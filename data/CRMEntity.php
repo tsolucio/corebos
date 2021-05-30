@@ -1066,7 +1066,7 @@ class CRMEntity {
 		$isRecordDeleted = $adb->query_result($result[$this->crmentityTable], 0, 'deleted');
 		if ($isRecordDeleted !== 0 && $isRecordDeleted !== '0' && !$deleted) {
 			if ($throwexception) {
-				throw new Exception($app_strings['LBL_RECORD_DELETE']." $module: $record", 1);
+				throw new InvalidArgumentException($app_strings['LBL_RECORD_DELETE']." $module: $record", 1);
 			} else {
 				require_once 'Smarty_setup.php';
 				$smarty = new vtigerCRM_Smarty();
@@ -1082,7 +1082,7 @@ class CRMEntity {
 			$mod_index_col = $this->tab_name_index[$this->table_name];
 			if ($adb->query_result($result[$this->table_name], 0, $mod_index_col) == '') {
 				if ($throwexception) {
-					throw new Exception($app_strings['LBL_RECORD_NOT_FOUND'], 1);
+					throw new InvalidArgumentException($app_strings['LBL_RECORD_NOT_FOUND'], 1);
 				} else {
 					require_once 'Smarty_setup.php';
 					$smarty = new vtigerCRM_Smarty();

@@ -174,7 +174,7 @@ class Webforms_Model {
 		// Create?
 		if ($isNew) {
 			if (self::existWebformWithName($this->getName())) {
-				throw new Exception(getTranslatedString('LBL_DUPLICATE_NAME', 'Webforms'));
+				throw new InvalidArgumentException(getTranslatedString('LBL_DUPLICATE_NAME', 'Webforms'));
 			}
 			$this->setPublicId($this->generatePublicId($this->getName()));
 			$insertSQL = 'INSERT INTO vtiger_webforms(name, targetmodule, publicid, enabled, description,ownerid,returnurl,web_domain) VALUES(?,?,?,?,?,?,?,?)';

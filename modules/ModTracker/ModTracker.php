@@ -254,7 +254,7 @@ class ModTracker {
 		$accessibleModules = $this->getModTrackerEnabledModules();
 
 		if (empty($accessibleModules)) {
-			throw new Exception('Modtracker not enabled for any modules');
+			throw new BadMethodCallException('Modtracker not enabled for any modules');
 		}
 
 		$query = 'SELECT id, module, modifiedtime, vtiger_crmobject.crmid, smownerid, vtiger_modtracker_basic.status

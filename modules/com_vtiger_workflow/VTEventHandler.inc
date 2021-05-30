@@ -77,7 +77,7 @@ class VTWorkflowEventHandler extends VTEventHandler {
 					$doEvaluate = false;
 					break;
 				default:
-					throw new Exception('Should never come here! Execution Condition:' . $workflow->executionCondition);
+					throw new LogicException('Should never come here! Execution Condition:' . $workflow->executionCondition);
 			}
 			if ($doEvaluate && $workflow->evaluate($entityCache, $entityData->getId())) {
 				if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {

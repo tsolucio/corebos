@@ -156,7 +156,7 @@ class MailManager_UploadFileXHR extends MailManager_UploadFile {
 		if (isset($_SERVER['CONTENT_LENGTH'])) {
 			return (int)$_SERVER['CONTENT_LENGTH'];
 		} else {
-			throw new Exception('Getting content length is not supported.');
+			throw new BadMethodCallException('Getting content length is not supported.');
 		}
 	}
 }

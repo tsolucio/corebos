@@ -62,7 +62,7 @@ class VTExpressionParser {
 	public function consume($label, $value) {
 		$token=$this->nextToken();
 		if ($token->label!=$label || $token->value!=$value) {
-			throw new Exception("Was expecting a $label of value $value got a {$token->label} of {$token->value} instead.");
+			throw new InvalidArgumentException("Was expecting a $label of value $value got a {$token->label} of {$token->value} instead.");
 		}
 	}
 
@@ -94,11 +94,11 @@ class VTExpressionParser {
 				$val = $this->expression();
 				$close = $this->nextToken();
 				if ($close->label != 'CLOSE_BRACKET') {
-					throw new Exception('Was expecting a close bracket');
+					throw new InvalidArgumentException('Was expecting a close bracket');
 				}
 				return $val;
 			default:
-				throw new Exception(json_encode($token));
+				throw new InvalidArgumentException(json_encode($token));
 		}
 	}
 
@@ -133,7 +133,7 @@ class VTExpressionParser {
 					$comma = $this->nextToken();
 				}
 				if ($comma->label != 'CLOSE_BRACKET') {
-					throw new Exception('Was expecting a closing bracket');
+					throw new InvalidArgumentException('Was expecting a closing bracket');
 				}
 			} else {
 				$this->consume('CLOSE_BRACKET', new VTExpressionSymbol(')'));

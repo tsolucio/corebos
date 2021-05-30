@@ -417,14 +417,14 @@ function registerWSAPI($operationInfo) {
 	);
 
 	if (empty($operationId)) {
-		throw new Exception('FAILED TO SETUP '.$operationInfo['name'].' WEBSERVICE');
+		throw new InvalidArgumentException('FAILED TO SETUP '.$operationInfo['name'].' WEBSERVICE');
 	}
 
 	$sequence = 1;
 	foreach ($operationInfo['parameters'] as $parameters) {
 		$status = vtws_addWebserviceOperationParam($operationId, $parameters['name'], $parameters['type'], $sequence++);
 		if ($status === false) {
-			throw new Exception('FAILED TO SETUP '.$parameters['name'].' WEBSERVICE HALFWAY THOURGH');
+			throw new InvalidArgumentException('FAILED TO SETUP '.$parameters['name'].' WEBSERVICE HALFWAY THOURGH');
 		}
 	}
 	return true;

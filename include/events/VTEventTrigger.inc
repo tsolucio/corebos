@@ -158,7 +158,7 @@ class VTEventTrigger {
 							$uncompletedEvents[] = $eventInfo['handler_class'];
 						}
 					}
-					throw new Exception('Deadlock occured for events: '. implode(' , ', $uncompletedEvents));
+					throw new LogicException('Deadlock occured for events: '. implode(' , ', $uncompletedEvents));
 				}
 			}
 		}

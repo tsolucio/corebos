@@ -90,7 +90,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 	public function reportError($e) {
 		global $log;
 		$log->fatal($e);
-		throw new Exception('The condition you provided is invalid');
+		throw new InvalidArgumentException('The condition you provided is invalid');
 	}
 
 	// delegates

@@ -646,7 +646,7 @@ class PearDatabase {
 					return $this->formatDate($data['value']);
 				break;
 				default:
-					throw new Exception('unhandled type: '.serialize($data));
+					throw new InvalidArgumentException('unhandled type: '.serialize($data));
 			}
 		} else {
 			return $this->quote($data);
@@ -655,13 +655,13 @@ class PearDatabase {
 
 	public function sql_insert_data($table, $data) {
 		if (!$table) {
-			throw new Exception('missing table name');
+			throw new InvalidArgumentException('missing table name');
 		}
 		if (!is_array($data)) {
-			throw new Exception('data must be an array');
+			throw new InvalidArgumentException('data must be an array');
 		}
 		if (!count($data)) {
-			throw new Exception('no data given');
+			throw new InvalidArgumentException('no data given');
 		}
 		$sql_fields = '';
 		$sql_data = '';
@@ -684,7 +684,7 @@ class PearDatabase {
 			return false;
 		}
 		if (!is_object($result)) {
-			throw new Exception("query $query failed: ".json_encode($result));
+			throw new InvalidArgumentException("query $query failed: ".json_encode($result));
 		}
 		$res = $result->FetchRow();
 		return $this->change_key_case($res);
@@ -727,10 +727,10 @@ class PearDatabase {
 	// create an IN expression from an array/list
 	public function sql_expr_datalist($a) {
 		if (!is_array($a)) {
-			throw new Exception('not an array');
+			throw new InvalidArgumentException('not an array');
 		}
 		if (!count($a)) {
-			throw new Exception('empty arrays not allowed');
+			throw new InvalidArgumentException('empty arrays not allowed');
 		}
 		$l = '';
 		foreach ($a as $cur) {
@@ -742,13 +742,13 @@ class PearDatabase {
 	// create an IN expression from a record list, take $field within each record
 	public function sql_expr_datalist_from_records($a, $field) {
 		if (!is_array($a)) {
-			throw new Exception('not an array');
+			throw new InvalidArgumentException('not an array');
 		}
 		if (!$field) {
-			throw new Exception('missing field');
+			throw new InvalidArgumentException('missing field');
 		}
 		if (!count($a)) {
-			throw new Exception('empty arrays not allowed');
+			throw new InvalidArgumentException('empty arrays not allowed');
 		}
 		$l = '';
 		foreach ($a as $cur) {
@@ -765,14 +765,14 @@ class PearDatabase {
 			case 'pgsql':
 				return '('.implode('||', $list).')';
 			default:
-				throw new Exception('unsupported dbtype: '.$this->dbType);
+				throw new InvalidArgumentException('unsupported dbtype: '.$this->dbType);
 		}
 	}
 
 	/* ADODB newly added. replacement for mysql_result() */
 	public function query_result(&$result, $row, $col = 0) {
 		if (!is_object($result)) {
-			throw new Exception('result is not an object');
+			throw new InvalidArgumentException('result is not an object');
 		}
 		$result->Move($row);
 		$rowdata = $this->change_key_case($result->FetchRow());
@@ -789,7 +789,7 @@ class PearDatabase {
 	// Function to get particular row from the query result
 	public function query_result_rowdata(&$result, $row = 0) {
 		if (!is_object($result)) {
-			throw new Exception('result is not an object');
+			throw new InvalidArgumentException('result is not an object');
 		}
 		$result->Move($row);
 		$rowdata = $this->change_key_case($result->FetchRow());
@@ -816,7 +816,7 @@ class PearDatabase {
 	 */
 	public function raw_query_result_rowdata(&$result, $row = 0) {
 		if (!is_object($result)) {
-			throw new Exception('result is not an object');
+			throw new InvalidArgumentException('result is not an object');
 		}
 		$result->Move($row);
 		return $this->change_key_case($result->FetchRow());

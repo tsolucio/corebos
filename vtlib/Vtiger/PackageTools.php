@@ -31,13 +31,13 @@ class PackageTools {
 		}
 		// first we check for the files
 		if (!is_dir("modules/$moduleName")) {  // check for module directory
-			throw new Exception("Module directory missing for {$moduleName}");
+			throw new InvalidArgumentException("Module directory missing for {$moduleName}");
 		}
 		if (!file_exists("modules/$moduleName/manifest.xml")) {  // check for manifest
-			throw new Exception("Module manifest missing for module {$moduleName}");
+			throw new InvalidArgumentException("Module manifest missing for module {$moduleName}");
 		}
 		if (!is_dir("modules/$moduleName/language")) {  // check for language directory
-			throw new Exception("Module language directory missing for module {$moduleName}");
+			throw new InvalidArgumentException("Module language directory missing for module {$moduleName}");
 		}
 		// Export as Zip
 		$zip = new Vtiger_Zip($buildPath . '/' . $fileName);
@@ -98,7 +98,7 @@ class PackageTools {
 		}
 		// first we check for the files
 		if (!is_file("include/language/{$languageCode}.manifest.xml")) {  // check for manifest
-			throw new Exception("Manifest missing for language package {$languageName}");
+			throw new InvalidArgumentException("Manifest missing for language package {$languageName}");
 		}
 		// Export as Zip
 		$zip = new Vtiger_Zip($buildPath . '/' . $fileName);

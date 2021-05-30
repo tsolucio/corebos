@@ -165,7 +165,7 @@ class VTWSEntityType {
 							break;
 						default:
 							print_r($type);
-							throw new Exception($type['name'].' is not supported yet.');
+							throw new InvalidArgumentException($type['name'].' is not supported yet.');
 					}
 					$this->fieldTypes[$fieldName] = $et;
 					break;

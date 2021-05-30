@@ -112,7 +112,7 @@ function vtWorkflowSave($adb, $request) {
 		$wf->relatemodule = $relatemodule;
 		$wm->save($wf);
 	} else {
-		throw new Exception();
+		throw new InvalidArgumentException();
 	}
 	if (isset($request['return_url'])) {
 		$returnUrl=$request['return_url'];

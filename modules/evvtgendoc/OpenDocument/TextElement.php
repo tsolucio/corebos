@@ -78,7 +78,7 @@ class OpenDocument_TextElement extends OpenDocument_Element {
 			$document = $object->getDocument();
 			$node = $object->getNode();
 		} else {
-			throw new Exception('Object must be OpenDocument or OpenDocument_Element');
+			throw new InvalidArgumentException('Object must be OpenDocument or OpenDocument_Element');
 		}
 		$element = new OpenDocument_TextElement($node->ownerDocument->createTextNode($text), $document);
 		$node->appendChild($element->node);

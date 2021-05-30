@@ -42,7 +42,7 @@ abstract class WSAPP_SynchronizeController {
 		$connector->setSynchronizeController($this);
 		$targetName = $this->targetConnector->getName();
 		if (empty($targetName)) {
-			throw new Exception('Target Name cannot be empty');
+			throw new InvalidArgumentException('Target Name cannot be empty');
 		}
 		return $connector->setName('Vtiger_'.$targetName);
 	}

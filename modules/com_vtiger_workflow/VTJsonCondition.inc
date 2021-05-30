@@ -499,7 +499,7 @@ class VTJsonCondition {
 				break;
 			default:
 				//Unexpected condition
-				throw new Exception('Found an unexpected condition: ' . $condition);
+				throw new LogicException('Found an unexpected condition: ' . $condition);
 		}
 	}
 }

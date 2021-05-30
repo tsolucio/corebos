@@ -234,7 +234,7 @@ class Vtiger_Cron {
 			case self::$STATUS_RUNNING:
 				break;
 			default:
-				throw new Exception('Invalid status');
+				throw new InvalidArgumentException('Invalid status');
 		}
 		self::querySilent('UPDATE vtiger_cron_task SET status=? WHERE id=?', array($status, $this->getId()));
 	}

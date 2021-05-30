@@ -315,12 +315,12 @@ class VTFieldExpressionEvaluater {
 				$logbg->debug("VTExpressionTreeNode: function $func $loginfo");
 				$this->debug[] = $loginfo;
 				if (empty($func)) {
-					throw new Exception('Unknown function '.$op->value.'<br>'.print_r($params, true));
+					throw new InvalidArgumentException('Unknown function '.$op->value.'<br>'.print_r($params, true));
 				}
 				try {
 					return $func($params);
 				} catch (Exception $e) {
-					throw new Exception('Unknown function '.$op->value.' '.print_r($params, true));
+					throw new InvalidArgumentException('Unknown function '.$op->value.' '.print_r($params, true));
 				}
 			}
 		} else {

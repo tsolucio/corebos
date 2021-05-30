@@ -211,7 +211,7 @@ class VTQL_Lexer {
 				$yysubmatches = $yymatches;
 				$yymatches = array_filter($yymatches, 'strlen'); // remove empty sub-patterns
 				if (!count($yymatches)) {
-					throw new Exception('Error: lexing failed because a rule matched an empty string. Input "' . substr($this->data, $this->index, 5) . ' state INITR');
+					throw new InvalidArgumentException('Error: lexing failed because a rule matched an empty string. Input "' . substr($this->data, $this->index, 5) . ' state INITR');
 				}
 				next($yymatches); // skip global match
 				$this->token = key($yymatches); // token number
@@ -247,7 +247,7 @@ class VTQL_Lexer {
 					// yymore is needed
 					do {
 						if (! strlen($yy_yymore_patterns[$this->token])) {
-							throw new Exception('cannot do yymore for the last token');
+							throw new InvalidArgumentException('cannot do yymore for the last token');
 						}
 						if (preg_match($yy_yymore_patterns[$this->token], substr($this->data, $this->index), $yymatches)) {
 							$yymatches = array_filter($yymatches, 'strlen'); // remove empty sub-patterns
@@ -263,7 +263,7 @@ class VTQL_Lexer {
 					return true;
 				}
 			} else {
-				throw new Exception('Unexpected input at line' . $this->linenum . ': ' . $this->data [$this->index]);
+				throw new InvalidArgumentException('Unexpected input at line' . $this->linenum . ': ' . $this->data [$this->index]);
 			}
 		} while (true);
 	} // end function

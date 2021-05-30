@@ -128,7 +128,7 @@ class OpenDocument_Hyperlink extends OpenDocument_StyledElement {
 			$document = $object->getDocument();
 			$node = $object->getNode();
 		} else {
-			throw new Exception('Object must be OpenDocument or OpenDocument_Element');
+			throw new InvalidArgumentException('Object must be OpenDocument or OpenDocument_Element');
 		}
 
 		$element = new OpenDocument_Hyperlink($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
