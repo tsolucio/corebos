@@ -166,33 +166,30 @@ class DetailViewLayoutMapping extends processcbMap {
 					$block['label'] = getTranslatedString(getBlockName($block['blockid']), $mapping['origin']);
 				}
 				if ($userPrivs->hasGlobalWritePermission() || $mapping['origin'] == 'Users' || $mapping['origin'] == 'Emails') {
-					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
+					$sql = 'SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
 						FROM vtiger_field
 						WHERE vtiger_field.fieldid IN (
-								SELECT MAX(vtiger_field.fieldid) FROM vtiger_field WHERE vtiger_field.tabid=? GROUP BY vtiger_field.columnname
-							) AND vtiger_field.block=? AND vtiger_field.displaytype IN (1,2,4) AND vtiger_field.presence IN (0,2)
-						ORDER BY sequence";
+							SELECT MAX(vtiger_field.fieldid) FROM vtiger_field WHERE vtiger_field.tabid=? GROUP BY vtiger_field.columnname
+						) AND vtiger_field.block=? AND vtiger_field.displaytype IN (1,2,4) AND vtiger_field.presence IN (0,2) ORDER BY sequence';
 					$params = array($origintab, $block['blockid']);
 				} elseif ($userPrivs->hasGlobalViewPermission()) { // view all
 					$profileList = getCurrentUserProfileList();
-					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
+					$sql = 'SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 						WHERE vtiger_field.tabid=? AND vtiger_field.block=? AND vtiger_field.displaytype IN (1,2,4)
-							AND vtiger_field.presence IN (0,2) AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ")
-						ORDER BY sequence";
+							AND vtiger_field.presence IN (0,2) AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') ORDER BY sequence';
 					$params = array($origintab, $block['blockid'], $profileList);
 				} else {
 					$profileList = getCurrentUserProfileList();
-					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
+					$sql = 'SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 						INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
 						WHERE vtiger_field.tabid=? AND vtiger_field.block=?
 							AND vtiger_field.displaytype IN (1,2,4) AND vtiger_field.presence IN (0,2)
 							AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0
-							AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ")
-						ORDER BY sequence";
+							AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') ORDER BY sequence';
 					$params = array($origintab, $block['blockid'], $profileList);
 				}
 

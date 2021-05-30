@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 global $vtqlp_where_col, $vtqlp_orderby, $vtqlp_in_started, $vtqlp_count;
 $vtqlp_where_col = false;
 $vtqlp_orderby = false;
@@ -159,15 +158,15 @@ class VTQL_Lexer {
 	public $state = 1;
 	private $data;
 	public $mandatory_states = array (
-			'select',
-			'column_list',
-			'from',
-			'table'
+		'select',
+		'column_list',
+		'from',
+		'table'
 	);
 	public $optional_states = array (
-			'where',
-			'orderby',
-			'limit'
+		'where',
+		'orderby',
+		'limit'
 	);
 	public $mandatory;
 	public $current_state;
@@ -198,8 +197,8 @@ class VTQL_Lexer {
 	}
 	public function yylex1() {
 		$tokenMap = array (
-				1 => 2,
-				4 => 0
+			1 => 2,
+			4 => 0
 		);
 		if ($this->index >= strlen($this->data)) {
 			return false; // end of input
@@ -241,8 +240,8 @@ class VTQL_Lexer {
 					// skip this token > continue
 				} else {
 					$yy_yymore_patterns = array (
-							1 => "^([ \t\r\n]+)",
-							4 => ''
+						1 => "^([ \t\r\n]+)",
+						4 => ''
 					);
 					// yymore is needed
 					do {

@@ -721,8 +721,8 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to get the current user information from the user_privileges file
-	 * @param $userid -- user id:: Type integer
-	 * @returns user info in $this->column_fields array:: Type array
+	 * @param integer user id
+	 * @return object user object with info in $this->column_fields
 	 */
 	public function retrieveCurrentUserInfoFromFile($userid) {
 		global $adb, $site_URL;
