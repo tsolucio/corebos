@@ -51,7 +51,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $adb;
 		$record = $this->checkQIDParam();
 		$smarty = new vtigerCRM_Smarty();
-		include_once 'modules/cbQuestion/cbQuestion.php';
 		$sql = cbQuestion::getSQL($record);
 		$rs = $adb->query($sql);
 		$rdo = array();
@@ -73,7 +72,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $adb, $current_user;
 		$record = $this->checkQIDParam();
 		$smarty = new vtigerCRM_Smarty();
-		include_once 'modules/cbQuestion/cbQuestion.php';
 		$rs = $adb->pquery('select qname,qmodule from vtiger_cbquestion where cbquestionid=?', array($record));
 		$qname = str_replace(' ', '_', $rs->fields['qname']);
 		$sql = cbQuestion::getSQL($record);
@@ -105,7 +103,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $adb;
 		$record = $this->checkQIDParam();
 		$smarty = new vtigerCRM_Smarty();
-		include_once 'modules/cbQuestion/cbQuestion.php';
 		$rs = $adb->pquery('select qname from vtiger_cbquestion where cbquestionid=?', array($record));
 		$sql = cbQuestion::getSQL($record);
 		$rs = $adb->query('CREATE OR REPLACE VIEW '.str_replace(' ', '_', $rs->fields['qname']).' AS '.$sql);
@@ -128,7 +125,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $adb;
 		$record = $this->checkQIDParam();
 		$smarty = new vtigerCRM_Smarty();
-		include_once 'modules/cbQuestion/cbQuestion.php';
 		$rs = $adb->pquery('select qname from vtiger_cbquestion where cbquestionid=?', array($record));
 		$sql = cbQuestion::getSQL($record);
 		$vname = str_replace(' ', '_', $rs->fields['qname']);
@@ -155,7 +151,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $adb;
 		$record = $this->checkQIDParam();
 		$smarty = new vtigerCRM_Smarty();
-		include_once 'modules/cbQuestion/cbQuestion.php';
 		$rs = $adb->pquery('select qname from vtiger_cbquestion where cbquestionid=?', array($record));
 		$vname = str_replace(' ', '_', $rs->fields['qname']);
 		$rs = $adb->query('drop table '.$vname);

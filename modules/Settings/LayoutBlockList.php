@@ -517,8 +517,7 @@ function changeFieldOrder() {
 			if (substr($blockid, 0, 3)=='dvb') { // detail view block
 				$adb->pquery('update vtiger_businessactions set sequence=if (sequence-1<0,0,sequence-1) where businessactionsid=?', array(substr($blockid, 3)));
 			} else {  // normal block
-				$sql='select * from vtiger_blocks where blockid=?';
-				$result = $adb->pquery($sql, array($blockid));
+				$result = $adb->pquery('select * from vtiger_blocks where blockid=?', array($blockid));
 				$row= $adb->fetch_array($result);
 				$current_sequence=$row['sequence'];
 
@@ -534,8 +533,7 @@ function changeFieldOrder() {
 		}
 
 		if ($_REQUEST['what_to_do']=='down' || $_REQUEST['what_to_do']=='Right') {
-			$sql='select * from vtiger_field where fieldid=? and vtiger_field.presence in (0,2)';
-			$result = $adb->pquery($sql, array(vtlib_purify($_REQUEST['fieldid'])));
+			$result = $adb->pquery('select * from vtiger_field where fieldid=? and vtiger_field.presence in (0,2)', array(vtlib_purify($_REQUEST['fieldid'])));
 			$row= $adb->fetch_array($result);
 			$current_sequence=$row['sequence'];
 			if ($_REQUEST['what_to_do']=='down') {
@@ -556,8 +554,7 @@ function changeFieldOrder() {
 		}
 
 		if ($_REQUEST['what_to_do']=='up' || $_REQUEST['what_to_do']=='Left') {
-			$sql='select * from vtiger_field where fieldid=? and vtiger_field.presence in (0,2)';
-			$result = $adb->pquery($sql, array(vtlib_purify($_REQUEST['fieldid'])));
+			$result = $adb->pquery('select * from vtiger_field where fieldid=? and vtiger_field.presence in (0,2)', array(vtlib_purify($_REQUEST['fieldid'])));
 			$row= $adb->fetch_array($result);
 			$current_sequence=$row['sequence'];
 
