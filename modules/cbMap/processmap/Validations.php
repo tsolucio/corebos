@@ -452,8 +452,7 @@ class Validations extends processcbMap {
 			}
 			foreach ($adb->database->MetaColumns($tablename) as $fname => $finfo) {
 				if ($finfo->type == 'varchar' && !in_array($fname, $novalfields)) {
-					$fname = strtolower($fname);
-					if (isset($mapping['fields'][$fname])) {
+					if (isset($mapping['fields'][strtolower($fname)])) {
 						$mapping['fields'][$fname][] = array('rule'=>'lengthMax', 'rst'=>array($finfo->max_length));
 					} else {
 						$mapping['fields'][$fname] = array(array('rule'=>'lengthMax', 'rst'=>array($finfo->max_length)));
