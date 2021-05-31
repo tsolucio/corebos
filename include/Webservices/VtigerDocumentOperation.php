@@ -19,6 +19,7 @@ include_once 'include/Webservices/AttachmentHelper.php';
 class VtigerDocumentOperation extends VtigerModuleOperation {
 	protected $tabId;
 	protected $isEntity = true;
+	protected $dbQueryError = 'Database error while performing required operation';
 
 	public function __construct($webserviceObject, $user, $adb, $log) {
 		parent::__construct($webserviceObject, $user, $adb, $log);
@@ -67,14 +68,14 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 
 		$error = $crmObject->create($element);
 		if (!$error) {
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, 'Database error while performing required operation');
+			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, $this->dbQueryError);
 		}
 
 		$id = $crmObject->getObjectId();
 
 		$error = $crmObject->read($id);
 		if (!$error) {
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, 'Database error while performing required operation');
+			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, $this->dbQueryError);
 		}
 
 		if ($element['filelocationtype']=='I' && !empty($attachid)) {
@@ -151,7 +152,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		$crmObject->setObjectId($ids[1]);
 		$error = $crmObject->update($element);
 		if (!$error) {
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, 'Database error while performing required operation');
+			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, $this->dbQueryError);
 		}
 
 		$id = $crmObject->getObjectId();

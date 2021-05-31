@@ -148,13 +148,14 @@ if (is_null($filename) || $filename == '') {
 if (isset($_REQUEST['contact_name']) && is_null($focus->contact_name)) {
 	$focus->contact_name = vtlib_purify($_REQUEST['contact_name']);
 }
+$getContactFolderID = "select folderid
+	from vtiger_attachmentsfolder
+	inner join vtiger_contactdetails on concat(trim(lastname), ' ', trim(firstname))=trim(foldername) where contactid=?";
+$getAccountFolderID = 'select folderid from vtiger_attachmentsfolder inner join vtiger_account on trim(accountname)=trim(foldername) where accountid=?';
 if (isset($_REQUEST['contact_id'])) {
 	$focus->contact_id = vtlib_purify($_REQUEST['contact_id']);
 	if (GlobalVariable::getVariable('Document_CreateSelectContactFolder', 0) && !GlobalVariable::getVariable('Document_CreateSelectAccountFolderForContact', 0)) {
-		$sql = "select folderid
-			from vtiger_attachmentsfolder
-			inner join vtiger_contactdetails on concat(trim(lastname), ' ', trim(firstname))=trim(foldername) where contactid=?";
-		$res = $adb->pquery($sql, array($focus->contact_id));
+		$res = $adb->pquery($getContactFolderID, array($focus->contact_id));
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
@@ -166,8 +167,7 @@ if (isset($_REQUEST['contact_id'])) {
 	}
 	if (GlobalVariable::getVariable('Document_CreateSelectAccountFolderForContact', 0)) {
 		$accid = getRelatedAccountContact($focus->contact_id, 'Accounts');
-		$sql = 'select folderid from vtiger_attachmentsfolder inner join vtiger_account on trim(accountname)=trim(foldername) where accountid=?';
-		$res = $adb->pquery($sql, array($accid));
+		$res = $adb->pquery($getAccountFolderID, array($accid));
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
@@ -185,8 +185,7 @@ if (isset($_REQUEST['parent_id'])) {
 	$focus->parent_id = vtlib_purify($_REQUEST['parent_id']);
 	$setype = getSalesEntityType($focus->parent_id);
 	if ($setype == 'Accounts' && GlobalVariable::getVariable('Document_CreateSelectAccountFolder', 0)) {
-		$sql = 'select folderid from vtiger_attachmentsfolder inner join vtiger_account on trim(accountname)=trim(foldername) where accountid=?';
-		$res = $adb->pquery($sql, array($focus->parent_id));
+		$res = $adb->pquery($getAccountFolderID, array($focus->parent_id));
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
@@ -196,10 +195,7 @@ if (isset($_REQUEST['parent_id'])) {
 		}
 	}
 	if ($setype == 'Contacts' && GlobalVariable::getVariable('Document_CreateSelectContactFolder', 0)) {
-		$sql = "select folderid
-			from vtiger_attachmentsfolder
-			inner join vtiger_contactdetails on concat(trim(lastname), ' ', trim(firstname))=trim(foldername) where contactid=?";
-		$res = $adb->pquery($sql, array($focus->parent_id));
+		$res = $adb->pquery($getContactFolderID, array($focus->parent_id));
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
@@ -211,8 +207,7 @@ if (isset($_REQUEST['parent_id'])) {
 	}
 	if ($setype == 'Contacts' && GlobalVariable::getVariable('Document_CreateSelectAccountFolderForContact', 0)) {
 		$accid = getRelatedAccountContact($focus->parent_id, 'Accounts');
-		$sql = 'select folderid from vtiger_attachmentsfolder inner join vtiger_account on trim(accountname)=trim(foldername) where accountid=?';
-		$res = $adb->pquery($sql, array($accid));
+		$res = $adb->pquery($getAccountFolderID, array($accid));
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
