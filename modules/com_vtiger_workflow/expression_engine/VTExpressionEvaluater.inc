@@ -119,6 +119,7 @@ class VTFieldExpressionEvaluater {
 			'min' => '__cb_min',
 			'max' => '__cb_max',
 			'sub_workdays' => '__cb_sub_workdays',
+            'average' => 'cb_average',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',
@@ -205,6 +206,7 @@ class VTFieldExpressionEvaluater {
 			'number_format' => 'cbexpsql_number_format',
 			'getSetting' => 'cbexpsql_getsetting',
 			'getIDof' => 'cbexpsql_getidof',
+            'average' => 'cbexpsql_average',
 		);
 		$this->rawparams = array(
 			'__cb_getGEODistanceFromUser2AccountBilling',

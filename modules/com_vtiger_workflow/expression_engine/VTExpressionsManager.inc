@@ -218,6 +218,7 @@ class VTExpressionsManager {
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
 			'min' => 'min(fieldname)',
 			'max' => 'max(fieldname)',
+			'average' => 'average(number,...)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

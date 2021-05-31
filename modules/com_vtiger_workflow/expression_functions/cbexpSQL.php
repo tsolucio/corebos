@@ -117,6 +117,7 @@ function cbexpsql_supportedFunctions() {
 		// 'exists' => 'exists(fieldname, value)',
 		// 'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 		// 'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
+		'average' => 'average(number,...)'
 	);
 }
 
@@ -539,6 +540,10 @@ function cbexpsql_getCurrentUserField($arr, $mmodule) {
 
 function cbexpsql_getCRMIDFromWSID($arr, $mmodule) {
 	return 'crmid';
+}
+
+function cbexpsql_average($arr, $mmodule) {
+	return 'TRUE';
 }
 
 function cbexpsql_getLatitude($arr, $mmodule) {
