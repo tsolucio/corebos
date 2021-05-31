@@ -98,4 +98,18 @@
 	<classname>mauticIntegationWorkflowAndFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Adding Contacts and Accoounts fields and workflow for Mautic Integration</description>
+	<filename>build/changeSets/2021/mauticContactsAndAccountsFields.php</filename>
+	<classname>mauticContactsAndAccountsFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Adding Mautic notification drivers</description>
+	<filename>build/changeSets/2021/mauticNotificationDrivers.php</filename>
+	<classname>mauticNotificationDrivers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

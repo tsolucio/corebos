@@ -100,4 +100,23 @@ function mauticContactUpdate($entity) {
 		}
 	}
 }
+
+function mauticContactDelete($entity) {
+	if (isset($entity->data['mautic_id']) && $entity->data['mautic_id'] != '') {
+		$send2mautic = array();
+		$send2mautic['corebos_id'] = '';
+		$send2mautic['ipAddress'] = $_SERVER['REMOTE_ADDR'];
+		$send2mautic['overwriteWithBlank'] = true;
+
+		$mautic = new corebos_mautic();
+		$auth = $mautic->authenticate();
+
+		if ($auth) {
+			$apiUrl     = $mautic->getSettings('baseUrl');
+			$api        = new MauticApi();
+			$contactApi = $api->newApi('contacts', $auth, $apiUrl);
+			$response = $contactApi->edit($entity->data['mautic_id'], $send2mautic);
+		}
+	}
+}
 ?>
