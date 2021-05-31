@@ -8,6 +8,7 @@
  ************************************************************************************}
 
 {if empty($smarty.request.ajax)}
+<input type="hidden" id="comments_parentId" value="{$ID}" />
 <table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tr class="detailview_block_header comments_block_header">
 <td colspan="4" class="dvInnerHeader">
@@ -52,7 +53,6 @@
 	</td>
 	<td width="100%" colspan="3" class="dvtCellInfo" align="left">
 		<div id="editarea_{$UIKEY}">
-			<input type="hidden" id="edit_comment_id_{$UIKEY}" value="" />
 			<textarea id="txtbox_{$UIKEY}" class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8"></textarea>
 			<br><a href="javascript:;" class="detailview_ajaxbutton ajax_save_detailview" onclick="ModCommentsCommon.addComment('{$UIKEY}', '{$ID}');">{$APP.LBL_SAVE_LABEL}</a>
 			<a href="javascript:;" onclick="document.getElementById('txtbox_{$UIKEY}').value='';" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CLEAR_BUTTON_LABEL}</a>

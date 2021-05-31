@@ -11,12 +11,7 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 		addComment : function (domkeyid, parentid) {
 			var textBoxField = document.getElementById('txtbox_'+domkeyid);
 			var contentWrapDOM = document.getElementById('contentwrap_'+domkeyid);
-			var ediTcommentId = document.getElementById('edit_comment_id_'+domkeyid);
-			var id = null;
-			if (ediTcommentId.value != '') {
-				id = ediTcommentId.value;
-				ediTcommentId.value = '';
-			}
+
 			if (textBoxField.value == '') {
 				return;
 			}
@@ -28,7 +23,7 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 
 			jQuery.ajax({
 				method: 'POST',
-				data : {'comment': textBoxField.value, 'id': id},
+				data : {'comment': textBoxField.value },
 				url: 'index.php?'+url,
 			}).done(function (response) {
 				VtigerJS_DialogBox.hidebusy();
@@ -37,10 +32,38 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 				if (responseTextTrimmed.substring(0, 10) == ':#:SUCCESS') {
 					textBoxField.value = '';
 					contentWrapDOM.innerHTML = responseTextTrimmed.substring(10)+contentWrapDOM.innerHTML;
-				} else if (responseTextTrimmed.substring(0, 10) == ':#:UPDATED') {
+				} else {
+					alert(alert_arr.OPERATION_DENIED);
+				}
+			});
+		},
+		editComment : function (commentId) {
+			var textBoxField = document.getElementById('txtbox_'+commentId);
+			var parentid = document.getElementById('comments_parentId').value;
+			if (textBoxField.value == '') {
+				return;
+			}
+
+			var url = 'module=ModComments&action=ModCommentsAjax&file=DetailViewAjax&ajax=true&ajxaction=WIDGETADDCOMMENT&parentid='+encodeURIComponent(parentid);
+
+			VtigerJS_DialogBox.block();
+			VtigerJS_DialogBox.showbusy();
+
+			jQuery.ajax({
+				method: 'POST',
+				data : {'comment': textBoxField.value, 'id': commentId},
+				url: 'index.php?'+url,
+			}).done(function (response) {
+				VtigerJS_DialogBox.hidebusy();
+				VtigerJS_DialogBox.unblock();
+				var responseTextTrimmed = trim(response);
+				if (responseTextTrimmed.substring(0, 10) == ':#:UPDATED') {
 					textBoxField.value = '';
-					var div_comment = document.getElementById('comment_div_'+id);
+					document.getElementById('editarea_'+commentId).style.display = 'none';
+					document.getElementById('dtlview_'+commentId).style.display = 'block';
+					var div_comment = document.getElementById('dtlview_'+commentId);
 					div_comment.innerHTML = responseTextTrimmed.substring(10);
+					itsonview=false;
 				} else {
 					alert(alert_arr.OPERATION_DENIED);
 				}
@@ -65,11 +88,6 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 					document.getElementById(targetdomid).innerHTML = response;
 				}
 			});
-		},
-		editCommentMode : function (parentId, commentId) {
-			document.getElementById('edit_comment_id_'+parentId).value = commentId;
-			var comment = document.getElementById('comment_content_'+commentId).innerHTML;
-			document.getElementById('txtbox_'+parentId).value = trim(comment);
-		},
+		}
 	};
 }
