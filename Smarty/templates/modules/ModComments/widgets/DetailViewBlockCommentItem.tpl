@@ -7,13 +7,13 @@
  * All Rights Reserved.
  ************************************************************************************}
 <div id="comment_div_{$COMMENTMODEL->id()}">
-<div class="dataField"  style="width: 99%; padding-top: 10px;" valign="top">
+<div class="dataField" id="comment_content_{$COMMENTMODEL->id()}" style="width: 99%; padding-top: 10px;" valign="top">
 	{$COMMENTMODEL->content()|@nl2br}
 </div>
 <div class="dataLabel" style="border-bottom: 1px dotted rgb(204, 204, 204); width: 99%; padding-bottom: 5px;" valign="top">
 	<font color="darkred">
 		{$MOD.LBL_AUTHOR}: {$COMMENTMODEL->author()} {$MOD.LBL_ON_DATE} {$COMMENTMODEL->timestamp()}
 	</font>
-	<div style="float:right"><button onclick="ModCommentsCommon.editCommentMode(`{$UIKEY}`,`{$COMMENTMODEL->id()}`,`{$COMMENTMODEL->content()}`)">{$APP.LBL_EDIT}</button></div>
+	<div style="float:right"><button onclick="ModCommentsCommon.editCommentMode(`{$UIKEY}`,`{$COMMENTMODEL->id()}`)">{$APP.LBL_EDIT}</button></div>
 </div>
 </div>

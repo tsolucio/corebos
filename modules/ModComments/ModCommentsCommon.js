@@ -66,9 +66,10 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 				}
 			});
 		},
-		editCommentMode : function (parentId, commentId, comment) {
+		editCommentMode : function (parentId, commentId) {
 			document.getElementById('edit_comment_id_'+parentId).value = commentId;
-			document.getElementById('txtbox_'+parentId).value = comment;
+			var comment = document.getElementById('comment_content_'+commentId).innerHTML;
+			document.getElementById('txtbox_'+parentId).value = trim(comment);
 		},
 	};
 }
