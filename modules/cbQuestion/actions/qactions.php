@@ -406,79 +406,45 @@ class qactions_Action extends CoreBOS_ActionController {
 	}
 
 	public function getBuilderData($ret = false) {
-		global $log, $adb;
-		$log->debug('> getBuilderData');
-
-		if (empty($_REQUEST['cbQuestionRecord'])) {
-			$entries_list = array(
-				'data' => array(
-					'contents' => array(),
-					'pagination' => array(
-						'page' => 1,
-						'totalCount' => 0,
-					),
+		global $adb;
+		$entries_list = array(
+			'data' => array(
+				'contents' => array(),
+				'pagination' => array(
+					'page' => 1,
+					'totalCount' => 0,
 				),
-				'result' => false,
-				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
-				'debug_query' => '',
-				'debug_params' => json_encode($_REQUEST),
-			);
-			if ($ret) {
-				return $entries_list;
-			}
-			echo json_encode($entries_list);
-		}
-		$builderData = $this->getBuilderDataQuery($ret);
-		$result = $adb->query(trim($builderData['query'], ';').$builderData['limit']);
-		$count_result = $adb->query('SELECT FOUND_ROWS();');
-		$noofrows = $adb->query_result($count_result, 0, 0);
-		if ($result) {
-			if ($noofrows>0) {
-				$entries_list = array(
-					'data' => array(
-						'contents' => array(),
-						'pagination' => array(
-							'page' => (int)$builderData['page'],
-							'totalCount' => (int)$noofrows,
-						),
-					),
-					'result' => true,
-				);
-				while ($lgn = $adb->fetch_array($result)) {
-					for ($col=0; $col < count($lgn); $col++) {
-						unset($lgn[$col]);
+			),
+			'result' => false,
+			'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
+			'debug_query' => '',
+			'debug_params' => json_encode($_REQUEST),
+		);
+		if (!empty($_REQUEST['cbQuestionRecord'])) {
+			$builderData = $this->getBuilderDataQuery($ret);
+			$query = trim($builderData['query'], ';').$builderData['limit'];
+			$entries_list['debug_query'] = $query;
+			$result = $adb->query($query);
+			$count_result = $adb->query('SELECT FOUND_ROWS();');
+			$noofrows = $adb->query_result($count_result, 0, 0);
+			if ($result) {
+				if ($noofrows>0) {
+					$entries_list['data']['pagination'] = array(
+						'page' => (int)$builderData['page'],
+						'totalCount' => (int)$noofrows,
+					);
+					$entries_list['result'] = true;
+					while ($lgn = $adb->fetch_array($result)) {
+						for ($col=0; $col < count($lgn); $col++) {
+							unset($lgn[$col]);
+						}
+						$entries_list['data']['contents'][] = $lgn;
 					}
-					$entries_list['data']['contents'][] = $lgn;
+				} else {
+					$entries_list['message'] = getTranslatedString('NoData', 'cbAuditTrail');
 				}
-			} else {
-				$entries_list = array(
-					'data' => array(
-						'contents' => array(),
-						'pagination' => array(
-							'page' => 1,
-							'totalCount' => 0,
-						),
-					),
-					'result' => false,
-					'message' => getTranslatedString('NoData', 'cbAuditTrail'),
-				);
 			}
-		} else {
-			$entries_list = array(
-				'data' => array(
-					'contents' => array(),
-					'pagination' => array(
-						'page' => 1,
-						'totalCount' => 0,
-					),
-				),
-				'result' => false,
-				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
-				'debug_query' => $builderData['query'].$builderData['limit'],
-				'debug_params' => json_encode($_REQUEST),
-			);
 		}
-		$log->debug('< getBuilderData');
 		if ($ret) {
 			return $entries_list;
 		}
