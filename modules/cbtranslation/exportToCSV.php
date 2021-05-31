@@ -23,10 +23,13 @@ $crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbtranslation');
 $allrecords = substr($_REQUEST['allrecords'], 0, -1);
 $allids = str_replace(';', ',', $allrecords);
 $allids = explode(',', $allids);
-if (!empty($allids)) {
-	$filename = 'cbtranslationExport.csv';
+if (empty($exportFormat)) {
+	$exportFormat = 'csv';
+}
+if (!empty($allids) && ($exportFormat=='csv' || $exportFormat=='json')) {
+	$filename = 'cbtranslationExport.'.$exportFormat;
 	$fp = fopen('php://output', 'w');
-	header('Content-type: application/csv');
+	header('Content-type: application/'.$exportFormat);
 	header('Content-Disposition: attachment; filename=' . $filename);
 	$queryString = 'SELECT translation_module,translation_key,i18n
 		FROM vtiger_cbtranslation
@@ -34,20 +37,31 @@ if (!empty($allids)) {
 		WHERE vtiger_cbtranslation.cbtranslationid IN (' . generateQuestionMarks($allids) . ')';
 	$cbtranslationQuery = $adb->pquery($queryString, $allids);
 	if ($cbtranslationQuery && $adb->num_rows($cbtranslationQuery) > 0) {
+		$csvContent = array();
 		while ($cbtranslationQuery && $row = $adb->fetch_array($cbtranslationQuery)) {
-			$csvContent = array();
 			$tranlation_module = $row['translation_module'];
 			$translation_key = $row['translation_key'];
 			$i18n = $row['i18n'];
-			$csvContent[] = $tranlation_module;
-			$csvContent[] = $translation_key;
-			$csvContent[] = $i18n;
-			fputcsv($fp, $csvContent);
+			if ($exportFormat=='csv') {
+				$csvContent[] = $tranlation_module;
+				$csvContent[] = $translation_key;
+				$csvContent[] = $i18n;
+				fputcsv($fp, $csvContent);
+				$csvContent = array();
+			} else {
+				$columnString = "$tranlation_module::$translation_key";
+				$csvContent[$columnString] = $i18n;
+			}
+		}
+		if ($exportFormat=='json') {
+			print json_encode($csvContent);
 		}
 		exit;
 	} else {
 		echo getTranslatedString('LBL_RECORD_NOT_FOUND');
 	}
+} elseif ($exportFormat!='csv' && $exportFormat!='json') {
+	echo getTranslatedString('LBL_INVALID_FORMAT');
 } else {
 	echo getTranslatedString('LBL_RECORD_NOT_FOUND');
 }

@@ -32,9 +32,6 @@ $mod_strings = array(
 	'Translates' => 'Translates',
 	'Field' => 'Field',
 	'Picklist' => 'Picklist',
-	'Assigned To' => 'Assigned To',
-	'Created Time' => 'Created Time',
-	'Modified Time' => 'Modified Time',
-	'Created By' => 'Created By',
+	'LBL_INVALID_FORMAT' => 'Invalid export format',
 );
 ?>
