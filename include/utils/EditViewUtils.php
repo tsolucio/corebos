@@ -1302,7 +1302,11 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 				);
 				if ($mdrs) {
 					$col_fields = array();
-					$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, $mdfield['fieldinfo']['name']);
+					if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate']=='true' && !is_null($mdfield['duplicatevalue'])) {
+						$col_fields[$mdfield['fieldinfo']['name']] = $mdfield['duplicatevalue'];
+					} else {
+						$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, $mdfield['fieldinfo']['name']);
+					}
 					$col_fields['record_id'] = $adb->query_result($mdrs, 0, 'inventorydetailsid');
 					$foutput = getOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], 100, $col_fields, 0, 'InventoryDetails', 'edit', $mdfield['fieldinfo']['typeofdata']);
 					$product_Detail[$i]['moreinfo'.$i][] = $foutput;

@@ -65,6 +65,8 @@
 		<value>xxx</value>
 		<editable>1</editable>
 		<mandatory>1</mandatory>
+		<defaultvalue>11</defaultvalue>
+		<duplicatevalue>22</duplicatevalue>
 		<hidden>1</hidden>
 		<layout></layout>
 	  </field>
@@ -211,6 +213,8 @@ class MasterDetailLayout extends processcbMap {
 					'mandatory' => isset($v->mandatory) ? (String)$v->mandatory : '',
 					'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
 					'value' => isset($v->value) ? (String)$v->value : '',
+					'defaultvalue' => isset($v->defaultvalue) ? (String)$v->defaultvalue : null,
+					'duplicatevalue' => isset($v->duplicatevalue) ? (String)$v->duplicatevalue : null,
 					'layout' => isset($v->layout) ? (String)$v->layout : '',
 				);
 				$mapping['detailview']['fieldnames'][] = $fieldinfo['name'];
@@ -301,7 +305,11 @@ class MasterDetailLayout extends processcbMap {
 				if ($mdfield['fieldinfo']['name']=='id') {
 					continue;
 				}
-				$col_fields[$mdfield['fieldinfo']['name']] = '';
+				if (is_null($mdfield['defaultvalue'])) {
+					$col_fields[$mdfield['fieldinfo']['name']] = '';
+				} else {
+					$col_fields[$mdfield['fieldinfo']['name']] = $mdfield['defaultvalue'];
+				}
 				$foutput = getOutputHtml(
 					$mdfield['fieldinfo']['uitype'],
 					$mdfield['fieldinfo']['name'],
