@@ -1460,7 +1460,13 @@ function doServerValidation(edit_type, formName, callback) {
 			CKEDITOR.instances[myFields[f].name].updateElement();
 			sentForm[myFields[f].name] = myFields[f].value;
 		} else if (myFields[f].type=='select-multiple') {
-			sentForm[myFields[f].name.substring(0, myFields[f].name.length-2)] = myFields[f].value;
+			var r = new Array();
+			for (var iter=0; iter < myFields[f].options.length; iter++) {
+				if (myFields[f].options[iter].selected) {
+					r[r.length] = myFields[f].options[iter].value;
+				}
+			}
+			sentForm[myFields[f].name.substring(0, myFields[f].name.length-2)] = r.join(' |##| ');
 		} else if (myFields[f].type=='radio' && myFields[f].checked) {
 			sentForm[myFields[f].name] = myFields[f].value;
 		} else if (myFields[f].type!='radio') {

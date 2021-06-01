@@ -389,7 +389,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 					notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
 				}
 			}
-			sentForm[fieldName] = r;
+			sentForm[fieldName] = r.join(' |##| ');
 			break;
 		case '56':
 		case 56:
