@@ -1512,11 +1512,7 @@ if (typeof(MailManager) == 'undefined') {
 					ret = ret + mailadd.charAt(i);
 				}
 			}
-			if (/^[a-z0-9]([a-z0-9_\-\.]*)@([a-z0-9_\-\.]*)(\.[a-z]{2,3}(\.[a-z]{2}){0,2})$/.test(ret)) {
-				return true;
-			} else {
-				return false;
-			}
+			return (/^[a-z0-9]([a-z0-9_\-\.]*)@([a-z0-9_\-\.]*)(\.[a-z]{2,3}(\.[a-z]{2}){0,2})$/.test(ret));
 		},
 
 		uploadCountUpdater : function () {

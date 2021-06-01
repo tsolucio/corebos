@@ -4599,11 +4599,7 @@ function re_dateValidate(fldval, fldLabel, type) {
 	chkdate.setDate(dd);
 
 	if (type!='OTH') {
-		if (!compareDates(chkdate, fldLabel, currdate, 'current date', type)) {
-			return false;
-		} else {
-			return true;
-		}
+		return compareDates(chkdate, fldLabel, currdate, 'current date', type);
 	} else {
 		return true;
 	}
