@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-<div id="mouseArea_{$COMMENTMODEL->id()}" onmouseover="hndMouseOver(19,'{$COMMENTMODEL->id()}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>
+<div id="mouseArea_{$COMMENTMODEL->id()}" onmouseover="hndMouseOver(19,'{$COMMENTMODEL->id()}');" onmouseout="fnhide('crmspanid');" {if $COMMENTMODEL->editPermission() }onclick='handleEdit(event);'{/if}>
 	<div id="dtlview_{$COMMENTMODEL->id()}">
 		<div class="dataField" id="comment_content_{$COMMENTMODEL->id()}" style="width: 99%; padding-top: 10px;" valign="top">
 			{$COMMENTMODEL->content()|@nl2br}
