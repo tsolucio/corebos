@@ -460,8 +460,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 
 			//This is added to strip the crmid and _ from the file name and show the original filename
 			//$org_filename = ltrim($col_fields[$fieldname],$col_fields['record_id'].'_');
-			/* Above line is not required as the filename in the database is stored as it is and doesn't have crmid attached to it.
-			  This was the cause for the issue reported in ticket #4645 */
+			/* Above line is not required as the filename in the database is stored as it is and doesn't have crmid attached to it.*/
 			$org_filename = $col_fields[$fieldname];
 			// For Backward Compatibility version < 5.0.4
 			$filename_pos = strpos($org_filename, $col_fields['record_id'] . '_');

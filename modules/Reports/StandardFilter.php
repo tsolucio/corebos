@@ -49,7 +49,6 @@ if (!isset($_REQUEST['record']) || $_REQUEST['record']=='') {
 
 	$BLOCK1 = getPrimaryStdFilterHTML($oReport->primodule, $oReport->stdselectedcolumn);
 	$BLOCK1 .= getSecondaryStdFilterHTML($oReport->secmodule, $oReport->stdselectedcolumn);
-	//added to fix the ticket #5117
 	$selectedcolumnvalue = '"'. $oReport->stdselectedcolumn . '"';
 	if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false) {
 		$BLOCK1 .= "<option selected value='Not Accessible'>".$app_strings['LBL_NOT_ACCESSIBLE'].'</option>';

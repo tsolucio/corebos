@@ -441,7 +441,6 @@ function re_patternValidate(fldval, fldLabel, type) {
 	}
 }
 
-//added to fix the ticket #5117
 function standardFilterDisplay() {
 	if (document.NewReport.stdDateFilterField.options.length <= 0 || (document.NewReport.stdDateFilterField.selectedIndex > -1 && document.NewReport.stdDateFilterField.options[document.NewReport.stdDateFilterField.selectedIndex].value == 'Not Accessible')) {
 		getObj('stdDateFilter').disabled = true;

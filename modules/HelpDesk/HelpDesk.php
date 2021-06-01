@@ -313,7 +313,7 @@ class HelpDesk extends CRMEntity {
 			if ($adb->query_result($result, $i, 'comments') != '') {
 				//this div is to display the comment
 				$comment = $adb->query_result($result, $i, 'comments');
-				// Asha: Fix for ticket #4478 . Need to escape html tags during ajax save.
+				// Need to escape html tags during ajax save.
 				if ($_REQUEST['action'] == 'HelpDeskAjax') {
 					$comment = htmlentities($comment, ENT_QUOTES, $default_charset);
 				}

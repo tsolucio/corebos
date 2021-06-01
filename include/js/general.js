@@ -913,7 +913,6 @@ function timeComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
 	var time1=new Date();
 	var time2=new Date();
 
-	//added to fix the ticket #5028
 	if (fldName1 == 'time_end' && (getObj('due_date') && getObj('date_start'))) {
 		var due_date=getObj('due_date').value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 		var start_date=getObj('date_start').value.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -1011,7 +1010,6 @@ function numValidate(fldName, fldLabel, format, neg) {
 			return true;
 		}
 	} else {
-		// changes made -- to fix the ticket#3272
 		if (fldName == 'probability' || fldName == 'commissionrate') {
 			var splitval=val.split('.');
 			var arr_len = splitval.length;
@@ -2730,7 +2728,6 @@ function confirmdelete(url) {
 	}
 }
 
-//function modified to apply the patch ref : Ticket #4065
 function valid(c, type) {
 	if (type == 'name') {
 		return (((c >= 'a') && (c <= 'z')) ||((c >= 'A') && (c <= 'Z')) ||((c >= '0') && (c <= '9')) || (c == '.') || (c == '_') || (c == '-') || (c == '@') );
@@ -4609,9 +4606,7 @@ function re_dateValidate(fldval, fldLabel, type) {
 //Copied from general.js and altered some lines. because we cant send values to function present in general.js. it accept only field names.
 function re_patternValidate(fldval, fldLabel, type) {
 	if (type.toUpperCase()=='EMAIL') {
-		/*changes made to fix -- ticket#3278 & ticket#3461
-		  var re=new RegExp(/^.+@.+\..+$/)*/
-		//Changes made to fix tickets #4633, #5111  to accomodate all possible email formats
+		// regex to accomodate all possible email formats
 		var re=new RegExp(/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/);
 	}
 
