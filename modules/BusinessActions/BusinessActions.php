@@ -291,7 +291,11 @@ class BusinessActions extends CRMEntity {
 					$entityCache = new VTEntityCache($current_user);
 					$ct = new VTSimpleTemplate($link->linkurl, true);
 					if ($module_name=='Users') {
-						$link->linkurl = $ct->render($entityCache, vtws_getEntityId('Users').'x'.$parameters['RECORD']);
+						if (Users::is_ActiveUserID($parameters['RECORD'])) {
+							$link->linkurl = $ct->render($entityCache, vtws_getEntityId('Users').'x'.$parameters['RECORD']);
+						} else {
+							$link->linkurl = '';
+						}
 					} else {
 						$link->linkurl = $ct->render($entityCache, vtws_getEntityId(getSalesEntityType($parameters['RECORD'])).'x'.$parameters['RECORD']);
 					}
