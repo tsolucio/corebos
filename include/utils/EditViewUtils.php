@@ -1173,16 +1173,12 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	}
 	if ($module != $currentModule && in_array($currentModule, getInventoryModules())) {
 		$cbMap = cbMap::getMapByName($currentModule.'InventoryDetails', 'MasterDetailLayout');
-		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
-		if ($MDMapFound) {
-			$cbMapFields = $cbMap->MasterDetailLayout();
-		}
 	} else {
 		$cbMap = cbMap::getMapByName($module.'InventoryDetails', 'MasterDetailLayout');
-		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
-		if ($MDMapFound) {
-			$cbMapFields = $cbMap->MasterDetailLayout();
-		}
+	}
+	$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
+	if ($MDMapFound) {
+		$cbMapFields = $cbMap->MasterDetailLayout();
 	}
 	$result = $adb->pquery($query, $params);
 	$num_rows=$adb->num_rows($result);

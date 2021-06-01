@@ -1015,7 +1015,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 							}
 						} elseif (($module == 'Faq' || $module == 'Documents') && $name == 'Related to') {
 							$value = getRelatedToEntity($module, $list_result, $i);
-						} elseif ($name == 'Account Name' && ($module == 'Potentials' || $module == 'SalesOrder' || $module == 'Quotes' || $module == 'Invoice')) {
+						} elseif ($name=='Account Name' && ($module=='Potentials' || $module=='SalesOrder' || $module=='Quotes' || $module=='Invoice' || $module=='Contacts')) {
 							$account_id = $adb->query_result($list_result, $i, 'accountid');
 							$account_name = getAccountName($account_id);
 							$value = textlength_check($account_name);
@@ -1023,10 +1023,6 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 							$quote_id = $adb->query_result($list_result, $i, 'quoteid');
 							$quotename = getQuoteName($quote_id);
 							$value = textlength_check($quotename);
-						} elseif ($name == 'Account Name' && $module == 'Contacts') {
-							$account_id = $adb->query_result($list_result, $i, 'accountid');
-							$account_name = getAccountName($account_id);
-							$value = textlength_check($account_name);
 						} elseif (isset($focus->popup_fields) && in_array($fieldname, $focus->popup_fields)) {
 							// vtlib customization: Generic popup handling
 							global $default_charset;
