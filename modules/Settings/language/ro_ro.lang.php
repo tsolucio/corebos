@@ -901,5 +901,6 @@ $mod_strings = array(
 	'Site Maintenance' => 'Mentenanta Site',
 	'SM_BeBackSoon' => 'Revenim in curand!',
 	'SM_SorryInconvenience' => 'Scuze de inconvenienta dar efectuam mentenanta acum. Revenim curand!',
+	'Not Labeled' => 'Not Labeled',
 );
 ?>
