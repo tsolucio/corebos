@@ -1141,6 +1141,22 @@ $WFExpressionFunctionDefinitons = array(
 		"getCRMIDFromWSID('33x2222')",
 	),
 ),
+'average' => array(
+    'name' => 'average(number,...)',
+    'desc' => 'This function returns the average from a list of numbers',
+    'params' => array(
+        array(
+            'name' => 'number',
+            'type' => 'Integer',
+            'optional' => false,
+            'desc' => 'List of numbers',
+        ),
+    ),
+    'categories' => array('Math'),
+    'examples' => array(
+        "average(1,2,3)",
+    ),
+),
 'getEntityType' => array(
 	'name' => 'getEntityType(field)',
 	'desc' => 'This function returns the module name of the given ID.',
