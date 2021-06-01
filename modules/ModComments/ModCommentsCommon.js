@@ -61,9 +61,8 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 					textBoxField.value = '';
 					document.getElementById('editarea_'+commentId).style.display = 'none';
 					document.getElementById('dtlview_'+commentId).style.display = 'block';
-					var div_comment = document.getElementById('dtlview_'+commentId);
-					div_comment.innerHTML = responseTextTrimmed.substring(10);
-					itsonview=false;
+					document.getElementById('dtlview_'+commentId).innerHTML = responseTextTrimmed.substring(10);
+					itsonview = false;
 				} else {
 					alert(alert_arr.OPERATION_DENIED);
 				}
