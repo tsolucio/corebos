@@ -9287,7 +9287,7 @@ precacheAndRoute([{
   "revision": "6d71311dc59b64a4951a0e16b6c69c89"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "199f590518f2809df2d65e7ba44f9a41"
+  "revision": "78b24ffbedf3f17cdc9bbfdaefbe3ed8"
 }, {
   "url": "include/js/en_gb.lang.js",
   "revision": "61d256e43844b1e85296cc69cb741050"
@@ -9311,7 +9311,7 @@ precacheAndRoute([{
   "revision": "03a067d91231bf0f881cb1449dfd8efd"
 }, {
   "url": "include/js/general.js",
-  "revision": "e7335e9444597ea5311ebc2cc7300fb1"
+  "revision": "649539edfee63f6cc5d38ab1383d27be"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "b8243aa64b88f790bbe422b6b6fa741b"
@@ -9515,7 +9515,7 @@ precacheAndRoute([{
   "revision": "c6ef3400e6d4e619d8282a5cc419b0be"
 }, {
   "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
-  "revision": "13d3c65c8751e6d688a3f28ec019641f"
+  "revision": "f81b5a4264ea41a328d5db7c318851f1"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
   "revision": "1956ac974aa16271cbe80b3918ead1c9"
@@ -9662,7 +9662,7 @@ precacheAndRoute([{
   "revision": "9ed4669f524bec38319be63a2ee4ba26"
 }, {
   "url": "modules/MailManager/MailManager.js",
-  "revision": "df857416d441b85a80e785a8ece7bceb"
+  "revision": "8ede0969d7a1b7bb36d5053c5b0caa2d"
 }, {
   "url": "modules/MailManager/MailManager.png",
   "revision": "1c045d808355b6ed581cd4971f3436f9"
@@ -9806,7 +9806,7 @@ precacheAndRoute([{
   "revision": "721bd3d5367129defea7f6bd1bb8eee3"
 }, {
   "url": "modules/Products/multifile.js",
-  "revision": "2469a9d75b05798558ca746bff88ef36"
+  "revision": "d9dc85cdf658755d29cdb4704fea4882"
 }, {
   "url": "modules/Products/Products.js",
   "revision": "5338644db016b93e59ed8f3b7765e3fe"
@@ -10079,7 +10079,7 @@ precacheAndRoute([{
   "revision": "65682db92a471ba46f12737f6f6b3e4d"
 }, {
   "url": "modules/Reports/Reports.js",
-  "revision": "f2454fae85dab7f99cdb555bd141825a"
+  "revision": "1dbbeec86ef8a9263439378971af23cf"
 }, {
   "url": "modules/Reports/ReportsSteps.js",
   "revision": "dac7c3f4b013798df0875b1450e27bc1"
