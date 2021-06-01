@@ -543,7 +543,13 @@ function cbexpsql_getCRMIDFromWSID($arr, $mmodule) {
 }
 
 function cbexpsql_average($arr, $mmodule) {
-	return 'TRUE';
+	$expression = __cbexpsql_functionparams('', $arr, $mmodule);
+	$values = explode(',', trim($expression->value, '()'));
+	$select = '(SELECT avg(nums) FROM (';
+	foreach ($values as $exp) {
+		$select .= '(select '.$exp.' as nums) union ';
+	}
+	return substr($select, 0, strlen($select)-7).') as setofnums)';
 }
 
 function cbexpsql_getLatitude($arr, $mmodule) {

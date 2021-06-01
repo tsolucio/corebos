@@ -1139,20 +1139,20 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'average' => array(
-    'name' => 'average(number,...)',
-    'desc' => 'Esta funcion devuelve la media de una lista de números',
-    'params' => array(
-        array(
-            'name' => 'number',
-            'type' => 'Entero',
-            'optional' => false,
-            'desc' => 'Lista de numeros',
-        ),
-    ),
-    'categories' => array('Math'),
-    'examples' => array(
-        "average(1,2,3)",
-    ),
+	'name' => 'average(number,...)',
+	'desc' => 'Esta funcion devuelve la media de una lista de números',
+	'params' => array(
+		array(
+			'name' => 'number',
+			'type' => 'Número',
+			'optional' => false,
+			'desc' => 'Lista de números',
+		),
+	),
+	'categories' => array('Math'),
+	'examples' => array(
+		"average(1,2,3)",
+),
 ),
 'getEntityType' => array(
 	'name' => 'getEntityType(field)',

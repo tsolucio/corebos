@@ -108,4 +108,16 @@ function __cb_number_format($arr) {
 		return '';
 	}
 }
+
+function cb_average($arr) {
+	if (empty($arr)) {
+		return null;
+	}
+	foreach ($arr as $averageValue) {
+		if (!is_numeric($averageValue)) {
+			return null;
+		}
+	}
+	return array_sum($arr)/count($arr);
+}
 ?>
