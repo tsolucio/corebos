@@ -215,34 +215,9 @@ if ($focus->mode == 'edit') {
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	$smarty->assign('MODE', $focus->mode);
 }
-$cbMap = cbMap::getMapByName($currentModule.'InventoryDetails', 'MasterDetailLayout');
-$smarty->assign('moreinfofields', '');
-if ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes') {
-	$cbMapFields = $cbMap->MasterDetailLayout();
-	$smarty->assign('moreinfofields', "'".implode("','", $cbMapFields['detailview']['fieldnames'])."'");
-	if (empty($associated_prod) && $isduplicate != 'true') { // creating
-		$product_Detail = $col_fields = array();
-		foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
-			if ($mdfield['fieldinfo']['name']=='id') {
-				continue;
-			}
-			$col_fields[$mdfield['fieldinfo']['name']] = '';
-			$foutput = getOutputHtml(
-				$mdfield['fieldinfo']['uitype'],
-				$mdfield['fieldinfo']['name'],
-				$mdfield['fieldinfo']['label'],
-				100,
-				$col_fields,
-				0,
-				'InventoryDetails',
-				'edit',
-				$mdfield['fieldinfo']['typeofdata']
-			);
-			$product_Detail['moreinfo'][] = $foutput;
-		}
-		$associated_prod = $product_Detail;
-		$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
-	}
+if (empty($associated_prod) && $isduplicate != 'true') { // creating
+	include_once 'modules/cbMap/processmap/MasterDetailLayout.php';
+	$associated_prod = MasterDetailLayout::setCreateAsociatedProductsValue($currentModule, $smarty);
 }
 
 list($v1, $v2, $associated_prod, $customtemplatename) = cbEventHandler::do_filter('corebos.filter.inventory.itemrow.edit', array($currentModule, $focus, $associated_prod, ''));

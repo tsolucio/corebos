@@ -287,5 +287,36 @@ class MasterDetailLayout extends processcbMap {
 		}
 		return $this->relatedfieldsinfo[$module][$ret];
 	}
+
+	// creating > empty($associated_prod) && $isduplicate != 'true'
+	public static function setCreateAsociatedProductsValue($module, &$smarty) {
+		$cbMap = cbMap::getMapByName($module.'InventoryDetails', 'MasterDetailLayout');
+		$smarty->assign('moreinfofields', '');
+		$product_Detail = array();
+		if ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes') {
+			$cbMapFields = $cbMap->MasterDetailLayout();
+			$smarty->assign('moreinfofields', "'".implode("','", $cbMapFields['detailview']['fieldnames'])."'");
+			$col_fields = array();
+			foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+				if ($mdfield['fieldinfo']['name']=='id') {
+					continue;
+				}
+				$col_fields[$mdfield['fieldinfo']['name']] = '';
+				$foutput = getOutputHtml(
+					$mdfield['fieldinfo']['uitype'],
+					$mdfield['fieldinfo']['name'],
+					$mdfield['fieldinfo']['label'],
+					100,
+					$col_fields,
+					0,
+					'InventoryDetails',
+					'edit',
+					$mdfield['fieldinfo']['typeofdata']
+				);
+				$product_Detail['moreinfo'][] = $foutput;
+			}
+		}
+		return $product_Detail;
+	}
 }
 ?>
