@@ -180,20 +180,20 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 							}
 							$moduleLabel = str_replace(' ', '', $moduleLabel);
 							$name = "<a href='javascript:void(0);' onClick='loadRelatedListBlock" .
-									"(\"module=$relatedmodule&action=" . $relatedmodule . "Ajax&" .
-									"file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=" . $moduleHeader .
+									"(\"module=$relatedmodule&action=" . $relatedmodule . 'Ajax&' .
+									'file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=' . $moduleHeader .
 									"&order_by=$col&record=$relatedlist&sorder=$temp_sorder$relationURL" .
 									"$actionsURL\",\"tbl_" . $relatedmodule . "_$moduleLabel\"," .
 									'"'.$relatedmodule.'_'.$moduleLabel."\");' class='listFormHeaderLinks'>$lbl_name$arrow</a>";
 						} elseif ($module == 'Users' && $name == 'User Name') {
-							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . "\",\"order_by=" . $col;
-							$name .= "&start=1&sorder=" . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>";
+							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . '","order_by=' . $col;
+							$name .= '&start=1&sorder=' . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>";
 							$name .= getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module) . $arrow . '</a>';
 						} elseif ($relatedlist == 'global') {
 							$name = $lbl_name;
 						} else {
-							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . "\",\"order_by=" . $col;
-							$name .= "&start=1&sorder=" . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>" . $lbl_name . $arrow . '</a>';
+							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . '","order_by=' . $col;
+							$name .= '&start=1&sorder=' . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>" . $lbl_name . $arrow . '</a>';
 						}
 						$arrow = '';
 					} else {
@@ -1561,7 +1561,17 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_desc = decode_html(htmlspecialchars($description, ENT_QUOTES, $default_charset));
 
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
-					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det", 'dto'=>$dtopdo);
+					$tmp_arr = array(
+						'entityid' => $entity_id,
+						'prodname' => stripslashes(decode_html(nl2br($slashes_temp_val))),
+						'unitprice' => $unitprice,
+						'qtyinstk' => $qty_stock,
+						'taxstring' => $tax_str,
+						'rowid' => $row_id,
+						'desc' => $slashes_desc,
+						'subprod_ids' => $sub_det,
+						'dto' => $dtopdo
+					);
 					$prod_arr = json_encode($tmp_arr);
 					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '",'.$dtopdo.');\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($field_valEncoded) . '</a>';
 				} elseif ($popuptype == 'inventory_prod_po') {
@@ -1613,7 +1623,16 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_desc = decode_html(htmlspecialchars($description, ENT_QUOTES, $default_charset));
 
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
-					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "0", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
+					$tmp_arr = array(
+						'entityid' => $entity_id,
+						'prodname' => stripslashes(decode_html(nl2br($slashes_temp_val))),
+						'unitprice' => $unitprice,
+						'qtyinstk' => '0',
+						'taxstring' => $tax_str,
+						'rowid' => $row_id,
+						'desc' => $slashes_desc,
+						'subprod_ids' => $sub_det
+					);
 					$prod_arr = json_encode($tmp_arr);
 					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory_po("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '"); \' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($field_valEncoded) . '</a>';
 				} elseif ($popuptype == 'inventory_service') {
@@ -1653,10 +1672,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$tmp_arr = array(
 						'entityid' => $entity_id,
 						'prodname' => stripslashes(decode_html(nl2br($slashes_temp_val))),
-						'unitprice' => "$unitprice",
-						'taxstring' => "$tax_str",
-						'rowid' => "$row_id",
-						'desc' => "$slashes_desc",
+						'unitprice' => $unitprice,
+						'taxstring' => $tax_str,
+						'rowid' => $row_id,
+						'desc' => $slashes_desc,
 						'dto' => $dtopdo
 					);
 					$prod_arr = json_encode($tmp_arr);
@@ -2662,9 +2681,9 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 			}
 		} elseif ($relmodule == 'Vendors') {
 			$mod = CRMEntity::getInstance('Contacts');
-			$vcquery = "SELECT vtiger_contactdetails.contactid
+			$vcquery = 'SELECT vtiger_contactdetails.contactid
 				from vtiger_contactdetails
-				inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+				inner join '.$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 				inner join vtiger_vendorcontactrel on vtiger_vendorcontactrel.contactid=vtiger_contactdetails.contactid
 				where vtiger_crmentity.deleted=0 and vtiger_vendorcontactrel.vendorid = $relmod_recordid";
 			$condition = "and vtiger_contactdetails.contactid in ($vcquery)";
@@ -3107,7 +3126,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 /** 	Function to get the Edit link details for ListView and RelatedListView
  * 	@param string 	$module 	- module name
  * 	@param int 	$entity_id 	- record id
- * 	@param string 	$relatedlist 	- string "relatedlist" or may be empty. if empty means ListView else relatedlist
+ * 	@param string 	$relatedlist 	- string 'relatedlist' or may be empty. if empty means ListView else relatedlist
  * 	@param string 	$returnset 	- may be empty in case of ListView.
  * 		For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
  * 	return string	$edit_link	- url string which contains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=EditView&record=10
@@ -3138,7 +3157,7 @@ function getListViewEditLink($module, $entity_id, $relatedlist, $returnset) {
 /** Function to get the Del link details for ListView and RelatedListView
  * 	@param string 	$module 	- module name
  * 	@param int 	$entity_id 	- record id
- * 	@param string 	$relatedlist 	- string "relatedlist" or may be empty. if empty means ListView else relatedlist
+ * 	@param string 	$relatedlist 	- string 'relatedlist' or may be empty. if empty means ListView else relatedlist
  * 	@param string 	$returnset 	- may be empty in case of ListView
  * 		For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
  * 	return string	$del_link	- url string which cotains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=Delete&record=10
@@ -3251,8 +3270,8 @@ function getParentId($parent_name) {
 	$num_rows = 0;
 	$mod = CRMEntity::getInstance($parent_module);
 	if ($parent_module == 'Contacts') {
-		$query = "select crmid
-			from vtiger_contactdetails, ".$mod->crmentityTable." as vtiger_crmentity
+		$query = 'select crmid
+			from vtiger_contactdetails, '.$mod->crmentityTable." as vtiger_crmentity
 			WHERE concat(lastname,' ',firstname)=? and vtiger_crmentity.crmid =vtiger_contactdetails.contactid and vtiger_crmentity.deleted=0";
 		$result = $adb->pquery($query, array($parent_name));
 		$num_rows = $adb->num_rows($result);
@@ -3428,7 +3447,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	}
 
 	if (($navigation_array['prev']) != 0) {
-		if ($action_val == "FindDuplicate") {
+		if ($action_val == 'FindDuplicate') {
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
@@ -3445,7 +3464,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
-	if ($action_val == "FindDuplicate") {
+	if ($action_val == 'FindDuplicate') {
 		$jsNavigate = "getDuplicateListViewEntries_js('$module','start='+this.value+'$url_string');";
 	} elseif ($action_val == 'UnifiedSearch') {
 		$jsNavigate = "getUnifiedSearchEntries_js('$search_tag','$module','start='+this.value+'$url_string');";
@@ -3468,7 +3487,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		$output .= $app_strings['LBL_LIST_OF'] . ' ' . $navigation_array['verylast'];
 	} else {
 		$output .= "<img src='" . vtiger_imageurl('windowRefresh.gif', $theme) . "' alt='" . $app_strings['LBL_HOME_COUNT'] . "'
-			onclick='getListViewCount(\"" . $module . "\",this,this.parentNode,\"" . $url . "\")'
+			onclick='getListViewCount(\"" . $module . '",this,this.parentNode,"' . $url . "\")'
 			align='absmiddle' name='" . $module . "_listViewCountRefreshIcon'/>
 			<img name='" . $module . "_listViewCountContainerBusy' src='" . vtiger_imageurl('vtbusy.gif', $theme) . "' style='display: none;'
 			align='absmiddle' alt='" . $app_strings['LBL_LOADING'] . "'>";
@@ -3476,7 +3495,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	$output .='</span>';
 
 	if (($navigation_array['next']) != 0) {
-		if ($action_val == "FindDuplicate") {
+		if ($action_val == 'FindDuplicate') {
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {

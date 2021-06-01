@@ -512,7 +512,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			if (!empty($image_array)) {
 				for ($img_itr=0, $img_itrMax = count($image_array); $img_itr< $img_itrMax; $img_itr++) {
-					$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr].$image_id_array[$img_itr]."_","orgname"=>$image_orgname_array[$img_itr]);
+					$fieldvalue[] = array(
+						'name' => $image_array[$img_itr],
+						'path' => $image_path_array[$img_itr].$image_id_array[$img_itr].'_',
+						'orgname' => $image_orgname_array[$img_itr]
+					);
 				}
 			} else {
 				$fieldvalue[] = '';
@@ -528,7 +532,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 			$myids=explode('|', $parent_id);
 			for ($i=0; $i<(count($myids)-1); $i++) {
-				$realid=explode("@", $myids[$i]);
+				$realid=explode('@', $myids[$i]);
 				$entityid=$realid[0];
 				$nemail=count($realid);
 
@@ -595,8 +599,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 						$parent_name .= $fullname.'&lt;'.$temp1.'&gt;; ';
 						$temp_parent_name .= $fullname.'&lt;'.$temp1.'&gt;; ';
 					} else {
-						$parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '."</b>";
-						$temp_parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '."</b>";
+						$parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '.'</b>';
+						$temp_parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '.'</b>';
 					}
 				}
 			}
@@ -1243,7 +1247,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 
 		//Delete link in First column
 		if ($i != 1) {
-			$product_Detail[$i]['delRow'.$i]="Del";
+			$product_Detail[$i]['delRow'.$i]='Del';
 		}
 		if (empty($focus->mode) && $seid!='') {
 			$crmETPC = CRMEntity::getcrmEntityTableAlias('ProductComponent');
@@ -1335,14 +1339,14 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$product_Detail[$i]['discount_amount'.$i] = 0;
 
 		if ($discount_percent != 'NULL' && $discount_percent != '') {
-			$product_Detail[$i]['discount_type'.$i] = "percentage";
+			$product_Detail[$i]['discount_type'.$i] = 'percentage';
 			$product_Detail[$i]['discount_percent'.$i] = $discount_percent;
 			$product_Detail[$i]['checked_discount_percent'.$i] = ' checked';
 			$product_Detail[$i]['style_discount_percent'.$i] = ' style="visibility:visible"';
 			$product_Detail[$i]['style_discount_amount'.$i] = ' style="visibility:hidden"';
 			$discountTotal = $productTotal*$discount_percent/100;
 		} elseif ($discount_amount != 'NULL' && $discount_amount != '') {
-			$product_Detail[$i]['discount_type'.$i] = "amount";
+			$product_Detail[$i]['discount_type'.$i] = 'amount';
 			$product_Detail[$i]['discount_amount'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discount_amount, null, true), null, true);
 			$product_Detail[$i]['checked_discount_amount'.$i] = ' checked';
 			$product_Detail[$i]['style_discount_amount'.$i] = ' style="visibility:visible"';
@@ -1612,7 +1616,7 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 * Param $mode - view type (detail/edit/create)
 * Param $col_fields - fields array
 * Param $tabid - tab id
-* Param $info_type - information type (basic/advance) default ""
+* Param $info_type - information type (basic/advance) default ''
 * Return type is an object array
 */
 function getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode) {
@@ -1750,8 +1754,7 @@ function getDBValidationData($tablearray, $tabid = '') {
 		global $adb, $default_charset;
 		$fieldModuleName = getTabModuleName($tabid);
 		$fieldres = $adb->pquery(
-			"SELECT fieldlabel,fieldname,typeofdata FROM vtiger_field
-			WHERE displaytype IN (1,3) AND presence in (0,2) AND tabid=?",
+			'SELECT fieldlabel,fieldname,typeofdata FROM vtiger_field WHERE displaytype IN (1,3) AND presence in (0,2) AND tabid=?',
 			array($tabid)
 		);
 		$fieldinfos = array();
