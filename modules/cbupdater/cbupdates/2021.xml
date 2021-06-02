@@ -91,4 +91,11 @@
 	<classname>changeEntityNameForUsersModule</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+        <author>Kiko Jover</author>
+        <description>Register RecurringInvoice Handler on Workflow Event</description>
+        <filename>build/changeSets/2021/register_RecurringInvoice_on_WorkflowEvent.php</filename>
+        <classname>register_RecurringInvoice_on_WorkflowEvent</classname>
+        <systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
