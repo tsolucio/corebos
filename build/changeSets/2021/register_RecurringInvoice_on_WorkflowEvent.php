@@ -27,7 +27,7 @@ class register_RecurringInvoice_on_WorkflowEvent extends cbupdaterWorker {
  			$ev = new VTEventsManager($adb);
 			$ev->registerHandler('corebos.aftersave.workflow', 'modules/SalesOrder/RecurringInvoiceHandler.php', 'RecurringInvoiceHandler');
 			$this->markApplied(true);
-			$this->finishExecution();
 		}
+		$this->finishExecution();
 	}
 }
