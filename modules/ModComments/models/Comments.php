@@ -39,7 +39,11 @@ class ModComments_CommentsModel {
 		return $this->commentId = isset($this->data['modcommentsid'])?vtlib_purify($this->data['modcommentsid']):vtlib_purify($this->data['record_id']);
 	}
 
-	public function editPermission(){
-		return isPermitted('ModComments', 'EditView', $this->commentId) == 'yes' ? true : false;
+	public function editPermission() {
+		if (GlobalVariable::getVariable('Inline_Comment_Edit', '1')) {
+			return isPermitted('ModComments', 'EditView', $this->commentId) == 'yes' ? true : false;
+		} else {
+			return false;
+		}
 	}
 }
