@@ -415,16 +415,10 @@ function __cb_add_workdays($arr) {
 	} else {
 		$lastdow = 7;
 	}
-	if (isset($arr[3]) && trim($arr[3])!='') {
-		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$arr[3], cbMap::getMapIdByName($arr[3]));
-		if ($cbMapid != 0) {
-			$cbMap = cbMap::getMapByID($cbMapid);
-			$holidays = $cbMap->InformationMap()->readInformationValue();
-		} else {
-			$holidays = explode(',', $arr[3]);
-		}
-	} else {
+	if (empty($arr[3])) {
 		$holidays = array();
+	} else {
+		$holidays = __cb_getHolidays($arr[3]);
 	}
 	$interval = new DateInterval('P1D');
 	$x = 0;
@@ -437,6 +431,17 @@ function __cb_add_workdays($arr) {
 	return $date->format('Y-m-d');
 }
 
+function __cb_getHolidays($holidayspec) {
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$holidayspec, cbMap::getMapIdByName($holidayspec));
+	if ($cbMapid != 0) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$holidays = $cbMap->InformationMap()->readInformationValue();
+	} else {
+		$holidays = explode(',', $holidayspec);
+	}
+	return $holidays;
+}
+
 function __cb_sub_workdays($arr) {
 	$date = new DateTime($arr[0]);
 	$numofdays = $arr[1];
@@ -446,16 +451,10 @@ function __cb_sub_workdays($arr) {
 	} else {
 		$lastdow = 6;
 	}
-	if (isset($arr[3]) && trim($arr[3])!='') {
-		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$arr[3], cbMap::getMapIdByName($arr[3]));
-		if ($cbMapid != 0) {
-			$cbMap = cbMap::getMapByID($cbMapid);
-			$holidays = $cbMap->InformationMap()->readInformationValue();
-		} else {
-			$holidays = explode(',', $arr[3]);
-		}
-	} else {
+	if (empty($arr[3])) {
 		$holidays = array();
+	} else {
+		$holidays = __cb_getHolidays($arr[3]);
 	}
 	$interval = new DateInterval('P1D');
 	$x = 0;
