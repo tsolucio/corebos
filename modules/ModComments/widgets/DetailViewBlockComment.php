@@ -115,7 +115,7 @@ class ModComments_DetailViewBlockCommentWidget {
 		$BLOCKOPEN = GlobalVariable::getVariable('ModComments_DefaultBlockStatus', 1);
 		$viewer->assign('BLOCKOPEN', $BLOCKOPEN);
 		list($void, $canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array($sourceRecordId, true));
-		$viewer->assign('CANADDCOMMENTS', ($canaddcomments ? 'YES' : 'NO'));
+		$viewer->assign('CANADDCOMMENTS', ($canaddcomments && isPermitted('ModComments', 'CreateView', $sourceRecordId) === 'yes' ? 'YES' : 'NO'));
 		$viewer->assign('COMMENTS', $this->getModels($sourceRecordId, $usecriteria));
 
 		return $viewer->fetch(vtlib_getModuleTemplate('ModComments', 'widgets/DetailViewBlockComment.tpl'));

@@ -21,7 +21,6 @@
 	<div id="editarea_{$COMMENTMODEL->id()}" style="display:none">
 		<textarea id="txtbox_{$COMMENTMODEL->id()}" class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8">{$COMMENTMODEL->content()|@nl2br}</textarea>
 		<br><a href="javascript:;" class="detailview_ajaxbutton ajax_save_detailview" onclick="ModCommentsCommon.editComment('{$COMMENTMODEL->id()}');">{$APP.LBL_SAVE_LABEL}</a>
-		<a href="javascript:;" onclick="document.getElementById('txtbox_{$COMMENTMODEL->id()}').value='';" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CLEAR_BUTTON_LABEL}</a>
 	</div>
 </div>
 </div>

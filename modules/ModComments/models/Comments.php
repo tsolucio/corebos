@@ -19,7 +19,7 @@ class ModComments_CommentsModel {
 	}
 
 	public function author() {
-		$authorid = $this->data['smcreatorid'];
+		$authorid = isset($this->data['smcreatorid']);
 		if (!isset(self::$ownerNamesCache[$authorid])) {
 			self::$ownerNamesCache[$authorid] = getOwnerName($authorid);
 		}
@@ -40,10 +40,6 @@ class ModComments_CommentsModel {
 	}
 
 	public function editPermission() {
-		if (GlobalVariable::getVariable('Inline_Comment_Edit', '1')) {
-			return isPermitted('ModComments', 'EditView', $this->commentId) == 'yes' ? true : false;
-		} else {
-			return false;
-		}
+		return (GlobalVariable::getVariable('ModComments_Edit_Inline', '1') && isPermitted('ModComments', 'EditView', $this->commentId) == 'yes');
 	}
 }
