@@ -541,20 +541,14 @@ class VTSimpleTemplate {
 		return $retrl;
 	}
 
-	private function getinvitedUsersList($recid) {
+	private function getActivityRelatedEmailList($recid, $query) {
 		global $adb;
 		$modulename = $this->parent->getModuleName();
 		if ($modulename!='cbCalendar') {
 			return '';
 		}
 		list($wsid,$activity_id) = explode('x', $recid);
-		$user_result = $adb->pquery(
-			'SELECT vtiger_users.email1
-			FROM vtiger_salesmanactivityrel
-			inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid
-			where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0',
-			array($activity_id)
-		);
+		$user_result = $adb->pquery($query, array($activity_id));
 		$ulist = array();
 		while ($user_result_row = $adb->fetch_array($user_result)) {
 			if (!in_array($user_result_row['email1'], $ulist)) {
@@ -567,31 +561,25 @@ class VTSimpleTemplate {
 		return '';
 	}
 
+	private function getinvitedUsersList($recid) {
+		return $this->getActivityRelatedEmailList(
+			$recid,
+			'SELECT vtiger_users.email1
+			FROM vtiger_salesmanactivityrel
+			inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid
+			where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0'
+		);
+	}
+
 	private function getRelatedContactsList($recid) {
-		global $adb;
-		$modulename = $this->parent->getModuleName();
-		if ($modulename!='cbCalendar') {
-			return '';
-		}
-		list($wsid,$activity_id) = explode('x', $recid);
-		$user_result = $adb->pquery(
+		return $this->getActivityRelatedEmailList(
+			$recid,
 			'SELECT email
 			FROM vtiger_contactdetails
 			inner join vtiger_cntactivityrel on vtiger_cntactivityrel.contactid=vtiger_contactdetails.contactid
 			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
-			where vtiger_cntactivityrel.activityid=? and vtiger_crmentity.deleted=0',
-			array($activity_id)
+			where vtiger_cntactivityrel.activityid=? and vtiger_crmentity.deleted=0'
 		);
-		$ulist = array();
-		while ($user_result_row = $adb->fetch_array($user_result)) {
-			if (!in_array($user_result_row['email'], $ulist)) {
-				$ulist[] = $user_result_row['email'];
-			}
-		}
-		if (!empty($ulist)) {
-			return implode(',', $ulist);
-		}
-		return '';
 	}
 
 	public function getGroupFieldList($groupref, $fieldname) {
