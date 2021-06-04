@@ -38,9 +38,13 @@ if ($ajaxaction == 'WIDGETADDCOMMENT') {
 				);
 				vtws_revise($newValues, $current_user);
 				$modObj->retrieve_entity_info(vtlib_purify($_REQUEST['id']), $currentModule);
+				if (empty($modObj->column_fields['smcreatorid'])) {
+					$modObj->column_fields['smcreatorid'] = $modObj->column_fields['creator'];
+				}
 				$response=':#:UPDATED';
 			} else {
-				$response =':#:FAILURE';
+				echo ':#:FAILURE';
+				die();
 			}
 		}
 		//update modifiedtime related module with modcomments modifiedtime
