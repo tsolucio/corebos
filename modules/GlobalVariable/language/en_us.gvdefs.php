@@ -1665,6 +1665,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'strict | loose | clean',
 	'definition' => 'This variable decides if we strictly/loosely check for the security issue in an image file or ignore the check and clean the image.',
 ),
+'Inline_Comment_Edit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When activated (1), system allow inline comment edit. Default is 0 (deactivated)',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {

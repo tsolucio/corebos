@@ -10,6 +10,7 @@
 
 class ModComments_CommentsModel {
 	private $data;
+	private $commentId;
 
 	public static $ownerNamesCache = array();
 
@@ -35,6 +36,14 @@ class ModComments_CommentsModel {
 	}
 
 	public function id() {
-		return isset($this->data['modcommentsid'])?vtlib_purify($this->data['modcommentsid']):vtlib_purify($this->data['record_id']);
+		return $this->commentId = isset($this->data['modcommentsid'])?vtlib_purify($this->data['modcommentsid']):vtlib_purify($this->data['record_id']);
+	}
+
+	public function editPermission() {
+		if (GlobalVariable::getVariable('Inline_Comment_Edit', '1')) {
+			return isPermitted('ModComments', 'EditView', $this->commentId) == 'yes' ? true : false;
+		} else {
+			return false;
+		}
 	}
 }
