@@ -99,19 +99,7 @@ class RecordVersionUtils {
 	}
 
 	public static function recverGetModuleinfo() {
-		$docact = BusinessActions::getModuleLinkStatusInfo('DETAILVIEWWIDGET', 'Revisiones');
-		$infomodules = array();
-		$i = 0;
-		foreach ($docact as $tabid => $modinfo) {
-			$infomodules[$i]['tabid'] = $tabid;
-			$infomodules[$i]['visible'] = $modinfo['active'];
-			$infomodules[$i]['name'] = $modinfo['name'];
-			$i++;
-		}
-		usort($infomodules, function ($a, $b) {
-			return (strtolower(getTranslatedString($a['name'], $a['name'])) < strtolower(getTranslatedString($b['name'], $b['name']))) ? -1 : 1;
-		});
-		return $infomodules;
+		return BusinessActions::getModuleLinkStatusInfoSortedFlat('DETAILVIEWWIDGET', 'Revisiones');
 	}
 
 	/**
