@@ -15,7 +15,7 @@ if ($ajaxaction == 'WIDGETADDCOMMENT') {
 	$response =':#:FAILURE';
 	list($void,$canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array(vtlib_purify($_REQUEST['parentid']), true));
 	if (isPermitted($currentModule, 'CreateView', '') == 'yes' && $canaddcomments) {
-		if (!isset($_REQUEST['id'])) {
+		if (empty($_REQUEST['id'])) {
 			$modObj->column_fields['commentcontent'] = htmlentities($_REQUEST['comment'], ENT_QUOTES, $default_charset); // we don't clean to accept all characters in comment
 			$modObj->column_fields['related_to'] = vtlib_purify($_REQUEST['parentid']);
 			$modObj->column_fields['assigned_user_id'] = $current_user->id;
@@ -38,9 +38,13 @@ if ($ajaxaction == 'WIDGETADDCOMMENT') {
 				);
 				vtws_revise($newValues, $current_user);
 				$modObj->retrieve_entity_info(vtlib_purify($_REQUEST['id']), $currentModule);
+				if (empty($modObj->column_fields['smcreatorid'])) {
+					$modObj->column_fields['smcreatorid'] = $modObj->column_fields['creator'];
+				}
 				$response=':#:UPDATED';
 			} else {
-				$response =':#:FAILURE';
+				echo ':#:FAILURE';
+				die();
 			}
 		}
 		//update modifiedtime related module with modcomments modifiedtime
