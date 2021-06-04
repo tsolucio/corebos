@@ -6,7 +6,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-<div id="mouseArea_{$COMMENTMODEL->id()}" onmouseover="hndMouseOver(19,'{$COMMENTMODEL->id()}');" onmouseout="fnhide('crmspanid');" {if $COMMENTMODEL->editPermission() }onclick='handleEdit(event);'{/if}>
+<div id="comment_id_{$COMMENTMODEL->id()}">
+	<div id="mouseArea_{$COMMENTMODEL->id()}" onmouseover="hndMouseOver(19,'{$COMMENTMODEL->id()}');" onmouseout="fnhide('crmspanid');" {if $COMMENTMODEL->editPermission() }onclick='handleEdit(event);'{/if}>
 	<div id="dtlview_{$COMMENTMODEL->id()}">
 		<div class="dataField" id="comment_content_{$COMMENTMODEL->id()}" style="width: 99%; padding-top: 10px;" valign="top">
 			{$COMMENTMODEL->content()|@nl2br}
@@ -22,4 +23,5 @@
 		<br><a href="javascript:;" class="detailview_ajaxbutton ajax_save_detailview" onclick="ModCommentsCommon.editComment('{$COMMENTMODEL->id()}');">{$APP.LBL_SAVE_LABEL}</a>
 		<a href="javascript:;" onclick="document.getElementById('txtbox_{$COMMENTMODEL->id()}').value='';" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CLEAR_BUTTON_LABEL}</a>
 	</div>
+</div>
 </div>
