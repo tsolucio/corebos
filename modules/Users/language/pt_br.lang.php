@@ -802,5 +802,6 @@ $mod_strings = array(
 'LBL_QUERY' => 'Pergunta',
 'LBL_FORE_LASTNAME' => 'Nome ou sobrenome',
 'LBL_NO_LDAP_MATCHES' => 'Nenhuma correspondência encontrada no servidor LDAP!',
+'EntityName' => 'Nome da Entidade',
 );
 ?>
