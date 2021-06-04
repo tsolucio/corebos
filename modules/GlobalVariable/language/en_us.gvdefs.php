@@ -1665,7 +1665,7 @@ $GlobalVariableDefinitons = array(
 	'values' => 'strict | loose | clean',
 	'definition' => 'This variable decides if we strictly/loosely check for the security issue in an image file or ignore the check and clean the image.',
 ),
-'Inline_Comment_Edit' => array(
+'ModComments_Edit_Inline' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
