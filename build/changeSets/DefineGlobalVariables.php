@@ -270,6 +270,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'esusername',
 				'espassword',
 				'Security_ImageCheck',
+				'ModComments_Edit_Inline',
 			);
 			$delete_these = array(
 				'preload_prototype',

@@ -10,6 +10,7 @@
 
 class ModComments_CommentsModel {
 	private $data;
+	private $commentId;
 
 	public static $ownerNamesCache = array();
 
@@ -18,7 +19,7 @@ class ModComments_CommentsModel {
 	}
 
 	public function author() {
-		$authorid = $this->data['smcreatorid'];
+		$authorid = empty($this->data['smcreatorid']) ? 0 : $this->data['smcreatorid'];
 		if (!isset(self::$ownerNamesCache[$authorid])) {
 			self::$ownerNamesCache[$authorid] = getOwnerName($authorid);
 		}
@@ -32,5 +33,13 @@ class ModComments_CommentsModel {
 
 	public function content() {
 		return vtlib_purify(decode_html($this->data['commentcontent']));
+	}
+
+	public function id() {
+		return $this->commentId = isset($this->data['modcommentsid'])?vtlib_purify($this->data['modcommentsid']):vtlib_purify($this->data['record_id']);
+	}
+
+	public function editPermission() {
+		return (GlobalVariable::getVariable('ModComments_Edit_Inline', '1') && isPermitted('ModComments', 'EditView', $this->commentId) == 'yes');
 	}
 }
