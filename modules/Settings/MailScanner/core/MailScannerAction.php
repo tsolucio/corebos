@@ -11,6 +11,7 @@ require_once 'modules/Emails/Emails.php';
 require_once 'modules/HelpDesk/HelpDesk.php';
 require_once 'modules/Users/Users.php';
 require_once 'modules/Documents/Documents.php';
+require_once 'modules/Emails/mail.php';
 
 /**
  * Mail Scanner Action
@@ -349,43 +350,31 @@ class Vtiger_MailScannerAction {
 			$referenceMeta = $referenceHandler->getMeta();
 			$relid = getEmailFieldId($referenceMeta, $linkfocus->id);
 		}
-		$focus = new Emails();
-		$focus->column_fields['parent_type'] = $module;
-		$focus->column_fields['activitytype'] = 'Emails';
-		$focus->column_fields['parent_id'] = "$linkfocus->id@$relid|";
+		$parent_id = "$linkfocus->id@$relid|";
 		foreach ((array)$this->otherEmailRelations as $crmid) {
 			$relmod = getSalesEntityType($crmid);
 			$referenceHandler = vtws_getModuleHandlerFromId(vtws_getEntityId($relmod).'x'.$crmid, $current_user);
 			$referenceMeta = $referenceHandler->getMeta();
 			$relid = getEmailFieldId($referenceMeta, $crmid);
-			$focus->column_fields['parent_id'] .= "$crmid@$relid|";
+			$parent_id .= "$crmid@$relid|";
 		}
-		$_REQUEST['parent_id'] = $focus->column_fields['parent_id'];
-		$_REQUEST['module'] = 'Emails';
-		$focus->column_fields['subject'] = $mailrecord->_subject;
-
-		$focus->column_fields['description'] = $mailrecord->getBodyHTML();
-		$focus->column_fields['assigned_user_id'] = $linkfocus->column_fields['assigned_user_id'];
-		$focus->column_fields['date_start'] = date('Y-m-d', $mailrecord->_date);
-		$focus->column_fields['email_flag'] = 'MAILSCANNER';
-
-		$from=$mailrecord->_from[0];
-		$replyto=$mailrecord->_reply_to[0];
-		$to = $mailrecord->_to[0];
-		$cc = (!empty($mailrecord->_cc))? implode(',', $mailrecord->_cc) : '';
-		$bcc= (!empty($mailrecord->_bcc))? implode(',', $mailrecord->_bcc) : '';
-		//emails field were restructured and to,bcc and cc field are JSON arrays
-		$focus->column_fields['from_email'] = $from;
-		$focus->column_fields['replyto'] = $replyto;
-		$focus->column_fields['saved_toid'] = $to;
-		$focus->column_fields['ccmail'] = $cc;
-		$focus->column_fields['bccmail'] = $bcc;
-		$focus->save('Emails');
-
+		$element = array(
+			'subject' => $mailrecord->_subject,
+			'parent_type' => empty($module) ? '' : $module,
+			'parent_id' => $parent_id,
+			'description' => $mailrecord->getBodyHTML(),
+			'assigned_user_id' => $linkfocus->column_fields['assigned_user_id'],
+			'date_start' => date('Y-m-d', $mailrecord->_date),
+			'email_flag' => 'MAILSCANNER',
+			'from_email' => $mailrecord->_from[0],
+			'replyto' => $mailrecord->_reply_to[0],
+			'saved_toid' => $mailrecord->_to[0],
+			'ccmail' => empty($mailrecord->_cc) ? '' : implode(',', $mailrecord->_cc),
+			'bccmail' => empty($mailrecord->_bcc) ? '' : implode(',', $mailrecord->_bcc),
+		);
+		$focus = createEmailRecordWithSave($element);
 		$emailid = $focus->id;
 		$this->log("Created [$focus->id]: $mailrecord->_subject linked it to " . $linkfocus->id);
-
-		// TODO: Handle attachments of the mail (inline/file)
 		$this->__SaveAttachements($mailrecord, 'Emails', $focus);
 		$_REQUEST['module'] = $reqModule;
 		return $emailid;

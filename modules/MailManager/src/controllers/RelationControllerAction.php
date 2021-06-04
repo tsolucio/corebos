@@ -10,6 +10,7 @@
 require_once 'modules/Settings/MailScanner/core/MailScannerAction.php';
 require_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
 require_once 'include/utils/utils.php';
+require_once 'modules/Emails/mail.php';
 
 /**
  * Class which Creates Emails, Attachments and Documents
@@ -34,42 +35,23 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		if (!$meta->hasWriteAccess()) {
 			return false;
 		}
-
-		$focus = new Emails();
-		$focus->column_fields['activitytype'] = 'Emails';
-		$focus->column_fields['subject'] = $mailrecord->_subject;
-
-		if (!empty($module)) {
-			$focus->column_fields['parent_type'] = $module;
-		}
-		if (!empty($linkfocus->id)) {
-			$focus->column_fields['parent_id'] = "$linkfocus->id@-1|";
-		}
-
-		$focus->column_fields['description'] = $mailrecord->getBodyHTML();
-		$focus->column_fields['assigned_user_id'] = $linkfocus->column_fields['assigned_user_id'];
-		$focus->column_fields['date_start']= date('Y-m-d', $mailrecord->_date);
-		$focus->column_fields['email_flag'] = 'MailManager';
-
-		$from=$mailrecord->_from[0];
-		$replyto=$mailrecord->_reply_to[0];
-		$to = $mailrecord->_to[0];
-		$cc = (!empty($mailrecord->_cc))? implode(',', $mailrecord->_cc) : '';
-		$bcc= (!empty($mailrecord->_bcc))? implode(',', $mailrecord->_bcc) : '';
-
-		//emails field were restructured and to,bcc and cc field are JSON arrays
-		$focus->column_fields['from_email'] = $from;
-		$focus->column_fields['replyto'] = $replyto;
-		$focus->column_fields['saved_toid'] = $to;
-		$focus->column_fields['ccmail'] = $cc;
-		$focus->column_fields['bccmail'] = $bcc;
-		$focus->save('Emails');
-
+		$element = array(
+			'subject' => $mailrecord->_subject,
+			'parent_type' => empty($module) ? '' : $module,
+			'parent_id' => empty($linkfocus->id) ? '' : "$linkfocus->id@-1|",
+			'description' => $mailrecord->getBodyHTML(),
+			'assigned_user_id' => $linkfocus->column_fields['assigned_user_id'],
+			'date_start' => date('Y-m-d', $mailrecord->_date),
+			'email_flag' => 'MailManager',
+			'from_email' => $mailrecord->_from[0],
+			'replyto' => $mailrecord->_reply_to[0],
+			'saved_toid' => $mailrecord->_to[0],
+			'ccmail' => empty($mailrecord->_cc) ? '' : implode(',', $mailrecord->_cc),
+			'bccmail' => empty($mailrecord->_bcc) ? '' : implode(',', $mailrecord->_bcc),
+		);
+		$focus = createEmailRecordWithSave($element);
 		$emailid = $focus->id;
-
-		// TODO: Handle attachments of the mail (inline/file)
 		$this->__SaveAttachements($mailrecord, 'Emails', $focus, $module, $linkfocus);
-
 		return $emailid;
 	}
 
