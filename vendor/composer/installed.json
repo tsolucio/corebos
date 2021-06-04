@@ -1981,6 +1981,51 @@
         ]
     },
     {
+        "name": "mautic/api-library",
+        "version": "3.0.0",
+        "version_normalized": "3.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mautic/api-library.git",
+            "reference": "557ce71ca1603324a781270f73334852fce10d0e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mautic/api-library/zipball/557ce71ca1603324a781270f73334852fce10d0e",
+            "reference": "557ce71ca1603324a781270f73334852fce10d0e",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "ext-json": "*",
+            "php": ">=7.2.0",
+            "psr/log": "~1.0"
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "~2.16.1",
+            "phpunit/phpunit": "~9.4.0",
+            "raveren/kint": "~0.9"
+        },
+        "time": "2020-10-17T14:04:17+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Mautic\\": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Mautic API Connector Library",
+        "support": {
+            "issues": "https://github.com/mautic/api-library/issues",
+            "source": "https://github.com/mautic/api-library/tree/3.0.0"
+        },
+        "install-path": "../mautic/api-library"
+    },
+    {
         "name": "microsoft/azure-storage-blob",
         "version": "1.5.1",
         "version_normalized": "1.5.1.0",

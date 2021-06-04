@@ -69,6 +69,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Monolog\\' => 8,
             'MicrosoftAzure\\Storage\\Common\\' => 30,
             'MicrosoftAzure\\Storage\\Blob\\' => 28,
+            'Mautic\\' => 7,
         ),
         'L' => 
         array (
@@ -198,6 +199,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'MicrosoftAzure\\Storage\\Blob\\' => 
         array (
             0 => __DIR__ . '/..' . '/microsoft/azure-storage-blob/src/Blob',
+        ),
+        'Mautic\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mautic/api-library/lib',
         ),
         'Laminas\\ZendFrameworkBridge\\' => 
         array (
