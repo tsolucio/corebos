@@ -1653,7 +1653,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_Filter_All_Edit' => array(
 	'status' => 'Implementada',
-	'valuetype' => 'Booleana',
+	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Permitir la edición del filtro "Todos". Por defecto es 1',
@@ -1664,6 +1664,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'strict | loose | clean',
 	'definition' => 'Esta variable decide si verificamos de manera estricta/vaga problemas de seguridad en un archivo de imagen o ignoramos la verificación y limpiamos la imagen.',
+),
+'ModComments_Edit_Inline' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Cuando está activado (1), el sistema permitirá la edición de comentarios en línea haciendo clic en el comentario. El valor predeterminado es 0 (desactivado)',
 ),
 );
 

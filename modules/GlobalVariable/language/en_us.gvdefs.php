@@ -1670,7 +1670,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'When activated (1), system allow inline comment edit. Default is 0 (deactivated)',
+	'definition' => 'When activated (1), the system will allow inline comment editing by clicking on the comment. Default is 0 (deactivated)',
 ),
 );
 
