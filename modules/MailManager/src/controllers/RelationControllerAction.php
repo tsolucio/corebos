@@ -165,7 +165,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	 * @return Array
 	 */
 	public static function associate($mailrecord, $linkto) {
-		$instance = new self();
+		$instance = new self(0);
 
 		$modulename = getSalesEntityType($linkto);
 		$linkfocus = CRMEntity::getInstance($modulename);
