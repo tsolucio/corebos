@@ -11,13 +11,9 @@
 	<span id="notebook_contents_{$NOTEBOOKID}" style="width: 100%; white-space: pre;"><pre>{$NOTEBOOK_CONTENTS}</pre></span>
 </div>
 <textarea id='notebook_textarea_{$NOTEBOOKID}' onfocus='this.className="detailedViewTextBoxOn"' rows="18" onblur='saveContents(this, {$NOTEBOOKID})' style='display:none;width: 100%; overflow: auto; min-height: 250px; padding-left: 2%; padding-right: 3%;' title="{$MOD.LBL_NOTEBOOK_SAVE_TITLE}"></textarea>
-<span class="small" style="padding-left: 10px;display: block;" id="notebook_dbl_click_message">
-	<font color="grey">
-		{$MOD.LBL_NOTEBOOK_TITLE}
-	</font>
+<span class="small" style="padding-left: 10px;display: block;color:grey;" id="notebook_dbl_click_message">
+	{$MOD.LBL_NOTEBOOK_TITLE}
 </span>
-<span class="small" style="padding-left: 10px;display: none;" id="notebook_save_message">
-	<font color="grey">
-		{$MOD.LBL_NOTEBOOK_SAVE_TITLE}
-	</font>
+<span class="small" style="padding-left: 10px;display: none;color:grey;" id="notebook_save_message">
+	{$MOD.LBL_NOTEBOOK_SAVE_TITLE}
 </span>
