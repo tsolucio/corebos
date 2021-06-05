@@ -12,8 +12,8 @@ var masterdetailwork = {
 			method: 'POST',
 			url: 'index.php?' + fileurl
 		}).done(function (response) {
-			res = JSON.parse(response);
-			if (res.success == true) {
+			let res = JSON.parse(response);
+			if (res.success) {
 				gridinstance.readData(1);
 			}
 		});
@@ -27,8 +27,8 @@ var masterdetailwork = {
 			method: 'POST',
 			url: 'index.php?' + fileurl
 		}).done(function (response) {
-			res = JSON.parse(response);
-			if (res.success == true) {
+			let res = JSON.parse(response);
+			if (res.success) {
 				gridinstance.readData(1);
 			} else {
 				alert(alert_arr.Failed);
@@ -43,8 +43,8 @@ var masterdetailwork = {
 				method: 'POST',
 				url: 'index.php?' + fileurl
 			}).done(function (response) {
-				res = JSON.parse(response);
-				if (res.success == true) {
+				let res = JSON.parse(response);
+				if (res.success) {
 					gridinstance.readData(1);
 				} else {
 					alert(alert_arr.Failed);
@@ -65,8 +65,8 @@ var masterdetailwork = {
 				method: 'POST',
 				url: 'index.php?' + fileurl
 			}).done(function (response) {
-				res = JSON.parse(response);
-				if (res.success == true) {
+				let res = JSON.parse(response);
+				if (res.success) {
 					ev.instance.readData(1);
 				} else {
 					alert(alert_arr.Failed);
@@ -82,7 +82,7 @@ var masterdetailwork = {
 	},
 
 	MDUpsert: (MDGrid, module, recordid, CurrentRecord = '') => {
-		record = recordid || '';
+		let record = recordid || '';
 		if (record!='') {
 			record = '&record='+record;
 		}
@@ -149,7 +149,7 @@ class mdActionRender {
 		}
 		if (props.columnInfo.renderer.options.edit) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.MDUpsert('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['LBL_EDIT']}">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.MDUpsert('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 				</svg>
@@ -157,7 +157,7 @@ class mdActionRender {
 		}
 		if (props.columnInfo.renderer.options.delete) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid},${mdgridob});" title="${alert_arr['LBL_DELETE']}">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid},${mdgridob});" title="${alert_arr['JSLBL_Delete']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 				</svg>

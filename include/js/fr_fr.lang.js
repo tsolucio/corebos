@@ -396,6 +396,7 @@ var alert_arr = {
 	'EMAIL_WITH_NO_SUBJECT' : '(sans-subjet)',
 	'INTEGERVALS':'Seul des nombres entiers sont autorisés',
 	'JSLBL_Delete': 'Supprimer',
+	'JSLBL_Edit': 'Edit',
 	'JSLBL_Loading': 'Chargement',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Le fichier joint ne peut être supprimé',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Taille limite de fichier dépassée!!',

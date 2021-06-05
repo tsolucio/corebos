@@ -1354,12 +1354,6 @@ class CRMEntity {
 	 */
 	public function save($module_name, $fileid = '') {
 		global $current_user, $adb;
-		if (empty($_REQUEST['FILTERFIELDSMAP'])) {
-			$mdmaps = cbMap::getMapsByType('MasterDetailLayout', $module_name);
-			if (count($mdmaps)>0) {
-				$_REQUEST['FILTERFIELDSMAP'] = reset($mdmaps);
-			}
-		}
 		if (!empty($_REQUEST['FILTERFIELDSMAP'])) {
 			$bmapname = vtlib_purify($_REQUEST['FILTERFIELDSMAP']);
 			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));

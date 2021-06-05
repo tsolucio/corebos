@@ -410,6 +410,7 @@ var alert_arr = {
 	'EMAIL_WITH_NO_SUBJECT' : '(no-Subject)',
 	'INTEGERVALS':'Only Integer values are allowed',
 	'JSLBL_Delete': 'Delete',
+	'JSLBL_Edit': 'Edit',
 	'JSLBL_Loading': 'Loading',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Attachment could not be deleted',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!',
