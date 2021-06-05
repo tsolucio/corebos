@@ -122,7 +122,6 @@ modules/Calendar4You/GoogleSync4YouHandler.php
 modules/Calendar4You/GoogleSync4You.php
 modules/Calendar4You/index.php
 modules/Calendar4You/language
-modules/Calendar4You/ProfilesPrivilegies.php
 modules/Calendar4You/SaveEvent.php
 modules/Calendar4You/SaveEventSettings.php
 modules/Calendar4You/Save.php
