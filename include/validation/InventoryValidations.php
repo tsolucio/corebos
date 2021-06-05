@@ -13,26 +13,12 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-global $log,$currentModule,$adb,$current_user;
+require_once 'modules/cbMap/processmap/Validations.php';
+ global $log,$currentModule,$adb,$current_user;
 
 $screen_values = json_decode($_REQUEST['structure'], true);
-$products = array();
 $message = '%%%OK%%%';
-foreach ($screen_values as $sv_name => $sv) {
-	if (strpos($sv_name, 'hdnProductId') !== false) {
-		$i = substr($sv_name, 12);
-		$qty_i = 'qty'.$i;
-		$name_i = 'productName'.$i;
-		$type_i = 'lineItemType'.$i;
-		$deleted_i = 'deleted'.$i;
-		$products[$i]['crmid'] = $sv;
-		$products[$i]['qty'] = $screen_values[$qty_i];
-		$products[$i]['name'] = $screen_values[$name_i];
-		$products[$i]['type'] = $screen_values[$type_i];
-		$products[$i]['deleted'] = $screen_values[$deleted_i];
-	}
-}
-
+$products = Validations::loadProductValuesFromScreenValues($screen_values);
 foreach ($products as $product) {
 	if ($product['type'] == 'Products') {
 		$q = $adb->pquery('SELECT divisible, discontinued FROM vtiger_products WHERE productid = ?', array($product['crmid']));
