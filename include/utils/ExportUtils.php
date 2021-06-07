@@ -71,6 +71,274 @@ function getPermittedFieldsQuery($module, $disp_view) {
 	return $sql;
 }
 
+/**
+ * Function to exporting XLS rows file format for modules.
+ * @param object $rowsonfo object contain rows to export
+ * @param string $modulename - module name
+ * @param array $fieldinfo - fields info list
+ * @param array $totalxclinfo - number of rows
+ * @param string $fldname - contain list of fields
+ * @return object PhpSpreadsheet rows in XLS format
+ */
+function exportExcelFileRows($rowsonfo, $totalxclinfo, $fldname, $fieldinfo, $modulename = '') {
+	global $currentModule, $current_language, $current_user;
+	if (empty($currentModule)) {
+		$currentModule = $modulename;
+	}
+	$mod_strings = return_module_language($current_language, $currentModule);
+
+	require 'include/PhpSpreadsheet/autoload.php';
+
+	$xlsrowheight = GlobalVariable::getVariable('Report_Excel_Export_RowHeight', 20);
+	$workbook = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+	$worksheet = $workbook->setActiveSheetIndex(0);
+	$header_styles = array(
+		'fill' => array('fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => array('rgb'=>'E1E0F7')),
+		'font' => array('bold' => true)
+	);
+
+	if (!empty($rowsonfo)) {
+		$FieldDataTypes = array();
+		foreach ($rowsonfo[0] as $hdr => $value) {
+			if (!isset($fieldinfo[$hdr])) {
+				$FieldDataTypes[$hdr] = 'string';
+				continue;
+			}
+			$FieldDataTypes[$hdr] = $fieldinfo[$hdr]->getFieldDataType();
+			if ($fieldinfo[$hdr]->getColumnName()=='totaltime') {
+				$FieldDataTypes[$hdr] = 'time';
+			}
+			if ($fieldinfo[$hdr]->getColumnName()=='totaldaytime') {
+				$FieldDataTypes[$hdr] = 'time';
+			}
+		}
+		$BoolTrue = getTranslatedString('LBL_YES');
+		//$BoolFalse = getTranslatedString('LBL_NO');
+		$count = 1;
+		$rowcount = 1;
+		$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
+		//copy the first value details
+		$arrayFirstRowValues = $rowsonfo[0];
+		$report_header = GlobalVariable::getVariable('Report_HeaderOnXLS', '');
+		if ($report_header == 1) {
+			$rowcount++;
+			$worksheet->setCellValueExplicitByColumnAndRow(1, 1, getTranslatedString($fldname), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+			$worksheet->getStyleByColumnAndRow(1, 1)->applyFromArray($header_styles);
+			$worksheet->getColumnDimensionByColumn(1)->setAutoSize(true);
+		}
+		foreach ($arrayFirstRowValues as $key => $value) {
+			$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $key, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+			$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
+			$worksheet->getColumnDimensionByColumn($count)->setAutoSize(true);
+			$count = $count + 1;
+			if ($FieldDataTypes[$key]=='currency') {
+				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('LBL_CURRENCY'), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+				$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
+				$worksheet->getColumnDimensionByColumn($count)->setAutoSize(true);
+				$count = $count + 1;
+			}
+		}
+		$rowcount++;
+		$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
+		foreach ($rowsonfo as $key => $array_value) {
+			$count = 1;
+			foreach ($array_value as $hdr => $value) {
+				$value = decode_html($value);
+				$datetime = false;
+				switch ($FieldDataTypes[$hdr]) {
+					case 'boolean':
+						$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_BOOL;
+						$value = ($value==$BoolTrue ? 1:0);
+						break;
+					case 'double':
+						$value = str_replace(',', '.', $value);
+						// fall through intentional
+					case 'integer':
+					case 'currency':
+						$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC;
+						break;
+					case 'date':
+					case 'time':
+						try {
+							if ($value!='-') {
+								if (strpos($value, ':')>0 && (strpos($value, '-')===false)) {
+									// only time, no date
+									$dt = new DateTime("1970-01-01 $value");
+								} elseif (strpos($value, ':')>0 && (strpos($value, '-')>0)) {
+									// date and time
+									$dt = new DateTime($value);
+									$datetime = true;
+								} else {
+									$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
+									$dt = new DateTime($value);
+								}
+								$value = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($dt);
+								$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC;
+							} else {
+								$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
+							}
+						} catch (Exception $e) {
+							$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
+						}
+						break;
+					default:
+						$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
+						break;
+				}
+				if ($FieldDataTypes[$hdr]=='currency') {
+					$csym = preg_replace('/[0-9,.-]/', '', $value);
+					$value = preg_replace('/[^0-9,.-]/', '', $value);
+					$value = str_replace($current_user->currency_grouping_separator, '', $value);
+					if ($current_user->currency_decimal_separator!='.') {
+						$value = str_replace($current_user->currency_decimal_separator, '.', $value);
+					}
+				}
+				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, $celltype);
+				if ($FieldDataTypes[$hdr]=='date') {
+					if ($datetime) {
+						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format.' '.\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME4);
+					} else {
+						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format);
+					}
+				} elseif ($FieldDataTypes[$hdr]=='time') {
+					$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME4);
+				}
+				if ($FieldDataTypes[$hdr]=='currency') {
+					$count = $count + 1;
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $csym, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+				}
+				$count = $count + 1;
+			}
+			$rowcount++;
+			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
+		}
+
+		// Summary Total
+		$rowcount++;
+		$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
+		$count=0;
+		if (isset($totalxclinfo) && is_array($totalxclinfo) && count($totalxclinfo)>0) {
+			if (is_array($totalxclinfo[0])) {
+				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('Totals', 'Reports'), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+				$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
+				$count = $count + 1;
+				foreach ($totalxclinfo[0] as $key => $value) {
+					$chdr=substr($key, -3, 3);
+					$translated_str = in_array($chdr, array_keys($mod_strings))?$mod_strings[$chdr]:$key;
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($translated_str), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+					$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
+					$count = $count + 1;
+				}
+			}
+			$rowcount++;
+			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
+			foreach ($totalxclinfo as $key => $array_value) {
+				$count = 0;
+				foreach ($array_value as $hdr => $value) {
+					if ($count==0) {
+						$lbl = substr($hdr, 0, strrpos($hdr, '_'));
+						$mname = substr($lbl, 0, strpos($lbl, '_'));
+						$lbl = substr($lbl, strpos($lbl, '_')+1);
+						$lbl = str_replace('_', ' ', $lbl);
+						$lbl = getTranslatedString($lbl, $mname);
+						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($lbl), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+						$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
+						$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
+						$count = $count + 1;
+					}
+					$value = str_replace($current_user->currency_grouping_separator, '', $value);
+					if ($current_user->currency_decimal_separator!='.') {
+						$value = str_replace($current_user->currency_decimal_separator, '.', $value);
+					}
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC);
+					$count = $count + 1;
+				}
+				$rowcount++;
+			}
+		}
+	}
+	return $workbook;
+}
+
+/**
+ * Function to dump csv rows file format for modules.
+ * @param object $result object contain rows to export
+ * @param string $type - module name
+ * @param array $columnsToExport - fields list
+ * @param string $CSV_Separator - export fields separators
+ * @param object $__processor - object contain list of fields
+ * @param object $focus - object of module information for record
+ * @return object headers and record rows in CSV format
+ */
+function dumpRowsToCSV($type, $__processor = '', $CSV_Separator, $columnsToExport, $result, $focus) {
+	global $adb;
+
+	while ($val = $adb->fetchByAssoc($result, -1, false)) {
+		$new_arr = array();
+		if ($__processor != '') {
+			$val = $__processor->sanitizeValues($val);
+		}
+		foreach ($columnsToExport as $col) {
+			$value = $val[$col];
+			if ($type == 'Documents' && $col == 'description') {
+				$value = strip_tags($value);
+				$value = str_replace('&nbsp;', '', $value);
+				$new_arr[] = $value;
+			} elseif ($type == 'com_vtiger_workflow' && $col == 'workflow_id') {
+				$wfm = new VTworkflowManager($adb);
+				$workflow = $wfm->retrieve($value);
+				$value = $wfm->serializeWorkflow($workflow);
+				$new_arr[] = base64_encode($value);
+			} elseif ($col != 'user_name') {
+				// Let us provide the module to transform the value before we save it to CSV file
+				$value = $focus->transform_export_value($col, $value);
+				$new_arr[] = preg_replace("/\"/", "\"\"", $value);
+			}
+		}
+		$line = '"'.implode('"'.$CSV_Separator.'"', $new_arr)."\"\r\n";
+		/** Output each row information */
+		echo $line;
+	}
+}
+/**
+ * Function to dump excel rows file format for modules.
+ * @param object $result object contain rows to export
+ * @param string $type - module name
+ * @param array $columnsToExport - fields list
+ * @param array $translated_fields_array - headers to export
+ * @param object $__processor - object contain list of fields
+ * @return object PhpSpreadsheet rows in XLS format
+ */
+function dumpRowsToXLS($type, $__processor = '', $columnsToExport, $translated_fields_array, $result) {
+	global $adb;
+
+	$xlsrows = array();
+	$column_arr = array();
+	$field_list = array();
+	while ($val = $adb->fetchByAssoc($result, -1, false)) {
+		$new_arr = array();
+		if ($__processor != '') {
+			$val = $__processor->sanitizeValues($val);
+		}
+		foreach ($columnsToExport as $col) {
+			$column_arr[] = $col;
+		}
+		foreach ($translated_fields_array as $field_arr) {
+			$field_list[] = $field_arr;
+		}
+		for ($i = 0; $i < sizeof($field_list); $i++) {
+			$new_arr[$field_list[$i]] = $val[$column_arr[$i]];
+		}
+		$xlsrows[] = $new_arr;
+	}
+	$totalxclinfo = array();
+	$fieldinfo = array();
+	$fldname = $type.' Excel Format';
+	$workbook = exportExcelFileRows($xlsrows, $totalxclinfo, $fldname, $fieldinfo, $type);
+	$workbookWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($workbook, 'Xls');
+	return $workbookWriter;
+}
+
 /**	function used to get the list of fields from the input query as a comma seperated string
  *	@param string $query - field table query which contains the list of fields
  *	@return string $fields - list of fields as a comma seperated string
