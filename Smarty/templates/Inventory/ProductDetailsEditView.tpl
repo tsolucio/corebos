@@ -72,8 +72,11 @@ function displayCoords(currObj,obj,mode,curr_row) {ldelim}
 	{rdelim}
 	document.getElementById(obj).style.display = "block";
 {rdelim}
-
+{if empty($moreinfofields)}
+	var moreInfoFields = Array();
+{else}
 	var moreInfoFields = Array({$moreinfofields});
+{/if}
 </script>
 
 <tr><td colspan="4" align="left">
