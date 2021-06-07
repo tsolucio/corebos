@@ -211,8 +211,8 @@ class Vtiger_MailScannerInfo {
 	public function checkRescan() {
 		$rescanRequired = false;
 		if ($this->rescan) {
-			foreach ($this->rescan as $folderName => $rescan) {
-				if ($rescan) {
+			foreach ($this->rescan as $folderName => $re_scan) {
+				if ($re_scan) {
 					$rescanRequired = $folderName;
 					break;
 				}
@@ -235,10 +235,10 @@ class Vtiger_MailScannerInfo {
 				for ($index = 0; $index < $fldcount; ++$index) {
 					$foldername = $adb->query_result($fldres, $index, 'foldername');
 					$folderid   = $adb->query_result($fldres, $index, 'folderid');
-					$lastscan   = $adb->query_result($fldres, $index, 'lastscan');
-					$rescan     = $adb->query_result($fldres, $index, 'rescan');
+					$last_scan   = $adb->query_result($fldres, $index, 'lastscan');
+					$re_scan     = $adb->query_result($fldres, $index, 'rescan');
 					$enabled    = $adb->query_result($fldres, $index, 'enabled');
-					$folderinfo[$foldername] = array ('folderid'=>$folderid, 'lastscan'=>$lastscan, 'rescan'=> $rescan, 'enabled'=>$enabled);
+					$folderinfo[$foldername] = array ('folderid'=>$folderid, 'lastscan'=>$last_scan, 'rescan'=> $re_scan, 'enabled'=>$enabled);
 				}
 			}
 		}

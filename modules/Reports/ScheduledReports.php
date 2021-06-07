@@ -44,16 +44,16 @@ class VTScheduledReport extends Reports {
 				if ($adb->num_rows($result) > 0) {
 					$reportScheduleInfo = $adb->raw_query_result_rowdata($result, 0);
 
-					$scheduledInterval = (!empty($reportScheduleInfo['schedule']))?json_decode($reportScheduleInfo['schedule'], true):array();
-					$scheduledRecipients = (!empty($reportScheduleInfo['recipients']))?json_decode($reportScheduleInfo['recipients'], true):array();
+					$scheduledIntval = (!empty($reportScheduleInfo['schedule']))?json_decode($reportScheduleInfo['schedule'], true):array();
+					$scheduledRepnts = (!empty($reportScheduleInfo['recipients']))?json_decode($reportScheduleInfo['recipients'], true):array();
 
 					VTCacheUtils::updateReport_ScheduledInfo(
 						$this->user->id,
 						$this->id,
 						true,
 						$reportScheduleInfo['format'],
-						$scheduledInterval,
-						$scheduledRecipients,
+						$scheduledIntval,
+						$scheduledRepnts,
 						$reportScheduleInfo['next_trigger_time']
 					);
 
@@ -375,14 +375,14 @@ class VTScheduledReport extends Reports {
 		for ($i=0; $i<$noOfScheduledReports; ++$i) {
 			$reportScheduleInfo = $adb->raw_query_result_rowdata($result, $i);
 
-			$scheduledInterval = (!empty($reportScheduleInfo['schedule'])) ? json_decode($reportScheduleInfo['schedule'], true) : array();
-			$scheduledRecipients = (!empty($reportScheduleInfo['recipients'])) ? json_decode($reportScheduleInfo['recipients'], true) : array();
+			$scheduledIntval = (!empty($reportScheduleInfo['schedule'])) ? json_decode($reportScheduleInfo['schedule'], true) : array();
+			$scheduledRepnts = (!empty($reportScheduleInfo['recipients'])) ? json_decode($reportScheduleInfo['recipients'], true) : array();
 
 			$vtScheduledReport = new VTScheduledReport($adb, $user, $reportScheduleInfo['reportid']);
 			$vtScheduledReport->isScheduled			= true;
 			$vtScheduledReport->scheduledFormat		= $reportScheduleInfo['format'];
-			$vtScheduledReport->scheduledInterval	= $scheduledInterval;
-			$vtScheduledReport->scheduledRecipients = $scheduledRecipients;
+			$vtScheduledReport->scheduledInterval	= $scheduledIntval;
+			$vtScheduledReport->scheduledRecipients = $scheduledRepnts;
 			$vtScheduledReport->scheduledTime		= $reportScheduleInfo['next_trigger_time'];
 
 			$scheduledReports[] = $vtScheduledReport;

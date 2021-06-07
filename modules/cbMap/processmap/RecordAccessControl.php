@@ -137,26 +137,26 @@ class RecordAccessControl extends processcbMap {
 		}
 		if (isset($xml->relatedlists)) {
 			foreach ($xml->relatedlists->relatedlist as $v) {
-				$modulename = (String)$v->modulename;
+				$module_name = (String)$v->modulename;
 				if (isset($v->c)) {
-					$this->mapping['relatedlist'][$modulename]['c'] = (Integer)$v->c;
+					$this->mapping['relatedlist'][$module_name]['c'] = (Integer)$v->c;
 				}
 				if (isset($v->r)) {
-					$this->mapping['relatedlist'][$modulename]['r'] = (Integer)$v->r;
+					$this->mapping['relatedlist'][$module_name]['r'] = (Integer)$v->r;
 				}
 				if (isset($v->u)) {
-					$this->mapping['relatedlist'][$modulename]['u'] = (Integer)$v->u;
+					$this->mapping['relatedlist'][$module_name]['u'] = (Integer)$v->u;
 				}
 				if (isset($v->d)) {
-					$this->mapping['relatedlist'][$modulename]['d'] = (Integer)$v->d;
+					$this->mapping['relatedlist'][$module_name]['d'] = (Integer)$v->d;
 				}
 				if (isset($v->s)) {
-					$this->mapping['relatedlist'][$modulename]['s'] = (Integer)$v->s;
+					$this->mapping['relatedlist'][$module_name]['s'] = (Integer)$v->s;
 				}
 				if (isset($v->condition)) {
-					$this->mapping['relatedlist'][$modulename]['condition'] = $this->convertConditionMap2Array($v->condition);
+					$this->mapping['relatedlist'][$module_name]['condition'] = $this->convertConditionMap2Array($v->condition);
 				} else {
-					$this->mapping['relatedlist'][$modulename]['condition'] = array();
+					$this->mapping['relatedlist'][$module_name]['condition'] = array();
 				}
 			}
 		}

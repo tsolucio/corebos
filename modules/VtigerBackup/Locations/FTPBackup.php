@@ -58,18 +58,16 @@ class Vtiger_FTPBackup extends Vtiger_Location {
 
 	public function limitbackup() {
 		$fileList = $this->getBackupTimeList();
-		$connection = $this->getConnection();
 		for ($index=0; count($fileList) > $this->limit -1; ++$index) {
 			$fileName = Vtiger_BackupZip::getDefaultFileName($fileList[$index]);
-			@ftp_delete($connection, $fileName);
+			@ftp_delete($this->getConnection(), $fileName);
 			unset($fileList[$index]);
 		}
 	}
 
 	public function getBackupTimeList() {
 		$backupFileList = array();
-		$connection = $this->getConnection();
-		$fileList = ftp_nlist($connection, '.');
+		$fileList = ftp_nlist($this->getConnection(), '.');
 		foreach ($fileList as $file) {
 			if ($file == "." || $file == "..") {
 				continue;
@@ -89,8 +87,7 @@ class Vtiger_FTPBackup extends Vtiger_Location {
 
 	public function getBackupFileList() {
 		$backupFileList = array();
-		$connection = $this->getConnection();
-		$fileList = ftp_nlist($connection, '.');
+		$fileList = ftp_nlist($this->getConnection(), '.');
 		foreach ($fileList as $file) {
 			if ($file == "." || $file == "..") {
 				continue;
@@ -109,8 +106,7 @@ class Vtiger_FTPBackup extends Vtiger_Location {
 
 	public function save($source) {
 		$dest=$this->getFileName($source);
-		$connection = $this->getConnection();
-		$upload = @ftp_put($connection, $dest, $source, FTP_BINARY);
+		$upload = @ftp_put($this->getConnection(), $dest, $source, FTP_BINARY);
 		// check upload status
 		if (empty($upload)) {
 			//TODO handle error
@@ -122,8 +118,7 @@ class Vtiger_FTPBackup extends Vtiger_Location {
 	}
 
 	public function close() {
-		$connection = $this->getConnection();
-		ftp_close($connection);
+		ftp_close($this->getConnection());
 		$this->initialized = false;
 	}
 
