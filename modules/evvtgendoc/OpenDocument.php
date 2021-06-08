@@ -802,11 +802,11 @@ class OpenDocument {
 			$docno = substr($texto_p, $strlen_includeGD);
 			$docno = trim($docno, ' }');
 			if ($docno!='Documents') {
-				$_path = Documents::getAttachmentPath($docno);
-				if ($_path!='') {
+				$pth = Documents::getAttachmentPath($docno);
+				if ($pth!='') {
 					$inccontentDOM = new DOMDocument('1.0', 'UTF-8');
-					if ($inccontentDOM->loadXML(ZipWrapper::read($_path, self::FILE_CONTENT))) {
-						OpenDocument::debugmsg('INCLUDING FILE: '.$_path);
+					if ($inccontentDOM->loadXML(ZipWrapper::read($pth, self::FILE_CONTENT))) {
+						OpenDocument::debugmsg('INCLUDING FILE: '.$pth);
 						// include content
 						$innodelist = $inccontentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'body');
 						$xmlText = simplexml_import_dom($innodelist->item(0)->firstChild);
@@ -872,7 +872,7 @@ class OpenDocument {
 							@mkdir($tmpdir);
 							ZipWrapper::unlinkRecursive($tmpdir, false);
 							$zipinc = new ZipArchive;
-							$zipinc->open(realpath($_path));
+							$zipinc->open(realpath($pth));
 							$zipinc->extractTo($tmpdir);
 							$zipinc->close();
 							foreach ($innodelist as $incnode) {

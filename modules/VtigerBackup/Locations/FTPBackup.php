@@ -58,9 +58,10 @@ class Vtiger_FTPBackup extends Vtiger_Location {
 
 	public function limitbackup() {
 		$fileList = $this->getBackupTimeList();
+		$conn = $this->getConnection();
 		for ($index=0; count($fileList) > $this->limit -1; ++$index) {
 			$fileName = Vtiger_BackupZip::getDefaultFileName($fileList[$index]);
-			@ftp_delete($this->getConnection(), $fileName);
+			@ftp_delete($conn, $fileName);
 			unset($fileList[$index]);
 		}
 	}
@@ -69,7 +70,7 @@ class Vtiger_FTPBackup extends Vtiger_Location {
 		$backupFileList = array();
 		$fileList = ftp_nlist($this->getConnection(), '.');
 		foreach ($fileList as $file) {
-			if ($file == "." || $file == "..") {
+			if ($file == '.' || $file == '..') {
 				continue;
 			}
 			$fileName = $this->getFileName($file, '/');
@@ -89,7 +90,7 @@ class Vtiger_FTPBackup extends Vtiger_Location {
 		$backupFileList = array();
 		$fileList = ftp_nlist($this->getConnection(), '.');
 		foreach ($fileList as $file) {
-			if ($file == "." || $file == "..") {
+			if ($file == '.' || $file == '..') {
 				continue;
 			}
 			$origFileName = $this->getFileName($file, '/');

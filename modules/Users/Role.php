@@ -80,11 +80,11 @@ class Vtiger_Role {
 	public function moveTo($role) {
 		global $adb;
 		//parent role has current role id in parent role sequence, remove current role id.
-		$__parentRoleSequence = $role->getParentRole().'::'.$this->getId();
+		$parentRoleSeq = $role->getParentRole().'::'.$this->getId();
 		$subDepth=$role->getDepth() + 1;
-		$adb->pquery('update vtiger_role set parentrole=?,depth=? where roleid=?', array($__parentRoleSequence, $subDepth, $this->getId()));
+		$adb->pquery('update vtiger_role set parentrole=?,depth=? where roleid=?', array($parentRoleSeq, $subDepth, $this->getId()));
 		$this->setDepty($subDepth);
-		$this->setParentRole($__parentRoleSequence);
+		$this->setParentRole($parentRoleSeq);
 	}
 
 	public function delete($role) {

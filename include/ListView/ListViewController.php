@@ -20,6 +20,7 @@ class ListViewController {
 	private $picklistValueMap;
 	private $picklistRoleMap;
 	private $headerSortingEnabled;
+
 	public function __construct($data_db, $user, $generator) {
 		$this->queryGenerator = $generator;
 		$this->db = $data_db;
@@ -135,7 +136,6 @@ class ListViewController {
 			}
 		}
 
-		$data_db = PearDatabase::getInstance();
 		$rowCount = $this->db->num_rows($result);
 		$listviewcolumns = $this->db->getFieldsArray($result);
 		$ownerFieldList = $this->queryGenerator->getOwnerFieldList();

@@ -169,12 +169,12 @@ class Google_Oauth2_Connector {
 		return $this->fireRequest(self::OAUTH2_TOKEN_URI, array(), $params);
 	}
 
-	public function storeToken($__token) {
+	public function storeToken($tkn) {
 		global $current_user, $adb;
 		if (!isset($this->user_id)) {
 			$this->user_id = $current_user->id;
 		}
-		$decodedToken = json_decode($__token, true);
+		$decodedToken = json_decode($tkn, true);
 		if (!empty($decodedToken['error'])) {
 			echo '<script>window.close();window.opener.location.href="index.php?module=Utilities&action=integration&integration=GoogleContacts&_op=Error&error_description='
 				.urlencode($decodedToken['error']).'&error_code=";</script>';
@@ -216,8 +216,8 @@ class Google_Oauth2_Connector {
 		);
 	}
 
-	public function setToken($__token) {
-		$this->token = $__token;
+	public function setToken($tkn) {
+		$this->token = $tkn;
 	}
 
 	public function isTokenExpired() {
@@ -246,16 +246,17 @@ class Google_Oauth2_Connector {
 		$encodedToken = $this->fireRequest(self::OAUTH2_TOKEN_URI, array(), $params);
 		$decodedToken = json_decode($encodedToken, true);
 		$decodedToken['created'] = time();
-		$__token['access_token'] = $decodedToken;
-		$__token['refresh_token'] = $this->token['refresh_token'];
-		$this->updateAccessToken(json_encode($decodedToken), $__token['refresh_token']);
-		$this->setToken($__token);
+		$tkn = array();
+		$tkn['access_token'] = $decodedToken;
+		$tkn['refresh_token'] = $this->token['refresh_token'];
+		$this->updateAccessToken(json_encode($decodedToken), $tkn['refresh_token']);
+		$this->setToken($tkn);
 	}
 
 	public function authorize() {
 		if ($this->hasStoredToken()) {
-			$__token = $this->retreiveToken();
-			$this->setToken($__token);
+			$tkn = $this->retreiveToken();
+			$this->setToken($tkn);
 			if ($this->isTokenExpired()) {
 				$this->refreshToken();
 			}
@@ -263,8 +264,8 @@ class Google_Oauth2_Connector {
 		} else {
 			if (!empty($_REQUEST['service']) && $_REQUEST['service'] && !empty($_REQUEST['code']) && $_REQUEST['code']) {
 				$authCode = $_REQUEST['code'];
-				$__token = $this->exchangeCodeForToken($authCode);
-				$this->storeToken($__token);
+				$tkn = $this->exchangeCodeForToken($authCode);
+				$this->storeToken($tkn);
 				echo '<script>window.close();window.opener.location.reload();</script>';
 				exit;
 			} elseif (!empty($_REQUEST['service']) && $_REQUEST['service']) {
