@@ -94,7 +94,7 @@ function obtainVisibleColumnNames(&$l, $k) {
  * Param $type - module name
  * Return type text
  */
-function export($type) {
+function export($type, $format = 'CSV') {
 	global $log, $adb;
 	$log->debug('> export '.$type);
 
@@ -216,68 +216,61 @@ function export($type) {
 		});
 		$fields_array[] = 'cbuuid';
 	}
+
 	$columnsToExport = array_map(
 		function ($field) {
 			return strtolower($field);
 		},
 		$fields_array
 	);
+
 	$__processor = new ExportUtils($type, $fields_array);
 
-	$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', $type);
-
-	// Translated the field names based on the language used.
 	$translated_fields_array = array_map(
 		function ($field) use ($type) {
 			return getTranslatedString($field, $type);
 		},
 		$fields_array
 	);
-	$header = '"'.implode('"'.$CSV_Separator.'"', $translated_fields_array)."\"\r\n";
 
-	/** Output header information */
-	echo $header;
-
-	while ($val = $adb->fetchByAssoc($result, -1, false)) {
-		$new_arr = array();
-		$val = $__processor->sanitizeValues($val);
-		foreach ($columnsToExport as $col) {
-			$value = $val[$col];
-			if ($type == 'Documents' && $col == 'description') {
-				$value = strip_tags($value);
-				$value = str_replace('&nbsp;', '', $value);
-				$new_arr[] = $value;
-			} elseif ($type == 'com_vtiger_workflow' && $col == 'workflow_id') {
-				$wfm = new VTworkflowManager($adb);
-				$workflow = $wfm->retrieve($value);
-				$value = $wfm->serializeWorkflow($workflow);
-				$new_arr[] = base64_encode($value);
-			} elseif ($col != 'user_name') {
-				// Let us provide the module to transform the value before we save it to CSV file
-				$value = $focus->transform_export_value($col, $value);
-				$new_arr[] = preg_replace("/\"/", "\"\"", $value);
-			}
-		}
-		$line = '"'.implode('"'.$CSV_Separator.'"', $new_arr)."\"\r\n";
-		/** Output each row information */
-		echo $line;
+	if ($format == 'CSV') {
+		$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', $type);
+		$header = '"'.implode('"'.$CSV_Separator.'"', $translated_fields_array)."\"\r\n";
+		/** Output header information */
+		echo $header;
+		dumpRowsToCSV($type, $__processor, $CSV_Separator, $columnsToExport, $result, $focus);
 	}
+	if ($format == 'XLS') {
+		return dumpRowsToXLS($type, $__processor, $columnsToExport, $translated_fields_array, $result);;
+	}
+
 	$log->debug('< export');
 	return true;
 }
 
-/** Send the output header and invoke function for contents output */
-$moduleName = vtlib_purify($_REQUEST['module']);
-$moduleName = getTranslatedString($moduleName, $moduleName);
-$moduleName = str_replace(' ', '_', $moduleName);
-header("Content-Disposition:attachment;filename=$moduleName.csv");
-header('Content-Type:text/csv;charset=UTF-8');
-header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-header('Cache-Control: post-check=0, pre-check=0', false);
-
-export(vtlib_purify($_REQUEST['module']));
-
+if (isset($_REQUEST['exportfile']) && $_REQUEST['exportfile']=='exportexcelfile') {
+	global $root_directory, $cache_dir;
+	$fname = tempnam($root_directory.$cache_dir, 'excel.xls');
+	$xlsobject = export(vtlib_purify($_REQUEST['module']), 'XLS');
+	$xlsobject->save($fname);
+	$moduleName = getTranslatedString($_REQUEST['module'], $_REQUEST['module']);
+	header('Content-Type: application/x-msexcel');
+	header('Content-Length: '.@filesize($fname));
+	header('Content-disposition: attachment; filename="'.$moduleName.'.xls"');
+	$fh=fopen($fname, 'rb');
+	fpassthru($fh);
+} else {
+	/** Send the output header and invoke function for contents output */
+	$moduleName = vtlib_purify($_REQUEST['module']);
+	$moduleName = getTranslatedString($moduleName, $moduleName);
+	$moduleName = str_replace(' ', '_', $moduleName);
+	header("Content-Disposition:attachment;filename=$moduleName.csv");
+	header('Content-Type:text/csv;charset=UTF-8');
+	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+	header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+	header('Cache-Control: post-check=0, pre-check=0', false);
+	export(vtlib_purify($_REQUEST['module']), 'CSV');
+}
 exit;
 
 /**
