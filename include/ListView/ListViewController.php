@@ -136,8 +136,8 @@ class ListViewController {
 		}
 
 		$data_db = PearDatabase::getInstance();
-		$rowCount = $data_db->num_rows($result);
-		$listviewcolumns = $data_db->getFieldsArray($result);
+		$rowCount = $this->db->num_rows($result);
+		$listviewcolumns = $this->db->getFieldsArray($result);
 		$ownerFieldList = $this->queryGenerator->getOwnerFieldList();
 		foreach ($ownerFieldList as $fieldName) {
 			if (in_array($fieldName, $listViewFields)) {
@@ -220,9 +220,9 @@ class ListViewController {
 				$baseTable = $meta->getEntityBaseTable();
 				$moduleTableIndexList = $meta->getEntityTableIndexList();
 				$baseTableIndex = $moduleTableIndexList[$baseTable];
-				$recordId = $data_db->query_result($result, $i, $baseTableIndex);
+				$recordId = $this->db->query_result($result, $i, $baseTableIndex);
 			} else {
-				$recordId = $data_db->query_result($result, $i, 'id');
+				$recordId = $this->db->query_result($result, $i, 'id');
 			}
 			$row = array();
 
@@ -259,23 +259,23 @@ class ListViewController {
 
 				if (($module == 'Documents' && $fieldName == 'filename') || $fieldName == 'Documents.filename') {
 					if ($fieldName == 'Documents.filename') {
-						$docrs = $data_db->pquery(
+						$docrs = $this->db->pquery(
 							'select filename,filelocationtype,filestatus,notesid from vtiger_notes where note_no=?',
-							array($data_db->query_result($result, $i, 'documentsnote_no'))
+							array($this->db->query_result($result, $i, 'documentsnote_no'))
 						);
-						$downloadtype = $data_db->query_result($docrs, 0, 'filelocationtype');
-						$fileName = $data_db->query_result($docrs, 0, 'filename');
-						$status = $data_db->query_result($docrs, 0, 'filestatus');
-						$docid = $data_db->query_result($docrs, 0, 'notesid');
+						$downloadtype = $this->db->query_result($docrs, 0, 'filelocationtype');
+						$fileName = $this->db->query_result($docrs, 0, 'filename');
+						$status = $this->db->query_result($docrs, 0, 'filestatus');
+						$docid = $this->db->query_result($docrs, 0, 'notesid');
 					} else {
 						$docid = $recordId;
-						$downloadtype = $data_db->query_result($result, $i, 'filelocationtype');
-						$fileName = $data_db->query_result($result, $i, 'filename');
-						$status = $data_db->query_result($result, $i, 'filestatus');
+						$downloadtype = $this->db->query_result($result, $i, 'filelocationtype');
+						$fileName = $this->db->query_result($result, $i, 'filename');
+						$status = $this->db->query_result($result, $i, 'filestatus');
 					}
 					$fileIdQuery = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
-					$fileIdRes = $data_db->pquery($fileIdQuery, array($docid));
-					$fileId = $data_db->query_result($fileIdRes, 0, 'attachmentsid');
+					$fileIdRes = $this->db->pquery($fileIdQuery, array($docid));
+					$fileId = $this->db->query_result($fileIdRes, 0, 'attachmentsid');
 					$fileicon = FileField::getFileIcon($value, $downloadtype, $module);
 					if ($fileicon=='') {
 						$value = ' --';
@@ -294,7 +294,7 @@ class ListViewController {
 					}
 					$value = $fileicon.$value;
 				} elseif ($module == 'Documents' && $fieldName == 'filesize') {
-					$downloadType = $data_db->query_result($result, $i, 'filelocationtype');
+					$downloadType = $this->db->query_result($result, $i, 'filelocationtype');
 					if ($downloadType == 'I') {
 						$value = FileField::getFileSizeDisplayValue($value);
 					} else {
@@ -303,7 +303,7 @@ class ListViewController {
 				} elseif ($module == 'Documents' && $fieldName == 'filestatus') {
 					$value = BooleanField::getBooleanDisplayValue($value, $module);
 				} elseif ($module == 'Documents' && $fieldName == 'filetype') {
-					$downloadType = $data_db->query_result($result, $i, 'filelocationtype');
+					$downloadType = $this->db->query_result($result, $i, 'filelocationtype');
 					if ($downloadType == 'E' || $downloadType != 'I') {
 						$value = '--';
 					}
