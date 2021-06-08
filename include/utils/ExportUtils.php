@@ -72,6 +72,60 @@ function getPermittedFieldsQuery($module, $disp_view) {
 }
 
 /**
+ * Function to export specific user comments.
+ * @param string $module - module name
+ * @param integer $recordid - record number
+ * @param array $field_arr - list of fields to export
+ * @return object rows in either CSV OR XLS format to export
+ */
+function exportUserCommentsForModule($module, $recordid, $format, $field_arr = array('commentcontent', 'createdtime')) {
+	global $adb, $current_user;
+	$mapname = 'Comments_Export_Columns';
+	if (!empty($recordid)) {
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$arr = $cbMap->FieldSetMapping()->getFieldSetModule($module);
+			$field_arr = array();
+			for ($i=0; $i<sizeof($arr); $i++) {
+				$field_arr[] = $arr[$i]['name'];
+			}
+		}
+		$queryGenerator = new QueryGenerator('ModComments', $current_user);
+		$queryGenerator->setFields($field_arr);
+		$queryGenerator->addReferenceModuleFieldCondition($module, 'related_to', 'id', $recordid, 'e');
+		$query = $queryGenerator->getQuery();
+		$queryres = $adb->pquery($query, array());
+		$fields_array = $adb->getFieldsArray($queryres);
+
+		$columnsToExport = array_map(
+			function ($field) {
+				return strtolower($field);
+			},
+			$fields_array
+		);
+		$translated_fields_array = array_map(
+			function ($field) use ($module) {
+				return getTranslatedString($field, $module);
+			},
+			$fields_array
+		);
+
+		$focus = CRMEntity::getInstance($module);
+		if ($format == 'CSV') {
+			$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', $module);
+			$header = '"'.implode('"'.$CSV_Separator.'"', $translated_fields_array)."\"\r\n";
+			/** Output header information */
+			echo $header;
+			dumpRowsToCSV($module, '', $CSV_Separator, $columnsToExport, $queryres, $focus);
+		} else {
+			return dumpRowsToXLS($module, '', $columnsToExport, $translated_fields_array, $queryres);
+		}
+	}
+	return true;
+}
+
+/**
  * Function to exporting XLS rows file format for modules.
  * @param object $rowsonfo object contain rows to export
  * @param string $modulename - module name
