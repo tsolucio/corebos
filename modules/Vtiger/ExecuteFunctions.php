@@ -420,13 +420,14 @@ switch ($functiontocall) {
 		}
 		break;
 	case 'ismoduleactive':
-	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
 		$rdo = vtlib_isModuleActive($mod);
 		$ret = array('isactive'=>$rdo);
 		break;
+	default:
+		$ret = '';
+		break;
 }
-
 echo json_encode($ret);
 die();
 ?>
