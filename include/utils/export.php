@@ -22,6 +22,7 @@ require_once 'modules/Products/Products.php';
 require_once 'modules/HelpDesk/HelpDesk.php';
 require_once 'modules/Vendors/Vendors.php';
 require_once 'include/utils/UserInfoUtil.php';
+require_once 'include/utils/ExportUtils.php';
 require_once 'modules/CustomView/CustomView.php';
 require_once 'modules/PickList/PickListUtils.php';
 require_once 'modules/Invoice/Invoice.php';
