@@ -40,6 +40,6 @@ class ModComments_CommentsModel {
 	}
 
 	public function editPermission() {
-		return (GlobalVariable::getVariable('ModComments_Edit_Inline', '1') && isPermitted('ModComments', 'EditView', $this->commentId) == 'yes');
+		return (GlobalVariable::getVariable('ModComments_Edit_Inline', '0') != '0' && isPermitted('ModComments', 'EditView', $this->commentId) == 'yes');
 	}
 }
