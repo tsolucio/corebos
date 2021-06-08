@@ -144,7 +144,14 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => 'CSV | XLS',
-	'definition' => 'This variable decides if we export by XLS or export by CSV. The default value is CSV',
+	'definition' => 'This variable decides if we export comments in CSV or XLS format. The default value is CSV',
+),
+'ModComments_Edit_Inline' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When activated (1), the system will allow inline comment editing by clicking on the comment. Default is 0 (deactivated)',
 ),
 'Application_TrackerMaxHistory' => array(
 	'status' => 'Implemented',

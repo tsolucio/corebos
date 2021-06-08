@@ -211,6 +211,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'ModComments_DefaultCriteria',
 				'ModComments_DefaultBlockStatus',
 				'ModComments_Export_Format',
+				'ModComments_Edit_Inline',
 				'EMail_OpenTrackingEnabled',
 				'Email_Attachments_Folder',
 				'EMail_Maximum_Number_Attachments',

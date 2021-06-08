@@ -167,7 +167,6 @@ function exportExcelFileRows($rowsonfo, $totalxclinfo, $fldname, $fieldinfo, $mo
 			}
 		}
 		$BoolTrue = getTranslatedString('LBL_YES');
-		//$BoolFalse = getTranslatedString('LBL_NO');
 		$count = 1;
 		$rowcount = 1;
 		$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);

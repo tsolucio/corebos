@@ -121,7 +121,7 @@ switch ($functiontocall) {
 	case 'exportUserComments':
 		$recordid = vtlib_purify($_REQUEST['record']);
 		$module = vtlib_purify($_REQUEST['module']);
-		include 'include/utils/ExportUtils.php';
+		include_once 'include/utils/ExportUtils.php';
 		if (GlobalVariable::getVariable('ModComments_Export_Format', 'CSV', $module) == 'CSV') {
 			header('Content-Disposition:attachment;filename="Comments'.$recordid.'.csv"');
 			header('Content-Type:text/csv;charset=UTF-8');
@@ -139,7 +139,6 @@ switch ($functiontocall) {
 			header('Content-disposition: attachment; filename="Comments'.$recordid.'.xls"');
 			$fh=fopen($fname, 'rb');
 			fpassthru($fh);
-			
 		}
 		exit;
 		break;
