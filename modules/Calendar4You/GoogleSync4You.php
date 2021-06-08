@@ -339,15 +339,15 @@ class GoogleSync4You {
 			}
 			try {
 				$this->gService->events->update($this->selected_calendar, $eventOld, $evnt);
-				$__status = true;
+				$stat = true;
 			} catch (Exception $e) {
-				$__status = null;
+				$stat = null;
 			}
 		} catch (Exception $e) {
-			$__status=null;
+			$stat=null;
 		}
 		set_include_path($this->root_directory);
-		return $__status;
+		return $stat;
 	}
 
 	public function deleteEvent($recordid, $eventURL) {
