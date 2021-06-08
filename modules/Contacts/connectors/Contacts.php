@@ -842,7 +842,7 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 		$decoded_resp = json_decode($response, true);
 		$feed = $decoded_resp['feed'];
 		$entries = $feed['entry'];
-		$groups = array(
+		$group_arr = array(
 			'title' => $feed['title']['$t']
 		);
 		foreach ($entries as $entry) {
@@ -853,8 +853,8 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 			if ($onlyIds) {
 				$group = $group['id'];
 			}
-			$groups['entry'][] = $group;
+			$group_arr['entry'][] = $group;
 		}
-		return $groups;
+		return $group_arr;
 	}
 }

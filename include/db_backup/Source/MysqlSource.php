@@ -179,10 +179,10 @@ class MysqlSource extends BackupSource {
 
 	public function getTableCreateStatement($tableName) {
 		$sql = "show create table $tableName";
-		$result = $this->connection->_Execute($sql, false);
-		$this->checkError($result, $sql.' '.$this->connection->ErrorMsg().' '.
+		$query_result = $this->connection->_Execute($sql, false);
+		$this->checkError($query_result, $sql.' '.$this->connection->ErrorMsg().' '.
 				$this->connection->ErrorNo());
-		$data = $result->FetchRow();
+		$data = $query_result->FetchRow();
 		return $data[1];
 	}
 
@@ -380,8 +380,8 @@ class MysqlSource extends BackupSource {
 		return $values;
 	}
 
-	public function checkError($result, $sql) {
-		if ($result === false) {
+	public function checkError($query_result, $sql) {
+		if ($query_result === false) {
 			throw new DatabaseBackupException(
 				DatabaseBackupErrorCode::$SQL_EXECUTION_ERROR,
 				DatabaseBackup::$langString['SqlExecutionError'].' '.$sql

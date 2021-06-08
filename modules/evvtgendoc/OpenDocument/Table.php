@@ -260,8 +260,8 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	 * @since       0.5.0 - 08. Feb. 2007
 	 */
 	private function includeCells() {
-		$cells = $this->cells;
-		ksort($cells);
+		$tablecells = $this->cells;
+		ksort($tablecells);
 		$currentRow = 0;
 		foreach ($this->cells as $row => $cols) {
 			if ($currentRow < $row -1) {

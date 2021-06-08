@@ -470,11 +470,11 @@ class Reports extends CRMEntity {
 	 */
 	public function getSecModuleColumnsList($module) {
 		if ($module != '') {
-			$secmodule = explode(':', $module);
-			for ($i=0; $i < count($secmodule); $i++) {
-				if ($this->module_list[$secmodule[$i]]) {
-					$this->sec_module_columnslist[$secmodule[$i]] = $this->getModuleFieldList(
-						$secmodule[$i]
+			$secondmodule = explode(':', $module);
+			for ($i=0; $i < count($secondmodule); $i++) {
+				if ($this->module_list[$secondmodule[$i]]) {
+					$this->sec_module_columnslist[$secondmodule[$i]] = $this->getModuleFieldList(
+						$secondmodule[$i]
 					);
 				}
 			}
@@ -787,8 +787,8 @@ class Reports extends CRMEntity {
 		$array_list = array();
 		for ($i=0; $i<$noofrows; $i++) {
 			$fieldcolname = $adb->query_result($result, $i, 'columnname');
-			$sort_values = $adb->query_result($result, $i, 'sortorder');
-			$this->ascdescorder[] = $sort_values;
+			$sortvalues = $adb->query_result($result, $i, 'sortorder');
+			$this->ascdescorder[] = $sortvalues;
 			$array_list[] = $fieldcolname;
 		}
 

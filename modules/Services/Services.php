@@ -582,17 +582,17 @@ class Services extends CRMEntity {
 		$numRows = $adb->num_rows($list_result);
 		for ($i=0; $i<$numRows; $i++) {
 			$entity_id = $adb->query_result($list_result, $i, 'crmid');
-			$unit_price = 	$adb->query_result($list_result, $i, 'unit_price');
+			$unitprice = 	$adb->query_result($list_result, $i, 'unit_price');
 			if ($currency_id != null) {
 				$prod_prices = getPricesForProducts($currency_id, array($entity_id), 'Services');
-				$unit_price = $prod_prices[$entity_id];
+				$unitprice = $prod_prices[$entity_id];
 			}
 			$listprice = $adb->query_result($list_result, $i, 'listprice');
 
 			$entries = array();
 			$entries[] = textlength_check($adb->query_result($list_result, $i, 'servicename'));
 			if (getFieldVisibilityPermission('Services', $current_user->id, 'unit_price') == '0') {
-				$entries[] = CurrencyField::convertToUserFormat($unit_price, null, true);
+				$entries[] = CurrencyField::convertToUserFormat($unitprice, null, true);
 			}
 
 			$entries[] = CurrencyField::convertToUserFormat($listprice, null, true);

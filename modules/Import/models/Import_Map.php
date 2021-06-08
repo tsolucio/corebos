@@ -14,14 +14,14 @@ class Import_Map {
 	public $map;
 	public $user;
 
-	public function __construct($map, $user) {
-		$this->map = $map;
+	public function __construct($__map, $user) {
+		$this->map = $__map;
 		$this->user = $user;
 	}
 
 	public static function getInstanceFromDb($row, $user) {
 		global $default_charset;
-		$map = array();
+		$__map = array();
 		foreach ($row as $key => $value) {
 			if (is_numeric($key)) {
 				continue;
@@ -35,12 +35,12 @@ class Import_Map {
 					$mappedName = str_replace('/amp/', '&', $mappedName);
 					$content[$mappedName] = $sequence;
 				}
-				$map[$key] = $content;
+				$__map[$key] = $content;
 			} else {
-				$map[$key] = $value;
+				$__map[$key] = $value;
 			}
 		}
-		return new Import_Map($map, $user);
+		return new Import_Map($__map, $user);
 	}
 
 	public static function markAsDeleted($mapId) {
@@ -84,11 +84,11 @@ class Import_Map {
 	public function save() {
 		$adb = PearDatabase::getInstance();
 
-		$map = $this->getAllValues();
-		$map['content'] = ''.$adb->getEmptyBlob().'';
-		$columnNames = array_keys($map);
-		$columnValues = array_values($map);
-		if (!empty($map)) {
+		$__map = $this->getAllValues();
+		$__map['content'] = ''.$adb->getEmptyBlob().'';
+		$columnNames = array_keys($__map);
+		$columnValues = array_values($__map);
+		if (!empty($__map)) {
 			$adb->pquery(
 				'INSERT INTO '.self::$tableName.' ('. implode(',', $columnNames).',date_entered) VALUES ('. generateQuestionMarks($columnValues).',now())',
 				array($columnValues)
