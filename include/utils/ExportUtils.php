@@ -266,17 +266,17 @@ function exportExcelFileRows($rowsonfo, $totalxclinfo, $fldname, $fieldinfo, $mo
  * @param string $type - module name
  * @param array $columnsToExport - fields list
  * @param string $CSV_Separator - export fields separators
- * @param object $__processor - object contain list of fields
+ * @param object $processor - object contain list of fields
  * @param object $focus - object of module information for record
  * @return object headers and record rows in CSV format
  */
-function dumpRowsToCSV($type, $__processor = '', $CSV_Separator, $columnsToExport, $result, $focus) {
+function dumpRowsToCSV($type, $processor, $CSV_Separator, $columnsToExport, $result, $focus) {
 	global $adb;
 
 	while ($val = $adb->fetchByAssoc($result, -1, false)) {
 		$new_arr = array();
-		if ($__processor != '') {
-			$val = $__processor->sanitizeValues($val);
+		if (!empty($processor)) {
+			$val = $processor->sanitizeValues($val);
 		}
 		foreach ($columnsToExport as $col) {
 			$value = $val[$col];
@@ -292,7 +292,7 @@ function dumpRowsToCSV($type, $__processor = '', $CSV_Separator, $columnsToExpor
 			} elseif ($col != 'user_name') {
 				// Let us provide the module to transform the value before we save it to CSV file
 				$value = $focus->transform_export_value($col, $value);
-				$new_arr[] = preg_replace("/\"/", "\"\"", $value);
+				$new_arr[] = preg_replace('/"/', '""', $value);
 			}
 		}
 		$line = '"'.implode('"'.$CSV_Separator.'"', $new_arr)."\"\r\n";
@@ -300,16 +300,17 @@ function dumpRowsToCSV($type, $__processor = '', $CSV_Separator, $columnsToExpor
 		echo $line;
 	}
 }
+
 /**
  * Function to dump excel rows file format for modules.
  * @param object $result object contain rows to export
  * @param string $type - module name
  * @param array $columnsToExport - fields list
  * @param array $translated_fields_array - headers to export
- * @param object $__processor - object contain list of fields
+ * @param object $processor - object contain list of fields
  * @return object PhpSpreadsheet rows in XLS format
  */
-function dumpRowsToXLS($type, $__processor = '', $columnsToExport, $translated_fields_array, $result) {
+function dumpRowsToXLS($type, $processor, $columnsToExport, $translated_fields_array, $result) {
 	global $adb;
 
 	$xlsrows = array();
@@ -317,8 +318,8 @@ function dumpRowsToXLS($type, $__processor = '', $columnsToExport, $translated_f
 	$field_list = array();
 	while ($val = $adb->fetchByAssoc($result, -1, false)) {
 		$new_arr = array();
-		if ($__processor != '') {
-			$val = $__processor->sanitizeValues($val);
+		if (!empty($processor)) {
+			$val = $processor->sanitizeValues($val);
 		}
 		foreach ($columnsToExport as $col) {
 			$column_arr[] = $col;
@@ -335,8 +336,7 @@ function dumpRowsToXLS($type, $__processor = '', $columnsToExport, $translated_f
 	$fieldinfo = array();
 	$fldname = $type.' Excel Format';
 	$workbook = exportExcelFileRows($xlsrows, $totalxclinfo, $fldname, $fieldinfo, $type);
-	$workbookWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($workbook, 'Xls');
-	return $workbookWriter;
+	return \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($workbook, 'Xls');
 }
 
 /**	function used to get the list of fields from the input query as a comma seperated string
