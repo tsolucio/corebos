@@ -74,8 +74,7 @@ class CustomView extends CRMEntity {
 	public function getMeta($module, $user) {
 		if (empty($this->moduleMetaInfo[$module])) {
 			$handler = vtws_getModuleHandlerFromName($module, $user);
-			$meta = $handler->getMeta();
-			$this->moduleMetaInfo[$module] = $meta;
+			$this->moduleMetaInfo[$module] = $handler->getMeta();
 		}
 		return $this->moduleMetaInfo[$module];
 	}
@@ -403,8 +402,8 @@ class CustomView extends CRMEntity {
 			}
 		}
 		$handler = vtws_getModuleHandlerFromName($module, $current_user);
-		$meta = $handler->getMeta();
-		$reffields = $meta->getReferenceFieldDetails();
+		$meta_data = $handler->getMeta();
+		$reffields = $meta_data->getReferenceFieldDetails();
 		foreach ($reffields as $mods) {
 			foreach ($mods as $mod) {
 				if (!vtlib_isEntityModule($mod)) {

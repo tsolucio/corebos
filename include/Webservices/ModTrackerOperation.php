@@ -51,7 +51,7 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 		return $this->meta;
 	}
 
-	public function create($elementType, $element) {
+	public function create($elementType, $elem) {
 		throw new WebServiceException(
 			WebServiceErrorCode::$OPERATIONNOTSUPPORTED,
 			vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$OPERATIONNOTSUPPORTED)
@@ -86,8 +86,7 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 		if (!$success) {
 			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record not found');
 		}
-		$element = $this->getElement();
-		return DataTransform::filterAndSanitize($element, $this->meta);
+		return DataTransform::filterAndSanitize($this->getElement(), $this->meta);
 	}
 
 	public function massRetrieve($wsIds) {
@@ -108,20 +107,19 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 		);
 		$rs = $adb->pquery($query, $wsIds);
 		while (!$rs->EOF) {
-			$element = $rs->FetchRow();
-			$rdo[] = DataTransform::filterAndSanitize($element, $this->meta);
+			$rdo[] = DataTransform::filterAndSanitize($rs->FetchRow(), $this->meta);
 		}
 		return $rdo;
 	}
 
-	public function update($element) {
+	public function update($elem) {
 		throw new WebServiceException(
 			WebServiceErrorCode::$OPERATIONNOTSUPPORTED,
 			vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$OPERATIONNOTSUPPORTED)
 		);
 	}
 
-	public function revise($element) {
+	public function revise($elem) {
 		throw new WebServiceException(
 			WebServiceErrorCode::$OPERATIONNOTSUPPORTED,
 			vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$OPERATIONNOTSUPPORTED)
@@ -170,8 +168,7 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 	public function getModuleFields() {
 		if ($this->moduleFields === null) {
 			$fields = array();
-			$moduleFields = $this->meta->getModuleFields();
-			foreach ($moduleFields as $webserviceField) {
+			foreach ($this->meta->getModuleFields() as $webserviceField) {
 				$fields[] = $this->getDescribeFieldArray($webserviceField);
 			}
 			$this->moduleFields = $fields;

@@ -794,7 +794,7 @@ Array (
 			return $expected;
 		}
 		$stack = $this->yystack;
-		$yyidx = $this->yyidx;
+		$indexElement = $this->yyidx;
 		do {
 			$yyact = $this->yy_find_shift_action($token);
 			if ($yyact >= self::YYNSTATE && $yyact < self::YYNSTATE + self::YYNRULE) {
@@ -802,7 +802,7 @@ Array (
 				$done = 0;
 				do {
 					if ($done++ == 100) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						// too much recursion prevents proper detection
 						// so give up
@@ -821,7 +821,7 @@ Array (
 							self::$yyExpectedTokens[$nextstate],
 							true
 						)) {
-							$this->yyidx = $yyidx;
+							$this->yyidx = $indexElement;
 							$this->yystack = $stack;
 							return array_unique($expected);
 						}
@@ -835,14 +835,14 @@ Array (
 						$this->yystack[$this->yyidx] = $x;
 						continue 2;
 					} elseif ($nextstate == self::YYNSTATE + self::YYNRULE + 1) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						// the last token was just ignored, we can't accept
 						// by ignoring input, this is in essence ignoring a
 						// syntax error!
 						return array_unique($expected);
 					} elseif ($nextstate === self::YY_NO_ACTION) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						// input accepted, but not shifted (I guess)
 						return $expected;
@@ -874,7 +874,7 @@ Array (
 			return true;
 		}
 		$stack = $this->yystack;
-		$yyidx = $this->yyidx;
+		$indexElement = $this->yyidx;
 		do {
 			$yyact = $this->yy_find_shift_action($token);
 			if ($yyact >= self::YYNSTATE && $yyact < self::YYNSTATE + self::YYNRULE) {
@@ -882,7 +882,7 @@ Array (
 				$done = 0;
 				do {
 					if ($done++ == 100) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						// too much recursion prevents proper detection
 						// so give up
@@ -896,7 +896,7 @@ Array (
 					);
 					if (isset(self::$yyExpectedTokens[$nextstate]) &&
 						  in_array($token, self::$yyExpectedTokens[$nextstate], true)) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						return true;
 					}
@@ -909,7 +909,7 @@ Array (
 						$this->yystack[$this->yyidx] = $x;
 						continue 2;
 					} elseif ($nextstate == self::YYNSTATE + self::YYNRULE + 1) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						if (!$token) {
 							// end of input: this is valid
@@ -920,7 +920,7 @@ Array (
 						// syntax error!
 						return false;
 					} elseif ($nextstate === self::YY_NO_ACTION) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						// input accepted, but not shifted (I guess)
 						return true;

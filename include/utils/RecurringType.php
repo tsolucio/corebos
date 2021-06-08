@@ -89,7 +89,7 @@ class RecurringType {
 		// All the information from the user is received in User Time zone
 		// Convert Start date and Time to DB Time zone
 		$startDateObj = DateTimeField::convertToDBTimeZone($requestArray["startdate"] . ' ' . $requestArray['starttime']);
-		$requestArray['startdate'] = $startDate = $startDateObj->format('Y-m-d');
+		$requestArray['startdate'] = $starting_date = $startDateObj->format('Y-m-d');
 		$requestArray['starttime'] = $startTime = $startDateObj->format('H:i');
 		$endDateObj = DateTimeField::convertToDBTimeZone($requestArray["enddate"] . ' ' . $requestArray['endtime']);
 		$requestArray['enddate'] = $endDateObj->format('Y-m-d');
@@ -119,7 +119,7 @@ class RecurringType {
 
 		if ($requestArray['type'] == 'Weekly') {
 			if ($requestArray['dayofweek_to_repeat'] != null) {
-				$userStartDateTime = DateTimeField::convertToUserTimeZone($startDate . ' ' . $startTime);
+				$userStartDateTime = DateTimeField::convertToUserTimeZone($starting_date . ' ' . $startTime);
 				$dbDaysOfWeek = array();
 				foreach ($requestArray['dayofweek_to_repeat'] as $selectedDayOfWeek) {
 					$currentDayOfWeek = $userStartDateTime->format('w');
@@ -130,7 +130,7 @@ class RecurringType {
 				$requestArray['dayofweek_to_repeat'] = $dbDaysOfWeek;
 			}
 		} elseif ($requestArray['type'] == 'Monthly') {
-			$userStartDateTime = DateTimeField::convertToUserTimeZone($startDate . ' ' . $startTime);
+			$userStartDateTime = DateTimeField::convertToUserTimeZone($starting_date . ' ' . $startTime);
 			if ($requestArray['repeatmonth_type'] == 'date') {
 				$dayOfMonth = $requestArray['repeatmonth_date'];
 				$userStartDateTime->setDate($userStartDateTime->format('Y'), $userStartDateTime->format('m'), $dayOfMonth);
@@ -349,13 +349,13 @@ class RecurringType {
 	 */
 	public function _getRecurringDates() {
 		$startdateObj = $this->startdate;
-		$startdate = $startdateObj->get_DB_formatted_date();
-		$recurringDates[] = $startdate;
+		$starting_date = $startdateObj->get_DB_formatted_date();
+		$recurringDates[] = $starting_date;
 		$tempdateObj = $startdateObj;
-		$tempdate = $startdate;
-		$enddate = $this->enddate->get_DB_formatted_date();
+		$tempdate = $starting_date;
+		$ending_date = $this->enddate->get_DB_formatted_date();
 
-		while ($tempdate <= $enddate) {
+		while ($tempdate <= $ending_date) {
 			$date = $tempdateObj->get_Date();
 			$month = $tempdateObj->getMonth();
 			$year = $tempdateObj->getYear();
@@ -368,7 +368,7 @@ class RecurringType {
 				}
 				$tempdateObj = $this->startdate->getThismonthDaysbyIndex($index, '', $month, $year);
 				$tempdate = $tempdateObj->get_DB_formatted_date();
-				if ($tempdate <= $enddate) {
+				if ($tempdate <= $ending_date) {
 					$recurringDates[] = $tempdate;
 				}
 			} elseif ($this->recur_type == 'Weekly') {
@@ -379,7 +379,7 @@ class RecurringType {
 				foreach ($this->dayofweek_to_rpt as $day) {
 					$repeatDay = $tempdateObj->getThisweekDaysbyIndex($day);
 					$repeatDate = $repeatDay->get_DB_formatted_date();
-					if ($repeatDate > $startdate && $repeatDate <= $enddate) {
+					if ($repeatDate > $starting_date && $repeatDate <= $ending_date) {
 						$recurringDates[] = $repeatDate;
 					}
 				}
@@ -491,7 +491,7 @@ class RecurringType {
 					$tempdateObj = new vt_DateTime($date_arr, true);
 				}
 				$tempdate = $tempdateObj->get_DB_formatted_date();
-				if ($tempdate <= $enddate) {
+				if ($tempdate <= $ending_date) {
 					$recurringDates[] = $tempdate;
 				}
 			} elseif ($this->recur_type == 'Yearly') {
@@ -511,7 +511,7 @@ class RecurringType {
 				);
 				$tempdateObj = new vt_DateTime($date_arr, true);
 				$tempdate = $tempdateObj->get_DB_formatted_date();
-				if ($tempdate <= $enddate) {
+				if ($tempdate <= $ending_date) {
 					$recurringDates[] = $tempdate;
 				}
 			} else {
