@@ -983,6 +983,9 @@ $app_strings = array(
 'LBL_SEARCH_CRITERIA_COLUMNS'=>'Export Filter Columns',
 'LBL_VISIBLE_COLUMNS'=>'Export only visible columns',
 'LBL_ALL_DATA'=>'Export all data',
+'LBL_EXPORT_FORMAT' => 'Export Format',
+'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 'LBL_DATA_IN_CURRENT_PAGE'=>'Export data in current page',
 'LBL_ONLY_SELECTED_RECORDS'=>'Export selected records',
 'LBL_YES'=>'Yes',
@@ -1095,7 +1098,7 @@ $app_strings = array(
 'Discount'=>'Discount',
 'LBL_ADD_BUTTON' => 'Add',
 
-//Added to Fix i18N issue in Email Template
+//Added to fix i18n issue in Email Template
 'LBL_GENERAL_FIELDS'=>'General Fields',
 //For Users fields
 'HomePhone'=>'HomePhone',
