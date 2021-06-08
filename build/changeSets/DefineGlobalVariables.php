@@ -210,6 +210,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Workflow_ListView_PageSize',
 				'ModComments_DefaultCriteria',
 				'ModComments_DefaultBlockStatus',
+				'ModComments_Export_Format',
+				'ModComments_Edit_Inline',
 				'EMail_OpenTrackingEnabled',
 				'Email_Attachments_Folder',
 				'EMail_Maximum_Number_Attachments',
@@ -270,7 +272,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'esusername',
 				'espassword',
 				'Security_ImageCheck',
-				'ModComments_Edit_Inline',
 			);
 			$delete_these = array(
 				'preload_prototype',

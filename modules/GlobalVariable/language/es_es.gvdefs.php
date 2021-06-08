@@ -139,6 +139,20 @@ $GlobalVariableDefinitons = array(
 	'values' => 'All | Last5 | Mine',
 	'definition' => '"All" (valor por defecto) mostrará todos los comentarios relacionados con el registro, "Last5" mostrará los últimos 5 comentarios y "Mine" mostrará todos los comentarios del usuario actual.',
 ),
+'ModComments_Export_Format' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'CSV | XLS',
+	'definition' => 'Esta variable decide si exportamos los comentarios en formato CSV o XLS. El valor predeterminado es CSV.',
+),
+'ModComments_Edit_Inline' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Cuando está activado (1), el sistema permitirá la edición de comentarios en línea haciendo clic en el comentario. El valor predeterminado es 0 (desactivado)',
+),
 'Application_TrackerMaxHistory' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
@@ -1664,13 +1678,6 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'strict | loose | clean',
 	'definition' => 'Esta variable decide si verificamos de manera estricta/vaga problemas de seguridad en un archivo de imagen o ignoramos la verificación y limpiamos la imagen.',
-),
-'ModComments_Edit_Inline' => array(
-	'status' => 'Implementada',
-	'valuetype' => 'Booleano',
-	'category' => 'Aplicación',
-	'values' => '0 | 1',
-	'definition' => 'Cuando está activado (1), el sistema permitirá la edición de comentarios en línea haciendo clic en el comentario. El valor predeterminado es 0 (desactivado)',
 ),
 );
 
