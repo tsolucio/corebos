@@ -270,7 +270,7 @@ function exportExcelFileRows($rowsonfo, $totalxclinfo, $fldname, $fieldinfo, $mo
 		$rowcount++;
 		$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 		$count=0;
-		if (isset($totalxclinfo) && is_array($totalxclinfo) && count($totalxclinfo)>0) {
+		if (!empty($totalxclinfo) && is_array($totalxclinfo)) {
 			if (is_array($totalxclinfo[0])) {
 				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('Totals', 'Reports'), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 				$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);

@@ -225,7 +225,7 @@ function export($type, $format = 'CSV') {
 		$fields_array
 	);
 
-	$__processor = new ExportUtils($type, $fields_array);
+	$processor = new ExportUtils($type, $fields_array);
 
 	$translated_fields_array = array_map(
 		function ($field) use ($type) {
@@ -239,10 +239,10 @@ function export($type, $format = 'CSV') {
 		$header = '"'.implode('"'.$CSV_Separator.'"', $translated_fields_array)."\"\r\n";
 		/** Output header information */
 		echo $header;
-		dumpRowsToCSV($type, $__processor, $CSV_Separator, $columnsToExport, $result, $focus);
+		dumpRowsToCSV($type, $processor, $CSV_Separator, $columnsToExport, $result, $focus);
 	}
 	if ($format == 'XLS') {
-		return dumpRowsToXLS($type, $__processor, $columnsToExport, $translated_fields_array, $result);;
+		return dumpRowsToXLS($type, $processor, $columnsToExport, $translated_fields_array, $result);
 	}
 
 	$log->debug('< export');
