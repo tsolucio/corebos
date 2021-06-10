@@ -1195,17 +1195,22 @@ function getListPrice($productid, $pbid) {
 }
 
 /** This function returns a string with removed new line character, single quote, and back slash double quoute.
- * param $str - string to be converted.
+ * @param string to be converted.
+ * @return string converted
  */
 function br2nl($str) {
-	global $log;
-	$log->debug('> br2nl(' . $str);
 	$str = preg_replace("/\r/", "\\r", $str);
 	$str = preg_replace("/\n/", "\\n", $str);
 	$str = preg_replace("/'/", ' ', $str);
-	$str = preg_replace("/\"/", ' ', $str);
-	$log->debug('< br2nl');
-	return $str;
+	return preg_replace('/"/', ' ', $str);
+}
+
+/** convert line breaks to space in (used in description field during export, among others)
+ * @param string text to converted
+ * @return string converted
+*/
+function br2nl_vt($str) {
+	return preg_replace("/(\r\n)/", ' ', $str);
 }
 
 /** This function returns a text, which escapes the html encode for link tag/ a href tag

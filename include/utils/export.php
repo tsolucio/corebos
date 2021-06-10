@@ -64,17 +64,6 @@ if ($allow_exports=='none' || ($allow_exports=='admin' && !is_admin($current_use
 	<?php exit;
 }
 
-/**Function convert line breaks to space in description during export
- * Pram $str - text
- * retrun type string
-*/
-function br2nl_vt($str) {
-	global $log;
-	$log->debug('> br2nl_vt '.$str);
-	$str = preg_replace("/(\r\n)/", ' ', $str);
-	$log->debug('< br2nl_vt');
-	return $str;
-}
 // Function to obtain the visible columns from filter
 function obtainVisibleColumnNames(&$l, $k) {
 	//vtiger_contactaddress:mailingcountry:mailingcountry:Contacts_Mailing_Country:V

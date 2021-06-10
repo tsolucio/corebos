@@ -8,14 +8,9 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
- global $app_strings, $mod_strings, $currentModule, $theme, $adb, $current_language, $default_charset;
+require_once 'include/utils/CommonUtils.php';
+global $app_strings, $mod_strings, $currentModule, $theme, $adb, $current_language, $default_charset;
 $image_path="themes/$theme/images/";
-
-//Function added to convert line breaks to space in description during export
-function br2nl_int($str) {
-	$str = preg_replace("/(\r\n)/", ' ', $str);
-	return $str;
-}
 
 if (isset($_SESSION['export_where'])) {
 	$exportWhere = $_SESSION['export_where'];
@@ -228,8 +223,8 @@ if ($step == 'ask') {
 			$new_arr = array();
 			// foreach (array_values($val) as $value)
 			foreach ($val as $key => $value) {
-				$value=br2nl_int($value);
-				$new_arr[] = preg_replace("/\"/", "\"\"", $value);
+				$value = br2nl_vt($value);
+				$new_arr[] = preg_replace('/"/', '""', $value);
 			}
 			$line = implode("\",\"", $new_arr);
 			$line = "\"" .$line;
