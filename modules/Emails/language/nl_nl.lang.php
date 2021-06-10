@@ -84,7 +84,6 @@ $mod_strings = array(
 	'LBL_TOOL_FORM_TITLE' => 'E-mail Gereedschap',
 	'Date & Time Sent' => 'Datum & tijd verzonden',
 	'Sales Enity Module' => 'Verkoop module',
-	'Activtiy Type' => 'Type activiteiten',
 	'Related To' => 'Gerelateerd aan',
 	'Assigned To' => 'Toegevoegd aan',
 	'Subject' => 'Onderwerp',

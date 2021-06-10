@@ -144,7 +144,6 @@ $mod_strings = array(
 	'LBL_PRINT_EMAIL' => 'Tiparire',
 	'LBL_ATTACH_DOCUMENTS' => 'Atasare documente',
 	'Access Count' => 'Contor Acces',
-	'Activtiy Type' => 'Tip Activitate',
 	'Last Modified By' => 'Ultima modificare de',
 	'From' => 'De La',
 	'To' => 'La',
