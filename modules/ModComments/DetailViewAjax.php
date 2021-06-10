@@ -33,7 +33,7 @@ if ($ajaxaction == 'WIDGETADDCOMMENT') {
 			if ($data) {
 				$newValues = array(
 					'id'=>$data['id'],
-					'commentcontent'=>htmlentities($_REQUEST['comment'], ENT_QUOTES, $default_charset),
+					'commentcontent'=>htmlentities(preg_replace('/\<br(\s*)?\/?\>/i', "\n", $_REQUEST['comment']), ENT_QUOTES, $default_charset),
 					'assigned_user_id'=>$data['assigned_user_id']
 				);
 				vtws_revise($newValues, $current_user);
