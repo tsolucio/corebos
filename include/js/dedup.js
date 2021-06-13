@@ -76,6 +76,5 @@ function formSelectColumnString() {
 		return false;
 	}
 	document.mergeDuplicates.selectedColumnsString.value = selectedColStr;
-	return;
 }
 setObjects();

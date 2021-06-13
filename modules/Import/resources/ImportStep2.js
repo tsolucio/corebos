@@ -156,6 +156,5 @@ function formSelectColumnString() {
 		return false;
 	}
 	document.Import.selectedColumnsString.value = selectedColStr;
-	return;
 }
 setObjects();
