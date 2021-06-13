@@ -98,16 +98,11 @@ function exportUserCommentsForModule($module, $recordid, $format, $field_arr = a
 		$queryres = $adb->pquery($query, array());
 		$fields_array = $adb->getFieldsArray($queryres);
 		$fields_query = getPermittedFieldsQuery('ModComments', 'edit_view');
-		$f_list = " vtiger_field.columnname IN (";
-		foreach ($fields_array as $fields) {
-			$f_list .= "'$fields',";
-		}
-		$f_list .= ")";
-		$f_list = str_replace(',)', ') AND', $f_list);
-		$fields_query = str_replace('WHERE', 'WHERE'.$f_list, $fields_query);
+		$f_list = " vtiger_field.columnname IN ('".implode("','", $fields_array)."') AND";
+		$fields_query = str_ireplace('WHERE', ' WHERE '.$f_list, $fields_query);
 		$get_fields = getFieldsListFromQuery($fields_query);
 		$all_fields = str_replace(',vtiger_crmentity.cbuuid', '', $get_fields);
-		$query_pos = strpos($query, 'FROM');
+		$query_pos = stripos($query, 'FROM');
 		$query_sub = substr($query, $query_pos);
 		$new_query = "SELECT $all_fields $query_sub";
 		$result_query = $adb->pquery($new_query, array());
