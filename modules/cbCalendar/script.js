@@ -54,7 +54,7 @@ function gshow(argg1, type, startdate, enddate, starthr, startmin, startfmt, end
 
 function rptoptDisp(Opt) {
 	var currOpt = Opt.options[Opt.selectedIndex].value;
-	if (currOpt == 'Daily') {
+	if (currOpt == 'Daily' || currOpt == 'Yearly') {
 		ghide('repeatWeekUI');
 		ghide('repeatMonthUI');
 	} else if (currOpt == 'Weekly') {
@@ -63,9 +63,6 @@ function rptoptDisp(Opt) {
 	} else if (currOpt == 'Monthly') {
 		ghide('repeatWeekUI');
 		document.getElementById('repeatMonthUI').style.display = 'block';
-	} else if (currOpt == 'Yearly') {
-		ghide('repeatWeekUI');
-		ghide('repeatMonthUI');
 	}
 }
 
