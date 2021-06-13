@@ -73,7 +73,6 @@ function ghide(argg2) {
 	}
 }
 
-
 function switchClass(myModule, toStatus) {
 	var x=document.getElementById(myModule);
 	if ((x)) {
