@@ -85,7 +85,7 @@ function exportUserCommentsForModule($module, $recordid, $format, $field_arr = a
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
-			$arr = $cbMap->FieldSetMapping()->getFieldSetModule($module);
+			$arr = $cbMap->FieldSetMapping()->getFieldSetModule('ModComments');
 			$field_arr = array();
 			for ($i=0; $i<sizeof($arr); $i++) {
 				$field_arr[] = $arr[$i]['name'];
@@ -97,33 +97,37 @@ function exportUserCommentsForModule($module, $recordid, $format, $field_arr = a
 		$query = $queryGenerator->getQuery();
 		$queryres = $adb->pquery($query, array());
 		$fields_array = $adb->getFieldsArray($queryres);
-
+		$fields_query = getPermittedFieldsQuery('ModComments', 'edit_view');
+		$f_list = " vtiger_field.columnname IN ('".implode("','", $fields_array)."') AND";
+		$fields_query = str_ireplace('WHERE', ' WHERE '.$f_list, $fields_query);
+		$get_fields = getFieldsListFromQuery($fields_query);
+		$all_fields = str_replace(',vtiger_crmentity.cbuuid', '', $get_fields);
+		$query_pos = stripos($query, 'FROM');
+		$query_sub = substr($query, $query_pos);
+		$new_query = "SELECT $all_fields $query_sub";
+		$result_query = $adb->pquery($new_query, array());
+		$fields_array_result = $adb->getFieldsArray($result_query);
 		$columnsToExport = array_map(
 			function ($field) {
 				return strtolower($field);
 			},
-			$fields_array
+			$fields_array_result
 		);
-		$translated_fields_array = array_map(
-			function ($field) use ($module) {
-				return getTranslatedString($field, $module);
-			},
-			$fields_array
-		);
-
-		$focus = CRMEntity::getInstance($module);
+		$focus = CRMEntity::getInstance('ModComments');
+		$processor = new ExportUtils('ModComments', $fields_array_result);
 		if ($format == 'CSV') {
-			$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', $module);
-			$header = '"'.implode('"'.$CSV_Separator.'"', $translated_fields_array)."\"\r\n";
+			$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', 'ModComments');
+			$header = '"'.implode('"'.$CSV_Separator.'"', $fields_array_result)."\"\r\n";
 			/** Output header information */
 			echo $header;
-			dumpRowsToCSV($module, '', $CSV_Separator, $columnsToExport, $queryres, $focus);
+			dumpRowsToCSV('ModComments', $processor, $CSV_Separator, $columnsToExport, $result_query, $focus);
 		} else {
-			return dumpRowsToXLS($module, '', $columnsToExport, $translated_fields_array, $queryres);
+			return dumpRowsToXLS('ModComments', $processor, $columnsToExport, $fields_array_result, $result_query);
 		}
 	}
 	return true;
 }
+
 
 /**
  * Function to exporting XLS rows file format for modules.
@@ -328,9 +332,7 @@ function dumpRowsToCSV($type, $processor, $CSV_Separator, $columnsToExport, $res
 
 	while ($val = $adb->fetchByAssoc($result, -1, false)) {
 		$new_arr = array();
-		if (!empty($processor)) {
-			$val = $processor->sanitizeValues($val);
-		}
+		$val = $processor->sanitizeValues($val);
 		foreach ($columnsToExport as $col) {
 			$value = $val[$col];
 			if ($type == 'Documents' && $col == 'description') {
@@ -371,9 +373,7 @@ function dumpRowsToXLS($type, $processor, $columnsToExport, $translated_fields_a
 	$field_list = array();
 	while ($val = $adb->fetchByAssoc($result, -1, false)) {
 		$new_arr = array();
-		if (!empty($processor)) {
-			$val = $processor->sanitizeValues($val);
-		}
+		$val = $processor->sanitizeValues($val);
 		foreach ($columnsToExport as $col) {
 			$column_arr[] = $col;
 		}
@@ -470,5 +470,132 @@ function getFieldsListFromQuery($query) {
 	}
 	$log->debug('< getFieldsListFromQuery '.$fields);
 	return $fields;
+}
+
+/**
+ * this class will provide utility functions to process the export data.
+ * this is to make sure that the data is sanitized before sending for export
+ */
+class ExportUtils {
+	public $fieldsArr = array();
+	public $picklistValues = array();
+
+	public function __construct($module, $fields_array) {
+		self::__init($module, $fields_array);
+	}
+
+	public function __init($module, $fields_array) {
+		$infoArr = self::getInformationArray($module);
+		//attach extra fields related information to the fields_array; this will be useful for processing the export data
+		foreach ($infoArr as $fieldname => $fieldinfo) {
+			if (in_array($fieldinfo['fieldlabel'], $fields_array)) {
+				$this->fieldsArr[$fieldname] = $fieldinfo;
+			}
+		}
+	}
+
+	/**
+	 * this function takes in an array of values for an user and sanitizes it for export
+	 * @param array $arr - the array of values
+	 */
+	public function sanitizeValues($arr) {
+		global $current_user, $adb;
+		$roleid = fetchUserRole($current_user->id);
+		$decimal = $current_user->currency_decimal_separator;
+		$numsep = $current_user->currency_grouping_separator;
+		foreach ($arr as $fieldlabel => &$value) {
+			if (empty($this->fieldsArr[$fieldlabel])) {
+				continue;
+			}
+			$fieldInfo = $this->fieldsArr[$fieldlabel];
+
+			$uitype = $fieldInfo['uitype'];
+			$fieldname = $fieldInfo['fieldname'];
+			if ($uitype == 15 || $uitype == 16 || $uitype == 33) {
+				//picklists
+				if (empty($this->picklistValues[$fieldname])) {
+					$this->picklistValues[$fieldname] = getAssignedPicklistValues($fieldname, $roleid, $adb);
+				}
+				$value = trim($value);
+			} elseif ($uitype == 10) {
+				//have to handle uitype 10
+				$value = trim($value);
+				if (!empty($value) && is_numeric($value)) {
+					$parent_module = getSalesEntityType($value);
+					$Export_RelatedField_GetValueFrom = GlobalVariable::getVariable('Export_RelatedField_GetValueFrom', '', $parent_module);
+					if ($Export_RelatedField_GetValueFrom != '') {
+						$qg = new QueryGenerator($parent_module, $current_user);
+						$qg->setFields(array($Export_RelatedField_GetValueFrom));
+						$qg->addCondition('id', $value, 'e');
+						$query = $qg->getQuery();
+						$rs = $adb->query($query);
+						if ($rs && $adb->num_rows($rs) == 1) {
+							$displayValue = $adb->query_result($rs, 0, $Export_RelatedField_GetValueFrom);
+						} else {
+							$displayValue = $value;
+						}
+					} else {
+						$displayValueArray = getEntityName($parent_module, $value);
+						if (!empty($displayValueArray)) {
+							foreach ($displayValueArray as $v) {
+								$displayValue = $v;
+							}
+						}
+					}
+					if (!empty($parent_module) && !empty($displayValue)) {
+						$value = $parent_module.'::::'.$displayValue;
+						$Export_RelatedField_NameForSearch = GlobalVariable::getVariable('Export_RelatedField_NameForSearch', '', $parent_module);
+						if ($Export_RelatedField_NameForSearch != '') {
+							$value = $value.'::::'.$Export_RelatedField_NameForSearch;
+						}
+					} else {
+						$value = '';
+					}
+				} else {
+					$value = empty($value) ? '' : $value;
+				}
+			} elseif ($uitype == 71) {
+				$value = CurrencyField::convertToUserFormat($value);
+			} elseif ($uitype == 72) {
+				$value = CurrencyField::convertToUserFormat($value, null, true);
+			} elseif ($uitype == 7 || $fieldInfo['typeofdata'] == 'N~O' || $uitype == 9) {
+				$value = number_format($value, 2, $decimal, $numsep);
+			} elseif ($uitype == 98) {
+				$value = getRoleName($value);
+			}
+		}
+		return $arr;
+	}
+
+	/**
+	 * this function takes in a module name and returns the field information for it
+	 */
+	public function getInformationArray($module) {
+		require_once 'include/utils/utils.php';
+		global $adb;
+		$tabid = getTabid($module);
+
+		$result = $adb->pquery('select * from vtiger_field where tabid=?', array($tabid));
+		$count = $adb->num_rows($result);
+		$arr = array();
+		$data = array();
+
+		for ($i=0; $i<$count; $i++) {
+			$arr['uitype'] = $adb->query_result($result, $i, 'uitype');
+			$arr['fieldname'] = $adb->query_result($result, $i, 'fieldname');
+			$arr['columnname'] = $adb->query_result($result, $i, 'columnname');
+			$arr['tablename'] = $adb->query_result($result, $i, 'tablename');
+			$arr['fieldlabel'] = $adb->query_result($result, $i, 'fieldlabel');
+			$arr['typeofdata'] = $adb->query_result($result, $i, 'typeofdata');
+			$fieldlabel = strtolower($arr['fieldlabel']);
+			$data[$fieldlabel] = $arr;
+		}
+		if (in_array($module, getInventoryModules())) {
+			include_once 'include/fields/InventoryLineField.php';
+			$ilfields = new InventoryLineField();
+			$data = array_merge($data, $ilfields->getInventoryLineFieldsByLabel());
+		}
+		return $data;
+	}
 }
 ?>
