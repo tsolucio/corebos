@@ -76,7 +76,7 @@ function getPermittedFieldsQuery($module, $disp_view) {
  * @param string $module - module name
  * @param integer $recordid - record number
  * @param array $field_arr - list of fields to export
- * @return object rows in either CSV OR XLS format to export
+ * @return object rows in either CSV or XLS format to export
  */
 function exportUserCommentsForModule($module, $recordid, $format, $field_arr = array('commentcontent', 'createdtime')) {
 	global $adb, $current_user;
@@ -99,11 +99,10 @@ function exportUserCommentsForModule($module, $recordid, $format, $field_arr = a
 		$fields_array = $adb->getFieldsArray($queryres);
 		$fields_query = getPermittedFieldsQuery('ModComments', 'edit_view');
 		$f_list = " vtiger_field.columnname IN ('".implode("','", $fields_array)."') AND";
-		$fields_query = str_ireplace('WHERE', ' WHERE '.$f_list, $fields_query);
+		$fields_query = str_ireplace(' WHERE ', ' WHERE '.$f_list, $fields_query);
 		$get_fields = getFieldsListFromQuery($fields_query);
 		$all_fields = str_replace(',vtiger_crmentity.cbuuid', '', $get_fields);
-		$query_pos = stripos($query, 'FROM');
-		$query_sub = substr($query, $query_pos);
+		$query_sub = substr($query, stripos($query, ' FROM '));
 		$new_query = "SELECT $all_fields $query_sub";
 		$result_query = $adb->pquery($new_query, array());
 		$fields_array_result = $adb->getFieldsArray($result_query);
