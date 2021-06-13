@@ -289,27 +289,6 @@ function vtlib_vtiger_imageurl(theme) {
 	return 'themes/'+theme+'/images';
 }
 
-/*
- * getElementsByClassName fix for I.E 8
- */
-function vtlib_getElementsByClassName(obj, className, tagName) {
-	//Use getElementsByClassName if it is supported
-	if ( typeof(obj.getElementsByClassName) != 'undefined' ) {
-		return obj.getElementsByClassName(className);
-	}
-
-	// Otherwise search for all tags of type tagname with class "className"
-	var returnList = new Array();
-	var nodes = obj.getElementsByTagName(tagName);
-	var max = nodes.length;
-	for (var i = 0; i < max; i++) {
-		if ( nodes[i].className == className ) {
-			returnList[returnList.length] = nodes[i];
-		}
-	}
-	return returnList;
-}
-
 function convertArrayOfJsonObjectsToString(arrayofjson) {
 	var rdo = '[';
 	var len = arrayofjson.length;
