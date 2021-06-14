@@ -39,7 +39,7 @@ class crmtogo_UI_BlockModel {
 	}
 
 	public function initCreateData($blockData) {
-		$this->initData($blockData['label']);
+		$this->initData($blockData);
 	}
 
 	public static function buildCreateModel($blocks) {
