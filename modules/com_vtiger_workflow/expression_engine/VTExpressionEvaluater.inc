@@ -91,6 +91,7 @@ class VTFieldExpressionEvaluater {
 			'getGEODistanceFromAssignUser2ContactShipping' => '__cb_getGEODistanceFromAssignUser2ContactShipping',
 			'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates',
 			'getIDof' => '__cb_getidof',
+			'getFieldsOF' => '__cb_getfieldsof',
 			'getFromContext' => '__cb_getfromcontext',
 			'getFromContextSearching' => '__cb_getfromcontextsearching',
 			'setToContext' => '__cb_setfromcontext',

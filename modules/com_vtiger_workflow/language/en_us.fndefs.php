@@ -1540,6 +1540,35 @@ $WFExpressionFunctionDefinitons = array(
 		"getIDof('Accounts', 'siccode', some_field)",
 	),
 ),
+'getFieldsOF' => array(
+	'name' => 'getFieldsOF(id, module, fields)',
+	'desc' => 'Given the ID of an existent record, this function will return an array with all the values of the fields the user has access to. If you specify the field you want in the function, only that value will be returned.',
+	'params' => array(
+		array(
+			'name' => 'id',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the id to search in',
+		),
+		array(
+			'name' => 'module',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the module to search in',
+		),
+		array(
+			'name' => 'fields',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'fields to return from the function',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getFieldsOF('8509', 'Contacts')",
+		"getFieldsOF('8509', 'Contacts', 'field1,field2,...,fieldN')",
+	),
+),
 'getFromContext' => array(
 	'name' => 'getFromContext(variablename)',
 	'desc' => 'This function gets the value of the variablename context variable.',
