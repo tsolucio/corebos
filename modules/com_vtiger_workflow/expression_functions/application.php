@@ -98,6 +98,23 @@ function __cb_getidof($arr) {
 	}
 }
 
+function __cb_getfieldsof($arr) {
+	global $current_user, $adb;
+	$qg = new QueryGenerator($arr[1], $current_user);
+	$qg->setFields(array('*'));
+	if (isset($arr[2])) {
+		$fields = explode(',', $arr[2]);
+		$qg->setFields($fields);
+	}
+	$qg->addCondition('id', $arr[0], 'e');
+	$rs = $adb->query($qg->getQuery(false));
+	if ($rs && $adb->num_rows($rs)>0) {
+		return $rs->FetchRow();
+	} else {
+		return 0;
+	}
+}
+
 function __cb_getfromcontext($arr) {
 	$str_arr = explode(',', $arr[0]);
 	$variableArr = array();
