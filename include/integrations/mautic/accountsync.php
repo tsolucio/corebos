@@ -29,76 +29,79 @@ use Mautic\MauticApi;
 function accountsync($input) {
 	global $adb;
 
-    $current_user = Users::getActiveAdminUser();
+	$current_user = Users::getActiveAdminUser();
 	$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
 
 	$data = json_decode($input, true);
 
-    $createupdate = array_key_exists('mautic.company_post_save', $data);
+	$createupdate = array_key_exists('mautic.company_post_save', $data);
 	$delete = array_key_exists('mautic.company_post_delete', $data);
 
-    if ($createupdate) {
-        $company = $data['mautic.company_post_save'][0]['company'];
-        $core_fields = $company['fields']['core'];
-        $professional_fields = $company['fields']['professional'];
-        $fields = array_merge($core_fields, $professional_fields);
+	if ($createupdate) {
+		$company = $data['mautic.company_post_save'][0]['company'];
+		$core_fields = $company['fields']['core'];
+		$professional_fields = $company['fields']['professional'];
+		$fields = array_merge($core_fields, $professional_fields);
 
-        $mauticdata = array();
-        foreach ($fields as $field) {
-            $mauticdata[$field['alias']] = $field['value'];
-        }
+		$pastChanges = $company['PastChanges'];
+		if (!array_key_exists('company_corebos_id', $pastChanges['fields'])) {
+			$mauticdata = array();
+			foreach ($fields as $field) {
+				$mauticdata[$field['alias']] = $field['value'];
+			}
 
-        $bmapname = 'MauticToAccounts';
-        $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-        if ($cbMapid) {
-            $send2cb = array();
-            $cbMap = cbMap::getMapByID($cbMapid);
-            $send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-            $send2cb['mautic_id'] = $company['id'];
-            $send2cb['assigned_user_id'] = $usrwsid;
-            $send2cb['from_externalsource'] = 'mautic';
+			$bmapname = 'MauticToAccounts';
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+			if ($cbMapid) {
+				$send2cb = array();
+				$cbMap = cbMap::getMapByID($cbMapid);
+				$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
+				$send2cb['mautic_id'] = $company['id'];
+				$send2cb['assigned_user_id'] = $usrwsid;
+				$send2cb['from_externalsource'] = 'mautic';
 
-            $record = null;
-            if ($fields['company_corebos_id']['value'] == NULL || $fields['company_corebos_id']['value'] == '') {
-                $record = vtws_create('Accounts', $send2cb, $current_user);
-            } else {
-                $send2cb['id'] = $fields['company_corebos_id']['value'];
-                $record = vtws_update($send2cb, $current_user);
-            }
+				$record = null;
+				if ($fields['company_corebos_id']['value'] == null || $fields['company_corebos_id']['value'] == '') {
+					$record = vtws_create('Accounts', $send2cb, $current_user);
+				} else {
+					$send2cb['id'] = $fields['company_corebos_id']['value'];
+					$record = vtws_update($send2cb, $current_user);
+				}
 
-            if ($record) {
-                // Reset from_externalsource
-                list($account_tabid, $account_crmid) = explode('x', $record['id']);
-                $sql = 'UPDATE vtiger_account SET from_externalsource = ? where accountid = ?';
-                $result = $adb->pquery($sql, array('', $account_crmid));
+				if ($record) {
+					// Reset from_externalsource
+					list($account_tabid, $account_crmid) = explode('x', $record['id']);
+					$sql = 'UPDATE vtiger_account SET from_externalsource = ? where accountid = ?';
+					$result = $adb->pquery($sql, array('', $account_crmid));
 
-                if ($fields['company_corebos_id']['value'] == NULL || $fields['company_corebos_id']['value'] == '') {
-                    // Update company_corebos_id
-					$mautic = new corebos_mautic();
-					$auth = $mautic->authenticate();
-					if ($auth) {
-						$apiUrl     = $mautic->getSettings('baseUrl');
-						$api        = new MauticApi();
-						$companyApi = $api->newApi('companies', $auth, $apiUrl);
+					if ($fields['company_corebos_id']['value'] == null || $fields['company_corebos_id']['value'] == '') {
+						// Update company_corebos_id
+						$mautic = new corebos_mautic();
+						$auth = $mautic->authenticate();
+						if ($auth) {
+							$apiUrl     = $mautic->getSettings('baseUrl');
+							$api        = new MauticApi();
+							$companyApi = $api->newApi('companies', $auth, $apiUrl);
 
-						$updatedData = [
-							'company_corebos_id' => $record['id']
-						];
-						$companyApi->edit($company['id'], $updatedData);
+							$updatedData = [
+								'company_corebos_id' => $record['id']
+							];
+							$companyApi->edit($company['id'], $updatedData);
+						}
 					}
-                }
-            }
-        }
-    } else if ($delete) {
-        $company = $data['mautic.company_post_delete'][0]['company'];
-        $core_fields = $company['fields']['core'];
-        $professional_fields = $company['fields']['professional'];
-        $fields = array_merge($core_fields, $professional_fields);
+				}
+			}
+		}
+	} elseif ($delete) {
+		$company = $data['mautic.company_post_delete'][0]['company'];
+		$core_fields = $company['fields']['core'];
+		$professional_fields = $company['fields']['professional'];
+		$fields = array_merge($core_fields, $professional_fields);
 
-        if (isset($fields['company_corebos_id']['value']) && $fields['company_corebos_id']['value'] != '') {
+		if (isset($fields['company_corebos_id']['value']) && $fields['company_corebos_id']['value'] != '') {
 			list($account_tabid, $account_crmid) = explode('x', $fields['company_corebos_id']['value']);
 			$sql = 'UPDATE vtiger_account SET mautic_id = ?, deleted_in_mautic = ? where accountid = ?';
 			$result = $adb->pquery($sql, array('', 1, $account_crmid));
 		}
-    }
+	}
 }
