@@ -142,23 +142,21 @@ function __cb_networkdays($arr) {
 
 function __cb_isHolidayDate($arr) {
 	if (empty($arr[0])) {
-		return 0;
+		return false;
 	}
 	$saturdayisholiday = isset($arr[1]) ? $arr[1] : 1;
+	$holidays = array();
+	if (!empty($arr[2])) {
+		$holidays = __cb_getHolidays($arr[2]);
+	}
 	$day_week = date("l", strtotime($arr[0]));
 	if ($day_week == 'Sunday') {
 		return true;
 	}
-	if ($day_week == 'Saturday') {
-		if ($saturdayisholiday == 1) {
-			return true;
-		}
-	}
-	if (!empty($arr[2])) {
-		$holidays = __cb_getHolidays($arr[2]);
-		if (in_array($arr[0], $holidays)) {
-			return true;
-		}
+	if ($saturdayisholiday == 1 && $day_week == 'Saturday') {
+		return true;
+	} else {
+		return in_array($arr[0], $holidays);
 	}
 	return false;
 }
