@@ -31,9 +31,10 @@ if ($isadmin && !empty($_REQUEST['baseUrl'])) {
 	$clientSecret = (empty($_REQUEST['clientSecret']) ? '' : vtlib_purify($_REQUEST['clientSecret']));
 	$callback = (empty($_REQUEST['callback']) ? '' : vtlib_purify($_REQUEST['callback']));
 	$leadSync = ((empty($_REQUEST['mautic_sync_lead']) || $_REQUEST['mautic_sync_lead']!='on') ? '0' : '1');
+	$companiesSync = ((empty($_REQUEST['mautic_sync_companies']) || $_REQUEST['mautic_sync_companies']!='on') ? '0' : '1');
 	$username = (empty($_REQUEST['mautic_username']) ? '' : vtlib_purify($_REQUEST['mautic_username']));
 	$password = (empty($_REQUEST['mautic_password']) ? '' : vtlib_purify($_REQUEST['mautic_password']));
-	$mautic->saveSettings($isActive, $baseUrl, $version, $clientKey, $clientSecret, $callback, $leadSync, $username, $password);
+	$mautic->saveSettings($isActive, $baseUrl, $version, $clientKey, $clientSecret, $callback, $leadSync, $companiesSync, $username, $password);
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Mautic Activation', $currentModule));
@@ -45,6 +46,7 @@ $smarty->assign('clientKey', $mauticSettings['clientKey']);
 $smarty->assign('clientSecret', $mauticSettings['clientSecret']);
 $smarty->assign('callback', $mauticSettings['callback']);
 $smarty->assign('isLeadSyncActive', $mauticSettings['leadSync']);
+$smarty->assign('isCompaniesSyncActive', $mauticSettings['companiesSync']);
 $smarty->assign('mauticUsername', $mauticSettings['userName']);
 $smarty->assign('mauticPassword', $mauticSettings['password']);
 $smarty->assign('APP', $app_strings);

@@ -94,6 +94,20 @@
 					</label>
 				</div>
 			</div>
+
+			<div class="slds-col">
+				<div class="slds-form-element">
+					<label class="slds-checkbox--toggle slds-grid">
+					<span class="slds-form-element__label slds-m-bottom--none">{'mautic_sync_with_accounts'|@getTranslatedString:$MODULE}</span>
+					<input type="checkbox" name="mautic_sync_companies" aria-describedby="toggle-desc" {if $isCompaniesSyncActive}checked{/if} />
+					<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
+						<span class="slds-checkbox--faux"></span>
+						<span class="slds-checkbox--on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
+						<span class="slds-checkbox--off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
+					</span>
+					</label>
+				</div>
+			</div>
 		</div>
 		<div class="slds-m-top--large">
 			<button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
