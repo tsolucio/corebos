@@ -140,6 +140,29 @@ function __cb_networkdays($arr) {
 	return $days;
 }
 
+function __cb_isHolidayDate($arr) {
+	if (empty($arr[0])) {
+		return 0;
+	}
+	$saturdayisholiday = isset($arr[1]) ? $arr[1] : 1;
+	$day_week = date("l", strtotime($arr[0]));
+	if ($day_week == 'Sunday') {
+		return true;
+	}
+	if ($day_week == 'Saturday') {
+		if ($saturdayisholiday == 1) {
+			return true;
+		}
+	}
+	if (!empty($arr[2])) {
+		$holidays = __cb_getHolidays($arr[2]);
+		if (in_array($arr[0], $holidays)) {
+			return true;
+		}
+	}
+	return false;
+}
+
 /**
  * Calculate the time difference (input times) or (current time and input time) and
  * convert it into number of days.
