@@ -105,4 +105,11 @@
 	<classname>correctActivityTypeFieldLabel</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Correct Payment module repeated entity name field</description>
+	<filename>build/changeSets/2021/fixCyPRepeatedEntityName.php</filename>
+	<classname>fixCyPRepeatedEntityName</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
