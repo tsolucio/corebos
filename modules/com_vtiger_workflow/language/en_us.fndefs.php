@@ -238,7 +238,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'isholidaydate' => array(
 	'name' => 'isholidaydate(date, saturdayisholiday, holidays)',
-	'desc' => 'Returns true if given date is fell on holidays or fell on sunday or saturday if saturday taken as holiday else it will return false',
+	'desc' => 'Returns true if the given date falls on a holiday, Sunday or Saturday. If Saturday is considered a holiday or not can be defined.',
 	'params' => array(
 		array(
 			'name' => 'date',
@@ -248,18 +248,18 @@ $WFExpressionFunctionDefinitons = array(
 		),
 		array(
 			'name' => 'saturdayisholiday',
-			'type' => 'Integer',
+			'type' => 'Boolean',
 			'optional' => false,
-			'desc' => 'if set to 0, Saturdays will not be added, if set to 1, they will be added',
+			'desc' => 'if set to 1, Saturdays will be considered as non-work days (like Sunday)',
 		),
 		array(
 			'name' => 'holidays',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'name of an Information Map that contains the holiday dates to exclude<br>'.nl2br(htmlentities("<map>\n<information>\n<infotype>Holidays in France 2020</infotype>\n<value>date1</value>\n<value>date2</value>\n</information>\n</map>")).'</pre>',
+			'desc' => 'comma-separated list of holidays or the name of an Information Map that contains the holiday dates<br>'.nl2br(htmlentities("<map>\n<information>\n<infotype>Holidays in France 2020</infotype>\n<value>date1</value>\n<value>date2</value>\n</information>\n</map>")).'</pre>',
 		),
 	),
-	'categories' => array('Day and Date'),
+	'categories' => array('Date and Time'),
 	'examples' => array(
 		"isholidaydate('2021-01-01', 0, 'holidays in Spain 2021')",
 		"isholidaydate('2021-01-01', 1, 'holidays in Spain 2021')",

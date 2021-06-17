@@ -233,6 +233,36 @@ $WFExpressionFunctionDefinitons = array(
 		"networkdays('2020-01-01', '2020-06-30', 'holidays in France 2020')",
 	),
 ),
+'isholidaydate' => array(
+	'name' => 'isholidaydate(date, saturdayisholiday, holidays)',
+	'desc' => 'Devuelve verdadero si la fecha dada cae en un día festivo, domingo o sábado. Si el sábado se considera festivo o no se puede definir.',
+	'params' => array(
+		array(
+			'name' => 'date',
+			'type' => 'Fecha',
+			'optional' => false,
+			'desc' => 'cualquier fecha válida o nombre de campo de tipo fecha',
+		),
+		array(
+			'name' => 'saturdayisholiday',
+			'type' => 'Booleano',
+			'optional' => false,
+			'desc' => 'si se establece en 1, los sábados se considerarán días no laborables (como el domingo)',
+		),
+		array(
+			'name' => 'holidays',
+			'type' => 'Texto',
+			'optional' => true,
+			'desc' => 'lista de vacaciones separadas por comas o el nombre de un mapa de información que contiene las fechas de vacaciones<br>'.nl2br(htmlentities("<map>\n<information>\n<infotype>Holidays in France 2020</infotype>\n<value>date1</value>\n<value>date2</value>\n</information>\n</map>")).'</pre>',
+		),
+	),
+	'categories' => array('Date and Time'),
+	'examples' => array(
+		"isholidaydate('2021-01-01', 0, 'holidays in Spain 2021')",
+		"isholidaydate('2021-01-01', 1, 'holidays in Spain 2021')",
+		"isholidaydate('2021-01-01', 0, 'holidays in France 2021')",
+	),
+),
 'aggregate_time' => array(
 	'name' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
 	'desc' => 'Esta función devuelve un tiempo agregado de un campo en un módulo relacionado con filtrado opcional de los registros',
