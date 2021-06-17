@@ -102,9 +102,9 @@ class corebos_mautic {
 		coreBOS_Settings::setSetting(self::KEY_MAUTICUSERNAME, $username);
 		coreBOS_Settings::setSetting(self::KEY_MAUTICPASSWORD, $password);
 
-		// if ($isactive == '1' && $leadsync == '1') {
-		// 	$this->leadsToContacts();
-		// }
+		if ($isactive == '1' && $leadsync == '1') {
+			$this->leadsToContacts();
+		}
 		if ($isactive == '1' && $companiessync == '1') {
 			$this->companiesToAccounts();
 		}
