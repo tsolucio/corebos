@@ -1346,7 +1346,7 @@ function getDetailAssociatedProducts($module, $focus) {
 	$grandTotal = ($focus->column_fields['hdnGrandTotal'] != '') ? $focus->column_fields['hdnGrandTotal'] : '0.00';
 	$output .= '<tr id="detailview_inventory_grandtotrow">';
 	$output .= '<td align="right" class="crmTableRow small lineOnTop"><b>' . $app_strings['LBL_GRAND_TOTAL'] . '</b></td>';
-	$output .= '<td align="right" class="crmTableRow small lineOnTop">' . CurrencyField::convertToUserFormat($grandTotal, null, true) . '</td>';
+	$output .= '<td align="right" class="crmTableRow small lineOnTop" data-qagrandtotal="'.$grandTotal.'">' . CurrencyField::convertToUserFormat($grandTotal, null, true) . '</td>';
 	$output .= '</tr>';
 	$output .= '</table>';
 

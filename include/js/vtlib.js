@@ -300,6 +300,9 @@ function convertArrayOfJsonObjectsToString(arrayofjson) {
 }
 
 function ExecuteFunctions(functiontocall, params) {
+	if (typeof coreBOS_runningUnitTests != 'undefined') {
+		return Promise.resolve(true);
+	}
 	var baseurl = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions';
 
 	// Return a new promise avoiding jquery and prototype

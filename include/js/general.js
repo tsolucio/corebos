@@ -8,6 +8,9 @@
  ********************************************************************************/
 
 function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
+	if (typeof coreBOS_runningUnitTests != 'undefined') {
+		return Promise.resolve(gvdefault);
+	}
 	if (typeof gVTUserID=='undefined' && typeof gVTModule=='undefined') {
 		let rdo = {};
 		rdo[gvname] = gvdefault;
