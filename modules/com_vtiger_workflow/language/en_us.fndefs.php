@@ -1542,13 +1542,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getFieldsOF' => array(
 	'name' => 'getFieldsOF(id, module, fields)',
-	'desc' => 'Given the ID of an existent record, this function will return an array with all the values of the fields the user has access to. If you specify the field you want in the function, only that value will be returned.',
+	'desc' => 'Given the ID of an existent record, this function will return an array with all the values of the fields the user has access to. If you specify the fields you want in the function, only those values will be returned.',
 	'params' => array(
 		array(
 			'name' => 'id',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'the id to search in',
+			'desc' => 'the ID to search in',
 		),
 		array(
 			'name' => 'module',
@@ -1560,7 +1560,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'fields',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'fields to return from the function',
+			'desc' => 'comma-separated list of fields to get the values from',
 		),
 	),
 	'categories' => array('Application'),
