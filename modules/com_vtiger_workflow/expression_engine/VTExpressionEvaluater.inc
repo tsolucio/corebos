@@ -38,6 +38,7 @@ class VTFieldExpressionEvaluater {
 			'time_diffweekdays' => '__cb_getWeekdayDifference',
 			'holidaydifference' => '__cb_holidaydifference',
 			'networkdays' => '__cb_networkdays',
+			'isholidaydate' => '__cb_isHolidayDate',
 			'aggregate_time' => '__cb_aggregate_time',
 			'add_days' => '__vt_add_days',
 			'sub_days' => '__vt_sub_days',

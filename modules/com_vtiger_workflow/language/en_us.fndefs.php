@@ -236,6 +236,36 @@ $WFExpressionFunctionDefinitons = array(
 		"networkdays('2020-01-01', '2020-06-30', 'holidays in France 2020')",
 	),
 ),
+'isholidaydate' => array(
+	'name' => 'isholidaydate(date, saturdayisholiday, holidays)',
+	'desc' => 'Returns true if given date is fell on holidays or fell on sunday or saturday if saturday taken as holiday else it will return false',
+	'params' => array(
+		array(
+			'name' => 'date',
+			'type' => 'Date',
+			'optional' => false,
+			'desc' => 'any valid date or date type field name',
+		),
+		array(
+			'name' => 'saturdayisholiday',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'if set to 0, Saturdays will not be added, if set to 1, they will be added',
+		),
+		array(
+			'name' => 'holidays',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'name of an Information Map that contains the holiday dates to exclude<br>'.nl2br(htmlentities("<map>\n<information>\n<infotype>Holidays in France 2020</infotype>\n<value>date1</value>\n<value>date2</value>\n</information>\n</map>")).'</pre>',
+		),
+	),
+	'categories' => array('Day and Date'),
+	'examples' => array(
+		"isholidaydate('2021-01-01', 0, 'holidays in Spain 2021')",
+		"isholidaydate('2021-01-01', 1, 'holidays in Spain 2021')",
+		"isholidaydate('2021-01-01', 0, 'holidays in France 2021')",
+	),
+),
 'aggregate_time' => array(
 	'name' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
 	'desc' => 'This function returns an aggregate time of a field on a related module with optional filtering of the records',
