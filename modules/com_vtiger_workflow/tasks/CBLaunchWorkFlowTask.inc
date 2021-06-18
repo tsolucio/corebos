@@ -15,10 +15,11 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once 'include/Webservices/Retrieve.php';
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'data/CRMEntity.php';
+require_once 'include/Webservices/Retrieve.php';
+include_once 'include/Webservices/ExecuteWorkflow.php';
 
 class CBLaunchWorkFlowTask extends VTTask {
 	public $executeImmediately = true;
@@ -31,34 +32,28 @@ class CBLaunchWorkFlowTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $currentModule, $log, $from_wf;
+		global $adb, $currentModule, $from_wf;
 
 		switch ($this->record_filter_opt) {
-			case "filterByCurrentRecord":
-				$crmids = array();
-				$crmids[] = $entity->getId();
-				$this->executeWorkflow($this->workflowid, $crmids, '[]', $current_user);
-				break;
-			case "filterByThese":
+			case 'filterByThese':
 				$idslist = explode(',', $this->crmids_list);
-				if (count($idslist) > 0) {
+				if (!empty($idslist)) {
 					$entityids = array();
 					foreach ($idslist as $entityid) {
 						if ($this->validateCRMID($entityid)) {
 							$entityids[] = $entityid;
 						}
 					}
-					$this->executeWorkflow($this->workflowid, $entityids, '[]', $current_user);
+					$this->executeWorkflow($this->workflowid, $entityids, '[]');
 				}
 				break;
-			case "filterByrelModuleAndConditionExpressionMap":
-				include_once 'data/CRMEntity.php';
+			case 'filterByrelModuleAndConditionExpressionMap':
 				list($wsid, $crmid) = explode('x', $entity->getId());
 				$parentModule = getSalesEntityType($crmid);
 				$focus = CRMEntity::getInstance($parentModule);
 				$focus->id = $crmid;
 				$focus->retrieve_entity_info($crmid, $parentModule, false, $from_wf);
-				global $GetRelatedList_ReturnOnlyQuery, $adb;
+				global $GetRelatedList_ReturnOnlyQuery;
 				$holdValue = $GetRelatedList_ReturnOnlyQuery;
 				$GetRelatedList_ReturnOnlyQuery = true;
 				$rectabid = getTabid($parentModule);
@@ -77,7 +72,7 @@ class CBLaunchWorkFlowTask extends VTTask {
 				if (isset($relationData['query'])) {
 					$query = $relationData['query'];
 					preg_match('/[\t ]from /i', $query, $matches, PREG_OFFSET_CAPTURE);
-					$query = 'select vtiger_crmentity.crmid as id'.substr($query, $matches[0][1]).$condition;
+					$query = 'select vtiger_crmentity.crmid as id'.substr($query, $matches[0][1]);
 					$result = $adb->query($query);
 					$crmids = array();
 					if ($result && $adb->num_rows($result) > 0) {
@@ -93,91 +88,66 @@ class CBLaunchWorkFlowTask extends VTTask {
 								$crmids[] = $relatedModuleId.'x'.$related['id'];
 							}
 						}
-
-						$this->executeWorkflow($this->workflowid, $crmids, '[]', $current_user);
+						$this->executeWorkflow($this->workflowid, $crmids, '[]');
 					}
 				}
 				break;
-			case "filterByRecordSetMap":
+			case 'filterByRecordSetMap':
 				require_once 'modules/cbMap/cbMap.php';
-				$focus = new cbMap();
-				$focus->id = $this->recordsetmapid;
-				$focus->retrieve_entity_info($this->recordsetmapid, 'cbMap');
-				$rsm = $focus->RecordSetMapping();
-				$mapinfo = $rsm->getFullRecordSet();
-
-				$include = $mapinfo['include'];
-				$exclude = $mapinfo['exclude'];
-				$group = $mapinfo['group'];
-				$modules = $mapinfo['modules'];
-
-				$crmids = array();
-
-				if (count($include) > 0) {
-					foreach ($modules as $module) {
-						if (array_key_exists($module, $include)) {
-							$idslist = $include[$module];
-							$moduleId = vtws_getEntityId($module);
-							$crmids = array();
-							foreach ($idslist as $id) {
-								if ($this->validateCRMID($moduleId.'x'.$id)) {
-									$crmids[] = $moduleId.'x'.$id;
-								}
-							}
-							$this->executeWorkflow($this->workflowid, $crmids, '[]', $current_user);
-						}
-					}
-				} elseif (count($exclude) > 0) {
-					foreach ($modules as $module) {
-						if (array_key_exists($module, $exclude)) {
-							$idslist = $exclude[$module];
-							$moduleId = vtws_getEntityId($module);
-							$crmids = array();
-							foreach ($idslist as $id) {
-								if ($this->validateCRMID($moduleId.'x'.$id)) {
-									$crmids[] = $moduleId.'x'.$id;
-								}
-							}
-							$this->executeWorkflow($this->workflowid, $crmids, '[]', $current_user);
-						}
-					}
-				} elseif (count($group) > 0) {
-					foreach ($modules as $module) {
-						if (array_key_exists($module, $group)) {
-							$idslist = $group[$module];
-							$moduleId = vtws_getEntityId($module);
-							$crmids = array();
-							foreach ($idslist as $id) {
-								if ($this->validateCRMID($moduleId.'x'.$id)) {
-									$crmids[] = $moduleId.'x'.$id;
-								}
-							}
-							$his->executeWorkflow($this->workflowid, $crmids, '[]', $current_user);
-						}
+				$focus = cbMap::getMapByID($this->recordsetmapid);
+				if (!empty($focus)) {
+					$rsm = $focus->RecordSetMapping();
+					$mapinfo = $rsm->getFullRecordSet();
+					$include = $mapinfo['include'];
+					$exclude = $mapinfo['exclude'];
+					$group = $mapinfo['group'];
+					$modules = $mapinfo['modules'];
+					$crmids = array();
+					if (!empty($include)) {
+						$this->launchWithRecordSetData($modules, $include);
+					} elseif (!empty($exclude)) {
+						$this->launchWithRecordSetData($modules, $exclude);
+					} elseif (!empty($group)) {
+						$this->launchWithRecordSetData($modules, $group);
 					}
 				}
+				break;
+			case 'filterByCurrentRecord':
+			default:
+				$crmids = array();
+				$crmids[] = $entity->getId();
+				$this->executeWorkflow($this->workflowid, $crmids, '[]');
 				break;
 		}
 	}
 
-	public function validateCRMID($entityId) {
-		list($moduleId, $crmId) = explode('x', $entityId);
-		$query = "select * from vtiger_crmentity where crmid={$crmId}";
-		$res = $adb->query($query);
-
-		if (is_numeric($moduleId) && is_numeric($crmId) && $adb->num_rows($res) > 0) {
-			return true;
-		} else {
-			return false;
+	private function launchWithRecordSetData($modules, $recset) {
+		foreach ($modules as $module) {
+			if (array_key_exists($module, $recset)) {
+				$idslist = $recset[$module];
+				$moduleId = vtws_getEntityId($module);
+				$crmids = array();
+				foreach ($idslist as $id) {
+					if ($this->validateCRMID($moduleId.'x'.$id)) {
+						$crmids[] = $moduleId.'x'.$id;
+					}
+				}
+				$this->executeWorkflow($this->workflowid, $crmids, '[]');
+			}
 		}
 	}
 
-	public function executeWorkflow($wfid, $crmids, $context, $current_user) {
-		include_once 'include/Webservices/ExecuteWorkflow.php';
-		try {
-			$ret = cbwsExecuteWorkflowWithContext($wfid, json_encode($crmids), $context, $current_user);
-		} catch (Exception $e) {
-			$ret = false;
+	private function validateCRMID($entityId) {
+		global $adb;
+		list($moduleId, $crmId) = explode('x', $entityId);
+		$res = $adb->query('select * from vtiger_crmobject where crmid='.$crmId);
+		return (is_numeric($moduleId) && is_numeric($crmId) && $adb->num_rows($res) > 0);
+	}
+
+	private function executeWorkflow($wfid, $crmids, $context) {
+		global $current_user;
+		if (!empty($crmids)) {
+			cbwsExecuteWorkflowWithContext($wfid, json_encode($crmids), $context, $current_user);
 		}
 	}
 }
