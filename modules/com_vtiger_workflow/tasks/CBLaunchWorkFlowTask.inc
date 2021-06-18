@@ -25,9 +25,9 @@ class CBLaunchWorkFlowTask extends VTTask {
 
 	public function getFieldNames() {
 		return array(
-			'workflowid', 'workflowid_display', 'record_filter_opt', 'relModlist',
-			'conditionexpressionmapid',  'conditionexpressionmapid_display',
-			'recordsetmapid', 'recordsetmapid_display', 'crmids_list');
+			'workflowid', 'workflowid_display', 'record_filter_opt', 'relModlist', 'conditionexpressionmapid',
+			'conditionexpressionmapid_display', 'recordsetmapid', 'recordsetmapid_display', 'crmids_list'
+		);
 	}
 
 	public function doTask(&$entity) {

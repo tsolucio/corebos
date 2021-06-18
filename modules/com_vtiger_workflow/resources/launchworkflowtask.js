@@ -5,7 +5,7 @@ $(document).ready(function () {
 		url: 'index.php?' + fileurl
 	}).done(function (modlistres) {
 		document.getElementById('relModlist').innerHTML = modlistres;
-		Array.from(document.querySelector("#relModlist").options).forEach(function(option_element) {
+		Array.from(document.querySelector('#relModlist').options).forEach(function (option_element) {
 			if ( option_element.value == selectedModule) {
 				option_element.selected = true;
 			}
@@ -19,11 +19,11 @@ function filterWorkFlowBasedOnRelatedModule() {
 
 	var BasicSearch = '&query=true&search=true&searchtype=BasicSearch&search_field=module_name&search_text='+document.getElementById('relModlist').value;
 	var SpecialSearch = encodeURI(BasicSearch);
-	document.getElementById("workflowid_display").addEventListener("click", function(){
-		window.open("index.php?module=com_vtiger_workflow&action=Popup&html=Popup_picker&form=new_task&forfield=workflowid&srcmodule=GlobalVariable&"+SpecialSearch,"vtlibui10wf", cbPopupWindowSettings);
+	document.getElementById('workflowid_display').addEventListener('click', function () {
+		window.open('index.php?module=com_vtiger_workflow&action=Popup&html=Popup_picker&form=new_task&forfield=workflowid&srcmodule=GlobalVariable&'+SpecialSearch, 'vtlibui10wf', cbPopupWindowSettings);
 	}, false);
 
-	document.getElementById("workflowid_clear").addEventListener("click", function(){
-		window.open("index.php?module=com_vtiger_workflow&action=Popup&html=Popup_picker&form=new_task&forfield=workflowid&srcmodule=GlobalVariable&"+SpecialSearch,"vtlibui10wf", cbPopupWindowSettings);
+	document.getElementById('workflowid_clear').addEventListener('click', function () {
+		window.open('index.php?module=com_vtiger_workflow&action=Popup&html=Popup_picker&form=new_task&forfield=workflowid&srcmodule=GlobalVariable&'+SpecialSearch, 'vtlibui10wf', cbPopupWindowSettings);
 	}, false);
 }
