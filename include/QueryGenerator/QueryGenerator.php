@@ -1023,7 +1023,7 @@ class QueryGenerator {
 				} elseif (in_array($fieldName, $this->ownerFields)) {
 					$fieldSql .= "$fieldGlue (trim(vtiger_users.ename) $valueSql or vtiger_groups.groupname $valueSql)";
 				} else {
-					if ($fieldName == 'birthday' && !$this->isRelativeSearchOperators($conditionInfo['operator'])) {
+					if (($fieldName == 'birthday' && !$this->isRelativeSearchOperators($conditionInfo['operator'])) || $conditionInfo['operator'] == 'monthday') {
 						$fieldSql .= "$fieldGlue DATE_FORMAT(".$field->getTableName().'.'.$field->getColumnName().",'%m%d') ".$valueSql;
 					} else {
 						if ($conditionInfo['operator'] == 'sx' || $conditionInfo['operator'] == 'nsx') {
@@ -1050,9 +1050,6 @@ class QueryGenerator {
 							}
 						}
 					}
-				}
-				if ($conditionInfo['operator'] = 'monthday') {
-					$fieldSql = "("."$fieldGlue "."DATE_FORMAT(".$field->getTableName().".".$field->getColumnName().", '%m-%d') = '".$conditionInfo['value']."'";
 				}
 				if ($conditionInfo['operator'] == 'n' || $conditionInfo['operator'] == 'k' || $conditionInfo['operator'] == 'dnsw') {
 					$fieldGlue = ' AND';
@@ -1401,7 +1398,7 @@ class QueryGenerator {
 				$sql[] = "NOT LIKE ''";
 				continue;
 			}
-
+			$addquotes = true;
 			switch ($operator) {
 				case 'e':
 					$sqlOperator = '=';
@@ -1433,6 +1430,16 @@ class QueryGenerator {
 					$sqlOperator = 'NOT LIKE';
 					$value = "%$value";
 					break;
+				case 'monthday':
+					$sqlOperator = '=';
+					if (substr($value, 0, 3)=='::#') {
+						$addquotes = false;
+						$value = 'DATE_FORMAT('.$value.",'%m%d') ";
+					} else {
+						list($void, $m, $d) = explode('-', getValidDBInsertDateValue($value));
+						$value = $m.$d;
+					}
+					break;
 				case 'nsx':
 				case 'sx':
 					$sqlOperator = 'SOUNDEX';
@@ -1462,8 +1469,9 @@ class QueryGenerator {
 			if ($field->getFieldDataType() == 'reference' && $operator == 'e' && empty($value)) {
 				$sql[] = ' IS NULL';
 			}
-			if ($this->requiresQuoteSearchOperators($operator) || (!$this->isNumericType($field->getFieldDataType()) &&
-					($field->getFieldName() != 'birthday' || ($field->getFieldName() == 'birthday' && $this->isRelativeSearchOperators($operator))))) {
+			if ($this->requiresQuoteSearchOperators($operator) || (!$this->isNumericType($field->getFieldDataType()) && $addquotes &&
+				($field->getFieldName() != 'birthday' || ($field->getFieldName() == 'birthday' && $this->isRelativeSearchOperators($operator))))
+			) {
 				$value = "'$value'";
 			}
 			if ($this->isNumericType($field->getFieldDataType()) && empty($value)) {
