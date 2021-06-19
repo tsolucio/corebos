@@ -54,13 +54,10 @@ class VTJsonCondition {
 				if (isset($exprResult['result'])) { // Condition to skip last condition
 					$result = $exprResult['result'];
 					if (!empty($exprResult['logicaloperator'])) {
-						switch ($exprResult['logicaloperator']) {
-							case 'and':
-								$groupResult = ($groupResult && $result);
-								break;
-							case 'or':
-								$groupResult = ($groupResult || $result);
-								break;
+						if ($exprResult['logicaloperator']=='and') {
+							$groupResult = ($groupResult && $result);
+						} else { // or
+							$groupResult = ($groupResult || $result);
 						}
 					} else { // Case for the first condition
 						$groupResult = $result;
@@ -75,13 +72,10 @@ class VTJsonCondition {
 			if (isset($groupResult['result'])) { // Condition to skip last condition
 				$result = $groupResult['result'];
 				if (!empty($groupResult['logicaloperator'])) {
-					switch ($groupResult['logicaloperator']) {
-						case 'and':
-							$finalResult = ($finalResult && $result);
-							break;
-						case 'or':
-							$finalResult = ($finalResult || $result);
-							break;
+					if ($groupResult['logicaloperator']=='and') {
+						$finalResult = ($finalResult && $result);
+					} else { // or
+						$finalResult = ($finalResult || $result);
 					}
 				} else { // Case for the first condition
 					$finalResult = $result;
