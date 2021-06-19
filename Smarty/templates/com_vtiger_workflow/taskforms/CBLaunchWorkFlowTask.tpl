@@ -28,14 +28,18 @@
 	var searchConditionsConditionExpressionMapping = [{
 		'columnname': 'vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V',
 		'comparator': 'e',
-		'value': 'Condition Expression'
+		'value': 'Condition Expression',
+		'columncondition': '',
+		'groupid': 1
 	}];
 	var advSearchConditionExpressionMapping = '&query=true&searchtype=advance&advft_criteria=' + convertArrayOfJsonObjectsToString(searchConditionsConditionExpressionMapping);
 	var SpecialSearchConditionExpressionMapping = encodeURI(advSearchConditionExpressionMapping);
 	var searchConditionsRecordSetMapping = [{
 		'columnname': 'vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V',
 		'comparator': 'e',
-		'value': 'Record Set Mapping'
+		'value': 'Record Set Mapping',
+		'columncondition': '',
+		'groupid': 1
 	}];
 	var advSearchRecordSetMapping = '&query=true&searchtype=advance&advft_criteria=' + convertArrayOfJsonObjectsToString(searchConditionsRecordSetMapping);
 	var SpecialSearchRecordSetMapping = encodeURI(advSearchRecordSetMapping);

@@ -238,6 +238,7 @@ $mod_strings = array(
 'Business Question' => 'Pregunta Negocio',
 'Select File Type' => 'Selecciona tipo fichero',
 'Launch Workflow' => 'Ejecutar Flujo de Trabajo',
+'CBLaunchWorkFlowTask' => 'Ejecutar Flujo de Trabajo',
 'LBL_EXECUTE_THIS_WORKFLOW' => 'Ejecutar este Flujo de Trabajo',
 'LBL_WITH_THIS_CONDITION' => 'relacionados y este filtro',
 'LBL_WITH_THIS_RECORDSET' => 'Con este Conjunto de Registros',

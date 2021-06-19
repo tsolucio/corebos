@@ -238,6 +238,7 @@ $mod_strings = array(
 	'Business Question' => 'Business Question',
 	'Select File Type' => 'Select file type',
 	'Launch Workflow' => 'Launch Workflow',
+	'CBLaunchWorkFlowTask' => 'Launch Workflow',
 	'LBL_EXECUTE_THIS_WORKFLOW' => 'Execute This Workflow',
 	'LBL_WITH_THIS_CONDITION' => 'With This Condition',
 	'LBL_WITH_THIS_RECORDSET' => 'On this Record Set',
