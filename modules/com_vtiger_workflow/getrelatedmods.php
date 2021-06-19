@@ -17,17 +17,20 @@
  *************************************************************************************************/
 require_once 'include/Webservices/getRelatedModules.php';
 global $current_user;
-$module = '';
+$listres = '';
 if (isset($_REQUEST['currentmodule'])) {
 	$module = vtlib_purify($_REQUEST['currentmodule']);
-}
-$relatedMods = getRelatedModulesInfomation($module, $current_user);
-$listres = '';
-foreach ($relatedMods as $modval) {
-	$rs = $adb->pquery('select relationtype from vtiger_relatedlists where relation_id=?', array($modval['relationId']));
-	$reltype = $adb->query_result($rs, 0, 'relationtype');
-	if ($reltype == 'N:N' && $modval['related_module'] != 'Emails') {
-		$listres =$listres .'<option value='.$modval['related_module'].'>'.$modval['labeli18n'].'</option>';
+	$reltype = empty($_REQUEST['reltype']) ? 'N:N' : vtlib_purify($_REQUEST['reltype']);
+	$relatedMods = getRelatedModulesInfomation($module, $current_user);
+	foreach ($relatedMods as $modval) {
+		if ($reltype=='*') {
+			$isGoodRelType = ($modval['relationtype']=='N:N' || $modval['relationtype']=='1:N');
+		} else {
+			$isGoodRelType = $modval['relationtype']==$reltype;
+		}
+		if ($isGoodRelType && $modval['related_tabid']!=0 && $modval['related_module'] != 'Emails') {
+			$listres = $listres .'<option value="'.$modval['related_module'].'">'.$modval['labeli18n'].'</option>';
+		}
 	}
 }
 echo $listres;

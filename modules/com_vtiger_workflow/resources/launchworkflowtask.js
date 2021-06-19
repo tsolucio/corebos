@@ -1,4 +1,4 @@
-let fileurl = 'module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getrelatedmods&currentmodule='+moduleName;
+let fileurl = 'module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getrelatedmods&reltype=*&currentmodule='+moduleName;
 $(document).ready(function () {
 	jQuery.ajax({
 		method: 'GET',
