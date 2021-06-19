@@ -33,7 +33,7 @@ class CBLaunchWorkFlowTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $currentModule, $from_wf, $logbg;
-		$logbg->fatal('LaunchWF '.$this->workflowid.' with type '.$this->record_filter_opt);
+		$logbg->debug('LaunchWF '.$this->workflowid.' with type '.$this->record_filter_opt);
 		switch ($this->record_filter_opt) {
 			case 'filterByThese':
 				$idslist = explode(',', $this->crmids_list);
@@ -135,7 +135,7 @@ class CBLaunchWorkFlowTask extends VTTask {
 	private function executeWorkflow($wfid, $crmids, $context) {
 		global $current_user, $logbg;
 		if (!empty($crmids)) {
-			$logbg->fatal('LaunchWF with', $crmids);
+			$logbg->debug('LaunchWF with', $crmids);
 			cbwsExecuteWorkflowWithContext($wfid, json_encode($crmids), $context, $current_user);
 		}
 	}
