@@ -73,7 +73,6 @@ function vtRunTaskJob($adb) {
 			$logbg->debug('WF Cron:: Module is not active: '.$wsModuleName);
 			continue;
 		}
-		//$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
 		if (empty($task->test)
 			|| (isset($task->reevaluate) && $task->reevaluate==0)
 			|| ((!isset($task->reevaluate) || $task->reevaluate==1) && $task->evaluate($entityCache, $entity->getId()))
