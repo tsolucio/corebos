@@ -162,12 +162,12 @@ class VTJsonCondition {
 			preg_match('/(\d{1,3}):(\d{1,2}):?(\d{1,2})?/', $value, $value_matches);
 			if (count($fieldValue_matches) == 3) {
 				$fieldValue = (int)($fieldValue_matches[1] * 3600) + (int)($fieldValue_matches[2] * 60);
-			} elseif (count($fieldValue_matches == 4)) {
+			} elseif (count($fieldValue_matches) == 4) {
 				$fieldValue = (int)($fieldValue_matches[1] * 3600) + (int)($fieldValue_matches[2] * 60) + (int)$fieldValue_matches[3];
 			}
 			if (count($value_matches) == 3) {
 				$value = (int)($value_matches[1] * 3600) + (int)($value_matches[2] * 60);
-			} elseif (count($value_matches == 4)) {
+			} elseif (count($value_matches) == 4) {
 				$value = (int)($value_matches[1] * 3600) + (int)($value_matches[2] * 60) + (int)$value_matches[3];
 			}
 		}
