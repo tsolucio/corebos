@@ -360,6 +360,7 @@ var alert_arr = {
 	'LBL_HAS_CHANGED' : 'is gewijzigd',
 	'LBL_HAS_CHANGED_TO' : 'in gewijzigd naar',
 	'LBL_WAS' : 'was',
+	'LBL_MONTHDAY' : 'month-day',
 	'LBL_IS_EMPTY': 'is leeg',
 	'LBL_IS_NOT_EMPTY' : 'is niet leeg',
 	'LBL_DOES_NOT_START_WITH' : 'begint niet met',

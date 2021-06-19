@@ -177,7 +177,7 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 			} else {
 				$newtest[] = $tst;
 			}
-			echo $tst['fieldname'].'('.$data[$tst['fieldname']].') '.$tst['operation'].' '.$tst['value'].' ('.(isset($tst['valuetype']) ? $tst['valuetype'] : '').')<br>';
+			echo $tst['fieldname'].'('.(isset($data[$tst['fieldname']]) ? $data[$tst['fieldname']] : '').') '.$tst['operation'].' '.$tst['value'].' ('.(isset($tst['valuetype']) ? $tst['valuetype'] : '').')<br>';
 			echo (isset($tst['joincondition']) ? $tst['joincondition'] : '').'<br>';
 		}
 	}

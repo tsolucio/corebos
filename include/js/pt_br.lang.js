@@ -361,6 +361,7 @@ var alert_arr = {
 	'LBL_HAS_CHANGED' : 'foi alterado',
 	'LBL_HAS_CHANGED_TO' : 'foi alterado para',
 	'LBL_WAS' : 'era',
+	'LBL_MONTHDAY' : 'month-day',
 	'LBL_IS_EMPTY': 'está vazio',
 	'LBL_IS_NOT_EMPTY' : 'não está vazio',
 	'LBL_EQUAL_TO' : 'igual a',

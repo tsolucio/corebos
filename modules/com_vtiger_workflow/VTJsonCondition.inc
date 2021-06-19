@@ -54,13 +54,10 @@ class VTJsonCondition {
 				if (isset($exprResult['result'])) { // Condition to skip last condition
 					$result = $exprResult['result'];
 					if (!empty($exprResult['logicaloperator'])) {
-						switch ($exprResult['logicaloperator']) {
-							case 'and':
-								$groupResult = ($groupResult && $result);
-								break;
-							case 'or':
-								$groupResult = ($groupResult || $result);
-								break;
+						if ($exprResult['logicaloperator']=='and') {
+							$groupResult = ($groupResult && $result);
+						} else { // or
+							$groupResult = ($groupResult || $result);
 						}
 					} else { // Case for the first condition
 						$groupResult = $result;
@@ -75,13 +72,10 @@ class VTJsonCondition {
 			if (isset($groupResult['result'])) { // Condition to skip last condition
 				$result = $groupResult['result'];
 				if (!empty($groupResult['logicaloperator'])) {
-					switch ($groupResult['logicaloperator']) {
-						case 'and':
-							$finalResult = ($finalResult && $result);
-							break;
-						case 'or':
-							$finalResult = ($finalResult || $result);
-							break;
+					if ($groupResult['logicaloperator']=='and') {
+						$finalResult = ($finalResult && $result);
+					} else { // or
+						$finalResult = ($finalResult || $result);
 					}
 				} else { // Case for the first condition
 					$finalResult = $result;
@@ -168,12 +162,12 @@ class VTJsonCondition {
 			preg_match('/(\d{1,3}):(\d{1,2}):?(\d{1,2})?/', $value, $value_matches);
 			if (count($fieldValue_matches) == 3) {
 				$fieldValue = (int)($fieldValue_matches[1] * 3600) + (int)($fieldValue_matches[2] * 60);
-			} elseif (count($fieldValue_matches == 4)) {
+			} elseif (count($fieldValue_matches) == 4) {
 				$fieldValue = (int)($fieldValue_matches[1] * 3600) + (int)($fieldValue_matches[2] * 60) + (int)$fieldValue_matches[3];
 			}
 			if (count($value_matches) == 3) {
 				$value = (int)($value_matches[1] * 3600) + (int)($value_matches[2] * 60);
-			} elseif (count($value_matches == 4)) {
+			} elseif (count($value_matches) == 4) {
 				$value = (int)($value_matches[1] * 3600) + (int)($value_matches[2] * 60) + (int)$value_matches[3];
 			}
 		}
@@ -437,6 +431,11 @@ class VTJsonCondition {
 					return true;
 				}
 				return false;
+
+			case 'monthday':
+				$val = date('md', strtotime($fieldValue));
+				$val2 = date('md', strtotime($value));
+				return ($val == $val2);
 
 			case 'less than hours later':
 				if (empty($fieldValue) || !isset($value)) {

@@ -1023,18 +1023,17 @@ class QueryGenerator {
 				} elseif (in_array($fieldName, $this->ownerFields)) {
 					$fieldSql .= "$fieldGlue (trim(vtiger_users.ename) $valueSql or vtiger_groups.groupname $valueSql)";
 				} else {
-					if ($fieldName == 'birthday' && !$this->isRelativeSearchOperators($conditionInfo['operator'])) {
+					if (($fieldName == 'birthday' && !$this->isRelativeSearchOperators($conditionInfo['operator'])) || $conditionInfo['operator'] == 'monthday') {
 						$fieldSql .= "$fieldGlue DATE_FORMAT(".$field->getTableName().'.'.$field->getColumnName().",'%m%d') ".$valueSql;
 					} else {
-						if ($conditionInfo['operator'] == 'sx') {
+						if ($conditionInfo['operator'] == 'sx' || $conditionInfo['operator'] == 'nsx') {
 							if (($field->getUIType() == 15 || $field->getUIType() == 16) && hasMultiLanguageSupport($field->getFieldName())) {
 								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (
 									select translation_key
 									from vtiger_cbtranslation
 									where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getFieldName()
-									.'" and SOUNDEX(i18n) LIKE SOUNDEX("'.$conditionInfo['value'].'"))'
-									.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
-									.$valueSql;
+									.'" and SOUNDEX(i18n)'.($conditionInfo['operator']=='nsx' ? ' NOT' : '').' LIKE SOUNDEX("'.$conditionInfo['value'].'"))'
+									.($conditionInfo['operator']=='nsx' ? ' AND ' : ' OR ').$valueSql;
 							} else {
 								$fieldSql .= "$fieldGlue ". $valueSql;
 							}
@@ -1399,7 +1398,7 @@ class QueryGenerator {
 				$sql[] = "NOT LIKE ''";
 				continue;
 			}
-
+			$addquotes = true;
 			switch ($operator) {
 				case 'e':
 					$sqlOperator = '=';
@@ -1431,6 +1430,17 @@ class QueryGenerator {
 					$sqlOperator = 'NOT LIKE';
 					$value = "%$value";
 					break;
+				case 'monthday':
+					$sqlOperator = '=';
+					if (substr($value, 0, 3)=='::#') {
+						$addquotes = false;
+						$value = 'DATE_FORMAT('.$value.",'%m%d') ";
+					} else {
+						list($void, $m, $d) = explode('-', getValidDBInsertDateValue($value));
+						$value = $m.$d;
+					}
+					break;
+				case 'nsx':
 				case 'sx':
 					$sqlOperator = 'SOUNDEX';
 					break;
@@ -1459,15 +1469,16 @@ class QueryGenerator {
 			if ($field->getFieldDataType() == 'reference' && $operator == 'e' && empty($value)) {
 				$sql[] = ' IS NULL';
 			}
-			if ($this->requiresQuoteSearchOperators($operator) || (!$this->isNumericType($field->getFieldDataType()) &&
-					($field->getFieldName() != 'birthday' || ($field->getFieldName() == 'birthday' && $this->isRelativeSearchOperators($operator))))) {
+			if ($this->requiresQuoteSearchOperators($operator) || (!$this->isNumericType($field->getFieldDataType()) && $addquotes &&
+				($field->getFieldName() != 'birthday' || ($field->getFieldName() == 'birthday' && $this->isRelativeSearchOperators($operator))))
+			) {
 				$value = "'$value'";
 			}
 			if ($this->isNumericType($field->getFieldDataType()) && empty($value)) {
 				$value = '0';
 			}
-			if ($this->requiresSoundex($operator) == 'sx') {
-				$sql[] = 'SOUNDEX('.$field->getTableName().'.'.$field->getColumnName().") LIKE SOUNDEX($value)";
+			if ($this->requiresSoundex($operator)) {
+				$sql[] = 'SOUNDEX('.$field->getTableName().'.'.$field->getColumnName().') '.($operator=='nsx' ? 'NOT ' : '')."LIKE SOUNDEX($value)";
 			} else {
 				$sql[] = "$sqlOperator $value";
 			}
@@ -1519,7 +1530,7 @@ class QueryGenerator {
 	}
 
 	private function requiresSoundex($operator) {
-		return ($operator == 'sx');
+		return ($operator == 'sx' || $operator == 'nsx');
 	}
 
 	public function fixDateTimeValue($name, $value, $first = true) {

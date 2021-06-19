@@ -353,6 +353,7 @@ var alert_arr = {
 	'LBL_HAS_CHANGED' : 'ha cambiado',
 	'LBL_HAS_CHANGED_TO' : 'ha cambiado a',
 	'LBL_WAS' : 'era',
+	'LBL_MONTHDAY' : 'mes-dia',
 	'LBL_IS_EMPTY': 'está vacío',
 	'LBL_IS_NOT_EMPTY' : 'no está vacío',
 	'LBL_EQUAL_TO' : 'igual a',
