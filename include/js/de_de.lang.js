@@ -355,6 +355,7 @@ var alert_arr = {
 	'LBL_HAS_CHANGED' : 'hat sich geändert',
 	'LBL_HAS_CHANGED_TO' : 'hat sich geändert zu',
 	'LBL_WAS' : 'war',
+	'LBL_MONTHDAY' : 'month-day',
 	'LBL_IS_EMPTY': 'ist leer',
 	'LBL_IS_NOT_EMPTY' : 'ist nicht leer',
 	'LBL_EQUAL_TO' : 'ist gleich',

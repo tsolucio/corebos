@@ -439,8 +439,8 @@ class VTJsonCondition {
 				return false;
 
 			case 'monthday':
-				$val = date('m-d', strtotime($fieldValue));
-				$val2 = date('m-d', strtotime($value));
+				$val = date('md', strtotime($fieldValue));
+				$val2 = date('md', strtotime($value));
 				return ($val == $val2);
 
 			case 'less than hours later':

@@ -351,7 +351,7 @@ class WorkFlowScheduler {
 	 */
 	private function _specialDateTimeOperator() {
 		return array('less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later',
-			'less than hours before', 'less than hours later', 'more than hours later', 'more than hours before', 'is today', 'monthday');
+			'less than hours before', 'less than hours later', 'more than hours later', 'more than hours before', 'is today');
 	}
 
 	/**
@@ -422,10 +422,6 @@ class WorkFlowScheduler {
 			case 'more than hours before':
 				$hours = $condition['value'];
 				$value = date('Y-m-d H:i:s', strtotime('-'.$hours.' hours'));
-				break;
-			case 'monthday':
-				$monthday = $condition['value'];
-				$value = date('m-d', strtotime($monthday));
 				break;
 		}
 		@date_default_timezone_set($default_timezone);
