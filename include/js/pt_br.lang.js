@@ -5,7 +5,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|01/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|03/04/2020|Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|21/06/2021|Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 var alert_arr = {
@@ -247,7 +247,7 @@ var alert_arr = {
 	'LBL_FOLDER_SHOULD_BE_EMPTY': 'A pasta deve estar limpa para ser removida!',
 
 	'LBL_PLEASE_SELECT_FILE_TO_UPLOAD': 'Por gentileza, selecione o arquivo para transferência.',
-	'LBL_ARE_YOU_SURE_TO_MOVE_TO': 'Tem certeza que desenja mover o(s) arquivo(s) para ',
+	'LBL_ARE_YOU_SURE_TO_MOVE_TO': 'Tem certeza que deseja mover o(s) arquivo(s) para ',
 	'LBL_FOLDER': ' Pasta',
 	'LBL_UNABLE_TO_UPDATE': 'Impossível atualizar! Por favor, tente novamente.',
 	'LBL_BLANK_REPLACEMENT': 'não é permitido selecionar valores em branco para substituição',
@@ -435,7 +435,7 @@ var alert_arr = {
 	'ERR_PASSWORD_NOT_CHANGED': 'Antiga e nova senha são iguais. Por favor, use senhas diferentes.',
 	'ERR_ENTER_OLD_PASSWORD': 'Por favor entre com sua senha antiga.',
 	'ERR_ENTER_NEW_PASSWORD': 'Por favor entre com sua nova senha.',
-	'PASSWORD REQUIREMENTS NOT MET': 'PASSWORD REQUIREMENTS NOT MET',
+	'PASSWORD REQUIREMENTS NOT MET': 'REQUISITOS DE SENHA NÃO ATENDIDOS',
 	'Old password is incorrect': 'A senha antiga é incorreta.',
 	'LBL_OLD_PASSWORD': 'Senha antiga',
 	'LBL_NEW_PASSWORD': 'Nova senha',
