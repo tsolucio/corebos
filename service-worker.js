@@ -2762,7 +2762,7 @@ precacheAndRoute([{
   "revision": "351e44a8f5939b2fa6d5c498a65bcdc9"
 }, {
   "url": "modules/Mobile/resources/getScrollcontent.js",
-  "revision": "6ac55c0e399455103faaa0704252b03b"
+  "revision": "7a23e7b8d45100ddcdc1279fa4769ae4"
 }, {
   "url": "modules/Mobile/resources/images/ajax-loader.gif",
   "revision": "8fd7e719b06cd3f701c791adb62bd7a6"
@@ -3434,7 +3434,7 @@ precacheAndRoute([{
   "revision": "ae989aa845cd40bce24cadefa3363b52"
 }, {
   "url": "modules/Mobile/resources/settings.js",
-  "revision": "7fab3007e1698eeb90371ff591b7f77c"
+  "revision": "462956d3d01f40c97f1d6714dfe495b1"
 }, {
   "url": "modules/Mobile/resources/signature_pad.js",
   "revision": "7314c126d7a2316ca8e00a1d405d0771"
@@ -9365,7 +9365,7 @@ precacheAndRoute([{
   "revision": "58117a33fae7fc35b0cb70a4f68c0d8e"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "93b282141cc3fd6ea4d3b79721236d5d"
+  "revision": "d5da6ccb9fd5732a5fbd9effa0ff9421"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "9663dd1cea6cb7fb0cfe983e54baa186"
