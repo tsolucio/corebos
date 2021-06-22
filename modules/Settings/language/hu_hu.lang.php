@@ -661,7 +661,6 @@ $mod_strings = array(
 	'LBL_ADD' => 'Hozzáadás',
 	'LBL_CONTACT' => 'Kapcsolat',
 	'LBL_ACCOUNT' => 'Cég',
-	'LBL_MESSAGES' => 'Üzenetek',
 	'LBL_FROM_CAPS' => 'Feladó',
 	'LBL_TO_CAPS' => 'Címzett',
 	'LBL_TO_SMALL' => 'Címzett',

@@ -734,7 +734,6 @@ $mod_strings = array(
 
 'LBL_CONTACT'=>'Contact',
 'LBL_ACCOUNT'=>'Organization',
-'LBL_MESSAGES' => 'Messages',
 
 'LBL_FROM_CAPS'=>'FROM',
 'LBL_TO_CAPS'=>'TO',
