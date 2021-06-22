@@ -658,6 +658,7 @@ $mod_strings = array (
 'LBL_ADD' => 'Aggiungi',
 'LBL_CONTACT' => 'Contatto',
 'LBL_ACCOUNT' => 'Azienda',
+'LBL_MESSAGES' => 'Messaggi',
 'LBL_FROM_CAPS' => 'DA',
 'LBL_TO_CAPS' => 'A',
 'LBL_TO_SMALL' => 'a',

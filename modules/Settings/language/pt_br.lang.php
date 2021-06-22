@@ -735,6 +735,7 @@ $mod_strings = array(
 'LBL_ADD'=>'Adicionar',
 'LBL_CONTACT'=>'Contato',
 'LBL_ACCOUNT'=>'Conta',
+'LBL_MESSAGES' => 'Mensagens',
 'LBL_FROM_CAPS'=>'DE',
 'LBL_TO_CAPS'=>'PARA',
 'LBL_TO_SMALL'=>'para',

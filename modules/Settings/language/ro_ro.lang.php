@@ -663,6 +663,7 @@ $mod_strings = array(
 	'LBL_ADD' => 'Adaugare',
 	'LBL_CONTACT' => 'Contact',
 	'LBL_ACCOUNT' => 'Organizatie',
+	'LBL_MESSAGES' => 'Messages',
 	'LBL_FROM_CAPS' => 'DE LA',
 	'LBL_TO_CAPS' => 'LA',
 	'LBL_TO_SMALL' => 'la',

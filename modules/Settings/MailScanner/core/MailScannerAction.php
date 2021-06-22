@@ -139,6 +139,8 @@ class Vtiger_MailScannerAction {
 		if ($this->actiontype == 'CREATE') {
 			if ($this->module == 'HelpDesk') {
 				$returnid = $this->__CreateTicket($mailscanner, $mailrecord);
+			} else if ($this->module == 'Messages') {
+				$returnid = $this->__CreateMessages($mailscanner, $mailrecord);
 			}
 		} elseif ($this->actiontype == 'LINK') {
 			$returnid = $this->__LinkToRecord($mailscanner, $mailrecord);
@@ -248,8 +250,48 @@ class Vtiger_MailScannerAction {
 	}
 
 	/**
-	 * Create ticket action.
+	 * Create Messages action.
 	 */
+	public function __CreateMessages($mailscanner, $mailrecord) {
+		global $adb;
+		// Prepare data to create trouble ticket
+		$usetitle = $mailrecord->_subject;
+		$description = $mailrecord->getBodyText();
+
+		// There will be only on FROM address to email, so pick the first one
+		$fromemail = $mailrecord->_from[0];
+		$linktoid = $mailscanner->LookupContact($fromemail);
+		if (!$linktoid) {
+			$linktoid = $mailscanner->LookupAccount($fromemail);
+		}
+		/** Now Create Ticket **/
+		global $current_user;
+		if (!$current_user) {
+			$current_user = Users::getActiveAdminUser();
+		}
+		if (!empty($mailrecord->_assign_to)) {
+			$usr = $mailrecord->_assign_to;
+		} else {
+			$usr = $current_user->id;
+		}
+
+		// Create message record
+		$messages = new Messages();
+		$messages->column_fields['messagename'] = $usetitle;
+		$messages->column_fields['description'] = $description;
+		$messages->column_fields['messagetype'] = 'Email';
+		$messages->column_fields['assigned_user_id'] = $usr;
+		if ($linktoid) {
+			$messages->column_fields['contact_message'] = $linktoid;
+		}
+		$messages->save('Messages');
+
+		// Associate any attachement of the email to messages
+		$this->__SaveAttachements($mailrecord, 'Messages', $messages);
+
+		return $messages->id;
+	}
+
 	public function __CreateTicket($mailscanner, $mailrecord) {
 		global $adb;
 		// Prepare data to create trouble ticket

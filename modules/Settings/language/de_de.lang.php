@@ -759,6 +759,7 @@ $mod_strings = array(
 
 	'LBL_CONTACT'=>'Person',
 	'LBL_ACCOUNT'=>'Organisation',
+	'LBL_MESSAGES' => 'Berichten',
 
 	'LBL_FROM_CAPS'=>'Von',
 	'LBL_TO_CAPS'=>'An',

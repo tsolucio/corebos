@@ -740,6 +740,7 @@ $mod_strings = array(
 
 'LBL_CONTACT'=>'Contact',
 'LBL_ACCOUNT'=>'Account',
+'LBL_MESSAGES' => 'Messages',
 
 'LBL_FROM_CAPS'=>'VAN',
 'LBL_TO_CAPS'=>'AAN',
