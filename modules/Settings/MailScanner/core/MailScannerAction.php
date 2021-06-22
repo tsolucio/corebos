@@ -139,7 +139,7 @@ class Vtiger_MailScannerAction {
 		if ($this->actiontype == 'CREATE') {
 			if ($this->module == 'HelpDesk') {
 				$returnid = $this->__CreateTicket($mailscanner, $mailrecord);
-			} else if ($this->module == 'Messages') {
+			} elseif ($this->module == 'Messages') {
 				$returnid = $this->__CreateMessages($mailscanner, $mailrecord);
 			}
 		} elseif ($this->actiontype == 'LINK') {
@@ -253,7 +253,6 @@ class Vtiger_MailScannerAction {
 	 * Create Messages action.
 	 */
 	public function __CreateMessages($mailscanner, $mailrecord) {
-		global $adb;
 		// Prepare data to create trouble ticket
 		$usetitle = $mailrecord->_subject;
 		$description = $mailrecord->getBodyText();
