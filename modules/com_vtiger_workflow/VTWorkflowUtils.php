@@ -80,7 +80,7 @@ class VTWorkflowUtils {
 			}
 		}
 
-		if ($fieldtype === 'owner') {
+		if ($fieldtype === 'owner' && !is_numeric($fieldValue)) {
 			$userId = getUserId_Ol($fieldValue);
 			$groupId = getGrpId($fieldValue);
 
