@@ -166,6 +166,8 @@
 									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_TO_CAPS}]</option>
 									<option value="LINK,Accounts,CC" {if $RULEACTIONTEXT eq 'LINK,Accounts,CC'}selected=true{/if}
 									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_CC}]</option>
+									<option value="CREATE,Messages,SUBJECT" {if $RULEACTIONTEXT eq 'CREATE,Messages,SUBJECT'}selected=true{/if}
+									>{$MOD.LBL_ADD} {'SINGLE_Messages'|getTranslatedString:'Messages'}</option>
 								</select>
 							</td>
 						</tr>
