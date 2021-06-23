@@ -26,7 +26,7 @@ class VTUpdateFieldsTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $logbg,$from_wf;
+		global $adb, $current_user, $logbg,$from_wf, $currentModule;
 		$from_wf = true;
 		$logbg->debug('> VTUpdateFieldsTask');
 		$util = new VTWorkflowUtils();
@@ -108,14 +108,15 @@ class VTUpdateFieldsTask extends VTTask {
 					$focusrel[$fieldmodule]->column_fields[$fldrelname]=$fieldValue;
 				}
 			}
-
 			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+			$holdCM = $currentModule;
 			$_REQUEST['ajxaction'] = 'Workflow';
 			$logbg->debug('field values presave', $focus->column_fields);
 			$focus->saveentity($moduleName);
 			if (!empty($relmodule) && !empty($relId)) {
 				foreach ($relmodule as $mod) {
+					$currentModule = $mod;
 					$focusrel[$mod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$mod]->column_fields, $handlerMetarel[$mod]);
 					if ($this->launchrelwf) {
 						$focusrel[$mod]->save($mod);
@@ -134,6 +135,7 @@ class VTUpdateFieldsTask extends VTTask {
 				}
 			}
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
+			$currentModule = $holdCM;
 			$util->revertUser();
 			$logbg->debug('field values postsave', $focus->column_fields);
 		}
