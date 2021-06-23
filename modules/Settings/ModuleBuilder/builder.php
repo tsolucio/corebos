@@ -18,7 +18,7 @@ class ModuleBuilder {
 
 	public function __construct($id = 0) {
 		$this->id = $id;
-		$this->path = 'modules/Settings/ModuleBuilder/modules/';
+		$this->path = 'cache/';
 	}
 
 	public $mode = '';
@@ -32,15 +32,15 @@ class ModuleBuilder {
 		'5' => array('DATE', 'D~'),
 		'50' => array('DATETIME', 'DT~'),
 		'14' => array('TIME', 'T~'),
-		'7' => array('INT(100)', 'V~'),
+		'7' => array('DECIMAL(10,2)', 'NN~'),
 		'71' => array('DECIMAL(10,2)', 'NN~'),
-		'9' => array('VARCHAR(30)', 'V~'),
+		'9' => array('DECIMAL(10,2)', 'NN~'),
 		'10' => array('INT(40)', 'V~'),
 		'101' => array('VARCHAR(40)', 'V~'),
 		'11' => array('VARCHAR(60)', 'V~'),
-		'13' => array('VARCHAR(100)', 'V~'),
+		'13' => array('VARCHAR(100)', 'E~'),
 		'17' => array('VARCHAR(100)', 'V~'),
-		'56' => array('VARCHAR(5)', 'V~'),
+		'56' => array('VARCHAR(5)', 'C~'),
 		'69' => array('VARCHAR(255)', 'V~'),
 		'85' => array('VARCHAR(100)', 'V~'),
 		'15' => array('VARCHAR(100)', 'V~'),
@@ -770,7 +770,7 @@ class ModuleBuilder {
 	public function generateManifest() {
 		global $adb;
 		$xml = new SimpleXMLElement('<?xml version="1.0"?><module/>');
-		$map = json_decode(urldecode($_REQUEST['map']), true);
+		$map = $_REQUEST['map'];
 		$xml->addChild('name', $map['name']);
 		$xml->addChild('label', $map['label']);
 		$xml->addChild('parent', $map['parent']);
@@ -990,8 +990,8 @@ class ModuleBuilder {
 		$search_fields = "'MODULE_NAME_LABEL'=> array('MODULE_NAME_LOWERCASE' => 'MODULE_REFERENCE_FIELD')";
 		$list_fields_name = "'MODULE_NAME_LABEL'=> 'MODULE_REFERENCE_FIELD',";
 		$search_fields_name = "'MODULE_NAME_LABEL'=> 'MODULE_REFERENCE_FIELD'";
-		$replist_fields .= "'".$map['name']."'=> array('MODULE_NAME_LOWERCASE' => '".$map['name']."no'),\n\t\t";
-		$replist_fields_name .= "'".$map['label']."'=> '".$map['name']."no',\n\t\t";
+		$replist_fields .= "'".$map['name']."'=> array('MODULE_NAME_LOWERCASE' => '".strtolower($module)."no'),\n\t\t";
+		$replist_fields_name .= "'".$map['label']."'=> '".strtolower($module)."no',\n\t\t";
 		foreach ($customviews as $key => $value) {
 			foreach ($fields as $f => $name) {
 				if ($name['fieldname'] == $value) {
@@ -1008,7 +1008,7 @@ class ModuleBuilder {
 		$newContent = str_replace("'Assigned To' => 'assigned_user_id'", '', $newContent);
 		$newContent = str_replace('MODULE_NAME_LOWERCASE', strtolower($module), $newContent);
 		$newContent = str_replace('ModuleClass', $module, $newContent);
-		$newContent = str_replace('MODULE_REFERENCE_FIELD', $map['name'].'no', $newContent);
+		$newContent = str_replace('MODULE_REFERENCE_FIELD', strtolower($module).'no', $newContent);
 		$newContent = str_replace('MODULE_NAME_LABEL', $map['label'], $newContent);
 		$newContent = str_replace("'icon'=>'account'", "'icon'=>'".$map['icon']."'", $newContent);
 		$moduleFile = fopen($path.'/modules/'.$module.'/'.$module.'.php', "w");

@@ -1817,9 +1817,13 @@ const mb = {
 					'Export': res.info.actions.export,
 				};
 			}
+			const data = {
+				"map": modObj
+			}
 			jQuery.ajax({
 				method: 'POST',
-				url: url+'&methodName=generateManifest&map='+encodeURI(JSON.stringify(modObj)),
+				url: url+'&methodName=generateManifest',
+				data: data
 			}).done(function (response) {
 				const res = JSON.parse(response);
 				if (res.success == true) {
