@@ -137,7 +137,7 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 		$app_strings = VTWS_PreserveGlobal::getGlobal('app_strings');
 		vtws_preserveGlobal('current_user', $this->user);
 		$label = (isset($app_strings[$elementType])) ? $app_strings[$elementType] : $elementType;
-		$createable = $this->meta->hasWriteAccess();
+		$createable = $this->meta->hasCreateAccess();
 		$updateable = $this->meta->hasWriteAccess();
 		$deleteable = $this->meta->hasDeleteAccess();
 		$retrieveable = $this->meta->hasReadAccess();

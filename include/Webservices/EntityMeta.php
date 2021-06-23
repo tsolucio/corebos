@@ -257,6 +257,7 @@ abstract class EntityMeta {
 	abstract public function hasAssignPrivilege($ownerWebserviceId);
 	abstract public function hasDeleteAccess();
 	abstract public function hasAccess();
+	abstract public function hasCreateAccess();
 	abstract public function hasReadAccess();
 	abstract public function hasWriteAccess();
 	abstract public function getEntityName();

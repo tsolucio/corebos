@@ -14,6 +14,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	private $meta;
 	private $assign;
 	private $hasAccess;
+	private $hasCreateAccess;
 	private $hasReadAccess;
 	private $hasWriteAccess;
 	private $hasDeleteAccess;
@@ -32,6 +33,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$this->ownerFields = null;
 		$this->moduleFields = array();
 		$this->hasAccess = false;
+		$this->hasCreateAccess = false;
 		$this->hasReadAccess = false;
 		$this->hasWriteAccess = false;
 		$this->hasDeleteAccess = false;
@@ -76,6 +78,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$active = vtlib_isModuleActive($this->getTabName());
 		if (!$active) {
 			$this->hasAccess = false;
+			$this->hasCreateAccess = false;
 			$this->hasReadAccess = false;
 			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
@@ -85,12 +88,12 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$userprivs = $this->user->getPrivileges();
 		if ($userprivs->hasGlobalReadPermission()) {
 			$this->hasAccess = true;
+			$this->hasCreateAccess = true;
 			$this->hasReadAccess = true;
 			$this->hasWriteAccess = true;
 			$this->hasDeleteAccess = true;
 		} else {
 			//TODO get or sort out the preference among profile2tab and profile2globalpermissions.
-			//TODO check whether create/edit seperate controls required for web sevices?
 			$profileList = getCurrentUserProfileList();
 
 			$sql = 'select * from vtiger_profile2globalpermissions where profileid in ('.generateQuestionMarks($profileList).');';
@@ -105,6 +108,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 				if ($permission != 1 || $permission != '1') {
 					$this->hasAccess = true;
 					if ($globalactionid == 2 || $globalactionid == '2') {
+						$this->hasCreateAccess = true;
 						$this->hasWriteAccess = true;
 						$this->hasDeleteAccess = true;
 					} else {
@@ -123,10 +127,12 @@ class VtigerCRMObjectMeta extends EntityMeta {
 				return;
 			}
 
-			//operation=2 is delete operation.
-			//operation=0 or 1 is create/edit operation. precise 0 create and 1 edit.
-			//operation=3 index or popup. //ignored for websevices.
-			//operation=4 is view operation.
+			//operation=0 is save
+			//operation=1 is edit
+			//operation=2 is delete
+			//operation=3 index or popup. //ignored for webservices
+			//operation=4 is view
+			//operation=7 is create
 			$sql = 'select * from vtiger_profile2standardpermissions where profileid in ('.generateQuestionMarks($profileList).') and tabid=?';
 			$result = $adb->pquery($sql, array($profileList,$this->getTabId()));
 
@@ -146,10 +152,13 @@ class VtigerCRMObjectMeta extends EntityMeta {
 						$this->hasDeleteAccess = true;
 					} elseif ($operation == 4 || $operation == '4') {
 						$this->hasReadAccess = true;
+					} elseif ($operation == 7 || $operation == '7') {
+						$this->hasCreateAccess = true;
 					}
 				}
 			}
 			if (!$standardDefined) {
+				$this->hasCreateAccess = true;
 				$this->hasReadAccess = true;
 				$this->hasWriteAccess = true;
 				$this->hasDeleteAccess = true;
@@ -162,6 +171,13 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			$this->retrieveMeta();
 		}
 		return $this->hasAccess;
+	}
+
+	public function hasCreateAccess() {
+		if (!$this->meta) {
+			$this->retrieveMeta();
+		}
+		return $this->hasCreateAccess;
 	}
 
 	public function hasWriteAccess() {
