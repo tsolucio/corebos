@@ -1,3 +1,9 @@
+var ReloadScreenAfterEdit = 0;
+GlobalVariable_getVariable('MasterDetail_ReloadScreenAfterEdit', 0).then(function (response) {
+	let obj = JSON.parse(response);
+	ReloadScreenAfterEdit = obj.MasterDetail_ReloadScreenAfterEdit;
+});
+
 var masterdetailwork = {
 
 	moveup: (MDGrid, recordid, gridinstance, module, rowkey) => {
@@ -68,6 +74,9 @@ var masterdetailwork = {
 				let res = JSON.parse(response);
 				if (res.success) {
 					ev.instance.readData(1);
+					if (ReloadScreenAfterEdit == 1) {
+						masterdetailwork.MDReload();
+					}
 				} else {
 					alert(alert_arr.Failed);
 				}
@@ -117,6 +126,40 @@ var masterdetailwork = {
 			</button>`;
 			jQuery('#qcform').draggable();
 			vtlib_executeJavascriptInElement(document.getElementById('qcform'));
+		});
+	},
+
+	MDReload: () => {
+		VtigerJS_DialogBox.block();
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const crmId = urlParams.get('record');
+		const data = {
+			'fldName' : '',
+			'fieldValue' : ''
+		};
+		const url = `file=DetailViewAjax&module=${gVTModule}&action=${gVTModule}Ajax&record=${crmId}&recordid=${crmId}&ajxaction=DETAILVIEW`;
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?' + url,
+			data : data
+		}).done(function (response) {
+			if (response.indexOf(':#:FAILURE')>-1) {
+				alert(alert_arr.ERROR_WHILE_EDITING);
+			} else if (response.indexOf(':#:ERR')>-1) {
+				alert_str = response.replace(':#:ERR', '');
+				alert(alert_str);
+				VtigerJS_DialogBox.hidebusy();
+			} else if (response.indexOf(':#:SUCCESS')>-1) {
+				const result = response.split(':#:');
+				if (result[2] != null) {
+					const target = document.getElementsByClassName('detailview_wrapper_table')[0];
+					target.innerHTML = result[2];
+					vtlib_executeJavascriptInElement(target);
+				}
+				VtigerJS_DialogBox.hidebusy();
+			}
+			VtigerJS_DialogBox.unblock();
 		});
 	},
 };

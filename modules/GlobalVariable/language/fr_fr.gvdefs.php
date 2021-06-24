@@ -1665,6 +1665,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'strict | loose | clean',
 	'definition' => 'This variable decides if we strictly/loosely check for the security issue in an image file or ignore the check and clean the image.',
 ),
+'MasterDetail_ReloadScreenAfterEdit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Reload the whole detail view after edit in masterdetail block.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {
