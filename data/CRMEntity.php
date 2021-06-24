@@ -2319,18 +2319,18 @@ class CRMEntity {
 			}
 		}
 
-		$query ="select case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name,
-				vtiger_activity.activityid, vtiger_activity.subject, vtiger_activity.semodule, vtiger_activity.activitytype, vtiger_email_track.access_count,
-				vtiger_activity.date_start,vtiger_activity.time_start, vtiger_activity.status, vtiger_activity.priority, ".$this->crmentityTable.'.crmid,'
-				.'vtiger_crmentity.smownerid,vtiger_crmentity.modifiedtime, vtiger_users.user_name, vtiger_seactivityrel.crmid as parent_id, vtiger_emaildetails.*
+		$query ="select case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name, vtiger_activity.activityid,
+				vtiger_activity.subject, vtiger_activity.semodule, vtiger_activity.activitytype, vtiger_email_track.access_count, vtiger_activity.date_start,
+				vtiger_activity.time_start, vtiger_activity.status, vtiger_activity.priority, ".$other->crmentityTable.'.crmid,'.$other->crmentityTable.'.smownerid,'
+				.$other->crmentityTable.'.modifiedtime, vtiger_users.user_name, vtiger_seactivityrel.crmid as parent_id, vtiger_emaildetails.*
 			from vtiger_activity
 			inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid'
-			.' inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_activity.activityid'
+			.' inner join '.$other->crmentityTable.' on '.$other->crmentityTable.'.crmid=vtiger_activity.activityid'
 			.' inner join vtiger_emaildetails on vtiger_emaildetails.emailid = vtiger_activity.activityid
 			left join vtiger_email_track on (vtiger_email_track.crmid=vtiger_seactivityrel.crmid AND vtiger_email_track.mailid=vtiger_activity.activityid)
-			left join vtiger_groups on vtiger_groups.groupid='.$this->crmentityTable.'.smownerid
-			left join vtiger_users on vtiger_users.id='.$this->crmentityTable.".smownerid
-			where vtiger_activity.activitytype='Emails' and ".$this->crmentityTable.'.deleted=0 and vtiger_seactivityrel.crmid='.$id;
+			left join vtiger_groups on vtiger_groups.groupid='.$other->crmentityTable.'.smownerid
+			left join vtiger_users on vtiger_users.id='.$other->crmentityTable.".smownerid
+			where vtiger_activity.activitytype='Emails' and ".$other->crmentityTable.'.deleted=0 and vtiger_seactivityrel.crmid='.$id;
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
