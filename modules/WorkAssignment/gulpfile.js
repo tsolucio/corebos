@@ -1,4 +1,6 @@
 const gulp = require('gulp')
+const webpack = require('webpack-stream')
+const webpackConfig = require('./webpack.config')
 
 gulp.task('copy-files', () => {
 	gulp.watch('./*').on('change', () => {
@@ -16,4 +18,12 @@ gulp.task('copy-files', () => {
 	})
 })
 
-gulp.task('default', gulp.parallel('copy-files'))
+gulp.task('bundle', () => {
+	gulp.watch('./src/*.js').on('change', () => {
+		gulp.src('./src/*.js')
+			.pipe(webpack(webpackConfig))
+			.pipe(gulp.dest('./dist'))
+	})
+})
+
+gulp.task('default', gulp.parallel(['copy-files', 'bundle']))
