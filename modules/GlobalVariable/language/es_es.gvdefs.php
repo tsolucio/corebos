@@ -1680,11 +1680,11 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Esta variable decide si verificamos de manera estricta/vaga problemas de seguridad en un archivo de imagen o ignoramos la verificación y limpiamos la imagen.',
 ),
 'MasterDetail_ReloadScreenAfterEdit' => array(
-	'status' => 'Implemented',
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'Reload the whole detail view after edit in masterdetail block.',
+	'definition' => 'Vuelve a cargar toda la vista de detalle después de editar en el bloque de maestro-detalle.',
 ),
 );
 
