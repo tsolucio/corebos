@@ -300,6 +300,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			break;
 		case Field_Metadata::UITYPE_ASSIGNED_TO_PICKLIST:
 		case Field_Metadata::UITYPE_USER_REFERENCE:
+		case Field_Metadata::UITYPE_ACTIVE_USERS:
 			if (!isset($ownerNameList[$fieldValue])) {
 				$ownerName = getOwnerNameList([$fieldValue]);
 				$ownerNameList[$fieldValue] = $ownerName[$fieldValue];
