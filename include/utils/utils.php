@@ -503,7 +503,7 @@ function return_module_language($language, $module) {
 
 	if (file_exists("modules/$module/language/$languagefound.custom.php")) {
 		@include "modules/$module/language/$languagefound.custom.php";
-		$mod_strings = array_merge($mod_strings, $custom_strings);
+		$mod_strings = $mod_strings + $custom_strings;
 	}
 	$return_value = $mod_strings;
 	$mod_strings = $temp_mod_strings;

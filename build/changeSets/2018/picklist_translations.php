@@ -56,6 +56,10 @@ class picklist_translations extends cbupdaterWorker {
 					if (file_exists('modules/' . $impmod . '/language/' . $lang . '.lang.php')) {
 						include 'modules/' . $impmod . '/language/' . $lang . '.lang.php';
 						include 'include/language/' . $lang . '.lang.php';
+						if (file_exists("modules/$impmod/language/$lang.custom.php")) {
+							@include "modules/$impmod/language/$lang.custom.php";
+							$mod_strings = $mod_strings + $custom_strings;
+						}
 						$rec['locale'] = $lang;
 						$query = $adb->pquery(
 							"select fieldname
