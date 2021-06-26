@@ -236,18 +236,17 @@ function getHistory($parentmodule, $query, $id) {
 	$result=$adb->query($query);
 	$noofrows = $adb->num_rows($result);
 
-	if ($noofrows == 0) {
-		//There is no entries for history
-	} else {
-		//Form the header columns
-		$header[] = $app_strings['LBL_TYPE'];
-		$header[] = $app_strings['LBL_SUBJECT'];
-		$header[] = $app_strings['LBL_RELATED_TO'];
-		$header[] = $app_strings['LBL_START_DATE'].' & '.$app_strings['LBL_TIME'];
-		$header[] = $app_strings['LBL_END_DATE'].' & '.$app_strings['LBL_TIME'];
-		$header[] = $app_strings['LBL_STATUS'];
-		$header[] = $app_strings['LBL_ASSIGNED_TO'];
-
+	//Form the header columns
+	$header = array();
+	$header[] = $app_strings['LBL_TYPE'];
+	$header[] = $app_strings['LBL_SUBJECT'];
+	$header[] = $app_strings['LBL_RELATED_TO'];
+	$header[] = $app_strings['LBL_START_DATE'].' & '.$app_strings['LBL_TIME'];
+	$header[] = $app_strings['LBL_END_DATE'].' & '.$app_strings['LBL_TIME'];
+	$header[] = $app_strings['LBL_STATUS'];
+	$header[] = $app_strings['LBL_ASSIGNED_TO'];
+	$entries_list = array();
+	if ($noofrows > 0) {
 		$i = 1;
 		while ($row = $adb->fetch_array($result)) {
 			$entries = array();
@@ -268,8 +267,7 @@ function getHistory($parentmodule, $query, $id) {
 			$entries[] = '<a href="index.php?module=cbCalendar&action=DetailView&return_module='.$parentmodule.'&return_action=DetailView&record='.$row['activityid']
 				.'&activity_mode='.$activitymode.'&return_id='.vtlib_purify($_REQUEST['record']).'">'.$row['subject'].'</a></td>';
 
-			$parentname = getRelatedTo('cbCalendar', $result, $i-1);
-			$entries[] = $parentname;
+			$entries[] = getRelatedTo('cbCalendar', $result, $i-1);
 
 			$date = new DateTimeField($row['date_start'].' '.$row['time_start']);
 			$entries[] = $date->getDisplayDateTimeValue();
@@ -287,11 +285,9 @@ function getHistory($parentmodule, $query, $id) {
 			$i++;
 			$entries_list[] = $entries;
 		}
-
-		$return_data = array('header'=>$header,'entries'=>$entries_list);
-		$log->debug('< getHistory');
-		return $return_data;
 	}
+	$log->debug('< getHistory');
+	return array('header' => $header, 'entries' => $entries_list);
 }
 
 /**	Function to display the Products which are related to the PriceBook
