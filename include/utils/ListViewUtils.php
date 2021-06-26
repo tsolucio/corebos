@@ -1002,20 +1002,15 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 						}
 						$value = $adb->query_result($list_result, $i, $column_name);
 					} else {
-						if (($module == 'Calls' || $module == 'Tasks' || $module == 'Meetings' || $module == 'Emails') && (($name == 'Related to') || ($name == 'Contact Name') || ($name == 'Vendor Name'))) {
-							if ($name == 'Related to') {
-								$value = getRelatedTo($module, $list_result, $i);
+						if ($module == 'Emails' && $name == 'Contact Name') {
+							$contact_id = $adb->query_result($list_result, $i, 'contactid');
+							$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
+							$value = '';
+							if (($contact_name != '') && ($contact_id != 'NULL')) {
+								$value = "<a href='index.php?module=Contacts&action=DetailView&record=" . $contact_id . "'>" . $contact_name . '</a>';
 							}
-							if ($name == 'Contact Name') {
-								$contact_id = $adb->query_result($list_result, $i, 'contactid');
-								$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
-								$value = '';
-								if (($contact_name != '') && ($contact_id != 'NULL')) {
-									$value = "<a href='index.php?module=Contacts&action=DetailView&record=" . $contact_id . "'>" . $contact_name . '</a>';
-								}
-							}
-						} elseif (($module == 'Faq' || $module == 'Documents') && $name == 'Related to') {
-							$value = getRelatedToEntity($module, $list_result, $i);
+						} elseif (($module == 'Faq' || $module == 'Documents' || $module == 'Emails') && $name == 'Related to') {
+							$value = getRelatedTo($module, $list_result, $i);
 						} elseif ($name=='Account Name' && ($module=='Potentials' || $module=='SalesOrder' || $module=='Quotes' || $module=='Invoice' || $module=='Contacts')) {
 							$account_id = $adb->query_result($list_result, $i, 'accountid');
 							$account_name = getAccountName($account_id);
@@ -1976,9 +1971,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$count = counterValue();
 					$value = '<a href="javascript:window.close();" onclick=\'set_return_specific_campaign("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 				} else {
-					if ($colname == 'lastname') {
-						$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
-					} elseif ($module == 'Users' && $fieldname == 'last_name') {
+					if ($colname == 'lastname' || ($module == 'Users' && $fieldname == 'last_name')) {
 						$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
 					}
 					$slashes_temp_val = popup_from_html($field_valEncoded);
