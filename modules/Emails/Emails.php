@@ -109,6 +109,8 @@ class Emails extends CRMEntity {
 	public function save_module($module) {
 		global $adb;
 		//Inserting into seactivityrel
+		$InsertRelationSQL = 'insert into vtiger_seactivityrel values(?,?)';
+		$DeleteRelationSQL = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
 		if (!empty($_REQUEST['module']) && $_REQUEST['module'] == 'Emails' && !$this->plugin_save) {
 			if ($_REQUEST['currentid'] != '') {
 				$actid = $_REQUEST['currentid'];
@@ -121,10 +123,8 @@ class Emails extends CRMEntity {
 				for ($i=0; $i < count($relatewithids); $i++) {
 					$relid= $relatewithids[$i];
 					if (strpos($parentid, $relatewithids[$i]) === false) {
-						$del_q = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
-						$adb->pquery($del_q, array($relid, $actid));
-						$mysql = 'insert into vtiger_seactivityrel values(?,?)';
-						$adb->pquery($mysql, array($relid, $actid));
+						$adb->pquery($DeleteRelationSQL, array($relid, $actid));
+						$adb->pquery($InsertRelationSQL, array($relid, $actid));
 					}
 				}
 			}
@@ -132,55 +132,41 @@ class Emails extends CRMEntity {
 				if (!$parentid) {
 					$parentid = $adb->getUniqueID('vtiger_seactivityrel');
 				}
-				$mysql = 'insert into vtiger_seactivityrel values(?,?)';
-				$adb->pquery($mysql, array($parentid, $actid));
+				$adb->pquery($InsertRelationSQL, array($parentid, $actid));
 			} else {
 				$myids = explode('|', $parentid);  //2@71|
 				for ($i = 0; $i < (count($myids) - 1); $i++) {
 					$realid = explode('@', $myids[$i]);
 					$mycrmid = $realid[0];
-					//added to handle the relationship of emails with vtiger_users
+					$del_q = $DeleteRelationSQL;
+					$mysql = $InsertRelationSQL;
+					//added to handle the relationship of emails with users
 					if (getModuleForField($realid[1]) == 'Users') {
 						$usrrs = $adb->pquery('select id from vtiger_users where id=?', array($mycrmid));
-						if ($adb->num_rows($usrrs)==0) {
-							$del_q = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
-							$adb->pquery($del_q, array($mycrmid, $actid));
-							$mysql = 'insert into vtiger_seactivityrel values(?,?)';
-						} else {
+						if ($adb->num_rows($usrrs)>0) {
 							$del_q = 'delete from vtiger_salesmanactivityrel where smid=? and activityid=?';
-							$adb->pquery($del_q, array($mycrmid, $actid));
 							$mysql = 'insert into vtiger_salesmanactivityrel values(?,?)';
 						}
-					} else {
-						$del_q = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
-						$adb->pquery($del_q, array($mycrmid, $actid));
-						$mysql = 'insert into vtiger_seactivityrel values(?,?)';
 					}
-					$params = array($mycrmid, $actid);
-					$adb->pquery($mysql, $params);
+					$adb->pquery($del_q, array($mycrmid, $actid));
+					$adb->pquery($mysql, array($mycrmid, $actid));
 				}
 			}
 		} else {
 			if (isset($this->column_fields['parent_id']) && $this->column_fields['parent_id'] != '') {
 				$realid = explode('@', $this->column_fields['parent_id']);
 				$mycrmid = $realid[0];
+				$del_q = $DeleteRelationSQL;
+				$sql = $InsertRelationSQL;
 				if ($realid[1]=='-1') { // user
 					$usrrs = $adb->pquery('select id from vtiger_users where id=?', array($mycrmid));
-					if ($adb->num_rows($usrrs)==0) {
-						$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($mycrmid, $this->id));
-						$sql = 'insert into vtiger_seactivityrel values(?,?)';
-						$params = array($mycrmid, $this->id);
-					} else {
-						$adb->pquery('DELETE FROM vtiger_salesmanactivityrel WHERE smid=? AND activityid=?', array($mycrmid, $this->id));
+					if ($adb->num_rows($usrrs)>0) {
+						$del_q = 'DELETE FROM vtiger_salesmanactivityrel WHERE smid=? AND activityid=?';
 						$sql = 'insert into vtiger_salesmanactivityrel values (?,?)';
-						$params = array($mycrmid, $this->id);
 					}
-				} else {
-					$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($mycrmid, $this->id));
-					$sql = 'insert into vtiger_seactivityrel values(?,?)';
-					$params = array($mycrmid, $this->id);
 				}
-				$adb->pquery($sql, $params);
+				$adb->pquery($del_q, array($mycrmid, $this->id));
+				$adb->pquery($sql, array($mycrmid, $this->id));
 			} elseif (empty($this->column_fields['parent_id']) && $this->mode == 'edit') {
 				$this->deleteRelation('vtiger_seactivityrel');
 			}
