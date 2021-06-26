@@ -2470,51 +2470,45 @@ function getRelatedTo($module, $list_result, $rset) {
 		$evt_query = 'SELECT vtiger_senotesrel.crmid, vtiger_crmentity.setype
 			FROM vtiger_senotesrel
 			INNER JOIN vtiger_crmentity ON vtiger_senotesrel.crmid = vtiger_crmentity.crmid
-			WHERE vtiger_senotesrel.notesid = ?';
+			WHERE vtiger_senotesrel.notesid=?';
 		$params = array($notesid);
 	} elseif ($module == 'Products') {
 		$productid = $adb->query_result($list_result, $rset, 'productid');
 		$evt_query = 'SELECT vtiger_seproductsrel.crmid, vtiger_crmentity.setype
 			FROM vtiger_seproductsrel
 			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_seproductsrel.crmid = vtiger_crmentity.crmid
-			WHERE vtiger_seproductsrel.productid =?';
+			WHERE vtiger_seproductsrel.productid=?';
 		$params = array($productid);
-	} else {
+	} elseif ($module == 'HelpDesk') {
+		$activity_id = $adb->query_result($list_result, $rset, 'parent_id');
+		$evt_query = 'SELECT crmid, setype FROM '.$crmTable.' WHERE crmid=?';
+		$params = array($activity_id);
+	} else { // calendar and emails
 		$activity_id = $adb->query_result($list_result, $rset, 'activityid');
 		$evt_query = 'SELECT vtiger_seactivityrel.crmid, vtiger_crmentity.setype
 			FROM vtiger_seactivityrel
-			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_seactivityrel.crmid = vtiger_crmentity.crmid
+			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_seactivityrel.crmid=vtiger_crmentity.crmid
 			WHERE vtiger_seactivityrel.activityid=?';
 		$params = array($activity_id);
-
-		if ($module == 'HelpDesk') {
-			$activity_id = $adb->query_result($list_result, $rset, 'parent_id');
-			if ($activity_id != '') {
-				$evt_query = 'SELECT crmid, setype FROM '.$crmTable.' WHERE crmid=?';
-				$params = array($activity_id);
-			}
-		}
 	}
 	// change the related to in emails to multiple if email is related with more than one contact
 	$evt_result = $adb->pquery($evt_query, $params);
 	$numrows = $adb->num_rows($evt_result);
-
 	$parent_module = $adb->query_result($evt_result, 0, 'setype');
 	$parent_id = $adb->query_result($evt_result, 0, 'crmid');
 	$parent_name = '';
+	$parent_value = '';
 	if ($numrows > 1) {
 		$parent_module = 'Multiple';
 		$parent_name = $app_strings['LBL_MULTIPLE'];
-	}
-	if ($module == 'HelpDesk' && ($parent_module == 'Accounts' || $parent_module == 'Contacts')) {
-		$module_icon='<img src="themes/images/'.$parent_module.'.gif" alt="'.$app_strings[$parent_module].'" title="'.$app_strings[$parent_module].'" border=0 align=center>';
-	} else {
-		$module_icon = '';
-	}
-
-	if ($parent_module == 'Multiple') {
 		$parent_value = $parent_name;
-	} else {
+	}
+	if ($parent_module != 'Multiple' && !empty($parent_id)) {
+		if ($module == 'HelpDesk' && ($parent_module == 'Accounts' || $parent_module == 'Contacts')) {
+			$module_icon='<img src="themes/images/'.$parent_module.'.gif" alt="'.$app_strings[$parent_module].'" title="'.$app_strings[$parent_module].'" border=0 align=center>';
+		} else {
+			$module_icon = '';
+		}
 		$ename = getEntityName($parent_module, array($parent_id));
 		$parent_name = $ename[$parent_id];
 		$parent_name = textlength_check($parent_name);
