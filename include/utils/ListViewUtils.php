@@ -2463,8 +2463,6 @@ function getRelatedToEntity($module, $list_result, $rset) {
  */
 function getRelatedTo($module, $list_result, $rset) {
 	global $adb, $log, $app_strings;
-	$mod = CRMEntity::getInstance($module);
-	$crmTable = $mod->crmentityTable;
 	if ($module == 'Documents') {
 		$notesid = $adb->query_result($list_result, $rset, 'notesid');
 		$evt_query = 'SELECT vtiger_senotesrel.crmid, vtiger_crmentity.setype
@@ -2474,20 +2472,20 @@ function getRelatedTo($module, $list_result, $rset) {
 		$params = array($notesid);
 	} elseif ($module == 'Products') {
 		$productid = $adb->query_result($list_result, $rset, 'productid');
-		$evt_query = 'SELECT vtiger_seproductsrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_seproductsrel.crmid, vtiger_crmobject.setype
 			FROM vtiger_seproductsrel
-			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_seproductsrel.crmid = vtiger_crmentity.crmid
+			INNER JOIN vtiger_crmobject ON vtiger_seproductsrel.crmid=vtiger_crmobject.crmid
 			WHERE vtiger_seproductsrel.productid=?';
 		$params = array($productid);
 	} elseif ($module == 'HelpDesk') {
 		$activity_id = $adb->query_result($list_result, $rset, 'parent_id');
-		$evt_query = 'SELECT crmid, setype FROM '.$crmTable.' WHERE crmid=?';
+		$evt_query = 'SELECT crmid, setype FROM vtiger_crmobject WHERE crmid=?';
 		$params = array($activity_id);
 	} else { // calendar and emails
 		$activity_id = $adb->query_result($list_result, $rset, 'activityid');
-		$evt_query = 'SELECT vtiger_seactivityrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_seactivityrel.crmid, vtiger_crmobject.setype
 			FROM vtiger_seactivityrel
-			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_seactivityrel.crmid=vtiger_crmentity.crmid
+			INNER JOIN vtiger_crmobject ON vtiger_seactivityrel.crmid=vtiger_crmobject.crmid
 			WHERE vtiger_seactivityrel.activityid=?';
 		$params = array($activity_id);
 	}
