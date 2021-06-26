@@ -98,6 +98,11 @@ class VTWorkflowEntity {
 			$entityCache->setCache($this->getId(), $this);
 			return $ct->render($entityCache, $this->getId());
 		}
+		if (substr($fieldName, 0, 14)=='previousvalue_') {
+			$entityDelta = new VTEntityDelta();
+			$idParts = vtws_getIdComponents($this->getId());
+			return $entityDelta->getOldEntityValue($this->getModuleName(), $idParts[1], substr($fieldName, 14));
+		}
 		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : null);
 	}
 

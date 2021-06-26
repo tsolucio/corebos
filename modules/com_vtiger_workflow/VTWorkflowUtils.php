@@ -44,10 +44,15 @@ class VTWorkflowUtils {
 			$fieldtype = '';
 		}
 		if ($fieldValueType == 'fieldname' && !preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue)) {
-			if ($fieldtype === 'currency' || $fieldtype === 'double') {
-				$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue, $focus->column_fields[$fieldValue], $handlerMeta->getTabId());
+			if (substr($fieldValue, 0, 14)=='previousvalue_') {
+				$entityDelta = new VTEntityDelta();
+				$fieldValue = $entityDelta->getOldEntityValue($entity->getModuleName(), $focus->id, substr($fieldValue, 14));
+			} else {
+				if ($fieldtype === 'currency' || $fieldtype === 'double') {
+					$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue, $focus->column_fields[$fieldValue], $handlerMeta->getTabId());
+				}
+				$fieldValue = $focus->column_fields[$fieldValue];
 			}
-			$fieldValue = $focus->column_fields[$fieldValue];
 		} elseif ($fieldValueType == 'expression' || ($fieldValueType == 'fieldname' && preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue))) {
 			include_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 			$fieldValue = preg_replace('/<br(\s+)?\/?>/i', ' ', $fieldValue);

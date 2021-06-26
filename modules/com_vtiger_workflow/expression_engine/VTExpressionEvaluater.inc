@@ -424,13 +424,21 @@ class VTFieldExpressionEvaluater {
 			} else {
 				$module = Vtiger_Module::getInstance($this->env->getModuleName());
 			}
-			$field = Vtiger_Field::getInstance($sym->value, $module);
+			$isPrevValue = (substr($sym->value, 0, 14)=='previousvalue_');
+			if ($isPrevValue) {
+				$field = Vtiger_Field::getInstance(substr($sym->value, 14), $module);
+			} else {
+				$field = Vtiger_Field::getInstance($sym->value, $module);
+			}
 			if ($field && !$raw) {
 				global $adb;
 				$rsfld = $adb->pquery('select * from vtiger_field where fieldid=?', array($field->id));
 				$field = WebserviceField::fromQueryResult($adb, $rsfld, 0);
 				$fieldType = $field->getFieldDataType();
 				if ($fieldType=='reference' || $fieldType=='owner') {
+					if ($isPrevValue) {
+						$val = vtws_getWSID($val);
+					}
 					preg_match('/([0-9]+)x([0-9]+)/', $val, $results);
 					if (!empty($results)) {  // if it has the form of a webserviceid
 						$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($results[1]));
