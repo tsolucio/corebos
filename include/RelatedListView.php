@@ -216,10 +216,10 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 }
 
 /** Function to get related list entries in detailed array format
-  * @param $parentmodule -- parentmodulename:: Type string
-  * @param $query -- query:: Type string
-  * @param $id -- id:: Type string
-  * @returns $return_data -- return data:: Type string array
+  * @param string parent module name
+  * @param string query
+  * @param string id
+  * @return array data
   */
 function getHistory($parentmodule, $query, $id) {
 	global $log, $adb, $app_strings, $current_user;

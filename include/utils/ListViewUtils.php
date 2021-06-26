@@ -428,20 +428,21 @@ function getNavigationValues($display, $noofrows, $limit) {
 	return $navigation_array;
 }
 
-/* * This function generates the List view entries in a list view
- * Param $focus - module object
- * Param $list_result - resultset of a listview query
- * Param $navigation_array - navigation values in an array
- * Param $relatedlist - check for related list flag
- * Param $returnset - list query parameters in url string
- * Param $edit_action - Edit action value
- * Param $del_action - delete action value
- * Param $oCv - vtiger_customview object
- * Returns an array type
+/** This function generates the List view entries in a list view
+ * @param object module object
+ * @param string related module name
+ * @param object resultset of a listview query
+ * @param array navigation values
+ * @param boolean check for related list flag
+ * @param string list query parameters in url
+ * @param string has Edit action value deprecated
+ * @param string has Delete action value deprecated
+ * @param object custom view object
+ * @return array with display values for each row in the list view
  */
 function getListViewEntries($focus, $module, $list_result, $navigation_array, $relatedlist = '', $returnset = '', $edit_action = 'EditView', $del_action = 'Delete', $oCv = '', $page = '', $selectedfields = '', $contRelatedfields = '', $skipActions = false) {
 	global $log, $adb, $current_user, $app_strings, $theme, $default_charset;
-	$log->debug("> getListViewEntries focus,$module,list_result,$relatedlist,$returnset,$edit_action,$del_action,oCv");
+	$log->debug("> getListViewEntries $module,$relatedlist,$returnset");
 	$noofrows = $adb->num_rows($list_result);
 	$list_block = array();
 	$tabid = getTabid($module);
@@ -886,12 +887,12 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	return $list_block;
 }
 
-/* * This function generates the List view entries in a popup list view
- * Param $focus - module object
- * Param $module
- * Param $list_result - resultset of a listview query
- * Param $navigation_array - navigation values in an array
- * Returns an array type
+/** This function generates the List view entries in a popup list view
+ * @param object module object
+ * @param string module name
+ * @param object resultset of a listview query
+ * @param array navigation values in an array
+ * @return array with user display values of search results
  */
 function getSearchListViewEntries($focus, $module, $list_result, $navigation_array) {
 	global $log, $adb, $app_strings, $current_user;
@@ -902,7 +903,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	$list_header = '';
 	$list_block = array();
 
-	//getting the vtiger_fieldtable entries from database
+	//getting the field table entries from database
 	$tabid = getTabid($module);
 	$userprivs = $current_user->getPrivileges();
 
@@ -2056,9 +2057,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 }
 
 /** Function to get the list query for a module
- * @param $module -- module name:: Type string
- * @param $where -- where:: Type string
- * @returns $query -- query:: Type query
+ * @param string module name
+ * @param string where
+ * @return string SQL query
  */
 function getListQuery($module, $where = '') {
 	global $log, $current_user;
@@ -2450,23 +2451,23 @@ function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popupt
 	return $list;
 }
 
-/* * Function to get parent name for a given parent id
- * Param $module - module name
- * Param $list_result- result set
- * Param $rset - result set index
- * Returns an string value
+/** Function to get the related record entity name for a given CRMID
+ * @param string module name
+ * @param object result set
+ * @param integer result set index
+ * @return string user display value of "related to" record
+ * @deprecated use getRelatedTo
  */
 function getRelatedToEntity($module, $list_result, $rset) {
 	return getRelatedTo($module, $list_result, $rset);
 }
 
-/* * Function to get parent name for a given parent id
- * Param $module - module name
- * Param $list_result- result set
- * Param $rset - result set index
- * Returns an string value
+/** Function to get the related record entity name for a given CRMID
+ * @param string module name
+ * @param object result set
+ * @param integer result set index
+ * @return string user display value of "related to" record
  */
-//used in home page listTop files
 function getRelatedTo($module, $list_result, $rset) {
 	global $adb, $log, $app_strings;
 	$mod = CRMEntity::getInstance($module);

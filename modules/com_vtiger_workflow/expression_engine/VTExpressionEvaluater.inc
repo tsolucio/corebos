@@ -431,10 +431,9 @@ class VTFieldExpressionEvaluater {
 				$field = WebserviceField::fromQueryResult($adb, $rsfld, 0);
 				$fieldType = $field->getFieldDataType();
 				if ($fieldType=='reference' || $fieldType=='owner') {
-					preg_match("/([0-9]+)x([0-9]+)/", $val, $results);
+					preg_match('/([0-9]+)x([0-9]+)/', $val, $results);
 					if (!empty($results)) {  // if it has the form of a webserviceid
-						$query = 'select name from vtiger_ws_entity where id = ?';
-						$rs = $adb->pquery($query, array($results[1]));
+						$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($results[1]));
 						if ($rs && $adb->num_rows($rs)==1) {  // if the first part is a valid webservice entity id
 							$modname = $adb->query_result($rs, 0, 'name');
 							$modinfo = getEntityName($modname, array($results[2]));
