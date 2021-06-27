@@ -82,7 +82,6 @@ modules/Emails/EditView.php
 modules/Emails/EmailsAjax.php
 modules/Emails/Emails.php
 modules/Emails/evcbrcHandler.php
-modules/Emails/GmailBookmarklet.php
 modules/Emails/index.php
 modules/Emails/language
 modules/Emails/ListViewPagging.php
@@ -92,7 +91,6 @@ modules/Emails/mailSelect.php
 modules/Emails/mailsend.php
 modules/Emails/PHPMailerAutoload.php
 modules/Emails/PrintEmail.php
-modules/Emails/SaveBookmarklet.php
 modules/Emails/Save.php
 modules/Emails/TrackAccess.php
 modules/Emails/UnifiedSearch.php
