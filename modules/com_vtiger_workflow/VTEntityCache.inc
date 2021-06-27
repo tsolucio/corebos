@@ -44,7 +44,7 @@ class VTWorkflowEntity {
 	/**
 	 * Get the data from the entity object as an array.
 	 *
-	 * @return An array representation of the module data.
+	 * @return array representation of the module data.
 	 */
 	public function getData() {
 		return $this->data;
@@ -62,7 +62,7 @@ class VTWorkflowEntity {
 	/**
 	 * Get the entity id.
 	 *
-	 * @return The entity id.
+	 * @return integer entity id.
 	 */
 	public function getId() {
 		return $this->data['id'];
@@ -71,7 +71,7 @@ class VTWorkflowEntity {
 	/**
 	 * Get the name of the module represented by the entity data object.
 	 *
-	 * @return The module name.
+	 * @return string module name.
 	 */
 	public function getModuleName() {
 		if ($this->moduleName==null) {
