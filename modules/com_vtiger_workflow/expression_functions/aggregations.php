@@ -174,12 +174,21 @@ function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $reco
 	$qg->setFields(array('id'));
 	$qg->startGroup();
 	foreach ($c as $cond) {
-		$cndparams = explode(',', $cond);
-		if (!$SQLGenerationMode) {
-			$ct = new VTSimpleTemplate($cndparams[2]);
-			$value = $ct->render($entityCache, $entityId);
+		$cndparams = preg_split('~,(?![^()]*\))~',$cond);
+		if (isset($cndparams[4]) && $cndparams[4] == 'expression') {
+			$adminUser = Users::getActiveAdminUser();
+			$entity = new VTWorkflowEntity($adminUser, $entityId);
+			$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer(rawurldecode($cndparams[2]))));
+			$expression = $parser->expression();
+			$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+			$value = $exprEvaluater->evaluate($entity);
 		} else {
-			$value = $cndparams[2];
+			if (!$SQLGenerationMode) {
+				$ct = new VTSimpleTemplate($cndparams[2]);
+				$value = $ct->render($entityCache, $entityId);
+			} else {
+				$value = $cndparams[2];
+			}
 		}
 		$qg->addCondition($cndparams[0], $value, $cndparams[1], $cndparams[3]);
 	}

@@ -1073,7 +1073,8 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Statistics'),
 	'examples' => array(
 		"aggregation('min','CobroPago','amount')",
-		"aggregation('count','SalesOrder','*','[duedate,h,2018-01-01]')"
+		"aggregation('count','SalesOrder','*','[duedate,h,2018-01-01]')",
+		"aggregation('count','SalesOrder','*','[duedate,h,get_date('today'),or,expression]')"
 	),
 ),
 'aggregation_fields_operation' => array(
