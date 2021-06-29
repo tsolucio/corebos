@@ -463,9 +463,11 @@ class VTSimpleTemplate {
 		}
 		foreach ($relationData['header'] as $row) {
 			if ($idx==$numelems) {
+				$idx++;
 				continue;
 			}
 			if (!in_array($fields[$idx], $fields2show)) {
+				$idx++;
 				continue;
 			}
 			if ($html) {
@@ -502,9 +504,11 @@ class VTSimpleTemplate {
 			}
 			foreach ($row as $fieldvalue) {
 				if ($idx==$numelems) {
+					$idx++;
 					continue;
 				}
 				if (!in_array($fields[$idx], $fields2show)) {
+					$idx++;
 					continue;
 				}
 				if ($html) {
