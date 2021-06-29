@@ -2850,20 +2850,20 @@ class CRMEntity {
 			}
 
 			$query .= " FROM $other->table_name";
-			$query .= ' INNER JOIN '.$this->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
+			$query .= ' INNER JOIN '.$other->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 			$query .= $more_relation;
 			if ($relWithSelf) {
 				$query .= " INNER JOIN $this->table_name as ".$this->table_name."RelSelf ON $relationconditions";
 			} else {
 				$query .= " INNER JOIN $this->table_name ON $relationconditions";
 			}
-			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$this->crmentityTable.'.smownerid';
-			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
+			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$other->crmentityTable.'.smownerid';
+			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$other->crmentityTable.'.smownerid';
 
 			if ($relWithSelf) {
-				$query .= ' WHERE '.$this->crmentityTable.'.deleted=0 AND '.$this->table_name."RelSelf.$this->table_index = $id";
+				$query .= ' WHERE '.$other->crmentityTable.'.deleted=0 AND '.$this->table_name."RelSelf.$this->table_index = $id";
 			} else {
-				$query .= " WHERE ".$this->crmentityTable.".deleted=0 AND $this->table_name.$this->table_index = $id";
+				$query .= " WHERE ".$other->crmentityTable.".deleted=0 AND $this->table_name.$this->table_index = $id";
 			}
 			$query .= " AND vtiger_activity.activitytype != 'Emails'";
 			if ($_REQUEST['cbcalendar_filter'] != 'all') {
