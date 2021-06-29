@@ -2766,8 +2766,10 @@ class CRMEntity {
 		}
 
 		$return_value = null;
-		$dependentFieldSql = $adb->pquery("SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND" .
-				' fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=? AND module=?)', array($currentModule, $related_module));
+		$dependentFieldSql = $adb->pquery(
+			"SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=? AND module=?)",
+			array($currentModule, $related_module)
+		);
 		$numOfFields = $adb->num_rows($dependentFieldSql);
 
 		$relWithSelf = false;

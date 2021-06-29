@@ -4,6 +4,7 @@
 ./include/components/loadjs.js
 ./include/js/advancefilter.js
 ./include/js/asterisk.js
+./include/js/clock.js
 ./include/js/corebosjshooks.js
 ./include/js/customview.js
 ./include/js/de_de.lang.js
