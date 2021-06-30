@@ -54,12 +54,7 @@ class ReportRunQueryPlanner {
 	}
 
 	public function requireTable($table, $dependencies = null) {
-
-		if ($this->disablePlanner) {
-			return true;
-		}
-
-		if (isset($this->tables[$table])) {
+		if ($this->disablePlanner || isset($this->tables[$table])) {
 			return true;
 		}
 		if (is_array($dependencies)) {
