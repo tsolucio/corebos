@@ -69,10 +69,7 @@ var validateFieldData = {
 			var dateTimeElements = value.split(' ');
 			var datePart = dateTimeElements[0];
 			var timePart = dateTimeElements[1];
-			if (this.validateDate(datePart) == false) {
-				return false;
-			}
-			if (this.validateTime(timePart) == false) {
+			if (!this.validateDate(datePart) || !this.validateTime(timePart)) {
 				return false;
 			}
 			return true;
@@ -199,7 +196,7 @@ var validateFieldData = {
 			}
 		}
 
-		if (validationFailed == true) {
+		if (validationFailed) {
 			var errorMessageDetails = '';
 			for (fieldName in invalidFieldValues) {
 				errorMessageDetails += '<li>' + invalidFieldValues[fieldName]['label'] + ' (' + invalidFieldValues[fieldName]['type'] + ') </li>';
@@ -219,7 +216,7 @@ var VTFieldValidatorPrototype = {
 		for (var i = 0; i < validators.length; i++) {
 			var validator = validators[i];
 			var result = validator.call(this);
-			if (result[0]==false) {
+			if (!result[0]) {
 				isValid = false;
 				break;
 			}

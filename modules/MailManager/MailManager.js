@@ -653,7 +653,7 @@ if (typeof(MailManager) == 'undefined') {
 			}
 
 			// No record is selected for linking?
-			if (selected == false) {
+			if (!selected) {
 				MailManager.show_error(MailManager.i18n('JSLBL_PLEASE_SELECT_ATLEAST_ONE_RECORD'));
 				MailManager.resetLinkToDropDown();
 				return false;
@@ -855,7 +855,7 @@ if (typeof(MailManager) == 'undefined') {
 			}).done(function (response) {
 				MailManager.progress_hide();
 				var responseJSON = JSON.parse(response);
-				if (responseJSON.result.success == true) {
+				if (responseJSON.result.success) {
 					MailManager.progress_hide();
 					var count = jQuery('#attachmentCount').val();
 					jQuery('#attachmentCount').val(--count);
@@ -920,7 +920,7 @@ if (typeof(MailManager) == 'undefined') {
 		/* Track and Initialize RTE instance for reply */
 		mail_reply_rteinstance: false,
 		mail_reply_rteinit: function (data) {
-			if (MailManager.mail_reply_rteinstance == false) {
+			if (!MailManager.mail_reply_rteinstance) {
 				var textAreaName = '_mail_replyfrm_body_';
 				CKEDITOR.replace(textAreaName, {
 					toolbar: 'Full',
@@ -1287,7 +1287,7 @@ if (typeof(MailManager) == 'undefined') {
 						jQuery(ele).remove();
 					});
 				}
-				if (reloadfolder == true) {
+				if (reloadfolder) {
 					if (foldername == '__vt_drafts') {
 						MailManager.folder_drafts();
 					} else {

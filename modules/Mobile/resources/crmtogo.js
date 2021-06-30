@@ -413,7 +413,7 @@ var crmtogo_Index_Js = {
 			if (mandatoryvalid) {
 				if ($('#module').val()=='cbCalendar') {
 					var datetimevaild = crmtogo_Index_Js.calendarvalidation();
-					if (datetimevaild == true) {
+					if (datetimevaild) {
 						$('#EditView').submit();
 						return true;
 					} else {

@@ -460,7 +460,7 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 }
 
 function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
-	if (patternValidateObject(dateFldObj, fldLabel, 'DATE')==false) {
+	if (!patternValidateObject(dateFldObj, fldLabel, 'DATE')) {
 		return false;
 	}
 	let dateval = dateFldObj.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -519,7 +519,7 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		}
 	}
 
-	if (patternValidateObject(timeFldObj, fldLabel, 'TIME')==false) {
+	if (!patternValidateObject(timeFldObj, fldLabel, 'TIME')) {
 		return false;
 	}
 
@@ -692,7 +692,7 @@ function dateTimeFieldComparison(dateFld1, fldLabel1, dateFld2, fldLabel2, type,
 }
 
 function dateValidate(fldName, fldLabel, type) {
-	if (patternValidate(fldName, fldLabel, 'DATE')==false) {
+	if (!patternValidate(fldName, fldLabel, 'DATE')) {
 		return false;
 	}
 	return dateValidateObject(getObj(fldName), fldLabel, type);
@@ -821,7 +821,7 @@ function dateComparisonObject(fldObj1, fldLabel1, fldObj2, fldLabel2, type) {
 }
 
 function timeValidate(fldName, fldLabel, type) {
-	if (patternValidate(fldName, fldLabel, 'TIME')==false) {
+	if (!patternValidate(fldName, fldLabel, 'TIME')) {
 		return false;
 	}
 
@@ -863,7 +863,7 @@ function timeValidate(fldName, fldLabel, type) {
 }
 
 function timeValidateObject(fldObject, fldLabel, type) {
-	if (patternValidateObject(fldObject, fldLabel, 'TIME')==false) {
+	if (!patternValidateObject(fldObject, fldLabel, 'TIME')) {
 		return false;
 	}
 
@@ -977,7 +977,7 @@ function numValidate(fldName, fldLabel, format, neg) {
 		} else {
 			var format=format.split(',');
 			var splitval=val.split('.');
-			if (neg==true) {
+			if (neg) {
 				if (splitval[0].indexOf('-')>=0) {
 					if (splitval[0].length-1>format[0]) {
 						invalid=true;
@@ -1002,7 +1002,7 @@ function numValidate(fldName, fldLabel, format, neg) {
 				}
 			}
 		}
-		if (invalid==true) {
+		if (invalid) {
 			ldsPrompt.show(alert_arr['ERROR'], alert_arr.INVALID+fldLabel);
 			try {
 				getObj(fldName).focus();
@@ -1040,7 +1040,7 @@ function numValidate(fldName, fldLabel, format, neg) {
 			}
 		}
 
-		if (neg==true) {
+		if (neg) {
 			var re=/^(-|)(\d)*(\.)?\d+(\.\d\d*)*$/;
 		} else {
 			var re=/^(\d)*(\.)?\d+(\.\d\d*)*$/;
@@ -1149,7 +1149,7 @@ function numConstCompObject(fldObj, fldLabel, type, constval) {
 		break;
 	}
 
-	if (ret==false) {
+	if (!ret) {
 		try {
 			fldObj.focus();
 		} catch (error) {
@@ -1272,7 +1272,7 @@ function run_massedit() {
 		var sentForm = new Object();
 		for (var f=0; f<myFields.length; f++) {
 			if (myFields[f].type == 'checkbox') {
-				if (myFields[f].checked != false) {
+				if (myFields[f].checked) {
 					var checked = 'on';
 					sentForm[myFields[f].name] = checked;
 				}
@@ -1580,11 +1580,11 @@ function doformValidation(edit_type) {
 				&& getObj('enable_recurring_mass_edit_check').checked
 				&& getObj('enable_recurring') != null) {
 				if (getObj('enable_recurring').checked && (getObj('recurring_frequency') == null
-					|| trim(getObj('recurring_frequency').value) == '--None--' || getObj('recurring_frequency_mass_edit_check').checked==false)) {
+					|| trim(getObj('recurring_frequency').value) == '--None--' || !getObj('recurring_frequency_mass_edit_check').checked)) {
 					ldsPrompt.show(alert_arr['ERROR'], alert_arr.RECURRING_FREQUENCY_NOT_PROVIDED);
 					return false;
 				}
-				if (getObj('enable_recurring').checked == false && getObj('recurring_frequency_mass_edit_check').checked
+				if (!getObj('enable_recurring').checked && getObj('recurring_frequency_mass_edit_check').checked
 					&& getObj('recurring_frequency') != null && trim(getObj('recurring_frequency').value) != '--None--') {
 					ldsPrompt.show(alert_arr['ERROR'], alert_arr.RECURRING_FREQNECY_NOT_ENABLED);
 					return false;
@@ -1609,7 +1609,7 @@ function doformValidation(edit_type) {
 			if (fieldname[i]!='salutationtype') {
 				var obj = getObj(fieldname[i]+'_mass_edit_check');
 			}
-			if (obj == null || obj.checked == false) {
+			if (obj == null || !obj.checked) {
 				continue;
 			}
 		}
@@ -1670,7 +1670,7 @@ function doformValidation(edit_type) {
 					}
 					if (type[3]) {
 						if (gVTModule == 'SalesOrder' && fieldname[i] == 'end_period'
-								&& (getObj('enable_recurring') == null || getObj('enable_recurring').checked == false)) {
+								&& (getObj('enable_recurring') == null || !getObj('enable_recurring').checked)) {
 							continue;
 						}
 						if (!dateComparison(fieldname[i], fieldlabel[i], type[4], type[5], type[3])) {
@@ -1879,7 +1879,7 @@ function toggleSelectAll(relCheckName, selectAllName, el = '') {
 	} else {
 		var atleastOneFalse=false;
 		for (var i=0; i<getObj(relCheckName).length; i++) {
-			if (getObj(relCheckName)[i].checked==false) {
+			if (!getObj(relCheckName)[i].checked) {
 				atleastOneFalse=true;
 				break;
 			}
@@ -2035,7 +2035,7 @@ function fnClear(source) {
 
 function fnCpy() {
 	var tagName=document.getElementById('cpy');
-	if (tagName.checked==true) {
+	if (tagName.checked) {
 		fnCopy('shipaddress', 'address');
 		fnCopy('shippobox', 'pobox');
 		fnCopy('shipcity', 'city');
@@ -2263,7 +2263,7 @@ function clear_form(form) {
 function ActivateCheckBox() {
 	var map = document.getElementById('saved_map_checkbox');
 	var source = document.getElementById('saved_source');
-	if (map.checked == true) {
+	if (map.checked) {
 		source.disabled = false;
 	} else {
 		source.disabled = true;
@@ -2906,7 +2906,7 @@ function default_togglestate(obj_id, elementId) {
 	var groupElements = document.getElementsByName(obj_id);
 	for (var i=0; i<groupElements.length; i++) {
 		var state=groupElements[i].checked;
-		if (state == false) {
+		if (!state) {
 			all_state=false;
 			break;
 		}
@@ -2938,7 +2938,7 @@ function rel_check_object(sel_id, module) {
 	var currentModule = document.getElementById('return_module').value;
 	var excluded = document.getElementById(currentModule+'_'+module+'_excludedRecords').value;
 	var i=0;
-	if (box_value == true) {
+	if (box_value) {
 		if (document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true') {
 			document.getElementById(currentModule+'_'+module+'_excludedRecords').value = excluded.replace(excluded.match(id+';'), '');
 		} else {
@@ -2982,12 +2982,12 @@ function rel_toggleSelect(state, relCheckName, module) {
 	}
 	var current_module = document.getElementById('return_module').value;
 	if (current_module == 'Campaigns') {
-		if (state == true) {
-			var count = document.getElementById(current_module+'_'+module+'_numOfRows').value;
-			if (count == '') {
+		if (state) {
+			var cnt = document.getElementById(current_module+'_'+module+'_numOfRows').value;
+			if (cnt == '') {
 				getNoOfRelatedRows(current_module, module);
 			}
-			if (parseInt(document.getElementById('maxrecords').value) < parseInt(count)) {
+			if (parseInt(document.getElementById('maxrecords').value) < parseInt(cnt)) {
 				document.getElementById(current_module+'_'+module+'_linkForSelectAll').style.display='block';
 			}
 		} else {
@@ -3015,7 +3015,7 @@ function rel_default_togglestate(module) {
 
 	for (var i=0; i<groupElements.length; i++) {
 		var state=groupElements[i].checked;
-		if (state == false) {
+		if (!state) {
 			all_state=false;
 			break;
 		}
@@ -3056,7 +3056,7 @@ function toggleSelect_ListView(state, relCheckName, groupParentElementId) {
 		}
 	}
 	if (document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View) {
-		if (state==true) {
+		if (state) {
 			var count = document.getElementById('numOfRows_'+groupParentElementId).value;
 			if (count == '') {
 				getNoOfRows(groupParentElementId);
@@ -3073,7 +3073,7 @@ function toggleSelect_ListView(state, relCheckName, groupParentElementId) {
 			}
 		}
 	} else {
-		if (state==true) {
+		if (state) {
 			var count = document.getElementById('numOfRows').value;
 			if (count == '') {
 				getNoOfRows();
@@ -3110,7 +3110,7 @@ function toggleShowHide(showid, hideid) {
 
 // Refactored APIs from DisplayFiels.tpl
 function fnshowHide(currObj, txtObj) {
-	if (currObj.checked == true) {
+	if (currObj.checked) {
 		document.getElementById(txtObj).style.visibility = 'visible';
 	} else {
 		document.getElementById(txtObj).style.visibility = 'hidden';
@@ -3163,7 +3163,7 @@ function delUserImage(id) {
 // Function to enable/disable related elements based on whether the current object is checked or not
 function fnenableDisable(currObj, enableId) {
 	var disable_flag = true;
-	if (currObj.checked == true) {
+	if (currObj.checked) {
 		disable_flag = false;
 	}
 
@@ -3218,7 +3218,7 @@ function updateBaseCurrencyValue() {
 
 	for (var i=0; i<cur_list.length; i++) {
 		var cur_ele = cur_list[i];
-		if (cur_ele != null && cur_ele.checked == true) {
+		if (cur_ele != null && cur_ele.checked) {
 			base_currency_ele.value = cur_ele.value;
 		}
 	}
@@ -3342,7 +3342,7 @@ GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'cbCalendar'
 	ExecuteFunctions('ispermitted', 'checkmodule=cbCalendar&checkaction=index').then(function (response) {
 		try {
 			var obj = JSON.parse(response);
-			if (obj.isPermitted == false) {
+			if (!obj.isPermitted) {
 				ActivityReminder_Deactivated = 1;
 			}
 		} catch (e) {
@@ -3597,7 +3597,7 @@ function movefieldsStep1() {
 	document.getElementById('selectedCol').style.width='164px';
 	var count=0;
 	for (var i=0; i<availListObj.length; i++) {
-		if (availListObj.options[i].selected==true) {
+		if (availListObj.options[i].selected) {
 			count++;
 		}
 	}
@@ -3608,7 +3608,7 @@ function movefieldsStep1() {
 	}
 	if (availListObj.options.selectedIndex > -1) {
 		for (i=0; i<availListObj.length; i++) {
-			if (availListObj.options[i].selected==true) {
+			if (availListObj.options[i].selected) {
 				var rowFound=false;
 				for (var j=0; j<selectedColumnsObj.length; j++) {
 					selectedColumnsObj.options[j].value==availListObj.options[i].value;
@@ -3618,7 +3618,7 @@ function movefieldsStep1() {
 						break;
 					}
 				}
-				if (rowFound!=true) {
+				if (!rowFound) {
 					var newColObj=document.createElement('OPTION');
 					newColObj.value=availListObj.options[i].value;
 					if (browser_ie) {
@@ -3639,7 +3639,7 @@ function movefieldsStep1() {
 }
 
 function selectedColClick(oSel) {
-	if (oSel.selectedIndex == -1 || oSel.options[oSel.selectedIndex].disabled == true) {
+	if (oSel.selectedIndex == -1 || oSel.options[oSel.selectedIndex].disabled) {
 		ldsPrompt.show(alert_arr['ERROR'], alert_arr.NOT_ALLOWED_TO_EDIT);
 		oSel.options[oSel.selectedIndex].selected = false;
 	}
@@ -3651,7 +3651,7 @@ function delFields() {
 	if (selectedColumnsObj.options.selectedIndex > -1) {
 		var del = false;
 		for (var i=0; i < selectedColumnsObj.options.length; i++) {
-			if (selectedColumnsObj.options[i].selected == true) {
+			if (selectedColumnsObj.options[i].selected) {
 				if (selected_tab == 4) {
 					if (selectedColumnsObj.options[i].innerHTML == 'Last Name') {
 						ldsPrompt.show(alert_arr['ERROR'], alert_arr.DEL_MANDATORY);
@@ -3685,7 +3685,7 @@ function delFields() {
 						del = true;
 					}
 				}
-				if (del == true) {
+				if (del) {
 					selectedColumnsObj.remove(i);
 					delFields();
 				}
@@ -3901,7 +3901,7 @@ function validate_merge(module) {
 			var check_parentvar=true;
 		}
 	}
-	if (check_parentvar!=true) {
+	if (!check_parentvar) {
 		ldsPrompt.show(alert_arr['ERROR'], alert_arr.Select_one_record_as_parent_record);
 		return false;
 	}
@@ -3942,7 +3942,7 @@ function selectDel(ThisName, CheckAllName) {
 		flag=true;
 	} else {
 		for (var j=0; j<len1; j++) {
-			if (ThisNameOptions[j].checked==false) {
+			if (!ThisNameOptions[j].checked) {
 				flag=false;
 				break;
 			}
@@ -4482,7 +4482,7 @@ function validateInputData(value, fieldLabel, typeofdata) {
 				var format = numformat.split(',');
 				var splitval = value.split('.');
 
-				if (negativeallowed == true) {
+				if (negativeallowed) {
 					if (splitval[0].indexOf('-') >= 0) {
 						if (splitval[0].length-1 > format[0]) {
 							invalid=true;
@@ -4509,7 +4509,7 @@ function validateInputData(value, fieldLabel, typeofdata) {
 				}
 			}
 
-			if (invalid==true) {
+			if (invalid) {
 				ldsPrompt.show(alert_arr['ERROR'], alert_arr.INVALID + fieldLabel);
 				return false;
 			} else {
@@ -4523,7 +4523,7 @@ function validateInputData(value, fieldLabel, typeofdata) {
 				ldsPrompt.show(alert_arr['ERROR'], fieldLabel + alert_arr.EXCEEDS_MAX);
 				return false;
 			}
-			if (negativeallowed == true) {
+			if (negativeallowed) {
 				var re=/^(-|)(\d)*(\.)?\d+(\.\d\d*)*$/;
 			} else {
 				var re=/^(\d)*(\.)?\d+(\.\d\d*)*$/;
@@ -4556,7 +4556,7 @@ function validateInputData(value, fieldLabel, typeofdata) {
 }
 
 function re_dateValidate(fldval, fldLabel, type) {
-	if (re_patternValidate(fldval, fldLabel, 'DATE')==false) {
+	if (!re_patternValidate(fldval, fldLabel, 'DATE')) {
 		return false;
 	}
 	var dateval=fldval.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -4658,7 +4658,7 @@ function copySelectedOptions(source, destination) {
 		return;
 	}
 	for (var i=0; i<srcObj.length; i++) {
-		if (srcObj.options[i].selected==true) {
+		if (srcObj.options[i].selected) {
 			var rowFound=false;
 			var existingObj=null;
 			for (var j=0; j<destObj.length; j++) {
@@ -4669,7 +4669,7 @@ function copySelectedOptions(source, destination) {
 				}
 			}
 
-			if (rowFound!=true) {
+			if (!rowFound) {
 				var newColObj=document.createElement('OPTION');
 				newColObj.value=srcObj.options[i].value;
 				if (browser_ie) {
@@ -4696,7 +4696,7 @@ function removeSelectedOptions(objName) {
 		return;
 	}
 	for (var i=obj.options.length-1; i>=0; i--) {
-		if (obj.options[i].selected == true) {
+		if (obj.options[i].selected) {
 			obj.options[i] = null;
 		}
 	}
@@ -4816,7 +4816,7 @@ function fnDropDownUser(obj, Lay) {
 //select the records across the pages
 function toggleSelectAll_Records(module, state, relCheckName) {
 	toggleSelect_ListView(state, relCheckName);
-	if (state == true) {
+	if (state) {
 		document.getElementById('allselectedboxes').value = 'all';
 		document.getElementById('selectAllRec').style.display = 'none';
 		document.getElementById('deSelectAllRec').style.display = 'inline';
@@ -4832,7 +4832,7 @@ function toggleSelectAll_Records(module, state, relCheckName) {
 
 function toggleSelectDocumentRecords(module, state, relCheckName, parentEleId) {
 	toggleSelect_ListView(state, relCheckName, parentEleId);
-	if (state == true) {
+	if (state) {
 		document.getElementById('selectedboxes_'+parentEleId).value = 'all';
 		document.getElementById('selectAllRec_'+parentEleId).style.display = 'none';
 		document.getElementById('deSelectAllRec_'+parentEleId).style.display = 'inline';
@@ -4879,7 +4879,7 @@ function getNoOfRows(id) {
 //select all function for related list of campaign module
 function rel_toggleSelectAll_Records(module, relmodule, state, relCheckName) {
 	rel_toggleSelect(state, relCheckName, relmodule);
-	if (state == true) {
+	if (state) {
 		document.getElementById(module+'_'+relmodule+'_selectallActivate').value = 'true';
 		document.getElementById(module+'_'+relmodule+'_selectAllRec').style.display = 'none';
 		document.getElementById(module+'_'+relmodule+'_deSelectAllRec').style.display = 'inline';
@@ -4912,7 +4912,7 @@ function updateParentCheckbox(obj, id) {
 	var parentCheck=true;
 	if (obj) {
 		for (var i=0; i<obj.length; ++i) {
-			if (obj[i].checked != true) {
+			if (!obj[i].checked) {
 				var parentCheck=false;
 			}
 		}
@@ -5232,7 +5232,7 @@ function CLIPBOARD_CLASS(canvas_id, autoresize) {
 	this.paste_createImage = function (source) {
 		var pastedImage = new Image();
 		pastedImage.onload = function () {
-			if (autoresize == true) {
+			if (autoresize) {
 				//resize
 				canvas.width = pastedImage.width;
 				canvas.height = pastedImage.height;

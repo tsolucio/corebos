@@ -78,9 +78,9 @@ function hndMouseOver(uitype, fieldLabel) {
 			} else {
 				var assign_type_G = false;
 			}
-			if (assign_type_U == true) {
+			if (assign_type_U) {
 				globaltxtboxid= 'txtbox_U'+fieldLabel;
-			} else if (assign_type_G == true) {
+			} else if (assign_type_G) {
 				globaltxtboxid= 'txtbox_G'+fieldLabel;
 			}
 		} else {
@@ -229,9 +229,9 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		} else {
 			var assign_type_U = assigntype[0].checked;
 		}
-		if (assign_type_U == true) {
+		if (assign_type_U) {
 			var txtBox= 'txtbox_U'+fieldLabel;
-		} else if (assign_type_G == true) {
+		} else if (assign_type_G) {
 			var txtBox= 'txtbox_G'+fieldLabel;
 			var group_id = encodeURIComponent(document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text);
 			groupurl = '&assigned_group_id='+group_id+'&assigntype=T';
@@ -265,7 +265,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 
 	//overriden the tagValue based on UI Type for checkbox
 	if (uitype == '56') {
-		if (document.getElementById(txtBox).checked == true) {
+		if (document.getElementById(txtBox).checked) {
 			if (module == 'Contacts') {
 				var obj = getObj('email');
 				if ((fieldName == 'portal') && (obj == null || obj.value == '')) {
@@ -282,7 +282,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			tagValue = '0';
 		}
 	} else if (uitype == '156') {
-		if (document.getElementById(txtBox).checked == true) {
+		if (document.getElementById(txtBox).checked) {
 			tagValue = 'on';
 		} else {
 			tagValue = 'off';
@@ -298,7 +298,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		if (module == 'Contacts') {
 			if (getObj('portal')) {
 				var port_obj = getObj('portal').checked;
-				if (fieldName == 'email' && tagValue == '' && port_obj == true) {
+				if (fieldName == 'email' && tagValue == '' && port_obj) {
 					alert(alert_arr.PORTAL_PROVIDE_EMAILID);
 					return false;
 				}
@@ -393,7 +393,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			break;
 		case '56':
 		case 56:
-			if (document.getElementById('txtbox_'+fieldName).checked == true) {
+			if (document.getElementById('txtbox_'+fieldName).checked) {
 				sentForm[fieldName] = 1;
 			} else {
 				sentForm[fieldName] = 0;
@@ -416,10 +416,10 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			} else {
 				var assign_type_U = assigntype[0].checked;
 			}
-			if (assign_type_U == true) {
+			if (assign_type_U) {
 				var txtBox= 'txtbox_U'+fieldLabel;
 				sentForm['assign_type'] = 'U';
-			} else if (assign_type_G == true) {
+			} else if (assign_type_G) {
 				var txtBox= 'txtbox_G'+fieldLabel;
 				sentForm['assign_type'] = 'T';
 			}
@@ -505,9 +505,9 @@ function setSelectValue(fieldLabel) {
 			if (assigntype[1]!=undefined) {
 				assign_type_G = assigntype[1].checked;
 			}
-			if (assign_type_U == true) {
+			if (assign_type_U) {
 				selCombo= 'txtbox_U'+fieldLabel;
-			} else if (assign_type_G == true) {
+			} else if (assign_type_G) {
 				selCombo= 'txtbox_G'+fieldLabel;
 			}
 		} else {

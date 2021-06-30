@@ -18,7 +18,7 @@ function fnToggleVIew(obj) {
 }
 
 function invokeview_all() {
-	if (document.getElementById('view_all_chk').checked == true) {
+	if (document.getElementById('view_all_chk').checked) {
 		for (var i = 0; i < document.profileform.elements.length; i++) {
 			if (document.profileform.elements[i].type == 'checkbox') {
 				if (document.profileform.elements[i].id.indexOf('tab_chk_com_') != -1 || document.profileform.elements[i].id.indexOf('tab_chk_4') != -1 || document.profileform.elements[i].id.indexOf('_field_') != -1) {
@@ -39,7 +39,7 @@ function showAllImages() {
 }
 
 function invokeedit_all() {
-	if (document.getElementById('edit_all_chk').checked == true) {
+	if (document.getElementById('edit_all_chk').checked) {
 		document.getElementById('view_all_chk').checked = true;
 		for (var i = 0; i < document.profileform.elements.length; i++) {
 			if (document.profileform.elements[i].type == 'checkbox') {
@@ -64,7 +64,7 @@ function unSelectView(id) {
 	var createid = 'tab_chk_1_'+id;
 	var deleteid = 'tab_chk_2_'+id;
 	var tab_id = 'tab_chk_com_'+id;
-	if (document.getElementById('tab_chk_4_'+id).checked == false) {
+	if (!document.getElementById('tab_chk_4_'+id).checked) {
 		unselect_view_all();
 		unselect_edit_all();
 		document.getElementById(createid).checked = false;
@@ -80,7 +80,7 @@ function unSelectView(id) {
 }
 function unSelectCreate(id) {
 	var viewid = 'tab_chk_4_'+id;
-	if (document.getElementById('tab_chk_1_'+id).checked == false) {
+	if (!document.getElementById('tab_chk_1_'+id).checked) {
 		unselect_edit_all();
 	} else {
 		var imageid = 'img_'+id;
@@ -93,7 +93,7 @@ function unSelectCreate(id) {
 	}
 }
 function unSelectDelete(id) {
-	if (document.getElementById('tab_chk_2_'+id).checked != false) {
+	if (document.getElementById('tab_chk_2_'+id).checked) {
 		var imageid = 'img_'+id;
 		var viewid = 'tab_chk_4_'+id;
 		if (typeof(document.getElementById(imageid)) != 'undefined') {
@@ -111,7 +111,7 @@ function hideTab(id) {
 	var deleteid = 'tab_chk_2_'+id;
 	var imageid = 'img_'+id;
 	var contid = id+'_view';
-	if (document.getElementById('tab_chk_com_'+id).checked == false) {
+	if (!document.getElementById('tab_chk_com_'+id).checked) {
 		unselect_view_all();
 		unselect_edit_all();
 		if (document.getElementById(imageid)) {
@@ -155,7 +155,7 @@ function hideTab(id) {
 	}
 }
 function selectUnselect(oCheckbox) {
-	if (oCheckbox.checked == false) {
+	if (!oCheckbox.checked) {
 		unselect_view_all();
 		unselect_edit_all();
 	}
@@ -249,12 +249,12 @@ function saveprofile(frm) {
 	var parent_profile = document.getElementsByName('parent_profile').item(0).value;
 	var radio_button = document.getElementsByName('radio_button').item(0).value;
 	var return_action = document.getElementsByName('return_action').item(0).value;
-	if (document.getElementsByName('view_all').item(0).checked == true) {
+	if (document.getElementsByName('view_all').item(0).checked) {
 		var viewall = 'on';
 	} else {
 		viewall = 'off';
 	}
-	if (document.getElementsByName('edit_all').item(0).checked == true) {
+	if (document.getElementsByName('edit_all').item(0).checked) {
 		var editall = 'on';
 	} else {
 		editall = 'off';
@@ -312,7 +312,7 @@ function saveprofile(frm) {
 			}
 
 			if (document.getElementsByName(fieldname).item(0)!=null) {
-				if (document.getElementsByName(fieldname).item(0).checked == true) {
+				if (document.getElementsByName(fieldname).item(0).checked) {
 					var checked = 'on';
 				} else {
 					checked = 'off';

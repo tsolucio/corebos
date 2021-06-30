@@ -48,7 +48,7 @@ var cbWSClient = function (url) {
 	 * Check if result has any error.
 	 */
 	this.hasError = function (resultdata) {
-		if (resultdata != null && resultdata['success'] == false) {
+		if (resultdata != null && !resultdata['success']) {
 			this._lasterror = resultdata['error'].code + ': ' + resultdata['error'].message;
 			return true;
 		}
@@ -112,7 +112,7 @@ var cbWSClient = function (url) {
 		return new Promise((resolve, reject) => {
 			this.__doChallenge(username)
 				.then(function (data) {
-					if (myself.hasError(data) == false) {
+					if (!myself.hasError(data)) {
 						let result = data['result'];
 						myself._servicetoken = result.token;
 						myself._servertime = result.serverTime;
@@ -126,10 +126,10 @@ var cbWSClient = function (url) {
 							.then(myself.status)
 							.then(myself.getData)
 							.then(logindata => {
-								if (myself.hasError(logindata) == false) {
-									var result = logindata['result'];
-									myself._sessionid = result.sessionName;
-									myself._userid = result.userId;
+								if (!myself.hasError(logindata)) {
+									var rdo = logindata['result'];
+									myself._sessionid = rdo.sessionName;
+									myself._userid = rdo.userId;
 									resolve(logindata);
 								} else {
 									reject(new Error('incorrect response: ' + myself.lastError()));
@@ -159,7 +159,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					myself._servicetoken = false;
 					myself._servertime = false;
 					myself._expiretime = false;
@@ -186,7 +186,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					myself._sessionid  = data['result'].sessionName;
 					myself._userid = data['result'].userId;
 					delete myself.fetchOptions.credentials;
@@ -219,7 +219,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					return Promise.resolve(data['result']);
 				} else {
 					return Promise.reject(new Error('incorrect response: '+myself.lastError()));
@@ -259,7 +259,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					let result = data['result'];
 					let modulenames = result['types'];
 					let returnvalue = { };
@@ -294,7 +294,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					return Promise.resolve(data['result']);
 				} else {
 					return Promise.reject(new Error('incorrect response: '+myself.lastError()));
@@ -320,7 +320,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					return Promise.resolve(data['result']);
 				} else {
 					return Promise.reject(new Error('incorrect response: '+myself.lastError()));
@@ -351,7 +351,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					return Promise.resolve(data['result']);
 				} else {
 					return Promise.reject(new Error('incorrect response: '+myself.lastError()));
@@ -382,7 +382,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					return Promise.resolve(data['result']);
 				} else {
 					return Promise.reject(new Error('incorrect response: '+myself.lastError()));
@@ -408,7 +408,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					return Promise.resolve(data['result']);
 				} else {
 					return Promise.reject(new Error('incorrect response: '+myself.lastError()));
@@ -434,7 +434,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					return Promise.resolve(data['result']);
 				} else {
 					return Promise.reject(new Error('incorrect response: '+myself.lastError()));
@@ -477,7 +477,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					return Promise.resolve(data['result']);
 				} else {
 					return Promise.reject(new Error('incorrect response: '+myself.lastError()));
@@ -505,7 +505,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					return Promise.resolve(data['result']);
 				} else {
 					return Promise.reject(new Error('incorrect response: '+myself.lastError()));
@@ -534,7 +534,7 @@ var cbWSClient = function (url) {
 			.then(this.status)
 			.then(this.getData)
 			.then(function (data) {
-				if (myself.hasError(data) == false) {
+				if (!myself.hasError(data)) {
 					return Promise.resolve(data['result']);
 				} else {
 					return Promise.reject(new Error('incorrect response: '+myself.lastError()));

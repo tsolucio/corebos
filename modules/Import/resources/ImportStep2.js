@@ -34,7 +34,7 @@ function deleteMapping() {
 
 function check_submit() {
 	var selectedColStr = '';
-	if (document.getElementById('merge_check').checked == true) {
+	if (document.getElementById('merge_check').checked) {
 		setObjects();
 		for (var i = 0; i < selectedColumnsObj.options.length; i++) {
 			selectedColStr += selectedColumnsObj.options[i].value + ',';
@@ -80,7 +80,7 @@ function showMergeOptions(curObj, arg) {
 	var ele = curObj;
 	var mergeoptions = document.getElementsByName('dup_type');
 	if (mergeoptions != null && ele != null) {
-		if (ele.checked == true) {
+		if (ele.checked) {
 			mergeoptions[0].checked = true;
 			mergeoptions[1].checked = false;
 		} else {
@@ -104,7 +104,7 @@ function addColumn() {
 	}
 
 	for (var i = 0; i < availListObj.length; i++) {
-		if (availListObj.options[i].selected == true) {
+		if (availListObj.options[i].selected) {
 			var rowFound = false;
 			var existingObj = null;
 			for (var j = 0; j < selectedColumnsObj.length; j++) {
@@ -115,7 +115,7 @@ function addColumn() {
 				}
 			}
 
-			if (rowFound != true) {
+			if (!rowFound) {
 				var newColObj = document.createElement('OPTION');
 				newColObj.value = availListObj.options[i].value;
 				if (browser_ie) {

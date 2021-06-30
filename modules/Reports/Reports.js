@@ -73,7 +73,7 @@ function selectedColumnClick(oSel) {
 	var error_str = false;
 	if (oSel.selectedIndex > -1) {
 		for (var i = 0; i < oSel.options.length; ++i) {
-			if (oSel.options[i].selected == true && oSel.options[i].disabled == true) {
+			if (oSel.options[i].selected && oSel.options[i].disabled) {
 				error_msg = error_msg + oSel.options[i].text+',';
 				error_str = true;
 				oSel.options[i].selected = false;
@@ -91,7 +91,7 @@ function selectedColumnClick(oSel) {
 function delColumn() {
 	if (selectedColumnsObj.options.selectedIndex > -1) {
 		for (var i=0; i < selectedColumnsObj.options.length; i++) {
-			if (selectedColumnsObj.options[i].selected == true) {
+			if (selectedColumnsObj.options[i].selected) {
 				selectedColumnsObj.remove(i);
 				delColumn();
 			}
@@ -178,7 +178,7 @@ function moveDown() {
 function disableMove() {
 	var cnt=0;
 	for (var i=0; i<selectedColumnsObj.options.length; i++) {
-		if (selectedColumnsObj.options[i].selected==true) {
+		if (selectedColumnsObj.options[i].selected) {
 			cnt++;
 		}
 	}
@@ -194,9 +194,9 @@ function disableMove() {
 function hideTabs() {
 	// Check the selected report type
 	var objreportType = document.forms.NewReport['reportType'];
-	if (objreportType[0].checked == true) {
+	if (objreportType[0].checked) {
 		objreportType = objreportType[0];
-	} else if (objreportType[1].checked == true) {
+	} else if (objreportType[1].checked) {
 		objreportType = objreportType[1];
 	}
 
@@ -362,7 +362,7 @@ function fnPopupWin(winName) {
 }
 
 function re_dateValidate(fldval, fldLabel, type) {
-	if (re_patternValidate(fldval, fldLabel, 'DATE')==false) {
+	if (!re_patternValidate(fldval, fldLabel, 'DATE')) {
 		return false;
 	}
 	dateval=fldval.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -682,7 +682,7 @@ function returnList(block) {
 		var $html = $('<select>');
 		for (var i=0; i<list_length; i++) {
 			var option = $('<option>', {'value':list[i].value});
-			if (Object.prototype.hasOwnProperty.call(list[i], 'selected') && list[i].selected == true) {
+			if (Object.prototype.hasOwnProperty.call(list[i], 'selected') && list[i].selected) {
 				option.prop('selected', true);
 			}
 			if (Object.prototype.hasOwnProperty.call(list[i], 'permission')) {
@@ -712,7 +712,7 @@ function setPropertiesOnList(block, selectid) {
 	for (var i=0; i<list_length; i++) {
 		var option = $(selectid + ' option[value="' + block[i].value + '"]');
 		if (option) {
-			if (Object.prototype.hasOwnProperty.call(block[i], 'selected') && block[i].selected == true) {
+			if (Object.prototype.hasOwnProperty.call(block[i], 'selected') && block[i].selected) {
 				option.prop('selected', true);
 			}
 			if (Object.prototype.hasOwnProperty.call(block[i], 'permission')) {
@@ -866,7 +866,7 @@ function validateDate() {
  */
 function ScheduleEmail() {
 	var isScheduledObj = getObj('isReportScheduled');
-	if (isScheduledObj.checked == true) {
+	if (isScheduledObj.checked) {
 		if (document.NewReport.scheduledTime.value == '') {
 			alert(alert_arr.ERR_INVALID_TIME);
 			return false;
@@ -1264,7 +1264,7 @@ function addColumns() {
 	}
 
 	for (i=0; i<availableListObj.length; i++) {
-		if (availableListObj.options[i].selected==true) {
+		if (availableListObj.options[i].selected) {
 			var rowFound=false;
 			var existingObj=null;
 			for (var j=0; j<columnsSelectedObj.length; j++) {
@@ -1275,7 +1275,7 @@ function addColumns() {
 				}
 			}
 
-			if (rowFound!=true) {
+			if (!rowFound) {
 				var newColObj = document.createElement('OPTION');
 				newColObj.value = availableListObj.options[i].value;
 				if (browser_ie) {

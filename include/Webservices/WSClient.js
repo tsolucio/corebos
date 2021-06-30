@@ -55,7 +55,7 @@ var Vtiger_WSClient = function (url) {
 	 * Check if result has any error.
 	 */
 	this.hasError = function (resultdata) {
-		if (resultdata != null && resultdata['success'] == false) {
+		if (resultdata != null && !resultdata['success']) {
 			this._lasterror = resultdata['error'];
 			return true;
 		}
@@ -108,7 +108,7 @@ var Vtiger_WSClient = function (url) {
 			complete : function (res, status) {
 				var usethis = this._wsclient;
 				var resobj = usethis.toJSON(res.responseText);
-				if (usethis.hasError(resobj) == false) {
+				if (!usethis.hasError(resobj)) {
 					var result = resobj['result'];
 					usethis._servicetoken = result.token;
 					usethis._servertime = result.serverTime;
@@ -130,8 +130,7 @@ var Vtiger_WSClient = function (url) {
 	 */
 	this.doLogin = function (username, accesskey, callback, withpassword) {
 		this.__doChallenge(username);
-		if (this._servicetoken == false) {
-			// TODO: Failed to get the service token
+		if (!this._servicetoken) {
 			return false;
 		}
 
@@ -157,7 +156,7 @@ var Vtiger_WSClient = function (url) {
 				var usethis = this._wsclient;
 				var resobj = usethis.toJSON(res.responseText);
 				var resflag = false;
-				if (usethis.hasError(resobj) == false) {
+				if (!usethis.hasError(resobj)) {
 					var result = resobj['result'];
 					usethis._sessionid  = result.sessionName;
 					usethis._userid = result.userId;
@@ -189,7 +188,7 @@ var Vtiger_WSClient = function (url) {
 				var usethis = this._wsclient;
 				var resobj = usethis.toJSON(res.responseText);
 				var result = false;
-				if (usethis.hasError(resobj) == false) {
+				if (!usethis.hasError(resobj)) {
 					result = resobj['result'];
 				}
 				usethis.__performCallback(callback, result);
@@ -213,7 +212,7 @@ var Vtiger_WSClient = function (url) {
 				var usethis = this._wsclient;
 				var resobj = usethis.toJSON(res.responseText);
 				var result = false;
-				if (usethis.hasError(resobj) == false) {
+				if (!usethis.hasError(resobj)) {
 					self._sessionid = resobj.result['sessionName'];
 					self._userid = resobj.result['userId'];
 					result = resobj['result'];
@@ -249,7 +248,7 @@ var Vtiger_WSClient = function (url) {
 				var usethis = this._wsclient;
 				var resobj = usethis.toJSON(res.responseText);
 				var result = false;
-				if (usethis.hasError(resobj) == false) {
+				if (!usethis.hasError(resobj)) {
 					result = resobj['result'];
 				}
 				usethis.__performCallback(callback, result);
@@ -292,7 +291,7 @@ var Vtiger_WSClient = function (url) {
 				var usethis = this._wsclient;
 				var resobj = usethis.toJSON(res.responseText);
 				var returnvalue = false;
-				if (usethis.hasError(resobj) == false) {
+				if (!usethis.hasError(resobj)) {
 					var result = resobj['result'];
 					var modulenames = result['types'];
 
