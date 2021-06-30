@@ -137,7 +137,7 @@ var validateFieldData = {
 				return false;
 			}
 			return true;
-		},
+		};
 		this.validateEmail= function (value) {
 			value = trim(value);
 			var re=new RegExp(/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/);

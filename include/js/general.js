@@ -5847,25 +5847,25 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		/* Set some default values */
 		params = params || {};
 		var me = this;
-		params.onSelect = params.onSelect || false,
+		params.onSelect = params.onSelect || false;
 		params.isMulti = params.isMulti || false;
 
 		/* Public attributes */
-		this.el 	= el,
-		this.input 	= el.getElementsByClassName('slds-combobox__input')[0],
-		this.specialKeys = ['up', 'down', 'enter', 'esc'],
-		this.optionNodes = this.getOptionNodes(),
-		this.active = false,
-		this.curSel = this.input.value,
-		this.fallBackSel = null,
-		this.curSelIndex = this.getCurSelIndex(),
-		this.fallBackIndex = this.getCurSelIndex(),
-		this.onSelect = typeof params.onSelect == 'function' ? params.onSelect : false,
-		this._val = params.isMulti ? this.getSelNodesArray() : this.optionNodes[this.curSelIndex].getAttribute('data-value'),
-		this.parentForm = _findUp(this.input, '$FORM'),
-		this.valueHolder = this.getValueHolder(),
-		this.isMulti = params.isMulti,
-		this.enabled = params.enabled !== undefined ? params.enabled : true,
+		this.el = el;
+		this.input = el.getElementsByClassName('slds-combobox__input')[0];
+		this.specialKeys = ['up', 'down', 'enter', 'esc'];
+		this.optionNodes = this.getOptionNodes();
+		this.active = false;
+		this.curSel = this.input.value;
+		this.fallBackSel = null;
+		this.curSelIndex = this.getCurSelIndex();
+		this.fallBackIndex = this.getCurSelIndex();
+		this.onSelect = typeof params.onSelect == 'function' ? params.onSelect : false;
+		this._val = params.isMulti ? this.getSelNodesArray() : this.optionNodes[this.curSelIndex].getAttribute('data-value');
+		this.parentForm = _findUp(this.input, '$FORM');
+		this.valueHolder = this.getValueHolder();
+		this.isMulti = params.isMulti;
+		this.enabled = params.enabled !== undefined ? params.enabled : true;
 		this.labels = {};
 
 		/* Instance listeners */
@@ -5997,7 +5997,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 */
 		open: function () {
-			this.fallBackIndex = this.getCurSelIndex(),
+			this.fallBackIndex = this.getCurSelIndex();
 			this.fallBackSel = this.curSel;
 
 			this.getOpener().classList.add('slds-is-open');
@@ -6078,11 +6078,10 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * Used when a dropdown was opened, but cancelled
 		 * Typically by browsing through the list but pressing
 		 * 'esc' without selecting anything
-		 *
 		 */
 		fallBack: function () {
 			this.unselectAll();
-			this.curSelIndex = this.fallBackIndex,
+			this.curSelIndex = this.fallBackIndex;
 			this.curSel = this.fallBackSel;
 			this.select();
 		},
@@ -6368,10 +6367,10 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 
 	function cbOnScroll(e) {
 		window.requestAnimationFrame(function () {
-			sy = Math.round(window.scrollY),
-			di = sy > psy ? 'down' : 'up',
+			sy = Math.round(window.scrollY);
+			di = sy > psy ? 'down' : 'up';
 			psy = sy - 1;
-			var i = 0;
+			var i;
 			if (di === 'down') {
 				for (i = 0; i < window.cbOnDownScrollers.length; i++) {
 					if (typeof window.cbOnDownScrollers[i] === 'function') {

@@ -1485,18 +1485,18 @@ function InventorySelectAll(mod) {
 		* @param {object}		The root inventoryblock object
 		*/
 	function ProductAutocomplete(el, parent, callback, rootObj) {
-		this.el = el,
-		this.root = rootObj,
-		this.parent = parent,
-		this.specialKeys = ['up', 'down', 'esc', 'enter'],
-		this.threshold = 3,
+		this.el = el;
+		this.root = rootObj;
+		this.parent = parent;
+		this.specialKeys = ['up', 'down', 'esc', 'enter'];
+		this.threshold = 3;
 		this.input = el.getElementsByTagName('input')[0],
-		this.source = 'index.php?module=Utilities&sourceModule='+gVTModule+'&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=',
-		this.active = false,
-		this.resultContainer,
-		this.resultBox,
-		this.lookupContainer = this.utils.getFirstClass(el, 'slds-combobox-lookup'),
-		this.currentResults = [],
+		this.source='index.php?module=Utilities&sourceModule='+gVTModule+'&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=';
+		this.active = false;
+		this.resultContainer = null;
+		this.resultBox = null;
+		this.lookupContainer = this.utils.getFirstClass(el, 'slds-combobox-lookup');
+		this.currentResults = [];
 		this.callback = typeof callback === 'function' ? callback : false;
 
 		/* Instance listeners */

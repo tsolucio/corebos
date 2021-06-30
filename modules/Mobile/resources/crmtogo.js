@@ -193,7 +193,7 @@
 			if ( !pageIsSelectmenuDialog(data.prevPage) ) {
 				return;
 			}
-			listview = data.prevPage.jqmData('listview'),
+			listview = data.prevPage.jqmData('listview');
 			form = listview.jqmData('filter-form');
 			// Put the form back in the popup. It goes ahead of the listview.
 			listview.before(form);
