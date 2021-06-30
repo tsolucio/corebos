@@ -82,7 +82,6 @@ var cbWSClient = function (url) {
 	 * @access private
 	 */
 	this.__doChallenge = function (username) {
-		// reqtype = 'GET';
 		let params = '?operation=getchallenge&username=' + username;
 		this.fetchOptions.method = 'get';
 		return fetch(this._serviceurl + params, this.fetchOptions)
@@ -101,7 +100,6 @@ var cbWSClient = function (url) {
 	 * Login Operation
 	 */
 	this.doLogin = function (username, accesskey, withpassword) {
-		// reqtype = 'POST';
 		this._serviceuser = username;
 		this._servicekey = accesskey;
 		if (withpassword == undefined) {
@@ -150,7 +148,6 @@ var cbWSClient = function (url) {
 	this.doLogout = function () {
 		this.__checkLogin();
 
-		// reqtype = 'POST';
 		let postdata = 'operation=logout&sessionName=' + this._sessionid;
 		this.fetchOptions.body = postdata;
 		this.fetchOptions.method = 'post';
@@ -176,7 +173,6 @@ var cbWSClient = function (url) {
 	};
 
 	this.extendSession = function () {
-		// reqtype = 'POST';
 		let postdata = 'operation=extendsession';
 		this.fetchOptions.body = postdata;
 		this.fetchOptions.credentials = 'include';
@@ -210,7 +206,6 @@ var cbWSClient = function (url) {
 			query += ';';
 		}
 
-		// reqtype = 'GET';
 		let params = '?operation=query&sessionName=' + this._sessionid + '&query=' + query;
 		this.fetchOptions.method = 'get';
 		delete this.fetchOptions.body;
@@ -250,7 +245,6 @@ var cbWSClient = function (url) {
 	this.doListTypes = function () {
 		this.__checkLogin();
 
-		// reqtype = 'GET';
 		let params = '?operation=listtypes&sessionName=' + this._sessionid;
 		this.fetchOptions.method = 'get';
 		delete this.fetchOptions.body;
@@ -285,7 +279,6 @@ var cbWSClient = function (url) {
 	this.doDescribe = function (module) {
 		this.__checkLogin();
 
-		// reqtype = 'GET';
 		let params = '?operation=describe&sessionName=' + this._sessionid + '&elementType=' + module;
 		this.fetchOptions.method = 'get';
 		delete this.fetchOptions.body;
@@ -311,7 +304,6 @@ var cbWSClient = function (url) {
 	this.doRetrieve = function (record) {
 		this.__checkLogin();
 
-		// reqtype = 'GET';
 		let params = '?operation=retrieve&sessionName=' + this._sessionid + '&id=' + record;
 		this.fetchOptions.method = 'get';
 		delete this.fetchOptions.body;
@@ -342,7 +334,6 @@ var cbWSClient = function (url) {
 			valuemap['assigned_user_id'] = this._userid;
 		}
 
-		// reqtype = 'POST';
 		let postdata = 'operation=create&sessionName=' + this._sessionid + '&elementType=' + module + '&element=' + JSON.stringify(valuemap);
 		this.fetchOptions.body = postdata;
 		this.fetchOptions.method = 'post';
@@ -373,7 +364,6 @@ var cbWSClient = function (url) {
 			valuemap['assigned_user_id'] = this._userid;
 		}
 
-		// reqtype = 'POST';
 		let postdata = 'operation=update&sessionName=' + this._sessionid + '&elementType=' + module + '&element=' + JSON.stringify(valuemap);
 		this.fetchOptions.body = postdata;
 		this.fetchOptions.method = 'post';
@@ -399,7 +389,6 @@ var cbWSClient = function (url) {
 	this.doRevise = function (module, valuemap) {
 		this.__checkLogin();
 
-		// reqtype = 'POST';
 		let postdata = 'operation=revise&sessionName=' + this._sessionid + '&elementType=' + module + '&element=' + JSON.stringify(valuemap);
 		this.fetchOptions.body = postdata;
 		this.fetchOptions.method = 'post';
@@ -425,7 +414,6 @@ var cbWSClient = function (url) {
 	this.doDelete = function (id) {
 		this.__checkLogin();
 
-		// reqtype = 'POST';
 		let postdata = 'operation=delete&sessionName=' + this._sessionid + '&id=' + id;
 		this.fetchOptions.body = postdata;
 		this.fetchOptions.method = 'post';
@@ -495,7 +483,6 @@ var cbWSClient = function (url) {
 		// Perform re-login if required.
 		this.__checkLogin();
 
-		// reqtype = 'POST';
 		let postdata = 'operation=getRelatedRecords&sessionName=' + this._sessionid + '&id=' + record + '&module=' + module;
 		postdata += '&relatedModule=' + relatedModule + '&queryParameters=' + JSON.stringify(queryParameters);
 		this.fetchOptions.body = postdata;
@@ -525,7 +512,6 @@ var cbWSClient = function (url) {
 		// Perform re-login if required.
 		this.__checkLogin();
 
-		// reqtype = 'POST';
 		let postdata = 'operation=SetRelation&sessionName=' + this._sessionid + '&relate_this_id=' + relate_this_id + '&with_these_ids=' + JSON.stringify(with_these_ids);
 		this.fetchOptions.body = postdata;
 		this.fetchOptions.method = 'post';

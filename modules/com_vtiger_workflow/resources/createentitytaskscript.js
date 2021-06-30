@@ -440,7 +440,7 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 				});
 				var out = '';
 				if (fieldvaluemapping.length!=0) {
-					var out = JSON.stringify(fieldvaluemapping);
+					out = JSON.stringify(fieldvaluemapping);
 				}
 				$('#save_fieldvaluemapping_json').val(out);
 

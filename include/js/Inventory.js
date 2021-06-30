@@ -195,13 +195,14 @@ function priceBookPickList(currObj, row_no) {
 }
 
 function getProdListBody() {
+	var prodListBody;
 	if (browser_ie) {
-		var prodListBody=getObj('productList').children[0].children[0];
+		prodListBody=getObj('productList').children[0].children[0];
 	} else if (browser_nn4 || browser_nn6) {
 		if (getObj('productList').childNodes.item(0).tagName=='TABLE') {
-			var prodListBody=getObj('productList').childNodes.item(0).childNodes.item(0);
+			prodListBody=getObj('productList').childNodes.item(0).childNodes.item(0);
 		} else {
-			var prodListBody=getObj('productList').childNodes.item(1).childNodes.item(1);
+			prodListBody=getObj('productList').childNodes.item(1).childNodes.item(1);
 		}
 	}
 	return prodListBody;

@@ -299,7 +299,7 @@ var Vtiger_WSClient = function (url) {
 					for (var mindex = 0; mindex < modulenames.length; ++mindex) {
 						var modulename = modulenames[mindex];
 						returnvalue[modulename] = {
-							'name'     : modulename
+							'name': modulename
 						};
 					}
 				}

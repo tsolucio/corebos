@@ -208,8 +208,7 @@ function checkDuplicatePicklistValues(arr) {
  * @param string fieldname - the picklist field name
  */
 function pickAdd(module, fieldname) {
-	var arr = new Array();
-	arr = document.getElementById('add_picklist_values').value.split('\n');
+	var arr = document.getElementById('add_picklist_values').value.split('\n');
 	var trimmedArr = new Array();
 	for (var i=0, j=0; i<arr.length; i++) {
 		if (trim(arr[i]) != '') {

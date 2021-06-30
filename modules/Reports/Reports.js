@@ -416,18 +416,19 @@ function re_dateValidate(fldval, fldLabel, type) {
 
 //Copied from general.js and altered some lines. becos we cant send vales to function present in general.js. it accept only field names.
 function re_patternValidate(fldval, fldLabel, type) {
+	var re;
 	if (type.toUpperCase()=='DATE') {//DATE validation
 		switch (userDateFormat) {
 		case 'yyyy-mm-dd' :
-			var re = /^\d{4}(-)\d{1,2}\1\d{1,2}$/;
+			re = /^\d{4}(-)\d{1,2}\1\d{1,2}$/;
 			break;
 		case 'mm-dd-yyyy' :
 		case 'dd-mm-yyyy' :
-			var re = /^\d{1,2}(-)\d{1,2}\1\d{4}$/;
+			re = /^\d{1,2}(-)\d{1,2}\1\d{4}$/;
 		}
 	}
 	if (type.toUpperCase()=='TIMESECONDS') {//TIME validation
-		var re = new RegExp('^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$|^([0-1][0-9]|[2][0-3]):([0-5][0-9])$');
+		re = new RegExp('^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$|^([0-1][0-9]|[2][0-3]):([0-5][0-9])$');
 	}
 	if (!re.test(fldval)) {
 		alert(alert_arr.ENTER_VALID + fldLabel);
@@ -454,6 +455,7 @@ function standardFilterDisplay() {
 
 function updateRelFieldOptions(sel, opSelName) {
 	var selObj = document.getElementById(opSelName);
+	var nMaxVal = selObj.length;
 	var fieldtype = null;
 	var currOption = selObj.options[selObj.selectedIndex];
 	var currField = sel.options[sel.selectedIndex];
@@ -463,7 +465,6 @@ function updateRelFieldOptions(sel, opSelName) {
 		var ops = rel_fields[fieldtype];
 		var off = 0;
 		if (ops != null) {
-			var nMaxVal = selObj.length;
 			for (var nLoop = 0; nLoop < nMaxVal; nLoop++) {
 				selObj.remove(0);
 			}
@@ -487,7 +488,6 @@ function updateRelFieldOptions(sel, opSelName) {
 			}
 		}
 	} else {
-		var nMaxVal = selObj.length;
 		for (nLoop = 0; nLoop < nMaxVal; nLoop++) {
 			selObj.remove(0);
 		}
@@ -1223,7 +1223,7 @@ function constructSelectOptions(selectedMemberType, idArr, nameArr) {
 	var findStr=document.NewReport.findStr.value;
 	if (findStr.replace(/^\s+/g, '').replace(/\s+$/g, '').length !=0) {
 		var k=0;
-		for (var i=0; i<nameArr.length; i++) {
+		for (i=0; i<nameArr.length; i++) {
 			if (nameArr[i].indexOf(findStr) == 0) {
 				constructedOptionName[k] = nameArr[i];
 				constructedOptionValue[k] = idArr[i];
@@ -1286,7 +1286,6 @@ function addColumns() {
 				columnsSelectedObj.appendChild(newColObj);
 				availableListObj.options[i].selected = false;
 				newColObj.selected = true;
-				rowFound = false;
 			} else {
 				availableListObj.options[i].selected = false;
 				if (existingObj != null) {

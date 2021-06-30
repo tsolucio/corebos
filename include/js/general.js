@@ -326,18 +326,19 @@ function patternValidateObject(fldObject, fldLabel, type) {
 	fldObject.value = trim(fldObject.value);
 	let checkval = fldObject.value;
 	let typeUC = type.toUpperCase();
+	let re;
 	if (typeUC=='EMAIL') { //Email ID validation
-		var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
+		re = new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
 	}
 
 	if (typeUC=='DATE') { //DATE validation
 		switch (userDateFormat) {
 		case 'yyyy-mm-dd' :
-			var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/;
+			re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/;
 			break;
 		case 'mm-dd-yyyy' :
 		case 'dd-mm-yyyy' :
-			var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
+			re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
 		}
 		if (checkval.indexOf(' ')>0) {
 			var dt = checkval.split(' ');
@@ -346,7 +347,7 @@ function patternValidateObject(fldObject, fldLabel, type) {
 	}
 
 	if (typeUC=='TIME') { //TIME validation
-		var re = /^\d{1,3}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
+		re = /^\d{1,3}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
 		if (checkval.indexOf(' ')>0) {
 			var dt = checkval.split(' ');
 			checkval = dt[1];
@@ -1430,15 +1431,17 @@ function runBAWorkflow(workflowid, crmids) {
 }
 
 function doModuleValidation(edit_type, editForm, callback) {
+	var formName;
+	var isvalid;
 	if (editForm == undefined) {
-		var formName = 'EditView';
+		formName = 'EditView';
 	} else {
-		var formName = editForm;
+		formName = editForm;
 	}
 	if (formName == 'QcEditView') {
-		var isvalid = QCformValidate();
+		isvalid = QCformValidate();
 	} else {
-		var isvalid = doformValidation(edit_type);
+		isvalid = doformValidation(edit_type);
 	}
 	if (isvalid && edit_type!='mass_edit') {
 		doServerValidation(edit_type, formName, callback);
@@ -4680,7 +4683,6 @@ function copySelectedOptions(source, destination) {
 				destObj.appendChild(newColObj);
 				srcObj.options[i].selected=false;
 				newColObj.selected=true;
-				rowFound=false;
 			} else {
 				if (existingObj != null) {
 					existingObj.selected=true;

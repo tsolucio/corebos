@@ -125,7 +125,6 @@ function addColumn() {
 					selectedColumnsObj.appendChild(newColObj);
 					availListObj.options[i].selected = false;
 					newColObj.selected = true;
-					rowFound = false;
 				}
 			} else {
 				if (existingObj != null) {
