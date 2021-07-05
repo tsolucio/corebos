@@ -1,4 +1,4 @@
-FROM php:7.1
+FROM php:7.3
 
 RUN mkdir /twilio
 WORKDIR /twilio
