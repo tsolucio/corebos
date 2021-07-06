@@ -128,7 +128,7 @@ class CBLaunchWorkFlowTask extends VTTask {
 	private function validateCRMID($entityId) {
 		global $adb;
 		list($moduleId, $crmId) = explode('x', $entityId);
-		$res = $adb->query('select * from vtiger_crmobject where crmid='.$crmId);
+		$res = $adb->query('select 1 from vtiger_crmobject where crmid='.$crmId);
 		return (is_numeric($moduleId) && is_numeric($crmId) && $adb->num_rows($res) > 0);
 	}
 
