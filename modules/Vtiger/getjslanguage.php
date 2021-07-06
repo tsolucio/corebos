@@ -21,7 +21,7 @@
  *  Then load the variable with jQuery.getScript()
  *************************************************************************************************/
 global $current_language, $currentModule;
-
+header('Content-type: application/javascript');
 $langmod = isset($_REQUEST['i18nmodule']) ? vtlib_purify($_REQUEST['i18nmodule']) : $currentModule;
 if (file_exists("modules/$langmod/language/$current_language.js")) {
 	$filename="modules/$langmod/language/$current_language.js";
