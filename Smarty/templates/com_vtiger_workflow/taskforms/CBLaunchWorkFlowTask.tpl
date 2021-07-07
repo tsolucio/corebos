@@ -38,6 +38,24 @@
 		'columnname': 'vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V',
 		'comparator': 'e',
 		'value': 'Record Set Mapping',
+		'columncondition': 'or',
+		'groupid': 1
+	},{
+		'columnname': 'vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V',
+		'comparator': 'e',
+		'value': 'Condition Query',
+		'columncondition': 'or',
+		'groupid': 1
+	},{
+		'columnname': 'vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V',
+		'comparator': 'e',
+		'value': 'Condition Expression',
+		'columncondition': 'or',
+		'groupid': 1
+	},{
+		'columnname': 'vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V',
+		'comparator': 'e',
+		'value': 'Decision Table',
 		'columncondition': '',
 		'groupid': 1
 	}];
