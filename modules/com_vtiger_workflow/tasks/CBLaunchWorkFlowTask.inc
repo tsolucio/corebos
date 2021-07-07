@@ -128,9 +128,8 @@ class CBLaunchWorkFlowTask extends VTTask {
 							if (is_string($return)) {
 								$crmids[] = $return;
 							} else {
-								$crmids = array();
-								foreach($return as $ids) {
-									array_push($crmids, array_values($ids)[0]);
+								foreach ($return as $ids) {
+									$crmids[] = reset($ids);
 								}
 							}
 							$this->executeWorkflow($this->workflowid, $crmids, '[]');
