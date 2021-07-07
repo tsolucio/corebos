@@ -9317,7 +9317,7 @@ precacheAndRoute([{
   "revision": "19886b1eaa89b43c3f045be1da6bfc9e"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "c1482460b32f84c786e0173f0a95ae25"
+  "revision": "18e787ed14da4f862156d9b015039971"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "649b525e9490a49f58c4f8d9e1f1bc25"
@@ -9536,7 +9536,7 @@ precacheAndRoute([{
   "revision": "507e0618da87701f11b973970362e3cf"
 }, {
   "url": "modules/com_vtiger_workflow/resources/functionselect.js",
-  "revision": "60339d6e4a5422ff61a0be8b6b420692"
+  "revision": "c4b56b420403c6b98721053315825a87"
 }, {
   "url": "modules/com_vtiger_workflow/resources/generateimagecode.js",
   "revision": "5e5ab3e366035fbf7da2e20ca4edb606"
