@@ -116,7 +116,7 @@ class CBLaunchWorkFlowTask extends VTTask {
 									}
 									$this->executeWorkflow($this->workflowid, $crmids, '[]');
 								}
-							}							
+							}
 							break;
 						default:
 							$context = $entity->getData();

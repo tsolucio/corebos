@@ -174,7 +174,7 @@ function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $reco
 	$qg->setFields(array('id'));
 	$qg->startGroup();
 	foreach ($c as $cond) {
-		$cndparams = preg_split('~,(?![^()]*\))~',$cond);
+		$cndparams = preg_split('~,(?![^()]*\))~', $cond);
 		if (isset($cndparams[4]) && $cndparams[4] == 'expression') {
 			$adminUser = Users::getActiveAdminUser();
 			$entity = new VTWorkflowEntity($adminUser, $entityId);
