@@ -98,21 +98,43 @@ class CBLaunchWorkFlowTask extends VTTask {
 				require_once 'modules/cbMap/cbMap.php';
 				$focus = cbMap::getMapByID($this->recordsetmapid);
 				if (!empty($focus)) {
-					$rsm = $focus->RecordSetMapping();
-					$modules = $rsm->getRecordSetModules();
-					foreach ($modules as $module) {
-						$include = $rsm->getRecordSetModule('include', $module);
-						if (!empty($include)) {
-							$moduleId = vtws_getEntityId($module);
-							$crmids = array();
-							foreach ($include as $id) {
-								$entityid = $moduleId.'x'.$id;
-								if ($this->validateCRMID($entityid)) {
-									$crmids[] = $entityid;
+					$maptype = $focus->column_fields['maptype'];
+					switch ($maptype) {
+						case 'Record Set Mapping':
+							$rsm = $focus->RecordSetMapping();
+							$modules = $rsm->getRecordSetModules();
+							foreach ($modules as $module) {
+								$include = $rsm->getRecordSetModule('include', $module);
+								if (!empty($include)) {
+									$moduleId = vtws_getEntityId($module);
+									$crmids = array();
+									foreach ($include as $id) {
+										$entityid = $moduleId.'x'.$id;
+										if ($this->validateCRMID($entityid)) {
+											$crmids[] = $entityid;
+										}
+									}
+									$this->executeWorkflow($this->workflowid, $crmids, '[]');
+								}
+							}							
+							break;
+						default:
+							$context = $entity->getData();
+							if (!isset($context['record_id'])) {
+								list($wsid, $crmid) = explode('x', $entity->getId());
+								$context['record_id'] = $crmid;
+							}
+							$return = coreBOS_Rule::evaluate($this->recordsetmapid, $context);
+							if (is_string($return)) {
+								$crmids[] = $return;
+							} else {
+								$crmids = array();
+								foreach($return as $ids) {
+									array_push($crmids, array_values($ids)[0]);
 								}
 							}
 							$this->executeWorkflow($this->workflowid, $crmids, '[]');
-						}
+							break;
 					}
 				}
 				break;
