@@ -840,6 +840,22 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'uppercasefirst' => array(
 	'name' => 'uppercasefirst(stringfield)',
+	'desc' => 'This function converts the first character of the given string to upper case.',
+	'params' => array(
+		array(
+			'name' => 'stringfield',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'The string to convert first character to upper case',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"uppercasefirst('hello world')",
+	),
+),
+'uppercasewords' => array(
+	'name' => 'uppercasewords(stringfield)',
 	'desc' => 'This function converts the first character of each word in a string to upper case.',
 	'params' => array(
 		array(
@@ -851,7 +867,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Text'),
 	'examples' => array(
-		"uppercasefirst('hello world')",
+		"uppercasewords('hello world')",
 	),
 ),
 'num2str' => array(

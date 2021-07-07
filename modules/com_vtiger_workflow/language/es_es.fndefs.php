@@ -837,6 +837,22 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'uppercasefirst' => array(
 	'name' => 'uppercasefirst(stringfield)',
+	'desc' => 'Esta función convierte el primer carácter de una cadena a mayúsculas.',
+	'params' => array(
+		array(
+			'name' => 'stringfield',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'la cadena en la que convertir el primer carácter a mayúsculas',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"uppercasefirst('hello world')",
+	),
+),
+'uppercasewords' => array(
+	'name' => 'uppercasewords(stringfield)',
 	'desc' => 'Esta función convierte el primer carácter de cada palabra en una cadena a mayúsculas.',
 	'params' => array(
 		array(
@@ -848,7 +864,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Text'),
 	'examples' => array(
-		"uppercasefirst('hello world')",
+		"uppercasewords('hello world')",
 	),
 ),
 'num2str' => array(
