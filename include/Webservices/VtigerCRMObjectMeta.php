@@ -21,9 +21,11 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	private $assignUsers;
 	public $idColumn;
 	public $baseTable;
+	public $allDisplayTypes = false;
 
 	public function __construct($webserviceObject, $user) {
 		parent::__construct($webserviceObject, $user);
+		$this->allDisplayTypes = $webserviceObject->allDisplayTypes;
 		$this->columnTableMapping = null;
 		$this->fieldColumnMapping = null;
 		$this->userAccessibleColumns = null;
@@ -364,7 +366,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$current_language = vtws_preserveGlobal('current_language', $current_language);
 		$this->computeAccess();
 		$cv = new CustomView();
-		$cv->getCustomViewModuleInfo($this->getTabName());
+		$cv->getCustomViewModuleInfo($this->getTabName(), $this->allDisplayTypes);
 		$blockArray = array();
 		foreach ($cv->module_list[$this->getTabName()] as $blockList) {
 			$blockArray = array_merge($blockArray, explode(',', $blockList));

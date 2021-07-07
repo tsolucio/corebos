@@ -496,9 +496,10 @@ function vtws_addWebserviceOperationParam($operationId, $paramName, $paramType, 
  * @param <type> $user
  * @return WebserviceEntityOperation
  */
-function vtws_getModuleHandlerFromName($name, $user) {
+function vtws_getModuleHandlerFromName($name, $user, $allDisplayTypes = false) {
 	global $adb, $log;
 	$webserviceObject = VtigerWebserviceObject::fromName($adb, $name);
+	$webserviceObject->allDisplayTypes = $allDisplayTypes;
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
 	require_once $handlerPath;

@@ -1124,7 +1124,7 @@ class CustomView extends CRMEntity {
 	/* This function sets the block information for the given module to the class variable module_list
 	 * and return the array
 	 */
-	public function getCustomViewModuleInfo($module) {
+	public function getCustomViewModuleInfo($module, $allDisplayTypes = false) {
 		global $adb, $current_language;
 		$current_mod_strings = return_specified_module_language($current_language, $module);
 		$block_info = array();
@@ -1146,12 +1146,12 @@ class CustomView extends CRMEntity {
 			getTabid('Invoice') => array('LBL_RELATED_PRODUCTS'),
 			getTabid('Users') => $userNoShowBlocks,
 		);
-
+		$displayTypeCondition = $allDisplayTypes ? '' : 'displaytype!=3 and ';
 		$Sql = 'select distinct block,vtiger_field.tabid,name,blocklabel
 			from vtiger_field
 			inner join vtiger_blocks on vtiger_blocks.blockid=vtiger_field.block
 			inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
-			where displaytype != 3 and vtiger_tab.name in (' . generateQuestionMarks($modules_list) . ') and vtiger_field.presence in (0,2) order by block';
+			where '.$displayTypeCondition.'vtiger_tab.name in (' . generateQuestionMarks($modules_list) . ') and vtiger_field.presence in (0,2) order by block';
 		$result = $adb->pquery($Sql, array($modules_list));
 
 		$pre_block_label = '';
