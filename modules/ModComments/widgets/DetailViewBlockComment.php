@@ -66,7 +66,7 @@ class ModComments_DetailViewBlockCommentWidget {
 
 	protected function getModels($parentRecordId, $criteria) {
 		global $adb, $current_user;
-
+		$instances = array();
 		$moduleName = 'ModComments';
 		if (vtlib_isModuleActive($moduleName)) {
 			$entityInstance = CRMEntity::getInstance($moduleName);
@@ -88,7 +88,6 @@ class ModComments_DetailViewBlockCommentWidget {
 			$query = $entityInstance->getListQuery($moduleName, sprintf(' AND %s.related_to=?', $entityInstance->table_name));
 			$query .= $queryCriteria;
 			$result = $adb->pquery($query, array($parentRecordId));
-			$instances = array();
 			if ($adb->num_rows($result)) {
 				while ($resultrow = $adb->fetch_array($result)) {
 					$instances[] = new ModComments_CommentsModel($resultrow);
