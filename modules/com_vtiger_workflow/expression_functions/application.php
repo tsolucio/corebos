@@ -107,10 +107,16 @@ function __cb_getfieldsof($arr) {
 	} else {
 		$qg->setFields(array('*'));
 	}
-	$qg->addCondition('id', $arr[0], 'e');
+	$ids = explode(',',$arr[0]);
+	foreach($ids as $id) {
+		$qg->addCondition('id', $id, 'e', 'or');
+	}
 	$rs = $adb->query($qg->getQuery(false));
 	if ($rs && $adb->num_rows($rs)>0) {
-		return array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
+		$data = array_map(function($val) {
+			return array_filter($val, 'is_string', ARRAY_FILTER_USE_KEY);
+		}, $rs->GetRows());
+		return $data;
 	} else {
 		return array();
 	}
