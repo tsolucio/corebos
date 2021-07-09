@@ -612,11 +612,10 @@ class Users extends CRMEntity {
 
 	public function verifyPassword($password) {
 		global $adb;
-		$query = "SELECT user_name,user_password,crypt_type FROM {$this->table_name} WHERE id=?";
-		$result = $adb->pquery($query, array($this->id));
+		$result = $adb->pquery("SELECT user_name,user_password,crypt_type FROM {$this->table_name} WHERE id=?", array($this->id));
 		$row = $adb->fetchByAssoc($result);
 		$encryptedPassword = $this->encrypt_password($password, $row['crypt_type']);
-		return !($encryptedPassword != $row['user_password']);
+		return $encryptedPassword == $row['user_password'];
 	}
 
 	public function is_authenticated() {

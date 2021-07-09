@@ -3464,17 +3464,17 @@ function getBlockName($blockid) {
 
 function validateAlphaNumericInput($string) {
 	preg_match('/^[\w _\-\/]+$/', $string, $matches);
-	return !(count($matches) == 0);
+	return (count($matches) > 0);
 }
 
 function validateServerName($string) {
 	preg_match('/^[\w\-\.\\/:]+$/', $string, $matches);
-	return !(count($matches) == 0);
+	return (count($matches) > 0);
 }
 
 function validateEmailId($string) {
 	preg_match('/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/', $string, $matches);
-	return !(count($matches) == 0);
+	return (count($matches) > 0);
 }
 
 function str_rsplit($string, $splitLength) {

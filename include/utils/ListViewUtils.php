@@ -3199,7 +3199,7 @@ function getEntityId($module, $entityName, $searchonfield = '') {
 	}
 	$tablename = $adb->query_result($result, 0, 'tablename');
 	$entityidfield = $adb->query_result($result, 0, 'entityidfield');
-	if (!(strpos($fieldsname, ',') === false)) {
+	if (strpos($fieldsname, ',')) {
 		$fieldlists = explode(',', $fieldsname);
 		$fieldsname = 'trim(concat(';  // Add trim function to weed-out extra character values
 		$fieldsname = $fieldsname . implode(",' ',", $fieldlists);
