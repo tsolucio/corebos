@@ -172,9 +172,7 @@ class Validator
             return $find[1];
         }
 
-        if (is_null($value)) {
-            return false;
-        } elseif (is_string($value) && trim($value) === '') {
+        if (is_null($value) || (is_string($value) && trim($value) === '')) {
             return false;
         }
 
@@ -422,9 +420,13 @@ class Validator
      */
     protected function validateIn($field, $value, $params)
     {
-        $isAssoc = array_values($params[0]) !== $params[0];
-        if ($isAssoc) {
-            $params[0] = array_keys($params[0]);
+        $forceAsAssociative = false;
+        if (isset($params[2])) {
+            $forceAsAssociative = (bool) $params[2];
+        }
+
+        if ($forceAsAssociative || $this->isAssociativeArray($params[0])) {
+           $params[0] = array_keys($params[0]);
         }
 
         $strict = false;
@@ -445,8 +447,12 @@ class Validator
      */
     protected function validateListContains($field, $value, $params)
     {
-        $isAssoc = array_values($value) !== $value;
-        if ($isAssoc) {
+        $forceAsAssociative = false;
+        if (isset($params[2])) {
+            $forceAsAssociative = (bool) $params[2];
+        }
+
+        if ($forceAsAssociative || $this->isAssociativeArray($value)) {
             $value = array_keys($value);
         }
 
@@ -629,7 +635,8 @@ class Validator
             if (function_exists('idn_to_ascii') && defined('INTL_IDNA_VARIANT_UTS46')) {
                 $domain = idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
             }
-            return checkdnsrr($domain, 'ANY');
+
+            return checkdnsrr($domain, 'MX');
         }
 
         return false;
@@ -897,11 +904,9 @@ class Validator
                 } elseif (isset($cards)) {
                     // if we have cards, check our users card against only the ones we have
                     foreach ($cards as $card) {
-                        if (in_array($card, array_keys($cardRegex))) {
+                        if (in_array($card, array_keys($cardRegex)) && preg_match($cardRegex[$card], $value) === 1) {
                             // if the card is valid, we want to stop looping
-                            if (preg_match($cardRegex[$card], $value) === 1) {
-                                return true;
-                            }
+                            return true;
                         }
                     }
                 } else {
@@ -1109,10 +1114,8 @@ class Validator
                 }
             }
             // Use custom label instead of field name if set
-            if (is_string($params[0])) {
-                if (isset($this->_labels[$param])) {
-                    $param = $this->_labels[$param];
-                }
+            if (is_string($params[0]) && isset($this->_labels[$param])) {
+                $param = $this->_labels[$param];
             }
             $values[] = $param;
         }
@@ -1301,10 +1304,8 @@ class Validator
     protected function hasRule($name, $field)
     {
         foreach ($this->_validations as $validation) {
-            if ($validation['rule'] == $name) {
-                if (in_array($field, $validation['fields'])) {
-                    return true;
-                }
+            if ($validation['rule'] == $name && in_array($field, $validation['fields'])) {
+                return true;
             }
         }
 
@@ -1582,5 +1583,10 @@ class Validator
         array_map(function ($field) use ($rules, $me) {
             $me->mapFieldRules($field, $rules[$field]);
         }, array_keys($rules));
+    }
+
+    private function isAssociativeArray($input){
+        //array contains at least one key that's not an can not be cast to an integer
+        return count(array_filter(array_keys($input), 'is_string')) > 0;
     }
 }
