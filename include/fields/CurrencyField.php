@@ -297,12 +297,9 @@ class CurrencyField {
 				$wholeNumberFirstPart = str_pad($wholeNumberFirstPart, $numberLength+$gapsToBeFilled, '0', STR_PAD_LEFT);
 				// Split the first part of tne number into chunks of 2 digits
 				$wholeNumberFirstPartElements = str_split($wholeNumberFirstPart, 2);
-				$wholeNumberFirstPart = ltrim(implode($currency_Separator, $wholeNumberFirstPartElements), '0');
 				$wholeNumberFirstPart = implode($currency_Separator, $wholeNumberFirstPartElements);
 				if ($wholeNumberFirstPart != 0) {
 					$wholeNumberFirstPart = ltrim($wholeNumberFirstPart, '0');
-				} else {
-					$wholeNumberFirstPart = 0;
 				}
 				// Re-create the whole number with user's configured currency separator
 				$numericParts[0] = $wholeNumberFirstPart.$currency_Separator.$wholeNumberLastPart;
