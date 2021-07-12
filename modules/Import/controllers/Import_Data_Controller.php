@@ -232,6 +232,19 @@ class Import_Data_Controller {
 					if ($noOfDuplicates > 0) {
 						if ($merge_type == Import_Utils::$AUTO_MERGE_IGNORE) {
 							$entityInfo['status'] = self::$IMPORT_RECORD_SKIPPED;
+							$fieldData = $this->transformForImport($fieldData, $moduleMeta);
+							$baseRecordId = $adb->query_result($duplicatesResult, $noOfDuplicates - 1, $fieldColumnMapping['id']);
+							$baseEntityId = vtws_getId($moduleObjectId, $baseRecordId);
+							$fieldData['id'] = $baseEntityId;
+							//Prepare data for event handler
+							$entityData= array();
+							$entityData['rowId'] = $rowId;
+							$entityData['tableName'] = $tableName;
+							$entityData['entityInfo'] = $entityInfo;
+							$entityData['fieldData'] = $fieldData;
+							$entityData['moduleName'] = $moduleName;
+							$entityData['user'] = $this->user;
+							cbEventHandler::do_action('corebos.entity.import.skip', $entityData);
 						} elseif ($merge_type == Import_Utils::$AUTO_MERGE_OVERWRITE || $merge_type == Import_Utils::$AUTO_MERGE_MERGEFIELDS) {
 							for ($index = 0; $index < $noOfDuplicates - 1; ++$index) {
 								$duplicateRecordId = $adb->query_result($duplicatesResult, $index, $fieldColumnMapping['id']);
