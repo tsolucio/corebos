@@ -166,7 +166,7 @@ function validatefn1(module){
 }
 function deletepbxmanager(module){
     jQuery.ajax({
-		method: "DELETE",
+		method: "POST",
     	url:'index.php?module=PBXManager&action=PBXManagerAjax&file=DeletePBXDetails&ajax=true&semodule='+module,
     }).done(function(response) {
         location.reload(); 

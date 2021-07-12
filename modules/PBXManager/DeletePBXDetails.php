@@ -14,10 +14,8 @@ if (!is_admin($current_user)) {
 	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
 	$smarty->assign('ERROR_MESSAGE', getTranslatedString('LBL_PERMISSION'));
 	$smarty->display('applicationmessage.tpl');
-} else {
-	if (isset($_REQUEST['semodule']) && $_REQUEST['semodule'] == 'asterisk') {
+} elseif (isset($_REQUEST['semodule']) && $_REQUEST['semodule'] == 'asterisk') {
 		$adb->query('delete from vtiger_asterisk'); //delete older records (if any)
-	}
 }
 
 ?>
