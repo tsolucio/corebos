@@ -117,7 +117,7 @@ function fillSelectBox(id, modules, parentModule, filterPred) {
 
 	var referenceFields = reduceR(concat, map(fieldReferenceNames, referenceFieldTypes), []);
 	var fieldLabels = dict(parentFields.concat(referenceFields));
-	document.getElementById(id).innerHTML = "";
+	document.getElementById(id).innerHTML = '';
 	var select = $('#'+id);
 	var optionClass = id+'_option';
 	$.each(fieldLabels, function (k, v) {

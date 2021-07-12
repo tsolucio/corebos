@@ -50,13 +50,12 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
 		where vtiger_senotesrel.crmid=?';
 	$result = $adb->pquery($query, array($_REQUEST['action_id']));
-
-	$req = new Vtiger_Request();
-	$req->set('action_id', $_REQUEST['action_id']);
-	$req->set('callvalue', $_REQUEST['callvalue']);
-	$req->set('targetfield', $_REQUEST['targetfield']);
-	$req->set('callfrom', $_REQUEST['callfrom']);
 }
+$req = new Vtiger_Request();
+$req->set('action_id', isset($_REQUEST['action_id']) ? $_REQUEST['action_id'] : '');
+$req->set('callvalue', isset($_REQUEST['callvalue']) ? $_REQUEST['callvalue'] : '');
+$req->set('targetfield', isset($_REQUEST['targetfield']) ? $_REQUEST['targetfield'] : '');
+$req->set('callfrom', isset($_REQUEST['callfrom']) ? $_REQUEST['callfrom'] : '');
 ?>
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <form name="frmrepstr" onsubmit="VtigerJS_DialogBox.block();">
@@ -66,7 +65,6 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 </textarea>
 </form>
 <script type="text/javascript">
-//my changes
 if (typeof window.opener.document.getElementById('subject') != 'undefined' && window.opener.document.getElementById('subject') != null) {
 	window.opener.document.getElementById('subject').value = window.document.frmrepstr.subject.value;
 	window.opener.document.getElementById('description').value = window.document.frmrepstr.repstr.value;
