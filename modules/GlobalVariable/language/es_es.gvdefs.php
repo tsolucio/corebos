@@ -538,6 +538,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Los campos de referencia a usuario se establecerán al usuario que importa los datos si el valor está vacío o el usuario no tiene permiso para realizar esa asignación. Si esta variable se establece en 1, el campo se dejará vacío si está vacío.',
 ),
+'Import_DuplicateRecordHandling_Open' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Decide si el paso de importación Manejo de registros duplicados está abierto (1) o cerrado (0). Cerrado es el predeterminado.',
+),
+'Import_DuplicateRecordHandling_Type' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'skip | overwrite | merge',
+	'definition' => 'Valor predeterminado para configurar la opción Manejo de registros duplicados.',
+),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'carácter',

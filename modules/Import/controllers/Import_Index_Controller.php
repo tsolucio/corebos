@@ -140,6 +140,16 @@ class Import_Index_Controller {
 		$viewer->assign('AVAILABLE_FIELDS', $indexController->getMergableFields($moduleName));
 		$viewer->assign('ENTITY_FIELDS', $indexController->getEntityFields($moduleName));
 		$viewer->assign('ERROR_MESSAGE', $userInputObject->get('error_message'));
+		$viewer->assign('STEP3_CHECK', GlobalVariable::getVariable('Import_DuplicateRecordHandling_Open', 0)!=0);
+		$STEP3_HANDLETYPE = strtolower(GlobalVariable::getVariable('Import_DuplicateRecordHandling_Type', 0));
+		if ($STEP3_HANDLETYPE=='skip') {
+			$STEP3_HANDLETYPE = 1;
+		} elseif ($STEP3_HANDLETYPE=='overwrite') {
+			$STEP3_HANDLETYPE = 2;
+		} elseif ($STEP3_HANDLETYPE=='merge') {
+			$STEP3_HANDLETYPE = 3;
+		}
+		$viewer->assign('STEP3_HANDLETYPE', $STEP3_HANDLETYPE);
 		$viewer->display('ImportBasic.tpl');
 	}
 

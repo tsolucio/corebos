@@ -182,6 +182,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Import_Scheduled_Limit',
 				'Import_Launch_EventsAndWorkflows',
 				'Import_LeaveUserReferenceFieldEmpty',
+				'Import_DuplicateRecordHandling_Open',
+				'Import_DuplicateRecordHandling_Type',
 				'Export_Field_Separator_Symbol',
 				'Export_RelatedField_GetValueFrom',
 				'Export_RelatedField_NameForSearch',

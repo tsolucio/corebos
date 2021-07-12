@@ -524,6 +524,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'User reference fields will be set to the user importing the data if the value is empty or the user does not have permission to make that assignment. If this variable is set to 1 the field will be left empty if it is empty.',
 ),
+'Import_DuplicateRecordHandling_Open' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Decides if the Duplicate Record Handling import step is open (1) or closed (0). Closed is the default.',
+),
+'Import_DuplicateRecordHandling_Type' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'skip | overwrite | merge',
+	'definition' => 'Default value to set the Duplicate Record Handling option.',
+),
 'Export_Field_Separator_Symbol' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'character',
