@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
 ********************************************************************************/
-global $app_strings, $current_user,$adb;
+global $app_strings, $current_user, $adb;
 if (!is_admin($current_user)) {
 	echo '<br><br>';
 	$smarty = new vtigerCRM_Smarty();
@@ -15,7 +15,6 @@ if (!is_admin($current_user)) {
 	$smarty->assign('ERROR_MESSAGE', getTranslatedString('LBL_PERMISSION'));
 	$smarty->display('applicationmessage.tpl');
 } elseif (isset($_REQUEST['semodule']) && $_REQUEST['semodule'] == 'asterisk') {
-		$adb->query('delete from vtiger_asterisk'); //delete older records (if any)
+	$adb->query('delete from vtiger_asterisk');
 }
-
 ?>

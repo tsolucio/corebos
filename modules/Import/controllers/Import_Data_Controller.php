@@ -203,8 +203,7 @@ class Import_Data_Controller {
 					$fieldsList = array('id');
 					$queryGenerator->setFields($fieldsList);
 
-					$mergeFields = $this->mergeFields;
-					foreach ($mergeFields as $mergeField) {
+					foreach ($this->mergeFields as $mergeField) {
 						if (!isset($fieldData[$mergeField])) {
 							continue;
 						}
@@ -233,8 +232,7 @@ class Import_Data_Controller {
 					if ($noOfDuplicates > 0) {
 						if ($merge_type == Import_Utils::$AUTO_MERGE_IGNORE) {
 							$entityInfo['status'] = self::$IMPORT_RECORD_SKIPPED;
-						} elseif ($merge_type == Import_Utils::$AUTO_MERGE_OVERWRITE ||
-								$merge_type == Import_Utils::$AUTO_MERGE_MERGEFIELDS) {
+						} elseif ($merge_type == Import_Utils::$AUTO_MERGE_OVERWRITE || $merge_type == Import_Utils::$AUTO_MERGE_MERGEFIELDS) {
 							for ($index = 0; $index < $noOfDuplicates - 1; ++$index) {
 								$duplicateRecordId = $adb->query_result($duplicatesResult, $index, $fieldColumnMapping['id']);
 								$entityId = vtws_getId($moduleObjectId, $duplicateRecordId);
@@ -269,9 +267,7 @@ class Import_Data_Controller {
 								}
 								$existingFieldValues = vtws_retrieve($baseEntityId, $this->user);
 								foreach ($existingFieldValues as $fieldName => $fieldValue) {
-									if (empty($fieldValue)
-											&& empty($filteredFieldData[$fieldName])
-											&& !empty($defaultFieldValues[$fieldName])) {
+									if (empty($fieldValue) && empty($filteredFieldData[$fieldName]) && !empty($defaultFieldValues[$fieldName])) {
 										$filteredFieldData[$fieldName] = $fieldValue;
 									}
 								}
@@ -371,8 +367,7 @@ class Import_Data_Controller {
 				if (empty($ownerId) && isset($defaultFieldValues[$fieldName])) {
 					$ownerId = $defaultFieldValues[$fieldName];
 				}
-				if (empty($ownerId) ||
-							!Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $ownerId)) {
+				if (empty($ownerId) || !Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $ownerId)) {
 					$ownerId = $this->user->id;
 				}
 				$fieldData[$fieldName] = $ownerId;
