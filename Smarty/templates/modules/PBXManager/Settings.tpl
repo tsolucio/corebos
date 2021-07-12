@@ -100,6 +100,7 @@
 									<tr>
 										<td width="20%" nowrap colspan="2" align ="center">
 											<input type="button" name="update" class="crmbutton small create" value="{$MOD.LBL_UPDATE_BUTTON}" onclick="validatefn1('asterisk');" />
+											<input type="button" name="delete" class="crmbutton small delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" onclick="if (confirm('{$APP.NTC_DELETE_CONFIRMATION}')) deletepbxmanager('asterisk');"/>
 											<input type="button" name="cancel" class="crmbutton small cancel" value="{$MOD.LBL_CANCEL_BUTTON}" onClick="window.history.back();"/>
 										</td>
 									</tr>
@@ -162,6 +163,14 @@ function validatefn1(module){
 		return false;
 	}
 	setSoftphoneDetails(module);
+}
+function deletepbxmanager(module){
+    jQuery.ajax({
+		method: "POST",
+    	url:'index.php?module=PBXManager&action=PBXManagerAjax&file=DeletePBXDetails&ajax=true&semodule='+module,
+    }).done(function(response) {
+        location.reload(); 
+    });
 }
 
 </script>
