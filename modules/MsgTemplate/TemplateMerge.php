@@ -51,6 +51,7 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 	$result = $adb->pquery($query, array($_REQUEST['action_id']));
 }
 ?>
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 <form name="frmrepstr" onsubmit="VtigerJS_DialogBox.block();">
 <input type="hidden" name="subject" value="<?php echo $tpl[2];?>"></input>
 <textarea name="repstr" style="visibility:hidden">
@@ -67,6 +68,8 @@ if (typeof window.opener.document.getElementById('subject') != 'undefined' && wi
 	var attachment = '<?php echo $row['filename']; ?>';
 	window.opener.addOption(<?php echo $row['notesid']; ?>, attachment);
 <?php } ?>
+} else {
+       vtlib_setvalue_from_popup('<?php echo $_REQUEST['action_id']; ?>', '<?php echo $_REQUEST['callvalue']; ?>', '<?php echo $_REQUEST['targetfield']; ?>', '<?php echo $_REQUEST['callform']; ?>');
 }
 window.close();
 </script>
