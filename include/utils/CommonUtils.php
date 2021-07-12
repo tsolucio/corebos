@@ -3557,7 +3557,7 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 		$accessibleFieldNames = array();
 		foreach ($fieldsName as $field) {
 			if ($module == 'Users' || getColumnVisibilityPermission($current_user->id, $field, $module) == '0') {
-				$accessibleFieldNames[] = $fieldValues[$field];
+				$accessibleFieldNames[] = isset($fieldValues[$field]) ? $fieldValues[$field] : '';
 			}
 		}
 		if (!empty($accessibleFieldNames)) {
