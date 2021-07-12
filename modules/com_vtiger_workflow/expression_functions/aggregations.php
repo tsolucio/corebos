@@ -161,8 +161,8 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 	} else {
 		if ($useNamesForUIType10 && $rfield->uitype==Field_Metadata::UITYPE_RECORD_RELATION) {
 			$secLevelRel = getFirstModule($relmodule, $rfield->name);
-			$einfo = getEntityField($secLevelRel);
-			$fname = $einfo['tablename'].'.'.$einfo['fieldname'];
+			$einfo = getEntityField($secLevelRel, true);
+			$fname = $einfo['fieldname'];
 		} else {
 			$fname = $rfield->table.'.'.$rfield->column;
 		}
