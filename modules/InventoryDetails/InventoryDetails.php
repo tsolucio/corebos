@@ -347,7 +347,7 @@ class InventoryDetails extends CRMEntity {
 				$invdet_focus->id = '';
 				$invdet_focus->mode = '';
 			}
-			if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1) {
+			if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $save_currentModule) == 1) {
 				switch ($module) {
 					case 'SalesOrder':
 						if ($invdet_focus->mode == 'edit') {
