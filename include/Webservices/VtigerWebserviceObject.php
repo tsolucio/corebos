@@ -14,6 +14,7 @@ class VtigerWebserviceObject {
 	private $name;
 	private $handlerPath;
 	private $handlerClass;
+	public $allDisplayTypes = false;
 
 	private function __construct($entityId, $entityName, $handler_path, $handler_class) {
 		$this->id = $entityId;

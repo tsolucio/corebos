@@ -182,6 +182,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Import_Scheduled_Limit',
 				'Import_Launch_EventsAndWorkflows',
 				'Import_LeaveUserReferenceFieldEmpty',
+				'Import_DuplicateRecordHandling_Open',
+				'Import_DuplicateRecordHandling_Type',
 				'Export_Field_Separator_Symbol',
 				'Export_RelatedField_GetValueFrom',
 				'Export_RelatedField_NameForSearch',
@@ -210,6 +212,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Workflow_ListView_PageSize',
 				'ModComments_DefaultCriteria',
 				'ModComments_DefaultBlockStatus',
+				'ModComments_Export_Format',
+				'ModComments_Edit_Inline',
 				'EMail_OpenTrackingEnabled',
 				'Email_Attachments_Folder',
 				'EMail_Maximum_Number_Attachments',
@@ -270,6 +274,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'esusername',
 				'espassword',
 				'Security_ImageCheck',
+				'MasterDetail_ReloadScreenAfterEdit',
 			);
 			$delete_these = array(
 				'preload_prototype',

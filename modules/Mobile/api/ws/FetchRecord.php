@@ -25,7 +25,7 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 		return $this->module;
 	}
 
-	protected function processRetrieve(crmtogo_API_Request $request, $module) {
+	protected function processRetrieve(crmtogo_API_Request $request, $modulename) {
 		global $current_language;
 		if (empty($current_language)) {
 			$current_language = crmtogo_WS_Controller::sessionGet('language');
@@ -34,11 +34,11 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 		$recordid = $request->get('record');
 		$record = vtws_retrieve($recordid, $current_user);
 		//on v6.4.0 for products, taxclass information are not retrieved by vtws_retrieve
-		if (!empty($record) && $module =='Products') {
+		if (!empty($record) && $modulename =='Products') {
 			$record['taxclass'] = crmtogo_WS_Utils::gettaxclassInformation($record['id']);
 		}
 		//on v6.4.0 for documents, detailed file information are not retrieved by vtws_retrieve
-		if (!empty($record) && $module =='Documents') {
+		if (!empty($record) && $modulename =='Documents') {
 			$record = crmtogo_WS_Utils::getDetailedDocumentInformation($record);
 		}
 		return $record;
@@ -47,16 +47,16 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 	public function process(crmtogo_API_Request $request) {
 		$response = new crmtogo_API_Response();
 		$current_user = $this->getActiveUser();
-		$module = $this->detectModuleName($request->get('record'));
-		$record = $this->processRetrieve($request, $module);
+		$modulename = $this->detectModuleName($request->get('record'));
+		$record = $this->processRetrieve($request, $modulename);
 		$record['createdtime'] = DateTimeField::convertToUserFormat($record['createdtime']);
 		$record['modifiedtime'] = DateTimeField::convertToUserFormat($record['modifiedtime']);
 		//set related values
 		$this->resolveRecordValues($record, $current_user);
 		$ret_arr = array('record' => $record);
 		if ($request->get('module')) {
-			$module = $request->get('module');
-			$moduleWSFieldNames =  crmtogo_WS_Utils::getEntityFieldnames($module);
+			$modulename = $request->get('module');
+			$moduleWSFieldNames =  crmtogo_WS_Utils::getEntityFieldnames($modulename);
 			foreach ($moduleWSFieldNames as $key => $value) {
 				if (!is_array($record[$value])) {
 					$relatedlistcontent[$key]=$record[$value];
@@ -66,7 +66,7 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 			}
 			$relatedlistcontent['id']=$record['id'];
 			$ret_arr['relatedlistcontent'] = $relatedlistcontent;
-		} elseif (vtlib_isModuleActive('ModComments') && $module!='HelpDesk') {
+		} elseif (vtlib_isModuleActive('ModComments') && $modulename!='HelpDesk') {
 			//crm-now: fetch ModComments if active, but not for trouble tickets
 			include_once 'include/Webservices/Query.php';
 			$comments = vtws_query("SELECT * FROM ModComments WHERE related_to = '".$record['id']."' ORDER BY createdtime DESC LIMIT 5;", $current_user);
@@ -79,7 +79,7 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 			} else {
 				$ret_arr['comments'] = array();
 			}
-		} elseif ($module =='HelpDesk') {
+		} elseif ($modulename =='HelpDesk') {
 			//crm-now: fetch Comments for trouble tickets
 			//there is currently no vtws service for ticket comments
 			$comments = crmtogo_WS_Utils::getTicketComments($record);

@@ -802,11 +802,11 @@ class OpenDocument {
 			$docno = substr($texto_p, $strlen_includeGD);
 			$docno = trim($docno, ' }');
 			if ($docno!='Documents') {
-				$path = Documents::getAttachmentPath($docno);
-				if ($path!='') {
+				$pth = Documents::getAttachmentPath($docno);
+				if ($pth!='') {
 					$inccontentDOM = new DOMDocument('1.0', 'UTF-8');
-					if ($inccontentDOM->loadXML(ZipWrapper::read($path, self::FILE_CONTENT))) {
-						OpenDocument::debugmsg('INCLUDING FILE: '.$path);
+					if ($inccontentDOM->loadXML(ZipWrapper::read($pth, self::FILE_CONTENT))) {
+						OpenDocument::debugmsg('INCLUDING FILE: '.$pth);
 						// include content
 						$innodelist = $inccontentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'body');
 						$xmlText = simplexml_import_dom($innodelist->item(0)->firstChild);
@@ -872,14 +872,14 @@ class OpenDocument {
 							@mkdir($tmpdir);
 							ZipWrapper::unlinkRecursive($tmpdir, false);
 							$zipinc = new ZipArchive;
-							$zipinc->open(realpath($path));
+							$zipinc->open(realpath($pth));
 							$zipinc->extractTo($tmpdir);
 							$zipinc->close();
 							foreach ($innodelist as $incnode) {
 								$nifname = $incnode->getAttribute('xlink:href');
 								$this->newImages[] = $tmpdir.'/'.$nifname;
-								$mimetype = $incnode->getAttribute('loext:mime-type');
-								$this->makeFileEntryElement($nifname, $mimetype);
+								$mtype = $incnode->getAttribute('loext:mime-type');
+								$this->makeFileEntryElement($nifname, $mtype);
 							}
 						}
 						// $xp = new DOMXPath($inccontentDOM);
@@ -1012,8 +1012,8 @@ class OpenDocument {
 		$this->metaDOM = $obj->metaDOM;
 		$this->settingsDOM = $obj->settingsDOM;
 		$this->manifestDOM = $obj->manifestDOM;
-		$fonts= $obj->getFontsInfo();
-		$this->addFonts($fonts);
+		$fonts_info= $obj->getFontsInfo();
+		$this->addFonts($fonts_info);
 		$this->copyStyles($obj->styles);
 		array_push($parentArray, $this);
 		$endcompile = microtime(true)-$startcompile;
@@ -1650,8 +1650,8 @@ class OpenDocument {
 	 */
 	public function addStyles($node, $elem, $elemtype, $keepname = false) {
 		$style_name = $this->getStyleName($node);
-		$ReservedStyles=implode('|', OpenDocument::$ReservedStyles);
-		if (preg_match("[$ReservedStyles]", $style_name)) {
+		$reservedstyl=implode('|', OpenDocument::$reservedstyl);
+		if (preg_match("[$reservedstyl]", $style_name)) {
 			$elem->getNode()->setAttributeNS(OpenDocument::NS_TEXT, 'style-name', $style_name);
 			return 0;
 		}
@@ -1870,27 +1870,27 @@ class OpenDocument {
 	 */
 	public function getStyles() {
 		$nodes = $this->styles->getElementsByTagNameNS(self::NS_STYLE, 'style');
-		$styles = array();
+		$styles_arr = array();
 		foreach ($nodes as $node) {
 			$stylename = $node->getAttributeNS(self::NS_STYLE, 'name');
-			$styles[$stylename] = $this->getStyleInfo($node);
+			$styles_arr[$stylename] = $this->getStyleInfo($node);
 		}
 		$nodes = $this->styles->getElementsByTagNameNS(self::NS_TEXT, 'list-style');
 		foreach ($nodes as $node) {
 			$stylename = $node->getAttributeNS(self::NS_STYLE, 'name');
-			$styles[$stylename] = $this->getListStyleInfo($node);
+			$styles_arr[$stylename] = $this->getListStyleInfo($node);
 		}
 		$nodes = $this->styles->getElementsByTagNameNS(OpenDocument::NS_NUMBER, 'date-style');
 		foreach ($nodes as $node) {
 			$stylename = $node->getAttributeNS(OpenDocument::NS_STYLE, 'name');
-			$styles[$stylename] = $this->getStyleInfo($node, true);
+			$styles_arr[$stylename] = $this->getStyleInfo($node, true);
 		}
 		$nodes = $this->styles->getElementsByTagNameNS(OpenDocument::NS_NUMBER, 'time-style');
 		foreach ($nodes as $node) {
 			$stylename = $node->getAttributeNS(OpenDocument::NS_STYLE, 'name');
-			$styles[$stylename] = $this->getStyleInfo($node, true);
+			$styles_arr[$stylename] = $this->getStyleInfo($node, true);
 		}
-		return $styles;
+		return $styles_arr;
 	}
 
 	/**
@@ -2045,11 +2045,11 @@ class OpenDocument {
 	 */
 	public function getFonts() {
 		$nodes = $this->fonts->getElementsByTagNameNS(self::NS_STYLE, 'font-face');
-		$fonts = array();
+		$fonts_info = array();
 		foreach ($nodes as $node) {
-			$fonts[] = $node->getAttributeNS(self::NS_STYLE, 'name');
+			$fonts_info[] = $node->getAttributeNS(self::NS_STYLE, 'name');
 		}
-		return $fonts;
+		return $fonts_info;
 	}
 
 	/**
@@ -2059,17 +2059,17 @@ class OpenDocument {
 	 */
 	public function getFontsInfo() {
 		$nodes = $this->fonts->getElementsByTagNameNS(self::NS_STYLE, 'font-face');
-		$fonts = array();
+		$fonts_info = array();
 		foreach ($nodes as $node) {
 			$fontname = $node->getAttributeNS(self::NS_STYLE, 'name');
 			$attributes = $node->attributes;
 			for ($i = 0; $i < $attributes->length; $i ++) {
 				$name = $attributes->item($i)->name;
 				$value = $attributes->item($i)->value;
-				$fonts[$fontname][$name] = $value;
+				$fonts_info[$fontname][$name] = $value;
 			}
 		}
-		return $fonts;
+		return $fonts_info;
 	}
 
 	/**
@@ -2095,9 +2095,9 @@ class OpenDocument {
 	 *
 	 * @param string $font_array
 	 */
-	public function addFonts($fonts) {
-		while ($fprops=current($fonts)) {
-			$fname=key($fonts);
+	public function addFonts($fonts_info) {
+		while ($fprops=current($fonts_info)) {
+			$fname=key($fonts_info);
 			if (!in_array($fname, $this->getFonts())) {
 				$node = $this->contentDOM->createElementNS(self::NS_STYLE, 'font-face');
 				$this->fonts->appendChild($node);
@@ -2111,7 +2111,7 @@ class OpenDocument {
 					next($fprops);
 				}
 			}
-			next($fonts);
+			next($fonts_info);
 		}
 	}
 
@@ -2139,10 +2139,10 @@ class OpenDocument {
 			return false;
 		}
 
-		$children = $node1->childNodes;
-		if ($children->length == $node2->childNodes->length) {
-			for ($i = 0; $i < $children->length; $i ++) {
-				$node = $children->item($i);
+		$child = $node1->childNodes;
+		if ($child->length == $node2->childNodes->length) {
+			for ($i = 0; $i < $child->length; $i ++) {
+				$node = $child->item($i);
 				$matches = $this->getChildrenByName($node2, $node->nodeName);
 				$test = false;
 				foreach ($matches as $match) {
@@ -2170,10 +2170,10 @@ class OpenDocument {
 	 * @return bool
 	 */
 	private function compareChildNodes(DOMNode $node1, DOMNode $node2) {
-		$children = $node1->childNodes;
-		if ($children->length == $node2->childNodes->length) {
-			for ($i = 0; $i < $children->length; $i ++) {
-				$node = $children->item($i);
+		$child = $node1->childNodes;
+		if ($child->length == $node2->childNodes->length) {
+			for ($i = 0; $i < $child->length; $i ++) {
+				$node = $child->item($i);
 				$matches = $this->getChildrenByName($node2, $node->nodeName);
 				$test = false;
 				foreach ($matches as $match) {
@@ -2389,7 +2389,7 @@ class OpenDocument {
 	 * @param 		string mimetype The mime type of this file
 	 * @access		private
 	 */
-	private function makeFileEntryElement($fullpath, $mimetype) {
+	private function makeFileEntryElement($fullpath, $mtype) {
 		/*
 		 * Create a new file-entry element ...
 		 */
@@ -2401,7 +2401,7 @@ class OpenDocument {
 		/*
 		 * ... add mime type of the file into media-type attribute.
 		 */
-		$node->setAttributeNS(self :: MANIFEST, 'manifest:media-type', $mimetype);
+		$node->setAttributeNS(self :: MANIFEST, 'manifest:media-type', $mtype);
 		$this->manifestDOM->firstChild->appendChild($node);
 		return $node;
 	}
@@ -2683,9 +2683,9 @@ class OpenDocument {
 					$nifname = $this->newImages[count($this->newImages)-1];
 					/* get mime-type for a specific file */
 					$finfo = finfo_open(FILEINFO_MIME); // return mime type ala mimetype extension
-					$mimetype = finfo_file($finfo, $nifname);
+					$mtype = finfo_file($finfo, $nifname);
 					if ($nifname != 'not_show_image') {
-						$this->makeFileEntryElement($nifname, $mimetype);
+						$this->makeFileEntryElement($nifname, $mtype);
 						OpenDocument::copyAttributes($child, $elem, basename($nifname));
 					}
 					$newImageAdded=false;

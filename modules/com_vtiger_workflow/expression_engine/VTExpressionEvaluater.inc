@@ -38,6 +38,7 @@ class VTFieldExpressionEvaluater {
 			'time_diffweekdays' => '__cb_getWeekdayDifference',
 			'holidaydifference' => '__cb_holidaydifference',
 			'networkdays' => '__cb_networkdays',
+			'isholidaydate' => '__cb_isHolidayDate',
 			'aggregate_time' => '__cb_aggregate_time',
 			'add_days' => '__vt_add_days',
 			'sub_days' => '__vt_sub_days',
@@ -91,6 +92,7 @@ class VTFieldExpressionEvaluater {
 			'getGEODistanceFromAssignUser2ContactShipping' => '__cb_getGEODistanceFromAssignUser2ContactShipping',
 			'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates',
 			'getIDof' => '__cb_getidof',
+			'getFieldsOF' => '__cb_getfieldsof',
 			'getFromContext' => '__cb_getfromcontext',
 			'getFromContextSearching' => '__cb_getfromcontextsearching',
 			'setToContext' => '__cb_setfromcontext',
@@ -422,17 +424,24 @@ class VTFieldExpressionEvaluater {
 			} else {
 				$module = Vtiger_Module::getInstance($this->env->getModuleName());
 			}
-			$field = Vtiger_Field::getInstance($sym->value, $module);
+			$isPrevValue = (substr($sym->value, 0, 14)=='previousvalue_');
+			if ($isPrevValue) {
+				$field = Vtiger_Field::getInstance(substr($sym->value, 14), $module);
+			} else {
+				$field = Vtiger_Field::getInstance($sym->value, $module);
+			}
 			if ($field && !$raw) {
 				global $adb;
 				$rsfld = $adb->pquery('select * from vtiger_field where fieldid=?', array($field->id));
 				$field = WebserviceField::fromQueryResult($adb, $rsfld, 0);
 				$fieldType = $field->getFieldDataType();
 				if ($fieldType=='reference' || $fieldType=='owner') {
-					preg_match("/([0-9]+)x([0-9]+)/", $val, $results);
+					if ($isPrevValue) {
+						$val = vtws_getWSID($val);
+					}
+					preg_match('/([0-9]+)x([0-9]+)/', $val, $results);
 					if (!empty($results)) {  // if it has the form of a webserviceid
-						$query = 'select name from vtiger_ws_entity where id = ?';
-						$rs = $adb->pquery($query, array($results[1]));
+						$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($results[1]));
 						if ($rs && $adb->num_rows($rs)==1) {  // if the first part is a valid webservice entity id
 							$modname = $adb->query_result($rs, 0, 'name');
 							$modinfo = getEntityName($modname, array($results[2]));

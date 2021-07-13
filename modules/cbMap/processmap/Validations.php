@@ -509,26 +509,30 @@ class Validations extends processcbMap {
 		}
 	}
 
+	public static function loadProductValuesFromScreenValues($screen_values) {
+		$products = array();
+		foreach ($screen_values as $sv_name => $sv) {
+			if (strpos($sv_name, 'hdnProductId') !== false) {
+				$i = substr($sv_name, 12);
+				$qty_i = 'qty'.$i;
+				$name_i = 'productName'.$i;
+				$type_i = 'lineItemType'.$i;
+				$deleted_i = 'deleted'.$i;
+				$products[$i]['crmid'] = $sv;
+				$products[$i]['qty'] = $screen_values[$qty_i];
+				$products[$i]['name'] = $screen_values[$name_i];
+				$products[$i]['type'] = $screen_values[$type_i];
+				$products[$i]['deleted'] = $screen_values[$deleted_i];
+			}
+		}
+		return $products;
+	}
+
 	public static function processAllValidationsFor($module) {
 		global $adb, $current_user;
 		$screen_values = json_decode($_REQUEST['structure'], true);
 		if (in_array($module, getInventoryModules())) {
-			$products = array();
-			foreach ($screen_values as $sv_name => $sv) {
-				if (strpos($sv_name, 'hdnProductId') !== false) {
-					$i = substr($sv_name, 12);
-					$qty_i = 'qty'.$i;
-					$name_i = 'productName'.$i;
-					$type_i = 'lineItemType'.$i;
-					$deleted_i = 'deleted'.$i;
-					$products[$i]['crmid'] = $sv;
-					$products[$i]['qty'] = $screen_values[$qty_i];
-					$products[$i]['name'] = $screen_values[$name_i];
-					$products[$i]['type'] = $screen_values[$type_i];
-					$products[$i]['deleted'] = $screen_values[$deleted_i];
-				}
-			}
-			$screen_values['pdoInformation'] = $products;
+			$screen_values['pdoInformation'] = Validations::loadProductValuesFromScreenValues($screen_values);
 		}
 		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
 		if (!empty($record)) {

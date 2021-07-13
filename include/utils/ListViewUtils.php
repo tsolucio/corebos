@@ -428,20 +428,21 @@ function getNavigationValues($display, $noofrows, $limit) {
 	return $navigation_array;
 }
 
-/* * This function generates the List view entries in a list view
- * Param $focus - module object
- * Param $list_result - resultset of a listview query
- * Param $navigation_array - navigation values in an array
- * Param $relatedlist - check for related list flag
- * Param $returnset - list query parameters in url string
- * Param $edit_action - Edit action value
- * Param $del_action - delete action value
- * Param $oCv - vtiger_customview object
- * Returns an array type
+/** This function generates the List view entries in a list view
+ * @param object module object
+ * @param string related module name
+ * @param object resultset of a listview query
+ * @param array navigation values
+ * @param boolean check for related list flag
+ * @param string list query parameters in url
+ * @param string has Edit action value deprecated
+ * @param string has Delete action value deprecated
+ * @param object custom view object
+ * @return array with display values for each row in the list view
  */
 function getListViewEntries($focus, $module, $list_result, $navigation_array, $relatedlist = '', $returnset = '', $edit_action = 'EditView', $del_action = 'Delete', $oCv = '', $page = '', $selectedfields = '', $contRelatedfields = '', $skipActions = false) {
 	global $log, $adb, $current_user, $app_strings, $theme, $default_charset;
-	$log->debug("> getListViewEntries focus,$module,list_result,$relatedlist,$returnset,$edit_action,$del_action,oCv");
+	$log->debug("> getListViewEntries $module,$relatedlist,$returnset");
 	$noofrows = $adb->num_rows($list_result);
 	$list_block = array();
 	$tabid = getTabid($module);
@@ -886,12 +887,12 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	return $list_block;
 }
 
-/* * This function generates the List view entries in a popup list view
- * Param $focus - module object
- * Param $module
- * Param $list_result - resultset of a listview query
- * Param $navigation_array - navigation values in an array
- * Returns an array type
+/** This function generates the List view entries in a popup list view
+ * @param object module object
+ * @param string module name
+ * @param object resultset of a listview query
+ * @param array navigation values in an array
+ * @return array with user display values of search results
  */
 function getSearchListViewEntries($focus, $module, $list_result, $navigation_array) {
 	global $log, $adb, $app_strings, $current_user;
@@ -902,7 +903,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	$list_header = '';
 	$list_block = array();
 
-	//getting the vtiger_fieldtable entries from database
+	//getting the field table entries from database
 	$tabid = getTabid($module);
 	$userprivs = $current_user->getPrivileges();
 
@@ -1001,20 +1002,15 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 						}
 						$value = $adb->query_result($list_result, $i, $column_name);
 					} else {
-						if (($module == 'Calls' || $module == 'Tasks' || $module == 'Meetings' || $module == 'Emails') && (($name == 'Related to') || ($name == 'Contact Name') || ($name == 'Vendor Name'))) {
-							if ($name == 'Related to') {
-								$value = getRelatedTo($module, $list_result, $i);
+						if ($module == 'Emails' && $name == 'Contact Name') {
+							$contact_id = $adb->query_result($list_result, $i, 'contactid');
+							$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
+							$value = '';
+							if (($contact_name != '') && ($contact_id != 'NULL')) {
+								$value = "<a href='index.php?module=Contacts&action=DetailView&record=" . $contact_id . "'>" . $contact_name . '</a>';
 							}
-							if ($name == 'Contact Name') {
-								$contact_id = $adb->query_result($list_result, $i, 'contactid');
-								$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
-								$value = '';
-								if (($contact_name != '') && ($contact_id != 'NULL')) {
-									$value = "<a href='index.php?module=Contacts&action=DetailView&record=" . $contact_id . "'>" . $contact_name . '</a>';
-								}
-							}
-						} elseif (($module == 'Faq' || $module == 'Documents') && $name == 'Related to') {
-							$value = getRelatedToEntity($module, $list_result, $i);
+						} elseif (($module == 'Faq' || $module == 'Documents' || $module == 'Emails') && $name == 'Related to') {
+							$value = getRelatedTo($module, $list_result, $i);
 						} elseif ($name=='Account Name' && ($module=='Potentials' || $module=='SalesOrder' || $module=='Quotes' || $module=='Invoice' || $module=='Contacts')) {
 							$account_id = $adb->query_result($list_result, $i, 'accountid');
 							$account_name = getAccountName($account_id);
@@ -1975,9 +1971,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$count = counterValue();
 					$value = '<a href="javascript:window.close();" onclick=\'set_return_specific_campaign("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 				} else {
-					if ($colname == 'lastname') {
-						$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
-					} elseif ($module == 'Users' && $fieldname == 'last_name') {
+					if ($colname == 'lastname' || ($module == 'Users' && $fieldname == 'last_name')) {
 						$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
 					}
 					$slashes_temp_val = popup_from_html($field_valEncoded);
@@ -2056,9 +2050,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 }
 
 /** Function to get the list query for a module
- * @param $module -- module name:: Type string
- * @param $where -- where:: Type string
- * @returns $query -- query:: Type query
+ * @param string module name
+ * @param string where
+ * @return string SQL query
  */
 function getListQuery($module, $where = '') {
 	global $log, $current_user;
@@ -2450,77 +2444,69 @@ function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popupt
 	return $list;
 }
 
-/* * Function to get parent name for a given parent id
- * Param $module - module name
- * Param $list_result- result set
- * Param $rset - result set index
- * Returns an string value
+/** Function to get the related record entity name for a given CRMID
+ * @param string module name
+ * @param object result set
+ * @param integer result set index
+ * @return string user display value of "related to" record
+ * @deprecated use getRelatedTo
  */
 function getRelatedToEntity($module, $list_result, $rset) {
 	return getRelatedTo($module, $list_result, $rset);
 }
 
-/* * Function to get parent name for a given parent id
- * Param $module - module name
- * Param $list_result- result set
- * Param $rset - result set index
- * Returns an string value
+/** Function to get the related record entity name for a given CRMID
+ * @param string module name
+ * @param object result set
+ * @param integer result set index
+ * @return string user display value of "related to" record
  */
-//used in home page listTop files
 function getRelatedTo($module, $list_result, $rset) {
 	global $adb, $log, $app_strings;
-	$mod = CRMEntity::getInstance($module);
-	$crmTable = $mod->crmentityTable;
 	if ($module == 'Documents') {
 		$notesid = $adb->query_result($list_result, $rset, 'notesid');
 		$evt_query = 'SELECT vtiger_senotesrel.crmid, vtiger_crmentity.setype
 			FROM vtiger_senotesrel
 			INNER JOIN vtiger_crmentity ON vtiger_senotesrel.crmid = vtiger_crmentity.crmid
-			WHERE vtiger_senotesrel.notesid = ?';
+			WHERE vtiger_senotesrel.notesid=?';
 		$params = array($notesid);
 	} elseif ($module == 'Products') {
 		$productid = $adb->query_result($list_result, $rset, 'productid');
-		$evt_query = 'SELECT vtiger_seproductsrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_seproductsrel.crmid, vtiger_crmobject.setype
 			FROM vtiger_seproductsrel
-			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_seproductsrel.crmid = vtiger_crmentity.crmid
-			WHERE vtiger_seproductsrel.productid =?';
+			INNER JOIN vtiger_crmobject ON vtiger_seproductsrel.crmid=vtiger_crmobject.crmid
+			WHERE vtiger_seproductsrel.productid=?';
 		$params = array($productid);
-	} else {
+	} elseif ($module == 'HelpDesk') {
+		$activity_id = $adb->query_result($list_result, $rset, 'parent_id');
+		$evt_query = 'SELECT crmid, setype FROM vtiger_crmobject WHERE crmid=?';
+		$params = array($activity_id);
+	} else { // calendar and emails
 		$activity_id = $adb->query_result($list_result, $rset, 'activityid');
-		$evt_query = 'SELECT vtiger_seactivityrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_seactivityrel.crmid, vtiger_crmobject.setype
 			FROM vtiger_seactivityrel
-			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_seactivityrel.crmid = vtiger_crmentity.crmid
+			INNER JOIN vtiger_crmobject ON vtiger_seactivityrel.crmid=vtiger_crmobject.crmid
 			WHERE vtiger_seactivityrel.activityid=?';
 		$params = array($activity_id);
-
-		if ($module == 'HelpDesk') {
-			$activity_id = $adb->query_result($list_result, $rset, 'parent_id');
-			if ($activity_id != '') {
-				$evt_query = 'SELECT crmid, setype FROM '.$crmTable.' WHERE crmid=?';
-				$params = array($activity_id);
-			}
-		}
 	}
 	// change the related to in emails to multiple if email is related with more than one contact
 	$evt_result = $adb->pquery($evt_query, $params);
 	$numrows = $adb->num_rows($evt_result);
-
 	$parent_module = $adb->query_result($evt_result, 0, 'setype');
 	$parent_id = $adb->query_result($evt_result, 0, 'crmid');
 	$parent_name = '';
+	$parent_value = '';
 	if ($numrows > 1) {
 		$parent_module = 'Multiple';
 		$parent_name = $app_strings['LBL_MULTIPLE'];
-	}
-	if ($module == 'HelpDesk' && ($parent_module == 'Accounts' || $parent_module == 'Contacts')) {
-		$module_icon='<img src="themes/images/'.$parent_module.'.gif" alt="'.$app_strings[$parent_module].'" title="'.$app_strings[$parent_module].'" border=0 align=center>';
-	} else {
-		$module_icon = '';
-	}
-
-	if ($parent_module == 'Multiple') {
 		$parent_value = $parent_name;
-	} else {
+	}
+	if ($parent_module != 'Multiple' && !empty($parent_id)) {
+		if ($module == 'HelpDesk' && ($parent_module == 'Accounts' || $parent_module == 'Contacts')) {
+			$module_icon='<img src="themes/images/'.$parent_module.'.gif" alt="'.$app_strings[$parent_module].'" title="'.$app_strings[$parent_module].'" border=0 align=center>';
+		} else {
+			$module_icon = '';
+		}
 		$ename = getEntityName($parent_module, array($parent_id));
 		$parent_name = $ename[$parent_id];
 		$parent_name = textlength_check($parent_name);
@@ -3213,7 +3199,7 @@ function getEntityId($module, $entityName, $searchonfield = '') {
 	}
 	$tablename = $adb->query_result($result, 0, 'tablename');
 	$entityidfield = $adb->query_result($result, 0, 'entityidfield');
-	if (!(strpos($fieldsname, ',') === false)) {
+	if (strpos($fieldsname, ',')) {
 		$fieldlists = explode(',', $fieldsname);
 		$fieldsname = 'trim(concat(';  // Add trim function to weed-out extra character values
 		$fieldsname = $fieldsname . implode(",' ',", $fieldlists);

@@ -310,6 +310,13 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>mocodertz</author>
+	<description>Install Launch workflow task</description>
+	<filename>build/changeSets/2020/installLaunchWorkFlowTask.php</filename>
+	<classname>installLaunchWorkFlowTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>denaldhushi</author>
 	<description>Add Send File workflow task</description>
 	<filename>build/changeSets/2020/addExeWFSendFilesTask.php</filename>

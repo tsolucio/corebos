@@ -157,6 +157,9 @@ class Plugin extends DAV\ServerPlugin
     public function httpPOST(RequestInterface $request, ResponseInterface $response)
     {
         $contentType = $request->getHeader('Content-Type');
+        if (!\is_string($contentType)) {
+            return;
+        }
         list($contentType) = explode(';', $contentType);
         if ('application/x-www-form-urlencoded' !== $contentType &&
             'multipart/form-data' !== $contentType) {
@@ -209,7 +212,6 @@ class Plugin extends DAV\ServerPlugin
 
                 // @codeCoverageIgnoreStart
                 case 'put':
-
                     if ($_FILES) {
                         $file = current($_FILES);
                     } else {

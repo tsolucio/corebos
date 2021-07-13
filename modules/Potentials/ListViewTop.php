@@ -37,9 +37,9 @@ function getTopPotentials($maxval, $calCnt) {
 	$rate_symbol = getCurrencySymbolandCRate($currencyid);
 	$curr_symbol = $rate_symbol['symbol'];
 	$header[]=$current_module_strings['LBL_LIST_AMOUNT'].'('.$curr_symbol.')';
-	$list_query = 'SELECT vtiger_crmentity.crmid, vtiger_potential.potentialname, vtiger_potential.amount, potentialid
+	$list_query = 'SELECT vtiger_crmentity.crmid, vtiger_potential.potentialname, vtiger_potential.amount, vtiger_potential.potentialid
 		FROM vtiger_potential
-		INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_potential.potentialid';
+		INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_potential.potentialid';
 	$list_query .= getNonAdminAccessControlQuery('Potentials', $current_user);
 	$list_query .= 'WHERE vtiger_crmentity.deleted=0 '.$where;
 	$list_query .=' ORDER BY amount DESC';

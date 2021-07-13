@@ -88,9 +88,14 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 		return 0;
 	}
 	$sep = '';
+	$useNamesForUIType10 = false;
 	if ($operation=='group_concat') { // to support 'separator'
 		if (stripos($arr[2], 'separator')!==false) {
 			$sep = ' '.trim(substr($arr[2], strpos($arr[2], ' ')));
+			if (strtolower(substr($sep, -4))=='name') {
+				$useNamesForUIType10 = true;
+				$sep = ' '.trim(substr($sep, 0, strlen($sep)-4));
+			}
 			$arr[2] = trim(substr($arr[2], 0, strpos($arr[2], ' ')));
 		} else {
 			$arr[2] = trim($arr[2]);
@@ -154,7 +159,14 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 	if ($userdefinedoperation) {
 		$query = 'select '.$operation.'('.$relfields_operation.') as aggop '.$qfrom;
 	} else {
-		$query = 'select '.$operation.'('.$rfield->table.'.'.$rfield->column.$sep.') as aggop '.$qfrom;
+		if ($useNamesForUIType10 && $rfield->uitype==Field_Metadata::UITYPE_RECORD_RELATION) {
+			$secLevelRel = getFirstModule($relmodule, $rfield->name);
+			$einfo = getEntityField($secLevelRel, true);
+			$fname = $einfo['fieldname'];
+		} else {
+			$fname = $rfield->table.'.'.$rfield->column;
+		}
+		$query = 'select '.$operation.'('.$fname.$sep.') as aggop '.$qfrom;
 	}
 	$logbg->debug("Agg query: $query");
 	return $query;
@@ -174,12 +186,21 @@ function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $reco
 	$qg->setFields(array('id'));
 	$qg->startGroup();
 	foreach ($c as $cond) {
-		$cndparams = explode(',', $cond);
-		if (!$SQLGenerationMode) {
-			$ct = new VTSimpleTemplate($cndparams[2]);
-			$value = $ct->render($entityCache, $entityId);
+		$cndparams = preg_split('~,(?![^()]*\))~', $cond);
+		if (isset($cndparams[4]) && $cndparams[4] == 'expression') {
+			$adminUser = Users::getActiveAdminUser();
+			$entity = new VTWorkflowEntity($adminUser, $entityId);
+			$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer(rawurldecode($cndparams[2]))));
+			$expression = $parser->expression();
+			$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+			$value = $exprEvaluater->evaluate($entity);
 		} else {
-			$value = $cndparams[2];
+			if (!$SQLGenerationMode) {
+				$ct = new VTSimpleTemplate($cndparams[2]);
+				$value = $ct->render($entityCache, $entityId);
+			} else {
+				$value = $cndparams[2];
+			}
 		}
 		$qg->addCondition($cndparams[0], $value, $cndparams[1], $cndparams[3]);
 	}

@@ -1354,12 +1354,6 @@ class CRMEntity {
 	 */
 	public function save($module_name, $fileid = '') {
 		global $current_user, $adb;
-		if (empty($_REQUEST['FILTERFIELDSMAP'])) {
-			$mdmaps = cbMap::getMapsByType('MasterDetailLayout', $module_name);
-			if (count($mdmaps)>0) {
-				$_REQUEST['FILTERFIELDSMAP'] = reset($mdmaps);
-			}
-		}
 		if (!empty($_REQUEST['FILTERFIELDSMAP'])) {
 			$bmapname = vtlib_purify($_REQUEST['FILTERFIELDSMAP']);
 			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -1705,7 +1699,7 @@ class CRMEntity {
 		global $current_user, $adb;
 		$thismodule = $_REQUEST['module'];
 
-		include 'include/utils/ExportUtils.php';
+		include_once 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery($thismodule, 'detail_view');
@@ -2325,18 +2319,18 @@ class CRMEntity {
 			}
 		}
 
-		$query ="select case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name,
-				vtiger_activity.activityid, vtiger_activity.subject, vtiger_activity.semodule, vtiger_activity.activitytype, vtiger_email_track.access_count,
-				vtiger_activity.date_start,vtiger_activity.time_start, vtiger_activity.status, vtiger_activity.priority, ".$this->crmentityTable.'.crmid,'
-				.'vtiger_crmentity.smownerid,vtiger_crmentity.modifiedtime, vtiger_users.user_name, vtiger_seactivityrel.crmid as parent_id, vtiger_emaildetails.*
+		$query ="select case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name, vtiger_activity.activityid,
+				vtiger_activity.subject, vtiger_activity.semodule, vtiger_activity.activitytype, vtiger_email_track.access_count, vtiger_activity.date_start,
+				vtiger_activity.time_start, vtiger_activity.status, vtiger_activity.priority, ".$other->crmentityTable.'.crmid,'.$other->crmentityTable.'.smownerid,'
+				.$other->crmentityTable.'.modifiedtime, vtiger_users.user_name, vtiger_seactivityrel.crmid as parent_id, vtiger_emaildetails.*
 			from vtiger_activity
 			inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid'
-			.' inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_activity.activityid'
+			.' inner join '.$other->crmentityTable.' on '.$other->crmentityTable.'.crmid=vtiger_activity.activityid'
 			.' inner join vtiger_emaildetails on vtiger_emaildetails.emailid = vtiger_activity.activityid
 			left join vtiger_email_track on (vtiger_email_track.crmid=vtiger_seactivityrel.crmid AND vtiger_email_track.mailid=vtiger_activity.activityid)
-			left join vtiger_groups on vtiger_groups.groupid='.$this->crmentityTable.'.smownerid
-			left join vtiger_users on vtiger_users.id='.$this->crmentityTable.".smownerid
-			where vtiger_activity.activitytype='Emails' and ".$this->crmentityTable.'.deleted=0 and vtiger_seactivityrel.crmid='.$id;
+			left join vtiger_groups on vtiger_groups.groupid='.$other->crmentityTable.'.smownerid
+			left join vtiger_users on vtiger_users.id='.$other->crmentityTable.".smownerid
+			where vtiger_activity.activitytype='Emails' and ".$other->crmentityTable.'.deleted=0 and vtiger_seactivityrel.crmid='.$id;
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
@@ -2772,8 +2766,10 @@ class CRMEntity {
 		}
 
 		$return_value = null;
-		$dependentFieldSql = $adb->pquery("SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND" .
-				' fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=? AND module=?)', array($currentModule, $related_module));
+		$dependentFieldSql = $adb->pquery(
+			"SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=? AND module=?)",
+			array($currentModule, $related_module)
+		);
 		$numOfFields = $adb->num_rows($dependentFieldSql);
 
 		$relWithSelf = false;
@@ -2856,20 +2852,20 @@ class CRMEntity {
 			}
 
 			$query .= " FROM $other->table_name";
-			$query .= ' INNER JOIN '.$this->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
+			$query .= ' INNER JOIN '.$other->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 			$query .= $more_relation;
 			if ($relWithSelf) {
 				$query .= " INNER JOIN $this->table_name as ".$this->table_name."RelSelf ON $relationconditions";
 			} else {
 				$query .= " INNER JOIN $this->table_name ON $relationconditions";
 			}
-			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$this->crmentityTable.'.smownerid';
-			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
+			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$other->crmentityTable.'.smownerid';
+			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$other->crmentityTable.'.smownerid';
 
 			if ($relWithSelf) {
-				$query .= ' WHERE '.$this->crmentityTable.'.deleted=0 AND '.$this->table_name."RelSelf.$this->table_index = $id";
+				$query .= ' WHERE '.$other->crmentityTable.'.deleted=0 AND '.$this->table_name."RelSelf.$this->table_index = $id";
 			} else {
-				$query .= " WHERE ".$this->crmentityTable.".deleted=0 AND $this->table_name.$this->table_index = $id";
+				$query .= " WHERE ".$other->crmentityTable.".deleted=0 AND $this->table_name.$this->table_index = $id";
 			}
 			$query .= " AND vtiger_activity.activitytype != 'Emails'";
 			if ($_REQUEST['cbcalendar_filter'] != 'all') {

@@ -49,7 +49,7 @@ class Tracker {
 			$fieldsname = $adb->query_result($result, 0, 'fieldname');
 			$tablename = $adb->query_result($result, 0, 'tablename');
 			$entityidfield = $adb->query_result($result, 0, 'entityidfield');
-			if (!(strpos($fieldsname, ',') === false)) {
+			if (strpos($fieldsname, ',')) {
 				// concatenate multiple fields with an whitespace between them
 				$fieldlists = explode(',', $fieldsname);
 				$fl = array();

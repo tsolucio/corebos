@@ -1195,17 +1195,22 @@ function getListPrice($productid, $pbid) {
 }
 
 /** This function returns a string with removed new line character, single quote, and back slash double quoute.
- * param $str - string to be converted.
+ * @param string to be converted.
+ * @return string converted
  */
 function br2nl($str) {
-	global $log;
-	$log->debug('> br2nl(' . $str);
 	$str = preg_replace("/\r/", "\\r", $str);
 	$str = preg_replace("/\n/", "\\n", $str);
 	$str = preg_replace("/'/", ' ', $str);
-	$str = preg_replace("/\"/", ' ', $str);
-	$log->debug('< br2nl');
-	return $str;
+	return preg_replace('/"/', ' ', $str);
+}
+
+/** convert line breaks to space in (used in description field during export, among others)
+ * @param string text to converted
+ * @return string converted
+*/
+function br2nl_vt($str) {
+	return preg_replace("/(\r\n)/", ' ', $str);
 }
 
 /** This function returns a text, which escapes the html encode for link tag/ a href tag
@@ -3454,7 +3459,7 @@ function getEntityField($module, $fqn = false) {
 		$fieldsname = $adb->query_result($result, 0, 'fieldname');
 		$tablename = $adb->query_result($result, 0, 'tablename');
 		$entityidfield = $adb->query_result($result, 0, 'entityidfield');
-		if (!(strpos($fieldsname, ',') === false)) {
+		if (strpos($fieldsname, ',')) {
 			$fieldlists = explode(',', $fieldsname);
 			if ($fqn) {
 				array_walk($fieldlists, function (&$elem, $key) use ($tablename) {
@@ -3489,7 +3494,7 @@ function getEntityFieldNames($module) {
 		$tableName = $adb->query_result($result, 0, 'tablename');
 		$entityIdField = $adb->query_result($result, 0, 'entityidfield');
 		$moduleName = $adb->query_result($result, 0, 'modulename');
-		if (!(strpos($fieldsName, ',') === false)) {
+		if (strpos($fieldsName, ',')) {
 			$fieldsName = explode(',', $fieldsName);
 		}
 		$data[$module] = array('tablename' => $tableName, 'modulename' => $moduleName, 'fieldname' => $fieldsName, 'entityidfield' => $entityIdField);
@@ -3552,7 +3557,7 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 		$accessibleFieldNames = array();
 		foreach ($fieldsName as $field) {
 			if ($module == 'Users' || getColumnVisibilityPermission($current_user->id, $field, $module) == '0') {
-				$accessibleFieldNames[] = $fieldValues[$field];
+				$accessibleFieldNames[] = isset($fieldValues[$field]) ? $fieldValues[$field] : '';
 			}
 		}
 		if (!empty($accessibleFieldNames)) {

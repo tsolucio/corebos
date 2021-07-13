@@ -109,6 +109,8 @@ class Emails extends CRMEntity {
 	public function save_module($module) {
 		global $adb;
 		//Inserting into seactivityrel
+		$InsertRelationSQL = 'insert into vtiger_seactivityrel values(?,?)';
+		$DeleteRelationSQL = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
 		if (!empty($_REQUEST['module']) && $_REQUEST['module'] == 'Emails' && !$this->plugin_save) {
 			if ($_REQUEST['currentid'] != '') {
 				$actid = $_REQUEST['currentid'];
@@ -121,10 +123,8 @@ class Emails extends CRMEntity {
 				for ($i=0; $i < count($relatewithids); $i++) {
 					$relid= $relatewithids[$i];
 					if (strpos($parentid, $relatewithids[$i]) === false) {
-						$del_q = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
-						$adb->pquery($del_q, array($relid, $actid));
-						$mysql = 'insert into vtiger_seactivityrel values(?,?)';
-						$adb->pquery($mysql, array($relid, $actid));
+						$adb->pquery($DeleteRelationSQL, array($relid, $actid));
+						$adb->pquery($InsertRelationSQL, array($relid, $actid));
 					}
 				}
 			}
@@ -132,55 +132,41 @@ class Emails extends CRMEntity {
 				if (!$parentid) {
 					$parentid = $adb->getUniqueID('vtiger_seactivityrel');
 				}
-				$mysql = 'insert into vtiger_seactivityrel values(?,?)';
-				$adb->pquery($mysql, array($parentid, $actid));
+				$adb->pquery($InsertRelationSQL, array($parentid, $actid));
 			} else {
 				$myids = explode('|', $parentid);  //2@71|
 				for ($i = 0; $i < (count($myids) - 1); $i++) {
 					$realid = explode('@', $myids[$i]);
 					$mycrmid = $realid[0];
-					//added to handle the relationship of emails with vtiger_users
+					$del_q = $DeleteRelationSQL;
+					$mysql = $InsertRelationSQL;
+					//added to handle the relationship of emails with users
 					if (getModuleForField($realid[1]) == 'Users') {
 						$usrrs = $adb->pquery('select id from vtiger_users where id=?', array($mycrmid));
-						if ($adb->num_rows($usrrs)==0) {
-							$del_q = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
-							$adb->pquery($del_q, array($mycrmid, $actid));
-							$mysql = 'insert into vtiger_seactivityrel values(?,?)';
-						} else {
+						if ($adb->num_rows($usrrs)>0) {
 							$del_q = 'delete from vtiger_salesmanactivityrel where smid=? and activityid=?';
-							$adb->pquery($del_q, array($mycrmid, $actid));
 							$mysql = 'insert into vtiger_salesmanactivityrel values(?,?)';
 						}
-					} else {
-						$del_q = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
-						$adb->pquery($del_q, array($mycrmid, $actid));
-						$mysql = 'insert into vtiger_seactivityrel values(?,?)';
 					}
-					$params = array($mycrmid, $actid);
-					$adb->pquery($mysql, $params);
+					$adb->pquery($del_q, array($mycrmid, $actid));
+					$adb->pquery($mysql, array($mycrmid, $actid));
 				}
 			}
 		} else {
 			if (isset($this->column_fields['parent_id']) && $this->column_fields['parent_id'] != '') {
 				$realid = explode('@', $this->column_fields['parent_id']);
 				$mycrmid = $realid[0];
+				$del_q = $DeleteRelationSQL;
+				$sql = $InsertRelationSQL;
 				if ($realid[1]=='-1') { // user
 					$usrrs = $adb->pquery('select id from vtiger_users where id=?', array($mycrmid));
-					if ($adb->num_rows($usrrs)==0) {
-						$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($mycrmid, $this->id));
-						$sql = 'insert into vtiger_seactivityrel values(?,?)';
-						$params = array($mycrmid, $this->id);
-					} else {
-						$adb->pquery('DELETE FROM vtiger_salesmanactivityrel WHERE smid=? AND activityid=?', array($mycrmid, $this->id));
+					if ($adb->num_rows($usrrs)>0) {
+						$del_q = 'DELETE FROM vtiger_salesmanactivityrel WHERE smid=? AND activityid=?';
 						$sql = 'insert into vtiger_salesmanactivityrel values (?,?)';
-						$params = array($mycrmid, $this->id);
 					}
-				} else {
-					$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($mycrmid, $this->id));
-					$sql = 'insert into vtiger_seactivityrel values(?,?)';
-					$params = array($mycrmid, $this->id);
 				}
-				$adb->pquery($sql, $params);
+				$adb->pquery($del_q, array($mycrmid, $this->id));
+				$adb->pquery($sql, array($mycrmid, $this->id));
 			} elseif (empty($this->column_fields['parent_id']) && $this->mode == 'edit') {
 				$this->deleteRelation('vtiger_seactivityrel');
 			}
@@ -200,8 +186,8 @@ class Emails extends CRMEntity {
 	/**
 	 * Function to get the array of record ids from a string pattern like '2@71|17@-1|120@15'
 	 * This will filter user record ids
-	 * @param type $recordIdsStr
-	 * @return type
+	 * @param string $recordIdsStr
+	 * @return array of CRMIDs
 	 */
 	public function getCRMIdsFromStringPattern($recordIdsStr) {
 		$recordIds = array();
@@ -436,7 +422,7 @@ class Emails extends CRMEntity {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
-		include 'include/utils/ExportUtils.php';
+		include_once 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery('Emails', 'detail_view');
@@ -598,54 +584,54 @@ function get_to_emailids($module) {
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias($module);
 	if ($module == 'Leads') {
 		$query = 'SELECT firstname,lastname,'.implode(',', $emailFields).',vtiger_leaddetails.leadid as id
-				  FROM vtiger_leaddetails
-				  INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
-				  LEFT JOIN vtiger_leadscf ON vtiger_leaddetails.leadid = vtiger_leadscf.leadid
-				  WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.leadid IN ('.generateQuestionMarks($idlist).')';
+			FROM vtiger_leaddetails
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
+			LEFT JOIN vtiger_leadscf ON vtiger_leaddetails.leadid = vtiger_leadscf.leadid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.leadid IN ('.generateQuestionMarks($idlist).')';
 		$leadcols = $adb->getColumnNames('vtiger_leaddetails');
 		if (in_array('emailoptout', $leadcols)) {
 			$query = $query.' AND vtiger_leaddetails.emailoptout=0';
 		}
 	} elseif ($module == 'Contacts') {
 		$query = 'SELECT firstname,lastname,'.implode(',', $emailFields).',vtiger_contactdetails.contactid as id
-				  FROM vtiger_contactdetails
-				  INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_contactdetails.contactid
-				  LEFT JOIN vtiger_contactscf ON vtiger_contactdetails.contactid = vtiger_contactscf.contactid
-				  WHERE vtiger_crmentity.deleted=0 AND vtiger_contactdetails.contactid IN ('.generateQuestionMarks($idlist).') AND vtiger_contactdetails.emailoptout=0';
+			FROM vtiger_contactdetails
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_contactdetails.contactid
+			LEFT JOIN vtiger_contactscf ON vtiger_contactdetails.contactid = vtiger_contactscf.contactid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_contactdetails.contactid IN ('.generateQuestionMarks($idlist).') AND vtiger_contactdetails.emailoptout=0';
 	} elseif ($module == 'Accounts') {
 		$query = 'SELECT vtiger_account.accountname, '.implode(',', $emailFields).',vtiger_account.accountid as id FROM vtiger_account
-				   INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_account.accountid
-				   LEFT JOIN vtiger_accountscf ON vtiger_accountscf.accountid= vtiger_account.accountid
-				   WHERE vtiger_crmentity.deleted=0 AND vtiger_account.accountid IN ('.generateQuestionMarks($idlist).') AND vtiger_account.emailoptout=0';
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_account.accountid
+			LEFT JOIN vtiger_accountscf ON vtiger_accountscf.accountid= vtiger_account.accountid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_account.accountid IN ('.generateQuestionMarks($idlist).') AND vtiger_account.emailoptout=0';
 	} elseif ($module == 'Project') {
 		$query = 'SELECT projectname,'.implode(',', $emailFields).',vtiger_project.projectid as id
-				  FROM vtiger_project
-				  INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_project.projectid
-				  LEFT JOIN vtiger_projectcf ON vtiger_projectcf.projectid = vtiger_project.projectid
-				  WHERE vtiger_crmentity.deleted=0 AND vtiger_project.projectid IN ('.generateQuestionMarks($idlist).')';
+			FROM vtiger_project
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_project.projectid
+			LEFT JOIN vtiger_projectcf ON vtiger_projectcf.projectid = vtiger_project.projectid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_project.projectid IN ('.generateQuestionMarks($idlist).')';
 	} elseif ($module == 'ProjectTask') {
 		$query = 'SELECT projecttaskname,'.implode(',', $emailFields).',vtiger_projecttask.projecttaskid as id
-				  FROM vtiger_projecttask
-				  INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_projecttask.projecttaskid
-				  LEFT JOIN vtiger_projecttaskcf ON vtiger_projecttaskcf.projecttaskid = vtiger_projecttask.projecttaskid
-				  WHERE vtiger_crmentity.deleted=0 AND vtiger_projecttask.projecttaskid IN ('.generateQuestionMarks($idlist).')';
+			FROM vtiger_projecttask
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_projecttask.projecttaskid
+			LEFT JOIN vtiger_projecttaskcf ON vtiger_projecttaskcf.projecttaskid = vtiger_projecttask.projecttaskid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_projecttask.projecttaskid IN ('.generateQuestionMarks($idlist).')';
 	} elseif ($module == 'Potentials') {
 		$query = 'SELECT potentialname,'.implode(',', $emailFields).',vtiger_potential.potentialid as id
-				  FROM vtiger_potential
-				  INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_potential.potentialid
-				  LEFT JOIN vtiger_potentialscf ON vtiger_potentialscf.potentialid = vtiger_potential.potentialid
-				  WHERE vtiger_crmentity.deleted=0 AND vtiger_potential.potentialid IN ('.generateQuestionMarks($idlist).')';
+			FROM vtiger_potential
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_potential.potentialid
+			LEFT JOIN vtiger_potentialscf ON vtiger_potentialscf.potentialid = vtiger_potential.potentialid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_potential.potentialid IN ('.generateQuestionMarks($idlist).')';
 	} elseif ($module == 'HelpDesk') {
 		$query = 'SELECT title,'.implode(',', $emailFields).',vtiger_troubletickets.ticketid as id
-				  FROM vtiger_troubletickets
-				  INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
-				  LEFT JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
-				  WHERE vtiger_crmentity.deleted=0 AND vtiger_troubletickets.ticketid IN ('.generateQuestionMarks($idlist).')';
+			FROM vtiger_troubletickets
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
+			LEFT JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_troubletickets.ticketid IN ('.generateQuestionMarks($idlist).')';
 	} elseif ($module == 'Vendors') {
 		$query = 'SELECT vtiger_vendor.vendorname, '.implode(',', $emailFields).',vtiger_vendor.vendorid as id FROM vtiger_vendor
-				   INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_vendor.vendorid
-				   LEFT JOIN vtiger_vendorcf ON vtiger_vendorcf.vendorid= vtiger_vendor.vendorid
-				   WHERE vtiger_crmentity.deleted=0 AND vtiger_vendor.vendorid IN ('.generateQuestionMarks($idlist).')';
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_vendor.vendorid
+			LEFT JOIN vtiger_vendorcf ON vtiger_vendorcf.vendorid= vtiger_vendor.vendorid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_vendor.vendorid IN ('.generateQuestionMarks($idlist).')';
 	} else {
 		$minfo = getEntityFieldNames($module);
 		$qg = new QueryGenerator($module, $current_user);

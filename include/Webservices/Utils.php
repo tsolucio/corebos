@@ -182,7 +182,7 @@ function vtws_getEntityNameFields($moduleName) {
 	$nameFields = array();
 	if ($rowCount > 0) {
 		$fieldsname = $adb->query_result($result, 0, 'fieldname');
-		if (!(strpos($fieldsname, ',') === false)) {
+		if (strpos($fieldsname, ',')) {
 			 $nameFields = explode(',', $fieldsname);
 		} else {
 			$nameFields[] = $fieldsname;
@@ -496,9 +496,10 @@ function vtws_addWebserviceOperationParam($operationId, $paramName, $paramType, 
  * @param <type> $user
  * @return WebserviceEntityOperation
  */
-function vtws_getModuleHandlerFromName($name, $user) {
+function vtws_getModuleHandlerFromName($name, $user, $allDisplayTypes = false) {
 	global $adb, $log;
 	$webserviceObject = VtigerWebserviceObject::fromName($adb, $name);
+	$webserviceObject->allDisplayTypes = $allDisplayTypes;
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
 	require_once $handlerPath;
@@ -572,7 +573,7 @@ function vtws_getActorEntityNameById($entityId, $idList) {
 			$nameFields = $db->query_result($result, 0, 'name_fields');
 			$tableName = $db->query_result($result, 0, 'table_name');
 			$indexField = $db->query_result($result, 0, 'index_field');
-			if (!(strpos($nameFields, ',') === false)) {
+			if (strpos($nameFields, ',')) {
 				$fieldList = explode(',', $nameFields);
 				$nameFields = 'concat(';
 				$nameFields = $nameFields.implode(",' ',", $fieldList);

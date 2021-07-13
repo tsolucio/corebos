@@ -28,16 +28,16 @@ class Vtiger_Net_Client {
 	 * Example:
 	 * $client = new Vtiger_Net_Client('http://www.vtiger.com');
 	 */
-	public function __construct($url) {
-		$this->setURL($url);
+	public function __construct($urlpath) {
+		$this->setURL($urlpath);
 	}
 
 	/**
 	 * Set another url for this instance
 	 * @param String URL to use go forward
 	 */
-	public function setURL($url) {
-		$this->url = $url;
+	public function setURL($urlpath) {
+		$this->url = $urlpath;
 		$this->client = new HTTP_Request2();
 		$this->response = false;
 	}
@@ -85,9 +85,9 @@ class Vtiger_Net_Client {
 		$this->client->setMethod(HTTP_Request2::METHOD_GET);
 
 		if ($params) {
-			$url = $this->client->getUrl();
+			$urlpath = $this->client->getUrl();
 			foreach ($params as $key => $value) {
-				$url->setQueryVariable($key, $value);
+				$urlpath->setQueryVariable($key, $value);
 			}
 		}
 		try {

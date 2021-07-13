@@ -101,7 +101,7 @@ class ListViewSession {
 			$instance = CRMEntity::getInstance($currentModule);
 			$instance->getNonAdminAccessControlQuery($currentModule, $current_user);
 			if ($currentModule=='Documents' && !empty($folderId)) {
-				$list_query = preg_replace("/[\n\r\s]+/", " ", $list_query);
+				$list_query = preg_replace("/[\n\r\s]+/", ' ', $list_query);
 				$hasOrderBy = stripos($list_query, 'order by');
 				if ($hasOrderBy>0) {
 					$list_query = substr($list_query, 0, $hasOrderBy-1)." AND vtiger_notes.folderid=$folderId ".substr($list_query, $hasOrderBy);

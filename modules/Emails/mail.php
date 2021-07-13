@@ -9,6 +9,7 @@
  ********************************************************************************/
 require_once 'modules/Emails/PHPMailerAutoload.php';
 require_once 'include/utils/CommonUtils.php';
+require_once 'modules/Emails/Emails.php';
 
 /** Function used to send an email
  * $module     - module: only used to add signature if it is different than "Calendar"
@@ -785,5 +786,19 @@ function createEmailRecord($element) {
 	}
 	$result = $handler->create($elementType, $element);
 	return $result['id'];
+}
+
+function createEmailRecordWithSave($element) {
+	$reqModule = $_REQUEST['module'];
+	$reqPID = isset($_REQUEST['parent_id']) ? $_REQUEST['parent_id'] : '';
+	$_REQUEST['module'] = 'Emails';
+	$_REQUEST['parent_id'] = $element['parent_id'];
+	$focus = new Emails();
+	$focus->column_fields = $element;
+	$focus->column_fields['activitytype'] = 'Emails';
+	$focus->save('Emails');
+	$_REQUEST['module'] = $reqModule;
+	$_REQUEST['parent_id'] = $reqPID;
+	return $focus;
 }
 ?>

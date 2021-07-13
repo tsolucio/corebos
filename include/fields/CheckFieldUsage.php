@@ -26,6 +26,8 @@
  */
 function checkFieldUsage($fldname, $modname) {
 	global $adb, $current_language;
+	$spanStart = '<span style="color:red">';
+	$spanEnd = '</span><br>';
 	$i18n = return_module_language($current_language, 'Settings');
 	$mod = Vtiger_Module::getInstance($modname);
 	$tabid = $mod->getId();
@@ -40,7 +42,7 @@ function checkFieldUsage($fldname, $modname) {
 	$crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test like ? and module_name=?', array('%'.$fldname.'%', $modname));
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$i18n['wf_conditions_found'].$fnd['workflow_id']. ' / ' .$fnd['summary'].'</span><br>';
+			$ret .= $spanStart.$i18n['wf_conditions_found'].$fnd['workflow_id']. ' / ' .$fnd['summary'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'workflow';
@@ -58,8 +60,8 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$i18n['wf_tasks_found'].'('.$fnd['workflow_id'].') '.$i18n['LBL_TASK'].' ('.$fnd['task_id'].'): ';
-			$ret .= $fnd['summary'].'</span><br>';
+			$ret .= $spanStart.$i18n['wf_tasks_found'].'('.$fnd['workflow_id'].') '.$i18n['LBL_TASK'].' ('.$fnd['task_id'].'): ';
+			$ret .= $fnd['summary'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'workflowtasks';
@@ -77,7 +79,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$i18n['cv_column'].$fnd['viewname'].'</span><br>';
+			$ret .= $spanStart.$i18n['cv_column'].$fnd['viewname'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'CustomView';
@@ -95,7 +97,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$i18n['cv_advfilter'].$fnd['viewname'].'</span><br>';
+			$ret .= $spanStart.$i18n['cv_advfilter'].$fnd['viewname'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'CustomViewConditions';
@@ -113,7 +115,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$i18n['cv_stdfilter'].$fnd['viewname'].'</span><br>';
+			$ret .= $spanStart.$i18n['cv_stdfilter'].$fnd['viewname'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'CustomViewDateFilters';
@@ -130,7 +132,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$i18n['email_templates'].$fnd['msgtemplateid'].' :: '.$fnd['reference'].'</span><br>';
+			$ret .= $spanStart.$i18n['email_templates'].$fnd['msgtemplateid'].' :: '.$fnd['reference'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'MsgTemplate';
@@ -149,7 +151,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$i18n['select_column'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
+			$ret .= $spanStart.$i18n['select_column'].$fnd['reportid'].' :: '.$fnd['reportname'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'Reports';
@@ -168,7 +170,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$i18n['report_dtfilter'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
+			$ret .= $spanStart.$i18n['report_dtfilter'].$fnd['reportid'].' :: '.$fnd['reportname'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'ReportsDateFilters';
@@ -187,7 +189,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$i18n['report'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
+			$ret .= $spanStart.$i18n['report'].$fnd['reportid'].' :: '.$fnd['reportname'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'ReportsGroupBy';
@@ -206,7 +208,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$i18n['report_sort'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
+			$ret .= $spanStart.$i18n['report_sort'].$fnd['reportid'].' :: '.$fnd['reportname'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'ReportsSort';
@@ -225,7 +227,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.$i18n['report_summary'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
+			$ret .= $spanStart.$i18n['report_summary'].$fnd['reportid'].' :: '.$fnd['reportname'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'ReportsSummary';
@@ -240,7 +242,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.getTranslatedString('LBL_PICKLIST_DEPENDENCY_SETUP', 'PickList').' :: '.$fnd['sourcefield'].' - '.$fnd['targetfield'].'</span><br>';
+			$ret .= $spanStart.getTranslatedString('LBL_PICKLIST_DEPENDENCY_SETUP', 'PickList').' :: '.$fnd['sourcefield'].' - '.$fnd['targetfield'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'PickList';
@@ -257,7 +259,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.getTranslatedString('cbQuestion', 'cbQuestion').' :: '.$fnd['cbquestionno'].' - '.$fnd['qname'].'</span><br>';
+			$ret .= $spanStart.getTranslatedString('cbQuestion', 'cbQuestion').' :: '.$fnd['cbquestionno'].' - '.$fnd['qname'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'cbQuestion';
@@ -272,7 +274,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.getTranslatedString('cbMap', 'cbMap').' :: '.$fnd['mapnumber'].' - '.$fnd['mapname'].'</span><br>';
+			$ret .= $spanStart.getTranslatedString('cbMap', 'cbMap').' :: '.$fnd['mapnumber'].' - '.$fnd['mapname'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'cbMap';
@@ -292,7 +294,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.getTranslatedString('cbCalendar', 'cbCalendar').' :: '.$fnd['view'].' - '.getUserFullName($fnd['userid']).'</span><br>';
+			$ret .= $spanStart.getTranslatedString('cbCalendar', 'cbCalendar').' :: '.$fnd['view'].' - '.getUserFullName($fnd['userid']).$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'cbCalendar';
@@ -306,9 +308,7 @@ function checkFieldUsage($fldname, $modname) {
 		array($fldname, $modname)
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
-		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.getTranslatedString('cbCalendar', 'cbCalendar').' Module Status</span><br>';
-		}
+		$ret .= $spanStart.getTranslatedString('cbCalendar', 'cbCalendar').' Module Status</span><br>';
 		$rdo['found'] = true;
 		$rdo['where'][] = 'Calendar Modules Status';
 	} else {
@@ -321,9 +321,7 @@ function checkFieldUsage($fldname, $modname) {
 		array($modname, $fldname, $fldname, '%'.$fldname.'%')
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
-		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.getTranslatedString('cbCalendar', 'cbCalendar').' Module Fields</span><br>';
-		}
+		$ret .= $spanStart.getTranslatedString('cbCalendar', 'cbCalendar').' Module Fields</span><br>';
 		$rdo['found'] = true;
 		$rdo['where'][] = 'Calendar Modules Fields';
 	} else {
@@ -340,7 +338,7 @@ function checkFieldUsage($fldname, $modname) {
 	);
 	if ($crs && $adb->num_rows($crs)>0) {
 		while ($fnd=$adb->fetch_array($crs)) {
-			$ret .= '<span style="color:red">'.getTranslatedString('Webforms', 'Webforms').' :: '.$fnd['name'].'</span><br>';
+			$ret .= $spanStart.getTranslatedString('Webforms', 'Webforms').' :: '.$fnd['name'].$spanEnd;
 		}
 		$rdo['found'] = true;
 		$rdo['where'][] = 'Webforms';
@@ -366,7 +364,7 @@ function checkFieldUsage($fldname, $modname) {
 		}
 		$crs = $adb->pquery("SELECT 1 FROM `vtiger_convertleadmapping` WHERE $searchon = ?", array($field->id));
 		if ($crs && $adb->num_rows($crs)>0) {
-			$ret .= '<span style="color:red">'.$i18n['cl_mapping'].'</span><br>';
+			$ret .= $spanStart.$i18n['cl_mapping'].$spanEnd;
 			$rdo['found'] = true;
 			$rdo['where'][] = 'Leads';
 		} else {

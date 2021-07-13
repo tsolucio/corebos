@@ -102,7 +102,10 @@ function wffnFilterSearch(srch) {
 	} else {
 		fns = Object.keys(wfexpfndefs)
 			.filter(fn => wfexpfndefs[fn].name.indexOf(srch) > -1)
-			.reduce((res, key) => (res[key] = wfexpfndefs[key], res), {});
+			.reduce((res, key) => {
+				res[key] = wfexpfndefs[key];
+				return res;
+			}, {});
 	}
 	setFilteredFunctions(fns);
 }
@@ -116,7 +119,10 @@ function wffnFilterCategories(cat) {
 		fns = Object.keys(wfexpfndefs)
 			.filter(fn => wfexpfndefs[fn].categories.indexOf(cat) > -1)
 			.sort()
-			.reduce((res, key) => (res[key] = wfexpfndefs[key], res), {});
+			.reduce((res, key) => {
+				res[key] = wfexpfndefs[key];
+				return res;
+			}, {});
 	}
 	setFilteredFunctions(fns);
 }

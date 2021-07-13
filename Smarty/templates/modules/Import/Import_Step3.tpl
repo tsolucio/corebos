@@ -11,7 +11,7 @@
 <table width="100%" cellspacing="0" cellpadding="5">
 	<tr>
 		<td class="heading2 cblds-p_large" width="10%">
-			<input type="checkbox" class="small" id="auto_merge" name="auto_merge" onclick="ImportJs.toogleMergeConfiguration();" />
+			<input type="checkbox" class="small" id="auto_merge" name="auto_merge" onclick="ImportJs.toogleMergeConfiguration();" {if $STEP3_CHECK}checked{/if} />
 			{'LBL_IMPORT_STEP_3'|@getTranslatedString:$MODULE}:
 		</td>
 		<td>
@@ -29,7 +29,7 @@
 						<span class="small">{'LBL_SPECIFY_MERGE_TYPE'|@getTranslatedString:$MODULE}</span>&nbsp;&nbsp;
 						<select name="merge_type" id="merge_type" class="small">
 							{foreach key=_MERGE_TYPE item=_MERGE_TYPE_LABEL from=$AUTO_MERGE_TYPES}
-							<option value="{$_MERGE_TYPE}">{$_MERGE_TYPE_LABEL|@getTranslatedString:$MODULE}</option>
+							<option value="{$_MERGE_TYPE}" {if $STEP3_HANDLETYPE eq $_MERGE_TYPE}selected{/if}>{$_MERGE_TYPE_LABEL|@getTranslatedString:$MODULE}</option>
 							{/foreach}
 						</select>
 					</td>

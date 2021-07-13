@@ -19,15 +19,27 @@
 class Authenticate extends Sabre\DAV\Auth\Backend\AbstractDigest {
 
 	public function getDigestHash($realm, $username) {
+		return md5($username.':'.$realm.':'.$this->getAccessKey($username));
+	}
+
+	private function getAccessKey($username) {
 		global $adb;
-		$result = $adb->pquery('SELECT accesskey,id FROM vtiger_users WHERE user_name=?', array(htmlentities(strip_tags($username))));
-		$data = $adb->fetch_array($result);
-		return md5($username.':'.$realm.':'.$data['accesskey']);
+		$result = $adb->pquery('SELECT accesskey FROM vtiger_users WHERE user_name=?', array(htmlentities(strip_tags($username))));
+		return $adb->query_result($result, 0, 'accesskey');
 	}
 
 	public function check(Sabre\HTTP\RequestInterface $request, Sabre\HTTP\ResponseInterface $response) {
 		global $adb, $current_user, $default_language, $current_language, $app_strings;
 		$check = parent::check($request, $response);
+		if (!$check[0]) {
+			$reqHeaders = apache_request_headers();
+			if (isset($reqHeaders['Authorization']) && substr($reqHeaders['Authorization'], 0, 5)=='Basic') {
+				$authInfo = explode(':', base64_decode(substr($reqHeaders['Authorization'], 6)));
+				if (count($authInfo)==2 && $authInfo[1]==$this->getAccessKey($authInfo[0])) {
+					$check = array(true, $this->principalPrefix.$authInfo[0]);
+				}
+			}
+		}
 		if ($check[0] && substr($check[1], 0, strlen($this->principalPrefix))==$this->principalPrefix) {
 			list($void, $username) = explode('/', $check[1]);
 			$result = $adb->pquery('SELECT id FROM vtiger_users WHERE user_name=?', array(htmlentities(strip_tags($username))));

@@ -108,7 +108,7 @@
 				</td>
 				<td>
 					{if $EDIT_MODE eq 'true'}
-						<input name="{$tax.taxname}" id="{$tax.taxname}" type="number" value="{$tax.percentage}" style="width:65%" class="slds-input">&nbsp;%
+						<input name="{$tax.taxname}" id="{$tax.taxname}" type="number" step='0.001' value="{$tax.percentage}" style="width:65%" class="slds-input">&nbsp;%
 					{else}
 						{$tax.percentage}&nbsp;%
 					{/if}
@@ -226,7 +226,7 @@
 			</td>
 			<td width=50% >
 				{if $SH_EDIT_MODE eq 'true'}
-					<input name="{$tax.taxname}" id="{$tax.taxname}" type="number" value="{$tax.percentage}" style="width:55%" class="slds-input">
+					<input name="{$tax.taxname}" id="{$tax.taxname}" type="number" step='0.001' value="{$tax.percentage}" style="width:55%" class="slds-input">
 					%&nbsp;
 				{else}
 					{$tax.percentage}&nbsp;%

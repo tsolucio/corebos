@@ -19,7 +19,6 @@
 <thead>
 	<tr>
 		<th>{'Name'|@getTranslatedString}</th>
-		<th>{'LBL_STATUS'|@getTranslatedString}</th>
 		<th>{$GlobalVariableDefinitonsHeader.valuetype}</th>
 		<th>{$GlobalVariableDefinitonsHeader.values}</th>
 		<th>{$GlobalVariableDefinitonsHeader.definition}</th>
@@ -30,7 +29,6 @@
 {foreach item=def key=var from=$GlobalVariableDefinitons}
 	<tr class="{cycle values=" ,alt"}">
 	<td><b><a name="{$var}"></a>{$var}</b></td>
-	<td>{$def.status}</td>
 	<td>{$def.valuetype}</td>
 	<td>{$def.values}</td>
 	<td>{$def.definition}</td>

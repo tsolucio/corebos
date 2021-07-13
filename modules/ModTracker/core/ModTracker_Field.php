@@ -156,7 +156,7 @@ class ModTracker_Field {
 	public function initialize() {
 		global $adb, $current_user;
 		if ($this->moduleMeta === null) {
-			$moduleHandler = vtws_getModuleHandlerFromName($this->parent->getModuleName(), $current_user);
+			$moduleHandler = vtws_getModuleHandlerFromName($this->parent->getModuleName(), $current_user, true);
 			$this->moduleMeta = $moduleHandler->getMeta();
 		}
 		if ($this->parent->getModuleName()=='Products' && $this->parent->getFieldName()=='imagename') {

@@ -233,6 +233,36 @@ $WFExpressionFunctionDefinitons = array(
 		"networkdays('2020-01-01', '2020-06-30', 'holidays in France 2020')",
 	),
 ),
+'isholidaydate' => array(
+	'name' => 'isholidaydate(date, saturdayisholiday, holidays)',
+	'desc' => 'Devuelve verdadero si la fecha dada cae en un día festivo, domingo o sábado. Si el sábado se considera festivo o no se puede definir.',
+	'params' => array(
+		array(
+			'name' => 'date',
+			'type' => 'Fecha',
+			'optional' => false,
+			'desc' => 'cualquier fecha válida o nombre de campo de tipo fecha',
+		),
+		array(
+			'name' => 'saturdayisholiday',
+			'type' => 'Booleano',
+			'optional' => false,
+			'desc' => 'si se establece en 1, los sábados se considerarán días no laborables (como el domingo)',
+		),
+		array(
+			'name' => 'holidays',
+			'type' => 'Texto',
+			'optional' => true,
+			'desc' => 'lista de vacaciones separadas por comas o el nombre de un mapa de información que contiene las fechas de vacaciones<br>'.nl2br(htmlentities("<map>\n<information>\n<infotype>Holidays in France 2020</infotype>\n<value>date1</value>\n<value>date2</value>\n</information>\n</map>")).'</pre>',
+		),
+	),
+	'categories' => array('Date and Time'),
+	'examples' => array(
+		"isholidaydate('2021-01-01', 0, 'holidays in Spain 2021')",
+		"isholidaydate('2021-01-01', 1, 'holidays in Spain 2021')",
+		"isholidaydate('2021-01-01', 0, 'holidays in France 2021')",
+	),
+),
 'aggregate_time' => array(
 	'name' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
 	'desc' => 'Esta función devuelve un tiempo agregado de un campo en un módulo relacionado con filtrado opcional de los registros',
@@ -807,6 +837,22 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'uppercasefirst' => array(
 	'name' => 'uppercasefirst(stringfield)',
+	'desc' => 'Esta función convierte el primer carácter de una cadena a mayúsculas.',
+	'params' => array(
+		array(
+			'name' => 'stringfield',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'la cadena en la que convertir el primer carácter a mayúsculas',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"uppercasefirst('hello world')",
+	),
+),
+'uppercasewords' => array(
+	'name' => 'uppercasewords(stringfield)',
 	'desc' => 'Esta función convierte el primer carácter de cada palabra en una cadena a mayúsculas.',
 	'params' => array(
 		array(
@@ -818,7 +864,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Text'),
 	'examples' => array(
-		"uppercasefirst('hello world')",
+		"uppercasewords('hello world')",
 	),
 ),
 'num2str' => array(
@@ -1043,7 +1089,8 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Statistics'),
 	'examples' => array(
 		"aggregation('min','CobroPago','amount')",
-		"aggregation('count','SalesOrder','*','[duedate,h,2018-01-01]')"
+		"aggregation('count','SalesOrder','*','[duedate,h,2018-01-01]')",
+		"aggregation('count','SalesOrder','*','[duedate,h,get_date('today'),or,expression]')"
 	),
 ),
 'aggregation_fields_operation' => array(
@@ -1535,6 +1582,35 @@ $WFExpressionFunctionDefinitons = array(
 		"getIDof('Contacts', 'firstname', 'Amy')",
 		"getIDof('Accounts', 'siccode', 'xyhdmsi33')",
 		"getIDof('Accounts', 'siccode', algun_campo)",
+	),
+),
+'getFieldsOF' => array(
+	'name' => 'getFieldsOF(id, módulo, campos)',
+	'desc' => 'Dado el ID de un registro existente, esta función devolverá una matriz con todos los valores de los campos a los que tiene acceso el usuario. Si especificas los campos que quieres en la función, solo se devolverán esos valores.',
+	'params' => array(
+		array(
+			'name' => 'id',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'el ID en el que buscar',
+		),
+		array(
+			'name' => 'módulo',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'el módulo en el que buscar',
+		),
+		array(
+			'name' => 'campos',
+			'type' => 'Texto',
+			'optional' => true,
+			'desc' => 'campos a devolver',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getFieldsOF('8509', 'Contacts')",
+		"getFieldsOF('8509', 'Contacts', 'field1,field2,...,fieldN')",
 	),
 ),
 'getFromContext' => array(

@@ -14,8 +14,8 @@ global $app_strings,$mod_strings, $currentModule, $theme, $current_language, $cu
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
 $smarty = new vtigerCRM_Smarty();
 
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $idstring = getSelectedRecords(
 	$_REQUEST,

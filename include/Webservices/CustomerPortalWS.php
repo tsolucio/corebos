@@ -978,7 +978,7 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 		$fieldsname = $ei['fieldname'];
 		$wherefield = $ei['fieldname']." $op ?";
 		$params = array($term);
-		if (!(strpos($fieldsname, ',') === false)) {
+		if (strpos($fieldsname, ',')) {
 			$fieldlists = explode(',', $fieldsname);
 			$fieldsname = 'concat(';
 			$fieldsname = $fieldsname . implode(",' ',", $fieldlists);

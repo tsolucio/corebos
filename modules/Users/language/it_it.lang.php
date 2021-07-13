@@ -782,5 +782,6 @@ $mod_strings = array(
 'LBL_QUERY' => 'Query',
 'LBL_FORE_LASTNAME' => 'Nome o Cognome',
 'LBL_NO_LDAP_MATCHES' => 'Combinazione non trovata nel server LDAP!',
+'EntityName' => 'Entity Name',
 );
 ?>

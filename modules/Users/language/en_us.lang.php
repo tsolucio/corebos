@@ -800,5 +800,6 @@ $mod_strings = array(
 'LBL_QUERY' => 'Query',
 'LBL_FORE_LASTNAME' => 'First or Last name',
 'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
+'EntityName' => 'Entity Name',
 );
 ?>

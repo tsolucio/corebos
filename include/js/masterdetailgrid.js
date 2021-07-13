@@ -1,3 +1,9 @@
+var ReloadScreenAfterEdit = 0;
+GlobalVariable_getVariable('MasterDetail_ReloadScreenAfterEdit', 0).then(function (response) {
+	let obj = JSON.parse(response);
+	ReloadScreenAfterEdit = obj.MasterDetail_ReloadScreenAfterEdit;
+});
+
 var masterdetailwork = {
 
 	moveup: (MDGrid, recordid, gridinstance, module, rowkey) => {
@@ -12,8 +18,8 @@ var masterdetailwork = {
 			method: 'POST',
 			url: 'index.php?' + fileurl
 		}).done(function (response) {
-			res = JSON.parse(response);
-			if (res.success == true) {
+			let res = JSON.parse(response);
+			if (res.success) {
 				gridinstance.readData(1);
 			}
 		});
@@ -27,8 +33,8 @@ var masterdetailwork = {
 			method: 'POST',
 			url: 'index.php?' + fileurl
 		}).done(function (response) {
-			res = JSON.parse(response);
-			if (res.success == true) {
+			let res = JSON.parse(response);
+			if (res.success) {
 				gridinstance.readData(1);
 			} else {
 				alert(alert_arr.Failed);
@@ -43,8 +49,8 @@ var masterdetailwork = {
 				method: 'POST',
 				url: 'index.php?' + fileurl
 			}).done(function (response) {
-				res = JSON.parse(response);
-				if (res.success == true) {
+				let res = JSON.parse(response);
+				if (res.success) {
 					gridinstance.readData(1);
 				} else {
 					alert(alert_arr.Failed);
@@ -65,9 +71,12 @@ var masterdetailwork = {
 				method: 'POST',
 				url: 'index.php?' + fileurl
 			}).done(function (response) {
-				res = JSON.parse(response);
-				if (res.success == true) {
+				let res = JSON.parse(response);
+				if (res.success) {
 					ev.instance.readData(1);
+					if (ReloadScreenAfterEdit == 1) {
+						masterdetailwork.MDReload();
+					}
 				} else {
 					alert(alert_arr.Failed);
 				}
@@ -82,7 +91,7 @@ var masterdetailwork = {
 	},
 
 	MDUpsert: (MDGrid, module, recordid, CurrentRecord = '') => {
-		record = recordid || '';
+		let record = recordid || '';
 		if (record!='') {
 			record = '&record='+record;
 		}
@@ -119,6 +128,40 @@ var masterdetailwork = {
 			vtlib_executeJavascriptInElement(document.getElementById('qcform'));
 		});
 	},
+
+	MDReload: () => {
+		VtigerJS_DialogBox.block();
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const crmId = urlParams.get('record');
+		const data = {
+			'fldName' : '',
+			'fieldValue' : ''
+		};
+		const url = `file=DetailViewAjax&module=${gVTModule}&action=${gVTModule}Ajax&record=${crmId}&recordid=${crmId}&ajxaction=DETAILVIEW`;
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?' + url,
+			data : data
+		}).done(function (response) {
+			if (response.indexOf(':#:FAILURE')>-1) {
+				alert(alert_arr.ERROR_WHILE_EDITING);
+			} else if (response.indexOf(':#:ERR')>-1) {
+				alert_str = response.replace(':#:ERR', '');
+				alert(alert_str);
+				VtigerJS_DialogBox.hidebusy();
+			} else if (response.indexOf(':#:SUCCESS')>-1) {
+				const result = response.split(':#:');
+				if (result[2] != null) {
+					const target = document.getElementsByClassName('detailview_wrapper_table')[0];
+					target.innerHTML = result[2];
+					vtlib_executeJavascriptInElement(target);
+				}
+				VtigerJS_DialogBox.hidebusy();
+			}
+			VtigerJS_DialogBox.unblock();
+		});
+	},
 };
 
 class mdActionRender {
@@ -149,7 +192,7 @@ class mdActionRender {
 		}
 		if (props.columnInfo.renderer.options.edit) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.MDUpsert('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['LBL_EDIT']}">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.MDUpsert('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 				</svg>
@@ -157,7 +200,7 @@ class mdActionRender {
 		}
 		if (props.columnInfo.renderer.options.delete) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid},${mdgridob});" title="${alert_arr['LBL_DELETE']}">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid},${mdgridob});" title="${alert_arr['JSLBL_Delete']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 				</svg>

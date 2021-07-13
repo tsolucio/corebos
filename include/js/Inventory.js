@@ -195,13 +195,14 @@ function priceBookPickList(currObj, row_no) {
 }
 
 function getProdListBody() {
+	var prodListBody;
 	if (browser_ie) {
-		var prodListBody=getObj('productList').children[0].children[0];
+		prodListBody=getObj('productList').children[0].children[0];
 	} else if (browser_nn4 || browser_nn6) {
 		if (getObj('productList').childNodes.item(0).tagName=='TABLE') {
-			var prodListBody=getObj('productList').childNodes.item(0).childNodes.item(0);
+			prodListBody=getObj('productList').childNodes.item(0).childNodes.item(0);
 		} else {
-			var prodListBody=getObj('productList').childNodes.item(1).childNodes.item(1);
+			prodListBody=getObj('productList').childNodes.item(1).childNodes.item(1);
 		}
 	}
 	return prodListBody;
@@ -1485,18 +1486,18 @@ function InventorySelectAll(mod) {
 		* @param {object}		The root inventoryblock object
 		*/
 	function ProductAutocomplete(el, parent, callback, rootObj) {
-		this.el = el,
-		this.root = rootObj,
-		this.parent = parent,
-		this.specialKeys = ['up', 'down', 'esc', 'enter'],
-		this.threshold = 3,
-		this.input = el.getElementsByTagName('input')[0],
-		this.source = 'index.php?module=Utilities&sourceModule='+gVTModule+'&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=',
-		this.active = false,
-		this.resultContainer,
-		this.resultBox,
-		this.lookupContainer = this.utils.getFirstClass(el, 'slds-combobox-lookup'),
-		this.currentResults = [],
+		this.el = el;
+		this.root = rootObj;
+		this.parent = parent;
+		this.specialKeys = ['up', 'down', 'esc', 'enter'];
+		this.threshold = 3;
+		this.input = el.getElementsByTagName('input')[0];
+		this.source='index.php?module=Utilities&sourceModule='+gVTModule+'&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=';
+		this.active = false;
+		this.resultContainer = null;
+		this.resultBox = null;
+		this.lookupContainer = this.utils.getFirstClass(el, 'slds-combobox-lookup');
+		this.currentResults = [];
 		this.callback = typeof callback === 'function' ? callback : false;
 
 		/* Instance listeners */

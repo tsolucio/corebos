@@ -225,7 +225,8 @@ class SalesOrder extends CRMEntity {
 			vtiger_salesorder.subject as salessubject, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
 			from vtiger_invoice
 			inner join $crmtablealias on vtiger_crmentity.crmid=vtiger_invoice.invoiceid
-			left outer join vtiger_account on vtiger_account.accountid=vtiger_invoice.accountid
+			left join vtiger_account on vtiger_account.accountid=vtiger_invoice.accountid
+			left join vtiger_contactdetails on vtiger_contactdetails.contactid=vtiger_invoice.contactid
 			inner join vtiger_salesorder on vtiger_salesorder.salesorderid=vtiger_invoice.salesorderid
 			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
 			LEFT JOIN vtiger_invoicebillads ON vtiger_invoicebillads.invoicebilladdressid = vtiger_invoice.invoiceid
@@ -439,7 +440,7 @@ class SalesOrder extends CRMEntity {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
-		include 'include/utils/ExportUtils.php';
+		include_once 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery('SalesOrder', 'detail_view');

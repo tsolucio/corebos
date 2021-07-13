@@ -118,6 +118,30 @@ switch ($functiontocall) {
 			$ret['from_email'] = $emltpl[3];
 		}
 		break;
+	case 'exportUserComments':
+		$recordid = vtlib_purify($_REQUEST['record']);
+		$module = vtlib_purify($_REQUEST['module']);
+		include_once 'include/utils/ExportUtils.php';
+		if (GlobalVariable::getVariable('ModComments_Export_Format', 'CSV', $module) == 'CSV') {
+			header('Content-Disposition:attachment;filename="Comments'.$recordid.'.csv"');
+			header('Content-Type:text/csv;charset=UTF-8');
+			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+			header('Cache-Control: post-check=0, pre-check=0', false);
+			exportUserCommentsForModule($module, $recordid, 'CSV');
+		} else {
+			global $root_directory, $cache_dir;
+			$fname = tempnam($root_directory.$cache_dir, 'comm.xls');
+			$xlsobject = exportUserCommentsForModule($module, $recordid, 'XLS');
+			$xlsobject->save($fname);
+			header('Content-Type: application/x-msexcel');
+			header('Content-Length: '.@filesize($fname));
+			header('Content-disposition: attachment; filename="Comments'.$recordid.'.xls"');
+			$fh=fopen($fname, 'rb');
+			fpassthru($fh);
+		}
+		exit;
+		break;
 	case 'ValidationExists':
 		$valmod = vtlib_purify($_REQUEST['valmodule']);
 		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
@@ -396,13 +420,14 @@ switch ($functiontocall) {
 		}
 		break;
 	case 'ismoduleactive':
-	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
 		$rdo = vtlib_isModuleActive($mod);
 		$ret = array('isactive'=>$rdo);
 		break;
+	default:
+		$ret = '';
+		break;
 }
-
 echo json_encode($ret);
 die();
 ?>

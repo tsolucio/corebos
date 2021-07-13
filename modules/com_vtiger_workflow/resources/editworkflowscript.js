@@ -211,7 +211,7 @@ function editworkflowscript($, conditions) {
 			number:['equal to', 'less than', 'greater than', 'does not equal', 'less than or equal to', 'greater than or equal to', 'has changed', 'exists', 'was'],
 			value:['is', 'is not', 'contains', 'does not contain', 'has changed', 'has changed to', 'is empty', 'is not empty', 'exists', 'was', 'has this as nth child'],
 			multipicklist:['is', 'is not', 'was'],
-			date:['is', 'is not', 'has changed', 'has changed to', 'between', 'before', 'after', 'is today', 'less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later', 'exists', 'was'],
+			date:['is', 'is not', 'has changed', 'has changed to', 'between', 'before', 'after', 'is today', 'less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later', 'exists', 'was', 'monthday'],
 			datetime:['is', 'is not', 'has changed', 'has changed to', 'less than hours before', 'less than hours later', 'more than hours before', 'more than hours later', 'equal to', 'less than', 'greater than', 'does not equal', 'less than or equal to', 'greater than or equal to', 'exists', 'was']
 		};
 		var mapping = [
@@ -248,7 +248,7 @@ function editworkflowscript($, conditions) {
 			date:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO,
 				alert_arr.LBL_BETWEEN, alert_arr.LBL_BEFORE, alert_arr.LBL_AFTER, alert_arr.LBL_IS_TODAY, alert_arr.LBL_LESS_THAN_DAYS_AGO,
 				alert_arr.LBL_MORE_THAN_DAYS_AGO, alert_arr.LBL_IN_LESS_THAN, alert_arr.LBL_IN_MORE_THAN, alert_arr.LBL_DAYS_AGO, alert_arr.LBL_DAYS_LATER,
-				alert_arr.LBL_EXISTS, alert_arr.LBL_WAS],
+				alert_arr.LBL_EXISTS, alert_arr.LBL_WAS, alert_arr.LBL_MONTHDAY],
 			datetime:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO,
 				alert_arr.LBL_LESS_THAN_HOURS_BEFORE, alert_arr.LBL_LESS_THAN_HOURS_LATER, alert_arr.LBL_MORE_THAN_HOURS_BEFORE, alert_arr.LBL_MORE_THAN_HOURS_LATER, alert_arr.LBL_EQUAL_TO, alert_arr.LBL_LESS_THAN, alert_arr.LBL_GREATER_THAN, alert_arr.LBL_DOEST_NOT_EQUAL,
 				alert_arr.LBL_LESS_THAN_OR_EQUAL_TO, alert_arr.LBL_GREATER_THAN_OR_EQUAL_TO, alert_arr.LBL_EXISTS, alert_arr.LBL_WAS]
@@ -443,7 +443,7 @@ function editworkflowscript($, conditions) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];

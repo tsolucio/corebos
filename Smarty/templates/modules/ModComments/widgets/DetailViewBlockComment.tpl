@@ -8,6 +8,7 @@
  ************************************************************************************}
 
 {if empty($smarty.request.ajax)}
+<input type="hidden" id="comments_parentId" value="{$ID}" />
 <table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tr class="detailview_block_header comments_block_header">
 <td colspan="4" class="dvInnerHeader">

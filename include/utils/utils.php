@@ -503,7 +503,7 @@ function return_module_language($language, $module) {
 
 	if (file_exists("modules/$module/language/$languagefound.custom.php")) {
 		@include "modules/$module/language/$languagefound.custom.php";
-		$mod_strings = array_merge($mod_strings, $custom_strings);
+		$mod_strings = $custom_strings + $mod_strings;
 	}
 	$return_value = $mod_strings;
 	$mod_strings = $temp_mod_strings;
@@ -3464,17 +3464,17 @@ function getBlockName($blockid) {
 
 function validateAlphaNumericInput($string) {
 	preg_match('/^[\w _\-\/]+$/', $string, $matches);
-	return !(count($matches) == 0);
+	return (count($matches) > 0);
 }
 
 function validateServerName($string) {
 	preg_match('/^[\w\-\.\\/:]+$/', $string, $matches);
-	return !(count($matches) == 0);
+	return (count($matches) > 0);
 }
 
 function validateEmailId($string) {
 	preg_match('/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/', $string, $matches);
-	return !(count($matches) == 0);
+	return (count($matches) > 0);
 }
 
 function str_rsplit($string, $splitLength) {

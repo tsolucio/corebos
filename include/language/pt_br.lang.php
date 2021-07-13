@@ -975,6 +975,9 @@ $app_strings = array (
 'LBL_SEARCH_CRITERIA_COLUMNS'=>'Export Filter Columns',
 'LBL_VISIBLE_COLUMNS'=>'Export only visible columns',
 'LBL_ALL_DATA'=>'Exportar todos os dados',
+'LBL_EXPORT_FORMAT' => 'Export Format',
+'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 'LBL_DATA_IN_CURRENT_PAGE'=>'Exportar dados na página atual',
 'LBL_ONLY_SELECTED_RECORDS'=>'Exportar registros selecionados',
 'LBL_YES'=>'Sim',
@@ -1179,8 +1182,8 @@ $app_strings = array (
 'LBL_CALLER_INFORMATION'=>'Informação de quem liga',
 'LBL_CALLER_NUMBER'=>'Número :',
 'LBL_CALLER_NAME'=>'Nome :',
-'LBL_VIEW_CONTACT' => 'View Contact',
-'LBL_CLICK_NOTIFICATION_TO'=> 'Click Notification to ',
+'LBL_VIEW_CONTACT' => 'Ver contato',
+'LBL_CLICK_NOTIFICATION_TO'=> 'Clique em notificação para ',
 
 // Module Sequence Numbering
 'LBL_DUPLICATE' => 'Duplicar',

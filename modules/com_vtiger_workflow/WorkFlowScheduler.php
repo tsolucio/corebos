@@ -45,6 +45,7 @@ class WorkFlowScheduler {
 		'exists' => 'exists',
 		'does not start with' => 'dnsw',
 		'does not end with' => 'dnew',
+		'monthday' => 'monthday',
 	);
 
 	public function __construct($adb) {

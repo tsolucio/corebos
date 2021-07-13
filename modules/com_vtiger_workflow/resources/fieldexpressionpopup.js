@@ -10,7 +10,7 @@
 var fieldExpressionPopup_LOADED = false;
 function fieldExpressionPopup(moduleName, $) {
 
-	if (fieldExpressionPopup_LOADED != false) {
+	if (fieldExpressionPopup_LOADED) {
 		return fieldExpressionPopup_LOADED;
 	}
 	var format = fn.format;

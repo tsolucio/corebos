@@ -34,7 +34,7 @@
 
 			// Custom messages based on settings
 			var $initmessage = '';
-			if ($settings.scroll == true) {
+			if ($settings.scroll) {
 				$initmessage = mobiscroll_arr.ALERT_SCROLL;
 			} else {
 				$initmessage = mobiscroll_arr.ALERT_CLICK;
@@ -73,7 +73,7 @@
 			}
 			getData(); // Run function initially
 			// If scrolling is enabled
-			if ($settings.scroll == true) {
+			if ($settings.scroll) {
 				// .. and the user is scrolling
 				$(window).scroll(function () {
 					// Check the user is at the bottom of the element
@@ -93,7 +93,7 @@
 			}
 			// Also content can be loaded by clicking the loading bar
 			$this.find('.loading-bar').click(function () {
-				if (busy == false) {
+				if (!busy) {
 					busy = true;
 					getData();
 				}

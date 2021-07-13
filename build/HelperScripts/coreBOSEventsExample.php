@@ -18,7 +18,6 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 class coreBOSEventsExample extends VTEventHandler {
-	private $_moduleCache = array();
 
 	/**
 	 * @param $handlerType
@@ -45,6 +44,9 @@ class coreBOSEventsExample extends VTEventHandler {
 				break;
 			case 'corebos.audit.login.attempt':
 				$log->fatal('corebos.audit.login.attempt');
+				$log->fatal($entityData);
+				break;
+			case 'corebos.entity.import.skip':
 				$log->fatal($entityData);
 				break;
 			case 'corebos.entity.link.before':

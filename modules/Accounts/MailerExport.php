@@ -8,14 +8,9 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
- global $app_strings, $mod_strings, $currentModule, $theme, $adb, $current_language, $default_charset;
+require_once 'include/utils/CommonUtils.php';
+global $app_strings, $mod_strings, $currentModule, $theme, $adb, $current_language, $default_charset;
 $image_path="themes/$theme/images/";
-
-//Function added to convert line breaks to space in description during export
-function br2nl_int($str) {
-	$str = preg_replace("/(\r\n)/", ' ', $str);
-	return $str;
-}
 
 if (isset($_SESSION['export_where'])) {
 	$exportWhere = $_SESSION['export_where'];
@@ -75,7 +70,7 @@ if ($step == 'ask') {
 		} elseif ($cfTmp['uitype'] == 15) {
 			$queryFields[$tmp] = $cfTmp;
 			$queryFields[$tmp]['value'][''] = $mod_strings['LBL_MAILER_EXPORT_IGNORE'];
-			$cfValues = 'SELECT '.$cfColName.",".$cfColName.'id FROM vtiger_'.$cfColName;
+			$cfValues = 'SELECT '.$cfColName.','.$cfColName.'id FROM vtiger_'.$cfColName;
 			$resVal = $adb->query($cfValues, true, "Error: <BR>$cfValues");
 			for ($tmp1=0; $tmp1 < $adb->num_rows($resVal); $tmp1++) {
 				$cfTmp=$adb->fetchByAssoc($resVal);
@@ -98,7 +93,7 @@ if ($step == 'ask') {
 	}
 	$smarty->assign('FIELDLIST', $fieldList);
 	// and their types
-	$typeList ="";
+	$typeList ='';
 	foreach ($queryFields as $myField) {
 		if (strlen($typeList) > 0) {
 			$typeList .= ',';
@@ -113,22 +108,22 @@ if ($step == 'ask') {
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts', true);
 	$exquery = array();
 	$content = '';
-	$fields = explode(",", $_POST['fieldlist']);
-	$types = explode(",", $_POST['typelist']);
+	$fields = explode(',', $_POST['fieldlist']);
+	$types = explode(',', $_POST['typelist']);
 	if (($export_type == 'email') || ($export_type == 'emailplus')) {
 		$where = '';
 		if (count($fields) > 0) {
 			$where .= getExpWhereClause($fields, $types);
 		}
-		$exquery[0] = "SELECT vtiger_crmentity.crmid, contactdetails.contactid, contactdetails.salutation,
+		$exquery[0] = 'SELECT vtiger_crmentity.crmid, contactdetails.contactid, contactdetails.salutation,
 			contactdetails.firstname, contactdetails.lastname, contactdetails.email
 			FROM vtiger_account
-			INNER JOIN ".$crmAccEntityTable." on vtiger_crmentity.crmid=vtiger_account.accountid
+			INNER JOIN '.$crmAccEntityTable.' on vtiger_crmentity.crmid=vtiger_account.accountid
 			INNER JOIN vtiger_accountbillads ON vtiger_account.accountid=vtiger_accountbillads.accountaddressid
 			INNER JOIN vtiger_accountshipads ON vtiger_account.accountid=vtiger_accountshipads.accountaddressid
 			INNER JOIN vtiger_accountscf ON vtiger_account.accountid = vtiger_accountscf.accountid
 			INNER JOIN vtiger_contactdetails contactdetails ON vtiger_account.accountid = contactdetails.accountid
-			INNER JOIN ".$crmEntityTable." contactdetails_crmentity ON contactdetails.contactid = contactdetails_crmentity.crmid
+			INNER JOIN '.$crmEntityTable." contactdetails_crmentity ON contactdetails.contactid = contactdetails_crmentity.crmid
 			INNER JOIN vtiger_contactscf contactscf ON contactscf.contactid = contactdetails.contactid
 			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
 			LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid
@@ -139,15 +134,15 @@ if ($step == 'ask') {
 		}
 
 		if ($export_type == 'emailplus') {
-			$exquery[1] = "SELECT vtiger_crmentity.crmid, contactdetails.contactid, contactdetails.salutation,
+			$exquery[1] = 'SELECT vtiger_crmentity.crmid, contactdetails.contactid, contactdetails.salutation,
 			contactdetails.firstname, contactdetails.lastname, vtiger_account.email1
 			FROM vtiger_account
-			INNER JOIN ".$crmAccEntityTable." ON vtiger_crmentity.crmid=vtiger_account.accountid
+			INNER JOIN '.$crmAccEntityTable.' ON vtiger_crmentity.crmid=vtiger_account.accountid
 			INNER JOIN vtiger_accountbillads ON vtiger_account.accountid=vtiger_accountbillads.accountaddressid
 			INNER JOIN vtiger_accountshipads ON vtiger_account.accountid=vtiger_accountshipads.accountaddressid
 			INNER JOIN vtiger_accountscf ON vtiger_account.accountid = vtiger_accountscf.accountid
 			INNER JOIN vtiger_contactdetails contactdetails ON vtiger_account.accountid = contactdetails.accountid
-			INNER JOIN ".$crmEntityTable." contactdetails_crmentity ON contactdetails.contactid = contactdetails_crmentity.crmid
+			INNER JOIN '.$crmEntityTable." contactdetails_crmentity ON contactdetails.contactid = contactdetails_crmentity.crmid
 			INNER JOIN vtiger_contactscf contactscf ON contactscf.contactid = contactdetails.contactid
 			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
 			LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid
@@ -218,8 +213,8 @@ if ($step == 'ask') {
 					$fields_array[$arraywalk] = (!empty($fld_label_arr[$fields_array[$arraywalk]]))?$fld_label_arr[$fields_array[$arraywalk]]:$fields_array[$arraywalk];
 				}
 			}
-			$header = implode("\",\"", array_values($fields_array));
-			$header = "\"" .$header;
+			$header = implode('","', array_values($fields_array));
+			$header = '"' .$header;
 			$header .= "\"\r\n";
 			$content .= $header;
 			$column_list = implode(",", array_values($fields_array));
@@ -228,21 +223,21 @@ if ($step == 'ask') {
 			$new_arr = array();
 			// foreach (array_values($val) as $value)
 			foreach ($val as $key => $value) {
-				$value=br2nl_int($value);
-				$new_arr[] = preg_replace("/\"/", "\"\"", $value);
+				$value = br2nl_vt($value);
+				$new_arr[] = preg_replace('/"/', '""', $value);
 			}
-			$line = implode("\",\"", $new_arr);
-			$line = "\"" .$line;
+			$line = implode('","', $new_arr);
+			$line = '"' .$line;
 			$line .= "\"\r\n";
 			$content .= $line;
 		}
 	}
-	header("Content-Disposition: inline; filename=MailerExport.csv");
-	header("Content-Type: text/csv; charset=".$default_charset);
-	header("Expires: Mon, 26 Jul 2007 05:00:00 GMT");
-	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-	header("Cache-Control: post-check=0, pre-check=0", false);
-	header("Content-Length: ".strlen($content));
+	header('Content-Disposition: inline; filename=MailerExport.csv');
+	header('Content-Type: text/csv; charset='.$default_charset);
+	header('Expires: Mon, 26 Jul 2007 05:00:00 GMT');
+	header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+	header('Cache-Control: post-check=0, pre-check=0', false);
+	header('Content-Length: '.strlen($content));
 	print $content;
 	exit();
 }

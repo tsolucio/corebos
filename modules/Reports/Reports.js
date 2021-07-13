@@ -33,47 +33,43 @@ function addColumn() {
 }
 
 function addColumnStep1() {
-	//the below line is added for report not woking properly in browser IE7
-	document.getElementById('selectedColumns').style.width='164px';
-
-	if (availListObj.options.selectedIndex > -1) {
-		for (var i=0; i<availListObj.length; i++) {
-			if (availListObj.options[i].selected==true) {
-				var rowFound=false;
-				for (var j=0; j<selectedColumnsObj.length; j++) {
-					if (selectedColumnsObj.options[j].value==availListObj.options[i].value) {
-						var rowFound=true;
-						var existingObj=selectedColumnsObj.options[j];
-						break;
-					}
-				}
-
-				if (rowFound!=true) {
-					var newColObj=document.createElement('OPTION');
-					newColObj.value=availListObj.options[i].value;
-					if (browser_ie) {
-						newColObj.innerText=availListObj.options[i].innerText;
-					} else if (browser_nn4 || browser_nn6) {
-						newColObj.text=availListObj.options[i].text;
-					}
-					selectedColumnsObj.appendChild(newColObj);
-					newColObj.selected=true;
-				} else {
-					existingObj.selected=true;
-				}
-				availListObj.options[i].selected=false;
-				addColumnStep1();
+	if (availListObj.options.selectedIndex < 0) {
+		return;
+	}
+	for (var i=0; i<availListObj.length; i++) {
+		if (!availListObj.options[i].selected) {
+			continue;
+		}
+		var rowFound=false;
+		for (var j=0; j<selectedColumnsObj.length; j++) {
+			if (selectedColumnsObj.options[j].value==availListObj.options[i].value) {
+				rowFound=true;
+				var existingObj=selectedColumnsObj.options[j];
+				break;
 			}
 		}
+
+		if (!rowFound) {
+			var newColObj=document.createElement('OPTION');
+			newColObj.value=availListObj.options[i].value;
+			newColObj.innerText=availListObj.options[i].innerText;
+			selectedColumnsObj.appendChild(newColObj);
+			newColObj.selected=true;
+		} else {
+			existingObj.selected=true;
+		}
+		availListObj.options[i].selected=false;
+		addColumnStep1();
 	}
 }
+
 //this function is done for checking,whether the user has access to edit the field
 function selectedColumnClick(oSel) {
 	var error_msg = '';
 	var error_str = false;
 	if (oSel.selectedIndex > -1) {
 		for (var i = 0; i < oSel.options.length; ++i) {
-			if (oSel.options[i].selected == true && oSel.options[i].disabled == true) {
+			if (oSel.options[i].selected && oSel.options[i].disabled) {
 				error_msg = error_msg + oSel.options[i].text+',';
 				error_str = true;
 				oSel.options[i].selected = false;
@@ -91,7 +87,7 @@ function selectedColumnClick(oSel) {
 function delColumn() {
 	if (selectedColumnsObj.options.selectedIndex > -1) {
 		for (var i=0; i < selectedColumnsObj.options.length; i++) {
-			if (selectedColumnsObj.options[i].selected == true) {
+			if (selectedColumnsObj.options[i].selected) {
 				selectedColumnsObj.remove(i);
 				delColumn();
 			}
@@ -178,7 +174,7 @@ function moveDown() {
 function disableMove() {
 	var cnt=0;
 	for (var i=0; i<selectedColumnsObj.options.length; i++) {
-		if (selectedColumnsObj.options[i].selected==true) {
+		if (selectedColumnsObj.options[i].selected) {
 			cnt++;
 		}
 	}
@@ -194,9 +190,9 @@ function disableMove() {
 function hideTabs() {
 	// Check the selected report type
 	var objreportType = document.forms.NewReport['reportType'];
-	if (objreportType[0].checked == true) {
+	if (objreportType[0].checked) {
 		objreportType = objreportType[0];
-	} else if (objreportType[1].checked == true) {
+	} else if (objreportType[1].checked) {
 		objreportType = objreportType[1];
 	}
 
@@ -234,10 +230,8 @@ function saveas() {
 }
 
 function changeSteps1() {
-	if (getObj('step5').style.display != 'none') {
-		if (!validateDate()) {
-			return false;
-		}
+	if (getObj('step5').style.display != 'none' && !validateDate()) {
+		return false;
 	}
 	if (getObj('step6').style.display != 'none' && document.getElementsByName('record')[0].value!='') {
 		var id = document.getElementById('save_as');
@@ -251,23 +245,24 @@ function changeSteps1() {
 	} else {
 		var cbreporttype = document.getElementById('cbreporttype').value;
 		for (var i = 0; i < divarray.length; i++) {
-			if (getObj(divarray[i]).style.display != 'none') {
-				if (i == 1 && selectedColumnsObj.options.length == 0 && cbreporttype != 'external' && cbreporttype != 'directsql') {
-					alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
-					return false;
-				}
-				if (divarray[i + 1] == 'step7') {
-					document.getElementById('next').value = finish_text;
-				}
-				hide(divarray[i]);
-				show(divarray[i + 1]);
-				var tableid = divarray[i] + 'label';
-				var newtableid = divarray[i + 1] + 'label';
-				getObj(tableid).className = 'settingsTabList';
-				getObj(newtableid).className = 'settingsTabSelected';
-				document.getElementById('back_rep').disabled = false;
-				break;
+			if (getObj(divarray[i]).style.display == 'none') {
+				continue;
 			}
+			if (i == 1 && selectedColumnsObj.options.length == 0 && cbreporttype != 'external' && cbreporttype != 'directsql') {
+				alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
+				return false;
+			}
+			if (divarray[i + 1] == 'step7') {
+				document.getElementById('next').value = finish_text;
+			}
+			hide(divarray[i]);
+			show(divarray[i + 1]);
+			var tableid = divarray[i] + 'label';
+			var newtableid = divarray[i + 1] + 'label';
+			getObj(tableid).className = 'settingsTabList';
+			getObj(newtableid).className = 'settingsTabSelected';
+			document.getElementById('back_rep').disabled = false;
+			break;
 		}
 	}
 }
@@ -362,7 +357,7 @@ function fnPopupWin(winName) {
 }
 
 function re_dateValidate(fldval, fldLabel, type) {
-	if (re_patternValidate(fldval, fldLabel, 'DATE')==false) {
+	if (!re_patternValidate(fldval, fldLabel, 'DATE')) {
 		return false;
 	}
 	dateval=fldval.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -416,18 +411,19 @@ function re_dateValidate(fldval, fldLabel, type) {
 
 //Copied from general.js and altered some lines. becos we cant send vales to function present in general.js. it accept only field names.
 function re_patternValidate(fldval, fldLabel, type) {
+	var re;
 	if (type.toUpperCase()=='DATE') {//DATE validation
 		switch (userDateFormat) {
 		case 'yyyy-mm-dd' :
-			var re = /^\d{4}(-)\d{1,2}\1\d{1,2}$/;
+			re = /^\d{4}(-)\d{1,2}\1\d{1,2}$/;
 			break;
 		case 'mm-dd-yyyy' :
 		case 'dd-mm-yyyy' :
-			var re = /^\d{1,2}(-)\d{1,2}\1\d{4}$/;
+			re = /^\d{1,2}(-)\d{1,2}\1\d{4}$/;
 		}
 	}
 	if (type.toUpperCase()=='TIMESECONDS') {//TIME validation
-		var re = new RegExp('^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$|^([0-1][0-9]|[2][0-3]):([0-5][0-9])$');
+		re = new RegExp('^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$|^([0-1][0-9]|[2][0-3]):([0-5][0-9])$');
 	}
 	if (!re.test(fldval)) {
 		alert(alert_arr.ENTER_VALID + fldLabel);
@@ -454,6 +450,7 @@ function standardFilterDisplay() {
 
 function updateRelFieldOptions(sel, opSelName) {
 	var selObj = document.getElementById(opSelName);
+	var nMaxVal = selObj.length;
 	var fieldtype = null;
 	var currOption = selObj.options[selObj.selectedIndex];
 	var currField = sel.options[sel.selectedIndex];
@@ -463,7 +460,6 @@ function updateRelFieldOptions(sel, opSelName) {
 		var ops = rel_fields[fieldtype];
 		var off = 0;
 		if (ops != null) {
-			var nMaxVal = selObj.length;
 			for (var nLoop = 0; nLoop < nMaxVal; nLoop++) {
 				selObj.remove(0);
 			}
@@ -487,7 +483,6 @@ function updateRelFieldOptions(sel, opSelName) {
 			}
 		}
 	} else {
-		var nMaxVal = selObj.length;
 		for (nLoop = 0; nLoop < nMaxVal; nLoop++) {
 			selObj.remove(0);
 		}
@@ -682,7 +677,7 @@ function returnList(block) {
 		var $html = $('<select>');
 		for (var i=0; i<list_length; i++) {
 			var option = $('<option>', {'value':list[i].value});
-			if (Object.prototype.hasOwnProperty.call(list[i], 'selected') && list[i].selected == true) {
+			if (Object.prototype.hasOwnProperty.call(list[i], 'selected') && list[i].selected) {
 				option.prop('selected', true);
 			}
 			if (Object.prototype.hasOwnProperty.call(list[i], 'permission')) {
@@ -712,7 +707,7 @@ function setPropertiesOnList(block, selectid) {
 	for (var i=0; i<list_length; i++) {
 		var option = $(selectid + ' option[value="' + block[i].value + '"]');
 		if (option) {
-			if (Object.prototype.hasOwnProperty.call(block[i], 'selected') && block[i].selected == true) {
+			if (Object.prototype.hasOwnProperty.call(block[i], 'selected') && block[i].selected) {
 				option.prop('selected', true);
 			}
 			if (Object.prototype.hasOwnProperty.call(block[i], 'permission')) {
@@ -866,7 +861,7 @@ function validateDate() {
  */
 function ScheduleEmail() {
 	var isScheduledObj = getObj('isReportScheduled');
-	if (isScheduledObj.checked == true) {
+	if (isScheduledObj.checked) {
 		if (document.NewReport.scheduledTime.value == '') {
 			alert(alert_arr.ERR_INVALID_TIME);
 			return false;
@@ -1223,7 +1218,7 @@ function constructSelectOptions(selectedMemberType, idArr, nameArr) {
 	var findStr=document.NewReport.findStr.value;
 	if (findStr.replace(/^\s+/g, '').replace(/\s+$/g, '').length !=0) {
 		var k=0;
-		for (var i=0; i<nameArr.length; i++) {
+		for (i=0; i<nameArr.length; i++) {
 			if (nameArr[i].indexOf(findStr) == 0) {
 				constructedOptionName[k] = nameArr[i];
 				constructedOptionValue[k] = idArr[i];
@@ -1264,7 +1259,7 @@ function addColumns() {
 	}
 
 	for (i=0; i<availableListObj.length; i++) {
-		if (availableListObj.options[i].selected==true) {
+		if (availableListObj.options[i].selected) {
 			var rowFound=false;
 			var existingObj=null;
 			for (var j=0; j<columnsSelectedObj.length; j++) {
@@ -1275,7 +1270,7 @@ function addColumns() {
 				}
 			}
 
-			if (rowFound!=true) {
+			if (!rowFound) {
 				var newColObj = document.createElement('OPTION');
 				newColObj.value = availableListObj.options[i].value;
 				if (browser_ie) {
@@ -1286,7 +1281,6 @@ function addColumns() {
 				columnsSelectedObj.appendChild(newColObj);
 				availableListObj.options[i].selected = false;
 				newColObj.selected = true;
-				rowFound = false;
 			} else {
 				availableListObj.options[i].selected = false;
 				if (existingObj != null) {

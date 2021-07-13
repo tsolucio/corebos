@@ -175,7 +175,7 @@ var ModTrackerCommon = {
 								},
 								{
 									name: 'oldval',
-									header: modtrackerarr['Previous value'],
+									header: modtrackerarr['Earlier value'],
 									whiteSpace: 'normal'
 								},
 								{

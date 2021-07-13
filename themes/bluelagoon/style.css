@@ -2819,3 +2819,7 @@ a.allMnu:Hover{
 	width: 100%;
 	display: block;
 }
+/* Currency modal LDS width override */
+.custom-width-350 {
+	width: 350px !important;
+}

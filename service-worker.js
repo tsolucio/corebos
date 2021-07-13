@@ -2681,7 +2681,7 @@ precacheAndRoute([{
   "revision": "89744856c32a6fa01ec83cf86b78f27f"
 }, {
   "url": "modules/Mobile/resources/crmtogo.js",
-  "revision": "0d047c8401e10aa50d21a6de4fd63686"
+  "revision": "76508738c07591ebb357a551ac863ad3"
 }, {
   "url": "modules/Mobile/resources/css/images/ui-bg_diagonals-thick_18_b81900_40x40.png",
   "revision": "e9c44fa4ccdc5d2d4c5e2bf65fc166aa"
@@ -2762,7 +2762,7 @@ precacheAndRoute([{
   "revision": "351e44a8f5939b2fa6d5c498a65bcdc9"
 }, {
   "url": "modules/Mobile/resources/getScrollcontent.js",
-  "revision": "6ac55c0e399455103faaa0704252b03b"
+  "revision": "7a23e7b8d45100ddcdc1279fa4769ae4"
 }, {
   "url": "modules/Mobile/resources/images/ajax-loader.gif",
   "revision": "8fd7e719b06cd3f701c791adb62bd7a6"
@@ -3434,7 +3434,7 @@ precacheAndRoute([{
   "revision": "ae989aa845cd40bce24cadefa3363b52"
 }, {
   "url": "modules/Mobile/resources/settings.js",
-  "revision": "7fab3007e1698eeb90371ff591b7f77c"
+  "revision": "462956d3d01f40c97f1d6714dfe495b1"
 }, {
   "url": "modules/Mobile/resources/signature_pad.js",
   "revision": "7314c126d7a2316ca8e00a1d405d0771"
@@ -9272,7 +9272,7 @@ precacheAndRoute([{
   "revision": "3f3688138a1b9fc4ef669ce9056b6674"
 }, {
   "url": "include/js/clock.js",
-  "revision": "6c590d5741d16b7d2a6b3e46b5e03ba1"
+  "revision": "0b6bdbfee7b61226371c555ced95bde2"
 }, {
   "url": "include/js/corebosjshooks.js",
   "revision": "1607aa9f922cfb8476b3635d3edd8286"
@@ -9281,46 +9281,46 @@ precacheAndRoute([{
   "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "b34dfb95ac5ea8bd84490c7d41f3bdbd"
+  "revision": "be42fba6902d03b8745a03b2e2b3cf94"
 }, {
   "url": "include/js/dedup.js",
-  "revision": "6d71311dc59b64a4951a0e16b6c69c89"
+  "revision": "f09b1b73041383bfe8a85ccce9641617"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "78b24ffbedf3f17cdc9bbfdaefbe3ed8"
+  "revision": "d5084dd78dbab59492657becfbf988f8"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "61d256e43844b1e85296cc69cb741050"
+  "revision": "2e89eaa0518fa53b28e998449a7f4b56"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "7cf4ae64473da752b336f7b4467ee3d7"
+  "revision": "66b5cfd26304bf0414fbcb7df5051618"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "68fd093acefb63f25edb67d31783cf21"
+  "revision": "09a3aee4c70aabd65a955b1106f4645e"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "4d49fa8542995e93ea714fd43b367a77"
+  "revision": "353098ee7b1902fc7a1df643118edeb7"
 }, {
   "url": "include/js/FieldDependencies.js",
-  "revision": "b6388b97a1c3fcee86ffe61ce3691c40"
+  "revision": "81d8785a11d8f7e64948045fb4766f43"
 }, {
   "url": "include/js/FieldDepFunc.js",
   "revision": "c6dd1fa8efe64120bc4721d19987922d"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "03a067d91231bf0f881cb1449dfd8efd"
+  "revision": "a7944e3065d1402d5390a8ed65170eb8"
 }, {
   "url": "include/js/general.js",
-  "revision": "649539edfee63f6cc5d38ab1383d27be"
+  "revision": "ea2d54a4209098683c6d2051ea73d70c"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "b8243aa64b88f790bbe422b6b6fa741b"
+  "revision": "19886b1eaa89b43c3f045be1da6bfc9e"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "7a4161946acad588e3f8193fe200dd43"
+  "revision": "18e787ed14da4f862156d9b015039971"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "00f9ba3dddb9e3dffbd251872cc2c8aa"
+  "revision": "649b525e9490a49f58c4f8d9e1f1bc25"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
@@ -9338,7 +9338,7 @@ precacheAndRoute([{
   "revision": "5a09d9ad89882ba8ad3e993e11a08055"
 }, {
   "url": "include/js/masterdetailgrid.js",
-  "revision": "2e58be5e8966313b3d986627f7f10d32"
+  "revision": "73a839ef54827ed51e3f80d92eee000a"
 }, {
   "url": "include/js/meld.js",
   "revision": "7c3894eb22d16cb4743a7ea226557ed1"
@@ -9347,7 +9347,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "530bac24ec772a9e064772b6ccae43f3"
+  "revision": "8382eca9b295ad462bd84ed96cba7f0f"
 }, {
   "url": "include/js/notebook.js",
   "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
@@ -9359,13 +9359,13 @@ precacheAndRoute([{
   "revision": "54744d385dd6fbc9e303f4906be988f1"
 }, {
   "url": "include/js/picklist.js",
-  "revision": "1ef073a518be05c33505aa254eb0e2cd"
+  "revision": "130bafbfea32aaea19a8f93e9d4744da"
 }, {
   "url": "include/js/popup.js",
   "revision": "58117a33fae7fc35b0cb70a4f68c0d8e"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "8f59175bc8023be576a92eaeca953ef4"
+  "revision": "d5da6ccb9fd5732a5fbd9effa0ff9421"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "9663dd1cea6cb7fb0cfe983e54baa186"
@@ -9374,7 +9374,7 @@ precacheAndRoute([{
   "revision": "3794d15286444aab05ed1ec3ec31da22"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "4c3d054f2e93114d3884b9d56f4ca4dd"
+  "revision": "d113ff06c969f7916cc9402b08cc0620"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -9383,7 +9383,7 @@ precacheAndRoute([{
   "revision": "008f3e9768bd2d226e65ea69999c9f14"
 }, {
   "url": "include/js/vtlib.js",
-  "revision": "5fcbae6bb7d56bc37f358537ec0c018e"
+  "revision": "1e35ab27991c6679996be1bc5b8def6c"
 }, {
   "url": "include/components/checkboxrenderer.js",
   "revision": "30a720fa2d1634076e325d7cd721acf7"
@@ -9512,34 +9512,34 @@ precacheAndRoute([{
   "revision": "15a73d14b6e91db79ae7847c2c0de1a1"
 }, {
   "url": "modules/com_vtiger_workflow/resources/createentitytaskscript.js",
-  "revision": "c6ef3400e6d4e619d8282a5cc419b0be"
+  "revision": "fc6646a77fe08a9ae143dc4384b6844f"
 }, {
   "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
   "revision": "f81b5a4264ea41a328d5db7c318851f1"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
-  "revision": "1956ac974aa16271cbe80b3918ead1c9"
+  "revision": "1ca883d8d2cc96b015d0be1016eaf3b5"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
-  "revision": "aeba476ac6b9a2d0874065ba513636a9"
+  "revision": "abc78c735021ff978667f6e996ff6dd2"
 }, {
   "url": "modules/com_vtiger_workflow/resources/entitymethodtask.js",
   "revision": "43155535cd6da302c6ad1c34c077c642"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldexpressionpopup.js",
-  "revision": "ed36c66da8563a585a4bb38ff656b741"
+  "revision": "8c3c42fdd9706088d63bb3c82d3a9687"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldvalidator.js",
-  "revision": "f60f12a21d27e5a9be6f5a6753b24114"
+  "revision": "898a540815812e279b7297b23b9d20f8"
 }, {
   "url": "modules/com_vtiger_workflow/resources/functional.js",
   "revision": "507e0618da87701f11b973970362e3cf"
 }, {
   "url": "modules/com_vtiger_workflow/resources/functionselect.js",
-  "revision": "156cde27c49277a61d14d130a22d43d4"
+  "revision": "c4b56b420403c6b98721053315825a87"
 }, {
   "url": "modules/com_vtiger_workflow/resources/generateimagecode.js",
-  "revision": "087b07bc4fffeedd00ae44f7c78a7e32"
+  "revision": "5e5ab3e366035fbf7da2e20ca4edb606"
 }, {
   "url": "modules/com_vtiger_workflow/resources/generateReportWfTask.js",
   "revision": "8c30d1f6f296735bb822882e9016d03b"
@@ -9549,6 +9549,9 @@ precacheAndRoute([{
 }, {
   "url": "modules/com_vtiger_workflow/resources/jquery.timepicker.js",
   "revision": "cf04488523916947850d381c20427f50"
+}, {
+  "url": "modules/com_vtiger_workflow/resources/launchworkflowtask.js",
+  "revision": "90ce5ce19efe004446cb24df2ffebe6a"
 }, {
   "url": "modules/com_vtiger_workflow/resources/many2manyrelation.js",
   "revision": "8778e149e296ca91f9c4c941007fc17c"
@@ -9563,16 +9566,16 @@ precacheAndRoute([{
   "revision": "a92ca52bdb5b6d1350e3681bf93f4682"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatefieldstaskscript.js",
-  "revision": "d37545f95657494d5595a9a9a9963ce0"
+  "revision": "dd2433dead063a2ba37f9c7c37e6190e"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js",
-  "revision": "6a4fc2f79fcb5ed5b66f66e8354e26b0"
+  "revision": "6d9f81de1ff75ec596813151f2bd3034"
 }, {
   "url": "modules/com_vtiger_workflow/resources/upserttask.js",
-  "revision": "40aeaddb03e3fa6e98acc32624d68a32"
+  "revision": "8ff06dd23594e698f4e045763b041a5a"
 }, {
   "url": "modules/com_vtiger_workflow/resources/vtigerwebservices.js",
-  "revision": "8acb4cd5b3583547db71a8345e8f667e"
+  "revision": "57eb8c551a6bceb48b08822fb48438d0"
 }, {
   "url": "modules/com_vtiger_workflow/resources/wfexeexp.js",
   "revision": "70312429e9d136159b33fd985ede4ff8"
@@ -9584,7 +9587,7 @@ precacheAndRoute([{
   "revision": "fab39532561524488d757c60df5fedd7"
 }, {
   "url": "modules/com_vtiger_workflow/resources/whatsappworkflowtaskscript.js",
-  "revision": "622c712a323d8be873240868ebe37a96"
+  "revision": "4ba8509ee8c1b014e06df45653e562d5"
 }, {
   "url": "modules/com_vtiger_workflow/resources/workflowlistscript.js",
   "revision": "8b5c1c927497e4a7203d89fb1d009eba"
@@ -9662,7 +9665,7 @@ precacheAndRoute([{
   "revision": "9ed4669f524bec38319be63a2ee4ba26"
 }, {
   "url": "modules/MailManager/MailManager.js",
-  "revision": "8ede0969d7a1b7bb36d5053c5b0caa2d"
+  "revision": "d166fb54361a463cf82a8b5cd908708c"
 }, {
   "url": "modules/MailManager/MailManager.png",
   "revision": "1c045d808355b6ed581cd4971f3436f9"
@@ -9800,7 +9803,7 @@ precacheAndRoute([{
   "revision": "1001255e02a066e3fab9687eb4f7ec79"
 }, {
   "url": "modules/Settings/profilePrivileges.js",
-  "revision": "5a6aa57c8fa6ca7353bd179c2f622bb3"
+  "revision": "e8735c467cb77eab04e51f77a14ca87b"
 }, {
   "url": "modules/Products/Productsslide.js",
   "revision": "721bd3d5367129defea7f6bd1bb8eee3"
@@ -9815,10 +9818,10 @@ precacheAndRoute([{
   "revision": "253c82414388480dd8d07ec5f899968d"
 }, {
   "url": "modules/ModComments/ModCommentsCommon.js",
-  "revision": "b7b8d25f4ae3e9f857c714f54b6b77b4"
+  "revision": "842d921f10a4cdd8e17ee17b92a238e1"
 }, {
   "url": "modules/MsgTemplate/MsgTemplate.js",
-  "revision": "fa6885419e640869506d9040884a6f6e"
+  "revision": "fa465d9a6a3e943b658f9db8aec162f5"
 }, {
   "url": "modules/ProjectTask/ProjectTask.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
@@ -9851,7 +9854,7 @@ precacheAndRoute([{
   "revision": "c663d6d8dfeba2b51a542382c8623087"
 }, {
   "url": "modules/cbCalendar/script.js",
-  "revision": "5aaa35e67a5421e1ac0828d6d81631c5"
+  "revision": "88ee07afbeec094fc410097456f8bb1c"
 }, {
   "url": "modules/cbCalendar/cbCalendar.js",
   "revision": "850ff484cc49801561ed0620843b7b19"
@@ -9863,7 +9866,7 @@ precacheAndRoute([{
   "revision": "e279c2c2415f15a8ca13cfe3c2f0dfa2"
 }, {
   "url": "modules/cbQuestion/resources/Builder.js",
-  "revision": "7dc7ea98176f34e1f6ad9cf90206a76c"
+  "revision": "57cf6e44395b16444e65a81ff66dc2cb"
 }, {
   "url": "modules/cbQuestion/resources/editbuilder.js",
   "revision": "27046546ece2590e865e7d3891862132"
@@ -9995,7 +9998,7 @@ precacheAndRoute([{
   "revision": "c822e17c71c3f3e039528c4311f4cbae"
 }, {
   "url": "modules/ModTracker/ModTrackerCommon.js",
-  "revision": "4724129285ac48868099072127bb4758"
+  "revision": "2c3a5d0e3cfb7010482b1afed64a4746"
 }, {
   "url": "modules/ModTracker/language/de_de.js",
   "revision": "bdafc8809c554dd1490838aa8132e6c2"
@@ -10025,7 +10028,7 @@ precacheAndRoute([{
   "revision": "6531a4eabc9036cd9898b785671f2f2c"
 }, {
   "url": "modules/ModTracker/language/pt_br.js",
-  "revision": "07c5965a57fb166f85618202540443d9"
+  "revision": "068213bd61bee2aeb53b4b95f6b72dc8"
 }, {
   "url": "modules/ModTracker/language/ro_ro.js",
   "revision": "bdafc8809c554dd1490838aa8132e6c2"
@@ -10070,7 +10073,7 @@ precacheAndRoute([{
   "revision": "18844ee70d6993cd1e9bbb8bb412d097"
 }, {
   "url": "modules/Import/resources/ImportStep2.js",
-  "revision": "45c632cf97d1f03c7f6805c1f78ae0a7"
+  "revision": "f98f9eeb54cd2b95375d74c1af6a9f14"
 }, {
   "url": "modules/Import/resources/Import.js",
   "revision": "d5e127679f8ff08f74ca1168618c310d"
@@ -10079,7 +10082,7 @@ precacheAndRoute([{
   "revision": "65682db92a471ba46f12737f6f6b3e4d"
 }, {
   "url": "modules/Reports/Reports.js",
-  "revision": "1dbbeec86ef8a9263439378971af23cf"
+  "revision": "366249ae160c02cbfa0a012edd559b49"
 }, {
   "url": "modules/Reports/ReportsSteps.js",
   "revision": "dac7c3f4b013798df0875b1450e27bc1"
@@ -10094,7 +10097,7 @@ precacheAndRoute([{
   "revision": "c4d6beb74ea9772d82bdde6a243a16fd"
 }, {
   "url": "include/Webservices/WSClient.js",
-  "revision": "ce5b9c7843df949930c6521cb685b0bd"
+  "revision": "062def9baf01f014c4baf6568704316a"
 }, {
   "url": "include/freetag/jquery.tagcanvas.js",
   "revision": "0be5cdb88030adc8bdeeaef233fdb1a4"

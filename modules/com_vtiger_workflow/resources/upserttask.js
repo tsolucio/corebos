@@ -176,7 +176,7 @@ function CBUpsertTask($, fieldvaluemapping) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];
@@ -301,7 +301,7 @@ function CBUpsertTask($, fieldvaluemapping) {
 			fetch(vtinst.serviceUrl + params, {
 				method: 'get',
 			}).then(response => response.json()).then(response => {
-				if (response.success == true) {
+				if (response.success) {
 					const mods = response.result.types;
 					mods.map(function (upsert_module) {
 						const mod_information = response.result.information;
