@@ -130,7 +130,13 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 	if ($relationResult && $adb->num_rows($relationResult)>0) {
 		$relationInfo = $adb->fetch_array($relationResult);
 		$moduleInstance = CRMEntity::getInstance($mainmodule);
-		$params = array($crmid, $moduleId, $relatedModuleId);
+		$linkfield = false;
+		if ($useNamesForUIType10 && $rfield->uitype==Field_Metadata::UITYPE_RECORD_RELATION) {
+			$secLevelRel = getFirstModule($relmodule, $rfield->name);
+			$linkfield = getEntityField($secLevelRel, true);
+			$linkfield['linkfield'] = $rfield->name;
+		}
+		$params = array($crmid, $moduleId, $relatedModuleId, false, $linkfield);
 		$hold = isset($currentModule) ? $currentModule : '';
 		$currentModule = $mainmodule;
 		$GetRelatedList_ReturnOnlyQuery = true;

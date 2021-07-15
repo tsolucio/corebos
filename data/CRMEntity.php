@@ -2527,7 +2527,7 @@ class CRMEntity {
 	 * NOTE: Vtiger_Module::setRelatedList sets reference to this function in vtiger_relatedlists table
 	 * if function name is not explicitly specified.
 	 */
-	public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+	public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions = false, $einfo = false) {
 		global $currentModule, $singlepane_view, $adb;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -2610,6 +2610,9 @@ class CRMEntity {
 		} else {
 			$del_table = 'vtiger_users';
 		}
+		if ($einfo) {
+			$query .= ' LEFT JOIN '.$einfo['tablename'].' ON '.$other->table_name.'.'.$einfo['linkfield'].'='.$einfo['tablename'].'.'.$einfo['entityid'].' ';
+		}
 		$query .= " WHERE {$del_table}.deleted = 0 AND (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
 
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
@@ -2629,7 +2632,7 @@ class CRMEntity {
 	 * For eg: A trouble ticket can be related to an Account or a Contact.
 	 * From a given Contact/Account if we need to fetch all such dependent trouble tickets, get_dependents_list function can be used.
 	 */
-	public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+	public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions = false, $einfo = false) {
 		global $currentModule, $singlepane_view, $current_user, $adb;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -2729,7 +2732,9 @@ class CRMEntity {
 			}
 			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$other->crmentityTable.'.smownerid';
 			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$other->crmentityTable.'.smownerid';
-
+			if ($einfo) {
+				$query .= ' LEFT JOIN '.$einfo['tablename'].' ON '.$other->table_name.'.'.$einfo['linkfield'].'='.$einfo['tablename'].'.'.$einfo['entityid'].' ';
+			}
 			if ($relWithSelf) {
 				$query .= ' WHERE '.$other->crmentityTable.'.deleted=0 AND '.$this->table_name."RelSelf.$this->table_index = $id";
 			} else {
