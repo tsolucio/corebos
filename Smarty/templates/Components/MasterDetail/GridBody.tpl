@@ -1,5 +1,13 @@
 <div id="{$MasterDetailLayoutMap.mapname}" data-mapname="{$MasterDetailLayoutMap.mapnameraw}" style="display: inline"></div>
 <script>
+var MasterDetail_Pagination = 0;
+var pageOptions = false;
+if ({$MasterDetail_Pagination} > 0) {
+	pageOptions = {
+		useClient: true,
+		perPage: {$MasterDetail_Pagination}
+	};
+}
 var mdgrid{$MasterDetailLayoutMap.mapname} = new tui.Grid({
 	el: document.getElementById('{$MasterDetailLayoutMap.mapname}'), // Container element
 	columns: [
@@ -33,6 +41,7 @@ var mdgrid{$MasterDetailLayoutMap.mapname} = new tui.Grid({
 		}
 	},
 	useClientSort: true,
+	pageOptions: pageOptions,
 	rowHeight: 'auto',
 	bodyHeight: 'auto',
 	scrollX: false,
