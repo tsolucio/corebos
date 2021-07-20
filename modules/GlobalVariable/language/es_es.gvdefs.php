@@ -1461,6 +1461,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Vuelve a cargar toda la vista de detalle después de editar en el bloque de maestro-detalle.',
 ),
+'MasterDetail_Pagination' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Number of rows to show per page in the master detail list view grid.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

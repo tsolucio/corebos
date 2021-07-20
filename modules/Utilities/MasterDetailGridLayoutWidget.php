@@ -48,6 +48,7 @@ class MasterDetailGridLayout_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('MasterDetailLayoutMap', $mdmap);
 		$smarty->assign('MasterDetaiCurrentRecord', $_REQUEST['record']);
 		$smarty->assign('MasterID', $masterid);
+		$smarty->assign('MasterDetail_Pagination', GlobalVariable::getVariable('MasterDetail_Pagination', 0));
 		return $smarty->fetch('Components/MasterDetail/Grid.tpl');
 	}
 }
