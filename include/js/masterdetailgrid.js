@@ -1,3 +1,4 @@
+var MDInstance = Array();
 var ReloadScreenAfterEdit = 0;
 GlobalVariable_getVariable('MasterDetail_ReloadScreenAfterEdit', 0).then(function (response) {
 	let obj = JSON.parse(response);
