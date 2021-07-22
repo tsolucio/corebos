@@ -9311,7 +9311,7 @@ precacheAndRoute([{
   "revision": "a7944e3065d1402d5390a8ed65170eb8"
 }, {
   "url": "include/js/general.js",
-  "revision": "ea2d54a4209098683c6d2051ea73d70c"
+  "revision": "dda5c3c84d84979627d248304ff7a26a"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "19886b1eaa89b43c3f045be1da6bfc9e"
@@ -9338,7 +9338,7 @@ precacheAndRoute([{
   "revision": "5a09d9ad89882ba8ad3e993e11a08055"
 }, {
   "url": "include/js/masterdetailgrid.js",
-  "revision": "73a839ef54827ed51e3f80d92eee000a"
+  "revision": "5a3a98e04b761f011bd8979be908dbae"
 }, {
   "url": "include/js/meld.js",
   "revision": "7c3894eb22d16cb4743a7ea226557ed1"
