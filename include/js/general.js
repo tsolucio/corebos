@@ -2553,7 +2553,7 @@ function selectContact(check, frmName) {
 		} else {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
 		}
-	} else if (document.getElementById('vendor_name') && gVTModule=='PurchaseOrder') {
+	} else if (document.getElementById('vendor_id') && gVTModule=='PurchaseOrder') {
 		record_id = frmName.vendor_id.value;
 		module_string = '&parent_module=Vendors';
 		if (record_id != '') {
