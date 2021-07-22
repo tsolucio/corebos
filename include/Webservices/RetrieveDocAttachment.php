@@ -62,6 +62,7 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 		$document_id = $ids[1];
 		$filetype=$adb->query_result($result, $i, 'filelocationtype');
 		if ($filetype=='E') {
+			$entity = array();
 			$entity['recordid'] = $adb->query_result($result, $i, 'notesid');
 			$entity['filetype'] = $adb->query_result($result, $i, 'filetype');
 			$entity['filename'] = $adb->query_result($result, $i, 'filename');

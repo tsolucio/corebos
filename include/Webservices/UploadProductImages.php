@@ -111,19 +111,14 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 	// Check that final total of images equals the start number plus the file count
 	if ($finalnumimages == ($numimages + count($fileData))) {
 		$myResult['Error'] = '0';
-		$myResult['ImagesAtStart'] = $numimages;
-		$myResult['NumberToAdd'] = count($fileData);
-		$myResult['ImagesAtFinish'] = $newnumimages;
-		$myResult['MaxImages'] = $maximages;
 	} else { // If not return the images actually inserted and an error code
 		$myResult['Error'] = '1';
 		$myResult['ErrorStr'] = 'Maximum number of images has been reached';
-		$myResult['ImagesAtStart'] = $numimages;
-		$myResult['NumberToAdd'] = count($fileData);
-		$myResult['ImagesAtFinish'] = $newnumimages;
-		$myResult['MaxImages'] = $maximages;
 	}
-
+	$myResult['ImagesAtStart'] = $numimages;
+	$myResult['NumberToAdd'] = count($fileData);
+	$myResult['ImagesAtFinish'] = $newnumimages;
+	$myResult['MaxImages'] = $maximages;
 	return $myResult;
 }
 ?>
