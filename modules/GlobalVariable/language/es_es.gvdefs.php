@@ -1462,10 +1462,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Vuelve a cargar toda la vista de detalle después de editar en el bloque de maestro-detalle.',
 ),
 'MasterDetail_Pagination' => array(
-	'valuetype' => 'Integer',
-	'category' => 'Application',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
 	'values' => '',
-	'definition' => 'Number of rows to show per page in the master detail list view grid.',
+	'definition' => 'Número de filas para mostrar por página en la lista de filas maestro-detalle.',
 ),
 );
 
