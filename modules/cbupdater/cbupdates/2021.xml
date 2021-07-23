@@ -112,4 +112,11 @@
 	<classname>fixCyPRepeatedEntityName</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set Document related list on Comments</description>
+	<filename>build/changeSets/2021/setDocRelComments.php</filename>
+	<classname>setDocRelComments</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
