@@ -224,6 +224,9 @@ class CRMEntity {
 				}
 				$files['original_name'] = str_replace(array('"',':'), '', $files['original_name']);
 				$result = $adb->pquery($sql, array($fileindex,$tabid));
+				if (!$result || $adb->num_rows($result)==0) {
+					continue;
+				}
 				$tblname = $adb->query_result($result, 0, 'tablename');
 				$colname = $adb->query_result($result, 0, 'columnname');
 				$fldname = $fileindex;
