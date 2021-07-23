@@ -241,6 +241,9 @@ class DateTimeField {
 		if (empty($date)) {
 			return $date;
 		}
+		if (strval(preg_match_all('/-/i', $date)) <= 1) {
+			$date = '--'.$date;
+		}
 		list($y, $m, $d) = explode('-', $date);
 		if (strlen($y) == 4) {
 			return $date;

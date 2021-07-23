@@ -1127,6 +1127,9 @@ class QueryGenerator {
 								$tname = $bTable;
 							}
 							if (($conditionInfo['SQLOperator'] == 'empty' || $conditionInfo['SQLOperator'] == 'y')) {
+								if (!$this->isDateType($field->getFieldDataType())) {
+									$fieldSqlList[$index] = "($tname.$fname IS NULL OR $tname.$fname = '0')";
+								}
 								$fieldSqlList[$index] = "($tname.$fname IS NULL OR $tname.$fname = '' OR $tname.$fname = '0')";
 								continue;
 							}
@@ -1363,7 +1366,7 @@ class QueryGenerator {
 					if ($operator == 'n') {
 						$sql[] = 'IS NOT NULL and '.$field->getTableName().'.'.$field->getColumnName()." <> ''";
 					} else {
-						$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getColumnName()." = ''";
+						$sql[] = 'IS NULL';
 					}
 					return $sql;
 				}
