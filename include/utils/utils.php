@@ -626,9 +626,9 @@ function create_guid() {
 	return $guid;
 }
 
-/** Function to create guid section for a given character
- * @param string characters
- * @return integer
+/** Function to create guid section for a UUID
+ * @param integer number of hexadecimal characters to return
+ * @return string concatenation of the given number of hexadecimal random integers
  */
 function create_guid_section($characters) {
 	global $log;
@@ -641,9 +641,10 @@ function create_guid_section($characters) {
 	return $return;
 }
 
-/** Function to ensure length
- * @param $string -- string:: Type string
- * @param $length -- length:: Type string
+/** Function to ensure length: the given string will be cut at the given length or padded with zeros to the given length
+ * @param string the string we need to control the length of
+ * @param integer length the string must have
+ * @return void the given string will be modified directly (passed by reference)
  */
 function ensure_length(&$string, $length) {
 	global $log;
