@@ -24,7 +24,7 @@ class GenerateDocument extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('gdformat', 'gendoctemplate', 'updateOnChange');
+		return array('gdformat', 'gendoctemplate', 'updateOnChange', 'shareOnCreate');
 	}
 
 	public function doTask(&$entity) {
@@ -84,6 +84,10 @@ class GenerateDocument extends VTTask {
 			if ($this->updateOnChange) {
 				$rdocs = $adb->pquery($relatedDocsSQL, array($fileid, $record));
 				while ($rdoc = $adb->fetch_array($rdocs)) {
+					if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
+						$smq->createShareLink($rdoc['notesid']);
+						$entity->WorkflowContext['wfgenerated_file'] = array();
+					}
 					$smq->swapDocument($rdoc['notesid'], $docid);
 				}
 				$adb->pquery(
@@ -94,6 +98,9 @@ class GenerateDocument extends VTTask {
 					"update vtiger_crmobject set vtiger_crmobject.deleted=1 where vtiger_crmobject.crmid in ($relatedDocsSQL)",
 					array($fileid, $record)
 				);
+			} elseif ($this->shareOnCreate && !$smq->isShared($docid)) {
+				$smq->createShareLink($docid);
+				$entity->WorkflowContext['SharedDocumentLink'] = array();
 			}
 			$adb->pquery('update vtiger_notes set gendoctplid=? where notesid=?', array($fileid, $docid));
 		}

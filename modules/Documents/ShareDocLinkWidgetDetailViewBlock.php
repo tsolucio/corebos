@@ -60,19 +60,35 @@ class ShareDocLinkWidgetDetailViewBlock extends DeveloperBlock {
 		return $msg;
 	}
 
-	private function constructShareLink($shdclkkey) {
+	public function getShareCode($docid) {
+		$skey = '';
+		if ($docid) {
+			$shdclkkey = coreBOS_Settings::getSetting($this->widgetPrefix.$docid, 0);
+			if ($shdclkkey && coreBOS_Settings::getSetting($this->widgetPrefix.$shdclkkey, 0)==$docid) {
+				$skey = $shdclkkey;
+			}
+		}
+		return $skey;
+	}
+
+	public function isShared($docid) {
+		return (!empty($docid) && !empty(coreBOS_Settings::getSetting($this->widgetPrefix.$docid, 0)));
+	}
+
+	public function constructShareLink($shdclkkey) {
 		global $site_URL;
 		return $site_URL.'/notifications.php?type=docshare&doc='.$shdclkkey;
 	}
 
 	public function createShareLink($docid) {
 		$docid = isset($docid) ? vtlib_purify($docid) : 0;
+		$skey = '';
 		if (!empty($docid)) {
 			$skey = bin2hex(random_bytes(14));
 			coreBOS_Settings::setSetting($this->widgetPrefix.$skey, $docid);
 			coreBOS_Settings::setSetting($this->widgetPrefix.$docid, $skey);
 		}
-		return $docid;
+		return $skey;
 	}
 
 	public function deleteShareLink($docid) {
