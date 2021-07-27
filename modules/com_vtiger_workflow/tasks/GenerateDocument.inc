@@ -18,6 +18,7 @@
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/evvtgendoc/OpenDocument.php';
+require_once 'modules/Documents/ShareDocLinkWidgetDetailViewBlock.php';
 
 class GenerateDocument extends VTTask {
 	public $executeImmediately = true;
@@ -28,6 +29,12 @@ class GenerateDocument extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $root_directory, $current_language, $default_charset;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
+		$relatedDocsSQL = 'SELECT vtiger_senotesrel.notesid
+			FROM vtiger_senotesrel
+			INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
+			WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=?';
+		$smq = new ShareDocLinkWidgetDetailViewBlock();
 		$this->addGenDocTplColumn();
 		$format = ($this->gdformat==1 ? 'odt' : 'pdf');
 		$record = preg_replace('/[^0-9]/', '', substr($entity->data['id'], strpos($entity->data['id'], 'x')));
@@ -75,21 +82,16 @@ class GenerateDocument extends VTTask {
 			}
 			$docid = OpenDocument::saveAsDocument($record, $module, $format, $mergeTemplateName, ($format=='pdf' ? $fullpdfname : $fullfilename), $name);
 			if ($this->updateOnChange) {
-				$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
+				$rdocs = $adb->pquery($relatedDocsSQL, array($fileid, $record));
+				while ($rdoc = $adb->fetch_array($rdocs)) {
+					$smq->swapDocument($rdoc['notesid'], $docid);
+				}
 				$adb->pquery(
-					'update '.$crmEntityTable.' set '.$crmEntityTable.'.deleted=1 where '.$crmEntityTable.'.crmid in (
-						SELECT vtiger_senotesrel.notesid
-						FROM vtiger_senotesrel
-						INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
-						WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=?)',
+					'update '.$crmEntityTable.' set '.$crmEntityTable.'.deleted=1 where '.$crmEntityTable.".crmid in ($relatedDocsSQL)",
 					array($fileid, $record)
 				);
 				$adb->pquery(
-					'update vtiger_crmobject set vtiger_crmobject.deleted=1 where vtiger_crmobject.crmid in (
-						SELECT vtiger_senotesrel.notesid
-						FROM vtiger_senotesrel
-						INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
-						WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=?)',
+					"update vtiger_crmobject set vtiger_crmobject.deleted=1 where vtiger_crmobject.crmid in ($relatedDocsSQL)",
 					array($fileid, $record)
 				);
 			}

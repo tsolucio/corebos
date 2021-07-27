@@ -302,3 +302,25 @@ function toggleModule_mod(tabid, action) {
 		document.getElementById('modDocsContents').innerHTML=response;
 	});
 }
+
+function docsdowork(work, docid, callmemaybe) {
+	fetch(
+		'index.php?module=Documents&action=DocumentsAjax&actionname=DActions&method='+work+'&docid='+docid,
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: '&'+csrfMagicName+'='+csrfMagicToken
+		}
+	).then(response => response.json()).then(response => {
+		if (typeof callmemaybe == 'function') {
+			callmemaybe(response);
+		}
+	});
+}
+
+function reloadShareLinkWidget(response) {
+	window.location.reload();
+}
