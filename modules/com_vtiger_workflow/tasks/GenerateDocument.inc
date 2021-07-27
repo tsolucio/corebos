@@ -85,8 +85,9 @@ class GenerateDocument extends VTTask {
 				$rdocs = $adb->pquery($relatedDocsSQL, array($fileid, $record));
 				while ($rdoc = $adb->fetch_array($rdocs)) {
 					if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
-						$smq->createShareLink($rdoc['notesid']);
-						$entity->WorkflowContext['wfgenerated_file'] = array();
+						$skey = $smq->createShareLink($rdoc['notesid']);
+						$entity->WorkflowContext['SharedDocumentCode'] = $skey;
+						$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
 					}
 					$smq->swapDocument($rdoc['notesid'], $docid);
 				}
@@ -99,8 +100,9 @@ class GenerateDocument extends VTTask {
 					array($fileid, $record)
 				);
 			} elseif ($this->shareOnCreate && !$smq->isShared($docid)) {
-				$smq->createShareLink($docid);
-				$entity->WorkflowContext['SharedDocumentLink'] = array();
+				$skey = $smq->createShareLink($docid);
+				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
+				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
 			}
 			$adb->pquery('update vtiger_notes set gendoctplid=? where notesid=?', array($fileid, $docid));
 		}
