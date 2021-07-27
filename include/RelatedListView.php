@@ -20,16 +20,17 @@ if (!function_exists('GetRelatedList')) {
 }
 
 /** Function to get related list entries in detailed array format
-  * @param $module -- modulename:: Type string
-  * @param $relatedmodule -- relatedmodule:: Type string
-  * @param $focus -- focus:: Type object
-  * @param $query -- query:: Type string
-  * @param $button -- buttons:: Type string
-  * @param $returnset -- returnset:: Type string
-  * @param $id -- id:: Type string
-  * @param $edit_val -- edit value:: Type string
-  * @param $del_val -- delete value:: Type string
-  * @returns $related_entries -- related entires:: Type string array
+  * @param string module name
+  * @param string related module
+  * @param object related module object to get the list information
+  * @param string SQL query to execute to get the rows and values
+  * @param string HTML of the buttons to show on related list
+  * @param string returnset
+  * @param string id
+  * @param string edit value (not used)
+  * @param string delete value (not used)
+  * @param boolean skip actions column or not
+  * @return array related entires
   */
 function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $returnset, $id = '', $edit_val = '', $del_val = '', $skipActions = false) {
 	$log = LoggerManager::getLogger('GetRelatedList');

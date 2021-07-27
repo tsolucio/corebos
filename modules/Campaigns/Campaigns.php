@@ -92,9 +92,9 @@ class Campaigns extends CRMEntity {
 	}
 
 	/**
-	 * Function to get Campaign related Accouts
-	 * @param  integer   $id      - campaignid
-	 * returns related Accounts record in array format
+	 * Function to get Campaign related Accounts
+	 * @param integer campaignid
+	 * @return array related Accounts records
 	 */
 	public function get_accounts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
@@ -128,12 +128,12 @@ class Campaigns extends CRMEntity {
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp';
 		/* To get Accounts CustomView -START */
 		require_once 'modules/CustomView/CustomView.php';
-		$ahtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One')." --</option>";
+		$ahtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One').' --</option>';
 		$oCustomView = new CustomView($related_module);
 		$viewid = $oCustomView->getViewId($related_module);
 		$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid, false);
 		$ahtml .= $customviewcombo_html;
-		$ahtml .= "</select>";
+		$ahtml .= '</select>';
 		/* To get Accounts CustomView -END */
 
 		$button .= $ahtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
@@ -194,8 +194,8 @@ class Campaigns extends CRMEntity {
 
 	/**
 	 * Function to get Campaign related Contacts
-	 * @param  integer   $id      - campaignid
-	 * returns related Contacts record in array format
+	 * @param integer campaignid
+	 * @return array related Contacts records
 	 */
 	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
@@ -230,12 +230,12 @@ class Campaigns extends CRMEntity {
 
 		/* To get Leads CustomView -START */
 		require_once 'modules/CustomView/CustomView.php';
-		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One')." --</option>";
+		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One').' --</option>';
 		$oCustomView = new CustomView($related_module);
 		$viewid = $oCustomView->getViewId($related_module);
 		$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid, false);
 		$lhtml .= $customviewcombo_html;
-		$lhtml .= "</select>";
+		$lhtml .= '</select>';
 		/* To get Leads CustomView -END */
 
 		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
@@ -300,8 +300,8 @@ class Campaigns extends CRMEntity {
 
 	/**
 	 * Function to get Campaign related Leads
-	 * @param  integer   $id      - campaignid
-	 * returns related Leads record in array format
+	 * @param integer campaignid
+	 * @return array related Leads records
 	 */
 	public function get_leads($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -336,12 +336,12 @@ class Campaigns extends CRMEntity {
 
 		/* To get Leads CustomView -START */
 		require_once 'modules/CustomView/CustomView.php';
-		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One')." --</option>";
+		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One').' --</option>';
 		$oCustomView = new CustomView($related_module);
 		$viewid = $oCustomView->getViewId($related_module);
 		$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid, false);
 		$lhtml .= $customviewcombo_html;
-		$lhtml .= "</select>";
+		$lhtml .= '</select>';
 		/* To get Leads CustomView -END */
 
 		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
@@ -401,11 +401,11 @@ class Campaigns extends CRMEntity {
 		return $return_value;
 	}
 
-	/*
+	/**
 	 * Function populate the status columns' HTML
-	 * @param - $related_list return value from GetRelatedList
-	 * @param - $status_column index of the status column in the list.
-	 * returns true on success
+	 * @param array return value from GetRelatedList
+	 * @param string index of the status column in the list
+	 * @return boolean true on success
 	 */
 	private function addStatusPopup($related_list, $status_column, $related_module) {
 		global $adb;
