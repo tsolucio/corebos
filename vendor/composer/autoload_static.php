@@ -59,6 +59,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
+            'ParagonIE\\ConstantTime\\' => 23,
         ),
         'O' => 
         array (
@@ -183,6 +184,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
+        'ParagonIE\\ConstantTime\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
+        ),
         'OneLogin\\' => 
         array (
             0 => __DIR__ . '/..' . '/onelogin/php-saml/src',
@@ -225,21 +230,21 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         ),
         'Laminas\\Cache\\Storage\\Adapter\\' => 
         array (
-            0 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apc/src',
-            1 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apcu/src',
-            2 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-blackhole/src',
-            3 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-dba/src',
-            4 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-ext-mongodb/src',
-            5 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-filesystem/src',
-            6 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcache/src',
+            0 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-zend-server/src',
+            1 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-xcache/src',
+            2 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-wincache/src',
+            3 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-session/src',
+            4 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-redis/src',
+            5 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-mongodb/src',
+            6 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memory/src',
             7 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcached/src',
-            8 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memory/src',
-            9 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-mongodb/src',
-            10 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-redis/src',
-            11 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-session/src',
-            12 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-wincache/src',
-            13 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-xcache/src',
-            14 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-zend-server/src',
+            8 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcache/src',
+            9 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-filesystem/src',
+            10 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-ext-mongodb/src',
+            11 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-dba/src',
+            12 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-blackhole/src',
+            13 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apcu/src',
+            14 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apc/src',
         ),
         'Laminas\\Cache\\' => 
         array (
@@ -326,6 +331,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
         'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
         'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
