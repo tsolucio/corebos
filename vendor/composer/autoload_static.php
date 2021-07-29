@@ -22,6 +22,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         '93aa591bc4ca510c520999e34229ee79' => __DIR__ . '/..' . '/sabre/xml/lib/Serializer/functions.php',
         'ebdb698ed4152ae445614b69b5e4bb6a' => __DIR__ . '/..' . '/sabre/http/lib/functions.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '79f66bc0a1900f77abe4a9a299057a0a' => __DIR__ . '/..' . '/starkbank/ecdsa/src/ellipticcurve.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -38,6 +39,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\Console\\' => 26,
+            'SendGrid\\' => 9,
             'Sabre\\Xml\\' => 10,
             'Sabre\\VObject\\' => 14,
             'Sabre\\Uri\\' => 10,
@@ -123,6 +125,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'SendGrid\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/php-http-client/lib',
         ),
         'Sabre\\Xml\\' => 
         array (
@@ -240,10 +246,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             7 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcached/src',
             8 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcache/src',
             9 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-filesystem/src',
-            10 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-ext-mongodb/src',
-            11 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-dba/src',
-            12 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-blackhole/src',
-            13 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apcu/src',
+            10 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apcu/src',
+            11 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-blackhole/src',
+            12 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-ext-mongodb/src',
+            13 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-dba/src',
             14 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apc/src',
         ),
         'Laminas\\Cache\\' => 

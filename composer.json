@@ -36,6 +36,8 @@
         "greenlion/php-sql-parser": "4.3",
         "monolog/monolog": "2.2.0",
         "automattic/woocommerce": "3.0.0",
-        "zendesk/zendesk_api_client_php": "2.2.11"
+        "zendesk/zendesk_api_client_php": "2.2.11",
+        "starkbank/ecdsa": "0.0.5",
+        "sendgrid/php-http-client": "3.14.0"
     }
 }
