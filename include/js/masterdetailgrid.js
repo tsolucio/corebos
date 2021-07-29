@@ -88,8 +88,12 @@ var masterdetailwork = {
 	save: (mdgridInstance, module) => {
 		const method_prefix = mdgridInstance.substring(6);
 		setTimeout(function () {
-			MDInstance[mdgridInstance].destroy();
-			window['loadMDGrid'+method_prefix]();
+			if (ReloadScreenAfterEdit == 1) {
+				masterdetailwork.MDReload();
+			} else {
+				MDInstance[mdgridInstance].destroy();
+				window['loadMDGrid'+method_prefix]();
+			}
 		}, 1300);
 	},
 
