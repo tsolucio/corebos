@@ -116,7 +116,12 @@ class Import_Index_Controller {
 
 	public function getEntityFields($moduleName) {
 		$moduleFields = $this->getAccessibleFields($moduleName);
-		$entityColumnNames = vtws_getEntityNameFields($moduleName);
+		$entityColumnNames = GlobalVariable::getVariable('Import_DuplicateRecordHandling_Fields', '');
+		if ($entityColumnNames != '') {
+			$entityColumnNames = explode(',', $entityColumnNames);
+		} else {
+			$entityColumnNames = vtws_getEntityNameFields($moduleName);
+		}
 		$entityNameFields = array();
 		foreach ($moduleFields as $fieldName => $fieldInstance) {
 			$fieldColumnName = $fieldInstance->getColumnName();

@@ -478,6 +478,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'skip | overwrite | merge',
 	'definition' => 'Valor predeterminado para configurar la opción Manejo de registros duplicados.',
 ),
+'Import_DuplicateRecordHandling_Fields' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'CSV de nombres de campo',
+	'definition' => 'Lista de nombres de campo separados por comas para buscar al realizar la deduplicación.',
+),
 'Export_Field_Separator_Symbol' => array(
 	'valuetype' => 'carácter',
 	'category' => 'Aplicación',

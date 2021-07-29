@@ -478,6 +478,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'skip | overwrite | merge',
 	'definition' => 'Default value to set the Duplicate Record Handling option.',
 ),
+'Import_DuplicateRecordHandling_Fields' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'CSV of field names',
+	'definition' => 'Comma separated list of field names to search on when deduplicating.',
+),
 'Export_Field_Separator_Symbol' => array(
 	'valuetype' => 'character',
 	'category' => 'Application',
