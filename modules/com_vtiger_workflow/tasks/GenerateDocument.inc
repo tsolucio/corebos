@@ -85,11 +85,12 @@ class GenerateDocument extends VTTask {
 				$rdocs = $adb->pquery($relatedDocsSQL, array($fileid, $record));
 				while ($rdoc = $adb->fetch_array($rdocs)) {
 					if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
-						$skey = $smq->createShareLink($rdoc['notesid']);
-						$entity->WorkflowContext['SharedDocumentCode'] = $skey;
-						$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
+						$smq->createShareLink($rdoc['notesid']);
 					}
 					$smq->swapDocument($rdoc['notesid'], $docid);
+					$skey = $smq->getShareCode($docid);
+					$entity->WorkflowContext['SharedDocumentCode'] = $skey;
+					$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
 				}
 				$adb->pquery(
 					'update '.$crmEntityTable.' set '.$crmEntityTable.'.deleted=1 where '.$crmEntityTable.".crmid in ($relatedDocsSQL)",
