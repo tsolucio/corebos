@@ -19,6 +19,10 @@
 
 $Vtiger_Utils_Log = false;
 include_once 'vtlib/Vtiger/Module.php';
+include_once 'include/integrations/sendgrid/lib/eventwebhook/EventWebhook.php';
+include_once 'include/integrations/sendgrid/lib/eventwebhook/EventWebhookHeader.php';
+use SendGrid\EventWebhook\EventWebhook;
+use SendGrid\EventWebhook\EventWebhookHeader;
 
 function evvtWrite2Log($msg) {
 	$writeLog = true;
@@ -42,7 +46,7 @@ array(
 )
 */
 function sendgridsync($input) {
-	global $adb, $current_user;
+	global $adb, $current_user,$log;
 	$sendgridevents = json_decode($input);
 
 	$date=date('l jS \of F Y h:i:s A');
@@ -192,5 +196,17 @@ function sendgridsync($input) {
 		);
 		cbEventHandler::do_action('sendgrid.NotificationHook', $notificationInfo);
 	} // foreach all events
+}
+
+function validateSignedNotification($publicValue = '', $publicKey, $payload) {
+	$headers =getallheaders();
+	$eventWebhook = new EventWebhook();
+	$ecPublicKey = $eventWebhook->convertPublicKeyToECDSA($publicKey);
+	return $eventWebhook->verifySignature(
+		$ecPublicKey,
+		$payload,
+		$headers[EventWebhookHeader::SIGNATURE],
+		$headers[EventWebhookHeader::TIMESTAMP]
+	);
 }
 ?>
