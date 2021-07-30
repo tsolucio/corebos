@@ -154,8 +154,7 @@ var masterdetailwork = {
 			if (response.indexOf(':#:FAILURE')>-1) {
 				alert(alert_arr.ERROR_WHILE_EDITING);
 			} else if (response.indexOf(':#:ERR')>-1) {
-				alert_str = response.replace(':#:ERR', '');
-				alert(alert_str);
+				alert(response.replace(':#:ERR', ''));
 				VtigerJS_DialogBox.hidebusy();
 			} else if (response.indexOf(':#:SUCCESS')>-1) {
 				const result = response.split(':#:');
@@ -180,7 +179,6 @@ class mdActionRender {
 		let module = props.grid.getValue(rowKey, 'record_module');
 		el = document.createElement('span');
 		let actions = '<div class="slds-button-group" role="group">';
-		let mdgridob = 'mdgrid'+props.grid.el.id;
 		if (props.columnInfo.renderer.options.moveup) {
 			actions += `
 			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.moveup('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveUp']}">

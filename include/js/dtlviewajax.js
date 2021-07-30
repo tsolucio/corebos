@@ -182,8 +182,7 @@ function dtlViewAjaxDirectFieldSave(fieldValue, module, tableName, fieldName, cr
 		if (response.indexOf(':#:FAILURE')>-1) {
 			alert(alert_arr.ERROR_WHILE_EDITING);
 		} else if (response.indexOf(':#:ERR')>-1) {
-			alert_str = response.replace(':#:ERR', '');
-			alert(alert_str);
+			alert(response.replace(':#:ERR', ''));
 			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			//For HD & FAQ - comments, we should empty the field value
@@ -323,8 +322,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		if (response.indexOf(':#:FAILURE')>-1) {
 			alert(alert_arr.ERROR_WHILE_EDITING);
 		} else if (response.indexOf(':#:ERR')>-1) {
-			alert_str = response.replace(':#:ERR', '');
-			alert(alert_str);
+			alert(response.replace(':#:ERR', ''));
 			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			var result = response.split(':#:');
