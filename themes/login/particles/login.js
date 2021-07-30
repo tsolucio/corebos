@@ -4,13 +4,13 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var stars = [], // Array that contains the stars
 	FPS = 60, // Frames per second
-	x = 100, // Number of stars
+	NofStars = 100, // Number of stars
 	mouse = {
 		x: 0,
 		y: 0
 	}; // mouse location
 // Push stars to array
-for (var i = 0; i < x; i++) {
+for (var pushstars = 0; pushstars < NofStars; pushstars++) {
 	stars.push({
 		x: Math.random() * canvas.width,
 		y: Math.random() * canvas.height,
@@ -24,7 +24,8 @@ for (var i = 0; i < x; i++) {
 function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.globalCompositeOperation = 'lighter';
-	for (var id = 0, xd = stars.length; id < xd; id++) {
+	var xd = stars.length;
+	for (var id = 0; id < xd; id++) {
 		var s = stars[id];
 		ctx.fillStyle = '#fff';
 		ctx.beginPath();
@@ -59,12 +60,13 @@ function distance(point1, point2) {
 	xs = xs * xs;
 	ys = point2.y - point1.y;
 	ys = ys * ys;
-	return Math.sqrt( xs + ys );
+	return Math.sqrt(xs + ys);
 }
 
 // Update star locations
 function update() {
-	for (var i = 0, x = stars.length; i < x; i++) {
+	var x = stars.length;
+	for (var i = 0; i < x; i++) {
 		var s = stars[i];
 		s.x += s.vx / FPS;
 		s.y += s.vy / FPS;
