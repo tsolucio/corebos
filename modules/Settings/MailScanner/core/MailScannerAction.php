@@ -12,6 +12,7 @@ require_once 'modules/HelpDesk/HelpDesk.php';
 require_once 'modules/Users/Users.php';
 require_once 'modules/Documents/Documents.php';
 require_once 'modules/Emails/mail.php';
+require_once 'modules/Messages/Messages.php';
 
 /**
  * Mail Scanner Action
