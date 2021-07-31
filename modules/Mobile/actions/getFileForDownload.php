@@ -18,7 +18,8 @@ class crmtogo_UI_DownLoadFile extends crmtogo_WS_Controller {
 		$operation = $request->getOperation();
 		if ($operation == 'downloadFile') {
 			$this->updateDownloadCount($record);
-			$response->setResult($this->downloadFile($record));
+			$this->downloadFile($record);
+			$response->setResult('');
 		} else {
 			$response->setError(8001, 'Wrong function call for file download');
 		}

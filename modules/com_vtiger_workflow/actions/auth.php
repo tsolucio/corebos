@@ -32,7 +32,7 @@ class auth_Action extends CoreBOS_ActionController {
 		if ($adapter == 'GoogleCloudStorage') {
 			//enable access in the first time by the user
 			coreBOS_Session::set('credentialid', $credentialid);
-			$client = $this->getClient($data);
+			$this->getClient($data);
 		}
 	}
 
