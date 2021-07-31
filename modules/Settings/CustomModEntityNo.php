@@ -29,7 +29,7 @@ $validInput = validateAlphaNumericInput($recprefix);
 if (!empty($recprefix) && ! $validInput) {
 	$recprefix = '';
 	$mode='';
-	$STATUSMSG = "<font color='red'>".$mod_strings['LBL_UPDATE'].' '.$mod_strings['LBL_FAILED'].'</font>';
+	$STATUSMSG = '<span style="color:red;">'.$mod_strings['LBL_UPDATE'].' '.$mod_strings['LBL_FAILED'].'</span>';
 }
 $recnumber = isset($_REQUEST['recnumber']) ? vtlib_purify($_REQUEST['recnumber']) : '';
 
@@ -57,9 +57,9 @@ if ($mode == 'UPDATESETTINGS') {
 	if (isset($focus)) {
 		$status = $focus->setModuleSeqNumber('configure', $selectedModule, $recprefix, $recnumber);
 		if ($status === false) {
-			$STATUSMSG = "<font color='red'>".$mod_strings['LBL_UPDATE'].' '.$mod_strings['LBL_FAILED']."</font> $recprefix$recnumber ".$mod_strings['LBL_IN_USE'];
+			$STATUSMSG = '<span style="color:red;">'.$mod_strings['LBL_UPDATE'].' '.$mod_strings['LBL_FAILED']."</span> $recprefix$recnumber ".$mod_strings['LBL_IN_USE'];
 		} else {
-			$STATUSMSG = "<font color='green'>".$mod_strings['LBL_UPDATE'].' '.$mod_strings['LBL_DONE']."</font>";
+			$STATUSMSG = '<span style="color:green">'.$mod_strings['LBL_UPDATE'].' '.$mod_strings['LBL_DONE'].'</span>';
 		}
 	}
 } elseif ($mode == 'UPDATEBULKEXISTING') {
@@ -70,9 +70,9 @@ if ($mode == 'UPDATESETTINGS') {
 			if ($resultinfo['totalrecords'] != $resultinfo['updatedrecords']) {
 				$usefontcolor = 'red';
 			}
-			$STATUSMSG = "<font color='$usefontcolor'>".$mod_strings['LBL_TOTAL'].
-				$resultinfo['totalrecords'] . ", ".$mod_strings['LBL_UPDATE'] . ' ' . $mod_strings['LBL_DONE'] . ':'.
-				$resultinfo['updatedrecords'] ."</font>";
+			$STATUSMSG = "<span style=\"color:$usefontcolor\">".$mod_strings['LBL_TOTAL'].
+				$resultinfo['totalrecords'] . ', '.$mod_strings['LBL_UPDATE'] . ' ' . $mod_strings['LBL_DONE'] . ':'.
+				$resultinfo['updatedrecords'] .'</span>';
 		}
 		$seqinfo = $focus->getModuleSeqInfo($selectedModule);
 		$recprefix = $seqinfo[0];
