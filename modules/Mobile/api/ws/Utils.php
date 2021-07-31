@@ -549,7 +549,7 @@ class crmtogo_WS_Utils {
 		if ($module=='Contacts') {
 			$attstr = 'Contacts Image';
 		} else {
-			$attstr = $module.' Attachment';
+			$attstr = $module.Field_Metadata::ATTACHMENT_ENTITY;
 		}
 		$sql = "SELECT vtiger_attachments.*, vtiger_crmentity.setype
 			FROM vtiger_attachments

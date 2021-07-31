@@ -1089,7 +1089,7 @@ class Users extends CRMEntity {
 
 		if ($upload_status) {
 			$sql1 = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?,?,?,?,?,?,?)';
-			$params1 = array($current_id, $current_user->id, $ownerid, $module . ' Attachment', $this->column_fields['description'],
+			$params1 = array($current_id, $current_user->id, $ownerid, $module.Field_Metadata::ATTACHMENT_ENTITY, $this->column_fields['description'],
 				$adb->formatString('vtiger_crmentity', 'createdtime', $date_var), $adb->formatDate($date_var, true));
 			$adb->pquery($sql1, $params1);
 

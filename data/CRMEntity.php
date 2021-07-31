@@ -247,7 +247,7 @@ class CRMEntity {
 				if (!empty($old_attachmentid)) {
 					$setypers = $adb->pquery('select setype from '.$this->crmentityTable.' where crmid=?', array($old_attachmentid));
 					$setype = $adb->query_result($setypers, 0, 'setype');
-					if ($setype == 'Contacts Image' || $setype == $module.' Attachment') {
+					if ($setype == 'Contacts Image' || $setype == $module.Field_Metadata::ATTACHMENT_ENTITY) {
 						$cntrels = $adb->pquery('select count(*) as cnt from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
 						$numrels = $adb->query_result($cntrels, 0, 'cnt');
 					} else {
@@ -256,7 +256,7 @@ class CRMEntity {
 				}
 				$file_saved = $this->uploadAndSaveFile($id, $module, $files, $attachmentname, $direct_import, $fldname);
 				// Remove the deleted attachments from db
-				if ($file_saved && !empty($old_attachmentid) && ($setype == 'Contacts Image' || $setype == $module.' Attachment')) {
+				if ($file_saved && !empty($old_attachmentid) && ($setype == 'Contacts Image' || $setype == $module.Field_Metadata::ATTACHMENT_ENTITY)) {
 					if ($numrels == 1) {
 						$adb->pquery('delete from vtiger_attachments where attachmentsid=?', array($old_attachmentid));
 					}
@@ -386,7 +386,7 @@ class CRMEntity {
 					$current_id,
 					$current_user->id,
 					$ownerid,
-					$module . ' Attachment',
+					$module . Field_Metadata::ATTACHMENT_ENTITY,
 					$description_val,
 					$adb->formatDate($date_var, true),
 					$adb->formatDate($date_var, true)
