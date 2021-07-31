@@ -1281,7 +1281,7 @@ class CustomView extends CRMEntity {
 		$changed_status = $status_label = '';
 		$status_details = array('Status' => CV_STATUS_DEFAULT, 'ChangedStatus' => $changed_status, 'Label' => $status_label);
 		if ($viewid>0) {
-			$cuserroles = getSubordinateUsersList($current_user->column_fields['roleid']);
+			$cuserroles = getSubordinateUsersList();
 			$status_userid_info = $this->getStatusAndUserid($viewid);
 		}
 		if (is_admin($current_user) || ($viewid>0 && in_array($status_userid_info['userid'], $cuserroles))) {

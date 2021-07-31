@@ -28,7 +28,6 @@ class vtigerCRMHandler extends SyncHandler {
 	}
 
 	public function get($module, $token, $user) {
-		$syncModule = $module;
 		$this->user = $user;
 		$syncModule = $module;
 		$syncType = 'user';

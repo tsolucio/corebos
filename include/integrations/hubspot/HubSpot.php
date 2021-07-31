@@ -378,9 +378,11 @@ class corebos_hubspot {
 	}
 
 	private function syncMasterSlaveCB2HS($cbfrom, $send2hs, $msinfo) {
+		return $send2hs;
 	}
 
 	private function syncMasterSlaveHS2CB($cbfrom, $send2hs, $msinfo) {
+		return $send2hs;
 	}
 
 	public function getPropertyFieldNames($cbfrommodule) {

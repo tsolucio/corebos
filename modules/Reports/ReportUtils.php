@@ -172,7 +172,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 	return $fieldvalue;
 }
 
-function report_getMoreInfoFromRequest($cbreporttype, $pmodule, $smodule, $pivotcolumns) {
+function report_getMoreInfoFromRequest($reporttype, $pmodule, $smodule, $pivotcolumns) {
 	global $adb, $default_charset;
 	if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='external') {
 		if (isset($_REQUEST['adduserinfo']) && ($_REQUEST['adduserinfo'] == 'on' || $_REQUEST['adduserinfo'] == 1)) {
