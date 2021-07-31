@@ -62,10 +62,7 @@ class crmtogo_UI_DownLoadFile extends crmtogo_WS_Controller {
 	public function updateDownloadCount($documentid) {
 		$db = PearDatabase::getInstance();
 		$documentid = explode('x', $documentid);
-		$notesId = $documentid[1];
-		$result = $db->pquery('SELECT filedownloadcount FROM vtiger_notes WHERE notesid = ?', array($notesId));
-		$downloadCount = $db->query_result($result, 0, 'filedownloadcount') + 1;
-		$db->pquery('UPDATE vtiger_notes SET filedownloadcount = ? WHERE notesid = ?', array($downloadCount, $notesId));
+		$db->pquery('UPDATE vtiger_notes SET filedownloadcount=filedownloadcount+1 WHERE notesid=?', array($documentid[1]));
 	}
 }
 ?>

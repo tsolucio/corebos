@@ -1698,9 +1698,7 @@ function get_plantilla($entid) {
 
 function getEntityModule($crmid) {
 	global $adb;
-
-	$seltype = "SELECT setype FROM vtiger_crmobject WHERE crmid=$crmid AND deleted=0";
-	$restype = $adb->query($seltype);
+	$restype = $adb->pquery('SELECT setype FROM vtiger_crmobject WHERE crmid=? AND deleted=0', array($crmid));
 	if ($restype) {
 		$modname = $adb->query_result($restype, 0, 'setype');
 	} else {
@@ -1711,11 +1709,9 @@ function getEntityModule($crmid) {
 
 function getUitypefield($module, $fieldname) {
 	global $adb;
-	$seltab = "SELECT tabid FROM vtiger_tab WHERE name=?";
-	$restab = $adb->pquery($seltab, array($module));
+	$restab = $adb->pquery('SELECT tabid FROM vtiger_tab WHERE name=?', array($module));
 	$tabid = $adb->query_result($restab, 0, 'tabid');
-	$selfield = "SELECT uitype FROM vtiger_field WHERE tabid=? AND fieldname=?";
-	$resfield = $adb->pquery($selfield, array($tabid,$fieldname));
+	$resfield = $adb->pquery('SELECT uitype FROM vtiger_field WHERE tabid=? AND fieldname=?', array($tabid, $fieldname));
 	return $adb->query_result($resfield, 0, 'uitype');
 }
 
