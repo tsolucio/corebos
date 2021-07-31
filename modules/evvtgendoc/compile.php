@@ -1717,7 +1717,7 @@ function getUitypefield($module, $fieldname) {
 
 function getRelatedCRMIDs($relsql, $sortinfo = false) {
 	global $adb;
-	$relsql = !!$sortinfo ? $relsql . ' ORDER BY ' . $sortinfo['cname'] . ' ' . $sortinfo['order'] : $relsql;
+	$relsql = empty($sortinfo) ? $relsql : $relsql . ' ORDER BY ' . $sortinfo['cname'] . ' ' . $sortinfo['order'];
 	$res = $adb->pquery($relsql, array());
 	$nr = $adb->num_rows($res);
 	$ret = array('entries' => array());
