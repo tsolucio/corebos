@@ -177,7 +177,7 @@ function controlGoogleSync() {
 					document.getElementById('google_sync_text').style.color = '#000000';
 					document.forms['SharingForm'].submit();
 				} else {
-					result = JSON.parse(response);
+					var result = JSON.parse(response);
 					document.getElementById('google_sync_text').innerHTML = result['text'];
 					fnHideDrop('google_sync_verifying');
 					fnShowDrop('google_sync_text');
