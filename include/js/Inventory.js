@@ -1962,7 +1962,7 @@ function InventorySelectAll(mod) {
 				try {
 					el.addEventListener(type, func.bind(context));
 				} catch (e) {
-					throw e + '. Called by ' + this.on.caller;
+					throw new Error(e + '. Called by ' + this.on.caller);
 				}
 			},
 			/*

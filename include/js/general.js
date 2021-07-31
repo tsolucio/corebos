@@ -5959,7 +5959,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 			case 'id':
 				var vh = document.getElementById(vhLocArray[1]);
 				if (!vh) {
-					throw ('ldsComboBox.getValueHolder: No node with id ' + vhLocArray[1] + ' found');
+					throw new Error('ldsComboBox.getValueHolder: No node with id ' + vhLocArray[1] + ' found');
 				}
 				return vh;
 			default:
