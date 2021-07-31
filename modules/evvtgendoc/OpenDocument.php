@@ -910,7 +910,9 @@ class OpenDocument {
 			$properties = array(
 				'insertindexGD' => $insertindexGD,
 			);
-			$pFilename = tempnam('/tmp', 'gendoc-');
+			if (empty($pFilename)) {
+				$pFilename = tempnam('/tmp', 'gendoc-');
+			}
 			$handle = fopen($pFilename, 'w');
 			foreach ($properties as $key => $value) {
 				fwrite($handle, "{$key} = {$value}\n");
@@ -2906,7 +2908,7 @@ class OpenDocument {
 					continue 2;
 					break;
 				case 'genxmlifexist':
-					$cumple_cond = eval_existe($condicion, $crmid, $module, false);
+					$cumple_cond = eval_existe($condicion, $crmid, $module);
 					if ($cumple_cond && $this->hasChild($node)) {
 						eval_paracada($condicion, $crmid, $module);
 						$this->processBranch($node, $iter_modules[$entidad][0], $entidad);
@@ -2914,7 +2916,7 @@ class OpenDocument {
 					continue 2;
 					break;
 				case 'genxmlifnotexist':
-					$cumple_cond = eval_existe($condicion, $crmid, $module, false);
+					$cumple_cond = eval_existe($condicion, $crmid, $module);
 					if (!$cumple_cond && $this->hasChild($node)) {
 						eval_paracada($condicion, $crmid, $module);
 						$this->processBranch($node, $iter_modules[$entidad][0], $entidad);
