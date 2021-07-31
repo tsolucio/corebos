@@ -13,6 +13,14 @@ require_once 'Smarty_setup.php';
 global $app_strings, $mod_strings, $currentModule, $current_language, $theme;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
+$smarty = new vtigerCRM_Smarty;
+$smarty->assign('MOD', return_module_language($current_language, 'Settings'));
+$smarty->assign('CMOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', $image_path);
 
 $recprefix = isset($_REQUEST['recprefix']) ? vtlib_purify($_REQUEST['recprefix']) : '';
 $mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
@@ -27,17 +35,9 @@ $recnumber = isset($_REQUEST['recnumber']) ? vtlib_purify($_REQUEST['recnumber']
 
 $module_array=getCRMSupportedModules();
 if (count($module_array) <= 0) {
-	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-		<tbody><tr>
-		<td rowspan='2' width='11%'><img src= " . vtiger_imageurl('denied.gif', $theme) . " ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-			<span class='genHeaderSmall'>".$app_strings['LBL_NO_MODULES_TO_SELECT']."</span></td>
-		</tr>
-		</tbody></table>
-		</div>
-	</td></tr></table>";
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+	$smarty->assign('ERROR_MESSAGE', $app_strings['LBL_NO_MODULES_TO_SELECT']);
+	$smarty->display('applicationmessage.tpl');
 	exit;
 }
 uasort($module_array, function ($a, $b) {
@@ -86,15 +86,6 @@ if ($mode == 'UPDATESETTINGS') {
 	}
 }
 
-$smarty = new vtigerCRM_Smarty;
-
-$smarty->assign('MOD', return_module_language($current_language, 'Settings'));
-$smarty->assign('CMOD', $mod_strings);
-$smarty->assign('APP', $app_strings);
-$smarty->assign('MODULE', $currentModule);
-$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
-$smarty->assign('THEME', $theme);
-$smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('MODULES', $module_array);
 $smarty->assign('SELMODULE', $selectedModule);
 $smarty->assign('MODNUM_PREFIX', $recprefix);
