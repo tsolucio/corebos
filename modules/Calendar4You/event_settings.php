@@ -191,7 +191,7 @@ if ($mode != 'user' && $id != 'invite' && $mode != 'module') {
 			<table>
 			<tr>
 			<td class='small' colspan='2'>
-				<b><?php echo $mod_strings['LBL_DAY_EVENT_INFO']; ?>:</b>
+				<strong><?php echo $mod_strings['LBL_DAY_EVENT_INFO']; ?>:</strong>
 				<select name='day_showed_field' id='day_showed_field' class=small>
 				<?php echo createFieldsOptions($OnlyEventFields, $Showed_Field['day']); ?>
 				</select>
@@ -229,7 +229,7 @@ if ($mode != 'user' && $id != 'invite' && $mode != 'module') {
 			<table>
 			<tr>
 			<td class="small" colspan="2">
-				<b><?php echo $mod_strings['LBL_WEEK_EVENT_INFO']; ?>:</b>
+				<strong><?php echo $mod_strings['LBL_WEEK_EVENT_INFO']; ?>:</strong>
 				<select name="week_showed_field" id="day_showed_field" class=small>
 				<?php echo createFieldsOptions($OnlyEventFields, $Showed_Field['week']); ?>
 				</select>
@@ -267,7 +267,7 @@ if ($mode != 'user' && $id != 'invite' && $mode != 'module') {
 			<table>
 			<tr>
 			<td class="small" colspan="2">
-				<b><?php echo $mod_strings['LBL_MONTH_EVENT_INFO']; ?>:</b>
+				<strong><?php echo $mod_strings['LBL_MONTH_EVENT_INFO']; ?>:</strong>
 				<select name="month_showed_field" id="day_showed_field" class=small>
 				<?php echo createFieldsOptions($OnlyEventFields, $Showed_Field['month']); ?>
 				</select>
