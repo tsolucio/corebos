@@ -1389,7 +1389,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					if (!in_array($val, $picklistarr)) {
 						continue;
 					}
-					if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $string_temp)) > $listview_max_textlength)) {
+					if (!$listview_max_textlength || strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $string_temp)) <= $listview_max_textlength) {
 						if ($str_c != 0) {
 							$string_temp .= ' , ';
 						}

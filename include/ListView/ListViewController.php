@@ -437,7 +437,7 @@ class ListViewController {
 							if (!$is_admin && !in_array(trim(decode_html($val)), $this->picklistValueMap[$field->getFieldName()])) {
 								continue;
 							}
-							if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $tmp)) > $listview_max_textlength)) {
+							if (!$listview_max_textlength || strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $tmp)) <= $listview_max_textlength) {
 								$tmpArray[] = $val;
 								$tmp .= ', '.$val;
 							} else {

@@ -646,7 +646,7 @@ function eval_noexiste($condition, $id, $module) {
 			$val = multiple_values($condition_pair[1]);
 			switch ($comp) {
 				case '=':
-					return !($cond == $val);
+					return $cond != $val;
 				break;
 				case $enGD:
 					return (count(array_intersect($cond, $values)) == 0);
