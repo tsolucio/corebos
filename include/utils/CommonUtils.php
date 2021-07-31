@@ -1766,27 +1766,24 @@ function UserCount() {
 }
 
 /**
- * This function is used to create folders recursively.
- * Param $dir - directory name
- * Param $mode - directory access mode
- * Param $recursive - create directory recursive, default true
+ * This function is used to create folders recursively
+ * @param string directory name
+ * @param integer directory access mode
+ * @param boolean create directory recursive, default true
+ * @return boolean if it was successful or not
  */
 function mkdirs($dir, $mode = 0777, $recursive = true) {
 	global $log;
 	$log->debug('> mkdirs ' . $dir . ',' . $mode . ',' . $recursive);
 	if (is_null($dir) || $dir === '') {
-		$log->debug('< mkdirs');
 		return false;
 	}
 	if (is_dir($dir) || $dir === '/') {
-		$log->debug('< mkdirs');
 		return true;
 	}
 	if (mkdirs(dirname($dir), $mode, $recursive)) {
-		$log->debug('< mkdirs');
 		return mkdir($dir, $mode);
 	}
-	$log->debug('< mkdirs');
 	return false;
 }
 

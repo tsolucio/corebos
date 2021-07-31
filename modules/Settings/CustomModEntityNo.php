@@ -26,7 +26,7 @@ $recprefix = isset($_REQUEST['recprefix']) ? vtlib_purify($_REQUEST['recprefix']
 $mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 $STATUSMSG = '';
 $validInput = validateAlphaNumericInput($recprefix);
-if (!empty($recprefix) && ! $validInput) {
+if (!empty($recprefix) && !$validInput) {
 	$recprefix = '';
 	$mode='';
 	$STATUSMSG = '<span style="color:red;">'.$mod_strings['LBL_UPDATE'].' '.$mod_strings['LBL_FAILED'].'</span>';
