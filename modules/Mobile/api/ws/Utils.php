@@ -719,7 +719,7 @@ class crmtogo_WS_Utils {
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
 			for ($i=0; $i<$noofrows; $i++) {
-				$module_list = explode(' |##| ', $db->query_result($result, $i, 'module_list'));
+				$module_list = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $db->query_result($result, $i, 'module_list'));
 				foreach ($module_list as $module) {
 					$comments_module[] = $module;
 				}

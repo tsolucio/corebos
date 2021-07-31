@@ -428,9 +428,9 @@ class ListViewController {
 						$value = '';
 					}
 				} elseif ($field->getFieldDataType() == 'multipicklist') {
-					$value = ($value != '') ? str_replace(' |##| ', ', ', $value) : '';
+					$value = ($value != '') ? str_replace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $value) : '';
 					if (!$is_admin && $value != '') {
-						$valueArray = ($rawValue != '') ? explode(' |##| ', $rawValue) : array();
+						$valueArray = ($rawValue != '') ? explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $rawValue) : array();
 						$tmp = '';
 						$tmpArray = array();
 						foreach ($valueArray as $val) {
@@ -456,12 +456,12 @@ class ListViewController {
 					}
 				} elseif ($field->getUIType() == 1024) {
 					if ($value != '') {
-						$value = textlength_check(implode(', ', array_map('getRoleName', explode(' |##| ', $value))));
+						$value = textlength_check(implode(', ', array_map('getRoleName', explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value))));
 					}
 				} elseif ($field->getUIType() == 1025) {
 					$content=array();
 					if ($value != '') {
-						$values=explode(' |##| ', $value);
+						$values=explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 						foreach ($values as $crmid) {
 							$srchmod=  getSalesEntityType($crmid);
 							$displayValueArray = getEntityName($srchmod, $crmid);
@@ -480,7 +480,7 @@ class ListViewController {
 					$value = textlength_check(implode(', ', $content));
 				} elseif ($field->getUIType() == 3313 || $field->getUIType() == 3314) {
 					require_once 'modules/PickList/PickListUtils.php';
-					$modlist = explode(' |##| ', $value);
+					$modlist = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 					$modlist = array_map(
 						function ($m) {
 							return getTranslatedString($m, $m);

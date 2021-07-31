@@ -119,6 +119,7 @@ class Field_Metadata {
 		self::UITYPE_MULTI_SELECT_MODS,
 		self::UITYPE_MULTI_SELECT_MODEXTS,
 	);
+	const MULTIPICKLIST_SEPARATOR = ' |##| ';
 	const USER_TYPES = array(
 		self::UITYPE_USER_REFERENCE,
 		self::UITYPE_ASSIGNED_TO_PICKLIST,

@@ -100,7 +100,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 					case '3313':
 					case '3314':
 						if (is_array($field_value)) {
-							$field_value = implode(' |##| ', $field_value);
+							$field_value = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $field_value);
 						}
 						break;
 				}

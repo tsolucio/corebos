@@ -340,7 +340,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 			}
 		}
 	} elseif ($uitype == '1024') {
-		$arr_evo=explode(' |##| ', $value);
+		$arr_evo=explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 		if ($action != 'DetailView') {
 			$roleid = $current_user->roleid;
 			$subrole = getRoleSubordinates($roleid);
@@ -389,7 +389,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 			);
 		}
 	} elseif ($uitype == '1025') {
-		$values = explode(' |##| ', $value);
+		$values = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 		if (!empty($value) && !empty($values[0])) {
 			$srchmod=  getSalesEntityType($values[0]);
 			for ($i=0; $i < count($values); $i++) {

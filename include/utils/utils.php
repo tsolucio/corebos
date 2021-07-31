@@ -2404,7 +2404,7 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 				$result[$col_arr[$k]]=getTranslatedString($result[$col_arr[$k]], $module);
 			}
 			if ($ui_type[$fld_arr[$k]] == 33) {
-				$fieldvalue = explode(' |##| ', $result[$col_arr[$k]]);
+				$fieldvalue = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $result[$col_arr[$k]]);
 				$result[$col_arr[$k]] = array();
 				foreach ($fieldvalue as $picklistValue) {
 					$result[$col_arr[$k]][] = getTranslatedString($picklistValue, $module);

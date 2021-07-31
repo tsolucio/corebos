@@ -1202,7 +1202,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	} elseif ($uitype == '1025') {
 		$parent_id = $field_valEncoded;
 		if (!empty($parent_id)) {
-			$values=explode(' |##| ', $parent_id);
+			$values=explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $parent_id);
 			$numvals = count($values);
 			for ($fvalues=0; $fvalues < $numvals; $fvalues++) {
 				$srchmod =  getSalesEntityType($values[$fvalues]);
@@ -1351,9 +1351,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	} elseif ($uitype == 98) {
 		$value = '<a href="index.php?action=RoleDetailView&module=Settings&roleid='.$field_val.'">'.textlength_check(getRoleName($field_valEncoded)).'</a>';
 	} elseif ($uitype == 33) {
-		$value = ($field_valEncoded != '') ? str_ireplace(' |##| ', ', ', $field_valEncoded) : '';
+		$value = ($field_valEncoded != '') ? str_ireplace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $field_valEncoded) : '';
 		if (!is_admin($current_user) && $value != '') {
-			$value = ($field_val != '') ? str_ireplace(' |##| ', ', ', $field_val) : '';
+			$value = ($field_val != '') ? str_ireplace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $field_val) : '';
 			if ($value != '') {
 				$value_arr = explode(',', trim($value));
 				$roleid = $current_user->roleid;

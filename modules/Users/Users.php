@@ -883,7 +883,7 @@ class Users extends CRMEntity {
 					}
 				} elseif ($uitype == 33) {
 					if (is_array($this->column_fields[$fieldname])) {
-						$field_list = implode(' |##| ', $this->column_fields[$fieldname]);
+						$field_list = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $this->column_fields[$fieldname]);
 					} else {
 						$field_list = $this->column_fields[$fieldname];
 					}

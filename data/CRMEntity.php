@@ -778,12 +778,12 @@ class CRMEntity {
 							$uservalues = getAssignedPicklistValues($fieldname, $roleid, $adb);
 						}
 						$vek=array_unique(array_merge(array_diff($currentvalues, $uservalues), $selectedvalues));
-						$fldvalue = implode(' |##| ', $vek);
+						$fldvalue = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $vek);
 						if ($uitype == 3313 || $uitype == 3314) {
 							// this value cannot be over 1010 characters if it has an index, so we cut it at that length always
 							$fldvaluecut = substr($fldvalue, 0, 1010);
 							if ($fldvalue!=$fldvaluecut) {
-								$fldvalue = substr($fldvaluecut, 0, strrpos($fldvaluecut, ' |##| '));
+								$fldvalue = substr($fldvaluecut, 0, strrpos($fldvaluecut, Field_Metadata::MULTIPICKLIST_SEPARATOR));
 							}
 						}
 					}

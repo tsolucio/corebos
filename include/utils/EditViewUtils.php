@@ -225,7 +225,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 1025) {
 		$entityTypes = array();
 		$parent_id = $value;
-		$values = explode(' |##| ', $value);
+		$values = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 		foreach ($cbMapFI['searchfields'] as $k => $value) {
 			$entityTypes[] = $k;
 		}
