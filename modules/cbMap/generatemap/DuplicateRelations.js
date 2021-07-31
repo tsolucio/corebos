@@ -1,15 +1,15 @@
 function fillinRelatedModules(module, cb) {
 	relatedmodules = Array();
-	cbws.doInvoke('getRelatedModulesInfomation', {'module':module}, 'post').then(rmods => {
+	cbws.doInvoke('getRelatedModulesInfomation', {'module':module}, 'post').then(async rmods => {
 		for (var rl in rmods) {
 			relatedmodules.push(new Array(rmods[rl].related_module, 'N:N'));
 		}
-		cbws.doDescribe(module).then(dd => {
+		await cbws.doDescribe(module).then(dd => {
 			var cc = Array();
-			dd.fields.filter(f => f.uitype==10).map(f => {
+			dd.fields.filter(f => f.uitype==10).forEach(f => {
 				cc = cc.concat(f.type.refersTo);
 			});
-			cc.map(e => relatedmodules.push(new Array(e, '1:1')));
+			cc.forEach(e => relatedmodules.push(new Array(e, '1:1')));
 			relatedmodules.sort();
 			cb();
 		});

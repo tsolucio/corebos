@@ -106,7 +106,7 @@ function export_results() {
 	document.getElementById('export_text').innerHTML = mod_alert_arr.Exporting;
 	const columns = getDataColumns();
 	let headers = [];
-	columns.map(cinfo => {
+	columns.forEach(cinfo => {
 		headers.push({
 			field: cinfo.header,
 			module: bqmodule

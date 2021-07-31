@@ -366,7 +366,7 @@ function editworkflowscript($, conditions) {
 		resetGroupJoinCondition(groupno);
 		let grpbtns = document.querySelectorAll('button[id^="save_conditions_add_"]');
 		let totgrp = grpbtns.length;
-		Array.from(grpbtns).map(x => x.style.visibility='hidden');
+		Array.from(grpbtns).forEach(x => x.style.visibility='hidden');
 		if (totgrp>0) {
 			grpbtns[totgrp-1].style.visibility = 'visible';
 		} else {
@@ -587,7 +587,7 @@ function editworkflowscript($, conditions) {
 							$('#save_conditions_add_'+groupid).bind('click', function () {
 								addCondition(groupno, condno++);
 							});
-							Array.from(document.querySelectorAll('button[id^="save_conditions_add_"]')).map(x => x.style.visibility='hidden');
+							Array.from(document.querySelectorAll('button[id^="save_conditions_add_"]')).forEach(x => x.style.visibility='hidden');
 							document.getElementById('save_conditions_add_'+groupid).style.visibility = 'visible';
 
 							var rem_group_img = $('#save_condition_group_'+groupid+'_remove');
