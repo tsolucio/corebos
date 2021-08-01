@@ -345,13 +345,12 @@ function CBUpsertTask($, fieldvaluemapping) {
 					},
 					filteredFields(parent['fields'])));
 					function getFieldType(fullFieldName) {
+						var fieldModule = selected_upsert_module;
+						var fieldName = fullFieldName;
 						var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
-						if (group==null) {
-							var fieldModule = selected_upsert_module;
-							var fieldName = fullFieldName;
-						} else {
-							var fieldModule = group[2];
-							var fieldName = group[3];
+						if (group!=null) {
+							fieldModule = group[2];
+							fieldName = group[3];
 						}
 						if ((moduleFieldTypes[fieldModule]==undefined || moduleFieldTypes[fieldModule][fieldName]==undefined) && fieldName!='none') {
 							alert(alert_arr.WF_UPDATE_MAP_ERROR+fieldModule+'.'+fieldName);
@@ -361,8 +360,8 @@ function CBUpsertTask($, fieldvaluemapping) {
 						if (fullFieldName == 'folderid' && moduleFieldTypes[fieldModule][fieldName]['name']=='reference') {
 							moduleFieldTypes[fieldModule][fieldName]['name']='picklist';
 							moduleFieldTypes[fieldModule][fieldName]['picklistValues']=moduleFieldTypes[fieldModule][fieldName]['picklistValues'].map((plval) => {
-								$wsid = plval.value.split('x');
-								plval.value = $wsid[1];
+								let wsid = plval.value.split('x');
+								plval.value = wsid[1];
 								return plval;
 							});
 						}
@@ -434,13 +433,12 @@ function CBUpsertTask($, fieldvaluemapping) {
 						filteredFields(parent['fields'])));
 
 						function getFieldType(fullFieldName) {
+							var fieldModule = module;
+							var fieldName = fullFieldName;
 							var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
-							if (group==null) {
-								var fieldModule = module;
-								var fieldName = fullFieldName;
-							} else {
-								var fieldModule = group[2];
-								var fieldName = group[3];
+							if (group!=null) {
+								fieldModule = group[2];
+								fieldName = group[3];
 							}
 							if ((moduleFieldTypes[fieldModule]==undefined || moduleFieldTypes[fieldModule][fieldName]==undefined) && fieldName!='none') {
 								alert(alert_arr.WF_UPDATE_MAP_ERROR+fieldModule+'.'+fieldName);
@@ -450,8 +448,8 @@ function CBUpsertTask($, fieldvaluemapping) {
 							if (fullFieldName == 'folderid' && moduleFieldTypes[fieldModule][fieldName]['name']=='reference') {
 								moduleFieldTypes[fieldModule][fieldName]['name']='picklist';
 								moduleFieldTypes[fieldModule][fieldName]['picklistValues']=moduleFieldTypes[fieldModule][fieldName]['picklistValues'].map((plval) => {
-									$wsid = plval.value.split('x');
-									plval.value = $wsid[1];
+									let wsid = plval.value.split('x');
+									plval.value = wsid[1];
 									return plval;
 								});
 							}
