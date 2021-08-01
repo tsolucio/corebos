@@ -306,7 +306,7 @@ function CBUpsertTask($, fieldvaluemapping) {
 					mods.map(function (upsert_module) {
 						const mod_information = response.result.information;
 						$('#upsert_module').append(
-							`<option value="${upsert_module}">${mod_information[upsert_module].label}</option>`
+							`<option value="${DOMPurify.sanitize(upsert_module)}">${DOMPurify.sanitize(mod_information[upsert_module].label)}</option>`
 						);
 					});
 					$('#upsert_module').bind('change', function () {
