@@ -1775,10 +1775,10 @@ class OpenDocument {
 			return; // Si ya lo tenemos, no lo repetimos
 		}
 
-				$style = $this->contentDOM->createElement(($isdatestyle?'number:date-style':'number:time-style'));
+		$style = $this->contentDOM->createElement(($isdatestyle ? 'number:date-style' : 'number:time-style'));
 		$style->setAttribute('style:name', $stylename);
 		$stylebranch=$this->originGenDocStyles[$stylename];
-		while (list($level1name,$datestyle)=each($stylebranch)) {
+		foreach ($stylebranch as $level1name => $datestyle) {
 			if (is_array($datestyle)) {
 				$substyle = $this->contentDOM->createElement('number:'.$level1name);
 				$level1stbranch=$datestyle;
