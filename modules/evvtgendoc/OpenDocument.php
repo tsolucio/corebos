@@ -2284,6 +2284,7 @@ class OpenDocument {
 	 */
 	public static function saveAsDocument($record, $module, $format, $mergeTemplateName, $fullfilename, $name) {
 		global $adb, $current_user;
+		$holdRequest = $_REQUEST;
 		if (substr($mergeTemplateName, -4)=='.odt' || substr($mergeTemplateName, -4)=='.pdf') {
 			$mergeTemplateName = substr($mergeTemplateName, 0, strlen($mergeTemplateName)-4);
 		}
@@ -2329,7 +2330,8 @@ class OpenDocument {
 		$_REQUEST['return_module'] = $module;
 		$_REQUEST['return_id'] = $record;
 		$doc->save('Documents');
-		unset($_REQUEST['createmode'], $_REQUEST['return_module'], $_REQUEST['return_id'], $_REQUEST['assigntype'], $_FILES);
+		unset($_FILES);
+		$_REQUEST = $holdRequest;
 		return $doc->id;
 	}
 
