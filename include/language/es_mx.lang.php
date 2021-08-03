@@ -1354,6 +1354,7 @@ $app_strings = array (
 	'LBL_NOPRODUCTS' => 'No se puede convertir la Orden de Venta ya que no hay lineas facturables.',
 	'VALIDATION_FAILED' => 'Validación errónea',
 	'Select Module To Upsert' => 'Selecciona Módulo',
+	'LBL_FIX_NOW' => 'Arreglar Ahora',
 );
 
 // Translation for currency names

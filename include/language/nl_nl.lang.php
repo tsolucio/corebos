@@ -1268,6 +1268,7 @@ $app_strings = array(
 	'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 	'VALIDATION_FAILED' => 'Validation failed',
 	'Select Module To Upsert' => 'Select Module To Upsert',
+	'LBL_FIX_NOW' => 'Fix Now',
 );
 
 // Translation for currency names

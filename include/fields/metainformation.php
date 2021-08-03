@@ -120,6 +120,7 @@ class Field_Metadata {
 		self::UITYPE_MULTI_SELECT_MODEXTS,
 	);
 	const MULTIPICKLIST_SEPARATOR = ' |##| ';
+	const PICKLIST_EMPTY_VALUE = '#__empty__#';
 	const ATTACHMENT_ENTITY = ' Attachment';
 	const USER_TYPES = array(
 		self::UITYPE_USER_REFERENCE,

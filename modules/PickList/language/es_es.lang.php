@@ -54,5 +54,6 @@ $mod_strings = array(
 	'multii18n' => 'Multi-Idioma',
 	'monoi18n' => 'Mono-Idioma',
 	'ERR_MustBeTranslated' => 'Esta lista ha de tener soporte para multi-idioma',
+	'ERR_InvalidValues' => 'Esta lista tiene valores inválidos',
 );
 ?>

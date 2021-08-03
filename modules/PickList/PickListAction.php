@@ -20,7 +20,7 @@ if (empty($mode)) {
 	echo 'action mode is empty';
 	exit;
 }
-
+$reloadpage = false;
 if ($mode == 'add') {
 	$newValues = $_REQUEST['newValues'];
 	$selectedRoles = $_REQUEST['selectedRoles'];
@@ -182,9 +182,12 @@ if ($mode == 'add') {
 		$adb->pquery('update vtiger_picklist set multii18n=? where name=?', array(($_REQUEST['ischecked']=='true' ? 1 : 0), $_REQUEST['fieldname']));
 		echo 'SUCCESS';
 	}
+} elseif ($mode == 'cleanpicklist') {
+	$reloadpage = true;
+	cleanPicklist($moduleName, $tableName);
 }
 
-if ($mode == 'add' || $mode == 'edit' || $mode == 'delete') {
+if ($mode == 'add' || $mode == 'edit' || $mode == 'delete' || $mode == 'cleanpicklist') {
 	$cache = new corebos_cache();
 	if ($cache->isUsable()) {
 		$allRoles = $adb->query('select roleid from vtiger_role');
@@ -198,5 +201,9 @@ if ($mode == 'add' || $mode == 'edit' || $mode == 'delete') {
 			$cache->getCacheClient()->deleteMultiple($cacheKeys);
 		}
 	}
+}
+if ($reloadpage) {
+	header('Location: index.php?module=PickList&action=PickList');
+	exit;
 }
 ?>

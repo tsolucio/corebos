@@ -1437,5 +1437,6 @@ $app_currency_strings = array(
 	'Tunisian, Dinar'		=> 'Tunisian, Dinar',
 	'Moroccan, Dirham'		=> 'Moroccan, Dirham',
 	'Select Module To Upsert' => 'Select Module To Upsert',
+	'LBL_FIX_NOW' => 'Fix Now',
 );
 ?>

@@ -1367,6 +1367,7 @@ $app_strings = array (
 'LBL_NOPRODUCTS' => 'Não é possível converter pedido de vendas em Fatura porque não há produtos restantes na fatura.',
 'VALIDATION_FAILED' => 'Falha na validação',
 'Select Module To Upsert' => 'Selecione módulo p/upsert',
+'LBL_FIX_NOW' => 'Fixa Agora',
 );
 
 // Translation for currency names
