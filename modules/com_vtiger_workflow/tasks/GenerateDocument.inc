@@ -30,10 +30,16 @@ class GenerateDocument extends VTTask {
 	public function doTask(&$entity) {
 		global $adb, $root_directory, $current_language, $default_charset;
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
+		$crmEntityTableAlias = CRMEntity::getcrmEntityTableAlias('Documents', false);
 		$relatedDocsSQL = 'SELECT vtiger_senotesrel.notesid
 			FROM vtiger_senotesrel
 			INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
 			WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=?';
+		$relatedDocsSQLNotDeleted = 'SELECT vtiger_senotesrel.notesid
+			FROM vtiger_senotesrel
+			INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
+			INNER JOIN '.$crmEntityTableAlias.' on vtiger_notes.notesid=vtiger_crmentity.crmid
+			WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=? and vtiger_crmentity.deleted=0';
 		$smq = new ShareDocLinkWidgetDetailViewBlock();
 		$this->addGenDocTplColumn();
 		$format = ($this->gdformat==1 ? 'odt' : 'pdf');
@@ -82,7 +88,7 @@ class GenerateDocument extends VTTask {
 			}
 			$docid = OpenDocument::saveAsDocument($record, $module, $format, $mergeTemplateName, ($format=='pdf' ? $fullpdfname : $fullfilename), $name);
 			if ($this->updateOnChange) {
-				$rdocs = $adb->pquery($relatedDocsSQL, array($fileid, $record));
+				$rdocs = $adb->pquery($relatedDocsSQLNotDeleted, array($fileid, $record));
 				if ($rdocs && $adb->num_rows($rdocs)>0) {
 					while ($rdoc = $adb->fetch_array($rdocs)) {
 						if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
