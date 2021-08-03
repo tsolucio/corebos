@@ -3344,7 +3344,7 @@ class CRMEntity {
 	/**
 	 * To keep track of action of field filtering and avoiding doing more than once.
 	 *
-	 * @var Array
+	 * @var Boolean
 	 */
 	public $__inactive_fields_filtered = false;
 
