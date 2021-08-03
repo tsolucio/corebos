@@ -145,18 +145,13 @@ var masterdetailwork = {
 			'fldName' : '',
 			'fieldValue' : ''
 		};
-		const url = `file=DetailViewAjax&module=${gVTModule}&action=${gVTModule}Ajax&record=${crmId}&recordid=${crmId}&ajxaction=DETAILVIEW`;
+		const url = `file=DetailViewAjax&module=${gVTModule}&action=${gVTModule}Ajax&record=${crmId}&recordid=${crmId}&ajxaction=DETAILVIEWLOAD`;
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?' + url,
 			data : data
 		}).done(function (response) {
-			if (response.indexOf(':#:FAILURE')>-1) {
-				alert(alert_arr.ERROR_WHILE_EDITING);
-			} else if (response.indexOf(':#:ERR')>-1) {
-				alert(response.replace(':#:ERR', ''));
-				VtigerJS_DialogBox.hidebusy();
-			} else if (response.indexOf(':#:SUCCESS')>-1) {
+			if (response.indexOf(':#:SUCCESS')>-1) {
 				const result = response.split(':#:');
 				if (result[2] != null) {
 					const target = document.getElementsByClassName('detailview_wrapper_table')[0];
