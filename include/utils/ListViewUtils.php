@@ -3420,6 +3420,9 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
 		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
+	if (isset($_REQUEST['popuptype']) && $_REQUEST['popuptype'] == 'set_return_emails' && isset($_REQUEST['email_field'])) {
+		$url_string .='&email_field=' . (isset($_REQUEST['email_field']) ? vtlib_purify($_REQUEST['email_field']) : '');
+	}
 	//Get custom paramaters to url_string
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
