@@ -107,6 +107,7 @@ function vtws_create($elementType, $element, $user) {
 		if (!empty($relations)) {
 			list($wsid,$newrecid) = vtws_getIdComponents($entity['id']);
 			$modname = $meta->getEntityName();
+			$relations = explode(',', $relations);
 			vtws_internal_setrelation($newrecid, $modname, $relations, $types);
 		}
 		VTWS_PreserveGlobal::flush();
