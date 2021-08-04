@@ -457,15 +457,15 @@ class Import_Data_Controller {
 					}
 				}
 			} elseif ($fieldInstance->getFieldDataType() == 'picklist') {
-				if (empty($fieldValue) && isset($defaultFieldValues[$fieldName])) {
-					$fieldData[$fieldName] = $fieldValue = $defaultFieldValues[$fieldName];
+				if (empty($fieldValue)) {
+					$fieldData[$fieldName]=$fieldValue=(isset($defaultFieldValues[$fieldName]) ? $defaultFieldValues[$fieldName] : Field_Metadata::PICKLIST_EMPTY_VALUE);
 				}
 				$allPicklistDetails = $fieldInstance->getPicklistDetails();
 				$allPicklistValues = array();
 				foreach ($allPicklistDetails as $picklistDetails) {
 					$allPicklistValues[] = $picklistDetails['value'];
 				}
-				if (!empty($fieldValue) && !in_array($fieldValue, $allPicklistValues)) {
+				if (!in_array($fieldValue, $allPicklistValues)) {
 					$moduleObject = Vtiger_Module::getInstance($moduleMeta->getEntityName());
 					$fieldObject = Vtiger_Field::getInstance($fieldName, $moduleObject);
 					$fieldObject->setPicklistValues(array($fieldValue));
