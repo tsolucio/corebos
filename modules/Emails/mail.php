@@ -275,11 +275,11 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 	if ($to_email != '') {
 		if (is_array($to_email)) {
 			foreach ($to_email as $recip) {
-				$mail->addAddress($recip);
+				$mail->addAddress(str_replace(' ', '', $recip));
 			}
 		} else {
 			foreach (explode(',', $to_email) as $recip) {
-				$mail->addAddress($recip);
+				$mail->addAddress(str_replace(' ', '', $recip));
 			}
 		}
 	}
