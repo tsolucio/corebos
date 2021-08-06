@@ -213,9 +213,9 @@ class DateTimeField {
 	/**
 	 *
 	 * @global Users $current_user
-	 * @param datetime $date
+	 * @param string $date
 	 * @param Users $user
-	 * @return type
+	 * @return string
 	 */
 	public static function convertToDBFormat($date, $user = null) {
 		global $current_user;
@@ -233,7 +233,7 @@ class DateTimeField {
 
 	/**
 	 *
-	 * @param datetime $date
+	 * @param string $date
 	 * @param string $format
 	 * @return string
 	 */

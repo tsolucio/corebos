@@ -322,20 +322,19 @@ class RecurringType {
 				if ($recurringInfo['repeatmonth_type'] == 'date') {
 					$displayRecurringData['repeatMonth_date'] = $recurringInfo['repeatmonth_date'];
 					$displayRecurringData['repeat_str'] = getTranslatedString('on', $i18nModule)
-						. ' ' . $recurringInfo['repeatmonth_date']
-						. ' ' . getTranslatedString('day of the month', $i18nModule);
+						. ' ' . $recurringInfo['repeatmonth_date']. ' ' . getTranslatedString('day of the month', $i18nModule);
 				} else {
 					$displayRecurringData['repeatMonth_daytype'] = $recurringInfo['repeatmonth_daytype'];
 					$displayRecurringData['repeatMonth_day'] = $recurringInfo['dayofweek_to_repeat'][0];
 					$translatedRepeatDay = getTranslatedString('LBL_DAY' . $recurringInfo['dayofweek_to_repeat'][0], $i18nModule);
 
 					$displayRecurringData['repeat_str'] = getTranslatedString('on', $i18nModule)
-						. ' ' . getTranslatedString($recurringInfo['repeatmonth_daytype'], $i18nModule)
-						. ' ' . $translatedRepeatDay;
+						. ' ' . getTranslatedString($recurringInfo['repeatmonth_daytype'], $i18nModule). ' ' . $translatedRepeatDay;
 				}
 				break;
 			case 'Daily':
 			case 'Yearly':
+			default:
 				$displayRecurringData['repeat_str'] = '';
 				break;
 		}
@@ -344,8 +343,7 @@ class RecurringType {
 
 	/**
 	 *  Function to get recurring dates depending on the recurring type
-	 *  return  array   $recurringDates     -  Recurring Dates in format
-	 * 	Recurring date will be returned in DB Time Zone, as well as DB format
+	 *  @return array Recurring Dates in DB Time Zone, as well as DB format
 	 */
 	public function _getRecurringDates() {
 		$startdateObj = $this->startdate;
@@ -521,12 +519,12 @@ class RecurringType {
 		return $recurringDates;
 	}
 
-	/** Function to get first day of the month(like first Monday or Friday and etc.)
-	 *  @param $dayofweek   -- day of the week to repeat the event :: Type string
-	 *  @param $dateObj     -- date object  :: Type vt_DateTime Object
-	 *  return $dateObj -- the date object on which the event repeats :: Type vt_DateTime Object
+	/** Function to get first day of the month (like first Monday or Friday and etc.)
+	 *  @param string day of the week to repeat the event
+	 *  @param object vt_DateTime Object
+	 *  @return object the vt_DateTime object on which the event repeats
 	 */
-	public function getFistdayofmonth($dayofweek, & $dateObj) {
+	public function getFistdayofmonth($dayofweek, &$dateObj) {
 		if ($dayofweek < $dateObj->dayofweek) {
 			$index = (7 - $dateObj->dayofweek) + $dayofweek;
 			$day = 1 + $index;
@@ -543,12 +541,12 @@ class RecurringType {
 		return $dateObj;
 	}
 
-	/** Function to get last day of the month(like last Monday or Friday and etc.)
-	 *  @param $dayofweek   -- day of the week to repeat the event :: Type string
-	 *  @param $dateObj     -- date object  :: Type vt_DateTime Object
-	 *  return $dateObj -- the date object on which the event repeats :: Type vt_DateTime Object
+	/** Function to get last day of the month (like last Monday or Friday and etc.)
+	 *  @param string day of the week to repeat the event
+	 *  @param object vt_DateTime Object
+	 *  @return object the vt_DateTime object on which the event repeats
 	 */
-	public function getLastdayofmonth($dayofweek, & $dateObj) {
+	public function getLastdayofmonth($dayofweek, &$dateObj) {
 		if ($dayofweek == $dateObj->dayofweek) {
 			return $dateObj;
 		} else {

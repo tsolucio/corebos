@@ -704,8 +704,8 @@ function decide_to_html() {
 decide_to_html();//call the function once when loading
 
 /** Function to convert the given string to html
- * @param $string -- string:: Type string
- * @returns $string -- string:: Type string
+ * @param string
+ * @return string
  */
 function to_html($string) {
 	global $doconvert,$default_charset;
@@ -725,9 +725,9 @@ function to_html($string) {
 	return $string;
 }
 
-/** Function to get the tablabel for a given id
- * @param $tabid -- tab id:: Type integer
- * @returns $string -- string:: Type string
+/** Function to get the tab label for a given id
+ * @param integer tab id
+ * @return string module label
  */
 function getTabname($tabid) {
 	global $log, $adb;
@@ -739,8 +739,8 @@ function getTabname($tabid) {
 }
 
 /** Function to get the tab module name for a given id
- * @param $tabid -- tab id:: Type integer
- * @returns $string -- string:: Type string
+ * @param integer tab id
+ * @return string module name
  */
 function getTabModuleName($tabid) {
 	global $log, $adb;
@@ -759,8 +759,8 @@ function getTabModuleName($tabid) {
 }
 
 /** Function to get column fields for a given module
- * @param $module -- module:: Type string
- * @returns $column_fld -- column field :: Type array
+ * @param string module name
+ * @return array column fields
  */
 function getColumnFields($module) {
 	global $log, $adb;

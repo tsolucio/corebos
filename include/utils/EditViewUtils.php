@@ -599,8 +599,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 						$parent_name .= $fullname.'&lt;'.$temp1.'&gt;; ';
 						$temp_parent_name .= $fullname.'&lt;'.$temp1.'&gt;; ';
 					} else {
-						$parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '.'</b>';
-						$temp_parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '.'</b>';
+						$parent_name .= "<strong style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; </strong>';
+						$temp_parent_name .= "<strong style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; </strong>';
 					}
 				}
 			}

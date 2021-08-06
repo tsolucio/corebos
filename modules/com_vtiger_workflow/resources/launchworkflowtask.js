@@ -6,7 +6,7 @@ $(document).ready(function () {
 	}).done(function (modlistres) {
 		document.getElementById('relModlist').innerHTML = modlistres;
 		Array.from(document.querySelector('#relModlist').options).forEach(function (option_element) {
-			if ( option_element.value == selectedModule) {
+			if (option_element.value == selectedModule) {
 				option_element.selected = true;
 			}
 		});
