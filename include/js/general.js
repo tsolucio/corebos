@@ -244,7 +244,7 @@ function clearTextSelection() {
 }
 
 // Setting cookies
-function set_cookie( name, value, exp_y, exp_m, exp_d, path, domain, secure ) {
+function set_cookie(name, value, exp_y, exp_m, exp_d, path, domain, secure, sameSite) {
 	var cookie_string = name + '=' + escape(value);
 
 	if (exp_y) {
@@ -258,6 +258,9 @@ function set_cookie( name, value, exp_y, exp_m, exp_d, path, domain, secure ) {
 	}
 	if (domain) {
 		cookie_string += '; domain=' + escape(domain);
+	}
+	if (sameSite && (sameSite=='Strict' || sameSite=='Lax' || sameSite=='None')) {
+		cookie_string += '; SameSite=' + escape(sameSite);
 	}
 	if (secure) {
 		cookie_string += '; secure';
