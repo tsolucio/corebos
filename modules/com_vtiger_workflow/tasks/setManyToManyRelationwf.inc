@@ -23,8 +23,6 @@ require_once 'include/Webservices/SetRelation.php';
 
 class setManyToManyRelationwf extends VTTask {
 	public $executeImmediately = true;
-	public $relrecords = array();
-	public $selAct = '';
 
 	public function getFieldNames() {
 		return array('relAction', 'idlist');
@@ -87,25 +85,6 @@ class setManyToManyRelationwf extends VTTask {
 						}
 					}
 				}
-			}
-		}
-	}
-
-	public function after_retrieve() {
-		global $adb, $current_user;
-		if (!empty($this->relAction)) {
-			$this->selAct = $this->relAction;
-		}
-		if (!empty($this->idlist)) {
-			$idlistArr = explode(',', $this->idlist);
-			$this->relrecords = array();
-			foreach ($idlistArr as $relcrmid) {
-				$rmod = getSalesEntityType($relcrmid);
-				$this->relrecords[] = array(
-					'recid' => $relcrmid,
-					'entityName' => array_values(getEntityName($rmod, $relcrmid))[0],
-					'entityType' => getTranslatedString($rmod, $rmod),
-				);
 			}
 		}
 	}
