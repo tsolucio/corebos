@@ -130,7 +130,7 @@ class Core_Lib_DebugShell
     public function __call($method, $args) {
         $o = $this->object;
         $cb = function() use($o, $method, $args) {
-            return call_user_func_array(array($o, $method), $args);
+            return call_user_func_array(array($o, $method), array_values($args));
         };
 
         $interrupt = null;

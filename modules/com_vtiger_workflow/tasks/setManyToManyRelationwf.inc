@@ -73,7 +73,7 @@ class setManyToManyRelationwf extends VTTask {
 					$holdValue = $GetRelatedList_ReturnOnlyQuery;
 					$GetRelatedList_ReturnOnlyQuery = true;
 					$params = array($recid, $rectabid, $relatedModuleId);
-					$relationData = call_user_func_array(array($modobj, $relationInfo['name']), $params);
+					$relationData = call_user_func_array(array($modobj, $relationInfo['name']), array_values($params));
 					$GetRelatedList_ReturnOnlyQuery = $holdValue;
 					$currentModule = $holdCM;
 					if (isset($relationData['query'])) {

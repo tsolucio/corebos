@@ -60,7 +60,7 @@ class CRMEntity {
 	public function __call($method, $args) {
 		if (in_array($method, self::$methods)) {
 			$args[] = $this;
-			return call_user_func_array($method, $args);
+			return call_user_func_array($method, array_values($args));
 		}
 	}
 
