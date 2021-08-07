@@ -92,6 +92,7 @@ class VTFieldExpressionEvaluater {
 			'getGEODistanceFromAssignUser2ContactShipping' => '__cb_getGEODistanceFromAssignUser2ContactShipping',
 			'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates',
 			'getIDof' => '__cb_getidof',
+			'getRelatedIDs' => '__cb_getrelatedids',
 			'getFieldsOF' => '__cb_getfieldsof',
 			'getFromContext' => '__cb_getfromcontext',
 			'getFromContextSearching' => '__cb_getfromcontextsearching',
@@ -240,6 +241,7 @@ class VTFieldExpressionEvaluater {
 			'__cb_existsrelated',
 			'__cb_allrelatedare',
 			'__cb_evaluateRule',
+			'__cb_getrelatedids',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

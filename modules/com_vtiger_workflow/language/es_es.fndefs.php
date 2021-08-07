@@ -1562,13 +1562,13 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'module',
 			'type' => 'Texto',
 			'optional' => false,
-			'desc' => 'the module name to search in.',
+			'desc' => 'el nombre del módulo en el que buscar.',
 		),
 		array(
 			'name' => 'searchon',
 			'type' => 'Texto',
 			'optional' => false,
-			'desc' => 'field of the module to search in',
+			'desc' => 'campo del módulo en el que buscar',
 		),
 		array(
 			'name' => 'searchfor',
@@ -1582,6 +1582,23 @@ $WFExpressionFunctionDefinitons = array(
 		"getIDof('Contacts', 'firstname', 'Amy')",
 		"getIDof('Accounts', 'siccode', 'xyhdmsi33')",
 		"getIDof('Accounts', 'siccode', algun_campo)",
+	),
+),
+'getRelatedIDs' => array(
+	'name' => 'getRelatedIDs(module)',
+	'desc' => 'Esta función devuelve un array de IDs de registros del módulo dado que están relacionados con el registro que activa el flujo de trabajo',
+	'params' => array(
+		array(
+			'name' => 'module',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'el nombre del módulo relacionado en el que buscar.',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRelatedIDs('Contacts')",
+		"getRelatedIDs('Accounts')",
 	),
 ),
 'getFieldsOF' => array(

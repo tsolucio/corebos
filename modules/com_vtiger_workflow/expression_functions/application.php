@@ -13,6 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
+require_once 'include/Webservices/GetRelatedRecords.php';
 
 function __cbwf_setype($arr) {
 	$ret = '';
@@ -83,6 +84,32 @@ function __cb_getcrudmode($arr) {
 	} else {
 		return 'edit';
 	}
+}
+
+function __cb_getrelatedids($arr) {
+	global $current_user;
+	$relids = array();
+	if (count($arr)<2 || empty($arr[0])) {
+		return $relids;
+	}
+	$env = $arr[1];
+	if (isset($env->moduleName)) {
+		$mainmodule = $env->moduleName;
+	} else {
+		$mainmodule = $env->getModuleName();
+	}
+	$data = $env->getData();
+	$recordid = $data['id'];
+	$relmodule = $arr[0];
+	try {
+		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, ['columns' => 'id'], $current_user);
+	} catch (\Throwable $th) {
+		return $relids;
+	}
+	foreach ($relrecords['records'] as $record) {
+		$relids[] = $record['id'];
+	}
+	return $relids;
 }
 
 function __cb_getidof($arr) {

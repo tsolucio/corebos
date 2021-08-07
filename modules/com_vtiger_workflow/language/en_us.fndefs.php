@@ -1587,6 +1587,23 @@ $WFExpressionFunctionDefinitons = array(
 		"getIDof('Accounts', 'siccode', some_field)",
 	),
 ),
+'getRelatedIDs' => array(
+	'name' => 'getRelatedIDs(module)',
+	'desc' => 'This function returns an array of record IDs in the given module, related to the record triggering the workflow',
+	'params' => array(
+		array(
+			'name' => 'module',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the related module name to search in.',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRelatedIDs('Contacts')",
+		"getRelatedIDs('Accounts')",
+	),
+),
 'getFieldsOF' => array(
 	'name' => 'getFieldsOF(id, module, fields)',
 	'desc' => 'Given the ID of an existent record, this function will return an array with all the values of the fields the user has access to. If you specify the fields you want in the function, only those values will be returned.',
