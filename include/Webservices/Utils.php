@@ -54,7 +54,7 @@ function vtws_generateRandomAccessKey($length = 10) {
 	$accesskey = '';
 	$maxIndex = strlen($source);
 	for ($i=0; $i<$length; ++$i) {
-		$accesskey = $accesskey.substr($source, rand(null, $maxIndex), 1);
+		$accesskey = $accesskey.substr($source, rand(0, $maxIndex), 1);
 	}
 	return $accesskey;
 }
