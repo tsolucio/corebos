@@ -204,7 +204,7 @@ class DateTimeField {
 	 */
 	public static function twoDigit($no) {
 		$no = trim($no);
-		if ($no < 10 && strlen($no) < 2) {
+		if ((int)$no < 10 && strlen($no) < 2) {
 			$no = '0'.$no;
 		}
 		return substr($no, 0, 2);

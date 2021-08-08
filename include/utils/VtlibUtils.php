@@ -93,7 +93,9 @@ function vtlib_prefetchModuleActiveInfo($force = true) {
  */
 function vtlib_isModuleActive($module) {
 	global $__cache_module_activeinfo, $adb;
-
+	if (is_numeric($module) || empty($module)) {
+		return false;
+	}
 	if (in_array($module, vtlib_moduleAlwaysActive())) {
 		return true;
 	}

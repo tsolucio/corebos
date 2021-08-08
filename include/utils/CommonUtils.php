@@ -599,9 +599,8 @@ function getContactName($contact_id) {
 	global $log, $adb, $current_user;
 	$log->debug('> getContactName '.$contact_id);
 	$contact_name = '';
-	if ($contact_id != '') {
-		$sql = 'select firstname, lastname from vtiger_contactdetails where contactid=?';
-		$result = $adb->pquery($sql, array($contact_id));
+	if (!empty($contact_id)) {
+		$result = $adb->pquery('select firstname, lastname from vtiger_contactdetails where contactid=?', array($contact_id));
 		$firstname = $adb->query_result($result, 0, 'firstname');
 		$lastname = $adb->query_result($result, 0, 'lastname');
 		$contact_name = $lastname;
