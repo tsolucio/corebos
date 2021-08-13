@@ -49,22 +49,22 @@ class colorConverter {
 
 	// check validity of RGB color code
 	public function isRGB($R, $G, $B) {
-		if ($this->Hexa($R)==false || $this->Hexa($G)==false || $this->Hexa($B)==false) {
+		if (!$this->Hexa($R) || !$this->Hexa($G) || !$this->Hexa($B)) {
 			$this->RGBError = 1;
 
-			if ($this->Hexa($R)==false) {
+			if (!$this->Hexa($R)) {
 				$Re = 'Minimal value of Red color is 0 and maximal value is 255<br />';
 			} else {
 				$Re = '';
 			}
 
-			if ($this->Hexa($G)==false) {
+			if (!$this->Hexa($G)) {
 				$Ge = 'Minimal value of Green color is 0 and maximal value is 255<br />';
 			} else {
 				$Ge = '';
 			}
 
-			if ($this->Hexa($B)==false) {
+			if (!$this->Hexa($B)) {
 				$Be = 'Minimal value of Blue color is 0 and maximal value is 255<br />';
 			} else {
 				$Be = '';

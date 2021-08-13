@@ -124,8 +124,6 @@ class Vtiger_LanguageImport extends Vtiger_LanguageExport {
 
 		self::register($prefix, $label, $name);
 		self::log("Importing $label [$prefix] ... DONE");
-
-		return;
 	}
 }
 ?>

@@ -19,9 +19,9 @@ $Vtiger_Utils_Log = false;
 include_once 'vtlib/Vtiger/Module.php';
 
 function setVAT($entity) {
-	global $log,$adb;
+	global $adb;
 	if (is_object($entity)) {
-		list($mod,$entid) = explode('x', $entity->data['id']);
+		list($void, $entid) = explode('x', $entity->data['id']);
 		$mod = getSalesEntityType($entid);
 	} else {
 		list($mod,$entid) = explode('x', $entity);
@@ -47,15 +47,6 @@ function setVAT($entity) {
 			'id' => 'purchaseorderid'
 		)
 	);
-	if ($mod != 'PurchaseOrder') {
-		if (GlobalVariable::getVariable('B2B', '1')=='1') {
-			$acvid = $entity->data['account_id'];
-		} else {
-			$acvid = $entity->data['contact_id'];
-		}
-	} else {
-		$acvid = $entity->data['vendor_id'];
-	}
 	$ipr_cols = $adb->getColumnNames('vtiger_inventoryproductrel');
 	$taxsum=$taxinfo=array();
 	$taxsum['taxtotal']=0;
@@ -80,7 +71,7 @@ function setVAT($entity) {
 		$finalDiscount = $hdnDiscountAmount;
 	}
 	$taxinfo['pl_dto_global'] = array('label'=>'Global Discount', 'field' => 'pl_dto_global');
-	$taxsum['pl_dto_global'] = (is_null($hdnDiscountAmount) == true ? 0 : $hdnDiscountAmount);
+	$taxsum['pl_dto_global'] = (is_null($hdnDiscountAmount) ? 0 : $hdnDiscountAmount);
 	$taxinfo['pl_sh_total'] = array('label'=>'SH Total', 'field' => 'pl_sh_total');
 	$taxsum['pl_sh_total'] = $adb->query_result($ent, 0, 's_h_amount');
 	$taxinfo['pl_sh_tax'] = array('label'=>'SH Tax', 'field' => 'pl_sh_tax');

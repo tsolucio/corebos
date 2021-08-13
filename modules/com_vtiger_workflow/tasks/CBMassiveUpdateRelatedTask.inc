@@ -76,7 +76,6 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
-				$fieldType = '';
 				$fldmod = '';
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue1 = trim($fieldInfo['value']);
@@ -125,7 +124,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				$logbg->debug(['rel func' => $relationInfo['name'], 'params' => $params]);
 				$holdCM = $currentModule;
 				$currentModule = $moduleName;
-				$relationData = call_user_func_array(array($focus, $relationInfo['name']), $params);
+				$relationData = call_user_func_array(array($focus, $relationInfo['name']), array_values($params));
 				$GetRelatedList_ReturnOnlyQuery = $holdValue;
 				$currentModule = $holdCM;
 				if (isset($relationData['query'])) {

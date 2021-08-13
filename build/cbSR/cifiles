@@ -82,7 +82,6 @@ modules/Emails/EditView.php
 modules/Emails/EmailsAjax.php
 modules/Emails/Emails.php
 modules/Emails/evcbrcHandler.php
-modules/Emails/GmailBookmarklet.php
 modules/Emails/index.php
 modules/Emails/language
 modules/Emails/ListViewPagging.php
@@ -92,7 +91,6 @@ modules/Emails/mailSelect.php
 modules/Emails/mailsend.php
 modules/Emails/PHPMailerAutoload.php
 modules/Emails/PrintEmail.php
-modules/Emails/SaveBookmarklet.php
 modules/Emails/Save.php
 modules/Emails/TrackAccess.php
 modules/Emails/UnifiedSearch.php
@@ -108,7 +106,6 @@ modules/Calendar4You/CalendarView.php
 modules/Calendar4You/CallRelatedList.php
 modules/Calendar4You/class
 modules/Calendar4You/cleartokens.php
-modules/Calendar4You/color_picker.html
 modules/Calendar4You/cron
 modules/Calendar4You/CustomView.php
 modules/Calendar4You/Delete.php
@@ -123,7 +120,6 @@ modules/Calendar4You/GoogleSync4YouHandler.php
 modules/Calendar4You/GoogleSync4You.php
 modules/Calendar4You/index.php
 modules/Calendar4You/language
-modules/Calendar4You/ProfilesPrivilegies.php
 modules/Calendar4You/SaveEvent.php
 modules/Calendar4You/SaveEventSettings.php
 modules/Calendar4You/Save.php
@@ -139,7 +135,6 @@ data
 index.php
 Mobile.php
 notifications.php
-phpversionfail.php
 ping.php
 Popup.php
 soap

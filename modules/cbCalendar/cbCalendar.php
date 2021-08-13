@@ -749,7 +749,6 @@ class cbCalendar extends CRMEntity {
 				$field1->label= $fldrow['fieldlabel'];
 				$field1->column = $fldrow['columnname'];
 				$field1->table = $fldrow['tablename'];
-				//$field1->columntype = 'VARCHAR(28)';
 				$field1->uitype = $fldrow['uitype'];
 				$field1->typeofdata = $fldrow['typeofdata'];
 				$field1->displaytype = $fldrow['displaytype'];
@@ -925,20 +924,6 @@ class cbCalendar extends CRMEntity {
 		}
 	}
 
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
 	public static function getCalendarActivityType($record) {
 		if (empty($record) || !is_numeric($record)) {
 			return 'Call';
@@ -960,16 +945,11 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function setActivityReminder($status) {
 		global $adb;
-		if ($status == 'on') {
-			$flag = 0;
-		} elseif ($status == 'off') {
-			$flag = 1;
-		} else {
-			return false;
+		if ($status == 'on' || $status == 'off') {
+			$adb->pquery('update vtiger_activity_reminder_popup set status=1 where recordid=?', array($this->id));
+			return true;
 		}
-		$sql = 'update vtiger_activity_reminder_popup set status=1 where recordid=?';
-		$adb->pquery($sql, array($this->id));
-		return true;
+		return false;
 	}
 
 	public function clearSingletonSaveFields() {
@@ -1022,7 +1002,6 @@ class cbCalendar extends CRMEntity {
 			define('_BENNU_VERSION', '0.1');
 		}
 		require_once 'include/utils/utils.php';
-		//require_once 'modules/cbCalendar/CalendarCommon.php';
 		require_once 'modules/cbCalendar/iCal/iCalendar_rfc2445.php';
 		require_once 'modules/cbCalendar/iCal/iCalendar_components.php';
 		require_once 'modules/cbCalendar/iCal/iCalendar_properties.php';

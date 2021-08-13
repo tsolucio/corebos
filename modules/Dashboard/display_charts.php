@@ -348,7 +348,6 @@ function dashBoardDisplayChart() {
 			$query=getDashboardQuery($tickets_by_contact, $module);
 			return get_graph_by_type($graph_by, $graph_title, $module, $where, $query, '510', '250', 'forhomepage');
 		} else {
-			//echo $mod_strings['LBL_NO_PERMISSION_FIELD'];
 			sleep(1);
 			return '<h3>'.$mod_strings['LBL_NO_PERMISSION_FIELD'].'</h3>';
 		}

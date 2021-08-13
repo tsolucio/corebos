@@ -230,34 +230,6 @@ class InventoryDetails extends CRMEntity {
 		}
 	}
 
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
 	public static function createInventoryDetails($related_focus, $module) {
 		global $adb, $current_user, $currentModule;
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
@@ -375,7 +347,7 @@ class InventoryDetails extends CRMEntity {
 				$invdet_focus->id = '';
 				$invdet_focus->mode = '';
 			}
-			if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1) {
+			if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $save_currentModule) == 1) {
 				switch ($module) {
 					case 'SalesOrder':
 						if ($invdet_focus->mode == 'edit') {

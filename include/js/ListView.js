@@ -342,7 +342,7 @@ function mass_edit1x1(obj) {
 	return false;
 }
 
-function mass_edit(obj, divid, module, parenttab) {
+function mass_edit(obj, divid, module) {
 	var select_options = document.getElementById('allselectedboxes').value;
 	var numOfRows = document.getElementById('numOfRows').value;
 	var excludedRecords = document.getElementById('excludedRecords').value;
@@ -368,7 +368,7 @@ function mass_edit(obj, divid, module, parenttab) {
 		}
 
 		if (confirm_status) {
-			mass_edit_formload(idstring, module, parenttab);
+			mass_edit_formload(idstring, module);
 		}
 	} else {
 		var x = select_options.split(';');
@@ -387,7 +387,7 @@ function mass_edit(obj, divid, module, parenttab) {
 			}
 
 			if (confirm_status) {
-				mass_edit_formload(idstring, module, parenttab);
+				mass_edit_formload(idstring, module);
 			}
 		} else {
 			ldsPrompt.show(alert_arr['ERROR'], alert_arr.SELECT);
@@ -412,10 +412,7 @@ function mergeMassEditRecords(selectedNames, obj, divid, module) {
 	}
 }
 
-function mass_edit_formload(idstring, module, parenttab) {
-	if (typeof (parenttab) == 'undefined') {
-		parenttab = '';
-	}
+function mass_edit_formload(idstring, module) {
 	var excludedRecords = document.getElementById('excludedRecords');
 	if (excludedRecords) {
 		excludedRecords = excludedRecords.value;
@@ -441,7 +438,7 @@ function mass_edit_formload(idstring, module, parenttab) {
 	}
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module='+encodeURIComponent(module)+'&action='+encodeURIComponent(module+'Ajax')+'&parenttab='+encodeURIComponent(parenttab)+'&file=MassEdit&mode=ajax&idstring='+idstring+'&viewname='+viewid+'&excludedRecords='+excludedRecords+urlstring
+		url: 'index.php?module='+encodeURIComponent(module)+'&action='+encodeURIComponent(module+'Ajax')+'&file=MassEdit&mode=ajax&idstring='+idstring+'&viewname='+viewid+'&excludedRecords='+excludedRecords+urlstring
 	}).done(function (response) {
 		document.getElementById('status').style.display='none';
 		var result = response;
@@ -595,12 +592,12 @@ function massDelete(module) {
 	}
 }
 
-function showDefaultCustomView(selectView, module, parenttab) {
+function showDefaultCustomView(selectView, module) {
 	document.getElementById('status').style.display = 'inline';
 	var viewName = encodeURIComponent(selectView.options[selectView.options.selectedIndex].value);
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=ListView&ajax=true&start=1&viewname=' + viewName + '&parenttab=' + parenttab
+		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=ListView&ajax=true&start=1&viewname=' + viewName
 	}).done(function (response) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
@@ -732,14 +729,13 @@ function check_object(sel_id, groupParentElementId) {
 		selected = trim(document.getElementById('allselectedboxes').value);
 		skip = document.getElementById('excludedRecords').value;
 	}
-	var select_global = new Array();
-	select_global = selected.split(';');
+	var select_global = selected.split(';');
 	var box_value = sel_id.checked;
 	var id = sel_id.value;
 	var duplicate = select_global.indexOf(id);
 	var size = select_global.length-1;
 	var result = '';
-	if (box_value == true) {
+	if (box_value) {
 		if (document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View && document.getElementById('selectedboxes_'+groupParentElementId).value == 'all') {
 			document.getElementById('excludedRecords_'+groupParentElementId).value = skip.replace(skip.match(id+';'), '');
 			document.getElementById('selectedboxes_'+groupParentElementId).value = 'all';
@@ -757,7 +753,6 @@ function check_object(sel_id, groupParentElementId) {
 					result=select_global[i]+';'+result;
 				}
 			}
-			//default_togglestate(sel_id.name,groupParentElementId);
 			if (document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View) {
 				document.getElementById('selectedboxes_'+groupParentElementId).value = result;
 			} else {
@@ -802,13 +797,8 @@ function check_object(sel_id, groupParentElementId) {
 function update_selected_checkbox() {
 	var cur = document.getElementById('current_page_boxes').value;
 	var tocheck = document.getElementById('allselectedboxes').value;
-	var cursplit = new Array();
-	cursplit = cur.split(';');
-
-	var selsplit = new Array();
-	selsplit = tocheck.split(';');
-
-	//	var n=selsplit.length;
+	var cursplit = cur.split(';');
+	var selsplit = tocheck.split(';');
 	var selectCurrentPageRecCheckValue = true;
 	for (var j=0; j<cursplit.length; j++) {
 		if (selsplit.indexOf(cursplit[j])!= '-1') {
@@ -823,7 +813,7 @@ function update_selected_checkbox() {
 }
 
 //Function to Set the status as Approve/Deny for Public access by Admin
-function ChangeCustomViewStatus(viewid, now_status, changed_status, module, parenttab) {
+function ChangeCustomViewStatus(viewid, now_status, changed_status, module) {
 	document.getElementById('status').style.display = 'block';
 	jQuery.ajax({
 		method: 'POST',
@@ -834,7 +824,7 @@ function ChangeCustomViewStatus(viewid, now_status, changed_status, module, pare
 			ldsPrompt.show(alert_arr['ERROR'], alert_arr.Failed);
 		} else if (responseVal.indexOf(':#:SUCCESS') > -1) {
 			var customview_ele = document.getElementById('viewname');
-			showDefaultCustomView(customview_ele, module, parenttab);
+			showDefaultCustomView(customview_ele, module);
 		} else {
 			document.getElementById('ListViewContents').innerHTML = responseVal;
 		}
@@ -991,23 +981,19 @@ function mailer_export() {
 
 function callSearch(searchtype) {
 	for (var i = 1; i <= 26; i++) {
-		var data_td_id = 'alpha_' + eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_' + i).className = 'searchAlph';
 	}
 	gPopupAlphaSearchUrl = '';
 	var search_fld_val = document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
 	var search_txt_val = encodeURIComponent(document.basicSearch.search_text.value);
 	var urlstring = '';
 	if (searchtype == 'Basic') {
-		var p_tab = document.getElementsByName('parenttab');
 		urlstring = 'search_field=' + search_fld_val + '&searchtype=BasicSearch&search_text=' + search_txt_val + '&';
-		urlstring = urlstring + 'parenttab=' + p_tab[0].value + '&';
 	} else if (searchtype == 'Advanced') {
 		checkAdvancedFilter();
 		var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
 		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-		urlstring += '&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&';
-		urlstring += 'searchtype=advance&';
+		urlstring += '&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&searchtype=advance&';
 	}
 	document.getElementById('status').style.display = 'inline';
 	jQuery.ajax({
@@ -1029,8 +1015,7 @@ function callSearch(searchtype) {
 
 function alphabetic(module, url, dataid) {
 	for (var i = 1; i <= 26; i++) {
-		var data_td_id = 'alpha_' + eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_' + i).className = 'searchAlph';
 	}
 	getObj(dataid).className = 'searchAlphselected';
 	document.getElementById('status').style.display = 'inline';

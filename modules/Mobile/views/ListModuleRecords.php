@@ -51,9 +51,8 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 			$response = $wsResponse;
 		} else {
 			$wsResponseResult = $wsResponse->getResult();
-			//$tabid = getTabid($wsResponseResult['module']);
 			$CATEGORY = getParentTabFromModule($wsResponseResult['module']);
-			if (($request->get('compact') !='true')) {
+			if ($request->get('compact') !='true') {
 				$customView = new CustomView($wsResponseResult['module']);
 				$id1=$request->get('viewName');
 				$id2=$request->get('view');
@@ -70,7 +69,7 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 			} else {
 				//compact calendar
 				$response = new crmtogo_API_Response();
-				if ($request->get('module')== 'cbCalendar' && $request->get('compact')== true) {
+				if ($request->get('module')== 'cbCalendar' && $request->get('compact')) {
 					$datetime_displayed = $request->get('datetime');
 					$month = date('m', strtotime($datetime_displayed));
 				}

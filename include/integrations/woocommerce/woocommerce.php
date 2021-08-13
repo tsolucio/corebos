@@ -374,7 +374,7 @@ class corebos_woocommerce {
 
 	public function deleteOrderInWC($change) {
 		$send2wc = $this->getPropertiesToWC($change);
-		if (count($send2wc)>0) {
+		if (!empty($send2wc)) {
 			// we do not support this yet
 		}
 	}
@@ -382,7 +382,7 @@ class corebos_woocommerce {
 	public function createFromWC($moduleName, $data) {
 		global $current_user, $adb;
 		$send2cb = $this->getPropertiesFromWC($moduleName, $data);
-		if (count($send2cb)>0) {
+		if (!empty($send2cb)) {
 			$hold = '';
 			try {
 				if (isset($send2cb['pdoInformation'])) {
@@ -427,7 +427,7 @@ class corebos_woocommerce {
 			return;
 		}
 		$send2cb = $this->getPropertiesFromWC($moduleName, $data);
-		if (count($send2cb)>0) {
+		if (!empty($send2cb)) {
 			$hold = '';
 			try {
 				if (isset($send2cb['pdoInformation'])) {
@@ -650,7 +650,7 @@ class corebos_woocommerce {
 					foreach ($cats as $cat) {
 						$categories[] = array('id' => $cat['wccode']);
 					}
-					if (count($categories)>0) {
+					if (!empty($categories)) {
 						$wcprops['categories'] = $categories;
 					}
 				}
@@ -696,7 +696,7 @@ class corebos_woocommerce {
 				if (!isset($wcprops['regular_price'])) {
 					$wcprops['regular_price'] = $cbfrom->column_fields['unit_price'];
 				}
-				if (!empty($data['status'])) {
+				if (!isset($wcprops['status'])) {
 					$wcprops['status'] = ($cbfrom->column_fields['wcsyncstatus']=='Published' ? 'publish' : 'pending');
 				}
 				if (vtlib_isModuleActive('wcProductCategory')) {
@@ -713,7 +713,7 @@ class corebos_woocommerce {
 					foreach ($cats as $cat) {
 						$categories[] = array('id' => $cat['wccode']);
 					}
-					if (count($categories)>0) {
+					if (!empty($categories)) {
 						$wcprops['categories'] = $categories;
 					}
 				}

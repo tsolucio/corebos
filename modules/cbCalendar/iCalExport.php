@@ -9,9 +9,6 @@ include 'modules/cbCalendar/iCal/iCalendar_components.php';
 include 'modules/cbCalendar/iCal/iCalendar_properties.php';
 include 'modules/cbCalendar/iCal/iCalendar_parameters.php';
 
-//$ical_query = "SELECT * FROM vtiger_activity WHERE (( STATUS != 'Completed' AND STATUS != 'Deferred' ) OR STATUS IS NULL)
-//               AND (( eventstatus != 'Held' AND eventstatus != 'Not Held' ) OR eventstatus IS NULL )";
-
 global $current_user,$adb,$default_timezone;
 $filename = $_REQUEST['filename'];
 $crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');

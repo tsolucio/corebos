@@ -19,7 +19,6 @@
 		<input type='hidden' name='action' value='EditView'>
 		<input type='hidden' name='return_action' value='ListView'>
 		<input type='hidden' name='return_module' value='Users'>
-		<input type='hidden' name='parenttab' value='Settings'>
 		<br>
 		<div align=center>
 			<!-- DISPLAY -->
@@ -29,7 +28,7 @@
 					<img src="{'ico-users.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width='48' height='48' border=0 title="{$MOD.LBL_USERS}">
 				</td>
 				<td class=heading2 valign=bottom>
-					<b><a href='index.php?module=Settings&action=index&parenttab=Settings'>{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_USERS}</b>
+					<b><a href='index.php?module=Settings&action=index'>{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_USERS}</b>
 				</td>
 			</tr>
 			<tr>
@@ -71,7 +70,7 @@ function deleteUser(obj, userid) {
 	document.getElementById('status').style.display='inline';
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?action=UsersAjax&file=UserDeleteStep1&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='+userid
+		url:'index.php?action=UsersAjax&file=UserDeleteStep1&return_action=ListView&return_module=Users&module=Users&record='+userid
 	}).done(function(response) {
 		document.getElementById('status').style.display='none';
 		document.getElementById('tempdiv').innerHTML= response;

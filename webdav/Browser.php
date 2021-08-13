@@ -70,9 +70,6 @@ class cbBrowserPlugin extends Sabre\DAV\Browser\Plugin {
 				$html .= '</td>';
 
 				$buttonActions = '';
-				// if ($subProps['subNode'] instanceof Sabre\DAV\IFile) {
-				// 	$buttonActions = '<a href="'.$this->escapeHTML($subProps['fullPath']).'?sabreAction=info"><span class="oi" data-glyph="info"></span></a>';
-				// }
 				$this->server->emit('browserButtonActions', [$subProps['fullPath'], $subProps['subNode'], &$buttonActions]);
 
 				$html .= '<td>'.$buttonActions.'</td>';
@@ -148,11 +145,7 @@ HTML;
 		} else {
 			$html .= '<span class="btn disabled">⇤ '.getTranslatedString('GoToParent', 'Settings').'</span>';
 		}
-
-		//$html .= ' <a href="?sabreAction=plugins" class="btn"><span class="oi" data-glyph="puzzle-piece"></span> Plugins</a>';
-
 		$html .= '</nav>';
-
 		return $html;
 	}
 

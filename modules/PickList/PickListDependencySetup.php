@@ -55,7 +55,7 @@ if (isset($_REQUEST['directmode']) && $_REQUEST['directmode'] == 'ajax') {
 		$cyclicDependencyExists = Vtiger_DependencyPicklist::checkCyclicDependency($fld_module, $sourceField, $targetField);
 
 		if ($cyclicDependencyExists) {
-			$smarty->assign('RETURN_URL', 'index.php?module=PickList&action=PickListDependencySetup&parenttab=Settings&moduleName='.$fld_module);
+			$smarty->assign('RETURN_URL', 'index.php?module=PickList&action=PickListDependencySetup&moduleName='.$fld_module);
 			$smarty->display("modules/PickList/PickListDependencyCyclicError.tpl");
 		} else {
 			$available_module_picklist = Vtiger_DependencyPicklist::getAvailablePicklists($fld_module);

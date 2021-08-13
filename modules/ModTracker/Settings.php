@@ -27,7 +27,7 @@ if (!is_admin($current_user)) {
 	$menu_array = array();
 
 	// Few more configuration
-	$menu_array['CONFIGURATION']['location'] = 'index.php?module=ModTracker&action=BasicSettings&parenttab=Settings&formodule=ModTracker';
+	$menu_array['CONFIGURATION']['location'] = 'index.php?module=ModTracker&action=BasicSettings&formodule=ModTracker';
 	$menu_array['CONFIGURATION']['image_src']= 'themes/images/toggleactive.png';
 	$menu_array['CONFIGURATION']['desc'] = getTranslatedString('LBL_CONFIGURATION_DESCRIPTION', $module);
 	$menu_array['CONFIGURATION']['label']= getTranslatedString('LBL_ModTracker_SETTINGS', $module);

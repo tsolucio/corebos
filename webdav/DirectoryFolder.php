@@ -18,8 +18,6 @@
 
 class DirectoryFolder extends Sabre\DAV\Collection {
 	private $folderid;
-	private $module;
-	private $letter;
 	private $foldername;
 
 	public function __construct($name, $folderid) {

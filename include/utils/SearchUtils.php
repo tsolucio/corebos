@@ -47,20 +47,16 @@ function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = ''
 			$oCv->list_fields_name = $focus->list_fields_name;
 		}
 	}
-	if ($oCv) {
-		if (isset($oCv->list_fields)) {
-			$focus->list_fields = $oCv->list_fields;
-		}
+	if ($oCv && isset($oCv->list_fields)) {
+		$focus->list_fields = $oCv->list_fields;
 	}
 	//Added to reduce the no. of queries logging for non-admin users
 	$field_list = array();
 	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
-		if ($oCv) {
-			if (isset($oCv->list_fields_name)) {
-				$fieldname = $oCv->list_fields_name[$name];
-			}
+		if ($oCv && isset($oCv->list_fields_name)) {
+			$fieldname = $oCv->list_fields_name[$name];
 		}
 		if ($fieldname == 'accountname' && $module !='Accounts') {
 			$fieldname = 'account_id';
@@ -136,16 +132,14 @@ function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = ''
 				$fieldname = 'contact_id';
 			}
 		}
-		if ($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field)) {
-			if ($fieldname!='parent_id') {
-				$fld_name=$fieldname;
-				if ($fieldname == 'contact_id' && $module !='Contacts') {
-					$name = $app_strings['LBL_CONTACT_LAST_NAME'];
-				} elseif ($fieldname == 'contact_id' && $module =='Contacts') {
-					$name = $mod_strings['Reports To'].' - '.$mod_strings['LBL_LIST_LAST_NAME'];
-				}
-				$search_header[$fld_name] = getTranslatedString($name);
+		if (($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field)) && $fieldname!='parent_id') {
+			$fld_name=$fieldname;
+			if ($fieldname == 'contact_id' && $module !='Contacts') {
+				$name = $app_strings['LBL_CONTACT_LAST_NAME'];
+			} elseif ($fieldname == 'contact_id' && $module =='Contacts') {
+				$name = $mod_strings['Reports To'].' - '.$mod_strings['LBL_LIST_LAST_NAME'];
 			}
+			$search_header[$fld_name] = getTranslatedString($name);
 		}
 		if ($module == 'HelpDesk' && $fieldname == 'crmid') {
 			$fld_name=$fieldname;
@@ -291,8 +285,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 		$search_field_first = $search_field;
 		if ($module=='HelpDesk') {
 			if ($search_field == 'contactid') {
-				$where = "(vtiger_contactdetails.contact_no like '". formatForSqlLike($search_string) ."')";
-				return $where;
+				return "(vtiger_contactdetails.contact_no like '". formatForSqlLike($search_string) ."')";
 			} elseif ($search_field == 'account_id') {
 				$search_field = 'parent_id';
 			}
@@ -496,14 +489,13 @@ function getAdvSearchfields($module) {
 
 	$result = $adb->pquery($sql, $params);
 	$noofrows = $adb->num_rows($result);
-	$block = '';
 	$select_flag = '';
 	$OPTION_SET = '';
 	for ($i=0; $i<$noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result, $i, 'tablename');
 		$fieldcolname = $adb->query_result($result, $i, 'columnname');
 		$fieldname = $adb->query_result($result, $i, 'fieldname');
-		$block = $adb->query_result($result, $i, 'block');
+		// $result > 'block'
 		$fieldtype = $adb->query_result($result, $i, 'typeofdata');
 		$fieldtype = explode('~', $fieldtype);
 		$fieldtypeofdata = $fieldtype[0];
@@ -860,7 +852,6 @@ function getdashboardcondition($input = '') {
 		$res = $adb->pquery('select vtiger_users.id from vtiger_users where vtiger_users.ename=?', array($owner));
 		$uid = $adb->query_result($res, 0, 'id');
 		$where_clauses[] = 'vtiger_crmentity.smownerid = '.$uid;
-		//$url_string .= '&assigned_user_id='.$uid;
 		$url_string .= '&owner='.$owner;
 	}
 	if (isset($campaign) && $campaign != '') {
@@ -1088,7 +1079,7 @@ function getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, 
 }
 
 function generateAdvancedSearchSql($advfilterlist) {
-	global $currentModule, $current_user;
+	global $currentModule;
 
 	$advfiltersql = $advcvsql = '';
 
@@ -1096,7 +1087,7 @@ function generateAdvancedSearchSql($advfilterlist) {
 		$groupcondition = (isset($groupinfo['condition']) ? $groupinfo['condition'] : '');
 		$groupcolumns = $groupinfo['columns'];
 
-		if (count($groupcolumns) > 0) {
+		if (!empty($groupcolumns)) {
 			$advfiltergroupsql = '';
 			foreach ($groupcolumns as $columninfo) {
 				$advorsql = array();
@@ -1110,7 +1101,7 @@ function generateAdvancedSearchSql($advfilterlist) {
 
 				if ($fieldcolname != '' && $comparator != '') {
 					$valuearray = explode(',', trim($value));
-					if (isset($valuearray) && count($valuearray) > 0 && $comparator != 'bw') {
+					if (isset($valuearray) && !empty($valuearray) && $comparator != 'bw') {
 						foreach ($valuearray as $val) {
 							$advorsql[] = getAdvancedSearchValue($columns[0], $columns[1], $comparator, trim($val), $datatype);
 						}
@@ -1122,8 +1113,8 @@ function generateAdvancedSearchSql($advfilterlist) {
 						}
 						$advfiltersql = ' ('.$advorsqls.') ';
 					} elseif ($comparator == 'bw' && count($valuearray) == 2) {
-						$advfiltersql = '('.$columns[0].'.'.$columns[1]." between '".getValidDBInsertDateTimeValue(trim($valuearray[0]), $datatype)."' and '"
-							.getValidDBInsertDateTimeValue(trim($valuearray[1]), $datatype)."')";
+						$advfiltersql = '('.$columns[0].'.'.$columns[1]." between '".getValidDBInsertDateTimeValue(trim($valuearray[0]))."' and '"
+							.getValidDBInsertDateTimeValue(trim($valuearray[1]))."')";
 					} else {
 						if ($currentModule == 'Documents' && $columns[1]=='folderid') {
 							$advfiltersql = 'vtiger_attachmentsfolder.foldername'.getAdvancedSearchComparator($comparator, trim($value), $datatype);
@@ -1165,7 +1156,7 @@ function getAdvancedSearchComparator($comparator, $value, $datatype = '') {
 	$value=html_entity_decode(trim($value), ENT_QUOTES, $default_charset);
 	$value = $adb->sql_escape_string($value);
 	if ($datatype == 'DT' || $datatype == 'D') {
-		$value = getValidDBInsertDateTimeValue($value, $datatype);
+		$value = getValidDBInsertDateTimeValue($value);
 	}
 
 	if ($comparator == 'e') {
@@ -1530,7 +1521,7 @@ function getCriteriaJS($formName) {
 		$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
 	}
 
-	$sjsStr = '<script type="text/javaScript">
+	return '<script type="text/javaScript">
 		function showDateRange( type ) {
 			if (type!="custom") {
 				document.'.$formName.'.startdate.readOnly=true
@@ -1627,7 +1618,6 @@ function getCriteriaJS($formName) {
 			}
 		}
 	</script>';
-	return $sjsStr;
 }
 
 function getDateforStdFilterBytype($type) {

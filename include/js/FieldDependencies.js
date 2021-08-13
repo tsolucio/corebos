@@ -249,12 +249,12 @@ FieldDependencies.prototype.fieldOptions = function (sourcename, targetFields, t
 				for (var index = 0; index < targetoptions.length; ++index) {
 					var targetoption = jQuery(targetoptions[index]);
 					// Show the option if field mapping matches the option value or there is not field mapping available.
-					if ( (targetvalues == false || targetvalues.indexOf(targetoption.val()) !== -1) && type==='setoptions') {
+					if ((!targetvalues || targetvalues.indexOf(targetoption.val()) !== -1) && type==='setoptions') {
 						var optionNode = jQuery(document.createElement('option'));
 						targetnode.append(optionNode);
 						optionNode.text(targetoption.text());
 						optionNode.val(targetoption.val());
-					} else if ( (targetvalues.indexOf(targetoption.val()) === -1) && type==='deloptions') {
+					} else if ((targetvalues.indexOf(targetoption.val()) === -1) && type==='deloptions') {
 						var optionNode = jQuery(document.createElement('option'));
 						targetnode.append(optionNode);
 						optionNode.text(targetoption.text());
@@ -389,7 +389,6 @@ FieldDependencies.prototype.callFunc = function (sourcename, allParam) {
 		//check if the function is already declared
 		//make sure it is not going to be called the first time the page is loaded
 		if (window[funcName]!==undefined && typeof(fld.data('initialVal')) !== 'undefined') {
-			//document.getElementsByName(sourcename).item(0).onchange=window[funcName](sourcename,action_field,fldValue,fld.data('initialVal'),parameters);
 			window[funcName](sourcename, action_field, fldValue, fld.data('initialVal'), parameters);
 		}
 		if (typeof(fld.data('initialVal')) == 'undefined') {

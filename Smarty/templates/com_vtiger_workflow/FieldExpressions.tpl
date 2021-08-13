@@ -9,24 +9,6 @@
  ************************************************************************************/
 -->*}
 <style>
-/* Tooltip container */
-.tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-  visibility: hidden;
-  position: absolute;
-  left: 25px;
-  top: -5px;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
 #editpopup {
 	top:35%;
 	left:20%;

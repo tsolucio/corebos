@@ -68,7 +68,7 @@ var moduleName = '{$entityName}';
 						</div>
 					</div>
 					<div class="slds-size_1-of-12">
-						<h2 class="slds-text-title"> {'LBL_OR'|@getTranslatedString} </h2>
+						<h2 class="slds-page-header__meta-text"> {'LBL_OR'|@getTranslatedString} </h2>
 					</div>
 					<div class="slds-size_2-of-12">
 						<div class="slds-form__item" role="listitem">

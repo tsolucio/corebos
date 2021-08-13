@@ -28,10 +28,8 @@ class SMSProvider {
 		$providers = array();
 		if ($handle = opendir(__DIR__ . '/providers')) {
 			while (false !== ($file = readdir($handle))) {
-				if (!in_array($file, array('.', '..', '.svn', 'CVS'))) {
-					if (preg_match("/(.*)\.php$/", $file, $matches)) {
-						$providers[] = $matches[1];
-					}
+				if (!in_array($file, array('.', '..', '.svn', 'CVS')) && preg_match("/(.*)\.php$/", $file, $matches)) {
+					$providers[] = $matches[1];
 				}
 			}
 		}

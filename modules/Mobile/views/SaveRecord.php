@@ -14,10 +14,6 @@ class crmtogo_UI_ProcessRecordCreation extends crmtogo_WS_SaveRecord {
 
 	public function process(crmtogo_API_Request $request) {
 		$wsResponse = parent::process($request);
-		$response = false;
-		if ($wsResponse->hasError()) {
-			$response = $wsResponse;
-		}
 		$wsResponseResult = $wsResponse->getResult();
 		$recordid = $wsResponseResult['record']['id'];
 		if (isset($_REQUEST['returnto']) && isset($_REQUEST['returntomodule'])) {

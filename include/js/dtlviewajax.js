@@ -78,9 +78,9 @@ function hndMouseOver(uitype, fieldLabel) {
 			} else {
 				var assign_type_G = false;
 			}
-			if (assign_type_U == true) {
+			if (assign_type_U) {
 				globaltxtboxid= 'txtbox_U'+fieldLabel;
-			} else if (assign_type_G == true) {
+			} else if (assign_type_G) {
 				globaltxtboxid= 'txtbox_G'+fieldLabel;
 			}
 		} else {
@@ -130,7 +130,6 @@ function handleCopyClipboard(event) {
 			document.getElementById('clipcopylink').dataset.clipboardText = assigne_value;
 		}
 	}
-	//if (event) event.stopPropagation();
 	return false;
 }
 
@@ -183,8 +182,7 @@ function dtlViewAjaxDirectFieldSave(fieldValue, module, tableName, fieldName, cr
 		if (response.indexOf(':#:FAILURE')>-1) {
 			alert(alert_arr.ERROR_WHILE_EDITING);
 		} else if (response.indexOf(':#:ERR')>-1) {
-			alert_str = response.replace(':#:ERR', '');
-			alert(alert_str);
+			alert(response.replace(':#:ERR', ''));
 			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			//For HD & FAQ - comments, we should empty the field value
@@ -230,9 +228,9 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		} else {
 			var assign_type_U = assigntype[0].checked;
 		}
-		if (assign_type_U == true) {
+		if (assign_type_U) {
 			var txtBox= 'txtbox_U'+fieldLabel;
-		} else if (assign_type_G == true) {
+		} else if (assign_type_G) {
 			var txtBox= 'txtbox_G'+fieldLabel;
 			var group_id = encodeURIComponent(document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text);
 			groupurl = '&assigned_group_id='+group_id+'&assigntype=T';
@@ -266,7 +264,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 
 	//overriden the tagValue based on UI Type for checkbox
 	if (uitype == '56') {
-		if (document.getElementById(txtBox).checked == true) {
+		if (document.getElementById(txtBox).checked) {
 			if (module == 'Contacts') {
 				var obj = getObj('email');
 				if ((fieldName == 'portal') && (obj == null || obj.value == '')) {
@@ -283,7 +281,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			tagValue = '0';
 		}
 	} else if (uitype == '156') {
-		if (document.getElementById(txtBox).checked == true) {
+		if (document.getElementById(txtBox).checked) {
 			tagValue = 'on';
 		} else {
 			tagValue = 'off';
@@ -299,7 +297,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		if (module == 'Contacts') {
 			if (getObj('portal')) {
 				var port_obj = getObj('portal').checked;
-				if (fieldName == 'email' && tagValue == '' && port_obj == true) {
+				if (fieldName == 'email' && tagValue == '' && port_obj) {
 					alert(alert_arr.PORTAL_PROVIDE_EMAILID);
 					return false;
 				}
@@ -324,8 +322,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		if (response.indexOf(':#:FAILURE')>-1) {
 			alert(alert_arr.ERROR_WHILE_EDITING);
 		} else if (response.indexOf(':#:ERR')>-1) {
-			alert_str = response.replace(':#:ERR', '');
-			alert(alert_str);
+			alert(response.replace(':#:ERR', ''));
 			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			var result = response.split(':#:');
@@ -390,11 +387,11 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 					notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
 				}
 			}
-			sentForm[fieldName] = r;
+			sentForm[fieldName] = r.join(' |##| ');
 			break;
 		case '56':
 		case 56:
-			if (document.getElementById('txtbox_'+fieldName).checked == true) {
+			if (document.getElementById('txtbox_'+fieldName).checked) {
 				sentForm[fieldName] = 1;
 			} else {
 				sentForm[fieldName] = 0;
@@ -417,10 +414,10 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			} else {
 				var assign_type_U = assigntype[0].checked;
 			}
-			if (assign_type_U == true) {
+			if (assign_type_U) {
 				var txtBox= 'txtbox_U'+fieldLabel;
 				sentForm['assign_type'] = 'U';
-			} else if (assign_type_G == true) {
+			} else if (assign_type_G) {
 				var txtBox= 'txtbox_G'+fieldLabel;
 				sentForm['assign_type'] = 'T';
 			}
@@ -506,9 +503,9 @@ function setSelectValue(fieldLabel) {
 			if (assigntype[1]!=undefined) {
 				assign_type_G = assigntype[1].checked;
 			}
-			if (assign_type_U == true) {
+			if (assign_type_U) {
 				selCombo= 'txtbox_U'+fieldLabel;
-			} else if (assign_type_G == true) {
+			} else if (assign_type_G) {
 				selCombo= 'txtbox_G'+fieldLabel;
 			}
 		} else {
@@ -553,10 +550,10 @@ function setCoOrdinate(elemId) {
 	tagName.style.left= leftpos - 276 + 'px';
 }
 
-function getListOfRecords(obj, sModule, iId, sParentTab) {
+function getListOfRecords(obj, sModule, iId) {
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
+		url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId,
 	}).done(function (response) {
 		document.getElementById('lstRecordLayout').innerHTML = response;
 		Lay = 'lstRecordLayout';

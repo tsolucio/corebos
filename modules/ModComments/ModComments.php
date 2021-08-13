@@ -78,7 +78,7 @@ class ModComments extends ModCommentsCore {
 				$commentWidgetModules[] = $moduleName;
 			}
 		}
-		if (count($commentWidgetModules) > 0) {
+		if (!empty($commentWidgetModules)) {
 			$modCommentsModule = Vtiger_Module::getInstance('ModComments');
 			$modCommentsModule->addLink('HEADERSCRIPT', 'ModCommentsCommonHeaderScript', 'modules/ModComments/ModCommentsCommon.js');
 			$modCommentsRelatedToField = Vtiger_Field::getInstance('related_to', $modCommentsModule);
@@ -112,7 +112,7 @@ class ModComments extends ModCommentsCore {
 				$commentWidgetModules[] = $moduleName;
 			}
 		}
-		if (count($commentWidgetModules) > 0) {
+		if (!empty($commentWidgetModules)) {
 			$modCommentsModule = Vtiger_Module::getInstance('ModComments');
 			$modCommentsRelatedToField = Vtiger_Field::getInstance('related_to', $modCommentsModule);
 			$modCommentsRelatedToField->unsetRelatedModules($commentWidgetModules);

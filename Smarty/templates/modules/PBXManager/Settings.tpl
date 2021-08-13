@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
@@ -21,13 +20,12 @@
 			<input type='hidden' name='action' value='DefModuleView'>
 			<input type='hidden' name='return_action' value='ListView'>
 			<input type='hidden' name='return_module' value='Users'>
-			<input type='hidden' name='parenttab' value='Settings'>
 			<br>
 			<div align=center>
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 					<tr>
 						<td width=50 rowspan=3 valign=top><img src="include/LD/assets/icons/standard/call_60.png" alt="{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}" style="background-color: #f2cf5b;width:48px;" title="{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}"></td>
-						<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}</b></td>
+						<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}</b></td>
 					</tr>
 					<tr>
 						<td valign=top class="small">{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS_DESCRIPTION}</td>
@@ -101,6 +99,7 @@
 									<tr>
 										<td width="20%" nowrap colspan="2" align ="center">
 											<input type="button" name="update" class="crmbutton small create" value="{$MOD.LBL_UPDATE_BUTTON}" onclick="validatefn1('asterisk');" />
+											<input type="button" name="delete" class="crmbutton small delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" onclick="if (confirm('{$APP.NTC_DELETE_CONFIRMATION}')) deletepbxmanager('asterisk');"/>
 											<input type="button" name="cancel" class="crmbutton small cancel" value="{$MOD.LBL_CANCEL_BUTTON}" onClick="window.history.back();"/>
 										</td>
 									</tr>
@@ -123,47 +122,54 @@
 </section>
 {literal}
 <script>
-
-function setSoftphoneDetails(module){
-	var asterisk_server_ip = document.getElementById("asterisk_server_ip").value;
-	var asterisk_port = document.getElementById("asterisk_port").value;
-	var asterisk_username = document.getElementById("asterisk_username").value;
-	var asterisk_password = document.getElementById("asterisk_password").value;
+function setSoftphoneDetails(module) {
+	var asterisk_server_ip = document.getElementById('asterisk_server_ip').value;
+	var asterisk_port = document.getElementById('asterisk_port').value;
+	var asterisk_username = document.getElementById('asterisk_username').value;
+	var asterisk_password = document.getElementById('asterisk_password').value;
 	var asterisk_version = document.getElementById('asterisk_version').value;
 
-	if(asterisk_port == ""){
+	if (asterisk_port == '') {
 		//port not specified :: so set default
-		asterisk_port = "5038";
+		asterisk_port = '5038';
 	}
-	document.getElementById("status").style.display="block";
+	document.getElementById('status').style.display='block';
 	jQuery.ajax({
-		method:"POST",
+		method:'POST',
 		url:'index.php?module=PBXManager&action=PBXManagerAjax&file=UpdatePBXDetails&ajax=true&qserver='+asterisk_server_ip+'&qport='+asterisk_port+'&qusername='+asterisk_username+'&qpassword='+encodeURIComponent(asterisk_password)+'&semodule='+module+'&version='+asterisk_version
-	}).done(function(response) {
-			if((response != '')){
-				alert(response);
-			}else{
-				window.history.back();	//successfully saved, so go back
-			}
-			document.getElementById("status").style.display="none";
-		});
+	}).done(function (response) {
+		if (response != '') {
+			alert(response);
+		} else {
+			window.history.back();	//successfully saved, so go back
+		}
+		document.getElementById('status').style.display='none';
+	});
 }
 
-function validatefn1(module){
-	var asterisk_server_ip = document.getElementById("asterisk_server_ip").value;
-	var asterisk_port = document.getElementById("asterisk_port").value;
+function validatefn1(module) {
+	var asterisk_server_ip = document.getElementById('asterisk_server_ip').value;
+	var asterisk_port = document.getElementById('asterisk_port').value;
 
-	if (!emptyCheck("asterisk_server_ip","Asterisk Server","text")){
+	if (!emptyCheck('asterisk_server_ip', 'Asterisk Server', 'text')) {
 		return false;
 	}
-	if (!emptyCheck("asterisk_username","Asterisk Username","text")){
+	if (!emptyCheck('asterisk_username', 'Asterisk Username', 'text')) {
 		return false;
 	}
-	if (!emptyCheck("asterisk_password","Asterisk Password","text")){
+	if (!emptyCheck('asterisk_password', 'Asterisk Password', 'text')) {
 		return false;
 	}
 	setSoftphoneDetails(module);
 }
 
+function deletepbxmanager(module){
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?module=PBXManager&action=PBXManagerAjax&file=DeletePBXDetails&ajax=true&semodule='+module,
+	}).done(function (response) {
+		location.reload();
+	});
+}
 </script>
 {/literal}

@@ -66,7 +66,6 @@ abstract class OpenDocument_Style {
 	 */
 	public function __construct(OpenDocument_StyledElement $element) {
 		$this->element = $element;
-		//$this->loadStyle();
 	}
 
 	/**

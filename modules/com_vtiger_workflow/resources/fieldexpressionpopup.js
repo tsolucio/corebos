@@ -10,7 +10,7 @@
 var fieldExpressionPopup_LOADED = false;
 function fieldExpressionPopup(moduleName, $) {
 
-	if (fieldExpressionPopup_LOADED != false) {
+	if (fieldExpressionPopup_LOADED) {
 		return fieldExpressionPopup_LOADED;
 	}
 	var format = fn.format;
@@ -36,7 +36,6 @@ function fieldExpressionPopup(moduleName, $) {
 		el.css({
 			width: '950px'
 		});
-		//placeAtCenter(el.get(0));
 	}
 
 	function showElement(ele, displaytype) {
@@ -90,8 +89,15 @@ function fieldExpressionPopup(moduleName, $) {
 		} else {
 			hideElement($('#editpopup_fieldnames'));
 			hideElement($('#editpopup_functions'));
-			var fieldType = $('#editpopup_field_type').val();
-			setFieldType(fieldType)(opType);
+			var selectorval_ = ele.selector;
+			var opval_ = selectorval_.replace(/value_type/g, 'operation');
+			var op = $(opval_).val();
+			if (opType.name === 'picklist' && (op === 'contains' || op === 'does not contain')) {
+				setFieldType('string')(opType);
+			} else {
+				var fieldType = $('#editpopup_field_type').val();
+				setFieldType(fieldType)(opType);
+			}
 		}
 	}
 
@@ -406,7 +412,7 @@ function evaluateit() {
 		})
 		.then(response => response.text())
 		.then(response => {
-			document.getElementById('evaluateexpressionresult').innerHTML = response;
+			document.getElementById('evaluateexpressionresult').innerHTML = DOMPurify.sanitize(response);
 		});
 }
 

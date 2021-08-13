@@ -29,7 +29,6 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	if (is_numeric($bmap)) {
 		$cbMapid = $bmap;
 	} else {
-		//$bmapname = 'BusinessMapping_'.$currentModule.'_DuplicateRelations';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
 	}
 	// Retrieve relations map
@@ -117,7 +116,6 @@ function duplicateRecordRelations($currentModule, $duplicatedrecord, $duplicated
 	if (is_numeric($bmap)) {
 		$cbMapid = $bmap;
 	} else {
-		//$bmapname = 'BusinessMapping_'.$currentModule.'_DuplicateRelations';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
 	}
 	// Retrieve relations map

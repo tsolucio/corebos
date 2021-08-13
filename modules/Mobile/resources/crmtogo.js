@@ -193,7 +193,7 @@
 			if ( !pageIsSelectmenuDialog(data.prevPage) ) {
 				return;
 			}
-			listview = data.prevPage.jqmData('listview'),
+			listview = data.prevPage.jqmData('listview');
 			form = listview.jqmData('filter-form');
 			// Put the form back in the popup. It goes ahead of the listview.
 			listview.before(form);
@@ -413,7 +413,7 @@ var crmtogo_Index_Js = {
 			if (mandatoryvalid) {
 				if ($('#module').val()=='cbCalendar') {
 					var datetimevaild = crmtogo_Index_Js.calendarvalidation();
-					if (datetimevaild == true) {
+					if (datetimevaild) {
 						$('#EditView').submit();
 						return true;
 					} else {

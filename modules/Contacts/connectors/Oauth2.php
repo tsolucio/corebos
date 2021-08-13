@@ -169,12 +169,12 @@ class Google_Oauth2_Connector {
 		return $this->fireRequest(self::OAUTH2_TOKEN_URI, array(), $params);
 	}
 
-	public function storeToken($token) {
+	public function storeToken($tkn) {
 		global $current_user, $adb;
 		if (!isset($this->user_id)) {
 			$this->user_id = $current_user->id;
 		}
-		$decodedToken = json_decode($token, true);
+		$decodedToken = json_decode($tkn, true);
 		if (!empty($decodedToken['error'])) {
 			echo '<script>window.close();window.opener.location.href="index.php?module=Utilities&action=integration&integration=GoogleContacts&_op=Error&error_description='
 				.urlencode($decodedToken['error']).'&error_code=";</script>';
@@ -216,8 +216,8 @@ class Google_Oauth2_Connector {
 		);
 	}
 
-	public function setToken($token) {
-		$this->token = $token;
+	public function setToken($tkn) {
+		$this->token = $tkn;
 	}
 
 	public function isTokenExpired() {
@@ -225,8 +225,7 @@ class Google_Oauth2_Connector {
 			return true;
 		}
 		// If the token is set to expire in the next 30 seconds.
-		$expired = ($this->token['access_token']['created'] + ($this->token['access_token']['expires_in'] - 30)) < time();
-		return $expired;
+		return ($this->token['access_token']['created'] + ($this->token['access_token']['expires_in'] - 30)) < time();
 	}
 
 	public function updateAccessToken($accesstoken, $refreshtoken) {
@@ -247,16 +246,17 @@ class Google_Oauth2_Connector {
 		$encodedToken = $this->fireRequest(self::OAUTH2_TOKEN_URI, array(), $params);
 		$decodedToken = json_decode($encodedToken, true);
 		$decodedToken['created'] = time();
-		$token['access_token'] = $decodedToken;
-		$token['refresh_token'] = $this->token['refresh_token'];
-		$this->updateAccessToken(json_encode($decodedToken), $token['refresh_token']);
-		$this->setToken($token);
+		$tkn = array();
+		$tkn['access_token'] = $decodedToken;
+		$tkn['refresh_token'] = $this->token['refresh_token'];
+		$this->updateAccessToken(json_encode($decodedToken), $tkn['refresh_token']);
+		$this->setToken($tkn);
 	}
 
 	public function authorize() {
 		if ($this->hasStoredToken()) {
-			$token = $this->retreiveToken();
-			$this->setToken($token);
+			$tkn = $this->retreiveToken();
+			$this->setToken($tkn);
 			if ($this->isTokenExpired()) {
 				$this->refreshToken();
 			}
@@ -264,8 +264,8 @@ class Google_Oauth2_Connector {
 		} else {
 			if (!empty($_REQUEST['service']) && $_REQUEST['service'] && !empty($_REQUEST['code']) && $_REQUEST['code']) {
 				$authCode = $_REQUEST['code'];
-				$token = $this->exchangeCodeForToken($authCode);
-				$this->storeToken($token);
+				$tkn = $this->exchangeCodeForToken($authCode);
+				$this->storeToken($tkn);
 				echo '<script>window.close();window.opener.location.reload();</script>';
 				exit;
 			} elseif (!empty($_REQUEST['service']) && $_REQUEST['service']) {

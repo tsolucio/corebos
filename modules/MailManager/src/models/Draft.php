@@ -157,8 +157,6 @@ class MailManager_Model_DraftEmail {
 			return false;
 		}
 
-		$email = CRMEntity::getInstance('Emails');
-
 		$to_string = rtrim($request->get('to'), ',');
 		$cc_string = rtrim($request->get('cc'), ',');
 		$bcc_string= rtrim($request->get('bcc'), ',');
@@ -232,8 +230,8 @@ class MailManager_Model_DraftEmail {
 
 		$emailId = $this->saveDraft($request);
 
-		if ($emailId != false) {
-			if ($uploadResponse && $uploadResponse['success'] == true) {
+		if ($emailId) {
+			if ($uploadResponse && $uploadResponse['success']) {
 				// Link document to base record
 				if (!empty($uploadResponse['docid'])) {
 					$this->saveEmailDocumentRel($emailId, $uploadResponse['docid']);
@@ -318,14 +316,7 @@ class MailManager_Model_DraftEmail {
 	}
 
 	public function getFormattedFileSize($filesize) {
-		if ($filesize < 1024) {
-			$filesize = sprintf('%0.2f', round($filesize, 2)).'b';
-		} elseif ($filesize > 1024 && $filesize < 1048576) {
-			$filesize = sprintf('%0.2f', round($filesize/1024, 2)).'kB';
-		} elseif ($filesize > 1048576) {
-			$filesize = sprintf('%0.2f', round($filesize/(1024*1024), 2)).'MB';
-		}
-		return $filesize;
+		return FileField::getFileSizeDisplayValue($filesize);
 	}
 }
 ?>

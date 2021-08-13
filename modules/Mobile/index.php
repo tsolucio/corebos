@@ -78,6 +78,7 @@ class crmtogo_Index_Controller {
 
 			include_once __DIR__ . $operationFile;
 			$operationController = new $operationClass;
+			$operationController->getConfigDefaults(); // sideeffect of loading current_language
 
 			$operationSession = false;
 			if ($operationController->requireLogin()) {

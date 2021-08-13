@@ -12,13 +12,13 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************
-* Allows a webservice client to send an OpenOffice/LibreOffice document for it to be converted
+* Allows a web service client to send an OpenOffice/LibreOffice document for it to be converted
 * into any format supported by unoconv and retrieve the resulting file
 * params:
 *   file: file structure
 *     name: filename
 *.....size: size
-*.....type: type of de document
+*.....type: type of the document
 *.....content: base 64 encoded content of the file
 *   convert_format: string, format to convert input file.
 * returns json string:
@@ -26,7 +26,7 @@
 *   file: resulting file structure
 *     name: filename
 *.....size: size
-*.....type: type of de document
+*.....type: type of the document
 *.....content: base 64 encoded content of the file
  *************************************************************************************************/
 require_once 'modules/evvtgendoc/OpenDocument.php';

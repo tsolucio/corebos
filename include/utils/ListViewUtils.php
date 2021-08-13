@@ -33,7 +33,6 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 
 	//Get the tabid of the module
 	$tabid = getTabid($module);
-	$tabname = getParentTab();
 	global $current_user;
 	$bmapname = $module.'_ListColumns';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -49,11 +48,9 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 			$oCv->list_fields_name = $focus->list_fields_name;
 		}
 	}
-	if ($oCv) {
-		if (isset($oCv->list_fields)) {
-			$focus->list_fields = $oCv->list_fields;
-			$focus->list_fields_name = $oCv->list_fields_name;
-		}
+	if ($oCv && isset($oCv->list_fields)) {
+		$focus->list_fields = $oCv->list_fields;
+		$focus->list_fields_name = $oCv->list_fields_name;
 	}
 
 	// Remove fields which are made inactive
@@ -64,10 +61,8 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
-		if ($oCv) {
-			if (isset($oCv->list_fields_name)) {
-				$fieldname = $oCv->list_fields_name[$name];
-			}
+		if ($oCv && isset($oCv->list_fields_name)) {
+			$fieldname = $oCv->list_fields_name[$name];
 		}
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
@@ -185,20 +180,20 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 							}
 							$moduleLabel = str_replace(' ', '', $moduleLabel);
 							$name = "<a href='javascript:void(0);' onClick='loadRelatedListBlock" .
-									"(\"module=$relatedmodule&action=" . $relatedmodule . "Ajax&" .
-									"file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=" . $moduleHeader .
+									"(\"module=$relatedmodule&action=" . $relatedmodule . 'Ajax&' .
+									'file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=' . $moduleHeader .
 									"&order_by=$col&record=$relatedlist&sorder=$temp_sorder$relationURL" .
 									"$actionsURL\",\"tbl_" . $relatedmodule . "_$moduleLabel\"," .
 									'"'.$relatedmodule.'_'.$moduleLabel."\");' class='listFormHeaderLinks'>$lbl_name$arrow</a>";
 						} elseif ($module == 'Users' && $name == 'User Name') {
-							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . "\",\"parenttab=" . $tabname . "&order_by=" . $col;
-							$name .= "&start=1&sorder=" . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>";
+							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . '","order_by=' . $col;
+							$name .= '&start=1&sorder=' . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>";
 							$name .= getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module) . $arrow . '</a>';
 						} elseif ($relatedlist == 'global') {
 							$name = $lbl_name;
 						} else {
-							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . "\",\"parenttab=" . $tabname . "&order_by=" . $col;
-							$name .= "&start=1&sorder=" . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>" . $lbl_name . $arrow . '</a>';
+							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . '","order_by=' . $col;
+							$name .= '&start=1&sorder=' . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>" . $lbl_name . $arrow . '</a>';
 						}
 						$arrow = '';
 					} else {
@@ -433,21 +428,21 @@ function getNavigationValues($display, $noofrows, $limit) {
 	return $navigation_array;
 }
 
-/* * This function generates the List view entries in a list view
- * Param $focus - module object
- * Param $list_result - resultset of a listview query
- * Param $navigation_array - navigation values in an array
- * Param $relatedlist - check for related list flag
- * Param $returnset - list query parameters in url string
- * Param $edit_action - Edit action value
- * Param $del_action - delete action value
- * Param $oCv - vtiger_customview object
- * Returns an array type
+/** This function generates the List view entries in a list view
+ * @param object module object
+ * @param string related module name
+ * @param object resultset of a listview query
+ * @param array navigation values
+ * @param boolean check for related list flag
+ * @param string list query parameters in url
+ * @param string has Edit action value deprecated
+ * @param string has Delete action value deprecated
+ * @param object custom view object
+ * @return array with display values for each row in the list view
  */
 function getListViewEntries($focus, $module, $list_result, $navigation_array, $relatedlist = '', $returnset = '', $edit_action = 'EditView', $del_action = 'Delete', $oCv = '', $page = '', $selectedfields = '', $contRelatedfields = '', $skipActions = false) {
 	global $log, $adb, $current_user, $app_strings, $theme, $default_charset;
-	$log->debug("> getListViewEntries focus,$module,list_result,$relatedlist,$returnset,$edit_action,$del_action,oCv");
-	$tabname = getParentTab();
+	$log->debug("> getListViewEntries $module,$relatedlist,$returnset");
 	$noofrows = $adb->num_rows($list_result);
 	$list_block = array();
 	$tabid = getTabid($module);
@@ -465,11 +460,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			$oCv->list_fields_name = $focus->list_fields_name;
 		}
 	}
-	if ($oCv) {
-		if (isset($oCv->list_fields)) {
-			$focus->list_fields = $oCv->list_fields;
-			$focus->list_fields_name = $oCv->list_fields_name;
-		}
+	if ($oCv && isset($oCv->list_fields)) {
+		$focus->list_fields = $oCv->list_fields;
+		$focus->list_fields_name = $oCv->list_fields_name;
 	}
 	if (is_array($selectedfields) && $selectedfields != '') {
 		$focus->list_fields = $selectedfields;
@@ -483,10 +476,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
-		if ($oCv) {
-			if (isset($oCv->list_fields_name)) {
-				$fieldname = $oCv->list_fields_name[$name];
-			}
+		if ($oCv && isset($oCv->list_fields_name)) {
+			$fieldname = $oCv->list_fields_name[$name];
 		}
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
@@ -514,7 +505,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 
 			$tabids = array($tabid);
 			if (isset($focus->related_tables)) {
-				foreach ($focus->related_tables as $reltable => $reltableinfo) {
+				foreach ($focus->related_tables as $reltableinfo) {
 					if (isset($reltableinfo[3]) && is_string($reltableinfo[3])) {
 						$tid = getTabid($reltableinfo[3]);
 						if (is_numeric($tid) && $tid>0) {
@@ -628,10 +619,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				}
 				if ($hasGlobalReadPermission || in_array($fieldname, $field) || $fieldname == '') {
 					if ($fieldname == '') {
-						//$table_name = '';
 						$column_name = '';
 						foreach ($tableinfo as $colname) {
-							//$table_name = $tablename;
 							$column_name = $colname;
 						}
 						$value = $adb->query_result($list_result, $i, $column_name);
@@ -678,37 +667,10 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							}
 							if ($fieldname == 'filename') {
 								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
-								$fileicon = '';
-								if ($downloadtype == 'I') {
-									$fld_value = $value;
-									$ext_pos = strrpos($fld_value, '.');
-									$ext = substr($fld_value, $ext_pos + 1);
-									$ext = strtolower($ext);
-									if ($value != '') {
-										if ($ext == 'bin' || $ext == 'exe' || $ext == 'rpm') {
-											$fileicon = "<img src='" . vtiger_imageurl('fExeBin.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										} elseif ($ext == 'jpg' || $ext == 'gif' || $ext == 'bmp') {
-											$fileicon = "<img src='" . vtiger_imageurl('fbImageFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										} elseif ($ext == 'txt' || $ext == 'doc' || $ext == 'xls') {
-											$fileicon = "<img src='" . vtiger_imageurl('fbTextFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										} elseif ($ext == 'zip' || $ext == 'gz' || $ext == 'rar') {
-											$fileicon = "<img src='" . vtiger_imageurl('fbZipFile.gif', $theme) . "' hspace='3' align='absmiddle'	border='0'>";
-										} else {
-											$fileicon = "<img src='" . vtiger_imageurl('fbUnknownFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										}
-									}
-								} elseif ($downloadtype == 'E') {
-									if (trim($value) != '') {
-										$fld_value = $value;
-										$fileicon = "<img src='" . vtiger_imageurl('fbLink.gif', $theme) . "' alt='" . getTranslatedString('LBL_EXTERNAL_LNK', $module)
-											."' title='" . getTranslatedString('LBL_EXTERNAL_LNK', $module) . "' hspace='3' align='absmiddle' border='0'>";
-									} else {
-										$fld_value = '--';
-										$fileicon = '';
-									}
-								} else {
-									$fld_value = ' --';
-									$fileicon = '';
+								$fld_value = $value;
+								$fileicon = FileField::getFileIcon($value, $downloadtype, $module);
+								if ($fileicon=='') {
+									$fld_value = '--';
 								}
 
 								$file_name = $adb->query_result($list_result, $i, 'filename');
@@ -736,27 +698,13 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							if ($fieldname == 'filesize') {
 								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
 								if ($downloadtype == 'I') {
-									$filesize = $value;
-									if ($filesize < 1024) {
-										$value = $filesize . ' B';
-									} elseif ($filesize > 1024 && $filesize < 1048576) {
-										$value = round($filesize / 1024, 2) . ' KB';
-									} elseif ($filesize > 1048576) {
-										$value = round($filesize / (1024 * 1024), 2) . ' MB';
-									}
+									$value = FileField::getFileSizeDisplayValue($value);
 								} else {
 									$value = ' --';
 								}
 							}
 							if ($fieldname == 'filestatus') {
-								$filestatus = $value;
-								if ($filestatus == 1) {
-									$value = getTranslatedString('yes', $module);
-								} elseif ($filestatus == 0) {
-									$value = getTranslatedString('no', $module);
-								} else {
-									$value = ' --';
-								}
+								$value = BooleanField::getBooleanDisplayValue($value, $module);
 							}
 							if ($fieldname == 'filetype') {
 								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
@@ -802,7 +750,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 								$account_name = getAccountName($account_id);
 							}
 							$acc_name = textlength_check($account_name);
-							$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $account_id . '&parenttab=' . $tabname . '">' . htmlspecialchars($acc_name, ENT_QUOTES, $default_charset) . '</a>';
+							$value = '<a href="index.php?module=Accounts&action=DetailView&record='.$account_id.'">'.htmlspecialchars($acc_name, ENT_QUOTES, $default_charset).'</a>';
 						} elseif (($module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
 							if ($module == 'HelpDesk' || $module == 'Faq') {
 								$product_id = $adb->query_result($list_result, $i, 'product_id');
@@ -911,12 +859,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			}
 
 			// Record Change Notification
-			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module)) {
-				if (!$focus->isViewed($entity_id)) {
-					$links_info .= " | <img src='" . vtiger_imageurl('important1.gif', $theme) . "' border=0>";
-				}
+			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module) && !$focus->isViewed($entity_id)) {
+				$links_info .= " | <img src='" . vtiger_imageurl('important1.gif', $theme) . "' border=0>";
 			}
-			// END
 			if ($links_info != '' && !$skipActions) {
 				$list_header[] = $links_info;
 			}
@@ -924,7 +869,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			$list_block[$entity_id] = $list_header;
 		}
 	}
-	if (count($totals) > 0 && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
+	if (!empty($totals) && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
 		$trow = array();
 		foreach ($focus->list_fields as $name => $tableinfo) {
 			$field_name = $focus->list_fields_name[$name];
@@ -942,12 +887,12 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	return $list_block;
 }
 
-/* * This function generates the List view entries in a popup list view
- * Param $focus - module object
- * Param $module
- * Param $list_result - resultset of a listview query
- * Param $navigation_array - navigation values in an array
- * Returns an array type
+/** This function generates the List view entries in a popup list view
+ * @param object module object
+ * @param string module name
+ * @param object resultset of a listview query
+ * @param array navigation values in an array
+ * @return array with user display values of search results
  */
 function getSearchListViewEntries($focus, $module, $list_result, $navigation_array) {
 	global $log, $adb, $app_strings, $current_user;
@@ -958,7 +903,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	$list_header = '';
 	$list_block = array();
 
-	//getting the vtiger_fieldtable entries from database
+	//getting the field table entries from database
 	$tabid = getTabid($module);
 	$userprivs = $current_user->getPrivileges();
 
@@ -1051,29 +996,22 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 
 				if ($hasGlobalReadPermission || in_array($fieldname, $field) || $module == 'Users') {
 					if ($fieldname == '') {
-						//$table_name = '';
 						$column_name = '';
 						foreach ($tableinfo as $colname) {
-							//$table_name = $tablename;
 							$column_name = $colname;
 						}
 						$value = $adb->query_result($list_result, $i, $column_name);
 					} else {
-						if (($module == 'Calls' || $module == 'Tasks' || $module == 'Meetings' || $module == 'Emails') && (($name == 'Related to') || ($name == 'Contact Name') || ($name == 'Vendor Name'))) {
-							if ($name == 'Related to') {
-								$value = getRelatedTo($module, $list_result, $i);
+						if ($module == 'Emails' && $name == 'Contact Name') {
+							$contact_id = $adb->query_result($list_result, $i, 'contactid');
+							$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
+							$value = '';
+							if (($contact_name != '') && ($contact_id != 'NULL')) {
+								$value = "<a href='index.php?module=Contacts&action=DetailView&record=" . $contact_id . "'>" . $contact_name . '</a>';
 							}
-							if ($name == 'Contact Name') {
-								$contact_id = $adb->query_result($list_result, $i, 'contactid');
-								$contact_name = getFullNameFromQResult($list_result, $i, 'Contacts');
-								$value = '';
-								if (($contact_name != '') && ($contact_id != 'NULL')) {
-									$value = "<a href='index.php?module=Contacts&action=DetailView&record=" . $contact_id . "'>" . $contact_name . '</a>';
-								}
-							}
-						} elseif (($module == 'Faq' || $module == 'Documents') && $name == 'Related to') {
-							$value = getRelatedToEntity($module, $list_result, $i);
-						} elseif ($name == 'Account Name' && ($module == 'Potentials' || $module == 'SalesOrder' || $module == 'Quotes' || $module == 'Invoice')) {
+						} elseif (($module == 'Faq' || $module == 'Documents' || $module == 'Emails') && $name == 'Related to') {
+							$value = getRelatedTo($module, $list_result, $i);
+						} elseif ($name=='Account Name' && ($module=='Potentials' || $module=='SalesOrder' || $module=='Quotes' || $module=='Invoice' || $module=='Contacts')) {
 							$account_id = $adb->query_result($list_result, $i, 'accountid');
 							$account_name = getAccountName($account_id);
 							$value = textlength_check($account_name);
@@ -1081,10 +1019,6 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 							$quote_id = $adb->query_result($list_result, $i, 'quoteid');
 							$quotename = getQuoteName($quote_id);
 							$value = textlength_check($quotename);
-						} elseif ($name == 'Account Name' && $module == 'Contacts') {
-							$account_id = $adb->query_result($list_result, $i, 'accountid');
-							$account_name = getAccountName($account_id);
-							$value = textlength_check($account_name);
 						} elseif (isset($focus->popup_fields) && in_array($fieldname, $focus->popup_fields)) {
 							// vtlib customization: Generic popup handling
 							global $default_charset;
@@ -1147,7 +1081,6 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 					array($entity_id)
 				);
 				for ($k = 0; $k < $adb->num_rows($sub_prod_query); $k++) {
-					//$sub_prod=array();
 					$id = $adb->query_result($sub_prod_query, $k, 'productid');
 					$str_sep = '';
 					if ($k > 0) {
@@ -1239,7 +1172,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	global $log, $app_strings, $current_language, $currentModule, $adb, $current_user, $default_charset;
 	$log->debug('> getValue', [$field_result, 'list_result', $fieldname, 'focus', $module, $entity_id, $list_result_count, $mode, $popuptype]);
 
-	$tabid = getTabid($module);
 	return_module_language($current_language, $module);
 	$uicolarr = isset($field_result[$fieldname]) ? $field_result[$fieldname] : array('1'=>$fieldname);
 	foreach ($uicolarr as $key => $value) {
@@ -1261,9 +1193,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 			$displayValueArray = getEntityName($parent_module, $parent_id);
 			if (!empty($displayValueArray)) {
-				foreach ($displayValueArray as $key => $value) {
-					$value = $value;
-				}
+				$value = $displayValueArray[$parent_id];
 			}
 			$value = "<a href='index.php?module=$parent_module&action=DetailView&record=$parent_id' title='$valueTitle'>" . textlength_check($value) . '</a>';
 		} else {
@@ -1272,7 +1202,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	} elseif ($uitype == '1025') {
 		$parent_id = $field_valEncoded;
 		if (!empty($parent_id)) {
-			$values=explode(' |##| ', $parent_id);
+			$values=explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $parent_id);
 			$numvals = count($values);
 			for ($fvalues=0; $fvalues < $numvals; $fvalues++) {
 				$srchmod =  getSalesEntityType($values[$fvalues]);
@@ -1396,8 +1326,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		}
 	} elseif ($uitype == 13 && (!empty($_REQUEST['action']) && $_REQUEST['action'] != 'Popup' && (empty($_REQUEST['file']) || $_REQUEST['file'] != 'Popup'))) {
 		if (isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] == 1) {
-			$tabid = getTabid($module);
-			$fieldid = getFieldid($tabid, $fieldname);
+			$fieldid = getFieldid(getTabid($module), $fieldname);
 			if (empty($popuptype)) {
 				$value = '<a href="javascript:InternalMailer(' . $entity_id . ',' . $fieldid . ',\'' . $fieldname . '\',\'' . $module . '\',\'record_id\');">' . textlength_check($field_valEncoded) . '</a>';
 			} else {
@@ -1420,11 +1349,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$value = '<a href = "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&return_module=' . $module
 			.'&fileid=' . $attachmentid . '&filename=' . $field_valEncoded . '">' . textlength_check($field_valEncoded) . '</a>';
 	} elseif ($uitype == 98) {
-		$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$field_val.'">'.textlength_check(getRoleName($field_valEncoded)).'</a>';
+		$value = '<a href="index.php?action=RoleDetailView&module=Settings&roleid='.$field_val.'">'.textlength_check(getRoleName($field_valEncoded)).'</a>';
 	} elseif ($uitype == 33) {
-		$value = ($field_valEncoded != '') ? str_ireplace(' |##| ', ', ', $field_valEncoded) : '';
+		$value = ($field_valEncoded != '') ? str_ireplace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $field_valEncoded) : '';
 		if (!is_admin($current_user) && $value != '') {
-			$value = ($field_val != '') ? str_ireplace(' |##| ', ', ', $field_val) : '';
+			$value = ($field_val != '') ? str_ireplace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $field_val) : '';
 			if ($value != '') {
 				$value_arr = explode(',', trim($value));
 				$roleid = $current_user->roleid;
@@ -1436,7 +1365,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$roleids = $roleid;
 				}
 
-				if (count($roleids) > 0) {
+				if (!empty($roleids)) {
 					$pick_query = "select distinct $fieldname
 						from vtiger_$fieldname
 						inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid
@@ -1460,7 +1389,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					if (!in_array($val, $picklistarr)) {
 						continue;
 					}
-					if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $string_temp)) > $listview_max_textlength)) {
+					if (!$listview_max_textlength || strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $string_temp)) <= $listview_max_textlength) {
 						if ($str_c != 0) {
 							$string_temp .= ' , ';
 						}
@@ -1522,9 +1451,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						//ADDED TO CHECK THE FIELD PERMISSIONS FOR
 						$xyz = array('mailingstreet', 'mailingcity', 'mailingzip', 'mailingpobox', 'mailingcountry', 'mailingstate', 'otherstreet', 'othercity', 'otherzip', 'otherpobox', 'othercountry', 'otherstate');
 						for ($i = 0; $i < 12; $i++) {
-							if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) == '0') {
-								$cntct_focus->column_fields[$xyz[$i]] = $cntct_focus->column_fields[$xyz[$i]];
-							} else {
+							if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) != '0') {
 								$cntct_focus->column_fields[$xyz[$i]] = '';
 							}
 						}
@@ -1606,7 +1533,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						array($entity_id)
 					);
 					for ($i = 0; $i < $adb->num_rows($sub_prod_query); $i++) {
-						//$sub_prod=array();
 						$id = $adb->query_result($sub_prod_query, $i, 'productid');
 						$str_sep = '';
 						if ($i > 0) {
@@ -1627,7 +1553,17 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_desc = decode_html(htmlspecialchars($description, ENT_QUOTES, $default_charset));
 
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
-					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det", 'dto'=>$dtopdo);
+					$tmp_arr = array(
+						'entityid' => $entity_id,
+						'prodname' => stripslashes(decode_html(nl2br($slashes_temp_val))),
+						'unitprice' => $unitprice,
+						'qtyinstk' => $qty_stock,
+						'taxstring' => $tax_str,
+						'rowid' => $row_id,
+						'desc' => $slashes_desc,
+						'subprod_ids' => $sub_det,
+						'dto' => $dtopdo
+					);
 					$prod_arr = json_encode($tmp_arr);
 					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '",'.$dtopdo.');\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($field_valEncoded) . '</a>';
 				} elseif ($popuptype == 'inventory_prod_po') {
@@ -1660,7 +1596,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						array($entity_id)
 					);
 					for ($i = 0; $i < $adb->num_rows($sub_prod_query); $i++) {
-						//$sub_prod=array();
 						$id = $adb->query_result($sub_prod_query, $i, 'productid');
 						$str_sep = '';
 						if ($i > 0) {
@@ -1680,7 +1615,16 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_desc = decode_html(htmlspecialchars($description, ENT_QUOTES, $default_charset));
 
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
-					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "0", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
+					$tmp_arr = array(
+						'entityid' => $entity_id,
+						'prodname' => stripslashes(decode_html(nl2br($slashes_temp_val))),
+						'unitprice' => $unitprice,
+						'qtyinstk' => '0',
+						'taxstring' => $tax_str,
+						'rowid' => $row_id,
+						'desc' => $slashes_desc,
+						'subprod_ids' => $sub_det
+					);
 					$prod_arr = json_encode($tmp_arr);
 					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory_po("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '"); \' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($field_valEncoded) . '</a>';
 				} elseif ($popuptype == 'inventory_service') {
@@ -1720,10 +1664,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$tmp_arr = array(
 						'entityid' => $entity_id,
 						'prodname' => stripslashes(decode_html(nl2br($slashes_temp_val))),
-						'unitprice' => "$unitprice",
-						'taxstring' => "$tax_str",
-						'rowid' => "$row_id",
-						'desc' => "$slashes_desc",
+						'unitprice' => $unitprice,
+						'taxstring' => $tax_str,
+						'rowid' => $row_id,
+						'desc' => $slashes_desc,
 						'dto' => $dtopdo
 					);
 					$prod_arr = json_encode($tmp_arr);
@@ -1745,9 +1689,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 					$xyz = array('bill_street', 'bill_city', 'bill_code', 'bill_pobox', 'bill_country', 'bill_state', 'ship_street', 'ship_city', 'ship_code', 'ship_pobox', 'ship_country', 'ship_state');
 					for ($i = 0; $i < 12; $i++) {
-						if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) == '0') {
-							$acct_focus->column_fields[$xyz[$i]] = $acct_focus->column_fields[$xyz[$i]];
-						} else {
+						if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) != '0') {
 							$acct_focus->column_fields[$xyz[$i]] = '';
 						}
 					}
@@ -1814,9 +1756,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 						$xyz = array('bill_street', 'bill_city', 'bill_code', 'bill_pobox', 'bill_country', 'bill_state', 'ship_street', 'ship_city', 'ship_code', 'ship_pobox', 'ship_country', 'ship_state');
 						for ($i = 0; $i < 12; $i++) {
-							if (getFieldVisibilityPermission('Accounts', $current_user->id, $xyz[$i]) == '0') {
-								$acct_focus->column_fields[$xyz[$i]] = $acct_focus->column_fields[$xyz[$i]];
-							} else {
+							if (getFieldVisibilityPermission('Accounts', $current_user->id, $xyz[$i]) != '0') {
 								$acct_focus->column_fields[$xyz[$i]] = '';
 							}
 						}
@@ -2031,9 +1971,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$count = counterValue();
 					$value = '<a href="javascript:window.close();" onclick=\'set_return_specific_campaign("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($field_valEncoded) . '</a>';
 				} else {
-					if ($colname == 'lastname') {
-						$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
-					} elseif ($module == 'Users' && $fieldname == 'last_name') {
+					if ($colname == 'lastname' || ($module == 'Users' && $fieldname == 'last_name')) {
 						$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
 					}
 					$slashes_temp_val = popup_from_html($field_valEncoded);
@@ -2052,7 +1990,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'" id='.$count.'>'.textlength_check($field_valEncoded).'</a>';
 				} elseif ($module == 'Emails') {
 					$value = $field_valHTML;
-				} elseif (($module == 'Users' && $colname == 'last_name')) {
+				} elseif ($module == 'Users' && $colname == 'last_name') {
 					$field_valEncoded = getFullNameFromQResult($list_result, $list_result_count, $module);
 					$value = '<a href="index.php?action=DetailView&module='.$module.'&record='.$entity_id.'">'.textlength_check($field_valEncoded).'</a>';
 				} else {
@@ -2112,9 +2050,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 }
 
 /** Function to get the list query for a module
- * @param $module -- module name:: Type string
- * @param $where -- where:: Type string
- * @returns $query -- query:: Type query
+ * @param string module name
+ * @param string where
+ * @return string SQL query
  */
 function getListQuery($module, $where = '') {
 	global $log, $current_user;
@@ -2172,7 +2110,7 @@ function getListQuery($module, $where = '') {
 				LEFT JOIN vtiger_vendor ON vtiger_vendor.vendorid = vtiger_products.vendor_id
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid';
-			if ((isset($_REQUEST['from_dashboard']) && $_REQUEST['from_dashboard'] == true) && (isset($_REQUEST['type']) && $_REQUEST['type'] == 'dbrd')) {
+			if ((isset($_REQUEST['from_dashboard']) && $_REQUEST['from_dashboard']) && (isset($_REQUEST['type']) && $_REQUEST['type'] == 'dbrd')) {
 				$query .= ' INNER JOIN vtiger_inventoryproductrel on vtiger_inventoryproductrel.productid = vtiger_products.productid';
 			}
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
@@ -2202,7 +2140,7 @@ function getListQuery($module, $where = '') {
 				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_contactdetails vtiger_contactdetails2 ON vtiger_contactdetails.reportsto = vtiger_contactdetails2.contactid
 				LEFT JOIN vtiger_customerdetails ON vtiger_customerdetails.customerid = vtiger_contactdetails.contactid';
-			if ((isset($_REQUEST['from_dashboard']) && $_REQUEST['from_dashboard'] == true) && (isset($_REQUEST['type']) && $_REQUEST['type'] == 'dbrd')) {
+			if ((isset($_REQUEST['from_dashboard']) && $_REQUEST['from_dashboard']) && (isset($_REQUEST['type']) && $_REQUEST['type'] == 'dbrd')) {
 				$query .= ' INNER JOIN vtiger_campaigncontrel on vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid';
 			}
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
@@ -2506,77 +2444,69 @@ function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popupt
 	return $list;
 }
 
-/* * Function to get parent name for a given parent id
- * Param $module - module name
- * Param $list_result- result set
- * Param $rset - result set index
- * Returns an string value
+/** Function to get the related record entity name for a given CRMID
+ * @param string module name
+ * @param object result set
+ * @param integer result set index
+ * @return string user display value of "related to" record
+ * @deprecated use getRelatedTo
  */
 function getRelatedToEntity($module, $list_result, $rset) {
 	return getRelatedTo($module, $list_result, $rset);
 }
 
-/* * Function to get parent name for a given parent id
- * Param $module - module name
- * Param $list_result- result set
- * Param $rset - result set index
- * Returns an string value
+/** Function to get the related record entity name for a given CRMID
+ * @param string module name
+ * @param object result set
+ * @param integer result set index
+ * @return string user display value of "related to" record
  */
-//used in home page listTop files
 function getRelatedTo($module, $list_result, $rset) {
 	global $adb, $log, $app_strings;
-	$mod = CRMEntity::getInstance($module);
-	$crmTable = $mod->crmentityTable;
 	if ($module == 'Documents') {
 		$notesid = $adb->query_result($list_result, $rset, 'notesid');
 		$evt_query = 'SELECT vtiger_senotesrel.crmid, vtiger_crmentity.setype
 			FROM vtiger_senotesrel
 			INNER JOIN vtiger_crmentity ON vtiger_senotesrel.crmid = vtiger_crmentity.crmid
-			WHERE vtiger_senotesrel.notesid = ?';
+			WHERE vtiger_senotesrel.notesid=?';
 		$params = array($notesid);
 	} elseif ($module == 'Products') {
 		$productid = $adb->query_result($list_result, $rset, 'productid');
-		$evt_query = 'SELECT vtiger_seproductsrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_seproductsrel.crmid, vtiger_crmobject.setype
 			FROM vtiger_seproductsrel
-			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_seproductsrel.crmid = vtiger_crmentity.crmid
-			WHERE vtiger_seproductsrel.productid =?';
+			INNER JOIN vtiger_crmobject ON vtiger_seproductsrel.crmid=vtiger_crmobject.crmid
+			WHERE vtiger_seproductsrel.productid=?';
 		$params = array($productid);
-	} else {
+	} elseif ($module == 'HelpDesk') {
+		$activity_id = $adb->query_result($list_result, $rset, 'parent_id');
+		$evt_query = 'SELECT crmid, setype FROM vtiger_crmobject WHERE crmid=?';
+		$params = array($activity_id);
+	} else { // calendar and emails
 		$activity_id = $adb->query_result($list_result, $rset, 'activityid');
-		$evt_query = 'SELECT vtiger_seactivityrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_seactivityrel.crmid, vtiger_crmobject.setype
 			FROM vtiger_seactivityrel
-			INNER JOIN '.$crmTable.' as vtiger_crmentity ON vtiger_seactivityrel.crmid = vtiger_crmentity.crmid
+			INNER JOIN vtiger_crmobject ON vtiger_seactivityrel.crmid=vtiger_crmobject.crmid
 			WHERE vtiger_seactivityrel.activityid=?';
 		$params = array($activity_id);
-
-		if ($module == 'HelpDesk') {
-			$activity_id = $adb->query_result($list_result, $rset, 'parent_id');
-			if ($activity_id != '') {
-				$evt_query = 'SELECT crmid, setype FROM '.$crmTable.' WHERE crmid=?';
-				$params = array($activity_id);
-			}
-		}
 	}
 	// change the related to in emails to multiple if email is related with more than one contact
 	$evt_result = $adb->pquery($evt_query, $params);
 	$numrows = $adb->num_rows($evt_result);
-
 	$parent_module = $adb->query_result($evt_result, 0, 'setype');
 	$parent_id = $adb->query_result($evt_result, 0, 'crmid');
 	$parent_name = '';
+	$parent_value = '';
 	if ($numrows > 1) {
 		$parent_module = 'Multiple';
 		$parent_name = $app_strings['LBL_MULTIPLE'];
-	}
-	if ($module == 'HelpDesk' && ($parent_module == 'Accounts' || $parent_module == 'Contacts')) {
-		$module_icon='<img src="themes/images/'.$parent_module.'.gif" alt="'.$app_strings[$parent_module].'" title="'.$app_strings[$parent_module].'" border=0 align=center>';
-	} else {
-		$module_icon = '';
-	}
-
-	if ($parent_module == 'Multiple') {
 		$parent_value = $parent_name;
-	} else {
+	}
+	if ($parent_module != 'Multiple' && !empty($parent_id)) {
+		if ($module == 'HelpDesk' && ($parent_module == 'Accounts' || $parent_module == 'Contacts')) {
+			$module_icon='<img src="themes/images/'.$parent_module.'.gif" alt="'.$app_strings[$parent_module].'" title="'.$app_strings[$parent_module].'" border=0 align=center>';
+		} else {
+			$module_icon = '';
+		}
 		$ename = getEntityName($parent_module, array($parent_id));
 		$parent_name = $ename[$parent_id];
 		$parent_name = textlength_check($parent_name);
@@ -2605,7 +2535,6 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 	} else {
 		$output = '<td align="right" style="padding: 5px;">';
 	}
-	$tabname = getParentTab();
 	$search_tag = isset($_REQUEST['search_tag']) ? $_REQUEST['search_tag'] : '';
 
 	$url_string = '';
@@ -2625,17 +2554,17 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 
 	if (($navigation_array['prev']) != 0) {
 		if ($action_val == 'FindDuplicate') {
-			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($module == 'Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents')) {
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['prev'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} else {
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}
 	} else {
 		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
@@ -2643,13 +2572,13 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 	}
 
 	if ($action_val == 'FindDuplicate') {
-		$jsNavigate = "getDuplicateListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
+		$jsNavigate = "getDuplicateListViewEntries_js('$module','start='+this.value+'$url_string');";
 	} elseif ($action_val == 'UnifiedSearch') {
-		$jsNavigate = "getUnifiedSearchEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
+		$jsNavigate = "getUnifiedSearchEntries_js('$module','start='+this.value+'$url_string');";
 	} elseif ($module == 'Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents')) {
-		$jsNavigate = "getListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string&folderid=$action_val');";
+		$jsNavigate = "getListViewEntries_js('$module','start='+this.value+'$url_string&folderid=$action_val');";
 	} else {
-		$jsNavigate = "getListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
+		$jsNavigate = "getListViewEntries_js('$module','start='+this.value+'$url_string');";
 	}
 	if ($module == 'Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents')) {
 		$url = '&folderid=' . $action_val;
@@ -2665,17 +2594,17 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 
 	if (($navigation_array['next']) != 0) {
 		if ($action_val == "FindDuplicate") {
-			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="themes/images/end.gif" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="themes/images/end.gif" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($module == 'Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents')) {
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['next'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['verylast'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} else {
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}
 	} else {
 		$output .= '<img src="' . vtiger_imageurl('next_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
@@ -2684,7 +2613,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 	$output .= '</td>';
 	$log->debug('< getTableHeaderNavigation');
 	if ($navigation_array['first'] == '') {
-		return;
+		return '';
 	} else {
 		return $output;
 	}
@@ -2734,9 +2663,9 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 			}
 		} elseif ($relmodule == 'Vendors') {
 			$mod = CRMEntity::getInstance('Contacts');
-			$vcquery = "SELECT vtiger_contactdetails.contactid
+			$vcquery = 'SELECT vtiger_contactdetails.contactid
 				from vtiger_contactdetails
-				inner join ".$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+				inner join '.$mod->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 				inner join vtiger_vendorcontactrel on vtiger_vendorcontactrel.contactid=vtiger_contactdetails.contactid
 				where vtiger_crmentity.deleted=0 and vtiger_vendorcontactrel.vendorid = $relmod_recordid";
 			$condition = "and vtiger_contactdetails.contactid in ($vcquery)";
@@ -2769,7 +2698,6 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 			$result = $adb->pquery($query, array($relmod_recordid));
 			$rows = $adb->num_rows($result);
 			if ($rows != 0) {
-				$j = 0;
 				$contactid_comma = '(';
 				for ($k = 0; $k < $rows; $k++) {
 					$contactid = $adb->query_result($result, $k, 'contactid');
@@ -2788,7 +2716,6 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 			$result = $adb->pquery($query, array($relmod_recordid, 'Contacts'));
 			$rows = $adb->num_rows($result);
 			if ($rows != 0) {
-				$j = 0;
 				$contactid_comma = '(';
 				for ($k = 0; $k < $rows; $k++) {
 					$contactid = $adb->query_result($result, $k, 'crmid');
@@ -2832,11 +2759,10 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 					inner join '.$mod->crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
 					where vtiger_crmentity.deleted=0 and vtiger_potential.related_to=?';
 			}
-			$pot_result = $result = $adb->pquery($pot_query, array($relmod_recordid));
+			$pot_result = $adb->pquery($pot_query, array($relmod_recordid));
 			$rows = $adb->num_rows($pot_result);
 			$potids_comma = '';
 			if ($rows != 0) {
-				$j = 0;
 				$potids_comma .= '(';
 				for ($k = 0; $k < $rows; $k++) {
 					$potential_ids = $adb->query_result($pot_result, $k, 'potentialid');
@@ -2853,8 +2779,7 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 		}
 	} elseif ($current_module == 'Products') {
 		if ($relmodule == 'Accounts') {
-			$pro_query = "select productid from vtiger_seproductsrel where setype='Accounts' and crmid=?";
-			$pro_result = $result = $adb->pquery($pro_query, array($relmod_recordid));
+			$pro_result = $adb->pquery("select productid from vtiger_seproductsrel where setype='Accounts' and crmid=?", array($relmod_recordid));
 			$rows = $adb->num_rows($pro_result);
 			if ($rows != 0) {
 				$proids_comma = '(';
@@ -2876,11 +2801,9 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 		}
 	} elseif ($current_module == 'Quotes') {
 		if ($relmodule == 'Accounts') {
-			$quote_query = 'select quoteid from vtiger_quotes where accountid=?';
-			$quote_result = $result = $adb->pquery($quote_query, array($relmod_recordid));
+			$quote_result = $adb->pquery('select quoteid from vtiger_quotes where accountid=?', array($relmod_recordid));
 			$rows = $adb->num_rows($quote_result);
 			if ($rows != 0) {
-				$j = 0;
 				$qtids_comma = '(';
 				for ($k = 0; $k < $rows; $k++) {
 					$quote_ids = $adb->query_result($quote_result, $k, 'quoteid');
@@ -2897,8 +2820,7 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 		}
 	} elseif ($current_module == 'SalesOrder') {
 		if ($relmodule == 'Accounts') {
-			$SO_query = 'select salesorderid from vtiger_salesorder where accountid=?';
-			$SO_result = $result = $adb->pquery($SO_query, array($relmod_recordid));
+			$SO_result = $adb->pquery('select salesorderid from vtiger_salesorder where accountid=?', array($relmod_recordid));
 			$rows = $adb->num_rows($SO_result);
 			if ($rows != 0) {
 				$SOids_comma = '(';
@@ -3070,10 +2992,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = '') {
 	global $currentModule;
 	$start = '';
-	if ($noofrows >= 1) {
-		$lv_array['start'] = 1;
-		$start = 1;
-	} elseif ($related != '' && $noofrows == 0) {
+	if ($noofrows >= 1 || ($noofrows == 0 && $related != '')) {
 		$lv_array['start'] = 1;
 		$start = 1;
 	} else {
@@ -3132,17 +3051,14 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 		}
 	}
 	if (empty($relatedListResult)) {
-		return;
+		return '';
 	}
 	$relatedListRow = $adb->fetch_row($relatedListResult);
 	$header = $relatedListRow['label'];
 	$actions = $relatedListRow['actions'];
-	$functionName = $relatedListRow['name'];
 
-	$urldata = "module=$module&action={$module}Ajax&file=DetailViewAjax&record={$recordid}&" .
-			"ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$relatedListRow['relation_id']}" .
-			"&actions={$actions}&{$url_qry}";
-	// $formattedHeader = str_replace(' ', '', $related_module);
+	$urldata = "module=$module&action={$module}Ajax&file=DetailViewAjax&record={$recordid}&"
+		."ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$relatedListRow['relation_id']}&actions={$actions}&{$url_qry}";
 	$formattedHeader = str_replace(' ', '', $header);
 	$target = 'tbl_' . $module . '_' . $formattedHeader;
 	$imagesuffix = $module . '_' . $formattedHeader;
@@ -3162,7 +3078,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 		onkeypress=\"$jsHandler\">";
 	$output .= "<span name='listViewCountContainerName' class='small' style='white-space: nowrap;'>";
 	$computeCount = isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : '';
-	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $module) || ((boolean) $computeCount) == true) {
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $module) || (boolean)$computeCount) {
 		$output .= $app_strings['LBL_LIST_OF'] . ' ' . $navigation_array['verylast'];
 	} else {
 		$output .= "<img src='" . vtiger_imageurl('windowRefresh.gif', $theme) . "' alt='" . $app_strings['LBL_HOME_COUNT'] . "'
@@ -3183,7 +3099,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 	$output .= '</td>';
 	$log->debug('< getRelatedTableHeaderNavigation');
 	if ($navigation_array['first'] == '') {
-		return;
+		return '';
 	} else {
 		return $output;
 	}
@@ -3192,7 +3108,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 /** 	Function to get the Edit link details for ListView and RelatedListView
  * 	@param string 	$module 	- module name
  * 	@param int 	$entity_id 	- record id
- * 	@param string 	$relatedlist 	- string "relatedlist" or may be empty. if empty means ListView else relatedlist
+ * 	@param string 	$relatedlist 	- string 'relatedlist' or may be empty. if empty means ListView else relatedlist
  * 	@param string 	$returnset 	- may be empty in case of ListView.
  * 		For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
  * 	return string	$edit_link	- url string which contains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=EditView&record=10
@@ -3223,7 +3139,7 @@ function getListViewEditLink($module, $entity_id, $relatedlist, $returnset) {
 /** Function to get the Del link details for ListView and RelatedListView
  * 	@param string 	$module 	- module name
  * 	@param int 	$entity_id 	- record id
- * 	@param string 	$relatedlist 	- string "relatedlist" or may be empty. if empty means ListView else relatedlist
+ * 	@param string 	$relatedlist 	- string 'relatedlist' or may be empty. if empty means ListView else relatedlist
  * 	@param string 	$returnset 	- may be empty in case of ListView
  * 		For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
  * 	return string	$del_link	- url string which cotains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=Delete&record=10
@@ -3283,7 +3199,7 @@ function getEntityId($module, $entityName, $searchonfield = '') {
 	}
 	$tablename = $adb->query_result($result, 0, 'tablename');
 	$entityidfield = $adb->query_result($result, 0, 'entityidfield');
-	if (!(strpos($fieldsname, ',') === false)) {
+	if (strpos($fieldsname, ',')) {
 		$fieldlists = explode(',', $fieldsname);
 		$fieldsname = 'trim(concat(';  // Add trim function to weed-out extra character values
 		$fieldsname = $fieldsname . implode(",' ',", $fieldlists);
@@ -3336,8 +3252,8 @@ function getParentId($parent_name) {
 	$num_rows = 0;
 	$mod = CRMEntity::getInstance($parent_module);
 	if ($parent_module == 'Contacts') {
-		$query = "select crmid
-			from vtiger_contactdetails, ".$mod->crmentityTable." as vtiger_crmentity
+		$query = 'select crmid
+			from vtiger_contactdetails, '.$mod->crmentityTable." as vtiger_crmentity
 			WHERE concat(lastname,' ',firstname)=? and vtiger_crmentity.crmid =vtiger_contactdetails.contactid and vtiger_crmentity.deleted=0";
 		$result = $adb->pquery($query, array($parent_name));
 		$num_rows = $adb->num_rows($result);
@@ -3388,7 +3304,7 @@ function getMergeFields($module, $str) {
 	$tabid = getTabid($module);
 	if ($str == 'available_fields') {
 		$result = getFieldsResultForMerge($tabid);
-	} else { //if($str == fields_to_merge)
+	} else { // $str == fields_to_merge
 		$result = $adb->pquery('select fieldid from vtiger_user2mergefields where tabid=? and userid=? and visible=1', array($tabid, $current_user->id));
 	}
 
@@ -3406,12 +3322,10 @@ function getMergeFields($module, $str) {
 	while ($row = $adb->getNextRow($result, false)) {
 		$field_id = $row['fieldid'];
 		foreach ($permitted_list as $field => $data) {
-			if ($data[4] == $field_id && $data[1] == 0) {
-				if ($is_admin || (in_array($field_id, $permitted_org_list))) {
-					$field = '<option value="' . $field_id . '">' . getTranslatedString($data[0], $module) . '</option>';
-					$fields.=$field;
-					break;
-				}
+			if ($data[4] == $field_id && $data[1] == 0 && ($is_admin || in_array($field_id, $permitted_org_list))) {
+				$field = '<option value="' . $field_id . '">' . getTranslatedString($data[0], $module) . '</option>';
+				$fields.=$field;
+				break;
 			}
 		}
 	}
@@ -3498,7 +3412,6 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	} else {
 		$output = '<td align="right" style="padding: 5px;">';
 	}
-	$tabname = getParentTab();
 	$search_tag = isset($_REQUEST['search_tag']) ? $_REQUEST['search_tag'] : '';
 	$url_string = '';
 
@@ -3507,6 +3420,9 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
 		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
+	if (isset($_REQUEST['popuptype']) && $_REQUEST['popuptype'] == 'set_return_emails' && isset($_REQUEST['email_field'])) {
+		$url_string .='&email_field=' . (isset($_REQUEST['email_field']) ? vtlib_purify($_REQUEST['email_field']) : '');
+	}
 	//Get custom paramaters to url_string
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
@@ -3516,31 +3432,31 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	}
 
 	if (($navigation_array['prev']) != 0) {
-		if ($action_val == "FindDuplicate") {
-			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+		if ($action_val == 'FindDuplicate') {
+			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($module == 'Documents') {
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['prev'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} else {
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=1' . $url_string . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}
 	} else {
 		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
-	if ($action_val == "FindDuplicate") {
-		$jsNavigate = "getDuplicateListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
+	if ($action_val == 'FindDuplicate') {
+		$jsNavigate = "getDuplicateListViewEntries_js('$module','start='+this.value+'$url_string');";
 	} elseif ($action_val == 'UnifiedSearch') {
-		$jsNavigate = "getUnifiedSearchEntries_js('$search_tag','$module','parenttab=$tabname&start='+this.value+'$url_string');";
+		$jsNavigate = "getUnifiedSearchEntries_js('$search_tag','$module','start='+this.value+'$url_string');";
 	} elseif ($module == 'Documents') {
-		$jsNavigate = "getListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string&folderid=$action_val');";
+		$jsNavigate = "getListViewEntries_js('$module','start='+this.value+'$url_string&folderid=$action_val');";
 	} else {
-		$jsNavigate = "getListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
+		$jsNavigate = "getListViewEntries_js('$module','start='+this.value+'$url_string');";
 	}
 	if ($module == 'Documents' && $action_val != 'UnifiedSearch') {
 		$url = '&folderid=' . $action_val;
@@ -3556,7 +3472,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		$output .= $app_strings['LBL_LIST_OF'] . ' ' . $navigation_array['verylast'];
 	} else {
 		$output .= "<img src='" . vtiger_imageurl('windowRefresh.gif', $theme) . "' alt='" . $app_strings['LBL_HOME_COUNT'] . "'
-			onclick='getListViewCount(\"" . $module . "\",this,this.parentNode,\"" . $url . "\")'
+			onclick='getListViewCount(\"" . $module . '",this,this.parentNode,"' . $url . "\")'
 			align='absmiddle' name='" . $module . "_listViewCountRefreshIcon'/>
 			<img name='" . $module . "_listViewCountContainerBusy' src='" . vtiger_imageurl('vtbusy.gif', $theme) . "' style='display: none;'
 			align='absmiddle' alt='" . $app_strings['LBL_LOADING'] . "'>";
@@ -3564,18 +3480,18 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	$output .='</span>';
 
 	if (($navigation_array['next']) != 0) {
-		if ($action_val == "FindDuplicate") {
-			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+		if ($action_val == 'FindDuplicate') {
+			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($action_val == 'UnifiedSearch') {
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="themes/images/end.gif" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\'' . $search_tag . '\',\'' . $module . '\',\'start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="themes/images/end.gif" border="0" align="absmiddle"></a>&nbsp;';
 		} elseif ($module == 'Documents') {
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['next'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['verylast'] . $url_string . '&folderid=' . $action_val . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		} else {
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['next'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_NEXT'] . '" title="' . $app_strings['LNK_LIST_NEXT'] . '"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}
 	} else {
 		$output .= '<img src="' . vtiger_imageurl('next_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
@@ -3583,7 +3499,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	}
 	$output .= '</td>';
 	if ($navigation_array['first'] == '') {
-		return;
+		return '';
 	} else {
 		return $output;
 	}
@@ -3594,8 +3510,7 @@ function getRecordRangeMessage($listResult, $limitStartRecord, $totalRows = '') 
 	$numRows = $adb->num_rows($listResult);
 	$recordListRangeMsg = '';
 	if ($numRows > 0) {
-		$recordListRangeMsg = $app_strings['LBL_SHOWING'] . ' ' . $app_strings['LBL_RECORDS'] .
-				' ' . ($limitStartRecord + 1) . ' - ' . ($limitStartRecord + $numRows);
+		$recordListRangeMsg = $app_strings['LBL_SHOWING'] . ' ' . $app_strings['LBL_RECORDS'] . ' ' . ($limitStartRecord + 1) . ' - ' . ($limitStartRecord + $numRows);
 		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 			$recordListRangeMsg .= ' ' . $app_strings['LBL_LIST_OF'] . " $totalRows";
 		}

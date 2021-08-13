@@ -11,20 +11,22 @@
 class Google_List_View {
 
 	protected $noRecords = false;
+	protected $countRecordsStart = array();
 
 	public function __construct() {
+		$this->countRecordsStart = array('vtiger' => array('update' => 0, 'create' => 0, 'delete' => 0), 'google' => array('update' => 0, 'create' => 0, 'delete' => 0));
 	}
 
 	public function process($request) {
 		switch ($request['operation']) {
 			case 'signin':
-				return $this->signin($request);
+				$this->signin($request);
 				break;
 			case 'sync':
 				return $this->renderSyncUI($request);
 				break;
 			case 'removeSync':
-				return $this->deleteSync($request);
+				$this->deleteSync($request);
 				break;
 			default:
 				$this->renderWidgetUI($request);
@@ -56,11 +58,12 @@ class Google_List_View {
 	}
 
 	public function renderSyncUI($request) {
-		global $theme;
+		global $theme, $mod_strings, $app_strings;
 		$viewer = new vtigerCRM_Smarty();
 		$sourceModule = $request['sourcemodule'];
 		$oauth2 = new Google_Oauth2_Connector($sourceModule);
 		$oauth2->authorize();
+		$records = $this->countRecordsStart;
 		if (!empty($sourceModule)) {
 			try {
 				$records = $this->Contacts();
@@ -79,7 +82,6 @@ class Google_List_View {
 		$viewer->assign('THEME', $theme);
 		$viewer->assign('RECORDS', $records);
 		$viewer->assign('NORECORDS', $this->noRecords);
-		global $mod_strings, $app_strings;
 		$viewer->assign('APP', $app_strings);
 		$viewer->assign('MOD', $mod_strings);
 		$viewer->assign('SOURCEMODULE', 'Contacts');
@@ -125,7 +127,7 @@ class Google_List_View {
 	 * @return array
 	 */
 	public function getSyncRecordsCount($syncRecords) {
-		$countRecords = array('vtiger' => array('update' => 0, 'create' => 0, 'delete' => 0), 'google' => array('update' => 0, 'create' => 0, 'delete' => 0));
+		$countRecords = $this->countRecordsStart;
 		$pushRecord = false;
 		$pullRecord = false;
 		foreach ($syncRecords as $key => $records) {

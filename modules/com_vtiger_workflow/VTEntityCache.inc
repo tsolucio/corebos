@@ -44,7 +44,7 @@ class VTWorkflowEntity {
 	/**
 	 * Get the data from the entity object as an array.
 	 *
-	 * @return An array representation of the module data.
+	 * @return array representation of the module data.
 	 */
 	public function getData() {
 		return $this->data;
@@ -62,7 +62,7 @@ class VTWorkflowEntity {
 	/**
 	 * Get the entity id.
 	 *
-	 * @return The entity id.
+	 * @return integer entity id.
 	 */
 	public function getId() {
 		return $this->data['id'];
@@ -71,7 +71,7 @@ class VTWorkflowEntity {
 	/**
 	 * Get the name of the module represented by the entity data object.
 	 *
-	 * @return The module name.
+	 * @return string module name.
 	 */
 	public function getModuleName() {
 		if ($this->moduleName==null) {
@@ -96,8 +96,12 @@ class VTWorkflowEntity {
 			}
 			$entityCache = new VTEntityCache($current_user);
 			$entityCache->setCache($this->getId(), $this);
-			$info = $ct->render($entityCache, $this->getId());
-			return $info;
+			return $ct->render($entityCache, $this->getId());
+		}
+		if (substr($fieldName, 0, 14)=='previousvalue_') {
+			$entityDelta = new VTEntityDelta();
+			$idParts = vtws_getIdComponents($this->getId());
+			return $entityDelta->getOldEntityValue($this->getModuleName(), $idParts[1], substr($fieldName, 14));
 		}
 		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : null);
 	}

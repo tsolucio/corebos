@@ -110,7 +110,6 @@ class mapactions_Action extends CoreBOS_ActionController {
 			} else {
 				echo '[]';
 			}
-			return;
 		}
 		$module = vtlib_purify($_REQUEST['fieldsmodule']);
 		$log->debug('> getFieldTablesForModule '.$module);
@@ -135,7 +134,6 @@ class mapactions_Action extends CoreBOS_ActionController {
 			} else {
 				echo '[]';
 			}
-			return;
 		}
 		$module = vtlib_purify($_REQUEST['fieldsmodule']);
 		$log->debug('> getFieldTranslationForModule '.$module);

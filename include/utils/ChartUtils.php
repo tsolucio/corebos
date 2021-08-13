@@ -39,7 +39,7 @@ class ChartUtils {
 
 		$restrictedModules = false;
 		foreach ($reportModules as $mod) {
-			if (isPermitted($mod, 'index') != 'yes' || vtlib_isModuleActive($mod) == false) {
+			if (isPermitted($mod, 'index') != 'yes' || !vtlib_isModuleActive($mod)) {
 				if (!is_array($restrictedModules)) {
 					$restrictedModules = array();
 				}
@@ -47,7 +47,7 @@ class ChartUtils {
 			}
 		}
 
-		if (is_array($restrictedModules) && count($restrictedModules) > 0) {
+		if (is_array($restrictedModules) && !empty($restrictedModules)) {
 			$ChartDataArray['error'] = '<h4>'.getTranslatedString('LBL_NO_ACCESS', 'Reports').' - '.implode(',', $restrictedModules).'</h4>';
 			return $ChartDataArray;
 		}
@@ -128,7 +128,7 @@ class ChartUtils {
 						$link_val = 'index.php?module=' . $module . '&query=true&action=index&' . $advanceSearchCondition;
 					} else {
 						$conditions = $oReport->advft_criteria;
-						if (count($conditions)>0) {
+						if (!empty($conditions)) {
 							$conditions[count($conditions)]['condition'] = 'and';
 						}
 						$conditions[count($conditions)+1] = array(  // this array index is important: do not change to push for optimization
@@ -147,7 +147,7 @@ class ChartUtils {
 				}
 			}
 		}
-		if (count($groupByFields) == 0) {
+		if (empty($groupByFields)) {
 			$ChartDataArray['error'] = "<div class='componentName'>".getTranslatedString('LBL_NO_DATA', 'Reports').'</div>';
 		}
 		$ChartDataArray['xaxisData'] = $groupByFields;
@@ -197,7 +197,7 @@ class ChartUtils {
 		} else {
 			$respproperty = 'false';
 		}
-		$sHTML = <<<EOF
+		return <<<EOF
 <canvas id="$html_imagename" style="width:{$width}px;height:{$height}px;margin:auto;padding:10px;"></canvas>
 <script type="text/javascript">
 window.doChart{$html_imagename} = function(charttype) {
@@ -257,7 +257,6 @@ window.doChart{$html_imagename} = function(charttype) {
 doChart{$html_imagename}('{$graph_type}');
 </script>
 EOF;
-		return $sHTML;
 	}
 
 	public static function getChartHTMLwithObject($chartObject, $targetObject, $html_imagename, $width, $height, $left, $right, $top, $bottom) {
@@ -268,7 +267,7 @@ EOF;
 		} else {
 			$czone = 'clickzone[activePoint[0]._index]';
 		}
-		$sHTML = <<<EOF
+		return <<<EOF
 <canvas id="$html_imagename" style="width:{$width}px;height:{$height}px;margin:auto;padding:10px;"></canvas>
 <script type="text/javascript">
 window.doChart{$html_imagename} = function() {
@@ -289,7 +288,6 @@ window.doChart{$html_imagename} = function() {
 doChart{$html_imagename}();
 </script>
 EOF;
-		return $sHTML;
 	}
 
 	public static function convertToArray($values, $translate = false, $withquotes = false) {

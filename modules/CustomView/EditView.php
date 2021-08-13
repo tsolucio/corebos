@@ -22,7 +22,6 @@ $recordid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
 $permit_all = isset($_REQUEST['permitall']) ? vtlib_purify($_REQUEST['permitall']) : 'false';
 
 $smarty->assign('MOD', $mod_strings);
-$smarty->assign('CATEGORY', getParentTab());
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
@@ -175,7 +174,7 @@ function getByModule_ColumnsList($mod, $columnslist, $selected = '') {
 						$check_dup[] = $module.$fieldlabel;
 					}
 				}
-				if (count($advfilter)>0) {
+				if (!empty($advfilter)) {
 					$advfilter_out[$modname.' - '.$label]= $advfilter;
 				}
 			}

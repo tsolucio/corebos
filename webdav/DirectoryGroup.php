@@ -32,16 +32,16 @@ class DirectoryGroup extends Sabre\DAV\Collection {
 
 	public function getModuleFolder() {
 		global $adb;
-		$module = array();
+		$mods = array();
 		$sql = 'SELECT vtiger_tab.tabid,vtiger_tab.name,vtiger_tab.tablabel
 			FROM vtiger_relatedlists
 			LEFT JOIN vtiger_tab ON vtiger_tab.tabid=vtiger_relatedlists.tabid
 			WHERE related_tabid=8 and isentitytype=1';
 		$records = $adb->query($sql);
 		while ($row = $adb->fetch_array($records)) {
-			$module[] = new DirectoryGroup(getTranslatedString($row['tablabel'], $row['name']).' [M-'.$row['tabid'].']');
+			$mods[] = new DirectoryGroup(getTranslatedString($row['tablabel'], $row['name']).' [M-'.$row['tabid'].']');
 		}
-		return $module;
+		return $mods;
 	}
 
 	public function getChildren() {
@@ -59,6 +59,8 @@ class DirectoryGroup extends Sabre\DAV\Collection {
 			case 'M':
 				return $this->getModuleFolders($code[1], isset($code[2]) ? $code[2] : false);
 				break;
+			default:
+				break;
 		}
 	}
 
@@ -67,7 +69,6 @@ class DirectoryGroup extends Sabre\DAV\Collection {
 		$folder = array();
 		$records = $adb->query('select * from vtiger_attachmentsfolder ORDER BY sequence');
 		while ($row = $adb->fetch_array($records)) {
-			//$folder[] = new DirectoryGroup( $row['foldername'].' [D-'.$row['folderid'].']');
 			$folder[] = new DirectoryFolder($row['foldername'], $row['folderid']);
 		}
 		return $folder;
@@ -100,6 +101,8 @@ class DirectoryGroup extends Sabre\DAV\Collection {
 				break;
 			case 'D': // Document overview
 				return new DirectoryGroup($name, $this->module);
+				break;
+			default:
 				break;
 		}
 		if (!empty($this->mode) && $this->mode == 'folder') {

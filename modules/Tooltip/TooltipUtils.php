@@ -92,11 +92,7 @@ function tooltip_exists($fieldid, $related_fieldid) {
 	global $adb;
 	$query = 'select * from vtiger_quickview where fieldid=? and related_fieldid=?';
 	$result = $adb->pquery($query, array ($fieldid,$related_fieldid));
-	if ($adb->num_rows($result) > 0) {
-		return true;
-	} else {
-		return false;
-	}
+	return ($adb->num_rows($result) > 0);
 }
 
 /**
@@ -186,8 +182,7 @@ function getToolTip($text, $format = 'default') {
 		return $tip;
 	}
 	$smarty->assign('TEXT', $text);
-	$tip = $smarty->fetch("modules/Tooltip/$format.tpl");
-	return $tip;
+	return $smarty->fetch("modules/Tooltip/$format.tpl");
 }
 
 /**

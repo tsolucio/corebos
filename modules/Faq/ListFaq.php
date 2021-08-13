@@ -28,7 +28,7 @@ function getMyFaq($maxval, $calCnt) {
 	$sorder = '';
 	$order_by = '';
 	$oCustomView = new CustomView("Faq");
-	if (isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='') {
+	if (!isset($_REQUEST['viewname']) || $_REQUEST['viewname']=='') {
 		if ($oCustomView->setdefaultviewid != "") {
 			$viewid = $oCustomView->setdefaultviewid;
 		} else {

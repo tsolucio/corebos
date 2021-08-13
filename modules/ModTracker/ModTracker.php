@@ -61,7 +61,7 @@ class ModTracker {
 					$seq = $cur_seq + 1;
 				}
 			}
-			$mturl = 'index.php?module=ModTracker&action=BasicSettings&parenttab=Settings&formodule=ModTracker';
+			$mturl = 'index.php?module=ModTracker&action=BasicSettings&formodule=ModTracker';
 			$adb->pquery(
 				'INSERT INTO vtiger_settings_field(fieldid, blockid, name, iconpath, description, linkto, sequence) VALUES (?,?,?,?,?,?,?)',
 				array($fieldid, $blockid, 'ModTracker', 'set-IcoLoginHistory.gif', 'LBL_MODTRACKER_DESCRIPTION', $mturl, $seq)
@@ -227,11 +227,7 @@ class ModTracker {
 	 * @param Integer $tabid
 	 */
 	public static function checkModuleInModTrackerCache($tabid) {
-		if (isset(self::$__cache_modtracker[$tabid])) {
-			return true;
-		} else {
-			return false;
-		}
+		return isset(self::$__cache_modtracker[$tabid]);
 	}
 
 	/**
@@ -258,7 +254,7 @@ class ModTracker {
 		$accessibleModules = $this->getModTrackerEnabledModules();
 
 		if (empty($accessibleModules)) {
-			throw new Exception('Modtracker not enabled for any modules');
+			throw new BadMethodCallException('Modtracker not enabled for any modules');
 		}
 
 		$query = 'SELECT id, module, modifiedtime, vtiger_crmobject.crmid, smownerid, vtiger_modtracker_basic.status
@@ -272,7 +268,7 @@ class ModTracker {
 			$params[] = $entityModule;
 		}
 
-		if ($limit != false) {
+		if ($limit) {
 			$query .=" LIMIT $limit";
 		}
 

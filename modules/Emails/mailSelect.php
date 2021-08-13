@@ -43,7 +43,7 @@ for ($i = 0; $i < $numrows; $i++) {
 }
 $entity_name = '';
 $field_value = array();
-if ($single_record && count($columnlists) > 0) {
+if ($single_record && !empty($columnlists)) {
 	$count = 0;
 	$val_cnt = 0;
 	switch ($pmodule) {
@@ -191,9 +191,7 @@ $smarty->assign('SEARCH_URL', isset($_REQUEST['searchurl']) ? vtlib_purify($_REQ
 $smarty->assign('VIEWID', isset($_REQUEST['viewname']) ? vtlib_purify($_REQUEST['viewname']) : '');
 $smarty->assign('RECORDID', isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : '');
 
-if (($single_record && count($columnlists) > 0)) {
-	$smarty->display('SelectEmail.tpl');
-} elseif (!$single_record && count($columnlists) > 0) {
+if (!empty($columnlists)) {
 	$smarty->display('SelectEmail.tpl');
 } elseif ($val_cnt < 0) {
 	echo 'Mail Ids not permitted';

@@ -15,10 +15,7 @@
  *************************************************************************************************/
 
 if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), '7.5.0') >= 0) {
-	header('Content-Type: text/html; charset=UTF-8');
-	$serverPhpVersion = phpversion();
-	require_once 'phpversionfail.php';
-	die();
+	require_once 'modules/Vtiger/phpversionfail.php';
 }
 
 if (!is_file('config.inc.php')) {
@@ -257,7 +254,7 @@ if (isset($action) && isset($module)) {
 		header('Pragma: no-cache');
 	}
 
-	if (($module == 'Users' || $module == 'Home') && (empty($_REQUEST['parenttab']) || $_REQUEST['parenttab'] != 'Settings')) {
+	if ($module == 'Users' || $module == 'Home') {
 		$skipSecurityCheck=true;
 	}
 
@@ -405,7 +402,6 @@ $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
 	$sitepath = empty($siteURLParts['path']) ? '' : ' path='.$siteURLParts['path'].';';
 	header('Set-Cookie: ck_login_id_vtiger='.$_SESSION['authenticated_user_id'].'; SameSite=Lax; expires=0;'.$sitepath.' domain='.$cookieDomain, false);
-	//setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'], 0, null, $cookieDomain, false, true);
 }
 
 if ($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile') {
@@ -415,17 +411,8 @@ if ($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile') {
 }
 
 //skip headers for popups, deleting, saving, importing and other actions
-if (!$skipHeaders) {
-	if ($use_current_login) {
-		include 'modules/Vtiger/header.php';
-	}
-} else {
-	/*if(($action != 'mytkt_rss') && ($action != 'home_rss') && ($action != $module."Ajax") && ($action != "body") && ($action != 'ActivityAjax')) {
-		require_once 'Smarty_setup.php';
-		$vartpl = new vtigerCRM_Smarty;
-		getBrowserVariables($vartpl);
-		$vartpl->display('BrowserVariables.tpl');
-	}*/
+if (!$skipHeaders && $use_current_login) {
+	include 'modules/Vtiger/header.php';
 }
 
 //logging the security Information
@@ -499,22 +486,20 @@ if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$A
 	&& $action!='ActivityAjax' && empty($_REQUEST['Module_Popup_Edit'])
 ) {
 	// ActivityReminder Customization for callback
-	if (!$skipFooters) {
-		if ($current_user->id!=null && isPermitted('cbCalendar', 'index') == 'yes' && vtlib_isModuleActive('cbCalendar')) {
-			echo "<script type='text/javascript'>if(typeof(ActivityReminderCallback) != 'undefined') ";
-			$cur_time = time();
-			$last_reminder_check_time = (isset($_SESSION['last_reminder_check_time']) ? $_SESSION['last_reminder_check_time'] : 0);
-			$next_reminder_interval = (isset($_SESSION['next_reminder_interval']) ? $_SESSION['next_reminder_interval'] : 0);
-			$reminder_interval_reset = ($last_reminder_check_time + $next_reminder_interval - $cur_time) * 1000;
-			if (isset($_SESSION['last_reminder_check_time']) && $reminder_interval_reset > 0) {
-				echo "window.setTimeout(function(){
-						ActivityReminderCallback(false);
-					},$reminder_interval_reset);";
-			} else {
-				echo 'ActivityReminderCallback(false);';
-			}
-			echo '</script>';
+	if (!$skipFooters && $current_user->id!=null && isPermitted('cbCalendar', 'index') == 'yes' && vtlib_isModuleActive('cbCalendar')) {
+		echo "<script type='text/javascript'>if(typeof(ActivityReminderCallback) != 'undefined') ";
+		$cur_time = time();
+		$last_reminder_check_time = (isset($_SESSION['last_reminder_check_time']) ? $_SESSION['last_reminder_check_time'] : 0);
+		$next_reminder_interval = (isset($_SESSION['next_reminder_interval']) ? $_SESSION['next_reminder_interval'] : 0);
+		$reminder_interval_reset = ($last_reminder_check_time + $next_reminder_interval - $cur_time) * 1000;
+		if (isset($_SESSION['last_reminder_check_time']) && $reminder_interval_reset > 0) {
+			echo "window.setTimeout(function(){
+					ActivityReminderCallback(false);
+				},$reminder_interval_reset);";
+		} else {
+			echo 'ActivityReminderCallback(false);';
 		}
+		echo '</script>';
 	}
 	if (!$skipFooters && $action!='ChangePassword' && $action!='body' && $action!=$Ajx_module.'Ajax' && $action!='Popup' && $action!='ImportStep3' && $action!='ActivityAjax' && $action!='getListOfRecords') {
 		cbEventHandler::do_action('corebos.footer.prefooter');

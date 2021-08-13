@@ -93,18 +93,17 @@ class OperationManager {
 	}
 
 	public function getOperationInput() {
-		$type = strtolower($this->type);
-		switch ($type) {
+		switch (strtolower($this->type)) {
 			case 'get':
 				$input = &$_GET;
-				return $input;
+				break;
 			case 'post':
 				$input = &$_POST;
-				return $input;
+				break;
 			default:
 				$input = &$_REQUEST;
-				return $input;
 		}
+		return $input;
 	}
 
 	public function sanitizeOperation($input) {
@@ -146,9 +145,9 @@ class OperationManager {
 			}
 			if (!$this->preLogin) {
 				$params['user'] = $user;
-				return call_user_func_array($this->handlerMethod, $params);
+				return call_user_func_array($this->handlerMethod, array_values($params));
 			} else {
-				$userDetails = call_user_func_array($this->handlerMethod, $params);
+				$userDetails = call_user_func_array($this->handlerMethod, array_values($params));
 				if (is_array($userDetails)) {
 					return $userDetails;
 				} else {
@@ -158,8 +157,7 @@ class OperationManager {
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
 					$userId = vtws_getId($webserviceObject->getEntityId(), $userDetails->id);
 					$vtigerVersion = vtws_getVtigerVersion();
-					$resp = array('sessionName'=>$this->sessionManager->getSessionId(),'userId'=>$userId,'version'=>$API_VERSION,'vtigerVersion'=>$vtigerVersion);
-					return $resp;
+					return array('sessionName'=>$this->sessionManager->getSessionId(), 'userId'=>$userId, 'version'=>$API_VERSION, 'vtigerVersion'=>$vtigerVersion);
 				}
 			}
 		} catch (WebServiceException $e) {

@@ -41,7 +41,7 @@ require_once 'include/Webservices/RetrieveDocAttachment.php';
  *  limit: a string indicating the limit of records to be returned. this is needed for paging
  *  offset: a string indicating the initial offset for returning values. this is needed for paging
  *  orderby: a syntactically and semantically correct order by directive wihtout the "order by", only the fields and their order (no validation is done)
- *  columns: a a comma separated string of column names that are to be returned. The special value "*" will return all fields.
+ *  columns: a comma separated string of column names that are to be returned. The special value "*" will return all fields.
  *       for example: 'assigned_user_id,id,createdtime,notes_title,filedownloadcount,filelocationtype,filesize'
  *  relationtouse: label of the relation to select when more than one is found, if not given, or not found an exception will be thrown
  *  returnattachments: for Document module will return the file attached if present
@@ -370,7 +370,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 				global $GetRelatedList_ReturnOnlyQuery;
 				$holdValue = $GetRelatedList_ReturnOnlyQuery;
 				$GetRelatedList_ReturnOnlyQuery = true;
-				$relationData = call_user_func_array(array($moduleInstance,$relationInfo['name']), $params);
+				$relationData = call_user_func_array(array($moduleInstance,$relationInfo['name']), array_values($params));
 				if (!isset($relationData['query'])) {
 					throw new WebServiceException(WebServiceErrorCode::$OPERATIONNOTSUPPORTED, 'getRelatedRecords can only be called from Webservice interface');
 				}

@@ -72,8 +72,11 @@ function displayCoords(currObj,obj,mode,curr_row) {ldelim}
 	{rdelim}
 	document.getElementById(obj).style.display = "block";
 {rdelim}
-
+{if empty($moreinfofields)}
+	var moreInfoFields = Array();
+{else}
 	var moreInfoFields = Array({$moreinfofields});
+{/if}
 </script>
 
 <tr><td colspan="4" align="left">
@@ -161,7 +164,7 @@ function displayCoords(currObj,obj,mode,curr_row) {ldelim}
 	<!-- column 1 - delete link - starts -->
 	<td class="crmTableRow small lineOnTop inv-editview__toolscol">
 		{if $row_no neq 1}
-			<img src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" onclick="deleteRow('{$MODULE}',{$row_no},'{$IMAGE_PATH}')" style="cursor:pointer;" title="{'LBL_DELETE'|@getTranslatedString:'Settings'}">
+			<img src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" onclick="deleteRow('{$MODULE}',{$row_no})" style="cursor:pointer;" title="{'LBL_DELETE'|@getTranslatedString:'Settings'}">
 		{/if}<br/><br/>
 		{if $row_no neq 1}
 			&nbsp;<a href="javascript:moveUpDown('UP','{$MODULE}',{$row_no})" title="{'LBL_MOVE'|@getTranslatedString:'Settings'} {'LBL_UP'|@getTranslatedString:'Settings'}"><img src="{'up_layout.gif'|@vtiger_imageurl:$THEME}" border="0"></a>
@@ -387,11 +390,11 @@ function displayCoords(currObj,obj,mode,curr_row) {ldelim}
    <tr>
 	<td colspan="3" class="cblds-p_medium">
 		{if 'Products'|vtlib_isModuleActive}
-		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_PRODUCT}" onclick="fnAddProductRow('{$MODULE}','{$IMAGE_PATH}');" />
+		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_PRODUCT}" onclick="fnAddProductRow('{$MODULE}');" />
 		{/if}
 		{if 'Services'|vtlib_isModuleActive}
 		&nbsp;&nbsp;
-		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_SERVICE}" onclick="fnAddServiceRow('{$MODULE}','{$IMAGE_PATH}');" />
+		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_SERVICE}" onclick="fnAddServiceRow('{$MODULE}');" />
 		{/if}
 	</td>
    </tr>

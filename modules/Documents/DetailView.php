@@ -15,14 +15,13 @@ global $mod_strings, $app_strings, $currentModule, $current_user, $theme;
 
 $focus = CRMEntity::getInstance($currentModule);
 
-if (isset($tool_buttons)==false) {
+if (!isset($tool_buttons)) {
 	$tool_buttons = Button_Check($currentModule);
 }
 $smarty = new vtigerCRM_Smarty();
 
 $record = vtlib_purify($_REQUEST['record']);
 $tabid = getTabid($currentModule);
-$category = getParentTab($currentModule);
 
 if ($record != '') {
 	$focus->id = $record;
@@ -106,7 +105,6 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
 $smarty->assign('ID', $focus->id);

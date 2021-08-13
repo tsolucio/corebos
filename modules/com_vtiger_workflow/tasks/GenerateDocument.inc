@@ -18,16 +18,29 @@
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/evvtgendoc/OpenDocument.php';
+require_once 'modules/Documents/ShareDocLinkWidgetDetailViewBlock.php';
 
 class GenerateDocument extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('gdformat', 'gendoctemplate', 'updateOnChange');
+		return array('gdformat', 'gendoctemplate', 'updateOnChange', 'shareOnCreate');
 	}
 
 	public function doTask(&$entity) {
 		global $adb, $root_directory, $current_language, $default_charset;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
+		$crmEntityTableAlias = CRMEntity::getcrmEntityTableAlias('Documents', false);
+		$relatedDocsSQL = 'SELECT vtiger_senotesrel.notesid
+			FROM vtiger_senotesrel
+			INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
+			WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=?';
+		$relatedDocsSQLNotDeleted = 'SELECT vtiger_senotesrel.notesid
+			FROM vtiger_senotesrel
+			INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
+			INNER JOIN '.$crmEntityTableAlias.' on vtiger_notes.notesid=vtiger_crmentity.crmid
+			WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=? and vtiger_crmentity.deleted=0';
+		$smq = new ShareDocLinkWidgetDetailViewBlock();
 		$this->addGenDocTplColumn();
 		$format = ($this->gdformat==1 ? 'odt' : 'pdf');
 		$record = preg_replace('/[^0-9]/', '', substr($entity->data['id'], strpos($entity->data['id'], 'x')));
@@ -75,23 +88,32 @@ class GenerateDocument extends VTTask {
 			}
 			$docid = OpenDocument::saveAsDocument($record, $module, $format, $mergeTemplateName, ($format=='pdf' ? $fullpdfname : $fullfilename), $name);
 			if ($this->updateOnChange) {
-				$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
-				$adb->pquery(
-					'update '.$crmEntityTable.' set '.$crmEntityTable.'.deleted=1 where '.$crmEntityTable.'.crmid in (
-						SELECT vtiger_senotesrel.notesid
-						FROM vtiger_senotesrel
-						INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
-						WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=?)',
-					array($fileid, $record)
-				);
-				$adb->pquery(
-					'update vtiger_crmobject set vtiger_crmobject.deleted=1 where vtiger_crmobject.crmid in (
-						SELECT vtiger_senotesrel.notesid
-						FROM vtiger_senotesrel
-						INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
-						WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=?)',
-					array($fileid, $record)
-				);
+				$rdocs = $adb->pquery($relatedDocsSQLNotDeleted, array($fileid, $record));
+				if ($rdocs && $adb->num_rows($rdocs)>0) {
+					while ($rdoc = $adb->fetch_array($rdocs)) {
+						if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
+							$smq->createShareLink($rdoc['notesid']);
+						}
+						$smq->swapDocument($rdoc['notesid'], $docid);
+						$skey = $smq->getShareCode($docid);
+					}
+					$adb->pquery(
+						'update '.$crmEntityTable.' set '.$crmEntityTable.'.deleted=1 where '.$crmEntityTable.".crmid in ($relatedDocsSQL)",
+						array($fileid, $record)
+					);
+					$adb->pquery(
+						"update vtiger_crmobject set vtiger_crmobject.deleted=1 where vtiger_crmobject.crmid in ($relatedDocsSQL)",
+						array($fileid, $record)
+					);
+				} else { // creating for the first time
+					$skey = $smq->createShareLink($docid);
+				}
+				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
+				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
+			} elseif ($this->shareOnCreate && !$smq->isShared($docid)) {
+				$skey = $smq->createShareLink($docid);
+				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
+				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
 			}
 			$adb->pquery('update vtiger_notes set gendoctplid=? where notesid=?', array($fileid, $docid));
 		}

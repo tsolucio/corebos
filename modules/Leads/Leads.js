@@ -27,7 +27,7 @@ function verifyConvertLeadData(form) {
 			return false;
 		}
 	}
-	var i=0;
+	var i;
 	if (form.select_account!=null && form.select_account.checked) {
 		for (i=0; i<no_ele; i++) {
 			if ((convertForm[i].getAttribute('module')=='Accounts') && (convertForm[i].getAttribute('record')=='true')) {
@@ -96,7 +96,7 @@ function verifyConvertLeadData(form) {
 }
 
 function togglePotFields(form) {
-	if (form.createpotential.checked == true) {
+	if (form.createpotential.checked) {
 		form.potential_name.disabled = true;
 		form.closedate.disabled = true;
 		form.potential_amount.disabled = true;
@@ -234,9 +234,9 @@ function callConvertLeadDiv(id) {
 			credentials: 'same-origin',
 			body: params
 		}
-	).then(response => response.text().then(response => {
+	).then(response => response.text().then(resptext => {
 		VtigerJS_DialogBox.unblock();
-		ldsModal.show('modalTitle', response, 'medium', "document.getElementById('ConvertLead').action.value='LeadConvertToEntities'; if (verifyConvertLeadData(ConvertLead)) {VtigerJS_DialogBox.block();document.getElementById('ConvertLead').submit();}");
+		ldsModal.show('modalTitle', resptext, 'medium', "document.getElementById('ConvertLead').action.value='LeadConvertToEntities'; if (verifyConvertLeadData(ConvertLead)) {VtigerJS_DialogBox.block();document.getElementById('ConvertLead').submit();}");
 		ldsModal.updateTitle(document.getElementById('convertLeadHeaderTitle').innerHTML);
 		vtlib_executeJavascriptInElement(document.getElementById('ConvertLead'));
 	}));

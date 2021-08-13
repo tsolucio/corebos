@@ -40,34 +40,13 @@ class ModTracker_Field {
 
 		if ($moduleName == 'Documents') {
 			if ($fieldName == 'filesize') {
-				$filesize = $value;
-				if (empty($filesize)) {
+				if (empty($value)) {
 					$value = '--';
-				} elseif ($filesize < 1024) {
-					$value = $filesize . ' B';
-				} elseif ($filesize > 1024 && $filesize < 1048576) {
-					$value = round($filesize / 1024, 2) . ' KB';
-				} elseif ($filesize > 1048576) {
-					$value = round($filesize / (1024 * 1024), 2) . ' MB';
-				}
-			}
-			if ($fieldName == 'filestatus') {
-				if ($value == 1) {
-					$value = getTranslatedString('yes', $moduleName);
-				} elseif ($value == 0) {
-					$value = getTranslatedString('no', $moduleName);
 				} else {
-					$value = '--';
+					$value = FileField::getFileSizeDisplayValue($value);
 				}
-			}
-			if ($fieldName == 'filetype') {
-				if ($value == 1) {
-					$value = getTranslatedString('yes', $moduleName);
-				} elseif ($value == 0) {
-					$value = getTranslatedString('no', $moduleName);
-				} else {
-					$value = '--';
-				}
+			} elseif ($fieldName == 'filestatus' || $fieldName == 'filetype') {
+				$value = BooleanField::getBooleanDisplayValue($value, $moduleName);
 			}
 		}
 
@@ -104,23 +83,21 @@ class ModTracker_Field {
 			}
 		}
 
-		if ($fieldInstance->getFieldDataType() == 'currency') {
-			if ($value != '' && $value != 0) {
-				if ($fieldInstance->getUIType() == 72) {
-					if ($fieldName == 'unit_price') {
-						$currencyId = getProductBaseCurrency($recordId, $moduleName);
-						$cursym_convrate = getCurrencySymbolandCRate($currencyId);
-						$currencySymbol = $cursym_convrate['symbol'];
-					} else {
-						$currencyInfo = getInventoryCurrencyInfo($moduleName, $recordId);
-						$currencySymbol = $currencyInfo['currency_symbol'];
-					}
-					$currencyValue = CurrencyField::convertToUserFormat($value, null, true);
-					$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
+		if ($fieldInstance->getFieldDataType() == 'currency' && $value != '' && $value != 0) {
+			if ($fieldInstance->getUIType() == 72) {
+				if ($fieldName == 'unit_price') {
+					$currencyId = getProductBaseCurrency($recordId, $moduleName);
+					$cursym_convrate = getCurrencySymbolandCRate($currencyId);
+					$currencySymbol = $cursym_convrate['symbol'];
 				} else {
-					$currencyField = new CurrencyField($value);
-					$value = $currencyField->getDisplayValueWithSymbol();
+					$currencyInfo = getInventoryCurrencyInfo($moduleName, $recordId);
+					$currencySymbol = $currencyInfo['currency_symbol'];
 				}
+				$currencyValue = CurrencyField::convertToUserFormat($value, null, true);
+				$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
+			} else {
+				$currencyField = new CurrencyField($value);
+				$value = $currencyField->getDisplayValueWithSymbol();
 			}
 		}
 
@@ -134,22 +111,16 @@ class ModTracker_Field {
 			}
 		}
 		if ($fieldInstance->getFieldDataType() == 'boolean') {
-			if ($value == 1) {
-				$value = getTranslatedString('yes', $moduleName);
-			} elseif ($value == 0) {
-				$value = getTranslatedString('no', $moduleName);
-			} else {
-				$value = '--';
-			}
+			$value = BooleanField::getBooleanDisplayValue($value, $moduleName);
 		}
 
 		if ($fieldInstance->getFieldDataType() == 'multipicklist') {
-			$value = ($value != '') ? str_replace(' |##| ', ', ', $value) : "";
+			$value = ($value != '') ? str_replace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $value) : '';
 		}
 		if ($fieldInstance->getFieldDataType() == 'reference') {
 			if (!empty($value)) {
 				$referenceList = $fieldInstance->getReferenceList();
-				if (count($referenceList) > 0) {
+				if (!empty($referenceList)) {
 					$firstReferenceModule = $referenceList[0];
 					if ($firstReferenceModule == 'Users') {
 						$value = getUserFullName($value);
@@ -185,7 +156,7 @@ class ModTracker_Field {
 	public function initialize() {
 		global $adb, $current_user;
 		if ($this->moduleMeta === null) {
-			$moduleHandler = vtws_getModuleHandlerFromName($this->parent->getModuleName(), $current_user);
+			$moduleHandler = vtws_getModuleHandlerFromName($this->parent->getModuleName(), $current_user, true);
 			$this->moduleMeta = $moduleHandler->getMeta();
 		}
 		if ($this->parent->getModuleName()=='Products' && $this->parent->getFieldName()=='imagename') {

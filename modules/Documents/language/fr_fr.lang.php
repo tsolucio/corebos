@@ -110,6 +110,7 @@ $mod_strings = array(
 	'LBL_NO_DOCUMENTS' => 'Aucun Documents',
 	'LBL_DESCRIPTION' => 'Description',
 	'FILE_HAS_NO_DATA'=>'Le fichier sé est invalide ou vide',
+	'NotShared' => 'File not shared',
 
 	'LBL_MAXIMUM_20'=>'Max. 20 caractères',
 	'LBL_MAXIMUM_50'=>'Max. 50 caractères',

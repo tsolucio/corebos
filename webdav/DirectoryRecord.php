@@ -32,16 +32,9 @@ class DirectoryRecord extends Sabre\DAV\Collection {
 
 	public function __construct($tabid, $foldername) {
 		$this->tabid = $tabid;
+		$this->module = getTabModuleName($this->tabid);
 		$this->id = $this->getId($foldername);
 		$this->foldername = $foldername;
-	}
-
-	private function getModule() {
-		if (!empty($this->module)) {
-			return $this->module;
-		}
-		$this->module = getTabModuleName($this->tabid);
-		return $this->module;
 	}
 
 	private function getDocumentQuery() {

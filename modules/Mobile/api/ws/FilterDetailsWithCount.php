@@ -16,7 +16,7 @@ class crmtogo_WS_FilterDetailsWithCount extends crmtogo_WS_FetchModuleFilters {
 	public function process(crmtogo_API_Request $request) {
 		$response = new crmtogo_API_Response();
 		$filterid = $request->get('filterid');
-		$current_user = $this->getActiveUser();
+		$this->getActiveUser();
 		$result = array();
 		$result['filter'] = $this->getModuleFilterDetails($filterid);
 		$response->setResult($result);

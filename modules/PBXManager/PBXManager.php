@@ -104,7 +104,7 @@ class PBXManager extends CRMEntity {
 		global $current_user;
 		$thismodule = $_REQUEST['module'];
 
-		include 'include/utils/ExportUtils.php';
+		include_once 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery($thismodule, 'detail_view');
@@ -146,20 +146,6 @@ class PBXManager extends CRMEntity {
 		}
 		return $query;
 	}
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// function save_related_module($module, $crmid, $with_module, $with_crmid) { }
 
 	/**
 	* Invoked when special actions are performed on the module.

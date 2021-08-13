@@ -39,13 +39,13 @@ if ($numOfRows > 0) {
 	$rep_modules[] = $primarymodule;
 	$modules_permitted = true;
 	foreach ($rep_modules as $mod) {
-		if (isPermitted($mod, 'index')!= 'yes' || vtlib_isModuleActive($mod)==false) {
+		if (isPermitted($mod, 'index')!= 'yes' || !vtlib_isModuleActive($mod)) {
 			$modules_permitted = false;
 			$restrictedmodules[] = $mod;
 		}
 	}
 
-	if (isPermitted($primarymodule, 'index') == 'yes' && $modules_permitted == true) {
+	if (isPermitted($primarymodule, 'index') == 'yes' && $modules_permitted) {
 		$genQueryId = $adb->getUniqueID('vtiger_selectquery');
 		if ($genQueryId != '') {
 			$response_array['reportid'] = $genQueryId;
@@ -56,7 +56,7 @@ if ($numOfRows > 0) {
 			$iquerysqlresult = $adb->pquery($iquerysql, array($genQueryId,0,0));
 			$log->debug('Reports :: Save->Successfully saved vtiger_selectquery');
 
-			if ($iquerysqlresult != false) {
+			if ($iquerysqlresult) {
 				$adb->pquery("INSERT INTO vtiger_selectcolumn (queryid,columnindex,columnname)
 						SELECT $genQueryId, columnindex, columnname FROM vtiger_selectcolumn WHERE queryid = ?", array($reportid));
 
@@ -71,7 +71,7 @@ if ($numOfRows > 0) {
 						FROM vtiger_report WHERE reportid=?",
 					array($reportid)
 				);
-				if ($ireportresult != false) {
+				if ($ireportresult) {
 					$log->debug('Reports :: Save->Successfully saved report');
 					$adb->pquery("INSERT INTO vtiger_reportmodules (reportmodulesid,primarymodule,secondarymodules)
 							SELECT $genQueryId,primarymodule,secondarymodules FROM vtiger_reportmodules WHERE reportmodulesid=?", array($reportid));

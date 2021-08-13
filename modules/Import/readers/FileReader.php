@@ -36,9 +36,7 @@ class Import_File_Reader {
 	}
 
 	public function hasHeader() {
-		return $this->userInputObject->get('has_header') == 'on'
-				|| $this->userInputObject->get('has_header') == 1
-				|| $this->userInputObject->get('has_header') == true;
+		return $this->userInputObject->get('has_header')=='on' || $this->userInputObject->get('has_header')==1 || $this->userInputObject->get('has_header');
 	}
 
 	public function getFirstRowData($hasHeader = true) {

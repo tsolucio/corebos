@@ -138,7 +138,7 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];
@@ -187,7 +187,7 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 					opType['picklistValues']
 				)
 			);
-			value.replaceWith('<select id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue">' + options + '</select>');
+			value.replaceWith('<select id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue slds-select">' + options + '</select>');
 			$('#save_fieldvalues_'+mappingno+'_value_type').val('rawtext');
 			$('#save_fieldvalues_'+mappingno+'_modulename').val($('#entity_type').val());
 			$('#save_fieldvalues_'+mappingno+'_modulename').prop('disabled', 'true');
@@ -311,7 +311,7 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 			function addFieldValueMapping(mappingno) {
 				$('#save_fieldvaluemapping').append(
 					`<div id="save_fieldvalues_${mappingno}" style="margin-bottom: 5px" class="slds-grid slds-grid_vertical-align-center">
-						<select id="save_fieldvalues_${mappingno}_fieldname" class="fieldname slds-select slds-col slds-size_3-of-12 slds-page-header__meta-text sm_margin"></select>
+						<select id="save_fieldvalues_${mappingno}_fieldname" class="slds-select slds-col slds-size_3-of-12 slds-page-header__meta-text sm_margin fieldname"></select>
 						<select id="save_fieldvalues_${mappingno}_modulename" class="modulename slds-select slds-col slds-size_3-of-12 slds-page-header__meta-text sm_margin"></select>
 						<input type="hidden" id="save_fieldvalues_${mappingno}_value_type" class="type slds-input slds-col slds-size_3-of-12 sm_margin">
 						<input type="text" id="save_fieldvalues_${mappingno}_value" class="expressionvalue slds-input fieldborder slds-col slds-size_3-of-12 sm_margin" readonly >
@@ -352,8 +352,7 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 					resetFields(entityFieldTypes[fieldname], fieldname, mappingno);
 					$(format('#save_fieldvalues_%s_value_type', mappingno)).val(fieldvaluemap['valuetype']);
 					$('#dump').html(fieldvaluemap['value']);
-					var text = $('#dump').text();
-					$(format('#save_fieldvalues_%s_value', mappingno)).val(text);
+					$(format('#save_fieldvalues_%s_value', mappingno)).val(fieldvaluemap['value']);
 					mappingno+=1;
 				});
 			}
@@ -441,7 +440,7 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 				});
 				var out = '';
 				if (fieldvaluemapping.length!=0) {
-					var out = JSON.stringify(fieldvaluemapping);
+					out = JSON.stringify(fieldvaluemapping);
 				}
 				$('#save_fieldvaluemapping_json').val(out);
 

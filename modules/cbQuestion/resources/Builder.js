@@ -108,7 +108,7 @@ function saveQuestion(update) {
 		'assigned_user_id': builderconditions.cbaccess.userId,
 		'condfilterformat': 0,
 		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsqlcoulumns').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
-		'qcondition': (qtype=='Mermaid' ? '' : (issqlwsq_disabled==true ? document.getElementById('bqsqlconditions').value : getSQLConditions())),
+		'qcondition': (qtype=='Mermaid' ? '' : (issqlwsq_disabled ? document.getElementById('bqsqlconditions').value : getSQLConditions())),
 		'orderby': getSQLOrderBy(false).substr(9),
 		'groupby': getSQLGroupBy(false).substr(9),
 		// 'typeprops': document.getElementById('qprops').value,
@@ -167,7 +167,7 @@ function getQuestionResults() {
 		'qmodule': document.getElementById('bqmodule').value,
 		'qpagesize': document.getElementById('qpagesize').value,
 		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsqlcoulumns').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
-		'qcondition': (qtype=='Mermaid' ? '' : (issqlwsq_disabled==true ? document.getElementById('bqsqlconditions').value : getSQLConditions())),
+		'qcondition': (qtype=='Mermaid' ? '' : (issqlwsq_disabled ? document.getElementById('bqsqlconditions').value : getSQLConditions())),
 		'orderby': getSQLOrderBy().substr(9),
 		'groupby': getSQLGroupBy().substr(9),
 		'typeprops': document.getElementById('qprops').value,
@@ -242,7 +242,6 @@ function getDataColumns() {
 					}
 				}
 			}
-			(finfo.operators=='custom' ? (finfo.fieldname.indexOf(': (')!=-1 ? fnam : finfo.fieldname) : finfo.fieldname),
 			slflds.push({
 				'name': fnam,
 				'header': (finfo.alias=='' ? (finfo.fieldname.indexOf(': (')!=-1 ? fhdr : finfo.fieldname) : finfo.alias),
@@ -282,7 +281,7 @@ function changecbqModule(newmodule) {
 	}
 	conditions = null;
 	builderconditions.conditions = null;
-	Array.from(document.querySelectorAll('.ceremovebutton')).map((e) => e.click());
+	Array.from(document.querySelectorAll('.ceremovebutton')).forEach((e) => e.click());
 	document.getElementById('bqmodulecontainer').classList.remove('slds-has-error');
 	document.getElementById('bqmodulecontainerhelp').style.display = 'none';
 	document.getElementById('msmodulescontainer').classList.remove('slds-has-error');
@@ -488,16 +487,7 @@ function getSQLConditions() {
 					var fieldname = this.querySelector('div > .cefieldname').value;
 					var operation = this.querySelector('div > .ceoperation').value;
 					var value = this.querySelector('div > .ceexpressionvalue').value;
-					//var valuetype = this.querySelector('div > .ceexpressiontype').value;
 					var joincondition = this.querySelector('div > .cejoincondition').value;
-					// var groupid = this.querySelector('div > .groupid').value;
-					// var groupjoin = '';
-					// if (groupid != '') {
-					// 	let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
-					// 	if (scgj != null) {
-					// 		groupjoin = scgj.value;
-					// 	}
-					// }
 					switch (operation) {
 					case 'contains':
 						conditions += fieldname+' LIKE \'%'+value+'%\' '+joincondition;

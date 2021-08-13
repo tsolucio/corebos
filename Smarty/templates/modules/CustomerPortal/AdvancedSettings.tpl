@@ -37,7 +37,7 @@
 						<table border=0 cellspacing=0 cellpadding=3 width="100%" class="small">
 						<tr>
 							<td class="dvtTabCache" style="width:10px" nowrap></td>
-							<td class="dvtUnSelectedCell" align="left" nowrap><a href="index.php?module=CustomerPortal&action=ListView&parenttab={$CATEGORY}">{$MOD.LBL_BASIC_SETTINGS}</a></td>
+							<td class="dvtUnSelectedCell" align="left" nowrap><a href="index.php?module=CustomerPortal&action=ListView">{$MOD.LBL_BASIC_SETTINGS}</a></td>
 							<td class="dvtTabCache" style="width:10px"></td>
 							<td class="dvtSelectedCell" align="left" nowrap>{$MOD.LBL_ADVANCED_SETTINGS}</a></td>
 							<td class="dvtTabCache" width="100%">&nbsp;</td>
@@ -63,7 +63,7 @@
 						<table border=0 cellspacing=0 cellpadding=3 width="100%" class="small">
 						<tr>
 							<td class="dvtTabCacheBottom" style="width:10px" nowrap></td>
-							<td class="dvtUnSelectedCell" align="left" nowrap><a href="index.php?module=CustomerPortal&action=ListView&parenttab={$CATEGORY}">{$MOD.LBL_BASIC_SETTINGS}</a></td>
+							<td class="dvtUnSelectedCell" align="left" nowrap><a href="index.php?module=CustomerPortal&action=ListView">{$MOD.LBL_BASIC_SETTINGS}</a></td>
 							<td class="dvtTabCacheBottom" style="width:10px"></td>
 							<td class="dvtSelectedCellBottom" align="left" nowrap>{$MOD.LBL_ADVANCED_SETTINGS}</a></td>
 							<td class="dvtTabCacheBottom" width="100%">&nbsp;</td>

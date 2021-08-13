@@ -31,7 +31,7 @@ foreach ($storearray as $id) {
 		$ids_list[] = $id;
 	}
 }
-if (count($ids_list) > 0) {
+if (!empty($ids_list)) {
 	$ret = getEntityName($returnmodule, $ids_list);
 	if (count($ret) > 0) {
 		$errormsg = urlencode(implode(',', $ret));

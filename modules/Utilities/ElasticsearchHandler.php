@@ -47,7 +47,7 @@ class ElasticsearchEventsHandler extends VTEventHandler {
 					if ($mapid != 0 && $mapid != '') {
 						$cbMap = cbMap::getMapByID($mapid);
 						$results = $cbMap->ConditionQuery(array($id));
-						if ($results && count($results)>0) {
+						if ($results && !empty($results)) {
 							$result = $results[0];
 							$resultnew[$entityidfield] = $result[$entityidfield];
 							foreach ($fieldnames as $key => $value) {

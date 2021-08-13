@@ -108,7 +108,6 @@ class LoginHistory {
 			$out = getTranslatedString('Signed off');
 			for ($i = $navigation_array['start']; $i <= $navigation_array['end_val']; $i++) {
 				$entries = array();
-				//$loginid = $adb->query_result($result, $i-1, 'login_id');
 				$entries[] = $adb->query_result($result, $i-1, 'user_name');
 				$entries[] = $adb->query_result($result, $i-1, 'user_ip');
 				$entries[] = $adb->query_result($result, $i-1, 'login_time');

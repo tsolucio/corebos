@@ -138,10 +138,6 @@ class cbLogger {
 
 	public function isLevelEnabled($level) {
 		return $this->enableLogLevel[$level];
-		if ($this->enableLogLevel[$level] && $this->configinfo) {
-			return (strtoupper($this->configinfo['level']) == $level);
-		}
-		return false;
 	}
 
 	public function isDebugEnabled() {

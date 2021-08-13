@@ -1,4 +1,5 @@
 ./build/cbSR/chksyntax
+./build/coreBOSTests/coverage_command
 ./build/HelperScripts/bettersafe.sh
 ./build/HelperScripts/createuserfiles
 ./build/HelperScripts/dumpdatabase.sh

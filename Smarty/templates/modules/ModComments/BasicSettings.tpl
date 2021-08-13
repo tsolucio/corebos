@@ -25,7 +25,7 @@
             <img src="modules/ModComments/ModComments.png" alt="{$MOD.ModComments}" title="{$MOD.ModComments}" border="0" height="48" width="48">
             </td>
             <td class="heading2" valign="bottom">
-            <b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$APP.LBL_SETTINGS}</a> &gt; {$MOD.ModComments}</b>
+            <b><a href="index.php?module=Settings&action=index">{$APP.LBL_SETTINGS}</a> &gt; {$MOD.ModComments}</b>
             </td>
         </tr>
 

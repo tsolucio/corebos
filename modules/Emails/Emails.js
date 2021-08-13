@@ -40,19 +40,20 @@ function email_validate(oform, mode) {
 		return false;
 	}
 	if (oform.parent_name.value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0) {
-		//alert('No recipients were specified');
 		alert(no_rcpts_err_msg);
 		return false;
 	}
 	//accomodate all possible email formats
 	var email_regex = /^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\_\-]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/;
-	var arr = new Array();
+	var arr;
+	var tmp;
+	var str;
+	var i;
 	if (document.EditView.ccmail != null) {
 		if (document.EditView.ccmail.value.length >= 1) {
-			var str = document.EditView.ccmail.value;
+			str = document.EditView.ccmail.value;
 			arr = str.split(',');
-			var tmp;
-			for (var i=0; i<=arr.length-1; i++) {
+			for (i=0; i<=arr.length-1; i++) {
 				tmp = arr[i];
 				if (tmp.match('<') && tmp.match('>')) {
 					if (!findAngleBracket(arr[i])) {
@@ -68,10 +69,9 @@ function email_validate(oform, mode) {
 	}
 	if (document.EditView.bccmail != null) {
 		if (document.EditView.bccmail.value.length >= 1) {
-			var str = document.EditView.bccmail.value;
+			str = document.EditView.bccmail.value;
 			arr = str.split(',');
-			var tmp;
-			for (var i=0; i<=arr.length-1; i++) {
+			for (i=0; i<=arr.length-1; i++) {
 				tmp = arr[i];
 				if (tmp.match('<') && tmp.match('>')) {
 					if (!findAngleBracket(arr[i])) {

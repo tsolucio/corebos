@@ -115,11 +115,9 @@ class ServiceContracts extends CRMEntity {
 		$return_action = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : false;
 		$for_module = isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : false;
 		$for_crmid  =isset($_REQUEST['return_id']) ? vtlib_purify($_REQUEST['return_id']) : false;
-		if ($return_action && $for_module && $for_crmid) {
-			if ($for_module == 'HelpDesk') {
-				$on_focus = CRMEntity::getInstance($for_module);
-				$on_focus->save_related_module($for_module, $for_crmid, $module, $this->id);
-			}
+		if ($return_action && $for_module && $for_crmid && $for_module == 'HelpDesk') {
+			$on_focus = CRMEntity::getInstance($for_module);
+			$on_focus->save_related_module($for_module, $for_crmid, $module, $this->id);
 		}
 	}
 
@@ -321,7 +319,7 @@ class ServiceContracts extends CRMEntity {
 		$updateCols[] = $progressUpdate;
 		$updateParams[] = $progressUpdateParams;
 
-		if (count($updateCols) > 0) {
+		if (!empty($updateCols)) {
 			$updateQuery = 'UPDATE vtiger_servicecontracts SET '. implode(',', $updateCols) .' WHERE servicecontractsid = ?';
 			$updateParams[] = $this->id;
 			$adb->pquery($updateQuery, $updateParams);
@@ -339,19 +337,5 @@ class ServiceContracts extends CRMEntity {
 			$this->updateServiceContractState($crmid);
 		}
 	}
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 }
 ?>

@@ -54,24 +54,15 @@ function gshow(argg1, type, startdate, enddate, starthr, startmin, startfmt, end
 
 function rptoptDisp(Opt) {
 	var currOpt = Opt.options[Opt.selectedIndex].value;
-	if (currOpt == 'Daily') {
+	if (currOpt == 'Daily' || currOpt == 'Yearly') {
 		ghide('repeatWeekUI');
 		ghide('repeatMonthUI');
 	} else if (currOpt == 'Weekly') {
-		// if (document.getElementById('repeatWeekUI').style.display == 'none') {
-
-		// }
 		document.getElementById('repeatWeekUI').style.display = 'block';
 		ghide('repeatMonthUI');
 	} else if (currOpt == 'Monthly') {
 		ghide('repeatWeekUI');
-		// if (document.getElementById('repeatMonthUI').style.display == 'none') {
-
-		// }
 		document.getElementById('repeatMonthUI').style.display = 'block';
-	} else if (currOpt == 'Yearly') {
-		ghide('repeatWeekUI');
-		ghide('repeatMonthUI');
 	}
 }
 
@@ -81,7 +72,6 @@ function ghide(argg2) {
 		z.display='none';
 	}
 }
-
 
 function switchClass(myModule, toStatus) {
 	var x=document.getElementById(myModule);
@@ -96,11 +86,7 @@ function switchClass(myModule, toStatus) {
 }
 
 function enableCalstarttime() {
-	if (document.SharingForm.sttime_check.checked == true) {
-		document.SharingForm.start_hour.disabled = false;
-	} else {
-		document.SharingForm.start_hour.disabled = true;
-	}
+	document.SharingForm.start_hour.disabled = !document.SharingForm.sttime_check.checked;
 }
 
 var moveupLinkObj, moveupDisabledObj, movedownLinkObj, movedownDisabledObj;
@@ -117,7 +103,7 @@ function incUser(avail_users, sel_users) {
 		selectedColumnsObj.options[i].selected=false;
 	}
 	for (i=0; i<availListObj.length; i++) {
-		if (availListObj.options[i].selected==true) {
+		if (availListObj.options[i].selected) {
 			var rowFound = false;
 			var existingObj = null;
 			for (var j=0; j<selectedColumnsObj.length; j++) {
@@ -127,7 +113,7 @@ function incUser(avail_users, sel_users) {
 					break;
 				}
 			}
-			if (rowFound!=true) {
+			if (!rowFound) {
 				var newColObj=document.createElement('OPTION');
 				newColObj.value=availListObj.options[i].value;
 				if (browser_ie) {
@@ -138,7 +124,6 @@ function incUser(avail_users, sel_users) {
 				selectedColumnsObj.appendChild(newColObj);
 				availListObj.options[i].selected=false;
 				newColObj.selected=true;
-				rowFound=false;
 			} else {
 				if (existingObj != null) {
 					existingObj.selected=true;
@@ -197,17 +182,18 @@ function fnAddEvent(obj, CurrObj, start_date, end_date, start_hr, start_min, sta
 }
 
 function fnRemoveEvent() {
-	var tagName = document.getElementById('addEventDropDown').style.display = 'none';
+	document.getElementById('addEventDropDown').style.display = 'none';
 }
+
 function fnRemoveButton() {
-	var tagName = document.getElementById('addButtonDropDown').style.display = 'none';
+	document.getElementById('addButtonDropDown').style.display = 'none';
 }
 
 function fnShowEvent() {
-	var tagName = document.getElementById('addEventDropDown').style.display= 'block';
+	document.getElementById('addEventDropDown').style.display = 'block';
 }
 function fnShowButton() {
-	var tagName = document.getElementById('addButtonDropDown').style.display= 'block';
+	document.getElementById('addButtonDropDown').style.display = 'block';
 }
 
 function updateStatus(record, status, view, hour, day, month, year, type) {
@@ -220,13 +206,11 @@ function updateStatus(record, status, view, hour, day, month, year, type) {
 			var result = response.split('####');
 			if (OptionData == 'listview') {
 				document.getElementById('total_activities').innerHTML = result[1];
-				//document.getElementById("listView").innerHTML=result[0];
 				document.EventViewOption.action.value = 'index';
 				window.document.EventViewOption.submit();
 			}
 			if (OptionData == 'hourview') {
 				document.getElementById('total_activities').innerHTML = result[1];
-				//document.getElementById("hrView").innerHTML=result[0];
 				document.EventViewOption.action.value = 'index';
 				window.document.EventViewOption.submit();
 			}
@@ -250,13 +234,13 @@ function getcalAction(obj, Lay, id, view, hour, dateVal, type) {
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
-	var getVal = eval(leftSide) + eval(widthM);
+	var getVal = leftSide + +widthM;
 	var vtDate = dateVal.split('-');
 	var day = parseInt(vtDate[2], 10);
 	var month = parseInt(vtDate[1], 10);
 	var year = parseInt(vtDate[0], 10);
 	if (getVal  > window.innerWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 'px';
 	} else {
 		tagName.style.left= leftSide + 'px';

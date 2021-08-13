@@ -27,7 +27,7 @@ foreach ($focusrel->column_fields as $fieldname => $fieldvalue) {
 			'size' => $fieldvalue['size']
 		);
 		$wsAttachments[] = $filepath;
-		if (validateImageFile($fileinfo) == 'true' && validateImageContents($filepath) == false) {
+		if (validateImageFile($fileinfo) == 'true' && !validateImageContents($filepath)) {
 			continue;
 		}
 		$_FILES[$fieldname] = $fileinfo;

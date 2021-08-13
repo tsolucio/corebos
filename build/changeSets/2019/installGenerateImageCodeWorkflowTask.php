@@ -50,7 +50,7 @@ class installGenerateImageCodeWorkflowTask extends cbupdaterWorker {
 			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%GenerateImageCode%'", array());
 			if ($result && $adb->num_rows($result)>1) {
 				$this->sendMsg(
-					'<span style="font-size:large;weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>'
+					'<span style="font-size:large;font-weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>'
 				);
 			} else {
 				$adb->pquery(

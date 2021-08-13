@@ -397,7 +397,7 @@ class Vtiger_MailScanner {
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$dnjoin = 'INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_contactdetails.contactid';
 		$contactres = $adb->pquery(
-			'SELECT contactid FROM vtiger_contactdetails '.$dnjoin.' WHERE vtiger_crmentity.deleted=0 and (email=? or secondaryemail=?)',
+			'SELECT vtiger_contactdetails.contactid FROM vtiger_contactdetails '.$dnjoin.' WHERE vtiger_crmentity.deleted=0 and (email=? or secondaryemail=?)',
 			array($email,$email)
 		);
 		while ($cto = $adb->fetch_array($contactres)) {
@@ -431,7 +431,7 @@ class Vtiger_MailScanner {
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
 		$dnjoin = 'INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_account.accountid';
 		$accountres = $adb->pquery(
-			'SELECT accountid FROM vtiger_account '.$dnjoin.' WHERE vtiger_crmentity.deleted=0 and (email1=? OR email2=?)',
+			'SELECT vtiger_account.accountid FROM vtiger_account '.$dnjoin.' WHERE vtiger_crmentity.deleted=0 and (email1=? OR email2=?)',
 			array($email, $email)
 		);
 		while ($acc = $adb->fetch_array($accountres)) {
@@ -484,10 +484,8 @@ class Vtiger_MailScanner {
 		$ticketid = false;
 		if ($checkTicketId) {
 			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmobject WHERE crmid=?', array($checkTicketId));
-			if ($adb->num_rows($crmres)) {
-				if ($adb->query_result($crmres, 0, 'setype') == 'HelpDesk' && $adb->query_result($crmres, 0, 'deleted') == '0') {
-					$ticketid = $checkTicketId;
-				}
+			if ($adb->num_rows($crmres) && $adb->query_result($crmres, 0, 'setype') == 'HelpDesk' && $adb->query_result($crmres, 0, 'deleted') == '0') {
+				$ticketid = $checkTicketId;
 			}
 		}
 		if ($ticketid) {
@@ -532,10 +530,8 @@ class Vtiger_MailScanner {
 		$projectid = false;
 		if ($checkProjectId) {
 			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmobject WHERE crmid=?', array($checkProjectId));
-			if ($adb->num_rows($crmres)) {
-				if ($adb->query_result($crmres, 0, 'setype') == 'Project' && $adb->query_result($crmres, 0, 'deleted') == '0') {
-					$projectid = $checkProjectId;
-				}
+			if ($adb->num_rows($crmres) && $adb->query_result($crmres, 0, 'setype') == 'Project' && $adb->query_result($crmres, 0, 'deleted') == '0') {
+				$projectid = $checkProjectId;
 			}
 		}
 		if ($projectid) {

@@ -72,7 +72,7 @@ class fixMailScannerEmailparentid extends cbupdaterWorker {
 						$newref[] = $ref;
 					}
 				}
-				if (count($newref)>0 && $changed) {
+				if (!empty($newref) && $changed) {
 					$newref = implode('|', $newref).'|';
 					$adb->pquery('UPDATE vtiger_emaildetails SET idlists=? WHERE emailid=?', array($newref, $email['emailid']));
 				}

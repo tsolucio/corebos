@@ -48,13 +48,9 @@ function vtws_login($username, $pwd) {
 
 function vtws_getActiveToken($userId) {
 	global $adb;
-
-	$sql = 'select token from vtiger_ws_userauthtoken where userid=? and expiretime >= ?';
-	$result = $adb->pquery($sql, array($userId,time()));
-	if ($result != null && isset($result)) {
-		if ($adb->num_rows($result)>0) {
-			return $adb->query_result($result, 0, 'token');
-		}
+	$result = $adb->pquery('select token from vtiger_ws_userauthtoken where userid=? and expiretime>=?', array($userId, time()));
+	if ($result != null && isset($result) && $adb->num_rows($result)>0) {
+		return $adb->query_result($result, 0, 'token');
 	}
 	return null;
 }
@@ -62,10 +58,8 @@ function vtws_getActiveToken($userId) {
 function vtws_getUserAccessKey($userId) {
 	global $adb;
 	$result = $adb->pquery('select accesskey from vtiger_users where id=?', array($userId));
-	if ($result != null && isset($result)) {
-		if ($adb->num_rows($result)>0) {
-			return $adb->query_result($result, 0, 'accesskey');
-		}
+	if ($result != null && isset($result) && $adb->num_rows($result)>0) {
+		return $adb->query_result($result, 0, 'accesskey');
 	}
 	return null;
 }

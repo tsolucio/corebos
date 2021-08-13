@@ -18,7 +18,7 @@ $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
 $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
 $smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); // Convert to MB
-if (isset($_REQUEST['upload_error']) && $_REQUEST['upload_error'] == true) {
+if (isset($_REQUEST['upload_error']) && $_REQUEST['upload_error']) {
 	echo '<br><b><font color="red"> The selected file has no data or a invalid file.</font></b><br>';
 }
 
@@ -95,7 +95,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	}
 	if (!empty($Users_Default_Send_Email_Template)) {
 		$emltpl = getTemplateDetails($Users_Default_Send_Email_Template, $crmid);
-		if (count($emltpl)>0) {
+		if (!empty($emltpl)) {
 			$focus->column_fields['subject'] = $emltpl[2];
 			$focus->column_fields['description'] = $emltpl[1];
 			$focus->column_fields['from_email'] = $emltpl[3];
@@ -145,7 +145,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	}
 	if (!empty($Users_Default_Send_Email_Template)) {
 		$emltpl = getTemplateDetails($Users_Default_Send_Email_Template, $crmid);
-		if (count($emltpl)>0) {
+		if (!empty($emltpl)) {
 			$focus->column_fields['subject'] = $emltpl[2];
 			$focus->column_fields['description'] = $emltpl[1];
 			$focus->column_fields['from_email'] = $emltpl[3];

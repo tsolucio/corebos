@@ -20,7 +20,7 @@ if ($rfid != '') {
 		echo getTranslatedString('LBL_FLDR_NOT_EMPTY', 'Reports');
 	} else {
 		$result = $adb->pquery('delete from vtiger_reportfolder where folderid=?', array($rfid));
-		if ($result!=false) {
+		if ($result) {
 			$res = $adb->pquery('delete from vtiger_report where folderid=?', array($rfid));
 			if ($res != '') {
 				header("Location: index.php?action=ReportsAjax&mode=ajax&file=ListView&module=Reports");

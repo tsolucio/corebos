@@ -51,7 +51,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $adb;
 		$record = $this->checkQIDParam();
 		$smarty = new vtigerCRM_Smarty();
-		include_once 'modules/cbQuestion/cbQuestion.php';
 		$sql = cbQuestion::getSQL($record);
 		$rs = $adb->query($sql);
 		$rdo = array();
@@ -73,7 +72,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $adb, $current_user;
 		$record = $this->checkQIDParam();
 		$smarty = new vtigerCRM_Smarty();
-		include_once 'modules/cbQuestion/cbQuestion.php';
 		$rs = $adb->pquery('select qname,qmodule from vtiger_cbquestion where cbquestionid=?', array($record));
 		$qname = str_replace(' ', '_', $rs->fields['qname']);
 		$sql = cbQuestion::getSQL($record);
@@ -105,7 +103,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $adb;
 		$record = $this->checkQIDParam();
 		$smarty = new vtigerCRM_Smarty();
-		include_once 'modules/cbQuestion/cbQuestion.php';
 		$rs = $adb->pquery('select qname from vtiger_cbquestion where cbquestionid=?', array($record));
 		$sql = cbQuestion::getSQL($record);
 		$rs = $adb->query('CREATE OR REPLACE VIEW '.str_replace(' ', '_', $rs->fields['qname']).' AS '.$sql);
@@ -128,7 +125,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $adb;
 		$record = $this->checkQIDParam();
 		$smarty = new vtigerCRM_Smarty();
-		include_once 'modules/cbQuestion/cbQuestion.php';
 		$rs = $adb->pquery('select qname from vtiger_cbquestion where cbquestionid=?', array($record));
 		$sql = cbQuestion::getSQL($record);
 		$vname = str_replace(' ', '_', $rs->fields['qname']);
@@ -155,7 +151,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		global $adb;
 		$record = $this->checkQIDParam();
 		$smarty = new vtigerCRM_Smarty();
-		include_once 'modules/cbQuestion/cbQuestion.php';
 		$rs = $adb->pquery('select qname from vtiger_cbquestion where cbquestionid=?', array($record));
 		$vname = str_replace(' ', '_', $rs->fields['qname']);
 		$rs = $adb->query('drop table '.$vname);
@@ -217,7 +212,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		$smarty = new vtigerCRM_Smarty();
 		$rdo = array();
 		require 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
-		$emm = new VTEntityMethodManager($adb);
 		$rs = $adb->pquery('select qname,qmodule,uniqueid,qmodule from vtiger_cbquestion where cbquestionid=?', array($record));
 		if (empty($rs->fields['uniqueid']) || empty($rs->fields['qmodule']) || !vtlib_isModuleActive($rs->fields['qmodule'])) {
 			$rdo['status'] = 'NOK';
@@ -228,12 +222,24 @@ class qactions_Action extends CoreBOS_ActionController {
 			echo json_encode($rdo);
 			die();
 		}
+		$wfname = 'Sync materialized view for Update on '.$rs->fields['qname'];
+		$wfrs = $adb->pquery('SELECT workflow_id FROM com_vtiger_workflows WHERE summary=? and module_name=?', array($wfname, $rs->fields['qmodule']));
+		if ($wfrs && $adb->num_rows($wfrs)==1) {
+			$rdo['status'] = 'NOK';
+			$rdo['msg'] = getTranslatedString('MVIEWWFWFAlredyExists', 'cbQuestion');
+			$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+			$smarty->assign('ERROR_MESSAGE', $rdo['msg']);
+			$rdo['notify'] = $smarty->fetch('applicationmessage.tpl');
+			echo json_encode($rdo);
+			die();
+		}
+		$emm = new VTEntityMethodManager($adb);
 		$emm->addEntityMethod($rs->fields['qmodule'], 'CBQuestionMViewFunction', 'modules/cbQuestion/workflow/mview.php', 'CBQuestionMViewFunction');
 		$this->updateMViewField($record, 'mviewwf', '1');
 		// create workflow tasks for sync
 		$WorkFlowMgr = new VTWorkflowManager($adb);
 		$WorkFlow = $WorkFlowMgr->newWorkFlow($rs->fields['qmodule']);
-		$WorkFlow->description = 'Sync materialized view for Update on '.$rs->fields['qname'];
+		$WorkFlow->description = $wfname;
 		$WorkFlow->executionCondition = VTWorkflowManager::$ON_EVERY_SAVE;
 		$WorkFlow->defaultworkflow = 0;
 		$WorkFlow->schtypeid = 0;
@@ -248,7 +254,7 @@ class qactions_Action extends CoreBOS_ActionController {
 		$tm = new VTTaskManager($adb);
 		$task = $tm->createTask('VTEntityMethodTask', $WorkFlow->id);
 		$task->active = true;
-		$task->summary = 'Sync materialized view for Update on '.$rs->fields['qname'];
+		$task->summary = $wfname;
 		$task->methodName = 'CBQuestionMViewFunction';
 		$task->executeImmediately = '1';
 		$task->test = '';
@@ -400,77 +406,45 @@ class qactions_Action extends CoreBOS_ActionController {
 	}
 
 	public function getBuilderData($ret = false) {
-		global $log, $adb, $current_user;
-		$log->debug('> getBuilderData');
-
-		if (empty($_REQUEST['cbQuestionRecord'])) {
-			$entries_list = array(
-				'data' => array(
-					'contents' => array(),
-					'pagination' => array(
-						'page' => 1,
-						'totalCount' => 0,
-					),
+		global $adb;
+		$entries_list = array(
+			'data' => array(
+				'contents' => array(),
+				'pagination' => array(
+					'page' => 1,
+					'totalCount' => 0,
 				),
-				'result' => false,
-				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
-				'debug_query' => '',
-				'debug_params' => json_encode($_REQUEST),
-			);
-			echo json_encode($entries_list);
-			return;
-		}
-		$builderData = $this->getBuilderDataQuery($ret);
-		$result = $adb->query(trim($builderData['query'], ';').$builderData['limit']);
-		$count_result = $adb->query('SELECT FOUND_ROWS();');
-		$noofrows = $adb->query_result($count_result, 0, 0);
-		if ($result) {
-			if ($noofrows>0) {
-				$entries_list = array(
-					'data' => array(
-						'contents' => array(),
-						'pagination' => array(
-							'page' => (int)$builderData['page'],
-							'totalCount' => (int)$noofrows,
-						),
-					),
-					'result' => true,
-				);
-				while ($lgn = $adb->fetch_array($result)) {
-					for ($col=0; $col < count($lgn); $col++) {
-						unset($lgn[$col]);
+			),
+			'result' => false,
+			'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
+			'debug_query' => '',
+			'debug_params' => json_encode($_REQUEST),
+		);
+		if (!empty($_REQUEST['cbQuestionRecord'])) {
+			$builderData = $this->getBuilderDataQuery($ret);
+			$query = trim($builderData['query'], ';').$builderData['limit'];
+			$entries_list['debug_query'] = $query;
+			$result = $adb->query($query);
+			$count_result = $adb->query('SELECT FOUND_ROWS();');
+			$noofrows = $adb->query_result($count_result, 0, 0);
+			if ($result) {
+				if ($noofrows>0) {
+					$entries_list['data']['pagination'] = array(
+						'page' => (int)$builderData['page'],
+						'totalCount' => (int)$noofrows,
+					);
+					$entries_list['result'] = true;
+					while ($lgn = $adb->fetch_array($result)) {
+						for ($col=0; $col < count($lgn); $col++) {
+							unset($lgn[$col]);
+						}
+						$entries_list['data']['contents'][] = $lgn;
 					}
-					$entries_list['data']['contents'][] = $lgn;
+				} else {
+					$entries_list['message'] = getTranslatedString('NoData', 'cbAuditTrail');
 				}
-			} else {
-				$entries_list = array(
-					'data' => array(
-						'contents' => array(),
-						'pagination' => array(
-							'page' => 1,
-							'totalCount' => 0,
-						),
-					),
-					'result' => false,
-					'message' => getTranslatedString('NoData', 'cbAuditTrail'),
-				);
 			}
-		} else {
-			$entries_list = array(
-				'data' => array(
-					'contents' => array(),
-					'pagination' => array(
-						'page' => 1,
-						'totalCount' => 0,
-					),
-				),
-				'result' => false,
-				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
-				'debug_query' => $builderData['query'].$builderData['limit'],
-				'debug_params' => json_encode($_REQUEST),
-			);
 		}
-		$log->debug('< getBuilderData');
 		if ($ret) {
 			return $entries_list;
 		}

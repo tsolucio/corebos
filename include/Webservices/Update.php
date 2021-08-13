@@ -60,10 +60,8 @@ function vtws_update($element, $user) {
 			if (!in_array($referenceObject->getEntityName(), $details)) {
 				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for $fieldName");
 			}
-			if ($referenceObject->getEntityName() == 'Users') {
-				if (!$meta->hasAssignPrivilege($element[$fieldName])) {
-					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
-				}
+			if ($referenceObject->getEntityName() == 'Users' && !$meta->hasAssignPrivilege($element[$fieldName])) {
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
 			}
 			if (!in_array($referenceObject->getEntityName(), $types['types']) && $referenceObject->getEntityName() != 'Users') {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to access reference type is denied '.$referenceObject->getEntityName());
@@ -88,6 +86,7 @@ function vtws_update($element, $user) {
 	if (in_array($entityName, getInventoryModules())) {
 		if (!empty($element['pdoInformation']) && is_array($element['pdoInformation'])) {
 			$elementType = $entityName;
+			$elementCRMID = $idList[1];
 			include 'include/Webservices/ProductLines.php';
 		} else {
 			$_REQUEST['action'] = $entityName.'Ajax';
@@ -122,7 +121,7 @@ function vtws_update($element, $user) {
 			$listofrelfields[] = $entity[$relfield];
 		}
 	}
-	if (count($listofrelfields)>0) {
+	if (!empty($listofrelfields)) {
 		if ($entityName=='Emails' && $entity['parent_id']!='') {
 			unset($listofrelfields['parent_id'], $r['parent_id']);
 		}
@@ -138,7 +137,7 @@ function vtws_update($element, $user) {
 	}
 	// Add attachment information
 	$imgs = $meta->getImageFields();
-	if (count($imgs)>0) {
+	if (!empty($imgs)) {
 		$imginfo = cbws_getrecordimageinfo($element['id'], $user);
 		if ($imginfo['results']>0) {
 			foreach ($imgs as $img) {

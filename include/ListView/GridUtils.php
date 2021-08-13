@@ -188,13 +188,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 	$fieldName = $fieldinfo['name'];
 	switch ($fieldinfo['uitype']) {
 		case Field_Metadata::UITYPE_CHECKBOX:
-			if ($fieldValue == 1) {
-				$return = getTranslatedString('yes', $module);
-			} elseif ($fieldValue == 0) {
-				$return = getTranslatedString('no', $module);
-			} else {
-				$return = '--';
-			}
+			$return = BooleanField::getBooleanDisplayValue($fieldValue, $module);
 			break;
 		case Field_Metadata::UITYPE_DOWNLOAD_TYPE:
 			if ($fieldValue == 'I') {
@@ -211,7 +205,6 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			} else {
 				$imageattachment = 'Attachment';
 			}
-			//$imgpath = getModuleFileStoragePath('Contacts').$col_fields[$fieldname];
 			$sql = "select vtiger_attachments.*,vtiger_crmentity.setype
 				from vtiger_attachments
 				inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
@@ -260,7 +253,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			$return = textlength_check(getTranslatedString($fieldValue, $module));
 			break;
 		case Field_Metadata::UITYPE_MULTI_SELECT:
-			$return = textlength_check(($fieldValue != '') ? str_replace(' |##| ', ', ', $fieldValue) : '');
+			$return = textlength_check(($fieldValue != '') ? str_replace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $fieldValue) : '');
 			break;
 		case Field_Metadata::UITYPE_PICKLIST_MODS:
 		case Field_Metadata::UITYPE_PICKLIST_MODEXTS:
@@ -268,7 +261,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			break;
 		case Field_Metadata::UITYPE_MULTI_SELECT_MODS:
 		case Field_Metadata::UITYPE_MULTI_SELECT_MODEXTS:
-			$modlist = explode(' |##| ', $fieldValue);
+			$modlist = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue);
 			$modlist = array_map(
 				function ($m) {
 					return getTranslatedString($m, $m);
@@ -278,7 +271,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			$return = textlength_check(($fieldValue != '') ? implode(', ', $modlist) : '');
 			break;
 		case Field_Metadata::UITYPE_PICKLIST_ROLES:
-			$return = textlength_check(($fieldValue != '') ? implode(', ', array_map('getRoleName', explode(' |##| ', $fieldValue))) : '');
+			$return = textlength_check(($fieldValue != '') ? implode(', ', array_map('getRoleName', explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue))) : '');
 			break;
 		case Field_Metadata::UITYPE_INTERNAL_TIME:
 		case Field_Metadata::UITYPE_DATE:
@@ -307,6 +300,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			break;
 		case Field_Metadata::UITYPE_ASSIGNED_TO_PICKLIST:
 		case Field_Metadata::UITYPE_USER_REFERENCE:
+		case Field_Metadata::UITYPE_ACTIVE_USERS:
 			if (!isset($ownerNameList[$fieldValue])) {
 				$ownerName = getOwnerNameList([$fieldValue]);
 				$ownerNameList[$fieldValue] = $ownerName[$fieldValue];

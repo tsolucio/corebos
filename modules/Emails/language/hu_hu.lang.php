@@ -142,7 +142,6 @@ $mod_strings = array(
 	'LBL_NO_RECORDS' => 'A rekord nem található',
 	'LBL_PRINT_EMAIL' => 'Nyomtatás',
 	'Access Count' => 'Megnyitva',
-	'Activtiy Type' => 'Aktivitás típus',
 	'CHOSE_EMAIL' => 'Válassz email-t',
 	'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
 	'Bounce' => 'Bounce',

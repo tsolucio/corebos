@@ -46,11 +46,9 @@ class Import_Controller {
 		$importInfo = Import_Queue_Controller::getImportInfo($this->userInputObject->get('module'), $this->user);
 		$importDataController = new Import_Data_Controller($importInfo, $this->user);
 
-		if (!$batchImport) {
-			if (!$importDataController->initializeImport()) {
-				Import_Utils::showErrorPage(getTranslatedString('ERR_FAILED_TO_LOCK_MODULE', 'Import'));
-				exit;
-			}
+		if (!$batchImport && !$importDataController->initializeImport()) {
+			Import_Utils::showErrorPage(getTranslatedString('ERR_FAILED_TO_LOCK_MODULE', 'Import'));
+			exit;
 		}
 		if ($setBatchImport) {
 			$importDataController->batchImport = false;
@@ -79,10 +77,6 @@ class Import_Controller {
 		$importStatusCount = $importDataController->getImportStatusCount();
 		$totalRecords = $importStatusCount['TOTAL'];
 		if ($totalRecords > ($importStatusCount['IMPORTED'] + $importStatusCount['FAILED']) && strpos(PHP_SAPI, 'apache')!==false) {
-//			if ($importInfo['status'] == Import_Queue_Controller::$IMPORT_STATUS_SCHEDULED) {
-//				self::showScheduledStatus($importInfo);
-//				exit;
-//			}
 			self::showCurrentStatus($importInfo, $importStatusCount, $continueImport);
 			exit;
 		} else {

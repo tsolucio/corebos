@@ -42,7 +42,7 @@ foreach ($cronTasks as $cronTask) {
 	}
 	$out['cronname'] = getTranslatedString($cron_mod, $cronTask->getModule());
 
-	$out['hours'] = str_pad((int)(($cron_freq/(60*60))), 2, 0, STR_PAD_LEFT);
+	$out['hours'] = str_pad((int)($cron_freq/(60*60)), 2, 0, STR_PAD_LEFT);
 	$out['mins'] =str_pad((int)(($cron_freq%(60*60))/60), 2, 0, STR_PAD_LEFT);
 	$out['id'] = $cron_id;
 	$out['status'] = $cron_st;

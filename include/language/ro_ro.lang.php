@@ -936,6 +936,8 @@ $app_strings = array(
 	'Mailing Po Box' => 'Po Box Livrare',
 	'Other Po Box' => 'Alt Po Box',
 	'Image' => 'Imagine',
+	'Unknown' => 'Unknown',
+	'Compressed' => 'Compressed',
 	'LBL_EXPORT_TYPE_1' => 'Export Tip1:',
 	'LBL_EXPORT_TYPE_2' => 'Export Tip2:',
 	'LBL_SEARCH_CRITERIA_RECORDS' => 'Export Inregistrari Criteriu Cautare',
@@ -945,6 +947,9 @@ $app_strings = array(
 	'LBL_SEARCH_CRITERIA_COLUMNS'=>'Export Filter Columns',
 	'LBL_VISIBLE_COLUMNS'=>'Export only visible columns',
 	'LBL_ALL_DATA' => 'Export toate datele',
+	'LBL_EXPORT_FORMAT' => 'Export Format',
+	'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+	'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 	'LBL_DATA_IN_CURRENT_PAGE' => 'Export datele din pagina curenta',
 	'LBL_ONLY_SELECTED_RECORDS' => 'Export inregistrarile selectate',
 	'LBL_YES' => 'Da',
@@ -1241,6 +1246,7 @@ $app_strings = array(
 	'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 	'VALIDATION_FAILED' => 'Validation failed',
 	'Select Module To Upsert' => 'Select Module To Upsert',
+	'LBL_FIX_NOW' => 'Fix Now',
 );
 
 // Translation for currency names

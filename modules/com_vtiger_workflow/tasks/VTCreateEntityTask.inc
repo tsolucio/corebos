@@ -68,7 +68,6 @@ class VTCreateEntityTask extends VTTask {
 			$files_set = false;
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
-				//$referenceModule = $fieldInfo['modulename'];
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue = trim($fieldInfo['value']);
 

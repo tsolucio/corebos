@@ -54,7 +54,6 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
 	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
-	$smarty->assign('CATEGORY', getParentTab());
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('ID', $focus->id);
@@ -98,19 +97,12 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 						$i18n = getTranslatedString($blk['label'], $blk['label']);
 						if (empty($rel_array[$i18n])) {
 							if (!empty($blk['relatedid'])) {
-								$found = false;
 								foreach ($rel_array as $RLLabel => $RLDetails) {
 									if ($RLDetails['relationId']==$blk['relatedid']) {
 										$related_array[$RLLabel] = $RLDetails;
-										$found = true;
 										break;
 									}
 								}
-								if (!$found) {
-									continue;
-								}
-							} else {
-								continue;
 							}
 						} else {
 							$related_array[$blk['loadfrom']] = $rel_array[$i18n];

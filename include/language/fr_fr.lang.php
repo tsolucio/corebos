@@ -945,6 +945,8 @@ $app_strings = array(
 	'Mailing Po Box' => 'Boite postale',
 	'Other Po Box' => 'Autre boite postale',
 	'Image' => 'Image',
+	'Unknown' => 'Unknown',
+	'Compressed' => 'Compressed',
 	'LBL_EXPORT_TYPE_1' => 'Export Type1 :',
 	'LBL_EXPORT_TYPE_2' => 'Export Type2 :',
 	'LBL_SEARCH_CRITERIA_RECORDS' => 'Exporter les critères de recherche d\'enregistrements',
@@ -954,6 +956,9 @@ $app_strings = array(
 	'LBL_SEARCH_CRITERIA_COLUMNS'=>'Export Filter Columns',
 	'LBL_VISIBLE_COLUMNS'=>'Export only visible columns',
 	'LBL_ALL_DATA' => 'Exporter toutes les données',
+	'LBL_EXPORT_FORMAT' => 'Export Format',
+	'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+	'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 	'LBL_DATA_IN_CURRENT_PAGE' => 'Exporter les données de la page courante',
 	'LBL_ONLY_SELECTED_RECORDS' => 'Exporter les entrées sélectionnées',
 	'LBL_YES' => 'Oui',
@@ -1432,5 +1437,6 @@ $app_currency_strings = array(
 	'Tunisian, Dinar'		=> 'Tunisian, Dinar',
 	'Moroccan, Dirham'		=> 'Moroccan, Dirham',
 	'Select Module To Upsert' => 'Select Module To Upsert',
+	'LBL_FIX_NOW' => 'Fix Now',
 );
 ?>

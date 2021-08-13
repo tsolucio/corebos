@@ -192,8 +192,6 @@ class Contacts extends CRMEntity {
 		$response = array();
 		$response['list'] = $list;
 		$response['row_count'] = $rows_found;
-		//$response['next_offset'] = $next_offset;
-		//$response['previous_offset'] = $previous_offset;
 		$log->debug('< plugin_process_list_query');
 		return $response;
 	}
@@ -207,8 +205,6 @@ class Contacts extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
-
-		$parenttab = getParentTab();
 
 		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
@@ -225,7 +221,7 @@ class Contacts extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
 					"' class='crmbutton small edit' type='button' ".
 					"onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable".
-					"&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab', 'test', cbPopupWindowSettings);\" value='".
+					"&form=EditView&form_submit=false&recordid=$id', 'test', cbPopupWindowSettings);\" value='".
 					getTranslatedString('LBL_SELECT'). ' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -279,8 +275,6 @@ class Contacts extends CRMEntity {
 		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
-		$parenttab = getParentTab();
-
 		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
 		} else {
@@ -295,7 +289,7 @@ class Contacts extends CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
-					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
+					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '
 					.getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
@@ -342,8 +336,6 @@ class Contacts extends CRMEntity {
 		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
-		$parenttab = getParentTab();
-
 		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
 		} else {
@@ -358,7 +350,7 @@ class Contacts extends CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
-					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
+					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '
 					.getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
@@ -408,8 +400,6 @@ class Contacts extends CRMEntity {
 		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
-		$parenttab = getParentTab();
-
 		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
 		} else {
@@ -424,7 +414,7 @@ class Contacts extends CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
-					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
+					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '
 					.getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
@@ -473,8 +463,6 @@ class Contacts extends CRMEntity {
 		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
-		$parenttab = getParentTab();
-
 		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
 		} else {
@@ -489,7 +477,7 @@ class Contacts extends CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
-					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
+					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '
 					.getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
@@ -540,8 +528,6 @@ class Contacts extends CRMEntity {
 		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
-		$parenttab = getParentTab();
-
 		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
 		} else {
@@ -556,7 +542,7 @@ class Contacts extends CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
-					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',"
+					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '
 					. getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
@@ -597,7 +583,7 @@ class Contacts extends CRMEntity {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
-		include 'include/utils/ExportUtils.php';
+		include_once 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery('Contacts', 'detail_view');
@@ -1133,7 +1119,6 @@ class Contacts extends CRMEntity {
 	public function getContactHierarchy($id) {
 		global $log, $current_user;
 		$log->debug('> getContactHierarchy '.$id);
-		$tabname = getParentTab();
 		$listview_header = array();
 		$listview_entries = array();
 
@@ -1166,7 +1151,7 @@ class Contacts extends CRMEntity {
 					if ($colname == 'lastname') {
 						if ($contact_id != $id) {
 							if ($hasRecordViewAccess) {
-								$data = '<a href="index.php?module=Contacts&action=DetailView&record='.$contact_id.'&parenttab='.$tabname.'">'.$data.'</a>';
+								$data = '<a href="index.php?module=Contacts&action=DetailView&record='.$contact_id.'">'.$data.'</a>';
 							} else {
 								$data = '<i>'.$data.'</i>';
 							}

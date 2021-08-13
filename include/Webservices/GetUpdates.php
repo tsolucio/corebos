@@ -67,7 +67,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 
 	$accessableModules = array_diff($accessableModules, $ignoreModules);
 
-	if (count($accessableModules)<=0) {
+	if (empty($accessableModules)) {
 		$output['lastModifiedTime'] = $mtime;
 		$output['more'] = false;
 		return $output;

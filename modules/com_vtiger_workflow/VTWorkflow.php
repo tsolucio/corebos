@@ -93,7 +93,7 @@ class Workflow {
 	}
 
 	public function filterInactiveFields($module) {
-		return;
+		// none
 	}
 
 	/**
@@ -226,11 +226,16 @@ class Workflow {
 				$logbg->debug($task->summary);
 				$trigger = (empty($task->trigger) ? null : $task->trigger);
 				if ($trigger != null) {
-					$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
+					if (array_key_exists('hours', $trigger)) {
+						$delay = strtotime($data[$trigger['field']])+$trigger['hours']*3600;
+					}
+					if (array_key_exists('days', $trigger)) {
+						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
+					}
 				} else {
 					$delay = 0;
 				}
-				if ($task->executeImmediately==true || $this->executionCondition==VTWorkflowManager::$MANUAL) {
+				if ($task->executeImmediately || $this->executionCondition==VTWorkflowManager::$MANUAL) {
 					// we permit update field delayed tasks even though some may not make sense
 					// for example a mathematical operation or a decision on a value of a field that
 					// may change during the delay. This is for some certain types of updates, generally
@@ -259,7 +264,7 @@ class Workflow {
 				}
 			}
 		}
-		if (count($errortasks)>0) {
+		if (!empty($errortasks)) {
 			$logbg->fatal('> *** Workflow Tasks Errors:');
 			$logbg->fatal($errortasks);
 			$logbg->fatal('> **************************');
@@ -521,7 +526,6 @@ class Workflow {
 	public function getNextTriggerTimeForMonthlyByWeekDay($scheduledWeekDayOfMonth, $scheduledTime) {
 		$currentTime = time();
 		$currentDayOfMonth = date('j', $currentTime);
-		$scheduledTime = $this->getWFScheduleTime();
 		if ($scheduledWeekDayOfMonth == $currentDayOfMonth) {
 			$nextTime = date('Y-m-d H:i:s', strtotime('+1 month '.$scheduledTime));
 		} else {

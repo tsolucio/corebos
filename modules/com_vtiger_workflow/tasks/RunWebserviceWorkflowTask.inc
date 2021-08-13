@@ -188,7 +188,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$entity->WorkflowContext[$v['context']] = $r2;
 					}
 				}
-				if (count($conds)>0) {
+				if (!empty($conds)) {
 					$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
 					$table = $adb->query_result($q, 0, 'tablename');
 					$id = $adb->query_result($q, 0, 'entityidfield');
@@ -272,60 +272,58 @@ class RunWebserviceWorkflowTask extends VTTask {
 				}
 
 				//write response to record fields
-				if (count($target_fields['Response']) > 0) {
-					if ($outputtype == 'JSON' || $outputtype == 'XML') {
-						$conds = array();
-						foreach ($target_fields['Response'] as $fld => $v) {
-							if (is_array($response)) {
-								foreach ($response as $key => $value) {
-									if (is_array($response[$key])) {
-										$r = $value[$fld];
-										if ($r != null) {
-											$r2 = $r;
-										}
-									} else {
-										$r2 = $value;
+				if (count($target_fields['Response']) > 0 && ($outputtype == 'JSON' || $outputtype == 'XML')) {
+					$conds = array();
+					foreach ($target_fields['Response'] as $fld => $v) {
+						if (is_array($response)) {
+							foreach ($response as $key => $value) {
+								if (is_array($response[$key])) {
+									$r = $value[$fld];
+									if ($r != null) {
+										$r2 = $r;
 									}
+								} else {
+									$r2 = $value;
 								}
+							}
+						} else {
+							if (!is_object($response)) {
+								$r = json_decode($response);
 							} else {
-								if (!is_object($response)) {
-									$r = json_decode($response);
-								} else {
-									$r = $response;
-								}
-								if ($r->$fld != null) {
-									$r2 = $r->$fld;
-								} else {
-									foreach ($r as $v1) {
-										$r2 = $v1->$fld;
-									}
+								$r = $response;
+							}
+							if ($r->$fld != null) {
+								$r2 = $r->$fld;
+							} else {
+								foreach ($r as $v1) {
+									$r2 = $v1->$fld;
 								}
 							}
-							if ((string)$r2 == 'null' || is_null($r2)) {
-								$r2 = '';
-							}
-							if (!empty($v['field'])) {
-								$conds[$v['field']] = $r2;
-							}
-							$entity->WorkflowContext[$v['context']] = $r2;
 						}
-						if (count($conds)>0) {
-							$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
-							$table = $adb->query_result($q, 0, 'tablename');
-							$id = $adb->query_result($q, 0, 'entityidfield');
-							$focus = new $origin_module();
-							$focus->mode = 'edit';
-							$focus->retrieve_entity_info($therecid, $origin_module);
-							$focus->id=$therecid;
-							foreach ($conds as $key => $value) {
-								$focus->column_fields[$key] = $value;
-							}
-							$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
-							$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
-							$_REQUEST['ajxaction'] = 'Workflow';
-							$focus->saveentity($origin_module);
-							$_REQUEST['ajxaction'] = $hold_ajxaction;
+						if ((string)$r2 == 'null' || is_null($r2)) {
+							$r2 = '';
 						}
+						if (!empty($v['field'])) {
+							$conds[$v['field']] = $r2;
+						}
+						$entity->WorkflowContext[$v['context']] = $r2;
+					}
+					if (!empty($conds)) {
+						$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
+						$table = $adb->query_result($q, 0, 'tablename');
+						$id = $adb->query_result($q, 0, 'entityidfield');
+						$focus = new $origin_module();
+						$focus->mode = 'edit';
+						$focus->retrieve_entity_info($therecid, $origin_module);
+						$focus->id=$therecid;
+						foreach ($conds as $key => $value) {
+							$focus->column_fields[$key] = $value;
+						}
+						$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+						$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+						$_REQUEST['ajxaction'] = 'Workflow';
+						$focus->saveentity($origin_module);
+						$_REQUEST['ajxaction'] = $hold_ajxaction;
 					}
 				}
 				//write logs for response

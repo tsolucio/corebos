@@ -338,25 +338,20 @@ class VTTaskType {
 			$includeModules = $modules['include'];
 			$excludeModules = $modules['exclude'];
 
-			if (!empty($sourceModule)) {
-				if (getTabid($sourceModule) == null || !vtlib_isModuleActive($sourceModule)) {
-					continue;
-				}
+			if (!empty($sourceModule) && (getTabid($sourceModule) == null || !vtlib_isModuleActive($sourceModule))) {
+				continue;
 			}
 
 			if (empty($includeModules) && empty($excludeModules)) {
 				$taskTypeInstances[] = $taskName;
-				continue;
 			} elseif (!empty($includeModules)) {
 				if (in_array($moduleName, $includeModules)) {
 					$taskTypeInstances[] = $taskName;
 				}
-				continue;
 			} elseif (!empty($excludeModules)) {
 				if (!(in_array($moduleName, $excludeModules))) {
 					$taskTypeInstances[] = $taskName;
 				}
-				continue;
 			}
 		}
 		return $taskTypeInstances;
@@ -364,7 +359,6 @@ class VTTaskType {
 
 	public static function getInstanceFromTaskType($taskType) {
 		$adb = PearDatabase::getInstance();
-
 		$result = $adb->pquery('SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename=? or classname=? limit 1', array($taskType, $taskType));
 		$taskTypes['name'] = $adb->query_result($result, 0, 'tasktypename');
 		$taskTypes['label'] = $adb->query_result($result, 0, 'label');
@@ -372,9 +366,7 @@ class VTTaskType {
 		$taskTypes['classpath'] = $adb->query_result($result, 0, 'classpath');
 		$taskTypes['templatepath'] = $adb->query_result($result, 0, 'templatepath');
 		$taskTypes['sourcemodule'] = $adb->query_result($result, 0, 'sourcemodule');
-
-		$taskDetails = self::getInstance($taskTypes);
-		return $taskDetails;
+		return self::getInstance($taskTypes);
 	}
 }
 ?>

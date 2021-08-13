@@ -93,7 +93,7 @@ class Vtiger_Menu {
 	 * @param Vtiger_Module Instance of the module
 	 */
 	public function removeModule($moduleInstance) {
-		if (empty($moduleInstance) || empty($moduleInstance)) {
+		if (empty($moduleInstance)) {
 			self::log('Module instance is not set!');
 			return;
 		}

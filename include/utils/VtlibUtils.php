@@ -93,7 +93,9 @@ function vtlib_prefetchModuleActiveInfo($force = true) {
  */
 function vtlib_isModuleActive($module) {
 	global $__cache_module_activeinfo, $adb;
-
+	if (is_numeric($module) || empty($module)) {
+		return false;
+	}
 	if (in_array($module, vtlib_moduleAlwaysActive())) {
 		return true;
 	}
@@ -131,10 +133,9 @@ function vtlib_RecreateUserPrivilegeFiles() {
  * Get list module names which are always active (cannot be disabled)
  */
 function vtlib_moduleAlwaysActive() {
-	$modules = array (
+	return array (
 		'CustomView', 'Settings', 'Users', 'Migration', 'Utilities', 'Import', 'com_vtiger_workflow', 'PickList',
 	);
-	return $modules;
 }
 
 /**
@@ -159,7 +160,6 @@ function vtlib_toggleModuleAccess($module, $enable_disable, $noevents = false) {
 
 	$__cache_module_activeinfo[$module] = $enable_disable;
 
-	//create_tab_data_file();
 	create_parenttab_data_file();
 	vtlib_RecreateUserPrivilegeFiles();
 
@@ -449,7 +449,7 @@ function vtlib_purify($input, $ignore = false) {
 	$value = $input;
 	if (!$ignore) {
 		// Initialize the instance if it has not yet done
-		if ($__htmlpurifier_instance == false) {
+		if (!$__htmlpurifier_instance) {
 			if (empty($use_charset)) {
 				$use_charset = 'UTF-8';
 			}

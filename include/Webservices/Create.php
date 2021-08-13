@@ -39,7 +39,7 @@ function vtws_create($elementType, $element, $user) {
 
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
-	if ($meta->hasWriteAccess() !== true) {
+	if (!$meta->hasCreateAccess()) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied');
 	}
 
@@ -54,10 +54,8 @@ function vtws_create($elementType, $element, $user) {
 			if (!in_array($referenceObject->getEntityName(), $details)) {
 				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for $fieldName");
 			}
-			if ($referenceObject->getEntityName() == 'Users') {
-				if (!$meta->hasAssignPrivilege($element[$fieldName])) {
-					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
-				}
+			if ($referenceObject->getEntityName() == 'Users' && !$meta->hasAssignPrivilege($element[$fieldName])) {
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
 			}
 			if (!in_array($referenceObject->getEntityName(), $types['types']) && $referenceObject->getEntityName() != 'Users') {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to access reference type is denied' . $referenceObject->getEntityName());
@@ -109,6 +107,9 @@ function vtws_create($elementType, $element, $user) {
 		if (!empty($relations)) {
 			list($wsid,$newrecid) = vtws_getIdComponents($entity['id']);
 			$modname = $meta->getEntityName();
+			if (is_string($relations)) { // they sent a comma-separated list
+				$relations = explode(',', $relations);
+			}
 			vtws_internal_setrelation($newrecid, $modname, $relations, $types);
 		}
 		VTWS_PreserveGlobal::flush();

@@ -146,34 +146,6 @@ class cbQuestion extends CRMEntity {
 		}
 	}
 
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
 	public static function getSQL($qid, $params = array()) {
 		global $current_user, $adb, $log;
 		$q = new cbQuestion();
@@ -296,7 +268,6 @@ class cbQuestion extends CRMEntity {
 		$q = new cbQuestion();
 		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
 			$q->column_fields = $params['cbQuestionRecord'];
-			//unset($params['cbQuestionRecord']);
 			if (isset($params['cbQuestionContext'])) {
 				$qctx = $params['cbQuestionContext'];
 				unset($params['cbQuestionContext']);
@@ -316,7 +287,7 @@ class cbQuestion extends CRMEntity {
 			$linkStyle = '';
 			if ($propertyody != null) {
 				$graph = $propertyody->graph;
-				if (count($params)> 0 && isset($params['states'])) {
+				if (!empty($params) && isset($params['states'])) {
 					include_once 'modules/cbMap/cbRule.php';
 					$record_id = $params['recordid'];
 					$states = $params['states'];

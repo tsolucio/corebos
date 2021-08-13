@@ -113,10 +113,6 @@ abstract class EntityMeta {
 		return $this->ownerFields;
 	}
 
-	public function getObectIndexColumn() {
-		return $this->idColumn;
-	}
-
 	public function getUserAccessibleColumns() {
 		if ($this->userAccessibleColumns === null) {
 			$this->userAccessibleColumns = array();
@@ -154,9 +150,8 @@ abstract class EntityMeta {
 	}
 
 	public function hasMandatoryFields($row) {
-		$mandatoryFields = $this->getMandatoryFields();
 		$hasMandatory = true;
-		foreach ($mandatoryFields as $field) {
+		foreach ($this->getMandatoryFields() as $field) {
 			if (!isset($row[$field]) || $row[$field] === '' || $row[$field] === null) {
 				// Getting Field label.
 				$fieldLabelKey = $this->moduleFields[$field]->getFieldLabelKey();
@@ -172,10 +167,9 @@ abstract class EntityMeta {
 		if (!is_array($element)) {
 			throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING, 'Mandatory field does not have a value');
 		}
-		$mandatoryFields = $this->getMandatoryFields();
 		$updateFields = array_keys($element);
 		$hasMandatory = true;
-		$updateMandatoryFields = array_intersect($updateFields, $mandatoryFields);
+		$updateMandatoryFields = array_intersect($updateFields, $this->getMandatoryFields());
 		if (!empty($updateMandatoryFields)) {
 			foreach ($updateMandatoryFields as $field) {
 				// dont use empty API as '0'(zero) is a valid value.
@@ -221,6 +215,10 @@ abstract class EntityMeta {
 		return $this->idColumn;
 	}
 
+	public function getObectIndexColumn() {
+		return $this->getIdColumn();
+	}
+
 	public function getEntityBaseTable() {
 		return $this->baseTable;
 	}
@@ -259,6 +257,7 @@ abstract class EntityMeta {
 	abstract public function hasAssignPrivilege($ownerWebserviceId);
 	abstract public function hasDeleteAccess();
 	abstract public function hasAccess();
+	abstract public function hasCreateAccess();
 	abstract public function hasReadAccess();
 	abstract public function hasWriteAccess();
 	abstract public function getEntityName();

@@ -57,21 +57,21 @@ function indent($hrarray, $roleout, $role_det) {
 		}
 		if ($roledepth == 0) {
 			$roleout .= '&nbsp;<b class="genHeaderGray">'.$rolename.'</b></td>';
-			$roleout .= '<td nowrap class="cblds-p-v_none"><div id="layer_'.$roleid.'" class="drag_Element"><a href="index.php?module=Settings&action=createrole&parenttab=Settings&parent='.
+			$roleout .= '<td nowrap class="cblds-p-v_none"><div id="layer_'.$roleid.'" class="drag_Element"><a href="index.php?module=Settings&action=createrole&parent='.
 				$roleid.'"><img src="' . vtiger_imageurl('Rolesadd.gif', $theme) . '" align="absmiddle" border="0" alt="'.$mod_strings['LBL_ADD_ROLE'].'" title="'.
 				$mod_strings['LBL_ADD_ROLE'].'"></a></div></td></tr></table>';
 		} else {
 			$roleout .= '&nbsp;<a href="javascript:put_child_ID(\'user_'.$roleid.'\');" class="x" id="user_'.$roleid.'">'.$rolename.'</a></td>';
 
 			$roleout.='<td nowrap class="cblds-p-v_none"><div id="layer_'.$roleid.'" class="drag_Element">
-				<a href="index.php?module=Settings&action=createrole&parenttab=Settings&parent='.$roleid.'"><img src="' . vtiger_imageurl('Rolesadd.gif', $theme) .
+				<a href="index.php?module=Settings&action=createrole&parent='.$roleid.'"><img src="' . vtiger_imageurl('Rolesadd.gif', $theme) .
 				'" align="absmiddle" border="0" alt="'.$mod_strings['LBL_ADD_ROLE'].'" title="'.$mod_strings['LBL_ADD_ROLE'].'"></a>
-				<a href="index.php?module=Settings&action=createrole&roleid='.$roleid.'&parenttab=Settings&mode=edit"><img src="'.
+				<a href="index.php?module=Settings&action=createrole&roleid='.$roleid.'&mode=edit"><img src="'.
 				vtiger_imageurl('RolesEdit.gif', $theme).'" align="absmiddle" border="0" alt="'.$mod_strings['LBL_EDIT_ROLE'].'" title="'.
 				$mod_strings['LBL_EDIT_ROLE'].'"></a>';
 
 			if ($roleid != 'H1' && $roleid != 'H2') {
-				$roleout .= '<a href="index.php?module=Settings&action=RoleDeleteStep1&roleid='.$roleid.'&parenttab=Settings"><img src="'.
+				$roleout .= '<a href="index.php?module=Settings&action=RoleDeleteStep1&roleid='.$roleid.'"><img src="'.
 					vtiger_imageurl('RolesDelete.gif', $theme) . '" align="absmiddle" border="0" alt="'.$mod_strings['LBL_DELETE_ROLE'].'" title="'.
 					$mod_strings['LBL_DELETE_ROLE'].'"></a>';
 			}

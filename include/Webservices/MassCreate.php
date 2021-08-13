@@ -33,7 +33,7 @@ function MassCreate($elements, $user) {
 	}
 
 	$types = vtws_listtypes(null, $user);
-	if ($mcModules && count($mcModules) > 0) {
+	if ($mcModules && !empty($mcModules)) {
 		foreach ($mcModules as $module) {
 			if (!in_array($module, $types['types'])) {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied on module'.$module);
@@ -44,7 +44,7 @@ function MassCreate($elements, $user) {
 			require_once $handlerPath;
 			$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 			$meta = $handler->getMeta();
-			if ($meta->hasWriteAccess() !== true) {
+			if ($meta->hasCreateAccess() !== true) {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied on module '.$module);
 			}
 		}
@@ -102,15 +102,13 @@ function mcGetReferenceRecord(&$arr, $reference, $lastReferenceId) {
 	$array = array();
 	$index = null;
 	for ($x = 0; $x <= count($arr); $x++) {
-		if (isset($arr[$x])) {
-			if ($arr[$x]['referenceId'] == $reference) {
-				if (!mcIsCyclicReference($arr[$x], $lastReferenceId)) {
-					$array = $arr[$x];
-					$index = $x;
-					break;
-				} else {
-					throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
-				}
+		if (isset($arr[$x]) && $arr[$x]['referenceId'] == $reference) {
+			if (!mcIsCyclicReference($arr[$x], $lastReferenceId)) {
+				$array = $arr[$x];
+				$index = $x;
+				break;
+			} else {
+				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
 			}
 		}
 	}

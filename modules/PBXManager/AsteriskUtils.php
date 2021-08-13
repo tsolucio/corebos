@@ -161,7 +161,7 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 	$focus->save('cbCalendar');
 	$focus->setActivityReminder('off');
 
-	if ($callerInfo != false) {
+	if ($callerInfo) {
 		$tablename = array(
 			'Contacts'=>'vtiger_cntactivityrel',
 			'Accounts'=>'vtiger_seactivityrel',

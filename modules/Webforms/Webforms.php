@@ -61,7 +61,7 @@ class Webforms {
 		$result=$adb->pquery('SELECT 1 FROM vtiger_settings_field WHERE name=?', array($this->LBL_WEBFORMS));
 		if (!$adb->num_rows($result)) {
 			$desc = 'Allows you to manage Webforms';
-			$url = 'index.php?module=Webforms&action=index&parenttab=Settings';
+			$url = 'index.php?module=Webforms&action=index';
 			$adb->pquery(
 				'INSERT INTO vtiger_settings_field(fieldid, blockid, name, iconpath, description, linkto, sequence) VALUES (?,?,?,?,?,?,?)',
 				array($fieldid, $blockid, $this->LBL_WEBFORMS , 'modules/Webforms/img/Webform.png', $desc, $url, $seq)

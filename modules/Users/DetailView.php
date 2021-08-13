@@ -38,8 +38,6 @@ $image_path=$theme_path.'images/';
 
 //the user might belong to multiple groups
 
-$category = getParenttab();
-
 $smarty->assign('UMOD', $mod_strings);
 global $current_language;
 $smod_strings = return_module_language($current_language, 'Settings');
@@ -56,10 +54,8 @@ $smarty->assign('GROUP_COUNT', count($oGetUserGroups->user_groups));
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('ID', $focus->id);
-$smarty->assign('CATEGORY', $category);
 
 if (!empty($_REQUEST['modechk'])) {
-	$modepref = vtlib_purify($_REQUEST['modechk']);
 	if ($_REQUEST['modechk'] == 'prefview') {
 		$parenttab = '';
 	} else {
@@ -75,7 +71,7 @@ if ((is_admin($current_user) || $_REQUEST['record'] == $current_user->id)
 		&& isset($default_user_name)
 		&& $default_user_name == $focus->user_name
 		&& isset($lock_default_user_name)
-		&& $lock_default_user_name == true
+		&& $lock_default_user_name
 ) {
 	$buttons = "<button title='".$app_strings['LBL_EDIT_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_EDIT_BUTTON_KEY']."' class='slds-button slds-button_neutral'"
 		." onclick=\"this.form.return_module.value='Users'; this.form.return_action.value='DetailView'; this.form.return_id.value='$focus->id'; "
@@ -133,7 +129,7 @@ $tabid = getTabid('Users');
 $validationData = getDBValidationData($lead_tables, $tabid);
 $data = split_validationdataArray($validationData);
 
-if ($current_user->id == $_REQUEST['record'] || is_admin($current_user) == true) {
+if ($current_user->id == $_REQUEST['record'] || is_admin($current_user)) {
 	$smarty->assign('VALIDATION_DATA_FIELDNAME', $data['fieldname']);
 	$smarty->assign('VALIDATION_DATA_FIELDDATATYPE', $data['datatype']);
 	$smarty->assign('VALIDATION_DATA_FIELDLABEL', $data['fieldlabel']);

@@ -85,7 +85,7 @@ function export_results() {
 		//'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsql').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
 		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsqlcoulumns').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
 		//'qcondition': (qtype=='Mermaid' ? '' : getSQLConditions()),
-		'qcondition': (qtype=='Mermaid' ? '' : (issqlwsq_disabled==true ? document.getElementById('bqsqlconditions').value : getSQLConditions())),
+		'qcondition': (qtype=='Mermaid' ? '' : (issqlwsq_disabled ? document.getElementById('bqsqlconditions').value : getSQLConditions())),
 		'orderby': getSQLOrderBy().substr(9),
 		'groupby': getSQLGroupBy().substr(9),
 		'typeprops': document.getElementById('qprops').value,
@@ -106,7 +106,7 @@ function export_results() {
 	document.getElementById('export_text').innerHTML = mod_alert_arr.Exporting;
 	const columns = getDataColumns();
 	let headers = [];
-	columns.map(cinfo => {
+	columns.forEach(cinfo => {
 		headers.push({
 			field: cinfo.header,
 			module: bqmodule

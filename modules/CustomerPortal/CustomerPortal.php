@@ -53,7 +53,7 @@ class CustomerPortal {
 					$seq = $cur_seq + 1;
 				}
 			}
-			$cpurl = 'index.php?module=CustomerPortal&action=index&parenttab=Settings';
+			$cpurl = 'index.php?module=CustomerPortal&action=index';
 			$adb->pquery(
 				'INSERT INTO vtiger_settings_field(fieldid, blockid, name, iconpath, description, linkto, sequence) VALUES (?,?,?,?,?,?,?)',
 				array($fieldid, $blockid, 'LBL_CUSTOMER_PORTAL', 'portal_icon.png', 'PORTAL_EXTENSION_DESCRIPTION', $cpurl, $seq)

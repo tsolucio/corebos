@@ -8,22 +8,27 @@
  * All Rights Reserved.
  ********************************************************************************/
 global $current_user,$mod_strings,$app_strings,$theme;
-
-$theme_path='themes/'.$theme.'/';
-$image_path=$theme_path.'images/';
+require_once 'Smarty_setup.php';
 require_once 'include/database/PearDatabase.php';
 require_once 'modules/cbCalendar/CalendarCommon.php';
 require_once 'modules/Calendar4You/Calendar4You.php';
 require_once 'modules/Calendar4You/CalendarUtils.php';
-$t=Date('Ymd');
-$userDetails=getSharingUserName($current_user->id);
-$shareduser_ids = getSharedUserId($current_user->id);
-
+$smarty = new vtigerCRM_Smarty;
 $c_mod_strings = return_module_language($current_language, 'cbCalendar');
 $users_mod_strings = return_module_language($current_language, 'Users');
-
+$smarty->assign('APP', $app_strings);
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('CMOD', $c_mod_strings);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+$smarty->assign('USERID', $current_user->id);
+$userDetails=getSharingUserName($current_user->id);
+$shareduser_ids = getSharedUserId($current_user->id);
 $save_google_sync = '0';
-$id = $_REQUEST['id'];
+$id = vtlib_purify($_REQUEST['id']);
+$mode = vtlib_purify($_REQUEST['mode']);
+$smarty->assign('ID', $id);
+$smarty->assign('MODE', $mode);
 
 if ($id != 'task') {
 	$google_sync_id = true;
@@ -31,23 +36,13 @@ if ($id != 'task') {
 	$google_sync_id = false;
 }
 
-$mode = $_REQUEST['mode'];
-
-$user_view_type = $_REQUEST['user_view_type'];
-
 $Calendar4You = new Calendar4You();
-
 $Calendar_Settings = $Calendar4You->getSettings();
-
 $Event_Colors = $Calendar4You->getEventColor($mode, $id);
-?>
-<table border=0 cellspacing=0 cellpadding=5 width="600px" class="layerHeadingULine">
-	<tr>
-		<td class="layerPopupHeading" align="left">
-<?php
-	echo '&quot;';
 if ($mode == 'user') {
 	$event_name = getITSUserFullName($id);
+} elseif ($mode == 'module') {
+	$event_name = vtlib_purify($_REQUEST['id']);
 } else {
 	if ($id == 'task') {
 		$event_name = $c_mod_strings['LBL_TASK'];
@@ -57,54 +52,34 @@ if ($mode == 'user') {
 		$event_name = getActTypeForCalendar($id);
 	}
 }
-	echo $event_name;
-	echo '&quot; ';
-	echo $app_strings['LBL_SETTINGS'];
-?></td>
-		<td align=right>
-			<a href="javascript:fninvsh('event_setting');"><img src="<?php echo vtiger_imageurl('close.gif', $theme) ?>" border="0"  align="absmiddle" /></a>
-		</td>
-	</tr>
-</table>
-<form name="SettingForm" method="post" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
-<input type="hidden" name="module" value="Calendar4You">
-<input type="hidden" name="action" value="SaveEventSettings">
-<input type="hidden" name="view" value="<?php echo vtlib_purify($_REQUEST['view']); ?>">
-<input type="hidden" name="hour" value="<?php echo (isset($_REQUEST['hour']) ? vtlib_purify($_REQUEST['hour']) : ''); ?>">
-<input type="hidden" name="day" value="<?php echo (isset($_REQUEST['day']) ? vtlib_purify($_REQUEST['day']) : ''); ?>">
-<input type="hidden" name="month" value="<?php echo (isset($_REQUEST['month']) ? vtlib_purify($_REQUEST['month']) : ''); ?>">
-<input type="hidden" name="year" value="<?php echo (isset($_REQUEST['year']) ? vtlib_purify($_REQUEST['year']) : ''); ?>">
-<input type="hidden" name="user_view_type" value="<?php echo $user_view_type; ?>">
-<input type="hidden" name="save_fields" value="<?php echo ($mode != 'user' && $id != 'invite') ? '1' : '0'; ?>">
-<input type="hidden" name="mode" value="<?php echo $mode; ?>">
-<input type="hidden" name="id" value="<?php echo $id; ?>">
-<input type="hidden" name="current_userid" value="<?php echo $current_user->id; ?>" >
-<input type="hidden" name="shar_userid" id="shar_userid" >
+$smarty->assign('ModalTitle', $event_name.' '.$app_strings['LBL_SETTINGS']);
+ob_start();
+?>
 <div style="padding:5px">
-<table align="center" bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" width="100%">
+<table>
 <tbody>
 <tr>
 	<td>
-	<table border="0" cellpadding="3" cellspacing="0" width="100%">
+	<table>
 	<tbody><tr>
 <?php
-if ($mode != "user" && $id != "invite") {
+if ($mode != 'user' && $id != 'invite' && $mode != 'module') {
 	?>
-	<td class="dvtTabCache" style="width:10px" nowrap="">&nbsp;</td>
-	<td id="cellTabEventColor" class="dvtSelectedCell" align="center" nowrap="">
+	<td class="dvtTabCache" style="width:10px">&nbsp;</td>
+	<td id="cellTabEventColor" class="dvtSelectedCell">
 	<a href="javascript:doNothing()" onclick="switchClass('cellTabEventColor','on');switchClass('cellTabEventInfo','off');switchClass('cellTabGoogleSync','off');fnShowDrop('TabColorInCalendar');fnHideDrop('TabEventInfoInCalendar');fnHideDrop('TabEventGoogleCalSync');">
 	<?php echo $mod_strings['LBL_COLOR_IN_CALENDAR']; ?>
 	</a>
 	</td>
 	<td class="dvtTabCache" style="width:10px">&nbsp;</td>
-	<td id="cellTabEventInfo" class="dvtUnSelectedCell" align="center" nowrap="">
+	<td id="cellTabEventInfo" class="dvtUnSelectedCell">
 	<a href="javascript:doNothing()" onclick="switchClass('cellTabEventColor','off');switchClass('cellTabEventInfo','on');switchClass('cellTabGoogleSync','off');fnHideDrop('TabColorInCalendar');fnShowDrop('TabEventInfoInCalendar');fnHideDrop('TabEventGoogleCalSync');">
 	<?php echo $mod_strings['LBL_DISPLAYED_INFO']; ?>
 	</a>
 	</td>
 	<?php if ($google_sync_id) { ?>
 	<td class="dvtTabCache" style="width:10px">&nbsp;</td>
-	<td id="cellTabGoogleSync" class="dvtUnSelectedCell" align="center" nowrap="">
+	<td id="cellTabGoogleSync" class="dvtUnSelectedCell">
 	<a href="javascript:doNothing()" onclick="switchClass('cellTabEventColor','off');switchClass('cellTabEventInfo','off');switchClass('cellTabGoogleSync','on');fnHideDrop('TabColorInCalendar');fnHideDrop('TabEventInfoInCalendar');fnShowDrop('TabEventGoogleCalSync');">
 		<?php echo $mod_strings['LBL_GOOGLE_SYNC']; ?>
 	</a>
@@ -112,7 +87,7 @@ if ($mode != "user" && $id != "invite") {
 	<?php } ?>
 	<td class="dvtTabCache" style="width:30%">&nbsp;</td>
 <?php } else { ?>
-		<td id="cellTabEventColor" class="dvtSelectedCell" align="center" nowrap=""><?php echo $mod_strings['LBL_COLOR_IN_CALENDAR']; ?></td>
+		<td id="cellTabEventColor" class="dvtSelectedCell"><?php echo $mod_strings['LBL_COLOR_IN_CALENDAR']; ?></td>
 		<td class="dvtTabCache" style="width:70%">&nbsp;</td>
 	<?php
 }
@@ -123,19 +98,16 @@ if ($mode != "user" && $id != "invite") {
 	</td>
 </tr>
 <tr>
-	<td class="dvtContentSpace" style="padding:10px;height:120px" align="left" valign="top" width="100%">
+	<td class="dvtContentSpace" style="padding:10px;height:120px">
 		<!-- Color In calendat UI -->
 		<div id="TabColorInCalendar" style="display: block; width: 100%;">
-			<br><table border=0 celspacing=0 cellpadding=0 width=100% align=center bgcolor=white>
+			<br><table>
 				<tr>
 					<td class="small">
 						<?php echo $mod_strings['LBL_COLOR_IN_CALENDAR_BACKGROUND']; ?>
 					</td>
-					<td class="small">	
-						<input style="background-color:<?php echo $Event_Colors['bg']; ?>;" value="<?php echo $Event_Colors['bg']; ?>" id="event_color_bg" name="event_color_bg" size="10" onblur="this.style.backgroundColor=this.value;" type="text">
-						<a href="javascript:C_TCP.popup(document.SettingForm.event_color_bg, 3)">
-						<img alt="<?php echo $mod_strings['Click2PickColor']; ?>" src="modules/Calendar4You/images/color_picker.gif" border="0" height="13" width="15">
-						</a>
+					<td class="small">
+						<input style="background-color:<?php echo $Event_Colors['bg']; ?>;" value="<?php echo $Event_Colors['bg']; ?>" id="event_color_bg" name="event_color_bg" size="10" onblur="this.style.backgroundColor=this.value;" type="color">
 					</td>
 				</tr>
 				<tr>
@@ -143,10 +115,7 @@ if ($mode != "user" && $id != "invite") {
 						<?php echo $mod_strings['LBL_COLOR_IN_CALENDAR_TEXT']; ?>:
 					</td>
 					<td class="small">
-						<input style="background-color:<?php echo $Event_Colors['text']; ?>;" value="<?php echo $Event_Colors['text']; ?>" id="event_color_text" name="event_color_text" size="10" onblur="this.style.backgroundColor=this.value;" type="text">
-						<a href="javascript:C_TCP.popup(document.SettingForm.event_color_text, 3)">
-						<img alt="<?php echo $mod_strings['Click2PickColor']; ?>" src="modules/Calendar4You/images/color_picker.gif" border="0" height="13" width="15">
-						</a>
+						<input style="background-color:<?php echo $Event_Colors['text']; ?>;" value="<?php echo $Event_Colors['text']; ?>" id="event_color_text" name="event_color_text" size="10" onblur="this.style.backgroundColor=this.value;" type="color">
 					</td>
 				</tr>
 			</table>
@@ -154,7 +123,7 @@ if ($mode != "user" && $id != "invite") {
 		<!-- Displayed info -->
 		<div id="TabEventInfoInCalendar" style="display: none; width: 100%;">
 		<?php
-		if ($mode != 'user' && $id != 'invite') {
+		if ($mode != 'user' && $id != 'invite' && $mode != 'module') {
 			$Event_Fields = array();
 			$Fields_Label = array();
 
@@ -219,22 +188,22 @@ if ($mode != "user" && $id != "invite") {
 			}
 			?>
 
-						<table border=0 celspacing=0 cellpadding=3 width=100% align=center bgcolor=white>
+			<table>
 			<tr>
 			<td class='small' colspan='2'>
-				<b><?php echo $mod_strings['LBL_DAY_EVENT_INFO']; ?>:</b>
+				<strong><?php echo $mod_strings['LBL_DAY_EVENT_INFO']; ?>:</strong>
 				<select name='day_showed_field' id='day_showed_field' class=small>
 				<?php echo createFieldsOptions($OnlyEventFields, $Showed_Field['day']); ?>
 				</select>
 			</td>
 			</tr>
 			<tr>
-			<td class='small' width='38%'>
+			<td class='small' style="width:38%">
 				<?php echo $mod_strings['LBL_AVAILABLE_INFO']; ?>
 			</td>
 			<td class="small">
 			</td>
-			<td class="small" width="38%">
+			<td class="small" style="width:38%">
 			<?php echo $mod_strings['LBL_SELECTED_INFO']; ?>
 			</td>
 			</tr>
@@ -257,22 +226,22 @@ if ($mode != "user" && $id != "invite") {
 			</tr>
 			</table>
 			<br>
-			<table border=0 celspacing=0 cellpadding=3 width=100% align=center bgcolor=white>
+			<table>
 			<tr>
 			<td class="small" colspan="2">
-				<b><?php echo $mod_strings['LBL_WEEK_EVENT_INFO']; ?>:</b>
+				<strong><?php echo $mod_strings['LBL_WEEK_EVENT_INFO']; ?>:</strong>
 				<select name="week_showed_field" id="day_showed_field" class=small>
 				<?php echo createFieldsOptions($OnlyEventFields, $Showed_Field['week']); ?>
 				</select>
 			</td>
 			</tr>
 			<tr>
-			<td class="small" width="38%">
+			<td class="small" style="width:38%">
 			<?php echo $mod_strings['LBL_AVAILABLE_INFO']; ?>
 			</td>
 			<td class="small">
 			</td>
-			<td class="small" width="38%">
+			<td class="small" style="width:38%">
 			<?php echo $mod_strings['LBL_SELECTED_INFO']; ?>
 			</td>
 			</tr>
@@ -295,22 +264,22 @@ if ($mode != "user" && $id != "invite") {
 			</tr>
 			</table>
 			<br>
-			<table border=0 celspacing=0 cellpadding=3 width=100% align=center bgcolor=white>
+			<table>
 			<tr>
 			<td class="small" colspan="2">
-				<b><?php echo $mod_strings['LBL_MONTH_EVENT_INFO']; ?>:</b>
+				<strong><?php echo $mod_strings['LBL_MONTH_EVENT_INFO']; ?>:</strong>
 				<select name="month_showed_field" id="day_showed_field" class=small>
 				<?php echo createFieldsOptions($OnlyEventFields, $Showed_Field['month']); ?>
 				</select>
 			</td>
 			</tr>
 			<tr>
-			<td class="small" width="38%">
+			<td class="small" style="width:38%">
 				<?php echo $mod_strings['LBL_AVAILABLE_INFO']; ?>
 			</td>
 			<td class="small">
 			</td>
-			<td class="small" width="38%">
+			<td class="small" style="width:38%">
 			<?php echo $mod_strings['LBL_SELECTED_INFO']; ?>
 			</td>
 			</tr>
@@ -408,24 +377,19 @@ if ($mode != "user" && $id != "invite") {
 			}
 		}
 		?>
+		<input type="hidden" name="savegooglesync" value="<?php echo $save_google_sync; ?>">
 		</div>
 	</td>
 </tr>
 </tbody>
 </table>
 </div>
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
-	<tr>
-		<td align="center">
-			<input type="submit" name="save" value=" &nbsp;<?php echo $app_strings['LBL_SAVE_BUTTON_LABEL'] ?>&nbsp;" class="crmbutton small save" onClick="saveITSEventSettings();"/>
-			&nbsp;&nbsp;
-			<input type="button" name="cancel" value=" <?php echo $app_strings['LBL_CANCEL_BUTTON_LABEL'] ?> " class="crmbutton small cancel" onclick="fninvsh('event_setting');" />
-		</td>
-	</tr>
-	</table>
-<input type="hidden" name="savegooglesync" value="<?php echo $save_google_sync; ?>">
-</form>
 <?php
+$out = ob_get_clean();
+ob_end_clean();
+$smarty->assign('OUT', $out);
+$smarty->display('modules/cbCalendar/EventSettings.tpl');
+
 function createFieldsOptions($Fields_Array, $selected_field = '') {
 	if (!is_array($Fields_Array)) {
 		return '';

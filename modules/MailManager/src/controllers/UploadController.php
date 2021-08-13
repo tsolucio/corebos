@@ -42,7 +42,6 @@ class MailManager_UploadFile {
 
 		if ($attachid !== false) {
 			// Create document record
-			$document = new Documents();
 			$document->column_fields['notes_title']      = $this->getName() ;
 			$document->column_fields['filename']         = $this->getName();
 			$document->column_fields['filestatus']       = 1;
@@ -157,7 +156,7 @@ class MailManager_UploadFileXHR extends MailManager_UploadFile {
 		if (isset($_SERVER['CONTENT_LENGTH'])) {
 			return (int)$_SERVER['CONTENT_LENGTH'];
 		} else {
-			throw new Exception('Getting content length is not supported.');
+			throw new BadMethodCallException('Getting content length is not supported.');
 		}
 	}
 }
@@ -175,9 +174,7 @@ class MailManager_UploadFileForm extends MailManager_UploadFile {
 	 */
 	public function save($path) {
 		global $root_directory;
-		if (is_file($root_directory.'/'.$path)) {
-			return true;
-		} elseif (move_uploaded_file($_FILES['qqfile']['tmp_name'], $path)) {
+		if (is_file($root_directory.'/'.$path) || move_uploaded_file($_FILES['qqfile']['tmp_name'], $path)) {
 			return true;
 		}
 		return false;
@@ -248,7 +245,7 @@ class MailManager_Uploader {
 		}
 
 		$response = $this->file->process();
-		if ($response['success'] == true) {
+		if ($response['success']) {
 			return $response;
 		} else {
 			return array('error'=> 'Could not save uploaded file. The upload was cancelled, or server error encountered');

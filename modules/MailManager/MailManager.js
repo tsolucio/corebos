@@ -624,11 +624,7 @@ if (typeof(MailManager) == 'undefined') {
 				MailManager.progress_hide();
 				var response = MailManager.removeHidElement(transport);
 				jQuery('#_relationpopupdiv_').get(0).innerHTML = (response);
-				var scriptTags = document.getElementById('_relationpopupdiv_').getElementsByTagName('script');
-				for (var i = 0; i< scriptTags.length; i++) {
-					var scriptTag = scriptTags[i];
-					eval(scriptTag.innerHTML);
-				}
+				vtlib_executeJavascriptInElement(document.getElementById('_relationpopupdiv_'));
 				// Place the popup at center
 				MailManager.placeAtCenter(jQuery('#_relationpopupdiv_'));
 				jQuery('#_relationpopupdiv_').css('visibility', '').show();
@@ -657,7 +653,7 @@ if (typeof(MailManager) == 'undefined') {
 			}
 
 			// No record is selected for linking?
-			if (selected == false) {
+			if (!selected) {
 				MailManager.show_error(MailManager.i18n('JSLBL_PLEASE_SELECT_ATLEAST_ONE_RECORD'));
 				MailManager.resetLinkToDropDown();
 				return false;
@@ -772,14 +768,14 @@ if (typeof(MailManager) == 'undefined') {
 					jQuery.ajax({
 						method: 'POST',
 						url: 'index.php?'+baseurl + encodeURIComponent(emltpl.Users_Default_Send_Email_Template)
-					}).done(function (response) {
-						emltpl = JSON.parse(response);
+					}).done(function (resp) {
+						emltpl = JSON.parse(resp);
 						document.getElementById('_mail_replyfrm_subject_').value = emltpl.subject;
-						document.getElementById('_mail_replyfrm_body_').value = emltpl.body + emailSignature,
+						document.getElementById('_mail_replyfrm_body_').value = emltpl.body + emailSignature;
 						MailManager.mail_reply_rteinit(emltpl.body);
 					});
 				} else {
-					document.getElementById('_mail_replyfrm_body_').value = '<p></p>' + emailSignature,
+					document.getElementById('_mail_replyfrm_body_').value = '<p></p>' + emailSignature;
 					MailManager.mail_reply_rteinit(emltpl.body);
 				}
 			});
@@ -859,7 +855,7 @@ if (typeof(MailManager) == 'undefined') {
 			}).done(function (response) {
 				MailManager.progress_hide();
 				var responseJSON = JSON.parse(response);
-				if (responseJSON.result.success == true) {
+				if (responseJSON.result.success) {
 					MailManager.progress_hide();
 					var count = jQuery('#attachmentCount').val();
 					jQuery('#attachmentCount').val(--count);
@@ -924,7 +920,7 @@ if (typeof(MailManager) == 'undefined') {
 		/* Track and Initialize RTE instance for reply */
 		mail_reply_rteinstance: false,
 		mail_reply_rteinit: function (data) {
-			if (MailManager.mail_reply_rteinstance == false) {
+			if (!MailManager.mail_reply_rteinstance) {
 				var textAreaName = '_mail_replyfrm_body_';
 				CKEDITOR.replace(textAreaName, {
 					toolbar: 'Full',
@@ -1087,10 +1083,6 @@ if (typeof(MailManager) == 'undefined') {
 				if (responseJSON['success']) {
 					MailManager.mail_reply_close();
 					MailManager.show_message(MailManager.i18n('JSLBL_MAIL_SENT'));
-
-					//                    var currentSelectedFolder = jQuery('#mm_selected_folder').val();
-					//                    MailManager.updateSelectedFolder(currentSelectedFolder);
-					//                    jQuery('#mm_selected_folder').val(currentSelectedFolder);
 				} else {
 					MailManager.show_error(MailManager.i18n('JSLBL_Failed_To_Send_Mail') +
 						': ' + responseJSON['error']['message']);
@@ -1295,7 +1287,7 @@ if (typeof(MailManager) == 'undefined') {
 						jQuery(ele).remove();
 					});
 				}
-				if (reloadfolder == true) {
+				if (reloadfolder) {
 					if (foldername == '__vt_drafts') {
 						MailManager.folder_drafts();
 					} else {
@@ -1344,10 +1336,10 @@ if (typeof(MailManager) == 'undefined') {
 					}
 					emailId = responseText.result.emailid;
 					jQuery('#emailid').val(emailId);
-					window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
+					window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
 				});
 			} else {
-				window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
+				window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
 			}
 			VtigerJS_DialogBox.unblock();
 		},
@@ -1484,8 +1476,7 @@ if (typeof(MailManager) == 'undefined') {
 
 		mail_validate : function (str) {
 			var email_regex = /^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\_\-]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/;
-			var arr = new Array();
-			arr = str.split(',');
+			var arr = str.split(',');
 			var tmp;
 			for (var i=0; i<=arr.length-1; i++) {
 				tmp = arr[i];
@@ -1520,11 +1511,7 @@ if (typeof(MailManager) == 'undefined') {
 					ret = ret + mailadd.charAt(i);
 				}
 			}
-			if (/^[a-z0-9]([a-z0-9_\-\.]*)@([a-z0-9_\-\.]*)(\.[a-z]{2,3}(\.[a-z]{2}){0,2})$/.test(ret)) {
-				return true;
-			} else {
-				return false;
-			}
+			return (/^[a-z0-9]([a-z0-9_\-\.]*)@([a-z0-9_\-\.]*)(\.[a-z]{2,3}(\.[a-z]{2}){0,2})$/.test(ret));
 		},
 
 		uploadCountUpdater : function () {
@@ -1597,7 +1584,6 @@ if (typeof(MailManager) == 'undefined') {
 		},
 
 		Request : function (url, params, callback) {
-			//var encodedParams = MailManager.getEncodedParameterString(params);
 			return jQuery.ajax({
 				url  : url,
 				type : 'POST',

@@ -147,7 +147,7 @@ class crmtogo_WS_Utils {
 		$fieldgroups = array();
 		while ($resultrow = $db->fetch_array($result)) {
 			if (array_key_exists($resultrow['blocklabel'], $current_module_strings)) {
-				$blocklabel = $resultrow['blocklabel'];
+				$blocklabel = $current_module_strings[$resultrow['blocklabel']];
 			} else {
 				$blocklabel = $resultrow['blocklabel'];
 			}
@@ -203,14 +203,14 @@ class crmtogo_WS_Utils {
 		} else {
 			$assigned_user_id_ws = $assigned_user_id;
 		}
-		if ($userObj->is_admin==false) {
+		if (!$userObj->is_admin) {
 			$resultuser =get_user_array(false, 'Active', $assigned_user_id_ws, 'private');
 		} else {
 			$resultuser =get_user_array(false, 'Active', $assigned_user_id_ws);
 		}
 		//add prefix to key
 		$data = array_flip($resultuser);
-		foreach ($data as $key => &$val) {
+		foreach ($data as &$val) {
 			$val = $recordprefix.'x'.$val;
 		}
 		$resultuser = array_flip($data);
@@ -228,7 +228,7 @@ class crmtogo_WS_Utils {
 		$group_array = array();
 		if (count($resultgroups) > 0) {
 			$newgrouporder = array ();
-			foreach ($resultgroups as $key => &$val) {
+			foreach ($resultgroups as &$val) {
 				$newgrouporder[$val['id']] = $val['name'];
 			}
 			foreach ($newgrouporder as $groupid => $groupname) {
@@ -274,7 +274,6 @@ class crmtogo_WS_Utils {
 				$picklistValues = self::getassignedtoValues($current_user, $module);
 				$fieldInfo['type']['name'] = 'picklist';
 				$fieldInfo['type']['picklistValues'] = $picklistValues;
-				//$fieldInfo['type']['defaultValue'] = $picklistValues[0];
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}
 		}
@@ -550,7 +549,7 @@ class crmtogo_WS_Utils {
 		if ($module=='Contacts') {
 			$attstr = 'Contacts Image';
 		} else {
-			$attstr = $module.' Attachment';
+			$attstr = $module.Field_Metadata::ATTACHMENT_ENTITY;
 		}
 		$sql = "SELECT vtiger_attachments.*, vtiger_crmentity.setype
 			FROM vtiger_attachments
@@ -566,8 +565,7 @@ class crmtogo_WS_Utils {
 			$imgpath = $imagePath.$imageId.'_'.$imageName;
 			$type = pathinfo($imgpath, PATHINFO_EXTENSION);
 			$data = file_get_contents($imgpath);
-			$str = 'data:image/'.$type.';base64,'.base64_encode($data);
-			return $str ;
+			return 'data:image/'.$type.';base64,'.base64_encode($data);
 		} else {
 			return '';
 		}
@@ -589,8 +587,7 @@ class crmtogo_WS_Utils {
 			$imgpath = $imagePath.$imageId.'_'.$imageName;
 			$type = pathinfo($imgpath, PATHINFO_EXTENSION);
 			$data = file_get_contents($imgpath);
-			$str = 'data:image/'.$type.';base64,'.base64_encode($data);
-			return $str ;
+			return 'data:image/'.$type.';base64,'.base64_encode($data);
 		} else {
 			return '';
 		}
@@ -722,7 +719,7 @@ class crmtogo_WS_Utils {
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
 			for ($i=0; $i<$noofrows; $i++) {
-				$module_list = explode(' |##| ', $db->query_result($result, $i, 'module_list'));
+				$module_list = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $db->query_result($result, $i, 'module_list'));
 				foreach ($module_list as $module) {
 					$comments_module[] = $module;
 				}
@@ -733,8 +730,7 @@ class crmtogo_WS_Utils {
 	}
 
 	public static function getUsersLanguage($lang) {
-		$user_lang = return_module_language($lang, 'Mobile');
-		return $user_lang;
+		return return_module_language($lang, 'Mobile');
 	}
 
 	public static function updateRecord($id, $fields, $targetModule, $user) {

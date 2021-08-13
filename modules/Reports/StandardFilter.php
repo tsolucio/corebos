@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once 'modules/CustomView/CustomView.php';
-if (isset($_REQUEST['record']) == false || $_REQUEST['record']=='') {
+if (!isset($_REQUEST['record']) || $_REQUEST['record']=='') {
 	$oReport = new Reports();
 	$primarymodule = vtlib_purify($_REQUEST['primarymodule']);
 
@@ -23,7 +23,7 @@ if (isset($_REQUEST['record']) == false || $_REQUEST['record']=='') {
 	$report_std_filter->assign('BLOCKJS_STD', $BLOCKJS);
 	$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria();
 	$report_std_filter->assign('BLOCKCRITERIA_STD', $BLOCKCRITERIA);
-} elseif (isset($_REQUEST['record']) == true) {
+} elseif (isset($_REQUEST['record'])) {
 	global $current_user;
 
 	$reportid = vtlib_purify($_REQUEST['record']);
@@ -49,7 +49,6 @@ if (isset($_REQUEST['record']) == false || $_REQUEST['record']=='') {
 
 	$BLOCK1 = getPrimaryStdFilterHTML($oReport->primodule, $oReport->stdselectedcolumn);
 	$BLOCK1 .= getSecondaryStdFilterHTML($oReport->secmodule, $oReport->stdselectedcolumn);
-	//added to fix the ticket #5117
 	$selectedcolumnvalue = '"'. $oReport->stdselectedcolumn . '"';
 	if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false) {
 		$BLOCK1 .= "<option selected value='Not Accessible'>".$app_strings['LBL_NOT_ACCESSIBLE'].'</option>';

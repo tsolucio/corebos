@@ -91,7 +91,7 @@ ul {ldelim}color:black;{rdelim}
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ico-roles.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_ROLES}" width="48" height="48" border=0 title="{$MOD.LBL_ROLES}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_ROLES}</b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_ROLES}</b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small cblds-p-v_none">{$MOD.LBL_ROLE_DESCRIPTION}</td>
@@ -173,7 +173,7 @@ ul {ldelim}color:black;{rdelim}
 		hideAll = false;
 		if (childId == 'NULL') {ldelim}
 			parentId = parentId.replace(/user_/gi, '');
-			window.location.href = 'index.php?module=Settings&action=RoleDetailView&parenttab=Settings&roleid=' + parentId;
+			window.location.href = 'index.php?module=Settings&action=RoleDetailView&roleid=' + parentId;
 		{rdelim} else {ldelim}
 			childId = childId.replace(/user_/gi, '');
 			parentId = parentId.replace(/user_/gi, '');

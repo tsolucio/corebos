@@ -6,7 +6,7 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
-include_once 'modules/Reports/ReportUtils.php';
+include_once 'include/fields/metainformation.php';
 require_once 'data/CRMEntity.php';
 include_once 'modules/cbCalendar/CalendarCommon.php';
 
@@ -109,7 +109,7 @@ function get_its_mini_calendar(&$cal) {
 			}
 
 			//To differentiate day having events from other days
-			if (count($acts)>0 && (in_array($cal['slice']->start_time->get_formatted_date(), $events))) {
+			if (!empty($acts) && (in_array($cal['slice']->start_time->get_formatted_date(), $events))) {
 				$event_class = 'class="eventDay"';
 			} else {
 				$event_class = '';
@@ -139,7 +139,7 @@ function get_its_mini_calendar(&$cal) {
 	echo $minical;
 }
 
-function get_previous_its_cal(& $cal) {
+function get_previous_its_cal(&$cal) {
 	return '<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true"
 		onClick="getITSMiniCal(\'view='.$cal['calendar']->view.$cal['calendar']->get_datechange_info('prev').'\');" title="'.getTranslatedString('LNK_LIST_PREVIOUS').'">
 		<svg class="slds-button__icon" aria-hidden="true">
@@ -149,7 +149,7 @@ function get_previous_its_cal(& $cal) {
 	</button>';
 }
 
-function get_next_its_cal(& $cal) {
+function get_next_its_cal(&$cal) {
 	return '<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true"
 		onClick="getITSMiniCal(\'view='.$cal['calendar']->view.$cal['calendar']->get_datechange_info('next').'\');" title="'.getTranslatedString('LNK_LIST_NEXT').'">
 		<svg class="slds-button__icon" aria-hidden="true">
@@ -291,7 +291,6 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 	global $log, $adb;
 	$log->debug('> getCalendar4YouListQuery '.$userid.','.$where);
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Calendar4You');
-	//$tab_id = getTabid('Calendar4You');
 
 	$query = 'SELECT distinct vtiger_activity.activityid as act_id, vtiger_crmentity.*, vtiger_activity.*, vtiger_activitycf.*, vtiger_contactdetails.lastname,
 		vtiger_contactdetails.firstname, vtiger_contactdetails.contactid, vtiger_activity.rel_id AS parent_id,its4you_googlesync4you_events.geventid,
@@ -357,7 +356,7 @@ function transferForAddIntoTitle($type, $row, $CD) {
 	}
 	if ($CD['module']=='cbCalendar') {
 		$Cal_Data = getDetailViewOutputHtml($CD['uitype'], $CD['fieldname'], $CD['fieldlabel'], $Col_Field, '2', getTabid('cbCalendar'), 'cbCalendar');
-		if (isPicklistUIType($CD['uitype'])) {
+		if (Field_Metadata::isPicklistUIType($CD['uitype'])) {
 			$Cal_Data[1] = getTranslatedString($Cal_Data[1], $CD['module']);
 		}
 		if ($CD['fieldname'] == 'subject' && strpos($Cal_Data[1], 'a href') === false) {
@@ -377,21 +376,34 @@ function transferForAddIntoTitle($type, $row, $CD) {
 				where relmodule=? and module=?',
 			array($CD['module'],'cbCalendar')
 		);
-		$relfield = $adb->query_result($frs, 0, 0);
-		$queryGenerator->addCondition('id', $row[$relfield], 'e', $queryGenerator::$AND);
-		$rec_query = $queryGenerator->getQuery();
-		$recinfo = $adb->pquery($rec_query, array());
-		$Cal_Data = array();
-		$Cal_Data[0] = getTranslatedString($CD['fieldlabel'], $CD['module']);
-		$Cal_Data[1] = $adb->query_result($recinfo, 0, $CD['columnname']);
-		if (isPicklistUIType($CD['uitype'])) {
-			$Cal_Data[1] = getTranslatedString($Cal_Data[1], $CD['module']);
+		if ($frs && $adb->num_rows($frs)>0) {
+			$relfield = $adb->query_result($frs, 0, 0);
+			$queryGenerator->addCondition('id', $row[$relfield], 'e', $queryGenerator::$AND);
+			$rec_query = $queryGenerator->getQuery();
+			$recinfo = $adb->pquery($rec_query, array());
+			$Cal_Data = array();
+			$Cal_Data[0] = getTranslatedString($CD['fieldlabel'], $CD['module']);
+			$Cal_Data[1] = $adb->query_result($recinfo, 0, $CD['columnname']);
+			if (Field_Metadata::isPicklistUIType($CD['uitype'])) {
+				$Cal_Data[1] = getTranslatedString($Cal_Data[1], $CD['module']);
+			}
+			if (Field_Metadata::isReferenceUIType($CD['uitype']) && !empty($Cal_Data[1])) {
+				$relModule = getSalesEntityType($Cal_Data[1]);
+				$einfo = getEntityName($relModule, $Cal_Data[1]);
+				$Cal_Data[1] = '<a href="index.php?module='.$relModule.'&action=DetailView&record='.$Cal_Data[1].'">'.$einfo[$Cal_Data[1]].'</a>';
+			}
+		} else {
+			if (empty($row[$CD['columnname']])) {
+				$Cal_Data[1] = '';
+			} else {
+				$Cal_Data[1] = '<a href="index.php?module='.$CD['module'].'&action=DetailView&record='.$row['crmid'].'">'.$row[$CD['columnname']].'</a>';
+			}
 		}
 	}
 
 	if ($type == '1') {
 		return vtlib_purify($Cal_Data[1]);
-	} else { //		return '<br><b>'.$Cal_Data[0].'</b>: '.$value;
+	} else {
 		return '<table><tr><td><b>'.$Cal_Data[0].':</b></td>
 			<td onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', this)" onmouseout="vtlib_listview.trigger(\'cell.onmouseout\', this)">'
 			.vtlib_purify($Cal_Data[1]).'</td></tr></table>';
@@ -653,7 +665,7 @@ function getModuleCalendarFields($module) {
 		// it isn't registered > we look for custom fields
 		$tid = getTabid($module);
 		$dtflds = getDateFieldsOfModule($tid);
-		if (count($dtflds)>0) {
+		if (!empty($dtflds)) {
 			$tmflds = getTimeFieldsOfModule($tid);
 			$efields = getEntityFieldNames($module);
 			$Module_StartEnd_Fields = array(

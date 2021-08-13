@@ -8,19 +8,10 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/ColorPicker2.js"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
-var cp2 = new ColorPicker('window');
-
-function pickColor(color)
-{ldelim}
-	ColorPicker_targetInput.value = color;
-	ColorPicker_targetInput.style.backgroundColor = color;
-{rdelim}
-
 function openPopup(){ldelim}
-	window.open("index.php?module=Users&action=UsersAjax&file=RolePopup&parenttab=Settings","roles_popup_window","height=425,width=640,toolbar=no,menubar=no,dependent=yes,resizable =no");
+	window.open("index.php?module=Users&action=UsersAjax&file=RolePopup","roles_popup_window","height=425,width=640,toolbar=no,menubar=no,dependent=yes,resizable =no");
 {rdelim}
 </script>
 
@@ -115,9 +106,6 @@ function check_duplicate() {ldelim}
 </script>
 {/if}
 <!-- END -->
-{if $PARENTTAB eq 'Settings'}
-	{include file='SetMenu.tpl'}
-{/if}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%" class="slds-m-around_medium" style="width: auto;">
@@ -130,7 +118,6 @@ function check_duplicate() {ldelim}
 		<input type="hidden" name="module" value="Users">
 		<input type="hidden" name="record" value="{if isset($ID)}{$ID}{/if}">
 		<input type="hidden" name="mode" value="{$MODE}">
-		<input type='hidden' name='parenttab' value='{$PARENTTAB}'>
 		<input type="hidden" name="action">
 		<input type="hidden" name="return_module" value="{$RETURN_MODULE}">
 		<input type="hidden" name="return_id" value="{$RETURN_ID}">
@@ -152,7 +139,7 @@ function check_duplicate() {ldelim}
 			<td>
 				<span class="lvtHeaderText">
 				{if $PARENTTAB neq ''}
-				<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Users&action=index&parenttab=Settings">{$MOD.LBL_USERS}</a> &gt;
+				<b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Users&action=index">{$MOD.LBL_USERS}</a> &gt;
 					{if $MODE eq 'edit'}
 						{$UMOD.LBL_EDITING} "{$USERNAME}"
 					{else}

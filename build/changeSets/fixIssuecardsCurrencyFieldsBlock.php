@@ -26,7 +26,6 @@ class fixIssuecardsCurrencyFieldsBlock extends cbupdaterWorker {
 			$module = 'Issuecards';
 			if ($this->isModuleInstalled($module)) {
 				global $adb;
-				$package = new Vtiger_Package();
 				$IssuecarId = getTabid($module);
 				$correct_block = $adb->run_query_field("SELECT blockid FROM vtiger_blocks WHERE tabid = ".$IssuecarId." AND blocklabel = 'LBL_ISSUECARDS_INFO'", 'blockid');
 				$bad_block = $adb->run_query_field("SELECT blockid FROM vtiger_blocks WHERE tabid = ".$IssuecarId." AND blocklabel = 'LBL_RELATED_PRODUCTS'", 'blockid');

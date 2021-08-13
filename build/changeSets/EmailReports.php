@@ -104,7 +104,6 @@ class EmailReports extends cbupdaterWorker {
 					$this->insertAdvFilter($queryid, $advfilters[$report['advfilterid']]);
 				}
 			}
-			//$this->ExecuteQuery("UPDATE vtiger_report SET sharingtype='Public'", array());
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
@@ -148,10 +147,7 @@ class EmailReports extends cbupdaterWorker {
 		}
 		$rse = $adb->query("SELECT count(*) FROM vtiger_report WHERE reportname in ('Contacts Email Report','Accounts Email Report','Leads Email Report','Vendors Email Report')");
 		$emrpt = $adb->query_result($rse, 0, 0);
-		if ($emrpt>0) {
-			return true;
-		}
-		return false;
+		return ($emrpt>0);
 	}
 
 	public function insertSelectQuery() {

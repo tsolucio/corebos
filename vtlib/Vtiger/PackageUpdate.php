@@ -81,7 +81,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 			$buildModuleArray = array();
 			$installSequenceArray = array();
 			$moduleBundle = (boolean)$this->_modulexml->modulebundle;
-			if ($moduleBundle == true) {
+			if ($moduleBundle) {
 				$moduleList = (Array)$this->_modulexml->modulelist;
 				foreach ($moduleList as $moduleInfos) {
 					foreach ($moduleInfos as $moduleInfo) {
@@ -106,7 +106,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 					self::log('Module name mismatch!');
 					return false;
 				}
-				$module = $this->initUpdate($moduleInstance, $zipfile, $overwrite);
+				$this->initUpdate($moduleInstance, $zipfile, $overwrite);
 				// Call module update function
 				$this->update_Module($moduleInstance);
 			}
@@ -134,12 +134,6 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 			$moduleInstance->name,
 			Vtiger_Module::EVENT_MODULE_PREUPDATE
 		);
-
-		// TODO Handle module property changes like menu, label etc...
-		/*if(!empty($parenttab) && $parenttab != '') {
-			$menuInstance = Vtiger_Menu::getInstance($parenttab);
-			$menuInstance->addModule($moduleInstance);
-		}*/
 
 		$this->handle_Migration($this->_modulexml, $moduleInstance);
 
@@ -298,7 +292,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 		foreach ($modulenode->customviews->customview as $customviewnode) {
 			$filterInstance = Vtiger_Filter::getInstance($customviewnode->viewname, $moduleInstance);
 			if (!$filterInstance) {
-				$filterInstance = $this->import_CustomView($modulenode, $moduleInstance, $customviewnode);
+				$this->import_CustomView($modulenode, $moduleInstance, $customviewnode);
 			} else {
 				$this->update_CustomView($modulenode, $moduleInstance, $customviewnode, $filterInstance);
 			}
@@ -430,7 +424,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 			} else {
 				$cronTask->status = Vtiger_Cron::$STATUS_ENABLED;
 			}
-			if ((empty($importCronTask->sequence))) {
+			if (empty($importCronTask->sequence)) {
 				$importCronTask->sequence=Vtiger_Cron::nextSequence();
 			}
 			Vtiger_Cron::register("$importCronTask->name", "$importCronTask->handler", "$importCronTask->frequency", "$modulenode->name", "$importCronTask->status", "$importCronTask->sequence", "$importCronTask->description");

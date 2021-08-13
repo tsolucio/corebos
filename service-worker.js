@@ -2345,7 +2345,7 @@ precacheAndRoute([{
   "revision": "1f8c673c8f76832febaeeac88a5f4353"
 }, {
   "url": "modules/Calendar4You/Calendar4You.js",
-  "revision": "73833a86e725feb5131b508b2a420c07"
+  "revision": "f45a75aaeb8ff0301bd79483a1c4cd8f"
 }, {
   "url": "modules/Calendar4You/Calendar4You.png",
   "revision": "af2cca5b0d51fbfc4248fee073bb75eb"
@@ -2681,7 +2681,7 @@ precacheAndRoute([{
   "revision": "89744856c32a6fa01ec83cf86b78f27f"
 }, {
   "url": "modules/Mobile/resources/crmtogo.js",
-  "revision": "0d047c8401e10aa50d21a6de4fd63686"
+  "revision": "76508738c07591ebb357a551ac863ad3"
 }, {
   "url": "modules/Mobile/resources/css/images/ui-bg_diagonals-thick_18_b81900_40x40.png",
   "revision": "e9c44fa4ccdc5d2d4c5e2bf65fc166aa"
@@ -2762,7 +2762,7 @@ precacheAndRoute([{
   "revision": "351e44a8f5939b2fa6d5c498a65bcdc9"
 }, {
   "url": "modules/Mobile/resources/getScrollcontent.js",
-  "revision": "6ac55c0e399455103faaa0704252b03b"
+  "revision": "7a23e7b8d45100ddcdc1279fa4769ae4"
 }, {
   "url": "modules/Mobile/resources/images/ajax-loader.gif",
   "revision": "8fd7e719b06cd3f701c791adb62bd7a6"
@@ -3434,7 +3434,7 @@ precacheAndRoute([{
   "revision": "ae989aa845cd40bce24cadefa3363b52"
 }, {
   "url": "modules/Mobile/resources/settings.js",
-  "revision": "7fab3007e1698eeb90371ff591b7f77c"
+  "revision": "462956d3d01f40c97f1d6714dfe495b1"
 }, {
   "url": "modules/Mobile/resources/signature_pad.js",
   "revision": "7314c126d7a2316ca8e00a1d405d0771"
@@ -7805,7 +7805,7 @@ precacheAndRoute([{
   "revision": "60718c9174ed712f0c6a240e34adec1d"
 }, {
   "url": "include/LD/assets/styles/override_lds.css",
-  "revision": "c37206ef39090fb15ec13ba1ad56a747"
+  "revision": "1c73aef82642440ff8fb12e7c6804a6b"
 }, {
   "url": "include/LD/assets/styles/salesforce-lightning-design-system_touch.css",
   "revision": "aae0a7ead47c69e71bbd2ae18e509560"
@@ -9272,76 +9272,73 @@ precacheAndRoute([{
   "revision": "3f3688138a1b9fc4ef669ce9056b6674"
 }, {
   "url": "include/js/clock.js",
-  "revision": "d63a09ae85fd37aee6be32fd9c9ca9ab"
-}, {
-  "url": "include/js/ColorPicker2.js",
-  "revision": "60d39426c70ba2d12e821f934728ac2a"
+  "revision": "0b6bdbfee7b61226371c555ced95bde2"
 }, {
   "url": "include/js/corebosjshooks.js",
   "revision": "1607aa9f922cfb8476b3635d3edd8286"
 }, {
   "url": "include/js/customview.js",
-  "revision": "fac2826174b3ef2d807edd9524c029f3"
+  "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "b34dfb95ac5ea8bd84490c7d41f3bdbd"
+  "revision": "be42fba6902d03b8745a03b2e2b3cf94"
 }, {
   "url": "include/js/dedup.js",
-  "revision": "3aab10a82c3f05de285ce73b6dc3be35"
+  "revision": "f09b1b73041383bfe8a85ccce9641617"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "6059341b114976dd92665c122b2e7410"
+  "revision": "9547a078d90dbb73f8ec73b9104c293d"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "61d256e43844b1e85296cc69cb741050"
+  "revision": "2e89eaa0518fa53b28e998449a7f4b56"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "7cf4ae64473da752b336f7b4467ee3d7"
+  "revision": "66b5cfd26304bf0414fbcb7df5051618"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "1394943a9797e0c1025ac282548895b0"
+  "revision": "09a3aee4c70aabd65a955b1106f4645e"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "5f82f573500574274f4b6858736eaffd"
+  "revision": "353098ee7b1902fc7a1df643118edeb7"
 }, {
   "url": "include/js/FieldDependencies.js",
-  "revision": "7023a4e6ee65093266df7e837578c52c"
+  "revision": "81d8785a11d8f7e64948045fb4766f43"
 }, {
   "url": "include/js/FieldDepFunc.js",
   "revision": "c6dd1fa8efe64120bc4721d19987922d"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "03a067d91231bf0f881cb1449dfd8efd"
+  "revision": "a7944e3065d1402d5390a8ed65170eb8"
 }, {
   "url": "include/js/general.js",
-  "revision": "6972b89b3ff84a583c3361e679da17a4"
+  "revision": "0d73d8c417895553b7d9f3351ea2edbc"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "b8243aa64b88f790bbe422b6b6fa741b"
+  "revision": "19886b1eaa89b43c3f045be1da6bfc9e"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "6d330434badd14d0629a2e8c211821fa"
+  "revision": "f8df747a631cf7d3aeeb8b66ce4f35c9"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "00f9ba3dddb9e3dffbd251872cc2c8aa"
+  "revision": "649b525e9490a49f58c4f8d9e1f1bc25"
 }, {
   "url": "include/js/jslog.js",
-  "revision": "31c7a760819a0277d2cdb75b82c2c66f"
+  "revision": "4fad4667b01c3c4db2f1313c9e24968e"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "4f6a56365bb644d4651e29b64fe08f36"
+  "revision": "7d18c4a30944048ee85c9fe7422f80e2"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
 }, {
   "url": "include/js/Mail.js",
-  "revision": "d18e82ce1218134b2cb61291aae4159c"
+  "revision": "246a4c20699e5215b094d9d806d48215"
 }, {
   "url": "include/js/massive.js",
-  "revision": "88c141893042950229a9ac13a5a8afc7"
+  "revision": "5a09d9ad89882ba8ad3e993e11a08055"
 }, {
   "url": "include/js/masterdetailgrid.js",
-  "revision": "2e58be5e8966313b3d986627f7f10d32"
+  "revision": "9e62e4524f0e3b9afcfa200f8d648ca7"
 }, {
   "url": "include/js/meld.js",
   "revision": "7c3894eb22d16cb4743a7ea226557ed1"
@@ -9350,34 +9347,34 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "530bac24ec772a9e064772b6ccae43f3"
+  "revision": "8382eca9b295ad462bd84ed96cba7f0f"
 }, {
   "url": "include/js/notebook.js",
-  "revision": "d944ea5145ae45ecbafab41bcbd112f3"
+  "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
 }, {
   "url": "include/js/notificationPopup.js",
   "revision": "3cfd7e34e7fee928b8c27cd0e9f1f46c"
 }, {
   "url": "include/js/PasswordManagement.js",
-  "revision": "d871391e97faa107c84bfdf8e770f113"
+  "revision": "54744d385dd6fbc9e303f4906be988f1"
 }, {
   "url": "include/js/picklist.js",
-  "revision": "1ef073a518be05c33505aa254eb0e2cd"
+  "revision": "599fa63675c88fe7cbadb987dc99659b"
 }, {
   "url": "include/js/popup.js",
-  "revision": "b1cd730bb99018ac56e2bf1ea6ce2d1c"
+  "revision": "58117a33fae7fc35b0cb70a4f68c0d8e"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "8f59175bc8023be576a92eaeca953ef4"
+  "revision": "d5da6ccb9fd5732a5fbd9effa0ff9421"
 }, {
   "url": "include/js/QuickCreate.js",
-  "revision": "e5029e6a617bfb7f9114191938738069"
+  "revision": "9663dd1cea6cb7fb0cfe983e54baa186"
 }, {
   "url": "include/js/RelatedLists.js",
-  "revision": "5bce2a6cf35180a097828b2cde3346ff"
+  "revision": "3794d15286444aab05ed1ec3ec31da22"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "4c3d054f2e93114d3884b9d56f4ca4dd"
+  "revision": "d113ff06c969f7916cc9402b08cc0620"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -9386,7 +9383,7 @@ precacheAndRoute([{
   "revision": "008f3e9768bd2d226e65ea69999c9f14"
 }, {
   "url": "include/js/vtlib.js",
-  "revision": "0d161c207df91ccaa62cbfbbbfcaf405"
+  "revision": "1e35ab27991c6679996be1bc5b8def6c"
 }, {
   "url": "include/components/checkboxrenderer.js",
   "revision": "30a720fa2d1634076e325d7cd721acf7"
@@ -9404,7 +9401,7 @@ precacheAndRoute([{
   "revision": "5794620d5e2be6ceccf5c7e8a3b203c7"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.js",
-  "revision": "5b0893299c562aaa3093fda08b1dae4b"
+  "revision": "d29531b749fc2a5d955fd47c696cc4c0"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.min.css",
   "revision": "59cedb42938c25aaabe90da607989d1c"
@@ -9449,22 +9446,22 @@ precacheAndRoute([{
   "revision": "93ba6c21f2a3038f2a0e5e4582acb536"
 }, {
   "url": "include/chart.js/Chart.bundle.js",
-  "revision": "fa54734fcf81ccf0f5d3940e146ea02e"
+  "revision": "cda1cb9319dc70d4cb41ce6c9164740b"
 }, {
   "url": "include/chart.js/Chart.bundle.min.js",
-  "revision": "86cc8cd0eb5d5a2b42c1fa46b922d338"
+  "revision": "2ef089205edd1cf2c7953f54ceca8670"
 }, {
   "url": "include/chart.js/Chart.css",
   "revision": "28dc89b92b7e59392029cfd2769027ab"
 }, {
   "url": "include/chart.js/Chart.js",
-  "revision": "aa0d045c7eefcedf60a4e27a6c613d19"
+  "revision": "ff2c8fa2e8f8c348765b8072a78ff161"
 }, {
   "url": "include/chart.js/Chart.min.css",
   "revision": "7d8693e997109f2aeac04066301679d6"
 }, {
   "url": "include/chart.js/Chart.min.js",
-  "revision": "b5c2301eb15826bf38c9bdcaa3bbe786"
+  "revision": "9b1ae20c4c7048d6e4a1b2e1aee7fb31"
 }, {
   "url": "include/chart.js/chartjs-plugin-colorschemes.js",
   "revision": "01e8f3b0edbcca291d30828f2a66c39c"
@@ -9515,34 +9512,34 @@ precacheAndRoute([{
   "revision": "15a73d14b6e91db79ae7847c2c0de1a1"
 }, {
   "url": "modules/com_vtiger_workflow/resources/createentitytaskscript.js",
-  "revision": "68964880f248a94114c5d000d74192e2"
+  "revision": "fc6646a77fe08a9ae143dc4384b6844f"
 }, {
   "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
-  "revision": "2246ea2e1c8d902d01ebeb1e70f2dd8c"
+  "revision": "f81b5a4264ea41a328d5db7c318851f1"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
-  "revision": "69310e3e47426f3cf39135b5ec268815"
+  "revision": "9ad990a1b14ea75c3d8e10ee616ce9c5"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
-  "revision": "2715ec6a92a2e830f6bebe677f73f19f"
+  "revision": "fc683735b7a78c8fc840d73220632b65"
 }, {
   "url": "modules/com_vtiger_workflow/resources/entitymethodtask.js",
   "revision": "43155535cd6da302c6ad1c34c077c642"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldexpressionpopup.js",
-  "revision": "1d93f6b5f3c0518faade3ab7d4e53a8e"
+  "revision": "ebe549a55c73d6944f383b6a1ea2c7a6"
 }, {
   "url": "modules/com_vtiger_workflow/resources/fieldvalidator.js",
-  "revision": "f60f12a21d27e5a9be6f5a6753b24114"
+  "revision": "898a540815812e279b7297b23b9d20f8"
 }, {
   "url": "modules/com_vtiger_workflow/resources/functional.js",
   "revision": "507e0618da87701f11b973970362e3cf"
 }, {
   "url": "modules/com_vtiger_workflow/resources/functionselect.js",
-  "revision": "156cde27c49277a61d14d130a22d43d4"
+  "revision": "a945a40adbcb3fd681a793f2dca07e6c"
 }, {
   "url": "modules/com_vtiger_workflow/resources/generateimagecode.js",
-  "revision": "bc1627f9b46bae11f03fde6958ff5809"
+  "revision": "5e5ab3e366035fbf7da2e20ca4edb606"
 }, {
   "url": "modules/com_vtiger_workflow/resources/generateReportWfTask.js",
   "revision": "8c30d1f6f296735bb822882e9016d03b"
@@ -9552,6 +9549,9 @@ precacheAndRoute([{
 }, {
   "url": "modules/com_vtiger_workflow/resources/jquery.timepicker.js",
   "revision": "cf04488523916947850d381c20427f50"
+}, {
+  "url": "modules/com_vtiger_workflow/resources/launchworkflowtask.js",
+  "revision": "90ce5ce19efe004446cb24df2ffebe6a"
 }, {
   "url": "modules/com_vtiger_workflow/resources/many2manyrelation.js",
   "revision": "8778e149e296ca91f9c4c941007fc17c"
@@ -9563,34 +9563,34 @@ precacheAndRoute([{
   "revision": "c00f6462ceeb5ab01f6cdf297e0e8735"
 }, {
   "url": "modules/com_vtiger_workflow/resources/style.css",
-  "revision": "d62dc231921aab35a4b55aabcc5fc96c"
+  "revision": "a92ca52bdb5b6d1350e3681bf93f4682"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatefieldstaskscript.js",
-  "revision": "708676228d0bacd72cb400b71c4e4759"
+  "revision": "dd2433dead063a2ba37f9c7c37e6190e"
 }, {
   "url": "modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js",
-  "revision": "fce8b262e036470ded2942628cc9bacb"
+  "revision": "6d9f81de1ff75ec596813151f2bd3034"
 }, {
   "url": "modules/com_vtiger_workflow/resources/upserttask.js",
-  "revision": "fe6a5c7c55e6ece2ed9a3f7c066bcb6f"
+  "revision": "553834ae8f29bd25ced0730f0c33e19e"
 }, {
   "url": "modules/com_vtiger_workflow/resources/vtigerwebservices.js",
-  "revision": "8acb4cd5b3583547db71a8345e8f667e"
+  "revision": "57eb8c551a6bceb48b08822fb48438d0"
 }, {
   "url": "modules/com_vtiger_workflow/resources/wfexeexp.js",
   "revision": "70312429e9d136159b33fd985ede4ff8"
 }, {
   "url": "modules/com_vtiger_workflow/resources/wfSendFile.js",
-  "revision": "849ebcabb1d9f991f67bfb5d7f6581a8"
+  "revision": "de6c79f2c04aee8faa49e60dead928e7"
 }, {
   "url": "modules/com_vtiger_workflow/resources/Whatsappckeditor.js",
   "revision": "fab39532561524488d757c60df5fedd7"
 }, {
   "url": "modules/com_vtiger_workflow/resources/whatsappworkflowtaskscript.js",
-  "revision": "622c712a323d8be873240868ebe37a96"
+  "revision": "4ba8509ee8c1b014e06df45653e562d5"
 }, {
   "url": "modules/com_vtiger_workflow/resources/workflowlistscript.js",
-  "revision": "c772b9cea1354ccf15f30bea58aa0fc2"
+  "revision": "8b5c1c927497e4a7203d89fb1d009eba"
 }, {
   "url": "modules/GlobalVariable/GlobalVariable.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
@@ -9614,7 +9614,7 @@ precacheAndRoute([{
   "revision": "a54846803de3cc786eec3d69f9ac2d38"
 }, {
   "url": "modules/GlobalVariable/tablesorter/themes/blue/style.css",
-  "revision": "5b98d0810fb7dbb9fcbc2362655f0dd7"
+  "revision": "8e07d2d467ad11f0e020d3936d71b856"
 }, {
   "url": "modules/GlobalVariable/tablesorter/themes/green/asc.png",
   "revision": "47d431b1524d523eae100b66b09babdc"
@@ -9641,7 +9641,7 @@ precacheAndRoute([{
   "revision": "e0d204f0961bb6aa4aa4fb79fa262025"
 }, {
   "url": "modules/evvtMenu/evvtMenu.css",
-  "revision": "3897d24cb8412c6c611bc55029d1f341"
+  "revision": "c0e3c989708fc430859a004175b9e59c"
 }, {
   "url": "modules/evvtMenu/evvtMenu.js",
   "revision": "49f1ad7e2f02a7581af0008dcc9ba4e4"
@@ -9665,7 +9665,7 @@ precacheAndRoute([{
   "revision": "9ed4669f524bec38319be63a2ee4ba26"
 }, {
   "url": "modules/MailManager/MailManager.js",
-  "revision": "a01c212d51878e9736d89a5269349e7f"
+  "revision": "d166fb54361a463cf82a8b5cd908708c"
 }, {
   "url": "modules/MailManager/MailManager.png",
   "revision": "1c045d808355b6ed581cd4971f3436f9"
@@ -9674,7 +9674,7 @@ precacheAndRoute([{
   "revision": "2225af5abe843f40dc29d79e0b1ea565"
 }, {
   "url": "modules/MailManager/resources/token-input-facebook.css",
-  "revision": "cfdd6597c7ee15d2808dedb313a625d9"
+  "revision": "a521fc5fcc6cc8dcf84edf3b26158805"
 }, {
   "url": "modules/Tooltip/Tooltip.js",
   "revision": "651680d2a9ffb37861fcac6d52d83f24"
@@ -9683,10 +9683,10 @@ precacheAndRoute([{
   "revision": "fc384192e4fa1a8cf362dd13fc9795b4"
 }, {
   "url": "modules/Tooltip/TooltipHeaderScript.js",
-  "revision": "dfe4e586e0044d9973576b5c5b79065b"
+  "revision": "37b386f55ebc37fa8c5818b3065d778c"
 }, {
   "url": "modules/Tooltip/TooltipSettings.js",
-  "revision": "62977aea32e2ee795041c7de5641e6dd"
+  "revision": "7d1c2445657e28da2cbcdebcace07c96"
 }, {
   "url": "modules/Accounts/Accounts.png",
   "revision": "f67a467753048c2b24896fea369f94c7"
@@ -9794,34 +9794,34 @@ precacheAndRoute([{
   "revision": "bad0f7ffab917e6e2a06966f0c91d277"
 }, {
   "url": "modules/Documents/Documents.js",
-  "revision": "5379a537fce7b3cba68f684538cbcec9"
+  "revision": "f54c5fc6d841cf0e879bf2d6e5a927f3"
 }, {
   "url": "modules/SalesOrder/SalesOrder.js",
-  "revision": "08044cebfd004af72f26432ff7cdd289"
+  "revision": "16492cb9a5e8791e2b8f443f5aedac2f"
 }, {
   "url": "modules/Settings/Settings.js",
   "revision": "1001255e02a066e3fab9687eb4f7ec79"
 }, {
   "url": "modules/Settings/profilePrivileges.js",
-  "revision": "d81d32d5d140b3eb65edf400f88cd8b6"
+  "revision": "e8735c467cb77eab04e51f77a14ca87b"
 }, {
   "url": "modules/Products/Productsslide.js",
   "revision": "721bd3d5367129defea7f6bd1bb8eee3"
 }, {
   "url": "modules/Products/multifile.js",
-  "revision": "2469a9d75b05798558ca746bff88ef36"
+  "revision": "d9dc85cdf658755d29cdb4704fea4882"
 }, {
   "url": "modules/Products/Products.js",
-  "revision": "ccfc370693479b43ba71ff20822c3199"
+  "revision": "5338644db016b93e59ed8f3b7765e3fe"
 }, {
   "url": "modules/ModComments/ModComments.js",
   "revision": "253c82414388480dd8d07ec5f899968d"
 }, {
   "url": "modules/ModComments/ModCommentsCommon.js",
-  "revision": "90cb31321c92bc6d3f1e73e5ecd0255a"
+  "revision": "842d921f10a4cdd8e17ee17b92a238e1"
 }, {
   "url": "modules/MsgTemplate/MsgTemplate.js",
-  "revision": "27d8e42cd919a523497573803ab57636"
+  "revision": "fa465d9a6a3e943b658f9db8aec162f5"
 }, {
   "url": "modules/ProjectTask/ProjectTask.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
@@ -9833,13 +9833,13 @@ precacheAndRoute([{
   "revision": "69636c3bb0f5569277b10c98016af69a"
 }, {
   "url": "modules/Emails/Emails.js",
-  "revision": "92590b1064f23d4416aefcf66dd83c31"
+  "revision": "c5f394c40d03b359242e795da97a9d45"
 }, {
   "url": "modules/Rss/Rss.js",
-  "revision": "9e93cf2f8dddbea42be801f31e1f73f3"
+  "revision": "72cbe52c78db93657e84d24dfadce955"
 }, {
   "url": "modules/PickList/DependencyPicklist.js",
-  "revision": "8b38e7858ab48183ba87dc24e60178bc"
+  "revision": "f2a574dba224e1925d8f0fb6df197a16"
 }, {
   "url": "modules/HelpDesk/HelpDesk.js",
   "revision": "7cdb17802602d0c07de8fbeb2d2efbc4"
@@ -9854,22 +9854,22 @@ precacheAndRoute([{
   "revision": "c663d6d8dfeba2b51a542382c8623087"
 }, {
   "url": "modules/cbCalendar/script.js",
-  "revision": "5ff84bd241541613e3a0105839d7daeb"
+  "revision": "88ee07afbeec094fc410097456f8bb1c"
 }, {
   "url": "modules/cbCalendar/cbCalendar.js",
-  "revision": "963d1c00b77948ab883373732ad89a8e"
+  "revision": "850ff484cc49801561ed0620843b7b19"
 }, {
   "url": "modules/cbQuestion/cbQuestion.js",
   "revision": "df1beb66383c404ca19595bfede77a1f"
 }, {
   "url": "modules/cbQuestion/resources/appendcontext.js",
-  "revision": "a75b50d829d5f8d0c5dcfb109dcd2a62"
+  "revision": "45f26b6647e4bb9c319c2623e23281f7"
 }, {
   "url": "modules/cbQuestion/resources/Builder.js",
-  "revision": "1d9e573b80d6a5eb3aaa66de961591c4"
+  "revision": "89d66d6f63eaae51d909868c78856e44"
 }, {
   "url": "modules/cbQuestion/resources/editbuilder.js",
-  "revision": "9560a14bbc77aea63bfc1dfc8349f1e6"
+  "revision": "4850e64dbe1340464e2b9d71738fcb8b"
 }, {
   "url": "modules/cbQuestion/resources/mermaid.min.js",
   "revision": "2cb9770b79c455efcb81bc3f58e35ef6"
@@ -9908,13 +9908,13 @@ precacheAndRoute([{
   "revision": "d8ea1290c611022fce93863c19c60b5a"
 }, {
   "url": "modules/Portal/Portal.js",
-  "revision": "01b10c9bbf410ef98cc023a2821412e1"
+  "revision": "e927ef1579f603e81f2fa3a80201d5fa"
 }, {
   "url": "modules/ProjectMilestone/ProjectMilestone.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
 }, {
   "url": "modules/Leads/Leads.js",
-  "revision": "bdb21e42576bc67c93cf41a6742bda52"
+  "revision": "bd824c092fa3ac7e497908067a598afb"
 }, {
   "url": "modules/WSAPP/WSAPP.js",
   "revision": "36b3093ded85fbdb78336ed100dae8ac"
@@ -9959,13 +9959,13 @@ precacheAndRoute([{
   "revision": "07af75347840dd7440241b543551a284"
 }, {
   "url": "modules/cbMap/generatemap/DecisionTable.js",
-  "revision": "d3ce497440169e6df9dad29baf5fdd0a"
+  "revision": "7c6a0066ea3fb375f23412a076d5063a"
 }, {
   "url": "modules/cbMap/generatemap/DetailViewLayoutMapping.js",
-  "revision": "682ce45325147f95e931f7596bdb6883"
+  "revision": "d333d135915576c76507e5b2f47b3729"
 }, {
   "url": "modules/cbMap/generatemap/DuplicateRelations.js",
-  "revision": "66a11b08efdeabf8a4e0d0bb3632baaa"
+  "revision": "a2c24e60f601be44f6d8a25b0a5e8431"
 }, {
   "url": "modules/cbTermConditions/cbTermConditions.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
@@ -9974,7 +9974,7 @@ precacheAndRoute([{
   "revision": "36804a710b0d90fecd80178cc5f6f0a2"
 }, {
   "url": "modules/Invoice/Invoice.js",
-  "revision": "1b3fe21f81e26efd0ebc450567a49667"
+  "revision": "9fc40d1e38d6a707c4b0a3c08e464885"
 }, {
   "url": "modules/CobroPago/CobroPago.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
@@ -9986,7 +9986,7 @@ precacheAndRoute([{
   "revision": "cde88c33da015b3b7e277c8906c50457"
 }, {
   "url": "modules/Home/Homestuff.js",
-  "revision": "93d9fa4ef0d77c580a19d848f257a19d"
+  "revision": "15e47a85456e109ca860fd85ec223d13"
 }, {
   "url": "modules/Home/js/HelpMeNow.js",
   "revision": "3facd26fc8ea33e48ec5c19fcef2472d"
@@ -9998,7 +9998,7 @@ precacheAndRoute([{
   "revision": "c822e17c71c3f3e039528c4311f4cbae"
 }, {
   "url": "modules/ModTracker/ModTrackerCommon.js",
-  "revision": "0142cfef4d787e344e7c425124d80f4e"
+  "revision": "2c3a5d0e3cfb7010482b1afed64a4746"
 }, {
   "url": "modules/ModTracker/language/de_de.js",
   "revision": "bdafc8809c554dd1490838aa8132e6c2"
@@ -10028,13 +10028,13 @@ precacheAndRoute([{
   "revision": "6531a4eabc9036cd9898b785671f2f2c"
 }, {
   "url": "modules/ModTracker/language/pt_br.js",
-  "revision": "07c5965a57fb166f85618202540443d9"
+  "revision": "068213bd61bee2aeb53b4b95f6b72dc8"
 }, {
   "url": "modules/ModTracker/language/ro_ro.js",
   "revision": "bdafc8809c554dd1490838aa8132e6c2"
 }, {
   "url": "modules/SMSNotifier/workflow/VTSMSTask.js",
-  "revision": "8120de0e05492fe510dd0d89ae500002"
+  "revision": "4e628b4202dd68d3887196edfef07704"
 }, {
   "url": "modules/SMSNotifier/SMSNotifier.js",
   "revision": "3264e49d554e0ae77bd1eb7f58d3b2c1"
@@ -10046,13 +10046,13 @@ precacheAndRoute([{
   "revision": "2bc5785bbc8662d43972828563d8e11a"
 }, {
   "url": "modules/Contacts/Contacts.js",
-  "revision": "c1b4a7ca39e33a21739bd848a8f9b48d"
+  "revision": "26560f6da689eaa78e22f13f70aca335"
 }, {
   "url": "modules/Dashboard/Dashboard.js",
-  "revision": "8ab2b632de69afd4fefcd5daccab5af6"
+  "revision": "f7fa08f24ea66f67c5b455f7562ad998"
 }, {
   "url": "modules/Services/Services.js",
-  "revision": "6aea15159a09cc39b9e8330ad777e35b"
+  "revision": "dbc6730984e47cdd99f254cd5a58a1ee"
 }, {
   "url": "modules/Vendors/Vendors.js",
   "revision": "29077a91b5317da8237274d0436bbc73"
@@ -10064,16 +10064,16 @@ precacheAndRoute([{
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
 }, {
   "url": "modules/Users/Users.js",
-  "revision": "e9be4cf50f50eedc61a491219ac3fc86"
+  "revision": "aba71d0bc4a7c39fed8e8e9e421d5b35"
 }, {
   "url": "modules/Users/ChangePassword.js",
-  "revision": "15bd7822790e2fcd520ed18cdb019883"
+  "revision": "19f8daa8f0800aac710c871199ea47d4"
 }, {
   "url": "modules/Utilities/Utilities.js",
   "revision": "18844ee70d6993cd1e9bbb8bb412d097"
 }, {
   "url": "modules/Import/resources/ImportStep2.js",
-  "revision": "45c632cf97d1f03c7f6805c1f78ae0a7"
+  "revision": "f98f9eeb54cd2b95375d74c1af6a9f14"
 }, {
   "url": "modules/Import/resources/Import.js",
   "revision": "d5e127679f8ff08f74ca1168618c310d"
@@ -10082,22 +10082,22 @@ precacheAndRoute([{
   "revision": "65682db92a471ba46f12737f6f6b3e4d"
 }, {
   "url": "modules/Reports/Reports.js",
-  "revision": "29a48bc56aef2789fce03f0b3a5601fd"
+  "revision": "366249ae160c02cbfa0a012edd559b49"
 }, {
   "url": "modules/Reports/ReportsSteps.js",
   "revision": "dac7c3f4b013798df0875b1450e27bc1"
 }, {
   "url": "modules/PriceBooks/PriceBooks.js",
-  "revision": "1975335374a344be4e3f98dbfe6756b4"
+  "revision": "3ee9922383fb439333f3604755bd4c1b"
 }, {
   "url": "modules/Quotes/Quotes.js",
-  "revision": "fd94d449f05b6edf97b677620d131ec1"
+  "revision": "c2bc50ca831f1b6183c8f806d0c230f6"
 }, {
   "url": "modules/PurchaseOrder/PurchaseOrder.js",
   "revision": "c4d6beb74ea9772d82bdde6a243a16fd"
 }, {
   "url": "include/Webservices/WSClient.js",
-  "revision": "ce5b9c7843df949930c6521cb685b0bd"
+  "revision": "062def9baf01f014c4baf6568704316a"
 }, {
   "url": "include/freetag/jquery.tagcanvas.js",
   "revision": "0be5cdb88030adc8bdeeaef233fdb1a4"

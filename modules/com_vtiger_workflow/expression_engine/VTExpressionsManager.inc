@@ -132,6 +132,7 @@ class VTExpressionsManager {
 			'time_diffweekdays(a)' => 'time_diffweekdays(a)',
 			'holidaydifference' => 'holidaydifference(startDate, endDate, include_saturdays, holidays)',
 			'networkdays' => 'networkdays(startDate, endDate, holidays)',
+			'isholidaydate' => 'isholidaydate(date, saturdayisholiday, holidays)',
 			'time_diff(a,b)' => 'time_diff(a,b)',
 			'time_diff(a)' => 'time_diff(a)',
 			'aggregate_time' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
@@ -175,6 +176,7 @@ class VTExpressionsManager {
 			'getCurrentUserID' => 'getCurrentUserID()',
 			'getCurrentUserName' => 'getCurrentUserName({full})',
 			'getCurrentUserField' => 'getCurrentUserField(fieldname)',
+			'getCRMIDFromWSID' => 'getCRMIDFromWSID(id)',
 			'getEntityType'=>'getEntityType(field)',
 			'getimageurl'=>'getimageurl(field)',
 			'getLatitude' => 'getLatitude(address)',
@@ -192,6 +194,8 @@ class VTExpressionsManager {
 			'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 			'getIDof' => 'getIDof(module, searchon, searchfor)',
+			'getRelatedIDs' => 'getRelatedIDs(module)',
+			'getFieldsOF' => 'getFieldsOF(id, module, fields)',
 			'getFromContext' => 'getFromContext(variablename)',
 			'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
 			'setToContext' => 'setToContext(variablename, value)',
@@ -217,6 +221,7 @@ class VTExpressionsManager {
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
 			'min' => 'min(fieldname)',
 			'max' => 'max(fieldname)',
+			'average' => 'average(number,...)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

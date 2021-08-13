@@ -28,6 +28,16 @@ function changeModule() {
 }
 
 /**
+ * this function is used to launch a clean picklist process
+ * @param string module - the module name
+ * @param string fieldname - the name of the field
+ */
+ function fixPicklistValues(module, fieldname) {
+	window.location = 'index.php?action=PickListAjax&module=PickList&file=PickListAction&fld_module='+encodeURIComponent(module)
+		+'&fieldname='+encodeURIComponent(fieldname)+'&mode=cleanpicklist';
+}
+
+/**
  * this function is used to assign picklist values to role
  * @param string module - the module name
  * @param string fieldname - the name of the field
@@ -179,7 +189,7 @@ function validateAdd(fieldname, module) {
 
 	pickArr = pickArr.concat(new_vals);
 	pickArr = pickArr.concat(nonEdit);
-	if (checkDuplicatePicklistValues(pickArr) == true) {
+	if (checkDuplicatePicklistValues(pickArr)) {
 		pickAdd(module, fieldname);
 	}
 }
@@ -208,8 +218,7 @@ function checkDuplicatePicklistValues(arr) {
  * @param string fieldname - the picklist field name
  */
 function pickAdd(module, fieldname) {
-	var arr = new Array();
-	arr = document.getElementById('add_picklist_values').value.split('\n');
+	var arr = document.getElementById('add_picklist_values').value.split('\n');
 	var trimmedArr = new Array();
 	for (var i=0, j=0; i<arr.length; i++) {
 		if (trim(arr[i]) != '') {
@@ -223,7 +232,7 @@ function pickAdd(module, fieldname) {
 	var roleValues = '';
 	if (roles.selectedIndex > -1) {
 		for (i=0, j=0; i<roles.length; i++) {
-			if (roles[i].selected == true) {
+			if (roles[i].selected) {
 				arr[j++] = roles[i].value;
 			}
 		}
@@ -345,7 +354,7 @@ function validateDelete(fieldname, module) {
 			return false;
 		} else {
 			for (var j=0, k=0; j<node.length; j++) {
-				if (node.options[j].selected == true) {
+				if (node.options[j].selected) {
 					arr[k++] = encodeURIComponent((node.options[j].value).replace(/(")/ig, '\\$1'));
 				}
 			}
@@ -409,7 +418,7 @@ function moveRight() {
 	var leftElem = document.getElementById('availList');
 
 	for (i=0; i<leftElem.length; i++) {
-		if (leftElem.options[i].selected==true) {
+		if (leftElem.options[i].selected) {
 			var rowFound=false;
 			//check if the value already exists
 			for (var j=0; j<rightElem.length; j++) {
@@ -421,7 +430,7 @@ function moveRight() {
 			}
 
 			//if the value does not exist then create it and set it as selected
-			if (rowFound!=true) {
+			if (!rowFound) {
 				var newColObj=document.createElement('OPTION');
 				newColObj.value=leftElem.options[i].value;
 				newColObj.innerHTML=leftElem.options[i].innerHTML;
@@ -440,7 +449,7 @@ function removeValue() {
 	var elem = document.getElementById('selectedColumns');
 	if (elem.options.selectedIndex>=0) {
 		for (var i=0; i<elem.options.length; i++) {
-			if (elem.options[i].selected == true) {
+			if (elem.options[i].selected) {
 				elem.removeChild(elem.options[i--]);
 			}
 		}
@@ -454,7 +463,7 @@ function moveUp() {
 	var elem = document.getElementById('selectedColumns');
 	if (elem.options.selectedIndex>=0) {
 		for (var i=1; i<elem.options.length; i++) {
-			if (elem.options[i].selected == true) {
+			if (elem.options[i].selected) {
 				//swap with one up
 				var first = elem.options[i-1];
 				var second = elem.options[i];
@@ -479,7 +488,7 @@ function moveDown() {
 	var elem = document.getElementById('selectedColumns');
 	if (elem.options.selectedIndex>=0) {
 		for (var i=elem.options.length-2; i>=0; i--) {
-			if (elem.options[i].selected == true) {
+			if (elem.options[i].selected) {
 				//swap with one down
 				var first = elem.options[i+1];
 				var second = elem.options[i];
@@ -519,7 +528,7 @@ function saveAssignedValues(moduleName, fieldName, roleid) {
 	if (node != null) {
 		if (node.selectedIndex > -1) {
 			for (var i=0, j=0; i<node.options.length; i++) {
-				if (node.options[i].selected == true) {
+				if (node.options[i].selected) {
 					otherRoles[j++] = node.options[i].value;
 				}
 			}

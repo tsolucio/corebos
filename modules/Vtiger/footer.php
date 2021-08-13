@@ -29,7 +29,7 @@ if ($calculate_response_time) {
 </div>
 <div class="slds-col slds-size_1-of-2 cblds-t-align_right">
 <span class='cblds-t-align_right small slds-p-right_small'>
-	&copy; 2004-<?php echo date('Y'); ?> <a href='<?php echo $coreBOS_uiapp_url; ?>' target='_blank'><?php echo $coreBOS_uiapp_companyname; ?></a>
+	&copy; 2004-<?php echo date('Y'); ?> <a href='<?php echo $coreBOS_uiapp_url; ?>' target='_blank' rel='noopener'><?php echo $coreBOS_uiapp_companyname; ?></a>
 </span>
 </div>
 </footer>

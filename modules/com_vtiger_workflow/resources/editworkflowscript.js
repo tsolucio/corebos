@@ -209,9 +209,9 @@ function editworkflowscript($, conditions) {
 		var op = {
 			string:['is', 'contains', 'does not contain', 'starts with', 'ends with', 'has changed', 'is empty', 'is not empty', 'exists', 'does not start with', 'does not end with', 'was'],
 			number:['equal to', 'less than', 'greater than', 'does not equal', 'less than or equal to', 'greater than or equal to', 'has changed', 'exists', 'was'],
-			value:['is', 'is not', 'has changed', 'has changed to', 'is empty', 'is not empty', 'exists', 'was', 'has this as nth child'],
+			value:['is', 'is not', 'contains', 'does not contain', 'has changed', 'has changed to', 'is empty', 'is not empty', 'exists', 'was', 'has this as nth child'],
 			multipicklist:['is', 'is not', 'was'],
-			date:['is', 'is not', 'has changed', 'has changed to', 'between', 'before', 'after', 'is today', 'less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later', 'exists', 'was'],
+			date:['is', 'is not', 'has changed', 'has changed to', 'between', 'before', 'after', 'is today', 'less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later', 'exists', 'was', 'monthday'],
 			datetime:['is', 'is not', 'has changed', 'has changed to', 'less than hours before', 'less than hours later', 'more than hours before', 'more than hours later', 'equal to', 'less than', 'greater than', 'does not equal', 'less than or equal to', 'greater than or equal to', 'exists', 'was']
 		};
 		var mapping = [
@@ -241,14 +241,14 @@ function editworkflowscript($, conditions) {
 				alert_arr.DOES_NOT_END_WITH, alert_arr.LBL_WAS],
 			number:[alert_arr.LBL_EQUAL_TO, alert_arr.LBL_LESS_THAN, alert_arr.LBL_GREATER_THAN, alert_arr.LBL_DOEST_NOT_EQUAL,
 				alert_arr.LBL_LESS_THAN_OR_EQUAL_TO, alert_arr.LBL_GREATER_THAN_OR_EQUAL_TO, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_EXISTS, alert_arr.LBL_WAS],
-			value:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY,
+			value:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_CONTAINS, alert_arr.LBL_DOES_NOT_CONTAIN, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY,
 				alert_arr.LBL_EXISTS, alert_arr.LBL_WAS],
-			reference:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY,
+			reference:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_CONTAINS, alert_arr.LBL_DOES_NOT_CONTAIN, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY,
 				alert_arr.LBL_EXISTS, alert_arr.LBL_WAS, alert_arr.HAS_THIS_AS_NTH_CHILD],
 			date:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO,
 				alert_arr.LBL_BETWEEN, alert_arr.LBL_BEFORE, alert_arr.LBL_AFTER, alert_arr.LBL_IS_TODAY, alert_arr.LBL_LESS_THAN_DAYS_AGO,
 				alert_arr.LBL_MORE_THAN_DAYS_AGO, alert_arr.LBL_IN_LESS_THAN, alert_arr.LBL_IN_MORE_THAN, alert_arr.LBL_DAYS_AGO, alert_arr.LBL_DAYS_LATER,
-				alert_arr.LBL_EXISTS, alert_arr.LBL_WAS],
+				alert_arr.LBL_EXISTS, alert_arr.LBL_WAS, alert_arr.LBL_MONTHDAY],
 			datetime:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO,
 				alert_arr.LBL_LESS_THAN_HOURS_BEFORE, alert_arr.LBL_LESS_THAN_HOURS_LATER, alert_arr.LBL_MORE_THAN_HOURS_BEFORE, alert_arr.LBL_MORE_THAN_HOURS_LATER, alert_arr.LBL_EQUAL_TO, alert_arr.LBL_LESS_THAN, alert_arr.LBL_GREATER_THAN, alert_arr.LBL_DOEST_NOT_EQUAL,
 				alert_arr.LBL_LESS_THAN_OR_EQUAL_TO, alert_arr.LBL_GREATER_THAN_OR_EQUAL_TO, alert_arr.LBL_EXISTS, alert_arr.LBL_WAS]
@@ -366,7 +366,7 @@ function editworkflowscript($, conditions) {
 		resetGroupJoinCondition(groupno);
 		let grpbtns = document.querySelectorAll('button[id^="save_conditions_add_"]');
 		let totgrp = grpbtns.length;
-		Array.from(grpbtns).map(x => x.style.visibility='hidden');
+		Array.from(grpbtns).forEach(x => x.style.visibility='hidden');
 		if (totgrp>0) {
 			grpbtns[totgrp-1].style.visibility = 'visible';
 		} else {
@@ -443,7 +443,7 @@ function editworkflowscript($, conditions) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];
@@ -587,7 +587,7 @@ function editworkflowscript($, conditions) {
 							$('#save_conditions_add_'+groupid).bind('click', function () {
 								addCondition(groupno, condno++);
 							});
-							Array.from(document.querySelectorAll('button[id^="save_conditions_add_"]')).map(x => x.style.visibility='hidden');
+							Array.from(document.querySelectorAll('button[id^="save_conditions_add_"]')).forEach(x => x.style.visibility='hidden');
 							document.getElementById('save_conditions_add_'+groupid).style.visibility = 'visible';
 
 							var rem_group_img = $('#save_condition_group_'+groupid+'_remove');

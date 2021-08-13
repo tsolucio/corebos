@@ -141,7 +141,6 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 function fqneqProcessConditions($conditions, $queryGenerator, $mainModule, $user) {
 	$glue = $col = $op = $val = '';
 	$havecol = $haveop = $haveval = false;
-	//var_dump($conditions);
 	foreach ($conditions as $condition) {
 		switch ($condition['expr_type']) {
 			case ExpressionType::BRACKET_EXPRESSION:
@@ -176,7 +175,6 @@ function fqneqProcessConditions($conditions, $queryGenerator, $mainModule, $user
 				break;
 		}
 		if ($havecol && $haveop && $haveval) {
-			//var_dump($col.' '.$op.' '.$val);
 			__FQNExtendedQueryAddCondition($queryGenerator, $col.' '.$op.' '.$val, $glue, $mainModule, $col, $user);
 			$col = $op = $val = '';
 			$havecol = $haveop = $haveval = false;
@@ -533,7 +531,6 @@ function __FQNExtendedQueryAddCondition($queryGenerator, $condition, $glue, $mai
 				$found = true;
 				if ($fname=='id') {
 					list($wsid,$val) = explode('x', $val);
-					//$fname = $relmeta->getObectIndexColumn();
 				}
 				$fmodreffld = __FQNExtendedQueryGetRefFieldForModule($fromrfs, $fmod, $reffld);
 				$queryGenerator->addReferenceModuleFieldCondition($fmod, $fmodreffld, $fname, $val, $op, $glue);

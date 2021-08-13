@@ -18,9 +18,9 @@
 		{if $RECORD_ID}
 			<td style="padding-left:10px;" align="left" width=10%><input class="crmbutton small save" type="button" value="{$APP.LBL_BACK}" onclick="window.history.back();"/></td>
 		{/if}
-		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAll('{$RETURN_MODULE}',image_pth) && document.getElementById('closewindow').value=='true')window.close();"/></td>
+		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAll('{$RETURN_MODULE}') && document.getElementById('closewindow').value=='true')window.close();"/></td>
 	{elseif $SELECT eq 'enable' && $POPUPTYPE eq 'inventory_service'}
-		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAllServices('{$RETURN_MODULE}',image_pth) && document.getElementById('closewindow').value=='true')window.close();"/></td>
+		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAllServices('{$RETURN_MODULE}') && document.getElementById('closewindow').value=='true')window.close();"/></td>
 	{else}
 		<td>&nbsp;</td>
 	{/if}

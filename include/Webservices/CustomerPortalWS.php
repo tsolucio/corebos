@@ -379,11 +379,9 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 			$oCustomView->list_fields = $focus->list_fields;
 			$oCustomView->list_fields_name = $focus->list_fields_name;
 		}
-		if ($oCustomView) {
-			if (isset($oCustomView->list_fields)) {
-				$focus->list_fields = $oCustomView->list_fields;
-				$focus->list_fields_name = $oCustomView->list_fields_name;
-			}
+		if ($oCustomView && isset($oCustomView->list_fields)) {
+			$focus->list_fields = $oCustomView->list_fields;
+			$focus->list_fields_name = $oCustomView->list_fields_name;
 		}
 
 		// Remove fields which are made inactive
@@ -565,10 +563,10 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $company
 			$condition = 'vtiger_account.accountid'.(is_array($accountId) ? ' IN ('.implode(',', $accountId).')' : '='.$accountId);
 			break;
 		case 'Products':
-			//$condition = "related.Contacts='".$contactId."'";
+			// we could set the condition to show only products related to the contact
 			break;
 		case 'Services':
-			//$condition = "related.Contacts='".$contactId."'";
+			// we could set the condition to show only Services related to the contact
 			break;
 		case 'Faq':
 			$condition = "faqstatus='Published'";
@@ -645,10 +643,8 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
-		if ($oCv) {
-			if (isset($oCv->list_fields_name)) {
-				$fieldname = $oCv->list_fields_name[$name];
-			}
+		if ($oCv && isset($oCv->list_fields_name)) {
+			$fieldname = $oCv->list_fields_name[$name];
 		}
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
@@ -673,7 +669,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
 				WHERE vtiger_field.tabid=? and vtiger_field.presence in (0,2)
-				AND vtiger_profile2field.visible = 0
 				AND vtiger_profile2field.visible = 0
 				AND vtiger_def_org_field.visible = 0
 				AND vtiger_profile2field.profileid IN ('. generateQuestionMarks($profileList) .')
@@ -712,12 +707,10 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 			//Getting the entityid
 			if ($module != 'Users') {
 				$entity_id = $adb->query_result($list_result, $i, 'crmid');
-				//$owner_id = $adb->query_result($list_result, $i, 'smownerid');
 			} else {
 				$entity_id = $adb->query_result($list_result, $i, 'id');
 			}
 			foreach ($focus->list_fields as $name => $tableinfo) {
-				$fieldname = $focus->list_fields_name[$name];
 				if ($oCv) {
 					if (isset($oCv->list_fields_name)) {
 						$fieldname = $oCv->list_fields_name[$name];
@@ -749,10 +742,8 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 				}
 				if ($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field) || $fieldname == '') {
 					if ($fieldname == '') {
-						//$table_name = '';
 						$column_name = '';
 						foreach ($tableinfo as $colname) {
-							//$table_name = $tablename;
 							$column_name = $colname;
 						}
 						$value = $adb->query_result($list_result, $i, $column_name);
@@ -794,41 +785,13 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							}
 							if ($fieldname == 'filename') {
 								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
-								if ($downloadtype == 'I') {
-									$fld_value = $value;
-									$ext_pos = strrpos($fld_value, '.');
-									$ext = substr($fld_value, $ext_pos + 1);
-									$ext = strtolower($ext);
-									if ($value != '') {
-										if ($ext == 'bin' || $ext == 'exe' || $ext == 'rpm') {
-											$fileicon = "<img src='" . vtiger_imageurl('fExeBin.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										} elseif ($ext == 'jpg' || $ext == 'gif' || $ext == 'bmp') {
-											$fileicon = "<img src='" . vtiger_imageurl('fbImageFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										} elseif ($ext == 'txt' || $ext == 'doc' || $ext == 'xls') {
-											$fileicon = "<img src='" . vtiger_imageurl('fbTextFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										} elseif ($ext == 'zip' || $ext == 'gz' || $ext == 'rar') {
-											$fileicon = "<img src='" . vtiger_imageurl('fbZipFile.gif', $theme) . "' hspace='3' align='absmiddle'	border='0'>";
-										} else {
-											$fileicon = "<img src='" . vtiger_imageurl('fbUnknownFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										}
-									}
-								} elseif ($downloadtype == 'E') {
-									if (trim($value) != '') {
-										$fld_value = $value;
-										$fileicon = "<img src='" . vtiger_imageurl('fbLink.gif', $theme) . "' alt='" . getTranslatedString('LBL_EXTERNAL_LNK', $module)
-											."' title='" . getTranslatedString('LBL_EXTERNAL_LNK', $module) . "' hspace='3' align='absmiddle' border='0'>";
-									} else {
-										$fld_value = '--';
-										$fileicon = '';
-									}
-								} else {
-									$fld_value = ' --';
-									$fileicon = '';
+								$fld_value = $value;
+								$fileicon = FileField::getFileIcon($value, $downloadtype, $module);
+								if ($fileicon=='') {
+									$fld_value = '--';
 								}
-
 								$file_name = $adb->query_result($list_result, $i, 'filename');
 								$notes_id = $adb->query_result($list_result, $i, 'crmid');
-								//$folder_id = $adb->query_result($list_result, $i, 'folderid');
 								$download_type = $adb->query_result($list_result, $i, 'filelocationtype');
 								$file_status = $adb->query_result($list_result, $i, 'filestatus');
 								$fileidQuery = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
@@ -840,7 +803,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 											.getTranslatedString('LBL_DOWNLOAD_FILE', $module) . "' onclick='javascript:dldCntIncrease($notes_id);'>"
 											.textlength_check($fld_value) . '</a>';
 									} elseif ($download_type == 'E') {
-										$fld_value = "<a target='_blank' href='$file_name' onclick='javascript:dldCntIncrease($notes_id);' title='"
+										$fld_value = "<a target='_blank' rel='noopener' href='$file_name' onclick='javascript:dldCntIncrease($notes_id);' title='"
 											.getTranslatedString('LBL_DOWNLOAD_FILE', $module) . "'>" . textlength_check($fld_value) . '</a>';
 									} else {
 										$fld_value = ' --';
@@ -851,27 +814,13 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							if ($fieldname == 'filesize') {
 								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
 								if ($downloadtype == 'I') {
-									$filesize = $value;
-									if ($filesize < 1024) {
-										$value = $filesize . ' B';
-									} elseif ($filesize > 1024 && $filesize < 1048576) {
-										$value = round($filesize / 1024, 2) . ' KB';
-									} elseif ($filesize > 1048576) {
-										$value = round($filesize / (1024 * 1024), 2) . ' MB';
-									}
+									$value = FileField::getFileSizeDisplayValue($value);
 								} else {
 									$value = ' --';
 								}
 							}
 							if ($fieldname == 'filestatus') {
-								$filestatus = $value;
-								if ($filestatus == 1) {
-									$value = getTranslatedString('yes', $module);
-								} elseif ($filestatus == 0) {
-									$value = getTranslatedString('no', $module);
-								} else {
-									$value = ' --';
-								}
+								$value = BooleanField::getBooleanDisplayValue($value, $module);
 							}
 							if ($fieldname == 'filetype') {
 								$downloadtype = $adb->query_result($list_result, $i, 'filelocationtype');
@@ -902,13 +851,10 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							$value = $product_id;
 						} elseif ($name == 'Account Name') {
 							if ($module == 'Accounts') {
-								$account_id = $adb->query_result($list_result, $i, 'crmid');
-								//$account_name = getAccountName($account_id);
 								$account_name = textlength_check($adb->query_result($list_result, $i, 'accountname'));
 								$value = $account_name;
 							} elseif ($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') {
 								//Potential,Contacts,Invoice,SalesOrder & Quotes records sort by Account Name
-								//$accountname = textlength_check($adb->query_result($list_result,$i,'accountname'));
 								$accountid = $adb->query_result($list_result, $i, 'accountid');
 								$accountname = textlength_check(getAccountName($accountid));
 								$value = $accountname;
@@ -1031,7 +977,7 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 		$fieldsname = $ei['fieldname'];
 		$wherefield = $ei['fieldname']." $op ?";
 		$params = array($term);
-		if (!(strpos($fieldsname, ',') === false)) {
+		if (strpos($fieldsname, ',')) {
 			$fieldlists = explode(',', $fieldsname);
 			$fieldsname = 'concat(';
 			$fieldsname = $fieldsname . implode(",' ',", $fieldlists);
@@ -1163,7 +1109,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		}
 	}
 
-	$prodcondquery .= count($prodconds) > 0 ? 'AND (' : '';
+	$prodcondquery .= empty($prodconds) ? '' : 'AND (';
 	for ($i=0; $i < count($prodconds); $i++) {
 		if ($i % 2 == 0) {
 			$prodcondoperation = $prodconds[$i]['field'] . ' ' . $opmap[$prodconds[$i]['operator']] . ' ' . $prodconds[$i]['value'];
@@ -1172,9 +1118,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			$prodcondquery .= ' ' . $prodconds[$i] . ' ';
 		}
 	}
-	$prodcondquery .= count($prodconds) > 0 ? ')' : '';
+	$prodcondquery .= empty($prodconds) ? '' : ')';
 
-	$servcondquery .= count($servconds) > 0 ? 'AND (' : '';
+	$servcondquery .= empty($servconds) ? '' : 'AND (';
 	for ($i=0; $i < count($servconds); $i++) {
 		if ($i % 2 == 0) {
 			$servcondoperation = $servconds[$i]['field'] . ' ' . $opmap[$servconds[$i]['operator']] . ' ' . $servconds[$i]['value'];
@@ -1183,7 +1129,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			$servcondquery .= ' ' . $servconds[$i] . ' ';
 		}
 	}
-	$servcondquery .= count($servconds) > 0 ? ')' : '';
+	$servcondquery .= empty($servconds) ? '' : ')';
 	$prod_aliasquery = '';
 	$modProducts = CRMEntity::getInstance('Products');
 	$crmTableProducts = $modProducts->crmentityTable;
@@ -1524,7 +1470,6 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 		}
 	}
 	VTWS_PreserveGlobal::flush();
-	$final=array('data'=>$respuesta,'total'=>$total);
-	return $final;
+	return array('data' => $respuesta, 'total' => $total);
 }
 ?>

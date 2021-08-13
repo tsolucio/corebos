@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 12/04/2021 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 29/07/2021 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -875,7 +875,7 @@ $app_strings = array (
 'MSG_VTIGERTEAM'=>'Equipe CRM',
 'MSG_IS_NOT_UPLOADED'=>'não foi atualizado. São permitidos arquivos do tipo - jpeg, png, jpg, pjpeg, x-png or gif',
 'MSG_IMAGE_ERROR'=>'Imagem não encontrada',
-'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
+'LBL_IMAGESECURITY_ERROR' => 'Imagem inválida: contém conteúdo potencialmente malicioso',
 'Information'=>'Informação',
 'Address'=>'Endereço',
 'Custom Information'=>'Informação customizada',
@@ -915,7 +915,7 @@ $app_strings = array (
 'Last Modified By' => 'Modificado por último por',
 'Created By' => 'Criado por',
 'createdby' => 'Criado por',
-'Lead Status'=>'Estágio lead',
+'Lead Status'=>'Status lead',
 'Lead Source'=>'Fonte lead',
 'Quote No'=>'No cotação',
 'Yahoo Id'=>'ID Yahoo',
@@ -962,6 +962,8 @@ $app_strings = array (
 'Mailing Po Box' => 'Cx. Postal correspondência',
 'Other Po Box' => 'Cx. Postal alternativo',
 'Image' => 'Imagem',
+'Unknown' => 'Desconhecido',
+'Compressed' => 'Compactado',
 
 //Export Records STARTS--->
 'LBL_EXPORT_TYPE_1'=>'Exportar Tipo1:',
@@ -970,9 +972,12 @@ $app_strings = array (
 'LBL_EXPORT_RECORDS'=>'Tipos Registros para Exportar',
 'LBL_WITH_SEARCH'=>'Exportar com os registros da pesquisa',
 'LBL_WITHOUT_SEARCH'=>'Exportar sem os registros da pesquisa',
-'LBL_SEARCH_CRITERIA_COLUMNS'=>'Export Filter Columns',
-'LBL_VISIBLE_COLUMNS'=>'Export only visible columns',
+'LBL_SEARCH_CRITERIA_COLUMNS'=>'Exportar colunas do filtro',
+'LBL_VISIBLE_COLUMNS'=>'Exportar apenas colunas visíveis',
 'LBL_ALL_DATA'=>'Exportar todos os dados',
+'LBL_EXPORT_FORMAT' => 'Formato de exportação',
+'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 'LBL_DATA_IN_CURRENT_PAGE'=>'Exportar dados na página atual',
 'LBL_ONLY_SELECTED_RECORDS'=>'Exportar registros selecionados',
 'LBL_YES'=>'Sim',
@@ -1177,8 +1182,8 @@ $app_strings = array (
 'LBL_CALLER_INFORMATION'=>'Informação de quem liga',
 'LBL_CALLER_NUMBER'=>'Número :',
 'LBL_CALLER_NAME'=>'Nome :',
-'LBL_VIEW_CONTACT' => 'View Contact',
-'LBL_CLICK_NOTIFICATION_TO'=> 'Click Notification to ',
+'LBL_VIEW_CONTACT' => 'Ver contato',
+'LBL_CLICK_NOTIFICATION_TO'=> 'Clique em notificação para ',
 
 // Module Sequence Numbering
 'LBL_DUPLICATE' => 'Duplicar',
@@ -1246,7 +1251,7 @@ $app_strings = array (
 'CANNOT_CONVERT' => 'Não pode ser convertido',
 
 // For note link on the detailview
-'LBL_ADD_NOTE'=>'Adicionar documento',
+'LBL_ADD_NOTE'=>'Anexar documento',
 
 // For Layout Editor
 'LBL_UNHIDE_FIELDS'=>'Reexibir campos',
@@ -1312,7 +1317,7 @@ $app_strings = array (
 'LBL_DESELECT_ALL' => 'Desmarcar todos',
 'LBL_RECORDS_IN' => 'registros em',
 'LBL_FOLDER' => 'pasta',
-'Add Event' => 'Adicionar evento',
+'Add Event' => 'Adicionar tarefa',
 'Create Invoice' => 'Cria fatura',
 'Send Email With PDF' => 'Enviar e-mail com PDF',
 'Export To PDF' => 'Exportar para PDF',
@@ -1362,6 +1367,7 @@ $app_strings = array (
 'LBL_NOPRODUCTS' => 'Não é possível converter pedido de vendas em Fatura porque não há produtos restantes na fatura.',
 'VALIDATION_FAILED' => 'Falha na validação',
 'Select Module To Upsert' => 'Selecione módulo p/upsert',
+'LBL_FIX_NOW' => 'Fixa Agora',
 );
 
 // Translation for currency names

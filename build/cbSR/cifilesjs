@@ -4,6 +4,7 @@
 ./include/components/loadjs.js
 ./include/js/advancefilter.js
 ./include/js/asterisk.js
+./include/js/clock.js
 ./include/js/corebosjshooks.js
 ./include/js/customview.js
 ./include/js/de_de.lang.js
@@ -226,3 +227,4 @@
 ./modules/Webforms/Webforms.js
 ./modules/WSAPP/WSAPP.js
 ./themes/login/login.js
+./themes/login/particles/login.js

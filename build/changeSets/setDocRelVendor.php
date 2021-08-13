@@ -23,13 +23,13 @@ class setDocRelVendor extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-					$module = 'Vendors';
-					$relmodule = 'Documents';
-					$mod = Vtiger_Module::getInstance($module);
-					$relmod = Vtiger_Module::getInstance($relmodule);
-					$mod->setRelatedList($relmod, 'Documents', array('ADD','SELECT'), 'get_attachments');
-					$this->sendMsg('Changeset '.get_class($this).' applied!');
-					$this->markApplied();
+			$module = 'Vendors';
+			$relmodule = 'Documents';
+			$mod = Vtiger_Module::getInstance($module);
+			$relmod = Vtiger_Module::getInstance($relmodule);
+			$mod->setRelatedList($relmod, 'Documents', array('ADD','SELECT'), 'get_attachments');
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
@@ -39,13 +39,13 @@ class setDocRelVendor extends cbupdaterWorker {
 			$this->sendError();
 		}
 		if ($this->isApplied()) {
-					$module = 'Vendors';
-					$relmodule = 'Documents';
-					$mod = Vtiger_Module::getInstance($module);
-					$relmod = Vtiger_Module::getInstance($relmodule);
-					$mod->unsetRelatedList($relmod, 'Documents');
-					$this->sendMsg('Changeset '.get_class($this).' undone!');
-					$this->markUndone();
+			$module = 'Vendors';
+			$relmodule = 'Documents';
+			$mod = Vtiger_Module::getInstance($module);
+			$relmod = Vtiger_Module::getInstance($relmodule);
+			$mod->unsetRelatedList($relmod, 'Documents');
+			$this->sendMsg('Changeset '.get_class($this).' undone!');
+			$this->markUndone();
 		} else {
 			$this->sendMsg('Changeset '.get_class($this).' not applied, it cannot be undone!');
 		}

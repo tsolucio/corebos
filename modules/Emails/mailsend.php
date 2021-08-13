@@ -18,7 +18,7 @@ $returnaction = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['retu
 if ((($returnmodule != 'Emails') || ($returnmodule == 'Emails' && empty($_REQUEST['record']))) && !empty($_REQUEST['return_id'])) {
 	$returnid = vtlib_purify($_REQUEST['return_id']);
 } else {
-	$returnid = $focus->id;//$_REQUEST['record'];
+	$returnid = $focus->id;
 }
 
 $adb->println("\n\nMail Sending Process has been started.");
@@ -108,7 +108,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 		$description = getMergedDescription($_REQUEST['description'], $mycrmid, $pmodule);
 		$all_to_emailids[]= $emailadd;
 		if ($individual_emails) {
-			$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $_REQUEST['subject'], $description, '', '', 'all', $focus->id);
+			$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $_REQUEST['subject'], $description, $cc, '', 'all', $focus->id);
 			$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
 		}
 	} else {
@@ -174,7 +174,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 
 				if ($individual_emails) {
 					if (isPermitted($pmodule, 'DetailView', $mycrmid) == 'yes') {
-						$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo, $replyto);
+						$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $subject, $description, $cc, '', 'all', $focus->id, $logo, $replyto);
 					}
 					$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
 					//added to get remain the EditView page if an error occurs in mail sending
@@ -189,7 +189,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 
 // Sending group emails
 if (!$individual_emails) {
-	$mail_status = send_mail('Emails', implode(',', $all_to_emailids), $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo, $replyto);
+	$mail_status = send_mail('Emails', implode(',', $all_to_emailids), $from_name, $from_address, $subject, $description, $cc, '', 'all', $focus->id, $logo, $replyto);
 	$mail_status_str .= $mail_status.'&&&';
 	//added to get remain the EditView page if an error occurs in mail sending
 	if ($mail_status != 1) {

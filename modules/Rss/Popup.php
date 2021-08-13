@@ -26,10 +26,10 @@ if (isset($_REQUEST['record'])) {
 	$oRss = new vtigerRSS();
 	if ($oRss->setRSSUrl($newRssUrl)) {
 		$result = $oRss->saveRSSUrl($newRssUrl, $setstarred);
-		if ($result == false) {
-			echo $mod_strings['UNABLE_TO_SAVE'];
-		} else {
+		if ($result) {
 			echo $result;
+		} else {
+			echo $mod_strings['UNABLE_TO_SAVE'];
 		}
 	} else {
 		echo $mod_strings['NOT_A_VALID'];

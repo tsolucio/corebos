@@ -76,10 +76,13 @@ class DuplicateRelations extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
-		$mapping=$target_fields=array();
-		$mapping['originid'] = (String)$xml->originmodule->originid;
-		$mapping['originname'] = (String)$xml->originmodule->originname;
-		$mapping['DuplicateDirectRelations'] = (String)$xml->DuplicateDirectRelations;
+		if (empty($xml)) {
+			return array();
+		}
+		$mapping_arr = array();
+		$mapping_arr['originid'] = (String)$xml->originmodule->originid;
+		$mapping_arr['originname'] = (String)$xml->originmodule->originname;
+		$mapping_arr['DuplicateDirectRelations'] = (String)$xml->DuplicateDirectRelations;
 
 		$relativemodules = array();
 		foreach ($xml->relatedmodules->relatedmodule as $r) {
@@ -88,9 +91,9 @@ class DuplicateRelations extends processcbMap {
 				'condition' => (string)$r->condition,
 			);
 		}
-		$mapping["relatedmodules"] = $relativemodules;
+		$mapping_arr["relatedmodules"] = $relativemodules;
 
-		$this->mapping = $mapping;
+		$this->mapping = $mapping_arr;
 	}
 }
 ?>

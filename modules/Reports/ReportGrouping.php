@@ -107,7 +107,7 @@ function getPrimaryColumns_GroupingHTML($module, $selected = '') {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
 			$block_listed[$value] = true;
 			$shtml .= "<optgroup label=\"".$i18nModule." ".getTranslatedString($value, $module)."\" class=\"select\" style=\"border:none\">";
-			if ($id_added==false) {
+			if (!$id_added) {
 				$is_selected ='';
 				if ($selected == $crmtable.':crmid:'.$module.'_ID:crmid:I') {
 					$is_selected = 'selected';
@@ -145,10 +145,10 @@ function getPrimaryColumns_GroupingHTML($module, $selected = '') {
  */
 function getSecondaryColumns_GroupingHTML($module, $selected = '') {
 	global $ogReport, $current_language;
-
+	$shtml = '';
 	$selected = decode_html($selected);
-	if ($module != "") {
-		$secmodule = explode(":", $module);
+	if ($module != '') {
+		$secmodule = explode(':', $module);
 		for ($i=0; $i < count($secmodule); $i++) {
 			if (vtlib_isModuleActive($secmodule[$i])) {
 				$mod_strings = return_module_language($current_language, $secmodule[$i]);

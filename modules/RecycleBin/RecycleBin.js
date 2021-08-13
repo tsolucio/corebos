@@ -9,8 +9,7 @@
 
 function callRBSearch(searchtype) {
 	for (var i=1; i<=26; i++) {
-		var data_td_id = 'alpha_'+ eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_'+ i).className = 'searchAlph';
 	}
 	gPopupAlphaSearchUrl = '';
 	search_fld_val= document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
@@ -48,7 +47,6 @@ function changeModule(pickmodule) {
 function massRestore() {
 	var excludedRecords = document.getElementById('excludedRecords').value;
 	var select_options  =  document.getElementById('allselectedboxes').value;
-	//var searchurl = document.getElementById('search_url').value;
 	var numOfRows = document.getElementById('numOfRows').value;
 	var idstring = '';
 	if (select_options=='all') {
@@ -154,8 +152,7 @@ function getListViewEntries_js(module, url) {
 
 function alphabetic(module, url, dataid) {
 	for (var i=1; i<=26; i++) {
-		var data_td_id = 'alpha_'+ eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_'+ i).className = 'searchAlph';
 	}
 	var selectedmodule = document.getElementById('select_module').options[document.getElementById('select_module').selectedIndex].value;
 	url += '&selected_module='+selectedmodule;
@@ -197,7 +194,6 @@ function callEmptyRecyclebin(id) {
 	}
 	var recbutton  =  document.getElementById('selectCurrentPageRec');
 	var allrec;
-	//var searchurl = document.getElementById('search_url').value;
 	var numOfRows = document.getElementById('numOfRows').value;
 	var idstring = '';
 	if (recbutton.checked) {

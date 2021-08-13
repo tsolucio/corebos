@@ -45,6 +45,7 @@ class WorkFlowScheduler {
 		'exists' => 'exists',
 		'does not start with' => 'dnsw',
 		'does not end with' => 'dnew',
+		'monthday' => 'monthday',
 	);
 
 	public function __construct($adb) {
@@ -74,7 +75,7 @@ class WorkFlowScheduler {
 			foreach ($selectExpressions as $selectExpression) {
 				if ($selectExpression->valuetype == 'fieldname') {
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $selectExpression->fieldname, $valuematches);
-					if (count($valuematches) != 0) {
+					if (!empty($valuematches)) {
 						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
 					} else {
 						$queryGenerator->addWhereField($selectExpression->fieldname);
@@ -82,7 +83,7 @@ class WorkFlowScheduler {
 					$selectFields[] = $queryGeneratorSelect->getSQLColumn($selectExpression->value);
 				} elseif ($selectExpression->valuetype == 'expression') {
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $selectExpression->value, $valuematches);
-					if (count($valuematches) != 0) {
+					if (!empty($valuematches)) {
 						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
 					}
 					$selectFields[] = $substExpsSelect["::#$selectExpsCounter"]." AS $selectExpression->fieldname";
@@ -218,7 +219,7 @@ class WorkFlowScheduler {
 			}
 			$vtWorflowManager->updateNexTriggerTime($workflow);
 		}
-		if (count($errortasks)>0) {
+		if (!empty($errortasks)) {
 			global $logbg;
 			$logbg->fatal('> *** Workflow Scheduled Tasks Errors:');
 			$logbg->fatal($errortasks);
@@ -292,7 +293,7 @@ class WorkFlowScheduler {
 						foreach ($params as $param) {
 							if (is_object($param) && isset($param->value)) {
 								preg_match('/(\w+) : \((\w+)\) (\w+)/', $param->value, $parammatches);
-								if (count($parammatches) != 0) {
+								if (!empty($parammatches)) {
 									$queryGenerator->setReferenceFieldsManually($parammatches[1], $parammatches[2], $parammatches[3]);
 								}
 							}
@@ -324,7 +325,7 @@ class WorkFlowScheduler {
 						}
 					}
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $value, $valuematches);
-					if (count($valuematches) != 0) {
+					if (!empty($valuematches)) {
 						list($value, $isfield) = self::getColumnFromField($value, true);
 						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
 					} elseif ($valueType=='fieldname' && strpos($value, '.')===false) {

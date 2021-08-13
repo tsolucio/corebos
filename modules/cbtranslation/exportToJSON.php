@@ -17,36 +17,5 @@
  *  Version      : 1.0
  *  Author       : OpenCubed
  *************************************************************************************************/
-global $adb, $log;
-require_once 'data/CRMEntity.php';
-$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbtranslation');
-$allrecords = substr($_REQUEST['allrecords'], 0, -1);
-$allids = str_replace(';', ',', $allrecords);
-$allids = explode(',', $allids);
-if (!empty($allids)) {
-	$filename = 'cbtranslationExport.json';
-	$fp = fopen('php://output', 'w');
-	header('Content-type: application/json');
-	header('Content-Disposition: attachment; filename=' . $filename);
-	$queryString = 'SELECT translation_module,translation_key,i18n
-		FROM vtiger_cbtranslation
-		INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_cbtranslation.cbtranslationid
-		WHERE vtiger_cbtranslation.cbtranslationid IN (' . generateQuestionMarks($allids) . ')';
-	$cbtranslationQuery = $adb->pquery($queryString, $allids);
-	if ($cbtranslationQuery && $adb->num_rows($cbtranslationQuery) > 0) {
-		$csvContent = array();
-		while ($cbtranslationQuery && $row = $adb->fetch_array($cbtranslationQuery)) {
-			$tranlation_module = $row['translation_module'];
-			$translation_key = $row['translation_key'];
-			$i18n = $row['i18n'];
-			$columnString = "$tranlation_module::$translation_key";
-			$csvContent[$columnString] = $i18n;
-		}
-		print json_encode($csvContent);
-		exit;
-	} else {
-		echo getTranslatedString('LBL_RECORD_NOT_FOUND');
-	}
-} else {
-	echo getTranslatedString('LBL_RECORD_NOT_FOUND');
-}
+$exportFormat = 'json';
+include 'modules/cbtranslation/exportToCSV.php';

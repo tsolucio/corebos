@@ -9,11 +9,11 @@
  *********************************************************************************/
 
 /**
- * @param WebserviceId $id
- * @param String $oldPassword
- * @param String $newPassword
- * @param String $confirmPassword
- * @param Users $user
+ * @param String web service ID
+ * @param String old password
+ * @param String new password
+ * @param String confirm password
+ * @param Users curent user
  */
 function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, $user) {
 	vtws_preserveGlobal('current_user', $user);

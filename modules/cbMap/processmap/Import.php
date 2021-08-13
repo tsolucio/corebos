@@ -69,12 +69,12 @@ class Import extends processcbMap {
 		$contentok = $this->isXML(htmlspecialchars_decode($map->column_fields['content']));
 		if ($contentok !== true) {
 			echo '<b>Incorrect Content</b>';
-			return;
+			return null;
 		}
 		$this->convertMap2Array();
 		if ($this->importtype == 'error') {
 			echo '<b>Incorrect Map Content</b>';
-			return;
+			return null;
 		}
 		$this->doImport($argv);
 		return $this;
@@ -222,7 +222,6 @@ class Import extends processcbMap {
 		$fp = fopen($filename, 'r');
 		$frow = fgetcsv($fp, 1000, $delimiter);
 
-		//$allHeaders = implode(',', $frow);
 		$columns = '`id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, `selected` varchar(3) ';
 		foreach ($frow as $column) {
 			if ($column=='') {
@@ -381,7 +380,7 @@ class Import extends processcbMap {
 		require_once 'modules/Import/api/Request.php';
 		include_once 'modules/Import/controllers/Import_Controller.php';
 		$rs = $adb->pquery('select module,field_mapping,defaultvalues from vtiger_import_maps where id=?', array($this->mapping['mapid']));
-		$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $rs->fields['module'])=='no'); //true;
+		$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $rs->fields['module'])=='no');
 		$requestArray = array(
 			'module' => $rs->fields['module'],
 			'action' => 'Import',
@@ -397,9 +396,17 @@ class Import extends processcbMap {
 			'merge_fields' => '',
 		);
 		if ($this->mapping['duphandling']!='none') {
-			$requestArray['merge_type'] = ($this->mapping['duphandling'] == 'overwrite' ?
-				Import_Utils::$AUTO_MERGE_OVERWRITE :
-				($this->mapping['duphandling'] == 'merge' ? Import_Utils::$AUTO_MERGE_MERGEFIELDS : Import_Utils::$AUTO_MERGE_IGNORE));
+			switch ($this->mapping['duphandling']) {
+				case 'overwrite':
+					$requestArray['merge_type'] = Import_Utils::$AUTO_MERGE_OVERWRITE;
+					break;
+				case 'merge':
+					$requestArray['merge_type'] = Import_Utils::$AUTO_MERGE_MERGEFIELDS;
+					break;
+				default:
+					$requestArray['merge_type'] = Import_Utils::$AUTO_MERGE_IGNORE;
+					break;
+			}
 			$requestArray['merge_fields'] = json_encode($this->mapping['dupmatches']);
 		}
 		$requestObject = new Import_API_Request($requestArray);

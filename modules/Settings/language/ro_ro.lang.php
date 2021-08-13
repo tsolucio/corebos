@@ -901,6 +901,7 @@ $mod_strings = array(
 	'Site Maintenance' => 'Mentenanta Site',
 	'SM_BeBackSoon' => 'Revenim in curand!',
 	'SM_SorryInconvenience' => 'Scuze de inconvenienta dar efectuam mentenanta acum. Revenim curand!',
+	'Not Labeled' => 'Not Labeled',
 	'LBL_MB_MODULENAME' => 'Module Name',
 	'LBL_MB_MODULELABEL' => 'Module Label',
 	'LBL_MB_MODULEFIELDS' => 'Module Fields',

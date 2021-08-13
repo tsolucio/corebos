@@ -127,8 +127,6 @@ function getNewLeads($maxval, $calCnt) {
 
 	$values=array('ModuleName'=>'Leads','Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 	$log->debug('< getNewLeads');
-	if ((count($entries) == 0 ) || (count($entries)>0)) {
-		return $values;
-	}
+	return $values;
 }
 ?>

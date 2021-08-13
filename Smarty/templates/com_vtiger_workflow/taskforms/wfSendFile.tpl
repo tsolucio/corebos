@@ -36,22 +36,22 @@ var wfexeexppressions = null;
 		<div class="slds-form-element">
 			<div class="slds-form-element__control">
 			<input id="credentialid" name="credentialid" type="hidden">
-			<input id="credentialid_display" class="slds-input" name="credentialid_display" readonly="" style="border:1px solid #bababa;" type="text" value="">
+			<input id="credentialid_display" class="slds-input" name="credentialid_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=credentialid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
 			</div>
 		</div>
 	</div>
 	<div class="slds-col slds-size_1-of-12 slds-text-align_right slds-p-around_x-small" style="margin-left: -50px;">
-		<button class="slds-button slds-button_icon" title="Select" type="button" onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=credentialid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);"> 
-			<svg class="slds-button__icon" aria-hidden="true"> 
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use> 
-			</svg> 
-			<span class="slds-assistive-text">{$MOD.LBL_SELECT}</span> 
+		<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button" onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=credentialid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+			<svg class="slds-button__icon" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+			</svg>
+			<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
 		</button>
-		<button class="slds-button slds-button_icon" title="Clear" type="button" onClick="this.form.credentialid.value=''; this.form.credentialid_display.value=''; return false;"> 
-			<svg class="slds-button__icon" aria-hidden="true"> 
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use> 
-			</svg> 
-			<span class="slds-assistive-text">{$MOD.LBL_CLEAR}</span> 
+		<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button" onClick="this.form.credentialid.value=''; this.form.credentialid_display.value=''; return false;">
+			<svg class="slds-button__icon" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+			</svg>
+			<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
 		</button>
 	</div>
 </div>

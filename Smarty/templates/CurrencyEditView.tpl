@@ -23,7 +23,6 @@
 			<!-- DISPLAY -->
 	<form action="index.php" method="post" name="index" id="form" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="module" value="Settings">
-	<input type="hidden" name="parenttab" value="{$PARENTTAB}">
 	<input type="hidden" name="action" value="index">
 	<input type="hidden" name="record" value="{$ID}">
 	<div class="slds-grid slds-gutters slds-p-right_small">
@@ -33,24 +32,46 @@
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
 			{$APP.LBL_SAVE_BUTTON_LABEL}</button>
 		</div>
-		<div id="CurrencyEditLay" class="layerPopup" style="display:none;width:25%;">
-			<div class="slds-col">
-				<p class="layerPopupHeading" align="left" width="60%">{$MOD.LBL_TRANSFER_CURRENCY} </p>
-				<p align="right" width="40%"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border=0 alt="{$APP.LBL_CLOSE}" title="{$APP.LBL_CLOSE}" style="cursor:pointer;" onClick="document.getElementById('CurrencyEditLay').style.display='none'";></p>
-			</div>
-			<div class="slds-col">
-				<p width="50%" class="cellLabel small"><b>{$MOD.LBL_CURRENT_CURRENCY}</b></p>
-				<p width="50%" class="cellText small"><b>{$CURRENCY_NAME|@getTranslatedCurrencyString}</b></p>
-			</div>
-			<p class="cellLabel small"><b>{$MOD.LBL_TRANSCURR}</b></p>
-			<p class="cellText small">
-			<select class="select small" name="transfer_currency_id" id="transfer_currency_id">';
-			{foreach key=cur_id item=cur_name from=$OTHER_CURRENCIES}
-				<option value="{$cur_id}">{$cur_name|@getTranslatedCurrencyString}</option>
-			{/foreach}
-			</p>
-			<br>
-			<input type="button" onclick="form.submit();" name="Update" value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmbutton small save">
+		<div id="CurrencyEditLay" style="display:none;">
+			<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-tcur" aria-modal="true" aria-describedby="modal-content-id-tcur" class="slds-modal slds-fade-in-open slds-modal_small">
+				<div class="slds-modal__container custom-width-350">
+					<header class="slds-modal__header">
+						<a class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="{$APP.LBL_CLOSE}" onClick="document.getElementById('CurrencyEditLay').style.display='none'";>
+							<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+							</svg>
+							<span class="slds-assistive-text">{$APP.LBL_CLOSE}</span>
+						</a>
+						<h2 id="modal-heading-tcur" class="slds-modal__title slds-hyphenate">{$MOD.LBL_TRANSFER_CURRENCY}</h2>
+					</header>
+					<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-tcur">
+						<div class="slds-grid slds-gutters slds-grid_vertical-align-center slds-p-around_xx-small">
+							<div class="slds-col slds-size_1-of-2 slds-text-align_left">
+								<span class="slds-truncate" title="{$MOD.LBL_CURRENT_CURRENCY}"> <strong> {$MOD.LBL_CURRENT_CURRENCY} </strong> </span>
+							</div>
+							<div class="slds-col slds-size_1-of-2 slds-text-align_left">
+								<span class="slds-truncate" title="{$CURRENCY_NAME|@getTranslatedCurrencyString}">{$CURRENCY_NAME|@getTranslatedCurrencyString}</span>
+							</div>
+						</div>
+						<div class="slds-grid slds-gutters slds-grid_vertical-align-center slds-p-around_xx-small">
+							<div class="slds-col slds-size_1-of-2 slds-text-align_left">
+								<span class="slds-truncate" title="{$MOD.LBL_TRANSCURR}"> <strong> {$MOD.LBL_TRANSCURR} </strong></span>
+							</div>
+							<div class="slds-col slds-size_1-of-2">
+								<select class="slds-select" name="transfer_currency_id" id="transfer_currency_id">
+									{foreach key=cur_id item=cur_name from=$OTHER_CURRENCIES}
+										<option value="{$cur_id}">{$cur_name|@getTranslatedCurrencyString}</option>
+									{/foreach}
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="slds-modal__footer">
+						<input type="button" onclick="form.submit();" name="Update" value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="slds-button slds-button_brand">
+					</div>
+				</div>
+			</section>
+			<div class="slds-backdrop slds-backdrop_open"></div>
 		</div>
 		<div class="slds-col slds-size_1-of-12 slds-p-left_none">
 			<br>

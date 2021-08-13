@@ -14,5 +14,7 @@ $mod_strings = array(
 	'LBL_AUDIT_TRAIL' => 'Auditoría de Usuarios',
 	'AuditTrailEnabled' => 'Auditoría Habilitada',
 	'AuditTrailDisabled' => 'Auditoría Deshabilitada',
+	'ERR_SQL' => 'Error: petición a base de datos incorrecta.',
+	'ERR_NoData' => 'Error: no se han encontrado datos.',
 );
 ?>

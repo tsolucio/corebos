@@ -18,7 +18,7 @@ class TextAnywhere implements ISMSProvider {
 	public $helpURL = 'https://www.textanywhere.com/';
 	public $helpLink = 'TextAnywhere';
 
-	const SERVICE_URI = 'http://www.textapp.net/webservice/httpservice.aspx';
+	const SERVICE_URI = 'https://www.textapp.net/webservice/httpservice.aspx';
 	private static $REQUIRED_PARAMETERS = array('Originator', 'CharacterSet');
 
 	public function __construct() {

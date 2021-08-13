@@ -327,9 +327,9 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 	 * @return <Array> -  list of modules for which field is refered to
 	 */
 	public function getReferenceList($hideDisabledModules = true, $presenceZero = true) {
-		$webserviceField = $this->getWebserviceFieldObject();
-		$referenceList = $webserviceField->getReferenceList($hideDisabledModules);
-		if ($presenceZero && is_array($referenceList) && count($referenceList) > 0) {
+		$webserviceFieldInfo = $this->getWebserviceFieldObject();
+		$referenceList = $webserviceFieldInfo->getReferenceList($hideDisabledModules);
+		if ($presenceZero && is_array($referenceList) && !empty($referenceList)) {
 			foreach ($referenceList as $key => $referenceModule) {
 				$moduleModel = Vtiger_Module::getInstance($referenceModule);
 				if ($moduleModel && $moduleModel->presence != 0) {
@@ -345,7 +345,7 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 	 * @return WebserviceField instance
 	 */
 	public function getWebserviceFieldObject() {
-		if ($this->webserviceField == false) {
+		if (!$this->webserviceField) {
 			$db = PearDatabase::getInstance();
 
 			$row = array();

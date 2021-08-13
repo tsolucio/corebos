@@ -67,7 +67,6 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 	if (json_last_error() !== JSON_ERROR_NONE) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid context parameter: '.json_last_error_msg());
 	}
-	$util = new VTWorkflowUtils();
 	$entityCache = new VTEntityCache($user);
 	$wfs = new VTWorkflowManager($adb);
 	$workflows = $wfs->getWorkflowsForResult($result);
@@ -107,7 +106,7 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 			$errortasks[$crmid] = "Workflow and record ($crmid) modules do not match";
 		}
 	}
-	if (count($errortasks)>0) {
+	if (!empty($errortasks)) {
 		throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, json_encode($errortasks));
 	}
 	return true;

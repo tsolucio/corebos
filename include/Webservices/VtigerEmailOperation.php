@@ -149,8 +149,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 			}
 		}
 		$params[] = $crmid;
-		$sql = 'UPDATE vtiger_emaildetails set '.implode(',', $updfields).' where emailid=?';
-		$rs = $adb->pquery($sql, $params);
+		$adb->pquery('UPDATE vtiger_emaildetails set '.implode(',', $updfields).' where emailid=?', $params);
 		$modby = (isset($element['modifiedby']) ? ',modifiedby='.substr($element['modifiedby'], strpos($element['modifiedby'], 'x')+1) : '');
 		$adb->pquery('update '.$mod->crmentityTable.' set modifiedtime=now()'.$modby.' where crmid=?', array($crmid));
 		//Event triggering code

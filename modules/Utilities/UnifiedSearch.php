@@ -141,9 +141,7 @@ if (isset($query_string) && $query_string != '') {
 							$start = ceil($noofrows/$list_max_entries_per_page);
 						}
 					}
-					if (!is_numeric($start)) {
-						$start = 1;
-					} elseif ($start < 0) {
+					if (!is_numeric($start) || $start < 0) {
 						$start = 1;
 					}
 					$start = ceil($start);
@@ -171,7 +169,7 @@ if (isset($query_string) && $query_string != '') {
 
 				//Do not display the Header if there are no entries in listview_entries
 				unset($listview_entries['total']);
-				if (count($listview_entries) > 0) {
+				if (!empty($listview_entries)) {
 					$display_header = 1;
 					if (count($listview_entries) == 1) {
 						$listview_entries_for1 = $listview_entries;

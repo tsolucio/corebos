@@ -36,12 +36,12 @@ class CoreBOS_ActionController extends CoreBOS_Controller {
 			if (method_exists($this, $method)) {
 				$this->$method();
 			} else {
-				throw new Exception('Method does not Exist', 404);
+				throw new InvalidArgumentException('Method does not Exist', 404);
 			}
 		} elseif (method_exists($this, 'main')) {
 			$this->main();
 		} else {
-			throw new Exception('Method does not Exist', 404);
+			throw new InvalidArgumentException('Method does not Exist', 404);
 		}
 	}
 }

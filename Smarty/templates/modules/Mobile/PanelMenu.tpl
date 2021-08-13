@@ -13,8 +13,7 @@
 		</script>
 		{/literal}
 		<form name="form" method="post" action="?_operation=globalsearch&module={$_MODULES[0]->name()}" target="_self">
-			<input type="hidden" name="parenttab" value="{if isset($CATEGORY)}{$CATEGORY}{/if}" style="margin:0px">
-			<input type="hidden" name="search_onlyin" value="{if isset($SEARCHIN)}{$SEARCHIN}{/if}" style="margin:0px">
+			<input type="hidden" name="search_onlyin" value="{if isset($SEARCHIN)}{$SEARCHIN}{/if}">
 			<table style="width:100%;padding-top:5px;">
 				<tr >
 					<td>

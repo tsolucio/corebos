@@ -23,7 +23,7 @@
 <script type="text/javascript" charset="utf-8">
 var relrecords = {$task->relrecords|json_encode};
 </script>
-<br/>
+<div class="slds-p-around_small">
 <fieldset class="slds-form-element">
   <div class="slds-form-element__control">
     <span class="slds-radio">
@@ -114,3 +114,4 @@ var relrecords = {$task->relrecords|json_encode};
   <tbody id="selected_recordsDiv">
   </tbody>
 </table>
+</div>

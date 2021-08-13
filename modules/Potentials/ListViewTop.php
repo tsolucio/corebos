@@ -29,23 +29,20 @@ function getTopPotentials($maxval, $calCnt) {
 	$title[]='myTopOpenPotentials.gif';
 	$title[]=$current_module_strings['LBL_TOP_OPPORTUNITIES'];
 	$title[]='home_mypot';
-	$where = "AND vtiger_potential.potentialid > 0 AND vtiger_potential.sales_stage not in ('Closed Won','Closed Lost','".$current_module_strings['Closed Won']."','".
-			$current_module_strings['Closed Lost']."') AND vtiger_crmentity.smownerid='".$current_user->id."' AND vtiger_potential.amount > 0";
+	$where = "AND vtiger_potential.potentialid > 0 AND vtiger_potential.sales_stage not in ('Closed Won','Closed Lost','".$current_module_strings['Closed Won']."','"
+		.$current_module_strings['Closed Lost']."') AND vtiger_crmentity.smownerid='".$current_user->id."' AND vtiger_potential.amount > 0";
 	$header=array();
 	$header[]=$current_module_strings['LBL_LIST_OPPORTUNITY_NAME'];
-	//$header[]=$current_module_strings['LBL_LIST_ACCOUNT_NAME'];
 	$currencyid=fetchCurrency($current_user->id);
 	$rate_symbol = getCurrencySymbolandCRate($currencyid);
 	$curr_symbol = $rate_symbol['symbol'];
 	$header[]=$current_module_strings['LBL_LIST_AMOUNT'].'('.$curr_symbol.')';
-	$list_query = 'SELECT vtiger_crmentity.crmid, vtiger_potential.potentialname,
-		vtiger_potential.amount, potentialid
+	$list_query = 'SELECT vtiger_crmentity.crmid, vtiger_potential.potentialname, vtiger_potential.amount, vtiger_potential.potentialid
 		FROM vtiger_potential
-		IGNORE INDEX(PRIMARY) INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_potential.potentialid';
+		INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_potential.potentialid';
 	$list_query .= getNonAdminAccessControlQuery('Potentials', $current_user);
-	$list_query .= 'WHERE vtiger_crmentity.deleted = 0 '.$where;
+	$list_query .= 'WHERE vtiger_crmentity.deleted=0 '.$where;
 	$list_query .=' ORDER BY amount DESC';
-
 	$list_query .=' LIMIT ' . $adb->sql_escape_string($maxval);
 
 	if ($calCnt == 'calculateCnt') {
@@ -54,24 +51,15 @@ function getTopPotentials($maxval, $calCnt) {
 	}
 
 	$list_result = $adb->query($list_query);
-
-	$open_potentials_list = array();
 	$noofrows = $adb->num_rows($list_result);
-
 	$entries=array();
 	if ($noofrows) {
 		for ($i=0; $i<$noofrows; $i++) {
-			$open_potentials_list[] = array(
-				'name' => $adb->query_result($list_result, $i, 'potentialname'),
-				'id' => $adb->query_result($list_result, $i, 'potentialid'),
-				'amount' => $adb->query_result($list_result, $i, 'amount'),
-			);
 			$potentialid=$adb->query_result($list_result, $i, 'potentialid');
 			$potentialname = $adb->query_result($list_result, $i, 'potentialname');
 			$Top_Potential = (strlen($potentialname) > 20) ? (substr($potentialname, 0, 20).'...') : $potentialname;
 			$value=array();
 			$value[]='<a href="index.php?action=DetailView&module=Potentials&record='.$potentialid.'">'.$Top_Potential.'</a>';
-
 			$value[] = CurrencyField::convertToUserFormat($adb->query_result($list_result, $i, 'amount'));
 			$entries[$potentialid]=$value;
 		}
@@ -106,8 +94,6 @@ function getTopPotentials($maxval, $calCnt) {
 	$values=array('ModuleName'=>'Potentials', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
 
 	$log->debug('< getTopPotentials');
-	if ((count($open_potentials_list) == 0 ) || (count($open_potentials_list)>0)) {
-		return $values;
-	}
+	return $values;
 }
 ?>

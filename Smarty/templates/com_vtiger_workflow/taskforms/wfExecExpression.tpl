@@ -29,7 +29,6 @@
 <script src="modules/{$module->name}/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/wfexeexp.js" type="text/javascript" charset="utf-8"></script>
 
-<div style="width:80%">
 <div class="slds-page-header slds-page-header_record-home">
 <div class="slds-page-header__row">
 <div class="slds-page-header__col-title">
@@ -83,7 +82,6 @@
 <tbody>
 </tbody>
 </table>
-</div>
 
 <input type="hidden" name="wfexeexps" value="" id="wfexeexps"/>
 

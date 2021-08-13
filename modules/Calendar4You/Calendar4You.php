@@ -370,6 +370,9 @@ class Calendar4You extends CRMEntity {
 
 	public function getEventColor($mode, $entity) {
 		global $adb,$current_user;
+		if ($mode=='module') {
+			$mode = 'type';
+		}
 		$result1 = $adb->pquery('SELECT type, color FROM its4you_calendar4you_colors WHERE userid=? AND mode=? AND entity=?', array($current_user->id, $mode, $entity));
 		$Colors = array();
 		if ($adb->num_rows($result1) > 0) {
@@ -424,9 +427,7 @@ class Calendar4You extends CRMEntity {
 		} elseif ($this->edit_all && ($actionKey == 'EDIT' || $actionKey == 'CREATE')) {
 			return true;
 		} else {
-			//$profileid = fetchUserProfileId($current_user->id);
 			if (isset($this->profilesActions[$actionKey])) {
-				//$actionid = getActionid($this->profilesActions[$actionKey]);
 				$permissions = isPermitted('cbCalendar', $this->profilesActions[$actionKey]);
 
 				if ($permissions == 'yes') {
@@ -546,10 +547,8 @@ class Calendar4You extends CRMEntity {
 			$checked = true;
 			$valueid = $adb->query_result($Res, $i, 'picklist_valueid');
 			$label = getTranslatedString($value, 'cbCalendar');
-			if ($type != '' || $load_ch) {
-				if (!empty($this->View[$type][$valueid])) {
-					$checked = false;
-				}
+			if (($type != '' || $load_ch) && !empty($this->View[$type][$valueid])) {
+				$checked = false;
 			}
 			$Data[$value] = array('id'=>$valueid,'value'=>$value,'label'=>$label,'checked'=>$checked);
 		}

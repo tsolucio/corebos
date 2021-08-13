@@ -1,4 +1,3 @@
-<script type="text/javascript" src="include/js/masterdetailgrid.js"></script>
 <div class="slds-page-header">
 <div class="slds-page-header__row">
 <div class="slds-page-header__col-title">

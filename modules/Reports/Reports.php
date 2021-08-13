@@ -111,7 +111,7 @@ class Reports extends CRMEntity {
 				}
 
 				$non_admin_query = " vtiger_report.reportid IN (SELECT reportid from vtiger_reportsharing WHERE $user_group_query (shareid=? AND setype='users'))";
-				if ($is_admin==false) {
+				if (!$is_admin) {
 					$ssql .= ' and ( ('.$non_admin_query.") or vtiger_report.sharingtype='Public' or vtiger_report.owner = ?
 						or vtiger_report.owner in (select vtiger_user2role.userid
 							from vtiger_user2role
@@ -385,7 +385,7 @@ class Reports extends CRMEntity {
 		$result = $adb->pquery($sql, $params);
 
 		$report = $adb->fetch_array($result);
-		if (count($report)>0) {
+		if (!empty($report)) {
 			do {
 				$report_details = array();
 				$report_details['customizable'] = $report['customizable'];
@@ -437,7 +437,7 @@ class Reports extends CRMEntity {
 	 */
 	public function getPriModuleColumnsList($module) {
 		if (empty($module)) {
-			return;
+			return false;
 		}
 		$ret_module_list = array();
 		foreach ($this->module_list[$module] as $key => $value) {
@@ -470,11 +470,11 @@ class Reports extends CRMEntity {
 	 */
 	public function getSecModuleColumnsList($module) {
 		if ($module != '') {
-			$secmodule = explode(':', $module);
-			for ($i=0; $i < count($secmodule); $i++) {
-				if ($this->module_list[$secmodule[$i]]) {
-					$this->sec_module_columnslist[$secmodule[$i]] = $this->getModuleFieldList(
-						$secmodule[$i]
+			$secondmodule = explode(':', $module);
+			for ($i=0; $i < count($secondmodule); $i++) {
+				if ($this->module_list[$secondmodule[$i]]) {
+					$this->sec_module_columnslist[$secondmodule[$i]] = $this->getModuleFieldList(
+						$secondmodule[$i]
 					);
 				}
 			}
@@ -573,10 +573,8 @@ class Reports extends CRMEntity {
 			$fieldcolname = $adb->query_result($result, $i, 'columnname');
 			$fieldname = $adb->query_result($result, $i, 'fieldname');
 			$fieldtype = $adb->query_result($result, $i, 'typeofdata');
-			//$uitype = $adb->query_result($result, $i, 'uitype');
 			$fieldtype = explode('~', $fieldtype);
 			$fieldtypeofdata = $fieldtype[0];
-			//$blockid = $adb->query_result($result, $i, 'block');
 
 			//Here we Changing the displaytype of the field. So that its criteria will be displayed correctly in Reports Advance Filter.
 			$fieldtypeofdata=ChangeTypeOfData_Filter($fieldtablename, $fieldcolname, $fieldtypeofdata);
@@ -673,7 +671,7 @@ class Reports extends CRMEntity {
 			where vtiger_report.reportid=?';
 		$result = $adb->pquery($sSQL, array($reportid));
 		$selectedstdfilter = $adb->fetch_array($result);
-		if ($selectedstdfilter && count($selectedstdfilter)>0) {
+		if ($selectedstdfilter && !empty($selectedstdfilter)) {
 			$this->stdselectedcolumn = $selectedstdfilter['datecolumnname'];
 			$this->stdselectedfilter = $selectedstdfilter['datefilter'];
 		} else {
@@ -730,19 +728,18 @@ class Reports extends CRMEntity {
 		$fieldname = $selectedfields[3];
 		if ($fieldname == 'parent_id') {
 			if ($this->primarymodule == 'HelpDesk' && $selectedfields[0] == 'vtiger_crmentityRelHelpDesk') {
-				$querycolumn = "case vtiger_crmentityRelHelpDesk.setype
+				return "case vtiger_crmentityRelHelpDesk.setype
 					when 'Accounts' then vtiger_accountRelHelpDesk.accountname
 					when 'Contacts' then vtiger_contactdetailsRelHelpDesk.lastname End '".$selectedfields[2]."', vtiger_crmentityRelHelpDesk.setype 'Entity_type'";
-				return $querycolumn;
 			}
 			if ($this->primarymodule == 'Products' || $this->secondarymodule == 'Products') {
-				$querycolumn = "case vtiger_crmentityRelProducts.setype
+				return "case vtiger_crmentityRelProducts.setype
 					when 'Accounts' then vtiger_accountRelProducts.accountname
 					when 'Leads' then vtiger_leaddetailsRelProducts.lastname
 					when 'Potentials' then vtiger_potentialRelProducts.potentialname End '".$selectedfields[2]."', vtiger_crmentityRelProducts.setype 'Entity_type'";
 			}
 		}
-		return $querycolumn;
+		return '';
 	}
 
 	public function getaccesfield() {
@@ -790,8 +787,8 @@ class Reports extends CRMEntity {
 		$array_list = array();
 		for ($i=0; $i<$noofrows; $i++) {
 			$fieldcolname = $adb->query_result($result, $i, 'columnname');
-			$sort_values = $adb->query_result($result, $i, 'sortorder');
-			$this->ascdescorder[] = $sort_values;
+			$sortvalues = $adb->query_result($result, $i, 'sortorder');
+			$this->ascdescorder[] = $sortvalues;
 			$array_list[] = $fieldcolname;
 		}
 
@@ -833,7 +830,7 @@ class Reports extends CRMEntity {
 					break;
 				}
 			}
-			if ($selmod_field_disabled==false) {
+			if (!$selmod_field_disabled) {
 				list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $fieldcolname);
 				list($module,$field) = explode('_', $module_field);
 				if (count($permitted_fields) == 0 && !$hasGlobalReadPermission) {
@@ -887,7 +884,6 @@ class Reports extends CRMEntity {
 			}
 
 			while ($relcriteriarow = $adb->fetch_array($result)) {
-				//$columnIndex = $relcriteriarow['columnindex'];
 				$criteria = array();
 				$criteria['columnname'] = html_entity_decode($relcriteriarow['columnname']);
 				$criteria['comparator'] = $relcriteriarow['comparator'];
@@ -895,7 +891,6 @@ class Reports extends CRMEntity {
 				$col = explode(':', $relcriteriarow['columnname']);
 
 				$moduleFieldLabel = $col[2];
-				//$fieldName = $col[3];
 
 				list($module, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
 				$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
@@ -972,7 +967,6 @@ class Reports extends CRMEntity {
 		$options = array();
 		$options[]= $this->sgetColumnstoTotalHTML($primarymodule, 0);
 		if (!empty($secondarymodule)) {
-			//$secondarymodule = explode(':',$secondarymodule);
 			for ($i=0; $i < count($secondarymodule); $i++) {
 				$options[]= $this->sgetColumnstoTotalHTML($secondarymodule[$i], ($i+1));
 			}
@@ -1186,12 +1180,10 @@ function getReportsModuleList($focus) {
  */
 function getReportRelatedModules($module, $focus) {
 	$optionhtml = array();
-	if (vtlib_isModuleActive($module)) {
-		if (!empty($focus->related_modules[$module])) {
-			foreach ($focus->related_modules[$module] as $rel_modules) {
-				if (isPermitted($rel_modules, 'index') == 'yes') {
-					$optionhtml[]= $rel_modules;
-				}
+	if (vtlib_isModuleActive($module) && !empty($focus->related_modules[$module])) {
+		foreach ($focus->related_modules[$module] as $rel_modules) {
+			if (isPermitted($rel_modules, 'index') == 'yes') {
+				$optionhtml[]= $rel_modules;
 			}
 		}
 	}
@@ -1224,7 +1216,6 @@ function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_grou
 
 		$column_info = explode(':', $adv_filter_column);
 		$moduleFieldLabel = $column_info[2];
-		//$fieldName = $column_info[3];
 
 		list($module, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
 		$fieldInfo = getFieldByReportLabel($module, $fieldLabel);

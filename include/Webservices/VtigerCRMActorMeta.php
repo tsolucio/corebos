@@ -14,6 +14,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 	protected static $fieldTypeMapping = array();
 	private $hasAccess;
 	private $hasReadAccess;
+	private $hasCreateAccess;
 	private $hasWriteAccess;
 	private $hasDeleteAccess;
 	private $PermissionModule = '';
@@ -117,6 +118,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$moduleName = $webserviceObject->getEntityName();
 		if ($moduleName=='Groups' || $moduleName=='Currency') {
 			$this->hasAccess = true;
+			$this->hasCreateAccess = false;
 			$this->hasReadAccess = true;
 			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
@@ -143,6 +145,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 				break;
 			default:
 				$this->hasAccess = false;
+				$this->hasCreateAccess = false;
 				$this->hasReadAccess = false;
 				$this->hasWriteAccess = false;
 				$this->hasDeleteAccess = false;
@@ -151,6 +154,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		}
 		if (!vtlib_isModuleActive($permModule)) {
 			$this->hasAccess = false;
+			$this->hasCreateAccess = false;
 			$this->hasReadAccess = false;
 			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
@@ -160,11 +164,13 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$userprivs = $user->getPrivileges();
 		if ($userprivs->hasGlobalReadPermission()) {
 			$this->hasAccess = true;
+			$this->hasCreateAccess = false;
 			$this->hasReadAccess = true;
 			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
 		} else {
 			$this->hasAccess = false;
+			$this->hasCreateAccess = false;
 			$this->hasReadAccess = false;
 			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
@@ -429,6 +435,10 @@ class VtigerCRMActorMeta extends EntityMeta {
 
 	public function hasReadAccess() {
 		return $this->hasReadAccess;
+	}
+
+	public function hasCreateAccess() {
+		return $this->hasCreateAccess;
 	}
 
 	public function hasWriteAccess() {

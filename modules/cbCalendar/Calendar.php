@@ -28,7 +28,6 @@ class Calendar {
 	/*
 	constructor
 	*/
-	//var $groupTable = Array('vtiger_activitygrouprelation','activityid');
 	public function __construct($view = '', $data = array()) {
 		$this->view = $view;
 		$this->date_time = new vt_DateTime($data, true);
@@ -112,9 +111,8 @@ class Calendar {
 					$this->year_array[$layout->start_time->z_month] = $layout;
 
 					$arr = getCalendarDaysInMonth($currMonth);
-					$slices = $arr['slices'];
 
-					$this->month_day_slices[$i] = $slices;
+					$this->month_day_slices[$i] = $arr['slices'];
 					$this->slices[] = $layout->start_time->z_month;
 				}
 				break;
@@ -193,7 +191,7 @@ class Layout {
  */
 function getCalendarDaysInMonth($date_time) {
 	$month_array = array();
-	$slices = array();
+	$slices_arr = array();
 	$monthview_days = $date_time->daysinmonth;
 
 	$firstday_of_month = $date_time->getThisMonthsDayByIndex(0);
@@ -206,10 +204,9 @@ function getCalendarDaysInMonth($date_time) {
 		$layout = new Layout('day', $pd);
 		$date = $layout->start_time->get_formatted_date();
 		$month_array[$date] = $layout;
-		$slices[] = $date;
+		$slices_arr[] = $date;
 	}
 
-	$result = array('month_array'=>$month_array, 'slices'=>$slices, 'date_time'=>$date_time);
-	return $result;
+	return array('month_array'=>$month_array, 'slices'=>$slices_arr, 'date_time'=>$date_time);
 }
 ?>

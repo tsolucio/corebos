@@ -91,7 +91,7 @@ function addtopricebook() {
 		}
 	}
 {/literal}
-document.addToPB.action="index.php?module=Products&action=addPbProductRelToDB&return_module={$RETURN_MODULE}&return_action={$RETURN_ACTION}&return_id={$RETURN_ID}&parenttab={$CATEGORY}"
+document.addToPB.action="index.php?module=Products&action=addPbProductRelToDB&return_module={$RETURN_MODULE}&return_action={$RETURN_ACTION}&return_id={$RETURN_ID}"
 {rdelim}
 
 function updateAllListPrice()

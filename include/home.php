@@ -139,16 +139,11 @@ class Homestuff {
 	public function addCustomWidgetFilter() {
 		global $adb;
 		$stuffid=$adb->getUniqueId('vtiger_homestuff');
-		$result=$adb->pquery('insert into vtiger_seq_temp values(?)', array($stuffid));
+		$adb->pquery('insert into vtiger_seq_temp values(?)', array($stuffid));
 		$rs = $adb->pquery('select min(value) from vtiger_seq_temp', array());
 		$id=$adb->query_result($rs, 0, 0);
 		$fieldarray=explode(',', $this->fieldvalue);
-		$result=$adb->pquery('insert into vtiger_home_cw_fields values(? ,?,?,?)', array($id, $this->selFiltername, $this->selAggregatename, $fieldarray[0]));
-		if (!$result) {
-			return false;
-		} else {
-			return true;
-		}
+		return $adb->pquery('insert into vtiger_home_cw_fields values(? ,?,?,?)', array($id, $this->selFiltername, $this->selAggregatename, $fieldarray[0]));
 	}
 
 	/**
@@ -158,8 +153,8 @@ class Homestuff {
 	public function getHomePageFrame() {
 		global $adb, $current_user;
 		$querystuff ='select vtiger_homestuff.stuffid,stufftype,stufftitle,setype from vtiger_homestuff
-						left join vtiger_homedefault on vtiger_homedefault.stuffid=vtiger_homestuff.stuffid
-						where visible=0 and userid=? order by stuffsequence desc';
+			left join vtiger_homedefault on vtiger_homedefault.stuffid=vtiger_homestuff.stuffid
+			where visible=0 and userid=? order by stuffsequence desc';
 		$resultstuff=$adb->pquery($querystuff, array($current_user->id));
 		$homeval = array();
 		for ($i=0; $i<$adb->num_rows($resultstuff); $i++) {
@@ -177,10 +172,8 @@ class Homestuff {
 				if ($adb->num_rows($result_setype)>0) {
 					$module_name = $adb->query_result($result_setype, 0, 'setype');
 				}
-				if (!empty($module_name) && $module_name!='NULL') {
-					if (!vtlib_isModuleActive($module_name)) {
-						continue;
-					}
+				if (!empty($module_name) && $module_name!='NULL' && !vtlib_isModuleActive($module_name)) {
+					continue;
 				}
 			} elseif ($stufftype == 'DashBoard') {
 				if (!vtlib_isModuleActive('Dashboard')) {
@@ -241,8 +234,7 @@ class Homestuff {
 	public function getSelectedStuff($sid, $stuffType) {
 		global $adb;
 		$resultstuff=$adb->pquery('select stufftitle from vtiger_homestuff where visible=0 and stuffid=?', array($sid));
-		$homeval=array('Stuffid'=>$sid, 'Stufftype'=>$stuffType, 'Stufftitle'=>$adb->query_result($resultstuff, 0, 'stufftitle'));
-		return $homeval;
+		return array('Stuffid'=>$sid, 'Stufftype'=>$stuffType, 'Stufftitle'=>$adb->query_result($resultstuff, 0, 'stufftitle'));
 	}
 
 	/**
@@ -316,11 +308,11 @@ class Homestuff {
 					$fldlabel=$fieldheader[1];
 					$pos=strpos($fldlabel, '_');
 
-					if ($pos==true) {
+					if ($pos) {
 						$fldlabel=str_replace('_', ' ', $fldlabel);
 					}
 
-					$field_label=isset($app_strings[$fldlabel])?$app_strings[$fldlabel]:(isset($fieldmod_strings[$fldlabel])?$fieldmod_strings[$fldlabel]:$fldlabel);
+					$field_label=isset($app_strings[$fldlabel]) ? $app_strings[$fldlabel] : (isset($fieldmod_strings[$fldlabel]) ? $fieldmod_strings[$fldlabel] : $fldlabel);
 					$cv_presence=$adb->pquery("SELECT * from vtiger_cvcolumnlist WHERE cvid = ? and columnname LIKE '%".$fldname."%'", array($cvid));
 
 					if (!is_admin($current_user)) {
@@ -336,10 +328,8 @@ class Homestuff {
 						);
 						$field_label = $adb->query_result($field_query, 0, 'fieldlabel');
 					}
-					//$fieldcolumns[$fldlabel] = array($tabname=>$colname);
 				}
 
-				// $list= getListViewEntries($focus,$modname,$list_result,6,'','','','',$oCustomView,'HomePage',$fieldcolumns);
 				if (getUItype($modname, $colname) == 71) {
 					$isCurrencyField = true;
 				} else {
@@ -398,7 +388,7 @@ class Homestuff {
 		$header[]=getTranslatedString('LBL_HOME_VALUE');
 		$return_value = array('ModuleName'=>'Home', 'cvid'=>0, 'Header'=>$header, 'Entries'=>$list);
 
-		if (count($header)!=0) {
+		if (!empty($list)) {
 			 return $return_value;
 		} else {
 			echo getTranslatedString('LBL_FIELDINFILTERNOTFOUND');
@@ -650,8 +640,8 @@ class Homestuff {
 
 	/**
 	 * this function returns the URL for a given widget id from the database
-	 * @param integer $widgetid - the notebookid
-	 * @return $url - the url for the widget
+	 * @param integer the widget id
+	 * @return string the url for the widget
 	 */
 	public function getWidgetURL($widgetid) {
 		global $adb;
@@ -938,7 +928,7 @@ function getGroupTaskLists($maxval) {
 		}
 
 		$values=array('Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>'');
-		if (count($entries)>0) {
+		if (!empty($entries)) {
 			return $values;
 		}
 	}

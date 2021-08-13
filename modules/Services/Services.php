@@ -227,27 +227,6 @@ class Services extends CRMEntity {
 		$adb->pquery($query, $params);
 	}
 
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
 	/**	function used to get the list of quotes which are related to the service
 	 *	@param int $id - service id
 	 *	@return array - array which will be returned from the function GetRelatedList
@@ -561,7 +540,7 @@ class Services extends CRMEntity {
 		$pricebook_id = $_REQUEST['record'];
 
 		$computeCount = (isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : false);
-		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, 'PriceBooks') || ((boolean) $computeCount) == true) {
+		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, 'PriceBooks') || ((boolean)$computeCount)) {
 			$rs = $adb->query(mkCountQuery($query));
 			$noofrows = $adb->query_result($rs, 0, 'count');
 		} else {
@@ -603,17 +582,17 @@ class Services extends CRMEntity {
 		$numRows = $adb->num_rows($list_result);
 		for ($i=0; $i<$numRows; $i++) {
 			$entity_id = $adb->query_result($list_result, $i, 'crmid');
-			$unit_price = 	$adb->query_result($list_result, $i, 'unit_price');
+			$unitprice = 	$adb->query_result($list_result, $i, 'unit_price');
 			if ($currency_id != null) {
 				$prod_prices = getPricesForProducts($currency_id, array($entity_id), 'Services');
-				$unit_price = $prod_prices[$entity_id];
+				$unitprice = $prod_prices[$entity_id];
 			}
 			$listprice = $adb->query_result($list_result, $i, 'listprice');
 
 			$entries = array();
 			$entries[] = textlength_check($adb->query_result($list_result, $i, 'servicename'));
 			if (getFieldVisibilityPermission('Services', $current_user->id, 'unit_price') == '0') {
-				$entries[] = CurrencyField::convertToUserFormat($unit_price, null, true);
+				$entries[] = CurrencyField::convertToUserFormat($unitprice, null, true);
 			}
 
 			$entries[] = CurrencyField::convertToUserFormat($listprice, null, true);

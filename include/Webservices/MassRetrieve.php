@@ -54,10 +54,10 @@ function vtws_massretrieve($ids, $user) {
 	}
 	$actors = vtws_getActorModules();
 	$rdo = array();
-	if (in_array($mname, $actors) && count($wsIds)>0) {
+	if (in_array($mname, $actors) && !empty($wsIds)) {
 		$rdo = $handler->massRetrieve($wsIds);
 	}
-	if (!in_array($mname, $actors) && count($wsIds)>0) {
+	if (!in_array($mname, $actors) && !empty($wsIds)) {
 		$r = $meta->getReferenceFieldDetails();
 		$imgs = $meta->getImageFields();
 		$crmentity = CRMEntity::getInstance($mname);
@@ -77,7 +77,7 @@ function vtws_massretrieve($ids, $user) {
 					$listofrelfields[] = $entity[$relfield];
 				}
 			}
-			if (count($listofrelfields)>0) {
+			if (!empty($listofrelfields)) {
 				if ($entityName=='Emails' && $entity['parent_id']!='') {
 					unset($listofrelfields['parent_id'], $r['parent_id']);
 				}

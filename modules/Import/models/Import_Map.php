@@ -14,14 +14,14 @@ class Import_Map {
 	public $map;
 	public $user;
 
-	public function __construct($map, $user) {
-		$this->map = $map;
+	public function __construct($mp, $user) {
+		$this->map = $mp;
 		$this->user = $user;
 	}
 
 	public static function getInstanceFromDb($row, $user) {
 		global $default_charset;
-		$map = array();
+		$mp = array();
 		foreach ($row as $key => $value) {
 			if (is_numeric($key)) {
 				continue;
@@ -35,12 +35,12 @@ class Import_Map {
 					$mappedName = str_replace('/amp/', '&', $mappedName);
 					$content[$mappedName] = $sequence;
 				}
-				$map[$key] = $content;
+				$mp[$key] = $content;
 			} else {
-				$map[$key] = $value;
+				$mp[$key] = $value;
 			}
 		}
-		return new Import_Map($map, $user);
+		return new Import_Map($mp, $user);
 	}
 
 	public static function markAsDeleted($mapId) {
@@ -49,8 +49,7 @@ class Import_Map {
 	}
 
 	public function getId() {
-		$map = $this->map;
-		return $map['id'];
+		return $this->map['id'];
 	}
 
 	public function getAllValues() {
@@ -58,13 +57,12 @@ class Import_Map {
 	}
 
 	public function getValue($key) {
-		$map = $this->map;
-		return $map[$key];
+		return $this->map[$key];
 	}
 
 	public function getStringifiedContent() {
 		if (empty($this->map['content'])) {
-			return;
+			return '';
 		}
 		$content = $this->map['content'];
 		$keyValueStrings = array();
@@ -78,20 +76,19 @@ class Import_Map {
 
 	public function getDefaultValues() {
 		if (empty($this->map['defaultvalues'])) {
-			return;
+			return '';
 		}
-		$defaultvalues = $this->map['defaultvalues'];
-		return $defaultvalues;
+		return $this->map['defaultvalues'];
 	}
 
 	public function save() {
 		$adb = PearDatabase::getInstance();
 
-		$map = $this->getAllValues();
-		$map['content'] = ''.$adb->getEmptyBlob().'';
-		$columnNames = array_keys($map);
-		$columnValues = array_values($map);
-		if (count($map) > 0) {
+		$mp = $this->getAllValues();
+		$mp['content'] = ''.$adb->getEmptyBlob().'';
+		$columnNames = array_keys($mp);
+		$columnValues = array_values($mp);
+		if (!empty($mp)) {
 			$adb->pquery(
 				'INSERT INTO '.self::$tableName.' ('. implode(',', $columnNames).',date_entered) VALUES ('. generateQuestionMarks($columnValues).',now())',
 				array($columnValues)

@@ -137,11 +137,9 @@ class HelpDesk extends CRMEntity {
 		$return_action = isset($_REQUEST['return_action']) ? $_REQUEST['return_action'] : false;
 		$for_module = isset($_REQUEST['return_module']) ? $_REQUEST['return_module'] : false;
 		$for_crmid = isset($_REQUEST['return_id']) ? $_REQUEST['return_id'] : false;
-		if ($return_action && $for_module && $for_crmid) {
-			if ($for_module == 'ServiceContracts') {
-				$on_focus = CRMEntity::getInstance($for_module);
-				$on_focus->save_related_module($for_module, $for_crmid, $module, $this->id);
-			}
+		if ($return_action && $for_module && $for_crmid && $for_module == 'ServiceContracts') {
+			$on_focus = CRMEntity::getInstance($for_module);
+			$on_focus->save_related_module($for_module, $for_crmid, $module, $this->id);
 		}
 	}
 
@@ -315,7 +313,7 @@ class HelpDesk extends CRMEntity {
 			if ($adb->query_result($result, $i, 'comments') != '') {
 				//this div is to display the comment
 				$comment = $adb->query_result($result, $i, 'comments');
-				// Asha: Fix for ticket #4478 . Need to escape html tags during ajax save.
+				// Need to escape html tags during ajax save.
 				if ($_REQUEST['action'] == 'HelpDeskAjax') {
 					$comment = htmlentities($comment, ENT_QUOTES, $default_charset);
 				}
@@ -381,7 +379,7 @@ class HelpDesk extends CRMEntity {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
-		include 'include/utils/ExportUtils.php';
+		include_once 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery("HelpDesk", "detail_view");
@@ -693,7 +691,7 @@ class HelpDesk extends CRMEntity {
 		$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
 		$portalUrl = "<a href='" . $PORTAL_URL . '/index.php?module=HelpDesk&action=index&ticketid=' . $entityId . "&fun=detail'>"
 			. getTranslatedString('LBL_TICKET_DETAILS', $moduleName) . "</a>";
-		$contents = getTranslatedString('Dear', $moduleName) . " " . getParentName(parentId) . ',<br><br>';
+		$contents = getTranslatedString('Dear', $moduleName) . ' ' . getParentName($parentId) . ',<br><br>';
 		$contents .= getTranslatedString('reply', $moduleName) . ' <b>' . $entityData->get('ticket_title')
 			. '</b>' . getTranslatedString('customer_portal', $moduleName);
 		$contents .= getTranslatedString('link', $moduleName) . '<br>';

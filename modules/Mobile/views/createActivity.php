@@ -18,8 +18,7 @@ class crmtogo_UI_DecideActivityType extends crmtogo_WS_Controller {
 		$viewer = new crmtogo_UI_Viewer();
 		$viewer->assign('MOD', $this->getUsersLanguage());
 		$viewer->assign('LANGUAGE', $current_language);
-		$response = $viewer->process('decideActivityType.tpl');
-		return $response;
+		return $viewer->process('decideActivityType.tpl');
 	}
 }
 ?>

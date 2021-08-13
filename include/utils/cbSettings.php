@@ -20,8 +20,11 @@ class coreBOS_Settings {
 
 	private static $cached_values = array();
 
-	/*
-	 * @return $default if not found
+	/** get the value of a key if it exists, will return default if the key is not found
+	 * @param string key to search for
+	 * @param mixed default value to return if key is not found
+	 * @param boolean true to use internal cache, false if not
+	 * @return mixed value of the key if found, $default if not found
 	 */
 	public static function getSetting($skey, $default, $cache = true) {
 		global $adb;

@@ -38,7 +38,6 @@ if ($mass_merge != '') {
 	if (array_pop($temp_mass_merge)=='') {
 		array_pop($mass_merge);
 	}
-	//$mass_merge = implode(',',$mass_merge);
 } elseif ($single_record != '') {
 	$mass_merge = $single_record;
 } else {
@@ -54,7 +53,7 @@ while ($row = $adb->fetch_array($result)) {
 	$deleted_id[] = $row['crmid'];
 }
 
-if (count($deleted_id) > 0) {
+if (!empty($deleted_id)) {
 	$update_query = "update vtiger_contactdetails set accountid = 0 where contactid in (". generateQuestionMarks($deleted_id) .")";
 	$result = $adb->pquery($update_query, array($deleted_id));
 }
@@ -93,10 +92,8 @@ for ($x=0; $x<$y; $x++) {
 	$columnname = $adb->query_result($result, $x, 'columnname');
 	$modulename = $adb->query_result($result, $x, 'name');
 
-	if ($tablename == 'crmentity') {
-		if ($modulename == 'Contacts') {
-			$tablename = 'vtiger_crmentityContacts';
-		}
+	if ($tablename == 'crmentity' && $modulename == 'Contacts') {
+		$tablename = 'vtiger_crmentityContacts';
 	}
 	$querycolumns[$x] = $tablename.'.'.$columnname;
 	if ($columnname == 'smownerid') {
@@ -149,7 +146,7 @@ $labels_length=array_reverse($labels_length);
 $csvheader = implode(',', $field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
 
-if (count($querycolumns) > 0) {
+if (!empty($querycolumns)) {
 	$selectcolumns = implode(',', $querycolumns);
 	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Accounts');
 	$crmEntityTable2 = CRMEntity::getcrmEntityTableAlias('Contacts', true);
@@ -180,12 +177,8 @@ if (count($querycolumns) > 0) {
 		for ($x=0; $x<$y; $x++) {
 			$value = $columnValues[$x];
 			foreach ($columnValues as $key => $val) {
-				if ($val == $value && $value != '') {
-					if (array_key_exists($key, $avail_pick_arr)) {
-						if (!in_array($val, $avail_pick_arr[$key])) {
-							$value = 'Not Accessible';
-						}
-					}
+				if ($val == $value && $value != '' && array_key_exists($key, $avail_pick_arr) && !in_array($val, $avail_pick_arr[$key])) {
+					$value = 'Not Accessible';
 				}
 			}
 			//<<<<<<<<<<<<<<< For blank Fields >>>>>>>>>>>>>>>>>>>>>>>>>>>>

@@ -255,10 +255,8 @@ class Invoice extends CRMEntity {
 
 	// Function to get column name - Overriding function of base class
 	public function get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype = '') {
-		if ($columname == 'salesorderid') {
-			if ($fldvalue == '') {
-				return null;
-			}
+		if ($columname == 'salesorderid' && $fldvalue == '') {
+			return null;
 		}
 		return parent::get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype);
 	}
@@ -357,9 +355,9 @@ class Invoice extends CRMEntity {
 		}
 	}
 
-	/*
+	/**
 	 * Function to get the relations of salesorder to invoice for recurring invoice procedure
-	 * @param - $salesorder_id Salesorder ID
+	 * @param integer $_salesorderid Salesorder ID through object property
 	 */
 	public function createRecurringInvoiceFromSO() {
 		global $adb;
@@ -387,7 +385,7 @@ class Invoice extends CRMEntity {
 					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 				}
 			}
-			if (count($col_value) > 0) {
+			if (!empty($col_value)) {
 				$col_value['id'] = $this->id;
 				$col_value['comment']= decode_html($col_value['comment']);
 				$columns = array_keys($col_value);
@@ -407,9 +405,9 @@ class Invoice extends CRMEntity {
 			$row = $adb->query_result_rowdata($res, $j);
 			$col_value = array();
 			for ($k=0; $k<count($fieldsList); $k++) {
-					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
+				$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 			}
-			if (count($col_value) > 0) {
+			if (!empty($col_value)) {
 				$col_value['id'] = $this->id;
 				$columns = array_keys($col_value);
 				$values = array_values($col_value);
@@ -433,7 +431,7 @@ class Invoice extends CRMEntity {
 					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 				}
 			}
-			if (count($col_value) > 0) {
+			if (!empty($col_value)) {
 				$col_value['id'] = $this->id;
 				$columns = array_keys($col_value);
 				$values = array_values($col_value);
@@ -460,7 +458,7 @@ class Invoice extends CRMEntity {
 			$updatecols[] = "$col=?";
 			$updateparams[] = $this->column_fields[$field];
 		}
-		if (count($updatecols) > 0) {
+		if (!empty($updatecols)) {
 			$updatequery .= implode(',', $updatecols);
 
 			$updatequery .= ' WHERE invoiceid=?';
@@ -693,7 +691,7 @@ class Invoice extends CRMEntity {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
-		include 'include/utils/ExportUtils.php';
+		include_once 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery('Invoice', 'detail_view');

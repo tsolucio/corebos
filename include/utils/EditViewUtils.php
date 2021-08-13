@@ -166,14 +166,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 		$options = array();
 		$pickcount=0;
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$value = decode_html($value);
 			$pickListValue=decode_html($adb->query_result($pickListResult, $j, strtolower($fieldname)));
 			if ($value == trim($pickListValue)) {
 				$chk_val = 'selected';
 				$pickcount++;
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
@@ -185,7 +183,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 		}
 		$fieldvalue [] = $options;
-	} elseif ($uitype == 1613 || $uitype == 1614 || $uitype == 1615 || $uitype == 1616) {
+	} elseif ($uitype == 1613 || $uitype == 1614 || $uitype == 1615 || $uitype == 1616 || $uitype == 3313 || $uitype == 3314 || $uitype == 1024) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $value);
@@ -202,7 +200,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
 		if ($uitype == 15) {
-			if (count($valueArr)>0) {
+			if (!empty($valueArr)) {
 				$valueArr = array_combine($valueArr, $valueArr);
 			}
 			$picklistValues = array_merge($picklistValues, $valueArr);
@@ -224,18 +222,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $options;
-	} elseif ($uitype == 3313 || $uitype == 3314) {
-		require_once 'modules/PickList/PickListUtils.php';
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $value);
-	} elseif ($uitype == 1024) {
-		require_once 'modules/PickList/PickListUtils.php';
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $value);
 	} elseif ($uitype == 1025) {
 		$entityTypes = array();
 		$parent_id = $value;
-		$values = explode(' |##| ', $value);
+		$values = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 		foreach ($cbMapFI['searchfields'] as $k => $value) {
 			$entityTypes[] = $k;
 		}
@@ -262,13 +252,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$editview_label[] = array('options'=>$entityTypes, 'selected'=>$valueType, 'displaylabel'=>getTranslatedString($fieldlabel, $module_name));
 		$fieldvalue[] = array('displayvalue'=>$displayValue,'entityid'=>$parent_id);
-	} elseif ($uitype == 17) {
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = $value;
-	} elseif ($uitype == 85) { //added for Skype
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = $value;
-	} elseif ($uitype == 14) { //added for Time Field
+	} elseif ($uitype == 17 || $uitype == 85 || $uitype == 14 || $uitype == 21 || $uitype == 56) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
 	} elseif ($uitype == 19) {
@@ -288,9 +272,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
-	} elseif ($uitype == 21) {
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = $value;
 	} elseif ($uitype == 52 || $uitype == 77) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		global $current_user;
@@ -299,12 +280,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		} else {
 			$assigned_user_id = $current_user->id;
 		}
-		if ($uitype == 52) {
-			$combo_lbl_name = 'assigned_user_id';
-		} elseif ($uitype == 77) {
-			$combo_lbl_name = 'assigned_user_id1';
-		}
-
 		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
 			$ua = get_user_array(false, 'Active', $assigned_user_id, 'private');
 		} else {
@@ -421,9 +396,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $value;
 		$fieldvalue[] = is_admin($current_user);
-	} elseif ($uitype == 56) {
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 61) {
 		if ($value != '') {
 			$assigned_user_id = $value;
@@ -538,9 +510,13 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 				$image_path_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
-			if (count($image_array)>0) {
+			if (!empty($image_array)) {
 				for ($img_itr=0, $img_itrMax = count($image_array); $img_itr< $img_itrMax; $img_itr++) {
-					$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr].$image_id_array[$img_itr]."_","orgname"=>$image_orgname_array[$img_itr]);
+					$fieldvalue[] = array(
+						'name' => $image_array[$img_itr],
+						'path' => $image_path_array[$img_itr].$image_id_array[$img_itr].'_',
+						'orgname' => $image_orgname_array[$img_itr]
+					);
 				}
 			} else {
 				$fieldvalue[] = '';
@@ -556,7 +532,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 			$myids=explode('|', $parent_id);
 			for ($i=0; $i<(count($myids)-1); $i++) {
-				$realid=explode("@", $myids[$i]);
+				$realid=explode('@', $myids[$i]);
 				$entityid=$realid[0];
 				$nemail=count($realid);
 
@@ -623,8 +599,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 						$parent_name .= $fullname.'&lt;'.$temp1.'&gt;; ';
 						$temp_parent_name .= $fullname.'&lt;'.$temp1.'&gt;; ';
 					} else {
-						$parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '."</b>";
-						$temp_parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '."</b>";
+						$parent_name .= "<strong style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; </strong>';
+						$temp_parent_name .= "<strong style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; </strong>';
 					}
 				}
 			}
@@ -779,13 +755,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$noofpickrows = $adb->num_rows($pickListResult);
 
 		$options = array();
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue=$adb->query_result($pickListResult, $j, strtolower($fieldname));
 
 			if ($value == $pickListValue) {
 				$chk_val = 'selected';
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
@@ -800,13 +774,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$noofpickrows = $adb->num_rows($pickListResult);
 
 		$options = array();
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue=$adb->query_result($pickListResult, $j, 'currency_name');
 			$currency_id=$adb->query_result($pickListResult, $j, 'id');
 			if ($value == $currency_id) {
 				$chk_val = 'selected';
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
@@ -834,7 +806,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$image_path_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
 		}
-		if (count($image_array)>0) {
+		if (!empty($image_array)) {
 			for ($img_itr=0, $img_itrMax = count($image_array); $img_itr< $img_itrMax; $img_itr++) {
 				$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr]);
 			}
@@ -945,9 +917,7 @@ function getConvertSoToInvoice($focus, $so_focus, $soid) {
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
 	);
 	foreach ($fields as $fieldname) {
-		if (getFieldVisibilityPermission('SalesOrder', $current_user->id, $fieldname) == '0') {
-			$so_focus->column_fields[$fieldname] = $so_focus->column_fields[$fieldname];
-		} else {
+		if (getFieldVisibilityPermission('SalesOrder', $current_user->id, $fieldname) != '0') {
 			$so_focus->column_fields[$fieldname] = '';
 		}
 	}
@@ -1002,9 +972,7 @@ function getConvertQuoteToInvoice($focus, $quote_focus, $quoteid) {
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
 	);
 	foreach ($fields as $fieldname) {
-		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) == '0') {
-			$quote_focus->column_fields[$fieldname] = $quote_focus->column_fields[$fieldname];
-		} else {
+		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) != '0') {
 			$quote_focus->column_fields[$fieldname] = '';
 		}
 	}
@@ -1053,9 +1021,7 @@ function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
 	);
 	foreach ($fields as $fieldname) {
-		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) == '0') {
-			$quote_focus->column_fields[$fieldname] = $quote_focus->column_fields[$fieldname];
-		} else {
+		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) != '0') {
 			$quote_focus->column_fields[$fieldname] = '';
 		}
 	}
@@ -1207,16 +1173,12 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	}
 	if ($module != $currentModule && in_array($currentModule, getInventoryModules())) {
 		$cbMap = cbMap::getMapByName($currentModule.'InventoryDetails', 'MasterDetailLayout');
-		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
-		if ($MDMapFound) {
-			$cbMapFields = $cbMap->MasterDetailLayout();
-		}
 	} else {
 		$cbMap = cbMap::getMapByName($module.'InventoryDetails', 'MasterDetailLayout');
-		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
-		if ($MDMapFound) {
-			$cbMapFields = $cbMap->MasterDetailLayout();
-		}
+	}
+	$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
+	if ($MDMapFound) {
+		$cbMapFields = $cbMap->MasterDetailLayout();
 	}
 	$result = $adb->pquery($query, $params);
 	$num_rows=$adb->num_rows($result);
@@ -1281,7 +1243,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 
 		//Delete link in First column
 		if ($i != 1) {
-			$product_Detail[$i]['delRow'.$i]="Del";
+			$product_Detail[$i]['delRow'.$i]='Del';
 		}
 		if (empty($focus->mode) && $seid!='') {
 			$crmETPC = CRMEntity::getcrmEntityTableAlias('ProductComponent');
@@ -1293,7 +1255,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 				array($seid)
 			);
 		} else {
-			$sub_prod_query = $adb->pquery("SELECT productid as prod_id from vtiger_inventorysubproductrel WHERE id=? AND sequence_no=?", array($focus->id,$i));
+			$sub_prod_query = $adb->pquery('SELECT productid as prod_id from vtiger_inventorysubproductrel WHERE id=? AND sequence_no=?', array($focus->id,$i));
 		}
 		$subprodid_str='';
 		$subprodname_str='';
@@ -1302,16 +1264,16 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			for ($j=0; $j<$adb->num_rows($sub_prod_query); $j++) {
 				$sprod_id = $adb->query_result($sub_prod_query, $j, 'prod_id');
 				$sprod_name = $subProductArray[] = getProductName($sprod_id);
-				$str_sep = "";
+				$str_sep = '';
 				if ($j>0) {
-					$str_sep = ":";
+					$str_sep = ':';
 				}
 				$subprodid_str .= $str_sep.$sprod_id;
-				$subprodname_str .= $str_sep." - ".$sprod_name;
+				$subprodname_str .= $str_sep.' - '.$sprod_name;
 			}
 		}
 
-		$subprodname_str = str_replace(":", "<br>", $subprodname_str);
+		$subprodname_str = str_replace(':', '<br>', $subprodname_str);
 
 		$product_Detail[$i]['subProductArray'.$i] = $subProductArray;
 		$product_Detail[$i]['hdnProductId'.$i] = $hdnProductId;
@@ -1340,7 +1302,11 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 				);
 				if ($mdrs) {
 					$col_fields = array();
-					$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, $mdfield['fieldinfo']['name']);
+					if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate']=='true' && !is_null($mdfield['duplicatevalue'])) {
+						$col_fields[$mdfield['fieldinfo']['name']] = $mdfield['duplicatevalue'];
+					} else {
+						$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, $mdfield['fieldinfo']['name']);
+					}
 					$col_fields['record_id'] = $adb->query_result($mdrs, 0, 'inventorydetailsid');
 					$foutput = getOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], 100, $col_fields, 0, 'InventoryDetails', 'edit', $mdfield['fieldinfo']['typeofdata']);
 					$product_Detail[$i]['moreinfo'.$i][] = $foutput;
@@ -1369,14 +1335,14 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$product_Detail[$i]['discount_amount'.$i] = 0;
 
 		if ($discount_percent != 'NULL' && $discount_percent != '') {
-			$product_Detail[$i]['discount_type'.$i] = "percentage";
+			$product_Detail[$i]['discount_type'.$i] = 'percentage';
 			$product_Detail[$i]['discount_percent'.$i] = $discount_percent;
 			$product_Detail[$i]['checked_discount_percent'.$i] = ' checked';
 			$product_Detail[$i]['style_discount_percent'.$i] = ' style="visibility:visible"';
 			$product_Detail[$i]['style_discount_amount'.$i] = ' style="visibility:hidden"';
 			$discountTotal = $productTotal*$discount_percent/100;
 		} elseif ($discount_amount != 'NULL' && $discount_amount != '') {
-			$product_Detail[$i]['discount_type'.$i] = "amount";
+			$product_Detail[$i]['discount_type'.$i] = 'amount';
 			$product_Detail[$i]['discount_amount'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discount_amount, null, true), null, true);
 			$product_Detail[$i]['checked_discount_amount'.$i] = ' checked';
 			$product_Detail[$i]['style_discount_amount'.$i] = ' style="visibility:visible"';
@@ -1420,7 +1386,6 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		for ($tax_count=0, $tax_countMax = count($tax_details); $tax_count< $tax_countMax; $tax_count++) {
 			$tax_name = $tax_details[$tax_count]['taxname'];
 			$tax_label = $tax_details[$tax_count]['taxlabel'];
-			$tax_value = '0.00';
 
 			//condition to avoid this function call when create new PO/SO/Quotes/Invoice from Product module
 			if ($focus->id != '') {
@@ -1515,7 +1480,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 				$tax_percent = $tax_details[$tax_count]['percentage'];
 			}
 		} else {
-			$tax_percent = $tax_details[$tax_count]['percentage'];//$adb->query_result($result,0,$tax_name);
+			$tax_percent = $tax_details[$tax_count]['percentage'];
 		}
 
 		if ($tax_percent == '' || $tax_percent == 'NULL') {
@@ -1567,7 +1532,6 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	$product_Detail[$j]['final_details']['grandTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($grandTotal, null, true), null, true);
 
 	$log->debug('< getAssociatedProducts');
-	// return array();
 	if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1) {
 		$res_prddtl = array();
 		$prdkey = 1;
@@ -1648,7 +1612,7 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 * Param $mode - view type (detail/edit/create)
 * Param $col_fields - fields array
 * Param $tabid - tab id
-* Param $info_type - information type (basic/advance) default ""
+* Param $info_type - information type (basic/advance) default ''
 * Return type is an object array
 */
 function getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode) {
@@ -1667,8 +1631,8 @@ function getBlockInformation($module, $result, $col_fields, $tabid, $block_label
 	}
 	$noofrows = $adb->num_rows($result);
 	for ($i=0; $i<$noofrows; $i++) {
-		$fieldtablename = $adb->query_result($result, $i, 'tablename');
-		$fieldcolname = $adb->query_result($result, $i, 'columnname');
+		// $result > 'tablename'
+		// $result > 'columnname'
 		$uitype = $adb->query_result($result, $i, 'uitype');
 		$fieldname = $adb->query_result($result, $i, 'fieldname');
 		$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
@@ -1786,8 +1750,7 @@ function getDBValidationData($tablearray, $tabid = '') {
 		global $adb, $default_charset;
 		$fieldModuleName = getTabModuleName($tabid);
 		$fieldres = $adb->pquery(
-			"SELECT fieldlabel,fieldname,typeofdata FROM vtiger_field
-			WHERE displaytype IN (1,3) AND presence in (0,2) AND tabid=?",
+			'SELECT fieldlabel,fieldname,typeofdata FROM vtiger_field WHERE displaytype IN (1,3) AND presence in (0,2) AND tabid=?',
 			array($tabid)
 		);
 		$fieldinfos = array();

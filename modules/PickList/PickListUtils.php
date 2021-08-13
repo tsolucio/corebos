@@ -166,7 +166,7 @@ function getNonEditablePicklistValues($fieldName, $lang, $adb) {
 			$values[]=$non_val;
 		}
 	}
-	if (count($values)==0) {
+	if (empty($values)) {
 		$values = '';
 	}
 	return $values;
@@ -175,7 +175,6 @@ function getNonEditablePicklistValues($fieldName, $lang, $adb) {
 /**
  * this function accepts the fieldname of a picklist and returns true if it contains noneditable values and false if not
  * @param string $fieldName - the name of the picklist
- * @param object $adb - the peardatabase object
  * @return boolean true if the picklist has noneditable values
  */
 function hasNonEditablePicklistValues($fieldName) {
@@ -187,13 +186,61 @@ function hasNonEditablePicklistValues($fieldName) {
 /**
  * this function accepts the fieldname of a picklist and returns true if it contains noneditable values and false if not
  * @param string $fieldName - the name of the picklist
- * @param object $adb - the peardatabase object
  * @return boolean true if the picklist has noneditable values
  */
 function hasMultiLanguageSupport($fieldName) {
 	global $adb;
 	$result = $adb->pquery('select multii18n from vtiger_picklist where name=?', array($fieldName));
 	return ((int)$adb->query_result($result, 0, 'multii18n')==1);
+}
+
+/**
+ * returns if a picklist has empty or duplicate values
+ * @param string $fieldName - the name of the picklist
+ * @return boolean true if an empty or duplicate value exists and false otherwise
+ */
+function isPicklistValid($fieldName) {
+	global $adb;
+	$cleanName = $adb->sql_escape_string($fieldName);
+	$emptyval = $adb->query('select 1 from vtiger_'.$cleanName.' where '.$cleanName."=''");
+	$withNoDups = $adb->query('SELECT distinct '.$cleanName.' FROM vtiger_'.$cleanName);
+	$withDups = $adb->query('SELECT distinct ('.$cleanName.' COLLATE utf8_bin) FROM vtiger_'.$cleanName);
+	return ($adb->num_rows($emptyval)==0 && $adb->num_rows($withNoDups)==$adb->num_rows($withDups));
+}
+
+/**
+ * this function accepts the fieldname of a picklist and eliminates empty and duplicate values
+ * @param string $module - the name of the module the picklist is in
+ * @param string $fieldName - the name of the picklist
+ * @return boolean true if values were changed and false if the picklist was already clean
+ */
+function cleanPicklist($module, $fieldName) {
+	global $adb;
+	$wascleaned = false;
+	if (!isPicklistValid($fieldName)) {
+		$mod = Vtiger_Module::getInstance($module);
+		if ($mod) {
+			$plist = Vtiger_Field::getInstance($fieldName, $mod);
+			if ($plist) {
+				$cleanName = $adb->sql_escape_string($fieldName);
+				$plisttable = $plist->table;
+				$plistcolumn = $plist->column;
+				$adb->pquery("UPDATE vtiger_$cleanName SET $cleanName=? WHERE $cleanName='' or $cleanName is null", array(Field_Metadata::PICKLIST_EMPTY_VALUE));
+				$adb->pquery("UPDATE $plisttable SET $plistcolumn=? WHERE $plistcolumn='' or $plistcolumn is null", array(Field_Metadata::PICKLIST_EMPTY_VALUE));
+				$result = $adb->query('select * from vtiger_'.$cleanName.' order by '.$cleanName);
+				while ($prow = $adb->fetch_array($result)) {
+					$hasDups = $adb->pquery('SELECT '.$cleanName.' FROM vtiger_'.$cleanName.' where '.$cleanName.'=? order by '.$cleanName, array($prow[$cleanName]));
+					if ($adb->num_rows($hasDups)>1) {
+						$oldVal = $adb->query_result($hasDups, 0, $cleanName);
+						$newVal = $adb->query_result($hasDups, 1, $cleanName);
+						$plist->delPicklistValues(array($oldVal => $newVal));
+					}
+				}
+				$wascleaned = true;
+			}
+		}
+	}
+	return $wascleaned;
 }
 
 /**
@@ -340,7 +387,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 			}
 		}
 	} elseif ($uitype == '1024') {
-		$arr_evo=explode(' |##| ', $value);
+		$arr_evo=explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 		if ($action != 'DetailView') {
 			$roleid = $current_user->roleid;
 			$subrole = getRoleSubordinates($roleid);
@@ -359,8 +406,8 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 			for ($i=0; $i < count($arr_evo); $i++) {
 				$roleid=$arr_evo[$i];
 				$rolename=getRoleName($roleid);
-				if ((is_admin($current_user))) {
-					$options[$i]='<a href="index.php?module=Settings&action=RoleDetailView&parenttab=Settings&roleid='.$roleid.'">'.$rolename.'</a>';
+				if (is_admin($current_user)) {
+					$options[$i]='<a href="index.php?module=Settings&action=RoleDetailView&roleid='.$roleid.'">'.$rolename.'</a>';
 				} else {
 					$options[$i]=$rolename;
 				}
@@ -389,7 +436,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 			);
 		}
 	} elseif ($uitype == '1025') {
-		$values = explode(' |##| ', $value);
+		$values = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 		if (!empty($value) && !empty($values[0])) {
 			$srchmod=  getSalesEntityType($values[0]);
 			for ($i=0; $i < count($values); $i++) {

@@ -88,7 +88,7 @@ function setFilteredFunctions(fns) {
 	var fnlist = document.getElementById('wffnlist');
 	var lis = '';
 	Object.keys(fns)
-		.map(fn => {
+		.forEach(fn => {
 			lis += `<li aria-selected="false" class="slds-p-around_xx-small" draggable="false" role="option" tabindex="-1" onClick="setFunctionInformation(this);" onDblClick="dblClickFunctionSelect(this);" data-value="${fn}">${fn}</li>`;
 		});
 	fnlist.innerHTML = lis;
@@ -102,7 +102,10 @@ function wffnFilterSearch(srch) {
 	} else {
 		fns = Object.keys(wfexpfndefs)
 			.filter(fn => wfexpfndefs[fn].name.indexOf(srch) > -1)
-			.reduce((res, key) => (res[key] = wfexpfndefs[key], res), {});
+			.reduce((res, key) => {
+				res[key] = wfexpfndefs[key];
+				return res;
+			}, {});
 	}
 	setFilteredFunctions(fns);
 }
@@ -116,7 +119,10 @@ function wffnFilterCategories(cat) {
 		fns = Object.keys(wfexpfndefs)
 			.filter(fn => wfexpfndefs[fn].categories.indexOf(cat) > -1)
 			.sort()
-			.reduce((res, key) => (res[key] = wfexpfndefs[key], res), {});
+			.reduce((res, key) => {
+				res[key] = wfexpfndefs[key];
+				return res;
+			}, {});
 	}
 	setFilteredFunctions(fns);
 }

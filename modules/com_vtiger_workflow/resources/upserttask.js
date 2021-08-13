@@ -176,7 +176,7 @@ function CBUpsertTask($, fieldvaluemapping) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];
@@ -235,9 +235,6 @@ function CBUpsertTask($, fieldvaluemapping) {
 		}
 		function forStringField(opType, mappingno) {
 			var value = $(format('#save_fieldvalues_%s_value', mappingno));
-			//value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
-			//	'value="" class="expressionvalue" readonly />', mappingno));
-
 			var fv = $(format('#save_fieldvalues_%s_value', mappingno));
 			fv.bind('focus', function () {
 				editFieldExpression($(this), opType);
@@ -304,12 +301,12 @@ function CBUpsertTask($, fieldvaluemapping) {
 			fetch(vtinst.serviceUrl + params, {
 				method: 'get',
 			}).then(response => response.json()).then(response => {
-				if (response.success == true) {
+				if (response.success) {
 					const mods = response.result.types;
 					mods.map(function (upsert_module) {
 						const mod_information = response.result.information;
 						$('#upsert_module').append(
-							`<option value="${upsert_module}">${mod_information[upsert_module].label}</option>`
+							`<option value="${DOMPurify.sanitize(upsert_module)}">${DOMPurify.sanitize(mod_information[upsert_module].label)}</option>`
 						);
 					});
 					$('#upsert_module').bind('change', function () {
@@ -348,13 +345,12 @@ function CBUpsertTask($, fieldvaluemapping) {
 					},
 					filteredFields(parent['fields'])));
 					function getFieldType(fullFieldName) {
+						var fieldModule = selected_upsert_module;
+						var fieldName = fullFieldName;
 						var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
-						if (group==null) {
-							var fieldModule = selected_upsert_module;
-							var fieldName = fullFieldName;
-						} else {
-							var fieldModule = group[2];
-							var fieldName = group[3];
+						if (group!=null) {
+							fieldModule = group[2];
+							fieldName = group[3];
 						}
 						if ((moduleFieldTypes[fieldModule]==undefined || moduleFieldTypes[fieldModule][fieldName]==undefined) && fieldName!='none') {
 							alert(alert_arr.WF_UPDATE_MAP_ERROR+fieldModule+'.'+fieldName);
@@ -364,8 +360,8 @@ function CBUpsertTask($, fieldvaluemapping) {
 						if (fullFieldName == 'folderid' && moduleFieldTypes[fieldModule][fieldName]['name']=='reference') {
 							moduleFieldTypes[fieldModule][fieldName]['name']='picklist';
 							moduleFieldTypes[fieldModule][fieldName]['picklistValues']=moduleFieldTypes[fieldModule][fieldName]['picklistValues'].map((plval) => {
-								$wsid = plval.value.split('x');
-								plval.value = $wsid[1];
+								let wsid = plval.value.split('x');
+								plval.value = wsid[1];
 								return plval;
 							});
 						}
@@ -437,13 +433,12 @@ function CBUpsertTask($, fieldvaluemapping) {
 						filteredFields(parent['fields'])));
 
 						function getFieldType(fullFieldName) {
+							var fieldModule = module;
+							var fieldName = fullFieldName;
 							var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
-							if (group==null) {
-								var fieldModule = module;
-								var fieldName = fullFieldName;
-							} else {
-								var fieldModule = group[2];
-								var fieldName = group[3];
+							if (group!=null) {
+								fieldModule = group[2];
+								fieldName = group[3];
 							}
 							if ((moduleFieldTypes[fieldModule]==undefined || moduleFieldTypes[fieldModule][fieldName]==undefined) && fieldName!='none') {
 								alert(alert_arr.WF_UPDATE_MAP_ERROR+fieldModule+'.'+fieldName);
@@ -453,8 +448,8 @@ function CBUpsertTask($, fieldvaluemapping) {
 							if (fullFieldName == 'folderid' && moduleFieldTypes[fieldModule][fieldName]['name']=='reference') {
 								moduleFieldTypes[fieldModule][fieldName]['name']='picklist';
 								moduleFieldTypes[fieldModule][fieldName]['picklistValues']=moduleFieldTypes[fieldModule][fieldName]['picklistValues'].map((plval) => {
-									$wsid = plval.value.split('x');
-									plval.value = $wsid[1];
+									let wsid = plval.value.split('x');
+									plval.value = wsid[1];
 									return plval;
 								});
 							}
@@ -476,15 +471,10 @@ function CBUpsertTask($, fieldvaluemapping) {
 						resetFields(getFieldType(fieldname), fieldname, mappingno, fieldmodule);
 						$(format('#save_fieldvalues_%s_value_type', mappingno)).val(fieldvaluemap['valuetype']);
 						$('#dump').html(fieldvaluemap['value']);
-						if (fieldvaluemap['valuetype'] == 'rawtext') {
-							var text = $('#dump').html();
-						} else {
-							var text = $('#dump').text();
-						}
 						//set property name on hidden field
 						var fv = $('#save_fieldvalues_'+mappingno+'_value');
 						fv.prop('name', fieldname);
-						$(format('#save_fieldvalues_%s_value', mappingno)).val(text);
+						$(format('#save_fieldvalues_%s_value', mappingno)).val(fieldvaluemap['value']);
 						var fv1 = $('#save_fieldvalues_'+mappingno+'_valuemodule');
 						fv1.prop('name', fieldmodule);
 						mappingno+=1;

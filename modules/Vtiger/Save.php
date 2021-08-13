@@ -108,7 +108,7 @@ if ($saveerror) { // there is an error so we go back to EditView.
 				$value = vtlib_purify($_REQUEST[$fieldname]);
 			}
 			if (is_array($value)) {
-				$value = implode(' |##| ', $value); // for multipicklists
+				$value = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value); // for multipicklists
 			}
 			$field_values_passed.=$fieldname."=".urlencode($value);
 		}

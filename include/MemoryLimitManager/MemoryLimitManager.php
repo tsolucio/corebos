@@ -251,10 +251,7 @@ class MemoryLimitManager {
 	public function isLimitReached(array $processIds = array()) {
 		$currentUsageInBytes = $this->getCurrentUsageInBytes($processIds);
 		$currentUsageWithBufferInBytes = $currentUsageInBytes + $this->bufferInBytes;
-
-		$isReached = ($currentUsageWithBufferInBytes >= $this->limitInBytes);
-
-		return $isReached;
+		return ($currentUsageWithBufferInBytes >= $this->limitInBytes);
 	}
 
 	/**

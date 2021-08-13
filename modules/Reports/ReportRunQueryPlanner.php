@@ -54,12 +54,7 @@ class ReportRunQueryPlanner {
 	}
 
 	public function requireTable($table, $dependencies = null) {
-
-		if ($this->disablePlanner) {
-			return true;
-		}
-
-		if (isset($this->tables[$table])) {
+		if ($this->disablePlanner || isset($this->tables[$table])) {
 			return true;
 		}
 		if (is_array($dependencies)) {
@@ -197,7 +192,7 @@ class ReportRunQueryPlanner {
 				$columnName = $condition['columnname'];
 				$columnParts = explode(':', $columnName);
 				list($moduleName, $fieldLabel) = explode('_', $columnParts[2], 2);
-				$fieldInfo = getFieldByReportLabel($moduleName, $columnParts[3], 'name');
+				$fieldInfo = getFieldByReportLabel($moduleName, $columnParts[3]);
 				if (!empty($fieldInfo)) {
 					$fieldInstance = WebserviceField::fromArray($db, $fieldInfo);
 					$dataType = $fieldInstance->getFieldDataType();

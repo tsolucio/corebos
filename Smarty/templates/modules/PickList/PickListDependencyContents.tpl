@@ -41,7 +41,7 @@
 				{else}
 				<input type="submit" value="{$APP.LBL_NEXT_BUTTON_LABEL}" name="next" class="crmButton small save" onclick="editNewDependencyPicklist('{$MODULE}');" />
 				{/if}
-				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="location.href='index.php?module=PickList&action=PickListDependencySetup&parenttab=Settings&moduleName={$MODULE}';" />
+				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="location.href='index.php?module=PickList&action=PickListDependencySetup&moduleName={$MODULE}';" />
 			</td>
 		</tr>
 

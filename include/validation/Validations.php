@@ -56,13 +56,7 @@ function validate_IBAN_BankAccount($field, $iban, $params, $fields) {
 		// obtenemos los siguientes dos valores
 		$siguienteNumeros = substr($iban, 2, 2);
 		$valor = substr($iban, 4, strlen($iban)) . $valorLetra1 . $valorLetra2 . $siguienteNumeros;
-		if (bcmod($valor, 97) == 1) {
-			return true;
-		} else {
-			return false;
-		}
-	} else {
-		return false;
+		return (bcmod($valor, 97) == 1);
 	}
 	return false;
 }
@@ -134,11 +128,7 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 	}
 	$query = $queryGenerator->getQuery();
 	$result = $adb->pquery($query, array());
-	if ($result && $adb->num_rows($result) == 0) {
-		return true;
-	} else {
-		return false;
-	}
+	return ($result && $adb->num_rows($result) == 0);
 }
 
 /** check if related record exists on given module
@@ -171,7 +161,7 @@ function validateRelatedModuleExists($field, $fieldval, $params, $fields) {
 		$GetRelatedList_ReturnOnlyQuery = true;
 		$holdCM = $currentModule;
 		$currentModule = $module;
-		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), $params);
+		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), array_values($params));
 		$currentModule = $holdCM;
 		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		if (!isset($relationData['query'])) {
@@ -243,10 +233,8 @@ function cbTaxclassRequired($field, $fieldval, $params, $fields) {
 		$i++;
 	}
 	// and it's value positive
-	if ($accepted) {
-		if ($fields[$tax_details[$i-1]['taxname']] < 0) {
-			return false;
-		}
+	if ($accepted && $fields[$tax_details[$i-1]['taxname']] < 0) {
+		return false;
 	}
 	return $accepted;
 }

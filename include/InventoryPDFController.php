@@ -27,11 +27,11 @@ class Vtiger_InventoryPDFController {
 	}
 
 	public function loadRecord($id) {
-		$this->focus = $focus = CRMEntity::getInstance($this->moduleName);
-		$focus->retrieve_entity_info($id, $this->moduleName);
-		$focus->apply_field_security();
-		$focus->id = $id;
-		$this->associated_products = getAssociatedProducts($this->moduleName, $focus);
+		$this->focus = CRMEntity::getInstance($this->moduleName);
+		$this->focus->retrieve_entity_info($id, $this->moduleName);
+		$this->focus->apply_field_security();
+		$this->focus->id = $id;
+		$this->associated_products = getAssociatedProducts($this->moduleName, $this->focus);
 	}
 
 	public function getPDFGenerator() {
@@ -73,7 +73,7 @@ class Vtiger_InventoryPDFController {
 
 	public function Output($filename, $type) {
 		if (is_null($this->focus)) {
-			return;
+			return '';
 		}
 		$pdfgenerator = $this->getPDFGenerator();
 		$pdfgenerator->setPagerViewer($this->getPagerViewer());
@@ -94,28 +94,19 @@ class Vtiger_InventoryPDFController {
 
 			$contentModel = new Vtiger_PDF_Model();
 
-			$discountPercentage = 0.00;
 			$total_tax_percent = 0.00;
 			$producttotal_taxes = 0.00;
-			$quantity = '';
-			$listPrice = '';
-			$discount = '';
-			$taxable_total = '';
-			$tax_amount = '';
-			$producttotal = '';
 
 			$quantity	= $productLineItem["qty{$productLineItemIndex}"];
 			$listPrice	= $productLineItem["listPrice{$productLineItemIndex}"];
 			$discount	= $productLineItem["discountTotal{$productLineItemIndex}"];
 			$taxable_total = $quantity * $listPrice - $discount;
 			$taxable_total = number_format($taxable_total, 2, '.', ''); //Convert to 2 decimals
-			$producttotal = $taxable_total;
-			if ($this->focus->column_fields['hdnTaxType'] == 'individual') {
+			if ($this->focus->column_fields['hdnTaxType'] == 'individual' && !empty($productLineItem['taxes'])) {
 				foreach ($productLineItem['taxes'] as $taxItem) {
 					$tax_percent = $taxItem['percentage'];
 					$total_tax_percent += $tax_percent;
-					$tax_amount = (($taxable_total*$tax_percent)/100);
-					$producttotal_taxes += $tax_amount;
+					$producttotal_taxes += (($taxable_total*$tax_percent)/100);
 				}
 			}
 
@@ -222,8 +213,6 @@ class Vtiger_InventoryPDFController {
 	}
 
 	public function buildHeaderModelColumnLeft() {
-		global $adb;
-		$modelColumnLeft = array();
 		// Company information
 		$resultrow = retrieveCompanyDetails();
 
@@ -252,12 +241,11 @@ class Vtiger_InventoryPDFController {
 			$additionalCompanyInfo[]= "\n".getTranslatedString('Website: ', $this->moduleName). $resultrow['website'];
 		}
 
-		$modelColumnLeft = array(
+		return array(
 			'logo' => $resultrow['applogo'],
 			'summary' => decode_html($resultrow['companyname']),
 			'content' => $this->joinValues($addressValues, ' '). $this->joinValues($additionalCompanyInfo, ' ')
 		);
-		return $modelColumnLeft;
 	}
 
 	public function buildHeaderModelColumnCenter() {
@@ -265,11 +253,10 @@ class Vtiger_InventoryPDFController {
 		$contactName = $this->resolveReferenceLabel($this->focusColumnValue('contact_id'), 'Contacts');
 		$customerNameLabel = getTranslatedString('Customer Name', $this->moduleName);
 		$contactNameLabel = getTranslatedString('Contact Name', $this->moduleName);
-		$modelColumnCenter = array(
+		return array(
 			$customerNameLabel => $customerName,
 			$contactNameLabel  => $contactName,
 		);
-		return $modelColumnCenter;
 	}
 
 	public function buildHeaderModelColumnRight() {
@@ -277,7 +264,7 @@ class Vtiger_InventoryPDFController {
 		$validDateLabel = getTranslatedString('Valid Date', $this->moduleName);
 		$billingAddressLabel = getTranslatedString('Billing Address', $this->moduleName);
 		$shippingAddressLabel = getTranslatedString('Shipping Address', $this->moduleName);
-		$modelColumnRight = array(
+		return array(
 			'dates' => array(
 				$issueDateLabel => $this->formatDate(date('Y-m-d')),
 				$validDateLabel => $this->formatDate($this->focusColumnValue('validtill')),
@@ -285,7 +272,6 @@ class Vtiger_InventoryPDFController {
 			$billingAddressLabel  => $this->buildHeaderBillingAddress(),
 			$shippingAddressLabel => $this->buildHeaderShippingAddress()
 		);
-		return $modelColumnRight;
 	}
 
 	public function buildFooterModel() {
@@ -367,9 +353,8 @@ class Vtiger_InventoryPDFController {
 	}
 
 	public function focusColumnValue($key, $defvalue = '') {
-		$focus = $this->focus;
-		if (isset($focus->column_fields[$key])) {
-			return $focus->column_fields[$key];
+		if (isset($this->focus->column_fields[$key])) {
+			return $this->focus->column_fields[$key];
 		}
 		return $defvalue;
 	}

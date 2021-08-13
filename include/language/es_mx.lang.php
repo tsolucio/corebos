@@ -956,6 +956,8 @@ $app_strings = array (
 	'Mailing Po Box' => 'Apdo. Postal (Envío)',
 	'Other Po Box' => 'Apdo. Postal (Alternativa)',
 	'Image' => 'Imagen',
+	'Unknown' => 'Desconocido',
+	'Compressed' => 'Comprimido',
 	'LBL_EXPORT_TYPE_1' => 'Tipo de Exportación 1:',
 	'LBL_EXPORT_TYPE_2' => 'Tipo de Exportación 2:',
 	'LBL_SEARCH_CRITERIA_RECORDS' => 'Exportar registros asociados a la búsqueda',
@@ -965,6 +967,9 @@ $app_strings = array (
 	'LBL_SEARCH_CRITERIA_COLUMNS'=>'Exportar Columnas del Filtro',
 	'LBL_VISIBLE_COLUMNS'=>'Exportar solo columnas visibles',
 	'LBL_ALL_DATA' => 'Exporta todos los datos',
+	'LBL_EXPORT_FORMAT' => 'Formato Exportación',
+	'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+	'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 	'LBL_DATA_IN_CURRENT_PAGE' => 'Exportar dato de la página actual',
 	'LBL_ONLY_SELECTED_RECORDS' => 'Export Registros seleccionados',
 	'LBL_YES' => 'Si',
@@ -1349,6 +1354,7 @@ $app_strings = array (
 	'LBL_NOPRODUCTS' => 'No se puede convertir la Orden de Venta ya que no hay lineas facturables.',
 	'VALIDATION_FAILED' => 'Validación errónea',
 	'Select Module To Upsert' => 'Selecciona Módulo',
+	'LBL_FIX_NOW' => 'Arreglar Ahora',
 );
 
 // Translation for currency names

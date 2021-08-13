@@ -53,6 +53,6 @@ final class Core_Worker_FunctionMediator extends Core_Worker_Mediator
     }
 
     public function inline() {
-        return call_user_func_array($this->function, func_get_args());
+        return call_user_func_array($this->function, array_values(func_get_args()));
     }
 }

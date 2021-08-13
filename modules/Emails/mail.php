@@ -9,6 +9,7 @@
  ********************************************************************************/
 require_once 'modules/Emails/PHPMailerAutoload.php';
 require_once 'include/utils/CommonUtils.php';
+require_once 'modules/Emails/Emails.php';
 
 /** Function used to send an email
  * $module     - module: only used to add signature if it is different than "Calendar"
@@ -263,7 +264,7 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 
 	//Handle the from name and email for HelpDesk
 	$mail->From = $from_email;
-	$rs = $adb->pquery('select first_name,last_name from vtiger_users where user_name=?', array($from_name));
+	$rs = $adb->pquery('select first_name,last_name,ename from vtiger_users where user_name=?', array($from_name));
 	$num_rows = $adb->num_rows($rs);
 	if ($num_rows > 0) {
 		$from_name = getFullNameFromQResult($rs, 0, 'Users');
@@ -274,11 +275,11 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 	if ($to_email != '') {
 		if (is_array($to_email)) {
 			foreach ($to_email as $recip) {
-				$mail->addAddress($recip);
+				$mail->addAddress(str_replace(' ', '', $recip));
 			}
 		} else {
 			foreach (explode(',', $to_email) as $recip) {
-				$mail->addAddress($recip);
+				$mail->addAddress(str_replace(' ', '', $recip));
 			}
 		}
 	}
@@ -334,7 +335,6 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 
 	$mail->IsHTML(true); // set email format to HTML
 	$mail->AllowEmpty = true; //allow sent empty body.
-	return;
 }
 
 /** Function to set the Mail Server Properties in the object passed
@@ -446,7 +446,7 @@ function addAttachment($mail, $filename, $record) {
 	if (is_file($root_directory.$filename) && ($root_directory.$filename) != '') {
 		$bn = basename($filename);
 		$parts = explode('_', $bn);
-		if (count($parts)>0 && is_attachmentid($parts[0])) {
+		if (!empty($parts) && is_attachmentid($parts[0])) {
 			$name = substr($bn, strlen($parts[0])+1);
 		} else {
 			$name = $bn;
@@ -605,7 +605,6 @@ function getParentMailId($parentmodule, $parentid) {
 		$second_email = 'email2';
 	}
 	if ($parentid != '') {
-		//$query = 'select * from '.$tablename.' where '.$idname.' = '.$parentid;
 		$query = 'select * from '.$tablename.' where '. $idname.' = ?';
 		$res = $adb->pquery($query, array($parentid));
 		$mailid = $adb->query_result($res, 0, $first_email);
@@ -694,25 +693,25 @@ function parseEmailErrorString($mail_error_str) {
 			$adb->println('Error in mail sending');
 			if ($status_str[1] == 'connect_host') {
 				$adb->println('if part - Mail sever is not configured');
-				$errorstr .= '<br><b><font color=red>'.getTranslatedString('MESSAGE_CHECK_MAIL_SERVER_NAME', 'Emails').'</font></b>';
+				$errorstr .= '<br><strong><span style="color:red;">'.getTranslatedString('MESSAGE_CHECK_MAIL_SERVER_NAME', 'Emails').'</span></strong>';
 				break;
 			} elseif ($status_str[1] == '0') {
 				$adb->println("first elseif part - status will be 0 which is the case of assigned to vtiger_users's email is empty.");
-				$errorstr .= '<br><b><font color=red> '.getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND', 'Emails').' '
-					.getTranslatedString('MESSAGE_PLEASE_CHECK_FROM_THE_MAILID', 'Emails').'</font></b>';
+				$errorstr .= '<br><strong><span style="color:red;"> '.getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND', 'Emails').' '
+					.getTranslatedString('MESSAGE_PLEASE_CHECK_FROM_THE_MAILID', 'Emails').'</span></strong>';
 				//Added to display the message about the CC && BCC mail sending status
 				if ($status_str[0] == 'cc_success') {
 					$cc_msg = 'But the mail has been sent to CC & BCC addresses.';
-					$errorstr .= '<br><b><font color=purple>'.$cc_msg.'</font></b>';
+					$errorstr .= '<br><strong><span style="color:purple;">'.$cc_msg.'</span></strong>';
 				}
 			} elseif (strstr($status_str[1], 'from_failed')) {
 				$adb->println('second elseif part - from email id is failed.');
 				$from = explode('from_failed', $status_str[1]);
-				$errorstr .= "<br><b><font color=red>".getTranslatedString('MESSAGE_PLEASE_CHECK_THE_FROM_MAILID', 'Emails')." '".$from[1]."'</font></b>";
+				$errorstr .= '<br><strong><span style="color:red;">'.getTranslatedString('MESSAGE_PLEASE_CHECK_THE_FROM_MAILID', 'Emails')." '".$from[1]."'</span></strong>";
 			} else {
 				$adb->println('else part - mail send process failed due to the following reason.');
-				$errorstr .= "<br><b><font color=red> ".getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND_TO_THIS_EMAILID', 'Emails')." '".$status_str[0]."'. "
-					.getTranslatedString('PLEASE_CHECK_THIS_EMAILID', 'Emails').'</font></b>';
+				$errorstr .= '<br><strong><span style="color:red;">'.getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND_TO_THIS_EMAILID', 'Emails')." '".$status_str[0]."'. "
+					.getTranslatedString('PLEASE_CHECK_THIS_EMAILID', 'Emails').'</span></strong>';
 			}
 		}
 	}
@@ -754,12 +753,10 @@ function getDefaultAssigneeEmailIds($groupId) {
 				}
 				$emails[] = $email;
 			}
-			//$adb->println("Email ids are selected => '".implode(',', $emails)."'");
-		} else {
-			//$adb->println("No users found in Group id $groupId");
+			// Email ids are selected => implode(',', $emails)
+		// else => No users found in Group id $groupId
 		}
-	} else {
-		//$adb->println('Group id is empty, so return value is empty');
+	// else Group id is empty, so return value as empty;
 	}
 	return $emails;
 }
@@ -789,5 +786,19 @@ function createEmailRecord($element) {
 	}
 	$result = $handler->create($elementType, $element);
 	return $result['id'];
+}
+
+function createEmailRecordWithSave($element) {
+	$reqModule = $_REQUEST['module'];
+	$reqPID = isset($_REQUEST['parent_id']) ? $_REQUEST['parent_id'] : '';
+	$_REQUEST['module'] = 'Emails';
+	$_REQUEST['parent_id'] = $element['parent_id'];
+	$focus = new Emails();
+	$focus->column_fields = $element;
+	$focus->column_fields['activitytype'] = 'Emails';
+	$focus->save('Emails');
+	$_REQUEST['module'] = $reqModule;
+	$_REQUEST['parent_id'] = $reqPID;
+	return $focus;
 }
 ?>

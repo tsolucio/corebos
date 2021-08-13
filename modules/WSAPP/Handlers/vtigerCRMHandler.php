@@ -28,7 +28,6 @@ class vtigerCRMHandler extends SyncHandler {
 	}
 
 	public function get($module, $token, $user) {
-		$syncModule = $module;
 		$this->user = $user;
 		$syncModule = $module;
 		$syncType = 'user';
@@ -51,7 +50,7 @@ class vtigerCRMHandler extends SyncHandler {
 		$updatedRecords = $recordDetails['updated'];
 		$deletedRecords = $recordDetails['deleted'];
 
-		if (count($createdRecords) > 0) {
+		if (!empty($createdRecords)) {
 			$createdRecords = $this->translateReferenceFieldNamesToIds($createdRecords, $user);
 			$createdRecords = $this->fillNonExistingMandatoryPicklistValues($createdRecords);
 			$createdRecords = $this->fillMandatoryFields($createdRecords, $user);
@@ -60,7 +59,7 @@ class vtigerCRMHandler extends SyncHandler {
 			$createdRecords[$index] = vtws_create($record['module'], $record, $this->user);
 		}
 
-		if (count($updatedRecords) > 0) {
+		if (!empty($updatedRecords)) {
 			$updatedRecords = $this->translateReferenceFieldNamesToIds($updatedRecords, $user);
 		}
 
@@ -122,13 +121,11 @@ class vtigerCRMHandler extends SyncHandler {
 				$meta = $handler->getMeta();
 				$hasDeleteAccess = $meta->hasDeleteAccess();
 			}
-			if ($hasDeleteAccess) {
-				if (in_array($idComp[1], $assignedDeletedRecordIds)) {
-					try {
-						vtws_delete($record, $this->user);
-					} catch (Exception $e) {
-						continue;
-					}
+			if ($hasDeleteAccess && in_array($idComp[1], $assignedDeletedRecordIds)) {
+				try {
+					vtws_delete($record, $this->user);
+				} catch (Exception $e) {
+					continue;
 				}
 			}
 		}
@@ -179,11 +176,8 @@ class vtigerCRMHandler extends SyncHandler {
 				}
 				$entityNameIds = wsapp_getRecordEntityNameIds(array_values($recordReferenceFieldNames), $referenceModuleDetails, $user);
 				foreach ($records as $index => $recordInfo) {
-					if (array_key_exists($referenceFieldName, $recordInfo)) {
-						$array = explode('x', $record[$referenceFieldName]);
-						if (is_numeric($array[0]) && is_numeric($array[1])) {
-							$recordInfo[$referenceFieldName] = $recordInfo[$referenceFieldName];
-						} elseif (!empty($entityNameIds[$recordInfo[$referenceFieldName]])) {
+					if (array_key_exists($referenceFieldName, $recordInfo) && !preg_match('/^[0-9]+x[0-9]+$/', $record[$referenceFieldName])) {
+						if (!empty($entityNameIds[$recordInfo[$referenceFieldName]])) {
 							$recordInfo[$referenceFieldName] = $entityNameIds[$recordInfo[$referenceFieldName]];
 						} else {
 							$recordInfo[$referenceFieldName] = '';
@@ -276,10 +270,10 @@ class vtigerCRMHandler extends SyncHandler {
 	}
 
 	/**
-	 * Function to fillMandatory fields in vtiger with given values
-	 * @param type $recordLists
-	 * @param type $user
-	 * @return type
+	 * Function to fill mandatory fields with given values
+	 * @param array set of records
+	 * @param object user
+	 * @return array
 	 */
 	public function fillMandatoryFields($recordLists, $user) {
 		$transformedRecords = array();
@@ -303,7 +297,6 @@ class vtigerCRMHandler extends SyncHandler {
 
 				$fieldDataType = $fieldInstance->getFieldDataType();
 				$defaultValue = $fieldInstance->getDefault();
-				$value = '';
 				switch ($fieldDataType) {
 					case 'date':
 						$value = $defaultValue;
@@ -312,38 +305,8 @@ class vtigerCRMHandler extends SyncHandler {
 							$value = $dateObject->format('Y-m-d');
 						}
 						break;
-					case 'text':
-						$value = '?????';
-						if (!empty($defaultValue)) {
-							$value = $defaultValue;
-						}
-						break;
-					case 'phone':
-						$value = '?????';
-						if (!empty($defaultValue)) {
-							$value = $defaultValue;
-						}
-						break;
 					case 'boolean':
 						$value = false;
-						if (!empty($defaultValue)) {
-							$value = $defaultValue;
-						}
-						break;
-					case 'email':
-						$value = '?????';
-						if (!empty($defaultValue)) {
-							$value = $defaultValue;
-						}
-						break;
-					case 'string':
-						$value = '?????';
-						if (!empty($defaultValue)) {
-							$value = $defaultValue;
-						}
-						break;
-					case 'url':
-						$value = '?????';
 						if (!empty($defaultValue)) {
 							$value = $defaultValue;
 						}
@@ -366,6 +329,18 @@ class vtigerCRMHandler extends SyncHandler {
 							$value = $defaultValue;
 						}
 						break;
+					case 'text':
+					case 'phone':
+					case 'email':
+					case 'string':
+					case 'url':
+						$value = '?????';
+						if (!empty($defaultValue)) {
+							$value = $defaultValue;
+						}
+						break;
+					default:
+						$value = '';
 				}
 				$record[$fieldName] = $value;
 			}

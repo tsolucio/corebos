@@ -117,10 +117,9 @@ function createUserSharingPrivilegesfile($userid) {
 		$user_focus->retrieve_entity_info($userid, "Users");
 		if ($user_focus->is_admin == 'on') {
 			$newbuf .= "\n";
-			$newbuf .= "?>";
+			$newbuf .= '?>';
 			fputs($handle, $newbuf);
 			fclose($handle);
-			return;
 		} else {
 			//Constructig the Default Org Share Array
 			$def_org_share=getAllDefaultSharingAction();
@@ -417,11 +416,9 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			$share_id_members[$shareid]=$share_id_role_members;
 			$share_permission=$adb->query_result($result, $i, 'permission');
 			if ($share_permission == 1) {
-				if ($def_org_share[$mod_tabid] == 3) {
-					if (!array_key_exists($share_roleid, $role_read_per)) {
-						$share_role_users=getRoleUserIds($share_roleid);
-						$role_read_per[$share_roleid]=$share_role_users;
-					}
+				if ($def_org_share[$mod_tabid] == 3 && !array_key_exists($share_roleid, $role_read_per)) {
+					$share_role_users=getRoleUserIds($share_roleid);
+					$role_read_per[$share_roleid]=$share_role_users;
 				}
 				if (!array_key_exists($share_roleid, $role_write_per)) {
 					$share_role_users=getRoleUserIds($share_roleid);
@@ -459,11 +456,9 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 
 			$share_permission=$adb->query_result($result, $i, 'permission');
 			if ($share_permission == 1) {
-				if ($def_org_share[$mod_tabid] == 3) {
-					if (!array_key_exists($share_roleid, $role_read_per)) {
-						$share_role_users=getRoleUserIds($share_roleid);
-						$role_read_per[$share_roleid]=$share_role_users;
-					}
+				if ($def_org_share[$mod_tabid] == 3 && !array_key_exists($share_roleid, $role_read_per)) {
+					$share_role_users=getRoleUserIds($share_roleid);
+					$role_read_per[$share_roleid]=$share_role_users;
 				}
 				if (!array_key_exists($share_roleid, $role_write_per)) {
 					$share_role_users=getRoleUserIds($share_roleid);
@@ -507,11 +502,9 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 
 				$share_permission=$adb->query_result($result, $i, 'permission');
 				if ($share_permission == 1) {
-					if ($def_org_share[$mod_tabid] == 3) {
-						if (!array_key_exists($share_roleid, $role_read_per)) {
-							$share_role_users=getRoleUserIds($share_roleid);
-							$role_read_per[$share_roleid]=$share_role_users;
-						}
+					if ($def_org_share[$mod_tabid] == 3 && !array_key_exists($share_roleid, $role_read_per)) {
+						$share_role_users=getRoleUserIds($share_roleid);
+						$role_read_per[$share_roleid]=$share_role_users;
 					}
 					if (!array_key_exists($share_roleid, $role_write_per)) {
 						$share_role_users=getRoleUserIds($share_roleid);
@@ -545,11 +538,9 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 				$share_id_roles[]=$share_roleid;
 
 				if ($share_permission == 1) {
-					if ($def_org_share[$mod_tabid] == 3) {
-						if (!array_key_exists($share_roleid, $role_read_per)) {
-							$share_role_users=getRoleUserIds($share_roleid);
-							$role_read_per[$share_roleid]=$share_role_users;
-						}
+					if ($def_org_share[$mod_tabid] == 3 && !array_key_exists($share_roleid, $role_read_per)) {
+						$share_role_users=getRoleUserIds($share_roleid);
+						$role_read_per[$share_roleid]=$share_role_users;
 					}
 					if (!array_key_exists($share_roleid, $role_write_per)) {
 						$share_role_users=getRoleUserIds($share_roleid);
@@ -589,11 +580,9 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 				$share_id_roles[]=$share_roleid;
 
 				if ($share_permission == 1) {
-					if ($def_org_share[$mod_tabid] == 3) {
-						if (!array_key_exists($share_roleid, $role_read_per)) {
-							$share_role_users=getRoleUserIds($share_roleid);
-							$role_read_per[$share_roleid]=$share_role_users;
-						}
+					if ($def_org_share[$mod_tabid] == 3 && !array_key_exists($share_roleid, $role_read_per)) {
+						$share_role_users=getRoleUserIds($share_roleid);
+						$role_read_per[$share_roleid]=$share_role_users;
 					}
 					if (!array_key_exists($share_roleid, $role_write_per)) {
 						$share_role_users=getRoleUserIds($share_roleid);
@@ -634,11 +623,9 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			foreach ($share_roleids as $share_roleid) {
 				$share_id_roles[]=$share_roleid;
 				if ($share_permission == 1) {
-					if ($def_org_share[$mod_tabid] == 3) {
-						if (!array_key_exists($share_roleid, $role_read_per)) {
-							$share_role_users=getRoleUserIds($share_roleid);
-							$role_read_per[$share_roleid]=$share_role_users;
-						}
+					if ($def_org_share[$mod_tabid] == 3 && !array_key_exists($share_roleid, $role_read_per)) {
+						$share_role_users=getRoleUserIds($share_roleid);
+						$role_read_per[$share_roleid]=$share_role_users;
 					}
 					if (!array_key_exists($share_roleid, $role_write_per)) {
 						$share_role_users=getRoleUserIds($share_roleid);
@@ -673,20 +660,18 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			$share_id_grps[]=$share_grpid;
 
 			if ($share_permission == 1) {
-				if ($def_org_share[$mod_tabid] == 3) {
-					if (!array_key_exists($share_grpid, $grp_read_per)) {
-						$focusGrpUsers = new GetGroupUsers();
-						$focusGrpUsers->getAllUsersInGroup($share_grpid);
-						$share_grp_users=$focusGrpUsers->group_users;
-						$share_grp_subgroups=$focusGrpUsers->group_subgroups;
-						$grp_read_per[$share_grpid]=$share_grp_users;
-						foreach ($focusGrpUsers->group_subgroups as $subgrpid => $subgrpusers) {
-							if (!array_key_exists($subgrpid, $grp_read_per)) {
-								$grp_read_per[$subgrpid]=$subgrpusers;
-							}
-							if (!in_array($subgrpid, $share_id_grps)) {
-								$share_id_grps[]=$subgrpid;
-							}
+				if ($def_org_share[$mod_tabid] == 3 && !array_key_exists($share_grpid, $grp_read_per)) {
+					$focusGrpUsers = new GetGroupUsers();
+					$focusGrpUsers->getAllUsersInGroup($share_grpid);
+					$share_grp_users=$focusGrpUsers->group_users;
+					$share_grp_subgroups=$focusGrpUsers->group_subgroups;
+					$grp_read_per[$share_grpid]=$share_grp_users;
+					foreach ($focusGrpUsers->group_subgroups as $subgrpid => $subgrpusers) {
+						if (!array_key_exists($subgrpid, $grp_read_per)) {
+							$grp_read_per[$subgrpid]=$subgrpusers;
+						}
+						if (!in_array($subgrpid, $share_id_grps)) {
+							$share_id_grps[]=$subgrpid;
 						}
 					}
 				}
@@ -740,20 +725,18 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			$share_id_grps[]=$share_grpid;
 
 			if ($share_permission == 1) {
-				if ($def_org_share[$mod_tabid] == 3) {
-					if (!array_key_exists($share_grpid, $grp_read_per)) {
-						$focusGrpUsers = new GetGroupUsers();
-						$focusGrpUsers->getAllUsersInGroup($share_grpid);
-						$share_grp_users=$focusGrpUsers->group_users;
-						$grp_read_per[$share_grpid]=$share_grp_users;
+				if ($def_org_share[$mod_tabid] == 3 && !array_key_exists($share_grpid, $grp_read_per)) {
+					$focusGrpUsers = new GetGroupUsers();
+					$focusGrpUsers->getAllUsersInGroup($share_grpid);
+					$share_grp_users=$focusGrpUsers->group_users;
+					$grp_read_per[$share_grpid]=$share_grp_users;
 
-						foreach ($focusGrpUsers->group_subgroups as $subgrpid => $subgrpusers) {
-							if (!array_key_exists($subgrpid, $grp_read_per)) {
-								$grp_read_per[$subgrpid]=$subgrpusers;
-							}
-							if (!in_array($subgrpid, $share_id_grps)) {
-								$share_id_grps[]=$subgrpid;
-							}
+					foreach ($focusGrpUsers->group_subgroups as $subgrpid => $subgrpusers) {
+						if (!array_key_exists($subgrpid, $grp_read_per)) {
+							$grp_read_per[$subgrpid]=$subgrpusers;
+						}
+						if (!in_array($subgrpid, $share_id_grps)) {
+							$share_id_grps[]=$subgrpid;
 						}
 					}
 				}
@@ -813,19 +796,17 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			$share_id_grps[]=$share_grpid;
 
 			if ($share_permission == 1) {
-				if ($def_org_share[$mod_tabid] == 3) {
-					if (!array_key_exists($share_grpid, $grp_read_per)) {
-						$focusGrpUsers = new GetGroupUsers();
-						$focusGrpUsers->getAllUsersInGroup($share_grpid);
-						$share_grp_users=$focusGrpUsers->group_users;
-						$grp_read_per[$share_grpid]=$share_grp_users;
-						foreach ($focusGrpUsers->group_subgroups as $subgrpid => $subgrpusers) {
-							if (!array_key_exists($subgrpid, $grp_read_per)) {
-								$grp_read_per[$subgrpid]=$subgrpusers;
-							}
-							if (!in_array($subgrpid, $share_id_grps)) {
-								$share_id_grps[]=$subgrpid;
-							}
+				if ($def_org_share[$mod_tabid] == 3 && !array_key_exists($share_grpid, $grp_read_per)) {
+					$focusGrpUsers = new GetGroupUsers();
+					$focusGrpUsers->getAllUsersInGroup($share_grpid);
+					$share_grp_users=$focusGrpUsers->group_users;
+					$grp_read_per[$share_grpid]=$share_grp_users;
+					foreach ($focusGrpUsers->group_subgroups as $subgrpid => $subgrpusers) {
+						if (!array_key_exists($subgrpid, $grp_read_per)) {
+							$grp_read_per[$subgrpid]=$subgrpusers;
+						}
+						if (!in_array($subgrpid, $share_id_grps)) {
+							$share_id_grps[]=$subgrpid;
 						}
 					}
 				}
@@ -911,17 +892,15 @@ function getRelatedModuleSharingArray($par_mod, $share_mod, $mod_sharingrule_mem
 				foreach ($shareEntArr as $shareEntId) {
 					if ($shareType == 'ROLE') {
 						if ($share_permission == 1) {
-							if ($def_org_share[$share_mod_id] == 3) {
-								if (! array_key_exists($shareEntId, $role_read_per)) {
-									if (array_key_exists($shareEntId, $mod_share_read_per['ROLE'])) {
-										$share_role_users=$mod_share_read_per['ROLE'][$shareEntId];
-									} elseif (array_key_exists($shareEntId, $mod_share_write_per['ROLE'])) {
-										$share_role_users=$mod_share_write_per['ROLE'][$shareEntId];
-									} else {
-										$share_role_users=getRoleUserIds($shareEntId);
-									}
-									$role_read_per[$shareEntId]=$share_role_users;
+							if ($def_org_share[$share_mod_id] == 3 && !array_key_exists($shareEntId, $role_read_per)) {
+								if (array_key_exists($shareEntId, $mod_share_read_per['ROLE'])) {
+									$share_role_users=$mod_share_read_per['ROLE'][$shareEntId];
+								} elseif (array_key_exists($shareEntId, $mod_share_write_per['ROLE'])) {
+									$share_role_users=$mod_share_write_per['ROLE'][$shareEntId];
+								} else {
+									$share_role_users=getRoleUserIds($shareEntId);
 								}
+								$role_read_per[$shareEntId]=$share_role_users;
 							}
 							if (! array_key_exists($shareEntId, $role_write_per)) {
 								if (array_key_exists($shareEntId, $mod_share_read_per['ROLE'])) {
@@ -948,43 +927,39 @@ function getRelatedModuleSharingArray($par_mod, $share_mod, $mod_sharingrule_mem
 						}
 					} elseif ($shareType == 'GROUP') {
 						if ($share_permission == 1) {
-							if ($def_org_share[$share_mod_id] == 3) {
-								if (! array_key_exists($shareEntId, $grp_read_per)) {
-									if (array_key_exists($shareEntId, $mod_share_read_per['GROUP'])) {
-										$share_grp_users=$mod_share_read_per['GROUP'][$shareEntId];
-									} elseif (array_key_exists($shareEntId, $mod_share_write_per['GROUP'])) {
-										$share_grp_users=$mod_share_write_per['GROUP'][$shareEntId];
-									} else {
-										$focusGrpUsers = new GetGroupUsers();
-										$focusGrpUsers->getAllUsersInGroup($shareEntId);
-										$share_grp_users=$focusGrpUsers->group_users;
-										foreach ($focusGrpUsers->group_subgroups as $subgrpid => $subgrpusers) {
-											if (! array_key_exists($subgrpid, $grp_read_per)) {
-												$grp_read_per[$subgrpid]=$subgrpusers;
-											}
+							if ($def_org_share[$share_mod_id] == 3 && !array_key_exists($shareEntId, $grp_read_per)) {
+								if (array_key_exists($shareEntId, $mod_share_read_per['GROUP'])) {
+									$share_grp_users=$mod_share_read_per['GROUP'][$shareEntId];
+								} elseif (array_key_exists($shareEntId, $mod_share_write_per['GROUP'])) {
+									$share_grp_users=$mod_share_write_per['GROUP'][$shareEntId];
+								} else {
+									$focusGrpUsers = new GetGroupUsers();
+									$focusGrpUsers->getAllUsersInGroup($shareEntId);
+									$share_grp_users=$focusGrpUsers->group_users;
+									foreach ($focusGrpUsers->group_subgroups as $subgrpid => $subgrpusers) {
+										if (! array_key_exists($subgrpid, $grp_read_per)) {
+											$grp_read_per[$subgrpid]=$subgrpusers;
 										}
 									}
-									$grp_read_per[$shareEntId]=$share_grp_users;
 								}
+								$grp_read_per[$shareEntId]=$share_grp_users;
 							}
-							if (! array_key_exists($shareEntId, $grp_write_per)) {
-								if (! array_key_exists($shareEntId, $grp_write_per)) {
-									if (array_key_exists($shareEntId, $mod_share_read_per['GROUP'])) {
-										$share_grp_users=$mod_share_read_per['GROUP'][$shareEntId];
-									} elseif (array_key_exists($shareEntId, $mod_share_write_per['GROUP'])) {
-										$share_grp_users=$mod_share_write_per['GROUP'][$shareEntId];
-									} else {
-										$focusGrpUsers = new GetGroupUsers();
-										$focusGrpUsers->getAllUsersInGroup($shareEntId);
-										$share_grp_users=$focusGrpUsers->group_users;
-										foreach ($focusGrpUsers->group_subgroups as $subgrpid => $subgrpusers) {
-											if (! array_key_exists($subgrpid, $grp_write_per)) {
-												$grp_write_per[$subgrpid]=$subgrpusers;
-											}
+							if (!array_key_exists($shareEntId, $grp_write_per)) {
+								if (array_key_exists($shareEntId, $mod_share_read_per['GROUP'])) {
+									$share_grp_users=$mod_share_read_per['GROUP'][$shareEntId];
+								} elseif (array_key_exists($shareEntId, $mod_share_write_per['GROUP'])) {
+									$share_grp_users=$mod_share_write_per['GROUP'][$shareEntId];
+								} else {
+									$focusGrpUsers = new GetGroupUsers();
+									$focusGrpUsers->getAllUsersInGroup($shareEntId);
+									$share_grp_users=$focusGrpUsers->group_users;
+									foreach ($focusGrpUsers->group_subgroups as $subgrpid => $subgrpusers) {
+										if (! array_key_exists($subgrpid, $grp_write_per)) {
+											$grp_write_per[$subgrpid]=$subgrpusers;
 										}
 									}
-									$grp_write_per[$shareEntId]=$share_grp_users;
 								}
+								$grp_write_per[$shareEntId]=$share_grp_users;
 							}
 						} elseif ($share_permission == 0 && $def_org_share[$share_mod_id] == 3) {
 							if (! array_key_exists($shareEntId, $grp_read_per)) {
@@ -1287,12 +1262,10 @@ function populateSharingPrivileges($enttype, $userid, $module, $pertype, $var_na
 			$has_values = false;
 			foreach ($var_name_arr['ROLE'] as $roleusers) {
 				foreach ($roleusers as $user_id) {
-					if (! in_array($user_id, $user_arr)) {
-						if (is_numeric($userid) && is_numeric($tabid) && is_numeric($user_id)) {
-							$query .= "($userid, $tabid, $user_id),";
-							$user_arr[]=$user_id;
-							$has_values = true;
-						}
+					if (!in_array($user_id, $user_arr) && is_numeric($userid) && is_numeric($tabid) && is_numeric($user_id)) {
+						$query .= "($userid, $tabid, $user_id),";
+						$user_arr[]=$user_id;
+						$has_values = true;
 					}
 				}
 			}
@@ -1306,12 +1279,10 @@ function populateSharingPrivileges($enttype, $userid, $module, $pertype, $var_na
 			$has_values = false;
 			foreach ($var_name_arr['GROUP'] as $grpid => $grpusers) {
 				foreach ($grpusers as $user_id) {
-					if (! in_array($user_id, $user_arr)) {
-						if (is_numeric($userid) && is_numeric($tabid) && is_numeric($user_id)) {
-							$query .= "($userid, $tabid, $user_id),";
-							$user_arr[]=$user_id;
-							$has_values = true;
-						}
+					if (!in_array($user_id, $user_arr) && is_numeric($userid) && is_numeric($tabid) && is_numeric($user_id)) {
+						$query .= "($userid, $tabid, $user_id),";
+						$user_arr[]=$user_id;
+						$has_values = true;
 					}
 				}
 			}
@@ -1337,12 +1308,10 @@ function populateSharingPrivileges($enttype, $userid, $module, $pertype, $var_na
 			$query = "insert into $table_name values ";
 			$has_values = false;
 			foreach ($var_name_arr['GROUP'] as $grpid => $grpusers) {
-				if (!in_array($grpid, $grp_arr)) {
-					if (is_numeric($userid) && is_numeric($tabid) && is_numeric($grpid)) {
-						$query .=" ($userid,$tabid,$grpid),";
-						$grp_arr[]=$grpid;
-						$has_values = true;
-					}
+				if (!in_array($grpid, $grp_arr) && is_numeric($userid) && is_numeric($tabid) && is_numeric($grpid)) {
+					$query .=" ($userid,$tabid,$grpid),";
+					$grp_arr[]=$grpid;
+					$has_values = true;
 				}
 			}
 			if ($has_values) {
@@ -1389,12 +1358,10 @@ function populateRelatedSharingPrivileges($enttype, $userid, $module, $relmodule
 			$has_values = false;
 			foreach ($var_name_arr['ROLE'] as $roleusers) {
 				foreach ($roleusers as $user_id) {
-					if (! in_array($user_id, $user_arr)) {
-						if (is_numeric($userid) && is_numeric($tabid) && is_numeric($reltabid) && is_numeric($user_id)) {
-							$query .= "($userid, $tabid, $reltabid, $user_id),";
-							$user_arr[]=$user_id;
-							$has_values = true;
-						}
+					if (!in_array($user_id, $user_arr) && is_numeric($userid) && is_numeric($tabid) && is_numeric($reltabid) && is_numeric($user_id)) {
+						$query .= "($userid, $tabid, $reltabid, $user_id),";
+						$user_arr[]=$user_id;
+						$has_values = true;
 					}
 				}
 			}
@@ -1408,12 +1375,10 @@ function populateRelatedSharingPrivileges($enttype, $userid, $module, $relmodule
 			$has_values = false;
 			foreach ($var_name_arr['GROUP'] as $grpid => $grpusers) {
 				foreach ($grpusers as $user_id) {
-					if (! in_array($user_id, $user_arr)) {
-						if (is_numeric($userid) && is_numeric($tabid) && is_numeric($reltabid) && is_numeric($user_id)) {
-							$query .= "($userid, $tabid, $reltabid, $user_id),";
-							$user_arr[]=$user_id;
-							$has_values = true;
-						}
+					if (!in_array($user_id, $user_arr) && is_numeric($userid) && is_numeric($tabid) && is_numeric($reltabid) && is_numeric($user_id)) {
+						$query .= "($userid, $tabid, $reltabid, $user_id),";
+						$user_arr[]=$user_id;
+						$has_values = true;
 					}
 				}
 			}
@@ -1439,12 +1404,10 @@ function populateRelatedSharingPrivileges($enttype, $userid, $module, $relmodule
 			$query = "insert into $table_name values ";
 			$has_values = false;
 			foreach ($var_name_arr['GROUP'] as $grpid => $grpusers) {
-				if (! in_array($grpid, $grp_arr)) {
-					if (is_numeric($userid) && is_numeric($tabid) && is_numeric($reltabid) && is_numeric($grpid)) {
-						$query .= "($userid, $tabid, $reltabid, $grpid),";
-						$grp_arr[]=$grpid;
-						$has_values = true;
-					}
+				if (!in_array($grpid, $grp_arr) && is_numeric($userid) && is_numeric($tabid) && is_numeric($reltabid) && is_numeric($grpid)) {
+					$query .= "($userid, $tabid, $reltabid, $grpid),";
+					$grp_arr[]=$grpid;
+					$has_values = true;
 				}
 			}
 			if ($has_values) {

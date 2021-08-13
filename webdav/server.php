@@ -28,8 +28,6 @@ chdir('..');
 
 set_include_path(get_include_path().PATH_SEPARATOR.'./Sync/');
 
-ini_set('display_errors', 1);
-error_reporting(-1);
 include 'vendor/autoload.php';
 require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';

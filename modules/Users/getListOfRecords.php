@@ -29,7 +29,7 @@ $query = $adb->pquery('SELECT tablename,entityidfield, fieldname from vtiger_ent
 $table_name = $adb->query_result($query, 0, 'tablename');
 $field_name = $adb->query_result($query, 0, 'fieldname');
 $id_field = $adb->query_result($query, 0, 'entityidfield');
-$fieldname = explode(",", $field_name);
+$fieldname = explode(',', $field_name);
 $fields_array = array($sModule=>$fieldname);
 $id_array = array($sModule=>$id_field);
 $tables_array = array($sModule=>$table_name);
@@ -84,7 +84,7 @@ $output = '<table width="100%" border="0" cellpadding="5" cellspacing="0" class=
 $output .= '<div style="height:270px;overflow-y:auto;">';
 $output .= '<table cellpadding="2">';
 
-if (count($recordList) > 0) {
+if (!empty($recordList)) {
 	$displayRecordCount = 10;
 	$count = count($recordList);
 	$idListEndIndex = ($count < ($recordIndex+$displayRecordCount))? ($count+1) : ($recordIndex+$displayRecordCount+1);
@@ -104,7 +104,7 @@ if (count($recordList) > 0) {
 		$recordId = $adb->query_result($fieldResult, $i, $id_array[$sModule]);
 		$fieldValue = '';
 		foreach ($permittedFieldNameList as $fieldName) {
-			$fieldValue .= " ".$adb->query_result($fieldResult, $i, $fieldName);
+			$fieldValue .= ' '.$adb->query_result($fieldResult, $i, $fieldName);
 		}
 		$fieldValue = textlength_check($fieldValue);
 		$recordNameMapping[$recordId] = $fieldValue;

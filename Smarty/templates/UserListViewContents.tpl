@@ -39,7 +39,7 @@
 	<td class="big" nowrap align="right">
 		<div align="right">
 		<input title="{$CMOD.LBL_NEW_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_NEW_USER_BUTTON_KEY}" type="submit" name="button" value="{$CMOD.LBL_NEW_USER_BUTTON_LABEL}" class="crmButton create small">
-		<input title="{$CMOD.LBL_EXPORT_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_EXPORT_USER_BUTTON_KEY}" type="button" onclick="return selectedRecords('Users','ptab')" value="{$CMOD.LBL_EXPORT_USER_BUTTON_LABEL}" class="crmButton small cancel">
+		<input title="{$CMOD.LBL_EXPORT_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_EXPORT_USER_BUTTON_KEY}" type="button" onclick="return selectedRecords('Users')" value="{$CMOD.LBL_EXPORT_USER_BUTTON_LABEL}" class="crmButton small cancel">
 		</div>
 	</td>
 </{$APP.LBL_EXPORT}

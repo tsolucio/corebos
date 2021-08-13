@@ -10,10 +10,7 @@
 ********************************************************************************/
 -->*}
 <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
-{if empty($CATEGORY)}
-{assign var="CATEGORY" value=""}
-{/if}
-{if $CATEGORY eq 'Settings' || $MODULE eq 'Calendar4You'}
+{if $MODULE eq 'Settings' || $MODULE eq 'Calendar4You'}
 {assign var="action" value="index"}
 {else}
 {assign var="action" value="ListView"}
@@ -539,7 +536,7 @@
 								{if $MODULE eq 'Calendar4You'}
 									{$exportbuttononclick = "fnvshobj(this,'CalExport');"}
 								{else}
-									{$exportbuttononclick = "return selectedRecords('{$MODULE}','{$CATEGORY}')"}
+									{$exportbuttononclick = "return selectedRecords('{$MODULE}')"}
 								{/if}
 							{/if}
 							{if isset($exportbuttononclick)}

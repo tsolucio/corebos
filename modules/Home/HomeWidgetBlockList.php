@@ -42,7 +42,7 @@ foreach ($widgetInfoList as $widgetInfo) {
 	} elseif ($widgetType == 'URL') {
 		$url = $homeObj->getWidgetURL($widgetId);
 		if (strpos($url, '://') === false) {
-			$url = 'http://'.trim($url);
+			$url = 'https://'.trim($url);
 		}
 		$smarty->assign('URL', $url);
 		$smarty->assign('WIDGETID', $widgetId);

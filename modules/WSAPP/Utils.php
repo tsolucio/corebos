@@ -35,17 +35,12 @@ function wsapp_getApplicationName($key) {
 }
 
 function wsapp_getRecordEntityNameIds($entityNames, $modules, $user) {
-	$entityMetaList = array();
-	$db = PearDatabase::getInstance();
-
-	if (empty($entityNames)) {
-		return;
-	}
-
-	$entityNames = (array)$entityNames;
-	if (empty($modules)) {
+	if (empty($entityNames) || empty($modules)) {
 		return array();
 	}
+	$entityMetaList = array();
+	$db = PearDatabase::getInstance();
+	$entityNames = (array)$entityNames;
 	$modules = (array)$modules;
 	$entityNameIds = array();
 	foreach ($modules as $moduleName) {
@@ -83,9 +78,9 @@ function wsapp_getRecordEntityNameIds($entityNames, $modules, $user) {
 function wsapp_convertDateTimeToTimeZone($dateTime, $toTimeZone) {
 	global $default_timezone;
 	$time_zone = $default_timezone;
-	$source_time = date_default_timezone_set($time_zone);
+	date_default_timezone_set($time_zone); // source
 	$sourceDate = date('Y-m-d H:i:s');
-	$dest_time = date_default_timezone_set($toTimeZone);
+	date_default_timezone_set($toTimeZone); // destination
 	$destinationDate = date('Y-m-d H:i:s');
 	$diff = (strtotime($destinationDate)-strtotime($sourceDate));
 	$givenTimeInSec = strtotime($dateTime);

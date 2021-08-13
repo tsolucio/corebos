@@ -65,6 +65,8 @@
 		<value>xxx</value>
 		<editable>1</editable>
 		<mandatory>1</mandatory>
+		<defaultvalue>11</defaultvalue>
+		<duplicatevalue>22</duplicatevalue>
 		<hidden>1</hidden>
 		<layout></layout>
 	  </field>
@@ -101,46 +103,49 @@ class MasterDetailLayout extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
-		$mapping=array();
-		$mapping['mapnameraw'] = $this->getMap()->column_fields['mapname'];
-		$mapping['mapname'] = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $mapping['mapnameraw'])); // Removes special chars.
-		$mapping['originmodule'] = (String)$xml->originmodule;
-		$mapping['targetmodule'] = (String)$xml->targetmodule;
-		$this->detailModule = $mapping['targetmodule'];
+		if (empty($xml)) {
+			return array();
+		}
+		$mapping_arr=array();
+		$mapping_arr['mapnameraw'] = $this->getMap()->column_fields['mapname'];
+		$mapping_arr['mapname'] = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $mapping_arr['mapnameraw'])); // Removes special chars.
+		$mapping_arr['originmodule'] = (String)$xml->originmodule;
+		$mapping_arr['targetmodule'] = (String)$xml->targetmodule;
+		$this->detailModule = $mapping_arr['targetmodule'];
 		$dmf = CRMEntity::getInstance($this->detailModule);
-		$mapping['targetmoduleidfield'] = $dmf->table_index;
-		$mapping['linkfields'] = array(
+		$mapping_arr['targetmoduleidfield'] = $dmf->table_index;
+		$mapping_arr['linkfields'] = array(
 			'originfield' => (String)$xml->linkfields->originfield,
 			'targetfield' => (String)$xml->linkfields->targetfield,
 		);
-		$mapping['sortfield'] = (String)$xml->sortfield;
-		$mapping['toolbar'] = array(
+		$mapping_arr['sortfield'] = (String)$xml->sortfield;
+		$mapping_arr['toolbar'] = array(
 			'title' => (String)$xml->toolbar->title,
 			'icon' => (String)$xml->toolbar->icon,
 			'expandall' => (String)$xml->toolbar->expandall,
 			'create' => (String)$xml->toolbar->create,
 		);
-		$mapping['listview'] = array();
+		$mapping_arr['listview'] = array();
 		if (isset($xml->listview->datasource)) {
 			$dsrc = (String)$xml->listview->datasource;
 			if (strtolower($dsrc)=='corebos') {
-				$mapping['listview']['datasource'] = 'index.php?module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=list&mdmap='
-					.urlencode($mapping['mapnameraw']);
+				$mapping_arr['listview']['datasource'] = 'index.php?module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=list&mdmap='
+					.urlencode($mapping_arr['mapnameraw']);
 			} else {
-				$mapping['listview']['datasource'] = $dsrc;
+				$mapping_arr['listview']['datasource'] = $dsrc;
 			}
 		}
 		if (isset($xml->listview->toolbar)) {
-			$mapping['listview']['toolbar'] = array(
+			$mapping_arr['listview']['toolbar'] = array(
 				'moveup' => isset($xml->listview->toolbar->moveup) ? (String)$xml->listview->toolbar->moveup : '1',
 				'movedown' => isset($xml->listview->toolbar->movedown) ? (String)$xml->listview->toolbar->movedown : '1',
 				'edit' => isset($xml->listview->toolbar->edit) ? (String)$xml->listview->toolbar->edit : '1',
 				'delete' => isset($xml->listview->toolbar->delete) ? (String)$xml->listview->toolbar->delete : '1',
 			);
 		}
-		$mapping['listview']['fields'] = array();
+		$mapping_arr['listview']['fields'] = array();
 		if (isset($xml->listview->fields->field) && is_object($xml->listview->fields->field)) {
-			foreach ($xml->listview->fields->field as $k => $v) {
+			foreach ($xml->listview->fields->field as $v) {
 				$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
 				$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
 				$fieldinfo = array();
@@ -159,29 +164,29 @@ class MasterDetailLayout extends processcbMap {
 							break;
 					}
 				}
-				$mapping['listview']['fields'][] = array(
+				$mapping_arr['listview']['fields'][] = array(
 					'fieldtype' => $fieldtype,
 					'fieldinfo' => $fieldinfo,
 					'editable' => isset($v->editable) ? (String)$v->editable : '',
 					'mandatory' => isset($v->mandatory) ? (String)$v->mandatory : '',
 					'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
 					'layout' => isset($v->layout) ? (String)$v->layout : '',
-					'editor' => !empty($v->editable) ? json_encode(gridGetEditor($mapping['targetmodule'], $fieldinfo['name'], $fieldinfo['uitype'])) : '',
+					'editor' => !empty($v->editable) ? json_encode(gridGetEditor($mapping_arr['targetmodule'], $fieldinfo['name'], $fieldinfo['uitype'])) : '',
 					'sortable' => !empty($v->sortable),
 					'sortingType' => isset($v->sortingType) ? (String)$v->sortingType : '',
 				);
-				$mapping['listview']['fieldnames'][] = $fieldinfo['name'];
+				$mapping_arr['listview']['fieldnames'][] = $fieldinfo['name'];
 			}
 		}
-		$mapping['viewfields'] = array();
-		$mapping['viewfieldnames'] = array();
-		$mapping['editfields'] = array();
-		$mapping['editfieldnames'] = array();
-		$mapping['detailview'] = array();
-		$mapping['detailview']['layout'] = isset($xml->detailview->layout) ? (String)$xml->detailview->layout : '';
-		$mapping['detailview']['fields'] = array();
+		$mapping_arr['viewfields'] = array();
+		$mapping_arr['viewfieldnames'] = array();
+		$mapping_arr['editfields'] = array();
+		$mapping_arr['editfieldnames'] = array();
+		$mapping_arr['detailview'] = array();
+		$mapping_arr['detailview']['layout'] = isset($xml->detailview->layout) ? (String)$xml->detailview->layout : '';
+		$mapping_arr['detailview']['fields'] = array();
 		if (is_object($xml->detailview->fields->field)) {
-			foreach ($xml->detailview->fields->field as $k => $v) {
+			foreach ($xml->detailview->fields->field as $v) {
 				$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
 				$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
 				$fieldinfo = array();
@@ -201,34 +206,36 @@ class MasterDetailLayout extends processcbMap {
 					}
 				}
 				$editable = isset($v->editable) ? (String)$v->editable : '';
-				$mapping['detailview']['fields'][] = array(
+				$mapping_arr['detailview']['fields'][] = array(
 					'fieldtype' => $fieldtype,
 					'fieldinfo' => $fieldinfo,
 					'editable' => $editable,
 					'mandatory' => isset($v->mandatory) ? (String)$v->mandatory : '',
 					'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
 					'value' => isset($v->value) ? (String)$v->value : '',
+					'defaultvalue' => isset($v->defaultvalue) ? (String)$v->defaultvalue : null,
+					'duplicatevalue' => isset($v->duplicatevalue) ? (String)$v->duplicatevalue : null,
 					'layout' => isset($v->layout) ? (String)$v->layout : '',
 				);
-				$mapping['detailview']['fieldnames'][] = $fieldinfo['name'];
+				$mapping_arr['detailview']['fieldnames'][] = $fieldinfo['name'];
 				if (!empty($editable) || $fieldinfo['mandatory']) {
-					$mapping['editfields'][] = $fieldinfo['fieldid'];
-					$mapping['editfieldnames'][] = $fieldinfo['name'];
+					$mapping_arr['editfields'][] = $fieldinfo['fieldid'];
+					$mapping_arr['editfieldnames'][] = $fieldinfo['name'];
 				}
-				$mapping['viewfields'][] = $fieldinfo['fieldid'];
-				$mapping['viewfieldnames'][] = $fieldinfo['name'];
+				$mapping_arr['viewfields'][] = $fieldinfo['fieldid'];
+				$mapping_arr['viewfieldnames'][] = $fieldinfo['name'];
 			}
 		}
 		foreach ($this->fieldsinfo as $finfo) {
 			if ($finfo['mandatory']) {
-				$mapping['editfields'][] = $finfo['fieldid'];
-				$mapping['editfieldnames'][] = $finfo['name'];
+				$mapping_arr['editfields'][] = $finfo['fieldid'];
+				$mapping_arr['editfieldnames'][] = $finfo['name'];
 			}
 		}
-		$mapping['aggregations'] = array();
+		$mapping_arr['aggregations'] = array();
 		if (is_object($xml->aggregations->operation)) {
-			foreach ($xml->aggregations->operation as $k => $v) {
-				$mapping['aggregations'][] = array(
+			foreach ($xml->aggregations->operation as $v) {
+				$mapping_arr['aggregations'][] = array(
 					'type' => isset($v->type) ? (String)$v->type : '',
 					'items' => isset($v->items) ? (String)$v->items : '',
 					'operation' => isset($v->operation) ? (String)$v->operation : '',
@@ -240,7 +247,7 @@ class MasterDetailLayout extends processcbMap {
 				);
 			}
 		}
-		return $mapping;
+		return $mapping_arr;
 	}
 
 	public function getFieldInfo($fieldname) {
@@ -283,6 +290,41 @@ class MasterDetailLayout extends processcbMap {
 			$this->relatedfieldsinfo[$module][$ret]['searchwsid'] = $WSCodeID;
 		}
 		return $this->relatedfieldsinfo[$module][$ret];
+	}
+
+	// creating > empty($associated_prod) && $isduplicate != 'true'
+	public static function setCreateAsociatedProductsValue($module, &$smarty) {
+		$cbMap = cbMap::getMapByName($module.'InventoryDetails', 'MasterDetailLayout');
+		$smarty->assign('moreinfofields', '');
+		$product_Detail = array();
+		if ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes') {
+			$cbMapFields = $cbMap->MasterDetailLayout();
+			$smarty->assign('moreinfofields', "'".implode("','", $cbMapFields['detailview']['fieldnames'])."'");
+			$col_fields = array();
+			foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+				if ($mdfield['fieldinfo']['name']=='id') {
+					continue;
+				}
+				if (is_null($mdfield['defaultvalue'])) {
+					$col_fields[$mdfield['fieldinfo']['name']] = '';
+				} else {
+					$col_fields[$mdfield['fieldinfo']['name']] = $mdfield['defaultvalue'];
+				}
+				$foutput = getOutputHtml(
+					$mdfield['fieldinfo']['uitype'],
+					$mdfield['fieldinfo']['name'],
+					$mdfield['fieldinfo']['label'],
+					100,
+					$col_fields,
+					0,
+					'InventoryDetails',
+					'edit',
+					$mdfield['fieldinfo']['typeofdata']
+				);
+				$product_Detail['moreinfo'][] = $foutput;
+			}
+		}
+		return $product_Detail;
 	}
 }
 ?>

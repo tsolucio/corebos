@@ -50,8 +50,7 @@ class cbMapcore {
 		$explodedxml = explode('r', $xml);
 		$badxml = $explodedxml[($error->line)-1];
 
-		$message = $error->message . ' at line ' . $error->line . '. Bad XML: ' . htmlentities($badxml);
-		return $message;
+		return $error->message . ' at line ' . $error->line . '. Bad XML: ' . htmlentities($badxml);
 	}
 
 	public function getMap() {

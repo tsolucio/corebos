@@ -45,7 +45,6 @@ class Google_Module_Model {
 			$db->pquery('DELETE FROM vtiger_google_sync_settings WHERE user = ?', array($user));
 			$db->pquery('DELETE FROM vtiger_google_sync_fieldmapping WHERE user = ?', array($user));
 		}
-		return;
 	}
 
 	/*

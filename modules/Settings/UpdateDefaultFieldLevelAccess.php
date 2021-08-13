@@ -38,6 +38,6 @@ foreach ($field_module as $fld_module => $fld_name) {
 		$adb->pquery('update vtiger_def_org_field set visible=? where fieldid=? and tabid=?', array($visible_value, $fieldid, $tab_id));
 	}
 }
-$loc = 'Location: index.php?action=DefaultFieldPermissions&module=Settings&parenttab=Settings&fld_module='.urlencode(vtlib_purify($_REQUEST['fld_module']));
+$loc = 'Location: index.php?action=DefaultFieldPermissions&module=Settings&fld_module='.urlencode(vtlib_purify($_REQUEST['fld_module']));
 header($loc);
 ?>

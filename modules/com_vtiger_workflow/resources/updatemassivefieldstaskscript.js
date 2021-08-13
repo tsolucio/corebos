@@ -167,7 +167,7 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];
@@ -227,9 +227,6 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 		}
 		function forStringField(opType, mappingno) {
 			var value = $(format('#save_fieldvalues_%s_value', mappingno));
-			//value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
-			//	'value="" class="expressionvalue" readonly />', mappingno));
-
 			var fv = $(format('#save_fieldvalues_%s_value', mappingno));
 			fv.bind('focus', function () {
 				editFieldExpression($(this), opType);
@@ -295,7 +292,6 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 
 		vtinst.extendSession(handleError(function (result) {
 			vtinst.post('getRelatedModulesInfomation', {'module':moduleName}, handleError(function (result) {
-				getTranslatedString;
 				var modarray={};
 				var combination;
 				for (var prop in result) {
@@ -503,15 +499,10 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 							resetFields(getFieldType(fieldname), fieldname, mappingno, fieldmodule);
 							$(format('#save_fieldvalues_%s_value_type', mappingno)).val(fieldvaluemap['valuetype']);
 							$('#dump').html(fieldvaluemap['value']);
-							if (fieldvaluemap['valuetype'] == 'rawtext') {
-								var text = $('#dump').html();
-							} else {
-								var text = $('#dump').text();
-							}
 							//set property name on hidden field
 							var fv = $('#save_fieldvalues_'+mappingno+'_value');
 							fv.prop('name', fieldname);
-							$(format('#save_fieldvalues_%s_value', mappingno)).val(text);
+							$(format('#save_fieldvalues_%s_value', mappingno)).val(fieldvaluemap['value']);
 							var fv1 = $('#save_fieldvalues_'+mappingno+'_valuemodule');
 							fv1.prop('name', fieldmodule);
 							mappingno+=1;
@@ -582,4 +573,4 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 
 	});
 }
-vtCBMassiveUpdateRelatedTask = CBMassiveUpdateRelatedTask(jQuery, fieldvaluemapping);
+CBMassiveUpdateRelatedTask(jQuery, fieldvaluemapping);

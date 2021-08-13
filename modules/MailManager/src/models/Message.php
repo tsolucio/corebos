@@ -376,9 +376,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			array($attachid, $binFile, $binFile, $mimetype, $dirname)
 		);
 
-		$attachInfo = array('attachid'=>$attachid, 'path'=>$dirname, 'name'=>$binFile, 'type'=>$mimetype, 'size'=>filesize($saveasfile));
-
-		return $attachInfo;
+		return array('attachid'=>$attachid, 'path'=>$dirname, 'name'=>$binFile, 'type'=>$mimetype, 'size'=>filesize($saveasfile));
 	}
 
 	/**
@@ -398,7 +396,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @return String
 	 */
 	public function subject($safehtml = true) {
-		if ($safehtml==true) {
+		if ($safehtml) {
 			return MailManager_Utils::safe_html_string($this->_subject);
 		}
 		return $this->_subject;
@@ -409,7 +407,6 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @param String $subject
 	 */
 	public function setSubject($subject) {
-		//$mailSubject = str_replace('_', ' ', $subject);
 		$this->_subject = @self::__mime_decode($subject);
 	}
 

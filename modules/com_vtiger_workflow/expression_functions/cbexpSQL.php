@@ -87,6 +87,7 @@ function cbexpsql_supportedFunctions() {
 		// 'getCurrentUserID' => 'getCurrentUserID()',
 		// 'getCurrentUserName' => 'getCurrentUserName({full})',
 		// 'getCurrentUserField' => 'getCurrentUserField(fieldname)',
+		'getCRMIDFromWSID' => 'getCRMIDFromWSID(id)',
 		// 'getEntityType'=>'getEntityType(field)',
 		// 'getimageurl'=>'getimageurl(field)',
 		// 'getLatitude' => 'getLatitude(address)',
@@ -104,6 +105,7 @@ function cbexpsql_supportedFunctions() {
 		// 'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 		// 'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 		'getIDof' => 'getIDof(module, searchon, searchfor)',
+		//'getRelatedIDs' => 'getRelatedIDs(module)',
 		// 'getFromContext' => 'getFromContext(variablename)',
 		// 'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
 		// 'setToContext' => 'setToContext(variablename, value)',
@@ -116,6 +118,7 @@ function cbexpsql_supportedFunctions() {
 		// 'exists' => 'exists(fieldname, value)',
 		// 'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 		// 'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
+		'average' => 'average(number,...)'
 	);
 }
 
@@ -485,7 +488,7 @@ function cbexpsql_groupconcat($arr, $mmodule) {
 }
 
 function cbexpsql_number_format($arr, $mmodule) {
-	if (count($arr)>0) {
+	if (!empty($arr)) {
 		$number = $arr[0];
 		$decimals = isset($arr[1]) ? $arr[1] : 0;
 		$dec_points = isset($arr[2]) ? $arr[2] : '.';
@@ -535,6 +538,21 @@ function cbexpsql_getCurrentUserName($arr, $mmodule) {
 function cbexpsql_getCurrentUserField($arr, $mmodule) {
 	return 'TRUE';
 }
+
+function cbexpsql_getCRMIDFromWSID($arr, $mmodule) {
+	return 'crmid';
+}
+
+function cbexpsql_average($arr, $mmodule) {
+	$expression = __cbexpsql_functionparams('', $arr, $mmodule);
+	$values = explode(',', trim($expression->value, '()'));
+	$select = '(SELECT avg(nums) FROM (';
+	foreach ($values as $exp) {
+		$select .= '(select '.$exp.' as nums) union ';
+	}
+	return substr($select, 0, strlen($select)-7).') as setofnums)';
+}
+
 function cbexpsql_getLatitude($arr, $mmodule) {
 	return 'TRUE';
 }

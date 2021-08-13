@@ -188,6 +188,10 @@ class VtigerCRMZendeskMeta extends EntityMeta {
 		return $this->hasReadAccess;
 	}
 
+	public function hasCreateAccess() {
+		return $this->hasWriteAccess;
+	}
+
 	public function hasWriteAccess() {
 		return $this->hasWriteAccess;
 	}

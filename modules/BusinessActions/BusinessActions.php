@@ -262,7 +262,7 @@ class BusinessActions extends CRMEntity {
 		foreach ($accumulator as $row) {
 			/** Should the widget be shown */
 			$return = cbEventHandler::do_filter('corebos.filter.link.show', array($row, $type, $parameters));
-			if ($return == false) {
+			if (!$return) {
 				continue;
 			}
 
@@ -290,7 +290,15 @@ class BusinessActions extends CRMEntity {
 					include_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 					$entityCache = new VTEntityCache($current_user);
 					$ct = new VTSimpleTemplate($link->linkurl, true);
-					$link->linkurl = $ct->render($entityCache, vtws_getEntityId(getSalesEntityType($parameters['RECORD'])).'x'.$parameters['RECORD']);
+					if ($module_name=='Users') {
+						if (Users::is_ActiveUserID($parameters['RECORD'])) {
+							$link->linkurl = $ct->render($entityCache, vtws_getEntityId('Users').'x'.$parameters['RECORD']);
+						} else {
+							$link->linkurl = '';
+						}
+					} else {
+						$link->linkurl = $ct->render($entityCache, vtws_getEntityId(getSalesEntityType($parameters['RECORD'])).'x'.$parameters['RECORD']);
+					}
 				}
 			}
 			if ($multitype) {
@@ -497,31 +505,19 @@ class BusinessActions extends CRMEntity {
 		return $mlist;
 	}
 
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
+	public static function getModuleLinkStatusInfoSortedFlat($actiontype, $actionlabel) {
+		$act = BusinessActions::getModuleLinkStatusInfo($actiontype, $actionlabel);
+		$infomodules = array();
+		$i = 0;
+		foreach ($act as $tabid => $modinfo) {
+			$infomodules[$i]['tabid'] = $tabid;
+			$infomodules[$i]['visible'] = $modinfo['active'];
+			$infomodules[$i]['name'] = $modinfo['name'];
+			$i++;
+		}
+		usort($infomodules, function ($a, $b) {
+			return (strtolower(getTranslatedString($a['name'], $a['name'])) < strtolower(getTranslatedString($b['name'], $b['name']))) ? -1 : 1;
+		});
+		return $infomodules;
+	}
 }

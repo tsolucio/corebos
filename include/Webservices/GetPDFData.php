@@ -89,7 +89,8 @@ function get_module_pdf($modulename, $recordid, $user = '') {
 			$_pdf_data = GetRawPDFData($modulename, $recordid);
 			break;
 	}
-
+	$recordpdf = array();
+	$recordpdf[0] = array();
 	$recordpdf[0]['recordid'] = $recordid;
 	$recordpdf[0]['modulename'] = $modulename;
 	$recordpdf[0]['pdf_data'] = base64_encode($_pdf_data);
@@ -110,7 +111,7 @@ function GetRawPDFData($modulename, $recordid) {
 	$purpose = 'webservice';
 
 	if ($modulename=='SalesOrder') {
-		require 'modules/'.$modulename.'/CreateSOPDF.php';
+		require 'modules/SalesOrder/CreateSOPDF.php';
 	} else {
 		require 'modules/'.$modulename.'/CreatePDF.php';
 	}

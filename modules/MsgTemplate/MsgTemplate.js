@@ -24,7 +24,7 @@ function submittemplate(recordid, value, target_fieldname, formname) {
 	calltype = (window.opener.document.getElementById('calltype') != null ? window.opener.document.getElementById('calltype').value : 'normalcall');
 	if (calltype =='normalcall') {
 		let mergewith = (window.opener.document.getElementById('merge_template_with')) !=null ? window.opener.document.getElementById('merge_template_with').value: '';
-		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMerge&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype+'&merge_template_with='+mergewith;
+		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMerge&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype+'&merge_template_with='+mergewith+'&callvalue='+value+'&targetfield='+target_fieldname+'&callform='+formname;
 		closeit = false;
 	}
 	if (calltype =='emailworkflow') {
@@ -117,7 +117,7 @@ function fillSelectBox(id, modules, parentModule, filterPred) {
 
 	var referenceFields = reduceR(concat, map(fieldReferenceNames, referenceFieldTypes), []);
 	var fieldLabels = dict(parentFields.concat(referenceFields));
-	document.getElementById(id).innerHTML = "";
+	document.getElementById(id).innerHTML = '';
 	var select = $('#'+id);
 	var optionClass = id+'_option';
 	$.each(fieldLabels, function (k, v) {
@@ -161,7 +161,7 @@ function getDescribeObjects(accessibleModules, moduleName, callback) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];

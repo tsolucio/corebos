@@ -29,11 +29,8 @@ function updateWidgetWindow() {
 		document.getElementById('content___Frame').src=fckEditoFrame;
 		if (selObj.options[selIndex].value!= 'NONE') {
 			window.location.href = 'index.php?module=Users&action=UsersAjax&file=AWWidget&contentHeading='+selObj.options[selIndex].value;
-		} else {
-			//document.getElementById('heading').setProperty("disable", "false");
 		}
 	}
-	//document.forms["addWidget"].headingNew.disabled=document.forms["addWidget"].announcement.disabled=document.forms["addWidget"].content.disabled=false;
 }
 
 function saveWidget() {
@@ -73,7 +70,6 @@ function updateWidgets(activity) {
 		newdiv.innerHTML = response;
 		var container = document.getElementById('widgets');
 		container.appendChild(newdiv);
-	//		document.getElementById("widgets").innerHTML = response.responseText;
 	});
 	return true;
 }
@@ -125,7 +121,7 @@ function closeWindow() {
 function manageWidgets(id, check) {
 	var str = '';
 	var checkBox = document.getElementById('VallWidgets_'+id);
-	if (checkBox.checked == true) {
+	if (checkBox.checked) {
 		str = 'module=Users&action=UsersAjax&activity=widgetUpdate&id='+id+'&update=0&type=delete';
 	} else {
 		str = 'module=Users&action=UsersAjax&activity=widgetUpdate&id='+id+'&update=1&type=delete';

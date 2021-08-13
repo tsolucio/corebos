@@ -1,4 +1,4 @@
-function postListViewSelection(module, action, parenttab) {
+function postListViewSelection(module, action) {
 	var method = 'post'; // Set method to post by default, if not specified.
 	var idlist = document.getElementById('allselectedboxes').value;
 	var excludedRecords = document.getElementById('excludedRecords').value;
@@ -13,7 +13,6 @@ function postListViewSelection(module, action, parenttab) {
 	var params = {
 		'module': module,
 		'action': action,
-		'parenttab': parenttab,
 		'idlist': idlist,
 		'viewname' : viewid,
 		'excludedRecords' : excludedRecords,
@@ -46,7 +45,6 @@ function massPrint(module) {
 	var pagenumber= document.getElementsByName('pagenum')[0].value;
 	var idstring = '';
 	if (count > 1) {
-		// document.getElementById('idlist').value=idstring;
 		document.getElementById('idlist').value=select_options;
 		idstring = select_options;
 	} else {

@@ -55,7 +55,7 @@ function __vt_div($arr) {
 }
 
 function __vt_round($arr) {
-	if (!is_array($arr) || count($arr)==0) {
+	if (!is_array($arr) || empty($arr)) {
 		return 0;
 	}
 	$decs = (isset($arr[1]) ? $arr[1] : 0);
@@ -91,14 +91,14 @@ function __cb_modulo($arr) {
 
 function __vt_power($elements) {
 	if (!empty($elements[0])) {
-		$exponent = ($elements[1]) ? $elements[1] : 0;
+		$exponent = (isset($elements[1])) ? $elements[1] : 0;
 		return pow($elements[0], $exponent);
 	}
 	return 0;
 }
 
 function __cb_number_format($arr) {
-	if (count($arr)>0) {
+	if (!empty($arr)) {
 		$number = $arr[0];
 		$decimals = isset($arr[1]) ? $arr[1] : 0;
 		$dec_points = isset($arr[2]) ? $arr[2] : '.';
@@ -107,5 +107,17 @@ function __cb_number_format($arr) {
 	} else {
 		return '';
 	}
+}
+
+function cb_average($arr) {
+	if (empty($arr)) {
+		return null;
+	}
+	foreach ($arr as $averageValue) {
+		if (!is_numeric($averageValue)) {
+			return null;
+		}
+	}
+	return array_sum($arr)/count($arr);
 }
 ?>

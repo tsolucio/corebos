@@ -26,7 +26,7 @@ function getCustomFieldList(customField)
 	document.getElementById('module_info').innerHTML = '{$MOD.LBL_CUSTOM_FILED_IN} "'+modulename+'" {$APP.LBL_MODULE}';
 	jQuery.ajax({ldelim}
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&fld_module='+modulename+'&parenttab=Settings&ajax=true'
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&fld_module='+modulename+'&ajax=true'
 	{rdelim}).done(function(response) {ldelim}
 		document.getElementById("cfList").innerHTML=response;
 	{rdelim});
@@ -37,7 +37,7 @@ function changeFieldorder(what_to_do,fieldid,blockid,modulename)
 	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({ldelim}
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+what_to_do+'&fieldid='+fieldid+'&blockid='+blockid+'&ajax=true'
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&what_to_do='+what_to_do+'&fieldid='+fieldid+'&blockid='+blockid+'&ajax=true'
 	{rdelim}).done(function(response) {ldelim}
 		document.getElementById("cfList").innerHTML=response;
 		VtigerJS_DialogBox.hidebusy();
@@ -49,7 +49,7 @@ function changeShowstatus(tabid,blockid,modulename)
 	var display_status = document.getElementById('display_status_'+blockid).value;
 	jQuery.ajax({ldelim}
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+display_status+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true'
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&what_to_do='+display_status+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true'
 	{rdelim}).done(function(response) {ldelim}
 		document.getElementById("cfList").innerHTML=response;
 	{rdelim});
@@ -60,7 +60,7 @@ function changeBlockorder(what_to_do,tabid,blockid,modulename)
 	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({ldelim}
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+what_to_do+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true'
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&what_to_do='+what_to_do+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true'
 	{rdelim}).done(function(response) {ldelim}
 		document.getElementById("cfList").innerHTML=response;
 		VtigerJS_DialogBox.hidebusy();
@@ -114,7 +114,7 @@ function getCreateCustomBlockForm(modulename,mode) {
 	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addBlock&fld_module='+modulename+'&parenttab=Settings&ajax=true&mode='+mode+'&blocklabel='+
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addBlock&fld_module='+modulename+'&ajax=true&mode='+mode+'&blocklabel='+
 		encodeURIComponent(val)+'&after_blockid='+blockid+'&relblock='+relblock
 	}).done(function(response) {
 		VtigerJS_DialogBox.hidebusy();
@@ -186,7 +186,7 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata,uitype) {
 	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&parenttab=Settings'+
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+''+
 			'&fieldid='+fieldid+'&fld_module='+module+'&uitype='+uitype+'&ajax=true'+urlstring
 	}).done(function(response) {
 		fninvsh('editfield_'+fieldid);
@@ -284,7 +284,7 @@ function show_move_hiddenfields(modulename,tabid,blockid,sub_mode) {
 	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&fld_module='+modulename+'&parenttab=Settings&ajax=true&tabid='+tabid+'&blockid='+blockid+'&selected='+selectedids_str,
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&fld_module='+modulename+'&ajax=true&tabid='+tabid+'&blockid='+blockid+'&selected='+selectedids_str,
 	}).done(function(response) {
 		document.getElementById("cfList").innerHTML=response;
 		VtigerJS_DialogBox.hidebusy();
@@ -295,7 +295,7 @@ function changeRelatedListorder(what_to_do,tabid,sequence,id,module) {
 	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeRelatedInfoOrder&sequence='+sequence+'&fld_module='+module+'&parenttab=Settings&what_to_do='+what_to_do+'&tabid='+tabid+'&id='+id+'&ajax=true'
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeRelatedInfoOrder&sequence='+sequence+'&fld_module='+module+'&what_to_do='+what_to_do+'&tabid='+tabid+'&id='+id+'&ajax=true'
 	}).done(function(response) {
 		document.getElementById("relatedlistdiv").innerHTML=response;
 		VtigerJS_DialogBox.hidebusy();
@@ -306,7 +306,7 @@ function deleteRelatedList(tabid,sequence,id,module) {
 	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=deleteRelatedList&sequence='+sequence+'&fld_module='+module+'&parenttab=Settings&tabid='+tabid+'&id='+id+'&ajax=true'
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=deleteRelatedList&sequence='+sequence+'&fld_module='+module+'&tabid='+tabid+'&id='+id+'&ajax=true'
 	}).done(function(response) {
 		document.getElementById("relatedlistdiv").innerHTML=response;
 		VtigerJS_DialogBox.hidebusy();
@@ -319,7 +319,7 @@ function createRelatedList(module) {
 	var relmod = relmodpl.options[relmodpl.selectedIndex].value;
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=createRelatedList&fld_module='+module+'&relwithmod='+relmod+'&parenttab=Settings&ajax=true',
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=createRelatedList&fld_module='+module+'&relwithmod='+relmod+'&ajax=true',
 	}).done(function(response) {
 		document.getElementById("relatedlistdiv").innerHTML=response;
 		VtigerJS_DialogBox.hidebusy();
@@ -330,7 +330,7 @@ function callRelatedList(module) {
 	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=getRelatedInfoOrder&parenttab=Settings&formodule='+module+'&ajax=true'
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=getRelatedInfoOrder&formodule='+module+'&ajax=true'
 	}).done(function(response) {
 		document.getElementById("relatedlistdiv").innerHTML=response;
 		fnvshNrm('relatedlistdiv');
@@ -369,8 +369,8 @@ var gselected_fieldtype = '';
 				<tr>
 					<td rowspan="2" valign="top" width="50"><img src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" alt="Users" title="Users" border="0" height="48" width="48"></td>
 					<td class="heading2" valign="bottom">
-						<b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a>
-						&gt;&nbsp;<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{$MODULE|@getTranslatedString:$MODULE}</a> &gt;
+						<b><a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a>
+						&gt;&nbsp;<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}">{$MODULE|@getTranslatedString:$MODULE}</a> &gt;
 						{$MOD.LBL_LAYOUT_EDITOR}</b>
 					</td>
 				</tr>

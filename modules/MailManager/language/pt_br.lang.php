@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|10/11/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor: Ranieri Slemer | Brazilian translate Missing Terms | 16-10-2020 | www.slemernet.com.br
+ * Contributor: Ranieri Slemer | Brazilian translate Missing Terms | 04-06-2021 | www.slemernet.com.br
  ************************************************************************************/
 $mod_strings = array (
 	'MailManager' => 'Gestor de Mensagens',
@@ -87,7 +87,7 @@ $mod_strings = array (
 	'LBL_Go_Back'         => 'Voltar',
 	'LBL_Reply_All'       => 'Responder a todos',
 	'LBL_Reply'           => 'Responder',
-	'LBL_REPLYTO'         => 'Reply To',
+	'LBL_REPLYTO'         => 'Responder para',
 	'LBL_Mark_As_Unread'  => 'Marcar como não lida',
 	'LBL_Previous'        => 'anterior',
 	'LBL_Next'            => 'próximo',

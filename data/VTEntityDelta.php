@@ -16,30 +16,25 @@ class VTEntityDelta extends VTEventHandler {
 	private static $newEntity_pimages = array();
 	private static $entityDelta;
 
-	public function __construct() {
-	}
-
 	public function handleEvent($eventName, $entityData) {
 		$adb = PearDatabase::getInstance();
 		$moduleName = $entityData->getModuleName();
 		$recordId = $entityData->getId();
 
-		if ($eventName == 'vtiger.entity.beforesave' || $eventName == 'corebos.beforesave.workflow') {
-			if (!empty($recordId)) {
-				$entityData = VTEntityData::fromEntityId($adb, $recordId);
-				if ($moduleName == 'HelpDesk') {
-					$entityData->set('comments', getTicketComments($recordId));
-				}
-				self::$oldEntity[$moduleName][$recordId] = $entityData;
-				if ($moduleName=='Products') {
-					self::$oldEntity_pimages = array();
-					$sql = 'SELECT vtiger_attachments.`attachmentsid`,name FROM `vtiger_seattachmentsrel`
-						inner join vtiger_attachments on vtiger_attachments.`attachmentsid` = `vtiger_seattachmentsrel`.`attachmentsid`
-						WHERE `crmid`=?';
-					$imagesrs = $adb->pquery($sql, array($recordId));
-					while ($image = $adb->fetch_array($imagesrs)) {
-						self::$oldEntity_pimages[$image['attachmentsid']] = $image['name'];
-					}
+		if (($eventName == 'vtiger.entity.beforesave' || $eventName == 'corebos.beforesave.workflow') && !empty($recordId)) {
+			$entityData = VTEntityData::fromEntityId($adb, $recordId);
+			if ($moduleName == 'HelpDesk') {
+				$entityData->set('comments', getTicketComments($recordId));
+			}
+			self::$oldEntity[$moduleName][$recordId] = $entityData;
+			if ($moduleName=='Products') {
+				self::$oldEntity_pimages = array();
+				$sql = 'SELECT vtiger_attachments.`attachmentsid`,name FROM `vtiger_seattachmentsrel`
+					inner join vtiger_attachments on vtiger_attachments.`attachmentsid` = `vtiger_seattachmentsrel`.`attachmentsid`
+					WHERE `crmid`=?';
+				$imagesrs = $adb->pquery($sql, array($recordId));
+				while ($image = $adb->fetch_array($imagesrs)) {
+					self::$oldEntity_pimages[$image['attachmentsid']] = $image['name'];
 				}
 			}
 		}
@@ -74,11 +69,9 @@ class VTEntityDelta extends VTEventHandler {
 
 		$oldData = array();
 		if (!empty(self::$oldEntity[$moduleName][$recordId])) {
-			$oldEntity = self::$oldEntity[$moduleName][$recordId];
-			$oldData = $oldEntity->getData();
+			$oldData = self::$oldEntity[$moduleName][$recordId]->getData();
 		}
-		$newEntity = self::$newEntity[$moduleName][$recordId];
-		$newData = $newEntity->getData();
+		$newData = self::$newEntity[$moduleName][$recordId]->getData();
 		/** Detect field value changes **/
 		foreach ($newData as $fieldName => $fieldValue) {
 			$isModified = false;
@@ -123,22 +116,19 @@ class VTEntityDelta extends VTEventHandler {
 	}
 
 	public function getOldValue($moduleName, $recordId, $fieldName) {
-		$entityDelta = self::$entityDelta[$moduleName][$recordId];
-		return (isset($entityDelta[$fieldName]) ? $entityDelta[$fieldName]['oldValue'] : '');
+		return (isset(self::$entityDelta[$moduleName][$recordId][$fieldName]) ? self::$entityDelta[$moduleName][$recordId][$fieldName]['oldValue'] : '');
 	}
 
 	public function getOldEntityValue($moduleName, $recordId, $fieldName) {
 		$oldData = array();
 		if (!empty(self::$oldEntity[$moduleName][$recordId])) {
-			$oldEntity = self::$oldEntity[$moduleName][$recordId];
-			$oldData = $oldEntity->getData();
+			$oldData = self::$oldEntity[$moduleName][$recordId]->getData();
 		}
 		return (isset($oldData[$fieldName]) ? $oldData[$fieldName] : '');
 	}
 
 	public function getCurrentValue($moduleName, $recordId, $fieldName) {
-		$entityDelta = self::$entityDelta[$moduleName][$recordId];
-		return $entityDelta[$fieldName]['currentValue'];
+		return self::$entityDelta[$moduleName][$recordId][$fieldName]['currentValue'];
 	}
 
 	public function getOldEntity($moduleName, $recordId) {

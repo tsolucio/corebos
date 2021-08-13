@@ -8,6 +8,9 @@
  ********************************************************************************/
 
 function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
+	if (typeof coreBOS_runningUnitTests != 'undefined') {
+		return Promise.resolve(gvdefault);
+	}
 	if (typeof gVTUserID=='undefined' && typeof gVTModule=='undefined') {
 		let rdo = {};
 		rdo[gvname] = gvdefault;
@@ -241,7 +244,7 @@ function clearTextSelection() {
 }
 
 // Setting cookies
-function set_cookie( name, value, exp_y, exp_m, exp_d, path, domain, secure ) {
+function set_cookie(name, value, exp_y, exp_m, exp_d, path, domain, secure, sameSite) {
 	var cookie_string = name + '=' + escape(value);
 
 	if (exp_y) {
@@ -255,6 +258,9 @@ function set_cookie( name, value, exp_y, exp_m, exp_d, path, domain, secure ) {
 	}
 	if (domain) {
 		cookie_string += '; domain=' + escape(domain);
+	}
+	if (sameSite && (sameSite=='Strict' || sameSite=='Lax' || sameSite=='None')) {
+		cookie_string += '; SameSite=' + escape(sameSite);
 	}
 	if (secure) {
 		cookie_string += '; secure';
@@ -323,30 +329,19 @@ function patternValidateObject(fldObject, fldLabel, type) {
 	fldObject.value = trim(fldObject.value);
 	let checkval = fldObject.value;
 	let typeUC = type.toUpperCase();
+	let re;
 	if (typeUC=='EMAIL') { //Email ID validation
-		var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
+		re = new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
 	}
 
 	if (typeUC=='DATE') { //DATE validation
-		//YMD
-		//var reg1 = /^\d{2}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //2 digit year
-		//var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //4 digit year
-
-		//MYD
-		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{2}\1\d{1,2}$/
-		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{4}\1\d{1,2}$/
-
-		//DMY
-		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{2}$/
-		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
-
 		switch (userDateFormat) {
 		case 'yyyy-mm-dd' :
-			var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/;
+			re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/;
 			break;
 		case 'mm-dd-yyyy' :
 		case 'dd-mm-yyyy' :
-			var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
+			re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
 		}
 		if (checkval.indexOf(' ')>0) {
 			var dt = checkval.split(' ');
@@ -355,7 +350,7 @@ function patternValidateObject(fldObject, fldLabel, type) {
 	}
 
 	if (typeUC=='TIME') { //TIME validation
-		var re = /^\d{1,3}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
+		re = /^\d{1,3}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
 		if (checkval.indexOf(' ')>0) {
 			var dt = checkval.split(' ');
 			checkval = dt[1];
@@ -469,7 +464,7 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 }
 
 function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
-	if (patternValidateObject(dateFldObj, fldLabel, 'DATE')==false) {
+	if (!patternValidateObject(dateFldObj, fldLabel, 'DATE')) {
 		return false;
 	}
 	let dateval = dateFldObj.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -528,7 +523,7 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		}
 	}
 
-	if (patternValidateObject(timeFldObj, fldLabel, 'TIME')==false) {
+	if (!patternValidateObject(timeFldObj, fldLabel, 'TIME')) {
 		return false;
 	}
 
@@ -701,7 +696,7 @@ function dateTimeFieldComparison(dateFld1, fldLabel1, dateFld2, fldLabel2, type,
 }
 
 function dateValidate(fldName, fldLabel, type) {
-	if (patternValidate(fldName, fldLabel, 'DATE')==false) {
+	if (!patternValidate(fldName, fldLabel, 'DATE')) {
 		return false;
 	}
 	return dateValidateObject(getObj(fldName), fldLabel, type);
@@ -830,7 +825,7 @@ function dateComparisonObject(fldObj1, fldLabel1, fldObj2, fldLabel2, type) {
 }
 
 function timeValidate(fldName, fldLabel, type) {
-	if (patternValidate(fldName, fldLabel, 'TIME')==false) {
+	if (!patternValidate(fldName, fldLabel, 'TIME')) {
 		return false;
 	}
 
@@ -872,7 +867,7 @@ function timeValidate(fldName, fldLabel, type) {
 }
 
 function timeValidateObject(fldObject, fldLabel, type) {
-	if (patternValidateObject(fldObject, fldLabel, 'TIME')==false) {
+	if (!patternValidateObject(fldObject, fldLabel, 'TIME')) {
 		return false;
 	}
 
@@ -925,7 +920,6 @@ function timeComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
 	var time1=new Date();
 	var time2=new Date();
 
-	//added to fix the ticket #5028
 	if (fldName1 == 'time_end' && (getObj('due_date') && getObj('date_start'))) {
 		var due_date=getObj('due_date').value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 		var start_date=getObj('date_start').value.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -987,7 +981,7 @@ function numValidate(fldName, fldLabel, format, neg) {
 		} else {
 			var format=format.split(',');
 			var splitval=val.split('.');
-			if (neg==true) {
+			if (neg) {
 				if (splitval[0].indexOf('-')>=0) {
 					if (splitval[0].length-1>format[0]) {
 						invalid=true;
@@ -1012,7 +1006,7 @@ function numValidate(fldName, fldLabel, format, neg) {
 				}
 			}
 		}
-		if (invalid==true) {
+		if (invalid) {
 			ldsPrompt.show(alert_arr['ERROR'], alert_arr.INVALID+fldLabel);
 			try {
 				getObj(fldName).focus();
@@ -1023,7 +1017,6 @@ function numValidate(fldName, fldLabel, format, neg) {
 			return true;
 		}
 	} else {
-		// changes made -- to fix the ticket#3272
 		if (fldName == 'probability' || fldName == 'commissionrate') {
 			var splitval=val.split('.');
 			var arr_len = splitval.length;
@@ -1051,7 +1044,7 @@ function numValidate(fldName, fldLabel, format, neg) {
 			}
 		}
 
-		if (neg==true) {
+		if (neg) {
 			var re=/^(-|)(\d)*(\.)?\d+(\.\d\d*)*$/;
 		} else {
 			var re=/^(\d)*(\.)?\d+(\.\d\d*)*$/;
@@ -1160,7 +1153,7 @@ function numConstCompObject(fldObj, fldLabel, type, constval) {
 		break;
 	}
 
-	if (ret==false) {
+	if (!ret) {
 		try {
 			fldObj.focus();
 		} catch (error) {
@@ -1283,7 +1276,7 @@ function run_massedit() {
 		var sentForm = new Object();
 		for (var f=0; f<myFields.length; f++) {
 			if (myFields[f].type == 'checkbox') {
-				if (myFields[f].checked != false) {
+				if (myFields[f].checked) {
 					var checked = 'on';
 					sentForm[myFields[f].name] = checked;
 				}
@@ -1441,15 +1434,17 @@ function runBAWorkflow(workflowid, crmids) {
 }
 
 function doModuleValidation(edit_type, editForm, callback) {
+	var formName;
+	var isvalid;
 	if (editForm == undefined) {
-		var formName = 'EditView';
+		formName = 'EditView';
 	} else {
-		var formName = editForm;
+		formName = editForm;
 	}
 	if (formName == 'QcEditView') {
-		var isvalid = QCformValidate();
+		isvalid = QCformValidate();
 	} else {
-		var isvalid = doformValidation(edit_type);
+		isvalid = doformValidation(edit_type);
 	}
 	if (isvalid && edit_type!='mass_edit') {
 		doServerValidation(edit_type, formName, callback);
@@ -1474,7 +1469,13 @@ function doServerValidation(edit_type, formName, callback) {
 			CKEDITOR.instances[myFields[f].name].updateElement();
 			sentForm[myFields[f].name] = myFields[f].value;
 		} else if (myFields[f].type=='select-multiple') {
-			sentForm[myFields[f].name.substring(0, myFields[f].name.length-2)] = myFields[f].value;
+			var r = new Array();
+			for (var iter=0; iter < myFields[f].options.length; iter++) {
+				if (myFields[f].options[iter].selected) {
+					r[r.length] = myFields[f].options[iter].value;
+				}
+			}
+			sentForm[myFields[f].name.substring(0, myFields[f].name.length-2)] = r.join(' |##| ');
 		} else if (myFields[f].type=='radio' && myFields[f].checked) {
 			sentForm[myFields[f].name] = myFields[f].value;
 		} else if (myFields[f].type!='radio') {
@@ -1555,8 +1556,8 @@ function executeServerValidation(edit_type, action, formName, callback, forModul
 function doformValidation(edit_type) {
 	if (gVTModule == 'Contacts') {
 		//Validation for Portal User
-		//if existing portal value = 0, portal checkbox = checked, ( email field is not available OR  email is empty ) then we should not allow -- OR --
-		//if existing portal value = 1, portal checkbox = checked, ( email field is available     AND email is empty ) then we should not allow
+		//if existing portal value = 0, portal checkbox = checked, (email field is not available OR  email is empty) then we should not allow -- OR --
+		//if existing portal value = 1, portal checkbox = checked, (email field is available     AND email is empty) then we should not allow
 		if (edit_type=='') {
 			if (getObj('existing_portal') != null && ((getObj('existing_portal').value == 0 && getObj('portal').checked && (getObj('email') == null
 				|| trim(getObj('email').value) == '')) || (getObj('existing_portal').value == 1 && getObj('portal').checked && getObj('email') != null
@@ -1585,11 +1586,11 @@ function doformValidation(edit_type) {
 				&& getObj('enable_recurring_mass_edit_check').checked
 				&& getObj('enable_recurring') != null) {
 				if (getObj('enable_recurring').checked && (getObj('recurring_frequency') == null
-					|| trim(getObj('recurring_frequency').value) == '--None--' || getObj('recurring_frequency_mass_edit_check').checked==false)) {
+					|| trim(getObj('recurring_frequency').value) == '--None--' || !getObj('recurring_frequency_mass_edit_check').checked)) {
 					ldsPrompt.show(alert_arr['ERROR'], alert_arr.RECURRING_FREQUENCY_NOT_PROVIDED);
 					return false;
 				}
-				if (getObj('enable_recurring').checked == false && getObj('recurring_frequency_mass_edit_check').checked
+				if (!getObj('enable_recurring').checked && getObj('recurring_frequency_mass_edit_check').checked
 					&& getObj('recurring_frequency') != null && trim(getObj('recurring_frequency').value) != '--None--') {
 					ldsPrompt.show(alert_arr['ERROR'], alert_arr.RECURRING_FREQNECY_NOT_ENABLED);
 					return false;
@@ -1614,7 +1615,7 @@ function doformValidation(edit_type) {
 			if (fieldname[i]!='salutationtype') {
 				var obj = getObj(fieldname[i]+'_mass_edit_check');
 			}
-			if (obj == null || obj.checked == false) {
+			if (obj == null || !obj.checked) {
 				continue;
 			}
 		}
@@ -1675,7 +1676,7 @@ function doformValidation(edit_type) {
 					}
 					if (type[3]) {
 						if (gVTModule == 'SalesOrder' && fieldname[i] == 'end_period'
-								&& (getObj('enable_recurring') == null || getObj('enable_recurring').checked == false)) {
+								&& (getObj('enable_recurring') == null || !getObj('enable_recurring').checked)) {
 							continue;
 						}
 						if (!dateComparison(fieldname[i], fieldlabel[i], type[4], type[5], type[3])) {
@@ -1752,7 +1753,7 @@ function doformValidation(edit_type) {
 				break;
 			}
 			//start Birth day date validation
-			if (fieldname[i] == 'birthday' && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0 ) {
+			if (fieldname[i] == 'birthday' && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) {
 				var now =new Date();
 				var currtimechk='OTH';
 				var datelabel = fieldlabel[i];
@@ -1844,7 +1845,7 @@ function openPopUp(winInst, currObj, baseURL, winName, width, height, features) 
 	}
 
 	features = cbPopupWindowSettings+',top='+top+',left='+left+';'+features;
-	winInst = window.open(baseURL, winName, features);
+	window.open(baseURL, winName, features);
 }
 
 var scrX=0, scrY=0, pgeX=0, pgeY=0;
@@ -1884,7 +1885,7 @@ function toggleSelectAll(relCheckName, selectAllName, el = '') {
 	} else {
 		var atleastOneFalse=false;
 		for (var i=0; i<getObj(relCheckName).length; i++) {
-			if (getObj(relCheckName)[i].checked==false) {
+			if (!getObj(relCheckName)[i].checked) {
 				atleastOneFalse=true;
 				break;
 			}
@@ -2040,7 +2041,7 @@ function fnClear(source) {
 
 function fnCpy() {
 	var tagName=document.getElementById('cpy');
-	if (tagName.checked==true) {
+	if (tagName.checked) {
 		fnCopy('shipaddress', 'address');
 		fnCopy('shippobox', 'pobox');
 		fnCopy('shipcity', 'city');
@@ -2197,7 +2198,6 @@ function fnvshobj(obj, Lay) {
 		topSide = topSide - 125;
 	} else if (Lay == 'transferdiv') {
 		leftSide = leftSide - 10;
-		//topSide = topSide;
 	}
 	var IE = document.all?true:false;
 	if (IE) {
@@ -2208,9 +2208,9 @@ function fnvshobj(obj, Lay) {
 		}
 	}
 
-	var getVal = eval(leftSide) + eval(widthM);
-	if (getVal > document.body.clientWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+	var getVal = +leftSide + +widthM;
+	if (getVal > document.body.clientWidth) {
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';
 	} else {
 		tagName.style.left= leftSide + 'px';
@@ -2226,9 +2226,9 @@ function posLay(obj, Lay) {
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
-	var getVal = eval(leftSide) + eval(widthM);
-	if (getVal > document.body.clientWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+	var getVal = +leftSide + +widthM;
+	if (getVal > document.body.clientWidth) {
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 'px';
 	} else {
 		tagName.style.left= leftSide + 'px';
@@ -2269,7 +2269,7 @@ function clear_form(form) {
 function ActivateCheckBox() {
 	var map = document.getElementById('saved_map_checkbox');
 	var source = document.getElementById('saved_source');
-	if (map.checked == true) {
+	if (map.checked) {
 		source.disabled = false;
 	} else {
 		source.disabled = true;
@@ -2425,32 +2425,15 @@ function ShowEmail(id) {
 	openPopUp('xComposeEmail', this, url, 'createemailWin', 820, 695, 'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 }
 
-var bSaf = (navigator.userAgent.indexOf('Safari') != -1);
-var bOpera = (navigator.userAgent.indexOf('Opera') != -1);
-var bMoz = (navigator.appName == 'Netscape');
-
 function execJS(node) {
-	var st = node.getElementsByTagName('SCRIPT');
-	var strExec;
-	for (var i=0; i<st.length; i++) {
-		if (bSaf) {
-			strExec = st[i].innerHTML;
-		} else if (bOpera) {
-			strExec = st[i].text;
-		} else if (bMoz) {
-			strExec = st[i].textContent;
-		} else {
-			strExec = st[i].text;
-		}
-		try {
-			eval(strExec);
-		} catch (e) {
-			ldsPrompt.show(alert_arr['ERROR'], e);
-		}
+	try {
+		vtlib_executeJavascriptInElement(node);
+	} catch (e) {
+		ldsPrompt.show(alert_arr['ERROR'], e);
 	}
 }
 
-//Function added for getting the Tab Selected Values (Standard/Advanced Filters) for Custom View - Ahmed
+//Function added for getting the Tab Selected Values (Standard/Advanced Filters) for Custom View
 function fnLoadCvValues(obj1, obj2, SelTab, unSelTab) {
 	var tabName1 = document.getElementById(obj1);
 	var tabName2 = document.getElementById(obj2);
@@ -2475,9 +2458,9 @@ function fnDropDown(obj, Lay) {
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
-	var getVal = eval(leftSide) + eval(widthM);
-	if (getVal > document.body.clientWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+	var getVal = +leftSide + +widthM;
+	if (getVal > document.body.clientWidth) {
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';
 	} else {
 		tagName.style.left= leftSide + 'px';
@@ -2573,7 +2556,7 @@ function selectContact(check, frmName) {
 		} else {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', cbPopupWindowSettings);
 		}
-	} else if (document.getElementById('vendor_name') && gVTModule=='PurchaseOrder') {
+	} else if (document.getElementById('vendor_id') && gVTModule=='PurchaseOrder') {
 		record_id = frmName.vendor_id.value;
 		module_string = '&parent_module=Vendors';
 		if (record_id != '') {
@@ -2746,7 +2729,7 @@ function calQCduedatetime() {
 	}
 }
 
-function _2digit( no ) {
+function _2digit(no) {
 	if (no < 10) {
 		return '0' + no;
 	} else {
@@ -2760,12 +2743,11 @@ function confirmdelete(url) {
 	}
 }
 
-//function modified to apply the patch ref : Ticket #4065
 function valid(c, type) {
 	if (type == 'name') {
-		return (((c >= 'a') && (c <= 'z')) ||((c >= 'A') && (c <= 'Z')) ||((c >= '0') && (c <= '9')) || (c == '.') || (c == '_') || (c == '-') || (c == '@') );
+		return (((c >= 'a') && (c <= 'z')) ||((c >= 'A') && (c <= 'Z')) ||((c >= '0') && (c <= '9')) || (c == '.') || (c == '_') || (c == '-') || (c == '@'));
 	} else if (type == 'namespace') {
-		return (((c >= 'a') && (c <= 'z')) ||((c >= 'A') && (c <= 'Z')) ||((c >= '0') && (c <= '9')) || (c == '.')||(c==' ') || (c == '_') || (c == '-') );
+		return (((c >= 'a') && (c <= 'z')) ||((c >= 'A') && (c <= 'Z')) ||((c >= '0') && (c <= '9')) || (c == '.')||(c==' ') || (c == '_') || (c == '-'));
 	}
 }
 
@@ -2823,12 +2805,12 @@ function validateUrl(name) {
 	}
 }
 
-function LTrim( value ) {
+function LTrim(value) {
 	var re = /\s*((\S+\s*)*)/;
 	return value.replace(re, '$1');
 }
 
-function selectedRecords(module, category) {
+function selectedRecords(module) {
 	var allselectedboxes = document.getElementById('allselectedboxes');
 	var idstring = (allselectedboxes == null)? '' : allselectedboxes.value;
 	var viewid = getviewId();
@@ -2839,23 +2821,23 @@ function selectedRecords(module, category) {
 		url = url+searchurl+'&excludedRecords='+excludedRecords;
 	}
 	if (idstring != '') {
-		window.location.href='index.php?module='+module+'&action=ExportRecords&parenttab='+category+'&idstring='+idstring+url;
+		window.location.href='index.php?module='+module+'&action=ExportRecords&idstring='+idstring+url;
 	} else {
-		window.location.href='index.php?module='+module+'&action=ExportRecords&parenttab='+category;
+		window.location.href='index.php?module='+module+'&action=ExportRecords';
 	}
 	return false;
 }
 
-function record_export(module, category, exform, idstring) {
+function record_export(module, exform, idstring) {
 	var searchType = document.getElementsByName('search_type');
 	var exportData = document.getElementsByName('export_data');
 	for (var i=0; i<2; i++) {
-		if (searchType[i].checked == true) {
+		if (searchType[i].checked) {
 			var sel_type = searchType[i].value;
 		}
 	}
 	for (i=0; i<3; i++) {
-		if (exportData[i].checked == true) {
+		if (exportData[i].checked) {
 			var exp_type = exportData[i].value;
 		}
 	}
@@ -2897,7 +2879,6 @@ function hideErrorMsg1() {
 
 // Replace the % sign with %25 to make sure the AJAX url is going wel.
 function escapeAll(tagValue) {
-	//return escape(tagValue.replace(/%/g, '%25'));
 	if (default_charset.toLowerCase() == 'utf-8') {
 		return encodeURIComponent(tagValue.replace(/%/g, '%25'));
 	} else {
@@ -2931,7 +2912,7 @@ function default_togglestate(obj_id, elementId) {
 	var groupElements = document.getElementsByName(obj_id);
 	for (var i=0; i<groupElements.length; i++) {
 		var state=groupElements[i].checked;
-		if (state == false) {
+		if (!state) {
 			all_state=false;
 			break;
 		}
@@ -2963,7 +2944,7 @@ function rel_check_object(sel_id, module) {
 	var currentModule = document.getElementById('return_module').value;
 	var excluded = document.getElementById(currentModule+'_'+module+'_excludedRecords').value;
 	var i=0;
-	if (box_value == true) {
+	if (box_value) {
 		if (document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true') {
 			document.getElementById(currentModule+'_'+module+'_excludedRecords').value = excluded.replace(excluded.match(id+';'), '');
 		} else {
@@ -3007,12 +2988,12 @@ function rel_toggleSelect(state, relCheckName, module) {
 	}
 	var current_module = document.getElementById('return_module').value;
 	if (current_module == 'Campaigns') {
-		if (state == true) {
-			var count = document.getElementById(current_module+'_'+module+'_numOfRows').value;
-			if (count == '') {
+		if (state) {
+			var cnt = document.getElementById(current_module+'_'+module+'_numOfRows').value;
+			if (cnt == '') {
 				getNoOfRelatedRows(current_module, module);
 			}
-			if (parseInt(document.getElementById('maxrecords').value) < parseInt(count)) {
+			if (parseInt(document.getElementById('maxrecords').value) < parseInt(cnt)) {
 				document.getElementById(current_module+'_'+module+'_linkForSelectAll').style.display='block';
 			}
 		} else {
@@ -3040,7 +3021,7 @@ function rel_default_togglestate(module) {
 
 	for (var i=0; i<groupElements.length; i++) {
 		var state=groupElements[i].checked;
-		if (state == false) {
+		if (!state) {
 			all_state=false;
 			break;
 		}
@@ -3081,7 +3062,7 @@ function toggleSelect_ListView(state, relCheckName, groupParentElementId) {
 		}
 	}
 	if (document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View) {
-		if (state==true) {
+		if (state) {
 			var count = document.getElementById('numOfRows_'+groupParentElementId).value;
 			if (count == '') {
 				getNoOfRows(groupParentElementId);
@@ -3098,7 +3079,7 @@ function toggleSelect_ListView(state, relCheckName, groupParentElementId) {
 			}
 		}
 	} else {
-		if (state==true) {
+		if (state) {
 			var count = document.getElementById('numOfRows').value;
 			if (count == '') {
 				getNoOfRows();
@@ -3135,7 +3116,7 @@ function toggleShowHide(showid, hideid) {
 
 // Refactored APIs from DisplayFiels.tpl
 function fnshowHide(currObj, txtObj) {
-	if (currObj.checked == true) {
+	if (currObj.checked) {
 		document.getElementById(txtObj).style.visibility = 'visible';
 	} else {
 		document.getElementById(txtObj).style.visibility = 'hidden';
@@ -3188,7 +3169,7 @@ function delUserImage(id) {
 // Function to enable/disable related elements based on whether the current object is checked or not
 function fnenableDisable(currObj, enableId) {
 	var disable_flag = true;
-	if (currObj.checked == true) {
+	if (currObj.checked) {
 		disable_flag = false;
 	}
 
@@ -3243,7 +3224,7 @@ function updateBaseCurrencyValue() {
 
 	for (var i=0; i<cur_list.length; i++) {
 		var cur_ele = cur_list[i];
-		if (cur_ele != null && cur_ele.checked == true) {
+		if (cur_ele != null && cur_ele.checked) {
 			base_currency_ele.value = cur_ele.value;
 		}
 	}
@@ -3367,7 +3348,7 @@ GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'cbCalendar'
 	ExecuteFunctions('ispermitted', 'checkmodule=cbCalendar&checkaction=index').then(function (response) {
 		try {
 			var obj = JSON.parse(response);
-			if (obj.isPermitted == false) {
+			if (!obj.isPermitted) {
 				ActivityReminder_Deactivated = 1;
 			}
 		} catch (e) {
@@ -3460,7 +3441,13 @@ function ActivityReminderCallback(clicked) {
 				}
 			}
 		}).fail(function (response) {
-			ldsModal.show(alert_arr['ERROR'], response.responseText.substring(response.responseText.indexOf('<div class="slds-modal__container">'), response.responseText.indexOf('</section>')), '');
+			if (gcbpageisdirty) {
+				gcbpagewhyisdirty = 'CSRF+'+gcbpagewhyisdirty;
+			} else {
+				gcbpageisdirty = true;
+				gcbpagewhyisdirty = 'CSRF';
+			}
+			ldsModal.show('', response.responseText.substring(response.responseText.indexOf('<div class="slds-modal__container">')+35, response.responseText.indexOf('</section>')-7), '');
 		});
 	}
 }
@@ -3616,28 +3603,28 @@ function movefieldsStep1() {
 	document.getElementById('selectedCol').style.width='164px';
 	var count=0;
 	for (var i=0; i<availListObj.length; i++) {
-		if (availListObj.options[i].selected==true) {
+		if (availListObj.options[i].selected) {
 			count++;
 		}
 	}
 	var total_fields=count+selectedColumnsObj.length;
-	if (total_fields >4 ) {
+	if (total_fields >4) {
 		ldsPrompt.show(alert_arr['ERROR'], alert_arr.MAX_RECORDS);
 		return false;
 	}
 	if (availListObj.options.selectedIndex > -1) {
 		for (i=0; i<availListObj.length; i++) {
-			if (availListObj.options[i].selected==true) {
+			if (availListObj.options[i].selected) {
 				var rowFound=false;
 				for (var j=0; j<selectedColumnsObj.length; j++) {
 					selectedColumnsObj.options[j].value==availListObj.options[i].value;
 					if (selectedColumnsObj.options[j].value==availListObj.options[i].value) {
-						var rowFound=true;
+						rowFound=true;
 						var existingObj=selectedColumnsObj.options[j];
 						break;
 					}
 				}
-				if (rowFound!=true) {
+				if (!rowFound) {
 					var newColObj=document.createElement('OPTION');
 					newColObj.value=availListObj.options[i].value;
 					if (browser_ie) {
@@ -3658,7 +3645,7 @@ function movefieldsStep1() {
 }
 
 function selectedColClick(oSel) {
-	if (oSel.selectedIndex == -1 || oSel.options[oSel.selectedIndex].disabled == true) {
+	if (oSel.selectedIndex == -1 || oSel.options[oSel.selectedIndex].disabled) {
 		ldsPrompt.show(alert_arr['ERROR'], alert_arr.NOT_ALLOWED_TO_EDIT);
 		oSel.options[oSel.selectedIndex].selected = false;
 	}
@@ -3670,7 +3657,7 @@ function delFields() {
 	if (selectedColumnsObj.options.selectedIndex > -1) {
 		var del = false;
 		for (var i=0; i < selectedColumnsObj.options.length; i++) {
-			if (selectedColumnsObj.options[i].selected == true) {
+			if (selectedColumnsObj.options[i].selected) {
 				if (selected_tab == 4) {
 					if (selectedColumnsObj.options[i].innerHTML == 'Last Name') {
 						ldsPrompt.show(alert_arr['ERROR'], alert_arr.DEL_MANDATORY);
@@ -3704,7 +3691,7 @@ function delFields() {
 						del = true;
 					}
 				}
-				if (del == true) {
+				if (del) {
 					selectedColumnsObj.remove(i);
 					delFields();
 				}
@@ -3765,7 +3752,6 @@ function moveFieldDown() {
 			tempdisabled = selectedColumnsObj.options[nextpos].disabled;
 			selectedColumnsObj.options[nextpos].innerText=selectedColumnsObj.options[currpos].innerText;
 			selectedColumnsObj.options[nextpos].disabled = false;
-			selectedColumnsObj.options[nextpos];
 			selectedColumnsObj.options[currpos].innerText=temp;
 			selectedColumnsObj.options[currpos].disabled = tempdisabled;
 		} else if (browser_nn4 || browser_nn6) {
@@ -3773,7 +3759,6 @@ function moveFieldDown() {
 			tempdisabled = selectedColumnsObj.options[nextpos].disabled;
 			selectedColumnsObj.options[nextpos].text=selectedColumnsObj.options[currpos].text;
 			selectedColumnsObj.options[nextpos].disabled = false;
-			selectedColumnsObj.options[nextpos];
 			selectedColumnsObj.options[currpos].text=temp;
 			selectedColumnsObj.options[currpos].disabled = tempdisabled;
 		}
@@ -3787,11 +3772,10 @@ function moveFieldDown() {
 
 function lastImport(module, req_module) {
 	var module_name= module;
-	var parent_tab= document.getElementById('parenttab').value;
 	if (module == '') {
 		return false;
 	} else {
-		window.open('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module+'&parenttab='+parent_tab, 'lastImport', cbPopupWindowSettings+',menubar=no,toolbar=no,location=no,status=no,scrollbars=yes');
+		window.open('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module, 'lastImport', cbPopupWindowSettings+',menubar=no,toolbar=no,location=no,status=no,scrollbars=yes');
 	}
 }
 
@@ -3923,7 +3907,7 @@ function validate_merge(module) {
 			var check_parentvar=true;
 		}
 	}
-	if (check_parentvar!=true) {
+	if (!check_parentvar) {
 		ldsPrompt.show(alert_arr['ERROR'], alert_arr.Select_one_record_as_parent_record);
 		return false;
 	}
@@ -3964,7 +3948,7 @@ function selectDel(ThisName, CheckAllName) {
 		flag=true;
 	} else {
 		for (var j=0; j<len1; j++) {
-			if (ThisNameOptions[j].checked==false) {
+			if (!ThisNameOptions[j].checked) {
 				flag=false;
 				break;
 			}
@@ -4138,7 +4122,6 @@ function startCall(number, recordid) {
 	outgoingPopup.content = div;
 	outgoingPopup.displayPopup(outgoingPopup.content);
 
-	//var ASTERISK_DIV_TIMEOUT = 6000;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?action=PBXManagerAjax&mode=ajax&file=StartCall&ajax=true&module=PBXManager&number='+encodeURIComponent(number)+'&recordid='+recordid
@@ -4218,7 +4201,7 @@ function ToolTipManager() {
 		state=false;
 		var divName = getDivId(id, fieldname);
 		var div = document.getElementById(divName);
-		if (typeof div != 'undefined' && div != null ) {
+		if (typeof div != 'undefined' && div != null) {
 			if (typeof nodelay != 'undefined' && nodelay != null) {
 				if (!state) {
 					div.addEventListener('mouseleave', function () {
@@ -4250,16 +4233,16 @@ function ToolTipManager() {
 		var topSide = findPosY(obj);
 		var dimensions = getDimension(tooltip);
 		var widthM = dimensions.x;
-		var getVal = eval(leftSide) + eval(widthM);
+		var getVal = +leftSide + +widthM;
 		var tooltipDimensions = getDimension(obj);
 		var tooltipWidth = tooltipDimensions.x;
 		if (leftSide == 0 && topSide == 0) {
 			tooltip.style.display = 'none';
 		} else {
-			if (getVal > document.body.clientWidth ) {
-				leftSide = eval(leftSide) - eval(widthM);
+			if (getVal > document.body.clientWidth) {
+				leftSide = leftSide - widthM;
 			} else {
-				leftSide = eval(leftSide) + (eval(tooltipWidth)/2);
+				leftSide = leftSide + (tooltipWidth/2);
 			}
 			if (leftSide < 0) {
 				leftSide = findPosX(obj) + tooltipWidth;
@@ -4267,14 +4250,14 @@ function ToolTipManager() {
 			tooltip.style.left = leftSide + 'px';
 
 			var heightTooltip = dimensions.y;
-			var bottomSide = eval(topSide) + eval(heightTooltip);
+			var bottomSide = +topSide + +heightTooltip;
 			if (bottomSide > document.body.clientHeight) {
 				topSide = topSide - (bottomSide - document.body.clientHeight) - 10;
-				if (topSide < 0 ) {
+				if (topSide < 0) {
 					topSide = 10;
 				}
 			} else {
-				topSide = eval(topSide) - eval(heightTooltip)/2;
+				topSide = topSide - (heightTooltip/2);
 				if (topSide<0) {
 					topSide = 10;
 				}
@@ -4331,19 +4314,11 @@ VtigerJS_DialogBox = {
 			olayer.id = olayerid;
 			olayer.className = 'slds-spinner_container slds-is-fixed';
 
-			// Avoid zIndex going beyond integer max
-			//olayer.style.zIndex = parseInt((new Date()).getTime() / 1000);
-
-			// In case zIndex goes to negative side!
-			//if (olayer.style.zIndex < 0) {
-			//	olayer.style.zIndex *= -1;
-			//}
 			if (browser_ie) {
 				olayer.style.height = document.body.offsetHeight + (document.body.scrollHeight - document.body.offsetHeight) + 'px';
 			} else if (browser_nn4 || browser_nn6) {
 				olayer.style.height = document.body.offsetHeight + 'px';
 			}
-			//olayer.style.width = '100%';
 			var spinner = document.createElement('div');
 			spinner.role = 'status';
 			spinner.className = 'slds-spinner slds-spinner_inline slds-spinner_large slds-spinner_brand';
@@ -4513,7 +4488,7 @@ function validateInputData(value, fieldLabel, typeofdata) {
 				var format = numformat.split(',');
 				var splitval = value.split('.');
 
-				if (negativeallowed == true) {
+				if (negativeallowed) {
 					if (splitval[0].indexOf('-') >= 0) {
 						if (splitval[0].length-1 > format[0]) {
 							invalid=true;
@@ -4540,7 +4515,7 @@ function validateInputData(value, fieldLabel, typeofdata) {
 				}
 			}
 
-			if (invalid==true) {
+			if (invalid) {
 				ldsPrompt.show(alert_arr['ERROR'], alert_arr.INVALID + fieldLabel);
 				return false;
 			} else {
@@ -4554,7 +4529,7 @@ function validateInputData(value, fieldLabel, typeofdata) {
 				ldsPrompt.show(alert_arr['ERROR'], fieldLabel + alert_arr.EXCEEDS_MAX);
 				return false;
 			}
-			if (negativeallowed == true) {
+			if (negativeallowed) {
 				var re=/^(-|)(\d)*(\.)?\d+(\.\d\d*)*$/;
 			} else {
 				var re=/^(\d)*(\.)?\d+(\.\d\d*)*$/;
@@ -4587,7 +4562,7 @@ function validateInputData(value, fieldLabel, typeofdata) {
 }
 
 function re_dateValidate(fldval, fldLabel, type) {
-	if (re_patternValidate(fldval, fldLabel, 'DATE')==false) {
+	if (!re_patternValidate(fldval, fldLabel, 'DATE')) {
 		return false;
 	}
 	var dateval=fldval.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -4633,11 +4608,7 @@ function re_dateValidate(fldval, fldLabel, type) {
 	chkdate.setDate(dd);
 
 	if (type!='OTH') {
-		if (!compareDates(chkdate, fldLabel, currdate, 'current date', type)) {
-			return false;
-		} else {
-			return true;
-		}
+		return compareDates(chkdate, fldLabel, currdate, 'current date', type);
 	} else {
 		return true;
 	}
@@ -4646,9 +4617,7 @@ function re_dateValidate(fldval, fldLabel, type) {
 //Copied from general.js and altered some lines. because we cant send values to function present in general.js. it accept only field names.
 function re_patternValidate(fldval, fldLabel, type) {
 	if (type.toUpperCase()=='EMAIL') {
-		/*changes made to fix -- ticket#3278 & ticket#3461
-		  var re=new RegExp(/^.+@.+\..+$/)*/
-		//Changes made to fix tickets #4633, #5111  to accomodate all possible email formats
+		// regex to accomodate all possible email formats
 		var re=new RegExp(/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/);
 	}
 
@@ -4695,7 +4664,7 @@ function copySelectedOptions(source, destination) {
 		return;
 	}
 	for (var i=0; i<srcObj.length; i++) {
-		if (srcObj.options[i].selected==true) {
+		if (srcObj.options[i].selected) {
 			var rowFound=false;
 			var existingObj=null;
 			for (var j=0; j<destObj.length; j++) {
@@ -4706,7 +4675,7 @@ function copySelectedOptions(source, destination) {
 				}
 			}
 
-			if (rowFound!=true) {
+			if (!rowFound) {
 				var newColObj=document.createElement('OPTION');
 				newColObj.value=srcObj.options[i].value;
 				if (browser_ie) {
@@ -4717,7 +4686,6 @@ function copySelectedOptions(source, destination) {
 				destObj.appendChild(newColObj);
 				srcObj.options[i].selected=false;
 				newColObj.selected=true;
-				rowFound=false;
 			} else {
 				if (existingObj != null) {
 					existingObj.selected=true;
@@ -4733,7 +4701,7 @@ function removeSelectedOptions(objName) {
 		return;
 	}
 	for (var i=obj.options.length-1; i>=0; i--) {
-		if (obj.options[i].selected == true) {
+		if (obj.options[i].selected) {
 			obj.options[i] = null;
 		}
 	}
@@ -4767,7 +4735,6 @@ function fnvshobjMore(obj, Lay) {
 		topSide = topSide - 225;
 	} else if (Lay == 'transferdiv') {
 		leftSide = leftSide - 10;
-		//topSide = topSide;
 	}
 	var IE = document.all?true:false;
 	if (IE) {
@@ -4812,7 +4779,6 @@ function fnvshobjsearch(obj, Lay) {
 		topSide = topSide - 125;
 	} else if (Lay == 'transferdiv') {
 		leftSide = leftSide - 10;
-		//topSide = topSide;
 	}
 	var IE = document.all?true:false;
 	if (IE) {
@@ -4823,9 +4789,9 @@ function fnvshobjsearch(obj, Lay) {
 		}
 	}
 
-	var getVal = eval(leftSide) + eval(widthM);
-	if (getVal > document.body.clientWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+	var getVal = +leftSide + +widthM;
+	if (getVal > document.body.clientWidth) {
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 91 + 'px';
 	} else {
 		tagName.style.left= leftSide - 324 + 'px';
@@ -4841,9 +4807,9 @@ function fnDropDownUser(obj, Lay) {
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
-	var getVal = eval(leftSide) + eval(widthM);
-	if (getVal > document.body.clientWidth ) {
-		leftSide = eval(leftSide) - eval(widthM);
+	var getVal = +leftSide + +widthM;
+	if (getVal > document.body.clientWidth) {
+		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';
 	} else {
 		tagName.style.left= leftSide - 50 + 'px';
@@ -4855,7 +4821,7 @@ function fnDropDownUser(obj, Lay) {
 //select the records across the pages
 function toggleSelectAll_Records(module, state, relCheckName) {
 	toggleSelect_ListView(state, relCheckName);
-	if (state == true) {
+	if (state) {
 		document.getElementById('allselectedboxes').value = 'all';
 		document.getElementById('selectAllRec').style.display = 'none';
 		document.getElementById('deSelectAllRec').style.display = 'inline';
@@ -4871,7 +4837,7 @@ function toggleSelectAll_Records(module, state, relCheckName) {
 
 function toggleSelectDocumentRecords(module, state, relCheckName, parentEleId) {
 	toggleSelect_ListView(state, relCheckName, parentEleId);
-	if (state == true) {
+	if (state) {
 		document.getElementById('selectedboxes_'+parentEleId).value = 'all';
 		document.getElementById('selectAllRec_'+parentEleId).style.display = 'none';
 		document.getElementById('deSelectAllRec_'+parentEleId).style.display = 'inline';
@@ -4918,7 +4884,7 @@ function getNoOfRows(id) {
 //select all function for related list of campaign module
 function rel_toggleSelectAll_Records(module, relmodule, state, relCheckName) {
 	rel_toggleSelect(state, relCheckName, relmodule);
-	if (state == true) {
+	if (state) {
 		document.getElementById(module+'_'+relmodule+'_selectallActivate').value = 'true';
 		document.getElementById(module+'_'+relmodule+'_selectAllRec').style.display = 'none';
 		document.getElementById(module+'_'+relmodule+'_deSelectAllRec').style.display = 'inline';
@@ -4951,7 +4917,7 @@ function updateParentCheckbox(obj, id) {
 	var parentCheck=true;
 	if (obj) {
 		for (var i=0; i<obj.length; ++i) {
-			if (obj[i].checked != true) {
+			if (!obj[i].checked) {
 				var parentCheck=false;
 			}
 		}
@@ -5271,7 +5237,7 @@ function CLIPBOARD_CLASS(canvas_id, autoresize) {
 	this.paste_createImage = function (source) {
 		var pastedImage = new Image();
 		pastedImage.onload = function () {
-			if (autoresize == true) {
+			if (autoresize) {
 				//resize
 				canvas.width = pastedImage.width;
 				canvas.height = pastedImage.height;
@@ -5492,7 +5458,7 @@ AutocompleteRelation.prototype.get = function (e) {
 		var nr_opt=array.length;
 		term=array[nr_opt-1];
 	}
-	if (term.length >= this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
+	if (term.length >= this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined')) {
 		this.data.term = term;
 		var acInstance = this;
 		this.activate();
@@ -5606,17 +5572,10 @@ AutocompleteRelation.prototype.set = function (items) {
 };
 
 AutocompleteRelation.prototype.select = function (params) {
-	// var label = params.label;
-	// var value = params.value;
-
-	// this.inputField.value 	= label;
-	// this.hiddenInput.value 	= value;
-
 	// Housekeeping after selection
 	this.clearTargetUL();
 	this.targetUL.hide();
 	this.deactivate();
-	// Schedular.AutoComplete.Current.clear();
 };
 
 AutocompleteRelation.prototype.goToRec = function (params) {
@@ -5764,7 +5723,7 @@ AutocompleteRelation.prototype.fillAssignField = function (value) {
 
 	var assigntype = document.getElementsByName('assigntype');
 
-	if ( user_picklist.innerHTML.indexOf('value="' + value + '"') > -1 ) {
+	if (user_picklist.innerHTML.indexOf('value="' + value + '"') > -1) {
 		type = 'U';
 		active_piclist = user_picklist;
 	} else {
@@ -5790,8 +5749,6 @@ AutocompleteRelation.prototype.isReferenceField = function (e) {
 		var reference_type_field = document.getElementsByName(field_root_name + '_type');
 		if (reference_type_field.length > 0) {
 			var ref_module = reference_type_field[0].value;
-			//var ref_field_id = document.getElementsByName(field_root_name);
-			//var ref_record_id = ref_field_id[0].value;
 			this.data.referencefield = {module:ref_module, fieldname:field_root_name};
 			this.extendFillFields([field_root_name +'='+field_root_name, field_root_name+'_display='+field_root_name+'_display']);
 		}
@@ -5895,25 +5852,25 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		/* Set some default values */
 		params = params || {};
 		var me = this;
-		params.onSelect = params.onSelect || false,
+		params.onSelect = params.onSelect || false;
 		params.isMulti = params.isMulti || false;
 
 		/* Public attributes */
-		this.el 	= el,
-		this.input 	= el.getElementsByClassName('slds-combobox__input')[0],
-		this.specialKeys = ['up', 'down', 'enter', 'esc'],
-		this.optionNodes = this.getOptionNodes(),
-		this.active = false,
-		this.curSel = this.input.value,
-		this.fallBackSel = null,
-		this.curSelIndex = this.getCurSelIndex(),
-		this.fallBackIndex = this.getCurSelIndex(),
-		this.onSelect = typeof params.onSelect == 'function' ? params.onSelect : false,
-		this._val = params.isMulti ? this.getSelNodesArray() : this.optionNodes[this.curSelIndex].getAttribute('data-value'),
-		this.parentForm = _findUp(this.input, '$FORM'),
-		this.valueHolder = this.getValueHolder(),
-		this.isMulti = params.isMulti,
-		this.enabled = params.enabled !== undefined ? params.enabled : true,
+		this.el = el;
+		this.input = el.getElementsByClassName('slds-combobox__input')[0];
+		this.specialKeys = ['up', 'down', 'enter', 'esc'];
+		this.optionNodes = this.getOptionNodes();
+		this.active = false;
+		this.curSel = this.input.value;
+		this.fallBackSel = null;
+		this.curSelIndex = this.getCurSelIndex();
+		this.fallBackIndex = this.getCurSelIndex();
+		this.onSelect = typeof params.onSelect == 'function' ? params.onSelect : false;
+		this._val = params.isMulti ? this.getSelNodesArray() : this.optionNodes[this.curSelIndex].getAttribute('data-value');
+		this.parentForm = _findUp(this.input, '$FORM');
+		this.valueHolder = this.getValueHolder();
+		this.isMulti = params.isMulti;
+		this.enabled = params.enabled !== undefined ? params.enabled : true;
 		this.labels = {};
 
 		/* Instance listeners */
@@ -6005,7 +5962,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 			case 'id':
 				var vh = document.getElementById(vhLocArray[1]);
 				if (!vh) {
-					throw ('ldsComboBox.getValueHolder: No node with id ' + vhLocArray[1] + ' found');
+					throw new Error('ldsComboBox.getValueHolder: No node with id ' + vhLocArray[1] + ' found');
 				}
 				return vh;
 			default:
@@ -6031,7 +5988,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 */
 		getOpener: function () {
-			if ( this.el.classList.contains('slds-combobox') ) {
+			if (this.el.classList.contains('slds-combobox')) {
 				return this.el;
 			} else {
 				return this.el.getElementsByClassName('slds-combobox')[0];
@@ -6045,7 +6002,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 */
 		open: function () {
-			this.fallBackIndex = this.getCurSelIndex(),
+			this.fallBackIndex = this.getCurSelIndex();
 			this.fallBackSel = this.curSel;
 
 			this.getOpener().classList.add('slds-is-open');
@@ -6126,11 +6083,10 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * Used when a dropdown was opened, but cancelled
 		 * Typically by browsing through the list but pressing
 		 * 'esc' without selecting anything
-		 *
 		 */
 		fallBack: function () {
 			this.unselectAll();
-			this.curSelIndex = this.fallBackIndex,
+			this.curSelIndex = this.fallBackIndex;
 			this.curSel = this.fallBackSel;
 			this.select();
 		},
@@ -6367,10 +6323,10 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	function _findUp(element, searchterm) {
 		element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
 		while (element = element.parentElement) {
-			if ( (searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
-				|| ( searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
-				|| ( searchterm.charAt(0) === '$' && element.tagName === searchterm.slice(1))
-				|| ( element.hasAttribute(searchterm) ))) {
+			if ((searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
+				|| (searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
+				|| (searchterm.charAt(0) === '$' && element.tagName === searchterm.slice(1))
+				|| (element.hasAttribute(searchterm)))) {
 				return element;
 			} else if (element == document.body) {
 				break;
@@ -6416,10 +6372,10 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 
 	function cbOnScroll(e) {
 		window.requestAnimationFrame(function () {
-			sy = Math.round(window.scrollY),
-			di = sy > psy ? 'down' : 'up',
+			sy = Math.round(window.scrollY);
+			di = sy > psy ? 'down' : 'up';
 			psy = sy - 1;
-			var i = 0;
+			var i;
 			if (di === 'down') {
 				for (i = 0; i < window.cbOnDownScrollers.length; i++) {
 					if (typeof window.cbOnDownScrollers[i] === 'function') {

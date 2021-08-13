@@ -189,7 +189,7 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 	$log->debug("> getAllTaxes $available,$sh,$mode,$id");
 	$taxtypes = array();
 	list($void1,$void2,$void3,$void4,$taxtypes) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getAllTaxes', array($available,$sh,$mode,$id, array()));
-	if (count($taxtypes)==0) {
+	if (empty($taxtypes)) {
 		if ($sh != '' && $sh == 'sh') {
 			$tablename = 'vtiger_shippingtaxinfo';
 			$value_table='vtiger_inventoryshippingrel';
@@ -219,7 +219,7 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 			}
 			//We are selecting taxes using that taxids. So It will get the tax even if the tax is disabled.
 			$where_ids='';
-			if (count($result_ids) > 0) {
+			if (!empty($result_ids)) {
 				$insert_str = str_repeat('?,', count($result_ids)-1);
 				$insert_str .= '?';
 				$where_ids="taxid in ($insert_str) or";
@@ -272,7 +272,7 @@ function getTaxDetailsForProduct($productid, $available = 'all', $acvid = 0) {
 			'corebos.filter.TaxCalculation.getTaxDetailsForProduct',
 			array($productid, $available, $acvid, array())
 		);
-		if (count($tax_details)==0) {
+		if (empty($tax_details)) {
 		//where condition added to avoid to retrieve the non available taxes
 			$where = '';
 			if ($available != 'all' && $available == 'available') {
@@ -1009,30 +1009,14 @@ function createRecords($obj) {
 
 	$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $obj->user);
 	$moduleMeta = $moduleHandler->getMeta();
-	$moduleObjectId = $moduleMeta->getEntityId();
 	$moduleFields = $moduleMeta->getModuleFields();
 	include_once 'include/fields/InventoryLineField.php';
 	$ilfields = new InventoryLineField();
 	$moduleFields = array_merge($moduleFields, $ilfields->getInventoryLineFieldsByObject());
 	$focus = CRMEntity::getInstance($moduleName);
-	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Products'));
-	if ($wsrs && $adb->num_rows($wsrs)==1) {
-		$pdowsid = $adb->query_result($wsrs, 0, 0).'x';
-	} else {
-		$pdowsid = '0x';
-	}
-	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Services'));
-	if ($wsrs && $adb->num_rows($wsrs)==1) {
-		$srvwsid = $adb->query_result($wsrs, 0, 0).'x';
-	} else {
-		$srvwsid = '0x';
-	}
-	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Users'));
-	if ($wsrs && $adb->num_rows($wsrs)==1) {
-		$usrwsid = $adb->query_result($wsrs, 0, 0).'x';
-	} else {
-		$usrwsid = '0x';
-	}
+	$pdowsid = vtws_getEntityId('Products').'x';
+	$srvwsid = vtws_getEntityId('Services').'x';
+	$usrwsid = vtws_getEntityId('Users').'x';
 
 	$tableName = Import_Utils::getDbTableName($obj->user);
 	$sql = 'SELECT subject FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE .' GROUP BY subject';
@@ -1047,11 +1031,10 @@ function createRecords($obj) {
 	$numberOfRecords = $adb->num_rows($result);
 
 	if ($numberOfRecords <= 0) {
-		return;
+		return false;
 	}
 
 	$fieldMapping = $obj->fieldMapping;
-	$fieldColumnMapping = $moduleMeta->getFieldColumnMapping();
 
 	for ($i = 0; $i < $numberOfRecords; ++$i) {
 		$row = $adb->raw_query_result_rowdata($result, $i);

@@ -14,27 +14,7 @@
 *************************************************************************************************/
 
 function getfiltersbymodule($module, $user) {
-	global $adb, $log;
-	// pickup meta data of module
-	$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
-	$handlerPath = $webserviceObject->getHandlerPath();
-	$handlerClass = $webserviceObject->getHandlerClass();
-	require_once $handlerPath;
-	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
-	$meta = $handler->getMeta();
-	$mainModule = $meta->getTabName();  // normalize module name
-	// check modules
-	if (!$meta->isModuleEntity()) {
-		throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
-	}
-
-	// check permission on module
-	$entityName = $meta->getEntityName();
-	$types = vtws_listtypes(null, $user);
-	if (!in_array($entityName, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
-	}
-
+	$meta = vtws_checkListTypesPermission($module, $user, 'meta');
 	if (!$meta->hasReadAccess()) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read module is denied');
 	}
@@ -76,14 +56,14 @@ function cbws_getCustomViewCombo($viewid, $module, $customView) {
 	$shtml_others = '';
 	$filters = array();
 
-	$ssql = 'select vtiger_customview.*, vtiger_users.first_name,vtiger_users.last_name
+	$ssql = 'select vtiger_customview.*, vtiger_users.first_name,vtiger_users.last_name,vtiger_users.ename
 		from vtiger_customview
 		inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype
 		left join vtiger_users on vtiger_customview.userid = vtiger_users.id ';
 	$ssql .= ' where vtiger_tab.tabid=?';
 	$sparams = array($tabid);
 
-	if (is_admin($current_user) == false) {
+	if (!is_admin($current_user)) {
 		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in (
 			select vtiger_user2role.userid
 			from vtiger_user2role
@@ -111,7 +91,6 @@ function cbws_getCustomViewCombo($viewid, $module, $customView) {
 			$disp_viewname = $viewname . ' [' . $userName . '] ';
 		}
 
-		//$advft_criteria = json_encode($customView->getAdvFilterByCvid($cvrow['cvid']));
 		$advft_criteria = $customView->getAdvFilterByCvid($cvrow['cvid']);
 		$advft = array();
 		$groupnum = 1;

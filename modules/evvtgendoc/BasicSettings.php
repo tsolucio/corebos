@@ -94,13 +94,10 @@ $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty;
-$category = getParentTab();
-
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
-$smarty->assign('CATEGORY', $category);
 if (!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
 } else {
@@ -112,7 +109,7 @@ if (!is_admin($current_user)) {
 	$infomodules = gendoc_getModuleinfo();
 	$smarty->assign('INFOMODULES', $infomodules);
 	$smarty->assign('MODULE', $module);
-	if (empty($_REQUEST['ajax']) || $_REQUEST['ajax'] != true) {
+	if (empty($_REQUEST['ajax']) || !$_REQUEST['ajax']) {
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'BasicSettings.tpl'));
 	} else {
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'BasicSettingsContents.tpl'));

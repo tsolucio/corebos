@@ -22,7 +22,7 @@ if (!empty($_REQUEST['start']) && !empty($_REQUEST['return_viewname'])) {
 	coreBOS_Session::set('rlvs^'.$return_module.'^'.$relationId.'^start', $start);
 }
 $delerror = false;
-if (($return_module=='Products' && !empty($return_id))) {
+if ($return_module=='Products' && !empty($return_id)) {
 	include_once 'include/Webservices/Delete.php';
 	$pdocmpid = vtws_getEntityId('ProductComponent').'x'.$record;
 	vtws_delete($pdocmpid, $current_user);

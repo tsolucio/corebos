@@ -30,10 +30,19 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $from_wf, $logbg, $root_directory;
+		global $from_wf, $root_directory;
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
-		$fieldValueToEncode = $entity->data[$this->field_to_encode];
+		if (empty($entity->WorkflowContext['GenerateImageCode_ValueToEncode'])) {
+			$fieldValueToEncode = $entity->data[$this->field_to_encode];
+		} else {
+			$fieldValueToEncode = $entity->WorkflowContext['GenerateImageCode_ValueToEncode'];
+		}
+		if (empty($entity->WorkflowContext['GenerateImageCode_EncodingType'])) {
+			$encoding_type = $this->encoding_type;
+		} else {
+			$encoding_type = $entity->WorkflowContext['GenerateImageCode_EncodingType'];
+		}
 		$util->adminUser();
 		$moduleName = $entity->getModuleName();
 		$entityId = $entity->getId();
@@ -44,42 +53,37 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 		require_once 'include/tcpdf/tcpdf_barcodes_2d.php';
 		require_once 'include/tcpdf/tcpdf_barcodes_1d.php';
 
-		if (array_key_exists($this->encoding_type, $this->tcpdf1dEncodingTypes)) {
-			$barcodeobj = new TCPDFBarcode(
-				$fieldValueToEncode,
-				$this->encoding_type
-			);
+		if (array_key_exists($encoding_type, $this->tcpdf1dEncodingTypes)) {
+			$barcodeobj = new TCPDFBarcode($fieldValueToEncode, $encoding_type);
 			$width = 1;
 			$height = 20;
-		} elseif (array_key_exists($this->encoding_type, $this->tcpdf2dEncodingTypes)) {
-			$barcodeobj = new TCPDF2DBarcode(
-				$fieldValueToEncode,
-				$this->encoding_type
-			);
+		} elseif (array_key_exists($encoding_type, $this->tcpdf2dEncodingTypes)) {
+			$barcodeobj = new TCPDF2DBarcode($fieldValueToEncode, $encoding_type);
 			$width = 3;
 			$height = 3;
 		}
+		if ($barcodeobj) {
+			$data = $barcodeobj->getBarcodePngData($width, $height, array(0,0,0));
 
-		$data = $barcodeobj->getBarcodePngData($width, $height, array(0,0,0));
+			$attachment_name = 'BARCODEname.png';
+			$filepath = $root_directory.'cache/'.$attachment_name;
+			file_put_contents($filepath, $data);
+			$_FILES[$this->save_encoded_value] = array(
+				'name' => $attachment_name,
+				'type' => 'image/png',
+				'tmp_name' => $filepath,
+				'error' => 0,
+				'size' => strlen($data)
+			);
 
-		$attachment_name = 'BARCODEname.png';
-		$filepath = $root_directory.'cache/'.$attachment_name;
-		file_put_contents($filepath, $data);
-		$_FILES[$this->save_encoded_value] = array(
-			'name' => $attachment_name,
-			'type' => 'image/png',
-			'tmp_name' => $filepath,
-			'error' => 0,
-			'size' => strlen($data)
-		);
-
-		$moduleInstance = CRMEntity::getInstance($moduleName);
-		$moduleInstance->id = $recordId;
-		$moduleInstance->mode = 'edit';
-		$moduleInstance->DirectImageFieldValues[$this->save_encoded_value] = $attachment_name;
-		$moduleInstance->retrieve_entity_info($recordId, $moduleName);
-		$moduleInstance->insertIntoAttachment($recordId, $moduleName);
-		unlink($filepath);
+			$moduleInstance = CRMEntity::getInstance($moduleName);
+			$moduleInstance->id = $recordId;
+			$moduleInstance->mode = 'edit';
+			$moduleInstance->DirectImageFieldValues[$this->save_encoded_value] = $attachment_name;
+			$moduleInstance->retrieve_entity_info($recordId, $moduleName);
+			$moduleInstance->insertIntoAttachment($recordId, $moduleName);
+			unlink($filepath);
+		}
 		$util->revertUser();
 	}
 

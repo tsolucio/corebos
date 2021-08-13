@@ -18,18 +18,18 @@
  *************************************************************************************************/
 global $current_user, $adb, $root_directory;
 include_once 'include/Webservices/Create.php';
-include_once "vtlib/Vtiger/Module.php";
+include_once 'vtlib/Vtiger/Module.php';
 include_once 'include/integrations/elasticsearch/getFields.php';
 require_once 'modules/cbMap/cbMap.php';
 
 $smarty = new vtigerCRM_Smarty();
 
 $isAppActive = false;
-$fieldsselected = "";
-$types = "";
-$analyzed = "";
-$labels = "";
-$error = "";
+$fieldsselected = '';
+$types = '';
+$analyzed = '';
+$labels = '';
+$error = '';
 
 $arrfieldsselected = array();
 $arrtypes = array();
@@ -39,16 +39,16 @@ $arrlabels = array();
 $moduleid = isset($_REQUEST['module_list']) ? vtlib_purify($_REQUEST['module_list']) : '';
 $mapid = isset($_REQUEST['bmapid']) ? vtlib_purify($_REQUEST['bmapid']) : '';
 
-$ip = GlobalVariable::getVariable("ip_elastic_server", "", $moduleid);
-$prefix = GlobalVariable::getVariable("ip_elastic_indexprefix", "", $moduleid);
-if (!isset($prefix) || $prefix=="") {
-	$dir = explode("/", $root_directory);
+$ip = GlobalVariable::getVariable('ip_elastic_server', '', $moduleid);
+$prefix = GlobalVariable::getVariable('ip_elastic_indexprefix', '', $moduleid);
+if (!isset($prefix) || $prefix=='') {
+	$dir = explode('/', $root_directory);
 	$countdir = count($dir)-2;
 	$prefix = strtolower($dir[$countdir]);
 }
 $indexname = $prefix.'_'.strtolower($moduleid.'index');
 
-$table = $adb->pquery("select mapid,fieldnames,fieldtypes,isanalyzed,fieldlabels from elasticsearch_indexes where module=?", array($moduleid));
+$table = $adb->pquery('select mapid,fieldnames,fieldtypes,isanalyzed,fieldlabels from elasticsearch_indexes where module=?', array($moduleid));
 $tablecnt = $adb->num_rows($table);
 
 if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
@@ -61,7 +61,7 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 		array('ip_elastic_server')
 	);
 	$count = $adb->num_rows($recexists);
-	$module_list = explode(' |##| ', $adb->query_result($recexists, 0, 1));
+	$module_list = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $adb->query_result($recexists, 0, 1));
 	$gvid = ($count>0 ? $adb->query_result($recexists, 0, 0) : '');
 
 	//check for global variable ip_elastic_indexprefix
@@ -70,29 +70,29 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 		array('ip_elastic_indexprefix')
 	);
 	$count2 = $adb->num_rows($recexists2);
-	$module_list2 = explode(' |##| ', $adb->query_result($recexists2, 0, 1));
+	$module_list2 = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $adb->query_result($recexists2, 0, 1));
 	$gvid2 = ($count2>0 ? $adb->query_result($recexists2, 0, 0) : '');
 
 	if ($isFormActive=='1') {
 		$countfields = isset($_REQUEST['countfields']) ? vtlib_purify($_REQUEST['countfields']) : 0;
 		for ($i = 0; $i<$countfields; $i++) {
 			$fldindex = $i+1;
-			if (isset($_REQUEST["checkf".$fldindex]) && $_REQUEST["checkf".$fldindex]=='on') {
-				$arrfieldsselected[] = vtlib_purify($_REQUEST["colname".$fldindex]);
-				$arrtypes[] = vtlib_purify($_REQUEST["modulfieldtype".$fldindex]);
-				$arranalyzed[] = isset($_REQUEST["checkanalyzed".$fldindex]) ? vtlib_purify($_REQUEST["checkanalyzed".$fldindex]) : '';
-				$arrlabels[] = strtolower(str_replace(" ", "", vtlib_purify($_REQUEST["modulfieldlabel".$fldindex])));
+			if (isset($_REQUEST['checkf'.$fldindex]) && $_REQUEST['checkf'.$fldindex]=='on') {
+				$arrfieldsselected[] = vtlib_purify($_REQUEST['colname'.$fldindex]);
+				$arrtypes[] = vtlib_purify($_REQUEST['modulfieldtype'.$fldindex]);
+				$arranalyzed[] = isset($_REQUEST['checkanalyzed'.$fldindex]) ? vtlib_purify($_REQUEST['checkanalyzed'.$fldindex]) : '';
+				$arrlabels[] = strtolower(str_replace(' ', '', vtlib_purify($_REQUEST['modulfieldlabel'.$fldindex])));
 			}
 		}
-		$fieldsselected = implode("##", $arrfieldsselected);
-		$types = implode("##", $arrtypes);
-		$analyzed = implode("##", $arranalyzed);
-		$labels = implode("##", $arrlabels);
+		$fieldsselected = implode('##', $arrfieldsselected);
+		$types = implode('##', $arrtypes);
+		$analyzed = implode('##', $arranalyzed);
+		$labels = implode('##', $arrlabels);
 
 		//insert record in table elasticsearch and create index mapping
 		if ($tablecnt == 0) {
-			if (isset($ip) && $ip != "") {
-				$adb->pquery("insert into elasticsearch_indexes (indexname,module,mapid,fieldnames,fieldtypes,isanalyzed,fieldlabels) values (?,?,?,?,?,?,?)", array($indexname,$moduleid,$mapid,$fieldsselected,$types,$analyzed,$labels));
+			if (isset($ip) && $ip != '') {
+				$adb->pquery('insert into elasticsearch_indexes (indexname,module,mapid,fieldnames,fieldtypes,isanalyzed,fieldlabels) values (?,?,?,?,?,?,?)', array($indexname,$moduleid,$mapid,$fieldsselected,$types,$analyzed,$labels));
 				createindexmapping($ip, $indexname, $arrlabels, $arrtypes, $arranalyzed, $moduleid);
 			} else {
 				$error = 1;
@@ -105,10 +105,10 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 			vtws_create('GlobalVariable', array(
 				'gvname' => 'ip_elastic_server',
 				'default_check' => '0',
-				'value' => "$ip",
+				'value' => $ip,
 				'mandatory' => '0',
 				'blocked' => '0',
-				'module_list' => "$moduleid",
+				'module_list' => $moduleid,
 				'category' => 'System',
 				'in_module_list' => '1',
 				'assigned_user_id' => vtws_getEntityId('Users').'x'.$current_user->id,
@@ -121,10 +121,10 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 			vtws_create('GlobalVariable', array(
 				'gvname' => 'ip_elastic_indexprefix',
 				'default_check' => '0',
-				'value' => "$prefix",
+				'value' => $prefix,
 				'mandatory' => '0',
 				'blocked' => '0',
-				'module_list' => "$moduleid",
+				'module_list' => $moduleid,
 				'category' => 'System',
 				'in_module_list' => '1',
 				'assigned_user_id' => vtws_getEntityId('Users').'x'.$current_user->id,
@@ -138,12 +138,12 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 			$isactive1 = $adb->query_result($evhandler, 0, 0);
 			$ehid1 = $adb->query_result($evhandler, 0, 1);
 			if ($isactive1 != 1) {
-				$adb->pquery("update vtiger_eventhandlers set is_active=1 where eventhandler_id=?", array($ehid1));
+				$adb->pquery('update vtiger_eventhandlers set is_active=1 where eventhandler_id=?', array($ehid1));
 			}
 			$isactive2 = $adb->query_result($evhandler, 1, 0);
 			$ehid2 = $adb->query_result($evhandler, 1, 1);
 			if ($isactive2 != 1) {
-				$adb->pquery("update vtiger_eventhandlers set is_active=1 where eventhandler_id=?", array($ehid2));
+				$adb->pquery('update vtiger_eventhandlers set is_active=1 where eventhandler_id=?', array($ehid2));
 			}
 		} else {
 			$em = new VTEventsManager($adb);
@@ -156,27 +156,27 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 	} else {
 		//delete index in elasticsearch
 		deleteindex($ip, $indexname);
-		$adb->pquery("delete from elasticsearch_indexes where module=?", array($moduleid));
+		$adb->pquery('delete from elasticsearch_indexes where module=?', array($moduleid));
 		$index = array_search($moduleid, $module_list);
 		unset($module_list[$index]);
-		if (count($module_list)>0) {
-			$module_del = implode(" |##| ", $module_list);
+		if (!empty($module_list)) {
+			$module_del = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $module_list);
 		} else {
-			$module_del = "";
+			$module_del = '';
 		}
 		$adb->pquery("update vtiger_globalvariable set module_list='$module_del' where globalvariableid=?", array($gvid));
 		$adb->pquery("update vtiger_globalvariable set module_list='$module_del' where globalvariableid=?", array($gvid2));
 		$isAppActive = false;
-		$mapid = "";
+		$mapid = '';
 	}
 } else {
 	if ($tablecnt>0) {
 		$isAppActive = true;
 		$mapid = $adb->query_result($table, 0, 0);
-		$arrfieldsselected = explode("##", $adb->query_result($table, 0, 1));
-		$arrtypes = explode("##", $adb->query_result($table, 0, 2));
-		$arranalyzed = explode("##", $adb->query_result($table, 0, 3));
-		$arrlabels = explode("##", $adb->query_result($table, 0, 4));
+		$arrfieldsselected = explode('##', $adb->query_result($table, 0, 1));
+		$arrtypes = explode('##', $adb->query_result($table, 0, 2));
+		$arranalyzed = explode('##', $adb->query_result($table, 0, 3));
+		$arrlabels = explode('##', $adb->query_result($table, 0, 4));
 	}
 }
 
@@ -188,13 +188,13 @@ foreach ($entitymodules as $module) {
 	} else {
 		$selected = '';
 	}
-	$opt.="<option value='$module' $selected>".getTranslatedString($module, $module)."</option>";
+	$opt.="<option value='$module' $selected>".getTranslatedString($module, $module).'</option>';
 }
 
 if ($mapid != '' && $mapid != 0) {
-	$mapname = getEntityName("cbMap", $mapid);
+	$mapname = getEntityName('cbMap', $mapid);
 } else {
-	$mapname[$mapid] = "";
+	$mapname[$mapid] = '';
 }
 //get fields for elasticsearch mapping
 $fields = getFields($moduleid, $arrfieldsselected, $arrtypes, $arranalyzed, $arrlabels);

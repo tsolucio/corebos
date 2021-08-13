@@ -24,7 +24,7 @@
 			<td rowspan="2" valign="top" width="50"><img src="{'set-IcoLoginHistory.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.ModTracker}"
 				title="{$MOD.ModTracker}" border="0" height="48" width="48"></td>
 			<td class="heading2" valign="bottom"><b>
-				<a href="index.php?module=Settings&action=index&parenttab=Settings">{$APP.LBL_SETTINGS}</a> &gt;
+				<a href="index.php?module=Settings&action=index">{$APP.LBL_SETTINGS}</a> &gt;
 				{$MOD.ModTracker}</b>
 			</td>
 		</tr>

@@ -43,6 +43,9 @@ class FieldSetMapping extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		if (isset($xml->module)) {
 			foreach ($xml->module as $v) {
 				$mname = (String)$v->name;

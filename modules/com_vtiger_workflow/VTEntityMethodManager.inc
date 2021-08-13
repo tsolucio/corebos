@@ -18,17 +18,16 @@ class VTEntityMethodManager {
 	}
 
 	public function addEntityMethod($moduleName, $methodName, $functionPath, $functionName) {
-		$adb = $this->adb;
-		$rs = $adb->pquery(
+		$rs = $this->adb->pquery(
 			'select count(*)
 			from com_vtiger_workflowtasks_entitymethod
 			where module_name=? and function_path=? and function_name=? and method_name=?',
 			array($moduleName, $functionPath, $functionName, $methodName)
 		);
-		$cnt = $adb->query_result($rs, 0, 0);
+		$cnt = $this->adb->query_result($rs, 0, 0);
 		if ($cnt==0) {
-			$id = $adb->getUniqueId('com_vtiger_workflowtasks_entitymethod');
-			$adb->pquery(
+			$id = $this->adb->getUniqueId('com_vtiger_workflowtasks_entitymethod');
+			$this->adb->pquery(
 				'insert into com_vtiger_workflowtasks_entitymethod (workflowtasks_entitymethod_id, module_name, function_path, function_name, method_name) values (?,?,?,?,?)',
 				array($id, $moduleName, $functionPath, $functionName, $methodName)
 			);
@@ -36,14 +35,13 @@ class VTEntityMethodManager {
 	}
 
 	public function executeMethod($entityData, $methodName) {
-		$adb = $this->adb;
 		$moduleName = $entityData->getModuleName();
-		$result = $adb->pquery(
+		$result = $this->adb->pquery(
 			"select function_path, function_name from com_vtiger_workflowtasks_entitymethod where (module_name=? or module_name='*') and method_name=?",
 			array($moduleName, $methodName)
 		);
-		if ($adb->num_rows($result)!=0) {
-			$data = $adb->raw_query_result_rowdata($result, 0);
+		if ($this->adb->num_rows($result)!=0) {
+			$data = $this->adb->raw_query_result_rowdata($result, 0);
 			$functionPath = $data['function_path'];
 			$functionName = $data['function_name'];
 			require_once $functionPath;

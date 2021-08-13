@@ -19,7 +19,6 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
 	$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-	$smarty->assign('CATEGORY', '');
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('ID', $record);
@@ -98,7 +97,7 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 		foreach ($act_data as $header => $blockitem) {
 			foreach ($blockitem as $row => $data) {
 				foreach ($data as $key => $maindata) {
-					if (count($maindata)==0) {
+					if (empty($maindata)) {
 						continue;
 					}
 					$fldlabel[$maindata[2][0]] = isset($maindata[1][0]) ? $maindata[1][0] : '';

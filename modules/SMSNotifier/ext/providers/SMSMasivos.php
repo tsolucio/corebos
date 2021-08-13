@@ -21,14 +21,11 @@ class SMSMasivos implements ISMSProvider {
 	private $_username;
 	private $_password;
 	private $_parameters = array('numregion');
-	public $helpURL = 'http://www.smasivos.com';
+	public $helpURL = 'https://www.smasivos.com';
 	public $helpLink = 'SMSMasivos';
 
-	const SERVICE_URI = 'http://www.smasivos.com';
+	const SERVICE_URI = 'https://www.smasivos.com';
 	private static $REQUIRED_PARAMETERS = array();
-
-	public function __construct() {
-	}
 
 	/**
 	 * Function to get provider name
@@ -99,7 +96,6 @@ class SMSMasivos implements ISMSProvider {
 			$httpClient = new Vtiger_Net_Client($serviceURL);
 			$response = $httpClient->doPost($params);
 			$responseobj = json_decode($response);
-			$referencia = $responseobj->referencia;
 			$responseLines = explode("\n", $response);
 			$i = 0;
 			foreach ($responseLines as $responseLine) {

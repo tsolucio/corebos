@@ -24,7 +24,6 @@
 		<input type='hidden' name='ruleid' value="{$SCANNERRULE->ruleid}">
 		<input type='hidden' name='return_action' value='MailScanner'>
 		<input type='hidden' name='return_module' value='Settings'>
-		<input type='hidden' name='parenttab' value='Settings'>
 
 		<br>
 
@@ -33,7 +32,7 @@
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width=50 rowspan=2 valign=top><img src="{'mailScanner.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MAIL_SCANNER}" width="48" height="48" border=0 title="{$MOD.LBL_MAIL_SCANNER}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small">{$MOD.LBL_MAIL_SCANNER_DESCRIPTION}</td>
@@ -167,6 +166,8 @@
 									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_TO_CAPS}]</option>
 									<option value="LINK,Accounts,CC" {if $RULEACTIONTEXT eq 'LINK,Accounts,CC'}selected=true{/if}
 									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_CC}]</option>
+									<option value="CREATE,Messages,SUBJECT" {if $RULEACTIONTEXT eq 'CREATE,Messages,SUBJECT'}selected=true{/if}
+									>{$MOD.LBL_ADD} {'SINGLE_Messages'|getTranslatedString:'Messages'}</option>
 								</select>
 							</td>
 						</tr>
@@ -247,7 +248,7 @@
 					<td colspan=3 nowrap align="center">
 						<input type="submit" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" />
 						<input type="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}"
-							onclick="location.href='index.php?module=Settings&action=MailScanner&parenttab=Settings&mode=rule&scannername={$SCANNERINFO.scannername}'"/>
+							onclick="location.href='index.php?module=Settings&action=MailScanner&mode=rule&scannername={$SCANNERINFO.scannername}'"/>
 					</td>
 				</tr>
 				</table>

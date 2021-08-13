@@ -73,7 +73,7 @@ function getPrimaryColumnsHTML($module) {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
 			$block_listed[$value] = true;
 			$shtml .= '<optgroup label="'.getTranslatedString($module, $module).' '.getTranslatedString($value).'" class="select" style="border:none">';
-			if ($id_added==false) {
+			if (!$id_added) {
 				$shtml .= "<option value=\"$crmtable:crmid:".$module.'_ID:crmid:I">'.getTranslatedString($module.' ID', $module).'</option>';
 				$id_added=true;
 			}

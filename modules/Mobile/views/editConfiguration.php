@@ -24,7 +24,6 @@ class crmtogo_UI_Configuration extends crmtogo_WS_Configuration {
 		$viewer->assign('_MODULES', $modules);
 		$viewer->assign('MOD', $this->getUsersLanguage());
 		$viewer->assign('NAVISETTING', $config['NavigationLimit']);
-		$response = $viewer->process('Config.tpl');
-		return $response;
+		return $viewer->process('Config.tpl');
 	}
 }

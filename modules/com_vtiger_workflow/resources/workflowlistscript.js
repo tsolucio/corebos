@@ -35,10 +35,6 @@ function wfRemoveFromList(delWorkflowURL) {
 	};
 	document.getElementById('yes_button').onclick = function () {
 		document.getElementById('confirm-prompt').style.display = 'none';
-		// var return_url = encodeURIComponent('index.php?module=com_vtiger_workflow&action=workflowlist');
-		//delWorkflowURL = window.location.origin + window.location.pathname + delWorkflowURL;
-		// var idPart= '&workflow_id='+workflow_id;
-		// var deleteURL =base_url + '?module=com_vtiger_workflow&action=deleteworkflow'+idPart+'&return_url='+return_url;
 		window.location.href = delWorkflowURL;
 	};
 }

@@ -117,7 +117,7 @@ function __cb_relatedevaluations($evaluation, $params) {
 		$GetRelatedList_ReturnOnlyQuery = true;
 		$holdCM = $currentModule;
 		$currentModule = $module;
-		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), $relfunp);
+		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), array_values($relfunp));
 		$currentModule = $holdCM;
 		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		if (!isset($relationData['query'])) {
@@ -158,16 +158,14 @@ function __cb_relatedevaluations($evaluation, $params) {
 
 function __cb_min($values) {
 	if (count($values) != 0) {
-		$min = min($values);
-		return $min;
+		return min($values);
 	}
 	return false;
 }
 
 function __cb_max($values) {
 	if (count($values) != 0) {
-		$max = max($values);
-		return $max;
+		return max($values);
 	}
 	return false;
 }

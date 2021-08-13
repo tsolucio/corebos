@@ -502,7 +502,7 @@ function leadCanBeConverted($leadid) {
 			&& (isPermitted('Accounts', 'CreateView') == 'yes' || isPermitted('Contacts', 'CreateView') == 'yes')
 			&& (vtlib_isModuleActive('Contacts') || vtlib_isModuleActive('Accounts'))
 			&& !isLeadConverted($leadid)
-			&& ($uiinfo->getCompany() != null || $uiinfo->isModuleActive('Contacts') == true);
+			&& ($uiinfo->getCompany() != null || $uiinfo->isModuleActive('Contacts'));
 	}
 	return $leadCanBeConverted;
 }
@@ -585,18 +585,14 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 	}
 
 	//Checking for view all permission
-	if ($userprivs->hasGlobalReadPermission()) {
-		if ($actionid == 3 || $actionid == 4) {
-			$log->debug('< isPermitted view all permission yes');
-			return 'yes';
-		}
+	if ($userprivs->hasGlobalReadPermission() && ($actionid == 3 || $actionid == 4)) {
+		$log->debug('< isPermitted view all permission yes');
+		return 'yes';
 	}
 	//Checking for edit all permission
-	if ($userprivs->hasGlobalWritePermission()) {
-		if ($actionid == 3 || $actionid == 4 || $actionid ==0 || $actionid ==1) {
-			$log->debug('< isPermitted edit all permission yes');
-			return 'yes';
-		}
+	if ($userprivs->hasGlobalWritePermission() && ($actionid == 3 || $actionid == 4 || $actionid ==0 || $actionid ==1)) {
+		$log->debug('< isPermitted edit all permission yes');
+		return 'yes';
 	}
 	//Checking for tab permission
 	if (!is_null($tabid) && !$userprivs->hasModuleAccess($tabid)) {
@@ -632,11 +628,9 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 	}
 
 	//If module is not shareable, everyone has access. Faq, PriceBook, among others
-	if ($record_id != '') {
-		if (getTabOwnedBy($module) == 1) {
-			$log->debug('< isPermitted TabOwnedBy sharing disabled yes');
-			return 'yes';
-		}
+	if ($record_id != '' && getTabOwnedBy($module) == 1) {
+		$log->debug('< isPermitted TabOwnedBy sharing disabled yes');
+		return 'yes';
 	}
 
 	// has access to module, now let's check the record
@@ -864,8 +858,7 @@ function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 
 	$sharingModuleList=getSharingModuleList();
 	if (! in_array($module, $sharingModuleList)) {
-		$sharePer='no';
-		return $sharePer;
+		return 'no';
 	}
 
 	$recordOwnerArr=getRecordOwnerId($record_id);
@@ -878,7 +871,7 @@ function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 	if ($ownertype == 'Users') {
 		//Checking the Read Sharing Permission Array in Role Users
 		$read_role_per=$read_per_arr['ROLE'];
-		foreach ($read_role_per as $roleid => $userids) {
+		foreach ($read_role_per as $userids) {
 			if (in_array($ownerid, $userids)) {
 				$sharePer='yes';
 				$log->debug('< isReadPermittedBySharing');
@@ -887,7 +880,7 @@ function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 		}
 		//Checking the Read Sharing Permission Array in Groups Users
 		$read_grp_per=$read_per_arr['GROUP'];
-		foreach ($read_grp_per as $grpid => $userids) {
+		foreach ($read_grp_per as $userids) {
 			if (in_array($ownerid, $userids)) {
 				$sharePer='yes';
 				$log->debug('< isReadPermittedBySharing');
@@ -919,7 +912,7 @@ function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 				if ($rel_owner_type=='Users') {
 					//Checking in Role Users
 					$read_related_role_per=$read_related_per_arr['ROLE'];
-					foreach ($read_related_role_per as $roleid => $userids) {
+					foreach ($read_related_role_per as $userids) {
 						if (in_array($rel_owner_id, $userids)) {
 							$sharePer='yes';
 							$log->debug('< isReadPermittedBySharing');
@@ -928,7 +921,7 @@ function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 					}
 					//Checking in Group Users
 					$read_related_grp_per=$read_related_per_arr['GROUP'];
-					foreach ($read_related_grp_per as $grpid => $userids) {
+					foreach ($read_related_grp_per as $userids) {
 						if (in_array($rel_owner_id, $userids)) {
 							$sharePer='yes';
 							$log->debug('< isReadPermittedBySharing');
@@ -967,8 +960,7 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 
 	$sharingModuleList=getSharingModuleList();
 	if (! in_array($module, $sharingModuleList)) {
-		$sharePer='no';
-		return $sharePer;
+		return 'no';
 	}
 
 	$recordOwnerArr=getRecordOwnerId($record_id);
@@ -982,7 +974,7 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 	if ($ownertype == 'Users') {
 		//Checking the Write Sharing Permission Array in Role Users
 		$write_role_per=$write_per_arr['ROLE'];
-		foreach ($write_role_per as $roleid => $userids) {
+		foreach ($write_role_per as $userids) {
 			if (in_array($ownerid, $userids)) {
 				$sharePer='yes';
 				$log->debug('< isReadWritePermittedBySharing');
@@ -991,7 +983,7 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 		}
 		//Checking the Write Sharing Permission Array in Groups Users
 		$write_grp_per=$write_per_arr['GROUP'];
-		foreach ($write_grp_per as $grpid => $userids) {
+		foreach ($write_grp_per as $userids) {
 			if (in_array($ownerid, $userids)) {
 				$sharePer='yes';
 				$log->debug('< isReadWritePermittedBySharing');
@@ -1023,7 +1015,7 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 				if ($rel_owner_type=='Users') {
 					//Checking in Role Users
 					$write_related_role_per=$write_related_per_arr['ROLE'];
-					foreach ($write_related_role_per as $roleid => $userids) {
+					foreach ($write_related_role_per as $userids) {
 						if (in_array($rel_owner_id, $userids)) {
 							$sharePer='yes';
 							$log->debug('< isReadWritePermittedBySharing');
@@ -1032,7 +1024,7 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 					}
 					//Checking in Group Users
 					$write_related_grp_per=$write_related_per_arr['GROUP'];
-					foreach ($write_related_grp_per as $grpid => $userids) {
+					foreach ($write_related_grp_per as $userids) {
 						if (in_array($rel_owner_id, $userids)) {
 							$sharePer='yes';
 							$log->debug('< isReadWritePermittedBySharing');
@@ -1628,7 +1620,7 @@ function getRoleAndSubordinatesHierarchy() {
 		$i=0;
 		$k=array();
 		$y=$hrarray;
-		if (count($hrarray) == 0) {
+		if (empty($hrarray)) {
 			$hrarray[$temp_list[0]]= array();
 		} else {
 			while ($i<$size-1) {
@@ -2137,7 +2129,7 @@ function tranferGroupOwnership($groupId, $transferId) {
 	$log->debug('> tranferGroupOwnership '.$groupId);
 	$denormModules = getDenormalizedModules();
 	if (count($denormModules) > 0) {
-		foreach ($denormModules as $key => $table) {
+		foreach ($denormModules as $table) {
 			$adb->pquery('update '.$table.' set smownerid=? where smownerid=?', array($transferId, $groupId));
 		}
 	}
@@ -3016,8 +3008,7 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 	$log->debug('> getFieldVisibilityPermission '.$fld_module.','. $userid.','. $fieldname.','.$accessmode);
 
 	// Check if field is in-active
-	$fieldActive = isFieldActive($fld_module, $fieldname);
-	if ($fieldActive == false) {
+	if (!isFieldActive($fld_module, $fieldname)) {
 		return '1';
 	}
 

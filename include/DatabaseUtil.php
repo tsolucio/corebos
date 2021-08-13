@@ -18,13 +18,11 @@ function check_db_utf8_support($conn) {
 	while (!$dbvarRS->EOF) {
 		$arr = $dbvarRS->FetchRow();
 		$arr = array_change_key_case($arr);
-		switch ($arr['variable_name']) {
-			case 'character_set_database':
-				$db_character_set = $arr['value'];
-				break;
-			case 'collation_database':
-				$db_collation_type = $arr['value'];
-				break;
+		if ($arr['variable_name'] == 'character_set_database') {
+			$db_character_set = $arr['value'];
+		}
+		if ($arr['variable_name'] == 'collation_database') {
+			$db_collation_type = $arr['value'];
 		}
 		// If we have all the required information break the loop.
 		if ($db_character_set != null && $db_collation_type != null) {
@@ -76,13 +74,13 @@ function mkTotQuery($query, $column) {
 	$query = mkXQuery($query, 'sum('.$column.') AS total');
 
 	// Strip off any "GROUP BY" clause
-	if (strpos($query, ' GROUP BY ') > 0) {
-		$query = substr($query, 0, strpos($query, ' GROUP BY '));
+	if (strripos($query, ' GROUP BY ') > 0) {
+		$query = substr($query, 0, strripos($query, ' GROUP BY '));
 	}
 
 	// Strip off any "ORDER BY" clause
-	if (strpos($query, ' ORDER BY ') > 0) {
-		$query = substr($query, 0, strpos($query, ' ORDER BY '));
+	if (strripos($query, ' ORDER BY ') > 0) {
+		$query = substr($query, 0, strripos($query, ' ORDER BY '));
 	}
 
 	return $query;
@@ -90,14 +88,14 @@ function mkTotQuery($query, $column) {
 
 //Strip tailing commands
 function stripTailCommandsFromQuery($query, $stripgroup = true) {
-	if ($stripgroup && stripos($query, ' GROUP BY ') > 0) {
-		$query = substr($query, 0, stripos($query, ' GROUP BY '));
+	if ($stripgroup && strripos($query, ' GROUP BY ') > 0) {
+		$query = substr($query, 0, strripos($query, ' GROUP BY '));
 	}
-	if (stripos($query, ' ORDER BY ') > 0) {
-		$query = substr($query, 0, stripos($query, ' ORDER BY '));
+	if (strripos($query, ' ORDER BY ') > 0) {
+		$query = substr($query, 0, strripos($query, ' ORDER BY '));
 	}
-	if (stripos($query, ' LIMIT ') > 0) {
-		$query = substr($query, 0, stripos($query, ' LIMIT '));
+	if (strripos($query, ' LIMIT ') > 0) {
+		$query = substr($query, 0, strripos($query, ' LIMIT '));
 	}
 	return $query;
 }
@@ -146,10 +144,8 @@ function getFromClauseAlreadyPresent($parsed, $fromClause) {
 		$fromClause = substr($fromClause, stripos($fromClause, ' join ')+6); // strip join
 		$fromClause = str_replace(' ', '', $fromClause);
 		foreach ($parsed['FROM'] as $clause) {
-			if ($clause['ref_type']=='ON') {
-				if (str_replace(' ', '', $clause['base_expr'])==$fromClause) {
-					return ($clause['join_type']=='JOIN' ? 'INNER' : $clause['join_type']).' join '.$clause['base_expr'];
-				}
+			if ($clause['ref_type']=='ON' && str_replace(' ', '', $clause['base_expr'])==$fromClause) {
+				return ($clause['join_type']=='JOIN' ? 'INNER' : $clause['join_type']).' join '.$clause['base_expr'];
 			}
 		}
 	}

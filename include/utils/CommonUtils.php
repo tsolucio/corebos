@@ -21,7 +21,7 @@ require_once 'modules/cbtranslation/cbtranslation.php';
  */
 function is_admin($user) {
 	global $log;
-	if (empty($user)) {
+	if (empty($user) || !is_object($user)) {
 		return false;
 	}
 	$log->debug('> is_admin ' . $user->user_name);
@@ -39,6 +39,9 @@ function is_admin($user) {
  * Check if user id belongs to a system admin.
  */
 function is_adminID($userID) {
+	if (empty($userID) || !is_numeric($userID) || $userID<1) {
+		return false;
+	}
 	require_once 'modules/Users/Users.php';
 	$privs = UserPrivileges::privsWithoutSharing($userID);
 	return $privs->isAdmin();
@@ -215,15 +218,13 @@ function parse_calendardate($local_format) {
 
 /**
  * Rudimentary/Trusted input clean up for XSS
- * input values $string - string to be cleaned
- * returns the cleaned value in string format
+ * @param string to be cleaned
+ * @return string the cleaned value
  */
 function from_html($string) {
-	if (is_string($string)) {
-		if (preg_match('/(script).*(\/script)/i', $string)) {
-			$string = preg_replace(array('/<\s*script/', '/<\/\s*script\s*>/'), array('&lt;script', '&lt;/script&gt;', '&quot;'), $string);
-			$string = str_replace('"', '&quot;', $string);
-		}
+	if (is_string($string) && preg_match('/(script).*(\/script)/i', $string)) {
+		$string = preg_replace(array('/<\s*script/', '/<\/\s*script\s*>/'), array('&lt;script', '&lt;/script&gt;', '&quot;'), $string);
+		$string = str_replace('"', '&quot;', $string);
 	}
 	return $string;
 }
@@ -247,7 +248,6 @@ function popup_from_html($string, $encode = true) {
 		"'" => '&#039;',
 	);
 
-	//if($encode && is_string($string))$string = html_entity_decode($string, ENT_QUOTES);
 	if ($encode && is_string($string)) {
 		$string = addslashes(str_replace(array_values($popup_toHtml), array_keys($popup_toHtml), $string));
 	}
@@ -599,9 +599,8 @@ function getContactName($contact_id) {
 	global $log, $adb, $current_user;
 	$log->debug('> getContactName '.$contact_id);
 	$contact_name = '';
-	if ($contact_id != '') {
-		$sql = 'select firstname, lastname from vtiger_contactdetails where contactid=?';
-		$result = $adb->pquery($sql, array($contact_id));
+	if (!empty($contact_id)) {
+		$result = $adb->pquery('select firstname, lastname from vtiger_contactdetails where contactid=?', array($contact_id));
 		$firstname = $adb->query_result($result, 0, 'firstname');
 		$lastname = $adb->query_result($result, 0, 'lastname');
 		$contact_name = $lastname;
@@ -1195,17 +1194,22 @@ function getListPrice($productid, $pbid) {
 }
 
 /** This function returns a string with removed new line character, single quote, and back slash double quoute.
- * param $str - string to be converted.
+ * @param string to be converted.
+ * @return string converted
  */
 function br2nl($str) {
-	global $log;
-	$log->debug('> br2nl(' . $str);
 	$str = preg_replace("/\r/", "\\r", $str);
 	$str = preg_replace("/\n/", "\\n", $str);
 	$str = preg_replace("/'/", ' ', $str);
-	$str = preg_replace("/\"/", ' ', $str);
-	$log->debug('< br2nl');
-	return $str;
+	return preg_replace('/"/', ' ', $str);
+}
+
+/** convert line breaks to space in (used in description field during export, among others)
+ * @param string text to converted
+ * @return string converted
+*/
+function br2nl_vt($str) {
+	return preg_replace("/(\r\n)/", ' ', $str);
 }
 
 /** This function returns a text, which escapes the html encode for link tag/ a href tag
@@ -1292,7 +1296,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			} else {
 				$fieldview = 'editfields';
 			}
-			if (!empty($mdmap[$fieldview])) {
+			if (!empty($mdmap[$fieldview]) && !empty($mdmap['targetmodule']) && $module==$mdmap['targetmodule']) {
 				$fieldsin = $adb->convert2Sql('and fieldid IN (' . generateQuestionMarks($mdmap[$fieldview]) . ')', $mdmap[$fieldview]);
 			}
 		}
@@ -1416,7 +1420,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		$result = $adb->pquery($sql, $params);
 		$getBlockInfo = getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode);
 	}
-	if (count($getBlockInfo) > 0) {
+	if (!empty($getBlockInfo)) {
 		foreach ($getBlockInfo as $label => $contents) {
 			if (empty($getBlockInfo[$label])) {
 				unset($getBlockInfo[$label]);
@@ -1574,7 +1578,6 @@ function updateInfoSinceMessage($id) {
 	$current_time = date('Y-m-d H:i:s');
 	$values = explode(' ', $modifiedtime);
 	$date_info = explode('-', $values[0]);
-	//$time_info = explode(':', $values[1]);
 	$date = $date_info[2] . ' ' . $app_strings[date('M', mktime(0, 0, 0, $date_info[1], $date_info[2], $date_info[0]))] . ' ' . $date_info[0];
 	$time_modified = strtotime($modifiedtime);
 	$time_now = strtotime($current_time);
@@ -1650,7 +1653,6 @@ function SaveImage($files, $module, $id, $mode) {
 		$filesize = $files['imagename']['size'];
 
 		$filetype_array = explode('/', $filetype);
-		//$file_type_val_image = strtolower($filetype_array[0]);
 		$file_type_val = strtolower($filetype_array[1]);
 		//checking the uploaded image is if an image type or not
 		if (!$move_upload_status) { //if any error during file uploading
@@ -1677,12 +1679,10 @@ function SaveImage($files, $module, $id, $mode) {
 					$saveimage = 'true';
 					$image_error = 'false';
 				} else {
-					$savelogo = 'false';
 					$image_error = 'true';
 					$errormessage = 'image';
 				}
 			} else {
-				$savelogo = 'false';
 				$image_error = 'true';
 				$errormessage = 'invalid';
 			}
@@ -1765,27 +1765,24 @@ function UserCount() {
 }
 
 /**
- * This function is used to create folders recursively.
- * Param $dir - directory name
- * Param $mode - directory access mode
- * Param $recursive - create directory recursive, default true
+ * This function is used to create folders recursively
+ * @param string directory name
+ * @param integer directory access mode
+ * @param boolean create directory recursive, default true
+ * @return boolean if it was successful or not
  */
 function mkdirs($dir, $mode = 0777, $recursive = true) {
 	global $log;
 	$log->debug('> mkdirs ' . $dir . ',' . $mode . ',' . $recursive);
 	if (is_null($dir) || $dir === '') {
-		$log->debug('< mkdirs');
 		return false;
 	}
 	if (is_dir($dir) || $dir === '/') {
-		$log->debug('< mkdirs');
 		return true;
 	}
 	if (mkdirs(dirname($dir), $mode, $recursive)) {
-		$log->debug('< mkdirs');
 		return mkdir($dir, $mode);
 	}
-	$log->debug('< mkdirs');
 	return false;
 }
 
@@ -1946,7 +1943,6 @@ function create_tab_data_file() {
 	} else {
 		echo "The file $filename does not exist";
 		$log->debug('< create_tab_data_file');
-		return;
 	}
 }
 
@@ -1986,7 +1982,7 @@ function getQuickCreateModules() {
 			$return_qcmodule[] = $tabname;
 		}
 	}
-	if (count($return_qcmodule) > 0) {
+	if (!empty($return_qcmodule)) {
 		$return_qcmodule = array_chunk($return_qcmodule, 2);
 	}
 
@@ -2044,7 +2040,6 @@ function QuickCreateFieldInformation($result, $module, $mapdefaults) {
 	$fieldName_array = array();
 	$qcreate_arr = array();
 	for ($i = 0; $i < $noofrows; $i++) {
-		//$fieldtablename = $adb->query_result($result, $i, 'tablename');
 		$uitype = $adb->query_result($result, $i, 'uitype');
 		$fieldname = $adb->query_result($result, $i, 'fieldname');
 		$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
@@ -2104,7 +2099,7 @@ function getUserslist($setdefval = true, $selecteduser = '') {
 	$change_owner = '';
 	foreach ($users_combo as $userid => $value) {
 		foreach ($value as $username => $selected) {
-			if ($setdefval == false) {
+			if (!$setdefval) {
 				$change_owner .= "<option value=$userid>" . $username . '</option>';
 			} elseif (is_numeric($selecteduser)) {
 				$change_owner .= "<option value=$userid ". ($userid==$selecteduser ? 'selected' : '') .'>'. $username . '</option>';
@@ -2199,10 +2194,7 @@ function getEntityName($module, $ids_list) {
 		}
 		$entityDisplay = array();
 		$entity_field_info = getEntityFieldNames($module);
-		//$tableName = $entity_field_info['tablename'];
 		$fieldsName = $entity_field_info['fieldname'];
-		//$moduleName = $entity_field_info['modulename'];
-		//$entityIdField = $entity_field_info['entityidfield'];
 		$entity_FieldValue = getEntityFieldValues($entity_field_info, $ids_list);
 
 		foreach ($entity_FieldValue as $entityInfo) {
@@ -2652,7 +2644,7 @@ function getMergedDescriptionForURL($url, $id, $parent_type) {
 	$log->debug('< getMergedDescriptionForURL');
 	return (isset($pieces['scheme']) ? $pieces['scheme'].'://' : (substr($url, 0, 2)=='//' ? '//' : ''))
 		.(isset($pieces['host']) ? $pieces['host'] : '')
-		.(isset($pieces['path']) ? $pieces['path'].(count($params)>0 ? '?' : '') : '')
+		.(isset($pieces['path']) ? $pieces['path'].(empty($params) ? '' : '?') : '')
 		.http_build_query($params);
 }
 
@@ -2789,15 +2781,14 @@ function getrecurringObjValue() {
 	}
 }
 
-/** 	Function used to get the translated string to the input string
+/** Function used to get the translated string to the input string
  * 	@param string $str - input string which we want to translate
  * 	@return string $str - translated string, if the translated string is available then the translated string other wise original string will be returned
  */
 function getTranslatedString($str, $module = '') {
 	global $app_strings, $mod_strings, $current_language;
 	$temp_mod_strings = ($module != '' ) ? return_module_language($current_language, $module) : $mod_strings;
-	$trans_str = (!empty($temp_mod_strings[$str]) ? $temp_mod_strings[$str] : (!empty($app_strings[$str]) ? $app_strings[$str] : cbtranslation::get($str, $module)));
-	return $trans_str;
+	return (!empty($temp_mod_strings[$str]) ? $temp_mod_strings[$str] : (!empty($app_strings[$str]) ? $app_strings[$str] : cbtranslation::get($str, $module)));
 }
 
 /**
@@ -2882,8 +2873,8 @@ function getTicketComments($ticketid) {
 }
 
 /**
- * This function is used to get a random password.
- * @return a random password with alpha numeric characters of length 8
+ * This function is used to get a random password
+ * @return string a random password with alpha numeric characters of length 8
  */
 function makeRandomPassword() {
 	global $log;
@@ -3458,14 +3449,13 @@ function isModuleSettingPermitted($module) {
  */
 function getEntityField($module, $fqn = false) {
 	global $adb;
-	$data = array();
 	if (!empty($module)) {
 		$query = 'select fieldname,tablename,entityidfield from vtiger_entityname where modulename = ?';
 		$result = $adb->pquery($query, array($module));
 		$fieldsname = $adb->query_result($result, 0, 'fieldname');
 		$tablename = $adb->query_result($result, 0, 'tablename');
 		$entityidfield = $adb->query_result($result, 0, 'entityidfield');
-		if (!(strpos($fieldsname, ',') === false)) {
+		if (strpos($fieldsname, ',')) {
 			$fieldlists = explode(',', $fieldsname);
 			if ($fqn) {
 				array_walk($fieldlists, function (&$elem, $key) use ($tablename) {
@@ -3479,8 +3469,7 @@ function getEntityField($module, $fqn = false) {
 	} else {
 		$tablename  = $fieldsname = $entityidfield = '';
 	}
-	$data = array('tablename' => $tablename, 'fieldname' => $fieldsname, 'entityid' => $entityidfield);
-	return $data;
+	return array('tablename' => $tablename, 'fieldname' => $fieldsname, 'entityid' => $entityidfield);
 }
 
 /**
@@ -3501,7 +3490,7 @@ function getEntityFieldNames($module) {
 		$tableName = $adb->query_result($result, 0, 'tablename');
 		$entityIdField = $adb->query_result($result, 0, 'entityidfield');
 		$moduleName = $adb->query_result($result, 0, 'modulename');
-		if (!(strpos($fieldsName, ',') === false)) {
+		if (strpos($fieldsName, ',')) {
 			$fieldsName = explode(',', $fieldsName);
 		}
 		$data[$module] = array('tablename' => $tableName, 'modulename' => $moduleName, 'fieldname' => $fieldsName, 'entityidfield' => $entityIdField);
@@ -3524,7 +3513,6 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 	global $adb;
 	$tableName = $entity_field_info['tablename'];
 	$fieldsName = $entity_field_info['fieldname'];
-	//$moduleName = $entity_field_info['modulename'];
 	$entityIdField = $entity_field_info['entityidfield'];
 	if (is_array($fieldsName)) {
 		$fieldsNameString = implode(',', $fieldsName);
@@ -3565,10 +3553,10 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 		$accessibleFieldNames = array();
 		foreach ($fieldsName as $field) {
 			if ($module == 'Users' || getColumnVisibilityPermission($current_user->id, $field, $module) == '0') {
-				$accessibleFieldNames[] = $fieldValues[$field];
+				$accessibleFieldNames[] = isset($fieldValues[$field]) ? $fieldValues[$field] : '';
 			}
 		}
-		if (count($accessibleFieldNames) > 0) {
+		if (!empty($accessibleFieldNames)) {
 			return implode(' ', $accessibleFieldNames);
 		}
 	}
@@ -3631,7 +3619,6 @@ function joinName($input, $glue = ' ') {
 
 function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
 	$entity_field_info = getEntityFieldNames($module);
-	//$tableName = $entity_field_info['tablename'];
 	$fieldsName = $entity_field_info['fieldname'];
 	if (is_array($fieldsName)) {
 		foreach ($fieldsName as $value) {

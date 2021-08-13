@@ -31,13 +31,12 @@ class Vtiger_PurchaseOrderPDFController extends Vtiger_InventoryPDFController {
 		$trackingNumberLabel = getTranslatedString('Tracking Number', $this->moduleName);
 		$requisitionNumberLabel = getTranslatedString('Requisition Number', $this->moduleName);
 
-		$modelColumn1 = array(
+		return array(
 				$contactNameLabel	=>	$contactName,
 				$vendorNameLabel	=>	$vendorName,
 				$trackingNumberLabel=>	$trackingNumber,
 				$requisitionNumberLabel=>$requisitionNumber
 			);
-		return $modelColumn1;
 	}
 
 	public function buildHeaderModelColumnRight() {
@@ -46,7 +45,7 @@ class Vtiger_PurchaseOrderPDFController extends Vtiger_InventoryPDFController {
 		$billingAddressLabel = getTranslatedString('Billing Address', $this->moduleName);
 		$shippingAddressLabel = getTranslatedString('Shipping Address', $this->moduleName);
 
-		$modelColumn2 = array(
+		return array(
 				'dates' => array(
 					$issueDateLabel  => $this->formatDate(date("Y-m-d")),
 					$validDateLabel => $this->formatDate($this->focusColumnValue('duedate')),
@@ -54,7 +53,6 @@ class Vtiger_PurchaseOrderPDFController extends Vtiger_InventoryPDFController {
 				$billingAddressLabel  => $this->buildHeaderBillingAddress(),
 				$shippingAddressLabel => $this->buildHeaderShippingAddress()
 			);
-		return $modelColumn2;
 	}
 
 	public function getWatermarkContent() {

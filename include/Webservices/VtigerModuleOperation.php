@@ -96,7 +96,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$crmObject = new VtigerCRMObject($this->tabId, true);
 		$crmObject->setObjectId($ids[1]);
 		$error = $crmObject->read($crmObject->getObjectId());
-		if ($error == false) {
+		if (!$error) {
 			return $error;
 		}
 		$cfields = $crmObject->getFields();
@@ -162,7 +162,6 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				$addDocGlue = (stripos($docrelcond, ' and ') > 0 || stripos($docrelcond, ' or ') > 0);
 				$mysql_query = substr($mysql_query, 0, stripos($mysql_query, 'where')+6);
 				$relatedCond = '/related.'.$moduleName.'\s*=\s*'.trim($m[2], ')').'/i';
-				// $relatedCond = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
 				$afterwhere=trim(preg_replace($relatedCond, $docrelcond, $afterwhere), ' ;');
 			} else {
 				$addDocGlue = true;

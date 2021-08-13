@@ -448,16 +448,6 @@ function doSaveSettings() {
 	var form = container.find('form[name="contactsyncsettings"]');
 	var fieldMapping = packFieldmappingsForSubmit(container);
 	form.find('#user_field_mapping').val(fieldMapping);
-	//    var serializedFormData = JSON.stringify(form);
-	//    var form = document.forms['contactsyncsettings'];
-	//    form.submit();
-	//    jQuery.ajax({
-	//            type : 'post',
-	//            data :  serializedFormData,
-	//            url : "index.php?module=Contacts&action=ContactsAjax&file=GSaveSyncSettings"
-	//    }).done(function(msg) {
-	//        alert('sdfsfdsf');
-	//    });
 	return true;
 }
 

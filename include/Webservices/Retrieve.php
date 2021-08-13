@@ -63,7 +63,7 @@ function vtws_retrieve($id, $user) {
 	if ($entityName=='Users') {
 		$entity['rolename'] = getRoleName($entity['roleid']);
 	}
-	if (count($listofrelfields)>0) {
+	if (!empty($listofrelfields)) {
 		if ($entityName=='Emails' && $entity['parent_id']!='') {
 			unset($listofrelfields['parent_id'], $r['parent_id']);
 		}

@@ -944,6 +944,8 @@ $app_strings = array (
   'Mailing Po Box' => 'Box (Spedizione)',
   'Other Po Box' => 'Altro Box',
   'Image' => 'Immagine',
+  'Unknown' => 'Unknown',
+  'Compressed' => 'Compressed',
   'LBL_EXPORT_TYPE_1' => 'Export di Tipo 1:',
   'LBL_EXPORT_TYPE_2' => 'Export di Tipo 2:',
   'LBL_SEARCH_CRITERIA_RECORDS' => 'Esporta Criterio di Ricerca Record',
@@ -953,6 +955,9 @@ $app_strings = array (
   'LBL_SEARCH_CRITERIA_COLUMNS'=>'Export Filter Columns',
   'LBL_VISIBLE_COLUMNS'=>'Export only visible columns',
   'LBL_ALL_DATA' => 'Esporta di tutti i dati',
+  'LBL_EXPORT_FORMAT' => 'Export Format',
+  'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+  'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
   'LBL_DATA_IN_CURRENT_PAGE' => 'Esporta i dati della pagina corrente',
   'LBL_ONLY_SELECTED_RECORDS' => 'Esporta i record selezionati',
   'LBL_YES' => 'Si',
@@ -1263,6 +1268,7 @@ $app_strings = array (
 'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 'VALIDATION_FAILED' => 'Validation failed',
 'Select Module To Upsert' => 'Select Module To Upsert',
+'LBL_FIX_NOW' => 'Fissare adesso',
 );
 
 // Translation for currency names

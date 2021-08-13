@@ -19,7 +19,6 @@
 <input type="hidden" name="module" value="Users">
 <input type="hidden" name="mode" value="create">
 <input type="hidden" name="action" value="CreateProfile">
-<input type="hidden" name="parenttab" value="Settings">
 
 <br>
 	<div align=center>
@@ -28,7 +27,7 @@
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ico-profile.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROFILES}" width="48" height="48" border=0 title="{$MOD.LBL_PROFILES}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_PROFILES} </b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_PROFILES} </b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small cblds-p-v_none">{$MOD.LBL_PROFILE_DESCRIPTION}</td>
@@ -62,13 +61,13 @@
 					<tr>
 						<td class="listTableRow small" valign=top>{$smarty.foreach.profilelist.iteration}</td>
 						<td class="listTableRow small" valign=top nowrap>
-							<a href="index.php?module=Settings&action=profilePrivileges&return_action=ListProfiles&parenttab=Settings&mode=edit&profileid={$listvalues.profileid}"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EDIT}" title="{$APP.LBL_EDIT}" border="0" align="absmiddle"></a>
+							<a href="index.php?module=Settings&action=profilePrivileges&return_action=ListProfiles&mode=edit&profileid={$listvalues.profileid}"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EDIT}" title="{$APP.LBL_EDIT}" border="0" align="absmiddle"></a>
 							{if $listvalues.del_permission eq 'yes'}
 								&nbsp;|&nbsp;
 								<a href="javascript:;"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" height="15" width="15" onclick="DeleteProfile(this,'{$listvalues.profileid}')" align="absmiddle" title="{$APP.LBL_DELETE_BUTTON}"></a>
 							{/if}
 						</td>
-						<td class="listTableRow small" valign=top><a href="index.php?module=Settings&action=profilePrivileges&mode=view&parenttab=Settings&profileid={$listvalues.profileid}"><b>{$listvalues.profilename}</b></a></td>
+						<td class="listTableRow small" valign=top><a href="index.php?module=Settings&action=profilePrivileges&mode=view&profileid={$listvalues.profileid}"><b>{$listvalues.profilename}</b></a></td>
 						<td class="listTableRow small" valign=top>{$listvalues.description}</td>
 					  </tr>
 					{/foreach}

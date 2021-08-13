@@ -421,7 +421,7 @@ class VTEmailTask extends VTTask {
 				$no_message = true;
 				break;
 		}
-		if ($no_message == false) {
+		if (!$no_message) {
 			$focus->column_fields['messagetype'] = 'email';
 			if ($templateid != 0) {
 				$focus->column_fields['email_tplid'] = $templateid;

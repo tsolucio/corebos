@@ -74,8 +74,7 @@ class CustomView extends CRMEntity {
 	public function getMeta($module, $user) {
 		if (empty($this->moduleMetaInfo[$module])) {
 			$handler = vtws_getModuleHandlerFromName($module, $user);
-			$meta = $handler->getMeta();
-			$this->moduleMetaInfo[$module] = $meta;
+			$this->moduleMetaInfo[$module] = $handler->getMeta();
 		}
 		return $this->moduleMetaInfo[$module];
 	}
@@ -137,10 +136,8 @@ class CustomView extends CRMEntity {
 	public function getViewIdByName($viewname, $module) {
 		global $adb;
 		if (isset($viewname)) {
-			$query = 'select cvid from vtiger_customview where viewname=? and entitytype=?';
-			$cvresult = $adb->pquery($query, array($viewname, $module));
-			$viewid = $adb->query_result($cvresult, 0, 'cvid');
-			return $viewid;
+			$cvresult = $adb->pquery('select cvid from vtiger_customview where viewname=? and entitytype=?', array($viewname, $module));
+			return $adb->query_result($cvresult, 0, 'cvid');
 		} else {
 			return 0;
 		}
@@ -207,7 +204,7 @@ class CustomView extends CRMEntity {
 		$shtml_others = '';
 
 		$selected = 'selected';
-		if ($markselected == false) {
+		if (!$markselected) {
 			$selected = '';
 		}
 
@@ -234,7 +231,7 @@ class CustomView extends CRMEntity {
 				$cvrow['viewname'] = $app_strings['COMBO_ALL'];
 			} else { /** Should the filter shown?  */
 				$return = cbEventHandler::do_filter('corebos.filter.listview.filter.show', $cvrow);
-				if ($return == false) {
+				if (!$return) {
 					continue;
 				}
 			}
@@ -405,8 +402,8 @@ class CustomView extends CRMEntity {
 			}
 		}
 		$handler = vtws_getModuleHandlerFromName($module, $current_user);
-		$meta = $handler->getMeta();
-		$reffields = $meta->getReferenceFieldDetails();
+		$meta_data = $handler->getMeta();
+		$reffields = $meta_data->getReferenceFieldDetails();
 		foreach ($reffields as $mods) {
 			foreach ($mods as $mod) {
 				if (!vtlib_isEntityModule($mod)) {
@@ -442,7 +439,7 @@ class CustomView extends CRMEntity {
 						unset($columnlist[$col]);
 					}
 				}
-				if (count($columnlist)>0) {
+				if (!empty($columnlist)) {
 					$ret_module_list[$mod][$key] = $columnlist;
 				}
 			}
@@ -831,7 +828,7 @@ class CustomView extends CRMEntity {
 		$sSQL = 'select vtiger_cvstdfilter.* from vtiger_cvstdfilter inner join vtiger_customview on vtiger_customview.cvid = vtiger_cvstdfilter.cvid';
 		$sSQL .= ' where vtiger_cvstdfilter.cvid=?';
 		$result = $adb->pquery($sSQL, array($cvid));
-		if ($result==false || $adb->num_rows($result)==0) {
+		if (!$result || $adb->num_rows($result)==0) {
 			return '';
 		}
 		$stdfilterrow = $adb->fetch_array($result);
@@ -856,7 +853,6 @@ class CustomView extends CRMEntity {
 		if (isset($stdfilterlist)) {
 			$startDateTime = $endDateTime = '';
 			$filtercolumn = $stdfilterlist['columnname'];
-			//$filtertype = $stdfilterlist['stdfilter'];
 			if (!empty($stdfilterlist['startdate'])) {
 				$startDateTime = new DateTimeField($stdfilterlist['startdate'] . ' ' . date('H:i:s'));
 				$userStartDate = $startDateTime->getDisplayDate();
@@ -889,14 +885,11 @@ class CustomView extends CRMEntity {
 		return $stdfiltersql;
 	}
 
-	/** to get the customview AdvancedFilter Query for the given customview Id
-	 * @param $cvid :: Type Integer
-	 * @returns  $advfiltersql as a string
-	 * This function will return the advanced filter criteria for the given customfield
+	/** Get the customview AdvancedFilter Query for the given customview Id
+	 * @param integer custom view ID
+	 * @return string advanced filter SQL
 	 */
 	public function getCVAdvFilterSQL($cvid, $webserviceQL = false) {
-		global $current_user;
-
 		$advfilter = $this->getAdvFilterByCvid($cvid);
 
 		$advcvsql = '';
@@ -932,8 +925,7 @@ class CustomView extends CRMEntity {
 						$advfiltersql = ' (' . $advorsqls . ') ';
 					} elseif ($comparator == 'bw' && count($valuearray) == 2) {
 						$advfiltersql = '(' . $columns[0] . '.' . $columns[1] . " between '" .
-							getValidDBInsertDateTimeValue(trim($valuearray[0]), $datatype) .
-							"' and '" . getValidDBInsertDateTimeValue(trim($valuearray[1]), $datatype) . "')";
+							getValidDBInsertDateTimeValue(trim($valuearray[0])) . "' and '" . getValidDBInsertDateTimeValue(trim($valuearray[1])) . "')";
 					} else {
 						if ($this->customviewmodule == 'Documents' && $columns[1] == 'folderid') {
 							$advfiltersql = 'vtiger_attachmentsfolder.foldername' . $this->getAdvComparator($comparator, trim($value), $datatype);
@@ -1132,7 +1124,7 @@ class CustomView extends CRMEntity {
 	/* This function sets the block information for the given module to the class variable module_list
 	 * and return the array
 	 */
-	public function getCustomViewModuleInfo($module) {
+	public function getCustomViewModuleInfo($module, $allDisplayTypes = false) {
 		global $adb, $current_language;
 		$current_mod_strings = return_specified_module_language($current_language, $module);
 		$block_info = array();
@@ -1154,12 +1146,12 @@ class CustomView extends CRMEntity {
 			getTabid('Invoice') => array('LBL_RELATED_PRODUCTS'),
 			getTabid('Users') => $userNoShowBlocks,
 		);
-
+		$displayTypeCondition = $allDisplayTypes ? '' : 'displaytype!=3 and ';
 		$Sql = 'select distinct block,vtiger_field.tabid,name,blocklabel
 			from vtiger_field
 			inner join vtiger_blocks on vtiger_blocks.blockid=vtiger_field.block
 			inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
-			where displaytype != 3 and vtiger_tab.name in (' . generateQuestionMarks($modules_list) . ') and vtiger_field.presence in (0,2) order by block';
+			where '.$displayTypeCondition.'vtiger_tab.name in (' . generateQuestionMarks($modules_list) . ') and vtiger_field.presence in (0,2) order by block';
 		$result = $adb->pquery($Sql, array($modules_list));
 
 		$pre_block_label = '';
@@ -1289,7 +1281,7 @@ class CustomView extends CRMEntity {
 		$changed_status = $status_label = '';
 		$status_details = array('Status' => CV_STATUS_DEFAULT, 'ChangedStatus' => $changed_status, 'Label' => $status_label);
 		if ($viewid>0) {
-			$cuserroles = getSubordinateUsersList($current_user->column_fields['roleid']);
+			$cuserroles = getSubordinateUsersList();
 			$status_userid_info = $this->getStatusAndUserid($viewid);
 		}
 		if (is_admin($current_user) || ($viewid>0 && in_array($status_userid_info['userid'], $cuserroles))) {

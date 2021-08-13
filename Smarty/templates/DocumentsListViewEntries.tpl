@@ -20,11 +20,11 @@
 				<table border=0 cellspacing=0 cellpadding=0 class="small" align="center">
 					<tr>
 						<td align="center" style="padding-left:5px;padding-right:5px">
-							<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
+							<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" onchange="showDefaultCustomView(this, '{$MODULE}')">{$CUSTOMVIEW_OPTION}</SELECT>
 						</td>
 						{if isset($ALL) && $ALL eq 'All'}
 							<td align="center" style="padding-left:5px;padding-right:5px">
-								<a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
+								<a href="index.php?module={$MODULE}&action=CustomView">{$APP.LNK_CV_CREATEVIEW}</a>
 								<span class="small">|</span>
 								<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>
 								<span class="small">|</span>
@@ -32,22 +32,22 @@
 							</td>
 						{else}
 							<td>
-								<a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
+								<a href="index.php?module={$MODULE}&action=CustomView">{$APP.LNK_CV_CREATEVIEW}</a>
 								<span class="small">|</span>
 								{if $CV_EDIT_PERMIT neq 'yes'}
 									<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>
 								{else}
-									<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}&parenttab={$CATEGORY}">{$APP.LNK_CV_EDIT}</a>
+									<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}">{$APP.LNK_CV_EDIT}</a>
 								{/if}
 								<span class="small">|</span>
 								{if $CV_DELETE_PERMIT neq 'yes'}
 									<span class="small" disabled>{$APP.LNK_CV_DELETE}</span>
 								{else}
-									<a href="javascript:confirmdelete('index.php?module=CustomView&action=Delete&dmodule={$MODULE}&record={$VIEWID}&parenttab={$CATEGORY}')">{$APP.LNK_CV_DELETE}</a>
+									<a href="javascript:confirmdelete('index.php?module=CustomView&action=Delete&dmodule={$MODULE}&record={$VIEWID}')">{$APP.LNK_CV_DELETE}</a>
 								{/if}
 								{if $CUSTOMVIEW_PERMISSION.ChangedStatus neq '' && $CUSTOMVIEW_PERMISSION.Label neq ''}
 									<span class="small">|</span>
-									<a href="#" id="customstatus_id" onClick="ChangeCustomViewStatus({$VIEWID},{$CUSTOMVIEW_PERMISSION.Status},{$CUSTOMVIEW_PERMISSION.ChangedStatus},'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_PERMISSION.Label}</a>
+									<a href="#" id="customstatus_id" onClick="ChangeCustomViewStatus({$VIEWID}, {$CUSTOMVIEW_PERMISSION.Status}, {$CUSTOMVIEW_PERMISSION.ChangedStatus}, '{$MODULE}')">{$CUSTOMVIEW_PERMISSION.Label}</a>
 								{/if}
 							</td>
 						{/if}
@@ -186,7 +186,7 @@
 																										{$MODULE_CREATE}
 																										{/if}
 																										{$APP.LBL_NOW}. {$APP.LBL_CLICK_THE_LINK}:<br>
-																										&nbsp;&nbsp;-<a href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf} {$APP.$MODULE_CREATE}</a>
+																										&nbsp;&nbsp;-<a href="index.php?module={$MODULE}&action=EditView&return_action=DetailView">{$APP.LBL_CREATE} {$APP.$vowel_conf} {$APP.$MODULE_CREATE}</a>
 																								</td>
 																							</tr>
 																						</table>

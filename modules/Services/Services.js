@@ -8,7 +8,7 @@
  ************************************************************************************/
 
 function updateListPrice(unitprice, fieldname, oSelect) {
-	if (oSelect.checked == true) {
+	if (oSelect.checked) {
 		document.getElementById(fieldname).style.visibility = 'visible';
 		document.getElementById(fieldname).value = unitprice;
 	} else {
@@ -74,7 +74,7 @@ function set_return_inventory_po(product_id, product_name, unitprice, taxstr, cu
 	set_return_inventory(product_id, product_name, unitprice, taxstr, curr_row, desc);
 }
 
-function InventorySelectAllServices(mod, z, image_pth) {
+function InventorySelectAllServices(mod) {
 	if (document.selectall.selected_id != undefined) {
 		var x = document.selectall.selected_id.length;
 		var y=0;
@@ -111,7 +111,7 @@ function InventorySelectAllServices(mod, z, image_pth) {
 					var desc = prod_array['desc'];
 					var dto = prod_array['dto'];
 					if (y>0) {
-						var row_id = window.opener.fnAddServiceRow(mod, image_pth);
+						var row_id = window.opener.fnAddServiceRow(mod);
 					} else {
 						var row_id = prod_array['rowid'];
 					}
@@ -140,16 +140,7 @@ function set_return_product(product_id, product_name) {
 	}
 }
 function getImageListBody() {
-	if (browser_ie) {
-		var ImageListBody=getObj('ImageList');
-	} else if (browser_nn4 || browser_nn6) {
-		if (getObj('ImageList').childNodes.item(0).tagName=='TABLE') {
-			var ImageListBody=getObj('ImageList');
-		} else {
-			var ImageListBody=getObj('ImageList');
-		}
-	}
-	return ImageListBody;
+	return getObj('ImageList');
 }
 
 // Function to Round off the Price Value
@@ -170,7 +161,7 @@ function roundPriceValue(val) {
 	return val;
 }
 
-function fnAddServiceRow(module, image_path) {
+function fnAddServiceRow(module) {
 	rowCnt++;
 
 	var tableName = document.getElementById('proTab');
@@ -199,7 +190,7 @@ function fnAddServiceRow(module, image_path) {
 
 	//Delete link
 	colone.className = 'crmTableRow small';
-	colone.innerHTML='<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+count+',\''+image_path+'\')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+count+'" name="deleted'+count+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+count+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
+	colone.innerHTML='<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+count+')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+count+'" name="deleted'+count+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+count+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
 	/* Product Re-Ordering Feature Code Addition Starts */
 	if (iPrevCount != 1) {
 		oPrevRow.cells[0].innerHTML = '<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+iPrevCount+')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+iPrevCount+'" name="deleted'+iPrevCount+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+iPrevCount+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>&nbsp;&nbsp;<a href="javascript:moveUpDown(\'DOWN\',\''+module+'\','+iPrevCount+')" title="'+alert_arr.MoveDown+'"><img src="themes/images/down_layout.gif" border="0"></a>';

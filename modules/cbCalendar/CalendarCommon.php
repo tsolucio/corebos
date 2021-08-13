@@ -339,8 +339,7 @@ function timeString($datetime, $fmt) {
 	$timeStr = formatUserTimeString($datetime, $fmt);
 	$date = new DateTimeField($dateStr.' '.$timeStr);
 	list($h, $m) = explode(':', $date->getDisplayTime());
-	$timeStr = formatUserTimeString(array('hour'=>$h, 'minute'=>$m), $fmt);
-	return $timeStr;
+	return formatUserTimeString(array('hour'=>$h, 'minute'=>$m), $fmt);
 }
 
 /**
@@ -468,39 +467,36 @@ function getActivityMailInfo($return_id, $status, $activity_type) {
 
 // User Select Customization
 /**
- * Function returns the id of the User selected by current user in the picklist of the ListView or Calendar view of Current User
- * return String -  Id of the user that the current user has selected
+ * get the id of the User selected by current user in the picklist of the ListView or Calendar view
+ * @return String Id of the user that the current user has selected
  */
 function calendarview_getSelectedUserId() {
 	global $current_user, $default_charset;
-	$only_for_user = htmlspecialchars(strip_tags($_REQUEST['onlyforuser']), ENT_QUOTES, $default_charset);
-	if ($only_for_user == '') {
-		$only_for_user = $current_user->id;
+	if (empty($_REQUEST['onlyforuser'])) {
+		return $current_user->id;
 	}
-	return $only_for_user;
+	return htmlspecialchars(strip_tags($_REQUEST['onlyforuser']), ENT_QUOTES, $default_charset);
 }
 
 function calendarview_getSelectedUserFilterQuerySuffix() {
 	global $current_user, $adb;
 	$only_for_user = calendarview_getSelectedUserId();
 	$qcondition = '';
-	if (!empty($only_for_user)) {
-		if ($only_for_user != 'ALL') {
-			$mod = CRMEntity::getInstance('cbCalendar');
-			// For logged in user include the group records also.
-			if ($only_for_user == $current_user->id) {
-				$user_group_ids = fetchUserGroupids($current_user->id);
-				// User does not belong to any group? Let us reset to non-existent group
-				if (!empty($user_group_ids)) {
-					$user_group_ids .= ',';
-				} else {
-					$user_group_ids = '';
-				}
-				$user_group_ids .= $current_user->id;
-				$qcondition = ' AND '.$mod->crmentityTable.'.smownerid IN (' . $user_group_ids .')';
+	if (!empty($only_for_user) && $only_for_user != 'ALL') {
+		$mod = CRMEntity::getInstance('cbCalendar');
+		// For logged in user include the group records also.
+		if ($only_for_user == $current_user->id) {
+			$user_group_ids = fetchUserGroupids($current_user->id);
+			// User does not belong to any group? Let us reset to non-existent group
+			if (!empty($user_group_ids)) {
+				$user_group_ids .= ',';
 			} else {
-				$qcondition = ' AND '.$mod->crmentityTable.'.smownerid = ' . $adb->sql_escape_string($only_for_user);
+				$user_group_ids = '';
 			}
+			$user_group_ids .= $current_user->id;
+			$qcondition = ' AND '.$mod->crmentityTable.'.smownerid IN (' . $user_group_ids .')';
+		} else {
+			$qcondition = ' AND '.$mod->crmentityTable.'.smownerid = ' . $adb->sql_escape_string($only_for_user);
 		}
 	}
 	return $qcondition;

@@ -44,28 +44,26 @@ class genDetailViewLayoutMapping extends generatecbMap {
 			!empty($details['handler_class']) ? $smarty->assign('handler_class', $details['handler_class']) : $smarty->assign('handler_class', '');
 			!empty($details['handler']) ? $smarty->assign('handler', $details['handler']) : $smarty->assign('handler', '');
 		}
-		if ($type == 'FieldList') {
-			if (isset($mapcontentArr['blocks']['block']['layout']['row']) && !empty($mapcontentArr['blocks']['block']['layout']['row'])) {
-				$rowdetail = $mapcontentArr['blocks']['block']['layout']['row'];
-				foreach ($rowdetail as $row) {
-					$oldvalue .='row$$';
-					if (isset($row['column'])) {
-						$columns = $row['column'];
-						if (!is_array($columns)) {
-							$oldvalue .='column##'.$columns.'$$';
-						}
-						if (is_array($columns) && count($columns) > 0) {
-							for ($i=0; $i < count($columns); $i++) {
-								$oldvalue .= 'column##'.$columns[$i].'$$';
-							}
-						}
-					} elseif (!isset($row['column']) && is_array($row)) {
-						for ($i=0; $i < count($row); $i++) {
-							$oldvalue .= 'column##'.$row[$i].'$$';
-						}
-					} else {
-						$oldvalue .= 'column##'.$row.'$$';
+		if ($type == 'FieldList' && isset($mapcontentArr['blocks']['block']['layout']['row']) && !empty($mapcontentArr['blocks']['block']['layout']['row'])) {
+			$rowdetail = $mapcontentArr['blocks']['block']['layout']['row'];
+			foreach ($rowdetail as $row) {
+				$oldvalue .='row$$';
+				if (isset($row['column'])) {
+					$columns = $row['column'];
+					if (!is_array($columns)) {
+						$oldvalue .='column##'.$columns.'$$';
 					}
+					if (is_array($columns) && !empty($columns)) {
+						for ($i=0; $i < count($columns); $i++) {
+							$oldvalue .= 'column##'.$columns[$i].'$$';
+						}
+					}
+				} elseif (!isset($row['column']) && is_array($row)) {
+					for ($i=0; $i < count($row); $i++) {
+						$oldvalue .= 'column##'.$row[$i].'$$';
+					}
+				} else {
+					$oldvalue .= 'column##'.$row.'$$';
 				}
 			}
 		}

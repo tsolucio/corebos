@@ -413,28 +413,24 @@ class OpenDocument {
 		if (!$this->metaDOM->loadXML(ZipWrapper::read($filename, self::FILE_META))) {
 			throw new OpenDocument_Exception(OpenDocument_Exception::LOAD_META_ERR);
 		}
-		//$this->metaXPath = new DOMXPath($this->metaDOM);
 
 		//get settings
 		$this->settingsDOM = new DOMDocument();
 		if (!$this->settingsDOM->loadXML(ZipWrapper::read($filename, self::FILE_SETTINGS))) {
 			throw new OpenDocument_Exception(OpenDocument_Exception::LOAD_SETTINGS_ERR);
 		}
-		//$this->settingsXPath = new DOMXPath($this->settingsDOM);
 
 		//get styles
 		$this->stylesDOM = new DOMDocument();
 		if (!$this->stylesDOM->loadXML(ZipWrapper::read($filename, self::FILE_STYLES))) {
 			throw new OpenDocument_Exception(OpenDocument_Exception::LOAD_STYLES_ERR);
 		}
-		//$this->stylesXPath = new DOMXPath($this->stylesDOM);
 
 		//get manifest information
 		$this->manifestDOM = new DOMDocument();
 		if (!$this->manifestDOM->loadXML(ZipWrapper::read($filename, self::FILE_MANIFEST))) {
 			throw new OpenDocument_Exception(OpenDocument_Exception::LOAD_MANIFEST_ERR);
 		}
-		//$this->manifestXPath = new DOMXPath($this->manifestDOM);
 
 		//set cursor
 		$this->cursor = $this->contentXPath->query('/office:document-content/office:body/office:text')->item(0);
@@ -806,11 +802,11 @@ class OpenDocument {
 			$docno = substr($texto_p, $strlen_includeGD);
 			$docno = trim($docno, ' }');
 			if ($docno!='Documents') {
-				$path = Documents::getAttachmentPath($docno);
-				if ($path!='') {
+				$pth = Documents::getAttachmentPath($docno);
+				if ($pth!='') {
 					$inccontentDOM = new DOMDocument('1.0', 'UTF-8');
-					if ($inccontentDOM->loadXML(ZipWrapper::read($path, self::FILE_CONTENT))) {
-						OpenDocument::debugmsg('INCLUDING FILE: '.$path);
+					if ($inccontentDOM->loadXML(ZipWrapper::read($pth, self::FILE_CONTENT))) {
+						OpenDocument::debugmsg('INCLUDING FILE: '.$pth);
 						// include content
 						$innodelist = $inccontentDOM->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:office:1.0', 'body');
 						$xmlText = simplexml_import_dom($innodelist->item(0)->firstChild);
@@ -876,14 +872,14 @@ class OpenDocument {
 							@mkdir($tmpdir);
 							ZipWrapper::unlinkRecursive($tmpdir, false);
 							$zipinc = new ZipArchive;
-							$zipinc->open(realpath($path));
+							$zipinc->open(realpath($pth));
 							$zipinc->extractTo($tmpdir);
 							$zipinc->close();
 							foreach ($innodelist as $incnode) {
 								$nifname = $incnode->getAttribute('xlink:href');
 								$this->newImages[] = $tmpdir.'/'.$nifname;
-								$mimetype = $incnode->getAttribute('loext:mime-type');
-								$this->makeFileEntryElement($nifname, $mimetype);
+								$mtype = $incnode->getAttribute('loext:mime-type');
+								$this->makeFileEntryElement($nifname, $mtype);
 							}
 						}
 						// $xp = new DOMXPath($inccontentDOM);
@@ -914,7 +910,9 @@ class OpenDocument {
 			$properties = array(
 				'insertindexGD' => $insertindexGD,
 			);
-			$pFilename = tempnam('/tmp', 'gendoc-');
+			if (empty($pFilename)) {
+				$pFilename = tempnam('/tmp', 'gendoc-');
+			}
 			$handle = fopen($pFilename, 'w');
 			foreach ($properties as $key => $value) {
 				fwrite($handle, "{$key} = {$value}\n");
@@ -923,7 +921,6 @@ class OpenDocument {
 			// Process and save
 			$filename = escapeshellarg('file://'.$filename);
 			$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} {$filename} {$filename}";
-			//$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} {$filename} {$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
 			$status = exec($command);
 			$this->debugmsg('Post processing: '.json_encode(array($command, $status)));
 			// Remove temp files
@@ -1007,7 +1004,6 @@ class OpenDocument {
 		$this->changedImages=array();
 		$this->newImages=array();
 		$this->originGenDocStyles = $obj->getStyles();
-		//$styleXML = $obj->stylesDOM->saveXML($obj->stylesDOM->documentElement);
 		$styleXML = $obj->stylesDOM->saveXML();
 		$endcompile = microtime(true)-$startcompile;
 		$this->debugmsg($originFile." START Compile $endcompile");
@@ -1018,14 +1014,14 @@ class OpenDocument {
 		$this->metaDOM = $obj->metaDOM;
 		$this->settingsDOM = $obj->settingsDOM;
 		$this->manifestDOM = $obj->manifestDOM;
-		$fonts= $obj->getFontsInfo();
-		$this->addFonts($fonts);
+		$fonts_info= $obj->getFontsInfo();
+		$this->addFonts($fonts_info);
 		$this->copyStyles($obj->styles);
 		array_push($parentArray, $this);
 		$endcompile = microtime(true)-$startcompile;
 		$this->debugmsg($originFile." START toGenDoc $endcompile");
 		set_time_limit(0);
-		$this->toGenDoc($obj, $id, $module, $root_module);//exit;
+		$this->toGenDoc($obj, $id, $module, $root_module);
 		$this->processInclude();
 		$endcompile = microtime(true)-$startcompile;
 		$this->debugmsg("END GenDOC $endcompile s");
@@ -1112,7 +1108,7 @@ class OpenDocument {
 				}
 				continue;
 			}
-			$hayqueincluir=(count($siincluir)==0 || $siincluir[count($siincluir)-1]);
+			$hayqueincluir=(empty($siincluir) || $siincluir[count($siincluir)-1]);
 			$topofarray=$parentArray[count($parentArray)-1];
 
 			switch (get_class($child)) {
@@ -1201,13 +1197,8 @@ class OpenDocument {
 					}
 					if (substr($texto_plow, 0, $lenimageGD)==$imageGD) {
 						$entidadimagen=rtrim(trim(substr($texto_p, $lenimageGD)), '}');
-						//Comento codigo para una sola imagen, nada nos asegura que sólo haya una, pueden haber campos personalizados de imagen
-						// if ($this->contextoParacada[$this->contextoActual]['repe']>0) { // en un paracada y ya hemos agotado la primera imagen, todas las demas son nuevas
 						$this->newImages[]=eval_imagen($entidadimagen, $id, $module);
 						$newImageAdded=true;
-						// } else {   // sustituimos imagen existente
-						//     $changedImage=eval_imagen($entidadimagen,$id,$module);
-						// }
 						continue 2;
 					}
 					if (substr($texto_plow, 0, $lenincludeGD)==$includeGD) {
@@ -1300,7 +1291,6 @@ class OpenDocument {
 	public function GenHTML($originFile, $id, $module) {
 		global $parentArray;
 		$obj = new OpenDocument($originFile);
-		//$obj->output();
 		$this->originGenDocStyles = $obj->getStyles();
 		$this->stylesDOM=$obj->stylesDOM;
 		array_push($parentArray, $this);
@@ -1346,7 +1336,7 @@ class OpenDocument {
 				}
 				continue;
 			}
-			$hayqueincluir=(count($siincluir)==0 || $siincluir[count($siincluir)-1]);
+			$hayqueincluir=(empty($siincluir) || $siincluir[count($siincluir)-1]);
 			switch (get_class($child)) {
 				case 'OpenDocument_TextElement':
 					if ($hayqueincluir) {
@@ -1475,8 +1465,8 @@ class OpenDocument {
 					foreach ($classes as $class) {
 						$reflection = new ReflectionClass($class);
 						$prefix = $reflection->getConstant('styleNamePrefix');
-						if (preg_match("/^$prefix(\d)+$/", $style_name, $m)) {
-							$max[$class] = isset($max[$class]) ? ($max[$class] < $m[1] ? $m[1] : $max[$class]) : $m[1];
+						if (preg_match("/^$prefix(\d)+$/", $style_name, $m) && (!isset($max[$class]) || $max[$class] < $m[1])) {
+							$max[$class] = $m[1];
 						}
 					}
 				}
@@ -1599,14 +1589,13 @@ class OpenDocument {
 			$style = $this->contentDOM->createElementNS(self::NS_STYLE, 'style');
 			$style->setAttributeNS(self::NS_STYLE, 'name', $style_name);
 			$style->setAttributeNS(self::NS_STYLE, 'family', ($name=='family' ? $value : 'paragraph'));
-			//$style->setAttributeNS(self::NS_STYLE, 'parent-style-name', 'Standard');
 			$this->styles->appendChild($style);
 			return $style->getAttributeNS(self::NS_STYLE, 'name');
 		} else {
 			$style = $this->getStyleNode($style_name)->cloneNode(true);
 			$this->styles->appendChild($style);
 			$generate = true;
-			$style_name = $object->generateStyleName();//uniqid('tmp');
+			$style_name = $object->generateStyleName();
 			$style->setAttributeNS(self::NS_STYLE, 'name', $style_name);
 		}
 
@@ -1618,19 +1607,6 @@ class OpenDocument {
 			return $style->getAttributeNS(self::NS_STYLE, 'name');
 		}
 
-/*        $ReflectionClass = new ReflectionClass($object);
-		if ($ReflectionClass->getConstant('nodePrefix')=='table')
-		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
-		elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
-		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'paragraph-properties');
-		else
-		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
-		/*
-		if (in_array($value,$this->NS_ENTITIES)) {
-			$nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $value.'-properties');
-		} else {
-			$nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
-		}*/
 		if (empty($elemtype)) {
 			$elemtype='text';
 		}
@@ -1638,18 +1614,6 @@ class OpenDocument {
 		if ($nodes->length) {
 			$text_properties = $nodes->item(0);
 		} else {
-			/*
-			if ($ReflectionClass->getConstant('nodePrefix')=='table')
-			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
-			elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
-			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'paragraph-properties');
-			else
-			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
-			if (in_array($value,$this->NS_ENTITIES)) {
-				$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $value.'-properties');
-			} else {
-				$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
-			}*/
 			$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, (strpos($elemtype, 'properties') ? $elemtype : $elemtype.'-properties'));
 			$style->appendChild($text_properties);
 		}
@@ -1661,8 +1625,6 @@ class OpenDocument {
 			$text_properties->setAttribute('draw:'.$name, $value);
 		} elseif (!is_array($value)) {
 			$text_properties->setAttribute('style:'.$name, $value);
-		//} else {
-				//$text_properties->setAttribute($name, $value);
 		}
 
 		//find alike style
@@ -1690,9 +1652,8 @@ class OpenDocument {
 	 */
 	public function addStyles($node, $elem, $elemtype, $keepname = false) {
 		$style_name = $this->getStyleName($node);
-		$ReservedStyles=implode('|', OpenDocument::$ReservedStyles);
-		//echo "$ReservedStyles<br>";
-		if (preg_match("[$ReservedStyles]", $style_name)) {
+		$reservedstyl=implode('|', OpenDocument::$reservedstyl);
+		if (preg_match("[$reservedstyl]", $style_name)) {
 			$elem->getNode()->setAttributeNS(OpenDocument::NS_TEXT, 'style-name', $style_name);
 			return 0;
 		}
@@ -1814,10 +1775,10 @@ class OpenDocument {
 			return; // Si ya lo tenemos, no lo repetimos
 		}
 
-				$style = $this->contentDOM->createElement(($isdatestyle?'number:date-style':'number:time-style'));
+		$style = $this->contentDOM->createElement(($isdatestyle ? 'number:date-style' : 'number:time-style'));
 		$style->setAttribute('style:name', $stylename);
 		$stylebranch=$this->originGenDocStyles[$stylename];
-		while (list($level1name,$datestyle)=each($stylebranch)) {
+		foreach ($stylebranch as $level1name => $datestyle) {
 			if (is_array($datestyle)) {
 				$substyle = $this->contentDOM->createElement('number:'.$level1name);
 				$level1stbranch=$datestyle;
@@ -1911,28 +1872,27 @@ class OpenDocument {
 	 */
 	public function getStyles() {
 		$nodes = $this->styles->getElementsByTagNameNS(self::NS_STYLE, 'style');
-		$styles = array();
+		$styles_arr = array();
 		foreach ($nodes as $node) {
 			$stylename = $node->getAttributeNS(self::NS_STYLE, 'name');
-			$styles[$stylename] = $this->getStyleInfo($node);
+			$styles_arr[$stylename] = $this->getStyleInfo($node);
 		}
-		//return $styles;
 		$nodes = $this->styles->getElementsByTagNameNS(self::NS_TEXT, 'list-style');
 		foreach ($nodes as $node) {
 			$stylename = $node->getAttributeNS(self::NS_STYLE, 'name');
-			$styles[$stylename] = $this->getListStyleInfo($node);
+			$styles_arr[$stylename] = $this->getListStyleInfo($node);
 		}
 		$nodes = $this->styles->getElementsByTagNameNS(OpenDocument::NS_NUMBER, 'date-style');
 		foreach ($nodes as $node) {
 			$stylename = $node->getAttributeNS(OpenDocument::NS_STYLE, 'name');
-			$styles[$stylename] = $this->getStyleInfo($node, true);
+			$styles_arr[$stylename] = $this->getStyleInfo($node, true);
 		}
 		$nodes = $this->styles->getElementsByTagNameNS(OpenDocument::NS_NUMBER, 'time-style');
 		foreach ($nodes as $node) {
 			$stylename = $node->getAttributeNS(OpenDocument::NS_STYLE, 'name');
-			$styles[$stylename] = $this->getStyleInfo($node, true);
+			$styles_arr[$stylename] = $this->getStyleInfo($node, true);
 		}
-		return $styles;
+		return $styles_arr;
 	}
 
 	/**
@@ -2087,11 +2047,11 @@ class OpenDocument {
 	 */
 	public function getFonts() {
 		$nodes = $this->fonts->getElementsByTagNameNS(self::NS_STYLE, 'font-face');
-		$fonts = array();
+		$fonts_info = array();
 		foreach ($nodes as $node) {
-			$fonts[] = $node->getAttributeNS(self::NS_STYLE, 'name');
+			$fonts_info[] = $node->getAttributeNS(self::NS_STYLE, 'name');
 		}
-		return $fonts;
+		return $fonts_info;
 	}
 
 	/**
@@ -2101,17 +2061,17 @@ class OpenDocument {
 	 */
 	public function getFontsInfo() {
 		$nodes = $this->fonts->getElementsByTagNameNS(self::NS_STYLE, 'font-face');
-		$fonts = array();
+		$fonts_info = array();
 		foreach ($nodes as $node) {
 			$fontname = $node->getAttributeNS(self::NS_STYLE, 'name');
 			$attributes = $node->attributes;
 			for ($i = 0; $i < $attributes->length; $i ++) {
 				$name = $attributes->item($i)->name;
 				$value = $attributes->item($i)->value;
-				$fonts[$fontname][$name] = $value;
+				$fonts_info[$fontname][$name] = $value;
 			}
 		}
-		return $fonts;
+		return $fonts_info;
 	}
 
 	/**
@@ -2137,9 +2097,9 @@ class OpenDocument {
 	 *
 	 * @param string $font_array
 	 */
-	public function addFonts($fonts) {
-		while ($fprops=current($fonts)) {
-			$fname=key($fonts);
+	public function addFonts($fonts_info) {
+		while ($fprops=current($fonts_info)) {
+			$fname=key($fonts_info);
 			if (!in_array($fname, $this->getFonts())) {
 				$node = $this->contentDOM->createElementNS(self::NS_STYLE, 'font-face');
 				$this->fonts->appendChild($node);
@@ -2153,7 +2113,7 @@ class OpenDocument {
 					next($fprops);
 				}
 			}
-			next($fonts);
+			next($fonts_info);
 		}
 	}
 
@@ -2181,10 +2141,10 @@ class OpenDocument {
 			return false;
 		}
 
-		$children = $node1->childNodes;
-		if ($children->length == $node2->childNodes->length) {
-			for ($i = 0; $i < $children->length; $i ++) {
-				$node = $children->item($i);
+		$child = $node1->childNodes;
+		if ($child->length == $node2->childNodes->length) {
+			for ($i = 0; $i < $child->length; $i ++) {
+				$node = $child->item($i);
 				$matches = $this->getChildrenByName($node2, $node->nodeName);
 				$test = false;
 				foreach ($matches as $match) {
@@ -2212,10 +2172,10 @@ class OpenDocument {
 	 * @return bool
 	 */
 	private function compareChildNodes(DOMNode $node1, DOMNode $node2) {
-		$children = $node1->childNodes;
-		if ($children->length == $node2->childNodes->length) {
-			for ($i = 0; $i < $children->length; $i ++) {
-				$node = $children->item($i);
+		$child = $node1->childNodes;
+		if ($child->length == $node2->childNodes->length) {
+			for ($i = 0; $i < $child->length; $i ++) {
+				$node = $child->item($i);
 				$matches = $this->getChildrenByName($node2, $node->nodeName);
 				$test = false;
 				foreach ($matches as $match) {
@@ -2257,7 +2217,7 @@ class OpenDocument {
 	 * @todo remove or finish function
 	 */
 	public function output() {
-		$list = $this->contentXPath->query('/office:document-content/office:font-face-decls/style:font-face');
+		$this->contentXPath->query('/office:document-content/office:font-face-decls/style:font-face');
 		return $this->contentDOM->saveXML();
 	}
 
@@ -2324,6 +2284,7 @@ class OpenDocument {
 	 */
 	public static function saveAsDocument($record, $module, $format, $mergeTemplateName, $fullfilename, $name) {
 		global $adb, $current_user;
+		$holdRequest = $_REQUEST;
 		if (substr($mergeTemplateName, -4)=='.odt' || substr($mergeTemplateName, -4)=='.pdf') {
 			$mergeTemplateName = substr($mergeTemplateName, 0, strlen($mergeTemplateName)-4);
 		}
@@ -2369,7 +2330,8 @@ class OpenDocument {
 		$_REQUEST['return_module'] = $module;
 		$_REQUEST['return_id'] = $record;
 		$doc->save('Documents');
-		unset($_REQUEST['createmode'], $_REQUEST['return_module'], $_REQUEST['return_id'], $_REQUEST['assigntype'], $_FILES);
+		unset($_FILES);
+		$_REQUEST = $holdRequest;
 		return $doc->id;
 	}
 
@@ -2431,7 +2393,7 @@ class OpenDocument {
 	 * @param 		string mimetype The mime type of this file
 	 * @access		private
 	 */
-	private function makeFileEntryElement($fullpath, $mimetype) {
+	private function makeFileEntryElement($fullpath, $mtype) {
 		/*
 		 * Create a new file-entry element ...
 		 */
@@ -2443,7 +2405,7 @@ class OpenDocument {
 		/*
 		 * ... add mime type of the file into media-type attribute.
 		 */
-		$node->setAttributeNS(self :: MANIFEST, 'manifest:media-type', $mimetype);
+		$node->setAttributeNS(self :: MANIFEST, 'manifest:media-type', $mtype);
 		$this->manifestDOM->firstChild->appendChild($node);
 		return $node;
 	}
@@ -2463,7 +2425,7 @@ class OpenDocument {
 			|| stripos($compiledtext, '<div')!==false
 		) { // hay html, traducir a odt
 			$dochtml = new DOMDocument();
-			$compiledtext = mb_convert_encoding($compiledtext, 'HTML-ENTITIES', "UTF-8");//echo $compiledtext;
+			$compiledtext = mb_convert_encoding($compiledtext, 'HTML-ENTITIES', 'UTF-8');
 			$compiledtext = str_replace('<div', '<span', $compiledtext);
 			$compiledtext = str_replace('</div>', '</span>', $compiledtext);
 			$compiledtext = str_replace("\n", '<br>', $compiledtext);
@@ -2579,7 +2541,6 @@ class OpenDocument {
 		switch (get_class($child)) {
 			case 'OpenDocument_TextElement':
 				$compiledtext=compile($child->text, $id, $module);
-	//            $this->processHTML('<div>'.$compiledtext.'</div>',$child);
 				$this->processHTML($compiledtext, $child);
 				break;
 			case 'OpenDocument_TextTab':
@@ -2726,9 +2687,9 @@ class OpenDocument {
 					$nifname = $this->newImages[count($this->newImages)-1];
 					/* get mime-type for a specific file */
 					$finfo = finfo_open(FILEINFO_MIME); // return mime type ala mimetype extension
-					$mimetype = finfo_file($finfo, $nifname);
+					$mtype = finfo_file($finfo, $nifname);
 					if ($nifname != 'not_show_image') {
-						$this->makeFileEntryElement($nifname, $mimetype);
+						$this->makeFileEntryElement($nifname, $mtype);
 						OpenDocument::copyAttributes($child, $elem, basename($nifname));
 					}
 					$newImageAdded=false;
@@ -2758,7 +2719,6 @@ class OpenDocument {
 				$elem=array_pop($parentArray);
 				break;
 			case 'OpenDocument_TableColumn':
-				//Reflection::export(new ReflectionClass($child));
 				$elem=$topofarray->createTableColumn($child->numcolsrepeated);
 				OpenDocument::copyAttributes($child, $elem);
 				break;
@@ -2929,10 +2889,8 @@ class OpenDocument {
 					$condition_pair = explode(' !en ', $condicion);
 				}
 			}
-			if (count($condition_pair) == 2) {
-				if (strpos($condition_pair[0], '.')===false) {
-					$condicion=$entidad.'.'.$condicion;  // si el campo de la condición no tiene la entidad, la añadimos
-				}
+			if (count($condition_pair) == 2 && strpos($condition_pair[0], '.')===false) {
+				$condicion=$entidad.'.'.$condicion;  // si el campo de la condición no tiene la entidad, la añadimos
 			}
 			if (empty($condicion)) {
 				$condicion = $entidad;
@@ -2952,7 +2910,7 @@ class OpenDocument {
 					continue 2;
 					break;
 				case 'genxmlifexist':
-					$cumple_cond = eval_existe($condicion, $crmid, $module, false);
+					$cumple_cond = eval_existe($condicion, $crmid, $module);
 					if ($cumple_cond && $this->hasChild($node)) {
 						eval_paracada($condicion, $crmid, $module);
 						$this->processBranch($node, $iter_modules[$entidad][0], $entidad);
@@ -2960,7 +2918,7 @@ class OpenDocument {
 					continue 2;
 					break;
 				case 'genxmlifnotexist':
-					$cumple_cond = eval_existe($condicion, $crmid, $module, false);
+					$cumple_cond = eval_existe($condicion, $crmid, $module);
 					if (!$cumple_cond && $this->hasChild($node)) {
 						eval_paracada($condicion, $crmid, $module);
 						$this->processBranch($node, $iter_modules[$entidad][0], $entidad);

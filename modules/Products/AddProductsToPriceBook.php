@@ -20,7 +20,6 @@ $currency_id = vtlib_purify($_REQUEST['currency_id']);
 if ($currency_id == null) {
 	$currency_id = fetchCurrency($current_user->id);
 }
-$parenttab = getParentTab();
 
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
@@ -189,7 +188,5 @@ if (!empty($sorder)) {
 }
 
 $smarty->assign('LISTENTITY', $list_body);
-$smarty->assign('CATEGORY', $parenttab);
-
 $smarty->display('AddProductsToPriceBook.tpl');
 ?>

@@ -950,6 +950,8 @@ $app_strings = array(
 	'Mailing Po Box' => 'Postafiók (Levelezés)',
 	'Other Po Box' => 'Postafiók (Másik)',
 	'Image' => 'Kép',
+	'Unknown' => 'Unknown',
+	'Compressed' => 'Compressed',
 	'LBL_EXPORT_TYPE_1' => 'Export Típus1:',
 	'LBL_EXPORT_TYPE_2' => 'Export Típus2:',
 	'LBL_SEARCH_CRITERIA_RECORDS' => 'Exportáláshoz keresési feltételek',
@@ -959,6 +961,9 @@ $app_strings = array(
 	'LBL_SEARCH_CRITERIA_COLUMNS'=>'Export Filter Columns',
 	'LBL_VISIBLE_COLUMNS'=>'Export only visible columns',
 	'LBL_ALL_DATA' => 'Minden adat Exportálása',
+	'LBL_EXPORT_FORMAT' => 'Export Format',
+	'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+	'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 	'LBL_DATA_IN_CURRENT_PAGE' => 'Adatok Exportálása az aktuális oldalról',
 	'LBL_ONLY_SELECTED_RECORDS' => 'Kiválasztott rekordok Exportálása',
 	'LBL_YES' => 'Igen',
@@ -1293,6 +1298,7 @@ $app_strings = array(
 	'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 	'VALIDATION_FAILED' => 'Validation failed',
 	'Select Module To Upsert' => 'Select Module To Upsert',
+	'LBL_FIX_NOW' => 'Fix Now',
 );
 
 // Translation for currency names

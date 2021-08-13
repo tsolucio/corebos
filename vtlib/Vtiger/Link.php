@@ -262,7 +262,7 @@ class Vtiger_Link {
 			while ($row = $adb->fetch_array($result)) {
 				/** Should the widget be shown */
 				$return = cbEventHandler::do_filter('corebos.filter.link.show', array($row, $type, $parameters));
-				if ($return == false) {
+				if (!$return) {
 					continue;
 				}
 				$instance = new self();

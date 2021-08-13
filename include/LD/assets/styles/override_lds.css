@@ -434,3 +434,31 @@ symbol#search {
 .containernpanel::-webkit-scrollbar { /* WebKit */
   width: 0px;
 }
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  position: absolute;
+  left: 25px;
+  top: -5px;
+}
+.tooltip .tooltiptextright {
+  visibility: hidden;
+  position: absolute;
+  right: 25px;
+  top: -5px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+.tooltip:hover .tooltiptextright {
+  visibility: visible;
+}

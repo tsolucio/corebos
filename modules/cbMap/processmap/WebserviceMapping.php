@@ -334,6 +334,9 @@ class WebserviceMapping extends processcbMap {
 
 	public function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping=$target_fields=array();
 		$target_fields1 = array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;

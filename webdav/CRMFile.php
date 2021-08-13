@@ -166,7 +166,7 @@ class CRMFile extends Sabre\DAV\File {
 	public function get() {
 		global $log;
 		if (empty($this->filepath)) {
-			return;
+			return false;
 		}
 		$file = fopen($this->filepath, 'r');
 		if ($file) {
@@ -174,7 +174,7 @@ class CRMFile extends Sabre\DAV\File {
 		} else {
 			$log->debug('WEBDAV: unable to open file: '.$this->filepath);
 		}
-		return;
+		return false;
 	}
 
 	public function getSize() {
@@ -216,7 +216,7 @@ class CRMFile extends Sabre\DAV\File {
 		}
 
 		if ($directory instanceof DirectoryRecord) {
-			$result = $adb->pquery('INSERT INTO vtiger_senotesrel VALUES(?,?)', array($directory->getCRMID(), $this->data['notesid']));
+			$adb->pquery('INSERT INTO vtiger_senotesrel VALUES(?,?)', array($directory->getCRMID(), $this->data['notesid']));
 		}
 
 		if ($directory instanceof DirectoryFolder) {
@@ -224,10 +224,10 @@ class CRMFile extends Sabre\DAV\File {
 			$fileid = $adb->query_result($result, 0, 'attachmentsid');
 
 			$pathQuery = $adb->pquery('select path from vtiger_attachments where attachmentsid=?', array($fileid));
-			$filepath = '../'.$adb->query_result($pathQuery, 0, 'path');
+			$fpath = '../'.$adb->query_result($pathQuery, 0, 'path');
 
 			$saved_filename = $fileid.'_'.$this->data['filename'];
-			$path = realpath(dirname(__FILE__).'/'.$filepath.$saved_filename);
+			$path = realpath(dirname(__FILE__).'/'.$fpath.$saved_filename);
 
 			$directory->createFile(html_entity_decode(html_entity_decode($this->data['filename'])), file_get_contents($path));
 		}

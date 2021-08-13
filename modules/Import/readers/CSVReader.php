@@ -17,7 +17,7 @@ class Import_CSV_Reader extends Import_File_Reader {
 
 		$fileHandler = $this->getFileHandler();
 		if (!$fileHandler) {
-			throw new Exception(getTranslatedString($this->errorMessage, 'Import').' ('.$this->getFilePath().')');
+			throw new InvalidArgumentException(getTranslatedString($this->errorMessage, 'Import').' ('.$this->getFilePath().')');
 		}
 
 		$headers = array();

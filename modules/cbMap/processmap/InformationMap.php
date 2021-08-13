@@ -50,21 +50,24 @@ class InformationMap extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
-		$mapping=array();
-		$mapping['information'] = array();
-		$mapping['information']['infotype']=array();
-		$mapping['information']['value']=array();
-		foreach ($xml->information->value as $k => $v) {
+		if (empty($xml)) {
+			return array();
+		}
+		$mapping_arr=array();
+		$mapping_arr['information'] = array();
+		$mapping_arr['information']['infotype']=array();
+		$mapping_arr['information']['value']=array();
+		foreach ($xml->information->value as $v) {
 			$date = (Array)$v[0];
 			$value[]= isset($date[0]) ? (String)$date[0] : '';
 		}
-		foreach ($xml->information->infotype as $k => $v) {
+		foreach ($xml->information->infotype as $v) {
 			$info = (Array)$v[0];
 			$infotypeinfotype[] = isset($info[0]) ? (String)$info[0] : '';
 		}
-		$mapping['information']['infotype']=$infotypeinfotype;
-		$mapping['information']['value']=$value;
-		$this->mapping = $mapping;
+		$mapping_arr['information']['infotype']=$infotypeinfotype;
+		$mapping_arr['information']['value']=$value;
+		$this->mapping = $mapping_arr;
 	}
 }
 ?>

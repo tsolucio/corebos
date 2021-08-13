@@ -125,7 +125,7 @@ function getStdOutput($groupInfoArr, $groupId, $mod_strings) {
 			$row++;
 			$memberinfo[] = $groupmembers;
 		}
-		if (count($memberinfo) >0) {
+		if (!empty($memberinfo)) {
 			$information[$memberDisplayType] = $memberinfo;
 		}
 	}

@@ -136,7 +136,7 @@ var Webforms ={
 			url: 'index.php?'+url
 		}).done(function (response) {
 			var JSONres = JSON.parse(response);
-			if (JSONres.result==false) {
+			if (!JSONres.result) {
 				alert(getTranslatedString('LBL_DUPLICATE_NAME', webforms_alert_arr));
 			} else {
 				Webforms.submitForm(form, action);

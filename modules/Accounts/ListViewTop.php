@@ -62,7 +62,6 @@ function getTopAccounts($maxval, $calCnt) {
 	$header[]=$current_module_strings['LBL_LIST_ACCOUNT_NAME'];
 	$currencyid=fetchCurrency($current_user->id);
 	$rate_symbol = getCurrencySymbolandCRate($currencyid);
-	//$rate = $rate_symbol['rate'];
 	$curr_symbol = $rate_symbol['symbol'];
 	$header[]=$current_module_strings['LBL_LIST_AMOUNT'].'('.$curr_symbol.')';
 	$header[] = $current_module_strings['LBL_POTENTIAL_TITLE'];
@@ -70,12 +69,6 @@ function getTopAccounts($maxval, $calCnt) {
 	$entries=array();
 	foreach ($open_accounts_list as $account) {
 		$value=array();
-// 		$account_fields = array(
-// 			'ACCOUNT_ID' => $account['accountid'],
-// 			'ACCOUNT_NAME' => $account['accountname'],
-// 			'AMOUNT' => $account['amount'],
-// 		);
-
 		$Top_Accounts = (strlen($account['accountname']) > 20) ? (substr($account['accountname'], 0, 20).'...') : $account['accountname'];
 		$value[]='<a href="index.php?action=DetailView&module=Accounts&record='.$account['accountid'].'">'.$Top_Accounts.'</a>';
 		$value[] = CurrencyField::convertToUserFormat($account['amount']);

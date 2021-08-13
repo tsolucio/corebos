@@ -96,14 +96,26 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 
 	if (isset($task->trigger) && $task->trigger!=null) {
 		$trigger = $task->trigger;
-		$days = $trigger['days'];
-		if ($days < 0) {
-			$days*=-1;
-			$direction = 'before';
-		} else {
-			$direction = 'after';
+		if (array_key_exists('days', $trigger)) {
+			$days = $trigger['days'];
+			if ($days < 0) {
+				$days*=-1;
+				$direction = 'before';
+			} else {
+				$direction = 'after';
+			}
+			$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction, 'field'=>$trigger['field']));
 		}
-		$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction, 'field'=>$trigger['field']));
+		if (array_key_exists('hours', $trigger)) {
+			$hours = $trigger['hours'];
+			if ($hours < 0) {
+				$hours*=-1;
+				$direction = 'before';
+			} else {
+				$direction = 'after';
+			}
+			$smarty->assign('trigger', array('hours'=>$hours, 'direction'=>$direction, 'field'=>$trigger['field']));
+		}
 	}
 	$metaVariables = $task->getMetaVariables();
 

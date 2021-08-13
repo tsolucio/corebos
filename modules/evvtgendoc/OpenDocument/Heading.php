@@ -112,8 +112,6 @@ class OpenDocument_Heading extends OpenDocument_StyledElement {
 		if (is_scalar($content)) {
 			$element->createTextElement($content);
 		}
-
-		//$element->__set('level', $level);
 		return $element;
 	}
 
@@ -124,15 +122,12 @@ class OpenDocument_Heading extends OpenDocument_StyledElement {
 	 * @param mixed $value
 	 */
 	public function __set($name, $value) {
-		switch ($name) {
-			case 'level':
-				if (!is_int($value) && !ctype_digit($value)) {
-					$value = 1;
-				}
-				$this->type = $value;
-				$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'outline-level', $value);
-				break;
-			default:
+		if ($name=='level') {
+			if (!is_int($value) && !ctype_digit($value)) {
+				$value = 1;
+			}
+			$this->type = $value;
+			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'outline-level', $value);
 		}
 	}
 

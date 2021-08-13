@@ -41,19 +41,17 @@ if ($ajaxaction == 'DETAILVIEW') {
 				return false;
 			}
 		}
-		if ($fieldname=='currency_grouping_separator' || $fieldname=='currency_decimal_separator') {
-			if ($userObj->column_fields['currency_grouping_separator']==$userObj->column_fields['currency_decimal_separator']) {
-				echo ':#:ERR'.$mod_strings['LBL_CURRENCY_SEPARATORS_INCORRECT'];
-				return false;
-			}
+		if (($fieldname=='currency_grouping_separator' || $fieldname=='currency_decimal_separator')
+			&& $userObj->column_fields['currency_grouping_separator']==$userObj->column_fields['currency_decimal_separator']
+		) {
+			echo ':#:ERR'.$mod_strings['LBL_CURRENCY_SEPARATORS_INCORRECT'];
+			return false;
 		}
-		if ($fieldname == 'internal_mailer') {
-			if (isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] != $userObj->column_fields['internal_mailer']) {
-				coreBOS_Session::set('internal_mailer', $userObj->column_fields['internal_mailer']);
-			}
+		if ($fieldname == 'internal_mailer' && isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] != $userObj->column_fields['internal_mailer']) {
+			coreBOS_Session::set('internal_mailer', $userObj->column_fields['internal_mailer']);
 		}
 		$userObj->id = $userid;
-		$userObj->mode = "edit";
+		$userObj->mode = 'edit';
 		$userObj->homeorder_array[] = 'Tag Cloud';
 		$homeStuffOrder = $userObj->getHomeStuffOrder($userid);
 		foreach ($homeStuffOrder as $widget => $visible) {

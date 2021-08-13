@@ -70,7 +70,7 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 	unlink($file);
 	$smarty = new vtigerCRM_Smarty;
 
-	if (isset($tool_buttons)==false) {
+	if (!isset($tool_buttons)) {
 		$tool_buttons = Button_Check('cbCalendar');
 	}
 	$smarty->assign('CHECK', $tool_buttons);
@@ -81,7 +81,6 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 	$smarty->assign("IMAGE_PATH", $image_path);
 	$smarty->assign('MODULE', 'cbCalendar');
 	$smarty->assign('SINGLE_MOD', 'SINGLE_cbCalendar');
-	$smarty->assign('CATEGORY', 'ptab');
 	$smarty->display("Buttons_List.tpl");
 	$imported_tasks = $cnt - $skip_count;
 	$message= "<b>".$mod_strings['LBL_SUCCESS']."</b>"
@@ -98,7 +97,7 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 } else {
 	$smarty = new vtigerCRM_Smarty;
 
-	if (isset($tool_buttons)==false) {
+	if (!isset($tool_buttons)) {
 		$tool_buttons = Button_Check('cbCalendar');
 	}
 	$smarty->assign('CHECK', $tool_buttons);
@@ -108,7 +107,6 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 	$smarty->assign("IMAGE_PATH", $image_path);
 	$smarty->assign('MODULE', 'cbCalendar');
 	$smarty->assign('SINGLE_MOD', 'SINGLE_cbCalendar');
-	$smarty->assign('CATEGORY', 'ptab');
 	$smarty->display("Buttons_List.tpl");
 
 	$last_import = new iCalLastImport();

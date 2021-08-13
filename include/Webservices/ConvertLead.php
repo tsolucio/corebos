@@ -101,10 +101,8 @@ function vtws_convertlead($entityvalues, $user) {
 			}
 
 			//update the contacts relation
-			if ($entityvalue['name'] == 'Contacts') {
-				if (!empty($entityIds['Accounts'])) {
-					$entityObjectValues['account_id'] = $entityIds['Accounts'];
-				}
+			if ($entityvalue['name'] == 'Contacts' && !empty($entityIds['Accounts'])) {
+				$entityObjectValues['account_id'] = $entityIds['Accounts'];
 			}
 
 			$create = true;
@@ -249,7 +247,7 @@ function vtws_validateConvertLeadEntityMandatoryValues($entity, $entityHandler, 
 			$fieldInfo = vtws_getConvertLeadFieldInfo($module, $field);
 			if (($fieldInfo['type']['name'] == 'picklist' || $fieldInfo['type']['name'] == 'multipicklist'
 					|| $fieldInfo['type']['name'] == 'date' || $fieldInfo['type']['name'] == 'datetime')
-				&& ($fieldInfo['editable'] == true)
+				&& ($fieldInfo['editable'])
 			) {
 				$entity[$field] = $fieldInfo['default'];
 			} else {

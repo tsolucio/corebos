@@ -141,14 +141,9 @@ function saveNewBlock() {
 	var relblock = 'no';
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addBlock&fld_module='+blockmodname+'&parenttab=Settings&ajax=true&mode=add&blocklabel='+
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addBlock&fld_module='+blockmodname+'&ajax=true&mode=add&blocklabel='+
 		encodeURIComponent(blocklabelval)+'&after_blockid='+afterblockid+'&relblock='+relblock
 	}).done(function (response) {
-		if (str == 'ERROR') {
-			console.log(response);
-		} else if (str == 'LENGTH_ERROR') {
-			console.log(response);
-		}
 		document.getElementById('newBlockcDiv').style.display = 'none';
 	});
 }

@@ -1278,8 +1278,6 @@ function preLoadMap() {
 			ruletype = 'businessmap';
 		} else if (rules.decisionTable) {
 			ruletype = 'decisiontable';
-		} else {
-			ruletype == '';
 		}
 		const rule = {
 			'sequence': rules.sequence,
@@ -1300,7 +1298,7 @@ function preLoadMap() {
 			} else if (rules[r].decisionTable) {
 				ruletype = 'decisiontable';
 			} else {
-				ruletype == '';
+				ruletype = '';
 			}
 			const rule = {
 				'sequence': rules[r].sequence,

@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contribuitor: Ranieri Slemer | 23-09-2021 | Translate Brazilian Portuguese | www.ecrmweb.com.br
+ * Contribuitor: Ranieri Slemer | 25-06-2021 | Translate Brazilian Portuguese | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -993,6 +993,7 @@ $mod_strings = array(
 'SM_BeBackSoon' => 'Estaremos de volta em breve!',
 'SM_SorryInconvenience' => 'Estamos fazendo uma manutenção no momento. Estaremos de volta on-line o mais breve possível!',
 'LBL_CC' => 'CC',
+'Not Labeled' => 'Sem descrição',
 'LBL_MB_MODULENAME' => 'Module Name',
 'LBL_MB_MODULELABEL' => 'Module Label',
 'LBL_MB_MODULEFIELDS' => 'Module Fields',

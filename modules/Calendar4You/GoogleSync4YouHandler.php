@@ -28,45 +28,42 @@ class GoogleSync4YouHandler extends VTEventHandler {
 			}
 		}
 
-		if ($handlerType == 'vtiger.entity.aftersave' || $handlerType == 'vtiger.entity.beforedelete') {
-			if ($entityData->getModuleName() == 'cbCalendar') {
-				$InGCalendars = array();
-				$id = $entityData->getId();
-				//$Data = $entityData->getData();
-				$ev=CRMEntity::getInstance('cbCalendar');
-				$ev->id=$id;
-				$ev->mode='edit';
-				$ev->retrieve_entity_info($id, 'cbCalendar');
-				$Data=$ev->column_fields;
-				$result1 = $adb->pquery('SELECT userid, geventid, eventtype FROM its4you_googlesync4you_events WHERE crmid = ?', array($id));
-				$num_rows1 = $adb->num_rows($result1);
-				if ($num_rows1 > 0) {
-					while ($row = $adb->fetchByAssoc($result1)) {
-						$InGCalendars[$row['eventtype']][$row['userid']] = $row['geventid'];
+		if (($handlerType == 'vtiger.entity.aftersave' || $handlerType == 'vtiger.entity.beforedelete') && $entityData->getModuleName()=='cbCalendar') {
+			$InGCalendars = array();
+			$id = $entityData->getId();
+			$ev=CRMEntity::getInstance('cbCalendar');
+			$ev->id=$id;
+			$ev->mode='edit';
+			$ev->retrieve_entity_info($id, 'cbCalendar');
+			$Data=$ev->column_fields;
+			$result1 = $adb->pquery('SELECT userid, geventid, eventtype FROM its4you_googlesync4you_events WHERE crmid=?', array($id));
+			$num_rows1 = $adb->num_rows($result1);
+			if ($num_rows1 > 0) {
+				while ($row = $adb->fetchByAssoc($result1)) {
+					$InGCalendars[$row['eventtype']][$row['userid']] = $row['geventid'];
+				}
+			}
+			if ($handlerType == 'vtiger.entity.aftersave') {
+				$Res = $adb->pquery('select activitytypeid from vtiger_activitytype where activitytype=?', array($Data['activitytype']));
+				$event = $adb->query_result($Res, 0, 'activitytypeid');
+				$assigned_user_id = $entityData->get('assigned_user_id');
+				$user_name = getUserName($assigned_user_id);
+				if ($user_name != '') {
+					$this->AddIntoCalendar($id, $assigned_user_id, $event, $Data);
+					unset($InGCalendars[$event][$assigned_user_id]);
+				} else {
+					$userGroups = new GetGroupUsers();
+					$userGroups->getAllUsersInGroup($assigned_user_id);
+					foreach ($userGroups->group_users as $to_email_id) {
+						$this->AddIntoCalendar($id, $to_email_id, $event, $Data);
+						unset($InGCalendars[$event][$to_email_id]);
 					}
 				}
-				if ($handlerType == 'vtiger.entity.aftersave') {
-					$Res = $adb->pquery('select activitytypeid from vtiger_activitytype where activitytype = ?', array($Data['activitytype']));
-					$event = $adb->query_result($Res, 0, 'activitytypeid');
-					$assigned_user_id = $entityData->get('assigned_user_id');
-					$user_name = getUserName($assigned_user_id);
-					if ($user_name != '') {
-						$this->AddIntoCalendar($id, $assigned_user_id, $event, $Data);
-						unset($InGCalendars[$event][$assigned_user_id]);
-					} else {
-						$userGroups = new GetGroupUsers();
-						$userGroups->getAllUsersInGroup($assigned_user_id);
-						foreach ($userGroups->group_users as $to_email_id) {
-							$this->AddIntoCalendar($id, $to_email_id, $event, $Data);
-							unset($InGCalendars[$event][$to_email_id]);
-						}
-					}
-				}
-				if (count($InGCalendars) > 0) {
-					foreach ($InGCalendars as $event => $Events) {
-						foreach ($Events as $userid => $eventURL) {
-							$this->DeleteGCalendarEvent($id, $userid, $eventURL, $event);
-						}
+			}
+			if (!empty($InGCalendars)) {
+				foreach ($InGCalendars as $event => $Events) {
+					foreach ($Events as $userid => $eventURL) {
+						$this->DeleteGCalendarEvent($id, $userid, $eventURL, $event);
 					}
 				}
 			}

@@ -84,44 +84,6 @@ class OpenDocument_FrameImage extends OpenDocument_StyledElement {
 			'OpenDocument_Hyperlink',
 		);
 		return true;
-		$href = $node->getAttributeNS(OpenDocument::NS_XLINK, 'href');
-		if (empty($href)) {
-			$href=$ahref;
-		}
-		if (!empty($href)) {
-			$this->node->setAttribute('xlink:href', $href);
-			$this->href = $href;
-		}
-		$type = $node->getAttributeNS(OpenDocument::NS_XLINK, 'type');
-		if (empty($type)) {
-			$type=$atype;
-		}
-		if (!empty($type)) {
-			$this->node->setAttribute('xlink:type', $type);
-			$this->type = $type;
-		}
-		$show = $node->getAttributeNS(OpenDocument::NS_XLINK, 'show');
-		if (empty($show)) {
-			$show=$ashow;
-		}
-		if (!empty($show)) {
-			$this->node->setAttribute('xlink:show', $show);
-			$this->show = $show;
-		}
-		$actuate = $node->getAttributeNS(OpenDocument::NS_XLINK, 'actuate');
-		if (empty($actuate)) {
-			$actuate=$aactuate;
-		}
-		if (!empty($actuate)) {
-			$this->node->setAttribute('xlink:actuate', $actuate);
-			$this->actuate = $actuate;
-		}
-
-		$this->allowedElements = array(
-			'OpenDocument_Paragraph',
-			'OpenDocument_Span',
-			'OpenDocument_Hyperlink',
-		);
 	}
 
 	/**

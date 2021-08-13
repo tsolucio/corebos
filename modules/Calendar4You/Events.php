@@ -231,7 +231,7 @@ foreach ($Users_Ids as $userid) {
 				$queryGenerator->endGroup();
 				$queryGenerator->endGroup();
 				$queryGenerator->addCondition('assigned_user_id', getUserFullName($userid), 'e', $queryGenerator::$AND);
-				if (count($Event_Status) > 0) {
+				if (!empty($Event_Status)) {
 					$evuniq = array_diff(array('Held','Not Held','Planned'), array_unique($Event_Status));
 					$encompas_group = false;
 					foreach ($evuniq as $evstat) {
@@ -278,11 +278,11 @@ foreach ($Users_Ids as $userid) {
 				$list_query .= ' AND vtiger_activity.activitytype = ?';
 				$list_array = array($activitytype);
 			}
-			if (count($Event_Status) > 0) {
+			if (!empty($Event_Status)) {
 				$list_query .= ' AND (vtiger_activity.eventstatus NOT IN (' . generateQuestionMarks($Event_Status) . ') OR vtiger_activity.eventstatus IS NULL)';
 				$list_array = array_merge($list_array, $Event_Status);
 			}
-			if (count($Task_Priority) > 0) {
+			if (!empty($Task_Priority)) {
 				$list_query .= ' AND (vtiger_activity.priority NOT IN (' . generateQuestionMarks($Task_Priority) . ') OR vtiger_activity.priority IS NULL)';
 				$list_array = array_merge($list_array, $Task_Priority);
 			}
@@ -380,14 +380,12 @@ foreach ($Users_Ids as $userid) {
 					.nl2br(vtlib_purify($into_title));
 			}
 			$title = "<font style='font-size:12px'>".$into_title.'</font>';
-			if ($add_more_info) {
-				if (isset($Event_Info[$event]) && count($Event_Info[$event]) > 0) {
-					$titlemi = '';
-					foreach ($Event_Info[$event] as $CD) {
-						$titlemi .= transferForAddIntoTitle(2, $row, $CD);
-					}
-					$title .= vtlib_purify($titlemi);
+			if ($add_more_info && isset($Event_Info[$event]) && count($Event_Info[$event]) > 0) {
+				$titlemi = '';
+				foreach ($Event_Info[$event] as $CD) {
+					$titlemi .= transferForAddIntoTitle(2, $row, $CD);
 				}
+				$title .= vtlib_purify($titlemi);
 			}
 			if (in_array($activitytypeid, $tasklabel)) {
 				$stfst = $row[$stfields['start']];

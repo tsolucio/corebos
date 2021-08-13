@@ -99,6 +99,41 @@ class Field_Metadata {
 	const UITYPE_USER_IS_ADMIN = 156;
 
 	// UITYPES GROUPINGS
-	const RELATION_TYPES = array(self::UITYPE_RECORD_RELATION, self::UITYPE_USER_REFERENCE, self::UITYPE_ASSIGNED_TO_PICKLIST);
-	const USER_TYPES = array(self::UITYPE_USER_REFERENCE, self::UITYPE_ASSIGNED_TO_PICKLIST);
+	const RELATION_TYPES = array(
+		self::UITYPE_RECORD_RELATION,
+		self::UITYPE_USER_REFERENCE,
+		self::UITYPE_ASSIGNED_TO_PICKLIST,
+		self::UITYPE_USER_REPORTS_TO,
+		self::UITYPE_CURRENCY_CODE,
+		self::UITYPE_FOLDER_NAME,
+	);
+	const PICKLIST_TYPES = array(
+		self::UITYPE_ROLE_BASED_PICKLIST,
+		self::UITYPE_PICKLIST,
+		self::UITYPE_PICKLIST_MODS,
+		self::UITYPE_PICKLIST_MODEXTS,
+		self::UITYPE_PICKLIST_PICKLISTS,
+		self::UITYPE_PICKLIST_FILTERS,
+		self::UITYPE_PICKLIST_ROLES,
+		self::UITYPE_MULTI_SELECT,
+		self::UITYPE_MULTI_SELECT_MODS,
+		self::UITYPE_MULTI_SELECT_MODEXTS,
+	);
+	const MULTIPICKLIST_SEPARATOR = ' |##| ';
+	const PICKLIST_EMPTY_VALUE = '#__empty__#';
+	const ATTACHMENT_ENTITY = ' Attachment';
+	const USER_TYPES = array(
+		self::UITYPE_USER_REFERENCE,
+		self::UITYPE_ASSIGNED_TO_PICKLIST,
+		self::UITYPE_ACTIVE_USERS,
+		self::UITYPE_USER_REPORTS_TO,
+	);
+
+	public static function isReferenceUIType($uitype) {
+		return in_array($uitype, self::RELATION_TYPES);
+	}
+
+	public static function isPicklistUIType($uitype) {
+		return in_array($uitype, self::PICKLIST_TYPES);
+	}
 }

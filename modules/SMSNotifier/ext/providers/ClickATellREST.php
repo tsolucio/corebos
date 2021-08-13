@@ -21,9 +21,6 @@ class ClickATellREST implements ISMSProvider {
 	const SERVICE_URI = 'https://platform.clickatell.com';
 	private static $REQUIRED_PARAMETERS = array('api_id', 'from');
 
-	public function __construct() {
-	}
-
 	/**
 	 * Function to get provider name
 	 * @return <String> provider name
@@ -96,7 +93,7 @@ class ClickATellREST implements ISMSProvider {
 		if (empty($rsp['error'])) {
 			$responseLines = $rsp['messages'];
 			foreach ($responseLines as $responseLine) {
-				if (!is_array($responseLine) || count($responseLine)==0) {
+				if (!is_array($responseLine) || empty($responseLine)) {
 					continue;
 				}
 

@@ -19,7 +19,10 @@
  *************************************************************************************************/
 include_once 'include/database/PearDatabase.php';
 include_once 'include/utils/utils.php';
-global $adb;
+checkFileAccessForInclusion("include/language/$default_language.lang.php");
+require_once "include/language/$default_language.lang.php";
+global $adb, $current_language;
+$current_language = $default_language;
 $type = vtlib_purify($_REQUEST['type']);
 $driver = $adb->pquery('select path, functionname from vtiger_notificationdrivers where type=?', array($type));
 if ($driver && $adb->num_rows($driver)>0) {

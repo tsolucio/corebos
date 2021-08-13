@@ -57,20 +57,16 @@ if ($mode == 'create') {
 	foreach ($roleDetails as $roleid => $rolename) {
 		$selected='';
 
-		if ($fromtype == 'roles') {
-			if ($roleid == $fromid) {
-				$selected='selected';
-			}
+		if ($fromtype == 'roles' && $roleid == $fromid) {
+			$selected='selected';
 		}
 		$fromComboValues .='<option value="roles::'.$roleid.'" '.$selected.'>'.$mod_strings['LBL_ROLES'].'::'.$rolename[0].'</option>';
 	}
 
 	foreach ($roleDetails as $roleid => $rolename) {
 		$selected='';
-		if ($fromtype == 'rs') {
-			if ($roleid == $fromid) {
-				$selected='selected';
-			}
+		if ($fromtype == 'rs' && $roleid == $fromid) {
+			$selected='selected';
 		}
 
 		$fromComboValues .='<option value="rs::'.$roleid.'" '.$selected.'>'.$mod_strings['LBL_ROLES_SUBORDINATES'].'::'.$rolename[0].'</option>';
@@ -78,10 +74,8 @@ if ($mode == 'create') {
 
 	foreach ($grpDetails as $groupid => $groupname) {
 		$selected='';
-		if ($fromtype == 'groups') {
-			if ($groupid == $fromid) {
-				$selected='selected';
-			}
+		if ($fromtype == 'groups' && $groupid == $fromid) {
+			$selected='selected';
 		}
 		$fromComboValues .='<option value="groups::'.$groupid.'" '.$selected.'>'.$mod_strings['LBL_GROUP'].'::'.$groupname.'</option>';
 	}
@@ -92,30 +86,24 @@ if ($mode == 'create') {
 
 	foreach ($roleDetails as $roleid => $rolename) {
 		$selected='';
-		if ($totype == 'roles') {
-			if ($roleid == $toid) {
-				$selected='selected';
-			}
+		if ($totype == 'roles' && $roleid == $toid) {
+			$selected='selected';
 		}
 		$toComboValues .='<option value="roles::'.$roleid.'" '.$selected.'>'.$mod_strings['LBL_ROLES'].'::'.$rolename[0].'</option>';
 	}
 
 	foreach ($roleDetails as $roleid => $rolename) {
 		$selected='';
-		if ($totype == 'rs') {
-			if ($roleid == $toid) {
-				$selected='selected';
-			}
+		if ($totype == 'rs' && $roleid == $toid) {
+			$selected='selected';
 		}
 		$toComboValues .='<option value="rs::'.$roleid.'" '.$selected.'>'.$mod_strings['LBL_ROLES_SUBORDINATES'].'::'.$rolename[0].'</option>';
 	}
 
 	foreach ($grpDetails as $groupid => $groupname) {
 		$selected='';
-		if ($totype == 'groups') {
-			if ($groupid == $toid) {
-				$selected='selected';
-			}
+		if ($totype == 'groups' && $groupid == $toid) {
+			$selected='selected';
 		}
 		$toComboValues .='<option value="groups::'.$groupid.'" '.$selected.'>'.$mod_strings['LBL_GROUP'].'::'.$groupname.'</option>';
 	}
@@ -142,7 +130,6 @@ if ($mode == 'create') {
 
 $output.='<div class="layerPopup" id="sharingRule"><form name="newGroupForm" action="index.php" method="post" onsubmit="VtigerJS_DialogBox.block();">
 <input type="hidden" name="module" value="Settings">
-<input type="hidden" name="parenttab" value="Settings">
 <input type="hidden" name="action" value="SaveSharingRule">
 <input type="hidden" name="sharing_module" value="'.$sharing_module.'">
 <input type="hidden" name="shareId" value="'.$shareid.'">

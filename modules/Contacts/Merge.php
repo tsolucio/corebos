@@ -38,7 +38,6 @@ if ($mass_merge != '') {
 	if (array_pop($temp_mass_merge)=='') {
 		array_pop($mass_merge);
 	}
-	//$mass_merge = implode(',',$mass_merge);
 } elseif ($single_record != '') {
 	$mass_merge = $single_record;
 } else {
@@ -78,10 +77,8 @@ for ($x=0; $x<$y; $x++) {
 	$columnname = $adb->query_result($result, $x, 'columnname');
 	$modulename = $adb->query_result($result, $x, 'name');
 
-	if ($tablename == 'crmentity') {
-		if ($modulename == 'Accounts') {
-			$tablename = 'crmentityAccounts';
-		}
+	if ($tablename == 'crmentity' && $modulename == 'Accounts') {
+		$tablename = 'crmentityAccounts';
 	}
 	$querycolumns[$x] = $tablename.'.'.$columnname;
 	if ($columnname == 'smownerid') {
@@ -139,7 +136,7 @@ $csvheader = implode(',', $field_label);
 // check if custom field CONTACT_MAILINGADDRESS exists and is not empty
 // if not empty remove all other relevant address fields fom $csvheader & query
 
-if (count($querycolumns) > 0) {
+if (!empty($querycolumns)) {
 	$selectcolumns = implode(',', $querycolumns);
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Accounts', true);
@@ -170,12 +167,8 @@ if (count($querycolumns) > 0) {
 		for ($x=0; $x<$y; $x++) {
 			$value = $columnValues[$x];
 			foreach ($columnValues as $key => $val) {
-				if ($val == $value && $value != '') {
-					if (array_key_exists($key, $avail_pick_arr)) {
-						if (!in_array($val, $avail_pick_arr[$key])) {
-							$value = 'Not Accessible';
-						}
-					}
+				if ($val == $value && $value != '' && array_key_exists($key, $avail_pick_arr) && !in_array($val, $avail_pick_arr[$key])) {
+					$value = 'Not Accessible';
 				}
 			}
 			//<<<<<<<<<<<<<<< For blank Fields >>>>>>>>>>>>>>>>>>>>>>>>>>>>

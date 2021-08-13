@@ -74,7 +74,7 @@ class PearDatabaseCache {
 	public function cacheResult($result, $sql, $params = false) {
 		// We don't want to cache NON-SELECT query results now
 		if (stripos(trim($sql), 'SELECT ') !== 0) {
-			return;
+			return false;
 		}
 		// If the result is too big, don't cache it
 		if ($this->_parent->num_rows($result) > $this->_CACHE_RESULT_ROW_LIMIT) {
@@ -87,6 +87,7 @@ class PearDatabaseCache {
 			$usekey = $this->_parent->convert2Sql($sql, $this->_parent->flatten_array($params));
 		}
 		$this->_queryResultCache[$usekey] = $result;
+		return true;
 	}
 
 	/**
@@ -153,7 +154,7 @@ class PearDatabase {
 		return $this->_cacheinstance;
 	}
 	public function isCacheEnabled() {
-		return ($this->enableCache && ($this->getCacheInstance() != false));
+		return ($this->enableCache && $this->getCacheInstance());
 	}
 	public function clearCache() {
 		if ($this->isCacheEnabled()) {
@@ -181,10 +182,8 @@ class PearDatabase {
 	 * Reset query result for resuing if cache is enabled.
 	 */
 	public function resetQueryResultToEOF(&$result) {
-		if ($result) {
-			if ($result->MoveLast()) {
-				$result->MoveNext();
-			}
+		if ($result && $result->MoveLast()) {
+			$result->MoveNext();
 		}
 	}
 
@@ -235,18 +234,12 @@ class PearDatabase {
 	}
 
 	public function startTransaction() {
-		if ($this->isPostgres()) {
-			return;
-		}
 		$this->checkConnection();
 		$this->println('TRANS Started');
 		$this->database->StartTrans();
 	}
 
 	public function completeTransaction() {
-		if ($this->isPostgres()) {
-			return;
-		}
 		if ($this->database->HasFailedTrans()) {
 			$this->println('TRANS Rolled Back');
 		} else {
@@ -288,8 +281,6 @@ class PearDatabase {
 		if (!isset($this->database)) {
 			$this->println('TRANS creating new connection');
 			$this->connect(false);
-		} else {
-			//$this->println('checkconnect using old connection');
 		}
 	}
 
@@ -353,7 +344,6 @@ class PearDatabase {
 	 */
 	public function query_batch($prefixsql, $valuearray) {
 		if ($this->ALLOW_SQL_QUERY_BATCH) {
-			$sql = $prefixsql;
 			$suffixsql = $valuearray;
 			if (!is_array($valuearray)) {
 				$suffixsql = implode(',', $valuearray);
@@ -369,7 +359,7 @@ class PearDatabase {
 	}
 
 	public function query($sql, $dieOnError = false, $msg = '') {
-		global $log, $default_charset;
+		global $log;
 		// Performance Tuning: Have we cached the result earlier?
 		if ($this->isCacheEnabled()) {
 			$fromcache = $this->getCacheInstance()->getCacheResult($sql);
@@ -423,8 +413,7 @@ class PearDatabase {
 				$vals[$index] = 'NULL';
 			}
 		}
-		$sql = preg_replace_callback("/('[^']*')|(\"[^\"]*\")|([?])/", array(new PreparedQMark2SqlValue($vals), 'call'), $ps);
-		return $sql;
+		return preg_replace_callback("/('[^']*')|(\"[^\"]*\")|([?])/", array(new PreparedQMark2SqlValue($vals), 'call'), $ps);
 	}
 
 	/* ADODB prepared statement Execution
@@ -434,7 +423,7 @@ class PearDatabase {
 	* @param $msg -- Error message on query execution failure
 	*/
 	public function pquery($sql, $params, $dieOnError = false, $msg = '') {
-		global $log, $default_charset;
+		global $log;
 		if (!isset($params)) {
 			$params = array();
 		}
@@ -566,7 +555,6 @@ class PearDatabase {
 	}
 
 	public function getFieldsDefinition(&$result) {
-		//$this->println("ADODB getFieldsArray");
 		$field_array = array();
 		if (!isset($result) || empty($result)) {
 			return 0;
@@ -582,13 +570,10 @@ class PearDatabase {
 			$field_array[] = $meta;
 			$i++;
 		}
-
-		//$this->println($field_array);
 		return $field_array;
 	}
 
 	public function getFieldsArray(&$result) {
-		//$this->println("ADODB getFieldsArray");
 		$field_array = array();
 		if (! isset($result) || empty($result)) {
 			return 0;
@@ -604,8 +589,6 @@ class PearDatabase {
 			$field_array[] = $meta->name;
 			$i++;
 		}
-
-		//$this->println($field_array);
 		return $field_array;
 	}
 
@@ -631,7 +614,6 @@ class PearDatabase {
 	/* ADODB newly added. replacement for mysql_fetch_array() */
 	public function fetch_array(&$result) {
 		if ($result->EOF) {
-			//$this->println("ADODB fetch_array return null");
 			return null;
 		}
 		$arr = $result->FetchRow();
@@ -641,8 +623,6 @@ class PearDatabase {
 		return $this->change_key_case($arr);
 	}
 
-	// adds new functions to the PearDatabase class to come around the whole broken query_result() idea
-	// Code-Contribution given by weigelt@metux.de - Starts
 	public function run_query_record_html($query) {
 		if (!is_array($rec = $this->run_query_record($query))) {
 			return $rec;
@@ -666,7 +646,7 @@ class PearDatabase {
 					return $this->formatDate($data['value']);
 				break;
 				default:
-					throw new Exception('unhandled type: '.serialize($data));
+					throw new InvalidArgumentException('unhandled type: '.serialize($data));
 			}
 		} else {
 			return $this->quote($data);
@@ -675,13 +655,13 @@ class PearDatabase {
 
 	public function sql_insert_data($table, $data) {
 		if (!$table) {
-			throw new Exception('missing table name');
+			throw new InvalidArgumentException('missing table name');
 		}
 		if (!is_array($data)) {
-			throw new Exception('data must be an array');
+			throw new InvalidArgumentException('data must be an array');
 		}
 		if (!count($data)) {
-			throw new Exception('no data given');
+			throw new InvalidArgumentException('no data given');
 		}
 		$sql_fields = '';
 		$sql_data = '';
@@ -694,17 +674,17 @@ class PearDatabase {
 
 	public function run_insert_data($table, $data) {
 		$query = $this->sql_insert_data($table, $data);
-		$res = $this->query($query);
+		$this->query($query);
 		$this->query('commit;');
 	}
 
 	public function run_query_record($query) {
 		$result = $this->query($query);
 		if (!$result) {
-			return;
+			return false;
 		}
 		if (!is_object($result)) {
-			throw new Exception("query $query failed: ".json_encode($result));
+			throw new InvalidArgumentException("query $query failed: ".json_encode($result));
 		}
 		$res = $result->FetchRow();
 		return $this->change_key_case($res);
@@ -731,7 +711,7 @@ class PearDatabase {
 
 	public function run_query_list($query, $field) {
 		$records = $this->run_query_allrecords($query);
-		foreach ($records as $walk => $cur) {
+		foreach ($records as $cur) {
 			$list[] = $cur[$field];
 		}
 	}
@@ -747,31 +727,32 @@ class PearDatabase {
 	// create an IN expression from an array/list
 	public function sql_expr_datalist($a) {
 		if (!is_array($a)) {
-			throw new Exception('not an array');
+			throw new InvalidArgumentException('not an array');
 		}
 		if (!count($a)) {
-			throw new Exception('empty arrays not allowed');
+			throw new InvalidArgumentException('empty arrays not allowed');
 		}
 		$l = '';
-		foreach ($a as $walk => $cur) {
-			$l .= ($l?',':'').$this->quote($cur);
+		foreach ($a as $cur) {
+			$l .= ($l ? ',' : '').$this->quote($cur);
 		}
 		return ' ( '.$l.' ) ';
 	}
 
-	// create an IN expression from an record list, take $field within each record
+	// create an IN expression from a record list, take $field within each record
 	public function sql_expr_datalist_from_records($a, $field) {
 		if (!is_array($a)) {
-			throw new Exception('not an array');
+			throw new InvalidArgumentException('not an array');
 		}
 		if (!$field) {
-			throw new Exception('missing field');
+			throw new InvalidArgumentException('missing field');
 		}
 		if (!count($a)) {
-			throw new Exception('empty arrays not allowed');
+			throw new InvalidArgumentException('empty arrays not allowed');
 		}
-		foreach ($a as $walk => $cur) {
-			$l .= ($l?',':'').$this->quote($cur[$field]);
+		$l = '';
+		foreach ($a as $cur) {
+			$l .= ($l ? ',' : '').$this->quote($cur[$field]);
 		}
 		return ' ( '.$l.' ) ';
 	}
@@ -784,15 +765,14 @@ class PearDatabase {
 			case 'pgsql':
 				return '('.implode('||', $list).')';
 			default:
-				throw new Exception('unsupported dbtype: '.$this->dbType);
+				throw new InvalidArgumentException('unsupported dbtype: '.$this->dbType);
 		}
 	}
-	// Code-Contribution given by weigelt@metux.de - Ends
 
 	/* ADODB newly added. replacement for mysql_result() */
 	public function query_result(&$result, $row, $col = 0) {
 		if (!is_object($result)) {
-			throw new Exception('result is not an object');
+			throw new InvalidArgumentException('result is not an object');
 		}
 		$result->Move($row);
 		$rowdata = $this->change_key_case($result->FetchRow());
@@ -809,7 +789,7 @@ class PearDatabase {
 	// Function to get particular row from the query result
 	public function query_result_rowdata(&$result, $row = 0) {
 		if (!is_object($result)) {
-			throw new Exception('result is not an object');
+			throw new InvalidArgumentException('result is not an object');
 		}
 		$result->Move($row);
 		$rowdata = $this->change_key_case($result->FetchRow());
@@ -836,7 +816,7 @@ class PearDatabase {
 	 */
 	public function raw_query_result_rowdata(&$result, $row = 0) {
 		if (!is_object($result)) {
-			throw new Exception('result is not an object');
+			throw new InvalidArgumentException('result is not an object');
 		}
 		$result->Move($row);
 		return $this->change_key_case($result->FetchRow());
@@ -973,7 +953,7 @@ class PearDatabase {
 			$this->setDatabaseHost($dbconfig['db_hostname']);
 			$this->setDatabaseName($dbconfig['db_name']);
 			if ($dbconfig['log_sql']) {
-				$this->enableSQLlog = ($dbconfig['log_sql'] == true);
+				$this->enableSQLlog = true;
 			}
 		} else {
 			$this->disconnect();
@@ -1010,19 +990,19 @@ class PearDatabase {
 	// ADODB newly added methods
 	public function createTables($schemaFile, $dbHostName = false, $userName = false, $userPassword = false, $dbName = false, $dbType = false) {
 		$this->println('DB createTables '.$schemaFile);
-		if ($dbHostName!=false) {
+		if ($dbHostName) {
 			$this->dbHostName=$dbHostName;
 		}
-		if ($userName!=false) {
+		if ($userName) {
 			$this->userName=$userPassword;
 		}
-		if ($userPassword!=false) {
+		if ($userPassword) {
 			$this->userPassword=$userPassword;
 		}
-		if ($dbName!=false) {
+		if ($dbName) {
 			$this->dbName=$dbName;
 		}
-		if ($dbType!=false) {
+		if ($dbType) {
 			$this->dbType=$dbType;
 		}
 
@@ -1114,8 +1094,8 @@ class PearDatabase {
 		$this->checkConnection();
 		$db = $this->database;
 		$date = $db->DBTimeStamp($datetime);
-		/* Asha: Stripping single quotes to use the date as parameter for Prepared statement */
-		if ($strip_quotes == true) {
+		/* Stripping single quotes to use the date as parameter for Prepared statement */
+		if ($strip_quotes) {
 			return trim($date, "'");
 		}
 		return $date;
@@ -1144,23 +1124,12 @@ class PearDatabase {
 		if (is_null($str)) {
 			return 'NULL';
 		}
-		$result_data = $this->database->qstr($str);
-		$result_data = substr($result_data, 1, -1);
-		return $result_data;
+		return substr($this->database->qstr($str), 1, -1);
 	}
 
 	// Function to get the last insert id based on the type of database
 	public function getLastInsertID($seqname = '') {
-		if ($this->isPostgres()) {
-			$result = pg_query("SELECT currval('".$seqname."_seq')");
-			if ($result) {
-				$row = pg_fetch_row($result);
-				$last_insert_id = $row[0];
-			}
-		} else {
-			$last_insert_id = $this->database->Insert_ID();
-		}
-		return $last_insert_id;
+		return $this->database->Insert_ID();
 	}
 
 	// Function to escape the special characters in database name based on database type.
@@ -1179,5 +1148,4 @@ if (empty($adb)) {
 	$adb = new PearDatabase();
 	$adb->connect();
 }
-//$adb->database->setFetchMode(ADODB_FETCH_NUM);
 ?>

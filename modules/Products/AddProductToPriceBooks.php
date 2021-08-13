@@ -15,8 +15,7 @@ global $app_strings,$mod_strings,$current_language,$theme,$log,$currentModule;
 $current_module_strings = return_module_language($current_language, $currentModule);
 
 $productid = vtlib_purify($_REQUEST['return_id']);
-$parenttab = getParentTab();
-$theme_path="themes/".$theme."/";
+$theme_path='themes/'.$theme.'/';
 $image_path=$theme_path."images/";
 $productNameArr = getEntityName($currentModule, array($productid));
 $productname = $productNameArr[$productid];
@@ -167,7 +166,5 @@ $smarty->assign('LISTENTITY', $list_body);
 $smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
 $smarty->assign('RETURN_ACTION', vtlib_purify($_REQUEST['return_action']));
 $smarty->assign('RETURN_ID', $productid);
-$smarty->assign('CATEGORY', $parenttab);
-
 $smarty->display('AddProductToPriceBooks.tpl');
 ?>

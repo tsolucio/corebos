@@ -16,26 +16,8 @@ require_once 'include/Webservices/Utils.php';
 
 /* Given a module, get all the many to one related modules */
 function getRelatedModulesManytoOne($module, $user) {
-	global $adb, $log;
-	// pickup meta data of module
-	$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
-	$handlerPath = $webserviceObject->getHandlerPath();
-	$handlerClass = $webserviceObject->getHandlerClass();
-	require_once $handlerPath;
-	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
-	$meta = $handler->getMeta();
-	$mainModule = $meta->getTabName();  // normalize module name
-	// check modules
-	if (!$meta->isModuleEntity()) {
-		throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
-	}
-
-	// check permission on module
-	$entityName = $meta->getEntityName();
-	$types = vtws_listtypes(null, $user);
-	if (!in_array($entityName, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
-	}
+	global $adb;
+	$types = vtws_checkListTypesPermission($module, $user);
 	$result = $adb->pquery(
 		'SELECT module,fieldname
 			from vtiger_fieldmodulerel

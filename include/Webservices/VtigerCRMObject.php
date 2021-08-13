@@ -55,23 +55,20 @@ class VtigerCRMObject {
 		$this->instance->id = $id;
 	}
 
-	private function titleCase($str) {
+	public function titleCase($str) {
 		$first = substr($str, 0, 1);
 		return strtoupper($first).substr($str, 1);
 	}
 
 	private function getObjectTypeId($objectName) {
-		// Use getTabid API
 		$tid = getTabid($objectName);
 
 		if ($tid === false) {
 			global $adb;
-
-			$sql = 'select tabid from vtiger_tab where name=?;';
 			$params = array($objectName);
-			$result = $adb->pquery($sql, $params);
+			$result = $adb->pquery('select tabid from vtiger_tab where name=?;', $params);
 			$data1 = $adb->fetchByAssoc($result, 1, false);
-			$tid = $data1["tabid"];
+			$tid = $data1['tabid'];
 		}
 		return $tid;
 	}
@@ -85,7 +82,7 @@ class VtigerCRMObject {
 	}
 
 	private function getTabName() {
-		return $this->moduleName;
+		return $this->getModuleName();
 	}
 
 	public function read($id, $deleted = false) {
@@ -96,7 +93,6 @@ class VtigerCRMObject {
 			$this->instance->retrieve_entity_info($id, $this->moduleName, $deleted);
 			$error = $adb->hasFailedTransaction();
 		} catch (\Throwable $th) {
-			//throw $th;
 			$error = true;
 		}
 		$adb->completeTransaction();
@@ -116,7 +112,6 @@ class VtigerCRMObject {
 			$this->instance->save($this->getTabName());
 			$error = $adb->hasFailedTransaction();
 		} catch (\Throwable $th) {
-			//throw $th;
 			$error = true;
 		}
 		$adb->completeTransaction();
@@ -137,38 +132,11 @@ class VtigerCRMObject {
 			$this->instance->save($this->getTabName());
 			$error = $adb->hasFailedTransaction();
 		} catch (\Throwable $th) {
-			//throw $th;
 			$error = true;
 		}
 		$adb->completeTransaction();
 		return !$error;
 	}
-
-// 	public function revise($element) {
-// 		global $adb;
-// 		$error = false;
-
-// 		$error = $this->read($this->getObjectId());
-// 		if ($error == false) {
-// 			return $error;
-// 		}
-
-// 		foreach ($element as $k=>$v) {
-// 			$this->instance->column_fields[$k] = $v;
-// 		}
-
-// 		//added to fix the issue of utf8 characters
-// 		foreach ($this->instance->column_fields as $key=>$value) {
-// 			$this->instance->column_fields[$key] = decode_html($value);
-// 		}
-
-// 		$adb->startTransaction();
-// 		$this->instance->mode = "edit";
-// 		$this->instance->Save($this->getTabName());
-// 		$error = $adb->hasFailedTransaction();
-// 		$adb->completeTransaction();
-// 		return !$error;
-// 	}
 
 	public function delete($id) {
 		global $adb;
@@ -178,7 +146,6 @@ class VtigerCRMObject {
 			DeleteEntity($this->getTabName(), $this->getTabName(), $this->instance, $id, 0);
 			$error = $adb->hasFailedTransaction();
 		} catch (\Throwable $th) {
-			//throw $th;
 			$error = true;
 		}
 		$adb->completeTransaction();
