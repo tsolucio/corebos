@@ -230,6 +230,7 @@ switch ($functiontocall) {
 		die();
 		break;
 	case 'delImage':
+		Vtiger_Request::validateRequest();
 		include_once 'include/utils/DelImage.php';
 		$id = vtlib_purify($_REQUEST['recordid']);
 		$id = preg_replace('/[^0-9]/', '', $id);
@@ -275,13 +276,15 @@ switch ($functiontocall) {
 		$term = vtlib_purify($data['term']);
 		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
 		$ret = array();
-		foreach ($retvals['data'] as $value) {
-			$ret[] = array(
-				'crmid' => $value['crmid'],
-				'crmmodule' => $value['crmmodule'],
-				'query_string' => $value['query_string'],
-				'total' => $retvals['total']
-			) + $value['crmfields'];
+		if (!empty($retvals['data'])) {
+			foreach ($retvals['data'] as $value) {
+				$ret[] = array(
+					'crmid' => $value['crmid'],
+					'crmmodule' => $value['crmmodule'],
+					'query_string' => $value['query_string'],
+					'total' => $retvals['total']
+				) + $value['crmfields'];
+			}
 		}
 		break;
 	case 'getRelatedListInfo':
@@ -317,12 +320,14 @@ switch ($functiontocall) {
 		}
 		break;
 	case 'setSetting':
+		Vtiger_Request::validateRequest();
 		$skey = vtlib_purify($_REQUEST['skey']);
 		$svalue = vtlib_purify($_REQUEST['svalue']);
 		coreBOS_Settings::setSetting($skey, $svalue);
 		$ret = '';
 		break;
 	case 'delSetting':
+		Vtiger_Request::validateRequest();
 		$skey = vtlib_purify($_REQUEST['skey']);
 		coreBOS_Settings::delSetting($skey);
 		$ret = '';
@@ -384,8 +389,11 @@ switch ($functiontocall) {
 		break;
 	case 'getImageInfoFor':
 		$id = vtlib_purify($_REQUEST['record']);
-		require_once 'include/Webservices/getRecordImages.php';
-		$imageinfo = cbws_getrecordimageinfo($id, $current_user);
+		$imageinfo = array();
+		if (isPermitted(getSalesEntityType($id), 'DetailView', $id)=='yes') {
+			require_once 'include/Webservices/getRecordImages.php';
+			$imageinfo = cbws_getrecordimageinfo($id, $current_user);
+		}
 		header('Content-Type: application/json');
 		if ((int)$imageinfo['results'] > 0) {
 			$ret = $imageinfo;
@@ -401,6 +409,7 @@ switch ($functiontocall) {
 		}
 		break;
 	case 'setNewPassword':
+		Vtiger_Request::validateRequest();
 		require_once 'modules/Users/Users.php';
 		require_once 'include/utils/UserInfoUtil.php';
 		$userid = vtlib_purify($_REQUEST['record']);
