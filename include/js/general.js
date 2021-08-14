@@ -2739,7 +2739,12 @@ function _2digit(no) {
 
 function confirmdelete(url) {
 	if (confirm(alert_arr.ARE_YOU_SURE)) {
-		document.location.href=url;
+		jQuery.ajax({
+			method: 'POST',
+			url: url
+		}).done(function (response) {
+			location.reload();
+		});
 	}
 }
 
