@@ -24,7 +24,7 @@ require_once 'modules/PickList/DependentPickListUtils.php';
   */
 function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name, $mode = '', $typeofdata = null, $cbMapFI = array()) {
 	global $log,$app_strings, $adb,$default_charset, $current_user;
-	$log->debug('> getOutputHtml '.$uitype.','. $fieldname.','. $fieldlabel.','. $maxlength.','. print_r($col_fields, true).','.$generatedtype.','.$module_name);
+	$log->debug('> getOutputHtml', [$uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name]);
 
 	$userprivs = $current_user->getPrivileges();
 
@@ -166,14 +166,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 		$options = array();
 		$pickcount=0;
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$value = decode_html($value);
 			$pickListValue=decode_html($adb->query_result($pickListResult, $j, strtolower($fieldname)));
 			if ($value == trim($pickListValue)) {
 				$chk_val = 'selected';
 				$pickcount++;
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
@@ -185,7 +183,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 		}
 		$fieldvalue [] = $options;
-	} elseif ($uitype == 1613 || $uitype == 1614 || $uitype == 1615 || $uitype == 1616) {
+	} elseif ($uitype == 1613 || $uitype == 1614 || $uitype == 1615 || $uitype == 1616 || $uitype == 3313 || $uitype == 3314 || $uitype == 1024) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $value);
@@ -202,7 +200,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
 		if ($uitype == 15) {
-			if (count($valueArr)>0) {
+			if (!empty($valueArr)) {
 				$valueArr = array_combine($valueArr, $valueArr);
 			}
 			$picklistValues = array_merge($picklistValues, $valueArr);
@@ -224,18 +222,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $options;
-	} elseif ($uitype == 3313 || $uitype == 3314) {
-		require_once 'modules/PickList/PickListUtils.php';
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $value);
-	} elseif ($uitype == 1024) {
-		require_once 'modules/PickList/PickListUtils.php';
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $value);
 	} elseif ($uitype == 1025) {
 		$entityTypes = array();
 		$parent_id = $value;
-		$values = explode(' |##| ', $value);
+		$values = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 		foreach ($cbMapFI['searchfields'] as $k => $value) {
 			$entityTypes[] = $k;
 		}
@@ -262,13 +252,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$editview_label[] = array('options'=>$entityTypes, 'selected'=>$valueType, 'displaylabel'=>getTranslatedString($fieldlabel, $module_name));
 		$fieldvalue[] = array('displayvalue'=>$displayValue,'entityid'=>$parent_id);
-	} elseif ($uitype == 17) {
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = $value;
-	} elseif ($uitype == 85) { //added for Skype
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = $value;
-	} elseif ($uitype == 14) { //added for Time Field
+	} elseif ($uitype == 17 || $uitype == 85 || $uitype == 14 || $uitype == 21 || $uitype == 56) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
 	} elseif ($uitype == 19) {
@@ -288,9 +272,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
-	} elseif ($uitype == 21) {
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = $value;
 	} elseif ($uitype == 52 || $uitype == 77) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		global $current_user;
@@ -299,12 +280,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		} else {
 			$assigned_user_id = $current_user->id;
 		}
-		if ($uitype == 52) {
-			$combo_lbl_name = 'assigned_user_id';
-		} elseif ($uitype == 77) {
-			$combo_lbl_name = 'assigned_user_id1';
-		}
-
 		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
 			$ua = get_user_array(false, 'Active', $assigned_user_id, 'private');
 		} else {
@@ -315,28 +290,23 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 53) {
 		global $noof_group_rows;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		// Get Group calculations > $noof_group_rows
-		if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
-			$result = get_current_user_access_groups($module_name);
-		} else {
-			$result = get_group_options();
-		}
-
 		$assigned_user_id = empty($value) ? $current_user->id : $value;
-
+		$groups_combo = '';
 		if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
+			get_current_user_access_groups($module_name); // calculate global variable $noof_group_rows
+			if ($noof_group_rows!=0) {
+				$ga = get_group_array(false, 'Active', $assigned_user_id, 'private');
+			}
 			$ua = get_user_array(false, 'Active', $assigned_user_id, 'private');
 		} else {
+			get_group_options();// calculate global variable $noof_group_rows
+			if ($noof_group_rows!=0) {
+				$ga = get_group_array(false, 'Active', $assigned_user_id);
+			}
 			$ua = get_user_array(false, 'Active', $assigned_user_id);
 		}
 		$users_combo = get_select_options_array($ua, $assigned_user_id);
-		$groups_combo = '';
 		if ($noof_group_rows!=0) {
-			if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
-				$ga = get_group_array(false, 'Active', $assigned_user_id, 'private');
-			} else {
-				$ga = get_group_array(false, 'Active', $assigned_user_id);
-			}
 			$groups_combo = get_select_options_array($ga, $assigned_user_id);
 		}
 		if (GlobalVariable::getVariable('Application_Group_Selection_Permitted', 1)!=1) {
@@ -426,9 +396,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $value;
 		$fieldvalue[] = is_admin($current_user);
-	} elseif ($uitype == 56) {
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 61) {
 		if ($value != '') {
 			$assigned_user_id = $value;
@@ -543,9 +510,13 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 				$image_path_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
-			if (count($image_array)>0) {
+			if (!empty($image_array)) {
 				for ($img_itr=0, $img_itrMax = count($image_array); $img_itr< $img_itrMax; $img_itr++) {
-					$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr].$image_id_array[$img_itr]."_","orgname"=>$image_orgname_array[$img_itr]);
+					$fieldvalue[] = array(
+						'name' => $image_array[$img_itr],
+						'path' => $image_path_array[$img_itr].$image_id_array[$img_itr].'_',
+						'orgname' => $image_orgname_array[$img_itr]
+					);
 				}
 			} else {
 				$fieldvalue[] = '';
@@ -561,7 +532,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 			$myids=explode('|', $parent_id);
 			for ($i=0; $i<(count($myids)-1); $i++) {
-				$realid=explode("@", $myids[$i]);
+				$realid=explode('@', $myids[$i]);
 				$entityid=$realid[0];
 				$nemail=count($realid);
 
@@ -628,8 +599,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 						$parent_name .= $fullname.'&lt;'.$temp1.'&gt;; ';
 						$temp_parent_name .= $fullname.'&lt;'.$temp1.'&gt;; ';
 					} else {
-						$parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '."</b>";
-						$temp_parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '."</b>";
+						$parent_name .= "<strong style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; </strong>';
+						$temp_parent_name .= "<strong style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; </strong>';
 					}
 				}
 			}
@@ -681,9 +652,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 							$parent_id .=$mycrmid.'@0|';
 							$parent_name .= $vendor_name.'<'.$myemail.'>; ';
 						} else {
-							$emailfield = getFirstEmailField($pmodule);
+							$emailfield = getFirstEmailField($parent_module);
 							if ($emailfield != '') {
-								$qg = new QueryGenerator($pmodule, $current_user);
+								$qg = new QueryGenerator($parent_module, $current_user);
 								$qg->setFields(array($emailfield));
 								$qg->addCondition('id', $mycrmid, 'e');
 								$query = $qg->getQuery();
@@ -693,7 +664,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 								$myemail = '';
 							}
 							$parent_id .=$mycrmid.'@0|';
-							$minfo = getEntityName($pmodule, array($mycrmid));
+							$minfo = getEntityName($parent_module, array($mycrmid));
 							$parent_name .= $minfo[$mycrmid] . '<'.$myemail.'>; ';
 						}
 					}
@@ -770,7 +741,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$day_options = getReminderSelectOption(0, 31, 'remdays', $rem_days);
 		$hr_options = getReminderSelectOption(0, 23, 'remhrs', $rem_hrs);
 		$min_options = getReminderSelectOption(10, 59, 'remmin', $rem_min);
-		$fieldvalue[] = array(array(0,32,'remdays',getTranslatedString('LBL_DAYS', 'Calendar'),$rem_days),array(0,24,'remhrs',getTranslatedString('LBL_HOURS', 'Calendar'),$rem_hrs),array(10,60,'remmin',getTranslatedString('LBL_MINUTES', 'Calendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT', 'Calendar'),$rem_min));
+		$fieldvalue[] = array(
+			array(0, 32, 'remdays', getTranslatedString('LBL_DAYS', 'cbCalendar'), $rem_days),
+			array(0, 24, 'remhrs', getTranslatedString('LBL_HOURS', 'cbCalendar'), $rem_hrs),
+			array(10, 60, 'remmin', getTranslatedString('LBL_MINUTES', 'cbCalendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT', 'cbCalendar'), $rem_min)
+		);
 		$fieldvalue[] = array($SET_REM,getTranslatedString('LBL_YES'),getTranslatedString('LBL_NO'));
 		$SET_REM = '';
 	} elseif ($uitype == 115) {
@@ -780,13 +755,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$noofpickrows = $adb->num_rows($pickListResult);
 
 		$options = array();
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue=$adb->query_result($pickListResult, $j, strtolower($fieldname));
 
 			if ($value == $pickListValue) {
 				$chk_val = 'selected';
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
@@ -801,13 +774,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$noofpickrows = $adb->num_rows($pickListResult);
 
 		$options = array();
-		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue=$adb->query_result($pickListResult, $j, 'currency_name');
 			$currency_id=$adb->query_result($pickListResult, $j, 'id');
 			if ($value == $currency_id) {
 				$chk_val = 'selected';
-				$found = true;
 			} else {
 				$chk_val = '';
 			}
@@ -835,7 +806,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$image_path_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
 		}
-		if (count($image_array)>0) {
+		if (!empty($image_array)) {
 			for ($img_itr=0, $img_itrMax = count($image_array); $img_itr< $img_itrMax; $img_itr++) {
 				$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr]);
 			}
@@ -946,9 +917,7 @@ function getConvertSoToInvoice($focus, $so_focus, $soid) {
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
 	);
 	foreach ($fields as $fieldname) {
-		if (getFieldVisibilityPermission('SalesOrder', $current_user->id, $fieldname) == '0') {
-			$so_focus->column_fields[$fieldname] = $so_focus->column_fields[$fieldname];
-		} else {
+		if (getFieldVisibilityPermission('SalesOrder', $current_user->id, $fieldname) != '0') {
 			$so_focus->column_fields[$fieldname] = '';
 		}
 	}
@@ -1003,9 +972,7 @@ function getConvertQuoteToInvoice($focus, $quote_focus, $quoteid) {
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
 	);
 	foreach ($fields as $fieldname) {
-		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) == '0') {
-			$quote_focus->column_fields[$fieldname] = $quote_focus->column_fields[$fieldname];
-		} else {
+		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) != '0') {
 			$quote_focus->column_fields[$fieldname] = '';
 		}
 	}
@@ -1054,9 +1021,7 @@ function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
 	);
 	foreach ($fields as $fieldname) {
-		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) == '0') {
-			$quote_focus->column_fields[$fieldname] = $quote_focus->column_fields[$fieldname];
-		} else {
+		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) != '0') {
 			$quote_focus->column_fields[$fieldname] = '';
 		}
 	}
@@ -1115,6 +1080,8 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	if (GlobalVariable::getVariable('PurchaseOrder_IgnoreTransferDiscount', '0', isset($_REQUEST['return_module']) ? $_REQUEST['return_module'] : '') == '1' && $currentModule == 'PurchaseOrder' && $_REQUEST['return_module'] != 'PurchaseOrder') {
 		$zerodiscount = true;
 	}
+	$crmETProduct = CRMEntity::getcrmEntityTableAlias('Products');
+	$crmETService = CRMEntity::getcrmEntityTableAlias('Services');
 
 	if (in_array($module, getInventoryModules())) {
 		$query="SELECT
@@ -1154,14 +1121,14 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			vtiger_products.unit_price, vtiger_products.qtyinstock, vtiger_crmentity.description AS product_description,
 			'Products' AS entitytype
 			FROM vtiger_products
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+			INNER JOIN $crmETProduct ON vtiger_crmentity.crmid=vtiger_products.productid
 			INNER JOIN vtiger_seproductsrel ON vtiger_seproductsrel.productid=vtiger_products.productid
 			WHERE vtiger_seproductsrel.crmid=?";
 		$query.=" UNION SELECT vtiger_service.serviceid AS productid, vtiger_service.servicename AS productname,
 			'NA' AS productcode, vtiger_service.unit_price AS unit_price, 'NA' AS qtyinstock,
 			vtiger_crmentity.description AS product_description, 'Services' AS entitytype
 			FROM vtiger_service
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_service.serviceid
+			INNER JOIN $crmETService ON vtiger_crmentity.crmid=vtiger_service.serviceid
 			INNER JOIN vtiger_crmentityrel ON vtiger_crmentityrel.relcrmid=vtiger_service.serviceid
 			WHERE vtiger_crmentityrel.crmid=?";
 			$params = array($seid,$seid);
@@ -1170,23 +1137,23 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			vtiger_products.unit_price, vtiger_products.qtyinstock, vtiger_crmentity.description AS product_description,
 			'Products' AS entitytype
 			FROM vtiger_products
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
-			WHERE vtiger_crmentity.deleted=0 AND productid=?";
+			INNER JOIN $crmETProduct ON vtiger_crmentity.crmid=vtiger_products.productid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_products.productid=?";
 			$params = array($seid);
 	} elseif ($module == 'Services') {
 		$query="SELECT vtiger_service.serviceid AS productid, 'NA' AS productcode, vtiger_service.servicename AS productname,
 			vtiger_service.unit_price AS unit_price, 'NA' AS qtyinstock, vtiger_crmentity.description AS product_description,
 			'Services' AS entitytype
 			FROM vtiger_service
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_service.serviceid
-			WHERE vtiger_crmentity.deleted=0 AND serviceid=?";
+			INNER JOIN $crmETService ON vtiger_crmentity.crmid=vtiger_service.serviceid
+			WHERE vtiger_crmentity.deleted=0 AND vtiger_service.serviceid=?";
 			$params = array($seid);
 	} else {
 		$query = "SELECT vtiger_products.productid, vtiger_products.productname, vtiger_products.productcode,
 			vtiger_products.unit_price, vtiger_products.qtyinstock, vtiger_crmentity.description AS product_description,
 			'Products' AS entitytype
 			FROM vtiger_products
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+			INNER JOIN $crmETProduct ON vtiger_crmentity.crmid=vtiger_products.productid
 			INNER JOIN vtiger_crmentityrel ON (
 				(vtiger_crmentityrel.crmid=vtiger_products.productid and vtiger_crmentityrel.relcrmid=?) or
 				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_products.productid)
@@ -1196,7 +1163,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			'NA' AS productcode, vtiger_service.unit_price AS unit_price, 'NA' AS qtyinstock,
 			vtiger_crmentity.description AS product_description, 'Services' AS entitytype
 			FROM vtiger_service
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_service.serviceid
+			INNER JOIN $crmETService ON vtiger_crmentity.crmid=vtiger_service.serviceid
 			INNER JOIN vtiger_crmentityrel ON (
 				(vtiger_crmentityrel.crmid=vtiger_service.serviceid and vtiger_crmentityrel.relcrmid=?) or
 				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_service.serviceid)
@@ -1206,16 +1173,12 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	}
 	if ($module != $currentModule && in_array($currentModule, getInventoryModules())) {
 		$cbMap = cbMap::getMapByName($currentModule.'InventoryDetails', 'MasterDetailLayout');
-		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
-		if ($MDMapFound) {
-			$cbMapFields = $cbMap->MasterDetailLayout();
-		}
 	} else {
 		$cbMap = cbMap::getMapByName($module.'InventoryDetails', 'MasterDetailLayout');
-		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
-		if ($MDMapFound) {
-			$cbMapFields = $cbMap->MasterDetailLayout();
-		}
+	}
+	$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
+	if ($MDMapFound) {
+		$cbMapFields = $cbMap->MasterDetailLayout();
 	}
 	$result = $adb->pquery($query, $params);
 	$num_rows=$adb->num_rows($result);
@@ -1223,20 +1186,22 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$so_line = 0;
 		$min_qty = null;
 		if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1) {
+			$crmETID = CRMEntity::getcrmEntityTableAlias('InventoryDetails', true);
 			if ($module == 'SalesOrder' && vtlib_isModuleActive('InventoryDetails')) {
 				if (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'sotoinvoice') {
 					$so_line = $adb->query_result($result, $i-1, 'lineitem_id');
-
-					$sel_min_qty = "SELECT remaining_units FROM vtiger_inventorydetails inde 
-					LEFT JOIN vtiger_crmentity crm ON inde.inventorydetailsid=crm.crmid WHERE crm.deleted = 0 AND lineitem_id=?";
+					$sel_min_qty = "SELECT remaining_units
+						FROM vtiger_inventorydetails inde
+						LEFT JOIN $crmETID crm ON inde.inventorydetailsid=crm.crmid WHERE crm.deleted=0 AND lineitem_id=?";
 					$res_min_qty = $adb->pquery($sel_min_qty, array($so_line));
 					if ($adb->num_rows($res_min_qty) == 1) {
 						$min_qty = $adb->query_result($res_min_qty, 0, 'remaining_units');
 					}
 				}
 			} elseif ($module == 'Invoice' && vtlib_isModuleActive('InventoryDetails')) {
-				$sel_soline = "SELECT rel_lineitem_id FROM vtiger_inventorydetails inde 
-				LEFT JOIN vtiger_crmentity crm ON inde.inventorydetailsid=crm.crmid WHERE crm.deleted = 0 AND lineitem_id=?";
+				$sel_soline = "SELECT rel_lineitem_id
+					FROM vtiger_inventorydetails inde
+					LEFT JOIN $crmETID crm ON inde.inventorydetailsid=crm.crmid WHERE crm.deleted=0 AND lineitem_id=?";
 				$res_soline = $adb->pquery($sel_soline, array($adb->query_result($result, $i-1, 'lineitem_id')));
 				if ($adb->num_rows($res_soline) == 1) {
 					$so_line = $adb->query_result($res_soline, 0, 'rel_lineitem_id');
@@ -1278,18 +1243,19 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 
 		//Delete link in First column
 		if ($i != 1) {
-			$product_Detail[$i]['delRow'.$i]="Del";
+			$product_Detail[$i]['delRow'.$i]='Del';
 		}
 		if (empty($focus->mode) && $seid!='') {
+			$crmETPC = CRMEntity::getcrmEntityTableAlias('ProductComponent');
 			$sub_prod_query = $adb->pquery(
 				'SELECT topdo as prod_id
 					FROM vtiger_productcomponent
-					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+					INNER JOIN '.$crmETPC.' ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
 					WHERE vtiger_crmentity.deleted=0 AND frompdo=?',
 				array($seid)
 			);
 		} else {
-			$sub_prod_query = $adb->pquery("SELECT productid as prod_id from vtiger_inventorysubproductrel WHERE id=? AND sequence_no=?", array($focus->id,$i));
+			$sub_prod_query = $adb->pquery('SELECT productid as prod_id from vtiger_inventorysubproductrel WHERE id=? AND sequence_no=?', array($focus->id,$i));
 		}
 		$subprodid_str='';
 		$subprodname_str='';
@@ -1298,16 +1264,16 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			for ($j=0; $j<$adb->num_rows($sub_prod_query); $j++) {
 				$sprod_id = $adb->query_result($sub_prod_query, $j, 'prod_id');
 				$sprod_name = $subProductArray[] = getProductName($sprod_id);
-				$str_sep = "";
+				$str_sep = '';
 				if ($j>0) {
-					$str_sep = ":";
+					$str_sep = ':';
 				}
 				$subprodid_str .= $str_sep.$sprod_id;
-				$subprodname_str .= $str_sep." - ".$sprod_name;
+				$subprodname_str .= $str_sep.' - '.$sprod_name;
 			}
 		}
 
-		$subprodname_str = str_replace(":", "<br>", $subprodname_str);
+		$subprodname_str = str_replace(':', '<br>', $subprodname_str);
 
 		$product_Detail[$i]['subProductArray'.$i] = $subProductArray;
 		$product_Detail[$i]['hdnProductId'.$i] = $hdnProductId;
@@ -1326,16 +1292,21 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		}
 		if ($MDMapFound) {
 			foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+				$crmETID = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 				$mdrs = $adb->pquery(
 					'select '.$mdfield['fieldinfo']['name'].',vtiger_inventorydetails.inventorydetailsid from vtiger_inventorydetails
-						inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+						inner join '.$crmETID.' on crmid=vtiger_inventorydetails.inventorydetailsid
 						inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
 						where deleted=0 and related_to=? and lineitem_id=?',
 					array($focus->id,$adb->query_result($result, $i - 1, 'lineitem_id'))
 				);
 				if ($mdrs) {
 					$col_fields = array();
-					$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, $mdfield['fieldinfo']['name']);
+					if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate']=='true' && !is_null($mdfield['duplicatevalue'])) {
+						$col_fields[$mdfield['fieldinfo']['name']] = $mdfield['duplicatevalue'];
+					} else {
+						$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, $mdfield['fieldinfo']['name']);
+					}
 					$col_fields['record_id'] = $adb->query_result($mdrs, 0, 'inventorydetailsid');
 					$foutput = getOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], 100, $col_fields, 0, 'InventoryDetails', 'edit', $mdfield['fieldinfo']['typeofdata']);
 					$product_Detail[$i]['moreinfo'.$i][] = $foutput;
@@ -1364,14 +1335,14 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$product_Detail[$i]['discount_amount'.$i] = 0;
 
 		if ($discount_percent != 'NULL' && $discount_percent != '') {
-			$product_Detail[$i]['discount_type'.$i] = "percentage";
+			$product_Detail[$i]['discount_type'.$i] = 'percentage';
 			$product_Detail[$i]['discount_percent'.$i] = $discount_percent;
 			$product_Detail[$i]['checked_discount_percent'.$i] = ' checked';
 			$product_Detail[$i]['style_discount_percent'.$i] = ' style="visibility:visible"';
 			$product_Detail[$i]['style_discount_amount'.$i] = ' style="visibility:hidden"';
 			$discountTotal = $productTotal*$discount_percent/100;
 		} elseif ($discount_amount != 'NULL' && $discount_amount != '') {
-			$product_Detail[$i]['discount_type'.$i] = "amount";
+			$product_Detail[$i]['discount_type'.$i] = 'amount';
 			$product_Detail[$i]['discount_amount'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discount_amount, null, true), null, true);
 			$product_Detail[$i]['checked_discount_amount'.$i] = ' checked';
 			$product_Detail[$i]['style_discount_amount'.$i] = ' style="visibility:visible"';
@@ -1415,7 +1386,6 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		for ($tax_count=0, $tax_countMax = count($tax_details); $tax_count< $tax_countMax; $tax_count++) {
 			$tax_name = $tax_details[$tax_count]['taxname'];
 			$tax_label = $tax_details[$tax_count]['taxlabel'];
-			$tax_value = '0.00';
 
 			//condition to avoid this function call when create new PO/SO/Quotes/Invoice from Product module
 			if ($focus->id != '') {
@@ -1510,7 +1480,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 				$tax_percent = $tax_details[$tax_count]['percentage'];
 			}
 		} else {
-			$tax_percent = $tax_details[$tax_count]['percentage'];//$adb->query_result($result,0,$tax_name);
+			$tax_percent = $tax_details[$tax_count]['percentage'];
 		}
 
 		if ($tax_percent == '' || $tax_percent == 'NULL') {
@@ -1562,7 +1532,6 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	$product_Detail[$j]['final_details']['grandTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($grandTotal, null, true), null, true);
 
 	$log->debug('< getAssociatedProducts');
-	// return array();
 	if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1) {
 		$res_prddtl = array();
 		$prdkey = 1;
@@ -1623,9 +1592,10 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 			where crmid=?';
 		$params = array($seid);
 	} elseif ($module == 'Products') {
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Products');
 		$query="select vtiger_products.productname,vtiger_products.unit_price, vtiger_crmentity.*
 			from vtiger_products
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_products.productid
+			inner join $crmEntityTable on vtiger_crmentity.crmid=vtiger_products.productid
 			where vtiger_crmentity.deleted=0 and productid=?";
 		$params = array($seid);
 	}
@@ -1642,12 +1612,12 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 * Param $mode - view type (detail/edit/create)
 * Param $col_fields - fields array
 * Param $tabid - tab id
-* Param $info_type - information type (basic/advance) default ""
+* Param $info_type - information type (basic/advance) default ''
 * Return type is an object array
 */
 function getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode) {
 	global $log, $adb;
-	$log->debug('> getBlockInformation '.$module.','. print_r($col_fields, true).','.$tabid.','.print_r($block_label, true));
+	$log->debug('> getBlockInformation', [$module, $col_fields, $tabid, $block_label]);
 	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 	$editview_arr = array();
 
@@ -1661,8 +1631,8 @@ function getBlockInformation($module, $result, $col_fields, $tabid, $block_label
 	}
 	$noofrows = $adb->num_rows($result);
 	for ($i=0; $i<$noofrows; $i++) {
-		$fieldtablename = $adb->query_result($result, $i, 'tablename');
-		$fieldcolname = $adb->query_result($result, $i, 'columnname');
+		// $result > 'tablename'
+		// $result > 'columnname'
 		$uitype = $adb->query_result($result, $i, 'uitype');
 		$fieldname = $adb->query_result($result, $i, 'fieldname');
 		$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
@@ -1742,7 +1712,7 @@ function getBlockInformation($module, $result, $col_fields, $tabid, $block_label
 */
 function split_validationdataArray($validationData) {
 	global $log;
-	$log->debug('> split_validationdataArray '.print_r($validationData, true));
+	$log->debug('> split_validationdataArray', $validationData);
 	$fieldName = '';
 	$fieldLabel = '';
 	$fldDataType = '';
@@ -1780,8 +1750,7 @@ function getDBValidationData($tablearray, $tabid = '') {
 		global $adb, $default_charset;
 		$fieldModuleName = getTabModuleName($tabid);
 		$fieldres = $adb->pquery(
-			"SELECT fieldlabel,fieldname,typeofdata FROM vtiger_field
-			WHERE displaytype IN (1,3) AND presence in (0,2) AND tabid=?",
+			'SELECT fieldlabel,fieldname,typeofdata FROM vtiger_field WHERE displaytype IN (1,3) AND presence in (0,2) AND tabid=?',
 			array($tabid)
 		);
 		$fieldinfos = array();

@@ -19,7 +19,6 @@ $log = LoggerManager::getLogger('note_list');
 
 global $app_strings,$mod_strings,$currentModule,$image_path,$theme;
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
-$category = getParentTab();
 
 $focus = new Documents();
 // Initialize sort by fields
@@ -97,7 +96,6 @@ $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('BUTTONS', $other_text);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
 $smarty->assign('Document_Folder_View', 1);
 //Retreive the list from Database
@@ -200,10 +198,8 @@ if ($foldercount > 0) {
 			$start[$folder_id] = 1;
 			if (!empty($_REQUEST['start'])) {
 				$start[$folder_id] = ListViewSession::getRequestStartPage();
-				if ($start[$folder_id] == 'last') {
-					if ($num_records > 0) {
-						$start[$folder_id] = ceil($num_records/$max_entries_per_page);
-					}
+				if ($start[$folder_id] == 'last' && $num_records > 0) {
+					$start[$folder_id] = ceil($num_records/$max_entries_per_page);
 				}
 				if (!is_numeric($start[$folder_id])) {
 					$start[$folder_id] = 1;
@@ -238,7 +234,7 @@ if ($foldercount > 0) {
 		$folder_details['entries']= $folder_files;
 		$folder_details['navigation'] = getTableHeaderSimpleNavigation($navigation_array, $url_string, 'Documents', $folder_id, $viewid);
 		$folder_details['recordListRange'] = getRecordRangeMessage($list_result, $limit_start_rec, $num_records);
-		if ($displayFolder == true) {
+		if ($displayFolder) {
 			$folders[$foldername] = $folder_details;
 		} else {
 			$emptyfolders[$foldername] = $folder_details;
@@ -247,7 +243,7 @@ if ($foldercount > 0) {
 			$default_folder_details = $folder_details;
 		}
 	}
-	if (count($folders) == 0) {
+	if (empty($folders)) {
 		$folders[$default_folder_details['foldername']] = $default_folder_details;
 	}
 	$smarty->assign('NO_FOLDERS', 'no');
@@ -281,7 +277,7 @@ $smarty->assign('CHECK', $check_button);
 
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
-$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
+$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
 
 // Search Panel Status

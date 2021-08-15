@@ -11,9 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class PriceBooks extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_pricebook';
 	public $table_index= 'pricebookid';
 	public $column_fields = array();
@@ -137,12 +134,12 @@ class PriceBooks extends CRMEntity {
 					"value='". getTranslatedString('LBL_SELECT'). ' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 		}
-
+		$crmtablealias = CRMEntity::getcrmEntityTableAlias('Products');
 		$query = 'SELECT vtiger_products.productid, vtiger_products.productname, vtiger_products.productcode, vtiger_products.commissionrate,
 					vtiger_products.qty_per_unit, vtiger_products.unit_price, vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_pricebookproductrel.listprice
 				FROM vtiger_products
 				INNER JOIN vtiger_pricebookproductrel ON vtiger_products.productid = vtiger_pricebookproductrel.productid
-				INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid = vtiger_products.productid
+				INNER JOIN '.$crmtablealias.' on vtiger_crmentity.crmid = vtiger_products.productid
 				INNER JOIN vtiger_pricebook on vtiger_pricebook.pricebookid = vtiger_pricebookproductrel.pricebookid
 				LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid '
@@ -192,12 +189,12 @@ class PriceBooks extends CRMEntity {
 					"value='". getTranslatedString('LBL_SELECT'). ' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 		}
-
+		$crmtablealias = CRMEntity::getcrmEntityTableAlias('Services');
 		$query = 'SELECT vtiger_service.serviceid, vtiger_service.servicename, vtiger_service.commissionrate, vtiger_service.qty_per_unit,
 				vtiger_service.unit_price, vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_pricebookproductrel.listprice
 			FROM vtiger_service
 			INNER JOIN vtiger_pricebookproductrel on vtiger_service.serviceid = vtiger_pricebookproductrel.productid
-			INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid = vtiger_service.serviceid
+			INNER JOIN '.$crmtablealias.' on vtiger_crmentity.crmid = vtiger_service.serviceid
 			INNER JOIN vtiger_pricebook on vtiger_pricebook.pricebookid = vtiger_pricebookproductrel.pricebookid
 			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid '
@@ -222,29 +219,29 @@ class PriceBooks extends CRMEntity {
 	 *		then return false, else return true
 	 */
 	public function get_pricebook_noproduct($id) {
-		global $log;
+		global $log, $adb;
 		$log->debug('> get_pricebook_noproduct '.$id);
 
 		$query = 'select vtiger_crmentity.crmid, vtiger_pricebook.*
 			from vtiger_pricebook
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
 			where vtiger_crmentity.deleted=0';
-		$result = $this->db->pquery($query, array());
-		$no_count = $this->db->num_rows($result);
+		$result = $adb->pquery($query, array());
+		$no_count = $adb->num_rows($result);
 		if ($no_count !=0) {
 			$pb_query = 'select vtiger_crmentity.crmid, vtiger_pricebook.pricebookid,vtiger_pricebookproductrel.productid
 				from vtiger_pricebook
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
+				inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
 				inner join vtiger_pricebookproductrel on vtiger_pricebookproductrel.pricebookid=vtiger_pricebook.pricebookid
 				where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
-			$result_pb = $this->db->pquery($pb_query, array($id));
-			if ($no_count == $this->db->num_rows($result_pb)) {
+			$result_pb = $adb->pquery($pb_query, array($id));
+			if ($no_count == $adb->num_rows($result_pb)) {
 				$log->debug('< get_pricebook_noproduct F');
 				return false;
-			} elseif ($this->db->num_rows($result_pb) == 0) {
+			} elseif ($adb->num_rows($result_pb) == 0) {
 				$log->debug('< get_pricebook_noproduct T');
 				return true;
-			} elseif ($this->db->num_rows($result_pb) < $no_count) {
+			} elseif ($adb->num_rows($result_pb) < $no_count) {
 				$log->debug('< get_pricebook_noproduct T');
 				return true;
 			}
@@ -269,9 +266,9 @@ class PriceBooks extends CRMEntity {
 		if (isset($modulecftable) && $queryplanner->requireTable($modulecftable)) {
 			$cfquery = "inner join $modulecftable as $modulecftable on $modulecftable.$modulecfindex=$moduletable.$moduleindex";
 		}
-
+		$crmtablealias = CRMEntity::getcrmEntityTableAlias($module);
 		$query = "from $moduletable $cfquery
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex";
+			inner join $crmtablealias on vtiger_crmentity.crmid=$moduletable.$moduleindex";
 		if ($queryplanner->requireTable("vtiger_currency_info$module")) {
 			$query .= "  left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = $moduletable.currency_id";
 		}

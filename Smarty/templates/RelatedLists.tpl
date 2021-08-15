@@ -31,7 +31,7 @@
 					{/if}
 					<div class="small detailview_utils_table_top">
 						<div class="detailview_utils_table_tabs">
-							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
+							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
 							{if isset($HASRELATEDPANES) && $HASRELATEDPANES eq 'true'}
 								{include file='RelatedPanes.tpl' tabposition='top'}
 							{else}
@@ -73,7 +73,7 @@
 				<td>
 					<div class="small detailview_utils_table_bottom">
 						<div class="detailview_utils_table_tabs">
-							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
+							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
 							{if $HASRELATEDPANES eq 'true'}
 								{include file='RelatedPanes.tpl' tabposition='bottom'}
 							{else}

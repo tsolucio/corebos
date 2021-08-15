@@ -66,7 +66,6 @@ class Vtiger_Request {
 		//Handled for null because vtlib_purify returns empty string
 		if (!empty($value)) {
 			$value = vtlib_purify($value);
-			//$value = str_replace(array(chr(10),chr(13)), '', $value);
 		}
 		return $value;
 	}
@@ -169,10 +168,8 @@ class Vtiger_Request {
 	}
 
 	public function validateWriteAccess($skipRequestTypeCheck = false) {
-		if (!$skipRequestTypeCheck) {
-			if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-				throw new Exception('Invalid request - validate Write Access');
-			}
+		if (!$skipRequestTypeCheck && $_SERVER['REQUEST_METHOD'] != 'POST') {
+			throw new Exception('Invalid request - validate Write Access');
 		}
 		$this->validateReadAccess();
 		$this->validateCSRF();
@@ -232,6 +229,9 @@ class Vtiger_Request {
 		}
 
 		// return unreliable ip since all else failed
+		if (empty($headers['REMOTE_ADDR'])) {
+			return ''; // no IP at all!
+		}
 		$iplist = explode(',', $headers['REMOTE_ADDR']);
 		foreach ($iplist as $ip) {
 			if (self::validate_ip($ip)) {

@@ -535,6 +535,10 @@ $mod_strings = array (
 	'Invalid_file' => 'Archivo erróneo o',
 	'File_has_no_data' => 'El Archivo no tiene datos',
 	'Sorry' => 'Lo Siento',
+	'LBL_OPTIONAL'=>'(opcional)',
+	'LBL_ATTACH'=>'Adjuntar',
+	'GoToParent' => 'Ir atrás',
+	'Directory' => 'Directorio',
 	'uploaded_file_exceeds_maximum_limit' => 'el archivo subido excede el máximo permitido.',
 	'try_file_smaller' => 'Pruebe con un archivo más pequeño de 800000 bytes',
 	'Problems_in_upload' => 'Problemas al subir el archivo',
@@ -711,6 +715,11 @@ $mod_strings = array (
 	'LBL_MESSAGES_FROM_LASTSCAN'=>'desde última lectura',
 	'LBL_MARK_MESSAGE_AS'=>'Marcar mensaje como',
 	'LBL_ASSIGN' => 'Asignar a',
+	'LBL_MUSTBERELATED' => 'Debe estar relacionado con el registro',
+	'LBL_ADDEMAILAS' => 'Añadir Correo como',
+	'LBL_ADDCOMMENTEMAIL' => 'Comentario y Correo',
+	'LBL_ADDLINKEMAIL' => 'Enlace en comentatio y Correo',
+	'LBL_ADDONLYEMAIL' => 'Solo Correo',
 
 	//Added for the workflow module
 	'LBL_LIST_WORKFLOWS'=>'Flujos de trabajo',
@@ -823,6 +832,7 @@ $mod_strings = array (
 	'LBL_ACTIVE' => 'Activo',
 	'LBL_QUICK_CREATE' => 'Creación Rápida',
 	'LBL_MASS_EDIT' => 'Edición Masiva',
+	'LBL_LONG_FIELD' => 'Texto Largo',
 	'LBL_BLOCK_NAME' => 'Nombre Bloque',
 	'AFTER' => 'Después',
 	'ADD_BLOCK' => 'Añadir Bloque',
@@ -942,5 +952,6 @@ $mod_strings = array (
 	'SM_BeBackSoon' => 'Volveremos pronto!',
 	'SM_SorryInconvenience' => 'Disculpa las molestias, pero estamos realizando un mantenimiento en este momento. ¡Pronto volveremos a estar en línea!',
 	'LBL_CC' => 'CC',
+	'Not Labeled' => 'Sin Etiqueta',
 );
 ?>

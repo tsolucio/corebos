@@ -25,9 +25,9 @@ DEFINE('FF_BIG5', 'Big5');
 
 DEFINE('FF_FONT1', 'Vera');
 
-/**This function is used to get the font name when a language code is given
-* Param $locale - language code
-* Return type string - font name
+/** This function is used to get the font name when a language code is given
+* @param string language code
+* @return string font name
 */
 function calculate_font_name($locale) {
 	global $log;
@@ -45,15 +45,12 @@ function calculate_font_name($locale) {
 				return FF_DEJAVUSAN;
 			} else {
 				$log->debug('< calculate_font_name');
-				 return FF_CHINESE;
+				return FF_CHINESE;
 			}
 		default:
 			$log->debug('< calculate_font_name');
 			return FF_DEJAVUSAN;
 	}
-
-	$log->debug('< calculate_font_name');
-	return FF_DEJAVUSAN;
 }
 
 /**This function is used to generate the n colors.
@@ -66,10 +63,10 @@ function color_generator($count = 1, $start = '33CCFF', $step = '221133') {
 	global $log;
 	$log->debug('> color_generator '.$count.','.$start.','.$step);
 	// explode color strings to RGB array
-	if ($start{0} == '#') {
+	if ($start[0] == '#') {
 		$start = substr($start, 1);
 	}
-	if ($step{0} == '#') {
+	if ($step[0] == '#') {
 		$step = substr($step, 1);
 	}
 	// pad shorter strings with 0
@@ -92,9 +89,9 @@ function color_generator($count = 1, $start = '33CCFF', $step = '221133') {
 	return $result;
 }
 
-/**This function is used to define the optimum spacin for tick marks on an axis
-* Param $max - maximum value of axis
-* Return type array - array of 2 values major and minor spacing
+/** This function is used to define the optimum spacin for tick marks on an axis
+* @param integer maximum value of axis
+* @return array 2 values major and minor spacing
 */
 function get_tickspacing($max = 10) {
 	global $log,$app_strings;

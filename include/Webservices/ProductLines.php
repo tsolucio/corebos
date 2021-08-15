@@ -25,7 +25,11 @@ if ($elementType != 'PurchaseOrder') {
 	$acvid = $element['vendor_id'];
 }
 if (empty($element['taxtype'])) {
-	$taxtype = 'group'; // Individual
+	if (empty($element['hdnTaxType'])) {
+		$taxtype = 'group'; // Individual
+	} else {
+		$taxtype = $element['hdnTaxType'];
+	}
 } else {
 	$taxtype=$element['taxtype'];
 }
@@ -35,6 +39,7 @@ $totalwithtax = 0;
 $i = 0;
 $pdoInformation=$element['pdoInformation'];
 $skipCurDBConv = !empty($element['__cbws_skipcurdbconv_pdo']);
+$lineitemAlreadyUsed = array();
 foreach ($pdoInformation as $pdoline) {
 	$i++;
 	$_REQUEST['deleted'.$i]=(isset($pdoline['deleted']) ? $pdoline['deleted'] : 0);
@@ -43,16 +48,27 @@ foreach ($pdoInformation as $pdoline) {
 		list($void,$pdoline['productid']) = explode('x', $pdoline['productid']);
 	}
 	$_REQUEST['hdnProductId'.$i]=$pdoline['productid'];
+	if (!empty($elementCRMID)) {
+		$resIPR = $adb->pquery('select lineitem_id from vtiger_inventoryproductrel where id=? and productid=?', array($elementCRMID, $pdoline['productid']));
+		$found=false;
+		while (!$found && $IPRrow = $adb->fetch_array($resIPR)) {
+			if (!in_array($IPRrow['lineitem_id'], $lineitemAlreadyUsed)) {
+				$_REQUEST['lineitem_id'.$i] = intval($IPRrow['lineitem_id']);
+				$lineitemAlreadyUsed[] = intval($IPRrow['lineitem_id']);
+				$found = true;
+			}
+		}
+	}
 	$qty=$pdoline['qty'];
 	$_REQUEST['qty'.$i]=$qty;
 	$setype=getSalesEntityType($pdoline['productid']);
-	$_REQUEST['listPrice'.$i] = $skipCurDBConv == true ? $pdoline['listprice'] : CurrencyField::convertToDBFormat($pdoline['listprice']);
+	$_REQUEST['listPrice'.$i] = $skipCurDBConv ? $pdoline['listprice'] : CurrencyField::convertToDBFormat($pdoline['listprice']);
 	$discount=0;
 	if (!empty($pdoline['discount'])) {
 		$_REQUEST["discount$i"]='on';
 		$_REQUEST["discount_type$i"]=$pdoline['discount_type'];
 		if ($pdoline['discount_type']=='amount') {
-			$_REQUEST["discount_amount$i"] = $skipCurDBConv == true ? $pdoline['discount_amount'] : CurrencyField::convertToDBFormat($pdoline['discount_amount']);
+			$_REQUEST["discount_amount$i"] = $skipCurDBConv ? $pdoline['discount_amount'] : CurrencyField::convertToDBFormat($pdoline['discount_amount']);
 			$discount=$pdoline['discount_amount'];
 		} else {
 			$_REQUEST["discount_percentage$i"]=$pdoline['discount_percentage'];
@@ -73,7 +89,7 @@ foreach ($pdoInformation as $pdoline) {
 	if ($cbMap!=null) {
 		$cbMapFields = $cbMap->MasterDetailLayout();
 		foreach ($cbMapFields['detailview']['fieldnames'] as $mdfield) {
-			if (!is_null($pdoline[$mdfield])) {
+			if (isset($pdoline[$mdfield]) && !is_null($pdoline[$mdfield])) {
 				$_REQUEST[$mdfield.$i] = $pdoline[$mdfield];
 			}
 		}

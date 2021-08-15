@@ -18,13 +18,14 @@
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
 
-//error_reporting(E_ALL); ini_set('display_errors', 'on');
 global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user, $theme;
 include_once 'modules/cbupdater/cbupdater.php';
 include_once 'modules/cbupdater/cbupdaterHelper.php';
+require_once 'data/CRMEntity.php';
 
 $error = false;
 $errmsg = '';
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbupdater');
 $cbupdatesfound = array();
 $cbupdate_files = array();
 if (!empty($_REQUEST['update_file'])) {
@@ -37,7 +38,7 @@ if (!empty($_REQUEST['update_file'])) {
 }
 
 $adb->query("ALTER TABLE vtiger_cbupdater ADD COLUMN appcs varchar(3) DEFAULT '1'");
-if (count($cbupdate_files)>0) {
+if (!empty($cbupdate_files)) {
 	libxml_use_internal_errors(true);
 	foreach ($cbupdate_files as $cbupdate_file) {
 		$cbupdate_file = realpath($cbupdate_file);
@@ -70,7 +71,6 @@ if (count($cbupdate_files)>0) {
 								$focus->column_fields['systemupdate'] = (empty($cbupd['systemupdate']) ? '0' : ($cbupd['systemupdate']=='true' ? '1' : '0'));
 								$focus->column_fields['blocked'] = (empty($cbupd['blocked']) ? '0' : ($cbupd['blocked']=='true' ? '1' : '0'));
 								$focus->column_fields['perspective'] = (empty($cbupd['perspective']) ? '0' : ($cbupd['perspective']=='true' ? '1' : '0'));
-								//$focus->column_fields['execdate'] = '';
 								$focus->column_fields['execorder'] = $execorder++;
 								$focus->save('cbupdater');
 								$cbupd['cbupdaterid'] = $focus->id;
@@ -83,10 +83,10 @@ if (count($cbupdate_files)>0) {
 							}
 						} else {
 							// we check for empty pathnames
-							$sql = "select cbupdaterid
+							$sql = 'select cbupdaterid
 								from vtiger_cbupdater
-								inner join vtiger_crmentity on crmid=cbupdaterid
-								where deleted=0 and (pathfilename='' or pathfilename is null) and classname=? and filename=?";
+								inner join '.$crmEntityTable." on vtiger_crmentity.crmid=cbupdaterid
+								where vtiger_crmentity.deleted=0 and (pathfilename='' or pathfilename is null) and classname=? and filename=?";
 							$rs = $adb->pquery($sql, array($cbupd['classname'], basename($cbupd['filename'], '.php')));
 							if ($rs && $adb->num_rows($rs)>0) {
 								$adb->pquery('update vtiger_cbupdater set pathfilename=? where cbupdaterid=?', array($cbupd['filename'], $rs->fields['cbupdaterid']));
@@ -127,7 +127,7 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('ERROR', $error);
 $smarty->assign('ERRORMSG', $errmsg);
 $smarty->assign('CBUPDATES', $cbupdatesfound);
-include 'modules/cbupdater/forcedButtons.php';
+include 'modules/cbupdater/cbupdButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->display('modules/cbupdater/getupdates.tpl');
 ?>

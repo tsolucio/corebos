@@ -1,4 +1,5 @@
 ./build/cbSR/chksyntax
+./build/coreBOSTests/coverage_command
 ./build/HelperScripts/bettersafe.sh
 ./build/HelperScripts/createuserfiles
 ./build/HelperScripts/dumpdatabase.sh
@@ -7,9 +8,19 @@
 ./docker/phpcbf.phar
 ./docker/phpcs.phar
 ./docker/phpmd.phar
+./include/cbmqtm/reboot
 ./include/cbmqtm/run.php
-./include/integrations/zendesk/vendor/zendesk/zendesk_api_client_php/bin/console
 ./include/sw-precache/regen_swprecache
 ./modules/evvtgendoc/unoservice.sh
-./vendor/monolog/monolog/src/Monolog/Handler/Slack/SlackRecord.php
+./vendor/sabre/dav/bin/build.php
+./vendor/sabre/dav/bin/googlecode_upload.py
+./vendor/sabre/dav/bin/naturalselection
+./vendor/sabre/dav/bin/sabredav
+./vendor/sabre/dav/bin/sabredav.php
+./vendor/sabre/vobject/bin/fetch_windows_zones.php
+./vendor/sabre/vobject/bin/generateicalendardata.php
+./vendor/sabre/vobject/bin/generate_vcards
+./vendor/sabre/vobject/bin/mergeduplicates.php
+./vendor/sabre/vobject/bin/vobject
 ./vendor/tecnickcom/tcpdf/tools/tcpdf_addfont.php
+./vendor/zendesk/zendesk_api_client_php/bin/console

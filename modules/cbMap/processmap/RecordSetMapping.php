@@ -49,8 +49,11 @@ class RecordSetMapping extends processcbMap {
 	private function convertMap2Array() {
 		global $adb, $current_user;
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		if (isset($xml->records)) {
-			foreach ($xml->records->record as $k => $v) {
+			foreach ($xml->records->record as $v) {
 				if (isset($v->action)) {
 					$action = strtolower((String)$v->action);
 					if (!in_array($action, $this->actions)) {
@@ -60,7 +63,7 @@ class RecordSetMapping extends processcbMap {
 					$action = $this->default_action;
 				}
 				if (isset($v->id)) {
-					$rs = $adb->pquery('select setype from vtiger_crmentity where crmid=? and deleted=0', array((Integer)$v->id));
+					$rs = $adb->pquery('select setype from vtiger_crmobject where crmid=? and deleted=0', array((Integer)$v->id));
 					if ($adb->num_rows($rs)==1) {
 						$recinfo = $adb->fetch_array($rs);
 						$this->mapping[$action]['ids'][] = (Integer)$v->id;
@@ -82,8 +85,8 @@ class RecordSetMapping extends processcbMap {
 						$id = $adb->query_result($idrs, 0, 0);
 						$this->mapping[$action]['ids'][] = (Integer)$id;
 						$this->mapping[$action][(String)$v->module][] = (Integer)$id;
-						if (!in_array($recinfo['setype'], $this->mapping['modules'])) {
-							$this->mapping['modules'][] = $recinfo['setype'];
+						if (!in_array((String)$v->module, $this->mapping['modules'])) {
+							$this->mapping['modules'][] = (String)$v->module;
 						}
 					}
 				}

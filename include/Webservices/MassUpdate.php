@@ -13,10 +13,9 @@ function vtws_massupdate($elements, $user) {
 	$failedUpdates = [];
 	$successUpdates = [];
 
-	foreach ($elements as $element) {
+	foreach ((array)$elements as $element) {
 		try {
-			$e = vtws_revise($element, $user);
-			$successUpdates[] = $e;
+			$successUpdates[] = vtws_revise($element, $user);
 		} catch (Exception $e) {
 			$failedUpdates[] = [
 				'id' => $element['id'],
@@ -26,11 +25,9 @@ function vtws_massupdate($elements, $user) {
 		}
 	}
 
-	$result = [
+	return [
 		'success_updates' => $successUpdates,
 		'failed_updates' => $failedUpdates
 	];
-
-	return $result;
 }
 ?>

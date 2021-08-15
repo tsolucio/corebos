@@ -16,10 +16,12 @@ require_once 'vtlib/Vtiger/Feed/Parser.php';
 
 class Rss extends CRMEntity {
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-account', 'class' => 'slds-icon', 'icon'=>'news');
+	public $tab_name = array();
 }
 
 class vtigerRSS extends CRMEntity {
 	public $rsscache_time = 1200;
+	public $tab_name = array();
 
 	/** Function to get the Rss Feeds from the Given URL
 	  * This Function accepts the url string as the argument
@@ -125,6 +127,7 @@ class vtigerRSS extends CRMEntity {
 	public function getCRMRssFeeds() {
 		global $adb, $theme;
 		$result = $adb->pquery('select * from vtiger_rss where rsstype=1', array());
+		$shtml = '';
 		while ($allrssrow = $adb->fetch_array($result)) {
 			$shtml .= '<tr>';
 			if ($allrssrow["starred"] == 1) {
@@ -172,7 +175,7 @@ class vtigerRSS extends CRMEntity {
 		if ($rssid != '') {
 			$result = $adb->pquery('select * from vtiger_rss where rssid=?', array($rssid));
 			$rssrow = $adb->fetch_array($result);
-			if (count($rssrow) > 0) {
+			if (!empty($rssrow)) {
 				$rssurl = $rssrow['rssurl'];
 			}
 		}
@@ -186,7 +189,7 @@ class vtigerRSS extends CRMEntity {
 			$result = $adb->pquery('select * from vtiger_rss where rssid=?', array($rssid));
 			$rssrow = $adb->fetch_array($result);
 
-			if (count($rssrow) > 0) {
+			if (!empty($rssrow)) {
 				$shtml = "<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"4\">
 					<tr>
 					<td class=\"rssPgTitle\">";
@@ -234,19 +237,15 @@ class vtigerRSS extends CRMEntity {
 		$sreturnhtml = array();
 		$shtml = '';
 		while ($allrssrow = $adb->fetch_array($result)) {
-			if ($this->setRSSUrl($allrssrow["rssurl"])) {
+			if ($this->setRSSUrl($allrssrow['rssurl'])) {
 				$rss_html = $this->getListViewRSSHtml();
 			}
 			$shtml .= $rss_html;
-			if (isset($this->rss_object)) {
-				if (count($this->rss_object) > 10) {
-					$shtml .= "<tr><td colspan='3' align=\"right\">
-						<a target=\"_BLANK\" href=\"$this->rss_link\">".$mod_strings['LBL_MORE']."</a>
-						</td></tr>";
-				}
+			if (isset($this->rss_object) && count($this->rss_object) > 10) {
+				$shtml .= "<tr><td colspan='3' align=\"right\"><a target=\"_BLANK\" href=\"$this->rss_link\">".$mod_strings['LBL_MORE'].'</a></td></tr>';
 			}
 			$sreturnhtml[] = $shtml;
-			$shtml = "";
+			$shtml = '';
 		}
 
 		$recordcount = round((count($sreturnhtml))/2);
@@ -277,12 +276,8 @@ class vtigerRSS extends CRMEntity {
 				$rss_html = $this->getListViewRSSHtml();
 			}
 			$shtml .= $rss_html;
-			if (isset($this->rss_object)) {
-				if (count($this->rss_object) > 10) {
-					$shtml .= "<tr><td colspan='3' align=\"right\">
-							<a target=\"_BLANK\" href=\"$this->rss_link\">".$mod_strings['LBL_MORE']."</a>
-							</td></tr>";
-				}
+			if (isset($this->rss_object) && count($this->rss_object) > 10) {
+				$shtml .= "<tr><td colspan='3' align=\"right\"><a target=\"_BLANK\" href=\"$this->rss_link\">".$mod_strings['LBL_MORE'].'</a></td></tr>';
 			}
 			$sreturnhtml[] = $shtml;
 		}
@@ -361,7 +356,6 @@ function gerRssTitle($id = '') {
 		$params = array($id);
 	}
 	$result = $adb->pquery($query, $params);
-	$title = $adb->query_result($result, 0, 'rsstitle');
-	return $title;
+	return $adb->query_result($result, 0, 'rsstitle');
 }
 ?>

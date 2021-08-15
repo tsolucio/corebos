@@ -11,10 +11,17 @@ require_once 'include/Webservices/QueryParser.php';
 
 $vtwsQueryHandler = '';
 
-function vtws_query($q, $user) {
+function vtws_query($q, $user, $emptyCache = false) {
 	global $log, $adb, $vtwsQueryHandler;
 	static $vtws_query_cache = array();
-
+	if ($emptyCache) {
+		foreach ($vtws_query_cache as $cacheinfo) {
+			$cacheinfo['handler']->emptyCache();
+		}
+		$vtws_query_cache = array();
+		VtigerWebserviceObject::emptyCache();
+		return array();
+	}
 	// Cache the instance for re-use
 	$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
 	$moduleName = '';
@@ -51,14 +58,14 @@ function vtws_query($q, $user) {
 	}
 
 	$types = vtws_listtypes(null, $user);
-	if (!in_array($webserviceObject->getEntityName(), $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+	if ($webserviceObject->getEntityName() != 'Users') {
+		if (!in_array($webserviceObject->getEntityName(), $types['types'])) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+		}
+		if (!$meta->hasReadAccess()) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
+		}
 	}
-
-	if (!$meta->hasReadAccess()) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
-	}
-
 	VTWS_PreserveGlobal::flush();
 	$vtwsQueryHandler = $handler;
 	return $handler->query($q);

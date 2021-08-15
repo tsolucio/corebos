@@ -682,7 +682,7 @@ class crxml implements arrayAccess, iterator
 			if($node->nodeType==XML_DOCUMENT_NODE) return $this;
 			$nodeName = $node->nodeName;
 			if(strpos($nodeName,"|")!==false) {
-				list($namespaceURI,$localName)=explode('|',$nodeName);
+				list($nameSpaceURI,$localName)=explode('|',$nodeName);
 				$nodeName = $nameSpaceURI. "|" . $localName;
 				$temp->$nodeName = $this;
 			} else if(strpos($nodeName,":")!==false) {

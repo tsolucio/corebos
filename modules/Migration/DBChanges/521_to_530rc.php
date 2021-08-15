@@ -623,7 +623,7 @@ $moduleInstance = Vtiger_Module::getInstance('Users');
 
 // Update/Increment the sequence for the succeeding blocks of Users module, with starting sequence 2
 $usersTabId = getTabid('Users');
-$blocksListResult = ExecuteQuery("UPDATE vtiger_blocks SET sequence = sequence+1 WHERE tabid=$usersTabId AND sequence >= 2");
+ExecuteQuery("UPDATE vtiger_blocks SET sequence=sequence+1 WHERE tabid=$usersTabId AND sequence>=2");
 
 // Create Currency Configuration block placing at position 2
 $currencyBlock = new Vtiger_Block();

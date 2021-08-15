@@ -107,6 +107,7 @@ $mod_strings = array(
 	'LBL_NO_DOCUMENTS' => 'in diesem Verzeichnis wurden keine Dokumente abgelegt',
 	'LBL_DESCRIPTION' => 'Beschreibung',
 	'FILE_HAS_NO_DATA'=>'Die Datei ist leer oder ungültig.',
+	'NotShared' => 'File not shared',
 
 	'LBL_MAXIMUM_20'=>'Maximum 20',
 	'LBL_MAXIMUM_50'=>'Maximum 50',

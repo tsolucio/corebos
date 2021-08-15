@@ -47,7 +47,7 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 			$filterOrAlertInstance->setUser($current_user);
 		}
 		if ($this->isCalendarModule($module)) {
-			if ($request->get('compact')== true) {
+			if ($request->get('compact')) {
 				//no limits for compact calendar
 				return $this->processSearchRecordLabelForCalendar($request, false);
 			} else {
@@ -97,22 +97,22 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 		$current_user = $this->getActiveUser();
 
 		// Fetch both Calendar (Todo) and Event information
-		if ($request->get('compact')== true) {
+		if ($request->get('compact')) {
 			//without paging per month
 			$datetimeevent=$request->get('datetime');
 			if (empty($datetimeevent)) {
-				$datestoconsider ['start'] = date('Y-m').'-01';
-				$datestoconsider ['end'] =date('Y-m-t');
+				$datestoconsider['start'] = date('Y-m').'-01';
+				$datestoconsider['end'] =date('Y-m-t');
 			} else {
 				$strDate = substr($datetimeevent, 4, 11);
-				if ($request->get('inweek')== true) {
+				if ($request->get('inweek')) {
 					$tsDate = strtotime($strDate);
 					$daysAfterWeekStart = (date('w', $tsDate)+6)%7; // +6%7 is for monday as first day of week
-					$datestoconsider ['start'] = date('Y-m-d', strtotime('-'.$daysAfterWeekStart.' days', $tsDate));
-					$datestoconsider ['end'] = date('Y-m-d', strtotime('+'.(6-$daysAfterWeekStart).' days', $tsDate));
+					$datestoconsider['start'] = date('Y-m-d', strtotime('-'.$daysAfterWeekStart.' days', $tsDate));
+					$datestoconsider['end'] = date('Y-m-d', strtotime('+'.(6-$daysAfterWeekStart).' days', $tsDate));
 				} else {
-					$datestoconsider ['start'] = date('Y-m', strtotime($strDate)).'-01';
-					$datestoconsider ['end'] =date('Y-m-t', strtotime($strDate));
+					$datestoconsider['start'] = date('Y-m', strtotime($strDate)).'-01';
+					$datestoconsider['end'] =date('Y-m-t', strtotime($strDate));
 				}
 			}
 
@@ -179,7 +179,8 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 		$columnByFieldNames = crmtogo_WS_Utils::getModuleColumnTableByFieldNames($module, $fieldnames);
 
 		// Build select clause similar to Webservice query
-		$selectColumnClause = "CONCAT('{$moduleWSId}','x',vtiger_crmentity.crmid) as id,";
+		$mod = CRMEntity::getInstance($module);
+		$selectColumnClause = "CONCAT('{$moduleWSId}','x',".$mod->crmentityTable.'.crmid) as id,';
 		foreach ($columnByFieldNames as $fieldname => $fieldinfo) {
 			$selectColumnClause .= sprintf('%s.%s as %s,', $fieldinfo['table'], $fieldinfo['column'], $fieldname);
 		}

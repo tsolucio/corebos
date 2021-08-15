@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'Smarty_setup.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
@@ -22,7 +23,6 @@ if ($activitytype == 'Emails') {
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
 	$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-	$smarty->assign('CATEGORY', '');
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('ID', $record);
@@ -105,7 +105,7 @@ if ($activitytype == 'Emails') {
 	$data['assigned_user_id'] = $focus->column_fields['assigned_user_id'];
 	$data['visibility'] = (isset($finaldata['visibility']) ? $finaldata['visibility'] : '');
 	$data['activitytype'] = (isset($finaldata['activitytype']) ? $finaldata['activitytype'] : $activitytype);
-	$data['location'] = $focus->column_fields['location'];
+	$data['location'] = isset($focus->column_fields['location']) ? $focus->column_fields['location'] : '';
 //Calculating reminder time
 	$rem_days = 0;
 	$rem_hrs = 0;

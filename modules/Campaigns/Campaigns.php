@@ -14,9 +14,6 @@ require_once 'modules/Leads/Leads.php';
 require 'modules/Vtiger/default_module_view.php';
 
 class Campaigns extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_campaign';
 	public $table_index= 'campaignid';
 	public $column_fields = array();
@@ -95,9 +92,9 @@ class Campaigns extends CRMEntity {
 	}
 
 	/**
-	 * Function to get Campaign related Accouts
-	 * @param  integer   $id      - campaignid
-	 * returns related Accounts record in array format
+	 * Function to get Campaign related Accounts
+	 * @param integer campaignid
+	 * @return array related Accounts records
 	 */
 	public function get_accounts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
@@ -117,8 +114,6 @@ class Campaigns extends CRMEntity {
 			$is_CampaignStatusAllowed = getFieldVisibilityPermission('Accounts', $current_user->id, 'campaignrelstatus', 'readwrite') == '0';
 		}
 
-		$parenttab = getParentTab();
-
 		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
 		} else {
@@ -133,12 +128,12 @@ class Campaigns extends CRMEntity {
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp';
 		/* To get Accounts CustomView -START */
 		require_once 'modules/CustomView/CustomView.php';
-		$ahtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One')." --</option>";
+		$ahtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One').' --</option>';
 		$oCustomView = new CustomView($related_module);
 		$viewid = $oCustomView->getViewId($related_module);
 		$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid, false);
 		$ahtml .= $customviewcombo_html;
-		$ahtml .= "</select>";
+		$ahtml .= '</select>';
 		/* To get Accounts CustomView -END */
 
 		$button .= $ahtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
@@ -155,8 +150,8 @@ class Campaigns extends CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module).
 					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
-					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-					"'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). ' '.
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
+					"cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '.
 					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -168,13 +163,13 @@ class Campaigns extends CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Accounts');
 		$query = "SELECT vtiger_account.*,
-				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
+				CASE when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name,
 				vtiger_crmentity.*, vtiger_crmentity.modifiedtime, vtiger_campaignrelstatus.*, vtiger_accountbillads.*
 				FROM vtiger_account
 				INNER JOIN vtiger_campaignaccountrel ON vtiger_campaignaccountrel.accountid = vtiger_account.accountid
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
+				INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid = vtiger_account.accountid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
 				LEFT JOIN vtiger_accountbillads ON vtiger_accountbillads.accountaddressid = vtiger_account.accountid
@@ -199,8 +194,8 @@ class Campaigns extends CRMEntity {
 
 	/**
 	 * Function to get Campaign related Contacts
-	 * @param  integer   $id      - campaignid
-	 * returns related Contacts record in array format
+	 * @param integer campaignid
+	 * @return array related Contacts records
 	 */
 	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
@@ -220,8 +215,6 @@ class Campaigns extends CRMEntity {
 			$is_CampaignStatusAllowed = getFieldVisibilityPermission('Contacts', $current_user->id, 'campaignrelstatus', 'readwrite') == '0';
 		}
 
-		$parenttab = getParentTab();
-
 		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
 		} else {
@@ -237,12 +230,12 @@ class Campaigns extends CRMEntity {
 
 		/* To get Leads CustomView -START */
 		require_once 'modules/CustomView/CustomView.php';
-		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One')." --</option>";
+		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One').' --</option>';
 		$oCustomView = new CustomView($related_module);
 		$viewid = $oCustomView->getViewId($related_module);
 		$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid, false);
 		$lhtml .= $customviewcombo_html;
-		$lhtml .= "</select>";
+		$lhtml .= '</select>';
 		/* To get Leads CustomView -END */
 
 		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
@@ -259,8 +252,8 @@ class Campaigns extends CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module).
 					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
-					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-					"'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). ' '.
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
+					"cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '.
 					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -272,9 +265,9 @@ class Campaigns extends CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$query = "SELECT vtiger_contactdetails.accountid, vtiger_account.accountname,
-				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name ,
+				CASE when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name ,
 				vtiger_contactdetails.contactid, vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.title,
 				vtiger_contactdetails.department, vtiger_contactdetails.email, vtiger_contactdetails.phone, vtiger_crmentity.crmid,
 				vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime, vtiger_campaignrelstatus.*
@@ -283,7 +276,7 @@ class Campaigns extends CRMEntity {
 				INNER JOIN vtiger_contactaddress ON vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid
 				INNER JOIN vtiger_contactsubdetails ON vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid
 				INNER JOIN vtiger_customerdetails ON vtiger_contactdetails.contactid = vtiger_customerdetails.customerid
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+				INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
 				LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_contactdetails.accountid
@@ -307,8 +300,8 @@ class Campaigns extends CRMEntity {
 
 	/**
 	 * Function to get Campaign related Leads
-	 * @param  integer   $id      - campaignid
-	 * returns related Leads record in array format
+	 * @param integer campaignid
+	 * @return array related Leads records
 	 */
 	public function get_leads($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -328,8 +321,6 @@ class Campaigns extends CRMEntity {
 			$is_CampaignStatusAllowed  = getFieldVisibilityPermission('Leads', $current_user->id, 'campaignrelstatus', 'readwrite') == '0';
 		}
 
-		$parenttab = getParentTab();
-
 		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
 		} else {
@@ -345,12 +336,12 @@ class Campaigns extends CRMEntity {
 
 		/* To get Leads CustomView -START */
 		require_once 'modules/CustomView/CustomView.php';
-		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One')." --</option>";
+		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One').' --</option>';
 		$oCustomView = new CustomView($related_module);
 		$viewid = $oCustomView->getViewId($related_module);
 		$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid, false);
 		$lhtml .= $customviewcombo_html;
-		$lhtml .= "</select>";
+		$lhtml .= '</select>';
 		/* To get Leads CustomView -END */
 
 		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
@@ -367,8 +358,8 @@ class Campaigns extends CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module).
 					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
-					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-					"'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). ' '.
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
+					"cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '.
 					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -380,13 +371,13 @@ class Campaigns extends CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
 		$query = "SELECT vtiger_leaddetails.*, vtiger_crmentity.crmid,vtiger_leadaddress.phone,vtiger_leadsubdetails.website,
-				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
+				CASE when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name,
 				vtiger_crmentity.smownerid, vtiger_campaignrelstatus.*
 				FROM vtiger_leaddetails
 				INNER JOIN vtiger_campaignleadrel ON vtiger_campaignleadrel.leadid=vtiger_leaddetails.leadid
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
+				INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
 				INNER JOIN vtiger_leadsubdetails  ON vtiger_leadsubdetails.leadsubscriptionid = vtiger_leaddetails.leadid
 				INNER JOIN vtiger_leadaddress ON vtiger_leadaddress.leadaddressid = vtiger_leadsubdetails.leadsubscriptionid
 				INNER JOIN vtiger_leadscf ON vtiger_leaddetails.leadid = vtiger_leadscf.leadid
@@ -410,11 +401,11 @@ class Campaigns extends CRMEntity {
 		return $return_value;
 	}
 
-	/*
+	/**
 	 * Function populate the status columns' HTML
-	 * @param - $related_list return value from GetRelatedList
-	 * @param - $status_column index of the status column in the list.
-	 * returns true on success
+	 * @param array return value from GetRelatedList
+	 * @param string index of the status column in the list
+	 * @return boolean true on success
 	 */
 	private function addStatusPopup($related_list, $status_column, $related_module) {
 		global $adb;
@@ -459,7 +450,6 @@ class Campaigns extends CRMEntity {
 			"Leads" => array("vtiger_campaignleadrel"=>array("campaignid","leadid"),"vtiger_campaign"=>"campaignid"),
 			"Accounts" => array("vtiger_campaignaccountrel"=>array("campaignid","accountid"),"vtiger_campaign"=>"campaignid"),
 			"Potentials" => array("vtiger_potential"=>array("campaignid","potentialid"),"vtiger_campaign"=>"campaignid"),
-			"Calendar" => array("vtiger_seactivityrel"=>array("crmid","activityid"),"vtiger_campaign"=>"campaignid"),
 			"Products" => array("vtiger_campaign"=>array("campaignid","product_id")),
 		);
 		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
@@ -467,21 +457,22 @@ class Campaigns extends CRMEntity {
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
 
 		if ($return_module == 'Leads') {
 			$sql = 'DELETE FROM vtiger_campaignleadrel WHERE campaignid=? AND leadid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} elseif ($return_module == 'Contacts') {
 			$sql = 'DELETE FROM vtiger_campaigncontrel WHERE campaignid=? AND contactid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} elseif ($return_module == 'Accounts') {
 			$sql = 'DELETE FROM vtiger_campaignaccountrel WHERE campaignid=? AND accountid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 			$sql = 'DELETE FROM vtiger_campaigncontrel WHERE campaignid=? AND contactid IN (SELECT contactid FROM vtiger_contactdetails WHERE accountid=?)';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}
@@ -556,10 +547,11 @@ class Campaigns extends CRMEntity {
 	/* Create potential */
 	public static function createPotentialRelatedTo($relatedto, $campaignid) {
 		global $adb, $current_user;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 		$checkrs = $adb->pquery('select 1
 			from vtiger_potential
-			inner join vtiger_crmentity on crmid=potentialid
-			where deleted=0 and related_to=? and campaignid=?', array($relatedto,$campaignid));
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=potentialid
+			where vtiger_crmentity.deleted=0 and related_to=? and campaignid=?', array($relatedto,$campaignid));
 		if ($adb->num_rows($checkrs)==0) {
 			require_once 'modules/Potentials/Potentials.php';
 			$entity = new Potentials();
@@ -612,7 +604,7 @@ class Campaigns extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
-		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
+		$log->debug('> transferRelatedRecords', ['module' => $module, 'transferEntityIds' => $transferEntityIds, 'entityId' => $entityId]);
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
 			'Contacts'=>'vtiger_campaigncontrel',

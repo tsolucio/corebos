@@ -9,39 +9,34 @@
  ************************************************************************************/
 -->*}
 <style>
-/* Tooltip container */
-.tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-  visibility: hidden;
-  position: absolute;
-  left: 25px;
-  top: -5px;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
 #editpopup {
 	top:35%;
 	left:20%;
 	height:350px;
 }
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function (event) {
+	loadJS('index.php?module=cbMap&action=cbMapAjax&file=getjslanguage');
+});
+var wfexpfndefs = {$FNDEFS};
+var wfexpselectionDIV = 'selectfunction';
+</script>
+<div id="selectfunction"></div>
 <div id='editpopup' class='layerPopup slds-align_absolute-center' style='display:none;z-index:1;'>
 	<div id='editpopup_draghandle' style='cursor: move;' class="slds-grid slds-badge_lightest">
 		<div class="slds-col slds-size_3-of-4 slds-page-header__title slds-m-top_xx-small">
 			<div>
 				&nbsp;{$MOD.LBL_SET_VALUE}&nbsp;
-				{include file='com_vtiger_workflow/FieldExpressionsHelp.tpl'}
 			</div>
 		</div>
 		<div class="slds-col slds-size_1-of-4 cblds-t-align_right">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false" title="{'LNK_HELP'|@getTranslatedString}" type="button" onclick="toggleExpEditorHelp(this);">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+				</svg>
+				<span class="slds-assistive-text">{'LNK_HELP'|@getTranslatedString}</span>
+			</button>
 			<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" id="editpopup_close" title="{$APP.LBL_CLOSE}" type="button">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
@@ -50,6 +45,53 @@
 			</button>
 		</div>
 	</div>
+	<div id="exphelpbody" style="display:none;">
+		<h2 class="slds-expression__title slds-m-left_xx-small">{$MOD.EXP_RULES}</h2>
+		<ul class="slds-list_dotted">
+			<li>{$MOD.EXP_RULE1} {'Example'|getTranslatedString:'cbMap'}, <code>first_name=='John'</code></li>
+			<li>{$MOD.EXP_RULE2}</li>
+			<li>{$MOD.EXP_RULE3} == ({$MOD['equal to']}), != ({$MOD['not equal to']}), &gt;, &lt;, &gt;=, &lt;=</li>
+			<li>{$MOD.EXP_RULE4}</li>
+		</ul>
+		<h2 class="slds-expression__title slds-m-left_xx-small">{'Examples'|getTranslatedString:'cbMap'}</h2>
+		<div class="slds-grid">
+		<div class="slds-col slds-size_1-of-5">
+			<header class="slds-popover__header">
+				<h2 class="slds-text-heading_small">{$MOD.LBL_RAW_TEXT}</h2>
+			</header>
+			<div class="slds-popover__body slds-page-header__meta-text" id="dialog-body-id-98">
+				<p>2000<br>any text</p>
+			</div>
+		</div>
+		<div class="slds-col slds-size_1-of-5">
+			<header class="slds-popover__header">
+				<h2 class="slds-text-heading_small">{$MOD.LBL_FIELD}</h2>
+			</header>
+			<div class="slds-popover__body slds-page-header__meta-text" id="dialog-body-id-98">
+				<p>annual_revenue<br>accountname</p>
+			</div>
+		</div>
+		<div class="slds-col slds-size_2-of-5">
+			<header class="slds-popover__header">
+				<h2 class="slds-text-heading_small">{$MOD.LBL_EXPRESSION}</h2>
+			</header>
+			<div class="slds-popover__body slds-page-header__meta-text" id="dialog-body-id-98">
+				<p>annual_revenue / 12<br>
+				<span style="color:blue;">if</span> mailingcountry == 'Spain' <span style="color:blue;">then</span> <span style="color:blue;">concat</span>(firstname,' ',lastname) <span style="color:blue;">else</span> <span style="color:blue;">concat</span>(lastname,' ',firstname) <span style="color:blue;">end</span>
+				</p>
+			</div>
+		</div>
+		<div class="slds-col slds-size_1-of-5">
+			<header class="slds-popover__header">
+				<h2 class="slds-text-heading_small">{$APP.LBL_MORE}</h2>
+			</header>
+			<div class="slds-popover__body slds-page-header__meta-text" id="dialog-body-id-98">
+				<p>See the <code>testexpression</code> variable in <a href="https://github.com/tsolucio/coreBOSTests/blob/master/modules/com_vtiger_workflow/expression_engine/VTExpressionEvaluaterTest.php" target="_blank">the unit tests</a>.</p>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div id="expeditorbody">
 	<div class="slds-grid">
 		<div class="slds-col slds-size_4-of-4 slds-p-around_xxx-small">
 			<select id='editpopup_expression_type' class='slds-select'>
@@ -66,9 +108,12 @@
 			</select>
 		</div>
 		<div class="slds-col slds-size_2-of-4 slds-p-around_xxx-small">
-			<select id='editpopup_functions' class='slds-select'>
-				<option value="">{$MOD.LBL_USE_FUNCTION_DASHDASH}</option>
-			</select>
+			<button class="slds-button slds-button_neutral" id="editpopup_functions" onclick="return openFunctionSelection('editpopup_expression');">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+				</svg>
+				{$MOD.LBL_USE_FUNCTION_DASHDASH}
+			</button>
 		</div>
 	</div>
 	<div class="slds-grid">
@@ -97,5 +142,6 @@
 			<button name="save" id='editpopup_save' type="button" class="slds-button slds-button_success">{$APP.LBL_SAVE_BUTTON_LABEL}</button>
 			<button name="cancel" id='editpopup_cancel' type="button" class="slds-button slds-button_destructive">{$APP.LBL_CANCEL_BUTTON_LABEL}</button>
 		</div>
+	</div>
 	</div>
 </div>

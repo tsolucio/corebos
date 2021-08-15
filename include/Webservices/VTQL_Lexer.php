@@ -7,15 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+global $vtqlp_where_col, $vtqlp_orderby, $vtqlp_in_started, $vtqlp_count;
+$vtqlp_where_col = false;
+$vtqlp_orderby = false;
+$vtqlp_in_started = false;
+$vtqlp_count = false;
 
-global $where_col, $orderby, $in_started, $count;
-$where_col = false;
-$orderby = false;
-$in_started = false;
-$count = false;
-
-function incrementN($lexer, $count) {
-	for ($i = 0; $i < $count; $i ++) {
+function incrementN($lexer, $vtqlp_count) {
+	for ($i = 0; $i < $vtqlp_count; $i ++) {
 		incState($lexer);
 	}
 }
@@ -26,28 +25,26 @@ function incState($lexer) {
 	}
 }
 function handleselect($lexer, $val) {
-	if ($lexer->mandatory) {
-		if (strcasecmp($val, $lexer->mandatory_states [$lexer->current_state]) === 0) {
-			incState($lexer);
-			return VTQL_Parser::SELECT;
-		}
+	if ($lexer->mandatory && strcasecmp($val, $lexer->mandatory_states[$lexer->current_state]) === 0) {
+		incState($lexer);
+		return VTQL_Parser::SELECT;
 	}
 }
 function handlecolumn_list($lexer, $val) {
-	global $count;
+	global $vtqlp_count;
 	if ($lexer->mandatory) {
-		if (! (strcasecmp($val, $lexer->mandatory_states [2]) === 0)) {
-			if (strcmp($val, "*") === 0) {
-				if (! $count) {
+		if (strcasecmp($val, $lexer->mandatory_states [2]) !== 0) {
+			if (strcmp($val, '*') === 0) {
+				if (!$vtqlp_count) {
 					incrementN($lexer, 1);
 				}
 				return VTQL_Parser::ASTERISK;
-			} elseif ((strcmp($val, '(') === 0)) {
+			} elseif (strcmp($val, '(') === 0) {
 				return VTQL_Parser::PARENOPEN;
 			} elseif (strcmp($val, ')') === 0) {
 				return VTQL_Parser::PARENCLOSE;
-			} elseif ((strcasecmp($val, 'count') === 0)) {
-				$count = true;
+			} elseif (strcasecmp($val, 'count') === 0) {
+				$vtqlp_count = true;
 				return VTQL_Parser::COUNT;
 			} elseif (strcmp($val, ',') === 0) {
 				return VTQL_Parser::COMMA;
@@ -61,7 +58,7 @@ function handlecolumn_list($lexer, $val) {
 	}
 }
 function handlefrom($lexer, $val) {
-	if ((strcasecmp($val, $lexer->mandatory_states [$lexer->current_state]) === 0)) {
+	if (strcasecmp($val, $lexer->mandatory_states [$lexer->current_state]) === 0) {
 		incState($lexer);
 		return VTQL_Parser::FRM;
 	}
@@ -70,81 +67,81 @@ function handletable($lexer, $val) {
 	if ($lexer->mandatory) {
 		$lexer->current_state = 0;
 		$lexer->mandatory = false;
-		if (! (strcasecmp($val, $lexer->optional_states [$lexer->current_state]) === 0)) {
+		if (strcasecmp($val, $lexer->optional_states[$lexer->current_state]) !== 0) {
 			return VTQL_Parser::TABLENAME;
 		}
 	}
 }
 function handlewhere($lexer, $val) {
-	global $where_col, $in_started;
+	global $vtqlp_where_col, $vtqlp_in_started;
 	$val = trim($val);
-	if ((strcmp($val, "=") === 0)) {
+	if (strcmp($val, '=') === 0) {
 		return VTQL_Parser::EQ;
-	} elseif ((strcasecmp($val, $lexer->optional_states [$lexer->current_state]) === 0)) {
+	} elseif (strcasecmp($val, $lexer->optional_states [$lexer->current_state]) === 0) {
 		return VTQL_Parser::WHERE;
-	} elseif ((strcmp($val, "<") === 0)) {
+	} elseif (strcmp($val, '<') === 0) {
 		return VTQL_Parser::LT;
-	} elseif ((strcmp($val, "<=") === 0)) {
+	} elseif (strcmp($val, '<=') === 0) {
 		return VTQL_Parser::LTE;
-	} elseif ((strcmp($val, ">=") === 0)) {
+	} elseif (strcmp($val, '>=') === 0) {
 		return VTQL_Parser::GTE;
-	} elseif ((strcmp($val, "!=") === 0)) {
+	} elseif (strcmp($val, '!=') === 0) {
 		return VTQL_Parser::NE;
-	} elseif ((strcmp($val, ">") === 0)) {
+	} elseif (strcmp($val, '>') === 0) {
 		return VTQL_Parser::GT;
-	} elseif ((strcmp($val, "(") === 0)) {
+	} elseif (strcmp($val, '(') === 0) {
 		return VTQL_Parser::PARENOPEN;
-	} elseif ((strcmp($val, ")") === 0)) {
-		if ($in_started) {
-			$in_started = false;
-			$where_col = false;
+	} elseif (strcmp($val, ')') === 0) {
+		if ($vtqlp_in_started) {
+			$vtqlp_in_started = false;
+			$vtqlp_where_col = false;
 		}
 		return VTQL_Parser::PARENCLOSE;
-	} elseif ((strcasecmp($val, "and") === 0)) {
+	} elseif (strcasecmp($val, 'and') === 0) {
 		return VTQL_Parser::LOGICAL_AND;
-	} elseif ((strcasecmp($val, "or") === 0)) {
+	} elseif (strcasecmp($val, 'or') === 0) {
 		return VTQL_Parser::LOGICAL_OR;
-	} elseif (! $where_col) {
-		$where_col = true;
+	} elseif (!$vtqlp_where_col) {
+		$vtqlp_where_col = true;
 		return VTQL_Parser::COLUMNNAME;
-	} elseif ((strcasecmp($val, "in") === 0)) {
-		$in_started = true;
+	} elseif (strcasecmp($val, 'in') === 0) {
+		$vtqlp_in_started = true;
 		return VTQL_Parser::IN;
-	} elseif (strcmp($val, ",") === 0) {
+	} elseif (strcmp($val, ',') === 0) {
 		return VTQL_Parser::COMMA;
-	} elseif (strcasecmp($val, "like") === 0) {
+	} elseif (strcasecmp($val, 'like') === 0) {
 		return VTQL_Parser::LIKE;
-	} elseif ($where_col) {
-		if (! $in_started) {
-			$where_col = false;
+	} elseif ($vtqlp_where_col) {
+		if (!$vtqlp_in_started) {
+			$vtqlp_where_col = false;
 		}
 		return VTQL_Parser::VALUE;
 	}
 }
 function handleorderby($lexer, $val) {
-	global $orderby;
-	if (! $orderby) {
-		$orderby = true;
+	global $vtqlp_orderby;
+	if (!$vtqlp_orderby) {
+		$vtqlp_orderby = true;
 		return VTQL_Parser::ORDERBY;
 	}
-	if (strcmp($val, ",") === 0) {
+	if (strcmp($val, ',') === 0) {
 		return VTQL_Parser::COMMA;
-	} elseif (strcasecmp($val, "asc") === 0) {
+	} elseif (strcasecmp($val, 'asc') === 0) {
 		return VTQL_Parser::ASC;
-	} elseif (strcasecmp($val, "desc") === 0) {
+	} elseif (strcasecmp($val, 'desc') === 0) {
 		return VTQL_Parser::DESC;
 	} else {
 		return VTQL_Parser::COLUMNNAME;
 	}
 }
 function handlelimit($lexer, $val) {
-	if ((strcasecmp($val, "limit") === 0)) {
+	if (strcasecmp($val, 'limit') === 0) {
 		return VTQL_Parser::LIMIT;
-	} elseif ((strcmp($val, "(") === 0)) {
+	} elseif (strcmp($val, '(') === 0) {
 		return VTQL_Parser::PARENOPEN;
-	} elseif ((strcmp($val, ")") === 0)) {
+	} elseif (strcmp($val, ')') === 0) {
 		return VTQL_Parser::PARENCLOSE;
-	} elseif (strcmp($val, ",") === 0) {
+	} elseif (strcmp($val, ',') === 0) {
 		return VTQL_Parser::COMMA;
 	} else {
 		return VTQL_Parser::VALUE;
@@ -161,15 +158,15 @@ class VTQL_Lexer {
 	public $state = 1;
 	private $data;
 	public $mandatory_states = array (
-			'select',
-			'column_list',
-			'from',
-			'table'
+		'select',
+		'column_list',
+		'from',
+		'table'
 	);
 	public $optional_states = array (
-			'where',
-			'orderby',
-			'limit'
+		'where',
+		'orderby',
+		'limit'
 	);
 	public $mandatory;
 	public $current_state;
@@ -181,7 +178,7 @@ class VTQL_Lexer {
 		$this->current_state = 0;
 	}
 	public function __toString() {
-		return $this->token . "";
+		return $this->token . '';
 	}
 	private $_yy_state = 1;
 	private $_yy_stack = array ();
@@ -200,8 +197,8 @@ class VTQL_Lexer {
 	}
 	public function yylex1() {
 		$tokenMap = array (
-				1 => 2,
-				4 => 0
+			1 => 2,
+			4 => 0
 		);
 		if ($this->index >= strlen($this->data)) {
 			return false; // end of input
@@ -213,7 +210,7 @@ class VTQL_Lexer {
 				$yysubmatches = $yymatches;
 				$yymatches = array_filter($yymatches, 'strlen'); // remove empty sub-patterns
 				if (!count($yymatches)) {
-					throw new Exception('Error: lexing failed because a rule matched an empty string. Input "' . substr($this->data, $this->index, 5) . ' state INITR');
+					throw new InvalidArgumentException('Error: lexing failed because a rule matched an empty string. Input "' . substr($this->data, $this->index, 5) . ' state INITR');
 				}
 				next($yymatches); // skip global match
 				$this->token = key($yymatches); // token number
@@ -240,19 +237,18 @@ class VTQL_Lexer {
 					if ($this->index >= strlen($this->data)) {
 						return false; // end of input
 					}
-					// skip this token
-					continue;
+					// skip this token > continue
 				} else {
 					$yy_yymore_patterns = array (
-							1 => "^([ \t\r\n]+)",
-							4 => ""
+						1 => "^([ \t\r\n]+)",
+						4 => ''
 					);
 					// yymore is needed
 					do {
-						if (! strlen($yy_yymore_patterns [$this->token])) {
-							throw new Exception('cannot do yymore for the last token');
+						if (! strlen($yy_yymore_patterns[$this->token])) {
+							throw new InvalidArgumentException('cannot do yymore for the last token');
 						}
-						if (preg_match($yy_yymore_patterns [$this->token], substr($this->data, $this->index), $yymatches)) {
+						if (preg_match($yy_yymore_patterns[$this->token], substr($this->data, $this->index), $yymatches)) {
 							$yymatches = array_filter($yymatches, 'strlen'); // remove empty sub-patterns
 							next($yymatches); // skip global match
 							$this->token = key($yymatches); // token number
@@ -266,46 +262,42 @@ class VTQL_Lexer {
 					return true;
 				}
 			} else {
-				throw new Exception('Unexpected input at line' . $this->linenum . ': ' . $this->data [$this->index]);
+				throw new InvalidArgumentException('Unexpected input at line' . $this->linenum . ': ' . $this->data [$this->index]);
 			}
-			break;
 		} while (true);
 	} // end function
 
 	const INITR = 1;
 
 	public function yy_r1_1($yy_subpatterns) {
-		global $orderby;
-		// echo "<br> ql state: ",$this->current_state," ",$this->value,"<br>";
+		global $vtqlp_orderby;
 		if ($this->mandatory) {
-			// echo "<br> ql state: ",$this->current_state," ",$this->value,"<br>";
 			$handler = 'handle' . $this->mandatory_states [$this->current_state];
 			$this->token = $handler($this, $this->value);
 		} else {
 			$str = $this->value;
-			if (strcmp($this->value, ";") === 0) {
+			if (strcmp($this->value, ';') === 0) {
 				$this->token = handleend($this, $this->value);
 				return;
 			}
-			if (strcasecmp($this->value, "order") === 0) {
-				$orderby = true;
+			if (strcasecmp($this->value, 'order') === 0) {
+				$vtqlp_orderby = true;
 				return false;
-			} elseif (strcasecmp($this->value, "by") === 0 && $orderby === true) {
-				$orderby = false;
+			} elseif (strcasecmp($this->value, 'by') === 0 && $vtqlp_orderby === true) {
+				$vtqlp_orderby = false;
 				$this->current_state = 1;
 			}
-			$index = array_search(strtolower($str), $this->optional_states, true);
-			if ($index !== false) {
-				$this->current_state = $index;
+			$idx = array_search(strtolower($str), $this->optional_states, true);
+			if ($idx !== false) {
+				$this->current_state = $idx;
 			}
 			$handler = 'handle' . $this->optional_states [$this->current_state];
 			$this->token = $handler($this, $this->value);
-		} // $this->yypushstate($this->value);
+		}
 	}
 
 	public function yy_r1_4($yy_subpatterns) {
 		return false;
 	}
 }
-
 ?>

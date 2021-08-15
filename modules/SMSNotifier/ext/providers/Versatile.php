@@ -14,10 +14,10 @@ class Versatile implements ISMSProvider {
 	private $userName;
 	private $password;
 	private $parameters = array();
-	public $helpURL = 'http://versatilesmshub.com/';
+	public $helpURL = 'https://versatilesmshub.com/';
 	public $helpLink = 'Versatile';
 
-	const SERVICE_URI = 'http://sms.versatilesmshub.com/api/mt';
+	const SERVICE_URI = 'https://sms.versatilesmshub.com/api/mt';
 	private static $REQUIRED_PARAMETERS = array('senderid', 'channel', 'DCS', 'flashsms', 'route');
 
 	public function __construct() {
@@ -128,10 +128,10 @@ class Versatile implements ISMSProvider {
 			$result = array( 'error' => false, 'statusmessage' => '' );
 			if (preg_match("/ERR:(.*)/", trim($responseLine), $matches)) {
 				$result['error'] = true;
-				if (count($tonumbers) > 1) {
-					$result['to'] = $tonumbers[0].'...';
+				if (count($toNumbers) > 1) {
+					$result['to'] = $toNumbers[0].'...';
 				} else {
-					$result['to'] = $tonumbers[0];
+					$result['to'] = $toNumbers[0];
 				}
 				$result['statusmessage'] = $matches[0]; // Complete error message
 			} elseif (preg_match("/ID: ([^ ]+)TO:(.*)/", $responseLine, $matches)) {

@@ -55,7 +55,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$secondarymodule = $get_secondmodules[1];
 		}
 
-		if (isPermitted($primarymodule, 'index') == 'yes' && $permission!=false) {
+		if (isPermitted($primarymodule, 'index') == 'yes' && $permission) {
 			$response = array(
 				'permission'=>1,
 				'primarymodule' => $primarymodule,
@@ -84,7 +84,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$BLOCK1 = array_merge((array)$BLOCK1, $SECMODFIELDS);
 
 			$BLOCK2 = $oReport->getSelectedColumnsList($recordid);
-			if ($permission == false) {
+			if (!$permission) {
 				echo json_encode(array('permission'=>0));
 			} else {
 				if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='crosstabsql') {
@@ -109,7 +109,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$AGGFIELDS = $BLOCK1;
 			$SECMODFIELDS = (array)getSecondaryColumnsHTML($secondarymodule);
 			$BLOCK1 = array_merge((array)$BLOCK1, $SECMODFIELDS);
-			if ($permission == false) {
+			if (!$permission) {
 				echo json_encode(array('permission'=>0));
 			} else {
 				if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='crosstabsql') {
@@ -167,9 +167,15 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 
 			$BLOCK1 = getPrimaryStdFilterHTML($oReport->primodule, $oReport->stdselectedcolumn);
 			$BLOCK1 =array_merge((array)$BLOCK1, (array)getSecondaryStdFilterHTML($oReport->secmodule, $oReport->stdselectedcolumn));
-			$selectedcolumnvalue = '"'. $oReport->stdselectedcolumn . '"';
-			if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false) {
-				$BLOCK1 = array_merge((array)$BLOCK1, array('selected'=>true,'value'=>'Not Accessible','label'=>$app_strings['LBL_NOT_ACCESSIBLE']));
+			$found = false;
+			foreach ($BLOCK1 as $block_field) {
+				$found = ($block_field['value']==$oReport->stdselectedcolumn);
+				if ($found) {
+					break;
+				}
+			}
+			if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && !$found) {
+				$BLOCK1 = array_merge((array)$BLOCK1, array(array('selected'=>true,'value'=>'Not Accessible','label'=>$app_strings['LBL_NOT_ACCESSIBLE'])));
 			}
 
 			$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria($oReport->stdselectedfilter);
@@ -351,7 +357,7 @@ function get_Secondmodules($oReport, $primarymodule) {
 	if (!empty($oReport->related_modules[$primarymodule])) {
 		foreach ($oReport->related_modules[$primarymodule] as $value) {
 			if (isset($_REQUEST['secondarymodule_'.$value])) {
-				$secondarymodules []= $_REQUEST['secondarymodule_'.$value];
+				$secondarymodules[]= $_REQUEST['secondarymodule_'.$value];
 				$oReport->getSecModuleColumnsList($_REQUEST['secondarymodule_'.$value]);
 				if (!isPermitted($_REQUEST['secondarymodule_'.$value], 'index')== 'yes' && !empty($_REQUEST['secondarymodule_'.$value])) {
 					$permission = false;
@@ -372,15 +378,15 @@ function getPrimaryColumnsHTML($module, $secondmodule) {
 	$ogReport = new Reports();
 	$ogReport->getPriModuleColumnsList($module);
 	$ogReport->getSecModuleColumnsList($secondmodule);
-
+	$crmtable = CRMEntity::getcrmEntityTableAlias($module, true);
 	$block_listed = array();
 	$modules_list = array();
 	foreach ($ogReport->module_list[$module] as $value) {
 		$modules_optgroup = array();
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !isset($block_listed[$value])) {
 			$block_listed[$value] = true;
-			if ($id_added==false) {
-				$v = 'vtiger_crmentity:crmid:'.$module.'_ID:crmid:I';
+			if (!$id_added) {
+				$v = $crmtable.':crmid:'.$module.'_ID:crmid:I';
 				$label = getTranslatedString($module.' ID', $module);
 				$modules_optgroup[] = array('value'=>$v,'label'=>$label);
 				$id_added=true;
@@ -447,7 +453,7 @@ function getPrimaryColumns_GroupingHTML($module, $selected = '') {
 
 	$block_listed = array();
 	$selected = decode_html($selected);
-
+	$crmtable = CRMEntity::getcrmEntityTableAlias($module, true);
 	$oReport->getPriModuleColumnsList($module);
 	$list = array();
 	foreach ($oReport->module_list[$module] as $value) {
@@ -460,13 +466,13 @@ function getPrimaryColumns_GroupingHTML($module, $selected = '') {
 				'style' => 'border:none'
 			);
 
-			if ($id_added==false) {
+			if (!$id_added) {
 				$option = array(
-					'value' => 'vtiger_crmentity:crmid:'.$module.'_ID:crmid:I',
+					'value' => $crmtable.':crmid:'.$module.'_ID:crmid:I',
 					'label' => getTranslatedString($module, $module).' '.getTranslatedString('ID', $module)
 				);
 
-				if ($selected == 'vtiger_crmentity:crmid:'.$module.'_ID:crmid:I') {
+				if ($selected == $crmtable.':crmid:'.$module.'_ID:crmid:I') {
 					$option['selected'] = true;
 				}
 				$optgroup['options'][] = $option;
@@ -779,7 +785,7 @@ function getRelatedColumns($selected = '') {
 	} elseif ($selected=='All') {
 		return $related_fields;
 	} else {
-		return ;
+		return array();
 	}
 }
 

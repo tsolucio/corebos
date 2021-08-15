@@ -36,18 +36,18 @@ class File extends Response {
 		do {
 			$index = strpos($path, '/', $start);
 			$start = $index + 1;
-			if ($index != false && $path[$index - 1] == '\\'.DIRECTORY_SEPARATOR) {
+			if ($index && $path[$index - 1] == '\\'.DIRECTORY_SEPARATOR) {
 				continue;
-			} elseif ($index != false) {
+			} elseif ($index) {
 				$path[$index] = DIRECTORY_SEPARATOR;
 			}
-		} while ($index != false);
+		} while ($index);
 		return $path;
 	}
 
 	public function getDefaultFilePath() {
 		$folder = $this->getDefaultFolderPath();
-		return $folder.strtotime("now").'.sql';
+		return $folder.strtotime('now').'.sql';
 	}
 
 	public function startBackup() {

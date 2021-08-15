@@ -15,6 +15,8 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'modules/Messages/Messages.php';
 require_once 'modules/Emails/mail.php';
 include_once 'include/Webservices/VtigerEmailOperation.php';
+include_once 'include/integrations/sendgrid/sendgrid.php';
+require_once 'data/CRMEntity.php';
 
 class VTEmailTask extends VTTask {
 	// Sending email takes more time, this should be handled via queue all the time.
@@ -27,7 +29,7 @@ class VTEmailTask extends VTTask {
 	private $entityinfo = '';
 
 	public function getFieldNames() {
-		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids');
+		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar', 'cbmsgtemplate', 'cbmsgtemplate_display', 'sgmsgtemplate', 'linktemplate');
 	}
 	public function after_retrieve() {
 		global $adb, $current_user;
@@ -35,14 +37,8 @@ class VTEmailTask extends VTTask {
 		$this->dzattinfo = array();
 		if (!empty($this->attachmentids)) {
 			$GenDocActive = vtlib_isModuleActive('evvtgendoc');
-			if ($GenDocActive) {
-				include_once 'modules/evvtgendoc/OpenDocument.php';
-				$gendoc_url = GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc');
-				$gendoc_srv = coreBOS_Settings::getSetting('cbgendoc_server', '');
-				$GenDocPDF = ($gendoc_srv!='' || $gendoc_url!='');
-			} else {
-				$GenDocPDF = false;
-			}
+			include_once 'modules/evvtgendoc/OpenDocument.php';
+			$GenDocPDF = ($GenDocActive && OpenDocument::PDFConversionActive());
 			$aids = explode(',', trim($this->attachmentids, ','));
 			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_notes.filename, vtiger_notes.filesize,
 					vtiger_notes.template, vtiger_notes.template_for
@@ -119,7 +115,11 @@ class VTEmailTask extends VTTask {
 			$rt = new VTEmailRecipientsTemplate($this->replyto);
 			$replyto = $rt->render($entityCache, $entity->getId());
 		}
-		$et = new VTEmailRecipientsTemplate($this->recepient);
+		if (isset($entity->WorkflowContext['SendEmailTo'])) {
+			$et = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendEmailTo']);
+		} else {
+			$et = new VTEmailRecipientsTemplate($this->recepient);
+		}
 		$to_email = $et->render($entityCache, $entity->getId());
 		if (empty($this->emailcc)) {
 			$cc = '';
@@ -143,13 +143,114 @@ class VTEmailTask extends VTTask {
 				$bcc = $mailto;
 			}
 		}
-		$to_email = preg_replace('/,,+/', ',', $to_email);
-		$cc = preg_replace('/,,+/', ',', $cc);
-		$bcc = preg_replace('/,,+/', ',', $bcc);
+		$to_email = trim(preg_replace('/,,+/', ',', $to_email), ',');
+		$cc = trim(preg_replace('/,,+/', ',', $cc), ',');
+		$bcc = trim(preg_replace('/,,+/', ',', $bcc), ',');
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
-			return ;
+			$util->revertUser();
+			return;
+		}
+		if (!empty($entity->WorkflowContext['SendThisMsgTemplate'])) {
+			if (strpos($entity->WorkflowContext['SendThisMsgTemplate'], 'x')>0) {
+				list($wsid, $entity->WorkflowContext['SendThisMsgTemplate']) = explode('x', $entity->WorkflowContext['SendThisMsgTemplate']);
+			}
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('MsgTemplate');
+			$mtrs = $adb->pquery(
+				'select subject,template,templateonlytext
+				from vtiger_msgtemplate
+				inner join '.$crmEntityTable.' on msgtemplateid=vtiger_crmentity.crmid
+				where vtiger_crmentity.deleted=0 and msgtemplateid=?',
+				array($entity->WorkflowContext['SendThisMsgTemplate'])
+			);
+			if ($mtrs && $adb->num_rows($mtrs)>0) {
+				if (!empty($mtrs->fields['subject'])) {
+					$this->subject = $mtrs->fields['subject'];
+				}
+				if (!empty($mtrs->fields['template'])) {
+					$this->content = $mtrs->fields['template'];
+				}
+				$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Documents');
+				$docrs = $adb->pquery(
+					'select notesid
+					from vtiger_senotesrel
+					inner join '.$crmEntityTable1.' on vtiger_crmentity.crmid=vtiger_senotesrel.notesid
+					where vtiger_crmentity.deleted=0 and vtiger_senotesrel.crmid=?',
+					array($entity->WorkflowContext['SendThisMsgTemplate'])
+				);
+				while (!$docrs->EOF) {
+					$doc = $docrs->FetchRow();
+					if (strpos($this->attachmentids, $doc['notesid'])===false) {
+						$this->attachmentids .= ($this->attachmentids=='' ? $doc['notesid'] : ','.$doc['notesid']);
+					}
+				}
+			}
+		}
+		if (!empty($this->linktemplate) && !empty($this->cbmsgtemplate)) {
+			$mail_templateid = $this->cbmsgtemplate;
+			list($tabid,$record_id) = explode('x', $entity->getId());
+			$msgtemp_res = $adb->pquery(
+				'select subject,template,templateonlytext
+				from vtiger_msgtemplate
+				inner join vtiger_crmentity on msgtemplateid=crmid
+				where deleted=0 and msgtemplateid=?',
+				array($mail_templateid)
+			);
+			if ($msgtemp_res && $adb->num_rows($msgtemp_res) > 0) {
+				if (!empty($msgtemp_res->fields['subject'])) {
+					$this->subject = $msgtemp_res->fields['subject'];
+				}
+				if (!empty($msgtemp_res->fields['template'])) {
+					$this->content = $msgtemp_res->fields['template'];
+				}
+				$this->subject = getMergedDescription($this->subject, $record_id, $entity->moduleName);
+				$this->content = getMergedDescription($this->content, $record_id, $entity->moduleName);
+				$mailtemp_docrs = $adb->pquery(
+					'select notesid
+					from vtiger_senotesrel
+					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_senotesrel.notesid
+					where vtiger_crmentity.deleted=0 and vtiger_senotesrel.crmid=?',
+					array($mail_templateid)
+				);
+				while (!$mailtemp_docrs->EOF) {
+					$doc = $mailtemp_docrs->FetchRow();
+					if (strpos($this->attachmentids, $doc['notesid'])===false) {
+						$this->attachmentids .= ($this->attachmentids=='' ? $doc['notesid'] : ','.$doc['notesid']);
+					}
+				}
+			}
+		}
+		$ids = array();
+		if (!empty($entity->WorkflowContext['MergeTemplateWith'])) {
+			$ids = explode(',', $entity->WorkflowContext['MergeTemplateWith']);
+		}
+		foreach ($ids as $id) {
+			if (strpos($id, 'x')>0) {
+				list($wsid, $id) = explode('x', $id);
+				$module = vtws_getEntityName($wsid);
+			} else {
+				$module = getSalesEntityType($id);
+			}
+			$this->subject = getMergedDescription($this->subject, $id, $module);
+			$this->content = getMergedDescription($this->content, $id, $module);
 		}
 		$this->after_retrieve();
+		if (!empty($entity->WorkflowContext['wfgenerated_file'])) {
+			$sendifempty = GlobalVariable::getVariable('Report_Send_Scheduled_ifEmpty', 1);
+			if ($sendifempty) {
+				for ($y=0; $y < count($entity->WorkflowContext['wfgenerated_file']); $y++) {
+					$this->attachmentsinfo[] = $entity->WorkflowContext['wfgenerated_file'][$y]['path'].$entity->WorkflowContext['wfgenerated_file'][$y]['name'];
+				}
+			} else {
+				for ($y=0; $y < count($entity->WorkflowContext['wfgenerated_file']); $y++) {
+					if ($entity->WorkflowContext['wfgenerated_file'][$y]['hascontent']) {
+						$this->attachmentsinfo[] = $entity->WorkflowContext['wfgenerated_file'][$y]['path'].$entity->WorkflowContext['wfgenerated_file'][$y]['name'];
+					}
+				}
+				if (empty($this->attachmentsinfo)) {
+					return;
+				}
+			}
+		}
 		if (!empty($this->attfieldnames)) {
 			if (substr($this->attfieldnames, -24) == ' : (Documents) filename)') {
 				$this->attfieldnames = substr($this->attfieldnames, 1, strlen($this->attfieldnames)-25);
@@ -181,6 +282,17 @@ class VTEmailTask extends VTTask {
 				$this->attachmentsinfo[] = $pathattfield;
 			}
 		}
+		if (!empty($this->attach_icalendar) && $this->attach_icalendar == 'on' && $entity->moduleName == 'cbCalendar') {
+			list($tabid,$recordid) = explode('x', $entity->getId());
+			if (isRecordExists($recordid)) {
+				$cbCalendar = CRMEntity::getInstance('cbCalendar');
+				$cbCalendar->retrieve_entity_info($recordid, 'cbCalendar');
+				$icalfilename = $cbCalendar->getiCalendar($cbCalendar);
+				if (!empty($icalfilename)) {
+					$this->attachmentsinfo[] = $icalfilename;
+				}
+			}
+		}
 		$st = new VTSimpleTemplate($this->subject);
 		$subject = $st->render($entityCache, $entity->getId());
 		$ct = new VTSimpleTemplate($this->content);
@@ -193,6 +305,7 @@ class VTEmailTask extends VTTask {
 		$element['parent_type'] = $module;
 		$element['parent_id'] = $entity->getId();
 		$element['from_email'] = $from_email;
+		$element['replyto'] = $replyto;
 		$element['ccmail'] = $cc;
 		$element['bccmail'] = $bcc;
 		$element['subject'] = $subject;
@@ -203,8 +316,41 @@ class VTEmailTask extends VTTask {
 		if ($crmid=='') {
 			list($wsid, $crmid) = explode('x', $emailid);
 		}
+		if (!empty($this->linktemplate) && !empty($this->sgmsgtemplate)) {
+			include_once 'include/integrations/sendgrid/sendgrid.php';
+			$sdInstance = new corebos_sendgrid();
+			try {
+				$res = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $entity->moduleName, $to_email, $subject, $this->attachmentsinfo, $from_name, $from_email, $cc, $bcc, $replyto);
+				$logbg->debug(
+					'SG template mail was sent',
+					[
+						'To' => $to_email,
+						'FromName' => $from_name,
+						'FromEmail' => $from_email,
+						'CC' => $cc,
+						'BCC' => $bcc,
+						'Result' => $res,
+						'AttInfo' => $this->attachmentsinfo,
+					]
+				);
+			} catch (Exception $e) {
+				$logbg->debug('SG template mail failed: '. $e->getMessage());
+			}
+			return;
+		}
 		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
-		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo\nAttInfo: ".print_r($this->attachmentsinfo, true));
+		$logbg->debug(
+			'EmailWFTask',
+			[
+				'To' => $to_email,
+				'FromName' => $from_name,
+				'FromEmail' => $from_email,
+				'CC' => $cc,
+				'BCC' => $bcc,
+				'Result' => $rdo,
+				'AttInfo' => $this->attachmentsinfo,
+			]
+		);
 		$util->revertUser();
 	}
 
@@ -275,7 +421,7 @@ class VTEmailTask extends VTTask {
 				$no_message = true;
 				break;
 		}
-		if ($no_message == false) {
+		if (!$no_message) {
 			$focus->column_fields['messagetype'] = 'email';
 			if ($templateid != 0) {
 				$focus->column_fields['email_tplid'] = $templateid;

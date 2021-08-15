@@ -9,7 +9,6 @@
  ********************************************************************************/
 -->*}
 
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
@@ -24,7 +23,6 @@
 		<input type='hidden' name='mode' value='save'>
 		<input type='hidden' name='return_action' value='MailScanner'>
 		<input type='hidden' name='return_module' value='Settings'>
-		<input type='hidden' name='parenttab' value='Settings'>
 
 		<br>
 
@@ -33,7 +31,7 @@
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'mailScanner.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MAIL_SCANNER}" width="48" height="48" border=0 title="{$MOD.LBL_MAIL_SCANNER}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small cblds-p-v_none">{$MOD.LBL_MAIL_SCANNER_DESCRIPTION}</td>
@@ -200,7 +198,7 @@
 				<tr>
 					<td colspan=2 nowrap align="center" class="cblds-t-align_center">
 						<input type="submit" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" onclick="return mailscaneredit_validateform(this.form);" />
-						<input type="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onclick="window.location.href='index.php?module=Settings&action=MailScanner&parenttab=Settings'"/>
+						<input type="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onclick="window.location.href='index.php?module=Settings&action=MailScanner'"/>
 					</td>
 				</tr>
 				</table>

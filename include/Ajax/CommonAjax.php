@@ -16,7 +16,7 @@ if (isset($_REQUEST['module'])) {
 		$moduleFilepath = 'modules/' . $_REQUEST['module'] . '/actions/'. $_REQUEST['actionname'].'.php';
 	} elseif (isset($_REQUEST['file'])) {
 		$moduleFilepath = 'modules/'.$_REQUEST['module'].'/'.$_REQUEST['file'].'.php';
-		if (file_exists($moduleFilepath) == false) {
+		if (!file_exists($moduleFilepath)) {
 			$moduleFilepath = 'modules/Vtiger/'.$_REQUEST['file'].'.php';
 		}
 	}

@@ -18,7 +18,7 @@ $returnaction = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['retu
 if ((($returnmodule != 'Emails') || ($returnmodule == 'Emails' && empty($_REQUEST['record']))) && !empty($_REQUEST['return_id'])) {
 	$returnid = vtlib_purify($_REQUEST['return_id']);
 } else {
-	$returnid = $focus->id;//$_REQUEST['record'];
+	$returnid = $focus->id;
 }
 
 $adb->println("\n\nMail Sending Process has been started.");
@@ -55,6 +55,7 @@ if (isset($_REQUEST['assigntype']) && $_REQUEST['assigntype'] == 'T' && !empty($
 } else {
 	$to_email = getUserEmailId('id', $focus->column_fields['assigned_user_id']);
 }
+$replyto = $_REQUEST['replyto'];
 $cc = $_REQUEST['ccmail'];
 $bcc = $_REQUEST['bccmail'];
 $errorheader1 = 0;
@@ -85,6 +86,16 @@ if (!empty($_REQUEST['from_email'])) {
 	$from_address = 'FROM:::>'.$from_address;
 }
 
+// Group emails
+if (isset($_REQUEST['individual_emails']) && $_REQUEST['individual_emails'] == 'on') {
+	$individual_emails = 1;
+} else {
+	$individual_emails = 0;
+}
+$logo = '';
+$subject = '';
+$description = '';
+
 for ($i=0; $i<(count($myids)-1); $i++) {
 	$realid=explode('@', $myids[$i]);
 	$nemail=count($realid);
@@ -95,17 +106,33 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 		$emailadd = $adb->query_result($rs, 0, 'email1');
 		$pmodule = 'Users';
 		$description = getMergedDescription($_REQUEST['description'], $mycrmid, $pmodule);
-		$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $_REQUEST['subject'], $description, '', '', 'all', $focus->id);
-		$all_to_emailids []= $emailadd;
-		$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
+		$all_to_emailids[]= $emailadd;
+		if ($individual_emails) {
+			$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $_REQUEST['subject'], $description, $cc, '', 'all', $focus->id);
+			$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
+		}
 	} else {
 		//Send mail to account, lead or contact based on their ids
 		$pmodule=getSalesEntityType($mycrmid);
 		$subject = $_REQUEST['subject'];
 		$description = $_REQUEST['description'];
+
+		// Merge template
+		$ids = array();
+		if (isset($_REQUEST['merge_template_with']) && $_REQUEST['merge_template_with'] != '') {
+			$ids = explode(',', $_REQUEST['merge_template_with']);
+		}
+		if (count($ids) > 0) {
+			foreach ($ids as $id) {
+				$module = getSalesEntityType($id);
+				$subject = getMergedDescription($subject, $id, $module);
+				$description = getMergedDescription($description, $id, $module);
+			}
+		}
+
 		for ($j=1; $j<$nemail; $j++) {
 			$temp=$realid[$j];
-			$myquery='Select columnname from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
+			$myquery='select fieldname from vtiger_field where fieldid=? and vtiger_field.presence in (0,2)';
 			$fresult=$adb->pquery($myquery, array($temp));
 			// vtlib customization: Enabling mail send from other modules
 			$myfocus = CRMEntity::getInstance($pmodule);
@@ -122,7 +149,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 				$subject=getMergedDescription($subject, $accid, 'Accounts');
 				$description=getMergedDescription($description, $accid, 'Accounts');
 			}
-			$fldname=$adb->query_result($fresult, 0, 'columnname');
+			$fldname=$adb->query_result($fresult, 0, 'fieldname');
 			$emailadd=br2nl($myfocus->column_fields[$fldname]);
 
 			if ($emailadd != '') {
@@ -142,20 +169,34 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 				} else {
 					$logo = 0;
 				}
-				if (isPermitted($pmodule, 'DetailView', $mycrmid) == 'yes') {
-					$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $subject, $description, '', '', 'all', $focus->id, $logo);
-				}
 
-				$all_to_emailids []= $emailadd;
-				$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
-				//added to get remain the EditView page if an error occurs in mail sending
-				if ($mail_status != 1) {
-					$errorheader2 = 1;
+				$all_to_emailids[]= $emailadd;
+
+				if ($individual_emails) {
+					if (isPermitted($pmodule, 'DetailView', $mycrmid) == 'yes') {
+						$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $subject, $description, $cc, '', 'all', $focus->id, $logo, $replyto);
+					}
+					$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
+					//added to get remain the EditView page if an error occurs in mail sending
+					if ($mail_status != 1) {
+						$errorheader2 = 1;
+					}
 				}
 			}
 		}
 	}
 }
+
+// Sending group emails
+if (!$individual_emails) {
+	$mail_status = send_mail('Emails', implode(',', $all_to_emailids), $from_name, $from_address, $subject, $description, $cc, '', 'all', $focus->id, $logo, $replyto);
+	$mail_status_str .= $mail_status.'&&&';
+	//added to get remain the EditView page if an error occurs in mail sending
+	if ($mail_status != 1) {
+		$errorheader2 = 1;
+	}
+}
+
 //Added to redirect the page to Emails/EditView if there is an error in mail sending
 if ($errorheader1 == 1 || $errorheader2 == 1) {
 	$returnmodule = 'Emails';

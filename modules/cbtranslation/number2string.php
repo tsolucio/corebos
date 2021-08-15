@@ -30,6 +30,7 @@ class number2string {
 		}
 		self::$lang2use = $lang;
 		$lng = self::getLanguage($lang);
+		$x = str_replace(',', '', $x);
 		$parte1 = floor($x / 1000000);
 		$parte2 = floor(($x - $parte1 * 1000000) / 1000);
 		$parte3 = $x - $parte1 * 1000000 - $parte2 * 1000;

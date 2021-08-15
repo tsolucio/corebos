@@ -764,6 +764,7 @@ $mod_strings = array(
 'Symbol Placement' => 'Posición de Símbolo',
 'Number Of Currency Decimals'  =>  'Número de Decimales',
 'PASSWORD REQUIREMENTS' => 'REQUISITOS CONTRASEÑA',
+'PASSWORD REQUIREMENTS NOT MET' => 'NO SE CUMPLEN LOS REQUISITOS DE CONTRASEÑA',
 'REQUIRED' => 'OBLIGATORIO',
 'Min. 8 characters' => 'Mínimo 8 caracteres',
 'Contains3of4' => 'CONTRASEÑA CUMPLE AL MENOS 3 DE LAS SIGUIENTES CONDICIONES',
@@ -782,5 +783,6 @@ $mod_strings = array(
 'LBL_QUERY' => 'Consulta',
 'LBL_FORE_LASTNAME' => 'Nombre o Apellido',
 'LBL_NO_LDAP_MATCHES' => 'No se han encontrado usuarios en el servidor LDAP!',
+'EntityName' => 'Nombre Entidad',
 );
 ?>

@@ -9,7 +9,7 @@
   *********************************************************************************/
 header('X-Frame-Options: DENY');
 //we don't want the parent module's string file, but rather the string file specifc to this subpanel
-global $current_language;
+global $current_language, $current_user;
 $current_module_strings = return_module_language($current_language, 'Users');
 
 define('IN_LOGIN', true);
@@ -55,15 +55,16 @@ require_once 'data/Tracker.php';
 require_once 'include/utils/utils.php';
 require_once 'vtigerversion.php';
 
-global $currentModule, $adb, $coreBOS_app_version;
+global $currentModule, $adb, $coreBOS_app_version, $default_language;
 $image_path='include/images/';
 
-$app_strings = return_application_language('en_us');
+$app_strings = return_application_language($default_language);
 
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 use \RobThree\Auth\TwoFactorAuth;
 
-$tfa = new TwoFactorAuth('coreBOSWebApp');
+$coreBOSWebApp = GlobalVariable::getVariable('Application_UI_Name', 'coreBOS').'-'.getUserName($focus->id);
+$tfa = new TwoFactorAuth($coreBOSWebApp);
 $twofasecret = coreBOS_Settings::getSetting('coreBOS_2FA_Secret_'.$focus->id, false);
 if ($twofasecret===false) {
 	$secret = $tfa->createSecret(160);
@@ -72,6 +73,8 @@ if ($twofasecret===false) {
 }
 $code = $tfa->getCode($twofasecret);
 coreBOS_Settings::setSetting('coreBOS_2FA_Code_'.$focus->id, $code);
+$focus->retrieveCurrentUserInfoFromFile($focus->id);
+$current_user = $focus;
 Users::send2FACode($code, $focus->id);
 
 $smarty=new vtigerCRM_Smarty;

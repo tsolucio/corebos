@@ -20,6 +20,9 @@ class VTCreateEntityTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user, $from_wf, $logbg;
+		if (!vtlib_isModuleActive($this->entity_type)) {
+			return;
+		}
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 
@@ -28,13 +31,7 @@ class VTCreateEntityTask extends VTTask {
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
-
 		$entityType = $this->entity_type;
-		if (!vtlib_isModuleActive($entityType)) {
-			$util->revertUser();
-			return;
-		}
-
 		$fieldValueMapping = array();
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
@@ -54,11 +51,12 @@ class VTCreateEntityTask extends VTTask {
 			$newEntity->mode = '';
 			if ($moduleName == $entityType) {
 				$newEntity->column_fields = $focus->column_fields;
+				unset($newEntity->column_fields['cbuuid']);
 			}
-			$newEntityData = VTEntityData::fromCRMEntity($newEntity);
 			$entityModuleHandler = vtws_getModuleHandlerFromName($entityType, $current_user);
 			$handlerMeta = $entityModuleHandler->getMeta();
 			$ownerFields = $handlerMeta->getOwnerFields();
+			$imageFields = $handlerMeta->getImageFields();
 			$dtFields = $handlerMeta->getFieldListByType('datetime');
 			$datetimeFields = array();
 			foreach ($dtFields as $webserviceField) {
@@ -67,27 +65,19 @@ class VTCreateEntityTask extends VTTask {
 			unset($dtFields);
 			$logbg->debug($focus->column_fields);
 			$logbg->debug($fieldValueMapping);
+			$files_set = false;
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
-				$referenceModule = $fieldInfo['modulename'];
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue = trim($fieldInfo['value']);
 
 				if ($fieldValueType == 'fieldname' && !preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue)) {
-					if ($referenceModule == $entityType) {
-						$fieldValue = $newEntity->column_fields[$fieldValue];
-					} else {
-						$fieldValue = ($fieldValue == 'id' ? $focus->column_fields['record_id'] : $focus->column_fields[$fieldValue]);
-					}
+					$fieldValue = ($fieldValue == 'id' ? $focus->column_fields['record_id'] : $focus->column_fields[$fieldValue]);
 				} elseif ($fieldValueType == 'expression' || ($fieldValueType == 'fieldname' && preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue))) {
 					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
 					$expression = $parser->expression();
 					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-					if ($referenceModule == $entityType) {
-						$fieldValue = $exprEvaluater->evaluate($newEntityData);
-					} else {
-						$fieldValue = $exprEvaluater->evaluate($entity);
-					}
+					$fieldValue = $exprEvaluater->evaluate($entity);
 				} elseif (preg_match('/([^:]+):boolean$/', $fieldValue, $match)) {
 					$fieldValue = $match[1];
 					if ($fieldValue == 'true') {
@@ -112,6 +102,17 @@ class VTCreateEntityTask extends VTTask {
 				if (in_array($fieldName, $datetimeFields) && strpos($fieldValue, ' ')===false) {
 					$rs = $adb->pquery('select start_hour from vtiger_users where id=?', array($current_user->id));
 					$fieldValue = $fieldValue.' '.$adb->query_result($rs, 0, 'start_hour');
+				}
+				if (in_array($fieldName, $imageFields)) {
+					if (!$files_set) {
+						$files_set =true;
+						$_FILES=array();
+					}
+					if (!empty($fieldValue)) {
+						$_REQUEST[$fieldName.'_hidden']=$fieldValue;
+						$_FILES[$fieldName]=array('size'=>0);
+						$_REQUEST['__cbisduplicatedfromrecordid']=$recordId;
+					}
 				}
 
 				$newEntity->column_fields[$fieldName] = $fieldValue;

@@ -10,17 +10,20 @@
 
 class OperationManager {
 	private $format;
-	private $formatsData=array(
-		'json'=>array(
-			'includePath'=>'include/Webservices/OperationManagerEnDecode.php',
-			'class'=>'OperationManagerEnDecode',
-			'encodeMethod'=>'encode',
-			'decodeMethod'=>'decode',
-			'postCreate'=>''
-		)
+	private const FORMATDEFAULTS = array(
+		'includePath'=>'include/Webservices/OperationManagerEnDecode.php',
+		'class'=>'OperationManagerEnDecode',
+		'encodeMethod'=>'encode',
+		'decodeMethod'=>'decode',
+		'postCreate'=>''
 	);
-	private $formatObjects ;
-	private $inParamProcess ;
+	private $formatsData=array(
+		'json'=> self::FORMATDEFAULTS,
+		'stream'=> self::FORMATDEFAULTS,
+		'streamraw'=> self::FORMATDEFAULTS,
+	);
+	private $formatObjects;
+	private $inParamProcess;
 	private $sessionManager;
 	private $pearDB;
 	private $operationName;
@@ -90,18 +93,17 @@ class OperationManager {
 	}
 
 	public function getOperationInput() {
-		$type = strtolower($this->type);
-		switch ($type) {
+		switch (strtolower($this->type)) {
 			case 'get':
 				$input = &$_GET;
-				return $input;
+				break;
 			case 'post':
 				$input = &$_POST;
-				return $input;
+				break;
 			default:
 				$input = &$_REQUEST;
-				return $input;
 		}
+		return $input;
 	}
 
 	public function sanitizeOperation($input) {
@@ -142,20 +144,20 @@ class OperationManager {
 				}
 			}
 			if (!$this->preLogin) {
-				$params[] = $user;
-				return call_user_func_array($this->handlerMethod, $params);
+				$params['user'] = $user;
+				return call_user_func_array($this->handlerMethod, array_values($params));
 			} else {
-				$userDetails = call_user_func_array($this->handlerMethod, $params);
+				$userDetails = call_user_func_array($this->handlerMethod, array_values($params));
 				if (is_array($userDetails)) {
 					return $userDetails;
 				} else {
 					$this->sessionManager->set('authenticatedUserId', $userDetails->id);
+					cbEventHandler::do_action('corebos.login', array($userDetails, $this->sessionManager, 'webservice'));
 					global $adb;
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
 					$userId = vtws_getId($webserviceObject->getEntityId(), $userDetails->id);
 					$vtigerVersion = vtws_getVtigerVersion();
-					$resp = array('sessionName'=>$this->sessionManager->getSessionId(),'userId'=>$userId,'version'=>$API_VERSION,'vtigerVersion'=>$vtigerVersion);
-					return $resp;
+					return array('sessionName'=>$this->sessionManager->getSessionId(), 'userId'=>$userId, 'version'=>$API_VERSION, 'vtigerVersion'=>$vtigerVersion);
 				}
 			}
 		} catch (WebServiceException $e) {

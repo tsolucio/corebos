@@ -57,6 +57,8 @@
 require_once 'modules/cbMap/cbMap.php';
 require_once 'modules/cbMap/processmap/processMap.php';
 
+$IMPORT_TABLE_THREAD = '';
+
 class Import extends processcbMap {
 	private $mapping = array();
 	private $importtype = '';
@@ -67,12 +69,12 @@ class Import extends processcbMap {
 		$contentok = $this->isXML(htmlspecialchars_decode($map->column_fields['content']));
 		if ($contentok !== true) {
 			echo '<b>Incorrect Content</b>';
-			return;
+			return null;
 		}
 		$this->convertMap2Array();
 		if ($this->importtype == 'error') {
 			echo '<b>Incorrect Map Content</b>';
-			return;
+			return null;
 		}
 		$this->doImport($argv);
 		return $this;
@@ -220,7 +222,6 @@ class Import extends processcbMap {
 		$fp = fopen($filename, 'r');
 		$frow = fgetcsv($fp, 1000, $delimiter);
 
-		//$allHeaders = implode(',', $frow);
 		$columns = '`id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, `selected` varchar(3) ';
 		foreach ($frow as $column) {
 			if ($column=='') {
@@ -244,6 +245,7 @@ class Import extends processcbMap {
 
 	private function doImportDirect($csvfile) {
 		include_once 'modules/Users/Users.php';
+		require_once 'data/CRMEntity.php';
 		global $adb,$current_user;
 		$table = $this->initializeImportDirect($csvfile);
 		if ($table == 'error' || $table == '') {
@@ -258,11 +260,12 @@ class Import extends processcbMap {
 		$matchFld=$this->getMapMatchFld();
 		$updateFld=$this->getMapUpdateFld();
 		$options=$this->getMapOptions();
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($module);
 		while ($dataQuery && $data = $adb->fetch_array($dataQuery)) {
 			$id = $data['id'];
 			$index_q = "SELECT $focus->table_name.$focus->table_index
 				FROM $focus->table_name
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$focus->table_name.$focus->table_index
+				INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid=$focus->table_name.$focus->table_index
 				INNER JOIN $customfld[0] ON $customfld[0].$customfld[1]=$focus->table_name.$focus->table_index
 				WHERE vtiger_crmentity.deleted=0 ";
 			foreach ($matchFld as $k => $v) {
@@ -304,10 +307,11 @@ class Import extends processcbMap {
 							if (!empty($otherid)) {
 								include_once "modules/$relModule/$relModule.php";
 								$otherModule = CRMEntity::getInstance($relModule);
+								$crmEntityTable = CRMEntity::getcrmEntityTableAlias($otherModule);
 								$customfld1 = $otherModule->customFieldTable;
 								$index_rel = $adb->query("SELECT $otherModule->table_name.$otherModule->table_index
 									FROM $otherModule->table_name
-									INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$otherModule->table_name.$otherModule->table_index
+									INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid=$otherModule->table_name.$otherModule->table_index
 									INNER JOIN $customfld1[0] ON $customfld1[0].$customfld1[1]=$otherModule->table_name.$otherModule->table_index
 									WHERE vtiger_crmentity.deleted=0 and $fieldName='$otherid'");
 								$focus->column_fields[$upkey] =$adb->query_result($index_rel, 0);
@@ -345,10 +349,11 @@ class Import extends processcbMap {
 						if (!empty($otherid)) {
 							include_once "modules/$relModule/$relModule.php";
 							$otherModule = CRMEntity::getInstance($relModule);
+							$crmEntityTable = CRMEntity::getcrmEntityTableAlias($relModule);
 							$customfld1 = $otherModule->customFieldTable;
 							$index_rel = $adb->query("SELECT $otherModule->table_name.$otherModule->table_index
 								FROM $otherModule->table_name
-								INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$otherModule->table_name.$otherModule->table_index
+								INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid=$otherModule->table_name.$otherModule->table_index
 								INNER JOIN $customfld1[0] ON $customfld1[0].$customfld1[1]=$otherModule->table_name.$otherModule->table_index
 								WHERE vtiger_crmentity.deleted=0 and $fieldName='$otherid'");
 							$focus1->column_fields[$upkey] =$adb->query_result($index_rel, 0);
@@ -369,12 +374,13 @@ class Import extends processcbMap {
 	}
 
 	private function doImportcoreBOS($arguments) {
-		global $current_user, $VTIGER_BULK_SAVE_MODE, $adb;
+		global $current_user, $VTIGER_BULK_SAVE_MODE, $adb, $IMPORT_TABLE_THREAD;
 		$previousBulkSaveMode = isset($VTIGER_BULK_SAVE_MODE) ? $VTIGER_BULK_SAVE_MODE : false;
-		$VTIGER_BULK_SAVE_MODE = true;
+		$IMPORT_TABLE_THREAD = isset($arguments[3]) ? vtlib_purify($arguments[3]) : '';
 		require_once 'modules/Import/api/Request.php';
 		include_once 'modules/Import/controllers/Import_Controller.php';
 		$rs = $adb->pquery('select module,field_mapping,defaultvalues from vtiger_import_maps where id=?', array($this->mapping['mapid']));
+		$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $rs->fields['module'])=='no');
 		$requestArray = array(
 			'module' => $rs->fields['module'],
 			'action' => 'Import',
@@ -390,21 +396,31 @@ class Import extends processcbMap {
 			'merge_fields' => '',
 		);
 		if ($this->mapping['duphandling']!='none') {
-			$requestObject['merge_type'] = ($this->mapping['duphandling'] == 'overwrite' ?
-				Import_Utils::$AUTO_MERGE_OVERWRITE :
-				($this->mapping['duphandling'] == 'merge' ? Import_Utils::$AUTO_MERGE_MERGEFIELDS : Import_Utils::$AUTO_MERGE_IGNORE));
-			$requestObject['merge_fields'] = json_encode($this->mapping['dupmatches']);
+			switch ($this->mapping['duphandling']) {
+				case 'overwrite':
+					$requestArray['merge_type'] = Import_Utils::$AUTO_MERGE_OVERWRITE;
+					break;
+				case 'merge':
+					$requestArray['merge_type'] = Import_Utils::$AUTO_MERGE_MERGEFIELDS;
+					break;
+				default:
+					$requestArray['merge_type'] = Import_Utils::$AUTO_MERGE_IGNORE;
+					break;
+			}
+			$requestArray['merge_fields'] = json_encode($this->mapping['dupmatches']);
 		}
 		$requestObject = new Import_API_Request($requestArray);
 		$importController = new Import_Controller($requestObject, $current_user);
 		@copy($arguments[1], Import_Utils::getImportDirectory().'IMPORT_'.$current_user->id);
+		$adb->query('DROP TABLE IF EXISTS '.Import_Utils::getDbTableName($current_user));
 		$fileReadStatus = $importController->copyFromFileToDB();
 		if ($fileReadStatus) {
 			$importController->queueDataImport(true);
-			$importController->triggerImport();
+			$importController->triggerImport(false, true);
 		} else {
 			echo '<b>Incorrect Import Table</b>';
 		}
+		$adb->query('DROP TABLE IF EXISTS '.Import_Utils::getDbTableName($current_user));
 		$VTIGER_BULK_SAVE_MODE = $previousBulkSaveMode;
 	}
 }

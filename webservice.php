@@ -24,6 +24,7 @@ require_once 'include/Webservices/SessionManager.php';
 require_once 'include/logging.php';
 checkFileAccessForInclusion("include/language/$default_language.lang.php");
 require_once "include/language/$default_language.lang.php";
+include_once 'include/integrations/saml/saml.php';
 
 $API_VERSION = '0.22';
 $adminid = Users::getActiveAdminId();
@@ -37,7 +38,7 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
 	$cors_enabled_domains = GlobalVariable::getVariable('Webservice_CORS_Enabled_Domains', '', 'Users', $adminid);
 	if (isset($_SERVER['HTTP_ORIGIN']) && !empty($cors_enabled_domains)) {
 		$parse = parse_url($_SERVER['HTTP_ORIGIN']);
-		if ($cors_enabled_domains=='*' || !(strpos($cors_enabled_domains, $parse['host'])===false)) {
+		if ($cors_enabled_domains=='*' || strpos($cors_enabled_domains, $parse['host'])!==false) {
 			header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
 			header('Access-Control-Allow-Credentials: true');
 		}
@@ -66,13 +67,15 @@ function setResponseHeaders() {
 	global $cors_enabled_domains;
 	if (isset($_SERVER['HTTP_ORIGIN']) && !empty($cors_enabled_domains)) {
 		$parse = parse_url($_SERVER['HTTP_ORIGIN']);
-		if ($cors_enabled_domains=='*' || !(strpos($cors_enabled_domains, $parse['host'])===false)) {
+		if ($cors_enabled_domains=='*' || strpos($cors_enabled_domains, $parse['host'])!==false) {
 			header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
 			header('Access-Control-Allow-Credentials: true');
 			header('Access-Control-Max-Age: 86400');    // cache for 1 day
 		}
 	}
-	header('Content-type: application/json');
+	if (!(isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || strtolower($_REQUEST['format'])=='streamraw'))) {
+		header('Content-type: application/json');
+	}
 }
 
 function writeErrorOutput($operationManager, $error) {
@@ -119,12 +122,35 @@ $operation = vtws_getParameter($_REQUEST, 'operation');
 $operation = strtolower($operation);
 $format = vtws_getParameter($_REQUEST, 'format', 'json');
 $sessionId = vtws_getParameter($_REQUEST, 'sessionName');
+$mode = vtws_getParameter($_REQUEST, 'mode', '');
 
 $sessionManager = new SessionManager();
+
+$saml = new corebos_saml();
+if ($saml->isActiveWS() && !empty($saml->samlclient) && ($mode!='' || ($operation=='logout' && !empty($sessionId)))) {
+	$sessionManager->startSession();
+	if (!empty($sessionManager->get('samlUserdata'))) {
+		$saml->authenticateWS($sessionManager, $API_VERSION, $mode);
+	} else {
+		if ($operation=='logout' || $mode=='slo') {
+			$saml->logoutWS($sessionId, $sessionManager->get('authenticatedUserId'));
+		} elseif ($mode=='acs') {
+			$saml->acs($sessionManager, $API_VERSION, $mode);
+		} elseif ($mode=='metadata') {
+			$saml->metadata();
+		} else {
+			$rturl = vtws_getParameter($_REQUEST, 'RTURL', '');
+			$saml->login($mode.($rturl=='' ? '' : '&RTURL='.$rturl));
+		}
+	}
+	die();
+}
+
 try {
 	$operationManager = new OperationManager($adb, $operation, $format, $sessionManager);
 } catch (WebServiceException $e) {
-	echo $e->message;
+	$operationManager = new OperationManager($adb, 'getchallenge', 'json', null);
+	writeErrorOutput($operationManager, $e);
 	die();
 }
 
@@ -172,6 +198,9 @@ try {
 	if (!empty($userid)) {
 		$seed_user = new Users();
 		$current_user = $seed_user->retrieveCurrentUserInfoFromFile($userid);
+		if (!empty($current_user->language)) {
+			$app_strings = return_application_language($current_user->language);
+		}
 	} else {
 		$current_user = null;
 	}

@@ -123,7 +123,6 @@ abstract class OpenDocument_Element {
 						$tag = $ReflectionClass->getConstant('nodePrefix') . ':' . $ReflectionClass->getConstant('nodeName');
 						if ($child->nodeName == $tag) {
 							$element = new $class($child, $this->document, (isset($child->text)?$child->text:''));
-							//OpenDocument::addStyles($element->getNode(), $element, $ReflectionClass->getConstant('nodePrefix'));
 							$this->children->append($element);
 							break;
 						}

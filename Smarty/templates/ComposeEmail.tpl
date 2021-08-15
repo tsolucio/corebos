@@ -16,6 +16,7 @@
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
 <link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
+{include file='BrowserVariables.tpl'}
 <script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
@@ -27,6 +28,7 @@
 {literal}
 <form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="if(email_validate(this.form,'')) { VtigerJS_DialogBox.block();} else { return false; }">
 {/literal}
+<input type="hidden" name="merge_template_with" id="merge_template_with" value="{$MERGE_TEMPLATE_WITH}">
 <input type="hidden" name="send_mail" >
 <input type="hidden" name="contact_id" value="{if isset($CONTACT_ID)}{$CONTACT_ID}{/if}">
 <input type="hidden" name="user_id" value="{if isset($USER_ID)}{$USER_ID}{/if}">
@@ -39,6 +41,8 @@
 <input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
 <input type="hidden" name="popupaction" value="create">
 <input type="hidden" name="hidden_toid" id="hidden_toid">
+<input type="hidden" name="cbcustominfo1" id="cbcustominfo1" value="{if isset($smarty.request.cbcustominfo1)}{$smarty.request.cbcustominfo1|@urlencode}{/if}" />
+<input type="hidden" name="cbcustominfo2" id="cbcustominfo2" value="{if isset($smarty.request.cbcustominfo2)}{$smarty.request.cbcustominfo2|@urlencode}{/if}" />
 <table class="small mailClient" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tbody>
 	<tr>
@@ -56,7 +60,9 @@
 	<td class="cellText" style="padding: 5px;">
 		<input name="from_email" id="from_email" class="txtBox" type="text" value="{if isset($FROM_MAIL)}{$FROM_MAIL}{/if}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
 	</td>
-	<td class="cellText" style="padding: 5px;" align="left" nowrap></td>
+	<td class="cellText" style="padding: 5px;" align="left" nowrap>
+		<input type="checkbox" name="individual_emails" {if $SEND_INDIVIDUAL_EMAILS eq 1}checked{/if}/>{$MOD.LBL_SEND_INDIVIDUAL_EMAILS}
+	</td>
 	</tr>
 {foreach item=row from=$BLOCKS}
 {foreach item=elements from=$row}
@@ -66,13 +72,16 @@
 	<td class="cellText" style="padding: 5px;">
 		<input name="listofids" id="listofids" type="hidden" value="{if isset($LISTID)}{$LISTID}{/if}">
 		<input name="{$elements.2.0}" id="{$elements.2.0}" type="hidden" value="{if isset($IDLISTS)}{$IDLISTS}{/if}">
-		<input type="hidden" name="saved_toid" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}">
+		<input name="relateemailwith" id="relateemailwith" type="hidden" value="{if isset($relateemailwith)}{$relateemailwith}{/if}">
+		<input type="hidden" id="saved_toid" name="saved_toid" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}">
 		<input id="parent_name" name="parent_name" readonly class="txtBox" type="text" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}" style="width: 525px;">&nbsp;
 		<span class="mailClientCSSButton">
-			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}"
+				onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails", "test", cbPopupWindowSettings);'
+				align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
 		<span class="mailClientCSSButton" >
-			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('parent_id').value=''; document.getElementById('hidden_toid').value='';document.getElementById('parent_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('parent_id').value=''; document.getElementById('saved_toid').value=''; document.getElementById('hidden_toid').value='';document.getElementById('parent_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 		</span>
 	</td>
 	<td class="cellText" style="padding: 5px;" align="left" nowrap>
@@ -90,16 +99,10 @@
 	</td>
 	</tr>
 	<tr>
-	{if 'ccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
-	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_CC}</td>
+	{if 'replyto'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
+	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.replyto}</td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="ccmail" id ="cc_name" class="txtBox" type="text" value="{if isset($CC_MAIL)}{$CC_MAIL}{/if}" style="width:525px">&nbsp;
-		<span class="mailClientCSSButton">
-			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=cc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
-		</span>
-		<span class="mailClientCSSButton" >
-			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('cc_name').value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-		</span>
+		<input name="replyto" id ="replyto" class="txtBox" type="text" value="{if isset($REPLYTO)}{$REPLYTO}{/if}" style="width:525px">&nbsp;
 	</td>
 	{else}
 		<td>&nbsp;</td>
@@ -107,13 +110,31 @@
 	{/if}
 	<td valign="top" class="cellLabel" rowspan="4"><div id="attach_cont" class="addEventInnerBox" style="overflow:auto;height:100px;width:100%;position:relative;left:0px;top:0px;"></div>
 	</tr>
+	<tr>
+	{if 'ccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
+	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_CC}</td>
+	<td class="cellText" style="padding: 5px;">
+		<input name="ccmail" id ="cc_name" class="txtBox" type="text" value="{if isset($CC_MAIL)}{$CC_MAIL}{/if}" style="width:525px">&nbsp;
+		<span class="mailClientCSSButton">
+			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}"
+				onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=cc_name", "test", cbPopupWindowSettings);'
+				align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+		</span>
+		<span class="mailClientCSSButton" >
+			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('cc_name').value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+		</span>
+	</td>
+	{/if}
+	</tr>
 	{if 'bccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
 	<tr>
 	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_BCC}</td>
 	<td class="cellText" style="padding: 5px;">
 		<input name="bccmail" id="bcc_name" class="txtBox" type="text" value="{if isset($BCC_MAIL)}{$BCC_MAIL}{/if}" style="width:525px">&nbsp;
 		<span class="mailClientCSSButton">
-			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=bcc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}"
+				onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=bcc_name", "test", cbPopupWindowSettings);'
+				align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
 		<span class="mailClientCSSButton" >
 			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('bcc_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
@@ -142,9 +163,9 @@
 			<span id="limitmsg" style= "color:red; display:'';">{'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}</span>
 		</div>
 		<script>
-			var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), {$EMail_Maximum_Number_Attachments} );
-			multi_selector.count = 0
-			multi_selector.addElement( document.getElementById( 'my_file_element' ) );
+			var multi_selector = new MultiSelector(document.getElementById('files_list'), {$EMail_Maximum_Number_Attachments});
+			multi_selector.count = 0;
+			multi_selector.addElement(document.getElementById('my_file_element'));
 		</script>
 		<div id="attach_temp_cont" style="display:none;">
 		<table class="small" width="100% ">
@@ -179,7 +200,7 @@
 	<tr>
 	<td colspan="3" class="mailSubHeader" style="padding: 5px;" align="center">
 		<input type='hidden' class='small' name="msgtpopup_type" id="msgtpopup_type" value="MsgTemplate">
-		<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick='return vtlib_open_popup_window("","msgtpopup","MsgTemplate","");' type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
+		<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick='return vtlib_open_popup_window("","msgtpopup","MsgTemplate",document.EditView.parent_type.value+"&relmod_id=0&parent_module="+document.EditView.parent_type.value);' type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
 		<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="return email_validate(this.form,'save');" type="button" name="button" value=" {$APP.LBL_SAVE_BUTTON_LABEL} " >&nbsp;
 		<input name="{$MOD.LBL_SEND}" value=" {$APP.LBL_SEND} " class="crmbutton small save" type="button" onclick="return email_validate(this.form,'send');">&nbsp;
 		<input value="{$MOD.LBL_ATTACH_DOCUMENTS}" class="crmbutton small edit" type="button" onclick="searchDocuments()">

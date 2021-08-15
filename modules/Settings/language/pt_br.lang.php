@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contribuitor: Ranieri Slemer | 25-04-2020 | Translate Brazilian Portuguese | www.ecrmweb.com.br
+ * Contribuitor: Ranieri Slemer | 25-06-2021 | Translate Brazilian Portuguese | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -34,8 +34,8 @@ $mod_strings = array(
 'currency code'=>'Código da Moeda',
 'currency symbol'=>'Símbolo',
 'conversion rate'=>'Taxa de câmbio',
-'currency status'=>'Estado da Moeda',
-'currency position'=>'Currency Position',
+'currency status'=>'Status da Moeda',
+'currency position'=>'Posição da moeda',
 'defaultid' => 'Default ID',
 'NTC_DELETE_CONFIRMATION'=>'Tem a certeza que deseja apagar este registo?',
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Configurações do campo lista de opções:',
@@ -470,8 +470,8 @@ $mod_strings = array(
 'LBL_START_NOTIFICATION'=>'Notificação de começo do suporte',
 'LBL_ACTIVITY_NOTIFICATION'=>'Notificação/lembrete de evento',
 
-'LBL_TASK_NOTIFICATION_DESCRITPION'=>'Notificação quando uma tarefa está atrasada a mais de 24 h',
-'LBL_BIG_DEAL_DESCRIPTION'=>'Notificação quando existe um grande Negócio',
+'LBL_TASK_NOTIFICATION_DESCRITPION'=>'Notificação quando uma tarefa está atrasada a mais de 24h',
+'LBL_BIG_DEAL_DESCRIPTION'=>'Notificação quando existe um grande negócio',
 'LBL_TICKETS_DESCRIPTION'=>'Notificação para verificar tickets pendentes',
 'LBL_MANY_TICKETS_DESCRIPTION'=>'Notificação quando um usuário recebe muitos tickets, podendo afetar o desempenho do nível de serviço',
 'LBL_START_DESCRIPTION'=>'Notificação sobre a situação do início do suporte/serviço',
@@ -589,6 +589,10 @@ $mod_strings = array(
 'Invalid_file'=>'Arquivo inválido OU',
 'File_has_no_data'=>'O arquivo não contém dados',
 'Sorry'=>'Desculpe',
+'LBL_OPTIONAL'=>'(opcional)',
+'LBL_ATTACH'=>'Anexo',
+'GoToParent' => 'Go to parent',
+'Directory' => 'Directory',
 'uploaded_file_exceeds_maximum_limit'=>'o arquivo transferido excedeu o limite máximo em :file_size',
 'try_file_smaller'=>'Por favor tente um arquivo menor que 800000 bytes',
 'Problems_in_upload'=>'Problemas na transferência do arquivo',
@@ -763,6 +767,11 @@ $mod_strings = array(
 'LBL_MESSAGES_FROM_LASTSCAN'=>'Mensagens do último rastreamento',
 'LBL_MARK_MESSAGE_AS'=>'Marcar mensagem como',
 'LBL_ASSIGN' => 'Atribuir a',
+'LBL_MUSTBERELATED' => 'Deve estar relacionado com um registro',
+'LBL_ADDEMAILAS' => 'Adicionar e-mail com',
+'LBL_ADDCOMMENTEMAIL' => 'Como comentário e email',
+'LBL_ADDLINKEMAIL' => 'Como link em comentário e e-mail',
+'LBL_ADDONLYEMAIL' => 'Apenas email',
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Workflows',
 'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Criar e editar workflows',
@@ -872,6 +881,7 @@ $mod_strings = array(
 'LBL_ACTIVE' => 'Ativo',
 'LBL_QUICK_CREATE' => 'Criar rápido',
 'LBL_MASS_EDIT' => 'Editar em massa',
+'LBL_LONG_FIELD' => 'Long Field',
 'LBL_BLOCK_NAME' => 'Nome bloco',
 'AFTER' => 'Depois',
 'ADD_BLOCK' => 'Adicionar bloco',
@@ -983,5 +993,6 @@ $mod_strings = array(
 'SM_BeBackSoon' => 'Estaremos de volta em breve!',
 'SM_SorryInconvenience' => 'Estamos fazendo uma manutenção no momento. Estaremos de volta on-line o mais breve possível!',
 'LBL_CC' => 'CC',
+'Not Labeled' => 'Sem descrição',
 );
 ?>

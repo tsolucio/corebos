@@ -17,12 +17,10 @@ $result = $adb->pquery('SELECT filename,filetype, data FROM vtiger_wordtemplates
 if ($result && $adb->num_rows($result) == 1) {
 	$fileType = $adb->query_result($result, 0, 'filetype');
 	$name = $adb->query_result($result, 0, 'filename');
-	//echo 'filetype is ' .$fileType;
 	$fileContent = $adb->query_result($result, 0, 'data');
 	$size = $adb->query_result($result, 0, 'filesize');
 	$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
 	header("Content-type: $fileType");
-	//header("Content-length: $size");
 	header('Cache-Control: private');
 	header("Content-Disposition: attachment; filename=$name");
 	header('Content-Description: PHP Generated Data');

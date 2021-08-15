@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+if (isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') {
 	$toggle_historicos = 'See Non Converted Leads';
 	$toggle_name = 'Converted Leads';
 } else {
@@ -231,7 +231,7 @@ $mod_strings = array(
 
 'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'Following could be one of the possible reasons',
 'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'All the mandatory fields are not mapped',
-'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Some of the mandatory field value are empty',
+'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Some of the mandatory field values are empty',
 'LBL_LEADS_FIELD_MAPPING' => 'Leads Custom Field Mapping',
 'LBL_FIELD_SETTINGS' => 'Field Settings',
 'Leads ID' => 'Leads ID',

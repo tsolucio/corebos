@@ -194,7 +194,8 @@ $app_strings = array (
 	'NTC_DATE_FORMAT' => '(aaaa-mm-dd)',
 	'NTC_TIME_FORMAT' => '(24:00)',
 	'NTC_DATE_TIME_FORMAT' => '(aaaa-mm-dd 24:00)',
-	'NTC_DELETE_CONFIRMATION' => '¿Está seguro que desea eliminar este registro?',
+	'NTC_DELETE_CONFIRMATION' => '¿Estás seguro que quieres eliminar este registro?',
+	'SMTP_DELETE_CONFIRMATION' => '¿Estás seguro que quieres eliminar esta configuración SMTP?',
 	'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Borrar esta cuenta eliminará sus relaciones con Oportunidades, Presupuestos, Ordenes de Venta y Facturas. ¿Quiere Borrar la Cuenta?',
 	'NTC_VENDOR_DELETE_CONFIRMATION' => 'Borrar este proveedor eliminará sus relaciones con Oportunidades, Presupuestos, Ordenes de Venta y Facturas. ¿Quiere Borrar el Proveedor?',
 	'ERR_DELETE_RECORD' => ' Debe especificar un registro para poder eliminar el contacto.',
@@ -875,6 +876,7 @@ $app_strings = array (
 	'MSG_VTIGERTEAM' => 'coreBOS Team',
 	'MSG_IS_NOT_UPLOADED' => 'no se ha subido. Las extensiones permitidas son jpeg, png, jpg, pjpeg, x-png o gif',
 	'MSG_IMAGE_ERROR' => 'Imagen no encontrada',
+	'LBL_IMAGESECURITY_ERROR' => 'Imagen inválida: contiene elementos potencialmente maliciosos',
 	'Information' => 'Información',
 	'Address' => 'Dirección',
 	'Custom Information' => 'Información Personalizada',
@@ -954,13 +956,20 @@ $app_strings = array (
 	'Mailing Po Box' => 'Apdo. Postal (Envío)',
 	'Other Po Box' => 'Apdo. Postal (Alternativa)',
 	'Image' => 'Imagen',
+	'Unknown' => 'Desconocido',
+	'Compressed' => 'Comprimido',
 	'LBL_EXPORT_TYPE_1' => 'Tipo de Exportación 1:',
 	'LBL_EXPORT_TYPE_2' => 'Tipo de Exportación 2:',
 	'LBL_SEARCH_CRITERIA_RECORDS' => 'Exportar registros asociados a la búsqueda',
 	'LBL_EXPORT_RECORDS' => 'Exportar Tipo de Registro',
 	'LBL_WITH_SEARCH' => 'Exportar con Registros de Búsqueda',
 	'LBL_WITHOUT_SEARCH' => 'Exportar sin Registros de Búsqueda',
+	'LBL_SEARCH_CRITERIA_COLUMNS'=>'Exportar Columnas del Filtro',
+	'LBL_VISIBLE_COLUMNS'=>'Exportar solo columnas visibles',
 	'LBL_ALL_DATA' => 'Exporta todos los datos',
+	'LBL_EXPORT_FORMAT' => 'Formato Exportación',
+	'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+	'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 	'LBL_DATA_IN_CURRENT_PAGE' => 'Exportar dato de la página actual',
 	'LBL_ONLY_SELECTED_RECORDS' => 'Export Registros seleccionados',
 	'LBL_YES' => 'Si',
@@ -1167,6 +1176,8 @@ $app_strings = array (
 	'LBL_CALLER_INFORMATION'=>'Información Llamada Entrante',
 	'LBL_CALLER_NUMBER'=>'Número :',
 	'LBL_CALLER_NAME'=>'Nombre :',
+	'LBL_VIEW_CONTACT' => 'Ver Contacto',
+	'LBL_CLICK_NOTIFICATION_TO'=> 'Haz click para ',
 	//asterisk integration ends
 
 	// Module Sequence Numbering
@@ -1349,6 +1360,9 @@ $app_strings = array (
 	'csrf_warning' => 'Error CSRF. La razón por la que esto sucede es que la página ha estado abierta sin interacción durante demasiado tiempo. Por razones de seguridad, ha expirado. Vuelva a cargar la página presionando CTRL+R o presiona recargar a continuación.',
 	'csrf_reload' => 'Cargar de nuevo la página',
 	'LBL_NOPRODUCTS' => 'No se puede convertir la Orden de Venta ya que no hay lineas facturables.',
+	'VALIDATION_FAILED' => 'Validación errónea',
+	'Select Module To Upsert' => 'Selecciona Módulo',
+	'LBL_FIX_NOW' => 'Arreglar Ahora',
 );
 
 // Translation for currency names

@@ -25,25 +25,26 @@ function vtws_retrieve($id, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($id);
-	$types = vtws_listtypes(null, $user);
-	if (!in_array($entityName, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
-	}
-	if ($meta->hasReadAccess()!==true) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied');
-	}
 
 	if ($entityName !== $webserviceObject->getEntityName()) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
 
-	if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $id)) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
-	}
-
 	$idComponents = vtws_getIdComponents($id);
 	if (!$meta->exists($idComponents[1])) {
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
+	}
+	if (!($entityName == 'Users' && $user->id == $idComponents[1])) {
+		$types = vtws_listtypes(null, $user);
+		if (!in_array($entityName, $types['types']) && !($entityName == 'Users' && $user->id==$idComponents[1])) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+		}
+		if ($meta->hasReadAccess()!==true) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
+		}
+		if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $id)) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+		}
 	}
 
 	$entity = $handler->retrieve($id);
@@ -59,13 +60,16 @@ function vtws_retrieve($id, $user) {
 			$listofrelfields[] = $entity[$relfield];
 		}
 	}
-	if (count($listofrelfields)>0) {
+	if ($entityName=='Users') {
+		$entity['rolename'] = getRoleName($entity['roleid']);
+	}
+	if (!empty($listofrelfields)) {
 		if ($entityName=='Emails' && $entity['parent_id']!='') {
 			unset($listofrelfields['parent_id'], $r['parent_id']);
 		}
 		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
 		foreach ($r as $relfield => $mods) {
-			if (!empty($entity[$relfield])) {
+			if (!empty($entity[$relfield]) && !empty($deref[$entity[$relfield]])) {
 				$entity[$relfield.'ename'] = $deref[$entity[$relfield]];
 			}
 		}
@@ -96,6 +100,16 @@ function vtws_retrieve($id, $user) {
 		$pdowsid = vtws_getEntityId('Products').'x';
 		$srvwsid = vtws_getEntityId('Services').'x';
 		list($wsid, $recordid) = explode('x', $id);
+		$ipr_cols = $adb->getColumnNames('vtiger_inventoryproductrel');
+		if ($entityName != 'PurchaseOrder' && $entityName != 'Receiptcards') {
+			if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
+				$acvid = isset($entity['account_id']) ? $entity['account_id'] : (isset($entity['accid']) ? $entity['accid'] : 0);
+			} else {
+				$acvid = isset($entity['contact_id']) ? $entity['contact_id'] : (isset($entity['ctoid']) ? $entity['ctoid'] : 0);
+			}
+		} else {
+			$acvid = isset($entity['vendor_id']) ? $entity['vendor_id'] : (isset($entity['vendorid']) ? $entity['vendorid'] : 0);
+		}
 		$result = $adb->pquery('select * from vtiger_inventoryproductrel where id=?', array($recordid));
 		while ($row=$adb->getNextRow($result, false)) {
 			if ($row['discount_amount'] == null && $row['discount_percent'] == null) {
@@ -129,16 +143,30 @@ function vtws_retrieve($id, $user) {
 				'discount_percentage'=>$discount_percent,
 				'discount_amount'=>$discount_amount,
 			);
+			if ($entity['hdnTaxType']=='individual') {
+				foreach (getTaxDetailsForProduct($row['productid'], 'all', $acvid) as $taxItem) {
+					$tax_name = $taxItem['taxname'];
+					if (!in_array($tax_name, $ipr_cols)) {
+						continue;
+					}
+					$onlyPrd[$tax_name] = (float)$row[$tax_name];
+					$onlyPrd[$tax_name.'_label'] = $taxItem['taxlabel'];
+					$totalAfterDiscount = $row['quantity']*$row['listprice']-$discount_amount;
+					$individual_taxamount = $totalAfterDiscount * $row[$tax_name] / 100;
+					$onlyPrd[$tax_name.'_amount'] = (float)CurrencyField::convertToUserFormat($individual_taxamount, null, true);
+				}
+			}
 			if ($MDMapFound) {
 				foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
 					if ($mdfield['fieldinfo']['name']=='id') {
 						continue;
 					}
+					$crmEntityTable = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 					$mdrs = $adb->pquery(
 						'select '.$mdfield['fieldinfo']['name'].',vtiger_inventorydetails.inventorydetailsid from vtiger_inventorydetails
-							inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+							inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid
 							inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
-							where deleted=0 and related_to=? and lineitem_id=?',
+							where vtiger_crmentity.deleted=0 and related_to=? and lineitem_id=?',
 						array($recordid, $row['lineitem_id'])
 					);
 					if ($mdrs) {
@@ -166,8 +194,14 @@ function vtws_retrieve_deleted($id, $user) {
 	global $log,$adb;
 
 	// First we look if it has been totally eliminated
+	$crmTable = 'vtiger_crmentity';
 	$parts = explode('x', $id);
-	$result = $adb->pquery('SELECT count(*) as cnt FROM vtiger_crmentity WHERE crmid=?', array($parts[1]));
+	$data = $adb->pquery('SELECT setype FROM vtiger_crmobject WHERE crmid=?', array($parts[1]));
+	if ($data && $adb->num_rows($data) > 0) {
+		$module = $adb->query_result($data, 0, 'setype');
+		$crmTable = CRMEntity::getcrmEntityTableAlias($module, true);
+	}
+	$result = $adb->pquery('SELECT count(*) as cnt FROM '.$crmTable.' WHERE crmid=?', array($parts[1]));
 	if ($adb->query_result($result, 0, 'cnt') == 1) { // If not we can "almost" continue normally
 		$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 		$handlerPath = $webserviceObject->getHandlerPath();

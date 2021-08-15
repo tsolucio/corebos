@@ -240,15 +240,41 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				</div>
 			</td>
 		{elseif $uitype eq 3 || $uitype eq 4}<!-- Non Editable field, only configured value will be loaded -->
-				<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">{/if}</td>
-				<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo"><span style='display:none;' id='{$fldname}_hidden'></span><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
-		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 13 || $uitype eq 7}
+			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">{/if}</td>
+			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo"><span style='display:none;' id='{$fldname}_hidden'></span><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
+		{elseif $uitype eq 11 || $uitype eq 13 || $uitype eq 7}
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
 			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo"><span style='display:none;' id='{$fldname}_hidden'></span><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
+		{elseif $uitype eq 1}
+			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
+			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo">
+				<span style='display:none;' id='{$fldname}_hidden'></span>
+				<div style="position: relative;">
+					<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}"
+					{if isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['combobox'])}
+						autocomplete="off"
+						class="autocomplete-input detailedViewTextBox"
+						data-autocomp='{$maindata['extendedfieldinfo']['combobox']|@json_encode}' />
+						<div id="listbox-unique-id-{$fldname}" role="listbox" class="">
+							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
+						</div>
+					{elseif ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
+					{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
+						autocomplete="off"
+						class="autocomplete-input detailedViewTextBox"
+						data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}' />
+						<div id="listbox-unique-id" role="listbox" class="">
+							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
+						</div>
+					{else}
+						class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" />
+					{/if}
+				</div>
+			</td>
 		{elseif $uitype eq 9}
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {$APP.COVERED_PERCENTAGE} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
 			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo"><span style='display:none;' id='{$fldname}_hidden'></span><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
-		{elseif $uitype eq 19 || $uitype eq 20}
+		{elseif $uitype eq 19}
 			<!-- In Add Comment we should not display anything -->
 			{assign var="i18nAddComment" value='LBL_ADD_COMMENT'|@getTranslatedString:$MODULE}
 			{if $fldlabel eq $i18nAddComment}
@@ -260,7 +286,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td id="td_val_{$fldname}" colspan=3 class="dvtCellInfo">
 				<span style='display:none;' id='{$fldname}_hidden'></span>
-				<textarea class="detailedViewTextBox" tabindex="{$vt_tab}" onFocus="this.className='detailedViewTextBoxOn'" name="{$fldname}" id="{$fldname}" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8">{$fldvalue}</textarea>
+				<textarea class="detailedViewTextBox" tabindex="{$vt_tab}" onFocus="this.className='detailedViewTextBoxOn'" name="{$fldname}" id="{$fldname}" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8" style="{$Application_Textarea_Style}">{$fldvalue}</textarea>
 				{assign var="i18nSolution" value='Solution'|@getTranslatedString:$MODULE}
 				{if $fldlabel eq $i18nSolution}
 				<input type="hidden" name="helpdesk_solution" id="helpdesk_solution" value='{$fldvalue}'>
@@ -291,7 +317,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/if}
 				{/if}
 			</td>
-		{elseif $uitype eq 21 || $uitype eq 24}
+		{elseif $uitype eq 21}
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 					<font color="red">{$mandatory_field}</font>
 				{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
@@ -307,11 +333,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
 				<span style='display:none;' id='{$fldname}_hidden'></span>
-				{if $MODULE eq 'Calendar'}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:160px;">
-				{else}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
-				{/if}
+				<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
 				{foreach item=arr from=$fldvalue}
 					<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				{foreachelse}
@@ -566,7 +588,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<span style='display:none;' id='{$fldname}_hidden'></span>
 						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</td>
-				{elseif $fldname eq 'filestatus'&& $MODE eq 'create'}
+				{elseif $fldname eq 'filestatus'&& ($MODE eq 'create' || $MODE eq '')}
 					<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
 						<span style='display:none;' id='{$fldname}_hidden'></span>
 						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
@@ -596,10 +618,10 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<input name="time_start" tabindex="{$vt_tab}" style="border:1px solid #bababa;" size="5" maxlength="5" type="text" value="{$time_val}">
 				{/if}
 
-				{if $uitype eq 6 && isset($QCMODULE) && $QCMODULE eq 'Event'}
+				{if $uitype eq 6}
 					<input name="dateFormat" type="hidden" value="{$dateFormat}">
 				{/if}
-				{if $uitype eq 23 && isset($QCMODULE) && $QCMODULE eq 'Event'}
+				{if $uitype eq 23}
 					<input name="time_end" style="border:1px solid #bababa;" size="5" maxlength="5" type="text" value="{$time_val}">
 				{/if}
 
@@ -668,32 +690,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					{/foreach}
 				</select>
 
-		{elseif $uitype eq 62}
-			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>
-				{if $fromlink eq 'qcreate'}
-					<select class="small" name="parent_type" onChange='document.QcEditView.parent_name.value=""; document.QcEditView.parent_id.value=""'>
-				{else}
-					<select class="small" name="parent_type" onChange='document.EditView.parent_name.value=""; document.EditView.parent_id.value=""'>
-				{/if}
-					{section name=combo loop=$fldlabel}
-						<option value="{$fldlabel_combo[combo]}" {$fldlabel_sel[combo]}>{$fldlabel[combo]} </option>
-					{/section}
-				</select>
-				{if $MASS_EDIT eq '1'}<input type="checkbox" name="parent_id_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
-				<span style='display:none;' id='{$fldname}_hidden'></span>
-				<input name="{$fldname}" type="hidden" value="{$secondvalue}">
-				<input name="parent_name" readonly id = "parentid" type="text" style="border:1px solid #bababa;" value="{$fldvalue}">
-				&nbsp;
-				{if $fromlink eq 'qcreate'}
-					<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.QcEditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-				{else}
-					<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-				{/if}
-			</td>
-
 		{elseif $uitype eq 357}
 			<td id="td_{$fldname}" width="20%" class="dvtCellLabel" align=right>To:&nbsp;</td>
 			<td id="td_val_{$fldname}" width="90%" colspan="3">
@@ -707,9 +703,15 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				</select>
 				&nbsp;
 				{if $fromlink eq 'qcreate'}
-					<img tabindex="{$vt_tab}" src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.QcEditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+					<img tabindex="{$vt_tab}" src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}"
+						onclick='return window.open("index.php?module="+ document.QcEditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}", "test", cbPopupWindowSettings);'
+						align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+					<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 				{else}
-					<img tabindex="{$vt_tab}" src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+					<img tabindex="{$vt_tab}" src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}"
+						onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}", "test", cbPopupWindowSettings);'
+						align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+					<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 				{/if}
 			</td>
 			<tr style="height:25px">
@@ -768,15 +770,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<input type="text" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" style="width:58%;" value= "{$secondvalue}" >
 			{/if}
 			</td>
-
-		{elseif $uitype eq 22}
-			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
-				<span style='display:none;' id='{$fldname}_hidden'></span>
-				<textarea name="{$fldname}" cols="30" tabindex="{$vt_tab}" rows="2">{$fldvalue}</textarea>
-			</td>
 		{elseif $uitype eq 14}
 			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {"LBL_TIMEFIELD"|@getTranslatedString}{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
@@ -798,7 +791,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<input name="del_file_list" type="hidden" value="">
 					<div id="files_list" style="border: 1px solid grey; width: 500px; padding: 5px; background: rgb(255, 255, 255) none repeat scroll 0%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: x-small">
 						<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}, {$APP.Files_Maximum}{$Product_Maximum_Number_Images}</span>
-						<input id="my_file_element" type="file" name="file_1" tabindex="{$vt_tab}"  onchange="validateFilename(this)"/>
+						<input id="my_file_element" type="file" name="file_1" tabindex="{$vt_tab}" onchange="validateFilename(this)"/>
 						<!--input type="hidden" name="file_1_hidden" value=""/-->
 						{assign var=image_count value=0}
 						{if isset($maindata[3].0.name) && $maindata[3].0.name neq '' && $DUPLICATE neq 'true'}
@@ -813,10 +806,18 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 					<script>
 						{*<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->*}
-						var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), {$Product_Maximum_Number_Images} );
+						var multi_selector = new MultiSelector(document.getElementById('files_list'), {$Product_Maximum_Number_Images});
 						multi_selector.count = {$image_count};
 						{*<!-- Pass in the file element -->*}
-						multi_selector.addElement( document.getElementById( 'my_file_element' ) );
+						multi_selector.addElement(document.getElementById('my_file_element'));
+						var ProductImages=new Array();
+						var ProductImagesCount=0;
+						function delRowEmt(imagename) {ldelim}
+							ProductImages[ProductImagesCount++]=imagename;
+							multi_selector.current_element.disabled = false;
+							multi_selector.count--;
+							document.EditView.del_file_list.value=ProductImages.join('###');
+						{rdelim}
 					</script>
 				{/if}
 			</td>
@@ -824,7 +825,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 				{if $MASS_EDIT eq '1'}
-					<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small"  >
+					<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">
 				{/if}
 			</td>
 			<td id="td_val_{$fldname}" colspan="1" width="30%" align=left class="dvtCellInfo">
@@ -1084,7 +1085,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						vtiger_{$fldname}Init();
 					{rdelim}
 				{rdelim}
-
 			</script>
 		</td>
 		{elseif $uitype eq 28}

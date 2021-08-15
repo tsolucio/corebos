@@ -66,25 +66,25 @@ class FieldDependency extends processcbMap {
 
 	private function convertMap2ArrayOld() {
 		$xml = $this->getXMLContent();
-		$mapping=array();
-		$mapping['name'] = $xml->name;
-		$mapping['targetmodule']=array();
-		$mapping['targetmodule']['targetid']=$xml->targetmodule->targetid;
-		$mapping['targetmodule']['targetname']=$xml->targetmodule->targetname;
-		$mapping['originmodule']=array();
-		$mapping['originmodule']['originid']=$xml->originmodule->originid;
-		$mapping['originmodule']['originname']=$xml->originmodule->originname;
-		$mapping['fields']=array();
-		$mapping['fields']['Responsiblefield']=array();
-		foreach ($xml->fields->field->Orgfields->Responsiblefield as $k => $v) {
+		$mapping_arr=array();
+		$mapping_arr['name'] = $xml->name;
+		$mapping_arr['targetmodule']=array();
+		$mapping_arr['targetmodule']['targetid']=$xml->targetmodule->targetid;
+		$mapping_arr['targetmodule']['targetname']=$xml->targetmodule->targetname;
+		$mapping_arr['originmodule']=array();
+		$mapping_arr['originmodule']['originid']=$xml->originmodule->originid;
+		$mapping_arr['originmodule']['originname']=$xml->originmodule->originname;
+		$mapping_arr['fields']=array();
+		$mapping_arr['fields']['Responsiblefield']=array();
+		foreach ($xml->fields->field->Orgfields->Responsiblefield as $v) {
 			$fieldname= isset($v->fieldname) ? (String)$v->fieldname : '';
 			$fieldvalue= isset($v->fieldvalue) ? (String)$v->fieldvalue : '';
 			$comparison= isset($v->comparison) ? (String)$v->comparison : '';
 			$fieldinfo[]=array('fieldname'=>$fieldname,'fieldvalue'=>$fieldvalue,'comparison'=>$comparison);
 		}
-		$mapping['fields']['Responsiblefield']=$fieldinfo;
-		$mapping['fields']['Orgfield']=array();
-		foreach ($xml->fields->field->Orgfields->Orgfield as $k2 => $v2) {
+		$mapping_arr['fields']['Responsiblefield']=$fieldinfo;
+		$mapping_arr['fields']['Orgfield']=array();
+		foreach ($xml->fields->field->Orgfields->Orgfield as $v2) {
 			$fieldnameout= isset($v2->fieldname) ? (String)$v2->fieldname : '';
 			$fieldaction= isset($v2->fieldaction) ? (String)$v2->fieldaction : '';
 			$fieldvalue= isset($v2->fieldvalue) ? (String)$v2->fieldvalue : '';
@@ -92,18 +92,18 @@ class FieldDependency extends processcbMap {
 			$fieldinfoorg[]=array('fieldname'=>$fieldnameout,
 			'fieldaction'=>$fieldaction,'fieldvalue'=>$fieldvalue,'mandatory'=>$mandatory);
 		}
-		$mapping['fields']['Orgfield']=$fieldinfoorg;
-		$mapping['fields']['ResponsibleMode']=array();
-		foreach ($xml->fields->field->Orgfields->ResponsibleMode->values as $k3 => $v3) {
+		$mapping_arr['fields']['Orgfield']=$fieldinfoorg;
+		$mapping_arr['fields']['ResponsibleMode']=array();
+		foreach ($xml->fields->field->Orgfields->ResponsibleMode->values as $v3) {
 			$responsiblemode[]= isset($v3) ? (String)$v3 : '';
 		}
-		$mapping['fields']['ResponsibleMode']=$responsiblemode;
-		$mapping['fields']['ResponsibleRole']=array();
-		foreach ($xml->fields->field->Orgfields->ResponsibleRole->values as $k4 => $v4) {
+		$mapping_arr['fields']['ResponsibleMode']=$responsiblemode;
+		$mapping_arr['fields']['ResponsibleRole']=array();
+		foreach ($xml->fields->field->Orgfields->ResponsibleRole->values as $v4) {
 			$responsiblerole[]= isset($v4) ? (String)$v4 : '';
 		}
-		$mapping['fields']['ResponsibleRole']=$responsiblerole;
-		$mapping['fields']['Picklist']=array();
+		$mapping_arr['fields']['ResponsibleRole']=$responsiblerole;
+		$mapping_arr['fields']['Picklist']=array();
 		foreach ($xml->fields->field->Orgfields->Picklist as $k5 => $v5) {
 			$value=array();
 			$fieldnamepick= isset($v5->fieldname) ? (String)$v5->fieldname : '';
@@ -116,8 +116,8 @@ class FieldDependency extends processcbMap {
 			}
 			$fieldinfopick[]=array('fieldname'=>$fieldnamepick,'value'=>$value);
 		}
-		$mapping['fields']['Picklist']=$fieldinfopick;
-		$this->mapping = $mapping;
+		$mapping_arr['fields']['Picklist']=$fieldinfopick;
+		$this->mapping = $mapping_arr;
 	}
 
 	private function expandConditionColumn($conditions, $module) {
@@ -134,74 +134,75 @@ class FieldDependency extends processcbMap {
 	}
 
 	public function convertMap2Array() {
-		global $current_user;
 		$xml = $this->getXMLContent();
-		$mapping = array();
-		$mapping['origin'] = (String)$xml->originmodule->originname;
+		if (empty($xml)) {
+			return array();
+		}
+		$mapping_arr = array();
+		$mapping_arr['origin'] = (String)$xml->originmodule->originname;
 		$target_fields = array();
-		foreach ($xml->dependencies->dependency as $k => $v) {
-			$fieldname = (String)$v->field;
-			$conditions = $this->expandConditionColumn((String)$v->condition, $mapping['origin']);
+		foreach ($xml->dependencies->dependency as $v) {
+			$conditions = $this->expandConditionColumn((String)$v->condition, $mapping_arr['origin']);
 			$actions=array();
-			foreach ($v->actions->change as $key => $action) {
+			foreach ($v->actions->change as $action) {
 				$actions['change'][] = array('field'=>(String)$action->field,'value'=>(String)$action->value);
 			}
-			foreach ($v->actions->hide as $key => $action) {
+			foreach ($v->actions->hide as $action) {
 				foreach ($action->field as $fld => $name) {
 					$actions['hide'][] = array('field'=>(String)$name);
 				}
 			}
-			foreach ($v->actions->readonly as $key => $action) {
+			foreach ($v->actions->readonly as $action) {
 				foreach ($action->field as $fld => $name) {
 					$actions['readonly'][] = array('field'=>(String)$name);
 				}
 			}
-			foreach ($v->actions->deloptions as $key => $action) {
+			foreach ($v->actions->deloptions as $action) {
 				$opt=array();
-				foreach ($v->actions->deloptions->option as $key2 => $opt2) {
+				foreach ($v->actions->deloptions->option as $opt2) {
 					$opt[]=(String)$opt2;
 				}
 				$actions['deloptions'][] = array('field'=>(String)$action->field,'options'=>$opt);
 			}
-			foreach ($v->actions->setoptions as $key => $action) {
+			foreach ($v->actions->setoptions as $action) {
 				$opt=array();
-				foreach ($v->actions->setoptions->option as $key2 => $opt2) {
+				foreach ($v->actions->setoptions->option as $opt2) {
 					$opt[]=(String)$opt2;
 				}
 				$actions['setoptions'][] = array('field'=>(String)$action->field,'options'=>$opt);
 			}
-			foreach ($v->actions->collapse as $key => $action) {
-				foreach ($action->block as $blc => $block) {
-					$bname = getTranslatedString((String)$block, $mapping['origin']);
+			foreach ($v->actions->collapse as $action) {
+				foreach ($action->block as $block) {
+					$bname = getTranslatedString((String)$block, $mapping_arr['origin']);
 					$bname = str_replace(' ', '', $bname);
 					$actions['collapse'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->open as $key => $action) {
-				foreach ($action->block as $blc => $block) {
-					$bname = getTranslatedString((String)$block, $mapping['origin']);
+			foreach ($v->actions->open as $action) {
+				foreach ($action->block as $block) {
+					$bname = getTranslatedString((String)$block, $mapping_arr['origin']);
 					$bname = str_replace(' ', '', $bname);
 					$actions['open'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->disappear as $key => $action) {
-				foreach ($action->block as $blc => $block) {
-					$bname = getTranslatedString((String)$block, $mapping['origin']);
+			foreach ($v->actions->disappear as $action) {
+				foreach ($action->block as $block) {
+					$bname = getTranslatedString((String)$block, $mapping_arr['origin']);
 					 $bname = str_replace(' ', '', $bname);
 					$actions['disappear'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->appear as $key => $action) {
-				foreach ($action->block as $blc => $block) {
-					$bname = getTranslatedString((String)$block, $mapping['origin']);
+			foreach ($v->actions->appear as $action) {
+				foreach ($action->block as $block) {
+					$bname = getTranslatedString((String)$block, $mapping_arr['origin']);
 					$bname = str_replace(' ', '', $bname);
 					$actions['appear'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->function as $key => $action) {
+			foreach ($v->actions->function as $action) {
 				$params=array();
-				if (isset($v->actions->function->parameters)) {
-					foreach ($v->actions->function->parameters->parameter as $key2 => $opt2) {
+				if (isset($action->parameters)) {
+					foreach ($action->parameters->parameter as $opt2) {
 						$params[]=(String)$opt2;
 					}
 				}
@@ -211,11 +212,11 @@ class FieldDependency extends processcbMap {
 					'params'=>$params
 				);
 			}
-			foreach ($v->field as $key => $fld) {
+			foreach ($v->field as $fld) {
 				$target_fields[(String)$fld][] = array('conditions'=>$conditions,'actions'=>$actions);
 			}
 		}
-		$picklistdep = Vtiger_DependencyPicklist::getMapPicklistDependencyDatasource($mapping['origin']);
+		$picklistdep = Vtiger_DependencyPicklist::getMapPicklistDependencyDatasource($mapping_arr['origin']);
 		foreach ($picklistdep as $key => $value) {
 			if (array_key_exists($key, $target_fields)) {
 				$target_fields[$key] = array_merge($value, $target_fields[$key]);
@@ -223,8 +224,8 @@ class FieldDependency extends processcbMap {
 				$target_fields[$key] = $value;
 			}
 		}
-		$mapping['fields'] = $target_fields;
-		return $mapping;
+		$mapping_arr['fields'] = $target_fields;
+		return $mapping_arr;
 	}
 }
 ?>

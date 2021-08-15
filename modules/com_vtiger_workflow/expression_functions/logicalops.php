@@ -23,13 +23,35 @@ function __cb_is_string($arr) {
 }
 
 function __cb_or($arr) {
-	return $arr[0] || $arr[1];
+	$res = false;
+	for ($x=0; $x < count($arr); $x++) {
+		$res = $res || $arr[$x];
+		if ($res) {
+			break;
+		}
+	}
+	return $res;
 }
 function __cb_and($arr) {
-	return $arr[0] && $arr[1];
+	$res = true;
+	for ($x=0; $x < count($arr); $x++) {
+		$res = $res && $arr[$x];
+		if (!$res) {
+			break;
+		}
+	}
+	return $res;
 }
 function __cb_not($arr) {
 	return !($arr[0]);
+}
+
+function __cb_regex($arr) {
+	if (count($arr)!=2) {
+		return false;
+	}
+	$arr[0] = '/'.trim($arr[0], '/').'/';
+	return preg_match($arr[0], $arr[1])==1;
 }
 
 function __cb_exists($arr) {
@@ -63,7 +85,13 @@ function __cb_relatedevaluations($evaluation, $params) {
 	global $adb;
 	$return = false;
 	$relatedmodule = $params[0];
-	$env = $params[3];
+	if (is_string($params[3])) {
+		$conditions = $params[3];
+		$env = $params[4];
+	} else {
+		$conditions = '';
+		$env = $params[3];
+	}
 	$data = $env->getData();
 	$recordid = $data['id'];
 	$module = $env->getModuleName();
@@ -89,7 +117,7 @@ function __cb_relatedevaluations($evaluation, $params) {
 		$GetRelatedList_ReturnOnlyQuery = true;
 		$holdCM = $currentModule;
 		$currentModule = $module;
-		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), $relfunp);
+		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), array_values($relfunp));
 		$currentModule = $holdCM;
 		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		if (!isset($relationData['query'])) {
@@ -103,16 +131,19 @@ function __cb_relatedevaluations($evaluation, $params) {
 			return false;
 		}
 		$query = mkXQuery($relationData['query'], '1');
+		if ($conditions!='') {
+			$conditions = ' AND ('.__cb_aggregation_getconditions($conditions, $relatedmodule, $module, $crmid).')';
+		}
 		switch ($evaluation) {
 			case 'existsrelated':
-				$query = stripTailCommandsFromQuery($query).' AND '.$fld->table.'.'.$fld->column.'=? LIMIT 1';
+				$query = stripTailCommandsFromQuery($query).' AND ('.$fld->table.'.'.$fld->column.'=? '.$conditions.') LIMIT 1';
 				$result = $adb->pquery($query, array($params[2]));
 				if ($result) {
 					$return = ($adb->num_rows($result) > 0);
 				}
 				break;
 			case 'allrelatedare':
-				$query = stripTailCommandsFromQuery($query).' AND '.$fld->table.'.'.$fld->column.'!=? LIMIT 1';
+				$query = stripTailCommandsFromQuery($query).' AND ('.$fld->table.'.'.$fld->column.'!=? '.$conditions.') LIMIT 1';
 				$result = $adb->pquery($query, array($params[2]));
 				if ($result) {
 					$return = ($adb->num_rows($result) == 0);
@@ -127,16 +158,14 @@ function __cb_relatedevaluations($evaluation, $params) {
 
 function __cb_min($values) {
 	if (count($values) != 0) {
-		$min = min($values);
-		return $min;
+		return min($values);
 	}
 	return false;
 }
 
 function __cb_max($values) {
 	if (count($values) != 0) {
-		$max = max($values);
-		return $max;
+		return max($values);
 	}
 	return false;
 }

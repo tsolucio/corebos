@@ -10,12 +10,10 @@
 -->*}
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javaScript" src="include/js/dedup.js"></script>
 
 <form enctype="multipart/form-data" name="mergeDuplicates" method="post" action="index.php?module={$MODULE}&action=FindDuplicateRecords" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="module" value="{$MODULE}">
-	<input type="hidden" name="parenttab" value="{$CATEGORY}">
 	<input type="hidden" name="action" value="FindDuplicateRecords">
 	<input type="hidden" name="selectedColumnsString"/>
 	<table class="searchUIBasic small" border="0" cellpadding="5" cellspacing="0" width="80%" height="10" align="center">
@@ -52,7 +50,7 @@
 						{$FIELDS_TO_MERGE}
 						</select>
 					</td>
-				</tr> 
+				</tr>
 				<tr>
 					<td colspan="3" align="center" class="cblds-t-align_center cblds-p_medium">
 					<input type="submit" name="save&merge" value="{$APP.LBL_SAVE_MERGE_BUTTON_TITLE}" class="crmbutton small edit" onClick="return formSelectColumnString()"/>

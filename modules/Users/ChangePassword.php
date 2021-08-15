@@ -74,7 +74,7 @@ function set_password(form) {
 			return false;
 		}
 	} else { //Password is not ok
-		errmsg.innerHTML = "<?php echo $badpassword; ?>";
+		errmsg.innerHTML = "<?php echo $mod_strings['PASSWORD REQUIREMENTS NOT MET']; ?>";
 		errmsg.style.display = 'block';
 		return false;
 	}
@@ -90,7 +90,7 @@ function set_password(form) {
 <form name="ChangePassword" onsubmit="VtigerJS_DialogBox.block();">
 <table width='100%' cellspacing='0' cellpadding='5' border='0' class="small">
 <tr>
-	<td class="detailedViewHeader" colspan="3"><b><?php echo $mod_strings['LBL_CHANGE_PASSWORD']; ?></b></td>
+	<td class="detailedViewHeader" colspan="3"><strong><?php echo $mod_strings['LBL_CHANGE_PASSWORD']; ?></strong></td>
 </tr>
 <?php
 if (!is_admin($current_user)) {
@@ -102,7 +102,7 @@ if (!is_admin($current_user)) {
 }
 ?>
 <tr>
-<td width='20%' class='dvtCellLabel' nowrap align="right"><b><?php echo $mod_strings['LBL_NEW_PASSWORD']; ?></b></td>
+<td width='20%' class='dvtCellLabel' nowrap align="right"><strong><?php echo $mod_strings['LBL_NEW_PASSWORD']; ?></strong></td>
 <td width='50%' class='dvtCellInfo'><input name='new_password' type='password' tabindex='1' size='15'></td>
 <td width='30%' class='dvtCellInfo'>
 <?php if (!is_admin($current_user)) { ?>
@@ -113,10 +113,11 @@ if (!is_admin($current_user)) {
 	<input type=button value='<?php echo $mod_strings['Generate password']; ?>' onClick='document.ChangePassword.new_password.value = corebos_Password.getPassword(12, true, true, true, true, false, true, true, true, false);  document.ChangePassword.confirm_new_password.value = document.ChangePassword.new_password.value;document.getElementById("rndpasswordshow").innerHTML=document.ChangePassword.new_password.value;'>
 </td>
 </tr><tr>
-<td width='20%' class='dvtCellLabel' nowrap align="right"><b><?php echo $mod_strings['LBL_CONFIRM_PASSWORD']; ?></b></td>
+<td width='20%' class='dvtCellLabel' nowrap align="right"><strong><?php echo $mod_strings['LBL_CONFIRM_PASSWORD']; ?></strong></td>
 <td width='50%' class='dvtCellInfo'><input name='confirm_new_password' type='password' tabindex='1' size='15'></td>
 <td width='30%' class='dvtCellInfo' id='rndpasswordshow' style="font-size: large;"></td>
 </tr>
+<tr><td colspan=3><?php echo $badpassword; ?></td>
 </table>
 <br>
 <table width='100%' cellspacing='0' cellpadding='1' border='0'>

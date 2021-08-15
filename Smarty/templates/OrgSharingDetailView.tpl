@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {literal}
 <style>
 DIV.fixedLay{
@@ -45,7 +44,7 @@ DIV.fixedLay {
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'shareaccess.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SHARING_ACCESS} </b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SHARING_ACCESS} </b></td>
 					<td rowspan=2 class="small" align=right>&nbsp;</td>
 				</tr>
 				<tr>
@@ -63,7 +62,6 @@ DIV.fixedLay {
 				<form action="index.php" method="post" name="new" id="orgSharingform" onsubmit="VtigerJS_DialogBox.block();">
 				<input type="hidden" name="module" value="Users">
 				<input type="hidden" name="action" value="OrgSharingEditView">
-				<input type="hidden" name="parenttab" value="Settings">
 				<tr>
 					<td class="big"><strong>1. {$CMOD.LBL_GLOBAL_ACCESS_PRIVILEGES}</strong></td>
 					<td class="small cblds-t-align_right" align=right>
@@ -171,10 +169,6 @@ DIV.fixedLay {
 		   </td></tr></table>
 				<br>
 		   </div>
-				<!-- Edit Button -->
-				<table border=0 cellspacing=0 cellpadding=5 width=100% >
-				<tr><td class="small" ><div align=right class="cblds-t-align_right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
-				</table>
 		</td>
 		</tr>
 		</table>

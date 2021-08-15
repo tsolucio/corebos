@@ -133,7 +133,7 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
 				groupid=conditions[j]['groupid'];
 				fieldName=field.split(':');
 				field=fieldName[1];
-				sourcevalue=(document.getElementById(field)!=undefined ? document.getElementById(field).value : document.getElementsByName(field).item(0).value);
+				sourcevalue=this.getFieldValue(field);
 				switch (comparator) {
 				case 'e': conditionResp+= sourcevalue===value; break;
 				case 'n': conditionResp+= sourcevalue!==value; break;
@@ -249,12 +249,12 @@ FieldDependencies.prototype.fieldOptions = function (sourcename, targetFields, t
 				for (var index = 0; index < targetoptions.length; ++index) {
 					var targetoption = jQuery(targetoptions[index]);
 					// Show the option if field mapping matches the option value or there is not field mapping available.
-					if ( (targetvalues == false || targetvalues.indexOf(targetoption.val()) !== -1) && type==='setoptions') {
+					if ((!targetvalues || targetvalues.indexOf(targetoption.val()) !== -1) && type==='setoptions') {
 						var optionNode = jQuery(document.createElement('option'));
 						targetnode.append(optionNode);
 						optionNode.text(targetoption.text());
 						optionNode.val(targetoption.val());
-					} else if ( (targetvalues.indexOf(targetoption.val()) === -1) && type==='deloptions') {
+					} else if ((targetvalues.indexOf(targetoption.val()) === -1) && type==='deloptions') {
 						var optionNode = jQuery(document.createElement('option'));
 						targetnode.append(optionNode);
 						optionNode.text(targetoption.text());
@@ -274,10 +274,26 @@ FieldDependencies.prototype.fieldValueChange = function (targetFields) {
 		field=targetFields[i]['field'];
 		value=targetFields[i]['value'];
 		if (document.getElementsByName(field).item(0) !== undefined && document.getElementsByName(field).item(0) !== null) {
-			document.getElementsByName(field).item(0).value=value;
+			let inputfld = document.getElementsByName(field).item(0);
+			if (inputfld.type == 'checkbox') {
+				inputfld.checked = !(value=='0' || value=='false' || value=='' || value=='null' || value=='yes');
+			} else {
+				inputfld.value = value;
+			}
 		}
 	}
+};
 
+FieldDependencies.prototype.getFieldValue = function (field) {
+	var fld = document.getElementById(field);
+	if (fld==undefined) {
+		fld = document.getElementsByName(field).item(0);
+	}
+	if (fld.type == 'checkbox') {
+		return (fld.checked ? '1' : '0');
+	} else {
+		return fld.value;
+	}
 };
 
 FieldDependencies.prototype.fieldHide = function (hideFields) {
@@ -373,7 +389,6 @@ FieldDependencies.prototype.callFunc = function (sourcename, allParam) {
 		//check if the function is already declared
 		//make sure it is not going to be called the first time the page is loaded
 		if (window[funcName]!==undefined && typeof(fld.data('initialVal')) !== 'undefined') {
-			//document.getElementsByName(sourcename).item(0).onchange=window[funcName](sourcename,action_field,fldValue,fld.data('initialVal'),parameters);
 			window[funcName](sourcename, action_field, fldValue, fld.data('initialVal'), parameters);
 		}
 		if (typeof(fld.data('initialVal')) == 'undefined') {

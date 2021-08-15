@@ -13,10 +13,6 @@ require_once 'include/utils/utils.php';
 include_once 'vtlib/Vtiger/Module.php';
 
 class cbPulse extends CRMEntity {
-
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_cbpulse';
 	public $table_index= 'cbpulseid';
 	public $column_fields = array();

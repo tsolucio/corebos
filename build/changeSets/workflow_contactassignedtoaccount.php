@@ -40,7 +40,7 @@ class workflow_contactassignedtoaccount extends cbupdaterWorker {
 			global $adb;
 			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%Update Contact Assigned To%'", array());
 			if ($result && $adb->num_rows($result)>0) {
-				$this->sendMsg('<span style="font-size:large;weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
+				$this->sendMsg('<span style="font-size:large;font-weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
 			} else {
 				$emm = new VTEntityMethodManager($adb);
 				$emm->removeEntityMethod("Contacts", "Update Contact Assigned To");

@@ -160,13 +160,13 @@
 					<div style='margin-left:6px;float:left;'>
 						<table border=0 cellspacing=0 cellpadding=2> {* name='schdayofweek' *}
 							<tr>
-							<td><input name="sun_flag" value="1" type="checkbox" {if is_array($dayOfWeek) && in_array('1', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY0'|@getTranslatedString:'Calendar'}</td>
-							<td><input name="mon_flag" value="2" type="checkbox" {if is_array($dayOfWeek) && in_array('2', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY1'|@getTranslatedString:'Calendar'}</td>
-							<td><input name="tue_flag" value="3" type="checkbox" {if is_array($dayOfWeek) && in_array('3', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY2'|@getTranslatedString:'Calendar'}</td>
-							<td><input name="wed_flag" value="4" type="checkbox" {if is_array($dayOfWeek) && in_array('4', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY3'|@getTranslatedString:'Calendar'}</td>
-							<td><input name="thu_flag" value="5" type="checkbox" {if is_array($dayOfWeek) && in_array('5', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY4'|@getTranslatedString:'Calendar'}</td>
-							<td><input name="fri_flag" value="6" type="checkbox" {if is_array($dayOfWeek) && in_array('6', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY5'|@getTranslatedString:'Calendar'}</td>
-							<td><input name="sat_flag" value="7" type="checkbox" {if is_array($dayOfWeek) && in_array('7', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY6'|@getTranslatedString:'Calendar'}</td>
+							<td><input name="sun_flag" value="1" type="checkbox" {if is_array($dayOfWeek) && in_array('1', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY0'|@getTranslatedString:'cbCalendar'}</td>
+							<td><input name="mon_flag" value="2" type="checkbox" {if is_array($dayOfWeek) && in_array('2', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY1'|@getTranslatedString:'cbCalendar'}</td>
+							<td><input name="tue_flag" value="3" type="checkbox" {if is_array($dayOfWeek) && in_array('3', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY2'|@getTranslatedString:'cbCalendar'}</td>
+							<td><input name="wed_flag" value="4" type="checkbox" {if is_array($dayOfWeek) && in_array('4', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY3'|@getTranslatedString:'cbCalendar'}</td>
+							<td><input name="thu_flag" value="5" type="checkbox" {if is_array($dayOfWeek) && in_array('5', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY4'|@getTranslatedString:'cbCalendar'}</td>
+							<td><input name="fri_flag" value="6" type="checkbox" {if is_array($dayOfWeek) && in_array('6', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY5'|@getTranslatedString:'cbCalendar'}</td>
+							<td><input name="sat_flag" value="7" type="checkbox" {if is_array($dayOfWeek) && in_array('7', $dayOfWeek)}checked{/if}></td><td>{'LBL_DAY6'|@getTranslatedString:'cbCalendar'}</td>
 							</tr>
 						</table>
 					</div>

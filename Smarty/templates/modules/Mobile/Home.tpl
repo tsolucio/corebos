@@ -31,7 +31,6 @@
 		</script>
 		{/literal}
 		<form name="form" method="post" action="?_operation=globalsearch&module={$_MODULES[0]->name()}" target="_blank">
-			<input type="hidden" name="parenttab" value="{$CATEGORY}" style="margin:0px">
 			<input type="hidden" name="search_onlyin" value="{$SEARCHIN}" style="margin:0px">
 			<table style="width:100%">
 				<tr >

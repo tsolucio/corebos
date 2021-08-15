@@ -15,12 +15,13 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	protected $isEntity = false;
 	protected $element;
 	protected $id;
+	private $queryTotalRows = 0;
 
 	public function __construct($webserviceObject, $user, $adb, $log) {
 		parent::__construct($webserviceObject, $user, $adb, $log);
 		$this->entityTableName = $this->getActorTables();
 		if ($this->entityTableName === null) {
-			throw new WebServiceException(WebServiceErrorCode::$UNKOWNENTITY, 'Entity is not associated with any tables');
+			throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, 'Entity is not associated with any tables');
 		}
 		$this->meta = $this->getMetaInstance();
 		$this->moduleFields = null;
@@ -85,8 +86,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		//Insert into group vtiger_table
 		$query = "insert into {$this->entityTableName}(".implode(',', array_keys($element)).') values('.generateQuestionMarks(array_keys($element)).')';
 		$result = null;
-		$transactionSuccessful = vtws_runQueryAsTransaction($query, array_values($element), $result);
-		return $transactionSuccessful;
+		return vtws_runQueryAsTransaction($query, array_values($element), $result);
 	}
 
 	public function create($elementType, $element) {
@@ -110,7 +110,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		foreach ($fields as $field) {
 			if (isset($element[$field['name']])) {
 				$newElement[$field['name']] = $element[$field['name']];
-			} elseif ($field['name'] != 'id' && $selectedOnly == false) {
+			} elseif ($field['name'] != 'id' && !$selectedOnly) {
 				$newElement[$field['name']] = '';
 			}
 		}
@@ -135,19 +135,36 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	}
 
 	public function retrieve($id) {
-
 		$ids = vtws_getIdComponents($id);
 		$elemId = $ids[1];
 		$success = $this->__retrieve($elemId);
 		if (!$success) {
 			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record not found');
 		}
-		$element = $this->getElement();
-		if (isset($element['folderid']) && !isset($element['id'])) {
-			$element['id'] = $element['folderid'];
-			unset($element['folderid']);
+		$elem = $this->getElement();
+		if (isset($elem['folderid']) && !isset($elem['id'])) {
+			$elem['id'] = $elem['folderid'];
+			unset($elem['folderid']);
 		}
-		return DataTransform::filterAndSanitize($element, $this->meta);
+		return DataTransform::filterAndSanitize($elem, $this->meta);
+	}
+
+	public function massRetrieve($wsIds) {
+		global $adb;
+		$wid = $this->meta->getEntityId();
+		$rdo = array();
+		$query = "select * from {$this->entityTableName} where {$this->meta->getObectIndexColumn()} in (" . generateQuestionMarks($wsIds) . ')';
+		$rs = $adb->pquery($query, $wsIds);
+		while (!$rs->EOF) {
+			$elem = $rs->FetchRow();
+			if (isset($elem['folderid']) && !isset($elem['id'])) {
+				$elem['id'] = $elem['folderid'];
+				unset($elem['folderid']);
+			}
+			$elemid = (empty($elem['id']) ? (empty($elem['groupid']) ? '0' : $elem['groupid']) : $elem['id']);
+			$rdo[$wid.'x'.$elemid] = DataTransform::filterAndSanitize($elem, $this->meta);
+		}
+		return $rdo;
 	}
 
 	public function __update($element, $id) {
@@ -172,12 +189,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	}
 
 	public function __revise($element, $id) {
-		$columnStr = 'set '.implode('=?,', array_keys($element)).' =? ';
-		$query = 'update '.$this->entityTableName.' '.$columnStr.'where '.$this->meta->getObectIndexColumn().'=?';
-		$params = array_values($element);
-		$params[] = $id;
-		$result = null;
-		return vtws_runQueryAsTransaction($query, $params, $result);
+		return $this->__update($element, $id);
 	}
 
 	public function revise($element) {
@@ -211,8 +223,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	public function __delete($elemId) {
 		$result = null;
 		$query = 'delete from '.$this->entityTableName.' where '. $this->meta->getObectIndexColumn().'=?';
-		$transactionSuccessful = vtws_runQueryAsTransaction($query, array($elemId), $result);
-		return $transactionSuccessful;
+		return vtws_runQueryAsTransaction($query, array($elemId), $result);
 	}
 
 	public function delete($id) {
@@ -233,7 +244,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$app_strings = VTWS_PreserveGlobal::getGlobal('app_strings');
 		vtws_preserveGlobal('current_user', $this->user);
 		$label = (isset($app_strings[$elementType])) ? $app_strings[$elementType] : $elementType;
-		$createable = $this->meta->hasWriteAccess();
+		$createable = $this->meta->hasCreateAccess();
 		$updateable = $this->meta->hasWriteAccess();
 		$deleteable = $this->meta->hasDeleteAccess();
 		$retrieveable = $this->meta->hasReadAccess();
@@ -253,11 +264,14 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		);
 	}
 
+	public function getFilterFields($elementType) {
+		return $this->meta->getFilterFields($elementType);
+	}
+
 	public function getModuleFields() {
 		if ($this->moduleFields === null) {
 			$fields = array();
-			$moduleFields = $this->meta->getModuleFields();
-			foreach ($moduleFields as $webserviceField) {
+			foreach ($this->meta->getModuleFields() as $webserviceField) {
 				$fields[] = $this->getDescribeFieldArray($webserviceField);
 			}
 			$this->moduleFields = $fields;
@@ -302,7 +316,6 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 			'label'=> getTranslatedString($label, $this->meta->getPermissionModule()),
 			'label_raw' => $label,
 			'mandatory'=>false,
-			'type'=>'id',
 			'editable'=>false,
 			'type'=>array('name'=>'autogenerated'),
 			'nullable'=>false,
@@ -324,9 +337,11 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	}
 
 	public function query($q) {
-		$meta = null;
-		$queryRelatedModules = array();
 		$mysql_query = $this->wsVTQL2SQL($q, $meta, $queryRelatedModules);
+		return $this->querySQLResults($mysql_query, $q, $meta, $queryRelatedModules);
+	}
+
+	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {
 		$this->pearDB->startTransaction();
 		$result = $this->pearDB->pquery($mysql_query, array());
 		$error = $this->pearDB->hasFailedTransaction();
@@ -347,9 +362,14 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 				continue;
 			}
 			$output[] = DataTransform::sanitizeDataWithColumn($row, $meta);
+			$this->queryTotalRows++;
 		}
 
 		return $output;
+	}
+
+	public function getQueryTotalRows() {
+		return $this->queryTotalRows;
 	}
 
 	protected function getElement() {

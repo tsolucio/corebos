@@ -14,12 +14,12 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getpdfdata',
-	 'include' => 'include/Webservices/GetPDFData.php',
-	 'handler' => 'cbws_getpdfdata',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'id','type' => 'String')
-	 )
+	'name'    => 'getpdfdata',
+	'include' => 'include/Webservices/GetPDFData.php',
+	'handler' => 'cbws_getpdfdata',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'id','type' => 'String')
+	)
 );

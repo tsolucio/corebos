@@ -32,7 +32,7 @@ class VtigerCRMZendeskMeta extends EntityMeta {
 					$this->idColumn = $dbField->name;
 				} else {
 					throw new WebServiceException(
-						WebServiceErrorCode::$UNKOWNENTITY,
+						WebServiceErrorCode::$UNKNOWNENTITY,
 						'Entity table with multi column primary key is not supported'
 					);
 				}
@@ -186,6 +186,10 @@ class VtigerCRMZendeskMeta extends EntityMeta {
 
 	public function hasReadAccess() {
 		return $this->hasReadAccess;
+	}
+
+	public function hasCreateAccess() {
+		return $this->hasWriteAccess;
 	}
 
 	public function hasWriteAccess() {

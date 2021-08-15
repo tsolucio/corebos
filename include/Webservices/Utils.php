@@ -23,9 +23,9 @@ require_once 'include/utils/VtlibUtils.php';
 require_once 'include/Webservices/WebserviceEntityOperation.php';
 require_once 'include/Webservices/PreserveGlobal.php';
 
-/* Function to return all the users in the groups that this user is part of.
- * @param $id - id of the user
- * returns Array:UserIds userid of all the users in the groups that this user is part of.
+/** return all the users in the groups that the given user is part of.
+ * @param integer id of the user
+ * @return array user names of all the users in the groups that this user is part of indexed by their ID
  */
 function vtws_getUsersInTheSameGroup($id) {
 	require_once 'include/utils/GetGroupUsers.php';
@@ -54,7 +54,7 @@ function vtws_generateRandomAccessKey($length = 10) {
 	$accesskey = '';
 	$maxIndex = strlen($source);
 	for ($i=0; $i<$length; ++$i) {
-		$accesskey = $accesskey.substr($source, rand(null, $maxIndex), 1);
+		$accesskey = $accesskey.substr($source, rand(0, $maxIndex), 1);
 	}
 	return $accesskey;
 }
@@ -149,6 +149,19 @@ function vtws_getWSID($id) {
 	}
 }
 
+function vtws_getCRMID($id) {
+	if (strlen($id)==40) {
+		return CRMEntity::getCRMIDfromUUID($id);
+	} elseif (preg_match('/^[0-9]+x[0-9]+$/', $id)) {
+		$parts = vtws_getIdComponents($id);
+		return $parts[1];
+	} elseif (is_numeric($id)) {
+		return $id;
+	} else {
+		return 0;
+	}
+}
+
 function getEmailFieldId($meta, $entityId) {
 	global $adb;
 	//no email field accessible in the module. since its only association pick up the field any way.
@@ -182,7 +195,7 @@ function vtws_getEntityNameFields($moduleName) {
 	$nameFields = array();
 	if ($rowCount > 0) {
 		$fieldsname = $adb->query_result($result, 0, 'fieldname');
-		if (!(strpos($fieldsname, ',') === false)) {
+		if (strpos($fieldsname, ',')) {
 			 $nameFields = explode(',', $fieldsname);
 		} else {
 			$nameFields[] = $fieldsname;
@@ -263,10 +276,10 @@ function vtws_isRecordOwnerGroup($ownerId) {
 }
 
 function vtws_getOwnerType($ownerId) {
-	if (vtws_isRecordOwnerGroup($ownerId) == true) {
+	if (vtws_isRecordOwnerGroup($ownerId)) {
 		return 'Groups';
 	}
-	if (vtws_isRecordOwnerUser($ownerId) == true) {
+	if (vtws_isRecordOwnerUser($ownerId)) {
 		return 'Users';
 	}
 	throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Invalid owner of the record');
@@ -299,9 +312,7 @@ function vtws_getWebserviceEntityId($entityName, $id) {
 }
 
 function vtws_addDefaultModuleTypeEntity($moduleName) {
-	$isModule = 1;
-	$moduleHandler = array('file'=>'include/Webservices/VtigerModuleOperation.php', 'class'=>'VtigerModuleOperation');
-	return vtws_addModuleTypeWebserviceEntity($moduleName, $moduleHandler['file'], $moduleHandler['class'], $isModule);
+	vtws_addModuleTypeWebserviceEntity($moduleName, 'include/Webservices/VtigerModuleOperation.php', 'VtigerModuleOperation');
 }
 
 function vtws_addModuleTypeWebserviceEntity($moduleName, $filePath, $className) {
@@ -311,11 +322,9 @@ function vtws_addModuleTypeWebserviceEntity($moduleName, $filePath, $className) 
 		array($moduleName, $filePath, $className)
 	);
 	if ($checkres && $adb->num_rows($checkres) == 0) {
-		$isModule=1;
-		$entityId = $adb->getUniqueID('vtiger_ws_entity');
 		$adb->pquery(
 			'insert into vtiger_ws_entity(id,name,handler_path,handler_class,ismodule) values (?,?,?,?,?)',
-			array($entityId,$moduleName,$filePath,$className,$isModule)
+			array($adb->getUniqueID('vtiger_ws_entity'), $moduleName, $filePath, $className, 1)
 		);
 	}
 }
@@ -327,7 +336,7 @@ function vtws_deleteWebserviceEntity($moduleName) {
 
 function vtws_addDefaultActorTypeEntity($actorName, $actorNameDetails, $withName = true) {
 	$actorHandler = array('file'=>'include/Webservices/VtigerActorOperation.php', 'class'=>'VtigerActorOperation');
-	if ($withName == true) {
+	if ($withName) {
 		vtws_addActorTypeWebserviceEntityWithName($actorName, $actorHandler['file'], $actorHandler['class'], $actorNameDetails);
 	} else {
 		vtws_addActorTypeWebserviceEntityWithoutName($actorName, $actorHandler['file'], $actorHandler['class'], $actorNameDetails);
@@ -421,14 +430,14 @@ function registerWSAPI($operationInfo) {
 	);
 
 	if (empty($operationId)) {
-		throw new Exception('FAILED TO SETUP '.$operationInfo['name'].' WEBSERVICE');
+		throw new InvalidArgumentException('FAILED TO SETUP '.$operationInfo['name'].' WEBSERVICE');
 	}
 
 	$sequence = 1;
 	foreach ($operationInfo['parameters'] as $parameters) {
 		$status = vtws_addWebserviceOperationParam($operationId, $parameters['name'], $parameters['type'], $sequence++);
 		if ($status === false) {
-			throw new Exception('FAILED TO SETUP '.$parameters['name'].' WEBSERVICE HALFWAY THOURGH');
+			throw new InvalidArgumentException('FAILED TO SETUP '.$parameters['name'].' WEBSERVICE HALFWAY THOURGH');
 		}
 	}
 	return true;
@@ -500,9 +509,10 @@ function vtws_addWebserviceOperationParam($operationId, $paramName, $paramType, 
  * @param <type> $user
  * @return WebserviceEntityOperation
  */
-function vtws_getModuleHandlerFromName($name, $user) {
+function vtws_getModuleHandlerFromName($name, $user, $allDisplayTypes = false) {
 	global $adb, $log;
 	$webserviceObject = VtigerWebserviceObject::fromName($adb, $name);
+	$webserviceObject->allDisplayTypes = $allDisplayTypes;
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
 	require_once $handlerPath;
@@ -542,6 +552,17 @@ function vtws_CreateCompanyLogoFile($fieldname) {
 	throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN, "$fieldname file upload failed");
 }
 
+function vtws_getActorModules() {
+	global $adb;
+	$actorrs = $adb->query("SELECT name FROM vtiger_ws_entity WHERE handler_class='VtigerActorOperation' or handler_class='ModTrackerOperation'");
+	$actors = array();
+	while (!$actorrs->EOF) {
+		$row = $actorrs->FetchRow();
+		$actors[] = $row['name'];
+	}
+	return $actors;
+}
+
 function vtws_getActorEntityName($name, $idList) {
 	$db = PearDatabase::getInstance();
 	if (!is_array($idList) && count($idList) == 0) {
@@ -565,7 +586,7 @@ function vtws_getActorEntityNameById($entityId, $idList) {
 			$nameFields = $db->query_result($result, 0, 'name_fields');
 			$tableName = $db->query_result($result, 0, 'table_name');
 			$indexField = $db->query_result($result, 0, 'index_field');
-			if (!(strpos($nameFields, ',') === false)) {
+			if (strpos($nameFields, ',')) {
 				$fieldList = explode(',', $nameFields);
 				$nameFields = 'concat(';
 				$nameFields = $nameFields.implode(",' ',", $fieldList);
@@ -690,7 +711,7 @@ function vtws_saveLeadRelations($leadId, $relatedId, $setype) {
 	for ($i = 0; $i < $rowCount; ++$i) {
 		$recordId = $adb->query_result($result, $i, 'relcrmid');
 		$recordModule = $adb->query_result($result, $i, 'relmodule');
-		$adb->pquery('insert into vtiger_crmentityrel values(?,?,?,?)', array($relatedId, $setype, $recordId, $recordModule));
+		$resultNew = $adb->pquery('insert into vtiger_crmentityrel values(?,?,?,?)', array($relatedId, $setype, $recordId, $recordModule));
 		if ($resultNew === false) {
 			return false;
 		}
@@ -703,7 +724,7 @@ function vtws_saveLeadRelations($leadId, $relatedId, $setype) {
 	for ($i = 0; $i < $rowCount; ++$i) {
 		$recordId = $adb->query_result($result, $i, 'crmid');
 		$recordModule = $adb->query_result($result, $i, 'module');
-		$adb->pquery(
+		$resultNew = $adb->pquery(
 			'insert into vtiger_crmentityrel values(?,?,?,?)',
 			array($relatedId, $setype, $recordId, $recordModule)
 		);
@@ -724,14 +745,14 @@ function vtws_getFieldfromFieldId($fieldId, $fieldObjectList) {
 	return null;
 }
 
-/**	Function used to get the lead related activities with other entities Account and Contact
+/**	Function used to transfer the lead related activities with other entities Account and Contact
  *	@param integer $leadId - lead entity id
  *	@param integer $accountId - related account id
- *	@param integer $contactId -  related contact id
+ *	@param integer $contactId - related contact id
  *	@param integer $relatedId - related entity id to which the records need to be transferred
+ *	@return boolean true if transfered correctly, false otherwise
  */
-function vtws_getRelatedActivities($leadId, $accountId, $contactId, $relatedId) {
-
+function vtws_transferRelatedActivities($leadId, $accountId, $contactId, $relatedId) {
 	if (empty($leadId) || empty($relatedId) || (empty($accountId) && empty($contactId))) {
 		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, 'Failed to move related Activities/Emails');
 	}
@@ -743,14 +764,13 @@ function vtws_getRelatedActivities($leadId, $accountId, $contactId, $relatedId) 
 	$rowCount = $adb->num_rows($result);
 	for ($i=0; $i<$rowCount; ++$i) {
 		$activityId=$adb->query_result($result, $i, 'activityid');
-
-		$resultNew = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($activityId));
+		$resultNew = $adb->pquery('select setype from vtiger_crmobject where crmid=?', array($activityId));
 		if ($resultNew === false) {
 			return false;
 		}
 		$type=$adb->query_result($resultNew, 0, 'setype');
 
-		$resultNew = $adb->pquery('delete from vtiger_seactivityrel where crmid=?', array($leadId));
+		$resultNew = $adb->pquery('delete from vtiger_seactivityrel where crmid=? and activityid=?', array($leadId, $activityId));
 		if ($resultNew === false) {
 			return false;
 		}
@@ -760,12 +780,14 @@ function vtws_getRelatedActivities($leadId, $accountId, $contactId, $relatedId) 
 				if ($resultNew === false) {
 					return false;
 				}
+				$adb->pquery('update vtiger_activity set rel_id=? where activityid=?', array($accountId, $activityId));
 			}
 			if (!empty($contactId)) {
 				$resultNew = $adb->pquery('insert into vtiger_cntactivityrel(contactid,activityid) values (?,?)', array($contactId, $activityId));
 				if ($resultNew === false) {
 					return false;
 				}
+				$adb->pquery('update vtiger_activity set cto_id=? where (cto_id="" or cto_id is null) and activityid=?', array($contactId, $activityId));
 			}
 		} else {
 			$resultNew = $adb->pquery('insert into vtiger_seactivityrel(crmid,activityid) values (?,?)', array($relatedId, $activityId));
@@ -849,10 +871,17 @@ function vtws_transferComments($sourceRecordId, $destinationRecordId) {
 function vtws_transferOwnership($ownerId, $newOwnerId, $delete = true) {
 	$db = PearDatabase::getInstance();
 	//Updating the smcreatorid,smownerid, modifiedby in vtiger_crmentity
+	$denormModules = getDenormalizedModules();
+	if (count($denormModules) > 0) {
+		foreach ($denormModules as $table) {
+			$db->pquery('update '.$table.' set smcreatorid=? where smcreatorid=?', array($newOwnerId, $ownerId));
+			$db->pquery('update '.$table.' set smownerid=? where smownerid=?', array($newOwnerId, $ownerId));
+			$db->pquery('update '.$table.' set modifiedby=? where modifiedby=?', array($newOwnerId, $ownerId));
+		}
+	}
 	$db->pquery('update vtiger_crmentity set smcreatorid=? where smcreatorid=?', array($newOwnerId, $ownerId));
 	$db->pquery('update vtiger_crmentity set smownerid=? where smownerid=?', array($newOwnerId, $ownerId));
 	$db->pquery('update vtiger_crmentity set modifiedby=? where modifiedby=?', array($newOwnerId, $ownerId));
-
 	//Updating the createdby in vtiger_attachmentsfolder
 	$db->pquery('update vtiger_attachmentsfolder set createdby=? where createdby=?', array($newOwnerId, $ownerId));
 
@@ -911,7 +940,9 @@ function vtws_transferOwnership($ownerId, $newOwnerId, $delete = true) {
 
 function vtws_getWebserviceTranslatedStringForLanguage($label, $currentLanguage) {
 	static $translations = array();
-	$currentLanguage = vtws_getWebserviceCurrentLanguage();
+	if (empty($currentLanguage)) {
+		$currentLanguage = vtws_getWebserviceCurrentLanguage();
+	}
 	if (empty($translations[$currentLanguage])) {
 		include 'include/Webservices/language/'.$currentLanguage.'.lang.php';
 		$translations[$currentLanguage] = $webservice_strings;
@@ -937,8 +968,7 @@ function vtws_getWebserviceTranslatedString($label) {
 		return $translation;
 	}
 
-	//if default language is not en_us then do the translation in en_us to eliminate the LBL_ bit
-	//of label.
+	//if default language is not en_us then do the translation in en_us to eliminate the LBL_ bit of label.
 	if ('en_us' != $defaultLanguage) {
 		$translation = vtws_getWebserviceTranslatedStringForLanguage($label, 'en_us');
 		if (!empty($translation)) {
@@ -972,5 +1002,33 @@ function vtws_getWsIdForFilteredRecord($moduleName, $conditions, $user) {
 		return null;
 	}
 	return vtws_getEntityId($moduleName).'x'.$adb->query_result($result, 0, 0);
+}
+
+function vtws_checkListTypesPermission($moduleName, $user, $return = 'types') {
+	global $adb, $log;
+	$webserviceObject = VtigerWebserviceObject::fromName($adb, $moduleName);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+	require_once $handlerPath;
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$meta = $handler->getMeta();
+	if (!$meta->isModuleEntity()) {
+		throw new WebServiceException('INVALID_MODULE', "Given module ($moduleName) cannot be found");
+	}
+	// check permission on module
+	$entityName = $meta->getEntityName();
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($moduleName) is denied");
+	}
+	switch ($return) {
+		case 'meta':
+			return $meta;
+			break;
+		case 'types':
+		default:
+			return $types;
+			break;
+	}
 }
 ?>

@@ -84,73 +84,40 @@ if (isset($query_string) && $query_string != '') {
 	}
 	$i = 0;
 	$moduleRecordCount = array();
-	echo '<div id="globasearch_results" style="display:none;">';
+	if (empty($_REQUEST['ajax'])) {
+		echo '<div id="globasearch_results" style="display:none;">';
+	}
+	$smarty = new vtigerCRM_Smarty;
+	$smarty->assign('THEME', $theme);
+	$smarty->assign('IMAGE_PATH', $image_path);
+	$smarty->assign('ISAJAXCALL', isset($_REQUEST['ajax']));
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('TAG_SEARCH', $search_tag);
+	$smarty->assign('SEARCH_MODULE', $search_module);
+	$smarty->assign('SEARCH_STRING', htmlentities($search_val, ENT_QUOTES, $default_charset));
+	$smarty->assign('MODULES_LIST', $object_array);
 	foreach ($object_array as $module => $object_name) {
 		if ($curModule == 'Utilities' || ($curModule == $module && !empty($_REQUEST['ajax']))) {
 			$focus = CRMEntity::getInstance($module);
 			if (isPermitted($module, 'index') == 'yes') {
-				$smarty = new vtigerCRM_Smarty;
-
 				if (!file_exists("modules/$module/language/".$current_language.'.lang.php')) {
 					$current_language = 'en_us';
 				}
 				require_once "modules/$module/language/".$current_language.'.lang.php';
-
 				$smarty->assign('MOD', $mod_strings);
-				$smarty->assign('APP', $app_strings);
-				$smarty->assign('THEME', $theme);
-				$smarty->assign('IMAGE_PATH', $image_path);
 				$smarty->assign('MODULE', $module);
-				$smarty->assign('TAG_SEARCH', $search_tag);
-				$smarty->assign('SEARCH_MODULE', $search_module);
 				$smarty->assign('SINGLE_MOD', $module);
-				$smarty->assign('SEARCH_STRING', htmlentities($search_val, ENT_QUOTES, $default_charset));
 
-				if ($module=='Calendar') {
-					$listquery = 'SELECT vtiger_activity.activityid as act_id,vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.setype,
-						vtiger_activity.*
-						FROM vtiger_activity
-						LEFT JOIN vtiger_activitycf ON vtiger_activitycf.activityid = vtiger_activity.activityid
-						LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
-						LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
-						LEFT OUTER JOIN vtiger_activity_reminder ON vtiger_activity_reminder.activity_id = vtiger_activity.activityid
-						LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid
-						LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
-					$listquery .= getNonAdminAccessControlQuery($module, $current_user);
-					$listquery .= ' where vtiger_crmentity.deleted=0 ';
-				} else {
-					$listquery = getListQuery($module);
-				}
-				$oCustomView = '';
-
-				$oCustomView = new CustomView($module);
-				//Instead of getting current customview id, use cvid of All so that all entities will be found
-				//$viewid = $oCustomView->getViewId($module);
-				$cv_res = $adb->pquery("select cvid from vtiger_customview where viewname='All' and entitytype=?", array($module));
-				$viewid = $adb->query_result($cv_res, 0, 'cvid');
-				$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid);
-
-				$listquery = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
-				if ($module == 'Calendar') {
-					if (!isset($oCustomView->list_fields['Close'])) {
-						$oCustomView->list_fields['Close']=array ('activity' => 'status');
-					}
-					if (!isset($oCustomView->list_fields_name['Close'])) {
-						$oCustomView->list_fields_name['Close']='status';
-					}
-					$listquery = str_replace(',vtiger_contactdetails.contactid', '', $listquery);
-					$listquery = str_ireplace('select ', 'select distinct ', $listquery);
-				}
+				$listquery = getListQuery($module);
 
 				if ($search_module != '' || $search_tag != '') {//This is for Tag search
 					$where = getTagWhere($search_val, $current_user->id);
 					$search_msg = $app_strings['LBL_TAG_SEARCH'];
-					$search_msg .= "<b>".to_html($search_val)."</b>";
+					$search_msg .= '<b>'.to_html($search_val).'</b>';
 				} else { //This is for Global search
 					$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
-					$search_msg .=	"<b>".htmlentities($search_val, ENT_QUOTES, $default_charset)."</b>";
+					$search_msg .= '<b>'.htmlentities($search_val, ENT_QUOTES, $default_charset).'</b>';
 				}
 
 				if ($where != '') {
@@ -174,9 +141,7 @@ if (isset($query_string) && $query_string != '') {
 							$start = ceil($noofrows/$list_max_entries_per_page);
 						}
 					}
-					if (!is_numeric($start)) {
-						$start = 1;
-					} elseif ($start < 0) {
+					if (!is_numeric($start) || $start < 0) {
 						$start = 1;
 					}
 					$start = ceil($start);
@@ -193,22 +158,20 @@ if (isset($query_string) && $query_string != '') {
 				$moduleRecordCount[$module]['recordListRangeMessage'] = getRecordRangeMessage($list_result, $limitStartRecord, $noofrows);
 
 				$info_message='&recordcount='.(isset($_REQUEST['recordcount']) ? $_REQUEST['recordcount'] : 0)
-					.'&noofrows='.(isset($_REQUEST['noofrows']) ? $_REQUEST['noofrows'] : 0).'&message='.(isset($_REQUEST['message']) ? $_REQUEST['message'] : '').
-					'&skipped_record_count='.(isset($_REQUEST['skipped_record_count']) ? $_REQUEST['skipped_record_count'] : 0);
+					.'&noofrows='.(isset($_REQUEST['noofrows']) ? $_REQUEST['noofrows'] : 0).'&message='.(isset($_REQUEST['message']) ? $_REQUEST['message'] : '')
+					.'&skipped_record_count='.(isset($_REQUEST['skipped_record_count']) ? $_REQUEST['skipped_record_count'] : 0);
 				$url_string = '&modulename='.(isset($_REQUEST['modulename']) ? $_REQUEST['modulename'] : '').'&nav_module='.$module.$info_message;
-				$viewid = '';
 
-				$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $module, 'UnifiedSearch', $viewid);
+				$oCustomView = new CustomView($module);
+				$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $module, 'UnifiedSearch', '');
 				$listview_header = getListViewHeader($focus, $module, '', '', '', 'global', $oCustomView);
 				$listview_entries = getListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView);
 
 				//Do not display the Header if there are no entries in listview_entries
 				unset($listview_entries['total']);
-				if (count($listview_entries) > 0) {
+				if (!empty($listview_entries)) {
 					$display_header = 1;
-					if (vtlib_isModuleActive('ListViewColors') && count($listview_entries) == 2) {
-						$listview_entries_for1 = $listview_entries;
-					} elseif (!vtlib_isModuleActive('ListViewColors') && count($listview_entries) == 1) {
+					if (count($listview_entries) == 1) {
 						$listview_entries_for1 = $listview_entries;
 					}
 				} else {
@@ -222,8 +185,6 @@ if (isset($query_string) && $query_string != '') {
 				$smarty->assign('ModuleRecordCount', $moduleRecordCount);
 				$total_record_count = $total_record_count + $noofrows;
 				$smarty->assign('SEARCH_CRITERIA', "( $noofrows )".$search_msg);
-				$smarty->assign('MODULES_LIST', $object_array);
-				$smarty->assign('CUSTOMVIEW_OPTION', $customviewcombo_html);
 
 				if (($i != 0 && empty($_REQUEST['ajax'])) || !(empty($_REQUEST['ajax']))) {
 					$smarty->display('UnifiedSearchAjax.tpl');
@@ -235,7 +196,9 @@ if (isset($query_string) && $query_string != '') {
 			}
 		}
 	}
-	echo '</div>';
+	if (empty($_REQUEST['ajax'])) {
+		echo '</div>';
+	}
 	if ($total_record_count == 1) {
 		// we have just one record in one module > we go there directly
 		$modwith1 = array_filter($moduleRecordCount, function ($e) {

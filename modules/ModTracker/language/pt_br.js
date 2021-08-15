@@ -4,7 +4,7 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Colaborator: Ranieri Slemer - translate to brazilian portuguese // Sao Paulo / Brazil - 13/03/2020
+ * Colaborator: Ranieri Slemer - translate to brazilian portuguese // Sao Paulo / Brazil - 11/06/2021
  ********************************************************************************/
 
 var modtrackerarr = {
@@ -12,13 +12,13 @@ var modtrackerarr = {
 	'History': 'Histórico',
 	'by': 'Por',
 	'Field': 'Campo',
-	'User': 'User',
-	'date': 'Date of Change',
-	'Earlier value': 'Earlier value',
-	'Value changed to': 'Valor mudado para',
-	'highlight': 'Difference',
-	'No further history': 'Não há mais registro de mudanças',
+	'User': 'Usuário',
+	'date': 'Data da alteração',
+	'Earlier value': 'Valor anterior',
+	'Value changed to': 'Valor alterado para',
+	'highlight': 'Diferença',
+	'No further history': 'Não há mais registro de alterações',
 	'No further history available for this record': 'Não há mais histórico disponível para este registro.',
-	'No history': 'Sem hitórico de mudanças',
+	'No history': 'Sem hitórico de alterações',
 	'No history available for this record': 'Nenhum histórico disponível para este registro',
 };

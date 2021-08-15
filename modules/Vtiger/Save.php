@@ -82,7 +82,7 @@ if (empty($_REQUEST['assigned_user_id']) && empty($_REQUEST['assigned_group_id']
 	if ($focus->mode != 'edit') {
 		$focus->column_fields['assigned_user_id'] = $current_user->id;
 	} else {
-		$ownerrs = $adb->pquery('select smownerid from vtiger_crmentity where crmid=?', array($focus->id));
+		$ownerrs = $adb->pquery('select smownerid from '.$focus->crmentityTable.' where crmid=?', array($focus->id));
 		$focus->column_fields['assigned_user_id'] = $adb->query_result($ownerrs, 0, 0);
 	}
 } else {
@@ -108,7 +108,7 @@ if ($saveerror) { // there is an error so we go back to EditView.
 				$value = vtlib_purify($_REQUEST[$fieldname]);
 			}
 			if (is_array($value)) {
-				$value = implode(' |##| ', $value); // for multipicklists
+				$value = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value); // for multipicklists
 			}
 			$field_values_passed.=$fieldname."=".urlencode($value);
 		}

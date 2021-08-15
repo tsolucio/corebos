@@ -49,6 +49,13 @@ function assignValues($picklistid, $roleid, $values, $tableName) {
 	//delete older values
 	$adb->pquery('DELETE FROM vtiger_role2picklist WHERE roleid=? AND picklistid=?', array($roleid,$picklistid));
 
+	//clear cache picklist#roleid key
+	$cache = new corebos_cache();
+	if ($cache->isUsable()) {
+		$cacheKey = $tableName . '#' . $roleid;
+		$cache->getCacheClient()->delete($cacheKey);
+	}
+
 	//insert the new values
 	$inssql = 'INSERT INTO vtiger_role2picklist VALUES (?,?,?,?)';
 	for ($i=0; $i<$count; $i++) {

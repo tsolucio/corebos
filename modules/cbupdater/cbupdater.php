@@ -11,9 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class cbupdater extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_cbupdater';
 	public $table_index= 'cbupdaterid';
 	public $column_fields = array();
@@ -131,9 +128,8 @@ class cbupdater extends CRMEntity {
 		if (empty($cbinfo['filename']) || empty($cbinfo['classname'])) {
 			return false;
 		}
-		$sql = "select 1
-			from vtiger_cbupdater
-			inner join vtiger_crmentity on crmid=cbupdaterid
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbupdater');
+		$sql = 'select 1 from vtiger_cbupdater inner join '.$crmEntityTable." on crmid=cbupdaterid
 			where deleted=0 and (pathfilename=? or pathfilename='' or pathfilename is null) and filename=? and classname=?";
 		$rs = $adb->pquery($sql, array($cbinfo['filename'], basename($cbinfo['filename'], '.php'), $cbinfo['classname']));
 		return ($rs && $adb->num_rows($rs)==1);
@@ -148,6 +144,14 @@ class cbupdater extends CRMEntity {
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
+		}
+	}
+
+	public function afterImportRecord($rowId, $entityInfo) {
+		global $adb;
+		if (!empty($entityInfo['id'])) {
+			list($wsid, $crmid) = explode('x', $entityInfo['id']);
+			$adb->pquery('update vtiger_cbupdater set filename=?,appcs=? where cbupdaterid=?', array(uniqid(), '0', $crmid));
 		}
 	}
 
@@ -172,33 +176,5 @@ class cbupdater extends CRMEntity {
 			// Handle actions after this module is updated.
 		}
 	}
-
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 }
 ?>

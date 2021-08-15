@@ -9,18 +9,37 @@
 
 function submittemplate(recordid, value, target_fieldname, formname) {
 	let idlist = (window.opener.document.getElementById('listofids')) !=null ? window.opener.document.getElementById('listofids').value: '';
+	var closeit = false;
 	var calltype = (window.opener.document.getElementById('calltype') != null ? window.opener.document.getElementById('calltype').value : 'normalcall');
+	if (calltype.substring(0, 10)=='function::') {
+		let func = calltype.substring(10);
+		if (typeof (window[func])=='function') {
+			window[func](recordid, value, target_fieldname, formname);
+			if (document.getElementById('closewindow').value=='true') {
+				closeit = true;
+			}
+		}
+	}
+	// we get it again in case the function above has changed the value
+	calltype = (window.opener.document.getElementById('calltype') != null ? window.opener.document.getElementById('calltype').value : 'normalcall');
 	if (calltype =='normalcall') {
-		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMerge&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype;
+		let mergewith = (window.opener.document.getElementById('merge_template_with')) !=null ? window.opener.document.getElementById('merge_template_with').value: '';
+		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMerge&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype+'&merge_template_with='+mergewith+'&callvalue='+value+'&targetfield='+target_fieldname+'&callform='+formname;
+		closeit = false;
 	}
 	if (calltype =='emailworkflow') {
 		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMergeEmailTask&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype;
+		closeit = false;
 	}
 	if (calltype =='mailManager') {
 		var sub = '_mail_replyfrm_subject_';
 		var tbody = '_mail_replyfrm_body_';
 		var url = 'index.php?module=MailManager&action=MailManagerAjax&file=TemplateMergeMailManager&templateid='+recordid+'&subject='+sub+'&textbody='+tbody;
 		window.document.location.href = url;
+		closeit = false;
+	}
+	if (closeit && document.getElementById('closewindow').value=='true') {
+		window.close();
 	}
 }
 
@@ -98,7 +117,7 @@ function fillSelectBox(id, modules, parentModule, filterPred) {
 
 	var referenceFields = reduceR(concat, map(fieldReferenceNames, referenceFieldTypes), []);
 	var fieldLabels = dict(parentFields.concat(referenceFields));
-	document.getElementById(id).innerHTML = "";
+	document.getElementById(id).innerHTML = '';
 	var select = $('#'+id);
 	var optionClass = id+'_option';
 	$.each(fieldLabels, function (k, v) {
@@ -142,7 +161,7 @@ function getDescribeObjects(accessibleModules, moduleName, callback) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];

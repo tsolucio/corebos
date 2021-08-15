@@ -43,7 +43,6 @@ if ($tabname[1]!='') {
 	$custom=true;
 }
 
-/* ticket2369 fixed */
 $columnName = $tableName;
 for ($i = 0; $i < $count; $i++) {
 	$pickArray[$i] = trim(from_html($pickArray[$i]));
@@ -61,14 +60,9 @@ for ($i = 0; $i < $count; $i++) {
 		for ($x=0; $x < $numrow; $x++) {
 			$picklistvalues = decode_html($adb->query_result($res, $x, $tableName));
 
-			// Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/5129
 			if ($current_language != 'en_us') {
 				// Translate the value in database and compare with input.
-				if ($fld_module == 'Events') {
-					$temp_module_strings = return_module_language($current_language, 'Calendar');
-				} else {
-					$temp_module_strings = return_module_language($current_language, $fld_module);
-				}
+				$temp_module_strings = return_module_language($current_language, $fld_module);
 
 				$mod_picklistvalue = trim($temp_module_strings[$picklistvalues]);
 				if ($mod_picklistvalue == $pickArray[$i]) {

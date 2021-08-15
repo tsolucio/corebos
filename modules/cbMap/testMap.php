@@ -87,7 +87,7 @@ switch ($focus->column_fields['maptype']) {
 			$testrecord = 74;
 		}
 		$currentModule = getSalesEntityType($testrecord);
-		$mapinfo = (array) $focus->ConditionQuery(74);
+		$mapinfo = (array) $focus->ConditionQuery($testrecord);
 		$currentModule = 'cbMap';
 		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
 		break;
@@ -102,14 +102,34 @@ switch ($focus->column_fields['maptype']) {
 		}
 		list($wsid, $crmid) = explode('x', $testrecord);
 		$currentModule = getSalesEntityType($crmid);
-		$mapinfo = (array) $focus->ConditionExpression('11x74');
+		$mapinfo = (array) $focus->ConditionExpression($testrecord);
 		$currentModule = 'cbMap';
 		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
 		break;
 	case 'Mapping':
-		$sofocus = CRMEntity::getInstance('SalesOrder');
-		$sofocus->retrieve_entity_info(10569, 'SalesOrder');
-		$mapinfo = $focus->Mapping($sofocus->column_fields, array('sentin'=>'notmodified'));
+		if (!empty($_REQUEST['testrecord'])) {
+			$testrecord = vtlib_purify($_REQUEST['testrecord']);
+			if (strpos($testrecord, 'x')>0) {
+				list($wsid, $testrecord) = explode('x', $testrecord);
+			}
+			$testModule = getSalesEntityType($testrecord);
+			$sofocus = CRMEntity::getInstance($testModule);
+			$sofocus->retrieve_entity_info($testrecord, $testModule);
+			$recfields = $sofocus->column_fields;
+		} elseif (isset($_REQUEST['testrecord'])) {
+			$recfields = array();
+		} else {
+			$sofocus = CRMEntity::getInstance('SalesOrder');
+			$sofocus->retrieve_entity_info(10569, 'SalesOrder');
+			$recfields = $sofocus->column_fields;
+		}
+		foreach ($_REQUEST as $key => $value) {
+			if ($key=='module' || $key=='testrecord' || $key=='record' || $key=='action') {
+				continue;
+			}
+			$recfields[$key] = $value;
+		}
+		$mapinfo = $focus->Mapping($recfields, array('sentin'=>'notmodified'));
 		break;
 	case 'Record Access Control':
 		$rac = $focus->RecordAccessControl();
@@ -126,19 +146,19 @@ switch ($focus->column_fields['maptype']) {
 		}
 		break;
 	case 'Record Set Mapping':
-			$rsm = $focus->RecordSetMapping();
-			$mapinfo = $rsm->getFullRecordSet();
+		$rsm = $focus->RecordSetMapping();
+		$mapinfo = $rsm->getFullRecordSet();
 		break;
 	case 'ListColumns':
-			$rsm = $focus->ListColumns();
-			$mapinfo = $rsm->getCompleteMapping();
+		$rsm = $focus->ListColumns();
+		$mapinfo = $rsm->getCompleteMapping();
 		break;
 	case 'DuplicateRelations':
-			$rsm = $focus->DuplicateRelations();
-			$mapinfo = $rsm->getCompleteMapping();
+		$rsm = $focus->DuplicateRelations();
+		$mapinfo = $rsm->getCompleteMapping();
 		break;
 	case 'RelatedPanes':
-			$mapinfo = $focus->RelatedPanes(array(74));
+		$mapinfo = $focus->RelatedPanes(array(74));
 		break;
 	case 'Import':
 		$mapinfo = $focus->Import()->getCompleteMapping();
@@ -186,16 +206,28 @@ switch ($focus->column_fields['maptype']) {
 		);
 		break;
 	case 'Field Set Mapping':
-			$fsm = $focus->FieldSetMapping();
-			$mapinfo = $fsm->getFieldSet();
+		$fsm = $focus->FieldSetMapping();
+		$mapinfo = $fsm->getFieldSet();
 		break;
 	case 'Detail View Layout Mapping':
-			$mapinfo = $focus->DetailViewLayoutMapping();
+		$mapinfo = $focus->DetailViewLayoutMapping();
 		break;
 	case 'Webservice Mapping':
-		$focus2 = CRMEntity::getInstance('Accounts');
-		$focus2->retrieve_entity_info(74, 'Accounts');
-		$mapinfo = $focus->WebserviceMapping($focus2->column_fields);
+		if (!empty($_REQUEST['testrecord'])) {
+			$testrecord = vtlib_purify($_REQUEST['testrecord']);
+			if (strpos($testrecord, 'x')>0) {
+				list($wsid, $testrecord) = explode('x', $testrecord);
+			}
+		} else {
+			$testrecord = 74;
+		}
+		$setype = getSalesEntityType($testrecord);
+		$focus2 = CRMEntity::getInstance($setype);
+		$focus2->retrieve_entity_info($testrecord, $setype);
+		$context = array(
+			'myvariable' => 'my var',
+		);
+		$mapinfo = $focus->WebserviceMapping($focus2->column_fields, $context);
 		break;
 	case 'DecisionTable':
 		$context = array(
@@ -204,7 +236,16 @@ switch ($focus->column_fields['maptype']) {
 			'numyears' => isset($_REQUEST['numyears']) ? $_REQUEST['numyears'] : 2,
 			'record_id' => 74,
 		);
-		$mapinfo = $focus->DecisionTable($context);
+		foreach ($_REQUEST as $key => $value) {
+			if ($key=='record') {
+				continue;
+			}
+			$context[$key] = $value;
+		}
+		$mapinfo = array(
+			'result' => $focus->DecisionTable($context),
+			'info' => $focus->mapExecutionInfo,
+		);
 		break;
 	default:
 		break;

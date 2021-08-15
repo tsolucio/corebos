@@ -14,13 +14,13 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'SetRelation',
-	 'include' => 'include/Webservices/SetRelation.php',
-	 'handler' => 'vtws_setrelation',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'relate_this_id','type' => 'String'),
-		 array('name' => 'with_these_ids','type' => 'encoded')
-	 )
+	'name'    => 'SetRelation',
+	'include' => 'include/Webservices/SetRelation.php',
+	'handler' => 'vtws_setrelation',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'relate_this_id','type' => 'String'),
+		array('name' => 'with_these_ids','type' => 'encoded')
+	)
 );

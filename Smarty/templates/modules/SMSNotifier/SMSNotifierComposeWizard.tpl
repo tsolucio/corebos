@@ -11,12 +11,12 @@
 
 <div style="width: 400px;">
 	<form method="POST" action="javascript:void(0);">
-	
+
 	<table width="100%" cellpadding="5" cellspacing="0" border="0" class="small mailClient">
 	<tr>
 		<td colspan="2" class="mailClientWriteEmailHeader" width="90%" align="left">{$MOD.ComposeSMS}</td>
 	</table>
-	
+
 	<table width="100%" cellpadding="5" cellspacing="0" border="0" align="center">
 	<tr>
 		<td>
@@ -27,7 +27,7 @@
 		<td align="right"><span id="__smsnotifer_compose_wordcount__">0</span> {$MOD.characters} </td>
 	</tr>
 	</table>
-	
+
 	<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerPopupTransport">
 	<tr>
 		<td class="small" align="center">

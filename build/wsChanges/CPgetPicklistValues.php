@@ -14,12 +14,12 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getPicklistValues',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_getPicklistValues',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'module','type' => 'string'),
-	 )
+	'name'    => 'getPicklistValues',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_getPicklistValues',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'module','type' => 'string'),
+	)
 );

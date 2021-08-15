@@ -160,6 +160,11 @@ $mod_strings = array(
 	'LBL_CUSTOMER_PORTAL_INFORMATION' => 'Informatii despre Clientul de Portal',
 	'Support Start Date' => 'Data Pornire Suport',
 	'Support End Date' => 'Data Oprire Suport',
+	'portalpasswordtype' => 'Password Encoding',
+	'portalloginuser' => 'Portal Logn User',
+	'PortalUserPasswordManagement' => 'Portal Password',
+	'ppset' => 'Password set',
+	'ppnotset' => 'Password not set',
 	'Name' => 'Nume',
 	'LBL_ALL' => 'Toate',
 	'LBL_MAXIMUM_LIMIT_ERROR' => 'Scuze, fișierul încărcat depășește limita maxima pe fișier. Te rugam încearcă un fișier mai mic de 800000 bytes',
@@ -298,5 +303,7 @@ $mod_strings = array(
 	'Receiptcards' => 'ChitanteCarduri',
 	'cbControlIngresoGasto' => 'cbControlGasto',
 	'BankAccounts' => 'Conturi Bancare',
-);
+	'ship_countrycode' => 'Shipping Country Code',
+	'bill_countrycode' => 'Billing Country Code'
+	);
 ?>

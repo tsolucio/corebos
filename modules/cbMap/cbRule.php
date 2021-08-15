@@ -24,12 +24,61 @@ class coreBOS_Rule {
 
 	public static function evaluate($conditionid, $context) {
 		global $log,$adb,$current_user;
+		$params = array(
+			'conditionid' => $conditionid,
+			'context' => $context,
+		);
+
+		$cache = new corebos_cache();
+		if ($cache->isUsable()) {
+			$cacheKey = md5(implode('', $adb->flatten_array($params)));
+			$query = '(select vtiger_crmentity.modifiedtime
+				from vtiger_crmentity
+				inner join vtiger_cbmap on (vtiger_cbmap.targetname=vtiger_crmentity.setype and vtiger_cbmap.cbmapid=?)
+				where vtiger_crmentity.deleted=0 order by modifiedtime desc limit 1)
+				UNION
+				(select vtiger_crmentity.modifiedtime
+				from vtiger_crmentity
+				where vtiger_crmentity.deleted=0 and vtiger_crmentity.crmid=?) order by modifiedtime desc limit 1';
+			if ($cache->getCacheClient()->hasWithQueryCheck($cacheKey, $query, [$conditionid, $conditionid])) {
+				$cacheValue = $cache->getCacheClient()->get($cacheKey);
+				cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, false, 'Cache', $cacheValue, date('Y-m-d H:i:s')));
+				return $cacheValue;
+			}
+		}
+
+		// check that cbmapid is correct and load it
+		if (preg_match('/^[0-9]+x[0-9]+$/', $conditionid)) {
+			list($cbmapws, $conditionid) = explode('x', $conditionid);
+		}
+		if (is_numeric($conditionid)) {
+			$cbmap = cbMap::getMapByID($conditionid);
+		} else {
+			$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$conditionid, cbMap::getMapIdByName($conditionid));
+			$cbmap = cbMap::getMapByID($cbmapid);
+		}
+		if (empty($cbmap)) {
+			$mapvalues = array();
+		} else {
+			$mapvalues = $cbmap->column_fields;
+		}
+		if (empty($cbmap) || !in_array($cbmap->column_fields['maptype'], self::$supportedBusinessMaps)) {
+			cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, WebServiceErrorCode::$INVALID_BUSINESSMAP, $mapvalues, false, date('Y-m-d H:i:s')));
+			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP, 'Invalid Business Map identifier: '.$conditionid);
+		}
+
 		if (is_array($context)) {
-			if (empty($context['record_id'])) {
+			if (empty($context['record_id']) && $cbmap->column_fields['maptype'] != 'DecisionTable') {
+				cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, WebServiceErrorCode::$INVALIDID, $mapvalues, false, date('Y-m-d H:i:s')));
 				throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'No record_id value given in context array.');
 			}
-			$mergeContextVariables = $context;
-			$contextid = $mergeContextVariables['record_id'];
+			if (empty($context['record_id'])) {
+				$mergeContextVariables = false;
+				$contextid = 0;
+			} else {
+				$mergeContextVariables = $context;
+				$contextid = $mergeContextVariables['record_id'];
+			}
 		} else {
 			$mergeContextVariables = false;
 			$contextid = $context;
@@ -50,27 +99,17 @@ class coreBOS_Rule {
 			$meta = $handler->getMeta();
 			$entityName = $meta->getObjectEntityName($contextid);
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $contextid)) {
+				cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, WebServiceErrorCode::$ACCESSDENIED, $mapvalues, false, date('Y-m-d H:i:s')));
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
 			}
-		}
-
-		// check that cbmapid is correct and load it
-		if (preg_match('/^[0-9]+x[0-9]+$/', $conditionid)) {
-			list($cbmapws, $conditionid) = explode('x', $conditionid);
-		}
-		if (is_numeric($conditionid)) {
-			$cbmap = cbMap::getMapByID($conditionid);
-		} else {
-			$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$conditionid, cbMap::getMapIdByName($conditionid));
-			$cbmap = cbMap::getMapByID($cbmapid);
-		}
-		if (empty($cbmap) || !in_array($cbmap->column_fields['maptype'], self::$supportedBusinessMaps)) {
-			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP, 'Invalid Business Map identifier: '.$conditionid);
 		}
 
 		// merge fixed context array values
 		if (is_array($mergeContextVariables)) {
 			foreach ($mergeContextVariables as $key => $value) {
+				if (is_array($value)) {
+					continue;
+				}
 				$cbmap->column_fields['content'] = str_ireplace('$['.$key.']', $value, $cbmap->column_fields['content']);
 			}
 		}
@@ -88,6 +127,10 @@ class coreBOS_Rule {
 			default:
 				$ruleinfo = $cbmap->ConditionExpression($context);
 				break;
+		}
+		cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, false, $mapvalues, $ruleinfo, date('Y-m-d H:i:s')));
+		if ($cache->isUsable()) {
+			$cache->getCacheClient()->setMultiple([$cacheKey => $ruleinfo, $cacheKey.$cache->getCacheClient()->getModifiedTimePostfix() => date('YmdHis')]);
 		}
 		return $ruleinfo;
 	}

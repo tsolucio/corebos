@@ -12,6 +12,7 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 require_once 'include/events/include.inc';
 require_once 'modules/cbMap/cbMap.php';
+require_once 'modules/com_vtiger_workflow/expression_functions/application.php';
 
 class RunWebserviceWorkflowTask extends VTTask {
 	public $executeImmediately = true;
@@ -36,7 +37,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 		$focus2 = CRMEntity::getInstance($origin_module);
 		$focus2->retrieve_entity_info($therecid, $origin_module);
-		$target_fields = $cbMap->WebserviceMapping($focus2->column_fields);
+		$target_fields = $cbMap->WebserviceMapping($focus2->column_fields, $entity->WorkflowContext);
 
 		$wsconfig = $target_fields['WSConfig'];
 		$url = $this->substituteSetting($wsconfig['wsurl']);
@@ -79,7 +80,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$nr = 0;
 			foreach ($headers as $head) {
 				$findauth = explode(':', $head);
-				if ($findauth[0] == 'Authorization' || $findauth[0] == 'Token') {
+				if (isset($findauth[1]) && (strpos($findauth[1], 'getContext(')!==false || strpos($findauth[1], 'getSetting(')!==false)) {
 					if (strstr($findauth[1], 'getContext')) {
 						$context = str_replace(array('getContext(', ')'), array('', ''), $findauth[1]);
 						$token = $entity->getContext();
@@ -87,12 +88,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 					} else {
 						$token = $this->substituteSetting($findauth[1]);
 					}
-					if ($findauth[0] == 'Token') {
-						$replace = 'Token: '.$token;
-					} else {
-						$replace = 'Authorization:Bearer: '.$token;
-					}
-					$headers[$nr] = $replace;
+					$headers[$nr] = $findauth[0].':'.$token;
 				}
 				$nr++;
 			}
@@ -105,13 +101,17 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$channel = curl_init();
 			curl_setopt($channel, CURLOPT_URL, $url);
 			curl_setopt($channel, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($channel, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt($channel, CURLOPT_SSL_VERIFYPEER, 0);
 			if ($method == 'POST') {
 				curl_setopt($channel, CURLOPT_POST, true);
 			} else {
 				curl_setopt($channel, CURLOPT_CUSTOMREQUEST, $method);
 			}
 			if ($inputtype != 'URL') {
-				if ($inputtype=='XML' || in_array('Content-type:application/x-www-form-urlencoded', $headers) || in_array('Content-type:multipart/form-data', $headers)) {
+				if ($inputtype=='XML' || in_array('Content-type:application/x-www-form-urlencoded', $headers)
+					|| in_array('Content-type:multipart/form-data', $headers) || in_array('Content-type:text/plain', $headers)
+				) {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, http_build_query($listreq));
 				} else {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, json_encode($listreq));
@@ -137,22 +137,25 @@ class RunWebserviceWorkflowTask extends VTTask {
 				$conds = array();
 				if ($outputtype == 'JSON') {
 					foreach ($target_fields['Response'] as $fld => $v) {
+						$r2 = '';
 						if (is_array($response2)) {
 							if (strpos($fld, '.')) {
-								list ($elemresponse, $elemfield) = explode('.', $fld);
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse->$elemfield));
+								$r2 = __cb_getfromcontextvalueinarrayobject($response2, $fld);
 							} else {
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$fld));
+								if (isset($response2[0]->$fld)) {
+									$r2 = json_encode($response2[0]->$fld);
+								}
 							}
 						} else {
 							if (strpos($fld, '.')) {
-								list ($elemresponse, $elemfield) = explode('.', $fld);
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse->$elemfield));
+								$r2 = __cb_getfromcontextvalueinarrayobject($response2, $fld);
 							} else {
-								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$fld));
+								if (isset($response2->$fld)) {
+									$r2 = json_encode($response2->$fld);
+								}
 							}
 						}
-						if ((string)$r2 == 'null' || is_null($r2)) {
+						if ((!is_array($r2) && (string)$r2 == 'null') || is_null($r2)) {
 							$r2 = '';
 						}
 						if (!empty($v['field'])) {
@@ -176,7 +179,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						} else {
 							$r2 = $response2[$fld];
 						}
-						if ((string)$r2 == 'null' || is_null($r2)) {
+						if ((!is_array($r2) && (string)$r2 == 'null') || is_null($r2)) {
 							$r2 = '';
 						}
 						if (!empty($v['field'])) {
@@ -185,7 +188,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$entity->WorkflowContext[$v['context']] = $r2;
 					}
 				}
-				if (count($conds)>0) {
+				if (!empty($conds)) {
 					$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
 					$table = $adb->query_result($q, 0, 'tablename');
 					$id = $adb->query_result($q, 0, 'entityidfield');
@@ -197,7 +200,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$focus->column_fields[$key] = $value;
 					}
 					$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+					$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+					$_REQUEST['ajxaction'] = 'Workflow';
 					$focus->saveentity($origin_module);
+					$_REQUEST['ajxaction'] = $hold_ajxaction;
 				}
 			}
 		}
@@ -219,15 +225,28 @@ class RunWebserviceWorkflowTask extends VTTask {
 			error_log("\nURL: ".$url, 3, $logname.'.log');
 
 			try {
+				$arrContextOptions=stream_context_create(array(
+					'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+					)
+				));
 				if ($wsuser != '' && $wspass != '') {
 					$options = array(
 						'login' => $wsuser,
 						'password' => $wspass,
+						'stream_context' => $arrContextOptions,
 					);
 					$soapclient = new SoapClient($url, $options);
 				} else {
-					$options = array();
-					$soapclient = new SoapClient($url);
+					$options = array(
+						//'soap_version' => SOAP_1_2,
+						'trace'      => 1,      // enable trace to view what is happening
+						'exceptions' => 0,      // disable exceptions
+						'cache_wsdl' => 0,      // disable any caching on the wsdl, encase you alter the wsdl
+						'stream_context' => $arrContextOptions,
+					);
+					$soapclient = new SoapClient($url, $options);
 				}
 
 				$response = $soapclient->__soapCall($methodname, array('parameters' => $arrconv));
@@ -253,53 +272,58 @@ class RunWebserviceWorkflowTask extends VTTask {
 				}
 
 				//write response to record fields
-				if (count($target_fields['Response']) > 0) {
-					if ($outputtype == 'JSON') {
-						$conds = array();
-						foreach ($target_fields['Response'] as $fld => $v) {
-							if (is_array($response)) {
-								foreach ($response as $key => $value) {
-									if (is_array($response[$key])) {
-										$r = $value[$fld];
-										if ($r != null) {
-											$r2 = $r;
-										}
-									} else {
-										$r2 = $value;
+				if (count($target_fields['Response']) > 0 && ($outputtype == 'JSON' || $outputtype == 'XML')) {
+					$conds = array();
+					foreach ($target_fields['Response'] as $fld => $v) {
+						if (is_array($response)) {
+							foreach ($response as $key => $value) {
+								if (is_array($response[$key])) {
+									$r = $value[$fld];
+									if ($r != null) {
+										$r2 = $r;
 									}
-								}
-							} else {
-								$r = json_decode($response);
-								if ($r->$fld != null) {
-									$r2 = $r->$fld;
 								} else {
-									foreach ($r as $v1) {
-										$r2 = $v1->$fld;
-									}
+									$r2 = $value;
 								}
 							}
-							if ((string)$r2 == 'null' || is_null($r2)) {
-								$r2 = '';
+						} else {
+							if (!is_object($response)) {
+								$r = json_decode($response);
+							} else {
+								$r = $response;
 							}
-							if (!empty($v['field'])) {
-								$conds[$v['field']] = $r2;
+							if ($r->$fld != null) {
+								$r2 = $r->$fld;
+							} else {
+								foreach ($r as $v1) {
+									$r2 = $v1->$fld;
+								}
 							}
-							$entity->WorkflowContext[$v['context']] = $r2;
 						}
-						if (count($conds)>0) {
-							$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
-							$table = $adb->query_result($q, 0, 'tablename');
-							$id = $adb->query_result($q, 0, 'entityidfield');
-							$focus = new $origin_module();
-							$focus->mode = 'edit';
-							$focus->retrieve_entity_info($therecid, $origin_module);
-							$focus->id=$therecid;
-							foreach ($conds as $key => $value) {
-								$focus->column_fields[$key] = $value;
-							}
-							$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
-							$focus->saveentity($origin_module);
+						if ((string)$r2 == 'null' || is_null($r2)) {
+							$r2 = '';
 						}
+						if (!empty($v['field'])) {
+							$conds[$v['field']] = $r2;
+						}
+						$entity->WorkflowContext[$v['context']] = $r2;
+					}
+					if (!empty($conds)) {
+						$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
+						$table = $adb->query_result($q, 0, 'tablename');
+						$id = $adb->query_result($q, 0, 'entityidfield');
+						$focus = new $origin_module();
+						$focus->mode = 'edit';
+						$focus->retrieve_entity_info($therecid, $origin_module);
+						$focus->id=$therecid;
+						foreach ($conds as $key => $value) {
+							$focus->column_fields[$key] = $value;
+						}
+						$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+						$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+						$_REQUEST['ajxaction'] = 'Workflow';
+						$focus->saveentity($origin_module);
+						$_REQUEST['ajxaction'] = $hold_ajxaction;
 					}
 				}
 				//write logs for response

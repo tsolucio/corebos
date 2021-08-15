@@ -8,7 +8,7 @@
 
 // Get User Default calendar variables
 var Calendar_Default_Reminder_Minutes = 0; // false
-GlobalVariable_getVariable('Calendar_Default_Reminder_Minutes', 0, 'Calendar', gVTUserID).then(function (response) {
+GlobalVariable_getVariable('Calendar_Default_Reminder_Minutes', 0, 'cbCalendar', gVTUserID).then(function (response) {
 	var obj = JSON.parse(response);
 	Calendar_Default_Reminder_Minutes = obj.Calendar_Default_Reminder_Minutes;
 }, function (error) {
@@ -68,19 +68,12 @@ function gITSshow(argg1, type, startdate, enddate, starthr, startmin, startfmt, 
 		g = d.getElementsByTagName('body')[0],
 		x = w.innerWidth || e.clientWidth || g.clientWidth,
 		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-	window.open(url, null, 'scrollbars=yes,resizable=yes,dependent=yes,width=' + (x-100), true);
+	window.open(url, null, cbPopupWindowSettings + ',dependent=yes');
 }
 
 function graphicalCalendarRefresh() {
 	jQuery('#calendar_div').fullCalendar('refetchEvents');
 	VtigerJS_DialogBox.unblock();
-//	if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
-//		var date=return_data[0]+'-'+return_data[1]+'-'+return_data[2];
-//		jQuery('#calendar_div').fullCalendar('gotoDate',date);
-//		alert(return_data[3]);
-//	} else {
-//		alert("error:"+data);
-//	}
 }
 
 function getITSCalSettings() {
@@ -130,201 +123,6 @@ function loadITSEventSettings(el, mode, id) {
 	});
 }
 
-// Title: Tigra Color Picker
-// URL: http://www.softcomplex.com/products/tigra_color_picker/
-// Version: 1.1
-// Date: 06/26/2003 (mm/dd/yyyy)
-// Note: Permission given to use this script in ANY kind of applications if
-//    header lines are left unchanged.
-// Note: Script consists of two files: picker.js and picker.html
-
-var C_TCP = new C_TColorPicker();
-
-function C_TCPopup(field, palette) {
-	this.field = field;
-	this.initPalette = !palette || palette > 3 ? 0 : palette;
-	var w = 194, h = 240,
-		move = screen ?
-			',left=' + ((screen.width - w) >> 1) + ',top=' + ((screen.height - h) >> 1) : '',
-		o_colWindow = window.open('modules/Calendar4You/color_picker.html', null, 'help=no,status=no,scrollbars=no,resizable=no' + move + ',width=' + w + ',height=' + h + ',dependent=yes', true);
-	o_colWindow.opener = window;
-	o_colWindow.focus();
-}
-
-function C_TCBuildCell(R, G, B, w, h) {
-	return '<td bgcolor="#' + this.dec2hex((R << 16) + (G << 8) + B) + '"><a href="javascript:P.S(\'' + this.dec2hex((R << 16) + (G << 8) + B) + '\')" onmouseover="P.P(\'' + this.dec2hex((R << 16) + (G << 8) + B) + '\')"><img src="pixel.gif" width="' + w + '" height="' + h + '" border="0"></a></td>';
-}
-
-function C_TCSelect(c) {
-	this.field.value = '#' + c.toUpperCase();
-	this.field.style.backgroundColor = this.field.value;
-	this.win.close();
-}
-
-function C_TCPaint(c, b_noPref) {
-	c = (b_noPref ? '' : '#') + c.toUpperCase();
-	if (this.o_samp) {
-		this.o_samp.innerHTML = '<font face=Tahoma size=2>' + c +' <font color=white>' + c + '</font></font>';
-	}
-	if (this.doc.layers) {
-		this.sample.bgColor = c;
-	} else {
-		if (this.sample.backgroundColor != null) {
-			this.sample.backgroundColor = c;
-		} else if (this.sample.background != null) {
-			this.sample.background = c;
-		}
-	}
-}
-
-function C_TCGenerateSafe() {
-	var s = '';
-	for (var j = 0; j < 12; j ++) {
-		s += '<tr>';
-		for (var k = 0; k < 3; k ++) {
-			for (var i = 0; i <= 5; i ++) {
-				s += this.bldCell(k * 51 + (j % 2) * 51 * 3, Math.floor(j / 2) * 51, i * 51, 8, 10);
-			}
-		}
-		s += '</tr>';
-	}
-	return s;
-}
-
-function C_TCGenerateWind() {
-	var s = '';
-	for (var j = 0; j < 12; j ++) {
-		s += '<tr>';
-		for (var k = 0; k < 3; k ++) {
-			for (var i = 0; i <= 5; i++) {
-				s += this.bldCell(i * 51, k * 51 + (j % 2) * 51 * 3, Math.floor(j / 2) * 51, 8, 10);
-			}
-		}
-		s += '</tr>';
-	}
-	return s;
-}
-
-function C_TCGenerateMac() {
-	var s = '';
-	var n = 1;
-	var r, g, b;
-	for (var j = 0; j < 15; j ++) {
-		s += '<tr>';
-		for (var k = 0; k < 3; k ++) {
-			for (var i = 0; i <= 5; i++) {
-				if (j<12) {
-					s += this.bldCell(255-(Math.floor(j / 2) * 51), 255-(k * 51 + (j % 2) * 51 * 3), 255-(i * 51), 8, 10);
-				} else {
-					if (n<=14) {
-						r = 255-(n * 17);
-						g=b=0;
-					} else if (n>14 && n<=28) {
-						g = 255-((n-14) * 17);
-						r=b=0;
-					} else if (n>28 && n<=42) {
-						b = 255-((n-28) * 17);
-						r=g=0;
-					} else {
-						r=g=b=255-((n-42) * 17);
-					}
-					s += this.bldCell(r, g, b, 8, 10);
-					n++;
-				}
-			}
-		}
-		s += '</tr>';
-	}
-	return s;
-}
-
-function C_TCGenerateGray() {
-	var s = '';
-	for (var j = 0; j <= 15; j ++) {
-		s += '<tr>';
-		for (var k = 0; k <= 15; k ++) {
-			var g = Math.floor((k + j * 16) % 256);
-			s += this.bldCell(g, g, g, 9, 7);
-		}
-		s += '</tr>';
-	}
-	return s;
-}
-
-function C_TCDec2Hex(v) {
-	v = v.toString(16);
-	for (; v.length < 6; v = '0' + v) {
-	}
-	return v;
-}
-
-function C_TCChgMode(v) {
-	for (var k in this.divs) {
-		this.hide(k);
-	}
-	this.show(v);
-}
-
-function C_TColorPicker(field) {
-	this.build0 = C_TCGenerateSafe;
-	this.build1 = C_TCGenerateWind;
-	this.build2 = C_TCGenerateGray;
-	this.build3 = C_TCGenerateMac;
-	this.show = document.layers ?
-		function (div) {
-			this.divs[div].visibility = 'show';
-		} :
-		function (div) {
-			this.divs[div].visibility = 'visible';
-		};
-	this.hide = document.layers ?
-		function (div) {
-			this.divs[div].visibility = 'hide';
-		} :
-		function (div) {
-			this.divs[div].visibility = 'hidden';
-		};
-	// event handlers
-	this.C       = C_TCChgMode;
-	this.S       = C_TCSelect;
-	this.P       = C_TCPaint;
-	this.popup   = C_TCPopup;
-	this.draw    = C_TCDraw;
-	this.dec2hex = C_TCDec2Hex;
-	this.bldCell = C_TCBuildCell;
-	this.divs = [];
-}
-
-function C_TCDraw(o_win, o_doc) {
-	this.win = o_win;
-	this.doc = o_doc;
-	var
-		s_tag_openT = o_doc.layers ?
-			'layer visibility=hidden top=54 left=5 width=182' :
-			'div style=visibility:hidden;position:absolute;left:6px;top:54px;width:182px;height:0',
-		s_tag_openS = o_doc.layers ? 'layer top=32 left=6' : 'div',
-		s_tag_close = o_doc.layers ? 'layer' : 'div';
-
-	this.doc.write('<' + s_tag_openS + ' id=sam name=sam><table cellpadding=0 cellspacing=0 border=1 width=181 align=center class=bd><tr><td align=center height=18><div id="samp"><font face=Tahoma size=2>sample <font color=white>sample</font></font></div></td></tr></table></' + s_tag_close + '>');
-	this.sample = o_doc.layers ? o_doc.layers['sam'] :
-		o_doc.getElementById ? o_doc.getElementById('sam').style : o_doc.all['sam'].style;
-
-	for (var k = 0; k < 4; k ++) {
-		this.doc.write('<' + s_tag_openT + ' id="p' + k + '" name="p' + k + '"><table cellpadding=0 cellspacing=0 border=1 align=center>' + this['build' + k]() + '</table></' + s_tag_close + '>');
-		this.divs[k] = o_doc.layers
-			? o_doc.layers['p' + k] : o_doc.all
-				? o_doc.all['p' + k].style : o_doc.getElementById('p' + k).style;
-	}
-	if (!o_doc.layers && o_doc.body.innerHTML) {
-		this.o_samp = o_doc.all
-			? o_doc.all.samp : o_doc.getElementById('samp');
-	}
-	this.C(this.initPalette);
-	if (this.field.value) {
-		this.P(this.field.value, true);
-	}
-}
-
 function saveITSEventSettings() {
 	formSelectColumnString('day_selected_fields', 'selected_day_fields');
 	formSelectColumnString('week_selected_fields', 'selected_week_fields');
@@ -356,13 +154,12 @@ function showGoogleSyncAccDiv(value) {
 
 function controlGoogleSync() {
 	if (document.getElementById('google_apikey')) {
-		// var google_password_val = document.getElementById('google_password').value;
 		var google_login_val = document.getElementById('google_login').value;
 		var google_apikey_val = document.getElementById('google_apikey').value;
 		var google_clientid_val = document.getElementById('google_clientid').value;
 		var google_keyfile_val = document.getElementById('google_keyfile').value;
 		var google_refresh = document.getElementById('google_refresh').value;
-		if (document.getElementById('googleinsert').checked==true) {
+		if (document.getElementById('googleinsert').checked) {
 			var googleinsert =1;
 			document.getElementById('googleinsert').value=1;
 		} else {
@@ -380,7 +177,7 @@ function controlGoogleSync() {
 					document.getElementById('google_sync_text').style.color = '#000000';
 					document.forms['SharingForm'].submit();
 				} else {
-					result = JSON.parse(response);
+					var result = JSON.parse(response);
 					document.getElementById('google_sync_text').innerHTML = result['text'];
 					fnHideDrop('google_sync_verifying');
 					fnShowDrop('google_sync_text');
@@ -440,5 +237,29 @@ function insertIntoCRM(userid, eventid, eventtype, geventid, start_date, end_dat
 		document.EditView.geventid.value = geventid;
 		document.EditView.gevent_type.value = eventtype;
 		document.EditView.gevent_userid.value = userid;
+	}
+}
+
+function exportCalendar() {
+	if (document.getElementsByName('exportCalendar')[0].value == 'iCal') {
+		var filename = document.getElementById('ics_filename').value;
+		VtigerJS_DialogBox.block();
+		var url = 'index.php?module=cbCalendar&action=iCalExport&filename='+filename;
+		location.href = url;
+		VtigerJS_DialogBox.unblock();
+		ghide('CalExport');
+	}
+}
+
+function importCalendar() {
+	var file = document.getElementById('ics_file').value;
+	if (file != '') {
+		if (file.indexOf('.ics') != (file.length - 4)) {
+			alert(alert_arr.PLS_SELECT_VALID_FILE+'.ics');
+		} else {
+			document.ical_import.action.value='iCalImport';
+			document.ical_import.module.value='cbCalendar';
+			document.ical_import.submit();
+		}
 	}
 }

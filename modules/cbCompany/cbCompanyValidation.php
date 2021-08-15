@@ -25,14 +25,14 @@
   Any other message will be interpreted as an error message that will be shown to user.
 ************************************************************************************/
 global $log,$currentModule,$adb;
-
+require_once 'data/CRMEntity.php';
 $screen_values = json_decode($_REQUEST['structure'], true);
 $record = vtlib_purify($screen_values['record']);
-
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCompany');
 $query = $adb->pquery(
 	'SELECT count(*) as cnt
 		FROM vtiger_cbcompany
-		INNER JOIN vtiger_crmentity on vtiger_cbcompany.cbcompanyid = vtiger_crmentity.crmid
+		INNER JOIN '.$crmEntityTable.' on vtiger_cbcompany.cbcompanyid = vtiger_crmentity.crmid
 		WHERE vtiger_crmentity.deleted = 0 AND defaultcompany=1 AND cbcompanyid!=?',
 	array($record)
 );
@@ -40,9 +40,8 @@ $query = $adb->pquery(
 $cnt = $adb->query_result($query, 0, 'cnt');
 $dfltcomp = vtlib_purify($screen_values['defaultcompany']);
 
-if (!empty($dfltcomp) && $dfltcomp==true && $query && $cnt>0) {
+if (!empty($dfltcomp) && $dfltcomp && $query && $cnt>0) {
 	echo getTranslatedString('LBL_COMPANY_EXISTS', 'cbCompany');
-	die;
+} else {
+	echo '%%%OK%%%';
 }
-
-echo '%%%OK%%%';

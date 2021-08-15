@@ -15,6 +15,9 @@
 	<meta name="robots" content="noindex">
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
 	<link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
+	{if !empty($SET_CSS_PROPERTIES) && is_file($SET_CSS_PROPERTIES)}
+		<link rel="stylesheet" type="text/css" media="all" href="{$SET_CSS_PROPERTIES}">
+	{/if}
 	<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 	{if $Application_JSCalendar_Load neq 0}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
@@ -55,19 +58,37 @@
 	<!-- End -->
 	{include file='BrowserVariables.tpl'}
 	{include file='Components/Components.tpl'}
+	{if $ONESIGNAL_IS_ACTIVE eq true}
+		<script src='https://cdn.onesignal.com/sdks/OneSignalSDK.js' async=''></script>
+		<script>
+			window.OneSignal = window.OneSignal || [];
+			OneSignal.push(function() {
+				OneSignal.init({ 'appId': '{$ONESIGNAL_APP_ID}' });
+				OneSignal.on('subscriptionChange', function(isSubscribed) {
+					if (isSubscribed) {
+						OneSignal.push(function() {
+						OneSignal.setExternalUserId({$CURRENT_USER_ID});
+						OneSignal.setEmail('{$CURRENT_USER_MAIL}');
+					});
+					}
+				});
+			});
+		</script>
+	{/if}
 </head>
-<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%"> 
+<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%">
 	<!-- header -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
+	<script type="text/javascript" src="include/dompurify/purify.min.js"></script>
 	<script type="text/javascript" src="include/js/meld.js"></script>
 	<script type="text/javascript" src="include/js/corebosjshooks.js"></script>
 	<script type="text/javascript" src="include/js/general.js"></script>
 	<script type="text/javascript" src="include/js/vtlib.js"></script>
 	<script type="text/javascript" id="_current_language_" src="include/js/{$LANGUAGE}.lang.js"></script>
 	<script type="text/javascript" src="include/js/QuickCreate.js"></script>
-	<script type="text/javascript" src="modules/Calendar/script.js"></script>
+	<script type="text/javascript" src="modules/cbCalendar/script.js"></script>
 	<script type="text/javascript" src="include/js/notificationPopup.js"></script>
 	{include file='Components/ComponentsJS.tpl'}
 	<script type="text/javascript" src="modules/Calendar4You/fullcalendar/lib/moment.min.js"></script>
@@ -157,7 +178,6 @@
 								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" id="primary-search-combobox-id-1" role="combobox">
 									<input type="hidden" name="action" value="UnifiedSearch">
 									<input type="hidden" name="module" value="Utilities">
-									<input type="hidden" name="parenttab" value="{$CATEGORY}">
 									<input type="hidden" name="search_onlyin" value="--USESELECTED--">
 									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left slds-global-search__form-element" role="none">
 										<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_left">
@@ -186,18 +206,31 @@
 				<li class="slds-global-actions__item">
 					<div class="slds-global-actions__favorites slds-dropdown-trigger">
 						<div class="slds-button-group">
-							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border " aria-pressed="false" title="{$APP.LNK_HELP}" onclick="window.open('{$HELP_URL}')">
+							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon-border " aria-pressed="false" title="{$APP.LNK_HELP}" onclick="window.open('{$HELP_URL}')">
 									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 									</svg>
 									<span class="slds-assistive-text">{$APP.LNK_HELP}</span>
 							</button>
-							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-pressed="false" title="{$APP.LBL_LAST_VIEWED}" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slidein--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slideout--right');">
+							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon-border" aria-pressed="false" title="{$APP.LBL_LAST_VIEWED}" onclick="panelViewToggle('cbds-last-visited');">
 								<svg class="slds-button__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
 								</svg>
 								<span class="slds-assistive-text">{$APP.LBL_LAST_VIEWED}</span>
 							</button>
+							<button
+								class="slds-button slds-button_icon slds-global-actions__notifications slds-global-actions__item-action slds-global-actions__favorites-action slds-button_icon-border slds-button_last" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}"
+								aria-live="assertive"
+								aria-atomic="true"
+								id="header_notification_button"
+								onclick="ActivityReminderCallback(true);"
+							>
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#notification"></use>
+								</svg>
+								<span class="slds-assistive-text"></span>
+							</button>
+							<span aria-hidden="true" class="slds-notification-badge slds-incoming-notification" id="header_notification_items"></span>
 						</div>
 					</div>
 				</li>
@@ -228,13 +261,13 @@
 								{/foreach}
 							</ul>
 						</div>
-					</div> 
+					</div>
 				</li>
 				{/if}
 				{if !empty($ADMIN_LINK)}
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_CRM_SETTINGS}" onclick="window.location.assign('index.php?module=Settings&action=index&parenttab=')">
+						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_CRM_SETTINGS}" onclick="window.location.assign('index.php?module=Settings&action=index')">
 							<svg class="slds-button__icon" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 							</svg>
@@ -251,7 +284,7 @@
 								{/foreach}
 								<li class="slds-has-divider_top-space" role="separator"></li>
 								<li class="slds-dropdown__item" role="presentation">
-									<a href="index.php?module=Settings&action=index&parenttab=" role="menuitem" tabindex="-1">
+									<a href="index.php?module=Settings&action=index" role="menuitem" tabindex="-1">
 										<span class="slds-truncate" title="{$APP.LBL_CRM_SETTINGS}">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 									</a>
 								</li>
@@ -342,7 +375,7 @@
 
 <div id='miniCal' style='position:absolute; display:none; left:100px; top:100px; z-index:100000'></div>
 
-{if $MODULE_NAME eq 'Calendar'}
+{if $MODULE_NAME eq 'Calendar4You'}
 	<div id="CalExport" style="width:300px; position:absolute; display:none; left:500px; top:100px; z-index:100000" class="layerPopup">
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 			<tr>
@@ -416,18 +449,18 @@
 <div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
 
 <!-- Last visited panel -->
-<div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">
+<div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
 	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{$APP.LBL_LAST_VIEWED}">{$APP.LBL_LAST_VIEWED}
 	</h2>
-	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'Close LAST_VIEWED'|@getTranslatedString}" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slideout--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slidein--right');">
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'Close LAST_VIEWED'|@getTranslatedString}" onclick="panelViewHide(document.getElementById('cbds-last-visited'));">
 		<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 		</svg>
 		<span class="slds-assistive-text">{'Close LAST_VIEWED'|@getTranslatedString}</span>
 	</button>
 </div>
-<div class="slds-panel__body">
+<div class="slds-panel__body containernpanel" style="height: 92%;">
 	{foreach name=trackinfo item=trackelements from=$TRACINFO}
 		<article class="slds-card">
 			<div class="slds-card__header slds-grid">
@@ -435,14 +468,14 @@
 					<div class="slds-media__figure">
 						<span class="{$trackelements.__ICONContainerClass}" title="{$trackelements.module_name}">
 							<svg class="{$trackelements.__ICONClass}" aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use> 
+								<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use>
 							</svg>
 						<span class="slds-assistive-text">{$trackelements.module_name}</span>
 					</span>
 					</div>
 					<div class="slds-media__body">
-						<h2 class="slds-card__header-title">
-							<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}&parenttab={$CATEGORY}" class="slds-card__header-link" title="{$trackelements.module_name}">
+						<h2 class="slds-card__header-title slds-truncate">
+							<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}" class="slds-card__header-link" title="{$trackelements.module_name}">
 								<span>{$trackelements.item_summary}</span>
 							</a>
 						</h2>
@@ -466,7 +499,7 @@
 			</li>
 		{/foreach}
 		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
-			<a href="index.php?module=Settings&action=index&parenttab=" class="slds-context-bar__label-action" title="{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}">
+			<a href="index.php?module=Settings&action=index" class="slds-context-bar__label-action" title="{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}">
 				<span class="slds-truncate">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 			</a>
 		</li>
@@ -478,8 +511,29 @@
 <script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
 </div>
 <!-- ActivityReminder Customization for callback -->
-<div class="lvtCol fixedLay1" id="ActivityRemindercallback" style="border: 0; right: 0px; bottom: 2px; display:none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
+<audio id="newEvents" src="{$Calendar_Notification_Sound}" preload="auto"></audio>
+<div id="cbds-notificationpanel" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
+<div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}">{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}
+	</h2>
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__refresh" title="{'LBL_REFRESH'|@getTranslatedString}" onclick="ActivityReminderCallback();">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+		</svg>
+		<span class="slds-assistive-text">{'LBL_REFRESH'|@getTranslatedString}</span>
+	</button>
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'LBL_CLOSE'|@getTranslatedString}" onclick="panelViewHide(document.getElementById('cbds-notificationpanel'));">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+		</svg>
+		<span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString}</span>
+	</button>
 </div>
+<div class="slds-panel__body containernpanel" style="height: 92%;">
+<ul id="todolist"></ul>
+</div>
+</div>
+<!-- End -->
 
 <!-- divs for asterisk integration -->
 <div class="lvtCol fixedLay1" id="notificationDiv" style="float: right; padding-right: 5px; overflow: hidden; border-style: solid; right: 0px; border-color: rgb(141, 141, 141); bottom: 0px; display: none; padding: 2px; z-index: 10; font-weight: normal;" align="left">

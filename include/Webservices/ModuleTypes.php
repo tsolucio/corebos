@@ -30,10 +30,6 @@ function vtws_listtypes($fieldTypeList, $user) {
 		vtws_preserveGlobal('current_user', $user);
 		//get All the modules the current user is permitted to Access.
 		$allModuleNames = getPermittedModuleNames();
-		$idx = array_search('Calendar', $allModuleNames);
-		if ($idx !== false) {
-			unset($allModuleNames[$idx]);
-		}
 
 		if (!empty($fieldTypeList)) {
 			$sql = 'SELECT distinct(vtiger_field.tabid) as tabid
@@ -65,10 +61,9 @@ function vtws_listtypes($fieldTypeList, $user) {
 		}
 
 		$accessibleModules = array_values(array_intersect($webserviceEntities['module'], $allModuleNames));
-		$entities = $webserviceEntities['entity'];
 		$accessibleEntities = array();
 		if (empty($fieldTypeList)) {
-			foreach ($entities as $entity) {
+			foreach ($webserviceEntities['entity'] as $entity) {
 				$webserviceObject = VtigerWebserviceObject::fromName($db, $entity);
 				$handlerPath = $webserviceObject->getHandlerPath();
 				$handlerClass = $webserviceObject->getHandlerClass();

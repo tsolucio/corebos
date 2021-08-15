@@ -95,7 +95,6 @@ class GoogleSync4You {
 		if ($num_rows == 1) {
 			$this->user_id = $userid;
 			$this->user_clientsecret = $this->db->query_result($result, 0, 'google_login');
-			//$this->user_password = $this->db->query_result($result,0,'google_password');
 			$this->apikey = $this->db->query_result($result, 0, 'google_apikey');
 			$this->clientid = $this->db->query_result($result, 0, 'google_clientid');
 			$this->keyfile = $this->db->query_result($result, 0, 'google_keyfile');
@@ -109,7 +108,6 @@ class GoogleSync4You {
 	public function setAccessData($userid, $login, $apikey, $keyfile, $clientid, $refresh, $googleinsert) {
 		$this->user_id = $userid;
 		$this->user_clientsecret = $login;
-		//$this->user_password = $password;
 		$this->apikey = $apikey;
 		$this->clientid = $clientid;
 		$this->keyfile = $keyfile;
@@ -193,21 +191,6 @@ class GoogleSync4You {
 				$authUrl = $client->createAuthUrl();
 				echo "<a class='login' href='$authUrl'>".getTranslatedString('LBL_CONNECT', 'Calendar4You').'</a><br>';
 			}
-//      } else if($this->refresh_token=='' && $this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!=""){
-//             $CLIENT_ID = $this->clientid;
-//             $KEY_FILE = $this->keyfile;
-//             $client = new Google_Client();
-//             $client->setApplicationName("corebos");
-//            $client->setClientSecret($this->user_clientsecret);
-//            $client->setRedirectUri($KEY_FILE);
-//            $client->setClientId($CLIENT_ID);
-//            $client->setDeveloperKey($this->apikey);
-//            $client->setAccessType("offline");
-//            $client->setScopes(array("https://www.googleapis.com/auth/calendar","https://www.googleapis.com/auth/calendar.readonly"));
-//            $authUrl = $client->createAuthUrl();
-//			if(isset($_REQUEST['type']) && ($_REQUEST['type'] == 'event_settings' || $_REQUEST['type'] == 'settings'))
-//                   echo "<a class='login' href='$authUrl'>".getTranslatedString('LBL_CONNECT', 'Calendar4You')."</a><br>";
-//        }
 		} else {
 			$this->status = getTranslatedString('LBL_MISSING_AUTH_DATA', 'Calendar4You');
 		}
@@ -226,8 +209,8 @@ class GoogleSync4You {
 		return $this->gListFeed;
 	}
 
-	public function setEvent($event, $load_user_calendar = true) {
-		$this->event = $event;
+	public function setEvent($evnt, $load_user_calendar = true) {
+		$this->event = $evnt;
 		if ($load_user_calendar) {
 			$this->loadUserCalendar();
 		}
@@ -276,44 +259,41 @@ class GoogleSync4You {
 		global $default_timezone;
 		$startTime = $Data['time_start'];
 		$endTime = $Data['time_end'];
-		$event = new Google_Service_Calendar_Event();
-		$event->setSummary(decode_html(utf8_decode(trim($Data['subject']))));
-		$event->setDescription(decode_html(utf8_decode($Data['description'])));
-		$event->setLocation(decode_html(utf8_decode(trim($Data['location']))));
+		$evnt = new Google_Service_Calendar_Event();
+		$evnt->setSummary(decode_html(utf8_decode(trim($Data['subject']))));
+		$evnt->setDescription(decode_html(utf8_decode($Data['description'])));
+		$evnt->setLocation(decode_html(utf8_decode(trim($Data['location']))));
 		$start = new Google_Service_Calendar_EventDateTime();
-		if (strlen($startTime)>4) {
+		if (strlen($startTime) == 5) {
 			$start->setDateTime($startDate.'T'.$startTime.':00.000');
+		} elseif (strlen($startTime)==8) {
+			$start->setDateTime($startDate.'T'.$startTime.'.000');
 		} else {
 			$start->setDateTime($startDate.'T'.$startTime.':00:00.000');
 		}
 		$start->setTimeZone("$default_timezone");
-		$event->setStart($start);
+		$evnt->setStart($start);
 		$end = new Google_Service_Calendar_EventDateTime();
-		if (strlen($endTime)>4) {
+		if (strlen($endTime) == 5) {
 			$end->setDateTime($endDate.'T'.$endTime.':00.000');
+		} elseif (strlen($endTime) == 8) {
+			$end->setDateTime($endDate.'T'.$endTime.'.000');
 		} else {
 			$end->setDateTime($endDate.'T'.$endTime.':00:00.000');
 		}
 		$end->setTimeZone("$default_timezone");
-		$event->setEnd($end);
+		$evnt->setEnd($end);
 		$SendEventNotifications = new Google_Service_Calendar_EventReminders();
-		//$SendEventNotifications->setValue(true);
-		$event->setReminders($SendEventNotifications);
-		$whos = $this->getInvitedUsersEmails($event, $recordid);
+		$evnt->setReminders($SendEventNotifications);
+		$whos = $this->getInvitedUsersEmails($evnt, $recordid);
 		if (count($whos) > 0) {
-			$event->attendees=$whos;
+			$evnt->attendees=$whos;
 		}
-
-//        $appCallUri = '';
-//
-//        foreach ($this->gListFeed as $calendar) {
-//            if ($calendar->id == $this->selected_calendar) $appCallUri = $calendar->content->src;
-//        }
 		try {
-			$createdEvent = $this->gService->events->insert($this->selected_calendar, $event);
+			$createdEvent = $this->gService->events->insert($this->selected_calendar, $evnt);
 			$eventid = urldecode($createdEvent->getId());
 		} catch (Exception $e) {
-			$status=null;
+			// ignore it
 		}
 		set_include_path($this->root_directory);
 		return $eventid;
@@ -327,44 +307,47 @@ class GoogleSync4You {
 		$startTime = $Data['time_start'];
 		$endTime = $Data['time_end'];
 		try {
-			$event = $this->gService->events->get($this->selected_calendar, $eventOld);
-			$event->setSummary(decode_html(utf8_decode(trim($Data['subject']))));
-			$event->setDescription(decode_html(utf8_decode($Data['description'])));
-			$event->setLocation(decode_html(utf8_decode(trim($Data['location']))));
+			$evnt = $this->gService->events->get($this->selected_calendar, $eventOld);
+			$evnt->setSummary(decode_html(utf8_decode(trim($Data['subject']))));
+			$evnt->setDescription(decode_html(utf8_decode($Data['description'])));
+			$evnt->setLocation(decode_html(utf8_decode(trim($Data['location']))));
 			$start = new Google_Service_Calendar_EventDateTime();
-			if (strlen($startTime)>4) {
+			if (strlen($startTime) == 5) {
 				$start->setDateTime($startDate.'T'.$startTime.':00.000');
+			} elseif (strlen($startTime)==8) {
+				$start->setDateTime($startDate.'T'.$startTime.'.000');
 			} else {
 				$start->setDateTime($startDate.'T'.$startTime.':00:00.000');
 			}
 			$start->setTimeZone("$default_timezone");
-			$event->setStart($start);
+			$evnt->setStart($start);
 			$end = new Google_Service_Calendar_EventDateTime();
-			if (strlen($endTime)>4) {
+			if (strlen($endTime) == 5) {
 				$end->setDateTime($endDate.'T'.$endTime.':00.000');
+			} elseif (strlen($endTime) == 8) {
+				$end->setDateTime($endDate.'T'.$endTime.'.000');
 			} else {
 				$end->setDateTime($endDate.'T'.$endTime.':00:00.000');
 			}
 			$end->setTimeZone("$default_timezone");
-			$event->setEnd($end);
+			$evnt->setEnd($end);
 			$SendEventNotifications = new Google_Service_Calendar_EventReminders();
-		//$SendEventNotifications->setValue(true);
-			$event->setReminders($SendEventNotifications);
-			$whos = $this->getInvitedUsersEmails($event, $recordid);
+			$evnt->setReminders($SendEventNotifications);
+			$whos = $this->getInvitedUsersEmails($evnt, $recordid);
 			if (count($whos) > 0) {
-				$event->attendees=$whos;
+				$evnt->attendees=$whos;
 			}
 			try {
-				$this->gService->events->update($this->selected_calendar, $eventOld, $event);
-				$status = true;
+				$this->gService->events->update($this->selected_calendar, $eventOld, $evnt);
+				$stat = true;
 			} catch (Exception $e) {
-				$status = null;
+				$stat = null;
 			}
 		} catch (Exception $e) {
-			$status=null;
+			$stat=null;
 		}
 		set_include_path($this->root_directory);
-		return $status;
+		return $stat;
 	}
 
 	public function deleteEvent($recordid, $eventURL) {
@@ -385,8 +368,7 @@ class GoogleSync4You {
 		$num_rows=$this->db->num_rows($result);
 		if ($num_rows > 0) {
 			for ($i=0; $i<$num_rows; $i++) {
-				//$userid=$this->db->query_result($result,$i,'inviteeid');
-						$googleEmail=$this->db->query_result($result, $i, 'email1');
+				$googleEmail=$this->db->query_result($result, $i, 'email1');
 				$who  = new Google_Service_Calendar_EventAttendee();
 				$who->setEmail($googleEmail);
 				$whos[] = $who;
@@ -399,39 +381,39 @@ class GoogleSync4You {
 		return substr($text, 0, -3);
 	}
 
-	public function saveEvent($recordid, $event, $Data) {
+	public function saveEvent($recordid, $evnt, $Data) {
 		if ($this->is_logged) {
-			$serv=$this->getRecordsGEvent($recordid, $event);
-			if ($serv->getSummary()!=null && $serv->getSummary()!='' && $this->getGEventId($recordid, $event)!='') {
-				$oldEvent = $this->getGEventId($recordid, $event);
+			$serv=$this->getRecordsGEvent($recordid, $evnt);
+			if ($serv->getSummary()!=null && $serv->getSummary()!='' && $this->getGEventId($recordid, $evnt)!='') {
+				$oldEvent = $this->getGEventId($recordid, $evnt);
 				if (!isset($Data['time_end'])) {
 					$Data['time_end'] = $Data['time_start'];
 				}
 				$eventid = $this->updateEvent($recordid, $oldEvent, $Data, date('P'));
 			} else {
 				$eventid = $this->addEvent($recordid, $Data, date('P'));
-				$this->insertIntoEvents($recordid, $eventid, $event);
+				$this->insertIntoEvents($recordid, $eventid, $evnt);
 			}
 		}
 	}
 
-	public function getGEventId($recordid, $event) {
+	public function getGEventId($recordid, $evnt) {
 		$geventid = '';
 		$sql = 'SELECT geventid FROM its4you_googlesync4you_events WHERE crmid = ? AND userid = ? AND eventtype = ?';
-		$result = $this->db->pquery($sql, array($recordid, $this->user_id, $event));
+		$result = $this->db->pquery($sql, array($recordid, $this->user_id, $evnt));
 		if ($this->db->num_rows($result) > 0) {
 			$geventid = $this->db->query_result($result, 0, 'geventid');
 		}
 		return $geventid;
 	}
 
-	public function getRecordsGEvent($recordid, $event) {
-		$geventid = $this->getGEventId($recordid, $event);
+	public function getRecordsGEvent($recordid, $evnt) {
+		$geventid = $this->getGEventId($recordid, $evnt);
 		return $this->getEvent($geventid);
 	}
 
-	public function insertIntoEvents($recordid, $geventid, $event) {
-		$p = array($recordid, $geventid, $this->user_id, $event);
+	public function insertIntoEvents($recordid, $geventid, $evnt) {
+		$p = array($recordid, $geventid, $this->user_id, $evnt);
 		$sql1 = 'SELECT crmid FROM its4you_googlesync4you_events WHERE crmid = ? AND geventid = ? AND userid = ? AND eventtype = ? limit 1';
 		$result1 = $this->db->pquery($sql1, $p);
 		$num_rows1 = $this->db->num_rows($result1);
@@ -469,48 +451,29 @@ class GoogleSync4You {
 				}
 			}
 		}
-//        $user = str_replace('http://www.google.com/calendar/feeds/default/', '', $calendar_feed);
-//
-//        $start_date = '2010-06-01';
-//        $end_date = '2015-06-30';
-//
-//        $query = $this->gService->newEventQuery();
-//
-//        $query->setUser($user);
-//        $query->setVisibility('private');
-//        $query->setProjection('full');
-//        $query->setOrderby('starttime');
-//
-//        $query->setStartMin($start_date);
-//        $query->setStartMax($end_date);
-//
-//        $event_list = $this->gService->getCalendarEventFeed($query);
-//        set_include_path($this->root_directory);
-
 		return $events;
 	}
 
 	public function getGoogleCalEvent($event_id) {
 		set_include_path($this->root_directory. 'modules/Calendar4You/');
 		try {
-			$event = $this->gService->events->get($this->selected_calendar, $event_id);
+			$evnt = $this->gService->events->get($this->selected_calendar, $event_id);
 		} catch (Exception $e) {
-			//echo 'Caught exception: ',  $e->getMessage(), "\n";
-			$event = false;
+			$evnt = false;
 		}
 		set_include_path($this->root_directory);
-		return $event;
+		return $evnt;
 	}
 
 	public function getGoogleCalEventfromcron($event_id, $cal) {
 		set_include_path($this->root_directory. 'modules/Calendar4You/');
 		try {
-			$event = $this->gService->events->get($cal, $event_id);
+			$evnt = $this->gService->events->get($cal, $event_id);
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
-			$event = false;
+			$evnt = false;
 		}
 		set_include_path($this->root_directory);
-		return $event;
+		return $evnt;
 	}
 }

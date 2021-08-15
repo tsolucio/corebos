@@ -14,13 +14,13 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getReferenceValue',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_getReferenceValue',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'id','type' => 'String')
-	 )
+	'name'    => 'getReferenceValue',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_getReferenceValue',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'id','type' => 'String')
+	)
 );
 

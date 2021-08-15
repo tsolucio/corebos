@@ -183,6 +183,19 @@ class Vtiger_Cron {
 	}
 
 	/**
+	 * Calculate next trigger time
+	 */
+	public function getNextTriggerTime() {
+		if (!$this->isDisabled() && !$this->isRunning()) {
+			$lastTime = ($this->getLastEnd() > 0) ? $this->getLastEnd() : $this->getLastStart();
+			$ntt = max($this->getFrequency() + $lastTime, $this->getFrequency() - time());
+		} else {
+			$ntt = time();
+		}
+		return $ntt;
+	}
+
+	/**
 	 * Helper function to check the status value.
 	 */
 	public function statusEqual($value) {
@@ -221,7 +234,7 @@ class Vtiger_Cron {
 			case self::$STATUS_RUNNING:
 				break;
 			default:
-				throw new Exception('Invalid status');
+				throw new InvalidArgumentException('Invalid status');
 		}
 		self::querySilent('UPDATE vtiger_cron_task SET status=? WHERE id=?', array($status, $this->getId()));
 	}

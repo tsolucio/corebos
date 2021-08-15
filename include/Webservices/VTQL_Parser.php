@@ -162,6 +162,7 @@ Array (
 	}
 
 	public function buildSelectStmt($sqlDump) {
+		global $current_user;
 		$meta = $sqlDump['meta'];
 		$fieldcol = $meta->getFieldColumnMapping();
 		$columnTable = $meta->getColumnTableMapping();
@@ -263,12 +264,12 @@ Array (
 				$nextToken = ' WHERE ';
 			}
 		}
-		if (strcasecmp('calendar', $this->out['moduleName'])===0) {
-			$this->query = $this->query." $nextToken activitytype='Task' AND ";
-		} elseif (strcasecmp('events', $this->out['moduleName'])===0) {
-			$this->query = $this->query."$nextToken activitytype!='Emails' AND activitytype!='Task' AND ";
+		if (strcasecmp('cbcalendar', $this->out['moduleName'])===0) {
+			$this->query = $this->query."$nextToken activitytype!='Emails' AND ";
 		} elseif (strcasecmp('emails', $this->out['moduleName'])===0) {
 			$this->query = $this->query."$nextToken activitytype='Emails' AND ";
+		} elseif (strcasecmp('users', $this->out['moduleName'])===0 && !is_admin($current_user)) {
+			$this->query = $this->query.$nextToken.' vtiger_users.id='.$current_user->id.' AND ';
 		} elseif (!empty($deletedQuery)) {
 			$this->query = $this->query.$nextToken;
 		}
@@ -277,17 +278,23 @@ Array (
 
 		if (!empty($sqlDump['orderby'])) {
 			$i=0;
-			$this->query = $this->query.' ORDER BY ';
+			$orderby = '';
 			foreach ($sqlDump['orderby'] as $field) {
+				if (empty($fieldcol[$field])) {
+					continue;
+				}
 				if ($i===0) {
-					$this->query = $this->query.$columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
+					$orderby .= $columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
 					$i++;
 				} else {
-					$this->query = $this->query.','.$columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
+					$orderby .= ','.$columnTable[$fieldcol[$field]].'.'.$fieldcol[$field];
 				}
 			}
 			if (!empty($sqlDump['sortOrder'])) {
-				$this->query .= ' '.$sqlDump['sortOrder'];
+				$orderby .= ' '.$sqlDump['sortOrder'];
+			}
+			if ($orderby!='') {
+				$this->query = $this->query.' ORDER BY '.$orderby;
 			}
 		}
 		if (!empty($sqlDump['limit'])) {
@@ -325,14 +332,10 @@ Array (
 	public function getReferenceValue($whereValue) {
 		$whereValue = trim($whereValue, '\'"');
 		$whereValue = vtws_getIdComponents($whereValue);
-		$whereValue = $whereValue[1];
-		return $whereValue;
+		return $whereValue[1];
 	}
 	public function getOwner($whereValue) {
-		$whereValue = trim($whereValue, '\'"');
-		$whereValue = vtws_getIdComponents($whereValue);
-		$whereValue = $whereValue[1];
-		return $whereValue;
+		return $this->getReferenceValue($whereValue);
 	}
 	public function isSuccess() {
 		return $this->success;
@@ -716,13 +719,12 @@ Array (
 	}
 
 	/**
-	 * The following function deletes the value associated with a
-	 * symbol.  The symbol can be either a terminal or nonterminal.
+	 * The following function deletes the value associated with a symbol. The symbol can be either a terminal or nonterminal.
 	 * @param int the symbol code
 	 * @param mixed the symbol's value
 	 */
 	public static function yy_destructor($yymajor, $yypminor) {
-		switch ($yymajor) {
+		//switch ($yymajor) {
 		/* Here is inserted the actions which take place when a
 		** terminal or non-terminal is destroyed.  This can happen
 		** when the symbol is popped from the stack during a
@@ -733,9 +735,9 @@ Array (
 		** which appear on the RHS of the rule, but which are not used
 		** inside the C code.
 		*/
-			default:
-				break;   /* If no destructor action specified: do nothing */
-		}
+		// 	default:
+		// 		break;   /* If no destructor action specified: do nothing */
+		// }
 	}
 
 	/**
@@ -792,7 +794,7 @@ Array (
 			return $expected;
 		}
 		$stack = $this->yystack;
-		$yyidx = $this->yyidx;
+		$indexElement = $this->yyidx;
 		do {
 			$yyact = $this->yy_find_shift_action($token);
 			if ($yyact >= self::YYNSTATE && $yyact < self::YYNSTATE + self::YYNRULE) {
@@ -800,7 +802,7 @@ Array (
 				$done = 0;
 				do {
 					if ($done++ == 100) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						// too much recursion prevents proper detection
 						// so give up
@@ -819,7 +821,7 @@ Array (
 							self::$yyExpectedTokens[$nextstate],
 							true
 						)) {
-							$this->yyidx = $yyidx;
+							$this->yyidx = $indexElement;
 							$this->yystack = $stack;
 							return array_unique($expected);
 						}
@@ -833,14 +835,14 @@ Array (
 						$this->yystack[$this->yyidx] = $x;
 						continue 2;
 					} elseif ($nextstate == self::YYNSTATE + self::YYNRULE + 1) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						// the last token was just ignored, we can't accept
 						// by ignoring input, this is in essence ignoring a
 						// syntax error!
 						return array_unique($expected);
 					} elseif ($nextstate === self::YY_NO_ACTION) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						// input accepted, but not shifted (I guess)
 						return $expected;
@@ -872,7 +874,7 @@ Array (
 			return true;
 		}
 		$stack = $this->yystack;
-		$yyidx = $this->yyidx;
+		$indexElement = $this->yyidx;
 		do {
 			$yyact = $this->yy_find_shift_action($token);
 			if ($yyact >= self::YYNSTATE && $yyact < self::YYNSTATE + self::YYNRULE) {
@@ -880,7 +882,7 @@ Array (
 				$done = 0;
 				do {
 					if ($done++ == 100) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						// too much recursion prevents proper detection
 						// so give up
@@ -894,7 +896,7 @@ Array (
 					);
 					if (isset(self::$yyExpectedTokens[$nextstate]) &&
 						  in_array($token, self::$yyExpectedTokens[$nextstate], true)) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						return true;
 					}
@@ -907,7 +909,7 @@ Array (
 						$this->yystack[$this->yyidx] = $x;
 						continue 2;
 					} elseif ($nextstate == self::YYNSTATE + self::YYNRULE + 1) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						if (!$token) {
 							// end of input: this is valid
@@ -918,7 +920,7 @@ Array (
 						// syntax error!
 						return false;
 					} elseif ($nextstate === self::YY_NO_ACTION) {
-						$this->yyidx = $yyidx;
+						$this->yyidx = $indexElement;
 						$this->yystack = $stack;
 						// input accepted, but not shifted (I guess)
 						return true;
@@ -982,8 +984,6 @@ Array (
 	 * @param int The look-ahead token
 	 */
 	public function yy_find_reduce_action($stateno, $iLookAhead) {
-		/* $stateno = $this->yystack[$this->yyidx]->stateno; */
-
 		if (!isset(self::$yy_reduce_ofst[$stateno])) {
 			return self::$yy_default[$stateno];
 		}
@@ -1024,8 +1024,6 @@ Array (
 #line 462 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
 
 			throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, 'Parser stack overflow');
-#line 1046 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
-			return;
 		}
 		$yytos = new VTQL_ParseryyStackEntry;
 		$yytos->stateno = $yyNewState;
@@ -1039,11 +1037,11 @@ Array (
 				self::$yyTracePrompt,
 				$yyNewState
 			);
-			fprintf(self::$yyTraceFILE, "%sStack:", self::$yyTracePrompt);
+			fprintf(self::$yyTraceFILE, '%sStack:', self::$yyTracePrompt);
 			for ($i = 1; $i <= $this->yyidx; $i++) {
 				fprintf(
 					self::$yyTraceFILE,
-					" %s",
+					' %s',
 					self::$yyTokenName[$this->yystack[$i]->major]
 				);
 			}
@@ -1154,9 +1152,6 @@ Array (
 		if ($this->yystack[$this->yyidx + -5]->minor) {
 			$this->out['from'] = $this->yystack[$this->yyidx + -5]->minor ;
 		}
-// if ($this->yystack[$this->yyidx]->minor) {
-// 	$this->out['semi_colon'] = self::SEMICOLON;
-// }
 		if ($this->out['select']) {
 			$this->buildSelectStmt($this->out);
 		}
@@ -1179,10 +1174,8 @@ Array (
 #line 1191 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
 #line 30 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
 	public function yy_r7() {
-		if (!in_array('*', $this->out['column_list']) && !in_array('count(*)', array_map('strtolower', $this->out['column_list']))) {
-			if (!in_array('id', $this->out['column_list'])) {
-				$this->out['column_list'][] = 'id';
-			}
+		if (!in_array('*', $this->out['column_list']) && !in_array('count(*)', array_map('strtolower', $this->out['column_list'])) && !in_array('id', $this->out['column_list'])) {
+			$this->out['column_list'][] = 'id';
 		}
 		$moduleName = $this->yystack[$this->yyidx + 0]->minor;
 		if (!$moduleName) {
@@ -1336,6 +1329,13 @@ Array (
 					$columns[] = $fieldcol[$field];
 				}
 			}
+			if (!empty($this->out['orderby'])) {
+				foreach ($this->out['orderby'] as $field) {
+					if (!empty($fieldcol[$field])) {
+						$columns[] = $fieldcol[$field];
+					}
+				}
+			}
 			$tables = $this->getTables($this->out, $columns);
 			if (!in_array($objectMeta->getEntityBaseTable(), $tables)) {
 				$tables[] = $objectMeta->getEntityBaseTable();
@@ -1353,7 +1353,13 @@ Array (
 			foreach ($tables as $table) {
 				if ($firstTable!=$table) {
 					if (!isset($tabNameIndex[$table]) && $table == 'vtiger_crmentity') {
-						$this->out['defaultJoinConditions']=$this->out['defaultJoinConditions']." LEFT JOIN $table ON $firstTable.$firstIndex=$table.crmid";
+						$mod = CRMEntity::getInstance($module);
+						$table = $mod->crmentityTable;
+						$this->out['defaultJoinConditions']= $this->out['defaultJoinConditions']
+							.' LEFT JOIN '.$mod->crmentityTable." ON $firstTable.$firstIndex=".$mod->crmentityTable.'.crmid';
+					} elseif (!isset($tabNameIndex[$table]) && $table == 'vtiger_attachments') {
+						$this->out['defaultJoinConditions'] .= " LEFT JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid=vtiger_activity.activityid";
+						$this->out['defaultJoinConditions'] .= " LEFT JOIN vtiger_attachments ON vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid";
 					} else {
 						$this->out['defaultJoinConditions']=$this->out['defaultJoinConditions']." LEFT JOIN $table ON $firstTable.$firstIndex=$table.".$tabNameIndex[$table];
 					}
@@ -1508,8 +1514,7 @@ Array (
 		while ($this->yyidx >= 0) {
 			$this->yy_pop_parser_stack();
 		}
-		/* Here code is inserted which will be executed whenever the
-		** parser accepts */
+		/* Here code is inserted which will be executed whenever the parser accepts */
 #line 452 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
 
 		$this->success = true;
@@ -1527,9 +1532,9 @@ Array (
 	 * @param mixed any extra arguments that should be passed to handlers
 	 */
 	public function doParse($yymajor, $yytokenvalue) {
-//		$yyact;			/* The parser action. */
-//		$yyendofinput;	 /* True if we are at the end of input */
-		$yyerrorhit = 0;   /* True if yymajor has invoked an error */
+		// $yyact contians the parser action
+		// $yyendofinput containss True if we are at the end of input
+		$yyerrorhit = 0; /* True if yymajor has invoked an error */
 
 		/* (re)initialize the parser, if necessary */
 		if ($this->yyidx === null || $this->yyidx < 0) {

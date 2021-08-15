@@ -72,20 +72,23 @@ class IOMap extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
-		$mapping=array();
-		$mapping['input'] = array();
-		$mapping['input']['fields']=array();
-		foreach ($xml->input->fields->field as $k => $v) {
+		if (empty($xml)) {
+			return array();
+		}
+		$mapping_arr=array();
+		$mapping_arr['input'] = array();
+		$mapping_arr['input']['fields']=array();
+		foreach ($xml->input->fields->field as $v) {
 			$fieldname[]= isset($v->fieldname) ? (String)$v->fieldname : '';
 		}
-		$mapping['input']['fields']=$fieldname;
-		$mapping['output']=array();
-		$mapping['output']['fields']=array();
-		foreach ($xml->output->fields->field as $k1 => $v1) {
+		$mapping_arr['input']['fields']=$fieldname;
+		$mapping_arr['output']=array();
+		$mapping_arr['output']['fields']=array();
+		foreach ($xml->output->fields->field as $v1) {
 			$fieldname1[]= isset($v1->fieldname) ? (String)$v1->fieldname : '';
 		}
-		$mapping['output']['fields']=$fieldname1;
-		$this->mapping = $mapping;
+		$mapping_arr['output']['fields']=$fieldname1;
+		$this->mapping = $mapping_arr;
 	}
 }
 ?>

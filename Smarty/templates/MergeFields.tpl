@@ -29,7 +29,6 @@
 {if $EDIT_DUPLICATE eq 'permitted'}
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script src="include/js/general.js" type="text/javascript"></script>
 <script src="include/js/{$LANGUAGE}.lang.js" type="text/javascript"></script>
 <form name="merge" method="POST" action="index.php" id="form" onsubmit="if(validate_merge('{$MODULENAME}')){ldelim}VtigerJS_DialogBox.block(); return true;{rdelim} else {ldelim} return false; {rdelim};">
@@ -37,7 +36,6 @@
 	<input type=hidden name="return_module" value="{$MODULENAME}">
 	<input type="hidden" name="action" value="ProcessDuplicates">
 	<input type="hidden" name="mergemode" value="mergesave">
-	<input type="hidden" name="parent" value="{$PARENT_TAB}">
 	<input type="hidden" name="pass_rec" value="{$IDSTRING}">
 	<input type="hidden" name="return_action" value="FindDuplicateRecords">
 	<div style='margin: 0 5px;'>

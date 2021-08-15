@@ -9,6 +9,7 @@
  ********************************************************************************/
 require_once 'modules/Emails/PHPMailerAutoload.php';
 require_once 'include/utils/CommonUtils.php';
+require_once 'modules/Emails/Emails.php';
 
 /** Function used to send an email
  * $module     - module: only used to add signature if it is different than "Calendar"
@@ -49,7 +50,22 @@ require_once 'include/utils/CommonUtils.php';
  * $qrScan     - if we should load qrcode images from cache directory   <img src="cid:qrcode{$fname}" />
  * $brScan     - if we should load barcode images from cache directory   <img src="cid:barcode{$fname}" />
  */
-function send_mail($module, $to_email, $from_name, $from_email, $subject, $contents, $cc = '', $bcc = '', $attachment = '', $emailid = '', $logo = '', $replyto = '', $qrScan = '', $brScan = '') {
+function send_mail(
+	$module,
+	$to_email,
+	$from_name,
+	$from_email,
+	$subject,
+	$contents,
+	$cc = '',
+	$bcc = '',
+	$attachment = '',
+	$emailid = '',
+	$logo = '',
+	$replyto = '',
+	$qrScan = '',
+	$brScan = ''
+) {
 	global $adb;
 	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 
@@ -124,11 +140,22 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 		$contents = getMergedDescription($contents, $adb->query_result($rs, 0, 'id'), 'Users');
 	}
 
-	list($systemEmailClassName, $systemEmailClassPath) = cbEventHandler::do_filter('corebos.filter.systemEmailClass.getname', array('Emails', 'modules/Emails/Emails.php'));
+	list($systemEmailClassName, $systemEmailClassPath) = cbEventHandler::do_filter(
+		'corebos.filter.systemEmailClass.getname',
+		array('Emails', 'modules/Emails/Emails.php')
+	);
 	require_once $systemEmailClassPath;
 	if (!call_user_func(array($systemEmailClassName, 'useEmailHook'))) {
 		$systemEmailClassName = 'Emails'; // default system method
 	}
+
+	$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', "");
+
+	if (!empty($inBucketServeUrl)) {
+		$systemEmailClassName = 'Emails';
+		$systemEmailClassPath = 'modules/Emails/Emails.php';
+	}
+
 	return call_user_func_array(
 		array($systemEmailClassName, 'sendEMail'),
 		array(
@@ -237,7 +264,7 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 
 	//Handle the from name and email for HelpDesk
 	$mail->From = $from_email;
-	$rs = $adb->pquery('select first_name,last_name from vtiger_users where user_name=?', array($from_name));
+	$rs = $adb->pquery('select first_name,last_name,ename from vtiger_users where user_name=?', array($from_name));
 	$num_rows = $adb->num_rows($rs);
 	if ($num_rows > 0) {
 		$from_name = getFullNameFromQResult($rs, 0, 'Users');
@@ -248,11 +275,11 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 	if ($to_email != '') {
 		if (is_array($to_email)) {
 			foreach ($to_email as $recip) {
-				$mail->addAddress($recip);
+				$mail->addAddress(str_replace(' ', '', $recip));
 			}
 		} else {
 			foreach (explode(',', $to_email) as $recip) {
-				$mail->addAddress($recip);
+				$mail->addAddress(str_replace(' ', '', $recip));
 			}
 		}
 	}
@@ -308,7 +335,6 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 
 	$mail->IsHTML(true); // set email format to HTML
 	$mail->AllowEmpty = true; //allow sent empty body.
-	return;
 }
 
 /** Function to set the Mail Server Properties in the object passed
@@ -316,85 +342,94 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
   */
 function setMailServerProperties($mail) {
 	global $adb,$default_charset, $current_user;
-	$adb->println('> setMailServerProperties');
-	$user_mail_config = $adb->pquery('select * from vtiger_mail_accounts where user_id=? AND og_server_status=1', array($current_user->id));
-	$res = $adb->pquery('select * from vtiger_systems where server_type=?', array('email'));
-	if (isset($_REQUEST['server'])) {
-		$server = $_REQUEST['server'];
-	} else {
-		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
-			$server = $adb->query_result($user_mail_config, 0, 'og_server_name');
-		} else {
-			$server = $adb->query_result($res, 0, 'server');
-		}
-	}
-	if (isset($_REQUEST['server_username'])) {
-		$username = $_REQUEST['server_username'];
-	} else {
-		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
-			$username = $adb->query_result($user_mail_config, 0, 'og_server_username');
-		} else {
-			$username = $adb->query_result($res, 0, 'server_username');
-		}
-	}
-	if (isset($_REQUEST['server_password'])) {
-		$password = $_REQUEST['server_password'];
-	} else {
-		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
-			require_once 'include/database/PearDatabase.php';
-			require_once 'modules/Users/Users.php';
-			$focus = new Users();
-			$password = $focus->de_cryption($adb->query_result($user_mail_config, 0, 'og_server_password'));
-		} else {
-			$password = html_entity_decode($adb->query_result($res, 0, 'server_password'), ENT_QUOTES, $default_charset);
-		}
-	}
-	if (isset($_REQUEST['smtp_auth'])) {
-		$smtp_auth = $_REQUEST['smtp_auth'];
-	} else {
-		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
-			$smtp_auth = $adb->query_result($user_mail_config, 0, 'og_smtp_auth	');
-		} else {
-			$smtp_auth = $adb->query_result($res, 0, 'smtp_auth');
-		}
-	}
 
-	$adb->println("Mail server name,username & password => '".$server."','".$username."','".$password."'");
-	if ('false' != $smtp_auth) {
-		$mail->SMTPAuth = true;
-		if ('true' != $smtp_auth) {
-			if ($smtp_auth == 'sslnc' || $smtp_auth == 'tlsnc') {
-				$mail->SMTPOptions = array(
+	$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', "");
+	if (!empty($inBucketServeUrl)) {
+		$mail->Host = $inBucketServeUrl; // Url for InBucket Server
+		$mail->Username = "";	// SMTP username
+		$mail->Password = "" ;	// SMTP password
+		$mail->SMTPAuth = false;
+	} else {
+		$adb->println('> setMailServerProperties');
+		$user_mail_config = $adb->pquery('select * from vtiger_mail_accounts where user_id=? AND og_server_status=1', array($current_user->id));
+		$res = $adb->pquery('select * from vtiger_systems where server_type=?', array('email'));
+		if (isset($_REQUEST['server'])) {
+			$server = $_REQUEST['server'];
+		} else {
+			if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+				$server = $adb->query_result($user_mail_config, 0, 'og_server_name');
+			} else {
+				$server = $adb->query_result($res, 0, 'server');
+			}
+		}
+		if (isset($_REQUEST['server_username'])) {
+			$username = $_REQUEST['server_username'];
+		} else {
+			if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+				$username = $adb->query_result($user_mail_config, 0, 'og_server_username');
+			} else {
+				$username = $adb->query_result($res, 0, 'server_username');
+			}
+		}
+		if (isset($_REQUEST['server_password'])) {
+			$password = $_REQUEST['server_password'];
+		} else {
+			if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+				require_once 'include/database/PearDatabase.php';
+				require_once 'modules/Users/Users.php';
+				$focus = new Users();
+				$password = $focus->de_cryption($adb->query_result($user_mail_config, 0, 'og_server_password'));
+			} else {
+				$password = html_entity_decode($adb->query_result($res, 0, 'server_password'), ENT_QUOTES, $default_charset);
+			}
+		}
+		if (isset($_REQUEST['smtp_auth'])) {
+			$smtp_auth = $_REQUEST['smtp_auth'];
+		} else {
+			if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+				$smtp_auth = $adb->query_result($user_mail_config, 0, 'og_smtp_auth	');
+			} else {
+				$smtp_auth = $adb->query_result($res, 0, 'smtp_auth');
+			}
+		}
+
+		$adb->println("Mail server name,username & password => '".$server."','".$username."','".$password."'");
+		if ('false' != $smtp_auth) {
+			$mail->SMTPAuth = true;
+			if ('true' != $smtp_auth) {
+				if ($smtp_auth == 'sslnc' || $smtp_auth == 'tlsnc') {
+					$mail->SMTPOptions = array(
 					'ssl' => array(
 						'verify_peer' => false,
 						'verify_peer_name' => false,
 						'allow_self_signed' => true
 					)
-				);
-				$smtp_auth = substr($smtp_auth, 0, 3);
+					);
+					$smtp_auth = substr($smtp_auth, 0, 3);
+				}
+				$mail->SMTPSecure = $smtp_auth;
 			}
-			$mail->SMTPSecure = $smtp_auth;
 		}
-	}
-	$mail->Host = $server;		// specify main and backup server
-	$mail->Username = $username ;	// SMTP username
-	$mail->Password = $password ;	// SMTP password
+		$mail->Host = $server;		// specify main and backup server
+		$mail->Username = $username ;	// SMTP username
+		$mail->Password = $password ;	// SMTP password
 
-	$debugEmail = GlobalVariable::getVariable('Debug_Email_Sending', 0);
-	if ($debugEmail) {
-		global $log;
-		$log->fatal(array(
+		$debugEmail = GlobalVariable::getVariable('Debug_Email_Sending', 0);
+		if ($debugEmail) {
+			global $log;
+			$log->fatal(array(
 			'SMTPOptions' => $mail->SMTPOptions,
 			'SMTPSecure' => $mail->SMTPSecure,
 			'Host' => $mail->Host = $server,
 			'Username' => $mail->Username = $username,
 			'Password' => $mail->Password = $password,
-		));
-		$mail->SMTPDebug = 4;
-		$mail->Debugoutput = function ($str, $level) {
-			global $log;
-			$log->fatal($str);
-		};
+			));
+			$mail->SMTPDebug = 4;
+			$mail->Debugoutput = function ($str, $level) {
+				global $log;
+				$log->fatal($str);
+			};
+		}
 	}
 }
 
@@ -411,10 +446,10 @@ function addAttachment($mail, $filename, $record) {
 	if (is_file($root_directory.$filename) && ($root_directory.$filename) != '') {
 		$bn = basename($filename);
 		$parts = explode('_', $bn);
-		if (count($parts)>0 && is_numeric($parts[0])) {
+		if (!empty($parts) && is_attachmentid($parts[0])) {
 			$name = substr($bn, strlen($parts[0])+1);
 		} else {
-			$name = $filename;
+			$name = $bn;
 		}
 		$mail->AddAttachment($root_directory.$filename, $name);
 	} elseif (is_numeric($filename)) {
@@ -570,7 +605,6 @@ function getParentMailId($parentmodule, $parentid) {
 		$second_email = 'email2';
 	}
 	if ($parentid != '') {
-		//$query = 'select * from '.$tablename.' where '.$idname.' = '.$parentid;
 		$query = 'select * from '.$tablename.' where '. $idname.' = ?';
 		$res = $adb->pquery($query, array($parentid));
 		$mailid = $adb->query_result($res, 0, $first_email);
@@ -659,25 +693,25 @@ function parseEmailErrorString($mail_error_str) {
 			$adb->println('Error in mail sending');
 			if ($status_str[1] == 'connect_host') {
 				$adb->println('if part - Mail sever is not configured');
-				$errorstr .= '<br><b><font color=red>'.getTranslatedString('MESSAGE_CHECK_MAIL_SERVER_NAME', 'Emails').'</font></b>';
+				$errorstr .= '<br><strong><span style="color:red;">'.getTranslatedString('MESSAGE_CHECK_MAIL_SERVER_NAME', 'Emails').'</span></strong>';
 				break;
 			} elseif ($status_str[1] == '0') {
 				$adb->println("first elseif part - status will be 0 which is the case of assigned to vtiger_users's email is empty.");
-				$errorstr .= '<br><b><font color=red> '.getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND', 'Emails').' '
-					.getTranslatedString('MESSAGE_PLEASE_CHECK_FROM_THE_MAILID', 'Emails').'</font></b>';
+				$errorstr .= '<br><strong><span style="color:red;"> '.getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND', 'Emails').' '
+					.getTranslatedString('MESSAGE_PLEASE_CHECK_FROM_THE_MAILID', 'Emails').'</span></strong>';
 				//Added to display the message about the CC && BCC mail sending status
 				if ($status_str[0] == 'cc_success') {
 					$cc_msg = 'But the mail has been sent to CC & BCC addresses.';
-					$errorstr .= '<br><b><font color=purple>'.$cc_msg.'</font></b>';
+					$errorstr .= '<br><strong><span style="color:purple;">'.$cc_msg.'</span></strong>';
 				}
 			} elseif (strstr($status_str[1], 'from_failed')) {
 				$adb->println('second elseif part - from email id is failed.');
 				$from = explode('from_failed', $status_str[1]);
-				$errorstr .= "<br><b><font color=red>".getTranslatedString('MESSAGE_PLEASE_CHECK_THE_FROM_MAILID', 'Emails')." '".$from[1]."'</font></b>";
+				$errorstr .= '<br><strong><span style="color:red;">'.getTranslatedString('MESSAGE_PLEASE_CHECK_THE_FROM_MAILID', 'Emails')." '".$from[1]."'</span></strong>";
 			} else {
 				$adb->println('else part - mail send process failed due to the following reason.');
-				$errorstr .= "<br><b><font color=red> ".getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND_TO_THIS_EMAILID', 'Emails')." '".$status_str[0]."'. "
-					.getTranslatedString('PLEASE_CHECK_THIS_EMAILID', 'Emails').'</font></b>';
+				$errorstr .= '<br><strong><span style="color:red;">'.getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND_TO_THIS_EMAILID', 'Emails')." '".$status_str[0]."'. "
+					.getTranslatedString('PLEASE_CHECK_THIS_EMAILID', 'Emails').'</span></strong>';
 			}
 		}
 	}
@@ -719,12 +753,10 @@ function getDefaultAssigneeEmailIds($groupId) {
 				}
 				$emails[] = $email;
 			}
-			//$adb->println("Email ids are selected => '".implode(',', $emails)."'");
-		} else {
-			//$adb->println("No users found in Group id $groupId");
+			// Email ids are selected => implode(',', $emails)
+		// else => No users found in Group id $groupId
 		}
-	} else {
-		//$adb->println('Group id is empty, so return value is empty');
+	// else Group id is empty, so return value as empty;
 	}
 	return $emails;
 }
@@ -754,5 +786,19 @@ function createEmailRecord($element) {
 	}
 	$result = $handler->create($elementType, $element);
 	return $result['id'];
+}
+
+function createEmailRecordWithSave($element) {
+	$reqModule = $_REQUEST['module'];
+	$reqPID = isset($_REQUEST['parent_id']) ? $_REQUEST['parent_id'] : '';
+	$_REQUEST['module'] = 'Emails';
+	$_REQUEST['parent_id'] = $element['parent_id'];
+	$focus = new Emails();
+	$focus->column_fields = $element;
+	$focus->column_fields['activitytype'] = 'Emails';
+	$focus->save('Emails');
+	$_REQUEST['module'] = $reqModule;
+	$_REQUEST['parent_id'] = $reqPID;
+	return $focus;
 }
 ?>

@@ -36,6 +36,7 @@ if ($editmode != 'edit') {
 	$invid = vtlib_purify($_REQUEST['invid']);
 	$tax_details = getAllTaxes('available', '', $editmode, $invid);
 }
+$smarty->assign('TAXFILLINMODE', GlobalVariable::getVariable('Inventory_Tax_FillInMode', 'All', $currentModule, $current_user->id));
 
 $smarty->assign('GROUP_TAXES', $tax_details);
 $smarty->display('Inventory/GroupTax.tpl');

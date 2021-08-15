@@ -56,9 +56,10 @@ function SaveAttachmentFile($attachid, $filename, $filecontent) {
 		if (!$fh) {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission denied, could not open file to save attachment: '.$saveasfile);
 		}
-		if (substr($filecontent, 0, strlen('data:image/png;base64,'))=='data:image/png;base64,') {
-			// Base64 Encoded HTML5 Canvas image
-			$filecontent = str_replace('data:image/png;base64,', '', $filecontent);
+		preg_match('/^data:\w+\/\w+;base64,/', $filecontent, $matches);
+		if (!empty($matches)) {
+			// Base64 Encoded HTML5 Canvas image or similar coming from javascript
+			$filecontent = str_replace($matches[0], '', $filecontent);
 			$filecontent = str_replace(' ', '+', $filecontent);
 		}
 		fwrite($fh, base64_decode($filecontent));

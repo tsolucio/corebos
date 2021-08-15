@@ -69,7 +69,8 @@ class ConditionQuery extends processcbMap {
 
 	private function executeSQL($sql, $arguments, $return) {
 		global $adb;
-		$rs = $adb->pquery($sql, $arguments);
+		$sql = $adb->convert2Sql($sql, $arguments);
+		$rs = $adb->query($sql);
 		if ($rs) {
 			if (strtolower($return)=='count') {
 				return $adb->num_rows($rs);
@@ -114,19 +115,6 @@ class ConditionQuery extends processcbMap {
 			$queryGenerator->setFields(array('id'));
 		}
 		$workflowScheduler->addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions);
-		if ($moduleName == 'Calendar' || $moduleName == 'Events') {
-			if ($conditions) {
-				$queryGenerator->addConditionGlue('AND');
-			}
-			// We should only get the records related to proper activity type
-			if ($moduleName == 'Calendar') {
-				$queryGenerator->addCondition('activitytype', 'Emails', 'n');
-				$queryGenerator->addCondition('activitytype', 'Task', 'e', 'AND');
-			} elseif ($moduleName == "Events") {
-				$queryGenerator->addCondition('activitytype', 'Emails', 'n');
-				$queryGenerator->addCondition('activitytype', 'Task', 'n', 'AND');
-			}
-		}
 		return $queryGenerator->getQuery();
 	}
 }

@@ -13,7 +13,7 @@
 <table style="width:70%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="10" cellspacing="10" class="searchUIBasic cblds-table-border_sep cblds-table-bordersp_medium">
 	<tr>
 		<td class="heading2" align="left" colspan="2">
-			{'LBL_IMPORT_SCHEDULED'|@getTranslatedString:$MODULE} 
+			{'LBL_IMPORT_SCHEDULED'|@getTranslatedString:$MODULE}
 		</td>
 	</tr>
 	{if !empty($ERROR_MESSAGE)}

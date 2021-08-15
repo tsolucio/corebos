@@ -15,6 +15,8 @@
 require_once 'include/Webservices/Utils.php';
 require_once 'modules/com_vtiger_workflow/include.inc';
 require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
+use \PHPSQLParser\PHPSQLParser;
+use \PHPSQLParser\utils\ExpressionType;
 
 /*
  * Given a webservice formatted query with optional extended FQN syntax return a valid SQL statement
@@ -27,6 +29,160 @@ require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
  *
  */
 function __FQNExtendedQueryGetQuery($q, $user) {
+	global $adb, $log;
+	$parser = new PHPSQLParser();
+	$parsed = $parser->parse($q);
+
+	if (isset($parsed['FROM'])) {
+		$mainModule = $parsed['FROM'][0]['no_quotes']['parts'][0];
+	} else {
+		throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, 'Given query is missing or has incorrect FROM clause');
+	}
+
+	// pickup meta data of module
+	$webserviceObject = VtigerWebserviceObject::fromName($adb, $mainModule);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+	require_once $handlerPath;
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$meta = $handler->getMeta();
+	$mainModule = $meta->getTabName();  // normalize module name
+	// check modules
+	if (!$meta->isModuleEntity()) {
+		throw new WebServiceException('INVALID_MODULE', "Given main module ($mainModule) cannot be found");
+	}
+
+	// check permission on module
+	$entityName = $meta->getEntityName();
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
+	}
+
+	if (!$meta->hasReadAccess()) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read module is denied');
+	}
+
+	// user has enough permission to start process
+	$fieldcolumn = $meta->getFieldColumnMapping();
+	$capsfield = array('hdnDiscountAmount', 'hdnDiscountPercent', 'hdnGrandTotal', 'hdnSubTotal', 'hdnS_H_Amount', 'hdnTaxType', 'txtAdjustment');
+	$queryGenerator = new QueryGenerator($mainModule, $user);
+	$queryColumns = array();
+	$queryRelatedModules = array();
+	$hasDistinct = false;
+	$countSelect = false;
+	foreach ($parsed['SELECT'] as $colspec) {
+		if ($colspec['expr_type']=='colref') {
+			if (strpos($colspec['base_expr'], '.')>0) {
+				list($m,$f) = explode('.', $colspec['base_expr']);
+				$mo = '';
+				if ($m=='UsersSec' || $m=='UsersCreator') {
+					$mo = $m;
+					$m = 'Users';
+				}
+				if (!isset($queryRelatedModules[$m])) {
+					$relhandler = vtws_getModuleHandlerFromName($m, $user);
+					$relmeta = $relhandler->getMeta();
+					$mn = $relmeta->getTabName();  // normalize module name
+					$queryRelatedModules[$mn] = $relmeta;
+					$queryColumns[] = ($mo!='' ? $mo : $mn).'.'.(in_array($f, $capsfield) ? $f : strtolower($f));
+				} else {
+					$queryColumns[] = ($mo!='' ? $mo : $m).'.'.(in_array($f, $capsfield) ? $f : strtolower($f));
+				}
+			} else {
+				$queryColumns[] = (in_array($colspec['base_expr'], $capsfield) ? $colspec['base_expr'] : strtolower($colspec['base_expr']));
+			}
+		} elseif (strtolower($colspec['base_expr'])=='distinct') {
+			$hasDistinct = true;
+		} elseif (strtolower($colspec['base_expr'])=='count') {
+			$countSelect = true;
+		} elseif ($colspec['expr_type']=='expression') {
+			throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, 'expressions not supported');
+		}
+	}
+	if (!$hasDistinct) {
+		$queryColumns[] = 'id'; // add ID column to follow REST interface behaviour
+	}
+	$queryGenerator->setFields(array_unique($queryColumns));
+
+	// where
+	if (isset($parsed['WHERE'])) {
+		$queryGenerator->startGroup($queryGenerator::$AND);
+		fqneqProcessConditions($parsed['WHERE'], $queryGenerator, $mainModule, $user);
+		$queryGenerator->endGroup();
+	}
+
+	// limit and order
+	$orderby = '';
+	if (isset($parsed['ORDER'])) {
+		$fieldtable = $meta->getColumnTableMapping();
+		foreach ($parsed['ORDER'] as $fieldspec) {
+			// we have to make sure we have all the join conditions for these fields as Query Generator doesn't do that by default
+			__FQNExtendedQuerySetQGRefField($fieldspec['base_expr'], $mainModule, $queryGenerator, $user);
+			$orderby .= __FQNExtendedQueryField2Column($fieldspec['base_expr'], $mainModule, $fieldcolumn, $fieldtable, $user).' '.$fieldspec['direction'];
+		}
+		$orderby = ' order by '.$orderby;
+	}
+	$query = 'select ';
+	if ($countSelect) {
+		$query .= 'count(*) ';
+	} else {
+		$query .= ($hasDistinct ? 'distinct ' : '').$queryGenerator->getSelectClauseColumnSQL().' ';
+	}
+	$query .= $queryGenerator->getFromClause().' ';
+	$query .= $queryGenerator->getWhereClause().' ';
+	$query .= $orderby;
+	if (isset($parsed['LIMIT'])) {
+		$query .= ' limit '.(!empty($parsed['LIMIT']['offset']) ? $parsed['LIMIT']['offset'] : '0').','.$parsed['LIMIT']['rowcount'];
+	}
+	return array($query, $queryRelatedModules);
+}
+
+function fqneqProcessConditions($conditions, $queryGenerator, $mainModule, $user) {
+	$glue = $col = $op = $val = '';
+	$havecol = $haveop = $haveval = false;
+	foreach ($conditions as $condition) {
+		switch ($condition['expr_type']) {
+			case ExpressionType::BRACKET_EXPRESSION:
+				$queryGenerator->startGroup($glue);
+				fqneqProcessConditions($condition['sub_tree'], $queryGenerator, $mainModule, $user);
+				$queryGenerator->endGroup();
+				break;
+			case ExpressionType::OPERATOR:
+				switch (strtolower($condition['base_expr'])) {
+					case 'and':
+						$glue = $queryGenerator::$AND;
+						break;
+					case 'or':
+						$glue = $queryGenerator::$OR;
+						break;
+					default:
+						$op .= ' '.$condition['base_expr'];
+						$haveop = true;
+						break;
+				}
+				break;
+			case ExpressionType::COLREF:
+				$col = $condition['base_expr'];
+				$havecol = true;
+				break;
+			case ExpressionType::CONSTANT:
+			case ExpressionType::IN_LIST:
+				$val = $condition['base_expr'];
+				$haveval = true;
+				break;
+			default:
+				break;
+		}
+		if ($havecol && $haveop && $haveval) {
+			__FQNExtendedQueryAddCondition($queryGenerator, $col.' '.$op.' '.$val, $glue, $mainModule, $col, $user);
+			$col = $op = $val = '';
+			$havecol = $haveop = $haveval = false;
+		}
+	}
+}
+
+function deprecated__FQNExtendedQueryGetQuery($q, $user) {
 	global $adb, $log;
 
 	$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)(.*)/";
@@ -43,7 +199,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	$mainModule = $meta->getTabName();  // normalize module name
 	// check modules
 	if (!$meta->isModuleEntity()) {
-		throw new WebserviceException('INVALID_MODULE', "Given main module ($mainModule) cannot be found");
+		throw new WebServiceException('INVALID_MODULE', "Given main module ($mainModule) cannot be found");
 	}
 
 	// check permission on module
@@ -68,6 +224,9 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	foreach ($queryColumns as $k => $field) {
 		if (strpos($field, '.')>0) {
 			list($m,$f) = explode('.', $field);
+			if ($m=='UsersSec' || $m=='UsersCreator') {
+				$m = 'Users';
+			}
 			if (!isset($queryRelatedModules[$m])) {
 				$relhandler = vtws_getModuleHandlerFromName($m, $user);
 				$relmeta = $relhandler->getMeta();
@@ -129,22 +288,40 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 		$glue = '';
 		while ($posand>0 || $posor>0 || strlen($qc)) {
 			$endgroup = false;
-			preg_match($inopRegex, $qc, $qcop);
-			$inop = (count($qcop)>0);
-			$lasttwo = '';
-			if ($inop) {
-				$lasttwo = str_replace(' ', '', $qc);
-				$lasttwo = substr($lasttwo, -2);
-			}
 			if ($posand==0 && $posor==0) {
+				$inparenthesis = (substr($qc, 0, 1)=='(' && substr($qc, strlen($qc)-1)==')');
+				if ($inparenthesis) {
+					$qc = substr($qc, 1, strlen($qc)-2);
+					$queryGenerator->startGroup();
+				}
+				preg_match($inopRegex, $qc, $qcop);
+				$inop = (count($qcop)>0);
+				$lasttwo = '';
+				if ($inop) {
+					$lasttwo = substr(str_replace(' ', '', $qc), -2);
+				}
 				if ((!$inop && substr($qc, -1)==')') || ($inop && $lasttwo=='))')) {
 					$qc = substr($qc, 0, strlen($qc)-1);
 					$endgroup = true;
 				}
 				__FQNExtendedQueryAddCondition($queryGenerator, $qc, $glue, $mainModule, $fieldcolumn, $user);
 				$qc = '';
+				if ($inparenthesis) {
+					$queryGenerator->endGroup();
+				}
 			} elseif ($posand==0 || ($posand>$posor && $posor!=0)) {
 				$qcond = trim(substr($qc, 0, $posor));
+				$inparenthesis = (substr($qcond, 0, 1)=='(' && substr($qcond, strlen($qcond)-1)==')');
+				if ($inparenthesis) {
+					$qcond = substr($qcond, 1, strlen($qcond)-2);
+					$queryGenerator->startGroup();
+				}
+				preg_match($inopRegex, $qcond, $qcop);
+				$inop = (count($qcop)>0);
+				$lasttwo = '';
+				if ($inop) {
+					$lasttwo = substr(str_replace(' ', '', $qcond), -2);
+				}
 				if ((!$inop && substr($qcond, -1)==')') || ($inop && $lasttwo=='))')) {
 					$qcond = substr($qcond, 0, strlen($qcond)-1);
 					$endgroup = true;
@@ -152,8 +329,22 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 				__FQNExtendedQueryAddCondition($queryGenerator, $qcond, $glue, $mainModule, $fieldcolumn, $user);
 				$glue = $queryGenerator::$OR;
 				$qc = trim(substr($qc, $posor+4));
+				if ($inparenthesis) {
+					$queryGenerator->endGroup();
+				}
 			} else {
 				$qcond = trim(substr($qc, 0, $posand));
+				$inparenthesis = (substr($qcond, 0, 1)=='(' && substr($qcond, strlen($qcond)-1)==')');
+				if ($inparenthesis) {
+					$qcond = substr($qcond, 1, strlen($qcond)-2);
+					$queryGenerator->startGroup();
+				}
+				preg_match($inopRegex, $qcond, $qcop);
+				$inop = (count($qcop)>0);
+				$lasttwo = '';
+				if ($inop) {
+					$lasttwo = substr(str_replace(' ', '', $qcond), -2);
+				}
 				if ((!$inop && substr($qcond, -1)==')') || ($inop && $lasttwo=='))')) {
 					$qcond = substr($qcond, 0, strlen($qcond)-1);
 					$endgroup = true;
@@ -161,6 +352,9 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 				__FQNExtendedQueryAddCondition($queryGenerator, $qcond, $glue, $mainModule, $fieldcolumn, $user);
 				$glue = $queryGenerator::$AND;
 				$qc = trim(substr($qc, $posand+5));
+				if ($inparenthesis) {
+					$queryGenerator->endGroup();
+				}
 			}
 			if ($endgroup) {
 				$queryGenerator->endGroup();
@@ -175,15 +369,8 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 		}
 		$queryGenerator->endGroup();
 	}
-	$query = 'select ';
-	if ($countSelect) {
-		$query .= 'count(*) ';
-	} else {
-		$query .= $queryGenerator->getSelectClauseColumnSQL().' ';
-	}
-	$query .= $queryGenerator->getFromClause().' ';
-	$query .= $queryGenerator->getWhereClause().' ';
 	// limit and order
+	$orderby = '';
 	if (!empty($obflds)) {
 		$obflds = trim($obflds);
 		if (strtolower(substr($obflds, -3))=='asc') {
@@ -196,11 +383,23 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 			$dir = '';
 		}
 		$obflds = explode(',', $obflds);
+		$fieldtable = $meta->getColumnTableMapping();
 		foreach ($obflds as $k => $field) {
-			$obflds[$k] = __FQNExtendedQueryField2Column($field, $mainModule, $fieldcolumn, $user);
+			// we have to make sure we have all the join conditions for these fields as Query Generator doesn't do that by default
+			__FQNExtendedQuerySetQGRefField($field, $mainModule, $queryGenerator, $user);
+			$obflds[$k] = __FQNExtendedQueryField2Column($field, $mainModule, $fieldcolumn, $fieldtable, $user);
 		}
-		$query .= ' order by '.implode(',', $obflds).$dir.' ';
+		$orderby = ' order by '.implode(',', $obflds).$dir.' ';
 	}
+	$query = 'select ';
+	if ($countSelect) {
+		$query .= 'count(*) ';
+	} else {
+		$query .= $queryGenerator->getSelectClauseColumnSQL().' ';
+	}
+	$query .= $queryGenerator->getFromClause().' ';
+	$query .= $queryGenerator->getWhereClause().' ';
+	$query .= $orderby;
 	if (!empty($lmoc)) {
 		$query .= " limit $lmoc ";
 	}
@@ -245,7 +444,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator, $condition, $glue, $mai
 	}
 	$val = trim($val);
 	$val = trim($val, "'");
-	$val = str_replace("''", "'", $val);
+	$val = str_replace("\\'", "'", $val); //$val = str_replace("''", "\\'", $val);
 	// TODO  add query generator operators for 'bw' = BETWEEN value1 and value2  (between two dates)
 	switch ($op) {
 		case '<':
@@ -278,6 +477,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator, $condition, $glue, $mai
 		case 'in':
 		case 'notin':
 			$op = ($op=='notin' ? 'ni' : 'i');
+			$val = preg_replace("/,([\s])+/", ",", $val);
 			$val = ltrim($val, '(');
 			$val = rtrim($val, ')');
 			$val = explode(',', $val);
@@ -331,7 +531,6 @@ function __FQNExtendedQueryAddCondition($queryGenerator, $condition, $glue, $mai
 				$found = true;
 				if ($fname=='id') {
 					list($wsid,$val) = explode('x', $val);
-					//$fname = $relmeta->getObectIndexColumn();
 				}
 				$fmodreffld = __FQNExtendedQueryGetRefFieldForModule($fromrfs, $fmod, $reffld);
 				$queryGenerator->addReferenceModuleFieldCondition($fmod, $fmodreffld, $fname, $val, $op, $glue);
@@ -369,11 +568,43 @@ function __FQNExtendedQueryGetRefFieldForModule($fromrfs, $module, $reffld) {
 	return $reffld;
 }
 
-function __FQNExtendedQueryField2Column($field, $mainModule, $maincolumnTable, $user) {
+function __FQNExtendedQuerySetQGRefField($field, $mainModule, $queryGenerator, $user) {
+	global $adb,$log;
+	$field = trim($field);
+	if (strpos($field, '.')>0) {  // FQN
+		list($fmod,$fname) = explode('.', $field);
+		$fromwebserviceObject = VtigerWebserviceObject::fromName($adb, $mainModule);
+		$fromhandlerPath = $fromwebserviceObject->getHandlerPath();
+		$fromhandlerClass = $fromwebserviceObject->getHandlerClass();
+		require_once $fromhandlerPath;
+		$fromhandler = new $fromhandlerClass($fromwebserviceObject, $user, $adb, $log);
+		$fromrelmeta = $fromhandler->getMeta();
+		$fromrfs = $fromrelmeta->getReferenceFieldDetails();
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, $fmod);
+		$handlerPath = $webserviceObject->getHandlerPath();
+		$handlerClass = $webserviceObject->getHandlerClass();
+		require_once $handlerPath;
+		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+		$relmeta = $handler->getMeta();
+		$fmod = $relmeta->getTabName();  // normalize module name
+		if ($fmod!=$mainModule) {
+			if ($fmod=='Users') {
+				$fmodreffld = 'assigned_user_id';
+			} else {
+				$fmodreffld = __FQNExtendedQueryGetRefFieldForModule($fromrfs, $fmod, $fname);
+			}
+			$queryGenerator->setReferenceFieldsManually($fmodreffld, $fmod, $fname);
+		}
+	} else {
+		$queryGenerator->addWhereField($field);
+	}
+}
+
+function __FQNExtendedQueryField2Column($field, $mainModule, $maincolumnTable, $mainfieldtable, $user) {
 	global $adb,$log;
 	$field = trim($field);
 	if (isset($maincolumnTable[$field])) {
-		return $maincolumnTable[$field];
+		return $mainfieldtable[$maincolumnTable[$field]].'.'.$maincolumnTable[$field];
 	}
 	if (strpos($field, '.')>0) {  // FQN
 		list($fmod,$fname) = explode('.', $field);
@@ -396,9 +627,16 @@ function __FQNExtendedQueryField2Column($field, $mainModule, $maincolumnTable, $
 		if ($fmod==$mainModule) {
 			return $fieldtable[$fname].'.'.$maincolumnTable[$fname];
 		} else {
-			$fmodreffld = __FQNExtendedQueryGetRefFieldForModule($fromrfs, $fmod, $fname);
-			return $fieldtable[$fname].$fmodreffld.'.'.$fieldcolumn[$fname];
+			if ($fmod=='Users') {
+				return 'vtiger_users.'.$fieldcolumn[$fname];
+			} else {
+				$fmodreffld = __FQNExtendedQueryGetRefFieldForModule($fromrfs, $fmod, $fname);
+				return $fieldtable[$fname].$fmodreffld.'.'.$fieldcolumn[$fname];
+			}
 		}
+	} elseif ($field=='id') {
+		$crmobj = CRMEntity::getInstance($mainModule);
+		$field = $crmobj->table_name.'.'.$crmobj->table_index;
 	}
 	return $field;
 }
@@ -485,7 +723,7 @@ function __ExtendedQueryConditionQuery($q) {
 }
 
 function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
-	global $adb;
+	global $adb, $log;
 	$workflowScheduler = new WorkFlowScheduler($adb);
 	$workflow = new Workflow();
 	$wfvals = array(
@@ -546,7 +784,58 @@ function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
 		$cond = trim($cond, ';');
 		$ol_by = substr($q, $endcond);
 		$ol_by = trim($ol_by);
-		$ol_by = ' '.trim($ol_by, ';');
+		$groupbyCond = "/([gG][rR][oO][uU][pP]\s+[bB][yY]\s+)+(.*)/";
+		preg_match($groupbyCond, $ol_by, $gb);
+		$gbflds = (isset($gb[2]) ? $gb[2] : '');
+		if (stripos($gbflds, ' order ')>0) {
+			$gbflds = substr($gbflds, 0, stripos($gbflds, ' order '));
+		}
+		if (stripos($gbflds, ' limit ')>0) {
+			$gbflds = substr($gbflds, 0, stripos($gbflds, ' limit '));
+		}
+		// limit and order
+		$orderbyCond = "/([oO][rR][dD][eE][rR]\s+[bB][yY]\s+)+(.*)/";
+		preg_match($orderbyCond, $ol_by, $ob);
+		$obflds = (isset($ob[2]) ? $ob[2] : '');
+		if (stripos($obflds, ' limit ')>0) {
+			$obflds = substr($obflds, 0, stripos($obflds, ' limit '));
+		}
+		$limitCond = "/([lL][iI][mM][iI][tT]\s+)+(.*)/";
+		preg_match($limitCond, $ol_by, $lm);
+		$lmoc = (isset($lm[2]) ? $lm[2] : '');
+		if (stripos($lmoc, ' order ')>0) {
+			$lmoc = substr($lmoc, 0, stripos($lmoc, ' order '));
+		}
+		$orderby = '';
+		if (!empty($obflds)) {
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $fromModule);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
+			require_once $handlerPath;
+			$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+			$meta = $handler->getMeta();
+			$fieldcolumn = $meta->getFieldColumnMapping();
+			$fieldtable = $meta->getColumnTableMapping();
+			$obflds = trim($obflds);
+			if (strtolower(substr($obflds, -3))=='asc') {
+				$dir = ' asc ';
+				$obflds = trim(substr($obflds, 0, strlen($obflds)-3));
+			} elseif (strtolower(substr($obflds, -4))=='desc') {
+				$dir = ' desc ';
+				$obflds = trim(substr($obflds, 0, strlen($obflds)-4));
+			} else {
+				$dir = '';
+			}
+			$obflds = explode(',', $obflds);
+			foreach ($obflds as $k => $field) {
+				$obflds[$k] = __FQNExtendedQueryField2Column($field, $fromModule, $fieldcolumn, $fieldtable, $user);
+			}
+			$orderby = ' order by '.implode(',', $obflds).$dir;
+		}
+		if (!empty($lmoc)) {
+			$orderby .= " limit $lmoc ";
+		}
+		$ol_by = ($gbflds=='' ? '' : ' group by '.$gbflds).trim($orderby, ';');
 		$wfvals['test'] = $cond;
 	} else {
 		$wfvals['test'] = '';

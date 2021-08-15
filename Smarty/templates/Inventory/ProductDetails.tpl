@@ -15,7 +15,7 @@ if(typeof(e) != 'undefined')
 
 //  window.onmousemove= displayCoords;
 //  window.onclick = fnRevert;
-function displayCoords(currObj,obj,mode,curr_row) 
+function displayCoords(currObj,obj,mode,curr_row)
 {ldelim}
 	if(mode != 'discount_final' && mode != 'sh_tax_div_title' && mode != 'group_tax_div_title')
 	{ldelim}
@@ -73,8 +73,11 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{rdelim}
 	document.getElementById(obj).style.display = "block";
 {rdelim}
-
+{if empty($moreinfofields)}
+	var moreInfoFields = Array();
+{else}
 	var moreInfoFields = Array({$moreinfofields});
+{/if}
 </script>
 
 <tr><td colspan="4" align="left">
@@ -139,6 +142,18 @@ function displayCoords(currObj,obj,mode,curr_row)
 					<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 						<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
 							<input id="productName1" name="productName1" class="slds-input slds-combobox__input cbds-inventoryline__input_name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{if isset($PRODUCT_NAME)}{$PRODUCT_NAME}{/if}" type="text" style="box-shadow: none;">
+							<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+								<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+								</svg>
+							</span>
+							<div class="slds-input__icon-group slds-input__icon-group_right">
+								<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small slds-input__spinner slds-hide">
+									<span class="slds-assistive-text">{'LBL_LOADING'|@getTranslatedString}</span>
+									<div class="slds-spinner__dot-a"></div>
+									<div class="slds-spinner__dot-b"></div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -160,7 +175,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			</tr>
 			<tr>
 			<td class="small" id="setComment">
-				<textarea id="comment1" name="comment1" class=small style="width:70%;height:40px"></textarea>
+				<textarea id="comment1" name="comment1" class=small style="{$Inventory_Comment_Style}"></textarea>
 				<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" onClick="getObj('comment1').value=''" style="cursor:pointer;" />
 			</td>
 		</tr>
@@ -193,35 +208,50 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 4 - Quantity - ends -->
 
 	<!-- column 5 - List Price with Discount, Total After Discount and Tax as table - starts -->
-	<td class="crmTableRow small lineOnTop" align="right" valign="top">
-		<table width="100%" cellpadding="0" cellspacing="0">
+	<td class="crmTableRow small lineOnTop inv-editview__pricecol" valign="top">
+		<table class="slds-table slds-table_cell-buffer">
+		<tbody>
 		   <tr>
-			<td align="right">
+			<td style="padding-right:0px;">
 				<input id="listPrice1" name="listPrice1" value="{if isset($UNIT_PRICE)}{$UNIT_PRICE}{/if}" type="text" class="small" style="width:70px" onBlur="calcTotal(); setDiscount(this,'1');callTaxCalc(1);calcTotal();"{if $Inventory_ListPrice_ReadOnly} readonly{/if}/>&nbsp;{if 'PriceBooks'|vtlib_isModuleActive}<img src="{'pricebook.gif'|@vtiger_imageurl:$THEME}" onclick="priceBookPickList(this,1)">{/if}
 			</td>
 		   </tr>
 		   <tr>
-			<td align="right" style="padding:5px;" nowrap>
+			<td style="padding:5px;" nowrap>
 				(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'discount_div1','discount','1')" >{$APP.LBL_DISCOUNT}</a> : </b>
 				<div class="discountUI" id="discount_div1">
 					<input type="hidden" id="discount_type1" name="discount_type1" value="">
-					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
+					<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+					<thead>
+						<tr class="slds-line-height_reset">
+						<th id="discount_div_title1" class="slds-p-left_none" scope="col"></th>
+						<th class="cblds-t-align_right slds-p-right_none" scope="col"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('discount_div1')" style="cursor:pointer;"></th>
+						</tr>
+					</thead>
+					<tbody>
 					   <tr>
-						<td id="discount_div_title1" nowrap align="left" ></td>
-						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('discount_div1')" style="cursor:pointer;"></td>
-					   </tr>
-					   <tr>
-						<td align="left" class="lineOnTop"><input type="radio" name="discount1" checked onclick="setDiscount(this,1); callTaxCalc(1);calcTotal();">&nbsp; {$APP.LBL_ZERO_DISCOUNT}</td>
+						<td class="lineOnTop" style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount1" checked onclick="setDiscount(this,1); callTaxCalc(1);calcTotal();">&nbsp; {$APP.LBL_ZERO_DISCOUNT}
+						</td>
 						<td class="lineOnTop">&nbsp;</td>
 					   </tr>
 					   <tr>
-						<td align="left"><input type="radio" name="discount1" onclick="setDiscount(this,1); callTaxCalc(1);calcTotal();">&nbsp; % {$APP.LBL_OF_PRICE}</td>
-						<td align="right"><input type="text" class="small" size="5" id="discount_percentage1" name="discount_percentage1" value="0" style="visibility:hidden" onBlur="setDiscount(this,1); callTaxCalc(1);calcTotal();">&nbsp;%</td>
+						<td style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount1" onclick="setDiscount(this,1); callTaxCalc(1);calcTotal();">&nbsp; % {$APP.LBL_OF_PRICE}
+						</td>
+						<td style="padding-left: 2px; padding-right: 4px;">
+							<input type="text" class="small" size="5" id="discount_percentage1" name="discount_percentage1" value="0" style="visibility:hidden" onBlur="setDiscount(this,1); callTaxCalc(1);calcTotal();">&nbsp;%
+						</td>
 					   </tr>
 					   <tr>
-						<td align="left" nowrap><input type="radio" name="discount1" onclick="setDiscount(this,1); callTaxCalc(1);calcTotal();">&nbsp;{$APP.LBL_DIRECT_PRICE_REDUCTION}</td>
-						<td align="right"><input type="text" id="discount_amount1" name="discount_amount1" size="5" value="0" style="visibility:hidden" onBlur="setDiscount(this,1); callTaxCalc(1);calcTotal();"></td>
+						<td nowrap style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount1" onclick="setDiscount(this,1); callTaxCalc(1);calcTotal();">&nbsp;{$APP.LBL_DIRECT_PRICE_REDUCTION}
+						</td>
+						<td style="padding-left: 2px; padding-right: 4px;">
+							<input type="text" id="discount_amount1" name="discount_amount1" size="5" value="0" style="visibility:hidden" onBlur="setDiscount(this,1); callTaxCalc(1);calcTotal();">
+						</td>
 					   </tr>
+					</tbody>
 					</table>
 				</div>
 			</td>
@@ -238,31 +268,34 @@ function displayCoords(currObj,obj,mode,curr_row)
 				</div>
 			</td>
 		   </tr>
-		</table> 
+		</tbody>
+		</table>
 	</td>
 	<!-- column 5 - List Price with Discount, Total After Discount and Tax as table - ends -->
 
 	<!-- column 6 - Product Total - starts -->
-	<td class="crmTableRow small lineOnTop" align="right">
-		<table width="100%" cellpadding="5" cellspacing="0">
+	<td class="crmTableRow small lineOnTop inv-editview__totalscol">
+		<table class="slds-table slds-table_cell-buffer">
+		<tbody>
 		   <tr>
-			<td id="productTotal1" align="right">&nbsp;</td>
+			<td id="productTotal1" style="padding-top:6px;">&nbsp;</td>
 		   </tr>
 		   <tr>
-			<td id="discountTotal1" align="right">0.00</td>
+			<td id="discountTotal1" style="padding-top:6px;">0.00</td>
 		   </tr>
 		   <tr>
-			<td id="totalAfterDiscount1" align="right">&nbsp;</td>
+			<td id="totalAfterDiscount1" style="padding-top:6px;">&nbsp;</td>
 		   </tr>
 		   <tr>
-			<td id="taxTotal1" align="right">0.00</td>
+			<td id="taxTotal1" style="padding-top:6px;">0.00</td>
 		   </tr>
+		</tbody>
 		</table>
 	</td>
 	<!-- column 6 - Product Total - ends -->
 
 	<!-- column 7 - Net Price - starts -->
-	<td valign="bottom" class="crmTableRow small lineOnTop" align="right"><span id="netPrice1"><b>&nbsp;</b></span></td>
+	<td style="vertical-align:bottom;" class="crmTableRow small lineOnTop inv-editview__netpricecol"><span id="netPrice1"><b>&nbsp;</b></span></td>
 	<!-- column 7 - Net Price - ends -->
 
    </tr>
@@ -277,11 +310,11 @@ function displayCoords(currObj,obj,mode,curr_row)
    <tr>
 	<td colspan="3">
 		{if 'Products'|vtlib_isModuleActive}
-		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_PRODUCT}" onclick="fnAddProductRow('{$MODULE}','{$IMAGE_PATH}');" />
+		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_PRODUCT}" onclick="fnAddProductRow('{$MODULE}');" />
 		{/if}
 		{if 'Services'|vtlib_isModuleActive}
 		&nbsp;&nbsp;
-		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_SERVICE}" onclick="fnAddServiceRow('{$MODULE}','{$IMAGE_PATH}');" />
+		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_SERVICE}" onclick="fnAddServiceRow('{$MODULE}');" />
 		{/if}
 	</td>
    </tr>
@@ -421,4 +454,4 @@ calcGroupTax();
 calcTotal();
 calcSHTax();
 </script>
-<!-- This above div is added to display the tax informations --> 
+<!-- This above div is added to display the tax informations -->

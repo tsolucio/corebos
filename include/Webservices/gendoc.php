@@ -12,13 +12,13 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************
-* Allows a webservice client to send an OpenOffice/LibreOffice document for it to be converted
+* Allows a web service client to send an OpenOffice/LibreOffice document for it to be converted
 * into any format supported by unoconv and retrieve the resulting file
 * params:
 *   file: file structure
 *     name: filename
 *.....size: size
-*.....type: type of de document
+*.....type: type of the document
 *.....content: base 64 encoded content of the file
 *   convert_format: string, format to convert input file.
 * returns json string:
@@ -26,20 +26,26 @@
 *   file: resulting file structure
 *     name: filename
 *.....size: size
-*.....type: type of de document
+*.....type: type of the document
 *.....content: base 64 encoded content of the file
  *************************************************************************************************/
 require_once 'modules/evvtgendoc/OpenDocument.php';
 
 function cbws_convert($file, $convert_format, $user) {
 	global $adb, $root_directory;
+	if (GlobalVariable::getVariable('Webservice_GenDocConversion_Active', 0, 'evvtgendoc', $user->id)==0) {
+		return array(
+			'result' => 'success',
+			'errormessage' => 'Service deactivated',
+		);
+	}
 	$globaltime_start = microtime(true);
 	$tmpplace = $root_directory.'cache/gd'.uniqid();
 	mkdir($tmpplace);
 	$filename = basename($file['name']);
 	$tmppath = $tmpplace.'/'.$filename;
 	$partsfile = explode('.', $filename);
-	$resfile = $partsfile[0].'.'.$convert_format;
+	$resfile = $partsfile[0].'.'.str_replace(['.',',','/',' '], '', $convert_format);
 	$result = file_put_contents($tmppath, base64_decode($file['content']));
 	if ($result === false) {
 		$ret = array(
@@ -64,8 +70,6 @@ function cbws_convert($file, $convert_format, $user) {
 					'content' => base64_encode(file_get_contents($resultpath))
 				),
 			);
-			array_map('unlink', glob($tmpplace.'/*'));
-			rmdir($tmpplace);
 		} else {
 			$ret = array(
 				'result' => 'error',
@@ -78,6 +82,8 @@ function cbws_convert($file, $convert_format, $user) {
 			'errormessage' => 'Error saving input file, filesize differ'
 		);
 	}
+	array_map('unlink', glob($tmpplace.'/*'));
+	rmdir($tmpplace);
 	$globaltime = microtime(true)-$globaltime_start;
 	$logarray = array(
 		'ip' => $_SERVER['REMOTE_ADDR'],

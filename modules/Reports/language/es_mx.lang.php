@@ -249,6 +249,7 @@ $mod_strings = array(
 'LBL_USERS_AVAILABEL'=> 'Destinatarios',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
 'LBL_REPORT_FORMAT_URL'=> 'URL',
+'LBL_REPORT_FORMAT_CSV'=> 'CSV',
 'LBL_REPORT_FORMAT_EXCEL'=> 'Excel',
 'LBL_REPORT_FORMAT_BOTH'=> 'Ambos',
 'LBL_REPORT_FORMAT'=> 'Formato Informe',
@@ -308,5 +309,6 @@ $mod_strings = array(
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error eliminando la carpeta.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error eliminando los informes de la carpeta',
 'ERR_CREATE_REPORT' => 'Error creando el informe.',
+'Select Report' => 'Selecciona informe',
 );
 ?>

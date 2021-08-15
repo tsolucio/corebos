@@ -14,9 +14,6 @@ require_once 'modules/Invoice/Invoice.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class PurchaseOrder extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_purchaseorder';
 	public $table_index= 'purchaseorderid';
 	public $column_fields = array();
@@ -83,7 +80,7 @@ class PurchaseOrder extends CRMEntity {
 	public $mandatory_fields = array('subject', 'vendor_id','createdtime' ,'modifiedtime');
 
 	// This is the list of vtiger_fields that are required.
-	public $required_fields = array("accountname"=>1);
+	public $required_fields = array('accountname'=>1);
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	public $default_order_by = 'subject';
@@ -114,7 +111,7 @@ class PurchaseOrder extends CRMEntity {
 		if (inventoryCanSaveProductLines($_REQUEST, 'PurchaseOrder')) {
 			//Based on the total Number of rows we will save the product relationship with this entity
 			saveInventoryProductDetails($this, 'PurchaseOrder');
-			if (vtlib_isModuleActive("InventoryDetails")) {
+			if (vtlib_isModuleActive('InventoryDetails')) {
 				InventoryDetails::createInventoryDetails($this, 'PurchaseOrder');
 			}
 		}
@@ -122,13 +119,12 @@ class PurchaseOrder extends CRMEntity {
 
 	public function registerInventoryHistory() {
 		global $app_strings;
-		if (isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
+		if (!empty($this->column_fields['vendor_id'])) {
 			$relatedname = getVendorName($this->column_fields['vendor_id']);
-			$total = $this->column_fields['hdnGrandTotal'];
-		} else { //using edit button and save
-			$relatedname = $_REQUEST["vendor_name"];
-			$total = $_REQUEST['total'];
+		} else {
+			$relatedname = getVendorName(getSingleFieldValue($this->table_name, 'vendorid', $this->table_index, $this->id));
 		}
+		$total = getSingleFieldValue($this->table_name, 'total', $this->table_index, $this->id);
 		if ($this->column_fields['postatus'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 			//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
 			$stat_value = getSingleFieldValue($this->table_name, 'postatus', $this->table_index, $this->id);
@@ -156,7 +152,7 @@ class PurchaseOrder extends CRMEntity {
 	 */
 	public function trash($module, $recordId) {
 		global $adb;
-		$result = $adb->pquery("SELECT postatus FROM vtiger_purchaseorder where purchaseorderid=?", array($recordId));
+		$result = $adb->pquery('SELECT postatus FROM vtiger_purchaseorder where purchaseorderid=?', array($recordId));
 		$poStatus = $adb->query_result($result, 0, 'postatus');
 		if ($poStatus == 'Received Shipment') {
 			deductProductsFromStock($recordId);
@@ -176,7 +172,7 @@ class PurchaseOrder extends CRMEntity {
 		$query = 'select vtiger_postatushistory.*, vtiger_purchaseorder.purchaseorder_no
 			from vtiger_postatushistory
 			inner join vtiger_purchaseorder on vtiger_purchaseorder.purchaseorderid = vtiger_postatushistory.purchaseorderid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_purchaseorder.purchaseorderid
 			where vtiger_crmentity.deleted = 0 and vtiger_purchaseorder.purchaseorderid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -235,11 +231,11 @@ class PurchaseOrder extends CRMEntity {
 				'vtiger_purchaseordercf', 'vtiger_vendorRelPurchaseOrder', 'vtiger_pobillads',
 				'vtiger_poshipads', 'vtiger_inventoryproductrelPurchaseOrder', 'vtiger_contactdetailsPurchaseOrder'));
 		$query = parent::generateReportsSecQuery($module, $secmodule, $queryPlanner, $type, $where_condition);
-		if ($queryPlanner->requireTable("vtiger_pobillads")) {
-			$query .= " left join vtiger_pobillads on vtiger_purchaseorder.purchaseorderid=vtiger_pobillads.pobilladdressid";
+		if ($queryPlanner->requireTable('vtiger_pobillads')) {
+			$query .= ' left join vtiger_pobillads on vtiger_purchaseorder.purchaseorderid=vtiger_pobillads.pobilladdressid';
 		}
-		if ($queryPlanner->requireTable("vtiger_poshipads")) {
-			$query .= " left join vtiger_poshipads on vtiger_purchaseorder.purchaseorderid=vtiger_poshipads.poshipaddressid";
+		if ($queryPlanner->requireTable('vtiger_poshipads')) {
+			$query .= ' left join vtiger_poshipads on vtiger_purchaseorder.purchaseorderid=vtiger_poshipads.poshipaddressid';
 		}
 		if ($queryPlanner->requireTable("vtiger_currency_info$secmodule")) {
 			$query .= " left join vtiger_currency_info as vtiger_currency_info$secmodule on vtiger_currency_info$secmodule.id = vtiger_purchaseorder.currency_id";
@@ -285,7 +281,6 @@ class PurchaseOrder extends CRMEntity {
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			'Calendar' =>array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_purchaseorder'=>'purchaseorderid'),
 			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_purchaseorder'=>'purchaseorderid'),
 			'Contacts' => array('vtiger_purchaseorder'=>array('purchaseorderid','contactid')),
 		);
@@ -294,19 +289,25 @@ class PurchaseOrder extends CRMEntity {
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
+		global $adb;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
 
 		if ($return_module == 'Vendors') {
-			$sql_req ='UPDATE vtiger_crmentity SET deleted = 1 WHERE crmid= ?';
-			$this->db->pquery($sql_req, array($id));
+			$mtime = $adb->formatDate(date('Y-m-d H:i:s'), true);
+			$adb->pquery('UPDATE vtiger_crmentity SET deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
+			$adb->pquery('UPDATE vtiger_crmobject SET deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
+			$crmtable = CRMEntity::getcrmEntityTableAlias(getSalesEntityType($id), true);
+			if ($crmtable!='vtiger_crmentity') {
+				$adb->pquery('UPDATE '.$crmtable.' SET deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
+			}
 		} elseif ($return_module == 'Contacts') {
 			$sql_req ='UPDATE vtiger_purchaseorder SET contactid=? WHERE purchaseorderid = ?';
-			$this->db->pquery($sql_req, array(null, $id));
+			$adb->pquery($sql_req, array(null, $id));
 		} elseif ($return_module == 'Documents') {
 			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
-			$this->db->pquery($sql, array($id, $return_id));
+			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}
@@ -342,16 +343,15 @@ class PurchaseOrder extends CRMEntity {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
-		include 'include/utils/ExportUtils.php';
+		include_once 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery('PurchaseOrder', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
-		$query = "SELECT $fields_list FROM vtiger_crmentity
-			INNER JOIN vtiger_purchaseorder ON vtiger_purchaseorder.purchaseorderid = vtiger_crmentity.crmid
+		$query = "SELECT $fields_list FROM ".$this->crmentityTableAlias
+			." INNER JOIN vtiger_purchaseorder ON vtiger_purchaseorder.purchaseorderid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_purchaseordercf ON vtiger_purchaseordercf.purchaseorderid = vtiger_purchaseorder.purchaseorderid
 			LEFT JOIN vtiger_pobillads ON vtiger_pobillads.pobilladdressid = vtiger_purchaseorder.purchaseorderid
 			LEFT JOIN vtiger_poshipads ON vtiger_poshipads.poshipaddressid = vtiger_purchaseorder.purchaseorderid

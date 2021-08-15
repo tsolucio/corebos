@@ -20,16 +20,17 @@ if (!function_exists('GetRelatedList')) {
 }
 
 /** Function to get related list entries in detailed array format
-  * @param $module -- modulename:: Type string
-  * @param $relatedmodule -- relatedmodule:: Type string
-  * @param $focus -- focus:: Type object
-  * @param $query -- query:: Type string
-  * @param $button -- buttons:: Type string
-  * @param $returnset -- returnset:: Type string
-  * @param $id -- id:: Type string
-  * @param $edit_val -- edit value:: Type string
-  * @param $del_val -- delete value:: Type string
-  * @returns $related_entries -- related entires:: Type string array
+  * @param string module name
+  * @param string related module
+  * @param object related module object to get the list information
+  * @param string SQL query to execute to get the rows and values
+  * @param string HTML of the buttons to show on related list
+  * @param string returnset
+  * @param string id
+  * @param string edit value (not used)
+  * @param string delete value (not used)
+  * @param boolean skip actions column or not
+  * @return array related entires
   */
 function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $returnset, $id = '', $edit_val = '', $del_val = '', $skipActions = false) {
 	$log = LoggerManager::getLogger('GetRelatedList');
@@ -74,10 +75,7 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('MODULE', $relatedmodule);
 
-	// We do not have RelatedListView in Detail View mode of Calendar module. So need to skip it.
-	if ($module!= 'Calendar') {
-		$focus->initSortByField($relatedmodule);
-	}
+	$focus->initSortByField($relatedmodule);
 	// Append security parameter
 	if ($relatedmodule != 'Users') {
 		global $current_user;
@@ -125,8 +123,7 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	// AssignedTo ordering issue in Related Lists
 	$query_order_by = $order_by;
 	if ($order_by == 'smownerid') {
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query_order_by = "case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end ";
+		$query_order_by = "case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end ";
 	} elseif ($order_by != 'crmid' && !empty($order_by)) {
 		$tabname = getTableNameForField($relatedmodule, $order_by);
 		if ($tabname !== '' && $tabname != null) {
@@ -137,19 +134,15 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 		$query .= ' ORDER BY '.$query_order_by.' '.$sorder;
 	}
 
-	if ($relatedmodule == 'Calendar') {
-		$mod_listquery = 'activity_listquery';
-	} else {
-		$mod_listquery = strtolower($relatedmodule).'_listquery';
-	}
+	$mod_listquery = strtolower($relatedmodule).'_listquery';
 	coreBOS_Session::set($mod_listquery, $query);
 
 	$url_qry ='&order_by='.$order_by.'&sorder='.$sorder;
 	$computeCount = isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : '';
-	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $module) || (boolean) $computeCount == true) {
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $module) || (boolean)$computeCount) {
 		// Retreiving the no of rows
 		list($specialPermissionWithDuplicateRows,$cached) = VTCacheUtils::lookupCachedInformation('SpecialPermissionWithDuplicateRows');
-		if (false && ($specialPermissionWithDuplicateRows || $relatedmodule == 'Calendar')) {
+		if (false && $specialPermissionWithDuplicateRows) {
 			// FIXME FIXME FIXME FIXME
 			// the FALSE above MUST be eliminated, we need to execute mkCountWithFullQuery for modified queries
 			// the problem is that related list queries are hardcoded and can (mostly do) repeat columns which is not supported as a
@@ -157,7 +150,6 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 			// This works on ListView because we use query generator that eliminates those repeated columns
 			// It is currently incorrect and will produce wrong count on related lists when special permissions are active
 			// FIXME FIXME FIXME FIXME
-			// for calendar (with multiple contacts for single activity) and special permissions, count will change
 			$count_result = $adb->query(mkCountWithFullQuery($query));
 		} else {
 			$count_result = $adb->query(mkCountQuery($query));
@@ -185,15 +177,13 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	}
 	$list_result = $adb->pquery($query." LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
-	/* Save the related list in session for when we click in a register
-	 * from this list we will can navigate with the arrows left and right, to move only in this related list
-	 */
+	// Save the related list in the session so when we click on a register from this list we can navigate with the arrows and move only in this related list
 	$relcv = new CustomView();
 	$relviewId = $relcv->getViewId($relatedmodule);
 	ListViewSession::setSessionQuery($relatedmodule, $query, $relviewId);
 	coreBOS_Session::set('lvs^'.$relatedmodule.'^'.$relviewId.'^start', $start);
 
-	//Retreive the List View Table Header
+	//Retrieve the List View Table Header
 	$id = vtlib_purify($_REQUEST['record']);
 	$listview_header = getListViewHeader($focus, $relatedmodule, '', $sorder, $order_by, $id, '', $module, $skipActions);//"Accounts");
 	if ($noofrows > 15) {
@@ -202,9 +192,6 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	}
 	$smarty->assign('LISTHEADER', $listview_header);
 
-	if ($module == 'PriceBook' && $relatedmodule == 'Products') {
-		$listview_entries = getListViewEntries($focus, $relatedmodule, $list_result, $navigation_array, 'relatedlist', $returnset, $edit_val, $del_val, '', '', '', '', $skipActions);
-	}
 	if ($module == 'Products' && $relatedmodule == 'PriceBooks') {
 		$listview_entries = getListViewEntries($focus, $relatedmodule, $list_result, $navigation_array, 'relatedlist', $returnset, 'EditListPrice', 'DeletePriceBookProductRel', '', '', '', '', $skipActions);
 	} elseif ($relatedmodule == 'SalesOrder') {
@@ -230,10 +217,10 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 }
 
 /** Function to get related list entries in detailed array format
-  * @param $parentmodule -- parentmodulename:: Type string
-  * @param $query -- query:: Type string
-  * @param $id -- id:: Type string
-  * @returns $return_data -- return data:: Type string array
+  * @param string parent module name
+  * @param string query
+  * @param string id
+  * @return array data
   */
 function getHistory($parentmodule, $query, $id) {
 	global $log, $adb, $app_strings, $current_user;
@@ -241,52 +228,47 @@ function getHistory($parentmodule, $query, $id) {
 
 	//Appending the security parameter
 	$userprivs = $current_user->getPrivileges();
-	$tab_id = getTabid('Calendar');
+	$tab_id = getTabid('cbCalendar');
 	if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tab_id)) {
-		$sec_parameter=getListViewSecurityParameter('Calendar');
+		$sec_parameter=getListViewSecurityParameter('cbCalendar');
 		$query .= ' '.$sec_parameter;
 	}
 	$query.= ' ORDER BY vtiger_activity.date_start DESC,vtiger_activity.time_start DESC';
 	$result=$adb->query($query);
 	$noofrows = $adb->num_rows($result);
 
-	if ($noofrows == 0) {
-		//There is no entries for history
-	} else {
-		//Form the header columns
-		$header[] = $app_strings['LBL_TYPE'];
-		$header[] = $app_strings['LBL_SUBJECT'];
-		$header[] = $app_strings['LBL_RELATED_TO'];
-		$header[] = $app_strings['LBL_START_DATE'].' & '.$app_strings['LBL_TIME'];
-		$header[] = $app_strings['LBL_END_DATE'].' & '.$app_strings['LBL_TIME'];
-		//$header[] = $app_strings['LBL_DESCRIPTION'];
-		$header[] = $app_strings['LBL_STATUS'];
-		$header[] = $app_strings['LBL_ASSIGNED_TO'];
-
+	//Form the header columns
+	$header = array();
+	$header[] = $app_strings['LBL_TYPE'];
+	$header[] = $app_strings['LBL_SUBJECT'];
+	$header[] = $app_strings['LBL_RELATED_TO'];
+	$header[] = $app_strings['LBL_START_DATE'].' & '.$app_strings['LBL_TIME'];
+	$header[] = $app_strings['LBL_END_DATE'].' & '.$app_strings['LBL_TIME'];
+	$header[] = $app_strings['LBL_STATUS'];
+	$header[] = $app_strings['LBL_ASSIGNED_TO'];
+	$entries_list = array();
+	if ($noofrows > 0) {
 		$i = 1;
 		while ($row = $adb->fetch_array($result)) {
 			$entries = array();
 			if ($row['activitytype'] == 'Task') {
 				$activitymode = 'Task';
-				$icon = 'Tasks.gif';
 				$status = $row['status'];
 				$status = $app_strings[$status];
 			} else {
 				$activitymode = 'Events';
-				$icon = 'Activities.gif';
 				$status = $row['eventstatus'];
 				$status = $app_strings[$status];
 			}
 
 			$typeofactivity = $row['activitytype'];
-			$typeofactivity = getTranslatedString($typeofactivity, 'Calendar');
+			$typeofactivity = getTranslatedString($typeofactivity, 'cbCalendar');
 			$entries[] = $typeofactivity;
 
-			$activity = '<a href="index.php?module=cbCalendar&action=DetailView&return_module='.$parentmodule.'&return_action=DetailView&record='.$row['activityid'] .'&activity_mode='.$activitymode.'&return_id='.vtlib_purify($_REQUEST['record']).'&parenttab='.vtlib_purify($_REQUEST['parenttab']).'">'.$row['subject'].'</a></td>';
-			$entries[] = $activity;
+			$entries[] = '<a href="index.php?module=cbCalendar&action=DetailView&return_module='.$parentmodule.'&return_action=DetailView&record='.$row['activityid']
+				.'&activity_mode='.$activitymode.'&return_id='.vtlib_purify($_REQUEST['record']).'">'.$row['subject'].'</a></td>';
 
-			$parentname = getRelatedTo('Calendar', $result, $i-1);
-			$entries[] = $parentname;
+			$entries[] = getRelatedTo('cbCalendar', $result, $i-1);
 
 			$date = new DateTimeField($row['date_start'].' '.$row['time_start']);
 			$entries[] = $date->getDisplayDateTimeValue();
@@ -304,11 +286,9 @@ function getHistory($parentmodule, $query, $id) {
 			$i++;
 			$entries_list[] = $entries;
 		}
-
-		$return_data = array('header'=>$header,'entries'=>$entries_list);
-		$log->debug('< getHistory');
-		return $return_data;
 	}
+	$log->debug('< getHistory');
+	return array('header' => $header, 'entries' => $entries_list);
 }
 
 /**	Function to display the Products which are related to the PriceBook
@@ -328,7 +308,7 @@ function getPriceBookRelatedProducts($query, $focus, $returnset = '') {
 	$pricebook_id = vtlib_purify($_REQUEST['record']);
 
 	$computeCount = (isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : false);
-	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, 'PriceBooks') || ((boolean) $computeCount) == true) {
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, 'PriceBooks') || ((boolean)$computeCount)) {
 		$rs = $adb->query(mkCountQuery($query));
 		$noofrows = $adb->query_result($rs, 0, 'count');
 	} else {
@@ -404,7 +384,7 @@ function getPriceBookRelatedProducts($query, $focus, $returnset = '') {
 			if ($action != '') {
 				$action .= '&nbsp;|&nbsp;';
 			}
-			$action .= '<img src="'. vtiger_imageurl('delete.gif', $theme).'" onclick="if(confirm(\''.$app_strings['ARE_YOU_SURE'].'\')) deletePriceBookProductRel('
+			$action .= '<img src="themes/images/delete.gif" onclick="if(confirm(\''.$app_strings['ARE_YOU_SURE'].'\')) deletePriceBookProductRel('
 				.$entity_id.','.$pricebook_id.');" alt="'.$app_strings['LBL_DELETE'].'" title="'.$app_strings['LBL_DELETE'].'" style="cursor:pointer;" border="0">';
 		}
 		if ($action != '') {

@@ -73,22 +73,6 @@ class OpenDocument_Footnote extends OpenDocument_StyledElement {
 			'OpenDocument_NoteBody'
 		);
 		return true;
-		$id = $node->getAttributeNS(OpenDocument::NS_TEXT, 'id');
-		if (empty($id)) {
-			$id=$idval;
-		}
-		if (!empty($id)) {
-			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'id', $id);
-			$this->id = $id;
-		}
-		$noteclassvalue = $node->getAttributeNS(OpenDocument::NS_TEXT, 'note-class');
-		if (empty($noteclassvalue)) {
-			$noteclassvalue=$ncval;
-		}
-		if (!empty($noteclassvalue)) {
-			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'note-class', $noteclassvalue);
-			$this->noteclass = $noteclassvalue;
-		}
 	}
 
 	/**
@@ -129,7 +113,7 @@ class OpenDocument_Footnote extends OpenDocument_StyledElement {
 		switch ($name) {
 			case 'id':
 				if (empty($value)) {
-					$value=$id_counter++;
+					$value = self::$id_counter++;
 				}
 				$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'id', $value);
 				break;

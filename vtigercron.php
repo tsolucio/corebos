@@ -18,32 +18,56 @@ if (PHP_SAPI === 'cli' || PHP_SAPI === 'cgi-fcgi' || PHP_SAPI === 'apache2handle
 	|| (isset($_SESSION['authenticated_user_id']) && isset($_SESSION['app_unique_key']) && $_SESSION['app_unique_key'] == $application_unique_key)
 ) {
 	$cronTasks = false;
+	$quiet = false;
 	if (isset($_REQUEST['service']) || ($argc==2 && !empty($argv[1]))) {
 		// Run specific service
 		$srv = empty($argv[1]) ? $_REQUEST['service'] : $argv[1];
 		$srv = vtlib_purify($srv);
-		$srvcron = Vtiger_Cron::getInstance($srv);
-		if ($srvcron !== false) {
-			$cronTasks = array($srvcron);
+		if ($srv == '--quiet' || $srv == '-q') {
+			$cronTasks = Vtiger_Cron::listAllActiveInstances();
+			$quiet = true;
 		} else {
-			echo "** Service $srv not found **";
-			die();
+			$srvcron = Vtiger_Cron::getInstance($srv);
+			if ($srvcron !== false) {
+				$cronTasks = array($srvcron);
+			} else {
+				echo "** Service $srv not found **";
+				die();
+			}
 		}
 	} else {
 		// Run all service
 		$cronTasks = Vtiger_Cron::listAllActiveInstances();
 	}
-	$app_strings = return_application_language($default_language);
+	global $current_language;
+	if (empty($current_language)) {
+		$current_language = $default_language;
+	}
+	$app_strings = return_application_language($current_language);
 	foreach ($cronTasks as $cronTask) {
 		try {
 			$cronTask->setBulkMode(true);
 
 			// Not ready to run yet?
 			if (!$cronTask->isRunnable()) {
-				$msg = sprintf("[INFO]: %s - not ready to run as the time to run again is not completed\n", $cronTask->getName());
-				echo $msg;
-				$logbg->info($msg);
-				continue;
+				$run_task = false;
+				if ($cronTask->getName() == 'cronWatcherService' && $cronTask->isRunning()) {
+					$time = 10;
+					$last = $cronTask->getLastStart();
+					$now = time();
+					if ($now-$last > $time*60) {
+						$msg = sprintf("[INFO]: %s - cron task had timedout as it is not completed for 10 minutes - restarting\n", $cronTask->getName());
+						echo $msg;
+						$logbg->info($msg);
+						$run_task = true;
+					}
+				}
+				if (!$run_task && !$quiet) {
+					$msg = sprintf("[INFO]: %s - not ready to run as the time to run again is not completed\n", $cronTask->getName());
+					echo $msg;
+					$logbg->info($msg);
+					continue;
+				}
 			}
 
 			// Timeout could happen if intermediate cron-tasks fails

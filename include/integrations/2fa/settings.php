@@ -22,22 +22,24 @@ include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 use \RobThree\Auth\TwoFactorAuth;
 
 $smarty = new vtigerCRM_Smarty();
-
+$isPermitted = isPermitted('GlobalVariable', 'EditView');
 $userid = isset($_REQUEST['user_list']) ? vtlib_purify($_REQUEST['user_list']) : '';
 $do2FA = GlobalVariable::getVariable('User_2FAAuthentication', 0, 'Users', $userid);
 $isAppActive = ($do2FA==1);
-if (!empty($userid) && $_REQUEST['_op']=='setconfig2fa') {
+if (!empty($userid) && $_REQUEST['_op']=='setconfig2fa' && $isPermitted=='yes') {
 	$isFormActive = ((empty($_REQUEST['2faactive']) || $_REQUEST['2faactive']!='on') ? '0' : '1');
-	$recexists = $adb->pquery('select globalvariableid
-		from vtiger_globalvariable
-		inner join vtiger_crmentity on crmid=globalvariableid
-		where deleted=0 and gvname=? and smownerid=?', array('User_2FAAuthentication',$userid));
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
+	$recexists = $adb->pquery(
+		'select globalvariableid from vtiger_globalvariable inner join '.$crmEntityTable.' on crmid=globalvariableid where deleted=0 and gvname=? and smownerid=?',
+		array('User_2FAAuthentication', $userid)
+	);
 	if ($isFormActive=='1') {
-		$tfa = new TwoFactorAuth('coreBOSWebApp');
+		$coreBOSWebApp = GlobalVariable::getVariable('Application_UI_Name', 'coreBOS').'-'.getUserName($userid);
+		$tfa = new TwoFactorAuth($coreBOSWebApp);
 		$FASecret = $tfa->createSecret(160);
 		$smarty->assign('FASecret', chunk_split($FASecret, 4, ' '));
 		coreBOS_Settings::setSetting('coreBOS_2FA_Secret_'.$userid, $FASecret);
-		$smarty->assign('QRCODE', $tfa->getQRCodeImageAsDataUri('coreBOSWebApp', $FASecret));
+		$smarty->assign('QRCODE', $tfa->getQRCodeImageAsDataUri($coreBOSWebApp, $FASecret));
 		if ($recexists && $adb->num_rows($recexists)==1) {
 			$gvid = $adb->query_result($recexists, 0, 0);
 			$adb->pquery('update vtiger_globalvariable set value=1 where globalvariableid=?', array($gvid));
@@ -82,5 +84,9 @@ $smarty->assign('THEME', $theme);
 include 'include/integrations/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('ISADMIN', is_admin($current_user));
+if ($isPermitted!='yes') {
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+	$smarty->assign('ERROR_MESSAGE', getTranslatedString('GVEditable', 'Utilities'));
+}
 $smarty->display('modules/Utilities/2fa.tpl');
 ?>

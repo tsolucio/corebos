@@ -159,6 +159,11 @@ $mod_strings = array(
 	'LBL_CUSTOMER_PORTAL_INFORMATION' => 'Ügyfélszolgálati Portál adatok',
 	'Support Start Date' => 'Hozzáférés kezdő dátuma',
 	'Support End Date' => 'Hozzáférés záró dátuma',
+	'portalpasswordtype' => 'Password Encoding',
+	'portalloginuser' => 'Portal Login User',
+	'PortalUserPasswordManagement' => 'Portal Password',
+	'ppset' => 'Password set',
+	'ppnotset' => 'Password not set',
 	'Name' => 'Név',
 	'LBL_ALL' => 'Minden',
 	'LBL_MAXIMUM_LIMIT_ERROR' => 'Sajnos, a feltöltendő fájl mérete meghaladja a maximálisan feltölthető fájl méretét. Kérjük, hogy próbálj egy 800 kB-nél kisebb méretű fájlt feltölteni.',
@@ -267,5 +272,7 @@ $mod_strings = array(
 	'SYNC_RESULTS'=>'Sync Results',
 	'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
 	'Template Language' => 'Template Language',
-);
+	'ship_countrycode' => 'Shipping Country Code',
+	'bill_countrycode' => 'Billing Country Code'
+	);
 ?>

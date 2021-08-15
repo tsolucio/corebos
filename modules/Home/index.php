@@ -22,8 +22,7 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'include/freetag/freetag.class.php';
 require_once 'modules/Home/HomeUtils.php';
 
-global $app_strings, $mod_strings;
-global $adb, $current_user, $theme, $current_language;
+global $app_strings, $mod_strings, $adb, $current_user, $theme, $current_language;
 
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
@@ -31,12 +30,8 @@ $image_path=$theme_path.'images/';
 $smarty = new vtigerCRM_Smarty;
 $homeObj=new Homestuff;
 
-// Performance Optimization
 $tabrows = vtlib_prefetchModuleActiveInfo();
 
-//$query="select name,tabid from vtiger_tab where tabid in (select distinct(tabid) from vtiger_field where tabid <> 29 and tabid <> 16 and tabid <>10) order by name";
-
-// Performance Optimization: Re-written to ignore extension and inactive modules
 $modulenamearr = array();
 foreach ($tabrows as $resultrow) {
 	if ($resultrow['isentitytype'] != '0') {
@@ -72,15 +67,14 @@ if (isPermitted('Reports', 'DetailView') == 'yes' && vtlib_isModuleActive('Repor
 $homedetails = $homeObj->getHomePageFrame();
 $maxdiv = count($homedetails)-1;
 $user_name = $current_user->column_fields['user_name'];
-$buttoncheck['Calendar'] = isPermitted('Calendar', 'index');
+$buttoncheck['Calendar'] = isPermitted('cbCalendar', 'index');
 $freetag = new freetag();
 $numberofcols = getNumberOfColumns();
 
 $smarty->assign('CHECK', $buttoncheck);
-$smarty->assign('CALENDAR_ACTIVE', (vtlib_isModuleActive('Calendar') ? 'yes' : 'no'));
+$smarty->assign('CALENDAR_ACTIVE', (vtlib_isModuleActive('cbCalendar') ? 'yes' : 'no'));
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('MODULE', 'Home');
-$smarty->assign('CATEGORY', getParenttab('Home'));
 $smarty->assign('CURRENTUSER', $user_name);
 $smarty->assign('ALL_TAG', $freetag->get_tag_cloud_html('', $current_user->id));
 $smarty->assign('USER_TAG_SHOWAS', getTagCloudShowAs($current_user->id));

@@ -14,13 +14,14 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'loginPortal',
-	 'include' => 'include/Webservices/LoginPortal.php',
-	 'handler' => 'vtws_loginportal',
-	 'prelogin'=> 1,
-	 'type'    => 'GET',
-	 'parameters' => array(
-		 array('name' => 'username','type' => 'string'),
-		 array('name' => 'password','type' => 'string'),
-	 )
+	'name'    => 'loginPortal',
+	'include' => 'include/Webservices/LoginPortal.php',
+	'handler' => 'vtws_loginportal',
+	'prelogin'=> 1,
+	'type'    => 'GET',
+	'parameters' => array(
+		array('name' => 'username','type' => 'string'),
+		array('name' => 'password','type' => 'string'),
+		array('name' => 'entity','type' => 'string'),
+	)
 );

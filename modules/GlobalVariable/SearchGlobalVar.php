@@ -18,20 +18,24 @@
  *************************************************************************************************/
 
 require_once 'modules/GlobalVariable/GlobalVariable.php';
-$gvname = vtlib_purify($_REQUEST['gvname']);
-$gvuserid = vtlib_purify($_REQUEST['gvuserid']);
-$gvmod = vtlib_purify($_REQUEST['gvmodule']);
-$retval = vtlib_purify($_REQUEST['returnvalidation']);
-$defval = vtlib_purify($_REQUEST['gvdefault']);
-$startTime = microtime(true);
-$rdo = GlobalVariable::getVariable($gvname, $defval, $gvmod, $gvuserid);
-$counter = (microtime(true) - $startTime);
-$ret = array($gvname=>$rdo);
-if ($retval) {
-	$gvvalidationinfo = GlobalVariable::getValidationInfo();
-	$gvvalidationinfo[] = "<h2 align='center'>RESULT: $rdo</H2>";
-	$ret['validation'] = $gvvalidationinfo;
-	$ret['timespent'] = round($counter*1000, 1);
+$defval = isset($_REQUEST['gvdefault']) ? vtlib_purify($_REQUEST['gvdefault']) : '';
+if (empty($_REQUEST['gvname'])) {
+	$ret = array($defval);
+} else {
+	$gvname = vtlib_purify($_REQUEST['gvname']);
+	$gvuserid = isset($_REQUEST['gvuserid']) ? vtlib_purify($_REQUEST['gvuserid']) : '';
+	$gvmod = isset($_REQUEST['gvmodule']) ? vtlib_purify($_REQUEST['gvmodule']) : '';
+	$retval = isset($_REQUEST['returnvalidation']) ? vtlib_purify($_REQUEST['returnvalidation']) : false;
+	$startTime = microtime(true);
+	$rdo = GlobalVariable::getVariable($gvname, $defval, $gvmod, $gvuserid);
+	$counter = (microtime(true) - $startTime);
+	$ret = array($gvname=>$rdo);
+	if ($retval) {
+		$gvvalidationinfo = GlobalVariable::getValidationInfo();
+		$gvvalidationinfo[] = "<h2 align='center'>RESULT: $rdo</H2>";
+		$ret['validation'] = $gvvalidationinfo;
+		$ret['timespent'] = round($counter*1000, 1);
+	}
 }
 echo json_encode($ret);
 ?>

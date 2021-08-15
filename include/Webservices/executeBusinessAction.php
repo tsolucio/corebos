@@ -14,11 +14,11 @@
 *************************************************************************************************/
 
 function executeBusinessAction($businessactionid, $context, $user) {
-	global $currentModule;
+	global $currentModule, $adb, $log;
 	$businessactionid = vtws_getWSID($businessactionid);
 	$context = json_decode($context, true);
 	if (json_last_error() !== JSON_ERROR_NONE) {
-		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: context');
+		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid context parameter: '.json_last_error_msg());
 	}
 	$wscrmid = empty($context['ID']) ? (empty($context['RECORDID']) ?  (empty($context['RECORD']) ? 0 : $context['RECORD']) : $context['RECORDID']) : $context['ID'];
 	if ($wscrmid==0) {
@@ -39,20 +39,50 @@ function executeBusinessAction($businessactionid, $context, $user) {
 		}
 	}
 	list($wsid, $crmid) = explode('x', $wscrmid);
+	$webserviceObject = VtigerWebserviceObject::fromId($adb, $wscrmid);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+
+	require_once $handlerPath;
+
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$meta = $handler->getMeta();
+	$entityName = $meta->getObjectEntityName($wscrmid);
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+	}
+
+	if ($entityName !== $webserviceObject->getEntityName()) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
+	}
+
+	if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $wscrmid)) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+	}
+
+	if (!$meta->exists($crmid)) {
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
+	}
+
 	$context['ID'] = $context['RECORDID'] = $context['RECORD'] = $crmid;
 	$context['id'] = $context['recordid'] = $context['record'] = $crmid;
 	if (empty($context['MODULE'])) {
-		$context['MODULE'] = getSalesEntityType($crmid);
-		$context['module'] = getSalesEntityType($crmid);
+		$context['MODULE'] = $context['module'] = getSalesEntityType($crmid);
 	}
 	$currentModule = $context['module'];
-	if (empty($context['MODE'])) {
+	if (!isset($context['MODE'])) {
 		$context['MODE'] = 'edit';
 		$context['mode'] = 'edit';
 	}
 	//$context['FIELDS']
-	$businessAction = (object) vtws_retrieve($businessactionid, $user);
-	$ba = (array) $businessAction;
+	$businessAction = CRMEntity::getInstance('BusinessActions');
+	list($bawsid, $baid) = explode('x', $businessactionid);
+	$businessAction->retrieve_entity_info($baid, 'BusinessActions', false, true, true);
+	$ba = $businessAction->column_fields;
+	if (strpos(Field_Metadata::MULTIPICKLIST_SEPARATOR.$ba['module_list'].Field_Metadata::MULTIPICKLIST_SEPARATOR, Field_Metadata::MULTIPICKLIST_SEPARATOR.$context['module'].Field_Metadata::MULTIPICKLIST_SEPARATOR)===false) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDMODULE, 'Module not supported by action');
+	}
 	$strtemplate = new Vtiger_StringTemplate();
 	foreach ($context as $key => $value) {
 		$strtemplate->assign($key, $value);
@@ -67,5 +97,4 @@ function executeBusinessAction($businessactionid, $context, $user) {
 	} else {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: business action (only block detail view widgets supported)');
 	}
-	return $return;
 }

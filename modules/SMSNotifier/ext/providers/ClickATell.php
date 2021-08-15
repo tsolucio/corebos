@@ -18,7 +18,7 @@ class ClickATell implements ISMSProvider {
 	public $helpURL = 'https://archive.clickatell.com/developers/2015/10/08/http/s/';
 	public $helpLink = 'ClickATell HTTP';
 
-	const SERVICE_URI = 'http://api.clickatell.com';
+	const SERVICE_URI = 'https://api.clickatell.com';
 	private static $REQUIRED_PARAMETERS = array('api_id', 'from', 'mo');
 
 	public function __construct() {
@@ -177,7 +177,7 @@ class ClickATell implements ISMSProvider {
 				if (!empty($statusMessage)) {
 					$result['error'] = true;
 					$result['needlookup'] = $needlookup;
-					$result['statusmessage'] = $statusmessage;
+					$result['statusmessage'] = $statusMessage;
 				}
 			}
 		}
@@ -194,7 +194,7 @@ class ClickATell implements ISMSProvider {
 		for ($i = 0; $i < strlen($data); $i ++) {
 			$c = mb_substr($data, $i, 1, 'UTF-8');
 			$o = unpack('N', mb_convert_encoding($c, 'UCS-4BE', 'UTF-8'));
-			$hx = sprintf('%04X', $o [1]);
+			$hx = sprintf('%04X', $o[1]);
 			$utf += intval(substr($hx, 0, 2));
 			$mb_hex .= $hx;
 		}

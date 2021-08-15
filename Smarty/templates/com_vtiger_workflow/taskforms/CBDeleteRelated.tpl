@@ -91,24 +91,34 @@
 </script>
 {/literal}
 
-<div class="slds-form-element">
-	<label class="slds-form-element__label" for="form-element-01">{'LBL_SELECT_MODULE'|@getTranslatedString:'Settings'}</label>
-	<div class="slds-form-element__control">
-	<span id="entity_type-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-	<select id="relmodule" name="relmodule" style="display:none;">
-		<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:'com_vtiger_workflow'}</option>
-	</select>
-	</div>
-</div>
-<br />
-<div class="slds-form-element">
-	<label class="slds-form-element__label" for="form-element-01">{'Select Condition'|@getTranslatedString}</label>
-	<div class="slds-form-element__control">
-	<input id="bmapid" name="bmapid" type="hidden" value="{$task->bmapid}">
-	<input id="bmapid_display" name="bmapid_display" readonly="" style="border:1px solid #bababa;" type="text" value="{$task->bmapid_display}">&nbsp;
-	<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="1" alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}"
-	onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=bmapid&srcmodule=GlobalVariable'+SpecialSearch,'vtlibui10wf','width=680,height=602,resizable=0,scrollbars=0,top=150,left=200');" style="cursor:hand;cursor:pointer" align="absmiddle">&nbsp;
-	<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
-	alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.bmapid.value=''; this.form.bmapid_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+		<div class="slds-form">
+			<div class="slds-form-element slds-form-element_stacked">
+				<label class="slds-form-element__label">{'LBL_SELECT_MODULE'|@getTranslatedString:'Settings'}</label>
+					<div class="slds-form-element__control">
+						<span id="entity_type-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+							<div class="slds-select_container">
+								<select class="slds-select slds-page-header__meta-text" id="relmodule" name="relmodule" style="display:none;">
+									<option value=""> {'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:'com_vtiger_workflow'} </option>
+								</select>
+							</div>
+					</div>
+			</div>
+			<div class="slds-form-element slds-form-element_stacked">
+				<label class="slds-form-element__label"> {'Select Condition'|@getTranslatedString} </label>
+					<div class="slds-form-element__control slds-input-has-fixed-addon">
+						<input id="bmapid" name="bmapid" class="slds-input" type="hidden" value="{$task->bmapid}">
+							<input id="bmapid_display" name="bmapid_display" class="slds-input slds-page-header__meta-text" readonly="" style="border:1px solid #bababa;" type="text" value="{$task->bmapid_display}" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=bmapid&srcmodule=GlobalVariable'+SpecialSearch, 'vtlibui10wf', cbPopupWindowSettings);">
+								<span class="slds-form-element__addon" id="fixed-text-addon-post">
+									<button type="image" class="slds-button" alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.bmapid.value=''; this.form.bmapid_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+										<svg class="slds-icon slds-icon_small slds-icon-text-light" aria-hidden="true" >
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use> 
+										</svg>
+									</button>
+								</span>
+					</div>
+			</div>
+		</div>
 	</div>
 </div>

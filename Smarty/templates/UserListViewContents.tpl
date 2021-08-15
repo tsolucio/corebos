@@ -39,7 +39,7 @@
 	<td class="big" nowrap align="right">
 		<div align="right">
 		<input title="{$CMOD.LBL_NEW_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_NEW_USER_BUTTON_KEY}" type="submit" name="button" value="{$CMOD.LBL_NEW_USER_BUTTON_LABEL}" class="crmButton create small">
-		<input title="{$CMOD.LBL_EXPORT_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_EXPORT_USER_BUTTON_KEY}" type="button" onclick="return selectedRecords('Users','ptab')" value="{$CMOD.LBL_EXPORT_USER_BUTTON_LABEL}" class="crmButton small cancel">
+		<input title="{$CMOD.LBL_EXPORT_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_EXPORT_USER_BUTTON_KEY}" type="button" onclick="return selectedRecords('Users')" value="{$CMOD.LBL_EXPORT_USER_BUTTON_LABEL}" class="crmButton small cancel">
 		</div>
 	</td>
 </{$APP.LBL_EXPORT}
@@ -170,7 +170,7 @@
 			{elseif $dtheader eq 'user_name'}
 			<td class="rptData">
 				<a av="href:viewusername"><span v="username"></span></a>
-				<table> 
+				<table>
 					<tr>
 						<td style="padding:0; margin:0;">
 							<a av="href:viewuser"><span v="firstname"></span>&nbsp;<span v="lastname"></span></a>&nbsp;&#10088;&nbsp;<a av="href:viewrole"><span v="rolename"></span></a>&nbsp;&#10089;
@@ -200,7 +200,7 @@ Template.define('userlist_row_template', {
 					url:'index.php?module=Users&action=UsersAjax&file=UserDeleteStep1&record='+data.id
 				}).done(function(response) {
 					document.getElementById('tempdiv').innerHTML= response;
-					fnvshobj(obj,'tempdiv');
+					positionDivToCenter('tempdiv');
 				}
 			);
 		});

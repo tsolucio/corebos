@@ -112,11 +112,35 @@ switch ($functiontocall) {
 		$emltplid = vtlib_purify($_REQUEST['templateid']);
 		$emltpl = getTemplateDetails($emltplid);
 		$ret = array();
-		if (count($emltpl)>0) {
+		if (!empty($emltpl)) {
 			$ret['subject'] = $emltpl[2];
 			$ret['body'] = $emltpl[1];
 			$ret['from_email'] = $emltpl[3];
 		}
+		break;
+	case 'exportUserComments':
+		$recordid = vtlib_purify($_REQUEST['record']);
+		$module = vtlib_purify($_REQUEST['module']);
+		include_once 'include/utils/ExportUtils.php';
+		if (GlobalVariable::getVariable('ModComments_Export_Format', 'CSV', $module) == 'CSV') {
+			header('Content-Disposition:attachment;filename="Comments'.$recordid.'.csv"');
+			header('Content-Type:text/csv;charset=UTF-8');
+			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+			header('Cache-Control: post-check=0, pre-check=0', false);
+			exportUserCommentsForModule($module, $recordid, 'CSV');
+		} else {
+			global $root_directory, $cache_dir;
+			$fname = tempnam($root_directory.$cache_dir, 'comm.xls');
+			$xlsobject = exportUserCommentsForModule($module, $recordid, 'XLS');
+			$xlsobject->save($fname);
+			header('Content-Type: application/x-msexcel');
+			header('Content-Length: '.@filesize($fname));
+			header('Content-disposition: attachment; filename="Comments'.$recordid.'.xls"');
+			$fh=fopen($fname, 'rb');
+			fpassthru($fh);
+		}
+		exit;
 		break;
 	case 'ValidationExists':
 		$valmod = vtlib_purify($_REQUEST['valmodule']);
@@ -152,12 +176,10 @@ switch ($functiontocall) {
 			echo getTranslatedString('RecordIsAssignedToInactiveUser');
 			die();
 		}
-		if (Validations::ValidationsExist($valmod)) {
-			$validation = Validations::processAllValidationsFor($valmod);
-			if ($validation!==true) {
-				echo Validations::formatValidationErrors($validation, $valmod);
-				die();
-			}
+		$validation = Validations::processAllValidationsFor($valmod);
+		if ($validation!==true) {
+			echo Validations::formatValidationErrors($validation, $valmod);
+			die();
 		}
 		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
 			include "modules/{$valmod}/{$valmod}Validation.php";
@@ -297,11 +319,13 @@ switch ($functiontocall) {
 	case 'setSetting':
 		$skey = vtlib_purify($_REQUEST['skey']);
 		$svalue = vtlib_purify($_REQUEST['svalue']);
-		$ret = coreBOS_Settings::setSetting($skey, $svalue);
+		coreBOS_Settings::setSetting($skey, $svalue);
+		$ret = '';
 		break;
 	case 'delSetting':
 		$skey = vtlib_purify($_REQUEST['skey']);
-		$ret = coreBOS_Settings::delSetting($skey);
+		coreBOS_Settings::delSetting($skey);
+		$ret = '';
 		break;
 	case 'getTranslatedStrings':
 		global $currentModule;
@@ -355,6 +379,46 @@ switch ($functiontocall) {
 		$rdo = isPermitted($mod, $act, $rec)=='yes';
 		$ret = array('isPermitted'=>$rdo);
 		break;
+	case 'getUserName':
+		$ret = getUserName(vtlib_purify($_REQUEST['userid']));
+		break;
+	case 'getImageInfoFor':
+		$id = vtlib_purify($_REQUEST['record']);
+		require_once 'include/Webservices/getRecordImages.php';
+		$imageinfo = cbws_getrecordimageinfo($id, $current_user);
+		header('Content-Type: application/json');
+		if ((int)$imageinfo['results'] > 0) {
+			$ret = $imageinfo;
+		} else {
+			$ret = '';
+		}
+		break;
+	case 'isAdmin':
+		if (is_admin($current_user)) {
+			$ret = array('admin' => 'on');
+		} else {
+			$ret = array('admin' => 'off');
+		}
+		break;
+	case 'setNewPassword':
+		require_once 'modules/Users/Users.php';
+		require_once 'include/utils/UserInfoUtil.php';
+		$userid = vtlib_purify($_REQUEST['record']);
+		if (is_admin($current_user) || $current_user->id==$userid) {
+			$focus = new Users();
+			$focus->mode='edit';
+			$focus->id = $userid;
+			$focus->retrieve_entity_info($userid, 'Users');
+			$ret = $focus->change_password('old_password', vtlib_purify($_REQUEST['new_password']));
+			if ($ret) {
+				$ret = array('password'=>$ret);
+			} else {
+				$ret = array('password'=>false);
+			}
+		} else {
+			$ret = array('password'=>false);
+		}
+		break;
 	case 'listViewJSON':
 		include_once 'include/ListView/ListViewJSON.php';
 		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateDataListView') {
@@ -393,13 +457,14 @@ switch ($functiontocall) {
 		}
 		break;
 	case 'ismoduleactive':
-	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
 		$rdo = vtlib_isModuleActive($mod);
 		$ret = array('isactive'=>$rdo);
 		break;
+	default:
+		$ret = '';
+		break;
 }
-
 echo json_encode($ret);
 die();
 ?>

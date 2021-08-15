@@ -29,7 +29,6 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	if (is_numeric($bmap)) {
 		$cbMapid = $bmap;
 	} else {
-		//$bmapname = 'BusinessMapping_'.$currentModule.'_DuplicateRelations';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
 	}
 	// Retrieve relations map
@@ -40,7 +39,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 		$maped_relations = array();
 	}
 	$logbg->debug('BMap: '.$cbMapid);
-	$logbg->debug('Relations to be copied: '.print_r($maped_relations, true));
+	$logbg->debug('Relations to be copied', $maped_relations);
 	// Duplicate Records that this Record is dependent of
 	if ($cbMapid && $cbMap->DuplicateRelations()->DuplicateDirectRelations()) {
 		$logbg->debug('Duplicating Direct Relations');
@@ -102,10 +101,10 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	$new_record_id = $focus->id;
 	$curr_tab_id = gettabid($currentModule);
 	$related_list = get_related_lists($curr_tab_id, $maped_relations);
-	$logbg->debug('Relations M Found: '.print_r($related_list, true));
+	$logbg->debug('Relations M Found', $related_list);
 	dup_related_lists($new_record_id, $currentModule, $related_list, $record_id, $maped_relations);
 	$dependents_list = get_dependent_lists($curr_tab_id);
-	$logbg->debug('Relations 1 Found: '.print_r($dependents_list, true));
+	$logbg->debug('Relations 1 Found', $dependents_list);
 	$dependent_tables = get_dependent_tables($dependents_list, $currentModule);
 	dup_dependent_rec($record_id, $currentModule, $new_record_id, $dependent_tables, $maped_relations);
 	return $new_record_id;
@@ -117,7 +116,6 @@ function duplicateRecordRelations($currentModule, $duplicatedrecord, $duplicated
 	if (is_numeric($bmap)) {
 		$cbMapid = $bmap;
 	} else {
-		//$bmapname = 'BusinessMapping_'.$currentModule.'_DuplicateRelations';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
 	}
 	// Retrieve relations map
@@ -128,13 +126,13 @@ function duplicateRecordRelations($currentModule, $duplicatedrecord, $duplicated
 		$maped_relations = array();
 	}
 	$logbg->debug('BMap: '.$cbMapid);
-	$logbg->debug('Relations to be copied: '.print_r($maped_relations, true));
+	$logbg->debug('Relations to be copied', $maped_relations);
 	$curr_tab_id = gettabid($currentModule);
 	$related_list = get_related_lists($curr_tab_id, $maped_relations);
-	$logbg->debug('Relations M Found: '.print_r($related_list, true));
+	$logbg->debug('Relations M Found', $related_list);
 	dup_related_lists($duplicatedrecord, $currentModule, $related_list, $duplicatedfrom, $maped_relations);
 	$dependents_list = get_dependent_lists($curr_tab_id);
-	$logbg->debug('Relations 1 Found: '.print_r($dependents_list, true));
+	$logbg->debug('Relations 1 Found', $dependents_list);
 	$dependent_tables = get_dependent_tables($dependents_list, $currentModule);
 	dup_dependent_rec($duplicatedfrom, $currentModule, $duplicatedrecord, $dependent_tables, $maped_relations);
 	return $duplicatedrecord;
@@ -365,7 +363,7 @@ function dq_updateRevisionFields($module, $crmid, $new_record_id) {
 		$revisiones=$adb->pquery(
 			"select count($entityidfield) as num_revisiones
 			from $table_name
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield
+			INNER JOIN ".$focus->crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield
 			where deleted=0 and $uniquefield=? order by revision",
 			array($seqno)
 		);

@@ -1,13 +1,15 @@
 function fillinRelatedModules(module, cb) {
 	relatedmodules = Array();
-	cbws.doInvoke('getRelatedModulesInfomation', {'module':module}, 'post').then(rmods => {
-		for (rl in rmods) {
+	cbws.doInvoke('getRelatedModulesInfomation', {'module':module}, 'post').then(async rmods => {
+		for (var rl in rmods) {
 			relatedmodules.push(new Array(rmods[rl].related_module, 'N:N'));
-		};
-		cbws.doDescribe(module).then(dd => {
+		}
+		await cbws.doDescribe(module).then(dd => {
 			var cc = Array();
-			dd.fields.filter(f => f.uitype==10).map(f => { cc = cc.concat(f.type.refersTo)});
-			cc.map(e => relatedmodules.push(new Array(e, '1:1')));
+			dd.fields.filter(f => f.uitype==10).forEach(f => {
+				cc = cc.concat(f.type.refersTo);
+			});
+			cc.forEach(e => relatedmodules.push(new Array(e, '1:1')));
 			relatedmodules.sort();
 			cb();
 		});
@@ -31,7 +33,7 @@ function fillinDuelingPickList(dpl, elements) {
 function dplfindmoveli(fromlist, tolist) {
 	let flist = document.getElementById(fromlist);
 	let lielems = flist.querySelectorAll('[name="dpl'+fromlist+'"]');
-	for (idx=0; idx<lielems.length; idx++) {
+	for (var idx=0; idx<lielems.length; idx++) {
 		if (lielems[idx].attributes['aria-selected'].value=='true') {
 			dplmove2list(lielems[idx], tolist);
 			break;
@@ -41,7 +43,7 @@ function dplfindmoveli(fromlist, tolist) {
 
 function dplsetSelected(dpl, lielem) {
 	const nlist = document.getElementsByName(dpl);
-	for (idx=0; idx<nlist.length; idx++) {
+	for (var idx=0; idx<nlist.length; idx++) {
 		nlist[idx].setAttribute('aria-selected', 'false');
 	}
 	lielem.querySelectorAll('div')[0].setAttribute('aria-selected', 'true');

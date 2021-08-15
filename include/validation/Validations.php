@@ -56,13 +56,7 @@ function validate_IBAN_BankAccount($field, $iban, $params, $fields) {
 		// obtenemos los siguientes dos valores
 		$siguienteNumeros = substr($iban, 2, 2);
 		$valor = substr($iban, 4, strlen($iban)) . $valorLetra1 . $valorLetra2 . $siguienteNumeros;
-		if (bcmod($valor, 97) == 1) {
-			return true;
-		} else {
-			return false;
-		}
-	} else {
-		return false;
+		return (bcmod($valor, 97) == 1);
 	}
 	return false;
 }
@@ -77,7 +71,7 @@ function validate_EU_VAT($field, $num_tva, $params, $fields) {
 		$prefix = substr($num_tva, 0, 2);
 		$tva = substr($num_tva, 2);
 		$param = array('countryCode' => $prefix, 'vatNumber' => $tva);
-		$soap = new SoapClient('http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl');
+		$soap = new SoapClient('https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl');
 		try {
 			$xml = $soap->checkVat($param);
 		} catch (Exception $e) {
@@ -99,22 +93,42 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 	$otherfields = $params[2];
 	$queryGenerator = new QueryGenerator($module, $current_user);
 	$queryGenerator->setFields(array('id'));
-	$queryGenerator->addCondition($field, $fieldval, 'e');
+	if (getUItypeByFieldName($module, $field)==10) {
+		if (!empty($fieldval)) {
+			if (strpos($fieldval, 'x') > 0) {
+				list($wsid, $relcrmid) = explode('x', $fieldval);
+			} else {
+				$relcrmid = $fieldval;
+			}
+			$relmod = getSalesEntityType($relcrmid);
+			$queryGenerator->addReferenceModuleFieldCondition($relmod, $field, 'id', $relcrmid, 'e');
+		}
+	} else {
+		$queryGenerator->addCondition($field, $fieldval, 'e');
+	}
 	if (isset($crmid) && $crmid !='') {
 		$queryGenerator->addCondition('id', $crmid, 'n', 'and');
 	}
 	if (isset($otherfields)) {
 		foreach ($otherfields as $field) {
-			$queryGenerator->addCondition($field, $fields[$field], 'e', 'and');
+			if (getUItypeByFieldName($module, $field)==10) {
+				if (!empty($fields[$field])) {
+					if (strpos($fields[$field], 'x') > 0) {
+						list($wsid, $relcrmid) = explode('x', $fields[$field]);
+					} else {
+						$relcrmid = $fields[$field];
+					}
+					$relmod = getSalesEntityType($relcrmid);
+					$queryGenerator->addReferenceModuleFieldCondition($relmod, $field, 'id', $relcrmid, 'e', 'and');
+				}
+			} else {
+				$queryGenerator->addCondition($field, $fields[$field], 'e', 'and');
+			}
 		}
 	}
 	$query = $queryGenerator->getQuery();
 	$result = $adb->pquery($query, array());
-	if ($result && $adb->num_rows($result) == 0) {
-		return true;
-	} else {
-		return false;
-	}
+	return ($result && $adb->num_rows($result) == 0);
 }
 
 /** check if related record exists on given module
@@ -147,7 +161,7 @@ function validateRelatedModuleExists($field, $fieldval, $params, $fields) {
 		$GetRelatedList_ReturnOnlyQuery = true;
 		$holdCM = $currentModule;
 		$currentModule = $module;
-		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), $params);
+		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), array_values($params));
 		$currentModule = $holdCM;
 		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		if (!isset($relationData['query'])) {
@@ -169,24 +183,34 @@ function validateRelatedModuleExists($field, $fieldval, $params, $fields) {
  */
 function validate_expression($field, $fieldval, $params, $fields) {
 	$bmap = $params[1];
+	// check that cbmapid is correct and load it
+	if (preg_match('/^[0-9]+x[0-9]+$/', $bmap)) {
+		list($cbmapws, $bmap) = explode('x', $bmap);
+	}
+	if (is_numeric($bmap)) {
+		$cbmap = cbMap::getMapByID($bmap);
+	} else {
+		$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
+		$cbmap = cbMap::getMapByID($cbmapid);
+	}
 	if (empty($params[0])) { // isNew
-		// check that cbmapid is correct and load it
-		if (preg_match('/^[0-9]+x[0-9]+$/', $bmap)) {
-			list($cbmapws, $bmap) = explode('x', $bmap);
-		}
-		if (is_numeric($bmap)) {
-			$cbmap = cbMap::getMapByID($bmap);
-		} else {
-			$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
-			$cbmap = cbMap::getMapByID($cbmapid);
-		}
-		if (empty($cbmap) || $cbmap->column_fields['maptype'] != 'Condition Expression') {
+		if (empty($cbmap) || ($cbmap->column_fields['maptype'] != 'Condition Expression' && $cbmap->column_fields['maptype'] != 'DecisionTable')) {
 			return false;
 		}
-		return $cbmap->ConditionExpression($fields);
+		if ($cbmap->column_fields['maptype'] == 'Condition Expression') {
+			return $cbmap->ConditionExpression($fields);
+		} else {
+			$dt = $cbmap->DecisionTable($fields);
+			return ($dt!='__DoesNotPass__');
+		}
 	} else { // editing
 		$fields['record_id'] = $params[0];
-		return coreBOS_Rule::evaluate($bmap, $fields);
+		$return = coreBOS_Rule::evaluate($bmap, $fields);
+		if ($cbmap->column_fields['maptype'] == 'DecisionTable') {
+			return ($return!='__DoesNotPass__');
+		} else {
+			return $return;
+		}
 	}
 }
 
@@ -209,10 +233,8 @@ function cbTaxclassRequired($field, $fieldval, $params, $fields) {
 		$i++;
 	}
 	// and it's value positive
-	if ($accepted) {
-		if ($fields[$tax_details[$i-1]['taxname']] < 0) {
-			return false;
-		}
+	if ($accepted && $fields[$tax_details[$i-1]['taxname']] < 0) {
+		return false;
 	}
 	return $accepted;
 }

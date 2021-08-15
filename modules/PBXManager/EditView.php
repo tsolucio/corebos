@@ -14,19 +14,12 @@ require_once 'modules/$currentModule/$currentModule.php';
 
 $focus = new $currentModule();
 $smarty = new vtigerCRM_Smarty();
-
-$category = getParentTab($currentModule);
-
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-
 $smarty->assign('SINGLE_MOD', 'CallHistory');
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-
 $smarty->assign('CHECK', array());
-
 $smarty->display(vtlib_getModuleTemplate('PBXManager', 'EditView.tpl'));
 ?>

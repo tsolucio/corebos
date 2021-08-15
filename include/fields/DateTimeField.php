@@ -204,7 +204,7 @@ class DateTimeField {
 	 */
 	public static function twoDigit($no) {
 		$no = trim($no);
-		if ($no < 10 && strlen($no) < 2) {
+		if ((int)$no < 10 && strlen($no) < 2) {
 			$no = '0'.$no;
 		}
 		return substr($no, 0, 2);
@@ -213,9 +213,9 @@ class DateTimeField {
 	/**
 	 *
 	 * @global Users $current_user
-	 * @param datetime $date
+	 * @param string $date
 	 * @param Users $user
-	 * @return type
+	 * @return string
 	 */
 	public static function convertToDBFormat($date, $user = null) {
 		global $current_user;
@@ -233,7 +233,7 @@ class DateTimeField {
 
 	/**
 	 *
-	 * @param datetime $date
+	 * @param string $date
 	 * @param string $format
 	 * @return string
 	 */
@@ -520,10 +520,8 @@ class DateTimeField {
 
 		//First we check if startFrom or endFrom is empty
 		if ((trim($startFrom) === '') || (trim($endFrom) === '')) {
-			// echo "One or both of dates input parameters is empty" ;
 			return $emptyArray;
 		} elseif (($checkStartDate === false) || ($checkEndDate === false)) {
-			// echo "The format of datestart or dateEnd is not a valid date format !! " . $startFrom . "------" . $endFrom;
 			return $emptyArray;
 		} else {
 			$interval_d1 = new DateInterval('P1D');
@@ -533,15 +531,12 @@ class DateTimeField {
 			$start_time = strtotime($startFrom);
 			$end_time = strtotime($endFrom);
 			if (strtotime($startFrom) > strtotime($endFrom)) {
-				// echo $startDate->format($format). " is bigger than " . $endDate->format($format);
 				$weekendDates = [];
 			} else {
-				// echo $startDate->format($format). " is smaller or equal to " . $endDate->format($format) . "\n";
 				$dt1 = strtotime($startDate->format($format));
 				$dt2 = date("l", $dt1);
 				$dt3 = strtolower($dt2);
 				if ($dt3 == "saturday") {
-					// echo $startDate->format($format). " is saturday " . "\n";
 					while ($start_time <= $end_time) {
 						//Add Saturday
 						$weekendDates[] = $startDate->format($format);
@@ -559,7 +554,6 @@ class DateTimeField {
 						$start_time = $current_time;
 					}
 				} elseif ($dt3 == "sunday") {
-					// echo $startDate->format($format). " is sunday " . "\n";
 					while ($start_time <= $end_time) {
 						//Add Sunday
 						$weekendDates[] = $startDate->format($format);

@@ -75,6 +75,8 @@ $mod_strings = array (
 	'JSLBL_NO_EMAILS_SELECTED' => 'Nessuna email selezionata.',
 	'JSLBL_ENTER_SOME_VALUE' => 'Inserisci testo da ricercare',
 	'JSLBL_DRAFT_MAIL_SAVED'=>'La mail &egrave; stata salvata sotto bozze',
+	'JSLBL_ON'=>'On',
+	'JSLBL_WROTE'=>'wrote',
 
 		// General translations
 	'LBL_Folders'         => 'Cartelle',
@@ -84,6 +86,7 @@ $mod_strings = array (
 	'LBL_Go_Back'         => 'Indietro',
 	'LBL_Reply_All'       => 'Rispondi a tutti',
 	'LBL_Reply'           => 'Rispondi',
+	'LBL_REPLYTO'         => 'Reply To',
 	'LBL_Mark_As_Unread'  => 'Segna come non letto',
 	'LBL_Previous'        => 'precedente',
 	'LBL_Next'            => 'prossimo',
@@ -154,6 +157,7 @@ $mod_strings = array (
 	'LBL_MAILMANAGER_ADD_Accounts' => 'Aggiungi Account',
 	'LBL_MAILMANAGER_ADD_Leads' => 'Aggiungi Lead',
 	'LBL_MAILMANAGER_ADD_Calendar' => 'Aggiungi ToDo',
+	'LBL_MAILMANAGER_ADD_cbCalendar' => 'Aggiungi ToDo',
 	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Aggiungi Ticket',
 	'LBL_MAILMANAGER_ADD_Emails' => 'Allega Email',
 	'LBL_MAILMANAGER_ADD_ModComments' => 'Aggiungi Commento',

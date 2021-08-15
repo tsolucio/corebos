@@ -25,27 +25,27 @@
 			<table border=0 cellspacing=1 cellpadding=0 width="100%" class="lvtBg">
 			<tr>
 				<td>
-					<table border=0 cellspacing=0 cellpadding=2 width="100%" class="small"> 
+					<table border=0 cellspacing=0 cellpadding=2 width="100%" class="small">
 					<tr>
 						<td style="padding-right:20px" nowrap align=right></td>
 					</tr>
 					</table>
-					
+
 					<table border=0 cellspacing=0 cellpadding=0 width="95%" class="small">
 					<!-- Tab Links -->
 					<tr><td>
 						<table border=0 cellspacing=0 cellpadding=3 width="100%" class="small">
 						<tr>
 							<td class="dvtTabCache" style="width:10px" nowrap></td>
-							<td class="dvtUnSelectedCell" align="left" nowrap><a href="index.php?module=CustomerPortal&action=ListView&parenttab={$CATEGORY}">{$MOD.LBL_BASIC_SETTINGS}</a></td>
+							<td class="dvtUnSelectedCell" align="left" nowrap><a href="index.php?module=CustomerPortal&action=ListView">{$MOD.LBL_BASIC_SETTINGS}</a></td>
 							<td class="dvtTabCache" style="width:10px"></td>
 							<td class="dvtSelectedCell" align="left" nowrap>{$MOD.LBL_ADVANCED_SETTINGS}</a></td>
 							<td class="dvtTabCache" width="100%">&nbsp;</td>
 						</tr>
 						</table>
 					</td></tr>
-					
-					<!-- Acutal Contents -->				
+
+					<!-- Acutal Contents -->
 					<tr><td>
 						<table border=0 cellspacing=0 cellpadding=10 width="100%" class="dvtContentSpace" style='border-bottom: 0'>
 						<tr>
@@ -57,22 +57,22 @@
 						</tr>
 						</table>
 					</td></tr>
-					
+
 					<!-- Tab Links -->
 					<tr><td>
 						<table border=0 cellspacing=0 cellpadding=3 width="100%" class="small">
 						<tr>
 							<td class="dvtTabCacheBottom" style="width:10px" nowrap></td>
-							<td class="dvtUnSelectedCell" align="left" nowrap><a href="index.php?module=CustomerPortal&action=ListView&parenttab={$CATEGORY}">{$MOD.LBL_BASIC_SETTINGS}</a></td>
+							<td class="dvtUnSelectedCell" align="left" nowrap><a href="index.php?module=CustomerPortal&action=ListView">{$MOD.LBL_BASIC_SETTINGS}</a></td>
 							<td class="dvtTabCacheBottom" style="width:10px"></td>
 							<td class="dvtSelectedCellBottom" align="left" nowrap>{$MOD.LBL_ADVANCED_SETTINGS}</a></td>
 							<td class="dvtTabCacheBottom" width="100%">&nbsp;</td>
 						</tr>
 						</table>
 					</td></tr>
-					
+
 					</table>
-										
+
 				</td>
 			</tr>
 			</table>

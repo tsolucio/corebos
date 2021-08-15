@@ -28,7 +28,7 @@ if ($mode=='Save') {
 		$sql = 'INSERT INTO vtiger_reportfolder (FOLDERNAME,DESCRIPTION,STATE) VALUES (?,?,?)';
 		$sql_params = array(trim($foldername), $folderdesc, 'CUSTOMIZED');
 		$result = $adb->pquery($sql, $sql_params);
-		if ($result!=false) {
+		if ($result) {
 			header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports');
 		} else {
 			include 'modules/Vtiger/header.php';
@@ -43,7 +43,7 @@ if ($mode=='Save') {
 		$sql = 'update vtiger_reportfolder set FOLDERNAME=?, DESCRIPTION=? where folderid=?';
 		$params = array(trim($foldername), $folderdesc, $rfid);
 		$result = $adb->pquery($sql, $params);
-		if ($result!=false) {
+		if ($result) {
 			header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports');
 		} else {
 			include 'modules/Vtiger/header.php';

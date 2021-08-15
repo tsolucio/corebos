@@ -14,13 +14,13 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getUItype',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_getUItype',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'module','type' => 'string'),
-	 )
+	'name'    => 'getUItype',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_getUItype',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'module','type' => 'string'),
+	)
 );
 

@@ -11,9 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class ProductComponent extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_productcomponent';
 	public $table_index= 'productcomponentid';
 	public $column_fields = array();
@@ -149,39 +146,10 @@ class ProductComponent extends CRMEntity {
 		}
 	}
 
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
 	public static function getRelation($fromProduct = '*', $toProduct = '*', $fromDate = '*', $toDate = '*', $relationType = '*') {
 		global $adb;
-		$sql = 'select * from vtiger_productcomponent
-			inner join vtiger_crmentity on crmid=productcomponentid
-			where deleted=0';
+		$crmentityTable = CRMEntity::getcrmEntityTableAlias('ProductComponent', false);
+		$sql = 'select * from vtiger_productcomponent inner join '.$crmentityTable.' on crmid=productcomponentid where deleted=0';
 		if ($fromProduct!='*') {
 			$sql.=' and frompdo=? ';
 			$params[] = $fromProduct;

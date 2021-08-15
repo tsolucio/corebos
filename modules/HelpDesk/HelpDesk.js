@@ -16,13 +16,3 @@ function set_return(product_id, product_name) {
 		window.opener.document.EditView.parent_id.value = product_id;
 	}
 }
-
-function set_return_todo(product_id, product_name) {
-	if (document.getElementById('from_link').value != '') {
-		window.opener.document.QcEditView.task_parent_name.value = product_name;
-		window.opener.document.QcEditView.task_parent_id.value = product_id;
-	} else {
-		window.opener.document.createTodo.task_parent_name.value = product_name;
-		window.opener.document.createTodo.task_parent_id.value = product_id;
-	}
-}

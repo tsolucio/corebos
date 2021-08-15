@@ -10,7 +10,6 @@
 <div class="mm_outerborder" id="open_email_con" name="open_email_con">
 <table width="100%" cellpadding=2 cellspacing=0 border=0 class="small" style='clear: both;'>
 	<tr class="mailSubHeader" valign="top">
-		
 		<td align=left>
 			<a href='javascript:void(0);' onclick="MailManager.mail_close();"><b style="font-size:14px">&#171; {'LBL_Go_Back'|@getTranslatedString}</b></a>&nbsp;&nbsp;&nbsp;
 			<span class="dvHeaderText" id="_mailopen_subject">{$MAIL->subject()}</span>
@@ -37,7 +36,7 @@
 	</td>
 	<td rowspan=3 align=right colspan=2>
 		<table cellpadding=0 cellspacing=0 border=0 width="100%">
-		<tr>		
+		<tr>
 			<td colspan=2 nowrap="nowrap">
 				<table width=100% cellpadding=0 cellspacing=0 border=0 class="rightMailMerge cblds-table-border_sep">
 				<tr>
@@ -60,6 +59,14 @@
 		<span id="_mailopen_msgid_" style="display:none;">{$MAIL->_uniqueid|@escape:'UTF-8'}</span>
 		<table width="100%" cellpadding=2 cellspacing=0 border=0 class="small cblds-table-border_sep cblds-table-bordersp_medium">
 		<tr>
+			<td width="100px" align=right class="cblds-t-align_right">{'LBL_REPLYTO'|@getTranslatedString}:</td>
+			<td id="_mailopen_replyto">
+				{foreach item=REPLYTO from=$MAIL->replyto() name='REPLYTO'}
+					{if $smarty.foreach.REPLYTO.index > 0}, {/if}{$REPLYTO}
+				{/foreach}
+			</td>
+		</tr>
+		<tr>
 			<td width="100px" align=right class="cblds-t-align_right">{'LBL_FROM'|@getTranslatedString}:</td>
 			<td id="_mailopen_from">
 				{foreach item=SENDER from=$MAIL->from()}
@@ -77,7 +84,7 @@
 			</td>
 		</tr>
 		{/if}
-		
+
 		{if $MAIL->cc()}
 		<tr>
 			<td width="100px" align=right class="cblds-t-align_right">{'LBL_CC'|@getTranslatedString}:</td>
@@ -88,7 +95,7 @@
 			</td>
 		</tr>
 		{/if}
-		
+
 		{if $MAIL->bcc()}
 		<tr>
 			<td width="100px" align=right class="cblds-t-align_right">{'LBL_BCC'|@getTranslatedString}:</td>
@@ -99,12 +106,12 @@
 			</td>
 		</tr>
 		{/if}
-		
+
 		<tr>
 			<td width="100px" align=right class="cblds-t-align_right">{'LBL_Date'|@getTranslatedString}:</td>
 			<td id="_mailopen_date">{$MAIL->date()}</td>
 		</tr>
-		
+
 		{if $MAIL->attachments(false)}
 		<tr>
 			<td width="100px" align=right class="cblds-t-align_right">{'LBL_Attachments'|@getTranslatedString}:</td>
@@ -118,7 +125,7 @@
 			</td>
 		</tr>
 		{/if}
-		
+
 		</table>
 	</td>
 </tr>

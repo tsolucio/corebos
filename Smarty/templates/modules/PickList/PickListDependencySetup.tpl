@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="modules/PickList/DependencyPicklist.js"></script>
 {if empty($MODULE)}
 	{assign var="MODULE" value='PickList'}
@@ -29,7 +28,7 @@
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 		<tr>
 			<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'picklist.gif'|@vtiger_imageurl:$THEME}" width="48" height="48" border=0 ></td>
-			<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD_PICKLIST.LBL_PICKLIST_DEPENDENCY_SETUP}</b></td>
+			<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD_PICKLIST.LBL_PICKLIST_DEPENDENCY_SETUP}</b></td>
 		</tr>
 		<tr>
 			<td valign=top class="small cblds-p-v_none">{$MOD_PICKLIST.LBL_PICKLIST_DEPENDENCY_DESCRIPTION}</td>
@@ -46,16 +45,6 @@
 						{include file='modules/PickList/PickListDependencyList.tpl'}
 					{/if}
 				</div>
-
-				<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr>
-						<td class="small cblds-t-align_right" nowrap align=right>
-							<a href="#top">
-								{$MOD.LBL_SCROLL}
-							</a>
-						</td>
-					</tr>
-				</table>
 			</td>
 		</tr>
 		</table>

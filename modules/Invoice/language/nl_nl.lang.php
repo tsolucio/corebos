@@ -56,7 +56,6 @@ $mod_strings = array(
 	'LBL_SHIPPING_ADDRESS' => 'Afleveradres:',
 	'LBL_ANY_ADDRESS' => 'Bezoekadres:',
 	'LBL_CITY' => 'Plaats:',
-	'LBL_Invoice_FINANCIALINFO' => 'Financial Information',
 	'LBL_STATE' => 'Provincie:',
 	'LBL_POSTAL_CODE' => 'Postcode:',
 	'LBL_COUNTRY' => 'Land:',

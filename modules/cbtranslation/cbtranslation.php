@@ -11,9 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class cbtranslation extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_cbtranslation';
 	public $table_index= 'cbtranslationid';
 	public $column_fields = array();
@@ -144,34 +141,6 @@ class cbtranslation extends CRMEntity {
 			// Handle actions after this module is updated.
 		}
 	}
-
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
 	/**
 	 * Returns the language string to be used for translation
@@ -700,7 +669,7 @@ class cbtranslation extends CRMEntity {
 		parent::trash($module, $record);
 		$adb->pquery('Delete from vtiger_cbtranslation where cbtranslationid=?', array($record));
 		$adb->pquery('Delete from vtiger_cbtranslationcf where cbtranslationid=?', array($record));
-		$adb->pquery('Delete from vtiger_crmentity where crmid=?', array($record));
+		$adb->pquery('Delete from '.$this->crmentityTable.' where crmid=?', array($record));
 	}
 }
 ?>

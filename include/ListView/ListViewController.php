@@ -20,9 +20,10 @@ class ListViewController {
 	private $picklistValueMap;
 	private $picklistRoleMap;
 	private $headerSortingEnabled;
-	public function __construct($db, $user, $generator) {
+
+	public function __construct($data_db, $user, $generator) {
 		$this->queryGenerator = $generator;
-		$this->db = $db;
+		$this->db = $data_db;
 		$this->user = $user;
 		$this->nameList = array();
 		$this->typeList = array();
@@ -68,7 +69,7 @@ class ListViewController {
 		}
 
 		$idList = array_keys($idList);
-		if (count($idList) == 0) {
+		if (empty($idList)) {
 			return;
 		}
 		if (isset($referenceFieldInfoList[$fieldName])) {
@@ -80,15 +81,15 @@ class ListViewController {
 			$meta = $this->queryGenerator->getMeta($module);
 			if ($meta->isModuleEntity()) {
 				if ($module == 'Users') {
-					$nameList = getOwnerNameList($idList);
+					$listName = getOwnerNameList($idList);
 				} else {
 					//TODO handle multiple module names overriding each other.
-					$nameList = getEntityName($module, $idList);
+					$listName = getEntityName($module, $idList);
 				}
 			} else {
-				$nameList = vtws_getActorEntityName($module, $idList);
+				$listName = vtws_getActorEntityName($module, $idList);
 			}
-			$entityTypeList = array_intersect(array_keys($nameList), $idList);
+			$entityTypeList = array_intersect(array_keys($listName), $idList);
 			foreach ($entityTypeList as $id) {
 				$this->typeList[$id] = $module;
 			}
@@ -97,7 +98,7 @@ class ListViewController {
 			}
 			foreach ($entityTypeList as $id) {
 				$this->typeList[$id] = $module;
-				$this->nameList[$fieldName][$id] = $nameList[$id];
+				$this->nameList[$fieldName][$id] = $listName[$id];
 			}
 		}
 	}
@@ -118,7 +119,6 @@ class ListViewController {
 		$is_admin = is_admin($current_user);
 		$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length', 40, $currentModule);
 		$fields = $this->queryGenerator->getFields();
-		//$whereFields = $this->queryGenerator->getWhereFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
 
 		$moduleFields = $meta->getModuleFields();
@@ -136,9 +136,8 @@ class ListViewController {
 			}
 		}
 
-		$db = PearDatabase::getInstance();
-		$rowCount = $db->num_rows($result);
-		$listviewcolumns = $db->getFieldsArray($result);
+		$rowCount = $this->db->num_rows($result);
+		$listviewcolumns = $this->db->getFieldsArray($result);
 		$ownerFieldList = $this->queryGenerator->getOwnerFieldList();
 		foreach ($ownerFieldList as $fieldName) {
 			if (in_array($fieldName, $listViewFields)) {
@@ -158,7 +157,7 @@ class ListViewController {
 						$idList[] = $id;
 					}
 				}
-				if (count($idList) > 0) {
+				if (!empty($idList)) {
 					if (!isset($this->ownerNameList[$fieldName]) || !is_array($this->ownerNameList[$fieldName])) {
 						$this->ownerNameList[$fieldName] = getOwnerNameList($idList);
 					} else {
@@ -197,7 +196,7 @@ class ListViewController {
 			} elseif (getTabid($currentModule)!=$field->getTabId() && $field->getFieldDataType()=='reference') {
 				$this->fetchNameList($field, $result, 1);
 			}
-			if (count($idList) > 0) {
+			if (!empty($idList)) {
 				if (!isset($this->ownerNameListrel[$fieldName]) || !is_array($this->ownerNameListrel[$fieldName])) {
 					$this->ownerNameListrel[$fieldName] = getOwnerNameList($idList);
 				} else {
@@ -221,9 +220,9 @@ class ListViewController {
 				$baseTable = $meta->getEntityBaseTable();
 				$moduleTableIndexList = $meta->getEntityTableIndexList();
 				$baseTableIndex = $moduleTableIndexList[$baseTable];
-				$recordId = $db->query_result($result, $i, $baseTableIndex);
+				$recordId = $this->db->query_result($result, $i, $baseTableIndex);
 			} else {
-				$recordId = $db->query_result($result, $i, 'id');
+				$recordId = $this->db->query_result($result, $i, 'id');
 			}
 			$row = array();
 
@@ -260,88 +259,51 @@ class ListViewController {
 
 				if (($module == 'Documents' && $fieldName == 'filename') || $fieldName == 'Documents.filename') {
 					if ($fieldName == 'Documents.filename') {
-						$docrs = $db->pquery(
+						$docrs = $this->db->pquery(
 							'select filename,filelocationtype,filestatus,notesid from vtiger_notes where note_no=?',
-							array($db->query_result($result, $i, 'documentsnote_no'))
+							array($this->db->query_result($result, $i, 'documentsnote_no'))
 						);
-						$downloadtype = $db->query_result($docrs, 0, 'filelocationtype');
-						$fileName = $db->query_result($docrs, 0, 'filename');
-						$status = $db->query_result($docrs, 0, 'filestatus');
-						$docid = $db->query_result($docrs, 0, 'notesid');
+						$downloadtype = $this->db->query_result($docrs, 0, 'filelocationtype');
+						$fileName = $this->db->query_result($docrs, 0, 'filename');
+						$status = $this->db->query_result($docrs, 0, 'filestatus');
+						$docid = $this->db->query_result($docrs, 0, 'notesid');
 					} else {
 						$docid = $recordId;
-						$downloadtype = $db->query_result($result, $i, 'filelocationtype');
-						$fileName = $db->query_result($result, $i, 'filename');
-						$status = $db->query_result($result, $i, 'filestatus');
+						$downloadtype = $this->db->query_result($result, $i, 'filelocationtype');
+						$fileName = $this->db->query_result($result, $i, 'filename');
+						$status = $this->db->query_result($result, $i, 'filestatus');
 					}
 					$fileIdQuery = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
-					$fileIdRes = $db->pquery($fileIdQuery, array($docid));
-					$fileId = $db->query_result($fileIdRes, 0, 'attachmentsid');
-					if ($downloadtype == 'I') {
-						$ext =substr($value, strrpos($value, '.') + 1);
-						$ext = strtolower($ext);
-						if ($value != '') {
-							if ($ext == 'bin' || $ext == 'exe' || $ext == 'rpm') {
-								$fileicon = "<img src='" . vtiger_imageurl('fExeBin.gif', $theme)."' hspace='3' align='absmiddle' border='0'>";
-							} elseif ($ext == 'jpg' || $ext == 'gif' || $ext == 'bmp') {
-								$fileicon = "<img src='".vtiger_imageurl('fbImageFile.gif', $theme)."' hspace='3' align='absmiddle' border='0'>";
-							} elseif ($ext == 'txt' || $ext == 'doc' || $ext == 'xls') {
-								$fileicon = "<img src='".vtiger_imageurl('fbTextFile.gif', $theme)."' hspace='3' align='absmiddle' border='0'>";
-							} elseif ($ext == 'zip' || $ext == 'gz' || $ext == 'rar') {
-								$fileicon = "<img src='".vtiger_imageurl('fbZipFile.gif', $theme)."' hspace='3' align='absmiddle'	border='0'>";
-							} else {
-								$fileicon = "<img src='".vtiger_imageurl('fbUnknownFile.gif', $theme)."' hspace='3' align='absmiddle' border='0'>";
-							}
-						}
-					} elseif ($downloadtype == 'E') {
-						if (trim($value) != '') {
-							$fileicon = "<img src='" . vtiger_imageurl('fbLink.gif', $theme)."' alt='".getTranslatedString('LBL_EXTERNAL_LNK', $module).
-								"' title='".getTranslatedString('LBL_EXTERNAL_LNK', $module)."' hspace='3' align='absmiddle' border='0'>";
-						} else {
-							$value = '--';
-							$fileicon = '';
-						}
-					} else {
+					$fileIdRes = $this->db->pquery($fileIdQuery, array($docid));
+					$fileId = $this->db->query_result($fileIdRes, 0, 'attachmentsid');
+					$fileicon = FileField::getFileIcon($value, $downloadtype, $module);
+					if ($fileicon=='') {
 						$value = ' --';
-						$fileicon = '';
 					}
 					if ($fileName != '' && $status == 1) {
 						if ($downloadtype == 'I') {
 							$value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile".
-									"&entityid=$docid&fileid=$fileId' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module).
-									"' onclick='javascript:dldCntIncrease($docid);'>".textlength_check($value).'</a>';
+								"&entityid=$docid&fileid=$fileId' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module).
+								"' onclick='javascript:dldCntIncrease($docid);'>".textlength_check($value).'</a>';
 						} elseif ($downloadtype == 'E') {
 							$value = "<a target='_blank' href='$fileName' onclick='javascript:".
-									"dldCntIncrease($docid);' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module)."'>".textlength_check($value).'</a>';
+								"dldCntIncrease($docid);' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module)."'>".textlength_check($value).'</a>';
 						} else {
 							$value = ' --';
 						}
 					}
 					$value = $fileicon.$value;
 				} elseif ($module == 'Documents' && $fieldName == 'filesize') {
-					$downloadType = $db->query_result($result, $i, 'filelocationtype');
+					$downloadType = $this->db->query_result($result, $i, 'filelocationtype');
 					if ($downloadType == 'I') {
-						$filesize = $value;
-						if ($filesize < 1024) {
-							$value=$filesize.' B';
-						} elseif ($filesize > 1024 && $filesize < 1048576) {
-							$value=round($filesize/1024, 2).' KB';
-						} elseif ($filesize > 1048576) {
-							$value=round($filesize/(1024*1024), 2).' MB';
-						}
+						$value = FileField::getFileSizeDisplayValue($value);
 					} else {
 						$value = ' --';
 					}
 				} elseif ($module == 'Documents' && $fieldName == 'filestatus') {
-					if ($value == 1) {
-						$value=getTranslatedString('yes', $module);
-					} elseif ($value == 0) {
-						$value=getTranslatedString('no', $module);
-					} else {
-						$value='--';
-					}
+					$value = BooleanField::getBooleanDisplayValue($value, $module);
 				} elseif ($module == 'Documents' && $fieldName == 'filetype') {
-					$downloadType = $db->query_result($result, $i, 'filelocationtype');
+					$downloadType = $this->db->query_result($result, $i, 'filelocationtype');
 					if ($downloadType == 'E' || $downloadType != 'I') {
 						$value = '--';
 					}
@@ -395,7 +357,7 @@ class ListViewController {
 					}
 				} elseif ($field->getFieldDataType() == 'double') {
 					if ($value != '') {
-						$value = CurrencyField::convertToUserFormat($value);
+						$value = CurrencyField::convertToUserFormat($value, $current_user, true);
 					}
 				} elseif ($field->getFieldDataType() == 'url') {
 					$matchPattern = "^[\w]+:\/\/^";
@@ -415,16 +377,9 @@ class ListViewController {
 						$value = '<a href="mailto:'.$rawValue.'">'.textlength_check($value).'</a>';
 					}
 				} elseif ($field->getFieldDataType() == 'boolean') {
-					if ($value == 1) {
-						$value = getTranslatedString('yes', $module);
-					} elseif ($value == 0) {
-						$value = getTranslatedString('no', $module);
-					} else {
-						$value = '--';
-					}
+					$value = BooleanField::getBooleanDisplayValue($value, $module);
 				} elseif ($field->getUIType() == 98) {
-					$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab='.
-						'Settings&roleid='.$value.'">'.textlength_check(getRoleName($value)).'</a>';
+					$value = '<a href="index.php?action=RoleDetailView&module=Settings&roleid='.$value.'">'.textlength_check(getRoleName($value)).'</a>';
 				} elseif ($field->getUIType() == '69m') {
 					if ($module == 'Products') {
 						$queryPrdt = 'SELECT vtiger_attachments.path,vtiger_attachments.attachmentsid,vtiger_attachments.`name`
@@ -448,7 +403,6 @@ class ListViewController {
 					} else {
 						$imageattachment = 'Attachment';
 					}
-					//$imgpath = getModuleFileStoragePath('Contacts').$col_fields[$fieldname];
 					$sql = "select vtiger_attachments.*,vtiger_crmentity.setype
 						from vtiger_attachments
 						inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
@@ -474,16 +428,16 @@ class ListViewController {
 						$value = '';
 					}
 				} elseif ($field->getFieldDataType() == 'multipicklist') {
-					$value = ($value != '') ? str_replace(' |##| ', ', ', $value) : '';
+					$value = ($value != '') ? str_replace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $value) : '';
 					if (!$is_admin && $value != '') {
-						$valueArray = ($rawValue != '') ? explode(' |##| ', $rawValue) : array();
+						$valueArray = ($rawValue != '') ? explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $rawValue) : array();
 						$tmp = '';
 						$tmpArray = array();
 						foreach ($valueArray as $val) {
 							if (!$is_admin && !in_array(trim(decode_html($val)), $this->picklistValueMap[$field->getFieldName()])) {
 								continue;
 							}
-							if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $tmp)) > $listview_max_textlength)) {
+							if (!$listview_max_textlength || strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $tmp)) <= $listview_max_textlength) {
 								$tmpArray[] = $val;
 								$tmp .= ', '.$val;
 							} else {
@@ -502,12 +456,12 @@ class ListViewController {
 					}
 				} elseif ($field->getUIType() == 1024) {
 					if ($value != '') {
-						$value = textlength_check(implode(', ', array_map('getRoleName', explode(' |##| ', $value))));
+						$value = textlength_check(implode(', ', array_map('getRoleName', explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value))));
 					}
 				} elseif ($field->getUIType() == 1025) {
 					$content=array();
 					if ($value != '') {
-						$values=explode(' |##| ', $value);
+						$values=explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 						foreach ($values as $crmid) {
 							$srchmod=  getSalesEntityType($crmid);
 							$displayValueArray = getEntityName($srchmod, $crmid);
@@ -526,7 +480,7 @@ class ListViewController {
 					$value = textlength_check(implode(', ', $content));
 				} elseif ($field->getUIType() == 3313 || $field->getUIType() == 3314) {
 					require_once 'modules/PickList/PickListUtils.php';
-					$modlist = explode(' |##| ', $value);
+					$modlist = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 					$modlist = array_map(
 						function ($m) {
 							return getTranslatedString($m, $m);
@@ -560,9 +514,9 @@ class ListViewController {
 						$setype = getSalesEntityType($value);
 						$moduleList = array($setype);
 						if (!isset($this->nameList[$fieldName])) {
-							$this->nameList[$fieldName] = array($fieldName=>array());
+							$this->nameList[$fieldName] = array();
 						}
-						if (!isset($this->nameList[$fieldName][$value])) {
+						if (!isset($this->nameList[$fieldName][$value]) && !empty($value)) {
 							$en = getEntityName($setype, $value);
 							$this->nameList[$fieldName][$value] = $en[$value];
 						}
@@ -591,7 +545,7 @@ class ListViewController {
 					}
 				} elseif ($field->getFieldDataType() == 'owner') {
 					if ($fieldName!='assigned_user_id' && false !== strpos($fieldName, '.assigned_user_id')) {
-						$value = textlength_check($this->ownerNameListrel[$fieldName][$value]);
+						$value = empty($this->ownerNameListrel[$fieldName][$value]) ? '' : textlength_check($this->ownerNameListrel[$fieldName][$value]);
 					} else {
 						$value = textlength_check($this->ownerNameList[$fieldName][$value]);
 					}
@@ -614,20 +568,19 @@ class ListViewController {
 					}
 				}
 				if ($field->getFieldDataType() != 'reference') {
-					$parenttab = getParentTab();
 					$nameFields = $this->queryGenerator->getModuleNameFields($module);
 					$nameFieldList = explode(',', $nameFields);
 					if (($fieldName == $focus->list_link_field || in_array($fieldName, $nameFieldList)) && $module != 'Emails') {
 						$opennewtab = GlobalVariable::getVariable('Application_OpenRecordInNewXOnListView', '', $module);
 						if ($opennewtab=='') {
-							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
+							$value = "<a href='index.php?module=$module&action=DetailView&record=".
 								"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
 						} elseif ($opennewtab=='window') {
-							$value = "<a href='#' onclick='window.open(\"index.php?module=$module&parenttab=$parenttab&action=DetailView&record="
-								."$recordId\", \"$module".'_'."$recordId\", \"width=1300, height=900, scrollbars=yes\"); return false;' title='"
+							$value = "<a href='#' onclick='window.open(\"index.php?module=$module&action=DetailView&record="
+								."$recordId\", \"$module".'_'."$recordId\", cbPopupWindowSettings); return false;' title='"
 								.getTranslatedString($module, $module)."'>$value</a>";
 						} else {
-							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record="
+							$value = "<a href='index.php?module=$module&action=DetailView&record="
 								."$recordId' title='".getTranslatedString($module, $module)."' target='_blank'>$value</a>";
 						}
 					}
@@ -679,10 +632,8 @@ class ListViewController {
 			}
 
 			// Record Change Notification
-			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module)) {
-				if (!$focus->isViewed($recordId)) {
-					$actionLinkInfo .= " | <img src='" . vtiger_imageurl('important1.gif', $theme) . "' border=0>";
-				}
+			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module) && !$focus->isViewed($recordId)) {
+				$actionLinkInfo .= " | <img src='" . vtiger_imageurl('important1.gif', $theme) . "' border=0>";
 			}
 			if ($actionLinkInfo != '' && !$skipActions) {
 				$row[] = $actionLinkInfo;
@@ -690,7 +641,7 @@ class ListViewController {
 			list($row,$unused,$unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($row,$this->db->query_result_rowdata($result, $i),$recordId));
 			$data[$recordId] = $row;
 		}
-		if (count($totals) > 0 && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
+		if (!empty($totals) && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
 			$trow = array();
 			foreach ($listViewFields as $fieldName) {
 				if (isset($totals[$fieldName])) {
@@ -710,43 +661,17 @@ class ListViewController {
 		if ($module == 'Emails') {
 			return 'javascript:;" onclick="OpenCompose(\''.$recordId.'\',\'edit\');';
 		}
-		if ($module != 'Calendar') {
-			$return_action = 'index';
-		} else {
-			$return_action = 'ListView';
-		}
-		//Added to fix 4600
 		$url = getBasic_Advance_SearchURL();
-		$parent = getParentTab();
 		//Appending view name while editing from ListView
-		$link = "index.php?module=$module&action=EditView&record=$recordId&return_module=$module".
-			"&return_action=$return_action&parenttab=$parent".$url."&return_viewname=".
+		return "index.php?module=$module&action=EditView&record=$recordId&return_module=$module&return_action=index$url&return_viewname=".
 			((isset($_SESSION['lvs']) && isset($_SESSION['lvs'][$module])) ? $_SESSION['lvs'][$module]['viewname'] : '');
-
-		if ($module == 'Calendar') {
-			if ($activityType == 'Task') {
-				$link .= '&activity_mode=Task';
-			} else {
-				$link .= '&activity_mode=Events';
-			}
-		}
-		return $link;
 	}
 
 	public function getListViewDeleteLink($module, $recordId) {
-		$parenttab = getParentTab();
 		$viewname = ((isset($_SESSION['lvs']) && isset($_SESSION['lvs'][$module])) ? $_SESSION['lvs'][$module]['viewname'] : '');
-		//Added to fix 4600
 		$url = getBasic_Advance_SearchURL();
-		if ($module == "Calendar") {
-			$return_action = "ListView";
-		} else {
-			$return_action = "index";
-		}
 		//This is added to avoid the del link in Product related list for the following modules
-		$link = "index.php?module=$module&action=Delete&record=$recordId".
-			"&return_module=$module&return_action=$return_action".
-			"&parenttab=$parenttab&return_viewname=".$viewname.$url;
+		$link = "index.php?module=$module&action=Delete&record=$recordId&return_module=$module&return_action=index&return_viewname=".$viewname.$url;
 
 		// vtlib customization: override default delete link for custom modules
 		$requestModule = isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : '';
@@ -755,10 +680,10 @@ class ListViewController {
 		$requestFile = isset($_REQUEST['file']) ? vtlib_purify($_REQUEST['file']) : '';
 		$isCustomModule = vtlib_isCustomModule($requestModule);
 
-		if ($isCustomModule && (!in_array($requestAction, array('index','ListView')) &&
-				($requestAction == $requestModule.'Ajax' && !in_array($requestFile, array('index','ListView'))))) {
-			$link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
-			$link .= "&destination_module=$module&idlist=$recordId&mode=delete&parenttab=$parenttab";
+		if ($isCustomModule && (!in_array($requestAction, array('index','ListView'))
+			&& ($requestAction == $requestModule.'Ajax' && !in_array($requestFile, array('index','ListView'))))
+		) {
+			$link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord&destination_module=$module&idlist=$recordId&mode=delete";
 		}
 		return $link;
 	}
@@ -767,13 +692,10 @@ class ListViewController {
 		global $theme, $current_user;
 
 		$arrow='';
+		$sorder=trim($sorder);
 		$header = array();
 
-		//$tabid = getTabid($module);
-		$tabname = getParentTab();
-
 		$fields = $this->queryGenerator->getFields();
-		//$whereFields = $this->queryGenerator->getWhereFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
 
 		$moduleFields = $meta->getModuleFields();
@@ -812,8 +734,7 @@ class ListViewController {
 				}
 				if ($module == 'Users' && $fieldName == 'User Name') {
 					$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
-						"\",\"parenttab=".$tabname.'&order_by='.$field->getFieldName().'&sorder='.
-						$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".
+						'","order_by='.$field->getFieldName().'&sorder='.$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".
 						getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module).$arrow.'</a>';
 				} else {
 					if ($this->isHeaderSortingEnabled()) {
@@ -827,7 +748,7 @@ class ListViewController {
 							$sesStart = '';
 						}
 						$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
-							"\",\"parenttab=".$tabname.'&foldername=Default&order_by='.$field->getFieldName().'&start='.
+							'","foldername=Default&order_by='.$field->getFieldName().'&start='.
 							$sesStart.'&sorder='.$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".$label.$arrow.'</a>';
 					} else {
 						$name = $label;
@@ -844,13 +765,11 @@ class ListViewController {
 		if (!$skipActions && (isPermitted($module, 'EditView', '') == 'yes' || isPermitted($module, 'Delete', '') == 'yes')) {
 			$header[] = getTranslatedString('LBL_ACTION', $module);
 		}
-		$header = cbEventHandler::do_filter('corebos.filter.listview.header', $header);
-		return $header;
+		return cbEventHandler::do_filter('corebos.filter.listview.header', $header);
 	}
 
 	public function getBasicSearchFieldInfoList() {
 		$fields = $this->queryGenerator->getFields();
-		//$whereFields = $this->queryGenerator->getWhereFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
 
 		$moduleFields = $meta->getModuleFields();
@@ -886,16 +805,12 @@ class ListViewController {
 			if (empty($label)) {
 				$label = $field->getFieldLabelKey();
 			}
-// 			if ($label == "Start Date & Time") {
-// 				$fieldlabel = "Start Date";
-// 			}
 			$selected = '';
 			if ($i++ == 0) {
 				$selected = 'selected';
 			}
 
 			// place option in array for sorting later
-			//$blockName = getTranslatedString(getBlockName($field->getBlockId()), $module);
 			$blockName = getTranslatedString($field->getBlockName(), $module);
 
 			$fieldLabelEscaped = str_replace(' ', '_', $field->getFieldLabelKey());

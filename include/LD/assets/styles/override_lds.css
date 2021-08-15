@@ -38,6 +38,15 @@ hr {
 	height: 1.875rem;
 }
 
+.slds-dropdown {
+  font-size: var(--cbslds-dropdown-fontsize, 0.75rem);
+}
+.slds-context-bar__label-action {
+  font-size: var(--cbslds-context-bar__label-action-fontsize, 0.8125rem);
+}
+.slds-context-bar__app-name {
+  font-size: var(--cbslds-context-bar__app-name-fontsize, 1.125rem);
+}
 @media print {
 	a[href]:after {
 		content: none;
@@ -321,6 +330,10 @@ table {
   border-collapse: initial;
 }
 
+symbol#search {
+  border: none;
+}
+
 /* Override general classes */
 .cblds-width_auto {
   width: auto !important;
@@ -411,4 +424,41 @@ table {
 .cblds-autowidth {
   width: auto !important;
   max-width: 100000000px !important;
+}
+
+.containernpanel {
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+.containernpanel::-webkit-scrollbar { /* WebKit */
+  width: 0px;
+}
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  position: absolute;
+  left: 25px;
+  top: -5px;
+}
+.tooltip .tooltiptextright {
+  visibility: hidden;
+  position: absolute;
+  right: 25px;
+  top: -5px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+.tooltip:hover .tooltiptextright {
+  visibility: visible;
 }

@@ -8,11 +8,11 @@
 	<br>
 
 	<div align=center>
-		
+
 		<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tr>
 			<td rowspan="2" valign="top" width="50" class="cblds-p_none"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48"></td>
-			<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.VTLIB_LBL_MODULE_MANAGER} &gt; {$APP.LBL_IMPORT}</b></td>
+			<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.VTLIB_LBL_MODULE_MANAGER} &gt; {$APP.LBL_IMPORT}</b></td>
 		</tr>
 
 		<tr>
@@ -48,7 +48,6 @@
 								<td class='cellText small' colspan=2 align=right>
 									<input type="hidden" name="module" value="Settings">
 									<input type="hidden" name="action" value="ModuleManager">
-									<input type="hidden" name="parenttab" value="Settings">
 									<input type="submit" class="crmbutton small edit" value="{$APP.LBL_FINISH}">
 								</td>
 							</tr>
@@ -114,7 +113,6 @@
 								<td class='cellText small cblds-t-align_right' colspan=2 align=right>
 									<input type="hidden" name="module" value="Settings">
 									<input type="hidden" name="action" value="ModuleManager">
-									<input type="hidden" name="parenttab" value="Settings">
 									<input type="hidden" name="module_import_file" value="{$MODULEIMPORT_FILE}">
 									<input type="hidden" name="module_import_type" value="{$MODULEIMPORT_TYPE}">
 									<input type="hidden" name="module_import" value="Step3">
@@ -137,7 +135,7 @@
 		</tr>
 		</table>
 		<!-- End of Display -->
-		
+
 		</td>
 		</tr>
 		</table>

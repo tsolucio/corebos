@@ -12,9 +12,6 @@ require_once 'data/Tracker.php';
 require_once 'vtlib/Vtiger/Module.php';
 
 class ModCommentsCore extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_modcomments';
 	public $table_index= 'modcommentsid';
 	public $column_fields = array();
@@ -101,11 +98,12 @@ class ModCommentsCore extends CRMEntity {
 		}
 		$relto = $this->column_fields['related_to'];
 		if (!empty($relto)) {
+			$mod = CRMEntity::getInstance(getSalesEntityType($relto));
 			// update related assigned to email read only field
 			$relemailrs = $adb->pquery(
 				'SELECT email1
 					FROM vtiger_modcomments
-					INNER JOIN vtiger_crmentity on crmid=related_to
+					INNER JOIN '.$mod->crmentityTable.' on crmid=related_to
 					INNER JOIN vtiger_users on id = smownerid
 					WHERE modcommentsid=?',
 				array($this->id)
@@ -149,33 +147,5 @@ class ModCommentsCore extends CRMEntity {
 			// Handle actions after this module is updated.
 		}
 	}
-
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 }
 ?>

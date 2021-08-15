@@ -9,11 +9,10 @@
 <span class="moduleName" id="mail_fldrname">{$FOLDER->name()}</span>
 <div class="mailClientBg mm_outerborder" id="email_con" name="email_con">
 <table width="100%" cellpadding=3 cellspacing=0 border=0 class="small">
-	
+
 {if $FOLDER->mails()}
 <tr>
 	<td>
-		
 	</td>
 	<td align="right" colspan="4" class="cblds-t-align_right cblds-p_medium">
 		<table style="display: inline-table;">

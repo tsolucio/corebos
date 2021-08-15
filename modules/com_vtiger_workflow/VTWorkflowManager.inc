@@ -168,10 +168,10 @@ class VTWorkflowManager {
 	 * @return Workflow
 	 */
 	public function getScheduledWorkflows($referenceTime = '') {
-		$query = 'SELECT * FROM com_vtiger_workflows WHERE execution_condition = ?';
-		$params = array(VTWorkflowManager::$ON_SCHEDULE);
+		$query = 'SELECT * FROM com_vtiger_workflows WHERE execution_condition=? and active=?';
+		$params = array(VTWorkflowManager::$ON_SCHEDULE, 'true');
 		if ($referenceTime != '') {
-			$query .= " AND (nexttrigger_time = '' OR nexttrigger_time IS NULL OR nexttrigger_time <= ?)";
+			$query .= ' AND (nexttrigger_time IS NULL OR nexttrigger_time <= ?)';
 			$params[] = $referenceTime;
 		}
 		$result = $this->adb->pquery($query, $params);
@@ -183,7 +183,10 @@ class VTWorkflowManager {
 	 * @return Integer
 	 */
 	public function getScheduledWorkflowsCount() {
-		$result = $this->adb->pquery('SELECT count(*) AS count FROM com_vtiger_workflows WHERE execution_condition = ?', array(VTWorkflowManager::$ON_SCHEDULE));
+		$result = $this->adb->pquery(
+			'SELECT count(*) AS count FROM com_vtiger_workflows WHERE execution_condition=? and active=?',
+			array(VTWorkflowManager::$ON_SCHEDULE, 'true')
+		);
 		return $this->adb->query_result($result, 0, 'count');
 	}
 
@@ -195,9 +198,12 @@ class VTWorkflowManager {
 		return GlobalVariable::getVariable('Workflow_Maximum_Scheduled', 10);
 	}
 
-	public function getWorkflowsForModule($moduleName) {
+	public function getWorkflowsForModule($moduleName, $onlyActive = false) {
 		global $current_user;
 		$where = is_admin($current_user) ? '' : ' and defaultworkflow=2';
+		if ($onlyActive) {
+			$where .= " and active='true'";
+		}
 		$result = $this->adb->pquery(
 			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose, wfstarton, wfendon, active from com_vtiger_workflows where module_name=?'.$where,
 			array($moduleName)
@@ -214,7 +220,7 @@ class VTWorkflowManager {
 		if (strpos($recordid, 'x')>0) {
 			list($void,$recordid) = explode('x', $recordid);
 		}
-		$rrs = $adb->pquery('select setype,deleted from vtiger_crmentity where crmid=?', array($recordid));
+		$rrs = $adb->pquery('select setype,deleted from vtiger_crmobject where crmid=?', array($recordid));
 		if (!$rrs) {
 			return false;
 		}
@@ -223,19 +229,10 @@ class VTWorkflowManager {
 		if ($deleted!=0 || in_array($moduleName, $not_supported)) {
 			return false;
 		}
-		if ($moduleName=='Calendar') {
+		if ($moduleName=='cbCalendar') {
 			$actrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($recordid));
-			$actvity_type = $adb->query_result($actrs, 0, 'activitytype');
-			switch ($actvity_type) {
-				case 'Emails':
-					$moduleName = 'Emails';
-					break;
-				case 'Task':
-					$moduleName = 'Calendar';
-					break;
-				default:
-					$moduleName = 'Events';
-					break;
+			if ($adb->query_result($actrs, 0, 'activitytype') == 'Emails') {
+				$moduleName = 'Emails';
 			}
 		}
 		$result = $adb->pquery('select id from vtiger_ws_entity where name=?', array($moduleName));
@@ -250,8 +247,8 @@ class VTWorkflowManager {
 	public function getRACWorkflowsForModule($moduleName) {
 		$adb=$this->adb;
 		$result = $adb->pquery(
-			'select * from com_vtiger_workflows where execution_condition = ? and module_name=?',
-			array(VTWorkflowManager::$RECORD_ACCESS_CONTROL,$moduleName)
+			'select * from com_vtiger_workflows where execution_condition=? and module_name=? and active=?',
+			array(VTWorkflowManager::$RECORD_ACCESS_CONTROL, $moduleName, 'true')
 		);
 		return $this->getWorkflowsForResult($result);
 	}
@@ -267,6 +264,9 @@ class VTWorkflowManager {
 		$entityCache->forId($recordid);
 		$found = false;
 		foreach ($wfs as $wf) {
+			if (!$wf->activeWorkflow()) {
+				continue;
+			}
 			$found = $wf->evaluate($entityCache, $recordid);
 			if ($found) {
 				break;
@@ -312,10 +312,8 @@ class VTWorkflowManager {
 		$workflowTypeConfig = $configReader->getConfig($type);
 		$workflowClassPath = $workflowTypeConfig['classpath'];
 		$workflowClass = $workflowTypeConfig['class'];
-
 		require_once $workflowClassPath;
-		$workflow = new $workflowClass();
-		return $workflow;
+		return new $workflowClass();
 	}
 
 	/**
@@ -350,9 +348,10 @@ class VTWorkflowManager {
 	}
 
 	public function newWorkflow($moduleName) {
+		global $current_user;
 		$workflow = $this->getWorkflowInstance();
 		$workflow->moduleName = $moduleName;
-		$workflow->executionCondition = self::$ON_EVERY_SAVE;
+		$workflow->executionCondition = (is_admin($current_user) ? self::$ON_EVERY_SAVE : self::$ON_SCHEDULE);
 		$workflow->type = 'basic';
 		$workflow->id = 0;
 		$workflow->description = '';

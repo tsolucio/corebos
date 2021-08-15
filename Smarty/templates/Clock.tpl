@@ -155,8 +155,9 @@
 <div id="theFace11" class="facestyle" style="color: rgb(0, 0, 0); top: 60px; left: 90.3731px;">2</div>
 </div>
 </div>
+</div>
 <script>
-	for (i=0; i < n; i++) {
+	for (var i=0; i < n; i++) {
 		cf[i]=document.getElementById('theFace'+i).style;
 		cf[i].top=y-6+30*1.4*Math.sin(i*e*Math.PI/180)+'px';
 		cf[i].left=xpos+12+30*1.4*Math.cos(i*e*Math.PI/180)+'px';
@@ -205,12 +206,11 @@
 	dsp5.backgroundPosition='24px 38px';
 	ClockAndAssign();
 	if (get_cookie('timezone')==null || get_cookie('timezone')==false || get_cookie('timezone')<0 || get_cookie('timezone')=='1') {
-		lcl(0,true)
+		lcl(0, true);
 	} else {
-		lcl(get_cookie('timezone'),false)
-		document.frmtimezone.clockcity.options[get_cookie('timezone')].selected=true
+		lcl(get_cookie('timezone'), false);
+		document.frmtimezone.clockcity.options[get_cookie('timezone')].selected=true;
 	}
 	jQuery('#wclock').draggable({ldelim} handle: '#Handle' {rdelim});
 </script>
-
 {/if}

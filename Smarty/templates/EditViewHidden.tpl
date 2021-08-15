@@ -62,7 +62,6 @@
 <input type="hidden" name="mode" value="{$MODE}">
 <input type="hidden" name="action">
 <input type="hidden" name="saverepeat" value="0">
-<input type="hidden" name="parenttab" value="{$CATEGORY}">
 <input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
 <input type="hidden" name="return_id" value="{if isset($RETURN_ID)}{$RETURN_ID}{/if}">
 <input type="hidden" name="return_action" value="{if isset($RETURN_ACTION)}{$RETURN_ACTION}{/if}">
@@ -74,5 +73,10 @@
 <input type="hidden" name="__cbisduplicatedfromrecordid" value="{$__cbisduplicatedfromrecordid}" />
 {/if}
 <input type="hidden" name="Module_Popup_Edit" value="{if isset($smarty.request.Module_Popup_Edit)}{$smarty.request.Module_Popup_Edit|@urlencode}{/if}" />
+<input type="hidden" name="FILTERFIELDSMAP" value="{if isset($smarty.request.FILTERFIELDSMAP)}{$smarty.request.FILTERFIELDSMAP|@urlencode}{/if}" />
 <input name='search_url' id="search_url" type='hidden' value='{if isset($SEARCH)}{$SEARCH}{/if}'>
-
+{if isset($CUSTOM_LINKS) && !empty($CUSTOM_LINKS.EDITVIEWHTML)}
+{foreach from=$CUSTOM_LINKS.EDITVIEWHTML item=evhtml}
+	{eval var=$evhtml->linkurl}
+{/foreach}
+{/if}

@@ -17,6 +17,7 @@ require_once 'include/Webservices/Utils.php';
 /* Given a module, get all the many to one related modules */
 function getRelatedModulesManytoOne($module, $user) {
 	global $adb;
+	$types = vtws_checkListTypesPermission($module, $user);
 	$result = $adb->pquery(
 		'SELECT module,fieldname
 			from vtiger_fieldmodulerel
@@ -26,11 +27,13 @@ function getRelatedModulesManytoOne($module, $user) {
 	);
 	$modules=array();
 	while ($rel = $adb->fetch_array($result)) {
-		$modules[] = array(
-			'label' => getTranslatedString($rel['module'], $rel['module']),
-			'name' => $rel['module'],
-			'field' => $rel['fieldname'],
-		);
+		if (in_array($rel['module'], $types['types'])) {
+			$modules[] = array(
+				'label' => getTranslatedString($rel['module'], $rel['module']),
+				'name' => $rel['module'],
+				'field' => $rel['fieldname'],
+			);
+		}
 	}
 	return $modules;
 }

@@ -25,7 +25,6 @@ class ticket191 extends cbupdaterWorker {
 			$this->markApplied(false);
 		} else {
 			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
-			$taskTypes = array();
 			$defaultModules = array('include' => array('Quotes','SalesOrder','Invoice','PurchaseOrder'), 'exclude'=>array());
 			$taskType= array("name"=>"CBRelateSales", "label"=>"CBRelateSales", "classname"=>"CBRelateSales",
 					 "classpath"=>"modules/com_vtiger_workflow/tasks/CBRelateSales.inc",
@@ -51,7 +50,7 @@ class ticket191 extends cbupdaterWorker {
 			global $adb;
 			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%CBRelateSales%'", array());
 			if ($result && $adb->num_rows($result)>0) {
-				$this->sendMsg('<span style="font-size:large;weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
+				$this->sendMsg('<span style="font-size:large;font-weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
 			} else {
 				$adb->pquery("DELETE FROM com_vtiger_workflow_tasktypes WHERE
 						tasktypename = 'CBRelateSales' and label = 'CBRelateSales' and classname = 'CBRelateSales'", array());

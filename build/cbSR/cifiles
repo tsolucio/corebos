@@ -1,4 +1,4 @@
---ignore=modules/cbMap/libs/crXml.php,*css,*.js,modules/Project/BURAK_Gantt.class.php,authTypes/*,include/integrations/zendesk/vendor,include/integrations/sendgrid/vendor,include/integrations/sendgrid/lib,include/integrations/hubspot/vendor
+--ignore=modules/cbMap/libs/crXml.php,*css,*.js,modules/Project/BURAK_Gantt.class.php,authTypes/*,include/integrations/zendesk/vendor,include/integrations/sendgrid/vendor,include/integrations/sendgrid/lib,include/integrations/hubspot/vendor,include/QueryGenerator/builders,include/QueryGenerator/exceptions,include/QueryGenerator/lexer,include/QueryGenerator/Options.php,include/QueryGenerator/PHPSQL*,include/QueryGenerator/positions,include/QueryGenerator/processors,include/QueryGenerator/utils
 modules/Accounts
 modules/Assets
 modules/BusinessActions
@@ -6,6 +6,7 @@ modules/Campaigns
 modules/cbAuditTrail
 modules/cbCalendar
 modules/cbCompany
+modules/cbCredentials
 modules/cbCVManagement
 modules/cbLoginHistory
 modules/cbMap
@@ -81,7 +82,6 @@ modules/Emails/EditView.php
 modules/Emails/EmailsAjax.php
 modules/Emails/Emails.php
 modules/Emails/evcbrcHandler.php
-modules/Emails/GmailBookmarklet.php
 modules/Emails/index.php
 modules/Emails/language
 modules/Emails/ListViewPagging.php
@@ -91,7 +91,6 @@ modules/Emails/mailSelect.php
 modules/Emails/mailsend.php
 modules/Emails/PHPMailerAutoload.php
 modules/Emails/PrintEmail.php
-modules/Emails/SaveBookmarklet.php
 modules/Emails/Save.php
 modules/Emails/TrackAccess.php
 modules/Emails/UnifiedSearch.php
@@ -107,7 +106,6 @@ modules/Calendar4You/CalendarView.php
 modules/Calendar4You/CallRelatedList.php
 modules/Calendar4You/class
 modules/Calendar4You/cleartokens.php
-modules/Calendar4You/color_picker.html
 modules/Calendar4You/cron
 modules/Calendar4You/CustomView.php
 modules/Calendar4You/Delete.php
@@ -122,11 +120,9 @@ modules/Calendar4You/GoogleSync4YouHandler.php
 modules/Calendar4You/GoogleSync4You.php
 modules/Calendar4You/index.php
 modules/Calendar4You/language
-modules/Calendar4You/ProfilesPrivilegies.php
 modules/Calendar4You/SaveEvent.php
 modules/Calendar4You/SaveEventSettings.php
 modules/Calendar4You/Save.php
-modules/Calendar4You/SaveTodo.php
 modules/Calendar4You/Settings.php
 modules/Calendar4You/updateCalendarSharing.php
 modules/Calendar4You/UpdateEvents.php
@@ -139,7 +135,6 @@ data
 index.php
 Mobile.php
 notifications.php
-phpversionfail.php
 ping.php
 Popup.php
 soap
@@ -153,6 +148,7 @@ webservice.php
 include/Ajax
 include/ComboUtil.php
 include/CustomFieldUtil.php
+include/csrfmagic/csrf-magic.php
 include/database
 include/DatabaseUtil.php
 include/db_backup

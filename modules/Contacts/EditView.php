@@ -50,7 +50,6 @@ if (!empty($_REQUEST['saverepeat'])) {
 }
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
-$category = getParentTab($currentModule);
 $record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
@@ -150,7 +149,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 					case '3313':
 					case '3314':
 						if (is_array($field_value)) {
-							$field_value = implode(' |##| ', $field_value);
+							$field_value = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $field_value);
 						}
 						break;
 				}
@@ -183,7 +182,6 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', $focus->id);
@@ -240,7 +238,7 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 	if ($adb->num_rows($mod_seq_string) == 0 || $focus->checkModuleSeqNumber($focus->table_name, $mod_seq_field['column'], $mod_seq_prefix.$mod_seq_no)) {
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
 		$smarty->assign('ERROR_MESSAGE', '<b>'. getTranslatedString($mod_seq_field['label']). ' '. getTranslatedString('LBL_NOT_CONFIGURED')
-			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='
+			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&selmodule='
 			.$currentModule.'">'.getTranslatedString('LBL_HERE').'</a> '.getTranslatedString('LBL_TO_CONFIGURE').' '.getTranslatedString($mod_seq_field['label']).'</b>');
 	} else {
 		$smarty->assign('MOD_SEQ_ID', $autostr);
@@ -274,8 +272,8 @@ if ($cbMapid) {
 }
 $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
+$smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
-
 $smarty->display('salesEditView.tpl');
 ?>

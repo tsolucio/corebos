@@ -587,6 +587,10 @@ $mod_strings = array(
 'Invalid_file'=>'Invalid file OR',
 'File_has_no_data'=>'File has no data',
 'Sorry'=>'Sorry',
+'LBL_OPTIONAL' => '(optional)',
+'LBL_ATTACH' => 'Attach',
+'GoToParent' => 'Go to parent',
+'Directory' => 'Directory',
 'uploaded_file_exceeds_maximum_limit'=>'the uploaded file exceeds the maximum file size limit',
 'try_file_smaller'=>'Please try a file smaller than 800000 bytes',
 'Problems_in_upload'=>'Problems in file upload',
@@ -768,6 +772,11 @@ $mod_strings = array(
 'LBL_MESSAGES_FROM_LASTSCAN'=>'Messages from last scan',
 'LBL_MARK_MESSAGE_AS'=>'Mark message as',
 'LBL_ASSIGN' => 'Assign to',
+'LBL_MUSTBERELATED' => 'Must be related with record',
+'LBL_ADDEMAILAS' => 'Add Email as',
+'LBL_ADDCOMMENTEMAIL' => 'As comment and email',
+'LBL_ADDLINKEMAIL' => 'As link in comment and email',
+'LBL_ADDONLYEMAIL' => 'Only email',
 
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Workflows',
@@ -879,6 +888,7 @@ $mod_strings = array(
 'LBL_ACTIVE' => 'Active',
 'LBL_QUICK_CREATE' => 'Quick Create',
 'LBL_MASS_EDIT' => 'Mass Edit',
+'LBL_LONG_FIELD' => 'Long Field',
 'LBL_BLOCK_NAME' => 'Block name',
 'AFTER' => 'After',
 'ADD_BLOCK' => 'Add Block',
@@ -998,5 +1008,6 @@ $mod_strings = array(
 'SM_BeBackSoon' => 'We&rsquo;ll be back soon!',
 'SM_SorryInconvenience' => 'Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. We&rsquo;ll be back online shortly!',
 'LBL_CC' => 'CC',
+'Not Labeled' => 'Not Labeled',
 );
 ?>

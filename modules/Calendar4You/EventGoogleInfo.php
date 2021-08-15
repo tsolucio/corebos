@@ -31,7 +31,7 @@ if ($have_access_data) {
 		} else {
 			$format = $current_user->hour_format;
 		}
-		$c_mod_strings = return_specified_module_language($current_language, 'Calendar');
+		$c_mod_strings = return_specified_module_language($current_language, 'cbCalendar');
 		$event = $GoogleSync4You->getGoogleCalEvent($geventid);
 		$recurrence = $event->recurrence;
 		if ($recurrence != '') {
@@ -134,7 +134,7 @@ if ($have_access_data) {
 			echo ' '.$time_arr['endhour'].':'.$time_arr['endmin'].$time_arr['endfmt'];
 		}
 		echo '<br />';
-		echo $c_mod_strings['Location'].": <span id='google_info_".$eventid."_location'>" .implode(',', $event->where).'</span><br />'; //$Where[0];
+		echo $c_mod_strings['Location'].": <span id='google_info_".$eventid."_location'>" .implode(',', $event->where).'</span><br />';
 	} else {
 		echo $GoogleSync4You->getStatus();
 	}
@@ -154,6 +154,6 @@ function extract_recurrence($ical_string) {
 			}
 		}
 	} //foreach $rep
-	return implode($recur_list, "\r\n");
+	return implode("\r\n", $recur_list);
 }
 ?>

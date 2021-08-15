@@ -97,12 +97,7 @@ for ($i=0; $i<$num_act_per; $i++) {
 			$permission_value = 1;
 		}
 
-		$sql7='insert into vtiger_profile2standardpermissions values(?,?,?,?)';
-		$adb->pquery($sql7, array($profileid, $tab_id, $action_id, $permission_value));
-
-		if ($tab_id ==9) {
-			$adb->pquery($sql7, array($profileid, 16, $action_id, $permission_value));
-		}
+		$adb->pquery('insert into vtiger_profile2standardpermissions values(?,?,?,?)', array($profileid, $tab_id, $action_id, $permission_value));
 	}
 }
 
@@ -169,7 +164,7 @@ foreach ($modArr as $fld_module => $fld_label) {
 		$adb->pquery('insert into vtiger_profile2field values(?,?,?,?,?,?)', array($profileid, $tab_id, $fieldid, $visible_value, $readOnlyValue, $positionValue));
 	}
 }
-$loc = 'index.php?action=ListProfiles&module=Settings&mode=view&parenttab=Settings&profileid='.urlencode(vtlib_purify($profileid))
+$loc = 'index.php?action=ListProfiles&module=Settings&mode=view&profileid='.urlencode(vtlib_purify($profileid))
 	.'&selected_tab=' . urlencode(vtlib_purify($def_tab)) . '&selected_module=' . urlencode(vtlib_purify($def_module));
 echo $loc;
 

@@ -19,9 +19,6 @@ if (!isset($where)) {
 	$where = '';
 }
 
-$parent_tab=getParentTab();
-$smarty->assign('CATEGORY', $parent_tab);
-
 $url = '';
 $popuptype = '';
 $popuptype = isset($_REQUEST['popuptype']) ? vtlib_purify($_REQUEST['popuptype']) : '';
@@ -45,6 +42,7 @@ $hdrcustomlink_params = array('MODULE'=>$currentModule);
 $COMMONHDRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, array('HEADERSCRIPT_POPUP', 'HEADERCSS_POPUP'), $hdrcustomlink_params);
 $smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT_POPUP']);
 $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS_POPUP']);
+$smarty->assign('SET_CSS_PROPERTIES', GlobalVariable::getVariable('Application_CSS_Properties', 'include/LD/assets/styles/properties.php'));
 
 $qc_modules = getQuickCreateModules();
 for ($i=0; $i<count($qc_modules); $i++) {
@@ -72,15 +70,6 @@ if (!empty($_REQUEST['popqc']) && $_REQUEST['popqc'] = 'true' && empty($_REQUEST
 	$_REQUEST['advft_criteria'] = '[{"groupid":"1","columnname":"'.$optionvalue.'","comparator":"e","value":"'.$fldval.'","columncondition":""}]';
 }
 
-//added to get relatedto field value for todo, while selecting from the popup list, after done the alphabet or basic search.
-if (isset($_REQUEST['maintab']) && $_REQUEST['maintab'] != '') {
-	$act_tab = vtlib_purify($_REQUEST['maintab']);
-	$url = '&maintab='.$act_tab;
-} else {
-	$act_tab = '';
-}
-$smarty->assign('MAINTAB', $act_tab);
-
 // This is added to support the type of popup and callback
 if (isset($_REQUEST['popupmode']) && isset($_REQUEST['callback'])) {
 	$url = '&popupmode='.vtlib_purify($_REQUEST['popupmode']).'&callback='.vtlib_purify($_REQUEST['callback']);
@@ -100,80 +89,19 @@ $smarty->assign('RETURN_MODULE', '');
 $smarty->assign('SELECT', '');
 switch ($currentModule) {
 	case 'Contacts':
-		$log = LoggerManager::getLogger('contact_list');
-		$smarty->assign('SINGLE_MOD', 'Contact');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		} else {
-			$smarty->assign('RETURN_MODULE', 'Emails');
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'lastname', 'true', 'basic', $popuptype, '', '', $url);
-		break;
-	case 'Campaigns':
-		$log = LoggerManager::getLogger('campaign_list');
-		$smarty->assign('SINGLE_MOD', 'Campaign');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'campaignname', 'true', 'basic', $popuptype, '', '', $url);
-		break;
 	case 'Accounts':
-		$log = LoggerManager::getLogger('account_list');
-		$smarty->assign('SINGLE_MOD', 'Account');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		} else {
-			$smarty->assign('RETURN_MODULE', 'Emails');
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'accountname', 'true', 'basic', $popuptype, '', '', $url);
-		break;
 	case 'Leads':
-		$log = LoggerManager::getLogger('contact_list');
-		$smarty->assign('SINGLE_MOD', 'Lead');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		} else {
-			$smarty->assign('RETURN_MODULE', 'Emails');
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'lastname', 'true', 'basic', $popuptype, '', '', $url);
-		break;
 	case 'Project':
-		$log = LoggerManager::getLogger('project_list');
-		$smarty->assign('SINGLE_MOD', 'Project');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		} else {
-			$smarty->assign('RETURN_MODULE', 'Emails');
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'projectname', 'true', 'basic', $popuptype, '', '', $url);
-		break;
 	case 'Potentials':
-		$log = LoggerManager::getLogger('potential_list');
-		$smarty->assign('SINGLE_MOD', 'Opportunity');
+	case 'Documents':
 		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
 			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
 		} else {
 			$smarty->assign('RETURN_MODULE', 'Emails');
 		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'potentialname', 'true', 'basic', $popuptype, '', '', $url);
-		break;
-	case 'Quotes':
-		$log = LoggerManager::getLogger('quotes_list');
-		$smarty->assign('SINGLE_MOD', 'Quote');
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'subject', 'true', 'basic', $popuptype, '', '', $url);
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		}
-		break;
-	case 'Invoice':
-		$smarty->assign('SINGLE_MOD', 'Invoice');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'subject', 'true', 'basic', $popuptype, '', '', $url);
 		break;
 	case 'Products':
-		$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
+	case 'Services':
 		if (isset($_REQUEST['curr_row'])) {
 			$curr_row = vtlib_purify($_REQUEST['curr_row']);
 			$smarty->assign('CURR_ROW', $curr_row);
@@ -182,32 +110,10 @@ switch ($currentModule) {
 		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
 			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
 		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'productname', 'true', 'basic', $popuptype, '', '', $url);
+		$smarty->assign('Service_Default_Units', GlobalVariable::getVariable('Inventory_Service_Default_Units', '1'));
 		$smarty->assign('Product_Default_Units', GlobalVariable::getVariable('Inventory_Product_Default_Units', '1'));
 		break;
-	case 'Vendors':
-		$smarty->assign('SINGLE_MOD', 'Vendor');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'vendorname', 'true', 'basic', $popuptype, '', '', $url);
-		break;
-	case 'SalesOrder':
-		$smarty->assign('SINGLE_MOD', 'SalesOrder');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'subject', 'true', 'basic', $popuptype, '', '', $url);
-		break;
-	case 'PurchaseOrder':
-		$smarty->assign('SINGLE_MOD', 'PurchaseOrder');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'subject', 'true', 'basic', $popuptype, '', '', $url);
-		break;
 	case 'PriceBooks':
-		$smarty->assign('SINGLE_MOD', 'PriceBook');
 		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
 			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
 		}
@@ -219,50 +125,15 @@ switch ($currentModule) {
 			$smarty->assign('PRODUCTID', vtlib_purify($_REQUEST['productid']));
 			$url_string .='&productid='.vtlib_purify($_REQUEST['productid']);
 		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'bookname', 'true', 'basic', $popuptype, '', '', $url);
 		break;
-	case 'Users':
-		$smarty->assign('SINGLE_MOD', 'Users');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != '') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'user_name', 'true', 'basic', $popuptype, '', '', $url);
-		break;
-	case 'HelpDesk':
-		$smarty->assign('SINGLE_MOD', 'HelpDesk');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'ticket_title', 'true', 'basic', $popuptype, '', '', $url);
-		break;
-
-	case 'Documents':
-		$smarty->assign('SINGLE_MOD', 'Document');
-		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
-			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
-		} else {
-			$smarty->assign('RETURN_MODULE', 'Emails');
-		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'notes_title', 'true', 'basic', $popuptype, '', '', $url);
-		break;
-
-	// Special case handling (for curr_row value) for Services module
-	case 'Services':
-		if (isset($_REQUEST['curr_row'])) {
-			$curr_row = vtlib_purify($_REQUEST['curr_row']);
-			$smarty->assign('CURR_ROW', $curr_row);
-			$url_string .='&curr_row='.vtlib_purify($_REQUEST['curr_row']);
-		}
-		$smarty->assign('Service_Default_Units', GlobalVariable::getVariable('Inventory_Service_Default_Units', '1'));
-	// vtlib customization: Generic hook for Popup selection
 	default:
-		$smarty->assign('SINGLE_MOD', $currentModule);
 		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
 			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
 		}
-		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', $focus->def_basicsearch_col, 'true', 'basic', $popuptype, '', '', $url);
 		break;
 }
+$smarty->assign('SINGLE_MOD', $currentModule);
+$alphabetical = AlphabeticalSearch($currentModule, 'Popup', $focus->def_basicsearch_col, 'true', 'basic', $popuptype, '', '', $url);
 if (isset($_REQUEST['select'])) {
 	$smarty->assign('SELECT', 'enable');
 }
@@ -273,10 +144,11 @@ $smarty->assign('RETURN_ACTION', isset($_REQUEST['return_action']) ? vtlib_purif
 if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 	$productid= isset($_REQUEST['productid']) ? vtlib_purify($_REQUEST['productid']) : 0;
 	$currency_id= isset($_REQUEST['currencyid']) ? vtlib_purify($_REQUEST['currencyid']) : fetchCurrency($current_user->id);
+	$crmalias = CRMEntity::getcrmEntityTableAlias('PriceBooks');
 	$query = 'select vtiger_pricebook.*, vtiger_pricebookproductrel.productid, vtiger_pricebookproductrel.listprice, ' .
 		'vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime ' .
 		'from vtiger_pricebook inner join vtiger_pricebookproductrel on vtiger_pricebookproductrel.pricebookid = vtiger_pricebook.pricebookid ' .
-		'inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_pricebook.pricebookid ' .
+		"inner join $crmalias on vtiger_crmentity.crmid = vtiger_pricebook.pricebookid " .
 		'where vtiger_crmentity.deleted=0 and vtiger_pricebook.currency_id='.$adb->sql_escape_string($currency_id).' and vtiger_pricebook.active=1';
 	if (!empty($productid)) {
 		$query.= ' and vtiger_pricebookproductrel.productid='.$adb->sql_escape_string($productid);
@@ -329,16 +201,18 @@ if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 		if ($showSubproducts == 'yes') {
 			$where_relquery.=' and vtiger_products.discontinued <> 0';
 		} else {
-			$where_relquery.=' and vtiger_products.discontinued<>0 AND vtiger_products.productid NOT IN (SELECT distinct topdo
+			$crmalias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
+			$where_relquery.=" and vtiger_products.discontinued<>0 AND vtiger_products.productid NOT IN (SELECT distinct topdo
 				FROM vtiger_productcomponent
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
-				WHERE vtiger_crmentity.deleted = 0)';
+				INNER JOIN $crmalias ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+				WHERE vtiger_crmentity.deleted = 0)";
 		}
 	} elseif ($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po')) {
+		$crmalias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
 		$where_relquery .= ' and vtiger_products.discontinued <> 0 AND (vtiger_products.productid IN '
-			.'(SELECT topdo FROM vtiger_productcomponent
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
-				WHERE vtiger_crmentity.deleted=0 AND frompdo='.$adb->sql_escape_string($_REQUEST['record_id']).'))';
+			."(SELECT topdo FROM vtiger_productcomponent
+				INNER JOIN $crmalias ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+				WHERE vtiger_crmentity.deleted=0 AND frompdo=".$adb->sql_escape_string($_REQUEST['record_id']).'))';
 	} elseif ($currentModule == 'Products' && (empty($_REQUEST['return_module']) || $_REQUEST['return_module'] != 'Products')) {
 		$where_relquery .= ' and vtiger_products.discontinued <> 0';
 	}
@@ -349,21 +223,23 @@ if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 		if ($parentLikeSubProduct == 'yes' && $SubProductBeParent == 'no') {
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid']).')';
 		} elseif ($parentLikeSubProduct == 'yes' && $SubProductBeParent == 'yes') {
+			$crmalias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid'])
-				.') AND vtiger_crmentity.crmid NOT IN (SELECT distinct frompdo
+				.") AND vtiger_crmentity.crmid NOT IN (SELECT distinct frompdo
 					FROM vtiger_productcomponent
-					INNER JOIN vtiger_crmentity crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
-					WHERE crmpc.deleted=0 AND topdo='.$adb->sql_escape_string($_REQUEST['recordid']).'))';
+					INNER JOIN $crmalias ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+					WHERE vtiger_crmentity.deleted=0 AND topdo=".$adb->sql_escape_string($_REQUEST['recordid']).'))';
 		} else {
+			$crmalias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid'])
-				.') AND vtiger_crmentity.crmid NOT IN (SELECT distinct frompdo
+				.") AND vtiger_crmentity.crmid NOT IN (SELECT distinct frompdo
 					FROM vtiger_productcomponent
-					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+					INNER JOIN $crmalias ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
 					WHERE vtiger_crmentity.deleted=0
 				) AND vtiger_crmentity.crmid NOT IN (SELECT distinct topdo
 					FROM vtiger_productcomponent
-					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
-					WHERE vtiger_crmentity.deleted=0 AND frompdo='.$adb->sql_escape_string($_REQUEST['recordid']).'))';
+					INNER JOIN $crmalias ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+					WHERE vtiger_crmentity.deleted=0 AND frompdo=".$adb->sql_escape_string($_REQUEST['recordid']).'))';
 		}
 	}
 	$smarty->assign('SHOW_SUBPRODUCTS', GlobalVariable::getVariable('Product_Show_Subproducts_Popup', 'no'));
@@ -454,9 +330,7 @@ if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 			$start = ceil($noofrows/$list_max_entries_per_page);
 		}
 	}
-	if (!is_numeric($start)) {
-		$start = 1;
-	} elseif ($start < 1) {
+	if (!is_numeric($start) || $start < 1) {
 		$start = 1;
 	}
 	$start = ceil($start);

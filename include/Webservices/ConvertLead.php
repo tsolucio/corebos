@@ -11,9 +11,9 @@ require_once 'include/Webservices/Retrieve.php';
 require_once 'include/Webservices/Create.php';
 require_once 'include/Webservices/Delete.php';
 require_once 'include/Webservices/DescribeObject.php';
+require_once 'modules/Vtiger/ExecuteFunctionsfromphp.php';
 
 function vtws_convertlead($entityvalues, $user) {
-
 	global $adb, $log;
 	if (empty($entityvalues['assignedTo'])) {
 		$entityvalues['assignedTo'] = vtws_getWebserviceEntityId('Users', $user->id);
@@ -34,8 +34,30 @@ function vtws_convertlead($entityvalues, $user) {
 
 	$leadHandler = new $handlerClass($leadObject, $user, $adb, $log);
 
-	$leadInfo = vtws_retrieve($entityvalues['leadId'], $user);
 	$leadIdComponents = vtws_getIdComponents($entityvalues['leadId']);
+	$meta = $leadHandler->getMeta();
+	$types = vtws_listtypes(null, $user);
+	$entityName = $meta->getObjectEntityName($entityvalues['leadId']);
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+	}
+
+	if ($entityName !== $leadObject->getEntityName()) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
+	}
+
+	if (!$meta->exists($leadIdComponents[1])) {
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
+	}
+
+	if (!$meta->hasPermission(EntityMeta::$UPDATE, $entityvalues['leadId'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+	}
+
+	if (!leadCanBeConverted($leadIdComponents[1])) {
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_CONVERTCONDITIONSNOTMET, 'Conditions to convert Lead are not met');
+	}
+
 	$result = $adb->pquery('select converted from vtiger_leaddetails where converted = 1 and leadid=?', array($leadIdComponents[1]));
 	if ($result === false) {
 		throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_' . WebServiceErrorCode::$DATABASEQUERYERROR));
@@ -53,6 +75,7 @@ function vtws_convertlead($entityvalues, $user) {
 		return null;
 	}
 
+	$leadInfo = vtws_retrieve($entityvalues['leadId'], $user);
 	foreach ($availableModules as $entityName) {
 		if (isset($entityvalues['entities'][$entityName]['create'])) {
 			$entityvalue = $entityvalues['entities'][$entityName];
@@ -78,30 +101,42 @@ function vtws_convertlead($entityvalues, $user) {
 			}
 
 			//update the contacts relation
-			if ($entityvalue['name'] == 'Contacts') {
-				if (!empty($entityIds['Accounts'])) {
-					$entityObjectValues['account_id'] = $entityIds['Accounts'];
-				}
+			if ($entityvalue['name'] == 'Contacts' && !empty($entityIds['Accounts'])) {
+				$entityObjectValues['account_id'] = $entityIds['Accounts'];
 			}
 
-			try {
-				$create = true;
-				if ($entityvalue['name'] == 'Accounts' && empty($entityvalue['forcecreate'])) {
-					$sql = 'SELECT vtiger_account.accountid
-						FROM vtiger_account, vtiger_crmentity
-						WHERE vtiger_crmentity.crmid=vtiger_account.accountid AND vtiger_account.accountname=? AND vtiger_crmentity.deleted=0';
-					$result = $adb->pquery($sql, array($entityvalue['accountname']));
-					if ($adb->num_rows($result) > 0) {
-						$entityIds[$entityName] = vtws_getWebserviceEntityId('Accounts', $adb->query_result($result, 0, 'accountid'));
-						$create = false;
+			$create = true;
+			if ($entityvalue['name'] == 'Accounts' && empty($entityvalue['forcecreate'])) {
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias($entityvalue['name']);
+				$sql = 'SELECT vtiger_account.accountid
+					FROM vtiger_account, '.$crmEntityTable.'
+					WHERE vtiger_crmentity.crmid=vtiger_account.accountid AND vtiger_account.accountname=? AND vtiger_crmentity.deleted=0';
+				$result = $adb->pquery($sql, array($entityvalue['accountname']));
+				if ($adb->num_rows($result) > 0) {
+					$entityIds[$entityName] = vtws_getWebserviceEntityId('Accounts', $adb->query_result($result, 0, 'accountid'));
+					$create = false;
+				}
+			}
+			if ($create) {
+				$screen_values = $entityObjectValues;
+				$screen_values['module'] = $entityvalue['name'];
+				$holdRecord = isset($_REQUEST['record']) ? $_REQUEST['record'] : '';
+				unset($screen_values['name'], $_REQUEST['record']);
+				$vals = executefunctionsvalidate('ValidationLoad', $entityvalue['name'], json_encode($screen_values));
+				$_REQUEST['record'] = $holdRecord;
+				if ($vals=='%%%OK%%%' || strpos($vals, '%%%CONFIRM%%%')!==false || strpos($vals, '%%%FUNCTION%%%')!==false) {
+					try {
+						$entityRecord = vtws_create($entityvalue['name'], $entityObjectValues, $user);
+						$entityIds[$entityName] = $entityRecord['id'];
+					} catch (Exception $e) {
+						throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION, $e->getMessage().' : '.$entityvalue['name']);
 					}
+				} else {
+					throw new WebServiceException(
+						WebServiceErrorCode::$VALIDATION_FAILED,
+						getTranslatedString('VALIDATION_FAILED').' ('.getTranslatedString($entityvalue['name'], $entityvalue['name']).') '.$vals
+					);
 				}
-				if ($create) {
-					$entityRecord = vtws_create($entityvalue['name'], $entityObjectValues, $user);
-					$entityIds[$entityName] = $entityRecord['id'];
-				}
-			} catch (Exception $e) {
-				throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION, $e->getMessage().' : '.$entityvalue['name']);
 			}
 		}
 	}
@@ -130,7 +165,7 @@ function vtws_convertlead($entityvalues, $user) {
 		vtws_convertLeadTransferHandler($leadIdComponents, $entityIds, $entityvalues);
 
 		$relatedIdComponents = vtws_getIdComponents($entityIds[$entityvalues['transferRelatedRecordsTo']]);
-		vtws_getRelatedActivities($leadIdComponents[1], $accountId, $contactId, $relatedIdComponents[1]);
+		vtws_transferRelatedActivities($leadIdComponents[1], $accountId, $contactId, $relatedIdComponents[1]);
 		// Transfer the related records to be converted
 		$focus = CRMEntity::getInstance('Leads');
 		$focus->transferRelatedRecords($entityvalues['transferRelatedRecordsTo'], array($leadIdComponents[1]), $relatedIdComponents[1]);
@@ -212,7 +247,7 @@ function vtws_validateConvertLeadEntityMandatoryValues($entity, $entityHandler, 
 			$fieldInfo = vtws_getConvertLeadFieldInfo($module, $field);
 			if (($fieldInfo['type']['name'] == 'picklist' || $fieldInfo['type']['name'] == 'multipicklist'
 					|| $fieldInfo['type']['name'] == 'date' || $fieldInfo['type']['name'] == 'datetime')
-				&& ($fieldInfo['editable'] == true)
+				&& ($fieldInfo['editable'])
 			) {
 				$entity[$field] = $fieldInfo['default'];
 			} else {
@@ -259,8 +294,9 @@ function vtws_updateConvertLeadStatus($entityIds, $leadId, $user) {
 		$adb->pquery('DELETE FROM vtiger_tracker WHERE item_id=?', array($leadIdComponents[1]));
 
 		//update the modifiedtime and modified by information for the record
+		$mod = CRMEntity::getInstance('Leads');
 		$leadModifiedTime = $adb->formatDate(date('Y-m-d H:i:s'), true);
-		$adb->pquery('UPDATE vtiger_crmentity SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($leadModifiedTime, $user->id, $leadIdComponents[1]));
+		$adb->pquery('UPDATE '.$mod->crmentityTable.' SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($leadModifiedTime, $user->id, $leadIdComponents[1]));
 	}
 	$moduleArray = array('Accounts','Contacts','Potentials');
 	foreach ($moduleArray as $module) {

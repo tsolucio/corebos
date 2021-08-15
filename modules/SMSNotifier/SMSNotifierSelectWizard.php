@@ -27,7 +27,7 @@ if (SMSNotifier::checkServer()) {
 	$excludedRecords=vtlib_purify($_REQUEST['excludedRecords']);
 	$idstring = vtlib_purify($_REQUEST['idstring']);
 	$idstring = trim($idstring, ';');
-	$idlist = getSelectedRecords($_REQUEST, $_REQUEST['sourcemodule'], $idstring, $excludedRecords);//explode(';', $idstring);
+	$idlist = getSelectedRecords($_REQUEST, $_REQUEST['sourcemodule'], $idstring, $excludedRecords);
 
 	$sourcemodule = vtlib_purify($_REQUEST['sourcemodule']);
 

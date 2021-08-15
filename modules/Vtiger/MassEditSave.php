@@ -39,7 +39,6 @@ $url = getBasic_Advance_SearchURL();
 if (isset($params['start']) && $params['start']!='') {
 	$rstart = '&start=' . urlencode(vtlib_purify($params['start']));
 }
-$exists = executefunctionsvalidate('ValidationExists', $currentModule);
 if (isset($idlist)) {
 	$_REQUEST['action'] = 'MassEditSave';
 
@@ -48,6 +47,7 @@ if (isset($idlist)) {
 	$idlist = trim($idlist, ';');
 	$recordids = explode(';', $idlist);
 	$recordcount = count($recordids);
+	$reclink = '<a target="_blank" href="index.php?module='.$currentModule.'&action=DetailView&record=';
 	$id = 1;
 	$recordprocessed = 0;
 	for ($index = 0; $index < $recordcount; ++$index) {
@@ -86,21 +86,18 @@ if (isset($idlist)) {
 				}
 			}
 			list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($params);
+			$recname = getEntityName($currentModule, $recordid);
+			$recname = $reclink.$recordid.'">'.$recname[$recordid].'</a>';
 			if (!$saveerror) { // if there is an error we ignore this record
-				if ($exists == 'yes') {
-					$validation = executefunctionsvalidate('ValidationLoad', $currentModule, vtlib_purify($_REQUEST['params']));
-					if ($validation == '%%%OK%%%') {
-						$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
-						$focus->save($currentModule);
-					} else {
-						$msg = $app_strings['record'].' '.$recordid.' '.$validation;
-					}
-				} else {
-					$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
+				$validation = executefunctionsvalidate('ValidationLoad', $currentModule, vtlib_purify($_REQUEST['params']));
+				if ($validation == '%%%OK%%%') {
+					$msg = $app_strings['record'].' '.$recname.' '.$app_strings['saved'];
 					$focus->save($currentModule);
+				} else {
+					$msg = $app_strings['record'].' '.$recname.' '.$validation;
 				}
 			} else {
-				$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['notsaved'].$errormessage;
+				$msg = $app_strings['record'].' '.$recname.' '.$app_strings['notsaved'].$errormessage;
 			}
 		}
 		$recordprocessed++;

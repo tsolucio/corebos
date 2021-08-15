@@ -9,7 +9,6 @@
 ********************************************************************************/
 -->
 *}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="modules/SMSNotifier/SMSConfigServer.js"></script>
 {literal}
 <style>
@@ -38,7 +37,7 @@
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width="50" rowspan="2" valign="top"><img src="{'proxy.gif'|@vtiger_imageurl:$THEME}" alt="{$CMOD.SERVER_CONFIGURATION}" width="48" height="48" border=0 title="{$CMOD.SERVER_CONFIGURATION}"></td>
-					<td colspan="2" class="heading2" valign=bottom align="left"><b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; {$CMOD.SMSNotifier} > {$CMOD.SERVER_CONFIGURATION} </b></td>
+					<td colspan="2" class="heading2" valign=bottom align="left"><b><a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; {$CMOD.SMSNotifier} > {$CMOD.SERVER_CONFIGURATION} </b></td>
 					<td rowspan=2 class="small" align=right>&nbsp;</td>
 				</tr>
 				<tr>
@@ -59,12 +58,6 @@
 			<div id="_smsservers_">
 				{include file='modules/SMSNotifier/SMSConfigServerListContents.tpl'}
 			</div>
-
-			<table border=0 cellspacing=0 cellpadding=5 width=100% >
-				<tr>
-					<td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
-				</tr>
-			</table>
 		</td>
 	</tr>
 </table>
@@ -78,7 +71,6 @@
 </div>
 
 </td>
-<td valign="top"><img src="{$IMAGE_PATH}showPanelTopRight.gif"></td>
 </tr>
 </tbody>
 </table>

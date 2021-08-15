@@ -10,173 +10,12 @@
 var gFolderid = 1;
 var gselectedrowid = 0;
 
-function getListViewEntries_js(module, url) {
-	document.getElementById('status').style.display='inline';
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module='+module+'&action='+module+'Ajax&file=ListView&ajax=true&'+url
-	}).done(function (response) {
-		document.getElementById('status').style.display='none';
-		document.getElementById('email_con').innerHTML=response;
-		execJS(document.getElementById('email_con'));
-	});
-}
-
-function massDelete() {
-	var delete_selected_row = false;
-	//added to fix the issue 4295
-	var select_options  =  document.getElementsByName('selected_id');
-	var x = select_options.length;
-
-	idstring = '';
-	var xx = 0;
-	for (var i = 0; i < x; i++) {
-		if (select_options[i].checked) {
-			idstring = select_options[i].value +';'+idstring;
-			if (select_options[i].value == gselectedrowid) {
-				gselectedrowid = 0;
-				delete_selected_row = true;
-			}
-			xx++;
-		}
-	}
-	if (xx > 0) {
-		document.massdelete.idlist.value=idstring;
-	} else {
-		alert(alert_arr.SELECT);
-		return false;
-	}
-	if (confirm(alert_arr.DELETE + xx + alert_arr.RECORDS)) {
-		getObj('search_text').value = '';
-		show('status');
-		if (!delete_selected_row) {
-			jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?module=Users&action=massdelete&folderid='+gFolderid+'&return_module=Emails&idlist='+idstring
-			}).done(function (response) {
-				document.getElementById('status').style.display='none';
-				document.getElementById('email_con').innerHTML=response;
-				execJS(document.getElementById('email_con'));
-			});
-		} else {
-			jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?module=Users&action=massdelete&folderid='+gFolderid+'&return_module=Emails&idlist='+idstring
-			}).done(function (response) {
-				document.getElementById('status').style.display='none';
-				document.getElementById('email_con').innerHTML=response;
-				execJS(document.getElementById('email_con'));
-				document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-				//document.getElementById("subjectsetter").innerHTML='';
-			});
-		}
-	} else {
-		return false;
-	}
-}
-
-function DeleteEmail(id) {
-	if (confirm(alert_arr.SURE_TO_DELETE)) {
-		getObj('search_text').value = '';
-		gselectedrowid = 0;
-		document.getElementById('status').style.display='inline';
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Users&action=massdelete&return_module=Emails&folderid='+gFolderid+'&idlist='+id
-		}).done(function (response) {
-			document.getElementById('status').style.display='none';
-			document.getElementById('email_con').innerHTML=response;
-			execJS(document.getElementById('email_con'));
-			document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-			//document.getElementById("subjectsetter").innerHTML='';
-		});
-	} else {
-		return false;
-	}
-}
-
-function Searchfn() {
-	gselectedrowid = 0;
-	var osearch_field = document.getElementById('search_field');
-	var search_field = osearch_field.options[osearch_field.options.selectedIndex].value;
-	var search_text = document.getElementById('search_text').value;
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module=Emails&action=EmailsAjax&ajax=true&file=ListView&folderid=' + gFolderid + '&search=true&search_field=' + search_field + '&search_text=' + search_text
-	}).done(function (response) {
-		document.getElementById('email_con').innerHTML = response;
-		document.getElementById('status').style.display = 'none';
-		document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-		//document.getElementById("subjectsetter").innerHTML = '';
-		execJS(document.getElementById('email_con'));
-	});
-}
-
-function getListViewCount(module, element, parentElement, url) {
-	if (module != 'Documents') {
-		var elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
-		for (var i=0; i<elementList.length; ++i) {
-			elementList[i].style.display = 'none';
-		}
-	} else {
-		element.style.display = 'none';
-	}
-	var elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
-	for (var i=0; i<elementList.length; ++i) {
-		elementList[i].style.display = '';
-	}
-	var element = document.getElementsByName('search_url')[0];
-	var searchURL = '';
-	if (typeof element !='undefined') {
-		searchURL = element.value;
-	} else if (typeof document.getElementsByName('search_text')[0] != 'undefined') {
-		element = document.getElementsByName('search_text')[0];
-		var searchField = document.getElementsByName('search_field')[0];
-		if (element.value.length > 0) {
-			searchURL = '&query=true&searchtype=BasicSearch&search_field=' + encodeURIComponent(searchField.value)+'&search_text='+encodeURIComponent(element.value);
-		}
-	} else if (document.getElementById('globalSearchText') != null && typeof document.getElementById('globalSearchText') != 'undefined') {
-		var searchText = document.getElementById('globalSearchText').value;
-		searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText);
-		if (document.getElementById('tagSearchText') != null && typeof document.getElementById('tagSearchText') != 'undefined') {
-			var tagSearch = document.getElementById('tagSearchText').value;
-			searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText)+'&tagSearchText='+encodeURIComponent(tagSearch);
-		}
-	}
-	if (module != 'Documents') {
-		searchURL += (url);
-	}
-	// Url parameters to carry forward the Alphabetical search in Popups,
-	// which is stored in the global variable gPopupAlphaSearchUrl
-	if (typeof gPopupAlphaSearchUrl != 'undefined' && gPopupAlphaSearchUrl != '') {
-		searchURL += gPopupAlphaSearchUrl;
-	}
-
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module='+module+'&action='+module+'Ajax&file=ListViewPagging&ajax=true'+searchURL
-	}).done(function (response) {
-		var elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
-		for (var i=0; i<elementList.length; ++i) {
-			elementList[i].style.display = 'none';
-		}
-		elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
-		if (module != 'Documents' && typeof parentElement != 'undefined' && elementList.length !=0) {
-			for (i=0; i<=elementList.length;) {
-				//No need to increment the count, as the element will be eliminated in the next step.
-				elementList[i].parentNode.innerHTML = response;
-			}
-		} else {
-			parentElement.innerHTML = response;
-		}
-	});
-}
 function searchDocuments() {
 	let q = '&query=true&search=true&searchtype=BasicSearch&search_field=filelocationtype&search_text=I';
 	window.open(
 		'index.php?module=Documents&return_module=Emails&action=Popup&popuptype=detailview&form=EditView&form_submit=false&srcmodule=Emails&popupmode=ajax&select=1'+q,
 		'emaildocselect',
-		'width=680,height=620,resizable=0,scrollbars=0');
+		cbPopupWindowSettings);
 }
 
 function addOption(id, filename) {
@@ -201,19 +40,20 @@ function email_validate(oform, mode) {
 		return false;
 	}
 	if (oform.parent_name.value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0) {
-		//alert('No recipients were specified');
 		alert(no_rcpts_err_msg);
 		return false;
 	}
 	//accomodate all possible email formats
 	var email_regex = /^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\_\-]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/;
-	var arr = new Array();
+	var arr;
+	var tmp;
+	var str;
+	var i;
 	if (document.EditView.ccmail != null) {
 		if (document.EditView.ccmail.value.length >= 1) {
-			var str = document.EditView.ccmail.value;
+			str = document.EditView.ccmail.value;
 			arr = str.split(',');
-			var tmp;
-			for (var i=0; i<=arr.length-1; i++) {
+			for (i=0; i<=arr.length-1; i++) {
 				tmp = arr[i];
 				if (tmp.match('<') && tmp.match('>')) {
 					if (!findAngleBracket(arr[i])) {
@@ -229,10 +69,9 @@ function email_validate(oform, mode) {
 	}
 	if (document.EditView.bccmail != null) {
 		if (document.EditView.bccmail.value.length >= 1) {
-			var str = document.EditView.bccmail.value;
+			str = document.EditView.bccmail.value;
 			arr = str.split(',');
-			var tmp;
-			for (var i=0; i<=arr.length-1; i++) {
+			for (i=0; i<=arr.length-1; i++) {
 				tmp = arr[i];
 				if (tmp.match('<') && tmp.match('>')) {
 					if (!findAngleBracket(arr[i])) {

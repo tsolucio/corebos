@@ -34,23 +34,20 @@ class Vtiger_SalesOrderPDFController extends Vtiger_InventoryPDFController {
 		$subject = $this->focusColumnValue('subject');
 		$customerName = $this->resolveReferenceLabel($this->focusColumnValue('account_id'), 'Accounts');
 		$contactName = $this->resolveReferenceLabel($this->focusColumnValue('contact_id'), 'Contacts');
-		//$purchaseOrder = $this->focusColumnValue('vtiger_purchaseorder');
 		$quote = $this->resolveReferenceLabel($this->focusColumnValue('quote_id'), 'Quotes');
 
 		$subjectLabel = getTranslatedString('Subject', $this->moduleName);
 		$customerNameLabel = getTranslatedString('Customer Name', $this->moduleName);
 		$contactNameLabel = getTranslatedString('Contact Name', $this->moduleName);
-		//$purchaseOrderLabel = getTranslatedString('Purchase Order', $this->moduleName);
 		$quoteLabel = getTranslatedString('Quote Name', $this->moduleName);
 
-		$modelColumn1 = array(
-				$subjectLabel		=>	$subject,
-				$customerNameLabel	=>	$customerName,
-				$contactNameLabel	=>	$contactName,
-				//$purchaseOrderLabel =>  $purchaseOrder,
-				$quoteLabel => $quote
-			);
-		return $modelColumn1;
+		return array(
+			$subjectLabel		=>	$subject,
+			$customerNameLabel	=>	$customerName,
+			$contactNameLabel	=>	$contactName,
+			//$purchaseOrderLabel =>  $purchaseOrder,
+			$quoteLabel => $quote
+		);
 	}
 
 	public function buildHeaderModelColumnRight() {
@@ -59,15 +56,14 @@ class Vtiger_SalesOrderPDFController extends Vtiger_InventoryPDFController {
 		$billingAddressLabel = getTranslatedString('Billing Address', $this->moduleName);
 		$shippingAddressLabel = getTranslatedString('Shipping Address', $this->moduleName);
 
-		$modelColumn2 = array(
-				'dates' => array(
-					$issueDateLabel  => $this->formatDate(date("Y-m-d")),
-					$validDateLabel => $this->formatDate($this->focusColumnValue('duedate')),
-				),
-				$billingAddressLabel  => $this->buildHeaderBillingAddress(),
-				$shippingAddressLabel => $this->buildHeaderShippingAddress()
-			);
-		return $modelColumn2;
+		return array(
+			'dates' => array(
+				$issueDateLabel  => $this->formatDate(date("Y-m-d")),
+				$validDateLabel => $this->formatDate($this->focusColumnValue('duedate')),
+			),
+			$billingAddressLabel  => $this->buildHeaderBillingAddress(),
+			$shippingAddressLabel => $this->buildHeaderShippingAddress()
+		);
 	}
 
 	public function getWatermarkContent() {

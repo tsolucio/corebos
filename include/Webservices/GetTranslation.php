@@ -33,7 +33,7 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user) {
 			$applanguage_used=false;
 		}
 	}
-	if ($applanguage_used != false && file_exists("include/language/$applanguage_used.custom.php")) {
+	if ($applanguage_used && file_exists("include/language/$applanguage_used.custom.php")) {
 		@include "include/language/$applanguage_used.custom.php";
 		$app_strings = array_merge($app_strings, $custom_strings);
 	}
@@ -54,7 +54,7 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user) {
 			}
 		}
 	}
-	if ($modlanguage_used != false && file_exists("modules/$module/language/$modlanguage_used.custom.php")) {
+	if ($modlanguage_used && file_exists("modules/$module/language/$modlanguage_used.custom.php")) {
 		@include "modules/$module/language/$modlanguage_used.custom.php";
 		$mod_strings = array_merge($mod_strings, $custom_strings);
 	}
@@ -62,11 +62,12 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user) {
 	if (!$applanguage_used && !$modlanguage_used) {
 		return $totranslate; // We can't find language file so we return what we are given
 	}
-
+	$originalDefaultLanguage = $default_language;
+	$originalCurrentLanguage = $current_language;
 	$default_language = $current_language = $language;
 	$translated=array();
 	foreach ($totranslate as $key => $str) {
-		$ismodule = vtlib_isModuleActive($key) && $key!='Events';
+		$ismodule = vtlib_isModuleActive($key);
 		if ($ismodule) {
 			$i18nMod = getTranslatedString($key, $key);
 		}
@@ -87,7 +88,8 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user) {
 		}
 		$translated[$key] = $tr;
 	}
-
+	$default_language = $originalDefaultLanguage;
+	$current_language = $originalCurrentLanguage;
 	$log->debug('< vtws_gettranslation');
 	return $translated;
 }

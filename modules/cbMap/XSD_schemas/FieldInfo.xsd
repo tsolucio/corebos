@@ -31,8 +31,8 @@
                                       <xs:element name="value" maxOccurs="unbounded" minOccurs="1">
                                         <xs:complexType mixed="true">
                                           <xs:sequence>
-                                            <xs:element type="xs:string" name="module"/>
-                                            <xs:element type="xs:string" name="value"/>
+                                            <xs:element type="xs:string" name="module" maxOccurs="1" minOccurs="0"/>
+                                            <xs:element type="xs:string" name="value" maxOccurs="1" minOccurs="0"/>
                                           </xs:sequence>
                                         </xs:complexType>
                                       </xs:element>

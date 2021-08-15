@@ -22,7 +22,6 @@
 				<input type="hidden" name="module" value="{$MODULE}">
  				<input type="hidden" name="return_module" value="{$MODULE}">
 				<input type="hidden" name="return_action" value="index">
-				<input type="hidden" name="parenttab" value="{$CATEGORY}">
 				<input type="hidden" name="step" value="1">
 				<input type="hidden" name="action" value="Import">
 
@@ -41,7 +40,7 @@
 						<span class="genHeaderSmall">{$MOD.LBL_MODULE_NAME} {$MOD.LBL_ERROR}</span>
 					</td>
 				   </tr>
-	
+
 				   <tr><td align="left" valign="top" colspan="2">&nbsp;</td></tr>
 				   <tr>
 					<td align="left" valign="top" colspan="2" style="padding-left:80px;"><font color="red" size="2px">{$MESSAGE}</font></td>

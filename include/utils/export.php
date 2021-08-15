@@ -15,7 +15,6 @@ require_once 'modules/Contacts/Contacts.php';
 require_once 'modules/Leads/Leads.php';
 require_once 'modules/Contacts/Contacts.php';
 require_once 'modules/Emails/Emails.php';
-require_once 'modules/Calendar/Activity.php';
 require_once 'modules/Documents/Documents.php';
 require_once 'modules/Potentials/Potentials.php';
 require_once 'modules/Users/Users.php';
@@ -23,6 +22,7 @@ require_once 'modules/Products/Products.php';
 require_once 'modules/HelpDesk/HelpDesk.php';
 require_once 'modules/Vendors/Vendors.php';
 require_once 'include/utils/UserInfoUtil.php';
+require_once 'include/utils/ExportUtils.php';
 require_once 'modules/CustomView/CustomView.php';
 require_once 'modules/PickList/PickListUtils.php';
 require_once 'modules/Invoice/Invoice.php';
@@ -64,16 +64,19 @@ if ($allow_exports=='none' || ($allow_exports=='admin' && !is_admin($current_use
 	<?php exit;
 }
 
-/**Function convert line breaks to space in description during export
- * Pram $str - text
- * retrun type string
-*/
-function br2nl_vt($str) {
-	global $log;
-	$log->debug('> br2nl_vt '.$str);
-	$str = preg_replace("/(\r\n)/", ' ', $str);
-	$log->debug('< br2nl_vt');
-	return $str;
+// Function to obtain the visible columns from filter
+function obtainVisibleColumnNames(&$l, $k) {
+	//vtiger_contactaddress:mailingcountry:mailingcountry:Contacts_Mailing_Country:V
+	$filter=explode(':', $l);
+	$module_columnname=explode('_', $filter[3]);
+	$l='';
+	for ($i = 1; $i<count($module_columnname); $i++) {
+		if ($i != 1) {
+			$l .= ' '.$module_columnname[$i];
+		} else {
+			$l .=$module_columnname[$i];
+		}
+	}
 }
 
 /**
@@ -81,7 +84,7 @@ function br2nl_vt($str) {
  * Param $type - module name
  * Return type text
  */
-function export($type) {
+function export($type, $format = 'CSV') {
 	global $log, $adb;
 	$log->debug('> export '.$type);
 
@@ -94,13 +97,14 @@ function export($type) {
 	}
 	$log = LoggerManager::getLogger('export_'.$type);
 
-	$oCustomView = new CustomView("$type");
-	$viewid = $oCustomView->getViewId("$type");
+	$oCustomView = new CustomView($type);
+	$viewid = $oCustomView->getViewId($type);
 	$sorder = $focus->getSortOrder();
 	$order_by = $focus->getOrderBy();
 
 	$search_type = vtlib_purify($_REQUEST['search_type']);
 	$export_data = vtlib_purify($_REQUEST['export_data']);
+	$filtercolumns = (isset($_REQUEST['visiblecolumns']) && $_REQUEST['visiblecolumns']=='on');
 
 	if (isset($_SESSION['export_where']) && $_SESSION['export_where']!='' && $search_type == 'includesearch') {
 		$where =$_SESSION['export_where'];
@@ -109,7 +113,7 @@ function export($type) {
 	}
 
 	$query = $focus->create_export_query($where);
-	if ($search_type != 'includesearch' && $type != 'Calendar') {
+	if ($search_type != 'includesearch') {
 		$stdfiltersql = $oCustomView->getCVStdFilterSQL($viewid);
 		$advfiltersql = $oCustomView->getCVAdvFilterSQL($viewid);
 		if (isset($stdfiltersql) && $stdfiltersql != '') {
@@ -194,190 +198,69 @@ function export($type) {
 	$result = $adb->pquery($query, $params, true, "Error exporting $type: <BR>$query");
 	$fields_array = $adb->getFieldsArray($result);
 	$fields_array = array_diff($fields_array, array('user_name'));
+	if ($filtercolumns) {
+		$visiblecolumns_array = $oCustomView->getColumnsListByCvid($viewid);
+		array_walk($visiblecolumns_array, 'obtainVisibleColumnNames');
+		$fields_array = array_filter($visiblecolumns_array, function ($efield) use ($fields_array) {
+			return in_array($efield, $fields_array);
+		});
+		$fields_array[] = 'cbuuid';
+	}
 
-	$__processor = new ExportUtils($type, $fields_array);
+	$columnsToExport = array_map(
+		function ($field) {
+			return strtolower($field);
+		},
+		$fields_array
+	);
 
-	$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', $type);
+	$processor = new ExportUtils($type, $fields_array);
 
-	// Translated the field names based on the language used.
 	$translated_fields_array = array_map(
 		function ($field) use ($type) {
 			return getTranslatedString($field, $type);
 		},
 		$fields_array
 	);
-	$header = '"'.implode('"'.$CSV_Separator.'"', $translated_fields_array)."\"\r\n";
 
-	/** Output header information */
-	echo $header;
-
-	//$column_list = implode(',', array_values($fields_array));
-
-	while ($val = $adb->fetchByAssoc($result, -1, false)) {
-		$new_arr = array();
-		$val = $__processor->sanitizeValues($val);
-		foreach ($val as $key => $value) {
-			if ($type == 'Documents' && $key == 'description') {
-				$value = strip_tags($value);
-				$value = str_replace('&nbsp;', '', $value);
-				$new_arr[] = $value;
-			} elseif ($type == 'com_vtiger_workflow' && $key == 'workflow_id') {
-				$wfm = new VTworkflowManager($adb);
-				$workflow = $wfm->retrieve($value);
-				$value = $wfm->serializeWorkflow($workflow);
-				$new_arr[] = base64_encode($value);
-			} elseif ($key != 'user_name') {
-				// Let us provide the module to transform the value before we save it to CSV file
-				$value = $focus->transform_export_value($key, $value);
-				$new_arr[] = preg_replace("/\"/", "\"\"", $value);
-			}
-		}
-		$line = '"'.implode('"'.$CSV_Separator.'"', $new_arr)."\"\r\n";
-		/** Output each row information */
-		echo $line;
+	if ($format == 'CSV') {
+		$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', $type);
+		$header = '"'.implode('"'.$CSV_Separator.'"', $translated_fields_array)."\"\r\n";
+		/** Output header information */
+		echo $header;
+		dumpRowsToCSV($type, $processor, $CSV_Separator, $columnsToExport, $result, $focus);
 	}
+	if ($format == 'XLS') {
+		return dumpRowsToXLS($type, $processor, $columnsToExport, $translated_fields_array, $result);
+	}
+
 	$log->debug('< export');
 	return true;
 }
 
-/** Send the output header and invoke function for contents output */
-$moduleName = vtlib_purify($_REQUEST['module']);
-$moduleName = getTranslatedString($moduleName, $moduleName);
-$moduleName = str_replace(' ', '_', $moduleName);
-header("Content-Disposition:attachment;filename=$moduleName.csv");
-header('Content-Type:text/csv;charset=UTF-8');
-header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-header('Cache-Control: post-check=0, pre-check=0', false);
-
-export(vtlib_purify($_REQUEST['module']));
-
+if (isset($_REQUEST['exportfile']) && $_REQUEST['exportfile']=='exportexcelfile') {
+	global $root_directory, $cache_dir;
+	$fname = tempnam($root_directory.$cache_dir, 'excel.xls');
+	$xlsobject = export(vtlib_purify($_REQUEST['module']), 'XLS');
+	$xlsobject->save($fname);
+	$moduleName = getTranslatedString($_REQUEST['module'], $_REQUEST['module']);
+	header('Content-Type: application/x-msexcel');
+	header('Content-Length: '.@filesize($fname));
+	header('Content-disposition: attachment; filename="'.$moduleName.'.xls"');
+	$fh=fopen($fname, 'rb');
+	fpassthru($fh);
+} else {
+	/** Send the output header and invoke function for contents output */
+	$moduleName = vtlib_purify($_REQUEST['module']);
+	$moduleName = getTranslatedString($moduleName, $moduleName);
+	$moduleName = str_replace(' ', '_', $moduleName);
+	header("Content-Disposition:attachment;filename=$moduleName.csv");
+	header('Content-Type:text/csv;charset=UTF-8');
+	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+	header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+	header('Cache-Control: post-check=0, pre-check=0', false);
+	export(vtlib_purify($_REQUEST['module']), 'CSV');
+}
 exit;
 
-/**
- * this class will provide utility functions to process the export data.
- * this is to make sure that the data is sanitized before sending for export
- */
-class ExportUtils {
-	public $fieldsArr = array();
-	public $picklistValues = array();
-
-	public function __construct($module, $fields_array) {
-		self::__init($module, $fields_array);
-	}
-
-	public function __init($module, $fields_array) {
-		$infoArr = self::getInformationArray($module);
-		//attach extra fields related information to the fields_array; this will be useful for processing the export data
-		foreach ($infoArr as $fieldname => $fieldinfo) {
-			if (in_array($fieldinfo['fieldlabel'], $fields_array)) {
-				$this->fieldsArr[$fieldname] = $fieldinfo;
-			}
-		}
-	}
-
-	/**
-	 * this function takes in an array of values for an user and sanitizes it for export
-	 * @param array $arr - the array of values
-	 */
-	public function sanitizeValues($arr) {
-		global $current_user, $adb;
-		$roleid = fetchUserRole($current_user->id);
-		$decimal = $current_user->currency_decimal_separator;
-		$numsep = $current_user->currency_grouping_separator;
-		foreach ($arr as $fieldlabel => &$value) {
-			if (empty($this->fieldsArr[$fieldlabel])) {
-				continue;
-			}
-			$fieldInfo = $this->fieldsArr[$fieldlabel];
-
-			$uitype = $fieldInfo['uitype'];
-			$fieldname = $fieldInfo['fieldname'];
-			if ($uitype == 15 || $uitype == 16 || $uitype == 33) {
-				//picklists
-				if (empty($this->picklistValues[$fieldname])) {
-					$this->picklistValues[$fieldname] = getAssignedPicklistValues($fieldname, $roleid, $adb);
-				}
-				$value = trim($value);
-			} elseif ($uitype == 10) {
-				//have to handle uitype 10
-				$value = trim($value);
-				if (!empty($value)) {
-					$parent_module = getSalesEntityType($value);
-					$Export_RelatedField_GetValueFrom = GlobalVariable::getVariable('Export_RelatedField_GetValueFrom', '', $parent_module);
-					if ($Export_RelatedField_GetValueFrom != '') {
-						$qg = new QueryGenerator($parent_module, $current_user);
-						$qg->setFields(array($Export_RelatedField_GetValueFrom));
-						$qg->addCondition('id', $value, 'e');
-						$query = $qg->getQuery();
-						$rs = $adb->query($query);
-						if ($rs && $adb->num_rows($rs) == 1) {
-							$displayValue = $adb->query_result($rs, 0, $Export_RelatedField_GetValueFrom);
-						} else {
-							$displayValue = $value;
-						}
-					} else {
-						$displayValueArray = getEntityName($parent_module, $value);
-						if (!empty($displayValueArray)) {
-							foreach ($displayValueArray as $v) {
-								$displayValue = $v;
-							}
-						}
-					}
-					if (!empty($parent_module) && !empty($displayValue)) {
-						$value = $parent_module.'::::'.$displayValue;
-						$Export_RelatedField_NameForSearch = GlobalVariable::getVariable('Export_RelatedField_NameForSearch', '', $parent_module);
-						if ($Export_RelatedField_NameForSearch != '') {
-							$value = $value.'::::'.$Export_RelatedField_NameForSearch;
-						}
-					} else {
-						$value = '';
-					}
-				} else {
-					$value = '';
-				}
-			} elseif ($uitype == 71) {
-				$value = CurrencyField::convertToUserFormat($value);
-			} elseif ($uitype == 72) {
-				$value = CurrencyField::convertToUserFormat($value, null, true);
-			} elseif ($uitype == 7 || $fieldInfo['typeofdata'] == 'N~O' || $uitype == 9) {
-				$value = number_format($value, 2, $decimal, $numsep);
-			} elseif ($uitype == 98) {
-				$value = getRoleName($value);
-			}
-		}
-		return $arr;
-	}
-
-	/**
-	 * this function takes in a module name and returns the field information for it
-	 */
-	public function getInformationArray($module) {
-		require_once 'include/utils/utils.php';
-		global $adb;
-		$tabid = getTabid($module);
-
-		$result = $adb->pquery('select * from vtiger_field where tabid=?', array($tabid));
-		$count = $adb->num_rows($result);
-		$arr = array();
-		$data = array();
-
-		for ($i=0; $i<$count; $i++) {
-			$arr['uitype'] = $adb->query_result($result, $i, 'uitype');
-			$arr['fieldname'] = $adb->query_result($result, $i, 'fieldname');
-			$arr['columnname'] = $adb->query_result($result, $i, 'columnname');
-			$arr['tablename'] = $adb->query_result($result, $i, 'tablename');
-			$arr['fieldlabel'] = $adb->query_result($result, $i, 'fieldlabel');
-			$arr['typeofdata'] = $adb->query_result($result, $i, 'typeofdata');
-			$fieldlabel = strtolower($arr['fieldlabel']);
-			$data[$fieldlabel] = $arr;
-		}
-		if (in_array($module, getInventoryModules())) {
-			include_once 'include/fields/InventoryLineField.php';
-			$ilfields = new InventoryLineField();
-			$data = array_merge($data, $ilfields->getInventoryLineFieldsByLabel());
-		}
-		return $data;
-	}
-}
 ?>

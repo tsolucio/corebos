@@ -82,6 +82,7 @@ $mod_strings = array(
 	'Add MView Workflow' => 'Añadir Flujo Trabajo Vista Materializada',
 	'Del MView Workflow' => 'Borrar Flujo Trabajo Vista Materializada',
 	'MVIEWWFMissingFields' => 'Campo ID y módulo deben existir para esta funcionalidad',
+	'MVIEWWFWFAlredyExists' => 'Flujo Trabajo Vista Materializada ya existe. Bórralo e intenta de nuevo.',
 	'DELMVIEWOK' => 'Vista Materializada eliminada correctamente',
 	'DELMVIEWNOK' => 'Error eliminando la vista materializada',
 	'MVIEWACTIVATED' => 'Cron Vista Materializada Activado',
@@ -106,5 +107,8 @@ $mod_strings = array(
 	'Update View when Related Changes' => 'Actualizar Vista cuando Cambia Relacionado',
 	'UpdateMViewRelatedInfo' => 'Actualizar Información Relacionada en Vistas Materializadas',
 	'Update Materialized Views Related Information.' => 'Actualiza la información Relacionada de Vistas Materializadas.',
+	'Add variable' => 'Añadir variable',
+	'Export Results' => 'Exportar Resultados',
+	'Value' => 'Valor',
 );
 ?>

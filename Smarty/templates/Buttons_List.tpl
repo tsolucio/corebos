@@ -10,10 +10,7 @@
 ********************************************************************************/
 -->*}
 <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
-{if empty($CATEGORY)}
-{assign var="CATEGORY" value=""}
-{/if}
-{if $CATEGORY eq 'Settings' || $MODULE eq 'Calendar4You'}
+{if $MODULE eq 'Settings' || $MODULE eq 'Calendar4You'}
 {assign var="action" value="index"}
 {else}
 {assign var="action" value="ListView"}
@@ -92,16 +89,16 @@
 							</span>
 						</li>
 					</ul>
-					<ul class="slds-button-group-list">
+					<ul class="slds-button-group-list" name="cbHeaderButtonGroup">
 					{if $CHECK.CreateView eq 'yes' && $MODULE eq 'Calendar4You'}
 						<li>
 							<button class="slds-button slds-button_neutral" {$ADD_ONMOUSEOVER}>{$MOD.LBL_ADD_EVENT}</button>
 						</li>
-					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails' && (empty($OP_MODE) || $OP_MODE != 'create_view') && !(isset($MED1x1MODE) && $MED1x1MODE!=0)}
+					{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails' && (empty($OP_MODE) || $OP_MODE != 'create_view') && !(isset($MED1x1MODE) && $MED1x1MODE!=0) && empty($Module_Popup_Edit)}
 						<li>
 							<a
 							class="slds-button slds-button_neutral"
-							href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}"
+							href="index.php?module={$MODULE}&action=EditView&return_action=DetailView"
 							title="{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}...">
 								<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
@@ -110,7 +107,7 @@
 							</a>
 						</li>
 					{/if}
-					{if isset($isDetailView) && $isDetailView}
+					{if isset($isDetailView) && $isDetailView && empty($Module_Popup_Edit)}
 						{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBUTTON}
 							{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBUTTON}
 								{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
@@ -192,7 +189,6 @@
 								accessKey="{'LBL_SAVE_BUTTON_KEY'|@getTranslatedString:$MODULE}"
 								onclick="
 									document.forms.EditView.action.value='Save';
-									displaydeleted();
 									{if isset($INV_CURRENCY_ID)}
 										return validateInventory('{$MODULE}');
 									{else}
@@ -212,7 +208,7 @@
 									class="slds-button slds-button_success"
 									title="{'LBL_SAVEREPEAT_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
 									accessKey="{'LBL_SAVEREPEAT_BUTTON_KEY'|@getTranslatedString:$MODULE}"
-									onclick="document.EditView.saverepeat.value='1';document.EditView.action.value='Save'; displaydeleted(); return formValidate();"
+									onclick="document.EditView.saverepeat.value='1';document.EditView.action.value='Save'; return formValidate();"
 									type="submit"
 									name="button">
 									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
@@ -228,7 +224,7 @@
 									class="slds-button slds-button_neutral"
 									title="{'LBL_SKIP_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
 									accessKey="{'LBL_SKIP_BUTTON_KEY'|@getTranslatedString:$MODULE}"
-									onclick="document.EditView.saverepeat.value='skip';document.EditView.action.value='Save'; displaydeleted();document.EditView.submit();"
+									onclick="document.EditView.saverepeat.value='skip';document.EditView.action.value='Save'; document.EditView.submit();"
 									type="button"
 									name="button">
 									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
@@ -244,7 +240,7 @@
 									class="slds-button slds-button_neutral"
 									title="{'LBL_GOBACK_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
 									accessKey="{'LBL_GOBACK_BUTTON_KEY'|@getTranslatedString:$MODULE}"
-									onclick="document.EditView.saverepeat.value='goback';document.EditView.action.value='Save'; displaydeleted();document.EditView.submit();"
+									onclick="document.EditView.saverepeat.value='goback';document.EditView.action.value='Save'; document.EditView.submit();"
 									type="submit"
 									name="button">
 									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
@@ -260,9 +256,10 @@
 								title="{'LBL_CANCEL_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
 								accessKey="{'LBL_CANCEL_BUTTON_KEY'|@getTranslatedString:$MODULE}"
 								onclick="
-									{if isset($smarty.request.Module_Popup_Edit)}window.close()
+									{if !empty($CANCELACTION)}{$CANCELACTION}
+									{elseif isset($smarty.request.Module_Popup_Edit)}{if empty($smarty.request.Module_Popup_Edit_Modal)}window.close(){else}ldsModal.close(){/if}
 									{elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'
-									{else}window.history.back()
+									{else}if (window.history.length==1) { window.close(); } else { window.history.back(); }
 									{/if};"
 								type="button"
 								name="button">
@@ -273,7 +270,7 @@
 							</button>
 						</li>
 					{/if}
-					{if isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes'}
+					{if isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes' && empty($Module_Popup_Edit)}
 						<li>
 							<button
 								class="slds-button slds-button_neutral"
@@ -294,9 +291,7 @@
 							</button>
 						</li>
 					{/if}
-					{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted')
-						|| (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes'))
-						&& !empty($isDetailView)}
+					{if isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted' && !empty($isDetailView) && empty($Module_Popup_Edit)}
 						<li>
 							<button
 								class="slds-button slds-button_neutral"
@@ -317,7 +312,7 @@
 							</button>
 						</li>
 					{/if}
-					{if isset($DELETE) && $DELETE eq 'permitted'}
+					{if isset($DELETE) && $DELETE eq 'permitted' && empty($Module_Popup_Edit)}
 						<li>
 							<button
 								class="slds-button slds-button_neutral"
@@ -413,7 +408,7 @@
 						#marquee span {
 							display: inline-block;
 							padding-left: 100%;
-							animation: marquee {$ANNOUNCEMENT|count_characters / 3}s linear infinite;
+							animation: marquee {math equation="max(15, y/3)" y=$ANNOUNCEMENT|count_characters}s linear infinite;
 						}
 						#marquee span:hover {
 							animation-play-state: paused
@@ -508,22 +503,21 @@
 							{* Import button *}
 							{if $CHECK.Import eq 'yes'
 								&& $MODULE neq 'Documents'
-								&& $MODULE neq 'Calendar'
 								&& $MODULE neq 'Calendar4You'
 							}
 							<a
 								class="slds-button slds-button_icon slds-button_icon-border-filled"
 								aria-haspopup="true"
 								title="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}"
-								href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=index&parenttab={$CATEGORY}">
-									<svg class="slds-button__icon slds-m-top_x-small" aria-hidden="true">
+								href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=index">
+									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
 									</svg>
 									<span class="slds-assistive-text">
 										{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}
 									</span>
 							</a>
-							{elseif $CHECK.Import eq 'yes' && $MODULE eq 'Calendar'}
+							{elseif $CHECK.Import eq 'yes' && $MODULE eq 'Calendar4You'}
 							<button
 								class="slds-button slds-button_icon slds-button_icon-border-filled"
 								aria-haspopup="true"
@@ -538,10 +532,12 @@
 							</button>
 							{/if}
 							{* Export Button *}
-							{if $CHECK.Export eq 'yes' && $MODULE neq 'Calendar' && $MODULE neq 'Calendar4You'}
-								{$exportbuttononclick = "return selectedRecords('{$MODULE}','{$CATEGORY}')"}
-							{elseif $CHECK.Export eq 'yes' && $MODULE eq 'Calendar'}
-								{$exportbuttononclick = "fnvshobj(this,'CalExport');"}
+							{if $CHECK.Export eq 'yes'}
+								{if $MODULE eq 'Calendar4You'}
+									{$exportbuttononclick = "fnvshobj(this,'CalExport');"}
+								{else}
+									{$exportbuttononclick = "return selectedRecords('{$MODULE}')"}
+								{/if}
 							{/if}
 							{if isset($exportbuttononclick)}
 							<button
@@ -596,7 +592,7 @@
 									aria-haspopup="true"
 									title="{'Tasks'|getTranslatedString:$MODULE}"
 									href="index.php?module=cbCalendar&action=index">
-										<svg class="slds-button__icon slds-m-top_x-small" aria-hidden="true">
+										<svg class="slds-button__icon" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#task"></use>
 										</svg>
 										<span class="slds-assistive-text">
@@ -610,8 +606,8 @@
 								class="slds-button slds-button_icon slds-button_icon-border-filled"
 								aria-haspopup="true"
 								title="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}"
-								href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">
-									<svg class="slds-button__icon slds-m-top_x-small" aria-hidden="true">
+								href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}">
+									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 									</svg>
 									<span class="slds-assistive-text">

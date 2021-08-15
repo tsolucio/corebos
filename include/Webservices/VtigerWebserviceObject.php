@@ -14,6 +14,7 @@ class VtigerWebserviceObject {
 	private $name;
 	private $handlerPath;
 	private $handlerClass;
+	public $allDisplayTypes = false;
 
 	private function __construct($entityId, $entityName, $handler_path, $handler_class) {
 		$this->id = $entityId;
@@ -72,7 +73,7 @@ class VtigerWebserviceObject {
 			$rowData = self::$_fromIdCache[$entityId];
 			return new VtigerWebserviceObject($rowData['id'], $rowData['name'], $rowData['handler_path'], $rowData['handler_class']);
 		}
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied for id');
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied for id: '.$entityId);
 	}
 
 	public static function fromQuery($adb, $query) {
@@ -103,6 +104,11 @@ class VtigerWebserviceObject {
 
 	public function getUUID($crmid) {
 		return CRMEntity::getUUIDfromCRMID($crmid);
+	}
+
+	public static function emptyCache() {
+		self::$_fromNameCache = array();
+		self::$_fromIdCache = array();
 	}
 }
 ?>

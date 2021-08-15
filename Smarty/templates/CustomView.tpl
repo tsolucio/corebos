@@ -18,12 +18,12 @@
 {/literal}
 <input type="hidden" name="module" value="CustomView">
 <input type="hidden" name="action" value="Save">
-<input type="hidden" name="parenttab" value="{$CATEGORY}">
 <input type="hidden" name="cvmodule" value="{$CVMODULE}">
 <input type="hidden" name="return_module" value="{$RETURN_MODULE}">
 <input type="hidden" name="record" value="{$CUSTOMVIEWID}">
 <input type="hidden" name="return_action" value="{$RETURN_ACTION}">
 <input type="hidden" id="user_dateformat" name="user_dateformat" value="{$DATEFORMAT}">
+<input type="hidden" name="permit_all" value="{$PERMITALL}" />
 <script type="text/javascript">
 function mandatoryCheck()
 {ldelim}
@@ -44,7 +44,6 @@ function mandatoryCheck()
                         alert("{$MOD.Missing_required_fields}:" + errorMessage);
                         return false;
                 {rdelim}
-		
 		for(i=1;i<=9;i++)
                 {ldelim}
                         var columnvalue = document.getElementById("column"+i).value;
@@ -74,7 +73,6 @@ function mandatoryCheck()
         {ldelim}
                 alert("{$APP.MUSTHAVE_ONE_REQUIREDFIELD}"+showvalues);
         {rdelim}
-        
         return false;
 {rdelim}
 </script>
@@ -83,9 +81,9 @@ function mandatoryCheck()
  <tbody><tr>
   <td class="showPanelBg" valign="top" width="100%">
    <div class="small" style="padding: 20px;">
-	<span class="lvtHeaderText"><a class="hdrLink" href="index.php?action=ListView&module={$MODULE}&parenttab={$CATEGORY}">{$MODULELABEL}</a> &gt;
+	<span class="lvtHeaderText"><a class="hdrLink" href="index.php?action=ListView&module={$MODULE}">{$MODULELABEL}</a> &gt;
 	{if $EXIST eq "true" && $EXIST neq ''}
-		{$MOD.Edit_Custom_View}
+		{$MOD.Edit_Custom_View} {$VIEWNAME}
 	{else}
 	 	{$MOD.New_Custom_View}
 	{/if}
@@ -106,29 +104,33 @@ function mandatoryCheck()
 					<td class="dvtCellInfo cblds-p_medium" width="10%" align="right"><span class="style1">*</span>{$MOD.LBL_VIEW_NAME}
 					</td>
 					<td class="dvtCellInfo" width="30%">
-						<input class="detailedViewTextBox" type="text" name='viewName' value="{if isset($VIEWNAME)}{$VIEWNAME}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" size="40"/>
+						<input class="detailedViewTextBox" type="text" name='viewName' value="{if isset($VIEWNAME)}{$VIEWNAME}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" size="40" {if $PERMITALL eq 'true'}disabled{/if}/>
 					</td>
 					<td class="dvtCellInfo" width="20%">
 					{if $CHECKED eq 'checked'}
-						<input type="checkbox" name="setDefault" value="1" checked/>{$MOD.LBL_SETDEFAULT}
+						<input type="checkbox" name="setDefault" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_SETDEFAULT}
 					{else}
-						<input type="checkbox" name="setDefault" value="0" />{$MOD.LBL_SETDEFAULT}
+						<input type="checkbox" name="setDefault" value="0" {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_SETDEFAULT}
 					{/if}
 					</td>
 					<td class="dvtCellInfo" width="20%">
 					{if $MCHECKED eq 'checked'}
-						<input type="checkbox" name="setMetrics" value="1" checked/>{$MOD.LBL_LIST_IN_METRICS}
+						<input type="checkbox" name="setMetrics" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_LIST_IN_METRICS}
 					{else}
-						<input type="checkbox" name="setMetrics" value="0" />{$MOD.LBL_LIST_IN_METRICS}
+						<input type="checkbox" name="setMetrics" value="0" {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_LIST_IN_METRICS}
 					{/if}
 					</td>
 					<td class="dvtCellInfo" width="20%">
-					{if $STATUS eq '' || $STATUS eq 1}
-						<input type="checkbox" name="setStatus" value="1"/>
-					{elseif $STATUS eq 2}
-						<input type="checkbox" name="setStatus" value="2" checked/>
-					{elseif $STATUS eq 3 || $STATUS eq 0}
-						<input type="checkbox" name="setStatus" value="3" checked/>
+					{if $PERMITALL eq 'true'}
+						<input type="checkbox" name="setStatus" value="0" checked {if $PERMITALL eq 'true'}disabled{/if} />
+					{else}
+						{if $STATUS eq '' || $STATUS eq 1}
+							<input type="checkbox" name="setStatus" value="1" />
+						{elseif $STATUS eq 2}
+							<input type="checkbox" name="setStatus" value="2" checked />
+						{elseif $STATUS eq 3 || $STATUS eq 0}
+							<input type="checkbox" name="setStatus" value="3" checked />
+						{/if}
 					{/if}
 						{$MOD.LBL_SET_AS_PUBLIC}
 					</td>
@@ -169,13 +171,14 @@ function mandatoryCheck()
 		</tr>
 		{/section}
 		<tr><td colspan="4">&nbsp;</td></tr>
+		{if $PERMITALL neq 'true'}
 		<tr><td colspan="4"><table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
 		<tbody><tr>
 		 <td>
 		  <table class="small cvt-tabheaders" border="0" cellpadding="3" cellspacing="0" width="100%">
 		   <tbody><tr>
 		    <td class="dvtTabCache" style="width: 10px;" nowrap>&nbsp;</td>
-		     {if $STDCOLUMNSCOUNT neq 0}	
+		     {if $STDCOLUMNSCOUNT neq 0}
 		    <td style="width: 100px;" nowrap class="dvtSelectedCell" id="pi" onclick="fnLoadCvValues('pi','mi','mnuTab','mnuTab2')">
 		     <b>{$MOD.LBL_STEP_3_TITLE}</b>
 		    </td>
@@ -219,7 +222,7 @@ function mandatoryCheck()
 			  <tr>
 			     <td align="right" class="dvtCellLabel">{$MOD.Select_Duration} :</td>
 			     <td class="dvtCellInfo">
-			        <select name="stdDateFilter" id="stdDateFilter" class="select small" onchange='showDateRange(this.options[this.selectedIndex].value )'>
+			        <select name="stdDateFilter" id="stdDateFilter" class="select small" onchange='showDateRange(this.options[this.selectedIndex].value)'>
 				{foreach item=duration from=$STDFILTERCRITERIA}
 					<option {$duration.selected} value={$duration.value}>{$duration.text}</option>
 				{/foreach}
@@ -281,11 +284,14 @@ function mandatoryCheck()
 	</table>
 	</td>
 	</tr>
+	{/if}
   <tr><td colspan="4">&nbsp;</td></tr>
   <tr><td colspan="4" style="padding: 5px;">
 	<div align="center">
 	  <input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save"  name="button2" value="{$APP.LBL_SAVE_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
-	  <input title="{$APP.LBL_NEW_BUTTON_TITLE}" accesskey="{$APP.LBL_NEW_BUTTON_KEY}" class="crmbutton small create" name="newsave" value="{$APP.LBL_NEW_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
+	  {if $PERMITALL neq 'true'}
+	  	<input title="{$APP.LBL_NEW_BUTTON_TITLE}" accesskey="{$APP.LBL_NEW_BUTTON_KEY}" class="crmbutton small create" name="newsave" value="{$APP.LBL_NEW_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
+	  {/if}
 	  <input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" name="button2" onclick='window.history.back()' value="{$APP.LBL_CANCEL_BUTTON_LABEL}" type="button" />
 	</div>
   </td></tr>
@@ -300,15 +306,18 @@ function mandatoryCheck()
 var k;
 var colOpts;
 var manCheck = new Array({$MANDATORYCHECK});
+var permitAll = {$PERMITALL};
 {literal}
-if(document.CustomView.record.value == '') {
-	for(k=0;k<manCheck.length;k++) {
+if (document.CustomView.record.value == '') {
+	for (k=0; k<manCheck.length; k++) {
 		selname = "column"+(k+1);
 		selelement = document.getElementById(selname);
-		if(selelement == null || typeof selelement == 'undefined') continue;
+		if (selelement == null || typeof selelement == 'undefined') {
+			continue;
+		}
 		colOpts = selelement.options;
-		for (l=0;l<colOpts.length;l++) {
-			if(colOpts[l].value == manCheck[k]) {
+		for (l=0; l<colOpts.length; l++) {
+			if (colOpts[l].value == manCheck[k]) {
 				colOpts[l].selected = true;
 			}
 		}
@@ -316,14 +325,14 @@ if(document.CustomView.record.value == '') {
 }
 
 function validateCV() {
-	if(checkDuplicate()) {
+	if (checkDuplicate()) {
 		return checkAdvancedFilter();
 	}
 	return false;
 }
 
 function checkDuplicate() {
-	if(getObj('viewName').value.toLowerCase() == 'all') {
+	if (getObj('viewName').value.toLowerCase() == 'all' && !permitAll) {
 		alert(alert_arr.ALL_FILTER_CREATION_DENIED);
 		return false;
 	}
@@ -331,43 +340,37 @@ function checkDuplicate() {
 	for (var cols=1;cols<={/literal}{$ListView_MaxColumns}{literal};cols++) {
 		cvselect_array.push('column'+cols);
 	}
-	for(var loop=0;loop < cvselect_array.length-1;loop++) {
+	for (var loop=0;loop < cvselect_array.length-1;loop++) {
 		selected_cv_columnvalue = document.getElementById(cvselect_array[loop]).options[document.getElementById(cvselect_array[loop]).selectedIndex].value;
-		if(selected_cv_columnvalue != '') {
-			for(var iloop=loop+1;iloop < cvselect_array.length;iloop++) {
+		if (selected_cv_columnvalue != '') {
+			for (var iloop=loop+1;iloop < cvselect_array.length;iloop++) {
 				selected_cv_icolumnvalue = document.getElementById(cvselect_array[iloop]).options[document.getElementById(cvselect_array[iloop]).selectedIndex].value;
-				if(selected_cv_columnvalue == selected_cv_icolumnvalue) {
-					{/literal}
+				if (selected_cv_columnvalue == selected_cv_icolumnvalue) {{/literal}
 					alert('{$APP.COLUMNS_CANNOT_BE_DUPLICATED}');
 					document.getElementById(cvselect_array[iloop]).selectedIndex = 0;
 					return false;
 					{literal}
 				}
-
 			}
 		}
 	}
 	return true;
 }
 
-function stdfilterdateValidate()
-{
-	if(!dateValidate("startdate",alert_arr.STDFILTER+" - "+alert_arr.STARTDATE,"OTH"))
-	{
-		getObj("startdate").focus()
+function stdfilterdateValidate() {
+	if (!dateValidate('startdate', alert_arr.STDFILTER+' - '+alert_arr.STARTDATE, 'OTH')) {
+		getObj('startdate').focus()
 		return false;
-	}
-	else if(!dateValidate("enddate",alert_arr.STDFILTER+" - "+alert_arr.ENDDATE,"OTH"))
-	{
-		getObj("enddate").focus()
+	} else if (!dateValidate('enddate', alert_arr.STDFILTER+' - '+alert_arr.ENDDATE, 'OTH')) {
+		getObj('enddate').focus()
 		return false;
-	}
-	else
-	{
-		if (!dateComparison("enddate",alert_arr.STDFILTER+" - "+alert_arr.ENDDATE,"startdate",alert_arr.STDFILTER+" - "+alert_arr.STARTDATE,"GE")) {
-                        getObj("enddate").focus()
-                        return false
-                } else return true;
+	} else {
+		if (!dateComparison('enddate', alert_arr.STDFILTER+' - '+alert_arr.ENDDATE, 'startdate', alert_arr.STDFILTER+' - '+alert_arr.STARTDATE, 'GE')) {
+			getObj('enddate').focus()
+			return false
+		} else {
+			return true;
+		}
 	}
 }
 standardFilterDisplay();

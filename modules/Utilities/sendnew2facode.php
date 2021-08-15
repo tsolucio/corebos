@@ -19,7 +19,11 @@ include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 use \RobThree\Auth\TwoFactorAuth;
 
 if (Users::is_ActiveUserID($_REQUEST['authuserid'])) {
-	$tfa = new TwoFactorAuth('coreBOSWebApp');
+	global $current_user;
+	$current_user = new Users();
+	$current_user->retrieveCurrentUserInfoFromFile($_REQUEST['authuserid']);
+	$coreBOSWebApp = GlobalVariable::getVariable('Application_UI_Name', 'coreBOS').'-'.getUserName($_REQUEST['authuserid']);
+	$tfa = new TwoFactorAuth($coreBOSWebApp);
 	$twofasecret = coreBOS_Settings::getSetting('coreBOS_2FA_Secret_'.$_REQUEST['authuserid'], false);
 	if ($twofasecret===false) {
 		$secret = $tfa->createSecret(160);

@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
@@ -23,13 +22,12 @@
 				<form id="form" name="roleView" action="index.php" method="post" onsubmit="VtigerJS_DialogBox.block();">
 				<input type="hidden" name="module" value="Settings">
 				<input type="hidden" name="action" value="createrole">
-				<input type="hidden" name="parenttab" value="Settings">
 				<input type="hidden" name="returnaction" value="RoleDetailView">
 				<input type="hidden" name="roleid" value="{$ROLEID}">
 				<input type="hidden" name="mode" value="edit">
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ico-roles.gif'|@vtiger_imageurl:$THEME}" width="48" height="48" border=0 ></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listroles&parenttab=Settings">{$CMOD.LBL_ROLES}</a> &gt; {$CMOD.LBL_VIEWING} &quot;{$ROLE_NAME}&quot; </b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listroles">{$CMOD.LBL_ROLES}</a> &gt; {$CMOD.LBL_VIEWING} &quot;{$ROLE_NAME}&quot; </b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small cblds-p-v_none">{$CMOD.LBL_VIEWING} {$CMOD.LBL_PROPERTIES} &quot;{$ROLE_NAME}&quot; {$MOD.LBL_LIST_CONTACT_ROLE} </td>
@@ -70,7 +68,7 @@
 						<tr class="small">
 							<td width="16"><div align="center"></div></td>
 							<td>
-								<a href="index.php?module=Settings&action=profilePrivileges&parenttab=Settings&profileid={$elements.0}&mode=view">{$elements.1}</a><br>
+								<a href="index.php?module=Settings&action=profilePrivileges&profileid={$elements.0}&mode=view">{$elements.1}</a><br>
 							</td>
 						</tr>
 						{/foreach}
@@ -84,17 +82,13 @@
 						<tr class="small">
 							<td width="16"><div align="center"></div></td>
 							<td>
-								<a href="index.php?module=Users&action=DetailView&parenttab=Settings&record={$elements.0}">{$elements.1}</a><br>
+								<a href="index.php?module=Users&action=DetailView&record={$elements.0}">{$elements.1}</a><br>
 							</td>
 						</tr>
 						{/foreach}
 					{/if}
 					</table></td>
 					</tr>
-					</table>
-					<br>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr><td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 					</table>
 				</td>
 				</tr>

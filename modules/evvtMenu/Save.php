@@ -58,7 +58,7 @@ function delSavedMenu($savedone) {
 		$adb->pquery('delete from vtiger_savemenu where savemenuid=?', array($savedone));
 	}
 }
-$dosaved = vtlib_purify($_REQUEST['savedmenudo']);
+$dosaved = isset($_REQUEST['savedmenudo']) ? vtlib_purify($_REQUEST['savedmenudo']) : '';
 
 switch ($dosaved) {
 	case 'doSaveCurrent':
@@ -218,6 +218,5 @@ switch ($do) {
 		}
 		break;
 }
-$parenttab = getParentTab();
-header("Location:index.php?action=index&module=evvtMenu&parenttab=$parenttab");
+header('Location:index.php?action=index&module=evvtMenu');
 ?>

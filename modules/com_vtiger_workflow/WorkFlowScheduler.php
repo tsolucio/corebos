@@ -12,19 +12,52 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/Users/Users.php';
 
 class WorkFlowScheduler {
-	private $user;
 	private $db;
+	public static $conditionMapping = array(
+		'equal to' => 'e',
+		'less than' => 'l',
+		'greater than' => 'g',
+		'does not equal' => 'n',
+		'less than or equal to' => 'm',
+		'greater than or equal to' => 'h',
+		'is' => 'e',
+		'contains' => 'c',
+		'does not contain' => 'k',
+		'starts with' => 's',
+		'ends with' => 'ew',
+		'is not' => 'n',
+		'is empty' => 'y',
+		'is not empty' => 'ny',
+		'before' => 'l',
+		'after' => 'g',
+		'between' => 'bw',
+		'less than days ago' => 'bw',
+		'more than days ago' => 'l',
+		'in less than' => 'bw',
+		'in more than' => 'g',
+		'days ago' => 'e',
+		'days later' => 'e',
+		'less than hours before' => 'bw',
+		'less than hours later' => 'bw',
+		'more than hours before' => 'l',
+		'more than hours later' => 'g',
+		'is today' => 'e',
+		'exists' => 'exists',
+		'does not start with' => 'dnsw',
+		'does not end with' => 'dnew',
+		'monthday' => 'monthday',
+	);
 
 	public function __construct($adb) {
-		$util = new VTWorkflowUtils();
-		$adminUser = $util->adminUser();
-		$this->user = $adminUser;
 		$this->db = $adb;
 	}
 
 	public function getWorkflowQuery($workflow, $fields = array(), $addID = true, $user = null) {
+		$revertUser = false;
 		if (is_null($user)) {
-			$user = $this->user;
+			$revertUser = true;
+			$util = new VTWorkflowUtils();
+			$user = $util->adminUser();
 		}
 		$moduleName = $workflow->moduleName;
 
@@ -42,7 +75,7 @@ class WorkFlowScheduler {
 			foreach ($selectExpressions as $selectExpression) {
 				if ($selectExpression->valuetype == 'fieldname') {
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $selectExpression->fieldname, $valuematches);
-					if (count($valuematches) != 0) {
+					if (!empty($valuematches)) {
 						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
 					} else {
 						$queryGenerator->addWhereField($selectExpression->fieldname);
@@ -50,7 +83,7 @@ class WorkFlowScheduler {
 					$selectFields[] = $queryGeneratorSelect->getSQLColumn($selectExpression->value);
 				} elseif ($selectExpression->valuetype == 'expression') {
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $selectExpression->value, $valuematches);
-					if (count($valuematches) != 0) {
+					if (!empty($valuematches)) {
 						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
 					}
 					$selectFields[] = $substExpsSelect["::#$selectExpsCounter"]." AS $selectExpression->fieldname";
@@ -98,6 +131,9 @@ class WorkFlowScheduler {
 				}
 			}
 		}
+		if ($revertUser) {
+			$util->revertUser();
+		}
 		return $query;
 	}
 
@@ -118,10 +154,12 @@ class WorkFlowScheduler {
 	public function queueScheduledWorkflowTasks() {
 		global $default_timezone;
 		$adb = $this->db;
+		$util = new VTWorkflowUtils();
+		$user = $util->adminUser();
 
 		$vtWorflowManager = new VTWorkflowManager($adb);
 		$taskQueue = new VTTaskQueue($adb);
-		$entityCache = new VTEntityCache($this->user);
+		$entityCache = new VTEntityCache($user);
 
 		// set the time zone to the admin's time zone, this is needed so that the scheduled workflow will be triggered
 		// at admin's time zone rather than the systems time zone. This is specially needed for Hourly and Daily scheduled workflows
@@ -133,32 +171,31 @@ class WorkFlowScheduler {
 		$errortasks = array();
 		$scheduledWorkflows = $vtWorflowManager->getScheduledWorkflows($currentTimestamp);
 		foreach ($scheduledWorkflows as $workflow) {
+			if (!$workflow->activeWorkflow()) {
+				continue;
+			}
 			$tm = new VTTaskManager($adb);
 			$tasks = $tm->getTasksForWorkflow($workflow->id);
 			if ($tasks) {
 				$records = $this->getEligibleWorkflowRecords($workflow);
 				$noOfRecords = count($records);
 				for ($j = 0; $j < $noOfRecords; ++$j) {
+					$tasks = $tm->getTasksForWorkflow($workflow->id);
 					$recordId = $records[$j];
 					$moduleName = $workflow->moduleName;
 					$wsEntityId = vtws_getWebserviceEntityId($moduleName, $recordId);
 					$entityData = $entityCache->forId($wsEntityId);
+					$entityData->WorkflowContext = array();
 					$data = $entityData->getData();
 					foreach ($tasks as $task) {
 						if ($task->active) {
 							$trigger = (empty($task->trigger) ? null : $task->trigger);
-							$wfminutes=$workflow->schminuteinterval;
-							if ($wfminutes!=null) {
-								$time = time();
-								$delay=$time;
+							if ($trigger != null) {
+								$delay = strtotime($data[$trigger['field']]) + $trigger['days'] * 86400;
 							} else {
-								if ($trigger != null) {
-									$delay = strtotime($data[$trigger['field']]) + $trigger['days'] * 86400;
-								} else {
-									$delay = 0;
-								}
+								$delay = 0;
 							}
-							if ($task->executeImmediately == true && $wfminutes==null) {
+							if ($delay==0) {
 								if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
 									try {
 										$task->startTask($entityData);
@@ -182,49 +219,17 @@ class WorkFlowScheduler {
 			}
 			$vtWorflowManager->updateNexTriggerTime($workflow);
 		}
-		if (count($errortasks)>0) {
+		if (!empty($errortasks)) {
 			global $logbg;
 			$logbg->fatal('> *** Workflow Scheduled Tasks Errors:');
 			$logbg->fatal($errortasks);
 			$logbg->fatal('> **************************');
 		}
 		$scheduledWorkflows = null;
+		$util->revertUser();
 	}
 
 	public function addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions) {
-		$conditionMapping = array(
-			'equal to' => 'e',
-			'less than' => 'l',
-			'greater than' => 'g',
-			'does not equal' => 'n',
-			'less than or equal to' => 'm',
-			'greater than or equal to' => 'h',
-			'is' => 'e',
-			'contains' => 'c',
-			'does not contain' => 'k',
-			'starts with' => 's',
-			'ends with' => 'ew',
-			'is not' => 'n',
-			'is empty' => 'y',
-			'is not empty' => 'ny',
-			'before' => 'l',
-			'after' => 'g',
-			'between' => 'bw',
-			'less than days ago' => 'bw',
-			'more than days ago' => 'l',
-			'in less than' => 'bw',
-			'in more than' => 'g',
-			'days ago' => 'e',
-			'days later' => 'e',
-			'less than hours before' => 'bw',
-			'less than hours later' => 'bw',
-			'more than hours before' => 'l',
-			'more than hours later' => 'g',
-			'is today' => 'e',
-			'exists' => 'exists',
-			'does not start with' => 'dnsw',
-			'does not end with' => 'dnew',
-		);
 		$noOfConditions = is_array($conditions) ? count($conditions) : 0;
 		//Algorithm :
 		//1. If the query has already where condition then start a new group with and condition, else start a group
@@ -260,7 +265,7 @@ class WorkFlowScheduler {
 				$columnCondition = $condition['joincondition'];
 				$groupId = $condition['groupid'];
 				$groupJoin = (isset($condition['groupjoin']) ? $condition['groupjoin'] : '');
-				$operator = $conditionMapping[$operation];
+				$operator = self::$conditionMapping[$operation];
 				$fieldname = $condition['fieldname'];
 
 				if ($index > 0 && $groupId != $previous_condition['groupid']) { // if new group, end older group and start new
@@ -273,7 +278,7 @@ class WorkFlowScheduler {
 				}
 
 				if (empty($columnCondition) || $index > 0) {
-					$columnCondition = $previous_condition['joincondition'];
+					$columnCondition = isset($previous_condition['joincondition']) ? $previous_condition['joincondition'] : '';
 				}
 				if ($index > 0 && $groupId != $previous_condition['groupid']) {	//if first condition in new group, send empty condition to append
 					$columnCondition = null;
@@ -288,19 +293,24 @@ class WorkFlowScheduler {
 						foreach ($params as $param) {
 							if (is_object($param) && isset($param->value)) {
 								preg_match('/(\w+) : \((\w+)\) (\w+)/', $param->value, $parammatches);
-								if (count($parammatches) != 0) {
+								if (!empty($parammatches)) {
 									$queryGenerator->setReferenceFieldsManually($parammatches[1], $parammatches[2], $parammatches[3]);
 								}
 							}
 						}
 					}
 					$wfscenv = new cbexpsql_environmentstub($queryGenerator->getModule(), '0x0');
+					$wfscenv->returnReferenceValue = false;
 					$substExpressions['::#'.$substExpressionsIndex] = $exprEvaluater->evaluate($wfscenv, true);
 					if (is_object($substExpressions['::#'.$substExpressionsIndex])) {
 						$substExpressions['::#'.$substExpressionsIndex] = $substExpressions['::#'.$substExpressionsIndex]->value;
 					}
 					$value = '::#'.$substExpressionsIndex;
 					$substExpressionsIndex++;
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
+					if (count($matches) != 0) {
+						list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+					}
 				} else {
 					$value = html_entity_decode($value);
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
@@ -315,7 +325,7 @@ class WorkFlowScheduler {
 						}
 					}
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $value, $valuematches);
-					if (count($valuematches) != 0) {
+					if (!empty($valuematches)) {
 						list($value, $isfield) = self::getColumnFromField($value, true);
 						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
 					} elseif ($valueType=='fieldname' && strpos($value, '.')===false) {

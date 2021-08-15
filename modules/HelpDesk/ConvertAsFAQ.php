@@ -8,8 +8,9 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once "modules/Faq/Faq.php";
-
-$focus = new FAQ();
+require_once 'data/CRMEntity.php';
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk');
+$focus = new Faq();
 //Map the vtiger_fields like ticket column => vtiger_faq column where ticket column is the troubletikcets vtiger_field name & vtiger_faq - column_fields
 $ticket_faq_mapping_fields = array(
 	'title'=>'question',
@@ -20,7 +21,7 @@ $ticket_faq_mapping_fields = array(
 );
 $sql = 'select ticketid, title, product_id,vtiger_crmentity.description, solution,vtiger_troubletickets.status, category
 	from vtiger_troubletickets
-	inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
+	inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
 	where ticketid=?';
 $res = $adb->pquery($sql, array($_REQUEST['record']));
 

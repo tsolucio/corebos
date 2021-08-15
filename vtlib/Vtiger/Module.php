@@ -227,10 +227,6 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 	 * @param String Module name
 	 */
 	public static function getClassInstance($modulename) {
-		if ($modulename == 'Calendar') {
-			$modulename = 'Activity';
-		}
-
 		$instance = false;
 		$filepath = "modules/$modulename/$modulename.php";
 		if (Vtiger_Utils::checkFileAccessForInclusion($filepath, false)) {
@@ -247,12 +243,10 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 	 */
 	public static function fireEvent($modulename, $event_type) {
 		$instance = self::getClassInstance((string)$modulename);
-		if ($instance) {
-			if (method_exists($instance, 'vtlib_handler')) {
-				self::log("Invoking vtlib_handler for $event_type ...START");
-				$instance->vtlib_handler((string)$modulename, (string)$event_type);
-				self::log("Invoking vtlib_handler for $event_type ...DONE");
-			}
+		if ($instance && method_exists($instance, 'vtlib_handler')) {
+			self::log("Invoking vtlib_handler for $event_type ...START");
+			$instance->vtlib_handler((string)$modulename, (string)$event_type);
+			self::log("Invoking vtlib_handler for $event_type ...DONE");
 		}
 	}
 }

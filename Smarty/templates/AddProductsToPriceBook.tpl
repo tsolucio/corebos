@@ -8,12 +8,11 @@
  ********************************************************************************/
 -->
 <script>
-var parenttab = '{$CATEGORY}';
 function updateAllListPrice() {ldelim}
 	var unitprice_array = new Array({$UNIT_PRICE_ARRAY});
 	var fieldname_array = new Array({$FIELD_NAME_ARRAY});
 
-	var n=unitprice_array.length;	
+	var n=unitprice_array.length;
 	var unitprice,fieldname;
 	var id;
 	var fieldinfo;
@@ -24,7 +23,7 @@ function updateAllListPrice() {ldelim}
 		id = fieldinfo[0];
 		checkid = 'check_'+id;
 		unitprice=unitprice_array[j];
-		fieldname=fieldname_array[j];	
+		fieldname=fieldname_array[j];
 		updateListPrice(unitprice,fieldname,document.getElementById(checkid));
 	{rdelim}
 {rdelim}

@@ -16,14 +16,6 @@ function getFieldByReportLabel($module, $label) {
 	getColumnFields($module);
 	//lookup all the accessible fields
 	$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
-	if ($module == 'Calendar') {
-		$cachedEventsFields = VTCacheUtils::lookupFieldInfo_Module('Events');
-		if ($cachedModuleFields == false) {
-			$cachedModuleFields = $cachedEventsFields;
-		} else {
-			$cachedModuleFields = array_merge($cachedModuleFields, $cachedEventsFields);
-		}
-	}
 	if (empty($cachedModuleFields)) {
 		return null;
 	}
@@ -84,7 +76,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 	if ($fieldType == 'currency' && $value != '') {
 		// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
 		if ($field->getUIType() == '72') {
-			$curid_value = explode("::", $value);
+			$curid_value = explode('::', $value);
 			$currency_id = $curid_value[0];
 			$currency_value = $curid_value[1];
 			$cur_sym_rate = getCurrencySymbolandCRate($currency_id);
@@ -96,10 +88,15 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 			$currencyField = new CurrencyField($value);
 			$fieldvalue = $currencyField->getDisplayValue();
 		}
-	} elseif ($dbField->name == "PurchaseOrder_Currency" || $dbField->name == "SalesOrder_Currency"
-				|| $dbField->name == "Invoice_Currency" || $dbField->name == "Quotes_Currency" || $dbField->name == "PriceBooks_Currency") {
+	} elseif ($dbField->name == 'PurchaseOrder_Currency' || $dbField->name == 'SalesOrder_Currency' || $dbField->name == 'Invoice_Currency'
+		|| $dbField->name == 'Quotes_Currency' || $dbField->name == 'PriceBooks_Currency'
+	) {
 		if ($value!='') {
 			$fieldvalue = getTranslatedCurrencyString($value);
+		}
+	} elseif ($fieldType == 'double') {
+		if (!empty($value)) {
+			$fieldvalue = CurrencyField::convertToUserFormat($value, null, true);
 		}
 	} elseif ((in_array($dbField->name, $report->ui101_fields) || (isset($field) && $field->getUIType() == '52')) && !empty($value)) {
 		if (is_numeric($value)) {
@@ -110,7 +107,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		}
 	} elseif ($fieldType == 'date' && !empty($value)) {
 			$fieldvalue = DateTimeField::convertToUserFormat($value);
-	} elseif ($fieldType == "datetime" && !empty($value)) {
+	} elseif ($fieldType == 'datetime' && !empty($value)) {
 		$date = new DateTimeField($value);
 		$fieldvalue = $date->getDisplayDateTimeValue();
 		$user_format = ($current_user->hour_format=='24' ? '24' : '12');
@@ -119,11 +116,11 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 			list($dt,$tm) = explode(' ', $fieldvalue);
 			$fieldvalue = $dt . ' ' . $curr_time;
 		}
-	} elseif ($fieldType == "picklist" && !empty($value)) {
+	} elseif ($fieldType == 'picklist' && !empty($value)) {
 		$fieldvalue = getTranslatedString($value, $module);
-	} elseif ($fieldType == "multipicklist" && !empty($value)) {
-		if (count($picklistArray)>0 && is_array($picklistArray[1])) {
-			$valueList = explode(' |##| ', $value);
+	} elseif ($fieldType == 'multipicklist' && !empty($value)) {
+		if (!empty($picklistArray) && is_array($picklistArray[1])) {
+			$valueList = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 			$translatedValueList = array();
 			foreach ($valueList as $value) {
 				if (is_array($picklistArray[1][$dbField->name]) && !in_array($value, $picklistArray[1][$dbField->name])) {
@@ -132,12 +129,12 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 				$translatedValueList[] = getTranslatedString($value, $module);
 			}
 		}
-		if (count($picklistArray)==0 || !is_array($picklistArray[1]) || !is_array($picklistArray[1][$dbField->name])) {
-			$fieldvalue = str_replace(' |##| ', ', ', $value);
+		if (empty($picklistArray) || !is_array($picklistArray[1]) || !is_array($picklistArray[1][$dbField->name])) {
+			$fieldvalue = str_replace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $value);
 		} else {
 			$fieldvalue = implode(', ', $translatedValueList);
 		}
-	} elseif ($fieldType == "multireference" && !empty($value)) {
+	} elseif ($fieldType == 'multireference' && !empty($value)) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$content = getPicklistValuesSpecialUitypes($field->getUIType(), $field->getFieldName(), $value, 'DetailView');
 		$fieldvalue = strip_tags(implode(', ', $content));
@@ -151,18 +148,18 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 			$fieldvalue = $value;
 		}
 	}
-	if ($fieldvalue == "") {
-		return "-";
+	if ($fieldvalue == '') {
+		return '-';
 	}
-	$fieldvalue = str_replace("<", "&lt;", $fieldvalue);
-	$fieldvalue = str_replace(">", "&gt;", $fieldvalue);
+	$fieldvalue = str_replace('<', '&lt;', $fieldvalue);
+	$fieldvalue = str_replace('>', '&gt;', $fieldvalue);
 	$fieldvalue = decode_html($fieldvalue);
 
-	if (stristr($fieldvalue, "|##|") && empty($fieldType)) {
-		$fieldvalue = str_ireplace(' |##| ', ', ', $fieldvalue);
-	} elseif ($fld_type == "date" && empty($fieldType)) {
+	if (stristr($fieldvalue, '|##|') && empty($fieldType)) {
+		$fieldvalue = str_ireplace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $fieldvalue);
+	} elseif ($fld_type == 'date' && empty($fieldType)) {
 		$fieldvalue = DateTimeField::convertToUserFormat($fieldvalue);
-	} elseif ($fld_type == "datetime" && empty($fieldType)) {
+	} elseif ($fld_type == 'datetime' && empty($fieldType)) {
 		$date = new DateTimeField($fieldvalue);
 		$fieldvalue = $date->getDisplayDateTimeValue();
 	}
@@ -175,7 +172,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 	return $fieldvalue;
 }
 
-function report_getMoreInfoFromRequest($cbreporttype, $pmodule, $smodule, $pivotcolumns) {
+function report_getMoreInfoFromRequest($reporttype, $pmodule, $smodule, $pivotcolumns) {
 	global $adb, $default_charset;
 	if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='external') {
 		if (isset($_REQUEST['adduserinfo']) && ($_REQUEST['adduserinfo'] == 'on' || $_REQUEST['adduserinfo'] == 1)) {
@@ -232,10 +229,10 @@ function report_getMoreInfoFromRequest($cbreporttype, $pmodule, $smodule, $pivot
 		}
 		$sql = PivotTableSQL(
 			$adb->database, // adodb connection
-			$pmod->table_name.',vtiger_crmentity,'.$smod->table_name, // tables
+			$pmod->table_name.',vtiger_crmobject,'.$smod->table_name, // tables
 			$pivotcolumns, // rows (multiple fields allowed)
 			$pivotfield, // column to pivot on
-			$pmod->table_name.'.'.$pmod->table_index.'=vtiger_crmentity.crmid and vtiger_crmentity.deleted=0 and '.$reljoin, // joins/where
+			$pmod->table_name.'.'.$pmod->table_index.'=vtiger_crmobject.crmid and vtiger_crmobject.deleted=0 and '.$reljoin, // joins/where
 			$aggfield,
 			$agglabel,
 			vtlib_purify($_REQUEST['crosstabaggfunction'])

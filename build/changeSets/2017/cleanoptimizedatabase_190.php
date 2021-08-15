@@ -41,21 +41,15 @@ class cleanoptimizedatabase_190 extends cbupdaterWorker {
 			// Change fieldLabel of description field to Description - Project modules.
 			$fieldId = getFieldid(getTabid('Project'), 'description');
 			if ($fieldId) {
-				$fieldModel = Vtiger_Field::getInstance($fieldId);
-				$fieldModel->label = 'Description';
-				$fieldModel->save();
+				$this->ExecuteQuery('UPDATE vtiger_field SET fieldlabel=? where fieldid=?', array('Description', $fieldId));
 			}
 			$fieldId = getFieldid(getTabid('ProjectMilestone'), 'description');
 			if ($fieldId) {
-				$fieldModel = Vtiger_Field::getInstance($fieldId);
-				$fieldModel->label = 'Description';
-				$fieldModel->save();
+				$this->ExecuteQuery('UPDATE vtiger_field SET fieldlabel=? where fieldid=?', array('Description', $fieldId));
 			}
 			$fieldId = getFieldid(getTabid('ProjectTask'), 'description');
 			if ($fieldId) {
-				$fieldModel = Vtiger_Field::getInstance($fieldId);
-				$fieldModel->label = 'Description';
-				$fieldModel->save();
+				$this->ExecuteQuery('UPDATE vtiger_field SET fieldlabel=? where fieldid=?', array('Description', $fieldId));
 			}
 
 			$columns = $adb->getColumnNames('vtiger_modcomments');

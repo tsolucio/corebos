@@ -29,8 +29,8 @@ function getTopPurchaseOrder($maxval, $calCnt) {
 	$order_by = '';
 	$oCustomView = new CustomView("PurchaseOrder");
 	$oCustomView->getCustomViewCombo();
-	if (isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='') {
-		if ($oCustomView->setdefaultviewid != "") {
+	if (!isset($_REQUEST['viewname']) || $_REQUEST['viewname']=='') {
+		if ($oCustomView->setdefaultviewid != '') {
 			$viewid = $oCustomView->setdefaultviewid;
 		} else {
 			$viewid = "0";

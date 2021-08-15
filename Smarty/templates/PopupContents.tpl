@@ -18,9 +18,9 @@
 		{if $RECORD_ID}
 			<td style="padding-left:10px;" align="left" width=10%><input class="crmbutton small save" type="button" value="{$APP.LBL_BACK}" onclick="window.history.back();"/></td>
 		{/if}
-		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAll('{$RETURN_MODULE}',image_pth) && document.getElementById('closewindow').value=='true')window.close();"/></td>
+		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAll('{$RETURN_MODULE}') && document.getElementById('closewindow').value=='true')window.close();"/></td>
 	{elseif $SELECT eq 'enable' && $POPUPTYPE eq 'inventory_service'}
-		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAllServices('{$RETURN_MODULE}',image_pth) && document.getElementById('closewindow').value=='true')window.close();"/></td>
+		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAllServices('{$RETURN_MODULE}') && document.getElementById('closewindow').value=='true')window.close();"/></td>
 	{else}
 		<td>&nbsp;</td>
 	{/if}
@@ -35,7 +35,7 @@
 		<input name="entityid" type="hidden" value="">
 		<input name="popuptype" type="hidden" value="{$POPUPTYPE}">
 		<input name="idlist" type="hidden" value="">
-		<div style="overflow:auto;height:348px;">
+		<div style="overflow:auto;height:calc(100vh - 200px);">
 		<table style="background-color: rgb(204, 204, 204);" class="small popup-table" border="0" cellpadding="5" cellspacing="1" width="100%">
 		<tbody>
 		<tr>
@@ -54,7 +54,7 @@
 		{foreach key=entity_id item=entity from=$LISTENTITY}
 		<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" >
 			{if $SELECT eq 'enable'}
-				<td><input type="checkbox" name="selected_id" value="{$entity_id}" onClick=toggleSelectAll(this.name,"select_all")></td>
+				<td><input type="checkbox" name="selected_id" value="{$entity_id}" onClick=toggleSelectAll(this.name,"select_all",this)></td>
 			{/if}
 			{foreach item=data from=$entity}
 				<td onMouseOver="vtlib_listview.trigger('cell.onmouseover', this);" onMouseOut="vtlib_listview.trigger('cell.onmouseout', this)">{$data}</td>

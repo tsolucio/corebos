@@ -156,7 +156,7 @@ class UserPrivileges {
 	}
 
 	/**
-	 * @return array(int)
+	 * @return array of integer group IDs
 	 */
 	public function getGroups() {
 		return $this->groups;

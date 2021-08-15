@@ -899,7 +899,7 @@ class PHPMailer
             return false;
         }
         // Immediately add standard addresses without IDN.
-        return call_user_func_array(array($this, 'addAnAddress'), $params);
+        return call_user_func_array(array($this, 'addAnAddress'), array_values($params));
     }
 
     /**
@@ -1237,7 +1237,7 @@ class PHPMailer
             // Dequeue recipient and Reply-To addresses with IDN
             foreach (array_merge($this->RecipientsQueue, $this->ReplyToQueue) as $params) {
                 $params[1] = $this->punyencodeAddress($params[1]);
-                call_user_func_array(array($this, 'addAnAddress'), $params);
+                call_user_func_array(array($this, 'addAnAddress'), array_values($params));
             }
             if ((count($this->to) + count($this->cc) + count($this->bcc)) < 1) {
                 throw new phpmailerException($this->lang('provide_address'), self::STOP_CRITICAL);
@@ -2711,26 +2711,8 @@ class PHPMailer
             if (!self::isPermittedPath($path) or !file_exists($path)) {
                 throw new phpmailerException($this->lang('file_open') . $path, self::STOP_CONTINUE);
             }
-            $magic_quotes = get_magic_quotes_runtime();
-            if ($magic_quotes) {
-                if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-                    set_magic_quotes_runtime(false);
-                } else {
-                    //Doesn't exist in PHP 5.4, but we don't need to check because
-                    //get_magic_quotes_runtime always returns false in 5.4+
-                    //so it will never get here
-                    ini_set('magic_quotes_runtime', false);
-                }
-            }
             $file_buffer = file_get_contents($path);
             $file_buffer = $this->encodeString($file_buffer, $encoding);
-            if ($magic_quotes) {
-                if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-                    set_magic_quotes_runtime($magic_quotes);
-                } else {
-                    ini_set('magic_quotes_runtime', $magic_quotes);
-                }
-            }
             return $file_buffer;
         } catch (Exception $exc) {
             $this->setError($exc->getMessage());
@@ -4038,7 +4020,7 @@ class PHPMailer
     {
         if (!empty($this->action_function) && is_callable($this->action_function)) {
             $params = array($isSent, $to, $cc, $bcc, $subject, $body, $from);
-            call_user_func_array($this->action_function, $params);
+            call_user_func_array($this->action_function, array_values($params));
         }
     }
 }

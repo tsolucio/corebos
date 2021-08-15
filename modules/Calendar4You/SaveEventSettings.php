@@ -12,8 +12,11 @@ global $adb,$current_user;
 
 $user_view_type = $_REQUEST['user_view_type'];
 
-$mode = $_REQUEST['mode'];
-$entity = $_REQUEST['id'];
+$mode = vtlib_purify($_REQUEST['mode']);
+if ($mode=='module') {
+	$mode = 'type';
+}
+$entity = vtlib_purify($_REQUEST['id']);
 
 $adb->pquery('delete from its4you_calendar4you_colors where userid=? and mode=? and entity=?', array($current_user->id,$mode,$entity));
 

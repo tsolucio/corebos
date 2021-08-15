@@ -64,23 +64,20 @@ if (isPermitted('VtigerBackup', '')=='yes') {
 			}
 		}
 	}
-	if ($server_type == 'ftp_backup' || $server_type == 'local_backup') {
-		if ($db_update) {
-			$sql='select * from vtiger_systems where server_type = ?';
-			$idrs=$adb->pquery($sql, array($server_type));
-			if ($idrs && $adb->num_rows($idrs)>0) {
-				$id=$adb->query_result($idrs, 0, 'id');
-				$sql='update vtiger_systems set
-					server = ?, server_username = ?, server_password = ?, smtp_auth= ?, server_type = ?, server_port= ?, server_path = ?, from_email_field=?
-					where id = ?';
-				$params = array($server, $server_username, $server_password, $smtp_auth, $server_type, $port, $server_path,$from_email_field, $id);
-			} else {
-				$id = $adb->getUniqueID('vtiger_systems');
-				$sql= 'insert into vtiger_systems values(?,?,?,?,?,?,?,?,?)';
-				$params = array($id, $server, $port, $server_username, $server_password, $server_type, $smtp_auth,$server_path,$from_email_field);
-			}
-			$adb->pquery($sql, $params);
+	if ($db_update && ($server_type == 'ftp_backup' || $server_type == 'local_backup')) {
+		$idrs = $adb->pquery('select * from vtiger_systems where server_type=?', array($server_type));
+		if ($idrs && $adb->num_rows($idrs)>0) {
+			$id=$adb->query_result($idrs, 0, 'id');
+			$sql='update vtiger_systems set
+				server=?, server_username=?, server_password=?, smtp_auth=?, server_type=?, server_port=?, server_path=?, from_email_field=?
+				where id=?';
+			$params = array($server, $server_username, $server_password, $smtp_auth, $server_type, $port, $server_path,$from_email_field, $id);
+		} else {
+			$id = $adb->getUniqueID('vtiger_systems');
+			$sql= 'insert into vtiger_systems values(?,?,?,?,?,?,?,?,?)';
+			$params = array($id, $server, $port, $server_username, $server_password, $server_type, $smtp_auth,$server_path,$from_email_field);
 		}
+		$adb->pquery($sql, $params);
 	}
 	header("Location: index.php?module=VtigerBackup&action=$action".$error_str);
 } else {

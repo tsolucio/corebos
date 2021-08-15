@@ -18,7 +18,6 @@
 }
 </style>
 {/literal}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="modules/Settings/profilePrivileges.js"></script>
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
@@ -31,7 +30,6 @@
 		<!-- DISPLAY -->
 		<form action="index.php" method="post" name="profileform" id="form">
 			<input type="hidden" name="module" value="Users">
-			<input type="hidden" name="parenttab" value="Settings">
 			<input type="hidden" name="action" value="{$ACTION}">
 			<input type="hidden" name="mode" value="{$MODE}">
 			<input type="hidden" name="profileid" value="{$PROFILEID}">
@@ -43,7 +41,7 @@
 			<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tbody><tr>
 					<td rowspan="2" valign="top" width="50" class="cblds-p_none"><img src="{'ico-profile.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROFILES}" title="{$MOD.LBL_PROFILES}" border="0" height="48" width="48"></td>
-					<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=ListProfiles&parenttab=Settings">{$CMOD.LBL_PROFILE_PRIVILEGES}</a> &gt; {$CMOD.LBL_VIEWING} &quot;{$PROFILE_NAME}&quot;</b></td>
+					<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=ListProfiles">{$CMOD.LBL_PROFILE_PRIVILEGES}</a> &gt; {$CMOD.LBL_VIEWING} &quot;{$PROFILE_NAME}&quot;</b></td>
 				</tr>
 				<tr>
 					<td class="small cblds-p-v_none" valign="top">{$CMOD.LBL_PROFILE_MESG} &quot;{$PROFILE_NAME}&quot; </td>
@@ -191,12 +189,8 @@
 								<tbody>
 						{if !empty($FIELD_PRIVILEGES[$tabid])}
 						<tr>
-							{if $modulename eq 'Calendar'}
-								<td class="small colHeader cblds-p-v_mediumsmall" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
-							{else}
-								<td class="small colHeader cblds-p-v_mediumsmall" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
-							{/if}
-							</tr>
+							<td class="small colHeader cblds-p-v_mediumsmall" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
+						</tr>
 						{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
 							<tr>
 							{foreach item=element from=$row_values}
@@ -279,10 +273,6 @@
 	  </table></td>
 	  </tr>
 	  </tbody></table>
-	<p>&nbsp;</p>
-	<table border="0" cellpadding="5" cellspacing="0" width="100%">
-	<tbody><tr><td class="small cblds-t-align_right" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
-	</tbody></table>
 	</td>
 	</tr>
 	</tbody></table>

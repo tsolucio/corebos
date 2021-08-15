@@ -34,8 +34,6 @@
 		 </row>
 	   </layout>
 	   <loadfrom></loadfrom> related list label or id | file to load | widget reference
-	   <loadcode></loadcode>
-	   <handler_path></handler_path>
 	   <handler_class></handler_class>
 	   <handler></handler>
 	 </block>
@@ -74,22 +72,23 @@ class DetailViewLayoutMapping extends processcbMap {
 
 	private function convertMap2Array($crmid) {
 		global $adb, $current_user;
-		$userPrivs = $current_user->getPrivileges();
-
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
+		$userPrivs = $current_user->getPrivileges();
 		$mapping = array();
 		$restrictedRelations = array();
 		$mapping['blocks'] = array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$origintab = getTabid($mapping['origin']);
 
-		foreach ($xml->blocks->block as $key => $value) {
+		foreach ($xml->blocks->block as $value) {
 			$block = array();
 			$block['type'] = (String)$value->type;
 			$block['sequence'] = (String)$value->sequence;
 			$block['label'] = getTranslatedString((String)$value->label, $mapping['origin']);
 			$block['loadfrom'] = (String)$value->loadfrom;
-			$block['loadcode'] = (isset($value->loadcode) ? (String)$value->loadcode : '');
 			$block['blockid'] = (isset($value->blockid) ? (String)$value->blockid : '');
 
 			if ($block['type']=='RelatedList') {
@@ -118,8 +117,8 @@ class DetailViewLayoutMapping extends processcbMap {
 				$row['linkurl']  = decode_html($block['loadfrom']);
 				$row['linkicon'] = '';
 				$row['sequence'] = $block['sequence'];
-				//$row['status'] = '';
-				$row['handler_path'] = (isset($value->handler_path) ? (String)$value->handler_path : '');
+				$row['onlyonmymodule'] = 1;
+				$row['handler_path'] = (isset($value->loadfrom) ? (String)$value->loadfrom : '');
 				$row['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
 				$row['handler'] = (isset($value->handler) ? (String)$value->handler : '');
 				$instance->initialize($row);
@@ -138,65 +137,84 @@ class DetailViewLayoutMapping extends processcbMap {
 				$instance->linkurl = $strtemplate->merge($instance->linkurl);
 				$block['instance'] = $instance;
 			} elseif ($block['type']=='FieldList') {
+				$orgtabid = getTabid($mapping['origin']);
+				if (empty(VTCacheUtils::$_fieldinfo_cache[$orgtabid])) {
+					getColumnFields($mapping['origin']);
+				}
 				$block['layout'] = array();
 				$idx = 0;
-				foreach ($value->layout->row as $k => $v) {
+				foreach ($value->layout->row as $v) {
 					$block['layout'][$idx] = array();
 					foreach ($v->column as $column) {
-						$block['layout'][$idx][] = (String) $column;
+						if (getFieldVisibilityPermission($mapping['origin'], $current_user->id, (String)$column) != '0') {
+							continue;
+						}
+						$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, (String)$column);
+						$lblraw = $finfo['fieldlabel'];
+						$block['layout'][$idx][] = array(
+							'columnname' => $finfo['columnname'],
+							'fieldname' => $finfo['fieldname'],
+							'label' => getTranslatedString($lblraw, $mapping['origin']),
+							'labelraw' => $lblraw,
+							'uitype' => $finfo['uitype'],
+						);
 					}
 					$idx++;
 				}
 			} elseif ($block['type']=='ApplicationFields') {
+				if (empty($block['label'])) {
+					$block['label'] = getTranslatedString(getBlockName($block['blockid']), $mapping['origin']);
+				}
 				if ($userPrivs->hasGlobalWritePermission() || $mapping['origin'] == 'Users' || $mapping['origin'] == 'Emails') {
-					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.uitype, sequence
+					$sql = 'SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
 						FROM vtiger_field
 						WHERE vtiger_field.fieldid IN (
-								SELECT MAX(vtiger_field.fieldid) FROM vtiger_field WHERE vtiger_field.tabid=? GROUP BY vtiger_field.columnname
-							) AND vtiger_field.block=? AND vtiger_field.displaytype IN (1,2,4) AND vtiger_field.presence IN (0,2)
-						ORDER BY sequence";
+							SELECT MAX(vtiger_field.fieldid) FROM vtiger_field WHERE vtiger_field.tabid=? GROUP BY vtiger_field.columnname
+						) AND vtiger_field.block=? AND vtiger_field.displaytype IN (1,2,4) AND vtiger_field.presence IN (0,2) ORDER BY sequence';
 					$params = array($origintab, $block['blockid']);
 				} elseif ($userPrivs->hasGlobalViewPermission()) { // view all
 					$profileList = getCurrentUserProfileList();
-					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.uitype, sequence
+					$sql = 'SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 						WHERE vtiger_field.tabid=? AND vtiger_field.block=? AND vtiger_field.displaytype IN (1,2,4)
-							AND vtiger_field.presence IN (0,2) AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ")
-						ORDER BY sequence";
+							AND vtiger_field.presence IN (0,2) AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') ORDER BY sequence';
 					$params = array($origintab, $block['blockid'], $profileList);
 				} else {
 					$profileList = getCurrentUserProfileList();
-					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.uitype, sequence
+					$sql = 'SELECT distinct vtiger_field.columnname, vtiger_field.fieldname, vtiger_field.fieldlabel, vtiger_field.uitype, sequence
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 						INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
 						WHERE vtiger_field.tabid=? AND vtiger_field.block=?
 							AND vtiger_field.displaytype IN (1,2,4) AND vtiger_field.presence IN (0,2)
 							AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0
-							AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ")
-						ORDER BY sequence";
+							AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') ORDER BY sequence';
 					$params = array($origintab, $block['blockid'], $profileList);
 				}
 
 				$result = $adb->pquery($sql, $params);
 				$noofrows = $adb->num_rows($result);
-
 				$block['layout'] = array();
-				$idx = 0;
-				for ($i = 0; $i < $noofrows; $i++) {
-					$fieldcolname = $adb->query_result($result, $i, 'columnname');
-					$uitype = $adb->query_result($result, $i, 'uitype');
-
-					if (!isset($block['layout'][$idx])) {
-						$block['layout'][$idx] = array($fieldcolname);
-						if ($uitype == 19) {
-							$idx++;
-						}
-					} else {
-						$block['layout'][$idx][] = $fieldcolname;
-						$idx++;
-					}
+				for ($idx = 0; $idx < $noofrows; $idx++) {
+					$lblraw = $adb->query_result($result, $idx, 'fieldlabel');
+					$block['layout'][$idx] = array(
+						'columnname' => $adb->query_result($result, $idx, 'columnname'),
+						'fieldname' => $adb->query_result($result, $idx, 'fieldname'),
+						'label' => getTranslatedString($lblraw, $mapping['origin']),
+						'labelraw' => $lblraw,
+						'uitype' => $adb->query_result($result, $idx, 'uitype'),
+					);
+				}
+			} elseif ($block['type']=='CodeWithHeader' || $block['type']=='CodeWithoutHeader') {
+				$block['loadfrom'] = (isset($value->loadfrom) ? (String)$value->loadfrom : '');
+				$block['handler_class'] = '';
+				$block['handler'] = '';
+				if (!empty($block['loadfrom']) && file_exists($block['loadfrom']) && isInsideApplication($block['loadfrom'])) {
+					$block['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
+					$block['handler'] = (isset($value->handler) ? (String)$value->handler : '');
+				} else {
+					$block['loadfrom'] = '';
 				}
 			}
 			$mapping['blocks'][$block['sequence']] = $block;

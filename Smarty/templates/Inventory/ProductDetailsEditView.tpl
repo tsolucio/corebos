@@ -15,8 +15,7 @@ if(typeof(e) != 'undefined')
 
 //  window.onmousemove= displayCoords;
 //  window.onclick = fnRevert;
-function displayCoords(currObj,obj,mode,curr_row) 
-{ldelim}
+function displayCoords(currObj,obj,mode,curr_row) {ldelim}
 	if(mode != 'discount_final' && mode != 'sh_tax_div_title' && mode != 'group_tax_div_title')
 	{ldelim}
 		var curr_productid = document.getElementById("hdnProductId"+curr_row).value;
@@ -73,8 +72,11 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{rdelim}
 	document.getElementById(obj).style.display = "block";
 {rdelim}
-
+{if empty($moreinfofields)}
+	var moreInfoFields = Array();
+{else}
 	var moreInfoFields = Array({$moreinfofields});
+{/if}
 </script>
 
 <tr><td colspan="4" align="left">
@@ -162,7 +164,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 1 - delete link - starts -->
 	<td class="crmTableRow small lineOnTop inv-editview__toolscol">
 		{if $row_no neq 1}
-			<img src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" onclick="deleteRow('{$MODULE}',{$row_no},'{$IMAGE_PATH}')" style="cursor:pointer;" title="{'LBL_DELETE'|@getTranslatedString:'Settings'}">
+			<img src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" onclick="deleteRow('{$MODULE}',{$row_no})" style="cursor:pointer;" title="{'LBL_DELETE'|@getTranslatedString:'Settings'}">
 		{/if}<br/><br/>
 		{if $row_no neq 1}
 			&nbsp;<a href="javascript:moveUpDown('UP','{$MODULE}',{$row_no})" title="{'LBL_MOVE'|@getTranslatedString:'Settings'} {'LBL_UP'|@getTranslatedString:'Settings'}"><img src="{'up_layout.gif'|@vtiger_imageurl:$THEME}" border="0"></a>
@@ -187,6 +189,18 @@ function displayCoords(currObj,obj,mode,curr_row)
 						<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 							<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
 								<input id="{$productName}" name="{$productName}" class="slds-input slds-combobox__input cbds-inventoryline__input_name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{$data.$productName}" type="text" style="box-shadow: none;">
+								<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+									<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+									</svg>
+								</span>
+								<div class="slds-input__icon-group slds-input__icon-group_right">
+									<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small slds-input__spinner slds-hide">
+										<span class="slds-assistive-text">{'LBL_LOADING'|@getTranslatedString}</span>
+										<div class="slds-spinner__dot-a"></div>
+										<div class="slds-spinner__dot-b"></div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -208,7 +222,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			</tr>
 			<tr>
 				<td class="small cblds-p_none" id="setComment">
-					<textarea id="{$comment}" name="{$comment}" class=small style="width:70%;height:40px">{$data.$comment}</textarea>
+					<textarea id="{$comment}" name="{$comment}" class=small style="{$Inventory_Comment_Style}">{$data.$comment}</textarea>
 					<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" onClick="getObj('{$comment}').value=''" style="cursor:pointer;" />
 				</td>
 			</tr>
@@ -240,35 +254,50 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 4 - Quantity - ends -->
 
 	<!-- column 5 - List Price with Discount, Total After Discount and Tax as table - starts -->
-	<td class="crmTableRow small lineOnTop inv-editview__pricecol" align="right" valign="top">
-		<table width="100%" cellpadding="0" cellspacing="0">
+	<td class="crmTableRow small lineOnTop inv-editview__pricecol" valign="top">
+		<table class="slds-table slds-table_cell-buffer">
+		<tbody>
 		   <tr>
-			<td align="right">
+			<td style="padding-right:0px;">
 				<input id="{$listPrice}" name="{$listPrice}" value="{$data.$listPrice}" type="text" class="small" style="width:70px" onBlur="calcTotal(); setDiscount(this,'{$row_no}');callTaxCalc('{$row_no}');"{if $Inventory_ListPrice_ReadOnly} readonly{/if}/>&nbsp;{if 'PriceBooks'|vtlib_isModuleActive}<img src="{'pricebook.gif'|@vtiger_imageurl:$THEME}" onclick="priceBookPickList(this,'{$row_no}')">{/if}
 			</td>
 		   </tr>
 		   <tr>
-			<td align="right" style="padding:5px;" nowrap>
+			<td style="padding:5px;" nowrap>
 				(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'discount_div{$row_no}','discount','{$row_no}')" >{$APP.LBL_DISCOUNT}</a> : </b>
 				<div class="discountUI" id="discount_div{$row_no}">
 					<input type="hidden" id="discount_type{$row_no}" name="discount_type{$row_no}" value="{if isset($data.$discount_type)}{$data.$discount_type}{/if}">
-					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
+					<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+					<thead>
+						<tr class="slds-line-height_reset">
+						<th id="discount_div_title{$row_no}" class="slds-p-left_none" scope="col"></th>
+						<th class="cblds-t-align_right slds-p-right_none" scope="col"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('discount_div{$row_no}')" style="cursor:pointer;"></th>
+						</tr>
+					</thead>
+					<tbody>
 					   <tr>
-						<td id="discount_div_title{$row_no}" nowrap align="left" ></td>
-						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('discount_div{$row_no}')" style="cursor:pointer;"></td>
+						<td class="lineOnTop" style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount{$row_no}" {if isset($data.$checked_discount_zero)}{$data.$checked_discount_zero}{/if} onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}');calcTotal();">&nbsp; {$APP.LBL_ZERO_DISCOUNT}
+						</td>
+						<td class="lineOnTop ">&nbsp;</td>
 					   </tr>
 					   <tr>
-						<td align="left" class="lineOnTop"><input type="radio" name="discount{$row_no}" {if isset($data.$checked_discount_zero)}{$data.$checked_discount_zero}{/if} onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}');calcTotal();">&nbsp; {$APP.LBL_ZERO_DISCOUNT}</td>
-						<td class="lineOnTop">&nbsp;</td>
+						<td style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount{$row_no}" onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();" {if isset($data.$checked_discount_percent)}{$data.$checked_discount_percent}{/if}>&nbsp; % {$APP.LBL_OF_PRICE}
+						</td>
+						<td style="padding-left: 2px; padding-right: 4px;">
+							<input type="text" class="small" size="5" id="discount_percentage{$row_no}" name="discount_percentage{$row_no}" value="{$data.$discount_percent}" {if isset($data.$style_discount_percent)}{$data.$style_discount_percent}{/if} onBlur="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();">&nbsp;%
+						</td>
 					   </tr>
 					   <tr>
-						<td align="left"><input type="radio" name="discount{$row_no}" onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();" {if isset($data.$checked_discount_percent)}{$data.$checked_discount_percent}{/if}>&nbsp; % {$APP.LBL_OF_PRICE}</td>
-						<td align="right"><input type="text" class="small" size="5" id="discount_percentage{$row_no}" name="discount_percentage{$row_no}" value="{$data.$discount_percent}" {if isset($data.$style_discount_percent)}{$data.$style_discount_percent}{/if} onBlur="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();">&nbsp;%</td>
+						<td nowrap style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount{$row_no}" onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();" {if isset($data.$checked_discount_amount)}{$data.$checked_discount_amount}{/if}>&nbsp;{$APP.LBL_DIRECT_PRICE_REDUCTION}
+						</td>
+						<td style="padding-left: 2px; padding-right: 4px;">
+							<input type="text" id="discount_amount{$row_no}" name="discount_amount{$row_no}" size="5" value="{$data.$discount_amount}" {if isset($data.$style_discount_amount)}{$data.$style_discount_amount}{/if} onBlur="setDiscount(this,{$row_no}); callTaxCalc('{$row_no}'); calcTotal();">
+						</td>
 					   </tr>
-					   <tr>
-						<td align="left" nowrap><input type="radio" name="discount{$row_no}" onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();" {if isset($data.$checked_discount_amount)}{$data.$checked_discount_amount}{/if}>&nbsp;{$APP.LBL_DIRECT_PRICE_REDUCTION}</td>
-						<td align="right"><input type="text" id="discount_amount{$row_no}" name="discount_amount{$row_no}" size="5" value="{$data.$discount_amount}" {if isset($data.$style_discount_amount)}{$data.$style_discount_amount}{/if} onBlur="setDiscount(this,{$row_no}); callTaxCalc('{$row_no}'); calcTotal();"></td>
-					   </tr>
+					</tbody>
 					</table>
 				</div>
 			</td>
@@ -279,7 +308,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			</td>
 		   </tr>
 		   <tr id="individual_tax_row{$row_no}" class="TaxShow">
-			<th align="right" class="cblds-t-align_right" style="padding:5px;" nowrap>
+			<th class="cblds-t-align_right" style="padding:5px;" nowrap>
 				(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'tax_div{$row_no}','tax','{$row_no}')" >{$APP.LBL_TAX} </a> : </b>
 				<div class="discountUI" id="tax_div{$row_no}">
 					<!-- we will form the table with all taxes -->
@@ -303,7 +332,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 							<input type="text" class="small" size="5" name="{$taxname}" id="{$taxname}" value="{$tax_data.percentage}" onBlur="calcCurrentTax('{$taxname}',{$row_no},{$tax_row_no})">&nbsp;%
 							<input type="hidden" id="{$tax_id_name}" value="{$taxname}">
 						</td>
-						<td>{$tax_data.taxlabel}&nbsp;</td>
+						<td style="padding-left: 2px;padding-right: 2px;">{$tax_data.taxlabel}&nbsp;</td>
 						<td class="cblds-t-align_right slds-p-right_none">
 							<input type="text" class="small" size="6" name="{$popup_tax_rowname}" id="{$popup_tax_rowname}{$smarty.foreach.taxloop.iteration}" style="cursor:pointer;" value="0.0" readonly>
 						</td>
@@ -316,31 +345,34 @@ function displayCoords(currObj,obj,mode,curr_row)
 				<!-- This above div is added to display the tax informations -->
 			</td>
 		   </tr>
+		</tbody>
 		</table>
 	</td>
 	<!-- column 5 - List Price with Discount, Total After Discount and Tax as table - ends -->
 
 	<!-- column 6 - Product Total - starts -->
-	<td class="crmTableRow small lineOnTop inv-editview__totalscol"align="right">
-		<table width="100%" cellpadding="5" cellspacing="0">
+	<td class="crmTableRow small lineOnTop inv-editview__totalscol">
+		<table class="slds-table slds-table_cell-buffer">
+		<tbody>
 		   <tr>
-			<td id="productTotal{$row_no}" align="right">{$data.$productTotal}</td>
+			<td id="productTotal{$row_no}" style="padding-top:6px;">{$data.$productTotal}</td>
 		   </tr>
 		   <tr>
-			<td id="discountTotal{$row_no}" align="right">{$data.$discountTotal}</td>
+			<td id="discountTotal{$row_no}" style="padding-top:6px;">{$data.$discountTotal}</td>
 		   </tr>
 		   <tr>
-			<td id="totalAfterDiscount{$row_no}" align="right">{$data.$totalAfterDiscount}</td>
+			<td id="totalAfterDiscount{$row_no}" style="padding-top:6px;">{$data.$totalAfterDiscount}</td>
 		   </tr>
 		   <tr>
-			<td id="taxTotal{$row_no}" align="right">{$data.$taxTotal}</td>
+			<td id="taxTotal{$row_no}" style="padding-top:6px;">{$data.$taxTotal}</td>
 		   </tr>
+		</tbody>
 		</table>
 	</td>
 	<!-- column 6 - Product Total - ends -->
 
 	<!-- column 7 - Net Price - starts -->
-	<td valign="bottom" class="crmTableRow small lineOnTop inv-editview__netpricecol" align="right">
+	<td valign="bottom" class="crmTableRow small lineOnTop inv-editview__netpricecol">
 		<span id="netPrice{$row_no}"><b>{$data.$netPrice}</b></span>
 	</td>
 	<!-- column 7 - Net Price - ends -->
@@ -358,17 +390,17 @@ function displayCoords(currObj,obj,mode,curr_row)
    <tr>
 	<td colspan="3" class="cblds-p_medium">
 		{if 'Products'|vtlib_isModuleActive}
-		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_PRODUCT}" onclick="fnAddProductRow('{$MODULE}','{$IMAGE_PATH}');" />
+		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_PRODUCT}" onclick="fnAddProductRow('{$MODULE}');" />
 		{/if}
 		{if 'Services'|vtlib_isModuleActive}
 		&nbsp;&nbsp;
-		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_SERVICE}" onclick="fnAddServiceRow('{$MODULE}','{$IMAGE_PATH}');" />
+		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_SERVICE}" onclick="fnAddServiceRow('{$MODULE}');" />
 		{/if}
 	</td>
    </tr>
 
 <!--
-All these details are stored in the first element in the array with the index name as final_details 
+All these details are stored in the first element in the array with the index name as final_details
 so we will get that array, parse that array and fill the details
 -->
 {assign var="FINAL" value=$ASSOCIATEDPRODUCTS.1.final_details}
@@ -524,4 +556,4 @@ calcGroupTax();
 calcTotal();
 calcSHTax();
 </script>
-<!-- This above div is added to display the tax informations --> 
+<!-- This above div is added to display the tax informations -->

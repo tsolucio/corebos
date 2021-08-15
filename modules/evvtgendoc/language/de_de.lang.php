@@ -43,6 +43,7 @@ $mod_strings = array(
 'LBL_DEBUG' => 'Debug',
 'LBL_LANG' => 'Sprache',
 'UpdatePrevious' => 'Vorherige Zusammenführung aktualisieren',
+'shareOnCreate' => 'Share After Create',
 'is set to' => 'Is set to',
 'is not set' => 'Is NOT set',
 );

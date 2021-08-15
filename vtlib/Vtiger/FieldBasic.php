@@ -61,6 +61,7 @@ class Vtiger_FieldBasic {
 		$this->typeofdata = $valuemap['typeofdata'];
 		$this->helpinfo = $valuemap['helpinfo'];
 		$this->masseditable = $valuemap['masseditable'];
+		$this->defaultvalue = $valuemap['defaultvalue'];
 		$this->block = $blockInstance? $blockInstance : Vtiger_Block::getInstance($valuemap['block'], $moduleInstance);
 	}
 
@@ -174,7 +175,7 @@ class Vtiger_FieldBasic {
 				$this->uitype,
 				$this->name,
 				$this->label,
-				$this->readonly,
+				isset($this->readonly) ? $this->readonly : 1,
 				$this->presence,
 				$this->defaultvalue,
 				$this->maximumlength,
@@ -217,10 +218,8 @@ class Vtiger_FieldBasic {
 			Vtiger_Profile::initForField($this);
 		}
 		$colrs = $adb->getColumnNames($this->table);
-		if (!in_array($this->column, $colrs)) {
-			if (!empty($this->columntype)) {
-				Vtiger_Utils::AddColumn($this->table, $this->column, $this->columntype);
-			}
+		if (!in_array($this->column, $colrs) && !empty($this->columntype)) {
+			Vtiger_Utils::AddColumn($this->table, $this->column, $this->columntype);
 		}
 		if (!empty($result)) {
 			self::log("Creating Field $this->name ... DONE");
@@ -230,7 +229,7 @@ class Vtiger_FieldBasic {
 			if (!empty($params)) {
 				self::log(print_r($params, true));
 			} else {
-				self::log("A field with that name or label already exists.");
+				self::log('A field with that name or label already exists.');
 			}
 		}
 	}
@@ -301,8 +300,8 @@ class Vtiger_FieldBasic {
 			self::log($isused['message']);
 			return false;
 		} else {
-			// Vtiger_Profile::deleteForField($this);
-			// $adb->pquery('DELETE FROM vtiger_field WHERE fieldid=?', array($this->id));
+			Vtiger_Profile::deleteForField($this);
+			$adb->pquery('DELETE FROM vtiger_field WHERE fieldid=?', array($this->id));
 			self::log("Deleting Field $this->name ... DONE");
 			self::log('<span style="color:red">**Remember to search the code for this field. Make sure the code does not use this field.</span>');
 			return true;

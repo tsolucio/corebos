@@ -16,7 +16,6 @@
 	<input type="hidden" name="transferToName" value="{$row.company}">
 	<input type="hidden" name="record" value="{$UIINFO->getLeadId()}">
 	<input type="hidden" name="action">
-	<input type="hidden" name="parenttab" value="{$CATEGORY}">
 	<input type="hidden" name="current_user_id" value="{$UIINFO->getUserId()}'">
 	<span id="convertLeadHeaderTitle" style="display:none;">
 		<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
@@ -54,7 +53,7 @@
 				<div class="slds-form-element__control slds-m-top_x-small">
 					<input type="hidden" name="accountname" id="accountname" value="{$UIINFO->getMappedFieldValue('Accounts','accountname',0)}" module="Accounts" {if $UIINFO->isMandatory('Accounts','accountname') eq true}record="true"{/if}>
 					<input type="text" name="accountname_display" id="accountname_display" class="slds-input" style="width:80%;border:1px solid #dddbda;" value="{$UIINFO->getMappedFieldValue('Accounts','accountname',0)}" readonly="readonly">
-					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|@getTranslatedString}" type="button" onclick="return window.open('index.php?module=Accounts&action=Popup&html=Popup_picker&form=ConvertLead&forfield=accountname&srcmodule=Leads&forrecord=','convertleadcompany','width=640,height=602,resizable=0,scrollbars=0,top=150,left=200');">
+					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|@getTranslatedString}" type="button" onclick="return window.open('index.php?module=Accounts&action=Popup&html=Popup_picker&form=ConvertLead&forfield=accountname&srcmodule=Leads&forrecord=', 'convertleadcompany', cbPopupWindowSettings);">
 						<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 						</svg>

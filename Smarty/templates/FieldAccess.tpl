@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
@@ -21,7 +20,6 @@
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 		<form action="index.php" method="post" name="new" id="form" onsubmit="VtigerJS_DialogBox.block();">
 		<input type="hidden" name="module" value="Settings">
-		<input type="hidden" name="parenttab" value="Settings">
 		<input type="hidden" name="fld_module" id="fld_module" value="{$DEF_MODULE}">
 		{if $MODE neq 'view'}
 			<input type="hidden" name="action" value="UpdateDefaultFieldLevelAccess">
@@ -30,7 +28,7 @@
 		{/if}
 		<tr>
 			<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MODULE_NAME}" width="48" height="48" border=0 title="{$MOD.LBL_MODULE_NAME}"></td>
-			<td colspan=2 class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_FIELDS_ACCESS} </b></td>
+			<td colspan=2 class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_FIELDS_ACCESS} </b></td>
 			<td rowspan=2 class="small" align=right>&nbsp;</td>
 		</tr>
 		<tr>
@@ -101,11 +99,6 @@
 		{/foreach}
 	</td>
 	</tr>
-	</table>
-	<br>
-	<br>
-	<table border=0 cellspacing=0 cellpadding=5 width=100% >
-		<tr><td class="small" ><div align=right><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
 	</table>
 </td>
 </tr>

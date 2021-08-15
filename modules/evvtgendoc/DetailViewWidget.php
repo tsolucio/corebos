@@ -16,15 +16,16 @@
  *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
+require_once 'data/CRMEntity.php';
 global $adb,$current_user,$mod_strings;
 $moduletemplate = vtlib_purify($_REQUEST['formodule']);
 $modulei18n = getTranslatedString('SINGLE_'.$moduletemplate, $moduletemplate);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
-
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 $templates=$adb->pquery(
 	'SELECT notesid,title
 		FROM vtiger_notes
-		INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_notes.notesid
+		INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_notes.notesid
 		WHERE deleted = 0 and template=1 and template_for=? order by title',
 	array($moduletemplate)
 );
@@ -49,51 +50,33 @@ if ($number==0) {
 	$gendoc_active = ($gendoc_pdfactive==1 || $gendoc_showpdf==1);
 	?>
 	</select><br/>
-	<table>
+	<table aria-describedby="GenDoc Templates">
 	<?php
+	$htmltrtdo = '<tr class="actionlink"><td align="left" style="padding-left:10px;">';
+	$htmltrtdc = '</td></tr>';
+	$htmlimg = '<img src="modules/evvtgendoc/images/';
+	$htmlstyle = 'style="border:0;padding:0 4px;"';
+	$linko = '<a class="webMnu" href="javascript:gendocAction(';
+	$linkc = '</a>';
+	$altdoc = ' alt="DOC" />';
 	if ($gendoc_active) {
-		?>
-<tr class="actionlink">
-	<td align="left" style="padding-left:10px;">
-		<a class="webMnu" href="javascript:gendocAction('export','pdf','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><img src="modules/evvtgendoc/images/genpdf.gif" hspace="5" align="absmiddle" border="0"/></a>
-		<a class="webMnu" href="javascript:gendocAction('export','pdf','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><?php echo getTranslatedString('Export PDF', 'evvtgendoc'); ?></a>
-	</td>
-</tr>
-<tr class="actionlink">
-	<td align="left" style="padding-left:10px;">
-		<a class="webMnu" href="javascript:gendocAction('email','pdf','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><img src="modules/evvtgendoc/images/emailpdf.gif" hspace="5" align="absmiddle" border="0"/></a>
-		<a class="webMnu" href="javascript:gendocAction('email','pdf','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><?php echo getTranslatedString('EMail PDF', 'evvtgendoc'); ?></a>
-	</td>
-</tr>
-<tr class="actionlink">
-	<td align="left" style="padding-left:10px;">
-		<a class="webMnu" href="javascript:gendocAction('save','pdf','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><img src="modules/evvtgendoc/images/savepdf.png" hspace="5" align="absmiddle" border="0"/></a>
-		<a class="webMnu" href="javascript:gendocAction('save','pdf','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><?php echo getTranslatedString('Save PDF', 'evvtgendoc'); ?></a>
-	</td>
-</tr>
-		<?php
+		$altpdf = ' alt="PDF" />';
+		echo $htmltrtdo.$linko."'export','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.$htmlimg.'genpdf.gif" '.$htmlstyle.$altpdf.$linkc;
+		echo $linko."'export','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.getTranslatedString('Export PDF', 'evvtgendoc').$linkc.$htmltrtdc;
+		echo $htmltrtdo.$linko."'email','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.$htmlimg.'emailpdf.gif" '.$htmlstyle.$altpdf.$linkc;
+		echo $linko."'email','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.getTranslatedString('EMail PDF', 'evvtgendoc').$linkc.$htmltrtdc;
+		echo $htmltrtdo.$linko."'save','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.$htmlimg.'savepdf.gif" '.$htmlstyle.$altpdf.$linkc;
+		echo $linko."'save','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.getTranslatedString('Save PDF', 'evvtgendoc').$linkc.$htmltrtdc;
 	}
+	echo $htmltrtdo.$linko."'export','doc','$moduletemplate','$forrecord','$modulei18n');".'">'.$htmlimg.'genoo.png" '.$htmlstyle.$altdoc.$linkc;
+	echo $linko."'export','doc','$moduletemplate','$forrecord','$modulei18n');".'">'.getTranslatedString('Export Doc', 'evvtgendoc').$linkc.$htmltrtdc;
+	echo $htmltrtdo.$linko."'email','doc','$moduletemplate','$forrecord','$modulei18n');".'">'.$htmlimg.'emailoo.png" '.$htmlstyle.$altdoc.$linkc;
+	echo $linko."'email','doc','$moduletemplate','$forrecord','$modulei18n');".'">'.getTranslatedString('EMail Doc', 'evvtgendoc').$linkc.$htmltrtdc;
+	echo $htmltrtdo.$linko."'save','doc','$moduletemplate','$forrecord','$modulei18n');".'">'.$htmlimg.'saveoo.png" '.$htmlstyle.$altdoc.$linkc;
+	echo $linko."'save','doc','$moduletemplate','$forrecord','$modulei18n');".'">'.getTranslatedString('Save Doc', 'evvtgendoc').$linkc.$htmltrtdc;
 	?>
-	<tr class="actionlink">
-		<td align="left" style="padding-left:10px;">
-			<a class="webMnu" href="javascript:gendocAction('export','doc','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><img src="modules/evvtgendoc/images/genoo.png" hspace="5" align="absmiddle" border="0"/></a>
-			<a class="webMnu" href="javascript:gendocAction('export','doc','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><?php echo getTranslatedString('Export Doc', 'evvtgendoc'); ?></a>
-		</td>
-	</tr>
-	<tr class="actionlink">
-		<td align="left" style="padding-left:10px;">
-			<a class="webMnu" href="javascript:gendocAction('email','doc','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><img src="modules/evvtgendoc/images/emailoo.png" hspace="5" align="absmiddle" border="0"/></a>
-			<a class="webMnu" href="javascript:gendocAction('email','doc','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><?php echo getTranslatedString('EMail Doc', 'evvtgendoc'); ?></a>
-		</td>
-	</tr>
-	<tr class="actionlink">
-		<td align="left" style="padding-left:10px;">
-			<a class="webMnu" href="javascript:gendocAction('save','doc','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><img src="modules/evvtgendoc/images/saveoo.png" hspace="5" align="absmiddle" border="0"/></a>
-			<a class="webMnu" href="javascript:gendocAction('save','doc','<?php echo $moduletemplate; ?>','<?php echo $forrecord; ?>','<?php echo $modulei18n; ?>');"><?php echo getTranslatedString('Save Doc', 'evvtgendoc'); ?></a>
-		</td>
-	</tr>
 	</table>
-	<iframe id="gendociframe" style="display:none"></iframe>
+	<iframe id="gendociframe" style="display:none" title="download document"></iframe>
 	<?php
 }
 ?>

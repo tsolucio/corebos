@@ -17,7 +17,6 @@
 *  Author       : OpenCubed
 *************************************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {include file="SetMenu.tpl"}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
@@ -31,7 +30,6 @@
 		{/literal}
 			<input type="hidden" id="module" name="module" value="evvtgendoc">
 			<input type="hidden" name="action" value="Settings">
-			<input type="hidden" name="parenttab" value="Settings">
 			<input type="hidden" name="return_module" value="Settings">
 			<input type="hidden" name="return_action" value="Settings">
 			<input type="hidden" name="mode" value="save">
@@ -43,7 +41,7 @@
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width=50 rowspan=2 valign=top><img src="modules/evvtgendoc/images/gendoc_server.png" alt="{'Evvtgendoc_title'|@getTranslatedString:$MODULE}" width="48" height="48" border=0 title="{'Evvtgendoc_title'|@getTranslatedString:$MODULE}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString:'Settings'}</a> > {'Evvtgendoc_title'|@getTranslatedString:$MODULE} </b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString:'Settings'}</a> > {'Evvtgendoc_title'|@getTranslatedString:$MODULE} </b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small">{'Evvtgendoc_subtitle'|@getTranslatedString:$MODULE}</td>

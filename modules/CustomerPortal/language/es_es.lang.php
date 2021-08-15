@@ -5,6 +5,7 @@
 */
 $mod_strings = array (
 'CustomerPortal' => 'Portal Cliente',
+'SINGLE_CustomerPortal' => 'Portal Cliente',
 'LBL_BASIC_SETTINGS'=>'Configuración Básica',
 'LBL_CUSTOMERPORTAL_SETTINGS'=>'Configuración Portal',
 'LBL_ADVANCED_SETTINGS'=>'Configuración Avanzada',

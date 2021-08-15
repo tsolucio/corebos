@@ -16,10 +16,8 @@
 function getRelatedModulesInfomation($module, $user) {
 	include_once 'include/Webservices/GetFilterFields.php';
 	global $adb;
-	$types = vtws_listtypes(null, $user);
-	if (!in_array($module, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
-	}
+	$types = vtws_checkListTypesPermission($module, $user);
+
 	$cur_tab_id = getTabid($module);
 	$result = $adb->pquery('select * from vtiger_relatedlists where tabid=?', array($cur_tab_id));
 	$num_row = $adb->num_rows($result);
@@ -34,12 +32,21 @@ function getRelatedModulesInfomation($module, $user) {
 			$relationfield = null;
 		} else {
 			$rs = $adb->pquery('select fieldname from vtiger_field where fieldid=?', array($relationfieldid));
-			$relationfield = $rs->fields['fieldname'];
+			$relationfield = $adb->query_result($rs, 0, 'fieldname');
 		}
 		if ($rel_tab_id != 0) {
 			$relModuleName = getTabModuleName($rel_tab_id);
 			if (!in_array($relModuleName, $types['types'])) {
 				continue;
+			}
+			$ffields = vtws_getfilterfields($relModuleName, $user);
+			$bmapname = $relModuleName.'_ListColumns';
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+			if ($cbMapid) {
+				$cbMap = cbMap::getMapByID($cbMapid);
+				$cbMapLC = $cbMap->ListColumns();
+				$ffields['fields'] = array_values($cbMapLC->getListFieldsNameFor($module));
+				$ffields['linkfields'] = $cbMapLC->getListLinkFor($module);
 			}
 			$focus_list[$label] = array(
 				'related_tabid' => $rel_tab_id,
@@ -50,7 +57,7 @@ function getRelatedModulesInfomation($module, $user) {
 				'relationId' => $relationId,
 				'relatedfield' => $relationfield,
 				'relationtype' => $adb->query_result($result, $i, 'relationtype'),
-				'filterFields'=> vtws_getfilterfields($relModuleName, $user),
+				'filterFields'=> $ffields,
 			);
 		} else {
 			$focus_list[$label] = array(

@@ -55,23 +55,20 @@ class VtigerCRMObject {
 		$this->instance->id = $id;
 	}
 
-	private function titleCase($str) {
+	public function titleCase($str) {
 		$first = substr($str, 0, 1);
 		return strtoupper($first).substr($str, 1);
 	}
 
 	private function getObjectTypeId($objectName) {
-		// Use getTabid API
 		$tid = getTabid($objectName);
 
 		if ($tid === false) {
 			global $adb;
-
-			$sql = 'select tabid from vtiger_tab where name=?;';
 			$params = array($objectName);
-			$result = $adb->pquery($sql, $params);
+			$result = $adb->pquery('select tabid from vtiger_tab where name=?;', $params);
 			$data1 = $adb->fetchByAssoc($result, 1, false);
-			$tid = $data1["tabid"];
+			$tid = $data1['tabid'];
 		}
 		return $tid;
 	}
@@ -85,15 +82,19 @@ class VtigerCRMObject {
 	}
 
 	private function getTabName() {
-		return $this->moduleName;
+		return $this->getModuleName();
 	}
 
 	public function read($id, $deleted = false) {
 		global $adb;
 		$error = false;
 		$adb->startTransaction();
-		$this->instance->retrieve_entity_info($id, $this->moduleName, $deleted);
-		$error = $adb->hasFailedTransaction();
+		try {
+			$this->instance->retrieve_entity_info($id, $this->moduleName, $deleted);
+			$error = $adb->hasFailedTransaction();
+		} catch (\Throwable $th) {
+			$error = true;
+		}
 		$adb->completeTransaction();
 		return !$error;
 	}
@@ -107,8 +108,12 @@ class VtigerCRMObject {
 		}
 
 		$adb->startTransaction();
-		$this->instance->Save($this->getTabName());
-		$error = $adb->hasFailedTransaction();
+		try {
+			$this->instance->save($this->getTabName());
+			$error = $adb->hasFailedTransaction();
+		} catch (\Throwable $th) {
+			$error = true;
+		}
 		$adb->completeTransaction();
 		return !$error;
 	}
@@ -123,44 +128,26 @@ class VtigerCRMObject {
 
 		$adb->startTransaction();
 		$this->instance->mode = 'edit';
-		$this->instance->save($this->getTabName());
-		$error = $adb->hasFailedTransaction();
+		try {
+			$this->instance->save($this->getTabName());
+			$error = $adb->hasFailedTransaction();
+		} catch (\Throwable $th) {
+			$error = true;
+		}
 		$adb->completeTransaction();
 		return !$error;
 	}
-
-// 	public function revise($element) {
-// 		global $adb;
-// 		$error = false;
-
-// 		$error = $this->read($this->getObjectId());
-// 		if ($error == false) {
-// 			return $error;
-// 		}
-
-// 		foreach ($element as $k=>$v) {
-// 			$this->instance->column_fields[$k] = $v;
-// 		}
-
-// 		//added to fix the issue of utf8 characters
-// 		foreach ($this->instance->column_fields as $key=>$value) {
-// 			$this->instance->column_fields[$key] = decode_html($value);
-// 		}
-
-// 		$adb->startTransaction();
-// 		$this->instance->mode = "edit";
-// 		$this->instance->Save($this->getTabName());
-// 		$error = $adb->hasFailedTransaction();
-// 		$adb->completeTransaction();
-// 		return !$error;
-// 	}
 
 	public function delete($id) {
 		global $adb;
 		$error = false;
 		$adb->startTransaction();
-		DeleteEntity($this->getTabName(), $this->getTabName(), $this->instance, $id, 0);
-		$error = $adb->hasFailedTransaction();
+		try {
+			DeleteEntity($this->getTabName(), $this->getTabName(), $this->instance, $id, 0);
+			$error = $adb->hasFailedTransaction();
+		} catch (\Throwable $th) {
+			$error = true;
+		}
 		$adb->completeTransaction();
 		return !$error;
 	}
@@ -172,22 +159,19 @@ class VtigerCRMObject {
 	/* this method just checks if a record exists and is not deleted, it does not obligate that it be the same entity type of the object instantiation */
 	public function exists($id) {
 		global $adb;
-		$result = $adb->pquery('select 1 from vtiger_crmentity where crmid=? and deleted=0 limit 1', array($id));
+		$module = $this->getModuleName();
+		$mod = CRMEntity::getInstance($module);
+		$result = $adb->pquery('select 1 from '.$mod->crmentityTable.' where crmid=? and deleted=0 limit 1', array($id));
 		return ($result && $adb->num_rows($result)>0);
 	}
 
 	public function getSEType($id) {
-		global $adb;
-
-		$seType = null;
-		$sql = 'select setype from vtiger_crmentity where crmid=? and deleted=0';
-		$result = $adb->pquery($sql, array($id));
-		if ($result != null && isset($result)) {
-			if ($adb->num_rows($result)>0) {
-				$seType = $adb->query_result($result, 0, 'setype');
-			}
+		$seType = getSalesEntityType($id);
+		if (empty($seType)) {
+			return null;
+		} else {
+			return $seType;
 		}
-		return $seType;
 	}
 }
 ?>

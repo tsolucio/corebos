@@ -17,9 +17,6 @@ require_once 'data/CRMEntity.php';
 require_once 'modules/CustomView/CustomView.php';
 
 class cbCVManagement extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_cbcvmanagement';
 	public $table_index= 'cbcvmanagementid';
 	public $column_fields = array();
@@ -183,9 +180,10 @@ class cbCVManagement extends CRMEntity {
 		}
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for mandatory records';
-		$cvsql = "select vtiger_cbcvmanagement.cvid
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCVManagement');
+		$cvsql = 'select vtiger_cbcvmanagement.cvid
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 			where vtiger_crmentity.deleted=0 and mandatory='1' and cvdefault='1' and entitytype=? and cvretrieve='1' limit 1";
 		$cvrs = $adb->pquery($cvsql, array($module));
@@ -195,12 +193,12 @@ class cbCVManagement extends CRMEntity {
 			VTCacheUtils::updateCachedInformation($key, $value);
 			return $value;
 		}
-		$cvsql = "select vtiger_cbcvmanagement.cvid
+		$cvsql = 'select vtiger_cbcvmanagement.cvid
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 			left join vtiger_user2role on vtiger_user2role.userid=?
-			where vtiger_crmentity.deleted=0 and cvdefault='1' and cvrole like concat('%', vtiger_user2role.roleid, '%')) and entitytype=? and cvretrieve='1' limit 1";
+			where vtiger_crmentity.deleted=0 and cvdefault='1' and cvrole like concat('%', vtiger_user2role.roleid, '%') and entitytype=? and cvretrieve='1' limit 1";
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for role records';
 		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
@@ -210,9 +208,9 @@ class cbCVManagement extends CRMEntity {
 			VTCacheUtils::updateCachedInformation($key, $value);
 			return $value;
 		}
-		$cvsql = "select vtiger_cbcvmanagement.cvid
+		$cvsql = 'select vtiger_cbcvmanagement.cvid
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 			where vtiger_crmentity.deleted=0 and cvdefault='1' and smownerid=? and entitytype=? and cvretrieve='1' limit 1";
 		self::$validationinfo[] = '---';
@@ -229,9 +227,9 @@ class cbCVManagement extends CRMEntity {
 		$UserGroups->getAllUserGroups($cvuserid);
 		if (count($UserGroups->user_groups)>0) {
 			$groups=implode(',', $UserGroups->user_groups);
-			$cvsql = "select vtiger_cbcvmanagement.cvid
+			$cvsql = 'select vtiger_cbcvmanagement.cvid
 				from vtiger_cbcvmanagement
-				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+				inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 				inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 				where vtiger_crmentity.deleted=0 and cvdefault='1' and smownerid in ($groups) and entitytype=? and cvretrieve='1' limit 1";
 			self::$validationinfo[] = '---';
@@ -246,9 +244,9 @@ class cbCVManagement extends CRMEntity {
 		} else {
 			self::$validationinfo[] = 'no groups to search in';
 		}
-		$cvsql = "select vtiger_cbcvmanagement.cvid
+		$cvsql = 'select vtiger_cbcvmanagement.cvid
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 			where vtiger_crmentity.deleted=0 and cvdefault='1' and default_setting='1' and module_list REGEXP ? and entitytype=? and cvretrieve='1' limit 1";
 		self::$validationinfo[] = '---';
@@ -309,36 +307,41 @@ class cbCVManagement extends CRMEntity {
 		}
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for mandatory records';
-		$cvsql = "select vtiger_cbcvmanagement.cvid
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCVManagement');
+		$cvsql = 'select vtiger_cbcvmanagement.cvid
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 			where vtiger_crmentity.deleted=0 and mandatory='1' and entitytype=? and cvretrieve='1'";
 		$cvrs = $adb->pquery($cvsql, array($module));
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			self::$validationinfo[] = 'mandatory records found';
 			while ($value = $adb->fetch_array($cvrs)) {
+				self::$validationinfo[] = $value['cvid'];
 				$allViews[] = $value['cvid'];
 			}
 		}
-		$cvsql = "select vtiger_cbcvmanagement.cvid
+		$cvsql = 'select vtiger_cbcvmanagement.cvid
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 			left join vtiger_user2role on vtiger_user2role.userid=?
-			where vtiger_crmentity.deleted=0 and cvrole like concat('%', vtiger_user2role.roleid, '%') and entitytype=? and cvretrieve='1'";
+			where vtiger_crmentity.deleted=0 and entitytype=? and cvretrieve='1'
+			and (cvrole=vtiger_user2role.roleid or cvrole like concat(vtiger_user2role.roleid, ' %')
+				or cvrole like concat('% ', vtiger_user2role.roleid, ' %') or cvrole like concat('% ', vtiger_user2role.roleid))";
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for role records';
 		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			self::$validationinfo[] = 'role records found';
 			while ($value = $adb->fetch_array($cvrs)) {
+				self::$validationinfo[] = $value['cvid'];
 				$allViews[] = $value['cvid'];
 			}
 		}
-		$cvsql = "select vtiger_cbcvmanagement.cvid
+		$cvsql = 'select vtiger_cbcvmanagement.cvid
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 			where vtiger_crmentity.deleted=0 and smownerid=? and entitytype=? and cvretrieve='1'";
 		self::$validationinfo[] = '---';
@@ -347,6 +350,7 @@ class cbCVManagement extends CRMEntity {
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			self::$validationinfo[] = 'user records found';
 			while ($value = $adb->fetch_array($cvrs)) {
+				self::$validationinfo[] = $value['cvid'];
 				$allViews[] = $value['cvid'];
 			}
 		}
@@ -355,9 +359,9 @@ class cbCVManagement extends CRMEntity {
 		$UserGroups->getAllUserGroups($cvuserid);
 		if (count($UserGroups->user_groups)>0) {
 			$groups=implode(',', $UserGroups->user_groups);
-			$cvsql = "select vtiger_cbcvmanagement.cvid
+			$cvsql = 'select vtiger_cbcvmanagement.cvid
 				from vtiger_cbcvmanagement
-				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+				inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 				inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 				where vtiger_crmentity.deleted=0 and smownerid in ($groups) and entitytype=? and cvretrieve='1'";
 			self::$validationinfo[] = '---';
@@ -366,15 +370,16 @@ class cbCVManagement extends CRMEntity {
 			if ($cvrs && $adb->num_rows($cvrs)>0) {
 				self::$validationinfo[] = 'group records found';
 				while ($value = $adb->fetch_array($cvrs)) {
+					self::$validationinfo[] = $value['cvid'];
 					$allViews[] = $value['cvid'];
 				}
 			}
 		} else {
 			self::$validationinfo[] = 'no groups to search in';
 		}
-		$cvsql = "select vtiger_cbcvmanagement.cvid
+		$cvsql = 'select vtiger_cbcvmanagement.cvid
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 			where vtiger_crmentity.deleted=0 and default_setting='1' and module_list REGEXP ? and entitytype=? and cvretrieve='1'";
 		self::$validationinfo[] = '---';
@@ -383,6 +388,7 @@ class cbCVManagement extends CRMEntity {
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			self::$validationinfo[] = 'default setting records found';
 			while ($value = $adb->fetch_array($cvrs)) {
+				self::$validationinfo[] = $value['cvid'];
 				$allViews[] = $value['cvid'];
 			}
 		}
@@ -393,6 +399,7 @@ class cbCVManagement extends CRMEntity {
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			self::$validationinfo[] = 'CV default records found';
 			while ($value = $adb->fetch_array($cvrs)) {
+				self::$validationinfo[] = $value['cvid'];
 				$allViews[] = $value['cvid'];
 			}
 		}
@@ -400,6 +407,7 @@ class cbCVManagement extends CRMEntity {
 	}
 
 	public static function getApprovers($cvid) {
+		global $adb;
 		if (empty($cvid)) {
 			return false;
 		}
@@ -484,9 +492,10 @@ class cbCVManagement extends CRMEntity {
 		}
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for mandatory/owner records';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCVManagement');
 		$cvsql = 'select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			where vtiger_crmentity.deleted=0 and cvdefault=? and smownerid=? and cvid=? and mandatory=? limit 1';
 		$cvsql = $adb->convert2Sql($cvsql, array(0, $cvuserid, $cvid, 1));
 		$value = self::returnPermission($cvsql, $key);
@@ -497,7 +506,7 @@ class cbCVManagement extends CRMEntity {
 		self::$validationinfo[] = 'search for mandatory/role records';
 		$cvsql = 'select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			left join vtiger_user2role on vtiger_user2role.userid=?
 			where vtiger_crmentity.deleted=0 and cvdefault=? and cvid=? and mandatory=?';
 		$cvsql = $adb->convert2Sql($cvsql, array($cvuserid, 0, $cvid, 1))." and cvrole like concat('%', vtiger_user2role.roleid, '%') limit 1";
@@ -516,9 +525,9 @@ class cbCVManagement extends CRMEntity {
 		}
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for mandatory/group records';
-		$cvsql = "select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
+		$cvsql = 'select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			where vtiger_crmentity.deleted=0 and cvdefault=? and smownerid in ($groups) and cvid=? and mandatory=? limit 1";
 		$cvsql = $adb->convert2Sql($cvsql, array(0, $cvid, 1));
 		$value = self::returnPermission($cvsql, $key);
@@ -527,10 +536,10 @@ class cbCVManagement extends CRMEntity {
 		}
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for owner records';
-		$cvsql = "select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
+		$cvsql = 'select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
-			where vtiger_crmentity.deleted=0 and cvdefault=? and smownerid=? and cvid=? limit 1";
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			where vtiger_crmentity.deleted=0 and cvdefault=? and smownerid=? and cvid=? limit 1';
 		$cvsql = $adb->convert2Sql($cvsql, array(0, $cvuserid, $cvid));
 		$value = self::returnPermission($cvsql, $key);
 		if ($value) {
@@ -540,7 +549,7 @@ class cbCVManagement extends CRMEntity {
 		self::$validationinfo[] = 'search for role records';
 		$cvsql = 'select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			left join vtiger_user2role on vtiger_user2role.userid=?
 			where vtiger_crmentity.deleted=0 and cvdefault=? and cvid=?';
 		$cvsql = $adb->convert2Sql($cvsql, array($cvuserid, 0, $cvid))." and cvrole like concat('%', vtiger_user2role.roleid, '%') limit 1";
@@ -550,9 +559,9 @@ class cbCVManagement extends CRMEntity {
 		}
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for group records';
-		$cvsql = "select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
+		$cvsql = 'select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			where vtiger_crmentity.deleted=0 and cvdefault=? and smownerid in ($groups) and cvid=? limit 1";
 		$cvsql = $adb->convert2Sql($cvsql, array(0, $cvid));
 		$value = self::returnPermission($cvsql, $key);
@@ -561,10 +570,10 @@ class cbCVManagement extends CRMEntity {
 		}
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for default records';
-		$cvsql = "select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
+		$cvsql = 'select cvcreate as c, cvretrieve as r, cvupdate as u, cvdelete as d, cvapprove as a
 			from vtiger_cbcvmanagement
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
-			where vtiger_crmentity.deleted=0 and cvdefault=? and module_list like ? and default_setting=? limit 1";
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			where vtiger_crmentity.deleted=0 and cvdefault=? and module_list like ? and default_setting=? limit 1';
 		$cvsql = $adb->convert2Sql($cvsql, array(0, '%'.$module.'%', 1));
 		$value = self::returnPermission($cvsql, $key);
 		if ($value) {
@@ -596,33 +605,5 @@ class cbCVManagement extends CRMEntity {
 	public static function getValidationInfo() {
 		return self::$validationinfo;
 	}
-
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 }
 ?>

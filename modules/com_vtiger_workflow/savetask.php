@@ -42,10 +42,18 @@ function vtSaveTask($adb, $request) {
 		$task->active=false;
 	}
 	if (isset($request['check_select_date'])) {
-		$trigger = array(
-			'days'=>($request['select_date_direction']=='after'?1:-1)*(int)$request['select_date_days'],
-			'field'=>$request['select_date_field']
-			);
+		if ($request['select_date_days'] != '') {
+			$trigger = array(
+				'days'=>($request['select_date_direction']=='after'?1:-1)*(int)$request['select_date_days'],
+				'field'=>$request['select_date_field']
+				);
+		}
+		if ($request['select_date_hours'] != '') {
+			$trigger = array(
+				'hours'=>($request['select_date_direction']=='after'?1:-1)*(int)$request['select_date_hours'],
+				'field'=>$request['select_date_field']
+				);
+		}
 		$task->trigger=$trigger;
 	} else {
 		$task->trigger=null;
@@ -59,7 +67,11 @@ function vtSaveTask($adb, $request) {
 				if (is_array($result)) {
 					$cleanarray = array();
 					foreach ($result as $key => $value) {
-						$cleanarray[$key] = vtlib_purify($value);
+						if (empty($value['valuetype'])) {
+							$cleanarray[$key] = vtlib_purify($value);
+						} else {
+							$cleanarray[$key] = $value;
+						}
 					}
 					$task->$fieldName = json_encode($cleanarray, JSON_UNESCAPED_UNICODE);
 				} else {

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | 02-04-2019 | www.ecrmweb.com.br
+ * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | 04-06-2021 | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -51,8 +51,8 @@ $mod_strings = array(
 'LBL_DATE_FORMAT'=>'Formato da data',
 
 'LBL_ERROR'=>'Erro:',
-'FORM_TOKEN_EXPIRED'=>'Edit token has expired. Try again.',
-'ERR_CANNOTEDITUSER' => 'Not Permitted. You cannot edit this User',
+'FORM_TOKEN_EXPIRED'=>'Tempo para edição do token expirou. Tente novamente.',
+'ERR_CANNOTEDITUSER' => 'Não permitido. Você não pode editar esse usuário',
 'LBL_PASSWORD'=>'Senha',
 'LBL_USER_NAME'=>'Usuário',
 'LBL_2FACODE' => 'Código',
@@ -67,7 +67,7 @@ $mod_strings = array(
 'LBL_LANGUAGE'=>'Idioma',
 'LBL_ADMIN'=>'Administrador',
 'LBL_OFFICE_PHONE'=>'Telefone Profissional',
-'LBL_REPORTS_TO'=>'Reporta perante',
+'LBL_REPORTS_TO'=>'Reporta para',
 'LBL_OTHER_PHONE'=>'Telefone Secundário',
 'LBL_OTHER_EMAIL'=>'E-mail Secundário',
 'LBL_DEPARTMENT'=>'Departamento',
@@ -131,7 +131,6 @@ $mod_strings = array(
 'ERR_DELETE_RECORD'=>"Um número de registro deve ser especificado para apagar a conta.",
 'ERR_MUST_CHANGE_PASSWORD' => 'Sua senha expirou. Você precisa mudar a senha para continuar.',
 
-// Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2
 // Users--listroles.php , createrole.php , ListPermissions.php , editpermissions.php
 
 'LBL_ROLES'=>'Funções',
@@ -493,7 +492,6 @@ $mod_strings = array(
 'LBL_CHANGE'=>'Mudar',
 
 //Added for Access Privileges
-
 'LBL_GLOBAL_FIELDS_MANAGER'=>'Administrar campos globais',
 'LBL_GLOBAL_ACCESS_PRIVILEGES'=>'Privilégios de acesso global',
 'LBL_CUSTOM_ACCESS_PRIVILEGES'=>'Privilégios de acesso personalizado',
@@ -783,6 +781,7 @@ $mod_strings = array(
 'vcylinder'=>'Cilindro vertical',
 'LBL_SEND_EMAIL_TO_SENDER' => 'Enviar uma cópia do e-mail',
 'PASSWORD REQUIREMENTS' => 'Exigências para a senha',
+'PASSWORD REQUIREMENTS NOT MET' => 'PASSWORD REQUIREMENTS NOT MET',
 'REQUIRED' => 'Exigido',
 'Min. 8 characters' => 'Min. 8 caracteres',
 'Contains3of4' => 'Senha deve conter ao menos três dos seguintes grupos de caracteres',
@@ -801,5 +800,6 @@ $mod_strings = array(
 'LBL_QUERY' => 'Pergunta',
 'LBL_FORE_LASTNAME' => 'Nome ou sobrenome',
 'LBL_NO_LDAP_MATCHES' => 'Nenhuma correspondência encontrada no servidor LDAP!',
+'EntityName' => 'Nome da Entidade',
 );
 ?>

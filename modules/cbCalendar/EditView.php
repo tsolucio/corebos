@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+require_once 'modules/cbCalendar/CalendarCommon.php';
 
 $record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
 $focus = CRMEntity::getInstance($currentModule);
@@ -18,7 +19,6 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
 	$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-	$smarty->assign('CATEGORY', '');
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('ID', $record);
@@ -97,7 +97,7 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 		foreach ($act_data as $header => $blockitem) {
 			foreach ($blockitem as $row => $data) {
 				foreach ($data as $key => $maindata) {
-					if (count($maindata)==0) {
+					if (empty($maindata)) {
 						continue;
 					}
 					$fldlabel[$maindata[2][0]] = isset($maindata[1][0]) ? $maindata[1][0] : '';
@@ -181,9 +181,9 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 		$rem_min = ($default_calendar_reminder-$rem_days*24*60)%60;
 		$secondvalue = array('reminder_time'=>array(($default_calendar_reminder>0 ? 'CHECKED' : ''),getTranslatedString('LBL_YES'),getTranslatedString('LBL_NO')));
 		$value['reminder_time'] = array(
-			array(0, 32, 'remdays', getTranslatedString('LBL_DAYS', 'Calendar'), $rem_days),
-			array(0, 24, 'remhrs', getTranslatedString('LBL_HOURS', 'Calendar'), $rem_hrs),
-			array(10, 60, 'remmin', getTranslatedString('LBL_MINUTES', 'Calendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT', 'Calendar'), $rem_min)
+			array(0, 32, 'remdays', getTranslatedString('LBL_DAYS', 'cbCalendar'), $rem_days),
+			array(0, 24, 'remhrs', getTranslatedString('LBL_HOURS', 'cbCalendar'), $rem_hrs),
+			array(10, 60, 'remmin', getTranslatedString('LBL_MINUTES', 'cbCalendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT', 'cbCalendar'), $rem_min)
 		);
 		$smarty->assign('secondvalue', $secondvalue);
 		$smarty->assign('thirdvalue', array());

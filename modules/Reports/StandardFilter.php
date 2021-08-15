@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once 'modules/CustomView/CustomView.php';
-if (isset($_REQUEST['record']) == false || $_REQUEST['record']=='') {
+if (!isset($_REQUEST['record']) || $_REQUEST['record']=='') {
 	$oReport = new Reports();
 	$primarymodule = vtlib_purify($_REQUEST['primarymodule']);
 
@@ -23,7 +23,7 @@ if (isset($_REQUEST['record']) == false || $_REQUEST['record']=='') {
 	$report_std_filter->assign('BLOCKJS_STD', $BLOCKJS);
 	$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria();
 	$report_std_filter->assign('BLOCKCRITERIA_STD', $BLOCKCRITERIA);
-} elseif (isset($_REQUEST['record']) == true) {
+} elseif (isset($_REQUEST['record'])) {
 	global $current_user;
 
 	$reportid = vtlib_purify($_REQUEST['record']);
@@ -37,7 +37,7 @@ if (isset($_REQUEST['record']) == false || $_REQUEST['record']=='') {
 	if (!empty($oRep->related_modules[$oReport->primodule])) {
 		foreach ($oRep->related_modules[$oReport->primodule] as $key => $value) {
 			if (isset($_REQUEST['secondarymodule_'.$value])) {
-				$secondarymodules []= $_REQUEST['secondarymodule_'.$value];
+				$secondarymodules[]= $_REQUEST['secondarymodule_'.$value];
 			}
 		}
 	}
@@ -49,7 +49,6 @@ if (isset($_REQUEST['record']) == false || $_REQUEST['record']=='') {
 
 	$BLOCK1 = getPrimaryStdFilterHTML($oReport->primodule, $oReport->stdselectedcolumn);
 	$BLOCK1 .= getSecondaryStdFilterHTML($oReport->secmodule, $oReport->stdselectedcolumn);
-	//added to fix the ticket #5117
 	$selectedcolumnvalue = '"'. $oReport->stdselectedcolumn . '"';
 	if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false) {
 		$BLOCK1 .= "<option selected value='Not Accessible'>".$app_strings['LBL_NOT_ACCESSIBLE'].'</option>';
@@ -68,24 +67,22 @@ if (isset($_REQUEST['record']) == false || $_REQUEST['record']=='') {
 }
 
 /** Function to get the HTML strings for the primarymodule standard filters
- * @ param $module : Type String
- * @ param $selected : Type String(optional)
- *  This Returns a HTML combo srings
+ * @param $module : Type String
+ * @param $selected : Type String(optional)
+ * @return HTML combo srings
  */
-function getPrimaryStdFilterHTML($module, $selected = "") {
+function getPrimaryStdFilterHTML($module, $selected = '') {
 	global $ogReport;
 	$ogReport->oCustomView=new CustomView();
 	$result = $ogReport->oCustomView->getStdCriteriaByModule($module);
+	$shtml = '';
 	if (isset($result)) {
 		$i18nModule = getTranslatedString($module, $module);
 		foreach ($result as $key => $value) {
-			if ($module == 'Calendar' || $module == 'Events') {
-				$key = str_replace('&amp;', 'and', $key);
-			}
 			if ($key == $selected) {
-				$shtml .= '<option selected value="'.$key.'">'.$i18nModule.' - '.getTranslatedString($value, $secmodule[$i]).'</option>';
+				$shtml .= '<option selected value="'.$key.'">'.$i18nModule.' - '.getTranslatedString($value, $module).'</option>';
 			} else {
-				$shtml .= '<option value="'.$key.'">'.$i18nModule.' - '.getTranslatedString($value, $secmodule[$i]).'</option>';
+				$shtml .= '<option value="'.$key.'">'.$i18nModule.' - '.getTranslatedString($value, $module).'</option>';
 			}
 		}
 	}
@@ -95,11 +92,12 @@ function getPrimaryStdFilterHTML($module, $selected = "") {
 /** Function to get the HTML strings for the secondary  standard filters
  * @param $module : Type String
  * @param $selected : Type String(optional)
- *  This Returns a HTML combo srings for the secondary modules
+ * @return HTML combo srings for the secondary modules
  */
-function getSecondaryStdFilterHTML($module, $selected = "") {
+function getSecondaryStdFilterHTML($module, $selected = '') {
 	global $ogReport;
 	$ogReport->oCustomView=new CustomView();
+	$shtml = '';
 	if ($module != '') {
 		$secmodule = explode(':', $module);
 		for ($i=0; $i < count($secmodule); $i++) {

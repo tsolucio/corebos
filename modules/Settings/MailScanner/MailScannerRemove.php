@@ -14,5 +14,5 @@ $scannerinfo = new Vtiger_MailScannerInfo(trim(vtlib_purify($_REQUEST['scannerna
 
 $scannerinfo->delete();
 
-header('Location: index.php?module=Settings&action=MailScanner&parenttab=Settings');
+header('Location: index.php?module=Settings&action=MailScanner');
 ?>

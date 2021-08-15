@@ -233,6 +233,7 @@ $mod_strings = array(
 	'LBL_USERS_AVAILABEL' => 'Recipients',
 	'LBL_REPORT_FORMAT_PDF' => 'PDF',
 	'LBL_REPORT_FORMAT_URL'=> 'URL',
+	'LBL_REPORT_FORMAT_CSV'=> 'CSV',
 	'LBL_REPORT_FORMAT_EXCEL' => 'Excel',
 	'LBL_REPORT_FORMAT_BOTH' => 'Both',
 	'LBL_REPORT_FORMAT' => 'Report format',
@@ -290,5 +291,6 @@ $mod_strings = array(
 	'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error while deleting the folder.',
 	'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
 	'ERR_CREATE_REPORT' => 'Error creating the report.',
+	'Select Report' => 'Select report',
 );
 ?>

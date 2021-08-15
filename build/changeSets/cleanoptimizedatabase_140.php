@@ -54,19 +54,6 @@ class cleandatabase_140 extends cbupdaterWorker {
 			$this->ExecuteQuery("ALTER TABLE vtiger_account MODIFY COLUMN annualrevenue decimal(25,5)", array());
 			$this->ExecuteQuery("ALTER TABLE vtiger_leaddetails MODIFY COLUMN annualrevenue decimal(25,5)", array());
 			$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata='N~O' WHERE fieldlabel='Annual Revenue' and typeofdata='I~O'", array());
-			/* // Currency changes
-			$this->ExecuteQuery("ALTER TABLE vtiger_currency_info MODIFY COLUMN conversion_rate decimal(12,5)", array());
-			$this->ExecuteQuery("ALTER TABLE vtiger_productcurrencyrel MODIFY COLUMN actual_price decimal(28,8)", array());
-			$this->ExecuteQuery("ALTER TABLE vtiger_productcurrencyrel MODIFY COLUMN converted_price decimal(28,8)", array());
-			$this->ExecuteQuery("ALTER TABLE vtiger_pricebookproductrel MODIFY COLUMN listprice decimal(27,8)", array());
-			$this->ExecuteQuery("ALTER TABLE vtiger_inventoryproductrel MODIFY COLUMN listprice decimal(27,8)", array());
-			$this->ExecuteQuery("ALTER TABLE vtiger_inventoryproductrel MODIFY COLUMN discount_amount decimal(27,8)", array());
-			$this->ExecuteQuery("ALTER TABLE vtiger_invoice MODIFY COLUMN discount_amount decimal(27,8)", array());
-			// We should do all other currency too
-			$this->ExecuteQuery('UPDATE vtiger_field SET uitype=?, typeofdata=? WHERE fieldname=?',array(71, 'N~O', 'listprice'));
-			$this->ExecuteQuery('UPDATE vtiger_field SET typeofdata=? WHERE fieldname=?',array('N~O', 'quantity'));
-			$this->ExecuteQuery('UPDATE vtiger_field SET typeofdata=?, uitype =?, fieldlabel=? WHERE fieldname =? and tablename=?', array('N~O', 71, 'Discount', 'discount_amount', 'vtiger_inventoryproductrel'));
-			*/
 
 			$this->ExecuteQuery('ALTER TABLE vtiger_assets CHANGE account account INT(19) NULL', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_assets CHANGE datesold datesold date NULL', array());

@@ -48,7 +48,6 @@
 			<input type="hidden" name="mobilemode" value="1">
 			<input type="hidden" name="_operation" value="saveRecord">
 			<input type="hidden" name="action">
-			<input type="hidden" name="parenttab" value="Support">
 			<input type="hidden" name="return_module" value="{$_MODULE->name()}">
 			<input type="hidden" name="return_id" value="{$id}">
 			<input type="hidden" name="return_action" value="index">

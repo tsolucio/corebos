@@ -58,6 +58,7 @@ $mod_strings = array(
 	'LBL_FROM' => 'Van :',
 	'LBL_CC' => 'Cc :',
 	'LBL_BCC' => 'Bcc :',
+	'replyto' => 'Reply To',
 	'NTC_REMOVE_INVITEE' => 'Wilt u dit adres verwijderen van deze e-mail?',
 	'LBL_INVITEE' => 'Ontvangers',
 	'LBL_BULK_MAILS' => 'Bulk e-mails',
@@ -83,7 +84,6 @@ $mod_strings = array(
 	'LBL_TOOL_FORM_TITLE' => 'E-mail Gereedschap',
 	'Date & Time Sent' => 'Datum & tijd verzonden',
 	'Sales Enity Module' => 'Verkoop module',
-	'Activtiy Type' => 'Type activiteiten',
 	'Related To' => 'Gerelateerd aan',
 	'Assigned To' => 'Toegevoegd aan',
 	'Subject' => 'Onderwerp',
@@ -160,5 +160,6 @@ $mod_strings = array(
 	'Dropped' => 'Dropped',
 	'Open' => 'Open',
 	'Unsubscribe' => 'Unsubscribe',
+	'LBL_SEND_INDIVIDUAL_EMAILS' => 'Send Individual Emails',
 );
 ?>

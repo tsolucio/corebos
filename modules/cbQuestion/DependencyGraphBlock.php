@@ -29,7 +29,7 @@ class DependencyGraphBlock {
 
 class DependencyGraphBlock_DetailViewBlock extends DeveloperBlock {
 
-	private $widgetName = 'DependencyGraphBlock';
+	protected $widgetName = 'DependencyGraphBlock';
 
 	public function process($context = false) {
 		$this->context = $context;
@@ -51,7 +51,7 @@ class DependencyGraphBlock_DetailViewBlock extends DeveloperBlock {
 			$smarty->assign('DEPENDENCYGRAPHDEVBLOCK', $graph);
 			return $smarty->fetch('modules/cbQuestion/dependencyGraphBlock.tpl');
 		}
-		return getTranslatedString('LBL_PERMISSION');
+		return '';
 	}
 }
 

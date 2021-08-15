@@ -17,14 +17,14 @@
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element type="xs:string" name="module"/>
-                    <xs:element type="xs:string" name="linkfield"/>
+                    <xs:element type="xs:string" name="linkfield" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="columns">
                       <xs:complexType mixed="true">
                         <xs:sequence>
                           <xs:element name="field" maxOccurs="unbounded" minOccurs="1">
                             <xs:complexType mixed="true">
                               <xs:sequence>
-                                <xs:element type="xs:string" name="label"/>
+                                <xs:element type="xs:string" name="label" minOccurs="0"/>
                                 <xs:element type="xs:string" name="name"/>
                                 <xs:element type="xs:string" name="table" minOccurs="0"/>
                                 <xs:element type="xs:string" name="columnname" minOccurs="0"/>
@@ -40,7 +40,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="popup">
+        <xs:element name="popup" maxOccurs="1" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
               <xs:element type="xs:string" name="linkfield"/>
@@ -50,7 +50,7 @@
                     <xs:element name="field" maxOccurs="unbounded" minOccurs="1">
                       <xs:complexType mixed="true">
                         <xs:sequence>
-                          <xs:element type="xs:string" name="label"/>
+                          <xs:element type="xs:string" name="label" minOccurs="0"/>
                           <xs:element type="xs:string" name="name"/>
                           <xs:element type="xs:string" name="table" minOccurs="0"/>
                           <xs:element type="xs:string" name="columnname" minOccurs="0"/>

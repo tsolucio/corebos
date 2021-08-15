@@ -45,7 +45,7 @@ class Webforms_Field_Model {
 
 	public function setDefaultValue($defaultvalue) {
 		if (is_array($defaultvalue)) {
-			$defaultvalue = implode(' |##| ', $defaultvalue);
+			$defaultvalue = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $defaultvalue);
 		}
 		$this->data['defaultvalue'] = $defaultvalue;
 	}

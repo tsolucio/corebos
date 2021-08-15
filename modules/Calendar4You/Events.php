@@ -47,7 +47,11 @@ $event_status = (isset($_REQUEST['event_status']) ? vtlib_purify($_REQUEST['even
 if ($event_status != '') {
 	$Load_Event_Status = explode(',', $event_status);
 }
-
+$Load_Task_Priority = array();
+$task_priority = (isset($_REQUEST['task_priority']) ? vtlib_purify($_REQUEST['task_priority']) : '');
+if ($task_priority != '') {
+	$Load_Task_Priority = explode(',', $task_priority);
+}
 $Load_Modules = array();
 foreach ($Type_Ids as $typeid) {
 	if (!is_numeric($typeid) && $typeid != 'invite') {
@@ -69,7 +73,6 @@ $ParentUsers = array();
 
 $u_query = 'select vtiger_user2role.userid as id
 	from vtiger_user2role
-	inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 	inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 	where vtiger_role.parentrole like ?';
 $u_params = array($privileges->getParentRoleSequence().'::%');
@@ -152,7 +155,17 @@ if (count($Load_Event_Status) > 0) {
 		$Event_Status[] = $eventstatus;
 	}
 }
-
+$Task_Priority = array();
+if (count($Load_Task_Priority) > 0) {
+	foreach ($Load_Task_Priority as $sid) {
+		$s_result = $adb->pquery('SELECT taskpriority FROM vtiger_taskpriority WHERE picklist_valueid=?', array($sid));
+		$taskpriority = $adb->query_result($s_result, 0, 'taskpriority');
+		$Task_Priority[] = $taskpriority;
+		$taskpriority = html_entity_decode($taskpriority, ENT_QUOTES, $default_charset);
+		$Task_Priority[] = $taskpriority;
+	}
+	$Task_Priority = array_unique($Task_Priority);
+}
 $showGroupEvents = GlobalVariable::getVariable('Calendar_Show_Group_Events', 1);
 $modtab = array_flip($tasklabel);
 foreach ($Users_Ids as $userid) {
@@ -218,7 +231,7 @@ foreach ($Users_Ids as $userid) {
 				$queryGenerator->endGroup();
 				$queryGenerator->endGroup();
 				$queryGenerator->addCondition('assigned_user_id', getUserFullName($userid), 'e', $queryGenerator::$AND);
-				if (count($Event_Status) > 0) {
+				if (!empty($Event_Status)) {
 					$evuniq = array_diff(array('Held','Not Held','Planned'), array_unique($Event_Status));
 					$encompas_group = false;
 					foreach ($evuniq as $evstat) {
@@ -242,8 +255,7 @@ foreach ($Users_Ids as $userid) {
 				}
 			}
 			$list_query = $queryGenerator->getQuery();
-			$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-			$list_query = "SELECT distinct vtiger_crmentity.crmid, vtiger_groups.groupname, $userNameSql as user_name, " .
+			$list_query = "SELECT distinct vtiger_crmentity.crmid, vtiger_groups.groupname, vtiger_users.ename as user_name, " .
 				$queryGenerator->getSelectClauseColumnSQL() . $queryGenerator->getFromClause() . $queryGenerator->getWhereClause();
 			$list_array = array();
 			if ($activitytypeid=='HelpDesk' && $modact->list_link_field == 'ticket_title') {
@@ -266,14 +278,18 @@ foreach ($Users_Ids as $userid) {
 				$list_query .= ' AND vtiger_activity.activitytype = ?';
 				$list_array = array($activitytype);
 			}
-			if (count($Event_Status) > 0) {
+			if (!empty($Event_Status)) {
 				$list_query .= ' AND (vtiger_activity.eventstatus NOT IN (' . generateQuestionMarks($Event_Status) . ') OR vtiger_activity.eventstatus IS NULL)';
 				$list_array = array_merge($list_array, $Event_Status);
+			}
+			if (!empty($Task_Priority)) {
+				$list_query .= ' AND (vtiger_activity.priority NOT IN (' . generateQuestionMarks($Task_Priority) . ') OR vtiger_activity.priority IS NULL)';
+				$list_array = array_merge($list_array, $Task_Priority);
 			}
 		}
 		$list_result = $adb->pquery($list_query, $list_array);
 		while ($row = $adb->fetchByAssoc($list_result)) {
-			if (!empty($stfields['start']) && empty($row[$stfields['start']])) {
+			if (in_array($activitytypeid, $tasklabel) && !empty($stfields['start']) && empty($row[$stfields['start']])) {
 				continue;
 			}
 			$visibility = 'private';
@@ -323,7 +339,7 @@ foreach ($Users_Ids as $userid) {
 							} else {
 								$evt_status = 'Held';
 							}
-							$Actions[] = '<a href="javascript:void(0);" onclick="ajaxChangeCalendarStatus(\''.$evt_status."',".$record.');">'.$app['LBL_CLOSE'].'</a>';
+							$Actions[] = '<a href="javascript:void(0);" onclick="ajaxChangeCalendarStatus(\''.$evt_status."',".$record.',\'calgui\');">'.$app['LBL_CLOSE'].'</a>';
 						}
 					}
 				}
@@ -342,6 +358,7 @@ foreach ($Users_Ids as $userid) {
 					$descflds = explode(',', $stfields['subject']);
 					$descvals = array();
 					$descvals[] = html_entity_decode($into_title, ENT_QUOTES, $default_charset);
+					$acttab = getTabid($activitytypeid);
 					foreach ($descflds as $dfld) {
 						if (strpos($dfld, '.')) {
 							$fld = substr($dfld, strpos($dfld, '.')+1);
@@ -349,7 +366,7 @@ foreach ($Users_Ids as $userid) {
 							$fld = $dfld;
 						}
 						// convert fieldname to columnname
-						$rscol = $adb->pquery('select columnname from vtiger_field where tabid=? and fieldname=?', array(getTabid($activitytypeid),$fld));
+						$rscol = $adb->pquery('select columnname from vtiger_field where tabid=? and fieldname=?', array($acttab, $fld));
 						if ($rscol && $adb->num_rows($rscol)==1) {
 							$fname = $adb->query_result($rscol, 0, 0);
 						} else {
@@ -363,14 +380,12 @@ foreach ($Users_Ids as $userid) {
 					.nl2br(vtlib_purify($into_title));
 			}
 			$title = "<font style='font-size:12px'>".$into_title.'</font>';
-			if ($add_more_info) {
-				if (isset($Event_Info[$event]) && count($Event_Info[$event]) > 0) {
-					$titlemi = '';
-					foreach ($Event_Info[$event] as $CD) {
-						$titlemi .= transferForAddIntoTitle(2, $row, $CD);
-					}
-					$title .= vtlib_purify($titlemi);
+			if ($add_more_info && isset($Event_Info[$event]) && count($Event_Info[$event]) > 0) {
+				$titlemi = '';
+				foreach ($Event_Info[$event] as $CD) {
+					$titlemi .= transferForAddIntoTitle(2, $row, $CD);
 				}
+				$title .= vtlib_purify($titlemi);
 			}
 			if (in_array($activitytypeid, $tasklabel)) {
 				$stfst = $row[$stfields['start']];
@@ -381,7 +396,18 @@ foreach ($Users_Ids as $userid) {
 				}
 				if (in_array($activitytypeid, $timeModules) && !empty($stfields['stime'])) {
 					$stfst = $stfst . ' ' . $row[$stfields['stime']];
-					$stfed = $stfed . ' ' . $row[$stfields['etime']];
+					if (empty($row[$stfields['etime']])) {
+						$stfedt = date(
+							'H:i:s',
+							mktime(
+								substr($row[$stfields['stime']], 0, 2),
+								substr($row[$stfields['stime']], 3, 2) + GlobalVariable::getVariable('Calendar_Slot_Minutes', 15)
+							)
+						);
+					} else {
+						$stfedt = $row[$stfields['etime']];
+					}
+					$stfed = $stfed.' '.$stfedt;
 					$allDay = false;
 				}
 				$convert_date_start = DateTimeField::convertToUserTimeZone($stfst);

@@ -29,7 +29,7 @@
 			moveDown(moduleInfo,sequence);
 	{rdelim}
 	function renderModuleSettings(moduleInfo){ldelim}
-	
+
 		var upImage = "{'arrow_up.png'|@vtiger_imageurl:$THEME}";
 		var downImage = "{'arrow_down.png'|@vtiger_imageurl:$THEME}";
 		var blankImage = "{'blank.gif'|@vtiger_imageurl:$THEME}";
@@ -44,12 +44,12 @@
 					'<td class="colHeader small">{'LBL_VISIBLE'|@getTranslatedString:$MODULE}</td>'+
 					'<td class="colHeader small">{'LBL_VIEW_ALL_RECORD'|@getTranslatedString:$MODULE}</td>'+
 				'</tr>';
-			
+
 		for(i=1;i<=moduleInfo.size();i++){ldelim}
 			var upImageTag = '<img src="'+upImage+'" style="width:16px;height:16px;" border="0"/>';
 			var downImageTag = '<img src="'+downImage+'" style="width:16px;height:16px;" border="0"/>';
 			var blankImageTag = '<img src="'+blankImage+'" style="width:16px;height:16px;" border="0"/>';
-			
+
 			if(moduleInfo[i].sequence == 1) {ldelim}
 				upImageTag = '';
 			{rdelim}
@@ -135,7 +135,7 @@
 										<option value="{$user.id}" selected>{$user.name}</option>
 									{else}
 										<option value="{$user.id}">{$user.name}</option>
-	{/if}	
+	{/if}
 								{/foreach}
 							</optgroup>
 							<optgroup style="border: none" label="Groups">
@@ -155,10 +155,9 @@
 			</table>
 	</td>
 	</tr>
-</table>	
+</table>
 <br><br>
 		<center><input class="crmbutton small save" type="Submit" style="width:70px" title="{$APP.LBL_SAVE_LABEL}" value="{$APP.LBL_SAVE_LABEL}" alt="{$APP.LBL_SAVE_LABEL}" onclick=VtigerJS_DialogBox.block();></center>
-		
 <script>
 	window.onload=function(){ldelim}
 		initialModuleSettings();

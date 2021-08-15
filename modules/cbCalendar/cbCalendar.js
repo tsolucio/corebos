@@ -9,14 +9,14 @@
 
 //// Get User Default calendar variables
 var calendar_call_default_duration = 5; // minutes
-GlobalVariable_getVariable('Calendar_call_default_duration', 5, 'Calendar', gVTUserID).then(function (response) {
+GlobalVariable_getVariable('Calendar_call_default_duration', 5, 'cbCalendar', gVTUserID).then(function (response) {
 	var obj = JSON.parse(response);
 	calendar_call_default_duration = obj.Calendar_call_default_duration;
 }, function (error) {
 	calendar_call_default_duration = 5; // minutes
 });
 var calendar_other_default_duration = 1; // hours
-GlobalVariable_getVariable('Calendar_other_default_duration', 1, 'Calendar', gVTUserID).then(function (response) {
+GlobalVariable_getVariable('Calendar_other_default_duration', 1, 'cbCalendar', gVTUserID).then(function (response) {
 	var obj = JSON.parse(response);
 	calendar_other_default_duration = obj.Calendar_other_default_duration;
 }, function (error) {
@@ -38,7 +38,6 @@ function changeEndtime_StartTime() {
 	let mm1 = dateelements1[1];
 	let yyyy1 = dateelements1[2];
 	let date1 = new Date();
-	//date1.setDate(dd1+1);
 	date1.setYear(yyyy1);
 	date1.setMonth(mm1 - 1, dd1 + 1);
 	let tempdate = getdispDate(date1);
@@ -53,11 +52,9 @@ function changeEndtime_StartTime() {
 			if (hour >= day_change_hour) {
 				date = tempdate;
 				hour = hour - +day_change_hour;
-				//min = min;
 				fmt = 'AM';
 			} else if (hour == 12) {
 				hour = 1;
-				//min = min;
 				fmt = 'PM';
 			} else {
 				hour = +hour + +calendar_other_default_duration;
@@ -68,11 +65,9 @@ function changeEndtime_StartTime() {
 		} else if (fmt == 'AM') {
 			if (hour >= day_change_hour) {
 				hour = hour - +day_change_hour;
-				//min = min;
 				fmt = 'PM';
 			} else if (hour == 12) {
 				hour = 1;
-				//min = min;
 				fmt = 'AM';
 			} else {
 				hour = +hour + +calendar_other_default_duration;
@@ -192,7 +187,7 @@ function open_filtered_contactsIfAccounts(fromlink, fldname, MODULE, ID) {
 	var valmod = (rel_type=='Accounts' || rel_type=='Potentials' || rel_type=='Quotes' || rel_type=='PurchaseOrder' || rel_type=='Vendors' || rel_type=='SalesOrder' || rel_type=='Invoice' || rel_type=='Campaigns' || rel_type=='Products');
 	if (rel_id != '' && valmod) {
 		var BasicSearch = '&parent_module='+rel_type+'&relmod_id='+rel_id; // special hard coded contact search
-		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID+BasicSearch, 'vtlibui10', 'width=780,height=652,resizable=0,scrollbars=0,top=150,left=200');
+		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID+BasicSearch, 'vtlibui10', cbPopupWindowSettings);
 	} else {
 		vtlib_open_popup_window('', 'cto_id', 'cbCalendar', '');
 	}

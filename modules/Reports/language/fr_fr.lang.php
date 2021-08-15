@@ -235,6 +235,7 @@ $mod_strings = array (
 	'LBL_USERS_AVAILABEL'=> 'Destinataires',
 	'LBL_REPORT_FORMAT_PDF'=> 'PDF',
 	'LBL_REPORT_FORMAT_URL'=> 'URL',
+	'LBL_REPORT_FORMAT_CSV'=> 'CSV',
 	'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 	'LBL_REPORT_FORMAT_BOTH'=> 'Les deux',
 	'LBL_REPORT_FORMAT'=> 'Format du rapport',
@@ -295,5 +296,6 @@ $mod_strings = array (
 	'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Erreur lors de la suppression du répertoire.',
 	'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Erreur lors de la suppression des rapports du répertoire',
 	'ERR_CREATE_REPORT' => 'Error creating the report.',
+	'Select Report' => 'Select report',
 );
 ?>

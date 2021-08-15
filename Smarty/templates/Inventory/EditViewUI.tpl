@@ -68,7 +68,6 @@
 		{else}
 			{assign var="mandatory_field" value=""}
 		{/if}
-
 		{* vtlib customization: Help information for the fields *}
 		{assign var="usefldlabel" value=$fldlabel}
 		{assign var="fldhelplink" value=""}
@@ -252,40 +251,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/foreach}
 				</select>
 			</span>
-		{elseif $uitype eq 50}
-			<span id="td_{$fldname}" width="20%" class="mdCellInfo{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</span>
-			<span id="td_val_{$fldname}" width="30%" align=left class="mdCellInfo">
-				<span style='display:none;' id='{$fldname}_hidden'></span>
-				{foreach key=date_value item=date12_value from=$fldvalue}
-					{assign var=date_val value="$date_value"}
-					{assign var=date12_val value="$date12_value"}
-				{/foreach}
-				{foreach key=user_format item=date_format from=$thirdvalue}
-					{assign var=userFormat value="$user_format"}
-					{assign var=fieldFormat value="$date_format"}
-				{/foreach}
-				<input name="{$fldname}" tabindex="{$vt_tab}" id="jscal_field_{$fldname}" type="text" style="border:1px solid #bababa;" size="16" maxlength="16" value="{$date12_val}">
-				<input name="timefmt_{$fldname}" id="inputtimefmt_{$fldname}" type="hidden" value="{$fieldFormat}">
-				<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$fldname}" style="vertical-align:middle">
-
-				{foreach key=date_format item=date_str from=$secondvalue}
-					{assign var=dateFormat value="$date_format"}
-					{assign var=dateStr value="$date_str"}
-				{/foreach}
-
-				<br><font size=1><em old="(yyyy-mm-dd)">({$dateStr})&nbsp;<span id="timefmt_{$fldname}">{if $userFormat neq "24"}{$fieldFormat}{/if}</span></em></font>
-
-				<script type="text/javascript" id='massedit_calendar_{$fldname}'>
-					Calendar.setup ({ldelim}
-						inputField : "jscal_field_{$fldname}", ifFormat : "{$dateFormat}", inputTimeFormat : "{$fieldFormat}",
-						{if $userFormat neq "24"}displayArea : "timefmt_{$fldname}", daFormat : "%p",{/if}
-						showsTime : true, timeFormat : "{$userFormat}",
-						button : "jscal_trigger_{$fldname}", singleClick : true, step : 1
-					{rdelim});
-				</script>
-			</span>
 
 		{elseif $uitype eq 17}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
@@ -355,10 +320,10 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<input name="time_start" tabindex="{$vt_tab}" style="border:1px solid #bababa;" size="5" maxlength="5" type="text" value="{$time_val}">
 				{/if}
 
-				{if $uitype eq 6 && $QCMODULE eq 'Event'}
+				{if $uitype eq 6}
 					<input name="dateFormat" type="hidden" value="{$dateFormat}">
 				{/if}
-				{if $uitype eq 23 && $QCMODULE eq 'Event'}
+				{if $uitype eq 23}
 					<input name="time_end" style="border:1px solid #bababa;" size="5" maxlength="5" type="text" value="{$time_val}">
 				{/if}
 
@@ -379,6 +344,40 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					{rdelim})
 				</script>
 			</span>
+		{elseif $uitype eq 50}
+			<span id="td_{$fldname}" width="20%" class="mdCellInfo{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
+				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
+			</span>
+			<span id="td_val_{$fldname}" width="30%" align=left class="mdCellInfo">
+				<span style='display:none;' id='{$fldname}_hidden'></span>
+				{foreach key=date_value item=date12_value from=$fldvalue}
+					{assign var=date_val value="$date_value"}
+					{assign var=date12_val value="$date12_value"}
+				{/foreach}
+				{foreach key=user_format item=date_format from=$thirdvalue}
+					{assign var=userFormat value="$user_format"}
+					{assign var=fieldFormat value="$date_format"}
+				{/foreach}
+				<input name="{$fldname}" tabindex="{$vt_tab}" id="jscal_field_{$fldname}" type="text" style="border:1px solid #bababa;" size="16" maxlength="16" value="{$date12_val}">
+				<input name="timefmt_{$fldname}" id="inputtimefmt_{$fldname}" type="hidden" value="{$fieldFormat}">
+				<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$fldname}" style="vertical-align:middle">
+
+				{foreach key=date_format item=date_str from=$secondvalue}
+					{assign var=dateFormat value="$date_format"}
+					{assign var=dateStr value="$date_str"}
+				{/foreach}
+
+				<br><font size=1><em old="(yyyy-mm-dd)">({$dateStr})&nbsp;<span id="timefmt_{$fldname}">{if $userFormat neq "24"}{$fieldFormat}{/if}</span></em></font>
+
+				<script type="text/javascript" id='massedit_calendar_{$fldname}'>
+					Calendar.setup ({ldelim}
+						inputField : "jscal_field_{$fldname}", ifFormat : "{$dateFormat}", inputTimeFormat : "{$fieldFormat}",
+						{if $userFormat neq "24"}displayArea : "timefmt_{$fldname}", daFormat : "%p",{/if}
+						showsTime : true, timeFormat : "{$userFormat}",
+						button : "jscal_trigger_{$fldname}", singleClick : true, step : 1
+					{rdelim});
+				</script>
+			</span>
 
 		{elseif $uitype eq 63}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
@@ -391,30 +390,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<option value="{$labelval}" {$selectval}>{$labelval}</option>
 					{/foreach}
 				</select>
-
-		{elseif $uitype eq 68 || $uitype eq 62}
-			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>
-				{if $fromlink eq 'qcreate'}
-					<select class="small" name="parent_type" onChange='document.QcEditView.parent_name.value=""; document.QcEditView.parent_id.value=""'>
-				{else}
-					<select class="small" name="parent_type" onChange='document.EditView.parent_name.value=""; document.EditView.parent_id.value=""'>
-				{/if}
-					{section name=combo loop=$fldlabel}
-						<option value="{$fldlabel_combo[combo]}" {$fldlabel_sel[combo]}>{$fldlabel[combo]} </option>
-					{/section}
-				</select>
-			</span>
-			<span width="30%" class="mdCellInfo">
-				<input name="{$fldname}" type="hidden" value="{$secondvalue}">
-				<input name="parent_name" readonly id = "parentid" type="text" style="border:1px solid #bababa;" value="{$fldvalue}">
-				&nbsp;
-				{if $fromlink eq 'qcreate'}
-					<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.QcEditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-				{else}
-					<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-				{/if}
-			</span>
 
 		{elseif $uitype eq 55 || $uitype eq 255}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
@@ -575,7 +550,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<span width="30%" class="mdCellInfo">
 					<input id="{$fldname}_display" name="{$fldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$fldvalue}" class="small" />&nbsp;
 					<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$secondvalue}" id="{$fldname}" />
-					&nbsp;<input title="{$APP.LBL_CHANGE_TITLE}" accessKey="C" type="button" class="small" value='{$APP.LBL_CHANGE}' name="btn1" onclick='return window.open("index.php?module=Users&action=Popup&html=Popup_picker&form=vtlibPopupView&form_submit=false&fromlink={$fromlink}&recordid={$ID}&forfield={$fldname}","test","width=640,height=603,resizable=0,scrollbars=0");'>
+					&nbsp;<input title="{$APP.LBL_CHANGE_TITLE}" accessKey="C" type="button" class="small" value='{$APP.LBL_CHANGE}' name="btn1" onclick='return window.open("index.php?module=Users&action=Popup&html=Popup_picker&form=vtlibPopupView&form_submit=false&fromlink={$fromlink}&recordid={$ID}&forfield={$fldname}", "test", cbPopupWindowSettings);'>
 					&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 				</span>
 			{elseif $uitype eq 117}<!-- for currency in users details-->
@@ -588,7 +563,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			   {else}
 				<select disabled name="{$fldname}" tabindex="{$vt_tab}" class="small">
 			   {/if}
-
+				{assign var="curr_stat" value=""}
 				{foreach item=arr key=uivalueid from=$fldvalue}
 					{foreach key=sel_value item=value from=$arr}
 						<option value="{$uivalueid}" {$value}>{$sel_value|@getTranslatedCurrencyString}</option>

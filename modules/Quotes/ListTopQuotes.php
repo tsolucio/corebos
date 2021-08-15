@@ -29,8 +29,8 @@ function getTopQuotes($maxval, $calCnt) {
 	$order_by = '';
 	$oCustomView = new CustomView('Quotes');
 	$oCustomView->getCustomViewCombo();
-	if (isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='') {
-		if ($oCustomView->setdefaultviewid != "") {
+	if (!isset($_REQUEST['viewname']) || $_REQUEST['viewname']=='') {
+		if ($oCustomView->setdefaultviewid != '') {
 			$viewid = $oCustomView->setdefaultviewid;
 		} else {
 			$viewid = '0';
@@ -119,8 +119,7 @@ function getTopQuotes($maxval, $calCnt) {
 	$header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, true);
 	$entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, true);
 
-	$values=array('ModuleName'=>'Quotes','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-	return $values;
+	return array('ModuleName'=>'Quotes', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
 }
 
 function getTopQuotesSearch($output) {

@@ -9,8 +9,7 @@
  ********************************************************************************/
 -->*}
 {if $smarty.request.action eq 'EmailsAjax'}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
@@ -18,7 +17,10 @@
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
 <link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
+{include file='BrowserVariables.tpl'}
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
+</head>
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 {/if}
 <table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -44,18 +46,24 @@
 	<td class="lvtCol" width="15%" height="70px" style="padding: 5px;" align="right"><b>{$MOD.LBL_TO}</b></td>
 	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$TO_MAIL}</td>
 	</tr>
-		{if 'ccmail'|@emails_checkFieldVisiblityPermission eq '0'}
+	{if 'replyto'|@emails_checkFieldVisiblityPermission eq '0'}
+		<tr>
+		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.replyto}</b></td>
+		<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$REPLYTO}</td>
+		</tr>
+	{/if}
+	{if 'ccmail'|@emails_checkFieldVisiblityPermission eq '0'}
 		<tr>
 		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_CC}</b></td>
 		<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$CC_MAIL}</td>
 		</tr>
-		{/if}
-		{if 'bccmail'|@emails_checkFieldVisiblityPermission eq '0'}
+	{/if}
+	{if 'bccmail'|@emails_checkFieldVisiblityPermission eq '0'}
 		<tr>
 		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_BCC}</b></td>
 		<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$BCC_MAIL}</td>
 		</tr>
-		{/if}
+	{/if}
 	<tr>
 		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_DATE}</b></td>
 		<td class="dvtCellLabel" style="padding: 5px;">{$DATE_START}&nbsp;</td>
@@ -66,7 +74,7 @@
 	</tr>
 	<tr>
 	<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_SUBJECT}</b></td>
-	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$elements.value}</td>
+	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$elements.value|vtlib_purify}</td>
 	</tr>
 	<tr>
 	<td colspan=3><table width="100%" border=0>
@@ -100,7 +108,7 @@
 	</tr>
 	{elseif $elements.fldname eq 'description'}
 	<tr>
-	<td style="padding: 5px;" colspan="3" valign="top"><div style="overflow:auto;height:415px;width:100%;">{$elements.value}</div></td>
+	<td style="padding: 5px;" colspan="3" valign="top"><div style="overflow:auto;height:415px;width:100%;">{$elements.value|vtlib_purify}</div></td>
 	</tr>
 	{elseif $elements.fldname eq 'filename'}
 	<tr><td colspan="3">
@@ -115,14 +123,6 @@
 	{/if}
 	{/foreach}
 	{/foreach}
-	<tr>
-	<td colspan="3" class="dvtCellLabel" style="padding: 10px;" align="center"><input type="button" name="forward" value=" {$MOD.LBL_FORWARD_BUTTON} " alt="{$MOD.LBL_FORWARD_BUTTON}" title="{$MOD.LBL_FORWARD_BUTTON}" class="crmbutton small edit" onClick="OpenCompose('{$ID}','forward')">&nbsp;
-	<input type="button" title="{$APP.LBL_EDIT}" alt="{$APP.LBL_EDIT}" name="edit" value=" {$APP.LBL_EDIT} " class="crmbutton small edit" onClick="OpenCompose('{$ID}','edit')">&nbsp;
-	<input name="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " title="{$APP.LBL_CANCEL_BUTTON_LABEL}" alt="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmbutton small cancel" type="button" onClick="{if isset($FROMCALENDAR)}cancelForm(){else}window.close(){/if}">
-	&nbsp;
-	<input type="button" title="{$MOD.LBL_PRINT_EMAIL}" name="{$MOD.LBL_PRINT_EMAIL}" value="{$MOD.LBL_PRINT_EMAIL}" class="crmbutton small edit" onClick="OpenCompose('{$ID}', 'print')"> &nbsp;
-	</td>
-	</tr>
 </table>
 <script>
 document.getElementById('attach_cont').innerHTML = document.getElementById('attach_temp_cont').innerHTML;

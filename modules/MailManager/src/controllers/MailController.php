@@ -47,8 +47,10 @@ class MailManager_MailController extends MailManager_Controller {
 			$uicontent = $viewer->fetch($this->getModuleTpl('Mail.Open.tpl'));
 
 			$metainfo = array(
-				'from' => $mail->from(), 'subject' => $mail->subject(),
-				'msgno' => $mail->msgNo(), 'msguid' => $mail->uniqueid(),
+				'from' => $mail->from(),
+				'subject' => $mail->subject(),
+				'msgno' => $mail->msgNo(),
+				'msguid' => $mail->uniqueid(),
 				'folder' => $foldername
 			);
 
@@ -93,7 +95,7 @@ class MailManager_MailController extends MailManager_Controller {
 
 			$to_string = rtrim($request->get('to'), ',');
 			$connector = $this->getConnector('__vt_drafts');
-
+			$status = false;
 			if (!empty($to_string)) {
 				$toArray = explode(',', $to_string);
 				foreach ($toArray as $to) {
@@ -109,7 +111,7 @@ class MailManager_MailController extends MailManager_Controller {
 									$parentIds = $relateto[1].'@'.($relatedtos[$i]['module']=='Users' ? '-' : '').'1';
 								} elseif ($relatedtos[$i]['module'] == $val) {
 									$relateto = vtws_getIdComponents($relatedtos[$i]['record']);
-									$parentIds = $relateto[1]."@1";
+									$parentIds = $relateto[1].'@1';
 									break;
 								}
 							}
@@ -118,12 +120,10 @@ class MailManager_MailController extends MailManager_Controller {
 							break;
 						}
 					}
-					if (empty($parentIds)) {
-						if ($numreltos > 0) {
-							$relateto = vtws_getIdComponents($relatedtos[0]['record']);
-							$parentIds = $relateto[1].'@'.($relatedtos[0]['module']=='Users' ? '-' : '').'1';
-							break;
-						}
+					if (empty($parentIds) && $numreltos > 0) {
+						$relateto = vtws_getIdComponents($relatedtos[0]['record']);
+						$parentIds = $relateto[1].'@'.($relatedtos[0]['module']=='Users' ? '-' : '').'1';
+						break;
 					}
 
 					$cc_string = rtrim($request->get('cc'), ',');
@@ -159,17 +159,13 @@ class MailManager_MailController extends MailManager_Controller {
 					}
 					$fromEmail = $connector->getFromEmailAddress();
 					$userFullName = getFullNameFromArray('Users', $current_user->column_fields);
-					$userId = $current_user->id;
 
 					$mailer = new Vtiger_Mailer();
 					$mailer->IsHTML(true);
-					$mailer->ConfigSenderInfo($fromEmail, $userFullName, $current_user->email1);
+					$replyTo = (empty($request->get('replyto')) ? $current_user->email1 : $request->get('replyto'));
+					$mailer->ConfigSenderInfo($fromEmail, $userFullName, $replyTo);
 					$mailer->Subject = $subject;
 					$mailer->Body = $description;
-					$mailer->addSignature($userId);
-					if ($mailer->Signature != '') {
-						$mailer->Body.= $mailer->Signature;
-					}
 
 					$ccs = empty($cc_string)? array() : explode(',', $cc_string);
 					$bccs= empty($bcc_string)?array() : explode(',', $bcc_string);
@@ -196,7 +192,7 @@ class MailManager_MailController extends MailManager_Controller {
 
 					if (is_array($attachments)) {
 						foreach ($attachments as $attachment) {
-							$fileNameWithPath = $root_directory.$attachment['path'].$attachment['fileid']."_".$attachment['attachment'];
+							$fileNameWithPath = $root_directory.$attachment['path'].$attachment['fileid'].'_'.$attachment['attachment'];
 							if (is_file($fileNameWithPath)) {
 								$mailer->AddAttachment($fileNameWithPath, $attachment['attachment']);
 							}
@@ -217,6 +213,7 @@ class MailManager_MailController extends MailManager_Controller {
 				$email->column_fields['activitytype'] = 'Emails';
 				$email->column_fields['from_email'] = $mailer->From;
 				$email->column_fields['saved_toid'] = $to_string;
+				$email->column_fields['replyto'] = $replyTo;
 				$email->column_fields['ccmail'] = $cc_string;
 				$email->column_fields['bccmail'] = $bcc_string;
 				$email->column_fields['email_flag'] = 'SENT';
@@ -246,7 +243,7 @@ class MailManager_MailController extends MailManager_Controller {
 				$mail->readFromDB($request->get('_muid'));
 				$attachment = $mail->attachments(true, $attachmentName);
 
-				if ($attachment[$attachmentName]) {
+				if (!empty($attachment[$attachmentName])) {
 					// Send as downloadable
 					header('Content-type: application/octet-stream');
 					header('Pragma: public');

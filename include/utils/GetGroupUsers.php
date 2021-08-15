@@ -74,7 +74,6 @@ class GetGroupUsers {
 			$focus = new GetGroupUsers();
 			$focus->getAllUsersInGroup($now_grp_id);
 			$now_grp_users=$focus->group_users;
-			//$now_grp_grps=$focus->group_subgroups;
 			if (!array_key_exists($now_grp_id, $this->group_subgroups)) {
 				$this->group_subgroups[$now_grp_id]=$now_grp_users;
 			}

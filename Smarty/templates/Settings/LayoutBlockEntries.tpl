@@ -10,7 +10,6 @@
 <form action="index.php" method="post" name="form" onsubmit="VtigerJS_DialogBox.block();">
 <input type="hidden" name="fld_module" value="{$MODULE}">
 <input type="hidden" name="module" value="Settings">
-<input type="hidden" name="parenttab" value="Settings">
 <input type="hidden" name="mode">
 <script type="text/javascript" src="include/js/customview.js"></script>
 <script type="text/javascript" src="modules/Settings/Settings.js"></script>
@@ -367,6 +366,22 @@
 								&nbsp;<label for="massedit_check_{$value.fieldselect}">{$MOD.LBL_MASS_EDIT}</label>
 								</td>
 							</tr>
+							{if $value.uitype eq '19' || $value.uitype eq '21'}
+								<tr>
+									<td valign="top" class="dvtCellInfo" align="left" width="10px">
+										<input id="longfield_check_{$value.fieldselect}" type="checkbox"
+										{if $value.uitype eq '19'}
+											checked
+										{/if}
+										{if $value.uitype eq '21'}
+											unchecked
+										{/if}>
+									</td>
+									<td valign="top" class="dvtCellInfo" align="left">
+									&nbsp;<label for="longfield_check_{$value.fieldselect}">{$MOD.LBL_LONG_FIELD}</label>
+									</td>
+								</tr>
+							{/if}
 							<tr>
 								<td valign="top" class="dvtCellInfo" align="left" width="10px">
 									{assign var="defaultsetting" value=$value.defaultvalue}
@@ -413,7 +428,7 @@
 						{if $value.customfieldflag neq 0}
 							<button name="delete" type="button" class="slds-button slds-button_destructive" onclick="getData('{$value.columnname}', '{$MODULE}', '{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}');">{$APP.LBL_DELETE_BUTTON_LABEL}</button>
 						{/if}
-						<button name="save" type="button" class="slds-button slds-button_brand" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');">{$APP.LBL_SAVE_BUTTON_LABEL}</button>
+						<button name="save" type="button" class="slds-button slds-button_brand" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}','{$value.uitype}');">{$APP.LBL_SAVE_BUTTON_LABEL}</button>
 					</footer>
 				</div>
 				<div id="hiddenfield_{$value.label}" style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px">

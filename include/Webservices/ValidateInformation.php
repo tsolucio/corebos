@@ -30,9 +30,19 @@ function cbwsValidateInformation($context, $user) {
 	if (json_last_error() !== JSON_ERROR_NONE) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter');
 	}
+	if (empty($screen_values['module']) && !empty($screen_values['record'])) {
+		if (strpos($screen_values['record'], 'x')===false) {
+			$crmid = $screen_values['record'];
+		} else {
+			list($wsid, $crmid) = explode('x', $screen_values['record']);
+		}
+		$screen_values['module'] = getSalesEntityType($crmid);
+		$context = json_encode($screen_values);
+	}
 	if (empty($screen_values['module']) || !isset($screen_values['record'])) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter');
 	}
+
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($screen_values['module'], $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
@@ -59,17 +69,12 @@ function cbwsValidateInformation($context, $user) {
 		if ($_REQUEST['module'] !== $webserviceObject->getEntityName()) {
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 		}
-		if (!$meta->hasPermission(EntityMeta::$UPDATE, $wsrecord)) {
+		if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $wsrecord)) {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
 		}
 		if (!$meta->exists($elementId)) {
 			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 		}
-	}
-	// Product line support
-	$elementType = $_REQUEST['module'];
-	if (in_array($elementType, getInventoryModules()) && isset($element['pdoInformation']) && (is_array($element['pdoInformation']))) {
-		include 'include/Webservices/ProductLines.php';
 	}
 	include_once 'modules/cbMap/processmap/Validations.php';
 	$validation = Validations::processAllValidationsFor($_REQUEST['module']);
@@ -79,6 +84,5 @@ function cbwsValidateInformation($context, $user) {
 			'wsresult' => $validation,
 		);
 	}
-	VTWS_PreserveGlobal::flush();
 	return $validation;
 }

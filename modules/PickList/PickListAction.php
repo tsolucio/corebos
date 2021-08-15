@@ -20,7 +20,7 @@ if (empty($mode)) {
 	echo 'action mode is empty';
 	exit;
 }
-
+$reloadpage = false;
 if ($mode == 'add') {
 	$newValues = $_REQUEST['newValues'];
 	$selectedRoles = $_REQUEST['selectedRoles'];
@@ -33,7 +33,6 @@ if ($mode == 'add') {
 	$picklistid = $adb->query_result($result, 0, 'picklistid');
 
 	foreach ($arr as $val) {
-		//$val = htmlentities(trim($val), ENT_QUOTES, $default_charset);
 		if (!empty($val)) {
 			$id = $adb->getUniqueID("vtiger_$tableName");
 			$picklist_valueid = getUniquePicklistID();
@@ -69,10 +68,9 @@ if ($mode == 'add') {
 		$newVal = array('encodedValue'=>html_entity_decode($newValues[$i], ENT_QUOTES, $default_charset), 'rawValue'=>$newValues[$i]);
 		$oldVal = $oldValues[$i];
 
-		if ($newVal != $oldVal) {
-			$oldVal = array('encodedValue'=>html_entity_decode($oldVal, ENT_QUOTES, $default_charset),'rawValue'=>$oldVal);
+		if ($newVal['encodedValue'] != $oldVal) {
 			$sql = "UPDATE vtiger_$tableName SET $tableName=? WHERE $tableName=?";
-			$adb->pquery($sql, array($newVal['encodedValue'], $oldVal['encodedValue']));
+			$adb->pquery($sql, array($newVal['encodedValue'], html_entity_decode($oldVal, ENT_QUOTES, $default_charset)));
 			//replace the value of this picklist with new one in all records
 			if ($uitype==33) {
 				for ($n=0; $n<$num; $n++) {
@@ -80,32 +78,32 @@ if ($mode == 'add') {
 					$columnName = $adb->query_result($result, $n, 'columnname');
 					// unique value
 					$sql = "update $table_name set $columnName=? where $columnName=?";
-					$adb->pquery($sql, array($newVal['rawValue'], $oldVal['rawValue']));
+					$adb->pquery($sql, array($newVal['rawValue'], $oldVal));
 					// middle value
 					$sql = "update $table_name set $columnName=REPLACE($columnName, ?, ?)";
-					$adb->pquery($sql, array('|##| '.$oldVal['rawValue'].' |##|', '|##| '.$newVal['rawValue'].' |##|'));
+					$adb->pquery($sql, array('|##| '.$oldVal.' |##|', '|##| '.$newVal['rawValue'].' |##|'));
 					// initial value
 					$sql = "update $table_name set $columnName=REPLACE($columnName, ?, ?)";
-					$adb->pquery($sql, array($oldVal['rawValue'].' |##|', $newVal['rawValue'].' |##|'));
+					$adb->pquery($sql, array($oldVal.' |##|', $newVal['rawValue'].' |##|'));
 					// final value
 					$sql = "update $table_name set $columnName=REPLACE($columnName, ?, ?)";
-					$adb->pquery($sql, array('|##| '.$oldVal['rawValue'], '|##| '.$newVal['rawValue']));
+					$adb->pquery($sql, array('|##| '.$oldVal, '|##| '.$newVal['rawValue']));
 					// meta info
 					$sql = 'UPDATE vtiger_field SET defaultvalue=? WHERE defaultvalue=? AND tablename=? AND columnname=?';
-					$adb->pquery($sql, array($newVal['rawValue'], $oldVal['rawValue'], $table_name, $columnName));
+					$adb->pquery($sql, array($newVal['rawValue'], $oldVal, $table_name, $columnName));
 					$sql = 'UPDATE vtiger_picklist_dependency SET sourcevalue=? WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
-					$adb->pquery($sql, array($newVal['rawValue'], $oldVal['rawValue'], $tableName, getTabid($moduleName)));
+					$adb->pquery($sql, array($newVal['rawValue'], $oldVal, $tableName, getTabid($moduleName)));
 				}
 			} else {
 				for ($n=0; $n<$num; $n++) {
 					$table_name = $adb->query_result($result, $n, 'tablename');
 					$columnName = $adb->query_result($result, $n, 'columnname');
 					$sql = "update $table_name set $columnName=? where $columnName=?";
-					$adb->pquery($sql, array($newVal['rawValue'], $oldVal['rawValue']));
+					$adb->pquery($sql, array($newVal['rawValue'], $oldVal));
 					$sql = 'UPDATE vtiger_field SET defaultvalue=? WHERE defaultvalue=? AND tablename=? AND columnname=?';
-					$adb->pquery($sql, array($newVal['rawValue'], $oldVal['rawValue'], $table_name, $columnName));
+					$adb->pquery($sql, array($newVal['rawValue'], $oldVal, $table_name, $columnName));
 					$sql = 'UPDATE vtiger_picklist_dependency SET sourcevalue=? WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
-					$adb->pquery($sql, array($newVal['rawValue'], $oldVal['rawValue'], $tableName, getTabid($moduleName)));
+					$adb->pquery($sql, array($newVal['rawValue'], $oldVal, $tableName, getTabid($moduleName)));
 				}
 			}
 		}
@@ -177,5 +175,35 @@ if ($mode == 'add') {
 		}
 	}
 	echo 'SUCCESS';
+} elseif ($mode == 'savei18n') {
+	if (hasNonEditablePicklistValues($_REQUEST['fieldname'])) {
+		echo getTranslatedString('ERR_MustBeTranslated', 'PickList');
+	} else {
+		$adb->pquery('update vtiger_picklist set multii18n=? where name=?', array(($_REQUEST['ischecked']=='true' ? 1 : 0), $_REQUEST['fieldname']));
+		echo 'SUCCESS';
+	}
+} elseif ($mode == 'cleanpicklist') {
+	$reloadpage = true;
+	cleanPicklist($moduleName, $tableName);
+}
+
+if ($mode == 'add' || $mode == 'edit' || $mode == 'delete' || $mode == 'cleanpicklist') {
+	$cache = new corebos_cache();
+	if ($cache->isUsable()) {
+		$allRoles = $adb->query('select roleid from vtiger_role');
+		$rolesCount = $adb->num_rows($allRoles);
+		if ($rolesCount > 0) {
+			$cacheKeys = array();
+			for ($i = 0; $i < $rolesCount; $i++) {
+				$roleId = $adb->query_result($allRoles, $i, 'roleid');
+				$cacheKeys[] = $tableName."#".$roleId;
+			}
+			$cache->getCacheClient()->deleteMultiple($cacheKeys);
+		}
+	}
+}
+if ($reloadpage) {
+	header('Location: index.php?module=PickList&action=PickList');
+	exit;
 }
 ?>

@@ -19,7 +19,7 @@
 <tr>
 <td class="listTableRow small" valign="top" width="5%">{$smarty.foreach.groupiter.iteration}</td>
 {if $IS_ADMIN}
-<td class="listTableRow small" valign="top"><a href="index.php?module=Settings&action=GroupDetailView&parenttab=Settings&groupId={$id}">{$groupname.1}</a></td>
+<td class="listTableRow small" valign="top"><a href="index.php?module=Settings&action=GroupDetailView&groupId={$id}">{$groupname.1}</a></td>
 {else}
 <td class="listTableRow small" valign="top">{$groupname.1}</td>
 {/if}

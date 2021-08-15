@@ -12,9 +12,6 @@ require_once 'data/Tracker.php';
 require_once 'modules/Invoice/Invoice.php';
 
 class CobroPago extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_cobropago';
 	public $table_index= 'cobropagoid';
 	public $column_fields = array();
@@ -169,26 +166,27 @@ class CobroPago extends CRMEntity {
 	}
 
 	public static function calculateRelatedTotals($pid) {
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('CobroPago');
 		global $adb;
 		$parent_module = getSalesEntityType($pid);
 		if ($parent_module=='Accounts' && self::account_control_installed()) {
 			$rs = $adb->pquery(
-				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',
+				'select sum(amount) as suma from vtiger_cobropago inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=1 and parent_id=?',
 				array($pid)
 			);
 			$sumamountcredit =$adb->query_result($rs, 0, 0);
 			$rs = $adb->pquery(
-				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',
+				'select sum(amount) as suma from vtiger_cobropago inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=0 and parent_id=?',
 				array($pid)
 			);
 			$sumamountdebit =$adb->query_result($rs, 0, 0);
 			$rs = $adb->pquery(
-				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",
+				"select sum(amount) as suma from vtiger_cobropago inner join ".$crmEntityTable." on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=1 and paid='0' and parent_id=?",
 				array($pid)
 			);
 			$sumpendingcredit=$adb->query_result($rs, 0, 0);
 			$rs = $adb->pquery(
-				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",
+				"select sum(amount) as suma from vtiger_cobropago inner join ".$crmEntityTable." on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=0 and paid='0' and parent_id=?",
 				array($pid)
 			);
 			$sumpendingdebit=$adb->query_result($rs, 0, 0);
@@ -199,22 +197,22 @@ class CobroPago extends CRMEntity {
 		}
 		if ($parent_module=='Contacts' && self::contact_control_installed()) {
 			$rs = $adb->pquery(
-				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',
+				'select sum(amount) as suma from vtiger_cobropago inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=1 and parent_id=?',
 				array($pid)
 			);
 			$sumamountcredit =$adb->query_result($rs, 0, 0);
 			$rs = $adb->pquery(
-				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',
+				'select sum(amount) as suma from vtiger_cobropago inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=0 and parent_id=?',
 				array($pid)
 			);
 			$sumamountdebit =$adb->query_result($rs, 0, 0);
 			$rs = $adb->pquery(
-				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",
+				"select sum(amount) as suma from vtiger_cobropago inner join ".$crmEntityTable." on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=1 and paid='0' and parent_id=?",
 				array($pid)
 			);
 			$sumpendingcredit=$adb->query_result($rs, 0, 0);
 			$rs = $adb->pquery(
-				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",
+				"select sum(amount) as suma from vtiger_cobropago inner join ".$crmEntityTable." on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=0 and paid='0' and parent_id=?",
 				array($pid)
 			);
 			$sumpendingdebit=$adb->query_result($rs, 0, 0);
@@ -225,22 +223,22 @@ class CobroPago extends CRMEntity {
 		}
 		if ($parent_module=='Vendors' && self::vendor_control_installed()) {
 			$rs = $adb->pquery(
-				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',
+				'select sum(amount) as suma from vtiger_cobropago inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=1 and parent_id=?',
 				array($pid)
 			);
 			$sumamountcredit =$adb->query_result($rs, 0, 0);
 			$rs = $adb->pquery(
-				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',
+				'select sum(amount) as suma from vtiger_cobropago inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=0 and parent_id=?',
 				array($pid)
 			);
 			$sumamountdebit =$adb->query_result($rs, 0, 0);
 			$rs = $adb->pquery(
-				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",
+				"select sum(amount) as suma from vtiger_cobropago inner join ".$crmEntityTable." on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=1 and paid='0' and parent_id=?",
 				array($pid)
 			);
 			$sumpendingcredit=$adb->query_result($rs, 0, 0);
 			$rs = $adb->pquery(
-				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",
+				"select sum(amount) as suma from vtiger_cobropago inner join ".$crmEntityTable." on vtiger_crmentity.crmid=cobropagoid where vtiger_crmentity.deleted=0 and credit=0 and paid='0' and parent_id=?",
 				array($pid)
 			);
 			$sumpendingdebit=$adb->query_result($rs, 0, 0);
@@ -271,8 +269,8 @@ class CobroPago extends CRMEntity {
 
 	public function unlinkRelationship($id, $return_module, $return_id) {
 		global $adb;
-		parent::unlinkRelationship($id, $return_module, $return_id);
 		$rs = $adb->pquery('select related_id,parent_id from vtiger_cobropago where cobropagoid=?', array($id));
+		parent::unlinkRelationship($id, $return_module, $return_id);
 		if ($rs && $adb->num_rows($rs)==1) {
 			$relatedId = $adb->query_result($rs, 0, 'related_id');
 			$pid = $adb->query_result($rs, 0, 'parent_id');
@@ -411,88 +409,6 @@ class CobroPago extends CRMEntity {
 			$adb->query("update vtiger_field set uitype=4, typeofdata='V~O' where fieldid={$field->id}");
 			BusinessActions::addLink(getTabid('CobroPago'), 'DETAILVIEWBASIC', 'Pay', 'notifications.php?type=Pay&cpid=$RECORD$', 'themes/images/Opportunities.gif', 0, null, false, 0);
 		}
-	}
-
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**	Function used to get the Payments Stage history of the CobroPago
-	 *	@param $id - cobropagoid
-	 *	return $return_data - array with header and the entries in format
-	 *		array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are array which contains all the column values of an row
-	 */
-	public function get_payment_history($id) {
-		global $log, $adb, $app_strings;
-		$log->debug('> get_stage_history '.$id);
-
-		$query = 'select vtiger_potstagehistory.*, vtiger_cobropago.reference
-			from vtiger_potstagehistory
-			inner join vtiger_cobropago on vtiger_cobropago.cobropagoid = vtiger_potstagehistory.cobropagoid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cobropago.cobropagoid
-			where vtiger_crmentity.deleted = 0 and vtiger_cobropago.cobropagoid = ?';
-		$result=$adb->pquery($query, array($id));
-
-		$header[] = $app_strings['LBL_AMOUNT'];
-		$header[] = $app_strings['LBL_SALES_STAGE'];
-		$header[] = $app_strings['LBL_PROBABILITY'];
-		$header[] = $app_strings['LBL_CLOSE_DATE'];
-		$header[] = $app_strings['LBL_LAST_MODIFIED'];
-
-		//Getting the field permission for the current user. 1 - Not Accessible, 0 - Accessible
-		//Sales Stage, Expected Close Dates are mandatory fields. So no need to do security check to these fields.
-		global $current_user;
-
-		//If field is accessible then getFieldVisibilityPermission function will return 0 else return 1
-		$amount_access = (getFieldVisibilityPermission('CobroPago', $current_user->id, 'amount') != '0')? 1 : 0;
-		$probability_access = (getFieldVisibilityPermission('CobroPago', $current_user->id, 'probability') != '0')? 1 : 0;
-		$picklistarray = getAccessPickListValues('CobroPago');
-
-		$potential_stage_array = $picklistarray['sales_stage'];
-		//- ==> picklist field is not permitted in profile
-		//Not Accessible - picklist is permitted in profile but picklist value is not permitted
-		$error_msg = 'Not Accessible';
-
-		while ($row = $adb->fetch_array($result)) {
-			$entries = array();
-
-			$entries[] = ($amount_access != 1)? $row['amount'] : 0;
-			$entries[] = (in_array($row['stage'], $potential_stage_array))? $row['stage']: $error_msg;
-			$entries[] = ($probability_access != 1) ? $row['probability'] : 0;
-			$entries[] = getDisplayDate($row['closedate']);
-			$entries[] = getDisplayDate($row['lastmodified']);
-
-			$entries_list[] = $entries;
-		}
-
-		$return_data = array('header'=>$header,'entries'=>$entries_list,'navigation'=>array('',''));
-
-		$log->debug('< get_stage_history');
-		return $return_data;
 	}
 
 	public function get_history_cobropago($cobropagoid) {

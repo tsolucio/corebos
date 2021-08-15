@@ -8,13 +8,12 @@
  ********************************************************************************/
 include_once 'modules/Calendar4You/CalendarUtils.php';
 include_once 'modules/Calendar4You/Calendar4You.php';
-require_once 'modules/Calendar/Calendar.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
+require_once 'modules/cbCalendar/Calendar.php';
 
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $current_user, $default_charset;
 require_once 'Smarty_setup.php';
 $tasklabel = getAllModulesWithDateFields();
-
-$category = getParentTab($currentModule);
 
 $smarty = new vtigerCRM_Smarty();
 
@@ -27,21 +26,16 @@ $Calendar4You->GetDefPermission($current_user);
 $Calendar4You->setgoogleaccessparams($current_user->id);
 $Ch_Views = $Calendar4You->GetView();
 
-if (count($Ch_Views) > 0) {
-	$load_ch = true;
-} else {
-	$load_ch = false;
-}
+$load_ch = !empty($Ch_Views);
 
 $Calendar_Settings = $Calendar4You->getSettings();
 $smarty->assign('CALENDAR_SETTINGS', $Calendar_Settings);
 
-$c_mod_strings = return_specified_module_language($current_language, 'Calendar');
+$c_mod_strings = return_specified_module_language($current_language, 'cbCalendar');
 $smarty->assign('CMOD', $c_mod_strings);
 
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', '');
@@ -60,16 +54,15 @@ $smarty->assign('Calendar_Panel_Order', $Calendar_Panel_Order);
 $viewBox = 'hourview';
 $smarty->assign('CREATE_PERMISSION', ($Calendar4You->CheckPermissions('CREATE') ? 'permitted' : ''));
 
-//if($Calendar4You->CheckPermissions('EDIT')) {
-	$smarty->assign('EDIT', ($Calendar4You->CheckPermissions('EDIT') ? 'permitted' : ''));
-	$hour_startat = timeString(array('hour' => date('H:i', (time() + (5 * 60))), 'minute' => 0), '24');
-	$hour_endat = timeString(array('hour'=>date('H:i', (time() + (60 * 60))),'minute'=>0), '24');
-	$time_arr = getaddITSEventPopupTime($hour_startat, $hour_endat, $Calendar_Settings['hour_format']);
+$smarty->assign('EDIT', ($Calendar4You->CheckPermissions('EDIT') ? 'permitted' : ''));
+$hour_startat = timeString(array('hour' => date('H:i', (time() + (5 * 60))), 'minute' => 0), '24');
+$hour_endat = timeString(array('hour'=>date('H:i', (time() + (60 * 60))),'minute'=>0), '24');
+$time_arr = getaddITSEventPopupTime($hour_startat, $hour_endat, $Calendar_Settings['hour_format']);
 
-	$date = new DateTimeField(null);
+$date = new DateTimeField(null);
 
-	//To get date in user selected format
-	$temp_date = $date->getDisplayDate();
+//To get date in user selected format
+$temp_date = $date->getDisplayDate();
 
 if ($current_user->column_fields['is_admin']=='on') {
 	$Res = $adb->pquery('select activitytype from vtiger_activitytype where activitytype!=?', array('Emails'));
@@ -92,15 +85,15 @@ if ($current_user->column_fields['is_admin']=='on') {
 	);
 }
 
-	$eventlist='';
-	$eventlists_array='';
-	$abelist = $btnelist = '';
+$eventlist='';
+$eventlists_array='';
+$abelist = $btnelist = '';
 for ($i=0; $i<$adb->num_rows($Res); $i++) {
 	$actname = $adb->query_result($Res, $i, 'activitytype');
 	$actname = html_entity_decode($actname, ENT_QUOTES, $default_charset);
 	$eventlist .= $actname.';';
 	$eventlists_array .= '"'.html_entity_decode($actname, ENT_QUOTES, $default_charset).'",';
-	$i18actname = getTranslatedString($actname, 'Calendar');
+	$i18actname = getTranslatedString($actname, 'cbCalendar');
 	$abelist.='<tr><td><a id="add'.strtolower($actname)
 		.'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.urlencode($actname)
 		.'" class="drop_down">'.$i18actname.'</a></td></tr>';
@@ -108,10 +101,10 @@ for ($i=0; $i<$adb->num_rows($Res); $i++) {
 		.'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.urlencode($actname)
 		.'" class="drop_down">'.$i18actname.'</a></td></tr>';
 }
-	$smarty->assign('EVENTLIST', trim($eventlists_array, ','));
-	$timeModluleDetails = array();
-	$timeModules_array = '';
-	$timeModules = getAllModulesWithDateTimeFields();
+$smarty->assign('EVENTLIST', trim($eventlists_array, ','));
+$timeModluleDetails = array();
+$timeModules_array = '';
+$timeModules = getAllModulesWithDateTimeFields();
 foreach ($timeModules as $tmid => $tmmod) {
 	$tmline = getTranslatedString($tmmod, $tmmod);
 	$tmlineid = str_replace(' ', '', $tmmod);
@@ -119,15 +112,14 @@ foreach ($timeModules as $tmid => $tmmod) {
 	$timeModluleDetails[$tmmod] = getModuleCalendarFields($tmmod);
 	$timeModules_array.= '"'.html_entity_decode($tmmod, ENT_QUOTES, $default_charset).'",';
 }
-	$smarty->assign('ADD_BUTTONEVENTLIST', $abelist);
-	$smarty->assign('ADD_ADDEVENTLIST', $btnelist);
-	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addButtonDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\""
-		.$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\""
-		.$viewBox."\",\"".(isset($subtab) ? $subtab : '')."\",\"".$eventlist."\");'";
-	$smarty->assign('ADD_ONMOUSEOVER', $add_javascript);
-	$smarty->assign('TIMEMODULEARRAY', trim($timeModules_array, ','));
-	$smarty->assign('TIMEMODULEDETAILS', json_encode($timeModluleDetails));
-//}
+$smarty->assign('ADD_BUTTONEVENTLIST', $abelist);
+$smarty->assign('ADD_ADDEVENTLIST', $btnelist);
+$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addButtonDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\""
+	.$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\""
+	.$viewBox."\",\"".(isset($subtab) ? $subtab : '')."\",\"".$eventlist."\");'";
+$smarty->assign('ADD_ONMOUSEOVER', $add_javascript);
+$smarty->assign('TIMEMODULEARRAY', trim($timeModules_array, ','));
+$smarty->assign('TIMEMODULEDETAILS', json_encode($timeModluleDetails));
 
 //Sunday=0, Monday=1, Tuesday=2, etc.
 $smarty->assign('FISRTDAY', $Calendar_Settings['number_dayoftheweek']);
@@ -177,7 +169,7 @@ foreach ($ActTypes as $act_id => $act_name) {
 
 	$Activity_Types[$act_id] = array(
 		'typename'=>html_entity_decode($act_name, ENT_QUOTES, $default_charset),
-		'label'=>getTranslatedString(html_entity_decode($act_name, ENT_QUOTES, $default_charset), 'Calendar'),
+		'label'=>getTranslatedString(html_entity_decode($act_name, ENT_QUOTES, $default_charset), 'cbCalendar'),
 		'act_type'=>'event',
 		'title_color'=>$Colors_Palete[0],
 		'color'=>$Colors_Palete[1],
@@ -260,8 +252,8 @@ $Users = $Calendar4You->GetCalendarUsersData();
 $smarty->assign('CALENDAR_USERS', $Users);
 $smarty->assign('CURRENT_USER_ID', $current_user->id);
 
-if (isset($tool_buttons)==false) {
-	$tool_buttons = Button_Check('Calendar');
+if (!isset($tool_buttons)) {
+	$tool_buttons = Button_Check('cbCalendar');
 }
 
 $smarty->assign('CHECK', $tool_buttons);
@@ -330,7 +322,7 @@ if (getFieldVisibilityPermission('cbCalendar', $current_user->id, 'eventstatus',
 }
 $smarty->assign('EVENT_STATUS', $Events_Status);
 
-if (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskpriority', 'readwrite') == '0') {
+if (getFieldVisibilityPermission('cbCalendar', $current_user->id, 'taskpriority', 'readwrite') == '0') {
 	$Task_Priority = $Calendar4You->getActStatusFieldValues('taskpriority', 'vtiger_taskpriority');
 } else {
 	$Task_Priority = array();

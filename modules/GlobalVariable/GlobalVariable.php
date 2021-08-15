@@ -20,9 +20,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class GlobalVariable extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_globalvariable';
 	public $table_index= 'globalvariableid';
 	public $column_fields = array();
@@ -129,12 +126,13 @@ class GlobalVariable extends CRMEntity {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable', true);
 		if (!empty($this->column_fields['rolegv'])) {
 			foreach ($this->column_fields['rolegv'] as $role) {
 				$user2role_result = $adb->pquery('select userid from vtiger_user2role where roleid =?', array($role));
 				if ($adb->num_rows($user2role_result)> 0) {
 					$userid = $adb->query_result($user2role_result, 0, 0);
-					$adb->pquery('Update vtiger_crmentity set smownerid=? where crmid=?', array($userid, $this->id));
+					$adb->pquery('Update '.$crmEntityTable.' set smownerid=? where crmid=?', array($userid, $this->id));
 					break;
 				}
 			}
@@ -162,7 +160,7 @@ class GlobalVariable extends CRMEntity {
 			}
 			$inmodule = $this->column_fields['in_module_list'];
 			$existmod = $adb->pquery('select module_list,in_module_list from vtiger_globalvariable
-				left join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid
+				left join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid
 				where gvname=? and deleted=0 and mandatory=1 and globalvariableid!=?', array($this->column_fields['gvname'],$recordid));
 			$num = $adb->num_rows($existmod);
 			$all_modules=vtws_getModuleNameList();
@@ -289,8 +287,8 @@ class GlobalVariable extends CRMEntity {
 				}
 			}
 		}
-		self::$validationinfo[] = "candidate list of modules to look for $module: ".print_r($list_of_modules, true);
-		if (count($list_of_modules) > 0) {
+		self::$validationinfo[] = "candidate list of modules to look for $module: ".json_encode($list_of_modules);
+		if (!empty($list_of_modules)) {
 			if (array_key_exists($module, $list_of_modules)) {
 				return $list_of_modules[$module];
 			} else {
@@ -340,8 +338,9 @@ class GlobalVariable extends CRMEntity {
 			self::$validationinfo[] = 'variable found in cache';
 			return $value;
 		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
 		$value='';
-		$join = ' FROM vtiger_globalvariable INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid ';
+		$join = ' FROM vtiger_globalvariable INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid ';
 		$select = 'select * '.$join;
 		$where = ' where vtiger_crmentity.deleted=0 and gvname=? ';
 
@@ -437,9 +436,10 @@ class GlobalVariable extends CRMEntity {
 		if (empty($module)) {
 			$module = $currentModule;
 		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
 		$sql = 'SELECT default_check,mandatory,module_list,in_module_list,smownerid
 			FROM vtiger_globalvariable
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
 			WHERE vtiger_crmentity.deleted=0 and globalvariableid=?';
 		$rs = $adb->pquery($sql, array($var));
 		if (!$rs || $adb->num_rows($rs)==0) {
@@ -455,7 +455,7 @@ class GlobalVariable extends CRMEntity {
 
 		$sql = 'SELECT 1
 			FROM vtiger_globalvariable
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
 			INNER JOIN vtiger_user2role ON vtiger_user2role.userid=?
 			WHERE globalvariableid=? and '."concat(rolegv, ' ') like concat('%', vtiger_user2role.roleid, ' %')";
 		$rs = $adb->pquery($sql, array($gvuserid, $var));
@@ -476,33 +476,5 @@ class GlobalVariable extends CRMEntity {
 	public static function getValidationInfo() {
 		return self::$validationinfo;
 	}
-
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 }
 ?>

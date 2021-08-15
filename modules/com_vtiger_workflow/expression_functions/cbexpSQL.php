@@ -14,6 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 include_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
+include_once 'modules/com_vtiger_workflow/VTSimpleTemplateOnData.inc';
 
 function cbexpsql_supportedFunctions() {
 	return array(
@@ -30,7 +31,8 @@ function cbexpsql_supportedFunctions() {
 		'stringposition' => 'stringposition(haystack,needle)',
 		'stringlength' => 'stringlength(string)',
 		'stringreplace' => 'stringreplace(search,replace,subject)',
-		'substring' => 'substring(stringfield,start,end)',
+		'substring' => 'substring(stringfield,start,length)',
+		'randomstring' => 'randomstring(length)',
 		'uppercase'=>'uppercase(stringfield)',
 		'lowercase'=>'lowercase(stringfield)',
 		//'uppercasefirst'=>'uppercasefirst(stringfield)',
@@ -43,6 +45,7 @@ function cbexpsql_supportedFunctions() {
 		'time_diffyears(a,b)' => 'time_diffyears(a,b)',
 		//'time_diffweekdays(a)' => 'time_diffweekdays(a)',
 		//'time_diffweekdays(a,b)' => 'time_diffweekdays(a,b)',
+		'networkdays' => 'networkdays(startDate, endDate, holidays)',
 		'add_days' => 'add_days(datefield, noofdays)',
 		'sub_days' => 'sub_days(datefield, noofdays)',
 		'add_months' => 'add_months(datefield, noofmonths)',
@@ -58,6 +61,7 @@ function cbexpsql_supportedFunctions() {
 		'max' => 'max(fieldname)',
 		'avg' => 'avg(fieldname)',
 		'count' => 'count(fieldname)',
+		'group_concat' => 'group_concat(fieldname)',
 		'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
 		'aggregation_fields_operation'=>'aggregation_fields_operation(operation,RelatedModule,relatedFieldsToAggregateWithOperation,conditions)',
 		'aggregate_time' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
@@ -83,6 +87,7 @@ function cbexpsql_supportedFunctions() {
 		// 'getCurrentUserID' => 'getCurrentUserID()',
 		// 'getCurrentUserName' => 'getCurrentUserName({full})',
 		// 'getCurrentUserField' => 'getCurrentUserField(fieldname)',
+		'getCRMIDFromWSID' => 'getCRMIDFromWSID(id)',
 		// 'getEntityType'=>'getEntityType(field)',
 		// 'getimageurl'=>'getimageurl(field)',
 		// 'getLatitude' => 'getLatitude(address)',
@@ -99,7 +104,10 @@ function cbexpsql_supportedFunctions() {
 		// 'getGEODistanceFromUser2ContactShipping' => 'getGEODistanceFromUser2ContactShipping(contact,address_specification)',
 		// 'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 		// 'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
+		'getIDof' => 'getIDof(module, searchon, searchfor)',
+		//'getRelatedIDs' => 'getRelatedIDs(module)',
 		// 'getFromContext' => 'getFromContext(variablename)',
+		// 'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
 		// 'setToContext' => 'setToContext(variablename, value)',
 		'getSetting' => "getSetting('setting_key', 'default')",
 		// 'setSetting' => 'setSetting('setting_key', value)',
@@ -110,6 +118,7 @@ function cbexpsql_supportedFunctions() {
 		// 'exists' => 'exists(fieldname, value)',
 		// 'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 		// 'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
+		'average' => 'average(number,...)'
 	);
 }
 
@@ -187,6 +196,17 @@ function cbexpsql_time_diffyears($arr, $mmodule) {
 	$arr[1] = $arr[0];
 	$arr[0] = new VTExpressionSymbol('YEAR', 'constant');
 	return __cbexpsql_functionparams('TIMESTAMPDIFF', $arr, $mmodule);
+}
+
+function cbexpsql_networkdays($arr, $mmodule) {
+	$s = $arr[0]->value;
+	$e = $arr[1]->value;
+	// https://stackoverflow.com/questions/1828948/mysql-function-to-find-the-number-of-working-days-between-two-dates
+	// 0123444401233334012222340111123400001234000123440 > I increment one day to match our function
+	return "(SELECT CASE
+		WHEN '$e' < '$s' THEN -5 * (DATEDIFF('$e', '$s') DIV 7) + SUBSTRING('1234555512344445123333451222234511112345001234550', 7 * WEEKDAY('$e') + WEEKDAY('$s') + 1, 1)
+		ELSE 5 * (DATEDIFF('$e', '$s') DIV 7) + SUBSTRING('1234555512344445123333451222234511112345001234550', 7 * WEEKDAY('$s') + WEEKDAY('$e') + 1, 1)
+	END)";
 }
 
 function cbexpsql_add_days($arr, $mmodule) {
@@ -302,6 +322,13 @@ function cbexpsql_stringreplace($arr, $mmodule) {
 	return __cbexpsql_functionparams('REPLACE', $arr, $mmodule);
 }
 
+function cbexpsql_randomstring($arr, $mmodule) {
+	if (empty($arr) || empty($arr[0])) {
+		$arr[0] = 10;
+	}
+	return 'SUBSTRING(HEX(CONCAT(NOW(), RAND(), UUID())), 1, '.$arr[0].')';
+}
+
 function cbexpsql_uppercase($arr, $mmodule) {
 	return __cbexpsql_functionparams('UPPER', $arr, $mmodule);
 }
@@ -321,7 +348,22 @@ function cbexpsql_setype($arr, $mmodule) {
 		if (count($crmidmatches)>0) {
 			list($void, $crmid) = explode('x', $crmid);
 		}
-		$ret = '(select setype from vtiger_crmentity where vtiger_crmentity.crmid='.$crmid.')';
+		$ret = '(select setype from vtiger_crmobject where vtiger_crmobject.crmid='.$crmid.')';
+	}
+	return $ret;
+}
+
+function cbexpsql_getidof($arr, $mmodule) {
+	global $current_user;
+	$ret = '';
+	if (!empty($arr[0])) {
+		$mod = trim(__cbexpsql_functionparamsvalue($arr[0], $mmodule), "'");
+		$fld = trim(__cbexpsql_functionparamsvalue($arr[1], $mmodule), "'");
+		$val = trim(__cbexpsql_functionparamsvalue($arr[2], $mmodule), "'");
+		$qg = new QueryGenerator($mod, $current_user);
+		$qg->setFields(array('id'));
+		$qg->addCondition($fld, $val, 'e');
+		$ret = 'coalesce(('.$qg->getQuery(false, 1).'), 0)';
 	}
 	return $ret;
 }
@@ -346,6 +388,7 @@ function cbexpsql_getsetting($arr, $mmodule) {
 // Aggregations
 function cbexpsql_aggregation($arr, $mmodule) {
 	$arr[4] = new cbexpsql_environmentstub($mmodule, '0x::#');
+	$arr[4]->returnReferenceValue = false;
 	$return = __cb_aggregation_getQuery($arr, true);
 	$mmod = CRMEntity::getInstance($mmodule);
 	$return = str_replace($mmod->table_name.'.', $mmod->table_name.'aggop.', $return);
@@ -382,7 +425,11 @@ function cbexpsql_div($arr, $mmodule) {
 }
 
 function cbexpsql_equals($arr, $mmodule) {
-	return 'TRUE';
+	if (count($arr)==2) {
+		return ($arr[0]->type=='string' ? "'".$arr[0]->value."'" : $arr[0]->value).'='.($arr[1]->type=='string' ? "'".$arr[1]->value."'" : $arr[1]->value);
+	} else {
+		return 'TRUE';
+	}
 }
 
 function cbexpsql_distinct($arr, $mmodule) {
@@ -435,8 +482,13 @@ function cbexpsql_avg($arr, $mmodule) {
 function cbexpsql_count($arr, $mmodule) {
 	return __cbexpsql_functionparams('COUNT', $arr, $mmodule);
 }
+
+function cbexpsql_groupconcat($arr, $mmodule) {
+	return __cbexpsql_functionparams('GROUP_CONCAT', $arr, $mmodule);
+}
+
 function cbexpsql_number_format($arr, $mmodule) {
-	if (count($arr)>0) {
+	if (!empty($arr)) {
 		$number = $arr[0];
 		$decimals = isset($arr[1]) ? $arr[1] : 0;
 		$dec_points = isset($arr[2]) ? $arr[2] : '.';
@@ -486,6 +538,21 @@ function cbexpsql_getCurrentUserName($arr, $mmodule) {
 function cbexpsql_getCurrentUserField($arr, $mmodule) {
 	return 'TRUE';
 }
+
+function cbexpsql_getCRMIDFromWSID($arr, $mmodule) {
+	return 'crmid';
+}
+
+function cbexpsql_average($arr, $mmodule) {
+	$expression = __cbexpsql_functionparams('', $arr, $mmodule);
+	$values = explode(',', trim($expression->value, '()'));
+	$select = '(SELECT avg(nums) FROM (';
+	foreach ($values as $exp) {
+		$select .= '(select '.$exp.' as nums) union ';
+	}
+	return substr($select, 0, strlen($select)-7).') as setofnums)';
+}
+
 function cbexpsql_getLatitude($arr, $mmodule) {
 	return 'TRUE';
 }
@@ -545,6 +612,7 @@ class cbexpsql_environmentstub {
 	private $crmid;
 	private $module;
 	private $data;
+	public $returnReferenceValue = true;
 
 	public function __construct($module, $crmid) {
 		$this->crmid = $crmid;
@@ -565,6 +633,13 @@ class cbexpsql_environmentstub {
 	}
 
 	public function get($fieldName) {
+		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
+		if ($this->returnReferenceValue && count($matches)>0) {
+			global $current_user;
+			$ct = new VTSimpleTemplateOnData($fieldName);
+			$entityCache = new VTEntityCache($current_user);
+			return $ct->render($entityCache, $this->module, $this->data);
+		}
 		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : $fieldName);
 	}
 

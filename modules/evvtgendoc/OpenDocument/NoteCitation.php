@@ -67,16 +67,6 @@ class OpenDocument_NoteCitation extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document, $content, $sel = '') {
 		parent::__construct($node, $document);
 		return true;
-		$label = $node->getAttributeNS(OpenDocument::NS_TEXT, 'label');
-		if (empty($label)) {
-			$label=$sel;
-		}
-		if (!empty($label)) {
-			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'label', $label);
-			$this->label = $label;
-		}
-
-		$this->allowedElements = array();
 	}
 
 	/**
@@ -114,14 +104,11 @@ class OpenDocument_NoteCitation extends OpenDocument_StyledElement {
 	 * @param mixed $value
 	 */
 	public function __set($name, $value) {
-		switch ($name) {
-			case 'label':
-				if (empty($value)) {
-					$value='i';
-				}
-				$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'label', $value);
-				break;
-			default:
+		if ($name=='label') {
+			if (empty($value)) {
+				$value='i';
+			}
+			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'label', $value);
 		}
 	}
 

@@ -18,7 +18,16 @@ function vtws_getchallenge($username) {
 	$user = new Users();
 	$userid = $user->retrieve_user_id($username);
 	if (empty($userid)) {
-		throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Given user cannot be found');
+		$prtrs = $adb->pquery(
+			'select id from vtiger_portalinfo inner join vtiger_crmobject on vtiger_crmobject.crmid=vtiger_portalinfo.id
+				where vtiger_crmobject.deleted=0 and user_name=? and isactive=1',
+			array($username)
+		);
+		if ($prtrs && $adb->num_rows($prtrs)==1) {
+			$userid = -$prtrs->fields['id'];
+		} else {
+			throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Given user cannot be found: '.$username);
+		}
 	}
 
 	$get_token = $adb->pquery('SELECT * FROM vtiger_ws_userauthtoken WHERE userid=?', array($userid));

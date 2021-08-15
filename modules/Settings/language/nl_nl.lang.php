@@ -591,11 +591,14 @@ $mod_strings = array(
 'Invalid_file'=>'Ongeldig bestand OF',
 'File_has_no_data'=>'Bestand heeft geen gegevens',
 'Sorry'=>'Sorry',
+'LBL_OPTIONAL'=>'(optioneel)',
+'LBL_ATTACH'=>'Toevoegen',
+'GoToParent' => 'Go to parent',
+'Directory' => 'Directory',
 'uploaded_file_exceeds_maximum_limit'=>'Het opgehaalde bestand overschrijdt het maximum bestandsmaat limiet',
 'try_file_smaller'=>'Probeer een bestand kleiner dan 800.000 bytes',
 'Problems_in_upload'=>'Problemen met het ophalen van het bestand',
 'Please_try_again'=>'aub Probeer opnieuw!',
-//5.0.3 fixes
 'LBL_TESTMAILSTATUS'=>'Test e-mail status : ',
 'LBL_CHECK_ASSIGNEDTO_MAILID'=>'aub Controleer het toegekende e-mailid',
 'LBL_MAILSENDERROR'=>'E-mail kon niet verstuurd worden aan de admin gebruiker. aub Controleer het admin e-mailid',
@@ -775,6 +778,11 @@ $mod_strings = array(
 'LBL_MESSAGES_FROM_LASTSCAN'=>'Bericht van laatste scan',
 'LBL_MARK_MESSAGE_AS'=>'Markeer bericht als',
 'LBL_ASSIGN' => 'Assign to',
+'LBL_MUSTBERELATED' => 'Must be related with record',
+'LBL_ADDEMAILAS' => 'Add Email as',
+'LBL_ADDCOMMENTEMAIL' => 'As comment and email',
+'LBL_ADDLINKEMAIL' => 'As link in comment and email',
+'LBL_ADDONLYEMAIL' => 'Only email',
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Werkstromen',
 'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Maak en bewerk de CRM werkstromen',
@@ -884,6 +892,7 @@ $mod_strings = array(
 'LBL_ACTIVE' => 'Actief',
 'LBL_QUICK_CREATE' => 'Snel Maken',
 'LBL_MASS_EDIT' => 'Massa Wijzig',
+'LBL_LONG_FIELD' => 'Long Field',
 'LBL_BLOCK_NAME' => 'Blok naam',
 'AFTER' => 'Na',
 'ADD_BLOCK' => 'Voeg Blok Toe',
@@ -1000,5 +1009,6 @@ $mod_strings = array(
 'SM_BeBackSoon' => 'We&rsquo;ll be back soon!',
 'SM_SorryInconvenience' => 'Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. We&rsquo;ll be back online shortly!',
 'LBL_CC' => 'CC',
+'Not Labeled' => 'Not Labeled',
 );
 ?>

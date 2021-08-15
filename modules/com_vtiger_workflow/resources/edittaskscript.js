@@ -1,12 +1,22 @@
 function edittaskscript($) {
 
-	function NumberBox(element) {
+	function NumberBox(element, value) {
 		var elementId = element.prop('id');
 		var boxId = '#'+elementId+'-number-box';
 		var str = '';
-		for (var i = 1; i <= 30; i++) {
+		var box_max_len = 0;
+		var box_rm = 0;
+		if (value == 'days') {
+			box_max_len = 30;
+			box_rm = 5;
+		}
+		if (value == 'hours') {
+			box_max_len = 24;
+			box_rm = 4;
+		}
+		for (var i = 1; i <= box_max_len; i++) {
 			str += '<a href="#'+i+'" class="box_cel">'+(i < 10? ('0'+i) : i)+'</a> ';
-			if (!(i % 5)) {
+			if (!(i % box_rm)) {
 				str+='<br>';
 			}
 		}
@@ -15,6 +25,8 @@ function edittaskscript($) {
 			var pos = element.position();
 			$(boxId).css('display', 'block');
 			$(boxId).css({
+				width: '200px',
+				'z-index': '1',
 				position: 'absolute',
 				top: (pos.top+25)+'px'
 			});
@@ -31,23 +43,57 @@ function edittaskscript($) {
 		});
 	}
 
+	function changeDelayInput() {
+		$('#select_date_days').val('');
+		$('#select_date_hours').val('');
+		if ($('#select_days_hours_option').val() == 'days') {
+			NumberBox($('#select_date_days'), $('#select_days_hours_option').val());
+			$('#select_date_hours').css('display', 'none');
+			$('#select_date_days').css('display', 'block');
+		}
+		if ($('#select_days_hours_option').val() == 'hours') {
+			NumberBox($('#select_date_hours'), $('#select_days_hours_option').val());
+			$('#select_date_days').css('display', 'none');
+			$('#select_date_hours').css('display', 'block');
+		}
+	}
+
 	$(document).ready(function () {
 		validator = new VTFieldValidator($('#new_task_form'));
 		validator.mandatoryFields = ['summary'];
 		$('.time_field').timepicker();
-		NumberBox($('#select_date_days'));
-		//UI to set the date for executing the task.
-		$('#check_select_date').click(function () {
-			if ($(this).prop('checked')) {
-				$('#select_date').css('display', 'block');
-			} else {
-				$('#select_date').css('display', 'none');
-			}
-		});
+		if ($('#select_date_days').val() != '') {
+			$('#select_date_days').css('display', 'block');
+			$('#select_date_hours').css('display', 'none');
+			$("select option[value='days']").attr("selected", "selected");
+			NumberBox($('#select_date_days'), $('#select_days_hours_option').val());
+			$('#select_days_hours_option').on('change', changeDelayInput);
+		} else if ($('#select_date_hours').val() != '') {
+			$('#select_date_hours').css('display', 'block');
+			$('#select_date_days').css('display', 'none');
+			$("select option[value='hours']").attr("selected", "selected");
+			NumberBox($('#select_date_hours'), $('#select_days_hours_option').val());
+			$('#select_days_hours_option').on('change', changeDelayInput);
+		} else {
+			//UI to set the date for executing the task.
+			$('#check_select_date').click(function () {
+				if ($(this).prop('checked')) {
+					$('#select_date').css('display', 'block');
+					$('#select_date_hours').css('display', 'none');
+					NumberBox($('#select_date_days'), $('#select_days_hours_option').val());
+					$('#select_days_hours_option').on('change', changeDelayInput);
+				} else {
+					$('#select_date').css('display', 'none');
+				}
+			});
+		}
 		$('#edittask_cancel_button').click(function () {
 			window.location=returnUrl;
 		});
 		$('#save').bind('click', function edittasksaveevent() {
+			if (!validator.validate()) {
+				return false;
+			}
 			var conditions = [];
 			var i=0;
 			$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {

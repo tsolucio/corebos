@@ -28,7 +28,7 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 	 * Generate unique id for insertion
 	 * @access public
 	 */
-	public function __getUniqueId() {
+	public static function __getUniqueId() {
 		global $adb;
 		return $adb->getUniqueID(self::TABLENAME);
 	}
@@ -65,7 +65,7 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 
 		$prefix = trim($prefix);
 		// We will not allow registering core language unless forced
-		if (strtolower($prefix) == 'en_us' && $overrideCore == false) {
+		if (strtolower($prefix) == 'en_us' && !$overrideCore) {
 			return;
 		}
 

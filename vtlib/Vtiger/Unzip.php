@@ -22,7 +22,7 @@ class Vtiger_Unzip {
 		$this->fileName = $filename;
 		$this->zipa = new ZipArchive();
 		if ($this->zipa->open($filename)!==true) {
-			throw new Exception("cannot open <$filename>");
+			throw new InvalidArgumentException("cannot open <$filename>");
 		}
 	}
 
@@ -157,7 +157,6 @@ class Vtiger_Unzip {
 	}
 
 	public function each($EachCallback) {
-		// $EachCallback(filename, fileinfo);
 		if (!is_callable($EachCallback)) {
 			die(get_class($this).":: You called 'each' method, but failed to provide a Callback as argument. Usage: \$zip->each(function(\$filename, \$fileinfo) use (\$zip){ ... \$zip->unzip(\$filename, 'uncompress/\$filename'); }).");
 		}
@@ -180,10 +179,10 @@ class Vtiger_Unzip {
 
 		$fdetails = self::$compressedList[$compressedFileName];
 		if (!isset(self::$compressedList[$compressedFileName])) {
-			throw new Exception("File '$compressedFileName' is not in the zip ".$this->fileName);
+			throw new InvalidArgumentException("File '$compressedFileName' is not in the zip ".$this->fileName);
 		}
 		if (substr($compressedFileName, -1) == '/') {
-			throw new Exception("Trying to unzip a folder name '$compressedFileName'.");
+			throw new InvalidArgumentException("Trying to unzip a folder name '$compressedFileName'.");
 		}
 		$destPath = ($targetFileName ? $targetFileName : $compressedFileName);
 		$destInfo = pathinfo($destPath);

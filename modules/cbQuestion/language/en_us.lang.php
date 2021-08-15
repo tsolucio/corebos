@@ -82,6 +82,7 @@ $mod_strings = array(
 	'Add MView Workflow' => 'Add Materialized View Workflow',
 	'Del MView Workflow' => 'Delete Materialized View Workflow',
 	'MVIEWWFMissingFields' => 'Unique ID and Module must exist for this functionality',
+	'MVIEWWFWFAlredyExists' => 'Materialized View Workflow already exists. Delete it first.',
 	'DELMVIEWOK' => 'Materialized View deleted correctly',
 	'DELMVIEWNOK' => 'Error deleting the materialized view',
 	'MVIEWACTIVATED' => 'Materialized View Cron Activated',
@@ -107,5 +108,8 @@ $mod_strings = array(
 	'Update View when Related Changes' => 'Update View when Related Changes',
 	'UpdateMViewRelatedInfo' => 'Update Materialized View Related Info',
 	'Update Materialized Views Related Information.' => 'Updates all Materialized Views Related Information.',
+	'Add variable' => 'Add variable',
+	'Export Results' => 'Export Results',
+	'Value' => 'Value',
 );
 ?>

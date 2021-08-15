@@ -1,20 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
-
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MIGRATE_INFO'=>'Preencha o formulário para migrar dados da <b><i> Fonte </i></b> para <b><i> versão atual do vtigerCRM</i></b>',
 'LBL_CURRENT_VT_MYSQL_EXIST'=>'O MySQL atual do vtiger encontra-se em',
 'LBL_THIS_MACHINE'=>'Nesta Máquina',
@@ -88,12 +82,5 @@ Então você pode fornecer este nome de Banco de Dados no arquivo config.inc.php
 'ENTER_DATABASE' => 'Por favor, digite o Nome do Banco de Dados',
 'SELECT_ANYONE_OPTION' => 'Por favor, selecione qualquer uma das opções',
 'ENTER_CORRECT_MYSQL_PATH' => 'Por favor, digite o Caminho Correto do MySql',
-
 );
-
-
-
-
-
-
 ?>

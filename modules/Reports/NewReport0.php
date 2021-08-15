@@ -48,7 +48,7 @@ if ($recordid!='') {
 			}
 		}
 	}
-	if (vtlib_isModuleActive($oRep->primodule)==false) {
+	if (!vtlib_isModuleActive($oRep->primodule)) {
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 80%; position: relative; z-index: 10000000;'>
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
@@ -107,7 +107,7 @@ if ($recordid!='') {
 	$list_report_form->assign('RESTRICTEDMODULES', '');
 }
 if (!empty($_REQUEST['reportmodule'])) {
-	if (vtlib_isModuleActive($_REQUEST['reportmodule'])==false || isPermitted($_REQUEST['reportmodule'], 'index')!= "yes") {
+	if (!vtlib_isModuleActive($_REQUEST['reportmodule']) || isPermitted($_REQUEST['reportmodule'], 'index')!= 'yes') {
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 80%; position: relative; z-index: 10000000;'>
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>

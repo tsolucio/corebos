@@ -154,6 +154,11 @@ $mod_strings = array (
 	'LBL_CUSTOMER_PORTAL_INFORMATION' => 'Informazioni Portale Clienti',
 	'Support Start Date' => 'Data Inizio Supporto',
 	'Support End Date' => 'Data Fine Supporto',
+	'portalpasswordtype' => 'Password Encoding',
+	'portalloginuser' => 'Portal Login User',
+	'PortalUserPasswordManagement' => 'Portal Password',
+	'ppset' => 'Password set',
+	'ppnotset' => 'Password not set',
 	'Name' => 'Nome',
 	'LBL_ALL' => 'Tutti',
 	'LBL_MAXIMUM_LIMIT_ERROR' => 'Attenzione, il file caricato eccede il limite massimo, riprova con uno pi&ugrave; piccolo di 800000 bytes',
@@ -258,5 +263,7 @@ $mod_strings = array (
 	'SYNC_RESULTS'=>'Risultati della sincronizzazione',
 	'ERR_GContactsSync'=>'Si è verificato un errore di accesso a Google. Le impostazioni sono state eliminate, configurare nuovamente l\'accesso.',
 	'Template Language' => 'Template Language',
-);
+	'ship_countrycode' => 'Shipping Country Code',
+	'bill_countrycode' => 'Billing Country Code'
+	);
 ?>

@@ -63,7 +63,7 @@ $mod_strings = array(
 'LBL_FROM'=>'De: ',
 'LBL_CC'=>'Cc: ',
 'LBL_BCC'=>'Cco: ',
-
+'replyto' => 'Responder a',
 'NTC_REMOVE_INVITEE'=>'¿Está seguro de eliminar esta dirección de Email?',
 'LBL_INVITEE'=>'Invitados',
 
@@ -165,5 +165,6 @@ $mod_strings = array(
 'Dropped' => 'Descartado',
 'Open' => 'Abierto',
 'Unsubscribe' => 'Baja',
+'LBL_SEND_INDIVIDUAL_EMAILS' => 'Enviar Correos Individuales',
 );
 ?>

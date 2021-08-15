@@ -83,18 +83,6 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document, $subtable = '') {
 		parent::__construct($node, $document);
 		return true;
-		$this->level = $node->getAttributeNS(OpenDocument::NS_TABLE, 'outline-level');
-		$issubtable = $node->getAttributeNS(OpenDocument::NS_TABLE, 'is-sub-table');
-		if (empty($issubtable)) {
-			$issubtable=$subtable;
-		}
-		if (!empty($issubtable)) {
-			$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'is-sub-table', $issubtable);
-			$this->issubtable = $issubtable;
-		}
-		$this->cells = array ();
-
-		$this->allowedElements = array();
 	}
 
 	/**
@@ -129,15 +117,12 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	 * @param mixed $value
 	 */
 	public function __set($name, $value) {
-		switch ($name) {
-			case 'level':
-				if (!is_int($value) && !ctype_digit($value)) {
-					$value = 1;
-				}
-				$this->type = $value;
-				$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'outline-level', $value);
-				break;
-			default:
+		if ($name=='level') {
+			if (!is_int($value) && !ctype_digit($value)) {
+				$value = 1;
+			}
+			$this->type = $value;
+			$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'outline-level', $value);
 		}
 	}
 
@@ -270,30 +255,30 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	}
 
 	/**
-	 *
+	 * @deprecated NOT USED AND INCORRECT!
 	 * @access      public
 	 * @since       0.5.0 - 08. Feb. 2007
 	 */
 	private function includeCells() {
-		$cells = $this->cells;
-		ksort($cells);
+		$tablecells = $this->cells;
+		ksort($tablecells);
 		$currentRow = 0;
 		foreach ($this->cells as $row => $cols) {
 			if ($currentRow < $row -1) {
-				$tbRow = $this->documentElement->createElementNS(self :: NS_TABLE, 'table-row');
-				$tbRow->setAttributeNS(self :: NS_TABLE, 'table:number-rows-repeated', ($row - $currentRow -1));
-				$tbCell = $this->documentElement->createElementNS(self :: NS_TABLE, 'table-cell');
-				$tbCell->setAttributeNS(self :: NS_TABLE, 'table:style-name', 'ce1');
+				$tbRow = $this->documentElement->createElementNS(OpenDocument::NS_TABLE, 'table-row');
+				$tbRow->setAttributeNS(OpenDocument::NS_TABLE, 'table:number-rows-repeated', ($row - $currentRow -1));
+				$tbCell = $this->documentElement->createElementNS(OpenDocument::NS_TABLE, 'table-cell');
+				$tbCell->setAttributeNS(OpenDocument::NS_TABLE, 'table:style-name', 'ce1');
 				$tbRow->appendChild($tbCell);
 				$this->appendChild($tbRow);
 			}
 			ksort($cols);
 			$currentCol = 0;
-			$tbRow = $this->documentElement->createElementNS(self :: NS_TABLE, 'table-row');
+			$tbRow = $this->documentElement->createElementNS(OpenDocument::NS_TABLE, 'table-row');
 			foreach ($cols as $col => $cell) {
 				if ($currentCol < $col -1) {
-					$tbCell = $this->documentElement->createElementNS(self :: NS_TABLE, 'table-cell');
-					$tbCell->setAttributeNS(self :: NS_TABLE, 'table:number-columns-repeated', ($col - $currentCol -1));
+					$tbCell = $this->documentElement->createElementNS(OpenDocument::NS_TABLE, 'table-cell');
+					$tbCell->setAttributeNS(OpenDocument::NS_TABLE, 'table:number-columns-repeated', ($col - $currentCol -1));
 					$tbRow->appendChild($tbCell);
 				}
 				$currentCol = $col;
@@ -305,7 +290,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	}
 
 	/**
-	 *
+	 * @deprecated NOT USED!
 	 * @access      public
 	 * @since       0.5.0 - 08. Feb. 2007
 	 */

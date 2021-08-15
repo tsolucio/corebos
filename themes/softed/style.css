@@ -13,13 +13,13 @@
 
 .small {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: var(--cbsofted-small-fontsize, 11px);
 	color: #000000;
 }
 
 .big {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
+	font-size: var(--cbsofted-big-fontsize, 12px);
 	line-height: 18px;
 	color: #000000;
 	font-weight:bold;
@@ -364,6 +364,8 @@ a:hover {
 	color:#545454;
 	padding-left:10px;
 	padding-right:10px;
+	padding-top: var(--cbsofted-dvtCellLabel-paddingtop);
+	padding-bottom: var(--cbsofted-dvtCellLabel-paddingbottom);
 	white-space:nowrap;}
 
 .dvtCellInfo, .cellInfo {
@@ -381,8 +383,7 @@ a:hover {
 .rightMailMergeHeader {
 	border-bottom:1px solid #ffffff;
 	padding:5px;
-	background-color:#000000;
-	background:  url(images/level2Bg.gif) bottom repeat-x;
+	background: url(images/level2Bg.gif) repeat-x bottom;
 	color:#555555;
 
 }
@@ -396,26 +397,30 @@ a:hover {
 
 	border:1px solid #DDDDDD;
 	padding:12px;
-	background:  #dddcdd   url(images/inner.gif) bottom repeat-x;
+	background: #dddcdd url(images/inner.gif) repeat-x bottom;
 	color: #000000;
 }
 
 .detailedViewTextBox {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: var(--cbsofted-detailedViewTextBox-fontsize, 11px);
 	color: #000000;
 	border:1px solid #bababa;
 	padding-left:5px;
+	padding-top: var(--cbsofted-detailedViewTextBox-paddingtop);
+	padding-bottom: var(--cbsofted-detailedViewTextBox-paddingbottom);
 	width:90%;
 	background-color:#ffffff;
 }
 
 .detailedViewTextBoxOn {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: var(--cbsofted-detailedViewTextBoxOn-fontsize, 11px);
 	color: #000000;
 	border:1px solid #bababa;
 	padding-left:5px;
+	padding-top: var(--cbsofted-detailedViewTextBoxOn-paddingtop);
+	padding-bottom: var(--cbsofted-detailedViewTextBoxOn-paddingbottom);
 	width:90%;
 	background-color:#ffffdd;
 }
@@ -834,7 +839,7 @@ a.submenu:Hover{
 	border-right: 0px;
 	border-bottom: 1px solid #CCC;
 	background-color: #FFFFCC;/*CBDFD6*/
-	font-family: Arial;
+	font-family: Arial, sans-serif;
 	font-size: 10px;
 	color: #BBB;
 	text-align: left;
@@ -1253,7 +1258,6 @@ a.alpha:Hover{
 	border-bottom:0px solid #dedede;
 	border-top:1px solid #dedede;
 	/* background:#ffffff url(images/softedHomeMark.gif) repeat-x; */
-	background:#ffffff;
 	background-position:bottom left;
 	width:31%;
 	visibility:visible;
@@ -1500,7 +1504,7 @@ a.calMnu:Hover{
 
 /* Cal Year View */
 .eventDay{
-	background-color:#FF9966;
+	background-color:#c9e8fd;
 	font-weight:bold;
 }
 
@@ -1521,7 +1525,7 @@ a.calMnu:Hover{
 
 /* Level 2 Menu Selected*/
 
-level2Sel{
+.level2Sel {
 	color:#000000;
 	font-weight:bold;
 	text-decoration:underline;
@@ -1611,16 +1615,10 @@ footer {
 	border: 1px solid #ddd;
 }
 
-datatable stats {
-	float: right;
-	line-height: 2rem;
-	color: #999;
-}
-
 .disabled {
-  cursor: not-allowed;
-  opacity: .65;
-  pointer-events: none;
+	cursor: not-allowed;
+	opacity: .65;
+	pointer-events: none;
 }
 
 .rptGrp1Total, .rptGrp2Total, .rptTotal {
@@ -1841,11 +1839,8 @@ ul {
 }
 
 .settingsSelectedUI {
-	padding-bottom: 5px;
-	background-color:#ffffff;
-	background:url(../images/settingsSelUIBg.gif) repeat-x;
-	padding:  15px 25px ;
-
+	background: #ffffff url(../images/settingsSelUIBg.gif) repeat-x;
+	padding: 15px 5px 25px 25px;
 }
 
 .settingsIconDisplay {
@@ -1904,9 +1899,9 @@ ul {
 
 .listTableRow{
 	border-bottom:1px solid #eaeaea;
-	border-right	:1px solid #eaeaea;
-	border-bottom:1px solid #eaeaea;
-	border-bottom:1px solid #eaeaea;
+	border-right:1px solid #eaeaea;
+	border-left:1px solid #eaeaea;
+	border-top:1px solid #eaeaea;
 }
 
 .listRow{
@@ -2101,7 +2096,7 @@ textarea {
 	border-left:1px solid #eaeaea;
 	border-top:1px solid #eaeaea;
 	border-right:1px solid #939271;
-	border-left:1px solid #939271;
+	border-bottom:1px solid #939271;
 }
 
 .mailClientCSSButton {
@@ -2820,7 +2815,6 @@ a.allMnu:Hover{
 	overflow-y:hidden;
 	background-color:#ffffff;
 	margin-top: 0px; /* added */
-	display:none;
 }
 .userName{
 	font-family: Arial, Helvetica, sans-serif;
@@ -3021,4 +3015,8 @@ a.allMnu:Hover{
 	text-align: center;
 	width: 100%;
 	display: block;
+}
+/* Currency modal LDS width override */
+.custom-width-350 {
+	width: 350px !important;
 }

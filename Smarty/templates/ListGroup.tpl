@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
@@ -24,10 +23,9 @@
 				<input type="hidden" name="module" value="Settings">
 				<input type="hidden" name="action" value="createnewgroup">
 				<input type="hidden" name="mode" value="create">
-				<input type="hidden" name="parenttab" value="Settings">
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ico-groups.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_GROUPS}" width="48" height="48" border=0 title="{$MOD.LBL_GROUPS}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$CMOD.LBL_GROUPS}</b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$CMOD.LBL_GROUPS}</b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small cblds-p-v_none">{$MOD.LBL_GROUP_DESC}</td>
@@ -38,7 +36,7 @@
 				<tr>
 
 				<td>
-				
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						<td class="big"><strong>{$MOD.LBL_GROUP_LIST}</strong></td>
@@ -48,12 +46,12 @@
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
 
 					<tr>
-					     <td class="small cblds-t-align_right" align=right>
+						<td class="small cblds-t-align_right" align=right>
 						<input title="{$CMOD.LBL_NEW_GROUP}" class="crmButton create small" type="submit" name="New" value="{$CMOD.LBL_NEW_GROUP}"/>
-					     </td>
+						</td>
 					</tr>
 					</table>
-						
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
 					<tr>
 						<td class="colHeader small cblds-p-v_mediumsmall" valign=top width=2%>#</td>
@@ -65,18 +63,15 @@
 					  <tr>
 						<td class="listTableRow small" valign=top>{$smarty.foreach.grouplist.iteration}</td>
 						<td class="listTableRow small" valign=top nowrap>
-							<a href="index.php?module=Settings&action=createnewgroup&returnaction=listgroups&parenttab=Settings&mode=edit&groupId={$groupvalues.groupid}"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LNK_EDIT}" title="{$APP.LNK_EDIT}" border="0" align="absmiddle"></a>&nbsp;|
+							<a href="index.php?module=Settings&action=createnewgroup&returnaction=listgroups&mode=edit&groupId={$groupvalues.groupid}"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LNK_EDIT}" title="{$APP.LNK_EDIT}" border="0" align="absmiddle"></a>&nbsp;|
 							<a href="#" onClick="deletegroup(this,'{$groupvalues.groupid}')";><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LNK_DELETE}" title="{$APP.LNK_DELETE}" border="0" align="absmiddle"></a>
 						</td>
 						<td class="listTableRow small" valign=top><strong>
-							<a href="index.php?module=Settings&action=GroupDetailView&parenttab=Settings&groupId={$groupvalues.groupid}">{$groupvalues.groupname}</a></strong>
+							<a href="index.php?module=Settings&action=GroupDetailView&groupId={$groupvalues.groupid}">{$groupvalues.groupname}</a></strong>
 						</td>
 						<td class="listTableRow small" valign=top>{$groupvalues.description}</td>
 					  </tr>
 					{/foreach}
-					</table>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr><td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 					</table>
 				</td>
 				</tr>

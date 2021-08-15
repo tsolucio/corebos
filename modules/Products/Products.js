@@ -8,7 +8,7 @@
  ************************************************************************************/
 
 function updateListPrice(unitprice, fieldname, oSelect) {
-	if (oSelect.checked == true) {
+	if (oSelect.checked) {
 		document.getElementById(fieldname).style.visibility = 'visible';
 		document.getElementById(fieldname).value = unitprice;
 	} else {
@@ -63,7 +63,6 @@ function set_return_inventory_po(product_id, product_name, unitprice, taxstr, cu
 	window.opener.document.EditView.elements['hdnProductId'+curr_row].value = product_id;
 	window.opener.document.EditView.elements['listPrice'+curr_row].value = unitprice;
 	window.opener.document.EditView.elements['comment'+curr_row].value = desc;
-	//getOpenerObj("unitPrice"+curr_row).innerHTML = unitprice;
 
 	// Apply decimal round-off to value
 	if (!isNaN(parseFloat(unitprice))) {
@@ -92,16 +91,7 @@ function set_return_product(product_id, product_name) {
 }
 
 function getImageListBody() {
-	if (browser_ie) {
-		var ImageListBody=getObj('ImageList');
-	} else if (browser_nn4 || browser_nn6) {
-		if (getObj('ImageList').childNodes.item(0).tagName=='TABLE') {
-			var ImageListBody=getObj('ImageList');
-		} else {
-			var ImageListBody=getObj('ImageList');
-		}
-	}
-	return ImageListBody;
+	return getObj('ImageList');
 }
 
 // Function to Round off the Price Value

@@ -59,6 +59,7 @@ $mod_strings = array(
 	'LBL_FROM' => 'Küldő :',
 	'LBL_CC' => 'Másolat :',
 	'LBL_BCC' => 'Rejtett másolat :',
+	'replyto' => 'Reply To',
 	'NTC_REMOVE_INVITEE' => 'Biztos vagy abban, hogy ezt a Címzettet el akarod távolítani az emailből?',
 	'LBL_INVITEE' => 'Címzettek',
 	'LBL_BULK_MAILS' => 'Tömeges levelek',
@@ -141,7 +142,6 @@ $mod_strings = array(
 	'LBL_NO_RECORDS' => 'A rekord nem található',
 	'LBL_PRINT_EMAIL' => 'Nyomtatás',
 	'Access Count' => 'Megnyitva',
-	'Activtiy Type' => 'Aktivitás típus',
 	'CHOSE_EMAIL' => 'Válassz email-t',
 	'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
 	'Bounce' => 'Bounce',
@@ -151,5 +151,6 @@ $mod_strings = array(
 	'Dropped' => 'Dropped',
 	'Open' => 'Open',
 	'Unsubscribe' => 'Unsubscribe',
+	'LBL_SEND_INDIVIDUAL_EMAILS' => 'Send Individual Emails',
 );
 ?>

@@ -344,7 +344,7 @@ class corebos_hubspot {
 	}
 
 	public function getPropertiesFromHubSpot($change) {
-		global $adb, $current_user;
+		global $current_user;
 		$send2hs = array();
 		$cbfrommodule = $change['module'];
 		$bmapname = 'HubSpot2' . $cbfrommodule;
@@ -378,13 +378,15 @@ class corebos_hubspot {
 	}
 
 	private function syncMasterSlaveCB2HS($cbfrom, $send2hs, $msinfo) {
+		return $send2hs;
 	}
 
 	private function syncMasterSlaveHS2CB($cbfrom, $send2hs, $msinfo) {
+		return $send2hs;
 	}
 
 	public function getPropertyFieldNames($cbfrommodule) {
-		global $adb, $current_user;
+		global $adb;
 		$fields = array('firstname','lastname','phone','email','lastmodifieddate'); // default fields
 		$bmapname = 'HubSpot2' . $cbfrommodule;
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -393,8 +395,8 @@ class corebos_hubspot {
 			$xmlcontent=html_entity_decode($cbMap->column_fields['content']);
 			$xml=simplexml_load_string($xmlcontent);
 			$allmergeFields = array();
-			foreach ($xml->fields->field as $k => $v) {
-				foreach ($v->Orgfields->Orgfield as $key => $value) {
+			foreach ($xml->fields->field as $v) {
+				foreach ($v->Orgfields->Orgfield as $value) {
 					$allmergeFields[] = (String)$value->OrgfieldName;
 				}
 			}
@@ -425,9 +427,10 @@ class corebos_hubspot {
 			case 'Potentials':
 				$table = 'vtiger_potential';
 				$idcol = 'potentialid';
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias($setype);
 				$reltors = $adb->pquery('select related_to,setype
 					from vtiger_potential
-					inner join vtiger_crmentity on crmid = related_to
+					inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = related_to
 					where potentialid=?', array($crmid));
 				if ($reltors && $adb->num_rows($reltors)>0) {
 					$relto = $adb->query_result($reltors, 0, 'related_to');
@@ -518,19 +521,20 @@ class corebos_hubspot {
 	}
 
 	public function deleteRecordIncoreBOS($module, $crmid) {
+		global $adb;
 		$now = date('Y-m-d H:i:s', time());
 		switch ($module) {
 			case 'Accounts':
-				$rs = $adb->pquery('update vtiger_account set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where accountid=?', array($now,$crmid));
+				$adb->pquery('update vtiger_account set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where accountid=?', array($now,$crmid));
 				break;
 			case 'Contacts':
-				$rs = $adb->pquery('update vtiger_contactdetails set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where contactid=?', array($now,$crmid));
+				$adb->pquery('update vtiger_contactdetails set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where contactid=?', array($now,$crmid));
 				break;
 			case 'Leads':
-				$rs = $adb->pquery('update vtiger_leaddetails set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where leadid=?', array($now,$crmid));
+				$adb->pquery('update vtiger_leaddetails set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where leadid=?', array($now,$crmid));
 				break;
 			case 'Potentials':
-				$rs = $adb->pquery('update vtiger_potential set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where potentialid=?', array($now,$crmid));
+				$adb->pquery('update vtiger_potential set hubspotsyncwith=0, hubspotdeleted=1, hubspotdeletedon=? where potentialid=?', array($now,$crmid));
 				break;
 			default:
 		}
@@ -712,7 +716,7 @@ class corebos_hubspot {
 			$cto['module'] = $module;
 			$cto['record_id'] = 0;
 			$wsinfo = $this->getPropertiesFromHubSpot($cto);
-			if (count($wsinfo)>0) {
+			if (!empty($wsinfo)) {
 				$wsinfo = DataTransform::sanitizeReferences($wsinfo, $meta);
 				$wsinfo['hubspotcreated'] = 1;
 				$wsinfo['hubspotsyncwith'] = 1;
@@ -746,7 +750,7 @@ class corebos_hubspot {
 				$cto['module'] = $module;
 				$cto['record_id'] = $crmid;
 				$wsinfo = $this->getPropertiesFromHubSpot($cto);
-				if (count($wsinfo)>0) {
+				if (!empty($wsinfo)) {
 					$wsinfo = DataTransform::sanitizeReferences($wsinfo, $meta);
 					$wsinfo['id'] = $wsid.$crmid;
 					try {
@@ -773,7 +777,7 @@ class corebos_hubspot {
 			$cmp['module'] = 'Accounts';
 			$cmp['record_id'] = 0;
 			$wsinfo = $this->getPropertiesFromHubSpot($cmp);
-			if (count($wsinfo)>0) {
+			if (!empty($wsinfo)) {
 				$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->accountMeta);
 				$wsinfo['hubspotcreated'] = 1;
 				$wsinfo['hubspotsyncwith'] = 1;
@@ -817,7 +821,7 @@ class corebos_hubspot {
 				$cmp['module'] = 'Accounts';
 				$cmp['record_id'] = $crmid;
 				$wsinfo = $this->getPropertiesFromHubSpot($cmp);
-				if (count($wsinfo)>0) {
+				if (!empty($wsinfo)) {
 					$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->accountMeta);
 					$wsinfo['id'] = $this->AccountWSID.$crmid;
 					$wsinfo['assigned_user_id'] = $this->UserWSID.$wsinfo['assigned_user_id'];
@@ -883,7 +887,7 @@ class corebos_hubspot {
 					$this->logMessage('createDeal', 'No related account or contact found', $dal, 0);
 				}
 			}
-			if (count($wsinfo)>0) {
+			if (!empty($wsinfo)) {
 				$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->potentialMeta);
 				$wsinfo['hubspotcreated'] = 1;
 				$wsinfo['hubspotsyncwith'] = 1;
@@ -909,7 +913,7 @@ class corebos_hubspot {
 		global $adb, $current_user;
 		$rscto = $adb->pquery(
 			'select '.self::LASTSYNCFIELD.','.self::SYNCWITHFIELD.',potentialid from vtiger_potential where '.self::IDFIELD.'=?',
-			array($cmp['dealId'])
+			array($dal['dealId'])
 		);
 		if ($adb->num_rows($rscto)==0) { // does not exist > we cannot update
 			return false;
@@ -931,7 +935,7 @@ class corebos_hubspot {
 				$dal['module'] = 'Potentials';
 				$dal['record_id'] = $crmid;
 				$wsinfo = $this->getPropertiesFromHubSpot($dal);
-				if (count($wsinfo)>0) {
+				if (!empty($wsinfo)) {
 					$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->potentialMeta);
 					$wsinfo['id'] = $this->PotentialWSID.$crmid;
 					try {
@@ -1044,9 +1048,9 @@ class corebos_hubspot {
 	public function activateFields() {
 		global $adb;
 		foreach (self::$supportedModules as $modulename) {
-			$module = VTiger_Module::getInstance($modulename);
+			$module = Vtiger_Module::getInstance($modulename);
 
-			$blockInstance = VTiger_Block::getInstance('LBL_HUBSPOT_INFORMATION', $module);
+			$blockInstance = Vtiger_Block::getInstance('LBL_HUBSPOT_INFORMATION', $module);
 			if (!$blockInstance) {
 				$blockInstance = new Vtiger_Block();
 				$blockInstance->label = 'LBL_HUBSPOT_INFORMATION';
@@ -1171,7 +1175,7 @@ class corebos_hubspot {
 		global $adb;
 		$fields = array('hubspotid','hubspotcreated','hubspotrecord','hubspotdeleted','hubspotlastsync','hubspotdeletedon', 'hubspotsyncwith');
 		foreach (self::$supportedModules as $modulename) {
-			$module = VTiger_Module::getInstance($modulename);
+			$module = Vtiger_Module::getInstance($modulename);
 			foreach ($fields as $fieldname) {
 				$field = Vtiger_Field::getInstance($fieldname, $module);
 				if ($field) {
@@ -1200,7 +1204,7 @@ class corebos_hubspot {
 		if (is_null($this->getAPIURL())) {
 			return self::$ERROR_NOTCONFIGURED;
 		}
-		$fields = 'grant_type=authorization_code&client_id='.$this->oauthclientId.'&client_secret='.$this->clientSecret.'&redirect_uri='.$this->getcoreBOSAuthorizationURL();
+		$fields='grant_type=authorization_code&client_id='.$this->oauthclientId.'&client_secret='.$this->clientSecret.'&redirect_uri='.$this->getcoreBOSAuthorizationURL();
 		$fields.= '&code='.$accessCode;
 		return $this->getAccessToken($fields);
 	}
@@ -1310,5 +1314,4 @@ class corebos_hubspot {
 		}
 	}
 }
-
 ?>

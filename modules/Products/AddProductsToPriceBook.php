@@ -20,7 +20,6 @@ $currency_id = vtlib_purify($_REQUEST['currency_id']);
 if ($currency_id == null) {
 	$currency_id = fetchCurrency($current_user->id);
 }
-$parenttab = getParentTab();
 
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
@@ -82,8 +81,8 @@ $num_rows = $adb->num_rows($list_result);
 //Retreiving the array of already releated Pdo/Srv
 $sql1 = 'select productid
 	FROM vtiger_pricebookproductrel
-	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_pricebookproductrel.productid
-	WHERE vtiger_crmentity.setype=? AND vtiger_crmentity.deleted=0 AND pricebookid=?';
+	INNER JOIN vtiger_crmobject ON vtiger_crmobject.crmid = vtiger_pricebookproductrel.productid
+	WHERE vtiger_crmobject.setype=? AND vtiger_crmobject.deleted=0 AND pricebookid=?';
 $res1 = $adb->pquery($sql1, array($currentModule, $pricebook_id));
 $num_prod_rows = $adb->num_rows($res1);
 $prod_array = array();
@@ -189,7 +188,5 @@ if (!empty($sorder)) {
 }
 
 $smarty->assign('LISTENTITY', $list_body);
-$smarty->assign('CATEGORY', $parenttab);
-
 $smarty->display('AddProductsToPriceBook.tpl');
 ?>

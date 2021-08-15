@@ -12,7 +12,7 @@ var hide_stock = 'no';
 document.addEventListener('DOMContentLoaded', function (event) {
 	ExecuteFunctions('ismoduleactive', 'checkmodule=Products').then(function (response) {
 		var obj = JSON.parse(response);
-		if (obj.isactive == true) {
+		if (obj.isactive) {
 			hide_stock = 'no';
 		} else {
 			hide_stock = 'yes';
@@ -44,16 +44,6 @@ function set_return_specific(product_id, product_name) {
 
 function add_data_to_relatedlist(entity_id, recordid) {
 	opener.document.location.href='index.php?module=Emails&action=updateRelations&destination_module=Accounts&entityid='+entity_id+'&parentid='+recordid;
-}
-
-function set_return_todo(product_id, product_name) {
-	if (document.getElementById('from_link').value != '') {
-		window.opener.document.QcEditView.task_parent_name.value = product_name;
-		window.opener.document.QcEditView.task_parent_id.value = product_id;
-	} else {
-		window.opener.document.createTodo.task_parent_name.value = product_name;
-		window.opener.document.createTodo.task_parent_id.value = product_id;
-	}
 }
 
 function QuotessetValueFromCapture(recordid, value, target_fieldname) {

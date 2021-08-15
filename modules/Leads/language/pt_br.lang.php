@@ -10,7 +10,7 @@
  * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 13/03/2020 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
-if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+if (isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') {
 	$toggle_historicos = 'Ver leads não convertidos';
 	$toggle_name = 'Leads Convertidos';
 } else {

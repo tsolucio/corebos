@@ -29,7 +29,7 @@ function getTopSalesOrder($maxval, $calCnt) {
 	$order_by = '';
 	$oCustomView = new CustomView("SalesOrder");
 	$oCustomView->getCustomViewCombo();
-	if (isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='') {
+	if (!isset($_REQUEST['viewname']) || $_REQUEST['viewname']=='') {
 		if ($oCustomView->setdefaultviewid != "") {
 			$viewid = $oCustomView->setdefaultviewid;
 		} else {
@@ -120,8 +120,7 @@ function getTopSalesOrder($maxval, $calCnt) {
 
 	$entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, true);
 
-	$values=array('ModuleName'=>'SalesOrder','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-	return $values;
+	return array('ModuleName'=>'SalesOrder', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
 }
 
 function getTopSalesOrderSearch($output) {

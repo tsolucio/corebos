@@ -25,7 +25,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 					<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%" >
 						<tr align="left">
 							<td rowspan="2" valign="top" width="50"><img src="{'custom.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48"></td>
-							<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a>&gt;<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule=Leads&parenttab=Settings">{$MODULE}</a> &gt; {'LBL_FIELD_SETTINGS'|@getTranslatedString:'Leads'}</b></td>
+							<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a>&gt;<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule=Leads">{$MODULE}</a> &gt; {'LBL_FIELD_SETTINGS'|@getTranslatedString:'Leads'}</b></td>
 						</tr>
 						<tr align="left">
 							<td class="small" valign="top">{'LBL_FIELD_MAPPING'|@getTranslatedString:$MODULE}</td>
@@ -154,11 +154,6 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								<td class="small">
 									<strong>{$APP.LBL_NOTE}: </strong> {$MOD.LBL_CUSTOM_MAPP_INFO}
 								</td>
-							</tr>
-						</table>
-						<table border="0" cellpadding="5" cellspacing="0" width="100%">
-							<tr>
-								<td class="small" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
 							</tr>
 						</table>
 					</form>

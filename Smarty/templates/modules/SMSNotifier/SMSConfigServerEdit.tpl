@@ -79,9 +79,9 @@ window.__smsHelpInfo = {$SMSHELPINFO};
 			<input type="text" class="detailedViewTextBox" name="smsserverparam_{$SMSPROVIDERPARAMKEY}_{$SMSPROVIDERPARAM}" value="{if isset($SMSSERVERPARAMS.$SMSPROVIDERPARAM)}{$SMSSERVERPARAMS.$SMSPROVIDERPARAM}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'">
 		</td>
 		</tr>
-		
+
 		{/foreach}
-		
+
 		</table>
 	</div>
 
@@ -89,7 +89,6 @@ window.__smsHelpInfo = {$SMSHELPINFO};
 	</tr>
 
 	{/foreach}
-	
 	</table>
 	</td>
 </tr>

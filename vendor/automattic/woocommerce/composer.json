@@ -1,0 +1,33 @@
+{
+  "name": "automattic/woocommerce",
+  "description": "A PHP wrapper for the WooCommerce REST API",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Claudio Sanches",
+      "email": "claudio.sanches@automattic.com"
+    }
+  ],
+  "keywords": [
+    "API",
+    "WooCommerce"
+  ],
+  "require": {
+    "php": ">= 5.4.0",
+    "ext-curl": "*",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*",
+    "squizlabs/php_codesniffer": "3.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Automattic\\WooCommerce\\": ["src/WooCommerce"]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": { "Automattic\\WooCommerce\\Tests\\": "tests/WooCommerce" }
+  }
+}

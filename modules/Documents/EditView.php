@@ -50,7 +50,6 @@ if (!empty($_REQUEST['saverepeat'])) {
 }
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
-$category = getParentTab($currentModule);
 $record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
@@ -64,20 +63,18 @@ if ($record) {
 	$focus->name=$focus->column_fields['notes_title'];
 }
 
-if ($focus->mode != 'edit') {
-	if (isset($_REQUEST['parent_id']) && isset($_REQUEST['return_module'])) {
-		$owner = getRecordOwnerId($_REQUEST['parent_id']);
-		if (isset($owner['Users']) && $owner['Users'] != '') {
-			$permitted_users = get_user_array('true', 'Active', $current_user->id);
-			if (!in_array($owner['Users'], $permitted_users)) {
-				$owner['Users'] = $current_user->id;
-			}
-			$focus->column_fields['assigntype'] = 'U';
-			$focus->column_fields['assigned_user_id'] = $owner['Users'];
-		} elseif (isset($owner['Groups']) && $owner['Groups'] != '') {
-			$focus->column_fields['assigntype'] = 'T';
-			$focus->column_fields['assigned_user_id'] = $owner['Groups'];
+if ($focus->mode != 'edit' && isset($_REQUEST['parent_id']) && isset($_REQUEST['return_module'])) {
+	$owner = getRecordOwnerId($_REQUEST['parent_id']);
+	if (isset($owner['Users']) && $owner['Users'] != '') {
+		$permitted_users = get_user_array('true', 'Active', $current_user->id);
+		if (!in_array($owner['Users'], $permitted_users)) {
+			$owner['Users'] = $current_user->id;
 		}
+		$focus->column_fields['assigntype'] = 'U';
+		$focus->column_fields['assigned_user_id'] = $owner['Users'];
+	} elseif (isset($owner['Groups']) && $owner['Groups'] != '') {
+		$focus->column_fields['assigntype'] = 'T';
+		$focus->column_fields['assigned_user_id'] = $owner['Groups'];
 	}
 }
 if ($isduplicate == 'true') {
@@ -118,7 +115,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 					case '3313':
 					case '3314':
 						if (is_array($field_value)) {
-							$field_value = implode(' |##| ', $field_value);
+							$field_value = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $field_value);
 						}
 						break;
 				}
@@ -151,13 +148,14 @@ if (is_null($filename) || $filename == '') {
 if (isset($_REQUEST['contact_name']) && is_null($focus->contact_name)) {
 	$focus->contact_name = vtlib_purify($_REQUEST['contact_name']);
 }
+$getContactFolderID = "select folderid
+	from vtiger_attachmentsfolder
+	inner join vtiger_contactdetails on concat(trim(lastname), ' ', trim(firstname))=trim(foldername) where contactid=?";
+$getAccountFolderID = 'select folderid from vtiger_attachmentsfolder inner join vtiger_account on trim(accountname)=trim(foldername) where accountid=?';
 if (isset($_REQUEST['contact_id'])) {
 	$focus->contact_id = vtlib_purify($_REQUEST['contact_id']);
 	if (GlobalVariable::getVariable('Document_CreateSelectContactFolder', 0) && !GlobalVariable::getVariable('Document_CreateSelectAccountFolderForContact', 0)) {
-		$sql = "select folderid
-			from vtiger_attachmentsfolder
-			inner join vtiger_contactdetails on concat(trim(lastname), ' ', trim(firstname))=trim(foldername) where contactid=?";
-		$res = $adb->pquery($sql, array($focus->contact_id));
+		$res = $adb->pquery($getContactFolderID, array($focus->contact_id));
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
@@ -169,12 +167,11 @@ if (isset($_REQUEST['contact_id'])) {
 	}
 	if (GlobalVariable::getVariable('Document_CreateSelectAccountFolderForContact', 0)) {
 		$accid = getRelatedAccountContact($focus->contact_id, 'Accounts');
-		$sql = 'select folderid from vtiger_attachmentsfolder inner join vtiger_account on trim(accountname)=trim(foldername) where accountid=?';
-		$res = $adb->pquery($sql, array($accid));
+		$res = $adb->pquery($getAccountFolderID, array($accid));
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
-			$fid = Documents::createFolder(html_entity_decode(getAccountName($accid, ENT_QUOTES, $default_charset)));
+			$fid = Documents::createFolder(html_entity_decode(getAccountName($accid), ENT_QUOTES, $default_charset));
 			if ($fid) {
 				$focus->column_fields['folderid'] = $fid;
 			}
@@ -188,8 +185,7 @@ if (isset($_REQUEST['parent_id'])) {
 	$focus->parent_id = vtlib_purify($_REQUEST['parent_id']);
 	$setype = getSalesEntityType($focus->parent_id);
 	if ($setype == 'Accounts' && GlobalVariable::getVariable('Document_CreateSelectAccountFolder', 0)) {
-		$sql = 'select folderid from vtiger_attachmentsfolder inner join vtiger_account on trim(accountname)=trim(foldername) where accountid=?';
-		$res = $adb->pquery($sql, array($focus->parent_id));
+		$res = $adb->pquery($getAccountFolderID, array($focus->parent_id));
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
@@ -199,10 +195,7 @@ if (isset($_REQUEST['parent_id'])) {
 		}
 	}
 	if ($setype == 'Contacts' && GlobalVariable::getVariable('Document_CreateSelectContactFolder', 0)) {
-		$sql = "select folderid
-			from vtiger_attachmentsfolder
-			inner join vtiger_contactdetails on concat(trim(lastname), ' ', trim(firstname))=trim(foldername) where contactid=?";
-		$res = $adb->pquery($sql, array($focus->parent_id));
+		$res = $adb->pquery($getContactFolderID, array($focus->parent_id));
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
@@ -214,8 +207,7 @@ if (isset($_REQUEST['parent_id'])) {
 	}
 	if ($setype == 'Contacts' && GlobalVariable::getVariable('Document_CreateSelectAccountFolderForContact', 0)) {
 		$accid = getRelatedAccountContact($focus->parent_id, 'Accounts');
-		$sql = 'select folderid from vtiger_attachmentsfolder inner join vtiger_account on trim(accountname)=trim(foldername) where accountid=?';
-		$res = $adb->pquery($sql, array($accid));
+		$res = $adb->pquery($getAccountFolderID, array($accid));
 		if ($res && $adb->num_rows($res)>0) {
 			$focus->column_fields['folderid'] = $adb->query_result($res, 0, 0);
 		} else {
@@ -253,7 +245,6 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', $focus->id);
@@ -301,7 +292,7 @@ if (isset($_REQUEST['record'])) {
 } else {
 	$smarty->assign('CANCELACTION', 'index');
 }
-if (isset($_REQUEST['upload_error']) && $_REQUEST['upload_error'] == true) {
+if (isset($_REQUEST['upload_error']) && $_REQUEST['upload_error']) {
 	echo '<br><b><font color="red"> '.$mod_strings['FILE_HAS_NO_DATA'].'.</font></b><br>';
 }
 
@@ -342,7 +333,7 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 	if ($adb->num_rows($mod_seq_string) == 0 || $focus->checkModuleSeqNumber($focus->table_name, $mod_seq_field['column'], $mod_seq_prefix.$mod_seq_no)) {
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
 		$smarty->assign('ERROR_MESSAGE', '<b>'. getTranslatedString($mod_seq_field['label']). ' '. getTranslatedString('LBL_NOT_CONFIGURED')
-			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='
+			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&selmodule='
 			.$currentModule.'">'.getTranslatedString('LBL_HERE').'</a> '.getTranslatedString('LBL_TO_CONFIGURE').' '.getTranslatedString($mod_seq_field['label']).'</b>');
 	} else {
 		$smarty->assign('MOD_SEQ_ID', $autostr);
@@ -368,6 +359,6 @@ $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtl
 $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
-
+$smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
 $smarty->display('salesEditView.tpl');
 ?>

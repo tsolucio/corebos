@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script>
 function dup_validation()
 {ldelim}
@@ -167,15 +166,14 @@ function validate()
 		<input type="hidden" name="module" value="Users">
 		<input type="hidden" name="action" value="SaveGroup">
 		<input type="hidden" name="mode" value="{$MODE}">
-		<input type="hidden" name="parenttab" value="Settings">
 		<input type="hidden" name="groupId" value="{$GROUPID}">
 		<input type="hidden" name="returnaction" value="{$RETURN_ACTION}">
 			<tr>
 				<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ico-groups.gif'|@vtiger_imageurl:$THEME}" alt="{$CMOD.LBL_GROUPS}" title="{$CMOD.LBL_GROUPS}" width="48" height="48" border=0 ></td>
 				{if $MODE eq 'edit'}
-				<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listgroups&parenttab=Settings">{$CMOD.LBL_GROUPS}</a> &gt; {$MOD.LBL_EDIT} &quot;{$GROUPNAME}&quot; </b></td>
+				<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listgroups">{$CMOD.LBL_GROUPS}</a> &gt; {$MOD.LBL_EDIT} &quot;{$GROUPNAME}&quot; </b></td>
 				{else}
-				<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listgroups&parenttab=Settings">{$CMOD.LBL_GROUPS}</a> &gt; {$CMOD.LBL_CREATE_NEW_GROUP}</b></td>
+				<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listgroups">{$CMOD.LBL_GROUPS}</a> &gt; {$CMOD.LBL_CREATE_NEW_GROUP}</b></td>
 				{/if}
 			</tr>
 			<tr>
@@ -277,10 +275,6 @@ function validate()
 								</table>
 							</td>
 						</tr>
-					</table>
-					<br>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr><td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 					</table>
 				</td></tr></table>
 				</td></tr></table>

@@ -110,7 +110,6 @@ class mapactions_Action extends CoreBOS_ActionController {
 			} else {
 				echo '[]';
 			}
-			return;
 		}
 		$module = vtlib_purify($_REQUEST['fieldsmodule']);
 		$log->debug('> getFieldTablesForModule '.$module);
@@ -125,6 +124,43 @@ class mapactions_Action extends CoreBOS_ActionController {
 		} else {
 			echo json_encode($fields);
 		}
+	}
+
+	public static function getFieldTranslationForModule($return = false) {
+		global $log, $adb;
+		if (empty($_REQUEST['fieldsmodule'])) {
+			if ($return) {
+				return array();
+			} else {
+				echo '[]';
+			}
+		}
+		$module = vtlib_purify($_REQUEST['fieldsmodule']);
+		$log->debug('> getFieldTranslationForModule '.$module);
+		$res = $adb->pquery('select fieldname,fieldlabel,tablename from vtiger_field where tabid=?', array(getTabid($module)));
+		$fields = array();
+		while ($row = $res->FetchRow()) {
+			$fields[$row['fieldname']] = getTranslatedString($row['fieldlabel'], $module);
+		}
+		$log->debug('< getFieldTranslationForModule');
+		if ($return) {
+			return $fields;
+		} else {
+			echo json_encode($fields);
+		}
+	}
+
+	public static function getFieldLabel() {
+		global $log, $adb;
+		$module = vtlib_purify($_REQUEST['fieldsmodule']);
+		$field = vtlib_purify($_REQUEST['field']);
+		$tabid = getTabid($module);
+		$log->debug('> getFieldLabel '.$module);
+		$res = $adb->pquery('select fieldlabel from vtiger_field where fieldname=? and tabid=?', array($field, $tabid));
+		$fieldlabel = $adb->query_result($res, 0, 'fieldlabel');
+		$label = getTranslatedString($fieldlabel, $module);
+		$log->debug('< getFieldLabel');
+		echo json_encode($label);
 	}
 }
 ?>

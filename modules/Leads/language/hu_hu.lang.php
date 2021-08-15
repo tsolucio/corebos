@@ -9,7 +9,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+if (isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') {
 	$toggle_historicos = 'See Non Converted Jelöltek';
 	$toggle_name = 'Converted Jelöltek';
 } else {

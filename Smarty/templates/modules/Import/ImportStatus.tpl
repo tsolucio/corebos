@@ -31,8 +31,7 @@ jQuery(document).ready(function() {
 <table style="width:70%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="10" cellspacing="10" class="searchUIBasic cblds-table-border_sep cblds-table-bordersp_medium">
 	<tr>
 		<td class="heading2" align="left" colspan="2">
-			{'LBL_IMPORT'|@getTranslatedString:$MODULE} {$FOR_MODULE|@getTranslatedString:$FOR_MODULE} - 
-			<span class="style1">{'LBL_RUNNING'|@getTranslatedString:$MODULE} ... </span>
+			{'LBL_IMPORT'|@getTranslatedString:$MODULE} {$FOR_MODULE|@getTranslatedString:$FOR_MODULE} - <span class="style1">{'LBL_RUNNING'|@getTranslatedString:$MODULE} ... </span>
 		</td>
 	</tr>
 	{if !empty($ERROR_MESSAGE)}

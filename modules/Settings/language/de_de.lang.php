@@ -610,11 +610,14 @@ $mod_strings = array(
 	'Invalid_file'=>'falsches Dateiformat ODER',
 	'File_has_no_data'=>'Datei ist leer',
 	'Sorry'=>'Das geht leider nicht',
+	'LBL_OPTIONAL'=>'(optional)',
+	'LBL_ATTACH'=>'Hinzufügen',
+	'GoToParent' => 'Go to parent',
+	'Directory' => 'Directory',
 	'uploaded_file_exceeds_maximum_limit'=>'die Datei ist zu gross.',
 	'try_file_smaller'=>'Bitte nutzen Sie eine Datei mit max. 800000 Bytes',
 	'Problems_in_upload'=>'Es gibt Probleme beim Laden der Datei.',
 	'Please_try_again'=>'Bitte noch einmal versuchen.',
-	//5.0.3 fixes
 	'LBL_TESTMAILSTATUS'=>'teste Mail Status: ',
 	'LBL_CHECK_ASSIGNEDTO_MAILID'=>'Bitte prüfen Sie die zugewiesene E-Mail Adresse.',
 	'LBL_MAILSENDERROR'=>'Es wurde erfolglos versucht, eine E-Mail zu der Adresse Ihres CRM Administrators zu senden. Bitte prüfen Sie die zugewiesene E-Mail Adresse und Ihre Servereinstellungen.',
@@ -794,6 +797,11 @@ $mod_strings = array(
 	'LBL_MESSAGES_FROM_LASTSCAN'=>'Nachrichten vom letzten Scan',
 	'LBL_MARK_MESSAGE_AS'=>'markiere die Nachricht als',
 	'LBL_ASSIGN' => 'Zuordnung an',
+	'LBL_MUSTBERELATED' => 'Must be related with record',
+	'LBL_ADDEMAILAS' => 'Add Email as',
+	'LBL_ADDCOMMENTEMAIL' => 'As comment and email',
+	'LBL_ADDLINKEMAIL' => 'As link in comment and email',
+	'LBL_ADDONLYEMAIL' => 'Only email',
 	//Added for the workflow module
 	'LBL_LIST_WORKFLOWS'=>'Liste der Workflows',
 	'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Anzeige und Gestaltung von Workflows für das CRM',
@@ -904,6 +912,7 @@ $mod_strings = array(
 	'LBL_ACTIVE' => 'Aktiv',
 	'LBL_QUICK_CREATE' => 'schnell erstellen',
 	'LBL_MASS_EDIT' => 'Massenänderung',
+	'LBL_LONG_FIELD' => 'Long Field',
 	'LBL_BLOCK_NAME' => 'Blockname',
 	'AFTER' => 'nach',
 	'ADD_BLOCK' => 'Block hinzufügen',
@@ -1023,5 +1032,6 @@ $mod_strings = array(
 	'SM_BeBackSoon' => 'We&rsquo;ll be back soon!',
 	'SM_SorryInconvenience' => 'Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. We&rsquo;ll be back online shortly!',
 	'LBL_CC' => 'CC',
+	'Not Labeled' => 'Not Labeled',
 );
 ?>

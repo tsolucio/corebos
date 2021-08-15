@@ -18,7 +18,6 @@
 }
 </style>
 {/literal}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript">
 {literal}
 function UpdateProfile() {
@@ -59,7 +58,6 @@ function UpdateProfile() {
 		<form  method="post" name="new" id="form" onsubmit="VtigerJS_DialogBox.block();">
 			<input type="hidden" name="module" value="Settings">
 			<input type="hidden" name="action" value="profilePrivileges">
-			<input type="hidden" name="parenttab" value="Settings">
 			<input type="hidden" name="return_action" value="profilePrivileges">
 			<input type="hidden" name="mode" value="edit">
 			<input type="hidden" name="profileid" value="{$PROFILEID}">
@@ -67,7 +65,7 @@ function UpdateProfile() {
 				<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tbody><tr>
 					<td rowspan="2" valign="top" width="50" class="cblds-p_none"><img src="{'ico-profile.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROFILES}" title="{$MOD.LBL_PROFILES}" border="0" height="48" width="48"></td>
-					<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=ListProfiles&parenttab=Settings">{$CMOD.LBL_PROFILE_PRIVILEGES}</a> &gt; {$CMOD.LBL_VIEWING} &quot;{$PROFILE_NAME}&quot;</b></td>
+					<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=ListProfiles">{$CMOD.LBL_PROFILE_PRIVILEGES}</a> &gt; {$CMOD.LBL_VIEWING} &quot;{$PROFILE_NAME}&quot;</b></td>
 				</tr>
 				<tr>
 					<td class="small cblds-p-v_none" valign="top">{$CMOD.LBL_PROFILE_MESG} &quot;{$PROFILE_NAME}&quot; </td>
@@ -244,11 +242,7 @@ function UpdateProfile() {
 								<tbody>
 						{if !empty($FIELD_PRIVILEGES[$tabid])}
 						<tr>
-							{if $modulename eq 'Calendar'}
-								<td class="small colHeader cblds-p-v_medium" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
-							{else}
-								<td class="small colHeader cblds-p-v_medium" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
-							{/if}
+							<td class="small colHeader cblds-p-v_medium" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
 						</tr>
 						{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
 								<tr>
@@ -334,10 +328,6 @@ function UpdateProfile() {
 	  </table></td>
 	  </tr>
 	  </tbody></table>
-	<p>&nbsp;</p>
-	<table border="0" cellpadding="5" cellspacing="0" width="100%">
-	<tbody><tr><td class="small cblds-t-align_right" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
-	</tbody></table>
 	</td>
 	</tr>
 	</tbody></table>

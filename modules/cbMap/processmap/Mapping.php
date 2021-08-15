@@ -132,7 +132,9 @@ class Mapping extends processcbMap {
 					$testexpression = array_pop($fieldinfo);
 					if (strtoupper($idx[0])=='FIELD') {
 						$testexpression = trim($testexpression);
-						if (substr($testexpression, 0, 1) != '$') {
+						if ($testexpression=='record_id') {
+							$testexpression = $ofields['record_id'];
+						} elseif (substr($testexpression, 0, 1) != '$') {
 							$testexpression = '$' . $testexpression;
 						}
 					}
@@ -182,6 +184,9 @@ class Mapping extends processcbMap {
 
 	public function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping=$target_fields=array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$mapping['target'] = (String)$xml->targetmodule->targetname;

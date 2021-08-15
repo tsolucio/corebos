@@ -8,6 +8,7 @@
  ********************************************************************************/
 
 var inventoryi18n = '',
+	inventoryLinesShown = true,
 	defaultProdQty = 1,
 	defaultSerQty = 1;
 
@@ -26,6 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		defaultSerQty = obj.Inventory_Service_Default_Units;
 	}, function (error) {
 		defaultSerQty = 1; // units
+	});
+	GlobalVariable_getVariable('Inventory_DoNotUseLines', '', gVTModule, gVTUserID).then(function (response) {
+		var obj = JSON.parse(response);
+		inventoryLinesShown = !obj.Inventory_DoNotUseLines.includes(gVTModule);
+	}, function (error) {
+		inventoryLinesShown = true;
 	});
 });
 
@@ -52,6 +59,12 @@ function copyAddressRight(form) {
 
 	if (typeof(form.bill_pobox) != 'undefined' && typeof(form.ship_pobox) != 'undefined') {
 		form.ship_pobox.value = form.bill_pobox.value;
+	}
+
+	if (form.ship_countrycode != undefined) {
+		[...form.ship_countrycode.options].forEach((option) => {
+			option.selected = (option.value == form.bill_countrycode.value);
+		});
 	}
 
 	return true;
@@ -82,6 +95,12 @@ function copyAddressLeft(form) {
 		form.bill_pobox.value = form.ship_pobox.value;
 	}
 
+	if (form.bill_countrycode != undefined) {
+		[...form.bill_countrycode.options].forEach((option) => {
+			option.selected = (option.value == form.ship_countrycode.value);
+		});
+	}
+
 	return true;
 }
 
@@ -108,9 +127,9 @@ function productPickList(currObj, module, row_no) {
 		var parent_id = document.EditView.vendor_id.value;
 
 		if (parent_id != '') {
-			window.open('index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype='+popuptype+'&curr_row='+rowId+'&return_module='+module+'&currencyid='+currencyid+'&relmod_id='+parent_id+module_string+additionalinfo, 'productWin', 'width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200');
+			window.open('index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype='+popuptype+'&curr_row='+rowId+'&return_module='+module+'&currencyid='+currencyid+'&relmod_id='+parent_id+module_string+additionalinfo, 'productWin', cbPopupWindowSettings);
 		} else {
-			window.open('index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype='+popuptype+'&curr_row='+rowId+'&return_module='+module+'&currencyid='+currencyid+additionalinfo, 'productWin', 'width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200');
+			window.open('index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype='+popuptype+'&curr_row='+rowId+'&return_module='+module+'&currencyid='+currencyid+additionalinfo, 'productWin', cbPopupWindowSettings);
 		}
 	} else {
 		var record_id = '';
@@ -118,9 +137,9 @@ function productPickList(currObj, module, row_no) {
 			record_id= document.EditView.account_id.value;
 		}
 		if (record_id != '') {
-			window.open('index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype='+popuptype+'&curr_row='+rowId+'&relmod_id='+record_id+'&parent_module=Accounts&return_module='+module+'&currencyid='+currencyid+additionalinfo, 'productWin', 'width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200');
+			window.open('index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype='+popuptype+'&curr_row='+rowId+'&relmod_id='+record_id+'&parent_module=Accounts&return_module='+module+'&currencyid='+currencyid+additionalinfo, 'productWin', cbPopupWindowSettings);
 		} else {
-			window.open('index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype='+popuptype+'&curr_row='+rowId+'&return_module='+module+'&currencyid='+currencyid+additionalinfo, 'productWin', 'width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200');
+			window.open('index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype='+popuptype+'&curr_row='+rowId+'&return_module='+module+'&currencyid='+currencyid+additionalinfo, 'productWin', cbPopupWindowSettings);
 		}
 	}
 }
@@ -172,23 +191,24 @@ function getInventoryModuleTaxRelatedInformation() {
 function priceBookPickList(currObj, row_no) {
 	var currencyid = document.getElementById('inventory_currency').value;
 	var productId=getObj('hdnProductId'+row_no).value || -1;
-	window.open('index.php?module=PriceBooks&action=Popup&html=Popup_picker&form=EditView&popuptype=inventory_pb&fldname=listPrice'+row_no+'&productid='+productId+'&currencyid='+currencyid, 'priceBookWin', 'width=640,height=565,resizable=0,scrollbars=0,top=150,left=200');
+	window.open('index.php?module=PriceBooks&action=Popup&html=Popup_picker&form=EditView&popuptype=inventory_pb&fldname=listPrice'+row_no+'&productid='+productId+'&currencyid='+currencyid, 'priceBookWin', cbPopupWindowSettings);
 }
 
 function getProdListBody() {
+	var prodListBody;
 	if (browser_ie) {
-		var prodListBody=getObj('productList').children[0].children[0];
+		prodListBody=getObj('productList').children[0].children[0];
 	} else if (browser_nn4 || browser_nn6) {
 		if (getObj('productList').childNodes.item(0).tagName=='TABLE') {
-			var prodListBody=getObj('productList').childNodes.item(0).childNodes.item(0);
+			prodListBody=getObj('productList').childNodes.item(0).childNodes.item(0);
 		} else {
-			var prodListBody=getObj('productList').childNodes.item(1).childNodes.item(1);
+			prodListBody=getObj('productList').childNodes.item(1).childNodes.item(1);
 		}
 	}
 	return prodListBody;
 }
 
-function deleteRow(module, i, image_path) {
+function deleteRow(module, i) {
 	rowCnt--;
 
 	document.getElementById('row'+i).style.display = 'none';
@@ -202,7 +222,6 @@ function deleteRow(module, i, image_path) {
 		}
 	}
 	// Added For product Reordering starts
-	image_path = document.getElementById('hidImagePath').value;
 	var iMax = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
 	for (var iCount=i; iCount>=1; iCount--) {
 		if (document.getElementById('row'+iCount) && document.getElementById('row'+iCount).style.display != 'none') {
@@ -234,7 +253,6 @@ function deleteRow(module, i, image_path) {
 	}
 	// Product reordering addition ends
 	document.getElementById('hdnProductId'+i).value = '';
-	//document.getElementById("productName"+i).value = "";
 	document.getElementById('deleted'+i).value = 1;
 	calcTotal();
 }
@@ -253,17 +271,17 @@ function calcTotal() {
 function calcProductTotal(rowId) {
 	if (document.getElementById('deleted'+rowId) && document.getElementById('deleted'+rowId).value == 0) {
 		var chknum = getObj('listPrice'+rowId).value;
-		if (chknum.indexOf(',')!=-1 || chknum.indexOf("'")!=-1) {
+		if (chknum.indexOf(',')!=-1 || chknum.indexOf('\'')!=-1) {
 			document.getElementById('listPrice'+rowId).value = standarizeFormatCurrencyValue(chknum);
 		}
 		chknum = getObj('qty'+rowId).value;
-		if (chknum.indexOf(',')!=-1 || chknum.indexOf("'")!=-1) {
+		if (chknum.indexOf(',')!=-1 || chknum.indexOf('\'')!=-1) {
 			document.getElementById('qty'+rowId).value = standarizeFormatCurrencyValue(chknum);
 		}
 		var total=getObj('qty'+rowId).value * getObj('listPrice'+rowId).value;
 		getObj('productTotal'+rowId).innerHTML=roundValue(total.toString());
 
-		var totalAfterDiscount = eval(total-document.getElementById('discountTotal'+rowId).innerHTML);
+		var totalAfterDiscount = total-document.getElementById('discountTotal'+rowId).innerHTML;
 		getObj('totalAfterDiscount'+rowId).innerHTML=roundValue(totalAfterDiscount.toString());
 
 		var tax_type = document.getElementById('taxtype').value;
@@ -271,7 +289,7 @@ function calcProductTotal(rowId) {
 		var netprice = 0;
 		if (tax_type == 'individual') {
 			callTaxCalc(rowId);
-			netprice = totalAfterDiscount+eval(document.getElementById('taxTotal'+rowId).innerHTML);
+			netprice = totalAfterDiscount + +document.getElementById('taxTotal'+rowId).innerHTML; // double plus to avoid concatenation
 		} else {
 			netprice = totalAfterDiscount;
 		}
@@ -330,7 +348,7 @@ function calcGrandTotal() {
 		grandTotal = grandTotal + parseFloat(sh_amount) + sh_tax;
 	}
 	if (adjustment != '') {
-		if (adjustment.indexOf(',')!=-1 || adjustment.indexOf("'")!=-1) {
+		if (adjustment.indexOf(',')!=-1 || adjustment.indexOf('\'')!=-1) {
 			adjustment = standarizeFormatCurrencyValue(adjustment);
 			document.getElementById('adjustment').value = adjustment;
 		}
@@ -365,7 +383,7 @@ function finishValidateInventory() {
 
 function validateInventoryLines(module) {
 	//for products, vendors and pricebook modules we won't validate the product details. here return the control
-	if (module == 'Products' || module == 'Vendors' || module == 'PriceBooks' || module == 'Services') {
+	if (module == 'Products' || module == 'Vendors' || module == 'PriceBooks' || module == 'Services' || !inventoryLinesShown) {
 		return true;
 	}
 
@@ -394,7 +412,6 @@ function validateInventoryLines(module) {
 		if (!numValidate('qty'+i, 'Qty', 'any', true)) {
 			return false;
 		}
-		//if (!numConstComp("qty"+i,"Qty","G","0")) return false;
 		if (!emptyCheck('listPrice'+i, alert_arr.LIST_PRICE, 'text')) {
 			return false;
 		}
@@ -412,14 +429,14 @@ function validateInventoryLines(module) {
 	discount_checks = document.getElementsByName('discount_final');
 
 	//Percentage selected, so validate the percentage
-	if (discount_checks[1].checked == true) {
+	if (discount_checks[1].checked) {
 		var temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById('discount_percentage_final').value);
 		if (!temp) {
 			alert(alert_arr.VALID_FINAL_PERCENT);
 			return false;
 		}
 	}
-	if (discount_checks[2].checked == true) {
+	if (discount_checks[2].checked) {
 		temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById('discount_amount_final').value);
 		if (!temp) {
 			alert(alert_arr.VALID_FINAL_AMOUNT);
@@ -499,7 +516,6 @@ function FindDuplicate() {
 		}
 	}
 	if (duplicate) {
-		//alert("You have selected < "+duplicate_products+" > more than once in line items  "+positions+".\n It is advisable to select the product just once but change the Qty. Thank You");
 		if (!confirm(alert_arr.SELECTED_MORE_THAN_ONCE+'\n'+duplicate_products+'\n '+alert_arr.WANT_TO_CONTINUE)) {
 			return false;
 		}
@@ -518,7 +534,7 @@ function fnshow_Hide(Lay) {
 
 function ValidateTax(txtObj) {
 	var temp= /^\d+(\.\d\d*)*$/.test(document.getElementById(txtObj).value);
-	if (temp == false) {
+	if (!temp) {
 		alert(alert_arr.ENTER_VALID_TAX);
 	}
 }
@@ -584,19 +600,20 @@ function fnAddTaxConfigRow(sh) {
 	var col4 = row.insertCell(3);
 	var col5 = row.insertCell(4);
 
-	colone.className = 'cellLabel small';
-	coltwo.className = 'cellText small';
-	col3.className = 'cellText small';
-	col4.className = 'cellText small';
-	col5.className = 'cellText small';
+	colone.className = 'slds-form-element';
+	coltwo.className = 'slds-form-element';
+	col3.className = 'slds-form-element';
+	col4.className = 'slds-form-element';
+	col5.className = 'slds-form-element';
 
-	colone.innerHTML='<input type=\'text\' id=\''+label_name+'\' name=\''+label_name+'\' value=\''+tax_labelarr.TAX_NAME+'\' class=\'txtBox\' onclick="this.form.'+label_name+'.value=\'\'";/>';
-	coltwo.innerHTML='<input type=\'text\' id=\''+label_val+'\' name=\''+label_val+'\' value=\''+tax_labelarr.TAX_VALUE+'\' class=\'txtBox\' onclick="this.form.'+label_val+'.value=\'\'";/>';
-	col3.innerHTML='<input type=\'checkbox\' id=\''+label_name+'retention\' name=\''+label_name+'retention\' class=\'txtBox\' />';
-	col4.innerHTML='<input type=\'checkbox\' id=\''+label_name+'default\' name=\''+label_name+'default\' class=\'txtBox\' />';
-	col5.innerHTML='<input type=\'checkbox\' id=\''+label_name+'qcreate\' name=\''+label_name+'qcreate\' class=\'txtBox\' />';
-
-	document.getElementById(td_id).innerHTML='<input type=\'submit\' name=\'Save\' value=\' '+tax_labelarr.SAVE_BUTTON+' \' class=\'crmButton small save\' onclick="this.form.action.value=\'TaxConfig\'; this.form.'+add_tax_flag+'.value=\'true\'; return validateNewTaxType(\''+label_name+'\',\''+label_val+'\');">&nbsp;<input type=\'submit\' name=\'Cancel\' value=\' '+tax_labelarr.CANCEL_BUTTON+' \' class=\'crmButton small cancel\' onclick="this.form.action.value=\'TaxConfig\'; this.form.module.value=\'Settings\'; this.form.'+add_tax_flag+'.value=\'false\'; this.form.parenttab.value=\'Settings\';">';
+	colone.innerHTML='<input type=\'text\' id=\''+label_name+'\' name=\''+label_name+'\' value=\''+tax_labelarr.TAX_NAME+'\' class=\'slds-input\' onclick="this.form.'+label_name+'.value=\'\'";/>';
+	coltwo.innerHTML='<input type=\'text\' id=\''+label_val+'\' name=\''+label_val+'\' value=\''+tax_labelarr.TAX_VALUE+'\' class=\'slds-input\' onclick="this.form.'+label_val+'.value=\'\'";/>';
+	if (sh == '' && sh != 'sh') {
+		col3.innerHTML='<input type=\'checkbox\' id=\''+label_name+'retention\' name=\''+label_name+'retention\' class=\'slds-checkbox\' />';
+		col4.innerHTML='<input type=\'checkbox\' id=\''+label_name+'default\' name=\''+label_name+'default\' class=\'slds-checkbox\' />';
+		col5.innerHTML='<input type=\'checkbox\' id=\''+label_name+'qcreate\' name=\''+label_name+'qcreate\' class=\'slds-checkbox\' />';
+	}
+	document.getElementById(td_id).innerHTML='<input type=\'submit\' name=\'Save\' value=\' '+tax_labelarr.SAVE_BUTTON+' \' class=\'slds-button slds-button_success save\' onclick="this.form.action.value=\'TaxConfig\'; this.form.'+add_tax_flag+'.value=\'true\'; return validateNewTaxType(\''+label_name+'\',\''+label_val+'\');">&nbsp;<input type=\'submit\' name=\'Cancel\' value=\' '+tax_labelarr.CANCEL_BUTTON+' \' class=\'slds-button slds-button_destructive cancel\' onclick="this.form.action.value=\'TaxConfig\'; this.form.module.value=\'Settings\'; this.form.'+add_tax_flag+'.value=\'false\';">';
 }
 
 function validateNewTaxType(fieldname, fieldvalue) {
@@ -649,7 +666,7 @@ function validateTaxes(countname) {
 }
 
 //Function used to add a new product row in PO, SO, Quotes and Invoice
-function fnAddProductRow(module, image_path) {
+function fnAddProductRow(module) {
 	rowCnt++;
 
 	var tableName = document.getElementById('proTab');
@@ -682,7 +699,7 @@ function fnAddProductRow(module, image_path) {
 
 	//Delete link
 	colone.className = 'crmTableRow small';
-	colone.innerHTML='<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+count+',\'themes/images/\')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+count+'" name="deleted'+count+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+count+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
+	colone.innerHTML='<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+count+')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+count+'" name="deleted'+count+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+count+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
 	/* Product Re-Ordering Feature Code Addition Starts */
 	var prevLineItemId = document.getElementById('lineitem_id'+iPrevCount) == undefined ? '' : document.getElementById('lineitem_id'+iPrevCount).value;
 
@@ -695,15 +712,57 @@ function fnAddProductRow(module, image_path) {
 
 	//Product Name with Popup image to select product
 	coltwo.className = 'crmTableRow small';
-	coltwo.innerHTML= '<table border="0" cellpadding="1" cellspacing="0" width="100%"><tr><td class="small"><div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">'+
-					'<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">'+
-					'<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none"><input id="productName'+count+'" name="productName'+count+'" class="slds-input slds-combobox__input '+
-					'cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="'+inventoryi18n.typetosearch_prodser+'" value="" '+
-					'type="text" style="box-shadow: none;"></div></div></div>'+
-					'&nbsp;<img id="searchIcon'+count+'" title="'+alert_arr.Products+'" src="themes/images/products.gif" style="cursor: pointer;" onclick="productPickList(this,\''+module+'\','+count+')" align="absmiddle">'+
-					'<input id="hdnProductId'+count+'" name="hdnProductId'+count+'" value="" type="hidden"><input type="hidden" id="lineItemType'+count+'" name="lineItemType'+count+'" value="Products" />'+
-					'</td></tr><tr><td class="small"><input type="hidden" value="" id="subproduct_ids'+count+'" name="subproduct_ids'+count+'" /><span id="subprod_names'+count+'" name="subprod_names'+count+'" style="color:#C0C0C0;font-style:italic;"> </span>'+
-					'</td></tr><tr><td class="small" id="setComment'+count+'"><textarea id="comment'+count+'" name="comment'+count+'" class=small style="width:70%;height:40px"></textarea><img src="themes/images/clear_field.gif" onClick="getObj(\'comment'+count+'\').value=\'\'"; style="cursor:pointer;" /></td></tr></tbody></table>';
+	coltwo.innerHTML= `<table border="0" cellpadding="1" cellspacing="0" width="100%">
+							<tbody>
+								<tr>
+									<td class="small">
+										<div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">
+											<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+												<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+													<input id="productName${count}"
+															name="productName${count}"
+															class="slds-input slds-combobox__input cbds-inventoryline__input--name"
+															aria-autocomplete="list"
+															aria-controls="listbox-unique-id"
+															autocomplete="off"
+															role="textbox"
+															placeholder="${inventoryi18n.typetosearch_prodser}" value=""
+															type="text"
+															style="box-shadow: none;">
+														<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+															<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+																<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+															</svg>
+														</span>
+														<div class="slds-input__icon-group slds-input__icon-group_right">
+															<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small slds-input__spinner slds-hide">
+																<span class="slds-assistive-text">Loading</span>
+																<div class="slds-spinner__dot-a"></div>
+																<div class="slds-spinner__dot-b"></div>
+															</div>
+														</div>
+												</div>
+											</div>
+										</div>&nbsp;
+										<img id="searchIcon${count}" title="${alert_arr.Products}" src="themes/images/products.gif" style="cursor: pointer;" onclick="productPickList(this,'${module}',${count})" align="absmiddle">
+										<input id="hdnProductId${count}" name="hdnProductId${count}" value="" type="hidden">
+										<input type="hidden" id="lineItemType${count}" name="lineItemType${count}" value="Products" />
+									</td>
+								</tr>
+								<tr>
+									<td class="small">
+										<input type="hidden" value="" id="subproduct_ids${count}" name="subproduct_ids${count}" />
+										<span id="subprod_names${count}" name="subprod_names${count}" style="color:#C0C0C0;font-style:italic;"></span>
+									</td>
+								</tr>
+								<tr>
+									<td class="small" id="setComment${count}">
+										<textarea id="comment${count}" name="comment${count}" class=small style="${Inventory_Comment_Style}"></textarea>
+										<img src="themes/images/clear_field.gif" onClick="getObj('comment${count}').value=''"; style="cursor:pointer;" />
+									</td>
+								</tr>
+							</tbody>
+						</table>`;
 
 	//Additional Information column
 	colthree.className = 'crmTableRow small';
@@ -719,16 +778,78 @@ function fnAddProductRow(module, image_path) {
 	temp+='" onChange="setDiscount(this,'+count+')" value=""/><br><span id="stock_alert'+count+'"></span>';
 	colfour.innerHTML=temp;
 	//List Price with Discount, Total after Discount and Tax labels
-	colfive.className = 'crmTableRow small';
-	colfive.innerHTML='<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="right"><input id="listPrice'+count+'" name="listPrice'+count+'" value="0.00" type="text" class="small" style="width:70px" onBlur="calcTotal();setDiscount(this,'+count+');callTaxCalc('+count+'); calcTotal();"'+(Inventory_ListPrice_ReadOnly==1 ? ' readonly ' : '')+'/>&nbsp;<img src="themes/images/pricebook.gif" onclick="priceBookPickList(this,'+count+')"></td></tr><tr><td align="right" style="padding:5px;" nowrap>		(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,\'discount_div'+count+'\',\'discount\','+count+')" >'+product_labelarr.DISCOUNT+'</a> : </b><div class="discountUI" id="discount_div'+count+'"><input type="hidden" id="discount_type'+count+'" name="discount_type'+count+'" value=""><table width="100%" border="0" cellpadding="5" cellspacing="0" class="small"><tr><td id="discount_div_title'+count+'" nowrap align="left" ></td><td align="right"><img src="themes/images/close.gif" border="0" onClick="fnhide(\'discount_div'+count+'\')" style="cursor:pointer;"></td></tr><tr><td align="left" class="lineOnTop"><input type="radio" name="discount'+count+'" checked onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; '+product_labelarr.ZERO_DISCOUNT+'</td><td class="lineOnTop">&nbsp;</td></tr><tr><td align="left"><input type="radio" name="discount'+count+'" onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; % '+product_labelarr.PERCENT_OF_PRICE+' </td><td align="right"><input type="text" class="small" size="2" id="discount_percentage'+count+'" name="discount_percentage'+count+'" value="0" style="visibility:hidden" onBlur="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp;%</td></tr><tr><td align="left" nowrap><input type="radio" name="discount'+count+'" onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; '+product_labelarr.DIRECT_PRICE_REDUCTION+'</td><td align="right"><input type="text" id="discount_amount'+count+'" name="discount_amount'+count+'" size="5" value="0" style="visibility:hidden" onBlur="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();"></td></tr></table></div></td></tr><tr> <td align="right" style="padding:5px;" nowrap><b>'+product_labelarr.TOTAL_AFTER_DISCOUNT+' :</b></td></tr><tr id="individual_tax_row'+count+'" class="TaxShow"><td align="right" style="padding:5px;" nowrap>(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,\'tax_div'+count+'\',\'tax\','+count+')" >'+product_labelarr.TAX+' </a> : </b><div class="discountUI" id="tax_div'+count+'"></div></td></tr></table>';
+	colfive.className = 'crmTableRow small inv-editview__pricecol';
+	colfive.innerHTML = `<table class="slds-table slds-table_cell-buffer"><tbody>
+		<tr>
+			<td style="padding:5px;">
+				<input id="listPrice${count}" name="listPrice${count}" value="0.00" type="text" class="small" style="width:70px" onBlur="calcTotal();setDiscount(this,${count});callTaxCalc(${count}); calcTotal();"${(Inventory_ListPrice_ReadOnly==1 ? ' readonly ' : '')}/>&nbsp;<img src="themes/images/pricebook.gif" onclick="priceBookPickList(this,${count})">
+			</td>
+		</tr>
+		<tr>
+			<td style="padding:5px;" nowrap>
+				(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'discount_div${count}','discount',${count})" >'${product_labelarr.DISCOUNT}</a> : </b>
+				<div class="discountUI" id="discount_div${count}">
+					<input type="hidden" id="discount_type${count}" name="discount_type${count}" value="">
+					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
+					<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+					<thead>
+						<tr class="slds-line-height_reset">
+						<th id="discount_div_title${count}" class="slds-p-left_none" scope="col"></th>
+						<th class="cblds-t-align_right slds-p-right_none" scope="col"><img src="themes/images/close.gif" border="0" onClick="fnhide('discount_div${count}')" style="cursor:pointer;"></th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td class="lineOnTop" style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount${count}" checked onclick="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp; ${product_labelarr.ZERO_DISCOUNT}
+						</td>
+						<td class="lineOnTop">&nbsp;</td>
+					</tr>
+					<tr>
+						<td style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount${count}" onclick="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp; % ${product_labelarr.PERCENT_OF_PRICE}
+						</td>
+						<td style="padding-left: 2px; padding-right: 4px;">
+							<input type="text" class="small" size="2" id="discount_percentage${count}" name="discount_percentage${count}" value="0" style="visibility:hidden" onBlur="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp;%
+						</td>
+					</tr>
+					<tr>
+						<td nowrap style="padding-left: 4px; text-align: left !important;">
+							<input type="radio" name="discount${count}" onclick="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">&nbsp; ${product_labelarr.DIRECT_PRICE_REDUCTION}
+						</td>
+						<td style="padding-left: 2px; padding-right: 4px;">
+							<input type="text" id="discount_amount${count}" name="discount_amount${count}" size="5" value="0" style="visibility:hidden" onBlur="setDiscount(this,${count}); callTaxCalc(${count});calcTotal();">
+						</td>
+					</tr>
+					</tbody>
+					</table>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding:5px;" nowrap>
+				<b>${product_labelarr.TOTAL_AFTER_DISCOUNT} :</b>
+			</td>
+		</tr>
+		<tr id="individual_tax_row${count}" class="TaxShow">
+			<td style="padding:5px;" nowrap>
+				(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'tax_div${count}','tax',${count})" >${product_labelarr.TAX} </a> : </b>
+				<div class="discountUI" id="tax_div${count}"></div>
+			</td>
+		</tr>
+		</tbody></table>`;
 
 	//Total and Discount, Total after Discount and Tax details
-	colsix.className = 'crmTableRow small';
-	colsix.innerHTML = '<table width="100%" cellpadding="5" cellspacing="0"><tr><td id="productTotal'+count+'" align="right">&nbsp;</td></tr><tr><td id="discountTotal'+count+'" align="right">0.00</td></tr><tr><td id="totalAfterDiscount'+count+'" align="right">&nbsp;</td></tr><tr><td id="taxTotal'+count+'" align="right">0.00</td></tr></table>';
+	colsix.className = 'crmTableRow small inv-editview__totalscol';
+	colsix.innerHTML = `<table class="slds-table slds-table_cell-buffer"><tbody>
+		<tr><td id="productTotal${count}" style="padding-top:6px;">&nbsp;</td></tr>
+		<tr><td id="discountTotal${count}" style="padding-top:6px;">0.00</td></tr>
+		<tr><td id="totalAfterDiscount${count}" style="padding-top:6px;">&nbsp;</td></tr>
+		<tr><td id="taxTotal${count}" style="padding-top:6px;">0.00</td></tr>
+		</tbody></table>`;
 
 	//Net Price
-	colseven.className = 'crmTableRow small';
-	colseven.align = 'right';
+	colseven.className = 'crmTableRow small inv-editview__netpricecol';
 	colseven.style.verticalAlign = 'bottom';
 	colseven.innerHTML = '<span id="netPrice'+count+'"><b>&nbsp;</b></span>';
 
@@ -764,10 +885,10 @@ function cloneMoreInfoNode(newRowId) {
 		domflddisp.innerHTML = '';
 	}
 	for (i=0; i<moreInfoFields.length; i++) {
-		var domfld = document.getElementById(moreInfoFields[i]+ newRowId);
+		domfld = document.getElementById(moreInfoFields[i]+ newRowId);
 		if (domfld) {
 			domfld.value = '';
-			var domflddisp = document.getElementById(moreInfoFields[i]+ newRowId+ '_display');
+			domflddisp = document.getElementById(moreInfoFields[i]+ newRowId+ '_display');
 			if (domflddisp) {
 				domflddisp.value = '';
 			}
@@ -823,13 +944,13 @@ function setDiscount(currObj, curr_row) {
 
 	discount_checks = document.getElementsByName('discount'+curr_row);
 	calcProductTotal(curr_row);
-	if (discount_checks[0].checked == true) {
+	if (discount_checks[0].checked) {
 		document.getElementById('discount_type'+curr_row).value = 'zero';
 		document.getElementById('discount_percentage'+curr_row).style.visibility = 'hidden';
 		document.getElementById('discount_amount'+curr_row).style.visibility = 'hidden';
 		document.getElementById('discountTotal'+curr_row).innerHTML = 0.00;
 	}
-	if (discount_checks[1].checked == true) {
+	if (discount_checks[1].checked) {
 		document.getElementById('discount_type'+curr_row).value = 'percentage';
 		document.getElementById('discount_percentage'+curr_row).style.visibility = 'visible';
 		document.getElementById('discount_amount'+curr_row).style.visibility = 'hidden';
@@ -838,18 +959,18 @@ function setDiscount(currObj, curr_row) {
 		//This is to calculate the final discount
 		if (curr_row == '_final') {
 			var discount_percentage_final_value = document.getElementById('discount_percentage'+curr_row).value;
-			if (discount_percentage_final_value.indexOf(',')!=-1 || discount_percentage_final_value.indexOf("'")!=-1) {
+			if (discount_percentage_final_value.indexOf(',')!=-1 || discount_percentage_final_value.indexOf('\'')!=-1) {
 				discount_percentage_final_value = standarizeFormatCurrencyValue(discount_percentage_final_value);
 				document.getElementById('discount_percentage'+curr_row).value = discount_percentage_final_value;
 			}
 			if (discount_percentage_final_value == '') {
 				discount_percentage_final_value = 0;
 			}
-			discount_amount = eval(document.getElementById('netTotal').innerHTML)*discount_percentage_final_value/100;
+			discount_amount = document.getElementById('netTotal').innerHTML*discount_percentage_final_value/100;
 		} else {
 			// This is to calculate the product discount
 			var discount_percentage_value = document.getElementById('discount_percentage'+curr_row).value;
-			if (discount_percentage_value.indexOf(',')!=-1 || discount_percentage_value.indexOf("'")!=-1) {
+			if (discount_percentage_value.indexOf(',')!=-1 || discount_percentage_value.indexOf('\'')!=-1) {
 				discount_percentage_value = standarizeFormatCurrencyValue(discount_percentage_value);
 				document.getElementById('discount_percentage'+curr_row).value = discount_percentage_value;
 			}
@@ -861,13 +982,13 @@ function setDiscount(currObj, curr_row) {
 		//Rounded the decimal part of discount amount to two digits
 		document.getElementById('discountTotal'+curr_row).innerHTML = roundValue(discount_amount.toString());
 	}
-	if (discount_checks[2].checked == true) {
+	if (discount_checks[2].checked) {
 		document.getElementById('discount_type'+curr_row).value = 'amount';
 		document.getElementById('discount_percentage'+curr_row).style.visibility = 'hidden';
 		document.getElementById('discount_amount'+curr_row).style.visibility = 'visible';
 		//Rounded the decimal part of discount amount to two digits
 		var discount_amount_value = document.getElementById('discount_amount'+curr_row).value.toString();
-		if (discount_amount_value.indexOf(',')!=-1 || discount_amount_value.indexOf("'")!=-1) {
+		if (discount_amount_value.indexOf(',')!=-1 || discount_amount_value.indexOf('\'')!=-1) {
 			discount_amount_value = standarizeFormatCurrencyValue(discount_amount_value);
 			document.getElementById('discount_amount'+curr_row).value = discount_amount_value;
 		}
@@ -901,7 +1022,6 @@ function calcCurrentTax(tax_name, curr_row, tax_row) {
 	if (product_total.substring(0, 3) == 'NaN') {
 		product_total = 0;
 	}
-	//var product_total = document.getElementById("productTotal"+curr_row).innerHTML
 	var new_tax_percent = document.getElementById(tax_name).value;
 
 	var new_amount_lbl = document.getElementsByName('popup_tax_row'+curr_row);
@@ -957,7 +1077,7 @@ function calcSHTax() {
 	}
 	var sh_tax_count = document.getElementById('sh_tax_count').value;
 	var sh_charge = document.getElementById('shipping_handling_charge').value;
-	if (sh_charge.indexOf(',')!=-1 || sh_charge.indexOf("'")!=-1) {
+	if (sh_charge.indexOf(',')!=-1 || sh_charge.indexOf('\'')!=-1) {
 		sh_charge = standarizeFormatCurrencyValue(sh_charge);
 		document.getElementById('shipping_handling_charge').value = sh_charge;
 	}
@@ -995,14 +1115,14 @@ function validateProductDiscounts() {
 		discount_checks = document.getElementsByName('discount'+i);
 
 		//Percentage selected, so validate the percentage
-		if (discount_checks[1].checked == true) {
+		if (discount_checks[1].checked) {
 			temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById('discount_percentage'+i).value);
 			if (!temp) {
 				alert(alert_arr.VALID_DISCOUNT_PERCENT);
 				return false;
 			}
 		}
-		if (discount_checks[2].checked == true) {
+		if (discount_checks[2].checked) {
 			temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById('discount_amount'+i).value);
 			if (!temp) {
 				alert(alert_arr.VALID_DISCOUNT_AMOUNT);
@@ -1017,7 +1137,7 @@ function stock_alert(curr_row) {
 	var stock=getObj('qtyInStock'+curr_row).innerHTML;
 	var qty=getObj('qty'+curr_row).value;
 	if (!isNaN(qty)) {
-		if (qty > stock) {
+		if (parseFloat(qty) > parseFloat(stock)) {
 			getObj('stock_alert'+curr_row).innerHTML='<font color="red" size="1">'+alert_arr.STOCK_IS_NOT_ENOUGH+'</font>';
 		} else {
 			getObj('stock_alert'+curr_row).innerHTML='';
@@ -1169,9 +1289,10 @@ function moveUpDown(sType, oModule, iIndex) {
 	var iCheckIndex = 0;
 	var iSwapCheckIndex = 0;
 	var sFormElement = '';
+	var domFormElements = document.getElementById('frmEditView').elements;
 	for (var j=0; j<=2; j++) {
-		if (eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+j+']')) {
-			sFormElement = eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+j+']');
+		if (domFormElements['discount'+iIndex] && domFormElements['discount'+iIndex][j]) {
+			sFormElement = domFormElements['discount'+iIndex][j];
 			if (sFormElement.checked) {
 				iCheckIndex = j;
 				break;
@@ -1180,20 +1301,20 @@ function moveUpDown(sType, oModule, iIndex) {
 	}
 
 	for (j=0; j<=2; j++) {
-		if (eval('document.getElementById(\'frmEditView\').discount'+iSwapIndex+'['+j+']')) {
-			sFormElement = eval('document.getElementById(\'frmEditView\').discount'+iSwapIndex+'['+j+']');
+		if (domFormElements['discount'+iSwapIndex] && domFormElements['discount'+iSwapIndex][j]) {
+			sFormElement = domFormElements['discount'+iSwapIndex][j];
 			if (sFormElement.checked) {
 				iSwapCheckIndex = j;
 				break;
 			}
 		}
 	}
-	if (eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+iSwapCheckIndex+']')) {
-		var oElement = eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+iSwapCheckIndex+']');
+	if (domFormElements['discount'+iIndex] && domFormElements['discount'+iIndex][iSwapCheckIndex]) {
+		var oElement = domFormElements['discount'+iIndex][iSwapCheckIndex];
 		oElement.checked = true;
 	}
-	if (eval('document.getElementById(\'frmEditView\').discount'+iSwapIndex+'['+iCheckIndex+']')) {
-		var oSwapElement = eval('document.getElementById(\'frmEditView\').discount'+iSwapIndex+'['+iCheckIndex+']');
+	if (domFormElements['discount'+iSwapIndex] && domFormElements['discount'+iSwapIndex][iCheckIndex]) {
+		var oSwapElement = domFormElements['discount'+iSwapIndex][iCheckIndex];
 		oSwapElement.checked = true;
 	}
 
@@ -1257,7 +1378,6 @@ function moveUpDown(sType, oModule, iIndex) {
 			document.getElementById(sSwapId).title = sTemp;
 		}
 	}
-	//FindDuplicate();
 	settotalnoofrows();
 	calcTotal();
 	loadTaxes_Ajax(iIndex);
@@ -1266,27 +1386,10 @@ function moveUpDown(sType, oModule, iIndex) {
 	callTaxCalc(iSwapIndex);
 	setDiscount(this, iIndex);
 	setDiscount(this, iSwapIndex);
-	// sId = 'tax1_percentage' + iIndex;
-	// var sTaxRowId = 'hidtax_row_no' + iIndex;
-	// if (document.getElementById(sTaxRowId)) {
-	// 	if (!(iTaxVal = document.getElementById(sTaxRowId).value)) {
-	// 		iTaxVal = 0;
-	// 	}
-	// 	//calcCurrentTax(sId,iIndex,iTaxVal);
-	// }
-
-	// sSwapId = 'tax1_percentage' + iSwapIndex;
-	// var sSwapTaxRowId = 'hidtax_row_no' + iSwapIndex;
-	// if (document.getElementById(sSwapTaxRowId)) {
-	// 	if (!(iSwapTaxVal = document.getElementById(sSwapTaxRowId).value)) {
-	// 		iSwapTaxVal = 0;
-	// 	}
-	// 	//calcCurrentTax(sSwapId,iSwapIndex,iSwapTaxVal);
-	// }
 	calcTotal();
 }
 
-function InventorySelectAll(mod, image_pth) {
+function InventorySelectAll(mod) {
 	if (document.selectall.selected_id != undefined) {
 		var x = document.selectall.selected_id.length;
 		var y=0;
@@ -1332,7 +1435,7 @@ function InventorySelectAll(mod, image_pth) {
 					var dto = prod_array['dto'];
 					var subprod_ids = prod_array['subprod_ids'];
 					if (y>0) {
-						row_id = window.opener.fnAddProductRow(mod, image_pth);
+						row_id = window.opener.fnAddProductRow(mod);
 					} else {
 						row_id = prod_array['rowid'];
 					}
@@ -1380,24 +1483,36 @@ function InventorySelectAll(mod, image_pth) {
 	 * @param {element}:	Root 'InventoryBlock' Object
 	 * @param {function}: 	Callback for custom implementations. Will receive an object with
 	 *						the root autocomplete node and all the result data
-	 */
-	function ProductAutocomplete(el, parent, callback) {
-		this.el = el,
-		this.parent = parent,
-		this.specialKeys = ['up', 'down', 'esc', 'enter'],
-		this.threshold = 3,
-		this.input = el.getElementsByTagName('input')[0],
-		this.source = 'index.php?module=Utilities&sourceModule='+gVTModule+'&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=',
-		this.active = false,
-		this.resultContainer,
-		this.resultBox,
-		this.lookupContainer = this.utils.getFirstClass(el, 'slds-combobox-lookup'),
-		this.currentResults = [],
+		* @param {object}		The root inventoryblock object
+		*/
+	function ProductAutocomplete(el, parent, callback, rootObj) {
+		this.el = el;
+		this.root = rootObj;
+		this.parent = parent;
+		this.specialKeys = ['up', 'down', 'esc', 'enter'];
+		this.threshold = 3;
+		this.input = el.getElementsByTagName('input')[0];
+		this.source='index.php?module=Utilities&sourceModule='+gVTModule+'&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=';
+		this.active = false;
+		this.resultContainer = null;
+		this.resultBox = null;
+		this.lookupContainer = this.utils.getFirstClass(el, 'slds-combobox-lookup');
+		this.currentResults = [];
 		this.callback = typeof callback === 'function' ? callback : false;
 
 		/* Instance listeners */
-		this.utils.on(this.input, 'keyup', this.throttle, this);
+		window.addEventListener('keyup', this.preventSubmit.bind(this), true);
+		this.utils.on(this.input, 'keyup', this.debounce(this.trigger, 420), this);
+		this.utils.on(this.input, 'keyup', this.handleImmediateInput, this);
 		this.utils.on(this.input, 'blur', this.delayedClear, this);
+
+		GlobalVariable_getVariable('Application_ProductService_Search_Autocomplete_Limit', 10, '', gVTUserID)
+			.then((r) => {
+				const limit = JSON.parse(r)['Application_ProductService_Search_Autocomplete_Limit'];
+				this.source = this.source.replace('limit=10', `limit=${limit}`);
+			}).catch((e) => {
+				console.error(e);
+			});
 	}
 
 	ProductAutocomplete.prototype = {
@@ -1408,10 +1523,9 @@ function InventorySelectAll(mod, image_pth) {
 			var term = this.input.value;
 			if (!isSpecialKey && term.length > this.threshold) {
 				this.getResults(term);
+				this.setSpinner(true);
 			} else if (term.length < this.threshold) {
 				this.clear();
-			} else if (isSpecialKey) {
-				this.handleKeyInput(e);
 			}
 		},
 
@@ -1423,33 +1537,84 @@ function InventorySelectAll(mod, image_pth) {
 			}
 		},
 
-		throttle: function (e) {
-			window.setTimeout(this.trigger(e), 100);
+		handleImmediateInput: function (e) {
+			if (this.isSpecialKey(e.keyCode)) {
+				this.handleKeyInput(e);
+			}
+		},
+
+		debounce: function (func, duration) {
+			let timeout;
+
+			return function (...args) {
+				const effect = () => {
+					timeout = null;
+					return func.apply(this, args);
+				};
+				clearTimeout(timeout);
+				timeout = setTimeout(effect, duration);
+			};
+		},
+
+		setSpinner: function (state) {
+			let spinner = this.utils.getFirstClass(this.el, 'slds-spinner');
+			if (state) {
+				spinner.classList.remove('slds-hide');
+			} else {
+				spinner.classList.add('slds-hide');
+			}
+		},
+
+		preventSubmit: function (e) {
+			if (e.keyCode == 13 && this.active) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				e.stopPropagation();
+				this.selectCurrentlyHighlighted();
+				return false;
+			}
 		},
 
 		getResults: function (term) {
-			var accid = 0;
-			if (document.EditView.account_id != undefined) {
-				accid = document.EditView.account_id.value;
-			} else if (document.EditView.accid != undefined) {
-				accid = document.EditView.accid.value;
+			var h = getAccConFieldnames,
+				dE = document.EditView,
+				accid = h().acc === '' ? 0 : document.EditView[h().acc].value,
+				ctoid = h().con === '' ? 0 : document.EditView[h().con].value,
+				recid = dE === undefined ? 0 : dE.record.value,
+				_this = this,
+				r = new XMLHttpRequest();
+			var currencyfield = document.getElementById('inventory_currency');
+			var currencyid = '';
+			if (currencyfield!=undefined) {
+				currencyid = currencyfield.value;
 			}
-			var ctoid = 0;
-			if (document.EditView.contact_id != undefined) {
-				ctoid = document.EditView.contact_id.value;
-			} else if (document.EditView.ctoid != undefined) {
-				ctoid = document.EditView.ctoid.value;
-			}
-			var _this = this;
-			var r = new XMLHttpRequest();
+
 			r.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
 					var res = JSON.parse(this.responseText);
 					_this.processResult(res);
 				}
 			};
-			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+document.EditView.record.value, true);
+			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+recid+'&currencyid='+currencyid, true);
 			r.send();
+
+			// Helper to keep organized
+			function getAccConFieldnames() {
+				let fldNames = {'acc': '', 'con': ''};
+				if (document.EditView !== undefined) {
+					if (document.EditView.account_id !== undefined) {
+						fldNames.acc = 'account_id';
+					} else if (document.EditView.accid !== undefined) {
+						fldNames.acc = 'accid';
+					}
+					if (document.EditView.contact_id !== undefined) {
+						fldNames.con = 'contact_id';
+					} else if (document.EditView.ctoid !== undefined) {
+						fldNames.acc = 'ctoid';
+					}
+				}
+				return fldNames;
+			}
 		},
 
 		processResult: function (res) {
@@ -1467,6 +1632,7 @@ function InventorySelectAll(mod, image_pth) {
 				// Build results
 				this.buildResults(res);
 			}
+			this.setSpinner(false);
 		},
 
 		buildResultBox: function () {
@@ -1547,7 +1713,9 @@ function InventorySelectAll(mod, image_pth) {
 
 			mediaBody.appendChild(listboxText);
 			for (var i = 0; i < listboxMetas.length; i++) {
-				mediaBody.appendChild(listboxMetas[i]);
+				if (lines[i].value != '##FIELDDISABLED##') {
+					mediaBody.appendChild(listboxMetas[i]);
+				}
 			}
 
 			var media = _createEl('div', 'slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta');
@@ -1625,8 +1793,7 @@ function InventorySelectAll(mod, image_pth) {
 					this.selectNext();
 					break;
 				case 'enter':
-					var current = this.getCurrentSelectedResult();
-					this.select(this.currentResults[current]);
+					this.selectCurrentlyHighlighted();
 					break;
 				case 'esc':
 					this.clear();
@@ -1693,6 +1860,11 @@ function InventorySelectAll(mod, image_pth) {
 			}
 		},
 
+		selectCurrentlyHighlighted() {
+			var current = this.getCurrentSelectedResult();
+			this.select(this.currentResults[current]);
+		},
+
 		select: function (result) {
 			this.fillLine(result);
 			this.clear(); // Clear autocomplete
@@ -1704,33 +1876,41 @@ function InventorySelectAll(mod, image_pth) {
 					usageunits = this.root.el.getElementsByClassName(this.root.lineClass + '--usageunit');
 
 				this.utils.getFirstClass(lineNode, 'cbds-product-line-image').src = result.obj.meta.image;
-				var currency = document.getElementById('inventory_currency').value;
-				if (result.obj.pricing.multicurrency[currency] != undefined) {
-					this.parent.setField('unit_price', result.obj.pricing.multicurrency[currency].actual_price);
-				} else {
-					this.parent.setField('unit_price', result.obj.pricing.unit_price);
-				}
+				this.parent.setField('listprice', result.obj.pricing.unit_price);
 				this.parent.setField('cost_price', result.obj.pricing.unit_cost);
-				this.parent.setField('qtyinstock', result.obj.logistics.qty_in_stock);
-				this.parent.setField('qtyindemand', result.obj.logistics.curr_ordered);
+				this.parent.setField('qtyinstock', result.obj.logistics.qtyinstock);
+				this.parent.setField('qtyindemand', result.obj.logistics.qtyindemand);
 
-				this.utils.getFirstClass(lineNode, this.root.linePrefix + '--comments').innerHTML = result.obj.meta.comments;
+				this.utils.getFirstClass(lineNode, this.root.inputPrefix + '--description').innerHTML = result.obj.meta.comments;
 				this.input.value = result.obj.meta.name;
 
 				for (var i = usageunits.length - 1; i >= 0; i--) {
 					usageunits[i].innerHTML = result.obj.logistics.usageunit;
 				}
 
+				this.parent.productId = result.obj.meta.id;
+				this.parent.divisible = result.obj.meta.divisible == 0 ? false : true;
+
 				this.parent.expandExtra();
+				this.parent.getProductImage(result.obj.meta.id);
 				this.parent.calcLine();
 
 				this.utils.getFirstClass(this.utils.findUp(this.el, '.' + this.root.lineClass), this.root.inputPrefix + '--quantity').focus();
+				this.retrieveProductTaxes(result.obj.meta.id);
 			} else {
 				this.callback({
 					'result': result.obj,
 					'source': this.el
 				});
 			}
+		},
+
+		retrieveProductTaxes: function (id) {
+			fetch(`index.php?module=Products&action=ProductsAjax&file=InventoryTaxAjax&productid=${id}&ctoid=0&accid=0&vndid=0&returnarray=1`)
+				.then(r => r.json())
+				.then((data) => {
+					this.parent.actualizeLineTaxes(data);
+				});
 		},
 
 		/*
@@ -1782,7 +1962,7 @@ function InventorySelectAll(mod, image_pth) {
 				try {
 					el.addEventListener(type, func.bind(context));
 				} catch (e) {
-					throw e + '. Called by ' + this.on.caller;
+					throw new Error(e + '. Called by ' + this.on.caller);
 				}
 			},
 			/*
@@ -1883,6 +2063,9 @@ function handleProductAutocompleteSelect(obj) {
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
 	var currency = document.getElementById('inventory_currency').value;
 	if (obj.result.pricing.multicurrency[currency] != undefined && gVTModule != 'PurchaseOrder' && gVTModule != 'Receiptcards') {
+		if (Object.keys(obj.result.pricing.multicurrency).length == 1 && obj.result.pricing.multicurrency[currency].actual_price != obj.result.pricing.unit_price) {
+			ldsPrompt.show(alert_arr['Warning'], alert_arr.ACT_UNIT_PRICE_MISMATCH);
+		}
 		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
 	} else {
 		var list_price = obj.result.pricing.unit_price;
@@ -1900,17 +2083,22 @@ function handleProductAutocompleteSelect(obj) {
 	if (obj.result.pricing.discount != undefined && obj.result.pricing.discount != 0) {
 		document.EditView.elements['discount'+no][1].checked = true;
 		document.EditView.elements['discount_percentage'+no].value = obj.result.pricing.discount;
+	} else {
+		// zero discount
+		document.EditView.elements['discount'+no][0].checked = true;
+		document.EditView.elements['discount_percentage'+no].value = 0;
+		document.EditView.elements['discount_amount'+no].value = 0;
 	}
 
 	// Update the icon
 	switch (type) {
 	case 'Products':
 		searchIcon.src = 'themes/images/products.gif';
-		searchIcon.setAttribute('onclick', "productPickList(this,'"+gVTModule+"','"+no+"')");
+		searchIcon.setAttribute('onclick', 'productPickList(this,\''+gVTModule+'\',\''+no+'\')');
 		break;
 	case 'Services':
 		searchIcon.src = 'themes/images/services.gif';
-		searchIcon.setAttribute('onclick', "servicePickList(this,'"+gVTModule+"','"+no+"')");
+		searchIcon.setAttribute('onclick', 'servicePickList(this,\''+gVTModule+'\',\''+no+'\')');
 		break;
 	}
 	var func = gVTModule + 'setValueFromCapture';

@@ -21,8 +21,6 @@ $mod_strings = array(
 	'Picklist' => 'Lista de opções',
 	'cbtranslation No' => 'Nr tradução',
 	'Locale'  => 'Código da Linguagem',
-	'Module' => 'Módulo',
-	'Translates' => 'Traduções',
 	'Proof Read'	=> 	'Revisado',
 	'Key' => 'Chave',
 	'Field' => 'Campo',
@@ -31,5 +29,6 @@ $mod_strings = array(
 	'Export CSV' => 'Exportar CSV',
 	'Export JSON' => 'Exportar JSON',
 	'Translates' => 'Traduções',
+	'LBL_INVALID_FORMAT' => 'Invalid export format',
 );
 ?>

@@ -13,6 +13,7 @@
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ************************************************************************************/
 require_once 'include/Webservices/Utils.php';
+require_once 'include/Webservices/RetrieveDocAttachment.php';
 
 /*
  * Given a record ID and a related module, this function returns the set of related records that belong to that ID
@@ -40,8 +41,10 @@ require_once 'include/Webservices/Utils.php';
  *  limit: a string indicating the limit of records to be returned. this is needed for paging
  *  offset: a string indicating the initial offset for returning values. this is needed for paging
  *  orderby: a syntactically and semantically correct order by directive wihtout the "order by", only the fields and their order (no validation is done)
- *  columns: a a comma separated string of column names that are to be returned. The special value "*" will return all fields.
+ *  columns: a comma separated string of column names that are to be returned. The special value "*" will return all fields.
  *       for example: 'assigned_user_id,id,createdtime,notes_title,filedownloadcount,filelocationtype,filesize'
+ *  relationtouse: label of the relation to select when more than one is found, if not given, or not found an exception will be thrown
+ *  returnattachments: for Document module will return the file attached if present
  *
  * Author: JPL TSolucio, S.L. June 2012.  Joe Bordes
  *
@@ -71,34 +74,66 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 	$meta = $handler->getMeta();
 
 	$query = __getRLQuery($id, $module, $relatedModule, $queryParameters, $user);
+	if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
+		$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+		if (empty($contactId)) {
+			throw new WebServiceException(WebServiceErrorCode::$OPERATIONNOTSUPPORTED, 'Customer portal access with no contact information');
+		} else {
+			$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+			$query = addPortalModuleRestrictions($query, $relatedModule, $accountId, $contactId);
+		}
+	}
 	$result = $adb->pquery($query, array());
 	$records = array();
 
 	// Return results
+	$returnAttachment = ($relatedModule=='Documents' && !empty($queryParameters['returnattachments']));
+	if ($returnAttachment) {
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
+		$docquery = "SELECT filelocationtype FROM vtiger_notes INNER JOIN $crmEntityTable ON crmid=notesid WHERE notesid=? and deleted=0";
+	}
 	$pdowsid = vtws_getEntityID('Products').'x';
 	$srvwsid = vtws_getEntityID('Services').'x';
 	while ($row = $adb->fetch_array($result)) {
 		if (($module=='HelpDesk' || $module=='Faq') && $relatedModule=='ModComments') {
 			$rec = $row;
 		} else {
-			if ($relatedModule=='Products') {
-				if (isset($row['productid']) && isset($row['sequence_no'])) {
-					if (isset($row['productid']) && getSalesEntityType($row['productid'])=='Services') {
-						$rec = DataTransform::sanitizeData($row, $srvmeta);
-						$rec['id'] = $srvwsid.$row['productid'];
-						$rec['productid'] = $srvwsid.$row['productid'];
-						$rec['linetype'] = 'Services';
-					} else {
-						$rec = DataTransform::sanitizeData($row, $meta);
-						$rec['productid'] = $pdowsid.$row['productid'];
-						$rec['id'] = $pdowsid.$row['productid'];
-						$rec['linetype'] = 'Products';
-					}
+			if ($relatedModule=='Products' && isset($row['id']) && isset($row['sequence_no'])) {
+				if (getSalesEntityType($row['id'])=='Services') {
+					$rec = DataTransform::sanitizeData($row, $srvmeta);
+					$rec['id'] = $srvwsid.$row['id'];
+					$rec['cbuuid'] = CRMEntity::getUUIDfromCRMID($row['id']);
+					$rec['productid'] = $srvwsid.$row['id'];
+					$rec['linetype'] = 'Services';
 				} else {
 					$rec = DataTransform::sanitizeData($row, $meta);
+					$rec['id'] = $pdowsid.$row['id'];
+					$rec['cbuuid'] = CRMEntity::getUUIDfromCRMID($row['id']);
+					$rec['productid'] = $pdowsid.$row['id'];
+					$rec['linetype'] = 'Products';
 				}
 			} else {
 				$rec = DataTransform::sanitizeData($row, $meta);
+				if ($returnAttachment) {
+					$docid = 0;
+					if (!empty($row['id'])) {
+						list($wsid, $docid) = explode('x', $row['id']);
+					} elseif (!empty($row['notesid'])) {
+						$docid = $row['notesid'];
+					}
+					if ($docid) {
+						$doc = $adb->pquery($docquery, array($docid));
+						if ($adb->query_result($doc, 0, 'filelocationtype')=='I') {
+							$attachment = vtws_retrievedocattachment_get_attachment($docid, true, true);
+							$rec['attachments'] = array(
+								'name' => $attachment['filename'],
+								'type' => $attachment['filetype'],
+								'content' => $attachment['attachment'],
+								'size' => $attachment['filesize']
+							);
+						}
+					}
+				}
 			}
 		}
 		if (isset($row['cbuuid'])) {
@@ -139,7 +174,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$meta = $handler->getMeta();
 	$relatedModule = $meta->getEntityName();
 	if (!$meta->isModuleEntity()) {
-		throw new WebserviceException('INVALID_MODULE', "Given related module ($relatedModule) cannot be found");
+		throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, "Given related module ($relatedModule) cannot be found");
 	}
 	$relatedModuleId = getTabid($relatedModule);
 
@@ -153,7 +188,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$meta = $handler->getMeta();
 	$module = $meta->getEntityName();
 	if (!$meta->isModuleEntity()) {
-		throw new WebserviceException('INVALID_MODULE', "Given module ($module) cannot be found");
+		throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, "Given module ($module) cannot be found");
 	}
 	$moduleId = getTabid($module);
 
@@ -295,11 +330,14 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 			// special product relation with Q/SO/I/PO
 			if ($relatedModule == 'Products' && in_array($module, array('Invoice','Quotes','SalesOrder','PurchaseOrder'))) {
 				$qparams = ' ' . $queryParameters['columns'] . ' ';
-				$qparams = str_replace(' id ', ' productid as id ', $qparams);
-				$qparams = str_replace(',id ', ',productid as id ', $qparams);
-				$qparams = str_replace(' id,', ' productid as id,', $qparams);
-				$qparams = str_replace(',id,', ',productid as id,', $qparams);
-				$query = 'select ' . $qparams . ' FROM vtiger_inventoryproductrel where id=' . $crmid;
+				$qparams = str_replace(' productid', ' vtiger_inventoryproductrel.productid', $qparams);
+				$qparams = str_replace(' id ', ' vtiger_inventoryproductrel.productid as id ', $qparams);
+				$qparams = str_replace(',id ', ',vtiger_inventoryproductrel.productid as id ', $qparams);
+				$qparams = str_replace(' id,', ' vtiger_inventoryproductrel.productid as id,', $qparams);
+				$qparams = str_replace(',id,', ',vtiger_inventoryproductrel.productid as id,', $qparams);
+				$query = 'select ' . $qparams . ',sequence_no FROM vtiger_inventoryproductrel
+					left join vtiger_service on serviceid=vtiger_inventoryproductrel.productid
+					left join vtiger_products on vtiger_products.productid=vtiger_inventoryproductrel.productid where id=' . $crmid;
 			} else {
 				$relationResult = $adb->pquery(
 					"SELECT * FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=? $relation_criteria",
@@ -307,11 +345,21 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 				);
 
 				if (!$relationResult || !$adb->num_rows($relationResult)) {
-					throw new WebserviceException('MODULES_NOT_RELATED', "Cannot find relation between $module and $relatedModule");
+					throw new WebServiceException('MODULES_NOT_RELATED', "Cannot find relation between $module and $relatedModule");
 				}
 
 				if ($adb->num_rows($relationResult) > 1) {
-					throw new WebserviceException('MANY_RELATIONS', "More than one relation exists between $module and $relatedModule");
+					if (empty($queryParameters['relationtouse'])) {
+						throw new WebServiceException('MANY_RELATIONS', "More than one relation exists between $module and $relatedModule");
+					} else {
+						$relationResult = $adb->pquery(
+							"SELECT * FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=? AND label=? $relation_criteria",
+							array($moduleId, $relatedModuleId, $queryParameters['relationtouse'])
+						);
+						if ($adb->num_rows($relationResult) != 1) {
+							throw new WebServiceException('MANY_RELATIONS', "More than one relation exists between $module and $relatedModule");
+						}
+					}
 				}
 
 				$relationInfo = $adb->fetch_array($relationResult);
@@ -322,7 +370,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 				global $GetRelatedList_ReturnOnlyQuery;
 				$holdValue = $GetRelatedList_ReturnOnlyQuery;
 				$GetRelatedList_ReturnOnlyQuery = true;
-				$relationData = call_user_func_array(array($moduleInstance,$relationInfo['name']), $params);
+				$relationData = call_user_func_array(array($moduleInstance,$relationInfo['name']), array_values($params));
 				if (!isset($relationData['query'])) {
 					throw new WebServiceException(WebServiceErrorCode::$OPERATIONNOTSUPPORTED, 'getRelatedRecords can only be called from Webservice interface');
 				}
@@ -335,10 +383,15 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					require_once $handlerPath;
 					$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 					$meta = $handler->getMeta();
+					$onelinequery = preg_replace("/[\n\r\s]+/", ' ', $query);
 					if (!empty($productDiscriminator) && $productDiscriminator == 'productparent') {
-						$query = appendFromClauseToQuery($query, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.frompdo');
+						if (stripos($onelinequery, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.frompdo')===false) {
+							$query = appendFromClauseToQuery($query, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.frompdo');
+						}
 					} else {
-						$query = appendFromClauseToQuery($query, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.topdo');
+						if (stripos($onelinequery, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.topdo')===false) {
+							$query = appendFromClauseToQuery($query, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.topdo');
+						}
 					}
 				}
 				// select the fields the user has access to and prepare query
@@ -371,42 +424,46 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					$relatedField = ($module == 'Accounts' ? 'accountid' : 'contactid');
 					$pstable = $meta->getEntityBaseTable();
 					$psfield = $meta->getIdColumn();
+					$psmodule = CRMEntity::getInstance($relatedModule);
 
 					if (substr($productDiscriminator, -4)=='only') {
 						$productDiscriminator = substr($productDiscriminator, 0, strlen($productDiscriminator)-4);
 						$query = '';
 					}
 					if ($productDiscriminator=='productlinequote' || $productDiscriminator=='productlineall') {
+						$mod = CRMEntity::getInstance('Quotes');
 						$q = "select distinct $qfields from vtiger_quotes
-							inner join vtiger_crmentity as crmq on crmq.crmid=vtiger_quotes.quoteid
+							inner join ".$mod->crmentityTable." as crmq on crmq.crmid=vtiger_quotes.quoteid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_quotes.quoteid
-							inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							inner join ".$psmodule->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmq.deleted=0
-							and $relatedField = $crmid";
+							and vtiger_quotes.$relatedField = $crmid";
 						$query .= ($query=='' ? '' : ' UNION DISTINCT ').$q;
 					}
 					if ($productDiscriminator=='productlineinvoice' || $productDiscriminator=='productlineall') {
+						$mod = CRMEntity::getInstance('SalesOrder');
 						$q = "select distinct $qfields from vtiger_invoice
-							inner join vtiger_crmentity as crmi on crmi.crmid=vtiger_invoice.invoiceid
+							inner join ".$mod->crmentityTable." as crmi on crmi.crmid=vtiger_invoice.invoiceid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_invoice.invoiceid
-							inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							inner join ".$psmodule->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid 
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmi.deleted=0
-							and $relatedField = $crmid";
+							and vtiger_invoice.$relatedField = $crmid";
 						$query .= ($query=='' ? '' : ' UNION DISTINCT ').$q;
 					}
 					if ($productDiscriminator=='productlinesalesorder' || $productDiscriminator=='productlineall') {
+						$mod = CRMEntity::getInstance('SalesOrder');
 						$q = "select distinct $qfields from vtiger_salesorder
-						inner join vtiger_crmentity as crms on crms.crmid=vtiger_salesorder.salesorderid
+						inner join ".$mod->crmentityTable." as crms on crms.crmid=vtiger_salesorder.salesorderid
 						left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_salesorder.salesorderid
-						inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+						inner join ".$psmodule->crmentityTable." as vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
 						left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 						left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 						where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crms.deleted=0
-						and $relatedField = $crmid";
+						and vtiger_salesorder.$relatedField = $crmid";
 						$query .= ($query=='' ? '' : ' UNION DISTINCT ').$q;
 					}
 				}
@@ -422,7 +479,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 		if (!empty($queryParameters['offset']) && !empty($queryParameters['limit'])) {
 			$query .= ' limit '.$queryParameters['offset'].','.$queryParameters['limit'];
 		} elseif (!empty($queryParameters['offset'])) {
-			$query .= ' offset '.$queryParameters['offset'];
+			$query .= ' LIMIT '.$queryParameters['offset'].', 18446744073709551614';
 		} elseif (!empty($queryParameters['limit'])) {
 			$query .= ' limit '.$queryParameters['limit'];
 		}
@@ -452,6 +509,9 @@ function __getRLQueryFields($meta, $cols = '*') {
 	$columnTable = $meta->getColumnTableMapping();
 	$qfields = '';
 	foreach ($fieldcol as $col) {
+		if ($columnTable[$col]=='vtiger_attachments') {
+			continue;
+		}
 		$cl = $col;
 		if ($col=='smownerid') {
 			$cl = 'smownerid as assigned_user_id,vtiger_crmentity.smownerid,vtiger_users.first_name as owner_firstname, vtiger_users.last_name as owner_lastname';
@@ -470,10 +530,11 @@ function __getRLQueryFields($meta, $cols = '*') {
 // this function is an intent to add the necessary joins to the default query so all fields will work
 function __getRLQueryFromJoins($query, $meta, $relatedModule = '') {
 	if ($meta->getEntityName()=='Emails') {
+		$mod = CRMEntity::getInstance('Emails');
 		// this query is non-standard, I try to fix it a bit to get it working
 		$chgFrom = 'from vtiger_activity, vtiger_seactivityrel, vtiger_contactdetails, vtiger_users, vtiger_crmentity';
 		$chgTo = 'from vtiger_activity
-					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity.activityid
+					inner join '.$mod->crmentityTable.' as vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity.activityid
 					left join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid
 					left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 					left join vtiger_contactdetails on vtiger_contactdetails.contactid = vtiger_seactivityrel.crmid ';

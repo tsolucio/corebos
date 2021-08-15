@@ -11,11 +11,8 @@ require_once 'include/database/PearDatabase.php';
 require 'modules/Vtiger/default_module_view.php';
 global $adb, $log;
 $idlist = vtlib_purify($_POST['idlist']);
-$returnmodule = urlencode(vtlib_purify($_REQUEST['return_module']));
-$returnaction = urlencode(vtlib_purify($_REQUEST['return_action']));
-$pricebook_id = vtlib_purify($_REQUEST['pricebook_id']);
-$productid = vtlib_purify($_REQUEST['product_id']);
 if (isset($_REQUEST['pricebook_id']) && $_REQUEST['pricebook_id']!='') {
+	$pricebook_id = vtlib_purify($_REQUEST['pricebook_id']);
 	$currency_id = getPriceBookCurrency($pricebook_id);
 	$storearray = explode(';', $idlist);
 	$query= 'insert into vtiger_pricebookproductrel (pricebookid,productid,listprice,usedcurrency) values(?,?,?,?)';
@@ -33,6 +30,7 @@ if (isset($_REQUEST['pricebook_id']) && $_REQUEST['pricebook_id']!='') {
 		header('Location: index.php?module=PriceBooks&action=CallRelatedList&record=' . urlencode($pricebook_id));
 	}
 } elseif (isset($_REQUEST['product_id']) && $_REQUEST['product_id']!='') {
+	$productid = vtlib_purify($_REQUEST['product_id']);
 	$storearray = explode(';', $idlist);
 	$query= 'insert into vtiger_pricebookproductrel (pricebookid,productid,listprice,usedcurrency) values(?,?,?,?)';
 	foreach ($storearray as $id) {
@@ -44,6 +42,8 @@ if (isset($_REQUEST['pricebook_id']) && $_REQUEST['pricebook_id']!='') {
 			$adb->pquery($query, array($id,$productid,$list_price,$currency_id));
 		}
 	}
+	$returnmodule = urlencode(vtlib_purify($_REQUEST['return_module']));
+	$returnaction = urlencode(vtlib_purify($_REQUEST['return_action']));
 	header("Location: index.php?module=$returnmodule&action=$returnaction&record=" . urlencode($productid));
 }
 ?>

@@ -20,13 +20,13 @@
 			<table class="settingsSelUITopLine" align="center" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tr>
 					<td rowspan="2" valign="top" width="50"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.VTLIB_LBL_MODULE_MANAGER}" title="{$MOD.VTLIB_LBL_MODULE_MANAGER}" border="0" height="48" width="48"></td>
-					<td class="heading2" valign="bottom"> <b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; {$MODULE_LBL} </td>
+					<td class="heading2" valign="bottom"> <b><a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; {$MODULE_LBL} </td>
 				</tr>
 				<tr>
 					<td class="small" valign="top">{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</td>
 				</tr>
 				</table>
-				
+
 				<br>
 				<table border="0" cellspacing="0" cellpadding="20" width="100%" class="settingsUI">
 					<tr>
@@ -69,7 +69,7 @@
 						</td>
 					</tr>
 				</table>
-				
+
 					</td>
 				</tr>
 			</table>

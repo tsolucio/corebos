@@ -27,6 +27,18 @@ $current_user = Users::getActiveAdminUser();
 
 @include_once 'install/config.db.php';
 $adb->query("SET SESSION sql_mode = ''");
+$adb->query('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
+	crmid int(19),
+	cbuuid char(40),
+	deleted tinyint(1),
+	setype varchar(100),
+	smownerid int(19),
+	modifiedtime datetime,
+	PRIMARY KEY (crmid),
+	INDEX (cbuuid),
+	INDEX (deleted),
+	INDEX (setype)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8');
 
 // mandatory coreBOS DB changes
 $result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
@@ -90,7 +102,6 @@ $createEventModules = array('include' => array("Leads","Accounts","Potentials","
 $taskTypes[] = array("name"=>"VTEmailTask", "label"=>"Send Mail", "classname"=>"VTEmailTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTEmailTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTEmailTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
 $taskTypes[] = array("name"=>"VTEntityMethodTask", "label"=>"Invoke Custom Function", "classname"=>"VTEntityMethodTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTEntityMethodTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
 $taskTypes[] = array("name"=>"VTCreateTodoTask", "label"=>"Create Todo", "classname"=>"VTCreateTodoTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTCreateTodoTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTCreateTodoTask.tpl", "modules"=>$createToDoModules, "sourcemodule"=>'');
-$taskTypes[] = array("name"=>"VTCreateEventTask", "label"=>"Create Event", "classname"=>"VTCreateEventTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTCreateEventTask.tpl", "modules"=>$createEventModules, "sourcemodule"=>'');
 $taskTypes[] = array("name"=>"VTUpdateFieldsTask", "label"=>"Update Fields", "classname"=>"VTUpdateFieldsTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTUpdateFieldsTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTUpdateFieldsTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
 $taskTypes[] = array("name"=>"VTCreateEntityTask", "label"=>"Create Entity", "classname"=>"VTCreateEntityTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTCreateEntityTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTCreateEntityTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
 $taskTypes[] = array("name"=>"VTSMSTask", "label"=>"SMS Task", "classname"=>"VTSMSTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTSMSTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTSMSTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'SMSNotifier');
@@ -121,6 +132,7 @@ $adb->query("UPDATE `vtiger_users` set date_modified=date_entered");
 $adb->query("UPDATE `vtiger_import_maps` set date_modified=date_entered");
 $adb->query("UPDATE `vtiger_loginhistory` set login_time=null where login_time='0000-00-00 00:00:00'");
 $adb->query("UPDATE `vtiger_loginhistory` set logout_time=null where logout_time='0000-00-00 00:00:00'");
+$adb->query("UPDATE `vtiger_crmentity` set modifiedtime=createdtime where modifiedtime='0000-00-00 00:00:00'");
 //
 
 $the_file = 'CheckSystem.php';

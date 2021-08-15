@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-global $adb,$current_user, $mod_strings,$currentModule;
+global $adb, $current_user, $mod_strings, $currentModule, $current_language, $app_strings;
 $userprivs = $current_user->getPrivileges();
 
 $modval = isset($_REQUEST['modname']) ? trim(vtlib_purify($_REQUEST['modname'])) : '';
@@ -24,7 +24,6 @@ if (!empty($modval)) {
 		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in 
 			(select vtiger_user2role.userid
 			from vtiger_user2role
-			inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 			inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 			where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 		$sparams[] = $current_user->id;
@@ -38,13 +37,13 @@ if (!empty($modval)) {
 		$html = '<select id=selFilterid name=selFiltername onchange=setPrimaryFld(this) class="detailedViewTextBox" onfocus="this.className=\'detailedViewTextBoxOn\'" ';
 		$html.= ' onblur="this.className=\'detailedViewTextBox\'" style="width:60%">';
 		for ($i=0; $i<$adb->num_rows($result); $i++) {
-			if ($adb->query_result($result, $i, "viewname")=='All') {
-				$html .= "<option value='".$adb->query_result($result, $i, 'cvid')."'>".getTranslatedString('COMBO_ALL', $currentModule)."</option>";
+			if ($adb->query_result($result, $i, 'viewname')=='All') {
+				$html .= "<option value='".$adb->query_result($result, $i, 'cvid')."'>".getTranslatedString('COMBO_ALL', $currentModule).'</option>';
 			} elseif ($adb->query_result($result, $i, 'userid')==$current_user->id) {
-				$html .= "<option value='".$adb->query_result($result, $i, 'cvid')."'>".$adb->query_result($result, $i, "viewname")."</option>";
+				$html .= "<option value='".$adb->query_result($result, $i, 'cvid')."'>".$adb->query_result($result, $i, 'viewname').'</option>';
 			} else {
-				$html .= "<option value='".$adb->query_result($result, $i, 'cvid')."'>".$adb->query_result($result, $i, "viewname")
-					."[".$adb->query_result($result, $i, 'user_name')."]</option>";
+				$html .= "<option value='".$adb->query_result($result, $i, 'cvid')."'>".$adb->query_result($result, $i, 'viewname')
+					.'['.$adb->query_result($result, $i, 'user_name').']</option>';
 			}
 		}
 		$html .= '</select>';
@@ -53,8 +52,7 @@ if (!empty($modval)) {
 }
 
 if (!empty($dash)) {
-	global $current_language;
-	$dashbd_strings = return_module_language($current_language, "Dashboard");
+	$dashbd_strings = return_module_language($current_language, 'Dashboard');
 	$graph_array = array(
 		'leadsource' => $dashbd_strings['leadsource'],
 		'leadstatus' => $dashbd_strings['leadstatus'],
@@ -99,10 +97,7 @@ if (!empty($dash)) {
 if (!empty($_REQUEST['primecvid'])) {
 	$cvid=$_REQUEST['primecvid'];
 	$fieldmodule = vtlib_purify($_REQUEST['fieldmodname']);
-	$queryprime="select cvid,columnname from vtiger_cvcolumnlist where columnname not like '%::%' and cvid=?";
-	$result=$adb->pquery($queryprime, array($cvid));
-	global $current_language,$app_strings;
-	$fieldmod_strings = return_module_language($current_language, $fieldmodule);
+	$result=$adb->pquery("select cvid,columnname from vtiger_cvcolumnlist where columnname not like '%::%' and cvid=?", array($cvid));
 	if ($adb->num_rows($result)==0) {
 		echo $mod_strings['MSG_NO_FIELDS'];
 		die;
@@ -110,12 +105,12 @@ if (!empty($_REQUEST['primecvid'])) {
 		$html = '<select id=selPrimeFldid name=PrimeFld multiple class="detailedViewTextBox" onfocus="this.className=\'detailedViewTextBoxOn\'"';
 		$html.= ' onblur="this.className=\'detailedViewTextBox\'" style="width:60%">';
 		for ($i=0; $i<$adb->num_rows($result); $i++) {
-			$columnname=$adb->query_result($result, $i, "columnname");
+			$columnname=$adb->query_result($result, $i, 'columnname');
 			if ($columnname != '') {
-				$prifldarr=explode(":", $columnname);
+				$prifldarr=explode(':', $columnname);
 				$fieldname = $prifldarr[2];
-				$priarr=explode("_", $prifldarr[3], 2); //getting field label
-				$prifld = str_replace("_", " ", $priarr[1]);
+				$priarr=explode('_', $prifldarr[3], 2); //getting field label
+				$prifld = str_replace('_', ' ', $priarr[1]);
 				if (!is_admin($current_user)) {
 					$fld_permission = getFieldVisibilityPermission($fieldmodule, $current_user->id, $fieldname);
 				} else {
@@ -128,7 +123,7 @@ if (!empty($_REQUEST['primecvid'])) {
 					);
 					$field_label = $adb->query_result($field_query, 0, 'fieldlabel');
 					if (trim($field_label) != '') {
-						$html .= "<option value='".$columnname."'>".getTranslatedString($field_label, $fieldmodule)."</option>";
+						$html .= "<option value='".$columnname."'>".getTranslatedString($field_label, $fieldmodule).'</option>';
 					}
 				}
 			}
@@ -141,42 +136,33 @@ if (!empty($_REQUEST['primecvid'])) {
 if (!empty($_REQUEST['showmaxval']) && !empty($_REQUEST['sid'])) {
 	$sid = vtlib_purify($_REQUEST['sid']);
 	$maxval=$_REQUEST['showmaxval'];
-	global $adb;
-	$query="select stufftype from vtiger_homestuff where stuffid=?";
+	$query='select stufftype from vtiger_homestuff where stuffid=?';
 	$res=$adb->pquery($query, array($sid));
-	$stufftypename=$adb->query_result($res, 0, "stufftype");
-	if ($stufftypename=="Module") {
-		$qry="update vtiger_homemodule set maxentries=? where stuffid=?";
-		$result=$adb->pquery($qry, array($maxval, $sid));
-	} elseif ($stufftypename=="RSS") {
-		$qry="update vtiger_homerss set maxentries=? where stuffid=?";
-		$result=$adb->pquery($qry, array($maxval, $sid));
-	} elseif ($stufftypename=="Default") {
-		$qry="update vtiger_homedefault set maxentries=? where stuffid=?";
-		$result=$adb->pquery($qry, array($maxval, $sid));
+	$stufftypename=$adb->query_result($res, 0, 'stufftype');
+	if ($stufftypename=='Module') {
+		$result=$adb->pquery('update vtiger_homemodule set maxentries=? where stuffid=?', array($maxval, $sid));
+	} elseif ($stufftypename=='RSS') {
+		$result=$adb->pquery('update vtiger_homerss set maxentries=? where stuffid=?', array($maxval, $sid));
+	} elseif ($stufftypename=='Default') {
+		$result=$adb->pquery('update vtiger_homedefault set maxentries=? where stuffid=?', array($maxval, $sid));
 	}
-	echo "loadStuff(".$sid.",'".$stufftypename."')";
+	echo 'loadStuff('.$sid.",'".$stufftypename."')";
 }
 
 if (!empty($_REQUEST['dashVal'])) {
 	$did = vtlib_purify($_REQUEST['did']);
-	global $adb;
-	$qry='update vtiger_homedashbd set dashbdtype=? where stuffid=?';
-	$res=$adb->pquery($qry, array($_REQUEST['dashVal'], $did));
-	echo "loadStuff(".$did.",'DashBoard')";
+	$res=$adb->pquery('update vtiger_homedashbd set dashbdtype=? where stuffid=?', array($_REQUEST['dashVal'], $did));
+	echo 'loadStuff('.$did.",'DashBoard')";
 }
 
 if (!empty($_REQUEST['reportVal'])) {
 	$stuffid = vtlib_purify($_REQUEST['stuffid']);
-	global $adb;
-	$qry="update vtiger_homereportchart set reportcharttype=? where stuffid=?";
-	$res=$adb->pquery($qry, array($_REQUEST['reportVal'], $stuffid));
-	echo "loadStuff(".$stuffid.",'ReportCharts')";
+	$res=$adb->pquery('update vtiger_homereportchart set reportcharttype=? where stuffid=?', array($_REQUEST['reportVal'], $stuffid));
+	echo 'loadStuff('.$stuffid.",'ReportCharts')";
 }
 
 if (!empty($_REQUEST['homestuffid'])) {
 	$sid=$_REQUEST['homestuffid'];
-	global $adb;
 	$rs = $adb->pquery('select stufftype from vtiger_homestuff where stuffid=?', array($sid));
 	$res=$adb->query_result($rs, 0, 'stufftype');
 	if ($res=='CustomWidget') {
@@ -189,11 +175,9 @@ if (!empty($_REQUEST['homestuffid'])) {
 
 //Sequencing of blocks starts
 if (!empty($_REQUEST['matrixsequence'])) {
-	global $adb;
 	$sequence = explode('_', $_REQUEST['matrixsequence']);
 	for ($i=count($sequence)-1, $seq=0; $i>=0; $i--, $seq++) {
-		$query = 'update vtiger_homestuff set stuffsequence=? where stuffid=?';
-		$result = $adb->pquery($query, array($seq, $sequence[$i]));
+		$result = $adb->pquery('update vtiger_homestuff set stuffsequence=? where stuffid=?', array($seq, $sequence[$i]));
 	}
 	echo "<table cellpadding='100' cellspacing='0' border='0' width='100%' class='vtResultPop'>
 		<tr><td align='center' style='font-size:14;font-weight:bold;'>".getTranslatedString('Layout Saved', 'Home').'</td></tr>
@@ -201,35 +185,27 @@ if (!empty($_REQUEST['matrixsequence'])) {
 }
 //Sequencing of blocks ends
 
-if (isset($_REQUEST['act']) && $_REQUEST['act'] =="hide") {
+if (isset($_REQUEST['act']) && $_REQUEST['act'] =='hide') {
 	$stuffid=$_REQUEST['stuffid'];
-	global $adb,$current_user;
-	$qry='update vtiger_homestuff set visible=1 where stuffid=?';
-	$res=$adb->pquery($qry, array($stuffid));
+	$res=$adb->pquery('update vtiger_homestuff set visible=1 where stuffid=?', array($stuffid));
 	echo 'SUCCESS';
 }
 
 //saving layout here
 if (!empty($_REQUEST['layout'])) {
-	global $adb, $current_user;
-
-	$sql = 'delete from vtiger_home_layout where userid=?';
-	$result = $adb->pquery($sql, array($current_user->id));
-
-	$sql = 'insert into vtiger_home_layout values (?, ?)';
-	$result = $adb->pquery($sql, array($current_user->id, $_REQUEST['layout']));
+	$result = $adb->pquery('delete from vtiger_home_layout where userid=?', array($current_user->id));
+	$result = $adb->pquery('insert into vtiger_home_layout values (?, ?)', array($current_user->id, $_REQUEST['layout']));
 	if (!$result) {
 		echo 'SUCCESS';
 	}
 }
 
 if (!empty($home)) {
-	global $current_user,$mod_strings,$currentModule;
 	$UMOD = $mod_strings;
 	$focus = new Users();
 	$homeWidgets = $focus->getHomeStuffOrder($current_user->id);
-	if (!in_array("", $homeWidgets)) {
-			$errorMsg="LBL_NO_WIDGETS_HIDDEN";
+	if (!in_array('', $homeWidgets)) {
+		$errorMsg='LBL_NO_WIDGETS_HIDDEN';
 	}
 	$html='<table border="0" cellpadding="5" cellspacing="0" ><tr>';
 	$COUNT = 0;
@@ -237,7 +213,7 @@ if (!empty($home)) {
 		if ($value == '') {
 			$html .= '<td class="dvtCellInfo" align="center" >
 			<input type="checkbox" name="names" value="'.$key.'"></td>
-			<td class="dvtCellLabel" align="left">'.getTranslatedString($key, "Users").'</td>';
+			<td class="dvtCellLabel" align="left">'.getTranslatedString($key, 'Users').'</td>';
 			$COUNT++;
 			if (($COUNT % 2) == 0) {
 				$html .= '</tr><tr>';
@@ -245,10 +221,9 @@ if (!empty($home)) {
 		}
 	}
 	if (!empty($errorMsg)) {
-		$html .= '<td align="center">'.getTranslatedString($errorMsg, "Home").'</td>';
+		$html .= '<td align="center">'.getTranslatedString($errorMsg, 'Home').'</td>';
 	}
 	$html .= '</tr></table>';
 	echo $html;
 }
-//layout save ends here
 ?>

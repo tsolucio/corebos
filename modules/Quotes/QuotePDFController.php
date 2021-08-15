@@ -30,7 +30,7 @@ class Vtiger_QuotePDFController extends Vtiger_InventoryPDFController {
 		$billingAddressLabel = getTranslatedString('Billing Address', $this->moduleName);
 		$shippingAddressLabel = getTranslatedString('Shipping Address', $this->moduleName);
 
-		$modelColumn2 = array(
+		return array(
 			'dates' => array(
 				$issueDateLabel  => $this->formatDate(date('Y-m-d')),
 				$validDateLabel => $this->formatDate($this->focusColumnValue('validtill')),
@@ -38,7 +38,6 @@ class Vtiger_QuotePDFController extends Vtiger_InventoryPDFController {
 			$billingAddressLabel  => $this->buildHeaderBillingAddress(),
 			$shippingAddressLabel => $this->buildHeaderShippingAddress()
 		);
-		return $modelColumn2;
 	}
 }
 ?>

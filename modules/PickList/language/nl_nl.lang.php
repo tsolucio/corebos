@@ -51,4 +51,8 @@ $mod_strings = array(
 	'LBL_REMOVE' => 'Remove',
 	'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this picklist dependency?',
 	'picklisthasdependency' => 'Warning: this list has dependencies configured',
+	'multii18n' => 'Multi-Language',
+	'monoi18n' => 'Mono-Language',
+	'ERR_MustBeTranslated' => 'This picklist must support multi-language',
+	'ERR_InvalidValues' => 'This picklist has invalid values',
 );

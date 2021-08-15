@@ -17,6 +17,7 @@ global $log, $app_strings, $mod_strings, $currentModule, $theme, $default_charse
 $focus = CRMEntity::getInstance($currentModule);
 
 $smarty = new vtigerCRM_Smarty;
+getBrowserVariables($smarty);
 if (isset($_REQUEST['record'])) {
 	global $adb;
 	$focus->retrieve_entity_info($_REQUEST['record'], 'Emails');
@@ -30,6 +31,7 @@ if (isset($_REQUEST['record'])) {
 	$to_email = json_decode($adb->query_result($result, 0, 'to_email'), true);
 	$cc_email = json_decode($adb->query_result($result, 0, 'cc_email'), true);
 	$smarty->assign('TO_MAIL', vt_suppressHTMLTags(@implode(',', $to_email)));
+	$smarty->assign('REPLYTO', $adb->query_result($result, 0, 'replyto'));
 	$smarty->assign('CC_MAIL', vt_suppressHTMLTags(@implode(',', $cc_email)));
 	$bcc_email = json_decode($adb->query_result($result, 0, 'bcc_email'), true);
 	$smarty->assign('BCC_MAIL', vt_suppressHTMLTags(@implode(',', $bcc_email)));
@@ -105,8 +107,6 @@ if (isset($_REQUEST['return_id'])) {
 }
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', 'themes/'.$theme.'/images/');
-$category = getParentTab();
-$smarty->assign('CATEGORY', $category);
 
 if (isset($focus->name)) {
 	$smarty->assign('NAME', $focus->name);
@@ -115,7 +115,6 @@ if (isset($focus->name)) {
 }
 
 $entries = getBlocks($currentModule, 'detail_view', '', $focus->column_fields);
-//changed this to view description in all langauge - bharath
 $smarty->assign('BLOCKS', $entries[$mod_strings['LBL_EMAIL_INFORMATION']]);
 $smarty->assign('SINGLE_MOD', 'Email');
 
@@ -135,5 +134,13 @@ $smarty->assign('MODULE', $currentModule);
 if ($_REQUEST['module']=='cbCalendar') {
 	$smarty->assign('FROMCALENDAR', 'true');
 }
-$smarty->display('EmailDetailView.tpl');
+$smarty->assign('CUSTOM_LINKS', '');
+include 'include/integrations/forcedButtons.php';
+$smarty->assign('CHECK', $tool_buttons);
+$smarty->assign('MOD_SEQ_ID', '');
+if ($_REQUEST['action']=='EmailsAjax') {
+	$smarty->display('EmailDetailView.tpl');
+} else {
+	$smarty->display('EmailDetailViewInside.tpl');
+}
 ?>

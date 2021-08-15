@@ -25,7 +25,6 @@ $smarty->assign('MOD', $smod_strings);
 $smarty->assign('MODULE', 'Settings');
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
-$smarty->assign('PARENTTAB', getParentTab());
 
 $return_data=array();
 $cnt=1;

@@ -128,8 +128,9 @@ class VTTaskManager {
 	}
 
 	public function unserializeTask($str) {
-		$tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($str));
-		$this->requireTask(self::taskName($str), $tasktype);
+		$taskName = $this->taskName($str);
+		$tasktype = VTTaskType::getInstanceFromTaskType($taskName);
+		$this->requireTask($taskName, $tasktype);
 		return unserialize($str);
 	}
 
@@ -149,8 +150,9 @@ class VTTaskManager {
 		$tasks = array();
 		foreach ($it as $row) {
 			$text = $row->task;
-			$tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($text));
-			$this->requireTask(self::taskName($text), $tasktype);
+			$taskName = $this->taskName($text);
+			$tasktype = VTTaskType::getInstanceFromTaskType($taskName);
+			$this->requireTask($taskName, $tasktype);
 			$wftask = unserialize($text);
 			$wftask->executionorder = $row->executionorder;
 			$tasks[] = $wftask;
@@ -255,6 +257,7 @@ abstract class VTTask {
 			'InventoryDetails' => '(general : (__VtigerMeta__) inventorydetails)',
 			'groupEmailList' => '(general : (__VtigerMeta__) groupEmailList_Put_Group_Name_Here)',
 			'invitedUsers' => '(general : (__VtigerMeta__) Events_Users_Invited)',
+			'relatedContacts' => '(general : (__VtigerMeta__) Events_Related_Contacts)',
 			'WorkflowFunction' => '(general : (__WorkflowFunction__) Put_Function_Here )',
 			'scan QRCode' => '(general : (__VtigerMeta__) scanQRCode->FieldName)',
 			'scan BarCode' =>'(general : (__VtigerMeta__) scanBarCode->CodeType->FieldName)'
@@ -335,25 +338,20 @@ class VTTaskType {
 			$includeModules = $modules['include'];
 			$excludeModules = $modules['exclude'];
 
-			if (!empty($sourceModule)) {
-				if (getTabid($sourceModule) == null || !vtlib_isModuleActive($sourceModule)) {
-					continue;
-				}
+			if (!empty($sourceModule) && (getTabid($sourceModule) == null || !vtlib_isModuleActive($sourceModule))) {
+				continue;
 			}
 
 			if (empty($includeModules) && empty($excludeModules)) {
 				$taskTypeInstances[] = $taskName;
-				continue;
 			} elseif (!empty($includeModules)) {
 				if (in_array($moduleName, $includeModules)) {
 					$taskTypeInstances[] = $taskName;
 				}
-				continue;
 			} elseif (!empty($excludeModules)) {
 				if (!(in_array($moduleName, $excludeModules))) {
 					$taskTypeInstances[] = $taskName;
 				}
-				continue;
 			}
 		}
 		return $taskTypeInstances;
@@ -361,7 +359,6 @@ class VTTaskType {
 
 	public static function getInstanceFromTaskType($taskType) {
 		$adb = PearDatabase::getInstance();
-
 		$result = $adb->pquery('SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename=? or classname=? limit 1', array($taskType, $taskType));
 		$taskTypes['name'] = $adb->query_result($result, 0, 'tasktypename');
 		$taskTypes['label'] = $adb->query_result($result, 0, 'label');
@@ -369,9 +366,7 @@ class VTTaskType {
 		$taskTypes['classpath'] = $adb->query_result($result, 0, 'classpath');
 		$taskTypes['templatepath'] = $adb->query_result($result, 0, 'templatepath');
 		$taskTypes['sourcemodule'] = $adb->query_result($result, 0, 'sourcemodule');
-
-		$taskDetails = self::getInstance($taskTypes);
-		return $taskDetails;
+		return self::getInstance($taskTypes);
 	}
 }
 ?>

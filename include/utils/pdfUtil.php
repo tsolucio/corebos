@@ -111,7 +111,6 @@ class pdfutil {
 			}
 			$pdp[$key] = $value;
 		}
-		$keyword = '/N.I.F/';
 		$str = preg_split('/N.I.F/', $string);
 		$str = strrev($str[0]);
 		$str = preg_split("/jT/", $str);

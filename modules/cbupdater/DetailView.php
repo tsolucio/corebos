@@ -18,18 +18,15 @@ if (!empty($_REQUEST['record'])) {
 	$cbu = $adb->pquery('select appcs from vtiger_cbupdater where cbupdaterid=?', array($record));
 	if ($cbu && $adb->num_rows($cbu)>0) {
 		if ($cbu->fields['appcs']=='1') {
-			include 'modules/cbupdater/forcedButtons.php';
+			include 'modules/cbupdater/cbupdButtons.php';
 
 			require_once 'modules/Vtiger/DetailView.php';
 
 			$singlepane_view = 'true';
 			$smarty->assign('SinglePane_View', $singlepane_view);
-			$smarty->assign('TODO_PERMISSION', 'no');
-			$smarty->assign('EVENT_PERMISSION', 'no');
 			$smarty->assign('EDIT_PERMISSION', 'no');
 			$smarty->assign('CREATE_PERMISSION', 'no');
 			$smarty->assign('DELETE', 'notpermitted');
-			$smarty->assign('CONTACT_PERMISSION', 'notpermitted');
 			$smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
 		} else {
 			require_once 'modules/Vtiger/DetailView.php';

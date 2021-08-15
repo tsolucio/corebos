@@ -22,4 +22,3 @@ function wsapp_put($key, $element, $user) {
 	}
 	return array();
 }
-

@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ******************************************************************************/
 
-/* Date difference between (input times) or (current time and input time)
+/** Date difference between (input times) or (current time and input time)
  *
  * @param Array $a $a[0] - Input time1, $a[1] - Input time2
  * (if $a[1] is not available $a[0] = Current Time, $a[1] = Input time1)
@@ -42,6 +42,124 @@ function __vt_time_diff($arr) {
 	return (strtotime($time_operand1) - strtotime($time_operand2));
 }
 
+function __cb_holidaydifference($arr) {
+	if (count($arr) == 4) {
+		$date1 = $arr[0];
+		$date2 = $arr[1];
+		$addsaturday = isset($arr[2]) ? $arr[2] : 1;
+		$mapname = $arr[3];
+	} else {
+		return 0; // one or more parameter is missing
+	}
+
+	if (empty($date1) || empty($date2)) {
+		return 0;
+	}
+
+	if ($addsaturday == 0) {
+		$lastdow = 6;
+	} else {
+		$lastdow = 7;
+	}
+
+	$firstDate = new DateTime($date1);
+	$lastDate = new DateTime($date2);
+	if ($firstDate>$lastDate) {
+		$h = $firstDate;
+		$firstDate = $lastDate;
+		$lastDate = $h;
+	}
+	$days = 0;
+	$oneDay = new DateInterval('P1D');
+	while ($firstDate->diff($lastDate)->days > 0) {
+		$days += $firstDate->format('N') < $lastdow ? 1 : 0;
+		$firstDate = $firstDate->add($oneDay);
+	}
+
+	if ($mapname != '') {
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+		if ($cbMapid != 0) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$holidays = $cbMap->InformationMap()->readInformationValue();
+		} else {
+			$holidays = explode(',', $arr[3]);
+		}
+		//add holidays dates
+		foreach ($holidays as $dateVal) {
+			$holidayDate = new DateTime($dateVal);
+			if (strtotime($dateVal) >= strtotime($date1) && strtotime($dateVal) <= strtotime($date2)) {
+				$days -= $holidayDate->format('N') < $lastdow ? 1 : 0;
+			}
+		}
+	}
+	return $days;
+}
+
+function __cb_networkdays($arr) {
+	$net_date1 = $arr[0];
+	$net_date2 = empty($arr[1]) ? date('Y-m-d H:i:s') : $arr[1];
+	$mapname = isset($arr[2]) ? $arr[2] : '';
+
+	if (empty($net_date1) || empty($net_date2)) {
+		return 0;
+	}
+	$firstDate = new DateTime($net_date1);
+	$lastDate = new DateTime($net_date2);
+	if ($firstDate>$lastDate) {
+		$h = $firstDate;
+		$firstDate = $lastDate;
+		$lastDate = $h;
+	}
+	$days = 0;
+	$oneDay = new DateInterval('P1D');
+	while ($firstDate->diff($lastDate)->days >= 0) {
+		if ($firstDate->diff($lastDate)->days == 0) {
+			$days += $firstDate->format('N') < 6 ? 1 : 0;
+			break;
+		}
+		$days += $firstDate->format('N') < 6 ? 1 : 0;
+		$firstDate = $firstDate->add($oneDay);
+	}
+
+	if ($mapname != '') {
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+		if ($cbMapid != 0) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$holidays = $cbMap->InformationMap()->readInformationValue();
+		} else {
+			$holidays = explode(',', $arr[2]);
+		}
+		//add holidays dates
+		foreach ($holidays as $dateVal) {
+			$holidayDate = new DateTime($dateVal);
+			if (strtotime($dateVal) >= strtotime($net_date1) && strtotime($dateVal) <= strtotime($net_date2)) {
+				$days -= $holidayDate->format('N') < 6 ? 1 : 0;
+			}
+		}
+	}
+	return $days;
+}
+
+function __cb_isHolidayDate($arr) {
+	if (empty($arr[0])) {
+		return false;
+	}
+	$saturdayisholiday = isset($arr[1]) ? $arr[1] : 1;
+	$holidays = array();
+	if (!empty($arr[2])) {
+		$holidays = __cb_getHolidays($arr[2]);
+	}
+	$day_week = date('l', strtotime($arr[0]));
+	if ($day_week == 'Sunday') {
+		return true;
+	}
+	if ($saturdayisholiday == 1 && $day_week == 'Saturday') {
+		return true;
+	} else {
+		return in_array($arr[0], $holidays);
+	}
+}
+
 /**
  * Calculate the time difference (input times) or (current time and input time) and
  * convert it into number of days.
@@ -51,8 +169,7 @@ function __vt_time_diff($arr) {
  */
 function __vt_time_diffdays($arr) {
 	$timediff  = __vt_time_diff($arr);
-	$days_diff = floor($timediff / (60 * 60 * 24));
-	return $days_diff;
+	return floor($timediff / (60 * 60 * 24));
 }
 
 function __cb_time_diffyears($arr) {
@@ -120,8 +237,7 @@ function __vt_add_days($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime($baseDate);
-	$date = strftime('%Y-%m-%d', $baseDate + ($noOfDays * 24 * 60 * 60));
-	return $date;
+	return strftime('%Y-%m-%d', $baseDate + ($noOfDays * 24 * 60 * 60));
 }
 
 function __vt_sub_days($arr) {
@@ -138,8 +254,7 @@ function __vt_sub_days($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime($baseDate);
-	$date = strftime('%Y-%m-%d', $baseDate - ($noOfDays * 24 * 60 * 60));
-	return $date;
+	return strftime('%Y-%m-%d', $baseDate - ($noOfDays * 24 * 60 * 60));
 }
 
 function __vt_add_months($arr) {
@@ -156,8 +271,7 @@ function __vt_add_months($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime("+$noOfMonths months", strtotime($baseDate));
-	$date = strftime('%Y-%m-%d', $baseDate);
-	return $date;
+	return strftime('%Y-%m-%d', $baseDate);
 }
 
 function __vt_sub_months($arr) {
@@ -174,8 +288,7 @@ function __vt_sub_months($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime("-$noOfMonths months", strtotime($baseDate));
-	$date = strftime('%Y-%m-%d', $baseDate);
-	return $date;
+	return strftime('%Y-%m-%d', $baseDate);
 }
 
 function __vt_get_date($arr) {
@@ -242,7 +355,7 @@ function __vt_sub_time($arr) {
 	return date('H:i:s', $endTime);
 }
 
-/* get next date that falls on the closest given days
+/** get next date that falls on the closest given days
  * @param ISO start date "2017-06-16
  * @param comma separated string of month days "15,30"
  * @param comma separated string of ISO holiday dates
@@ -266,17 +379,15 @@ function __cb_next_date($arr) {
 	$daterange = new DatePeriod($startDate, $interval, $endDate);
 	$result = '';
 	foreach ($daterange as $date) {
-		if ($date->format('N') < $lastdow && !in_array($date->format('Y-m-d'), $holiday)) {
-			if (in_array($date->format('d'), $nextDays)) {
-				$result = $date->format('Y-m-d');
-				break;
-			}
+		if ($date->format('N') < $lastdow && !in_array($date->format('Y-m-d'), $holiday) && in_array($date->format('d'), $nextDays)) {
+			$result = $date->format('Y-m-d');
+			break;
 		}
 	}
 	return $result;
 }
 
-/* get next laborable date that falls after the closest given days
+/** get next laborable date that falls after the closest given days
  * @param ISO start date "2017-06-16
  * @param comma separated string of month days "15,30"
  * @param comma separated string of ISO holiday dates
@@ -306,7 +417,7 @@ function __cb_next_dateLaborable($arr) {
 		}
 	}
 	if ($found) {
-		while ((in_array($found->format('N'), $weekend) || in_array($found->format('Y-m-d'), $holiday))) {
+		while (in_array($found->format('N'), $weekend) || in_array($found->format('Y-m-d'), $holiday)) {
 			$found->add($interval);
 		}
 		return $found->format('Y-m-d');
@@ -324,15 +435,51 @@ function __cb_add_workdays($arr) {
 	} else {
 		$lastdow = 7;
 	}
-	if (isset($arr[3]) && trim($arr[3])!='') {
-		$holidays = explode(',', $arr[3]);
-	} else {
+	if (empty($arr[3])) {
 		$holidays = array();
+	} else {
+		$holidays = __cb_getHolidays($arr[3]);
 	}
 	$interval = new DateInterval('P1D');
 	$x = 0;
 	while ($x < $numofdays) {
 		$date = $date->add($interval);
+		if ($date->format('N') < $lastdow && !in_array($date->format('Y-m-d'), $holidays)) {
+			$x++;
+		}
+	}
+	return $date->format('Y-m-d');
+}
+
+function __cb_getHolidays($holidayspec) {
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$holidayspec, cbMap::getMapIdByName($holidayspec));
+	if ($cbMapid != 0) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$holidays = $cbMap->InformationMap()->readInformationValue();
+	} else {
+		$holidays = explode(',', $holidayspec);
+	}
+	return $holidays;
+}
+
+function __cb_sub_workdays($arr) {
+	$date = new DateTime($arr[0]);
+	$numofdays = $arr[1];
+	$removesaturday = isset($arr[2]) ? $arr[2] : 0;
+	if ($removesaturday == 1) {
+		$lastdow = 7;
+	} else {
+		$lastdow = 6;
+	}
+	if (empty($arr[3])) {
+		$holidays = array();
+	} else {
+		$holidays = __cb_getHolidays($arr[3]);
+	}
+	$interval = new DateInterval('P1D');
+	$x = 0;
+	while ($x < $numofdays) {
+		$date = $date->sub($interval);
 		if ($date->format('N') < $lastdow && !in_array($date->format('Y-m-d'), $holidays)) {
 			$x++;
 		}

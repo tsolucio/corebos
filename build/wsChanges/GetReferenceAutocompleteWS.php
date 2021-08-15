@@ -14,15 +14,15 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getReferenceAutocomplete',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'getReferenceAutocomplete',
-	 'prelogin'=> 0,
-	 'type'    => 'GET',
-	 'parameters' => array(
-		 array('name' => 'term','type' => 'String'),
-		 array('name' => 'filter','type' => 'String'),
-		 array('name' => 'searchinmodules','type' => 'String'),
-		 array('name' => 'limit','type' => 'String')
-	 )
+	'name'    => 'getReferenceAutocomplete',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'getReferenceAutocomplete',
+	'prelogin'=> 0,
+	'type'    => 'GET',
+	'parameters' => array(
+		array('name' => 'term','type' => 'String'),
+		array('name' => 'filter','type' => 'String'),
+		array('name' => 'searchinmodules','type' => 'String'),
+		array('name' => 'limit','type' => 'String')
+	)
 );

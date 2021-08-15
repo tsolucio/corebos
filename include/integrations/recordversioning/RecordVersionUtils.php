@@ -29,13 +29,14 @@ class RecordVersionUtils {
 		global $adb, $current_user;
 		$this->moduleid = $moduleid;
 		//check for global variable
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
 		$recexists = $adb->pquery(
-			'select globalvariableid,module_list from vtiger_globalvariable inner join vtiger_crmentity on crmid=globalvariableid where deleted=0 and gvname=?',
+			'select globalvariableid,module_list from vtiger_globalvariable inner join '.$crmEntityTable.' on crmid=globalvariableid where deleted=0 and gvname=?',
 			array('RecordVersioningModules')
 		);
 		$count = $adb->num_rows($recexists);
 		if ($count > 0) {
-			$this->modulelist = explode(' |##| ', $adb->query_result($recexists, 0, 1));
+			$this->modulelist = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $adb->query_result($recexists, 0, 1));
 			$this->globalvar = $adb->query_result($recexists, 0, 0);
 			if (!in_array($moduleid, $this->modulelist)) {
 				$adb->pquery("update vtiger_globalvariable set module_list=CONCAT(module_list,' |##| $moduleid') where globalvariableid=?", array($this->globalvar));
@@ -60,8 +61,9 @@ class RecordVersionUtils {
 			list($wsid, $this->globalvar) = explode('x', $gv['id']);
 		}
 		//check for business action
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		$ba = $adb->pquery(
-			'select businessactionsid from vtiger_businessactions join vtiger_crmentity on crmid=businessactionsid where deleted=0 and active=? and linklabel=?',
+			'select businessactionsid from vtiger_businessactions join '.$crmEntityTable.' on crmid=businessactionsid where deleted=0 and active=? and linklabel=?',
 			array('1', 'Revisiones')
 		);
 		$bacount = $adb->num_rows($ba);
@@ -97,19 +99,7 @@ class RecordVersionUtils {
 	}
 
 	public static function recverGetModuleinfo() {
-		$docact = BusinessActions::getModuleLinkStatusInfo('DETAILVIEWWIDGET', 'Revisiones');
-		$infomodules = array();
-		$i = 0;
-		foreach ($docact as $tabid => $modinfo) {
-			$infomodules[$i]['tabid'] = $tabid;
-			$infomodules[$i]['visible'] = $modinfo['active'];
-			$infomodules[$i]['name'] = $modinfo['name'];
-			$i++;
-		}
-		usort($infomodules, function ($a, $b) {
-			return (strtolower(getTranslatedString($a['name'], $a['name'])) < strtolower(getTranslatedString($b['name'], $b['name']))) ? -1 : 1;
-		});
-		return $infomodules;
+		return BusinessActions::getModuleLinkStatusInfoSortedFlat('DETAILVIEWWIDGET', 'Revisiones');
 	}
 
 	/**
@@ -199,7 +189,7 @@ class RecordVersionUtils {
 		$index = array_search($this->moduleid, $this->modulelist);
 		unset($this->modulelist[$index]);
 		if (count($this->modulelist)>0) {
-			$module_del = implode(' |##| ', $this->modulelist);
+			$module_del = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $this->modulelist);
 		} else {
 			$module_del = '';
 		}

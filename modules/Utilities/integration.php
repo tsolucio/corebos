@@ -74,6 +74,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigwhatsapp':
 		include_once 'include/integrations/whatsapp/settings.php';
 		break;
+	case 'getconfigsaml':
+	case 'setconfigsaml':
+		include_once 'include/integrations/saml/settings.php';
+		break;
 	case 'getconfigsendgrid':
 	case 'setconfigsendgrid':
 		include_once 'include/integrations/sendgrid/settings.php';
@@ -94,6 +98,30 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigelasticsearch':
 		include_once 'include/integrations/elasticsearch/settings.php';
 		break;
+	case 'getconfiglogall':
+	case 'setconfiglogall':
+		include_once 'include/integrations/logall/settings.php';
+		break;
+	case 'getconfigloginsync':
+	case 'setconfigloginsync':
+		include_once 'include/integrations/loginsync/settings.php';
+		break;
+	case 'getconfigdenormalization':
+	case 'setconfigdenormalization':
+		include_once 'include/integrations/denormalize/settings.php';
+		break;
+	case 'getconfigonesignal':
+	case 'setconfigonesignal':
+		include_once 'include/integrations/onesignal/settings.php';
+		break;
+	case 'getconfigcache':
+	case 'setconfigcache':
+		include_once 'include/integrations/cache/settings.php';
+		break;
+	case 'getconfigwc':
+	case 'setconfigwc':
+		include_once 'include/integrations/woocommerce/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
@@ -103,6 +131,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('GoTo2FAActivation', 'Utilities'),
 				'desc' => getTranslatedString('GoTo2FAActivation_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfig2fa',
+			),
+			array(
+				'abbr' => 'SSO',
+				'title' => getTranslatedString('SAML Activation', 'Utilities'),
+				'desc' => getTranslatedString('SAML Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsaml',
 			),
 			array(
 				'abbr' => 'GC',
@@ -128,12 +162,12 @@ switch ($_REQUEST['_op']) {
 				'desc' => getTranslatedString('Record Versioning_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigrecordversioning',
 			),
-			array(
-				'abbr' => 'ZD',
-				'title' => getTranslatedString('Zendesk Activation', 'Utilities'),
-				'desc' => getTranslatedString('Zendesk Activation_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigzendesk',
-			),
+			// array(
+			// 	'abbr' => 'ZD',
+			// 	'title' => getTranslatedString('Zendesk Activation', 'Utilities'),
+			// 	'desc' => getTranslatedString('Zendesk Activation_Desc', 'Utilities'),
+			// 	'url' => 'index.php?action=integration&module=Utilities&_op=getconfigzendesk',
+			// ),
 			array(
 				'abbr' => 'WA',
 				'title' => getTranslatedString('Whatsapp Activation', 'Utilities'),
@@ -158,7 +192,47 @@ switch ($_REQUEST['_op']) {
 				'desc' => getTranslatedString('Elasticsearch_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigelasticsearch',
 			),
+			array(
+				'abbr' => 'LA',
+				'title' => getTranslatedString('LogAll Activation', 'Utilities'),
+				'desc' => getTranslatedString('LogAll_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfiglogall',
+			),
+			array(
+				'abbr' => 'DM',
+				'title' => getTranslatedString('Denormalization Activation', 'Utilities'),
+				'desc' => getTranslatedString('Denormalize_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigdenormalization',
+			),
+			array(
+				'abbr' => 'CA',
+				'title' => getTranslatedString('Cache Activation', 'Utilities'),
+				'desc' => getTranslatedString('Cache Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigcache',
+			),
+			array(
+				'abbr' => 'WC',
+				'title' => getTranslatedString('Woocommerce Activation', 'Utilities'),
+				'desc' => getTranslatedString('Woocommerce Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigwc',
+			),
 		);
+		if (file_exists('build/wsChanges/LoginSession.php')) {
+			$intgr[] = array(
+				'abbr' => 'LS',
+				'title' => getTranslatedString('Login Sync Activation', 'Utilities'),
+				'desc' => getTranslatedString('Login_Synic Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigloginsync',
+			);
+		}
+		if (file_exists('OneSignalSDKUpdaterWorker.js') && file_exists('OneSignalSDKWorker.js')) {
+			$intgr[] = array(
+				'abbr' => 'OS',
+				'title' => getTranslatedString('OneSignal Activation', 'Utilities'),
+				'desc' => getTranslatedString('OneSignal Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigonesignal',
+			);
+		}
 		$smarty->assign('integrations', $intgr);
 		$smarty->assign('TITLE_MESSAGE', $titlemessage);
 		$smarty->assign('APP', $app_strings);

@@ -71,7 +71,6 @@ $smarty->assign('PORTALS', $portal_info);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('DEFAULT', 'yes');
-$smarty->assign('CATEGORY', getParentTab());
 $tool_buttons = array(
 	'EditView' => 'no',
 	'CreateView' => 'no',
@@ -111,12 +110,13 @@ function isEmbbedeable($url) {
 	//if it needs a certificate to be able so show, send to another window
 	if ($error == CURLE_SSL_PEER_CERTIFICATE || $error == CURLE_SSL_CACERT || $error == 77) {
 		//it is a https request
+		curl_close($ch);
 		return 0;
 	} else {
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 		$headers = substr($response, 0, $header_size);
+		curl_close($ch);
 		return (strpos($headers, 'X-Frame-Options: deny') > -1 || strpos($headers, 'X-Frame-Options: SAMEORIGIN') > -1 ? 0 : 1);
 	}
-	curl_close($ch);
 }
 ?>

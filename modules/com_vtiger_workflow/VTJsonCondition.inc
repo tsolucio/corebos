@@ -10,9 +10,6 @@
 
 class VTJsonCondition {
 
-	public function __construct() {
-	}
-
 	public function evaluate($condition, $entityCache, $id) {
 		global $logbg;
 		$logbg->debug("> evaluate($condition,$id)");
@@ -57,13 +54,10 @@ class VTJsonCondition {
 				if (isset($exprResult['result'])) { // Condition to skip last condition
 					$result = $exprResult['result'];
 					if (!empty($exprResult['logicaloperator'])) {
-						switch ($exprResult['logicaloperator']) {
-							case 'and':
-								$groupResult = ($groupResult && $result);
-								break;
-							case 'or':
-								$groupResult = ($groupResult || $result);
-								break;
+						if ($exprResult['logicaloperator']=='and') {
+							$groupResult = ($groupResult && $result);
+						} else { // or
+							$groupResult = ($groupResult || $result);
 						}
 					} else { // Case for the first condition
 						$groupResult = $result;
@@ -78,13 +72,10 @@ class VTJsonCondition {
 			if (isset($groupResult['result'])) { // Condition to skip last condition
 				$result = $groupResult['result'];
 				if (!empty($groupResult['logicaloperator'])) {
-					switch ($groupResult['logicaloperator']) {
-						case 'and':
-							$finalResult = ($finalResult && $result);
-							break;
-						case 'or':
-							$finalResult = ($finalResult || $result);
-							break;
+					if ($groupResult['logicaloperator']=='and') {
+						$finalResult = ($finalResult && $result);
+					} else { // or
+						$finalResult = ($finalResult || $result);
 					}
 				} else { // Case for the first condition
 					$finalResult = $result;
@@ -132,9 +123,9 @@ class VTJsonCondition {
 			if ($referredEntityData != null) {
 				$referredData = $referredEntityData->getData();
 				preg_match('/(\w+) : \((\w+)\) (\w+)/', $value, $valuematches);
-				if (isset($referredEntityData->user) && count($valuematches) > 0 && $valuematches[1]=='assigned_user_id') {
+				if (isset($referredEntityData->user) && !empty($valuematches) && $valuematches[1]=='assigned_user_id') {
 					$referredData[$value] = $referredEntityData->user->column_fields[$valuematches[3]];
-				} elseif (count($valuematches) > 0) {
+				} elseif (!empty($valuematches)) {
 					$value = $valuematches[3];
 				}
 			} else {
@@ -171,12 +162,12 @@ class VTJsonCondition {
 			preg_match('/(\d{1,3}):(\d{1,2}):?(\d{1,2})?/', $value, $value_matches);
 			if (count($fieldValue_matches) == 3) {
 				$fieldValue = (int)($fieldValue_matches[1] * 3600) + (int)($fieldValue_matches[2] * 60);
-			} elseif (count($fieldValue_matches == 4)) {
+			} elseif (count($fieldValue_matches) == 4) {
 				$fieldValue = (int)($fieldValue_matches[1] * 3600) + (int)($fieldValue_matches[2] * 60) + (int)$fieldValue_matches[3];
 			}
 			if (count($value_matches) == 3) {
 				$value = (int)($value_matches[1] * 3600) + (int)($value_matches[2] * 60);
-			} elseif (count($value_matches == 4)) {
+			} elseif (count($value_matches) == 4) {
 				$value = (int)($value_matches[1] * 3600) + (int)($value_matches[2] * 60) + (int)$value_matches[3];
 			}
 		}
@@ -441,6 +432,11 @@ class VTJsonCondition {
 				}
 				return false;
 
+			case 'monthday':
+				$val = date('md', strtotime($fieldValue));
+				$val2 = date('md', strtotime($value));
+				return ($val == $val2);
+
 			case 'less than hours later':
 				if (empty($fieldValue) || !isset($value)) {
 					return false;
@@ -476,6 +472,7 @@ class VTJsonCondition {
 
 				if ($value != 0) {
 					require_once 'vtlib/Vtiger/Module.php';
+					require_once 'data/CRMEntity.php';
 
 					list($child_wsid, $child_id) = explode('x', $data['id']);
 					list($parent_wsid, $parent_id) = explode('x', $data[$cond['fieldname']]);
@@ -483,28 +480,25 @@ class VTJsonCondition {
 					$children = array();
 
 					$mod = Vtiger_Module::getInstance($child_setype);
+					$crmEntityTable = CRMEntity::getcrmEntityTableAlias($mod);
 					$field = Vtiger_Field::getInstance($cond['fieldname'], $mod);
 
 					$r = $adb->query("SELECT {$field->table}.{$mod->basetableid}
 						FROM {$field->table}
-						INNER JOIN vtiger_crmentity ON {$field->table}.{$mod->basetableid} = vtiger_crmentity.crmid
+						INNER JOIN {$crmEntityTable} ON {$field->table}.{$mod->basetableid} = vtiger_crmentity.crmid
 						WHERE {$field->table}.{$cond['fieldname']}={$parent_id} AND vtiger_crmentity.deleted=0
 						ORDER BY vtiger_crmentity.createdtime ASC");
 					while ($child = $adb->fetch_array($r)) {
 						$children[] = $child[$mod->basetableid];
 					}
-					if ($value = $adb->num_rows($r) && $children[$value - 1] == $child_id) {
-						return true;
-					} else {
-						return false;
-					}
+					return ($value = $adb->num_rows($r) && $children[$value - 1] == $child_id);
 				} else {
 					return false;
 				}
 				break;
 			default:
 				//Unexpected condition
-				throw new Exception('Found an unexpected condition: ' . $condition);
+				throw new LogicException('Found an unexpected condition: ' . $condition);
 		}
 	}
 }

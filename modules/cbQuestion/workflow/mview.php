@@ -14,9 +14,11 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 include_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
+require_once 'data/CRMEntity.php';
 
 function CBQuestionMViewFunction($entityData) {
 	global $adb;
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbQuestion');
 	if ($entityData->WorkflowEvent==VTWorkflowManager::$ON_EVERY_SAVE ||
 		$entityData->WorkflowEvent==VTWorkflowManager::$ON_FIRST_SAVE ||
 		$entityData->WorkflowEvent==VTWorkflowManager::$ON_MODIFY ||
@@ -25,8 +27,8 @@ function CBQuestionMViewFunction($entityData) {
 		$qs = $adb->pquery(
 			'select cbquestionid, uniqueid, qname, crmentityalias, maintablealias
 				from vtiger_cbquestion
-				inner join vtiger_crmentity on crmid=cbquestionid
-				where deleted=0 and qmodule=? and mviewwf=?',
+				inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbquestionid
+				where vtiger_crmentity.deleted=0 and qmodule=? and mviewwf=?',
 			array($entityData->getModuleName(), '1')
 		);
 		list($void, $eid) = explode('x', $entityData->getId());

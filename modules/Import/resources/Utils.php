@@ -18,7 +18,7 @@ class Import_Utils {
 	public static $AUTO_MERGE_MERGEFIELDS = 3;
 
 	public static $supportedFileEncoding = array('UTF-8'=>'UTF-8', 'ISO-8859-1'=>'ISO-8859-1');
-	public static $supportedDelimiters = array(','=>'comma', ';'=>'semicolon');
+	public static $supportedDelimiters = array(','=>'comma', ';'=>'semicolon', '|'=>'pipe', '^'=>'caret', '\t'=>'tab');
 	public static $supportedFileExtensions = array('csv','vcf');
 
 	public static function getSupportedFileExtensions() {
@@ -68,7 +68,7 @@ class Import_Utils {
 		$fileReaderInfo = self::getFileReaderInfo($userInputObject->get('type'));
 		if (!empty($fileReaderInfo)) {
 			require_once $fileReaderInfo['classpath'];
-			$fileReader = new $fileReaderInfo['reader'] ($userInputObject, $user);
+			$fileReader = new $fileReaderInfo['reader']($userInputObject, $user);
 		} else {
 			$fileReader = null;
 		}
@@ -76,9 +76,11 @@ class Import_Utils {
 	}
 
 	public static function getDbTableName($user) {
+		global $IMPORT_TABLE_THREAD;
+		$IMPORT_TABLE_THREAD = isset($IMPORT_TABLE_THREAD) ? $IMPORT_TABLE_THREAD : '';
 		$configReader = new ConfigReader('modules/Import/config.inc', 'ImportConfig');
 		$userImportTablePrefix = $configReader->getConfig('userImportTablePrefix');
-		return $userImportTablePrefix . $user->id;
+		return $userImportTablePrefix . $IMPORT_TABLE_THREAD . $user->id;
 	}
 
 	public static function showErrorPage($errorMessage, $errorDetails = false, $customActions = false, $moduleName = '') {
@@ -91,12 +93,10 @@ class Import_Utils {
 	}
 
 	public static function showImportLockedError($lockInfo) {
-
 		$errorMessage = getTranslatedString('ERR_MODULE_IMPORT_LOCKED', 'Import');
 		$errorDetails = array(getTranslatedString('LBL_MODULE_NAME', 'Import') => getTabModuleName($lockInfo['tabid']),
 							getTranslatedString('LBL_USER_NAME', 'Import') => getUserFullName($lockInfo['userid']),
 							getTranslatedString('LBL_LOCKED_TIME', 'Import') => $lockInfo['locked_since']);
-
 		self::showErrorPage($errorMessage, $errorDetails);
 	}
 
@@ -109,7 +109,6 @@ class Import_Utils {
 	public static function isUserImportBlocked($user) {
 		$adb = PearDatabase::getInstance();
 		$tableName = self::getDbTableName($user);
-
 		if (Vtiger_Utils::CheckTable($tableName)) {
 			$result = $adb->query('SELECT 1 FROM '.$tableName.' WHERE status = '.Import_Data_Controller::$IMPORT_RECORD_NONE);
 			if ($adb->num_rows($result) > 0) {
@@ -122,7 +121,6 @@ class Import_Utils {
 	public static function clearUserImportInfo($user) {
 		$adb = PearDatabase::getInstance();
 		$tableName = self::getDbTableName($user);
-
 		$adb->query('DROP TABLE IF EXISTS '.$tableName);
 		Import_Lock_Controller::unLock($user);
 		Import_Queue_Controller::removeForUser($user);

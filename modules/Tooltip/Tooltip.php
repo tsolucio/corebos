@@ -27,7 +27,7 @@ class Tooltip {
 			$blockname = 'LBL_MODULE_MANAGER';
 			$icon = 'quickview.png';
 			$description = 'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION';
-			$links = 'index.php?module=Tooltip&action=QuickView&parenttab=Settings';
+			$links = 'index.php?module=Tooltip&action=QuickView';
 			$adb->pquery(
 				'INSERT INTO vtiger_settings_field (fieldid, blockid, name, iconpath, description, linkto) VALUES (?,?,?,?,?,?)',
 				array($adb->getUniqueID('vtiger_settings_field'), getSettingsBlockId($blockname), $name, $icon, $description, $links)

@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="include/js/picklist.js"></script>
 <script src="modules/Home/Homestuff.js" type="text/javascript"></script>
 {include file='SetMenu.tpl'}
@@ -23,7 +22,7 @@
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 		<tr>
 			<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'picklist.gif'|@vtiger_imageurl:$THEME}" width="48" height="48" border=0 ></td>
-			<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_PICKLIST_EDITOR}</b></td>
+			<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_PICKLIST_EDITOR}</b></td>
 		</tr>
 		<tr>
 			<td valign=top class="small cblds-p-v_none">{$MOD.LBL_PICKLIST_DESCRIPTION}</td>
@@ -50,19 +49,9 @@
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 			<tr>
 				<td class="big" rowspan="2">
-				<div id="picklist_datas">	
+				<div id="picklist_datas">
 					{include file='modules/PickList/PickListContents.tpl'}
 				</div>
-				</td>
-			</tr>
-			</table>
-
-			<table border=0 cellspacing=0 cellpadding=5 width=100% >
-			<tr>
-				<td class="small" nowrap align=right>
-					<a href="#top">
-						{$MOD.LBL_SCROLL}
-					</a>
 				</td>
 			</tr>
 			</table>

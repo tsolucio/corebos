@@ -19,9 +19,9 @@ require_once 'modules/CustomView/CustomView.php';
 
 $cv_module = vtlib_purify($_REQUEST['module']);
 $recordid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
+$permit_all = isset($_REQUEST['permitall']) ? vtlib_purify($_REQUEST['permitall']) : 'false';
 
 $smarty->assign('MOD', $mod_strings);
-$smarty->assign('CATEGORY', getParentTab());
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
@@ -65,6 +65,7 @@ if ($recordid == '') {
 	$smarty->assign('EXIST', 'false');
 	$data_type[] = $oCustomView->data_type;
 	$smarty->assign('DATATYPE', $data_type);
+	$smarty->assign('PERMITALL', $permit_all);
 } else {
 	$oCustomView = new CustomView($cv_module);
 	$now_action = vtlib_purify($_REQUEST['action']);
@@ -117,6 +118,7 @@ if ($recordid == '') {
 		$smarty->assign('EXIST', 'true');
 		$data_type[] = $oCustomView->data_type;
 		$smarty->assign('DATATYPE', $data_type);
+		$smarty->assign('PERMITALL', $permit_all);
 	} else {
 		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 		exit;
@@ -169,10 +171,10 @@ function getByModule_ColumnsList($mod, $columnslist, $selected = '') {
 						$advfilter_option['text'] = getTranslatedString($fieldlabel, $module);
 						$advfilter_option['selected'] = ($selected == $field ? 'selected' : '');
 						$advfilter[] = $advfilter_option;
-						$check_dup [] = $module.$fieldlabel;
+						$check_dup[] = $module.$fieldlabel;
 					}
 				}
-				if (count($advfilter)>0) {
+				if (!empty($advfilter)) {
 					$advfilter_out[$modname.' - '.$label]= $advfilter;
 				}
 			}

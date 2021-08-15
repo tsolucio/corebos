@@ -120,8 +120,10 @@ class ListColumns extends processcbMap {
 	}
 
 	private function convertMap2Array() {
-		global $adb;
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return false;
+		}
 		$this->modulename = (String)$xml->originmodule->originname;
 		$this->moduleid = (isset($xml->originmodule->originid) ? (String)$xml->originmodule->originid : 0);
 		$f = CRMEntity::getInstance($this->modulename);
@@ -136,40 +138,74 @@ class ListColumns extends processcbMap {
 			$this->mapping['cbmapPOPUP']['SearchFields'] = array();
 			$this->mapping['cbmapPOPUP']['SearchFieldsName'] = array();
 			if (!empty($xml->popup->linkfield)) {
-				$this->mapping['cbmapPOPUP']['LINKFIELD'] = (String)$xml->popup->linkfield;
-			}
-			foreach ($xml->popup->columns->field as $k => $v) {
-				$table = empty($v->table) ? '' : (String)$v->table;
-				$columnname = empty($v->columnname) ? '' : (String)$v->columnname;
-				if ($table=='' || $columnname=='') {
-					$res = $adb->pquery('SELECT columnname,tablename FROM vtiger_field WHERE fieldname=? AND tabid=?', array((String)$v->name, $tabid));
-					if ($res && $adb->num_rows($res)>0) {
-						$table = str_replace('vtiger_', '', $adb->query_result($res, 0, 'tablename'));
-						$columnname = $adb->query_result($res, 0, 'columnname');
+				$cachedModuleFields = VTCacheUtils::lookupFieldInfo($tabid, (String)$xml->popup->linkfield);
+				if (!$cachedModuleFields) {
+					$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, (String)$xml->popup->linkfield);
+					if ($cachedModuleFields) {
+						$xml->popup->linkfield = $cachedModuleFields['fieldname'];
 					}
 				}
-				$this->mapping['cbmapPOPUP']['SearchFields'][(String)$v->label] = array($table => $columnname);
-				$this->mapping['cbmapPOPUP']['SearchFieldsName'][(String)$v->label] = (String)$v->name;
+				$this->mapping['cbmapPOPUP']['LINKFIELD'] = (String)$xml->popup->linkfield;
+			}
+			foreach ($xml->popup->columns->field as $v) {
+				$label = empty($v->label) ? '' : (String)$v->label;
+				$table = empty($v->table) ? '' : (String)$v->table;
+				$columnname = empty($v->columnname) ? '' : (String)$v->columnname;
+				if ($table=='' || $columnname=='' || $label=='') {
+					$cachedModuleFields = VTCacheUtils::lookupFieldInfo($tabid, (String)$v->name);
+					if ($cachedModuleFields) {
+						$table = str_replace('vtiger_', '', $cachedModuleFields['tablename']);
+						$columnname = $cachedModuleFields['columnname'];
+						$label = ($label=='' ? $cachedModuleFields['fieldlabel'] : $label);
+					} else { // we try searching with column name in case they gave us that instead of the field name
+						$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, (String)$v->name);
+						if ($cachedModuleFields) {
+							$table = str_replace('vtiger_', '', $cachedModuleFields['tablename']);
+							$columnname = (String)$v->name;
+							$v->name = $cachedModuleFields['fieldname'];
+							$label = ($label=='' ? $cachedModuleFields['fieldlabel'] : $label);
+						}
+					}
+				}
+				$this->mapping['cbmapPOPUP']['SearchFields'][$label] = array($table => $columnname);
+				$this->mapping['cbmapPOPUP']['SearchFieldsName'][$label] = (String)$v->name;
 			}
 		}
 		if (isset($xml->relatedlists)) {
-			foreach ($xml->relatedlists->relatedlist as $k => $v) {
-				$modulename = (String)$v->module;
-				$this->mapping[$modulename]['ListFields'] = array();
-				$this->mapping[$modulename]['ListFieldsName'] = array();
-				$this->mapping[$modulename]['LINKFIELD'] = (!empty($v->linkfield) ? (String)$v->linkfield : $f->list_link_field);
+			foreach ($xml->relatedlists->relatedlist as $v) {
+				$mname = (String)$v->module;
+				$this->mapping[$mname]['ListFields'] = array();
+				$this->mapping[$mname]['ListFieldsName'] = array();
+				$cachedModuleFields = VTCacheUtils::lookupFieldInfo($tabid, (String)$v->linkfield);
+				if (!$cachedModuleFields) {
+					$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, (String)$v->linkfield);
+					if ($cachedModuleFields) {
+						$v->linkfield = $cachedModuleFields['fieldname'];
+					}
+				}
+				$this->mapping[$mname]['LINKFIELD'] = (!empty($v->linkfield) ? (String)$v->linkfield : $f->list_link_field);
 				foreach ($v->columns->field as $vl) {
+					$label = empty($vl->label) ? '' : (String)$vl->label;
 					$table = empty($vl->table) ? '' : (String)$vl->table;
 					$columnname = empty($vl->columnname) ? '' : (String)$vl->columnname;
-					if ($table=='' || $columnname=='') {
-						$res = $adb->pquery('SELECT columnname,tablename FROM vtiger_field WHERE fieldname=? AND tabid=?', array((String)$vl->name, $tabid));
-						if ($res && $adb->num_rows($res)>0) {
-							$table = str_replace('vtiger_', '', $adb->query_result($res, 0, 'tablename'));
-							$columnname = $adb->query_result($res, 0, 'columnname');
+					if ($table=='' || $columnname=='' || $label=='') {
+						$cachedModuleFields = VTCacheUtils::lookupFieldInfo($tabid, (String)$vl->name);
+						if ($cachedModuleFields) {
+							$table = str_replace('vtiger_', '', $cachedModuleFields['tablename']);
+							$columnname = $cachedModuleFields['columnname'];
+							$label = ($label=='' ? $cachedModuleFields['fieldlabel'] : $label);
+						} else { // we try searching with column name in case they gave us that instead of the field name
+							$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, (String)$vl->name);
+							if ($cachedModuleFields) {
+								$table = str_replace('vtiger_', '', $cachedModuleFields['tablename']);
+								$columnname = (String)$vl->name;
+								$vl->name = $cachedModuleFields['fieldname'];
+								$label = ($label=='' ? $cachedModuleFields['fieldlabel'] : $label);
+							}
 						}
 					}
-					$this->mapping[$modulename]['ListFields'][(String)$vl->label] = array($table => $columnname);
-					$this->mapping[$modulename]['ListFieldsName'][(String)$vl->label] = (String)$vl->name;
+					$this->mapping[$mname]['ListFields'][$label] = array($table => $columnname);
+					$this->mapping[$mname]['ListFieldsName'][$label] = (String)$vl->name;
 				}
 			}
 		}
@@ -179,13 +215,13 @@ class ListColumns extends processcbMap {
 			$this->mapping['cbmapSUMMARY']['HEADER']['ListFields'] = array();
 			$this->mapping['cbmapSUMMARY']['BODY']['ListFields'] = array();
 
-			foreach ($xml->summary->header->fields as $k => $v) {
+			foreach ($xml->summary->header->fields as $v) {
 				foreach ($v->field as $vf) {
 					$this->mapping['cbmapSUMMARY']['HEADER']['ListFields'][(String)$vf->label] = (String)$vf->name;
 				}
 			}
 
-			foreach ($xml->summary->body->fields as $k => $v) {
+			foreach ($xml->summary->body->fields as $v) {
 				foreach ($v->field as $vf) {
 					$this->mapping['cbmapSUMMARY']['BODY']['ListFields'][(String)$vf->label] = (String)$vf->name;
 				}

@@ -41,7 +41,7 @@ function customFieldMappings() {
 			$accountid = $adb->query_result($convert_result, $j, 'accountfid');
 			$contactid = $adb->query_result($convert_result, $j, 'contactfid');
 			$potentialid = $adb->query_result($convert_result, $j, 'potentialfid');
-			if ((empty($accountid) && empty($contactid) && empty($potentialid))) {
+			if (empty($accountid) && empty($contactid) && empty($potentialid)) {
 				$lead_field['display'] = 'false';
 			} else {
 				$lead_field['display'] = 'true';

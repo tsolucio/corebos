@@ -51,24 +51,25 @@ function sendgridsync($input) {
 		evvtWrite2Log("$LogContent Error Input Information");
 		return 1;
 	}
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Messages', true);
 	foreach ($sendgridevents as $request) {
 		foreach ($request as $key => $value) {
 			if (!is_object($value)) {
-				$LogContent.= "Key: $key; Value: $value \n";
+				$LogContent.= "Key: $key; Value: ".print_r($value, true)." \n";
 			}
 		}
 		evvtWrite2Log($LogContent);
 
 		$recipient=trim($request->email);
 		$event=$request->event;
-		$combid=explode('-', $request->category);
-		$category=$combid[0];
-		$crmid=$request->crmid;
+		$crmid = isset($request->crmid) ? $request->crmid : 0;
 		$crmtype=getSalesEntityType($crmid);
 		if ($crmtype!='Messages' && $crmtype!='Emails') {
 			evvtWrite2Log("Error CRM Type: $crmtype - $crmid");
 			continue;
 		}
+		$combid=explode('-', $request->category);
+		$category=$combid[0];
 		evvtWrite2Log("CRM Type: $crmtype - $crmid");
 		$current_user = Users::getActiveAdminUser();
 		$em = new VTEventsManager($adb);
@@ -157,7 +158,7 @@ function sendgridsync($input) {
 			case 'click':
 				$query="Update $updtable set clicked=clicked+1 where $updindex=?";
 				if ($crmtype=='Messages') {
-					$rsdesc = $adb->pquery('select description from vtiger_crmentity where crmid=?', array($crmid));
+					$rsdesc = $adb->pquery('select description from '.$crmEntityTable.' where crmid=?', array($crmid));
 					$desc = $adb->query_result($rsdesc, 0, 'description');
 					$msg = $desc.$request->url.';';
 					$adb->pquery('update vtiger_messages set lasturlclicked=? where messagesid=?', array($request->url, $crmid));
@@ -166,13 +167,15 @@ function sendgridsync($input) {
 		evvtWrite2Log($query);
 		if ((!empty($query) || !empty($msg)) && $crmtype=='Messages') {
 			if (!empty($msg)) {
-				$adb->pquery('update vtiger_crmentity set description=? where crmid=?', array($msg, $crmid));
+				$adb->pquery('update '.$crmEntityTable.' set description=? where crmid=?', array($msg, $crmid));
 			}
 			$adb->pquery('update vtiger_messages set lasteventtime=now() where messagesid=?', array($crmid));
 		}
 		if (!empty($query)) {
 			$adb->pquery($query, array($crmid));
-			$adb->pquery('update vtiger_crmentity set modifiedtime=now() where crmid=?', array($crmid));
+			$mtime = date('Y-m-d H:i:s');
+			$adb->pquery('update '.$crmEntityTable.' set modifiedtime=? where crmid=?', array($crmid, $mtime));
+			$adb->pquery('update vtiger_crmobject set modifiedtime=? where crmid=?', array($crmid, $mtime));
 			//Event triggering code
 			$em->triggerEvent('vtiger.entity.aftersave', $entityData);
 			//Event triggering code ends

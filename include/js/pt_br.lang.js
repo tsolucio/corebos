@@ -5,7 +5,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|01/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|03/04/2020|Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|21/06/2021|Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 var alert_arr = {
@@ -109,6 +109,8 @@ var alert_arr = {
 	'LBL_DOES_NOT_END_WITH' : 'não termina com',
 	'DOES_NOT_START_WITH':'não começa com',
 	'DOES_NOT_END_WITH':'não termina com',
+	'SOUNDEX':'soundex',
+	'REGEXP':'regexp',
 	'Widget_Deleted_Sucessfully':'Widget apagado com sucesso',
 	'LESS_OR_EQUALS':'menor ou igual',
 	'GREATER_OR_EQUALS':'maior ou igual',
@@ -172,6 +174,7 @@ var alert_arr = {
 	'SAME_GROUPS': 'você terá que selecionar um registro de em um mesmo grupo para mesclar',
 	'ATLEAST_TWO': 'Selecione pelo menos dois registros para mesclar',
 	'MAX_THREE': 'você tem permissão para selecionar no máximo três registros',
+	'MAX_RECORDS_EXCEEDED': 'You have exceeded the maximum amount of selectable records',
 	'MAX_RECORDS': 'você tem permissão para selecionar no máximo quatro registros',
 	'CON_MANDATORY': 'Selecione o campo obrigatório sobrenome',
 	'LE_MANDATORY': 'Selecione os campos obrigatórios sobrenome e empresa',
@@ -244,7 +247,7 @@ var alert_arr = {
 	'LBL_FOLDER_SHOULD_BE_EMPTY': 'A pasta deve estar limpa para ser removida!',
 
 	'LBL_PLEASE_SELECT_FILE_TO_UPLOAD': 'Por gentileza, selecione o arquivo para transferência.',
-	'LBL_ARE_YOU_SURE_TO_MOVE_TO': 'Tem certeza que desenja mover o(s) arquivo(s) para ',
+	'LBL_ARE_YOU_SURE_TO_MOVE_TO': 'Tem certeza que deseja mover o(s) arquivo(s) para ',
 	'LBL_FOLDER': ' Pasta',
 	'LBL_UNABLE_TO_UPDATE': 'Impossível atualizar! Por favor, tente novamente.',
 	'LBL_BLANK_REPLACEMENT': 'não é permitido selecionar valores em branco para substituição',
@@ -358,6 +361,7 @@ var alert_arr = {
 	'LBL_HAS_CHANGED' : 'foi alterado',
 	'LBL_HAS_CHANGED_TO' : 'foi alterado para',
 	'LBL_WAS' : 'era',
+	'LBL_MONTHDAY' : 'month-day',
 	'LBL_IS_EMPTY': 'está vazio',
 	'LBL_IS_NOT_EMPTY' : 'não está vazio',
 	'LBL_EQUAL_TO' : 'igual a',
@@ -406,6 +410,7 @@ var alert_arr = {
 	'EMAIL_WITH_NO_SUBJECT' : '(sem assunto)',
 	'INTEGERVALS':'Somente valores inteiros são permitidos',
 	'JSLBL_Delete': 'Apagar',
+	'JSLBL_Edit': 'Edit',
 	'JSLBL_Loading': 'Carregando',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'O anexo não pode ser excluído',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Limite de carregamento do arquivo excedido!!',
@@ -427,6 +432,23 @@ var alert_arr = {
 	'Failed': 'Falhou',
 	'Warning': 'Alerta',
 	'Copied': 'Copiado',
+	'ERR_PASSWORD_NOT_CHANGED': 'Antiga e nova senha são iguais. Por favor, use senhas diferentes.',
+	'ERR_ENTER_OLD_PASSWORD': 'Por favor entre com sua senha antiga.',
+	'ERR_ENTER_NEW_PASSWORD': 'Por favor entre com sua nova senha.',
+	'PASSWORD REQUIREMENTS NOT MET': 'REQUISITOS DE SENHA NÃO ATENDIDOS',
+	'Old password is incorrect': 'A senha antiga é incorreta.',
+	'LBL_OLD_PASSWORD': 'Senha antiga',
+	'LBL_NEW_PASSWORD': 'Nova senha',
+	'PASSWORD REQUIREMENTS': 'Exigências para a senha',
+	'REQUIRED': 'Exigido',
+	'Min. 8 characters': 'Min. 8 caracteres',
+	'Contains3of4': 'Senha deve conter ao menos três dos seguintes grupos de caracteres',
+	'Min. 1 uppercase': 'Min. 1 letra maiúscula',
+	'Min. 1 lowercase': 'Min. 1 letra minúscula',
+	'Min. 1 number': 'Min. 1 número',
+	'Min. 1 special character': 'Min. 1 caracter especial , ! ? , ; - @ #',
+	'LBL_CHANGE_PASSWORD': 'Mudar senha',
+	'ACT_UNIT_PRICE_MISMATCH': 'O preço real para esta moeda deve ser igual ao preço unitário, mas este não é o caso para este produto ou serviço'
 	'LBL_SHOWING': 'Exibindo Registros ',
 	'LBL_RECORDS': ' de ',
 	'LNK_DELETE': 'Lixeira',

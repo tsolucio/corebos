@@ -96,10 +96,7 @@ class SyncServer {
 	public function checkIdExistInQueue($syncServerId) {
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery('SELECT syncserverid FROM vtiger_wsapp_queuerecords WHERE syncserverid=?', array($syncServerId));
-		if ($db->num_rows($result)>0) {
-				return true;
-		}
-		return false;
+		return ($db->num_rows($result)>0);
 	}
 
 	public function markRecordAsDeleteForAllCleints($recordValues) {
@@ -109,7 +106,6 @@ class SyncServer {
 		$result = $db->pquery('SELECT * FROM vtiger_wsapp_recordmapping WHERE serverid=? and servermodifiedtime < ?', array($recordWsId,$modifiedTime));
 		while ($arre = $db->fetchByAssoc($result)) {
 			$syncServerId = $arre['id'];
-			//$clientId = $arre['clientid'];
 			$clientMappedId = $arre['appid'];
 			if (!$this->checkIdExistInQueue($syncServerId)) {
 				$this->idmap_storeRecordsInQueue($syncServerId, $recordValues, $this->delete, $clientMappedId);
@@ -260,7 +256,7 @@ class SyncServer {
 		$appid = $this->appid_with_key($key);
 
 		if (empty($appid)) {
-			throw new WebServiceException('WSAPP04', "Access restricted to app");
+			throw new WebServiceException('WSAPP04', 'Access restricted to app');
 		}
 
 		$records = (array)$element;
@@ -345,7 +341,7 @@ class SyncServer {
 			$response['updated'][] = $responseRecord;
 		}
 		foreach ($result['deleted'] as $clientRecordId => $record) {
-			$this->idmap_put($appid, $record, $clientRecordId, "", "", $serverAppId, $this->delete);
+			$this->idmap_put($appid, $record, $clientRecordId, '', '', $serverAppId, $this->delete);
 			$response['deleted'][] = $clientRecordId;
 		}
 		$queueRecordIds = array();
@@ -354,7 +350,7 @@ class SyncServer {
 			$queueRecordIds[] = $record['id'];
 			$queueRecordDetails[$record['id']] = $this->convertToQueueRecordFormat($record, $this->delete);
 		}
-		if (count($queueRecordIds) > 0) {
+		if (!empty($queueRecordIds)) {
 			$syncServerDetails = $this->idmap_get_clientmap($appid, $queueRecordIds);
 			foreach ($queueRecordIds as $serverId) {
 				$syncServerId = $syncServerDetails[$serverId]['id'];
@@ -416,7 +412,6 @@ class SyncServer {
 				} elseif (empty($updatedLookupIds[$u['id']])) {
 					$u['_id'] = $u['id'];// Rename the id key
 					$u['_modifiedtime'] = $u['modifiedtime'];
-					//unset($u['id']);
 					$filteredCreates[] = $u;
 				}
 			}
@@ -449,7 +444,6 @@ class SyncServer {
 		$deleteQueueSyncServerIds = array();
 		$serverKey = wsapp_getAppKey('vtigerCRM');
 		$serverAppId = $this->appid_with_key($serverKey);
-		//$lookups = $this->idmap_get_clientmap($appid, array_values($createDetails));
 		foreach ($createDetails as $clientid => $serverDetails) {
 			$this->idmap_put($appid, $serverDetails['serverid'], $clientid, $serverDetails['modifiedtime'], $serverDetails['_modifiedtime'], $serverAppId, $this->create);
 		}
@@ -473,7 +467,7 @@ class SyncServer {
 				}
 			}
 		}
-		if (count($deleteQueueSyncServerIds)>0) {
+		if (!empty($deleteQueueSyncServerIds)) {
 			$this->deleteQueueRecords($deleteQueueSyncServerIds);
 		}
 	}
@@ -511,12 +505,9 @@ class SyncServer {
 	*/
 	public function idmap_get_serverId($clientid, $appId) {
 		$db = PearDatabase::getInstance();
-
-		$result = $db->pquery('SELECT serverid, clientid FROM vtiger_wsapp_recordmapping WHERE clientid = ? and appid=?', array($clientid,$appId));
+		$result = $db->pquery('SELECT serverid FROM vtiger_wsapp_recordmapping WHERE clientid=? and appid=?', array($clientid, $appId));
 		if ($db->num_rows($result)) {
-			while ($row = $db->fetch_array($result)) {
-				return $row['serverid'];
-			}
+			return $db->query_result($result, 0, 'serverid');
 		}
 		return false;
 	}
@@ -526,12 +517,9 @@ class SyncServer {
 	*/
 	public function idmap_get_clientId($serverid, $appId) {
 		$db = PearDatabase::getInstance();
-
-		$result = $db->pquery('SELECT serverid, clientid FROM vtiger_wsapp_recordmapping WHERE serverid = ? and appid=?', array($serverid,$appId));
+		$result = $db->pquery('SELECT clientid FROM vtiger_wsapp_recordmapping WHERE serverid=? and appid=?', array($serverid, $appId));
 		if ($db->num_rows($result)) {
-			while ($row = $db->fetch_array($result)) {
-				return $row['clientid'];
-			}
+			return $db->query_result($result, 0, 'clientid');
 		}
 		return false;
 	}

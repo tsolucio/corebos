@@ -145,8 +145,10 @@ class Vtiger_Block {
 	public function delete($recursive = true) {
 		if ($recursive) {
 			$fields = Vtiger_Field::getAllForBlock($this);
-			foreach ($fields as $fieldInstance) {
-				$fieldInstance->delete($recursive);
+			if ($fields) {
+				foreach ($fields as $fieldInstance) {
+					$fieldInstance->delete(true);
+				}
 			}
 		}
 		$this->__delete();
@@ -174,7 +176,8 @@ class Vtiger_Block {
 	/**
 	 * Get instance of block
 	 * @param mixed block id or block label
-	 * @param Vtiger_Module Instance of the module if block label is passed
+	 * @param object Vtiger_Module Instance of the module if block label is passed
+	 * @return object Vtiger_Block or false if block not found
 	 */
 	public static function getInstance($value, $moduleInstance = false) {
 		global $adb;

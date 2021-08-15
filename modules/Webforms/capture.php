@@ -24,12 +24,12 @@ class Webform_Capture {
 		$returnURL = false;
 		try {
 			if (!vtlib_isModuleActive('Webforms')) {
-				throw new Exception('webforms is not active');
+				throw new BadMethodCallException('webforms is not active');
 			}
 
 			$webform = Webforms_Model::retrieveWithPublicId(vtlib_purify($request['publicid']));
 			if (empty($webform)) {
-				throw new Exception('Webform not found.');
+				throw new InvalidArgumentException('Webform not found.');
 			}
 
 			$returnURL = $webform->getReturnUrl();
@@ -37,7 +37,7 @@ class Webform_Capture {
 			$webDomain = $webform->getWebDomain();
 			$incomingOrigin = parse_url($server['HTTP_REFERER']);
 			if (!empty($webDomain) && stripos($incomingOrigin['host'], $webDomain) === false) {
-				throw new Exception('The domain of the form does not match with the webform');
+				throw new LogicException('The domain of the form does not match with the webform');
 			}
 			// Retrieve user information
 			$user = CRMEntity::getInstance('Users');
@@ -49,7 +49,7 @@ class Webform_Capture {
 			$webformFields = $webform->getFields();
 			foreach ($webformFields as $webformField) {
 				if (is_array(vtlib_purify($request[$webformField->getNeutralizedField()]))) {
-					$fieldData=implode(' |##| ', vtlib_purify($request[$webformField->getNeutralizedField()]));
+					$fieldData=implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, vtlib_purify($request[$webformField->getNeutralizedField()]));
 				} else {
 					$fieldData=vtlib_purify($request[$webformField->getNeutralizedField()]);
 				}
@@ -57,10 +57,8 @@ class Webform_Capture {
 				if (empty($parameters[$webformField->getFieldName()]) && $webformField->getDefaultValue()!=null) {
 					$parameters[$webformField->getFieldName()] = decode_html($webformField->getDefaultValue());
 				}
-				if ($webformField->getRequired()) {
-					if (empty($parameters[$webformField->getFieldName()])) {
-						throw new Exception('Required fields not filled');
-					}
+				if ($webformField->getRequired() && empty($parameters[$webformField->getFieldName()])) {
+					throw new BadMethodCallException('Required fields not filled');
 				}
 			}
 			switch ($webform->getTargetModule()) {
@@ -71,7 +69,7 @@ class Webform_Capture {
 						$wsid = $adb->query_result($result, 0, 'id');
 						$parameters['related_to'] = $wsid.'x'.$request['related_to'];
 					} else {
-						throw new Exception('Required field Related To not filled');
+						throw new BadMethodCallException('Required field Related To not filled');
 					}
 					if (isset($request['campaignid']) && $request['campaignid'] != null) {
 						$result = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name = ?', array('Campaigns'));

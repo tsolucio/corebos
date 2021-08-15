@@ -17,7 +17,9 @@
 *  Author       : OpenCubed
 *************************************************************************************************/
 require_once 'include/utils/CommonUtils.php';
-global $default_charset;
+require_once 'include/utils/Request.php';
+require_once 'data/CRMEntity.php';
+global $default_charset, $log;
 
 if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 	$ids = explode(':', $_REQUEST['listofids']);
@@ -27,16 +29,35 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 	}
 	$tpl = getTemplateDetails($_REQUEST['action_id'], $crmid);
 
+	// Merge template
+	$mids = array();
+	if (isset($_REQUEST['merge_template_with']) && $_REQUEST['merge_template_with'] != '') {
+		$mids = explode(',', $_REQUEST['merge_template_with']);
+	}
+	if (count($mids) > 0) {
+		foreach ($mids as $mid) {
+			$module = getSalesEntityType($mid);
+			$tpl[2] = getMergedDescription($tpl[2], $mid, $module);
+			$tpl[1] = getMergedDescription($tpl[1], $mid, $module);
+		}
+	}
+
 	// Get Related Documents
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 	$query='select vtiger_notes.notesid,vtiger_notes.filename
 		from vtiger_notes
 		inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
-		inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
-		inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid
-		where crm2.crmid=?';
+		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
+		where vtiger_senotesrel.crmid=?';
 	$result = $adb->pquery($query, array($_REQUEST['action_id']));
 }
+$req = new Vtiger_Request();
+$req->set('action_id', isset($_REQUEST['action_id']) ? $_REQUEST['action_id'] : '');
+$req->set('callvalue', isset($_REQUEST['callvalue']) ? $_REQUEST['callvalue'] : '');
+$req->set('targetfield', isset($_REQUEST['targetfield']) ? $_REQUEST['targetfield'] : '');
+$req->set('callfrom', isset($_REQUEST['callfrom']) ? $_REQUEST['callfrom'] : '');
 ?>
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 <form name="frmrepstr" onsubmit="VtigerJS_DialogBox.block();">
 <input type="hidden" name="subject" value="<?php echo $tpl[2];?>"></input>
 <textarea name="repstr" style="visibility:hidden">
@@ -44,7 +65,6 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 </textarea>
 </form>
 <script type="text/javascript">
-//my changes
 if (typeof window.opener.document.getElementById('subject') != 'undefined' && window.opener.document.getElementById('subject') != null) {
 	window.opener.document.getElementById('subject').value = window.document.frmrepstr.subject.value;
 	window.opener.document.getElementById('description').value = window.document.frmrepstr.repstr.value;
@@ -53,6 +73,8 @@ if (typeof window.opener.document.getElementById('subject') != 'undefined' && wi
 	var attachment = '<?php echo $row['filename']; ?>';
 	window.opener.addOption(<?php echo $row['notesid']; ?>, attachment);
 <?php } ?>
+} else {
+	vtlib_setvalue_from_popup('<?php echo $req->get('action_id'); ?>', '<?php echo $req->get('callvalue') ; ?>', '<?php echo $req->get('targetfield'); ?>', '<?php echo $req->get('callform'); ?>');
 }
 window.close();
 </script>

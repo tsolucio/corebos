@@ -26,6 +26,22 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		return WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id];
 	}
 
+	public function getCache($module = '') {
+		if (empty($module)) {
+			return WebserviceEntityOperation::$metaCache;
+		} else {
+			return WebserviceEntityOperation::$metaCache[$module][$this->user->id];
+		}
+	}
+
+	public function emptyCache($module = '') {
+		if (empty($module)) {
+			WebserviceEntityOperation::$metaCache = array();
+		} else {
+			unset(WebserviceEntityOperation::$metaCache[$module]);
+		}
+	}
+
 	public function create($elementType, $element) {
 		$crmObject = new VtigerCRMObject($elementType, false);
 
@@ -80,7 +96,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$crmObject = new VtigerCRMObject($this->tabId, true);
 		$crmObject->setObjectId($ids[1]);
 		$error = $crmObject->read($crmObject->getObjectId());
-		if ($error == false) {
+		if (!$error) {
 			return $error;
 		}
 		$cfields = $crmObject->getFields();
@@ -130,7 +146,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
 			preg_match($moduleRegex, $q, $m);
 			$relatedModule = trim($m[1]);
-			$moduleRegex = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
+			$moduleRegex = "/\s+\(*\s*[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
 			preg_match($moduleRegex, $q, $m);
 			$moduleName = trim($m[1]);
 			$id = trim($m[2], "(')");
@@ -145,7 +161,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				$docrelcond = substr($mysql_query, stripos($mysql_query, 'where')+6);
 				$addDocGlue = (stripos($docrelcond, ' and ') > 0 || stripos($docrelcond, ' or ') > 0);
 				$mysql_query = substr($mysql_query, 0, stripos($mysql_query, 'where')+6);
-				$relatedCond = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
+				$relatedCond = '/related.'.$moduleName.'\s*=\s*'.trim($m[2], ')').'/i';
 				$afterwhere=trim(preg_replace($relatedCond, $docrelcond, $afterwhere), ' ;');
 			} else {
 				$addDocGlue = true;
@@ -241,6 +257,15 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$mysql_query = $parser->getSql();
 			$meta = $parser->getObjectMetaData();
 		}
+		if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
+			$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+			if (empty($contactId)) {
+				$mysql_query = 'select 1';
+			} else {
+				$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+				$mysql_query = addPortalModuleRestrictions($mysql_query, $meta->getEntityName(), $accountId, $contactId);
+			}
+		}
 		return $mysql_query;
 	}
 
@@ -250,7 +275,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {
-		global $site_URL, $adb, $default_charset;
+		global $site_URL, $adb, $default_charset, $currentModule;
+		$holdCM = $currentModule;
+		$currentModule = $meta->getEntityName();
 		if (strpos($mysql_query, 'vtiger_inventoryproductrel')) {
 			$invlines = true;
 			$pdowsid = vtws_getEntityId('Products');
@@ -264,64 +291,120 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$this->pearDB->completeTransaction();
 
 		if ($error) {
+			$currentModule = $holdCM;
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-
+		$imageFields = $meta->getImageFields();
+		$imgquery = 'select vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_attachments.path
+			from vtiger_attachments
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+			inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+			where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment") and deleted=0 and vtiger_seattachmentsrel.crmid=?';
 		$isDocModule = ($meta->getEntityName()=='Documents');
 		$isRelatedQuery = __FQNExtendedQueryIsFQNQuery($q);
 		$noofrows = $this->pearDB->num_rows($result);
 		$output = array();
+		$streamraw = (isset($_REQUEST['format']) && strtolower($_REQUEST['format'])=='streamraw');
+		$streaming = (isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || $streamraw));
+		$stream = '';
 		for ($i=0; $i<$noofrows; $i++) {
 			$row = $this->pearDB->fetchByAssoc($result, $i);
 			$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $rowcrmid)) {
 				continue;
 			}
-			$newrow = DataTransform::sanitizeDataWithColumn($row, $meta);
-			if ($isRelatedQuery) {
-				if ($invlines) {
-					$newrow = $row;
-					$newrow['id'] = (getSalesEntityType($newrow['id']) == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['id'];
-				} else {
-					$relflds = array_diff_key($row, $newrow);
-					foreach ($queryRelatedModules as $relmod => $relmeta) {
-						$lrm = strtolower($relmod);
-						$newrflds = array();
-						foreach ($relflds as $fldname => $fldvalue) {
-							$fldmod = substr($fldname, 0, strlen($relmod));
-							if (isset($row[$fldname]) && $fldmod==$lrm) {
-								$newkey = substr($fldname, strlen($lrm));
-								$newrflds[$newkey] = $fldvalue;
+			if ($streamraw) {
+				$newrow = $row;
+			} else {
+				$newrow = DataTransform::sanitizeDataWithColumn($row, $meta);
+				if ($isRelatedQuery) {
+					if ($invlines) {
+						$newrow = $row;
+						if (!empty($newrow['id'])) {
+							$newrow['id'] = vtws_getEntityId(getSalesEntityType($newrow['id'])) . 'x' . $newrow['id'];
+						}
+						$newrow['linetype'] = '';
+						if (!empty($newrow['productid'])) {
+							$newrow['linetype'] = getSalesEntityType($newrow['productid']);
+							$newrow['productid'] = ($newrow['linetype'] == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['productid'];
+						}
+						if (!empty($newrow['serviceid'])) {
+							$newrow['linetype'] = 'Services';
+							$newrow['serviceid'] = $srvwsid . 'x' . $newrow['serviceid'];
+						}
+					} else {
+						$relflds = array_diff_key($row, $newrow);
+						foreach ($queryRelatedModules as $relmod => $relmeta) {
+							$lrm = strtolower($relmod);
+							$newrflds = array();
+							foreach ($relflds as $fldname => $fldvalue) {
+								$fldmod = substr($fldname, 0, strlen($relmod));
+								if (isset($row[$fldname]) && $fldmod==$lrm) {
+									$newkey = substr($fldname, strlen($lrm));
+									$newrflds[$newkey] = $fldvalue;
+								}
+							}
+							$relrow = DataTransform::sanitizeDataWithColumn($newrflds, $relmeta);
+							$newrelrow = array();
+							foreach ($relrow as $key => $value) {
+								$newrelrow[$lrm.$key] = $value;
+							}
+							$newrow = array_merge($newrow, $newrelrow);
+						}
+					}
+				}
+				if ($isDocModule) {
+					$relatt=$adb->pquery('SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid=?', array($rowcrmid));
+					if ($relatt && $adb->num_rows($relatt)==1) {
+						$fileid = $adb->query_result($relatt, 0, 0);
+						$attrs=$adb->pquery('SELECT * FROM vtiger_attachments WHERE attachmentsid=?', array($fileid));
+						if ($attrs && $adb->num_rows($attrs) == 1) {
+							$name = @$adb->query_result($attrs, 0, 'name');
+							$filepath = @$adb->query_result($attrs, 0, 'path');
+							$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
+							$newrow['_downloadurl'] = $site_URL.'/'.$filepath.$fileid.'_'.$name;
+							$newrow['filename'] = $name;
+						}
+					}
+				} elseif (!empty($imageFields)) {
+					foreach ($imageFields as $imgvalue) {
+						$newrow[$imgvalue.'fullpath'] = ''; // initialize so we have same number of columns in all rows
+					}
+					$result_image = $adb->pquery($imgquery, array($rowcrmid));
+					while ($img = $adb->fetch_array($result_image)) {
+						foreach ($imageFields as $imgvalue) {
+							if (!empty($row[$imgvalue]) && ($img['name'] == $row[$imgvalue] || $img['name'] == str_replace(' ', '_', $row[$imgvalue]))) {
+								$newrow[$imgvalue.'fullpath'] = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
+								break;
 							}
 						}
-						$relrow = DataTransform::sanitizeDataWithColumn($newrflds, $relmeta);
-						$newrelrow = array();
-						foreach ($relrow as $key => $value) {
-							$newrelrow[$lrm.$key] = $value;
-						}
-						$newrow = array_merge($newrow, $newrelrow);
 					}
 				}
 			}
-			if ($isDocModule) {
-				$relatt=$adb->pquery('SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid=?', array($rowcrmid));
-				if ($relatt && $adb->num_rows($relatt)==1) {
-					$fileid = $adb->query_result($relatt, 0, 0);
-					$attrs=$adb->pquery('SELECT * FROM vtiger_attachments WHERE attachmentsid=?', array($fileid));
-					if ($attrs && $adb->num_rows($attrs) == 1) {
-						$name = @$adb->query_result($attrs, 0, 'name');
-						$filepath = @$adb->query_result($attrs, 0, 'path');
-						$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
-						$newrow['_downloadurl'] = $site_URL.'/'.$filepath.$fileid.'_'.$name;
-						$newrow['filename'] = $name;
-					}
+			if ($streaming) {
+				$stream .= json_encode($newrow)."\n";
+				if (($i % 500)==0) {
+					echo $stream;
+					flush();
+					$stream = '';
 				}
+			} else {
+				$output[] = $newrow;
 			}
-			$output[] = $newrow;
+		}
+		if ($stream!='') {
+			echo $stream;
+			flush();
+			$stream = '';
 		}
 		$mysql_query = mkXQuery(stripTailCommandsFromQuery($mysql_query, false), 'count(*) AS cnt');
 		$result = $this->pearDB->pquery($mysql_query, array());
-		$this->queryTotalRows = $result->fields['cnt'];
+		if ($result) {
+			$this->queryTotalRows = $result->fields['cnt'];
+		} else {
+			$this->queryTotalRows = 0;
+		}
+		$currentModule = $holdCM;
 		return $output;
 	}
 
@@ -408,6 +491,10 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 
 	public function getMeta() {
 		return $this->meta;
+	}
+
+	public function getTabId() {
+		return $this->tabId;
 	}
 
 	public function getField($fieldName) {

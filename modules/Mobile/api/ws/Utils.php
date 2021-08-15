@@ -11,12 +11,6 @@
 
 class crmtogo_WS_Utils {
 
-	public static function initModuleGlobals($module) {
-		if ($module == 'Events' || $module == 'Calendar') {
-			$module = 'cbCalendar';
-		}
-	}
-
 	public static function getVtigerVersion() {
 		global $vtiger_current_version;
 		return $vtiger_current_version;
@@ -137,35 +131,23 @@ class crmtogo_WS_Utils {
 		$db = PearDatabase::getInstance();
 		$current_language = crmtogo_WS_Controller::sessionGet('language') ;
 		$current_module_strings = return_module_language($current_language, $module);
-		self::initModuleGlobals($module);
 		// Cache hit?
 		if (isset(self::$gatherModuleFieldGroupInfoCache[$module])) {
 			return self::$gatherModuleFieldGroupInfoCache[$module];
 		}
-		if ($module != 'Calendar') {
-			$result = $db->pquery(
-				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, displaytype
-					FROM vtiger_field
-					INNER JOIN vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block
-					WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 AND vtiger_field.tablename !='vtiger_ticketcomments'
-					ORDER BY vtiger_blocks.sequence, vtiger_field.sequence",
-				array(getTabid($module))
-			);
-		} else {
-			$result = $db->pquery(
-				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, displaytype
-					FROM vtiger_field
-					INNER JOIN vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block
-					WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 and fieldname != 'eventstatus' and fieldname !=  'activitytype'
-					ORDER BY vtiger_blocks.sequence, vtiger_field.sequence",
-				array(getTabid($module))
-			);
-		}
+		$result = $db->pquery(
+			"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, displaytype
+				FROM vtiger_field
+				INNER JOIN vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block
+				WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 AND vtiger_field.tablename !='vtiger_ticketcomments'
+				ORDER BY vtiger_blocks.sequence, vtiger_field.sequence",
+			array(getTabid($module))
+		);
 
 		$fieldgroups = array();
 		while ($resultrow = $db->fetch_array($result)) {
 			if (array_key_exists($resultrow['blocklabel'], $current_module_strings)) {
-				$blocklabel = $resultrow['blocklabel'];
+				$blocklabel = $current_module_strings[$resultrow['blocklabel']];
 			} else {
 				$blocklabel = $resultrow['blocklabel'];
 			}
@@ -221,14 +203,14 @@ class crmtogo_WS_Utils {
 		} else {
 			$assigned_user_id_ws = $assigned_user_id;
 		}
-		if ($userObj->is_admin==false) {
+		if (!$userObj->is_admin) {
 			$resultuser =get_user_array(false, 'Active', $assigned_user_id_ws, 'private');
 		} else {
 			$resultuser =get_user_array(false, 'Active', $assigned_user_id_ws);
 		}
 		//add prefix to key
 		$data = array_flip($resultuser);
-		foreach ($data as $key => &$val) {
+		foreach ($data as &$val) {
 			$val = $recordprefix.'x'.$val;
 		}
 		$resultuser = array_flip($data);
@@ -246,7 +228,7 @@ class crmtogo_WS_Utils {
 		$group_array = array();
 		if (count($resultgroups) > 0) {
 			$newgrouporder = array ();
-			foreach ($resultgroups as $key => &$val) {
+			foreach ($resultgroups as &$val) {
 				$newgrouporder[$val['id']] = $val['name'];
 			}
 			foreach ($newgrouporder as $groupid => $groupname) {
@@ -292,7 +274,6 @@ class crmtogo_WS_Utils {
 				$picklistValues = self::getassignedtoValues($current_user, $module);
 				$fieldInfo['type']['name'] = 'picklist';
 				$fieldInfo['type']['picklistValues'] = $picklistValues;
-				//$fieldInfo['type']['defaultValue'] = $picklistValues[0];
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}
 		}
@@ -320,8 +301,8 @@ class crmtogo_WS_Utils {
 					$datetimeevent=$_REQUEST['datetime'];
 				if (empty($datetimeevent)) {
 					$stdate = new DateTimeField(date('Y-m-d').' '.date('H:i'));
-					$datestoconsider ['start'] = date('Y-m-d');
-					$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+					$datestoconsider['start'] = date('Y-m-d');
+					$datestoconsider['tstart'] = $stdate->getDisplayTime();
 					$duration = GlobalVariable::getVariable('Calendar_other_default_duration', 1, 'cbCalendar') * 60;
 					$startparts = $stdate->getDisplayDateTimeValueComponents();
 					$datetime_end = date(
@@ -329,14 +310,14 @@ class crmtogo_WS_Utils {
 						mktime($startparts['hour'], $startparts['minute']+$duration, $startparts['second'], $startparts['month'], $startparts['day'], $startparts['year'])
 					);
 					list($dend,$tend) = explode(' ', $datetime_end);
-					$datestoconsider ['end'] = $dend;
-					$datestoconsider ['tend'] = $tend;
+					$datestoconsider['end'] = $dend;
+					$datestoconsider['tend'] = $tend;
 				} else {
 					$strDate = substr($datetimeevent, 4, 11);
 					$dstart = date('Y-m-d', strtotime($strDate));
 					$stdate = new DateTimeField($dstart.' '.date('H:i'));
-					$datestoconsider ['start'] = date('Y-m-d', strtotime($strDate));
-					$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+					$datestoconsider['start'] = date('Y-m-d', strtotime($strDate));
+					$datestoconsider['tstart'] = $stdate->getDisplayTime();
 					$duration = GlobalVariable::getVariable('Calendar_other_default_duration', 1, 'cbCalendar') * 60;
 					$startparts = $stdate->getDisplayDateTimeValueComponents();
 					$datetime_end = date(
@@ -344,8 +325,8 @@ class crmtogo_WS_Utils {
 						mktime($startparts['hour'], $startparts['minute']+$duration, $startparts['second'], $startparts['month'], $startparts['day'], $startparts['year'])
 					);
 					list($dend,$tend) = explode(' ', $datetime_end);
-					$datestoconsider ['end'] = $dend;
-					$datestoconsider ['tend'] = $tend;
+					$datestoconsider['end'] = $dend;
+					$datestoconsider['tend'] = $tend;
 				}
 			}
 			foreach ($describeInfo['fields'] as $index => $fieldInfo) {
@@ -358,21 +339,21 @@ class crmtogo_WS_Utils {
 						$fieldInfo['type']['defaultValue'] = $fieldInfo['type']['picklistValues'][0]['value'];
 					}
 				} elseif ($fieldInfo['name'] == 'date_start') {
-					$fieldInfo['default'] = $datestoconsider ['start'];
+					$fieldInfo['default'] = $datestoconsider['start'];
 				} elseif ($fieldInfo['name'] == 'time_start') {
-					$fieldInfo['default'] = $datestoconsider ['tstart'];
+					$fieldInfo['default'] = $datestoconsider['tstart'];
 				} elseif ($fieldInfo['name'] == 'due_date') {
-					$fieldInfo['default'] = $datestoconsider ['end'];
+					$fieldInfo['default'] = $datestoconsider['end'];
 				} elseif ($fieldInfo['name'] == 'time_end') {
-					$fieldInfo['default'] = $datestoconsider ['tend'];
+					$fieldInfo['default'] = $datestoconsider['tend'];
 				}
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}
 		} elseif ($module == 'Timecontrol') {
 			if (isset($_REQUEST['_operation']) && $_REQUEST['_operation']=='create') {
 				$stdate = new DateTimeField(date('Y-m-d').' '.date('H:i'));
-				$datestoconsider ['start'] = date('Y-m-d');
-				$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+				$datestoconsider['start'] = date('Y-m-d');
+				$datestoconsider['tstart'] = $stdate->getDisplayTime();
 			}
 			foreach ($describeInfo['fields'] as $index => $fieldInfo) {
 				if (isset($fieldInfo['uitype'])) {
@@ -384,9 +365,9 @@ class crmtogo_WS_Utils {
 						$fieldInfo['type']['defaultValue'] = $fieldInfo['type']['picklistValues'][0]['value'];
 					}
 				} elseif ($fieldInfo['name'] == 'date_start') {
-					$fieldInfo['default'] = $datestoconsider ['start'];
+					$fieldInfo['default'] = $datestoconsider['start'];
 				} elseif ($fieldInfo['name'] == 'time_start') {
-					$fieldInfo['default'] = $datestoconsider ['tstart'];
+					$fieldInfo['default'] = $datestoconsider['tstart'];
 				}
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}
@@ -416,10 +397,9 @@ class crmtogo_WS_Utils {
 		$tabid = getTabid($module);
 
 		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabid)) {
-			$querySuffix .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
+			$querySuffix .= " AND (vtiger_crmentity.smownerid=$current_user->id OR vtiger_crmentity.smownerid IN
 					(
 						SELECT vtiger_user2role.userid FROM vtiger_user2role
-						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
 						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
 						WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%'
 					)
@@ -569,7 +549,7 @@ class crmtogo_WS_Utils {
 		if ($module=='Contacts') {
 			$attstr = 'Contacts Image';
 		} else {
-			$attstr = $module.' Attachment';
+			$attstr = $module.Field_Metadata::ATTACHMENT_ENTITY;
 		}
 		$sql = "SELECT vtiger_attachments.*, vtiger_crmentity.setype
 			FROM vtiger_attachments
@@ -585,8 +565,7 @@ class crmtogo_WS_Utils {
 			$imgpath = $imagePath.$imageId.'_'.$imageName;
 			$type = pathinfo($imgpath, PATHINFO_EXTENSION);
 			$data = file_get_contents($imgpath);
-			$str = 'data:image/'.$type.';base64,'.base64_encode($data);
-			return $str ;
+			return 'data:image/'.$type.';base64,'.base64_encode($data);
 		} else {
 			return '';
 		}
@@ -608,8 +587,7 @@ class crmtogo_WS_Utils {
 			$imgpath = $imagePath.$imageId.'_'.$imageName;
 			$type = pathinfo($imgpath, PATHINFO_EXTENSION);
 			$data = file_get_contents($imgpath);
-			$str = 'data:image/'.$type.';base64,'.base64_encode($data);
-			return $str ;
+			return 'data:image/'.$type.';base64,'.base64_encode($data);
 		} else {
 			return '';
 		}
@@ -628,24 +606,25 @@ class crmtogo_WS_Utils {
 	public static function getDetailedDocumentInformation($documentrecord) {
 		$documentid = explode('x', $documentrecord['id']);
 		$db = PearDatabase::getInstance();
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 		$sql = 'SELECT filename,filetype,fileversion, filedownloadcount,notecontent,filesize, path, vtiger_attachments.attachmentsid
-			FROM vtiger_notes
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_notes.notesid
-			INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid = vtiger_notes.notesid
+			FROM vtiger_notes '
+			.' INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_notes.notesid'
+			.' INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid = vtiger_notes.notesid
 			INNER JOIN vtiger_attachments ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid
-			WHERE vtiger_notes.notesid = ? and vtiger_crmentity.deleted = 0';
+			WHERE vtiger_notes.notesid=? and vtiger_crmentity.deleted=0';
 		$result = $db->pquery($sql, array($documentid[1]));
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
-			$documentrecord ['filename'] = $db->query_result($result, 0, 'filename');
-			$documentrecord ['filetype'] = $db->query_result($result, 0, 'filetype');
-			$documentrecord ['fileversion'] = $db->query_result($result, 0, 'fileversion');
-			$documentrecord ['filedownloadcount'] = $db->query_result($result, 0, 'filedownloadcount');
-			$documentrecord ['notecontent'] = $db->query_result($result, 0, 'notecontent');
-			$documentrecord ['filesize'] = $db->query_result($result, 0, 'filesize');
-			$documentrecord ['attachmentinfo']['path'] = $db->query_result($result, 0, 'path');
-			$documentrecord ['attachmentinfo']['attachmentsid'] = $db->query_result($result, 0, 'attachmentsid');
-			$documentrecord ['attachmentinfo']['attachmentname'] = $documentrecord ['filename'];
+			$documentrecord['filename'] = $db->query_result($result, 0, 'filename');
+			$documentrecord['filetype'] = $db->query_result($result, 0, 'filetype');
+			$documentrecord['fileversion'] = $db->query_result($result, 0, 'fileversion');
+			$documentrecord['filedownloadcount'] = $db->query_result($result, 0, 'filedownloadcount');
+			$documentrecord['notecontent'] = $db->query_result($result, 0, 'notecontent');
+			$documentrecord['filesize'] = $db->query_result($result, 0, 'filesize');
+			$documentrecord['attachmentinfo']['path'] = $db->query_result($result, 0, 'path');
+			$documentrecord['attachmentinfo']['attachmentsid'] = $db->query_result($result, 0, 'attachmentsid');
+			$documentrecord['attachmentinfo']['attachmentname'] = $documentrecord['filename'];
 		}
 		return $documentrecord;
 	}
@@ -656,9 +635,9 @@ class crmtogo_WS_Utils {
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery('SELECT * FROM berli_crmtogo_defaults', array());
 		$config = array ();
-		$config ['language'] = $default_language;
-		$config ['fetch_limit'] = $db->query_result($result, 0, 'fetch_limit');
-		$config ['theme'] = $db->query_result($result, 0, 'defaulttheme');
+		$config['language'] = $default_language;
+		$config['fetch_limit'] = $db->query_result($result, 0, 'fetch_limit');
+		$config['theme'] = $db->query_result($result, 0, 'defaulttheme');
 		//Get organizations details
 		$companyDetails = retrieveCompanyDetails();
 		$config['company_name'] = $companyDetails['companyname'];
@@ -672,9 +651,9 @@ class crmtogo_WS_Utils {
 		$result = $db->pquery('SELECT * FROM berli_crmtogo_config  where crmtogouser = ?', array($userid));
 		if ($db->num_rows($result) >0) {
 			$config = array ();
-			$config ['NavigationLimit'] = $db->query_result($result, 0, 'navi_limit');
-			$config ['theme'] = $db->query_result($result, 0, 'theme_color');
-			$config ['compactcalendar'] = $db->query_result($result, 0, 'compact_cal');
+			$config['NavigationLimit'] = $db->query_result($result, 0, 'navi_limit');
+			$config['theme'] = $db->query_result($result, 0, 'theme_color');
+			$config['compactcalendar'] = $db->query_result($result, 0, 'compact_cal');
 		} else {
 			//initialize config for new user by taking admin config
 			$result = $db->pquery('SELECT * FROM berli_crmtogo_config where crmtogouser = 1', array());
@@ -685,9 +664,9 @@ class crmtogo_WS_Utils {
 				$navi_limit = $db->query_result($result, $i, 'navi_limit');
 				$theme = $db->query_result($result, $i, 'theme_color');
 				$compact_cal = $db->query_result($result, $i, 'compact_cal');
-				$config ['NavigationLimit'] = $navi_limit;
-				$config ['theme'] = $theme;
-				$config ['compactcalendar'] = $compact_cal;
+				$config['NavigationLimit'] = $navi_limit;
+				$config['theme'] = $theme;
+				$config['compactcalendar'] = $compact_cal;
 				$db->pquery($incl_sql, array($userid,$navi_limit, $theme,$compact_cal));
 			}
 		}
@@ -728,19 +707,19 @@ class crmtogo_WS_Utils {
 	}
 
 	public static function getConfigComments() {
-		//todo: find better way to identify modules with comments
 		$comments_module = array ();
 		$db = PearDatabase::getInstance();
-		$sql = "SELECT vtiger_businessactions.module_list 
-                  FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid 
-                 WHERE vtiger_crmentity.deleted = 0
-                   AND vtiger_businessactions.elementtype_action = 'DETAILVIEWWIDGET' 
-                   AND vtiger_businessactions.linkurl = 'block://ModComments:modules/ModComments/ModComments.php'";
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
+		$sql = "SELECT vtiger_businessactions.module_list
+			FROM vtiger_businessactions INNER JOIN $crmEntityTable ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid
+			WHERE vtiger_crmentity.deleted=0
+			AND vtiger_businessactions.elementtype_action='DETAILVIEWWIDGET'
+			AND vtiger_businessactions.linkurl='block://ModComments:modules/ModComments/ModComments.php'";
 		$result = $db->pquery($sql, array());
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
 			for ($i=0; $i<$noofrows; $i++) {
-				$module_list = explode(' |##| ', $db->query_result($result, $i, 'module_list'));
+				$module_list = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $db->query_result($result, $i, 'module_list'));
 				foreach ($module_list as $module) {
 					$comments_module[] = $module;
 				}
@@ -751,8 +730,7 @@ class crmtogo_WS_Utils {
 	}
 
 	public static function getUsersLanguage($lang) {
-		$user_lang = return_module_language($lang, 'Mobile');
-		return $user_lang;
+		return return_module_language($lang, 'Mobile');
 	}
 
 	public static function updateRecord($id, $fields, $targetModule, $user) {

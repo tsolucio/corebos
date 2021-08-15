@@ -58,7 +58,7 @@ class installcbgendoc extends cbupdaterWorker {
 				$sequence = $adb->query_result($rs, 0, 1) + 1;
 				$sql = 'insert into vtiger_attachmentsfolder (folderid,foldername,description,createdby,sequence) values (?,?,?,?,?)';
 				$params = array($fid, $foldername, '', $current_user->id, $sequence);
-				$result = $adb->pquery($sql, $params);
+				$adb->pquery($sql, $params);
 			} else {
 				$fid = $adb->query_result($result1, 0, 0);
 			}
@@ -83,6 +83,7 @@ class installcbgendoc extends cbupdaterWorker {
 					'template_for'=>$mm['module'],
 					'mergetemplate'=>1,
 					'description'=>$mm['description'],
+					'notecontent' => (empty($mm['description']) ? $mm['filename'] : $mm['description']),
 					'folderid' => vtws_getEntityId('DocumentFolders').'x'.$fid,
 				);
 				$response = vtws_create('Documents', $docData, $current_user);

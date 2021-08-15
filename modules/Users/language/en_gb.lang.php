@@ -701,6 +701,7 @@ $mod_strings = array(
 	'vcylinder'=>'Vertical Cylinder',
 	'LBL_SEND_EMAIL_TO_SENDER' => 'Send copy of email',
 	'PASSWORD REQUIREMENTS' => 'PASSWORD REQUIREMENTS',
+	'PASSWORD REQUIREMENTS NOT MET' => 'PASSWORD REQUIREMENTS NOT MET',
 	'REQUIRED' => 'REQUIRED',
 	'Min. 8 characters' => 'Minimum 8 characters',
 	'Contains3of4' => 'PASSWORD CONTAINS AT LEAST THREE OF THE FOLLOWING FOUR CHARACTER GROUPS',
@@ -719,5 +720,6 @@ $mod_strings = array(
 	'LBL_QUERY' => 'Query',
 	'LBL_FORE_LASTNAME' => 'First or Last name',
 	'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
+	'EntityName' => 'Entity Name',
 );
 ?>

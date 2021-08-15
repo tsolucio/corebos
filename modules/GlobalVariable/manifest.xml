@@ -177,7 +177,7 @@
 <defaultvalue>Blocked</defaultvalue>
 <sequence>6</sequence>
 <maximumlength>3</maximumlength>
-<typeofdata>V~O</typeofdata>
+<typeofdata>C~O</typeofdata>
 <quickcreate>1</quickcreate>
 <quickcreatesequence></quickcreatesequence>
 <displaytype>1</displaytype>
@@ -401,7 +401,7 @@
 <customlink>
 <linktype>DETAILVIEWBASIC</linktype>
 <linklabel>Test</linklabel>
-<linkurl><![CDATA[javascript:gotourl('index.php?module=GlobalVariable&action=TestGlobalVar&parenttab=Tools')]]></linkurl>
+<linkurl><![CDATA[javascript:gotourl('index.php?module=GlobalVariable&action=TestGlobalVar')]]></linkurl>
 <linkicon><![CDATA[]]></linkicon>
 <sequence>0</sequence>
 <handler_path><![CDATA[]]></handler_path>
@@ -411,7 +411,7 @@
 <customlink>
 <linktype>LISTVIEWBASIC</linktype>
 <linklabel>Test</linklabel>
-<linkurl><![CDATA[javascript:gotourl('index.php?module=GlobalVariable&action=TestGlobalVar&parenttab=Tools')]]></linkurl>
+<linkurl><![CDATA[javascript:gotourl('index.php?module=GlobalVariable&action=TestGlobalVar')]]></linkurl>
 <linkicon><![CDATA[]]></linkicon>
 <sequence>0</sequence>
 <handler_path><![CDATA[]]></handler_path>
@@ -421,7 +421,7 @@
 <customlink>
 <linktype>LISTVIEWBASIC</linktype>
 <linklabel>Definitions</linklabel>
-<linkurl><![CDATA[javascript:gotourl('index.php?module=GlobalVariable&action=GlobalVariableDefinitions&parenttab=Tools')]]></linkurl>
+<linkurl><![CDATA[javascript:gotourl('index.php?module=GlobalVariable&action=GlobalVariableDefinitions')]]></linkurl>
 <linkicon><![CDATA[]]></linkicon>
 <sequence>1</sequence>
 <handler_path><![CDATA[]]></handler_path>

@@ -21,6 +21,7 @@ require_once 'include/logging.php';
 require_once 'data/Tracker.php';
 require_once 'include/utils/utils.php';
 require_once 'modules/evvtgendoc/OpenDocument.php';
+require_once 'data/CRMEntity.php';
 if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 	include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
 } else {
@@ -224,7 +225,9 @@ function compile($text, $id, $module, $changeamp = false, $applyformat = true) {
 				$replacewith = eval_expression($marcador, $id);
 			} elseif ($changeamp) {
 				$compiled_marc = retrieve_from_db($marcador, $id, $module, $applyformat);
-				$replacewith = str_replace('&', '&amp;', $compiled_marc);
+				$compiledtext = mb_convert_encoding($compiled_marc, 'UTF-8', 'HTML-ENTITIES');
+				$compiledtext = str_replace('<br>', '<text:line-break/>', $compiledtext);
+				$replacewith = str_replace('&', '&amp;', $compiledtext);
 			} else {
 				$replacewith = retrieve_from_db($marcador, $id, $module, $applyformat);
 			}
@@ -546,6 +549,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 		$reemplazo = '{'.$marcador.'}';
 	}
 
+	$reemplazo = str_replace("\r\n", '<br>', $reemplazo);
 	$reemplazo = str_replace("\n", '<br>', $reemplazo);
 	return $reemplazo;
 }
@@ -642,7 +646,7 @@ function eval_noexiste($condition, $id, $module) {
 			$val = multiple_values($condition_pair[1]);
 			switch ($comp) {
 				case '=':
-					return !($cond == $val);
+					return $cond != $val;
 				break;
 				case $enGD:
 					return (count(array_intersect($cond, $values)) == 0);
@@ -735,7 +739,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 		$module = 'cbCompany';
 	}
 	preg_match('/(.+)\s*(>|<|=|!=|<=|>=| '.$enGD.' | !'.$enGD.' )\s*(.+)/', $condition, $splitcondition);
-	if (count($splitcondition)>0) {
+	if (!empty($splitcondition)) {
 		$condition_pair = array(
 			$splitcondition[1],
 			$splitcondition[3],
@@ -766,7 +770,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 	$token_pair = explode('.', $condition_pair[0]);
 
 	preg_match('/(\w+)\s\[(.+)+\]/', $condition, $cond_elements); // Multiple conditions?
-	if (count($cond_elements) > 0 && isset($cond_elements[2])) {
+	if (!empty($cond_elements) && isset($cond_elements[2])) {
 		$json_condition = make_json_condition($cond_elements[1], $cond_elements[2]);
 		OpenDocument::debugmsg($json_condition);
 		$comp = 'wfeval';
@@ -775,7 +779,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 	}
 
 	preg_match('/\*((\w+)\s(ASC|DESC|asc|desc))\*/', $condition, $sortinfo); // Has sort condition?
-	if (count($sortinfo) > 0) {
+	if (!empty($sortinfo)) {
 		$token_pair[0] = str_replace($sortinfo[0], '', $token_pair[0]);
 	}
 
@@ -813,7 +817,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 				$GetRelatedList_ReturnOnlyQuery = true;
 				$relatedsql = $focus->$func_rel($id, $tab_mod, $tab_rel);
 				$GetRelatedList_ReturnOnlyQuery = false;
-				if (count($sortinfo) > 0) {
+				if (!empty($sortinfo)) {
 					list($sortstring, $bare_sortstring, $fieldname, $sortorder) = $sortinfo;
 					$columnname = getColumnnameByFieldname($tab_rel, $fieldname);
 					$sortinfo = array('cname' => $columnname, 'order' => $sortorder);
@@ -1005,7 +1009,6 @@ function eval_paracada($condition, $id, $module, $check = false) {
 			}
 		}
 	}
-	//error_log(print_r($iter_modules,true)."\n",3,'gendoc.log');
 }
 
 function eval_imagen($entity, $id, $module) {
@@ -1013,7 +1016,6 @@ function eval_imagen($entity, $id, $module) {
 	OpenDocument::debugmsg("eval_image: $entity, $id, $module");
 	list($mod,$field) = explode('.', $entity);
 	$att_name = '';
-	// if (array_key_exists($entity,$image_modules)){
 	if ($mod == $module) {
 		$entid = $id;
 	} elseif (array_key_exists($mod, $iter_modules)) {
@@ -1111,9 +1113,6 @@ function eval_imagen($entity, $id, $module) {
 			return 'modules/evvtgendoc/not_found.jpg';
 		}
 	}
-	// }else{
-	//     return 'modules/evvtgendoc/no_image_entity.jpg';
-	// }
 }
 
 function eval_incluir($entity, $id, $module) {
@@ -1143,7 +1142,7 @@ function eval_incluir($entity, $id, $module) {
 
 function iterations() {
 	global $iter_modules;
-	if (count($iter_modules)>0) {
+	if (!empty($iter_modules)) {
 		$keys = array_keys($iter_modules);
 		$last_module = $keys[count($iter_modules)-1];
 		$iter = count($iter_modules[$last_module]);
@@ -1212,7 +1211,8 @@ function entity_exists($focus, $id, $module) {
 			$SQL = 'SELECT COUNT(*) as qtab FROM vtiger_users WHERE id=? AND deleted=0';
 			break;
 		default:
-			$SQL = 'SELECT COUNT(*) as qtab FROM vtiger_crmentity WHERE crmid=? AND setype=? AND deleted=0';
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias($module);
+			$SQL = 'SELECT COUNT(*) as qtab FROM '.$crmEntityTable.' WHERE vtiger_crmentity.crmid=? AND vtiger_crmentity.setype=? AND vtiger_crmentity.deleted=0';
 			$params[] = $module;
 	}
 	$res = $adb->pquery($SQL, $params);
@@ -1426,7 +1426,7 @@ if (!function_exists('elimina_puntuacion')) {
 		'&Ecirc;' => 'E',
 		'&Icirc;' => 'I',
 		'&Ocirc;' => 'O',
-		'&ucirc;' => 'U',
+		'&Ucirc;' => 'U',
 
 		'&atilde;' => 'a',
 		'&etilde;' => 'e',
@@ -1435,7 +1435,7 @@ if (!function_exists('elimina_puntuacion')) {
 		'&utilde;' => 'u',
 
 		'&Atilde;' => 'A',
-		'&etilde;' => 'E',
+		'&Etilde;' => 'E',
 		'&Itilde;' => 'I',
 		'&Otilde;' => 'O',
 		'&Utilde;' => 'U',
@@ -1470,7 +1470,7 @@ if (!function_exists('elimina_puntuacion')) {
 		'&Egrave' => 'e',
 		'&Igrave' => 'i',
 		'&Ograve' => 'o',
-		'&Igrave' => 'u',
+		'&Ugrave' => 'u',
 
 		'&aacute' => 'a',
 		'&eacute' => 'e',
@@ -1580,11 +1580,7 @@ function is_date($field, $module) {
 	$res = $adb->pquery($SQL, array($field,$tabid));
 	$uitype = $adb->query_result($res, 0, 'uitype');
 
-	if (in_array($uitype, $ui_date)) {
-		return true;
-	} else {
-		return false;
-	}
+	return in_array($uitype, $ui_date);
 }
 
 function is_picklist($field, $module) {
@@ -1603,7 +1599,7 @@ function is_picklist($field, $module) {
 function get_plantilla($entid) {
 	global $adb,$root_directory,$app_strings,$current_user;
 
-	$SQL = 'SELECT setype FROM vtiger_crmentity WHERE crmid=?';
+	$SQL = 'SELECT setype FROM vtiger_crmobject WHERE crmid=?';
 	$res = $adb->pquery($SQL, array($entid));
 	$relmodule = $adb->query_result($res, 0, 'setype');
 	switch ($relmodule) {
@@ -1651,7 +1647,6 @@ function get_plantilla($entid) {
 			array_push($sqlfields, $fld_no);
 		}
 		$queryGenerator->setFields($sqlfields);
-		//$queryGenerator->addCondition('id',$entid,'e');
 		$query = $queryGenerator->getQuery();
 		$query.= ' and vtiger_crmentity.crmid=? ';
 		$res = $adb->pquery($query, array($entid));
@@ -1687,7 +1682,7 @@ function get_plantilla($entid) {
 		list($name,$ext) = explode('.', $plantilla);
 	}
 
-	$ret = array(
+	return array(
 		'documentid' => $IDplantilla,
 		'document' => (empty($plantilla) ? '' : $root_directory.$ruta.$prefix.$plantilla),
 		'relmodule' => $relmodule,
@@ -1699,14 +1694,11 @@ function get_plantilla($entid) {
 		'categoria' => $cat,
 		'entityname' => (empty($entityname) ? '' : elimina_puntuacion(elimina_acentos($entityname))),
 	);
-	return $ret;
 }
 
 function getEntityModule($crmid) {
 	global $adb;
-
-	$seltype = "SELECT setype FROM vtiger_crmentity WHERE crmid=$crmid AND deleted=0";
-	$restype = $adb->query($seltype);
+	$restype = $adb->pquery('SELECT setype FROM vtiger_crmobject WHERE crmid=? AND deleted=0', array($crmid));
 	if ($restype) {
 		$modname = $adb->query_result($restype, 0, 'setype');
 	} else {
@@ -1717,17 +1709,15 @@ function getEntityModule($crmid) {
 
 function getUitypefield($module, $fieldname) {
 	global $adb;
-	$seltab = "SELECT tabid FROM vtiger_tab WHERE name=?";
-	$restab = $adb->pquery($seltab, array($module));
+	$restab = $adb->pquery('SELECT tabid FROM vtiger_tab WHERE name=?', array($module));
 	$tabid = $adb->query_result($restab, 0, 'tabid');
-	$selfield = "SELECT uitype FROM vtiger_field WHERE tabid=? AND fieldname=?";
-	$resfield = $adb->pquery($selfield, array($tabid,$fieldname));
+	$resfield = $adb->pquery('SELECT uitype FROM vtiger_field WHERE tabid=? AND fieldname=?', array($tabid, $fieldname));
 	return $adb->query_result($resfield, 0, 'uitype');
 }
 
 function getRelatedCRMIDs($relsql, $sortinfo = false) {
 	global $adb;
-	$relsql = !!$sortinfo ? $relsql . ' ORDER BY ' . $sortinfo['cname'] . ' ' . $sortinfo['order'] : $relsql;
+	$relsql = empty($sortinfo) ? $relsql : $relsql . ' ORDER BY ' . $sortinfo['cname'] . ' ' . $sortinfo['order'];
 	$res = $adb->pquery($relsql, array());
 	$nr = $adb->num_rows($res);
 	$ret = array('entries' => array());

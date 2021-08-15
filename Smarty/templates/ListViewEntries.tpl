@@ -15,20 +15,18 @@
 {/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();">
-   <input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
-   <input name="idlist" id="idlist" type="hidden">
-   <input name="change_owner" type="hidden">
-   <input name="change_status" type="hidden">
-   <input name="action" id="action" type="hidden">
-   <input name="massedit1x1" id="massedit1x1" type="hidden" value="">
-   <input name="where_export" type="hidden" value="">
-   <input name="step" type="hidden">
-   <input name="excludedRecords" type="hidden" id="excludedRecords" value="">
-   <input name="numOfRows" id="numOfRows" type="hidden" value="">
-   <input name="allids" type="hidden" id="allids" value="{if isset($ALLIDS)}{$ALLIDS}{/if}">
-   <input name="selectedboxes" id="selectedboxes" type="hidden" value="{$SELECTEDIDS}">
-   <input name="allselectedboxes" id="allselectedboxes" type="hidden" value="{$ALLSELECTEDIDS}">
-   <input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
+	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
+	<input name="idlist" id="idlist" type="hidden">
+	<input name="action" id="action" type="hidden">
+	<input name="massedit1x1" id="massedit1x1" type="hidden" value="">
+	<input name="where_export" type="hidden" value="{$export_where}">
+	<input name="step" type="hidden">
+	<input name="excludedRecords" type="hidden" id="excludedRecords" value="">
+	<input name="numOfRows" id="numOfRows" type="hidden" value="">
+	<input name="allids" type="hidden" id="allids" value="{if isset($ALLIDS)}{$ALLIDS}{/if}">
+	<input name="selectedboxes" id="selectedboxes" type="hidden" value="{$SELECTEDIDS}">
+	<input name="allselectedboxes" id="allselectedboxes" type="hidden" value="{$ALLSELECTEDIDS}">
+	<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
 </form>
 <!-- List View's Buttons and Filters starts -->
 <table width="100%" class="layerPopupTransport">

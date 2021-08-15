@@ -121,12 +121,12 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 				$this->_attachments = array();
 			}
 			$this->_attachments[$filename] = $data;  // TODO: this is a problem if two files have same name
-		} elseif ($p->ifdisposition && $p->disposition == "INLINE" && $p->bytes > 0 && $p->subtype != 'PLAIN' && $p->subtype != 'HTML') {
+		} elseif ($p->ifdisposition && $p->disposition == 'INLINE' && $p->bytes > 0 && $p->subtype != 'PLAIN' && $p->subtype != 'HTML') {
 			// embedded images right now are treated as attachments
-			$this->_attachments["noname".$partno. "." .$p->subtype] = $data;
+			$this->_attachments['noname'.$partno. '.' .$p->subtype] = $data;
 		} elseif ($p->type==0 && $data) {
 			// TEXT
-			$this->_charset = $params['charset'];  // assume all parts are same charset
+			$this->_charset = substr($params['charset'], 0, 10);  // assume all parts are same charset
 			$data = self::__convert_encoding($data, 'UTF-8', $this->_charset);
 
 			// Messages may be split in different parts because of inline attachments,
@@ -134,7 +134,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			if (strtolower($p->subtype)=='plain') {
 				$this->_plainmessage .= trim($data) ."\n\n";
 			} else {
-				$this->_htmlmessage .= $data ."<br><br>";
+				$this->_htmlmessage .= $data .'<br><br>';
 			}
 		} elseif ($p->type==2 && $data) {
 			// EMBEDDED MESSAGE
@@ -211,13 +211,14 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 
 			$this->_from = json_decode(decode_html($resultrow['mfrom']));
 			$this->_to   = json_decode(decode_html($resultrow['mto']));
+			$this->_reply_to = json_decode(decode_html($resultrow['mreplyto']));
 			$this->_cc   = json_decode(decode_html($resultrow['mcc']));
 			$this->_bcc  = json_decode(decode_html($resultrow['mbcc']));
 
 			$this->_date	= decode_html($resultrow['mdate']);
-			$this->_subject = str_replace("_", " ", decode_html($resultrow['msubject']));
+			$this->_subject = str_replace('_', ' ', decode_html($resultrow['msubject']));
 			$this->_body    = decode_html($resultrow['mbody']);
-			$this->_charset = decode_html($resultrow['mcharset']);
+			$this->_charset = substr(decode_html($resultrow['mcharset']), 0, 10); // to cut -i in case it is there
 
 			$this->_isbodyhtml   = (int)$resultrow['misbodyhtml'] ? true : false;
 			$this->_plainmessage = $resultrow['mplainmessage'];
@@ -297,12 +298,13 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$params[] = $uid;
 		$params[] = json_encode($this->_from);
 		$params[] = json_encode($this->_to);
+		$params[] = json_encode($this->_reply_to);
 		$params[] = json_encode($this->_cc);
 		$params[] = json_encode($this->_bcc);
 		$params[] = $this->_date;
 		$params[] = $this->_subject;
 		$params[] = $this->_body;
-		$params[] = $this->_charset;
+		$params[] = substr($this->_charset, 0, 10);
 		$params[] = $this->_isbodyhtml;
 		$params[] = $this->_plainmessage;
 		$params[] = $this->_htmlmessage;
@@ -311,7 +313,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$params[] = $savedtime;
 
 		$adb->pquery(
-			'INSERT INTO vtiger_mailmanager_mailrecord (userid, muid, mfrom, mto, mcc, mbcc,
+			'INSERT INTO vtiger_mailmanager_mailrecord (userid, muid, mfrom, mto, mreplyto, mcc, mbcc,
 				mdate, msubject, mbody, mcharset, misbodyhtml, mplainmessage, mhtmlmessage, muniqueid,
 				mbodyparsed, lastsavedtime) VALUES ('.generateQuestionMarks($params).')',
 			$params
@@ -365,20 +367,16 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$mimetype = MailAttachmentMIME::detect($saveasfile);
 
 		$adb->pquery(
-			"INSERT INTO vtiger_crmentity(crmid, smcreatorid, smownerid,
-				modifiedby, setype, description, createdtime, modifiedtime, presence, deleted)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			array($attachid, $current_user->id, $current_user->id, $current_user->id, "MailManager Attachment", $binFile, $usetime, $usetime, 1, 0)
+			'INSERT INTO vtiger_crmentity(crmid,smcreatorid,smownerid,modifiedby,setype,description,createdtime,modifiedtime,presence,deleted) VALUES (?,?,?,?,?,?,?,?,?,?)',
+			array($attachid, $current_user->id, $current_user->id, $current_user->id, 'MailManager Attachment', $binFile, $usetime, $usetime, 1, 0)
 		);
 
 		$adb->pquery(
-			"INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?",
+			'INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?',
 			array($attachid, $binFile, $binFile, $mimetype, $dirname)
 		);
 
-		$attachInfo = array('attachid'=>$attachid, 'path'=>$dirname, 'name'=>$binFile, 'type'=>$mimetype, 'size'=>filesize($saveasfile));
-
-		return $attachInfo;
+		return array('attachid'=>$attachid, 'path'=>$dirname, 'name'=>$binFile, 'type'=>$mimetype, 'size'=>filesize($saveasfile));
 	}
 
 	/**
@@ -398,7 +396,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @return String
 	 */
 	public function subject($safehtml = true) {
-		if ($safehtml==true) {
+		if ($safehtml) {
 			return MailManager_Utils::safe_html_string($this->_subject);
 		}
 		return $this->_subject;
@@ -409,7 +407,6 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @param String $subject
 	 */
 	public function setSubject($subject) {
-		//$mailSubject = str_replace('_', ' ', $subject);
 		$this->_subject = @self::__mime_decode($subject);
 	}
 
@@ -453,7 +450,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @param Email $from
 	 */
 	public function setFrom($from) {
-		$mailFrom = str_replace("_", " ", $from);
+		$mailFrom = str_replace('_', ' ', $from);
 		$this->_from = @self::__mime_decode($mailFrom);
 	}
 
@@ -463,6 +460,14 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 */
 	public function to() {
 		return $this->_to;
+	}
+
+	/**
+	 * Gets the Mail To Email Addresses
+	 * @return Email(s)
+	 */
+	public function replyto() {
+		return $this->_reply_to;
 	}
 
 	/**
@@ -510,9 +515,9 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			$date = date('Y-m-d', strtotime($date));
 		}
 		if ($format) {
-			if (preg_match(sprintf("/%s ([^ ]+)/", date('D, d M Y')), $date, $m)) {
+			if (preg_match(sprintf('/%s ([^ ]+)/', date('D, d M Y')), $date, $m)) {
 				$date = $m[1]; // Pick only time part for today
-			} elseif (preg_match("/[a-zA-Z]{3}, ([0-9]{1,2} [a-zA-Z]{3} [0-9]{4})/", $date, $m)) {
+			} elseif (preg_match('/[a-zA-Z]{3}, ([0-9]{1,2} [a-zA-Z]{3} [0-9]{4})/', $date, $m)) {
 				$date = $m[1]; // Pick only date part
 			}
 			return str_replace('--', '', getValidDisplayDate($date));

@@ -163,7 +163,7 @@ function WhatsappTask($) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];
@@ -288,31 +288,18 @@ var attachmentManager = {
 		jQuery('#_progress_').hide();
 	},
 	show_error: function (message) {
-		var errordiv = jQuery('#_messagediv_');
-		if (message == '') {
-			errordiv.text('').hide();
-		} else {
-			errordiv.html('<p>' + message + '</p>').css('display', 'block').addClass('mm_error').removeClass('mm_message');
-			attachmentManager.placeAtCenter(errordiv);
-		}
-		attachmentManager.hide_error();
+		ldsModal.show(alert_arr['ERROR'], DOMPurify.sanitize(message), 'small', '');
 	},
 	hide_error: function () {
 		setTimeout(
 			function () {
-				jQuery('#_messagediv_').hide();
+				ldsModal.close();
 			},
 			5000
 		);
 	},
 	show_message: function (message) {
-		var errordiv = jQuery('#_messagediv_');
-		if (message == '') {
-			errordiv.text('').hide();
-		} else {
-			errordiv.html('<p>' + message + '</p>').css('display', 'block').removeClass('mm_error').addClass('mm_message');
-			attachmentManager.placeAtCenter(errordiv);
-		}
+		ldsModal.show('', DOMPurify.sanitize(message), 'small', '');
 		attachmentManager.hide_error();
 	},
 	i18n: function (key) {
@@ -330,7 +317,7 @@ var attachmentManager = {
 		if (!attachmentManager.checkUploadCount()) {
 			return false;
 		}
-		window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid=&forrecord=&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&callback=MailManager.add_data_to_relatedlist', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+		window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid=&forrecord=&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&callback=MailManager.add_data_to_relatedlist', 'test', cbPopupWindowSettings);
 	},
 	checkUploadCount : function () {
 		var CurrentUploadCount = jQuery('#attachmentCount').val();

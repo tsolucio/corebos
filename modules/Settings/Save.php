@@ -58,5 +58,5 @@ if ($mail_status != 1) {
 	}
 	$adb->pquery($sql, $params);
 }
-header("Location: index.php?module=Settings&parenttab=Settings&action=$action&$error_str");
+header("Location: index.php?module=Settings&action=$action&$error_str");
 ?>

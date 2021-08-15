@@ -66,7 +66,7 @@ class VTEventsManager {
 	 */
 	public function setHandlerInActive($handlerClass) {
 		$adb = $this->adb;
-		$adb->pquery("update vtiger_eventhandlers set is_active=false where handler_class=?", array($handlerClass));
+		$adb->pquery('update vtiger_eventhandlers set is_active=false where handler_class=?', array($handlerClass));
 		$this->clearTriggerCache();
 	}
 
@@ -77,7 +77,7 @@ class VTEventsManager {
 	 */
 	public function setHandlerActive($handlerClass) {
 		$adb = $this->adb;
-		$adb->pquery("update vtiger_eventhandlers set is_active=true where handler_class=?", array($handlerClass));
+		$adb->pquery('update vtiger_eventhandlers set is_active=true where handler_class=?', array($handlerClass));
 		$this->clearTriggerCache();
 	}
 
@@ -125,9 +125,10 @@ class VTEventsManager {
 		$result = $adb->pquery('SELECT eventhandler_module_id FROM vtiger_eventhandler_module WHERE handler_class=? limit 1', array($handlerClass));
 		if ($adb->num_rows($result)===0) {
 			$handlerModuleId = $adb->getUniqueId('vtiger_eventhandler_module');
-			$adb->pquery("insert into vtiger_eventhandler_module
-				(eventhandler_module_id, module_name, handler_class)
-				values (?,?,?)", array($handlerModuleId, $moduleName, $handlerClass));
+			$adb->pquery(
+				'insert into vtiger_eventhandler_module (eventhandler_module_id, module_name, handler_class) values (?,?,?)',
+				array($handlerModuleId, $moduleName, $handlerClass)
+			);
 		}
 	}
 
@@ -160,7 +161,7 @@ class VTEventsManager {
 
 	public function listAllEventHandlers() {
 		$adb = $this->adb;
-		$result = $adb->pquery("select * from vtiger_eventhandlers", array());
+		$result = $adb->pquery('select * from vtiger_eventhandlers', array());
 		return $this->listEventHandlers($result);
 	}
 

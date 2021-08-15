@@ -15,8 +15,7 @@ global $app_strings,$mod_strings,$current_language,$theme,$log,$currentModule;
 $current_module_strings = return_module_language($current_language, $currentModule);
 
 $productid = vtlib_purify($_REQUEST['return_id']);
-$parenttab = getParentTab();
-$theme_path="themes/".$theme."/";
+$theme_path='themes/'.$theme.'/';
 $image_path=$theme_path."images/";
 $productNameArr = getEntityName($currentModule, array($productid));
 $productname = $productNameArr[$productid];
@@ -59,17 +58,17 @@ $num_rows = $adb->num_rows($list_result);
 
 //Retreiving the array of already releated products
 if ($currentModule=='Products') {
-	$sql1='select vtiger_crmentity.crmid, vtiger_pricebookproductrel.pricebookid,vtiger_products.unit_price
+	$sql1='select vtiger_crmobject.crmid, vtiger_pricebookproductrel.pricebookid,vtiger_products.unit_price
 		from vtiger_pricebookproductrel
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_pricebookproductrel.productid
+		inner join vtiger_crmobject on vtiger_crmobject.crmid=vtiger_pricebookproductrel.productid
 		inner join vtiger_products on vtiger_products.productid=vtiger_pricebookproductrel.productid
-		where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
+		where vtiger_crmobject.deleted=0 and vtiger_pricebookproductrel.productid=?';
 } else {
-	$sql1='select vtiger_crmentity.crmid, vtiger_pricebookproductrel.pricebookid,vtiger_service.unit_price
+	$sql1='select vtiger_crmobject.crmid, vtiger_pricebookproductrel.pricebookid,vtiger_service.unit_price
 		from vtiger_pricebookproductrel
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_pricebookproductrel.productid
+		inner join vtiger_crmobject on vtiger_crmobject.crmid=vtiger_pricebookproductrel.productid
 		inner join vtiger_service on vtiger_service.serviceid=vtiger_pricebookproductrel.productid
-		where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
+		where vtiger_crmobject.deleted=0 and vtiger_pricebookproductrel.productid=?';
 }
 $res1 = $adb->pquery($sql1, array($productid));
 $num_prod_rows = $adb->num_rows($res1);
@@ -133,7 +132,7 @@ for ($i=0; $i<$num_rows; $i++) {
 		$pk_currency_name = $adb->query_result($list_result, $i, 'currency_name');
 		$unit_price = $prod_cur_price[$pk_currency_id];
 		$field_name = $entity_id.'_listprice';
-		$unit_price_array[]='"'.CurrencyField::convertToUserFormat($unit_price, null, true).'"';
+		$unit_price_array[]='"'.$unit_price.'"';
 		$field_name_array[]="'".$field_name."'";
 
 		$list_body .= '<tr class="lvtColData" onmouseover="this.className=\'lvtColDataHover\'" onmouseout="this.className=\'lvtColData\'" bgcolor="white">';
@@ -141,7 +140,7 @@ for ($i=0; $i<$num_rows; $i++) {
 		$list_body .= ' onClick=\'toggleSelectAll(this.name,"selectall");updateListPriceForField("'.$field_name.'",this)\'></td>';
 		$list_body .= '<td>'.$adb->query_result($list_result, $i, "bookname").'</td>';
 		$list_body .= '<td>'.$pk_currency_name.'</td>';
-		$list_body .= '<td>'.CurrencyField::convertToUserFormat($unit_price, null, true).'</td>';
+		$list_body .= '<td>'.$unit_price.'</td>';
 
 		$list_body .='<td>';
 		if (isPermitted('PriceBooks', 'EditView', "") == 'yes') {
@@ -167,7 +166,5 @@ $smarty->assign('LISTENTITY', $list_body);
 $smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
 $smarty->assign('RETURN_ACTION', vtlib_purify($_REQUEST['return_action']));
 $smarty->assign('RETURN_ID', $productid);
-$smarty->assign('CATEGORY', $parenttab);
-
 $smarty->display('AddProductToPriceBooks.tpl');
 ?>

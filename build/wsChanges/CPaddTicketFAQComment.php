@@ -14,13 +14,13 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'addTicketFaqComment',
-	 'include' => 'include/Webservices/addTicketFaqComment.php',
-	 'handler' => 'vtws_addTicketFaqComment',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'id','type' => 'string'),
-		 array('name' => 'values','type' => 'encoded'),
-	 )
+	'name'    => 'addTicketFaqComment',
+	'include' => 'include/Webservices/addTicketFaqComment.php',
+	'handler' => 'vtws_addTicketFaqComment',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'id','type' => 'string'),
+		array('name' => 'values','type' => 'encoded'),
+	)
 );

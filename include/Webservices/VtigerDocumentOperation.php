@@ -19,6 +19,7 @@ include_once 'include/Webservices/AttachmentHelper.php';
 class VtigerDocumentOperation extends VtigerModuleOperation {
 	protected $tabId;
 	protected $isEntity = true;
+	protected $dbQueryError = 'Database error while performing required operation';
 
 	public function __construct($webserviceObject, $user, $adb, $log) {
 		parent::__construct($webserviceObject, $user, $adb, $log);
@@ -42,7 +43,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		global $adb, $default_charset;
 		$crmObject = new VtigerCRMObject($elementType, false);
 
-		if ($element['filelocationtype']=='I' && !empty($element['filename'])) {
+		if ($element['filelocationtype']=='I' && !empty($element['filename']) && is_array($element['filename'])) {
 			$file = $element['filename'];
 			$file['assigned_user_id'] = $element['assigned_user_id'];
 			$file['setype'] = 'Documents Attachment';
@@ -51,8 +52,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 			$element['filename']= str_replace(array(' ','/'), '_', $file['name']);  // no spaces nor slashes
 			$element['filesize']=$file['size'];
 			if ($element['filesize']==0) {
-				$dbQuery = 'SELECT * FROM vtiger_attachments WHERE attachmentsid = ?' ;
-				$result = $adb->pquery($dbQuery, array($attachid));
+				$result = $adb->pquery('SELECT name,path FROM vtiger_attachments WHERE attachmentsid=?', array($attachid));
 				if ($result && $adb->num_rows($result) == 1) {
 					$name = @$adb->query_result($result, 0, 'name');
 					$filepath = @$adb->query_result($result, 0, 'path');
@@ -68,14 +68,14 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 
 		$error = $crmObject->create($element);
 		if (!$error) {
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, 'Database error while performing required operation');
+			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, $this->dbQueryError);
 		}
 
 		$id = $crmObject->getObjectId();
 
 		$error = $crmObject->read($id);
 		if (!$error) {
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, 'Database error while performing required operation');
+			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, $this->dbQueryError);
 		}
 
 		if ($element['filelocationtype']=='I' && !empty($attachid)) {
@@ -89,14 +89,20 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		if (isset($fields['cbuuid'])) {
 			$return['cbuuid'] = $fields['cbuuid'];
 		}
+		$this->addMoreInformation($id, $return);
+		unset($return['relations']);
 		return $return;
 	}
 
 	public function retrieve($id, $deleted = false) {
-		global $adb,$default_charset,$site_URL;
 		$ids = vtws_getIdComponents($id);
-		$elemid = $ids[1];
 		$doc = parent::retrieve($id, $deleted);
+		$this->addMoreInformation($ids[1], $doc);
+		return $doc;
+	}
+
+	private function addMoreInformation($elemid, &$doc) {
+		global $adb,$default_charset,$site_URL;
 		// Add relations
 		$relsrs=$adb->pquery('SELECT crmid FROM vtiger_senotesrel where notesid=?', array($elemid));
 		$rels=array();
@@ -118,7 +124,6 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 				}
 			}
 		}
-		return $doc;
 	}
 
 	/*
@@ -132,7 +137,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 	public function update($element) {
 		global $adb;
 		$ids = vtws_getIdComponents($element['id']);
-		if ($element['filelocationtype']=='I' && !empty($element['filename'])) {
+		if ($element['filelocationtype']=='I' && !empty($element['filename']) && is_array($element['filename'])) {
 			$file = $element['filename'];
 			$element['filesize']=$file['size'];
 			$file['assigned_user_id'] = $element['assigned_user_id'];
@@ -148,7 +153,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		$crmObject->setObjectId($ids[1]);
 		$error = $crmObject->update($element);
 		if (!$error) {
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, 'Database error while performing required operation');
+			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, $this->dbQueryError);
 		}
 
 		$id = $crmObject->getObjectId();

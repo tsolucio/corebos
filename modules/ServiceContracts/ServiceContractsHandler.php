@@ -45,53 +45,51 @@ class ServiceContractsHandler extends VTEventHandler {
 			if ($moduleName == 'HelpDesk' && (empty($_REQUEST['return_module']) || $_REQUEST['return_module'] != 'ServiceContracts')) {
 				$ticketId = $entityData->getId();
 				$data = $entityData->getData();
-				if ($data['ticketstatus'] != $entityData->oldStatus) {
-					if (strtolower($data['ticketstatus']) == 'closed' || strtolower($entityData->oldStatus) == 'closed') {
-						if (strtolower($entityData->oldStatus) == 'closed') {
-							$op = '-';
-						} else {
-							$op = '+';
+				if ($data['ticketstatus'] != $entityData->oldStatus && (strtolower($data['ticketstatus'])=='closed' || strtolower($entityData->oldStatus)=='closed')) {
+					if (strtolower($entityData->oldStatus) == 'closed') {
+						$op = '-';
+					} else {
+						$op = '+';
+					}
+					$directRelation = '';
+					$params = array($ticketId,$ticketId);
+					$sql = 'SELECT tablename,columnname
+						FROM vtiger_fieldmodulerel
+						JOIN vtiger_field ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid
+						WHERE module=? AND relmodule=?';
+					$result = $adb->pquery($sql, array('HelpDesk', 'ServiceContracts'));
+					$noofrows = $adb->num_rows($result);
+					if ($noofrows) {
+						while ($r = $adb->fetch_array($result)) {
+							$directRelation .= ' UNION SELECT '.$r['tablename'].'.'.$r['columnname'].' FROM '.$r['tablename'].' WHERE '.$r['tablename'].'.ticketid=?';
+							$params[] = $ticketId;
 						}
-						$directRelation = '';
-						$params = array($ticketId,$ticketId);
-						$sql = 'SELECT tablename,columnname
-							FROM vtiger_fieldmodulerel
-							JOIN vtiger_field ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid
-							WHERE module=? AND relmodule=?';
-						$result = $adb->pquery($sql, array('HelpDesk', 'ServiceContracts'));
-						$noofrows = $adb->num_rows($result);
-						if ($noofrows) {
-							while ($r = $adb->fetch_array($result)) {
-								$directRelation .= ' UNION SELECT '.$r['tablename'].'.'.$r['columnname'].' FROM '.$r['tablename'].' WHERE '.$r['tablename'].'.ticketid=?';
-								$params[] = $ticketId;
+					}
+					$contract_tktresult = $adb->pquery(
+						"SELECT crmid FROM vtiger_crmentityrel WHERE module='ServiceContracts' AND relmodule='HelpDesk' AND relcrmid=?
+						UNION
+						SELECT relcrmid FROM vtiger_crmentityrel WHERE relmodule='ServiceContracts' AND module='HelpDesk' AND crmid=? $directRelation",
+						$params
+					);
+					$noOfContracts = $adb->num_rows($contract_tktresult);
+					if ($noOfContracts > 0) {
+						for ($i=0; $i<$noOfContracts; $i++) {
+							$contract_id = $adb->query_result($contract_tktresult, $i, 'crmid');
+							$scFocus = CRMEntity::getInstance('ServiceContracts');
+							$scFocus->id = $contract_id;
+							$scFocus->retrieve_entity_info($contract_id, 'ServiceContracts');
+							$prevUsedUnits = $scFocus->column_fields['used_units'];
+							if (empty($prevUsedUnits)) {
+								$prevUsedUnits = 0;
 							}
-						}
-						$contract_tktresult = $adb->pquery(
-							"SELECT crmid FROM vtiger_crmentityrel WHERE module = 'ServiceContracts' AND relmodule = 'HelpDesk' AND relcrmid = ?
-							UNION
-							SELECT relcrmid FROM vtiger_crmentityrel WHERE relmodule = 'ServiceContracts' AND module = 'HelpDesk' AND crmid = ? $directRelation",
-							$params
-						);
-						$noOfContracts = $adb->num_rows($contract_tktresult);
-						if ($noOfContracts > 0) {
-							for ($i=0; $i<$noOfContracts; $i++) {
-								$contract_id = $adb->query_result($contract_tktresult, $i, 'crmid');
-								$scFocus = CRMEntity::getInstance('ServiceContracts');
-								$scFocus->id = $contract_id;
-								$scFocus->retrieve_entity_info($contract_id, 'ServiceContracts');
-								$prevUsedUnits = $scFocus->column_fields['used_units'];
-								if (empty($prevUsedUnits)) {
-									$prevUsedUnits = 0;
-								}
-								$usedUnits = $scFocus->computeUsedUnits($data);
-								if ($op == '-') {
-									$totalUnits = $prevUsedUnits - $usedUnits;
-								} else {
-									$totalUnits = $prevUsedUnits + $usedUnits;
-								}
-								$scFocus->updateUsedUnits($totalUnits);
-								$scFocus->calculateProgress();
+							$usedUnits = $scFocus->computeUsedUnits($data);
+							if ($op == '-') {
+								$totalUnits = $prevUsedUnits - $usedUnits;
+							} else {
+								$totalUnits = $prevUsedUnits + $usedUnits;
 							}
+							$scFocus->updateUsedUnits($totalUnits);
+							$scFocus->calculateProgress();
 						}
 					}
 				}

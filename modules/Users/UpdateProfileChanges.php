@@ -86,12 +86,10 @@ for ($i=0; $i<$num_act_per; $i++) {
 		} else {
 			$permission_value = 1;
 		}
-		$update_query = 'update vtiger_profile2standardpermissions set permissions=? where tabid=? and Operation=? and profileid=?';
-		$adb->pquery($update_query, array($permission_value, $tab_id, $action_id, $profileid));
-		if ($tab_id ==9) {
-			$update_query = 'update vtiger_profile2standardpermissions set permissions=? where tabid=16 and Operation=? and profileid=?';
-			$adb->pquery($update_query, array($permission_value, $action_id, $profileid));
-		}
+		$adb->pquery(
+			'update vtiger_profile2standardpermissions set permissions=? where tabid=? and operation=? and profileid=?',
+			array($permission_value, $tab_id, $action_id, $profileid)
+		);
 	}
 }
 
@@ -147,9 +145,9 @@ foreach ($modArr as $fld_module => $fld_label) {
 	}
 }
 if ($return_action == 'profilePrivileges' || $return_action == 'ListProfiles') {
-	$loc="index.php?action=$return_action&module=Settings&mode=view&parenttab=Settings&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
+	$loc="index.php?action=$return_action&module=Settings&mode=view&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
 } else {
-	$loc="index.php?action=$return_action&module=Users&mode=view&parenttab=Settings&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
+	$loc="index.php?action=$return_action&module=Users&mode=view&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
 }
 echo $loc;
 

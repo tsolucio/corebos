@@ -8,14 +8,13 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 <br>
 	<div align=center>
-	
+
 			{include file='SetMenu.tpl'}
 
 				<!-- DISPLAY -->
@@ -28,7 +27,7 @@
 				<input type="hidden" name="foldername" value="{$FOLDERNAME}">
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ViewTemplate.gif'|@vtiger_imageurl:$THEME}" width="45" height="60" border=0 ></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listemailtemplates&parenttab=Settings">{$UMOD.LBL_EMAIL_TEMPLATES}</a> &gt; {$MOD.LBL_VIEWING} &quot;{$TEMPLATENAME}&quot; </b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listemailtemplates">{$UMOD.LBL_EMAIL_TEMPLATES}</a> &gt; {$MOD.LBL_VIEWING} &quot;{$TEMPLATENAME}&quot; </b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small cblds-p-v_none">{$UMOD.LBL_EMAIL_TEMPLATE_DESC}</td>
@@ -42,7 +41,7 @@
 					<tr>
 						<td class="big"><strong>{$UMOD.LBL_PROPERTIES} &quot;{$TEMPLATENAME}&quot; </strong></td>
 						<td class="small cblds-t-align_right" align=right>&nbsp;&nbsp;
-						  <input class="crmButton edit small" type="submit" name="Button" value="{$APP.LBL_EDIT_BUTTON_LABEL}" onclick="this.form.action.value='editemailtemplate'; this.form.parenttab.value='Settings'">&nbsp;&nbsp;
+						  <input class="crmButton edit small" type="submit" name="Button" value="{$APP.LBL_EDIT_BUTTON_LABEL}" onclick="this.form.action.value='editemailtemplate';'">&nbsp;&nbsp;
 						</td>
 					</tr>
 					</table>
@@ -79,16 +78,9 @@
                                 <td class="cellText small">{$BODY}</td>
                               </tr>
                           </table></td>
-                          
                         </tr>
                       </table></td>
 					  </tr>
-					</table>
-					<br>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr>
-					  <td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
-					</tr>
 					</table>
 				</td>
 				</tr>

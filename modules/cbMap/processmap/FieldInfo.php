@@ -66,18 +66,25 @@ class FieldInfo extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping = array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$target_fields = array();
-		foreach ($xml->fields->field as $k => $v) {
+		foreach ($xml->fields->field as $v) {
 			$fieldname = (String)$v->fieldname;
 			$features = array();
-			foreach ($v->features->feature as $key => $feature) {
+			foreach ($v->features->feature as $feature) {
 				if (isset($feature->value)) {
 					$features[(String)$feature->name] = (String)$feature->value;
 				} else {
-					foreach ($feature->values->value as $key1 => $single_value) {
-						$features[(String)$feature->name][(String)$single_value->module] = (String)$single_value->value;
+					foreach ($feature->values->value as $single_value) {
+						if (isset($single_value->module)) {
+							$features[(String)$feature->name][(String)$single_value->module] = (String)$single_value->value;
+						} else {
+							$features[(String)$feature->name][] = isset($single_value->value) ? (String)$single_value->value : (String)$single_value;
+						}
 					}
 				}
 			}

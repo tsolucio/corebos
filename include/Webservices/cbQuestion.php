@@ -24,7 +24,18 @@ include_once 'modules/cbQuestion/cbQuestion.php';
  */
 function cbwsGetAnswer($qid, $params, $user) {
 	global $adb, $log;
-	$qid = vtws_getWSID($qid);
+	$qwsid = vtws_getWSID($qid);
+	if ($qwsid===false || $qwsid=='0x0') {
+		// we try to search it as a string
+		$qrs = $adb->pquery(
+			'select cbquestionid from vtiger_cbquestion inner join vtiger_crmentity on crmid=cbquestionid where deleted=0 and qname=?',
+			array($qid)
+		);
+		if ($qrs && $adb->num_rows($qrs)>0) {
+			$qwsid = vtws_getEntityId('cbQuestion').'x'.$qrs->fields['cbquestionid'];
+		}
+	}
+	$qid = $qwsid;
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $qid);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
@@ -50,6 +61,12 @@ function cbwsGetAnswer($qid, $params, $user) {
 	$qidComponents = vtws_getIdComponents($qid);
 	if (!$meta->exists($qidComponents[1])) {
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
+	}
+	if (is_string($params) && substr($params, 0, 1)=='{') {
+		$params = json_decode($params, true);
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Invalid Question context');
+		}
 	}
 	return cbQuestion::getAnswer($qidComponents[1], $params);
 }

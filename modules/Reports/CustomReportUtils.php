@@ -25,8 +25,7 @@ class CustomReportUtils {
 		if (!empty($groupby)) {
 			$showcharts = true;
 		}
-		$reportQuery = $reportnew->sGetSQLforReport($reportid, $filterlist, 'HTML', $showcharts);
-		return $reportQuery;
+		return $reportnew->sGetSQLforReport($reportid, $filterlist, 'HTML', $showcharts);
 	}
 
 	public static function getReportChart($reportid, $chartType) {
@@ -35,10 +34,7 @@ class CustomReportUtils {
 		$groupBy = $oReportRun->getGroupingList($reportid);
 		$module_field = $fieldDetails = '';
 		foreach ($groupBy as $key => $value) {
-			// $groupByConditon = explode(" ",$value);
-			//$groupByNew = explode("'",$groupByConditon[0]);
 			list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $key);
-			//list($module, $field) = explode('_', $module_field);
 			$fieldDetails = $key;
 			break;
 		}
@@ -62,16 +58,11 @@ class CustomReportUtils {
 			return false;
 		}
 		list($tablename, $colname, $module_field, $fieldname, $typeOfData) = explode(':', $reportColDetails);
-		if ($typeOfData == 'D') {
-			return true;
-		} else {
-			return false;
-		}
+		return ($typeOfData == 'D');
 	}
 
 	public static function getAdvanceSearchCondition($fieldDetails, $criteria, $fieldvalue) {
 		list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $fieldDetails);
-		//list($module, $field) = explode('_', $module_field);
 		list($year, $month, $day) = explode('-', $fieldvalue);
 		$grteqCondition = 'h';
 		$eqCondition = 'e';
@@ -79,8 +70,7 @@ class CustomReportUtils {
 		$advft_criteria_groups = array('1' => array('groupcondition' => null));
 		$advft_criteria = array();
 		if (empty($fieldvalue)) {
-			$condition = 'query=true&searchtype=advance&advft_criteria=' . json_encode($advft_criteria) . '&advft_criteria_groups=' . json_encode($advft_criteria_groups);
-			return $condition;
+			return 'query=true&searchtype=advance&advft_criteria=' . json_encode($advft_criteria) . '&advft_criteria_groups=' . json_encode($advft_criteria_groups);
 		}
 		if (strtolower($criteria) == 'year') {
 			$firstDate = DateTimeField::convertToUserFormat($year);
@@ -183,8 +173,6 @@ class CustomReportUtils {
 	public static function getXAxisDateFieldValue($dateFieldValue, $criteria) {
 		$timeStamp = strtotime($dateFieldValue);
 		$year = date('Y', $timeStamp);
-		//$month = date('m', $timeStamp);
-		//$day = date('d', $timeStamp);
 		$xaxisLabel = "";
 		if (strtolower($criteria) == 'year') {
 			$xaxisLabel = "Year $year";
@@ -205,7 +193,7 @@ class CustomReportUtils {
 	public static function getEntityTypeFromName($entityName, $modules = false) {
 		global $adb;
 
-		if ($modules == false) {
+		if (!$modules) {
 			$modules = array();
 			$result = $adb->pquery('SELECT modulename FROM vtiger_entityname', array());
 			$noOfModules = $adb->num_rows($result);

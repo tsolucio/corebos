@@ -17,7 +17,6 @@ require_once 'include/database/PearDatabase.php';
   * StandardUser is allowed to view only his login history details.
 **/
 class LoginHistory {
-	private $log;
 	private $db;
 
 	// Stored fields
@@ -42,7 +41,6 @@ class LoginHistory {
 	);
 
 	public function __construct() {
-		$this->log = LoggerManager::getLogger('loginhistory');
 		$this->db = PearDatabase::getInstance();
 	}
 
@@ -64,7 +62,7 @@ class LoginHistory {
 		'Signout Time'=>'logout_time',
 		'Status'=>'status'
 		);
-	public $default_order_by = "login_time";
+	public $default_order_by = 'login_time';
 	public $default_sort_order = 'DESC';
 
 	/**
@@ -97,9 +95,9 @@ class LoginHistory {
 		$log->debug('> getHistoryListViewEntries');
 
 		if ($sorder != '' && $order_by != '') {
-			$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$order_by." ".$sorder;
+			$list_query = 'Select * from vtiger_loginhistory where user_name=? order by '.$order_by.' '.$sorder;
 		} else {
-			$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = 'Select * from vtiger_loginhistory where user_name=? order by '.$this->default_order_by.' '.$this->default_sort_order;
 		}
 
 		$result = $adb->pquery($list_query, array($username));
@@ -110,7 +108,6 @@ class LoginHistory {
 			$out = getTranslatedString('Signed off');
 			for ($i = $navigation_array['start']; $i <= $navigation_array['end_val']; $i++) {
 				$entries = array();
-				//$loginid = $adb->query_result($result, $i-1, 'login_id');
 				$entries[] = $adb->query_result($result, $i-1, 'user_name');
 				$entries[] = $adb->query_result($result, $i-1, 'user_ip');
 				$entries[] = $adb->query_result($result, $i-1, 'login_time');
@@ -138,7 +135,7 @@ class LoginHistory {
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_loginhistory $where order by $order_by $sorder";
 		} else {
-			$list_query = "Select * from vtiger_loginhistory $where order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = "Select * from vtiger_loginhistory $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
 		$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
 		$from = ($page-1)*$rowsperpage;
@@ -188,12 +185,12 @@ class LoginHistory {
 	}
 
 	/** Function that Records the Login info of the User
-	 *  @param ref variable $usname :: Type varchar
-	 *  @param ref variable $usip :: Type varchar
-	 *  @param ref variable $intime :: Type timestamp
+	 *  @param string $usname user name logging in
+	 *  @param string $usip IP from which user is logging in
+	 *  @param datetime $intime login time
 	 *  Returns the query result which contains the details of User Login Info
 	*/
-	public function user_login(&$usname, &$usip, &$intime) {
+	public function user_login(&$usname, $usip, $intime) {
 		global $adb;
 		cbEventHandler::do_action('corebos.audit.login', array($usname, 'Users', 'Login', $usname, date('Y-m-d H:i:s')));
 		$query = 'Insert into vtiger_loginhistory (user_name, user_ip, logout_time, login_time, status) values (?,?,?,?,?)';
@@ -212,7 +209,7 @@ class LoginHistory {
 		cbEventHandler::do_action('corebos.audit.logout', array($usname, 'Users', 'Logout', $usname, date('Y-m-d H:i:s')));
 		$logid_qry = 'SELECT max(login_id) AS login_id from vtiger_loginhistory where user_name=? and user_ip=?';
 		$result = $adb->pquery($logid_qry, array($usname, $usip));
-		$loginid = $adb->query_result($result, 0, "login_id");
+		$loginid = $adb->query_result($result, 0, 'login_id');
 		if ($loginid == '') {
 			return;
 		}
@@ -237,7 +234,7 @@ class LoginHistory {
 
 		if ($recordCount === 0) {
 			$firstTimeLoginStatus = true;
-			cbEventHandler::do_action('corebos.audit.firsttime.login', array($user_name, 'Users', 'FirstTimeLogin', $user_name, date("Y-m-d H:i:s")));
+			cbEventHandler::do_action('corebos.audit.firsttime.login', array($user_name, 'Users', 'FirstTimeLogin', $user_name, date('Y-m-d H:i:s')));
 		} else {
 			if ($recordCount == 1) { // Only first time?
 				$row = $adb->fetch_array($result);

@@ -33,8 +33,7 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 		$searchFilter = false;
 		if (!empty($search)) {
 			$criterias = array('search' => $search, 'fieldnames' => $this->cachedSearchFields($module));
-			$searchFilter = crmtogo_UI_SearchFilterModel::modelWithCriterias($module, $criterias);
-			return $searchFilter;
+			return crmtogo_UI_SearchFilterModel::modelWithCriterias($module, $criterias);
 		}
 		return $searchFilter;
 	}
@@ -42,11 +41,11 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 
 	public function process(crmtogo_API_Request $request) {
 		$db = PearDatabase::getInstance();
-		$displayed_modules=  $this->getUserConfigModuleSettings();
+		$displayed_modules= $this->getUserConfigModuleSettings();
 		$searchmodule = array ();
 		foreach ($displayed_modules as $modulename => $moduleconfig) {
-			if ($moduleconfig ['active'] == 1) {
-				$searchmodule [] = $modulename;
+			if ($moduleconfig['active'] == 1) {
+				$searchmodule[] = $modulename;
 			}
 		}
 		$wsResponse = parent::process($request);
@@ -66,7 +65,7 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 				$sql = 'select distinct vtiger_field.tabid,name
 					from vtiger_field
 					inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
-					where vtiger_tab.tabid not in (16,29) and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
+					where vtiger_tab.tabid != 29 and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
 				$result = $db->pquery($sql, array());
 				while ($module_result = $db->fetch_array($result)) {
 					$modulename = $module_result['name'];
@@ -74,11 +73,7 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 					if (!empty($filter) && is_array($filter) && !in_array($modulename, $filter)) {
 						continue;
 					}
-					if ($modulename != 'Calendar') {
-						$return_arr[$modulename] = $modulename;
-					} else {
-						$return_arr[$modulename] = 'Activity';
-					}
+					$return_arr[$modulename] = $modulename;
 				}
 				return $return_arr;
 			}
@@ -102,7 +97,7 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 				$moduleRecordCount = array();
 				foreach ($object_array as $module => $object_name) {
 					$focus = CRMEntity::getInstance($module);
-					if (isPermitted($module, "index") == "yes") {
+					if (isPermitted($module, 'index') == 'yes') {
 						$listquery = getListQuery($module);
 						$oCustomView = '';
 						$oCustomView = new CustomView($module);
@@ -112,14 +107,6 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 						$viewid = $db->query_result($cv_res, 0, 'cvid');
 
 						$listquery = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
-						if ($module == "Calendar") {
-							if (!isset($oCustomView->list_fields['Close'])) {
-								$oCustomView->list_fields['Close']=array('activity' => 'status');
-							}
-							if (!isset($oCustomView->list_fields_name['Close'])) {
-								$oCustomView->list_fields_name['Close']='status';
-							}
-						}
 
 						//This is for Global search
 						$where = crmtogo_WS_Utils::getUnifiedWhere($listquery, $module, $search_val, $current_user);

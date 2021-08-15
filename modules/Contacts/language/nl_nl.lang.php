@@ -158,6 +158,11 @@ $mod_strings = array(
 	'LBL_CUSTOMER_PORTAL_INFORMATION' => 'Klantportaal informatie',
 	'Support Start Date' => 'Startdatum toegang',
 	'Support End Date' => 'Einddatum toegang',
+	'portalpasswordtype' => 'Password Encoding',
+	'portalloginuser' => 'Portal Login User',
+	'PortalUserPasswordManagement' => 'Portal Password',
+	'ppset' => 'Password set',
+	'ppnotset' => 'Password not set',
 	'Name' => 'Naam',
 	'LBL_ALL' => 'Alles',
 	'LBL_MAXIMUM_LIMIT_ERROR' => 'FOUT, uw bestand is te groot. Probeer opnieuw a.u.b. Probeer een bestand kleiner dan 800000 bytes',
@@ -283,5 +288,7 @@ $mod_strings = array(
 	'SYNC_RESULTS'=>'Sync Results',
 	'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
 	'Template Language' => 'Template Language',
+	'ship_countrycode' => 'A Landcode',
+	'bill_countrycode' => 'P landcode',
 );
 ?>

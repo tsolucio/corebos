@@ -43,5 +43,6 @@ $mod_strings = array (
 	'mailsubject' => '[Warning]: cron Task(s) exceed time threshold',
 	'mailheader' => 'Some cron tasks in <b>%s</b> have exceeded the maximum execution time.',
 	'LBL_CRONALERT' => 'Alert After',
+	'LBL_NTT' => 'Next Trigger Time',
 );
 ?>

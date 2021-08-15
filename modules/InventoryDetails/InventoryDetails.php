@@ -11,9 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class InventoryDetails extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_inventorydetails';
 	public $table_index= 'inventorydetailsid';
 	public $column_fields = array();
@@ -137,7 +134,11 @@ class InventoryDetails extends CRMEntity {
 		$handler = vtws_getModuleHandlerFromName('InventoryDetails', $current_user);
 		$meta = $handler->getMeta();
 		$dbformat = DataTransform::sanitizeCurrencyFieldsForDB($this->column_fields, $meta);
-		$this->column_fields['cost_gross'] = $this->column_fields['quantity'] * (float)$dbformat['cost_price'];
+		if (isset($dbformat['cost_price'])) {
+			$this->column_fields['cost_gross'] = (float)$dbformat['quantity'] * (float)$dbformat['cost_price'];
+		} else {
+			$this->column_fields['cost_gross'] = 0;
+		}
 		$adb->pquery('update vtiger_inventorydetails set cost_gross=? where inventorydetailsid=?', array($this->column_fields['cost_gross'], $this->id));
 		if (!empty($this->column_fields['productid'])) {
 			$this->column_fields['total_stock'] = getPrdQtyInStck($this->column_fields['productid']);
@@ -229,36 +230,9 @@ class InventoryDetails extends CRMEntity {
 		}
 	}
 
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
 	public static function createInventoryDetails($related_focus, $module) {
 		global $adb, $current_user, $currentModule;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 		$save_currentModule = $currentModule;
 		$currentModule = 'InventoryDetails';
 		$related_to = $related_focus->id;
@@ -332,10 +306,11 @@ class InventoryDetails extends CRMEntity {
 		}
 		// Delete all InventoryDetails where related with $related_to
 		$res_to_del = $adb->pquery(
-			'SELECT inventorydetailsid
+			'SELECT vtiger_inventorydetails.inventorydetailsid
 				FROM vtiger_inventorydetails
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid
-				WHERE deleted = 0 AND related_to = ? and lineitem_id not in (select lineitem_id from vtiger_inventoryproductrel where id=?)',
+				INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid
+				WHERE vtiger_crmentity.deleted=0 AND vtiger_inventorydetails.related_to=?
+					and vtiger_inventorydetails.lineitem_id not in (select lineitem_id from vtiger_inventoryproductrel where id=?)',
 			array($related_to,$related_to)
 		);
 		while ($invdrow = $adb->getNextRow($res_to_del, false)) {
@@ -358,10 +333,10 @@ class InventoryDetails extends CRMEntity {
 			$invdet_focus = array();
 			$invdet_focus = new InventoryDetails();
 			$rec_exists = $adb->pquery(
-				'SELECT inventorydetailsid
+				'SELECT vtiger_inventorydetails.inventorydetailsid
 					FROM vtiger_inventorydetails
-					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid
-					WHERE deleted = 0 AND lineitem_id = ?',
+					INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid
+					WHERE vtiger_crmentity.deleted=0 AND vtiger_inventorydetails.lineitem_id=?',
 				array($row['lineitem_id'])
 			);
 			if ($adb->num_rows($rec_exists)>0) {
@@ -372,13 +347,18 @@ class InventoryDetails extends CRMEntity {
 				$invdet_focus->id = '';
 				$invdet_focus->mode = '';
 			}
-			if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1) {
+			if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $save_currentModule) == 1) {
 				switch ($module) {
 					case 'SalesOrder':
 						if ($invdet_focus->mode == 'edit') {
 							$diff = $row['quantity']-$invdet_focus->column_fields['quantity'];
 							$result_units = $invdet_focus->column_fields['remaining_units']+$diff;
-							$invdet_focus->column_fields['remaining_units'] = ($result_units > 0 ? $result_units : 0);
+							if ($invdet_focus->column_fields['remaining_units'] > 0 && $result_units < 0) {
+								$result_units = 0;
+							} elseif ($invdet_focus->column_fields['remaining_units'] < 0 && $result_units > 0) {
+								$result_units = 0;
+							}
+							$invdet_focus->column_fields['remaining_units'] = $result_units;
 						} else {
 							$invdet_focus->column_fields['remaining_units'] = $row['quantity'];
 						}
@@ -386,8 +366,8 @@ class InventoryDetails extends CRMEntity {
 					case 'Invoice':
 						if (array_key_exists('rel_lineitem_id'.$requestindex, $_REQUEST)) {
 							$rel_invdet = $_REQUEST['rel_lineitem_id'.$requestindex];
-							$sel_rel_rec_exists = 'SELECT inventorydetailsid FROM vtiger_inventorydetails INNER JOIN vtiger_crmentity 
-							ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid WHERE deleted = 0 AND lineitem_id = ?';
+							$sel_rel_rec_exists = 'SELECT vtiger_inventorydetails.inventorydetailsid FROM vtiger_inventorydetails INNER JOIN '.$crmEntityTable
+								.' ON vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid WHERE deleted=0 AND vtiger_inventorydetails.lineitem_id=?';
 							$rel_rec_exists = $adb->pquery($sel_rel_rec_exists, array($rel_invdet));
 							if ($adb->num_rows($rel_rec_exists)>0) {
 								$rel_id_focus = new InventoryDetails();
@@ -397,10 +377,20 @@ class InventoryDetails extends CRMEntity {
 								if ($invdet_focus->mode == 'edit') {
 									$diff = $row['quantity']-$invdet_focus->column_fields['quantity'];
 									$result_units = $rel_id_focus->column_fields['remaining_units']-$diff;
-									$rel_id_focus->column_fields['remaining_units'] = ($result_units > 0 ? $result_units : 0);
+									if ($rel_id_focus->column_fields['remaining_units'] > 0 && $result_units < 0) {
+										$result_units = 0;
+									} elseif ($rel_id_focus->column_fields['remaining_units'] < 0 && $result_units > 0) {
+										$result_units = 0;
+									}
+									$rel_id_focus->column_fields['remaining_units'] = $result_units;
 								} else {
 									$result_units = $rel_id_focus->column_fields['remaining_units'] - $row['quantity'];
-									$rel_id_focus->column_fields['remaining_units'] = ($result_units > 0 ? $result_units : 0);
+									if ($rel_id_focus->column_fields['remaining_units'] > 0 && $result_units < 0) {
+										$result_units = 0;
+									} elseif ($rel_id_focus->column_fields['remaining_units'] < 0 && $result_units > 0) {
+										$result_units = 0;
+									}
+									$rel_id_focus->column_fields['remaining_units'] = $result_units;
 								}
 								$rel_id_focus->save('InventoryDetails');
 							}
@@ -420,8 +410,6 @@ class InventoryDetails extends CRMEntity {
 					$invdet_focus->column_fields[$fieldname] = $row[$fieldname];
 				}
 			}
-			$invdet_focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($invdet_focus->column_fields, $meta);
-
 			foreach ($invdet_focus->column_fields as $fieldname => $val) {
 				if (isset($_REQUEST[$fieldname.$requestindex])) {
 					$invdet_focus->column_fields[$fieldname] = vtlib_purify($_REQUEST[$fieldname.$requestindex]);
@@ -445,6 +433,7 @@ class InventoryDetails extends CRMEntity {
 				$invdet_focus->column_fields['tax_percent'] = 0;
 				$invdet_focus->column_fields['linetax'] = 0;
 			}
+			$invdet_focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($invdet_focus->column_fields, $meta);
 			$invdet_focus->save('InventoryDetails');
 			$requestindex++;
 			while (isset($_REQUEST['deleted'.$requestindex]) && $_REQUEST['deleted'.$requestindex] == 1) {
@@ -465,8 +454,9 @@ class InventoryDetails extends CRMEntity {
 					}
 			}
 			if ($check_invoiced) {
-				$sel_invoiced = 'SELECT COUNT(*) as remaining FROM vtiger_inventorydetails INNER JOIN vtiger_crmentity 
-					ON vtiger_crmentity.crmid = vtiger_inventorydetails.inventorydetailsid WHERE deleted = 0 AND related_to = ? AND remaining_units > 0';
+				$sel_invoiced = 'SELECT COUNT(*) as remaining FROM vtiger_inventorydetails INNER JOIN '.$crmEntityTable
+					.' ON vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid'
+					.' WHERE vtiger_crmentity.deleted=0 AND vtiger_inventorydetails.related_to=? AND vtiger_inventorydetails.remaining_units>0';
 				$rel_invoiced = $adb->pquery($sel_invoiced, array($soid));
 				$remaining = $adb->query_result($rel_invoiced, 0, 'remaining');
 				if ($remaining > 0) {
@@ -474,7 +464,7 @@ class InventoryDetails extends CRMEntity {
 				} else {
 					$invoiced = 1;
 				}
-				$adb->pquery('UPDATE vtiger_salesorder SET invoiced = ? WHERE salesorderid =?', array($invoiced,$soid));
+				$adb->pquery('UPDATE vtiger_salesorder SET invoiced=? WHERE salesorderid=?', array($invoiced,$soid));
 			}
 		}
 

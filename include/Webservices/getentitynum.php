@@ -16,21 +16,19 @@
 /* function used to get the numeration of entities:: autonumeric field
  * return array $entitynum - numeration of entities
  */
-function vtws_get_entitynum() {
-	require_once 'include/utils/UserInfoUtil.php';
-	require_once 'modules/Users/Users.php';
+function vtws_get_entitynum($user = '') {
 	global $adb;
-
-	$enumres = $adb->query('SELECT semodule, prefix FROM vtiger_modentity_num');
-	$no_of_cont = $adb->num_rows($enumres);
+	$types = vtws_listtypes(null, $user);
+	$enumres = $adb->pquery(
+		'SELECT semodule, prefix FROM vtiger_modentity_num WHERE active=1 and semodule in ('. generateQuestionMarks($types['types']) .')',
+		$types['types']
+	);
 	$entitynum = array();
-	for ($i=0; $i<$no_of_cont; $i++) {
-		$module = $adb->query_result($enumres, $i, 'semodule');
-		$prefix = $adb->query_result($enumres, $i, 'prefix');
-		if (is_null($entitynum[$module])) {
-			$entitynum[$module] = array($prefix);
+	while ($en=$adb->fetch_array($enumres)) {
+		if (empty($entitynum[$en['semodule']])) {
+			$entitynum[$en['semodule']] = array($en['prefix']);
 		} else {
-			$entitynum[$module][] = $prefix;
+			$entitynum[$en['semodule']][] = $en['prefix'];
 		}
 	}
 	return array($entitynum);

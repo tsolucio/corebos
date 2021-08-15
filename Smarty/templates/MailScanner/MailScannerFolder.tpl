@@ -9,7 +9,6 @@
  ********************************************************************************/
 -->*}
 
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript">
 {literal}
 function vtmailscanner_folders_resetAll_To(checktype) {
@@ -39,7 +38,6 @@ function vtmailscanner_folders_resetAll_To(checktype) {
 		<input type='hidden' name='mode' value='foldersave'>
 		<input type='hidden' name='return_action' value='MailScanner'>
 		<input type='hidden' name='return_module' value='Settings'>
-		<input type='hidden' name='parenttab' value='Settings'>
 
         <br>
 
@@ -48,31 +46,31 @@ function vtmailscanner_folders_resetAll_To(checktype) {
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width=50 rowspan=2 valign=top><img src="{'mailScanner.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MAIL_SCANNER}" width="48" height="48" border=0 title="{$MOD.LBL_MAIL_SCANNER}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small">{$MOD.LBL_MAIL_SCANNER_DESCRIPTION}</td>
 				</tr>
 				</table>
-				
+
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
 				<tr>
 				<td>
-				
+
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 				<tr>
 					<td class="big" width="70%"><strong>{$MOD.LBL_MAILBOX} {$MOD.LBL_FOLDER}</strong></td>
 					<td align="right">
-						<input type="submit" class="crmbutton small create" onclick="this.form.mode.value='folderupdate'" value="{$MOD.LBL_UPDATE}"> 
+						<input type="submit" class="crmbutton small create" onclick="this.form.mode.value='folderupdate'" value="{$MOD.LBL_UPDATE}">
 						<a href='javascript:void(0);' onclick="vtmailscanner_folders_resetAll_To(true);">{$MOD.LBL_SELECT} {$MOD.LBL_ALL}</a> |
 						<a href='javascript:void(0);' onclick="vtmailscanner_folders_resetAll_To(false);">{$MOD.LBL_UNSELECT} {$MOD.LBL_ALL}</a>
 					</td>
 				</tr>
 				</table>
 
-				{assign var="FOLDER_COL_LIMIT" value="4"}				
-				{assign var="FOLDER_COL_INDEX" value="0"}				
+				{assign var="FOLDER_COL_LIMIT" value="4"}
+				{assign var="FOLDER_COL_INDEX" value="0"}
 				{assign var="FOLDER_ROW_OPEN" value="false"}
 
 				<table border=0 cellspacing=0 cellpadding=0 width=100% class="listRow">
@@ -98,23 +96,23 @@ function vtmailscanner_folders_resetAll_To(checktype) {
 				<tr>
 					<td colspan="{$FOLDER_COL_LIMIT}" nowrap align="center">
 						<input type="submit" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" />
-						<input type="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" 
-							onclick="location.href='index.php?module=Settings&action=MailScanner&parenttab=Settings&scannername={$SCANNERINFO.scannername}'"/>
+						<input type="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}"
+							onclick="location.href='index.php?module=Settings&action=MailScanner&scannername={$SCANNERINFO.scannername}'"/>
 					</td>
 				</tr>
-				</table>	
-				
+				</table>
+
 				</td>
 				</tr>
 				</table>
-			
+
 			</td>
 			</tr>
 			</table>
 		</td>
 	</tr>
 	</table>
-		
+
 	</div>
 
 </td>

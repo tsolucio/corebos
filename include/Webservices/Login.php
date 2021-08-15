@@ -27,7 +27,7 @@ function vtws_login($username, $pwd) {
 	}
 
 	$accessCrypt = md5($token.$accessKey);
-	if (strcmp($accessCrypt, $pwd)!==0) {
+	if (!hash_equals($accessCrypt, $pwd)) {
 		$userpass = vtws_getUserPasswordFromInput($token, $pwd);
 		$user->column_fields['user_name']=$username;
 		if ($userpass['token']!=$token || !$user->doLogin($userpass['password'])) {
@@ -36,6 +36,11 @@ function vtws_login($username, $pwd) {
 	}
 	$user = $user->retrieveCurrentUserInfoFromFile($userId);
 	if ($user->status != 'Inactive') {
+		cbEventHandler::do_action('corebos.audit.authenticate', array($userId, 'Users', 'Authenticate', $userId, date('Y-m-d H:i:s'), 'webservice'));
+		// Recording the login info
+		require_once 'modules/Users/LoginHistory.php';
+		$loghistory=new LoginHistory();
+		$loghistory->user_login($username, Vtiger_Request::get_ip(), date('Y/m/d H:i:s'));
 		return $user;
 	}
 	throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Given user is inactive');
@@ -43,13 +48,9 @@ function vtws_login($username, $pwd) {
 
 function vtws_getActiveToken($userId) {
 	global $adb;
-
-	$sql = 'select token from vtiger_ws_userauthtoken where userid=? and expiretime >= ?';
-	$result = $adb->pquery($sql, array($userId,time()));
-	if ($result != null && isset($result)) {
-		if ($adb->num_rows($result)>0) {
-			return $adb->query_result($result, 0, 'token');
-		}
+	$result = $adb->pquery('select token from vtiger_ws_userauthtoken where userid=? and expiretime>=?', array($userId, time()));
+	if ($result != null && isset($result) && $adb->num_rows($result)>0) {
+		return $adb->query_result($result, 0, 'token');
 	}
 	return null;
 }
@@ -57,10 +58,8 @@ function vtws_getActiveToken($userId) {
 function vtws_getUserAccessKey($userId) {
 	global $adb;
 	$result = $adb->pquery('select accesskey from vtiger_users where id=?', array($userId));
-	if ($result != null && isset($result)) {
-		if ($adb->num_rows($result)>0) {
-			return $adb->query_result($result, 0, 'accesskey');
-		}
+	if ($result != null && isset($result) && $adb->num_rows($result)>0) {
+		return $adb->query_result($result, 0, 'accesskey');
 	}
 	return null;
 }

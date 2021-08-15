@@ -17,7 +17,7 @@ include_once 'include/Webservices/Create.php';
 include_once 'include/Webservices/Revise.php';
 
 function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
-	global $adb;
+	global $adb, $log;
 	$searchFields = explode(',', $searchOn);
 	array_walk(
 		$searchFields,
@@ -45,13 +45,42 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 	$queryGenerator = new QueryGenerator($elementType, $user);
 	$queryGenerator->setFields(['id']);
 
+	$webserviceObject = VtigerWebserviceObject::fromName($adb, $elementType);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+
+	require_once $handlerPath;
+
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$meta = $handler->getMeta();
+	$r = $meta->getReferenceFieldDetails();
 	//add condition to check for the record
 	foreach ($searchWithValues as $fieldName => $fieldValue) {
-		$queryGenerator->addCondition($fieldName, $fieldValue, 'e');
+		if ($fieldName=='cbuuid') {
+			continue;
+		}
+		if (isset($r[$fieldName])) { // reference field
+			if (empty($fieldValue)) {
+				$crmid = 0;
+			} else {
+				list($wsid, $crmid) = explode('x', $fieldValue);
+			}
+			$queryGenerator->addReferenceModuleFieldCondition($r[$fieldName][0], $fieldName, 'id', $crmid, 'e', QueryGenerator::$AND);
+		} else {
+			if ($fieldName=='id' && strpos($fieldValue, 'x')>0) {
+				list($wsid, $fieldValue) = explode('x', $fieldValue);
+			}
+			$queryGenerator->addCondition($fieldName, $fieldValue, 'e', QueryGenerator::$AND);
+		}
 	}
 
 	//get only one record of many possible records
-	$query = $queryGenerator->getQuery(false, 1);
+	$query = $queryGenerator->getQuery();
+	// special case for cbuuid
+	if (in_array('cbuuid', array_keys($searchWithValues))) {
+		$query .= $adb->convert2Sql(' and cbuuid=?', array($searchWithValues['cbuuid']));
+	}
+	$query .= ' limit 0,1';
 	$result = $adb->pquery($query, []);
 	if ($adb->num_rows($result) == 0) {
 		//remove id field if exists from input

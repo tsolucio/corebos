@@ -233,6 +233,7 @@ $mod_strings = array (
 'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Programma invio di un Report a intervalli regolari via mail ad un destinatario ',
 'LBL_USERS_AVAILABEL'=> 'Destinatari',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+'LBL_REPORT_FORMAT_CSV'=> 'CSV',
 'LBL_REPORT_FORMAT_URL'=> 'URL',
 'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 'LBL_REPORT_FORMAT_BOTH'=> 'Entrambi',
@@ -294,5 +295,6 @@ $mod_strings = array (
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Errore mentre si eliminava la cartella.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Errore mentre si eliminivano i report della cartella',
 'ERR_CREATE_REPORT' => 'Error creating the report.',
+'Select Report' => 'Select report',
 );
 ?>

@@ -13,7 +13,7 @@
 				<img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.VTLIB_LBL_MODULE_MANAGER}" title="{$MOD.VTLIB_LBL_MODULE_MANAGER}" border="0" height="48" width="48">
 			</td>
 			<td class="heading2" valign="bottom">
-				<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.VTLIB_LBL_MODULE_MANAGER}</b>
+				<b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.VTLIB_LBL_MODULE_MANAGER}</b>
 			</td>
 		</tr>
 		<tr>
@@ -27,11 +27,6 @@
 				<div id="vtlib_modulemanager_list">
 					{include file="Settings/ModuleManager/ModuleManagerAjax.tpl"}
 				</div>
-				<table border="0" cellpadding="5" cellspacing="0" width="100%">
-				<tr>
-					<td class="small" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
-				</tr>
-				</table>
 			</td>
 		</tr>
 		</table>

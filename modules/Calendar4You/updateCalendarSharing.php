@@ -14,7 +14,7 @@ $service='GoogleCalendar';
 if (!empty($_REQUEST['hour_format'])) {
 	$hour_format = vtlib_purify($_REQUEST['hour_format']);
 } else {
-	$hour_format = '24';
+	$hour_format = '12';
 }
 
 $activity_view = $_REQUEST['activity_view'];
@@ -61,7 +61,6 @@ $update_google_account = (isset($_REQUEST['update_google_account']) ? $_REQUEST[
 
 if ($update_google_account == '1') {
 	$google_login = vtlib_purify($_REQUEST['google_login']);
-	// $google_password = vtlib_purify($_REQUEST['google_password']);
 	$google_apikey= vtlib_purify($_REQUEST['google_apikey']);
 	$google_keyfile = vtlib_purify($_REQUEST['google_keyfile']);
 	$google_clientid = vtlib_purify($_REQUEST['google_clientid']);

@@ -42,13 +42,16 @@ class GlobalSearchAutocomplete extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping = array();
 		$mapping['mincharstosearch'] = (isset($xml->mincharstosearch) ? (Integer)$xml->mincharstosearch : 3);
 		$mapping['maxresults'] = (
 			isset($xml->maxresults) ? (Integer)$xml->maxresults : GlobalVariable::getVariable('Application_Global_Search_Autocomplete_Limit', 15)
 		);
 		$searchin = array();
-		foreach ($xml->searchin->module as $k => $v) {
+		foreach ($xml->searchin->module as $v) {
 			$searchfields = explode(',', (String)$v->searchfields);
 			$searchfields = array_map('trim', $searchfields);
 			$showfields = explode(',', (String)$v->showfields);

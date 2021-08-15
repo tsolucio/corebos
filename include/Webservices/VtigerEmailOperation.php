@@ -42,7 +42,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 			foreach ($element['files'] as $file) {
 				$element['filesize']=$file['size'];
 				$file['assigned_user_id'] = $element['assigned_user_id'];
-				$file['setype'] = "Emails Attachment";
+				$file['setype'] = 'Emails Attachment';
 				$attachments[] = SaveAttachmentDB($file);
 				$element['filetype']=$file['type'];
 				$element['filename']= str_replace(' ', '_', $file['name']);
@@ -132,6 +132,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 	 */
 	public function update($element) {
 		global $adb;
+		$mod = CRMEntity::getInstance('Emails');
 		list($wsid, $crmid) = vtws_getIdComponents($element['id']);
 		$em = new VTEventsManager($adb);
 		// Initialize Event trigger cache
@@ -148,10 +149,9 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 			}
 		}
 		$params[] = $crmid;
-		$sql = 'UPDATE vtiger_emaildetails set '.implode(',', $updfields).' where emailid=?';
-		$rs = $adb->pquery($sql, $params);
+		$adb->pquery('UPDATE vtiger_emaildetails set '.implode(',', $updfields).' where emailid=?', $params);
 		$modby = (isset($element['modifiedby']) ? ',modifiedby='.substr($element['modifiedby'], strpos($element['modifiedby'], 'x')+1) : '');
-		$adb->pquery('update vtiger_crmentity set modifiedtime=now()'.$modby.' where crmid=?', array($crmid));
+		$adb->pquery('update '.$mod->crmentityTable.' set modifiedtime=now()'.$modby.' where crmid=?', array($crmid));
 		//Event triggering code
 		$em->triggerEvent('vtiger.entity.aftersave', $entityData);
 		//Event triggering code ends

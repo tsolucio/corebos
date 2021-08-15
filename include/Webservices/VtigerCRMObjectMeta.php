@@ -14,14 +14,18 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	private $meta;
 	private $assign;
 	private $hasAccess;
+	private $hasCreateAccess;
 	private $hasReadAccess;
 	private $hasWriteAccess;
 	private $hasDeleteAccess;
 	private $assignUsers;
 	public $idColumn;
+	public $baseTable;
+	public $allDisplayTypes = false;
 
 	public function __construct($webserviceObject, $user) {
 		parent::__construct($webserviceObject, $user);
+		$this->allDisplayTypes = $webserviceObject->allDisplayTypes;
 		$this->columnTableMapping = null;
 		$this->fieldColumnMapping = null;
 		$this->userAccessibleColumns = null;
@@ -31,6 +35,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$this->ownerFields = null;
 		$this->moduleFields = array();
 		$this->hasAccess = false;
+		$this->hasCreateAccess = false;
 		$this->hasReadAccess = false;
 		$this->hasWriteAccess = false;
 		$this->hasDeleteAccess = false;
@@ -73,8 +78,9 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	private function computeAccess() {
 		global $adb;
 		$active = vtlib_isModuleActive($this->getTabName());
-		if ($active == false) {
+		if (!$active) {
 			$this->hasAccess = false;
+			$this->hasCreateAccess = false;
 			$this->hasReadAccess = false;
 			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
@@ -84,12 +90,12 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$userprivs = $this->user->getPrivileges();
 		if ($userprivs->hasGlobalReadPermission()) {
 			$this->hasAccess = true;
+			$this->hasCreateAccess = true;
 			$this->hasReadAccess = true;
 			$this->hasWriteAccess = true;
 			$this->hasDeleteAccess = true;
 		} else {
-			//TODO get oer sort out the preference among profile2tab and profile2globalpermissions.
-			//TODO check whether create/edit seperate controls required for web sevices?
+			//TODO get or sort out the preference among profile2tab and profile2globalpermissions.
 			$profileList = getCurrentUserProfileList();
 
 			$sql = 'select * from vtiger_profile2globalpermissions where profileid in ('.generateQuestionMarks($profileList).');';
@@ -104,6 +110,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 				if ($permission != 1 || $permission != '1') {
 					$this->hasAccess = true;
 					if ($globalactionid == 2 || $globalactionid == '2') {
+						$this->hasCreateAccess = true;
 						$this->hasWriteAccess = true;
 						$this->hasDeleteAccess = true;
 					} else {
@@ -122,10 +129,12 @@ class VtigerCRMObjectMeta extends EntityMeta {
 				return;
 			}
 
-			//operation=2 is delete operation.
-			//operation=0 or 1 is create/edit operation. precise 0 create and 1 edit.
-			//operation=3 index or popup. //ignored for websevices.
-			//operation=4 is view operation.
+			//operation=0 is save
+			//operation=1 is edit
+			//operation=2 is delete
+			//operation=3 index or popup. //ignored for webservices
+			//operation=4 is view
+			//operation=7 is create
 			$sql = 'select * from vtiger_profile2standardpermissions where profileid in ('.generateQuestionMarks($profileList).') and tabid=?';
 			$result = $adb->pquery($sql, array($profileList,$this->getTabId()));
 
@@ -133,10 +142,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			for ($i=0; $i<$noofrows; $i++) {
 				$standardDefined = true;
 				$permission = $adb->query_result($result, $i, 'permissions');
-				$operation = $adb->query_result($result, $i, 'Operation');
-				if (!$operation) {
-					$operation = $adb->query_result($result, $i, 'operation');
-				}
+				$operation = $adb->query_result($result, $i, 'operation');
 
 				if ($permission != 1 || $permission != '1') {
 					$this->hasAccess = true;
@@ -148,10 +154,13 @@ class VtigerCRMObjectMeta extends EntityMeta {
 						$this->hasDeleteAccess = true;
 					} elseif ($operation == 4 || $operation == '4') {
 						$this->hasReadAccess = true;
+					} elseif ($operation == 7 || $operation == '7') {
+						$this->hasCreateAccess = true;
 					}
 				}
 			}
 			if (!$standardDefined) {
+				$this->hasCreateAccess = true;
 				$this->hasReadAccess = true;
 				$this->hasWriteAccess = true;
 				$this->hasDeleteAccess = true;
@@ -164,6 +173,13 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			$this->retrieveMeta();
 		}
 		return $this->hasAccess;
+	}
+
+	public function hasCreateAccess() {
+		if (!$this->meta) {
+			$this->retrieveMeta();
+		}
+		return $this->hasCreateAccess;
 	}
 
 	public function hasWriteAccess() {
@@ -225,14 +241,9 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			if (!$this->assign) {
 				$this->retrieveUserHierarchy();
 			}
-			if (in_array($userId, array_keys($this->assignUsers))) {
-				return true;
-			} else {
-				return false;
-			}
+			return in_array($userId, array_keys($this->assignUsers));
 		} elseif (strcasecmp($webserviceObject->getEntityName(), 'Groups') === 0) {
-			$tabId = $this->getTabId();
-			$groups = vtws_getUserAccessibleGroups($tabId, $this->user);
+			$groups = vtws_getUserAccessibleGroups($this->getTabId(), $this->user);
 			foreach ($groups as $group) {
 				if ($group['id'] == $userId) {
 					return true;
@@ -270,9 +281,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		if ($this->fieldColumnMapping === null) {
 			$this->fieldColumnMapping = array();
 			foreach ($this->moduleFields as $fieldName => $webserviceField) {
-				if (strcasecmp($webserviceField->getFieldDataType(), 'file') !== 0) {
-					$this->fieldColumnMapping[$fieldName] = $webserviceField->getColumnName();
-				}
+				$this->fieldColumnMapping[$fieldName] = $webserviceField->getColumnName();
 			}
 			$this->fieldColumnMapping['id'] = $this->idColumn;
 		}
@@ -302,7 +311,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	}
 
 	public function getEntityName() {
-		return $this->objectName;
+		return $this->getTabName();
 	}
 
 	public function getEntityId() {
@@ -357,14 +366,16 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$current_language = vtws_preserveGlobal('current_language', $current_language);
 		$this->computeAccess();
 		$cv = new CustomView();
-		$cv->getCustomViewModuleInfo($this->getTabName());
+		$cv->getCustomViewModuleInfo($this->getTabName(), $this->allDisplayTypes);
 		$blockArray = array();
 		foreach ($cv->module_list[$this->getTabName()] as $blockList) {
 			$blockArray = array_merge($blockArray, explode(',', $blockList));
 		}
 		$this->retrieveMetaForBlock($blockArray);
 		$this->meta = true;
-		VTWS_PreserveGlobal::flush();
+		VTWS_PreserveGlobal::restore('current_user');
+		VTWS_PreserveGlobal::restore('theme');
+		VTWS_PreserveGlobal::restore('current_language');
 	}
 
 	private function retrieveUserHierarchy() {
@@ -379,7 +390,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$tabid = $this->getTabId();
 		$condition = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 		$userprivs = $this->user->getPrivileges();
-		if ($userprivs->hasGlobalReadPermission()) {
+		if ($userprivs->hasGlobalReadPermission() || $this->objectName == 'Users') {
 			$sql = "SELECT vtiger_field.*, '0' as readonly, vtiger_blocks.sequence as blkseq
 				FROM vtiger_field
 				LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
@@ -415,7 +426,6 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$result = $adb->pquery($sql, $params);
 		$noofrows = $adb->num_rows($result);
 		for ($i=0; $i<$noofrows; $i++) {
-			//$fieldname = $adb->query_result($result, $i, 'fieldname');
 			$webserviceField = WebserviceField::fromQueryResult($adb, $result, $i);
 			$this->moduleFields[$webserviceField->getFieldName()] = $webserviceField;
 		}
@@ -438,17 +448,13 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$seType = null;
 		if ($this->objectName == 'Users') {
 			$result = $adb->pquery('select user_name from vtiger_users where id=? and deleted=?', array($id,$deleted));
-			if ($result != null && isset($result)) {
-				if ($adb->num_rows($result)>0) {
-					$seType = 'Users';
-				}
+			if ($result != null && isset($result) && $adb->num_rows($result)>0) {
+				$seType = 'Users';
 			}
 		} else {
-			$result = $adb->pquery('select setype from vtiger_crmentity where crmid=? and deleted=?', array($id,$deleted));
-			if ($result != null && isset($result)) {
-				if ($adb->num_rows($result)>0) {
-					$seType = $adb->query_result($result, 0, 'setype');
-				}
+			$result = $adb->pquery('select setype from vtiger_crmobject where crmid=? and deleted=?', array($id, $deleted));
+			if ($result && $adb->num_rows($result)>0) {
+				$seType = $adb->query_result($result, 0, 'setype');
 			}
 		}
 		return $seType;
@@ -458,28 +464,27 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		global $adb;
 
 		// Caching user existence value for optimizing repeated reads.
-		// NOTE: We are not caching the record existence
-		// to ensure only latest state from DB is sent.
+		// NOTE: We are not caching the record existence to ensure only latest state from DB is sent.
 		static $user_exists_cache = array();
 
 		$exists = false;
 		$sql = '';
 		if ($this->objectName == 'Users') {
-			if (array_key_exists($recordId, $user_exists_cache)) {
-				$exists = true;
+			if (isset($user_exists_cache[$recordId])) {
+				$exists = $user_exists_cache[$recordId];
 			} else {
 				$sql = "select 1 from vtiger_users where id=? and deleted=0 and status='Active'";
 			}
 		} else {
-			$sql = "select 1 from vtiger_crmentity where crmid=? and deleted=0 and setype='".$this->getTabName()."'";
+			$module = $this->getTabName();
+			$mod = CRMEntity::getInstance($module);
+			$sql = 'select 1 from '.$mod->crmentityTable." where crmid=? and deleted=0 and setype='".$this->getTabName()."'";
 		}
 
 		if ($sql) {
 			$result = $adb->pquery($sql, array($recordId));
-			if ($result != null && isset($result)) {
-				if ($adb->num_rows($result)>0) {
-					$exists = true;
-				}
+			if ($result && $adb->num_rows($result)>0) {
+				$exists = true;
 			}
 			// Cache the value for further lookup.
 			if ($this->objectName == 'Users') {
@@ -492,15 +497,23 @@ class VtigerCRMObjectMeta extends EntityMeta {
 
 	public function getNameFields() {
 		global $adb;
-		$result = $adb->pquery('select fieldname,tablename,entityidfield from vtiger_entityname where tabid = ?', array($this->getEffectiveTabId()));
-		$fieldNames = '';
-		if ($result) {
-			$rowCount = $adb->num_rows($result);
-			if ($rowCount > 0) {
-				$fieldNames = $adb->query_result($result, 0, 'fieldname');
+		$tabid = $this->getEffectiveTabId();
+		$result = $adb->pquery('select fieldname from vtiger_entityname where tabid=?', array($tabid));
+		$fieldNames = array();
+		if ($result && $adb->num_rows($result) > 0) {
+			$labelFields = $adb->query_result($result, 0, 'fieldname');
+			$lfields = explode(',', $labelFields);
+			foreach ($lfields as $key => $columnname) {
+				$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $columnname);
+				if ($fieldinfo === false) {
+					getColumnFields($this->getTabName());
+					$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $columnname);
+				}
+				$lfields[$key] = $fieldinfo['fieldname'];
 			}
+			$fieldNames = $lfields;
 		}
-		return $fieldNames;
+		return implode(',', $fieldNames);
 	}
 
 	public function getName($webserviceId) {

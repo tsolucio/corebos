@@ -12,6 +12,7 @@ require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 
 class VTWorkflowEntity {
 	private $isDeleted = false;
+	public $formatReferenceValues = true;
 	public $WorkflowEvent = 0;
 	public $WorkflowContext = array();
 
@@ -43,7 +44,7 @@ class VTWorkflowEntity {
 	/**
 	 * Get the data from the entity object as an array.
 	 *
-	 * @return An array representation of the module data.
+	 * @return array representation of the module data.
 	 */
 	public function getData() {
 		return $this->data;
@@ -61,7 +62,7 @@ class VTWorkflowEntity {
 	/**
 	 * Get the entity id.
 	 *
-	 * @return The entity id.
+	 * @return integer entity id.
 	 */
 	public function getId() {
 		return $this->data['id'];
@@ -70,7 +71,7 @@ class VTWorkflowEntity {
 	/**
 	 * Get the name of the module represented by the entity data object.
 	 *
-	 * @return The module name.
+	 * @return string module name.
 	 */
 	public function getModuleName() {
 		if ($this->moduleName==null) {
@@ -88,10 +89,19 @@ class VTWorkflowEntity {
 		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
 		if (count($matches)>0) {
 			global $current_user;
-			$ct = new VTSimpleTemplate($fieldName);
+			if (!$this->formatReferenceValues) {
+				$ct = new VTSimpleTemplate($fieldName, false, $this->formatReferenceValues);
+			} else {
+				$ct = new VTSimpleTemplate($fieldName);
+			}
 			$entityCache = new VTEntityCache($current_user);
-			$info = $ct->render($entityCache, $this->getId());
-			return $info;
+			$entityCache->setCache($this->getId(), $this);
+			return $ct->render($entityCache, $this->getId());
+		}
+		if (substr($fieldName, 0, 14)=='previousvalue_') {
+			$entityDelta = new VTEntityDelta();
+			$idParts = vtws_getIdComponents($this->getId());
+			return $entityDelta->getOldEntityValue($this->getModuleName(), $idParts[1], substr($fieldName, 14));
 		}
 		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : null);
 	}
@@ -131,6 +141,14 @@ class VTEntityCache {
 	public function __construct($user) {
 		$this->user = $user;
 		$this->cache = array();
+	}
+
+	public function setCache($id, $wfEntity) {
+		$this->cache[$id] = $wfEntity;
+	}
+
+	public function emptyCache($id) {
+		unset($this->cache[$id]);
 	}
 
 	public function forId($id) {

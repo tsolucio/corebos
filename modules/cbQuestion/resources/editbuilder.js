@@ -316,7 +316,7 @@ function editbuilderscript($, conditions) {
 		resetGroupJoinCondition(groupno);
 		let grpbtns = document.querySelectorAll('button[id^="save_conditions_add_"]');
 		let totgrp = grpbtns.length;
-		Array.from(grpbtns).map(x => x.style.visibility='hidden');
+		Array.from(grpbtns).forEach(x => x.style.visibility='hidden');
 		if (totgrp>0) {
 			grpbtns[totgrp-1].style.visibility = 'visible';
 		} else {
@@ -398,7 +398,7 @@ function editbuilderscript($, conditions) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];
@@ -554,7 +554,7 @@ function editbuilderscript($, conditions) {
 							$('#save_conditions_add_'+groupid).bind('click', function () {
 								addCondition(groupno, condno++);
 							});
-							Array.from(document.querySelectorAll('button[id^="save_conditions_add_"]')).map(x => x.style.visibility='hidden');
+							Array.from(document.querySelectorAll('button[id^="save_conditions_add_"]')).forEach(x => x.style.visibility='hidden');
 							document.getElementById('save_conditions_add_'+groupid).style.visibility = 'visible';
 
 							var rem_group_img = $('#save_condition_group_'+groupid+'_remove');
@@ -672,7 +672,7 @@ function editbuilderscript($, conditions) {
 
 					$('#save_submit').unbind('click').bind('click', function () {
 						var conditions = [];
-						i=0;
+						var i=0;
 						$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
 							$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
 								$(conditiongroup).children().each(function (l) {
@@ -727,7 +727,7 @@ function editbuilderscript($, conditions) {
 		};
 	}
 
-	$(document).ready(changeModule());
+	$(document).ready(changeModule);
 	this.changeModule = changeModule;
 	this.getMetaInformation = getMetaInformation;
 	this.cbaccess = vtinst;

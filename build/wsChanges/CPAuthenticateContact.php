@@ -14,13 +14,13 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'authenticateContact',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_AuthenticateContact',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		 array('name' => 'email','type' => 'string'),
-		 array('name' => 'password','type' => 'string'),
-	 )
+	'name'    => 'authenticateContact',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_AuthenticateContact',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'email','type' => 'string'),
+		array('name' => 'password','type' => 'string'),
+	)
 );

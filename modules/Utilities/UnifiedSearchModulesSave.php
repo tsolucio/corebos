@@ -29,7 +29,7 @@ if (isset($_REQUEST['search_onlyin'])) {
 	}
 	if (count($search_onlyin)>0) {
 		$search_onlyin = array_filter($search_onlyin, function ($elem) {
-			return !(strpos($elem, $GLOBALS['csrf']['input-name']) !== false);
+			return (strpos($elem, $GLOBALS['csrf']['input-name']) === false);
 		});
 	}
 	// Save the selection for future use (UnifiedSearchModules.php)
@@ -38,11 +38,10 @@ if (isset($_REQUEST['search_onlyin'])) {
 		// we save this users preferences in a global variable
 		global $current_user, $adb;
 		include_once 'include/Webservices/Create.php';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
+		$dnjoin = 'INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid';
 		$checkrs = $adb->pquery(
-			'select crmid
-			from vtiger_globalvariable
-			inner join vtiger_crmentity on crmid=globalvariableid
-			where deleted=0 and gvname=? and smownerid=?',
+			'select globalvariableid from vtiger_globalvariable '.$dnjoin.' where vtiger_crmentity.deleted=0 and gvname=? and vtiger_crmentity.smownerid=?',
 			array('Application_Global_Search_SelectedModules',$current_user->id)
 		);
 		if ($adb->num_rows($checkrs)>0) {

@@ -43,7 +43,6 @@ $smarty->assign('CURRENT_USER_MAIL', $current_user->email1);
 $smarty->assign('CURRENT_USER', $current_user->user_name);
 $smarty->assign('CURRENT_USER_ID', $current_user->id);
 $smarty->assign('CURRENT_USER_IMAGE', ($current_user->column_fields['imagenameimageinfo']!='' ? $current_user->column_fields['imagenameimageinfo']['path'] : ''));
-$smarty->assign('CATEGORY', getParentTab());
 $smarty->assign('CALC', get_calc($image_path));
 $smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 
@@ -51,13 +50,13 @@ if (is_admin($current_user)) {
 	$smarty->assign('ADMIN_LINK', "<a href='index.php?module=Settings&action=index'>".$app_strings['LBL_SETTINGS'].'</a>');
 }
 
-$module_path="modules/".$currentModule."/";
+$module_path='modules/'.$currentModule.'/';
 
 //Assign the entered global search string to a variable and display it again
 if (isset($_REQUEST['query_string']) && $_REQUEST['query_string'] != '') {
-	$smarty->assign("QUERY_STRING", htmlspecialchars($_REQUEST['query_string'], ENT_QUOTES, $default_charset));//BUGIX " Cross-Site-Scripting "
+	$smarty->assign('QUERY_STRING', htmlspecialchars($_REQUEST['query_string'], ENT_QUOTES, $default_charset));//BUGIX Cross-Site-Scripting
 } else {
-	$smarty->assign("QUERY_STRING", "$app_strings[LBL_SEARCH_STRING]");
+	$smarty->assign('QUERY_STRING', $app_strings['LBL_SEARCH_STRING']);
 }
 
 require_once 'data/Tracker.php';
@@ -83,6 +82,11 @@ $smarty->assign('coreBOS_app_name', $appUIName);
 $appUINameHTML = decode_html(vtlib_purify(GlobalVariable::getVariable('Application_UI_NameHTML', $appUIName)));
 $smarty->assign('coreBOS_app_nameHTML', $appUINameHTML);
 $smarty->assign('coreBOS_app_coverimage', GlobalVariable::getVariable('Application_UI_CoverImage', 'themes/images/content-bg-1.png'));
+$NotificationSound = GlobalVariable::getVariable('Calendar_Notification_Sound', 'modules/cbCalendar/media/new_event.mp3');
+if (!isInsideApplication($NotificationSound)) {
+	$NotificationSound = 'modules/cbCalendar/media/new_event.mp3';
+}
+$smarty->assign('Calendar_Notification_Sound', $NotificationSound);
 
 $companyDetails = retrieveCompanyDetails();
 $smarty->assign('COMPANY_DETAILS', $companyDetails);
@@ -100,12 +104,20 @@ $smarty->assign('GS_AUTOCOMP', $cbMapGS);
 $Application_Global_Search_Active = GlobalVariable::getVariable('Application_Global_Search_Active', 1);
 $smarty->assign('Application_Global_Search_Active', $Application_Global_Search_Active);
 
-$smarty->assign('HELP_URL', GlobalVariable::getVariable('Application_Help_URL', 'http://corebos.org/documentation'));
+$smarty->assign('HELP_URL', GlobalVariable::getVariable('Application_Help_URL', 'https://corebos.org/documentation'));
+$smarty->assign('SET_CSS_PROPERTIES', GlobalVariable::getVariable('Application_CSS_Properties', 'include/LD/assets/styles/properties.php'));
 ob_start();
 cbEventHandler::do_action('corebos.header.premenu');
 $smarty->assign('COREBOS_HEADER_PREMENU', ob_get_clean());
 getBrowserVariables($smarty);
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
+
+if (coreBOS_Settings::getSetting('onesignal_isactive', '0') == '1') {
+	$smarty->assign('ONESIGNAL_APP_ID', coreBOS_Settings::getSetting('onesignal_app_id', ''));
+	$smarty->assign('ONESIGNAL_IS_ACTIVE', true);
+} else {
+	$smarty->assign('ONESIGNAL_IS_ACTIVE', false);
+}
 
 $smarty->display('Header.tpl');
 ?>

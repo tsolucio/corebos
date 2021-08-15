@@ -19,7 +19,8 @@
 *************************************************************************************************/
 global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user, $theme;
 require_once 'modules/cbupdater/cbupdaterHelper.php';
-
+require_once 'data/CRMEntity.php';
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbupdater');
 $error = false;
 $errmsg = '';
 
@@ -31,7 +32,7 @@ $smarty->assign('CUSTOM_MODULE', true);
 $smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
-include 'modules/cbupdater/forcedButtons.php';
+include 'modules/cbupdater/cbupdButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 echo $smarty->fetch('Buttons_List.tpl');
 
@@ -48,8 +49,8 @@ if (!empty($ids)) {
 	}
 	$adb->query("ALTER TABLE vtiger_cbupdater ADD COLUMN appcs varchar(3) DEFAULT '1'");
 	$sql = 'select cbupdaterid,filename,pathfilename,classname, appcs, cbupd_no, description from vtiger_cbupdater
-			inner join vtiger_crmentity on crmid=cbupdaterid
-			where deleted=0 and ';
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbupdaterid
+			where vtiger_crmentity.deleted=0 and ';
 	if ($ids=='all') {
 		$sql .= "execstate in ('Pending','Continuous')";
 	} else {
@@ -124,7 +125,11 @@ if (!empty($ids)) {
 						}
 						cbupdater_show_message($msg);
 						$cbw = new cbupdaterWorker($upd['cbupdaterid']);
-						$cbw->processManualUpdate($ins);
+						if ($whattodo == 'undo') {
+							$cbw->undoChange();
+						} else {
+							$cbw->processManualUpdate($ins);
+						}
 						if (!$cbw->updError) {
 							$totalopsok++;
 						}

@@ -20,6 +20,8 @@ var MailManageri18nInfo = {ldelim}{rdelim};
 		MailManageri18nInfo['{$i18nKey}'] = '{$i18nValue}';
 	{/if}
 {/foreach}
+var emailSignature = `{$emailSignature}`;
+var emailSignatureBeforeQuote = {$emailSignatureBeforeQuote};
 </script>
 
 <table style="width:98%;margin:auto;">
@@ -41,7 +43,6 @@ var MailManageri18nInfo = {ldelim}{rdelim};
 					</div>
 				</td>
 				<td width="85%">
-					<span id="_messagediv_">{if $ERROR}<p>{$ERROR}</p>{/if}</span>
 						<div id="_contentdiv_"></div>
 						<div id="_contentdiv2_"></div>
 						<div id="_settingsdiv_"></div>

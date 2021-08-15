@@ -30,7 +30,7 @@ if ($foldercount > 0) {
 		$folder_details['foldername']=$adb->query_result($result, $i, 'foldername');
 		$foldername = $folder_details['foldername'];
 		$folder_details['description']=$adb->query_result($result, $i, 'description');
-		if ($displayFolder == true) {
+		if ($displayFolder) {
 			$folders[$foldername] = $folder_details;
 		} else {
 			$emptyfolders[$foldername] = $folder_details;
@@ -39,7 +39,7 @@ if ($foldercount > 0) {
 			$default_folder_details = $folder_details;
 		}
 	}
-	if (count($folders) == 0) {
+	if (empty($folders)) {
 		$folders[$default_folder_details['foldername']] = $default_folder_details;
 	}
 }

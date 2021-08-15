@@ -66,10 +66,8 @@ if ((empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN']!==(in
 	die;
 }
 
-if (isset($_POST['record']) && !is_admin($current_user) && $_POST['record'] != $current_user->id) {
-	echo ('Unauthorized access to user administration.');
-} elseif (!isset($_POST['record']) && !is_admin($current_user)) {
-	echo ('Unauthorized access to user administration.');
+if ((isset($_POST['record']) && !is_admin($current_user) && $_POST['record'] != $current_user->id) || (!isset($_POST['record']) && !is_admin($current_user))) {
+	echo 'Unauthorized access to user administration.';
 }
 
 $focus = new Users();
@@ -96,11 +94,9 @@ if (isset($_REQUEST['deleteImage']) && $_REQUEST['deleteImage'] == 'true') {
 if (isset($_REQUEST['changepassword']) && $_REQUEST['changepassword'] == 'true') {
 	$focus->retrieve_entity_info($_REQUEST['record'], 'Users');
 	$focus->id = vtlib_purify($_REQUEST['record']);
-	if (isset($_REQUEST['new_password'])) {
-		if (!$focus->change_password(vtlib_purify($_REQUEST['old_password']), vtlib_purify($_REQUEST['new_password']))) {
-			header('Location: index.php?action=DetailView&module=Users&record='.$focus->id.'&error_string='.urlencode($focus->error_string));
-			exit;
-		}
+	if (isset($_REQUEST['new_password']) && !$focus->change_password(vtlib_purify($_REQUEST['old_password']), vtlib_purify($_REQUEST['new_password']))) {
+		header('Location: index.php?action=DetailView&module=Users&record='.$focus->id.'&error_string='.urlencode($focus->error_string));
+		exit;
 	}
 }
 
@@ -143,10 +139,8 @@ if (empty($_REQUEST['changepassword']) || $_REQUEST['changepassword'] != 'true')
 
 	$return_id = $focus->id;
 
-	if (isset($focus->id) && $focus->id != '') {
-		if (isset($_POST['group_name']) && $_POST['group_name'] != '') {
-			updateUsers2GroupMapping($_POST['group_name'], $focus->id);
-		}
+	if (isset($focus->id) && $focus->id != '' && isset($_POST['group_name']) && $_POST['group_name'] != '') {
+		updateUsers2GroupMapping($_POST['group_name'], $focus->id);
 	}
 }
 if (isset($_POST['return_module']) && $_POST['return_module'] != '') {

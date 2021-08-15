@@ -246,6 +246,7 @@ $mod_strings = array(
 'LBL_USERS_AVAILABEL'=> 'Ontvangers',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
 'LBL_REPORT_FORMAT_URL'=> 'URL',
+'LBL_REPORT_FORMAT_CSV'=> 'CSV',
 'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 'LBL_REPORT_FORMAT_BOTH'=> 'Beiden',
 'LBL_REPORT_FORMAT'=> 'Rapportformaat',
@@ -306,5 +307,6 @@ $mod_strings = array(
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Fout bij het wissen van de map.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
 'ERR_CREATE_REPORT' => 'Error creating the report.',
+'Select Report' => 'Select report',
 );
 ?>

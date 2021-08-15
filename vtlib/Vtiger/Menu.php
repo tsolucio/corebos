@@ -84,7 +84,7 @@ class Vtiger_Menu {
 			);
 			self::log("Added {$moduleInstance->name} to menu {$this->label} ... DONE");
 		} else {
-			self::log("Menu could not be found!");
+			self::log('Menu could not be found!');
 		}
 	}
 
@@ -93,8 +93,8 @@ class Vtiger_Menu {
 	 * @param Vtiger_Module Instance of the module
 	 */
 	public function removeModule($moduleInstance) {
-		if (empty($moduleInstance) || empty($moduleInstance)) {
-			self::log("Module instance is not set!");
+		if (empty($moduleInstance)) {
+			self::log('Module instance is not set!');
 			return;
 		}
 		if ($this->id) {
@@ -103,7 +103,7 @@ class Vtiger_Menu {
 			$adb->pquery("DELETE FROM vtiger_evvtmenu WHERE mparent=? AND mtype='module' AND mvalue=?", array($this->menuid,$moduleInstance->name));
 			self::log("Removed {$moduleInstance->name} from menu {$this->label} ... DONE");
 		} else {
-			self::log("Menu could not be found!");
+			self::log('Menu could not be found!');
 		}
 	}
 
@@ -113,9 +113,9 @@ class Vtiger_Menu {
 	 */
 	public static function detachModule($moduleInstance) {
 		global $adb;
-		$adb->pquery("DELETE FROM vtiger_parenttabrel WHERE tabid=?", array($moduleInstance->id));
+		$adb->pquery('DELETE FROM vtiger_parenttabrel WHERE tabid=?', array($moduleInstance->id));
 		$adb->pquery("DELETE FROM vtiger_evvtmenu WHERE mtype='module' and mvalue=?", array($moduleInstance->name));
-		self::log("Detaching from menu ... DONE");
+		self::log('Detaching from menu ... DONE');
 	}
 
 	/**
@@ -126,7 +126,7 @@ class Vtiger_Menu {
 		global $adb;
 		$query = false;
 		$instance = false;
-		$adb->query("CREATE TABLE IF NOT EXISTS `vtiger_evvtmenu` (`evvtmenuid` int(11) NOT NULL AUTO_INCREMENT,
+		$adb->query('CREATE TABLE IF NOT EXISTS `vtiger_evvtmenu` (`evvtmenuid` int(11) NOT NULL AUTO_INCREMENT,
 			`mtype` varchar(25) NOT NULL,
 			`mvalue` varchar(200) NOT NULL,
 			`mlabel` varchar(200) NOT NULL,
@@ -136,12 +136,12 @@ class Vtiger_Menu {
 			`mpermission` varchar(250) NOT NULL,
 			PRIMARY KEY (`evvtmenuid`),
 			KEY `mparent` (`mparent`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;');
 		if (Vtiger_Utils::isNumber($value)) {
-			$query = "SELECT * FROM vtiger_parenttab WHERE parenttabid=?";
+			$query = 'SELECT * FROM vtiger_parenttab WHERE parenttabid=?';
 			$querymenu = "SELECT * FROM vtiger_evvtmenu WHERE evvtmenuid=? and mtype='menu'";
 		} else {
-			$query = "SELECT * FROM vtiger_parenttab WHERE parenttab_label=?";
+			$query = 'SELECT * FROM vtiger_parenttab WHERE parenttab_label=?';
 			$querymenu = "SELECT * FROM vtiger_evvtmenu WHERE mvalue=? and mtype='menu'";
 		}
 		$result = $adb->pquery($query, array($value));

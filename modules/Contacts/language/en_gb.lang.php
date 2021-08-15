@@ -153,6 +153,11 @@ $mod_strings = array(
 	'LBL_CUSTOMER_PORTAL_INFORMATION' => 'Customer Portal Information',
 	'Support Start Date' => 'Support Start Date',
 	'Support End Date' => 'Support End Date',
+	'portalpasswordtype' => 'Password Encoding',
+	'portalloginuser' => 'Portal Login User',
+	'PortalUserPasswordManagement' => 'Portal Password',
+	'ppset' => 'Password set',
+	'ppnotset' => 'Password not set',
 	'Name' => 'Name',
 	'LBL_ALL' => 'All',
 	'LBL_MAXIMUM_LIMIT_ERROR' => 'Sorry, the uploaded file exceeds the maximum filesize limit. Please try a file smaller than 800000 bytes',
@@ -257,5 +262,7 @@ $mod_strings = array(
 'SYNC_RESULTS'=>'Sync Results',
 'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
 'Template Language' => 'Template Language',
+'ship_countrycode' => 'Shipping Country Code',
+'bill_countrycode' => 'Billing Country Code'
 );
 ?>

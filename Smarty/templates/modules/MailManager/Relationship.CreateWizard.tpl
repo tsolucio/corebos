@@ -7,6 +7,9 @@
  * All Rights Reserved.
  ************************************************************************************}
 {strip}
+<script>
+	loadJS('modules/{$MODULE}/{$MODULE}.js');
+</script>
 {include file='QuickCreateHidden.tpl'}
 <table border="0" cellspacing="0" cellpadding="0" width="90%" class="mailClient mailClientBg">
 <tr>
@@ -35,8 +38,8 @@
 		<tr>
 			<td align=right class="cblds-t-align_right">
 			{if $MODULE eq 'Accounts'}
-				<input title="{'LBL_SAVE_LABEL'|getTranslatedString}" accessKey="{'LBL_SAVE_LABEL'|getTranslatedString}" class="crmbutton small save" 
-					   onclick="if(QCformValidate()) MailManager.AjaxDuplicateValidate('Accounts', 'accountname', this.form).done(function(form) {ldelim} MailManager.mail_associate_create(form);{rdelim} );" type="button" name="button" value="{'LBL_SAVE_LABEL'|getTranslatedString}">
+				<input title="{'LBL_SAVE_LABEL'|getTranslatedString}" accessKey="{'LBL_SAVE_LABEL'|getTranslatedString}" class="crmbutton small save"
+					onclick="if(QCformValidate()) MailManager.AjaxDuplicateValidate('Accounts', 'accountname', this.form).done(function(form) {ldelim} MailManager.mail_associate_create(form);{rdelim} );" type="button" name="button" value="{'LBL_SAVE_LABEL'|getTranslatedString}">
 			{else}
 				<input type="button" class="crmbutton small save" value="{'LBL_SAVE_LABEL'|getTranslatedString}" onclick="if(QCformValidate()) MailManager.mail_associate_create(this.form);">
 			{/if}
@@ -47,19 +50,11 @@
 </td>
 </tr>
 </table>
-{if $MODULE eq 'Calendar'}
 <script id="qcvalidate">
-	var qcfieldname = new Array('subject','date_start','time_start','taskstatus');
-        var qcfieldlabel = new Array('Subject','Start Date & Time','Start Date & Time','Status');
-        var qcfielddatatype = new Array('V~M','DT~M~time_start','T~O','V~O');
+	var qcfieldname = new Array({$VALIDATION_DATA_FIELDNAME});
+	var qcfieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
+	var qcfielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
-{else}
-<script id="qcvalidate">
-        var qcfieldname = new Array({$VALIDATION_DATA_FIELDNAME});
-        var qcfieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
-        var qcfielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
-</script>
-{/if}
 	<input type="hidden" class="small" name="_folder" value="{$FOLDER}">
 	<input type="hidden" class="small" name="_msgno" value="{$MSGNO}">
 	<input type="hidden" class="small" name="_mlinktotype" value="{$MODULE}">

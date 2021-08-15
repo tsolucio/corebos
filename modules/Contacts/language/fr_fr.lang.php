@@ -153,6 +153,11 @@ $mod_strings = array (
 		'LBL_CUSTOMER_PORTAL_INFORMATION' => 'Portail de service client',
 		'Support Start Date' => 'Début assistance',
 		'Support End Date' => 'Fin assistance',
+		'portalpasswordtype' => 'Password Encoding',
+		'portalloginuser' => 'Portal Login User',
+		'PortalUserPasswordManagement' => 'Portal Password',
+		'ppset' => 'Password set',
+		'ppnotset' => 'Password not set',
 		'Name' => 'Nom',
 		'LBL_ALL' => 'Tout',
 		'LBL_MAXIMUM_LIMIT_ERROR' => 'Désolé, le fichier que vous tentez de télécharger dépasse la taille limite. Veuillez réessayer avec un fichier dont la taille est inférieure à 800 000 bytes',
@@ -257,5 +262,7 @@ $mod_strings = array (
 		'SYNC_RESULTS'=>'Sync Results',
 		'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
 		'Template Language' => 'Template Language',
+		'ship_countrycode' => 'Shipping Country Code',
+		'bill_countrycode' => 'Billing Country Code'
 );
 ?>

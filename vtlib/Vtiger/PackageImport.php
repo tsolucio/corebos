@@ -48,7 +48,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * Parse the manifest file
 	 * @access private
 	 */
-	private function __parseManifestFile($unzip) {
+	public function __parseManifestFile($unzip) {
 		$manifestfile = $this->__getManifestFilePath();
 		$unzip->unzip('manifest.xml', $manifestfile);
 		$this->_modulexml = simplexml_load_file($manifestfile);
@@ -91,13 +91,10 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * Are we trying to import language package?
 	 */
 	public function isLanguageType($zipfile = null) {
-		if (!empty($zipfile)) {
-			if (!$this->checkZip($zipfile)) {
-				return false;
-			}
+		if (!empty($zipfile) && !$this->checkZip($zipfile)) {
+			return false;
 		}
 		$packagetype = $this->type();
-
 		if ($packagetype) {
 			$lcasetype = strtolower($packagetype);
 			if ($lcasetype == 'language') {
@@ -114,12 +111,9 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 */
 	public function isModuleBundle($zipfile = null) {
 		// If data is not yet available
-		if (!empty($zipfile)) {
-			if (!$this->checkZip($zipfile)) {
-				return false;
-			}
+		if (!empty($zipfile) && !$this->checkZip($zipfile)) {
+			return false;
 		}
-
 		return (boolean)$this->_modulexml->modulebundle;
 	}
 
@@ -183,7 +177,6 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			preg_match("/modules\/([^\/]+)\/language\/en_us.lang.php/", $filename, $matches);
 			if (count($matches)) {
 				$language_modulename = $matches[1];
-				continue;
 			}
 		}
 
@@ -203,18 +196,16 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			$validzip = true;
 		}
 
-		if ($validzip) {
-			if (!empty($this->_modulexml->license)) {
-				if (!empty($this->_modulexml->license->inline)) {
-					$this->_licensetext = $this->_modulexml->license->inline;
-				} elseif (!empty($this->_modulexml->license->file)) {
-					$licensefile = $this->_modulexml->license->file;
-					$licensefile = "$licensefile";
-					if (!empty($filelist[$licensefile])) {
-						$this->_licensetext = $unzip->unzip($licensefile);
-					} else {
-						$this->_licensetext = "Missing $licensefile!";
-					}
+		if ($validzip && !empty($this->_modulexml->license)) {
+			if (!empty($this->_modulexml->license->inline)) {
+				$this->_licensetext = $this->_modulexml->license->inline;
+			} elseif (!empty($this->_modulexml->license->file)) {
+				$licensefile = $this->_modulexml->license->file;
+				$licensefile = "$licensefile";
+				if (!empty($filelist[$licensefile])) {
+					$this->_licensetext = $unzip->unzip($licensefile);
+				} else {
+					$this->_licensetext = "Missing $licensefile!";
 				}
 			}
 		}
@@ -286,7 +277,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 			// Unzip selectively
 			$unzip->unzipAllEx(
-				".",
+				'.',
 				array(
 					// Include only file/folders that need to be extracted
 					'include' => array('templates', "modules/$module", 'cron','manifest.xml'),
@@ -365,7 +356,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			$buildModuleArray = array();
 			$installSequenceArray = array();
 			$moduleBundle = (boolean)$this->_modulexml->modulebundle;
-			if ($moduleBundle == true) {
+			if ($moduleBundle) {
 				$moduleList = (Array)$this->_modulexml->modulelist;
 				foreach ($moduleList as $moduleInfos) {
 					foreach ($moduleInfos as $moduleInfo) {
@@ -385,7 +376,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 					}
 				}
 			} else {
-				$module = $this->initImport($zipfile, $overwrite);
+				$this->initImport($zipfile, $overwrite);
 				// Call module import function
 				$this->import_Module();
 			}
@@ -463,7 +454,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		} else {
 			$moduleInstance->parent='Tools';
 		}
-		$moduleInstance->isentitytype = ($isextension != true);
+		$moduleInstance->isentitytype = !$isextension;
 		$moduleInstance->version = (!$tabversion)? 0 : $tabversion;
 		$moduleInstance->minversion = (!$vtigerMinVersion)? false : $vtigerMinVersion;
 		$moduleInstance->maxversion = (!$vtigerMaxVersion)?  false : $vtigerMaxVersion;
@@ -540,7 +531,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				} else {
 					self::log("SQL: $tablesql ... ", false);
 					Vtiger_Utils::ExecuteQuery($tablesql);
-					self::log("DONE");
+					self::log('DONE');
 				}
 			}
 		}
@@ -569,7 +560,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * Import Block of the module
 	 * @access private
 	 */
-	private function import_Block($modulenode, $moduleInstance, $blocknode) {
+	public function import_Block($modulenode, $moduleInstance, $blocknode) {
 		$blocklabel = $blocknode->label;
 		$blockInstance = new Vtiger_Block();
 		$blockInstance->label = $blocklabel;
@@ -863,7 +854,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			} else {
 				$cronTask->status = Vtiger_Cron::$STATUS_ENABLED;
 			}
-			if ((empty($cronTask->sequence))) {
+			if (empty($cronTask->sequence)) {
 				$cronTask->sequence=Vtiger_Cron::nextSequence();
 			}
 			Vtiger_Cron::register("$cronTask->name", "$cronTask->handler", "$cronTask->frequency", "$modulenode->name", "$cronTask->status", "$cronTask->sequence", "$cronTask->description");

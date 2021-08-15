@@ -80,7 +80,7 @@ if (!empty($langid) && !empty($pmodule)) {
 				$filename='include/language/'.$langprefix.'.custom.php';
 				$fd = fopen($filename, 'w');
 				if ($fd) {
-					if ($make_backups == true) {
+					if ($make_backups) {
 						@unlink($filename.'.bak');
 						@copy($filename, $filename.'.bak');
 					}
@@ -111,7 +111,7 @@ if (!empty($langid) && !empty($pmodule)) {
 		} elseif ($pmodule=='JavaScript') {
 			$filename='include/js/'.$langprefix.'.lang.js';
 			if (file_exists($filename) && is_writable($filename)) {
-				if ($make_backups == true) {
+				if ($make_backups) {
 					@unlink($filename.'.bak');
 					@copy($filename, $filename.'.bak');
 				}
@@ -142,7 +142,7 @@ if (!empty($langid) && !empty($pmodule)) {
 				$filename=$modulesDirectory.'/'.$pmodule.'/language/'.$langprefix.'.custom.php';
 				$fd = @fopen($filename, 'w');
 				if ($fd) {
-					if ($make_backups == true) {
+					if ($make_backups) {
 						@unlink($filename.'.bak');
 						@copy($filename, $filename.'.bak');
 					}
@@ -189,6 +189,6 @@ if (!empty($langid) && !empty($pmodule)) {
 			}
 		} // if no language prefix
 	}
-	header('Location:index.php?module=Settings&action=LanguageEdit&parenttab=Settings&pick_module='.urlencode($pmodule).'&languageid='.urlencode($langid));
+	header('Location:index.php?module=Settings&action=LanguageEdit&pick_module='.urlencode($pmodule).'&languageid='.urlencode($langid));
 }
 ?>

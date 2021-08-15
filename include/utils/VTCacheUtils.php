@@ -24,6 +24,13 @@ class VTCacheUtils {
 	public static function updateCachedInformation($key, $value) {
 		self::$_cbcacheinfo_cache[$key] = $value;
 	}
+	public static function emptyCachedInformation($key = '') {
+		if (empty($key)) {
+			self::$_cbcacheinfo_cache = array();
+		} else {
+			unset(self::$_cbcacheinfo_cache[$key]);
+		}
+	}
 
 	/** Tab information caching */
 	public static $_tabidinfo_cache = array();
@@ -90,7 +97,7 @@ class VTCacheUtils {
 	}
 
 	/** Block information caching */
-	private static $_blocklabel_cache = array();
+	public static $_blocklabel_cache = array();
 	public static function updateBlockLabelWithId($label, $id) {
 		self::$_blocklabel_cache[$id] = $label;
 	}
@@ -112,7 +119,9 @@ class VTCacheUtils {
 		$tablename,
 		$uitype,
 		$typeofdata,
-		$presence
+		$presence,
+		$defaultvalue,
+		$generatedtype
 	) {
 		self::$_fieldinfo_cache[$tabid][$fieldname] = array(
 			'tabid'     => $tabid,
@@ -124,6 +133,8 @@ class VTCacheUtils {
 			'uitype'    => $uitype,
 			'typeofdata'=> $typeofdata,
 			'presence'  => $presence,
+			'defaultvalue'  => $defaultvalue,
+			'generatedtype'  => $generatedtype,
 		);
 	}
 	public static function lookupFieldInfo($tabid, $fieldname) {
@@ -274,10 +285,8 @@ class VTCacheUtils {
 	/** Report module information based on used. */
 	public static $_reportmodule_infoperuser_cache = array();
 	public static function lookupReport_Info($userid, $reportid) {
-		if (isset(self::$_reportmodule_infoperuser_cache[$userid])) {
-			if (isset(self::$_reportmodule_infoperuser_cache[$userid][$reportid])) {
-				return self::$_reportmodule_infoperuser_cache[$userid][$reportid];
-			}
+		if (isset(self::$_reportmodule_infoperuser_cache[$userid]) && isset(self::$_reportmodule_infoperuser_cache[$userid][$reportid])) {
+			return self::$_reportmodule_infoperuser_cache[$userid][$reportid];
 		}
 		return false;
 	}
@@ -341,11 +350,8 @@ class VTCacheUtils {
 	/** Report module information based on used. */
 	public static $_reportmodule_scheduledinfoperuser_cache = array();
 	public static function lookupReport_ScheduledInfo($userid, $reportid) {
-
-		if (isset(self::$_reportmodule_scheduledinfoperuser_cache[$userid])) {
-			if (isset(self::$_reportmodule_scheduledinfoperuser_cache[$userid][$reportid])) {
-				return self::$_reportmodule_scheduledinfoperuser_cache[$userid][$reportid];
-			}
+		if (isset(self::$_reportmodule_scheduledinfoperuser_cache[$userid]) && isset(self::$_reportmodule_scheduledinfoperuser_cache[$userid][$reportid])) {
+			return self::$_reportmodule_scheduledinfoperuser_cache[$userid][$reportid];
 		}
 		return false;
 	}

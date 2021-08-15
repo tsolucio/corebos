@@ -80,48 +80,6 @@ class OpenDocument_DrawObject extends OpenDocument_StyledElement {
 		parent::__construct($node, $document);
 		$this->allowedElements = array();
 		return true;
-		$href = $node->getAttributeNS(OpenDocument::NS_XLINK, 'href');
-		if (empty($href)) {
-			$href=$ahref;
-		}
-		if (!empty($href)) {
-			$this->node->setAttribute('xlink:href', $href);
-			$this->href = $href;
-		}
-		$type = $node->getAttributeNS(OpenDocument::NS_XLINK, 'type');
-		if (empty($type)) {
-			$type=$atype;
-		}
-		if (!empty($type)) {
-			$this->node->setAttribute('xlink:type', $type);
-			$this->type = $type;
-		}
-		$show = $node->getAttributeNS(OpenDocument::NS_XLINK, 'show');
-		if (empty($show)) {
-			$show=$ashow;
-		}
-		if (!empty($show)) {
-			$this->node->setAttribute('xlink:show', $show);
-			$this->show = $show;
-		}
-		$actuate = $node->getAttributeNS(OpenDocument::NS_XLINK, 'actuate');
-		if (empty($actuate)) {
-			$actuate=$aactuate;
-		}
-		if (!empty($actuate)) {
-			$this->node->setAttribute('xlink:actuate', $actuate);
-			$this->actuate = $actuate;
-		}
-		$draw_notifyonupdateofranges = $node->getAttributeNS(OpenDocument::NS_DRAW, 'notify-on-update-of-ranges');
-		if (empty($draw_notifyonupdateofranges)) {
-			$draw_notifyonupdateofranges=$adraw_notifyonupdateofranges;
-		}
-		if (!empty($draw_notifyonupdateofranges)) {
-			$this->node->setAttribute('draw:notify-on-update-of-ranges', $draw_notifyonupdateofranges);
-			$this->draw_notifyonupdateofranges = $draw_notifyonupdateofranges;
-		}
-
-		$this->allowedElements = array();
 	}
 
 	/**
@@ -142,7 +100,7 @@ class OpenDocument_DrawObject extends OpenDocument_StyledElement {
 		} else {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
-
+		$text = $href = $type = $show = $actuate = $draw_notifyonupdateofranges = '';
 		$element = new OpenDocument_FrameImage($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $text, $href, $type, $show, $actuate, $draw_notifyonupdateofranges);
 		$node->appendChild($element->node);
 		return $element;

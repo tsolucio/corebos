@@ -60,6 +60,7 @@ $mod_strings = array(
 	'LBL_FROM' => 'De La :',
 	'LBL_CC' => 'Cc :',
 	'LBL_BCC' => 'Bcc :',
+	'replyto' => 'Reply To',
 	'NTC_REMOVE_INVITEE' => 'Sigur doriti stergerea destinatarului din email?',
 	'LBL_INVITEE' => 'Destinatari',
 	'LBL_BULK_MAILS' => 'Mal-uri Bulk',
@@ -143,7 +144,6 @@ $mod_strings = array(
 	'LBL_PRINT_EMAIL' => 'Tiparire',
 	'LBL_ATTACH_DOCUMENTS' => 'Atasare documente',
 	'Access Count' => 'Contor Acces',
-	'Activtiy Type' => 'Tip Activitate',
 	'Last Modified By' => 'Ultima modificare de',
 	'From' => 'De La',
 	'To' => 'La',
@@ -161,5 +161,6 @@ $mod_strings = array(
 	'Contacts' => 'Contacte',
 	'Users' => 'Utilizatori',
 	'Documents' => 'Documente',
+	'LBL_SEND_INDIVIDUAL_EMAILS' => 'Send Individual Emails',
 );
 ?>

@@ -22,9 +22,9 @@ function showAllRecords() {
 	for (var i=0; i< emp_url.length; i++) {
 		if (emp_url[i] != '') {
 			var split_value = emp_url[i].split('=');
-			if (split_value[0] == modname || split_value[0] == idname ) {
-				emp_url[i]='';
-			} else if (split_value[0] == 'fromPotential' || split_value[0] == 'acc_id' || emp_url[i] == 'query=true' || emp_url[i] == 'search=true' || split_value[0] == 'searchtype') {
+			if (split_value[0] == modname || split_value[0] == idname || split_value[0] == 'fromPotential' || split_value[0] == 'acc_id'
+				|| emp_url[i] == 'query=true' || emp_url[i] == 'search=true' || split_value[0] == 'searchtype'
+			) {
 				emp_url[i]='';
 			}
 		}
@@ -34,8 +34,7 @@ function showAllRecords() {
 
 //function added to get all the records when parent record doesn't relate with the selection module records while opening/loading popup.
 function redirectWhenNoRelatedRecordsFound() {
-	var loadUrl = showAllRecords();
-	window.location.href = loadUrl;
+	window.location.href = showAllRecords();
 }
 
 function add_data_to_relatedlist(entity_id, recordid, mod, popupmode, callback) {
@@ -78,8 +77,7 @@ function set_focus() {
 function callSearch(searchtype) {
 	gstart='';
 	for (var i=1; i<=26; i++) {
-		var data_td_id = 'alpha_'+ eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_'+ i).className = 'searchAlph';
 	}
 	gPopupAlphaSearchUrl = '';
 	var search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
@@ -96,9 +94,7 @@ function callSearch(searchtype) {
 	}
 	var popuptype = document.getElementsByName('popuptype')[0].value;
 	var module = document.getElementById('module').value;
-	var act_tab = document.getElementById('maintab').value;
 	urlstring += '&popuptype='+popuptype;
-	urlstring += '&maintab='+act_tab;
 	urlstring += '&query=true&file=Popup&module=' + module + '&action=' + module + 'Ajax&ajax=true&search=true';
 	urlstring += gethiddenelements();
 	var record_id = document.basicSearch.record_id.value;
@@ -124,8 +120,7 @@ function alphabetic(module, url, dataid) {
 	gstart='';
 	document.basicSearch.search_text.value = '';
 	for (var i=1; i<=26; i++) {
-		var data_td_id = 'alpha_' + eval(i);
-		getObj(data_td_id).className = 'searchAlph';
+		getObj('alpha_'+ i).className = 'searchAlph';
 	}
 	getObj(dataid).className = 'searchAlphselected';
 	gPopupAlphaSearchUrl = '&'+url;
@@ -282,12 +277,7 @@ function QCreatePop(module, urlpop) {
 			document.getElementById('status').style.display='none';
 			document.getElementById('qcformpop').style.display='inline';
 			document.getElementById('qcformpop').innerHTML = response;
-			// Evaluate all the script tags in the response text.
-			var scriptTags = document.getElementById('qcformpop').getElementsByTagName('script');
-			for (var i = 0; i< scriptTags.length; i++) {
-				var scriptTag = scriptTags[i];
-				eval(scriptTag.innerHTML);
-			}
+			vtlib_executeJavascriptInElement(document.getElementById('qcformpop'));
 		});
 	} else {
 		hide('qcformpop');

@@ -14,10 +14,10 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getPortalUserInfo',
-	 'include' => 'include/Webservices/CustomerPortalWS.php',
-	 'handler' => 'vtws_getPortalUserInfo',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array()
+	'name'    => 'getPortalUserInfo',
+	'include' => 'include/Webservices/CustomerPortalWS.php',
+	'handler' => 'vtws_getPortalUserInfo',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array()
 );

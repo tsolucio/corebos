@@ -25,7 +25,7 @@
 			<img src="modules/evvtgendoc/images/oomerge.jpg" alt="{$MOD.evvtgendoc}" title="{$MOD.evvtgendoc}" border="0" height="48" width="48">
 			</td>
 			<td class="heading2" valign="bottom">
-			<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$APP.LBL_SETTINGS}</a> &gt; {$MOD.evvtgendoc}</b>
+			<b><a href="index.php?module=Settings&action=index">{$APP.LBL_SETTINGS}</a> &gt; {$MOD.evvtgendoc}</b>
 			</td>
 		</tr>
 

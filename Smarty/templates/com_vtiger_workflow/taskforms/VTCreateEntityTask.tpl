@@ -19,65 +19,65 @@
         var fieldvaluemapping = null;
     {/if}
 	var selectedEntityType = '{$task->entity_type}';
-	var createEntityHeaderTemplate = '<input type="button" class="crmButton create small" value="'+"{'LBL_ADD_FIELD'|@getTranslatedString:$MODULE_NAME}"+ '" id="save_fieldvaluemapping_add" />';
+	var createEntityHeaderTemplate = '<input type="button" class="slds-button slds-button_success" value="'+"{'LBL_ADD_FIELD'|@getTranslatedString:$MODULE_NAME}"+ '" id="save_fieldvaluemapping_add" />';
 </script>
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/{$module->name}/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/createentitytaskscript.js" type="text/javascript" charset="utf-8"></script>
 
-<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
-	<tr valign="top">
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap">{'LBL_ENTITY_TYPE'|@getTranslatedString:$MODULE_NAME}</td>
-		<td class='dvtCellInfo'>
-			<input type="hidden" value='{$task->reference_field}' name='reference_field' id='reference_field' />
-			<span id="entity_type-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-			<select name="entity_type" id="entity_type" class="small" style="display:none;">
-				<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:$MODULE_NAME}</option>
-			</select>
-		</td>
-	</tr>
-	<tr><td colspan="2"><hr size="1" noshade="noshade" /></td></tr>
-
-    <tr>
-        <td class="small" align="right" colspan="2">
-            <span id="workflow_loading" style="display:none">
-                <b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
-            </span>
-            <span id="save_fieldvaluemapping_add-busyicon" style="display:none"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-            <span id="save_fieldvaluemapping_add_wrapper"></span>
-        </td>
-    </tr>
-
-	<tr>
-		<td class="small" align="center" colspan="2">
-			{include file="com_vtiger_workflow/FieldExpressions.tpl"}
-			<input type="hidden" name="field_value_mapping" value="" id="save_fieldvaluemapping_json"/>
-			<div id="dump" style="display:none;"></div>
-			<div id="save_fieldvaluemapping">
-				<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative; z-index: 10000000;">
-					<table width="98%" cellspacing="0" cellpadding="5" border="0">
-						<tbody>
-							<tr>
-								<td width="25%"><img width="61" height="60" src="{'empty.jpg'|@vtiger_imageUrl:$THEME}"></td>
-								<td width="75%" nowrap="nowrap" style="border-bottom: 1px solid rgb(204, 204, 204);">
-									<span class="genHeaderSmall">{'LBL_NO_ENTITIES_FOUND'|@getTranslatedString:$MODULE_NAME}</span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+<div class="slds-grid slds-grid_vertical-align-center">
+	<div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_x-small">
+		<span> <b> {'LBL_ENTITY_TYPE'|@getTranslatedString:$MODULE_NAME} </b> </span>
+	</div>
+	<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
+		<div class="slds-form-element">
+			<div class="slds-form-element__control">
+				<input type="hidden" value='{$task->reference_field}' name='reference_field' id='reference_field' />
 			</div>
-		</td>
-	</tr>
-
-	<tr>
-		<td style='padding-top: 10px;' colspan="2">
-			<span class="helpmessagebox">{'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS'|@getTranslatedString:$MODULE_NAME}</span>
-		</td>
-	</tr>
-	<tr>
-		<td style='padding-top: 10px;' colspan="2">
-			<span class="helpmessagebox">{'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS'|@getTranslatedString:$MODULE_NAME}</span>
-		</td>
-	</tr>
-</table>
-<br>
+			<span id="entity_type-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" ></span>
+				<div class="slds-form-element__control">
+					<div class="slds-select_container">
+						<select name="entity_type" id="entity_type" class="slds-select slds-page-header__meta-text" style="display:none;">
+							<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:$MODULE_NAME}</option>
+						</select>
+					</div>
+				</div>
+		</div>
+	</div>
+</div>
+<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_x-large">
+	<div class="slds-col slds-p-around_x-small">
+		<span id="workflow_loading" style="display:none">
+			<b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" >
+		</span>
+		<span id="save_fieldvaluemapping_add-busyicon" style="display:none"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" ></span>
+		<span id="save_fieldvaluemapping_add_wrapper"></span>
+	</div>
+</div>
+<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_x-large">
+	<div class="slds-col slds-p-around_x-small">
+		{include file="com_vtiger_workflow/FieldExpressions.tpl"}
+			<input type="hidden" class="slds-input" name="field_value_mapping" value="" id="save_fieldvaluemapping_json"/>
+				<div id="dump" style="display:none;"></div>
+					<div id="save_fieldvaluemapping">
+						<div class="slds-grid slds-grid_vertical-align-center">
+							<div class="slds-col slds-p-around_x-small">
+								<img width="61" height="60" src="{'empty.jpg'|@vtiger_imageUrl:$THEME}">
+							</div>
+							<div class="slds-col slds-p-around_x-small">
+								<span class="genHeaderSmall">{'LBL_NO_ENTITIES_FOUND'|@getTranslatedString:$MODULE_NAME}</span>
+							</div>
+						</div>
+					</div>
+	</div>
+</div>
+<div class="slds-grid slds-grid_vertical-align-center">
+	<div class="slds-col slds-p-around_x-small">
+		<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+			<h2> {'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS'|@getTranslatedString:$MODULE_NAME} </h2>
+		</div>
+		<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+			<h2> {'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS'|@getTranslatedString:$MODULE_NAME} </h2>
+		</div>
+	</div>
+</div>

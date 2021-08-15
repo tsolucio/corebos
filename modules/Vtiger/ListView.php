@@ -17,14 +17,13 @@ require_once 'include/DatabaseUtil.php';
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once "modules/$currentModule/$currentModule.php";
 
-$category = getParentTab();
 $url_string = '';
 $massedit1x1 = isset($_REQUEST['massedit1x1']) ? vtlib_purify($_REQUEST['massedit1x1']) : 0;
 if ($massedit1x1=='c') { // mass edit 1x1 cancelled
 	coreBOS_Session::delete('ME1x1Info');
 }
 
-if (isset($tool_buttons)==false) {
+if (!isset($tool_buttons)) {
 	$tool_buttons = Button_Check($currentModule);
 }
 
@@ -51,14 +50,11 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('BUTTONS', $list_buttons);
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 
-$smarty->assign('CHANGE_OWNER', getUserslist());
-$smarty->assign('CHANGE_GROUP_OWNER', getGroupslist());
 if (empty($ERROR_MESSAGE) && !empty($_REQUEST['error_msg'])) {
 	if (isset($_REQUEST['error_msgclass'])) {
 		$ERROR_MESSAGE_CLASS = vtlib_purify($_REQUEST['error_msgclass']);
@@ -220,7 +216,7 @@ if ($sql_error) {
 
 		$smarty->assign('CUSTOMVIEW_OPTION', $customview_html);
 
-	// Navigation
+		// Navigation
 		$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $currentModule, 'index', $viewid);
 		$smarty->assign('NAVIGATION', $navigationOutput);
 
@@ -260,7 +256,7 @@ if ($sql_error) {
 
 	// Gather the custom link information to display
 		include_once 'vtlib/Vtiger/Link.php';
-		$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
+		$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 		$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
 	}
 } // try query
@@ -275,6 +271,7 @@ if (is_array($listview_header_search)) {
 // Search Panel Status
 $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_ListView_SearchPanel_Open', 1);
 $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS', ($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));
+$smarty->assign('EDIT_FILTER_ALL', GlobalVariable::getVariable('Application_Filter_All_Edit', 1));
 
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 	$smarty->display('ListViewEntries.tpl');

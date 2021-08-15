@@ -31,7 +31,7 @@
 <td colspan="3" align="left"><input name="bookmark" value=" {$MOD.LBL_NEW_BOOKMARK} " class="crmbutton small create" onclick="fnvshobj(this,'editportal_cont');fetchAddSite('');" type="button"></td>
 </tr>
 </table>
-<table border="0" cellpadding="5" cellspacing="0" width="100%" class="listTable bgwhite"> 
+<table border="0" cellpadding="5" cellspacing="0" width="100%" class="listTable bgwhite">
 <tr>
 <td class="colHeader small" align="left" width="5%"><b>{$MOD.LBL_SNO}</b></td>
 <td class="colHeader small" align="left" width="75%"><b>{$MOD.LBL_BOOKMARK_NAME_URL}</b></td>

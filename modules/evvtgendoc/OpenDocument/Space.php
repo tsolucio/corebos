@@ -110,14 +110,11 @@ class OpenDocument_TextSpace extends OpenDocument_StyledElement {
 	 * @param mixed $value
 	 */
 	public function __set($name, $value) {
-		switch ($name) {
-			case 'numspaces':
-				if (!is_int($value) && !ctype_digit($value)) {
-					$value = 1;
-				}
-				$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'c', $value);
-				break;
-			default:
+		if ($name=='numspaces') {
+			if (!is_int($value) && !ctype_digit($value)) {
+				$value = 1;
+			}
+			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'c', $value);
 		}
 	}
 

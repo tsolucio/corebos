@@ -8,7 +8,9 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<body class=small>
+<script>
+	loadJS('modules/{$MODULE}/{$MODULE}.js');
+</script>
 {include file='QuickCreateHidden.tpl'}
 <table border="0" align="center" cellspacing="0" cellpadding="0" width="90%" class="mailClient mailClientBg">
 <tr>
@@ -48,24 +50,9 @@
 </td>
 </tr>
 </table>
-{if $QCMODULE eq 'Event'}
-<SCRIPT id="qcvalidate">
-	var qcfieldname = new Array('subject','date_start','time_start','eventstatus','activitytype','due_date','time_end','due_date','time_end');
-	var qcfieldlabel = new Array('Subject','Start Date & Time','Start Date & Time','Status','Activity Type','End Date & Time','End Date & Time','End Date & Time','End Date & Time');
-	var qcfielddatatype = new Array('V~M','DT~M~time_start','T~O','V~O','V~O','D~M~OTH~GE~date_start~Start Date & Time','T~M','DT~M~time_end','T~O~OTH~GE~time_start~Start Date & Time');
-</SCRIPT>
-{elseif $QCMODULE eq 'Todo'}
-<SCRIPT id="qcvalidate">
-	var qcfieldname = new Array('subject','date_start','time_start','taskstatus');
-	var qcfieldlabel = new Array('Subject','Start Date & Time','Start Date & Time','Status');
-	var qcfielddatatype = new Array('V~M','DT~M~time_start','T~O','V~O');
-</SCRIPT>
-{else}
 <SCRIPT id="qcvalidate">
 	var qcfieldname = new Array({$VALIDATION_DATA_FIELDNAME});
 	var qcfieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
 	var qcfielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </SCRIPT>
-{/if}
 </form>
-</body>

@@ -86,9 +86,9 @@ class Webforms_Model {
 			$fieldModel->setFieldName($fieldname);
 			$fieldModel->setNeutralizedField($fieldname, $fieldInfo['label']);
 			$field = Webforms::getFieldInfo($this->getTargetModule(), $fieldname);
-			if (($field['type']['name'] == 'date')) {
+			if ($field['type']['name'] == 'date') {
 				$defaultvalue = DateTimeField::convertToDBFormat($value[$fieldname]);
-			} elseif (($field['type']['name'] == 'boolean')) {
+			} elseif ($field['type']['name'] == 'boolean') {
 				if (in_array($fieldname, $required)) {
 					if (empty($value[$fieldname])) {
 						$defaultvalue='off';
@@ -102,7 +102,7 @@ class Webforms_Model {
 				$defaultvalue = vtlib_purify($value[$fieldname]);
 			}
 			$fieldModel->setDefaultValue($defaultvalue);
-			if ((!empty($required) && in_array($fieldname, $required))) {
+			if (!empty($required) && in_array($fieldname, $required)) {
 				$fieldModel->setRequired(1);
 			} else {
 				$fieldModel->setRequired(0);
@@ -174,11 +174,11 @@ class Webforms_Model {
 		// Create?
 		if ($isNew) {
 			if (self::existWebformWithName($this->getName())) {
-				throw new Exception(getTranslatedString('LBL_DUPLICATE_NAME', 'Webforms'));
+				throw new InvalidArgumentException(getTranslatedString('LBL_DUPLICATE_NAME', 'Webforms'));
 			}
 			$this->setPublicId($this->generatePublicId($this->getName()));
 			$insertSQL = 'INSERT INTO vtiger_webforms(name, targetmodule, publicid, enabled, description,ownerid,returnurl,web_domain) VALUES(?,?,?,?,?,?,?,?)';
-			$result = $adb->pquery(
+			$adb->pquery(
 				$insertSQL,
 				array(
 					$this->getName(), $this->getTargetModule(), $this->getPublicid(), $this->getEnabled(),
@@ -189,7 +189,7 @@ class Webforms_Model {
 		} else {
 			// Udpate
 			$updateSQL = 'UPDATE vtiger_webforms SET description=? ,returnurl=?,ownerid=?,enabled=?,web_domain=? WHERE id=?';
-			$result = $adb->pquery(
+			$adb->pquery(
 				$updateSQL,
 				array($this->getDescription(), $this->getReturnUrl(), $this->getOwnerId(), $this->getEnabled(), $this->getWebDomain(), $this->getId())
 			);
@@ -222,7 +222,7 @@ class Webforms_Model {
 
 		$model = false;
 		// Retrieve model and populate information
-		$result = $adb->pquery("SELECT * FROM vtiger_webforms WHERE publicid=? AND enabled=?", array($publicid, 1));
+		$result = $adb->pquery('SELECT * FROM vtiger_webforms WHERE publicid=? AND enabled=?', array($publicid, 1));
 		if ($adb->num_rows($result)) {
 			$model = new Webforms_Model($adb->fetch_array($result));
 			$model->retrieveFields();
@@ -236,7 +236,7 @@ class Webforms_Model {
 		$id = $data;
 		$model = false;
 		// Retrieve model and populate information
-		$result = $adb->pquery("SELECT * FROM vtiger_webforms WHERE id=?", array($id));
+		$result = $adb->pquery('SELECT * FROM vtiger_webforms WHERE id=?', array($id));
 		if ($adb->num_rows($result)) {
 			$model = new Webforms_Model($adb->fetch_array($result));
 			$model->retrieveFields();
@@ -290,7 +290,7 @@ class Webforms_Model {
 			if (($field['type']['name'] == 'date') && !empty($defaultvalue)) {
 				$defaultvalue = DateTimeField::convertToUserFormat($defaultvalue);
 			}
-			$defaultvalue = explode(' |##| ', $defaultvalue);
+			$defaultvalue = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $defaultvalue);
 		}
 		return $defaultvalue;
 	}

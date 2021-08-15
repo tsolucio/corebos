@@ -93,7 +93,7 @@ class Workflow {
 	}
 
 	public function filterInactiveFields($module) {
-		return;
+		// none
 	}
 
 	/**
@@ -101,14 +101,14 @@ class Workflow {
 	 * return string $sorder    - sortorder string either 'ASC' or 'DESC'
 	 */
 	public function getSortOrder() {
-		global $log;
+		global $log, $adb;
 		$cmodule = get_class($this);
 		$log->debug('> getSortOrder');
 		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $cmodule));
 		if (isset($_REQUEST['sorder'])) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
+			$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 		} elseif (!empty($_SESSION[$cmodule.'_Sort_Order'])) {
-			$sorder = $this->db->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
+			$sorder = $adb->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
 		}
 		$log->debug('< getSortOrder');
 		return $sorder;
@@ -119,7 +119,7 @@ class Workflow {
 	 * return string $order_by    - fieldname(eg: 'accountname')
 	 */
 	public function getOrderBy() {
-		global $log;
+		global $log, $adb;
 		$log->debug('> getOrderBy');
 		$cmodule = get_class($this);
 		$order_by = '';
@@ -128,9 +128,9 @@ class Workflow {
 		}
 
 		if (isset($_REQUEST['order_by'])) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+			$order_by = $adb->sql_escape_string($_REQUEST['order_by']);
 		} elseif (!empty($_SESSION[$cmodule.'_Order_By'])) {
-			$order_by = $this->db->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
+			$order_by = $adb->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
 		}
 		$log->debug('< getOrderBy');
 		return $order_by;
@@ -183,20 +183,15 @@ class Workflow {
 
 	public function isCompletedForRecord($recordId) {
 		global $adb;
-		$result = $adb->pquery('SELECT * FROM com_vtiger_workflow_activatedonce WHERE entity_id=? and workflow_id=?', array($recordId, $this->id));
+		$result = $adb->pquery('SELECT 1 FROM com_vtiger_workflow_activatedonce WHERE entity_id=? and workflow_id=?', array($recordId, $this->id));
 		$result2=$adb->pquery(
-			'SELECT *
+			'SELECT 1
 			FROM com_vtiger_workflowtasks
-			INNER JOIN com_vtiger_workflowtask_queue ON com_vtiger_workflowtasks.task_id= com_vtiger_workflowtask_queue.task_id
+			INNER JOIN com_vtiger_workflowtask_queue ON com_vtiger_workflowtasks.task_id=com_vtiger_workflowtask_queue.task_id
 			WHERE workflow_id=? AND entity_id=?',
 			array($this->id, $recordId)
 		);
-
-		if ($adb->num_rows($result)===0 && $adb->num_rows($result2)===0) { // Workflow not done for specified record
-			return false;
-		} else {
-			return true;
-		}
+		return !($adb->num_rows($result)===0 && $adb->num_rows($result2)===0); // Workflow not done for specified record
 	}
 
 	public function markAsCompletedForRecord($recordId) {
@@ -231,18 +226,24 @@ class Workflow {
 				$logbg->debug($task->summary);
 				$trigger = (empty($task->trigger) ? null : $task->trigger);
 				if ($trigger != null) {
-					$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
+					if (array_key_exists('hours', $trigger)) {
+						$delay = strtotime($data[$trigger['field']])+$trigger['hours']*3600;
+					}
+					if (array_key_exists('days', $trigger)) {
+						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
+					}
 				} else {
 					$delay = 0;
 				}
-				if ($task->executeImmediately==true || $this->executionCondition==VTWorkflowManager::$MANUAL) {
+				if ($task->executeImmediately || $this->executionCondition==VTWorkflowManager::$MANUAL) {
 					// we permit update field delayed tasks even though some may not make sense
 					// for example a mathematical operation or a decision on a value of a field that
 					// may change during the delay. This is for some certain types of updates, generally
 					// absolute updates. You MUST know what you are doing when creating workflows.
-					if ($delay!=0 && get_class($task) == 'VTUpdateFieldsTask') {
+					if ($delay!=0 && (get_class($task) == 'VTUpdateFieldsTask' || get_class($task) == 'VTCreateEntityTask')) {
 						$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
 					} else {
+						$entityCache->emptyCache($entityData->getId());
 						if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
 							try {
 								$task->startTask($entityData);
@@ -263,13 +264,13 @@ class Workflow {
 				}
 			}
 		}
-		if (count($errortasks)>0) {
+		if (!empty($errortasks)) {
 			$logbg->fatal('> *** Workflow Tasks Errors:');
 			$logbg->fatal($errortasks);
 			$logbg->fatal('> **************************');
 			if ($webservice) {
 				require_once 'include/Webservices/WebServiceError.php';
-				throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, print_r($errortasks, true));
+				throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, json_encode($errortasks));
 			}
 		}
 	}
@@ -371,11 +372,11 @@ class Workflow {
 		$scheduleMinute= $this->getScheduleMinute();
 		$nextTime = date('Y-m-d H:i:s');
 		if ($scheduleType==Workflow::$SCHEDULED_BY_MINUTE) {
-			$nextTime=date("Y-m-d H:i:s", strtotime("+ $scheduleMinute minutes"));
+			$nextTime=date('Y-m-d H:i:s', strtotime("+ $scheduleMinute minutes"));
 		}
 
 		if ($scheduleType == Workflow::$SCHEDULED_HOURLY) {
-			$nextTime = date("Y-m-d H:i:s", strtotime("+1 hour"));
+			$nextTime = date('Y-m-d H:i:s', strtotime('+1 hour'));
 		}
 
 		if ($scheduleType == Workflow::$SCHEDULED_DAILY) {
@@ -525,17 +526,16 @@ class Workflow {
 	public function getNextTriggerTimeForMonthlyByWeekDay($scheduledWeekDayOfMonth, $scheduledTime) {
 		$currentTime = time();
 		$currentDayOfMonth = date('j', $currentTime);
-		$scheduledTime = $this->getWFScheduleTime();
 		if ($scheduledWeekDayOfMonth == $currentDayOfMonth) {
-			$nextTime = date("Y-m-d H:i:s", strtotime('+1 month '.$scheduledTime));
+			$nextTime = date('Y-m-d H:i:s', strtotime('+1 month '.$scheduledTime));
 		} else {
 			$monthInFullText = date('F', $currentTime);
 			$yearFullNumberic = date('Y', $currentTime);
 			if ($scheduledWeekDayOfMonth < $currentDayOfMonth) {
-				$nextMonth = date("Y-m-d H:i:s", strtotime('next month'));
+				$nextMonth = date('Y-m-d H:i:s', strtotime('next month'));
 				$monthInFullText = date('F', strtotime($nextMonth));
 			}
-			$nextTime = date("Y-m-d H:i:s", strtotime($scheduledWeekDayOfMonth.' '.$monthInFullText.' '.$yearFullNumberic.' '.$scheduledTime));
+			$nextTime = date('Y-m-d H:i:s', strtotime($scheduledWeekDayOfMonth.' '.$monthInFullText.' '.$yearFullNumberic.' '.$scheduledTime));
 		}
 		return $nextTime;
 	}

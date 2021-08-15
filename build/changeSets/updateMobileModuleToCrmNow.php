@@ -30,7 +30,7 @@ class updateMobileModuleToCrmNow extends cbupdaterWorker {
 
 				$moduleInstance = Vtiger_Module::getInstance($module);
 				$package->loadManifestFromFile('modules/'.$module.'/manifest.xml');
-				$rdo = $package->update_Module($moduleInstance);
+				$package->update_Module($moduleInstance);
 				global $adb;
 				$Mobilers = $adb->query("SELECT version FROM vtiger_tab WHERE name = 'Mobile'");
 				$version = $adb->query_result($Mobilers, 0, 'version');

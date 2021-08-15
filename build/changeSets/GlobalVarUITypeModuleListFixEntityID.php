@@ -40,12 +40,6 @@ class GlobalVarUITypeModuleListFixEntityID extends cbupdaterWorker {
 					$this->ExecuteQuery($updsql, array($ml,$gv['globalvariableid']));
 				}
 			}
-			// fix incorrect entiyidentifier
-			$updsql = "UPDATE `vtiger_entityname` SET 
-				`fieldname`='globalno',
-				`entityidfield`='globalvariableid',
-				`entityidcolumn`='globalvariableid'
-				WHERE `modulename`='GlobalVariable' and `tablename`='vtiger_globalvariable'";
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}

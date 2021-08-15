@@ -117,15 +117,15 @@ function getStdOutput($groupInfoArr, $groupId, $mod_strings) {
 				$memberActionParameter='record';
 				$memberDisplayType='User';
 			}
-			$groupmembers ['membername'] = $memberName;
-			$groupmembers ['memberid'] = $memberId;
-			$groupmembers ['membertype'] = $memberDisplayType;
-			$groupmembers ['memberaction'] = $memberAction;
-			$groupmembers ['actionparameter'] = $memberActionParameter;
+			$groupmembers['membername'] = $memberName;
+			$groupmembers['memberid'] = $memberId;
+			$groupmembers['membertype'] = $memberDisplayType;
+			$groupmembers['memberaction'] = $memberAction;
+			$groupmembers['actionparameter'] = $memberActionParameter;
 			$row++;
-			$memberinfo [] = $groupmembers;
+			$memberinfo[] = $groupmembers;
 		}
-		if (count($memberinfo) >0) {
+		if (!empty($memberinfo)) {
 			$information[$memberDisplayType] = $memberinfo;
 		}
 	}

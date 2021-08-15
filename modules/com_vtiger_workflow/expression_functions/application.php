@@ -13,6 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
+require_once 'include/Webservices/GetRelatedRecords.php';
 
 function __cbwf_setype($arr) {
 	$ret = '';
@@ -85,12 +86,133 @@ function __cb_getcrudmode($arr) {
 	}
 }
 
-function __cb_getfromcontext($arr) {
-	if (empty($arr[1]->WorkflowContext[$arr[0]])) {
-		return '';
-	} else {
-		return $arr[1]->WorkflowContext[$arr[0]];
+function __cb_getrelatedids($arr) {
+	global $current_user;
+	$relids = array();
+	if (count($arr)<2 || empty($arr[0])) {
+		return $relids;
 	}
+	$env = $arr[1];
+	if (isset($env->moduleName)) {
+		$mainmodule = $env->moduleName;
+	} else {
+		$mainmodule = $env->getModuleName();
+	}
+	$data = $env->getData();
+	$recordid = $data['id'];
+	$relmodule = $arr[0];
+	try {
+		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, ['columns' => 'id'], $current_user);
+	} catch (\Throwable $th) {
+		return $relids;
+	}
+	foreach ($relrecords['records'] as $record) {
+		$relids[] = $record['id'];
+	}
+	return $relids;
+}
+
+function __cb_getidof($arr) {
+	global $current_user, $adb;
+	$qg = new QueryGenerator($arr[0], $current_user);
+	$qg->setFields(array('id'));
+	$qg->addCondition($arr[1], $arr[2], 'e');
+	$rs = $adb->query($qg->getQuery(false, 1));
+	if ($rs && $adb->num_rows($rs)>0) {
+		return $adb->query_result($rs, 0, 0);
+	} else {
+		return 0;
+	}
+}
+
+function __cb_getfieldsof($arr) {
+	global $current_user, $adb;
+	$qg = new QueryGenerator($arr[1], $current_user);
+	if (isset($arr[2])) {
+		$fields = explode(',', $arr[2]);
+		$qg->setFields($fields);
+	} else {
+		$qg->setFields(array('*'));
+	}
+	$qg->addCondition('id', $arr[0], 'e');
+	$rs = $adb->query($qg->getQuery(false));
+	if ($rs && $adb->num_rows($rs)>0) {
+		return array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
+	} else {
+		return array();
+	}
+}
+
+function __cb_getfromcontext($arr) {
+	$str_arr = explode(',', $arr[0]);
+	$variableArr = array();
+	foreach ($str_arr as $vname) {
+		if (strpos($vname, '.')) {
+			$variableArr[$vname] = __cb_getfromcontextvalueinarrayobject($arr[1]->WorkflowContext, $vname);
+		} elseif (empty($arr[1]->WorkflowContext[$vname])) {
+			$variableArr[$vname] = '';
+		} else {
+			$variableArr[$vname] = $arr[1]->WorkflowContext[$vname];
+		}
+	}
+	if (count($variableArr)==1) {
+		return $variableArr[$arr[0]];
+	} else {
+		return json_encode($variableArr);
+	}
+}
+
+function __cb_getfromcontextsearching($arr) {
+	$str_arr = explode(',', $arr[0]);
+	$variableArr = array();
+	foreach ($str_arr as $vname) {
+		$array = false;
+		if (strpos($vname, '.')) {
+			$array = __cb_getfromcontextvalueinarrayobject($arr[4]->WorkflowContext, $vname);
+		} elseif (empty($arr[4]->WorkflowContext[$vname])) {
+			$variableArr[$vname] = '';
+		} else {
+			$array = $arr[4]->WorkflowContext[$vname];
+		}
+		if (is_array($array)) {
+			$key = array_search($arr[2], array_column($array, $arr[1]));
+			if ($key && !empty($array[$key])) {
+				$variableArr[$vname] = __cb_getfromcontextvalueinarrayobject($array[$key], $arr[3]);
+			} else {
+				$variableArr[$vname] = '';
+			}
+		}
+	}
+	if (count($variableArr)==1) {
+		return $variableArr[$arr[0]];
+	} else {
+		return json_encode($variableArr);
+	}
+}
+
+function __cb_getfromcontextvalueinarrayobject($aORo, $vname) {
+	$value = '';
+	$levels = explode('.', $vname);
+	foreach ($levels as $key) {
+		if (is_array($aORo)) {
+			if (!empty($aORo[$key])) {
+				$value = $aORo[$key];
+				$aORo = $aORo[$key];
+			} else {
+				$value = '';
+			}
+		} elseif (is_object($aORo)) {
+			if (!empty($aORo->$key)) {
+				$value = $aORo->$key;
+				$aORo = $aORo->$key;
+			} else {
+				$value = '';
+			}
+		} else {
+			$value = '';
+		}
+	}
+	return $value;
 }
 
 function __cb_setfromcontext($arr) {
@@ -138,5 +260,36 @@ function __cb_readMessage($arr) {
 	$cbmq = coreBOS_MQTM::getInstance();
 	$msg = $cbmq->getMessage($channel, 'wfmessagereader', 'workflow');
 	return $msg['information'];
+}
+
+function __cb_evaluateRule($arr) {
+	global $logbg;
+	if (count($arr)<2 || empty($arr[0])) {
+		return 0;
+	}
+	if (!is_object($arr[1])) {
+		return 0;
+	}
+	$env = $arr[1];
+	$data = $env->getData();
+	$context = array_merge((array)$env->WorkflowContext, $data);
+	if (!empty($data['id'])) {
+		list($wsid,$crmid) = explode('x', $data['id']);
+		if (!empty($crmid)) {
+			$context['record_id'] = $crmid;
+		}
+	}
+	$result = 0;
+	try {
+		$result = coreBOS_Rule::evaluate($arr[0], $context);
+	} catch (\Exception $e) {
+		$logbg->debug(array(
+			'Rule: '.$arr[0],
+			$e->getCode(),
+			$e->getMessage(),
+			$context
+		));
+	}
+	return $result;
 }
 ?>

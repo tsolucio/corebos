@@ -28,9 +28,11 @@ class ConvertLeadUI {
 
 	public function __construct($leadid, $current_user) {
 		global $adb;
+		require_once 'data/CRMEntity.php';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
 		$this->leadid = $leadid;
 		$this->current_user = $current_user;
-		$sql = 'SELECT * FROM vtiger_leaddetails,vtiger_leadscf,vtiger_crmentity
+		$sql = 'SELECT * FROM vtiger_leaddetails,vtiger_leadscf,'.$crmEntityTable.'
 			WHERE vtiger_leaddetails.leadid=vtiger_leadscf.leadid
 			AND vtiger_leaddetails.leadid=vtiger_crmentity.crmid
 			AND vtiger_leaddetails.leadid =?';
@@ -44,20 +46,13 @@ class ConvertLeadUI {
 
 	public function isModuleActive($module) {
 		include_once 'include/utils/VtlibUtils.php';
-		return vtlib_isModuleActive($module) && ((isPermitted($module, 'EditView') == 'yes'));
+		return vtlib_isModuleActive($module) && (isPermitted($module, 'EditView') == 'yes');
 	}
 
 	public function isActive($field, $mod) {
 		global $adb;
-		$tabid = getTabid($mod);
-		$query = 'select * from vtiger_field where fieldname = ? and tabid = ? and presence in (0,2)';
-		$res = $adb->pquery($query, array($field, $tabid));
-		$rows = $adb->num_rows($res);
-		if ($rows > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		$res = $adb->pquery('select 1 from vtiger_field where fieldname=? and tabid=? and presence in (0,2)', array($field, getTabid($mod)));
+		return ($adb->num_rows($res) > 0);
 	}
 
 	public function isMandatory($module, $fieldname) {

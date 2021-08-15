@@ -120,7 +120,7 @@ function validate_sendmail(idlist, module) {
 	var email_type = new Array();
 	for (var i=0; i < chk_emails; i++) {
 		if (oFsendmail[i].type != 'button') {
-			if (oFsendmail[i].checked != false) {
+			if (oFsendmail[i].checked) {
 				email_type [j++]= oFsendmail[i].value;
 			}
 		}
@@ -128,7 +128,7 @@ function validate_sendmail(idlist, module) {
 	if (email_type != '') {
 		var field_lists = email_type.join(':');
 		var url= 'index.php?module=Emails&action=EmailsAjax&pmodule='+module+'&file=EditView&sendmail=true&idlist='+idlist+'&field_lists='+field_lists+url1;
-		openPopUp('xComposeEmail', this, url, 'createemailWin', 1000, 800, 'menubar=no,toolbar=no,location=no,status=no,resizable=no');
+		openPopUp('xComposeEmail', this, url, 'createemailWin', 1200, 900, 'menubar=no,toolbar=no,location=no,status=no,resizable=no');
 		fninvsh('roleLay');
 		return true;
 	} else {

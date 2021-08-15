@@ -95,8 +95,8 @@ class MailManager_Connector {
 		$this->mBoxUrl = $boxUrl;
 		$this->mBoxBaseUrl = $baseUrl; // Used for folder List
 		$this->mBox = @imap_open($url, $username, $password);
-		imap_errors();
 		$this->isError();
+		imap_errors();
 	}
 
 	/**
@@ -153,12 +153,12 @@ class MailManager_Connector {
 	 * Reads mail box folders
 	 * @param string $ref Optional -
 	 */
-	public function folders($ref = "{folder}") {
+	public function folders($ref = '{folder}') {
 		if ($this->mFolders) {
 			return $this->mFolders;
 		}
 
-		$result = imap_getmailboxes($this->mBox, $ref, "*");
+		$result = imap_getmailboxes($this->mBox, $ref, '*');
 		if ($this->isError()) {
 			return false;
 		}

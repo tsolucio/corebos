@@ -40,30 +40,24 @@ class SessionManager {
 		if (HTTP_Session2::isExpired()) {
 			$valid = false;
 			HTTP_Session2::destroy();
-			throw new WebServiceException(WebServiceErrorCode::$SESSLIFEOVER, 'Session has life span over please login again');
+			throw new WebServiceException(WebServiceErrorCode::$SESSLIFEOVER, 'Session life span over, please login again');
 		}
 		// idled
 		if (HTTP_Session2::isIdle()) {
 			$valid = false;
 			HTTP_Session2::destroy();
-			throw new WebServiceException(WebServiceErrorCode::$SESSIONIDLE, 'Session has been invalidated to due lack activity');
+			throw new WebServiceException(WebServiceErrorCode::$SESSIONIDLE, 'Session has been invalidated due to lack of activity');
 		}
-		//echo '<br>is new: ', HTTP_Session2::isNew();
 		//invalid sessionId provided.
-		//echo '<br>get: ',$this->get($this->sessionVar);
 		if (!$this->get($this->sessionVar) && !HTTP_Session2::isNew()) {
 			$valid = false;
 			HTTP_Session2::destroy();
-			throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Session Identifier provided is Invalid');
+			throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Session Identifier provided is invalid');
 		}
 		return $valid;
 	}
 
 	public function startSession($sid = null, $adoptSession = false, $sname = null) {
-		//if ($sid) {
-		//	HTTP_Session2::id($sid);
-		//}
-
 		if (!$sid || strlen($sid) ===0) {
 			$sid = null;
 		}
@@ -73,21 +67,19 @@ class SessionManager {
 
 		$newSID = HTTP_Session2::id();
 
-		if (!$sid || $adoptSession==true) {
+		if (!$sid || $adoptSession) {
 			$this->set($this->sessionVar, 'true');
 		} else {
 			if (!$this->get($this->sessionVar)) {
 				HTTP_Session2::destroy();
-				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Session Identifier provided is Invalid');
-				$newSID = null;
+				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Session Identifier provided is invalid');
 			}
 		}
 
 		if (!$this->isValid()) {
 			$newSID = null;
 		}
-		$sid = $newSID;
-		return $sid;
+		return $newSID;
 	}
 
 	public function getSessionId() {
@@ -99,7 +91,6 @@ class SessionManager {
 	}
 
 	public function get($name) {
-		//echo "<br> getting for: ",$name," :value: ",HTTP_Session2::get($name);
 		return HTTP_Session2::get($name);
 	}
 
