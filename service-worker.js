@@ -9311,7 +9311,7 @@ precacheAndRoute([{
   "revision": "a7944e3065d1402d5390a8ed65170eb8"
 }, {
   "url": "include/js/general.js",
-  "revision": "0d73d8c417895553b7d9f3351ea2edbc"
+  "revision": "c6c8c49b8e0ee33516d653eba81c0549"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "19886b1eaa89b43c3f045be1da6bfc9e"
@@ -9551,7 +9551,7 @@ precacheAndRoute([{
   "revision": "cf04488523916947850d381c20427f50"
 }, {
   "url": "modules/com_vtiger_workflow/resources/launchworkflowtask.js",
-  "revision": "90ce5ce19efe004446cb24df2ffebe6a"
+  "revision": "f9abcd1f86a21b38f20e043ff01df6e4"
 }, {
   "url": "modules/com_vtiger_workflow/resources/many2manyrelation.js",
   "revision": "8778e149e296ca91f9c4c941007fc17c"
@@ -10100,14 +10100,14 @@ precacheAndRoute([{
   "revision": "062def9baf01f014c4baf6568704316a"
 }, {
   "url": "include/freetag/jquery.tagcanvas.js",
-  "revision": "0be5cdb88030adc8bdeeaef233fdb1a4"
+  "revision": "c6e953f037f6294b34a42c9155fc20bf"
 }, {
   "url": "include/freetag/jquery.tagcanvas.min.js",
-  "revision": "3e99f6e7297378ccbcdcfd0b907a511a"
+  "revision": "2730cc84e040244a8fb029ffe2609e63"
 }, {
   "url": "include/freetag/tagcanvas.min.js",
-  "revision": "82199e635f5096bfb6a5cf79ce023933"
+  "revision": "b82c049a6299fc20fddde4c4ec998e9c"
 }, {
   "url": "include/freetag/tagcanvas.js",
-  "revision": "88dd1cf2eb131225f8aab090d5fce221"
+  "revision": "109089828ca587dcf0be263da4bf0533"
 }], {});
