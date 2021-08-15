@@ -1,103 +1,103 @@
 /*!
  * TOAST UI Grid
- * @version 4.14.0 | Fri Jun 26 2020
+ * @version 4.17.0 | Tue Apr 27 2021
  * @author NHN. FE Development Lab
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
-    if(typeof exports === 'object' && typeof module === 'object')
-        module.exports = factory(require("tui-date-picker"), require("tui-pagination"));
-    else if(typeof define === 'function' && define.amd)
-        define(["tui-date-picker", "tui-pagination"], factory);
-    else if(typeof exports === 'object')
-        exports["Grid"] = factory(require("tui-date-picker"), require("tui-pagination"));
-    else
-        root["tui"] = root["tui"] || {}, root["tui"]["Grid"] = factory(root["tui"]["DatePicker"], root["tui"]["Pagination"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__110__) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("tui-date-picker"), require("tui-pagination"));
+	else if(typeof define === 'function' && define.amd)
+		define(["tui-date-picker", "tui-pagination"], factory);
+	else if(typeof exports === 'object')
+		exports["Grid"] = factory(require("tui-date-picker"), require("tui-pagination"));
+	else
+		root["tui"] = root["tui"] || {}, root["tui"]["Grid"] = factory(root["tui"]["DatePicker"], root["tui"]["Pagination"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__114__) {
 return /******/ (function(modules) { // webpackBootstrap
-/******/    // The module cache
-/******/    var installedModules = {};
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
 /******/
-/******/    // The require function
-/******/    function __webpack_require__(moduleId) {
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
 /******/
-/******/        // Check if module is in cache
-/******/        if(installedModules[moduleId]) {
-/******/            return installedModules[moduleId].exports;
-/******/        }
-/******/        // Create a new module (and put it into the cache)
-/******/        var module = installedModules[moduleId] = {
-/******/            i: moduleId,
-/******/            l: false,
-/******/            exports: {}
-/******/        };
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
 /******/
-/******/        // Execute the module function
-/******/        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/
-/******/        // Flag the module as loaded
-/******/        module.l = true;
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
 /******/
-/******/        // Return the exports of the module
-/******/        return module.exports;
-/******/    }
-/******/
-/******/
-/******/    // expose the modules object (__webpack_modules__)
-/******/    __webpack_require__.m = modules;
-/******/
-/******/    // expose the module cache
-/******/    __webpack_require__.c = installedModules;
-/******/
-/******/    // define getter function for harmony exports
-/******/    __webpack_require__.d = function(exports, name, getter) {
-/******/        if(!__webpack_require__.o(exports, name)) {
-/******/            Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/        }
-/******/    };
-/******/
-/******/    // define __esModule on exports
-/******/    __webpack_require__.r = function(exports) {
-/******/        if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/            Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/        }
-/******/        Object.defineProperty(exports, '__esModule', { value: true });
-/******/    };
-/******/
-/******/    // create a fake namespace object
-/******/    // mode & 1: value is a module id, require it
-/******/    // mode & 2: merge all properties of value into the ns
-/******/    // mode & 4: return value when already ns object
-/******/    // mode & 8|1: behave like require
-/******/    __webpack_require__.t = function(value, mode) {
-/******/        if(mode & 1) value = __webpack_require__(value);
-/******/        if(mode & 8) return value;
-/******/        if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/        var ns = Object.create(null);
-/******/        __webpack_require__.r(ns);
-/******/        Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/        if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/        return ns;
-/******/    };
-/******/
-/******/    // getDefaultExport function for compatibility with non-harmony modules
-/******/    __webpack_require__.n = function(module) {
-/******/        var getter = module && module.__esModule ?
-/******/            function getDefault() { return module['default']; } :
-/******/            function getModuleExports() { return module; };
-/******/        __webpack_require__.d(getter, 'a', getter);
-/******/        return getter;
-/******/    };
-/******/
-/******/    // Object.prototype.hasOwnProperty.call
-/******/    __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/    // __webpack_public_path__
-/******/    __webpack_require__.p = "/dist";
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 /******/
 /******/
-/******/    // Load entry module and return exports
-/******/    return __webpack_require__(__webpack_require__.s = 53);
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/dist";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 55);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -107,6 +107,7 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.silentSplice = exports.convertTextToData = exports.endsWith = exports.startsWith = exports.uniqByProp = exports.uniq = exports.pick = exports.omit = exports.pruneObject = exports.debounce = exports.convertToNumber = exports.fromArray = exports.isEmpty = exports.isNil = exports.isString = exports.isNumber = exports.isBoolean = exports.isNull = exports.isUndefined = exports.isBlank = exports.last = exports.range = exports.clamp = exports.setDefaultProp = exports.encodeHTMLEntity = exports.hasOwnProp = exports.forEachObject = exports.isObject = exports.isFunction = exports.createMapFromArray = exports.removeArrayItem = exports.assign = exports.deepCopy = exports.deepCopyArray = exports.deepMergedCopy = exports.mapProp = exports.findOffsetIndex = exports.findPrevIndex = exports.findIndexes = exports.findPropIndex = exports.findIndex = exports.someProp = exports.some = exports.findProp = exports.find = exports.includes = exports.pipe = exports.sum = exports.arrayEqual = exports.shallowEqual = void 0;
 var tslib_1 = __webpack_require__(1);
 var CUSTOM_LF_SUBCHAR = '___tui_grid_lf___';
 var CUSTOM_CR_SUBCHAR = '___tui_grid_cr___';
@@ -392,6 +393,10 @@ function isString(value) {
     return typeof value === 'string';
 }
 exports.isString = isString;
+function isNil(value) {
+    return isUndefined(value) || isNull(value);
+}
+exports.isNil = isNil;
 /**
  * check the emptiness(included null) of object or array. if obj parameter is null or undefind, return true
  * @param obj - target object or array
@@ -783,6 +788,7 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getComputedFontStyle = exports.getTextWidth = exports.setClipboardSelection = exports.isSupportWindowClipboardData = exports.convertTableToData = exports.getCoordinateWithOffset = exports.setCursorStyle = exports.appendStyleElement = exports.getCellAddress = exports.findParent = exports.findParentByTagName = exports.hasClass = exports.isDatePickerElement = exports.cls = exports.dataAttr = void 0;
 var common_1 = __webpack_require__(0);
 var CLS_PREFIX = 'tui-grid-';
 exports.dataAttr = {
@@ -813,8 +819,15 @@ function cls() {
     return result.join(' ');
 }
 exports.cls = cls;
+function isSvgElement(el) {
+    var _a;
+    return ((_a = el.namespaceURI) === null || _a === void 0 ? void 0 : _a.indexOf('svg')) !== -1;
+}
 function isDatePickerElement(el) {
     var currentEl = el;
+    if (isSvgElement(el)) {
+        return false;
+    }
     while (currentEl && currentEl.className.split(' ').indexOf('tui-datepicker') === -1) {
         currentEl = currentEl.parentElement;
     }
@@ -822,7 +835,7 @@ function isDatePickerElement(el) {
 }
 exports.isDatePickerElement = isDatePickerElement;
 function hasClass(el, className) {
-    return el.className.split(' ').indexOf(cls(className)) !== -1;
+    return !isSvgElement(el) && el.className.split(' ').indexOf(cls(className)) !== -1;
 }
 exports.hasClass = hasClass;
 function findParentByTagName(el, tagName) {
@@ -925,6 +938,31 @@ function setClipboardSelection(node) {
     }
 }
 exports.setClipboardSelection = setClipboardSelection;
+function getTextWidth(text, font) {
+    var context = document.createElement('canvas').getContext('2d');
+    context.font = font;
+    var width = context.measureText(String(text)).width;
+    return Math.ceil(width);
+}
+exports.getTextWidth = getTextWidth;
+function getComputedFontStyle(selector) {
+    var firstCellNode = document.querySelector("." + cls(selector));
+    var walker = document.createTreeWalker(firstCellNode, 4);
+    var node = firstCellNode;
+    while (walker.nextNode()) {
+        node = walker.currentNode;
+        if (node.nodeType === 3) {
+            node = node.parentElement;
+            break;
+        }
+    }
+    var compStyle = getComputedStyle(node);
+    var fontSize = compStyle.getPropertyValue('font-size');
+    var fontWeight = compStyle.getPropertyValue('font-weight');
+    var fontFamily = compStyle.getPropertyValue('font-family');
+    return fontWeight + " " + fontSize + " " + fontFamily;
+}
+exports.getComputedFontStyle = getComputedFontStyle;
 
 
 /***/ }),
@@ -950,51 +988,51 @@ var stack = [];
 var EMPTY_CHILDREN = [];
 
 function h(nodeName, attributes) {
-    var children = EMPTY_CHILDREN,
-        lastSimple,
-        child,
-        simple,
-        i;
-    for (i = arguments.length; i-- > 2;) {
-        stack.push(arguments[i]);
-    }
-    if (attributes && attributes.children != null) {
-        if (!stack.length) stack.push(attributes.children);
-        delete attributes.children;
-    }
-    while (stack.length) {
-        if ((child = stack.pop()) && child.pop !== undefined) {
-            for (i = child.length; i--;) {
-                stack.push(child[i]);
-            }
-        } else {
-            if (typeof child === 'boolean') child = null;
+	var children = EMPTY_CHILDREN,
+	    lastSimple,
+	    child,
+	    simple,
+	    i;
+	for (i = arguments.length; i-- > 2;) {
+		stack.push(arguments[i]);
+	}
+	if (attributes && attributes.children != null) {
+		if (!stack.length) stack.push(attributes.children);
+		delete attributes.children;
+	}
+	while (stack.length) {
+		if ((child = stack.pop()) && child.pop !== undefined) {
+			for (i = child.length; i--;) {
+				stack.push(child[i]);
+			}
+		} else {
+			if (typeof child === 'boolean') child = null;
 
-            if (simple = typeof nodeName !== 'function') {
-                if (child == null) child = '';else if (typeof child === 'number') child = String(child);else if (typeof child !== 'string') simple = false;
-            }
+			if (simple = typeof nodeName !== 'function') {
+				if (child == null) child = '';else if (typeof child === 'number') child = String(child);else if (typeof child !== 'string') simple = false;
+			}
 
-            if (simple && lastSimple) {
-                children[children.length - 1] += child;
-            } else if (children === EMPTY_CHILDREN) {
-                children = [child];
-            } else {
-                children.push(child);
-            }
+			if (simple && lastSimple) {
+				children[children.length - 1] += child;
+			} else if (children === EMPTY_CHILDREN) {
+				children = [child];
+			} else {
+				children.push(child);
+			}
 
-            lastSimple = simple;
-        }
-    }
+			lastSimple = simple;
+		}
+	}
 
-    var p = new VNode();
-    p.nodeName = nodeName;
-    p.children = children;
-    p.attributes = attributes == null ? undefined : attributes;
-    p.key = attributes == null ? undefined : attributes.key;
+	var p = new VNode();
+	p.nodeName = nodeName;
+	p.children = children;
+	p.attributes = attributes == null ? undefined : attributes;
+	p.key = attributes == null ? undefined : attributes.key;
 
-    if (options.vnode !== undefined) options.vnode(p);
+	if (options.vnode !== undefined) options.vnode(p);
 
-    return p;
+	return p;
 }
 
 function extend(obj, props) {
@@ -1020,110 +1058,110 @@ var IS_NON_DIMENSIONAL = /acit|ex(?:s|g|n|p|$)|rph|ows|mnc|ntw|ine[ch]|zoo|^ord/
 var items = [];
 
 function enqueueRender(component) {
-    if (!component._dirty && (component._dirty = true) && items.push(component) == 1) {
-        (options.debounceRendering || defer)(rerender);
-    }
+	if (!component._dirty && (component._dirty = true) && items.push(component) == 1) {
+		(options.debounceRendering || defer)(rerender);
+	}
 }
 
 function rerender() {
-    var p;
-    while (p = items.pop()) {
-        if (p._dirty) renderComponent(p);
-    }
+	var p;
+	while (p = items.pop()) {
+		if (p._dirty) renderComponent(p);
+	}
 }
 
 function isSameNodeType(node, vnode, hydrating) {
-    if (typeof vnode === 'string' || typeof vnode === 'number') {
-        return node.splitText !== undefined;
-    }
-    if (typeof vnode.nodeName === 'string') {
-        return !node._componentConstructor && isNamedNode(node, vnode.nodeName);
-    }
-    return hydrating || node._componentConstructor === vnode.nodeName;
+	if (typeof vnode === 'string' || typeof vnode === 'number') {
+		return node.splitText !== undefined;
+	}
+	if (typeof vnode.nodeName === 'string') {
+		return !node._componentConstructor && isNamedNode(node, vnode.nodeName);
+	}
+	return hydrating || node._componentConstructor === vnode.nodeName;
 }
 
 function isNamedNode(node, nodeName) {
-    return node.normalizedNodeName === nodeName || node.nodeName.toLowerCase() === nodeName.toLowerCase();
+	return node.normalizedNodeName === nodeName || node.nodeName.toLowerCase() === nodeName.toLowerCase();
 }
 
 function getNodeProps(vnode) {
-    var props = extend({}, vnode.attributes);
-    props.children = vnode.children;
+	var props = extend({}, vnode.attributes);
+	props.children = vnode.children;
 
-    var defaultProps = vnode.nodeName.defaultProps;
-    if (defaultProps !== undefined) {
-        for (var i in defaultProps) {
-            if (props[i] === undefined) {
-                props[i] = defaultProps[i];
-            }
-        }
-    }
+	var defaultProps = vnode.nodeName.defaultProps;
+	if (defaultProps !== undefined) {
+		for (var i in defaultProps) {
+			if (props[i] === undefined) {
+				props[i] = defaultProps[i];
+			}
+		}
+	}
 
-    return props;
+	return props;
 }
 
 function createNode(nodeName, isSvg) {
-    var node = isSvg ? document.createElementNS('http://www.w3.org/2000/svg', nodeName) : document.createElement(nodeName);
-    node.normalizedNodeName = nodeName;
-    return node;
+	var node = isSvg ? document.createElementNS('http://www.w3.org/2000/svg', nodeName) : document.createElement(nodeName);
+	node.normalizedNodeName = nodeName;
+	return node;
 }
 
 function removeNode(node) {
-    var parentNode = node.parentNode;
-    if (parentNode) parentNode.removeChild(node);
+	var parentNode = node.parentNode;
+	if (parentNode) parentNode.removeChild(node);
 }
 
 function setAccessor(node, name, old, value, isSvg) {
-    if (name === 'className') name = 'class';
+	if (name === 'className') name = 'class';
 
-    if (name === 'key') {} else if (name === 'ref') {
-        applyRef(old, null);
-        applyRef(value, node);
-    } else if (name === 'class' && !isSvg) {
-        node.className = value || '';
-    } else if (name === 'style') {
-        if (!value || typeof value === 'string' || typeof old === 'string') {
-            node.style.cssText = value || '';
-        }
-        if (value && typeof value === 'object') {
-            if (typeof old !== 'string') {
-                for (var i in old) {
-                    if (!(i in value)) node.style[i] = '';
-                }
-            }
-            for (var i in value) {
-                node.style[i] = typeof value[i] === 'number' && IS_NON_DIMENSIONAL.test(i) === false ? value[i] + 'px' : value[i];
-            }
-        }
-    } else if (name === 'dangerouslySetInnerHTML') {
-        if (value) node.innerHTML = value.__html || '';
-    } else if (name[0] == 'o' && name[1] == 'n') {
-        var useCapture = name !== (name = name.replace(/Capture$/, ''));
-        name = name.toLowerCase().substring(2);
-        if (value) {
-            if (!old) node.addEventListener(name, eventProxy, useCapture);
-        } else {
-            node.removeEventListener(name, eventProxy, useCapture);
-        }
-        (node._listeners || (node._listeners = {}))[name] = value;
-    } else if (name !== 'list' && name !== 'type' && !isSvg && name in node) {
-        try {
-            node[name] = value == null ? '' : value;
-        } catch (e) {}
-        if ((value == null || value === false) && name != 'spellcheck') node.removeAttribute(name);
-    } else {
-        var ns = isSvg && name !== (name = name.replace(/^xlink:?/, ''));
+	if (name === 'key') {} else if (name === 'ref') {
+		applyRef(old, null);
+		applyRef(value, node);
+	} else if (name === 'class' && !isSvg) {
+		node.className = value || '';
+	} else if (name === 'style') {
+		if (!value || typeof value === 'string' || typeof old === 'string') {
+			node.style.cssText = value || '';
+		}
+		if (value && typeof value === 'object') {
+			if (typeof old !== 'string') {
+				for (var i in old) {
+					if (!(i in value)) node.style[i] = '';
+				}
+			}
+			for (var i in value) {
+				node.style[i] = typeof value[i] === 'number' && IS_NON_DIMENSIONAL.test(i) === false ? value[i] + 'px' : value[i];
+			}
+		}
+	} else if (name === 'dangerouslySetInnerHTML') {
+		if (value) node.innerHTML = value.__html || '';
+	} else if (name[0] == 'o' && name[1] == 'n') {
+		var useCapture = name !== (name = name.replace(/Capture$/, ''));
+		name = name.toLowerCase().substring(2);
+		if (value) {
+			if (!old) node.addEventListener(name, eventProxy, useCapture);
+		} else {
+			node.removeEventListener(name, eventProxy, useCapture);
+		}
+		(node._listeners || (node._listeners = {}))[name] = value;
+	} else if (name !== 'list' && name !== 'type' && !isSvg && name in node) {
+		try {
+			node[name] = value == null ? '' : value;
+		} catch (e) {}
+		if ((value == null || value === false) && name != 'spellcheck') node.removeAttribute(name);
+	} else {
+		var ns = isSvg && name !== (name = name.replace(/^xlink:?/, ''));
 
-        if (value == null || value === false) {
-            if (ns) node.removeAttributeNS('http://www.w3.org/1999/xlink', name.toLowerCase());else node.removeAttribute(name);
-        } else if (typeof value !== 'function') {
-            if (ns) node.setAttributeNS('http://www.w3.org/1999/xlink', name.toLowerCase(), value);else node.setAttribute(name, value);
-        }
-    }
+		if (value == null || value === false) {
+			if (ns) node.removeAttributeNS('http://www.w3.org/1999/xlink', name.toLowerCase());else node.removeAttribute(name);
+		} else if (typeof value !== 'function') {
+			if (ns) node.setAttributeNS('http://www.w3.org/1999/xlink', name.toLowerCase(), value);else node.setAttribute(name, value);
+		}
+	}
 }
 
 function eventProxy(e) {
-    return this._listeners[e.type](options.event && options.event(e) || e);
+	return this._listeners[e.type](options.event && options.event(e) || e);
 }
 
 var mounts = [];
@@ -1135,512 +1173,512 @@ var isSvgMode = false;
 var hydrating = false;
 
 function flushMounts() {
-    var c;
-    while (c = mounts.shift()) {
-        if (options.afterMount) options.afterMount(c);
-        if (c.componentDidMount) c.componentDidMount();
-    }
+	var c;
+	while (c = mounts.shift()) {
+		if (options.afterMount) options.afterMount(c);
+		if (c.componentDidMount) c.componentDidMount();
+	}
 }
 
 function diff(dom, vnode, context, mountAll, parent, componentRoot) {
-    if (!diffLevel++) {
-        isSvgMode = parent != null && parent.ownerSVGElement !== undefined;
+	if (!diffLevel++) {
+		isSvgMode = parent != null && parent.ownerSVGElement !== undefined;
 
-        hydrating = dom != null && !('__preactattr_' in dom);
-    }
+		hydrating = dom != null && !('__preactattr_' in dom);
+	}
 
-    var ret = idiff(dom, vnode, context, mountAll, componentRoot);
+	var ret = idiff(dom, vnode, context, mountAll, componentRoot);
 
-    if (parent && ret.parentNode !== parent) parent.appendChild(ret);
+	if (parent && ret.parentNode !== parent) parent.appendChild(ret);
 
-    if (! --diffLevel) {
-        hydrating = false;
+	if (! --diffLevel) {
+		hydrating = false;
 
-        if (!componentRoot) flushMounts();
-    }
+		if (!componentRoot) flushMounts();
+	}
 
-    return ret;
+	return ret;
 }
 
 function idiff(dom, vnode, context, mountAll, componentRoot) {
-    var out = dom,
-        prevSvgMode = isSvgMode;
+	var out = dom,
+	    prevSvgMode = isSvgMode;
 
-    if (vnode == null || typeof vnode === 'boolean') vnode = '';
+	if (vnode == null || typeof vnode === 'boolean') vnode = '';
 
-    if (typeof vnode === 'string' || typeof vnode === 'number') {
-        if (dom && dom.splitText !== undefined && dom.parentNode && (!dom._component || componentRoot)) {
-            if (dom.nodeValue != vnode) {
-                dom.nodeValue = vnode;
-            }
-        } else {
-            out = document.createTextNode(vnode);
-            if (dom) {
-                if (dom.parentNode) dom.parentNode.replaceChild(out, dom);
-                recollectNodeTree(dom, true);
-            }
-        }
+	if (typeof vnode === 'string' || typeof vnode === 'number') {
+		if (dom && dom.splitText !== undefined && dom.parentNode && (!dom._component || componentRoot)) {
+			if (dom.nodeValue != vnode) {
+				dom.nodeValue = vnode;
+			}
+		} else {
+			out = document.createTextNode(vnode);
+			if (dom) {
+				if (dom.parentNode) dom.parentNode.replaceChild(out, dom);
+				recollectNodeTree(dom, true);
+			}
+		}
 
-        out['__preactattr_'] = true;
+		out['__preactattr_'] = true;
 
-        return out;
-    }
+		return out;
+	}
 
-    var vnodeName = vnode.nodeName;
-    if (typeof vnodeName === 'function') {
-        return buildComponentFromVNode(dom, vnode, context, mountAll);
-    }
+	var vnodeName = vnode.nodeName;
+	if (typeof vnodeName === 'function') {
+		return buildComponentFromVNode(dom, vnode, context, mountAll);
+	}
 
-    isSvgMode = vnodeName === 'svg' ? true : vnodeName === 'foreignObject' ? false : isSvgMode;
+	isSvgMode = vnodeName === 'svg' ? true : vnodeName === 'foreignObject' ? false : isSvgMode;
 
-    vnodeName = String(vnodeName);
-    if (!dom || !isNamedNode(dom, vnodeName)) {
-        out = createNode(vnodeName, isSvgMode);
+	vnodeName = String(vnodeName);
+	if (!dom || !isNamedNode(dom, vnodeName)) {
+		out = createNode(vnodeName, isSvgMode);
 
-        if (dom) {
-            while (dom.firstChild) {
-                out.appendChild(dom.firstChild);
-            }
-            if (dom.parentNode) dom.parentNode.replaceChild(out, dom);
+		if (dom) {
+			while (dom.firstChild) {
+				out.appendChild(dom.firstChild);
+			}
+			if (dom.parentNode) dom.parentNode.replaceChild(out, dom);
 
-            recollectNodeTree(dom, true);
-        }
-    }
+			recollectNodeTree(dom, true);
+		}
+	}
 
-    var fc = out.firstChild,
-        props = out['__preactattr_'],
-        vchildren = vnode.children;
+	var fc = out.firstChild,
+	    props = out['__preactattr_'],
+	    vchildren = vnode.children;
 
-    if (props == null) {
-        props = out['__preactattr_'] = {};
-        for (var a = out.attributes, i = a.length; i--;) {
-            props[a[i].name] = a[i].value;
-        }
-    }
+	if (props == null) {
+		props = out['__preactattr_'] = {};
+		for (var a = out.attributes, i = a.length; i--;) {
+			props[a[i].name] = a[i].value;
+		}
+	}
 
-    if (!hydrating && vchildren && vchildren.length === 1 && typeof vchildren[0] === 'string' && fc != null && fc.splitText !== undefined && fc.nextSibling == null) {
-        if (fc.nodeValue != vchildren[0]) {
-            fc.nodeValue = vchildren[0];
-        }
-    } else if (vchildren && vchildren.length || fc != null) {
-            innerDiffNode(out, vchildren, context, mountAll, hydrating || props.dangerouslySetInnerHTML != null);
-        }
+	if (!hydrating && vchildren && vchildren.length === 1 && typeof vchildren[0] === 'string' && fc != null && fc.splitText !== undefined && fc.nextSibling == null) {
+		if (fc.nodeValue != vchildren[0]) {
+			fc.nodeValue = vchildren[0];
+		}
+	} else if (vchildren && vchildren.length || fc != null) {
+			innerDiffNode(out, vchildren, context, mountAll, hydrating || props.dangerouslySetInnerHTML != null);
+		}
 
-    diffAttributes(out, vnode.attributes, props);
+	diffAttributes(out, vnode.attributes, props);
 
-    isSvgMode = prevSvgMode;
+	isSvgMode = prevSvgMode;
 
-    return out;
+	return out;
 }
 
 function innerDiffNode(dom, vchildren, context, mountAll, isHydrating) {
-    var originalChildren = dom.childNodes,
-        children = [],
-        keyed = {},
-        keyedLen = 0,
-        min = 0,
-        len = originalChildren.length,
-        childrenLen = 0,
-        vlen = vchildren ? vchildren.length : 0,
-        j,
-        c,
-        f,
-        vchild,
-        child;
+	var originalChildren = dom.childNodes,
+	    children = [],
+	    keyed = {},
+	    keyedLen = 0,
+	    min = 0,
+	    len = originalChildren.length,
+	    childrenLen = 0,
+	    vlen = vchildren ? vchildren.length : 0,
+	    j,
+	    c,
+	    f,
+	    vchild,
+	    child;
 
-    if (len !== 0) {
-        for (var i = 0; i < len; i++) {
-            var _child = originalChildren[i],
-                props = _child['__preactattr_'],
-                key = vlen && props ? _child._component ? _child._component.__key : props.key : null;
-            if (key != null) {
-                keyedLen++;
-                keyed[key] = _child;
-            } else if (props || (_child.splitText !== undefined ? isHydrating ? _child.nodeValue.trim() : true : isHydrating)) {
-                children[childrenLen++] = _child;
-            }
-        }
-    }
+	if (len !== 0) {
+		for (var i = 0; i < len; i++) {
+			var _child = originalChildren[i],
+			    props = _child['__preactattr_'],
+			    key = vlen && props ? _child._component ? _child._component.__key : props.key : null;
+			if (key != null) {
+				keyedLen++;
+				keyed[key] = _child;
+			} else if (props || (_child.splitText !== undefined ? isHydrating ? _child.nodeValue.trim() : true : isHydrating)) {
+				children[childrenLen++] = _child;
+			}
+		}
+	}
 
-    if (vlen !== 0) {
-        for (var i = 0; i < vlen; i++) {
-            vchild = vchildren[i];
-            child = null;
+	if (vlen !== 0) {
+		for (var i = 0; i < vlen; i++) {
+			vchild = vchildren[i];
+			child = null;
 
-            var key = vchild.key;
-            if (key != null) {
-                if (keyedLen && keyed[key] !== undefined) {
-                    child = keyed[key];
-                    keyed[key] = undefined;
-                    keyedLen--;
-                }
-            } else if (min < childrenLen) {
-                    for (j = min; j < childrenLen; j++) {
-                        if (children[j] !== undefined && isSameNodeType(c = children[j], vchild, isHydrating)) {
-                            child = c;
-                            children[j] = undefined;
-                            if (j === childrenLen - 1) childrenLen--;
-                            if (j === min) min++;
-                            break;
-                        }
-                    }
-                }
+			var key = vchild.key;
+			if (key != null) {
+				if (keyedLen && keyed[key] !== undefined) {
+					child = keyed[key];
+					keyed[key] = undefined;
+					keyedLen--;
+				}
+			} else if (min < childrenLen) {
+					for (j = min; j < childrenLen; j++) {
+						if (children[j] !== undefined && isSameNodeType(c = children[j], vchild, isHydrating)) {
+							child = c;
+							children[j] = undefined;
+							if (j === childrenLen - 1) childrenLen--;
+							if (j === min) min++;
+							break;
+						}
+					}
+				}
 
-            child = idiff(child, vchild, context, mountAll);
+			child = idiff(child, vchild, context, mountAll);
 
-            f = originalChildren[i];
-            if (child && child !== dom && child !== f) {
-                if (f == null) {
-                    dom.appendChild(child);
-                } else if (child === f.nextSibling) {
-                    removeNode(f);
-                } else {
-                    dom.insertBefore(child, f);
-                }
-            }
-        }
-    }
+			f = originalChildren[i];
+			if (child && child !== dom && child !== f) {
+				if (f == null) {
+					dom.appendChild(child);
+				} else if (child === f.nextSibling) {
+					removeNode(f);
+				} else {
+					dom.insertBefore(child, f);
+				}
+			}
+		}
+	}
 
-    if (keyedLen) {
-        for (var i in keyed) {
-            if (keyed[i] !== undefined) recollectNodeTree(keyed[i], false);
-        }
-    }
+	if (keyedLen) {
+		for (var i in keyed) {
+			if (keyed[i] !== undefined) recollectNodeTree(keyed[i], false);
+		}
+	}
 
-    while (min <= childrenLen) {
-        if ((child = children[childrenLen--]) !== undefined) recollectNodeTree(child, false);
-    }
+	while (min <= childrenLen) {
+		if ((child = children[childrenLen--]) !== undefined) recollectNodeTree(child, false);
+	}
 }
 
 function recollectNodeTree(node, unmountOnly) {
-    var component = node._component;
-    if (component) {
-        unmountComponent(component);
-    } else {
-        if (node['__preactattr_'] != null) applyRef(node['__preactattr_'].ref, null);
+	var component = node._component;
+	if (component) {
+		unmountComponent(component);
+	} else {
+		if (node['__preactattr_'] != null) applyRef(node['__preactattr_'].ref, null);
 
-        if (unmountOnly === false || node['__preactattr_'] == null) {
-            removeNode(node);
-        }
+		if (unmountOnly === false || node['__preactattr_'] == null) {
+			removeNode(node);
+		}
 
-        removeChildren(node);
-    }
+		removeChildren(node);
+	}
 }
 
 function removeChildren(node) {
-    node = node.lastChild;
-    while (node) {
-        var next = node.previousSibling;
-        recollectNodeTree(node, true);
-        node = next;
-    }
+	node = node.lastChild;
+	while (node) {
+		var next = node.previousSibling;
+		recollectNodeTree(node, true);
+		node = next;
+	}
 }
 
 function diffAttributes(dom, attrs, old) {
-    var name;
+	var name;
 
-    for (name in old) {
-        if (!(attrs && attrs[name] != null) && old[name] != null) {
-            setAccessor(dom, name, old[name], old[name] = undefined, isSvgMode);
-        }
-    }
+	for (name in old) {
+		if (!(attrs && attrs[name] != null) && old[name] != null) {
+			setAccessor(dom, name, old[name], old[name] = undefined, isSvgMode);
+		}
+	}
 
-    for (name in attrs) {
-        if (name !== 'children' && name !== 'innerHTML' && (!(name in old) || attrs[name] !== (name === 'value' || name === 'checked' ? dom[name] : old[name]))) {
-            setAccessor(dom, name, old[name], old[name] = attrs[name], isSvgMode);
-        }
-    }
+	for (name in attrs) {
+		if (name !== 'children' && name !== 'innerHTML' && (!(name in old) || attrs[name] !== (name === 'value' || name === 'checked' ? dom[name] : old[name]))) {
+			setAccessor(dom, name, old[name], old[name] = attrs[name], isSvgMode);
+		}
+	}
 }
 
 var recyclerComponents = [];
 
 function createComponent(Ctor, props, context) {
-    var inst,
-        i = recyclerComponents.length;
+	var inst,
+	    i = recyclerComponents.length;
 
-    if (Ctor.prototype && Ctor.prototype.render) {
-        inst = new Ctor(props, context);
-        Component.call(inst, props, context);
-    } else {
-        inst = new Component(props, context);
-        inst.constructor = Ctor;
-        inst.render = doRender;
-    }
+	if (Ctor.prototype && Ctor.prototype.render) {
+		inst = new Ctor(props, context);
+		Component.call(inst, props, context);
+	} else {
+		inst = new Component(props, context);
+		inst.constructor = Ctor;
+		inst.render = doRender;
+	}
 
-    while (i--) {
-        if (recyclerComponents[i].constructor === Ctor) {
-            inst.nextBase = recyclerComponents[i].nextBase;
-            recyclerComponents.splice(i, 1);
-            return inst;
-        }
-    }
+	while (i--) {
+		if (recyclerComponents[i].constructor === Ctor) {
+			inst.nextBase = recyclerComponents[i].nextBase;
+			recyclerComponents.splice(i, 1);
+			return inst;
+		}
+	}
 
-    return inst;
+	return inst;
 }
 
 function doRender(props, state, context) {
-    return this.constructor(props, context);
+	return this.constructor(props, context);
 }
 
 function setComponentProps(component, props, renderMode, context, mountAll) {
-    if (component._disable) return;
-    component._disable = true;
+	if (component._disable) return;
+	component._disable = true;
 
-    component.__ref = props.ref;
-    component.__key = props.key;
-    delete props.ref;
-    delete props.key;
+	component.__ref = props.ref;
+	component.__key = props.key;
+	delete props.ref;
+	delete props.key;
 
-    if (typeof component.constructor.getDerivedStateFromProps === 'undefined') {
-        if (!component.base || mountAll) {
-            if (component.componentWillMount) component.componentWillMount();
-        } else if (component.componentWillReceiveProps) {
-            component.componentWillReceiveProps(props, context);
-        }
-    }
+	if (typeof component.constructor.getDerivedStateFromProps === 'undefined') {
+		if (!component.base || mountAll) {
+			if (component.componentWillMount) component.componentWillMount();
+		} else if (component.componentWillReceiveProps) {
+			component.componentWillReceiveProps(props, context);
+		}
+	}
 
-    if (context && context !== component.context) {
-        if (!component.prevContext) component.prevContext = component.context;
-        component.context = context;
-    }
+	if (context && context !== component.context) {
+		if (!component.prevContext) component.prevContext = component.context;
+		component.context = context;
+	}
 
-    if (!component.prevProps) component.prevProps = component.props;
-    component.props = props;
+	if (!component.prevProps) component.prevProps = component.props;
+	component.props = props;
 
-    component._disable = false;
+	component._disable = false;
 
-    if (renderMode !== 0) {
-        if (renderMode === 1 || options.syncComponentUpdates !== false || !component.base) {
-            renderComponent(component, 1, mountAll);
-        } else {
-            enqueueRender(component);
-        }
-    }
+	if (renderMode !== 0) {
+		if (renderMode === 1 || options.syncComponentUpdates !== false || !component.base) {
+			renderComponent(component, 1, mountAll);
+		} else {
+			enqueueRender(component);
+		}
+	}
 
-    applyRef(component.__ref, component);
+	applyRef(component.__ref, component);
 }
 
 function renderComponent(component, renderMode, mountAll, isChild) {
-    if (component._disable) return;
+	if (component._disable) return;
 
-    var props = component.props,
-        state = component.state,
-        context = component.context,
-        previousProps = component.prevProps || props,
-        previousState = component.prevState || state,
-        previousContext = component.prevContext || context,
-        isUpdate = component.base,
-        nextBase = component.nextBase,
-        initialBase = isUpdate || nextBase,
-        initialChildComponent = component._component,
-        skip = false,
-        snapshot = previousContext,
-        rendered,
-        inst,
-        cbase;
+	var props = component.props,
+	    state = component.state,
+	    context = component.context,
+	    previousProps = component.prevProps || props,
+	    previousState = component.prevState || state,
+	    previousContext = component.prevContext || context,
+	    isUpdate = component.base,
+	    nextBase = component.nextBase,
+	    initialBase = isUpdate || nextBase,
+	    initialChildComponent = component._component,
+	    skip = false,
+	    snapshot = previousContext,
+	    rendered,
+	    inst,
+	    cbase;
 
-    if (component.constructor.getDerivedStateFromProps) {
-        state = extend(extend({}, state), component.constructor.getDerivedStateFromProps(props, state));
-        component.state = state;
-    }
+	if (component.constructor.getDerivedStateFromProps) {
+		state = extend(extend({}, state), component.constructor.getDerivedStateFromProps(props, state));
+		component.state = state;
+	}
 
-    if (isUpdate) {
-        component.props = previousProps;
-        component.state = previousState;
-        component.context = previousContext;
-        if (renderMode !== 2 && component.shouldComponentUpdate && component.shouldComponentUpdate(props, state, context) === false) {
-            skip = true;
-        } else if (component.componentWillUpdate) {
-            component.componentWillUpdate(props, state, context);
-        }
-        component.props = props;
-        component.state = state;
-        component.context = context;
-    }
+	if (isUpdate) {
+		component.props = previousProps;
+		component.state = previousState;
+		component.context = previousContext;
+		if (renderMode !== 2 && component.shouldComponentUpdate && component.shouldComponentUpdate(props, state, context) === false) {
+			skip = true;
+		} else if (component.componentWillUpdate) {
+			component.componentWillUpdate(props, state, context);
+		}
+		component.props = props;
+		component.state = state;
+		component.context = context;
+	}
 
-    component.prevProps = component.prevState = component.prevContext = component.nextBase = null;
-    component._dirty = false;
+	component.prevProps = component.prevState = component.prevContext = component.nextBase = null;
+	component._dirty = false;
 
-    if (!skip) {
-        rendered = component.render(props, state, context);
+	if (!skip) {
+		rendered = component.render(props, state, context);
 
-        if (component.getChildContext) {
-            context = extend(extend({}, context), component.getChildContext());
-        }
+		if (component.getChildContext) {
+			context = extend(extend({}, context), component.getChildContext());
+		}
 
-        if (isUpdate && component.getSnapshotBeforeUpdate) {
-            snapshot = component.getSnapshotBeforeUpdate(previousProps, previousState);
-        }
+		if (isUpdate && component.getSnapshotBeforeUpdate) {
+			snapshot = component.getSnapshotBeforeUpdate(previousProps, previousState);
+		}
 
-        var childComponent = rendered && rendered.nodeName,
-            toUnmount,
-            base;
+		var childComponent = rendered && rendered.nodeName,
+		    toUnmount,
+		    base;
 
-        if (typeof childComponent === 'function') {
+		if (typeof childComponent === 'function') {
 
-            var childProps = getNodeProps(rendered);
-            inst = initialChildComponent;
+			var childProps = getNodeProps(rendered);
+			inst = initialChildComponent;
 
-            if (inst && inst.constructor === childComponent && childProps.key == inst.__key) {
-                setComponentProps(inst, childProps, 1, context, false);
-            } else {
-                toUnmount = inst;
+			if (inst && inst.constructor === childComponent && childProps.key == inst.__key) {
+				setComponentProps(inst, childProps, 1, context, false);
+			} else {
+				toUnmount = inst;
 
-                component._component = inst = createComponent(childComponent, childProps, context);
-                inst.nextBase = inst.nextBase || nextBase;
-                inst._parentComponent = component;
-                setComponentProps(inst, childProps, 0, context, false);
-                renderComponent(inst, 1, mountAll, true);
-            }
+				component._component = inst = createComponent(childComponent, childProps, context);
+				inst.nextBase = inst.nextBase || nextBase;
+				inst._parentComponent = component;
+				setComponentProps(inst, childProps, 0, context, false);
+				renderComponent(inst, 1, mountAll, true);
+			}
 
-            base = inst.base;
-        } else {
-            cbase = initialBase;
+			base = inst.base;
+		} else {
+			cbase = initialBase;
 
-            toUnmount = initialChildComponent;
-            if (toUnmount) {
-                cbase = component._component = null;
-            }
+			toUnmount = initialChildComponent;
+			if (toUnmount) {
+				cbase = component._component = null;
+			}
 
-            if (initialBase || renderMode === 1) {
-                if (cbase) cbase._component = null;
-                base = diff(cbase, rendered, context, mountAll || !isUpdate, initialBase && initialBase.parentNode, true);
-            }
-        }
+			if (initialBase || renderMode === 1) {
+				if (cbase) cbase._component = null;
+				base = diff(cbase, rendered, context, mountAll || !isUpdate, initialBase && initialBase.parentNode, true);
+			}
+		}
 
-        if (initialBase && base !== initialBase && inst !== initialChildComponent) {
-            var baseParent = initialBase.parentNode;
-            if (baseParent && base !== baseParent) {
-                baseParent.replaceChild(base, initialBase);
+		if (initialBase && base !== initialBase && inst !== initialChildComponent) {
+			var baseParent = initialBase.parentNode;
+			if (baseParent && base !== baseParent) {
+				baseParent.replaceChild(base, initialBase);
 
-                if (!toUnmount) {
-                    initialBase._component = null;
-                    recollectNodeTree(initialBase, false);
-                }
-            }
-        }
+				if (!toUnmount) {
+					initialBase._component = null;
+					recollectNodeTree(initialBase, false);
+				}
+			}
+		}
 
-        if (toUnmount) {
-            unmountComponent(toUnmount);
-        }
+		if (toUnmount) {
+			unmountComponent(toUnmount);
+		}
 
-        component.base = base;
-        if (base && !isChild) {
-            var componentRef = component,
-                t = component;
-            while (t = t._parentComponent) {
-                (componentRef = t).base = base;
-            }
-            base._component = componentRef;
-            base._componentConstructor = componentRef.constructor;
-        }
-    }
+		component.base = base;
+		if (base && !isChild) {
+			var componentRef = component,
+			    t = component;
+			while (t = t._parentComponent) {
+				(componentRef = t).base = base;
+			}
+			base._component = componentRef;
+			base._componentConstructor = componentRef.constructor;
+		}
+	}
 
-    if (!isUpdate || mountAll) {
-        mounts.push(component);
-    } else if (!skip) {
+	if (!isUpdate || mountAll) {
+		mounts.push(component);
+	} else if (!skip) {
 
-        if (component.componentDidUpdate) {
-            component.componentDidUpdate(previousProps, previousState, snapshot);
-        }
-        if (options.afterUpdate) options.afterUpdate(component);
-    }
+		if (component.componentDidUpdate) {
+			component.componentDidUpdate(previousProps, previousState, snapshot);
+		}
+		if (options.afterUpdate) options.afterUpdate(component);
+	}
 
-    while (component._renderCallbacks.length) {
-        component._renderCallbacks.pop().call(component);
-    }if (!diffLevel && !isChild) flushMounts();
+	while (component._renderCallbacks.length) {
+		component._renderCallbacks.pop().call(component);
+	}if (!diffLevel && !isChild) flushMounts();
 }
 
 function buildComponentFromVNode(dom, vnode, context, mountAll) {
-    var c = dom && dom._component,
-        originalComponent = c,
-        oldDom = dom,
-        isDirectOwner = c && dom._componentConstructor === vnode.nodeName,
-        isOwner = isDirectOwner,
-        props = getNodeProps(vnode);
-    while (c && !isOwner && (c = c._parentComponent)) {
-        isOwner = c.constructor === vnode.nodeName;
-    }
+	var c = dom && dom._component,
+	    originalComponent = c,
+	    oldDom = dom,
+	    isDirectOwner = c && dom._componentConstructor === vnode.nodeName,
+	    isOwner = isDirectOwner,
+	    props = getNodeProps(vnode);
+	while (c && !isOwner && (c = c._parentComponent)) {
+		isOwner = c.constructor === vnode.nodeName;
+	}
 
-    if (c && isOwner && (!mountAll || c._component)) {
-        setComponentProps(c, props, 3, context, mountAll);
-        dom = c.base;
-    } else {
-        if (originalComponent && !isDirectOwner) {
-            unmountComponent(originalComponent);
-            dom = oldDom = null;
-        }
+	if (c && isOwner && (!mountAll || c._component)) {
+		setComponentProps(c, props, 3, context, mountAll);
+		dom = c.base;
+	} else {
+		if (originalComponent && !isDirectOwner) {
+			unmountComponent(originalComponent);
+			dom = oldDom = null;
+		}
 
-        c = createComponent(vnode.nodeName, props, context);
-        if (dom && !c.nextBase) {
-            c.nextBase = dom;
+		c = createComponent(vnode.nodeName, props, context);
+		if (dom && !c.nextBase) {
+			c.nextBase = dom;
 
-            oldDom = null;
-        }
-        setComponentProps(c, props, 1, context, mountAll);
-        dom = c.base;
+			oldDom = null;
+		}
+		setComponentProps(c, props, 1, context, mountAll);
+		dom = c.base;
 
-        if (oldDom && dom !== oldDom) {
-            oldDom._component = null;
-            recollectNodeTree(oldDom, false);
-        }
-    }
+		if (oldDom && dom !== oldDom) {
+			oldDom._component = null;
+			recollectNodeTree(oldDom, false);
+		}
+	}
 
-    return dom;
+	return dom;
 }
 
 function unmountComponent(component) {
-    if (options.beforeUnmount) options.beforeUnmount(component);
+	if (options.beforeUnmount) options.beforeUnmount(component);
 
-    var base = component.base;
+	var base = component.base;
 
-    component._disable = true;
+	component._disable = true;
 
-    if (component.componentWillUnmount) component.componentWillUnmount();
+	if (component.componentWillUnmount) component.componentWillUnmount();
 
-    component.base = null;
+	component.base = null;
 
-    var inner = component._component;
-    if (inner) {
-        unmountComponent(inner);
-    } else if (base) {
-        if (base['__preactattr_'] != null) applyRef(base['__preactattr_'].ref, null);
+	var inner = component._component;
+	if (inner) {
+		unmountComponent(inner);
+	} else if (base) {
+		if (base['__preactattr_'] != null) applyRef(base['__preactattr_'].ref, null);
 
-        component.nextBase = base;
+		component.nextBase = base;
 
-        removeNode(base);
-        recyclerComponents.push(component);
+		removeNode(base);
+		recyclerComponents.push(component);
 
-        removeChildren(base);
-    }
+		removeChildren(base);
+	}
 
-    applyRef(component.__ref, null);
+	applyRef(component.__ref, null);
 }
 
 function Component(props, context) {
-    this._dirty = true;
+	this._dirty = true;
 
-    this.context = context;
+	this.context = context;
 
-    this.props = props;
+	this.props = props;
 
-    this.state = this.state || {};
+	this.state = this.state || {};
 
-    this._renderCallbacks = [];
+	this._renderCallbacks = [];
 }
 
 extend(Component.prototype, {
-    setState: function setState(state, callback) {
-        if (!this.prevState) this.prevState = this.state;
-        this.state = extend(extend({}, this.state), typeof state === 'function' ? state(this.state, this.props) : state);
-        if (callback) this._renderCallbacks.push(callback);
-        enqueueRender(this);
-    },
-    forceUpdate: function forceUpdate(callback) {
-        if (callback) this._renderCallbacks.push(callback);
-        renderComponent(this, 2);
-    },
-    render: function render() {}
+	setState: function setState(state, callback) {
+		if (!this.prevState) this.prevState = this.state;
+		this.state = extend(extend({}, this.state), typeof state === 'function' ? state(this.state, this.props) : state);
+		if (callback) this._renderCallbacks.push(callback);
+		enqueueRender(this);
+	},
+	forceUpdate: function forceUpdate(callback) {
+		if (callback) this._renderCallbacks.push(callback);
+		renderComponent(this, 2);
+	},
+	render: function render() {}
 });
 
 function render(vnode, parent, merge) {
@@ -1648,18 +1686,18 @@ function render(vnode, parent, merge) {
 }
 
 function createRef() {
-    return {};
+	return {};
 }
 
 var preact = {
-    h: h,
-    createElement: h,
-    cloneElement: cloneElement,
-    createRef: createRef,
-    Component: Component,
-    render: render,
-    rerender: rerender,
-    options: options
+	h: h,
+	createElement: h,
+	cloneElement: cloneElement,
+	createRef: createRef,
+	Component: Component,
+	render: render,
+	rerender: rerender,
+	options: options
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (preact);
@@ -1674,6 +1712,7 @@ var preact = {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.connect = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var observable_1 = __webpack_require__(5);
@@ -1730,8 +1769,9 @@ exports.connect = connect;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.asyncInvokeObserver = exports.batchObserver = exports.unobservedInvoke = exports.getOriginObject = exports.notify = exports.observable = exports.partialObservable = exports.observe = exports.isObservable = exports.getRunningObservers = exports.observerInfoMap = void 0;
 var common_1 = __webpack_require__(0);
-var array_1 = __webpack_require__(56);
+var array_1 = __webpack_require__(58);
 var generateObserverId = (function () {
     var lastId = 0;
     return function () {
@@ -1913,12 +1953,22 @@ function unobservedInvoke(fn) {
     paused = false;
 }
 exports.unobservedInvoke = unobservedInvoke;
-function batchedInvokeObserver(fn) {
+function batchObserver(fn) {
     pending = true;
     fn();
     pending = false;
 }
-exports.batchedInvokeObserver = batchedInvokeObserver;
+exports.batchObserver = batchObserver;
+var asyncTimer = null;
+function asyncInvokeObserver(fn) {
+    if (common_1.isNull(asyncTimer)) {
+        asyncTimer = setTimeout(function () {
+            fn();
+            asyncTimer = null;
+        });
+    }
+}
+exports.asyncInvokeObserver = asyncInvokeObserver;
 
 
 /***/ }),
@@ -1928,13 +1978,17 @@ exports.batchedInvokeObserver = batchedInvokeObserver;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.changeRawDataToOriginDataForTree = exports.getOmittedInternalProp = exports.createChangeInfo = exports.getFormattedValue = exports.getRowKeyByIndexWithPageRange = exports.getRowIndexPerPage = exports.isClientPagination = exports.isScrollPagination = exports.getMaxRowKey = exports.isFiltered = exports.isSorted = exports.getCreatedRowInfo = exports.getRemovedClassName = exports.getAddedClassName = exports.getLoadingState = exports.getRowHeight = exports.isInitialSortState = exports.isSortable = exports.getUniqColumnData = exports.findRowByRowKey = exports.findIndexByRowKey = exports.getConditionalRows = exports.getCheckedRowInfoList = exports.isEditableCell = exports.getCellAddressByIndex = void 0;
 var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 var instance_1 = __webpack_require__(7);
 var rowSpan_1 = __webpack_require__(11);
-var column_1 = __webpack_require__(13);
-var data_1 = __webpack_require__(12);
-var data_2 = __webpack_require__(15);
+var column_1 = __webpack_require__(12);
+var data_1 = __webpack_require__(13);
+var data_2 = __webpack_require__(26);
+var data_3 = __webpack_require__(14);
+var validation_1 = __webpack_require__(25);
+var observable_1 = __webpack_require__(5);
 function getCellAddressByIndex(_a, rowIndex, columnIndex) {
     var data = _a.data, column = _a.column;
     return {
@@ -1981,7 +2035,7 @@ function getConditionalRows(_a, conditions) {
 exports.getConditionalRows = getConditionalRows;
 function findIndexByRowKey(data, column, id, rowKey, filtered) {
     if (filtered === void 0) { filtered = true; }
-    if (common_1.isUndefined(rowKey) || common_1.isNull(rowKey)) {
+    if (common_1.isNil(rowKey)) {
         return -1;
     }
     var filteredRawData = data.filteredRawData, rawData = data.rawData, sortState = data.sortState;
@@ -2017,7 +2071,10 @@ function findRowByRowKey(data, column, id, rowKey, filtered) {
 exports.findRowByRowKey = findRowByRowKey;
 function getUniqColumnData(targetData, column, columnName) {
     var columnInfo = column.allColumnMap[columnName];
-    var uniqColumnData = common_1.uniqByProp(columnName, targetData);
+    var uniqColumnData = common_1.uniqByProp(columnName, targetData.map(function (data) {
+        var _a;
+        return (tslib_1.__assign(tslib_1.__assign({}, data), (_a = {}, _a[columnName] = common_1.isNil(data[columnName]) ? '' : data[columnName], _a)));
+    }));
     return uniqColumnData.map(function (row) {
         var value = row[columnName];
         var formatterProps = {
@@ -2026,7 +2083,7 @@ function getUniqColumnData(targetData, column, columnName) {
             column: columnInfo,
         };
         var relationListItems = row._relationListItemMap[columnName];
-        return data_1.getFormattedValue(formatterProps, columnInfo.formatter, value, relationListItems);
+        return data_2.getFormattedValue(formatterProps, columnInfo.formatter, value, relationListItems);
     });
 }
 exports.getUniqColumnData = getUniqColumnData;
@@ -2108,22 +2165,76 @@ function isClientPagination(_a) {
     return !common_1.isEmpty(pageOptions) && pageOptions.useClient && pageOptions.type === 'pagination';
 }
 exports.isClientPagination = isClientPagination;
-function getRowIndexWithPage(data, rowIndex) {
+function getRowIndexPerPage(data, rowIndex) {
     return isClientPagination(data) ? rowIndex % data.pageOptions.perPage : rowIndex;
 }
-exports.getRowIndexWithPage = getRowIndexWithPage;
+exports.getRowIndexPerPage = getRowIndexPerPage;
+function getRowKeyByIndexWithPageRange(data, rowIndex) {
+    if (isClientPagination(data)) {
+        rowIndex += data.pageRowRange[0];
+    }
+    return data.filteredRawData[rowIndex].rowKey;
+}
+exports.getRowKeyByIndexWithPageRange = getRowKeyByIndexWithPageRange;
 function getFormattedValue(store, rowKey, columnName) {
     var data = store.data, column = store.column, id = store.id;
     var rowIndex = findIndexByRowKey(data, column, id, rowKey, false);
     var viewData = data.viewData;
     if (rowIndex !== -1) {
-        data_2.makeObservable(store, rowIndex);
+        data_3.makeObservable(store, rowIndex);
         var viewCell = viewData[rowIndex].valueMap[columnName];
         return viewCell ? viewCell.formattedValue : null;
     }
     return null;
 }
 exports.getFormattedValue = getFormattedValue;
+function createChangeInfo(store, row, columnName, pastingValue, index) {
+    var id = store.id, column = store.column;
+    var rowKey = row.rowKey;
+    var prevChange = { rowKey: rowKey, columnName: columnName, value: row[columnName], nextValue: pastingValue };
+    var nextChange = { rowKey: rowKey, columnName: columnName, prevValue: row[columnName], value: pastingValue };
+    var changeValue = function () {
+        var value = prevChange.value, nextValue = prevChange.nextValue;
+        validation_1.replaceColumnUniqueInfoMap(id, column, {
+            rowKey: rowKey,
+            columnName: columnName,
+            prevValue: value,
+            value: nextValue,
+        });
+        nextChange.value = nextValue;
+        row[columnName] = nextValue;
+        return index;
+    };
+    return { prevChange: prevChange, nextChange: nextChange, changeValue: changeValue };
+}
+exports.createChangeInfo = createChangeInfo;
+function getOmittedInternalProp(row) {
+    var additaional = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        additaional[_i - 1] = arguments[_i];
+    }
+    return common_1.omit.apply(void 0, tslib_1.__spreadArrays([observable_1.getOriginObject(row), 'sortKey',
+        'uniqueKey',
+        'rowSpanMap',
+        '_relationListItemMap',
+        '_disabledPriority'], additaional));
+}
+exports.getOmittedInternalProp = getOmittedInternalProp;
+function changeRowToOriginRowForTree(row) {
+    var originRow = getOmittedInternalProp(row, 'rowKey', '_attributes');
+    if (originRow._children) {
+        originRow._children = originRow._children.map(function (childRow) {
+            return changeRowToOriginRowForTree(childRow);
+        });
+    }
+    return originRow;
+}
+function changeRawDataToOriginDataForTree(rawData) {
+    return rawData
+        .filter(function (row) { var _a, _b; return common_1.isNil((_b = (_a = row._attributes) === null || _a === void 0 ? void 0 : _a.tree) === null || _b === void 0 ? void 0 : _b.parentRowKey); })
+        .map(function (row) { return changeRowToOriginRowForTree(row); });
+}
+exports.changeRawDataToOriginDataForTree = changeRawDataToOriginDataForTree;
 
 
 /***/ }),
@@ -2133,6 +2244,7 @@ exports.getFormattedValue = getFormattedValue;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPaginationManager = exports.getDataManager = exports.getDataProvider = exports.getInstance = exports.registerDataSources = exports.register = void 0;
 var common_1 = __webpack_require__(0);
 var currentId = 0;
 var instanceMap = {};
@@ -2180,6 +2292,7 @@ exports.getPaginationManager = getPaginationManager;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getEventBus = exports.createEventBus = void 0;
 var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 var instance_1 = __webpack_require__(7);
@@ -2307,8 +2420,10 @@ exports.default = GridEvent;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isCheckboxColumn = exports.isRowNumColumn = exports.isRowHeader = void 0;
+var common_1 = __webpack_require__(0);
 function isRowHeader(columnName) {
-    return ['_number', '_checked'].indexOf(columnName) > -1;
+    return common_1.includes(['_number', '_checked', '_draggable'], columnName);
 }
 exports.isRowHeader = isRowHeader;
 function isRowNumColumn(columnName) {
@@ -2328,8 +2443,9 @@ exports.isCheckboxColumn = isCheckboxColumn;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isRowSpanEnabled = exports.getMaxRowSpanCount = exports.getRowSpanByRowKey = exports.getRowSpanBottomIndex = exports.getRowSpanTopIndex = exports.getRowSpan = exports.getVerticalPosWithRowSpan = exports.getRowRangeWithRowSpan = exports.getMaxRowSpanRange = void 0;
 var common_1 = __webpack_require__(0);
-var selection_1 = __webpack_require__(14);
+var selection_1 = __webpack_require__(19);
 function getMainRowSpan(columnName, rowSpan, data) {
     var mainRow = rowSpan.mainRow, mainRowKey = rowSpan.mainRowKey;
     if (mainRow) {
@@ -2437,7 +2553,8 @@ exports.getRowSpanByRowKey = getRowSpanByRowKey;
  * get max rowSpan count in all columns that have rowSpan
  */
 function getMaxRowSpanCount(rowIndex, data) {
-    var rowSpanMap = data[rowIndex].rowSpanMap;
+    var _a;
+    var rowSpanMap = (_a = data[rowIndex]) === null || _a === void 0 ? void 0 : _a.rowSpanMap;
     if (common_1.isEmpty(rowSpanMap)) {
         return 0;
     }
@@ -2457,47 +2574,103 @@ exports.isRowSpanEnabled = isRowSpanEnabled;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getColumnSide = exports.getChildHeaderCount = exports.getHierarchyMaxRowCount = exports.getComplexColumnsHierarchy = exports.getRemovedHiddenChildColumns = exports.getColumnHierarchy = exports.isComplexHeader = exports.isHiddenColumn = exports.isParentColumnHeader = void 0;
+var tslib_1 = __webpack_require__(1);
+var common_1 = __webpack_require__(0);
+function isParentColumnHeader(complexColumnHeaders, name) {
+    return !!complexColumnHeaders.length && common_1.some(function (item) { return item.name === name; }, complexColumnHeaders);
+}
+exports.isParentColumnHeader = isParentColumnHeader;
+function isHiddenColumn(column, columnName) {
+    return column.allColumnMap[columnName].hidden;
+}
+exports.isHiddenColumn = isHiddenColumn;
+function isComplexHeader(column, columnName) {
+    return common_1.some(function (_a) {
+        var name = _a.name, hideChildHeaders = _a.hideChildHeaders, childNames = _a.childNames;
+        return !!(name === columnName || (hideChildHeaders && common_1.includes(childNames, columnName)));
+    }, column.complexColumnHeaders);
+}
+exports.isComplexHeader = isComplexHeader;
+function getColumnHierarchy(column, complexColumnHeaders, mergedComplexColumns) {
+    var complexColumns = mergedComplexColumns || [];
+    if (column) {
+        complexColumns.push(column);
+        if (complexColumnHeaders) {
+            complexColumnHeaders.forEach(function (complexColumnHeader) {
+                if (common_1.includes(complexColumnHeader.childNames, column.name)) {
+                    getColumnHierarchy(complexColumnHeader, complexColumnHeaders, complexColumns);
+                }
+            });
+        }
+    }
+    return complexColumns;
+}
+exports.getColumnHierarchy = getColumnHierarchy;
+function getRemovedHiddenChildColumns(hierarchies) {
+    return hierarchies.map(function (columns) {
+        if (columns.length > 1) {
+            // The hideChildHeaders option always exists in the second column to last.
+            var hideChildHeaders = columns[columns.length - 2].hideChildHeaders;
+            if (hideChildHeaders) {
+                columns.pop();
+            }
+        }
+        return columns;
+    });
+}
+exports.getRemovedHiddenChildColumns = getRemovedHiddenChildColumns;
+function getComplexColumnsHierarchy(columns, complexColumnHeaders) {
+    return getRemovedHiddenChildColumns(columns.map(function (column) { return getColumnHierarchy(column, complexColumnHeaders).reverse(); }));
+}
+exports.getComplexColumnsHierarchy = getComplexColumnsHierarchy;
+function getHierarchyMaxRowCount(hierarchies) {
+    return Math.max.apply(Math, tslib_1.__spreadArrays([0], common_1.mapProp('length', hierarchies)));
+}
+exports.getHierarchyMaxRowCount = getHierarchyMaxRowCount;
+function getChildHeaderCount(columns, complexColumns, name) {
+    var count = 0;
+    var leafColumn = common_1.someProp('name', name, columns);
+    if (!leafColumn) {
+        var complexColumn = common_1.findProp('name', name, complexColumns);
+        if (complexColumn) {
+            complexColumn.childNames.forEach(function (childName) {
+                var leafChildColumn = common_1.someProp('name', childName, columns);
+                count += leafChildColumn ? 1 : getChildHeaderCount(columns, complexColumns, childName);
+            });
+        }
+    }
+    return count;
+}
+exports.getChildHeaderCount = getChildHeaderCount;
+function getColumnSide(column, columnName) {
+    return common_1.someProp('name', columnName, column.visibleColumnsBySideWithRowHeader.R) ? 'R' : 'L';
+}
+exports.getColumnSide = getColumnSide;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = exports.createData = exports.createRawRow = exports.setRowRelationListItems = exports.createViewRow = exports.createRowSpan = exports.generateDataCreationKey = void 0;
 var tslib_1 = __webpack_require__(1);
 var observable_1 = __webpack_require__(5);
 var column_1 = __webpack_require__(10);
 var common_1 = __webpack_require__(0);
-var listItemText_1 = __webpack_require__(57);
 var tree_1 = __webpack_require__(21);
-var validation_1 = __webpack_require__(33);
+var validation_1 = __webpack_require__(25);
 var data_1 = __webpack_require__(6);
+var data_2 = __webpack_require__(26);
 var dataCreationKey = '';
 function generateDataCreationKey() {
     dataCreationKey = "@dataKey" + Date.now();
     return dataCreationKey;
 }
 exports.generateDataCreationKey = generateDataCreationKey;
-function getCellDisplayValue(value) {
-    if (typeof value === 'undefined' || value === null) {
-        return '';
-    }
-    return String(value);
-}
-function getFormattedValue(props, formatter, defaultValue, relationListItems) {
-    var value;
-    if (formatter === 'listItemText') {
-        value = listItemText_1.listItemText(props, relationListItems);
-    }
-    else if (typeof formatter === 'function') {
-        value = formatter(props);
-    }
-    else if (typeof formatter === 'string') {
-        value = formatter;
-    }
-    else {
-        value = defaultValue;
-    }
-    var strValue = getCellDisplayValue(value);
-    if (strValue && props.column.escapeHTML) {
-        return common_1.encodeHTMLEntity(strValue);
-    }
-    return strValue;
-}
-exports.getFormattedValue = getFormattedValue;
 function getRelationCbResult(fn, relationParams) {
     var result = common_1.isFunction(fn) ? fn(relationParams) : null;
     return common_1.isUndefined(result) ? null : result;
@@ -2531,8 +2704,8 @@ function createViewCell(id, row, column, relationInfo) {
     var _a = relationInfo.relationMatched, relationMatched = _a === void 0 ? true : _a, relationListItems = relationInfo.relationListItems;
     var name = column.name, formatter = column.formatter, editor = column.editor, validation = column.validation, defaultValue = column.defaultValue;
     var value = column_1.isRowHeader(name) ? getRowHeaderValue(row, name) : row[name];
-    if (common_1.isUndefined(value) || common_1.isNull(value)) {
-        value = defaultValue || '';
+    if (common_1.isNil(value) && !common_1.isNil(defaultValue)) {
+        value = defaultValue;
     }
     if (!relationMatched) {
         value = '';
@@ -2551,8 +2724,8 @@ function createViewCell(id, row, column, relationInfo) {
         editable: !!editor,
         className: className,
         disabled: cellDisabled,
-        invalidStates: validation_1.getValidationCode({ id: id, value: value, row: row, validation: validation, columnName: name }),
-        formattedValue: getFormattedValue(formatterProps, formatter, value, relationListItems),
+        invalidStates: validation_1.getValidationCode({ id: id, value: row[name], row: row, validation: validation, columnName: name }),
+        formattedValue: data_2.getFormattedValue(formatterProps, formatter, value, relationListItems),
         value: value,
     };
 }
@@ -2561,15 +2734,14 @@ function createRelationViewCell(id, name, row, _a) {
     var _b = valueMap[name], editable = _b.editable, disabled = _b.disabled, value = _b.value;
     var _c = columnMap[name].relationMap, relationMap = _c === void 0 ? {} : _c;
     Object.keys(relationMap).forEach(function (targetName) {
-        var _a;
-        var _b = relationMap[targetName], editableCallback = _b.editable, disabledCallback = _b.disabled, listItemsCallback = _b.listItems;
+        var _a = relationMap[targetName], editableCallback = _a.editable, disabledCallback = _a.disabled, listItemsCallback = _a.listItems;
         var relationCbParams = { value: value, editable: editable, disabled: disabled, row: row };
         var targetEditable = getEditable(editableCallback, relationCbParams);
         var targetDisabled = getDisabled(disabledCallback, relationCbParams);
         var targetListItems = getListItems(listItemsCallback, relationCbParams);
         var targetValue = row[targetName];
         var targetEditor = columnMap[targetName].editor;
-        var targetEditorOptions = (_a = targetEditor) === null || _a === void 0 ? void 0 : _a.options;
+        var targetEditorOptions = targetEditor === null || targetEditor === void 0 ? void 0 : targetEditor.options;
         var relationMatched = common_1.isFunction(listItemsCallback)
             ? common_1.someProp('value', targetValue, targetListItems)
             : true;
@@ -2728,6 +2900,9 @@ function createRawRow(id, row, index, column, options) {
     row._disabledPriority = row._disabledPriority || {};
     row.rowSpanMap = createRowSpanMap(row, rowSpan, prevRow);
     setRowRelationListItems(row, column.columnMapWithRelation);
+    if (column.autoResizingColumn.length) {
+        data_2.setMaxTextMap(column, row);
+    }
     if (lazyObservable) {
         validation_1.addUniqueInfoMap(id, row, column);
     }
@@ -2779,7 +2954,7 @@ function applyFilterToRawData(rawData, filters, columnMap) {
                 var value = row[columnName];
                 var relationListItems = row._relationListItemMap[columnName];
                 var formatterProps = { row: row, column: columnMap[columnName], value: value };
-                var filtered = conditionFn(getFormattedValue(formatterProps, formatter, value, relationListItems));
+                var filtered = conditionFn(data_2.getFormattedValue(formatterProps, formatter, value, relationListItems));
                 // cache the filtered index for performance
                 if (acc === rawData && filtered) {
                     cachedFilteredIndex[row.rowKey] = index;
@@ -2869,186 +3044,36 @@ exports.create = create;
 
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(0);
-function isParentColumnHeader(complexColumnHeaders, name) {
-    return !!complexColumnHeaders.length && common_1.some(function (item) { return item.name === name; }, complexColumnHeaders);
-}
-exports.isParentColumnHeader = isParentColumnHeader;
-function isHiddenColumn(column, columnName) {
-    return column.allColumnMap[columnName].hidden;
-}
-exports.isHiddenColumn = isHiddenColumn;
-function isComplexHeader(column, columnName) {
-    return common_1.some(function (_a) {
-        var name = _a.name, hideChildHeaders = _a.hideChildHeaders, childNames = _a.childNames;
-        return !!(name === columnName || (hideChildHeaders && common_1.includes(childNames, columnName)));
-    }, column.complexColumnHeaders);
-}
-exports.isComplexHeader = isComplexHeader;
-function getColumnHierarchy(column, complexColumnHeaders, mergedComplexColumns) {
-    var complexColumns = mergedComplexColumns || [];
-    if (column) {
-        complexColumns.push(column);
-        if (complexColumnHeaders) {
-            complexColumnHeaders.forEach(function (complexColumnHeader) {
-                if (common_1.includes(complexColumnHeader.childNames, column.name)) {
-                    getColumnHierarchy(complexColumnHeader, complexColumnHeaders, complexColumns);
-                }
-            });
-        }
-    }
-    return complexColumns;
-}
-exports.getColumnHierarchy = getColumnHierarchy;
-function getRemovedHiddenChildColumns(hierarchies) {
-    return hierarchies.map(function (columns) {
-        if (columns.length > 1) {
-            // The hideChildHeaders option always exists in the second column to last.
-            var hideChildHeaders = columns[columns.length - 2].hideChildHeaders;
-            if (hideChildHeaders) {
-                columns.pop();
-            }
-        }
-        return columns;
-    });
-}
-exports.getRemovedHiddenChildColumns = getRemovedHiddenChildColumns;
-function getComplexColumnsHierarchy(columns, complexColumnHeaders) {
-    return getRemovedHiddenChildColumns(columns.map(function (column) { return getColumnHierarchy(column, complexColumnHeaders).reverse(); }));
-}
-exports.getComplexColumnsHierarchy = getComplexColumnsHierarchy;
-function getHierarchyMaxRowCount(hierarchies) {
-    return Math.max.apply(Math, tslib_1.__spreadArrays([0], common_1.mapProp('length', hierarchies)));
-}
-exports.getHierarchyMaxRowCount = getHierarchyMaxRowCount;
-function getChildHeaderCount(columns, complexColumns, name) {
-    var count = 0;
-    var leafColumn = common_1.someProp('name', name, columns);
-    if (!leafColumn) {
-        var complexColumn = common_1.findProp('name', name, complexColumns);
-        if (complexColumn) {
-            complexColumn.childNames.forEach(function (childName) {
-                var leafChildColumn = common_1.someProp('name', childName, columns);
-                count += leafChildColumn ? 1 : getChildHeaderCount(columns, complexColumns, childName);
-            });
-        }
-    }
-    return count;
-}
-exports.getChildHeaderCount = getChildHeaderCount;
-
-
-/***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.removeRows = exports.appendRows = exports.scrollToNext = exports.moveRow = exports.setRow = exports.updateRowNumber = exports.setCheckedAllRows = exports.setLoadingState = exports.removeColumnClassName = exports.addColumnClassName = exports.removeCellClassName = exports.addCellClassName = exports.removeRowClassName = exports.addRowClassName = exports.resetData = exports.clearData = exports.removeRow = exports.appendRow = exports.setRowCheckDisabled = exports.setColumnDisabled = exports.setRowDisabled = exports.setDisabled = exports.setDisabledAllCheckbox = exports.uncheckAll = exports.checkAll = exports.uncheck = exports.check = exports.setColumnValues = exports.setAllRowAttribute = exports.setRowAttribute = exports.isUpdatableRowAttr = exports.setValue = exports.makeObservable = exports.updateHeights = void 0;
 var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
-var column_1 = __webpack_require__(13);
-function sortByVisibleColumns(visibleColumnsWithRowHeader, childNames) {
-    var result = [];
-    visibleColumnsWithRowHeader.forEach(function (column) {
-        if (common_1.includes(childNames, column.name)) {
-            result.push(column.name);
-        }
-    });
-    return result;
-}
-function getLeafChildColumnNames(complexColumnHeaders, name) {
-    var column = common_1.findProp('name', name, complexColumnHeaders);
-    if (!column) {
-        return [name];
-    }
-    var result = [];
-    column.childNames.forEach(function (childName) {
-        if (column_1.isParentColumnHeader(complexColumnHeaders, childName)) {
-            result = tslib_1.__spreadArrays(result, getLeafChildColumnNames(complexColumnHeaders, childName));
-        }
-        else {
-            result = tslib_1.__spreadArrays(result, [childName]);
-        }
-    });
-    return result;
-}
-exports.getLeafChildColumnNames = getLeafChildColumnNames;
-function getChildColumnRange(visibleColumnsWithRowHeader, complexColumnHeaders, name) {
-    var unsortedChildNames = getLeafChildColumnNames(complexColumnHeaders, name);
-    var childNames = sortByVisibleColumns(visibleColumnsWithRowHeader, unsortedChildNames);
-    var startIndex = common_1.findPropIndex('name', childNames[0], visibleColumnsWithRowHeader);
-    var endIndex = common_1.findPropIndex('name', childNames[childNames.length - 1], visibleColumnsWithRowHeader);
-    return [startIndex, endIndex];
-}
-exports.getChildColumnRange = getChildColumnRange;
-function getSortedRange(range) {
-    return range[0] > range[1] ? [range[1], range[0]] : range;
-}
-exports.getSortedRange = getSortedRange;
-function isSameInputRange(inp1, inp2) {
-    if (common_1.isNull(inp1) || common_1.isNull(inp2)) {
-        return inp1 === inp2;
-    }
-    return (inp1.column[0] === inp2.column[0] &&
-        inp1.column[1] === inp2.column[1] &&
-        inp1.row[0] === inp2.row[0] &&
-        inp1.row[1] === inp2.row[1]);
-}
-exports.isSameInputRange = isSameInputRange;
-function getSelectionRange(range, pageOptions) {
-    if (!common_1.isEmpty(pageOptions)) {
-        var row = range.row, column = range.column;
-        var perPage = pageOptions.perPage, page = pageOptions.page;
-        var prevPageRowCount = (page - 1) * perPage;
-        return {
-            row: [row[0] - prevPageRowCount, row[1] - prevPageRowCount],
-            column: column,
-        };
-    }
-    return range;
-}
-exports.getSelectionRange = getSelectionRange;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var clipboard_1 = __webpack_require__(27);
-var common_1 = __webpack_require__(0);
-var data_1 = __webpack_require__(12);
+var data_1 = __webpack_require__(13);
 var observable_1 = __webpack_require__(5);
-var selection_1 = __webpack_require__(16);
+var selection_1 = __webpack_require__(15);
 var eventBus_1 = __webpack_require__(8);
 var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
 var instance_1 = __webpack_require__(7);
-var tree_1 = __webpack_require__(28);
+var tree_1 = __webpack_require__(30);
 var rowSpan_1 = __webpack_require__(11);
-var focus_1 = __webpack_require__(17);
+var focus_1 = __webpack_require__(18);
 var tree_2 = __webpack_require__(21);
-var sort_1 = __webpack_require__(24);
+var sort_1 = __webpack_require__(28);
 var data_2 = __webpack_require__(6);
-var summary_1 = __webpack_require__(25);
-var filter_1 = __webpack_require__(29);
-var selection_2 = __webpack_require__(14);
-var viewport_1 = __webpack_require__(19);
+var summary_1 = __webpack_require__(24);
+var filter_1 = __webpack_require__(34);
+var viewport_1 = __webpack_require__(23);
 var column_1 = __webpack_require__(10);
-var pagination_1 = __webpack_require__(32);
-var rowSpan_2 = __webpack_require__(70);
-var lazyObservable_1 = __webpack_require__(23);
-var validation_1 = __webpack_require__(33);
+var pagination_1 = __webpack_require__(35);
+var rowSpan_2 = __webpack_require__(73);
+var lazyObservable_1 = __webpack_require__(27);
+var validation_1 = __webpack_require__(25);
+var column_2 = __webpack_require__(31);
 function updateHeightsWithFilteredData(store) {
     if (store.data.filters) {
         focus_1.initFocus(store);
@@ -3064,7 +3089,8 @@ function updateHeights(store) {
         : filteredRawData.map(function (row) { return data_2.getRowHeight(row, rowHeight); });
 }
 exports.updateHeights = updateHeights;
-function makeObservable(store, rowIndex) {
+function makeObservable(store, rowIndex, silent) {
+    if (silent === void 0) { silent = false; }
     var data = store.data, column = store.column, id = store.id;
     var rawData = data.rawData, viewData = data.viewData;
     var treeColumnName = column.treeColumnName;
@@ -3080,13 +3106,16 @@ function makeObservable(store, rowIndex) {
         rawData[rowIndex] = data_1.createRawRow(id, rawRow, rowIndex, column);
     }
     viewData[rowIndex] = data_1.createViewRow(id, rawData[rowIndex], rawData, column);
-    observable_1.notify(data, 'rawData', 'filteredRawData', 'viewData', 'filteredViewData');
+    if (!silent) {
+        observable_1.notify(data, 'rawData', 'filteredRawData', 'viewData', 'filteredViewData');
+    }
 }
 exports.makeObservable = makeObservable;
 function setValue(store, rowKey, columnName, value, checkCellState) {
     if (checkCellState === void 0) { checkCellState = false; }
     var gridEvent;
     var column = store.column, data = store.data, id = store.id;
+    var eventBus = eventBus_1.getEventBus(id);
     var rawData = data.rawData, viewData = data.viewData, sortState = data.sortState;
     var allColumnMap = column.allColumnMap, columnsWithoutRowHeader = column.columnsWithoutRowHeader;
     var rowIndex = data_2.findIndexByRowKey(data, column, id, rowKey, false);
@@ -3103,6 +3132,7 @@ function setValue(store, rowKey, columnName, value, checkCellState) {
     }
     var targetColumn = common_1.findProp('name', columnName, columnsWithoutRowHeader);
     var orgValue = targetRow[columnName];
+    // @TODO: 'onBeforeChange' event is deprecated. This event will be replaced with 'beforeChange' event
     if (targetColumn && targetColumn.onBeforeChange) {
         gridEvent = new gridEvent_1.default({ rowKey: rowKey, columnName: columnName, value: orgValue, nextValue: value });
         targetColumn.onBeforeChange(gridEvent);
@@ -3110,6 +3140,20 @@ function setValue(store, rowKey, columnName, value, checkCellState) {
             return;
         }
     }
+    var change = { rowKey: rowKey, columnName: columnName, value: orgValue, nextValue: value };
+    gridEvent = new gridEvent_1.default({ origin: 'cell', changes: [change] });
+    /**
+     * Occurs before one or more cells is changed
+     * @event Grid#beforeChange
+     * @property {string} origin - The type of change('paste', 'delete', 'cell')
+     * @property {Array.<object>} changes - rowKey, column name, original values and next values before changing the values
+     * @property {Grid} instance - Current grid instance
+     */
+    eventBus.trigger('beforeChange', gridEvent);
+    if (gridEvent.isStopped()) {
+        return;
+    }
+    value = change.nextValue;
     var rowSpanMap = targetRow.rowSpanMap;
     var columns = sortState.columns;
     var index = common_1.findPropIndex('columnName', columnName, columns);
@@ -3131,10 +3175,24 @@ function setValue(store, rowKey, columnName, value, checkCellState) {
             instance_1.getDataManager(id).push('UPDATE', rawData[rowIndex + count]);
         }
     }
+    column_2.setAutoResizingColumnWidths(store);
+    // @TODO: 'onAfterChange' event is deprecated. This event will be replaced with 'afterChange' event
     if (targetColumn && targetColumn.onAfterChange) {
         gridEvent = new gridEvent_1.default({ rowKey: rowKey, columnName: columnName, value: value, prevValue: orgValue });
         targetColumn.onAfterChange(gridEvent);
     }
+    gridEvent = new gridEvent_1.default({
+        origin: 'cell',
+        changes: [{ rowKey: rowKey, columnName: columnName, value: value, prevValue: orgValue }],
+    });
+    /**
+     * Occurs after one or more cells is changed
+     * @event Grid#afterChange
+     * @property {string} origin - The type of change('paste', 'delete', 'cell')
+     * @property {Array.<object>} changes - rowKey, column name, previous values and changed values after changing the values
+     * @property {Grid} instance - Current grid instance
+     */
+    eventBus.trigger('afterChange', gridEvent);
 }
 exports.setValue = setValue;
 function isUpdatableRowAttr(name, checkDisabled) {
@@ -3189,6 +3247,7 @@ function setColumnValues(store, columnName, value, checkCellState) {
     });
     summary_1.updateSummaryValueByColumn(store, columnName, { value: value });
     validation_1.forceValidateUniquenessOfColumn(data.rawData, column, columnName);
+    column_2.setAutoResizingColumnWidths(store);
 }
 exports.setColumnValues = setColumnValues;
 function check(store, rowKey) {
@@ -3200,7 +3259,9 @@ function check(store, rowKey) {
     if (allColumnMap[treeColumnName]) {
         tree_1.changeTreeRowsCheckedState(store, rowKey, true);
     }
-    setCheckedAllRows(store);
+    observable_1.asyncInvokeObserver(function () {
+        setCheckedAllRows(store);
+    });
     /**
      * Occurs when a checkbox in row header is checked
      * @event Grid#check
@@ -3219,7 +3280,9 @@ function uncheck(store, rowKey) {
     if (allColumnMap[treeColumnName]) {
         tree_1.changeTreeRowsCheckedState(store, rowKey, false);
     }
-    setCheckedAllRows(store);
+    observable_1.asyncInvokeObserver(function () {
+        setCheckedAllRows(store);
+    });
     /**
      * Occurs when a checkbox in row header is unchecked
      * @event Grid#uncheck
@@ -3257,48 +3320,6 @@ function uncheckAll(store, allPage) {
     eventBus.trigger('uncheckAll', gridEvent);
 }
 exports.uncheckAll = uncheckAll;
-function applyPasteDataToRawData(store, pasteData, indexToPaste) {
-    var data = store.data, column = store.column, id = store.id;
-    var filteredRawData = data.filteredRawData, filteredViewData = data.filteredViewData;
-    var visibleColumnsWithRowHeader = column.visibleColumnsWithRowHeader;
-    var _a = indexToPaste.row, startRowIndex = _a[0], endRowIndex = _a[1], _b = indexToPaste.column, startColumnIndex = _b[0], endColumnIndex = _b[1];
-    var columnNames = common_1.mapProp('name', visibleColumnsWithRowHeader);
-    for (var rowIndex = 0; rowIndex + startRowIndex <= endRowIndex; rowIndex += 1) {
-        var pasted = false;
-        var rawRowIndex = rowIndex + startRowIndex;
-        for (var columnIndex = 0; columnIndex + startColumnIndex <= endColumnIndex; columnIndex += 1) {
-            var name = columnNames[columnIndex + startColumnIndex];
-            if (filteredViewData.length && data_2.isEditableCell(data, column, rawRowIndex, name)) {
-                var targetRow = filteredRawData[rawRowIndex];
-                var value = pasteData[rowIndex][columnIndex];
-                validation_1.replaceColumnUniqueInfoMap(id, column, {
-                    rowKey: targetRow.rowKey,
-                    columnName: name,
-                    prevValue: targetRow[name],
-                    value: value,
-                });
-                pasted = true;
-                targetRow[name] = value;
-            }
-        }
-        if (pasted) {
-            instance_1.getDataManager(id).push('UPDATE', filteredRawData[rawRowIndex]);
-            validation_1.forceValidateUniquenessOfColumns(data.rawData, column);
-        }
-    }
-}
-function paste(store, pasteData) {
-    var selection = store.selection, id = store.id, data = store.data;
-    var pageOptions = data.pageOptions;
-    var originalRange = selection.originalRange;
-    if (originalRange) {
-        pasteData = clipboard_1.copyDataToRange(originalRange, pasteData);
-    }
-    var rangeToPaste = clipboard_1.getRangeToPaste(store, pasteData);
-    applyPasteDataToRawData(store, pasteData, rangeToPaste);
-    selection_1.changeSelectionRange(selection, selection_2.getSelectionRange(rangeToPaste, pageOptions), id);
-}
-exports.paste = paste;
 function setDisabledAllCheckbox(_a) {
     var data = _a.data;
     var rawData = data.rawData;
@@ -3384,7 +3405,7 @@ function appendRow(store, row, options) {
     }
     instance_1.getDataManager(id).push('CREATE', rawRow, inserted);
     summary_1.updateSummaryValueByRow(store, rawRow, { type: 'APPEND' });
-    postUpdateAfterManipulation(store, at, 'DONE');
+    postUpdateAfterManipulation(store, at, 'DONE', [rawRow]);
 }
 exports.appendRow = appendRow;
 function removeRow(store, rowKey, options) {
@@ -3398,11 +3419,11 @@ function removeRow(store, rowKey, options) {
     var nextRow = rawData[rowIndex + 1];
     pagination_1.updatePageWhenRemovingRow(store, 1);
     validation_1.removeUniqueInfoMap(id, rawData[rowIndex], column);
-    observable_1.batchedInvokeObserver(function () {
+    observable_1.batchObserver(function () {
         removedRow = rawData.splice(rowIndex, 1)[0];
-        viewData.splice(rowIndex, 1);
-        updateHeights(store);
     });
+    viewData.splice(rowIndex, 1);
+    updateHeights(store);
     if (!common_1.someProp('rowKey', focus.rowKey, rawData)) {
         focus_1.initFocus(store);
     }
@@ -3456,9 +3477,10 @@ function resetData(store, inputData, options) {
     setLoadingState(store, data_2.getLoadingState(rawData));
     setCheckedAllRows(store);
     if (instance_1.getDataManager(id)) {
-        instance_1.getDataManager(id).setOriginData(inputData);
-        instance_1.getDataManager(id).clearAll();
+    instance_1.getDataManager(id).setOriginData(inputData);
+    instance_1.getDataManager(id).clearAll();
     }
+    column_2.setColumnWidthsByText(store);
     setTimeout(function () {
         /**
          * Occurs when the grid data is updated and the grid is rendered onto the DOM
@@ -3598,10 +3620,10 @@ function moveRow(store, rowKey, targetIndex) {
     var minIndex = Math.min(currentIndex, targetIndex);
     var rawRow = common_1.silentSplice(rawData, currentIndex, 1)[0];
     var viewRow = common_1.silentSplice(viewData, currentIndex, 1)[0];
-    observable_1.batchedInvokeObserver(function () {
+    observable_1.batchObserver(function () {
         rawData.splice(targetIndex, 0, rawRow);
-        viewData.splice(targetIndex, 0, viewRow);
     });
+    viewData.splice(targetIndex, 0, viewRow);
     sort_1.resetSortKey(data, minIndex);
     updateRowNumber(store, minIndex);
     instance_1.getDataManager(id).push('UPDATE', rawRow, true);
@@ -3640,7 +3662,7 @@ function appendRows(store, inputData) {
     sort_1.resetSortKey(data, startIndex);
     sort_1.sortByCurrentState(store);
     updateHeights(store);
-    postUpdateAfterManipulation(store, startIndex, 'DONE');
+    postUpdateAfterManipulation(store, startIndex, 'DONE', rawData);
 }
 exports.appendRows = appendRows;
 function removeRows(store, targetRows) {
@@ -3672,26 +3694,28 @@ function removeRows(store, targetRows) {
     postUpdateAfterManipulation(store, rowIndexes[0], data_2.getLoadingState(rawData));
 }
 exports.removeRows = removeRows;
-function postUpdateAfterManipulation(store, rowIndex, state) {
+function postUpdateAfterManipulation(store, rowIndex, state, rows) {
     setLoadingState(store, state);
     updateRowNumber(store, rowIndex);
     setDisabledAllCheckbox(store);
     setCheckedAllRows(store);
     validation_1.forceValidateUniquenessOfColumns(store.data.rawData, store.column);
+    column_2.setAutoResizingColumnWidths(store, rows);
 }
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.initSelection = exports.setSelection = exports.changeSelectionRange = void 0;
 var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 var eventBus_1 = __webpack_require__(8);
-var selection_1 = __webpack_require__(14);
+var selection_1 = __webpack_require__(19);
 var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
 var rowSpan_1 = __webpack_require__(11);
 function changeSelectionRange(selection, inputRange, id) {
@@ -3736,162 +3760,26 @@ exports.initSelection = initSelection;
 
 
 /***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TREE_CELL_HORIZONTAL_PADDING = exports.TREE_INDENT_WIDTH = exports.FILTER_DEBOUNCE_TIME = void 0;
+exports.FILTER_DEBOUNCE_TIME = 50;
+exports.TREE_INDENT_WIDTH = 22;
+exports.TREE_CELL_HORIZONTAL_PADDING = 19;
+
+
+/***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
-var eventBus_1 = __webpack_require__(8);
-var data_1 = __webpack_require__(6);
-var focus_1 = __webpack_require__(58);
-var rowSpan_1 = __webpack_require__(11);
-var data_2 = __webpack_require__(15);
-var common_1 = __webpack_require__(0);
-var column_1 = __webpack_require__(13);
-function startEditing(store, rowKey, columnName) {
-    var data = store.data, focus = store.focus, column = store.column, id = store.id;
-    var filteredRawData = data.filteredRawData;
-    var foundIndex = data_1.findIndexByRowKey(data, column, id, rowKey);
-    if (foundIndex === -1) {
-        return;
-    }
-    // makes the data observable to judge editable, disable of the cell;
-    data_2.makeObservable(store, data_1.findIndexByRowKey(data, column, id, rowKey, false));
-    if (!data_1.isEditableCell(data, column, foundIndex, columnName)) {
-        return;
-    }
-    var eventBus = eventBus_1.getEventBus(id);
-    var gridEvent = new gridEvent_1.default({
-        rowKey: rowKey,
-        columnName: columnName,
-        value: filteredRawData[foundIndex][columnName],
-    });
-    /**
-     * Occurs when editing the cell is started
-     * @event Grid#editingStart
-     * @property {number} rowKey - rowKey of the target cell
-     * @property {number} columnName - columnName of the target cell
-     * @property {number | string | boolean | null | undefined} value - value of the editing cell
-     * @property {Grid} instance - Current grid instance
-     */
-    eventBus.trigger('editingStart', gridEvent);
-    if (!gridEvent.isStopped()) {
-        focus.forcedDestroyEditing = false;
-        focus.navigating = false;
-        focus.editingAddress = { rowKey: rowKey, columnName: columnName };
-    }
-}
-exports.startEditing = startEditing;
-function finishEditing(_a, rowKey, columnName, value) {
-    var focus = _a.focus, id = _a.id;
-    var eventBus = eventBus_1.getEventBus(id);
-    var gridEvent = new gridEvent_1.default({ rowKey: rowKey, columnName: columnName, value: value });
-    /**
-     * Occurs when editing the cell is finished
-     * @event Grid#editingFinish
-     * @property {number} rowKey - rowKey of the target cell
-     * @property {number} columnName - columnName of the target cell
-     * @property {number | string | boolean | null | undefined} value - value of the editing cell
-     * @property {Grid} instance - Current grid instance
-     */
-    eventBus.trigger('editingFinish', gridEvent);
-    if (!gridEvent.isStopped()) {
-        if (focus_1.isEditingCell(focus, rowKey, columnName)) {
-            focus.editingAddress = null;
-            focus.navigating = true;
-        }
-    }
-}
-exports.finishEditing = finishEditing;
-function changeFocus(store, rowKey, columnName, id) {
-    var data = store.data, focus = store.focus, column = store.column;
-    if (focus_1.isFocusedCell(focus, rowKey, columnName) ||
-        (columnName && column_1.isHiddenColumn(column, columnName))) {
-        return;
-    }
-    var rawData = data.rawData, sortState = data.sortState;
-    var eventBus = eventBus_1.getEventBus(id);
-    var gridEvent = new gridEvent_1.default({
-        rowKey: rowKey,
-        columnName: columnName,
-        prevColumnName: focus.columnName,
-        prevRowKey: focus.rowKey,
-    });
-    /**
-     * Occurs when focused cell is about to change
-     * @event Grid#focusChange
-     * @property {number} rowKey - rowKey of the target cell
-     * @property {number} columnName - columnName of the target cell
-     * @property {number} prevRowKey - rowKey of the currently focused cell
-     * @property {number} prevColumnName - columnName of the currently focused cell
-     * @property {Grid} instance - Current grid instance
-     */
-    eventBus.trigger('focusChange', gridEvent);
-    if (!gridEvent.isStopped()) {
-        var focusRowKey = rowKey;
-        if (rowKey && columnName && rowSpan_1.isRowSpanEnabled(sortState)) {
-            var rowSpan = rowSpan_1.getRowSpanByRowKey(rowKey, columnName, rawData);
-            if (rowSpan) {
-                focusRowKey = rowSpan.mainRowKey;
-            }
-        }
-        focus.prevColumnName = focus.columnName;
-        focus.prevRowKey = focus.rowKey;
-        focus.columnName = columnName;
-        focus.rowKey = focusRowKey;
-    }
-}
-exports.changeFocus = changeFocus;
-function initFocus(_a) {
-    var focus = _a.focus;
-    focus.editingAddress = null;
-    focus.navigating = false;
-    focus.rowKey = null;
-    focus.columnName = null;
-    focus.prevRowKey = null;
-    focus.prevColumnName = null;
-}
-exports.initFocus = initFocus;
-function saveAndFinishEditing(store, value) {
-    // @TODO: remove 'value' paramter
-    // saveAndFinishEditing(store: Store)
-    var focus = store.focus, data = store.data, column = store.column, id = store.id;
-    var editingAddress = focus.editingAddress;
-    if (!editingAddress) {
-        return;
-    }
-    var rowKey = editingAddress.rowKey, columnName = editingAddress.columnName;
-    // makes the data observable to judge editable, disable of the cell.
-    data_2.makeObservable(store, data_1.findIndexByRowKey(data, column, id, rowKey, false));
-    // if value is 'undefined', editing result is saved and finished.
-    if (common_1.isUndefined(value)) {
-        focus.forcedDestroyEditing = true;
-        focus.editingAddress = null;
-        focus.navigating = true;
-        return;
-    }
-    data_2.setValue(store, rowKey, columnName, value);
-    finishEditing(store, rowKey, columnName, value);
-}
-exports.saveAndFinishEditing = saveAndFinishEditing;
-function setFocusInfo(store, rowKey, columnName, navigating) {
-    var focus = store.focus, id = store.id;
-    focus.navigating = navigating;
-    changeFocus(store, rowKey, columnName, id);
-}
-exports.setFocusInfo = setFocusInfo;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.isArrowKey = exports.isNonPrintableKey = exports.keyEventGenerate = exports.getKeyStrokeString = exports.keyStrokeCommandMap = exports.keyboardEventCommandMap = exports.keyboardEventTypeMap = exports.keyNameMap = void 0;
 var common_1 = __webpack_require__(0);
 exports.keyNameMap = {
     8: 'backspace',
@@ -4034,64 +3922,228 @@ exports.isArrowKey = isArrowKey;
 
 
 /***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.setFocusInfo = exports.saveAndFinishEditing = exports.initFocus = exports.changeFocus = exports.finishEditing = exports.startEditing = void 0;
+var tslib_1 = __webpack_require__(1);
+var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
+var eventBus_1 = __webpack_require__(8);
+var data_1 = __webpack_require__(6);
+var focus_1 = __webpack_require__(70);
+var rowSpan_1 = __webpack_require__(11);
+var data_2 = __webpack_require__(14);
+var common_1 = __webpack_require__(0);
+var column_1 = __webpack_require__(12);
+function startEditing(store, rowKey, columnName) {
+    var data = store.data, focus = store.focus, column = store.column, id = store.id;
+    var filteredRawData = data.filteredRawData;
+    var foundIndex = data_1.findIndexByRowKey(data, column, id, rowKey);
+    if (foundIndex === -1) {
+        return;
+    }
+    // makes the data observable to judge editable, disable of the cell
+    data_2.makeObservable(store, data_1.findIndexByRowKey(data, column, id, rowKey, false));
+    if (!data_1.isEditableCell(data, column, foundIndex, columnName)) {
+        return;
+    }
+    var eventBus = eventBus_1.getEventBus(id);
+    var gridEvent = new gridEvent_1.default({
+        rowKey: rowKey,
+        columnName: columnName,
+        value: filteredRawData[foundIndex][columnName],
+    });
+    /**
+     * Occurs when editing the cell is started
+     * @event Grid#editingStart
+     * @property {number} rowKey - rowKey of the target cell
+     * @property {number} columnName - columnName of the target cell
+     * @property {number | string | boolean | null | undefined} value - value of the editing cell
+     * @property {Grid} instance - Current grid instance
+     */
+    eventBus.trigger('editingStart', gridEvent);
+    if (!gridEvent.isStopped()) {
+        focus.forcedDestroyEditing = false;
+        focus.navigating = false;
+        focus.editingAddress = { rowKey: rowKey, columnName: columnName };
+    }
+}
+exports.startEditing = startEditing;
+function finishEditing(_a, rowKey, columnName, value) {
+    var focus = _a.focus, id = _a.id;
+    var eventBus = eventBus_1.getEventBus(id);
+    var gridEvent = new gridEvent_1.default({ rowKey: rowKey, columnName: columnName, value: value });
+    /**
+     * Occurs when editing the cell is finished
+     * @event Grid#editingFinish
+     * @property {number} rowKey - rowKey of the target cell
+     * @property {number} columnName - columnName of the target cell
+     * @property {number | string | boolean | null | undefined} value - value of the editing cell
+     * @property {Grid} instance - Current grid instance
+     */
+    eventBus.trigger('editingFinish', gridEvent);
+    if (!gridEvent.isStopped()) {
+        if (focus_1.isEditingCell(focus, rowKey, columnName)) {
+            focus.editingAddress = null;
+            focus.navigating = true;
+        }
+    }
+}
+exports.finishEditing = finishEditing;
+function changeFocus(store, rowKey, columnName, id) {
+    var data = store.data, focus = store.focus, column = store.column;
+    if (focus_1.isFocusedCell(focus, rowKey, columnName) ||
+        (columnName && column_1.isHiddenColumn(column, columnName))) {
+        return;
+    }
+    var rawData = data.rawData, sortState = data.sortState;
+    var eventBus = eventBus_1.getEventBus(id);
+    var gridEvent = new gridEvent_1.default({
+        rowKey: rowKey,
+        columnName: columnName,
+        prevColumnName: focus.columnName,
+        prevRowKey: focus.rowKey,
+    });
+    /**
+     * Occurs when focused cell is about to change
+     * @event Grid#focusChange
+     * @property {number} rowKey - rowKey of the target cell
+     * @property {number} columnName - columnName of the target cell
+     * @property {number} prevRowKey - rowKey of the currently focused cell
+     * @property {number} prevColumnName - columnName of the currently focused cell
+     * @property {Grid} instance - Current grid instance
+     */
+    eventBus.trigger('focusChange', gridEvent);
+    if (!gridEvent.isStopped()) {
+        var focusRowKey = rowKey;
+        if (rowKey && columnName && rowSpan_1.isRowSpanEnabled(sortState)) {
+            var rowSpan = rowSpan_1.getRowSpanByRowKey(rowKey, columnName, rawData);
+            if (rowSpan) {
+                focusRowKey = rowSpan.mainRowKey;
+            }
+        }
+        focus.prevColumnName = focus.columnName;
+        focus.prevRowKey = focus.rowKey;
+        focus.columnName = columnName;
+        focus.rowKey = focusRowKey;
+    }
+}
+exports.changeFocus = changeFocus;
+function initFocus(_a) {
+    var focus = _a.focus;
+    focus.editingAddress = null;
+    focus.navigating = false;
+    focus.rowKey = null;
+    focus.columnName = null;
+    focus.prevRowKey = null;
+    focus.prevColumnName = null;
+}
+exports.initFocus = initFocus;
+function saveAndFinishEditing(store, value) {
+    // @TODO: remove 'value' paramter
+    // saveAndFinishEditing(store: Store)
+    var focus = store.focus, data = store.data, column = store.column, id = store.id;
+    var editingAddress = focus.editingAddress;
+    if (!editingAddress) {
+        return;
+    }
+    var rowKey = editingAddress.rowKey, columnName = editingAddress.columnName;
+    // makes the data observable to judge editable, disable of the cell.
+    data_2.makeObservable(store, data_1.findIndexByRowKey(data, column, id, rowKey, false));
+    // if value is 'undefined', editing result is saved and finished.
+    if (common_1.isUndefined(value)) {
+        focus.forcedDestroyEditing = true;
+        focus.editingAddress = null;
+        focus.navigating = true;
+        return;
+    }
+    data_2.setValue(store, rowKey, columnName, value);
+    finishEditing(store, rowKey, columnName, value);
+}
+exports.saveAndFinishEditing = saveAndFinishEditing;
+function setFocusInfo(store, rowKey, columnName, navigating) {
+    var focus = store.focus, id = store.id;
+    focus.navigating = navigating;
+    changeFocus(store, rowKey, columnName, id);
+}
+exports.setFocusInfo = setFocusInfo;
+
+
+/***/ }),
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var viewport_1 = __webpack_require__(69);
-function setScrollPosition(viewport, changedScrollTop, changedScrollLeft) {
-    if (changedScrollLeft !== null) {
-        viewport.scrollLeft = changedScrollLeft;
+exports.getSelectionRange = exports.isSameInputRange = exports.getSortedRange = exports.getChildColumnRange = exports.getLeafChildColumnNames = void 0;
+var tslib_1 = __webpack_require__(1);
+var common_1 = __webpack_require__(0);
+var column_1 = __webpack_require__(12);
+function sortByVisibleColumns(visibleColumnsWithRowHeader, childNames) {
+    var result = [];
+    visibleColumnsWithRowHeader.forEach(function (column) {
+        if (common_1.includes(childNames, column.name)) {
+            result.push(column.name);
+        }
+    });
+    return result;
+}
+function getLeafChildColumnNames(complexColumnHeaders, name) {
+    var column = common_1.findProp('name', name, complexColumnHeaders);
+    if (!column) {
+        return [name];
     }
-    if (changedScrollTop !== null) {
-        viewport.scrollTop = changedScrollTop;
+    var result = [];
+    column.childNames.forEach(function (childName) {
+        if (column_1.isParentColumnHeader(complexColumnHeaders, childName)) {
+            result = tslib_1.__spreadArrays(result, getLeafChildColumnNames(complexColumnHeaders, childName));
+        }
+        else {
+            result = tslib_1.__spreadArrays(result, [childName]);
+        }
+    });
+    return result;
+}
+exports.getLeafChildColumnNames = getLeafChildColumnNames;
+function getChildColumnRange(visibleColumnsWithRowHeader, complexColumnHeaders, name) {
+    var unsortedChildNames = getLeafChildColumnNames(complexColumnHeaders, name);
+    var childNames = sortByVisibleColumns(visibleColumnsWithRowHeader, unsortedChildNames);
+    var startIndex = common_1.findPropIndex('name', childNames[0], visibleColumnsWithRowHeader);
+    var endIndex = common_1.findPropIndex('name', childNames[childNames.length - 1], visibleColumnsWithRowHeader);
+    return [startIndex, endIndex];
+}
+exports.getChildColumnRange = getChildColumnRange;
+function getSortedRange(range) {
+    return range[0] > range[1] ? [range[1], range[0]] : range;
+}
+exports.getSortedRange = getSortedRange;
+function isSameInputRange(inp1, inp2) {
+    if (common_1.isNull(inp1) || common_1.isNull(inp2)) {
+        return inp1 === inp2;
     }
+    return (inp1.column[0] === inp2.column[0] &&
+        inp1.column[1] === inp2.column[1] &&
+        inp1.row[0] === inp2.row[0] &&
+        inp1.row[1] === inp2.row[1]);
 }
-function setScrollToFocus(store) {
-    var _a = store.focus, cellPosRect = _a.cellPosRect, side = _a.side, viewport = store.viewport;
-    if (cellPosRect === null || side === null) {
-        return;
+exports.isSameInputRange = isSameInputRange;
+function getSelectionRange(range, pageOptions) {
+    if (!common_1.isEmpty(pageOptions)) {
+        var row = range.row, column = range.column;
+        var perPage = pageOptions.perPage, page = pageOptions.page;
+        var prevPageRowCount = (page - 1) * perPage;
+        return {
+            row: [row[0] - prevPageRowCount, row[1] - prevPageRowCount],
+            column: column,
+        };
     }
-    var _b = viewport_1.getChangedScrollPosition(store, side), changedScrollLeft = _b[0], changedScrollTop = _b[1];
-    setScrollPosition(viewport, changedScrollTop, changedScrollLeft);
+    return range;
 }
-exports.setScrollToFocus = setScrollToFocus;
-function setScrollToSelection(store) {
-    var _a = store.columnCoords, widths = _a.widths, columnOffsets = _a.offsets, _b = store.rowCoords, heights = _b.heights, rowOffsets = _b.offsets, inputRange = store.selection.inputRange, viewport = store.viewport;
-    if (!inputRange) {
-        return;
-    }
-    var rowIndex = inputRange.row[1];
-    var columnIndex = inputRange.column[1];
-    var cellSide = columnIndex > widths.L.length - 1 ? 'R' : 'L';
-    var rightSideColumnIndex = columnIndex < widths.L.length ? widths.L.length : columnIndex - widths.L.length;
-    var left = columnOffsets[cellSide][rightSideColumnIndex];
-    var right = left + widths[cellSide][rightSideColumnIndex];
-    var top = rowOffsets[rowIndex];
-    var bottom = top + heights[rowIndex];
-    var cellPosRect = { left: left, right: right, top: top, bottom: bottom };
-    var _c = viewport_1.getChangedScrollPosition(store, cellSide, cellPosRect), changedScrollLeft = _c[0], changedScrollTop = _c[1];
-    setScrollPosition(viewport, changedScrollTop, changedScrollLeft);
-}
-exports.setScrollToSelection = setScrollToSelection;
-function setScrollLeft(_a, scrollLeft) {
-    var viewport = _a.viewport;
-    viewport.scrollLeft = scrollLeft;
-}
-exports.setScrollLeft = setScrollLeft;
-function setScrollTop(_a, scrollTop) {
-    var viewport = _a.viewport;
-    viewport.scrollTop = scrollTop;
-}
-exports.setScrollTop = setScrollTop;
-function initScrollPosition(_a) {
-    var viewport = _a.viewport;
-    viewport.scrollLeft = 0;
-    viewport.scrollTop = 0;
-}
-exports.initScrollPosition = initScrollPosition;
+exports.getSelectionRange = getSelectionRange;
 
 
 /***/ }),
@@ -4101,8 +4153,140 @@ exports.initScrollPosition = initScrollPosition;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FILTER_DEBOUNCE_TIME = 50;
-exports.TREE_INDENT_WIDTH = 22;
+var tslib_1 = __webpack_require__(1);
+var messages = {
+    en: {
+        display: {
+            noData: 'No data.',
+            loadingData: 'Loading data.',
+            resizeHandleGuide: 'You can change the width of the column by mouse drag, and initialize the width by double-clicking.',
+        },
+        net: {
+            confirmCreate: 'Are you sure you want to create {{count}} data?',
+            confirmUpdate: 'Are you sure you want to update {{count}} data?',
+            confirmDelete: 'Are you sure you want to delete {{count}} data?',
+            confirmModify: 'Are you sure you want to modify {{count}} data?',
+            noDataToCreate: 'No data to create.',
+            noDataToUpdate: 'No data to update.',
+            noDataToDelete: 'No data to delete.',
+            noDataToModify: 'No data to modify.',
+            failResponse: 'An error occurred while requesting data.\nPlease try again.',
+        },
+        filter: {
+            contains: 'Contains',
+            eq: 'Equals',
+            ne: 'Not equals',
+            start: 'Starts with',
+            end: 'Ends with',
+            after: 'After',
+            afterEq: 'After or Equal',
+            before: 'Before',
+            beforeEq: 'Before or Equal',
+            apply: 'Apply',
+            clear: 'Clear',
+            selectAll: 'Select All',
+            emptyValue: 'Empty Value',
+        },
+    },
+    ko: {
+        display: {
+            noData: '데이터가 존재하지 않습니다.',
+            loadingData: '데이터를 불러오는 중입니다.',
+            resizeHandleGuide: '마우스 드래그하여 컬럼 너비를 조정할 수 있고, 더블 클릭으로 컬럼 너비를 초기화할 수 있습니다.',
+        },
+        net: {
+            confirmCreate: '{{count}}건의 데이터를 생성하겠습니까?',
+            confirmUpdate: '{{count}}건의 데이터를 수정하겠습니까?',
+            confirmDelete: '{{count}}건의 데이터를 삭제하겠습니까?',
+            confirmModify: '{{count}}건의 데이터를 처리하겠습니까?',
+            noDataToCreate: '생성할 데이터가 없습니다.',
+            noDataToUpdate: '수정할 데이터가 없습니다.',
+            noDataToDelete: '삭제할 데이터가 없습니다.',
+            noDataToModify: '처리할 데이터가 없습니다.',
+            failResponse: '데이터 요청 중에 에러가 발생하였습니다.\n다시 시도하여 주시기 바랍니다.',
+        },
+        filter: {
+            contains: 'Contains',
+            eq: 'Equals',
+            ne: 'Not equals',
+            start: 'Starts with',
+            end: 'Ends with',
+            after: 'After',
+            afterEq: 'After or Equal',
+            before: 'Before',
+            beforeEq: 'Before or Equal',
+            apply: 'Apply',
+            clear: 'Clear',
+            selectAll: 'Select All',
+            emptyValue: 'Empty Value',
+        },
+    },
+};
+var messageMap = {};
+/**
+ * Flatten message map
+ * @param {object} data - Messages
+ * @returns {object} Flatten message object (key format is 'key.subKey')
+ * @ignore
+ */
+function flattenMessageMap(data) {
+    if (data === void 0) { data = {}; }
+    var obj = {};
+    var newKey;
+    Object.keys(data).forEach(function (key) {
+        var keyWithType = key;
+        var groupMessages = data[keyWithType];
+        Object.keys(groupMessages).forEach(function (subKey) {
+            newKey = key + "." + subKey;
+            obj[newKey] = groupMessages[subKey];
+        });
+    });
+    return obj;
+}
+/**
+ * Replace text
+ * @param {string} text - Text including handlebar expression
+ * @param {Object} values - Replaced values
+ * @returns {string} Replaced text
+ */
+function replaceText(text, values) {
+    return text
+        ? text.replace(/\{\{(\w*)\}\}/g, function (_, prop) { return (values.hasOwnProperty(prop) ? values[prop] : ''); })
+        : '';
+}
+exports.default = {
+    /**
+     * Set messages
+     * @param {string} localeCode - Code to set locale messages and
+     *     this is the language or language-region combination. (ex: en-US)
+     * @param {object} [data] - Messages using in Grid
+     */
+    setLanguage: function (localeCode, data) {
+        var localeMessages = messages[localeCode];
+        if (!localeMessages && !data) {
+            throw new Error('You should set messages to map the locale code.');
+        }
+        var newData = flattenMessageMap(data);
+        if (localeMessages) {
+            var originData = flattenMessageMap(localeMessages);
+            messageMap = tslib_1.__assign(tslib_1.__assign({}, originData), newData);
+        }
+        else {
+            messageMap = newData;
+        }
+    },
+    /**
+     * Get message
+     * @param {string} key - Key to find message (ex: 'net.confirmCreate')
+     * @param {object} [replacements] - Values to replace string
+     * @returns {string} Message
+     */
+    get: function (key, replacements) {
+        if (replacements === void 0) { replacements = {}; }
+        var message = messageMap[key];
+        return replaceText(message, replacements);
+    },
+};
 
 
 /***/ }),
@@ -4112,28 +4296,39 @@ exports.TREE_INDENT_WIDTH = 22;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTreeIndentWidth = exports.createTreeCellInfo = exports.createTreeRawData = exports.flattenTreeData = exports.createTreeRawRow = void 0;
 var tslib_1 = __webpack_require__(1);
-var data_1 = __webpack_require__(12);
+var data_1 = __webpack_require__(13);
 var tree_1 = __webpack_require__(22);
 var observable_1 = __webpack_require__(5);
 var common_1 = __webpack_require__(0);
-var constant_1 = __webpack_require__(20);
+var constant_1 = __webpack_require__(16);
 var treeRowKey = -1;
 function generateTreeRowKey() {
     treeRowKey += 1;
     return treeRowKey;
 }
-function addChildRowKey(row, rowKey) {
+function addChildRowKey(row, childRow) {
     var tree = row._attributes.tree;
+    var rowKey = childRow.rowKey;
     if (tree && !common_1.includes(tree.childRowKeys, rowKey)) {
         tree.childRowKeys.push(rowKey);
     }
+    if (!common_1.someProp('rowKey', rowKey, row._children)) {
+        row._children.push(childRow);
+    }
+    row._leaf = false;
 }
-function insertChildRowKey(row, rowKey, offset) {
+function insertChildRowKey(row, childRow, offset) {
     var tree = row._attributes.tree;
+    var rowKey = childRow.rowKey;
     if (tree && !common_1.includes(tree.childRowKeys, rowKey)) {
         tree.childRowKeys.splice(offset, 0, rowKey);
     }
+    if (!common_1.someProp('rowKey', rowKey, row._children)) {
+        row._children.splice(offset, 0, childRow);
+    }
+    row._leaf = false;
 }
 function getTreeCellInfo(rawData, row, useIcon) {
     var depth = tree_1.getDepth(rawData, row);
@@ -4152,6 +4347,10 @@ function createTreeRawRow(id, row, parentRow, column, options) {
         childRowKeys = row._attributes.tree.childRowKeys;
     }
     var keyColumnName = options.keyColumnName, offset = options.offset, _a = options.lazyObservable, lazyObservable = _a === void 0 ? false : _a, _b = options.disabled, disabled = _b === void 0 ? false : _b;
+    if (!row._children) {
+        row._children = [];
+        row._leaf = true;
+    }
     // generate new tree rowKey when row doesn't have rowKey
     var targetTreeRowKey = common_1.isUndefined(row.rowKey) ? generateTreeRowKey() : Number(row.rowKey);
     var rawRow = data_1.createRawRow(id, row, targetTreeRowKey, column, {
@@ -4159,7 +4358,6 @@ function createTreeRawRow(id, row, parentRow, column, options) {
         lazyObservable: lazyObservable,
         disabled: disabled,
     });
-    var rowKey = rawRow.rowKey;
     var defaultAttributes = {
         parentRowKey: parentRow ? parentRow.rowKey : null,
         childRowKeys: childRowKeys,
@@ -4167,15 +4365,13 @@ function createTreeRawRow(id, row, parentRow, column, options) {
     };
     if (parentRow) {
         if (!common_1.isUndefined(offset)) {
-            insertChildRowKey(parentRow, rowKey, offset);
+            insertChildRowKey(parentRow, rawRow, offset);
         }
         else {
-            addChildRowKey(parentRow, rowKey);
+            addChildRowKey(parentRow, rawRow);
         }
     }
-    var tree = tslib_1.__assign(tslib_1.__assign({}, defaultAttributes), ((Array.isArray(row._children) || childRowKeys.length) && {
-        expanded: !!row._attributes.expanded,
-    }));
+    var tree = tslib_1.__assign(tslib_1.__assign({}, defaultAttributes), { expanded: row._attributes.expanded });
     rawRow._attributes.tree = lazyObservable ? tree : observable_1.observable(tree);
     return rawRow;
 }
@@ -4233,6 +4429,7 @@ exports.getTreeIndentWidth = getTreeIndentWidth;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getRootParentRow = exports.traverseDescendantRows = exports.traverseAncestorRows = exports.getDepth = exports.isRootChildRow = exports.isExpanded = exports.isLeaf = exports.isHidden = exports.getChildRowKeys = exports.getParentRowKey = exports.getStartIndexToAppendRow = exports.getDescendantRows = exports.getAncestorRows = exports.getChildRows = exports.getParentRow = void 0;
 var observable_1 = __webpack_require__(5);
 var data_1 = __webpack_require__(6);
 var common_1 = __webpack_require__(0);
@@ -4323,14 +4520,16 @@ function getChildRowKeys(row) {
     return tree ? tree.childRowKeys.slice() : [];
 }
 exports.getChildRowKeys = getChildRowKeys;
-function isHidden(row) {
-    var tree = row._attributes.tree;
+function isHidden(_a) {
+    var _attributes = _a._attributes;
+    var tree = _attributes.tree;
     return !!(tree && tree.hidden);
 }
 exports.isHidden = isHidden;
-function isLeaf(row) {
-    var tree = row._attributes.tree;
-    return !!tree && !tree.childRowKeys.length && common_1.isUndefined(tree.expanded);
+function isLeaf(_a) {
+    var _attributes = _a._attributes, _leaf = _a._leaf;
+    var tree = _attributes.tree;
+    return !!tree && !tree.childRowKeys.length && !!_leaf;
 }
 exports.isLeaf = isLeaf;
 function isExpanded(row) {
@@ -4397,9 +4596,441 @@ exports.getRootParentRow = getRootParentRow;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.initScrollPosition = exports.setScrollTop = exports.setScrollLeft = exports.setScrollToSelection = exports.setScrollToFocus = void 0;
+var viewport_1 = __webpack_require__(72);
+function setScrollPosition(viewport, changedScrollTop, changedScrollLeft) {
+    if (changedScrollLeft !== null) {
+        viewport.scrollLeft = changedScrollLeft;
+    }
+    if (changedScrollTop !== null) {
+        viewport.scrollTop = changedScrollTop;
+    }
+}
+function setScrollToFocus(store) {
+    var _a = store.focus, cellPosRect = _a.cellPosRect, side = _a.side, viewport = store.viewport;
+    if (cellPosRect === null || side === null) {
+        return;
+    }
+    var _b = viewport_1.getChangedScrollPosition(store, side), changedScrollLeft = _b[0], changedScrollTop = _b[1];
+    setScrollPosition(viewport, changedScrollTop, changedScrollLeft);
+}
+exports.setScrollToFocus = setScrollToFocus;
+function setScrollToSelection(store) {
+    var _a = store.columnCoords, widths = _a.widths, columnOffsets = _a.offsets, _b = store.rowCoords, heights = _b.heights, rowOffsets = _b.offsets, inputRange = store.selection.inputRange, viewport = store.viewport;
+    if (!inputRange) {
+        return;
+    }
+    var rowIndex = inputRange.row[1];
+    var columnIndex = inputRange.column[1];
+    var cellSide = columnIndex > widths.L.length - 1 ? 'R' : 'L';
+    var rightSideColumnIndex = columnIndex < widths.L.length ? widths.L.length : columnIndex - widths.L.length;
+    var left = columnOffsets[cellSide][rightSideColumnIndex];
+    var right = left + widths[cellSide][rightSideColumnIndex];
+    var top = rowOffsets[rowIndex];
+    var bottom = top + heights[rowIndex];
+    var cellPosRect = { left: left, right: right, top: top, bottom: bottom };
+    var _c = viewport_1.getChangedScrollPosition(store, cellSide, cellPosRect), changedScrollLeft = _c[0], changedScrollTop = _c[1];
+    setScrollPosition(viewport, changedScrollTop, changedScrollLeft);
+}
+exports.setScrollToSelection = setScrollToSelection;
+function setScrollLeft(_a, scrollLeft) {
+    var viewport = _a.viewport;
+    viewport.scrollLeft = scrollLeft;
+}
+exports.setScrollLeft = setScrollLeft;
+function setScrollTop(_a, scrollTop) {
+    var viewport = _a.viewport;
+    viewport.scrollTop = scrollTop;
+}
+exports.setScrollTop = setScrollTop;
+function initScrollPosition(_a) {
+    var viewport = _a.viewport;
+    viewport.scrollLeft = 0;
+    viewport.scrollTop = 0;
+}
+exports.initScrollPosition = initScrollPosition;
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateAllSummaryValues = exports.updateSummaryValueByRow = exports.updateSummaryValueByColumn = exports.updateSummaryValueByCell = exports.setSummaryColumnContent = void 0;
+var summary_1 = __webpack_require__(42);
+var common_1 = __webpack_require__(0);
+var summary_2 = __webpack_require__(43);
+var observable_1 = __webpack_require__(5);
+function setSummaryColumnContent(_a, columnName, columnContent) {
+    var summary = _a.summary, data = _a.data;
+    var castedColumnContent = summary_1.castToSummaryColumnContent(columnContent);
+    var content = summary_1.extractSummaryColumnContent(castedColumnContent, null);
+    summary.summaryColumnContents[columnName] = content;
+    summary.summaryValues[columnName] = summary_2.createSummaryValue(content, columnName, data);
+    observable_1.notify(summary, 'summaryValues');
+}
+exports.setSummaryColumnContent = setSummaryColumnContent;
+function updateSummaryValue(_a, columnName, type, options) {
+    var summary = _a.summary, data = _a.data;
+    var content = summary.summaryColumnContents[columnName];
+    if (!content || !content.useAutoSummary) {
+        return;
+    }
+    var summaryValue = summary.summaryValues[columnName];
+    var orgValue = Number(options.orgValue) || 0;
+    var value = Number(options.value) || 0;
+    var cntVariation = options.type === 'APPEND' ? 1 : -1;
+    var columnFilter = common_1.findProp('columnName', columnName, data.filters || []);
+    var hasColumnFilter = !!(columnFilter && common_1.isFunction(columnFilter.conditionFn));
+    var included = hasColumnFilter && columnFilter.conditionFn(value);
+    var sum = summaryValue.sum, min = summaryValue.min, max = summaryValue.max, cnt = summaryValue.cnt;
+    var _b = summaryValue.filtered, filteredSum = _b.sum, filteredMin = _b.min, filteredMax = _b.max, filteredCnt = _b.cnt;
+    switch (type) {
+        case 'UPDATE_COLUMN':
+            sum = value * cnt;
+            min = value;
+            max = value;
+            if (hasColumnFilter) {
+                filteredCnt = included ? filteredCnt : 0;
+                filteredSum = included ? value * filteredCnt : 0;
+                filteredMin = included ? value : 0;
+                filteredMax = included ? value : 0;
+            }
+            break;
+        case 'UPDATE_CELL':
+            sum = sum - orgValue + value;
+            if (hasColumnFilter) {
+                var orgIncluded = columnFilter.conditionFn(orgValue);
+                if (!orgIncluded && included) {
+                    filteredSum = filteredSum + value;
+                    filteredCnt += 1;
+                }
+                else if (orgIncluded && !included) {
+                    filteredSum = filteredSum - orgValue;
+                    filteredCnt -= 1;
+                }
+                else if (orgIncluded && included) {
+                    filteredSum = filteredSum - orgValue + value;
+                }
+            }
+            break;
+        case 'UPDATE_ROW':
+            cnt += cntVariation;
+            sum = sum + cntVariation * value;
+            if (hasColumnFilter && included) {
+                filteredSum = filteredSum + cntVariation * value;
+                filteredCnt += cntVariation;
+            }
+            break;
+        default:
+        // do nothing;
+    }
+    var avg = sum / cnt;
+    var filteredAvg = filteredSum / filteredCnt;
+    min = Math.min(value, min);
+    max = Math.max(value, max);
+    filteredMin = Math.min(value, filteredMin);
+    filteredMax = Math.max(value, filteredMax);
+    summary.summaryValues[columnName] = {
+        sum: sum,
+        min: min,
+        max: max,
+        avg: avg,
+        cnt: cnt,
+        filtered: {
+            sum: filteredSum,
+            min: filteredMin,
+            max: filteredMax,
+            avg: filteredAvg,
+            cnt: filteredCnt,
+        },
+    };
+    observable_1.notify(summary, 'summaryValues');
+}
+function updateSummaryValueByCell(store, columnName, options) {
+    updateSummaryValue(store, columnName, 'UPDATE_CELL', options);
+}
+exports.updateSummaryValueByCell = updateSummaryValueByCell;
+function updateSummaryValueByColumn(store, columnName, options) {
+    updateSummaryValue(store, columnName, 'UPDATE_COLUMN', options);
+}
+exports.updateSummaryValueByColumn = updateSummaryValueByColumn;
+function updateSummaryValueByRow(store, row, options) {
+    var summary = store.summary, column = store.column;
+    var type = options.type, orgRow = options.orgRow;
+    var summaryColumns = column.allColumns.filter(function (_a) {
+        var name = _a.name;
+        return !!summary.summaryColumnContents[name];
+    });
+    summaryColumns.forEach(function (_a) {
+        var name = _a.name;
+        if (type === 'SET') {
+            updateSummaryValue(store, name, 'UPDATE_CELL', { orgValue: orgRow[name], value: row[name] });
+        }
+        else {
+            updateSummaryValue(store, name, 'UPDATE_ROW', { type: type, value: row[name] });
+        }
+    });
+}
+exports.updateSummaryValueByRow = updateSummaryValueByRow;
+function updateAllSummaryValues(_a) {
+    var summary = _a.summary, data = _a.data, column = _a.column;
+    var summaryColumns = column.allColumns.filter(function (_a) {
+        var name = _a.name;
+        return !!summary.summaryColumnContents[name];
+    });
+    summaryColumns.forEach(function (_a) {
+        var name = _a.name;
+        var content = summary.summaryColumnContents[name];
+        summary.summaryValues[name] = summary_2.createSummaryValue(content, name, data);
+    });
+    observable_1.notify(summary, 'summaryValues');
+}
+exports.updateAllSummaryValues = updateAllSummaryValues;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getValidationCode = exports.forceValidateUniquenessOfColumn = exports.forceValidateUniquenessOfColumns = exports.replaceColumnUniqueInfoMap = exports.removeUniqueInfoMap = exports.addUniqueInfoMap = exports.invokeWithUniqueValidationColumn = exports.createNewValidationMap = void 0;
+var tslib_1 = __webpack_require__(1);
+var common_1 = __webpack_require__(0);
+var observable_1 = __webpack_require__(5);
+var instance_1 = __webpack_require__(7);
+var data_1 = __webpack_require__(6);
+var instanceValidationMap = {};
+var isValidatingUniquenessMap = {};
+function createNewValidationMap(id) {
+    instanceValidationMap[id] = {};
+}
+exports.createNewValidationMap = createNewValidationMap;
+function invokeWithUniqueValidationColumn(column, fn) {
+    column.validationColumns.forEach(function (_a) {
+        var name = _a.name, validation = _a.validation;
+        if (validation.unique) {
+            fn(name);
+        }
+    });
+}
+exports.invokeWithUniqueValidationColumn = invokeWithUniqueValidationColumn;
+function addUniqueInfoMap(id, row, column) {
+    invokeWithUniqueValidationColumn(column, function (name) {
+        return addColumnUniqueInfoMap(id, row.rowKey, name, row[name]);
+    });
+}
+exports.addUniqueInfoMap = addUniqueInfoMap;
+function removeUniqueInfoMap(id, row, column) {
+    invokeWithUniqueValidationColumn(column, function (name) {
+        return removeColumnUniqueInfoMap(id, row.rowKey, name, row[name]);
+    });
+}
+exports.removeUniqueInfoMap = removeUniqueInfoMap;
+function removeColumnUniqueInfoMap(id, rowKey, columnName, cellValue) {
+    var value = String(cellValue);
+    var uniqueInfoMap = instanceValidationMap[id];
+    if (uniqueInfoMap && uniqueInfoMap[value] && uniqueInfoMap[value][columnName]) {
+        uniqueInfoMap[value][columnName] = uniqueInfoMap[value][columnName].filter(function (targetRowKey) { return targetRowKey !== rowKey; });
+    }
+}
+function addColumnUniqueInfoMap(id, rowKey, columnName, cellValue) {
+    var value = String(cellValue);
+    var uniqueInfoMap = instanceValidationMap[id];
+    uniqueInfoMap[value] = uniqueInfoMap[value] || {};
+    uniqueInfoMap[value][columnName] = uniqueInfoMap[value][columnName] || [];
+    uniqueInfoMap[value][columnName].push(rowKey);
+}
+function replaceColumnUniqueInfoMap(id, column, _a) {
+    var rowKey = _a.rowKey, columnName = _a.columnName, prevValue = _a.prevValue, value = _a.value;
+    if (common_1.some(function (_a) {
+        var name = _a.name;
+        return name === columnName;
+    }, column.validationColumns)) {
+        removeColumnUniqueInfoMap(id, rowKey, columnName, prevValue);
+        addColumnUniqueInfoMap(id, rowKey, columnName, value);
+    }
+}
+exports.replaceColumnUniqueInfoMap = replaceColumnUniqueInfoMap;
+function forceValidateUniquenessOfColumns(rawData, column) {
+    if (rawData.length) {
+        // trick for forcing to validate the uniqueness
+        invokeWithUniqueValidationColumn(column, function (name) { return observable_1.notify(rawData[0], name); });
+    }
+}
+exports.forceValidateUniquenessOfColumns = forceValidateUniquenessOfColumns;
+function forceValidateUniquenessOfColumn(rawData, column, columnName) {
+    if (common_1.some(function (_a) {
+        var name = _a.name;
+        return name === columnName;
+    }, column.validationColumns) && rawData.length) {
+        // trick for forcing to validate the uniqueness
+        observable_1.notify(rawData[0], columnName);
+    }
+}
+exports.forceValidateUniquenessOfColumn = forceValidateUniquenessOfColumn;
+function hasDuplicateValue(id, columnName, cellValue) {
+    var _a;
+    var value = String(cellValue);
+    var uniqueInfoMap = instanceValidationMap[id];
+    return !!(uniqueInfoMap && uniqueInfoMap[value] && ((_a = uniqueInfoMap[value][columnName]) === null || _a === void 0 ? void 0 : _a.length) > 1);
+}
+function validateDataUniqueness(id, value, columnName, invalidStates) {
+    if (hasDuplicateValue(id, columnName, value)) {
+        invalidStates.push({ code: 'UNIQUE' });
+    }
+    // prevent recursive call of 'validateDataUniqueness' when scrolling or manipulating the data
+    if (!isValidatingUniquenessMap[columnName] &&
+        !common_1.includes(observable_1.getRunningObservers(), 'lazyObservable')) {
+        var rawData_1 = [];
+        observable_1.unobservedInvoke(function () {
+            // @TODO: should get the latest rawData through function(not private field of the grid instance)
+            // @ts-ignore
+            rawData_1 = instance_1.getInstance(id).store.data.rawData;
+        });
+        isValidatingUniquenessMap[columnName] = true;
+        rawData_1.forEach(function (row) {
+            if (observable_1.isObservable(row)) {
+                observable_1.notify(row, columnName);
+            }
+        });
+        setTimeout(function () {
+            isValidatingUniquenessMap[columnName] = false;
+        });
+    }
+}
+function validateCustomValidator(row, value, columnName, validatorFn, invalidStates) {
+    var originRow = data_1.getOmittedInternalProp(row);
+    observable_1.unobservedInvoke(function () {
+        var result = validatorFn(value, originRow, columnName);
+        var _a = (common_1.isBoolean(result)
+            ? { valid: result }
+            : result), valid = _a.valid, meta = _a.meta;
+        if (!valid) {
+            invalidStates.push(tslib_1.__assign({ code: 'VALIDATOR_FN' }, meta));
+        }
+    });
+}
+function getValidationCode(_a) {
+    var id = _a.id, value = _a.value, row = _a.row, columnName = _a.columnName, validation = _a.validation;
+    var invalidStates = [];
+    if (!validation) {
+        return invalidStates;
+    }
+    var required = validation.required, dataType = validation.dataType, min = validation.min, max = validation.max, regExp = validation.regExp, unique = validation.unique, validatorFn = validation.validatorFn;
+    if (required && common_1.isBlank(value)) {
+        invalidStates.push({ code: 'REQUIRED' });
+    }
+    if (unique) {
+        validateDataUniqueness(id, value, columnName, invalidStates);
+    }
+    if (common_1.isFunction(validatorFn)) {
+        validateCustomValidator(row, value, columnName, validatorFn, invalidStates);
+    }
+    if (dataType === 'string' && !common_1.isString(value)) {
+        invalidStates.push({ code: 'TYPE_STRING' });
+    }
+    if (regExp && common_1.isString(value) && !regExp.test(value)) {
+        invalidStates.push({ code: 'REGEXP', regExp: regExp });
+    }
+    var numberValue = common_1.convertToNumber(value);
+    if (dataType === 'number' && !common_1.isNumber(numberValue)) {
+        invalidStates.push({ code: 'TYPE_NUMBER' });
+    }
+    if (common_1.isNumber(min) && common_1.isNumber(numberValue) && numberValue < min) {
+        invalidStates.push({ code: 'MIN', min: min });
+    }
+    if (common_1.isNumber(max) && common_1.isNumber(numberValue) && numberValue > max) {
+        invalidStates.push({ code: 'MAX', max: max });
+    }
+    return invalidStates;
+}
+exports.getValidationCode = getValidationCode;
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getFormattedValue = exports.createFormattedValue = exports.getMaxTextMap = exports.setMaxColumnTextMap = exports.setMaxTextMap = exports.initMaxTextMap = void 0;
+var listItemText_1 = __webpack_require__(59);
+var common_1 = __webpack_require__(0);
+var maxTextMap = {};
+function initMaxTextMap() {
+    maxTextMap = {};
+}
+exports.initMaxTextMap = initMaxTextMap;
+function setMaxTextMap(column, row) {
+    column.autoResizingColumn.forEach(function (columnInfo) {
+        var name = columnInfo.name;
+        var formattedValue = createFormattedValue(row, columnInfo);
+        if (!maxTextMap[name] || maxTextMap[name].formattedValue.length < formattedValue.length) {
+            setMaxColumnTextMap(name, formattedValue, row);
+        }
+    });
+}
+exports.setMaxTextMap = setMaxTextMap;
+function setMaxColumnTextMap(columnName, formattedValue, row) {
+    maxTextMap[columnName] = { formattedValue: formattedValue, row: row };
+}
+exports.setMaxColumnTextMap = setMaxColumnTextMap;
+function getMaxTextMap() {
+    return maxTextMap;
+}
+exports.getMaxTextMap = getMaxTextMap;
+function createFormattedValue(row, columnInfo) {
+    var name = columnInfo.name, formatter = columnInfo.formatter, defaultValue = columnInfo.defaultValue;
+    var formatterProps = { row: row, column: columnInfo, value: row[name] };
+    return getFormattedValue(formatterProps, formatter, row[name] || defaultValue, row._relationListItemMap[name]);
+}
+exports.createFormattedValue = createFormattedValue;
+function getFormattedValue(props, formatter, defaultValue, relationListItems) {
+    var value;
+    if (formatter === 'listItemText') {
+        value = listItemText_1.listItemText(props, relationListItems);
+    }
+    else if (common_1.isFunction(formatter)) {
+        value = formatter(props);
+    }
+    else if (common_1.isString(formatter)) {
+        value = formatter;
+    }
+    else {
+        value = defaultValue;
+    }
+    var strValue = getCellDisplayValue(value);
+    if (strValue && props.column.escapeHTML) {
+        return common_1.encodeHTMLEntity(strValue);
+    }
+    return strValue;
+}
+exports.getFormattedValue = getFormattedValue;
+function getCellDisplayValue(value) {
+    if (common_1.isNil(value)) {
+        return '';
+    }
+    return String(value);
+}
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createObservableData = exports.fillMissingColumnData = void 0;
 var tslib_1 = __webpack_require__(1);
 var observable_1 = __webpack_require__(5);
-var data_1 = __webpack_require__(12);
+var data_1 = __webpack_require__(13);
 var data_2 = __webpack_require__(6);
 var tree_1 = __webpack_require__(21);
 var common_1 = __webpack_require__(0);
@@ -4407,7 +5038,8 @@ function getDataToBeObservable(acc, row, viewRow, index, treeColumnName) {
     if (treeColumnName && row._attributes.tree.hidden) {
         return acc;
     }
-    if (!observable_1.isObservable(row) || (viewRow && !observable_1.isObservable(viewRow.valueMap))) {
+    if (!observable_1.isObservable(row) ||
+        (viewRow && row.rowKey === viewRow.rowKey && !observable_1.isObservable(viewRow.valueMap))) {
         acc.rows.push(row);
         acc.targetIndexes.push(index);
     }
@@ -4497,21 +5129,22 @@ exports.createObservableData = createObservableData;
 
 
 /***/ }),
-/* 24 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.resetSortState = exports.sortByCurrentState = exports.resetSortKey = exports.updateSortKey = exports.emitAfterSort = exports.emitBeforeSort = exports.initSortState = exports.unsort = exports.sort = exports.changeSortState = void 0;
 var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 var observable_1 = __webpack_require__(5);
-var sort_1 = __webpack_require__(59);
+var sort_1 = __webpack_require__(71);
 var eventBus_1 = __webpack_require__(8);
-var data_1 = __webpack_require__(15);
+var data_1 = __webpack_require__(14);
 var data_2 = __webpack_require__(6);
-var column_1 = __webpack_require__(13);
-var sort_2 = __webpack_require__(37);
+var column_1 = __webpack_require__(12);
+var sort_2 = __webpack_require__(41);
 function createSoretedViewData(rawData) {
     return rawData.map(function (_a) {
         var rowKey = _a.rowKey, sortKey = _a.sortKey, uniqueKey = _a.uniqueKey;
@@ -4726,177 +5359,48 @@ exports.resetSortState = resetSortState;
 
 
 /***/ }),
-/* 25 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var summary_1 = __webpack_require__(38);
+exports.composeConditionFn = exports.getFilterConditionFn = exports.getUnixTime = exports.createFilterSelectOption = void 0;
+var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
-var summary_2 = __webpack_require__(39);
-var observable_1 = __webpack_require__(5);
-function setSummaryColumnContent(_a, columnName, columnContent) {
-    var summary = _a.summary, data = _a.data;
-    var castedColumnContent = summary_1.castToSummaryColumnContent(columnContent);
-    var content = summary_1.extractSummaryColumnContent(castedColumnContent, null);
-    summary.summaryColumnContents[columnName] = content;
-    summary.summaryValues[columnName] = summary_2.createSummaryValue(content, columnName, data);
-    observable_1.notify(summary, 'summaryValues');
-}
-exports.setSummaryColumnContent = setSummaryColumnContent;
-function updateSummaryValue(_a, columnName, type, options) {
-    var summary = _a.summary, data = _a.data;
-    var content = summary.summaryColumnContents[columnName];
-    if (!content || !content.useAutoSummary) {
-        return;
+var i18n_1 = tslib_1.__importDefault(__webpack_require__(20));
+var filterSelectOption;
+function createFilterSelectOption() {
+    if (!filterSelectOption) {
+        filterSelectOption = {
+            number: {
+                eq: '=',
+                lt: '<',
+                gt: '>',
+                lte: '<=',
+                gte: '>=',
+                ne: '!=',
+            },
+            text: {
+                contain: i18n_1.default.get('filter.contains'),
+                eq: i18n_1.default.get('filter.eq'),
+                ne: i18n_1.default.get('filter.ne'),
+                start: i18n_1.default.get('filter.start'),
+                end: i18n_1.default.get('filter.end'),
+            },
+            date: {
+                eq: i18n_1.default.get('filter.eq'),
+                ne: i18n_1.default.get('filter.ne'),
+                after: i18n_1.default.get('filter.after'),
+                afterEq: i18n_1.default.get('filter.afterEq'),
+                before: i18n_1.default.get('filter.before'),
+                beforeEq: i18n_1.default.get('filter.beforeEq'),
+            },
+        };
     }
-    var summaryValue = summary.summaryValues[columnName];
-    var orgValue = Number(options.orgValue) || 0;
-    var value = Number(options.value) || 0;
-    var cntVariation = options.type === 'APPEND' ? 1 : -1;
-    var columnFilter = common_1.findProp('columnName', columnName, data.filters || []);
-    var hasColumnFilter = !!(columnFilter && common_1.isFunction(columnFilter.conditionFn));
-    var included = hasColumnFilter && columnFilter.conditionFn(value);
-    var sum = summaryValue.sum, min = summaryValue.min, max = summaryValue.max, cnt = summaryValue.cnt;
-    var _b = summaryValue.filtered, filteredSum = _b.sum, filteredMin = _b.min, filteredMax = _b.max, filteredCnt = _b.cnt;
-    switch (type) {
-        case 'UPDATE_COLUMN':
-            sum = value * cnt;
-            min = value;
-            max = value;
-            if (hasColumnFilter) {
-                filteredCnt = included ? filteredCnt : 0;
-                filteredSum = included ? value * filteredCnt : 0;
-                filteredMin = included ? value : 0;
-                filteredMax = included ? value : 0;
-            }
-            break;
-        case 'UPDATE_CELL':
-            sum = sum - orgValue + value;
-            if (hasColumnFilter) {
-                var orgIncluded = columnFilter.conditionFn(orgValue);
-                if (!orgIncluded && included) {
-                    filteredSum = filteredSum + value;
-                    filteredCnt += 1;
-                }
-                else if (orgIncluded && !included) {
-                    filteredSum = filteredSum - orgValue;
-                    filteredCnt -= 1;
-                }
-                else if (orgIncluded && included) {
-                    filteredSum = filteredSum - orgValue + value;
-                }
-            }
-            break;
-        case 'UPDATE_ROW':
-            cnt += cntVariation;
-            sum = sum + cntVariation * value;
-            if (hasColumnFilter && included) {
-                filteredSum = filteredSum + cntVariation * value;
-                filteredCnt += cntVariation;
-            }
-            break;
-        default:
-        // do nothing;
-    }
-    var avg = sum / cnt;
-    var filteredAvg = filteredSum / filteredCnt;
-    min = Math.min(value, min);
-    max = Math.max(value, max);
-    filteredMin = Math.min(value, filteredMin);
-    filteredMax = Math.max(value, filteredMax);
-    summary.summaryValues[columnName] = {
-        sum: sum,
-        min: min,
-        max: max,
-        avg: avg,
-        cnt: cnt,
-        filtered: {
-            sum: filteredSum,
-            min: filteredMin,
-            max: filteredMax,
-            avg: filteredAvg,
-            cnt: filteredCnt,
-        },
-    };
-    observable_1.notify(summary, 'summaryValues');
+    return filterSelectOption;
 }
-function updateSummaryValueByCell(store, columnName, options) {
-    updateSummaryValue(store, columnName, 'UPDATE_CELL', options);
-}
-exports.updateSummaryValueByCell = updateSummaryValueByCell;
-function updateSummaryValueByColumn(store, columnName, options) {
-    updateSummaryValue(store, columnName, 'UPDATE_COLUMN', options);
-}
-exports.updateSummaryValueByColumn = updateSummaryValueByColumn;
-function updateSummaryValueByRow(store, row, options) {
-    var summary = store.summary, column = store.column;
-    var type = options.type, orgRow = options.orgRow;
-    var summaryColumns = column.allColumns.filter(function (_a) {
-        var name = _a.name;
-        return !!summary.summaryColumnContents[name];
-    });
-    summaryColumns.forEach(function (_a) {
-        var name = _a.name;
-        if (type === 'SET') {
-            updateSummaryValue(store, name, 'UPDATE_CELL', { orgValue: orgRow[name], value: row[name] });
-        }
-        else {
-            updateSummaryValue(store, name, 'UPDATE_ROW', { type: type, value: row[name] });
-        }
-    });
-}
-exports.updateSummaryValueByRow = updateSummaryValueByRow;
-function updateAllSummaryValues(_a) {
-    var summary = _a.summary, data = _a.data, column = _a.column;
-    var summaryColumns = column.allColumns.filter(function (_a) {
-        var name = _a.name;
-        return !!summary.summaryColumnContents[name];
-    });
-    summaryColumns.forEach(function (_a) {
-        var name = _a.name;
-        var content = summary.summaryColumnContents[name];
-        summary.summaryValues[name] = summary_2.createSummaryValue(content, name, data);
-    });
-    observable_1.notify(summary, 'summaryValues');
-}
-exports.updateAllSummaryValues = updateAllSummaryValues;
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = __webpack_require__(0);
-exports.filterSelectOption = {
-    number: {
-        eq: '=',
-        lt: '<',
-        gt: '>',
-        lte: '<=',
-        gte: '>=',
-        ne: '!=',
-    },
-    text: {
-        contain: 'Contains',
-        eq: 'Equals',
-        ne: 'Not equals',
-        start: 'Starts with',
-        end: 'Ends with',
-    },
-    date: {
-        eq: 'Equals',
-        ne: 'Not equals',
-        after: 'After',
-        afterEq: 'After or Equal',
-        before: 'Before',
-        beforeEq: 'Before or Equal',
-    },
-};
+exports.createFilterSelectOption = createFilterSelectOption;
 function getUnixTime(value) {
     return parseInt((new Date(String(value)).getTime() / 1000).toFixed(0), 10);
 }
@@ -4961,151 +5465,30 @@ exports.composeConditionFn = composeConditionFn;
 
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.moveTreeRow = exports.removeTreeRow = exports.appendTreeRow = exports.changeTreeRowsCheckedState = exports.collapseAll = exports.collapseByRowKey = exports.expandAll = exports.expandByRowKey = exports.removeExpandedAttr = void 0;
 var tslib_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(0);
-function getCustomValue(customValue, value, rowAttrs, column) {
-    return typeof customValue === 'function' ? customValue(value, rowAttrs, column) : customValue;
-}
-function getTextWithCopyOptionsApplied(valueMap, rawData, column) {
-    var text = valueMap.value;
-    var copyOptions = column.copyOptions, editor = column.editor;
-    var editorOptions = editor && editor.options;
-    // priority: customValue > useListItemText > useFormattedValue > original Data
-    if (copyOptions) {
-        if (copyOptions.customValue) {
-            text = getCustomValue(copyOptions.customValue, valueMap.value, rawData, column);
-        }
-        else if (copyOptions.useListItemText && editorOptions) {
-            var listItems_1 = editorOptions.listItems;
-            var value = valueMap.value;
-            var valueList = [value];
-            var result_1 = [];
-            if (typeof value === 'string') {
-                valueList = value.split(',');
-            }
-            valueList.forEach(function (val) {
-                var listItem = common_1.find(function (item) { return item.value === val; }, listItems_1);
-                result_1.push(listItem ? listItem.text : val);
-            });
-            text = result_1.join(',');
-        }
-        else if (copyOptions.useFormattedValue) {
-            text = "" + valueMap.formattedValue;
-        }
-    }
-    if (typeof text === 'undefined' || text === null) {
-        return '';
-    }
-    return String(text);
-}
-function getValueToString(store) {
-    var visibleColumnsWithRowHeader = store.column.visibleColumnsWithRowHeader, _a = store.focus, rowIndex = _a.rowIndex, columnName = _a.columnName, totalColumnIndex = _a.totalColumnIndex, _b = store.data, filteredViewData = _b.filteredViewData, filteredRawData = _b.filteredRawData;
-    if (rowIndex === null || columnName === null || totalColumnIndex === null) {
-        return '';
-    }
-    var valueMap = filteredViewData[rowIndex].valueMap[columnName];
-    return getTextWithCopyOptionsApplied(valueMap, filteredRawData, visibleColumnsWithRowHeader[totalColumnIndex]);
-}
-function getValuesToString(store) {
-    var originalRange = store.selection.originalRange, visibleColumnsWithRowHeader = store.column.visibleColumnsWithRowHeader, _a = store.data, filteredViewData = _a.filteredViewData, filteredRawData = _a.filteredRawData;
-    if (!originalRange) {
-        return '';
-    }
-    var _b = originalRange, row = _b.row, column = _b.column;
-    var rowList = filteredViewData.slice(row[0], row[1] + 1);
-    var columnInRange = visibleColumnsWithRowHeader.slice(column[0], column[1] + 1);
-    return rowList
-        .map(function (_a) {
-        var valueMap = _a.valueMap;
-        return columnInRange
-            .map(function (_a, index) {
-            var name = _a.name;
-            return getTextWithCopyOptionsApplied(valueMap[name], filteredRawData, visibleColumnsWithRowHeader[index]);
-        })
-            .join('\t');
-    })
-        .join('\n');
-}
-function getRangeToPaste(store, pasteData) {
-    var originalRange = store.selection.originalRange, _a = store.focus, totalColumnIndex = _a.totalColumnIndex, originalRowIndex = _a.originalRowIndex, visibleColumnsWithRowHeader = store.column.visibleColumnsWithRowHeader, viewData = store.data.viewData;
-    var startRowIndex, startColumnIndex;
-    if (originalRange) {
-        startRowIndex = originalRange.row[0];
-        startColumnIndex = originalRange.column[0];
-    }
-    else {
-        startRowIndex = originalRowIndex;
-        startColumnIndex = totalColumnIndex;
-    }
-    var endRowIndex = Math.min(pasteData.length + startRowIndex, viewData.length) - 1;
-    var endColumnIndex = Math.min(pasteData[0].length + startColumnIndex, visibleColumnsWithRowHeader.length) - 1;
-    return {
-        row: [startRowIndex, endRowIndex],
-        column: [startColumnIndex, endColumnIndex],
-    };
-}
-exports.getRangeToPaste = getRangeToPaste;
-function copyDataToRange(range, pasteData) {
-    var rowLength = range.row[1] - range.row[0] + 1;
-    var colLength = range.column[1] - range.column[0] + 1;
-    var dataRowLength = pasteData.length;
-    var dataColLength = pasteData[0].length;
-    var rowDupCount = Math.floor(rowLength / dataRowLength) - 1;
-    var colDupCount = Math.floor(colLength / dataColLength) - 1;
-    var result = tslib_1.__spreadArrays(pasteData);
-    for (var i = 0; i < rowDupCount; i += 1) {
-        pasteData.forEach(function (row) {
-            result.push(row.slice(0));
-        });
-    }
-    result.forEach(function (row) {
-        var rowData = row.slice(0);
-        for (var i = 0; i < colDupCount; i += 1) {
-            row.push.apply(row, rowData);
-        }
-    });
-    return result;
-}
-exports.copyDataToRange = copyDataToRange;
-function getText(store) {
-    var selection = store.selection, _a = store.focus, rowIndex = _a.rowIndex, columnName = _a.columnName;
-    if (selection.range) {
-        return getValuesToString(store);
-    }
-    if (rowIndex !== null && columnName !== null) {
-        return getValueToString(store);
-    }
-    return '';
-}
-exports.getText = getText;
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var data_1 = __webpack_require__(12);
+var data_1 = __webpack_require__(13);
 var data_2 = __webpack_require__(6);
 var observable_1 = __webpack_require__(5);
 var instance_1 = __webpack_require__(7);
-var data_3 = __webpack_require__(15);
+var data_3 = __webpack_require__(14);
 var tree_1 = __webpack_require__(22);
 var eventBus_1 = __webpack_require__(8);
 var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
 var tree_2 = __webpack_require__(21);
 var common_1 = __webpack_require__(0);
 var dom_1 = __webpack_require__(2);
-var lazyObservable_1 = __webpack_require__(23);
+var lazyObservable_1 = __webpack_require__(27);
+var column_1 = __webpack_require__(12);
+var data_4 = __webpack_require__(26);
+var constant_1 = __webpack_require__(16);
+var column_2 = __webpack_require__(31);
 var computedFontStyle = '';
 function changeExpandedAttr(row, expanded) {
     var tree = row._attributes.tree;
@@ -5119,9 +5502,6 @@ function changeHiddenAttr(row, hidden) {
     if (tree) {
         tree.hidden = hidden;
     }
-}
-function getColumnSide(columnName, visibleColumns) {
-    return common_1.someProp('name', columnName, visibleColumns.R) ? 'R' : 'L';
 }
 function expand(store, row, recursive) {
     var rowKey = row.rowKey;
@@ -5142,7 +5522,7 @@ function expand(store, row, recursive) {
     var heights = rowCoords.heights;
     changeExpandedAttr(row, true);
     var childRowKeys = tree_1.getChildRowKeys(row);
-    updateTreeColumnWidth(childRowKeys, column, columnCoords, data.rawData);
+    updateTreeColumnWidth(childRowKeys, column, columnCoords, dimension, data.rawData);
     childRowKeys.forEach(function (childRowKey) {
         var childRow = data_2.findRowByRowKey(data, column, id, childRowKey);
         if (!childRow) {
@@ -5160,61 +5540,33 @@ function expand(store, row, recursive) {
         observable_1.notify(viewport, 'rowRange');
     }
 }
-function updateTreeColumnWidth(childRowKeys, column, columnCoords, rawData) {
-    var visibleColumnsBySideWithRowHeader = column.visibleColumnsBySideWithRowHeader, treeIcon = column.treeIcon;
+function updateTreeColumnWidth(childRowKeys, column, columnCoords, dimension, rawData) {
+    var visibleColumnsBySideWithRowHeader = column.visibleColumnsBySideWithRowHeader, treeIcon = column.treeIcon, allColumnMap = column.allColumnMap;
     var treeColumnName = column.treeColumnName;
-    var treeColumnSide = getColumnSide(treeColumnName, visibleColumnsBySideWithRowHeader);
+    var treeColumnSide = column_1.getColumnSide(column, treeColumnName);
     var treeColumnIndex = common_1.findPropIndex('name', treeColumnName, column.visibleColumnsBySide[treeColumnSide]);
     var columnInfo = visibleColumnsBySideWithRowHeader[treeColumnSide][treeColumnIndex];
-    if (columnInfo.resizable) {
-        var maxWidth = getChildTreeNodeMaxWidth(childRowKeys, rawData, columnInfo, treeColumnName, treeIcon);
-        var prevWidth = columnCoords.widths[treeColumnSide][treeColumnIndex];
-        if (prevWidth < maxWidth) {
-            columnCoords.widths[treeColumnSide][treeColumnIndex] = maxWidth;
-            observable_1.notify(columnCoords, 'widths');
-        }
+    // @TODO: auto resizing is operated with 'autoResizing' option
+    // 'resizable' condition should be deprecated in next version
+    if (columnInfo.resizable || columnInfo.autoResizing) {
+        var maxWidth = getChildTreeNodeMaxWidth(childRowKeys, rawData, columnInfo, treeIcon);
+        var prevWidth = columnCoords.widths[treeColumnSide][treeColumnIndex] + dimension.cellBorderWidth;
+        allColumnMap[treeColumnName].baseWidth = Math.max(prevWidth, maxWidth);
+        allColumnMap[treeColumnName].fixedWidth = true;
     }
 }
-function getTextWidth(text, font) {
-    var context = document.createElement('canvas').getContext('2d');
-    context.font = font;
-    var width = context.measureText(String(text)).width;
-    return Math.ceil(width);
-}
-function getComputedFontStyle() {
-    var firstTreeCellNode = document.querySelector("." + dom_1.cls('tree-wrapper-relative'));
-    var walker = document.createTreeWalker(firstTreeCellNode, 4);
-    var node = firstTreeCellNode;
-    while (walker.nextNode()) {
-        node = walker.currentNode;
-        if (node.nodeType === 3) {
-            node = node.parentElement;
-            break;
-        }
-    }
-    var compStyle = getComputedStyle(node);
-    var fontSize = compStyle.getPropertyValue('font-size');
-    var fontWeight = compStyle.getPropertyValue('font-weight');
-    var fontFamily = compStyle.getPropertyValue('font-family');
-    return fontWeight + " " + fontSize + " " + fontFamily;
-}
-function getChildTreeNodeMaxWidth(childRowKeys, rawData, column, treeColumnName, useIcon) {
-    var CELL_CONTENT_LEFT_PADDING = 14;
-    var CELL_CONTENT_RIGHT_PADDING = 5;
+function getChildTreeNodeMaxWidth(childRowKeys, rawData, column, useIcon) {
     var maxLength = 0;
-    computedFontStyle = computedFontStyle || getComputedFontStyle();
+    computedFontStyle = computedFontStyle || dom_1.getComputedFontStyle('tree-wrapper-relative');
     var getMaxWidth = childRowKeys.reduce(function (acc, rowKey) {
         var row = common_1.findProp('rowKey', rowKey, rawData);
-        var value = row[treeColumnName];
-        var formatter = column.formatter, defaultValue = column.defaultValue;
-        var formattedValue = data_1.getFormattedValue({ row: row, column: column, value: value }, formatter, defaultValue || value);
+        var formattedValue = data_4.createFormattedValue(row, column);
         if (formattedValue.length > maxLength) {
             maxLength = formattedValue.length;
             acc = function () {
-                return getTextWidth(formattedValue, computedFontStyle) +
+                return dom_1.getTextWidth(formattedValue, computedFontStyle) +
                     tree_2.getTreeIndentWidth(tree_1.getDepth(rawData, row), useIcon) +
-                    CELL_CONTENT_LEFT_PADDING +
-                    CELL_CONTENT_RIGHT_PADDING;
+                    constant_1.TREE_CELL_HORIZONTAL_PADDING;
             };
         }
         return acc;
@@ -5254,6 +5606,7 @@ function collapse(store, row, recursive) {
                 tree_1.getDescendantRows(store, childRowKey).forEach(function (_a) {
                     var descendantRowKey = _a.rowKey;
                     var index = data_2.findIndexByRowKey(data, column, id, descendantRowKey);
+                    changeHiddenAttr(data.filteredRawData[index], true);
                     heights[index] = 0;
                 });
             }
@@ -5298,6 +5651,15 @@ function removeChildRowKey(row, rowKey) {
     var tree = row._attributes.tree;
     if (tree) {
         common_1.removeArrayItem(rowKey, tree.childRowKeys);
+        if (row._children) {
+            var index = common_1.findPropIndex('rowKey', rowKey, row._children);
+            if (index !== -1) {
+                row._children.splice(index, 1);
+            }
+        }
+        if (!tree.childRowKeys.length) {
+            row._leaf = true;
+        }
         observable_1.notify(tree, 'childRowKeys');
     }
 }
@@ -5362,20 +5724,18 @@ function appendTreeRow(store, row, options) {
         offset: offset,
     });
     lazyObservable_1.fillMissingColumnData(column, rawRows);
-    observable_1.batchedInvokeObserver(function () {
+    var viewRows = rawRows.map(function (rawRow) { return data_1.createViewRow(id, rawRow, rawData, column); });
+    observable_1.batchObserver(function () {
         rawData.splice.apply(rawData, tslib_1.__spreadArrays([startIdx, 0], rawRows));
-        var viewRows = rawRows.map(function (rawRow) { return data_1.createViewRow(id, rawRow, rawData, column); });
-        viewData.splice.apply(viewData, tslib_1.__spreadArrays([startIdx, 0], viewRows));
     });
+    viewData.splice.apply(viewData, tslib_1.__spreadArrays([startIdx, 0], viewRows));
     var rowHeights = rawRows.map(function (rawRow) {
         changeTreeRowsCheckedState(store, rawRow.rowKey, rawRow._attributes.checked);
         instance_1.getDataManager(id).push('CREATE', rawRow, true);
         return data_2.getRowHeight(rawRow, dimension.rowHeight);
     });
     heights.splice.apply(heights, tslib_1.__spreadArrays([startIdx, 0], rowHeights));
-    data_3.setLoadingState(store, data_2.getLoadingState(rawData));
-    data_3.updateRowNumber(store, startIdx);
-    data_3.setCheckedAllRows(store);
+    postUpdateAfterManipulation(store, startIdx, rawRows);
 }
 exports.appendTreeRow = appendTreeRow;
 // @TODO: consider tree disabled state with cascading
@@ -5394,42 +5754,725 @@ function removeTreeRow(store, rowKey) {
     var startIdx = data_2.findIndexByRowKey(data, column, id, rowKey);
     var deleteCount = tree_1.getDescendantRows(store, rowKey).length + 1;
     var removedRows = [];
-    observable_1.batchedInvokeObserver(function () {
+    observable_1.batchObserver(function () {
         removedRows = rawData.splice(startIdx, deleteCount);
-        viewData.splice(startIdx, deleteCount);
     });
+    viewData.splice(startIdx, deleteCount);
     heights.splice(startIdx, deleteCount);
     for (var i = removedRows.length - 1; i >= 0; i -= 1) {
         instance_1.getDataManager(id).push('DELETE', removedRows[i]);
     }
-    data_3.setLoadingState(store, data_2.getLoadingState(rawData));
-    data_3.updateRowNumber(store, startIdx);
-    data_3.setCheckedAllRows(store);
+    postUpdateAfterManipulation(store, startIdx, rawData);
 }
 exports.removeTreeRow = removeTreeRow;
+function postUpdateAfterManipulation(store, rowIndex, rows) {
+    data_3.setLoadingState(store, data_2.getLoadingState(store.data.rawData));
+    data_3.updateRowNumber(store, rowIndex);
+    data_3.setCheckedAllRows(store);
+    column_2.setAutoResizingColumnWidths(store, rows);
+}
+function moveTreeRow(store, rowKey, targetIndex, options) {
+    var data = store.data, column = store.column, id = store.id;
+    var rawData = data.rawData;
+    var targetRow = rawData[targetIndex];
+    if (!targetRow || data_2.isSorted(data) || data_2.isFiltered(data)) {
+        return;
+    }
+    var currentIndex = data_2.findIndexByRowKey(data, column, id, rowKey, false);
+    var row = rawData[currentIndex];
+    if (currentIndex === -1 ||
+        currentIndex === targetIndex ||
+        row._attributes.disabled ||
+        (targetRow._attributes.disabled && options.appended)) {
+        return;
+    }
+    var childRows = tree_1.getDescendantRows(store, rowKey);
+    var minIndex = Math.min(currentIndex, targetIndex);
+    var moveToChild = common_1.some(function (childRow) { return childRow.rowKey === targetRow.rowKey; }, childRows);
+    if (!moveToChild) {
+        removeTreeRow(store, rowKey);
+        var originRow = observable_1.getOriginObject(row);
+        instance_1.getDataManager(id).push('UPDATE', targetRow, true);
+        instance_1.getDataManager(id).push('UPDATE', row, true);
+        if (options.appended) {
+            appendTreeRow(store, originRow, { parentRowKey: targetRow.rowKey });
+        }
+        else {
+            var parentRowKey = targetRow._attributes.tree.parentRowKey;
+            var parentIndex = data_2.findIndexByRowKey(data, column, id, parentRowKey);
+            var offset = void 0;
+            // calculate the moving index for considering removed rows
+            if (targetIndex > currentIndex) {
+                var indexWithoutRemovedRows = targetIndex - (childRows.length + 1);
+                offset =
+                    parentIndex === -1 ? indexWithoutRemovedRows : indexWithoutRemovedRows - parentIndex - 1;
+            }
+            else {
+                offset = parentIndex === -1 ? targetIndex : targetIndex - parentIndex - 1;
+            }
+            // to resolve the index for moving last index
+            if (options.moveToLast) {
+                offset += 1;
+            }
+            appendTreeRow(store, originRow, { parentRowKey: parentRowKey, offset: offset });
+        }
+        postUpdateAfterManipulation(store, minIndex);
+    }
+}
+exports.moveTreeRow = moveTreeRow;
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.setColumnWidthsByText = exports.setAutoResizingColumnWidths = exports.changeColumnHeadersByName = exports.setComplexColumnHeaders = exports.showColumn = exports.hideColumn = exports.resetColumnWidths = exports.setColumns = exports.setColumnWidth = exports.setFrozenColumnCount = void 0;
+var tslib_1 = __webpack_require__(1);
+var column_1 = __webpack_require__(32);
+var data_1 = __webpack_require__(13);
+var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
+var eventBus_1 = __webpack_require__(8);
+var focus_1 = __webpack_require__(18);
+var observable_1 = __webpack_require__(5);
+var sort_1 = __webpack_require__(28);
+var filter_1 = __webpack_require__(34);
+var selection_1 = __webpack_require__(15);
+var common_1 = __webpack_require__(0);
+var viewport_1 = __webpack_require__(23);
+var dom_1 = __webpack_require__(2);
+var data_2 = __webpack_require__(26);
+var tree_1 = __webpack_require__(21);
+var tree_2 = __webpack_require__(22);
+var constant_1 = __webpack_require__(16);
+function setFrozenColumnCount(_a, count) {
+    var column = _a.column;
+    column.frozenCount = count;
+}
+exports.setFrozenColumnCount = setFrozenColumnCount;
+function getCellWidthToBeResized(columns, range, resizeAmount, startWidths) {
+    var widths = [];
+    var startIdx = range[0], endIdx = range[1];
+    var rangeLength = endIdx - startIdx + 1;
+    var delta = resizeAmount / rangeLength;
+    for (var idx = 0; idx < rangeLength; idx += 1) {
+        var columnIdx = startIdx + idx;
+        var minWidth = columns[columnIdx].minWidth;
+        var width = Math.max(startWidths[idx] + delta, minWidth);
+        widths.push(width);
+    }
+    return widths;
+}
+function setColumnWidth(_a, side, range, resizeAmount, startWidths) {
+    var column = _a.column, id = _a.id;
+    var eventBus = eventBus_1.getEventBus(id);
+    var columns = column.visibleColumnsBySideWithRowHeader[side];
+    var startIdx = range[0], endIdx = range[1];
+    var resizedColumns = [];
+    var widths = getCellWidthToBeResized(columns, range, resizeAmount, startWidths);
+    for (var idx = startIdx; idx <= endIdx; idx += 1) {
+        resizedColumns.push({
+            columnName: columns[idx].name,
+            width: widths[idx - startIdx],
+        });
+    }
+    var gridEvent = new gridEvent_1.default({ resizedColumns: resizedColumns });
+    /**
+     * Occurs when column is resized
+     * @event Grid#columnResize
+     * @property {Array} resizedColumns - state about resized columns
+     * @property {number} resizedColumns.columnName - columnName of the target cell
+     * @property {number} resizedColumns.width - width of the resized column
+     * @property {Grid} instance - Current grid instance
+     */
+    eventBus.trigger('columnResize', gridEvent);
+    if (!gridEvent.isStopped()) {
+        widths.forEach(function (width, idx) {
+            var columnIdx = startIdx + idx;
+            var item = columns[columnIdx];
+            item.baseWidth = width;
+            item.fixedWidth = true;
+        });
+    }
+}
+exports.setColumnWidth = setColumnWidth;
+function setColumns(store, optColumns) {
+    var column = store.column, data = store.data, id = store.id;
+    var _a = column.dataForColumnCreation, columnOptions = _a.columnOptions, copyOptions = _a.copyOptions, treeColumnOptions = _a.treeColumnOptions, rowHeaders = _a.rowHeaders;
+    var relationColumns = optColumns.reduce(function (acc, _a) {
+        var _b = _a.relations, relations = _b === void 0 ? [] : _b;
+        return acc.concat(column_1.createRelationColumns(relations)).filter(function (columnName, index) {
+            var foundIndex = acc.indexOf(columnName);
+            return foundIndex === -1 || foundIndex === index;
+        });
+    }, []);
+    var columnInfos = optColumns.map(function (optColumn) {
+        return column_1.createColumn(optColumn, columnOptions, relationColumns, copyOptions, treeColumnOptions, column.columnHeaderInfo, !!optColumn.disabled);
+    });
+    var dataCreationKey = data_1.generateDataCreationKey();
+    viewport_1.initScrollPosition(store);
+    focus_1.initFocus(store);
+    selection_1.initSelection(store);
+    column.allColumns = tslib_1.__spreadArrays(rowHeaders, columnInfos);
+    data.viewData.forEach(function (viewRow) {
+        if (Array.isArray(viewRow.__unobserveFns__)) {
+            viewRow.__unobserveFns__.forEach(function (fn) { return fn(); });
+        }
+    });
+    data.rawData = data.rawData.map(function (row) {
+        var newRow = tslib_1.__assign(tslib_1.__assign({}, column.emptyRow), row);
+        newRow.uniqueKey = dataCreationKey + "-" + row.rowKey;
+        return newRow;
+    });
+    data.viewData = data.rawData.map(function (row) {
+        return observable_1.isObservable(row)
+            ? data_1.createViewRow(id, row, data.rawData, column)
+            : { rowKey: row.rowKey, sortKey: row.sortKey, uniqueKey: row.uniqueKey };
+    });
+    filter_1.initFilter(store);
+    sort_1.unsort(store);
+    setColumnWidthsByText(store);
+}
+exports.setColumns = setColumns;
+function resetColumnWidths(_a, widths) {
+    var column = _a.column;
+    column.visibleColumns.forEach(function (columnInfo, idx) {
+        columnInfo.baseWidth = widths[idx];
+        columnInfo.autoResizing = false;
+    });
+}
+exports.resetColumnWidths = resetColumnWidths;
+function setColumnsHiddenValue(column, columnName, hidden) {
+    var allColumnMap = column.allColumnMap, complexColumnHeaders = column.complexColumnHeaders;
+    if (complexColumnHeaders.length) {
+        var complexColumn = common_1.findProp('name', columnName, complexColumnHeaders);
+        if (complexColumn) {
+            complexColumn.childNames.forEach(function (childName) {
+                allColumnMap[childName].hidden = hidden;
+            });
+            return;
+        }
+    }
+    allColumnMap[columnName].hidden = hidden;
+}
+function hideColumn(store, columnName) {
+    var column = store.column, focus = store.focus;
+    if (focus.columnName === columnName) {
+        focus_1.initFocus(store);
+    }
+    selection_1.initSelection(store);
+    filter_1.unfilter(store, columnName);
+    sort_1.unsort(store, columnName);
+    setColumnsHiddenValue(column, columnName, true);
+}
+exports.hideColumn = hideColumn;
+function showColumn(_a, columnName) {
+    var column = _a.column;
+    setColumnsHiddenValue(column, columnName, false);
+}
+exports.showColumn = showColumn;
+function setComplexColumnHeaders(store, complexColumnHeaders) {
+    store.column.complexColumnHeaders = complexColumnHeaders;
+}
+exports.setComplexColumnHeaders = setComplexColumnHeaders;
+function changeColumnHeadersByName(_a, columnsMap) {
+    var column = _a.column;
+    var complexColumnHeaders = column.complexColumnHeaders, allColumnMap = column.allColumnMap;
+    Object.keys(columnsMap).forEach(function (columnName) {
+        var col = allColumnMap[columnName];
+        if (col) {
+            col.header = columnsMap[columnName];
+        }
+        if (complexColumnHeaders.length) {
+            var complexCol = common_1.findProp('name', columnName, complexColumnHeaders);
+            if (complexCol) {
+                complexCol.header = columnsMap[columnName];
+            }
+        }
+    });
+    observable_1.notify(column, 'allColumns');
+}
+exports.changeColumnHeadersByName = changeColumnHeadersByName;
+function setAutoResizingColumnWidths(store, targetData) {
+    var autoResizingColumn = store.column.autoResizingColumn;
+    var rawData = targetData || store.data.rawData;
+    if (!rawData.length || !autoResizingColumn.length) {
+        return;
+    }
+    data_2.initMaxTextMap();
+    var maxTextMap = data_2.getMaxTextMap();
+    rawData.forEach(function (row) {
+        autoResizingColumn.forEach(function (columnInfo) {
+            var name = columnInfo.name;
+            var formattedValue = data_2.createFormattedValue(row, columnInfo);
+            if (!maxTextMap[name] || maxTextMap[name].formattedValue.length < formattedValue.length) {
+                data_2.setMaxColumnTextMap(name, formattedValue, row);
+            }
+        });
+    });
+    setColumnWidthsByText(store);
+}
+exports.setAutoResizingColumnWidths = setAutoResizingColumnWidths;
+function setColumnWidthsByText(store) {
+    var autoResizingColumn = store.column.autoResizingColumn;
+    if (store.data.rawData.length && autoResizingColumn.length) {
+        autoResizingColumn.forEach(function (_a) {
+            var name = _a.name;
+            setColumnWidthByText(store, name);
+        });
+    }
+}
+exports.setColumnWidthsByText = setColumnWidthsByText;
+function setColumnWidthByText(_a, columnName) {
+    var data = _a.data, column = _a.column;
+    var allColumnMap = column.allColumnMap, treeColumnName = column.treeColumnName, treeIcon = column.treeIcon;
+    var maxTextMap = data_2.getMaxTextMap();
+    var _b = maxTextMap[columnName], formattedValue = _b.formattedValue, row = _b.row;
+    var width = dom_1.getTextWidth(formattedValue, dom_1.getComputedFontStyle(treeColumnName ? 'tree-wrapper-relative' : 'cell'));
+    if (treeColumnName) {
+        width +=
+            tree_1.getTreeIndentWidth(tree_2.getDepth(data.rawData, row), treeIcon) + constant_1.TREE_CELL_HORIZONTAL_PADDING;
+    }
+    allColumnMap[columnName].baseWidth = Math.max(allColumnMap[columnName].minWidth, width);
+    allColumnMap[columnName].fixedWidth = true;
+}
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = exports.createColumn = exports.createRelationColumns = exports.createColumnFilterOption = exports.validateRelationColumn = void 0;
+var tslib_1 = __webpack_require__(1);
+var observable_1 = __webpack_require__(5);
+var column_1 = __webpack_require__(10);
+var common_1 = __webpack_require__(0);
+var default_1 = __webpack_require__(60);
+var manager_1 = __webpack_require__(61);
+var rowHeaderInput_1 = __webpack_require__(68);
+var rowHeaderDraggable_1 = __webpack_require__(69);
+var DEF_ROW_HEADER_INPUT = '<input type="checkbox" name="_checked" />';
+var ROW_HEADER = 40;
+var COLUMN = 50;
+var rowHeadersMap = {
+    rowNum: '_number',
+    checkbox: '_checked',
+    draggable: '_draggable',
+};
+function validateRelationColumn(columnInfos) {
+    var checked = {};
+    function checkCircularRelation(column, relations) {
+        var name = column.name, relationMap = column.relationMap;
+        relations.push(name);
+        checked[name] = true;
+        if (common_1.uniq(relations).length !== relations.length) {
+            throw new Error('Cannot create circular reference between relation columns');
+        }
+        if (!common_1.isUndefined(relationMap)) {
+            Object.keys(relationMap).forEach(function (targetName) {
+                var targetColumn = common_1.findProp('name', targetName, columnInfos);
+                // copy the 'relation' array to prevent to push all relation column into same array
+                checkCircularRelation(targetColumn, tslib_1.__spreadArrays(relations));
+            });
+        }
+    }
+    columnInfos.forEach(function (column) {
+        if (!checked[column.name]) {
+            checkCircularRelation(column, []);
+        }
+    });
+}
+exports.validateRelationColumn = validateRelationColumn;
+function createBuiltInEditorOptions(editorType, options) {
+    var editInfo = manager_1.editorMap[editorType];
+    return {
+        type: editInfo[0],
+        options: tslib_1.__assign(tslib_1.__assign({}, editInfo[1]), options),
+    };
+}
+function createEditorOptions(editor) {
+    if (common_1.isFunction(editor)) {
+        return { type: editor };
+    }
+    if (common_1.isString(editor)) {
+        return createBuiltInEditorOptions(editor);
+    }
+    if (common_1.isObject(editor)) {
+        return common_1.isString(editor.type)
+            ? createBuiltInEditorOptions(editor.type, editor.options)
+            : editor;
+    }
+    return null;
+}
+function createRendererOptions(renderer) {
+    if (common_1.isFunction(renderer)) {
+        return { type: renderer };
+    }
+    if (common_1.isObject(renderer) && !common_1.isFunction(renderer) && common_1.isFunction(renderer.type)) {
+        return renderer;
+    }
+    var defaultRenderer = { type: default_1.DefaultRenderer };
+    return common_1.isObject(renderer)
+        ? tslib_1.__assign(tslib_1.__assign({}, defaultRenderer), renderer)
+        : defaultRenderer;
+}
+function createTreeInfo(treeColumnOptions, name) {
+    if (treeColumnOptions && treeColumnOptions.name === name) {
+        var _a = treeColumnOptions.useIcon, useIcon = _a === void 0 ? true : _a;
+        return { tree: { useIcon: useIcon } };
+    }
+    return null;
+}
+function createRelationMap(relations) {
+    var relationMap = {};
+    relations.forEach(function (relation) {
+        var editable = relation.editable, disabled = relation.disabled, listItems = relation.listItems, _a = relation.targetNames, targetNames = _a === void 0 ? [] : _a;
+        targetNames.forEach(function (targetName) {
+            relationMap[targetName] = {
+                editable: editable,
+                disabled: disabled,
+                listItems: listItems,
+            };
+        });
+    });
+    return relationMap;
+}
+function createColumnHeaderInfo(name, columnHeaderInfo) {
+    var columnHeaders = columnHeaderInfo.columnHeaders, defaultAlign = columnHeaderInfo.align, defaultVAlign = columnHeaderInfo.valign;
+    var columnOption = common_1.findProp('name', name, columnHeaders);
+    var headerAlign = columnOption && columnOption.align ? columnOption.align : defaultAlign;
+    var headerVAlign = columnOption && columnOption.valign ? columnOption.valign : defaultVAlign;
+    var headerRenderer = columnOption && columnOption.renderer ? columnOption.renderer : null;
+    return {
+        headerAlign: headerAlign,
+        headerVAlign: headerVAlign,
+        headerRenderer: headerRenderer,
+    };
+}
+function createColumnFilterOption(filter) {
+    var defaultOption = {
+        type: common_1.isObject(filter) ? filter.type : filter,
+        showApplyBtn: false,
+        showClearBtn: false,
+    };
+    if (common_1.isString(filter)) {
+        if (filter === 'select') {
+            return tslib_1.__assign(tslib_1.__assign({}, defaultOption), { operator: 'OR' });
+        }
+    }
+    if (common_1.isObject(filter)) {
+        return tslib_1.__assign(tslib_1.__assign({}, defaultOption), (filter.type === 'select'
+            ? common_1.omit(filter, 'showApplyBtn', 'showClearBtn', 'operator', 'options')
+            : filter));
+    }
+    return defaultOption;
+}
+exports.createColumnFilterOption = createColumnFilterOption;
+function createRelationColumns(relations) {
+    var relationColumns = [];
+    relations.forEach(function (relation) {
+        var _a = relation.targetNames, targetNames = _a === void 0 ? [] : _a;
+        targetNames.forEach(function (targetName) {
+            relationColumns.push(targetName);
+        });
+    });
+    return relationColumns;
+}
+exports.createRelationColumns = createRelationColumns;
+// eslint-disable-next-line max-params
+function createColumn(column, columnOptions, relationColumns, gridCopyOptions, treeColumnOptions, columnHeaderInfo, disabled) {
+    var name = column.name, header = column.header, width = column.width, minWidth = column.minWidth, align = column.align, hidden = column.hidden, resizable = column.resizable, editor = column.editor, renderer = column.renderer, relations = column.relations, sortable = column.sortable, sortingType = column.sortingType, copyOptions = column.copyOptions, validation = column.validation, formatter = column.formatter, onBeforeChange = column.onBeforeChange, onAfterChange = column.onAfterChange, whiteSpace = column.whiteSpace, ellipsis = column.ellipsis, valign = column.valign, defaultValue = column.defaultValue, escapeHTML = column.escapeHTML, ignored = column.ignored, filter = column.filter, className = column.className, comparator = column.comparator;
+    var editorOptions = createEditorOptions(editor);
+    var rendererOptions = createRendererOptions(renderer);
+    var filterOptions = filter ? createColumnFilterOption(filter) : null;
+    var _a = createColumnHeaderInfo(name, columnHeaderInfo), headerAlign = _a.headerAlign, headerVAlign = _a.headerVAlign, headerRenderer = _a.headerRenderer;
+    return observable_1.observable(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign({ name: name,
+        escapeHTML: escapeHTML, header: header || name, hidden: Boolean(hidden), resizable: common_1.isUndefined(resizable) ? Boolean(columnOptions.resizable) : Boolean(resizable), align: align || 'left', fixedWidth: typeof width === 'number', copyOptions: tslib_1.__assign(tslib_1.__assign({}, gridCopyOptions), copyOptions), baseWidth: (width === 'auto' ? 0 : width) || 0, minWidth: minWidth || columnOptions.minWidth || COLUMN, relationMap: createRelationMap(relations || []), related: common_1.includes(relationColumns, name), sortable: sortable, sortingType: sortingType || 'asc', validation: validation ? tslib_1.__assign({}, validation) : {}, renderer: rendererOptions, formatter: formatter,
+        onBeforeChange: onBeforeChange,
+        onAfterChange: onAfterChange,
+        whiteSpace: whiteSpace,
+        ellipsis: ellipsis, valign: valign || 'middle', defaultValue: defaultValue,
+        ignored: ignored }, (!!editorOptions && { editor: editorOptions })), createTreeInfo(treeColumnOptions, name)), { headerAlign: headerAlign,
+        headerVAlign: headerVAlign, filter: filterOptions, headerRenderer: headerRenderer,
+        className: className,
+        disabled: disabled,
+        comparator: comparator, autoResizing: width === 'auto' }));
+}
+exports.createColumn = createColumn;
+function createRowHeader(data, columnHeaderInfo) {
+    var rowHeader = common_1.isString(data)
+        ? { name: rowHeadersMap[data] }
+        : tslib_1.__assign({ name: rowHeadersMap[data.type] }, common_1.omit(data, 'type'));
+    var name = rowHeader.name, header = rowHeader.header, align = rowHeader.align, valign = rowHeader.valign, renderer = rowHeader.renderer, width = rowHeader.width, minWidth = rowHeader.minWidth;
+    var baseMinWith = common_1.isNumber(minWidth) ? minWidth : ROW_HEADER;
+    var baseWidth = (width === 'auto' ? baseMinWith : width) || baseMinWith;
+    var rowNumColumn = column_1.isRowNumColumn(name);
+    var defaultHeader = rowNumColumn ? 'No. ' : DEF_ROW_HEADER_INPUT;
+    var rendererOptions = renderer || {
+        type: rowNumColumn ? default_1.DefaultRenderer : rowHeaderInput_1.RowHeaderInputRenderer,
+    };
+    var _a = createColumnHeaderInfo(name, columnHeaderInfo), headerAlign = _a.headerAlign, headerVAlign = _a.headerVAlign, headerRenderer = _a.headerRenderer;
+    return observable_1.observable({
+        name: name,
+        header: header || defaultHeader,
+        hidden: false,
+        resizable: false,
+        align: align || 'center',
+        valign: valign || 'middle',
+        renderer: createRendererOptions(rendererOptions),
+        fixedWidth: true,
+        baseWidth: baseWidth,
+        escapeHTML: false,
+        minWidth: baseMinWith,
+        headerAlign: headerAlign,
+        headerVAlign: headerVAlign,
+        headerRenderer: headerRenderer,
+        autoResizing: false,
+    });
+}
+function createComplexColumnHeaders(column, columnHeaderInfo) {
+    var header = column.header, name = column.name, childNames = column.childNames, renderer = column.renderer, hideChildHeaders = column.hideChildHeaders, _a = column.resizable, resizable = _a === void 0 ? false : _a;
+    var headerAlign = column.headerAlign || columnHeaderInfo.align;
+    var headerVAlign = column.headerVAlign || columnHeaderInfo.valign;
+    return observable_1.observable({
+        header: header,
+        name: name,
+        childNames: childNames,
+        headerAlign: headerAlign,
+        headerVAlign: headerVAlign,
+        headerRenderer: renderer || null,
+        hideChildHeaders: hideChildHeaders,
+        resizable: resizable,
+    });
+}
+function createDraggableRowHeader(rowHeaderColumn) {
+    var renderer = common_1.isObject(rowHeaderColumn)
+        ? rowHeaderColumn.renderer
+        : { type: rowHeaderDraggable_1.RowHeaderDraggableRenderer };
+    var draggableColumn = {
+        name: '_draggable',
+        header: '',
+        hidden: false,
+        resizable: false,
+        align: 'center',
+        valign: 'middle',
+        renderer: createRendererOptions(renderer),
+        baseWidth: ROW_HEADER,
+        minWidth: ROW_HEADER,
+        fixedWidth: true,
+        autoResizing: false,
+        escapeHTML: false,
+        headerAlign: 'center',
+        headerVAlign: 'middle',
+    };
+    return draggableColumn;
+}
+function create(_a) {
+    var columns = _a.columns, columnOptions = _a.columnOptions, rowHeaders = _a.rowHeaders, copyOptions = _a.copyOptions, keyColumnName = _a.keyColumnName, treeColumnOptions = _a.treeColumnOptions, complexColumns = _a.complexColumns, align = _a.align, valign = _a.valign, columnHeaders = _a.columnHeaders, disabled = _a.disabled, draggable = _a.draggable;
+    var relationColumns = columns.reduce(function (acc, _a) {
+        var relations = _a.relations;
+        acc = acc.concat(createRelationColumns(relations || []));
+        return acc.filter(function (columnName, idx) { return acc.indexOf(columnName) === idx; });
+    }, []);
+    var columnHeaderInfo = { columnHeaders: columnHeaders, align: align, valign: valign };
+    var rowHeaderInfos = [];
+    if (draggable) {
+        var rowHeaderColumn = null;
+        var index = common_1.findIndex(function (rowHeader) {
+            return (common_1.isString(rowHeader) && rowHeader === 'draggable') ||
+                rowHeader.type === 'draggable';
+        }, rowHeaders);
+        if (index !== -1) {
+            rowHeaderColumn = rowHeaders.splice(index, 1)[0];
+        }
+        rowHeaderInfos.push(createDraggableRowHeader(rowHeaderColumn));
+    }
+    rowHeaders.forEach(function (rowHeader) {
+        return rowHeaderInfos.push(createRowHeader(rowHeader, columnHeaderInfo));
+    });
+    var columnInfos = columns.map(function (column) {
+        return createColumn(column, columnOptions, relationColumns, copyOptions, treeColumnOptions, columnHeaderInfo, !!(disabled || column.disabled));
+    });
+    validateRelationColumn(columnInfos);
+    var allColumns = rowHeaderInfos.concat(columnInfos);
+    var treeColumnName = treeColumnOptions.name, _b = treeColumnOptions.useIcon, treeIcon = _b === void 0 ? true : _b, _c = treeColumnOptions.useCascadingCheckbox, treeCascadingCheckbox = _c === void 0 ? true : _c;
+    var complexColumnHeaders = complexColumns.map(function (column) {
+        return createComplexColumnHeaders(column, columnHeaderInfo);
+    });
+    return observable_1.observable(tslib_1.__assign({ keyColumnName: keyColumnName,
+        allColumns: allColumns,
+        complexColumnHeaders: complexColumnHeaders,
+        columnHeaderInfo: columnHeaderInfo, frozenCount: columnOptions.frozenCount || 0, dataForColumnCreation: {
+            copyOptions: copyOptions,
+            columnOptions: columnOptions,
+            treeColumnOptions: treeColumnOptions,
+            relationColumns: relationColumns,
+            rowHeaders: rowHeaderInfos,
+        }, get allColumnMap() {
+            return common_1.createMapFromArray(this.allColumns, 'name');
+        }, get rowHeaderCount() {
+            return rowHeaderInfos.length;
+        }, get visibleColumns() {
+            return this.allColumns.slice(this.rowHeaderCount).filter(function (_a) {
+                var hidden = _a.hidden;
+                return !hidden;
+            });
+        },
+        get visibleColumnsWithRowHeader() {
+            return this.allColumns.filter(function (_a) {
+                var hidden = _a.hidden;
+                return !hidden;
+            });
+        }, get visibleColumnsBySide() {
+            return {
+                L: this.visibleColumns.slice(0, this.frozenCount),
+                R: this.visibleColumns.slice(this.frozenCount),
+            };
+        }, get visibleColumnsBySideWithRowHeader() {
+            var frozenLastIndex = this.rowHeaderCount + this.frozenCount;
+            return {
+                L: this.visibleColumnsWithRowHeader.slice(0, frozenLastIndex),
+                R: this.visibleColumnsWithRowHeader.slice(frozenLastIndex),
+            };
+        },
+        get defaultValues() {
+            return this.allColumns
+                .filter(function (_a) {
+                var defaultValue = _a.defaultValue;
+                return Boolean(defaultValue);
+            })
+                .map(function (_a) {
+                var name = _a.name, defaultValue = _a.defaultValue;
+                return ({ name: name, value: defaultValue });
+            });
+        }, get visibleFrozenCount() {
+            return this.visibleColumnsBySideWithRowHeader.L.length;
+        }, get validationColumns() {
+            return this.allColumns.filter(function (_a) {
+                var validation = _a.validation;
+                return !common_1.isEmpty(validation);
+            });
+        },
+        get ignoredColumns() {
+            return this.allColumns.filter(function (_a) {
+                var ignored = _a.ignored;
+                return ignored;
+            }).map(function (_a) {
+                var name = _a.name;
+                return name;
+            });
+        },
+        get columnMapWithRelation() {
+            // copy the array to prevent to affect allColumns property
+            var copiedColumns = tslib_1.__spreadArrays(this.allColumns);
+            copiedColumns.sort(function (columnA, columnB) {
+                var _a, _b;
+                var hasRelationMapA = !common_1.isEmpty(columnA.relationMap);
+                var hasRelationMapB = !common_1.isEmpty(columnB.relationMap);
+                if (hasRelationMapA && hasRelationMapB) {
+                    if ((_a = columnA.relationMap) === null || _a === void 0 ? void 0 : _a[columnB.name]) {
+                        return -1;
+                    }
+                    return ((_b = columnB.relationMap) === null || _b === void 0 ? void 0 : _b[columnA.name]) ? 1 : 0;
+                }
+                if (hasRelationMapA) {
+                    return -1;
+                }
+                return hasRelationMapB ? 1 : 0;
+            });
+            return common_1.createMapFromArray(copiedColumns, 'name');
+        }, get columnsWithoutRowHeader() {
+            return this.allColumns.slice(this.rowHeaderCount);
+        }, get emptyRow() {
+            return this.columnsWithoutRowHeader.reduce(function (acc, _a) {
+                var _b;
+                var name = _a.name;
+                return (tslib_1.__assign(tslib_1.__assign({}, acc), (_b = {}, _b[name] = null, _b)));
+            }, {});
+        },
+        get autoResizingColumn() {
+            return this.columnsWithoutRowHeader.filter(function (_a) {
+                var autoResizing = _a.autoResizing;
+                return autoResizing;
+            });
+        } }, (treeColumnName && { treeColumnName: treeColumnName, treeIcon: treeIcon, treeCascadingCheckbox: treeCascadingCheckbox })));
+}
+exports.create = create;
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.setLayerPosition = exports.getContainerElement = exports.setOpacity = void 0;
+var dom_1 = __webpack_require__(2);
+var INDENT = 5;
+var SCROLL_BAR_WIDTH = 17;
+var SCROLL_BAR_HEIGHT = 17;
+function setOpacity(el, opacity) {
+    el.style.opacity = String(opacity);
+}
+exports.setOpacity = setOpacity;
+function getContainerElement(el) {
+    return dom_1.findParent(el, 'container');
+}
+exports.getContainerElement = getContainerElement;
+function setLayerPosition(innerEl, layerEl, childEl, startBottom) {
+    if (startBottom === void 0) { startBottom = false; }
+    var containerRect = getContainerElement(innerEl).getBoundingClientRect();
+    var innerHeight = window.innerHeight, innerWidth = window.innerWidth;
+    var _a = innerEl.getBoundingClientRect(), left = _a.left, top = _a.top, bottom = _a.bottom;
+    var _b = layerEl.getBoundingClientRect(), layerHeight = _b.height, layerWidth = _b.width;
+    var layerTop = startBottom ? bottom : top + INDENT;
+    var childElHeight = 0;
+    var childElWidth = 0;
+    if (childEl) {
+        var _c = childEl.getBoundingClientRect(), height = _c.height, width = _c.width;
+        childElHeight = height;
+        childElWidth = width;
+    }
+    var totalHeight = layerHeight + childElHeight;
+    var totalWidth = layerWidth || childElWidth;
+    layerEl.style.top = (layerTop + totalHeight > innerHeight - SCROLL_BAR_WIDTH
+        ? innerHeight - totalHeight - INDENT - SCROLL_BAR_WIDTH
+        : layerTop) - containerRect.top + "px";
+    layerEl.style.left = (left + totalWidth > innerWidth - SCROLL_BAR_HEIGHT
+        ? innerWidth - totalWidth - INDENT - SCROLL_BAR_HEIGHT
+        : left) - containerRect.left + "px";
+}
+exports.setLayerPosition = setLayerPosition;
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.resetFilterState = exports.emitAfterFilter = exports.initFilter = exports.setFilter = exports.unfilter = exports.clearFilter = exports.updateFilters = exports.filter = exports.setActiveFilterState = exports.clearActiveFilterState = exports.applyActiveFilterState = exports.setActiveColumnAddress = exports.setActiveSelectFilterState = exports.toggleSelectAllCheckbox = exports.setActiveFilterOperator = void 0;
 var observable_1 = __webpack_require__(5);
 var common_1 = __webpack_require__(0);
-var filter_1 = __webpack_require__(26);
+var filter_1 = __webpack_require__(29);
 var data_1 = __webpack_require__(6);
-var column_1 = __webpack_require__(30);
-var viewport_1 = __webpack_require__(19);
-var selection_1 = __webpack_require__(16);
-var focus_1 = __webpack_require__(17);
+var column_1 = __webpack_require__(32);
+var viewport_1 = __webpack_require__(23);
+var selection_1 = __webpack_require__(15);
+var focus_1 = __webpack_require__(18);
 var eventBus_1 = __webpack_require__(8);
-var column_2 = __webpack_require__(13);
-var data_2 = __webpack_require__(15);
-var summary_1 = __webpack_require__(25);
-var filter_2 = __webpack_require__(42);
-var pagination_1 = __webpack_require__(32);
+var column_2 = __webpack_require__(12);
+var data_2 = __webpack_require__(14);
+var summary_1 = __webpack_require__(24);
+var filter_2 = __webpack_require__(44);
+var pagination_1 = __webpack_require__(35);
 function initLayerAndScrollAfterFiltering(store) {
     var data = store.data;
     viewport_1.initScrollPosition(store);
@@ -5526,7 +6569,7 @@ function applyActiveFilterState(store) {
         unfilter(store, columnName);
         return;
     }
-    filterLayerState.activeFilterState.state = validState;
+    filterLayerState.activeFilterState.state = state;
     if (type === 'select') {
         var columnData = data_1.getUniqColumnData(data.rawData, column, columnName);
         if (columnData.length === state.length) {
@@ -5534,7 +6577,7 @@ function applyActiveFilterState(store) {
             return;
         }
     }
-    var fns = validState.map(function (_a) {
+    var fns = state.map(function (_a) {
         var code = _a.code, value = _a.value;
         return filter_1.getFilterConditionFn(code, value, type);
     });
@@ -5707,391 +6750,21 @@ exports.resetFilterState = resetFilterState;
 
 
 /***/ }),
-/* 30 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var observable_1 = __webpack_require__(5);
-var column_1 = __webpack_require__(10);
-var common_1 = __webpack_require__(0);
-var default_1 = __webpack_require__(60);
-var manager_1 = __webpack_require__(61);
-var rowHeaderInput_1 = __webpack_require__(68);
-var DEF_ROW_HEADER_INPUT = '<input type="checkbox" name="_checked" />';
-var ROW_HEADER = 40;
-var COLUMN = 50;
-var rowHeadersMap = {
-    rowNum: '_number',
-    checkbox: '_checked',
-};
-function validateRelationColumn(columnInfos) {
-    var checked = {};
-    function checkCircularRelation(column, relations) {
-        var name = column.name, relationMap = column.relationMap;
-        relations.push(name);
-        checked[name] = true;
-        if (common_1.uniq(relations).length !== relations.length) {
-            throw new Error('Cannot create circular reference between relation columns');
-        }
-        if (!common_1.isUndefined(relationMap)) {
-            Object.keys(relationMap).forEach(function (targetName) {
-                var targetColumn = common_1.findProp('name', targetName, columnInfos);
-                // copy the 'relation' array to prevent to push all relation column into same array
-                checkCircularRelation(targetColumn, tslib_1.__spreadArrays(relations));
-            });
-        }
-    }
-    columnInfos.forEach(function (column) {
-        if (!checked[column.name]) {
-            checkCircularRelation(column, []);
-        }
-    });
-}
-exports.validateRelationColumn = validateRelationColumn;
-function createBuiltInEditorOptions(editorType, options) {
-    var editInfo = manager_1.editorMap[editorType];
-    return {
-        type: editInfo[0],
-        options: tslib_1.__assign(tslib_1.__assign({}, editInfo[1]), options),
-    };
-}
-function createEditorOptions(editor) {
-    if (common_1.isFunction(editor)) {
-        return { type: editor };
-    }
-    if (common_1.isString(editor)) {
-        return createBuiltInEditorOptions(editor);
-    }
-    if (common_1.isObject(editor)) {
-        return common_1.isString(editor.type)
-            ? createBuiltInEditorOptions(editor.type, editor.options)
-            : editor;
-    }
-    return null;
-}
-function createRendererOptions(renderer) {
-    if (common_1.isFunction(renderer)) {
-        return { type: renderer };
-    }
-    if (common_1.isObject(renderer) && !common_1.isFunction(renderer) && common_1.isFunction(renderer.type)) {
-        return renderer;
-    }
-    return { type: default_1.DefaultRenderer };
-}
-function createTreeInfo(treeColumnOptions, name) {
-    if (treeColumnOptions && treeColumnOptions.name === name) {
-        var _a = treeColumnOptions.useIcon, useIcon = _a === void 0 ? true : _a;
-        return { tree: { useIcon: useIcon } };
-    }
-    return null;
-}
-function createRelationMap(relations) {
-    var relationMap = {};
-    relations.forEach(function (relation) {
-        var editable = relation.editable, disabled = relation.disabled, listItems = relation.listItems, _a = relation.targetNames, targetNames = _a === void 0 ? [] : _a;
-        targetNames.forEach(function (targetName) {
-            relationMap[targetName] = {
-                editable: editable,
-                disabled: disabled,
-                listItems: listItems,
-            };
-        });
-    });
-    return relationMap;
-}
-function createColumnHeaderInfo(name, columnHeaderInfo) {
-    var columnHeaders = columnHeaderInfo.columnHeaders, defaultAlign = columnHeaderInfo.align, defaultVAlign = columnHeaderInfo.valign;
-    var columnOption = common_1.findProp('name', name, columnHeaders);
-    var headerAlign = columnOption && columnOption.align ? columnOption.align : defaultAlign;
-    var headerVAlign = columnOption && columnOption.valign ? columnOption.valign : defaultVAlign;
-    var headerRenderer = columnOption && columnOption.renderer ? columnOption.renderer : null;
-    return {
-        headerAlign: headerAlign,
-        headerVAlign: headerVAlign,
-        headerRenderer: headerRenderer,
-    };
-}
-function createColumnFilterOption(filter) {
-    var defaultOption = {
-        type: common_1.isObject(filter) ? filter.type : filter,
-        showApplyBtn: false,
-        showClearBtn: false,
-    };
-    if (common_1.isString(filter)) {
-        if (filter === 'select') {
-            return tslib_1.__assign(tslib_1.__assign({}, defaultOption), { operator: 'OR' });
-        }
-    }
-    if (common_1.isObject(filter)) {
-        return tslib_1.__assign(tslib_1.__assign({}, defaultOption), (filter.type === 'select'
-            ? common_1.omit(filter, 'showApplyBtn', 'showClearBtn', 'operator', 'options')
-            : filter));
-    }
-    return defaultOption;
-}
-exports.createColumnFilterOption = createColumnFilterOption;
-function createRelationColumns(relations) {
-    var relationColumns = [];
-    relations.forEach(function (relation) {
-        var _a = relation.targetNames, targetNames = _a === void 0 ? [] : _a;
-        targetNames.forEach(function (targetName) {
-            relationColumns.push(targetName);
-        });
-    });
-    return relationColumns;
-}
-exports.createRelationColumns = createRelationColumns;
-// eslint-disable-next-line max-params
-function createColumn(column, columnOptions, relationColumns, gridCopyOptions, treeColumnOptions, columnHeaderInfo, disabled) {
-    var name = column.name, header = column.header, width = column.width, minWidth = column.minWidth, align = column.align, hidden = column.hidden, resizable = column.resizable, editor = column.editor, renderer = column.renderer, relations = column.relations, sortable = column.sortable, sortingType = column.sortingType, copyOptions = column.copyOptions, validation = column.validation, formatter = column.formatter, onBeforeChange = column.onBeforeChange, onAfterChange = column.onAfterChange, whiteSpace = column.whiteSpace, ellipsis = column.ellipsis, valign = column.valign, defaultValue = column.defaultValue, escapeHTML = column.escapeHTML, ignored = column.ignored, filter = column.filter, className = column.className, comparator = column.comparator;
-    var editorOptions = createEditorOptions(editor);
-    var rendererOptions = createRendererOptions(renderer);
-    var filterOptions = filter ? createColumnFilterOption(filter) : null;
-    var _a = createColumnHeaderInfo(name, columnHeaderInfo), headerAlign = _a.headerAlign, headerVAlign = _a.headerVAlign, headerRenderer = _a.headerRenderer;
-    return observable_1.observable(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign({ name: name,
-        escapeHTML: escapeHTML, header: header || name, hidden: Boolean(hidden), resizable: common_1.isUndefined(resizable) ? Boolean(columnOptions.resizable) : Boolean(resizable), align: align || 'left', fixedWidth: typeof width === 'number', copyOptions: tslib_1.__assign(tslib_1.__assign({}, gridCopyOptions), copyOptions), baseWidth: (width === 'auto' ? 0 : width) || 0, minWidth: minWidth || columnOptions.minWidth || COLUMN, relationMap: createRelationMap(relations || []), related: common_1.includes(relationColumns, name), sortable: sortable, sortingType: sortingType || 'asc', validation: validation ? tslib_1.__assign({}, validation) : {}, renderer: rendererOptions, formatter: formatter,
-        onBeforeChange: onBeforeChange,
-        onAfterChange: onAfterChange,
-        whiteSpace: whiteSpace,
-        ellipsis: ellipsis, valign: valign || 'middle', defaultValue: defaultValue,
-        ignored: ignored }, (!!editorOptions && { editor: editorOptions })), createTreeInfo(treeColumnOptions, name)), { headerAlign: headerAlign,
-        headerVAlign: headerVAlign, filter: filterOptions, headerRenderer: headerRenderer,
-        className: className,
-        disabled: disabled,
-        comparator: comparator }));
-}
-exports.createColumn = createColumn;
-function createRowHeader(data, columnHeaderInfo) {
-    var rowHeader = common_1.isString(data)
-        ? { name: rowHeadersMap[data] }
-        : tslib_1.__assign({ name: rowHeadersMap[data.type] }, common_1.omit(data, 'type'));
-    var name = rowHeader.name, header = rowHeader.header, align = rowHeader.align, valign = rowHeader.valign, renderer = rowHeader.renderer, width = rowHeader.width, minWidth = rowHeader.minWidth;
-    var baseMinWith = common_1.isNumber(minWidth) ? minWidth : ROW_HEADER;
-    var baseWidth = (width === 'auto' ? baseMinWith : width) || baseMinWith;
-    var rowNumColumn = column_1.isRowNumColumn(name);
-    var defaultHeader = rowNumColumn ? 'No. ' : DEF_ROW_HEADER_INPUT;
-    var rendererOptions = renderer || {
-        type: rowNumColumn ? default_1.DefaultRenderer : rowHeaderInput_1.RowHeaderInputRenderer,
-    };
-    var _a = createColumnHeaderInfo(name, columnHeaderInfo), headerAlign = _a.headerAlign, headerVAlign = _a.headerVAlign, headerRenderer = _a.headerRenderer;
-    return observable_1.observable({
-        name: name,
-        header: header || defaultHeader,
-        hidden: false,
-        resizable: false,
-        align: align || 'center',
-        valign: valign || 'middle',
-        renderer: createRendererOptions(rendererOptions),
-        fixedWidth: true,
-        baseWidth: baseWidth,
-        escapeHTML: false,
-        minWidth: baseMinWith,
-        headerAlign: headerAlign,
-        headerVAlign: headerVAlign,
-        headerRenderer: headerRenderer,
-    });
-}
-function createComplexColumnHeaders(column, columnHeaderInfo) {
-    var header = column.header, name = column.name, childNames = column.childNames, renderer = column.renderer, hideChildHeaders = column.hideChildHeaders, _a = column.resizable, resizable = _a === void 0 ? false : _a;
-    var headerAlign = column.headerAlign || columnHeaderInfo.align;
-    var headerVAlign = column.headerVAlign || columnHeaderInfo.valign;
-    return observable_1.observable({
-        header: header,
-        name: name,
-        childNames: childNames,
-        headerAlign: headerAlign,
-        headerVAlign: headerVAlign,
-        headerRenderer: renderer || null,
-        hideChildHeaders: hideChildHeaders,
-        resizable: resizable,
-    });
-}
-function create(_a) {
-    var columns = _a.columns, columnOptions = _a.columnOptions, rowHeaders = _a.rowHeaders, copyOptions = _a.copyOptions, keyColumnName = _a.keyColumnName, treeColumnOptions = _a.treeColumnOptions, complexColumns = _a.complexColumns, align = _a.align, valign = _a.valign, columnHeaders = _a.columnHeaders, disabled = _a.disabled;
-    var relationColumns = columns.reduce(function (acc, _a) {
-        var relations = _a.relations;
-        acc = acc.concat(createRelationColumns(relations || []));
-        return acc.filter(function (columnName, idx) { return acc.indexOf(columnName) === idx; });
-    }, []);
-    var columnHeaderInfo = { columnHeaders: columnHeaders, align: align, valign: valign };
-    var rowHeaderInfos = rowHeaders.map(function (rowHeader) {
-        return createRowHeader(rowHeader, columnHeaderInfo);
-    });
-    var columnInfos = columns.map(function (column) {
-        return createColumn(column, columnOptions, relationColumns, copyOptions, treeColumnOptions, columnHeaderInfo, !!(disabled || column.disabled));
-    });
-    validateRelationColumn(columnInfos);
-    var allColumns = rowHeaderInfos.concat(columnInfos);
-    var treeColumnName = treeColumnOptions.name, _b = treeColumnOptions.useIcon, treeIcon = _b === void 0 ? true : _b, _c = treeColumnOptions.useCascadingCheckbox, treeCascadingCheckbox = _c === void 0 ? true : _c;
-    var complexColumnHeaders = complexColumns.map(function (column) {
-        return createComplexColumnHeaders(column, columnHeaderInfo);
-    });
-    return observable_1.observable(tslib_1.__assign({ keyColumnName: keyColumnName,
-        allColumns: allColumns,
-        complexColumnHeaders: complexColumnHeaders,
-        columnHeaderInfo: columnHeaderInfo, frozenCount: columnOptions.frozenCount || 0, dataForColumnCreation: {
-            copyOptions: copyOptions,
-            columnOptions: columnOptions,
-            treeColumnOptions: treeColumnOptions,
-            relationColumns: relationColumns,
-            rowHeaders: rowHeaderInfos,
-        }, get allColumnMap() {
-            return common_1.createMapFromArray(this.allColumns, 'name');
-        },
-        get rowHeaderCount() {
-            return rowHeaderInfos.length;
-        },
-        get visibleColumns() {
-            return this.allColumns.slice(this.rowHeaderCount).filter(function (_a) {
-                var hidden = _a.hidden;
-                return !hidden;
-            });
-        },
-        get visibleColumnsWithRowHeader() {
-            return this.allColumns.filter(function (_a) {
-                var hidden = _a.hidden;
-                return !hidden;
-            });
-        },
-        get visibleColumnsBySide() {
-            return {
-                L: this.visibleColumns.slice(0, this.frozenCount),
-                R: this.visibleColumns.slice(this.frozenCount),
-            };
-        },
-        get visibleColumnsBySideWithRowHeader() {
-            var frozenLastIndex = this.rowHeaderCount + this.frozenCount;
-            return {
-                L: this.visibleColumnsWithRowHeader.slice(0, frozenLastIndex),
-                R: this.visibleColumnsWithRowHeader.slice(frozenLastIndex),
-            };
-        },
-        get defaultValues() {
-            return this.allColumns
-                .filter(function (_a) {
-                var defaultValue = _a.defaultValue;
-                return Boolean(defaultValue);
-            })
-                .map(function (_a) {
-                var name = _a.name, defaultValue = _a.defaultValue;
-                return ({ name: name, value: defaultValue });
-            });
-        },
-        get visibleFrozenCount() {
-            return this.visibleColumnsBySideWithRowHeader.L.length;
-        },
-        get validationColumns() {
-            return this.allColumns.filter(function (_a) {
-                var validation = _a.validation;
-                return !common_1.isEmpty(validation);
-            });
-        },
-        get ignoredColumns() {
-            return this.allColumns.filter(function (_a) {
-                var ignored = _a.ignored;
-                return ignored;
-            }).map(function (_a) {
-                var name = _a.name;
-                return name;
-            });
-        },
-        get columnMapWithRelation() {
-            // copy the array to prevent to affect allColumns property
-            var copiedColumns = tslib_1.__spreadArrays(this.allColumns);
-            copiedColumns.sort(function (columnA, columnB) {
-                var _a, _b;
-                var hasRelationMapA = !common_1.isEmpty(columnA.relationMap);
-                var hasRelationMapB = !common_1.isEmpty(columnB.relationMap);
-                if (hasRelationMapA && hasRelationMapB) {
-                    if ((_a = columnA.relationMap) === null || _a === void 0 ? void 0 : _a[columnB.name]) {
-                        return -1;
-                    }
-                    return ((_b = columnB.relationMap) === null || _b === void 0 ? void 0 : _b[columnA.name]) ? 1 : 0;
-                }
-                if (hasRelationMapA) {
-                    return -1;
-                }
-                return hasRelationMapB ? 1 : 0;
-            });
-            return common_1.createMapFromArray(copiedColumns, 'name');
-        },
-        get columnsWithoutRowHeader() {
-            return this.allColumns.slice(this.rowHeaderCount);
-        },
-        get emptyRow() {
-            return this.columnsWithoutRowHeader.reduce(function (acc, _a) {
-                var _b;
-                var name = _a.name;
-                return (tslib_1.__assign(tslib_1.__assign({}, acc), (_b = {}, _b[name] = null, _b)));
-            }, {});
-        } }, (treeColumnName && { treeColumnName: treeColumnName, treeIcon: treeIcon, treeCascadingCheckbox: treeCascadingCheckbox })));
-}
-exports.create = create;
-
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var dom_1 = __webpack_require__(2);
-var INDENT = 5;
-var SCROLL_BAR_WIDTH = 17;
-var SCROLL_BAR_HEIGHT = 17;
-function setOpacity(el, opacity) {
-    el.style.opacity = String(opacity);
-}
-exports.setOpacity = setOpacity;
-function getContainerElement(el) {
-    return dom_1.findParent(el, 'container');
-}
-exports.getContainerElement = getContainerElement;
-function setLayerPosition(innerEl, layerEl, childEl, startBottom) {
-    if (startBottom === void 0) { startBottom = false; }
-    var containerRect = getContainerElement(innerEl).getBoundingClientRect();
-    var innerHeight = window.innerHeight, innerWidth = window.innerWidth;
-    var _a = innerEl.getBoundingClientRect(), left = _a.left, top = _a.top, bottom = _a.bottom;
-    var _b = layerEl.getBoundingClientRect(), layerHeight = _b.height, layerWidth = _b.width;
-    var layerTop = startBottom ? bottom : top + INDENT;
-    var childElHeight = 0;
-    var childElWidth = 0;
-    if (childEl) {
-        var _c = childEl.getBoundingClientRect(), height = _c.height, width = _c.width;
-        childElHeight = height;
-        childElWidth = width;
-    }
-    var totalHeight = layerHeight + childElHeight;
-    var totalWidth = layerWidth || childElWidth;
-    layerEl.style.top = (layerTop + totalHeight > innerHeight - SCROLL_BAR_WIDTH
-        ? innerHeight - totalHeight - INDENT - SCROLL_BAR_WIDTH
-        : layerTop) - containerRect.top + "px";
-    layerEl.style.left = (left + totalWidth > innerWidth - SCROLL_BAR_HEIGHT
-        ? innerWidth - totalWidth - INDENT - SCROLL_BAR_HEIGHT
-        : left) - containerRect.left + "px";
-}
-exports.setLayerPosition = setLayerPosition;
-
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.resetPageState = exports.updatePageWhenRemovingRow = exports.movePage = exports.updatePageOptions = void 0;
 var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 var data_1 = __webpack_require__(6);
-var viewport_1 = __webpack_require__(19);
-var selection_1 = __webpack_require__(16);
-var focus_1 = __webpack_require__(17);
-var data_2 = __webpack_require__(15);
-var summary_1 = __webpack_require__(25);
+var viewport_1 = __webpack_require__(23);
+var selection_1 = __webpack_require__(15);
+var focus_1 = __webpack_require__(18);
+var data_2 = __webpack_require__(14);
+var summary_1 = __webpack_require__(24);
 var observable_1 = __webpack_require__(5);
 function updatePageOptions(_a, pageOptions, forceUpdatePage) {
     var data = _a.data;
@@ -6144,171 +6817,13 @@ exports.resetPageState = resetPageState;
 
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(0);
-var observable_1 = __webpack_require__(5);
-var instance_1 = __webpack_require__(7);
-var instanceValidationMap = {};
-var isValidatingUniquenessMap = {};
-function createNewValidationMap(id) {
-    instanceValidationMap[id] = {};
-}
-exports.createNewValidationMap = createNewValidationMap;
-function invokeWithUniqueValidationColumn(column, fn) {
-    column.validationColumns.forEach(function (_a) {
-        var name = _a.name, validation = _a.validation;
-        if (validation.unique) {
-            fn(name);
-        }
-    });
-}
-exports.invokeWithUniqueValidationColumn = invokeWithUniqueValidationColumn;
-function addUniqueInfoMap(id, row, column) {
-    invokeWithUniqueValidationColumn(column, function (name) {
-        return addColumnUniqueInfoMap(id, row.rowKey, name, row[name]);
-    });
-}
-exports.addUniqueInfoMap = addUniqueInfoMap;
-function removeUniqueInfoMap(id, row, column) {
-    invokeWithUniqueValidationColumn(column, function (name) {
-        return removeColumnUniqueInfoMap(id, row.rowKey, name, row[name]);
-    });
-}
-exports.removeUniqueInfoMap = removeUniqueInfoMap;
-function removeColumnUniqueInfoMap(id, rowKey, columnName, cellValue) {
-    var value = String(cellValue);
-    var uniqueInfoMap = instanceValidationMap[id];
-    if (uniqueInfoMap && uniqueInfoMap[value] && uniqueInfoMap[value][columnName]) {
-        uniqueInfoMap[value][columnName] = uniqueInfoMap[value][columnName].filter(function (targetRowKey) { return targetRowKey !== rowKey; });
-    }
-}
-function addColumnUniqueInfoMap(id, rowKey, columnName, cellValue) {
-    var value = String(cellValue);
-    var uniqueInfoMap = instanceValidationMap[id];
-    uniqueInfoMap[value] = uniqueInfoMap[value] || {};
-    uniqueInfoMap[value][columnName] = uniqueInfoMap[value][columnName] || [];
-    uniqueInfoMap[value][columnName].push(rowKey);
-}
-function replaceColumnUniqueInfoMap(id, column, _a) {
-    var rowKey = _a.rowKey, columnName = _a.columnName, prevValue = _a.prevValue, value = _a.value;
-    if (common_1.some(function (_a) {
-        var name = _a.name;
-        return name === columnName;
-    }, column.validationColumns)) {
-        removeColumnUniqueInfoMap(id, rowKey, columnName, prevValue);
-        addColumnUniqueInfoMap(id, rowKey, columnName, value);
-    }
-}
-exports.replaceColumnUniqueInfoMap = replaceColumnUniqueInfoMap;
-function forceValidateUniquenessOfColumns(rawData, column) {
-    if (rawData.length) {
-        // trick for forcing to validate the uniqueness
-        invokeWithUniqueValidationColumn(column, function (name) { return observable_1.notify(rawData[0], name); });
-    }
-}
-exports.forceValidateUniquenessOfColumns = forceValidateUniquenessOfColumns;
-function forceValidateUniquenessOfColumn(rawData, column, columnName) {
-    if (common_1.some(function (_a) {
-        var name = _a.name;
-        return name === columnName;
-    }, column.validationColumns) && rawData.length) {
-        // trick for forcing to validate the uniqueness
-        observable_1.notify(rawData[0], columnName);
-    }
-}
-exports.forceValidateUniquenessOfColumn = forceValidateUniquenessOfColumn;
-function hasDuplicateValue(id, columnName, cellValue) {
-    var _a;
-    var value = String(cellValue);
-    var uniqueInfoMap = instanceValidationMap[id];
-    return !!(uniqueInfoMap && uniqueInfoMap[value] && ((_a = uniqueInfoMap[value][columnName]) === null || _a === void 0 ? void 0 : _a.length) > 1);
-}
-function validateDataUniqueness(id, value, columnName, invalidStates) {
-    if (hasDuplicateValue(id, columnName, value)) {
-        invalidStates.push({ code: 'UNIQUE' });
-    }
-    // prevent recursive call of 'validateDataUniqueness' when scrolling or manipulating the data
-    if (!isValidatingUniquenessMap[columnName] &&
-        !common_1.includes(observable_1.getRunningObservers(), 'lazyObservable')) {
-        var rawData_1 = [];
-        observable_1.unobservedInvoke(function () {
-            // @TODO: should get the latest rawData through function(not private field of the grid instance)
-            // @ts-ignore
-            rawData_1 = instance_1.getInstance(id).store.data.rawData;
-        });
-        isValidatingUniquenessMap[columnName] = true;
-        rawData_1.forEach(function (row) {
-            if (observable_1.isObservable(row)) {
-                observable_1.notify(row, columnName);
-            }
-        });
-        setTimeout(function () {
-            isValidatingUniquenessMap[columnName] = false;
-        });
-    }
-}
-function validateCustomValidator(row, value, columnName, validatorFn, invalidStates) {
-    var originRow = common_1.omit(observable_1.getOriginObject(row), 'sortKey', 'uniqueKey', '_relationListItemMap', '_disabledPriority');
-    observable_1.unobservedInvoke(function () {
-        var result = validatorFn(value, originRow, columnName);
-        var _a = (common_1.isBoolean(result)
-            ? { valid: result }
-            : result), valid = _a.valid, meta = _a.meta;
-        if (!valid) {
-            invalidStates.push(tslib_1.__assign({ code: 'VALIDATOR_FN' }, meta));
-        }
-    });
-}
-function getValidationCode(_a) {
-    var id = _a.id, value = _a.value, row = _a.row, columnName = _a.columnName, validation = _a.validation;
-    var invalidStates = [];
-    if (!validation) {
-        return invalidStates;
-    }
-    var required = validation.required, dataType = validation.dataType, min = validation.min, max = validation.max, regExp = validation.regExp, unique = validation.unique, validatorFn = validation.validatorFn;
-    if (required && common_1.isBlank(value)) {
-        invalidStates.push({ code: 'REQUIRED' });
-    }
-    if (unique) {
-        validateDataUniqueness(id, value, columnName, invalidStates);
-    }
-    if (common_1.isFunction(validatorFn)) {
-        validateCustomValidator(row, value, columnName, validatorFn, invalidStates);
-    }
-    if (dataType === 'string' && !common_1.isString(value)) {
-        invalidStates.push({ code: 'TYPE_STRING' });
-    }
-    if (regExp && common_1.isString(value) && !regExp.test(value)) {
-        invalidStates.push({ code: 'REGEXP', regExp: regExp });
-    }
-    var numberValue = common_1.convertToNumber(value);
-    if (dataType === 'number' && !common_1.isNumber(numberValue)) {
-        invalidStates.push({ code: 'TYPE_NUMBER' });
-    }
-    if (common_1.isNumber(min) && common_1.isNumber(numberValue) && numberValue < min) {
-        invalidStates.push({ code: 'MIN', min: min });
-    }
-    if (common_1.isNumber(max) && common_1.isNumber(numberValue) && numberValue > max) {
-        invalidStates.push({ code: 'MAX', max: max });
-    }
-    return invalidStates;
-}
-exports.getValidationCode = getValidationCode;
-
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.ColGroup = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
@@ -6345,125 +6860,154 @@ exports.ColGroup = hoc_1.connect(function (_a, _b) {
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getText = exports.copyDataToRange = exports.getRangeToPaste = void 0;
 var tslib_1 = __webpack_require__(1);
-var messages = {
-    en: {
-        display: {
-            noData: 'No data.',
-            loadingData: 'Loading data.',
-            resizeHandleGuide: 'You can change the width of the column by mouse drag, and initialize the width by double-clicking.',
-        },
-        net: {
-            confirmCreate: 'Are you sure you want to create {{count}} data?',
-            confirmUpdate: 'Are you sure you want to update {{count}} data?',
-            confirmDelete: 'Are you sure you want to delete {{count}} data?',
-            confirmModify: 'Are you sure you want to modify {{count}} data?',
-            noDataToCreate: 'No data to create.',
-            noDataToUpdate: 'No data to update.',
-            noDataToDelete: 'No data to delete.',
-            noDataToModify: 'No data to modify.',
-            failResponse: 'An error occurred while requesting data.\nPlease try again.',
-        },
-    },
-    ko: {
-        display: {
-            noData: 'ë°ì´í„°ê°€ ì¡´ìž¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.',
-            loadingData: 'ë°ì´í„°ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘ìž…ë‹ˆë‹¤.',
-            resizeHandleGuide: 'ë§ˆìš°ìŠ¤ ë“œëž˜ê·¸í•˜ì—¬ ì»¬ëŸ¼ ë„ˆë¹„ë¥¼ ì¡°ì •í•  ìˆ˜ ìžˆê³ , ë”ë¸” í´ë¦­ìœ¼ë¡œ ì»¬ëŸ¼ ë„ˆë¹„ë¥¼ ì´ˆê¸°í™”í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.',
-        },
-        net: {
-            confirmCreate: '{{count}}ê±´ì˜ ë°ì´í„°ë¥¼ ìƒì„±í•˜ê² ìŠµë‹ˆê¹Œ?',
-            confirmUpdate: '{{count}}ê±´ì˜ ë°ì´í„°ë¥¼ ìˆ˜ì •í•˜ê² ìŠµë‹ˆê¹Œ?',
-            confirmDelete: '{{count}}ê±´ì˜ ë°ì´í„°ë¥¼ ì‚­ì œí•˜ê² ìŠµë‹ˆê¹Œ?',
-            confirmModify: '{{count}}ê±´ì˜ ë°ì´í„°ë¥¼ ì²˜ë¦¬í•˜ê² ìŠµë‹ˆê¹Œ?',
-            noDataToCreate: 'ìƒì„±í•  ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.',
-            noDataToUpdate: 'ìˆ˜ì •í•  ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.',
-            noDataToDelete: 'ì‚­ì œí•  ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.',
-            noDataToModify: 'ì²˜ë¦¬í•  ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.',
-            failResponse: 'ë°ì´í„° ìš”ì²­ ì¤‘ì— ì—ëŸ¬ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.\në‹¤ì‹œ ì‹œë„í•˜ì—¬ ì£¼ì‹œê¸° ë°”ëžë‹ˆë‹¤.',
-        },
-    },
-};
-var messageMap = {};
-/**
- * Flatten message map
- * @param {object} data - Messages
- * @returns {object} Flatten message object (key format is 'key.subKey')
- * @ignore
- */
-function flattenMessageMap(data) {
-    if (data === void 0) { data = {}; }
-    var obj = {};
-    var newKey;
-    Object.keys(data).forEach(function (key) {
-        var keyWithType = key;
-        var groupMessages = data[keyWithType];
-        Object.keys(groupMessages).forEach(function (subKey) {
-            newKey = key + "." + subKey;
-            obj[newKey] = groupMessages[subKey];
+var common_1 = __webpack_require__(0);
+var data_1 = __webpack_require__(14);
+var observable_1 = __webpack_require__(5);
+function getCustomValue(customValue, value, rowAttrs, column) {
+    return typeof customValue === 'function' ? customValue(value, rowAttrs, column) : customValue;
+}
+function getTextWithCopyOptionsApplied(valueMap, rawData, column) {
+    var text = valueMap.value;
+    var copyOptions = column.copyOptions, editor = column.editor;
+    var editorOptions = editor && editor.options;
+    // priority: customValue > useListItemText > useFormattedValue > original Data
+    if (copyOptions) {
+        if (copyOptions.customValue) {
+            text = getCustomValue(copyOptions.customValue, valueMap.value, rawData, column);
+        }
+        else if (copyOptions.useListItemText && (editorOptions === null || editorOptions === void 0 ? void 0 : editorOptions.listItems)) {
+            var listItems_1 = editorOptions.listItems;
+            var value = valueMap.value;
+            var valueList = [value];
+            var result_1 = [];
+            if (typeof value === 'string') {
+                valueList = value.split(',');
+            }
+            valueList.forEach(function (val) {
+                var listItem = common_1.find(function (item) { return item.value === val; }, listItems_1);
+                result_1.push(listItem ? listItem.text : val);
+            });
+            text = result_1.join(',');
+        }
+        else if (copyOptions.useFormattedValue) {
+            text = "" + valueMap.formattedValue;
+        }
+    }
+    if (typeof text === 'undefined' || text === null) {
+        return '';
+    }
+    return String(text);
+}
+function getValueToString(store) {
+    var visibleColumnsWithRowHeader = store.column.visibleColumnsWithRowHeader, _a = store.focus, originalRowIndex = _a.originalRowIndex, columnName = _a.columnName, totalColumnIndex = _a.totalColumnIndex, _b = store.data, filteredViewData = _b.filteredViewData, filteredRawData = _b.filteredRawData;
+    if (common_1.isNull(originalRowIndex) || common_1.isNull(columnName) || common_1.isNull(totalColumnIndex)) {
+        return '';
+    }
+    var valueMap = filteredViewData[originalRowIndex].valueMap[columnName];
+    return getTextWithCopyOptionsApplied(valueMap, filteredRawData, visibleColumnsWithRowHeader[totalColumnIndex]);
+}
+function getObservableList(store, filteredViewData, start, end) {
+    var rowList = [];
+    for (var i = start; i <= end; i += 1) {
+        if (!observable_1.isObservable(filteredViewData[i].valueMap)) {
+            data_1.makeObservable(store, i, true);
+            if (i === end) {
+                observable_1.notify(store.data, 'rawData', 'filteredRawData', 'viewData', 'filteredViewData');
+            }
+        }
+        rowList.push(filteredViewData[i]);
+    }
+    return rowList;
+}
+function getValuesToString(store) {
+    var originalRange = store.selection.originalRange, visibleColumnsWithRowHeader = store.column.visibleColumnsWithRowHeader, _a = store.data, filteredViewData = _a.filteredViewData, filteredRawData = _a.filteredRawData;
+    if (!originalRange) {
+        return '';
+    }
+    var _b = originalRange, row = _b.row, column = _b.column;
+    var rowList = getObservableList.apply(void 0, tslib_1.__spreadArrays([store, filteredViewData], row));
+    var columnInRange = visibleColumnsWithRowHeader.slice(column[0], column[1] + 1);
+    return rowList
+        .map(function (_a) {
+        var valueMap = _a.valueMap;
+        return columnInRange
+            .map(function (targetColumn) {
+            return getTextWithCopyOptionsApplied(valueMap[targetColumn.name], filteredRawData, targetColumn);
+        })
+            .join('\t');
+    })
+        .join('\n');
+}
+function getRangeToPaste(store, pasteData) {
+    var originalRange = store.selection.originalRange, _a = store.focus, totalColumnIndex = _a.totalColumnIndex, originalRowIndex = _a.originalRowIndex, visibleColumnsWithRowHeader = store.column.visibleColumnsWithRowHeader, viewData = store.data.viewData;
+    var startRowIndex, startColumnIndex;
+    if (originalRange) {
+        startRowIndex = originalRange.row[0];
+        startColumnIndex = originalRange.column[0];
+    }
+    else {
+        startRowIndex = originalRowIndex;
+        startColumnIndex = totalColumnIndex;
+    }
+    var endRowIndex = Math.min(pasteData.length + startRowIndex, viewData.length) - 1;
+    var endColumnIndex = Math.min(pasteData[0].length + startColumnIndex, visibleColumnsWithRowHeader.length) - 1;
+    return {
+        row: [startRowIndex, endRowIndex],
+        column: [startColumnIndex, endColumnIndex],
+    };
+}
+exports.getRangeToPaste = getRangeToPaste;
+function copyDataToRange(range, pasteData) {
+    var rowLength = range.row[1] - range.row[0] + 1;
+    var colLength = range.column[1] - range.column[0] + 1;
+    var dataRowLength = pasteData.length;
+    var dataColLength = pasteData[0].length;
+    var rowDupCount = Math.floor(rowLength / dataRowLength) - 1;
+    var colDupCount = Math.floor(colLength / dataColLength) - 1;
+    var result = tslib_1.__spreadArrays(pasteData);
+    for (var i = 0; i < rowDupCount; i += 1) {
+        pasteData.forEach(function (row) {
+            result.push(row.slice(0));
         });
+    }
+    result.forEach(function (row) {
+        var rowData = row.slice(0);
+        for (var i = 0; i < colDupCount; i += 1) {
+            row.push.apply(row, rowData);
+        }
     });
-    return obj;
+    return result;
 }
-/**
- * Replace text
- * @param {string} text - Text including handlebar expression
- * @param {Object} values - Replaced values
- * @returns {string} Replaced text
- */
-function replaceText(text, values) {
-    return text
-        ? text.replace(/\{\{(\w*)\}\}/g, function (_, prop) { return (values.hasOwnProperty(prop) ? values[prop] : ''); })
-        : '';
+exports.copyDataToRange = copyDataToRange;
+function getText(store) {
+    var selection = store.selection, _a = store.focus, rowIndex = _a.rowIndex, columnName = _a.columnName;
+    if (selection.range) {
+        return getValuesToString(store);
+    }
+    if (rowIndex !== null && columnName !== null) {
+        return getValueToString(store);
+    }
+    return '';
 }
-exports.default = {
-    /**
-     * Set messages
-     * @param {string} localeCode - Code to set locale messages and
-     *     this is the language or language-region combination. (ex: en-US)
-     * @param {object} [data] - Messages using in Grid
-     */
-    setLanguage: function (localeCode, data) {
-        var localeMessages = messages[localeCode];
-        if (!localeMessages && !data) {
-            throw new Error('You should set messages to map the locale code.');
-        }
-        var newData = flattenMessageMap(data);
-        if (localeMessages) {
-            var originData = flattenMessageMap(localeMessages);
-            messageMap = tslib_1.__assign(tslib_1.__assign({}, originData), newData);
-        }
-        else {
-            messageMap = newData;
-        }
-    },
-    /**
-     * Get message
-     * @param {string} key - Key to find message (ex: 'net.confirmCreate')
-     * @param {object} [replacements] - Values to replace string
-     * @returns {string} Message
-     */
-    get: function (key, replacements) {
-        if (replacements === void 0) { replacements = {}; }
-        var message = messageMap[key];
-        return replaceText(message, replacements);
-    },
-};
+exports.getText = getText;
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createAjaxConfig = void 0;
 var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 function createAjaxConfig(target) {
@@ -6480,12 +7024,38 @@ exports.createAjaxConfig = createAjaxConfig;
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getListItems = void 0;
+var common_1 = __webpack_require__(0);
+function getListItems(props) {
+    var _a = props.columnInfo.editor.options, listItems = _a.listItems, relationListItemMap = _a.relationListItemMap;
+    if (!common_1.isEmpty(relationListItemMap) && Array.isArray(relationListItemMap[props.rowKey])) {
+        return relationListItemMap[props.rowKey];
+    }
+    return listItems;
+}
+exports.getListItems = getListItems;
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createSortEvent = exports.isCancelSort = void 0;
 var tslib_1 = __webpack_require__(1);
 var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
 var common_1 = __webpack_require__(0);
@@ -6574,12 +7144,13 @@ exports.createSortEvent = createSortEvent;
 
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.extractSummaryColumnContent = exports.castToSummaryColumnContent = exports.calculate = exports.getSummaryValue = void 0;
 var tslib_1 = __webpack_require__(1);
 function assignFilteredSummaryValue(summaryValue) {
     var sum = summaryValue.sum, min = summaryValue.min, max = summaryValue.max, avg = summaryValue.avg, cnt = summaryValue.cnt;
@@ -6657,14 +7228,15 @@ exports.extractSummaryColumnContent = extractSummaryColumnContent;
 
 
 /***/ }),
-/* 39 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = exports.createSummaryValue = void 0;
 var observable_1 = __webpack_require__(5);
-var summary_1 = __webpack_require__(38);
+var summary_1 = __webpack_require__(42);
 var common_1 = __webpack_require__(0);
 function createSummaryValue(content, columnName, data) {
     if (content && content.useAutoSummary) {
@@ -6715,36 +7287,13 @@ exports.create = create;
 
 
 /***/ }),
-/* 40 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = __webpack_require__(0);
-function getListItems(props) {
-    var _a = props.columnInfo.editor.options, listItems = _a.listItems, relationListItemMap = _a.relationListItemMap;
-    if (!common_1.isEmpty(relationListItemMap) && Array.isArray(relationListItemMap[props.rowKey])) {
-        return relationListItemMap[props.rowKey];
-    }
-    return listItems;
-}
-exports.getListItems = getListItems;
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.createFilterEvent = exports.getFilterState = void 0;
 var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
@@ -6786,36 +7335,36 @@ function createFilterEvent(_a, eventType, eventParams) {
             };
             break;
         /**
-         *Â OccursÂ beforeÂ unfiltering
-         *Â @eventÂ Grid#beforeUnfilter
-         *Â @propertyÂ {Grid}Â instanceÂ -Â CurrentÂ gridÂ instance
-         *Â @propertyÂ {string} columnName - Target column name
-         *Â @propertyÂ {Object} filterState -Â Current filter state
+         * Occurs before unfiltering
+         * @event Grid#beforeUnfilter
+         * @property {Grid} instance - Current grid instance
+         * @property {string} columnName - Target column name
+         * @property {Object} filterState - Current filter state
          */
         case 'beforeUnfilter':
         /**
-         *Â OccursÂ afterÂ filtering
+         * Occurs after filtering
          * @deprecated
-         *Â @eventÂ Grid#filter
-         *Â @propertyÂ {Grid}Â instanceÂ -Â CurrentÂ gridÂ instance
-         *Â @propertyÂ {string} columnName - Target column name
-         *Â @propertyÂ {Object} filterState -Â Current filter state
+         * @event Grid#filter
+         * @property {Grid} instance - Current grid instance
+         * @property {string} columnName - Target column name
+         * @property {Object} filterState - Current filter state
          */
         case 'filter':
         /**
-         *Â OccursÂ afterÂ filtering
-         *Â @eventÂ Grid#afterFilter
-         *Â @propertyÂ {Grid}Â instanceÂ -Â CurrentÂ gridÂ instance
-         *Â @propertyÂ {string} columnName - Target column name
-         *Â @propertyÂ {Object} filterState -Â Current filter state
+         * Occurs after filtering
+         * @event Grid#afterFilter
+         * @property {Grid} instance - Current grid instance
+         * @property {string} columnName - Target column name
+         * @property {Object} filterState - Current filter state
          */
         case 'afterFilter':
         /**
-         *Â OccursÂ afterÂ unfiltering
-         *Â @eventÂ Grid#afterUnfilter
-         *Â @propertyÂ {Grid}Â instanceÂ -Â CurrentÂ gridÂ instance
-         *Â @propertyÂ {string} columnName - Target column name
-         *Â @propertyÂ {Object} filterState -Â Current filter state
+         * Occurs after unfiltering
+         * @event Grid#afterUnfilter
+         * @property {Grid} instance - Current grid instance
+         * @property {string} columnName - Target column name
+         * @property {Object} filterState - Current filter state
          */
         case 'afterUnfilter':
             props = {
@@ -6832,12 +7381,13 @@ exports.createFilterEvent = createFilterEvent;
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.setAutoBodyHeight = exports.refreshLayout = exports.setHeaderHeight = exports.setOffsetLeft = exports.setOffsetTop = exports.setBodyHeight = exports.setHeight = exports.setWidth = void 0;
 function setWidth(_a, width, autoWidth) {
     var dimension = _a.dimension;
     dimension.autoWidth = autoWidth;
@@ -6893,22 +7443,23 @@ exports.setAutoBodyHeight = setAutoBodyHeight;
 
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.HeaderArea = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var colGroup_1 = __webpack_require__(34);
+var colGroup_1 = __webpack_require__(36);
 var dom_1 = __webpack_require__(2);
 var hoc_1 = __webpack_require__(4);
-var columnResizer_1 = __webpack_require__(82);
+var columnResizer_1 = __webpack_require__(85);
 var instance_1 = __webpack_require__(7);
-var column_1 = __webpack_require__(13);
-var complexHeader_1 = __webpack_require__(83);
-var columnHeader_1 = __webpack_require__(45);
+var column_1 = __webpack_require__(12);
+var complexHeader_1 = __webpack_require__(86);
+var columnHeader_1 = __webpack_require__(47);
 var HeaderAreaComp = /** @class */ (function (_super) {
     tslib_1.__extends(HeaderAreaComp, _super);
     function HeaderAreaComp() {
@@ -6997,19 +7548,20 @@ exports.HeaderArea = hoc_1.connect(function (store, _a) {
 
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ColumnHeader = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var dom_1 = __webpack_require__(2);
-var headerCheckbox_1 = __webpack_require__(84);
-var sortingButton_1 = __webpack_require__(85);
-var sortingOrder_1 = __webpack_require__(86);
-var filterButton_1 = __webpack_require__(87);
+var headerCheckbox_1 = __webpack_require__(87);
+var sortingButton_1 = __webpack_require__(88);
+var sortingOrder_1 = __webpack_require__(89);
+var filterButton_1 = __webpack_require__(90);
 var column_1 = __webpack_require__(10);
 var common_1 = __webpack_require__(0);
 var ColumnHeader = /** @class */ (function (_super) {
@@ -7075,22 +7627,24 @@ exports.ColumnHeader = ColumnHeader;
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BodyArea = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var bodyRows_1 = __webpack_require__(88);
-var colGroup_1 = __webpack_require__(34);
+var draggable_1 = __webpack_require__(91);
+var bodyRows_1 = __webpack_require__(92);
+var colGroup_1 = __webpack_require__(36);
 var dom_1 = __webpack_require__(2);
 var hoc_1 = __webpack_require__(4);
-var focusLayer_1 = __webpack_require__(94);
-var selectionLayer_1 = __webpack_require__(95);
+var focusLayer_1 = __webpack_require__(98);
+var selectionLayer_1 = __webpack_require__(99);
 var common_1 = __webpack_require__(0);
-var editingLayer_1 = __webpack_require__(96);
+var editingLayer_1 = __webpack_require__(100);
 var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
 var eventBus_1 = __webpack_require__(8);
 // only updates when these props are changed
@@ -7104,6 +7658,10 @@ var PROPS_FOR_UPDATE = [
 ];
 // Minimum distance (pixel) to detect if user wants to drag when moving mouse with button pressed.
 var MIN_DISTANCE_FOR_DRAG = 10;
+var ADDITIONAL_RANGE = 3;
+var DRAGGING_CLASS = 'dragging';
+var PARENT_CELL_CLASS = 'parent-cell';
+var DRAGGABLE_COLUMN_NAME = '_draggable';
 var BodyAreaComp = /** @class */ (function (_super) {
     tslib_1.__extends(BodyAreaComp, _super);
     function BodyAreaComp() {
@@ -7113,6 +7671,12 @@ var BodyAreaComp = /** @class */ (function (_super) {
             pageY: null,
         };
         _this.prevScrollLeft = 0;
+        // draggable info when start to move the row
+        _this.draggableInfo = null;
+        // floating row width and height for dragging
+        _this.floatingRowSize = null;
+        // the index info to move row through drag
+        _this.movedIndexInfo = null;
         _this.scrollToNextDebounced = common_1.debounce(function () {
             _this.props.dispatch('scrollToNext');
         }, 200);
@@ -7122,7 +7686,9 @@ var BodyAreaComp = /** @class */ (function (_super) {
             dispatch('setScrollTop', scrollTop);
             if (side === 'R') {
                 dispatch('setScrollLeft', scrollLeft);
-                if (scrollHeight - scrollTop === clientHeight && _this.prevScrollLeft === scrollLeft) {
+                if (scrollTop > 0 &&
+                    scrollHeight - scrollTop === clientHeight &&
+                    _this.prevScrollLeft === scrollLeft) {
                     var gridEvent = new gridEvent_1.default();
                     /**
                      * Occurs when scroll at the bottommost
@@ -7135,12 +7701,82 @@ var BodyAreaComp = /** @class */ (function (_super) {
                 _this.prevScrollLeft = scrollLeft;
             }
         };
+        _this.dragRow = function (ev) {
+            var _a = dom_1.getCoordinateWithOffset(ev.pageX, ev.pageY), pageX = _a[0], pageY = _a[1];
+            if (_this.moveEnoughToTriggerDragEvent({ pageX: pageX, pageY: pageY })) {
+                var _b = _this, el = _b.el, boundingRect = _b.boundingRect, props = _b.props;
+                var _c = el, scrollTop = _c.scrollTop, scrollLeft = _c.scrollLeft;
+                var movedPosAndIndex = draggable_1.getMovedPosAndIndex(_this.context.store, {
+                    scrollLeft: scrollLeft,
+                    scrollTop: scrollTop,
+                    left: boundingRect.left,
+                    top: boundingRect.top,
+                    pageX: pageX,
+                    pageY: pageY,
+                });
+                var index = movedPosAndIndex.index, targetRow = movedPosAndIndex.targetRow;
+                var rowKeyToMove = targetRow.rowKey;
+                var _d = _this.draggableInfo, row = _d.row, rowKey = _d.rowKey;
+                var _e = draggable_1.getResolvedOffsets(_this.context.store, movedPosAndIndex, _this.floatingRowSize), offsetLeft = _e.offsetLeft, offsetTop = _e.offsetTop;
+                row.style.left = offsetLeft + "px";
+                row.style.top = offsetTop + "px";
+                var gridEvent = new gridEvent_1.default({ rowKey: rowKey, targetRowKey: rowKeyToMove });
+                /**
+                 * Occurs when dragging the row
+                 * @event Grid#drag
+                 * @property {Grid} instance - Current grid instance
+                 * @property {RowKey} rowKey - The rowKey of the dragging row
+                 * @property {RowKey} targetRowKey - The rowKey of the row at current dragging position
+                 */
+                _this.props.eventBus.trigger('drag', gridEvent);
+                if (props.hasTreeColumn) {
+                    _this.setTreeMovedIndexInfo(movedPosAndIndex);
+                }
+                else {
+                    // move the row to next index
+                    _this.movedIndexInfo = { index: index, rowKey: rowKeyToMove };
+                    _this.props.dispatch('moveRow', rowKey, index);
+                }
+            }
+        };
+        _this.startToDragRow = function (posInfo) {
+            var container = _this.el.parentElement.parentElement;
+            posInfo.container = container;
+            var draggableInfo = draggable_1.createDraggableInfo(_this.context.store, posInfo);
+            if (draggableInfo) {
+                var row = draggableInfo.row, rowKey = draggableInfo.rowKey, line = draggableInfo.line;
+                var gridEvent = new gridEvent_1.default({ rowKey: rowKey, floatingRow: row });
+                /**
+                 * Occurs when starting to drag the row
+                 * @event Grid#dragStart
+                 * @property {Grid} instance - Current grid instance
+                 * @property {RowKey} rowKey - The rowKey of the row to drag
+                 * @property {HTMLElement} floatingRow - The floating row DOM element
+                 */
+                _this.props.eventBus.trigger('dragStart', gridEvent);
+                if (!gridEvent.isStopped()) {
+                    container.appendChild(row);
+                    var clientWidth = row.clientWidth, clientHeight = row.clientHeight;
+                    _this.floatingRowSize = { width: clientWidth, height: clientHeight };
+                    _this.draggableInfo = draggableInfo;
+                    if (_this.props.hasTreeColumn) {
+                        container.appendChild(line);
+                    }
+                    _this.props.dispatch('addRowClassName', rowKey, DRAGGING_CLASS);
+                    _this.props.dispatch('setFocusInfo', null, null, false);
+                    document.addEventListener('mousemove', _this.dragRow);
+                    document.addEventListener('mouseup', _this.dropRow);
+                    document.addEventListener('selectstart', _this.handleSelectStart);
+                }
+            }
+        };
         _this.handleMouseDown = function (ev) {
+            var _a;
             var targetElement = ev.target;
             if (!_this.el || targetElement === _this.el) {
                 return;
             }
-            var _a = _this.props, side = _a.side, dispatch = _a.dispatch;
+            var _b = _this.props, side = _b.side, dispatch = _b.dispatch;
             if (dom_1.hasClass(targetElement, 'cell-dummy')) {
                 dispatch('saveAndFinishEditing');
                 dispatch('initFocus');
@@ -7149,10 +7785,14 @@ var BodyAreaComp = /** @class */ (function (_super) {
             }
             var el = _this.el;
             var shiftKey = ev.shiftKey;
-            var _b = dom_1.getCoordinateWithOffset(ev.pageX, ev.pageY), pageX = _b[0], pageY = _b[1];
+            var _c = dom_1.getCoordinateWithOffset(ev.pageX, ev.pageY), pageX = _c[0], pageY = _c[1];
             var scrollTop = el.scrollTop, scrollLeft = el.scrollLeft;
-            var _c = el.getBoundingClientRect(), top = _c.top, left = _c.left;
+            var _d = el.getBoundingClientRect(), top = _d.top, left = _d.left;
             _this.boundingRect = { top: top, left: left };
+            if (((_a = dom_1.getCellAddress(targetElement)) === null || _a === void 0 ? void 0 : _a.columnName) === DRAGGABLE_COLUMN_NAME) {
+                _this.startToDragRow({ pageX: pageX, pageY: pageY, left: left, top: top, scrollLeft: scrollLeft, scrollTop: scrollTop });
+                return;
+            }
             if (!dom_1.isDatePickerElement(targetElement) && !dom_1.findParent(targetElement, 'layer-editing')) {
                 dispatch('mouseDownBody', tslib_1.__assign({ scrollTop: scrollTop, scrollLeft: scrollLeft, side: side }, _this.boundingRect), { pageX: pageX, pageY: pageY, shiftKey: shiftKey });
             }
@@ -7180,6 +7820,37 @@ var BodyAreaComp = /** @class */ (function (_super) {
                 dispatch('dragMoveBody', _this.dragStartData, { pageX: pageX, pageY: pageY }, tslib_1.__assign({ scrollTop: scrollTop, scrollLeft: scrollLeft, side: side }, boundingRect));
             }
         };
+        _this.dropRow = function () {
+            var hasTreeColumn = _this.props.hasTreeColumn;
+            var rowKey = _this.draggableInfo.rowKey;
+            if (_this.movedIndexInfo) {
+                var _a = _this.movedIndexInfo, index = _a.index, targetRowKey = _a.rowKey, _b = _a.appended, appended = _b === void 0 ? false : _b, _c = _a.moveToLast, moveToLast = _c === void 0 ? false : _c;
+                var gridEvent = new gridEvent_1.default({ rowKey: rowKey, targetRowKey: targetRowKey, appended: appended });
+                /**
+                 * Occurs when dropping the row
+                 * @event Grid#drop
+                 * @property {Grid} instance - Current grid instance
+                 * @property {RowKey} rowKey - The rowKey of the dragging row
+                 * @property {RowKey} targetRowKey - The rowKey of the row at current dragging position
+                 * @property {boolean} appended - Whether the row is appended to other row as the child in tree data.
+                 */
+                _this.props.eventBus.trigger('drop', gridEvent);
+                if (!gridEvent.isStopped()) {
+                    if (hasTreeColumn) {
+                        _this.props.dispatch('moveTreeRow', rowKey, index, { appended: appended, moveToLast: moveToLast });
+                    }
+                    else {
+                        _this.props.dispatch('moveRow', rowKey, index);
+                    }
+                }
+            }
+            _this.props.dispatch('removeRowClassName', rowKey, DRAGGING_CLASS);
+            if (_this.movedIndexInfo) {
+                _this.props.dispatch('removeRowClassName', _this.movedIndexInfo.rowKey, PARENT_CELL_CLASS);
+            }
+            // clear floating element and draggable info
+            _this.clearDraggableInfo();
+        };
         _this.clearDocumentEvents = function () {
             _this.dragStartData = { pageX: null, pageY: null };
             _this.props.dispatch('dragEnd');
@@ -7190,6 +7861,38 @@ var BodyAreaComp = /** @class */ (function (_super) {
         };
         return _this;
     }
+    BodyAreaComp.prototype.setTreeMovedIndexInfo = function (movedPosAndIndex) {
+        var line = this.draggableInfo.line;
+        var index = movedPosAndIndex.index, offsetTop = movedPosAndIndex.offsetTop, height = movedPosAndIndex.height, targetRow = movedPosAndIndex.targetRow, moveToLast = movedPosAndIndex.moveToLast;
+        var rowKey = targetRow.rowKey;
+        if (this.movedIndexInfo) {
+            this.props.dispatch('removeRowClassName', this.movedIndexInfo.rowKey, PARENT_CELL_CLASS);
+        }
+        // display line border to mark the index to move
+        if (Math.abs(height - offsetTop) < ADDITIONAL_RANGE || moveToLast) {
+            line.style.top = height + "px";
+            line.style.display = 'block';
+            this.movedIndexInfo = { index: index, rowKey: rowKey, moveToLast: moveToLast };
+            // show the background color to mark parent row
+        }
+        else {
+            line.style.display = 'none';
+            this.movedIndexInfo = { index: index, rowKey: rowKey, appended: true };
+            this.props.dispatch('addRowClassName', rowKey, PARENT_CELL_CLASS);
+        }
+    };
+    BodyAreaComp.prototype.clearDraggableInfo = function () {
+        var _a = this.draggableInfo, row = _a.row, line = _a.line;
+        row.parentElement.removeChild(row);
+        if (this.props.hasTreeColumn) {
+            line.parentElement.removeChild(line);
+        }
+        this.draggableInfo = null;
+        this.movedIndexInfo = null;
+        document.removeEventListener('mousemove', this.dragRow);
+        document.removeEventListener('mouseup', this.dropRow);
+        document.removeEventListener('selectstart', this.handleSelectStart);
+    };
     BodyAreaComp.prototype.shouldComponentUpdate = function (nextProps) {
         var currProps = this.props;
         return common_1.some(function (propName) { return nextProps[propName] !== currProps[propName]; }, PROPS_FOR_UPDATE);
@@ -7210,8 +7913,8 @@ var BodyAreaComp = /** @class */ (function (_super) {
             areaStyle.overflowY = 'hidden';
         }
         var tableContainerStyle = {
-            top: totalRowHeight ? offsetTop : 0,
-            left: totalRowHeight ? offsetLeft : 0,
+            top: offsetTop,
+            left: offsetLeft,
             height: dummyRowCount ? bodyHeight - scrollXHeight : '',
             overflow: dummyRowCount ? 'hidden' : 'visible',
         };
@@ -7235,7 +7938,7 @@ var BodyAreaComp = /** @class */ (function (_super) {
 }(preact_1.Component));
 exports.BodyArea = hoc_1.connect(function (store, _a) {
     var side = _a.side;
-    var columnCoords = store.columnCoords, rowCoords = store.rowCoords, dimension = store.dimension, viewport = store.viewport, id = store.id;
+    var columnCoords = store.columnCoords, rowCoords = store.rowCoords, dimension = store.dimension, viewport = store.viewport, id = store.id, column = store.column;
     var totalRowHeight = rowCoords.totalRowHeight;
     var totalColumnWidth = columnCoords.totalColumnWidth;
     var bodyHeight = dimension.bodyHeight, scrollXHeight = dimension.scrollXHeight, scrollX = dimension.scrollX, scrollY = dimension.scrollY, cellBorderWidth = dimension.cellBorderWidth;
@@ -7254,21 +7957,23 @@ exports.BodyArea = hoc_1.connect(function (store, _a) {
         scrollY: scrollY,
         cellBorderWidth: cellBorderWidth,
         eventBus: eventBus_1.getEventBus(id),
+        hasTreeColumn: !!column.treeColumnName,
     };
 })(BodyAreaComp);
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SummaryArea = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var colGroup_1 = __webpack_require__(34);
-var summaryBodyRow_1 = __webpack_require__(97);
+var colGroup_1 = __webpack_require__(36);
+var summaryBodyRow_1 = __webpack_require__(101);
 var dom_1 = __webpack_require__(2);
 var hoc_1 = __webpack_require__(4);
 var SummaryAreaComp = /** @class */ (function (_super) {
@@ -7316,12 +8021,13 @@ exports.SummaryArea = hoc_1.connect(function (store, _a) {
 
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isMobile = exports.isEdge = void 0;
 function isEdge() {
     var rEdge = /Edge\/(\d+)\./;
     return rEdge.exec(window.navigator.userAgent);
@@ -7334,12 +8040,13 @@ exports.isMobile = isMobile;
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.findRowIndexByPosition = exports.findColumnIndexByPosition = exports.getColumnNameRange = exports.getOverflowFromMousePosition = void 0;
 var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 function getTotalColumnOffsets(widths, cellBorderWidth) {
@@ -7430,14 +8137,15 @@ exports.findRowIndexByPosition = findRowIndexByPosition;
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.gridAjax = void 0;
 var tslib_1 = __webpack_require__(1);
-var serializer_1 = __webpack_require__(124);
+var serializer_1 = __webpack_require__(127);
 var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
 var common_1 = __webpack_require__(0);
 var ENCODED_SPACE_REGEXP = /%20/g;
@@ -7579,15 +8287,17 @@ exports.gridAjax = gridAjax;
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createManager = exports.getDataWithOptions = void 0;
 var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 var observable_1 = __webpack_require__(5);
+var data_1 = __webpack_require__(6);
 var paramNameMap = {
     CREATE: 'createdRows',
     UPDATE: 'updatedRows',
@@ -7606,10 +8316,7 @@ function getDataWithOptions(targetRows, options) {
         rows = rows.map(function (row) { return common_1.omit.apply(void 0, tslib_1.__spreadArrays([row], ignoredColumns)); });
     }
     if (!withRawData) {
-        // @ts-ignore
-        rows = rows.map(function (row) {
-            return common_1.omit(row, 'sortKey', 'uniqueKey', '_attributes', '_relationListItemMap', '_disabledPriority');
-        });
+        rows = rows.map(function (row) { return data_1.getOmittedInternalProp(row); });
     }
     if (rowKeyOnly) {
         return rows.map(function (row) { return row.rowKey; });
@@ -7644,7 +8351,7 @@ function createManager() {
     return {
         // only for restore
         setOriginData: function (data) {
-            originData = data.map(function (row) { return (tslib_1.__assign({}, row)); });
+            originData = data_1.changeRawDataToOriginDataForTree(data);
         },
         getOriginData: function () {
             return originData;
@@ -7715,14 +8422,15 @@ exports.createManager = createManager;
 
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getAlertMessage = exports.getConfirmMessage = void 0;
 var tslib_1 = __webpack_require__(1);
-var _1 = tslib_1.__importDefault(__webpack_require__(35));
+var _1 = tslib_1.__importDefault(__webpack_require__(20));
 var confirmMessageMap = {
     CREATE: 'net.confirmCreate',
     UPDATE: 'net.confirmUpdate',
@@ -7746,20 +8454,20 @@ exports.getAlertMessage = getAlertMessage;
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var tslib_1 = __webpack_require__(1);
-var grid_1 = tslib_1.__importDefault(__webpack_require__(54));
-__webpack_require__(129);
+var grid_1 = tslib_1.__importDefault(__webpack_require__(56));
+__webpack_require__(132);
 grid_1.default.setLanguage('en');
 module.exports = grid_1.default;
 
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7767,29 +8475,29 @@ module.exports = grid_1.default;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var create_1 = __webpack_require__(55);
-var root_1 = __webpack_require__(79);
-var create_2 = __webpack_require__(111);
-var manager_1 = tslib_1.__importDefault(__webpack_require__(117));
+var create_1 = __webpack_require__(57);
+var root_1 = __webpack_require__(82);
+var create_2 = __webpack_require__(115);
+var manager_1 = tslib_1.__importDefault(__webpack_require__(120));
 var instance_1 = __webpack_require__(7);
-var i18n_1 = tslib_1.__importDefault(__webpack_require__(35));
-var clipboard_1 = __webpack_require__(27);
-var validation_1 = __webpack_require__(121);
+var i18n_1 = tslib_1.__importDefault(__webpack_require__(20));
+var clipboard_1 = __webpack_require__(37);
+var validation_1 = __webpack_require__(124);
 var dom_1 = __webpack_require__(2);
 var common_1 = __webpack_require__(0);
 var observable_1 = __webpack_require__(5);
 var eventBus_1 = __webpack_require__(8);
 var data_1 = __webpack_require__(6);
 var column_1 = __webpack_require__(10);
-var serverSideDataProvider_1 = __webpack_require__(122);
-var modifiedDataManager_1 = __webpack_require__(51);
-var message_1 = __webpack_require__(52);
-var paginationManager_1 = __webpack_require__(127);
+var serverSideDataProvider_1 = __webpack_require__(125);
+var modifiedDataManager_1 = __webpack_require__(53);
+var message_1 = __webpack_require__(54);
+var paginationManager_1 = __webpack_require__(130);
 var tree_1 = __webpack_require__(22);
 var rowSpan_1 = __webpack_require__(11);
-var googleAnalytics_1 = __webpack_require__(128);
-var filter_1 = __webpack_require__(26);
-var filter_2 = __webpack_require__(42);
+var googleAnalytics_1 = __webpack_require__(131);
+var filter_1 = __webpack_require__(29);
+var filter_2 = __webpack_require__(44);
 /* eslint-disable global-require */
 if (false) {}
 /**
@@ -7872,7 +8580,7 @@ if (false) {}
  *      @param {Array} options.columns - The configuration of the grid columns.
  *          @param {string} options.columns.name - The name of the column.
  *          @param {boolean} [options.columns.ellipsis=false] - If set to true, ellipsis will be used
- *              for overflowing content.
+ *              for overflowing content.(This option will be deprecated)
  *          @param {string} [options.columns.align=left] - Horizontal alignment of the column content.
  *              Available values are 'left', 'center', 'right'.
  *          @param {string} [options.columns.valign=middle] - Vertical alignment of the column content.
@@ -7951,7 +8659,7 @@ if (false) {}
  *              by fitting to the column's width. If set to 'pre', spaces are preserved and the text is braken by
  *              new line characters. If set to 'pre-wrap', spaces are preserved, the text line is broken by
  *              fitting to the column's width and new line characters. If set to 'pre-line', spaces are merged,
- *              the text line is broken by fitting to the column's width and new line characters.
+ *              the text line is broken by fitting to the column's width and new line characters.(This option will be deprecated)
  *      @param {Object} [options.summary] - The object for configuring summary area.
  *          @param {number} [options.summary.height] - The height of the summary area.
  *          @param {string} [options.summary.position='bottom'] - The position of the summary area. ('bottom', 'top')
@@ -7982,6 +8690,7 @@ if (false) {}
  *      @param {function} [options.onGridMounted] - The function that will be called after rendering the grid.
  *      @param {function} [options.onGridUpdated] - The function that will be called after updating the all data of the grid and rendering the grid.
  *      @param {function} [options.onGridBeforeDestroy] - The function that will be called before destroying the grid.
+ *      @param {boolean} [options.draggable] - Whether to enable to drag the row for changing the order of rows.
  */
 var Grid = /** @class */ (function () {
     function Grid(options) {
@@ -8017,6 +8726,7 @@ var Grid = /** @class */ (function () {
             _this.eventBus.on(eventName, lifeCycleEvent[eventName]);
         });
         this.gridEl = preact_1.render(preact_1.h(root_1.Root, { store: store, dispatch: dispatch, rootElement: el }), el);
+        this.dispatch('setColumnWidthsByText');
     }
     /**
      * Apply theme to all grid instances with the preset options of a given name.
@@ -8337,7 +9047,9 @@ var Grid = /** @class */ (function () {
      */
     Grid.prototype.startEditing = function (rowKey, columnName, setScroll) {
         if (this.focus(rowKey, columnName, setScroll)) {
-            this.dispatch('startEditing', rowKey, columnName);
+            if (this.store.focus.rowKey === rowKey && this.store.focus.columnName === columnName) {
+                this.dispatch('startEditing', rowKey, columnName);
+            }
         }
     };
     /**
@@ -8387,10 +9099,11 @@ var Grid = /** @class */ (function () {
      * @returns {number|string|boolean|null} - The value of the cell
      */
     Grid.prototype.getValue = function (rowKey, columnName) {
-        var _a = this.store, data = _a.data, column = _a.column, id = _a.id;
+        var _a;
+        var _b = this.store, data = _b.data, column = _b.column, id = _b.id;
         var targetRow = data_1.findRowByRowKey(data, column, id, rowKey, false);
         if (targetRow) {
-            return targetRow[columnName] || null;
+            return (_a = targetRow[columnName]) !== null && _a !== void 0 ? _a : null;
         }
         return null;
     };
@@ -8799,7 +9512,7 @@ var Grid = /** @class */ (function () {
      * @returns {Array} - A list of all rows
      */
     Grid.prototype.getData = function () {
-        return this.store.data.rawData.map(function (row) { return observable_1.getOriginObject(row); });
+        return this.store.data.rawData.map(function (row) { return data_1.getOmittedInternalProp(row); });
     };
     /**
      * Return the total number of the rows.
@@ -8900,8 +9613,9 @@ var Grid = /** @class */ (function () {
     /**
      * Set number of rows per page and reload current page
      * @param {number} perPage - Number of rows per page
+     * @param {Params} data - Data(parameters) to send to the server
      */
-    Grid.prototype.setPerPage = function (perPage) {
+    Grid.prototype.setPerPage = function (perPage, data) {
         var pagination = this.getPagination();
         if (pagination) {
             var pageOptions = this.store.data.pageOptions;
@@ -8910,7 +9624,7 @@ var Grid = /** @class */ (function () {
                 this.dispatch('updateHeights');
             }
             else {
-                this.readData(1, { perPage: perPage });
+                this.readData(1, tslib_1.__assign(tslib_1.__assign({}, data), { perPage: perPage }));
             }
         }
     };
@@ -9108,7 +9822,7 @@ var Grid = /** @class */ (function () {
      * (Original data is set by {@link Grid#resetData|resetData}
      */
     Grid.prototype.resetOriginData = function () {
-        this.dataManager.setOriginData(this.getData());
+        this.dataManager.setOriginData(this.store.data.rawData);
     };
     /** Remove all checked rows.
      * @param {boolean} [showConfirm] - If set to true, confirm message will be shown before remove.
@@ -9214,10 +9928,28 @@ var Grid = /** @class */ (function () {
      * Move the row identified by the specified rowKey to target index.
      * If data is sorted or filtered, this couldn't be used.
      * @param {number|string} rowKey - The unique key of the row
-     * @param {number} targetIndex - target index for moving
+     * @param {number} targetIndex - Target index for moving
+     * @param {Object} [options] - Options
+     * @param {number} [options.appended] - This option for only tree data. Whether the row is appended to other row as the child.
      */
-    Grid.prototype.moveRow = function (rowKey, targetIndex) {
-        this.dispatch('moveRow', rowKey, targetIndex);
+    Grid.prototype.moveRow = function (rowKey, targetIndex, options) {
+        if (options === void 0) { options = { appended: false }; }
+        var _a = this.store, column = _a.column, data = _a.data;
+        if (column.treeColumnName) {
+            var moveToLast = false;
+            if (!options.appended) {
+                if (targetIndex === data.rawData.length - 1) {
+                    moveToLast = true;
+                }
+                else if (this.getIndexOfRow(rowKey) < targetIndex) {
+                    targetIndex += 1;
+                }
+            }
+            this.dispatch('moveTreeRow', rowKey, targetIndex, tslib_1.__assign(tslib_1.__assign({}, options), { moveToLast: moveToLast }));
+        }
+        else {
+            this.dispatch('moveRow', rowKey, targetIndex);
+        }
     };
     /**
      * Set parameters to be sent with the request to communicate with the server.
@@ -9275,33 +10007,34 @@ exports.default = Grid;
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createStore = void 0;
 var observable_1 = __webpack_require__(5);
-var data_1 = __webpack_require__(12);
-var column_1 = __webpack_require__(30);
-var dimension_1 = __webpack_require__(71);
-var viewport_1 = __webpack_require__(72);
-var columnCoords_1 = __webpack_require__(73);
-var rowCoords_1 = __webpack_require__(74);
-var focus_1 = __webpack_require__(75);
-var summary_1 = __webpack_require__(39);
-var selection_1 = __webpack_require__(76);
-var renderState_1 = __webpack_require__(77);
-var filterLayerState_1 = __webpack_require__(78);
-var dimension_2 = __webpack_require__(43);
-var lazyObservable_1 = __webpack_require__(23);
-var validation_1 = __webpack_require__(33);
+var data_1 = __webpack_require__(13);
+var column_1 = __webpack_require__(32);
+var dimension_1 = __webpack_require__(74);
+var viewport_1 = __webpack_require__(75);
+var columnCoords_1 = __webpack_require__(76);
+var rowCoords_1 = __webpack_require__(77);
+var focus_1 = __webpack_require__(78);
+var summary_1 = __webpack_require__(43);
+var selection_1 = __webpack_require__(79);
+var renderState_1 = __webpack_require__(80);
+var filterLayerState_1 = __webpack_require__(81);
+var dimension_2 = __webpack_require__(45);
+var lazyObservable_1 = __webpack_require__(27);
+var validation_1 = __webpack_require__(25);
 function createStore(id, options) {
     validation_1.createNewValidationMap(id);
-    var el = options.el, width = options.width, rowHeight = options.rowHeight, bodyHeight = options.bodyHeight, heightResizable = options.heightResizable, minRowHeight = options.minRowHeight, minBodyHeight = options.minBodyHeight, _a = options.columnOptions, columnOptions = _a === void 0 ? {} : _a, keyColumnName = options.keyColumnName, _b = options.rowHeaders, rowHeaders = _b === void 0 ? [] : _b, _c = options.copyOptions, copyOptions = _c === void 0 ? {} : _c, _d = options.summary, summaryOptions = _d === void 0 ? {} : _d, _e = options.selectionUnit, selectionUnit = _e === void 0 ? 'cell' : _e, _f = options.showDummyRows, showDummyRows = _f === void 0 ? false : _f, _g = options.editingEvent, editingEvent = _g === void 0 ? 'dblclick' : _g, _h = options.tabMode, tabMode = _h === void 0 ? 'moveAndEdit' : _h, scrollX = options.scrollX, scrollY = options.scrollY, _j = options.useClientSort, useClientSort = _j === void 0 ? true : _j, _k = options.pageOptions, pageOptions = _k === void 0 ? {} : _k, _l = options.treeColumnOptions, treeColumnOptions = _l === void 0 ? { name: '' } : _l, _m = options.header, header = _m === void 0 ? {} : _m, _o = options.disabled, disabled = _o === void 0 ? false : _o;
+    var el = options.el, width = options.width, rowHeight = options.rowHeight, bodyHeight = options.bodyHeight, heightResizable = options.heightResizable, minRowHeight = options.minRowHeight, minBodyHeight = options.minBodyHeight, _a = options.columnOptions, columnOptions = _a === void 0 ? {} : _a, keyColumnName = options.keyColumnName, _b = options.rowHeaders, rowHeaders = _b === void 0 ? [] : _b, _c = options.copyOptions, copyOptions = _c === void 0 ? {} : _c, _d = options.summary, summaryOptions = _d === void 0 ? {} : _d, _e = options.selectionUnit, selectionUnit = _e === void 0 ? 'cell' : _e, _f = options.showDummyRows, showDummyRows = _f === void 0 ? false : _f, _g = options.editingEvent, editingEvent = _g === void 0 ? 'dblclick' : _g, _h = options.tabMode, tabMode = _h === void 0 ? 'moveAndEdit' : _h, scrollX = options.scrollX, scrollY = options.scrollY, _j = options.useClientSort, useClientSort = _j === void 0 ? true : _j, _k = options.pageOptions, pageOptions = _k === void 0 ? {} : _k, _l = options.treeColumnOptions, treeColumnOptions = _l === void 0 ? { name: '' } : _l, _m = options.header, header = _m === void 0 ? {} : _m, _o = options.disabled, disabled = _o === void 0 ? false : _o, _p = options.draggable, draggable = _p === void 0 ? false : _p;
     var frozenBorderWidth = columnOptions.frozenBorderWidth;
     var summaryHeight = summaryOptions.height, summaryPosition = summaryOptions.position;
-    var _p = header.height, headerHeight = _p === void 0 ? 40 : _p, _q = header.complexColumns, complexColumns = _q === void 0 ? [] : _q, _r = header.align, align = _r === void 0 ? 'center' : _r, _s = header.valign, valign = _s === void 0 ? 'middle' : _s, _t = header.columns, columnHeaders = _t === void 0 ? [] : _t;
+    var _q = header.height, headerHeight = _q === void 0 ? 40 : _q, _r = header.complexColumns, complexColumns = _r === void 0 ? [] : _r, _s = header.align, align = _s === void 0 ? 'center' : _s, _t = header.valign, valign = _t === void 0 ? 'middle' : _t, _u = header.columns, columnHeaders = _u === void 0 ? [] : _u;
     var column = column_1.create({
         columns: options.columns,
         columnOptions: columnOptions,
@@ -9314,6 +10047,7 @@ function createStore(id, options) {
         valign: valign,
         columnHeaders: columnHeaders,
         disabled: disabled,
+        draggable: draggable,
     });
     var data = data_1.create({
         data: Array.isArray(options.data) ? options.data : [],
@@ -9398,12 +10132,13 @@ exports.createStore = createStore;
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.patchArrayMethods = void 0;
 var observable_1 = __webpack_require__(5);
 var common_1 = __webpack_require__(0);
 var methods = ['splice', 'push', 'pop', 'shift', 'unshift'];
@@ -9433,12 +10168,13 @@ exports.patchArrayMethods = patchArrayMethods;
 
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.listItemText = void 0;
 var common_1 = __webpack_require__(0);
 function getListItemText(listItems, value) {
     var item = common_1.findProp('value', value, listItems);
@@ -9464,112 +10200,56 @@ exports.listItemText = listItemText;
 
 
 /***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-function isFocusedCell(focus, rowKey, columnName) {
-    return rowKey === focus.rowKey && columnName === focus.columnName;
-}
-exports.isFocusedCell = isFocusedCell;
-function isEditingCell(focus, rowKey, columnName) {
-    var editingAddress = focus.editingAddress;
-    return !!(editingAddress &&
-        editingAddress.rowKey === rowKey &&
-        editingAddress.columnName === columnName);
-}
-exports.isEditingCell = isEditingCell;
-
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = __webpack_require__(0);
-function compare(valueA, valueB) {
-    var isBlankA = common_1.isBlank(valueA);
-    var isBlankB = common_1.isBlank(valueB);
-    var convertedA = common_1.convertToNumber(valueA);
-    var convertedB = common_1.convertToNumber(valueB);
-    if (!common_1.isNumber(convertedA) || !common_1.isNumber(convertedB)) {
-        convertedA = String(valueA);
-        convertedB = String(valueB);
-    }
-    var result = 0;
-    if (isBlankA && !isBlankB) {
-        result = -1;
-    }
-    else if (!isBlankA && isBlankB) {
-        result = 1;
-    }
-    else if (convertedA < convertedB) {
-        result = -1;
-    }
-    else if (convertedA > convertedB) {
-        result = 1;
-    }
-    return result;
-}
-exports.compare = compare;
-function getComparators(columns) {
-    var comparators = [];
-    columns.forEach(function (column) {
-        var columnName = column.columnName, ascending = column.ascending, customComparator = column.comparator;
-        var comparator = customComparator || compare;
-        comparators.push({
-            name: columnName,
-            comparator: ascending
-                ? comparator
-                : function (valueA, valueB, rowA, rowB) {
-                    return -comparator(valueA, valueB, rowA, rowB);
-                },
-        });
-    });
-    return comparators;
-}
-function sortRawData(columns) {
-    var comparators = getComparators(columns);
-    return function (rowA, rowB) {
-        for (var _i = 0, comparators_1 = comparators; _i < comparators_1.length; _i++) {
-            var _a = comparators_1[_i], columnName = _a.name, comparator = _a.comparator;
-            var result = comparator(rowA[columnName], rowB[columnName], rowA, rowB);
-            if (result) {
-                return result;
-            }
-        }
-        return 0;
-    };
-}
-exports.sortRawData = sortRawData;
-
-
-/***/ }),
 /* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DefaultRenderer = void 0;
 var dom_1 = __webpack_require__(2);
+var common_1 = __webpack_require__(0);
 var DefaultRenderer = /** @class */ (function () {
     function DefaultRenderer(props) {
         var el = document.createElement('div');
-        var _a = props.columnInfo, ellipsis = _a.ellipsis, whiteSpace = _a.whiteSpace;
-        el.className = dom_1.cls('cell-content');
+        var _a = props.columnInfo, ellipsis = _a.ellipsis, whiteSpace = _a.whiteSpace, renderer = _a.renderer;
+        var className = '';
+        this.props = props;
+        this.el = el;
+        if (renderer) {
+            var attributes = renderer.attributes, styles = renderer.styles, classNames = renderer.classNames;
+            if (attributes) {
+                this.setAttrsOrStyles('attrs', attributes);
+            }
+            if (styles) {
+                this.setAttrsOrStyles('styles', styles);
+            }
+            if (classNames) {
+                className = " " + classNames.join(' ');
+            }
+        }
+        el.className = dom_1.cls('cell-content') + className;
+        // @TODO: we should remove below options and consider common the renderer option for style, attribute and class names
         if (ellipsis) {
             el.style.textOverflow = 'ellipsis';
         }
         if (whiteSpace) {
             el.style.whiteSpace = whiteSpace;
         }
-        this.el = el;
         this.render(props);
     }
+    DefaultRenderer.prototype.setAttrsOrStyles = function (type, targets) {
+        var _this = this;
+        Object.keys(targets).forEach(function (name) {
+            var value = common_1.isFunction(targets[name]) ? targets[name](_this.props) : targets[name];
+            if (type === 'attrs') {
+                _this.el.setAttribute(name, value);
+            }
+            else {
+                _this.el.style[name] = value;
+            }
+        });
+    };
     DefaultRenderer.prototype.getElement = function () {
         return this.el;
     };
@@ -9588,6 +10268,7 @@ exports.DefaultRenderer = DefaultRenderer;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.editorMap = void 0;
 var text_1 = __webpack_require__(62);
 var checkbox_1 = __webpack_require__(63);
 var select_1 = __webpack_require__(64);
@@ -9609,6 +10290,7 @@ exports.editorMap = {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TextEditor = void 0;
 var dom_1 = __webpack_require__(2);
 var common_1 = __webpack_require__(0);
 var TextEditor = /** @class */ (function () {
@@ -9617,7 +10299,7 @@ var TextEditor = /** @class */ (function () {
         var options = props.columnInfo.editor.options;
         el.className = dom_1.cls('content-text');
         el.type = options.type;
-        el.value = String(common_1.isUndefined(props.value) || common_1.isNull(props.value) ? '' : props.value);
+        el.value = String(common_1.isNil(props.value) ? '' : props.value);
         this.el = el;
     }
     TextEditor.prototype.getElement = function () {
@@ -9641,11 +10323,12 @@ exports.TextEditor = TextEditor;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var editor_1 = __webpack_require__(40);
+exports.CheckboxEditor = void 0;
+var editor_1 = __webpack_require__(39);
 var dom_1 = __webpack_require__(2);
-var keyboard_1 = __webpack_require__(18);
+var keyboard_1 = __webpack_require__(17);
 var common_1 = __webpack_require__(0);
-var dom_2 = __webpack_require__(31);
+var dom_2 = __webpack_require__(33);
 var LAYER_CLASSNAME = dom_1.cls('editor-checkbox-list-layer');
 var LIST_ITEM_CLASSNAME = dom_1.cls('editor-checkbox');
 var HOVERED_LIST_ITEM_CLASSNAME = dom_1.cls('editor-checkbox-hovered') + " " + LIST_ITEM_CLASSNAME;
@@ -9683,8 +10366,9 @@ var CheckboxEditor = /** @class */ (function () {
                 _this.portalEditingKeydown(ev);
             }
         };
-        var columnInfo = props.columnInfo, width = props.width, value = props.value, formattedValue = props.formattedValue, portalEditingKeydown = props.portalEditingKeydown;
+        var columnInfo = props.columnInfo, width = props.width, formattedValue = props.formattedValue, portalEditingKeydown = props.portalEditingKeydown;
         var el = document.createElement('div');
+        var value = String(common_1.isNil(props.value) ? '' : props.value);
         el.className = dom_1.cls('layer-editing-inner');
         el.innerText = formattedValue;
         this.inputType = columnInfo.editor.options.type;
@@ -9817,13 +10501,14 @@ exports.CheckboxEditor = CheckboxEditor;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SelectEditor = void 0;
 var tslib_1 = __webpack_require__(1);
 var select_box_1 = tslib_1.__importDefault(__webpack_require__(65));
 __webpack_require__(66);
-var editor_1 = __webpack_require__(40);
+var editor_1 = __webpack_require__(39);
 var dom_1 = __webpack_require__(2);
-var dom_2 = __webpack_require__(31);
-var keyboard_1 = __webpack_require__(18);
+var dom_2 = __webpack_require__(33);
+var keyboard_1 = __webpack_require__(17);
 var common_1 = __webpack_require__(0);
 var SelectEditor = /** @class */ (function () {
     function SelectEditor(props) {
@@ -9841,8 +10526,9 @@ var SelectEditor = /** @class */ (function () {
                 ev.preventDefault();
             }
         };
-        var width = props.width, value = props.value, formattedValue = props.formattedValue, portalEditingKeydown = props.portalEditingKeydown;
+        var width = props.width, formattedValue = props.formattedValue, portalEditingKeydown = props.portalEditingKeydown;
         var el = document.createElement('div');
+        var value = String(common_1.isNil(props.value) ? '' : props.value);
         el.className = dom_1.cls('layer-editing-inner');
         el.innerText = formattedValue;
         var listItems = editor_1.getListItems(props);
@@ -9895,7 +10581,8 @@ var SelectEditor = /** @class */ (function () {
         return this.el;
     };
     SelectEditor.prototype.getValue = function () {
-        return this.selectBoxEl.getSelectedItem().getValue();
+        var _a, _b;
+        return (_b = (_a = this.selectBoxEl.getSelectedItem()) === null || _a === void 0 ? void 0 : _a.getValue()) !== null && _b !== void 0 ? _b : '';
     };
     SelectEditor.prototype.mounted = function () {
         this.selectBoxEl.open();
@@ -9929,804 +10616,804 @@ exports.SelectEditor = SelectEditor;
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
-    if(true)
-        module.exports = factory();
-    else {}
+	if(true)
+		module.exports = factory();
+	else {}
 })(window, function() {
 return /******/ (function(modules) { // webpackBootstrap
-/******/    function hotDisposeChunk(chunkId) {
-/******/        delete installedChunks[chunkId];
-/******/    }
-/******/    var parentHotUpdateCallback = window["webpackHotUpdate"];
-/******/    window["webpackHotUpdate"] = // eslint-disable-next-line no-unused-vars
-/******/    function webpackHotUpdateCallback(chunkId, moreModules) {
-/******/        hotAddUpdateChunk(chunkId, moreModules);
-/******/        if (parentHotUpdateCallback) parentHotUpdateCallback(chunkId, moreModules);
-/******/    } ;
+/******/ 	function hotDisposeChunk(chunkId) {
+/******/ 		delete installedChunks[chunkId];
+/******/ 	}
+/******/ 	var parentHotUpdateCallback = window["webpackHotUpdate"];
+/******/ 	window["webpackHotUpdate"] = // eslint-disable-next-line no-unused-vars
+/******/ 	function webpackHotUpdateCallback(chunkId, moreModules) {
+/******/ 		hotAddUpdateChunk(chunkId, moreModules);
+/******/ 		if (parentHotUpdateCallback) parentHotUpdateCallback(chunkId, moreModules);
+/******/ 	} ;
 /******/
-/******/    // eslint-disable-next-line no-unused-vars
-/******/    function hotDownloadUpdateChunk(chunkId) {
-/******/        var script = document.createElement("script");
-/******/        script.charset = "utf-8";
-/******/        script.src = __webpack_require__.p + "" + chunkId + "." + hotCurrentHash + ".hot-update.js";
-/******/        if (null) {}
-/******/        document.head.appendChild(script);
-/******/    }
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	function hotDownloadUpdateChunk(chunkId) {
+/******/ 		var script = document.createElement("script");
+/******/ 		script.charset = "utf-8";
+/******/ 		script.src = __webpack_require__.p + "" + chunkId + "." + hotCurrentHash + ".hot-update.js";
+/******/ 		if (null) {}
+/******/ 		document.head.appendChild(script);
+/******/ 	}
 /******/
-/******/    // eslint-disable-next-line no-unused-vars
-/******/    function hotDownloadManifest(requestTimeout) {
-/******/        requestTimeout = requestTimeout || 10000;
-/******/        return new Promise(function(resolve, reject) {
-/******/            if (typeof XMLHttpRequest === "undefined") {
-/******/                return reject(new Error("No browser support"));
-/******/            }
-/******/            try {
-/******/                var request = new XMLHttpRequest();
-/******/                var requestPath = __webpack_require__.p + "" + hotCurrentHash + ".hot-update.json";
-/******/                request.open("GET", requestPath, true);
-/******/                request.timeout = requestTimeout;
-/******/                request.send(null);
-/******/            } catch (err) {
-/******/                return reject(err);
-/******/            }
-/******/            request.onreadystatechange = function() {
-/******/                if (request.readyState !== 4) return;
-/******/                if (request.status === 0) {
-/******/                    // timeout
-/******/                    reject(
-/******/                        new Error("Manifest request to " + requestPath + " timed out.")
-/******/                    );
-/******/                } else if (request.status === 404) {
-/******/                    // no update available
-/******/                    resolve();
-/******/                } else if (request.status !== 200 && request.status !== 304) {
-/******/                    // other failure
-/******/                    reject(new Error("Manifest request to " + requestPath + " failed."));
-/******/                } else {
-/******/                    // success
-/******/                    try {
-/******/                        var update = JSON.parse(request.responseText);
-/******/                    } catch (e) {
-/******/                        reject(e);
-/******/                        return;
-/******/                    }
-/******/                    resolve(update);
-/******/                }
-/******/            };
-/******/        });
-/******/    }
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	function hotDownloadManifest(requestTimeout) {
+/******/ 		requestTimeout = requestTimeout || 10000;
+/******/ 		return new Promise(function(resolve, reject) {
+/******/ 			if (typeof XMLHttpRequest === "undefined") {
+/******/ 				return reject(new Error("No browser support"));
+/******/ 			}
+/******/ 			try {
+/******/ 				var request = new XMLHttpRequest();
+/******/ 				var requestPath = __webpack_require__.p + "" + hotCurrentHash + ".hot-update.json";
+/******/ 				request.open("GET", requestPath, true);
+/******/ 				request.timeout = requestTimeout;
+/******/ 				request.send(null);
+/******/ 			} catch (err) {
+/******/ 				return reject(err);
+/******/ 			}
+/******/ 			request.onreadystatechange = function() {
+/******/ 				if (request.readyState !== 4) return;
+/******/ 				if (request.status === 0) {
+/******/ 					// timeout
+/******/ 					reject(
+/******/ 						new Error("Manifest request to " + requestPath + " timed out.")
+/******/ 					);
+/******/ 				} else if (request.status === 404) {
+/******/ 					// no update available
+/******/ 					resolve();
+/******/ 				} else if (request.status !== 200 && request.status !== 304) {
+/******/ 					// other failure
+/******/ 					reject(new Error("Manifest request to " + requestPath + " failed."));
+/******/ 				} else {
+/******/ 					// success
+/******/ 					try {
+/******/ 						var update = JSON.parse(request.responseText);
+/******/ 					} catch (e) {
+/******/ 						reject(e);
+/******/ 						return;
+/******/ 					}
+/******/ 					resolve(update);
+/******/ 				}
+/******/ 			};
+/******/ 		});
+/******/ 	}
 /******/
-/******/    var hotApplyOnUpdate = true;
-/******/    // eslint-disable-next-line no-unused-vars
-/******/    var hotCurrentHash = "fbd02ae0ea88b9f7e886";
-/******/    var hotRequestTimeout = 10000;
-/******/    var hotCurrentModuleData = {};
-/******/    var hotCurrentChildModule;
-/******/    // eslint-disable-next-line no-unused-vars
-/******/    var hotCurrentParents = [];
-/******/    // eslint-disable-next-line no-unused-vars
-/******/    var hotCurrentParentsTemp = [];
+/******/ 	var hotApplyOnUpdate = true;
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	var hotCurrentHash = "fbd02ae0ea88b9f7e886";
+/******/ 	var hotRequestTimeout = 10000;
+/******/ 	var hotCurrentModuleData = {};
+/******/ 	var hotCurrentChildModule;
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	var hotCurrentParents = [];
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	var hotCurrentParentsTemp = [];
 /******/
-/******/    // eslint-disable-next-line no-unused-vars
-/******/    function hotCreateRequire(moduleId) {
-/******/        var me = installedModules[moduleId];
-/******/        if (!me) return __webpack_require__;
-/******/        var fn = function(request) {
-/******/            if (me.hot.active) {
-/******/                if (installedModules[request]) {
-/******/                    if (installedModules[request].parents.indexOf(moduleId) === -1) {
-/******/                        installedModules[request].parents.push(moduleId);
-/******/                    }
-/******/                } else {
-/******/                    hotCurrentParents = [moduleId];
-/******/                    hotCurrentChildModule = request;
-/******/                }
-/******/                if (me.children.indexOf(request) === -1) {
-/******/                    me.children.push(request);
-/******/                }
-/******/            } else {
-/******/                console.warn(
-/******/                    "[HMR] unexpected require(" +
-/******/                        request +
-/******/                        ") from disposed module " +
-/******/                        moduleId
-/******/                );
-/******/                hotCurrentParents = [];
-/******/            }
-/******/            return __webpack_require__(request);
-/******/        };
-/******/        var ObjectFactory = function ObjectFactory(name) {
-/******/            return {
-/******/                configurable: true,
-/******/                enumerable: true,
-/******/                get: function() {
-/******/                    return __webpack_require__[name];
-/******/                },
-/******/                set: function(value) {
-/******/                    __webpack_require__[name] = value;
-/******/                }
-/******/            };
-/******/        };
-/******/        for (var name in __webpack_require__) {
-/******/            if (
-/******/                Object.prototype.hasOwnProperty.call(__webpack_require__, name) &&
-/******/                name !== "e" &&
-/******/                name !== "t"
-/******/            ) {
-/******/                Object.defineProperty(fn, name, ObjectFactory(name));
-/******/            }
-/******/        }
-/******/        fn.e = function(chunkId) {
-/******/            if (hotStatus === "ready") hotSetStatus("prepare");
-/******/            hotChunksLoading++;
-/******/            return __webpack_require__.e(chunkId).then(finishChunkLoading, function(err) {
-/******/                finishChunkLoading();
-/******/                throw err;
-/******/            });
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	function hotCreateRequire(moduleId) {
+/******/ 		var me = installedModules[moduleId];
+/******/ 		if (!me) return __webpack_require__;
+/******/ 		var fn = function(request) {
+/******/ 			if (me.hot.active) {
+/******/ 				if (installedModules[request]) {
+/******/ 					if (installedModules[request].parents.indexOf(moduleId) === -1) {
+/******/ 						installedModules[request].parents.push(moduleId);
+/******/ 					}
+/******/ 				} else {
+/******/ 					hotCurrentParents = [moduleId];
+/******/ 					hotCurrentChildModule = request;
+/******/ 				}
+/******/ 				if (me.children.indexOf(request) === -1) {
+/******/ 					me.children.push(request);
+/******/ 				}
+/******/ 			} else {
+/******/ 				console.warn(
+/******/ 					"[HMR] unexpected require(" +
+/******/ 						request +
+/******/ 						") from disposed module " +
+/******/ 						moduleId
+/******/ 				);
+/******/ 				hotCurrentParents = [];
+/******/ 			}
+/******/ 			return __webpack_require__(request);
+/******/ 		};
+/******/ 		var ObjectFactory = function ObjectFactory(name) {
+/******/ 			return {
+/******/ 				configurable: true,
+/******/ 				enumerable: true,
+/******/ 				get: function() {
+/******/ 					return __webpack_require__[name];
+/******/ 				},
+/******/ 				set: function(value) {
+/******/ 					__webpack_require__[name] = value;
+/******/ 				}
+/******/ 			};
+/******/ 		};
+/******/ 		for (var name in __webpack_require__) {
+/******/ 			if (
+/******/ 				Object.prototype.hasOwnProperty.call(__webpack_require__, name) &&
+/******/ 				name !== "e" &&
+/******/ 				name !== "t"
+/******/ 			) {
+/******/ 				Object.defineProperty(fn, name, ObjectFactory(name));
+/******/ 			}
+/******/ 		}
+/******/ 		fn.e = function(chunkId) {
+/******/ 			if (hotStatus === "ready") hotSetStatus("prepare");
+/******/ 			hotChunksLoading++;
+/******/ 			return __webpack_require__.e(chunkId).then(finishChunkLoading, function(err) {
+/******/ 				finishChunkLoading();
+/******/ 				throw err;
+/******/ 			});
 /******/
-/******/            function finishChunkLoading() {
-/******/                hotChunksLoading--;
-/******/                if (hotStatus === "prepare") {
-/******/                    if (!hotWaitingFilesMap[chunkId]) {
-/******/                        hotEnsureUpdateChunk(chunkId);
-/******/                    }
-/******/                    if (hotChunksLoading === 0 && hotWaitingFiles === 0) {
-/******/                        hotUpdateDownloaded();
-/******/                    }
-/******/                }
-/******/            }
-/******/        };
-/******/        fn.t = function(value, mode) {
-/******/            if (mode & 1) value = fn(value);
-/******/            return __webpack_require__.t(value, mode & ~1);
-/******/        };
-/******/        return fn;
-/******/    }
+/******/ 			function finishChunkLoading() {
+/******/ 				hotChunksLoading--;
+/******/ 				if (hotStatus === "prepare") {
+/******/ 					if (!hotWaitingFilesMap[chunkId]) {
+/******/ 						hotEnsureUpdateChunk(chunkId);
+/******/ 					}
+/******/ 					if (hotChunksLoading === 0 && hotWaitingFiles === 0) {
+/******/ 						hotUpdateDownloaded();
+/******/ 					}
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 		fn.t = function(value, mode) {
+/******/ 			if (mode & 1) value = fn(value);
+/******/ 			return __webpack_require__.t(value, mode & ~1);
+/******/ 		};
+/******/ 		return fn;
+/******/ 	}
 /******/
-/******/    // eslint-disable-next-line no-unused-vars
-/******/    function hotCreateModule(moduleId) {
-/******/        var hot = {
-/******/            // private stuff
-/******/            _acceptedDependencies: {},
-/******/            _declinedDependencies: {},
-/******/            _selfAccepted: false,
-/******/            _selfDeclined: false,
-/******/            _disposeHandlers: [],
-/******/            _main: hotCurrentChildModule !== moduleId,
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	function hotCreateModule(moduleId) {
+/******/ 		var hot = {
+/******/ 			// private stuff
+/******/ 			_acceptedDependencies: {},
+/******/ 			_declinedDependencies: {},
+/******/ 			_selfAccepted: false,
+/******/ 			_selfDeclined: false,
+/******/ 			_disposeHandlers: [],
+/******/ 			_main: hotCurrentChildModule !== moduleId,
 /******/
-/******/            // Module API
-/******/            active: true,
-/******/            accept: function(dep, callback) {
-/******/                if (dep === undefined) hot._selfAccepted = true;
-/******/                else if (typeof dep === "function") hot._selfAccepted = dep;
-/******/                else if (typeof dep === "object")
-/******/                    for (var i = 0; i < dep.length; i++)
-/******/                        hot._acceptedDependencies[dep[i]] = callback || function() {};
-/******/                else hot._acceptedDependencies[dep] = callback || function() {};
-/******/            },
-/******/            decline: function(dep) {
-/******/                if (dep === undefined) hot._selfDeclined = true;
-/******/                else if (typeof dep === "object")
-/******/                    for (var i = 0; i < dep.length; i++)
-/******/                        hot._declinedDependencies[dep[i]] = true;
-/******/                else hot._declinedDependencies[dep] = true;
-/******/            },
-/******/            dispose: function(callback) {
-/******/                hot._disposeHandlers.push(callback);
-/******/            },
-/******/            addDisposeHandler: function(callback) {
-/******/                hot._disposeHandlers.push(callback);
-/******/            },
-/******/            removeDisposeHandler: function(callback) {
-/******/                var idx = hot._disposeHandlers.indexOf(callback);
-/******/                if (idx >= 0) hot._disposeHandlers.splice(idx, 1);
-/******/            },
+/******/ 			// Module API
+/******/ 			active: true,
+/******/ 			accept: function(dep, callback) {
+/******/ 				if (dep === undefined) hot._selfAccepted = true;
+/******/ 				else if (typeof dep === "function") hot._selfAccepted = dep;
+/******/ 				else if (typeof dep === "object")
+/******/ 					for (var i = 0; i < dep.length; i++)
+/******/ 						hot._acceptedDependencies[dep[i]] = callback || function() {};
+/******/ 				else hot._acceptedDependencies[dep] = callback || function() {};
+/******/ 			},
+/******/ 			decline: function(dep) {
+/******/ 				if (dep === undefined) hot._selfDeclined = true;
+/******/ 				else if (typeof dep === "object")
+/******/ 					for (var i = 0; i < dep.length; i++)
+/******/ 						hot._declinedDependencies[dep[i]] = true;
+/******/ 				else hot._declinedDependencies[dep] = true;
+/******/ 			},
+/******/ 			dispose: function(callback) {
+/******/ 				hot._disposeHandlers.push(callback);
+/******/ 			},
+/******/ 			addDisposeHandler: function(callback) {
+/******/ 				hot._disposeHandlers.push(callback);
+/******/ 			},
+/******/ 			removeDisposeHandler: function(callback) {
+/******/ 				var idx = hot._disposeHandlers.indexOf(callback);
+/******/ 				if (idx >= 0) hot._disposeHandlers.splice(idx, 1);
+/******/ 			},
 /******/
-/******/            // Management API
-/******/            check: hotCheck,
-/******/            apply: hotApply,
-/******/            status: function(l) {
-/******/                if (!l) return hotStatus;
-/******/                hotStatusHandlers.push(l);
-/******/            },
-/******/            addStatusHandler: function(l) {
-/******/                hotStatusHandlers.push(l);
-/******/            },
-/******/            removeStatusHandler: function(l) {
-/******/                var idx = hotStatusHandlers.indexOf(l);
-/******/                if (idx >= 0) hotStatusHandlers.splice(idx, 1);
-/******/            },
+/******/ 			// Management API
+/******/ 			check: hotCheck,
+/******/ 			apply: hotApply,
+/******/ 			status: function(l) {
+/******/ 				if (!l) return hotStatus;
+/******/ 				hotStatusHandlers.push(l);
+/******/ 			},
+/******/ 			addStatusHandler: function(l) {
+/******/ 				hotStatusHandlers.push(l);
+/******/ 			},
+/******/ 			removeStatusHandler: function(l) {
+/******/ 				var idx = hotStatusHandlers.indexOf(l);
+/******/ 				if (idx >= 0) hotStatusHandlers.splice(idx, 1);
+/******/ 			},
 /******/
-/******/            //inherit from previous dispose call
-/******/            data: hotCurrentModuleData[moduleId]
-/******/        };
-/******/        hotCurrentChildModule = undefined;
-/******/        return hot;
-/******/    }
+/******/ 			//inherit from previous dispose call
+/******/ 			data: hotCurrentModuleData[moduleId]
+/******/ 		};
+/******/ 		hotCurrentChildModule = undefined;
+/******/ 		return hot;
+/******/ 	}
 /******/
-/******/    var hotStatusHandlers = [];
-/******/    var hotStatus = "idle";
+/******/ 	var hotStatusHandlers = [];
+/******/ 	var hotStatus = "idle";
 /******/
-/******/    function hotSetStatus(newStatus) {
-/******/        hotStatus = newStatus;
-/******/        for (var i = 0; i < hotStatusHandlers.length; i++)
-/******/            hotStatusHandlers[i].call(null, newStatus);
-/******/    }
+/******/ 	function hotSetStatus(newStatus) {
+/******/ 		hotStatus = newStatus;
+/******/ 		for (var i = 0; i < hotStatusHandlers.length; i++)
+/******/ 			hotStatusHandlers[i].call(null, newStatus);
+/******/ 	}
 /******/
-/******/    // while downloading
-/******/    var hotWaitingFiles = 0;
-/******/    var hotChunksLoading = 0;
-/******/    var hotWaitingFilesMap = {};
-/******/    var hotRequestedFilesMap = {};
-/******/    var hotAvailableFilesMap = {};
-/******/    var hotDeferred;
+/******/ 	// while downloading
+/******/ 	var hotWaitingFiles = 0;
+/******/ 	var hotChunksLoading = 0;
+/******/ 	var hotWaitingFilesMap = {};
+/******/ 	var hotRequestedFilesMap = {};
+/******/ 	var hotAvailableFilesMap = {};
+/******/ 	var hotDeferred;
 /******/
-/******/    // The update info
-/******/    var hotUpdate, hotUpdateNewHash;
+/******/ 	// The update info
+/******/ 	var hotUpdate, hotUpdateNewHash;
 /******/
-/******/    function toModuleId(id) {
-/******/        var isNumber = +id + "" === id;
-/******/        return isNumber ? +id : id;
-/******/    }
+/******/ 	function toModuleId(id) {
+/******/ 		var isNumber = +id + "" === id;
+/******/ 		return isNumber ? +id : id;
+/******/ 	}
 /******/
-/******/    function hotCheck(apply) {
-/******/        if (hotStatus !== "idle") {
-/******/            throw new Error("check() is only allowed in idle status");
-/******/        }
-/******/        hotApplyOnUpdate = apply;
-/******/        hotSetStatus("check");
-/******/        return hotDownloadManifest(hotRequestTimeout).then(function(update) {
-/******/            if (!update) {
-/******/                hotSetStatus("idle");
-/******/                return null;
-/******/            }
-/******/            hotRequestedFilesMap = {};
-/******/            hotWaitingFilesMap = {};
-/******/            hotAvailableFilesMap = update.c;
-/******/            hotUpdateNewHash = update.h;
+/******/ 	function hotCheck(apply) {
+/******/ 		if (hotStatus !== "idle") {
+/******/ 			throw new Error("check() is only allowed in idle status");
+/******/ 		}
+/******/ 		hotApplyOnUpdate = apply;
+/******/ 		hotSetStatus("check");
+/******/ 		return hotDownloadManifest(hotRequestTimeout).then(function(update) {
+/******/ 			if (!update) {
+/******/ 				hotSetStatus("idle");
+/******/ 				return null;
+/******/ 			}
+/******/ 			hotRequestedFilesMap = {};
+/******/ 			hotWaitingFilesMap = {};
+/******/ 			hotAvailableFilesMap = update.c;
+/******/ 			hotUpdateNewHash = update.h;
 /******/
-/******/            hotSetStatus("prepare");
-/******/            var promise = new Promise(function(resolve, reject) {
-/******/                hotDeferred = {
-/******/                    resolve: resolve,
-/******/                    reject: reject
-/******/                };
-/******/            });
-/******/            hotUpdate = {};
-/******/            var chunkId = "main";
-/******/            // eslint-disable-next-line no-lone-blocks
-/******/            {
-/******/                /*globals chunkId */
-/******/                hotEnsureUpdateChunk(chunkId);
-/******/            }
-/******/            if (
-/******/                hotStatus === "prepare" &&
-/******/                hotChunksLoading === 0 &&
-/******/                hotWaitingFiles === 0
-/******/            ) {
-/******/                hotUpdateDownloaded();
-/******/            }
-/******/            return promise;
-/******/        });
-/******/    }
+/******/ 			hotSetStatus("prepare");
+/******/ 			var promise = new Promise(function(resolve, reject) {
+/******/ 				hotDeferred = {
+/******/ 					resolve: resolve,
+/******/ 					reject: reject
+/******/ 				};
+/******/ 			});
+/******/ 			hotUpdate = {};
+/******/ 			var chunkId = "main";
+/******/ 			// eslint-disable-next-line no-lone-blocks
+/******/ 			{
+/******/ 				/*globals chunkId */
+/******/ 				hotEnsureUpdateChunk(chunkId);
+/******/ 			}
+/******/ 			if (
+/******/ 				hotStatus === "prepare" &&
+/******/ 				hotChunksLoading === 0 &&
+/******/ 				hotWaitingFiles === 0
+/******/ 			) {
+/******/ 				hotUpdateDownloaded();
+/******/ 			}
+/******/ 			return promise;
+/******/ 		});
+/******/ 	}
 /******/
-/******/    // eslint-disable-next-line no-unused-vars
-/******/    function hotAddUpdateChunk(chunkId, moreModules) {
-/******/        if (!hotAvailableFilesMap[chunkId] || !hotRequestedFilesMap[chunkId])
-/******/            return;
-/******/        hotRequestedFilesMap[chunkId] = false;
-/******/        for (var moduleId in moreModules) {
-/******/            if (Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/                hotUpdate[moduleId] = moreModules[moduleId];
-/******/            }
-/******/        }
-/******/        if (--hotWaitingFiles === 0 && hotChunksLoading === 0) {
-/******/            hotUpdateDownloaded();
-/******/        }
-/******/    }
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	function hotAddUpdateChunk(chunkId, moreModules) {
+/******/ 		if (!hotAvailableFilesMap[chunkId] || !hotRequestedFilesMap[chunkId])
+/******/ 			return;
+/******/ 		hotRequestedFilesMap[chunkId] = false;
+/******/ 		for (var moduleId in moreModules) {
+/******/ 			if (Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+/******/ 				hotUpdate[moduleId] = moreModules[moduleId];
+/******/ 			}
+/******/ 		}
+/******/ 		if (--hotWaitingFiles === 0 && hotChunksLoading === 0) {
+/******/ 			hotUpdateDownloaded();
+/******/ 		}
+/******/ 	}
 /******/
-/******/    function hotEnsureUpdateChunk(chunkId) {
-/******/        if (!hotAvailableFilesMap[chunkId]) {
-/******/            hotWaitingFilesMap[chunkId] = true;
-/******/        } else {
-/******/            hotRequestedFilesMap[chunkId] = true;
-/******/            hotWaitingFiles++;
-/******/            hotDownloadUpdateChunk(chunkId);
-/******/        }
-/******/    }
+/******/ 	function hotEnsureUpdateChunk(chunkId) {
+/******/ 		if (!hotAvailableFilesMap[chunkId]) {
+/******/ 			hotWaitingFilesMap[chunkId] = true;
+/******/ 		} else {
+/******/ 			hotRequestedFilesMap[chunkId] = true;
+/******/ 			hotWaitingFiles++;
+/******/ 			hotDownloadUpdateChunk(chunkId);
+/******/ 		}
+/******/ 	}
 /******/
-/******/    function hotUpdateDownloaded() {
-/******/        hotSetStatus("ready");
-/******/        var deferred = hotDeferred;
-/******/        hotDeferred = null;
-/******/        if (!deferred) return;
-/******/        if (hotApplyOnUpdate) {
-/******/            // Wrap deferred object in Promise to mark it as a well-handled Promise to
-/******/            // avoid triggering uncaught exception warning in Chrome.
-/******/            // See https://bugs.chromium.org/p/chromium/issues/detail?id=465666
-/******/            Promise.resolve()
-/******/                .then(function() {
-/******/                    return hotApply(hotApplyOnUpdate);
-/******/                })
-/******/                .then(
-/******/                    function(result) {
-/******/                        deferred.resolve(result);
-/******/                    },
-/******/                    function(err) {
-/******/                        deferred.reject(err);
-/******/                    }
-/******/                );
-/******/        } else {
-/******/            var outdatedModules = [];
-/******/            for (var id in hotUpdate) {
-/******/                if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/                    outdatedModules.push(toModuleId(id));
-/******/                }
-/******/            }
-/******/            deferred.resolve(outdatedModules);
-/******/        }
-/******/    }
+/******/ 	function hotUpdateDownloaded() {
+/******/ 		hotSetStatus("ready");
+/******/ 		var deferred = hotDeferred;
+/******/ 		hotDeferred = null;
+/******/ 		if (!deferred) return;
+/******/ 		if (hotApplyOnUpdate) {
+/******/ 			// Wrap deferred object in Promise to mark it as a well-handled Promise to
+/******/ 			// avoid triggering uncaught exception warning in Chrome.
+/******/ 			// See https://bugs.chromium.org/p/chromium/issues/detail?id=465666
+/******/ 			Promise.resolve()
+/******/ 				.then(function() {
+/******/ 					return hotApply(hotApplyOnUpdate);
+/******/ 				})
+/******/ 				.then(
+/******/ 					function(result) {
+/******/ 						deferred.resolve(result);
+/******/ 					},
+/******/ 					function(err) {
+/******/ 						deferred.reject(err);
+/******/ 					}
+/******/ 				);
+/******/ 		} else {
+/******/ 			var outdatedModules = [];
+/******/ 			for (var id in hotUpdate) {
+/******/ 				if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
+/******/ 					outdatedModules.push(toModuleId(id));
+/******/ 				}
+/******/ 			}
+/******/ 			deferred.resolve(outdatedModules);
+/******/ 		}
+/******/ 	}
 /******/
-/******/    function hotApply(options) {
-/******/        if (hotStatus !== "ready")
-/******/            throw new Error("apply() is only allowed in ready status");
-/******/        options = options || {};
+/******/ 	function hotApply(options) {
+/******/ 		if (hotStatus !== "ready")
+/******/ 			throw new Error("apply() is only allowed in ready status");
+/******/ 		options = options || {};
 /******/
-/******/        var cb;
-/******/        var i;
-/******/        var j;
-/******/        var module;
-/******/        var moduleId;
+/******/ 		var cb;
+/******/ 		var i;
+/******/ 		var j;
+/******/ 		var module;
+/******/ 		var moduleId;
 /******/
-/******/        function getAffectedStuff(updateModuleId) {
-/******/            var outdatedModules = [updateModuleId];
-/******/            var outdatedDependencies = {};
+/******/ 		function getAffectedStuff(updateModuleId) {
+/******/ 			var outdatedModules = [updateModuleId];
+/******/ 			var outdatedDependencies = {};
 /******/
-/******/            var queue = outdatedModules.map(function(id) {
-/******/                return {
-/******/                    chain: [id],
-/******/                    id: id
-/******/                };
-/******/            });
-/******/            while (queue.length > 0) {
-/******/                var queueItem = queue.pop();
-/******/                var moduleId = queueItem.id;
-/******/                var chain = queueItem.chain;
-/******/                module = installedModules[moduleId];
-/******/                if (!module || module.hot._selfAccepted) continue;
-/******/                if (module.hot._selfDeclined) {
-/******/                    return {
-/******/                        type: "self-declined",
-/******/                        chain: chain,
-/******/                        moduleId: moduleId
-/******/                    };
-/******/                }
-/******/                if (module.hot._main) {
-/******/                    return {
-/******/                        type: "unaccepted",
-/******/                        chain: chain,
-/******/                        moduleId: moduleId
-/******/                    };
-/******/                }
-/******/                for (var i = 0; i < module.parents.length; i++) {
-/******/                    var parentId = module.parents[i];
-/******/                    var parent = installedModules[parentId];
-/******/                    if (!parent) continue;
-/******/                    if (parent.hot._declinedDependencies[moduleId]) {
-/******/                        return {
-/******/                            type: "declined",
-/******/                            chain: chain.concat([parentId]),
-/******/                            moduleId: moduleId,
-/******/                            parentId: parentId
-/******/                        };
-/******/                    }
-/******/                    if (outdatedModules.indexOf(parentId) !== -1) continue;
-/******/                    if (parent.hot._acceptedDependencies[moduleId]) {
-/******/                        if (!outdatedDependencies[parentId])
-/******/                            outdatedDependencies[parentId] = [];
-/******/                        addAllToSet(outdatedDependencies[parentId], [moduleId]);
-/******/                        continue;
-/******/                    }
-/******/                    delete outdatedDependencies[parentId];
-/******/                    outdatedModules.push(parentId);
-/******/                    queue.push({
-/******/                        chain: chain.concat([parentId]),
-/******/                        id: parentId
-/******/                    });
-/******/                }
-/******/            }
+/******/ 			var queue = outdatedModules.map(function(id) {
+/******/ 				return {
+/******/ 					chain: [id],
+/******/ 					id: id
+/******/ 				};
+/******/ 			});
+/******/ 			while (queue.length > 0) {
+/******/ 				var queueItem = queue.pop();
+/******/ 				var moduleId = queueItem.id;
+/******/ 				var chain = queueItem.chain;
+/******/ 				module = installedModules[moduleId];
+/******/ 				if (!module || module.hot._selfAccepted) continue;
+/******/ 				if (module.hot._selfDeclined) {
+/******/ 					return {
+/******/ 						type: "self-declined",
+/******/ 						chain: chain,
+/******/ 						moduleId: moduleId
+/******/ 					};
+/******/ 				}
+/******/ 				if (module.hot._main) {
+/******/ 					return {
+/******/ 						type: "unaccepted",
+/******/ 						chain: chain,
+/******/ 						moduleId: moduleId
+/******/ 					};
+/******/ 				}
+/******/ 				for (var i = 0; i < module.parents.length; i++) {
+/******/ 					var parentId = module.parents[i];
+/******/ 					var parent = installedModules[parentId];
+/******/ 					if (!parent) continue;
+/******/ 					if (parent.hot._declinedDependencies[moduleId]) {
+/******/ 						return {
+/******/ 							type: "declined",
+/******/ 							chain: chain.concat([parentId]),
+/******/ 							moduleId: moduleId,
+/******/ 							parentId: parentId
+/******/ 						};
+/******/ 					}
+/******/ 					if (outdatedModules.indexOf(parentId) !== -1) continue;
+/******/ 					if (parent.hot._acceptedDependencies[moduleId]) {
+/******/ 						if (!outdatedDependencies[parentId])
+/******/ 							outdatedDependencies[parentId] = [];
+/******/ 						addAllToSet(outdatedDependencies[parentId], [moduleId]);
+/******/ 						continue;
+/******/ 					}
+/******/ 					delete outdatedDependencies[parentId];
+/******/ 					outdatedModules.push(parentId);
+/******/ 					queue.push({
+/******/ 						chain: chain.concat([parentId]),
+/******/ 						id: parentId
+/******/ 					});
+/******/ 				}
+/******/ 			}
 /******/
-/******/            return {
-/******/                type: "accepted",
-/******/                moduleId: updateModuleId,
-/******/                outdatedModules: outdatedModules,
-/******/                outdatedDependencies: outdatedDependencies
-/******/            };
-/******/        }
+/******/ 			return {
+/******/ 				type: "accepted",
+/******/ 				moduleId: updateModuleId,
+/******/ 				outdatedModules: outdatedModules,
+/******/ 				outdatedDependencies: outdatedDependencies
+/******/ 			};
+/******/ 		}
 /******/
-/******/        function addAllToSet(a, b) {
-/******/            for (var i = 0; i < b.length; i++) {
-/******/                var item = b[i];
-/******/                if (a.indexOf(item) === -1) a.push(item);
-/******/            }
-/******/        }
+/******/ 		function addAllToSet(a, b) {
+/******/ 			for (var i = 0; i < b.length; i++) {
+/******/ 				var item = b[i];
+/******/ 				if (a.indexOf(item) === -1) a.push(item);
+/******/ 			}
+/******/ 		}
 /******/
-/******/        // at begin all updates modules are outdated
-/******/        // the "outdated" status can propagate to parents if they don't accept the children
-/******/        var outdatedDependencies = {};
-/******/        var outdatedModules = [];
-/******/        var appliedUpdate = {};
+/******/ 		// at begin all updates modules are outdated
+/******/ 		// the "outdated" status can propagate to parents if they don't accept the children
+/******/ 		var outdatedDependencies = {};
+/******/ 		var outdatedModules = [];
+/******/ 		var appliedUpdate = {};
 /******/
-/******/        var warnUnexpectedRequire = function warnUnexpectedRequire() {
-/******/            console.warn(
-/******/                "[HMR] unexpected require(" + result.moduleId + ") to disposed module"
-/******/            );
-/******/        };
+/******/ 		var warnUnexpectedRequire = function warnUnexpectedRequire() {
+/******/ 			console.warn(
+/******/ 				"[HMR] unexpected require(" + result.moduleId + ") to disposed module"
+/******/ 			);
+/******/ 		};
 /******/
-/******/        for (var id in hotUpdate) {
-/******/            if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/                moduleId = toModuleId(id);
-/******/                /** @type {TODO} */
-/******/                var result;
-/******/                if (hotUpdate[id]) {
-/******/                    result = getAffectedStuff(moduleId);
-/******/                } else {
-/******/                    result = {
-/******/                        type: "disposed",
-/******/                        moduleId: id
-/******/                    };
-/******/                }
-/******/                /** @type {Error|false} */
-/******/                var abortError = false;
-/******/                var doApply = false;
-/******/                var doDispose = false;
-/******/                var chainInfo = "";
-/******/                if (result.chain) {
-/******/                    chainInfo = "\nUpdate propagation: " + result.chain.join(" -> ");
-/******/                }
-/******/                switch (result.type) {
-/******/                    case "self-declined":
-/******/                        if (options.onDeclined) options.onDeclined(result);
-/******/                        if (!options.ignoreDeclined)
-/******/                            abortError = new Error(
-/******/                                "Aborted because of self decline: " +
-/******/                                    result.moduleId +
-/******/                                    chainInfo
-/******/                            );
-/******/                        break;
-/******/                    case "declined":
-/******/                        if (options.onDeclined) options.onDeclined(result);
-/******/                        if (!options.ignoreDeclined)
-/******/                            abortError = new Error(
-/******/                                "Aborted because of declined dependency: " +
-/******/                                    result.moduleId +
-/******/                                    " in " +
-/******/                                    result.parentId +
-/******/                                    chainInfo
-/******/                            );
-/******/                        break;
-/******/                    case "unaccepted":
-/******/                        if (options.onUnaccepted) options.onUnaccepted(result);
-/******/                        if (!options.ignoreUnaccepted)
-/******/                            abortError = new Error(
-/******/                                "Aborted because " + moduleId + " is not accepted" + chainInfo
-/******/                            );
-/******/                        break;
-/******/                    case "accepted":
-/******/                        if (options.onAccepted) options.onAccepted(result);
-/******/                        doApply = true;
-/******/                        break;
-/******/                    case "disposed":
-/******/                        if (options.onDisposed) options.onDisposed(result);
-/******/                        doDispose = true;
-/******/                        break;
-/******/                    default:
-/******/                        throw new Error("Unexception type " + result.type);
-/******/                }
-/******/                if (abortError) {
-/******/                    hotSetStatus("abort");
-/******/                    return Promise.reject(abortError);
-/******/                }
-/******/                if (doApply) {
-/******/                    appliedUpdate[moduleId] = hotUpdate[moduleId];
-/******/                    addAllToSet(outdatedModules, result.outdatedModules);
-/******/                    for (moduleId in result.outdatedDependencies) {
-/******/                        if (
-/******/                            Object.prototype.hasOwnProperty.call(
-/******/                                result.outdatedDependencies,
-/******/                                moduleId
-/******/                            )
-/******/                        ) {
-/******/                            if (!outdatedDependencies[moduleId])
-/******/                                outdatedDependencies[moduleId] = [];
-/******/                            addAllToSet(
-/******/                                outdatedDependencies[moduleId],
-/******/                                result.outdatedDependencies[moduleId]
-/******/                            );
-/******/                        }
-/******/                    }
-/******/                }
-/******/                if (doDispose) {
-/******/                    addAllToSet(outdatedModules, [result.moduleId]);
-/******/                    appliedUpdate[moduleId] = warnUnexpectedRequire;
-/******/                }
-/******/            }
-/******/        }
+/******/ 		for (var id in hotUpdate) {
+/******/ 			if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
+/******/ 				moduleId = toModuleId(id);
+/******/ 				/** @type {TODO} */
+/******/ 				var result;
+/******/ 				if (hotUpdate[id]) {
+/******/ 					result = getAffectedStuff(moduleId);
+/******/ 				} else {
+/******/ 					result = {
+/******/ 						type: "disposed",
+/******/ 						moduleId: id
+/******/ 					};
+/******/ 				}
+/******/ 				/** @type {Error|false} */
+/******/ 				var abortError = false;
+/******/ 				var doApply = false;
+/******/ 				var doDispose = false;
+/******/ 				var chainInfo = "";
+/******/ 				if (result.chain) {
+/******/ 					chainInfo = "\nUpdate propagation: " + result.chain.join(" -> ");
+/******/ 				}
+/******/ 				switch (result.type) {
+/******/ 					case "self-declined":
+/******/ 						if (options.onDeclined) options.onDeclined(result);
+/******/ 						if (!options.ignoreDeclined)
+/******/ 							abortError = new Error(
+/******/ 								"Aborted because of self decline: " +
+/******/ 									result.moduleId +
+/******/ 									chainInfo
+/******/ 							);
+/******/ 						break;
+/******/ 					case "declined":
+/******/ 						if (options.onDeclined) options.onDeclined(result);
+/******/ 						if (!options.ignoreDeclined)
+/******/ 							abortError = new Error(
+/******/ 								"Aborted because of declined dependency: " +
+/******/ 									result.moduleId +
+/******/ 									" in " +
+/******/ 									result.parentId +
+/******/ 									chainInfo
+/******/ 							);
+/******/ 						break;
+/******/ 					case "unaccepted":
+/******/ 						if (options.onUnaccepted) options.onUnaccepted(result);
+/******/ 						if (!options.ignoreUnaccepted)
+/******/ 							abortError = new Error(
+/******/ 								"Aborted because " + moduleId + " is not accepted" + chainInfo
+/******/ 							);
+/******/ 						break;
+/******/ 					case "accepted":
+/******/ 						if (options.onAccepted) options.onAccepted(result);
+/******/ 						doApply = true;
+/******/ 						break;
+/******/ 					case "disposed":
+/******/ 						if (options.onDisposed) options.onDisposed(result);
+/******/ 						doDispose = true;
+/******/ 						break;
+/******/ 					default:
+/******/ 						throw new Error("Unexception type " + result.type);
+/******/ 				}
+/******/ 				if (abortError) {
+/******/ 					hotSetStatus("abort");
+/******/ 					return Promise.reject(abortError);
+/******/ 				}
+/******/ 				if (doApply) {
+/******/ 					appliedUpdate[moduleId] = hotUpdate[moduleId];
+/******/ 					addAllToSet(outdatedModules, result.outdatedModules);
+/******/ 					for (moduleId in result.outdatedDependencies) {
+/******/ 						if (
+/******/ 							Object.prototype.hasOwnProperty.call(
+/******/ 								result.outdatedDependencies,
+/******/ 								moduleId
+/******/ 							)
+/******/ 						) {
+/******/ 							if (!outdatedDependencies[moduleId])
+/******/ 								outdatedDependencies[moduleId] = [];
+/******/ 							addAllToSet(
+/******/ 								outdatedDependencies[moduleId],
+/******/ 								result.outdatedDependencies[moduleId]
+/******/ 							);
+/******/ 						}
+/******/ 					}
+/******/ 				}
+/******/ 				if (doDispose) {
+/******/ 					addAllToSet(outdatedModules, [result.moduleId]);
+/******/ 					appliedUpdate[moduleId] = warnUnexpectedRequire;
+/******/ 				}
+/******/ 			}
+/******/ 		}
 /******/
-/******/        // Store self accepted outdated modules to require them later by the module system
-/******/        var outdatedSelfAcceptedModules = [];
-/******/        for (i = 0; i < outdatedModules.length; i++) {
-/******/            moduleId = outdatedModules[i];
-/******/            if (
-/******/                installedModules[moduleId] &&
-/******/                installedModules[moduleId].hot._selfAccepted &&
-/******/                // removed self-accepted modules should not be required
-/******/                appliedUpdate[moduleId] !== warnUnexpectedRequire
-/******/            ) {
-/******/                outdatedSelfAcceptedModules.push({
-/******/                    module: moduleId,
-/******/                    errorHandler: installedModules[moduleId].hot._selfAccepted
-/******/                });
-/******/            }
-/******/        }
+/******/ 		// Store self accepted outdated modules to require them later by the module system
+/******/ 		var outdatedSelfAcceptedModules = [];
+/******/ 		for (i = 0; i < outdatedModules.length; i++) {
+/******/ 			moduleId = outdatedModules[i];
+/******/ 			if (
+/******/ 				installedModules[moduleId] &&
+/******/ 				installedModules[moduleId].hot._selfAccepted &&
+/******/ 				// removed self-accepted modules should not be required
+/******/ 				appliedUpdate[moduleId] !== warnUnexpectedRequire
+/******/ 			) {
+/******/ 				outdatedSelfAcceptedModules.push({
+/******/ 					module: moduleId,
+/******/ 					errorHandler: installedModules[moduleId].hot._selfAccepted
+/******/ 				});
+/******/ 			}
+/******/ 		}
 /******/
-/******/        // Now in "dispose" phase
-/******/        hotSetStatus("dispose");
-/******/        Object.keys(hotAvailableFilesMap).forEach(function(chunkId) {
-/******/            if (hotAvailableFilesMap[chunkId] === false) {
-/******/                hotDisposeChunk(chunkId);
-/******/            }
-/******/        });
+/******/ 		// Now in "dispose" phase
+/******/ 		hotSetStatus("dispose");
+/******/ 		Object.keys(hotAvailableFilesMap).forEach(function(chunkId) {
+/******/ 			if (hotAvailableFilesMap[chunkId] === false) {
+/******/ 				hotDisposeChunk(chunkId);
+/******/ 			}
+/******/ 		});
 /******/
-/******/        var idx;
-/******/        var queue = outdatedModules.slice();
-/******/        while (queue.length > 0) {
-/******/            moduleId = queue.pop();
-/******/            module = installedModules[moduleId];
-/******/            if (!module) continue;
+/******/ 		var idx;
+/******/ 		var queue = outdatedModules.slice();
+/******/ 		while (queue.length > 0) {
+/******/ 			moduleId = queue.pop();
+/******/ 			module = installedModules[moduleId];
+/******/ 			if (!module) continue;
 /******/
-/******/            var data = {};
+/******/ 			var data = {};
 /******/
-/******/            // Call dispose handlers
-/******/            var disposeHandlers = module.hot._disposeHandlers;
-/******/            for (j = 0; j < disposeHandlers.length; j++) {
-/******/                cb = disposeHandlers[j];
-/******/                cb(data);
-/******/            }
-/******/            hotCurrentModuleData[moduleId] = data;
+/******/ 			// Call dispose handlers
+/******/ 			var disposeHandlers = module.hot._disposeHandlers;
+/******/ 			for (j = 0; j < disposeHandlers.length; j++) {
+/******/ 				cb = disposeHandlers[j];
+/******/ 				cb(data);
+/******/ 			}
+/******/ 			hotCurrentModuleData[moduleId] = data;
 /******/
-/******/            // disable module (this disables requires from this module)
-/******/            module.hot.active = false;
+/******/ 			// disable module (this disables requires from this module)
+/******/ 			module.hot.active = false;
 /******/
-/******/            // remove module from cache
-/******/            delete installedModules[moduleId];
+/******/ 			// remove module from cache
+/******/ 			delete installedModules[moduleId];
 /******/
-/******/            // when disposing there is no need to call dispose handler
-/******/            delete outdatedDependencies[moduleId];
+/******/ 			// when disposing there is no need to call dispose handler
+/******/ 			delete outdatedDependencies[moduleId];
 /******/
-/******/            // remove "parents" references from all children
-/******/            for (j = 0; j < module.children.length; j++) {
-/******/                var child = installedModules[module.children[j]];
-/******/                if (!child) continue;
-/******/                idx = child.parents.indexOf(moduleId);
-/******/                if (idx >= 0) {
-/******/                    child.parents.splice(idx, 1);
-/******/                }
-/******/            }
-/******/        }
+/******/ 			// remove "parents" references from all children
+/******/ 			for (j = 0; j < module.children.length; j++) {
+/******/ 				var child = installedModules[module.children[j]];
+/******/ 				if (!child) continue;
+/******/ 				idx = child.parents.indexOf(moduleId);
+/******/ 				if (idx >= 0) {
+/******/ 					child.parents.splice(idx, 1);
+/******/ 				}
+/******/ 			}
+/******/ 		}
 /******/
-/******/        // remove outdated dependency from module children
-/******/        var dependency;
-/******/        var moduleOutdatedDependencies;
-/******/        for (moduleId in outdatedDependencies) {
-/******/            if (
-/******/                Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
-/******/            ) {
-/******/                module = installedModules[moduleId];
-/******/                if (module) {
-/******/                    moduleOutdatedDependencies = outdatedDependencies[moduleId];
-/******/                    for (j = 0; j < moduleOutdatedDependencies.length; j++) {
-/******/                        dependency = moduleOutdatedDependencies[j];
-/******/                        idx = module.children.indexOf(dependency);
-/******/                        if (idx >= 0) module.children.splice(idx, 1);
-/******/                    }
-/******/                }
-/******/            }
-/******/        }
+/******/ 		// remove outdated dependency from module children
+/******/ 		var dependency;
+/******/ 		var moduleOutdatedDependencies;
+/******/ 		for (moduleId in outdatedDependencies) {
+/******/ 			if (
+/******/ 				Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
+/******/ 			) {
+/******/ 				module = installedModules[moduleId];
+/******/ 				if (module) {
+/******/ 					moduleOutdatedDependencies = outdatedDependencies[moduleId];
+/******/ 					for (j = 0; j < moduleOutdatedDependencies.length; j++) {
+/******/ 						dependency = moduleOutdatedDependencies[j];
+/******/ 						idx = module.children.indexOf(dependency);
+/******/ 						if (idx >= 0) module.children.splice(idx, 1);
+/******/ 					}
+/******/ 				}
+/******/ 			}
+/******/ 		}
 /******/
-/******/        // Now in "apply" phase
-/******/        hotSetStatus("apply");
+/******/ 		// Now in "apply" phase
+/******/ 		hotSetStatus("apply");
 /******/
-/******/        hotCurrentHash = hotUpdateNewHash;
+/******/ 		hotCurrentHash = hotUpdateNewHash;
 /******/
-/******/        // insert new code
-/******/        for (moduleId in appliedUpdate) {
-/******/            if (Object.prototype.hasOwnProperty.call(appliedUpdate, moduleId)) {
-/******/                modules[moduleId] = appliedUpdate[moduleId];
-/******/            }
-/******/        }
+/******/ 		// insert new code
+/******/ 		for (moduleId in appliedUpdate) {
+/******/ 			if (Object.prototype.hasOwnProperty.call(appliedUpdate, moduleId)) {
+/******/ 				modules[moduleId] = appliedUpdate[moduleId];
+/******/ 			}
+/******/ 		}
 /******/
-/******/        // call accept handlers
-/******/        var error = null;
-/******/        for (moduleId in outdatedDependencies) {
-/******/            if (
-/******/                Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
-/******/            ) {
-/******/                module = installedModules[moduleId];
-/******/                if (module) {
-/******/                    moduleOutdatedDependencies = outdatedDependencies[moduleId];
-/******/                    var callbacks = [];
-/******/                    for (i = 0; i < moduleOutdatedDependencies.length; i++) {
-/******/                        dependency = moduleOutdatedDependencies[i];
-/******/                        cb = module.hot._acceptedDependencies[dependency];
-/******/                        if (cb) {
-/******/                            if (callbacks.indexOf(cb) !== -1) continue;
-/******/                            callbacks.push(cb);
-/******/                        }
-/******/                    }
-/******/                    for (i = 0; i < callbacks.length; i++) {
-/******/                        cb = callbacks[i];
-/******/                        try {
-/******/                            cb(moduleOutdatedDependencies);
-/******/                        } catch (err) {
-/******/                            if (options.onErrored) {
-/******/                                options.onErrored({
-/******/                                    type: "accept-errored",
-/******/                                    moduleId: moduleId,
-/******/                                    dependencyId: moduleOutdatedDependencies[i],
-/******/                                    error: err
-/******/                                });
-/******/                            }
-/******/                            if (!options.ignoreErrored) {
-/******/                                if (!error) error = err;
-/******/                            }
-/******/                        }
-/******/                    }
-/******/                }
-/******/            }
-/******/        }
+/******/ 		// call accept handlers
+/******/ 		var error = null;
+/******/ 		for (moduleId in outdatedDependencies) {
+/******/ 			if (
+/******/ 				Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
+/******/ 			) {
+/******/ 				module = installedModules[moduleId];
+/******/ 				if (module) {
+/******/ 					moduleOutdatedDependencies = outdatedDependencies[moduleId];
+/******/ 					var callbacks = [];
+/******/ 					for (i = 0; i < moduleOutdatedDependencies.length; i++) {
+/******/ 						dependency = moduleOutdatedDependencies[i];
+/******/ 						cb = module.hot._acceptedDependencies[dependency];
+/******/ 						if (cb) {
+/******/ 							if (callbacks.indexOf(cb) !== -1) continue;
+/******/ 							callbacks.push(cb);
+/******/ 						}
+/******/ 					}
+/******/ 					for (i = 0; i < callbacks.length; i++) {
+/******/ 						cb = callbacks[i];
+/******/ 						try {
+/******/ 							cb(moduleOutdatedDependencies);
+/******/ 						} catch (err) {
+/******/ 							if (options.onErrored) {
+/******/ 								options.onErrored({
+/******/ 									type: "accept-errored",
+/******/ 									moduleId: moduleId,
+/******/ 									dependencyId: moduleOutdatedDependencies[i],
+/******/ 									error: err
+/******/ 								});
+/******/ 							}
+/******/ 							if (!options.ignoreErrored) {
+/******/ 								if (!error) error = err;
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 				}
+/******/ 			}
+/******/ 		}
 /******/
-/******/        // Load self accepted modules
-/******/        for (i = 0; i < outdatedSelfAcceptedModules.length; i++) {
-/******/            var item = outdatedSelfAcceptedModules[i];
-/******/            moduleId = item.module;
-/******/            hotCurrentParents = [moduleId];
-/******/            try {
-/******/                __webpack_require__(moduleId);
-/******/            } catch (err) {
-/******/                if (typeof item.errorHandler === "function") {
-/******/                    try {
-/******/                        item.errorHandler(err);
-/******/                    } catch (err2) {
-/******/                        if (options.onErrored) {
-/******/                            options.onErrored({
-/******/                                type: "self-accept-error-handler-errored",
-/******/                                moduleId: moduleId,
-/******/                                error: err2,
-/******/                                originalError: err
-/******/                            });
-/******/                        }
-/******/                        if (!options.ignoreErrored) {
-/******/                            if (!error) error = err2;
-/******/                        }
-/******/                        if (!error) error = err;
-/******/                    }
-/******/                } else {
-/******/                    if (options.onErrored) {
-/******/                        options.onErrored({
-/******/                            type: "self-accept-errored",
-/******/                            moduleId: moduleId,
-/******/                            error: err
-/******/                        });
-/******/                    }
-/******/                    if (!options.ignoreErrored) {
-/******/                        if (!error) error = err;
-/******/                    }
-/******/                }
-/******/            }
-/******/        }
+/******/ 		// Load self accepted modules
+/******/ 		for (i = 0; i < outdatedSelfAcceptedModules.length; i++) {
+/******/ 			var item = outdatedSelfAcceptedModules[i];
+/******/ 			moduleId = item.module;
+/******/ 			hotCurrentParents = [moduleId];
+/******/ 			try {
+/******/ 				__webpack_require__(moduleId);
+/******/ 			} catch (err) {
+/******/ 				if (typeof item.errorHandler === "function") {
+/******/ 					try {
+/******/ 						item.errorHandler(err);
+/******/ 					} catch (err2) {
+/******/ 						if (options.onErrored) {
+/******/ 							options.onErrored({
+/******/ 								type: "self-accept-error-handler-errored",
+/******/ 								moduleId: moduleId,
+/******/ 								error: err2,
+/******/ 								originalError: err
+/******/ 							});
+/******/ 						}
+/******/ 						if (!options.ignoreErrored) {
+/******/ 							if (!error) error = err2;
+/******/ 						}
+/******/ 						if (!error) error = err;
+/******/ 					}
+/******/ 				} else {
+/******/ 					if (options.onErrored) {
+/******/ 						options.onErrored({
+/******/ 							type: "self-accept-errored",
+/******/ 							moduleId: moduleId,
+/******/ 							error: err
+/******/ 						});
+/******/ 					}
+/******/ 					if (!options.ignoreErrored) {
+/******/ 						if (!error) error = err;
+/******/ 					}
+/******/ 				}
+/******/ 			}
+/******/ 		}
 /******/
-/******/        // handle errors in accept handlers and self accepted module load
-/******/        if (error) {
-/******/            hotSetStatus("fail");
-/******/            return Promise.reject(error);
-/******/        }
+/******/ 		// handle errors in accept handlers and self accepted module load
+/******/ 		if (error) {
+/******/ 			hotSetStatus("fail");
+/******/ 			return Promise.reject(error);
+/******/ 		}
 /******/
-/******/        hotSetStatus("idle");
-/******/        return new Promise(function(resolve) {
-/******/            resolve(outdatedModules);
-/******/        });
-/******/    }
+/******/ 		hotSetStatus("idle");
+/******/ 		return new Promise(function(resolve) {
+/******/ 			resolve(outdatedModules);
+/******/ 		});
+/******/ 	}
 /******/
-/******/    // The module cache
-/******/    var installedModules = {};
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
 /******/
-/******/    // The require function
-/******/    function __webpack_require__(moduleId) {
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
 /******/
-/******/        // Check if module is in cache
-/******/        if(installedModules[moduleId]) {
-/******/            return installedModules[moduleId].exports;
-/******/        }
-/******/        // Create a new module (and put it into the cache)
-/******/        var module = installedModules[moduleId] = {
-/******/            i: moduleId,
-/******/            l: false,
-/******/            exports: {},
-/******/            hot: hotCreateModule(moduleId),
-/******/            parents: (hotCurrentParentsTemp = hotCurrentParents, hotCurrentParents = [], hotCurrentParentsTemp),
-/******/            children: []
-/******/        };
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {},
+/******/ 			hot: hotCreateModule(moduleId),
+/******/ 			parents: (hotCurrentParentsTemp = hotCurrentParents, hotCurrentParents = [], hotCurrentParentsTemp),
+/******/ 			children: []
+/******/ 		};
 /******/
-/******/        // Execute the module function
-/******/        modules[moduleId].call(module.exports, module, module.exports, hotCreateRequire(moduleId));
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, hotCreateRequire(moduleId));
 /******/
-/******/        // Flag the module as loaded
-/******/        module.l = true;
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
 /******/
-/******/        // Return the exports of the module
-/******/        return module.exports;
-/******/    }
-/******/
-/******/
-/******/    // expose the modules object (__webpack_modules__)
-/******/    __webpack_require__.m = modules;
-/******/
-/******/    // expose the module cache
-/******/    __webpack_require__.c = installedModules;
-/******/
-/******/    // define getter function for harmony exports
-/******/    __webpack_require__.d = function(exports, name, getter) {
-/******/        if(!__webpack_require__.o(exports, name)) {
-/******/            Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/        }
-/******/    };
-/******/
-/******/    // define __esModule on exports
-/******/    __webpack_require__.r = function(exports) {
-/******/        if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/            Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/        }
-/******/        Object.defineProperty(exports, '__esModule', { value: true });
-/******/    };
-/******/
-/******/    // create a fake namespace object
-/******/    // mode & 1: value is a module id, require it
-/******/    // mode & 2: merge all properties of value into the ns
-/******/    // mode & 4: return value when already ns object
-/******/    // mode & 8|1: behave like require
-/******/    __webpack_require__.t = function(value, mode) {
-/******/        if(mode & 1) value = __webpack_require__(value);
-/******/        if(mode & 8) return value;
-/******/        if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/        var ns = Object.create(null);
-/******/        __webpack_require__.r(ns);
-/******/        Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/        if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/        return ns;
-/******/    };
-/******/
-/******/    // getDefaultExport function for compatibility with non-harmony modules
-/******/    __webpack_require__.n = function(module) {
-/******/        var getter = module && module.__esModule ?
-/******/            function getDefault() { return module['default']; } :
-/******/            function getModuleExports() { return module; };
-/******/        __webpack_require__.d(getter, 'a', getter);
-/******/        return getter;
-/******/    };
-/******/
-/******/    // Object.prototype.hasOwnProperty.call
-/******/    __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/    // __webpack_public_path__
-/******/    __webpack_require__.p = "dist";
-/******/
-/******/    // __webpack_hash__
-/******/    __webpack_require__.h = function() { return hotCurrentHash; };
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 /******/
 /******/
-/******/    // Load entry module and return exports
-/******/    return hotCreateRequire("./src/js/index.js")(__webpack_require__.s = "./src/js/index.js");
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "dist";
+/******/
+/******/ 	// __webpack_hash__
+/******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return hotCreateRequire("./src/js/index.js")(__webpack_require__.s = "./src/js/index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -12781,9 +13468,9 @@ module.exports = isUndefined;
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! tui-code-snippet/collection/forEachOwnProperties */ "./node_modules/tui-code-snippet/collection/forEachOwnProperties.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-                __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-                (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(this, function (_exports, _forEachOwnProperties) {
   "use strict";
@@ -12841,9 +13528,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! tui-code-snippet/collection/forEachArray */ "./node_modules/tui-code-snippet/collection/forEachArray.js"), __webpack_require__(/*! tui-code-snippet/type/isExisty */ "./node_modules/tui-code-snippet/type/isExisty.js"), __webpack_require__(/*! tui-code-snippet/type/isNumber */ "./node_modules/tui-code-snippet/type/isNumber.js"), __webpack_require__(/*! tui-code-snippet/domUtil/addClass */ "./node_modules/tui-code-snippet/domUtil/addClass.js"), __webpack_require__(/*! tui-code-snippet/domUtil/removeClass */ "./node_modules/tui-code-snippet/domUtil/removeClass.js"), __webpack_require__(/*! tui-code-snippet/domUtil/removeElement */ "./node_modules/tui-code-snippet/domUtil/removeElement.js"), __webpack_require__(/*! ./utils */ "./src/js/utils.js"), __webpack_require__(/*! ./constants */ "./src/js/constants.js"), __webpack_require__(/*! ./itemGroup */ "./src/js/itemGroup.js"), __webpack_require__(/*! ./item */ "./src/js/item.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-                __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-                (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(this, function (_exports, _forEachArray, _isExisty, _isNumber, _addClass, _removeClass, _removeElement, _utils, _constants, _itemGroup, _item) {
   "use strict";
@@ -13309,9 +13996,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./selectBox */ "./src/js/selectBox.js"), __webpack_require__(/*! ../css/selectBox.css */ "./src/css/selectBox.css")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-                __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-                (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(this, function (_exports, _selectBox, _selectBox2) {
   "use strict";
@@ -13342,9 +14029,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! tui-code-snippet/domUtil/addClass */ "./node_modules/tui-code-snippet/domUtil/addClass.js"), __webpack_require__(/*! tui-code-snippet/domUtil/removeClass */ "./node_modules/tui-code-snippet/domUtil/removeClass.js"), __webpack_require__(/*! tui-code-snippet/domUtil/removeElement */ "./node_modules/tui-code-snippet/domUtil/removeElement.js"), __webpack_require__(/*! ./utils */ "./src/js/utils.js"), __webpack_require__(/*! ./constants */ "./src/js/constants.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-                __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-                (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(this, function (_exports, _addClass, _removeClass, _removeElement, _utils, _constants) {
   "use strict";
@@ -13514,9 +14201,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! tui-code-snippet/domUtil/addClass */ "./node_modules/tui-code-snippet/domUtil/addClass.js"), __webpack_require__(/*! tui-code-snippet/domUtil/removeClass */ "./node_modules/tui-code-snippet/domUtil/removeClass.js"), __webpack_require__(/*! tui-code-snippet/domUtil/removeElement */ "./node_modules/tui-code-snippet/domUtil/removeElement.js"), __webpack_require__(/*! ./utils */ "./src/js/utils.js"), __webpack_require__(/*! ./constants */ "./src/js/constants.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-                __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-                (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(this, function (_exports, _addClass, _removeClass, _removeElement, _utils, _constants) {
   "use strict";
@@ -13838,9 +14525,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! tui-code-snippet/domUtil/addClass */ "./node_modules/tui-code-snippet/domUtil/addClass.js"), __webpack_require__(/*! tui-code-snippet/domUtil/removeClass */ "./node_modules/tui-code-snippet/domUtil/removeClass.js"), __webpack_require__(/*! tui-code-snippet/domUtil/removeElement */ "./node_modules/tui-code-snippet/domUtil/removeElement.js"), __webpack_require__(/*! ./utils */ "./src/js/utils.js"), __webpack_require__(/*! ./constants */ "./src/js/constants.js"), __webpack_require__(/*! ./item */ "./src/js/item.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-                __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-                (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(this, function (_exports, _addClass, _removeClass, _removeElement, _utils, _constants, _item) {
   "use strict";
@@ -14085,9 +14772,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-                __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-                (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(this, function (_exports) {
   "use strict";
@@ -14151,9 +14838,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! tui-code-snippet/customEvents/customEvents */ "./node_modules/tui-code-snippet/customEvents/customEvents.js"), __webpack_require__(/*! tui-code-snippet/domEvent/on */ "./node_modules/tui-code-snippet/domEvent/on.js"), __webpack_require__(/*! tui-code-snippet/domEvent/off */ "./node_modules/tui-code-snippet/domEvent/off.js"), __webpack_require__(/*! tui-code-snippet/domEvent/preventDefault */ "./node_modules/tui-code-snippet/domEvent/preventDefault.js"), __webpack_require__(/*! tui-code-snippet/domEvent/getTarget */ "./node_modules/tui-code-snippet/domEvent/getTarget.js"), __webpack_require__(/*! tui-code-snippet/domUtil/closest */ "./node_modules/tui-code-snippet/domUtil/closest.js"), __webpack_require__(/*! tui-code-snippet/domUtil/removeElement */ "./node_modules/tui-code-snippet/domUtil/removeElement.js"), __webpack_require__(/*! tui-code-snippet/type/isObject */ "./node_modules/tui-code-snippet/type/isObject.js"), __webpack_require__(/*! tui-code-snippet/type/isExisty */ "./node_modules/tui-code-snippet/type/isExisty.js"), __webpack_require__(/*! tui-code-snippet/type/isHTMLNode */ "./node_modules/tui-code-snippet/type/isHTMLNode.js"), __webpack_require__(/*! tui-code-snippet/request/sendHostname */ "./node_modules/tui-code-snippet/request/sendHostname.js"), __webpack_require__(/*! ./utils */ "./src/js/utils.js"), __webpack_require__(/*! ./keyEventUtils */ "./src/js/keyEventUtils.js"), __webpack_require__(/*! ./constants */ "./src/js/constants.js"), __webpack_require__(/*! ./input */ "./src/js/input.js"), __webpack_require__(/*! ./dropdown */ "./src/js/dropdown.js"), __webpack_require__(/*! ./itemGroup */ "./src/js/itemGroup.js"), __webpack_require__(/*! ./item */ "./src/js/item.js"), __webpack_require__(/*! ./theme */ "./src/js/theme.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-                __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-                (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(this, function (_exports, _customEvents, _on, _off, _preventDefault, _getTarget, _closest, _removeElement, _isObject, _isExisty, _isHTMLNode, _sendHostname, _utils, _keyEventUtils, _constants, _input, _dropdown, _itemGroup, _item, _theme) {
   "use strict";
@@ -14973,9 +15660,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! tui-code-snippet/collection/forEachOwnProperties */ "./node_modules/tui-code-snippet/collection/forEachOwnProperties.js"), __webpack_require__(/*! tui-code-snippet/domUtil/removeElement */ "./node_modules/tui-code-snippet/domUtil/removeElement.js"), __webpack_require__(/*! tui-code-snippet/type/isArray */ "./node_modules/tui-code-snippet/type/isArray.js"), __webpack_require__(/*! tui-code-snippet/type/isBoolean */ "./node_modules/tui-code-snippet/type/isBoolean.js"), __webpack_require__(/*! tui-code-snippet/type/isString */ "./node_modules/tui-code-snippet/type/isString.js"), __webpack_require__(/*! ./utils */ "./src/js/utils.js"), __webpack_require__(/*! ./constants */ "./src/js/constants.js"), __webpack_require__(/*! ./themeConfig */ "./src/js/themeConfig.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-                __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-                (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(this, function (_exports, _forEachOwnProperties, _removeElement, _isArray, _isBoolean, _isString, _utils, _constants, _themeConfig) {
   "use strict";
@@ -15178,9 +15865,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-                __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-                (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(this, function (_exports) {
   "use strict";
@@ -15348,9 +16035,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! tui-code-snippet/collection/forEachOwnProperties */ "./node_modules/tui-code-snippet/collection/forEachOwnProperties.js"), __webpack_require__(/*! tui-code-snippet/type/isString */ "./node_modules/tui-code-snippet/type/isString.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-                __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-                (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(this, function (_exports, _forEachOwnProperties, _isString) {
   "use strict";
@@ -15476,15 +16163,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DatePickerEditor = void 0;
 var tslib_1 = __webpack_require__(1);
-var tui_date_picker_1 = tslib_1.__importDefault(__webpack_require__(41));
+var tui_date_picker_1 = tslib_1.__importDefault(__webpack_require__(40));
 var dom_1 = __webpack_require__(2);
 var common_1 = __webpack_require__(0);
-var dom_2 = __webpack_require__(31);
+var dom_2 = __webpack_require__(33);
 var DatePickerEditor = /** @class */ (function () {
     function DatePickerEditor(props) {
         var _this = this;
-        var usageStatistics = props.grid.usageStatistics, columnInfo = props.columnInfo, value = props.value;
+        var usageStatistics = props.grid.usageStatistics, columnInfo = props.columnInfo;
+        var value = String(common_1.isNil(props.value) ? '' : props.value);
         var el = document.createElement('div');
         el.className = dom_1.cls('layer-editing-inner');
         this.el = el;
@@ -15502,7 +16191,7 @@ var DatePickerEditor = /** @class */ (function () {
             this.inputEl.className = dom_1.cls('datepicker-input');
             datepickerInputContainer.appendChild(icon);
         }
-        var date = common_1.isUndefined(value) || common_1.isNull(value) ? '' : new Date();
+        var date;
         if (!options.format) {
             options.format = 'yyyy-MM-dd';
         }
@@ -15582,6 +16271,7 @@ exports.DatePickerEditor = DatePickerEditor;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RowHeaderInputRenderer = void 0;
 var dom_1 = __webpack_require__(2);
 var RowHeaderInputRenderer = /** @class */ (function () {
     function RowHeaderInputRenderer(props) {
@@ -15625,6 +16315,131 @@ exports.RowHeaderInputRenderer = RowHeaderInputRenderer;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RowHeaderDraggableRenderer = void 0;
+var dom_1 = __webpack_require__(2);
+var ROW_COUNT = 3;
+var COL_COUNT = 3;
+var RowHeaderDraggableRenderer = /** @class */ (function () {
+    function RowHeaderDraggableRenderer() {
+        var el = document.createElement('div');
+        el.className = dom_1.cls('row-header-draggable');
+        this.el = el;
+        this.renderDraggableIcon();
+    }
+    RowHeaderDraggableRenderer.prototype.getElement = function () {
+        return this.el;
+    };
+    RowHeaderDraggableRenderer.prototype.renderDraggableIcon = function () {
+        for (var i = 0; i < ROW_COUNT; i += 1) {
+            var wrapper = document.createElement('div');
+            wrapper.style.lineHeight = '0';
+            for (var j = 0; j < COL_COUNT; j += 1) {
+                var square = document.createElement('span');
+                wrapper.appendChild(square);
+            }
+            this.el.appendChild(wrapper);
+        }
+    };
+    return RowHeaderDraggableRenderer;
+}());
+exports.RowHeaderDraggableRenderer = RowHeaderDraggableRenderer;
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isEditingCell = exports.isFocusedCell = void 0;
+function isFocusedCell(focus, rowKey, columnName) {
+    return rowKey === focus.rowKey && columnName === focus.columnName;
+}
+exports.isFocusedCell = isFocusedCell;
+function isEditingCell(focus, rowKey, columnName) {
+    var editingAddress = focus.editingAddress;
+    return !!(editingAddress &&
+        editingAddress.rowKey === rowKey &&
+        editingAddress.columnName === columnName);
+}
+exports.isEditingCell = isEditingCell;
+
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sortRawData = exports.compare = void 0;
+var common_1 = __webpack_require__(0);
+function compare(valueA, valueB) {
+    var isBlankA = common_1.isBlank(valueA);
+    var isBlankB = common_1.isBlank(valueB);
+    var convertedA = common_1.convertToNumber(valueA);
+    var convertedB = common_1.convertToNumber(valueB);
+    if (!common_1.isNumber(convertedA) || !common_1.isNumber(convertedB)) {
+        convertedA = String(valueA);
+        convertedB = String(valueB);
+    }
+    var result = 0;
+    if (isBlankA && !isBlankB) {
+        result = -1;
+    }
+    else if (!isBlankA && isBlankB) {
+        result = 1;
+    }
+    else if (convertedA < convertedB) {
+        result = -1;
+    }
+    else if (convertedA > convertedB) {
+        result = 1;
+    }
+    return result;
+}
+exports.compare = compare;
+function getComparators(columns) {
+    var comparators = [];
+    columns.forEach(function (column) {
+        var columnName = column.columnName, ascending = column.ascending, customComparator = column.comparator;
+        var comparator = customComparator || compare;
+        comparators.push({
+            name: columnName,
+            comparator: ascending
+                ? comparator
+                : function (valueA, valueB, rowA, rowB) {
+                    return -comparator(valueA, valueB, rowA, rowB);
+                },
+        });
+    });
+    return comparators;
+}
+function sortRawData(columns) {
+    var comparators = getComparators(columns);
+    return function (rowA, rowB) {
+        for (var _i = 0, comparators_1 = comparators; _i < comparators_1.length; _i++) {
+            var _a = comparators_1[_i], columnName = _a.name, comparator = _a.comparator;
+            var result = comparator(rowA[columnName], rowB[columnName], rowA, rowB);
+            if (result) {
+                return result;
+            }
+        }
+        return 0;
+    };
+}
+exports.sortRawData = sortRawData;
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getChangedScrollPosition = void 0;
 function getHorizontalScrollPosition(rightSideWidth, cellPosRect, scrollLeft, tableBorderWidth) {
     var left = cellPosRect.left, right = cellPosRect.right;
     if (left < scrollLeft) {
@@ -15659,13 +16474,14 @@ exports.getChangedScrollPosition = getChangedScrollPosition;
 
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var data_1 = __webpack_require__(12);
+exports.updateRowSpanWhenRemoving = exports.updateRowSpanWhenAppending = void 0;
+var data_1 = __webpack_require__(13);
 var common_1 = __webpack_require__(0);
 function updateRowSpanWhenAppending(data, prevRow, extendPrevRowSpan) {
     var prevRowSpanMap = prevRow.rowSpanMap;
@@ -15736,12 +16552,13 @@ function updateSubRowSpan(data, mainRow, columnName, startOffset, spanCount) {
 
 
 /***/ }),
-/* 71 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = void 0;
 var observable_1 = __webpack_require__(5);
 var common_1 = __webpack_require__(0);
 function create(_a) {
@@ -15790,12 +16607,13 @@ exports.create = create;
 
 
 /***/ }),
-/* 72 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = void 0;
 var observable_1 = __webpack_require__(5);
 var common_1 = __webpack_require__(0);
 var rowSpan_1 = __webpack_require__(11);
@@ -15887,12 +16705,13 @@ exports.create = create;
 
 
 /***/ }),
-/* 73 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = void 0;
 var tslib_1 = __webpack_require__(1);
 var observable_1 = __webpack_require__(5);
 var common_1 = __webpack_require__(0);
@@ -16016,12 +16835,13 @@ exports.create = create;
 
 
 /***/ }),
-/* 74 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = void 0;
 var observable_1 = __webpack_require__(5);
 var common_1 = __webpack_require__(0);
 var data_1 = __webpack_require__(6);
@@ -16051,12 +16871,13 @@ exports.create = create;
 
 
 /***/ }),
-/* 75 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = void 0;
 var observable_1 = __webpack_require__(5);
 var common_1 = __webpack_require__(0);
 var rowSpan_1 = __webpack_require__(11);
@@ -16097,17 +16918,19 @@ function create(_a) {
         },
         get rowIndex() {
             var rowKey = this.rowKey;
-            return rowKey === null ? null : data_1.findIndexByRowKey(data, column, id, rowKey);
+            if (common_1.isNull(rowKey)) {
+                return null;
+            }
+            var index = data_1.findIndexByRowKey(data, column, id, rowKey);
+            return data_1.isClientPagination(data) ? index - data.pageRowRange[0] : index;
         },
         get originalRowIndex() {
             var rowIndex = this.rowIndex;
-            var pageOptions = data.pageOptions;
-            if (rowIndex === null) {
+            if (common_1.isNull(rowIndex)) {
                 return null;
             }
             if (data_1.isClientPagination(data)) {
-                var perPage = pageOptions.perPage, page = pageOptions.page;
-                return rowIndex + (page - 1) * perPage;
+                return rowIndex + data.pageRowRange[0];
             }
             return rowIndex;
         },
@@ -16118,13 +16941,12 @@ function create(_a) {
             if (columnIndex === null || rowIndex === null || side === null || columnName === null) {
                 return null;
             }
-            var targetRowIndex = data_1.getRowIndexWithPage(data, rowIndex);
             var widths = columnCoords.widths, offsets = columnCoords.offsets;
             var borderWidth = widths[side].length - 1 === columnIndex ? 0 : cellBorderWidth;
             var left = offsets[side][columnIndex];
             var right = left + widths[side][columnIndex] + borderWidth;
-            var top = rowCoords.offsets[targetRowIndex];
-            var bottom = top + rowCoords.heights[targetRowIndex];
+            var top = rowCoords.offsets[rowIndex];
+            var bottom = top + rowCoords.heights[rowIndex];
             var rowSpan = rowSpan_1.getRowSpanByRowKey(rowKey, columnName, filteredRawData);
             if (rowSpan_1.isRowSpanEnabled(sortState) && rowSpan) {
                 var verticalPos = rowSpan_1.getVerticalPosWithRowSpan(columnName, rowSpan, rowCoords, filteredRawData);
@@ -16138,15 +16960,16 @@ exports.create = create;
 
 
 /***/ }),
-/* 76 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = void 0;
 var tslib_1 = __webpack_require__(1);
 var observable_1 = __webpack_require__(5);
-var selection_1 = __webpack_require__(14);
+var selection_1 = __webpack_require__(19);
 var data_1 = __webpack_require__(6);
 function getOwnSideColumnRange(columnRange, side, visibleFrozenCount) {
     var _a = columnRange.map(function (columnIdx) { return columnIdx; }), start = _a[0], end = _a[1];
@@ -16273,12 +17096,13 @@ exports.create = create;
 
 
 /***/ }),
-/* 77 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = void 0;
 var observable_1 = __webpack_require__(5);
 function create() {
     return observable_1.observable({ hoveredRowKey: null, cellHeightMap: {} });
@@ -16287,12 +17111,13 @@ exports.create = create;
 
 
 /***/ }),
-/* 78 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = void 0;
 var observable_1 = __webpack_require__(5);
 function create() {
     return observable_1.observable({ activeColumnAddress: null, activeFilterState: null });
@@ -16301,15 +17126,16 @@ exports.create = create;
 
 
 /***/ }),
-/* 79 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Root = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var container_1 = __webpack_require__(80);
+var container_1 = __webpack_require__(83);
 var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
 var eventBus_1 = __webpack_require__(8);
 var Root = /** @class */ (function (_super) {
@@ -16354,28 +17180,29 @@ exports.Root = Root;
 
 
 /***/ }),
-/* 80 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Container = exports.ContainerComp = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var leftSide_1 = __webpack_require__(81);
-var rightSide_1 = __webpack_require__(99);
-var stateLayer_1 = __webpack_require__(100);
-var filterLayer_1 = __webpack_require__(101);
-var heightResizeHandle_1 = __webpack_require__(107);
-var clipboard_1 = __webpack_require__(108);
-var pagination_1 = __webpack_require__(109);
+var leftSide_1 = __webpack_require__(84);
+var rightSide_1 = __webpack_require__(103);
+var stateLayer_1 = __webpack_require__(104);
+var filterLayer_1 = __webpack_require__(105);
+var heightResizeHandle_1 = __webpack_require__(111);
+var clipboard_1 = __webpack_require__(112);
+var pagination_1 = __webpack_require__(113);
 var dom_1 = __webpack_require__(2);
 var hoc_1 = __webpack_require__(4);
 var eventBus_1 = __webpack_require__(8);
 var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
-var browser_1 = __webpack_require__(48);
+var browser_1 = __webpack_require__(50);
 var common_1 = __webpack_require__(0);
-var keyboard_1 = __webpack_require__(18);
+var keyboard_1 = __webpack_require__(17);
 var DOUBLE_TAP_DURATION = 200;
 var TAP_THRESHOLD = 10;
 var ContainerComp = /** @class */ (function (_super) {
@@ -16563,11 +17390,13 @@ var ContainerComp = /** @class */ (function (_super) {
         return _this;
     }
     ContainerComp.prototype.startEditing = function (eventTarget) {
-        var dispatch = this.props.dispatch;
+        var _a = this.props, dispatch = _a.dispatch, focusedRowKey = _a.focusedRowKey, focusedColumnName = _a.focusedColumnName;
         var address = dom_1.getCellAddress(eventTarget);
         if (address) {
             var rowKey = address.rowKey, columnName = address.columnName;
-            dispatch('startEditing', rowKey, columnName);
+            if (focusedRowKey === rowKey && focusedColumnName === columnName) {
+                dispatch('startEditing', rowKey, columnName);
+            }
         }
     };
     ContainerComp.prototype.componentDidMount = function () {
@@ -16639,22 +17468,25 @@ exports.Container = hoc_1.connect(function (_a) {
         scrollX: dimension.scrollX,
         scrollY: dimension.scrollY,
         renderState: renderState,
+        focusedRowKey: focus.rowKey,
+        focusedColumnName: focus.columnName,
     });
 })(ContainerComp);
 
 
 /***/ }),
-/* 81 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LeftSide = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var headerArea_1 = __webpack_require__(44);
-var bodyArea_1 = __webpack_require__(46);
-var summaryArea_1 = __webpack_require__(47);
+var headerArea_1 = __webpack_require__(46);
+var bodyArea_1 = __webpack_require__(48);
+var summaryArea_1 = __webpack_require__(49);
 var dom_1 = __webpack_require__(2);
 var hoc_1 = __webpack_require__(4);
 var LeftSideComp = /** @class */ (function (_super) {
@@ -16686,18 +17518,19 @@ exports.LeftSide = hoc_1.connect(function (_a) {
 
 
 /***/ }),
-/* 82 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ColumnResizer = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var dom_1 = __webpack_require__(2);
 var hoc_1 = __webpack_require__(4);
 var common_1 = __webpack_require__(0);
-var column_1 = __webpack_require__(13);
+var column_1 = __webpack_require__(12);
 var WIDTH = 7;
 var HALF_WIDTH = 3;
 var ColumnResizerComp = /** @class */ (function (_super) {
@@ -16739,12 +17572,12 @@ var ColumnResizerComp = /** @class */ (function (_super) {
     ColumnResizerComp.prototype.renderHandle = function (info, index) {
         var _a;
         var _this = this;
-        var name = info.name, height = info.height, offsetX = info.offsetX, offsetY = info.offsetY, width = info.width;
+        var name = info.name, height = info.height, offsetX = info.offsetX, offsetY = info.offsetY, width = info.width, header = info.header;
         var attrs = (_a = {},
             _a[dom_1.dataAttr.COLUMN_INDEX] = index,
             _a[dom_1.dataAttr.COLUMN_NAME] = name,
             _a);
-        return (preact_1.h("div", tslib_1.__assign({ class: dom_1.cls('column-resize-handle'), title: name }, attrs, { style: {
+        return (preact_1.h("div", tslib_1.__assign({ class: dom_1.cls('column-resize-handle'), title: header }, attrs, { style: {
                 height: height,
                 width: WIDTH,
                 left: offsetX + width - HALF_WIDTH,
@@ -16810,11 +17643,12 @@ var ColumnResizerComp = /** @class */ (function (_super) {
             var len = cols.length;
             var offsetY = headerHeight;
             cols.forEach(function (col, idx) {
-                var resizable = col.resizable, name = col.name;
+                var resizable = col.resizable, name = col.name, header = col.header;
                 var height = idx === len - 1 ? defaultHeight * (maxLen - len + 1) : defaultHeight;
                 offsetY -= height;
                 if (resizable && !_this.isHideChildColumns(name) && !nameMap[name]) {
                     resizerInfo.push(tslib_1.__assign({ name: name,
+                        header: header,
                         height: height,
                         offsetY: offsetY }, _this.getResizerCoords(name)));
                     nameMap[name] = true;
@@ -16845,18 +17679,19 @@ exports.ColumnResizer = hoc_1.connect(function (_a, _b) {
 
 
 /***/ }),
-/* 83 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ComplexHeader = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
-var selection_1 = __webpack_require__(14);
-var columnHeader_1 = __webpack_require__(45);
-var column_1 = __webpack_require__(13);
+var selection_1 = __webpack_require__(19);
+var columnHeader_1 = __webpack_require__(47);
+var column_1 = __webpack_require__(12);
 var ComplexHeaderComp = /** @class */ (function (_super) {
     tslib_1.__extends(ComplexHeaderComp, _super);
     function ComplexHeaderComp() {
@@ -16933,12 +17768,13 @@ exports.ComplexHeader = hoc_1.connect(function (store, _a) {
 
 
 /***/ }),
-/* 84 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.HeaderCheckbox = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
@@ -16991,12 +17827,13 @@ exports.HeaderCheckbox = hoc_1.connect(function (store) {
 
 
 /***/ }),
-/* 85 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SortingButton = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var dom_1 = __webpack_require__(2);
@@ -17052,12 +17889,13 @@ exports.SortingButton = hoc_1.connect(function (store, props) {
 
 
 /***/ }),
-/* 86 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SortingOrder = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
@@ -17086,12 +17924,13 @@ exports.SortingOrder = hoc_1.connect(function (store, props) {
 
 
 /***/ }),
-/* 87 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FilterButton = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var dom_1 = __webpack_require__(2);
@@ -17136,16 +17975,154 @@ exports.FilterButton = hoc_1.connect(function (store, _a) {
 
 
 /***/ }),
-/* 88 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getResolvedOffsets = exports.createFloatingLine = exports.getMovedPosAndIndex = exports.createDraggableInfo = void 0;
+var common_1 = __webpack_require__(0);
+var dom_1 = __webpack_require__(2);
+var data_1 = __webpack_require__(6);
+var EXCEED_RATIO = 0.8;
+var ADDITIONAL_HEIGHT = 10;
+function createRow(height) {
+    var row = document.createElement('div');
+    row.className = dom_1.cls('floating-row');
+    row.style.height = height;
+    row.style.lineHeight = height;
+    row.style.width = 'auto';
+    return row;
+}
+function createCells(cell) {
+    var childLen = cell.childNodes.length;
+    var el = document.createElement('div');
+    el.className = dom_1.cls('floating-cell');
+    el.style.width = window.getComputedStyle(cell).width;
+    for (var i = 0; i < childLen; i += 1) {
+        // the cell is not complex structure, so there is no the performance problem
+        el.appendChild(cell.childNodes[i].cloneNode(true));
+    }
+    return el;
+}
+function createTreeCell(treeColumnName, viewRow) {
+    var cell = document.createElement('div');
+    var iconStyle = viewRow.treeInfo.leaf ? '' : 'background-position: -39px -35px';
+    var span = document.createElement('span');
+    span.className = dom_1.cls('floating-tree-cell-content');
+    span.textContent = String(viewRow.valueMap[treeColumnName].value);
+    cell.className = dom_1.cls('floating-tree-cell');
+    cell.innerHTML = "\n    <span class=\"" + dom_1.cls('tree-icon') + "\">\n      <i style=\"" + iconStyle + "\"></i>\n    </span>\n  ";
+    cell.appendChild(span);
+    return cell;
+}
+function createFloatingDraggableRow(store, rowKey, offsetLeft, offsetTop, posInfo) {
+    var data = store.data, column = store.column, id = store.id;
+    var treeColumnName = column.treeColumnName;
+    var cells = common_1.fromArray(posInfo.container.querySelectorAll("[data-row-key=\"" + rowKey + "\"]"));
+    // get original table row height
+    var height = cells[0].parentElement.clientHeight + "px";
+    var row = createRow(height);
+    row.style.left = offsetLeft + "px";
+    row.style.top = offsetTop + "px";
+    if (treeColumnName) {
+        var index = data_1.findIndexByRowKey(data, column, id, rowKey);
+        var viewRow = data.viewData[index];
+        row.appendChild(createTreeCell(treeColumnName, viewRow));
+    }
+    else {
+        cells.forEach(function (cell) {
+            row.appendChild(createCells(cell));
+        });
+    }
+    return row;
+}
+function createDraggableInfo(store, posInfo) {
+    var data = store.data, dimension = store.dimension;
+    var rawData = data.rawData, filters = data.filters;
+    // if there is any filter condition, cannot drag the row
+    if (!rawData.length || (filters === null || filters === void 0 ? void 0 : filters.length)) {
+        return null;
+    }
+    var _a = getMovedPosAndIndex(store, posInfo), offsetLeft = _a.offsetLeft, offsetTop = _a.offsetTop, index = _a.index;
+    var _b = rawData[index], rowKey = _b.rowKey, _attributes = _b._attributes;
+    var row = createFloatingDraggableRow(store, rowKey, offsetLeft, offsetTop, posInfo);
+    return _attributes.disabled
+        ? null
+        : {
+            row: row,
+            rowKey: rowKey,
+            line: createFloatingLine(dimension.scrollYWidth),
+        };
+}
+exports.createDraggableInfo = createDraggableInfo;
+function getMovedPosAndIndex(store, _a) {
+    var pageX = _a.pageX, pageY = _a.pageY, left = _a.left, top = _a.top, scrollTop = _a.scrollTop;
+    var rowCoords = store.rowCoords, dimension = store.dimension, column = store.column, data = store.data;
+    var heights = rowCoords.heights, offsets = rowCoords.offsets;
+    var rawData = data.rawData;
+    var headerHeight = dimension.headerHeight;
+    var offsetLeft = pageX - left;
+    var offsetTop = pageY - top + scrollTop;
+    var index = common_1.findOffsetIndex(rowCoords.offsets, offsetTop);
+    // move to next index when exceeding the height with ratio
+    if (!column.treeColumnName) {
+        if (index < rawData.length - 1 && offsetTop - offsets[index] > heights[index] * EXCEED_RATIO) {
+            index += 1;
+        }
+    }
+    var height = offsets[index] - scrollTop + headerHeight;
+    var moveToLast = false;
+    // resolve the height for moving to last index with tree data
+    if (column.treeColumnName) {
+        if (rawData.length - 1 === index && offsetTop > offsets[index] + heights[index]) {
+            height += heights[index];
+            moveToLast = true;
+        }
+    }
+    return {
+        index: index,
+        height: height,
+        offsetLeft: offsetLeft,
+        offsetTop: offsetTop - scrollTop + headerHeight,
+        targetRow: rawData[index],
+        moveToLast: moveToLast,
+    };
+}
+exports.getMovedPosAndIndex = getMovedPosAndIndex;
+function createFloatingLine(scrollYWidth) {
+    var line = document.createElement('div');
+    line.className = dom_1.cls('floating-line');
+    line.style.width = "calc(100% - " + scrollYWidth + "px)";
+    return line;
+}
+exports.createFloatingLine = createFloatingLine;
+function getResolvedOffsets(_a, _b, _c) {
+    var dimension = _a.dimension;
+    var offsetLeft = _b.offsetLeft, offsetTop = _b.offsetTop;
+    var width = _c.width;
+    var bodyWidth = dimension.width, bodyHeight = dimension.bodyHeight, scrollXHeight = dimension.scrollXHeight;
+    return {
+        offsetLeft: common_1.clamp(offsetLeft, 0, bodyWidth - width),
+        offsetTop: common_1.clamp(offsetTop, 0, bodyHeight + scrollXHeight + ADDITIONAL_HEIGHT),
+    };
+}
+exports.getResolvedOffsets = getResolvedOffsets;
+
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BodyRows = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var bodyRow_1 = __webpack_require__(89);
-var bodyDummyRow_1 = __webpack_require__(93);
+var bodyRow_1 = __webpack_require__(93);
+var bodyDummyRow_1 = __webpack_require__(97);
 var common_1 = __webpack_require__(0);
 var hoc_1 = __webpack_require__(4);
 var BodyRowsComp = /** @class */ (function (_super) {
@@ -17181,18 +18158,19 @@ exports.BodyRows = hoc_1.connect(function (_a, _b) {
 
 
 /***/ }),
-/* 89 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BodyRow = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
 var dom_1 = __webpack_require__(2);
 var common_1 = __webpack_require__(0);
-var rowSpanCell_1 = __webpack_require__(90);
+var rowSpanCell_1 = __webpack_require__(94);
 var ROW_HEIGHT_DEBOUNCE_TIME = 10;
 var BodyRowComp = /** @class */ (function (_super) {
     tslib_1.__extends(BodyRowComp, _super);
@@ -17239,16 +18217,17 @@ exports.BodyRow = hoc_1.connect(function (_a, _b) {
 
 
 /***/ }),
-/* 90 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RowSpanCell = exports.RowSpanCellComp = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
-var bodyCell_1 = __webpack_require__(91);
+var bodyCell_1 = __webpack_require__(95);
 var RowSpanCellComp = /** @class */ (function (_super) {
     tslib_1.__extends(RowSpanCellComp, _super);
     function RowSpanCellComp() {
@@ -17279,20 +18258,20 @@ exports.RowSpanCell = hoc_1.connect(function (_a, _b) {
 
 
 /***/ }),
-/* 91 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BodyCell = exports.BodyCellComp = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var treeCellContents_1 = __webpack_require__(92);
+var treeCellContents_1 = __webpack_require__(96);
 var dom_1 = __webpack_require__(2);
 var hoc_1 = __webpack_require__(4);
 var instance_1 = __webpack_require__(7);
 var column_1 = __webpack_require__(10);
-var data_1 = __webpack_require__(6);
 var common_1 = __webpack_require__(0);
 var BodyCellComp = /** @class */ (function (_super) {
     tslib_1.__extends(BodyCellComp, _super);
@@ -17399,7 +18378,7 @@ var BodyCellComp = /** @class */ (function (_super) {
 }(preact_1.Component));
 exports.BodyCellComp = BodyCellComp;
 exports.BodyCell = hoc_1.connect(function (_a, _b) {
-    var id = _a.id, column = _a.column, data = _a.data, selection = _a.selection, dimension = _a.dimension;
+    var id = _a.id, column = _a.column, selection = _a.selection, dimension = _a.dimension;
     var viewRow = _b.viewRow, columnInfo = _b.columnInfo, rowIndex = _b.rowIndex;
     var rowKey = viewRow.rowKey, valueMap = viewRow.valueMap, treeInfo = viewRow.treeInfo;
     var treeColumnName = column.treeColumnName;
@@ -17407,28 +18386,26 @@ exports.BodyCell = hoc_1.connect(function (_a, _b) {
     var range = selection.range;
     var columnName = columnInfo.name;
     var defaultRowHeight = dimension.rowHeight, cellBorderWidth = dimension.cellBorderWidth;
-    var rowIndexWithPage = data_1.getRowIndexWithPage(data, rowIndex);
     return tslib_1.__assign(tslib_1.__assign({ grid: grid,
         rowKey: rowKey,
         columnInfo: columnInfo,
-        defaultRowHeight: defaultRowHeight, renderData: (valueMap && valueMap[columnName]) || { invalidStates: [] } }, (columnName === treeColumnName ? { treeInfo: treeInfo } : null)), { selectedRow: range
-            ? rowIndexWithPage >= range.row[0] && rowIndexWithPage <= range.row[1]
-            : false, cellBorderWidth: cellBorderWidth });
+        defaultRowHeight: defaultRowHeight, renderData: (valueMap && valueMap[columnName]) || { invalidStates: [] } }, (columnName === treeColumnName ? { treeInfo: treeInfo } : null)), { selectedRow: range ? rowIndex >= range.row[0] && rowIndex <= range.row[1] : false, cellBorderWidth: cellBorderWidth });
 })(BodyCellComp);
 
 
 /***/ }),
-/* 92 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TreeCellContents = exports.TreeCellContentsComp = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var dom_1 = __webpack_require__(2);
 var hoc_1 = __webpack_require__(4);
-var constant_1 = __webpack_require__(20);
+var constant_1 = __webpack_require__(16);
 var TreeCellContentsComp = /** @class */ (function (_super) {
     tslib_1.__extends(TreeCellContentsComp, _super);
     function TreeCellContentsComp() {
@@ -17481,12 +18458,13 @@ exports.TreeCellContents = hoc_1.connect(function (_a, _b) {
 
 
 /***/ }),
-/* 93 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BodyDummyRow = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
@@ -17498,7 +18476,7 @@ var BodyDummyRowComp = function (_a) {
     return (preact_1.h("tr", { style: { height: rowHeight }, class: dom_1.cls([isOddRow, 'row-odd'], [!isOddRow, 'row-even']) }, columnNames.map(function (name) {
         var _a;
         var attrs = (_a = {}, _a[dom_1.dataAttr.COLUMN_NAME] = name, _a);
-        return (preact_1.h("td", tslib_1.__assign({}, attrs, { key: index, class: dom_1.cls('cell', 'cell-dummy', [column_1.isRowHeader(name), 'cell-row-header']) })));
+        return (preact_1.h("td", tslib_1.__assign({}, attrs, { key: name + "-" + index, class: dom_1.cls('cell', 'cell-dummy', [column_1.isRowHeader(name), 'cell-row-header']) })));
     })));
 };
 exports.BodyDummyRow = hoc_1.connect(function (_a) {
@@ -17510,12 +18488,13 @@ exports.BodyDummyRow = hoc_1.connect(function (_a) {
 
 
 /***/ }),
-/* 94 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FocusLayer = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var dom_1 = __webpack_require__(2);
@@ -17578,12 +18557,13 @@ exports.FocusLayer = hoc_1.connect(function (_a, _b) {
 
 
 /***/ }),
-/* 95 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SelectionLayer = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var dom_1 = __webpack_require__(2);
@@ -17614,17 +18594,18 @@ exports.SelectionLayer = hoc_1.connect(function (_a, _b) {
 
 
 /***/ }),
-/* 96 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.EditingLayer = exports.EditingLayerComp = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
 var dom_1 = __webpack_require__(2);
-var keyboard_1 = __webpack_require__(18);
+var keyboard_1 = __webpack_require__(17);
 var common_1 = __webpack_require__(0);
 var instance_1 = __webpack_require__(7);
 var EditingLayerComp = /** @class */ (function (_super) {
@@ -17761,15 +18742,16 @@ exports.EditingLayer = hoc_1.connect(function (store, _a) {
 
 
 /***/ }),
-/* 97 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SummaryBodyRow = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var summaryBodyCell_1 = __webpack_require__(98);
+var summaryBodyCell_1 = __webpack_require__(102);
 var common_1 = __webpack_require__(0);
 var SummaryBodyRow = /** @class */ (function (_super) {
     tslib_1.__extends(SummaryBodyRow, _super);
@@ -17794,12 +18776,13 @@ exports.SummaryBodyRow = SummaryBodyRow;
 
 
 /***/ }),
-/* 98 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SummaryBodyCell = exports.SummaryBodyCellComp = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var dom_1 = __webpack_require__(2);
@@ -17844,18 +18827,19 @@ exports.SummaryBodyCell = hoc_1.connect(function (_a, _b) {
 
 
 /***/ }),
-/* 99 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RightSide = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var dom_1 = __webpack_require__(2);
-var bodyArea_1 = __webpack_require__(46);
-var headerArea_1 = __webpack_require__(44);
-var summaryArea_1 = __webpack_require__(47);
+var bodyArea_1 = __webpack_require__(48);
+var headerArea_1 = __webpack_require__(46);
+var summaryArea_1 = __webpack_require__(49);
 var hoc_1 = __webpack_require__(4);
 var RightSideComp = /** @class */ (function (_super) {
     tslib_1.__extends(RightSideComp, _super);
@@ -17956,17 +18940,18 @@ exports.RightSide = hoc_1.connect(function (_a) {
 
 
 /***/ }),
-/* 100 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.StateLayer = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var dom_1 = __webpack_require__(2);
 var hoc_1 = __webpack_require__(4);
-var i18n_1 = tslib_1.__importDefault(__webpack_require__(35));
+var i18n_1 = tslib_1.__importDefault(__webpack_require__(20));
 var StateLayerComp = /** @class */ (function (_super) {
     tslib_1.__extends(StateLayerComp, _super);
     function StateLayerComp() {
@@ -18004,16 +18989,17 @@ exports.StateLayer = hoc_1.connect(function (_a) {
 
 
 /***/ }),
-/* 101 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FilterLayer = exports.FilterLayerComp = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
-var filterLayerInner_1 = __webpack_require__(102);
+var filterLayerInner_1 = __webpack_require__(106);
 var FilterLayerComp = /** @class */ (function (_super) {
     tslib_1.__extends(FilterLayerComp, _super);
     function FilterLayerComp() {
@@ -18035,25 +19021,28 @@ exports.FilterLayer = hoc_1.connect(function (_a) {
 
 
 /***/ }),
-/* 102 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FilterLayerInner = exports.FilterLayerInnerComp = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
 var dom_1 = __webpack_require__(2);
-var textFilter_1 = __webpack_require__(103);
-var datePickerFilter_1 = __webpack_require__(104);
-var filterOperator_1 = __webpack_require__(105);
-var selectFilter_1 = __webpack_require__(106);
+var textFilter_1 = __webpack_require__(107);
+var datePickerFilter_1 = __webpack_require__(108);
+var filterOperator_1 = __webpack_require__(109);
+var selectFilter_1 = __webpack_require__(110);
 var common_1 = __webpack_require__(0);
+var i18n_1 = tslib_1.__importDefault(__webpack_require__(20));
 var FilterLayerInnerComp = /** @class */ (function (_super) {
     tslib_1.__extends(FilterLayerInnerComp, _super);
     function FilterLayerInnerComp() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.state = { left: _this.props.columnAddress.left };
         _this.renderFilter = function (index) {
             var _a = _this.props, columnAddress = _a.columnAddress, filterState = _a.filterState, columnInfo = _a.columnInfo;
             var type = columnInfo.filter.type;
@@ -18071,11 +19060,23 @@ var FilterLayerInnerComp = /** @class */ (function (_super) {
         };
         return _this;
     }
+    FilterLayerInnerComp.prototype.componentDidMount = function () {
+        var left = this.el.getBoundingClientRect().left;
+        var clientWidth = this.el.clientWidth;
+        var innerWidth = window.innerWidth;
+        if (innerWidth < left + clientWidth) {
+            var orgLeft = this.state.left;
+            this.setState({ left: orgLeft - (left + clientWidth - innerWidth) });
+        }
+    };
     FilterLayerInnerComp.prototype.render = function () {
-        var _a = this.props, columnAddress = _a.columnAddress, columnInfo = _a.columnInfo, renderSecondFilter = _a.renderSecondFilter, dispatch = _a.dispatch, currentColumnActive = _a.currentColumnActive, filterState = _a.filterState;
+        var _this = this;
+        var _a = this.props, columnInfo = _a.columnInfo, renderSecondFilter = _a.renderSecondFilter, dispatch = _a.dispatch, currentColumnActive = _a.currentColumnActive, filterState = _a.filterState;
         var _b = columnInfo.filter, showApplyBtn = _b.showApplyBtn, showClearBtn = _b.showClearBtn;
-        var left = columnAddress.left;
-        return (preact_1.h("div", { className: dom_1.cls('filter-container'), style: { left: left } },
+        var left = this.state.left;
+        return (preact_1.h("div", { className: dom_1.cls('filter-container'), style: { left: left }, ref: function (el) {
+                _this.el = el;
+            } },
             preact_1.h("div", null,
                 preact_1.h("span", { className: dom_1.cls('btn-filter', [currentColumnActive, 'btn-filter-active'], 'filter-icon') }),
                 preact_1.h("a", { className: dom_1.cls('btn-close'), onClick: function () {
@@ -18087,10 +19088,10 @@ var FilterLayerInnerComp = /** @class */ (function (_super) {
             preact_1.h("div", { className: dom_1.cls('filter-btn-container') },
                 showClearBtn && (preact_1.h("button", { className: dom_1.cls('filter-btn', 'filter-btn-clear'), onClick: function () {
                         dispatch('clearActiveFilterState');
-                    } }, "Clear")),
+                    } }, i18n_1.default.get('filter.clear'))),
                 showApplyBtn && (preact_1.h("button", { className: dom_1.cls('filter-btn', 'filter-btn-apply'), onClick: function () {
                         dispatch('applyActiveFilterState');
-                    } }, "Apply")))));
+                    } }, i18n_1.default.get('filter.apply'))))));
     };
     return FilterLayerInnerComp;
 }(preact_1.Component));
@@ -18116,20 +19117,21 @@ exports.FilterLayerInner = hoc_1.connect(function (store, _a) {
 
 
 /***/ }),
-/* 103 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TextFilter = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
 var dom_1 = __webpack_require__(2);
-var filter_1 = __webpack_require__(26);
+var filter_1 = __webpack_require__(29);
 var common_1 = __webpack_require__(0);
-var keyboard_1 = __webpack_require__(18);
-var constant_1 = __webpack_require__(20);
+var keyboard_1 = __webpack_require__(17);
+var constant_1 = __webpack_require__(16);
 var TextFilterComp = /** @class */ (function (_super) {
     tslib_1.__extends(TextFilterComp, _super);
     function TextFilterComp() {
@@ -18169,7 +19171,8 @@ var TextFilterComp = /** @class */ (function (_super) {
         var _this = this;
         var columnInfo = this.props.columnInfo;
         var _a = this.getPreviousValue(), code = _a.code, value = _a.value;
-        var selectOption = filter_1.filterSelectOption[columnInfo.filter.type];
+        var filterSelectOptions = filter_1.createFilterSelectOption();
+        var selectOption = filterSelectOptions[columnInfo.filter.type];
         return (preact_1.h("div", null,
             preact_1.h("div", { className: dom_1.cls('filter-dropdown') },
                 preact_1.h("select", { ref: function (ref) {
@@ -18199,22 +19202,23 @@ exports.TextFilter = hoc_1.connect(function (store, _a) {
 
 
 /***/ }),
-/* 104 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DatePickerFilter = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var tui_date_picker_1 = tslib_1.__importDefault(__webpack_require__(41));
+var tui_date_picker_1 = tslib_1.__importDefault(__webpack_require__(40));
 var hoc_1 = __webpack_require__(4);
 var instance_1 = __webpack_require__(7);
 var dom_1 = __webpack_require__(2);
-var filter_1 = __webpack_require__(26);
+var filter_1 = __webpack_require__(29);
 var common_1 = __webpack_require__(0);
-var keyboard_1 = __webpack_require__(18);
-var constant_1 = __webpack_require__(20);
+var keyboard_1 = __webpack_require__(17);
+var constant_1 = __webpack_require__(16);
 var DatePickerFilterComp = /** @class */ (function (_super) {
     tslib_1.__extends(DatePickerFilterComp, _super);
     function DatePickerFilterComp() {
@@ -18292,7 +19296,8 @@ var DatePickerFilterComp = /** @class */ (function (_super) {
         var columnInfo = this.props.columnInfo;
         var options = columnInfo.filter.options;
         var showIcon = !(options && options.showIcon === false);
-        var selectOption = filter_1.filterSelectOption.date;
+        var filterSelectOptions = filter_1.createFilterSelectOption();
+        var selectOption = filterSelectOptions.date;
         var _a = this.getPreviousValue(), value = _a.value, code = _a.code;
         return (preact_1.h("div", null,
             preact_1.h("div", { className: dom_1.cls('filter-dropdown') },
@@ -18329,12 +19334,13 @@ exports.DatePickerFilter = hoc_1.connect(function (store, _a) {
 
 
 /***/ }),
-/* 105 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FilterOperator = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
@@ -18371,12 +19377,13 @@ exports.FilterOperator = hoc_1.connect(function (_, _a) {
 
 
 /***/ }),
-/* 106 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SelectFilter = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
@@ -18384,7 +19391,8 @@ var instance_1 = __webpack_require__(7);
 var dom_1 = __webpack_require__(2);
 var common_1 = __webpack_require__(0);
 var data_1 = __webpack_require__(6);
-var constant_1 = __webpack_require__(20);
+var constant_1 = __webpack_require__(16);
+var i18n_1 = tslib_1.__importDefault(__webpack_require__(20));
 var SelectFilterComp = /** @class */ (function (_super) {
     tslib_1.__extends(SelectFilterComp, _super);
     function SelectFilterComp() {
@@ -18392,10 +19400,10 @@ var SelectFilterComp = /** @class */ (function (_super) {
         _this.state = {
             searchInput: '',
         };
-        _this.handleChange = common_1.debounce(function (ev, id) {
+        _this.handleChange = common_1.debounce(function (ev, value) {
             var dispatch = _this.props.dispatch;
             var checked = ev.target.checked;
-            dispatch('setActiveSelectFilterState', id, checked);
+            dispatch('setActiveSelectFilterState', value, checked);
         }, constant_1.FILTER_DEBOUNCE_TIME);
         _this.toggleAllColumnCheckbox = common_1.debounce(function (ev) {
             var checked = ev.target.checked;
@@ -18419,14 +19427,13 @@ var SelectFilterComp = /** @class */ (function (_super) {
             preact_1.h("li", { className: dom_1.cls('filter-list-item', [isAllSelected, 'filter-list-item-checked']) },
                 preact_1.h("label", null,
                     preact_1.h("input", { type: "checkbox", onChange: this.toggleAllColumnCheckbox, checked: isAllSelected }),
-                    preact_1.h("span", null, "Select All"))),
+                    preact_1.h("span", null, i18n_1.default.get('filter.selectAll')))),
             preact_1.h("ul", { className: dom_1.cls('filter-list') }, data.map(function (item) {
-                var value = item.value, checked = item.checked;
-                var text = String(value);
+                var value = item.value, text = item.text, checked = item.checked;
                 return (preact_1.h("li", { className: dom_1.cls('filter-list-item', [checked, 'filter-list-item-checked']), key: text },
                     preact_1.h("label", null,
-                        preact_1.h("input", { type: "checkbox", checked: checked, onChange: function (ev) { return _this.handleChange(ev, text); } }),
-                        preact_1.h("span", null, value))));
+                        preact_1.h("input", { type: "checkbox", checked: checked, onChange: function (ev) { return _this.handleChange(ev, value); } }),
+                        preact_1.h("span", null, text))));
             }))));
     };
     return SelectFilterComp;
@@ -18439,10 +19446,21 @@ exports.SelectFilter = hoc_1.connect(function (store, _a) {
     var state = filterState.state;
     var columnName = columnAddress.name;
     var uniqueColumnData = data_1.getUniqColumnData(rawData, column, columnName);
-    var columnData = uniqueColumnData.map(function (value) { return ({
+    var columnData = uniqueColumnData
+        .filter(function (value) { return value; })
+        .map(function (value) { return ({
         value: value,
+        text: String(value),
         checked: common_1.some(function (item) { return value === item.value; }, state),
     }); });
+    var isExistEmptyValue = uniqueColumnData.some(function (value) { return common_1.isEmpty(value); });
+    if (isExistEmptyValue) {
+        columnData.push({
+            value: '',
+            text: i18n_1.default.get('filter.emptyValue'),
+            checked: common_1.some(function (item) { return common_1.isEmpty(item.value); }, state),
+        });
+    }
     return {
         grid: instance_1.getInstance(id),
         columnData: columnData,
@@ -18455,12 +19473,13 @@ exports.SelectFilter = hoc_1.connect(function (store, _a) {
 
 
 /***/ }),
-/* 107 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.HeightResizeHandle = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
@@ -18510,19 +19529,20 @@ exports.HeightResizeHandle = hoc_1.connect(function (_a) {
 
 
 /***/ }),
-/* 108 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Clipboard = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
 var hoc_1 = __webpack_require__(4);
 var dom_1 = __webpack_require__(2);
-var keyboard_1 = __webpack_require__(18);
-var browser_1 = __webpack_require__(48);
-var clipboard_1 = __webpack_require__(27);
+var keyboard_1 = __webpack_require__(17);
+var browser_1 = __webpack_require__(50);
+var clipboard_1 = __webpack_require__(37);
 var common_1 = __webpack_require__(0);
 var KEYDOWN_LOCK_TIME = 10;
 var ClipboardComp = /** @class */ (function (_super) {
@@ -18577,7 +19597,7 @@ var ClipboardComp = /** @class */ (function (_super) {
                         return;
                     }
                     var store = _this.context.store;
-                    _this.el.innerHTML = clipboard_1.getText(store);
+                    _this.el.textContent = clipboard_1.getText(store);
                     if (dom_1.isSupportWindowClipboardData()) {
                         dom_1.setClipboardSelection(_this.el.childNodes[0]);
                     }
@@ -18613,7 +19633,7 @@ var ClipboardComp = /** @class */ (function (_super) {
             if (!_this.el) {
                 return;
             }
-            var text = _this.el.innerHTML;
+            var text = _this.el.textContent;
             if (dom_1.isSupportWindowClipboardData()) {
                 window.clipboardData.setData('Text', text);
             }
@@ -18654,12 +19674,12 @@ var ClipboardComp = /** @class */ (function (_super) {
         var data;
         if (html && html.indexOf('table') !== -1) {
             // step 1: Append copied data on contenteditable element to parsing correctly table data.
-            el.innerHTML = html;
+            el.textContent = html;
             // step 2: Make grid data from cell data of appended table element.
             var rows = el.querySelector('tbody').rows;
             data = dom_1.convertTableToData(rows);
             // step 3: Empty contenteditable element to reset.
-            el.innerHTML = '';
+            el.textContent = '';
         }
         else {
             data = common_1.convertTextToData(clipboardData.getData('text/plain'));
@@ -18719,15 +19739,16 @@ exports.Clipboard = hoc_1.connect(function (_a) {
 
 
 /***/ }),
-/* 109 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Pagination = void 0;
 var tslib_1 = __webpack_require__(1);
 var preact_1 = __webpack_require__(3);
-var tui_pagination_1 = tslib_1.__importDefault(__webpack_require__(110));
+var tui_pagination_1 = tslib_1.__importDefault(__webpack_require__(114));
 var hoc_1 = __webpack_require__(4);
 var dom_1 = __webpack_require__(2);
 var common_1 = __webpack_require__(0);
@@ -18772,14 +19793,8 @@ var PaginationComp = /** @class */ (function (_super) {
     };
     PaginationComp.prototype.createPagination = function () {
         var _a = this.props, pageOptions = _a.pageOptions, paginationHolder = _a.paginationHolder, usageStatistics = _a.grid.usageStatistics;
-        var totalCount = pageOptions.totalCount, perPage = pageOptions.perPage, page = pageOptions.page, visiblePages = pageOptions.visiblePages;
-        var options = {
-            totalItems: totalCount,
-            itemsPerPage: perPage,
-            page: page,
-            visiblePages: visiblePages,
-            usageStatistics: usageStatistics,
-        };
+        var totalCount = pageOptions.totalCount, perPage = pageOptions.perPage;
+        var options = tslib_1.__assign(tslib_1.__assign({}, pageOptions), { totalItems: totalCount, itemsPerPage: perPage, usageStatistics: usageStatistics });
         this.tuiPagination = new tui_pagination_1.default(this.el, options);
         this.addEventListener();
         paginationHolder.setPagination(this.tuiPagination);
@@ -18841,33 +19856,34 @@ exports.Pagination = hoc_1.connect(function (_a) {
 
 
 /***/ }),
-/* 110 */
+/* 114 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__110__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__114__;
 
 /***/ }),
-/* 111 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createDispatcher = void 0;
 var tslib_1 = __webpack_require__(1);
-var viewport = tslib_1.__importStar(__webpack_require__(19));
-var dimension = tslib_1.__importStar(__webpack_require__(43));
-var data = tslib_1.__importStar(__webpack_require__(15));
-var column = tslib_1.__importStar(__webpack_require__(112));
-var keyboard = tslib_1.__importStar(__webpack_require__(113));
-var mouse = tslib_1.__importStar(__webpack_require__(115));
-var focus = tslib_1.__importStar(__webpack_require__(17));
-var summary = tslib_1.__importStar(__webpack_require__(25));
-var selection = tslib_1.__importStar(__webpack_require__(16));
-var renderState = tslib_1.__importStar(__webpack_require__(116));
-var tree = tslib_1.__importStar(__webpack_require__(28));
-var sort = tslib_1.__importStar(__webpack_require__(24));
-var filter = tslib_1.__importStar(__webpack_require__(29));
-var pagination = tslib_1.__importStar(__webpack_require__(32));
+var viewport = tslib_1.__importStar(__webpack_require__(23));
+var dimension = tslib_1.__importStar(__webpack_require__(45));
+var data = tslib_1.__importStar(__webpack_require__(14));
+var column = tslib_1.__importStar(__webpack_require__(31));
+var keyboard = tslib_1.__importStar(__webpack_require__(116));
+var mouse = tslib_1.__importStar(__webpack_require__(118));
+var focus = tslib_1.__importStar(__webpack_require__(18));
+var summary = tslib_1.__importStar(__webpack_require__(24));
+var selection = tslib_1.__importStar(__webpack_require__(15));
+var renderState = tslib_1.__importStar(__webpack_require__(119));
+var tree = tslib_1.__importStar(__webpack_require__(30));
+var sort = tslib_1.__importStar(__webpack_require__(28));
+var filter = tslib_1.__importStar(__webpack_require__(34));
+var pagination = tslib_1.__importStar(__webpack_require__(35));
 var dispatchMap = tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign({}, viewport), dimension), data), column), mouse), focus), keyboard), summary), selection), renderState), tree), sort), filter), pagination);
 function createDispatcher(store) {
     return function dispatch(fname) {
@@ -18883,188 +19899,29 @@ exports.createDispatcher = createDispatcher;
 
 
 /***/ }),
-/* 112 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateDataByKeyMap = exports.paste = exports.removeContent = exports.moveSelection = exports.moveTabFocus = exports.editFocus = exports.moveFocus = void 0;
 var tslib_1 = __webpack_require__(1);
-var column_1 = __webpack_require__(30);
-var data_1 = __webpack_require__(12);
-var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
-var eventBus_1 = __webpack_require__(8);
-var focus_1 = __webpack_require__(17);
-var observable_1 = __webpack_require__(5);
-var sort_1 = __webpack_require__(24);
-var filter_1 = __webpack_require__(29);
-var selection_1 = __webpack_require__(16);
-var common_1 = __webpack_require__(0);
-var viewport_1 = __webpack_require__(19);
-function setFrozenColumnCount(_a, count) {
-    var column = _a.column;
-    column.frozenCount = count;
-}
-exports.setFrozenColumnCount = setFrozenColumnCount;
-function getCellWidthToBeResized(columns, range, resizeAmount, startWidths) {
-    var widths = [];
-    var startIdx = range[0], endIdx = range[1];
-    var rangeLength = endIdx - startIdx + 1;
-    var delta = resizeAmount / rangeLength;
-    for (var idx = 0; idx < rangeLength; idx += 1) {
-        var columnIdx = startIdx + idx;
-        var minWidth = columns[columnIdx].minWidth;
-        var width = Math.max(startWidths[idx] + delta, minWidth);
-        widths.push(width);
-    }
-    return widths;
-}
-function setColumnWidth(_a, side, range, resizeAmount, startWidths) {
-    var column = _a.column, id = _a.id;
-    var eventBus = eventBus_1.getEventBus(id);
-    var columns = column.visibleColumnsBySideWithRowHeader[side];
-    var startIdx = range[0], endIdx = range[1];
-    var resizedColumns = [];
-    var widths = getCellWidthToBeResized(columns, range, resizeAmount, startWidths);
-    for (var idx = startIdx; idx <= endIdx; idx += 1) {
-        resizedColumns.push({
-            columnName: columns[idx].name,
-            width: widths[idx - startIdx],
-        });
-    }
-    var gridEvent = new gridEvent_1.default({ resizedColumns: resizedColumns });
-    /**
-     * Occurs when column is resized
-     * @event Grid#columnResize
-     * @property {Array} resizedColumns - state about resized columns
-     * @property {number} resizedColumns.columnName - columnName of the target cell
-     * @property {number} resizedColumns.width - width of the resized column
-     * @property {Grid} instance - Current grid instance
-     */
-    eventBus.trigger('columnResize', gridEvent);
-    if (!gridEvent.isStopped()) {
-        widths.forEach(function (width, idx) {
-            var columnIdx = startIdx + idx;
-            var item = columns[columnIdx];
-            item.baseWidth = width;
-            item.fixedWidth = true;
-        });
-    }
-}
-exports.setColumnWidth = setColumnWidth;
-function setColumns(store, optColumns) {
-    var column = store.column, data = store.data, id = store.id;
-    var _a = column.dataForColumnCreation, columnOptions = _a.columnOptions, copyOptions = _a.copyOptions, treeColumnOptions = _a.treeColumnOptions, rowHeaders = _a.rowHeaders;
-    var relationColumns = optColumns.reduce(function (acc, _a) {
-        var _b = _a.relations, relations = _b === void 0 ? [] : _b;
-        return acc.concat(column_1.createRelationColumns(relations)).filter(function (columnName, index) {
-            var foundIndex = acc.indexOf(columnName);
-            return foundIndex === -1 || foundIndex === index;
-        });
-    }, []);
-    var columnInfos = optColumns.map(function (optColumn) {
-        return column_1.createColumn(optColumn, columnOptions, relationColumns, copyOptions, treeColumnOptions, column.columnHeaderInfo, !!optColumn.disabled);
-    });
-    var dataCreationKey = data_1.generateDataCreationKey();
-    viewport_1.initScrollPosition(store);
-    focus_1.initFocus(store);
-    selection_1.initSelection(store);
-    column.allColumns = tslib_1.__spreadArrays(rowHeaders, columnInfos);
-    data.viewData.forEach(function (viewRow) {
-        if (Array.isArray(viewRow.__unobserveFns__)) {
-            viewRow.__unobserveFns__.forEach(function (fn) { return fn(); });
-        }
-    });
-    data.rawData = data.rawData.map(function (row) {
-        var newRow = tslib_1.__assign(tslib_1.__assign({}, column.emptyRow), row);
-        newRow.uniqueKey = dataCreationKey + "-" + row.rowKey;
-        return newRow;
-    });
-    data.viewData = data.rawData.map(function (row) {
-        return observable_1.isObservable(row)
-            ? data_1.createViewRow(id, row, data.rawData, column)
-            : { rowKey: row.rowKey, sortKey: row.sortKey, uniqueKey: row.uniqueKey };
-    });
-    filter_1.initFilter(store);
-    sort_1.unsort(store);
-}
-exports.setColumns = setColumns;
-function resetColumnWidths(_a, widths) {
-    var column = _a.column;
-    column.visibleColumns.forEach(function (columnInfo, idx) {
-        columnInfo.baseWidth = widths[idx];
-    });
-}
-exports.resetColumnWidths = resetColumnWidths;
-function setColumnsHiddenValue(column, columnName, hidden) {
-    var allColumnMap = column.allColumnMap, complexColumnHeaders = column.complexColumnHeaders;
-    if (complexColumnHeaders.length) {
-        var complexColumn = common_1.findProp('name', columnName, complexColumnHeaders);
-        if (complexColumn) {
-            complexColumn.childNames.forEach(function (childName) {
-                allColumnMap[childName].hidden = hidden;
-            });
-            return;
-        }
-    }
-    allColumnMap[columnName].hidden = hidden;
-}
-function hideColumn(store, columnName) {
-    var column = store.column, focus = store.focus;
-    if (focus.columnName === columnName) {
-        focus_1.initFocus(store);
-    }
-    selection_1.initSelection(store);
-    filter_1.unfilter(store, columnName);
-    sort_1.unsort(store, columnName);
-    setColumnsHiddenValue(column, columnName, true);
-}
-exports.hideColumn = hideColumn;
-function showColumn(_a, columnName) {
-    var column = _a.column;
-    setColumnsHiddenValue(column, columnName, false);
-}
-exports.showColumn = showColumn;
-function setComplexColumnHeaders(store, complexColumnHeaders) {
-    store.column.complexColumnHeaders = complexColumnHeaders;
-}
-exports.setComplexColumnHeaders = setComplexColumnHeaders;
-function changeColumnHeadersByName(_a, columnsMap) {
-    var column = _a.column;
-    var complexColumnHeaders = column.complexColumnHeaders, allColumnMap = column.allColumnMap;
-    Object.keys(columnsMap).forEach(function (columnName) {
-        var col = allColumnMap[columnName];
-        if (col) {
-            col.header = columnsMap[columnName];
-        }
-        if (complexColumnHeaders.length) {
-            var complexCol = common_1.findProp('name', columnName, complexColumnHeaders);
-            if (complexCol) {
-                complexCol.header = columnsMap[columnName];
-            }
-        }
-    });
-    observable_1.notify(column, 'allColumns');
-}
-exports.changeColumnHeadersByName = changeColumnHeadersByName;
-
-
-/***/ }),
-/* 113 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var keyboard_1 = __webpack_require__(114);
-var focus_1 = __webpack_require__(17);
-var selection_1 = __webpack_require__(16);
+var keyboard_1 = __webpack_require__(117);
+var focus_1 = __webpack_require__(18);
+var selection_1 = __webpack_require__(15);
 var column_1 = __webpack_require__(10);
 var rowSpan_1 = __webpack_require__(11);
 var instance_1 = __webpack_require__(7);
+var eventBus_1 = __webpack_require__(8);
+var gridEvent_1 = tslib_1.__importDefault(__webpack_require__(9));
+var data_1 = __webpack_require__(6);
+var validation_1 = __webpack_require__(25);
+var clipboard_1 = __webpack_require__(37);
+var common_1 = __webpack_require__(0);
+var summary_1 = __webpack_require__(24);
 function moveFocus(store, command) {
     var focus = store.focus, data = store.data, visibleColumnsWithRowHeader = store.column.visibleColumnsWithRowHeader, id = store.id;
-    var filteredViewData = data.filteredViewData;
     var rowIndex = focus.rowIndex, columnIndex = focus.totalColumnIndex;
     if (rowIndex === null || columnIndex === null) {
         return;
@@ -19073,13 +19930,12 @@ function moveFocus(store, command) {
     var nextColumnName = visibleColumnsWithRowHeader[nextColumnIndex].name;
     if (!column_1.isRowHeader(nextColumnName)) {
         focus.navigating = true;
-        focus_1.changeFocus(store, filteredViewData[nextRowIndex].rowKey, nextColumnName, id);
+        focus_1.changeFocus(store, data_1.getRowKeyByIndexWithPageRange(data, nextRowIndex), nextColumnName, id);
     }
 }
 exports.moveFocus = moveFocus;
 function editFocus(store, command) {
-    var focus = store.focus;
-    var rowKey = focus.rowKey, columnName = focus.columnName;
+    var _a = store.focus, rowKey = _a.rowKey, columnName = _a.columnName;
     if (rowKey === null || columnName === null) {
         return;
     }
@@ -19100,12 +19956,14 @@ function moveTabFocus(store, command) {
         return;
     }
     var _a = keyboard_1.getNextCellIndex(store, command, [rowIndex, columnIndex]), nextRowIndex = _a[0], nextColumnIndex = _a[1];
-    var nextRowKey = data.filteredRawData[nextRowIndex].rowKey;
+    var nextRowKey = data_1.getRowKeyByIndexWithPageRange(data, nextRowIndex);
     var nextColumnName = visibleColumnsWithRowHeader[nextColumnIndex].name;
     if (!column_1.isRowHeader(nextColumnName)) {
         focus.navigating = true;
         focus_1.changeFocus(store, nextRowKey, nextColumnName, id);
-        if (focus.tabMode === 'moveAndEdit') {
+        if (focus.tabMode === 'moveAndEdit' &&
+            focus.rowKey === nextRowKey &&
+            focus.columnName === nextColumnName) {
             setTimeout(function () {
                 focus_1.startEditing(store, nextRowKey, nextColumnName);
             });
@@ -19163,45 +20021,121 @@ function moveSelection(store, command) {
 }
 exports.moveSelection = moveSelection;
 function removeContent(store) {
-    var column = store.column, data = store.data, id = store.id;
-    var rawData = data.rawData;
-    var removeRange = keyboard_1.getRemoveRange(store);
-    if (!removeRange) {
+    var column = store.column, data = store.data;
+    var range = keyboard_1.getRemoveRange(store);
+    if (!range) {
         return;
     }
-    var _a = removeRange.column, columnStart = _a[0], columnEnd = _a[1], _b = removeRange.row, rowStart = _b[0], rowEnd = _b[1];
-    var modifiedRowMap = {};
-    var manager = instance_1.getDataManager(id);
-    column.visibleColumnsWithRowHeader
-        .slice(columnStart, columnEnd + 1)
-        .filter(function (_a) {
-        var editor = _a.editor;
-        return !!editor;
-    })
-        .forEach(function (_a) {
-        var name = _a.name;
-        rawData.slice(rowStart, rowEnd + 1).forEach(function (row) {
-            row[name] = '';
-            modifiedRowMap[row.rowKey] = row;
+    var _a = range.column, columnStart = _a[0], columnEnd = _a[1], _b = range.row, rowStart = _b[0], rowEnd = _b[1];
+    var changeValueFns = [];
+    var prevChanges = [];
+    var nextChanges = [];
+    data.filteredRawData.slice(rowStart, rowEnd + 1).forEach(function (row, index) {
+        column.visibleColumnsWithRowHeader.slice(columnStart, columnEnd + 1).forEach(function (_a) {
+            var name = _a.name;
+            var rowIndex = index + rowStart;
+            if (data_1.isEditableCell(data, column, rowIndex, name)) {
+                var _b = data_1.createChangeInfo(store, row, name, '', rowIndex), prevChange = _b.prevChange, nextChange = _b.nextChange, changeValue = _b.changeValue;
+                prevChanges.push(prevChange);
+                nextChanges.push(nextChange);
+                changeValueFns.push(changeValue);
+            }
         });
     });
-    Object.keys(modifiedRowMap).forEach(function (key) {
-        manager.push('UPDATE', modifiedRowMap[key]);
-    });
+    updateDataByKeyMap(store, 'delete', { prevChanges: prevChanges, nextChanges: nextChanges, changeValueFns: changeValueFns });
 }
 exports.removeContent = removeContent;
+function applyCopiedData(store, copiedData, range) {
+    var data = store.data, column = store.column;
+    var filteredRawData = data.filteredRawData, filteredViewData = data.filteredViewData;
+    var visibleColumnsWithRowHeader = column.visibleColumnsWithRowHeader;
+    var _a = range.row, startRowIndex = _a[0], endRowIndex = _a[1], _b = range.column, startColumnIndex = _b[0], endColumnIndex = _b[1];
+    var columnNames = common_1.mapProp('name', visibleColumnsWithRowHeader);
+    var changeValueFns = [];
+    var prevChanges = [];
+    var nextChanges = [];
+    for (var rowIndex = 0; rowIndex + startRowIndex <= endRowIndex; rowIndex += 1) {
+        var rawRowIndex = rowIndex + startRowIndex;
+        for (var columnIndex = 0; columnIndex + startColumnIndex <= endColumnIndex; columnIndex += 1) {
+            var name = columnNames[columnIndex + startColumnIndex];
+            if (filteredViewData.length && data_1.isEditableCell(data, column, rawRowIndex, name)) {
+                var targetRow = filteredRawData[rawRowIndex];
+                var _c = data_1.createChangeInfo(store, targetRow, name, copiedData[rowIndex][columnIndex], rawRowIndex), prevChange = _c.prevChange, nextChange = _c.nextChange, changeValue = _c.changeValue;
+                prevChanges.push(prevChange);
+                nextChanges.push(nextChange);
+                changeValueFns.push(changeValue);
+                summary_1.updateSummaryValueByCell(store, name, {
+                    orgValue: targetRow[name],
+                    value: copiedData[rowIndex][columnIndex],
+                });
+            }
+        }
+    }
+    updateDataByKeyMap(store, 'paste', { prevChanges: prevChanges, nextChanges: nextChanges, changeValueFns: changeValueFns });
+}
+function paste(store, copiedData) {
+    var selection = store.selection, id = store.id;
+    var originalRange = selection.originalRange;
+    if (originalRange) {
+        copiedData = clipboard_1.copyDataToRange(originalRange, copiedData);
+    }
+    var rangeToPaste = clipboard_1.getRangeToPaste(store, copiedData);
+    applyCopiedData(store, copiedData, rangeToPaste);
+    selection_1.changeSelectionRange(selection, rangeToPaste, id);
+}
+exports.paste = paste;
+function updateDataByKeyMap(store, origin, changeInfo) {
+    var id = store.id, data = store.data, column = store.column;
+    var rawData = data.rawData, filteredRawData = data.filteredRawData;
+    var prevChanges = changeInfo.prevChanges, nextChanges = changeInfo.nextChanges, changeValueFns = changeInfo.changeValueFns;
+    var eventBus = eventBus_1.getEventBus(id);
+    var manager = instance_1.getDataManager(id);
+    var gridEvent = new gridEvent_1.default({ origin: origin, changes: prevChanges });
+    /**
+     * Occurs before one or more cells is changed
+     * @event Grid#beforeChange
+     * @property {string} origin - The type of change('paste', 'delete', 'cell')
+     * @property {Array.<object>} changes - rowKey, column name, original values and next values before changing the values
+     * @property {Grid} instance - Current grid instance
+     */
+    eventBus.trigger('beforeChange', gridEvent);
+    if (gridEvent.isStopped()) {
+        return;
+    }
+    var index = null;
+    changeValueFns.forEach(function (changeValue) {
+        var targetRowIndex = changeValue();
+        if (index !== targetRowIndex) {
+            index = targetRowIndex;
+            manager.push('UPDATE', filteredRawData[index]);
+        }
+    });
+    validation_1.forceValidateUniquenessOfColumns(rawData, column);
+    gridEvent = new gridEvent_1.default({ origin: origin, changes: nextChanges });
+    /**
+     * Occurs after one or more cells is changed
+     * @event Grid#afterChange
+     * @property {string} origin - The type of change('paste', 'delete', 'cell')
+     * @property {Array.<object>} changes - rowKey, column name, previous values and changed values after changing the values
+     * @property {Grid} instance - Current grid instance
+     */
+    eventBus.trigger('afterChange', gridEvent);
+}
+exports.updateDataByKeyMap = updateDataByKeyMap;
 
 
 /***/ }),
-/* 114 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getNextCellIndexWithRowSpan = exports.getRemoveRange = exports.getNextCellIndex = void 0;
 var common_1 = __webpack_require__(0);
 var rowSpan_1 = __webpack_require__(11);
-var selection_1 = __webpack_require__(14);
+var selection_1 = __webpack_require__(19);
+var data_1 = __webpack_require__(6);
 function getPrevRowIndex(rowIndex, heights) {
     var index = rowIndex;
     while (index > 0) {
@@ -19225,9 +20159,10 @@ function getNextRowIndex(rowIndex, heights) {
 function getNextCellIndex(store, command, _a) {
     var rowIndex = _a[0], columnIndex = _a[1];
     var data = store.data, _b = store.column, visibleColumnsWithRowHeader = _b.visibleColumnsWithRowHeader, rowHeaderCount = _b.rowHeaderCount, heights = store.rowCoords.heights;
-    var viewData = data.viewData, sortState = data.sortState, filteredRawData = data.filteredRawData, filteredViewData = data.filteredViewData;
+    var sortState = data.sortState, filteredRawData = data.filteredRawData, pageRowRange = data.pageRowRange;
+    var lastRowIndex = (data_1.isClientPagination(data) ? pageRowRange[1] - pageRowRange[0] : filteredRawData.length) - 1;
     var columnName = visibleColumnsWithRowHeader[columnIndex].name;
-    var lastRow = filteredRawData.length - 1 === rowIndex;
+    var lastRow = lastRowIndex === rowIndex;
     var lastColumn = visibleColumnsWithRowHeader.length - 1 === columnIndex;
     var firstRow = rowIndex === 0;
     var firstColumn = columnIndex === rowHeaderCount;
@@ -19256,14 +20191,14 @@ function getNextCellIndex(store, command, _a) {
             break;
         case 'lastCell':
             columnIndex = visibleColumnsWithRowHeader.length - 1;
-            rowIndex = viewData.length - 1;
+            rowIndex = lastRowIndex;
             break;
         case 'pageUp': {
             rowIndex = 0;
             break;
         }
         case 'pageDown': {
-            rowIndex = viewData.length - 1;
+            rowIndex = lastRowIndex;
             break;
         }
         case 'firstColumn':
@@ -19305,7 +20240,7 @@ function getNextCellIndex(store, command, _a) {
         default:
             break;
     }
-    rowIndex = common_1.clamp(rowIndex, 0, filteredViewData.length - 1);
+    rowIndex = common_1.clamp(rowIndex, 0, lastRowIndex);
     columnIndex = common_1.clamp(columnIndex, 0, visibleColumnsWithRowHeader.length - 1);
     return [rowIndex, columnIndex];
 }
@@ -19343,20 +20278,21 @@ exports.getNextCellIndexWithRowSpan = getNextCellIndexWithRowSpan;
 
 
 /***/ }),
-/* 115 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.dragMoveRowHeader = exports.mouseDownRowHeader = exports.dragMoveHeader = exports.mouseDownHeader = exports.mouseDownBody = exports.dragEnd = exports.dragMoveBody = exports.selectionEnd = exports.setNavigating = void 0;
 var common_1 = __webpack_require__(0);
 var column_1 = __webpack_require__(10);
-var focus_1 = __webpack_require__(17);
-var selection_1 = __webpack_require__(16);
+var focus_1 = __webpack_require__(18);
+var selection_1 = __webpack_require__(15);
 var rowSpan_1 = __webpack_require__(11);
-var selection_2 = __webpack_require__(14);
+var selection_2 = __webpack_require__(19);
 var data_1 = __webpack_require__(6);
-var mouse_1 = __webpack_require__(49);
+var mouse_1 = __webpack_require__(51);
 function stopAutoScroll(selection) {
     var intervalIdForAutoScroll = selection.intervalIdForAutoScroll;
     if (intervalIdForAutoScroll !== null) {
@@ -19475,7 +20411,6 @@ function mouseDownBody(store, elementInfo, eventInfo) {
     var side = elementInfo.side, scrollLeft = elementInfo.scrollLeft, scrollTop = elementInfo.scrollTop, left = elementInfo.left, top = elementInfo.top;
     var offsetLeft = pageX - left + scrollLeft;
     var offsetTop = pageY - top + scrollTop;
-    var rowIndex = common_1.findOffsetIndex(rowCoords.offsets, offsetTop);
     var columnIndex = common_1.findOffsetIndex(columnCoords.offsets[side], offsetLeft);
     var columnName = visibleColumnsBySideWithRowHeader[side][columnIndex].name;
     if (!column_1.isRowHeader(columnName)) {
@@ -19484,8 +20419,9 @@ function mouseDownBody(store, elementInfo, eventInfo) {
             updateSelection(store, dragData);
         }
         else {
+            var rowIndex = common_1.findOffsetIndex(rowCoords.offsets, offsetTop);
             selectionEnd(store);
-            focus_1.changeFocus(store, filteredRawData[rowIndex].rowKey, columnName, id);
+            focus_1.changeFocus(store, data_1.getRowKeyByIndexWithPageRange(data, rowIndex), columnName, id);
         }
     }
 }
@@ -19512,7 +20448,7 @@ function mouseDownHeader(store, name, parentHeader) {
         row: [0, endRowIndex],
         column: [startColumnIndex, endColumnIndex],
     };
-    var rowKey = filteredRawData[0].rowKey;
+    var rowKey = data_1.getRowKeyByIndexWithPageRange(data, 0);
     finishEditingByHeaderSelection(store, rowKey, columnName);
     focus_1.changeFocus(store, rowKey, columnName, id);
     selection_1.changeSelectionRange(selection, inputRange, id);
@@ -19552,9 +20488,9 @@ function mouseDownRowHeader(store, rowKey) {
     var selection = store.selection, id = store.id, column = store.column, data = store.data;
     var visibleColumnsWithRowHeader = column.visibleColumnsWithRowHeader, rowHeaderCount = column.rowHeaderCount;
     var rowIndex = data_1.findIndexByRowKey(data, column, id, rowKey);
-    var rowIndexWithPage = data_1.getRowIndexWithPage(data, rowIndex);
+    var rowIndexPerPage = data_1.getRowIndexPerPage(data, rowIndex);
     var endColumnIndex = visibleColumnsWithRowHeader.length - 1;
-    var _a = rowSpan_1.getRowRangeWithRowSpan([rowIndexWithPage, rowIndexWithPage], [rowHeaderCount, endColumnIndex], visibleColumnsWithRowHeader, null, data), startRowIndex = _a[0], endRowIndex = _a[1];
+    var _a = rowSpan_1.getRowRangeWithRowSpan([rowIndexPerPage, rowIndexPerPage], [rowHeaderCount, endColumnIndex], visibleColumnsWithRowHeader, null, data), startRowIndex = _a[0], endRowIndex = _a[1];
     var inputRange = {
         row: [startRowIndex, endRowIndex],
         column: [rowHeaderCount, endColumnIndex],
@@ -19591,15 +20527,16 @@ exports.dragMoveRowHeader = dragMoveRowHeader;
 
 
 /***/ }),
-/* 116 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.refreshRowHeight = exports.removeCellHeight = exports.setCellHeight = exports.setHoveredRowKeyByPosition = exports.setHoveredRowKey = void 0;
 var tslib_1 = __webpack_require__(1);
 var observable_1 = __webpack_require__(5);
-var mouse_1 = __webpack_require__(49);
+var mouse_1 = __webpack_require__(51);
 var common_1 = __webpack_require__(0);
 function setHoveredRowKey(_a, rowKey) {
     var renderState = _a.renderState;
@@ -19649,17 +20586,17 @@ exports.refreshRowHeight = refreshRowHeight;
 
 
 /***/ }),
-/* 117 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = __webpack_require__(1);
-var preset_1 = __webpack_require__(118);
+var preset_1 = __webpack_require__(121);
 var common_1 = __webpack_require__(0);
 var dom_1 = __webpack_require__(2);
-var styleGen = tslib_1.__importStar(__webpack_require__(119));
+var styleGen = tslib_1.__importStar(__webpack_require__(122));
 var STYLE_ELEMENT_ID = 'tui-grid-theme-style';
 var presetOptions = {
     default: preset_1.presetDefault,
@@ -19783,12 +20720,13 @@ exports.default = {
 
 
 /***/ }),
-/* 118 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.striped = exports.clean = exports.presetDefault = void 0;
 var common_1 = __webpack_require__(0);
 exports.presetDefault = {
     selection: {
@@ -19985,15 +20923,16 @@ exports.striped = common_1.deepMergedCopy(exports.presetDefault, {
 
 
 /***/ }),
-/* 119 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.cellCurrentRow = exports.cellInvalid = exports.cellDisabled = exports.cellRequired = exports.cellEditable = exports.cellFocusedInactive = exports.cellFocused = exports.cellSelectedRowHeader = exports.cellSelectedHeader = exports.rowDummy = exports.rowHover = exports.rowOdd = exports.rowEven = exports.cellSummary = exports.cellRowHeader = exports.cellHeader = exports.cell = exports.summaryArea = exports.bodyArea = exports.headerArea = exports.selection = exports.pagination = exports.heightResizeHandle = exports.scrollbar = exports.frozenBorder = exports.outline = void 0;
 var tslib_1 = __webpack_require__(1);
 var dom_1 = __webpack_require__(2);
-var cssRuleBuilder_1 = __webpack_require__(120);
+var cssRuleBuilder_1 = __webpack_require__(123);
 function bgTextRuleString(className, options) {
     var background = options.background, text = options.text;
     return cssRuleBuilder_1.createClassRule(className).bg(background).text(text).build();
@@ -20200,12 +21139,13 @@ exports.cellCurrentRow = cellCurrentRow;
 
 
 /***/ }),
-/* 120 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.buildAll = exports.createIEScrollbarRule = exports.createWebkitScrollbarRules = exports.createNestedClassRule = exports.createClassRule = exports.create = void 0;
 var dom_1 = __webpack_require__(2);
 var common_1 = __webpack_require__(0);
 /**
@@ -20375,13 +21315,14 @@ exports.buildAll = buildAll;
 
 
 /***/ }),
-/* 121 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var lazyObservable_1 = __webpack_require__(23);
+exports.getInvalidRows = void 0;
+var lazyObservable_1 = __webpack_require__(27);
 function getInvalidRows(store) {
     // @TODO: find more practical way to make observable
     lazyObservable_1.createObservableData(store, true);
@@ -20415,16 +21356,17 @@ exports.getInvalidRows = getInvalidRows;
 
 
 /***/ }),
-/* 122 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createProvider = void 0;
 var common_1 = __webpack_require__(0);
-var mutationRequest_1 = __webpack_require__(123);
-var getterRequest_1 = __webpack_require__(126);
-var ajaxConfig_1 = __webpack_require__(36);
+var mutationRequest_1 = __webpack_require__(126);
+var getterRequest_1 = __webpack_require__(129);
+var ajaxConfig_1 = __webpack_require__(38);
 function createConfig(store, dispatch, dataSource) {
     var lastRequiredData = { perPage: store.data.pageOptions.perPage };
     var requestParams = {};
@@ -20467,11 +21409,10 @@ function createFallbackProvider() {
     };
 }
 function createProvider(store, dispatch, data) {
-    var _a;
     var provider = createFallbackProvider();
     if (!Array.isArray(data) && common_1.isObject(data)) {
-        var api = data.api, _b = data.initialRequest, initialRequest = _b === void 0 ? true : _b;
-        if (!common_1.isObject((_a = api) === null || _a === void 0 ? void 0 : _a.readData)) {
+        var api = data.api, _a = data.initialRequest, initialRequest = _a === void 0 ? true : _a;
+        if (!common_1.isObject(api === null || api === void 0 ? void 0 : api.readData)) {
             throw new Error('GET API should be configured in DataSource to get data');
         }
         var config = createConfig(store, dispatch, data);
@@ -20492,21 +21433,22 @@ exports.createProvider = createProvider;
 
 
 /***/ }),
-/* 123 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.request = void 0;
 var tslib_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
-var gridAjax_1 = __webpack_require__(50);
+var gridAjax_1 = __webpack_require__(52);
 var eventBus_1 = __webpack_require__(8);
 var instance_1 = __webpack_require__(7);
-var modifiedDataManager_1 = __webpack_require__(51);
+var modifiedDataManager_1 = __webpack_require__(53);
 var data_1 = __webpack_require__(6);
-var confirm_1 = __webpack_require__(125);
-var ajaxConfig_1 = __webpack_require__(36);
+var confirm_1 = __webpack_require__(128);
+var ajaxConfig_1 = __webpack_require__(38);
 var requestTypeCodeMap = {
     createData: 'CREATE',
     updateData: 'UPDATE',
@@ -20568,12 +21510,13 @@ exports.request = request;
 
 
 /***/ }),
-/* 124 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.serialize = void 0;
 var common_1 = __webpack_require__(0);
 /**
  * 1. Array format
@@ -20594,7 +21537,7 @@ var common_1 = __webpack_require__(0);
  *   { a: { b: 1, c: 2 } } => a[b]=1&a[c]=2
  */
 function encodePairs(key, value) {
-    return encodeURIComponent(key) + "=" + encodeURIComponent(common_1.isNull(value) || common_1.isUndefined(value) ? '' : value);
+    return encodeURIComponent(key) + "=" + encodeURIComponent(common_1.isNil(value) ? '' : value);
 }
 function serializeParams(key, value, serializedList) {
     if (Array.isArray(value)) {
@@ -20625,13 +21568,14 @@ exports.serialize = serialize;
 
 
 /***/ }),
-/* 125 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var message_1 = __webpack_require__(52);
+exports.confirmMutation = void 0;
+var message_1 = __webpack_require__(54);
 function confirmMutation(type, params) {
     var count = Object.keys(params).reduce(function (acc, key) { return acc + params[key].length; }, 0);
     return count ? confirm(message_1.getConfirmMessage(type, count)) : alert(message_1.getAlertMessage(type));
@@ -20640,22 +21584,23 @@ exports.confirmMutation = confirmMutation;
 
 
 /***/ }),
-/* 126 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.unsort = exports.sort = exports.reloadData = exports.readData = void 0;
 var tslib_1 = __webpack_require__(1);
-var tree_1 = __webpack_require__(28);
+var tree_1 = __webpack_require__(30);
 var tree_2 = __webpack_require__(22);
 var common_1 = __webpack_require__(0);
-var gridAjax_1 = __webpack_require__(50);
+var gridAjax_1 = __webpack_require__(52);
 var eventBus_1 = __webpack_require__(8);
 var data_1 = __webpack_require__(6);
-var ajaxConfig_1 = __webpack_require__(36);
-var sort_1 = __webpack_require__(24);
-var sort_2 = __webpack_require__(37);
+var ajaxConfig_1 = __webpack_require__(38);
+var sort_1 = __webpack_require__(28);
+var sort_2 = __webpack_require__(41);
 function validateResponse(responseData) {
     if (common_1.isUndefined(responseData)) {
         throw new Error('The response data is empty to rerender grid');
@@ -20770,12 +21715,13 @@ function sendRequest(config, params, successCallback) {
 
 
 /***/ }),
-/* 127 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createPaginationManager = void 0;
 function createPaginationManager() {
     var pagination = null;
     return {
@@ -20791,12 +21737,13 @@ exports.createPaginationManager = createPaginationManager;
 
 
 /***/ }),
-/* 128 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendHostname = void 0;
 var MS_7_DAYS = 7 * 24 * 60 * 60 * 1000;
 function isExpired(date) {
     var now = new Date().getTime();
@@ -20843,7 +21790,7 @@ exports.sendHostname = sendHostname;
 
 
 /***/ }),
-/* 129 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
