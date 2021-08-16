@@ -209,11 +209,9 @@ class Users extends CRMEntity {
 	 *
 	 */
 	public function savePreferecesToDB() {
-		global $log, $adb;
+		global $adb;
 		$data = base64_encode(serialize($this->user_preferences));
-		$query = "UPDATE $this->table_name SET user_preferences=? where id=?";
-		$result = $adb->pquery($query, array($data, $this->id));
-		$log->debug('SAVING: PREFERENCES SIZE ' . strlen($data) . 'ROWS AFFECTED WHILE UPDATING USER PREFERENCES:' . $adb->getAffectedRowCount($result));
+		$adb->pquery("UPDATE $this->table_name SET user_preferences=? where id=?", array($data, $this->id));
 		coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
 	}
 
@@ -232,10 +230,10 @@ class Users extends CRMEntity {
 	}
 
 	/**
+	 * Take an unencrypted username and password and return the encrypted password
 	 * @return string encrypted password for storage in DB and comparison against DB password.
 	 * @param string $user_name - Must be non null and at least 2 characters
 	 * @param string $user_password - Must be non null and at least 1 character.
-	 * @desc Take an unencrypted username and password and return the encrypted password
 	 */
 	public function encrypt_password($user_password, $crypt_type = '') {
 		// encrypt the password.
