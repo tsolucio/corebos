@@ -1588,7 +1588,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'getRelatedIDs' => array(
-	'name' => 'getRelatedIDs(module)',
+	'name' => 'getRelatedIDs(module, recordid)',
 	'desc' => 'This function returns an array of record IDs in the given module, related to the record triggering the workflow',
 	'params' => array(
 		array(
@@ -1597,11 +1597,18 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'the related module name to search in.',
 		),
+		array(
+			'name' => 'recordid',
+			'type' => 'Integer',
+			'optional' => true,
+			'desc' => 'the main record ID to get the related records from, if not given the current record triggering the workflow will be used',
+		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
 		"getRelatedIDs('Contacts')",
 		"getRelatedIDs('Accounts')",
+		"getRelatedIDs('Contacts', 943)",
 	),
 ),
 'getFieldsOF' => array(

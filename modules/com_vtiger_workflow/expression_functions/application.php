@@ -92,14 +92,19 @@ function __cb_getrelatedids($arr) {
 	if (count($arr)<2 || empty($arr[0])) {
 		return $relids;
 	}
-	$env = $arr[1];
-	if (isset($env->moduleName)) {
-		$mainmodule = $env->moduleName;
+	if (is_string($arr[1]) || is_numeric($arr[1])) {
+		$recordid = $arr[1];
+		$mainmodule = getSalesEntityType($arr[1]);
 	} else {
-		$mainmodule = $env->getModuleName();
+		$env = $arr[1];
+		$data = $env->getData();
+		$recordid = $data['id'];
+		if (isset($env->moduleName)) {
+			$mainmodule = $env->moduleName;
+		} else {
+			$mainmodule = $env->getModuleName();
+		}
 	}
-	$data = $env->getData();
-	$recordid = $data['id'];
 	$relmodule = $arr[0];
 	try {
 		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, ['columns' => 'id'], $current_user);

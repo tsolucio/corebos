@@ -1585,7 +1585,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'getRelatedIDs' => array(
-	'name' => 'getRelatedIDs(module)',
+	'name' => 'getRelatedIDs(module, recordid)',
 	'desc' => 'Esta función devuelve un array de IDs de registros del módulo dado que están relacionados con el registro que activa el flujo de trabajo',
 	'params' => array(
 		array(
@@ -1594,11 +1594,18 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'el nombre del módulo relacionado en el que buscar.',
 		),
+		array(
+			'name' => 'recordid',
+			'type' => 'Entero',
+			'optional' => true,
+			'desc' => 'el ID de registro principal para obtener los registros relacionados, si no se proporciona se utilizará el registro actual del flujo de trabajo',
+		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
 		"getRelatedIDs('Contacts')",
 		"getRelatedIDs('Accounts')",
+		"getRelatedIDs('Contacts', 943)",
 	),
 ),
 'getFieldsOF' => array(
