@@ -29,7 +29,8 @@ class Import_Queue_Controller {
 					default_values TEXT,
 					merge_type INT,
 					merge_fields TEXT,
-					status INT default 0",
+					status INT default 0,
+					importmergecondition INT default 0)",
 				true
 			);
 		}
@@ -41,7 +42,7 @@ class Import_Queue_Controller {
 		}
 
 		$adb->pquery(
-			'INSERT INTO vtiger_import_queue VALUES(?,?,?,?,?,?,?,?)',
+			'INSERT INTO vtiger_import_queue VALUES(?,?,?,?,?,?,?,?,?)',
 			array(
 				$adb->getUniqueID('vtiger_import_queue'),
 				$user->id,
@@ -50,7 +51,8 @@ class Import_Queue_Controller {
 				json_encode($userInputObject->get('default_values')),
 				$userInputObject->get('merge_type'),
 				json_encode($userInputObject->get('merge_fields')),
-				$status
+				$status,
+				empty($userInputObject->get('importmergecondition')) ? 0 : $userInputObject->get('importmergecondition'),
 			)
 		);
 	}
@@ -137,6 +139,7 @@ class Import_Queue_Controller {
 			'default_values' => json_decode($rowData['default_values'], true),
 			'merge_type' => $rowData['merge_type'],
 			'merge_fields' => json_decode($rowData['merge_fields'], true),
+			'importmergecondition' => $rowData['importmergecondition'],
 			'user_id' => $rowData['userid'],
 			'status' => $rowData['status']
 		);
