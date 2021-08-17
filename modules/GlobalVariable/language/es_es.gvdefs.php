@@ -485,7 +485,7 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Lista de nombres de campo separados por comas para buscar al realizar la deduplicación.',
 ),
 'Export_Field_Separator_Symbol' => array(
-	'valuetype' => 'carácter',
+	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
 	'values' => ', | ; | others',
 	'definition' => 'Símbolo de carácter que separa los campos de los archivos de exportación CSV. Normalmente esto será una coma o un punto y coma, pero se puede usar cualquier símbolo.',
