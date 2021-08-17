@@ -822,6 +822,9 @@ class PearDatabase {
 		return $this->change_key_case($result->FetchRow());
 	}
 
+	/**
+	 * WARNING: this method returns false for SELECT statements
+	 */
 	public function getAffectedRowCount(&$result) {
 		global $log;
 		$log->debug('> getAffectedRowCount');
