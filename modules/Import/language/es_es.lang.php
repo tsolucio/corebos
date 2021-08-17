@@ -28,6 +28,7 @@ $mod_strings = array (
 	'LBL_HAS_HEADER' => 'Tiene cabecera',
 	'LBL_SPECIFY_MERGE_TYPE' => 'Selecciona cómo se han de gestionar los registros duplicados',
 	'LBL_SELECT_MERGE_FIELDS' => 'Selecciona los campos coincidentes para encontrar duplicados',
+	'LBL_SELECT_MERGE_CONDITION' => 'O selecciona una regla para decidir si el registro es un duplicado o no',
 	'LBL_AVAILABLE_FIELDS' => 'Campos Disponibles',
 	'LBL_SELECTED_FIELDS' => 'Campos Coincidentes',
 	'UTF-8' => 'UTF-8',

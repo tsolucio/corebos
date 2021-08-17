@@ -29,6 +29,7 @@ $mod_strings = array(
 	'LBL_HAS_HEADER' => 'Van fejléc',
 	'LBL_SPECIFY_MERGE_TYPE' => 'Válaszd ki, hogyan kezeljük a duplikált rekordokat',
 	'LBL_SELECT_MERGE_FIELDS' => 'Válaszd ki azokat a mezőket, amiknek egyezniük kell, hogy a rekord duplikált legyen',
+	'LBL_SELECT_MERGE_CONDITION' => 'Or select a rule to decide if the record is duplicate or not',
 	'LBL_AVAILABLE_FIELDS' => 'Elérhető mezők',
 	'LBL_SELECTED_FIELDS' => 'Mezők, amiknek egyezniük kell',
 	'UTF-8' => 'UTF-8',

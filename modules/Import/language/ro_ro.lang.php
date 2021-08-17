@@ -34,6 +34,7 @@ $mod_strings = array(
 	'LBL_HAS_HEADER' => 'Are Header',
 	'LBL_SPECIFY_MERGE_TYPE' => 'Selecteaza cum sa fie manipulate inregistrarile duplicat',
 	'LBL_SELECT_MERGE_FIELDS' => 'Selecteaza campurile potrivite pentru a gasi duplicate',
+	'LBL_SELECT_MERGE_CONDITION' => 'Or select a rule to decide if the record is duplicate or not',
 	'LBL_AVAILABLE_FIELDS' => 'Campuri Disponibile',
 	'LBL_SELECTED_FIELDS' => 'Campuri care urmeaza a fi potrivite',
 	'UTF-8' => 'UTF-8',

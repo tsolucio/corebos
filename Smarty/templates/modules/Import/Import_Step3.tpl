@@ -71,7 +71,40 @@
 						</table>
 					</td>
 				</tr>
+				<tr>
+					<td class="small">
+						{'LBL_SELECT_MERGE_CONDITION'|@getTranslatedString:$MODULE}
+						{assign var='RELATIONFIELD' value=[
+							'id'=>'importmergecondition',
+							'value'=>'',
+							'display'=>'',
+							'module' => 'cbMap',
+							'filter' => 'SpecialSearchRecordSetMapping',
+							'form' => 'importBasic'
+						]}
+						{include file='Components/uitypes/WorkflowRelationField.tpl' RELATIONFIELD=$RELATIONFIELD}
+					</td>
+				</tr>
 			</table>
 		</td>
 	</tr>
 </table>
+<script type="text/javascript" charset="utf-8">
+{literal}
+	var searchConditionsRecordSetMapping = [{
+		'columnname': 'vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V',
+		'comparator': 'e',
+		'value': 'Condition Query',
+		'columncondition': 'or',
+		'groupid': 1
+	},{
+		'columnname': 'vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V',
+		'comparator': 'e',
+		'value': 'Condition Expression',
+		'columncondition': 'or',
+		'groupid': 1
+	}];
+	var advSearchRecordSetMapping = '&query=true&searchtype=advance&advft_criteria=' + convertArrayOfJsonObjectsToString(searchConditionsRecordSetMapping);
+	var SpecialSearchRecordSetMapping = encodeURI(advSearchRecordSetMapping);
+{/literal}
+</script>

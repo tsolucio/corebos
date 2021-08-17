@@ -30,6 +30,7 @@ class Import_Data_Controller {
 	public $fieldMapping;
 	public $mergeType;
 	public $mergeFields;
+	public $mergeCondition;
 	public $defaultValues;
 	public $importedRecordInfo = array();
 	public $batchImport = true;
@@ -47,6 +48,7 @@ class Import_Data_Controller {
 		$this->fieldMapping = $importInfo['field_mapping'];
 		$this->mergeType = $importInfo['merge_type'];
 		$this->mergeFields = $importInfo['merge_fields'];
+		$this->mergeCondition = $importInfo['importmergecondition'];
 		$this->defaultValues = $importInfo['default_values'];
 		$this->user = $user;
 	}
@@ -178,7 +180,14 @@ class Import_Data_Controller {
 		if ($numberOfRecords <= 0) {
 			return true;
 		}
-
+		if (!empty($this->mergeCondition)) {
+			$cbMapObject = new cbMap();
+			$cbMapObject->id = $this->mergeCondition;
+			$cbMapObject->retrieve_entity_info($this->mergeCondition, 'cbMap');
+			if ($cbMapObject->column_fields['maptype']!='ConditionExpression' && $cbMapObject->column_fields['maptype']!='ConditionQuery') {
+				$this->mergeCondition = 0;
+			}
+		}
 		$afterImportRecordExists = method_exists($focus, 'afterImportRecord');
 		$fieldColumnMapping = $moduleMeta->getFieldColumnMapping();
 		$fieldColumnMapping['cbuuid'] = 'cbuuid';
@@ -198,37 +207,45 @@ class Import_Data_Controller {
 				$entityInfo = $focus->importRecord($this, $fieldData);
 			} else {
 				if (!empty($merge_type) && $merge_type != Import_Utils::$AUTO_MERGE_NONE) {
-					$queryGenerator = new QueryGenerator($moduleName, $this->user);
-					$queryGenerator->initForDefaultCustomView();
-					$fieldsList = array('id');
-					$queryGenerator->setFields($fieldsList);
+					if (empty($this->mergeCondition)) {
+						$queryGenerator = new QueryGenerator($moduleName, $this->user);
+						$queryGenerator->initForDefaultCustomView();
+						$fieldsList = array('id');
+						$queryGenerator->setFields($fieldsList);
 
-					foreach ($this->mergeFields as $mergeField) {
-						if (!isset($fieldData[$mergeField])) {
-							continue;
-						}
-						$comparisonValue = $fieldData[$mergeField];
-						$fieldInstance = $moduleFields[$mergeField];
-						if ($fieldInstance->getFieldDataType() == 'owner') {
-							$userId = getUserId_Ol($comparisonValue);
-							$comparisonValue = getUserFullName($userId);
-						}
-						if ($fieldInstance->getFieldDataType() == 'reference') {
-							if (strpos($comparisonValue, '::::') > 0) {
-								$referenceFileValueComponents = explode('::::', $comparisonValue);
-							} else {
-								$referenceFileValueComponents = explode(':::', $comparisonValue);
+						foreach ($this->mergeFields as $mergeField) {
+							if (!isset($fieldData[$mergeField])) {
+								continue;
 							}
-							if (count($referenceFileValueComponents) > 1) {
-								$comparisonValue = trim($referenceFileValueComponents[1]);
+							$comparisonValue = $fieldData[$mergeField];
+							$fieldInstance = $moduleFields[$mergeField];
+							if ($fieldInstance->getFieldDataType() == 'owner') {
+								$userId = getUserId_Ol($comparisonValue);
+								$comparisonValue = getUserFullName($userId);
 							}
+							if ($fieldInstance->getFieldDataType() == 'reference') {
+								if (strpos($comparisonValue, '::::') > 0) {
+									$referenceFileValueComponents = explode('::::', $comparisonValue);
+								} else {
+									$referenceFileValueComponents = explode(':::', $comparisonValue);
+								}
+								if (count($referenceFileValueComponents) > 1) {
+									$comparisonValue = trim($referenceFileValueComponents[1]);
+								}
+							}
+							$queryGenerator->addCondition($mergeField, $comparisonValue, 'e', QueryGenerator::$AND);
 						}
-						$queryGenerator->addCondition($mergeField, $comparisonValue, 'e', QueryGenerator::$AND);
+						$query = $queryGenerator->getQuery();
+					} else {
+						if ($cbMapObject->column_fields['maptype']=='ConditionExpression') {
+							$duplicateIDs = $cbMapObject->ConditionExpression($fieldData);
+						} else {
+							$duplicateIDs = $cbMapObject->ConditionQuery($fieldData);
+						}
+						$query = 'select crmid as id from vtiger_crmobject where crmid in ('.$adb->convert2SQL($duplicateIDs, array()).')';
 					}
-					$query = $queryGenerator->getQuery();
 					$duplicatesResult = $adb->query($query);
 					$noOfDuplicates = $adb->num_rows($duplicatesResult);
-
 					if ($noOfDuplicates > 0) {
 						if ($merge_type == Import_Utils::$AUTO_MERGE_IGNORE) {
 							$entityInfo['status'] = self::$IMPORT_RECORD_SKIPPED;

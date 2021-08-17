@@ -27,6 +27,7 @@ $mod_strings = array (
 	'LBL_HAS_HEADER' => 'Contient une ligne d\'entête',
 	'LBL_SPECIFY_MERGE_TYPE' => 'Choisir comment les doublons vont être traitées',
 	'LBL_SELECT_MERGE_FIELDS' => 'Sélectionner les champs de correspondance pour trouver les doublons',
+	'LBL_SELECT_MERGE_CONDITION' => 'Or select a rule to decide if the record is duplicate or not',
 	'LBL_AVAILABLE_FIELDS' => 'Champs Disponibles',
 	'LBL_SELECTED_FIELDS' => 'Champs de Correspondance',
 	'UTF-8' => 'UTF-8',

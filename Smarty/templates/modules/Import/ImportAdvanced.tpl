@@ -20,7 +20,7 @@
 	<input type="hidden" name="delimiter" value='{$USER_INPUT->getString('delimiter')}' />
 	<input type="hidden" name="merge_type" value='{$USER_INPUT->getString('merge_type')}' />
 	<input type="hidden" name="merge_fields" value='{$USER_INPUT->getString('merge_fields')}' />
-
+	<input type="hidden" name="importmergecondition" value='{$USER_INPUT->getString('importmergecondition')}' />
 	<input type="hidden" id="mandatory_fields" name="mandatory_fields" value='{$ENCODED_MANDATORY_FIELDS}' />
 
 	<table style="width:80%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="5" cellspacing="12" class="searchUIBasic cblds-table-border_sep cblds-table-bordersp_medium">
