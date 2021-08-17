@@ -34,6 +34,7 @@ class Import_Data_Controller {
 	public $defaultValues;
 	public $importedRecordInfo = array();
 	public $batchImport = true;
+	private $logImport;
 
 	public static $IMPORT_RECORD_NONE = 0;
 	public static $IMPORT_RECORD_CREATED = 1;
@@ -51,6 +52,7 @@ class Import_Data_Controller {
 		$this->mergeCondition = $importInfo['importmergecondition'];
 		$this->defaultValues = $importInfo['default_values'];
 		$this->user = $user;
+		$this->logImport = LoggerManager::getLogger('IMPORT');
 	}
 
 	public function getDefaultFieldValues($moduleMeta) {
@@ -108,11 +110,15 @@ class Import_Data_Controller {
 	public function importData() {
 		$focus = CRMEntity::getInstance($this->module);
 		if (method_exists($focus, 'createRecords')) {
+			$this->logImport->debug('Import started with custom createRecords method on module '.$this->module);
 			$focus->createRecords($this);
 		} else {
+			$this->logImport->debug('Import started with application createRecords method on module '.$this->module);
 			$this->createRecords();
 		}
+		$this->logImport->debug('Import finished: updating sequence field');
 		$this->updateModuleSequenceNumber();
+		$this->logImport->debug('Import finished');
 	}
 
 	public function initializeImport() {
@@ -166,7 +172,7 @@ class Import_Data_Controller {
 
 		$tableName = Import_Utils::getDbTableName($this->user);
 		$sql = 'SELECT * FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE;
-
+		$this->logImport->debug('Import table '.$tableName);
 		if ($this->batchImport) {
 			$importBatchLimit = GlobalVariable::getVariable('Import_Batch_Limit', 250);
 			if (!is_numeric($importBatchLimit)) {
@@ -178,6 +184,7 @@ class Import_Data_Controller {
 		$numberOfRecords = $adb->num_rows($result);
 
 		if ($numberOfRecords <= 0) {
+			$this->logImport->debug('No records to import');
 			return true;
 		}
 		if (!empty($this->mergeCondition)) {
@@ -191,6 +198,9 @@ class Import_Data_Controller {
 		$afterImportRecordExists = method_exists($focus, 'afterImportRecord');
 		$fieldColumnMapping = $moduleMeta->getFieldColumnMapping();
 		$fieldColumnMapping['cbuuid'] = 'cbuuid';
+		$merge_type = $this->mergeType;
+		$customImport = method_exists($focus, 'importRecord');
+		$this->logImport->debug('import record with '.($customImport ? 'custom' : 'application').' method');
 		for ($i = 0; $i < $numberOfRecords; ++$i) {
 			$row = $adb->raw_query_result_rowdata($result, $i);
 			$rowId = $row['id'];
@@ -199,11 +209,10 @@ class Import_Data_Controller {
 			foreach ($this->fieldMapping as $fieldName => $index) {
 				$fieldData[$fieldName] = (isset($row[$fieldName]) ? $row[$fieldName] : '');
 			}
-
-			$merge_type = $this->mergeType;
+			$this->logImport->debug('row', $row);
+			$this->logImport->debug('fieldData', $fieldData);
 			$createRecord = false;
-
-			if (method_exists($focus, 'importRecord')) {
+			if ($customImport) {
 				$entityInfo = $focus->importRecord($this, $fieldData);
 			} else {
 				if (!empty($merge_type) && $merge_type != Import_Utils::$AUTO_MERGE_NONE) {
@@ -262,11 +271,13 @@ class Import_Data_Controller {
 							$entityData['moduleName'] = $moduleName;
 							$entityData['user'] = $this->user;
 							cbEventHandler::do_action('corebos.entity.import.skip', $entityData);
+							$this->logImport->debug('skipped record', $fieldData);
 						} elseif ($merge_type == Import_Utils::$AUTO_MERGE_OVERWRITE || $merge_type == Import_Utils::$AUTO_MERGE_MERGEFIELDS) {
 							for ($index = 0; $index < $noOfDuplicates - 1; ++$index) {
 								$duplicateRecordId = $adb->query_result($duplicatesResult, $index, $fieldColumnMapping['id']);
 								$entityId = vtws_getId($moduleObjectId, $duplicateRecordId);
 								vtws_delete($entityId, $this->user);
+								$this->logImport->debug('overwrite/merge deleted '.$entityId);
 							}
 							$baseRecordId = $adb->query_result($duplicatesResult, $noOfDuplicates - 1, $fieldColumnMapping['id']);
 							$baseEntityId = vtws_getId($moduleObjectId, $baseRecordId);
@@ -274,6 +285,7 @@ class Import_Data_Controller {
 							if ($merge_type == Import_Utils::$AUTO_MERGE_OVERWRITE) {
 								$fieldData = $this->transformForImport($fieldData, $moduleMeta);
 								$fieldData['id'] = $baseEntityId;
+								$this->logImport->debug('overwrite fields', $fieldData);
 								$entityInfo = vtws_update($fieldData, $this->user);
 								$entityInfo['status'] = self::$IMPORT_RECORD_UPDATED;
 								//Prepare data for event handler
@@ -285,6 +297,7 @@ class Import_Data_Controller {
 								$entityData['moduleName'] = $moduleName;
 								$entityData['user'] = $this->user;
 								cbEventHandler::do_action('corebos.entity.import.overwrite', $entityData);
+								$this->logImport->debug('updated record overwrite', $entityInfo);
 							}
 
 							if ($merge_type == Import_Utils::$AUTO_MERGE_MERGEFIELDS) {
@@ -303,6 +316,7 @@ class Import_Data_Controller {
 								}
 								$filteredFieldData = $this->transformForImport($filteredFieldData, $moduleMeta, false, true);
 								$filteredFieldData['id'] = $baseEntityId;
+								$this->logImport->debug('merge fields', $filteredFieldData);
 								$entityInfo = vtws_revise($filteredFieldData, $this->user);
 								$entityInfo['status'] = self::$IMPORT_RECORD_MERGED;
 								//Prepare data for event handler
@@ -314,6 +328,7 @@ class Import_Data_Controller {
 								$entityData['moduleName'] = $moduleName;
 								$entityData['user'] = $this->user;
 								cbEventHandler::do_action('corebos.entity.import.merge', $entityData);
+								$this->logImport->debug('updated record merge', $entityInfo);
 							}
 						} else {
 							$createRecord = true;
@@ -341,7 +356,9 @@ class Import_Data_Controller {
 							$entityData['moduleName'] = $moduleName;
 							$entityData['user'] = $this->user;
 							cbEventHandler::do_action('corebos.entity.import.create', $entityData);
+							$this->logImport->debug('created record', $entityInfo);
 						} catch (\Throwable $th) {
+							$this->logImport->debug('ERROR creating record: '.$th->getMessage());
 							$entityInfo = null;
 						}
 					}
