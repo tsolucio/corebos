@@ -7,10 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************ */
-require_once 'include/Webservices/Create.php';
-require_once 'include/Webservices/Update.php';
+require_once 'include/Webservices/ValidateCUR.php';
 require_once 'include/Webservices/Delete.php';
-require_once 'include/Webservices/Revise.php';
 require_once 'include/Webservices/Retrieve.php';
 require_once 'include/Webservices/DataTransform.php';
 require_once 'vtlib/Vtiger/Utils.php';
@@ -200,6 +198,7 @@ class Import_Data_Controller {
 		$fieldColumnMapping['cbuuid'] = 'cbuuid';
 		$merge_type = $this->mergeType;
 		$customImport = method_exists($focus, 'importRecord');
+		$applyValidations = GlobalVariable::getVariable('Import_ApplyValidationRules', 0, $moduleName, $this->user->id);
 		$this->logImport->debug('import record with '.($customImport ? 'custom' : 'application').' method');
 		for ($i = 0; $i < $numberOfRecords; ++$i) {
 			$row = $adb->raw_query_result_rowdata($result, $i);
@@ -286,8 +285,18 @@ class Import_Data_Controller {
 								$fieldData = $this->transformForImport($fieldData, $moduleMeta);
 								$fieldData['id'] = $baseEntityId;
 								$this->logImport->debug('overwrite fields', $fieldData);
-								$entityInfo = vtws_update($fieldData, $this->user);
-								$entityInfo['status'] = self::$IMPORT_RECORD_UPDATED;
+								$validation=true;
+								if ($applyValidations) {
+									$validation = __cbwsCURValidation($fieldData, $this->user);
+								}
+								if ($validation===true) {
+									$entityInfo = vtws_update($fieldData, $this->user);
+									$entityInfo['status'] = self::$IMPORT_RECORD_UPDATED;
+									$this->logImport->debug('updated record overwrite', $entityInfo);
+								} else {
+									$entityInfo = array('id' => null, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $validation['wsresult']);
+									$this->logImport->debug('update overwrite FAILED', $entityInfo);
+								}
 								//Prepare data for event handler
 								$entityData= array();
 								$entityData['rowId'] = $rowId;
@@ -297,7 +306,6 @@ class Import_Data_Controller {
 								$entityData['moduleName'] = $moduleName;
 								$entityData['user'] = $this->user;
 								cbEventHandler::do_action('corebos.entity.import.overwrite', $entityData);
-								$this->logImport->debug('updated record overwrite', $entityInfo);
 							}
 
 							if ($merge_type == Import_Utils::$AUTO_MERGE_MERGEFIELDS) {
@@ -317,8 +325,18 @@ class Import_Data_Controller {
 								$filteredFieldData = $this->transformForImport($filteredFieldData, $moduleMeta, false, true);
 								$filteredFieldData['id'] = $baseEntityId;
 								$this->logImport->debug('merge fields', $filteredFieldData);
-								$entityInfo = vtws_revise($filteredFieldData, $this->user);
-								$entityInfo['status'] = self::$IMPORT_RECORD_MERGED;
+								$validation=true;
+								if ($applyValidations) {
+									$validation = __cbwsCURValidation($fieldData, $this->user);
+								}
+								if ($validation===true) {
+									$entityInfo = vtws_revise($filteredFieldData, $this->user);
+									$entityInfo['status'] = self::$IMPORT_RECORD_MERGED;
+									$this->logImport->debug('updated record merge', $entityInfo);
+								} else {
+									$entityInfo = array('id' => null, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $validation['wsresult']);
+									$this->logImport->debug('update merge FAILED', $entityInfo);
+								}
 								//Prepare data for event handler
 								$entityData= array();
 								$entityData['rowId'] = $rowId;
@@ -328,7 +346,6 @@ class Import_Data_Controller {
 								$entityData['moduleName'] = $moduleName;
 								$entityData['user'] = $this->user;
 								cbEventHandler::do_action('corebos.entity.import.merge', $entityData);
-								$this->logImport->debug('updated record merge', $entityInfo);
 							}
 						} else {
 							$createRecord = true;
@@ -345,8 +362,21 @@ class Import_Data_Controller {
 						$entityInfo = null;
 					} else {
 						try {
-							$entityInfo = vtws_create($moduleName, $fieldData, $this->user);
-							$entityInfo['status'] = self::$IMPORT_RECORD_CREATED;
+							$validation=true;
+							if ($applyValidations) {
+								$context = $fieldData;
+								$context['record'] = '';
+								$context['module'] = $moduleName;
+								$validation = cbwsValidateInformation(json_encode($context), $this->user);
+							}
+							if ($validation===true) {
+								$entityInfo = vtws_create($moduleName, $fieldData, $this->user);
+								$entityInfo['status'] = self::$IMPORT_RECORD_CREATED;
+								$this->logImport->debug('created record', $entityInfo);
+							} else {
+								$entityInfo = array('id' => null, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $validation['wsresult']);
+								$this->logImport->debug('create FAILED', $entityInfo);
+							}
 							//Prepare data for event handler
 							$entityData= array();
 							$entityData['rowId'] = $rowId;
@@ -356,7 +386,6 @@ class Import_Data_Controller {
 							$entityData['moduleName'] = $moduleName;
 							$entityData['user'] = $this->user;
 							cbEventHandler::do_action('corebos.entity.import.create', $entityData);
-							$this->logImport->debug('created record', $entityInfo);
 						} catch (\Throwable $th) {
 							$this->logImport->debug('ERROR creating record: '.$th->getMessage());
 							$entityInfo = null;

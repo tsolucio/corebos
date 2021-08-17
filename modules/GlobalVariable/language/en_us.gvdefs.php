@@ -484,6 +484,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSV of field names',
 	'definition' => 'Comma separated list of field names to search on when deduplicating.',
 ),
+'Import_ApplyValidationRules' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If existing validation rules should be applied on records being imported.',
+),
 'Export_Field_Separator_Symbol' => array(
 	'valuetype' => 'character',
 	'category' => 'Application',

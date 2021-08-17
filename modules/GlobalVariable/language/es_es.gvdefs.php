@@ -484,6 +484,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSV de nombres de campo',
 	'definition' => 'Lista de nombres de campo separados por comas para buscar al realizar la deduplicación.',
 ),
+'Import_ApplyValidationRules' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Si se deben aplicar las reglas de validación existentes en los registros que se están importando.',
+),
 'Export_Field_Separator_Symbol' => array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
