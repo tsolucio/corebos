@@ -484,6 +484,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSV of field names',
 	'definition' => 'Comma separated list of field names to search on when deduplicating.',
 ),
+'Import_ValidateMandatoryFields' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If field mapping of all mandatory fields must be enforced. By default they are mandatory.',
+),
 'Import_ApplyValidationRules' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',

@@ -484,6 +484,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSV de nombres de campo',
 	'definition' => 'Lista de nombres de campo separados por comas para buscar al realizar la deduplicación.',
 ),
+'Import_ValidateMandatoryFields' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Si se debe aplicar el mapeo de todos los campos obligatorios. Por defecto son obligatorios.',
+),
 'Import_ApplyValidationRules' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
