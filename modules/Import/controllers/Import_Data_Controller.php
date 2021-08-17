@@ -290,11 +290,16 @@ class Import_Data_Controller {
 									$validation = __cbwsCURValidation($fieldData, $this->user);
 								}
 								if ($validation===true) {
-									$entityInfo = vtws_update($fieldData, $this->user);
-									$entityInfo['status'] = self::$IMPORT_RECORD_UPDATED;
-									$this->logImport->debug('updated record overwrite', $entityInfo);
+									try {
+										$entityInfo = vtws_update($fieldData, $this->user);
+										$entityInfo['status'] = self::$IMPORT_RECORD_UPDATED;
+										$this->logImport->debug('updated record overwrite', $entityInfo);
+									} catch (\Throwable $th) {
+										$this->logImport->debug('ERROR updating record: '.$th->getMessage());
+										$entityInfo = array('id' => $baseEntityId, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $th->getMessage());
+									}
 								} else {
-									$entityInfo = array('id' => null, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $validation['wsresult']);
+									$entityInfo = array('id' => $baseEntityId, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $validation['wsresult']);
 									$this->logImport->debug('update overwrite FAILED', $entityInfo);
 								}
 								//Prepare data for event handler
@@ -330,11 +335,16 @@ class Import_Data_Controller {
 									$validation = __cbwsCURValidation($fieldData, $this->user);
 								}
 								if ($validation===true) {
-									$entityInfo = vtws_revise($filteredFieldData, $this->user);
-									$entityInfo['status'] = self::$IMPORT_RECORD_MERGED;
-									$this->logImport->debug('updated record merge', $entityInfo);
+									try {
+										$entityInfo = vtws_revise($filteredFieldData, $this->user);
+										$entityInfo['status'] = self::$IMPORT_RECORD_MERGED;
+										$this->logImport->debug('updated record merge', $entityInfo);
+									} catch (\Throwable $th) {
+										$this->logImport->debug('ERROR revising record: '.$th->getMessage());
+										$entityInfo = array('id' => $baseEntityId, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $th->getMessage());
+									}
 								} else {
-									$entityInfo = array('id' => null, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $validation['wsresult']);
+									$entityInfo = array('id' => $baseEntityId, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $validation['wsresult']);
 									$this->logImport->debug('update merge FAILED', $entityInfo);
 								}
 								//Prepare data for event handler
