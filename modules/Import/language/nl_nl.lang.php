@@ -29,6 +29,7 @@ $mod_strings = array(
 	'LBL_SPECIFY_MERGE_TYPE' => 'Geef samenvoegtype aan',
 	'LBL_SELECT_MERGE_FIELDS' => 'Kies samenvoegvelden',
 	'LBL_SELECT_MERGE_CONDITION' => 'Or select a rule to decide if the record is duplicate or not',
+	'LBL_SKIP_CREATE' => 'Skip record creation (only update)',
 	'LBL_AVAILABLE_FIELDS' => 'Available Fields',
 	'LBL_SELECTED_FIELDS' => 'Fields to be matched on',
 	'UTF-8' => 'UTF-8',

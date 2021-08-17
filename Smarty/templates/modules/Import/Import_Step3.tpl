@@ -32,6 +32,9 @@
 							<option value="{$_MERGE_TYPE}" {if $STEP3_HANDLETYPE eq $_MERGE_TYPE}selected{/if}>{$_MERGE_TYPE_LABEL|@getTranslatedString:$MODULE}</option>
 							{/foreach}
 						</select>
+						&nbsp;&nbsp;
+						<span class="small">{'LBL_SKIP_CREATE'|@getTranslatedString:$MODULE}</span>
+						<input type="checkbox" class="small" id="skipcreate" name="skipcreate" />
 					</td>
 				</tr>
 				<tr>

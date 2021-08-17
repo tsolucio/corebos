@@ -30,6 +30,7 @@ $mod_strings = array (
 	'LBL_SPECIFY_MERGE_TYPE' => 'Selecione como registros duplicados devem ser manuseados',
 	'LBL_SELECT_MERGE_FIELDS' => 'Selecionar os campos correspondentes para encontrar registros duplicados',
 	'LBL_SELECT_MERGE_CONDITION' => 'Or select a rule to decide if the record is duplicate or not',
+	'LBL_SKIP_CREATE' => 'Skip record creation (only update)',
 	'LBL_AVAILABLE_FIELDS' => 'Campos Disponíveis',
 	'LBL_SELECTED_FIELDS' => 'Campos devem coincidir com',
 	'UTF-8' => 'UTF-8',

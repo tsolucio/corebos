@@ -29,6 +29,7 @@ class Import_Data_Controller {
 	public $mergeType;
 	public $mergeFields;
 	public $mergeCondition;
+	public $skipCreate;
 	public $defaultValues;
 	public $importedRecordInfo = array();
 	public $batchImport = true;
@@ -48,6 +49,7 @@ class Import_Data_Controller {
 		$this->mergeType = $importInfo['merge_type'];
 		$this->mergeFields = $importInfo['merge_fields'];
 		$this->mergeCondition = $importInfo['importmergecondition'];
+		$this->skipCreate = $importInfo['skipcreate'];
 		$this->defaultValues = $importInfo['default_values'];
 		$this->user = $user;
 		$this->logImport = LoggerManager::getLogger('IMPORT');
@@ -358,10 +360,16 @@ class Import_Data_Controller {
 								cbEventHandler::do_action('corebos.entity.import.merge', $entityData);
 							}
 						} else {
-							$createRecord = true;
+							$createRecord = (!$this->skipCreate);
+							if (!$createRecord) {
+								$this->logImport->debug('CREATE SKIPPED');
+							}
 						}
 					} else {
-						$createRecord = true;
+						$createRecord = (!$this->skipCreate);
+						if (!$createRecord) {
+							$this->logImport->debug('CREATE SKIPPED');
+						}
 					}
 				} else {
 					$createRecord = true;

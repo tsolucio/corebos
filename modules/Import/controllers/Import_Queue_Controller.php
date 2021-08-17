@@ -30,7 +30,8 @@ class Import_Queue_Controller {
 					merge_type INT,
 					merge_fields TEXT,
 					status INT default 0,
-					importmergecondition INT default 0)",
+					importmergecondition INT default 0,
+					skipcreate INT default 0)",
 				true
 			);
 		}
@@ -40,9 +41,10 @@ class Import_Queue_Controller {
 		} else {
 			$status = self::$IMPORT_STATUS_NONE;
 		}
-
+		$skipCreate = $userInputObject->get('skipcreate');
 		$adb->pquery(
-			'INSERT INTO vtiger_import_queue VALUES(?,?,?,?,?,?,?,?,?)',
+			'INSERT INTO vtiger_import_queue (importid,userid,tabid,field_mapping,default_values,merge_type,merge_fields,`status`,importmergecondition,skipcreate)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',
 			array(
 				$adb->getUniqueID('vtiger_import_queue'),
 				$user->id,
@@ -53,6 +55,7 @@ class Import_Queue_Controller {
 				json_encode($userInputObject->get('merge_fields')),
 				$status,
 				empty($userInputObject->get('importmergecondition')) ? 0 : $userInputObject->get('importmergecondition'),
+				empty($skipCreate) ? 0 : ($skipCreate=='on' || $skipCreate=='1' ? 1 : 0),
 			)
 		);
 	}
@@ -140,6 +143,7 @@ class Import_Queue_Controller {
 			'merge_type' => $rowData['merge_type'],
 			'merge_fields' => json_decode($rowData['merge_fields'], true),
 			'importmergecondition' => $rowData['importmergecondition'],
+			'skipcreate' => $rowData['skipcreate'],
 			'user_id' => $rowData['userid'],
 			'status' => $rowData['status']
 		);
