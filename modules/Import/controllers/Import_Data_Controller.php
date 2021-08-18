@@ -191,7 +191,7 @@ class Import_Data_Controller {
 			$cbMapObject = new cbMap();
 			$cbMapObject->id = $this->mergeCondition;
 			$cbMapObject->retrieve_entity_info($this->mergeCondition, 'cbMap');
-			if ($cbMapObject->column_fields['maptype']!='ConditionExpression' && $cbMapObject->column_fields['maptype']!='ConditionQuery') {
+			if ($cbMapObject->column_fields['maptype']!='Condition Expression' && $cbMapObject->column_fields['maptype']!='Condition Query') {
 				$this->mergeCondition = 0;
 			}
 		}
@@ -247,12 +247,22 @@ class Import_Data_Controller {
 						}
 						$query = $queryGenerator->getQuery();
 					} else {
-						if ($cbMapObject->column_fields['maptype']=='ConditionExpression') {
+						if ($cbMapObject->column_fields['maptype']=='Condition Expression') {
 							$duplicateIDs = $cbMapObject->ConditionExpression($fieldData);
 						} else {
 							$duplicateIDs = $cbMapObject->ConditionQuery($fieldData);
 						}
-						$query = 'select crmid as id from vtiger_crmobject where crmid in ('.$adb->convert2SQL($duplicateIDs, array()).')';
+						if (empty($duplicateIDs)) {
+							$duplicateIDs = 0;
+						}
+						if (is_array($duplicateIDs)) {
+							$dups = array();
+							foreach ($duplicateIDs as $rowvalue) {
+								$dups[] = reset($rowvalue);
+							}
+							$duplicateIDs = implode(',', $dups);
+						}
+						$query = 'select crmid as '.$fieldColumnMapping['id'].' from vtiger_crmobject where crmid in ('.$adb->convert2SQL($duplicateIDs, array()).')';
 					}
 					$duplicatesResult = $adb->query($query);
 					$noOfDuplicates = $adb->num_rows($duplicatesResult);

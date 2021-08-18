@@ -104,7 +104,7 @@
 		'columnname': 'vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V',
 		'comparator': 'e',
 		'value': 'Condition Expression',
-		'columncondition': 'or',
+		'columncondition': '',
 		'groupid': 1
 	}];
 	var advSearchRecordSetMapping = '&query=true&searchtype=advance&advft_criteria=' + convertArrayOfJsonObjectsToString(searchConditionsRecordSetMapping);
