@@ -299,7 +299,9 @@ class Import_Data_Controller {
 								$this->logImport->debug('overwrite fields', $fieldData);
 								$validation=true;
 								if ($applyValidations) {
-									$validation = __cbwsCURValidation($fieldData, $this->user);
+									$context = $fieldData;
+									$context['module'] = $moduleName;
+									$validation = __cbwsCURValidation($context, $this->user);
 								}
 								if ($validation===true) {
 									try {
@@ -344,7 +346,10 @@ class Import_Data_Controller {
 								$this->logImport->debug('merge fields', $filteredFieldData);
 								$validation=true;
 								if ($applyValidations) {
-									$validation = __cbwsCURValidation($fieldData, $this->user);
+									$context = $fieldData;
+									$context['module'] = $moduleName;
+									$context['id'] = $baseEntityId;
+									$validation = __cbwsCURValidation($context, $this->user);
 								}
 								if ($validation===true) {
 									try {
