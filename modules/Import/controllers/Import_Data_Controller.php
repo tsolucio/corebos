@@ -378,12 +378,14 @@ class Import_Data_Controller {
 							$createRecord = (!$this->skipCreate);
 							if (!$createRecord) {
 								$this->logImport->debug('CREATE SKIPPED');
+								$entityInfo = array('id' => null, 'status' => self::$IMPORT_RECORD_SKIPPED, 'error' => 'CREATE SKIPPED');
 							}
 						}
 					} else {
 						$createRecord = (!$this->skipCreate);
 						if (!$createRecord) {
 							$this->logImport->debug('CREATE SKIPPED');
+							$entityInfo = array('id' => null, 'status' => self::$IMPORT_RECORD_SKIPPED, 'error' => 'CREATE SKIPPED');
 						}
 					}
 				} else {
