@@ -1913,6 +1913,28 @@ $WFExpressionFunctionDefinitons = array(
 		"evaluateRule(ruleID)",
 	),
 ),
+'executeSQL' => array(
+	'name' => 'executeSQL(query, parameters...)',
+	'desc' => 'Execute an SQL statement.',
+	'params' => array(
+		array(
+			'name' => 'query',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'a prepared SQL statement',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'any number of parameters the SQL may need',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"executeSQL('select siccode from vtiger_accounts where accountname=?', field)",
+	),
+),
 'getCRUDMode' => array(
 	'name' => 'getCRUDMode()',
 	'desc' => 'This function returns create or edit depending on the action being done.',

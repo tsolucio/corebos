@@ -105,6 +105,7 @@ function cbexpsql_supportedFunctions() {
 		// 'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 		// 'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 		'getIDof' => 'getIDof(module, searchon, searchfor)',
+		'executeSQL' => 'executeSQL(query, parameters...)',
 		//'getRelatedIDs' => 'getRelatedIDs(module)',
 		// 'getFromContext' => 'getFromContext(variablename)',
 		// 'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
@@ -551,6 +552,15 @@ function cbexpsql_average($arr, $mmodule) {
 		$select .= '(select '.$exp.' as nums) union ';
 	}
 	return substr($select, 0, strlen($select)-7).') as setofnums)';
+}
+
+function cbexpsql_executesql($arr, $mmodule) {
+	global $adb;
+	$params = array();
+	foreach (array_slice($arr, 1) as $value) {
+		$params[] = trim(__cbexpsql_functionparamsvalue($value, $mmodule), "'");
+	}
+	return '('.$adb->convert2SQL(trim(__cbexpsql_functionparamsvalue($arr[0], $mmodule), "'"), $params).')';
 }
 
 function cbexpsql_getLatitude($arr, $mmodule) {

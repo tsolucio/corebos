@@ -297,4 +297,19 @@ function __cb_evaluateRule($arr) {
 	}
 	return $result;
 }
+
+function __cb_executesql($arr) {
+	global $adb;
+	$rdo = array();
+	if (empty($arr) || empty($arr[0])) {
+		return $rdo;
+	}
+	$rs = $adb->pquery($arr[0], array_slice($arr, 1));
+	if ($rs) {
+		while ($row = $adb->fetchByAssoc($rs, -1, false)) {
+			$rdo[] = $row;
+		}
+	}
+	return $rdo;
+}
 ?>
