@@ -211,6 +211,7 @@ class VTExpressionsManager {
 			'evaluateRule' => 'evaluateRule(ruleID)',
 			'executeSQL' => 'executeSQL(query, parameters...)',
 			'getCRUDMode' => 'getCRUDMode()',
+			'Importing' => 'Importing()',
 			'isNumeric' => 'isNumeric(fieldname)',
 			'isString' => 'isString(fieldname)',
 			'OR' => 'OR(condition1, condition2)',

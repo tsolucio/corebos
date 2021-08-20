@@ -109,6 +109,7 @@ class VTFieldExpressionEvaluater {
 			'evaluateRule' => '__cb_evaluateRule',
 			'executeSQL' => '__cb_executesql',
 			'getCRUDMode' => '__cb_getcrudmode',
+			'Importing' => '__cb_currentlyimporting',
 			'isNumeric' => '__cb_is_numeric',
 			'isString' => '__cb_is_string',
 			'OR' => '__cb_or',

@@ -19,6 +19,7 @@ require_once 'modules/Import/resources/Utils.php';
 require_once 'modules/Import/controllers/Import_Lock_Controller.php';
 require_once 'modules/Import/controllers/Import_Queue_Controller.php';
 require_once 'vtlib/Vtiger/Mailer.php';
+$CURRENTLY_IMPORTING = false; // import working global variable
 
 class Import_Data_Controller {
 
@@ -43,6 +44,8 @@ class Import_Data_Controller {
 	public static $IMPORT_RECORD_FAILED = 5;
 
 	public function __construct($importInfo, $user) {
+		global $CURRENTLY_IMPORTING;
+		$CURRENTLY_IMPORTING = false;
 		$this->id = $importInfo['id'];
 		$this->module = $importInfo['module'];
 		$this->fieldMapping = $importInfo['field_mapping'];
@@ -108,6 +111,8 @@ class Import_Data_Controller {
 	}
 
 	public function importData() {
+		global $CURRENTLY_IMPORTING;
+		$CURRENTLY_IMPORTING = true;
 		$focus = CRMEntity::getInstance($this->module);
 		if (method_exists($focus, 'createRecords')) {
 			$this->logImport->debug('Import started with custom createRecords method on module '.$this->module);
@@ -119,6 +124,7 @@ class Import_Data_Controller {
 		$this->logImport->debug('Import finished: updating sequence field');
 		$this->updateModuleSequenceNumber();
 		$this->logImport->debug('Import finished');
+		$CURRENTLY_IMPORTING = false;
 	}
 
 	public function initializeImport() {

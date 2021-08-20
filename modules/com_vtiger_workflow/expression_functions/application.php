@@ -86,6 +86,11 @@ function __cb_getcrudmode($arr) {
 	}
 }
 
+function __cb_importing($arr) {
+	global $CURRENTLY_IMPORTING;
+	return $CURRENTLY_IMPORTING;
+}
+
 function __cb_getrelatedids($arr) {
 	global $current_user;
 	$relids = array();

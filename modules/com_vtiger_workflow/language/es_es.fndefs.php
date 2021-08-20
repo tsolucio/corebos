@@ -1942,6 +1942,16 @@ $WFExpressionFunctionDefinitons = array(
 		"getCRUDMode()",
 	),
 ),
+'Importing' => array(
+	'name' => 'Importing()',
+	'desc' => 'Esta función devuelve verdadero si la ejecución está dentro de un proceso de importación o falso en caso contrario.',
+	'params' => array(
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"Importing()",
+	),
+),
 'isNumeric' => array(
 	'name' => 'isNumeric(fieldname)',
 	'desc' => 'Esta función comprueba si un campo es numérico.',
