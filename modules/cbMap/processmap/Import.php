@@ -141,6 +141,8 @@ class Import extends processcbMap {
 			'mapname' => $mapname,
 			'mapid' => $rs->fields['id'],
 			'delimiter' => (empty($xml->delimiter)) ? ',' : (String)$xml->delimiter,
+			'skipcreate' => (empty($xml->skipcreate)) ? 0 : (Int)$xml->skipcreate,
+			'importmergecondition' => (empty($xml->importmergecondition)) ? 0 : (Int)$xml->importmergecondition,
 			'duphandling' => 'none',
 			'dupmatches' => array(),
 		);
@@ -394,6 +396,8 @@ class Import extends processcbMap {
 			'default_values' => $rs->fields['defaultvalues'],
 			'merge_type' => Import_Utils::$AUTO_MERGE_NONE,
 			'merge_fields' => '',
+			'skipcreate' => empty($this->mapping['skipcreate']) ? 0 : $this->mapping['skipcreate'],
+			'importmergecondition' => empty($this->mapping['importmergecondition']) ? 0 : $this->mapping['importmergecondition'],
 		);
 		if ($this->mapping['duphandling']!='none') {
 			switch ($this->mapping['duphandling']) {
