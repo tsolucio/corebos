@@ -1328,7 +1328,7 @@ class iCalendar_property_request_status extends iCalendar_property {
 				if ($thischar == '\\') {
 					// Next char must now be one of ";,\nN"
 					if ($nextchar != ';' && $nextchar != ',' && $nextchar != '\\' &&
-					   $nextchar != 'n' && $nextchar != 'N') {
+						$nextchar != 'n' && $nextchar != 'N') {
 						return false;
 					}
 

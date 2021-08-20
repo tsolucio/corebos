@@ -67,7 +67,7 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'any value or valid field name',
 		),
-		 array(
+		array(
 			'name' => 'b',
 			'type' => 'Multiple',
 			'optional' => true,

@@ -188,7 +188,7 @@ class FieldDependency extends processcbMap {
 			foreach ($v->actions->disappear as $action) {
 				foreach ($action->block as $block) {
 					$bname = getTranslatedString((String)$block, $mapping_arr['origin']);
-					 $bname = str_replace(' ', '', $bname);
+					$bname = str_replace(' ', '', $bname);
 					$actions['disappear'][] = array('block'=>$bname);
 				}
 			}

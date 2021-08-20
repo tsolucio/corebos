@@ -1231,7 +1231,7 @@ function getEventInfo(&$cal, $mode) {
 	$event_info = '';
 	$event_info .= $mod_strings['LBL_TOTALEVENTS'].'&nbsp;'.$event['event']['totalevent'];
 	if ($event['event']['pendingevent'] != null) {
-		 $event_info .= ', '.$event['event']['pendingevent'].'&nbsp;'.$mod_strings['LBL_PENDING'];
+		$event_info .= ', '.$event['event']['pendingevent'].'&nbsp;'.$mod_strings['LBL_PENDING'];
 	}
 	$cal_log->debug('< getEventInfo');
 	return $event_info;
@@ -1292,7 +1292,7 @@ function constructEventListView(&$cal, $entry_list, $navigation_array = '') {
 	);
 	if (isPermitted('cbCalendar', 'EditView') == 'yes' || isPermitted('cbCalendar', 'Delete') == 'yes') {
 		$header[] = $mod_strings['LBL_ACTION'];
-		 $header_width[] = '10%';
+		$header_width[] = '10%';
 	}
 	if (getFieldVisibilityPermission('Events', $current_user->id, 'eventstatus') == '0') {
 		$header[] = $mod_strings['LBL_STATUS'];
