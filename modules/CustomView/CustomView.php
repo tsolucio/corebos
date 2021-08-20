@@ -1140,12 +1140,11 @@ class CustomView extends CRMEntity {
 		$skipBlocksList = array(
 			getTabid('HelpDesk') => array('LBL_COMMENTS'),
 			getTabid('Faq') => array('LBL_COMMENT_INFORMATION'),
-			getTabid('Quotes') => array('LBL_RELATED_PRODUCTS'),
-			getTabid('PurchaseOrder') => array('LBL_RELATED_PRODUCTS'),
-			getTabid('SalesOrder') => array('LBL_RELATED_PRODUCTS'),
-			getTabid('Invoice') => array('LBL_RELATED_PRODUCTS'),
 			getTabid('Users') => $userNoShowBlocks,
 		);
+		foreach (getInventoryModules() as $invmod) {
+			$skipBlocksList[getTabid($invmod)] = array('LBL_RELATED_PRODUCTS');
+		}
 		$displayTypeCondition = $allDisplayTypes ? '' : 'displaytype!=3 and ';
 		$Sql = 'select distinct block,vtiger_field.tabid,name,blocklabel
 			from vtiger_field

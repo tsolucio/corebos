@@ -361,7 +361,7 @@ function updateInventoryProductRel($entity) {
 	}
 
 	$moduleName = $entity->getModuleName();
-	if ($moduleName === 'Invoice') {
+	if ($moduleName === 'Invoice' || $moduleName === 'Issuecards' || $moduleName === 'Receiptcards') {
 		$statusFieldName = 'invoicestatus';
 		$statusFieldValue = 'Cancel';
 	} elseif ($moduleName === 'SalesOrder') {
@@ -370,9 +370,6 @@ function updateInventoryProductRel($entity) {
 	} elseif ($moduleName === 'PurchaseOrder') {
 		$statusFieldName = 'postatus';
 		$statusFieldValue = 'Received Shipment';
-	} elseif ($moduleName === 'Issuecards') {
-		$statusFieldName = 'invoicestatus';
-		$statusFieldValue = 'Cancel';
 	}
 	$statusChanged = false;
 	$vtEntityDelta = new VTEntityDelta();
@@ -390,7 +387,7 @@ function updateInventoryProductRel($entity) {
 			$updateInventoryProductRel_deduct_stock = false;
 			deductProductsFromStock($entity_id);
 		}
-	} elseif ($recordDetails[$statusFieldName] == $statusFieldValue) {
+	} elseif (empty($recordDetails[$statusFieldName]) || $recordDetails[$statusFieldName] == $statusFieldValue) {
 		$updateInventoryProductRel_deduct_stock = false;
 	}
 
