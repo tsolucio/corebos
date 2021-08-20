@@ -86,10 +86,8 @@ class ConditionQuery extends processcbMap {
 			if (isset($f[$return])) {
 				return $f[$return];
 			}
-			return false;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	private function processSQL($xml, $arguments) {

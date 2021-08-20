@@ -137,7 +137,7 @@ class Import extends processcbMap {
 			$this->importtype = 'error';
 			return;
 		}
-		$mapping= array(
+		$tmap= array(
 			'mapname' => $mapname,
 			'mapid' => $rs->fields['id'],
 			'delimiter' => (empty($xml->delimiter)) ? ',' : (String)$xml->delimiter,
@@ -147,14 +147,14 @@ class Import extends processcbMap {
 			'dupmatches' => array(),
 		);
 		if (isset($xml->duplicates)) {
-			$mapping['duphandling'] = isset($xml->duplicates->handling) ? (String)$xml->duplicates->handling : 'none';
+			$tmap['duphandling'] = isset($xml->duplicates->handling) ? (String)$xml->duplicates->handling : 'none';
 			foreach ($xml->duplicates->fields->name as $v) {
 				if (!empty($v)) {
-					$mapping['dupmatches'][] = (String)$v;
+					$tmap['dupmatches'][] = (String)$v;
 				}
 			}
 		}
-		$this->mapping = $mapping;
+		$this->mapping = $tmap;
 	}
 
 	private function convertMap2ArrayDirect() {
@@ -193,13 +193,12 @@ class Import extends processcbMap {
 		foreach ($xml->targetmodule[0] as $key => $value) {
 			$target_module[$key] = (string) $value;
 		}
-		$mapping= array(
+		$this->mapping= array(
 			'target' => $fieldinfo,
 			'match' => $match_fields,
 			'options'=>$update_rules,
 			'targetmodule'=>$target_module,
 		);
-		$this->mapping = $mapping;
 	}
 
 	private function doImport($arguments) {
