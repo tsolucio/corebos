@@ -99,19 +99,19 @@ class RecordAccessControl extends processcbMap {
 		if (empty($xml)) {
 			return array();
 		}
-		$this->modulename = (String)$xml->originmodule->originname;
-		$this->moduleid = (isset($xml->originmodule->originid) ? (String)$xml->originmodule->originid : 0);
+		$this->modulename = (string)$xml->originmodule->originname;
+		$this->moduleid = (isset($xml->originmodule->originid) ? (string)$xml->originmodule->originid : 0);
 		if (isset($xml->listview->c)) {
-			$this->mapping['listview']['c'] = (Integer)$xml->listview->c;
+			$this->mapping['listview']['c'] = (integer)$xml->listview->c;
 		}
 		if (isset($xml->listview->r)) {
-			$this->mapping['listview']['r'] = (Integer)$xml->listview->r;
+			$this->mapping['listview']['r'] = (integer)$xml->listview->r;
 		}
 		if (isset($xml->listview->u)) {
-			$this->mapping['listview']['u'] = (Integer)$xml->listview->u;
+			$this->mapping['listview']['u'] = (integer)$xml->listview->u;
 		}
 		if (isset($xml->listview->d)) {
-			$this->mapping['listview']['d'] = (Integer)$xml->listview->d;
+			$this->mapping['listview']['d'] = (integer)$xml->listview->d;
 		}
 		if (isset($xml->listview->condition)) {
 			$this->mapping['listview']['condition'] = $this->convertConditionMap2Array($xml->listview->condition);
@@ -119,16 +119,16 @@ class RecordAccessControl extends processcbMap {
 			$this->mapping['listview']['condition'] = array();
 		}
 		if (isset($xml->detailview->c)) {
-			$this->mapping['detailview']['c'] = (Integer)$xml->detailview->c;
+			$this->mapping['detailview']['c'] = (integer)$xml->detailview->c;
 		}
 		if (isset($xml->detailview->r)) {
-			$this->mapping['detailview']['r'] = (Integer)$xml->detailview->r;
+			$this->mapping['detailview']['r'] = (integer)$xml->detailview->r;
 		}
 		if (isset($xml->detailview->u)) {
-			$this->mapping['detailview']['u'] = (Integer)$xml->detailview->u;
+			$this->mapping['detailview']['u'] = (integer)$xml->detailview->u;
 		}
 		if (isset($xml->detailview->d)) {
-			$this->mapping['detailview']['d'] = (Integer)$xml->detailview->d;
+			$this->mapping['detailview']['d'] = (integer)$xml->detailview->d;
 		}
 		if (isset($xml->detailview->condition)) {
 			$this->mapping['detailview']['condition'] = $this->convertConditionMap2Array($xml->detailview->condition);
@@ -137,21 +137,21 @@ class RecordAccessControl extends processcbMap {
 		}
 		if (isset($xml->relatedlists)) {
 			foreach ($xml->relatedlists->relatedlist as $v) {
-				$module_name = (String)$v->modulename;
+				$module_name = (string)$v->modulename;
 				if (isset($v->c)) {
-					$this->mapping['relatedlist'][$module_name]['c'] = (Integer)$v->c;
+					$this->mapping['relatedlist'][$module_name]['c'] = (integer)$v->c;
 				}
 				if (isset($v->r)) {
-					$this->mapping['relatedlist'][$module_name]['r'] = (Integer)$v->r;
+					$this->mapping['relatedlist'][$module_name]['r'] = (integer)$v->r;
 				}
 				if (isset($v->u)) {
-					$this->mapping['relatedlist'][$module_name]['u'] = (Integer)$v->u;
+					$this->mapping['relatedlist'][$module_name]['u'] = (integer)$v->u;
 				}
 				if (isset($v->d)) {
-					$this->mapping['relatedlist'][$module_name]['d'] = (Integer)$v->d;
+					$this->mapping['relatedlist'][$module_name]['d'] = (integer)$v->d;
 				}
 				if (isset($v->s)) {
-					$this->mapping['relatedlist'][$module_name]['s'] = (Integer)$v->s;
+					$this->mapping['relatedlist'][$module_name]['s'] = (integer)$v->s;
 				}
 				if (isset($v->condition)) {
 					$this->mapping['relatedlist'][$module_name]['condition'] = $this->convertConditionMap2Array($v->condition);
@@ -166,19 +166,19 @@ class RecordAccessControl extends processcbMap {
 		$cmap = array();
 		if (!empty($condition->businessrule)) {
 			if (isset($condition->c)) {
-				$cmap['c'] = (Integer)$condition->c;
+				$cmap['c'] = (integer)$condition->c;
 			}
 			if (isset($condition->r)) {
-				$cmap['r'] = (Integer)$condition->r;
+				$cmap['r'] = (integer)$condition->r;
 			}
 			if (isset($condition->u)) {
-				$cmap['u'] = (Integer)$condition->u;
+				$cmap['u'] = (integer)$condition->u;
 			}
 			if (isset($condition->d)) {
-				$cmap['d'] = (Integer)$condition->d;
+				$cmap['d'] = (integer)$condition->d;
 			}
 			if (isset($condition->s)) {
-				$cmap['s'] = (Integer)$condition->s;
+				$cmap['s'] = (integer)$condition->s;
 			}
 			$cmap['cmapid'] = $condition->businessrule;
 		}

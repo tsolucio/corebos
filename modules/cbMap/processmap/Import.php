@@ -130,7 +130,7 @@ class Import extends processcbMap {
 	private function convertMap2ArraycoreBOS() {
 		global $adb;
 		$xml = $this->getXMLContent();
-		$mapname = (String)$xml->mapname;
+		$mapname = (string)$xml->mapname;
 		$rs = $adb->pquery('select id from vtiger_import_maps where name=? limit 1', array($mapname));
 		if (!$rs || $adb->num_rows($rs)==0) {
 			$this->mapping = array();
@@ -140,17 +140,17 @@ class Import extends processcbMap {
 		$tmap= array(
 			'mapname' => $mapname,
 			'mapid' => $rs->fields['id'],
-			'delimiter' => (empty($xml->delimiter)) ? ',' : (String)$xml->delimiter,
-			'skipcreate' => (empty($xml->skipcreate)) ? 0 : (Int)$xml->skipcreate,
-			'importmergecondition' => (empty($xml->importmergecondition)) ? 0 : (Int)$xml->importmergecondition,
+			'delimiter' => (empty($xml->delimiter)) ? ',' : (string)$xml->delimiter,
+			'skipcreate' => (empty($xml->skipcreate)) ? 0 : (int)$xml->skipcreate,
+			'importmergecondition' => (empty($xml->importmergecondition)) ? 0 : (int)$xml->importmergecondition,
 			'duphandling' => 'none',
 			'dupmatches' => array(),
 		);
 		if (isset($xml->duplicates)) {
-			$tmap['duphandling'] = isset($xml->duplicates->handling) ? (String)$xml->duplicates->handling : 'none';
+			$tmap['duphandling'] = isset($xml->duplicates->handling) ? (string)$xml->duplicates->handling : 'none';
 			foreach ($xml->duplicates->fields->name as $v) {
 				if (!empty($v)) {
-					$tmap['dupmatches'][] = (String)$v;
+					$tmap['dupmatches'][] = (string)$v;
 				}
 			}
 		}
@@ -160,9 +160,9 @@ class Import extends processcbMap {
 	private function convertMap2ArrayDirect() {
 		$xml = $this->getXMLContent();
 		foreach ($xml->fields->field as $v) {
-			$fieldname= isset($v->fieldname) ? (String)$v->fieldname : '';
-			$value= isset($v->value) ? (String)$v->value : '';
-			$predefined= isset($v->predefined) ? (String)$v->predefined : '';
+			$fieldname= isset($v->fieldname) ? (string)$v->fieldname : '';
+			$value= isset($v->value) ? (string)$v->value : '';
+			$predefined= isset($v->predefined) ? (string)$v->predefined : '';
 			if (empty($v->Orgfields[0]->Relfield)) {
 				$fieldinfo[$fieldname] = array('value'=>$value,'predefined'=>$predefined);
 			} elseif (!empty($v->Orgfields[0]->Relfield) && isset($v->Orgfields[0]->Relfield)) {

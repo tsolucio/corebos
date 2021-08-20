@@ -109,25 +109,25 @@ class MasterDetailLayout extends processcbMap {
 		$mapping_arr=array();
 		$mapping_arr['mapnameraw'] = $this->getMap()->column_fields['mapname'];
 		$mapping_arr['mapname'] = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $mapping_arr['mapnameraw'])); // Removes special chars.
-		$mapping_arr['originmodule'] = (String)$xml->originmodule;
-		$mapping_arr['targetmodule'] = (String)$xml->targetmodule;
+		$mapping_arr['originmodule'] = (string)$xml->originmodule;
+		$mapping_arr['targetmodule'] = (string)$xml->targetmodule;
 		$this->detailModule = $mapping_arr['targetmodule'];
 		$dmf = CRMEntity::getInstance($this->detailModule);
 		$mapping_arr['targetmoduleidfield'] = $dmf->table_index;
 		$mapping_arr['linkfields'] = array(
-			'originfield' => (String)$xml->linkfields->originfield,
-			'targetfield' => (String)$xml->linkfields->targetfield,
+			'originfield' => (string)$xml->linkfields->originfield,
+			'targetfield' => (string)$xml->linkfields->targetfield,
 		);
-		$mapping_arr['sortfield'] = (String)$xml->sortfield;
+		$mapping_arr['sortfield'] = (string)$xml->sortfield;
 		$mapping_arr['toolbar'] = array(
-			'title' => (String)$xml->toolbar->title,
-			'icon' => (String)$xml->toolbar->icon,
-			'expandall' => (String)$xml->toolbar->expandall,
-			'create' => (String)$xml->toolbar->create,
+			'title' => (string)$xml->toolbar->title,
+			'icon' => (string)$xml->toolbar->icon,
+			'expandall' => (string)$xml->toolbar->expandall,
+			'create' => (string)$xml->toolbar->create,
 		);
 		$mapping_arr['listview'] = array();
 		if (isset($xml->listview->datasource)) {
-			$dsrc = (String)$xml->listview->datasource;
+			$dsrc = (string)$xml->listview->datasource;
 			if (strtolower($dsrc)=='corebos') {
 				$mapping_arr['listview']['datasource'] = 'index.php?module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=list&mdmap='
 					.urlencode($mapping_arr['mapnameraw']);
@@ -137,17 +137,17 @@ class MasterDetailLayout extends processcbMap {
 		}
 		if (isset($xml->listview->toolbar)) {
 			$mapping_arr['listview']['toolbar'] = array(
-				'moveup' => isset($xml->listview->toolbar->moveup) ? (String)$xml->listview->toolbar->moveup : '1',
-				'movedown' => isset($xml->listview->toolbar->movedown) ? (String)$xml->listview->toolbar->movedown : '1',
-				'edit' => isset($xml->listview->toolbar->edit) ? (String)$xml->listview->toolbar->edit : '1',
-				'delete' => isset($xml->listview->toolbar->delete) ? (String)$xml->listview->toolbar->delete : '1',
+				'moveup' => isset($xml->listview->toolbar->moveup) ? (string)$xml->listview->toolbar->moveup : '1',
+				'movedown' => isset($xml->listview->toolbar->movedown) ? (string)$xml->listview->toolbar->movedown : '1',
+				'edit' => isset($xml->listview->toolbar->edit) ? (string)$xml->listview->toolbar->edit : '1',
+				'delete' => isset($xml->listview->toolbar->delete) ? (string)$xml->listview->toolbar->delete : '1',
 			);
 		}
 		$mapping_arr['listview']['fields'] = array();
 		if (isset($xml->listview->fields->field) && is_object($xml->listview->fields->field)) {
 			foreach ($xml->listview->fields->field as $v) {
-				$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
-				$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
+				$fieldtype = isset($v->fieldtype) ? (string)$v->fieldtype : '';
+				$fieldname = isset($v->fieldname) ? (string)$v->fieldname : '';
 				$fieldinfo = array();
 				if (!empty($fieldname)) {
 					switch (strtolower($fieldtype)) {
@@ -159,7 +159,7 @@ class MasterDetailLayout extends processcbMap {
 							break;
 						case 'computed':
 							$fieldinfo['name'] = $fieldname;
-							$fieldinfo['label'] = isset($v->fieldlabel) ? (String)$v->fieldlabel : '';
+							$fieldinfo['label'] = isset($v->fieldlabel) ? (string)$v->fieldlabel : '';
 							$fieldinfo['uitype'] = 'computed';
 							break;
 					}
@@ -167,13 +167,13 @@ class MasterDetailLayout extends processcbMap {
 				$mapping_arr['listview']['fields'][] = array(
 					'fieldtype' => $fieldtype,
 					'fieldinfo' => $fieldinfo,
-					'editable' => isset($v->editable) ? (String)$v->editable : '',
-					'mandatory' => isset($v->mandatory) ? (String)$v->mandatory : '',
-					'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
-					'layout' => isset($v->layout) ? (String)$v->layout : '',
+					'editable' => isset($v->editable) ? (string)$v->editable : '',
+					'mandatory' => isset($v->mandatory) ? (string)$v->mandatory : '',
+					'hidden' => isset($v->hidden) ? (string)$v->hidden : '0',
+					'layout' => isset($v->layout) ? (string)$v->layout : '',
 					'editor' => !empty($v->editable) ? json_encode(gridGetEditor($mapping_arr['targetmodule'], $fieldinfo['name'], $fieldinfo['uitype'])) : '',
 					'sortable' => !empty($v->sortable),
-					'sortingType' => isset($v->sortingType) ? (String)$v->sortingType : '',
+					'sortingType' => isset($v->sortingType) ? (string)$v->sortingType : '',
 				);
 				$mapping_arr['listview']['fieldnames'][] = $fieldinfo['name'];
 			}
@@ -183,12 +183,12 @@ class MasterDetailLayout extends processcbMap {
 		$mapping_arr['editfields'] = array();
 		$mapping_arr['editfieldnames'] = array();
 		$mapping_arr['detailview'] = array();
-		$mapping_arr['detailview']['layout'] = isset($xml->detailview->layout) ? (String)$xml->detailview->layout : '';
+		$mapping_arr['detailview']['layout'] = isset($xml->detailview->layout) ? (string)$xml->detailview->layout : '';
 		$mapping_arr['detailview']['fields'] = array();
 		if (is_object($xml->detailview->fields->field)) {
 			foreach ($xml->detailview->fields->field as $v) {
-				$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
-				$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
+				$fieldtype = isset($v->fieldtype) ? (string)$v->fieldtype : '';
+				$fieldname = isset($v->fieldname) ? (string)$v->fieldname : '';
 				$fieldinfo = array();
 				if (!empty($fieldname)) {
 					switch (strtolower($fieldtype)) {
@@ -200,22 +200,22 @@ class MasterDetailLayout extends processcbMap {
 							break;
 						case 'computed':
 							$fieldinfo['name'] = $fieldname;
-							$fieldinfo['label'] = isset($v->fieldlabel) ? (String)$v->fieldlabel : '';
+							$fieldinfo['label'] = isset($v->fieldlabel) ? (string)$v->fieldlabel : '';
 							$fieldinfo['uitype'] = 'computed';
 							break;
 					}
 				}
-				$editable = isset($v->editable) ? (String)$v->editable : '';
+				$editable = isset($v->editable) ? (string)$v->editable : '';
 				$mapping_arr['detailview']['fields'][] = array(
 					'fieldtype' => $fieldtype,
 					'fieldinfo' => $fieldinfo,
 					'editable' => $editable,
-					'mandatory' => isset($v->mandatory) ? (String)$v->mandatory : '',
-					'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
-					'value' => isset($v->value) ? (String)$v->value : '',
-					'defaultvalue' => isset($v->defaultvalue) ? (String)$v->defaultvalue : null,
-					'duplicatevalue' => isset($v->duplicatevalue) ? (String)$v->duplicatevalue : null,
-					'layout' => isset($v->layout) ? (String)$v->layout : '',
+					'mandatory' => isset($v->mandatory) ? (string)$v->mandatory : '',
+					'hidden' => isset($v->hidden) ? (string)$v->hidden : '0',
+					'value' => isset($v->value) ? (string)$v->value : '',
+					'defaultvalue' => isset($v->defaultvalue) ? (string)$v->defaultvalue : null,
+					'duplicatevalue' => isset($v->duplicatevalue) ? (string)$v->duplicatevalue : null,
+					'layout' => isset($v->layout) ? (string)$v->layout : '',
 				);
 				$mapping_arr['detailview']['fieldnames'][] = $fieldinfo['name'];
 				if (!empty($editable) || $fieldinfo['mandatory']) {
@@ -236,14 +236,14 @@ class MasterDetailLayout extends processcbMap {
 		if (is_object($xml->aggregations->operation)) {
 			foreach ($xml->aggregations->operation as $v) {
 				$mapping_arr['aggregations'][] = array(
-					'type' => isset($v->type) ? (String)$v->type : '',
-					'items' => isset($v->items) ? (String)$v->items : '',
-					'operation' => isset($v->operation) ? (String)$v->operation : '',
-					'column' => isset($v->column) ? (String)$v->column : '',
-					'variable' => isset($v->variable) ? (String)$v->variable : '0',
-					'label' => isset($v->label) ? (String)$v->label : '',
-					'currency' => isset($v->currency) ? (strtolower((String)$v->currency)=='true' ? 1 : 0) : 0,
-					'position' => isset($v->position) ? (String)$v->position : '',
+					'type' => isset($v->type) ? (string)$v->type : '',
+					'items' => isset($v->items) ? (string)$v->items : '',
+					'operation' => isset($v->operation) ? (string)$v->operation : '',
+					'column' => isset($v->column) ? (string)$v->column : '',
+					'variable' => isset($v->variable) ? (string)$v->variable : '0',
+					'label' => isset($v->label) ? (string)$v->label : '',
+					'currency' => isset($v->currency) ? (strtolower((string)$v->currency)=='true' ? 1 : 0) : 0,
+					'position' => isset($v->position) ? (string)$v->position : '',
 				);
 			}
 		}

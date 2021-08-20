@@ -91,23 +91,23 @@ class ConditionQuery extends processcbMap {
 	}
 
 	private function processSQL($xml, $arguments) {
-		return $this->executeSQL((String)$xml->sql, $arguments, (String)$xml->return);
+		return $this->executeSQL((string)$xml->sql, $arguments, (string)$xml->return);
 	}
 
 	private function processQuery($xml, $arguments) {
 		$query = $this->getExpressionQuery($xml);
-		return $this->executeSQL($query, array(), (String)$xml->return);
+		return $this->executeSQL($query, array(), (string)$xml->return);
 	}
 
 	public function getExpressionQuery($xml) {
 		global $adb,$current_user;
 		$workflowScheduler = new WorkFlowScheduler($adb);
-		$moduleName = (String)$xml->module;
+		$moduleName = (string)$xml->module;
 		$queryGenerator = new QueryGenerator($moduleName, $current_user);
-		$conditions = (String)$xml->conditions;
+		$conditions = (string)$xml->conditions;
 		$conditions = json_decode(decode_html($conditions));
 		if (isset($xml->fields)) {
-			$fields = explode(',', trim((String)$xml->fields));
+			$fields = explode(',', trim((string)$xml->fields));
 			$queryGenerator->setFields($fields);
 		} else {
 			$queryGenerator->setFields(array('id'));

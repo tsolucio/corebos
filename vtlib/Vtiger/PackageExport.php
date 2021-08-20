@@ -378,7 +378,7 @@ class Vtiger_PackageExport {
 					if (!in_array($table, $_exportedTables)) {
 						$tbldef = Vtiger_Utils::CreateTableSql($table);
 						if (empty($tbldef)) {
-							$tbldef = (String) $tablenode->sql;
+							$tbldef = (string) $tablenode->sql;
 						}
 						if (!empty($tbldef)) {
 							$this->openNode('table');

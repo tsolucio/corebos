@@ -397,7 +397,7 @@ class corebos_hubspot {
 			$allmergeFields = array();
 			foreach ($xml->fields->field as $v) {
 				foreach ($v->Orgfields->Orgfield as $value) {
-					$allmergeFields[] = (String)$value->OrgfieldName;
+					$allmergeFields[] = (string)$value->OrgfieldName;
 				}
 			}
 			$fields = array_unique(array_merge($fields, $allmergeFields));

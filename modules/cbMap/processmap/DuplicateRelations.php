@@ -80,9 +80,9 @@ class DuplicateRelations extends processcbMap {
 			return array();
 		}
 		$mapping_arr = array();
-		$mapping_arr['originid'] = (String)$xml->originmodule->originid;
-		$mapping_arr['originname'] = (String)$xml->originmodule->originname;
-		$mapping_arr['DuplicateDirectRelations'] = (String)$xml->DuplicateDirectRelations;
+		$mapping_arr['originid'] = (string)$xml->originmodule->originid;
+		$mapping_arr['originname'] = (string)$xml->originmodule->originname;
+		$mapping_arr['DuplicateDirectRelations'] = (string)$xml->DuplicateDirectRelations;
 
 		$relativemodules = array();
 		foreach ($xml->relatedmodules->relatedmodule as $r) {

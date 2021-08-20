@@ -121,8 +121,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * @return Array module list available in the module bundle.
 	 */
 	public function getAvailableModuleInfoFromModuleBundle() {
-		$list = (Array)$this->_modulexml->modulelist;
-		return (Array)$list['dependent_module'];
+		$list = (array)$this->_modulexml->modulelist;
+		return (array)$list['dependent_module'];
 	}
 
 	/**
@@ -357,10 +357,10 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			$installSequenceArray = array();
 			$moduleBundle = (boolean)$this->_modulexml->modulebundle;
 			if ($moduleBundle) {
-				$moduleList = (Array)$this->_modulexml->modulelist;
+				$moduleList = (array)$this->_modulexml->modulelist;
 				foreach ($moduleList as $moduleInfos) {
 					foreach ($moduleInfos as $moduleInfo) {
-						$moduleInfo = (Array)$moduleInfo;
+						$moduleInfo = (array)$moduleInfo;
 						$buildModuleArray[] = $moduleInfo;
 						$installSequenceArray[] = $moduleInfo['install_sequence'];
 					}

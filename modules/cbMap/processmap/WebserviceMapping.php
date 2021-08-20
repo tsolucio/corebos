@@ -339,22 +339,22 @@ class WebserviceMapping extends processcbMap {
 		}
 		$mapping=$target_fields=array();
 		$target_fields1 = array();
-		$mapping['origin'] = (String)$xml->originmodule->originname;
+		$mapping['origin'] = (string)$xml->originmodule->originname;
 		foreach ($xml->fields->field as $v) {
-			$fieldname = (String)$v->fieldname;
+			$fieldname = (string)$v->fieldname;
 			if (!empty($v->value)) {
-				$target_fields[$fieldname]['value'] = (String)$v->value;
+				$target_fields[$fieldname]['value'] = (string)$v->value;
 			} elseif (!empty($v->Orgfields[0]->Orgfield) && isset($v->Orgfields[0]->Orgfield)) {
 				$allmergeFields = array();
 				foreach ($v->Orgfields->Orgfield as $value) {
-					$allmergeFields[] = array((String)$value->OrgfieldID=>(String)$value->OrgfieldName);
+					$allmergeFields[] = array((string)$value->OrgfieldID=>(string)$value->OrgfieldName);
 				}
 				if (isset($v->Orgfields->delimiter)) {
-					$target_fields[$fieldname]['delimiter'] = (String)$v->Orgfields->delimiter;
+					$target_fields[$fieldname]['delimiter'] = (string)$v->Orgfields->delimiter;
 				}
 				$target_fields[$fieldname]['merge'] = $allmergeFields;
 				if (isset($v->master)) {
-					$target_fields[$fieldname]['master'] = filter_var((String)$v->master, FILTER_VALIDATE_BOOLEAN);
+					$target_fields[$fieldname]['master'] = filter_var((string)$v->master, FILTER_VALIDATE_BOOLEAN);
 				} else {
 					$target_fields[$fieldname]['master'] = false;
 				}
@@ -363,15 +363,15 @@ class WebserviceMapping extends processcbMap {
 				$allmergeFields = array();
 				foreach ($v->Orgfields->Relfield as $value1) {
 					$allRelValues = array(
-						'fieldname'=>(String)$value1->RelfieldName,
-						'relmodule'=>(String)$value1->RelModule,
-						'linkfield'=>(String)$value1->linkfield,
-						'linkvalue'=>isset($value1->Relfieldvalue) ? (String)$value1->Relfieldvalue : '',
+						'fieldname'=>(string)$value1->RelfieldName,
+						'relmodule'=>(string)$value1->RelModule,
+						'linkfield'=>(string)$value1->linkfield,
+						'linkvalue'=>isset($value1->Relfieldvalue) ? (string)$value1->Relfieldvalue : '',
 					);
 				}
 				$allmergeFields[] = $allRelValues;
 				if (isset($v->Orgfields[0]->Relfield->delimiter)) {
-					$target_fields[$fieldname]['delimiter'] = (String)$v->Orgfields[0]->Relfield->delimiter;
+					$target_fields[$fieldname]['delimiter'] = (string)$v->Orgfields[0]->Relfield->delimiter;
 				}
 				$target_fields[$fieldname]['relatedFields'] = $allmergeFields;
 			}
@@ -380,10 +380,10 @@ class WebserviceMapping extends processcbMap {
 		//response block
 		if (!empty($xml->Response[0]) && isset($xml->Response[0])) {
 			foreach ($xml->Response[0] as $v) {
-				$fieldname1 = (String) $v->fieldname;
+				$fieldname1 = (string) $v->fieldname;
 				$target_fields1[$fieldname1] = array(
-					'field' => (empty($v->destination->field) ? '' : (String)$v->destination->field),
-					'context' => (empty($v->destination->context) ? 'wsctx_'.$fieldname1 : (String)$v->destination->context),
+					'field' => (empty($v->destination->field) ? '' : (string)$v->destination->field),
+					'context' => (empty($v->destination->context) ? 'wsctx_'.$fieldname1 : (string)$v->destination->context),
 				);
 			}
 		}
@@ -395,7 +395,7 @@ class WebserviceMapping extends processcbMap {
 			$headers = array();
 			foreach ($xml->wsconfig[0] as $k => $v) {
 				if ($k != 'wsheader') {
-					$target_fields2[$k] = (String)$v[0];
+					$target_fields2[$k] = (string)$v[0];
 				} else {
 					$hd = $v[0];
 					foreach ($hd as $v1) {
