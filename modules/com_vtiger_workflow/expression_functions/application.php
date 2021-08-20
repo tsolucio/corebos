@@ -86,7 +86,7 @@ function __cb_getcrudmode($arr) {
 	}
 }
 
-function __cb_importing($arr) {
+function __cb_currentlyimporting($arr) {
 	global $CURRENTLY_IMPORTING;
 	return $CURRENTLY_IMPORTING;
 }
