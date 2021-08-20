@@ -732,8 +732,9 @@ class Vtiger_PackageExport {
 				}
 
 				$relModuleInstance = Vtiger_Module::getInstance($row['related_tabid']);
-				$this->outputNode($relModuleInstance->name, 'relatedmodule');
-
+				if ($relModuleInstance) {
+					$this->outputNode($relModuleInstance->name, 'relatedmodule');
+				}
 				$this->closeNode('relatedlist');
 			}
 
