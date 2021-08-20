@@ -141,13 +141,13 @@ class Import extends processcbMap {
 			'mapname' => $mapname,
 			'mapid' => $rs->fields['id'],
 			'delimiter' => (empty($xml->delimiter)) ? ',' : (string)$xml->delimiter,
-			'skipcreate' => (empty($xml->skipcreate)) ? 0 : (int)$xml->skipcreate,
-			'importmergecondition' => (empty($xml->importmergecondition)) ? 0 : (int)$xml->importmergecondition,
 			'duphandling' => 'none',
 			'dupmatches' => array(),
 		);
 		if (isset($xml->duplicates)) {
 			$tmap['duphandling'] = isset($xml->duplicates->handling) ? (string)$xml->duplicates->handling : 'none';
+			$tmap['skipcreate'] = (empty($xml->duplicates->skipcreate)) ? 0 : (int)$xml->duplicates->skipcreate;
+			$tmap['importmergecondition'] = (empty($xml->duplicates->importmergecondition)) ? 0 : (int)$xml->duplicates->importmergecondition;
 			foreach ($xml->duplicates->fields->name as $v) {
 				if (!empty($v)) {
 					$tmap['dupmatches'][] = (string)$v;
