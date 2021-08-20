@@ -396,7 +396,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 				LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
 				WHERE ".$condition.' and block in ('.generateQuestionMarks($block).') and displaytype in (1,2,3,4)
 				ORDER BY vtiger_blocks.sequence ASC, vtiger_field.sequence ASC';
-			$params = array($tabid, $block);
+			$params = array_merge([$tabid], $block);
 		} else {
 			$profileList = getCurrentUserProfileList();
 			if (count($profileList) > 0) {
@@ -409,7 +409,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 						AND vtiger_profile2field.profileid IN ('. generateQuestionMarks($profileList) .')
 						AND vtiger_def_org_field.visible = 0 and vtiger_field.block in ('.generateQuestionMarks($block).') and vtiger_field.displaytype in (1,2,3,4)
 						AND vtiger_field.presence in (0,2) ORDER BY vtiger_blocks.sequence ASC, vtiger_field.sequence ASC';
-				$params = array($tabid, $profileList, $block);
+				$params = array_merge([$tabid], $profileList, $block);
 			} else {
 				$sql = 'SELECT distinct vtiger_field.*, vtiger_profile2field.readonly, vtiger_blocks.sequence as blkseq, vtiger_profile2field.summary
 					FROM vtiger_field
@@ -419,7 +419,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 					WHERE '.$condition.' AND vtiger_profile2field.visible = 0
 						AND vtiger_def_org_field.visible = 0 and vtiger_field.block in ('.generateQuestionMarks($block).') and vtiger_field.displaytype in (1,2,3,4)
 						AND vtiger_field.presence in (0,2) ORDER BY vtiger_blocks.sequence ASC, vtiger_field.sequence ASC';
-				$params = array($tabid, $block);
+				$params = array_merge([$tabid], $block);
 			}
 		}
 

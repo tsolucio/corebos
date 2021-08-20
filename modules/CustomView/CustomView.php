@@ -1151,7 +1151,7 @@ class CustomView extends CRMEntity {
 			inner join vtiger_blocks on vtiger_blocks.blockid=vtiger_field.block
 			inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
 			where '.$displayTypeCondition.'vtiger_tab.name in (' . generateQuestionMarks($modules_list) . ') and vtiger_field.presence in (0,2) order by block';
-		$result = $adb->pquery($Sql, array($modules_list));
+		$result = $adb->pquery($Sql, $modules_list);
 
 		$pre_block_label = '';
 		while ($block_result = $adb->fetch_array($result)) {
