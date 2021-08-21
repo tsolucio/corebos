@@ -32,7 +32,7 @@ function changeModule() {
  * @param string module - the module name
  * @param string fieldname - the name of the field
  */
- function fixPicklistValues(module, fieldname) {
+function fixPicklistValues(module, fieldname) {
 	window.location = 'index.php?action=PickListAjax&module=PickList&file=PickListAction&fld_module='+encodeURIComponent(module)
 		+'&fieldname='+encodeURIComponent(fieldname)+'&mode=cleanpicklist';
 }
