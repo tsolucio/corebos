@@ -95,8 +95,8 @@ function createUserPrivilegesfile($userid) {
 
 /** Creates a file with all the organization default sharing permissions and custom sharing permissins specific for the specified user.
  *  In this file the information of the other users whose data is shared with the specified user is stored.
-  * @param $userid -- user id:: Type integer
-  * @returns sharing_privileges_userid file under the user_privileges directory
+  * @param integer user id
+  * @return void sharing_privileges_userid file under the user_privileges directory
  */
 function createUserSharingPrivilegesfile($userid) {
 	global $adb, $root_directory;
@@ -325,7 +325,7 @@ function createUserSharingPrivilegesfile($userid) {
 			$newbuf .= "\$Invoice_share_write_permission=array('ROLE'=>".constructTwoDimensionalCharIntSingleValueArray($inv_share_write_per['ROLE']).",'GROUP'=>".constructTwoDimensionalArray($inv_share_write_per['GROUP']).");\n\n";
 
 			// Writing Sharing Rules For Custom Modules.
-			// TODO: We are ignoring rules that has already been calculated above, it is good to add GENERIC logic here.
+			// NOTE: We are ignoring rules that have already been calculated above, it is good to add GENERIC logic here.
 			$custom_modules = getSharingModuleList(
 				array('Leads', 'Accounts', 'Contacts', 'Potentials', 'HelpDesk',
 				'Emails',
@@ -368,13 +368,13 @@ function createUserSharingPrivilegesfile($userid) {
 }
 
 /** Gives an array which contains the information for what all roles, groups and user data is to be shared with the specified user for the specified module
-  * @param $module -- module name:: Type varchar
-  * @param $userid -- user id:: Type integer
-  * @param $def_org_share -- default organization sharing permission array:: Type array
-  * @param $current_user_roles -- roleid:: Type varchar
-  * @param $parent_roles -- parent roles:: Type varchar
-  * @param $current_user_groups -- user id:: Type integer
-  * @returns $mod_share_permission -- array which contains the id of roles,group and users data shared with specifed user for the specified module
+  * @param string module name
+  * @param integer user id
+  * @param array default organization sharing permission array
+  * @param string roleid
+  * @param string parent roles
+  * @param integer user id
+  * @return array which contains the id of roles,group and users data shared with specifed user for the specified module
  */
 function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_user_roles, $parent_roles, $current_user_groups) {
 	global $adb;

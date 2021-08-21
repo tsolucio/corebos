@@ -177,8 +177,7 @@ class MailManager_RelationController extends MailManager_Controller {
 			try {
 				$focus->save($linkModule);
 
-				// This condition is added so that emails are not created for Todo without Parent,
-				// as there is no way to relate them
+				// This condition is added so that emails are not created for calendar without a Parent as there is no way to relate them
 				if (empty($parent) && $linkModule != 'cbCalendar') {
 					$linkedto = MailManager_RelationControllerAction::associate($mail, $focus->id);
 				}

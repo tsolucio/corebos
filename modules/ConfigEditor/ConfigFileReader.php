@@ -266,7 +266,6 @@ class ConfigFileRow {
 	 * Set the variable value
 	 */
 	public function setVariableValue($value) {
-		// TODO Avoid any PHP String concate hacks
 		if (preg_match(self::$variableUnSafeValueRegex, $value, $m)) {
 			return false;
 		}

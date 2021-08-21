@@ -182,9 +182,9 @@ class UserPrivileges {
 	}
 
 	/**
-	 * @param $tabname - module name
-	 * @param $permission - read|write|delete
-	 * @return array(TODO)
+	 * @param string module name
+	 * @param string read|write|delete
+	 * @return array of module sharing rules
 	 */
 	public function getModuleSharingRules($tabname, $permission) {
 		$varname = $tabname . '_share_' . $permission . '_permission';

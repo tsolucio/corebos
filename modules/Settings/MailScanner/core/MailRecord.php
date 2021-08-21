@@ -320,7 +320,7 @@ class Vtiger_MailRecord {
 			if (!$this->_attachments) {
 				$this->_attachments = array();
 			}
-			$this->_attachments[$filename] = $data;  // TODO: this is a problem if two files have same name
+			$this->_attachments[$filename] = $data;
 		} elseif ($p->type==0 && $data) { // TEXT
 			if (!empty($params['charset']) && $params['charset']!='UTF-8') {
 				$this->_charset = substr($params['charset'], 0, 10);  // assume all parts are same charset

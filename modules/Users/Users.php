@@ -1034,8 +1034,7 @@ class Users extends CRMEntity {
 		$this->column_fields['currency_symbol'] = $this->currency_symbol = $ui_curr;
 		$this->column_fields['conv_rate'] = $this->conv_rate = $adb->query_result($currency_result, 0, 'conversion_rate');
 
-		// TODO - This needs to be cleaned up once default values for fields are picked up in a cleaner way.
-		// This is just a quick fix to ensure things doesn't start breaking when the user currency configuration is missing
+		// This is just a quick fix to ensure things don't start breaking when the user currency configuration is missing
 		if ($this->column_fields['currency_grouping_pattern'] == '' && $this->column_fields['currency_symbol_placement'] == '') {
 			$this->column_fields['currency_grouping_pattern'] = $this->currency_grouping_pattern = '123,456,789';
 			$this->column_fields['currency_decimal_separator'] = $this->currency_decimal_separator = '.';
@@ -1420,7 +1419,7 @@ class Users extends CRMEntity {
 	}
 
 	public function filterInactiveFields($module) {
-		// TODO Nothing do right now
+		// Nothing do right now
 	}
 
 	public function deleteImage() {

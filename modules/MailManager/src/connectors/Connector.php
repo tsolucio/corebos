@@ -244,7 +244,6 @@ class MailManager_Connector {
 	 * Return the cache interval
 	 */
 	public function clearDBCacheInterval() {
-		// TODO Provide configuration option.
 		if (self::$DB_CACHE_CLEAR_INTERVAL) {
 			return strtotime(self::$DB_CACHE_CLEAR_INTERVAL);
 		}

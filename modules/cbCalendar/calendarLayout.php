@@ -131,9 +131,9 @@ function getEventListView(&$cal, $mode = '') {
 
 /**
  * Fuction constructs Todos ListView depends on the view
- * @param   array  $cal            - collection of objects and strings
- * @param   string $check          - string 'listcnt' or empty. if empty means get Todos ListView else get total no. of Todos and no. of pending todos Info.
- * @return  string $todo_list      - total no. of todos and no. of pending todos Info(Eg: Total Todos : 2, 1 Pending).
+ * @param  array collection of objects and strings
+ * @param  string 'listcnt' or empty. if empty means get Calendar ListView else get total no. of Events and no. of pending events information
+ * @return string total no. of events and no. of pending events information (Eg: Total Events : 2, 1 Pending).
  */
 function getTodosListView($cal, $check = '', $subtab = '') {
 	global $cal_log,$theme;
@@ -1218,10 +1218,10 @@ function getTodoList(&$calendar, $start_date, $end_date, $info = '') {
 }
 
 /**
- * Function to get number of Events and Todos Info
- * @param array    $cal  collection of objects and strings
- * @param string   $mode 'listcnt' or may be empty. if empty means get Events/Todos ListView else get total events/todos and no. of pending events/todos Info.
- * @return array    $event_todo_info  - collection of events/todos info.
+ * Function to get number of calendar information
+ * @param array collection of objects and strings
+ * @param string 'listcnt' or empty. if empty means get Calendar ListView else get total number of events and pending calendar information
+ * @return array collection of calendar information
  */
 function getEventInfo(&$cal, $mode) {
 	global $mod_strings,$cal_log;

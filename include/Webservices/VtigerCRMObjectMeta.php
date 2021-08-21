@@ -95,7 +95,6 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			$this->hasWriteAccess = true;
 			$this->hasDeleteAccess = true;
 		} else {
-			//TODO get or sort out the preference among profile2tab and profile2globalpermissions.
 			$profileList = getCurrentUserProfileList();
 
 			$sql = 'select * from vtiger_profile2globalpermissions where profileid in ('.generateQuestionMarks($profileList).');';

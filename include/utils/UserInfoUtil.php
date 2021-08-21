@@ -62,7 +62,6 @@ function fetchUserProfileId($userid) {
 
 		if ($result && $adb->num_rows($result)) {
 			$profileid = $adb->query_result($result, 0, 'profileid');
-			// TODO: What if there are multiple profile to one role?
 		}
 
 		// Update information to cache for re-use
