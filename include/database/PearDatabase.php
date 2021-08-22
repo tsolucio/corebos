@@ -622,6 +622,12 @@ class PearDatabase {
 		return $this->change_key_case($arr);
 	}
 
+	public function rowGenerator($r) {
+		while ($row = $this->fetch_array($r)) {
+			yield $row;
+		}
+	}
+
 	public function run_query_record_html($query) {
 		if (!is_array($rec = $this->run_query_record($query))) {
 			return $rec;
