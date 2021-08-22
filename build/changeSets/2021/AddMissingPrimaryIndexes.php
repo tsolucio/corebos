@@ -24,10 +24,7 @@ class AddMissingPrimaryIndexes extends cbupdaterWorker {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
 			global $adb;
-			$cnmsg = $adb->getColumnNames('vtiger_import_queue');
-			if (!in_array('importmergecondition', $cnmsg)) {
-				$this->ExecuteQuery('ALTER TABLE `vtiger_modtracker_detail` ADD PRIMARY KEY(`id`, `fieldname`);');
-			}
+			$this->ExecuteQuery('ALTER TABLE `vtiger_modtracker_detail` ADD PRIMARY KEY(`id`, `fieldname`);');
 			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
 			$this->markApplied(false);
 		}
