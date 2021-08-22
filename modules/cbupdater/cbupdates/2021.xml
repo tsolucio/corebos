@@ -133,4 +133,11 @@
 	<classname>AddImportSkipCreateColumn</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add missing primary indexes</description>
+	<filename>build/changeSets/2021/AddMissingPrimaryIndexes.php</filename>
+	<classname>AddMissingPrimaryIndexes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
