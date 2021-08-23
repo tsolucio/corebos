@@ -8,15 +8,16 @@
  * All Rights Reserved.
  *********************************************************************************/
 global $adb, $log;
+Vtiger_Request::validateRequest();
 $record = vtlib_purify($_REQUEST['record']);
 $pricebook_id = vtlib_purify($_REQUEST['pricebook_id']);
 $product_id = vtlib_purify($_REQUEST['product_id']);
 $listprice = vtlib_purify($_REQUEST['list_price']);
 $return_action = urlencode(vtlib_purify($_REQUEST['return_action']));
 $return_module = urlencode(vtlib_purify($_REQUEST['return_module']));
-
-$query = 'update vtiger_pricebookproductrel set listprice=? where pricebookid=? and productid=?';
-$listprice = CurrencyField::convertToDBFormat($listprice, null, true);
-$adb->pquery($query, array($listprice, $pricebook_id, $product_id));
+if (isPermitted('PriceBooks', 'EditView', $record)=='yes') {
+	$listprice = CurrencyField::convertToDBFormat($listprice, null, true);
+	$adb->pquery('update vtiger_pricebookproductrel set listprice=? where pricebookid=? and productid=?', [$listprice, $pricebook_id, $product_id]);
+}
 header("Location: index.php?module=$return_module&action=$return_action&ajax=true&record=".urlencode($record));
 ?>
