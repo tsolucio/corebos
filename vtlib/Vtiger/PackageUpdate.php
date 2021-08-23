@@ -375,7 +375,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 		}
 		$moduleInstance->deleteRelatedLists();
 		foreach ($modulenode->relatedlists->relatedlist as $relatedlistnode) {
-			$relModuleInstance = $this->update_Relatedlist($modulenode, $moduleInstance, $relatedlistnode);
+			$this->update_Relatedlist($modulenode, $moduleInstance, $relatedlistnode);
 		}
 	}
 

@@ -38,13 +38,6 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	private $_licensetext = false;
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Parse the manifest file
 	 * @access private
 	 */
@@ -449,25 +442,20 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$moduleInstance = new Vtiger_Module();
 		$moduleInstance->name = $tabname;
 		$moduleInstance->label= $tablabel;
-		if ($menuInstance = Vtiger_Menu::getInstance($parenttab)) {
-			$moduleInstance->parent=$parenttab;
-		} else {
-			$moduleInstance->parent='Tools';
+		$menuInstance = Vtiger_Menu::getInstance($parenttab);
+		if (!$menuInstance) {
+			self::log("Module attached to Tools because $parenttab does not exist");
+			$parenttab = 'Tools';
+			$menuInstance = Vtiger_Menu::getInstance($parenttab);
 		}
+		$moduleInstance->parent = $parenttab;
 		$moduleInstance->isentitytype = !$isextension;
 		$moduleInstance->version = (!$tabversion)? 0 : $tabversion;
 		$moduleInstance->minversion = (!$vtigerMinVersion)? false : $vtigerMinVersion;
 		$moduleInstance->maxversion = (!$vtigerMaxVersion)?  false : $vtigerMaxVersion;
 		$moduleInstance->save();
 
-		if (!empty($parenttab)) {
-			$menuInstance = Vtiger_Menu::getInstance($parenttab);
-			if ($menuInstance == null) {
-				$menuInstance = Vtiger_Menu::getInstance('Tools');
-				self::log("Module attached to Tools because $parenttab does not exist");
-			}
-			$menuInstance->addModule($moduleInstance);
-		}
+		$menuInstance->addModule($moduleInstance);
 
 		$this->import_Tables($this->_modulexml);
 		$this->import_Blocks($this->_modulexml, $moduleInstance);
