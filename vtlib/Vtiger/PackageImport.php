@@ -346,21 +346,9 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				$this->__parseManifestFile($unzip);
 			}
 
-			$buildModuleArray = array();
-			$installSequenceArray = array();
 			$moduleBundle = (boolean)$this->_modulexml->modulebundle;
 			if ($moduleBundle) {
-				$moduleList = (array)$this->_modulexml->modulelist;
-				foreach ($moduleList as $moduleInfos) {
-					foreach ($moduleInfos as $moduleInfo) {
-						$moduleInfo = (array)$moduleInfo;
-						$buildModuleArray[] = $moduleInfo;
-						$installSequenceArray[] = $moduleInfo['install_sequence'];
-					}
-				}
-				sort($installSequenceArray);
-				$unzip = new Vtiger_Unzip($zipfile);
-				$unzip->unzipAllEx($this->getTemporaryFilePath());
+				list($buildModuleArray, $installSequenceArray) = $this->prepareBundleForProcessing($zipfile);
 				foreach ($installSequenceArray as $sequence) {
 					foreach ($buildModuleArray as $moduleInfo) {
 						if ($moduleInfo['install_sequence'] == $sequence) {
@@ -374,6 +362,26 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				$this->import_Module();
 			}
 		}
+	}
+
+	/**
+	 * unpacks a module bundle and returns informtion for processing
+	 */
+	public function prepareBundleForProcessing($zipfile) {
+		$buildModuleArray = array();
+		$installSequenceArray = array();
+		$moduleList = (array)$this->_modulexml->modulelist;
+		foreach ($moduleList as $moduleInfos) {
+			foreach ($moduleInfos as $moduleInfo) {
+				$moduleInfo = (array)$moduleInfo;
+				$buildModuleArray[] = $moduleInfo;
+				$installSequenceArray[] = $moduleInfo['install_sequence'];
+			}
+		}
+		sort($installSequenceArray);
+		$unzip = new Vtiger_Unzip($zipfile);
+		$unzip->unzipAllEx($this->getTemporaryFilePath());
+		return array($buildModuleArray, $installSequenceArray);
 	}
 
 	/**
