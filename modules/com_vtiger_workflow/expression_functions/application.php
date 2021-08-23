@@ -181,7 +181,7 @@ function __cb_getfromcontextsearching($arr) {
 		}
 		if (is_array($array)) {
 			$key = array_search($arr[2], array_column($array, $arr[1]));
-			if ($key && !empty($array[$key])) {
+			if ($key!==false && !empty($array[$key])) {
 				$variableArr[$vname] = __cb_getfromcontextvalueinarrayobject($array[$key], $arr[3]);
 			} else {
 				$variableArr[$vname] = '';
