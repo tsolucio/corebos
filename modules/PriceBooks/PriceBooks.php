@@ -213,15 +213,12 @@ class PriceBooks extends CRMEntity {
 		return $return_value;
 	}
 
-	/**	function used to get whether the pricebook has related with a product or not
-	 *	@param int $id - product id
-	 *	@return true or false - if there are no pricebooks available or associated pricebooks for the product is equal to total number of pricebooks
-	 *		then return false, else return true
+	/**	return if product is related to ALL pricebooks or not
+	 *	@param integer product id
+	 *	@return boolean false if there are no pricebooks available or associated pricebooks for the product is equal to total number of pricebooks, else return true
 	 */
 	public function get_pricebook_noproduct($id) {
-		global $log, $adb;
-		$log->debug('> get_pricebook_noproduct '.$id);
-
+		global $adb;
 		$query = 'select vtiger_crmentity.crmid, vtiger_pricebook.*
 			from vtiger_pricebook
 			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
@@ -236,25 +233,19 @@ class PriceBooks extends CRMEntity {
 				where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
 			$result_pb = $adb->pquery($pb_query, array($id));
 			if ($no_count == $adb->num_rows($result_pb)) {
-				$log->debug('< get_pricebook_noproduct F');
 				return false;
-			} elseif ($adb->num_rows($result_pb) == 0) {
-				$log->debug('< get_pricebook_noproduct T');
-				return true;
-			} elseif ($adb->num_rows($result_pb) < $no_count) {
-				$log->debug('< get_pricebook_noproduct T');
+			} elseif ($adb->num_rows($result_pb) == 0 || $adb->num_rows($result_pb) < $no_count) {
 				return true;
 			}
 		} else {
-			$log->debug('< get_pricebook_noproduct F');
 			return false;
 		}
 	}
 
-	/*
+	/**
 	 * Function to get the primary query part of a report
-	 * @param - $module Primary module name
-	 * returns the query string formed on fetching the related data for report for primary module
+	 * @param string Primary module name
+	 * @return string query string formed on fetching the related data for report for primary module
 	 */
 	public function generateReportsQuery($module, $queryplanner) {
 		$moduletable = $this->table_name;
@@ -290,10 +281,10 @@ class PriceBooks extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
