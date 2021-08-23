@@ -252,29 +252,29 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			// array with all different address fieldnames for each module
 			$fieldnamesByModule = array(
 				'Accounts' => array(
-					 'bill_street', 'ship_street',
-					 'bill_city', 'ship_city',
-					 'bill_state', 'ship_state',
-					 'bill_code', 'ship_code',
-					 'bill_country', 'ship_country',
-					 'ship_address', 'bill_address'
-					),
+					'bill_street', 'ship_street',
+					'bill_city', 'ship_city',
+					'bill_state', 'ship_state',
+					'bill_code', 'ship_code',
+					'bill_country', 'ship_country',
+					'ship_address', 'bill_address'
+				),
 				'SalesOrder' => array(
-					 'bill_street', 'ship_street',
-					 'bill_city', 'ship_city',
-					 'bill_state', 'ship_state',
-					 'bill_code', 'ship_code',
-					 'bill_country', 'ship_country',
-					 'ship_address', 'bill_address'
-					),
+					'bill_street', 'ship_street',
+					'bill_city', 'ship_city',
+					'bill_state', 'ship_state',
+					'bill_code', 'ship_code',
+					'bill_country', 'ship_country',
+					'ship_address', 'bill_address'
+				),
 				'Contacts' => array(
-					 'mailingstreet', 'otherstreet',
-					 'mailingcity', 'othercity',
-					 'mailingstate', 'otherstate',
-					 'mailingzip', 'otherzip',
-					 'mailingcountry', 'othercountry',
-					 'mailingaddress', 'otheraddress'
-					),
+					'mailingstreet', 'otherstreet',
+					'mailingcity', 'othercity',
+					'mailingstate', 'otherstate',
+					'mailingzip', 'otherzip',
+					'mailingcountry', 'othercountry',
+					'mailingaddress', 'otheraddress'
+				),
 				'Leads' => array(
 					'lane', '',
 					'city', '',

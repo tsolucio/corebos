@@ -64,7 +64,7 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'cualquier valor o nombre de campo válido',
 		),
-		 array(
+		array(
 			'name' => 'b',
 			'type' => 'Múltiple',
 			'optional' => true,
@@ -1910,6 +1910,28 @@ $WFExpressionFunctionDefinitons = array(
 		"evaluateRule(ruleID)",
 	),
 ),
+'executeSQL' => array(
+	'name' => 'executeSQL(query, parameters...)',
+	'desc' => 'Ejecuta una consulta SQL.',
+	'params' => array(
+		array(
+			'name' => 'query',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'una consulta SQL preparada',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'Texto',
+			'optional' => true,
+			'desc' => 'cualquier número de parámetros que necesite la consulta SQL',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"executeSQL('select siccode from vtiger_accounts where accountname=?', campo)",
+	),
+),
 'getCRUDMode' => array(
 	'name' => 'getCRUDMode()',
 	'desc' => 'Esta función devuelve create o edit dependiendo de la acción que se esté realizando.',
@@ -1918,6 +1940,16 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"getCRUDMode()",
+	),
+),
+'Importing' => array(
+	'name' => 'Importing()',
+	'desc' => 'Esta función devuelve verdadero si la ejecución está dentro de un proceso de importación o falso en caso contrario.',
+	'params' => array(
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"Importing()",
 	),
 ),
 'isNumeric' => array(

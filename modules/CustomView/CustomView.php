@@ -1140,19 +1140,18 @@ class CustomView extends CRMEntity {
 		$skipBlocksList = array(
 			getTabid('HelpDesk') => array('LBL_COMMENTS'),
 			getTabid('Faq') => array('LBL_COMMENT_INFORMATION'),
-			getTabid('Quotes') => array('LBL_RELATED_PRODUCTS'),
-			getTabid('PurchaseOrder') => array('LBL_RELATED_PRODUCTS'),
-			getTabid('SalesOrder') => array('LBL_RELATED_PRODUCTS'),
-			getTabid('Invoice') => array('LBL_RELATED_PRODUCTS'),
 			getTabid('Users') => $userNoShowBlocks,
 		);
+		foreach (getInventoryModules() as $invmod) {
+			$skipBlocksList[getTabid($invmod)] = array('LBL_RELATED_PRODUCTS');
+		}
 		$displayTypeCondition = $allDisplayTypes ? '' : 'displaytype!=3 and ';
 		$Sql = 'select distinct block,vtiger_field.tabid,name,blocklabel
 			from vtiger_field
 			inner join vtiger_blocks on vtiger_blocks.blockid=vtiger_field.block
 			inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
 			where '.$displayTypeCondition.'vtiger_tab.name in (' . generateQuestionMarks($modules_list) . ') and vtiger_field.presence in (0,2) order by block';
-		$result = $adb->pquery($Sql, array($modules_list));
+		$result = $adb->pquery($Sql, $modules_list);
 
 		$pre_block_label = '';
 		while ($block_result = $adb->fetch_array($result)) {

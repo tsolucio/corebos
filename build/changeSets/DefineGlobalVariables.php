@@ -185,6 +185,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Import_DuplicateRecordHandling_Open',
 				'Import_DuplicateRecordHandling_Type',
 				'Import_DuplicateRecordHandling_Fields',
+				'Import_ApplyValidationRules',
+				'Import_ValidateMandatoryFields',
 				'Export_Field_Separator_Symbol',
 				'Export_RelatedField_GetValueFrom',
 				'Export_RelatedField_NameForSearch',

@@ -196,7 +196,6 @@ class Vtiger_PDF_Generator {
 			$file = str_replace(' ', '%20', $file);
 			$imsize = @getimagesize($file);
 			if ($imsize === false) {
-				//TODO handle error better.
 				//values here are consistent with one that should be max size of logo.
 				return array(60, 30, null, null);
 			}

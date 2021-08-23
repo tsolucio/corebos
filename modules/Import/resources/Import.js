@@ -7,6 +7,16 @@
  * All Rights Reserved.
  ************************************************************************************/
 
+var validateMandatoryFields = true;
+document.addEventListener('DOMContentLoaded', function () {
+	GlobalVariable_getVariable('Import_ValidateMandatoryFields', '1', gVTModule, gVTUserID).then(function (response) {
+		var obj = JSON.parse(response);
+		validateMandatoryFields = (obj.Import_ValidateMandatoryFields!='0');
+	}, function (error) {
+		validateMandatoryFields = true;
+	});
+});
+
 if (typeof(ImportJs) == 'undefined') {
 	/*
 	 * Namespaced javascript class for Import
@@ -143,7 +153,7 @@ if (typeof(ImportJs) == 'undefined') {
 					}
 				}
 			}
-			if (missingMandatoryFields.length > 0) {
+			if (validateMandatoryFields && missingMandatoryFields.length > 0) {
 				alert(alert_arr.ERR_PLEASE_MAP_MANDATORY_FIELDS + ' : ' + missingMandatoryFields.join(','));
 				return false;
 			}

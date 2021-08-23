@@ -1543,8 +1543,6 @@ class CRMEntity {
 	 */
 	public function apply_field_security() {
 		global $current_user, $currentModule;
-
-		require_once 'include/utils/UserInfoUtil.php';
 		foreach ($this->column_fields as $fieldname => $fieldvalue) {
 			$reset_value = false;
 			if (getFieldVisibilityPermission($currentModule, $current_user->id, $fieldname) != '0') {
@@ -1821,8 +1819,6 @@ class CRMEntity {
 	 */
 	public function initImportableFields($module) {
 		global $current_user;
-		require_once 'include/utils/UserInfoUtil.php';
-
 		$skip_uitypes = array('4'); // uitype 4 is for Mod numbers
 		// Look at cache if the fields information is available.
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);

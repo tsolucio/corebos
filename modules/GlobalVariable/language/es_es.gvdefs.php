@@ -484,8 +484,20 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSV de nombres de campo',
 	'definition' => 'Lista de nombres de campo separados por comas para buscar al realizar la deduplicación.',
 ),
+'Import_ValidateMandatoryFields' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Si se debe aplicar el mapeo de todos los campos obligatorios. Por defecto son obligatorios.',
+),
+'Import_ApplyValidationRules' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Si se deben aplicar las reglas de validación existentes en los registros que se están importando.',
+),
 'Export_Field_Separator_Symbol' => array(
-	'valuetype' => 'carácter',
+	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
 	'values' => ', | ; | others',
 	'definition' => 'Símbolo de carácter que separa los campos de los archivos de exportación CSV. Normalmente esto será una coma o un punto y coma, pero se puede usar cualquier símbolo.',

@@ -67,7 +67,7 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'any value or valid field name',
 		),
-		 array(
+		array(
 			'name' => 'b',
 			'type' => 'Multiple',
 			'optional' => true,
@@ -1913,6 +1913,28 @@ $WFExpressionFunctionDefinitons = array(
 		"evaluateRule(ruleID)",
 	),
 ),
+'executeSQL' => array(
+	'name' => 'executeSQL(query, parameters...)',
+	'desc' => 'Execute an SQL statement.',
+	'params' => array(
+		array(
+			'name' => 'query',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'a prepared SQL statement',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'any number of parameters the SQL may need',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"executeSQL('select siccode from vtiger_accounts where accountname=?', field)",
+	),
+),
 'getCRUDMode' => array(
 	'name' => 'getCRUDMode()',
 	'desc' => 'This function returns create or edit depending on the action being done.',
@@ -1921,6 +1943,16 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"getCRUDMode()",
+	),
+),
+'Importing' => array(
+	'name' => 'Importing()',
+	'desc' => 'This function returns true if the execution is inside an import process or false otherwise.',
+	'params' => array(
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"Importing()",
 	),
 ),
 'isNumeric' => array(

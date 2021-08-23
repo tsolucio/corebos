@@ -90,7 +90,7 @@ class Import_CSV_Reader extends Import_File_Reader {
 
 					$status_fullcsv = $this->createTablesFullCSV($columnsListQuery, $columnNamesFullCSV, $RealCSVcolumnNames);
 				}
-				 continue;
+				continue;
 			}
 			$mappedData = array();
 			$allValuesEmpty = true;

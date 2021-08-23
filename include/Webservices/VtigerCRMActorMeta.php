@@ -175,8 +175,6 @@ class VtigerCRMActorMeta extends EntityMeta {
 			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
 			$tabid = getTabid($permModule);
-			//TODO get or sort out the preference among profile2tab and profile2globalpermissions.
-			//TODO check whether create/edit seperate controls required for web sevices?
 			$profileList = getCurrentUserProfileList();
 
 			$sql = 'select * from vtiger_profile2globalpermissions where profileid in ('.generateQuestionMarks($profileList).');';
@@ -280,10 +278,11 @@ class VtigerCRMActorMeta extends EntityMeta {
 				if ($this->idColumn === null) {
 					$this->idColumn = $dbField->name;
 				} else {
-					throw new WebServiceException(
-						WebServiceErrorCode::$UNKNOWNENTITY,
-						'Entity table with multi column primary key is not supported'
-					);
+					if ($tableName=='vtiger_modtracker_detail') { // valid table with compound primary key
+						break;
+					} else {
+						throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, 'Entity table with multi column primary key is not supported');
+					}
 				}
 			}
 			$field = $this->getFieldArrayFromDBField($dbField, $tableName);

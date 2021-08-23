@@ -46,7 +46,7 @@ class Vtiger_MailScannerRule {
 
 	// associated actions for this rule
 	public $actions  = false;
-	// TODO we are restricting one action for one rule right now
+	// NOTE: we are restricting one action for one rule right now
 	public $useaction= false;
 
 	/** DEBUG functionality **/

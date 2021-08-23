@@ -168,6 +168,7 @@ class MailManager_RelationController extends MailManager_Controller {
 					break;
 
 				case 'ModComments':
+				default:
 					$focus->column_fields['assigned_user_id'] = $current_user->id;
 					$focus->column_fields['creator'] = $current_user->id;
 					$focus->column_fields['related_to'] = $parent;
@@ -177,15 +178,14 @@ class MailManager_RelationController extends MailManager_Controller {
 			try {
 				$focus->save($linkModule);
 
-				// This condition is added so that emails are not created for Todo without Parent,
-				// as there is no way to relate them
+				// This condition is added so that emails are not created for calendar without a Parent as there is no way to relate them
 				if (empty($parent) && $linkModule != 'cbCalendar') {
 					$linkedto = MailManager_RelationControllerAction::associate($mail, $focus->id);
 				}
 
 				// add attachments to the tickets as Documents
 				if (in_array($linkModule, array('HelpDesk','Potentials','Project','ProjectTask')) && !empty($attachments)) {
-					$relationController = new MailManager_RelationControllerAction();
+					$relationController = new MailManager_RelationControllerAction('');
 					$relationController->__SaveAttachements($mail, $linkModule, $focus);
 				}
 

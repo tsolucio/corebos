@@ -9,7 +9,6 @@
  ************************************************************************************/
 require_once 'Smarty_setup.php';
 require_once 'data/Tracker.php';
-require_once 'include/upload_file.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme;
 

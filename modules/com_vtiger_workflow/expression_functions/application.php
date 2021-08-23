@@ -86,6 +86,11 @@ function __cb_getcrudmode($arr) {
 	}
 }
 
+function __cb_currentlyimporting($arr) {
+	global $CURRENTLY_IMPORTING;
+	return $CURRENTLY_IMPORTING;
+}
+
 function __cb_getrelatedids($arr) {
 	global $current_user;
 	$relids = array();
@@ -296,5 +301,20 @@ function __cb_evaluateRule($arr) {
 		));
 	}
 	return $result;
+}
+
+function __cb_executesql($arr) {
+	global $adb;
+	$rdo = array();
+	if (empty($arr) || empty($arr[0])) {
+		return $rdo;
+	}
+	$rs = $adb->pquery($arr[0], array_slice($arr, 1));
+	if ($rs) {
+		while ($row = $adb->fetchByAssoc($rs, -1, false)) {
+			$rdo[] = $row;
+		}
+	}
+	return $rdo;
 }
 ?>
