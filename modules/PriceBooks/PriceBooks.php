@@ -147,7 +147,7 @@ class PriceBooks extends CRMEntity {
 				WHERE vtiger_pricebook.pricebookid = '.$id.' and vtiger_crmentity.deleted = 0';
 
 		$this->retrieve_entity_info($id, $this_module);
-		$return_value = getPriceBookRelatedProducts($query, $this, $returnset);
+		$return_value = getPriceBookRelatedProducts($query, $this, $returnset, 'Products');
 
 		if ($return_value == null) {
 			$return_value = array();
