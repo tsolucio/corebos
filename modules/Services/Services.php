@@ -527,7 +527,7 @@ class Services extends CRMEntity {
 	 *	@param string $query - query to get the list of products which are related to the current PriceBook
 	 *	@param object $focus - PriceBook object which contains all the information of the current PriceBook
 	 *	@param string $returnset - return_module, return_action and return_id which are sequenced with & to pass to the URL which is optional
-	 *	return array $return_data which will be formed like array('header'=>$header, 'entries'=>$entries_list)
+	 *	@return array $return_data which will be formed like array('header'=>$header, 'entries'=>$entries_list)
 	 *		where $header contains all the header columns and $entries_list will contain all the Service entries
 	 */
 	public function getPriceBookRelatedServices($query, $focus, $returnset = '') {
@@ -623,9 +623,9 @@ class Services extends CRMEntity {
 
 	/**
 	 * Move the related records of the specified list of id's to the given record.
-	 * @param String This module name
-	 * @param Array List of Entity Id's from which related records need to be transfered
-	 * @param Integer Id of the the Record to which the related records are to be moved
+	 * @param string This module name
+	 * @param array List of Entity Id's from which related records need to be transfered
+	 * @param integer Id of the the Record to which the related records are to be moved
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
@@ -670,10 +670,10 @@ class Services extends CRMEntity {
 		$log->debug('< transferRelatedRecords');
 	}
 
-	/*
+	/**
 	 * Function to get the primary query part of a report
-	 * @param - $module primary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @return string query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsQuery($module, $queryPlanner) {
 		global $current_user;
@@ -715,11 +715,11 @@ class Services extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string the query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsSecQuery($module, $secmodule, $queryPlanner, $type = '', $where_condition = '') {
 		global $current_user;
@@ -750,10 +750,10 @@ class Services extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return string the array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -777,8 +777,8 @@ class Services extends CRMEntity {
 
 	 /**
 	* Invoked when special actions are performed on the module.
-	* @param String Module name
-	* @param String Event Type
+	* @param string Module name
+	* @param string Event Type
 	*/
 	public function vtlib_handler($moduleName, $eventType) {
 		require_once 'include/utils/utils.php';

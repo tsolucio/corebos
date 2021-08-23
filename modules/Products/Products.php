@@ -145,9 +145,9 @@ class Products extends CRMEntity {
 	}
 
 	/**	function to save the product tax information in vtiger_producttaxrel table
-	 *	@param string $tablename - vtiger_tablename to save the product tax relationship (producttaxrel)
-	 *	@param string $module	 - current module name
-	 *	$return void
+	 *	@param string tablename to save the product tax relationship (producttaxrel)
+	 *	@param string current module name
+	 *	@return void
 	*/
 	public function insertTaxInformation($tablename, $module) {
 		global $adb, $log;
@@ -194,9 +194,9 @@ class Products extends CRMEntity {
 	}
 
 	/**	function to save the product price information in vtiger_productcurrencyrel table
-	 *	@param string $tablename - vtiger_tablename to save the product currency relationship (productcurrencyrel)
-	 *	@param string $module	 - current module name
-	 *	$return void
+	 *	@param string tablename to save the product currency relationship (productcurrencyrel)
+	 *	@param string current module name
+	 *	@return void
 	*/
 	public function insertPriceInformation($tablename, $module) {
 		global $adb, $log;
@@ -943,8 +943,8 @@ class Products extends CRMEntity {
 
 	/**
 	* Function to get Product's related Products
-	* @param  integer   $id      - productid
-	* returns related Products record in array format
+	* @param integer productid
+	* @return array related Products records
 	*/
 	public function get_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -1008,8 +1008,8 @@ class Products extends CRMEntity {
 
 	/**
 	* Function to get Product's related Products
-	* @param  integer   $id      - productid
-	* returns related Products record in array format
+	* @param  integer productid
+	* @return array related Products records
 	*/
 	public function get_parent_products($id) {
 		global $log, $singlepane_view, $app_strings;
@@ -1085,9 +1085,9 @@ class Products extends CRMEntity {
 
 	/**
 	 * Move the related records of the specified list of id's to the given record.
-	 * @param String This module name
-	 * @param Array List of Entity Id's from which related records need to be transfered
-	 * @param Integer Id of the the Record to which the related records are to be moved
+	 * @param string This module name
+	 * @param array List of Entity Id's from which related records need to be transfered
+	 * @param integer Id of the the Record to which the related records are to be moved
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
@@ -1144,11 +1144,11 @@ class Products extends CRMEntity {
 		$log->debug('< transferRelatedRecords');
 	}
 
-	/*
+	/**
 	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string the query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsSecQuery($module, $secmodule, $queryplanner, $type = '', $where_condition = '') {
 		global $current_user;

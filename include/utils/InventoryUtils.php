@@ -859,7 +859,7 @@ function getProductBaseCurrency($productid, $module = 'Products') {
 /**	Function used to get the conversion rate for the product base currency with respect to the CRM base currency
  *	@param int $productid - product id for which we want to get the conversion rate of the base currency
  *  @param string $mode - Mode in which the function is called
- *  @return number $conversion_rate - conversion rate of the base currency for the given product based on the CRM base currency
+ *  @return float $conversion_rate - conversion rate of the base currency for the given product based on the CRM base currency
  */
 function getBaseConversionRateForProduct($productid, $mode = 'edit', $module = 'Products') {
 	global $adb, $current_user;
