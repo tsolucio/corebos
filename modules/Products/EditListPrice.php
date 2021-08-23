@@ -25,7 +25,8 @@ if (isset($_REQUEST['return_module']) && $_REQUEST['return_module']=='PriceBooks
 	$return_id = vtlib_purify($_REQUEST['pricebook_id']);
 }
 $onSubmit = 'if (!verify_data()) { document.getElementById(\'roleLay\').style.display=\'inline\'; return false; }';
-$output ='<div id="roleLay" style="display:block;" class="layerPopup">
+$onClose = 'document.getElementById(\'editlistprice\').style.display=\'none\';';
+$output ='<div id="roleLay" style="display:block;border-radius:10px;" class="layerPopup">
 	<form action="index.php" name="editpriceform" onSubmit="'.$onSubmit.'" method="post">
 	<input type="hidden" name="module" value="Products">
 	<input type="hidden" name="action" value="UpdateListPrice">
@@ -34,35 +35,32 @@ $output ='<div id="roleLay" style="display:block;" class="layerPopup">
 	<input type="hidden" name="record" value="'.$return_id.'">
 	<input type="hidden" name="pricebook_id" value="'.$pricebook_id.'">
 	<input type="hidden" name="product_id" value="'.$product_id.'">
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
-	<tr>
-		<td class=layerPopupHeading " align="left">'.getTranslatedString('LBL_EDITLISTPRICE', 'Products').'</td>
-		<td align="right" class="small"><img src="'. vtiger_imageurl('close.gif', $theme) .'" border=0 alt="'.$app_strings['LBL_CLOSE']
-		.'" title="'.$app_strings["LBL_CLOSE"].'" style="cursor:pointer" onClick="document.getElementById(\'editlistprice\').style.display=\'none\';"></td>
-	</tr>
-	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
-<tr>
-	<td class="small">
-	<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-	<tr>
-		<td width="50%" class="cellLabel small"><b>'.$mod_strings["LBL_EDITLISTPRICE"].'</b></td>
-		<td width="50%" class="cellText small"><input class="dataInput" type="text" id="list_price" name="list_price" value="'.$listprice.'" /></td>
-	</tr>
-	</table>
-	</td>
-</tr>
-</table>
-<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
-<tr>
-	<td colspan="3" align="center" class="small">
-	<input title="'.$app_strings['LBL_SAVE_BUTTON_LABEL'].'" class="crmbutton small save" type="submit" value="'.$app_strings['LBL_SAVE_BUTTON_LABEL'].'">
-	<input title="'.$app_strings['LBL_CANCEL_BUTTON_LABEL']
-	.'" class="crmbutton small cancel" onClick="document.getElementById(\'editlistprice\').style.display=\'none\';" type="button" value="'
-	.$app_strings["LBL_CANCEL_BUTTON_LABEL"].'">
-	</td>
-</tr>
-</table>
+	<div class="slds-form">
+	<div class="slds-form__row" style="margin:unset;">
+		<span class="slds-page-header" style="flex:auto;">
+			<strong>'.getTranslatedString('LBL_EDITLISTPRICE', 'Products').'</strong>
+			<span class="cblds-float_right">
+		<button type="button" class="slds-button slds-button_icon" title="'.$app_strings['LBL_CLOSE'].'" onClick="'.$onClose.'">
+			<svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+			</svg>
+			<span class="slds-assistive-text">'.$app_strings['LBL_CLOSE'].'</span>
+		</button>
+			</span>
+		</span>
+	</div>
+	<div class="slds-form__row">
+		<div class="slds-form__item" role="listitem">
+		<div class="slds-form-element slds-form-element_edit slds-form-element_stacked slds-m-top_small">
+			<input class="slds-input" type="text" id="list_price" name="list_price" value="'.$listprice.'" />
+		</div>
+		</div>
+	</div>
+	<div class="slds-form__row slds-align_absolute-center slds-m-bottom_small">
+	<button class="slds-button slds-button_neutral" type="submit">'.$app_strings['LBL_SAVE_BUTTON_LABEL'].'</button>
+	<button	class="slds-button slds-button_destructive" type="button" onClick="'.$onClose.'">'
+		.$app_strings["LBL_CANCEL_BUTTON_LABEL"].'</button>
+	</div>
 </form>
 </div>';
 echo $output;
