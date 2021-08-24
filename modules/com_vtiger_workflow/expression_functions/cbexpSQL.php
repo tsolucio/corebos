@@ -31,6 +31,7 @@ function cbexpsql_supportedFunctions() {
 		'stringposition' => 'stringposition(haystack,needle)',
 		'stringlength' => 'stringlength(string)',
 		'stringreplace' => 'stringreplace(search,replace,subject)',
+		'regexreplace' => 'regexreplace(pattern,replace,subject)',
 		'substring' => 'substring(stringfield,start,length)',
 		'randomstring' => 'randomstring(length)',
 		'uppercase'=>'uppercase(stringfield)',
@@ -321,6 +322,10 @@ function cbexpsql_stringlength($arr, $mmodule) {
 
 function cbexpsql_stringreplace($arr, $mmodule) {
 	return __cbexpsql_functionparams('REPLACE', $arr, $mmodule);
+}
+
+function cbexpsql_regexreplace($arr, $mmodule) {
+	return __cbexpsql_functionparams('REGEXP_REPLACE', array($arr[2], $arr[0], $arr[1]), $mmodule);
 }
 
 function cbexpsql_randomstring($arr, $mmodule) {

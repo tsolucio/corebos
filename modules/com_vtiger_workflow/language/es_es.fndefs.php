@@ -737,6 +737,34 @@ $WFExpressionFunctionDefinitons = array(
 		"stringreplace('ERICA','JON','MIKE AND ERICA ') // cambia erica por jon",
 	),
 ),
+'regexreplace' => array(
+	'name' => 'regexreplace(pattern,replace,subject)',
+	'desc' => 'Esta función devuelve una cadena con todas las apariciones de la expresión regular en el asunto reemplazadas con el valor de reemplazo dado.',
+	'params' => array(
+		array(
+			'name' => 'pattern',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'la expresión regular para buscar',
+		),
+		array(
+			'name' => 'replace',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'el valor a sustituir',
+		),
+		array(
+			'name' => 'subject',
+			'type' => 'Texto',
+			'optional' => false,
+			'desc' => 'la cadena en la que se busca y sustituye',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"regexreplace('[A-za-z]+','J','MIKE AND ERICA ')  //todo Js
+	),
+),
 'randomstring' => array(
 	'name' => 'randomstring(length)',
 	'desc' => 'Esta función devuelve una cadena aleatoria de la longitud indicada.',

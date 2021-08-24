@@ -155,6 +155,7 @@ class VTExpressionsManager {
 			'stringposition' => 'stringposition(haystack,needle)',
 			'stringlength' => 'stringlength(string)',
 			'stringreplace' => 'stringreplace(search,replace,subject)',
+			'regexreplace' => 'regexreplace(pattern,replace,subject)',
 			'power(base,exponential)' => 'power(base,exponential)',
 			'substring' => 'substring(stringfield,start,length)',
 			'randomstring' => 'randomstring(length)',
