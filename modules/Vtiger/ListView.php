@@ -273,6 +273,9 @@ $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_ListView
 $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS', ($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));
 $smarty->assign('EDIT_FILTER_ALL', GlobalVariable::getVariable('Application_Filter_All_Edit', 1));
 
+if (!empty($custom_list_include) && file_exists($custom_list_include)) {
+	include $custom_list_include;
+}
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 	$smarty->display('ListViewEntries.tpl');
 } elseif (isset($custom_list_template) && $custom_list_template != '') {
