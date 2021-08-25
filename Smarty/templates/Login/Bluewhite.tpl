@@ -10,16 +10,16 @@
          </div>
          <ul class="cbds-desc cbds-descoval">
             <li>
-               <img  id='cbds-iconimage' src="themes/login/images/checked.png" style="width:25px;height:25px">
-               <p style="padding-left:1rem">{'LBL_Bussiness'|getTranslatedString}</p>
+               <img  id='cbds-iconimage' src="themes/login/images/checked.png">
+               <p>{'LBL_Bussiness'|getTranslatedString}</p>
             </li>
             <li>
-               <img  id='cbds-iconimage' src="themes/login/images/checked.png" style="width:25px;height:25px">
-               <p style="padding-left:1rem">{'LBL_Management'|getTranslatedString}</p>
+               <img  id='cbds-iconimage' src="themes/login/images/checked.png">
+               <p>{'LBL_Management'|getTranslatedString}</p>
             </li>
             <li>
-               <img  id='cbds-iconimage' src="themes/login/images/checked.png" style="width:25px;height:25px">
-               <p style="padding-left:1rem">{'LBL_Statistics'|getTranslatedString}</p>
+               <img  id='cbds-iconimage' src="themes/login/images/checked.png"
+               <p>{'LBL_Statistics'|getTranslatedString}</p>
             </li>
          </ul>
          <div class="cbds-pic-ctn">
@@ -30,10 +30,10 @@
    </div>
    <div class="cbds-right cbds-rightoval">
    <div class="cbds-container">
-      <span id='headlogin'; style="font-size:44px; font-weight: 600 !important; color:#04589B; font-family: 'Roboto', sans-serif;">{'LBL_LOGIN'|getTranslatedString:'Users'|upper}</span>
+      <span id='cbds-headlogin'>{'LBL_LOGIN'|getTranslatedString:'Users'|upper}</span>
       <p  id='infologin'; style="font-size:20px;padding:1rem 0;color: black;">{'LBL_Please_login_to_your_account'|getTranslatedString:'Users'}</p>
       <div class="inpt">
-         <div id="theloginform" style="display: block;">
+         <div id="theloginform">
             {if $LOGIN_ERROR neq ''}
             <div class="errorMessage">{$LOGIN_ERROR}</div>
             {/if}
@@ -45,7 +45,7 @@
                <div id="usernamegroup" class="inputgroup">
                   <label for="username" class="cbds-label">{'Email'|getTranslatedString:'Users'|upper}</label>
                   <div id="username_container">
-                     <input class="input r4 wide mb16 mt8 username cbds-usrname cbds-bordercolor" type="email" value="" name="user_name" id="username" style="display: block;">
+                     <input class="input r4 wide mb16 mt8 username cbds-usrname cbds-bordercolor" type="email" value="" name="user_name" id="username">
                   </div>
                </div>
                <div class="inpt">
@@ -58,7 +58,7 @@
                      </svg>
                   </div>
                </div>
-               <div id="pwcaps" class="mb16" style="display: none">
+               <div id="pwcaps" class="mb16">
                   <img id="pwcapsicon" alt="{'CapsLockActive'|getTranslatedString}" width="12" src="themes/login/lds/capslock_blue.png">
                   {'CapsLockActive'|getTranslatedString}
                </div>

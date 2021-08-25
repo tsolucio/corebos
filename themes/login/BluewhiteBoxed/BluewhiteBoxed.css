@@ -78,9 +78,12 @@
 	display: flex;
 	font-size: 18px;
 	align-items: center;
-	margin-bottom: 1rem;
+	margin-bottom: 1rem;	
 }
 
+.cbds-desc p {
+	padding-left:1rem;
+}
 .cbds-right {
 	background: white;
 	display: flex;
@@ -184,6 +187,7 @@ p {
 
 .cbds-usrname {
 	font-size: 18 !important;
+	display: block !important;
 }
 
 .cbds-bordercolor {
@@ -212,6 +216,31 @@ p {
 	height: 1.5rem !important;
 	width: 1.5rem !important;
 	fill: #878787 !important
+}
+
+#cbds-iconimage {
+	width: 25px !important;
+	height: 25px !important;
+}
+
+#cbds-headlogin {
+	font-size:44px; 
+	font-weight: 600 !important; 
+	color:#04589B; font-family: 'Roboto', sans-serif;
+}
+
+.cbds-loginnote {
+	font-size:20px;
+	padding:1rem 0;
+	color: black;
+}
+
+#cbds-theloginform{
+	display: block;
+}
+
+.mb16 {
+	display: none
 }
 
 @keyframes display {
@@ -338,7 +367,7 @@ p {
 		display: flex;
 		justify-content: center;
 	}
-	#headlogin {
+	#cbds-headlogin {
 		font-size: 50px;
 	}
 	#infologin {
