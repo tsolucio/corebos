@@ -1,3 +1,4 @@
+{if !isset($moduleShowFilter) || $moduleShowFilter}
 <table width="100%" class="layerPopupTransport">
 	<tr>
 		<td width="25%" class="small" nowrap align="left">{$recordListRange}</td>
@@ -61,3 +62,4 @@
 		</td>
 	</tr>
 </table>
+{/if}
