@@ -10,8 +10,19 @@
 *}
 
 <div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-button_last">
-<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="{$MENULABEL|@getTranslatedString}" style="color:#0070d2;width:5rem;" type="button">
+{if isset($MENUIMAGE)}
+	{assign var='MENUBUTTONWIDTH' value=3}
+{else}
+	{assign var='MENUBUTTONWIDTH' value=5}
+{/if}
+<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="{$MENULABEL|@getTranslatedString}" style="color:#0070d2;width:{$MENUBUTTONWIDTH}rem;" type="button">
+{if isset($MENUIMAGE)}
+<svg class="slds-button__icon" aria-hidden="true">
+<use xlink:href="include/LD/assets/icons/{$MENUIMAGE.library}-sprite/svg/symbols.svg#{$MENUIMAGE.icon}"></use>
+</svg>
+{else}
 {$MENULABEL|@getTranslatedString}
+{/if}
 <svg class="slds-button__icon" aria-hidden="true">
 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
 </svg>

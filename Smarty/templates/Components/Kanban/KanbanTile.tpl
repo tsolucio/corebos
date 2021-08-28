@@ -6,6 +6,7 @@
 		<span class="small slds-col slds-size_1-of-4">
 			<span style="float:right;">
 			{assign var='MENULABEL' value='LBL_ACTIONS'}
+			{assign var='MENUIMAGE' value=['library'=>'utility', 'icon'=>'settings']}
 			{assign var='MENUBUTTONS' value=$KBMENU_LINKS}
 			{include file="Components/DropdownButtons.tpl"}
 			</span>
