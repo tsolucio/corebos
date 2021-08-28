@@ -92,7 +92,7 @@ if (isset($_REQUEST['module'])) {
 		$dir = @scandir($root_directory.'modules', SCANDIR_SORT_NONE);
 		$in_dir = @scandir($root_directory.'modules/'.$module, SCANDIR_SORT_NONE);
 		$is_module = @in_array($module, $dir);
-		$is_action = @in_array($action.'.php', $in_dir);
+		$is_action = @in_array($action.'.php', $in_dir) || file_exists('modules/Vtiger/'.$action.'.php');
 	}
 	if (!$is_module) {
 		die('Module name is missing or incorrect. Please check the module name.');
@@ -471,7 +471,13 @@ if ($display == 'no'
 	$smarty->assign('OPERATION_MESSAGE', getTranslatedString($currentModule, $currentModule) . $app_strings['VTLIB_MOD_NOT_ACTIVE']);
 	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 } else {
-	include_once $currentModuleFile;
+	if (file_exists($currentModuleFile)) {
+		include_once $currentModuleFile;
+	} elseif (file_exists('modules/Vtiger/'.$action.'.php')) {
+		include_once 'modules/Vtiger/'.$action.'.php';
+	} else {
+		die('Action name is missing or incorrect. Please check the action name: '.vtlib_purify($action));
+	}
 }
 
 //added to get the theme . This is a bad fix as we need to know where the problem lies yet
