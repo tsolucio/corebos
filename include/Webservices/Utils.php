@@ -205,7 +205,7 @@ function vtws_getEntityNameFields($moduleName) {
 }
 
 /** function to get the module List to which are crm entities.
- *  @return Array modules list as array
+ *  @return array modules list
  */
 function vtws_getModuleNameList() {
 	global $adb;
@@ -302,7 +302,7 @@ function vtws_getCalendarEntityType($id) {
 	return 'cbCalendar';
 }
 
-/***
+/**
  * Get the webservice reference Id given the entity's id and it's type name
  */
 function vtws_getWebserviceEntityId($entityName, $id) {
@@ -392,7 +392,7 @@ function vtws_preserveGlobal($name, $value) {
 
 /**
  * Given the details of a webservices definition, it creates it if it doesn't exist already
- * @param $operationInfo array with the new web service method definition. Like this:
+ * @param array with the new web service method definition. Like this:
   $operationInfo = array(
 	 'name'    => 'getRelatedRecords',
 	 'include' => 'include/Webservices/GetRelatedRecords.php',
@@ -406,8 +406,8 @@ function vtws_preserveGlobal($name, $value) {
 		 array('name' => 'queryParameters','type' => 'encoded')
 	 )
   );
- * @return false if already registered, true if registered correctly
- * @errors Failed to create webservice and Failed to setup parameters
+ * @return boolean false if already registered, true if registered correctly
+ * @throws InvalidArgumentException if failed to create webservice or failed to setup parameters
  */
 function registerWSAPI($operationInfo) {
 	global $adb;
@@ -445,16 +445,14 @@ function registerWSAPI($operationInfo) {
 
 /**
  * Takes the details of a webservices and exposes it over http.
- * @param $name name of the webservice to be added with namespace.
- * @param $handlerFilePath file to be include which provides the handler method for the given webservice.
- * @param $handlerMethodName name of the function to the called when this webservice is invoked.
- * @param $requestType type of request that this operation should be, if in doubt give it as GET,
- * 	general rule of thumb is that, if the operation is adding/updating data on server then it must be POST
- * 	otherwise it should be GET.
- * @param $preLogin 0 if the operation need the user to authorised to access the webservice and
- * 	1 if the operation is called before login operation hence the there will be no user authorisation happening
- * 	for the operation.
- * @return Integer operationId of successful or null upon failure.
+ * @param string name of the webservice to be added with namespace.
+ * @param string file to be include which provides the handler method for the given webservice.
+ * @param string name of the function to the called when this webservice is invoked.
+ * @param string type of request that this operation should be, if in doubt give it as GET,
+ * 	general rule of thumb is that, if the operation is adding/updating data on server then it must be POST otherwise it should be GET.
+ * @param boolean 0 if the operation need the user to authorised to access the webservice and
+ * 	1 if the operation is called before login operation hence the there will be no user authorisation happening for the operation.
+ * @return integer operationId of successful or null upon failure.
  */
 function vtws_addWebserviceOperation($name, $handlerFilePath, $handlerMethodName, $requestType, $preLogin = 0) {
 	global $adb;
@@ -478,12 +476,12 @@ function vtws_addWebserviceOperation($name, $handlerFilePath, $handlerMethodName
 
 /**
  * Add a parameter to a webservice.
- * @param $operationId Id of the operation for which a webservice needs to be added.
- * @param $paramName name of the parameter used to pickup value from request(POST/GET) object.
- * @param $paramType type of the parameter, it can either 'string','datetime' or 'encoded'
+ * @param integer Id of the operation for which a webservice needs to be added.
+ * @param string name of the parameter used to pickup value from request(POST/GET) object.
+ * @param string type of the parameter, it can either 'string','datetime' or 'encoded'
  * 	encoded type is used for input which will be encoded in JSON or XML(NOT SUPPORTED).
- * @param $sequence sequence of the parameter in the definition in the handler method.
- * @return Boolean true if the parameter was added successfully, false otherwise
+ * @param integer sequence of the parameter in the definition in the handler method.
+ * @return boolean true if the parameter was added successfully, false otherwise
  */
 function vtws_addWebserviceOperationParam($operationId, $paramName, $paramType, $sequence) {
 	global $adb;
@@ -504,9 +502,10 @@ function vtws_addWebserviceOperationParam($operationId, $paramName, $paramType, 
 
 /**
  * @global PearDatabase $adb
- * @global <type> $log
- * @param <type> $name
- * @param <type> $user
+ * @global object $log
+ * @param string module name
+ * @param Users user
+ * @param boolean if we should access all displaytypes
  * @return WebserviceEntityOperation
  */
 function vtws_getModuleHandlerFromName($name, $user, $allDisplayTypes = false) {
@@ -673,9 +672,9 @@ function vtws_getRelatedNotesAttachments($id, $relatedId) {
 }
 
 /**	Function used to save the lead related products with other entities Account, Contact and Potential
- *	$leadid - leadid
- *	$relatedid - related entity id (accountid/contactid/potentialid)
- *	$setype - related module(Accounts/Contacts/Potentials)
+ *	@param integer leadid
+ *	@param integer related entity id (accountid/contactid/potentialid)
+ *	@param string related module (Accounts/Contacts/Potentials)
  */
 function vtws_saveLeadRelatedProducts($leadId, $relatedId, $setype) {
 	global $adb;
@@ -696,9 +695,9 @@ function vtws_saveLeadRelatedProducts($leadId, $relatedId, $setype) {
 }
 
 /**	Function used to save the lead related services with other entities Account, Contact and Potential
- *	$leadid - leadid
- *	$relatedid - related entity id (accountid/contactid/potentialid)
- *	$setype - related module(Accounts/Contacts/Potentials)
+ *	@param integer leadid
+ *	@param integer related entity id (accountid/contactid/potentialid)
+ *	@param string related module (Accounts/Contacts/Potentials)
  */
 function vtws_saveLeadRelations($leadId, $relatedId, $setype) {
 	global $adb;
@@ -804,7 +803,7 @@ function vtws_transferRelatedActivities($leadId, $accountId, $contactId, $relate
  * @param $leadid - leadid
  * @param $relatedid - related entity id (contactid/accountid)
  * @param $setype - related module(Accounts/Contacts)
- * @return Boolean true on success, false otherwise.
+ * @return boolean true on success, false otherwise.
  */
 function vtws_saveLeadRelatedCampaigns($leadId, $relatedId, $seType) {
 	global $adb;
@@ -830,9 +829,9 @@ function vtws_saveLeadRelatedCampaigns($leadId, $relatedId, $seType) {
 
 /**
  * Function used to transfer all the lead related records to given Entity(Contact/Account) record
- * @param $leadid - leadid
- * @param $relatedid - related entity id (contactid/accountid)
- * @param $setype - related module(Accounts/Contacts)
+ * @param integer leadid
+ * @param integer related entity id (contactid/accountid)
+ * @param string related module (Accounts/Contacts)
  */
 function vtws_transferLeadRelatedRecords($leadId, $relatedId, $seType) {
 	global $adb;
