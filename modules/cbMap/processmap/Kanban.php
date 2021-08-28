@@ -77,7 +77,7 @@ class Kanban extends processcbMap {
 		} else {
 			$this->mapping['pagesize'] = (int)$xml->pagesize;
 		}
-		$this->mapping['lanes'] = $this->getLanes($xml);
+		list($this->mapping['lanes'], $this->mapping['lanenames']) = $this->getLanes($xml);
 		$this->mapping['cards'] = $this->getCards($xml);
 		return $this->mapping;
 	}
@@ -92,7 +92,9 @@ class Kanban extends processcbMap {
 		$dblanes = array();
 		if ($rs && $adb->num_rows($rs)>0) {
 			foreach ($adb->rowGenerator($rs) as $lanevalue) {
-				$dblanes[$lanevalue[$this->mapping['lanefield']]] = $lanevalue[$this->mapping['lanefield']];
+				if (!empty($lanevalue[$this->mapping['lanefield']])) {
+					$dblanes[$lanevalue[$this->mapping['lanefield']]] = $lanevalue[$this->mapping['lanefield']];
+				}
 			}
 		}
 		$xmllanes = array();
@@ -103,6 +105,7 @@ class Kanban extends processcbMap {
 				}
 				$xmllane = array(
 					'name' => (string)$v->name,
+					'id' => uniqid(strtolower(str_replace(' ', '', (string)$v->name))),
 					'sequence' => empty($v->sequence) ? -1 : (int)$v->sequence,
 				);
 				if (!empty($v->image) && !empty($v->image->library) && !empty($v->image->icon)) {
@@ -121,7 +124,7 @@ class Kanban extends processcbMap {
 				array_multisort($keys, SORT_ASC, $xmllanes);
 			}
 		}
-		$lanes = array();
+		$lanes = $lanenames = array();
 		$notsortedbutinfo = array();
 		foreach ($xmllanes as $value) {
 			if ($value['sequence']==-1) {
@@ -130,15 +133,20 @@ class Kanban extends processcbMap {
 			}
 			$lanes[$value['name']] = $value;
 			unset($dblanes[$value['name']]);
+			$lanenames[] = $value['name'];
 		}
 		foreach ($dblanes as $fvalue) {
 			if (isset($notsortedbutinfo[$fvalue])) {
 				$lanes[$fvalue] = $notsortedbutinfo[$fvalue];
 			} else {
-				$lanes[$fvalue] = $fvalue;
+				$lanes[$fvalue] = array(
+					'name' => $fvalue,
+					'id' => uniqid(strtolower(str_replace(' ', '', $fvalue))),
+				);
+				$lanenames[] = $fvalue;
 			}
 		}
-		return $lanes;
+		return [$lanes, $lanenames];
 	}
 
 	private function getCards($xml) {
