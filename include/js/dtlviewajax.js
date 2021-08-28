@@ -73,10 +73,9 @@ function hndMouseOver(uitype, fieldLabel) {
 		var assigntype = document.getElementsByName('assigntype');
 		if (assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
+			var assign_type_G = false;
 			if (assigntype[1]!=undefined) {
-				var assign_type_G = assigntype[1].checked;
-			} else {
-				var assign_type_G = false;
+				assign_type_G = assigntype[1].checked;
 			}
 			if (assign_type_U) {
 				globaltxtboxid= 'txtbox_U'+fieldLabel;
@@ -92,14 +91,10 @@ function hndMouseOver(uitype, fieldLabel) {
 	} else {
 		globaltxtboxid='txtbox_'+ fieldLabel;//textboxpanid;
 	}
-	divObj = getObj('crmspanid');
+	var divObj = getObj('crmspanid');
 	var crmy = findPosY(getObj(mouseArea));
 	var crmx = findPosX(getObj(mouseArea));
-	if (document.all) {
-		divObj.onclick=handleEdit;
-	} else {
-		divObj.setAttribute('onclick', 'handleEdit();');
-	}
+	divObj.setAttribute('onclick', 'handleEdit();');
 	divObj.style.left=(crmx+getObj(mouseArea).offsetWidth -divObj.offsetWidth)+'px';
 	divObj.style.top=crmy+'px';
 }
@@ -140,7 +135,7 @@ function handleEdit(event) {
 	show(globaleditareaspanid);
 	fnhide(globaldtlviewspanid);
 	if (((globaluitype == 15 || globaluitype == 16 || globaluitype == 1613 || globaluitype == 1614 || globaluitype == 1615) && globaltempvalue == '') ||
-			(globaluitype != 53 && globaluitype != 15 && globaluitype != 16 && globaluitype != 1613 && globaluitype != 1614 && globaluitype != 1615)
+		(globaluitype != 53 && globaluitype != 15 && globaluitype != 16 && globaluitype != 1613 && globaluitype != 1614 && globaluitype != 1615)
 	) {
 		globaltempvalue = getObj(globaltxtboxid).value;
 		if (getObj(globaltxtboxid).type != 'hidden') {
@@ -155,7 +150,7 @@ function handleEdit(event) {
 	return false;
 }
 
-//Asha: Function changed to trim both leading and trailing spaces.
+// trim both leading and trailing spaces
 function trim(str) {
 	var s = str.replace(/\s+$/, '');
 	s = s.replace(/^\s+/, '');
@@ -522,8 +517,6 @@ function setSelectValue(fieldLabel) {
 
 //Added to ajax edit the folder name in Documents Module
 function hndMouseClick(fieldLabel) {
-	var mouseArea='';
-	mouseArea='mouseArea_'+ fieldLabel;
 	if (itsonview) {
 		return;
 	}
@@ -556,8 +549,7 @@ function getListOfRecords(obj, sModule, iId) {
 		url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId,
 	}).done(function (response) {
 		document.getElementById('lstRecordLayout').innerHTML = response;
-		Lay = 'lstRecordLayout';
-		var tagName = document.getElementById(Lay);
+		var tagName = document.getElementById('lstRecordLayout');
 		var leftSide = findPosX(obj);
 		var topSide = findPosY(obj);
 		var maxW = tagName.style.width;
