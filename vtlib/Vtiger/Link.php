@@ -105,12 +105,12 @@ class Vtiger_Link {
 
 	/**
 	 * Add link given module
-	 * @param Integer Module ID
-	 * @param String Link Type (like DETAILVIEW). Useful for grouping based on pages.
-	 * @param String Label to display
-	 * @param String HREF value or URL to use for the link
-	 * @param String ICON to use on the display
-	 * @param Integer Order or sequence of displaying the link
+	 * @param integer Module ID
+	 * @param string Link Type (like DETAILVIEW). Useful for grouping based on pages.
+	 * @param string Label to display
+	 * @param string HREF value or URL to use for the link
+	 * @param string ICON to use on the display
+	 * @param integer Order or sequence of displaying the link
 	 */
 	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false) {
 		if (self::isBusinessActionCompatible()) {
@@ -142,10 +142,10 @@ class Vtiger_Link {
 
 	/**
 	 * Delete link of the module
-	 * @param Integer Module ID
-	 * @param String Link Type (like DETAILVIEW). Useful for grouping based on pages.
-	 * @param String Display label
-	 * @param String URL of link to lookup while deleting
+	 * @param integer Module ID
+	 * @param string Link Type (like DETAILVIEW). Useful for grouping based on pages.
+	 * @param string Display label
+	 * @param string URL of link to lookup while deleting
 	 */
 	public static function deleteLink($tabid, $type, $label, $url = false) {
 		if (self::isBusinessActionCompatible()) {
@@ -171,7 +171,7 @@ class Vtiger_Link {
 
 	/**
 	 * Delete all links related to module
-	 * @param Integer Module ID.
+	 * @param integer Module ID.
 	 */
 	public static function deleteAll($tabid) {
 		if (self::isBusinessActionCompatible()) {
@@ -186,7 +186,7 @@ class Vtiger_Link {
 
 	/**
 	 * Get all the links related to module
-	 * @param Integer Module ID.
+	 * @param integer Module ID.
 	 */
 	public static function getAll($tabid) {
 		return self::getAllByType($tabid);
@@ -194,9 +194,9 @@ class Vtiger_Link {
 
 	/**
 	 * Get all the link related to module based on type
-	 * @param Integer Module ID
+	 * @param integer Module ID
 	 * @param mixed String or List of types to select
-	 * @param Map Key-Value pair to use for formating the link url
+	 * @param array Key-Value pair to use for formating the link url
 	 */
 	public static function getAllByType($tabid, $type = false, $parameters = false, $userid = null, $recordid = null) {
 		if (self::isBusinessActionCompatible()) {
@@ -206,7 +206,7 @@ class Vtiger_Link {
 			self::__initSchema();
 
 			$multitype = false;
-			$orderby = ' order by linktype,sequence'; //MSL
+			$orderby = ' order by linktype,sequence';
 			if ($type) {
 				// Multiple link type selection?
 				if (is_array($type)) {
@@ -293,8 +293,8 @@ class Vtiger_Link {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 * @access private
 	 */
 	private static function log($message, $delimit = true) {
@@ -304,7 +304,7 @@ class Vtiger_Link {
 	/**
 	 * Checks whether the user is admin or not
 	 * @param Vtiger_LinkData $linkData
-	 * @return Boolean
+	 * @return boolean
 	 */
 	public static function isAdmin($linkData) {
 		$user = $linkData->getUser();
