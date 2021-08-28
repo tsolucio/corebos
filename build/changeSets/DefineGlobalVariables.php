@@ -68,6 +68,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Default_Action',
 				'Application_Default_Module',
 				'Application_Allow_Exports',
+				'Application_ListView_Layout',
 				'Application_ListView_MaxColumns',
 				'Application_ListView_Max_Text_Length',
 				'Application_ListView_PageSize',

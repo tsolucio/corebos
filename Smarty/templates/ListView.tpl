@@ -35,7 +35,17 @@
 	<!-- PUBLIC CONTENTS STARTS-->
 	<div id="ListViewContents" class="small" style="width:100%;">
 	{if $MODULE neq "Documents" || $Document_Folder_View eq 0}
-		{include file="ListViewEntries.tpl"}
+		{if empty($moduleView) || $moduleView=='table'}
+			{include file="ListViewEntries.tpl"}
+		{elseif $moduleView=='Kanban'}
+			{include file="KanbanView.tpl"}
+		{elseif $moduleView=='Dashboard'}
+			{include file="DashboardView.tpl"}
+		{elseif $moduleView=='Pivot'}
+			{include file="PivotView.tpl"}
+		{elseif $moduleView=='tuigrid'}
+			{include file="ListViewTUIGrid.tpl"}
+		{/if}
 	{else}
 		{include file="DocumentsListViewEntries.tpl"}
 	{/if}

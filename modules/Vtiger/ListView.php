@@ -272,6 +272,7 @@ if (is_array($listview_header_search)) {
 $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_ListView_SearchPanel_Open', 1);
 $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS', ($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));
 $smarty->assign('EDIT_FILTER_ALL', GlobalVariable::getVariable('Application_Filter_All_Edit', 1));
+$smarty->assign('moduleView', GlobalVariable::getVariable('Application_ListView_Layout', 'table'));
 
 if (!empty($custom_list_include) && file_exists($custom_list_include)) {
 	include $custom_list_include;

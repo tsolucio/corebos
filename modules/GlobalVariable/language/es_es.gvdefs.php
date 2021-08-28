@@ -280,6 +280,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Activar la acción de "Guardar y Repetir" en modo edición. Por defecto desactivado',
 ),
+'Application_ListView_Layout' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'table|tuigrid',
+	'definition' => 'Muestra la vista clásica basada en tablas (predeterminada) o la vista TUIGrid.',
+),
 'Application_ListView_Max_Text_Length' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Aplicación',
