@@ -20,6 +20,7 @@
 <div class="slds-dropdown slds-dropdown_right">
 <ul class="slds-dropdown__list" role="menu">
 	{foreach item=CUSTOMLINK from=$MENUBUTTONS}
+	{if is_object($CUSTOMLINK)}
 		{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 		{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
 		{assign var="customlink_id" value=$CUSTOMLINK->linklabel|replace:' ':''}
@@ -43,6 +44,9 @@
 				</span>
 			</a>
 		</li>
+	{else}
+		{$CUSTOMLINK}
+	{/if}
 	{/foreach}
 </ul>
 </div>
