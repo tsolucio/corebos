@@ -300,12 +300,9 @@ if ($use_current_login) {
 	coreBOS_Session::setUserGlobalSessionVariables();
 
 	/* Skip audit trail log for special request types */
-	$skip_auditing = false;
-	if (($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'cbCalendar') {
-		$skip_auditing = true;
-	} elseif (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
-		$skip_auditing = true;
-	}
+	$skip_auditing = (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager')
+		||
+		(($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'cbCalendar');
 	$privileges = $current_user->getPrivileges();
 	if (coreBOS_Settings::getSetting('audit_trail', false) && !$skip_auditing) {
 		$auditaction = $action;
@@ -480,7 +477,6 @@ if ($display == 'no'
 	}
 }
 
-//added to get the theme . This is a bad fix as we need to know where the problem lies yet
 if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_authenticated_user_theme'] != '') {
 	$theme = $_SESSION['vtiger_authenticated_user_theme'];
 } else {
