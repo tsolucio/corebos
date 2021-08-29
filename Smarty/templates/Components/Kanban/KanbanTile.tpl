@@ -1,5 +1,5 @@
 <article class="slds-tile">
-	<div class="slds-grid">
+	<div class="slds-grid slds-gutters">
 		<h3 class="slds-tile__title slds-truncate slds-col slds-size_3-of-4" title="{$Tile.title}">
 			<strong>{$Tile.title}</strong>
 		</h3>
@@ -12,7 +12,7 @@
 			</span>
 		</span>
 	</div>
-	<div class="slds-tile__detail slds-grid">
+	<div class="slds-tile__detail">
 		<dl class="slds-list_horizontal slds-wrap">
 		{foreach from=$Tile.showfields item=finfo key=fkey}
 			<dt class="slds-item_label slds-text-color_weak slds-truncate" title="{$finfo.label}">{$finfo.label}:</dt>
