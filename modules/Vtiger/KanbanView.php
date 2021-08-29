@@ -24,6 +24,7 @@ if (empty($cbMapKb)) {
 } else {
 	$smarty->assign('showDesert', false);
 	$smarty->assign('kanbanID', uniqid('kb'.strtolower($currentModule)));
+	$cbMapKb['currentPage'] = 0;
 	$smarty->assign('kanbanBoardInfo', json_encode($cbMapKb));
 	$smarty->assign('moduleShowSearch', $cbMapKb['showsearch']);
 	$smarty->assign('moduleShowFilter', $cbMapKb['showfilter']);

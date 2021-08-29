@@ -18,15 +18,14 @@ switch ($op) {
 	case 'getBoardItemsFormatted':
 		include_once 'modules/Vtiger/KanbanAPI/getBoardItems.php';
 		$boardinfo = json_decode(vtlib_purify($_REQUEST['boardinfo']), true);
-		$boardinfo['page'] = isset($boardinfo['page']) ? (int) vtlib_purify($boardinfo['page']) : 0;
 		$boardinfo['pagesize'] = isset($boardinfo['pagesize']) ?
 			(int) vtlib_purify($boardinfo['pagesize']) :
 			GlobalVariable::getVariable('Application_ListView_PageSize', 40, $module);
 		$boardinfo['allfields'] = array_merge(['id', $boardinfo['cards']['title']], $boardinfo['cards']['showfields'], $boardinfo['cards']['morefields']);
 		if ($op=='getBoardItems') {
-			$ret = kbGetBoardItems($module, $boardinfo['page'], $boardinfo);
+			$ret = kbGetBoardItems($module, $boardinfo['currentPage'], $boardinfo);
 		} else {
-			$ret = kbGetBoardItemsFormatted($module, $boardinfo['page'], $boardinfo);
+			$ret = kbGetBoardItemsFormatted($module, $boardinfo['currentPage'], $boardinfo);
 		}
 		break;
 	default:

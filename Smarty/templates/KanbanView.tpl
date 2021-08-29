@@ -29,7 +29,10 @@
 			{/if}
 		{/foreach}
 	</style>
+	<span>
 	<div id="{{$kanbanID}}" style="max-width: 96vw; min-height:105vh;padding: 20px 0;"></div>
+	<span id="{$kanbanID}Scroll"></span>
+	</span>
 	<script>
 	var {$kanbanID}Info = {$kanbanBoardInfo};
 	var {$kanbanID} = new jKanban({
@@ -58,6 +61,6 @@
 		{/foreach}
 		]
 	});
-	kanbanRefresh('{$kanbanID}');
+	kanbanSetupInfiniteScroll('{$kanbanID}');
 	</script>
 {/if}

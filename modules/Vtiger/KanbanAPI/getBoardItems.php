@@ -74,7 +74,10 @@ function kbGetBoardItemsFormatted($module, $limit_start_rec, $boardinfo) {
 			null,
 			$tile['crmid']
 		);
-		$smarty->assign('KBMENU_LINKS', array_merge(getKanbanTileMenu($tabid, $module, $tile['crmid'], $boardinfo['lanenames'], $boardinfo['lanefield']), $kbadditionalmenu['KANBANMENU']));
+		$smarty->assign(
+			'KBMENU_LINKS',
+			array_merge(getKanbanTileMenu($tabid, $module, $tile['crmid'], $boardinfo['lanenames'], $boardinfo['lanefield']), $kbadditionalmenu['KANBANMENU'])
+		);
 		$smarty->assign('Tile', $tile);
 		$ret[] = $smarty->fetch('Components/Kanban/KanbanTile.tpl');
 	}

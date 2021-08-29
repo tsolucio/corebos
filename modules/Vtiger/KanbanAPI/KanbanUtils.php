@@ -14,8 +14,6 @@ function kbGetItemQuery($module, $limit_start_rec, $boardinfo) {
 	if (ListViewSession::hasViewChanged($module)) {
 		coreBOS_Session::set($module.'_Order_By', '');
 	}
-	$order_by = $focus->getOrderBy();
-	coreBOS_Session::set($module.'_Order_By', $order_by);
 	$queryGenerator = new QueryGenerator($module, $current_user);
 	$customView = new CustomView($module);
 	$viewid = $customView->getViewId($module);
@@ -32,9 +30,11 @@ function kbGetItemQuery($module, $limit_start_rec, $boardinfo) {
 	if (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true') {
 		$queryGenerator->addUserSearchConditions($_REQUEST);
 	}
-	if (!empty($order_by)) {
-		$queryGenerator->addWhereField($order_by);
+	$order_by = $focus->getOrderBy();
+	if (empty($order_by)) {
+		$order_by = $focus->default_order_by;
 	}
+	$queryGenerator->addWhereField($order_by);
 	$queryGenerator->addCondition($boardinfo['lanefield'], $boardinfo['lanename'], 'e', QueryGenerator::$AND);
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.before', $queryGenerator);
 	$list_query = $queryGenerator->getQuery();
@@ -46,6 +46,6 @@ function kbGetItemQuery($module, $limit_start_rec, $boardinfo) {
 	} else {
 		coreBOS_Session::delete('export_where');
 	}
-	return $list_query. " LIMIT $limit_start_rec, ".$boardinfo['pagesize'];
+	return $list_query. " ORDER BY $order_by LIMIT ".($limit_start_rec*$boardinfo['pagesize']).', '.$boardinfo['pagesize'];
 }
 ?>
