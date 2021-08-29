@@ -90,8 +90,13 @@ function kbUpdateAfterDrop(el, target) {
 	let fieldName = window[kanbanID+'Info'].lanefield;
 	let dstboard = document.getElementById(target.parentElement.getAttribute('data-id')+'lane');
 	let dstlane = dstboard.getAttribute('data-lane');
-	dtlViewAjaxDirectFieldSave(dstlane, module, '', fieldName, crmid, '');
-	el.setAttribute('data-lane', dstlane);
+	let srclane = el.getAttribute('data-lane');
+	if (dstlane==srclane) {
+		// use kanbansequence table and order the cards > seems difficult
+	} else {
+		dtlViewAjaxDirectFieldSave(dstlane, module, '', fieldName, crmid, '');
+		el.setAttribute('data-lane', dstlane);
+	}
 }
 
 function kbDeleteElement(module, record, kanbanID) {
