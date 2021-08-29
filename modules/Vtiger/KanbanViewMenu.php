@@ -20,7 +20,7 @@ Move to
 Add
 Delete
 */
-function getKanbanTileMenu($tabid, $module, $crmid, $lanenames, $fieldName) {
+function getKanbanTileMenu($tabid, $module, $crmid, $lanenames, $fieldName, $lanename, $kanbanID) {
 	$links = array();
 	$seq = 0;
 	if (isPermitted($module, 'DetailView', $crmid)=='yes') {
@@ -29,7 +29,7 @@ function getKanbanTileMenu($tabid, $module, $crmid, $lanenames, $fieldName) {
 		$link->linkid = 0;
 		$link->linktype = 'KANBANMENU';
 		$link->linklabel = getTranslatedString('LBL_VIEW', 'Settings');
-		$link->linkurl = "window.open('index.php?action=DetailView&module=".$module."&record=".$crmid."&Module_Popup_Edit=1', null, cbPopupWindowSettings + ',dependent=yes');";
+		$link->linkurl = "window.open('index.php?action=DetailView&module=".$module.'&record='.$crmid."&Module_Popup_Edit=1', null, cbPopupWindowSettings+',dependent=yes');";
 		$link->linkicon = '';
 		$link->sequence = $seq++;
 		$link->status = false;
@@ -45,7 +45,10 @@ function getKanbanTileMenu($tabid, $module, $crmid, $lanenames, $fieldName) {
 		$link->linkid = 0;
 		$link->linktype = 'KANBANMENU';
 		$link->linklabel = getTranslatedString('LBL_EDIT', 'CustomView');
-		$link->linkurl = "window.open('index.php?action=EditView&module=".$module."&record=".$crmid."&Module_Popup_Edit=1', null, cbPopupWindowSettings + ',dependent=yes');";
+		$saveParam = urlencode(json_encode(['id'=>$kanbanID, 'lanename'=>$lanename]));
+		$link->linkurl = "window.open('index.php?action=EditView&module=".$module.'&record='.$crmid
+			.'&Module_Popup_Save=kbPopupSaveHook&Module_Popup_Edit=1&Module_Popup_Save_Param='.$saveParam
+			."', null, cbPopupWindowSettings + ',dependent=yes');";
 		$link->linkicon = '';
 		$link->sequence = $seq++;
 		$link->status = false;
@@ -61,7 +64,8 @@ function getKanbanTileMenu($tabid, $module, $crmid, $lanenames, $fieldName) {
 			$link->linkid = 0;
 			$link->linktype = 'KANBANMENU';
 			$link->linklabel = getTranslatedString($lname, $module);
-			$link->linkurl = "javascript:dtlViewAjaxDirectFieldSave('".$lname."', '".$module."', '', '".$fieldName."', ".$crmid.", '')";
+			$link->linkurl = "javascript:dtlViewAjaxDirectFieldSave('".$lname."', '".$module."', '', '".$fieldName."', ".$crmid.", '');".
+				"kbMoveTile('".$kanbanID."', '".$lname."', '".$module."', ".$crmid.');';
 			$link->linkicon = '';
 			$link->sequence = $seq++;
 			$link->status = false;
@@ -79,7 +83,8 @@ function getKanbanTileMenu($tabid, $module, $crmid, $lanenames, $fieldName) {
 		$link->linkid = 0;
 		$link->linktype = 'KANBANMENU';
 		$link->linklabel = getTranslatedString('LBL_ADD', 'Settings');
-		$link->linkurl = "window.open('index.php?action=EditView&module=".$module."&record=&Module_Popup_Edit=1', null, cbPopupWindowSettings + ',dependent=yes');";
+		$link->linkurl="window.open('index.php?action=EditView&module=".$module.'&record=&Module_Popup_Save=kbPopupSaveHook&Module_Popup_Edit=1&Module_Popup_Save_Param='
+			.$kanbanID.'&'.$fieldName.'='.$lanename."', null, cbPopupWindowSettings + ',dependent=yes');";
 		$link->linkicon = '';
 		$link->sequence = $seq++;
 		$link->status = false;
@@ -95,7 +100,7 @@ function getKanbanTileMenu($tabid, $module, $crmid, $lanenames, $fieldName) {
 		$link->linkid = 0;
 		$link->linktype = 'KANBANMENU';
 		$link->linklabel = getTranslatedString('LBL_DELETE', 'Settings');
-		$link->linkurl = "javascript:confirmdelete('index.php?module=".$module."&action=Delete&record=".$crmid."&return_module=".$module."&return_action=Kanban')";
+		$link->linkurl = "javascript:kbDeleteElement('".$module."', ".$crmid.", '".$kanbanID."');";
 		$link->linkicon = '';
 		$link->sequence = $seq++;
 		$link->status = false;

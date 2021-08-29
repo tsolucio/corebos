@@ -7,6 +7,8 @@
  * Portions created by coreBOS are Copyright (C) coreBOS.
  * All Rights Reserved.
  ************************************************************************************/
+include_once 'vtlib/Vtiger/Link.php';
+
 function kbGetItemQuery($module, $limit_start_rec, $boardinfo) {
 	global $current_user;
 	$focus = new $module();

@@ -61,6 +61,7 @@
 		{/foreach}
 		]
 	});
+	kanbanRefresh('{$kanbanID}');
 	kanbanSetupInfiniteScroll('{$kanbanID}');
 	</script>
 {/if}

@@ -61,7 +61,6 @@ function kbGetBoardItemsFormatted($module, $limit_start_rec, $boardinfo) {
 	$items = kbGetBoardItems($module, $limit_start_rec, $boardinfo);
 	$ret = array();
 	$smarty = new vtigerCRM_Smarty();
-	include_once 'vtlib/Vtiger/Link.php';
 	$tabid = getTabid($module);
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('APP', $app_strings);
@@ -76,10 +75,17 @@ function kbGetBoardItemsFormatted($module, $limit_start_rec, $boardinfo) {
 		);
 		$smarty->assign(
 			'KBMENU_LINKS',
-			array_merge(getKanbanTileMenu($tabid, $module, $tile['crmid'], $boardinfo['lanenames'], $boardinfo['lanefield']), $kbadditionalmenu['KANBANMENU'])
+			array_merge(
+				getKanbanTileMenu($tabid, $module, $tile['crmid'], $boardinfo['lanenames'], $boardinfo['lanefield'], $boardinfo['lanename'], $boardinfo['kanbanID']),
+				$kbadditionalmenu['KANBANMENU']
+			)
 		);
 		$smarty->assign('Tile', $tile);
-		$ret[] = $smarty->fetch('Components/Kanban/KanbanTile.tpl');
+		$ret[] = [
+			'id' => $tile['id'],
+			'lane' => $boardinfo['lanename'],
+			'title' => $smarty->fetch('Components/Kanban/KanbanTile.tpl'),
+		];
 	}
 	return $ret;
 }

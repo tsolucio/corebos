@@ -20,10 +20,12 @@ function kanbanGetBoardItems(kanbanID, lane, kbinfo) {
 			body: '&'+csrfMagicName+'='+csrfMagicToken+kbinfostr+'&kbmodule='+kbinfo.module
 		}
 	).then(response => response.json()).then(response => {
-		if (response) {
+		if (response && response.length) {
 			response.forEach(tile => {
 				window[kanbanID].addElement(boardid, {
-					title: tile
+					id: tile.id,
+					lane: lane,
+					title: tile.title
 				});
 			});
 			kanbanApplyCustomCSS(kanbanID);
@@ -42,11 +44,89 @@ function kanbanSetupInfiniteScroll(kanbanID) {
 
 	const callback = entries => {
 		if (entries[0].isIntersecting) {
-			kanbanRefresh(kanbanID);
+			if (window[kanbanID+'Info'].currentPage) {
+				kanbanRefresh(kanbanID);
+			}
 			window[kanbanID+'Info'].currentPage++;
 		}
 	}
 
 	var observer = new IntersectionObserver(callback, options);
 	observer.observe(document.getElementById(kanbanID+'Scroll'));
+}
+
+function kbMoveTile(kanbanID, lane, module, record) {
+	let kbinfostr = '&boardinfo=' + encodeURIComponent(JSON.stringify(window[kanbanID+'Info']));
+	fetch(
+		'index.php?module=Utilities&action=UtilitiesAjax&file=KanbanAPI&method=getBoardItemFormatted',
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: '&'+csrfMagicName+'='+csrfMagicToken+kbinfostr+'&kbmodule='+module+'&tileid='+record
+		}
+	).then(response => response.json()).then(response => {
+		if (response) {
+			let element = {
+				id: response.id,
+				lane: lane,
+				title: response.title
+			};
+			window[kanbanID].moveElement(window[kanbanID+'Info'].lanes[lane].id, module+record, element);
+		}
+	});
+}
+
+function kbDeleteElement(module, record, kanbanID) {
+	if (confirm(alert_arr.ARE_YOU_SURE)) {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module='+module+'&action=Delete&record='+record+'&return_module='+module+'&return_action=Kanban'
+		}).done(function (response) {
+			window[kanbanID].removeElement(module+record);
+		});
+	}
+}
+
+function kbPopupSaveHook(module, record, mode, kbinfo) {
+	let kbinfoname = '';
+	let param = kbinfo;
+	if (mode=='edit') {
+		param = JSON.parse(decodeURIComponent(kbinfo));
+		kbinfoname = param.id+'Info';
+	} else {
+		kbinfoname = param+'Info';
+	}
+	let kbinfostr = '&boardinfo=' + encodeURIComponent(JSON.stringify(window[kbinfoname]));
+	fetch(
+		'index.php?module=Utilities&action=UtilitiesAjax&file=KanbanAPI&method=getBoardItemFormatted',
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: '&'+csrfMagicName+'='+csrfMagicToken+kbinfostr+'&kbmodule='+module+'&tileid='+record
+		}
+	).then(response => response.json()).then(response => {
+		if (response) {
+			let element = {
+				id: response.id,
+				lane: response.lane,
+				title: response.title
+			};
+			if (mode=='edit') {
+				if (tile.dataset.lane!=response.lane) {
+					window[window[kbinfoname].kanbanID].moveElement(window[kbinfoname].lanes[response.lane].id, response.id, element);
+				} else {
+					window[window[kbinfoname].kanbanID].replaceElement(response.id, element);
+				}
+			} else {
+				window[window[kbinfoname].kanbanID].addElement(window[kbinfoname].lanes[response.lane].id, element);
+			}
+			kanbanApplyCustomCSS(window[kbinfoname].kanbanID);
+		}
+	});
 }

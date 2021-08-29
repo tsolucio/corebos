@@ -28,6 +28,17 @@ switch ($op) {
 			$ret = kbGetBoardItemsFormatted($module, $boardinfo['currentPage'], $boardinfo);
 		}
 		break;
+	case 'getBoardItem':
+	case 'getBoardItemFormatted':
+		include_once 'modules/Vtiger/KanbanAPI/getBoardItem.php';
+		$boardinfo = json_decode(vtlib_purify($_REQUEST['boardinfo']), true);
+		$tileid = vtlib_purify($_REQUEST['tileid']);
+		if ($op=='getBoardItem') {
+			$ret = kbGetBoardItem($module, $tileid, $boardinfo);
+		} else {
+			$ret = kbGetBoardItemFormatted($module, $tileid, $boardinfo);
+		}
+		break;
 	default:
 		$ret = '';
 		break;
