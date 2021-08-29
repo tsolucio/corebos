@@ -13,7 +13,6 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-include_once 'modules/Vtiger/KanbanViewMenu.php';
 $bmapname = $currentModule.'_Kanban';
 $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
 if ($cbMapid) {
@@ -24,46 +23,11 @@ if (empty($cbMapKb)) {
 	$smarty->assign('showDesert', true);
 } else {
 	$smarty->assign('showDesert', false);
-	$smarty->assign('kanbanID', uniqid(strtolower($currentModule)));
+	$smarty->assign('kanbanID', uniqid('kb'.strtolower($currentModule)));
+	$smarty->assign('kanbanBoardInfo', json_encode($cbMapKb));
 	$smarty->assign('moduleShowSearch', $cbMapKb['showsearch']);
 	$smarty->assign('moduleShowFilter', $cbMapKb['showfilter']);
 	$smarty->assign('kbLanes', $cbMapKb['lanes']);
-	$tile =array(
-		'id' => $currentModule.'crmid',
-		'title' => 'ChemexChemex ChemexChemex ChemexChemex',
-		'showfields' => array(
-			array(
-				'label' => 'label1',
-				'value' => 'value1',
-			),
-			array(
-				'label' => 'label2',
-				'value' => 'value2',
-			),
-		),
-		'morefields' => array(
-			array(
-				'label' => 'mlabel1',
-				'value' => 'mvalue1',
-			),
-			array(
-				'label' => 'mlabel2 mlabel2',
-				'value' => 'mlabel2 mlabel2mlabel2 mlabel2mlabel2 mlabel2mlabel2 mlabel2mlabel2 mlabel2mvalue2',
-			),
-		),
-	);
-	$smarty->assign('Tile', $tile);
-	include_once 'vtlib/Vtiger/Link.php';
-	$customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>'Kanban');
-	$tabid = getTabid($currentModule);
-	$kbadditionalmenu = Vtiger_Link::getAllByType(
-		$tabid,
-		array('KANBANMENU'),
-		$customlink_params,
-		null,
-		$focus->id
-	);
-	$smarty->assign('KBMENU_LINKS', array_merge(getKanbanTileMenu($tabid, $currentModule, 74, $cbMapKb['lanenames'], $cbMapKb['lanefield']), $kbadditionalmenu['KANBANMENU']));
 }
 $smarty->assign('moduleView', 'Kanban');
 ?>
