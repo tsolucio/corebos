@@ -25,6 +25,8 @@ function kanbanGetBoardItems(kanbanID, lane, kbinfo) {
 				window[kanbanID].addElement(boardid, {
 					id: tile.id,
 					lane: lane,
+					crmid: tile.crmid,
+					kanbanID: kanbanID,
 					title: tile.title
 				});
 			});
@@ -72,11 +74,24 @@ function kbMoveTile(kanbanID, lane, module, record) {
 			let element = {
 				id: response.id,
 				lane: lane,
+				crmid: response.crmid,
+				kanbanID: kanbanID,
 				title: response.title
 			};
 			window[kanbanID].moveElement(window[kanbanID+'Info'].lanes[lane].id, module+record, element);
 		}
 	});
+}
+
+function kbUpdateAfterDrop(el, target) {
+	let crmid = el.getAttribute('data-crmid');
+	let kanbanID = el.getAttribute('data-kanbanID');
+	let module = window[kanbanID+'Info'].module;
+	let fieldName = window[kanbanID+'Info'].lanefield;
+	let dstboard = document.getElementById(target.parentElement.getAttribute('data-id')+'lane');
+	let dstlane = dstboard.getAttribute('data-lane');
+	dtlViewAjaxDirectFieldSave(dstlane, module, '', fieldName, crmid, '');
+	el.setAttribute('data-lane', dstlane);
 }
 
 function kbDeleteElement(module, record, kanbanID) {
@@ -115,6 +130,8 @@ function kbPopupSaveHook(module, record, mode, kbinfo) {
 			let element = {
 				id: response.id,
 				lane: response.lane,
+				crmid: response.crmid,
+				kanbanID: window[kbinfoname].kanbanID,
 				title: response.title
 			};
 			if (mode=='edit') {

@@ -43,8 +43,7 @@
 			enabled: false,
 		},
 		dropEl: function(el, target, source, sibling){
-			console.log(target.parentElement.getAttribute('data-id'));
-			console.log(el, target, source, sibling)
+			kbUpdateAfterDrop(el, target);
 		},
 		itemAddOptions: {
 			enabled: false,
@@ -54,6 +53,7 @@
 		{foreach from=$kbLanes item=BOARD key=TITLE}
 		{
 			id: '{$BOARD.id}',
+			mod: 'Accounts',
 			title: `{include file="Components/Kanban/KanbanHeader.tpl"}`,
 			class: '{if !empty($BOARD.color)}kanban-{$BOARD.color}{/if}',
 			item: []

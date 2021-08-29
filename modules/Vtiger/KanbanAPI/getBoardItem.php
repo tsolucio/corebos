@@ -69,6 +69,8 @@ function kbGetBoardItemFormatted($module, $record, $boardinfo) {
 	return [
 		'id' => $tile['id'],
 		'lane' => $tile['lanename'],
+		'crmid' => $tile['crmid'],
+		'kanbanID' => $boardinfo['kanbanID'],
 		'title' => $smarty->fetch('Components/Kanban/KanbanTile.tpl'),
 	];
 }

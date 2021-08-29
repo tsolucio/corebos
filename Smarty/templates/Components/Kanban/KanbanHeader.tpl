@@ -1,4 +1,4 @@
-<div class="slds-grid">
+<div class="slds-grid" id='{$BOARD.id}lane' data-lane='{$BOARD.name}'>
 {if isset($BOARD.image)}
 	<div class="slds-media__figure">
 		<span class="slds-icon_container slds-icon-{$BOARD.image.library}-{$BOARD.image.icon}" title="{$TITLE}">
