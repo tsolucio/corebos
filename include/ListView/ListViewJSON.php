@@ -208,6 +208,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 	$data = array();
 	$linkfield = array();
 	$result = $adb->pquery($list_query, array());
+	$changeIndicatorActive = GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $currentModule);
 	while ($result && $row = $adb->fetch_array($result)) {
 		$rows = array();
 		$linkRow = array();
@@ -217,6 +218,9 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 					$fieldName,
 					$tabid
 				));
+				if ($adb->num_rows($fieldnameSql)==0) {
+					continue;
+				}
 				$fieldName = $adb->query_result($fieldnameSql, 0, 0);
 				//check field uitypes
 				$fieldType = getUItypeByFieldName($currentModule, $fieldName);
@@ -259,7 +263,7 @@ function getListViewJSON($currentModule, $entries = 20, $orderBy = 'DESC', $sort
 					}
 				}
 			}
-			if (GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $currentModule)) {
+			if ($changeIndicatorActive) {
 				$isModified = false;
 				if (!$focus->isViewed($row[$entityidfield])) {
 					$isModified = true;

@@ -18,7 +18,18 @@
 {if !isset($Document_Folder_View)}
 	{assign var=Document_Folder_View value=0}
 {/if}
-<script>var Document_Folder_View={$Document_Folder_View};</script>
+<script>
+var Document_Folder_View={$Document_Folder_View};
+{if empty($moduleView)}
+var Application_Landing_View='table';
+{else}
+var Application_Landing_View='{$moduleView}';
+{/if}
+</script>
+{if !empty($moduleView) && $moduleView=='tuigrid'}
+<script src="./include/js/ListViewRenderes.js"></script>
+<script src="./include/js/ListViewJSON.js"></script>
+{/if}
 {include file='Buttons_List.tpl'}
 
 {*<!-- Contents -->*}

@@ -344,7 +344,7 @@ function mass_edit1x1(obj) {
 
 function mass_edit(obj, divid, module) {
 	var select_options = document.getElementById('allselectedboxes').value;
-	if (select_options != 'all') {
+	if (select_options != 'all' && Application_Landing_View!='table') {
 		ListView.getCheckedRows();
 	}
 	var numOfRows = document.getElementById('numOfRows').value;
@@ -577,13 +577,18 @@ function massDelete(module) {
 				method: 'POST',
 				url: 'index.php?module=Users&action=massdelete&return_module='+module+'&'+gstart+'&viewname='+viewid+'&idlist='+idstring+searchurl+url
 			}).done(function (response) {
-				const selectedType = document.getElementById('allselectedboxes').value;
-				if (selectedType == 'all') {
-					ListView.removeRows('all');
-				} else {
-					ListView.removeRows();
-				}
 				var result = response.split('&#&#&#');
+				if (Application_Landing_View=='table') {
+					document.getElementById('status').style.display = 'none';
+					document.getElementById('ListViewContents').innerHTML = result[2];
+				} else {
+					const selectedType = document.getElementById('allselectedboxes').value;
+					if (selectedType == 'all') {
+						ListView.removeRows('all');
+					} else {
+						ListView.removeRows();
+					}
+				}
 				if (result[1] != '') {
 					ldsPrompt.show(alert_arr['ERROR'], result[1]);
 				}
@@ -606,8 +611,17 @@ function showDefaultCustomView(selectView, module) {
 		method: 'POST',
 		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=ListView&ajax=true&start=1&viewname=' + viewName
 	}).done(function (response) {
-		ListView.ListViewJSON('filter');
 		var result = response.split('&#&#&#');
+		if (Application_Landing_View=='table') {
+			document.getElementById('status').style.display = 'none';
+			document.getElementById('ListViewContents').innerHTML = result[2];
+			vtlib_executeJavascriptInElement(document.getElementById('ListViewContents'));
+			document.getElementById('basicsearchcolumns_real').innerHTML = document.getElementById('basicsearchcolumns').innerHTML;
+			document.getElementById('basicsearchcolumns').innerHTML = '';
+			document.basicSearch.search_text.value = '';
+		} else {
+			ListView.ListViewJSON('filter');
+		}
 		if (result[1] != '') {
 			ldsPrompt.show(alert_arr['ERROR'], result[1]);
 		}
@@ -998,8 +1012,29 @@ function callSearch(searchtype) {
 		urlstring += '&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&searchtype=advance&';
 	}
 	document.getElementById('status').style.display = 'inline';
-	ListView.ListViewJSON('search', urlstring, searchtype);
+	if (Application_Landing_View=='table') {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?' + urlstring + 'query=true&file=index&module=' + gVTModule + '&action=' + gVTModule + 'Ajax&ajax=true&search=true'
+		}).done(function (response) {
+			processQuickSearchResponse(response);
+		});
+	} else {
+		ListView.ListViewJSON('search', urlstring, searchtype);
+	}
 	return false;
+}
+
+function processQuickSearchResponse(response) {
+	document.getElementById('status').style.display = 'none';
+	var result = response.split('&#&#&#');
+	var LVC = document.getElementById('ListViewContents');
+	LVC.innerHTML = result[2];
+	vtlib_executeJavascriptInElement(LVC);
+	if (result[1] != '') {
+		ldsPrompt.show(alert_arr['ERROR'], result[1]);
+	}
+	document.getElementById('basicsearchcolumns').innerHTML = '';
 }
 
 function alphabetic(module, url, dataid) {
@@ -1008,7 +1043,16 @@ function alphabetic(module, url, dataid) {
 	}
 	getObj(dataid).className = 'searchAlphselected';
 	document.getElementById('status').style.display = 'inline';
-	ListView.ListViewJSON('alphabetic', url);
+	if (Application_Landing_View=='table') {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=index&ajax=true&search=true&' + url
+		}).done(function (response) {
+			processQuickSearchResponse(response);
+		});
+	} else {
+		ListView.ListViewJSON('alphabetic', url);
+	}
 }
 
 function PositionDialogToCenter(ID) {
