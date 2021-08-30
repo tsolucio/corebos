@@ -762,7 +762,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Text'),
 	'examples' => array(
-		"regexreplace('[A-za-z]+','J','MIKE AND ERICA ')  //todo Js
+		"regexreplace('[A-za-z]+','J','MIKE AND ERICA ')  //todo Js"
 	),
 ),
 'randomstring' => array(

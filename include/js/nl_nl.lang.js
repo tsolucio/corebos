@@ -449,7 +449,7 @@ var alert_arr = {
 	'Min. 1 number': 'Minimaal één cijfer',
 	'Min. 1 special character': 'Minimaal één speciaal karakter , ! ? , ; - @ #',
 	'LBL_CHANGE_PASSWORD': 'Wijzig wachtwoord',
-	'ACT_UNIT_PRICE_MISMATCH': 'De actuele prijs van de valuta zou overeen moeten komen met de verkoopprijs, maar dit is niet het geval voor dit product of deze dienst'
+	'ACT_UNIT_PRICE_MISMATCH': 'De actuele prijs van de valuta zou overeen moeten komen met de verkoopprijs, maar dit is niet het geval voor dit product of deze dienst',
 	'LBL_SHOWING': 'Selectie Records ',
 	'LBL_RECORDS': ' van ',
 	'LNK_DELETE': 'Verwijder',
