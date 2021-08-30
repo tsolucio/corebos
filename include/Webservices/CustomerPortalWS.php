@@ -1380,7 +1380,7 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 	global $current_user,$adb,$default_charset;
 
 	$respuesta=array();
-	if (empty($searchin)) {
+	if (empty($searchin) || !is_array($searchin)) {
 		return $respuesta;
 	}
 	if (empty($limit)) {

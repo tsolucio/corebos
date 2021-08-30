@@ -39,15 +39,20 @@ class setManyToManyRelationwf extends VTTask {
 				$idlistArr = $entity->WorkflowContext['SetManyToManyRelation_Records'];
 			}
 		}
+		if (empty($entity->WorkflowContext['SetManyToManyRelation_Record'])) {
+			list($modid, $recid) = explode('x', $entity->getId());
+			$recmod = $entity->getModuleName();
+		} else {
+			$recid = vtws_getCRMID($entity->WorkflowContext['SetManyToManyRelation_Record']);
+			$recmod = getSalesEntityType($recid);
+		}
 		if ($this->relAction == 'addrel') {
 			$idlistNewArr = array();
 			foreach ($idlistArr as $recId) {
 				$idlistNewArr[] = vtws_getWSID($recId);
 			}
-			vtws_setrelation($entity->id, $idlistNewArr, $current_user);
+			vtws_setrelation(vtws_getWSID($recid), $idlistNewArr, $current_user);
 		} elseif ($this->relAction == 'delrel') {
-			list($modid,$recid) = explode('x', $entity->getId());
-			$recmod = $entity->getModuleName();
 			$modobj = CRMEntity::getInstance($recmod);
 			foreach ($idlistArr as $rid) {
 				$rid = vtws_getCRMID($rid);
@@ -56,8 +61,6 @@ class setManyToManyRelationwf extends VTTask {
 				$modobj->trackUnLinkedInfo($return_module, $rid, $recmod, $recid);
 			}
 		} elseif ($this->relAction == 'delAllrel') {
-			list($modid,$recid) = explode('x', $entity->getId());
-			$recmod = $entity->getModuleName();
 			$rectabid = getTabid($recmod);
 			$modobj = CRMEntity::getInstance($recmod);
 			$done = array();

@@ -15,14 +15,16 @@ require_once 'include/CustomFieldUtil.php';
 require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
 
 /** This function is used to get the list view header values in a list view
- * Param $focus - module object
- * Param $module - module name
- * Param $sort_qry - sort by value
- * Param $sorder - sorting order (asc/desc)
- * Param $order_by - order by
- * Param $relatedlist - flag to check whether the header is for listvie or related list
- * Param $oCv - Custom view object
- * Returns the listview header values in an array
+ * @param object module object
+ * @param string module name
+ * @param string sort by value
+ * @param string sorting order (asc/desc)
+ * @param string order by
+ * @param boolean flag to check whether the header is for list view or related list
+ * @param object custom view object
+ * @param string relalted module name
+ * @param boolean flag to skip adding the actions columns
+ * @return array the listview header values
  */
 function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order_by = '', $relatedlist = '', $oCv = '', $relatedmodule = '', $skipActions = false) {
 	global $log, $adb, $theme, $app_strings;
@@ -1448,14 +1450,13 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						require_once 'modules/Contacts/Contacts.php';
 						$cntct_focus = new Contacts();
 						$cntct_focus->retrieve_entity_info($entity_id, 'Contacts');
-						//ADDED TO CHECK THE FIELD PERMISSIONS FOR
+						//Added to check the field permissions for
 						$xyz = array('mailingstreet', 'mailingcity', 'mailingzip', 'mailingpobox', 'mailingcountry', 'mailingstate', 'otherstreet', 'othercity', 'otherzip', 'otherpobox', 'othercountry', 'otherstate');
 						for ($i = 0; $i < 12; $i++) {
 							if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) != '0') {
 								$cntct_focus->column_fields[$xyz[$i]] = '';
 							}
 						}
-						// For ToDo creation the underlying form is not named as EditView
 						$form = !empty($_REQUEST['form']) ? $_REQUEST['form'] : '';
 						if (!empty($form)) {
 							$form = htmlspecialchars($form, ENT_QUOTES, $default_charset);

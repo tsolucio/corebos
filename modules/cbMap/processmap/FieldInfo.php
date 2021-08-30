@@ -70,20 +70,20 @@ class FieldInfo extends processcbMap {
 			return array();
 		}
 		$mapping = array();
-		$mapping['origin'] = (String)$xml->originmodule->originname;
+		$mapping['origin'] = (string)$xml->originmodule->originname;
 		$target_fields = array();
 		foreach ($xml->fields->field as $v) {
-			$fieldname = (String)$v->fieldname;
+			$fieldname = (string)$v->fieldname;
 			$features = array();
 			foreach ($v->features->feature as $feature) {
 				if (isset($feature->value)) {
-					$features[(String)$feature->name] = (String)$feature->value;
+					$features[(string)$feature->name] = (string)$feature->value;
 				} else {
 					foreach ($feature->values->value as $single_value) {
 						if (isset($single_value->module)) {
-							$features[(String)$feature->name][(String)$single_value->module] = (String)$single_value->value;
+							$features[(string)$feature->name][(string)$single_value->module] = (string)$single_value->value;
 						} else {
-							$features[(String)$feature->name][] = isset($single_value->value) ? (String)$single_value->value : (String)$single_value;
+							$features[(string)$feature->name][] = isset($single_value->value) ? (string)$single_value->value : (string)$single_value;
 						}
 					}
 				}

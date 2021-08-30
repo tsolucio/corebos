@@ -63,8 +63,7 @@ class iCalLastImport {
 		$adb = PearDatabase::getInstance();
 		if (Vtiger_Utils::CheckTable($this->tableName)) {
 			$result = $adb->pquery(
-				'UPDATE vtiger_crmentity SET deleted=1 WHERE crmid IN
-								(SELECT crmid FROM '.$this->tableName .' WHERE userid = ? AND entitytype = ?)',
+				'UPDATE vtiger_crmentity SET deleted=1 WHERE crmid IN (SELECT crmid FROM '.$this->tableName .' WHERE userid=? AND entitytype=?)',
 				array($userId, $moduleName)
 			);
 			return $adb->getAffectedRowCount($result);

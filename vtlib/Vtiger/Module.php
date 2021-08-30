@@ -17,7 +17,7 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 
 	/**
 	 * Function to get the Module/Tab id
-	 * @return <Number>
+	 * @return integer
 	 */
 	public function getId() {
 		return $this->id;
@@ -49,9 +49,9 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 	/**
 	 * Set related list information between other module
 	 * @param Vtiger_Module Instance of target module with which relation should be setup
-	 * @param String Label to display in related list (default is target module name)
-	 * @param Array List of action button to show ('ADD', 'SELECT')
-	 * @param String Callback function name of this module to use as handler
+	 * @param string Label to display in related list (default is target module name)
+	 * @param array List of action button to show ('ADD', 'SELECT')
+	 * @param string Callback function name of this module to use as handler
 	 *
 	 * @internal Creates table vtiger_crmentityrel if it does not exists
 	 */
@@ -127,8 +127,8 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 	/**
 	 * Unset related list information that exists with other module
 	 * @param Vtiger_Module Instance of target module with which relation should be setup
-	 * @param String Label to display in related list (default is target module name)
-	 * @param String Callback function name of this module to use as handler
+	 * @param string Label to display in related list (default is target module name)
+	 * @param string Callback function name of this module to use as handler
 	 */
 	public function unsetRelatedList($moduleInstance, $label = '', $function_name = 'get_related_list') {
 		global $adb;
@@ -156,11 +156,11 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 
 	/**
 	 * Add custom link for a module page
-	 * @param String Type can be like 'DETAILVIEW', 'LISTVIEW' etc..
-	  * @param String Label to use for display
-	 * @param String HREF value to use for generated link
-	 * @param String Path to the image file (relative or absolute)
-	 * @param Integer Sequence of appearance
+	 * @param string Type can be like 'DETAILVIEW', 'LISTVIEW' etc..
+	 * @param string Label to use for display
+	 * @param string HREF value to use for generated link
+	 * @param string Path to the image file (relative or absolute)
+	 * @param integer Sequence of appearance
 	 *
 	 * NOTE: $url can have variables like $MODULE (module for which link is associated),
 	 * $RECORD (record on which link is dispalyed)
@@ -171,9 +171,9 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 
 	/**
 	 * Delete custom link of a module
-	 * @param String Type can be like 'DETAILVIEW', 'LISTVIEW' etc..
-	  * @param String Display label to lookup
-	 * @param String URL value to lookup
+	 * @param string Type can be like 'DETAILVIEW', 'LISTVIEW' etc..
+	 * @param string Display label to lookup
+	 * @param string URL value to lookup
 	 */
 	public function deleteLink($type, $label, $url = false) {
 		Vtiger_Link::deleteLink($this->id, $type, $label, $url);
@@ -224,7 +224,7 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 
 	/**
 	 * Get instance of the module class.
-	 * @param String Module name
+	 * @param string Module name
 	 */
 	public static function getClassInstance($modulename) {
 		$instance = false;

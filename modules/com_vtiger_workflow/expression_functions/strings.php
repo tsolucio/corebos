@@ -49,6 +49,10 @@ function __cb_stringreplace($arr) {
 	return str_replace($arr[0], $arr[1], $arr[2]);
 }
 
+function __cb_regexreplace($arr) {
+	return preg_replace('/'.$arr[0].'/', $arr[1], $arr[2]);
+}
+
 function __cb_randomstring($arr) {
 	if (empty($arr) || empty($arr[0])) {
 		$arr[0] = 10;

@@ -547,7 +547,6 @@ class QueryGenerator {
 			$baseTableIndex = $moduleTableIndexList[$baseTable];
 			return $baseTable.'.'.$baseTableIndex;
 		}
-
 		$moduleFields = $this->getModuleFields();
 		if (!empty($moduleFields[$name])) {
 			$field = $moduleFields[$name];
@@ -557,10 +556,7 @@ class QueryGenerator {
 		if (empty($field)) {
 			return '';
 		}
-		//TODO optimization to eliminate one more lookup of name, in case the field refers to only
-		//one module or is of type owner.
-		$column = $field->getColumnName();
-		return $field->getTableName().'.'.$column;
+		return $field->getTableName().'.'.$field->getColumnName();
 	}
 
 	public function getSelectClauseColumnSQL() {

@@ -396,7 +396,6 @@ class PearDatabase {
 		if (empty($vals)) {
 			return $ps;
 		}
-		// TODO: Checks need to be added array out of bounds situations
 		for ($index = 0; $index < count($vals); $index++) {
 			// Package import pushes data after XML parsing, so type-cast it
 			if (is_a($vals[$index], 'SimpleXMLElement')) {
@@ -623,6 +622,12 @@ class PearDatabase {
 		return $this->change_key_case($arr);
 	}
 
+	public function rowGenerator($r) {
+		while ($row = $this->fetch_array($r)) {
+			yield $row;
+		}
+	}
+
 	public function run_query_record_html($query) {
 		if (!is_array($rec = $this->run_query_record($query))) {
 			return $rec;
@@ -822,6 +827,9 @@ class PearDatabase {
 		return $this->change_key_case($result->FetchRow());
 	}
 
+	/**
+	 * WARNING: this method returns false for SELECT statements
+	 */
 	public function getAffectedRowCount(&$result) {
 		global $log;
 		$log->debug('> getAffectedRowCount');

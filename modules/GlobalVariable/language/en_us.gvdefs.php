@@ -280,6 +280,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Activate "Save and Repeat" action in edit mode. Default deactivated',
 ),
+'Application_ListView_Layout' => array(
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'table|tuigrid',
+	'definition' => 'Show the classic table-based view (default) or the TUIGrid view.',
+),
 'Application_ListView_Max_Text_Length' => array(
 	'valuetype' => 'Integer',
 	'category' => 'Application',
@@ -483,6 +489,18 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'CSV of field names',
 	'definition' => 'Comma separated list of field names to search on when deduplicating.',
+),
+'Import_ValidateMandatoryFields' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If field mapping of all mandatory fields must be enforced. By default they are mandatory.',
+),
+'Import_ApplyValidationRules' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If existing validation rules should be applied on records being imported.',
 ),
 'Export_Field_Separator_Symbol' => array(
 	'valuetype' => 'character',

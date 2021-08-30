@@ -31,6 +31,7 @@ function cbexpsql_supportedFunctions() {
 		'stringposition' => 'stringposition(haystack,needle)',
 		'stringlength' => 'stringlength(string)',
 		'stringreplace' => 'stringreplace(search,replace,subject)',
+		'regexreplace' => 'regexreplace(pattern,replace,subject)',
 		'substring' => 'substring(stringfield,start,length)',
 		'randomstring' => 'randomstring(length)',
 		'uppercase'=>'uppercase(stringfield)',
@@ -105,6 +106,7 @@ function cbexpsql_supportedFunctions() {
 		// 'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 		// 'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 		'getIDof' => 'getIDof(module, searchon, searchfor)',
+		'executeSQL' => 'executeSQL(query, parameters...)',
 		//'getRelatedIDs' => 'getRelatedIDs(module)',
 		// 'getFromContext' => 'getFromContext(variablename)',
 		// 'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
@@ -320,6 +322,10 @@ function cbexpsql_stringlength($arr, $mmodule) {
 
 function cbexpsql_stringreplace($arr, $mmodule) {
 	return __cbexpsql_functionparams('REPLACE', $arr, $mmodule);
+}
+
+function cbexpsql_regexreplace($arr, $mmodule) {
+	return __cbexpsql_functionparams('REGEXP_REPLACE', array($arr[2], $arr[0], $arr[1]), $mmodule);
 }
 
 function cbexpsql_randomstring($arr, $mmodule) {
@@ -551,6 +557,15 @@ function cbexpsql_average($arr, $mmodule) {
 		$select .= '(select '.$exp.' as nums) union ';
 	}
 	return substr($select, 0, strlen($select)-7).') as setofnums)';
+}
+
+function cbexpsql_executesql($arr, $mmodule) {
+	global $adb;
+	$params = array();
+	foreach (array_slice($arr, 1) as $value) {
+		$params[] = trim(__cbexpsql_functionparamsvalue($value, $mmodule), "'");
+	}
+	return '('.$adb->convert2SQL(trim(__cbexpsql_functionparamsvalue($arr[0], $mmodule), "'"), $params).')';
 }
 
 function cbexpsql_getLatitude($arr, $mmodule) {

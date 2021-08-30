@@ -120,7 +120,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			if (!$this->_attachments) {
 				$this->_attachments = array();
 			}
-			$this->_attachments[$filename] = $data;  // TODO: this is a problem if two files have same name
+			$this->_attachments[$filename] = $data;  // this is a problem if two files have same name
 		} elseif ($p->ifdisposition && $p->disposition == 'INLINE' && $p->bytes > 0 && $p->subtype != 'PLAIN' && $p->subtype != 'HTML') {
 			// embedded images right now are treated as attachments
 			$this->_attachments['noname'.$partno. '.' .$p->subtype] = $data;

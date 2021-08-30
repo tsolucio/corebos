@@ -527,105 +527,18 @@ class Services extends CRMEntity {
 	 *	@param string $query - query to get the list of products which are related to the current PriceBook
 	 *	@param object $focus - PriceBook object which contains all the information of the current PriceBook
 	 *	@param string $returnset - return_module, return_action and return_id which are sequenced with & to pass to the URL which is optional
-	 *	return array $return_data which will be formed like array('header'=>$header, 'entries'=>$entries_list)
+	 *	@return array $return_data which will be formed like array('header'=>$header, 'entries'=>$entries_list)
 	 *		where $header contains all the header columns and $entries_list will contain all the Service entries
 	 */
 	public function getPriceBookRelatedServices($query, $focus, $returnset = '') {
-		global $log, $adb, $app_strings, $current_language, $current_user, $theme;
-		$log->debug('> getPriceBookRelatedServices '.$query.','.get_class($focus).','.$returnset);
-
-		$current_module_strings = return_module_language($current_language, 'Services');
-		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, 'Services');
-
-		$pricebook_id = $_REQUEST['record'];
-
-		$computeCount = (isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : false);
-		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, 'PriceBooks') || ((boolean)$computeCount)) {
-			$rs = $adb->query(mkCountQuery($query));
-			$noofrows = $adb->query_result($rs, 0, 'count');
-		} else {
-			$noofrows = null;
-		}
-		$module = 'PriceBooks';
-		$relatedmodule = 'Services';
-		if (empty($_SESSION['rlvs'][$module][$relatedmodule])) {
-			$modObj = new ListViewSession();
-			$modObj->sortby = $focus->getOrderBy();
-			$modObj->sorder = $focus->getSortOrder();
-			coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
-		}
-		if (isset($_REQUEST['relmodule']) && $_REQUEST['relmodule']!='' && $_REQUEST['relmodule'] == $relatedmodule) {
-			$relmodule = vtlib_purify($_REQUEST['relmodule']);
-			if ($_SESSION['rlvs'][$module][$relmodule]) {
-				setSessionVar($_SESSION['rlvs'][$module][$relmodule], $noofrows, $list_max_entries_per_page, $module, $relmodule);
-			}
-		}
-		global $relationId;
-		$start = RelatedListViewSession::getRequestCurrentPage($relationId, $query);
-		$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
-
-		$limit_start_rec = ($start-1) * $list_max_entries_per_page;
-
-		$list_result = $adb->pquery($query." LIMIT $limit_start_rec, $list_max_entries_per_page", array());
-
-		$header=array();
-		$header[]=$current_module_strings['LBL_LIST_SERVICE_NAME'];
-		if (getFieldVisibilityPermission('Services', $current_user->id, 'unit_price') == '0') {
-			$header[]=$current_module_strings['LBL_SERVICE_UNIT_PRICE'];
-		}
-		$header[]=$current_module_strings['LBL_PB_LIST_PRICE'];
-		if (isPermitted('PriceBooks', 'EditView', '') == 'yes' || isPermitted('PriceBooks', 'Delete', '') == 'yes') {
-			$header[]=$app_strings['LBL_ACTION'];
-		}
-
-		$currency_id = $focus->column_fields['currency_id'];
-		$numRows = $adb->num_rows($list_result);
-		for ($i=0; $i<$numRows; $i++) {
-			$entity_id = $adb->query_result($list_result, $i, 'crmid');
-			$unitprice = 	$adb->query_result($list_result, $i, 'unit_price');
-			if ($currency_id != null) {
-				$prod_prices = getPricesForProducts($currency_id, array($entity_id), 'Services');
-				$unitprice = $prod_prices[$entity_id];
-			}
-			$listprice = $adb->query_result($list_result, $i, 'listprice');
-
-			$entries = array();
-			$entries[] = textlength_check($adb->query_result($list_result, $i, 'servicename'));
-			if (getFieldVisibilityPermission('Services', $current_user->id, 'unit_price') == '0') {
-				$entries[] = CurrencyField::convertToUserFormat($unitprice, null, true);
-			}
-
-			$entries[] = CurrencyField::convertToUserFormat($listprice, null, true);
-			$action = '';
-			if (isPermitted('PriceBooks', 'EditView', '') == 'yes' && isPermitted('Services', 'EditView', $entity_id) == 'yes') {
-				$action .= '<img style="cursor:pointer;" src="themes/images/editfield.gif" border="0" onClick="fnvshobj(this,\'editlistprice\'),editProductListPrice(\''.$entity_id.'\',\''.$pricebook_id.'\',\''.$listprice.'\')" alt="'.$app_strings["LBL_EDIT_BUTTON"].'" title="'.$app_strings["LBL_EDIT_BUTTON"].'"/>';
-			} else {
-				$action .= '<img src="'. vtiger_imageurl('blank.gif', $theme).'" border="0" />';
-			}
-			if (isPermitted('PriceBooks', 'Delete', '') == 'yes' && isPermitted('Services', 'Delete', $entity_id) == 'yes') {
-				if ($action != '') {
-					$action .= '&nbsp;|&nbsp;';
-				}
-				$action .= '<img src="themes/images/delete.gif" onclick="if(confirm(\''.$app_strings['ARE_YOU_SURE'].'\')) deletePriceBookProductRel('.$entity_id.','.$pricebook_id.');" alt="'.$app_strings["LBL_DELETE"].'" title="'.$app_strings["LBL_DELETE"].'" style="cursor:pointer;" border="0">';
-			}
-			if ($action != '') {
-				$entries[] = $action;
-			}
-			$entries_list[] = $entries;
-		}
-		$navigationOutput[] = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
-		$navigationOutput[] = getRelatedTableHeaderNavigation($navigation_array, '', $module, $relatedmodule, $focus->id);
-		$return_data = array('header'=>$header,'entries'=>$entries_list,'navigation'=>$navigationOutput);
-
-		$log->debug('< getPriceBookRelatedServices');
-		return $return_data;
+		return getPriceBookRelatedProducts($query, $focus, $returnset, 'Services');
 	}
 
 	/**
 	 * Move the related records of the specified list of id's to the given record.
-	 * @param String This module name
-	 * @param Array List of Entity Id's from which related records need to be transfered
-	 * @param Integer Id of the the Record to which the related records are to be moved
+	 * @param string This module name
+	 * @param array List of Entity Id's from which related records need to be transfered
+	 * @param integer Id of the the Record to which the related records are to be moved
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
@@ -670,10 +583,10 @@ class Services extends CRMEntity {
 		$log->debug('< transferRelatedRecords');
 	}
 
-	/*
+	/**
 	 * Function to get the primary query part of a report
-	 * @param - $module primary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @return string query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsQuery($module, $queryPlanner) {
 		global $current_user;
@@ -715,11 +628,11 @@ class Services extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string the query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsSecQuery($module, $secmodule, $queryPlanner, $type = '', $where_condition = '') {
 		global $current_user;
@@ -750,10 +663,10 @@ class Services extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return string the array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -777,8 +690,8 @@ class Services extends CRMEntity {
 
 	 /**
 	* Invoked when special actions are performed on the module.
-	* @param String Module name
-	* @param String Event Type
+	* @param string Module name
+	* @param string Event Type
 	*/
 	public function vtlib_handler($moduleName, $eventType) {
 		require_once 'include/utils/utils.php';

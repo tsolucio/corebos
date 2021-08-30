@@ -86,20 +86,30 @@ function __cb_getcrudmode($arr) {
 	}
 }
 
+function __cb_currentlyimporting($arr) {
+	global $CURRENTLY_IMPORTING;
+	return $CURRENTLY_IMPORTING;
+}
+
 function __cb_getrelatedids($arr) {
 	global $current_user;
 	$relids = array();
 	if (count($arr)<2 || empty($arr[0])) {
 		return $relids;
 	}
-	$env = $arr[1];
-	if (isset($env->moduleName)) {
-		$mainmodule = $env->moduleName;
+	if (is_string($arr[1]) || is_numeric($arr[1])) {
+		$recordid = $arr[1];
+		$mainmodule = getSalesEntityType($arr[1]);
 	} else {
-		$mainmodule = $env->getModuleName();
+		$env = $arr[1];
+		$data = $env->getData();
+		$recordid = $data['id'];
+		if (isset($env->moduleName)) {
+			$mainmodule = $env->moduleName;
+		} else {
+			$mainmodule = $env->getModuleName();
+		}
 	}
-	$data = $env->getData();
-	$recordid = $data['id'];
 	$relmodule = $arr[0];
 	try {
 		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, ['columns' => 'id'], $current_user);
@@ -176,7 +186,7 @@ function __cb_getfromcontextsearching($arr) {
 		}
 		if (is_array($array)) {
 			$key = array_search($arr[2], array_column($array, $arr[1]));
-			if ($key && !empty($array[$key])) {
+			if ($key!==false && !empty($array[$key])) {
 				$variableArr[$vname] = __cb_getfromcontextvalueinarrayobject($array[$key], $arr[3]);
 			} else {
 				$variableArr[$vname] = '';
@@ -291,5 +301,20 @@ function __cb_evaluateRule($arr) {
 		));
 	}
 	return $result;
+}
+
+function __cb_executesql($arr) {
+	global $adb;
+	$rdo = array();
+	if (empty($arr) || empty($arr[0])) {
+		return $rdo;
+	}
+	$rs = $adb->pquery($arr[0], array_slice($arr, 1));
+	if ($rs) {
+		while ($row = $adb->fetchByAssoc($rs, -1, false)) {
+			$rdo[] = $row;
+		}
+	}
+	return $rdo;
 }
 ?>

@@ -88,7 +88,7 @@ class ConditionExpression extends processcbMap {
 		}
 		$current_user = $holduser;
 		if (isset($xml->expression)) {
-			$testexpression = (String)$xml->expression;
+			$testexpression = (string)$xml->expression;
 			$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
 			$expression = $parser->expression();
 			$exprEvaluater = new VTFieldExpressionEvaluater($expression);
@@ -98,17 +98,17 @@ class ConditionExpression extends processcbMap {
 				list($void,$entity->data['record_id']) = explode('x', $entity->data['id']);
 				$entity->data['record_module'] = $entity->getModuleName();
 			}
-			$function = (String)$xml->function->name;
+			$function = (string)$xml->function->name;
 			$testexpression = '$exprEvaluation = ' . $function . '(';
 			if (isset($xml->function->parameters) && isset($xml->function->parameters->parameter)) {
 				$GLOBALS['currentuserID'] = $current_user->id;
 				foreach ($xml->function->parameters->parameter as $v) {
-					if (isset($entity->data[(String)$v])) {
-						$testexpression.= "'" . $entity->data[(String)$v] . "',";
-					} elseif (isset($GLOBALS[(String)$v])) {
-						$testexpression.= "'" . $GLOBALS[(String)$v] . "',";
+					if (isset($entity->data[(string)$v])) {
+						$testexpression.= "'" . $entity->data[(string)$v] . "',";
+					} elseif (isset($GLOBALS[(string)$v])) {
+						$testexpression.= "'" . $GLOBALS[(string)$v] . "',";
 					} else {
-						$testexpression.= "'" . (String)$v . "',";
+						$testexpression.= "'" . (string)$v . "',";
 					}
 				}
 				unset($GLOBALS['currentuserID']);
@@ -116,7 +116,7 @@ class ConditionExpression extends processcbMap {
 			$testexpression = trim($testexpression, ',') . ');';
 			eval($testexpression);
 		} elseif (isset($xml->template)) {
-			$testexpression = (String)$xml->template;
+			$testexpression = (string)$xml->template;
 			$entityCache = new VTEntityCache($current_user);
 			$ct = new VTSimpleTemplate($testexpression);
 			$exprEvaluation = $ct->render($entityCache, $entityId);

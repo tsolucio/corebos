@@ -100,18 +100,18 @@ class DecisionTable extends processcbMap {
 		}
 		$current_user = $holduser;
 		$outputs = array();
-		$hitpolicy = (String)$xml->hitPolicy;
+		$hitpolicy = (string)$xml->hitPolicy;
 		$mapvalues = array(
 			'context' => $context,
 			'hitpolicy' => $hitpolicy,
 		);
 		if ($hitpolicy == 'G') {
-			$aggregate = (String)$xml->aggregate;
+			$aggregate = (string)$xml->aggregate;
 		}
 		$rules = array();
 		foreach ($xml->rules->rule as $value) {
-			$sequence = (String)$value->sequence;
-			$ruleOutput = (String)$value->output;
+			$sequence = (string)$value->sequence;
+			$ruleOutput = (string)$value->output;
 			$rule = array(
 				'sequence' => $sequence,
 				'ruleOutput' => $ruleOutput,
@@ -119,7 +119,7 @@ class DecisionTable extends processcbMap {
 			$eval = '';
 			if (isset($value->expression)) {
 				$this->mapExecutionInfo['type'] = 'Expression';
-				$testexpression = (String)$value->expression;
+				$testexpression = (string)$value->expression;
 				$rule['type'] = 'expression';
 				$rule['valueraw'] = $testexpression;
 				if (is_array($context)) {
@@ -146,7 +146,7 @@ class DecisionTable extends processcbMap {
 				}
 			} elseif (isset($value->mapid)) {
 				$this->mapExecutionInfo['type'] = 'Map';
-				$mapid = (String)$value->mapid;
+				$mapid = (string)$value->mapid;
 				$eval = coreBOS_Rule::evaluate($mapid, $context);
 				$rule['type'] = 'map';
 				$rule['valueraw'] = $mapid;
@@ -163,23 +163,23 @@ class DecisionTable extends processcbMap {
 			} elseif (isset($value->decisionTable)) {
 				$this->mapExecutionInfo['type'] = 'DecisionTable';
 				$this->mapExecutionInfo['queries'] = array();
-				$module = (String)$value->decisionTable->module;
+				$module = (string)$value->decisionTable->module;
 				$queryGenerator = new QueryGenerator($module, $current_user);
 				if (isset($value->decisionTable->conditions)) {
 					foreach ($value->decisionTable->conditions->condition as $v) {
-						$cval = isset($context[(String)$v->input]) ? $context[(String)$v->input] : (String)$v->input;
-						$queryGenerator->addCondition((String)$v->field, $cval, (String)$v->operation, $queryGenerator::$AND);
+						$cval = isset($context[(string)$v->input]) ? $context[(string)$v->input] : (string)$v->input;
+						$queryGenerator->addCondition((string)$v->field, $cval, (string)$v->operation, $queryGenerator::$AND);
 					}
 				}
 				if (isset($value->decisionTable->searches)) {
 					foreach ($value->decisionTable->searches->search as $s) {
 						foreach ($s->condition as $v) {
-							if (isset($context[(String)$v->input]) && $context[(String)$v->input]!='__IGNORE__') {
+							if (isset($context[(string)$v->input]) && $context[(string)$v->input]!='__IGNORE__') {
 								if (empty($v->preprocess)) {
-									$conditionvalue = $context[(String)$v->input];
+									$conditionvalue = $context[(string)$v->input];
 								} else {
 									if (is_array($context)) {
-										$v->preprocess = (String)$v->preprocess;
+										$v->preprocess = (string)$v->preprocess;
 										foreach ($context as $ckey => $cval) {
 											if (is_array($cval)) {
 												continue;
@@ -187,12 +187,12 @@ class DecisionTable extends processcbMap {
 											$v->preprocess = str_ireplace('$['.$ckey.']', $cval, $v->preprocess);
 										}
 									}
-									$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer((String)$v->preprocess)));
+									$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer((string)$v->preprocess)));
 									$expression = $parser->expression();
 									$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 									$conditionvalue = $exprEvaluater->evaluate($entity);
 								}
-								$uitype = getUItypeByFieldName($module, (String)$v->field);
+								$uitype = getUItypeByFieldName($module, (string)$v->field);
 								$queryGenerator->startGroup($queryGenerator::$AND);
 								if ($uitype==10) {
 									if (strpos($conditionvalue, 'x') > 0) {
@@ -201,19 +201,19 @@ class DecisionTable extends processcbMap {
 										$crmid = $conditionvalue;
 									}
 										$relmod = getSalesEntityType($crmid);
-										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', $crmid, (String)$v->operation);
-										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', '', 'y', $queryGenerator::$OR);
+										$queryGenerator->addReferenceModuleFieldCondition($relmod, (string)$v->field, 'id', $crmid, (string)$v->operation);
+										$queryGenerator->addReferenceModuleFieldCondition($relmod, (string)$v->field, 'id', '', 'y', $queryGenerator::$OR);
 								} else {
-									$queryGenerator->addCondition((String)$v->field, $conditionvalue, (String)$v->operation);
-									$queryGenerator->addCondition((String)$v->field, '__IGNORE__', 'e', $queryGenerator::$OR);
+									$queryGenerator->addCondition((string)$v->field, $conditionvalue, (string)$v->operation);
+									$queryGenerator->addCondition((string)$v->field, '__IGNORE__', 'e', $queryGenerator::$OR);
 								}
 								$queryGenerator->endGroup();
 							}
 						}
 					}
 				}
-				$field = (String)$value->decisionTable->output;
-				$orderby = (String)$value->decisionTable->orderby;
+				$field = (string)$value->decisionTable->output;
+				$orderby = (string)$value->decisionTable->orderby;
 				if (strpos($field, ',')) {
 					$queryFields = explode(',', $field);
 				} else {

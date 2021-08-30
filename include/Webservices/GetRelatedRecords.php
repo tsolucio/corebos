@@ -295,21 +295,8 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					break;
 				default:
 					$entityInstance = CRMEntity::getInstance($relatedModule);
-					$queryCriteria  = '';
-					$criteria='All';  // currently hard coded to all  ** TODO **
-					switch ($criteria) { // currently hard coded to all  ** TODO **
-						case 'All':
-							$queryCriteria = '';
-							break;
-						case 'Last5':
-							$queryCriteria = sprintf(' ORDER BY %s.%s DESC LIMIT 5', $entityInstance->table_name, $entityInstance->table_index);
-							break;
-						case 'Mine':
-							$queryCriteria = ' AND vtiger_crmentity.smcreatorid=' . $current_user->id;
-							break;
-					}
+					// we always return ALL, use query language to get restricted set of comments
 					$query = $entityInstance->getListQuery('ModComments', sprintf(" AND %s.related_to=$crmid", $entityInstance->table_name));
-					$query .= $queryCriteria;
 					$qfields = __getRLQueryFields($meta, $queryParameters['columns']);
 					// Remove all the \n, \r and white spaces to keep the space between the words consistent.
 					$query = preg_replace("/[\n\r\s]+/", ' ', $query);

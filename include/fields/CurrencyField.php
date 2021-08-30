@@ -17,13 +17,13 @@ class CurrencyField {
 
 	/**
 	 * Currency Format(3,3,3) or (2,2,3)
-	 * @var String
+	 * @var string
 	 */
 	public $currencyFormat = '123,456,789';
 
 	/**
 	 * Currency Separator for example (comma, dot, hash)
-	 * @var String
+	 * @var string
 	 */
 	public $currencySeparator = ',';
 
@@ -35,19 +35,19 @@ class CurrencyField {
 
 	/**
 	 * Number of Decimal Numbers
-	 * @var Integer
+	 * @var integer
 	 */
 	public $numberOfDecimal = 3;
 
 	/**
 	 * Currency Id
-	 * @var Integer
+	 * @var integer
 	 */
 	public $currencyId = 1;
 
 	/**
 	 * Currency Symbol
-	 * @var String
+	 * @var string
 	 */
 	public $currencySymbol;
 
@@ -58,25 +58,25 @@ class CurrencyField {
 
 	/**
 	 * Currency Conversion Rate
-	 * @var Number
+	 * @var float
 	 */
 	public $conversionRate = 1;
 
 	/**
 	 * Value to be converted
-	 * @param Number $value
+	 * @param float $value
 	 */
 	public $value = null;
 
 	/**
 	 * Maximum Number Of Currency Decimals
-	 * @var Number
+	 * @var integer
 	 */
 	public static $maxNumberOfDecimals = 6;
 
 	/**
 	 * Constructor
-	 * @param Number $value
+	 * @param float $value
 	 */
 	public function __construct($val) {
 		$this->value = $val;
@@ -136,8 +136,8 @@ class CurrencyField {
 	 * Returns the Formatted Currency value for the User
 	 * @global Users $current_user
 	 * @param Users $user
-	 * @param Boolean $skipConversion for multicurrency support
-	 * @return String - Formatted Currency
+	 * @param boolean $skipConversion for multicurrency support
+	 * @return string Formatted Currency
 	 */
 	public static function convertToUserFormat($val, $user = null, $skipConversion = false) {
 		$self = new self($val);
@@ -147,8 +147,8 @@ class CurrencyField {
 	/**
 	 * Function that converts the Number into Users Currency
 	 * @param Users $user
-	 * @param Boolean $skipConversion for multicurrency support
-	 * @return Formatted Currency
+	 * @param boolean $skipConversion for multicurrency support
+	 * @return string Formatted Currency
 	 */
 	public function getDisplayValue($user = null, $skipConversion = false, $noInit = false) {
 		global $current_user;
@@ -168,8 +168,8 @@ class CurrencyField {
 	/**
 	 * Function that converts the Number into Users Currency along with currency symbol
 	 * @param Users $user
-	 * @param Boolean $skipConversion
-	 * @return Formatted Currency
+	 * @param boolean $skipConversion
+	 * @return string Formatted Currency
 	 */
 	public function getDisplayValueWithSymbol($user = null, $skipConversion = false) {
 		$formattedValue = $this->getDisplayValue($user, $skipConversion);
@@ -178,10 +178,10 @@ class CurrencyField {
 
 	/**
 	 * Static Function that appends the currency symbol to a given currency value, based on the preferred symbol placement
-	 * @param Number $currencyValue
-	 * @param String $currencySymbol
-	 * @param String $currencySymbolPlacement
-	 * @return Currency value appended with the currency symbol
+	 * @param float $currencyValue
+	 * @param string $currencySymbol
+	 * @param string $currencySymbolPlacement
+	 * @return string Currency value appended with the currency symbol
 	 */
 	public static function appendCurrencySymbol($currencyValue, $currencySymbol, $currencySymbolPlacement = '') {
 		global $current_user;
@@ -202,8 +202,8 @@ class CurrencyField {
 
 	/**
 	 * Function that formats the Number based on the User configured Pattern, Currency separator and Decimal separator
-	 * @param Number $value
-	 * @return Formatted Currency
+	 * @param float $value
+	 * @return string Formatted Currency
 	 */
 	private function formatCurrencyValue($val) {
 		if (is_string($val)) {
@@ -320,8 +320,8 @@ class CurrencyField {
 	 * Returns the Currency value without formatting for DB Operations
 	 * @global Users $current_user
 	 * @param Users $user
-	 * @param Boolean $skipConversion
-	 * @return Number
+	 * @param boolean $skipConversion
+	 * @return float
 	 */
 	public function getDBInsertedValue($user = null, $skipConversion = false) {
 		global $current_user;
@@ -352,10 +352,10 @@ class CurrencyField {
 
 	/**
 	 * Returns the Currency value without formatting for DB Operations
-	 * @param Number $value
+	 * @param float $value
 	 * @param Users $user
-	 * @param Boolean $skipConversion
-	 * @return Number
+	 * @param boolean $skipConversion
+	 * @return float
 	 */
 	public static function convertToDBFormat($val, $user = null, $skipConversion = false) {
 		$self = new self($val);
@@ -388,8 +388,8 @@ class CurrencyField {
 	}
 
 	/** This function returns the amount converted from master currency.
-	 * param $amount - amount to be converted.
-	 * param $crate - conversion rate.
+	 * @param float amount to be converted.
+	 * @param float conversion rate.
 	 */
 	public static function convertFromMasterCurrency($amount, $conversionRate) {
 		return $amount * $conversionRate;
@@ -399,9 +399,9 @@ class CurrencyField {
 	 * For this to work, the module MUST have two fields on their MAIN table:
 	 *  currency_id: integer uitype 117
 	 *  conversion_rate: decimal(10,3) uitype 1 displaytype 3
-	 * param $module module name to get the currrency from
-	 * param $crmid record to get the currrency from
-	 * returns array with all the currency information
+	 * @param string module name to get the currrency from
+	 * @param integer record to get the currrency from
+	 * @return array with all the currency information
 	 */
 	public static function getMultiCurrencyInfoFrom($module, $crmid) {
 		global $log, $adb;

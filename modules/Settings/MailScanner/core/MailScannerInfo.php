@@ -201,7 +201,6 @@ class Vtiger_MailScannerInfo {
 		if ($this->rescan && isset($this->rescan[$folderName])) {
 			return $this->rescan[$folderName];
 		}
-		// TODO Pick details of rescan flag of folder from database?
 		return false;
 	}
 
@@ -337,7 +336,6 @@ class Vtiger_MailScannerInfo {
 		if ($this->server != $otherInstance->server || $this->username != $otherInstance->username) {
 			$mailServerChanged = true;
 			$this->clearLastscan();
-			// TODO How to handle lastscan info if server settings switches back in future?
 		}
 
 		$this->server    = $otherInstance->server;
