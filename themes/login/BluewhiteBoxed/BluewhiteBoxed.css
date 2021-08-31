@@ -60,7 +60,6 @@
 	width: 100%;
 }
 
-
 /* .cbds-leftbox.cbds-container {
 	
 } */
@@ -147,7 +146,6 @@ p {
 .cbds-right .cbds-container #cbds-login {
 	width: 100%;
 	border-radius: 50px !important;
-	border-color: inherit !important;
 	height: 50px !important;
 	background-color: #0B2559;
 	color: white;
