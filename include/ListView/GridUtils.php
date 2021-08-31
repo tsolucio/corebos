@@ -163,6 +163,10 @@ function getDataGridResponse($mdmap) {
 			$r[$finfo['fieldinfo']['name']] = $dataGridValue[0];
 			$r[$finfo['fieldinfo']['name'].'_attributes'] = $dataGridValue[1];
 		}
+		$r['record_permissions'] = array(
+			'delete' => isPermitted($mdmap['targetmodule'], 'Delete', $row[$mdmap['targetmoduleidfield']]),
+			'edit' => isPermitted($mdmap['targetmodule'], 'EditView', $row[$mdmap['targetmoduleidfield']])
+		);
 		$ret[] = $r;
 	}
 	return json_encode(
