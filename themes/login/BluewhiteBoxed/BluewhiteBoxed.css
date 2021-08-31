@@ -12,7 +12,7 @@
 	background: #0B2559;
 }
 
-.cbds-submain1 {
+.cbds-submain_rightoval {
 	width: 100%;
 	display: flex;
 	height: 100%;
@@ -81,7 +81,7 @@
 	margin-bottom: 1rem;	
 }
 
-.cbds-desc p {
+.cbds-desc .cbds-appinformation {
 	padding-left:1rem;
 }
 .cbds-right {
@@ -185,16 +185,18 @@ p {
 	/* transition: 0.3s; */
 }
 
-.cbds-usrname {
+.cbds-input__primary {
 	font-size: 18 !important;
 	display: block !important;
-}
-
-.cbds-bordercolor {
 	border-color: #0B2559 !important;
 }
 
-.cbds-bordercolor:focus {
+/* .cbds-bordercolor {
+	border-color: #0B2559 !important;
+	
+} */
+
+.cbds-input__primary:focus {
 	border-color: #0B2559 !important;
 }
 
@@ -238,9 +240,8 @@ p {
 #cbds-theloginform{
 	display: block;
 }
-
-.mb16 {
-	display: none
+#pwcaps {
+    display: none !important;
 }
 
 @keyframes display {
@@ -302,7 +303,7 @@ p {
 
 @media only screen and (max-device-width: 760px),
 (max-device-width: 768px) {
-	.cbds-submain1 {
+	.cbds-submain_rightoval {
 		clip-path: ellipse(100% 60% at 50% 0%);
 	}
 	.cbds-Bluewhite {

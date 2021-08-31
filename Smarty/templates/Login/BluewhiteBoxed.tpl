@@ -3,7 +3,7 @@
 </head>
 <body onload="set_focus()" data-gr-c-s-loaded="true">
    <div class="cbds-main cbds-Bluebox">
-   <div class="cbds-submain1">
+   <div class="cbds-submain_rightoval">
    </div>
    <div class="cbds-submain">
    <div class="cbds-left cbds-leftbox">
@@ -14,15 +14,15 @@
          <ul class="cbds-desc cbds-descbox">
             <li>
                <img id='cbds-iconimage' src="themes/login/images/checked.png">
-               <p>{'LBL_Bussiness'|getTranslatedString}</p>
+               <p class="cbds-appinformation">{'LBL_Bussiness'|getTranslatedString}</p>
             </li>
             <li>
                <img id='cbds-iconimage' src="themes/login/images/checked.png">
-               <p>{'LBL_Management'|getTranslatedString}</p>
+               <p class="cbds-appinformation">{'LBL_Management'|getTranslatedString}</p>
             </li>
             <li>
                <img id='cbds-iconimage' src="themes/login/images/checked.png">
-               <p>{'LBL_Statistics'|getTranslatedString}</p>
+               <p class="cbds-appinformation">{'LBL_Statistics'|getTranslatedString}</p>
             </li>
          </ul>
          <div class="cbds-pic-ctn">
@@ -48,13 +48,13 @@
                   <div id="usernamegroup" class="inputgroup">
                      <label for="username" class="cbds-label">{'Email'|getTranslatedString:'Users'|upper}</label>
                      <div id="username_container">
-                        <input class="input r4 wide mb16 mt8 username cbds-usrname cbds-bordercolor" type="email" value="" name="user_name" id="username">
+                        <input class="input r4 wide mb16 mt8 username cbds-input__primary" type="email" value="" name="user_name" id="username">
                      </div>
                   </div>
                   <div class="inpt">
                      <label for="password" class="cbds-label">{'LBL_PASSWORD'|getTranslatedString:'Users'|upper}</label>
                      <div class="cbds-iconB">
-                        <input class="input r4 wide mb16 mt8 password cbds-usrname cbds-bordercolor" type="password" id="password" name="user_password"
+                        <input class="input r4 wide mb16 mt8 password cbds-input__primary" type="password" id="password" name="user_password"
                            onkeypress="checkCaps(event)" autocomplete="off">
                         <svg class="slds-button__icon  cbds-button__primary" id="btnid" aria-hidden="true" onclick="showPassword()">
                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
