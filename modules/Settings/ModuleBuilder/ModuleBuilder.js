@@ -1827,7 +1827,7 @@ const mb = {
 			}).done(function (response) {
 				const res = JSON.parse(response);
 				if (res.success == true) {
-					window.location.href = 'modules/Settings/ModuleBuilder/modules/'+res.module+'.zip';
+					window.location.href = 'cache/'+res.module+'.zip';
 					const msg = `Module <b>${res.module}</b> is generated successfully!`;
 					mb.resetTemplate();
 					mb.loadMessage(msg, true, 'success');
