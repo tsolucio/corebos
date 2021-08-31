@@ -1371,6 +1371,12 @@ $app_strings = array(
 'VALIDATION_FAILED' => 'Validation failed',
 'Select Module To Upsert' => 'Select Module To Upsert',
 'LBL_FIX_NOW' => 'Fix Now',
+
+//login translation
+'LBL_Please_login_to_your_account' => 'Please login to your account',
+'LBL_Bussiness'	=> 'Make your business run smoothly',
+'LBL_Management' => 'Intelligent customer management',
+'LBL_Statistics' => 'Easy to track your statistics',
 );
 
 // Translation for currency names
