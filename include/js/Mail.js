@@ -189,3 +189,19 @@ function rel_eMail(module, oButton, relmod) {
 	sendmail(relmod, allids, url);
 	set_cookie(relmod+'_all', '');
 }
+
+function sendToselectedAdd() {
+	var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');
+	for (var attributeIn of markedCheckbox) {
+		entityid = attributeIn.getAttribute('entityid');
+		emailid = attributeIn.getAttribute('emailid');
+		parentname = attributeIn.getAttribute('parentname');
+		emailadd = attributeIn.getAttribute('emailadd');
+		emailadd2 = attributeIn.getAttribute('emailadd2');
+		perm = attributeIn.getAttribute('perm');
+		emailfield = attributeIn.getAttribute('emailfield');
+		set_return_emails(entityid, emailid, parentname, emailadd, emailadd2, perm, emailfield);
+	}
+	window.close();
+	return true;
+}

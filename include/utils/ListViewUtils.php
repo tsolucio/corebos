@@ -1430,6 +1430,30 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = CurrencyField::convertToUserFormat($field_valEncoded, $current_user, true);
 		}
+	} elseif ($uitype == 13 && $popuptype == 'set_return_emails') {
+		$qstr = 'SELECT fieldid FROM vtiger_field WHERE tabid=? and uitype=13 and fieldname=? and vtiger_field.presence in (0,2) limit 1';
+		$qres = $adb->pquery($qstr, array(getTabid($module), $fieldname));
+		$fid = $adb->query_result($qres, 0, 'fieldid');
+		if (CheckFieldPermission($fieldname, $module) == 'true') {
+			$email_address = $adb->query_result($list_result, $list_result_count, $colname);
+			$email_check = 1;
+		} else {
+			$email_address = '';
+			$email_check = 0;
+		}
+		if (empty($_REQUEST['email_field'])) {
+			$sre_param = ', "default"';
+			$mail_field = 'default';
+		} else {
+			$sre_param = ', "'.$_REQUEST['email_field'].'"';
+			$mail_field = $_REQUEST['email_field'];
+		}
+		$count = counterValue();
+		if (!empty($email_address)) {
+			$value = '<input type="checkbox" entityid="'.$entity_id.'" emailid="'.$fid.'" parentname="'.$email_address.'" emailadd="'.$email_address.'" emailadd2="" perm="'.$email_check.'" emailfield="'.$mail_field.'" value="" />&nbsp;<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',' . $fid . ',"' . decode_html($email_address) . '","' . $email_address . '","","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . textlength_check($email_address) . '</a>';
+		} else {
+			$value = '';
+		}
 	} else {
 		if ($fieldname == $focus->list_link_field) {
 			if ($mode == 'search') {
