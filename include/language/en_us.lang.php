@@ -1379,7 +1379,7 @@ $app_strings = array(
 'LBL_Statistics' => 'Easy to track your statistics',
 
 //List view popup content
- 'LBL_SEND_TO' => 'SEND TO',
+'LBL_SEND_TO' => 'SEND TO',
 );
 
 // Translation for currency names
