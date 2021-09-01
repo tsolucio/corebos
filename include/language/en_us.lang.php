@@ -1377,6 +1377,9 @@ $app_strings = array(
 'LBL_Bussiness'	=> 'Make your business run smoothly',
 'LBL_Management' => 'Intelligent customer management',
 'LBL_Statistics' => 'Easy to track your statistics',
+
+//List view popup content
+ 'LBL_SEND_TO' => 'SEND TO',
 );
 
 // Translation for currency names

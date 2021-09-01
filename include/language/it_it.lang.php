@@ -1269,6 +1269,9 @@ $app_strings = array (
 'VALIDATION_FAILED' => 'Validation failed',
 'Select Module To Upsert' => 'Select Module To Upsert',
 'LBL_FIX_NOW' => 'Fissare adesso',
+
+//List view popup content
+ 'LBL_SEND_TO' => 'INVIARE A',
 );
 
 // Translation for currency names

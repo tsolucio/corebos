@@ -21,6 +21,8 @@
 		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAll('{$RETURN_MODULE}') && document.getElementById('closewindow').value=='true')window.close();"/></td>
 	{elseif $SELECT eq 'enable' && $POPUPTYPE eq 'inventory_service'}
 		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAllServices('{$RETURN_MODULE}') && document.getElementById('closewindow').value=='true')window.close();"/></td>
+	{elseif $POPUPTYPE eq 'set_return_emails'}
+		<td style="padding-left:10px; float:right; margin-right: 20px" align="left"><button onclick="sendToselectedAdd();" class="slds-button slds-button_outline-brand">{$APP.LBL_SEND_TO}</button></td>
 	{else}
 		<td>&nbsp;</td>
 	{/if}
