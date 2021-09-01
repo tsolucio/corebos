@@ -9338,7 +9338,7 @@ precacheAndRoute([{
   "revision": "d5317a375aa85d10e53f5989b1be0524"
 }, {
   "url": "include/js/Mail.js",
-  "revision": "246a4c20699e5215b094d9d806d48215"
+  "revision": "38f36445f41a532a04011c39feb50e58"
 }, {
   "url": "include/js/massive.js",
   "revision": "5a09d9ad89882ba8ad3e993e11a08055"
