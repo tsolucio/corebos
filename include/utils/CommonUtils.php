@@ -1957,14 +1957,14 @@ function create_parenttab_data_file() {
 }
 
 /**
- * This function is used to get the all the modules that have Quick Create Feature.
- * Returns Tab Name and Tablabel.
+ * This function is used to get all the modules that have Quick Create feature
+ * @return array Tab Name and Tab label
  */
 function getQuickCreateModules() {
 	global $log, $adb;
 	$log->debug('> getQuickCreateModules');
 
-	$qc_query = 'select distinct vtiger_tab.tablabel,vtiger_tab.name
+	$qc_query = 'select distinct vtiger_tab.name
 		from vtiger_field
 		inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid 
 		where quickcreate in (0,2) and vtiger_tab.presence != 1';
@@ -1973,12 +1973,9 @@ function getQuickCreateModules() {
 	$noofrows = $adb->num_rows($result);
 	$return_qcmodule = array();
 	for ($i = 0; $i < $noofrows; $i++) {
-		$tablabel = $adb->query_result($result, $i, 'tablabel');
-
 		$tabname = $adb->query_result($result, $i, 'name');
-		$tablabel = getTranslatedString("SINGLE_$tabname", $tabname);
 		if (isPermitted($tabname, 'CreateView', '') == 'yes') {
-			$return_qcmodule[] = $tablabel;
+			$return_qcmodule[] = getTranslatedString("SINGLE_$tabname", $tabname);
 			$return_qcmodule[] = $tabname;
 		}
 	}
