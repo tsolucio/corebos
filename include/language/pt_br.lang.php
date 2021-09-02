@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 29/07/2021 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 02/09/2021 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -1370,13 +1370,13 @@ $app_strings = array (
 'LBL_FIX_NOW' => 'Fixa Agora',
 
 //login translation
-'LBL_Please_login_to_your_account' => 'Please login to your account',
-'LBL_Bussiness'	=> 'Make your business run smoothly',
-'LBL_Management' => 'Intelligent customer management',
-'LBL_Statistics' => 'Easy to track your statistics',
+'LBL_Please_login_to_your_account' => 'Faça login em sua conta',
+'LBL_Bussiness'	=> 'Faça seu negócio funcionar sem problemas',
+'LBL_Management' => 'Gestão inteligente do cliente',
+'LBL_Statistics' => 'Fácil de acompanhar suas estatísticas',
 
 //List view popup content
-'LBL_SEND_TO' => 'SEND TO',
+'LBL_SEND_TO' => 'ENVIAR PARA',
 );
 
 // Translation for currency names
