@@ -104,6 +104,8 @@ var masterdetailwork = {
 		}
 		if (CurrentRecord!='') {
 			CurrentRecord = '&MDCurrentRecord='+CurrentRecord;
+		} else if (document.getElementById('record')) {
+			CurrentRecord = '&MDCurrentRecord='+document.getElementById('record').value;
 		}
 		let mapname = document.getElementById(MDGrid.substring(6)).dataset.mapname;
 		let mdgridinfo = JSON.stringify({
