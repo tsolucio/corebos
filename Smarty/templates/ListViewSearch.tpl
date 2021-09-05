@@ -12,11 +12,10 @@
 {if !isset($moduleShowSearch) || $moduleShowSearch}
 <div id="searchAcc" style="{$DEFAULT_SEARCH_PANEL_STATUS};position:relative;">
 <form name="basicSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='basic';return callSearch('Basic');">
-<table width="100%" cellpadding="5" cellspacing="0" class="searchUIBasic small" align="center" border=0>
+<table style="width:100%;" class="slds-card small">
 	<tr>
 		<td class="searchUIName small" nowrap align="left">
-		<span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="fnhide('searchAcc');show('advSearch');document.basicSearch.searchtype.value='advance';document.basicSearch.searchtype.searchlaunched='';document.getElementById('cbds-advanced-search').classList.add('cbds-advanced-search--active')">{$APP.LBL_GO_TO} {$APP.LNK_ADVANCED_SEARCH}</a></span>
-		<!-- <img src="themes/images/basicSearchLens.gif" align="absmiddle" alt="{$APP.LNK_BASIC_SEARCH}" title="{$APP.LNK_BASIC_SEARCH}" border=0>&nbsp;&nbsp;-->
+		<span class="moduleName">{$APP.LBL_SEARCH}</span>
 		</td>
 		<td class="small" width="20%">
 			<div class="slds-form-element">
@@ -58,27 +57,44 @@
 					</svg>
 					{$APP.LBL_SEARCH_NOW_BUTTON}
 				</a>
-				<a onClick="ListView.ListViewReloadData()" class="slds-button slds-button_text-destructive">
-					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+				{if !empty($moduleView) && $moduleView=='tuigrid'}
+				<button class="slds-button slds-button_icon slds-button_icon-more" title="{'LBL_CLEAR'|@getTranslatedString}" type="button"
+					onClick="ListView.ListViewReloadData()">
+					<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 					</svg>
-					{$APP.LBL_CLEAR}
-				</a>
+					<span class="slds-assistive-text">{'LBL_CLEAR'|@getTranslatedString}</span>
+				</button>
+				{/if}
+				<button class="slds-button slds-button_icon slds-button_icon-more" title="{'LNK_ADVANCED_SEARCH'|@getTranslatedString}" type="button"
+					onClick="fnhide('searchAcc');show('advSearch');document.basicSearch.searchtype.value='advance';document.basicSearch.searchtype.searchlaunched='';document.getElementById('cbds-advanced-search').classList.add('cbds-advanced-search--active')">
+					<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_lookup"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LNK_ADVANCED_SEARCH'|@getTranslatedString}</span>
+				</button>
+				<button class="slds-button slds-button_icon slds-button_icon-more" title="{'LNK_ALPHABETICAL_SEARCH'|@getTranslatedString}" type="button"
+					onClick="toggleDiv('alphasearchtable');">
+					<img class="slds-button__icon slds-button__icon_large" aria-hidden="true" src="include/LD/assets/icons/utility/az.png">
+					<span class="slds-assistive-text">{'LNK_ALPHABETICAL_SEARCH'|@getTranslatedString}</span>
+				</button>
 			</div>
 		</td>
 		<td class="small closeX" valign="top"></td>
 	</tr>
 	<tr>
-		<td colspan="7" align="center" class="small">
-			<table border=0 cellspacing=0 cellpadding=0 width=100%>
+		<td colspan="7" class="small">
+			<div id="alphasearchtable" style="display:none;">
+			<table style="width:100%;">
 				<tr>
 				{$ALPHABETICAL}
 				</tr>
 			</table>
+			</div>
 		</td>
 	</tr>
 </table>
-</form><br class="searchbreak">
+</form>
 </div>
 <!-- ADVANCED SEARCH -->
 <!-- Advanced search row -->
@@ -86,7 +102,7 @@
 	<form name="advSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='advance';return callSearch('Advanced');">
 		<input type="hidden" name="advft_criteria" id="advft_criteria" value="">
 		<input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value="">
-		<div class="slds-grid slds-m-top--large cbds-advanced-search--inactive" id="cbds-advanced-search">
+		<div class="slds-grid slds-m-top_small cbds-advanced-search--inactive" id="cbds-advanced-search">
 			<div class="slds-col">
 				<div class="slds-expression slds-p-bottom_xx-large">
 					<div class="slds-grid">

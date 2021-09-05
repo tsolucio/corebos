@@ -709,7 +709,8 @@ const ListView = {
 		let select = document.createElement('select');
 		select.id = 'viewname';
 		select.name = 'viewname';
-		select.className = 'small';
+		select.className = 'slds-select';
+		select.setAttribute('style', 'max-width:240px;');
 		select.setAttribute('onchange', 'showDefaultCustomView(this, "'+lvmodule+'", "")');
 		select.innerHTML = filters.customview_html;
 		document.getElementById('filterOptions').appendChild(select);

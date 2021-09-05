@@ -217,7 +217,7 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 						<td align="center" class="small" width=90%>
 							<input type="hidden" name="advft_criteria" id="advft_criteria" value="">
 							<input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value="">
-							<div class="slds-grid slds-m-top--large cbds-advanced-search--inactive" id="cbds-advanced-search">
+							<div class="slds-grid slds-m-top_small cbds-advanced-search--inactive" id="cbds-advanced-search">
 								<div class="slds-col">
 									<div class="slds-expression slds-p-bottom_xx-large">
 										<div class="slds-grid">

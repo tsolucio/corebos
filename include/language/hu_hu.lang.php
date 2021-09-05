@@ -1308,6 +1308,7 @@ $app_strings = array(
 
 	//List view popup content
 	'LBL_SEND_TO' => 'SEND TO',
+	'LNK_ALPHABETICAL_SEARCH' => 'Alpabetical Search',
 );
 
 // Translation for currency names

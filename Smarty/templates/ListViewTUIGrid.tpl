@@ -28,7 +28,7 @@
 	<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
 </form>
 <!-- List View's Buttons and Filters starts -->
-<table width="100%" class="layerPopupTransport">
+<table style="width:100%;" class="slds-card">
 <tr>
 	<td width="25%" class="small" nowrap align="left">
 		<span id="gridRecordCountHeader"></span>
@@ -43,10 +43,10 @@
 				<table cellpadding="5" cellspacing="0" class="small cblds-table-border_sep cblds-table-bordersp_medium">
 					<tr>
 						<td style="padding-left:5px;padding-right:5px" align="center">
-						<b><font size=2>{$APP.LBL_VIEW}</font></b> 
+						<strong>{$APP.LBL_VIEW}</strong>
 						<span id="filterOptions"></span>
 						</td>
-						<td style="padding-left:5px;padding-right:5px" align="center">
+						<td style="padding-left:5px;padding-right:5px;width:45%;" align="center">
 						<a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
 						<span id="filterEditActions"></span>
 						<span id="filterDeleteActions"></span>
@@ -60,7 +60,7 @@
 		</table>
 	</td>
 	<!-- Page Navigation -->
-	<td nowrap align="right" width="25%" class="cblds-t-align_right">
+	<td nowrap style="width:25%;" class="cblds-t-align_right">
 	</td>
 </tr>
 </table>
