@@ -6665,45 +6665,35 @@ function findUp(element, searchterm) {
 		case 'N':
 			// Check if valid number
 			return cbVal.isNum(val);
-			break;
 		case 'NN':
 			// Check if valid negative no.
 			return cbVal.isNegNum(val);
-			break;
 		case 'I':
 			// Check if valid Integer
 			return cbVal.isInt(val);
-			break;
 		case 'D':
 			// Check if valid date
 			return cbVal.isDate(val);
-			break;
 		case 'DT':
 			// Check if valid datetime
 			return cbVal.isDateTime(val);
-			break;
 		case 'C':
 			// Check if valid checkbox
 			return cbVal.isValidCheckBoxVal(val);
-			break;
 		case 'E':
 			// Check if valid email
 			return cbVal.isEmail(val);
-			break;
 		case 'T':
 			// Check if valid time
 			return cbVal.isTime(val);
-			break;
 		case 'V':
 			// Check if valid varchar
 			return cbVal.isValidVarchar(val);
-			break;
 		case 'O':
 			// Check if valid RecurringType/Duration_minutes
 			break;
 		default:
 			return false;
-			break;
 		}
 	}
 
@@ -6809,8 +6799,6 @@ function findUp(element, searchterm) {
 			dI	 = fArr.indexOf('dd'),
 			flg  = false; // Flag setup
 
-		// console.log(df, splt, dArr, fArr, flg);
-
 		if (val.indexOf(splt) === -1) {
 			return false; // If splitter is not present return right away
 		}
@@ -6885,8 +6873,8 @@ function findUp(element, searchterm) {
 	};
 
 	/*
-		* Export
-		*/
+	* Export
+	*/
 	return cbVal;
 });
 

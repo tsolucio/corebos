@@ -29,13 +29,13 @@
 	 */
 	function cbAdvancedFilter(el) {
 		/* Public attributes */
-		this.el         = el,
-		this.groups     = [],
-		this.condCnt    = 0,
-		this.grpCnt     = 1,
-		this.conds      = [],
-		this.vals       = [],
-		this.grpCont    = document.getElementById('cbds-advfilt-groups'),
+		this.el         = el;
+		this.groups     = [];
+		this.condCnt    = 0;
+		this.grpCnt     = 1;
+		this.conds      = [];
+		this.vals       = [];
+		this.grpCont    = document.getElementById('cbds-advfilt-groups');
 		this.searchForm = _findUp(el, '$FORM');
 		this.context    = document.getElementById('cbds-advfilt__context').value;
 
@@ -454,10 +454,7 @@
 			<div style="height: 13rem;"></div>`;
 
 			ldsModal.show('Select field', content, 'medium', 'AdvancedFilter.onComparisonModalClose()');
-			this.comparisonModalCombo = new ldsCombobox(document.getElementById('cbds-advfilt__fieldcomp-combo'),
-				{
-					'isMulti': true
-				});
+			this.comparisonModalCombo = new ldsCombobox(document.getElementById('cbds-advfilt__fieldcomp-combo'), {'isMulti': true});
 
 			this.currentComparisonInput = function () {
 				let valueCol = _findUp(button, '.' + this.vals[0].class);
@@ -742,25 +739,23 @@
 			});
 			return conds.length > 0;
 		}
-
 	};
 
 	/* Cond submodule */
 	function Cond(node, group) {
-		this.parent    = group.parent,
-		this.el        = node,
-		this.group     = group,
-		this.no        = null,
-		this.delButton = this.el.getElementsByClassName(this.delButtClass)[0],
-		this.glueBox   = this.el.getElementsByClassName(this.glueBoxClass)[0],
-		this.glueInput = this.el.getElementsByClassName(this.glueInpClass)[0],
-		this.fieldBox  = this.el.getElementsByClassName(this.fieldBoxClass)[0],
-		this.opWrapper = this.el.getElementsByClassName(this.opsWrapperClass)[0],
-		this.glueCombo = null,
-		this.fieldCombo= null,
-		this.op        = null,
+		this.parent    = group.parent;
+		this.el        = node;
+		this.group     = group;
+		this.no        = null;
+		this.delButton = this.el.getElementsByClassName(this.delButtClass)[0];
+		this.glueBox   = this.el.getElementsByClassName(this.glueBoxClass)[0];
+		this.glueInput = this.el.getElementsByClassName(this.glueInpClass)[0];
+		this.fieldBox  = this.el.getElementsByClassName(this.fieldBoxClass)[0];
+		this.opWrapper = this.el.getElementsByClassName(this.opsWrapperClass)[0];
+		this.glueCombo = null;
+		this.fieldCombo= null;
+		this.op        = null;
 		this.vals      = [];
-
 		this.parent.conds.push(this);
 	}
 
@@ -859,7 +854,6 @@
 					}
 				}
 				return values;
-				break;
 			case 'string':
 				vals = this.getVals('obj');
 				for (i = 0; i < vals.length; i++) {
@@ -868,7 +862,6 @@
 					}
 				}
 				return values.join(',');
-				break;
 			}
 		},
 
@@ -1204,14 +1197,14 @@
 
 	/* Value submodule */
 	function Value(cond, node) {
-		this.cond       = cond,
-		this.condNo     = cond.no,
-		this.active     = false,
-		this.val        = null,
-		this.el         = node,
-		this.dpActive   = false,
-		this.input      = this.el.getElementsByClassName(this.inputClass)[0],
-		this.dateButt   = this.el.getElementsByClassName(this.dateButtClass)[0],
+		this.cond       = cond;
+		this.condNo     = cond.no;
+		this.active     = false;
+		this.val        = null;
+		this.el         = node;
+		this.dpActive   = false;
+		this.input      = this.el.getElementsByClassName(this.inputClass)[0];
+		this.dateButt   = this.el.getElementsByClassName(this.dateButtClass)[0];
 		this.hasError   = false;
 
 		// Will be used by the Calendar date/time picker
@@ -1442,8 +1435,8 @@
 	fLabels['a'] = alert_arr.AFTER;
 
 	/*
-		* Globals
-		*/
+	* Globals
+	*/
 
 	return cbAdvancedFilter;
 });
