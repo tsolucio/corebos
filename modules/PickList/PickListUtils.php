@@ -325,7 +325,7 @@ function getAllowedPicklistModules($allowNonEntities = 0) {
 	$allAllowedModules=getPermittedModuleNames();
 	$allEntities = array();
 	$entitycondition = ($allowNonEntities ? '' : 'isentitytype=1 and ');
-	$entityQuery = "SELECT name FROM vtiger_tab WHERE $entitycondition name NOT IN ('Rss','Recyclebin','Events')";
+	$entityQuery = "SELECT name FROM vtiger_tab WHERE $entitycondition name NOT IN ('Rss','Recyclebin')";
 	$result = $adb->pquery($entityQuery, array());
 	while ($result && $row = $adb->fetch_array($result)) {
 		$allEntities[] = $row['name'];

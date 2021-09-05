@@ -64,7 +64,15 @@
 <table class="small reportGenerateTable" align="center" cellpadding="5" cellspacing="0" width="95%" border=0>
 	<tr>
 		<td align="left" style="padding:5px" width="80%">
-			{include file='AdvanceFilter.tpl' SOURCE='reports1'}
+			<div class="slds-grid slds-m-top--large cbds-advanced-search--active" id="cbds-advanced-search">
+				<div class="slds-col">
+					<div class="slds-expression slds-p-bottom_xx-large slds-p-horizontal_small">
+						<input type="hidden" name="advft_criteria" id="advft_criteria" value="">
+						<input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value="">
+						{include file='AdvanceFilter.tpl' SOURCE='reports' MODULES_BLOCK=$COLUMNS_BLOCK_ARRAY}
+					</div>
+				</div>
+			</div>
 		</td>
 	</tr>
 	<tr>

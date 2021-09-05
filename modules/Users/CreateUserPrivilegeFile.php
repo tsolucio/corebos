@@ -399,7 +399,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 		$rs_write_per=array();
 		$grp_read_per=array();
 		$grp_write_per=array();
-		//Retreiving from vtiger_role to vtiger_role
 		$query='select vtiger_datashare_role2role.*
 			from vtiger_datashare_role2role
 			inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_role2role.shareid
@@ -432,7 +431,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			}
 		}
 
-		//Retreiving from role to rs
 		$parRoleList = array();
 		foreach ($parent_roles as $par_role_id) {
 			$parRoleList[] = $par_role_id;
@@ -519,7 +517,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			}
 		}
 
-		//Retreiving from rs to vtiger_role
 		$query='select vtiger_datashare_rs2role.*
 			from vtiger_datashare_rs2role
 			inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_rs2role.shareid
@@ -557,7 +554,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			$share_id_members[$shareid]=$share_id_role_members;
 		}
 
-		//Retreiving from rs to rs
 		$parRoleList = array();
 		foreach ($parent_roles as $par_role_id) {
 			$parRoleList[] = $par_role_id;
@@ -644,7 +640,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 		$mod_share_read_permission['ROLE']=$role_read_per;
 		$mod_share_write_permission['ROLE']=$role_write_per;
 
-		//Retreiving from the grp2role sharing
 		$query='select vtiger_datashare_grp2role.*
 			from vtiger_datashare_grp2role
 			inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_grp2role.shareid
@@ -709,7 +704,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			$share_id_members[$shareid]=$share_id_grp_members;
 		}
 
-		//Retreiving from the grp2rs sharing
 		$query='select vtiger_datashare_grp2rs.*
 			from vtiger_datashare_grp2rs
 			inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_grp2rs.shareid
@@ -773,8 +767,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			$share_id_grp_members['GROUP']=$share_id_grps;
 			$share_id_members[$shareid]=$share_id_grp_members;
 		}
-
-		//Retreiving from the grp2grp sharing
 
 		$query = 'select vtiger_datashare_grp2grp.*
 			from vtiger_datashare_grp2grp

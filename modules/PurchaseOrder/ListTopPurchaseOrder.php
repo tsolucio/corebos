@@ -37,7 +37,6 @@ function getTopPurchaseOrder($maxval, $calCnt) {
 		}
 	}
 
-	//Retreive the list from Database
 	//<<<<<<<<<customview>>>>>>>>>
 	$currentModule = 'PurchaseOrder';
 	$viewId = getCvIdOfAll($currentModule);
@@ -76,17 +75,14 @@ function getTopPurchaseOrder($maxval, $calCnt) {
 
 	$list_result = $adb->query($query);
 
-	//Retreiving the no of rows
 	$noofrows = $adb->num_rows($list_result);
 
-	//Retreiving the start value from request
 	if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 		$start = vtlib_purify($_REQUEST['start']);
 	} else {
 		$start = 1;
 	}
 
-	//Retreive the Navigation array
 	$navigation_array = getNavigationValues($start, $noofrows, $list_max_entries_per_page);
 
 	if ($navigation_array['start'] == 1) {
@@ -112,7 +108,6 @@ function getTopPurchaseOrder($maxval, $calCnt) {
 
 	$focus = new PurchaseOrder();
 
-	//Retreive the List View Table Header
 	$title=array('myTopPurchaseOrders.gif',$current_module_strings['LBL_MY_TOP_PO'],'home_mytoppo');
 	$controller = new ListViewController($adb, $current_user, $queryGenerator);
 	$controller->setHeaderSorting(false);

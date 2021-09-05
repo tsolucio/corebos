@@ -11,6 +11,7 @@
 <script type='text/javascript' src='modules/MailManager/resources/jquery.tokeninput.js'></script>
 <link rel='stylesheet' type='text/css' href='modules/MailManager/resources/token-input-facebook.css'>
 <script type='text/javascript' src='modules/MailManager/MailManager.js'></script>
+<script type="text/javascript" src="include/js/ListView.js"></script>
 
 {* Parse the translation string applicable to javascript *}
 <script type='text/javascript'>

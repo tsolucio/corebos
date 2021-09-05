@@ -201,6 +201,7 @@
 	opacity: 1;
 	height: auto;
 	transition: opacity 100ms linear 50ms, height 0ms linear 0ms;
+	overflow: visible;
 }
 
 /* ---- CBDS expansion on LDS components ---- */
@@ -334,6 +335,7 @@
 .cbds-inventoryaggr__taxes_group.active {
 	height: auto;
 	opacity: 1;
+>>>>>>>>> Temporary merge branch 2
 }
 
 /* ---- CBDS animations ---- */
@@ -477,4 +479,28 @@
     -webkit-transform: translate3d(100%, 0, 0);
     transform: translate3d(100%, 0, 0);
   }
+}
+
+/* =========================================================== */
+/* ===================== SOME OVERRIDES ====================== */
+/* =========================================================== */
+
+#report-steps > .steps {
+  width: 20%;
+}
+#report-steps > .content {
+  box-sizing: border-box;
+  width: 80%;
+  margin: 0;
+  padding: 1.5%;
+}
+#report-steps > .content > .body {
+  width: 100%;
+  padding: 2% 0.5rem;
+}
+#cbds-advfilt-groups > .slds-expression__group {
+  padding: 0.75rem !important;
+}
+#mnuTab2.cv-advfilt-tab {
+  overflow: visible;
 }

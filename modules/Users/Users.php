@@ -984,9 +984,9 @@ class Users extends CRMEntity {
 		$log->debug('< insertIntoAttachment');
 	}
 
-	/** Function to retreive the user info of the specifed user id The user info will be available in $this->column_fields array
-	 * @param $record -- record id:: Type integer
-	 * @param $module -- module:: Type varchar
+	/** Function to retrieve the user information of the given user ID which will be loaded into the $this->column_fields array
+	 * @param integer record ID
+	 * @param string module
 	 */
 	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false, $throwexception = false) {
 		global $adb, $log;

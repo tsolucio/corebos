@@ -48,7 +48,6 @@ $smarty->assign('IMAGE_PATH', $image_path);
 
 $focus = new PriceBooks();
 
-//Retreive the list of PriceBooks
 $list_query = getListQuery('PriceBooks');
 
 $list_query .= ' and vtiger_pricebook.active<>0 ORDER BY pricebookid DESC';
@@ -56,7 +55,7 @@ $list_query .= ' and vtiger_pricebook.active<>0 ORDER BY pricebookid DESC';
 $list_result = $adb->query($list_query);
 $num_rows = $adb->num_rows($list_result);
 
-//Retreiving the array of already releated products
+//Retrieving the array of already releated products
 if ($currentModule=='Products') {
 	$sql1='select vtiger_crmobject.crmid, vtiger_pricebookproductrel.pricebookid,vtiger_products.unit_price
 		from vtiger_pricebookproductrel

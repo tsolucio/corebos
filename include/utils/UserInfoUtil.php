@@ -14,10 +14,10 @@ require_once 'include/DatabaseUtil.php';
 include 'config.inc.php';
 global $log;
 
-/** To retreive the mail server info resultset for the specified user
-  * @param object user object
-  * @return object mail server database information resultset
- */
+/** To retrieve the mail server info resultset for the specified user
+ * @param object user object
+ * @return object mail server database information resultset
+*/
 function getMailServerInfo($user) {
 	global $log, $adb;
 	$log->debug('> getMailServerInfo '.$user->user_name);
@@ -196,17 +196,16 @@ function getTabsUtilityActionPermission($profileid) {
 	return $check;
 }
 
- /** This Function returns the Default Organization Sharing Action array for all modules whose sharing actions are editable
-  * @return array with following format:
-  * Arr=(tabid1=>Sharing Action Id,
-  *      tabid2=>Sharing Action Id,
-  *            |
-  *      tabidn=>Sharing Acion Id)
-  */
+/** This Function returns the Default Organization Sharing Action array for all modules whose sharing actions are editable
+ * @return array with following format:
+ * Arr=(tabid1=>Sharing Action Id,
+ *      tabid2=>Sharing Action Id,
+ *            |
+ *      tabidn=>Sharing Acion Id)
+ */
 function getDefaultSharingEditAction() {
 	global $log, $adb;
 	$log->debug('> getDefaultSharingEditAction');
-	//retreiving the standard permissions
 	$copy = array();
 	$result = $adb->pquery('select tabid,permission from vtiger_def_org_share where editstatus=0', array());
 	while ($permissionRow=$adb->fetch_array($result)) {
@@ -237,19 +236,18 @@ function getDefaultSharingAction() {
 }
 
 /** This Function returns the Default Organisation Sharing Action array for all modules
-  * @return array with following format:
-  * Arr=(tabid1=>Sharing Action Id,
-  *      tabid2=>SharingAction Id,
-  *            |
-  *            |
-  *            |
-  *      tabid3=>SharingAcion Id)
-  */
+ * @return array with following format:
+ * Arr=(tabid1=>Sharing Action Id,
+ *      tabid2=>SharingAction Id,
+ *            |
+ *            |
+ *            |
+ *      tabid3=>SharingAcion Id)
+ */
 function getAllDefaultSharingAction() {
 	global $log,$adb;
 	$log->debug('> getAllDefaultSharingAction');
 	$copy=array();
-	//retreiving the standard permissions
 	$result = $adb->pquery('select tabid, permission from vtiger_def_org_share', array());
 	$num_rows=$adb->num_rows($result);
 	for ($i=0; $i<$num_rows; $i++) {
@@ -1226,7 +1224,6 @@ function createProfile($profilename, $parentProfileId, $description) {
 	//Inserting values into Profile Table
 	$adb->pquery('insert into vtiger_profile values(?,?,?)', array('', $profilename, $description));
 
-	//Retreiving the vtiger_profileid
 	$result2 = $adb->pquery('select max(profileid) as current_id from vtiger_profile', array());
 	$current_profile_id = $adb->query_result($result2, 0, 'current_id');
 
@@ -2464,8 +2461,8 @@ function getEntityDisplayLink($entityType, $entityid) {
 }
 
 /** Function to get the Sharing rule Info
- *  @param $shareId -- Sharing Rule Id
- *  @returns Sharing Rule Information Array in the following format:
+ *  @param integer Sharing Rule ID
+ *  @return array Sharing Rule Information in the following format:
  *    $shareRuleInfoArr=Array($shareId, $tabid, $type, $share_ent_type, $to_ent_type, $share_entity_id, $to_entity_id,$permission);
  */
 function getSharingRuleInfo($shareId) {
@@ -2475,23 +2472,23 @@ function getSharingRuleInfo($shareId) {
 	$shareRuleInfoArr=array();
 	$query='select tabid, relationtype from vtiger_datashare_module_rel where shareid=?';
 	$result=$adb->pquery($query, array($shareId));
-	//Retreving the Sharing Tabid
+	//Retrieving the Sharing Tabid
 	$tabid=$adb->query_result($result, 0, 'tabid');
 	$type=$adb->query_result($result, 0, 'relationtype');
 
-	//Retreiving the Sharing Table Name
+	//Retrieving the Sharing Table Name
 	$tableName=getDSTableNameForType($type);
 
-	//Retreiving the Sharing Col Names
+	//Retrieving the Sharing Col Names
 	$dsTableColArr=getDSTableColumns($tableName);
 	$share_ent_col=$dsTableColArr[0];
 	$to_ent_col=$dsTableColArr[1];
 
-	//Retreiving the Sharing Entity Col Types
+	//Retrieving the Sharing Entity Col Types
 	$share_ent_type=getEntityTypeFromCol($share_ent_col);
 	$to_ent_type=getEntityTypeFromCol($to_ent_col);
 
-	//Retreiving the Value from Table
+	//Retrieving the Value from Table
 	$query1="select * from $tableName where shareid=?";
 	$result1=$adb->pquery($query1, array($shareId));
 	$share_id=$adb->query_result($result1, 0, $share_ent_col);
@@ -2512,10 +2509,10 @@ function getSharingRuleInfo($shareId) {
 	return $shareRuleInfoArr;
 }
 
-/** This function is to retreive the list of related sharing modules for the specifed module
-  * It takes the following input parameters:
-  *     $tabid -- The module tabid:: Type Integer
-  */
+/** This function is to retrieve the list of related sharing modules for the specifed module
+ * @param integer moduole TAB ID
+ * @return array related tab id indexed array of sharing table database key
+ */
 function getRelatedSharingModules($tabid) {
 	global $log, $adb;
 	$log->debug('> getRelatedSharingModules '.$tabid);
@@ -2566,12 +2563,11 @@ function updateRelatedModuleSharingPermission($shareid, $tabid, $relatedtabid, $
 	$log->debug('< updateRelatedModuleSharingPermission');
 }
 
-/** This function is to retreive the Related Module Sharing Id
-  * It takes the following input parameters:
-  *     $tabid -- The module tabid:: Type Integer
-  *     $related_tabid -- The related module tabid:: Type Integer
-  * This function returns the Related Module Sharing Id
-  */
+/** Retrieve the Related Module Sharing Id
+ * @param integer module tabid
+ * @param integer related module tabid
+ * @return integer the Related Module Sharing ID
+*/
 function getRelatedModuleSharingId($tabid, $related_tabid) {
 	global $log, $adb;
 	$log->debug('> getRelatedModuleSharingId '.$tabid.','.$related_tabid);
@@ -2582,16 +2578,15 @@ function getRelatedModuleSharingId($tabid, $related_tabid) {
 	return $relatedModuleSharingId;
 }
 
-/** This function is to retreive the Related Module Sharing Permissions for the specified Sharing Rule
-  * It takes the following input parameters:
-  *     $shareid -- The Sharing Rule Id:: Type Integer
-  *This function will return the Related Module Sharing permissions in an Array in the following format:
-  *     $PermissionArray=($relatedTabid1=>$sharingPermission1,
-  *			  $relatedTabid2=>$sharingPermission2,
-  *					|
-  *                                     |
-  *                       $relatedTabid-n=>$sharingPermission-n)
-  */
+/** Retrieve the Related Module Sharing Permissions for the specified Sharing Rule
+ * @param integer Sharing Rule ID
+ * @return array Related Module Sharing permissions in the following format:
+ *     $PermissionArray=(
+ *        $relatedTabid1=>$sharingPermission1,
+ *          |
+ *        $relatedTabid-n=>$sharingPermission-n,
+ *     )
+*/
 function getRelatedModuleSharingPermission($shareid) {
 	global $log, $adb;
 	$log->debug('> getRelatedModuleSharingPermission '.$shareid);
@@ -2611,12 +2606,11 @@ function getRelatedModuleSharingPermission($shareid) {
 	return $relatedSharingModulePermissionArray;
 }
 
-/** This function is to retreive the vtiger_profiles associated with the  the specified user
-  * It takes the following input parameters:
-  *     $userid -- The User Id:: Type Integer
-  *This function will return the vtiger_profiles associated to the specified vtiger_users in an Array in the following format:
-  *     $userProfileArray=(profileid1,profileid2,profileid3,...,profileidn);
-  */
+/** This function is to retrieve the profiles associated with the given user
+ * @param integer User ID
+ * @return array profiles associated to the specified user in the following format:
+ *     $userProfileArray=(profileid1,profileid2,profileid3,...,profileidn);
+ */
 function getUserProfile($userId) {
 	global $log, $adb;
 	$log->debug('> getUserProfile '.$userId);
@@ -2637,12 +2631,11 @@ function getUserProfile($userId) {
 	return $profArr;
 }
 
-/** To retreive the global permission of the specifed user from the various vtiger_profiles associated with the user
-  * @param $userid -- The User Id:: Type Integer
-  * @returns  user global permission  array in the following format:
-  *     $gloabalPerrArray=(view all action id=>permission,
-			   edit all action id=>permission)
-  */
+/** Retrieve the global permission of the specifed user from the various profiles associated with the user
+ * @param integer User ID
+ * @return array user global permission in the following format:
+ *     $gloabalPerrArray=(view all action id=>permission, edit all action id=>permission)
+ */
 function getCombinedUserGlobalPermissions($userId) {
 	global $log;
 	$log->debug('> getCombinedUserGlobalPermissions '.$userId);
@@ -2666,12 +2659,11 @@ function getCombinedUserGlobalPermissions($userId) {
 	return $userGlobalPerrArr;
 }
 
-/** To retreive the vtiger_tab permissions of the specifed user from the various vtiger_profiles associated with the user
-  * @param $userid -- The User Id:: Type Integer
-  * @returns  user global permission  array in the following format:
-  *     $tabPerrArray=(tabid1=>permission,
-  *			   tabid2=>permission)
-  */
+/** retrieve the tab permissions of the specifed user from the various profiles associated with the user
+ * @param integer User ID
+ * @return array user global permission in the following format:
+ *     $tabPerrArray=(tabid1=>permission, tabid2=>permission)
+ */
 function getCombinedUserTabsPermissions($userId) {
 	global $log;
 	$log->debug('> getCombinedUserTabsPermissions '.$userId);
@@ -2700,12 +2692,11 @@ function getCombinedUserTabsPermissions($userId) {
 	return $userTabPerrArr;
 }
 
-/** To retreive the vtiger_tab acion permissions of the specifed user from the various vtiger_profiles associated with the user
-  * @param $userid -- The User Id:: Type Integer
-  * @returns  user global permission  array in the following format:
-  *     $actionPerrArray=(tabid1=>permission,
-  *			   tabid2=>permission);
- */
+/** To retrieve the tab action permissions of the specifed user from the various profiles associated with the user
+ * @param integer User ID
+ * @return array user global permission in the following format:
+ *     $actionPerrArray=(tabid1=>permission, tabid2=>permission);
+*/
 function getCombinedUserActionPermissions($userId) {
 	global $log;
 	$log->debug('> getCombinedUserActionPermissions '.$userId);
@@ -2732,11 +2723,11 @@ function getCombinedUserActionPermissions($userId) {
 	return $actionPerrArr;
 }
 
-/** To retreive the parent vtiger_role of the specified vtiger_role
-  * @param $roleid -- The Role Id:: Type varchar
-  * @returns  parent vtiger_role array in the following format:
-  *     $parentRoleArray=(roleid1,roleid2,.......,roleidn);
- */
+/** Retrieve the parent role of the specified role
+ * @param string Role ID
+ * @return array parent role array in the following format:
+ *     $parentRoleArray=(roleid1,roleid2,.......,roleidn);
+*/
 function getParentRole($roleId) {
 	global $log;
 	$log->debug('> getParentRole '.$roleId);
@@ -2759,16 +2750,15 @@ function getParentRole($roleId) {
 	return $parentRoleArr;
 }
 
-/** To retreive the subordinate vtiger_roles of the specified parent vtiger_role
-  * @param $roleid -- The Role Id:: Type varchar
-  * @returns  subordinate vtiger_role array in the following format:
-  *     $subordinateRoleArray=(roleid1,roleid2,.......,roleidn);
- */
+/** Retrieve the subordinate roles of the specified parent role
+ * @param string Role ID
+ * @return array subordinate role array in the following format:
+ *     $subordinateRoleArray=(roleid1,roleid2,.......,roleidn);
+*/
 function getRoleSubordinates($roleId) {
 	global $log;
 	$log->debug('> getRoleSubordinates '.$roleId);
 
-	// Look at cache first for information
 	$roleSubordinates = VTCacheUtils::lookupRoleSubordinates($roleId);
 
 	if ($roleSubordinates === false) {
@@ -2791,15 +2781,15 @@ function getRoleSubordinates($roleId) {
 	return $roleSubordinates;
 }
 
-/** To retreive the subordinate vtiger_roles and vtiger_users of the specified parent vtiger_role
-  * @param $roleid -- The Role Id:: Type varchar
-  * @returns  subordinate vtiger_role array in the following format:
-  *     $subordinateRoleUserArray=(roleid1=>Array(userid1,userid2,userid3),
-							   vtiger_roleid2=>Array(userid1,userid2,userid3)
-								|
-						|
-				   vtiger_roleidn=>Array(userid1,userid2,userid3));
- */
+/** Retrieve the subordinate roles and users of the specified parent role
+ * @param string Role ID
+ * @return array subordinate role array in the following format:
+ *     $subordinateRoleUserArray=(
+ *        roleid1=>Array(userid1,userid2,userid3),
+ *        |
+ *        roleidn=>Array(userid1,userid2,userid3),
+ *     );
+*/
 function getSubordinateRoleAndUsers($roleId, $users = true) {
 	global $log;
 	$log->debug('> getSubordinateRoleAndUsers '.$roleId);

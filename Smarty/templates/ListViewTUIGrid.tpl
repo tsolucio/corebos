@@ -32,6 +32,7 @@
 <tr>
 	<td width="25%" class="small" nowrap align="left">
 		<span id="gridRecordCountHeader"></span>
+		<span id="filteredData"></span>
 	</td>
 	<td>
 		<table align="center">

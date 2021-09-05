@@ -406,10 +406,11 @@ class ModTracker {
 			array_push($params, $crmid);
 		}
 
+		$list_query = "select * from vtiger_modtracker_basic join vtiger_modtracker_detail on vtiger_modtracker_basic.id=vtiger_modtracker_detail.id $where order by ";
 		if ($sorder != '' && $order_by != '') {
-			$list_query = "Select SQL_CALC_FOUND_ROWS * from vtiger_modtracker_basic join vtiger_modtracker_detail on vtiger_modtracker_basic.id=vtiger_modtracker_detail.id $where order by $order_by $sorder";
+			$list_query .= $order_by.' '.$sorder;
 		} else {
-			$list_query = "Select SQL_CALC_FOUND_ROWS * from vtiger_modtracker_basic join vtiger_modtracker_detail on vtiger_modtracker_basic.id=vtiger_modtracker_detail.id $where order by ".$this->default_order_by.' '.$this->default_sort_order;
+			$list_query .= $this->default_order_by.' '.$this->default_sort_order;
 		}
 		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
 			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
@@ -419,7 +420,7 @@ class ModTracker {
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
 		$result = $adb->pquery($list_query.$limit, $params);
-		$count_result = $adb->query('SELECT FOUND_ROWS();');
+		$count_result = $adb->query(mkCountQuery($list_query));
 		$noofrows = $adb->query_result($count_result, 0, 0);
 		if ($result) {
 			if ($noofrows>0) {

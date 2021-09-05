@@ -76,10 +76,9 @@ class ConvertLeadUI {
 
 	public function setAssignedToInfo() {
 		$userid = $this->row['smownerid'];
-		//Retreiving the current user id
 		if ($userid != '') {
 			global $adb;
-			$res = $adb->pquery('SELECT * from vtiger_users WHERE id = ?', array($userid));
+			$res = $adb->pquery('SELECT * from vtiger_users WHERE id=?', array($userid));
 			$rows = $adb->num_rows($res);
 			$this->leadowner = $userid;
 			if ($rows > 0) {
@@ -113,7 +112,6 @@ class ConvertLeadUI {
 	}
 
 	public function getLeadInfo() {
-		//Retreive lead details from database
 		return $this->row;
 	}
 

@@ -455,4 +455,11 @@ var alert_arr = {
 	'LNK_EDIT': 'Editar',
 	'LNK_EDIT_ACTION': 'Editar',
 	'LNK_DELETE_ACTION': 'Apagar',
+	'LBL_MODIFIED': 'Modified',
+	'LBL_CREATE': 'Create a',
+	'LBL_IMPORT': 'Import',
+	'LBL_NO_DATA': 'No Data Found',
+	'filterApplied': 'Filter applied',
+	'QuickView': 'Quick view',
+	'Restore': 'Restore',
 };

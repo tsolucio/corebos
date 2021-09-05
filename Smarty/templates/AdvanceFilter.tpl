@@ -7,294 +7,321 @@
  * All Rights Reserved.
  *********************************************************************************/
 -->
-<style>
-	.wizard .layerPopup {
-		border: 0;
-		position: absolute;
-		z-index: 50;
-		display: none;
-		width: 100%;
-		height:100%;
-		background:transparent;
-		top: 0 !important;
-		left:0 !important;
-	}
-
-	.wizard .layerPopupBlock {
-		width: 300px;
-		position: absolute;
-		top: 50%;
-		left: 0;
-		right: 0;
-	}
-</style>
 <script type="text/javascript" src="include/js/advancefilter.js"></script>
-{if empty($JS_DATEFORMAT)}
-	{assign var="JS_DATEFORMAT" value=$APP.NTC_DATE_FORMAT|@parse_calendardate}
-{/if}
-<input type="hidden" id="jscal_dateformat" name="jscal_dateformat" value="{$JS_DATEFORMAT}" />
-<input type="hidden" id="image_path" name="image_path" value="{$IMAGE_PATH}" />
-<input type="hidden" name="advft_criteria" id="advft_criteria" value="" />
-<input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value="" />
-<script>
-	{if $SOURCE neq 'reports'}
-		var BLOCKJS = "";
-		var BLOCKCRITERIA = "";
-		{if $SOURCE neq 'customview'}
-			var COL_BLOCK = '{$COLUMNS_BLOCK|addcslashes:"'"}';
-		{else}
-			var COL_BLOCK = "{$COLUMNS_BLOCK}";
-		{/if};
-		var FOPTION_ADV = "";
-		var MOMENT = "";
+{* Get selected value to start out the dropdown with *}
+{foreach from=$MODULES_BLOCK item=COLUMNS_BLOCK}
+	{foreach from=$COLUMNS_BLOCK item=BLOCK}
+		{foreach from=$BLOCK item=FIELD}
+			{if $FIELD.selected}
+				{$SELECTEDFIELD = $FIELD}
+			{/if}
+		{/foreach}
+	{/foreach}
+{/foreach}
+<ul id="cbds-advfilt-groups" style="list-style: none !important;"></ul>
+
+<div class="slds-expression__buttons">
+	<button type="button" class="slds-button slds-button_neutral" data-onclick="add-group">
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+		</svg>{'LBL_NEW_GROUP'|@getTranslatedString:$MODULE}
+	</button>
+{if $SOURCE == 'listview'}
+	<button type="button" class="slds-button slds-button_brand" data-onclick="submit-adv-cond-form">
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+		</svg>{'LBL_SEARCH'|@getTranslatedString:$MODULE}
+	</button>
 	{/if}
-</script>
-<script type="text/JavaScript">
-function addColumnConditionGlue(columnIndex) {ldelim}
-	var columnConditionGlueElement = document.getElementById('columnconditionglue_'+columnIndex);
-	if (columnConditionGlueElement) {ldelim}
-		columnConditionGlueElement.innerHTML = "<select name='fcon"+columnIndex+"' id='fcon"+columnIndex+"' class='detailedViewTextBox'>"+
-			"<option value='and'>{'LBL_CRITERIA_AND'|@getTranslatedString:$MODULE}</option>"+
-			"<option value='or'>{'LBL_CRITERIA_OR'|@getTranslatedString:$MODULE}</option>"+
-			"</select>";
-	{rdelim}
-{rdelim}
-
-function addConditionRow(groupIndex) {ldelim}
-	var groupColumns = column_index_array[groupIndex];
-	if (typeof(groupColumns) != 'undefined') {ldelim}
-		for (var i=groupColumns.length - 1; i>=0; --i) {ldelim}
-			var prevColumnIndex = groupColumns[i];
-			if (document.getElementById('conditioncolumn_'+groupIndex+'_'+prevColumnIndex)) {ldelim}
-				addColumnConditionGlue(prevColumnIndex);
-				break;
-			{rdelim}
-		{rdelim}
-	{rdelim}
-
-	var columnIndex = advft_column_index_count+1;
-	var nextNode = document.getElementById('groupfooter_'+groupIndex);
-
-	var newNode = document.createElement('tr');
-	newNodeId = 'conditioncolumn_'+groupIndex+'_'+columnIndex;
-	newNode.setAttribute('id',newNodeId);
-	newNode.setAttribute('name','conditionColumn');
-	nextNode.parentNode.insertBefore(newNode, nextNode);
-
-	node1 = document.createElement('td');
-	node1.setAttribute('class', 'dvtCellLabel');
-	node1.setAttribute('width', '25%');
-	newNode.appendChild(node1);
-	{if $SOURCE eq 'reports'}
-		node1.innerHTML = '<select name="fcol'+columnIndex+'" id="fcol'+columnIndex+'" onchange="updatefOptions(this, \'fop'+columnIndex+'\');addRequiredElements('+columnIndex+');updateRelFieldOptions(this, \'fval_'+columnIndex+'\');" class="detailedViewTextBox">'+
-							'<option value="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>'+COL_BLOCK+
-						'</select>';
-	{else}
-		node1.innerHTML = "<select name='fcol"+columnIndex+"' id='fcol"+columnIndex+"' onchange='updatefOptions(this, \"fop"+columnIndex+"\");addRequiredElements("+columnIndex+");' class='detailedViewTextBox'>"+
-							"<option value=''>{'LBL_NONE'|@getTranslatedString:$MODULE}</option>"+COL_BLOCK+
-						"</select>";
-	{/if}
-	node2 = document.createElement('td');
-	node2.setAttribute('class', 'dvtCellLabel');
-	node2.setAttribute('width', '25%');
-
-	node2.innerHTML = '<select name="fop'+columnIndex+'" id="fop'+columnIndex+'" class="repBox" style="width:100px;" onchange="addRequiredElements('+columnIndex+');">'+FOPTION_ADV+
-							'<option value="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>'+
-						'</select>';
-	newNode.appendChild(node2);
-	node3 = document.createElement('td');
-	node3.setAttribute('class', 'dvtCellLabel');
-	newNode.appendChild(node3);
-	{if $SOURCE eq 'reports'}
-		node3.innerHTML = '<input name="fval'+columnIndex+'" id="fval'+columnIndex+'" class="repBox" type="text" value="">'+
-						'<img height=20 width=20 align="absmiddle" style="cursor: pointer;" title="{$APP.LBL_FIELD_FOR_COMPARISION}" alt="{$APP.LBL_FIELD_FOR_COMPARISION}" src="themes/images/terms.gif" onClick="hideAllElementsByName(\'relFieldsPopupDiv\'); fnShowDrop(\'show_val'+columnIndex+'\');"/>'+
-						'<img align="absmiddle" style="cursor: pointer;" onclick="document.getElementById(\'fval'+columnIndex+'\').value=\'\';return false;" title="{$APP.LBL_CLEAR}" alt="{$APP.LBL_CLEAR}" src="themes/images/clear_field.gif"/>'+
-						'<div class="layerPopup" id="show_val'+columnIndex+'" name="relFieldsPopupDiv" >'+
-							'<table width="100%" cellspacing="0" cellpadding="0" border="0" align="center" class="mailClient mailClientBg layerPopupBlock">'+
-								'<tr>'+
-									'<td>'+
-										'<table width="100%" cellspacing="0" cellpadding="0" border="0" class="layerHeadingULine">'+
-											'<tr background="themes/images/qcBg.gif" class="mailSubHeader">'+
-												'<td width=90% class="genHeaderSmall"><b>{$MOD.LBL_SELECT_FIELDS}</b></td>'+
-												'<td align=right>'+
-													'<img border="0" align="absmiddle" src="themes/images/close.gif" style="cursor: pointer;" alt="{$APP.LBL_CLOSE}" title="{$APP.LBL_CLOSE}" onclick="hideAllElementsByName(\'relFieldsPopupDiv\');"/>'+
-												'</td>'+
-											'</tr>'+
-										'</table>'+
-
-										'<table width="100%" cellspacing="0" cellpadding="0" border="0" class="small">'+
-											'<tr>'+
-												'<td>'+
-													'<table width="100%" cellspacing="0" cellpadding="5" border="0" bgcolor="white" class="small">'+
-														'<tr>'+
-															'<td width="30%" align="left" class="cellLabel small">{$MOD.LBL_RELATED_FIELDS}</td>'+
-															'<td width="30%" align="left" class="cellText">'+
-																'<select name="fval_'+columnIndex+'" id="fval_'+columnIndex+'" onChange="AddFieldToFilter('+columnIndex+',this);" class="detailedViewTextBox">'+
-																	'<option value="">{$MOD.LBL_NONE}</option>'+
-																	REL_FIELDS+
-																'</select>'+
-															'</td>'+
-														'</tr>'+
-													'</table>'+
-													'<!-- save cancel buttons -->'+
-													'<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerPopupTransport">'+
-														'<tr>'+
-															'<td width="50%" align="center">'+
-																'<input type="button" style="width: 70px;" value="{$APP.LBL_DONE}" name="button" onclick="hideAllElementsByName(\'relFieldsPopupDiv\');" class="crmbutton small create" accesskey="X" title="{$APP.LBL_DONE}"/>'+
-															'</td>'+
-														'</tr>'+
-													'</table>'+
-												'</td>'+
-											'</tr>'+
-										'</table>'+
-									'</td>'+
-								'</tr>'+
-							'</table>'+
-						'</div>';
-	{else}
-		node3.innerHTML = '<input name="fval'+columnIndex+'" id="fval'+columnIndex+'" class="repBox" type="text" value="">'+ '<img align="absmiddle" style="cursor: pointer;" onclick="document.getElementById(\'fval'+columnIndex+'\').value=\'\';return false;" title="{$APP.LBL_CLEAR}" alt="{$APP.LBL_CLEAR}" src="themes/images/clear_field.gif"/>';
-	{/if}
-
-	node4 = document.createElement('td');
-	node4.setAttribute('class', 'dvtCellLabel');
-	node4.setAttribute('id', 'columnconditionglue_'+columnIndex);
-	node4.setAttribute('width', '60px');
-	newNode.appendChild(node4);
-
-	node5 = document.createElement('td');
-	node5.setAttribute('class', 'dvtCellLabel');
-	node5.setAttribute('width', '30px');
-	newNode.appendChild(node5);
-	node5.innerHTML = '<a onclick="deleteColumnRow('+groupIndex+','+columnIndex+');" href="javascript:;">'+
-		'<img src="themes/images/delete.gif" align="absmiddle" border="0"></a>';
-
-	if (document.getElementById('fcol'+columnIndex)) {
-		updatefOptions(document.getElementById('fcol'+columnIndex), 'fop'+columnIndex);
-	}
-	if (typeof(column_index_array[groupIndex]) == 'undefined') {
-		column_index_array[groupIndex] = [];
-	}
-	column_index_array[groupIndex].push(columnIndex);
-	advft_column_index_count++;
-{rdelim}
-
-function addGroupConditionGlue(groupIndex) {ldelim}
-	var groupConditionGlueElement = document.getElementById('groupconditionglue_'+groupIndex);
-	if (groupConditionGlueElement) {ldelim}
-		groupConditionGlueElement.innerHTML = "<select name='gpcon"+groupIndex+"' id='gpcon"+groupIndex+"' class='small'>"+
-			"<option value='and'>{'LBL_CRITERIA_AND'|@getTranslatedString:$MODULE}</option>"+
-			"<option value='or'>{'LBL_CRITERIA_OR'|@getTranslatedString:$MODULE}</option>"+
-		"</select>";
-	{rdelim}
-{rdelim}
-
-function addConditionGroup(parentNodeId) {ldelim}
-	for (var i=group_index_array.length - 1; i>=0; --i) {ldelim}
-		var prevGroupIndex = group_index_array[i];
-		if (document.getElementById('conditiongroup_'+prevGroupIndex)) {ldelim}
-			addGroupConditionGlue(prevGroupIndex);
-			break;
-		{rdelim}
-	{rdelim}
-
-	var groupIndex = advft_group_index_count+1;
-	var parentNode = document.getElementById(parentNodeId);
-
-	var newNode = document.createElement('div');
-	newNodeId = 'conditiongroup_'+groupIndex;
-	newNode.setAttribute('id',newNodeId);
-	newNode.setAttribute('name','conditionGroup');
-
-	newNode.innerHTML = "<table class='small crmTable' border='0' cellpadding='5' cellspacing='1' width='100%' valign='top' id='conditiongrouptable_"+groupIndex+"'>"+
-			"<tr id='groupheader_"+groupIndex+"'>"+
-				"<td colspan='5' align='right' class='cblds-t-align_right'>"+
-					"<a href='javascript:void(0);' onclick='deleteGroup(\""+groupIndex+"\");'><img border=0 src={'close.gif'|@vtiger_imageurl:$THEME} alt='{$APP.LBL_DELETE_GROUP}' title='{$APP.LBL_DELETE_GROUP}'/></a>"+
-				"</td>"+
-			"</tr>"+
-			"<tr id='groupfooter_"+groupIndex+"'>"+
-				"<td colspan='5' align='left'>"+
-					"<input type='button' class='crmbutton edit small' value='{$APP.LBL_NEW_CONDITION}' onclick='addConditionRow(\""+groupIndex+"\")' />"+
-				"</td>"+
-			"</tr>"+
-		"</table>"+
-		"<table class='small' border='0' cellpadding='5' cellspacing='1' width='100%' valign='top'>"+
-			"<tr><td align='center' class='cblds-t-align_center' id='groupconditionglue_"+groupIndex+"'>"+
-			"</td></tr>"+
-		"</table>";
-
-	parentNode.appendChild(newNode);
-
-	group_index_array.push(groupIndex);
-	advft_group_index_count++;
-{rdelim}
-
-function add_grouping_criteria(grouping_criteria) {ldelim}
-	if (grouping_criteria == null) {
-		return false;
-	}
-	var grouping_criteria_length = Object.keys(grouping_criteria).length;
-
-	if (grouping_criteria_length > 0) {
-		for (var i = 1;i <= grouping_criteria_length; i++) {
-			var group_columns = grouping_criteria[i].columns;
-			addConditionGroup('adv_filter_div');
-			for (var key in group_columns) {
-				if (group_columns.hasOwnProperty(key)) {
-					addConditionRow(i);
-					var conditionColumnRowElement = document.getElementById('fcol'+advft_column_index_count);
-
-					conditionColumnRowElement.value = group_columns[key].columnname;
-					updatefOptions(conditionColumnRowElement, 'fop'+advft_column_index_count);
-					document.getElementById('fop'+advft_column_index_count).value = group_columns[key].comparator;
-					addRequiredElements(advft_column_index_count);
-					{if $SOURCE eq 'reports'}
-						updateRelFieldOptions(conditionColumnRowElement, 'fval_'+advft_column_index_count);
-					{/if}
-					var columnvalue = group_columns[key].value;
-					if (group_columns[key].comparator == 'bw' && columnvalue != '') {
-						var values = columnvalue.split(",");
-						document.getElementById('fval'+advft_column_index_count).value = values[0];
-						if (values.length == 2 && document.getElementById('fval_ext'+advft_column_index_count)) {
-							document.getElementById('fval_ext'+advft_column_index_count).value = values[1];
-						}
-					} else {
-						document.getElementById('fval'+advft_column_index_count).value = columnvalue;
-					}
-					var keyprev=key-1;
-					if (document.getElementById('fcon'+keyprev)) {
-						document.getElementById('fcon'+keyprev).value = group_columns[keyprev].column_condition;
-					}
-				}
-			}
-			var iprev=i-1;
-			if (document.getElementById('gpcon'+iprev)) {
-				document.getElementById('gpcon'+iprev).value = grouping_criteria[iprev].condition;
-			}
-		}
-	} else {
-		addNewConditionGroup('adv_filter_div');
-	}
-{rdelim}
-</script>
-
-<div style="overflow:auto;margin-top: 30px;" id='adv_filter_div' name='adv_filter_div'>
-	<table class="small" border="0" cellpadding="5" cellspacing="0" width="100%">
-		<tr>
-			<td class="detailedViewHeader" align="left"><b>{'LBL_ADVANCED_FILTER'|@getTranslatedString:$MODULE}</b></td>
-		</tr>
-		<tr>
-			<td colspan="2" align="right">
-				<input type="button" class="crmbutton create small" value="{'LBL_NEW_GROUP'|@getTranslatedString:$MODULE}" onclick="addNewConditionGroup('adv_filter_div')" />
-			</td>
-		</tr>
-	</table>
-<script>
-	{if $SOURCE neq 'reports'}
-		{if isset($CRITERIA_GROUPS) && $CRITERIA_GROUPS|@count > 0}
-			add_grouping_criteria({json_encode($CRITERIA_GROUPS)});
-		{else}
-			addNewConditionGroup('adv_filter_div');
-		{/if}
-	{/if}
-</script>
 </div>
+
+<div id="cbds-advfilt-template__operation-box" style="display: none;">
+	<div class="slds-combobox_container">
+		<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+			<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+				<input class="slds-input slds-combobox__input" autocomplete="off" role="textbox" type="text" readonly="" value="" data-valueholder="nextsibling">
+				<input type="hidden" value="" />
+				<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+					<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+					</svg>
+				</span>
+			</div>
+			<div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
+				<ul class="slds-listbox slds-listbox_vertical" role="presentation">
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="cbds-advfilt-template__operation-item" style="display: none;">
+	<li role="presentation" class="slds-listbox__item">
+		<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+			<span class="slds-media__figure slds-listbox__option-icon"></span>
+			<span class="slds-media__body">
+				<span class="slds-truncate" title="">
+					
+				</span>
+			</span>
+		</div>
+	</li>	
+</div>
+
+<div id="cbds-advfilt-template__group" style="display: none;">
+	<li class="slds-expression__group" data-group-no="" data-condcount="" style="display: block !important;">
+		<div class="slds-grid slds-gutters_xx-small cbds-advfilt-group__controls slds-hide">
+			<div class="slds-col slds-grid slds-grid_align-end">
+				<div class="col">
+					<div class="slds-combobox_container">
+						<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click cbds-advfilt-group__gluecombo" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+							<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+								<input class="slds-input slds-combobox__input slds-combobox__input-value adv-filt-group__glue" autocomplete="off" role="textbox" type="text" readonly="" value="{$APP.LBL_CRITERIA_AND}" data-valueholder="nextsibling" />
+								<input type="hidden" value="and" />
+								<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+									<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+									</svg>
+								</span>
+							</div>
+							<div class="slds-dropdown slds-dropdown_length-2 slds-dropdown_fluid" role="listbox" style="min-width: 0">
+								<ul class="slds-listbox slds-listbox_vertical" role="group" style="list-style: none !important;">
+									<li role="presentation" class="slds-listbox__item" data-value="and" style="display: block !important;">
+										<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+											<span class="slds-media__figure slds-listbox__option-icon"></span>
+											<span class="slds-media__body">
+												<span class="slds-truncate" title="{$APP.LBL_CRITERIA_AND}">{$APP.LBL_CRITERIA_AND}</span>
+											</span>
+										</div>
+									</li>
+									<li role="presentation" class="slds-listbox__item" data-value="or" style="display: block !important;">
+										<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+											<span class="slds-media__figure slds-listbox__option-icon"></span>
+											<span class="slds-media__body">
+												<span class="slds-truncate" title="{$APP.LBL_CRITERIA_OR}">{$APP.LBL_CRITERIA_OR}</span>
+											</span>
+										</div>
+									</li>
+								</ul> 
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slds-col">
+					<button type="button" class="slds-button slds-button_icon slds-button_icon-border" data-onclick="delete-group" title="{$APP.LBL_DELETE_GROUP}">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+						</svg>
+						<span class="slds-assistive-text">{$APP.LBL_DELETE_GROUP}</span>
+					</button>
+				</div>
+			</div>
+		</div>
+		<fieldset>
+			<ul class="cbds-advfilt-condwrapper" style="list-style: none !important;">
+			</ul>
+			<div class="slds-expression__buttons">
+				<button type="button" class="slds-button slds-button_neutral" data-onclick="add-condition">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+					</svg>
+					{$APP.LBL_NEW_CONDITION}
+				</button>
+			</div>
+		</fieldset>
+	</li>	
+</div>
+
+<div id="cbds-advfilt-template__condition" style="display: none;">
+	<li class="slds-expression__row slds-expression__row_group slds-p-horizontal_none" data-cond-no="" style="display: block !important;">
+		<fieldset>
+			<div class="slds-grid slds-gutters_xx-small">
+				<div class="slds-col slds-size_1-of-12">
+					<div class="slds-form-element">
+						{*<label class="slds-form-element__label"></label>*}
+						<div class="slds-form-element__control">
+							<div class="slds-combobox_container">
+								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click cbds-advfilt-cond__glue" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+										<input class="slds-input slds-combobox__input slds-combobox__input-value cbds-advfilt-cond__glue--input" autocomplete="off" role="textbox" type="text" readonly="" disabled="" value="{$APP.LBL_CRITERIA_AND}" data-valueholder="nextsibling" />
+										<input type="hidden" value="and" />
+										<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+											<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+											</svg>
+										</span>
+									</div>
+									<div class="slds-dropdown slds-dropdown_length-2 slds-dropdown_fluid" role="listbox" style="min-width: 0">
+										<ul class="slds-listbox slds-listbox_vertical" role="group" style="list-style: none !important;">
+											<li role="presentation" class="slds-listbox__item" data-value="and" style="display: block !important;">
+												<div id="option1" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+													<span class="slds-media__body">
+														<span class="slds-truncate" title="{$APP.LBL_CRITERIA_AND}">{$APP.LBL_CRITERIA_AND}</span>
+													</span>
+												</div>
+											</li>
+											<li role="presentation" class="slds-listbox__item" data-value="or" style="display: block !important;">
+												<div id="option1" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+													<span class="slds-media__body">
+														<span class="slds-truncate" title="{$APP.LBL_CRITERIA_OR}">{$APP.LBL_CRITERIA_OR}</span>
+													</span>
+												</div>
+											</li>
+										</ul> 
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slds-col">
+					<div class="slds-form-element">
+						{*<label class="slds-form-element__label">{$APP.LBL_GENERAL_FIELDS}</label>*}
+						<div class="slds-form-element__control">
+							<div class="slds-combobox_container">
+								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click cbds-advfilt-cond__field" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+										<input class="slds-input slds-combobox__input slds-combobox__input-value" autocomplete="off" role="textbox" type="text" placeholder="{if !empty($SELECTEDFIELD)}{$SELECTEDFIELD.label}{/if}" readonly="" value="{if !empty($SELECTEDFIELD)}{$SELECTEDFIELD.label}{/if}" data-valueholder="nextsibling" />
+										<input type="hidden" value="{if !empty($SELECTEDFIELD)}{$SELECTEDFIELD.value}{/if}" />
+										<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+											<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+											</svg>
+										</span>
+									</div>
+									<div class="slds-dropdown slds-dropdown_length-7 slds-dropdown_fluid" role="listbox">
+										{if $SOURCE != 'reports-modal'}
+											{foreach from=$MODULES_BLOCK item='COLUMNS_BLOCK' key='MODLABEL'}
+												<ul class="slds-listbox slds-listbox_vertical" role="group">
+												<li role="presentation" class="slds-listbox__item cbds-bg-blue--dark">
+													<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
+														<h3 class="slds-text-title_caps slds-text-color_inverse" role="presentation">{$MODLABEL|@getTranslatedString:$MODULE}</h3>
+													</div>
+												</li>
+												{foreach from=$COLUMNS_BLOCK item='BLOCK' key='BLOCKLABEL'}
+													<li role="presentation" class="slds-listbox__item">
+														<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
+															<h3 class="slds-text-title_caps" role="presentation">{$BLOCKLABEL}</h3>
+														</div>
+													</li>
+													{foreach from=$BLOCK item='FIELD' key='FIELDLABEL'}
+													<li role="presentation" class="slds-listbox__item" data-value="{$FIELD.value}">
+														<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+															<span class="slds-media__figure slds-listbox__option-icon"></span>
+															<span class="slds-media__body">
+																<span class="slds-truncate" title="{$FIELD.label}">{$FIELD.label}</span>
+															</span>
+														</div>
+													</li>
+													{/foreach}
+												{/foreach}
+												</ul>
+											{/foreach}
+										{else}
+										{* Reports fills the dropdowns through javascript and don't provide a Smarty array *}
+											<ul class="slds-listbox slds-listbox_vertical cbds-advfilt__fieldcombo-list" role="group">
+											</ul>
+										{/if}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slds-col slds-grow-none">
+					<div class="slds-form-element">
+						{*<label class="slds-form-element__label">Operator</label>*}
+						<div class="slds-form-element__control cbds-advfilt-cond__opswrapper">
+							{* Filled by JS *}
+						</div>
+					</div>
+				</div>
+				<div class="slds-col">
+					<div class="slds-form-element cbds-advfilt-cond__value">
+						<div class="slds-form-element__control slds-grid slds-p-horizontal_none">
+							<div class="slds-col slds-size_8-of-12">
+								<input class="slds-input cbds-advfilt-cond__value--input cbds-advfilt-cond__value--validate" type="text" value="">
+							</div>
+							<div class="slds-col slds-size_4-of-12">
+								<div class="slds-button-group">
+									{if $SOURCE == 'reports-modal'}
+									<button type="button" class="cbds-advfilt-cond__value--compfield slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_FIELD_FOR_COMPARISION}" data-onclick="pick-comparison-field">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#replace"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$APP.LBL_FIELD_FOR_COMPARISION}
+										</span>
+									</button>
+									{/if}
+									<button type="button" disabled="disabled" class="cbds-advfilt-cond__value--datebutt slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_ACTION_DATE}" data-onclick="pick-date">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$APP.LBL_ACTION_DATE}
+										</span>
+									</button>
+									{if $SOURCE != 'listview'}
+									<button type="button" class="cbds-advfilt-cond__value--clearbutt slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_CLEAR}" data-onclick="clear-cond">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#spinner"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$APP.LBL_CLEAR}
+										</span>
+									</button>
+									{/if}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="slds-form-element slds-hide cbds-advfilt-cond__value slds-m-top_xx-small">
+						<div class="slds-form-element__control slds-grid slds-p-horizontal_none">
+							<div class="slds-col slds-size_8-of-12">
+								<input class="slds-input cbds-advfilt-cond__value--input" type="text" value="">
+							</div>
+							<div class="slds-col slds-size_4-of-12">
+								<button type="button" disabled="disabled" class="cbds-advfilt-cond__value--datebutt slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_ACTION_DATE}" data-onclick="pick-date">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
+									</svg>
+									<span class="slds-assistive-text">
+									   {$APP.LBL_ACTION_DATE} 
+									</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slds-col slds-grow-none slds-size_1-of-12">
+					<div class="slds-form-element">
+						{*<span class="slds-form-element__label">&nbsp;</span>*}
+						<div class="slds-form-element__control">
+							<button type="button" disabled="disabled" class="slds-float_right slds-button slds-button_icon slds-button_icon-border-filled cbds-advfilt-cond__delete" title="{$APP.LBL_DELETE_BUTTON}" data-onclick="delete-cond">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+								</svg>
+								<span class="slds-assistive-text">
+									{$APP.LBL_DELETE_BUTTON}
+								</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</li>
+</div>
+<input type="hidden" id="cbds-advfilt__context" value="{$SOURCE}" />
+{if $SOURCE == 'customview' || $SOURCE == 'reports' || $SOURCE == 'reports-modal'}
+<input type="hidden" id="cbds-advfilt_existing-conditions" value='{$CRITERIA_GROUPS|json_encode}' />
+{/if}
+{if $SOURCE != 'reports-modal'}
+<script>
+	window.addEventListener("load", function(){
+		var advancedFilter = document.getElementById("cbds-advanced-search");
+		window.AdvancedFilter = new cbAdvancedFilter(advancedFilter);
+	});
+</script>
+{/if}

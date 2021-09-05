@@ -26,7 +26,6 @@ if (isset($_REQUEST['return_action']) && $_REQUEST['return_action']!= '') {
 	$return_action = 'ListProfiles';
 }
 
-//Retreiving the vtiger_tabs permission array
 $tab_perr_result = $adb->pquery('select * from vtiger_profile2tab where profileid=?', array($profileid));
 $act_perr_result = $adb->pquery('select * from vtiger_profile2standardpermissions where profileid=?', array($profileid));
 $act_utility_result = $adb->pquery('select * from vtiger_profile2utility where profileid=?', array($profileid));

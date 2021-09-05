@@ -406,45 +406,77 @@ class qactions_Action extends CoreBOS_ActionController {
 	}
 
 	public function getBuilderData($ret = false) {
-		global $adb;
-		$entries_list = array(
-			'data' => array(
-				'contents' => array(),
-				'pagination' => array(
-					'page' => 1,
-					'totalCount' => 0,
+		global $log, $adb, $current_user;
+		$log->debug('> getBuilderData');
+
+		if (empty($_REQUEST['cbQuestionRecord'])) {
+			$entries_list = array(
+				'data' => array(
+					'contents' => array(),
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
 				),
-			),
-			'result' => false,
-			'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
-			'debug_query' => '',
-			'debug_params' => json_encode($_REQUEST),
-		);
-		if (!empty($_REQUEST['cbQuestionRecord'])) {
-			$builderData = $this->getBuilderDataQuery($ret);
-			$query = trim($builderData['query'], ';').$builderData['limit'];
-			$entries_list['debug_query'] = $query;
-			$result = $adb->query($query);
-			$count_result = $adb->query('SELECT FOUND_ROWS();');
-			$noofrows = $adb->query_result($count_result, 0, 0);
-			if ($result) {
-				if ($noofrows>0) {
-					$entries_list['data']['pagination'] = array(
-						'page' => (int)$builderData['page'],
-						'totalCount' => (int)$noofrows,
-					);
-					$entries_list['result'] = true;
-					while ($lgn = $adb->fetch_array($result)) {
-						for ($col=0; $col < count($lgn); $col++) {
-							unset($lgn[$col]);
-						}
-						$entries_list['data']['contents'][] = $lgn;
-					}
-				} else {
-					$entries_list['message'] = getTranslatedString('NoData', 'cbAuditTrail');
-				}
-			}
+				'result' => false,
+				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
+				'debug_query' => '',
+				'debug_params' => json_encode($_REQUEST),
+			);
+			echo json_encode($entries_list);
+			return;
 		}
+		$builderData = $this->getBuilderDataQuery($ret);
+		$result = $adb->query(trim($builderData['query'], ';').$builderData['limit']);
+		$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($list_query, false), 'count(*) AS count'));
+		$noofrows = $adb->query_result($count_result, 0, 0);
+		if ($result) {
+			if ($noofrows>0) {
+				$entries_list = array(
+					'data' => array(
+						'contents' => array(),
+						'pagination' => array(
+							'page' => (int)$builderData['page'],
+							'totalCount' => (int)$noofrows,
+						),
+					),
+					'result' => true,
+				);
+				while ($lgn = $adb->fetch_array($result)) {
+					for ($col=0; $col < count($lgn); $col++) {
+						unset($lgn[$col]);
+					}
+					$entries_list['data']['contents'][] = $lgn;
+				}
+			} else {
+				$entries_list = array(
+					'data' => array(
+						'contents' => array(),
+						'pagination' => array(
+							'page' => 1,
+							'totalCount' => 0,
+						),
+					),
+					'result' => false,
+					'message' => getTranslatedString('NoData', 'cbAuditTrail'),
+				);
+			}
+		} else {
+			$entries_list = array(
+				'data' => array(
+					'contents' => array(),
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
+				),
+				'result' => false,
+				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
+				'debug_query' => $builderData['query'].$builderData['limit'],
+				'debug_params' => json_encode($_REQUEST),
+			);
+		}
+		$log->debug('< getBuilderData');
 		if ($ret) {
 			return $entries_list;
 		}
@@ -472,7 +504,6 @@ class qactions_Action extends CoreBOS_ActionController {
 		if (stripos($list_query, ' LIMIT ') > 0) {
 			$list_query = substr($list_query, 0, stripos($list_query, ' LIMIT '));
 		}
-		$list_query = 'SELECT SQL_CALC_FOUND_ROWS '.substr($list_query, 6);
 		unset($_REQUEST['cbQuestionRecord']);
 		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
 			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
