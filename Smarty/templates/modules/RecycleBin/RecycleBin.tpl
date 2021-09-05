@@ -12,6 +12,17 @@
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type='text/javascript' src='include/js/Merge.js'></script>
 <script type='text/javascript' src='modules/RecycleBin/language/{$LANGUAGE}.lang.js'></script>
+<script>
+{if empty($moduleView)}
+var Application_Landing_View='table';
+{else}
+var Application_Landing_View='{$moduleView}';
+{/if}
+</script>
+{if !empty($moduleView) && $moduleView=='tuigrid'}
+<script src="./include/js/ListViewRenderes.js"></script>
+<script src="./include/js/ListViewJSON.js"></script>
+{/if}
 {include file='Buttons_List.tpl'}
 {*<!-- Contents -->*}
 <table class="slds-m-around_medium" style="width:98%;margin:auto;">
@@ -89,10 +100,13 @@
 {*<!-- Searching UI -->*}
 
 	<div id="modules_datas" class="small" style="width:100%;">
+	{if !empty($moduleView) && $moduleView=='tuigrid'}
+		{include file="modules/$MODULE/RecycleBinContentsTGrid.tpl"}
+	{else}
 		{include file="modules/$MODULE/RecycleBinContents.tpl"}
+	{/if}
 	</div>
 </tr></td>
-
 
 </div>
 </td>
