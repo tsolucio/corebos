@@ -6772,7 +6772,7 @@ function findUp(element, searchterm) {
 	*/
 	cbVal.isTime = function (val) {
 		var hours  = window.userHourFormat == 'am/pm' ? 12 : 23,
-			patt   = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}$/ : /^[0-9]{1,2}\:[0-9]{2}[ ]?(am|pm)$/,
+			patt   = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}$/ : /^[0-9]{1,2}\:[0-9]{2}[ ]?(am|pm)?$/,
 			isTime = false; // Assume the worst
 
 		if (patt.test(val) && parseInt(val.split(':')[0]) <= hours && parseInt(val.split(':')[1]) <= 59) {
@@ -6843,14 +6843,11 @@ function findUp(element, searchterm) {
 	* @return: (bool)
 	*/
 	cbVal.isValidVarchar = function (val) {
-		var flg = false;
-		for (var i = 0; i < cbVal.notAllowedInVarchar.length; i++) {
-			if (val.indexOf(cbVal.notAllowedInVarchar[i]) === -1) {
-				flg = true;
-			} else {
-				flg = false;
-				break;
-			}
+		var flg = true;
+		var i = 0;
+		while (i < cbVal.notAllowedInVarchar.length && flg) {
+			flg = (val.indexOf(cbVal.notAllowedInVarchar[i]) === -1);
+			i++;
 		}
 		return flg;
 	};

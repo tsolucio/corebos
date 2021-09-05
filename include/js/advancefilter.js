@@ -363,14 +363,11 @@
 			* @return : (bool)
 			*/
 		validate: function () {
-			var pass = false;
-			for (var i = 0; i < this.vals.length; i++) {
-				if (this.vals[i].active && this.vals[i].validate()) {
-					pass = true;
-				} else if (this.vals[i].active && !this.vals[i].validate()) {
-					pass = false;
-					break;
-				}
+			var pass = true;
+			var i = 0;
+			while (i < this.vals.length && pass) {
+				pass = (this.vals[i].active && this.vals[i].validate());
+				i++;
 			}
 			return pass;
 		},
@@ -719,10 +716,9 @@
 		* belong to this group
 		*/
 		getConds: function () {
-			const conds = this.parent.conds.filter((cond) => {
+			return this.parent.conds.filter((cond) => {
 				return (this.no == cond.group.no);
 			});
-			return conds;
 		},
 
 		/*
