@@ -1,6 +1,6 @@
 function kanbanRefresh(kanbanID) {
 	let kbinfo = window[kanbanID+'Info'];
-	for (const lane in kbinfo.lanes){
+	for (const lane in kbinfo.lanes) {
 		kanbanGetBoardItems(kanbanID, lane, kbinfo);
 	}
 }
@@ -51,7 +51,7 @@ function kanbanSetupInfiniteScroll(kanbanID) {
 			}
 			window[kanbanID+'Info'].currentPage++;
 		}
-	}
+	};
 
 	var observer = new IntersectionObserver(callback, options);
 	observer.observe(document.getElementById(kanbanID+'Scroll'));

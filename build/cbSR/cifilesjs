@@ -23,6 +23,8 @@
 ./include/js/it_it.lang.js
 ./include/js/jslog.js
 ./include/js/ListView.js
+./include/js/ListViewJSON.js
+./include/js/ListViewRenderes.js
 ./include/js/loadjslog.js
 ./include/js/Mail.js
 ./include/js/massive.js
@@ -49,6 +51,17 @@
 ./modules/Calendar4You/Calendar4You.js
 ./modules/Campaigns/Campaigns.js
 ./modules/cbAuditTrail/cbAuditTrail.js
+./modules/cbAuditTrail/language/de_de.js
+./modules/cbAuditTrail/language/en_gb.js
+./modules/cbAuditTrail/language/en_us.js
+./modules/cbAuditTrail/language/es_es.js
+./modules/cbAuditTrail/language/es_mx.js
+./modules/cbAuditTrail/language/fr_fr.js
+./modules/cbAuditTrail/language/hu_hu.js
+./modules/cbAuditTrail/language/it_it.js
+./modules/cbAuditTrail/language/nl_nl.js
+./modules/cbAuditTrail/language/pt_br.js
+./modules/cbAuditTrail/language/ro_ro.js
 ./modules/cbCalendar/cbCalendar.js
 ./modules/cbCalendar/script.js
 ./modules/cbCompany/cbCompany.js
@@ -57,6 +70,7 @@
 ./modules/cbLoginHistory/cbLoginHistory.js
 ./modules/cbMap/cbMap.js
 ./modules/cbMap/generatemap/DecisionTable.js
+./modules/cbMap/generatemap/DetailViewLayoutMapping.js
 ./modules/cbMap/generatemap/DuplicateRelations.js
 ./modules/cbMap/language/de_de.js
 ./modules/cbMap/language/en_gb.js
@@ -105,6 +119,7 @@
 ./modules/com_vtiger_workflow/resources/functionselect.js
 ./modules/com_vtiger_workflow/resources/generateimagecode.js
 ./modules/com_vtiger_workflow/resources/generateReportWfTask.js
+./modules/com_vtiger_workflow/resources/launchworkflowtask.js
 ./modules/com_vtiger_workflow/resources/many2manyrelation.js
 ./modules/com_vtiger_workflow/resources/parallelexecuter.js
 ./modules/com_vtiger_workflow/resources/updatefieldstaskscript.js
@@ -170,6 +185,7 @@
 ./modules/MsgTemplate/MsgTemplate.js
 ./modules/PBXManager/PBXManager.js
 ./modules/PickList/DependencyPicklist.js
+./modules/PickList/PickList.js
 ./modules/Portal/Portal.js
 ./modules/Potentials/Potentials.js
 ./modules/PriceBooks/PriceBooks.js
@@ -213,6 +229,7 @@
 ./modules/Utilities/Utilities.js
 ./modules/Vendors/Vendors.js
 ./modules/VtigerBackup/VtigerBackup.js
+./modules/Vtiger/KanbanAPI/Kanban.js
 ./modules/Webforms/language/de_de.lang.js
 ./modules/Webforms/language/en_gb.lang.js
 ./modules/Webforms/language/en_us.lang.js
@@ -226,5 +243,6 @@
 ./modules/Webforms/language/ro_ro.lang.js
 ./modules/Webforms/Webforms.js
 ./modules/WSAPP/WSAPP.js
+./themes/login/BluewhiteBoxed/Bluewhite.js
 ./themes/login/login.js
 ./themes/login/particles/login.js

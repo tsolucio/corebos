@@ -125,9 +125,7 @@ const ListView = {
 			if (uitype == '15' || uitype == '16' || uitype == '52' || uitype == '53') {
 				values = headerObj[index].picklist;
 			}
-			if (ListView.deniedMods().includes(lvmodule)) {
-				edit = false;
-			} else if (lvmodule == '') {
+			if (ListView.deniedMods().includes(lvmodule) || lvmodule == '') {
 				edit = false;
 			}
 			if (edit) {
@@ -420,10 +418,10 @@ const ListView = {
 		document.addEventListener('click', function (e) {
 			[...document.getElementById('listview-tui-grid').getElementsByClassName('slds-dropdown_right')].forEach(dd => {
 				if (!e.target.classList.contains('listview-actions-opener')) {
-					dd.classList.remove('slds-is-open')
-					findUp(dd, '.tui-grid-cell').classList.remove('tui-grid-cell-has-overflow')
+					dd.classList.remove('slds-is-open');
+					findUp(dd, '.tui-grid-cell').classList.remove('tui-grid-cell-has-overflow');
 				}
-			})
+			});
 		}, false);
 	},
 	/**
@@ -437,7 +435,7 @@ const ListView = {
 		if (searchtype == 'Basic') {
 			const parseUrl = urlstring.split('&');
 			let urlArr = [];
-			for (arg in parseUrl) {
+			for (var arg in parseUrl) {
 				const URI = parseUrl[arg].split('=');
 				urlArr[URI[0]] = decodeURI(URI[1]);
 			}
@@ -476,7 +474,7 @@ const ListView = {
 		});
 		//update pagination onchange
 		lvdataGridInstance.setPerPage(parseInt(PageSize));
-		const total = ListView.updateData();
+		ListView.updateData();
 		ListView.noData();
 	},
 	/**
@@ -562,7 +560,6 @@ const ListView = {
 			}
 		).then(response => response.json()).then(response => {
 			let headers = ListView.getColumnHeaders(response[0]);
-			let filters = response[1];
 			document.getElementById('bas_searchfield').innerHTML = '';
 			for (let h in headers) {
 				if (headers[h]['name'] != 'cblvactioncolumn') {
@@ -606,7 +603,6 @@ const ListView = {
 	 */
 	getCheckedRows: (type, el = '') => {
 		let checkedRows = ListView.getAllCheckedRows(type, el);
-		let currentPage = lvdataGridInstance.getPagination()._currentPage;
 		let ids = [];
 		let rowKeys = [];
 		//add checked rows for current page
@@ -624,7 +620,7 @@ const ListView = {
 		select_options += actualVal.value;
 		let actualArr = select_options.split(';');
 		let newIds = [];
-		for (index in actualArr) {
+		for (var index in actualArr) {
 			if (!newIds.includes(actualArr[index])) {
 				newIds.push(actualArr[index]);
 			}
@@ -634,7 +630,7 @@ const ListView = {
 			select_options += ';';
 		}
 		//remove id for current unchecked row
-		if (el.checked == false) {
+		if (!el.checked) {
 			let removeId = el.id;
 			let recordId = lvdataGridInstance.getValue(parseInt(removeId), 'recordid');
 			select_options = select_options.replace(recordId+';', '');
@@ -666,7 +662,7 @@ const ListView = {
 			document.getElementById('numOfRows').value = '';
 			document.getElementById('linkForSelectAll').style.display = 'none';
 		} else {
-			const total = ListView.updateData();
+			ListView.updateData();
 			document.getElementById('linkForSelectAll').style.display = 'none';
 		}
 	},
@@ -705,7 +701,7 @@ const ListView = {
 		if (lvmodule == '') {
 			return;
 		}
-		if (reload == true) {
+		if (reload) {
 			document.getElementById('filterOptions').innerHTML = '';
 			document.getElementById('filterEditActions').innerHTML = '';
 			document.getElementById('filterDeleteActions').innerHTML = '';
@@ -786,7 +782,6 @@ const ListView = {
 	 */
 	updateFieldData: (ev, idx) => {
 		const recordid = lvdataGridInstance.getValue(idx, 'recordid');
-		const rowKey = ev.rowKey;
 		const columnName = ev.columnName;
 		const value = ev.value;
 		const preValue = ev.preValue;
@@ -941,10 +936,10 @@ const ListView = {
 	RenderActions: (recordid) => {
 		[...document.getElementById('listview-tui-grid').getElementsByClassName('slds-dropdown_right')].forEach(dd => {
 			if (dd.id != `dropdown-${recordid}`) {
-				dd.classList.remove('slds-is-open')
-				findUp(dd, '.tui-grid-cell').classList.remove('tui-grid-cell-has-overflow')
+				dd.classList.remove('slds-is-open');
+				findUp(dd, '.tui-grid-cell').classList.remove('tui-grid-cell-has-overflow');
 			}
-		})
+		});
 		fetch(
 			'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getRecordActions&formodule='+lvmodule+'&recordid='+recordid,
 			{
@@ -991,7 +986,7 @@ const ListView = {
 						</a>
 					</li>`;
 				}
-				if (edit_action.edit == true) {
+				if (edit_action.edit) {
 					button_template += `
 					<li class="slds-dropdown__item" role="presentation">
 						<a href="${edit_action.link}">
@@ -1002,7 +997,7 @@ const ListView = {
 						</a>
 					</li>`;
 				}
-				if (delete_action.delete == true) {
+				if (delete_action.delete) {
 					button_template += `
 					<li class="slds-dropdown__item" role="presentation">
 						<a onclick="javascript:confirmdelete('${delete_action.link}');">
@@ -1013,7 +1008,7 @@ const ListView = {
 						</a>
 					</li>`;
 				}
-				if (view_action.view == true) {
+				if (view_action.view) {
 					button_template += `
 					<li class="slds-dropdown__item" role="presentation">
 						<div class="
@@ -1033,10 +1028,8 @@ const ListView = {
 			}
 			let ddWrapper = document.getElementById(`dropdown-${recordid}`);
 			ddWrapper.innerHTML = button_template;
-			findUp(ddWrapper, '.slds-dropdown-trigger_click').classList.add('slds-is-open')
-			findUp(ddWrapper, '.tui-grid-cell').classList.add('tui-grid-cell-has-overflow')
-			// document.getElementById(`dropdown-${recordid}`).style.display = 'block';
-
+			findUp(ddWrapper, '.slds-dropdown-trigger_click').classList.add('slds-is-open');
+			findUp(ddWrapper, '.tui-grid-cell').classList.add('tui-grid-cell-has-overflow');
 		});
 	},
 	/**

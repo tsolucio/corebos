@@ -62,7 +62,6 @@ class LinkRender {
 		let columnName = props.columnInfo.name;
 		let recordid = props.grid.getValue(rowKey, 'recordid');
 		let referenceField = props.grid.getValue(rowKey, 'reference_field');
-		let referenceValue = props.grid.getValue(rowKey, referenceField);
 		let relatedRows = props.grid.getValue(rowKey, 'relatedRows');
 		const { tooltip } = props.columnInfo.renderer.options;
 		if (tooltip) {
@@ -75,8 +74,7 @@ class LinkRender {
 				<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 				</svg>
-			</span>
-			`;
+			</span>`;
 		}
 		if (referenceField.includes(columnName)) {
 			el = document.createElement('a');
@@ -166,15 +164,9 @@ class LinkRender {
 class ActionRender {
 
 	constructor(props) {
-		let el, module;
-		if (document.getElementById('curmodule')) {
-			module = document.getElementById('curmodule').value;
-		} else if (document.getElementById('select_module')) {
-			module = document.getElementById('select_module').value;
-		}
 		let rowKey = props.rowKey;
 		let recordid = props.grid.getValue(rowKey, 'recordid');
-		el = document.createElement('span');
+		let el = document.createElement('span');
 		let actions = `
 			<div class="slds-dropdown-trigger slds-dropdown-trigger_click">
 				<button
@@ -189,8 +181,7 @@ class ActionRender {
 					<span class="slds-assistive-text">Show More</span>
 				</button>
 				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" id="dropdown-${recordid}">
-			</div>
-		`
+			</div>`;
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);
