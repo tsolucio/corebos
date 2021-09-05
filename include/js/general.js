@@ -6902,8 +6902,8 @@ function findUp(element, searchterm) {
 	/*
 	* Static properties
 	*/
-	cbNumber.decSep = window.userDecimalSeparator,
-	cbNumber.curSep = window.userCurrencySeparator,
+	cbNumber.decSep = window.userDecimalSeparator;
+	cbNumber.curSep = window.userCurrencySeparator;
 	cbNumber.decNum = Number(window.userNumberOfDecimals);
 
 	/*
@@ -6968,7 +6968,7 @@ function findUp(element, searchterm) {
 			d = this.decSep == undefined ? '.' : this.decSep,
 			t = this.curSep == undefined ? ',' : this.curSep,
 			s = n < 0 ? '-' : '',
-			i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+			i = String(parseInt(Math.abs(Number(n) || 0).toFixed(c))),
 			j = (j = i.length) > 3 ? j % 3 : 0;
 		return s + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '');
 	};
