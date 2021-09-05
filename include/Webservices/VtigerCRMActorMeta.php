@@ -278,9 +278,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 				if ($this->idColumn === null) {
 					$this->idColumn = $dbField->name;
 				} else {
-					if ($tableName=='vtiger_modtracker_detail') { // valid table with compound primary key
-						break;
-					} else {
+					if ($tableName!='vtiger_modtracker_detail') { // valid table with compound primary key
 						throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, 'Entity table with multi column primary key is not supported');
 					}
 				}
