@@ -94,7 +94,7 @@
 							<div class="slds-text-title_caps slds-align_absolute-center">{$APP.LBL_SEARCH}</div>
 						</div>
 						<div class="slds-col slds-size_1-of-12 slds-clearfix">
-							<button type="button" 
+							<button type="button"
 									class="slds-button slds-button_icon slds-button_icon-border slds-float_right"
 									onClick="show('searchAcc');fnhide('advSearch');document.basicSearch.searchtype.value='basic';document.basicSearch.searchtype.searchlaunched='';document.getElementById('cbds-advanced-search').classList.remove('cbds-advanced-search--active')">
 								<svg class="slds-button__icon" aria-hidden="true">

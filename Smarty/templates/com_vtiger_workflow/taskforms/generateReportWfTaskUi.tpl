@@ -61,7 +61,7 @@
 			<tr>
 				<td>
 					<label class="slds-form-element__label" for="file_type">{'Select File Type'|@getTranslatedString}</label>
-				</td>	
+				</td>
 			</tr>
 			<tr>
 				<td>

@@ -61,11 +61,10 @@
 			<span class="slds-media__figure slds-listbox__option-icon"></span>
 			<span class="slds-media__body">
 				<span class="slds-truncate" title="">
-					
 				</span>
 			</span>
 		</div>
-	</li>	
+	</li>
 </div>
 
 <div id="cbds-advfilt-template__group" style="display: none;">
@@ -102,7 +101,7 @@
 											</span>
 										</div>
 									</li>
-								</ul> 
+								</ul>
 							</div>
 						</div>
 					</div>
@@ -129,7 +128,7 @@
 				</button>
 			</div>
 		</fieldset>
-	</li>	
+	</li>
 </div>
 
 <div id="cbds-advfilt-template__condition" style="display: none;">
@@ -167,7 +166,7 @@
 													</span>
 												</div>
 											</li>
-										</ul> 
+										</ul>
 									</div>
 								</div>
 							</div>
@@ -230,7 +229,6 @@
 				</div>
 				<div class="slds-col slds-grow-none">
 					<div class="slds-form-element">
-						{*<label class="slds-form-element__label">Operator</label>*}
 						<div class="slds-form-element__control cbds-advfilt-cond__opswrapper">
 							{* Filled by JS *}
 						</div>
@@ -265,7 +263,7 @@
 									{if $SOURCE != 'listview'}
 									<button type="button" class="cbds-advfilt-cond__value--clearbutt slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_CLEAR}" data-onclick="clear-cond">
 										<svg class="slds-button__icon" aria-hidden="true">
-											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#spinner"></use>
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 										</svg>
 										<span class="slds-assistive-text">
 											{$APP.LBL_CLEAR}
@@ -287,7 +285,7 @@
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
 									</svg>
 									<span class="slds-assistive-text">
-									   {$APP.LBL_ACTION_DATE} 
+										{$APP.LBL_ACTION_DATE}
 									</span>
 								</button>
 							</div>
@@ -296,7 +294,6 @@
 				</div>
 				<div class="slds-col slds-grow-none slds-size_1-of-12">
 					<div class="slds-form-element">
-						{*<span class="slds-form-element__label">&nbsp;</span>*}
 						<div class="slds-form-element__control">
 							<button type="button" disabled="disabled" class="slds-float_right slds-button slds-button_icon slds-button_icon-border-filled cbds-advfilt-cond__delete" title="{$APP.LBL_DELETE_BUTTON}" data-onclick="delete-cond">
 								<svg class="slds-button__icon" aria-hidden="true">
@@ -319,8 +316,8 @@
 {/if}
 {if $SOURCE != 'reports-modal'}
 <script>
-	window.addEventListener("load", function(){
-		var advancedFilter = document.getElementById("cbds-advanced-search");
+	window.addEventListener('load', function() {
+		var advancedFilter = document.getElementById('cbds-advanced-search');
 		window.AdvancedFilter = new cbAdvancedFilter(advancedFilter);
 	});
 </script>

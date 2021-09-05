@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="themes/login/lds/sfdc_210.css">
 <link rel="stylesheet" href="themes/login/particles/login.css">
 </head>
-<body onload="set_focus()" data-gr-c-s-loaded="true"> 
+<body onload="set_focus()" data-gr-c-s-loaded="true">
 <canvas id="canvas"></canvas>
 <div id="left" class="pr">
 	<div id="wrap">

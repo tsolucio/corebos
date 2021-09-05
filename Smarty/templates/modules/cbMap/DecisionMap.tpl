@@ -4,17 +4,17 @@
 }
 
 .slds-dropdown__scroll::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
+  box-shadow: inset 0 0 5px grey;
   border-radius: 5px;
 }
- 
+
 .slds-dropdown__scroll::-webkit-scrollbar-thumb {
-  background: grey; 
+  background: grey;
   border-radius: 5px;
 }
 
 .slds-dropdown__scroll::-webkit-scrollbar-thumb:hover {
-  background: #d3d3d3; 
+  background: #d3d3d3;
 }
 </style>
 <script src="modules/com_vtiger_workflow/resources/functional.js" type="text/javascript" charset="utf-8"></script>
