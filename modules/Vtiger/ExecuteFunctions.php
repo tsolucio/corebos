@@ -433,7 +433,7 @@ switch ($functiontocall) {
 					}
 				}
 				coreBOS_Session::set($formodule.'_Sort_Order', $orderBy);
-				$LV = getListViewJSON($formodule, $perPage, $orderBy, $sortColumn, $page, $search, $searchtype, $tabid);
+				$LV = getListViewJSON($formodule, $tabid, $perPage, $orderBy, $sortColumn, $page, $search, $searchtype);
 			} else {
 				//get headers
 				$LV = getListViewHeaders($formodule, $tabid);

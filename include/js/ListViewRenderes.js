@@ -78,7 +78,7 @@ class LinkRender {
 			</span>
 			`;
 		}
-		if (columnName == referenceField) {
+		if (referenceField.includes(columnName)) {
 			el = document.createElement('a');
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
@@ -176,15 +176,21 @@ class ActionRender {
 		let recordid = props.grid.getValue(rowKey, 'recordid');
 		el = document.createElement('span');
 		let actions = `
-		<div class="slds-button-group" role="group">
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="ListView.RenderActions(${recordid});">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
-				</svg>
-			</button>
-			<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" id="dropdown-${recordid}" style="display: none; background: transparent; border: 0px; padding: 0rem 0;">
+			<div class="slds-dropdown-trigger slds-dropdown-trigger_click">
+				<button
+					class="slds-button slds-button_icon slds-button_icon-border-filled listview-actions-opener"
+					aria-haspopup="true"
+					title="Show More"
+					onclick="ListView.RenderActions(${recordid});"
+				>
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
+					</svg>
+					<span class="slds-assistive-text">Show More</span>
+				</button>
+				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" id="dropdown-${recordid}">
 			</div>
-		</div>`;
+		`
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);
