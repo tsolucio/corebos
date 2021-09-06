@@ -363,10 +363,15 @@
 			* @return : (bool)
 			*/
 		validate: function () {
+			if (this.vals.length == 0) {
+				return false;
+			}
 			var pass = true;
 			var i = 0;
 			while (i < this.vals.length && pass) {
-				pass = (this.vals[i].active && this.vals[i].validate());
+				if (this.vals[i].active) {
+					pass = this.vals[i].validate();
+				}
 				i++;
 			}
 			return pass;

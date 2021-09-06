@@ -6627,15 +6627,18 @@ function checkOneRevisionSelected() {
 function findUp(element, searchterm) {
 	element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
 	while (element = element.parentElement) {
+		if (element == document.body) {
+			break;
+		}
 		if ((searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
 			|| (searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
 			|| (searchterm.charAt(0) === '$' && element.tagName === searchterm.slice(1))
 			|| (element.hasAttribute(searchterm)))
-			|| (element == document.body)) {
-				break;
-			}
+		) {
+			return element;
+		}
 	}
-	return element;
+	return undefined;
 }
 
 /****
