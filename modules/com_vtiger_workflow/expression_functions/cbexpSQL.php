@@ -222,22 +222,26 @@ function cbexpsql_sub_days($arr, $mmodule) {
 }
 
 function cbexpsql_add_months($arr, $mmodule) {
-	$arr[1] = new VTExpressionSymbol('INTERVAL '.$arr[1].' month', 'constant');
+	$val = is_object($arr[1]) ? $arr[1]->value : $arr[1];
+	$arr[1] = new VTExpressionSymbol('INTERVAL '.$val.' month', 'constant');
 	return __cbexpsql_functionparams('DATE_ADD', $arr, $mmodule);
 }
 
 function cbexpsql_sub_months($arr, $mmodule) {
-	$arr[1] = new VTExpressionSymbol('INTERVAL '.$arr[1].' month', 'constant');
+	$val = is_object($arr[1]) ? $arr[1]->value : $arr[1];
+	$arr[1] = new VTExpressionSymbol('INTERVAL '.$val.' month', 'constant');
 	return __cbexpsql_functionparams('DATE_SUB', $arr, $mmodule);
 }
 
 function cbexpsql_add_time($arr, $mmodule) {
-	$arr[1] = new VTExpressionSymbol('INTERVAL '.$arr[1].' MINUTE', 'constant');
+	$val = is_object($arr[1]) ? $arr[1]->value : $arr[1];
+	$arr[1] = new VTExpressionSymbol('INTERVAL '.$val.' MINUTE', 'constant');
 	return __cbexpsql_functionparams('DATE_ADD', $arr, $mmodule);
 }
 
 function cbexpsql_sub_time($arr, $mmodule) {
-	$arr[1] = new VTExpressionSymbol('INTERVAL '.$arr[1].' MINUTE', 'constant');
+	$val = is_object($arr[1]) ? $arr[1]->value : $arr[1];
+	$arr[1] = new VTExpressionSymbol('INTERVAL '.$val.' MINUTE', 'constant');
 	return __cbexpsql_functionparams('DATE_SUB', $arr, $mmodule);
 }
 
