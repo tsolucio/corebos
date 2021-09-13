@@ -8,7 +8,9 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-
+<div style="padding:1px">
+	<span style="color:red" id="massedit_error"></span>
+</div>
 <table border=0 cellspacing=0 cellpadding=5 width=100% align=center>
 	<tr>
 		<td class="small">

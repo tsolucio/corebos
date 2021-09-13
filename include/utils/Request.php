@@ -182,7 +182,7 @@ class Vtiger_Request {
 		if (isset($_SERVER['HTTP_REFERER']) && $current_user) {//Check for user post authentication.
 			global $site_URL;
 			if ((stripos($_SERVER['HTTP_REFERER'], $site_URL) !== 0) && ($this->get('module') != 'Install')) {
-				throw new Exception('Illegal request');
+				throw new Exception('Site URL mismatch');
 			}
 		}
 		return true;
@@ -199,6 +199,11 @@ class Vtiger_Request {
 		try {
 			$request->validateWriteAccess();
 		} catch (\Throwable $th) {
+			$message = $th->getMessage();
+			if ($message == 'Site URL mismatch') {
+				echo $message;
+				die();
+			}
 			if ($msg) {
 				require_once 'Smarty_setup.php';
 				echo '<br><br>';

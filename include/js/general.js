@@ -1295,62 +1295,70 @@ function run_massedit() {
 		}
 
 		ExecuteFunctions('setSetting', 'skey=masseditids'+corebos_browsertabID+'&svalue='+sentForm['massedit_recordids']).then(function (response) {
+			if(response == 'Site URL mismatch'){
+				document.getElementById('massedit_error').innerHTML = alert_arr.ERR_SITE_URL_MISMATCH;
+				return false;
+			}
+			progressDetails();
 		}, function (error) {
 			console.log('error', error);
 		});
-		delete sentForm['massedit_recordids'];
-		delete sentForm['idstring'];
-		sentForm.corebos_browsertabID= corebos_browsertabID;
-
-		var rdo = document.getElementById('relresultssection');
-		rdo.style.visibility = 'visible';
-		rdo.style.display = 'block';
-		document.getElementById('massedit').style.display = 'none';
-
-		var worker  = new Worker('massedit-worker.js');
-		//a message is received
-		sentForm.SSE_SOURCE_ACTION = 'MassEditSave';
-		worker.postMessage(sentForm);
-		worker.addEventListener('message', function (e) {
-			var message = e.data;
-			if (e.data == 'CLOSE') {
-				if (document.basicSearch) {
-					var srch = document.basicSearch.searchtype.searchlaunched;
-					if (srch=='basic') {
-						callSearch('Basic');
-					} else if (srch=='advance') {
-						callSearch('Advanced');
-					} else {
-						jQuery.ajax({
-							method: 'POST',
-							url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
-						}).done(function (response) {
-							var result = response.split('&#&#&#');
-							if (Application_Landing_View=='table') {
-								document.getElementById('ListViewContents').innerHTML= result[2];
-							} else {
-								ListView.ListViewJSON('massedit');
-							}
-							if (result[1] != '') {
-								ldsPrompt.show(alert_arr['ERROR'], result[1]);
-							}
-						});
-					}
-				}
-				__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
-				var pBar = document.getElementById('progressor');
-				pBar.value = pBar.max; //max out the progress bar
-			} else {
-				__addLog(message.message);
-				var pBar = document.getElementById('progressor');
-				pBar.value = message.progress;
-				var perc = document.getElementById('percentage');
-				perc.innerHTML   = message.progress  + '% &nbsp;&nbsp;' + message.processed + '/' + message.total;
-				perc.style.width = (Math.floor(pBar.clientWidth * (message.progress/100)) + 15) + 'px';
-			}
-		}, false);
-		worker.postMessage(true);
 	}
+}
+
+function progressDetails(){
+	delete sentForm['massedit_recordids'];
+	delete sentForm['idstring'];
+	sentForm.corebos_browsertabID= corebos_browsertabID;
+
+	var rdo = document.getElementById('relresultssection');
+	rdo.style.visibility = 'visible';
+	rdo.style.display = 'block';
+	document.getElementById('massedit').style.display = 'none';
+
+	var worker  = new Worker('massedit-worker.js');
+	//a message is received
+	sentForm.SSE_SOURCE_ACTION = 'MassEditSave';
+	worker.postMessage(sentForm);
+	worker.addEventListener('message', function (e) {
+		var message = e.data;
+		if (e.data == 'CLOSE') {
+			if (document.basicSearch) {
+				var srch = document.basicSearch.searchtype.searchlaunched;
+				if (srch=='basic') {
+					callSearch('Basic');
+				} else if (srch=='advance') {
+					callSearch('Advanced');
+				} else {
+					jQuery.ajax({
+						method: 'POST',
+						url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
+					}).done(function (response) {
+						var result = response.split('&#&#&#');
+						if (Application_Landing_View=='table') {
+							document.getElementById('ListViewContents').innerHTML= result[2];
+						} else {
+							ListView.ListViewJSON('massedit');
+						}
+						if (result[1] != '') {
+							ldsPrompt.show(alert_arr['ERROR'], result[1]);
+						}
+					});
+				}
+			}
+			__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
+			var pBar = document.getElementById('progressor');
+			pBar.value = pBar.max; //max out the progress bar
+		} else {
+			__addLog(message.message);
+			var pBar = document.getElementById('progressor');
+			pBar.value = message.progress;
+			var perc = document.getElementById('percentage');
+			perc.innerHTML   = message.progress  + '% &nbsp;&nbsp;' + message.processed + '/' + message.total;
+			perc.style.width = (Math.floor(pBar.clientWidth * (message.progress/100)) + 15) + 'px';
+		}
+	}, false);
+	worker.postMessage(true);
 }
 
 function stopTask() {
@@ -1451,10 +1459,12 @@ function doModuleValidation(edit_type, editForm, callback) {
 		isvalid = doformValidation(edit_type);
 	}
 	if (isvalid && edit_type!='mass_edit') {
+		console.log("do server validate");
 		doServerValidation(edit_type, formName, callback);
 	} else {
 		return isvalid;
 	}
+	console.log("do module validate ..");
 	return false;
 }
 
