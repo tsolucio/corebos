@@ -104,6 +104,8 @@ var masterdetailwork = {
 		}
 		if (CurrentRecord!='') {
 			CurrentRecord = '&MDCurrentRecord='+CurrentRecord;
+		} else if (document.getElementById('record')) {
+			CurrentRecord = '&MDCurrentRecord='+document.getElementById('record').value;
 		}
 		let mapname = document.getElementById(MDGrid.substring(6)).dataset.mapname;
 		let mdgridinfo = JSON.stringify({
@@ -170,6 +172,7 @@ class mdActionRender {
 	constructor(props) {
 		let el;
 		let rowKey = props.rowKey;
+		let permissions = props.grid.getValue(rowKey, 'record_permissions');
 		let recordid = props.grid.getValue(rowKey, 'record_id') || '';
 		let module = props.grid.getValue(rowKey, 'record_module');
 		el = document.createElement('span');
@@ -190,7 +193,7 @@ class mdActionRender {
 				</svg>
 			</button>`;
 		}
-		if (props.columnInfo.renderer.options.edit) {
+		if (props.columnInfo.renderer.options.edit && permissions.edit == 'yes') {
 			actions += `
 			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.MDUpsert('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
 				<svg class="slds-button__icon" aria-hidden="true">
@@ -198,7 +201,7 @@ class mdActionRender {
 				</svg>
 			</button>`;
 		}
-		if (props.columnInfo.renderer.options.delete) {
+		if (props.columnInfo.renderer.options.delete && permissions.delete == 'yes') {
 			actions += `
 			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Delete']}">
 				<svg class="slds-button__icon" aria-hidden="true">

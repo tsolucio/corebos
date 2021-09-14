@@ -10,7 +10,7 @@ require_once 'modules/Calendar4You/Calendar4You.php';
 require_once 'modules/Calendar4You/CalendarUtils.php';
 
 global $currentModule, $current_user;
-
+Vtiger_Request::validateRequest();
 $Calendar4You = new Calendar4You();
 
 $Calendar4You->GetDefPermission($current_user);

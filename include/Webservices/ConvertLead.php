@@ -182,12 +182,10 @@ function vtws_convertlead($entityvalues, $user) {
 	return $entityIds;
 }
 
-/*
- * populate the entity fields with the lead info.
+/** populate the entity fields with the lead info.
  * if mandatory field is not provided populate with '????'
- * returns the entity array.
+ * @return array the entity
  */
-
 function vtws_populateConvertLeadEntities($entityvalue, $entity, $entityHandler, $leadHandler, $leadinfo) {
 	global $adb;
 	$entityName = $entityvalue['name'];
@@ -215,12 +213,12 @@ function vtws_populateConvertLeadEntities($entityvalue, $entity, $entityHandler,
 		do {
 			$entityField = vtws_getFieldfromFieldId($row[$column], $entityFields);
 			if ($entityField == null) {
-				//user doesn't have access so continue.TODO update even if user doesn't have access
+				//user doesn't have access so continue. should we update even if user doesn't have access?
 				continue;
 			}
 			$leadField = vtws_getFieldfromFieldId($row['leadfid'], $leadFields);
 			if ($leadField == null) {
-				//user doesn't have access so continue.TODO update even if user doesn't have access
+				//user doesn't have access so continue. should we update even if user doesn't have access?
 				continue;
 			}
 			$leadFieldName = $leadField->getFieldName();

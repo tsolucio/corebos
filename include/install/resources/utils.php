@@ -987,7 +987,7 @@ class Common_Install_Wizard_Utils {
 					$unzip->unzipAllEx($package->getTemporaryFilePath());
 					$moduleInfoList = $package->getAvailableModuleInfoFromModuleBundle();
 					foreach ($moduleInfoList as $moduleInfo) {
-						$moduleInfo = (Array)$moduleInfo;
+						$moduleInfo = (array)$moduleInfo;
 						$packagepath = $package->getTemporaryFilePath($moduleInfo['filepath']);
 						$subModule = new Vtiger_Package();
 						$subModule->getModuleNameFromZip($packagepath);
@@ -1189,7 +1189,7 @@ class Common_Install_Wizard_Utils {
 							$unzip->unzipAllEx($package->getTemporaryFilePath());
 							$moduleInfoList = $package->getAvailableModuleInfoFromModuleBundle();
 							foreach ($moduleInfoList as $moduleInfo) {
-								$moduleInfo = (Array)$moduleInfo;
+								$moduleInfo = (array)$moduleInfo;
 								$packagepath = $package->getTemporaryFilePath($moduleInfo['filepath']);
 								$subModule = new Vtiger_Package();
 								$subModuleName = $subModule->getModuleNameFromZip($packagepath);

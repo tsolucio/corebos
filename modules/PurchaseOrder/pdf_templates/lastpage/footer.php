@@ -47,9 +47,9 @@ $pdf->addTextBlock($app_strings["Billing Address"].":", $billText, $billPosition
 // totals
 $totalBlock=array("145","235","10", "110");
 $totalText=$app_strings["Subtotal"].":      ".$price_subtotal."\n".
-	   $app_strings["Tax"].":              ".$price_salestax."\n".
-	   $app_strings["Adjustment"].":  ".$price_adjustment."\n".
-	   $app_strings["Total"].":            ".$price_total;
+	$app_strings["Tax"].":              ".$price_salestax."\n".
+	$app_strings["Adjustment"].":  ".$price_adjustment."\n".
+	$app_strings["Total"].":            ".$price_total;
 $pdf->addDescBlock($totalText, $app_strings["Total Due"], $totalBlock);
 
 $blurbBlock=array("10","265","150", "60");

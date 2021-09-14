@@ -39,7 +39,7 @@ class VTTaskManager {
 			$taskId = $adb->getUniqueID('com_vtiger_workflowtasks');
 			$task->id = $taskId;
 			$orderrs = $adb->pquery('select max(executionorder) from com_vtiger_workflowtasks where workflow_id=?', array($task->workflowId));
-			$order = $adb->query_result($orderrs, 0, 0)+1;
+			$order = (int)$adb->query_result($orderrs, 0, 0)+1;
 			$rdo = $adb->pquery(
 				'insert into com_vtiger_workflowtasks (task_id, workflow_id, summary, task, executionorder) values (?, ?, ?, ?, ?)',
 				array($taskId, $task->workflowId, $task->summary, serialize($task), $order)

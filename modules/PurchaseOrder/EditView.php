@@ -302,8 +302,6 @@ if ($focus->mode == 'edit') {
 	$smarty->assign('INV_CURRENCY_ID', $currencyid);
 }
 
-$smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : '');
-
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));

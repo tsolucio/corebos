@@ -128,7 +128,7 @@ class CRMEntity {
 		return (($rs && $adb->num_rows($rs)>0) ? $rs->fields['wsid'] : '');
 	}
 
-	public function saveentity($module, $fileid = '') {
+	public function saveentity($module) {
 		global $current_user, $adb;
 		if (property_exists($module, 'HasDirectImageField') && $this->HasDirectImageField && !empty($this->id)) {
 			// we have to save these names to delete previous overwritten values in uitype 69 field
@@ -159,9 +159,9 @@ class CRMEntity {
 
 		foreach ($this->tab_name as $table_name) {
 			if ($table_name == 'vtiger_crmentity') {
-				$this->insertIntoCrmEntity($module, $fileid);
+				$this->insertIntoCrmEntity($module);
 			} else {
-				$this->insertIntoEntityTable($table_name, $module, $fileid);
+				$this->insertIntoEntityTable($table_name, $module);
 			}
 		}
 
@@ -444,13 +444,8 @@ class CRMEntity {
 	/** Function to insert values in the crmentity table for the specified module
 	 * @param $module -- module:: Type varchar
 	 */
-	private function insertIntoCrmEntity($module, $fileid = '') {
+	private function insertIntoCrmEntity($module) {
 		global $adb, $current_user;
-
-		if ($fileid != '') {
-			$this->id = $fileid;
-			$this->mode = 'edit';
-		}
 		$crmvalues = $this->getCrmEntityValues($module);
 		$ownerid = $crmvalues['ownerid'];
 		if ($this->mode == 'edit') {
@@ -602,7 +597,7 @@ class CRMEntity {
 	 * @param $table_name -- table name:: Type varchar
 	 * @param $module -- module:: Type varchar
 	 */
-	private function insertIntoEntityTable($table_name, $module, $fileid = '') {
+	private function insertIntoEntityTable($table_name, $module) {
 		global $log, $current_user, $app_strings, $from_wf, $adb;
 		$log->debug("> insertIntoEntityTable $module $table_name");
 		$insertion_mode = $this->mode;
@@ -1355,7 +1350,7 @@ class CRMEntity {
 	/** Function to saves the values in all the tables mentioned in the class variable $tab_name for the specified module
 	 * @param $module_name -- module:: Type varchar
 	 */
-	public function save($module_name, $fileid = '') {
+	public function save($module_name) {
 		global $current_user, $adb;
 		if (!empty($_REQUEST['FILTERFIELDSMAP'])) {
 			$bmapname = vtlib_purify($_REQUEST['FILTERFIELDSMAP']);
@@ -1430,7 +1425,7 @@ class CRMEntity {
 		$em->triggerEvent('vtiger.entity.beforesave.final', $entityData);
 		//Event triggering code ends
 		//GS Save entity being called with the modulename as parameter
-		$this->saveentity($module_name, $fileid);
+		$this->saveentity($module_name);
 
 		//Event triggering code
 		$em->triggerEvent('vtiger.entity.aftersave.first', $entityData);
@@ -1548,8 +1543,6 @@ class CRMEntity {
 	 */
 	public function apply_field_security() {
 		global $current_user, $currentModule;
-
-		require_once 'include/utils/UserInfoUtil.php';
 		foreach ($this->column_fields as $fieldname => $fieldvalue) {
 			$reset_value = false;
 			if (getFieldVisibilityPermission($currentModule, $current_user->id, $fieldname) != '0') {
@@ -1826,8 +1819,6 @@ class CRMEntity {
 	 */
 	public function initImportableFields($module) {
 		global $current_user;
-		require_once 'include/utils/UserInfoUtil.php';
-
 		$skip_uitypes = array('4'); // uitype 4 is for Mod numbers
 		// Look at cache if the fields information is available.
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);

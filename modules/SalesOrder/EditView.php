@@ -77,7 +77,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$currencyid = $quote_focus->column_fields['currency_id'];
 		$rate = $quote_focus->column_fields['conversion_rate'];
 
-		//Added to display the Quotes's associated vtiger_products -- when we create SO from Quotes DetailView
+		//Added to display the Quotes's associated products -- when we create SO from Quotes DetailView
 		$associated_prod = getAssociatedProducts('Quotes', $quote_focus);
 		$smarty->assign('CONVERT_MODE', vtlib_purify($_REQUEST['convertmode']));
 		$smarty->assign('QUOTE_ID', $quoteid);
@@ -428,8 +428,6 @@ if ($focus->mode == 'edit') {
 } else {
 	$smarty->assign('INV_CURRENCY_ID', $currencyid);
 }
-
-$smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : '');
 
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';

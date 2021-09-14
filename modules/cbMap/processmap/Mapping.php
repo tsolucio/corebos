@@ -188,30 +188,30 @@ class Mapping extends processcbMap {
 			return array();
 		}
 		$mapping=$target_fields=array();
-		$mapping['origin'] = (String)$xml->originmodule->originname;
-		$mapping['target'] = (String)$xml->targetmodule->targetname;
+		$mapping['origin'] = (string)$xml->originmodule->originname;
+		$mapping['target'] = (string)$xml->targetmodule->targetname;
 		foreach ($xml->fields->field as $v) {
-			$fieldname = (String)$v->fieldname;
+			$fieldname = (string)$v->fieldname;
 			if (!empty($v->value)) {
-				$target_fields[$fieldname]['value'] = (String)$v->value;
+				$target_fields[$fieldname]['value'] = (string)$v->value;
 			}
 			$allmergeFields=array();
 			foreach ($v->Orgfields->Orgfield as $value) {
 				if (isset($value->Rule)) {
 					$arr = array(
-						(String)$value->OrgfieldID=>(String)$value->OrgfieldName,
-						"mapid"=>(String)$value->Rule);
+						(string)$value->OrgfieldID=>(string)$value->OrgfieldName,
+						"mapid"=>(string)$value->Rule);
 				} else {
-					$arr = array((String)$value->OrgfieldID=>(String)$value->OrgfieldName);
+					$arr = array((string)$value->OrgfieldID=>(string)$value->OrgfieldName);
 				}
 				$allmergeFields[] = $arr;
 			}
 			if (isset($v->Orgfields->delimiter)) {
-				$target_fields[$fieldname]['delimiter']=(String)$v->Orgfields->delimiter;
+				$target_fields[$fieldname]['delimiter']=(string)$v->Orgfields->delimiter;
 			}
 			$target_fields[$fieldname]['merge']=$allmergeFields;
 			if (isset($v->master)) {
-				$target_fields[$fieldname]['master'] = filter_var((String)$v->master, FILTER_VALIDATE_BOOLEAN);
+				$target_fields[$fieldname]['master'] = filter_var((string)$v->master, FILTER_VALIDATE_BOOLEAN);
 			} else {
 				$target_fields[$fieldname]['master'] = false;
 			}

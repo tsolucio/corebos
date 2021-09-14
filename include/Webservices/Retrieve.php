@@ -90,7 +90,7 @@ function vtws_retrieve($id, $user) {
 		}
 	}
 	//return product lines
-	if ($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') {
+	if (in_array($entityName, getInventoryModules())) {
 		$cbMap = cbMap::getMapByName($entityName.'InventoryDetails', 'MasterDetailLayout');
 		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'index')=='yes');
 		if ($MDMapFound) {

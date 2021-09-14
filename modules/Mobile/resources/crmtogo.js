@@ -51,6 +51,9 @@
 		return isDialog;
 	}
 	function updateOnlineStatus(event) {
+		if (event.srcElement.origin !== window.location.origin) {
+			return;
+		}
 		var condition = navigator.onLine ? 'online' : 'offline';
 		if (condition == 'offline') {
 			jQuery.blockUI({

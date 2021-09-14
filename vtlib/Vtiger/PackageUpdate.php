@@ -78,21 +78,9 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 				$this->__parseManifestFile($zipfile);
 			}
 
-			$buildModuleArray = array();
-			$installSequenceArray = array();
 			$moduleBundle = (boolean)$this->_modulexml->modulebundle;
 			if ($moduleBundle) {
-				$moduleList = (Array)$this->_modulexml->modulelist;
-				foreach ($moduleList as $moduleInfos) {
-					foreach ($moduleInfos as $moduleInfo) {
-						$moduleInfo = (Array)$moduleInfo;
-						$buildModuleArray[] = $moduleInfo;
-						$installSequenceArray[] = $moduleInfo['install_sequence'];
-					}
-				}
-				sort($installSequenceArray);
-				$unzip = new Vtiger_Unzip($zipfile);
-				$unzip->unzipAllEx($this->getTemporaryFilePath());
+				list($buildModuleArray, $installSequenceArray) = $this->prepareBundleForProcessing($zipfile);
 				foreach ($installSequenceArray as $sequence) {
 					foreach ($buildModuleArray as $moduleInfo) {
 						if ($moduleInfo['install_sequence'] == $sequence) {
@@ -375,7 +363,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 		}
 		$moduleInstance->deleteRelatedLists();
 		foreach ($modulenode->relatedlists->relatedlist as $relatedlistnode) {
-			$relModuleInstance = $this->update_Relatedlist($modulenode, $moduleInstance, $relatedlistnode);
+			$this->update_Relatedlist($modulenode, $moduleInstance, $relatedlistnode);
 		}
 	}
 

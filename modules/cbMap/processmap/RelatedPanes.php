@@ -80,11 +80,11 @@ class RelatedPanes extends processcbMap {
 			return array();
 		}
 		$mapping=array();
-		$mapping['origin'] = (String)$xml->originmodule->originname;
+		$mapping['origin'] = (string)$xml->originmodule->originname;
 		$origintab=getTabid($mapping['origin']);
 		$mapping['panes'] = array();
 		foreach ($xml->panes->pane as $v) {
-			$pane = array('label'=>getTranslatedString((String)$v->label, $mapping['origin']));
+			$pane = array('label'=>getTranslatedString((string)$v->label, $mapping['origin']));
 			$pane['blocks'] = $restrictedRelations = array();
 			if (isset($v->defaultMoreInformation)) {
 				$pane['label'] = getTranslatedString('LBL_MORE').' '.getTranslatedString('LBL_INFORMATION');
@@ -103,11 +103,11 @@ class RelatedPanes extends processcbMap {
 			} else {
 				foreach ($v->blocks->block as $value) {
 					$block = array();
-					$block['type'] = (String)$value->type;
-					$block['sequence'] = (String)$value->sequence;
-					$block['label'] = getTranslatedString((String)$value->label, $mapping['origin']);
-					$block['loadfrom'] = (String)$value->loadfrom;
-					$block['loadphp'] = (isset($value->loadphp) ? (String)$value->loadphp : '');
+					$block['type'] = (string)$value->type;
+					$block['sequence'] = (string)$value->sequence;
+					$block['label'] = getTranslatedString((string)$value->label, $mapping['origin']);
+					$block['loadfrom'] = (string)$value->loadfrom;
+					$block['loadphp'] = (isset($value->loadphp) ? (string)$value->loadphp : '');
 					if ($block['type']=='RelatedList') {
 						if (is_numeric($block['loadfrom']) && !vtlib_isModuleActive($block['loadfrom'])) {
 							continue;
@@ -134,9 +134,9 @@ class RelatedPanes extends processcbMap {
 						$row['linkurl']  = decode_html($block['loadfrom']);
 						$row['linkicon'] = '';
 						$row['sequence'] = $block['sequence'];
-						$row['handler_path'] = (isset($value->handler_path) ? (String)$value->handler_path : '');
-						$row['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
-						$row['handler'] = (isset($value->handler) ? (String)$value->handler : '');
+						$row['handler_path'] = (isset($value->handler_path) ? (string)$value->handler_path : '');
+						$row['handler_class'] = (isset($value->handler_class) ? (string)$value->handler_class : '');
+						$row['handler'] = (isset($value->handler) ? (string)$value->handler : '');
 						$row['onlyonmymodule'] = 1;
 						$instance->initialize($row);
 						if (!empty($row['handler_path']) && isInsideApplication($row['handler_path'])) {
@@ -159,7 +159,7 @@ class RelatedPanes extends processcbMap {
 				$pane['restrictedRelations'] = $restrictedRelations;
 			}
 			ksort($pane['blocks']);
-			$mapping['panes'][(Integer)$v->sequence]=$pane;
+			$mapping['panes'][(integer)$v->sequence]=$pane;
 		}
 		ksort($mapping['panes']);
 		return $mapping;

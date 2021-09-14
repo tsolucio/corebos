@@ -447,5 +447,11 @@ var alert_arr = {
 	'Min. 1 number': 'Minimum one number',
 	'Min. 1 special character': 'Minimum one special character ! ? , ; - @ #',
 	'LBL_CHANGE_PASSWORD': 'Passwort ändern',
-	'ACT_UNIT_PRICE_MISMATCH': 'The actual price for this currency should be equal to the unit price, but this is not the case for this product or service'
+	'ACT_UNIT_PRICE_MISMATCH': 'The actual price for this currency should be equal to the unit price, but this is not the case for this product or service',
+	'LBL_SHOWING': 'Zeige Datensätze ',
+	'LBL_RECORDS': ' von ',
+	'LNK_DELETE': 'löschen',
+	'LNK_EDIT': 'bearbeiten',
+	'LNK_EDIT_ACTION': 'Bearbeiten',
+	'LNK_DELETE_ACTION': 'Löschen',
 };

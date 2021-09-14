@@ -119,4 +119,25 @@
 	<classname>setDocRelComments</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Import Merge Condition Column</description>
+	<filename>build/changeSets/2021/AddImportMergeConditionColumn.php</filename>
+	<classname>AddImportMergeConditionColumn</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Import Skip Create Column</description>
+	<filename>build/changeSets/2021/AddImportSkipCreateColumn.php</filename>
+	<classname>AddImportSkipCreateColumn</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add missing primary indexes</description>
+	<filename>build/changeSets/2021/AddMissingPrimaryIndexes.php</filename>
+	<classname>AddMissingPrimaryIndexes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

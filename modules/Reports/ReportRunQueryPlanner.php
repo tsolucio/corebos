@@ -90,7 +90,6 @@ class ReportRunQueryPlanner {
 
 			$keyColumns = is_array($keyColumns) ? array_unique($keyColumns) : array($keyColumns);
 
-			// Minor optimization to avoid re-creating similar temporary table.
 			$uniqueName = null;
 			foreach ($this->tempTables as $tmpUniqueName => $tmpTableInfo) {
 				if (strcasecmp($query, $tmpTableInfo['query']) === 0 && $tmpTableInfo['module'] == $module) {
@@ -103,8 +102,6 @@ class ReportRunQueryPlanner {
 
 			// Nothing found?
 			if ($uniqueName === null) {
-				// TODO Adding randomness in name to avoid concurrency
-				// even when same-user opens the report multiple instances at same-time.
 				$uniqueName = $this->tempTablePrefix . str_replace('.', '', uniqid($current_user->id, true)) . (self::$tempTableCounter++);
 				$this->tempTables[$uniqueName] = array(
 					'query' => $query,

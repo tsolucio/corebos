@@ -38,13 +38,6 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	private $_licensetext = false;
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Parse the manifest file
 	 * @access private
 	 */
@@ -121,8 +114,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * @return Array module list available in the module bundle.
 	 */
 	public function getAvailableModuleInfoFromModuleBundle() {
-		$list = (Array)$this->_modulexml->modulelist;
-		return (Array)$list['dependent_module'];
+		$list = (array)$this->_modulexml->modulelist;
+		return (array)$list['dependent_module'];
 	}
 
 	/**
@@ -353,21 +346,9 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				$this->__parseManifestFile($unzip);
 			}
 
-			$buildModuleArray = array();
-			$installSequenceArray = array();
 			$moduleBundle = (boolean)$this->_modulexml->modulebundle;
 			if ($moduleBundle) {
-				$moduleList = (Array)$this->_modulexml->modulelist;
-				foreach ($moduleList as $moduleInfos) {
-					foreach ($moduleInfos as $moduleInfo) {
-						$moduleInfo = (Array)$moduleInfo;
-						$buildModuleArray[] = $moduleInfo;
-						$installSequenceArray[] = $moduleInfo['install_sequence'];
-					}
-				}
-				sort($installSequenceArray);
-				$unzip = new Vtiger_Unzip($zipfile);
-				$unzip->unzipAllEx($this->getTemporaryFilePath());
+				list($buildModuleArray, $installSequenceArray) = $this->prepareBundleForProcessing($zipfile);
 				foreach ($installSequenceArray as $sequence) {
 					foreach ($buildModuleArray as $moduleInfo) {
 						if ($moduleInfo['install_sequence'] == $sequence) {
@@ -381,6 +362,26 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				$this->import_Module();
 			}
 		}
+	}
+
+	/**
+	 * unpacks a module bundle and returns informtion for processing
+	 */
+	public function prepareBundleForProcessing($zipfile) {
+		$buildModuleArray = array();
+		$installSequenceArray = array();
+		$moduleList = (array)$this->_modulexml->modulelist;
+		foreach ($moduleList as $moduleInfos) {
+			foreach ($moduleInfos as $moduleInfo) {
+				$moduleInfo = (array)$moduleInfo;
+				$buildModuleArray[] = $moduleInfo;
+				$installSequenceArray[] = $moduleInfo['install_sequence'];
+			}
+		}
+		sort($installSequenceArray);
+		$unzip = new Vtiger_Unzip($zipfile);
+		$unzip->unzipAllEx($this->getTemporaryFilePath());
+		return array($buildModuleArray, $installSequenceArray);
 	}
 
 	/**
@@ -449,25 +450,20 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$moduleInstance = new Vtiger_Module();
 		$moduleInstance->name = $tabname;
 		$moduleInstance->label= $tablabel;
-		if ($menuInstance = Vtiger_Menu::getInstance($parenttab)) {
-			$moduleInstance->parent=$parenttab;
-		} else {
-			$moduleInstance->parent='Tools';
+		$menuInstance = Vtiger_Menu::getInstance($parenttab);
+		if (!$menuInstance) {
+			self::log("Module attached to Tools because $parenttab does not exist");
+			$parenttab = 'Tools';
+			$menuInstance = Vtiger_Menu::getInstance($parenttab);
 		}
+		$moduleInstance->parent = $parenttab;
 		$moduleInstance->isentitytype = !$isextension;
 		$moduleInstance->version = (!$tabversion)? 0 : $tabversion;
 		$moduleInstance->minversion = (!$vtigerMinVersion)? false : $vtigerMinVersion;
 		$moduleInstance->maxversion = (!$vtigerMaxVersion)?  false : $vtigerMaxVersion;
 		$moduleInstance->save();
 
-		if (!empty($parenttab)) {
-			$menuInstance = Vtiger_Menu::getInstance($parenttab);
-			if ($menuInstance == null) {
-				$menuInstance = Vtiger_Menu::getInstance('Tools');
-				self::log("Module attached to Tools because $parenttab does not exist");
-			}
-			$menuInstance->addModule($moduleInstance);
-		}
+		$menuInstance->addModule($moduleInstance);
 
 		$this->import_Tables($this->_modulexml);
 		$this->import_Blocks($this->_modulexml, $moduleInstance);

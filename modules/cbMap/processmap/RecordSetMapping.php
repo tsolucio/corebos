@@ -55,7 +55,7 @@ class RecordSetMapping extends processcbMap {
 		if (isset($xml->records)) {
 			foreach ($xml->records->record as $v) {
 				if (isset($v->action)) {
-					$action = strtolower((String)$v->action);
+					$action = strtolower((string)$v->action);
 					if (!in_array($action, $this->actions)) {
 						$action = $this->default_action;
 					}
@@ -63,30 +63,30 @@ class RecordSetMapping extends processcbMap {
 					$action = $this->default_action;
 				}
 				if (isset($v->id)) {
-					$rs = $adb->pquery('select setype from vtiger_crmobject where crmid=? and deleted=0', array((Integer)$v->id));
+					$rs = $adb->pquery('select setype from vtiger_crmobject where crmid=? and deleted=0', array((integer)$v->id));
 					if ($adb->num_rows($rs)==1) {
 						$recinfo = $adb->fetch_array($rs);
-						$this->mapping[$action]['ids'][] = (Integer)$v->id;
-						$this->mapping[$action][$recinfo['setype']][] = (Integer)$v->id;
+						$this->mapping[$action]['ids'][] = (integer)$v->id;
+						$this->mapping[$action][$recinfo['setype']][] = (integer)$v->id;
 						if (!in_array($recinfo['setype'], $this->mapping['modules'])) {
 							$this->mapping['modules'][] = $recinfo['setype'];
 						}
 					}
 				} else {
-					$tabid = getTabid((String)$v->module);
+					$tabid = getTabid((string)$v->module);
 					$ui4rs = $adb->pquery('select fieldname from vtiger_field where uitype=4 and tabid=?', array($tabid));
 					$ui4 = $adb->query_result($ui4rs, 0, 0);
-					$queryGenerator = new QueryGenerator((String)$v->module, $current_user);
+					$queryGenerator = new QueryGenerator((string)$v->module, $current_user);
 					$queryGenerator->setFields(array('id'));
-					$queryGenerator->addCondition($ui4, (String)$v->value, 'e');
+					$queryGenerator->addCondition($ui4, (string)$v->value, 'e');
 					$query = $queryGenerator->getQuery();
 					$idrs = $adb->pquery($query, array());
 					if ($idrs && $adb->num_rows($idrs)>0) {
 						$id = $adb->query_result($idrs, 0, 0);
-						$this->mapping[$action]['ids'][] = (Integer)$id;
-						$this->mapping[$action][(String)$v->module][] = (Integer)$id;
-						if (!in_array((String)$v->module, $this->mapping['modules'])) {
-							$this->mapping['modules'][] = (String)$v->module;
+						$this->mapping[$action]['ids'][] = (integer)$id;
+						$this->mapping[$action][(string)$v->module][] = (integer)$id;
+						if (!in_array((string)$v->module, $this->mapping['modules'])) {
+							$this->mapping['modules'][] = (string)$v->module;
 						}
 					}
 				}

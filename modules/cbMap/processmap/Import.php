@@ -130,37 +130,39 @@ class Import extends processcbMap {
 	private function convertMap2ArraycoreBOS() {
 		global $adb;
 		$xml = $this->getXMLContent();
-		$mapname = (String)$xml->mapname;
+		$mapname = (string)$xml->mapname;
 		$rs = $adb->pquery('select id from vtiger_import_maps where name=? limit 1', array($mapname));
 		if (!$rs || $adb->num_rows($rs)==0) {
 			$this->mapping = array();
 			$this->importtype = 'error';
 			return;
 		}
-		$mapping= array(
+		$tmap= array(
 			'mapname' => $mapname,
 			'mapid' => $rs->fields['id'],
-			'delimiter' => (empty($xml->delimiter)) ? ',' : (String)$xml->delimiter,
+			'delimiter' => (empty($xml->delimiter)) ? ',' : (string)$xml->delimiter,
 			'duphandling' => 'none',
 			'dupmatches' => array(),
 		);
 		if (isset($xml->duplicates)) {
-			$mapping['duphandling'] = isset($xml->duplicates->handling) ? (String)$xml->duplicates->handling : 'none';
+			$tmap['duphandling'] = isset($xml->duplicates->handling) ? (string)$xml->duplicates->handling : 'none';
+			$tmap['skipcreate'] = (empty($xml->duplicates->skipcreate)) ? 0 : (int)$xml->duplicates->skipcreate;
+			$tmap['importmergecondition'] = (empty($xml->duplicates->importmergecondition)) ? 0 : (int)$xml->duplicates->importmergecondition;
 			foreach ($xml->duplicates->fields->name as $v) {
 				if (!empty($v)) {
-					$mapping['dupmatches'][] = (String)$v;
+					$tmap['dupmatches'][] = (string)$v;
 				}
 			}
 		}
-		$this->mapping = $mapping;
+		$this->mapping = $tmap;
 	}
 
 	private function convertMap2ArrayDirect() {
 		$xml = $this->getXMLContent();
 		foreach ($xml->fields->field as $v) {
-			$fieldname= isset($v->fieldname) ? (String)$v->fieldname : '';
-			$value= isset($v->value) ? (String)$v->value : '';
-			$predefined= isset($v->predefined) ? (String)$v->predefined : '';
+			$fieldname= isset($v->fieldname) ? (string)$v->fieldname : '';
+			$value= isset($v->value) ? (string)$v->value : '';
+			$predefined= isset($v->predefined) ? (string)$v->predefined : '';
 			if (empty($v->Orgfields[0]->Relfield)) {
 				$fieldinfo[$fieldname] = array('value'=>$value,'predefined'=>$predefined);
 			} elseif (!empty($v->Orgfields[0]->Relfield) && isset($v->Orgfields[0]->Relfield)) {
@@ -191,13 +193,12 @@ class Import extends processcbMap {
 		foreach ($xml->targetmodule[0] as $key => $value) {
 			$target_module[$key] = (string) $value;
 		}
-		$mapping= array(
+		$this->mapping= array(
 			'target' => $fieldinfo,
 			'match' => $match_fields,
 			'options'=>$update_rules,
 			'targetmodule'=>$target_module,
 		);
-		$this->mapping = $mapping;
 	}
 
 	private function doImport($arguments) {
@@ -394,6 +395,8 @@ class Import extends processcbMap {
 			'default_values' => $rs->fields['defaultvalues'],
 			'merge_type' => Import_Utils::$AUTO_MERGE_NONE,
 			'merge_fields' => '',
+			'skipcreate' => empty($this->mapping['skipcreate']) ? 0 : $this->mapping['skipcreate'],
+			'importmergecondition' => empty($this->mapping['importmergecondition']) ? 0 : $this->mapping['importmergecondition'],
 		);
 		if ($this->mapping['duphandling']!='none') {
 			switch ($this->mapping['duphandling']) {

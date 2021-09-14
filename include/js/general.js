@@ -1326,7 +1326,11 @@ function run_massedit() {
 							url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
 						}).done(function (response) {
 							var result = response.split('&#&#&#');
-							document.getElementById('ListViewContents').innerHTML= result[2];
+							if (Application_Landing_View=='table') {
+								document.getElementById('ListViewContents').innerHTML= result[2];
+							} else {
+								ListView.ListViewJSON('massedit');
+							}
 							if (result[1] != '') {
 								ldsPrompt.show(alert_arr['ERROR'], result[1]);
 							}
@@ -2739,7 +2743,12 @@ function _2digit(no) {
 
 function confirmdelete(url) {
 	if (confirm(alert_arr.ARE_YOU_SURE)) {
-		document.location.href=url;
+		jQuery.ajax({
+			method: 'POST',
+			url: url
+		}).done(function (response) {
+			location.reload();
+		});
 	}
 }
 
@@ -3573,9 +3582,13 @@ function ajaxChangeCalendarStatus(statusname, activityid, from) {
 	}).done(function (response) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
-		if (document.getElementById('ListViewContents')) {
-			document.getElementById('ListViewContents').innerHTML = result[2];
-			document.getElementById('basicsearchcolumns').innerHTML = '';
+		if (Application_Landing_View=='table') {
+			if (document.getElementById('ListViewContents')) {
+				document.getElementById('ListViewContents').innerHTML = result[2];
+				document.getElementById('basicsearchcolumns').innerHTML = '';
+			}
+		} else {
+			ListView.ListViewJSON('massedit');
 		}
 		if (result[1] && result[1] != '') {
 			ldsPrompt.show(alert_arr['ERROR'], result[1]);

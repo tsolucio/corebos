@@ -146,7 +146,6 @@ class Vtiger_MailScanner {
 				unset($mailrecord);
 			}
 			/* Update lastscan for this folder and reset rescan flag */
-			// TODO: Update lastscan only if all the mail searched was parsed successfully?
 			$rescanFolderFlag = false;
 			$this->updateLastScan($lookAtFolder, $rescanFolderFlag);
 		}
@@ -193,7 +192,6 @@ class Vtiger_MailScanner {
 		if ($crmid === false) {
 			$crmid = null;
 		}
-		// TODO Make sure we have unique entry
 		$adb->pquery(
 			'INSERT INTO vtiger_mailscanner_ids(scannerid, messageid, crmid) VALUES(?,?,?)',
 			array($this->_scannerinfo->scannerid, $mailrecord->_uniqueid, $crmid)
