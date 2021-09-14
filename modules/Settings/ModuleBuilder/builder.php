@@ -178,6 +178,7 @@ class ModuleBuilder {
 					$this->column_data['export']
 				));
 				$lastID = $adb->getLastInsertID();
+				$this->id = $lastID;
 				$adb->pquery('INSERT INTO vtiger_modulebuilder_name (modulebuilderid, date, completed, userid) VALUES (?,?,?,?)', array($lastID,date('Y-m-d'),'20',$current_user->id));
 				$cookie_name = "ModuleBuilderID";
 				setcookie($cookie_name, $lastID, time() + ((86400 * 30) * 7), "/");
@@ -247,7 +248,7 @@ class ModuleBuilder {
 			}
 		}
 		if (!$adb->database->_errorMsg) {
-			return array('saved' => true);
+			return array('moduleid' => $this->id);
 		}
 		return array('error' => $adb->database->_errorMsg);
 	}
@@ -276,7 +277,7 @@ class ModuleBuilder {
 			WHERE userid=?';
 		$modulesSql = $adb->pquery($list_query, array($current_user->id));
 		$numOfRows = $adb->num_rows($modulesSql);
-		$modules = $adb->pquery($list_query.$limitSql, array($current_user->id));
+		$modules = $adb->pquery($list_query, array($current_user->id));
 		$moduleLists = array();
 		while ($row = $modules->FetchRow()) {
 			$modInfo = array();
@@ -702,9 +703,12 @@ class ModuleBuilder {
 
 	public function VerifyModule($modulename) {
 		global $adb;
-		$sql = $adb->pquery('SELECT * FROM vtiger_modulebuilder WHERE modulebuilder_name=?', array($modulename));
+		$sql = $adb->pquery('SELECT * FROM vtiger_modulebuilder m INNER JOIN vtiger_modulebuilder_name mb ON mb.modulebuilderid=m.modulebuilderid WHERE modulebuilder_name=?', array($modulename));
 		if ($adb->num_rows($sql) > 0) {
-			return array('moduleid' => (Int)$adb->query_result($sql, 0, 'modulebuilderid'));
+			return array(
+				'moduleid' => (Int)$adb->query_result($sql, 0, 'modulebuilderid'),
+				'step' => $adb->query_result($sql, 0, 'completed')
+			);
 		}
 		return 0;
 	}

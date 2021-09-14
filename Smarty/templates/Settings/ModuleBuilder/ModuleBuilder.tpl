@@ -41,7 +41,7 @@
 							      <div class="slds-path__scroller">
 							        <div class="slds-path__scroller_inner">
 							          <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
-							            <li class="slds-path__item slds-is-current slds-is-active" id="general-information">
+							            <li class="slds-path__item slds-is-current slds-is-active" id="general-information" onclick="mb.backTo(1, true)">
 							              <a aria-selected="true" class="slds-path__link">
 							                <span class="slds-path__stage">
 							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
@@ -51,7 +51,7 @@
 							                <span class="slds-path__title">{$MOD.LBL_MB_GENERAL}</span>
 							              </a>
 							            </li>
-							            <li class="slds-path__item slds-is-incomplete" role="presentation"id="block-information">
+							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="block-information" onclick="mb.backTo(2, true)">
 							              <a aria-selected="false" class="slds-path__link">
 							                <span class="slds-path__stage">
 							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
@@ -61,7 +61,7 @@
 							                <span class="slds-path__title">{$MOD.LBL_MB_MODULEBLOCKS}</span>
 							              </a>
 							            </li>
-							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="field-information">
+							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="field-information" onclick="mb.backTo(3, true)">
 							              <a aria-selected="false" class="slds-path__link">
 							                <span class="slds-path__stage">
 							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
@@ -71,7 +71,7 @@
 							                <span class="slds-path__title">{$MOD.LBL_MB_MODULEFIELDS}</span>
 							              </a>
 							            </li>
-							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="filters">
+							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="filters" onclick="mb.backTo(4, true)">
 							              <a aria-selected="false" class="slds-path__link">
 							                <span class="slds-path__stage">
 							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
@@ -81,7 +81,7 @@
 							                <span class="slds-path__title">{$MOD.LBL_MB_CVS}</span>
 							              </a>
 							            </li>
-							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="relationship">
+							            <li class="slds-path__item slds-is-incomplete" role="presentation" id="relationship" onclick="mb.backTo(5, true)">
 							              <a aria-selected="false" class="slds-path__link">
 							                <span class="slds-path__stage">
 							                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">

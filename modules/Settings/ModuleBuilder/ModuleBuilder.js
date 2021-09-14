@@ -21,6 +21,7 @@ let fieldGridInstance;
 let viewGridInstance;
 let listGridInstance;
 let moduleData = new Array();
+let MODULEID = localStorage.getItem('ModuleBuilderID');
 
 const mb = {
 	/**
@@ -159,21 +160,18 @@ const mb = {
 		if (step == 5) {
 			let relatedLists = [];
 			const LIST_COUNT = mb.loadElement('LIST_COUNT');
-			let UITYPE_NO = document.getElementsByName('uitype_no').value;
 			if (forward == false) {
 				let proceed = true;
-				if (UITYPE_NO == 10) {
-					if (mb.loadElement(`autocomplete-module-${LIST_COUNT}`) == '') {
-						mb.loadMessage(mod_alert_arr.Related_module_label, true, 'error');
-						proceed = false;
-					}
-					if (mb.loadElement(`related-label-${LIST_COUNT}`) == '') {
-						mb.loadMessage(mod_alert_arr.Related_module_label, true, 'error');
-						proceed = false;
-					}
+				if (mb.loadElement(`autocomplete-module-${LIST_COUNT}`) == '') {
+					mb.loadMessage(mod_alert_arr.Related_module_label, true, 'error');
+					proceed = false;
+				}
+				if (mb.loadElement(`related-label-${LIST_COUNT}`) == '') {
+					mb.loadMessage(mod_alert_arr.Related_module_label, true, 'error');
+					proceed = false;
 				}
 				if (!proceed) {
-					return;
+					return false;
 				}
 				let lists = {
 					relatedmodule: mb.loadElement(`autocomplete-module-${LIST_COUNT}`),
@@ -199,6 +197,9 @@ const mb = {
 			data: data
 		}).done(function (response) {
 			const res = JSON.parse(response);
+			if (res.moduleid !== undefined) {
+				localStorage.setItem('ModuleBuilderID', res.moduleid);
+			}
 			const msg = mod_alert_arr.RecordSaved;
 			if (res != null && res.error) {
 				mb.loadMessage(res.error, true, 'error');
@@ -289,9 +290,11 @@ const mb = {
 		}).done(function (response) {
 			mb.removeElement('loadBlocks', true);
 			const res = JSON.parse(response);
-			if (response.moduleid != 0) {
-				const msg = mod_alert_arr.editmode;
-				mb.loadMessage(msg, true);
+			if (res.moduleid != 0) {
+				if (res.step > 20) {
+					const msg = mod_alert_arr.editmode;
+					mb.loadMessage(msg, true);
+				}
 				//load blocks
 				jQuery.ajax({
 					method: 'GET',
@@ -340,6 +343,12 @@ const mb = {
 	 * @param {number} moduleid
 	 */
 	backTo: (step, mod = false, moduleid = 0) => {
+		if (moduleid != 0) {
+			localStorage.setItem('ModuleBuilderID', moduleid);
+		}
+		if (localStorage.getItem('ModuleBuilderID') == undefined) {
+			return false;
+		}
 		let thisStep = step + 1;
 		//remove `finish module` step
 		mb.removeElement('info', true);
@@ -473,7 +482,7 @@ const mb = {
 								type: 'Fields'
 							}
 						},
-						width: 50
+						width: 100
 					}
 				],
 				data: {
@@ -485,11 +494,14 @@ const mb = {
 					}
 				},
 				useClientSort: false,
-				pageOptions: false,
+				pageOptions: {
+					useClient: true,
+					perPage: 5
+				},
 				rowHeight: 'auto',
 				bodyHeight: 250,
 				scrollX: false,
-				scrollY: true,
+				scrollY: false,
 				columnOptions: {
 					resizable: true
 				},
@@ -529,7 +541,7 @@ const mb = {
 								type: 'CustomView'
 							}
 						},
-						width: 50
+						width: 100
 					}
 				],
 				data: {
@@ -541,11 +553,14 @@ const mb = {
 					}
 				},
 				useClientSort: false,
-				pageOptions: false,
+				pageOptions: {
+					useClient: true,
+					perPage: 5
+				},
 				rowHeight: 'auto',
 				bodyHeight: 250,
 				scrollX: false,
-				scrollY: true,
+				scrollY: false,
 				columnOptions: {
 					resizable: true
 				},
@@ -589,7 +604,7 @@ const mb = {
 								type: 'RelatedLists'
 							}
 						},
-						width: 50
+						width: 100
 					}
 				],
 				data: {
@@ -601,11 +616,14 @@ const mb = {
 					}
 				},
 				useClientSort: false,
-				pageOptions: false,
+				pageOptions: {
+					useClient: true,
+					perPage: 5
+				},
 				rowHeight: 'auto',
 				bodyHeight: 250,
 				scrollX: false,
-				scrollY: true,
+				scrollY: false,
 				columnOptions: {
 					resizable: true
 				},
@@ -1064,7 +1082,8 @@ const mb = {
 			},
 			useClientSort: false,
 			pageOptions: {
-				perPage: '5'
+				useClient: true,
+				perPage: 5
 			},
 			rowHeight: 'auto',
 			bodyHeight: 'auto',
@@ -1864,6 +1883,7 @@ const mb = {
 		document.getElementById('filters').classList.remove('slds-is-active');
 		document.getElementById('relationship').classList.remove('slds-is-active');
 		document.getElementById('modulename').removeAttribute('readonly');
+		localStorage.removeItem('ModuleBuilderID');
 	},
 
 	loadTemplate: () => {
@@ -2154,21 +2174,30 @@ class BuilderActionRender {
 		let el;
 		let id;
 		let functionName = '';
+		let functionEditName = '';
 		let rowKey = props.rowKey;
 		const { type } = props.columnInfo.renderer.options;
 		if (type == 'Fields') {
 			id = props.grid.getValue(rowKey, 'fieldsid');
 			functionName = 'deleteFields';
+			functionEditName = 'editFields';
 		} else if (type == 'CustomView') {
 			id = props.grid.getValue(rowKey, 'customviewid');
 			functionName = 'deleteFilters';
+			functionEditName = 'editFilters';
 		} else if (type == 'RelatedLists') {
 			id = props.grid.getValue(rowKey, 'relatedlistid');
 			functionName = 'deleteRelationships';
+			functionEditName = 'editRelationships';
 		}
 		el = document.createElement('span');
 		let actions = `
 			<div class="slds-button-group" role="group">
+				<button onclick='mb.${functionEditName}(${id})' class="slds-button slds-button_icon slds-button_icon-brand" aria-pressed="false">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+				</svg>
+				</button>
 				<button onclick='mb.${functionName}(${id})' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>

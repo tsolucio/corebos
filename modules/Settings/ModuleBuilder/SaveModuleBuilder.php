@@ -45,6 +45,7 @@ function SaveModuleBuilder($step) {
 			$mb->mode = 'edit';
 			$mb->column_data['blocks'] = vtlib_purify($_REQUEST['blocks']);
 			$ret = $mb->save($step);
+			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="40" WHERE userid=? AND modulebuilderid=?', array($current_user->id,$moduleid));
 			return $ret;
 			break;
 		case '3':
@@ -72,9 +73,10 @@ function SaveModuleBuilder($step) {
 				$mb->column_data['relatedmodules'] = vtlib_purify($_REQUEST['fields'][0]['relatedmodules']);
 				$mb->column_data['picklistvalues'] = vtlib_purify($_REQUEST['fields'][0]['picklistvalues']);
 				$ret = $mb->save($step);
+				$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="60" WHERE userid=? AND modulebuilderid=?', array($current_user->id,$moduleid));
 				return $ret;
 			}
-			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="60" WHERE userid=? AND modulebuilderid=?', array($current_user->id,$moduleid));
+			return array('moduleid'=>$moduleid);
 			break;
 		case '4':
 			$customview = isset($_REQUEST['customview']) ? vtlib_purify($_REQUEST['customview']) : array();
@@ -98,6 +100,7 @@ function SaveModuleBuilder($step) {
 				return $ret;
 			}
 			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="Completed" WHERE userid=? AND modulebuilderid=?', array($current_user->id,$moduleid));
+			return array('moduleid'=>$moduleid);
 			break;
 		default:
 			//
