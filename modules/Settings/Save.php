@@ -28,7 +28,7 @@ $HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'y
 
 $to_email = getUserEmailId('id', $current_user->id);
 $from_email = $to_email;
-if(!empty($from_email_field)){
+if (!empty($from_email_field)) {
 	$from_email = $from_email_field;
 }
 $subject = 'Test mail about the mail server configuration.';
