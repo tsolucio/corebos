@@ -42,9 +42,9 @@ $error_str = getMailErrorString($mail_status_str);
 $action = 'EmailConfig';
 if ($mail_status != 1) {
 	$action = 'EmailConfig&emailconfig_mode=edit&server_name='.
-		urlencode(vtlib_purify($_REQUEST['server'])).'&server_user='.
-		urlencode(vtlib_purify($_REQUEST['server_username'])).'&auth_check='.
-		urlencode(vtlib_purify($_REQUEST['smtp_auth']));
+	urlencode(vtlib_purify($_REQUEST['server'])).'&server_user='.
+	urlencode(vtlib_purify($_REQUEST['server_username'])).'&auth_check='.
+	urlencode(vtlib_purify($_REQUEST['smtp_auth']));
 } else {
 	$idrs = $adb->pquery('select * from vtiger_systems where server_type = ?', array($server_type));
 	if ($idrs && $adb->num_rows($idrs)>0) {
