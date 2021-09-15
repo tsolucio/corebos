@@ -28,6 +28,9 @@ $HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'y
 
 $to_email = getUserEmailId('id', $current_user->id);
 $from_email = $to_email;
+if(!empty($from_email_field)){
+	$from_email = $from_email_field;
+}
 $subject = 'Test mail about the mail server configuration.';
 $description = 'Dear '.$current_user->user_name.', <br><br><b> This is a test mail sent to confirm if a mail is actually being sent through the smtp server that you'
 	.' have configured. </b><br>Feel free to delete this mail.<br><br>Thanks and Regards,<br> '.$HELPDESK_SUPPORT_NAME.' <br>';
