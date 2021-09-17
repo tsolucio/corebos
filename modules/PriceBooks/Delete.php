@@ -8,8 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 global $currentModule;
+Vtiger_Request::validateRequest();
 $focus = CRMEntity::getInstance($currentModule);
-
 $record = vtlib_purify($_REQUEST['record']);
 $module = urlencode(vtlib_purify($_REQUEST['module']));
 $return_module = vtlib_purify($_REQUEST['return_module']);

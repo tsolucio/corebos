@@ -194,9 +194,7 @@ class Vtiger_MailRecord {
 	 * MIME encode function to prepare input to target charset supported by normal IMAP clients.
 	 */
 	public static function __mime_encode($input, $encoding = 'Q', $charset = 'iso-8859-1') {
-		$returnvalue = $input;
 		$encoded = false;
-
 		if (strtoupper($encoding) == 'B') {
 			$returnvalue = self::__convert_encoding($input, $charset);
 			$returnvalue = base64_encode($returnvalue);
@@ -205,10 +203,10 @@ class Vtiger_MailRecord {
 			$returnvalue = self::__convert_encoding($input, $charset);
 			if (function_exists('imap_qprint')) {
 				$returnvalue = imap_qprint($returnvalue);
-				$encoded = true;
 			} else {
-				// TODO: Handle case when imap_qprint is not available.
+				$returnvalue = quoted_printable_decode($returnvalue);
 			}
+			$encoded = true;
 		}
 		if ($encoded) {
 			$returnvalue = "=?$charset?$encoding?$returnvalue?=";
@@ -320,7 +318,7 @@ class Vtiger_MailRecord {
 			if (!$this->_attachments) {
 				$this->_attachments = array();
 			}
-			$this->_attachments[$filename] = $data;  // TODO: this is a problem if two files have same name
+			$this->_attachments[$filename] = $data;
 		} elseif ($p->type==0 && $data) { // TEXT
 			if (!empty($params['charset']) && $params['charset']!='UTF-8') {
 				$this->_charset = substr($params['charset'], 0, 10);  // assume all parts are same charset

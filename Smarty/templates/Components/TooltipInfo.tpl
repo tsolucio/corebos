@@ -8,6 +8,8 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->
+
+TOOLTIPLEFT.set to 1 to show tooltip on the left
 *}
 
 <section class="tooltip" role="dialog">
@@ -16,7 +18,7 @@
 	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 	</svg>
 </span>
-<span class="tooltiptext slds-popover slds-nubbin_left-top-corner">
+<span class="tooltiptext{if isset($TOOLTIPLEFT)}right{/if} slds-popover slds-nubbin_{if isset($TOOLTIPLEFT)}right{else}left{/if}-top-corner">
 {block name=TOOLTIPInfo}Nothing to add!{/block}
 </span>
 </section>

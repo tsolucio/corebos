@@ -58,12 +58,12 @@ class InformationMap extends processcbMap {
 		$mapping_arr['information']['infotype']=array();
 		$mapping_arr['information']['value']=array();
 		foreach ($xml->information->value as $v) {
-			$date = (Array)$v[0];
-			$value[]= isset($date[0]) ? (String)$date[0] : '';
+			$date = (array)$v[0];
+			$value[]= isset($date[0]) ? (string)$date[0] : '';
 		}
 		foreach ($xml->information->infotype as $v) {
-			$info = (Array)$v[0];
-			$infotypeinfotype[] = isset($info[0]) ? (String)$info[0] : '';
+			$info = (array)$v[0];
+			$infotypeinfotype[] = isset($info[0]) ? (string)$info[0] : '';
 		}
 		$mapping_arr['information']['infotype']=$infotypeinfotype;
 		$mapping_arr['information']['value']=$value;

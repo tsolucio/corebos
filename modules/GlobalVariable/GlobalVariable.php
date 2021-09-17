@@ -120,6 +120,7 @@ class GlobalVariable extends CRMEntity {
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'gvname');
 
 	private static $validationinfo = array();
+	const USE_DESCRIPTION_IDENTIFIER = '[[Use Description]]';
 
 	public function save_module($module) {
 		global $adb;
@@ -139,7 +140,7 @@ class GlobalVariable extends CRMEntity {
 		}
 	}
 
-	/* Validate values trying to be saved.
+	/** Validate values trying to be saved.
 	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
 	 * @return array
 	 *   saveerror: true if error false if not
@@ -248,7 +249,7 @@ class GlobalVariable extends CRMEntity {
 					$value = $adb->query_result($query, $i, 'bmapid');
 				} else {
 					$value = $adb->query_result($query, $i, 'value');
-					if ($value=='[[Use Description]]') {
+					if ($value==self::USE_DESCRIPTION_IDENTIFIER) {
 						$value = $adb->query_result($query, $i, 'description');
 					}
 				}
@@ -263,7 +264,7 @@ class GlobalVariable extends CRMEntity {
 							$value = $adb->query_result($query, $i, 'bmapid');
 						} else {
 							$value = $adb->query_result($query, $i, 'value');
-							if ($value=='[[Use Description]]') {
+							if ($value==self::USE_DESCRIPTION_IDENTIFIER) {
 								$value = $adb->query_result($query, $i, 'description');
 							}
 						}
@@ -272,13 +273,12 @@ class GlobalVariable extends CRMEntity {
 				} else {
 					$all_modules=vtws_getModuleNameList();
 					$other_modules=array_diff($all_modules, $modules_list);
-					$nummods = count($other_modules);
 					foreach ($other_modules as $omod) {
 						if ($isBusinessMapping) {
 							$value = $adb->query_result($query, $i, 'bmapid');
 						} else {
 							$value = $adb->query_result($query, $i, 'value');
-							if ($value=='[[Use Description]]') {
+							if ($value==self::USE_DESCRIPTION_IDENTIFIER) {
 								$value = $adb->query_result($query, $i, 'description');
 							}
 						}
@@ -298,10 +298,10 @@ class GlobalVariable extends CRMEntity {
 		return '';
 	}
 
-	/* returns the value of a global variable depending on the different escalation options
-	 * param $var: the name of variable
-	 * param $defalt: default value in case the variable is not found in the module
-	 * returns: value of the variable following these rules:
+	/** returns the value of a global variable depending on the different escalation options
+	 * @param string the name of variable
+	 * @param mixed default value in case the variable is not found in the module
+	 * @return mixed value of the variable following these rules:
 	 *   search for and return the first one found:
 	 *   - $var + mandatory=true + ('In Module List' ? $current_module in Module : $current_module not in Module)
 	 *   - $var + mandatory=true
@@ -315,20 +315,14 @@ class GlobalVariable extends CRMEntity {
 	 */
 	public static function getVariable($var, $default, $module = '', $gvuserid = '') {
 		global $adb, $current_user, $currentModule, $installationStrings;
-		if (!is_object($adb) || is_null($adb->database)) {
-			return $default;
+		if (empty($gvuserid) && !empty($current_user)) {
+			$gvuserid = $current_user->id;
 		}
-		if (isset($installationStrings)) {
+		if (!is_object($adb) || is_null($adb->database) || isset($installationStrings) || empty($gvuserid)) {
 			return $default;
 		}
 		self::$validationinfo = array();
 		self::$validationinfo[] = "search for variable '$var' with default value of '$default'";
-		if (empty($gvuserid) && !empty($current_user)) {
-			$gvuserid = $current_user->id;
-		}
-		if (empty($gvuserid)) {
-			return $default;
-		}
 		if (empty($module)) {
 			$module = $currentModule;
 		}
@@ -416,21 +410,18 @@ class GlobalVariable extends CRMEntity {
 		return $default;
 	}
 
-	/* returns true if the given variable affects the given module and user
-	 * param $var: the ID of the variable
-	 * param $module: module to search in
-	 * param $userid: user to apply for
-	 * returns: boolean
+	/** returns true if the given variable affects the given module and user
+	 * @param integer the ID of the variable
+	 * @param string module to search in
+	 * @param integer user ID to apply for
+	 * @return boolean
 	 */
 	public static function isAppliable($var, $module = '', $gvuserid = '') {
 		global $adb, $current_user, $currentModule, $installationStrings;
-		if (!is_object($adb) || is_null($adb->database) || !is_numeric($var) || isset($installationStrings)) {
-			return false;
-		}
 		if (empty($gvuserid) && !empty($current_user)) {
 			$gvuserid = $current_user->id;
 		}
-		if (empty($gvuserid) || !is_numeric($gvuserid) || $gvuserid<0) {
+		if (!is_object($adb) || is_null($adb->database) || !is_numeric($var) || isset($installationStrings) || empty($gvuserid) || !is_numeric($gvuserid) || $gvuserid<0) {
 			return false;
 		}
 		if (empty($module)) {

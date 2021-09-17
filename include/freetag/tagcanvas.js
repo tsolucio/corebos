@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2010-2015 Graham Breach
+ * Copyright (C) 2010-2021 Graham Breach
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * TagCanvas 2.9
+ * TagCanvas 2.11
  * For more information, please contact <graham@goat1000.com>
  */
 (function(){
@@ -28,7 +28,7 @@ var i, j, abs = Math.abs, sin = Math.sin, cos = Math.cos, max = Math.max,
   b:"187,", B:"187,", c:"204,", C:"204,", d:"221,", D:"221,",
   e:"238,", E:"238,", f:"255,", F:"255,"  
   }, Oproto, Tproto, TCproto, Mproto, Vproto, TSproto, TCVproto,
-  doc = document, ocanvas, handlers = {};
+  doc = document, ocanvas, audio, audioClick, handlers = {};
 for(i = 0; i < 256; ++i) {
   j = i.toString(16);
   if(i < 16)
@@ -66,6 +66,49 @@ function Shuffle(a) {
     a[p] = t;
     --i;
   }
+}
+function SetupAudio() {
+  var ac = window.AudioContext || window.webkitAudioContext;
+  audio = new ac();
+  if(!audio) {
+    audio = 'off';
+    return;
+  }
+  return audio;
+}
+function AudioIcon(mute,c,size,offsetx,offsety,stroke,colour) {
+  var x = offsetx, y = offsety, s = size * 0.01, w = 80 * s, h = 100 * s, d = 40 * s, e = 30 * s;
+  var f = e / 2;
+  var x2 = x + w, x1 = x2 - d;
+  var y3 = y + h, y2 = y3 - e, y1 = y + e, y4 = y + h / 2;
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  c.setLineDash([]);
+  c.globalAlpha = 1;
+  c.strokeStyle = colour;
+  c.lineWidth = stroke;
+  c.lineJoin = 'round';
+  c.beginPath();
+  c.moveTo(x1, y1);
+  c.lineTo(x1, y2);
+  c.moveTo(x2, y3);
+  c.lineTo(x1, y2);
+  c.lineTo(x, y2);
+  c.lineTo(x, y1);
+  c.lineTo(x1, y1);
+  c.lineTo(x2, y);
+  if(mute) {
+    c.lineTo(x2, y1);
+    c.moveTo(x2, y2);
+    c.lineTo(x2, y3);
+    c.moveTo(x2 - f, y4 - f);
+    c.lineTo(x2 + f, y4 + f);
+    c.moveTo(x2 + f, y4 - f);
+    c.lineTo(x2 - f, y4 + f);
+    c.stroke();
+    return;
+  }
+  c.closePath();
+  c.stroke();
 }
 function Vector(x, y, z) {
   this.x = x;
@@ -591,13 +634,15 @@ function RemoveHandler(h,f,e) {
   else
     e.detachEvent('on' + h, f);
 }
-function AddImage(i, o, t, tc) {
+function AddImage(i, o, alt, t, tc) {
   var s = tc.imageScale, mscale, ic, bc, oc, iw, ih;
   // image not loaded, wait for image onload
   if(!o.complete)
-    return AddHandler('load',function() { AddImage(i,o,t,tc); }, o);
+    return AddHandler('load',function() { AddImage(i,o,alt,t,tc); }, o);
   if(!i.complete)
-    return AddHandler('load',function() { AddImage(i,o,t,tc); }, i);
+    return AddHandler('load',function() { AddImage(i,o,alt,t,tc); }, i);
+  if(alt && !alt.complete)
+    return AddHandler('load',function() { AddImage(i,o,alt,t,tc); }, alt);
 
   // Yes, this does look like nonsense, but it makes sure that both the
   // width and height are actually set and not just calculated. This is
@@ -679,6 +724,7 @@ function AddImage(i, o, t, tc) {
       }
     }
   }
+  t.alt = alt;
   t.Init();
 }
 function GetProperty(e,p) {
@@ -861,6 +907,12 @@ function DrawCanvasRAF(t) {
   for(i in tc)
     tc[i].Draw(t);
 }
+function NextFrameRAF() {
+  requestAnimationFrame(DrawCanvasRAF);
+};
+function NextFrameTimeout(iv) {
+  setTimeout(DrawCanvas, iv);
+};
 function AbsPos(id) {
   var e = doc.getElementById(id), r = e.getBoundingClientRect(),
     dd = doc.documentElement, b = doc.body, w = window,
@@ -960,10 +1012,10 @@ function Outline(tc,t) {
     this.colour = GetProperty(t.a, 'background-color');
   this.Draw = this.pulsate ? this.DrawPulsate : this.DrawSimple;
   this.radius = tc.outlineRadius | 0;
-  this.SetMethod(tc.outlineMethod);
+  this.SetMethod(tc.outlineMethod,tc.altImage);
 }
 Oproto = Outline.prototype;
-Oproto.SetMethod = function(om) {
+Oproto.SetMethod = function(om,alt) {
   var methods = {
     block: ['PreDraw','DrawBlock'],
     colour: ['PreDraw','DrawColour'],
@@ -978,6 +1030,10 @@ Oproto.SetMethod = function(om) {
     this.drawFunc = this[funcs[1]];
   }
   this[funcs[0]] = this.Draw;
+  if(alt) {
+    this.RealPreDraw = this.PreDraw;
+    this.PreDraw = this.DrawAlt;
+  }
 };
 Oproto.Update = function(x,y,w,h,sc,z,xo,yo) {
   var o = this.tc.outlineOffset, o2 = 2 * o;
@@ -1095,6 +1151,14 @@ Oproto.DrawColourImage = function(c,x,y,w,h,colour,tag,x1,y1) {
   c.globalCompositeOperation = 'source-over';
   return 1;
 };
+Oproto.DrawAlt = function(c,tag,x1,y1,ga,useGa) {
+  var r = this.RealPreDraw(c,tag,x1,y1,ga,useGa);
+  if(tag.alt) {
+    tag.DrawImage(c, x1, y1, tag.alt);
+    r = 1;
+  }
+  return r;
+};
 Oproto.DrawBlock = function(c,x,y,w,h,colour) {
   var r = min(this.radius, h/2, w/2);
   c.fillStyle = colour;
@@ -1153,6 +1217,7 @@ function Tag(tc, text, a, v, w, h, col, bcol, bradius, boutline, bothickness,
   this.sc = this.alpha = 1;
   this.weighted = !tc.weight;
   this.outline = new Outline(tc,this);
+  this.audio = null;
 }
 Tproto = Tag.prototype;
 Tproto.Init = function(e) {
@@ -1182,6 +1247,10 @@ Tproto.EqualTo = function(e) {
 };
 Tproto.SetImage = function(i) {
   this.image = this.fimage = i;
+};
+Tproto.SetAudio = function(a) {
+  this.audio = a;
+  this.audio.load();
 };
 Tproto.SetDraw = function(t) {
   this.Draw = this.fimage ? (t.ie > 7 ? this.DrawImageIE : this.DrawImage) : this.DrawText;
@@ -1407,11 +1476,54 @@ Tproto.Clicked = function(e) {
   }
   doc.location = h;
 };
+Tproto.StopAudio = function() {
+  this.audio && this.playing && this.audio.pause();
+  this.stopped = 1;
+  this.playing = 0;
+};
+Tproto.PlayAudio = function() {
+  if(audio === 'off' || this.tc.audioOff)
+    return;
+  if(!audio && !SetupAudio())
+    return;
+
+  var a = this.tc.audio, g = this.tc.gain, sus = 'suspended', p;
+  if(this.audio) {
+    if(!this.track) {
+      this.track = audio.createMediaElementSource(this.audio);
+      this.gain = audio.createGain();
+      this.track.connect(this.gain);
+      this.gain.connect(audio.destination);
+    }
+    a = this.audio;
+    g = this.gain;
+    if(!a.paused)
+      return 1;
+  }
+
+  if(a) {
+    if(audio.state == sus)
+      audio.resume();
+    if(audio.state == sus)
+      return;
+
+    g.gain.value = min(2, max(0, this.tc.audioVolume * 1));
+    a.currentTime = 0;
+    this.stopped = 0;
+    p = a.play();
+    if(p !== undefined) {
+      p.then(r => {
+        this.stopped ? this.audio.pause() : this.playing = 1;
+      });
+    }
+    return 1;
+  }
+};
 /**
  * @constructor
  */
 function TagCanvas(cid,lctr,opt) {
-  var i, p, c = doc.getElementById(cid), cp = ['id','class','innerHTML'], raf;
+  var i, p, c = doc.getElementById(cid), cp = ['id','class','innerHTML'];
 
   if(!c) throw 0;
   if(Defined(window.G_vmlCanvasManager)) {
@@ -1473,6 +1585,11 @@ function TagCanvas(cid,lctr,opt) {
   } else {
     delete this.shadow;
   }
+  if(this.activeAudio === false) {
+    audio = 'off';
+  } else {
+    this.activeAudio && this.LoadAudio();
+  }
   this.Load();
   if(lctr && this.hideTags) {
     (function(t) {
@@ -1531,11 +1648,8 @@ function TagCanvas(cid,lctr,opt) {
     }
   }
   if(!TagCanvas.started) {
-    raf = window.requestAnimationFrame = window.requestAnimationFrame ||
-      window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||
-      window.msRequestAnimationFrame;
-    TagCanvas.NextFrame = raf ? TagCanvas.NextFrameRAF :
-      TagCanvas.NextFrameTimeout;
+    TagCanvas.NextFrame = window.requestAnimationFrame ? NextFrameRAF :
+      NextFrameTimeout;
     TagCanvas.interval = this.interval;
     TagCanvas.NextFrame(this.interval);
     TagCanvas.started = 1;
@@ -1582,8 +1696,17 @@ TCproto.Message = function(text) {
   }
   return tl;
 };
+TCproto.AddAudio = function(e, t) {
+  if(audio === 'off')
+    return;
+  var au = e.getElementsByTagName('audio');
+  if(au.length) {
+    t.SetAudio(au[0]);
+    this.hasAudio = 1;
+  }
+};
 TCproto.CreateTag = function(e) {
-  var im, i, t, txt, ts, font, bc, boc, p = [0, 0, 0];
+  var im, i, t, txt, ts, font, bc, boc, p = [0, 0, 0], au;
   if('text' != this.imageMode) {
     im = e.getElementsByTagName('img');
     if(im.length) {
@@ -1594,7 +1717,8 @@ TCproto.CreateTag = function(e) {
         t = new Tag(this, "", e, p, 0, 0);
         t.SetImage(i);
         //t.Init();
-        AddImage(i, im[0], t, this);
+        AddImage(i, im[0], im[1], t, this);
+        this.AddAudio(e, t);
         return t;
       }
     }
@@ -1620,10 +1744,11 @@ TCproto.CreateTag = function(e) {
       boc, this.bgOutlineThickness, font, this.padding, ts && ts.original);
     if(i) {
       t.SetImage(i);
-      AddImage(i, im[0], t, this);
+      AddImage(i, im[0], im[1], t, this);
     } else {
       t.Init();
     }
+    this.AddAudio(e, t);
     return t;
   }
 };
@@ -1790,6 +1915,48 @@ TCproto.SetShadow = function(c) {
   c.shadowOffsetX = this.shadowOffset[0];
   c.shadowOffsetY = this.shadowOffset[1];
 };
+TCproto.LoadAudio = function() {
+  if(!audio && !SetupAudio())
+    return;
+  this.audio = doc.createElement('audio');
+  this.audio.src = this.activeAudio;
+  this.track = audio.createMediaElementSource(this.audio);
+  this.gain = audio.createGain();
+  this.track.connect(this.gain);
+  this.gain.connect(audio.destination);
+  this.hasAudio = 1;
+  audioClick = function(e) {
+    audio.resume();
+    doc.removeEventListener('click', audioClick);
+  };
+  doc.addEventListener('click', audioClick);
+};
+TCproto.ShowAudioIcon = function() {
+  var s = this.audioIconSize, cv = this.canvas, c = this.ctxt,
+    x = cv.width - s - 3, y = cv.height - s - 3, t = this.audioIconThickness,
+    c1 = '#000', c2 = '#fff', d = this.audioIconDark, muted = this.audioOff,
+    sus = 'suspended';
+  if(!audio)
+    return;
+  if(!muted)
+    muted = (audio.state === sus);
+
+  if(this.audioIcon && this.hasAudio) {
+    AudioIcon(muted,c,s,x,y,t+1,d ? c2 : c1);
+    AudioIcon(muted,c,s,x,y,t,d ? c1 : c2);
+  }
+};
+TCproto.CheckAudioIcon = function() {
+  var s = this.audioIconSize, cv = this.canvas, t = this.audioIconThickness / 2,
+    x = cv.width - s - 3 - t, y = cv.height - s - 3 - t;
+  if(this.audioIcon && this.mx >= x && this.my >= y)
+    return true;
+};
+TCproto.ToggleAudio = function() {
+  var on = this.audioOff || (audio && audio.state === 'suspended');
+  on || this.currentAudio && this.currentAudio.StopAudio();
+  this.audioOff = !on;
+};
 TCproto.Draw = function(t) {
   if(this.paused)
     return;
@@ -1797,6 +1964,7 @@ TCproto.Draw = function(t) {
     tdelta = (t - this.time) * TagCanvas.interval / 1000,
     x = cw / 2 + this.offsetX, y = ch / 2 + this.offsetY, c = this.ctxt,
     active, a, i, aindex = -1, tl = this.taglist, l = tl.length,
+    last = this.active && this.active.tag, cursor = '',
     frontsel = this.frontSelect, centreDrawn = (this.centreFunc == Nop), fixed;
   this.time = t;
   if(this.frozen && this.drawn)
@@ -1811,16 +1979,20 @@ TCproto.Draw = function(t) {
     active = this.fixedAnim.tag.UpdateActive(c, x, y);
   } else {
     this.active = null;
-    for(i = 0; i < l; ++i) {
-      a = this.mx >= 0 && this.my >= 0 && this.taglist[i].CheckActive(c, x, y);
-      if(a && a.sc > max_sc && (!frontsel || a.z <= 0)) {
-        active = a;
-        aindex = i;
-        active.tag = this.taglist[i];
-        max_sc = a.sc;
+    if(this.CheckAudioIcon()) {
+      cursor = 'pointer';
+    } else {
+      for(i = 0; i < l; ++i) {
+        a = this.mx >= 0 && this.my >= 0 && this.taglist[i].CheckActive(c, x, y);
+        if(a && a.sc > max_sc && (!frontsel || a.z <= 0)) {
+          active = a;
+          aindex = i;
+          active.tag = this.taglist[i];
+          max_sc = a.sc;
+        }
       }
+      this.active = active;
     }
-    this.active = active;
   }
 
   this.txtOpt || (this.shadow && this.SetShadow(c));
@@ -1852,9 +2024,18 @@ TCproto.Draw = function(t) {
     this.fixedCallback = null;
   }
   fixed || this.Animate(cw, ch, tdelta);
-  active && active.LastDraw(c);
-  cv.style.cursor = active ? this.activeCursor : '';
+  if(active) {
+    active.LastDraw(c);
+    if(active.tag != last) {
+      this.currentAudio && this.currentAudio != active.tag && this.currentAudio.StopAudio();
+      if(active.tag.PlayAudio())
+        this.currentAudio = active.tag;
+    }
+    cursor = this.activeCursor;
+  }
+  cv.style.cursor = cursor;
   this.Tooltip(active,this.taglist[aindex]);
+  this.audioIcon && this.ShowAudioIcon();
 };
 TCproto.TooltipNone = function() { };
 TCproto.TooltipNative = function(active,tag) {
@@ -1979,6 +2160,10 @@ TCproto.Zoom = function(r) {
   this.drawn = 0;
 };
 TCproto.Clicked = function(e) {
+  if(this.CheckAudioIcon()) {
+    this.ToggleAudio();
+    return;
+  }
   var a = this.active;
   try {
     if(a && a.tag)
@@ -2084,6 +2269,9 @@ TCproto.RotateTag = function(tag, lt, lg, time, callback, active) {
 TCproto.TagToFront = function(tag, time, callback, active) {
   this.RotateTag(tag, 0, 0, time, callback, active);
 };
+TCproto.Volume = function(vol) {
+  this.audioVolume = vol * 1;
+};
 TagCanvas.Start = function(id,l,o) {
   TagCanvas.Delete(id);
   TagCanvas.tc[id] = new TagCanvas(id,l,o);
@@ -2135,12 +2323,6 @@ TagCanvas.Delete = function(id) {
   }
   delete handlers[id];
   delete TagCanvas.tc[id];
-};
-TagCanvas.NextFrameRAF = function() {
-  requestAnimationFrame(DrawCanvasRAF);
-};
-TagCanvas.NextFrameTimeout = function(iv) {
-  setTimeout(DrawCanvas, iv);
 };
 TagCanvas.tc = {};
 TagCanvas.options = {
@@ -2234,7 +2416,14 @@ imageRadius: 0,
 scrollPause: false,
 outlineDash: 0,
 outlineDashSpace: 0,
-outlineDashSpeed: 1
+outlineDashSpeed: 1,
+activeAudio: '',
+audioVolume: 1,
+audioIcon: 1,
+audioIconSize: 20,
+audioIconThickness: 2,
+audioIconDark: 0,
+altImage: 0
 };
 for(i in TagCanvas.options) TagCanvas[i] = TagCanvas.options[i];
 window.TagCanvas = TagCanvas;

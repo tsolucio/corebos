@@ -549,7 +549,7 @@ class crmtogo_WS_Utils {
 		if ($module=='Contacts') {
 			$attstr = 'Contacts Image';
 		} else {
-			$attstr = $module.' Attachment';
+			$attstr = $module.Field_Metadata::ATTACHMENT_ENTITY;
 		}
 		$sql = "SELECT vtiger_attachments.*, vtiger_crmentity.setype
 			FROM vtiger_attachments
@@ -719,7 +719,7 @@ class crmtogo_WS_Utils {
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
 			for ($i=0; $i<$noofrows; $i++) {
-				$module_list = explode(' |##| ', $db->query_result($result, $i, 'module_list'));
+				$module_list = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $db->query_result($result, $i, 'module_list'));
 				foreach ($module_list as $module) {
 					$comments_module[] = $module;
 				}

@@ -134,7 +134,7 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 		$hold = isset($currentModule) ? $currentModule : '';
 		$currentModule = $mainmodule;
 		$GetRelatedList_ReturnOnlyQuery = true;
-		$relationData = call_user_func_array(array($moduleInstance,$relationInfo['name']), $params);
+		$relationData = call_user_func_array(array($moduleInstance,$relationInfo['name']), array_values($params));
 		$currentModule = $hold;
 		unset($GetRelatedList_ReturnOnlyQuery);
 		if (!isset($relationData['query'])) {

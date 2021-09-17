@@ -46,20 +46,20 @@ class GlobalSearchAutocomplete extends processcbMap {
 			return array();
 		}
 		$mapping = array();
-		$mapping['mincharstosearch'] = (isset($xml->mincharstosearch) ? (Integer)$xml->mincharstosearch : 3);
+		$mapping['mincharstosearch'] = (isset($xml->mincharstosearch) ? (integer)$xml->mincharstosearch : 3);
 		$mapping['maxresults'] = (
-			isset($xml->maxresults) ? (Integer)$xml->maxresults : GlobalVariable::getVariable('Application_Global_Search_Autocomplete_Limit', 15)
+			isset($xml->maxresults) ? (integer)$xml->maxresults : GlobalVariable::getVariable('Application_Global_Search_Autocomplete_Limit', 15)
 		);
 		$searchin = array();
 		foreach ($xml->searchin->module as $v) {
-			$searchfields = explode(',', (String)$v->searchfields);
+			$searchfields = explode(',', (string)$v->searchfields);
 			$searchfields = array_map('trim', $searchfields);
-			$showfields = explode(',', (String)$v->showfields);
+			$showfields = explode(',', (string)$v->showfields);
 			$showfields = array_map('trim', $showfields);
-			$searchin[(String)$v->name] = array(
+			$searchin[(string)$v->name] = array(
 				'searchfields' => $searchfields,
 				'showfields' => $showfields,
-				'searchcondition' => (isset($v->searchcondition) ? (String)$v->searchcondition : 'startswith'),
+				'searchcondition' => (isset($v->searchcondition) ? (string)$v->searchcondition : 'startswith'),
 			);
 		}
 		$mapping['searchin'] = $searchin;

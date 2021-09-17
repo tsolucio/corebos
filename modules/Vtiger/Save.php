@@ -108,7 +108,7 @@ if ($saveerror) { // there is an error so we go back to EditView.
 				$value = vtlib_purify($_REQUEST[$fieldname]);
 			}
 			if (is_array($value)) {
-				$value = implode(' |##| ', $value); // for multipicklists
+				$value = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value); // for multipicklists
 			}
 			$field_values_passed.=$fieldname."=".urlencode($value);
 		}
@@ -137,7 +137,13 @@ if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 
 if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
 	if (isset($_REQUEST['Module_Popup_Edit']) && $_REQUEST['Module_Popup_Edit']==1) {
-		echo '<script>window.close();</script>';
+		if (empty($_REQUEST['Module_Popup_Save'])) {
+			echo '<script>window.close();</script>';
+		} else {
+			$saveHook = vtlib_purify($_REQUEST['Module_Popup_Save']);
+			$saveParm = "'$currentModule', $return_id, '$mode', '".(empty($_REQUEST['Module_Popup_Save_Param']) ? '' : vtlib_purify($_REQUEST['Module_Popup_Save_Param']))."'";
+			echo "<script>if (typeof window.opener.$saveHook == 'function') window.opener.$saveHook($saveParm);window.close();</script>";
+		}
 	} else {
 		if (!empty($_REQUEST['saverepeat'])) {
 			$sesreq = coreBOS_Session::get('saverepeatRequest', array());

@@ -90,6 +90,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 			$return['cbuuid'] = $fields['cbuuid'];
 		}
 		$this->addMoreInformation($id, $return);
+		unset($return['relations']);
 		return $return;
 	}
 

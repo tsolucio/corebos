@@ -222,8 +222,8 @@ function rfc2445_is_valid_value($value, $type) {
 			}
 
 			return($value[8] == 'T' &&
-				   rfc2445_is_valid_value(substr($value, 0, 8), RFC2445_TYPE_DATE) &&
-				   rfc2445_is_valid_value(substr($value, 9), RFC2445_TYPE_TIME));
+				rfc2445_is_valid_value(substr($value, 0, 8), RFC2445_TYPE_DATE) &&
+				rfc2445_is_valid_value(substr($value, 9), RFC2445_TYPE_TIME));
 		break;
 
 		case RFC2445_TYPE_DURATION:
@@ -471,8 +471,8 @@ function rfc2445_is_valid_value($value, $type) {
 			// has some elements, they are illegal.
 
 			if ($vars['FREQ'] != 'SECONDLY' && $vars['FREQ'] != 'MINUTELY' && $vars['FREQ'] != 'HOURLY' &&
-			   $vars['FREQ'] != 'DAILY'    && $vars['FREQ'] != 'WEEKLY' &&
-			   $vars['FREQ'] != 'MONTHLY'  && $vars['FREQ'] != 'YEARLY') {
+				$vars['FREQ'] != 'DAILY'    && $vars['FREQ'] != 'WEEKLY' &&
+				$vars['FREQ'] != 'MONTHLY'  && $vars['FREQ'] != 'YEARLY') {
 				return false;
 			}
 			unset($vars['FREQ']);

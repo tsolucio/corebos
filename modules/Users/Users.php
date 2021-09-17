@@ -209,11 +209,9 @@ class Users extends CRMEntity {
 	 *
 	 */
 	public function savePreferecesToDB() {
-		global $log, $adb;
+		global $adb;
 		$data = base64_encode(serialize($this->user_preferences));
-		$query = "UPDATE $this->table_name SET user_preferences=? where id=?";
-		$result = $adb->pquery($query, array($data, $this->id));
-		$log->debug('SAVING: PREFERENCES SIZE ' . strlen($data) . 'ROWS AFFECTED WHILE UPDATING USER PREFERENCES:' . $adb->getAffectedRowCount($result));
+		$adb->pquery("UPDATE $this->table_name SET user_preferences=? where id=?", array($data, $this->id));
 		coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
 	}
 
@@ -232,10 +230,10 @@ class Users extends CRMEntity {
 	}
 
 	/**
+	 * Take an unencrypted username and password and return the encrypted password
 	 * @return string encrypted password for storage in DB and comparison against DB password.
 	 * @param string $user_name - Must be non null and at least 2 characters
 	 * @param string $user_password - Must be non null and at least 1 character.
-	 * @desc Take an unencrypted username and password and return the encrypted password
 	 */
 	public function encrypt_password($user_password, $crypt_type = '') {
 		// encrypt the password.
@@ -883,7 +881,7 @@ class Users extends CRMEntity {
 					}
 				} elseif ($uitype == 33) {
 					if (is_array($this->column_fields[$fieldname])) {
-						$field_list = implode(' |##| ', $this->column_fields[$fieldname]);
+						$field_list = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $this->column_fields[$fieldname]);
 					} else {
 						$field_list = $this->column_fields[$fieldname];
 					}
@@ -1036,8 +1034,7 @@ class Users extends CRMEntity {
 		$this->column_fields['currency_symbol'] = $this->currency_symbol = $ui_curr;
 		$this->column_fields['conv_rate'] = $this->conv_rate = $adb->query_result($currency_result, 0, 'conversion_rate');
 
-		// TODO - This needs to be cleaned up once default values for fields are picked up in a cleaner way.
-		// This is just a quick fix to ensure things doesn't start breaking when the user currency configuration is missing
+		// This is just a quick fix to ensure things don't start breaking when the user currency configuration is missing
 		if ($this->column_fields['currency_grouping_pattern'] == '' && $this->column_fields['currency_symbol_placement'] == '') {
 			$this->column_fields['currency_grouping_pattern'] = $this->currency_grouping_pattern = '123,456,789';
 			$this->column_fields['currency_decimal_separator'] = $this->currency_decimal_separator = '.';
@@ -1089,7 +1086,7 @@ class Users extends CRMEntity {
 
 		if ($upload_status) {
 			$sql1 = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?,?,?,?,?,?,?)';
-			$params1 = array($current_id, $current_user->id, $ownerid, $module . ' Attachment', $this->column_fields['description'],
+			$params1 = array($current_id, $current_user->id, $ownerid, $module.Field_Metadata::ATTACHMENT_ENTITY, $this->column_fields['description'],
 				$adb->formatString('vtiger_crmentity', 'createdtime', $date_var), $adb->formatDate($date_var, true));
 			$adb->pquery($sql1, $params1);
 
@@ -1422,7 +1419,7 @@ class Users extends CRMEntity {
 	}
 
 	public function filterInactiveFields($module) {
-		// TODO Nothing do right now
+		// Nothing do right now
 	}
 
 	public function deleteImage() {

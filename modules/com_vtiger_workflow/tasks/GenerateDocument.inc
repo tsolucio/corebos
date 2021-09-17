@@ -30,10 +30,16 @@ class GenerateDocument extends VTTask {
 	public function doTask(&$entity) {
 		global $adb, $root_directory, $current_language, $default_charset;
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
+		$crmEntityTableAlias = CRMEntity::getcrmEntityTableAlias('Documents', false);
 		$relatedDocsSQL = 'SELECT vtiger_senotesrel.notesid
 			FROM vtiger_senotesrel
 			INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
 			WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=?';
+		$relatedDocsSQLNotDeleted = 'SELECT vtiger_senotesrel.notesid
+			FROM vtiger_senotesrel
+			INNER JOIN vtiger_notes on vtiger_notes.notesid=vtiger_senotesrel.notesid
+			INNER JOIN '.$crmEntityTableAlias.' on vtiger_notes.notesid=vtiger_crmentity.crmid
+			WHERE vtiger_notes.gendoctplid=? and vtiger_senotesrel.crmid=? and vtiger_crmentity.deleted=0';
 		$smq = new ShareDocLinkWidgetDetailViewBlock();
 		$this->addGenDocTplColumn();
 		$format = ($this->gdformat==1 ? 'odt' : 'pdf');
@@ -82,23 +88,28 @@ class GenerateDocument extends VTTask {
 			}
 			$docid = OpenDocument::saveAsDocument($record, $module, $format, $mergeTemplateName, ($format=='pdf' ? $fullpdfname : $fullfilename), $name);
 			if ($this->updateOnChange) {
-				$rdocs = $adb->pquery($relatedDocsSQL, array($fileid, $record));
-				while ($rdoc = $adb->fetch_array($rdocs)) {
-					if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
-						$skey = $smq->createShareLink($rdoc['notesid']);
-						$entity->WorkflowContext['SharedDocumentCode'] = $skey;
-						$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
+				$rdocs = $adb->pquery($relatedDocsSQLNotDeleted, array($fileid, $record));
+				if ($rdocs && $adb->num_rows($rdocs)>0) {
+					while ($rdoc = $adb->fetch_array($rdocs)) {
+						if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
+							$smq->createShareLink($rdoc['notesid']);
+						}
+						$smq->swapDocument($rdoc['notesid'], $docid);
+						$skey = $smq->getShareCode($docid);
 					}
-					$smq->swapDocument($rdoc['notesid'], $docid);
+					$adb->pquery(
+						'update '.$crmEntityTable.' set '.$crmEntityTable.'.deleted=1 where '.$crmEntityTable.".crmid in ($relatedDocsSQL)",
+						array($fileid, $record)
+					);
+					$adb->pquery(
+						"update vtiger_crmobject set vtiger_crmobject.deleted=1 where vtiger_crmobject.crmid in ($relatedDocsSQL)",
+						array($fileid, $record)
+					);
+				} else { // creating for the first time
+					$skey = $smq->createShareLink($docid);
 				}
-				$adb->pquery(
-					'update '.$crmEntityTable.' set '.$crmEntityTable.'.deleted=1 where '.$crmEntityTable.".crmid in ($relatedDocsSQL)",
-					array($fileid, $record)
-				);
-				$adb->pquery(
-					"update vtiger_crmobject set vtiger_crmobject.deleted=1 where vtiger_crmobject.crmid in ($relatedDocsSQL)",
-					array($fileid, $record)
-				);
+				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
+				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
 			} elseif ($this->shareOnCreate && !$smq->isShared($docid)) {
 				$skey = $smq->createShareLink($docid);
 				$entity->WorkflowContext['SharedDocumentCode'] = $skey;

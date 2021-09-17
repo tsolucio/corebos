@@ -52,12 +52,6 @@ class Import_Index_Controller {
 			if ($fieldInstance->getPresence() === 1) {
 				continue;
 			}
-			// We need to avoid Last Modified by or any such User reference field
-			// for now as Query Generator is not handling it well enough.
-			// The case in which query generator is failing to generate right query is,
-			// Assigned User field is not there either in the selected fields list or in the conditions
-			// and condition is added on the User reference field
-			// TODO - Cleanup this once Query Generator support is corrected
 			if ($fieldInstance->getFieldDataType() == 'reference') {
 				$referencedModules = $fieldInstance->getReferenceList();
 				if (isset($referencedModules[0]) && $referencedModules[0] == 'Users') {
@@ -116,7 +110,12 @@ class Import_Index_Controller {
 
 	public function getEntityFields($moduleName) {
 		$moduleFields = $this->getAccessibleFields($moduleName);
-		$entityColumnNames = vtws_getEntityNameFields($moduleName);
+		$entityColumnNames = GlobalVariable::getVariable('Import_DuplicateRecordHandling_Fields', '');
+		if ($entityColumnNames != '') {
+			$entityColumnNames = explode(',', $entityColumnNames);
+		} else {
+			$entityColumnNames = vtws_getEntityNameFields($moduleName);
+		}
 		$entityNameFields = array();
 		foreach ($moduleFields as $fieldName => $fieldInstance) {
 			$fieldColumnName = $fieldInstance->getColumnName();

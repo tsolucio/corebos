@@ -418,7 +418,7 @@ class VTSimpleTemplate {
 		$hold = isset($currentModule) ? $currentModule : '';
 		$currentModule = $modulename;
 		$params = array($crmid, $mmtabid, $rmtabid);
-		$relationData = call_user_func_array(array($mod, $func), $params);
+		$relationData = call_user_func_array(array($mod, $func), array_values($params));
 		$currentModule = $hold;
 		if (empty($relationData['entries'])) {
 			return '';

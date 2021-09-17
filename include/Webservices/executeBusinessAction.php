@@ -80,7 +80,7 @@ function executeBusinessAction($businessactionid, $context, $user) {
 	list($bawsid, $baid) = explode('x', $businessactionid);
 	$businessAction->retrieve_entity_info($baid, 'BusinessActions', false, true, true);
 	$ba = $businessAction->column_fields;
-	if (strpos(' |##| '.$ba['module_list'].' |##| ', ' |##| '.$context['module'].' |##| ')===false) {
+	if (strpos(Field_Metadata::MULTIPICKLIST_SEPARATOR.$ba['module_list'].Field_Metadata::MULTIPICKLIST_SEPARATOR, Field_Metadata::MULTIPICKLIST_SEPARATOR.$context['module'].Field_Metadata::MULTIPICKLIST_SEPARATOR)===false) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDMODULE, 'Module not supported by action');
 	}
 	$strtemplate = new Vtiger_StringTemplate();

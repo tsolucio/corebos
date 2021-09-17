@@ -178,7 +178,7 @@ class PearDatabase {
 		return $adb;
 	}
 
-	/*
+	/**
 	 * Reset query result for resuing if cache is enabled.
 	 */
 	public function resetQueryResultToEOF(&$result) {
@@ -396,7 +396,6 @@ class PearDatabase {
 		if (empty($vals)) {
 			return $ps;
 		}
-		// TODO: Checks need to be added array out of bounds situations
 		for ($index = 0; $index < count($vals); $index++) {
 			// Package import pushes data after XML parsing, so type-cast it
 			if (is_a($vals[$index], 'SimpleXMLElement')) {
@@ -416,11 +415,11 @@ class PearDatabase {
 		return preg_replace_callback("/('[^']*')|(\"[^\"]*\")|([?])/", array(new PreparedQMark2SqlValue($vals), 'call'), $ps);
 	}
 
-	/* ADODB prepared statement Execution
-	* @param $sql -- Prepared sql statement
-	* @param $params -- Parameters for the prepared statement
-	* @param $dieOnError -- Set to true, when query execution fails
-	* @param $msg -- Error message on query execution failure
+	/** ADODB prepared statement Execution
+	* @param string Prepared sql statement
+	* @param array Parameters for the prepared statement
+	* @param boolean dieOnError when query execution fails
+	* @param string Error message on query execution failure
 	*/
 	public function pquery($sql, $params, $dieOnError = false, $msg = '') {
 		global $log;
@@ -435,7 +434,6 @@ class PearDatabase {
 				return $fromcache;
 			}
 		}
-		// END
 		$log->debug('> pquery '.$sql);
 		$this->checkConnection();
 
@@ -471,8 +469,8 @@ class PearDatabase {
 	/**
 	 * Flatten the composite array into single value.
 	 * Example:
-	 * $input = array(10, 20, array(30, 40), array('key1' => '50', 'key2'=>array(60), 70));
-	 * returns array(10, 20, 30, 40, 50, 60, 70);
+	 * @param array $input = array(10, 20, array(30, 40), array('key1' => '50', 'key2'=>array(60), 70));
+	 * @return array (10, 20, 30, 40, 50, 60, 70);
 	 */
 	public function flatten_array($input, $output = null) {
 		if ($input == null) {
@@ -601,17 +599,14 @@ class PearDatabase {
 		return $rows;
 	}
 
-	/* ADODB newly added. replacement for mysql_num_rows */
 	public function num_rows(&$result) {
 		return $this->getRowCount($result);
 	}
 
-	/* ADODB newly added. replacement form mysql_num_fields */
 	public function num_fields(&$result) {
 		return $result->FieldCount();
 	}
 
-	/* ADODB newly added. replacement for mysql_fetch_array() */
 	public function fetch_array(&$result) {
 		if ($result->EOF) {
 			return null;
@@ -621,6 +616,12 @@ class PearDatabase {
 			$arr = array_map('to_html', $arr);
 		}
 		return $this->change_key_case($arr);
+	}
+
+	public function rowGenerator($r) {
+		while ($row = $this->fetch_array($r)) {
+			yield $row;
+		}
 	}
 
 	public function run_query_record_html($query) {
@@ -769,19 +770,19 @@ class PearDatabase {
 		}
 	}
 
-	/* ADODB newly added. replacement for mysql_result() */
 	public function query_result(&$result, $row, $col = 0) {
 		if (!is_object($result)) {
 			throw new InvalidArgumentException('result is not an object');
 		}
 		$result->Move($row);
 		$rowdata = $this->change_key_case($result->FetchRow());
-		//$this->println($rowdata);
-		//Commented strip_selected_tags and added to_html function for HTML tags vulnerability
 		if ($col == 'fieldlabel') {
+			if (is_bool($rowdata)) {
+				echo $result->sql;
+			}
 			$coldata = $rowdata[$col];
 		} else {
-			$coldata = (isset($rowdata[$col]) ? to_html($rowdata[$col]) : '');
+			$coldata = (isset($rowdata[$col]) ? to_html($rowdata[$col]) : ''); // added to_html function for HTML tags vulnerability
 		}
 		return $coldata;
 	}
@@ -804,14 +805,12 @@ class PearDatabase {
 
 	/**
 	 * Get an array representing a row in the result set
-	 * Unlike it's non raw siblings this method will not escape
-	 * html entities in return strings.
+	 * Unlike it's non raw siblings this method will not escape html entities in return strings.
 	 *
-	 * The case of all the field names is converted to lower case.
-	 * as with the other methods.
+	 * The case of all the field names is converted to lower case, as with the other methods.
 	 *
-	 * @param &$result The query result to fetch from.
-	 * @param $row The row number to fetch. It's default value is 0
+	 * @param object The query result to fetch from
+	 * @param integer The row number to fetch. It's default value is 0
 	 *
 	 */
 	public function raw_query_result_rowdata(&$result, $row = 0) {
@@ -822,6 +821,9 @@ class PearDatabase {
 		return $this->change_key_case($result->FetchRow());
 	}
 
+	/**
+	 * WARNING: this method returns false for SELECT statements
+	 */
 	public function getAffectedRowCount(&$result) {
 		global $log;
 		$log->debug('> getAffectedRowCount');
@@ -840,7 +842,7 @@ class PearDatabase {
 		return '';
 	}
 
-	/* function which extends requireSingleResult api to execute prepared statment
+	/** function which extends requireSingleResult api to execute prepared statement
 	 */
 	public function requirePsSingleResult($sql, $params, $dieOnError = false, $msg = '', $encode = true) {
 		$result = $this->pquery($sql, $params, $dieOnError, $msg);
@@ -987,7 +989,6 @@ class PearDatabase {
 		$this->database->debug = $value;
 	}
 
-	// ADODB newly added methods
 	public function createTables($schemaFile, $dbHostName = false, $userName = false, $userPassword = false, $dbName = false, $dbType = false) {
 		$this->println('DB createTables '.$schemaFile);
 		if ($dbHostName) {

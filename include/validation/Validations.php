@@ -161,7 +161,7 @@ function validateRelatedModuleExists($field, $fieldval, $params, $fields) {
 		$GetRelatedList_ReturnOnlyQuery = true;
 		$holdCM = $currentModule;
 		$currentModule = $module;
-		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), $params);
+		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), array_values($params));
 		$currentModule = $holdCM;
 		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		if (!isset($relationData['query'])) {

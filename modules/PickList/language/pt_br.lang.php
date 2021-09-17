@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 13/04/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 08/03/2020 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 13/08/2021 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 $mod_strings = array(
 	'LBL_ASSIGN_BUTTON'=>'Designar',
@@ -53,8 +53,9 @@ $mod_strings = array(
 	'LBL_REMOVE' => 'Apagar',
 	'NTC_DELETE_CONFIRMATION'=>'Tem a certeza que deseja apagar esta dependência da lista de opções?',
 	'picklisthasdependency' => 'Atenção: Os valores desta lista, estão ligadas a outra (dependência)',
-	'multii18n' => 'Multi-Language',
-	'monoi18n' => 'Mono-Language',
-	'ERR_MustBeTranslated' => 'This picklist must support multi-language',
+	'multii18n' => 'Multi-Linguagem',
+	'monoi18n' => 'Mono-Linguagem',
+	'ERR_MustBeTranslated' => 'Essa lista deve suportar multi-linguagem',
+	'ERR_InvalidValues' => 'Esta picklist tem valores inválidos.',
 );
 ?>

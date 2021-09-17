@@ -526,7 +526,6 @@ class Workflow {
 	public function getNextTriggerTimeForMonthlyByWeekDay($scheduledWeekDayOfMonth, $scheduledTime) {
 		$currentTime = time();
 		$currentDayOfMonth = date('j', $currentTime);
-		$scheduledTime = $this->getWFScheduleTime();
 		if ($scheduledWeekDayOfMonth == $currentDayOfMonth) {
 			$nextTime = date('Y-m-d H:i:s', strtotime('+1 month '.$scheduledTime));
 		} else {

@@ -124,13 +124,12 @@ function verify_data() {
 	var returnValue = true;
 	var list_price = document.getElementById('list_price');
 	if (list_price.value != '' && list_price.value != 0) {
-		intval= intValidate('list_price', 'EditListPrice');
-		if (!intval) {
+		if (!intValidate('list_price', alert_arr.INVALID_LIST_PRICE)) {
 			returnValue = false;
 		}
 	} else {
 		if (list_price.value == '') {
-			alert(alert_arr.LISTPRICE_CANNOT_BE_EMPTY);
+			ldsPrompt.show(alert_arr['ERROR'], alert_arr.LISTPRICE_CANNOT_BE_EMPTY);
 			returnValue = false;
 		}
 	}

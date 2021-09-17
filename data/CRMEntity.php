@@ -60,7 +60,7 @@ class CRMEntity {
 	public function __call($method, $args) {
 		if (in_array($method, self::$methods)) {
 			$args[] = $this;
-			return call_user_func_array($method, $args);
+			return call_user_func_array($method, array_values($args));
 		}
 	}
 
@@ -128,7 +128,7 @@ class CRMEntity {
 		return (($rs && $adb->num_rows($rs)>0) ? $rs->fields['wsid'] : '');
 	}
 
-	public function saveentity($module, $fileid = '') {
+	public function saveentity($module) {
 		global $current_user, $adb;
 		if (property_exists($module, 'HasDirectImageField') && $this->HasDirectImageField && !empty($this->id)) {
 			// we have to save these names to delete previous overwritten values in uitype 69 field
@@ -159,9 +159,9 @@ class CRMEntity {
 
 		foreach ($this->tab_name as $table_name) {
 			if ($table_name == 'vtiger_crmentity') {
-				$this->insertIntoCrmEntity($module, $fileid);
+				$this->insertIntoCrmEntity($module);
 			} else {
-				$this->insertIntoEntityTable($table_name, $module, $fileid);
+				$this->insertIntoEntityTable($table_name, $module);
 			}
 		}
 
@@ -247,7 +247,7 @@ class CRMEntity {
 				if (!empty($old_attachmentid)) {
 					$setypers = $adb->pquery('select setype from '.$this->crmentityTable.' where crmid=?', array($old_attachmentid));
 					$setype = $adb->query_result($setypers, 0, 'setype');
-					if ($setype == 'Contacts Image' || $setype == $module.' Attachment') {
+					if ($setype == 'Contacts Image' || $setype == $module.Field_Metadata::ATTACHMENT_ENTITY) {
 						$cntrels = $adb->pquery('select count(*) as cnt from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
 						$numrels = $adb->query_result($cntrels, 0, 'cnt');
 					} else {
@@ -256,7 +256,7 @@ class CRMEntity {
 				}
 				$file_saved = $this->uploadAndSaveFile($id, $module, $files, $attachmentname, $direct_import, $fldname);
 				// Remove the deleted attachments from db
-				if ($file_saved && !empty($old_attachmentid) && ($setype == 'Contacts Image' || $setype == $module.' Attachment')) {
+				if ($file_saved && !empty($old_attachmentid) && ($setype == 'Contacts Image' || $setype == $module.Field_Metadata::ATTACHMENT_ENTITY)) {
 					if ($numrels == 1) {
 						$adb->pquery('delete from vtiger_attachments where attachmentsid=?', array($old_attachmentid));
 					}
@@ -386,7 +386,7 @@ class CRMEntity {
 					$current_id,
 					$current_user->id,
 					$ownerid,
-					$module . ' Attachment',
+					$module . Field_Metadata::ATTACHMENT_ENTITY,
 					$description_val,
 					$adb->formatDate($date_var, true),
 					$adb->formatDate($date_var, true)
@@ -444,13 +444,8 @@ class CRMEntity {
 	/** Function to insert values in the crmentity table for the specified module
 	 * @param $module -- module:: Type varchar
 	 */
-	private function insertIntoCrmEntity($module, $fileid = '') {
+	private function insertIntoCrmEntity($module) {
 		global $adb, $current_user;
-
-		if ($fileid != '') {
-			$this->id = $fileid;
-			$this->mode = 'edit';
-		}
 		$crmvalues = $this->getCrmEntityValues($module);
 		$ownerid = $crmvalues['ownerid'];
 		if ($this->mode == 'edit') {
@@ -602,7 +597,7 @@ class CRMEntity {
 	 * @param $table_name -- table name:: Type varchar
 	 * @param $module -- module:: Type varchar
 	 */
-	private function insertIntoEntityTable($table_name, $module, $fileid = '') {
+	private function insertIntoEntityTable($table_name, $module) {
 		global $log, $current_user, $app_strings, $from_wf, $adb;
 		$log->debug("> insertIntoEntityTable $module $table_name");
 		$insertion_mode = $this->mode;
@@ -778,12 +773,12 @@ class CRMEntity {
 							$uservalues = getAssignedPicklistValues($fieldname, $roleid, $adb);
 						}
 						$vek=array_unique(array_merge(array_diff($currentvalues, $uservalues), $selectedvalues));
-						$fldvalue = implode(' |##| ', $vek);
+						$fldvalue = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $vek);
 						if ($uitype == 3313 || $uitype == 3314) {
 							// this value cannot be over 1010 characters if it has an index, so we cut it at that length always
 							$fldvaluecut = substr($fldvalue, 0, 1010);
 							if ($fldvalue!=$fldvaluecut) {
-								$fldvalue = substr($fldvaluecut, 0, strrpos($fldvaluecut, ' |##| '));
+								$fldvalue = substr($fldvaluecut, 0, strrpos($fldvaluecut, Field_Metadata::MULTIPICKLIST_SEPARATOR));
 							}
 						}
 					}
@@ -1355,7 +1350,7 @@ class CRMEntity {
 	/** Function to saves the values in all the tables mentioned in the class variable $tab_name for the specified module
 	 * @param $module_name -- module:: Type varchar
 	 */
-	public function save($module_name, $fileid = '') {
+	public function save($module_name) {
 		global $current_user, $adb;
 		if (!empty($_REQUEST['FILTERFIELDSMAP'])) {
 			$bmapname = vtlib_purify($_REQUEST['FILTERFIELDSMAP']);
@@ -1430,7 +1425,7 @@ class CRMEntity {
 		$em->triggerEvent('vtiger.entity.beforesave.final', $entityData);
 		//Event triggering code ends
 		//GS Save entity being called with the modulename as parameter
-		$this->saveentity($module_name, $fileid);
+		$this->saveentity($module_name);
 
 		//Event triggering code
 		$em->triggerEvent('vtiger.entity.aftersave.first', $entityData);
@@ -1548,8 +1543,6 @@ class CRMEntity {
 	 */
 	public function apply_field_security() {
 		global $current_user, $currentModule;
-
-		require_once 'include/utils/UserInfoUtil.php';
 		foreach ($this->column_fields as $fieldname => $fieldvalue) {
 			$reset_value = false;
 			if (getFieldVisibilityPermission($currentModule, $current_user->id, $fieldname) != '0') {
@@ -1826,8 +1819,6 @@ class CRMEntity {
 	 */
 	public function initImportableFields($module) {
 		global $current_user;
-		require_once 'include/utils/UserInfoUtil.php';
-
 		$skip_uitypes = array('4'); // uitype 4 is for Mod numbers
 		// Look at cache if the fields information is available.
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
@@ -3344,7 +3335,7 @@ class CRMEntity {
 	/**
 	 * To keep track of action of field filtering and avoiding doing more than once.
 	 *
-	 * @var Array
+	 * @var Boolean
 	 */
 	public $__inactive_fields_filtered = false;
 

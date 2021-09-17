@@ -162,6 +162,9 @@ function getToolTipText($view, $fieldname, $module, $value) {
 				<div class="dataLabel" style="border-bottom: 1px dotted rgb(204, 204, 204); width: 80%; padding-bottom: 5px;" valign="top">
 					<span style="color:darkred;">'.$i18nAuthor.': '.getUserName($row['smownerid']).' '.$i18nOn.' '.$row['modifiedtime'].'</span>
 				</div>';
+				if ($row['commentcontent'] != '') {
+					$text['ModComments'] = true;
+				}
 			}
 			$text[getTranslatedString('ModComments', 'ModComments')] = $coms.'</div>';
 		}

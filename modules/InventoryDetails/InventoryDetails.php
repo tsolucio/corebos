@@ -283,13 +283,7 @@ class InventoryDetails extends CRMEntity {
 
 		switch ($module) {
 			case 'Quotes':
-					$accountid = $related_focus->column_fields['account_id'];
-					$contactid = $related_focus->column_fields['contact_id'];
-				break;
 			case 'SalesOrder':
-					$accountid = $related_focus->column_fields['account_id'];
-					$contactid = $related_focus->column_fields['contact_id'];
-				break;
 			case 'Invoice':
 					$accountid = $related_focus->column_fields['account_id'];
 					$contactid = $related_focus->column_fields['contact_id'];
@@ -353,9 +347,7 @@ class InventoryDetails extends CRMEntity {
 						if ($invdet_focus->mode == 'edit') {
 							$diff = $row['quantity']-$invdet_focus->column_fields['quantity'];
 							$result_units = $invdet_focus->column_fields['remaining_units']+$diff;
-							if ($invdet_focus->column_fields['remaining_units'] > 0 && $result_units < 0) {
-								$result_units = 0;
-							} elseif ($invdet_focus->column_fields['remaining_units'] < 0 && $result_units > 0) {
+							if (($invdet_focus->column_fields['remaining_units']>0 && $result_units<0) || ($invdet_focus->column_fields['remaining_units']<0 && $result_units>0)) {
 								$result_units = 0;
 							}
 							$invdet_focus->column_fields['remaining_units'] = $result_units;
@@ -377,21 +369,13 @@ class InventoryDetails extends CRMEntity {
 								if ($invdet_focus->mode == 'edit') {
 									$diff = $row['quantity']-$invdet_focus->column_fields['quantity'];
 									$result_units = $rel_id_focus->column_fields['remaining_units']-$diff;
-									if ($rel_id_focus->column_fields['remaining_units'] > 0 && $result_units < 0) {
-										$result_units = 0;
-									} elseif ($rel_id_focus->column_fields['remaining_units'] < 0 && $result_units > 0) {
-										$result_units = 0;
-									}
-									$rel_id_focus->column_fields['remaining_units'] = $result_units;
 								} else {
 									$result_units = $rel_id_focus->column_fields['remaining_units'] - $row['quantity'];
-									if ($rel_id_focus->column_fields['remaining_units'] > 0 && $result_units < 0) {
-										$result_units = 0;
-									} elseif ($rel_id_focus->column_fields['remaining_units'] < 0 && $result_units > 0) {
-										$result_units = 0;
-									}
-									$rel_id_focus->column_fields['remaining_units'] = $result_units;
 								}
+								if (($rel_id_focus->column_fields['remaining_units']>0 && $result_units<0) || ($rel_id_focus->column_fields['remaining_units']<0 && $result_units>0)) {
+									$result_units = 0;
+								}
+								$rel_id_focus->column_fields['remaining_units'] = $result_units;
 								$rel_id_focus->save('InventoryDetails');
 							}
 						}
@@ -442,16 +426,14 @@ class InventoryDetails extends CRMEntity {
 		}
 		if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1) {
 			$check_invoiced = false;
-			switch ($module) {
-				case 'SalesOrder':
-					$soid = $related_to;
+			if ($module=='SalesOrder') {
+				$soid = $related_to;
+				$check_invoiced = true;
+			} elseif ($module=='Invoice') {
+				$soid = $related_focus->column_fields['salesorder_id'];
+				if (isRecordExists($soid)) {
 					$check_invoiced = true;
-					break;
-				case 'Invoice':
-					$soid = $related_focus->column_fields['salesorder_id'];
-					if (isRecordExists($soid)) {
-						$check_invoiced = true;
-					}
+				}
 			}
 			if ($check_invoiced) {
 				$sel_invoiced = 'SELECT COUNT(*) as remaining FROM vtiger_inventorydetails INNER JOIN '.$crmEntityTable

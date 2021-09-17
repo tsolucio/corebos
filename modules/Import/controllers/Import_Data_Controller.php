@@ -7,10 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************ */
-require_once 'include/Webservices/Create.php';
-require_once 'include/Webservices/Update.php';
+require_once 'include/Webservices/ValidateCUR.php';
 require_once 'include/Webservices/Delete.php';
-require_once 'include/Webservices/Revise.php';
 require_once 'include/Webservices/Retrieve.php';
 require_once 'include/Webservices/DataTransform.php';
 require_once 'vtlib/Vtiger/Utils.php';
@@ -21,6 +19,7 @@ require_once 'modules/Import/resources/Utils.php';
 require_once 'modules/Import/controllers/Import_Lock_Controller.php';
 require_once 'modules/Import/controllers/Import_Queue_Controller.php';
 require_once 'vtlib/Vtiger/Mailer.php';
+$CURRENTLY_IMPORTING = false; // import working global variable
 
 class Import_Data_Controller {
 
@@ -30,9 +29,12 @@ class Import_Data_Controller {
 	public $fieldMapping;
 	public $mergeType;
 	public $mergeFields;
+	public $mergeCondition;
+	public $skipCreate;
 	public $defaultValues;
 	public $importedRecordInfo = array();
 	public $batchImport = true;
+	private $logImport;
 
 	public static $IMPORT_RECORD_NONE = 0;
 	public static $IMPORT_RECORD_CREATED = 1;
@@ -42,13 +44,18 @@ class Import_Data_Controller {
 	public static $IMPORT_RECORD_FAILED = 5;
 
 	public function __construct($importInfo, $user) {
+		global $CURRENTLY_IMPORTING;
+		$CURRENTLY_IMPORTING = false;
 		$this->id = $importInfo['id'];
 		$this->module = $importInfo['module'];
 		$this->fieldMapping = $importInfo['field_mapping'];
 		$this->mergeType = $importInfo['merge_type'];
 		$this->mergeFields = $importInfo['merge_fields'];
+		$this->mergeCondition = $importInfo['importmergecondition'];
+		$this->skipCreate = $importInfo['skipcreate'];
 		$this->defaultValues = $importInfo['default_values'];
 		$this->user = $user;
+		$this->logImport = LoggerManager::getLogger('IMPORT');
 	}
 
 	public function getDefaultFieldValues($moduleMeta) {
@@ -104,13 +111,20 @@ class Import_Data_Controller {
 	}
 
 	public function importData() {
+		global $CURRENTLY_IMPORTING;
+		$CURRENTLY_IMPORTING = true;
 		$focus = CRMEntity::getInstance($this->module);
 		if (method_exists($focus, 'createRecords')) {
+			$this->logImport->debug('Import started with custom createRecords method on module '.$this->module);
 			$focus->createRecords($this);
 		} else {
+			$this->logImport->debug('Import started with application createRecords method on module '.$this->module);
 			$this->createRecords();
 		}
+		$this->logImport->debug('Import finished: updating sequence field');
 		$this->updateModuleSequenceNumber();
+		$this->logImport->debug('Import finished');
+		$CURRENTLY_IMPORTING = false;
 	}
 
 	public function initializeImport() {
@@ -164,7 +178,7 @@ class Import_Data_Controller {
 
 		$tableName = Import_Utils::getDbTableName($this->user);
 		$sql = 'SELECT * FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE;
-
+		$this->logImport->debug('Import table '.$tableName);
 		if ($this->batchImport) {
 			$importBatchLimit = GlobalVariable::getVariable('Import_Batch_Limit', 250);
 			if (!is_numeric($importBatchLimit)) {
@@ -176,12 +190,24 @@ class Import_Data_Controller {
 		$numberOfRecords = $adb->num_rows($result);
 
 		if ($numberOfRecords <= 0) {
+			$this->logImport->debug('No records to import');
 			return true;
 		}
-
+		if (!empty($this->mergeCondition)) {
+			$cbMapObject = new cbMap();
+			$cbMapObject->id = $this->mergeCondition;
+			$cbMapObject->retrieve_entity_info($this->mergeCondition, 'cbMap');
+			if ($cbMapObject->column_fields['maptype']!='Condition Expression' && $cbMapObject->column_fields['maptype']!='Condition Query') {
+				$this->mergeCondition = 0;
+			}
+		}
 		$afterImportRecordExists = method_exists($focus, 'afterImportRecord');
 		$fieldColumnMapping = $moduleMeta->getFieldColumnMapping();
 		$fieldColumnMapping['cbuuid'] = 'cbuuid';
+		$merge_type = $this->mergeType;
+		$customImport = method_exists($focus, 'importRecord');
+		$applyValidations = GlobalVariable::getVariable('Import_ApplyValidationRules', 0, $moduleName, $this->user->id);
+		$this->logImport->debug('import record with '.($customImport ? 'custom' : 'application').' method');
 		for ($i = 0; $i < $numberOfRecords; ++$i) {
 			$row = $adb->raw_query_result_rowdata($result, $i);
 			$rowId = $row['id'];
@@ -190,45 +216,62 @@ class Import_Data_Controller {
 			foreach ($this->fieldMapping as $fieldName => $index) {
 				$fieldData[$fieldName] = (isset($row[$fieldName]) ? $row[$fieldName] : '');
 			}
-
-			$merge_type = $this->mergeType;
+			$this->logImport->debug('row', $row);
+			$this->logImport->debug('fieldData', $fieldData);
 			$createRecord = false;
-
-			if (method_exists($focus, 'importRecord')) {
+			if ($customImport) {
 				$entityInfo = $focus->importRecord($this, $fieldData);
 			} else {
 				if (!empty($merge_type) && $merge_type != Import_Utils::$AUTO_MERGE_NONE) {
-					$queryGenerator = new QueryGenerator($moduleName, $this->user);
-					$queryGenerator->initForDefaultCustomView();
-					$fieldsList = array('id');
-					$queryGenerator->setFields($fieldsList);
+					if (empty($this->mergeCondition)) {
+						$queryGenerator = new QueryGenerator($moduleName, $this->user);
+						$queryGenerator->initForDefaultCustomView();
+						$fieldsList = array('id');
+						$queryGenerator->setFields($fieldsList);
 
-					foreach ($this->mergeFields as $mergeField) {
-						if (!isset($fieldData[$mergeField])) {
-							continue;
-						}
-						$comparisonValue = $fieldData[$mergeField];
-						$fieldInstance = $moduleFields[$mergeField];
-						if ($fieldInstance->getFieldDataType() == 'owner') {
-							$userId = getUserId_Ol($comparisonValue);
-							$comparisonValue = getUserFullName($userId);
-						}
-						if ($fieldInstance->getFieldDataType() == 'reference') {
-							if (strpos($comparisonValue, '::::') > 0) {
-								$referenceFileValueComponents = explode('::::', $comparisonValue);
-							} else {
-								$referenceFileValueComponents = explode(':::', $comparisonValue);
+						foreach ($this->mergeFields as $mergeField) {
+							if (!isset($fieldData[$mergeField])) {
+								continue;
 							}
-							if (count($referenceFileValueComponents) > 1) {
-								$comparisonValue = trim($referenceFileValueComponents[1]);
+							$comparisonValue = $fieldData[$mergeField];
+							$fieldInstance = $moduleFields[$mergeField];
+							if ($fieldInstance->getFieldDataType() == 'owner') {
+								$userId = getUserId_Ol($comparisonValue);
+								$comparisonValue = getUserFullName($userId);
 							}
+							if ($fieldInstance->getFieldDataType() == 'reference') {
+								if (strpos($comparisonValue, '::::') > 0) {
+									$referenceFileValueComponents = explode('::::', $comparisonValue);
+								} else {
+									$referenceFileValueComponents = explode(':::', $comparisonValue);
+								}
+								if (count($referenceFileValueComponents) > 1) {
+									$comparisonValue = trim($referenceFileValueComponents[1]);
+								}
+							}
+							$queryGenerator->addCondition($mergeField, $comparisonValue, 'e', QueryGenerator::$AND);
 						}
-						$queryGenerator->addCondition($mergeField, $comparisonValue, 'e', QueryGenerator::$AND);
+						$query = $queryGenerator->getQuery();
+					} else {
+						if ($cbMapObject->column_fields['maptype']=='Condition Expression') {
+							$duplicateIDs = $cbMapObject->ConditionExpression($fieldData);
+						} else {
+							$duplicateIDs = $cbMapObject->ConditionQuery($fieldData);
+						}
+						if (empty($duplicateIDs)) {
+							$duplicateIDs = 0;
+						}
+						if (is_array($duplicateIDs)) {
+							$dups = array();
+							foreach ($duplicateIDs as $rowvalue) {
+								$dups[] = reset($rowvalue);
+							}
+							$duplicateIDs = implode(',', $dups);
+						}
+						$query = 'select crmid as '.$fieldColumnMapping['id'].' from vtiger_crmobject where crmid in ('.$adb->convert2SQL($duplicateIDs, array()).')';
 					}
-					$query = $queryGenerator->getQuery();
 					$duplicatesResult = $adb->query($query);
 					$noOfDuplicates = $adb->num_rows($duplicatesResult);
-
 					if ($noOfDuplicates > 0) {
 						if ($merge_type == Import_Utils::$AUTO_MERGE_IGNORE) {
 							$entityInfo['status'] = self::$IMPORT_RECORD_SKIPPED;
@@ -245,11 +288,13 @@ class Import_Data_Controller {
 							$entityData['moduleName'] = $moduleName;
 							$entityData['user'] = $this->user;
 							cbEventHandler::do_action('corebos.entity.import.skip', $entityData);
+							$this->logImport->debug('skipped record', $fieldData);
 						} elseif ($merge_type == Import_Utils::$AUTO_MERGE_OVERWRITE || $merge_type == Import_Utils::$AUTO_MERGE_MERGEFIELDS) {
 							for ($index = 0; $index < $noOfDuplicates - 1; ++$index) {
 								$duplicateRecordId = $adb->query_result($duplicatesResult, $index, $fieldColumnMapping['id']);
 								$entityId = vtws_getId($moduleObjectId, $duplicateRecordId);
 								vtws_delete($entityId, $this->user);
+								$this->logImport->debug('overwrite/merge deleted '.$entityId);
 							}
 							$baseRecordId = $adb->query_result($duplicatesResult, $noOfDuplicates - 1, $fieldColumnMapping['id']);
 							$baseEntityId = vtws_getId($moduleObjectId, $baseRecordId);
@@ -257,8 +302,26 @@ class Import_Data_Controller {
 							if ($merge_type == Import_Utils::$AUTO_MERGE_OVERWRITE) {
 								$fieldData = $this->transformForImport($fieldData, $moduleMeta);
 								$fieldData['id'] = $baseEntityId;
-								$entityInfo = vtws_update($fieldData, $this->user);
-								$entityInfo['status'] = self::$IMPORT_RECORD_UPDATED;
+								$this->logImport->debug('overwrite fields', $fieldData);
+								$validation=true;
+								if ($applyValidations) {
+									$context = $fieldData;
+									$context['module'] = $moduleName;
+									$validation = __cbwsCURValidation($context, $this->user);
+								}
+								if ($validation===true) {
+									try {
+										$entityInfo = vtws_update($fieldData, $this->user);
+										$entityInfo['status'] = self::$IMPORT_RECORD_UPDATED;
+										$this->logImport->debug('updated record overwrite', $entityInfo);
+									} catch (\Throwable $th) {
+										$this->logImport->debug('ERROR updating record: '.$th->getMessage());
+										$entityInfo = array('id' => $baseEntityId, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $th->getMessage());
+									}
+								} else {
+									$entityInfo = array('id' => $baseEntityId, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $validation['wsresult']);
+									$this->logImport->debug('update overwrite FAILED', $entityInfo);
+								}
 								//Prepare data for event handler
 								$entityData= array();
 								$entityData['rowId'] = $rowId;
@@ -286,8 +349,27 @@ class Import_Data_Controller {
 								}
 								$filteredFieldData = $this->transformForImport($filteredFieldData, $moduleMeta, false, true);
 								$filteredFieldData['id'] = $baseEntityId;
-								$entityInfo = vtws_revise($filteredFieldData, $this->user);
-								$entityInfo['status'] = self::$IMPORT_RECORD_MERGED;
+								$this->logImport->debug('merge fields', $filteredFieldData);
+								$validation=true;
+								if ($applyValidations) {
+									$context = $fieldData;
+									$context['module'] = $moduleName;
+									$context['id'] = $baseEntityId;
+									$validation = __cbwsCURValidation($context, $this->user);
+								}
+								if ($validation===true) {
+									try {
+										$entityInfo = vtws_revise($filteredFieldData, $this->user);
+										$entityInfo['status'] = self::$IMPORT_RECORD_MERGED;
+										$this->logImport->debug('updated record merge', $entityInfo);
+									} catch (\Throwable $th) {
+										$this->logImport->debug('ERROR revising record: '.$th->getMessage());
+										$entityInfo = array('id' => $baseEntityId, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $th->getMessage());
+									}
+								} else {
+									$entityInfo = array('id' => $baseEntityId, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $validation['wsresult']);
+									$this->logImport->debug('update merge FAILED', $entityInfo);
+								}
 								//Prepare data for event handler
 								$entityData= array();
 								$entityData['rowId'] = $rowId;
@@ -299,10 +381,18 @@ class Import_Data_Controller {
 								cbEventHandler::do_action('corebos.entity.import.merge', $entityData);
 							}
 						} else {
-							$createRecord = true;
+							$createRecord = (!$this->skipCreate);
+							if (!$createRecord) {
+								$this->logImport->debug('CREATE SKIPPED');
+								$entityInfo = array('id' => null, 'status' => self::$IMPORT_RECORD_SKIPPED, 'error' => 'CREATE SKIPPED');
+							}
 						}
 					} else {
-						$createRecord = true;
+						$createRecord = (!$this->skipCreate);
+						if (!$createRecord) {
+							$this->logImport->debug('CREATE SKIPPED');
+							$entityInfo = array('id' => null, 'status' => self::$IMPORT_RECORD_SKIPPED, 'error' => 'CREATE SKIPPED');
+						}
 					}
 				} else {
 					$createRecord = true;
@@ -313,8 +403,21 @@ class Import_Data_Controller {
 						$entityInfo = null;
 					} else {
 						try {
-							$entityInfo = vtws_create($moduleName, $fieldData, $this->user);
-							$entityInfo['status'] = self::$IMPORT_RECORD_CREATED;
+							$validation=true;
+							if ($applyValidations) {
+								$context = $fieldData;
+								$context['record'] = '';
+								$context['module'] = $moduleName;
+								$validation = cbwsValidateInformation(json_encode($context), $this->user);
+							}
+							if ($validation===true) {
+								$entityInfo = vtws_create($moduleName, $fieldData, $this->user);
+								$entityInfo['status'] = self::$IMPORT_RECORD_CREATED;
+								$this->logImport->debug('created record', $entityInfo);
+							} else {
+								$entityInfo = array('id' => null, 'status' => self::$IMPORT_RECORD_FAILED, 'error' => $validation['wsresult']);
+								$this->logImport->debug('create FAILED', $entityInfo);
+							}
 							//Prepare data for event handler
 							$entityData= array();
 							$entityData['rowId'] = $rowId;
@@ -325,6 +428,7 @@ class Import_Data_Controller {
 							$entityData['user'] = $this->user;
 							cbEventHandler::do_action('corebos.entity.import.create', $entityData);
 						} catch (\Throwable $th) {
+							$this->logImport->debug('ERROR creating record: '.$th->getMessage());
 							$entityInfo = null;
 						}
 					}
@@ -457,15 +561,15 @@ class Import_Data_Controller {
 					}
 				}
 			} elseif ($fieldInstance->getFieldDataType() == 'picklist') {
-				if (empty($fieldValue) && isset($defaultFieldValues[$fieldName])) {
-					$fieldData[$fieldName] = $fieldValue = $defaultFieldValues[$fieldName];
+				if (empty($fieldValue)) {
+					$fieldData[$fieldName]=$fieldValue=(isset($defaultFieldValues[$fieldName]) ? $defaultFieldValues[$fieldName] : Field_Metadata::PICKLIST_EMPTY_VALUE);
 				}
 				$allPicklistDetails = $fieldInstance->getPicklistDetails();
 				$allPicklistValues = array();
 				foreach ($allPicklistDetails as $picklistDetails) {
 					$allPicklistValues[] = $picklistDetails['value'];
 				}
-				if (!empty($fieldValue) && !in_array($fieldValue, $allPicklistValues)) {
+				if (!in_array($fieldValue, $allPicklistValues)) {
 					$moduleObject = Vtiger_Module::getInstance($moduleMeta->getEntityName());
 					$fieldObject = Vtiger_Field::getInstance($fieldName, $moduleObject);
 					$fieldObject->setPicklistValues(array($fieldValue));

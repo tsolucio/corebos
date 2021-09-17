@@ -49,7 +49,7 @@ class Webform_Capture {
 			$webformFields = $webform->getFields();
 			foreach ($webformFields as $webformField) {
 				if (is_array(vtlib_purify($request[$webformField->getNeutralizedField()]))) {
-					$fieldData=implode(' |##| ', vtlib_purify($request[$webformField->getNeutralizedField()]));
+					$fieldData=implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, vtlib_purify($request[$webformField->getNeutralizedField()]));
 				} else {
 					$fieldData=vtlib_purify($request[$webformField->getNeutralizedField()]);
 				}

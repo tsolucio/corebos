@@ -109,7 +109,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 					case '3313':
 					case '3314':
 						if (is_array($field_value)) {
-							$field_value = implode(' |##| ', $field_value);
+							$field_value = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $field_value);
 						}
 						break;
 				}
@@ -332,8 +332,6 @@ if ($focus->mode == 'edit') {
 } else {
 	$smarty->assign('INV_CURRENCY_ID', $currencyid);
 }
-
-$smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : '');
 
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';

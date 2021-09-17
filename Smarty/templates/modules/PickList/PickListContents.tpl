@@ -83,6 +83,14 @@
 						</span>
 						</label>
 					</div>
+					{if !isPicklistValid($picklistfields.fieldname)}
+					<div class="slds-form-element slds-m-top_small slds-m-left_small">
+						<label class="slds-checkbox_toggle slds-grid slds-text-color_error">{'ERR_InvalidValues'|getTranslatedString:'PickList'}</label>
+						<button class="slds-button slds-button_text-destructive slds-m-top_x-small" onclick="fixPicklistValues('{$MODULE}', '{$picklistfields.fieldname}');">
+							{'LBL_FIX_NOW'|getTranslatedString:'PickList'}
+						</button>
+					</div>
+					{/if}
 				</td>
 			{else}
 				<td class="listTableTopButtons small" colspan="2">&nbsp;</td>

@@ -145,9 +145,9 @@ class OperationManager {
 			}
 			if (!$this->preLogin) {
 				$params['user'] = $user;
-				return call_user_func_array($this->handlerMethod, $params);
+				return call_user_func_array($this->handlerMethod, array_values($params));
 			} else {
-				$userDetails = call_user_func_array($this->handlerMethod, $params);
+				$userDetails = call_user_func_array($this->handlerMethod, array_values($params));
 				if (is_array($userDetails)) {
 					return $userDetails;
 				} else {

@@ -41,7 +41,7 @@ class ModuleSetMapping extends processcbMap {
 		$module_set = array();
 		if (isset($xml->modules)) {
 			foreach ($xml->modules->module as $v) {
-				$module_set[] = (String)$v;
+				$module_set[] = (string)$v;
 			}
 		}
 		return $module_set;

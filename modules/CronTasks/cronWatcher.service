@@ -90,7 +90,7 @@ if ($mailto != '') {
 } else {
 	$mailto = $mailtoDefined;
 }
-if ($mailto != '' && count($output)>0) {
+if ($mailto != '' && !empty($output)) {
 	$mailsubject = getTranslatedString('mailsubject', 'CronTasks');
 	$mailcontent = '<br>'.sprintf(getTranslatedString('mailheader', 'CronTasks'), $site_URL).'<br><br>';
 	$mailcontent.= '<table width="100%" border=1>';

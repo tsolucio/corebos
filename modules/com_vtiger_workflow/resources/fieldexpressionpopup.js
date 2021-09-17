@@ -412,7 +412,7 @@ function evaluateit() {
 		})
 		.then(response => response.text())
 		.then(response => {
-			document.getElementById('evaluateexpressionresult').innerHTML = response;
+			document.getElementById('evaluateexpressionresult').innerHTML = DOMPurify.sanitize(response);
 		});
 }
 

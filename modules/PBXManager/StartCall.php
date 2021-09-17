@@ -11,7 +11,7 @@
 /**
  * this function starts the call, it writes the caller and called information to database where it is picked up from
  */
-echo startCall();
+startCall();
 
 function startCall() {
 	global $current_user, $adb,$log;
@@ -29,7 +29,6 @@ function startCall() {
 		$port = $data['port'];
 		$username = $data['username'];
 		$password = $data['password'];
-		//$version = $data['version'];
 		$errno = $errstr = null;
 		$sock = fsockopen($server, $port, $errno, $errstr, 1);
 		stream_set_blocking($sock, false);

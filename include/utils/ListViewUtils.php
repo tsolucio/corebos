@@ -15,14 +15,16 @@ require_once 'include/CustomFieldUtil.php';
 require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
 
 /** This function is used to get the list view header values in a list view
- * Param $focus - module object
- * Param $module - module name
- * Param $sort_qry - sort by value
- * Param $sorder - sorting order (asc/desc)
- * Param $order_by - order by
- * Param $relatedlist - flag to check whether the header is for listvie or related list
- * Param $oCv - Custom view object
- * Returns the listview header values in an array
+ * @param object module object
+ * @param string module name
+ * @param string sort by value
+ * @param string sorting order (asc/desc)
+ * @param string order by
+ * @param boolean flag to check whether the header is for list view or related list
+ * @param object custom view object
+ * @param string relalted module name
+ * @param boolean flag to skip adding the actions columns
+ * @return array the listview header values
  */
 function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order_by = '', $relatedlist = '', $oCv = '', $relatedmodule = '', $skipActions = false) {
 	global $log, $adb, $theme, $app_strings;
@@ -1202,7 +1204,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	} elseif ($uitype == '1025') {
 		$parent_id = $field_valEncoded;
 		if (!empty($parent_id)) {
-			$values=explode(' |##| ', $parent_id);
+			$values=explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $parent_id);
 			$numvals = count($values);
 			for ($fvalues=0; $fvalues < $numvals; $fvalues++) {
 				$srchmod =  getSalesEntityType($values[$fvalues]);
@@ -1351,9 +1353,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	} elseif ($uitype == 98) {
 		$value = '<a href="index.php?action=RoleDetailView&module=Settings&roleid='.$field_val.'">'.textlength_check(getRoleName($field_valEncoded)).'</a>';
 	} elseif ($uitype == 33) {
-		$value = ($field_valEncoded != '') ? str_ireplace(' |##| ', ', ', $field_valEncoded) : '';
+		$value = ($field_valEncoded != '') ? str_ireplace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $field_valEncoded) : '';
 		if (!is_admin($current_user) && $value != '') {
-			$value = ($field_val != '') ? str_ireplace(' |##| ', ', ', $field_val) : '';
+			$value = ($field_val != '') ? str_ireplace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $field_val) : '';
 			if ($value != '') {
 				$value_arr = explode(',', trim($value));
 				$roleid = $current_user->roleid;
@@ -1389,7 +1391,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					if (!in_array($val, $picklistarr)) {
 						continue;
 					}
-					if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $string_temp)) > $listview_max_textlength)) {
+					if (!$listview_max_textlength || strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $string_temp)) <= $listview_max_textlength) {
 						if ($str_c != 0) {
 							$string_temp .= ' , ';
 						}
@@ -1428,6 +1430,30 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = CurrencyField::convertToUserFormat($field_valEncoded, $current_user, true);
 		}
+	} elseif ($uitype == 13 && $popuptype == 'set_return_emails') {
+		$qstr = 'SELECT fieldid FROM vtiger_field WHERE tabid=? and uitype=13 and fieldname=? and vtiger_field.presence in (0,2) limit 1';
+		$qres = $adb->pquery($qstr, array(getTabid($module), $fieldname));
+		$fid = $adb->query_result($qres, 0, 'fieldid');
+		if (CheckFieldPermission($fieldname, $module) == 'true') {
+			$email_address = $adb->query_result($list_result, $list_result_count, $colname);
+			$email_check = 1;
+		} else {
+			$email_address = '';
+			$email_check = 0;
+		}
+		if (empty($_REQUEST['email_field'])) {
+			$sre_param = ', "default"';
+			$mail_field = 'default';
+		} else {
+			$sre_param = ', "'.$_REQUEST['email_field'].'"';
+			$mail_field = $_REQUEST['email_field'];
+		}
+		$count = counterValue();
+		if (!empty($email_address)) {
+			$value = '<input type="checkbox" entityid="'.$entity_id.'" emailid="'.$fid.'" parentname="'.$email_address.'" emailadd="'.$email_address.'" emailadd2="" perm="'.$email_check.'" emailfield="'.$mail_field.'" value="" />&nbsp;<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',' . $fid . ',"' . decode_html($email_address) . '","' . $email_address . '","","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . textlength_check($email_address) . '</a>';
+		} else {
+			$value = '';
+		}
 	} else {
 		if ($fieldname == $focus->list_link_field) {
 			if ($mode == 'search') {
@@ -1448,14 +1474,13 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						require_once 'modules/Contacts/Contacts.php';
 						$cntct_focus = new Contacts();
 						$cntct_focus->retrieve_entity_info($entity_id, 'Contacts');
-						//ADDED TO CHECK THE FIELD PERMISSIONS FOR
+						//Added to check the field permissions for
 						$xyz = array('mailingstreet', 'mailingcity', 'mailingzip', 'mailingpobox', 'mailingcountry', 'mailingstate', 'otherstreet', 'othercity', 'otherzip', 'otherpobox', 'othercountry', 'otherstate');
 						for ($i = 0; $i < 12; $i++) {
 							if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) != '0') {
 								$cntct_focus->column_fields[$xyz[$i]] = '';
 							}
 						}
-						// For ToDo creation the underlying form is not named as EditView
 						$form = !empty($_REQUEST['form']) ? $_REQUEST['form'] : '';
 						if (!empty($form)) {
 							$form = htmlspecialchars($form, ENT_QUOTES, $default_charset);
@@ -3420,6 +3445,9 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
 		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
+	if (isset($_REQUEST['popuptype']) && $_REQUEST['popuptype'] == 'set_return_emails' && isset($_REQUEST['email_field'])) {
+		$url_string .='&email_field=' . (isset($_REQUEST['email_field']) ? vtlib_purify($_REQUEST['email_field']) : '');
+	}
 	//Get custom paramaters to url_string
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);

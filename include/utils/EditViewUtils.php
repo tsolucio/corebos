@@ -225,7 +225,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 1025) {
 		$entityTypes = array();
 		$parent_id = $value;
-		$values = explode(' |##| ', $value);
+		$values = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 		foreach ($cbMapFI['searchfields'] as $k => $value) {
 			$entityTypes[] = $k;
 		}
@@ -599,8 +599,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 						$parent_name .= $fullname.'&lt;'.$temp1.'&gt;; ';
 						$temp_parent_name .= $fullname.'&lt;'.$temp1.'&gt;; ';
 					} else {
-						$parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '.'</b>';
-						$temp_parent_name .= "<b style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; '.'</b>';
+						$parent_name .= "<strong style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; </strong>';
+						$temp_parent_name .= "<strong style='color:red'>".$fullname.'&lt;'.$temp1.'&gt;; </strong>';
 					}
 				}
 			}

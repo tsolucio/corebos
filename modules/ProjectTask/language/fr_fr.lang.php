@@ -9,7 +9,7 @@
  ************************************************************************************/
 $mod_strings = array(
 	'LBL_MODULE_NAME'=>'Tâches Projet',
-	  'LBL_MODULE_TITLE'=>'Tâches Projet',
+	'LBL_MODULE_TITLE'=>'Tâches Projet',
 	'LBL_NEW_PROJECTTASK'=>'Nouvelle Tâche Projet',
 	'LBL_PROJECTTASKS'=>'Tâches Projet',
 	'LBL_PROJECTTASK'=>'Tâches Projet',
