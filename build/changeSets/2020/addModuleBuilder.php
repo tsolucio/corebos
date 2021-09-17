@@ -92,6 +92,7 @@ class addModuleBuilder extends cbupdaterWorker {
 					`entityidentifier` varchar(10) NOT NULL DEFAULT "no",
 					`relatedmodules` varchar(100) NOT NULL,
 					`picklistvalues` text NOT NULL,
+					`fieldlength` varchar(5) NOT NULL,
 					PRIMARY KEY (`fieldsid`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 			);

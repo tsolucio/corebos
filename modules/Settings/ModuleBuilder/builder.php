@@ -191,7 +191,7 @@ class ModuleBuilder {
 			}
 		} elseif ($step == 3) {
 			if (!isset($this->column_data['fieldsid'])) {
-				$adb->pquery('INSERT INTO vtiger_modulebuilder_fields (blockid, moduleid,fieldname,uitype,columnname,tablename,fieldlabel,presence,sequence,typeofdata,quickcreate,displaytype,masseditable,relatedmodules, picklistvalues) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
+				$adb->pquery('INSERT INTO vtiger_modulebuilder_fields (blockid, moduleid,fieldname,uitype,columnname,tablename,fieldlabel,presence,sequence,typeofdata,quickcreate,displaytype,masseditable,relatedmodules, picklistvalues, fieldlength) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
 					$this->column_data['blockid'],
 					$this->id,
 					$this->column_data['fieldname'],
@@ -207,9 +207,10 @@ class ModuleBuilder {
 					$this->column_data['masseditable'],
 					$this->column_data['relatedmodules'],
 					$this->column_data['picklistvalues'],
+					$this->column_data['fieldlength'],
 				));
 			} else {
-				$adb->pquery('UPDATE vtiger_modulebuilder_fields SET fieldname=?,columnname=?,fieldlabel=?,uitype=?,tablename=?,presence=?,sequence=?,typeofdata=?,quickcreate=?,displaytype=?,masseditable=?,relatedmodules=?, picklistvalues=? WHERE fieldsid=? AND blockid=? AND moduleid=?', array(
+				$adb->pquery('UPDATE vtiger_modulebuilder_fields SET fieldname=?,columnname=?,fieldlabel=?,uitype=?,tablename=?,presence=?,sequence=?,typeofdata=?,quickcreate=?,displaytype=?,masseditable=?,relatedmodules=?, picklistvalues=?, fieldlength=? WHERE fieldsid=? AND blockid=? AND moduleid=?', array(
 					$this->column_data['fieldname'],
 					$this->column_data['columnname'],
 					$this->column_data['fieldlabel'],
@@ -225,6 +226,7 @@ class ModuleBuilder {
 					$this->column_data['picklistvalues'],
 					$this->column_data['fieldsid'],
 					$this->column_data['blockid'],
+					$this->column_data['fieldlength'],
 					$this->id
 				));
 			}
@@ -465,6 +467,7 @@ class ModuleBuilder {
 				$blockname = $adb->query_result($blocksql, 0, 'blocks_label');
 				$fieldsInfo['fieldsid'] = $row['fieldsid'];
 				$fieldsInfo['fieldname'] = $row['fieldname'];
+				$fieldsInfo['fieldlength'] = $row['fieldlength'];
 				$fieldsInfo['columnname'] = $row['columnname'];
 				$fieldsInfo['fieldlabel'] = $row['fieldlabel'];
 				$fieldsInfo['entityidentifier'] = $row['entityidentifier'];
@@ -737,6 +740,8 @@ class ModuleBuilder {
 
 	public function generateSql($blocks, $module, $idx) {
 		$fields = array();
+		$textfield = array('1', '19', '21', '13', '11');
+		$decimalfield = array('7');
 		if ($idx == 0) {
 			$table = "CREATE TABLE IF NOT EXISTS `vtiger_".strtolower($module)."` (\n";
 			$table .= "`".strtolower($module)."id` INT(11) NOT NULL,\n";
@@ -745,7 +750,14 @@ class ModuleBuilder {
 				foreach ($value['block']['fields'] as $field => $info) {
 					$fieldname = $info['fieldname'];
 					$uitype = $info['uitype'];
-					$table .= "`".strtolower($fieldname)."` ".$this->typeofdata[$uitype][0]." DEFAULT NULL,\n";
+					$fieldlength = $info['fieldlength'] == 0 ? 20 : $info['fieldlength'];
+					if (in_array($uitype, $textfield)) {
+						$table .= "`".strtolower($fieldname)."` VARCAHR(".$fieldlength.") DEFAULT NULL,\n";
+					} else if (in_array($uitype, $decimalfield)) {
+						$table .= "`".strtolower($fieldname)."` DECIMAL(".$fieldlength.") DEFAULT NULL,\n";
+					} else {
+						$table .= "`".strtolower($fieldname)."` ".$this->typeofdata[$uitype][0]." DEFAULT NULL,\n";
+					}
 				}
 			}
 			$table .= "PRIMARY KEY (`".strtolower($module)."id`)\n";
@@ -830,6 +842,9 @@ class ModuleBuilder {
 				$field->addChild('generatedtype', 1);
 				$field->addChild('fieldlabel', $fValue['fieldlabel']);
 				$field->addChild('presence', $fValue['presence']);
+				if (isset($fValue['fieldlength']) && $fValue['fieldlength'] != '') {
+					$field->addChild('maximumlength', $fValue['fieldlength']);
+				}
 				$field->addChild('readonly', 1);
 				$field->addChild('sequence', $sequence);
 				$field->addChild('typeofdata', $this->typeofdata($fValue['typeofdata'], $fValue['uitype']));
@@ -844,7 +859,7 @@ class ModuleBuilder {
 							$relatedmodules->addChild('relatedmodule', $mod);
 						}
 					}
-				} elseif ($fValue['uitype'] == 15 || $fValue['uitype'] == 16) {
+				} elseif ($fValue['uitype'] == 15 || $fValue['uitype'] == 16 || $fValue['uitype'] == 33) {
 					$picklistvalues = $field->addChild('picklistvalues');
 					$values = explode(',', $fValue['picklistvalues']);
 					foreach ($values as $i => $list) {

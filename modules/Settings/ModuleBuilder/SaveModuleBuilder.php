@@ -64,6 +64,7 @@ function SaveModuleBuilder($step) {
 				$mb->column_data['uitype'] = vtlib_purify($_REQUEST['fields'][0]['uitype']);
 				$mb->column_data['columnname'] = vtlib_purify($_REQUEST['fields'][0]['columnname']);
 				$mb->column_data['fieldlabel'] = vtlib_purify($_REQUEST['fields'][0]['fieldlabel']);
+				$mb->column_data['fieldlength'] = vtlib_purify($_REQUEST['fields'][0]['fieldlength']);
 				$mb->column_data['presence'] = vtlib_purify($_REQUEST['fields'][0]['presence']);
 				$mb->column_data['sequence'] = vtlib_purify($_REQUEST['fields'][0]['sequence']);
 				$mb->column_data['typeofdata'] = vtlib_purify($_REQUEST['fields'][0]['typeofdata']);

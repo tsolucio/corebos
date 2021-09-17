@@ -63,17 +63,17 @@ const mb = {
 			var btnid = buttonid.split('-')[4];
 			if (forward == false) {
 				let proceed = true;
-				if (mb.loadElement(`fieldname_${btnid}`) == '' || mb.loadElement(`fieldlabel_${btnid}`) == '') {
+				if (mb.loadElement(`fieldname_${btnid}`) == '' || mb.loadElement(`fieldlabel_${btnid}`) == '' || mb.loadElement(`UItype_${btnid}`) == '') {
 					mb.loadMessage(mod_alert_arr.FieldsEmpty, true, 'error');
 					proceed = false;
 				}
-				if (mb.loadElement(`Uitype_${btnid}`) == '10') {
+				if (mb.loadElement(`UItype_${btnid}`) == '10') {
 					if (mb.loadElement(`relatedmodules_${btnid}`) == '') {
 						mb.loadMessage(mod_alert_arr.Relmod, true, 'error');
 						proceed = false;
 					}
 				}
-				if (mb.loadElement(`Uitype_${btnid}`) == '15' || mb.loadElement(`Uitype_${btnid}`) == '16') {
+				if (mb.loadElement(`UItype_${btnid}`) == '15' || mb.loadElement(`UItype_${btnid}`) == '16') {
 					if (mb.loadElement(`picklistvalues_${btnid}`) == '') {
 						mb.loadMessage(mod_alert_arr.PickListFld, true, 'error');
 						proceed = false;
@@ -85,6 +85,7 @@ const mb = {
 				var fieldValues = {
 					blockid: mb.getRadioValue(`select-for-field-${btnid}`),
 					fieldname: mb.loadElement(`fieldname_${btnid}`),
+					fieldlength: mb.loadElement(`fieldlength_${btnid}`),
 					columnname: mb.loadElement(`fieldname_${btnid}`),
 					fieldlabel: mb.loadElement(`fieldlabel_${btnid}`),
 					relatedmodules: mb.loadElement(`relatedmodules_${btnid}`),
@@ -93,7 +94,7 @@ const mb = {
 					quickcreate: mb.loadElement(`Quickcreate_${btnid}`),
 					typeofdata: mb.loadElement(`Typeofdata_${btnid}`),
 					presence: mb.loadElement(`Presence_${btnid}`),
-					uitype: mb.loadElement(`Uitype_${btnid}`),
+					uitype: mb.loadElement(`UItype_${btnid}`),
 					picklistvalues: mb.loadElement(`picklistvalues_${btnid}`),
 					sequence: FIELD_COUNT,
 				};
@@ -336,7 +337,7 @@ const mb = {
 		});
 	},
 
- 	/**
+	/**
 	 * Go to back step
 	 * @param {number} step
 	 * @param {boolean} mod
@@ -687,7 +688,7 @@ const mb = {
 				document.getElementById('filters').classList.add('slds-is-active');
 				document.getElementById('relationship').classList.add('slds-is-active');
 			}
- 		}
+		}
 	},
 	/**
 	 * Show module icons in step 1
@@ -774,6 +775,10 @@ const mb = {
 			value: 'fieldlabel',
 		},
 		{
+			type: mod_alert_arr.fieldlength,
+			value: 'fieldlength',
+		},
+		{
 			type: mod_alert_arr.picklistvalues,
 			value: 'picklistvalues',
 		},
@@ -782,8 +787,9 @@ const mb = {
 			value: 'relatedmodules',
 		}];
 		let fieldtypes = [{
-			type: 'Uitype',
+			type: 'UItype',
 			values: {
+				0: '',
 				1: mod_alert_arr.LineText,
 				21: mod_alert_arr.BlockTextSmall,
 				19: mod_alert_arr.BlockTextLarge,
@@ -873,54 +879,70 @@ const mb = {
 			'placeholder': '',
 		};
 		let fieldTemplate = '<div class="slds-grid slds-gutters">';
-		for (var key in textfields) {
-			if (textfields[key].value == 'relatedmodules') {
-				inStyle.style = 'margin: 5px; display: none';
-				inStyle.id = `show-field-${textfields[key].value}-${FIELD_COUNT}`;
-				inStyle.placeholder = 'Value 1,Value 2,...';
-				fieldTemplate += `
-				<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
-					<div class="slds-form-element">
-					<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-						<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
-					</label>
-					<div class="slds-form-element__control">
-						<input type="hidden" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
-						<div class="slds-pill_container" onclick="mb.loadModules('load-mods')">
-							<ul class="slds-listbox slds-listbox_horizontal" role="listbox" id="show-pills">
-							</ul>
+		for (var key in textfields) {console.log(textfields)
+			switch(textfields[key].value) {
+				case 'relatedmodules':
+					inStyle.style = 'margin: 5px; display: none';
+					inStyle.id = `show-field-${textfields[key].value}-${FIELD_COUNT}`;
+					inStyle.placeholder = 'Value 1,Value 2,...';
+					fieldTemplate += `
+					<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
+						<div class="slds-form-element">
+						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+							<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+						</label>
+						<div class="slds-form-element__control">
+							<input type="hidden" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+							<div class="slds-pill_container" onclick="mb.loadModules('load-mods')">
+								<ul class="slds-listbox slds-listbox_horizontal" role="listbox" id="show-pills">
+								</ul>
+							</div>
+							<span id="load-mods" class="closeList"></span>
 						</div>
-						<span id="load-mods" class="closeList"></span>
-					</div>
-					</div>
-				</div>`;
-			} else if (textfields[key].value == 'picklistvalues') {
-				inStyle.style = 'margin: 5px; display: none';
-				inStyle.id = `show-field-${textfields[key].value}-${FIELD_COUNT}`;
-				inStyle.placeholder = 'Value 1,Value 2,...';
-				fieldTemplate += `
-				<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
-					<div class="slds-form-element">
-					<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-						<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
-					</label>
-					<div class="slds-form-element__control">
-						<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
-					</div>
-					</div>
-				</div>`;
-			} else {
-				fieldTemplate += `
-				<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
-					<div class="slds-form-element">
-					<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-						<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
-					</label>
-					<div class="slds-form-element__control">
-						<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
-					</div>
-					</div>
-				</div>`;
+						</div>
+					</div>`;
+					break;
+				case 'picklistvalues':
+					inStyle.style = 'margin: 5px; display: none';
+					inStyle.id = `show-field-${textfields[key].value}-${FIELD_COUNT}`;
+					inStyle.placeholder = 'Value 1,Value 2,...';
+					fieldTemplate += `
+					<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
+						<div class="slds-form-element">
+						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+							<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+						</label>
+						<div class="slds-form-element__control">
+							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+						</div>
+						</div>
+					</div>`;
+					break;
+				case 'fieldlength':
+					fieldTemplate += `
+					<div class="slds-col" style="${inStyle.style}" id="show-fieldlength-${FIELD_COUNT}">
+						<div class="slds-form-element">
+						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+							<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+						</label>
+						<div class="slds-form-element__control">
+							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+						</div>
+						</div>
+					</div>`;
+					break;
+				default:
+					fieldTemplate += `
+					<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
+						<div class="slds-form-element">
+						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+							<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+						</label>
+						<div class="slds-form-element__control">
+							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+						</div>
+						</div>
+					</div>`;
 			}
 		}
 		fieldTemplate += '</div><div class="slds-grid slds-gutters">';
@@ -929,8 +951,8 @@ const mb = {
 			const type = mandatory[i].type;
 			const values = mandatory[i].values;
 			const selecttype = document.createElement('select');
-			if (type == 'Uitype') {
-				inStyle.onchange = 'mb.showRelationModule(this, FIELD_COUNT)';
+			if (type == 'UItype') {
+				inStyle.onchange = 'mb.showNewOptions(this, FIELD_COUNT)';
 			}
 			fieldTemplate += `
 			<div class="slds-col">
@@ -939,10 +961,10 @@ const mb = {
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
 							<select class="slds-select" id="${type}_${FIELD_COUNT}" onchange="${inStyle.onchange}">`;
-			for (let j in values) {
-				fieldTemplate += `<option value="${j}">${values[j]}</option>`;
-			}
-			fieldTemplate += `
+								for (let j in values) {
+									fieldTemplate += `<option value="${j}">${values[j]}</option>`;
+								}
+								fieldTemplate += `
 							</select>
 						</div>
 					</div>
@@ -956,8 +978,8 @@ const mb = {
 			const type = fieldtypes[i].type;
 			const values = fieldtypes[i].values;
 			const selecttype = document.createElement('select');
-			if (type == 'Uitype') {
-				inStyle.onchange = 'mb.showRelationModule(this, FIELD_COUNT)';
+			if (type == 'UItype') {
+				inStyle.onchange = 'mb.showNewOptions(this, FIELD_COUNT)';
 			}
 			fieldTemplate += `
 			<div class="slds-col">
@@ -966,10 +988,14 @@ const mb = {
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
 							<select class="slds-select" id="${type}_${FIELD_COUNT}" onchange="${inStyle.onchange}">`;
-			for (let j in values) {
-				fieldTemplate += `<option value="${j}">${values[j]}</option>`;
-			}
-			fieldTemplate += `
+								for (let j in values) {
+									if (values[j] == '') {
+										fieldTemplate += `<option value="" selected disabled></option>`;
+									} else {
+										fieldTemplate += `<option value="${j}">${values[j]}</option>`;
+									}
+								}
+								fieldTemplate += `
 							</select>
 						</div>
 					</div>
@@ -1014,18 +1040,36 @@ const mb = {
 		mb.loadElement(`fields_inputs_${FIELD_COUNT}`, true).innerHTML = fieldTemplate;
 	},
 
-	showRelationModule: (e, id) => {
-		if (e.value == 10) {
-			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = '';
-			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
-			document.getElementById(`Uitype_${id.value}`).disabled = 'true';
-		} else if (e.value == 15 || e.value == 16) {
-			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = '';
-			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
-			document.getElementById(`Uitype_${id.value}`).disabled = 'true';
-		} else {
-			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
-			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
+	showNewOptions: (state, id) => {
+		switch(state.value) {
+			case '10':
+				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = '';
+				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
+				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
+				document.getElementById(`fieldlength_${id.value}`).value = '';
+				break;
+			case '15':
+			case '16':
+			case '33':
+				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = '';
+				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
+				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
+				document.getElementById(`fieldlength_${id.value}`).value = '';
+				break;
+			case '1':
+			case '19':
+			case '21':
+			case '13':
+			case '11':
+			case '7':
+				document.getElementById(`show-fieldlength-${id.value}`).style.display = '';
+				break;
+			default:
+				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
+				document.getElementById(`fieldlength_${id.value}`).value = '';
+				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
+				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
+			//
 		}
 	},
 
@@ -1276,12 +1320,12 @@ const mb = {
 				if (!ids.includes(res[r].fieldsid)) {
 					listFields += `
 					<li class="slds-dropdown__item">
-			            <a id="${res[r].fieldsid}" onclick="mb.setFieldValues('${res[r].fieldname}', '${res[r].fieldsid}', ${FILTER_COUNT})">
-			                <span class="slds-truncate">${res[r].fieldname}</span>
-			            </a>
-			        </li>`;
-			    show = true;
-		    	}
+						<a id="${res[r].fieldsid}" onclick="mb.setFieldValues('${res[r].fieldname}', '${res[r].fieldsid}', ${FILTER_COUNT})">
+							<span class="slds-truncate">${res[r].fieldname}</span>
+						</a>
+					</li>`;
+				show = true;
+				}
 			}
 			listFields += '</ul>';
 			if (show) {
@@ -1292,16 +1336,16 @@ const mb = {
 
 	setFieldValues: (fieldaname, fieldid, FILTER_COUNT) => {
 		let template = `
-	    <li class="slds-listbox-item" role="presentation" id="${fieldid}">
-	      	<span class="slds-pill" role="option" aria-selected="true">
-	        <span class="slds-pill__label" title="${fieldaname}">${fieldaname}</span>
-	        <span class="slds-icon_container slds-pill__remove" id="remove-${fieldid}" onclick="mb.removeFieldForFilter(this, ${FILTER_COUNT})" style="cursor: pointer">
-	          	<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
-	            	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-	          	</svg>
-	        </span>
-	      	</span>
-	    </li>`;
+		<li class="slds-listbox-item" role="presentation" id="${fieldid}">
+			<span class="slds-pill" role="option" aria-selected="true">
+			<span class="slds-pill__label" title="${fieldaname}">${fieldaname}</span>
+			<span class="slds-icon_container slds-pill__remove" id="remove-${fieldid}" onclick="mb.removeFieldForFilter(this, ${FILTER_COUNT})" style="cursor: pointer">
+				<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+				</svg>
+			</span>
+			</span>
+		</li>`;
 		const fields = document.getElementById(`viewfields-${FILTER_COUNT}`).value;
 		const getfields = document.getElementById('show-fields').innerHTML;
 		const pills = `${getfields}${template}`;
@@ -1899,36 +1943,36 @@ const mb = {
 			let infoTemplate = `
 			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
 				<thead>
-				    <tr class="slds-line-height_reset">
-				      	<th scope="col">
-				        	<div class="slds-truncate">${mod_alert_arr.name}</div>
-				      	</th>
-				      	<th scope="col">
-				       		<div class="slds-truncate">${mod_alert_arr.label}</div>
-				      	</th>
-				      	<th scope="col">
-				        	<div class="slds-truncate">${mod_alert_arr.icon}</div>
-				      	</th>
-				      	<th scope="col">
-				        	<div class="slds-truncate">${mod_alert_arr.parent}</div>
-				      	</th>
-				    </tr>
+					<tr class="slds-line-height_reset">
+						<th scope="col">
+							<div class="slds-truncate">${mod_alert_arr.name}</div>
+						</th>
+						<th scope="col">
+							<div class="slds-truncate">${mod_alert_arr.label}</div>
+						</th>
+						<th scope="col">
+							<div class="slds-truncate">${mod_alert_arr.icon}</div>
+						</th>
+						<th scope="col">
+							<div class="slds-truncate">${mod_alert_arr.parent}</div>
+						</th>
+					</tr>
 				</thead>
 				<tbody>
-			    <tr class="slds-hint-parent">
-			      	<td>
-			        	<div class="slds-truncate">${res.info.name}</div>
-			      	</td>
-			      	<td>
-			        	<div class="slds-truncate">${res.info.label}</div>
-			      	</td>
-			      	<td>
-			        	<div class="slds-truncate">${res.info.icon}</div>
-			      	</td>
-			      	<td>
-			        	<div class="slds-truncate">${res.info.parent}</div>
-			      	</td>
-			    </tr>
+				<tr class="slds-hint-parent">
+					<td>
+						<div class="slds-truncate">${res.info.name}</div>
+					</td>
+					<td>
+						<div class="slds-truncate">${res.info.label}</div>
+					</td>
+					<td>
+						<div class="slds-truncate">${res.info.icon}</div>
+					</td>
+					<td>
+						<div class="slds-truncate">${res.info.parent}</div>
+					</td>
+				</tr>
 				</tbody>
 			</table>`;
 			document.getElementById('info').innerHTML = infoTemplate;
@@ -1937,20 +1981,20 @@ const mb = {
 			let blockTemplate = `
 			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
 			  <thead>
-			    <tr class="slds-line-height_reset">
-			      	<thscope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.blockslist}</div>
-			      	</th>
-			    </tr>
+				<tr class="slds-line-height_reset">
+					<thscope="col">
+						<div class="slds-truncate">${mod_alert_arr.blockslist}</div>
+					</th>
+				</tr>
 			  </thead>
 			  <tbody>`;
 			for (let i in res.blocks) {
 				blockTemplate += `
-			    <tr class="slds-hint-parent">
-			      	<td>
-			      		<div class="slds-truncate">${res.blocks[i].blocks_label}</div>
-			      	</td>
-			    </tr>`;
+				<tr class="slds-hint-parent">
+					<td>
+						<div class="slds-truncate">${res.blocks[i].blocks_label}</div>
+					</td>
+				</tr>`;
 			}
 			blockTemplate += `
 			  </tbody>
@@ -1961,45 +2005,45 @@ const mb = {
 			let tableTemplate = `
 			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
 			  <thead>
-			    <tr class="slds-line-height_reset">
-			      	<th class="" scope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.fieldname}</div>
-			      	</th>
-			      	<th class="" scope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.fieldlabel}</div>
-			      	</th>
-			      	<th class="" scope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.uitype}</div>
-			      	</th>
-			      	<th class="" scope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.relatedmodule}</div>
-			      	</th>
-			      	<th class="" scope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.massedit}</div>
-			      	</th>
-			    </tr>
+				<tr class="slds-line-height_reset">
+					<th class="" scope="col">
+						<div class="slds-truncate">${mod_alert_arr.fieldname}</div>
+					</th>
+					<th class="" scope="col">
+						<div class="slds-truncate">${mod_alert_arr.fieldlabel}</div>
+					</th>
+					<th class="" scope="col">
+						<div class="slds-truncate">${mod_alert_arr.uitype}</div>
+					</th>
+					<th class="" scope="col">
+						<div class="slds-truncate">${mod_alert_arr.relatedmodule}</div>
+					</th>
+					<th class="" scope="col">
+						<div class="slds-truncate">${mod_alert_arr.massedit}</div>
+					</th>
+				</tr>
 			  </thead>
 			  <tbody>`;
 			for (let i = 0; i < res.fields['data'].contents.length; i++) {
 				const masseditable = res.fields['data'].contents[i].masseditable == 0 ? 'On' : 'Off';
 				tableTemplate += `
-			    <tr class="slds-hint-parent">
-			      	<td>
-			        	<div class="slds-truncate">${res.fields['data'].contents[i].fieldname}</div>
-			      	</td>
-			      	<td>
-			        	<div class="slds-truncate">${res.fields['data'].contents[i].fieldlabel}</div>
-			      	</td>
-			      	<td>
-			        	<div class="slds-truncate">${res.fields['data'].contents[i].uitype}</div>
-			      	</td>
-			      	<td>
-			        	<div class="slds-truncate">${res.fields['data'].contents[i].relatedmodules}</div>
-			      	</td>
-			      	<td>
-			        	<div class="slds-truncate">${masseditable}</div>
-			      	</td>
-			    </tr>`;
+				<tr class="slds-hint-parent">
+					<td>
+						<div class="slds-truncate">${res.fields['data'].contents[i].fieldname}</div>
+					</td>
+					<td>
+						<div class="slds-truncate">${res.fields['data'].contents[i].fieldlabel}</div>
+					</td>
+					<td>
+						<div class="slds-truncate">${res.fields['data'].contents[i].uitype}</div>
+					</td>
+					<td>
+						<div class="slds-truncate">${res.fields['data'].contents[i].relatedmodules}</div>
+					</td>
+					<td>
+						<div class="slds-truncate">${masseditable}</div>
+					</td>
+				</tr>`;
 			}
 			tableTemplate += `
 				</tbody>
@@ -2009,26 +2053,26 @@ const mb = {
 			let viewTemplate = `
 			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
 			  <thead>
-			    <tr class="slds-line-height_reset">
-			      	<th class="" scope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.filter}</div>
-			      	</th>
-			      	<th class="" scope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.fields}</div>
-			      	</th>
-			    </tr>
+				<tr class="slds-line-height_reset">
+					<th class="" scope="col">
+						<div class="slds-truncate">${mod_alert_arr.filter}</div>
+					</th>
+					<th class="" scope="col">
+						<div class="slds-truncate">${mod_alert_arr.fields}</div>
+					</th>
+				</tr>
 			  </thead>
 			  <tbody>`;
 			for (let i = 0; i < res.views['data'].contents.length; i++) {
 				viewTemplate += `
-			    <tr class="slds-hint-parent">
-			      	<td>
-			        	<div class="slds-truncate">${res.views['data'].contents[i].viewname}</div>
-			      	</td>
-			      	<td>
-			        	<div class="slds-truncate">${res.views['data'].contents[i].fields}</div>
-			      	</td>
-			    </tr>`;
+				<tr class="slds-hint-parent">
+					<td>
+						<div class="slds-truncate">${res.views['data'].contents[i].viewname}</div>
+					</td>
+					<td>
+						<div class="slds-truncate">${res.views['data'].contents[i].fields}</div>
+					</td>
+				</tr>`;
 			}
 			viewTemplate += `
 				</tbody>
@@ -2039,38 +2083,38 @@ const mb = {
 			let listTemplate = `
 			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
 			  <thead>
-			    <tr class="slds-line-height_reset">
-			      	<th class="" scope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.functionname}</div>
-			      	</th>
-			      	<th class="" scope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.fieldlabel}</div>
-			      	</th>
-			      	<th class="" scope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.actions}</div>
-			      	</th>
-			      	<th class="" scope="col">
-			        	<div class="slds-truncate">${mod_alert_arr.relatedmodules}</div>
-			      	</th>
-			    </tr>
+				<tr class="slds-line-height_reset">
+					<th class="" scope="col">
+						<div class="slds-truncate">${mod_alert_arr.functionname}</div>
+					</th>
+					<th class="" scope="col">
+						<div class="slds-truncate">${mod_alert_arr.fieldlabel}</div>
+					</th>
+					<th class="" scope="col">
+						<div class="slds-truncate">${mod_alert_arr.actions}</div>
+					</th>
+					<th class="" scope="col">
+						<div class="slds-truncate">${mod_alert_arr.relatedmodules}</div>
+					</th>
+				</tr>
 			  </thead>
 			  <tbody>`;
 			for (let i = 0; i < res.lists['data'].contents.length; i++) {
 				listTemplate += `
-			    <tr class="slds-hint-parent">
-			      	<td>
-			        	<div class="slds-truncate">${res.lists['data'].contents[i].functionname}</div>
-			      	</td>
-			      	<td>
-			        	<div class="slds-truncate">${res.lists['data'].contents[i].label}</div>
-			      	</td>
-			      	<td>
-			        	<div class="slds-truncate">${res.lists['data'].contents[i].actions}</div>
-			      	</td>
-			      	<td>
-			        	<div class="slds-truncate">${res.lists['data'].contents[i].relatedmodule}</div>
-			      	</td>
-			    </tr>`;
+				<tr class="slds-hint-parent">
+					<td>
+						<div class="slds-truncate">${res.lists['data'].contents[i].functionname}</div>
+					</td>
+					<td>
+						<div class="slds-truncate">${res.lists['data'].contents[i].label}</div>
+					</td>
+					<td>
+						<div class="slds-truncate">${res.lists['data'].contents[i].actions}</div>
+					</td>
+					<td>
+						<div class="slds-truncate">${res.lists['data'].contents[i].relatedmodule}</div>
+					</td>
+				</tr>`;
 			}
 			listTemplate += `
 				</tbody>
@@ -2108,10 +2152,10 @@ const mb = {
 			for (let m in modules) {
 				listMods += `
 				<li class="slds-dropdown__item">
-		            <a tabindex="${modules[m]}" id="${modules[m]}" onclick="mb.setModuleValues('${modules[m]}')">
-		                <span class="slds-truncate">${modules[m]}</span>
-		            </a>
-		        </li>`;
+					<a tabindex="${modules[m]}" id="${modules[m]}" onclick="mb.setModuleValues('${modules[m]}')">
+						<span class="slds-truncate">${modules[m]}</span>
+					</a>
+				</li>`;
 			}
 			listMods += '</ul>';
 			document.getElementById(`${id}`).innerHTML = listMods;
@@ -2120,16 +2164,16 @@ const mb = {
 
 	setModuleValues: (modulename) => {
 		let template = `
-	    <li class="slds-listbox-item" role="presentation" id="${modulename}">
-	      	<span class="slds-pill" role="option" aria-selected="true">
-	        <span class="slds-pill__label" title="${modulename}">${modulename}</span>
-	        <span class="slds-icon_container slds-pill__remove" id="remove-${modulename}" onclick="mb.removeField(this)" style="cursor: pointer">
-	          	<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
-	            	<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-	          	</svg>
-	        </span>
-	      	</span>
-	    </li>`;
+		<li class="slds-listbox-item" role="presentation" id="${modulename}">
+			<span class="slds-pill" role="option" aria-selected="true">
+			<span class="slds-pill__label" title="${modulename}">${modulename}</span>
+			<span class="slds-icon_container slds-pill__remove" id="remove-${modulename}" onclick="mb.removeField(this)" style="cursor: pointer">
+				<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+				</svg>
+			</span>
+			</span>
+		</li>`;
 		const modules = document.getElementById('relatedmodules_1').value;
 		const getmodules = document.getElementById('show-pills').innerHTML;
 		const pills = `${getmodules}${template}`;
@@ -2161,7 +2205,7 @@ const mb = {
 document.addEventListener('click', function (event) {
 	const getSection = document.getElementsByClassName('closeList');
 	let getIds = Array.prototype.filter.call(getSection, function (el) {
-	  	return el.nodeName;
+		return el.nodeName;
 	});
 	for (let i in getIds) {
 		document.getElementById(getIds[i].id).innerHTML = '';
