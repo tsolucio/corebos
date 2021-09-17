@@ -456,5 +456,4 @@ var alert_arr = {
 	'LNK_EDIT': 'edit',
 	'LNK_EDIT_ACTION': 'Edit',
 	'LNK_DELETE_ACTION': 'Delete',
-	'ERR_SITE_URL_MISMATCH':'Site URL mismatch',
 };

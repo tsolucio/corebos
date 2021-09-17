@@ -195,19 +195,21 @@ class Vtiger_Request {
 	}
 
 	public static function validateRequest($die = true, $msg = true) {
+		require_once 'Smarty_setup.php';
+		$smarty = new vtigerCRM_Smarty();
 		$request = new Vtiger_Request($_REQUEST);
 		try {
 			$request->validateWriteAccess();
 		} catch (\Throwable $th) {
 			$message = $th->getMessage();
 			if ($message == 'Site URL mismatch') {
-				echo $message;
+				$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+				$smarty->assign('ERROR_MESSAGE', getTranslatedString('ERR_SITE_URL_MISMATCH'));
+				$smarty->display('applicationmessage.tpl');
 				die();
 			}
 			if ($msg) {
-				require_once 'Smarty_setup.php';
 				echo '<br><br>';
-				$smarty = new vtigerCRM_Smarty();
 				$smarty->assign('csrfWarning', getTranslatedString($th->getMessage()));
 				$smarty->assign('csrfReload', getTranslatedString('csrf_reload'));
 				$smarty->display('csrf-warning.tpl');

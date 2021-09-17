@@ -1295,18 +1295,19 @@ function run_massedit() {
 		}
 
 		ExecuteFunctions('setSetting', 'skey=masseditids'+corebos_browsertabID+'&svalue='+sentForm['massedit_recordids']).then(function (response) {
-			if(response == 'Site URL mismatch'){
-				document.getElementById('massedit_error').innerHTML = alert_arr.ERR_SITE_URL_MISMATCH;
+			if(!response.trim()){
+				document.getElementById('appnotifydiv').innerHTML = response;
+				document.getElementById('appnotifydiv').style.display = 'block';
 				return false;
 			}
-			progressDetails();
+			progressMassEditDetails(sentForm);
 		}, function (error) {
 			console.log('error', error);
 		});
 	}
 }
 
-function progressDetails(){
+function progressMassEditDetails(sentForm){
 	delete sentForm['massedit_recordids'];
 	delete sentForm['idstring'];
 	sentForm.corebos_browsertabID= corebos_browsertabID;
@@ -1459,12 +1460,10 @@ function doModuleValidation(edit_type, editForm, callback) {
 		isvalid = doformValidation(edit_type);
 	}
 	if (isvalid && edit_type!='mass_edit') {
-		console.log("do server validate");
 		doServerValidation(edit_type, formName, callback);
 	} else {
 		return isvalid;
 	}
-	console.log("do module validate ..");
 	return false;
 }
 
