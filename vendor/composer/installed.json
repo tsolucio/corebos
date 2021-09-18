@@ -1060,17 +1060,17 @@
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-ext-mongodb",
-            "version": "1.2.0",
-            "version_normalized": "1.2.0.0",
+            "version": "1.1.0",
+            "version_normalized": "1.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache-storage-adapter-ext-mongodb.git",
-                "reference": "72f68589cc8323fa688167a4720b795dd0907f4e"
+                "reference": "5810c3ffb442527b8b3429b0d29dce1ddabc92f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-ext-mongodb/zipball/72f68589cc8323fa688167a4720b795dd0907f4e",
-                "reference": "72f68589cc8323fa688167a4720b795dd0907f4e",
+                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-ext-mongodb/zipball/5810c3ffb442527b8b3429b0d29dce1ddabc92f2",
+                "reference": "5810c3ffb442527b8b3429b0d29dce1ddabc92f2",
                 "shasum": ""
             },
             "require": {
@@ -1086,16 +1086,15 @@
             "require-dev": {
                 "laminas/laminas-cache": "^2.10.3",
                 "laminas/laminas-cache-storage-adapter-test": "^1.1.1",
-                "laminas/laminas-coding-standard": "~2.2.0",
+                "laminas/laminas-coding-standard": "~1.0.0",
                 "laminas/laminas-serializer": "^2.10.1",
                 "mongodb/mongodb": "^1.8.0",
-                "psalm/plugin-phpunit": "^0.16.1",
-                "vimeo/psalm": "^4.9"
+                "squizlabs/php_codesniffer": "^2.7"
             },
             "suggest": {
                 "mongodb/mongodb": "MongoDB, to use the ExtMongoDb storage adapter"
             },
-            "time": "2021-08-10T18:17:48+00:00",
+            "time": "2021-05-06T07:52:48+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1260,21 +1259,21 @@
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-memcached",
-            "version": "1.2.0",
-            "version_normalized": "1.2.0.0",
+            "version": "1.1.0",
+            "version_normalized": "1.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache-storage-adapter-memcached.git",
-                "reference": "d05f33e43a352b85c6d0208e9cfbf2a59f02ede3"
+                "reference": "f5d35cc2ef6264c76021bcc798569182103baa91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-memcached/zipball/d05f33e43a352b85c6d0208e9cfbf2a59f02ede3",
-                "reference": "d05f33e43a352b85c6d0208e9cfbf2a59f02ede3",
+                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-memcached/zipball/f5d35cc2ef6264c76021bcc798569182103baa91",
+                "reference": "f5d35cc2ef6264c76021bcc798569182103baa91",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.3 || ~8.0.0"
+                "php": "^7.3"
             },
             "conflict": {
                 "laminas/laminas-cache": "<2.10"
@@ -1285,13 +1284,14 @@
             "require-dev": {
                 "laminas/laminas-cache": "^2.10",
                 "laminas/laminas-cache-storage-adapter-test": "^1.0.2",
-                "laminas/laminas-coding-standard": "~2.2.0",
-                "phpunit/phpunit": "^9.5.8"
+                "laminas/laminas-coding-standard": "~1.0.0",
+                "phpunit/phpunit": "^7.5.20",
+                "squizlabs/php_codesniffer": "^2.7"
             },
             "suggest": {
                 "ext-memcached": "Memcached >= 1.0.0 to use the Memcached storage adapter"
             },
-            "time": "2021-08-08T14:51:12+00:00",
+            "time": "2021-04-24T20:06:16+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
