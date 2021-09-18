@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '2f70e2295982150dd78c16315a10d78bbe967433',
+        'reference' => '546103b5116d9b41b3f93cf3d4b7493e234d0f7d',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '2f70e2295982150dd78c16315a10d78bbe967433',
+            'reference' => '546103b5116d9b41b3f93cf3d4b7493e234d0f7d',
             'dev_requirement' => false,
         ),
         'automattic/woocommerce' => array(
@@ -188,12 +188,12 @@
             'dev_requirement' => false,
         ),
         'laminas/laminas-cache-storage-adapter-ext-mongodb' => array(
-            'pretty_version' => '1.1.0',
-            'version' => '1.1.0.0',
+            'pretty_version' => '1.2.0',
+            'version' => '1.2.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laminas/laminas-cache-storage-adapter-ext-mongodb',
             'aliases' => array(),
-            'reference' => '5810c3ffb442527b8b3429b0d29dce1ddabc92f2',
+            'reference' => '72f68589cc8323fa688167a4720b795dd0907f4e',
             'dev_requirement' => false,
         ),
         'laminas/laminas-cache-storage-adapter-filesystem' => array(
@@ -215,12 +215,12 @@
             'dev_requirement' => false,
         ),
         'laminas/laminas-cache-storage-adapter-memcached' => array(
-            'pretty_version' => '1.1.0',
-            'version' => '1.1.0.0',
+            'pretty_version' => '1.2.0',
+            'version' => '1.2.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laminas/laminas-cache-storage-adapter-memcached',
             'aliases' => array(),
-            'reference' => 'f5d35cc2ef6264c76021bcc798569182103baa91',
+            'reference' => 'd05f33e43a352b85c6d0208e9cfbf2a59f02ede3',
             'dev_requirement' => false,
         ),
         'laminas/laminas-cache-storage-adapter-memory' => array(
@@ -574,6 +574,21 @@
             'aliases' => array(),
             'reference' => '7880d5aecc53856802130ba83af1dfcf942e9767',
             'dev_requirement' => false,
+        ),
+        'sendgrid/sendgrid' => array(
+            'pretty_version' => '7.9.2',
+            'version' => '7.9.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../sendgrid/sendgrid',
+            'aliases' => array(),
+            'reference' => 'ab0023a6233f39e408b5eb8c4299f20790f5f5a7',
+            'dev_requirement' => false,
+        ),
+        'sendgrid/sendgrid-php' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
         ),
         'smalot/pdfparser' => array(
             'pretty_version' => 'v0.14.0',
