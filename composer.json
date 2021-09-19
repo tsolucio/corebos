@@ -38,6 +38,7 @@
         "automattic/woocommerce": "3.0.0",
         "zendesk/zendesk_api_client_php": "2.2.11",
         "starkbank/ecdsa": "0.0.5",
-        "sendgrid/php-http-client": "3.14.0"
+	"sendgrid/php-http-client": "3.14.0",
+	"sendgrid/sendgrid": "7.9.2"
     }
 }
