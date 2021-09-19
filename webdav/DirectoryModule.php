@@ -111,7 +111,11 @@ class DirectoryModule extends Sabre\DAV\Collection {
 			$letter = 'A';
 		}
 		$obj = self::getModule($module);
-		return array('operator' => 's', 'search_field' => $obj->list_link_field, 'search_text' => $letter);
+		if ($letter=='EMPTY') {
+			return array('operator' => 'e', 'search_field' => $obj->list_link_field, 'search_text' => '');
+		} else {
+			return array('operator' => 's', 'search_field' => $obj->list_link_field, 'search_text' => $letter);
+		}
 	}
 
 	public static function getLetterArray($module, $letter) {
@@ -131,7 +135,7 @@ class DirectoryModule extends Sabre\DAV\Collection {
 		$records = $adb->query($sql);
 		$letter = array();
 		while ($data = $adb->fetch_array($records)) {
-			$letter[] = $data['letter'];
+			$letter[] = empty($data['letter']) ? 'empty' : $data['letter'];
 		}
 		return $letter;
 	}
