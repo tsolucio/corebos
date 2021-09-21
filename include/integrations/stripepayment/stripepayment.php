@@ -101,7 +101,7 @@ class corebos_stripepayment {
 		global $logbg;
 		$stripe = new \Stripe\StripeClient(coreBOS_Settings::getSetting(self::KEY_STRIPE_API_KEY, ''));
 		$customers = $stripe->customers->all();
-		$customer = array_map(function($key) use ($data) {
+		$customer = array_map(function ($key) use ($data) {
 			if ($key->email == $data['email']) {
 				return $key;
 			}
@@ -119,7 +119,7 @@ class corebos_stripepayment {
 		$stripe = new \Stripe\StripeClient(coreBOS_Settings::getSetting(self::KEY_STRIPE_API_KEY, ''));
 		try {
 			$customer = $stripe->customers->create([
-				'source' => $data['token'], 
+				'source' => $data['token'],
 				'email' => $data['email']
 			]);
 			return $customer;
