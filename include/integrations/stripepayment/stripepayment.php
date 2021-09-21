@@ -31,10 +31,7 @@ class corebos_stripepayment {
 		$this->isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, 0);
 	}
 
-	public function saveSettings(
-		$isactive,
-		$stripekey
-	) {
+	public function saveSettings($isactive, $stripekey) {
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::KEY_STRIPE_API_KEY, $stripekey);
 	}
