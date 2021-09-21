@@ -38,6 +38,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\Console\\' => 26,
+            'Stripe\\' => 7,
             'Sabre\\Xml\\' => 10,
             'Sabre\\VObject\\' => 14,
             'Sabre\\Uri\\' => 10,
@@ -122,6 +123,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'Stripe\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
         ),
         'Sabre\\Xml\\' => 
         array (
