@@ -91,4 +91,6 @@ var mod_alert_arr = {
 	'default': 'Set as default',
 	'massedit': 'MassEditable',
 	'blockslist': 'Blocks',
+	'generatedtype': 'Generated type',
+	'fieldlength': 'Length'
 };

@@ -190,8 +190,9 @@ class ModuleBuilder {
 				}
 			}
 		} elseif ($step == 3) {
-			if (!isset($this->column_data['fieldsid'])) {
-				$adb->pquery('INSERT INTO vtiger_modulebuilder_fields (blockid, moduleid,fieldname,uitype,columnname,tablename,fieldlabel,presence,sequence,typeofdata,quickcreate,displaytype,masseditable,relatedmodules, picklistvalues, fieldlength) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
+			$recordid = vtlib_purify($_REQUEST['recordid']);
+			if ($recordid == 0) {
+				$adb->pquery('INSERT INTO vtiger_modulebuilder_fields (blockid, moduleid,fieldname,uitype,columnname,tablename,fieldlabel,presence,sequence,typeofdata,quickcreate,displaytype,masseditable,relatedmodules,picklistvalues,fieldlength,generatedtype) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
 					$this->column_data['blockid'],
 					$this->id,
 					$this->column_data['fieldname'],
@@ -208,9 +209,10 @@ class ModuleBuilder {
 					$this->column_data['relatedmodules'],
 					$this->column_data['picklistvalues'],
 					$this->column_data['fieldlength'],
+					$this->column_data['generatedtype'] == '' ? 0 : $this->column_data['generatedtype'],
 				));
 			} else {
-				$adb->pquery('UPDATE vtiger_modulebuilder_fields SET fieldname=?,columnname=?,fieldlabel=?,uitype=?,tablename=?,presence=?,sequence=?,typeofdata=?,quickcreate=?,displaytype=?,masseditable=?,relatedmodules=?, picklistvalues=?, fieldlength=? WHERE fieldsid=? AND blockid=? AND moduleid=?', array(
+				$adb->pquery('UPDATE vtiger_modulebuilder_fields SET fieldname=?,columnname=?,fieldlabel=?,uitype=?,tablename=?,presence=?,sequence=?,typeofdata=?,quickcreate=?,displaytype=?,masseditable=?,relatedmodules=?, picklistvalues=?, fieldlength=?, generatedtype=? WHERE fieldsid=?', array(
 					$this->column_data['fieldname'],
 					$this->column_data['columnname'],
 					$this->column_data['fieldlabel'],
@@ -224,29 +226,54 @@ class ModuleBuilder {
 					$this->column_data['masseditable'],
 					$this->column_data['relatedmodules'],
 					$this->column_data['picklistvalues'],
-					$this->column_data['fieldsid'],
-					$this->column_data['blockid'],
 					$this->column_data['fieldlength'],
-					$this->id
+					$this->column_data['generatedtype'] == '' ? 0 : $this->column_data['generatedtype'],
+					$recordid
 				));
 			}
 		} elseif ($step == 4) {
-			if (isset($this->column_data['customview']['viewname']) && $this->column_data['customview']['viewname'] != '') {
+			$recordid = vtlib_purify($_REQUEST['recordid']);
+			$setmetrics = 'false';
+			if ($recordid > 0) {
 				$viewname = $this->column_data['customview']['viewname'];
 				$setdefault = (String)$this->column_data['customview']['setdefault'];
 				$fields = substr((String)$this->column_data['customview']['fields'], 0, -1);
-				$setmetrics = 'false';
-				$adb->pquery('INSERT INTO vtiger_modulebuilder_customview (viewname, setdefault, setmetrics, fields, moduleid) VALUES(?,?,?,?,?)', array($viewname,$setdefault,$setmetrics,$fields,$this->id));
+				$adb->pquery('UPDATE vtiger_modulebuilder_customview SET viewname=?, setdefault=?, setmetrics=?, fields=? WHERE customviewid=?', array(
+					$viewname,
+					$setdefault,
+					$setmetrics,
+					$fields,
+					$recordid
+				));
+			} else {
+				if (isset($this->column_data['customview']['viewname']) && $this->column_data['customview']['viewname'] != '') {
+					$viewname = $this->column_data['customview']['viewname'];
+					$setdefault = (String)$this->column_data['customview']['setdefault'];
+					$fields = substr((String)$this->column_data['customview']['fields'], 0, -1);
+					$setmetrics = 'false';
+					$adb->pquery('INSERT INTO vtiger_modulebuilder_customview (viewname, setdefault, setmetrics, fields, moduleid) VALUES(?,?,?,?,?)', array($viewname,$setdefault,$setmetrics,$fields,$this->id));
+				}
 			}
 		} elseif ($step == 5) {
-			if (isset($this->column_data['name']) && $this->column_data['name'] != '') {
-				$adb->pquery('INSERT INTO vtiger_modulebuilder_relatedlists (function, label, actions, relatedmodule, moduleid) VALUES(?,?,?,?,?)', array(
+			$recordid = vtlib_purify($_REQUEST['recordid']);
+			if ($recordid > 0) {
+				$adb->pquery('UPDATE vtiger_modulebuilder_relatedlists SET function=?, label=?, actions=?, relatedmodule=? WHERE relatedlistid=?', array(
 					$this->column_data['name'],
 					$this->column_data['label'],
 					$this->column_data['actions'],
 					$this->column_data['relatedmodule'],
-					$this->id
+					$recordid
 				));
+			} else {
+				if (isset($this->column_data['name']) && $this->column_data['name'] != '') {
+					$adb->pquery('INSERT INTO vtiger_modulebuilder_relatedlists (function, label, actions, relatedmodule, moduleid) VALUES(?,?,?,?,?)', array(
+						$this->column_data['name'],
+						$this->column_data['label'],
+						$this->column_data['actions'],
+						$this->column_data['relatedmodule'],
+						$this->id
+					));
+				}
 			}
 		}
 		if (!$adb->database->_errorMsg) {
@@ -415,7 +442,7 @@ class ModuleBuilder {
 		return $num_rows;
 	}
 
-	public function loadValues($step, $moduleId) {
+	public function loadValues($step, $moduleId, $recordid = 0) {
 		global $adb;
 		if ($moduleId == 0 || $moduleId == 'undefined') {
 			$moduleid = $this->id;
@@ -455,9 +482,15 @@ class ModuleBuilder {
 			}
 			return $block;
 		} elseif ($step == 3) {
-			$fieldsdb = $adb->pquery('SELECT * FROM `vtiger_modulebuilder_fields` WHERE moduleid=?', array(
-				$moduleid
-			));
+			if ($recordid > 0) {
+				$fieldsdb = $adb->pquery('SELECT * FROM `vtiger_modulebuilder_fields` WHERE moduleid=? AND fieldsid=?', array(
+					$moduleid, $recordid
+				));
+			} else {
+				$fieldsdb = $adb->pquery('SELECT * FROM `vtiger_modulebuilder_fields` WHERE moduleid=?', array(
+					$moduleid
+				));
+			}
 			$numOfRows = $adb->num_rows($fieldsdb);
 			$fieldlst = array();
 			while ($row = $fieldsdb->FetchRow()) {
@@ -478,7 +511,10 @@ class ModuleBuilder {
 				$fieldsInfo['masseditable'] = $row['masseditable'];
 				$fieldsInfo['quickcreate'] = $row['quickcreate'];
 				$fieldsInfo['picklistvalues'] = $row['picklistvalues'];
+				$fieldsInfo['displaytype'] = $row['displaytype'];
+				$fieldsInfo['generatedtype'] = $row['generatedtype'];
 				$fieldsInfo['blockname'] = $blockname;
+				$fieldsInfo['blockid'] = $blockid;
 				array_push($fieldlst, $fieldsInfo);
 			}
 			if ($numOfRows > 0) {
@@ -506,9 +542,15 @@ class ModuleBuilder {
 			}
 			return $entries_list;
 		} elseif ($step == 4) {
-			$viewSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_customview WHERE moduleid=?', array(
-				$moduleid
-			));
+			if ($recordid > 0) {
+				$viewSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_customview WHERE moduleid=? AND customviewid=?', array(
+					$moduleid, $recordid
+				));				
+			} else {
+				$viewSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_customview WHERE moduleid=?', array(
+					$moduleid
+				));
+			}
 			$numOfRows = $adb->num_rows($viewSql);
 			$view = array();
 			while ($row = $viewSql->FetchRow()) {
@@ -524,9 +566,17 @@ class ModuleBuilder {
 					$fieldInfo[] = strtolower($modName).'no';
 				}
 				foreach ($fields as $key => $value) {
-					$fieldSql = $adb->pquery('SELECT fieldname FROM vtiger_modulebuilder_fields WHERE fieldsid=?', array($value));
+					$fieldSql = $adb->pquery('SELECT fieldsid, fieldname FROM vtiger_modulebuilder_fields WHERE fieldsid=?', array($value));
 					$fieldname = $adb->query_result($fieldSql, 0, 'fieldname');
-					array_push($fieldInfo, $fieldname);
+					$fieldsid = $adb->query_result($fieldSql, 0, 'fieldsid');
+					if ($recordid > 0) {
+						array_push($fieldInfo, array(
+							'fieldsid' => $fieldsid,
+							'fieldname' => $fieldname
+						));
+					} else {
+						array_push($fieldInfo, $fieldname);
+					}
 				}
 				$viewInfo['customviewid'] = $customviewid;
 				$viewInfo['viewname'] = $viewname;
@@ -559,9 +609,15 @@ class ModuleBuilder {
 			}
 			return $entries_list;
 		} elseif ($step == 5) {
-			$listSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_relatedlists WHERE moduleid=?', array(
-				$moduleid
-			));
+			if ($recordid > 0) {
+				$listSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_relatedlists WHERE moduleid=? AND relatedlistid=?', array(
+					$moduleid, $recordid
+				));
+			} else {
+				$listSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_relatedlists WHERE moduleid=?', array(
+					$moduleid
+				));
+			}
 			$numOfRows = $adb->num_rows($listSql);
 			$list = array();
 			while ($row = $listSql->FetchRow()) {
@@ -644,7 +700,7 @@ class ModuleBuilder {
 		return $this->id;
 	}
 
-	public function loadTemplate($modId = 0) {
+	public function loadTemplate($modId = 0, $recordid = 0) {
 		if (isset($modId) && $modId != 0) {
 			$moduleid = $modId;
 		} else {
@@ -653,9 +709,9 @@ class ModuleBuilder {
 		return array(
 			'info' => $this->loadValues(1, $moduleid),
 			'blocks' => $this->loadValues(2, $moduleid),
-			'fields' => $this->loadValues(3, $moduleid),
-			'views' => $this->loadValues(4, $moduleid),
-			'lists' => $this->loadValues(5, $moduleid)
+			'fields' => $this->loadValues(3, $moduleid, $recordid),
+			'views' => $this->loadValues(4, $moduleid, $recordid),
+			'lists' => $this->loadValues(5, $moduleid, $recordid)
 		);
 	}
 
@@ -834,12 +890,13 @@ class ModuleBuilder {
 				$entityidentifier->addChild('entityidcolumn', strtolower($map['name']).'id');
 			}
 			foreach ($blockInfo['block']['fields'] as $kField => $fValue) {
+				$generatedtype = $fValue['generatedtype'] == 0 ? 1 : $fValue['generatedtype'];
 				$field = $fields->addChild('field');
 				$field->addChild('fieldname', $fValue['fieldname']);
 				$field->addChild('uitype', $fValue['uitype']);
 				$field->addChild('columnname', $fValue['columnname']);
 				$field->addChild('tablename', 'vtiger_'.strtolower($map['name']));
-				$field->addChild('generatedtype', 1);
+				$field->addChild('generatedtype', $generatedtype);
 				$field->addChild('fieldlabel', $fValue['fieldlabel']);
 				$field->addChild('presence', $fValue['presence']);
 				if (isset($fValue['fieldlength']) && $fValue['fieldlength'] != '') {
@@ -873,12 +930,13 @@ class ModuleBuilder {
 					if ($fieldname == 'description') {
 						continue;
 					}
+					$generatedtype = $fieldInfo['generatedtype'] == 0 ? 1 : $fieldInfo['generatedtype'];
 					$field = $fields->addChild('field');
 					$field->addChild('fieldname', $fieldname);
 					$field->addChild('uitype', $fieldInfo['uitype']);
 					$field->addChild('columnname', $fieldInfo['columnname']);
 					$field->addChild('tablename', 'vtiger_crmentity');
-					$field->addChild('generatedtype', 1);
+					$field->addChild('generatedtype', $generatedtype);
 					$field->addChild('fieldlabel', $fieldInfo['fieldlabel']);
 					$field->addChild('presence', $fieldInfo['presence']);
 					$field->addChild('readonly', $fieldInfo['readonly']);

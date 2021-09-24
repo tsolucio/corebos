@@ -30,7 +30,7 @@ const mb = {
 	 * @param {boolean} forward
 	 * @param {string} buttonid
 	 */
-	SaveModule: (step, forward = true, buttonid = '') => {
+	SaveModule: (step, forward = true, buttonid = '', recordid = 0) => {
 		var data = {};
 		if (step == 1) {
 			data = {
@@ -96,17 +96,20 @@ const mb = {
 					presence: mb.loadElement(`Presence_${btnid}`),
 					uitype: mb.loadElement(`UItype_${btnid}`),
 					picklistvalues: mb.loadElement(`picklistvalues_${btnid}`),
+					generatedtype: mb.loadElement(`generatedtype_${btnid}`),
 					sequence: FIELD_COUNT,
 				};
 				fields.push(fieldValues);
 				data = {
 					fields: fields,
-					step: step
+					step: step,
+					recordid: recordid
 				};
 			} else {
 				data = {
 					fields: [],
-					step: step
+					step: step,
+					recordid: recordid
 				};
 			}
 		}
@@ -148,12 +151,14 @@ const mb = {
 				};
 				data = {
 					customview: customObj,
-					step: step
+					step: step,
+					recordid: recordid
 				};
 			} else {
 				data = {
 					customview: [],
-					step: step
+					step: step,
+					recordid: recordid
 				};
 			}
 		}
@@ -182,12 +187,14 @@ const mb = {
 				};
 				data = {
 					relatedlists: lists,
-					step: step
+					step: step,
+					recordid: recordid
 				};
 			} else {
 				data = {
 					relatedlists: [],
-					step: step
+					step: step,
+					recordid: recordid
 				};
 			}
 		}
@@ -765,7 +772,7 @@ const mb = {
 	/**
 	 * Generate field input for step 3
 	 */
-	generateFields: () => {
+	generateFields: (fieldid = 0) => {
 		let textfields = [{
 			type: mod_alert_arr.fieldname,
 			value: 'fieldname',
@@ -781,6 +788,10 @@ const mb = {
 		{
 			type: mod_alert_arr.picklistvalues,
 			value: 'picklistvalues',
+		},
+		{
+			type: mod_alert_arr.generatedtype,
+			value: 'generatedtype',
 		},
 		{
 			type: mod_alert_arr.relatedmodules,
@@ -860,7 +871,10 @@ const mb = {
 			},
 		}];
 		const checkboxFields = [];
-		if (document.getElementById('for-field-1')) {
+		if (fieldid > 0) {
+			mb.clearField(1);
+		}
+		if (document.getElementById('for-field-1') && fieldid == 0) {
 			const msg = mod_alert_arr.fieldprocces;
 			mb.loadMessage(msg, true, 'error');
 			return;
@@ -879,7 +893,7 @@ const mb = {
 			'placeholder': '',
 		};
 		let fieldTemplate = '<div class="slds-grid slds-gutters">';
-		for (var key in textfields) {console.log(textfields)
+		for (var key in textfields) {
 			switch(textfields[key].value) {
 				case 'relatedmodules':
 					inStyle.style = 'margin: 5px; display: none';
@@ -927,6 +941,20 @@ const mb = {
 						</label>
 						<div class="slds-form-element__control">
 							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+						</div>
+						</div>
+					</div>`;
+					break;
+				case 'generatedtype':
+					inStyle.style = 'display: none';
+					fieldTemplate += `
+					<div class="slds-col" style="${inStyle.style}" id="show-generatedtype-${FIELD_COUNT}">
+						<div class="slds-form-element">
+						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+							<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+						</label>
+						<div class="slds-form-element__control">
+							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
 						</div>
 						</div>
 					</div>`;
@@ -1025,7 +1053,7 @@ const mb = {
 		fieldTemplate += `</div>
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col"><br>
-				<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-field-${FIELD_COUNT}" onclick="mb.SaveModule(3, false, this.id)">
+				<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-field-${FIELD_COUNT}" onclick="mb.SaveModule(3, false, this.id, ${fieldid})">
 					<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 					</svg>${mod_alert_arr.LBL_MB_SAVEFIELD}
@@ -1038,23 +1066,63 @@ const mb = {
 			</div>
 		</div>`;
 		mb.loadElement(`fields_inputs_${FIELD_COUNT}`, true).innerHTML = fieldTemplate;
+		if (fieldid > 0) {
+			jQuery.ajax({
+				method: 'GET',
+				url: url+'&methodName=loadTemplate&recordid='+fieldid,
+			}).done(function (response) {
+				const state = JSON.parse(response).fields.data.contents[0];
+				document.getElementById(`fieldname_${FIELD_COUNT}`).value = state.fieldname;
+				document.getElementById(`fieldlabel_${FIELD_COUNT}`).value = state.fieldlabel;
+				document.getElementById(`Typeofdata_${FIELD_COUNT}`).value = state.typeofdata;
+				document.getElementById(`Displaytype_${FIELD_COUNT}`).value = state.displaytype;
+				document.getElementById(`Masseditable_${FIELD_COUNT}`).value = state.masseditable;
+				document.getElementById(`UItype_${FIELD_COUNT}`).value = state.uitype;
+				document.getElementById(`Presence_${FIELD_COUNT}`).value = state.presence;
+				document.getElementById(`Quickcreate_${FIELD_COUNT}`).value = state.quickcreate;
+				const uitype = document.getElementById(`UItype_${FIELD_COUNT}`);
+				const field_c = document.getElementById(`FIELD_COUNT`);
+				mb.showNewOptions(uitype, field_c);
+				document.getElementById(`fieldlength_${FIELD_COUNT}`).value = state.fieldlength;
+				document.getElementById(`picklistvalues_${FIELD_COUNT}`).value = state.picklistvalues;
+				document.getElementById(`relatedmodules_${FIELD_COUNT}`).value = state.relatedmodules;
+				if (state.uitype == '10') {
+					const relatedmodules = state.relatedmodules.split(',');
+					for (let r in relatedmodules) {
+						if (relatedmodules[r] != '') {
+							mb.setModuleValues(relatedmodules[r]);
+						}
+					}
+				}
+				const blockel = document.getElementsByName(`select-for-field-1`);
+				console.log(blockel)
+				for (let i = 0; i < blockel.length; i++) {
+					console.log(blockel[i].value)
+					if (parseInt(state.blockid) == parseInt(blockel[i].value)) {
+						blockel[i].checked = true;
+					}
+				}
+			});
+		}
 	},
 
 	showNewOptions: (state, id) => {
 		switch(state.value) {
 			case '10':
+				document.getElementById(`fieldlength_${id.value}`).value = '';
 				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = '';
 				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
 				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
-				document.getElementById(`fieldlength_${id.value}`).value = '';
+				document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
 				break;
 			case '15':
 			case '16':
 			case '33':
+				document.getElementById(`fieldlength_${id.value}`).value = '';
 				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = '';
 				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
 				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
-				document.getElementById(`fieldlength_${id.value}`).value = '';
+				document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
 				break;
 			case '1':
 			case '19':
@@ -1063,32 +1131,42 @@ const mb = {
 			case '11':
 			case '7':
 				document.getElementById(`show-fieldlength-${id.value}`).style.display = '';
+				document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
+				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
+				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
+				break;
+			case '5':
+			case '50':
+			case '14':
+				console.log(id.value)
+				document.getElementById(`show-generatedtype-${id.value}`).style.display = '';
+				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
+				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
+				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
 				break;
 			default:
-				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
 				document.getElementById(`fieldlength_${id.value}`).value = '';
+				document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
+				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
 				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
 				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
 			//
 		}
 	},
 
-	clearField: (e) => {
-		const id = e.id.split('-')[4];
+	clearField: (id) => {
 		mb.removeElement(`for-field-${id}`);
 		mb.removeElement(`for-field-inputs-${id}`);
 		mb.loadElement('FIELD_COUNT', true).value = 0;
 	},
 
-	clearView: (e) => {
-		const id = e.id.split('-')[4];
+	clearView: (id) => {
 		mb.removeElement(`for-customview-${id}`);
 		mb.removeElement('FilterBTN', true);
 		mb.loadElement('FILTER_COUNT', true).value = 0;
 	},
 
-	clearList: (e) => {
-		const id = e.id.split('-')[4];
+	clearList: (id) => {
 		mb.removeElement(`for-related-${id}`);
 		mb.loadElement('LIST_COUNT', true).value = 0;
 	},
@@ -1203,13 +1281,16 @@ const mb = {
 	/**
 	 * Generate inputs for custom views in step 4
 	 */
-	generateCustomView: () => {
+	generateCustomView: (filterid = 0) => {
+		if (filterid > 0) {
+			mb.clearView(1);
+		}
 		const FILTER_COUNT = mb.autoIncrementIds('FILTER_COUNT');
 		const table = mb.getTable('CustomView');
-		if (document.getElementById('for-customview-1')) {
+		if (document.getElementById('for-customview-1') && filterid == 0) {
 			const msg = mod_alert_arr.filterprocces;
 			mb.loadMessage(msg, true, 'error');
-			return;
+			return false;
 		}
 		// get custom view number for filter
 		const modulename = mb.loadElement('modulename');
@@ -1251,10 +1332,10 @@ const mb = {
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
 							<select class="slds-select" name="setdefault-${FILTER_COUNT}" id="setdefault-${FILTER_COUNT}">`;
-		for (let val in setdefaultOption[0]) {
-			viewTemplate += `<option value="${val}">${setdefaultOption[0][val]}</option>`;
-		}
-		viewTemplate += `
+							for (let val in setdefaultOption[0]) {
+								viewTemplate += `<option value="${val}">${setdefaultOption[0][val]}</option>`;
+							}
+							viewTemplate += `
 							</select>
 						</div>
 					</div>
@@ -1281,14 +1362,30 @@ const mb = {
 		</div>`;
 		mb.loadElement(`customview_inputs${FILTER_COUNT}`, true).innerHTML = viewTemplate;
 		//create save button for each field
+		if (filterid > 0) {
+			//get values for filters
+			jQuery.ajax({
+				method: 'GET',
+				url: url+'&methodName=loadTemplate&recordid='+filterid,
+			}).done(function (response) {
+				const state = JSON.parse(response).views.data.contents[0];
+				document.getElementById(`viewname-${FILTER_COUNT}`).value = state.viewname;
+				document.getElementById(`setdefault-${FILTER_COUNT}`).value = state.setdefault;
+				for (let f in state.fields) {
+					if (typeof state.fields[f] == 'object') {
+						mb.setFieldValues(state.fields[f].fieldname, state.fields[f].fieldsid, FILTER_COUNT);
+					}
+				}
+			});
+		}
 		let btnTemplate = `
 		<div class="slds-grid slds-gutters">
-			<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-view-${FILTER_COUNT}" onclick="mb.SaveModule(4, false, this.id)">
+			<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-view-${FILTER_COUNT}" onclick="mb.SaveModule(4, false, this.id, ${filterid})">
 				<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 				</svg>${mod_alert_arr.LBL_MB_SAVE}
 			</button>
-			<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-view-${FILTER_COUNT}" onclick="mb.clearView(this)">
+			<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-view-${FILTER_COUNT}" onclick="mb.clearView(${FILTER_COUNT})">
 				<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 				</svg>${mod_alert_arr.LBL_MB_CLEAR}
@@ -1529,7 +1626,7 @@ const mb = {
 	/**
 	 * Generate related lists for step 5
 	 */
-	generateRelatedList: () => {
+	generateRelatedList: (relatedid = 0) => {
 		const modulename = mb.loadElement('modulename');
 		const _mod = {
 			modulename: modulename
@@ -1545,9 +1642,12 @@ const mb = {
 				mb.loadMessage(mod_alert_arr.Related_modlabel, true, 'error');
 				proceed = false;
 			} else {
+				if (relatedid > 0) {
+					mb.clearList(1);
+				}
 				const LIST_COUNT = mb.autoIncrementIds('LIST_COUNT');
 				const table = mb.getTable('RelatedLists');
-				if (document.getElementById('for-related-1')) {
+				if (document.getElementById('for-related-1') && relatedid == 0) {
 					const msg = mod_alert_arr.relatedprocces;
 					mb.loadMessage(msg, true, 'error');
 					return;
@@ -1594,20 +1694,31 @@ const mb = {
 						</div>
 					</div>
 				</div><br>
-				<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-list-${LIST_COUNT}" onclick="mb.SaveModule(5, false, this.id)">
+				<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-list-${LIST_COUNT}" onclick="mb.SaveModule(5, false, this.id, ${relatedid})">
 					<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 					</svg>${mod_alert_arr.LBL_MB_SAVE}
 				</button>
-				<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-list-${LIST_COUNT}" onclick="mb.clearList(this)">
+				<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-list-${LIST_COUNT}" onclick="mb.clearList(${LIST_COUNT})">
 					<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 					</svg>${mod_alert_arr.LBL_MB_CLEAR}
 				</button>`;
 				mb.loadElement(`related_inputs_${LIST_COUNT}`, true).innerHTML = listTemplate;
+				if (relatedid > 0) {
+					jQuery.ajax({
+						method: 'GET',
+						url: url+'&methodName=loadTemplate&recordid='+relatedid,
+					}).done(function (response) {
+						const state = JSON.parse(response).lists.data.contents[0];
+						document.getElementById(`autocomplete-related-${LIST_COUNT}`).value = state.functionname;
+						document.getElementById(`related-label-${LIST_COUNT}`).value = state.label;
+						document.getElementById(`autocomplete-module-${LIST_COUNT}`).value = state.relatedmodule;
+					});
+				}
 			}
 			if (!proceed) {
-				return;
+				return false;
 			}
 		});
 	},
@@ -1760,7 +1871,9 @@ const mb = {
 		if (type == true) {
 			element.innerHTML = '';
 		} else {
-			element.parentNode.removeChild(element);
+			if (element) {
+				element.parentNode.removeChild(element);
+			}
 		}
 	},
 	/**
@@ -2196,6 +2309,18 @@ const mb = {
 			}
 		}
 		document.getElementById('relatedmodules_1').value = newValues;
+	},
+
+	editFilters: (id) => {
+		mb.generateCustomView(id);
+	},
+
+	editRelationships: (id) => {
+		mb.generateRelatedList(id);
+	},
+
+	editFields: (id) => {
+		mb.generateFields(id);
 	},
 };
 

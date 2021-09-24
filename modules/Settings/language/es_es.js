@@ -92,4 +92,6 @@ var mod_alert_arr = {
 	'ChoseField': 'Please choose at least one field to continue',
 	'Related_modlabel': 'Module hasn\'t relations fields please finish the module',
 	'FirstFilterAll_msg': 'First Filter should be All',
+	'generatedtype': 'Generated type',
+	'fieldlength': 'Length'
 };

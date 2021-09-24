@@ -69,10 +69,11 @@ function SaveModuleBuilder($step) {
 				$mb->column_data['sequence'] = vtlib_purify($_REQUEST['fields'][0]['sequence']);
 				$mb->column_data['typeofdata'] = vtlib_purify($_REQUEST['fields'][0]['typeofdata']);
 				$mb->column_data['quickcreate'] = vtlib_purify($_REQUEST['fields'][0]['quickcreate']);
-				$mb->column_data['displaytype'] = vtlib_purify($_REQUEST['fields'][0]['blockid']);
+				$mb->column_data['displaytype'] = vtlib_purify($_REQUEST['fields'][0]['displaytype']);
 				$mb->column_data['masseditable'] = vtlib_purify($_REQUEST['fields'][0]['masseditable']);
 				$mb->column_data['relatedmodules'] = vtlib_purify($_REQUEST['fields'][0]['relatedmodules']);
 				$mb->column_data['picklistvalues'] = vtlib_purify($_REQUEST['fields'][0]['picklistvalues']);
+				$mb->column_data['generatedtype'] = vtlib_purify($_REQUEST['fields'][0]['generatedtype']);
 				$ret = $mb->save($step);
 				$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="60" WHERE userid=? AND modulebuilderid=?', array($current_user->id,$moduleid));
 				return $ret;
