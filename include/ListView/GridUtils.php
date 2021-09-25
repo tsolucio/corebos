@@ -163,6 +163,10 @@ function getDataGridResponse($mdmap) {
 			$r[$finfo['fieldinfo']['name']] = $dataGridValue[0];
 			$r[$finfo['fieldinfo']['name'].'_attributes'] = $dataGridValue[1];
 		}
+		$r['record_permissions'] = array(
+			'delete' => isPermitted($mdmap['targetmodule'], 'Delete', $row[$mdmap['targetmoduleidfield']]),
+			'edit' => isPermitted($mdmap['targetmodule'], 'EditView', $row[$mdmap['targetmoduleidfield']])
+		);
 		$ret[] = $r;
 	}
 	return json_encode(
@@ -253,7 +257,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			$return = textlength_check(getTranslatedString($fieldValue, $module));
 			break;
 		case Field_Metadata::UITYPE_MULTI_SELECT:
-			$return = textlength_check(($fieldValue != '') ? str_replace(' |##| ', ', ', $fieldValue) : '');
+			$return = textlength_check(($fieldValue != '') ? str_replace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $fieldValue) : '');
 			break;
 		case Field_Metadata::UITYPE_PICKLIST_MODS:
 		case Field_Metadata::UITYPE_PICKLIST_MODEXTS:
@@ -261,7 +265,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			break;
 		case Field_Metadata::UITYPE_MULTI_SELECT_MODS:
 		case Field_Metadata::UITYPE_MULTI_SELECT_MODEXTS:
-			$modlist = explode(' |##| ', $fieldValue);
+			$modlist = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue);
 			$modlist = array_map(
 				function ($m) {
 					return getTranslatedString($m, $m);
@@ -271,7 +275,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			$return = textlength_check(($fieldValue != '') ? implode(', ', $modlist) : '');
 			break;
 		case Field_Metadata::UITYPE_PICKLIST_ROLES:
-			$return = textlength_check(($fieldValue != '') ? implode(', ', array_map('getRoleName', explode(' |##| ', $fieldValue))) : '');
+			$return = textlength_check(($fieldValue != '') ? implode(', ', array_map('getRoleName', explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue))) : '');
 			break;
 		case Field_Metadata::UITYPE_INTERNAL_TIME:
 		case Field_Metadata::UITYPE_DATE:

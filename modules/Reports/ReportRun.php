@@ -2596,6 +2596,7 @@ class ReportRun extends CRMEntity {
 				$lastvalue = '';
 				$secondvalue = '';
 				$thirdvalue = '';
+				$emptycell = "<td style='border-top:1px dotted #FFFFFF;'>&nbsp;</td>";
 				do {
 					$newvalue = '';
 					$snewvalue = '';
@@ -2626,29 +2627,21 @@ class ReportRun extends CRMEntity {
 						$fld = $adb->field_name($result, $i);
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
 						if (($lastvalue == $fieldvalue) && $this->reporttype == 'summary') {
-							if ($this->reporttype == 'summary') {
-								$valtemplate .= "<td style='border-top:1px dotted #FFFFFF;'>&nbsp;</td>";
-							} else {
-								$valtemplate .= '<td>'.$fieldvalue.'</td>';
-							}
+							$valtemplate .= $emptycell;
 						} elseif (($secondvalue == $fieldvalue) && $this->reporttype == 'summary') {
 							if ($lastvalue == $newvalue) {
-								$valtemplate .= "<td style='border-top:1px dotted #FFFFFF;'>&nbsp;</td>";
+								$valtemplate .= $emptycell;
 							} else {
 								$valtemplate .= '<td>'.$fieldvalue.'</td>';
 							}
 						} elseif (($thirdvalue == $fieldvalue) && $this->reporttype == 'summary') {
 							if ($secondvalue == $snewvalue) {
-								$valtemplate .= "<td style='border-top:1px dotted #FFFFFF;'>&nbsp;</td>";
+								$valtemplate .= $emptycell;
 							} else {
 								$valtemplate .= '<td>'.$fieldvalue.'</td>';
 							}
 						} else {
-							if ($this->reporttype == 'tabular') {
-								$valtemplate .= '<td>'.$fieldvalue.'</td>';
-							} else {
-								$valtemplate .= '<td>'.$fieldvalue.'</td>';
-							}
+							$valtemplate .= '<td>'.$fieldvalue.'</td>';
 						}
 					}
 					$valtemplate .= '</tr>';

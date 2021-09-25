@@ -67,7 +67,7 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'any value or valid field name',
 		),
-		 array(
+		array(
 			'name' => 'b',
 			'type' => 'Multiple',
 			'optional' => true,
@@ -738,6 +738,34 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Text'),
 	'examples' => array(
 		"stringreplace('ERICA','JON','MIKE AND ERICA ')  //wants to replace erica with jon",
+	),
+),
+'regexreplace' => array(
+	'name' => 'regexreplace(pattern,replace,subject)',
+	'desc' => 'This function returns a string with all occurrences of regex pattern in subject replaced with the given replace value.',
+	'params' => array(
+		array(
+			'name' => 'pattern',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the regex pattern being searched for',
+		),
+		array(
+			'name' => 'replace',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the replacement value',
+		),
+		array(
+			'name' => 'subject',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the string being searched and replaced on',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"regexreplace('[A-za-z]+','J','MIKE AND ERICA ')  //will return all Js"
 	),
 ),
 'randomstring' => array(
@@ -1587,6 +1615,30 @@ $WFExpressionFunctionDefinitons = array(
 		"getIDof('Accounts', 'siccode', some_field)",
 	),
 ),
+'getRelatedIDs' => array(
+	'name' => 'getRelatedIDs(module, recordid)',
+	'desc' => 'This function returns an array of record IDs in the given module, related to the record triggering the workflow',
+	'params' => array(
+		array(
+			'name' => 'module',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the related module name to search in.',
+		),
+		array(
+			'name' => 'recordid',
+			'type' => 'Integer',
+			'optional' => true,
+			'desc' => 'the main record ID to get the related records from, if not given the current record triggering the workflow will be used',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRelatedIDs('Contacts')",
+		"getRelatedIDs('Accounts')",
+		"getRelatedIDs('Contacts', 943)",
+	),
+),
 'getFieldsOF' => array(
 	'name' => 'getFieldsOF(id, module, fields)',
 	'desc' => 'Given the ID of an existent record, this function will return an array with all the values of the fields the user has access to. If you specify the fields you want in the function, only those values will be returned.',
@@ -1889,6 +1941,28 @@ $WFExpressionFunctionDefinitons = array(
 		"evaluateRule(ruleID)",
 	),
 ),
+'executeSQL' => array(
+	'name' => 'executeSQL(query, parameters...)',
+	'desc' => 'Execute an SQL statement.',
+	'params' => array(
+		array(
+			'name' => 'query',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'a prepared SQL statement',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'any number of parameters the SQL may need',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"executeSQL('select siccode from vtiger_accounts where accountname=?', field)",
+	),
+),
 'getCRUDMode' => array(
 	'name' => 'getCRUDMode()',
 	'desc' => 'This function returns create or edit depending on the action being done.',
@@ -1897,6 +1971,16 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"getCRUDMode()",
+	),
+),
+'Importing' => array(
+	'name' => 'Importing()',
+	'desc' => 'This function returns true if the execution is inside an import process or false otherwise.',
+	'params' => array(
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"Importing()",
 	),
 ),
 'isNumeric' => array(

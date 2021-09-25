@@ -427,4 +427,10 @@ var alert_arr = {
 	'Min. 1 number': 'Minimum one number',
 	'Min. 1 special character': 'Minimum one special character ! ? , ; - @ #',
 	'LBL_CHANGE_PASSWORD': 'Jelszó megváltoztatása',
+	'LBL_SHOWING': 'Mutat Rekordok ',
+	'LBL_RECORDS': ' of ',
+	'LNK_DELETE': 'del',
+	'LNK_EDIT': 'edit',
+	'LNK_EDIT_ACTION': 'Edit',
+	'LNK_DELETE_ACTION': 'Delete',
 };

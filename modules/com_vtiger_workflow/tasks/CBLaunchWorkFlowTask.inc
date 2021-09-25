@@ -67,7 +67,7 @@ class CBLaunchWorkFlowTask extends VTTask {
 				$params = array($crmid, $rectabid, $relatedModuleId);
 				$holdCM = $currentModule;
 				$currentModule = $parentModule;
-				$relationData = call_user_func_array(array($focus, $relationInfo['name']), $params);
+				$relationData = call_user_func_array(array($focus, $relationInfo['name']), array_values($params));
 				$GetRelatedList_ReturnOnlyQuery = $holdValue;
 				$currentModule = $holdCM;
 				if (isset($relationData['query'])) {

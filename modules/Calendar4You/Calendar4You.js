@@ -29,16 +29,16 @@ function fnAddITSEvent(obj, CurrObj, start_date, end_date, start_hr, start_min, 
 }
 
 function fnRemoveITSEvent() {
-	var tagName = document.getElementById('addEventDropDown').style.display = 'none';
+	document.getElementById('addEventDropDown').style.display = 'none';
 }
 function fnRemoveITSButton() {
-	var tagName = document.getElementById('addButtonDropDown').style.display = 'none';
+	document.getElementById('addButtonDropDown').style.display = 'none';
 }
 function fnShowITSEvent() {
-	var tagName = document.getElementById('addEventDropDown').style.display= 'block';
+	document.getElementById('addEventDropDown').style.display= 'block';
 }
 function fnShowITSButton() {
-	var tagName = document.getElementById('addButtonDropDown').style.display= 'block';
+	document.getElementById('addButtonDropDown').style.display= 'block';
 }
 
 function gITSshow(argg1, type, startdate, enddate, starthr, startmin, startfmt, endhr, endmin, endfmt, viewOption, subtab, skipconvertendtime) {
@@ -62,12 +62,6 @@ function gITSshow(argg1, type, startdate, enddate, starthr, startmin, startfmt, 
 	url = url + '&dtstart=' + startdate + ' ' + shr + ':' + smin;
 	url = url + '&dtend=' + enddate + ' ' + ehr + ':' + emin;
 	url = url + '&activitytype=' + encodeURIComponent(type);
-	var w = window,
-		d = document,
-		e = d.documentElement,
-		g = d.getElementsByTagName('body')[0],
-		x = w.innerWidth || e.clientWidth || g.clientWidth,
-		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 	window.open(url, null, cbPopupWindowSettings + ',dependent=yes');
 }
 
@@ -177,7 +171,7 @@ function controlGoogleSync() {
 					document.getElementById('google_sync_text').style.color = '#000000';
 					document.forms['SharingForm'].submit();
 				} else {
-					result = JSON.parse(response);
+					var result = JSON.parse(response);
 					document.getElementById('google_sync_text').innerHTML = result['text'];
 					fnHideDrop('google_sync_verifying');
 					fnShowDrop('google_sync_text');

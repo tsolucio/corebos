@@ -107,6 +107,7 @@ $mod_strings = array(
 'LBL_NO_DOCUMENTS' => 'Nessun Documento',
 'LBL_DESCRIPTION' => 'Descrizione',
 'FILE_HAS_NO_DATA'=>'Il file selezionato non ha dati o non &egrave; un file valido',
+'NotShared' => 'File not shared',
 
 'LBL_MAXIMUM_20'=>'Massimo 20 caratteri',
 'LBL_MAXIMUM_50'=>'Massimo 50 caratteri',

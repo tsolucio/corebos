@@ -92,7 +92,7 @@ if (isset($_REQUEST['module'])) {
 		$dir = @scandir($root_directory.'modules', SCANDIR_SORT_NONE);
 		$in_dir = @scandir($root_directory.'modules/'.$module, SCANDIR_SORT_NONE);
 		$is_module = @in_array($module, $dir);
-		$is_action = @in_array($action.'.php', $in_dir);
+		$is_action = @in_array($action.'.php', $in_dir) || file_exists('modules/Vtiger/'.$action.'.php');
 	}
 	if (!$is_module) {
 		die('Module name is missing or incorrect. Please check the module name.');
@@ -300,12 +300,9 @@ if ($use_current_login) {
 	coreBOS_Session::setUserGlobalSessionVariables();
 
 	/* Skip audit trail log for special request types */
-	$skip_auditing = false;
-	if (($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'cbCalendar') {
-		$skip_auditing = true;
-	} elseif (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
-		$skip_auditing = true;
-	}
+	$skip_auditing = (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager')
+		||
+		(($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'cbCalendar');
 	$privileges = $current_user->getPrivileges();
 	if (coreBOS_Settings::getSetting('audit_trail', false) && !$skip_auditing) {
 		$auditaction = $action;
@@ -471,10 +468,15 @@ if ($display == 'no'
 	$smarty->assign('OPERATION_MESSAGE', getTranslatedString($currentModule, $currentModule) . $app_strings['VTLIB_MOD_NOT_ACTIVE']);
 	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 } else {
-	include_once $currentModuleFile;
+	if (file_exists($currentModuleFile)) {
+		include_once $currentModuleFile;
+	} elseif (file_exists('modules/Vtiger/'.$action.'.php')) {
+		include_once 'modules/Vtiger/'.$action.'.php';
+	} else {
+		die('Action name is missing or incorrect. Please check the action name: '.vtlib_purify($action));
+	}
 }
 
-//added to get the theme . This is a bad fix as we need to know where the problem lies yet
 if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_authenticated_user_theme'] != '') {
 	$theme = $_SESSION['vtiger_authenticated_user_theme'];
 } else {

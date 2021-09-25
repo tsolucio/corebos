@@ -910,7 +910,9 @@ class OpenDocument {
 			$properties = array(
 				'insertindexGD' => $insertindexGD,
 			);
-			$pFilename = tempnam('/tmp', 'gendoc-');
+			if (empty($pFilename)) {
+				$pFilename = tempnam('/tmp', 'gendoc-');
+			}
 			$handle = fopen($pFilename, 'w');
 			foreach ($properties as $key => $value) {
 				fwrite($handle, "{$key} = {$value}\n");
@@ -1773,10 +1775,10 @@ class OpenDocument {
 			return; // Si ya lo tenemos, no lo repetimos
 		}
 
-				$style = $this->contentDOM->createElement(($isdatestyle?'number:date-style':'number:time-style'));
+		$style = $this->contentDOM->createElement(($isdatestyle ? 'number:date-style' : 'number:time-style'));
 		$style->setAttribute('style:name', $stylename);
 		$stylebranch=$this->originGenDocStyles[$stylename];
-		while (list($level1name,$datestyle)=each($stylebranch)) {
+		foreach ($stylebranch as $level1name => $datestyle) {
 			if (is_array($datestyle)) {
 				$substyle = $this->contentDOM->createElement('number:'.$level1name);
 				$level1stbranch=$datestyle;
@@ -2282,6 +2284,7 @@ class OpenDocument {
 	 */
 	public static function saveAsDocument($record, $module, $format, $mergeTemplateName, $fullfilename, $name) {
 		global $adb, $current_user;
+		$holdRequest = $_REQUEST;
 		if (substr($mergeTemplateName, -4)=='.odt' || substr($mergeTemplateName, -4)=='.pdf') {
 			$mergeTemplateName = substr($mergeTemplateName, 0, strlen($mergeTemplateName)-4);
 		}
@@ -2327,7 +2330,8 @@ class OpenDocument {
 		$_REQUEST['return_module'] = $module;
 		$_REQUEST['return_id'] = $record;
 		$doc->save('Documents');
-		unset($_REQUEST['createmode'], $_REQUEST['return_module'], $_REQUEST['return_id'], $_REQUEST['assigntype'], $_FILES);
+		unset($_FILES);
+		$_REQUEST = $holdRequest;
 		return $doc->id;
 	}
 
@@ -2906,7 +2910,7 @@ class OpenDocument {
 					continue 2;
 					break;
 				case 'genxmlifexist':
-					$cumple_cond = eval_existe($condicion, $crmid, $module, false);
+					$cumple_cond = eval_existe($condicion, $crmid, $module);
 					if ($cumple_cond && $this->hasChild($node)) {
 						eval_paracada($condicion, $crmid, $module);
 						$this->processBranch($node, $iter_modules[$entidad][0], $entidad);
@@ -2914,7 +2918,7 @@ class OpenDocument {
 					continue 2;
 					break;
 				case 'genxmlifnotexist':
-					$cumple_cond = eval_existe($condicion, $crmid, $module, false);
+					$cumple_cond = eval_existe($condicion, $crmid, $module);
 					if (!$cumple_cond && $this->hasChild($node)) {
 						eval_paracada($condicion, $crmid, $module);
 						$this->processBranch($node, $iter_modules[$entidad][0], $entidad);

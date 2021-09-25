@@ -115,7 +115,7 @@ class ModTracker_Field {
 		}
 
 		if ($fieldInstance->getFieldDataType() == 'multipicklist') {
-			$value = ($value != '') ? str_replace(' |##| ', ', ', $value) : "";
+			$value = ($value != '') ? str_replace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $value) : '';
 		}
 		if ($fieldInstance->getFieldDataType() == 'reference') {
 			if (!empty($value)) {

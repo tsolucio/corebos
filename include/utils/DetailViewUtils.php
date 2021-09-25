@@ -206,13 +206,13 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 33) {
 		$roleid = $current_user->roleid;
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$label_fld[] = str_ireplace(' |##| ', ', ', $col_fields[$fieldname]);
+		$label_fld[] = str_ireplace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $col_fields[$fieldname]);
 
 		$picklistValues = getAssignedPicklistValues($fieldname, $roleid, $adb);
 
 		$options = array();
 		$selected_entries = array();
-		$selected_entries = explode(' |##| ', $col_fields[$fieldname]);
+		$selected_entries = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $col_fields[$fieldname]);
 
 		if (!empty($picklistValues)) {
 			foreach ($picklistValues as $pickListValue) {
@@ -235,7 +235,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 3313 || $uitype == 3314) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$label_fld[] = str_ireplace(' |##| ', ', ', $col_fields[$fieldname]);
+		$label_fld[] = str_ireplace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $col_fields[$fieldname]);
 		$label_fld ['options'] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $col_fields[$fieldname], 'DetailView');
 	} elseif ($uitype == 17) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);

@@ -14,9 +14,9 @@ require_once 'modules/cbCalendar/CalendarCommon.php';
 
 /**
  * Function to get date info depending upon on the calendar view(Eg: 21 July 2000)
- * @param string  $view        - calendar view(day/week/month/year)
- * @param array   $date_time   - contains DateTime object
- * @return string  $label       - date info(Eg for dayview : 13 July 2000)
+ * @param string calendar view(day/week/month/year)
+ * @param object DateTime object
+ * @return string date info (eg for dayview : 13 July 2000)
  */
 function display_date($view, $date_time) {
 	global $cal_log;
@@ -52,8 +52,8 @@ function display_date($view, $date_time) {
 
 /**
  *  Function to get css class name for date
- *  @param   date
- *  @return  string  css class name or empty string
+ *  @param date
+ *  @return string  css class name or empty string
  */
 function dateCheck($slice_date) {
 	global $cal_log;
@@ -131,9 +131,9 @@ function getEventListView(&$cal, $mode = '') {
 
 /**
  * Fuction constructs Todos ListView depends on the view
- * @param   array  $cal            - collection of objects and strings
- * @param   string $check          - string 'listcnt' or empty. if empty means get Todos ListView else get total no. of Todos and no. of pending todos Info.
- * returns  string $todo_list      - total no. of todos and no. of pending todos Info(Eg: Total Todos : 2, 1 Pending).
+ * @param  array collection of objects and strings
+ * @param  string 'listcnt' or empty. if empty means get Calendar ListView else get total no. of Events and no. of pending events information
+ * @return string total no. of events and no. of pending events information (Eg: Total Events : 2, 1 Pending).
  */
 function getTodosListView($cal, $check = '', $subtab = '') {
 	global $cal_log,$theme;
@@ -188,7 +188,7 @@ function getTodosListView($cal, $check = '', $subtab = '') {
 /**
  * Function creates HTML to display Calendar DayView
  * @param  array     $cal            - collections of objects and strings.
- * return  string    $dayview_layout - html tags in string format
+ * @return string    $dayview_layout - html tags in string format
  */
 function getDayViewLayout(&$cal) {
 	global $theme, $cal_log;
@@ -255,7 +255,7 @@ function getDayViewLayout(&$cal) {
 /**
  * Function creates HTML to display Calendar WeekView
  * @param  array     $cal             - collections of objects and strings.
- * return  string    $weekview_layout - html tags in string format
+ * @return string    $weekview_layout - html tags in string format
  */
 function getWeekViewLayout(&$cal) {
 	global $cal_log, $theme;
@@ -533,7 +533,7 @@ function getYearViewLayout(&$cal) {
  * @param  string    $slice       - date:time(eg: 2006-07-13:10)
  * @return string    $eventlayer  - hmtl in string format
  */
-function getdayEventLayer(& $cal, $slice, $rows) {
+function getdayEventLayer(&$cal, $slice, $rows) {
 	global $mod_strings, $cal_log, $listview_max_textlength, $adb, $current_user, $theme;
 	$cal_log->debug('> getdayEventLayer');
 	$eventlayer = '';
@@ -759,9 +759,9 @@ function getweekEventLayer(&$cal, $slice) {
  * Function creates HTML To display events in month view
  * @param  array     $cal         - collection of objects and strings
  * @param  string    $slice       - date(eg: 2006-07-13)
- * returns string    $eventlayer  - hmtl in string format
+ * @return string    $eventlayer  - hmtl in string format
  */
-function getmonthEventLayer(& $cal, $slice) {
+function getmonthEventLayer(&$cal, $slice) {
 	global $mod_strings,$cal_log,$adb,$current_user,$theme;
 	$cal_log->debug('> getmonthEventLayer');
 	$eventlayer = '';
@@ -1218,10 +1218,10 @@ function getTodoList(&$calendar, $start_date, $end_date, $info = '') {
 }
 
 /**
- * Function to get number of Events and Todos Info
- * @param array    $cal  collection of objects and strings
- * @param string   $mode 'listcnt' or may be empty. if empty means get Events/Todos ListView else get total events/todos and no. of pending events/todos Info.
- * @return array    $event_todo_info  - collection of events/todos info.
+ * Function to get number of calendar information
+ * @param array collection of objects and strings
+ * @param string 'listcnt' or empty. if empty means get Calendar ListView else get total number of events and pending calendar information
+ * @return array collection of calendar information
  */
 function getEventInfo(&$cal, $mode) {
 	global $mod_strings,$cal_log;
@@ -1231,7 +1231,7 @@ function getEventInfo(&$cal, $mode) {
 	$event_info = '';
 	$event_info .= $mod_strings['LBL_TOTALEVENTS'].'&nbsp;'.$event['event']['totalevent'];
 	if ($event['event']['pendingevent'] != null) {
-		 $event_info .= ', '.$event['event']['pendingevent'].'&nbsp;'.$mod_strings['LBL_PENDING'];
+		$event_info .= ', '.$event['event']['pendingevent'].'&nbsp;'.$mod_strings['LBL_PENDING'];
 	}
 	$cal_log->debug('< getEventInfo');
 	return $event_info;
@@ -1292,7 +1292,7 @@ function constructEventListView(&$cal, $entry_list, $navigation_array = '') {
 	);
 	if (isPermitted('cbCalendar', 'EditView') == 'yes' || isPermitted('cbCalendar', 'Delete') == 'yes') {
 		$header[] = $mod_strings['LBL_ACTION'];
-		 $header_width[] = '10%';
+		$header_width[] = '10%';
 	}
 	if (getFieldVisibilityPermission('Events', $current_user->id, 'eventstatus') == '0') {
 		$header[] = $mod_strings['LBL_STATUS'];
@@ -1391,9 +1391,9 @@ function constructEventListView(&$cal, $entry_list, $navigation_array = '') {
 
 /**
  * Function creates HTML to display Todos ListView
- * @param array  $todo_list     - collection of strings(Todo Information)
- * @param array  $cal           - collection of objects and strings
- * @return string $list_view     - html tags in string format
+ * @param array collection of strings (Task Information)
+ * @param array collection of objects and strings
+ * @return string html tags in string format
  */
 function constructTodoListView($todo_list, $cal, $subtab, $navigation_array = '') {
 	global $mod_strings,$cal_log,$adb,$theme;

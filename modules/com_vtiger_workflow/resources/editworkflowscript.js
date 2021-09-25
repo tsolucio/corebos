@@ -243,7 +243,7 @@ function editworkflowscript($, conditions) {
 				alert_arr.LBL_LESS_THAN_OR_EQUAL_TO, alert_arr.LBL_GREATER_THAN_OR_EQUAL_TO, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_EXISTS, alert_arr.LBL_WAS],
 			value:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_CONTAINS, alert_arr.LBL_DOES_NOT_CONTAIN, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY,
 				alert_arr.LBL_EXISTS, alert_arr.LBL_WAS],
-			reference:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY,
+			reference:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_CONTAINS, alert_arr.LBL_DOES_NOT_CONTAIN, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY,
 				alert_arr.LBL_EXISTS, alert_arr.LBL_WAS, alert_arr.HAS_THIS_AS_NTH_CHILD],
 			date:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO,
 				alert_arr.LBL_BETWEEN, alert_arr.LBL_BEFORE, alert_arr.LBL_AFTER, alert_arr.LBL_IS_TODAY, alert_arr.LBL_LESS_THAN_DAYS_AGO,
@@ -366,7 +366,7 @@ function editworkflowscript($, conditions) {
 		resetGroupJoinCondition(groupno);
 		let grpbtns = document.querySelectorAll('button[id^="save_conditions_add_"]');
 		let totgrp = grpbtns.length;
-		Array.from(grpbtns).map(x => x.style.visibility='hidden');
+		Array.from(grpbtns).forEach(x => x.style.visibility='hidden');
 		if (totgrp>0) {
 			grpbtns[totgrp-1].style.visibility = 'visible';
 		} else {
@@ -587,7 +587,7 @@ function editworkflowscript($, conditions) {
 							$('#save_conditions_add_'+groupid).bind('click', function () {
 								addCondition(groupno, condno++);
 							});
-							Array.from(document.querySelectorAll('button[id^="save_conditions_add_"]')).map(x => x.style.visibility='hidden');
+							Array.from(document.querySelectorAll('button[id^="save_conditions_add_"]')).forEach(x => x.style.visibility='hidden');
 							document.getElementById('save_conditions_add_'+groupid).style.visibility = 'visible';
 
 							var rem_group_img = $('#save_condition_group_'+groupid+'_remove');

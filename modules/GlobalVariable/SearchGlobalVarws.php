@@ -25,7 +25,7 @@
  *  the default value given: if a variable record is not found or the current user does not have access to the Global Variable module
 */
 function cbws_SearchGlobalVar($gvname, $defaultvalue, $gvmodule, $user) {
-	global $log, $adb;
+	global $log, $adb, $default_charset;
 
 	$entityName = 'GlobalVariable';
 	$webserviceObject = VtigerWebserviceObject::fromName($adb, $entityName);
@@ -48,7 +48,7 @@ function cbws_SearchGlobalVar($gvname, $defaultvalue, $gvmodule, $user) {
 			$rs = $adb->pquery('select contentjson from vtiger_cbmap where cbmapid=?', array($rdo));
 			$rdo = array(
 				'id' => vtws_getEntityID('cbMap').'x'.$rdo,
-				'map' => $adb->query_result($rs, 0, 0),
+				'map' => html_entity_decode($adb->query_result($rs, 0, 0), ENT_QUOTES, $default_charset),
 			);
 		}
 	} else {

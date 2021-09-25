@@ -230,6 +230,7 @@ switch ($functiontocall) {
 		die();
 		break;
 	case 'delImage':
+		Vtiger_Request::validateRequest();
 		include_once 'include/utils/DelImage.php';
 		$id = vtlib_purify($_REQUEST['recordid']);
 		$id = preg_replace('/[^0-9]/', '', $id);
@@ -275,13 +276,15 @@ switch ($functiontocall) {
 		$term = vtlib_purify($data['term']);
 		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
 		$ret = array();
-		foreach ($retvals['data'] as $value) {
-			$ret[] = array(
-				'crmid' => $value['crmid'],
-				'crmmodule' => $value['crmmodule'],
-				'query_string' => $value['query_string'],
-				'total' => $retvals['total']
-			) + $value['crmfields'];
+		if (!empty($retvals['data'])) {
+			foreach ($retvals['data'] as $value) {
+				$ret[] = array(
+					'crmid' => $value['crmid'],
+					'crmmodule' => $value['crmmodule'],
+					'query_string' => $value['query_string'],
+					'total' => $retvals['total']
+				) + $value['crmfields'];
+			}
 		}
 		break;
 	case 'getRelatedListInfo':
@@ -317,12 +320,14 @@ switch ($functiontocall) {
 		}
 		break;
 	case 'setSetting':
+		Vtiger_Request::validateRequest();
 		$skey = vtlib_purify($_REQUEST['skey']);
 		$svalue = vtlib_purify($_REQUEST['svalue']);
 		coreBOS_Settings::setSetting($skey, $svalue);
 		$ret = '';
 		break;
 	case 'delSetting':
+		Vtiger_Request::validateRequest();
 		$skey = vtlib_purify($_REQUEST['skey']);
 		coreBOS_Settings::delSetting($skey);
 		$ret = '';
@@ -384,8 +389,11 @@ switch ($functiontocall) {
 		break;
 	case 'getImageInfoFor':
 		$id = vtlib_purify($_REQUEST['record']);
-		require_once 'include/Webservices/getRecordImages.php';
-		$imageinfo = cbws_getrecordimageinfo($id, $current_user);
+		$imageinfo = array();
+		if (isPermitted(getSalesEntityType($id), 'DetailView', $id)=='yes') {
+			require_once 'include/Webservices/getRecordImages.php';
+			$imageinfo = cbws_getrecordimageinfo($id, $current_user);
+		}
 		header('Content-Type: application/json');
 		if ((int)$imageinfo['results'] > 0) {
 			$ret = $imageinfo;
@@ -401,6 +409,7 @@ switch ($functiontocall) {
 		}
 		break;
 	case 'setNewPassword':
+		Vtiger_Request::validateRequest();
 		require_once 'modules/Users/Users.php';
 		require_once 'include/utils/UserInfoUtil.php';
 		$userid = vtlib_purify($_REQUEST['record']);
@@ -417,6 +426,43 @@ switch ($functiontocall) {
 			}
 		} else {
 			$ret = array('password'=>false);
+		}
+		break;
+	case 'listViewJSON':
+		include_once 'include/ListView/ListViewJSON.php';
+		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateDataListView') {
+			updateDataListView();
+			$ret = array();
+		} else {
+			$orderBy = ' DESC';
+			$entries = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
+			$formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
+			$columns = isset($_REQUEST['columns']) ? vtlib_purify($_REQUEST['columns']) : '';
+			$beforeFilter = isset($_REQUEST['beforeFilter']) ? vtlib_purify($_REQUEST['beforeFilter']) : '';
+			if (isset($_REQUEST['perPage'])) {
+				//get data
+				$perPage = isset($_REQUEST['perPage']) ? vtlib_purify($_REQUEST['perPage']) : $entries;
+				$sortAscending = isset($_REQUEST['sortAscending']) ? vtlib_purify($_REQUEST['sortAscending']) : '';
+				$sortColumn = isset($_REQUEST['sortColumn']) ? vtlib_purify($_REQUEST['sortColumn']) : '';
+				$page = isset($_REQUEST['page']) ? vtlib_purify($_REQUEST['page']) : 1;
+				$search = isset($_REQUEST['search']) ? vtlib_purify($_REQUEST['search']) : '';
+				$searchtype = isset($_REQUEST['searchtype']) ? vtlib_purify($_REQUEST['searchtype']) : '';
+				if ($sortAscending == 'true') {
+					$orderBy = ' ASC';
+				}
+				if ($perPage == 0) {
+					$perPage = $list_max_entries_per_page;
+				}
+				$LV = getListViewJSON($formodule, $perPage, $orderBy, $sortColumn, $page, $search, $searchtype);
+			} else {
+				//get headers
+				$LV = getListViewJSON($formodule);
+			}
+			if (isset($columns) && $columns == 'true') {
+				$ret = array($LV['headers'], $LV['data']['customview'], $LV['data']['export_where']);
+			} else {
+				$ret = $LV['data'];
+			}
 		}
 		break;
 	case 'ismoduleactive':

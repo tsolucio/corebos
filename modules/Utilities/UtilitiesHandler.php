@@ -33,7 +33,7 @@ class UtilitiesEventsHandler extends VTEventHandler {
 				array('RecordVersioningModules')
 			);
 			if ($adb->num_rows($recexists) > 0) {
-				$modulelist = explode(' |##| ', $adb->query_result($recexists, 0, 'module_list'));
+				$modulelist = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $adb->query_result($recexists, 0, 'module_list'));
 				// $parameter is the QueryGenerator Object
 				if (in_array($parameter->getModule(), $modulelist)) {
 					$parameter->addCondition('revisionactiva', 1, 'e', 'and');

@@ -626,9 +626,9 @@ function create_guid() {
 	return $guid;
 }
 
-/** Function to create guid section for a given character
- * @param string characters
- * @return integer
+/** Function to create guid section for a UUID
+ * @param integer number of hexadecimal characters to return
+ * @return string concatenation of the given number of hexadecimal random integers
  */
 function create_guid_section($characters) {
 	global $log;
@@ -641,9 +641,10 @@ function create_guid_section($characters) {
 	return $return;
 }
 
-/** Function to ensure length
- * @param $string -- string:: Type string
- * @param $length -- length:: Type string
+/** Function to ensure length: the given string will be cut at the given length or padded with zeros to the given length
+ * @param string the string we need to control the length of
+ * @param integer length the string must have
+ * @return void the given string will be modified directly (passed by reference)
  */
 function ensure_length(&$string, $length) {
 	global $log;
@@ -703,8 +704,8 @@ function decide_to_html() {
 decide_to_html();//call the function once when loading
 
 /** Function to convert the given string to html
- * @param $string -- string:: Type string
- * @returns $string -- string:: Type string
+ * @param string
+ * @return string
  */
 function to_html($string) {
 	global $doconvert,$default_charset;
@@ -724,9 +725,9 @@ function to_html($string) {
 	return $string;
 }
 
-/** Function to get the tablabel for a given id
- * @param $tabid -- tab id:: Type integer
- * @returns $string -- string:: Type string
+/** Function to get the tab label for a given id
+ * @param integer tab id
+ * @return string module label
  */
 function getTabname($tabid) {
 	global $log, $adb;
@@ -738,8 +739,8 @@ function getTabname($tabid) {
 }
 
 /** Function to get the tab module name for a given id
- * @param $tabid -- tab id:: Type integer
- * @returns $string -- string:: Type string
+ * @param integer tab id
+ * @return string module name
  */
 function getTabModuleName($tabid) {
 	global $log, $adb;
@@ -758,8 +759,8 @@ function getTabModuleName($tabid) {
 }
 
 /** Function to get column fields for a given module
- * @param $module -- module:: Type string
- * @returns $column_fld -- column field :: Type array
+ * @param string module name
+ * @return array column fields
  */
 function getColumnFields($module) {
 	global $log, $adb;
@@ -2403,7 +2404,7 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 				$result[$col_arr[$k]]=getTranslatedString($result[$col_arr[$k]], $module);
 			}
 			if ($ui_type[$fld_arr[$k]] == 33) {
-				$fieldvalue = explode(' |##| ', $result[$col_arr[$k]]);
+				$fieldvalue = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $result[$col_arr[$k]]);
 				$result[$col_arr[$k]] = array();
 				foreach ($fieldvalue as $picklistValue) {
 					$result[$col_arr[$k]][] = getTranslatedString($picklistValue, $module);

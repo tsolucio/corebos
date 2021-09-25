@@ -389,7 +389,7 @@ abstract class Core_Worker_Mediator implements Core_ITask
                                 }
 
                                 $printer("Calling Function $matches[1]()...");
-                                $return = call_user_func_array($function, $args);
+                                $return = call_user_func_array($function, array_values($args));
                                 if (is_scalar($return))
                                     $printer("Return: $return", 100);
                                 else
@@ -794,7 +794,7 @@ abstract class Core_Worker_Mediator implements Core_ITask
                     if (!$this->via->put($call))
                         $this->log("Call {$call->id} Could Not Ack Running.");
 
-                    $call->returned(call_user_func_array($this->get_callback($call->method), $call->args));
+                    $call->returned(call_user_func_array($this->get_callback($call->method), array_values($call->args)));
                     if (!$this->via->put($call))
                         $this->log("Call {$call->id} Could Not Ack Complete.");
                 }

@@ -61,7 +61,7 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 		array('ip_elastic_server')
 	);
 	$count = $adb->num_rows($recexists);
-	$module_list = explode(' |##| ', $adb->query_result($recexists, 0, 1));
+	$module_list = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $adb->query_result($recexists, 0, 1));
 	$gvid = ($count>0 ? $adb->query_result($recexists, 0, 0) : '');
 
 	//check for global variable ip_elastic_indexprefix
@@ -70,7 +70,7 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 		array('ip_elastic_indexprefix')
 	);
 	$count2 = $adb->num_rows($recexists2);
-	$module_list2 = explode(' |##| ', $adb->query_result($recexists2, 0, 1));
+	$module_list2 = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $adb->query_result($recexists2, 0, 1));
 	$gvid2 = ($count2>0 ? $adb->query_result($recexists2, 0, 0) : '');
 
 	if ($isFormActive=='1') {
@@ -160,7 +160,7 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigelasticsearch') {
 		$index = array_search($moduleid, $module_list);
 		unset($module_list[$index]);
 		if (!empty($module_list)) {
-			$module_del = implode(' |##| ', $module_list);
+			$module_del = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $module_list);
 		} else {
 			$module_del = '';
 		}

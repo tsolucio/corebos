@@ -194,6 +194,25 @@ class Vtiger_Request {
 		}
 	}
 
+	public static function validateRequest($die = true, $msg = true) {
+		$request = new Vtiger_Request($_REQUEST);
+		try {
+			$request->validateWriteAccess();
+		} catch (\Throwable $th) {
+			if ($msg) {
+				require_once 'Smarty_setup.php';
+				echo '<br><br>';
+				$smarty = new vtigerCRM_Smarty();
+				$smarty->assign('csrfWarning', getTranslatedString($th->getMessage()));
+				$smarty->assign('csrfReload', getTranslatedString('csrf_reload'));
+				$smarty->display('csrf-warning.tpl');
+			}
+			if ($die) {
+				die();
+			}
+		}
+	}
+
 	public static function get_ip() {
 		$headers = $_SERVER;
 		// check for shared internet/ISP IP

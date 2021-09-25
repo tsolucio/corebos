@@ -66,4 +66,10 @@ $loggerConfig = array(
 		'MaxBackup' => 10,
 		'File' => 'javascript',
 	],
+	'IMPORT' => [
+		'Enabled' => false,
+		'Level' => 'DEBUG',
+		'MaxBackup' => 10,
+		'File' => 'import',
+	],
 );

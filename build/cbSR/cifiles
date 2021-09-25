@@ -168,7 +168,6 @@ include/RelatedListView.php
 include/saveMergeCriteria.php
 include/setVAT.php
 include/smarty
-include/upload_file.php
 include/utils
 include/Webservices
 include/wfMethods

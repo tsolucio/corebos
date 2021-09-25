@@ -117,7 +117,7 @@ function __cb_relatedevaluations($evaluation, $params) {
 		$GetRelatedList_ReturnOnlyQuery = true;
 		$holdCM = $currentModule;
 		$currentModule = $module;
-		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), $relfunp);
+		$relationData = call_user_func_array(array($moduleInstance, $relationInfo['name']), array_values($relfunp));
 		$currentModule = $holdCM;
 		$GetRelatedList_ReturnOnlyQuery = $holdValue;
 		if (!isset($relationData['query'])) {

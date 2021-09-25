@@ -19,7 +19,7 @@ if ($result && $adb->num_rows($result) > 0) {
 		$uniqueid = $adb->query_result($result, $x, 'uniqueid');
 		$qmodule = $adb->query_result($result, $x, 'qmodule');
 		$relatedModules = $adb->query_result($result, $x, 'mvrelated_modulelist');
-		$relatedModulesArr = explode(' |##| ', $relatedModules);
+		$relatedModulesArr = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $relatedModules);
 		$crmentity_table = $adb->query_result($result, $x, 'crmentityalias');
 		$maintablealias = $adb->query_result($result, $x, 'maintablealias');
 		$qid = $adb->query_result($result, $x, 'cbquestionid');

@@ -49,10 +49,11 @@ class CustomView extends CRMEntity {
 		'bw' => 'between',
 	);
 
-	/** This function sets the currentuser id to the class variable smownerid,
+	/** This function sets
+	 * the currentuser id to the class variable smownerid,
 	 * modulename to the class variable customviewmodule
-	 * @param $module -- The module Name:: Type String(optional)
-	 * @returns  nothing
+	 * @param string module Name (optional)
+	 * @return void
 	 */
 	public function __construct($module = '') {
 		global $current_user;
@@ -79,9 +80,9 @@ class CustomView extends CRMEntity {
 		return $this->moduleMetaInfo[$module];
 	}
 
-	/** To get the customViewId of the specified module
-	 * @param $module -- The module Name:: Type String
-	 * @returns  customViewId :: Type Integer
+	/** To get the custom view ID of the specified module
+	 * @param string module Name
+	 * @return integer custom view ID
 	 */
 	public function getViewId($module) {
 		global $adb, $current_user;
@@ -143,11 +144,10 @@ class CustomView extends CRMEntity {
 		}
 	}
 
-	// return type array
-	/** to get the details of a customview
-	 * @param $cvid :: Type Integer
-	 * @returns  $customviewlist Array in the following format
-	 * $customviewlist = Array('viewname'=>value,
+	/** to get the details of a custom view
+	 * @param integer custom view ID
+	 * @return array in the following format
+	 * $customviewlist = array('viewname'=>value,
 	 *                         'setdefault'=>defaultchk,
 	 *                         'setmetrics'=>setmetricschk)
 	 */
@@ -188,10 +188,9 @@ class CustomView extends CRMEntity {
 		return $customviewlist;
 	}
 
-	/** to get the customviewCombo for the class variable customviewmodule
-	 * @param $viewid :: Type Integer
-	 * $viewid will make the corresponding selected
-	 * @returns  $customviewCombo :: Type String
+	/** to get the custom view combo for the class variable customviewmodule
+	 * @param integer view ID
+	 * @return string custom view combo
 	 */
 	public function getCustomViewCombo($viewid = '', $markselected = true) {
 		global $adb, $current_user, $app_strings;
@@ -286,9 +285,9 @@ class CustomView extends CRMEntity {
 	}
 
 	/** to get the getColumnsListbyBlock for the given module and Block
-	 * @param $module :: Type String
-	 * @param $block :: Type Integer
-	 * @returns  $columnlist Array in the format
+	 * @param string module
+	 * @param integer block
+	 * @return array in the format
 	 * $columnlist = Array ($fieldlabel =>'$fieldtablename:$fieldcolname:$fieldname:$module_$fieldlabel1:$fieldtypeofdata',
 	  $fieldlabel1 =>'$fieldtablename1:$fieldcolname1:$fieldname1:$module_$fieldlabel11:$fieldtypeofdata1',
 	  |
@@ -377,8 +376,8 @@ class CustomView extends CRMEntity {
 	}
 
 	/** to get the getModuleColumnsList for the given module
-	 * @param $module :: Type String
-	 * @returns  $ret_module_list Array in the following format
+	 * @param string module
+	 * @return array in the following format
 	 * $ret_module_list =
 	  Array ('module' =>
 	  Array('BlockLabel1' =>
@@ -448,12 +447,12 @@ class CustomView extends CRMEntity {
 	}
 
 	/** to get the getColumnsListByCvid for the given customview
-	 * @param $cvid :: Type Integer
-	 * @returns  $columnlist Array in the following format
+	 * @param integer custom view ID
+	 * @return array in the following format
 	 * $columnlist = Array( $columnindex => $columnname,
-	 * 			 $columnindex1 => $columnname1,
-	 * 					|
-	 * 			 $columnindexn => $columnnamen)
+	 * 		$columnindex1 => $columnname1,
+	 * 			|
+	 * 		$columnindexn => $columnnamen)
 	 */
 	public function getColumnsListByCvid($cvid) {
 		global $adb;
@@ -470,12 +469,12 @@ class CustomView extends CRMEntity {
 	}
 
 	/** to get the standard filter fields or the given module
-	 * @param $module :: Type String
-	 * @returns  $stdcriteria_list Array in the following format
+	 * @param string module
+	 * @return array in the following format
 	 * $stdcriteria_list = Array( $tablename:$columnname:$fieldname:$module_$fieldlabel => $fieldlabel,
-	 * 			 $tablename1:$columnname1:$fieldname1:$module_$fieldlabel1 => $fieldlabel1,
-	 * 					|
-	 * 			 $tablenamen:$columnnamen:$fieldnamen:$module_$fieldlabeln => $fieldlabeln)
+	 * 		$tablename1:$columnname1:$fieldname1:$module_$fieldlabel1 => $fieldlabel1,
+	 * 			|
+	 * 		$tablenamen:$columnnamen:$fieldnamen:$module_$fieldlabeln => $fieldlabeln)
 	 */
 	public function getStdCriteriaByModule($module) {
 		global $adb, $current_user;
@@ -546,8 +545,8 @@ class CustomView extends CRMEntity {
 	}
 
 	/** to get the standard filter criteria
-	 * @param $selcriteria :: Type String (optional)
-	 * @returns  $filter Array in the following format
+	 * @param string selcriteria (optional)
+	 * @return array in the following format
 	 * $filter = Array( 0 => array('value'=>$filterkey,'text'=>$mod_strings[$filterkey],'selected'=>$selected)
 	 * 		     1 => array('value'=>$filterkey1,'text'=>$mod_strings[$filterkey1],'selected'=>$selected)
 	 * 		                             		|
@@ -602,16 +601,16 @@ class CustomView extends CRMEntity {
 
 	/**
 	 * This function will return the script to set the start data and end date for the standard selection criteria
-	 * @returns  $jsStr : Type String
+	 * @return string $jsStr
 	 */
 	public function getCriteriaJS() {
 		return getCriteriaJS('CustomView');
 	}
 
 	/** to get the standard filter for the given customview Id
-	 * @param $cvid :: Type Integer
-	 * @returns  $stdfilterlist Array in the following format
-	 * $stdfilterlist = Array( 'columnname' =>  $tablename:$columnname:$fieldname:$module_$fieldlabel,'stdfilter'=>$stdfilter,'startdate'=>$startdate,'enddate'=>$enddate)
+	 * @param integer custom view ID
+	 * @return array in the following format
+	 * $stdfilterlist = array('columnname' =>  $tablename:$columnname:$fieldname:$module_$fieldlabel,'stdfilter'=>$stdfilter,'startdate'=>$startdate,'enddate'=>$enddate)
 	 */
 	public function getStdFilterByCvid($cvid) {
 		global $adb;
@@ -653,8 +652,8 @@ class CustomView extends CRMEntity {
 	}
 
 	/** to get the Advanced filter for the given customview Id
-	 * @param $cvid :: Type Integer
-	 * @returns  $advfilterlist Array
+	 * @param integer custom view ID
+	 * @return array
 	 */
 	public function getAdvFilterByCvid($cvid) {
 		global $adb, $default_charset, $current_user;
@@ -735,15 +734,15 @@ class CustomView extends CRMEntity {
 	/**
 	 * Cache information to perform re-lookups
 	 *
-	 * @var String
+	 * @var array
 	 */
 	protected $_fieldby_tblcol_cache = array();
 
 	/**
 	 * Function to check if field is present based on
 	 *
-	 * @param String $columnname
-	 * @param String $tablename
+	 * @param string $columnname
+	 * @param string $tablename
 	 */
 	public function isFieldPresent_ByColumnTable($columnname, $tablename) {
 		global $adb;
@@ -769,8 +768,8 @@ class CustomView extends CRMEntity {
 	}
 
 	/** to get the customview Columnlist Query for the given customview Id
-	 * @param $cvid :: Type Integer
-	 * @returns  $getCvColumnList as a string
+	 * @param integer custmo view ID
+	 * @return string $getCvColumnList
 	 * This function will return the columns for the given customfield in comma seperated values in the format
 	 *                     $tablename.$columnname,$tablename1.$columnname1, ------ $tablenamen.$columnnamen
 	 */
@@ -815,8 +814,8 @@ class CustomView extends CRMEntity {
 	}
 
 	/** to get the customview stdFilter Query for the given customview Id
-	 * @param $cvid :: Type Integer
-	 * @returns  $stdfiltersql as a string
+	 * @param integer custom view ID
+	 * @return string $stdfiltersql
 	 * This function will return the standard filter criteria for the given customfield
 	 */
 	public function getCVStdFilterSQL($cvid, $webserviceQL = false) {
@@ -1026,42 +1025,39 @@ class CustomView extends CRMEntity {
 	}
 
 	/** to get the realvalues for the given value
-	 * @param $tablename :: type string
-	 * @param $fieldname :: type string
-	 * @param $comparator :: type string
-	 * @param $value :: type string
-	 * @returns  $value as a string in the following format
-	 * 	  $tablename.$fieldname comparator
+	 * @param string $tablename
+	 * @param string $fieldname
+	 * @param string $comparator
+	 * @param string $value
+	 * @return string in the following format: $tablename.$fieldname comparator
 	 */
 	public function getRealValues($tablename, $fieldname, $comparator, $value, $datatype, $webserviceQL = false) {
 		return getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $datatype, $webserviceQL);
 	}
 
 	/** to get the comparator value for the given comparator and value
-	 * @param $comparator :: type string
-	 * @param $value :: type string
-	 * @returns  $rtvalue in the format $comparator $value
+	 * @param string $comparator
+	 * @param string $value
+	 * @return string in the format $comparator $value
 	 */
 	public function getAdvComparator($comparator, $value, $datatype = '') {
 		return getAdvancedSearchComparator($comparator, $value, $datatype);
 	}
 
 	/** to get the date value for the given type
-	 * @param $type :: type string
-	 * @returns  $datevalue array in the following format
-	 *             $datevalue = Array(0=>$startdate,1=>$enddate)
+	 * @param string
+	 * @return array in the following format: $datevalue = array(0=>$startdate, 1=>$enddate)
 	 */
 	public function getDateforStdFilterBytype($type) {
 		return getDateforStdFilterBytype($type);
 	}
 
 	/** to get the customview query for the given customview
-	 * @param $viewid (custom view id):: type Integer
-	 * @param $listquery (List View Query):: type string
-	 * @param $module (Module Name):: type string
-	 * @returns  $query
+	 * @param integer custom view id
+	 * @param string List View Query
+	 * @param string Module Name
+	 * @return string $query
 	 */
-	//CHANGE : TO IMPROVE PERFORMANCE
 	public function getModifiedCvListQuery($viewid, $listquery, $module) {
 		$mod = CRMEntity::getInstance($module);
 		$query = '';
@@ -1098,10 +1094,10 @@ class CustomView extends CRMEntity {
 	}
 
 	/** to get the Key Metrics for the home page query for the given customview  to find the no of records
-	 * @param $viewid (custom view id):: type Integer
-	 * @param $listquery (List View Query):: type string
-	 * @param $module (Module Name):: type string
-	 * @returns  $query
+	 * @param integer custom view id
+	 * @param string List View Query
+	 * @param string Module Name
+	 * @return string $query
 	 */
 	public function getMetricsCvListQuery($viewid, $listquery, $module) {
 		if ($viewid != '' && $listquery != '') {
@@ -1121,8 +1117,8 @@ class CustomView extends CRMEntity {
 		return $query;
 	}
 
-	/* This function sets the block information for the given module to the class variable module_list
-	 * and return the array
+	/** This function sets the block information for the given module to the class variable module_list
+	 * @return array
 	 */
 	public function getCustomViewModuleInfo($module, $allDisplayTypes = false) {
 		global $adb, $current_language;
@@ -1140,19 +1136,18 @@ class CustomView extends CRMEntity {
 		$skipBlocksList = array(
 			getTabid('HelpDesk') => array('LBL_COMMENTS'),
 			getTabid('Faq') => array('LBL_COMMENT_INFORMATION'),
-			getTabid('Quotes') => array('LBL_RELATED_PRODUCTS'),
-			getTabid('PurchaseOrder') => array('LBL_RELATED_PRODUCTS'),
-			getTabid('SalesOrder') => array('LBL_RELATED_PRODUCTS'),
-			getTabid('Invoice') => array('LBL_RELATED_PRODUCTS'),
 			getTabid('Users') => $userNoShowBlocks,
 		);
+		foreach (getInventoryModules() as $invmod) {
+			$skipBlocksList[getTabid($invmod)] = array('LBL_RELATED_PRODUCTS');
+		}
 		$displayTypeCondition = $allDisplayTypes ? '' : 'displaytype!=3 and ';
 		$Sql = 'select distinct block,vtiger_field.tabid,name,blocklabel
 			from vtiger_field
 			inner join vtiger_blocks on vtiger_blocks.blockid=vtiger_field.block
 			inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
 			where '.$displayTypeCondition.'vtiger_tab.name in (' . generateQuestionMarks($modules_list) . ') and vtiger_field.presence in (0,2) order by block';
-		$result = $adb->pquery($Sql, array($modules_list));
+		$result = $adb->pquery($Sql, $modules_list);
 
 		$pre_block_label = '';
 		while ($block_result = $adb->fetch_array($result)) {
@@ -1182,12 +1177,11 @@ class CustomView extends CRMEntity {
 	/**
 	 * Get the userid, status information of this custom view.
 	 *
-	 * @param Integer $viewid
-	 * @return Array
+	 * @param integer $viewid
+	 * @return array
 	 */
 	private function getStatusAndUserid($viewid) {
 		global $adb;
-
 		if ($this->_status === false || $this->_userid === false) {
 			$query = 'SELECT status, userid FROM vtiger_customview WHERE cvid=?';
 			$result = $adb->pquery($query, array($viewid));
@@ -1281,7 +1275,7 @@ class CustomView extends CRMEntity {
 		$changed_status = $status_label = '';
 		$status_details = array('Status' => CV_STATUS_DEFAULT, 'ChangedStatus' => $changed_status, 'Label' => $status_label);
 		if ($viewid>0) {
-			$cuserroles = getSubordinateUsersList($current_user->column_fields['roleid']);
+			$cuserroles = getSubordinateUsersList();
 			$status_userid_info = $this->getStatusAndUserid($viewid);
 		}
 		if (is_admin($current_user) || ($viewid>0 && in_array($status_userid_info['userid'], $cuserroles))) {

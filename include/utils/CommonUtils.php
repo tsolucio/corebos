@@ -599,9 +599,8 @@ function getContactName($contact_id) {
 	global $log, $adb, $current_user;
 	$log->debug('> getContactName '.$contact_id);
 	$contact_name = '';
-	if ($contact_id != '') {
-		$sql = 'select firstname, lastname from vtiger_contactdetails where contactid=?';
-		$result = $adb->pquery($sql, array($contact_id));
+	if (!empty($contact_id)) {
+		$result = $adb->pquery('select firstname, lastname from vtiger_contactdetails where contactid=?', array($contact_id));
 		$firstname = $adb->query_result($result, 0, 'firstname');
 		$lastname = $adb->query_result($result, 0, 'lastname');
 		$contact_name = $lastname;
@@ -1298,7 +1297,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				$fieldview = 'editfields';
 			}
 			if (!empty($mdmap[$fieldview]) && !empty($mdmap['targetmodule']) && $module==$mdmap['targetmodule']) {
-				$fieldsin = $adb->convert2Sql('and fieldid IN (' . generateQuestionMarks($mdmap[$fieldview]) . ')', $mdmap[$fieldview]);
+				$fieldsin = $adb->convert2Sql('and vtiger_field.fieldid IN (' . generateQuestionMarks($mdmap[$fieldview]) . ')', $mdmap[$fieldview]);
 			}
 		}
 	}
@@ -1766,27 +1765,24 @@ function UserCount() {
 }
 
 /**
- * This function is used to create folders recursively.
- * Param $dir - directory name
- * Param $mode - directory access mode
- * Param $recursive - create directory recursive, default true
+ * This function is used to create folders recursively
+ * @param string directory name
+ * @param integer directory access mode
+ * @param boolean create directory recursive, default true
+ * @return boolean if it was successful or not
  */
 function mkdirs($dir, $mode = 0777, $recursive = true) {
 	global $log;
 	$log->debug('> mkdirs ' . $dir . ',' . $mode . ',' . $recursive);
 	if (is_null($dir) || $dir === '') {
-		$log->debug('< mkdirs');
 		return false;
 	}
 	if (is_dir($dir) || $dir === '/') {
-		$log->debug('< mkdirs');
 		return true;
 	}
 	if (mkdirs(dirname($dir), $mode, $recursive)) {
-		$log->debug('< mkdirs');
 		return mkdir($dir, $mode);
 	}
-	$log->debug('< mkdirs');
 	return false;
 }
 
@@ -2877,8 +2873,8 @@ function getTicketComments($ticketid) {
 }
 
 /**
- * This function is used to get a random password.
- * @return a random password with alpha numeric characters of length 8
+ * This function is used to get a random password
+ * @return string a random password with alpha numeric characters of length 8
  */
 function makeRandomPassword() {
 	global $log;

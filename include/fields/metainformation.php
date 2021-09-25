@@ -51,6 +51,7 @@ class Field_Metadata {
 	const UITYPE_FROM_EMAIL = 12;
 	const UITYPE_EMAIL = 13;
 	const UITYPE_TIME = 14;
+	const UITYPE_TIMESPAN = 63;
 	const UITYPE_ROLE_BASED_PICKLIST = 15;
 	const UITYPE_PICKLIST = 16; //non-role based picklist
 	const UITYPE_PICKLIST_MODS = 1613;
@@ -119,6 +120,9 @@ class Field_Metadata {
 		self::UITYPE_MULTI_SELECT_MODS,
 		self::UITYPE_MULTI_SELECT_MODEXTS,
 	);
+	const MULTIPICKLIST_SEPARATOR = ' |##| ';
+	const PICKLIST_EMPTY_VALUE = '#__empty__#';
+	const ATTACHMENT_ENTITY = ' Attachment';
 	const USER_TYPES = array(
 		self::UITYPE_USER_REFERENCE,
 		self::UITYPE_ASSIGNED_TO_PICKLIST,

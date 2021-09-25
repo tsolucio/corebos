@@ -182,7 +182,6 @@ class Vtiger_Utils {
 	 * @param String tablename to create
 	 * @param String table creation criteria like '(columnname columntype, ....)'
 	 * @param String Optional suffix to add during table creation
-	 * <br>
 	 * will be appended to CREATE TABLE $tablename SQL
 	 */
 	public static function CreateTable($tablename, $criteria, $suffixTableMeta = false) {
@@ -196,7 +195,7 @@ class Vtiger_Utils {
 				if ($adb->isMySQL()) {
 					$suffixTableMeta = ' ENGINE=InnoDB DEFAULT CHARSET=utf8';
 				} else {
-					// TODO Handle other database types.
+					$suffixTableMeta = ''; // other database types
 				}
 			}
 			$sql .= $suffixTableMeta;

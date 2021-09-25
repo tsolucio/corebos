@@ -16,15 +16,15 @@ require_once 'config.inc.php';
 
 class LoggerManager {
 	private static $cacheLoggers = array();
-	const LOGLINEFORMAT = "[%datetime%] %channel%.%level_name%: %message% :::: %context%\n";
 
 	public static function getlogger($name = 'APPLICATION') {
 		require 'include/logging/config.php';
+		$LOGLINEFORMAT = '[%datetime%{'.getmypid()."}] %channel%.%level_name%: %message% :::: %context%\n";
 		if (isset($loggerConfig[$name])) {
 			if (empty(self::$cacheLoggers[$name])) {
 				if ($loggerConfig[$name]['Enabled']) {
 					$logger = new Logger($name);
-					$formatter = new LineFormatter(self::LOGLINEFORMAT);
+					$formatter = new LineFormatter($LOGLINEFORMAT, 'Y-m-d H:i:s:u');
 					$logger = self::addHandlers($logger, $formatter);
 					$stream = new RotatingFileHandler('logs/'.$loggerConfig[$name]['File'].'.log', $loggerConfig[$name]['MaxBackup'], self::getLogLevel($loggerConfig[$name]['Level']), true, 0664);
 					$stream->setFormatter($formatter);
@@ -38,7 +38,7 @@ class LoggerManager {
 			if (empty(self::$cacheLoggers['APPLICATION'])) {
 				if ($loggerConfig[$name]['Enabled']) {
 					$logger = new Logger('APPLICATION');
-					$formatter = new LineFormatter(self::LOGLINEFORMAT);
+					$formatter = new LineFormatter($LOGLINEFORMAT, 'Y-m-d H:i:s:u');
 					$logger = self::addHandlers($logger, $formatter);
 					$stream = new RotatingFileHandler('logs/'.$loggerConfig['APPLICATION']['File'].'.log', $loggerConfig['APPLICATION']['MaxBackup'], self::getLogLevel($loggerConfig[$name]['Level']));
 					$stream->setFormatter($formatter);

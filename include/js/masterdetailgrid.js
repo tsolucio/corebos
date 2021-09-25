@@ -88,8 +88,12 @@ var masterdetailwork = {
 	save: (mdgridInstance, module) => {
 		const method_prefix = mdgridInstance.substring(6);
 		setTimeout(function () {
-			MDInstance[mdgridInstance].destroy();
-			window['loadMDGrid'+method_prefix]();
+			if (ReloadScreenAfterEdit == 1) {
+				masterdetailwork.MDReload();
+			} else {
+				MDInstance[mdgridInstance].destroy();
+				window['loadMDGrid'+method_prefix]();
+			}
 		}, 1300);
 	},
 
@@ -100,6 +104,8 @@ var masterdetailwork = {
 		}
 		if (CurrentRecord!='') {
 			CurrentRecord = '&MDCurrentRecord='+CurrentRecord;
+		} else if (document.getElementById('record')) {
+			CurrentRecord = '&MDCurrentRecord='+document.getElementById('record').value;
 		}
 		let mapname = document.getElementById(MDGrid.substring(6)).dataset.mapname;
 		let mdgridinfo = JSON.stringify({
@@ -141,19 +147,13 @@ var masterdetailwork = {
 			'fldName' : '',
 			'fieldValue' : ''
 		};
-		const url = `file=DetailViewAjax&module=${gVTModule}&action=${gVTModule}Ajax&record=${crmId}&recordid=${crmId}&ajxaction=DETAILVIEW`;
+		const url = `file=DetailViewAjax&module=${gVTModule}&action=${gVTModule}Ajax&record=${crmId}&recordid=${crmId}&ajxaction=DETAILVIEWLOAD`;
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?' + url,
 			data : data
 		}).done(function (response) {
-			if (response.indexOf(':#:FAILURE')>-1) {
-				alert(alert_arr.ERROR_WHILE_EDITING);
-			} else if (response.indexOf(':#:ERR')>-1) {
-				alert_str = response.replace(':#:ERR', '');
-				alert(alert_str);
-				VtigerJS_DialogBox.hidebusy();
-			} else if (response.indexOf(':#:SUCCESS')>-1) {
+			if (response.indexOf(':#:SUCCESS')>-1) {
 				const result = response.split(':#:');
 				if (result[2] != null) {
 					const target = document.getElementsByClassName('detailview_wrapper_table')[0];
@@ -172,11 +172,11 @@ class mdActionRender {
 	constructor(props) {
 		let el;
 		let rowKey = props.rowKey;
+		let permissions = props.grid.getValue(rowKey, 'record_permissions');
 		let recordid = props.grid.getValue(rowKey, 'record_id') || '';
 		let module = props.grid.getValue(rowKey, 'record_module');
 		el = document.createElement('span');
 		let actions = '<div class="slds-button-group" role="group">';
-		let mdgridob = 'mdgrid'+props.grid.el.id;
 		if (props.columnInfo.renderer.options.moveup) {
 			actions += `
 			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.moveup('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveUp']}">
@@ -193,7 +193,7 @@ class mdActionRender {
 				</svg>
 			</button>`;
 		}
-		if (props.columnInfo.renderer.options.edit) {
+		if (props.columnInfo.renderer.options.edit && permissions.edit == 'yes') {
 			actions += `
 			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.MDUpsert('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
 				<svg class="slds-button__icon" aria-hidden="true">
@@ -201,7 +201,7 @@ class mdActionRender {
 				</svg>
 			</button>`;
 		}
-		if (props.columnInfo.renderer.options.delete) {
+		if (props.columnInfo.renderer.options.delete && permissions.delete == 'yes') {
 			actions += `
 			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Delete']}">
 				<svg class="slds-button__icon" aria-hidden="true">

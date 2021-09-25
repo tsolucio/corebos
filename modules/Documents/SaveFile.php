@@ -30,7 +30,7 @@ if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'checkFileIntegrityDetailView
 	$filepath = '';
 	if ($download_type == 'I') {
 		$saved_filename = $fileid.'_'.$name;
-		$pathQuery = $adb->pquery('select path from vtiger_attachments where attachmentsid = ?', array($fileid));
+		$pathQuery = $adb->pquery('select path from vtiger_attachments where attachmentsid=?', array($fileid));
 		$filepath = $adb->query_result($pathQuery, 0, 'path');
 	} else {
 		echo 'file_not_available';
@@ -39,7 +39,7 @@ if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'checkFileIntegrityDetailView
 
 	if (!fopen($filepath.$saved_filename, 'r')) {
 		if ($file_status == 1) {
-			$result1 = $adb->pquery('update vtiger_notes set filestatus = 0 where notesid= ?', array($notesid));
+			$result1 = $adb->pquery('update vtiger_notes set filestatus=0 where notesid=?', array($notesid));
 			echo 'lost_integrity';
 		} else {
 			echo 'file_not_available';
@@ -59,7 +59,7 @@ if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'massDldCnt') {
 	$dec_files =json_decode($all_files, true);
 	foreach ($dec_files as $folder_id => $files_id) {
 		if ($files_id) {
-			$folderQuery = $adb->pquery('SELECT foldername FROM vtiger_attachmentsfolder WHERE folderid = ?', array($folder_id));
+			$folderQuery = $adb->pquery('SELECT foldername FROM vtiger_attachmentsfolder WHERE folderid=?', array($folder_id));
 			$folderName = $adb->query_result($folderQuery, 0, 'foldername');
 			$files = explode(';', $files_id);
 			foreach ($files as $file) {
@@ -67,14 +67,14 @@ if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'massDldCnt') {
 					$dbQuery = 'SELECT *
 						FROM vtiger_attachments
 						JOIN vtiger_seattachmentsrel ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid
-						WHERE crmid = ?';
+						WHERE crmid=?';
 					$result = $adb->pquery($dbQuery, array($file));
 					if ($adb->num_rows($result) == 1) {
 						$pname = @$adb->query_result($result, 0, 'attachmentsid');
 						$name = @$adb->query_result($result, 0, 'name');
 						$filepath = @$adb->query_result($result, 0, 'path');
 						$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
-						$saved_filename = $pname."_".$name;
+						$saved_filename = $pname.'_'.$name;
 						$zip->addFile($filepath.$saved_filename, $folderName.'/'.$saved_filename);
 					}
 				}

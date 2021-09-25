@@ -361,7 +361,7 @@ function updateInventoryProductRel($entity) {
 	}
 
 	$moduleName = $entity->getModuleName();
-	if ($moduleName === 'Invoice') {
+	if ($moduleName === 'Invoice' || $moduleName === 'Issuecards' || $moduleName === 'Receiptcards') {
 		$statusFieldName = 'invoicestatus';
 		$statusFieldValue = 'Cancel';
 	} elseif ($moduleName === 'SalesOrder') {
@@ -370,9 +370,6 @@ function updateInventoryProductRel($entity) {
 	} elseif ($moduleName === 'PurchaseOrder') {
 		$statusFieldName = 'postatus';
 		$statusFieldValue = 'Received Shipment';
-	} elseif ($moduleName === 'Issuecards') {
-		$statusFieldName = 'invoicestatus';
-		$statusFieldValue = 'Cancel';
 	}
 	$statusChanged = false;
 	$vtEntityDelta = new VTEntityDelta();
@@ -390,7 +387,7 @@ function updateInventoryProductRel($entity) {
 			$updateInventoryProductRel_deduct_stock = false;
 			deductProductsFromStock($entity_id);
 		}
-	} elseif ($recordDetails[$statusFieldName] == $statusFieldValue) {
+	} elseif (empty($recordDetails[$statusFieldName]) || $recordDetails[$statusFieldName] == $statusFieldValue) {
 		$updateInventoryProductRel_deduct_stock = false;
 	}
 
@@ -862,7 +859,7 @@ function getProductBaseCurrency($productid, $module = 'Products') {
 /**	Function used to get the conversion rate for the product base currency with respect to the CRM base currency
  *	@param int $productid - product id for which we want to get the conversion rate of the base currency
  *  @param string $mode - Mode in which the function is called
- *  @return number $conversion_rate - conversion rate of the base currency for the given product based on the CRM base currency
+ *  @return float $conversion_rate - conversion rate of the base currency for the given product based on the CRM base currency
  */
 function getBaseConversionRateForProduct($productid, $mode = 'edit', $module = 'Products') {
 	global $adb, $current_user;

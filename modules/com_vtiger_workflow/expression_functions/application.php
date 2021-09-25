@@ -13,6 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
+require_once 'include/Webservices/GetRelatedRecords.php';
 
 function __cbwf_setype($arr) {
 	$ret = '';
@@ -85,6 +86,42 @@ function __cb_getcrudmode($arr) {
 	}
 }
 
+function __cb_currentlyimporting($arr) {
+	global $CURRENTLY_IMPORTING;
+	return $CURRENTLY_IMPORTING;
+}
+
+function __cb_getrelatedids($arr) {
+	global $current_user;
+	$relids = array();
+	if (count($arr)<2 || empty($arr[0])) {
+		return $relids;
+	}
+	if (is_string($arr[1]) || is_numeric($arr[1])) {
+		$recordid = $arr[1];
+		$mainmodule = getSalesEntityType($arr[1]);
+	} else {
+		$env = $arr[1];
+		$data = $env->getData();
+		$recordid = $data['id'];
+		if (isset($env->moduleName)) {
+			$mainmodule = $env->moduleName;
+		} else {
+			$mainmodule = $env->getModuleName();
+		}
+	}
+	$relmodule = $arr[0];
+	try {
+		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, ['columns' => 'id'], $current_user);
+	} catch (\Throwable $th) {
+		return $relids;
+	}
+	foreach ($relrecords['records'] as $record) {
+		$relids[] = $record['id'];
+	}
+	return $relids;
+}
+
 function __cb_getidof($arr) {
 	global $current_user, $adb;
 	$qg = new QueryGenerator($arr[0], $current_user);
@@ -149,7 +186,7 @@ function __cb_getfromcontextsearching($arr) {
 		}
 		if (is_array($array)) {
 			$key = array_search($arr[2], array_column($array, $arr[1]));
-			if ($key && !empty($array[$key])) {
+			if ($key!==false && !empty($array[$key])) {
 				$variableArr[$vname] = __cb_getfromcontextvalueinarrayobject($array[$key], $arr[3]);
 			} else {
 				$variableArr[$vname] = '';
@@ -264,5 +301,20 @@ function __cb_evaluateRule($arr) {
 		));
 	}
 	return $result;
+}
+
+function __cb_executesql($arr) {
+	global $adb;
+	$rdo = array();
+	if (empty($arr) || empty($arr[0])) {
+		return $rdo;
+	}
+	$rs = $adb->pquery($arr[0], array_slice($arr, 1));
+	if ($rs) {
+		while ($row = $adb->fetchByAssoc($rs, -1, false)) {
+			$rdo[] = $row;
+		}
+	}
+	return $rdo;
 }
 ?>

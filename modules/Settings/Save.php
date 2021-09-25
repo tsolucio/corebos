@@ -28,6 +28,9 @@ $HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'y
 
 $to_email = getUserEmailId('id', $current_user->id);
 $from_email = $to_email;
+if (!empty($from_email_field)) {
+	$from_email = $from_email_field;
+}
 $subject = 'Test mail about the mail server configuration.';
 $description = 'Dear '.$current_user->user_name.', <br><br><b> This is a test mail sent to confirm if a mail is actually being sent through the smtp server that you'
 	.' have configured. </b><br>Feel free to delete this mail.<br><br>Thanks and Regards,<br> '.$HELPDESK_SUPPORT_NAME.' <br>';
@@ -42,9 +45,9 @@ $error_str = getMailErrorString($mail_status_str);
 $action = 'EmailConfig';
 if ($mail_status != 1) {
 	$action = 'EmailConfig&emailconfig_mode=edit&server_name='.
-		urlencode(vtlib_purify($_REQUEST['server'])).'&server_user='.
-		urlencode(vtlib_purify($_REQUEST['server_username'])).'&auth_check='.
-		urlencode(vtlib_purify($_REQUEST['smtp_auth']));
+	urlencode(vtlib_purify($_REQUEST['server'])).'&server_user='.
+	urlencode(vtlib_purify($_REQUEST['server_username'])).'&auth_check='.
+	urlencode(vtlib_purify($_REQUEST['smtp_auth']));
 } else {
 	$idrs = $adb->pquery('select * from vtiger_systems where server_type = ?', array($server_type));
 	if ($idrs && $adb->num_rows($idrs)>0) {

@@ -670,7 +670,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
 				WHERE vtiger_field.tabid=? and vtiger_field.presence in (0,2)
 				AND vtiger_profile2field.visible = 0
-				AND vtiger_profile2field.visible = 0
 				AND vtiger_def_org_field.visible = 0
 				AND vtiger_profile2field.profileid IN ('. generateQuestionMarks($profileList) .')
 				AND vtiger_field.fieldname IN ('. generateQuestionMarks($field_list) .')';
@@ -1381,7 +1380,7 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 	global $current_user,$adb,$default_charset;
 
 	$respuesta=array();
-	if (empty($searchin)) {
+	if (empty($searchin) || !is_array($searchin)) {
 		return $respuesta;
 	}
 	if (empty($limit)) {

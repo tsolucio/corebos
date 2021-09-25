@@ -290,7 +290,7 @@ class Webforms_Model {
 			if (($field['type']['name'] == 'date') && !empty($defaultvalue)) {
 				$defaultvalue = DateTimeField::convertToUserFormat($defaultvalue);
 			}
-			$defaultvalue = explode(' |##| ', $defaultvalue);
+			$defaultvalue = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $defaultvalue);
 		}
 		return $defaultvalue;
 	}

@@ -646,7 +646,7 @@ function eval_noexiste($condition, $id, $module) {
 			$val = multiple_values($condition_pair[1]);
 			switch ($comp) {
 				case '=':
-					return !($cond == $val);
+					return $cond != $val;
 				break;
 				case $enGD:
 					return (count(array_intersect($cond, $values)) == 0);
@@ -1698,9 +1698,7 @@ function get_plantilla($entid) {
 
 function getEntityModule($crmid) {
 	global $adb;
-
-	$seltype = "SELECT setype FROM vtiger_crmobject WHERE crmid=$crmid AND deleted=0";
-	$restype = $adb->query($seltype);
+	$restype = $adb->pquery('SELECT setype FROM vtiger_crmobject WHERE crmid=? AND deleted=0', array($crmid));
 	if ($restype) {
 		$modname = $adb->query_result($restype, 0, 'setype');
 	} else {
@@ -1711,17 +1709,15 @@ function getEntityModule($crmid) {
 
 function getUitypefield($module, $fieldname) {
 	global $adb;
-	$seltab = "SELECT tabid FROM vtiger_tab WHERE name=?";
-	$restab = $adb->pquery($seltab, array($module));
+	$restab = $adb->pquery('SELECT tabid FROM vtiger_tab WHERE name=?', array($module));
 	$tabid = $adb->query_result($restab, 0, 'tabid');
-	$selfield = "SELECT uitype FROM vtiger_field WHERE tabid=? AND fieldname=?";
-	$resfield = $adb->pquery($selfield, array($tabid,$fieldname));
+	$resfield = $adb->pquery('SELECT uitype FROM vtiger_field WHERE tabid=? AND fieldname=?', array($tabid, $fieldname));
 	return $adb->query_result($resfield, 0, 'uitype');
 }
 
 function getRelatedCRMIDs($relsql, $sortinfo = false) {
 	global $adb;
-	$relsql = !!$sortinfo ? $relsql . ' ORDER BY ' . $sortinfo['cname'] . ' ' . $sortinfo['order'] : $relsql;
+	$relsql = empty($sortinfo) ? $relsql : $relsql . ' ORDER BY ' . $sortinfo['cname'] . ' ' . $sortinfo['order'];
 	$res = $adb->pquery($relsql, array());
 	$nr = $adb->num_rows($res);
 	$ret = array('entries' => array());

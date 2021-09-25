@@ -378,9 +378,11 @@ class corebos_hubspot {
 	}
 
 	private function syncMasterSlaveCB2HS($cbfrom, $send2hs, $msinfo) {
+		return $send2hs;
 	}
 
 	private function syncMasterSlaveHS2CB($cbfrom, $send2hs, $msinfo) {
+		return $send2hs;
 	}
 
 	public function getPropertyFieldNames($cbfrommodule) {
@@ -395,7 +397,7 @@ class corebos_hubspot {
 			$allmergeFields = array();
 			foreach ($xml->fields->field as $v) {
 				foreach ($v->Orgfields->Orgfield as $value) {
-					$allmergeFields[] = (String)$value->OrgfieldName;
+					$allmergeFields[] = (string)$value->OrgfieldName;
 				}
 			}
 			$fields = array_unique(array_merge($fields, $allmergeFields));

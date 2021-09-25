@@ -281,7 +281,7 @@ function changecbqModule(newmodule) {
 	}
 	conditions = null;
 	builderconditions.conditions = null;
-	Array.from(document.querySelectorAll('.ceremovebutton')).map((e) => e.click());
+	Array.from(document.querySelectorAll('.ceremovebutton')).forEach((e) => e.click());
 	document.getElementById('bqmodulecontainer').classList.remove('slds-has-error');
 	document.getElementById('bqmodulecontainerhelp').style.display = 'none';
 	document.getElementById('msmodulescontainer').classList.remove('slds-has-error');

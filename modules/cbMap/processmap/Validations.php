@@ -362,35 +362,35 @@ class Validations extends processcbMap {
 			return array();
 		}
 		$mapping=$val_fields=array();
-		$mapping['origin'] = (String)$xml->originmodule->originname;
+		$mapping['origin'] = (string)$xml->originmodule->originname;
 		foreach ($xml->fields->field as $v) {
-			$fieldname = (String)$v->fieldname;
+			$fieldname = (string)$v->fieldname;
 			if (empty($fieldname)) {
 				continue;
 			}
 			$allvals=array();
 			foreach ($v->validations->validation as $val) {
 				$retval = array();
-				$retval['rule'] = (String)$val->rule;
+				$retval['rule'] = (string)$val->rule;
 				if (empty($retval['rule'])) {
 					continue;
 				}
 				$rst = array();
 				if (isset($val->restrictions)) {
 					foreach ($val->restrictions->restriction as $rv) {
-						$rst[]=(String)$rv;
+						$rst[]=(string)$rv;
 					}
 					if (isset($val->restrictions->parameters)) {
 						$params = array();
 						foreach ($val->restrictions->parameters->parameter as $prm) {
-							$params[(String)$prm->name]=(String)$prm->value;
+							$params[(string)$prm->name]=(string)$prm->value;
 						}
 						$rst[]=$params;
 					}
 				}
 				$retval['rst'] = $rst;
 				if (isset($val->message)) {
-					$retval['msg']=(String)$val->message;
+					$retval['msg']=(string)$val->message;
 				}
 				$allvals[]=$retval;
 			}

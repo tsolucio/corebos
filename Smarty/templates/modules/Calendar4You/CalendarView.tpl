@@ -504,7 +504,7 @@ function hideITSEventInfo(){
 				</div>
 				<div style="padding:5px" class="ui-widget-content">
 					<select id="user_view_type" onChange="changeCalendarUserView(this.value);" style="width:100%;padding:2px">
-					<option value="all" {if $SHOW_ONLY_ME neq "true"}selected{/if}>{$MOD.LBL_ALL_USERS}</option>
+					<option value="all" {if isset($SHOW_ONLY_ME) && $SHOW_ONLY_ME neq "true"}selected{/if}>{$MOD.LBL_ALL_USERS}</option>
 					{foreach name=calendar_users item=userdata key=userid from=$CALENDAR_USERS}
 					<option value="{$userid}" {if $USER_VIEW_TYPE eq $userid}selected{/if}>{$userdata.fullname} {if $userdata.status eq "Inactive"} ({$APP.Inactive}){/if}</option>
 					{/foreach}

@@ -120,7 +120,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		$fieldvalue = getTranslatedString($value, $module);
 	} elseif ($fieldType == 'multipicklist' && !empty($value)) {
 		if (!empty($picklistArray) && is_array($picklistArray[1])) {
-			$valueList = explode(' |##| ', $value);
+			$valueList = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);
 			$translatedValueList = array();
 			foreach ($valueList as $value) {
 				if (is_array($picklistArray[1][$dbField->name]) && !in_array($value, $picklistArray[1][$dbField->name])) {
@@ -130,7 +130,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 			}
 		}
 		if (empty($picklistArray) || !is_array($picklistArray[1]) || !is_array($picklistArray[1][$dbField->name])) {
-			$fieldvalue = str_replace(' |##| ', ', ', $value);
+			$fieldvalue = str_replace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $value);
 		} else {
 			$fieldvalue = implode(', ', $translatedValueList);
 		}
@@ -156,7 +156,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 	$fieldvalue = decode_html($fieldvalue);
 
 	if (stristr($fieldvalue, '|##|') && empty($fieldType)) {
-		$fieldvalue = str_ireplace(' |##| ', ', ', $fieldvalue);
+		$fieldvalue = str_ireplace(Field_Metadata::MULTIPICKLIST_SEPARATOR, ', ', $fieldvalue);
 	} elseif ($fld_type == 'date' && empty($fieldType)) {
 		$fieldvalue = DateTimeField::convertToUserFormat($fieldvalue);
 	} elseif ($fld_type == 'datetime' && empty($fieldType)) {
@@ -172,7 +172,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 	return $fieldvalue;
 }
 
-function report_getMoreInfoFromRequest($cbreporttype, $pmodule, $smodule, $pivotcolumns) {
+function report_getMoreInfoFromRequest($reporttype, $pmodule, $smodule, $pivotcolumns) {
 	global $adb, $default_charset;
 	if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='external') {
 		if (isset($_REQUEST['adduserinfo']) && ($_REQUEST['adduserinfo'] == 'on' || $_REQUEST['adduserinfo'] == 1)) {

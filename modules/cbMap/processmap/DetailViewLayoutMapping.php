@@ -80,16 +80,16 @@ class DetailViewLayoutMapping extends processcbMap {
 		$mapping = array();
 		$restrictedRelations = array();
 		$mapping['blocks'] = array();
-		$mapping['origin'] = (String)$xml->originmodule->originname;
+		$mapping['origin'] = (string)$xml->originmodule->originname;
 		$origintab = getTabid($mapping['origin']);
 
 		foreach ($xml->blocks->block as $value) {
 			$block = array();
-			$block['type'] = (String)$value->type;
-			$block['sequence'] = (String)$value->sequence;
-			$block['label'] = getTranslatedString((String)$value->label, $mapping['origin']);
-			$block['loadfrom'] = (String)$value->loadfrom;
-			$block['blockid'] = (isset($value->blockid) ? (String)$value->blockid : '');
+			$block['type'] = (string)$value->type;
+			$block['sequence'] = (string)$value->sequence;
+			$block['label'] = getTranslatedString((string)$value->label, $mapping['origin']);
+			$block['loadfrom'] = (string)$value->loadfrom;
+			$block['blockid'] = (isset($value->blockid) ? (string)$value->blockid : '');
 
 			if ($block['type']=='RelatedList') {
 				if (is_numeric($block['loadfrom']) && !vtlib_isModuleActive($block['loadfrom'])) {
@@ -118,9 +118,9 @@ class DetailViewLayoutMapping extends processcbMap {
 				$row['linkicon'] = '';
 				$row['sequence'] = $block['sequence'];
 				$row['onlyonmymodule'] = 1;
-				$row['handler_path'] = (isset($value->loadfrom) ? (String)$value->loadfrom : '');
-				$row['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
-				$row['handler'] = (isset($value->handler) ? (String)$value->handler : '');
+				$row['handler_path'] = (isset($value->loadfrom) ? (string)$value->loadfrom : '');
+				$row['handler_class'] = (isset($value->handler_class) ? (string)$value->handler_class : '');
+				$row['handler'] = (isset($value->handler) ? (string)$value->handler : '');
 				$instance->initialize($row);
 				if (!empty($row['handler_path']) && isInsideApplication($row['handler_path'])) {
 					checkFileAccessForInclusion($row['handler_path']);
@@ -146,10 +146,10 @@ class DetailViewLayoutMapping extends processcbMap {
 				foreach ($value->layout->row as $v) {
 					$block['layout'][$idx] = array();
 					foreach ($v->column as $column) {
-						if (getFieldVisibilityPermission($mapping['origin'], $current_user->id, (String)$column) != '0') {
+						if (getFieldVisibilityPermission($mapping['origin'], $current_user->id, (string)$column) != '0') {
 							continue;
 						}
-						$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, (String)$column);
+						$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, (string)$column);
 						$lblraw = $finfo['fieldlabel'];
 						$block['layout'][$idx][] = array(
 							'columnname' => $finfo['columnname'],
@@ -207,12 +207,12 @@ class DetailViewLayoutMapping extends processcbMap {
 					);
 				}
 			} elseif ($block['type']=='CodeWithHeader' || $block['type']=='CodeWithoutHeader') {
-				$block['loadfrom'] = (isset($value->loadfrom) ? (String)$value->loadfrom : '');
+				$block['loadfrom'] = (isset($value->loadfrom) ? (string)$value->loadfrom : '');
 				$block['handler_class'] = '';
 				$block['handler'] = '';
 				if (!empty($block['loadfrom']) && file_exists($block['loadfrom']) && isInsideApplication($block['loadfrom'])) {
-					$block['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
-					$block['handler'] = (isset($value->handler) ? (String)$value->handler : '');
+					$block['handler_class'] = (isset($value->handler_class) ? (string)$value->handler_class : '');
+					$block['handler'] = (isset($value->handler) ? (string)$value->handler : '');
 				} else {
 					$block['loadfrom'] = '';
 				}

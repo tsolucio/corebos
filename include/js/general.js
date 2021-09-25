@@ -244,7 +244,7 @@ function clearTextSelection() {
 }
 
 // Setting cookies
-function set_cookie( name, value, exp_y, exp_m, exp_d, path, domain, secure ) {
+function set_cookie(name, value, exp_y, exp_m, exp_d, path, domain, secure, sameSite) {
 	var cookie_string = name + '=' + escape(value);
 
 	if (exp_y) {
@@ -258,6 +258,9 @@ function set_cookie( name, value, exp_y, exp_m, exp_d, path, domain, secure ) {
 	}
 	if (domain) {
 		cookie_string += '; domain=' + escape(domain);
+	}
+	if (sameSite && (sameSite=='Strict' || sameSite=='Lax' || sameSite=='None')) {
+		cookie_string += '; SameSite=' + escape(sameSite);
 	}
 	if (secure) {
 		cookie_string += '; secure';
@@ -1323,7 +1326,11 @@ function run_massedit() {
 							url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
 						}).done(function (response) {
 							var result = response.split('&#&#&#');
-							document.getElementById('ListViewContents').innerHTML= result[2];
+							if (Application_Landing_View=='table') {
+								document.getElementById('ListViewContents').innerHTML= result[2];
+							} else {
+								ListView.ListViewJSON('massedit');
+							}
 							if (result[1] != '') {
 								ldsPrompt.show(alert_arr['ERROR'], result[1]);
 							}
@@ -1553,8 +1560,8 @@ function executeServerValidation(edit_type, action, formName, callback, forModul
 function doformValidation(edit_type) {
 	if (gVTModule == 'Contacts') {
 		//Validation for Portal User
-		//if existing portal value = 0, portal checkbox = checked, ( email field is not available OR  email is empty ) then we should not allow -- OR --
-		//if existing portal value = 1, portal checkbox = checked, ( email field is available     AND email is empty ) then we should not allow
+		//if existing portal value = 0, portal checkbox = checked, (email field is not available OR  email is empty) then we should not allow -- OR --
+		//if existing portal value = 1, portal checkbox = checked, (email field is available     AND email is empty) then we should not allow
 		if (edit_type=='') {
 			if (getObj('existing_portal') != null && ((getObj('existing_portal').value == 0 && getObj('portal').checked && (getObj('email') == null
 				|| trim(getObj('email').value) == '')) || (getObj('existing_portal').value == 1 && getObj('portal').checked && getObj('email') != null
@@ -1750,7 +1757,7 @@ function doformValidation(edit_type) {
 				break;
 			}
 			//start Birth day date validation
-			if (fieldname[i] == 'birthday' && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0 ) {
+			if (fieldname[i] == 'birthday' && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) {
 				var now =new Date();
 				var currtimechk='OTH';
 				var datelabel = fieldlabel[i];
@@ -2206,7 +2213,7 @@ function fnvshobj(obj, Lay) {
 	}
 
 	var getVal = +leftSide + +widthM;
-	if (getVal > document.body.clientWidth ) {
+	if (getVal > document.body.clientWidth) {
 		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';
 	} else {
@@ -2224,7 +2231,7 @@ function posLay(obj, Lay) {
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
 	var getVal = +leftSide + +widthM;
-	if (getVal > document.body.clientWidth ) {
+	if (getVal > document.body.clientWidth) {
 		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 'px';
 	} else {
@@ -2456,7 +2463,7 @@ function fnDropDown(obj, Lay) {
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
 	var getVal = +leftSide + +widthM;
-	if (getVal > document.body.clientWidth ) {
+	if (getVal > document.body.clientWidth) {
 		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';
 	} else {
@@ -2726,7 +2733,7 @@ function calQCduedatetime() {
 	}
 }
 
-function _2digit( no ) {
+function _2digit(no) {
 	if (no < 10) {
 		return '0' + no;
 	} else {
@@ -2736,15 +2743,20 @@ function _2digit( no ) {
 
 function confirmdelete(url) {
 	if (confirm(alert_arr.ARE_YOU_SURE)) {
-		document.location.href=url;
+		jQuery.ajax({
+			method: 'POST',
+			url: url
+		}).done(function (response) {
+			location.reload();
+		});
 	}
 }
 
 function valid(c, type) {
 	if (type == 'name') {
-		return (((c >= 'a') && (c <= 'z')) ||((c >= 'A') && (c <= 'Z')) ||((c >= '0') && (c <= '9')) || (c == '.') || (c == '_') || (c == '-') || (c == '@') );
+		return (((c >= 'a') && (c <= 'z')) ||((c >= 'A') && (c <= 'Z')) ||((c >= '0') && (c <= '9')) || (c == '.') || (c == '_') || (c == '-') || (c == '@'));
 	} else if (type == 'namespace') {
-		return (((c >= 'a') && (c <= 'z')) ||((c >= 'A') && (c <= 'Z')) ||((c >= '0') && (c <= '9')) || (c == '.')||(c==' ') || (c == '_') || (c == '-') );
+		return (((c >= 'a') && (c <= 'z')) ||((c >= 'A') && (c <= 'Z')) ||((c >= '0') && (c <= '9')) || (c == '.')||(c==' ') || (c == '_') || (c == '-'));
 	}
 }
 
@@ -2802,7 +2814,7 @@ function validateUrl(name) {
 	}
 }
 
-function LTrim( value ) {
+function LTrim(value) {
 	var re = /\s*((\S+\s*)*)/;
 	return value.replace(re, '$1');
 }
@@ -3570,9 +3582,13 @@ function ajaxChangeCalendarStatus(statusname, activityid, from) {
 	}).done(function (response) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
-		if (document.getElementById('ListViewContents')) {
-			document.getElementById('ListViewContents').innerHTML = result[2];
-			document.getElementById('basicsearchcolumns').innerHTML = '';
+		if (Application_Landing_View=='table') {
+			if (document.getElementById('ListViewContents')) {
+				document.getElementById('ListViewContents').innerHTML = result[2];
+				document.getElementById('basicsearchcolumns').innerHTML = '';
+			}
+		} else {
+			ListView.ListViewJSON('massedit');
 		}
 		if (result[1] && result[1] != '') {
 			ldsPrompt.show(alert_arr['ERROR'], result[1]);
@@ -3605,7 +3621,7 @@ function movefieldsStep1() {
 		}
 	}
 	var total_fields=count+selectedColumnsObj.length;
-	if (total_fields >4 ) {
+	if (total_fields >4) {
 		ldsPrompt.show(alert_arr['ERROR'], alert_arr.MAX_RECORDS);
 		return false;
 	}
@@ -4198,7 +4214,7 @@ function ToolTipManager() {
 		state=false;
 		var divName = getDivId(id, fieldname);
 		var div = document.getElementById(divName);
-		if (typeof div != 'undefined' && div != null ) {
+		if (typeof div != 'undefined' && div != null) {
 			if (typeof nodelay != 'undefined' && nodelay != null) {
 				if (!state) {
 					div.addEventListener('mouseleave', function () {
@@ -4236,7 +4252,7 @@ function ToolTipManager() {
 		if (leftSide == 0 && topSide == 0) {
 			tooltip.style.display = 'none';
 		} else {
-			if (getVal > document.body.clientWidth ) {
+			if (getVal > document.body.clientWidth) {
 				leftSide = leftSide - widthM;
 			} else {
 				leftSide = leftSide + (tooltipWidth/2);
@@ -4250,7 +4266,7 @@ function ToolTipManager() {
 			var bottomSide = +topSide + +heightTooltip;
 			if (bottomSide > document.body.clientHeight) {
 				topSide = topSide - (bottomSide - document.body.clientHeight) - 10;
-				if (topSide < 0 ) {
+				if (topSide < 0) {
 					topSide = 10;
 				}
 			} else {
@@ -4787,7 +4803,7 @@ function fnvshobjsearch(obj, Lay) {
 	}
 
 	var getVal = +leftSide + +widthM;
-	if (getVal > document.body.clientWidth ) {
+	if (getVal > document.body.clientWidth) {
 		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 91 + 'px';
 	} else {
@@ -4805,7 +4821,7 @@ function fnDropDownUser(obj, Lay) {
 	var maxW = tagName.style.width;
 	var widthM = maxW.substring(0, maxW.length-2);
 	var getVal = +leftSide + +widthM;
-	if (getVal > document.body.clientWidth ) {
+	if (getVal > document.body.clientWidth) {
 		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 34 + 'px';
 	} else {
@@ -5455,7 +5471,7 @@ AutocompleteRelation.prototype.get = function (e) {
 		var nr_opt=array.length;
 		term=array[nr_opt-1];
 	}
-	if (term.length >= this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
+	if (term.length >= this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined')) {
 		this.data.term = term;
 		var acInstance = this;
 		this.activate();
@@ -5720,7 +5736,7 @@ AutocompleteRelation.prototype.fillAssignField = function (value) {
 
 	var assigntype = document.getElementsByName('assigntype');
 
-	if ( user_picklist.innerHTML.indexOf('value="' + value + '"') > -1 ) {
+	if (user_picklist.innerHTML.indexOf('value="' + value + '"') > -1) {
 		type = 'U';
 		active_piclist = user_picklist;
 	} else {
@@ -5959,7 +5975,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 			case 'id':
 				var vh = document.getElementById(vhLocArray[1]);
 				if (!vh) {
-					throw ('ldsComboBox.getValueHolder: No node with id ' + vhLocArray[1] + ' found');
+					throw new Error('ldsComboBox.getValueHolder: No node with id ' + vhLocArray[1] + ' found');
 				}
 				return vh;
 			default:
@@ -5985,7 +6001,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 */
 		getOpener: function () {
-			if ( this.el.classList.contains('slds-combobox') ) {
+			if (this.el.classList.contains('slds-combobox')) {
 				return this.el;
 			} else {
 				return this.el.getElementsByClassName('slds-combobox')[0];
@@ -6320,10 +6336,10 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	function _findUp(element, searchterm) {
 		element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
 		while (element = element.parentElement) {
-			if ( (searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
-				|| ( searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
-				|| ( searchterm.charAt(0) === '$' && element.tagName === searchterm.slice(1))
-				|| ( element.hasAttribute(searchterm) ))) {
+			if ((searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
+				|| (searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
+				|| (searchterm.charAt(0) === '$' && element.tagName === searchterm.slice(1))
+				|| (element.hasAttribute(searchterm)))) {
 				return element;
 			} else if (element == document.body) {
 				break;

@@ -96,7 +96,7 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 	public function processSearchRecordLabelForCalendar(crmtogo_API_Request $request, $paging = false) {
 		$current_user = $this->getActiveUser();
 
-		// Fetch both Calendar (Todo) and Event information
+		// Fetch both Calendar information
 		if ($request->get('compact')) {
 			//without paging per month
 			$datetimeevent=$request->get('datetime');

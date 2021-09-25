@@ -153,6 +153,9 @@ switch ($focus->column_fields['maptype']) {
 		$rsm = $focus->ListColumns();
 		$mapinfo = $rsm->getCompleteMapping();
 		break;
+	case 'Kanban':
+		$mapinfo = $focus->Kanban();
+		break;
 	case 'DuplicateRelations':
 		$rsm = $focus->DuplicateRelations();
 		$mapinfo = $rsm->getCompleteMapping();
@@ -208,6 +211,9 @@ switch ($focus->column_fields['maptype']) {
 	case 'Field Set Mapping':
 		$fsm = $focus->FieldSetMapping();
 		$mapinfo = $fsm->getFieldSet();
+		break;
+	case 'ApplicationMenu':
+		$mapinfo = json_decode($focus->ApplicationMenu());
 		break;
 	case 'Detail View Layout Mapping':
 		$mapinfo = $focus->DetailViewLayoutMapping();

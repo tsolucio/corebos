@@ -139,7 +139,7 @@ function get_its_mini_calendar(&$cal) {
 	echo $minical;
 }
 
-function get_previous_its_cal(& $cal) {
+function get_previous_its_cal(&$cal) {
 	return '<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true"
 		onClick="getITSMiniCal(\'view='.$cal['calendar']->view.$cal['calendar']->get_datechange_info('prev').'\');" title="'.getTranslatedString('LNK_LIST_PREVIOUS').'">
 		<svg class="slds-button__icon" aria-hidden="true">
@@ -149,7 +149,7 @@ function get_previous_its_cal(& $cal) {
 	</button>';
 }
 
-function get_next_its_cal(& $cal) {
+function get_next_its_cal(&$cal) {
 	return '<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true"
 		onClick="getITSMiniCal(\'view='.$cal['calendar']->view.$cal['calendar']->get_datechange_info('next').'\');" title="'.getTranslatedString('LNK_LIST_NEXT').'">
 		<svg class="slds-button__icon" aria-hidden="true">

@@ -12,6 +12,7 @@ require_once 'modules/HelpDesk/HelpDesk.php';
 require_once 'modules/Users/Users.php';
 require_once 'modules/Documents/Documents.php';
 require_once 'modules/Emails/mail.php';
+require_once 'modules/Messages/Messages.php';
 
 /**
  * Mail Scanner Action
@@ -197,7 +198,7 @@ class Vtiger_MailScannerAction {
 				// Set the ticket status to Open if its Closed
 				$adb->pquery("UPDATE vtiger_troubletickets set status=? WHERE ticketid=? AND status='Closed'", array('Open', $linkfocus->id));
 			} else {
-				// TODO If matching ticket was not found, create ticket?
+				// If matching ticket was not found, create ticket?
 				// $returnid = $this->__CreateTicket($mailscanner, $mailrecord);
 			}
 		}
@@ -242,8 +243,7 @@ class Vtiger_MailScannerAction {
 					$comment->save('ModComments');
 				}
 			} else {
-				// TODO If matching ticket was not found, create ticket?
-				// $returnid = $this->__CreateTicket($mailscanner, $mailrecord);
+				// If matching project was not found, create project?
 			}
 		}
 		return $returnid;
