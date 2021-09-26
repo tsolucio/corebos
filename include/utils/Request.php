@@ -182,7 +182,7 @@ class Vtiger_Request {
 		if (isset($_SERVER['HTTP_REFERER']) && $current_user) {//Check for user post authentication.
 			global $site_URL;
 			if ((stripos($_SERVER['HTTP_REFERER'], $site_URL) !== 0) && ($this->get('module') != 'Install')) {
-				throw new Exception('Illegal request');
+				throw new Exception('Site URL mismatch');
 			}
 		}
 		return true;
@@ -195,14 +195,21 @@ class Vtiger_Request {
 	}
 
 	public static function validateRequest($die = true, $msg = true) {
+		require_once 'Smarty_setup.php';
+		$smarty = new vtigerCRM_Smarty();
 		$request = new Vtiger_Request($_REQUEST);
 		try {
 			$request->validateWriteAccess();
 		} catch (\Throwable $th) {
+			$message = $th->getMessage();
+			if ($message == 'Site URL mismatch') {
+				$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+				$smarty->assign('ERROR_MESSAGE', getTranslatedString('ERR_SITE_URL_MISMATCH'));
+				$smarty->display('applicationmessage.tpl');
+				die();
+			}
 			if ($msg) {
-				require_once 'Smarty_setup.php';
 				echo '<br><br>';
-				$smarty = new vtigerCRM_Smarty();
 				$smarty->assign('csrfWarning', getTranslatedString($th->getMessage()));
 				$smarty->assign('csrfReload', getTranslatedString('csrf_reload'));
 				$smarty->display('csrf-warning.tpl');

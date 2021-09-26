@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
-* Copyright 2012-2013 OpenCubed  --  This file is a part of vtMktDashboard.
+* Copyright 2021 Spike
 * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
 * Vizsage Public License (the "License"). You may not use this file except in compliance with the
 * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -12,13 +12,13 @@
 * See the License for the specific language governing permissions and limitations under the
 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************
-*  Module       : MarketingDashboard
-*  Version      : 1.9
-*  Author       : OpenCubed
+*  Module       : Sendgrid Notifications
 *************************************************************************************************/
-
+require_once 'vendor/autoload.php';
 $Vtiger_Utils_Log = false;
 include_once 'vtlib/Vtiger/Module.php';
+use SendGrid\EventWebhook\EventWebhook;
+use SendGrid\EventWebhook\EventWebhookHeader;
 
 function evvtWrite2Log($msg) {
 	$writeLog = true;
@@ -42,7 +42,7 @@ array(
 )
 */
 function sendgridsync($input) {
-	global $adb, $current_user;
+	global $adb, $current_user,$log;
 	$sendgridevents = json_decode($input);
 
 	$date=date('l jS \of F Y h:i:s A');
@@ -192,5 +192,17 @@ function sendgridsync($input) {
 		);
 		cbEventHandler::do_action('sendgrid.NotificationHook', $notificationInfo);
 	} // foreach all events
+}
+
+function validateSignedNotification($publicValue, $publicKey, $payload) {
+	$headers =getallheaders();
+	$eventWebhook = new EventWebhook();
+	$ecPublicKey = $eventWebhook->convertPublicKeyToECDSA($publicKey);
+	return $eventWebhook->verifySignature(
+		$ecPublicKey,
+		$payload,
+		$headers[EventWebhookHeader::SIGNATURE],
+		$headers[EventWebhookHeader::TIMESTAMP]
+	);
 }
 ?>

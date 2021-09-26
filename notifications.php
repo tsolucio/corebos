@@ -24,16 +24,30 @@ require_once "include/language/$default_language.lang.php";
 global $adb, $current_language;
 $current_language = $default_language;
 $type = vtlib_purify($_REQUEST['type']);
-$driver = $adb->pquery('select path, functionname from vtiger_notificationdrivers where type=?', array($type));
+$driver = $adb->pquery('select path, functionname ,signedkey, signedvalue,signedvalidation from vtiger_notificationdrivers where type=?', array($type));
 if ($driver && $adb->num_rows($driver)>0) {
-	$path = $adb->query_result($driver, 0, 0);
-	$function = $adb->query_result($driver, 0, 1);
+	$path = $adb->query_result($driver, 0, 'path');
+	$function = $adb->query_result($driver, 0, 'functionname');
+	$signedkey = $adb->query_result($driver, 0, 'signedkey');
+	$signedvalue = $adb->query_result($driver, 0, 'signedvalue');
+	include_once $path;
 	if ($type == 'googlecal' || $type == 'googlestorage') {
 		$input = $_GET['code'];
 	} else {
 		$input = file_get_contents('php://input');
 	}
+	if (!empty($signedkey) && !empty($signedvalue)) {
+		$signedfunction = $adb->query_result($driver, 0, 'signedvalidation');
+		if (empty($signedfunction)) {
+			if (empty($_REQUEST[$signedvalue]) || $_REQUEST[$signedvalue]!=$signedkey) {
+				die();
+			}
+		} else {
+			if (!$signedfunction($signedvalue, $signedkey, $input)) {
+				die();
+			}
+		}
+	}
 	//run function
-	include_once $path;
 	$function($input);
 }

@@ -255,7 +255,20 @@ function __cb_aggregation_queryonsamemodule($conditions, $module, $relfield, $re
 			if ($cnd == $numconds) {
 				$cndparams[3] = QueryGenerator::$AND;
 			}
-			$ct = new VTSimpleTemplate($cndparams[2]);
+			$adminUser = Users::getActiveAdminUser();
+			$entity = new VTWorkflowEntity($adminUser, $entityId);
+			$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer(rawurldecode($cndparams[2]))));
+			$expression = $parser->expression();
+			$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+			$value = $exprEvaluater->evaluate($entity);
+			if (empty($value)) {
+				$value = $cndparams[2];
+			}
+			if ($cndparams[2] == 'id') {
+				$tmp_value = explode('x', $value);
+				$value = $tmp_value[1];
+			}
+			$ct = new VTSimpleTemplate($value);
 			$value = $ct->render($entityCache, $entityId);
 			$qg->addCondition($cndparams[0], $value, $cndparams[1], $cndparams[3]);
 			$cnd++;
