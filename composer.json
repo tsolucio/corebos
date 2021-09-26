@@ -13,7 +13,7 @@
         "laminas/laminas-cache": "2.10.0",
         "laminas/laminas-json": "3.1.2",
         "laminas/laminas-serializer": "2.9.1",
-        "phpseclib/phpseclib": "2.0.23",
+        "phpseclib/phpseclib": "2.0.31",
         "psr/log": "1.1.1",
         "firebase/php-jwt": "5.0.0",
         "google/auth": "1.6.0",
