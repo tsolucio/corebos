@@ -1295,7 +1295,7 @@ function run_massedit() {
 		}
 
 		ExecuteFunctions('setSetting', 'skey=masseditids'+corebos_browsertabID+'&svalue='+sentForm['massedit_recordids']).then(function (response) {
-			if(!response.trim()){
+			if (!response.trim()) {
 				document.getElementById('appnotifydiv').innerHTML = response;
 				document.getElementById('appnotifydiv').style.display = 'block';
 				return false;
@@ -1307,7 +1307,7 @@ function run_massedit() {
 	}
 }
 
-function progressMassEditDetails(sentForm){
+function progressMassEditDetails(sentForm) {
 	delete sentForm['massedit_recordids'];
 	delete sentForm['idstring'];
 	sentForm.corebos_browsertabID= corebos_browsertabID;
