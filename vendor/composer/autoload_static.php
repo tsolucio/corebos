@@ -39,6 +39,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\Console\\' => 26,
+            'Stripe\\' => 7,
             'SendGrid\\Stats\\' => 15,
             'SendGrid\\Mail\\' => 14,
             'SendGrid\\Helper\\' => 16,
@@ -130,6 +131,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'Stripe\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
         ),
         'SendGrid\\Stats\\' => 
         array (

@@ -151,5 +151,8 @@ $mod_strings = array(
 	'DENORMALIZE' => 'Desnormalizar',
 	'DENORMALIZED' => 'Desnormalizado',
 	'SELECT_OPERATION' => 'Selecciona Operación',
+	'Stripe Payment Activation' => 'Activar Pagos con Stripe',
+	'StripePayment_Desc' => 'Configura Pagos con Stripe',
+	'stripe_Key' => 'Clave API Stripe',
 );
 ?>
