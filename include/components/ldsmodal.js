@@ -1,7 +1,7 @@
 const ldsModalClosing = new Event('closemodal');
 const ldsModal = {
 	show : (headText, content, size = 'medium', saveAction = '', cancelButtonText = '') => {
-		let cancelButtonText = cancelButtonText === '' ? alert_arr.JSLBL_CANCEL : cancelButtonText
+		cancelButtonText = cancelButtonText === '' ? alert_arr.JSLBL_CANCEL : cancelButtonText
 		let sact = (saveAction!==false && saveAction!='') ? `<button class="slds-button slds-button_brand" onclick="${saveAction}">${alert_arr.JSLBL_SAVE}</button>` : '';
 		let modal = `<section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_${size}" aria-modal="true">
 			<div class="slds-modal__container">
