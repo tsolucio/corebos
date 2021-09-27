@@ -1,4 +1,4 @@
-name: formatting
+name: formatting_unittests
 on: [push]
 jobs:
   formatcode:
@@ -15,3 +15,12 @@ jobs:
         run: docker run tsolucio/corebos-formatter find . -not -path "./.git/*" -type f -perm /u=x,g=x,o=x -print | sort -f | diff build/cbSR/executables -
       - name: check syntax
         run: docker run tsolucio/corebos-formatter build/cbSR/chksyntax
+  
+  unittests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build -t tsolucio/corebosunittest -f ./docker/Dockerfileunittest . 
+      - name: start corebos and run unit tests
+        run: docker run -t tsolucio/corebosunittest ./run.sh
