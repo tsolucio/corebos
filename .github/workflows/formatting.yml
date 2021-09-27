@@ -1,4 +1,4 @@
-name: formatting
+name: formatting_unittests
 on: [push]
 jobs:
   formatcode:
@@ -23,4 +23,4 @@ jobs:
       - name: Build the Docker image
         run: docker build -t tsolucio/corebosunittest -f ./docker/Dockerfileunittest . 
       - name: start corebos and run unit tests
-        run: docker run -t tsolucio/corebosunittest 
+        run: docker run -t tsolucio/corebosunittest ./run.sh

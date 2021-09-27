@@ -42,4 +42,4 @@ WORKDIR /var/www/html
 RUN chown www-data:www-data -R .
 RUN chmod +x runtests
 RUN chmod +x run.sh
-CMD ["./run.sh"]
+#CMD ["./run.sh"]
