@@ -1277,7 +1277,8 @@ $app_strings = array (
 'LBL_Statistics' => 'Easy to track your statistics',
 
 //List view popup content
- 'LBL_SEND_TO' => 'INVIARE A',
+'LBL_SEND_TO' => 'INVIARE A',
+'ERR_SITE_URL_MISMATCH' => 'Site URL mismatch',
 );
 
 // Translation for currency names

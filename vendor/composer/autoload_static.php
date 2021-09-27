@@ -21,6 +21,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         '3569eecfeed3bcf0bad3c998a494ecb8' => __DIR__ . '/..' . '/sabre/xml/lib/Deserializer/functions.php',
         '93aa591bc4ca510c520999e34229ee79' => __DIR__ . '/..' . '/sabre/xml/lib/Serializer/functions.php',
         'ebdb698ed4152ae445614b69b5e4bb6a' => __DIR__ . '/..' . '/sabre/http/lib/functions.php',
+        '79f66bc0a1900f77abe4a9a299057a0a' => __DIR__ . '/..' . '/starkbank/ecdsa/src/ellipticcurve.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
     );
 
@@ -38,6 +39,13 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\Console\\' => 26,
+            'Stripe\\' => 7,
+            'SendGrid\\Stats\\' => 15,
+            'SendGrid\\Mail\\' => 14,
+            'SendGrid\\Helper\\' => 16,
+            'SendGrid\\EventWebhook\\' => 22,
+            'SendGrid\\Contacts\\' => 18,
+            'SendGrid\\' => 9,
             'Sabre\\Xml\\' => 10,
             'Sabre\\VObject\\' => 14,
             'Sabre\\Uri\\' => 10,
@@ -59,6 +67,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
+            'ParagonIE\\ConstantTime\\' => 23,
         ),
         'O' => 
         array (
@@ -123,6 +132,34 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
         ),
+        'Stripe\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
+        ),
+        'SendGrid\\Stats\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/stats',
+        ),
+        'SendGrid\\Mail\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/mail',
+        ),
+        'SendGrid\\Helper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/helper',
+        ),
+        'SendGrid\\EventWebhook\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/eventwebhook',
+        ),
+        'SendGrid\\Contacts\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/contacts',
+        ),
+        'SendGrid\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/php-http-client/lib',
+        ),
         'Sabre\\Xml\\' => 
         array (
             0 => __DIR__ . '/..' . '/sabre/xml/lib',
@@ -183,6 +220,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
+        'ParagonIE\\ConstantTime\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
+        ),
         'OneLogin\\' => 
         array (
             0 => __DIR__ . '/..' . '/onelogin/php-saml/src',
@@ -225,21 +266,21 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         ),
         'Laminas\\Cache\\Storage\\Adapter\\' => 
         array (
-            0 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apc/src',
-            1 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apcu/src',
-            2 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-blackhole/src',
-            3 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-dba/src',
-            4 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-ext-mongodb/src',
-            5 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-filesystem/src',
-            6 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcache/src',
+            0 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-zend-server/src',
+            1 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-xcache/src',
+            2 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-wincache/src',
+            3 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-session/src',
+            4 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-redis/src',
+            5 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-mongodb/src',
+            6 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memory/src',
             7 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcached/src',
-            8 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memory/src',
-            9 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-mongodb/src',
-            10 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-redis/src',
-            11 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-session/src',
-            12 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-wincache/src',
-            13 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-xcache/src',
-            14 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-zend-server/src',
+            8 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcache/src',
+            9 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-filesystem/src',
+            10 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-ext-mongodb/src',
+            11 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-dba/src',
+            12 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-blackhole/src',
+            13 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apcu/src',
+            14 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apc/src',
         ),
         'Laminas\\Cache\\' => 
         array (
@@ -326,11 +367,14 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
     );
 
     public static $classMap = array (
+        'BaseSendGridClientInterface' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/BaseSendGridClientInterface.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
         'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
         'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
         'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
         'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
+        'SendGrid' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/SendGrid.php',
         'TCPDF' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf.php',
         'TCPDF2DBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_2d.php',
         'TCPDFBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_1d.php',
@@ -342,6 +386,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'TCPDF_IMPORT' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_import.php',
         'TCPDF_PARSER' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_parser.php',
         'TCPDF_STATIC' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_static.php',
+        'TwilioEmail' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/TwilioEmail.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
