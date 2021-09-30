@@ -192,5 +192,6 @@ if [ -n "${REPLICATION_SLAVE}" ]; then
 fi
 
 build/HelperScripts/createuserfiles
+php modules/cbupdater/loadapplychanges.php
 service apache2 start
 ./runtests
