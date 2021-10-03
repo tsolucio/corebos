@@ -287,11 +287,6 @@ if (isset($_REQUEST['ticket_id'])) {
 if (isset($_REQUEST['fileid'])) {
 	$smarty->assign('FILEID', vtlib_purify($_REQUEST['fileid']));
 }
-if (isset($_REQUEST['record'])) {
-	$smarty->assign('CANCELACTION', 'DetailView');
-} else {
-	$smarty->assign('CANCELACTION', 'index');
-}
 if (isset($_REQUEST['upload_error']) && $_REQUEST['upload_error']) {
 	echo '<br><b><font color="red"> '.$mod_strings['FILE_HAS_NO_DATA'].'.</font></b><br>';
 }
