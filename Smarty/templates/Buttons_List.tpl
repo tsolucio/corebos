@@ -256,8 +256,7 @@
 								title="{'LBL_CANCEL_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
 								accessKey="{'LBL_CANCEL_BUTTON_KEY'|@getTranslatedString:$MODULE}"
 								onclick="
-									{if !empty($CANCELACTION)}{$CANCELACTION}
-									{elseif isset($smarty.request.Module_Popup_Edit)}{if empty($smarty.request.Module_Popup_Edit_Modal)}window.close(){else}ldsModal.close(){/if}
+									{if isset($smarty.request.Module_Popup_Edit)}{if empty($smarty.request.Module_Popup_Edit_Modal)}window.close(){else}ldsModal.close(){/if}
 									{elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'
 									{else}if (window.history.length==1) { window.close(); } else { window.history.back(); }
 									{/if};"
