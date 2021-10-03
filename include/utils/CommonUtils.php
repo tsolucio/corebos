@@ -2778,9 +2778,10 @@ function getrecurringObjValue() {
 	}
 }
 
-/** Function used to get the translated string to the input string
- * 	@param string $str - input string which we want to translate
- * 	@return string $str - translated string, if the translated string is available then the translated string other wise original string will be returned
+/** get the translated string of the input string
+ * @param string input string which we want to translate
+ * @param string module name to start search from
+ * @return string translated string, if the translated string is available then the translated string otherwise the original string will be returned
  */
 function getTranslatedString($str, $module = '') {
 	global $app_strings, $mod_strings, $current_language;
@@ -2790,8 +2791,8 @@ function getTranslatedString($str, $module = '') {
 
 /**
  * Get translated currency name string.
- * @param String $str - input currency name
- * @return String $str - translated currency name
+ * @param string input currency name
+ * @return string translated currency name
  */
 function getTranslatedCurrencyString($str) {
 	global $app_currency_strings;

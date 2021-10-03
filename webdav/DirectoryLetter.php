@@ -52,6 +52,7 @@ class DirectoryLetter extends Sabre\DAV\Collection {
 		$queryGenerator->addUserSearchConditions(DirectoryModule::getSearchArray($this->getModule(), $this->letter));
 		$query = $queryGenerator->getQuery();
 		$records = $adb->query($query);
+		$folder = array();
 		while ($row = $adb->fetch_array($records)) {
 			$folder[] = new DirectoryRecord($this->tabid, DirectoryModule::getFolderName($this->getModule(), $row));
 		}

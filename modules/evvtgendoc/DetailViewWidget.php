@@ -65,7 +65,7 @@ if ($number==0) {
 		echo $linko."'export','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.getTranslatedString('Export PDF', 'evvtgendoc').$linkc.$htmltrtdc;
 		echo $htmltrtdo.$linko."'email','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.$htmlimg.'emailpdf.gif" '.$htmlstyle.$altpdf.$linkc;
 		echo $linko."'email','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.getTranslatedString('EMail PDF', 'evvtgendoc').$linkc.$htmltrtdc;
-		echo $htmltrtdo.$linko."'save','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.$htmlimg.'savepdf.gif" '.$htmlstyle.$altpdf.$linkc;
+		echo $htmltrtdo.$linko."'save','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.$htmlimg.'savepdf.png" '.$htmlstyle.$altpdf.$linkc;
 		echo $linko."'save','pdf','$moduletemplate','$forrecord','$modulei18n');".'">'.getTranslatedString('Save PDF', 'evvtgendoc').$linkc.$htmltrtdc;
 	}
 	echo $htmltrtdo.$linko."'export','doc','$moduletemplate','$forrecord','$modulei18n');".'">'.$htmlimg.'genoo.png" '.$htmlstyle.$altdoc.$linkc;
