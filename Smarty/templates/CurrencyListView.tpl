@@ -20,7 +20,7 @@
 		<input type="hidden" name="action" value="CurrencyEditView">
 		<div align="right" class="slds-col slds-p-right_xx-large slds-p-top_large">
 			<button type="submit" class="slds-button slds-button_brand">
-			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use> </svg>
+			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use> </svg>
 			&nbsp;{$MOD.LBL_NEW_CURRENCY}
 			</button>
 		</div>

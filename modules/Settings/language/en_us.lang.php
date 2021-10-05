@@ -1009,5 +1009,9 @@ $mod_strings = array(
 'SM_SorryInconvenience' => 'Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. We&rsquo;ll be back online shortly!',
 'LBL_CC' => 'CC',
 'Not Labeled' => 'Not Labeled',
+
+//FROM servce contract module
+'SyncHelpDesk' => 'Synchronize Support Tickets',
+'SyncHelpDeskDescription' => 'Synchronize with Support Tickets Time and Effort',
 );
 ?>
