@@ -29,9 +29,7 @@ switch ($methodName) {
 		$ret = $mb->checkForModule($modulename);
 		break;
 	case 'loadModules':
-		$page = vtlib_purify($_REQUEST['page']);
-		$perPage = vtlib_purify($_REQUEST['perPage']);
-		$ret = $mb->loadModules($page, $perPage);
+		$ret = $mb->loadModules();
 		break;
 	case 'loadBlocks':
 		$ret = $mb->loadBlocks();
@@ -102,6 +100,9 @@ switch ($methodName) {
 		break;
 	case 'getModules':
 		$ret = $mb->getModules();
+		break;
+	case 'deleteModule':
+		$ret = $mb->deleteModule();
 		break;
 	default:
 		$ret = array();

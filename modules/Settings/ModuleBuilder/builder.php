@@ -212,7 +212,7 @@ class ModuleBuilder {
 					$this->column_data['generatedtype'] == '' ? 0 : $this->column_data['generatedtype'],
 				));
 			} else {
-				$adb->pquery('UPDATE vtiger_modulebuilder_fields SET fieldname=?,columnname=?,fieldlabel=?,uitype=?,tablename=?,presence=?,sequence=?,typeofdata=?,quickcreate=?,displaytype=?,masseditable=?,relatedmodules=?, picklistvalues=?, fieldlength=?, generatedtype=? WHERE fieldsid=?', array(
+				$adb->pquery('UPDATE vtiger_modulebuilder_fields SET fieldname=?,columnname=?,fieldlabel=?,uitype=?,tablename=?,presence=?,sequence=?,typeofdata=?,quickcreate=?,displaytype=?,masseditable=?,relatedmodules=?, picklistvalues=?, fieldlength=?, generatedtype=?, blockid=? WHERE fieldsid=?', array(
 					$this->column_data['fieldname'],
 					$this->column_data['columnname'],
 					$this->column_data['fieldlabel'],
@@ -228,6 +228,7 @@ class ModuleBuilder {
 					$this->column_data['picklistvalues'],
 					$this->column_data['fieldlength'],
 					$this->column_data['generatedtype'] == '' ? 0 : $this->column_data['generatedtype'],
+					$this->column_data['blockid'],
 					$recordid
 				));
 			}
@@ -296,10 +297,9 @@ class ModuleBuilder {
 		return 0;
 	}
 
-	public function loadModules($page, $perPage) {
+	public function loadModules() {
 		global $adb, $current_user, $mod_strings;
-		$limit = ($page-1) * $perPage;
-		$limitSql = ' LIMIT '.$limit.','.$perPage;
+		$_currentPage = isset($_REQUEST['_currentPage']) ? (int)$_REQUEST['_currentPage'] : 1;
 		$list_query = 'SELECT vtiger_modulebuilder.modulebuilder_name as modulebuilder_name, mb.date as date, mb.completed as completed, vtiger_modulebuilder.modulebuilderid as moduleid
 			FROM vtiger_modulebuilder_name as mb
 			JOIN vtiger_modulebuilder ON mb.modulebuilderid=vtiger_modulebuilder.modulebuilderid 
@@ -327,7 +327,7 @@ class ModuleBuilder {
 				'data' => array(
 					'contents' => $moduleLists,
 					'pagination' => array(
-						'page' => (int)$page,
+						'page' => $_currentPage,
 						'totalCount' => (int)$numOfRows,
 					),
 				),
@@ -444,6 +444,7 @@ class ModuleBuilder {
 
 	public function loadValues($step, $moduleId, $recordid = 0) {
 		global $adb;
+		$_currentPage = isset($_REQUEST['_currentPage']) ? (int)$_REQUEST['_currentPage'] : 1;
 		if ($moduleId == 0 || $moduleId == 'undefined') {
 			$moduleid = $this->id;
 		} else {
@@ -522,7 +523,7 @@ class ModuleBuilder {
 					'data' => array(
 						'contents' => $fieldlst,
 						'pagination' => array(
-							'page' => 1,
+							'page' => $_currentPage,
 							'totalCount' => (int)$numOfRows,
 						),
 					),
@@ -589,7 +590,7 @@ class ModuleBuilder {
 					'data' => array(
 						'contents' => $view,
 						'pagination' => array(
-							'page' => 1,
+							'page' => $_currentPage,
 							'totalCount' => (int)$numOfRows,
 						),
 					),
@@ -634,7 +635,7 @@ class ModuleBuilder {
 					'data' => array(
 						'contents' => $list,
 						'pagination' => array(
-							'page' => 1,
+							'page' => $_currentPage,
 							'totalCount' => (int)$numOfRows,
 						),
 					),
@@ -1093,6 +1094,18 @@ class ModuleBuilder {
 		fclose($moduleFile);
 		$this->zipModule($path, $module);
 		return array('success'=>true, 'module'=>$module);
+	}
+
+	public function deleteModule() {
+		global $adb;
+		$moduleid = vtlib_purify($_REQUEST['moduleid']);
+		$adb->pquery('DELETE FROM vtiger_modulebuilder WHERE modulebuilderid=?', array($moduleid));
+		$adb->pquery('DELETE FROM vtiger_modulebuilder_blocks WHERE moduleid=?', array($moduleid));
+		$adb->pquery('DELETE FROM vtiger_modulebuilder_customview WHERE moduleid=?', array($moduleid));
+		$adb->pquery('DELETE FROM vtiger_modulebuilder_fields WHERE moduleid=?', array($moduleid));
+		$adb->pquery('DELETE FROM vtiger_modulebuilder_name WHERE moduleid=?', array($moduleid));
+		$adb->pquery('DELETE FROM vtiger_modulebuilder_relatedlists WHERE moduleid=?', array($moduleid));
+		return !$adb->database->_errorMsg;
 	}
 }
 ?>

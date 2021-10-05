@@ -119,23 +119,12 @@ const mb = {
 			let field;
 			var btnid = buttonid.split('-')[4];
 			const FILTER_COUNT = mb.loadElement('FILTER_COUNT');
-			let CV_NUMBER = document.getElementsByName('cvnumber').value;
+			//let CV_NUMBER = document.getElementsByName('cvnumber').value;
 			if (forward == false) {
 				let proceed = true;
-				if (CV_NUMBER == 0) {
-					if (mb.loadElement(`viewname-${FILTER_COUNT}`) == 'All') {
-						proceed = true;
-					}
-					if (mb.loadElement(`viewname-${FILTER_COUNT}`) != 'All' || mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
-						mb.loadMessage(mod_alert_arr.FirstFilterAll_msg, true, 'error');
-						proceed = false;
-					}
-				}
-				if (CV_NUMBER > 0) {
-					if (mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
-						mb.loadMessage(mod_alert_arr.ViewnameEmpty_msg, true, 'error');
-						proceed = false;
-					}
+				if (mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
+					mb.loadMessage(mod_alert_arr.ViewnameEmpty_msg, true, 'error');
+					proceed = false;
 				}
 				if (mb.loadElement(`viewfields-${FILTER_COUNT}`) == '') {
 					mb.loadMessage(mod_alert_arr.ChoseField, true, 'error');
@@ -222,26 +211,26 @@ const mb = {
 			if (forward == false) {
 				if (step == 3) {
 					mb.loadMessage(msg, true);
-					fieldGridInstance.clear();
-					fieldGridInstance.reloadData();
 					mb.removeElement(`for-field-${btnid}`);
 					mb.removeElement(`for-field-inputs-${btnid}`);
 					mb.loadElement('FIELD_COUNT', true).value = 0;
+					const _currentPage = fieldGridInstance.getPagination()._currentPage;
+					mb.backTo(3, false, 0, _currentPage);
 				}
 				if (step == 4) {
 					mb.loadMessage(msg, true);
-					viewGridInstance.clear();
-					viewGridInstance.reloadData();
 					mb.removeElement(`for-customview-${btnid}`);
 					mb.removeElement('FilterBTN', true);
 					mb.loadElement('FILTER_COUNT', true).value = 0;
+					const _currentPage = viewGridInstance.getPagination()._currentPage;
+					mb.backTo(4, false, 0, _currentPage);
 				}
 				if (step == 5) {
 					mb.loadMessage(msg, true);
-					listGridInstance.clear();
-					listGridInstance.reloadData();
 					document.getElementById('LIST_COUNT').value = 0;
 					mb.removeElement('RelatedLists', true);
+					const _currentPage = listGridInstance.getPagination()._currentPage;
+					mb.backTo(5, false, 0, _currentPage);
 				}
 			} else {
 				mb.loadElement(`step-${step}`, true).style.display = 'none';
@@ -350,7 +339,7 @@ const mb = {
 	 * @param {boolean} mod
 	 * @param {number} moduleid
 	 */
-	backTo: (step, mod = false, moduleid = 0) => {
+	backTo: (step, mod = false, moduleid = 0, _currentPage = 1) => {
 		if (moduleid != 0) {
 			localStorage.setItem('ModuleBuilderID', moduleid);
 		}
@@ -497,17 +486,20 @@ const mb = {
 					api: {
 						readData: {
 							url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
-							method: 'GET'
+							method: 'GET',
+							initParams: {
+								_currentPage: _currentPage
+							}
 						}
 					}
 				},
 				useClientSort: false,
 				pageOptions: {
 					useClient: true,
-					perPage: 5
+					perPage: 10
 				},
 				rowHeight: 'auto',
-				bodyHeight: 250,
+				bodyHeight: 'auto',
 				scrollX: false,
 				scrollY: false,
 				columnOptions: {
@@ -556,17 +548,20 @@ const mb = {
 					api: {
 						readData: {
 							url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
-							method: 'GET'
+							method: 'GET',
+							initParams: {
+								_currentPage: _currentPage
+							}
 						}
 					}
 				},
 				useClientSort: false,
 				pageOptions: {
 					useClient: true,
-					perPage: 5
+					perPage: 10
 				},
 				rowHeight: 'auto',
-				bodyHeight: 250,
+				bodyHeight: 'auto',
 				scrollX: false,
 				scrollY: false,
 				columnOptions: {
@@ -619,17 +614,20 @@ const mb = {
 					api: {
 						readData: {
 							url: url+'&methodName=loadValues&step='+step+'&moduleid='+moduleid,
-							method: 'GET'
+							method: 'GET',
+							initParams: {
+								_currentPage: _currentPage
+							}
 						}
 					}
 				},
 				useClientSort: false,
 				pageOptions: {
 					useClient: true,
-					perPage: 5
+					perPage: 10
 				},
 				rowHeight: 'auto',
-				bodyHeight: 250,
+				bodyHeight: 'auto',
 				scrollX: false,
 				scrollY: false,
 				columnOptions: {
@@ -848,8 +846,8 @@ const mb = {
 		let mandatory = [{
 			type: 'Typeofdata',
 			values: {
-				'M': mod_alert_arr.mandatory,
 				'O': mod_alert_arr.optional,
+				'M': mod_alert_arr.mandatory,
 			}
 		},
 		{
@@ -865,8 +863,8 @@ const mb = {
 		{
 			type: 'Masseditable',
 			values: {
-				0: mod_alert_arr.NoMassEditNoActivate,
 				1: mod_alert_arr.MassEditable,
+				0: mod_alert_arr.NoMassEditNoActivate,
 				2: mod_alert_arr.NoMassEditActivate,
 			},
 		}];
@@ -951,7 +949,7 @@ const mb = {
 					<div class="slds-col" style="${inStyle.style}" id="show-generatedtype-${FIELD_COUNT}">
 						<div class="slds-form-element">
 						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-							<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+							${textfields[key].type}
 						</label>
 						<div class="slds-form-element__control">
 							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
@@ -1058,7 +1056,7 @@ const mb = {
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 					</svg>${mod_alert_arr.LBL_MB_SAVEFIELD}
 				</button>
-				<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-field-${FIELD_COUNT}" onclick="mb.clearField(this)">
+				<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-field-${FIELD_COUNT}" onclick="mb.clearField(1)">
 					<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 					</svg>${mod_alert_arr.LBL_MB_CLEAR}
@@ -1086,6 +1084,7 @@ const mb = {
 				document.getElementById(`fieldlength_${FIELD_COUNT}`).value = state.fieldlength;
 				document.getElementById(`picklistvalues_${FIELD_COUNT}`).value = state.picklistvalues;
 				document.getElementById(`relatedmodules_${FIELD_COUNT}`).value = state.relatedmodules;
+				document.getElementById(`generatedtype_${FIELD_COUNT}`).value = state.generatedtype;
 				if (state.uitype == '10') {
 					const relatedmodules = state.relatedmodules.split(',');
 					for (let r in relatedmodules) {
@@ -1095,9 +1094,7 @@ const mb = {
 					}
 				}
 				const blockel = document.getElementsByName(`select-for-field-1`);
-				console.log(blockel)
 				for (let i = 0; i < blockel.length; i++) {
-					console.log(blockel[i].value)
 					if (parseInt(state.blockid) == parseInt(blockel[i].value)) {
 						blockel[i].checked = true;
 					}
@@ -1173,7 +1170,7 @@ const mb = {
 	/**
 	 * Open tui grid to list all modules
 	 */
-	openModal: () => {
+	openModal: (_currentPage = 1) => {
 		dataGridInstance = new tuiGrid({
 			el: document.getElementById('moduleListView'),
 			columns: [
@@ -1198,14 +1195,17 @@ const mb = {
 				api: {
 					readData: {
 						url: url+'&methodName=loadModules',
-						method: 'GET'
+						method: 'GET',
+						initParams: {
+							_currentPage: _currentPage
+						}
 					}
 				}
 			},
 			useClientSort: false,
 			pageOptions: {
 				useClient: true,
-				perPage: 5
+				perPage: 2
 			},
 			rowHeight: 'auto',
 			bodyHeight: 'auto',
@@ -1504,25 +1504,29 @@ const mb = {
 	 */
 	updateData: () => {
 		let btn = '';
-		for (var i = 0; i < 5; i++) {
+		for (var i = 0; i < dataGridInstance.getRowCount(); i++) {
 			let completed = dataGridInstance.getValue(i, 'completed');
 			let moduleid = dataGridInstance.getValue(i, 'moduleid');
 			if (completed == 'Completed') {
 				btn = `
-				<button class="slds-button slds-button_brand" aria-live="assertive" onclick="mb.generateManifest(${moduleid})">
-					<span class="slds-text-not-pressed">
-						<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+				<div class="slds-button-group" role="group">
+					<button onclick="mb.generateManifest(${moduleid})" class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+						<svg class="slds-button__icon" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
-						</svg>${mod_alert_arr.Export}
-					</span>
-				</button>
-				<button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(5, true, ${moduleid}); mb.closeModal()" aria-live="assertive">
-					<span class="slds-text-not-pressed">
-						<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+						</svg>
+					</button>
+					<button onclick="mb.backTo(5, true, ${moduleid}); mb.closeModal()" class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+						<svg class="slds-button__icon" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-						</svg>${mod_alert_arr.StartEditing}
-					</span>
-				</button>`;
+						</svg>
+					</button>
+					<button onclick='mb.deleteModule(${moduleid})' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+						</svg>
+					</button>
+				</div>
+				`;
 			} else {
 				let step = 0;
 				if (completed == '20%') {
@@ -1535,13 +1539,19 @@ const mb = {
 					step = 4;
 				}
 				btn = `
-				<button class="slds-button slds-button_neutral slds-button_dual-stateful" onclick="mb.backTo(${step}, true, ${moduleid}); mb.closeModal()" aria-live="assertive">
-					<span class="slds-text-not-pressed">
-						<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+				<div class="slds-button-group" role="group">
+					<button onclick="mb.backTo(${step}, true, ${moduleid}); mb.closeModal()" class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+						<svg class="slds-button__icon" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-						</svg>${mod_alert_arr.StartEditing}
-					</span>
-				</button>`;
+						</svg>
+					</button>
+					<button onclick='mb.deleteModule(${moduleid})' class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+						</svg>
+					</button>
+				</div>
+				`;
 			}
 			dataGridInstance.setValue(i, 'export', btn, false);
 		}
@@ -1815,51 +1825,57 @@ const mb = {
 	 * @param {string} fieldsid
 	 */
 	deleteFields: (fieldsid) => {
-		jQuery.ajax({
-			method: 'POST',
-			url: url+'&methodName=deleteFields',
-			data: 'fieldsid='+fieldsid
-		}).done(function (response) {
-			const res = JSON.parse(response);
-			if (res == true) {
-				fieldGridInstance.clear();
-				fieldGridInstance.reloadData();
-			}
-		});
+		if (confirm(alert_arr.ARE_YOU_SURE)) {
+			jQuery.ajax({
+				method: 'POST',
+				url: url+'&methodName=deleteFields',
+				data: 'fieldsid='+fieldsid
+			}).done(function (response) {
+				const res = JSON.parse(response);
+				if (res == true) {
+					fieldGridInstance.clear();
+					fieldGridInstance.reloadData();
+				}
+			});
+		}
 	},
 	/**
 	 * Remove View on step 4
 	 * @param {string} viewid
 	 */
 	deleteFilters: (viewid) => {
-		jQuery.ajax({
-			method: 'POST',
-			url: url+'&methodName=deleteFilters',
-			data: 'viewid='+viewid
-		}).done(function (response) {
-			const res = JSON.parse(response);
-			if (res == true) {
-				viewGridInstance.clear();
-				viewGridInstance.reloadData();
-			}
-		});
+		if (confirm(alert_arr.ARE_YOU_SURE)) {
+			jQuery.ajax({
+				method: 'POST',
+				url: url+'&methodName=deleteFilters',
+				data: 'viewid='+viewid
+			}).done(function (response) {
+				const res = JSON.parse(response);
+				if (res == true) {
+					viewGridInstance.clear();
+					viewGridInstance.reloadData();
+				}
+			});
+		}
 	},
 	/**
 	 * Remove Lists on step 5
 	 * @param {string} listid
 	 */
 	deleteRelationships: (list) => {
-		jQuery.ajax({
-			method: 'POST',
-			url: url+'&methodName=deleteRelationships',
-			data: 'listid='+list
-		}).done(function (response) {
-			const res = JSON.parse(response);
-			if (res == true) {
-				listGridInstance.clear();
-				listGridInstance.reloadData();
-			}
-		});
+		if (confirm(alert_arr.ARE_YOU_SURE)) {
+			jQuery.ajax({
+				method: 'POST',
+				url: url+'&methodName=deleteRelationships',
+				data: 'listid='+list
+			}).done(function (response) {
+				const res = JSON.parse(response);
+				if (res == true) {
+					listGridInstance.clear();
+					listGridInstance.reloadData();
+				}
+			});
+		}
 	},
 	/**
 	 * Remove elements
@@ -2321,6 +2337,29 @@ const mb = {
 
 	editFields: (id) => {
 		mb.generateFields(id);
+	},
+
+	deleteModule: (moduleid) => {
+		const _currentPage = dataGridInstance.getPagination()._currentPage;
+		if (confirm(alert_arr.ARE_YOU_SURE)) {
+			const data = {
+				'moduleid': moduleid
+			}
+			jQuery.ajax({
+				method: 'POST',
+				url: url+'&methodName=deleteModule',
+				data: data
+			}).done(function (response) {
+				const res = JSON.parse(response);
+				if (res == true) {
+					dataGridInstance.destroy();
+					mb.openModal(_currentPage);
+					if (localStorage.getItem('ModuleBuilderID') == moduleid) {
+						mb.resetTemplate();
+					}
+				}
+			});
+		}
 	},
 };
 
