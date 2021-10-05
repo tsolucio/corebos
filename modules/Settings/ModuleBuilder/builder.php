@@ -809,7 +809,7 @@ class ModuleBuilder {
 					$uitype = $info['uitype'];
 					$fieldlength = $info['fieldlength'] == 0 ? 20 : $info['fieldlength'];
 					if (in_array($uitype, $textfield)) {
-						$table .= "`".strtolower($fieldname)."` VARCAHR(".$fieldlength.") DEFAULT NULL,\n";
+						$table .= "`".strtolower($fieldname)."` VARCHAR(".$fieldlength.") DEFAULT NULL,\n";
 					} else if (in_array($uitype, $decimalfield)) {
 						$table .= "`".strtolower($fieldname)."` DECIMAL(".$fieldlength.") DEFAULT NULL,\n";
 					} else {
