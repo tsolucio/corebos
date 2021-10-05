@@ -1135,7 +1135,6 @@ const mb = {
 			case '5':
 			case '50':
 			case '14':
-				console.log(id.value)
 				document.getElementById(`show-generatedtype-${id.value}`).style.display = '';
 				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
 				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
@@ -1205,7 +1204,7 @@ const mb = {
 			useClientSort: false,
 			pageOptions: {
 				useClient: true,
-				perPage: 2
+				perPage: 5
 			},
 			rowHeight: 'auto',
 			bodyHeight: 'auto',
