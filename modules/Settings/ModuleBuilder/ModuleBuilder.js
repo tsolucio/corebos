@@ -988,7 +988,11 @@ const mb = {
 						<div class="slds-select_container">
 							<select class="slds-select" id="${type}_${FIELD_COUNT}" onchange="${inStyle.onchange}">`;
 								for (let j in values) {
-									fieldTemplate += `<option value="${j}">${values[j]}</option>`;
+									let selected = '';
+									if (type == 'Masseditable' && j == 1) {
+										selected = 'selected';
+									}
+									fieldTemplate += `<option value="${j}" ${selected}>${values[j]}</option>`;
 								}
 								fieldTemplate += `
 							</select>
