@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2017 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
+ * Copyright 2021 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -19,6 +19,7 @@
 include_once 'vtlib/Vtiger/Module.php';
 require_once 'include/Webservices/Revise.php';
 require_once 'include/Webservices/Create.php';
+require_once 'include/integrations/mailup/lib/MailUpClient.php';
 require 'vendor/autoload.php';
 
 
@@ -27,10 +28,14 @@ class corebos_mailup {
 	private $API_URL = 'tsolucio';
 	private $clientId = '';
 	private $clientSecret = '';
+	private $mailup_password = '';
+	private $mailup_username = '';
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'mailup_isactive';
 	const KEY_API_URL = 'mailup_apiurl';
+	const USERNAME = 'mailup_username';
+	const PASSWORD = 'mailup_password';
 	const KEY_ACCESSID = 'mailup_client_id';
 	const KEY_ACCESSSECRET = 'mailup_client_secret';
 
@@ -49,24 +54,50 @@ class corebos_mailup {
 		$this->initGlobalScope();
 	}
 
+
+
 	public function initGlobalScope() {
 		$this->API_URL = coreBOS_Settings::getSetting(self::KEY_API_URL, '');
 		$this->mailup_client_id = coreBOS_Settings::getSetting(self::KEY_ACCESSID, '');
 		$this->mailup_client_secret = coreBOS_Settings::getSetting(self::KEY_ACCESSSECRET, '');
+		$this->mailup_username = coreBOS_Settings::getSetting(self::USERNAME, '');
+		$this->mailup_password = coreBOS_Settings::getSetting(self::PASSWORD, '');
 	}
 
-	public function saveSettings($isactive, $API_URL, $clientId, $clientSecret) {
+	public function saveSettings($isactive, $API_URL, $clientId, $clientSecret, $mailup_username, $mailup_password) {
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::KEY_API_URL, $API_URL);
 		coreBOS_Settings::setSetting(self::KEY_ACCESSID, $clientId);
 		coreBOS_Settings::setSetting(self::KEY_ACCESSSECRET, $clientSecret);
-		global $adb;
-		$em = new VTEventsManager($adb);
-		if (self::useEmailHook()) {
-			$em->registerHandler('corebos.filter.systemEmailClass.getname', 'include/integrations/mailup/Mailup.php', 'corebos_mailup');
-		} else {
-			$em->unregisterHandler('corebos_mailup');
-		}
+		coreBOS_Settings::setSetting(self::USERNAME, $mailup_username);
+		coreBOS_Settings::setSetting(self::PASSWORD, $mailup_password);
+		$callback = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']
+			=== 'on' ? "https" : "http") . "://" .
+			$_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+
+		$auth_data = array(
+			'client_id' => $clientId,
+			'secret_key' => $clientSecret,
+			'callback_url' => $callback
+		);
+
+		$api = array(
+			'logon' => 'https://services.mailup.com/Authorization/OAuth/LogOn',
+			'authorization' => 'https://services.mailup.com/Authorization/OAuth/Authorization',
+			'token' => 'https://services.mailup.com/Authorization/OAuth/Token',
+			'console' => 'https://services.mailup.com/API/v1.1/Rest/ConsoleService.svc',
+			'mail_stats' => 'https://services.mailup.com/API/v1.1/Rest/MailStatisticsService.svc'
+		);
+
+		$mailUp = new MailUpClient($auth_data, $api);
+		$mailUp->retrieveTokenByPassword($mailup_username, $mailup_password);
+		// global $adb;
+		// $em = new VTEventsManager($adb);
+		// if (self::useEmailHook()) {
+		// 	$em->registerHandler('corebos.filter.systemEmailClass.getname', 'include/integrations/mailup/Mailup.php', 'corebos_mailup');
+		// } else {
+		// 	$em->unregisterHandler('corebos_mailup');
+		// }
 	}
 
 	public function getSettings() {
@@ -75,6 +106,8 @@ class corebos_mailup {
 			'API_URL' => coreBOS_Settings::getSetting(self::KEY_API_URL, 'https://services.mailup.com/Authorization/OAuth/LogOn'),
 			'mailup_client_id' => coreBOS_Settings::getSetting(self::KEY_ACCESSID, ''),
 			'mailup_client_secret' => coreBOS_Settings::getSetting(self::KEY_ACCESSSECRET, ''),
+			'mailup_username' => coreBOS_Settings::getSetting(self::USERNAME, ''),
+			'mailup_password' => coreBOS_Settings::getSetting(self::PASSWORD, '')
 		);
 	}
 

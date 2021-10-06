@@ -154,5 +154,7 @@ $mod_strings = array(
 	'mailup_apiurl' => 'API Domain',
 	'mailup_client_id' => 'Mailup Client ID',
 	'mailup_client_secret' => 'Mailup Client Secret',
+	'mailup_username' => 'Mailup Username',
+	'mailup_password' => 'Mailup Password',
 );
 ?>

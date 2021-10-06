@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2019 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
+ * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -26,9 +26,11 @@ $isadmin = is_admin($current_user);
 if ($isadmin && isset($_REQUEST['mailup_active'])) {
 	$isActive = ((empty($_REQUEST['mailup_active']) || $_REQUEST['mailup_active']!='on') ? '0' : '1');
 	$API_URL = (empty($_REQUEST['API_URL']) ? '' : vtlib_purify($_REQUEST['API_URL']));
+	$mailup_username = (empty($_REQUEST['mailup_username']) ? '' : vtlib_purify($_REQUEST['mailup_username']));
+	$mailup_password = (empty($_REQUEST['mailup_password']) ? '' : vtlib_purify($_REQUEST['mailup_password']));
 	$mailup_client_id = (empty($_REQUEST['mailup_client_id']) ? '' : vtlib_purify($_REQUEST['mailup_client_id']));
 	$mailup_client_secret = (empty($_REQUEST['mailup_client_secret']) ? '' : vtlib_purify($_REQUEST['mailup_client_secret']));
-	$mu->saveSettings($isActive, $API_URL, $mailup_client_id, $mailup_client_secret);
+	$mu->saveSettings($isActive, $API_URL, $mailup_client_id, $mailup_client_secret, $mailup_username, $mailup_password);
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Mailup Activation', $currentModule));
@@ -37,6 +39,8 @@ $smarty->assign('isActive', $mu->isActive());
 $smarty->assign('API_URL', $musettings['API_URL']);
 $smarty->assign('mailup_client_id', $musettings['mailup_client_id']);
 $smarty->assign('mailup_client_secret', $musettings['mailup_client_secret']);
+$smarty->assign('mailup_username', $musettings['mailup_username']);
+$smarty->assign('mailup_password', $musettings['mailup_password']);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);

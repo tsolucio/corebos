@@ -35,6 +35,18 @@
 			</div>
 		</div>
 		<div class="slds-form-element slds-m-top--small">
+			<label class="slds-form-element__label" for="username">{'mailup_username'|@getTranslatedString:$MODULE}</label>
+			<div class="slds-form-element__control">
+				<input type="text" id="mailup_username" name="mailup_username" class="slds-input" value="{$mailup_username}" />
+			</div>
+		</div>
+		<div class="slds-form-element slds-m-top--small">
+			<label class="slds-form-element__label" for="mailup_password">{'mailup_password'|@getTranslatedString:$MODULE}</label>
+			<div class="slds-form-element__control">
+				<input type="text" id="mailup_password" name="mailup_password" class="slds-input" value="{$mailup_password}" />
+			</div>
+		</div>
+		<div class="slds-form-element slds-m-top--small">
 			<label class="slds-form-element__label" for="mailup_client_id">{'mailup_client_id'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="mailup_client_id" name="mailup_client_id" class="slds-input" value="{$mailup_client_id}" />
