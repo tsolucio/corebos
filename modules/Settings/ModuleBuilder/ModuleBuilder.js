@@ -119,7 +119,6 @@ const mb = {
 			let field;
 			var btnid = buttonid.split('-')[4];
 			const FILTER_COUNT = mb.loadElement('FILTER_COUNT');
-			//let CV_NUMBER = document.getElementsByName('cvnumber').value;
 			if (forward == false) {
 				let proceed = true;
 				if (mb.loadElement(`viewname-${FILTER_COUNT}`) == '') {
@@ -233,6 +232,14 @@ const mb = {
 					mb.backTo(5, false, 0, _currentPage);
 				}
 			} else {
+				if (step == 4) {
+					const getData = viewGridInstance.getData();
+					const filterAll = getData.find(e => e.viewname === 'All');
+					if (!filterAll) {
+						mb.loadMessage(mod_alert_arr.FirstFilterAll_msg, true, 'error');
+						return false;
+					}
+				}
 				mb.loadElement(`step-${step}`, true).style.display = 'none';
 				var nextstep = step + 1;
 				mb.loadElement(`step-${nextstep}`, true).style.display = 'block';
@@ -1314,8 +1321,8 @@ const mb = {
 			'style': 'width: 25%'
 		};
 		let setdefaultOption = [{
-			false: alert_arr.NO,
 			true:  alert_arr.YES,
+			false: alert_arr.NO,
 		}];
 		var viewTemplate = `
 		<div class="slds-grid slds-gutters">
