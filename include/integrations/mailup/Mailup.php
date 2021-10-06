@@ -20,6 +20,7 @@ include_once 'vtlib/Vtiger/Module.php';
 require_once 'include/Webservices/Revise.php';
 require_once 'include/Webservices/Create.php';
 require_once 'include/integrations/mailup/lib/MailUpClient.php';
+require_once 'include/integrations/mailup/lib/api.php';
 require 'vendor/autoload.php';
 
 
@@ -30,6 +31,7 @@ class corebos_mailup {
 	private $clientSecret = '';
 	private $mailup_password = '';
 	private $mailup_username = '';
+	private $mailup;
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'mailup_isactive';
@@ -71,26 +73,11 @@ class corebos_mailup {
 		coreBOS_Settings::setSetting(self::KEY_ACCESSSECRET, $clientSecret);
 		coreBOS_Settings::setSetting(self::USERNAME, $mailup_username);
 		coreBOS_Settings::setSetting(self::PASSWORD, $mailup_password);
-		$callback = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']
-			=== 'on' ? "https" : "http") . "://" .
-			$_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 
-		$auth_data = array(
-			'client_id' => $clientId,
-			'secret_key' => $clientSecret,
-			'callback_url' => $callback
-		);
-
-		$api = array(
-			'logon' => 'https://services.mailup.com/Authorization/OAuth/LogOn',
-			'authorization' => 'https://services.mailup.com/Authorization/OAuth/Authorization',
-			'token' => 'https://services.mailup.com/Authorization/OAuth/Token',
-			'console' => 'https://services.mailup.com/API/v1.1/Rest/ConsoleService.svc',
-			'mail_stats' => 'https://services.mailup.com/API/v1.1/Rest/MailStatisticsService.svc'
-		);
-
-		$mailUp = new MailUpClient($auth_data, $api);
+		$mailUp = new MailUpClient($this->authData($clientId, $clientSecret));
 		$mailUp->retrieveTokenByPassword($mailup_username, $mailup_password);
+
+		$this->sendEMail($clientId, $clientSecret);
 		// global $adb;
 		// $em = new VTEventsManager($adb);
 		// if (self::useEmailHook()) {
@@ -114,6 +101,54 @@ class corebos_mailup {
 	public function isActive() {
 		$isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
 		return ($isactive=='1');
+	}
+
+
+	public function sendEMail($clientId, $clientSecret) {
+		// Not format this string, otherwise the server will return 400 error.
+		$message = "<html><body><p>Hello<\\/p><\\/body><\\/html>";
+		$email = '{
+            "Subject": "Test Message Objective-COREBOS cc",
+            "idList": "1",
+            "Content": "' . $message . '",
+            "Embed": true,
+            "IsConfirmation": true,
+            "Fields": [],
+            "Notes": "Some notes",
+            "Tags": [],
+            "TrackingInfo": {
+                "CustomParams": "",
+                "Enabled": true,
+                "Protocols": [
+                    "http"
+                ]
+            }
+        }';
+
+		$mailUp = new MailUpClient($this->authData($clientId, $clientSecret));
+
+		$result = $mailUp->getResult(
+			"POST",
+			"JSON",
+			$email,
+			"Console",
+			"/Console/List/1/Email",
+			"Create and save \"hello\" message"
+		);
+	}
+
+	private function authData($clientId, $clientSecret) {
+		return array(
+			'client_id' => $clientId,
+			'secret_key' => $clientSecret,
+			'callback_url' => $this->callBackUrl()
+		);
+	}
+
+	private function callBackUrl() {
+		return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']
+			=== 'on' ? "https" : "http") . "://" .
+			$_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 	}
 }
 ?>

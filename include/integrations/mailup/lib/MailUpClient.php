@@ -1,7 +1,8 @@
 <?php
 
-require_once 'MailUpException.php';
-require_once 'DataFilter.php';
+require_once 'include/integrations/mailup/lib/MailUpException.php';
+require_once 'include/integrations/mailup/lib/DataFilter.php';
+require_once 'include/integrations/mailup/lib/api.php';
 
 class MailUpClient {
 
@@ -17,10 +18,10 @@ class MailUpClient {
 	const REFRESHTOKEN = 'mailup_refresh_token';
 	const TOKENTIME = 'mailup_token_time';
 
-	function __construct($auth, $api) {
+	protected function __construct($auth, $api = array()) {
 		$this->clientId = $auth['client_id'];
 		$this->secretKey = $auth['secret_key'];
-		$this->api = $api;
+		$this->api = $this->api();
 
 		$this->loadToken();
 	}
@@ -246,7 +247,7 @@ class MailUpClient {
 		coreBOS_Settings::setSetting(self::TOKENTIME, $this->tokenTime);
 	}
 
-	private function getResult($method, $type, $body, $env, $ep, $text) {
+	public function getResult($method, $type, $body, $env, $ep, $text) {
 		$result = array();
 		$url = "Console" === $env ? $this->api['console'] : $this->api['mail_stats'];
 		$url = $url . $ep;
@@ -259,5 +260,15 @@ class MailUpClient {
 		$result['text'] = $text;
 		$result['req_body'] = $body;
 		return $result;
+	}
+
+	private function api() {
+		return array(
+			'logon' => 'https://services.mailup.com/Authorization/OAuth/LogOn',
+			'authorization' => 'https://services.mailup.com/Authorization/OAuth/Authorization',
+			'token' => 'https://services.mailup.com/Authorization/OAuth/Token',
+			'console' => 'https://services.mailup.com/API/v1.1/Rest/ConsoleService.svc',
+			'mail_stats' => 'https://services.mailup.com/API/v1.1/Rest/MailStatisticsService.svc'
+		);
 	}
 }
