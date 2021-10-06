@@ -2,7 +2,6 @@
 
 require_once 'include/integrations/mailup/lib/MailUpException.php';
 require_once 'include/integrations/mailup/lib/DataFilter.php';
-require_once 'include/integrations/mailup/lib/api.php';
 
 class MailUpClient {
 
@@ -18,7 +17,7 @@ class MailUpClient {
 	const REFRESHTOKEN = 'mailup_refresh_token';
 	const TOKENTIME = 'mailup_token_time';
 
-	protected function __construct($auth, $api = array()) {
+	public function __construct($auth, $api = array()) {
 		$this->clientId = $auth['client_id'];
 		$this->secretKey = $auth['secret_key'];
 		$this->api = $this->api();
@@ -151,7 +150,7 @@ class MailUpClient {
 		$this->saveToken($result->access_token, $result->refresh_token, $result->expires_in);
 	}
 
-	public function makeRequest($method, $content_type = "JSON", $url, $body = "", $refresh = true) {
+	public function makeRequest($method, $url, $content_type = "JSON", $body = "", $refresh = true) {
 		$temp_file = null;
 		$content_type = ($content_type === "XML" ? "application/xml" : "application/json");
 		$headers = array(
@@ -203,7 +202,7 @@ class MailUpClient {
 
 		if ($code === 401 & $refresh === true) {
 			$this->refreshToken();
-			return $this->makeRequest($method, $content_type, $url, $body, false);
+			return $this->makeRequest($method, $url, $content_type, $body, false);
 		}
 
 		if ($code !== 200 & $code !== 302) {
@@ -252,7 +251,7 @@ class MailUpClient {
 		$url = "Console" === $env ? $this->api['console'] : $this->api['mail_stats'];
 		$url = $url . $ep;
 		$this->errorUrl = $url;
-		$result['res_body']  = $this->makeRequest($method, $type, $url, $body);
+		$result['res_body']  = $this->makeRequest($method, $url, $type, $body);
 		$result['url'] = $env;
 		$result['content_type'] = $type;
 		$result['method'] = $method;

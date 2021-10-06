@@ -20,7 +20,6 @@ include_once 'vtlib/Vtiger/Module.php';
 require_once 'include/Webservices/Revise.php';
 require_once 'include/Webservices/Create.php';
 require_once 'include/integrations/mailup/lib/MailUpClient.php';
-require_once 'include/integrations/mailup/lib/api.php';
 require 'vendor/autoload.php';
 
 
