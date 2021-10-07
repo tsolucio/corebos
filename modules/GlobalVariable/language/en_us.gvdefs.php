@@ -617,8 +617,8 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Show or hide Shipping and Handling charges',
 ),
 'Application_Global_Search_Active' => array(
-	'valuetype' => 'Booleano',
-	'category' => 'Aplicación',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Displays (1) or hides (0) the global search functionality. It can be combined with the global search autocomplete map to offer a reduced search option.',
 ),

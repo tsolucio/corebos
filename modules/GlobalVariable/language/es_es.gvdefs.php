@@ -917,8 +917,8 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Cada hora en el calendario se dividirá en este número de minutos. El valor predeterminado es 15 minutos, lo que crea 4 divisiones por hora.',
 ),
 'Calendar_Slot_Event_Overlap' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Determina si los eventos en la vista de agenda deben superponerse visualmente. Cuando se establece en 1 (el valor predeterminado), los eventos se superpondrán entre si. Cuando se establece en 0, no habrá absolutamente ninguna superposición.',
 ),
@@ -979,6 +979,7 @@ $GlobalVariableDefinitons = array(
 'Calendar_Notification_Sound' => array(
 	'valuetype' => 'Camino Fichero',
 	'category' => 'Aplicación',
+	'values' => 'Camino al fichero de audio',
 	'definition' => 'Camino al fichero de audio que sonará al llegar un nuevo evento.',
 ),
 'CronTasks_cronWatcher_mailto' => array(

@@ -280,6 +280,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Activate "Save and Repeat" action in edit mode. Default deactivated',
 ),
+'Application_ListView_Layout' => array(
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'table|tuigrid',
+	'definition' => 'Show the classic table-based view (default) or the TUIGrid view.',
+),
 'Application_ListView_Max_Text_Length' => array(
 	'valuetype' => 'Entier',
 	'category' => 'Application',
