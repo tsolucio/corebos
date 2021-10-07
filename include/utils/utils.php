@@ -54,7 +54,7 @@ define('RB_RECORD_UPDATED', 'update');
 
 /** Function to load global browser variables for javascript
  * @param smarty object to load the variables, if empty it will only return the variables in an array
- * @returns array with the variables
+ * @return array with the variables
  */
 function getBrowserVariables(&$smarty) {
 	global $currentModule,$current_user,$default_charset,$theme,$adb,$current_language;
@@ -112,7 +112,7 @@ function getBrowserVariables(&$smarty) {
  * @param $row -- row:: Type integer
  * @param $first_column -- first column:: Type string
  * @param $last_column -- last column:: Type string
- * @returns $fullname -- fullname:: Type string
+ * @return $fullname -- fullname:: Type string
  */
 function return_name(&$row, $first_column, $last_column) {
 	global $log;
@@ -145,7 +145,7 @@ function return_name(&$row, $first_column, $last_column) {
 }
 
 /** Function to return language
- * @returns $languages -- languages:: Type string
+ * @return $languages -- languages:: Type string
  */
 function get_languages() {
 	global $log, $languages;
@@ -155,7 +155,7 @@ function get_languages() {
 
 /** Function to return language
  * @param $key -- key:: Type string
- * @returns $languages -- languages:: Type string
+ * @return $languages -- languages:: Type string
  */
 function get_language_display($key) {
 	global $log, $languages;
@@ -165,7 +165,7 @@ function get_language_display($key) {
 
 /** Function returns the user array
  * @param $assigned_user_id -- assigned_user_id:: Type string
- * @returns $user_list -- user list:: Type array
+ * @return $user_list -- user list:: Type array
  */
 function get_assigned_user_name($assigned_user_id) {
 	global $log;
@@ -180,11 +180,11 @@ function get_assigned_user_name($assigned_user_id) {
 }
 
 /** Function returns the user key in user array
- * @param $add_blank -- boolean:: Type boolean
- * @param $status -- user status:: Type string
- * @param $assigned_user -- user id:: Type string
- * @param $private -- sharing type:: Type string
- * @returns $user_array -- user array:: Type array
+ * @param boolean add blank picklist entry
+ * @param string user status to retrieve
+ * @param string assigned_user id must always add this user
+ * @param string sharing type: private
+ * @return array user array
  */
 function get_user_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '') {
 	global $log, $current_user;
@@ -360,7 +360,7 @@ function get_group_array($add_blank = true, $status = 'Active', $assigned_user =
 /** Function skips executing arbitary commands given in a string
  * @param $string -- string:: Type string
  * @param $maxlength -- maximun length:: Type integer
- * @returns $string -- escaped string:: Type string
+ * @return $string -- escaped string:: Type string
  */
 function clean($string, $maxLength) {
 	global $log;
@@ -513,7 +513,7 @@ function return_module_language($language, $module) {
 	return $return_value;
 }
 
-/*This function returns the mod_strings for the given language and module: it does not update the current mod_strings contents */
+/** This function returns the mod_strings for the given language and module: it does not update the current mod_strings contents */
 function return_specified_module_language($language, $module) {
 	global $log, $default_language;
 	$log->debug('> return_specified_module_language '.$language.','. $module);
@@ -577,7 +577,7 @@ function append_where_clause(&$where_clauses, $variable_name, $SQL_name = null) 
 /**
  * Generate the appropriate SQL based on the where clauses.
  * @param $where_clauses - An Array of individual where clauses stored as strings
- * @returns string where_clause - The final SQL where clause to be executed.
+ * @return string where_clause - The final SQL where clause to be executed.
  */
 function generate_where_statement($where_clauses) {
 	global $log;
@@ -595,7 +595,7 @@ function generate_where_statement($where_clauses) {
 
 /**
  * A temporary method of generating GUIDs of the correct format for our DB.
- * @return String contianing a GUID in the format: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+ * @return string contianing a GUID in the format: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
  */
 function create_guid() {
 	global $log;
@@ -831,7 +831,7 @@ function getUserEmail($userid) {
 
 /** Function to get a userid for outlook // outlook security
  * @param $username -- username :: Type string
- * @returns $user_id -- user id :: Type integer
+ * @return $user_id -- user id :: Type integer
  */
 function getUserId_Ol($username) {
 	global $log, $adb;
@@ -879,7 +879,7 @@ function getActionname($actionid) {
 
 /** Function to get a assigned user id for a given entity
  * @param $record -- entity id :: Type integer
- * @returns $user_id -- user id :: Type integer
+ * @return $user_id -- user id :: Type integer
  */
 function getUserId($record) {
 	global $log, $adb, $currentModule;
@@ -893,7 +893,7 @@ function getUserId($record) {
 
 /** Function to get a user id or group id for a given entity
  * @param $record -- entity id :: Type integer
- * @returns $ownerArr -- owner id :: Type array
+ * @return $ownerArr -- owner id :: Type array
  */
 function getRecordOwnerId($record) {
 	global $log, $adb;
@@ -963,7 +963,7 @@ function insert_def_org_field() {
 /** Function to insert value to profile2field table
  * @param $fld_module -- field module :: Type string
  * @param $profileid -- profileid :: Type integer
- * @returns $result -- result :: Type string
+ * @return $result -- result :: Type string
  */
 function getProfile2FieldList($fld_module, $profileid) {
 	global $log, $adb;
@@ -981,7 +981,7 @@ function getProfile2FieldList($fld_module, $profileid) {
 /** Function to insert value to profile2fieldPermissions table
  * @param $fld_module -- field module :: Type string
  * @param $profileid -- profileid :: Type integer
- * @returns $return_data -- return_data :: Type string
+ * @return $return_data -- return_data :: Type string
  */
 function getProfile2FieldPermissionList($fld_module, $profileid) {
 	global $log;
@@ -1024,7 +1024,7 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 /** Function to insert value to profile2fieldPermissions table
  * @param $fld_module -- field module :: Type string
  * @param $profileid -- profileid :: Type integer
- * @returns $return_data -- return_data :: Type string
+ * @return $return_data -- return_data :: Type string
  */
 function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 	global $log, $adb;
@@ -1066,7 +1066,7 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 /** Function to getProfile2allfieldsListinsert value to profile2fieldPermissions table
  * @param $mod_array -- mod_array :: Type string
  * @param $profileid -- profileid :: Type integer
- * @returns $profilelist -- profilelist :: Type string
+ * @return $profilelist -- profilelist :: Type string
  */
 function getProfile2AllFieldList($mod_array, $profileid) {
 	global $log;
@@ -1081,7 +1081,7 @@ function getProfile2AllFieldList($mod_array, $profileid) {
 
 /** Function to getdefaultfield organisation list for a given module
  * @param $fld_module -- module name :: Type string
- * @returns $result -- string :: Type object
+ * @return $result -- string :: Type object
  */
 function getDefOrgFieldList($fld_module) {
 	global $log, $adb;
@@ -1102,7 +1102,7 @@ function getDefOrgFieldList($fld_module) {
 /** Function to getQuickCreate for a given tabid
  * @param $tabid -- tab id :: Type string
  * @param $actionid -- action id :: Type integer
- * @returns $QuickCreateForm -- QuickCreateForm :: Type boolean
+ * @return $QuickCreateForm -- QuickCreateForm :: Type boolean
  */
 function getQuickCreate($tabid, $actionid) {
 	global $log;
@@ -1121,7 +1121,7 @@ function getQuickCreate($tabid, $actionid) {
 
 /** Function to get unitprice for a given product id
  * @param $productid -- product id :: Type integer
- * @returns $up -- up :: Type string
+ * @return $up -- up :: Type string
  */
 function getUnitPrice($productid, $module = 'Products') {
 	global $log, $adb;
@@ -1141,7 +1141,7 @@ function getUnitPrice($productid, $module = 'Products') {
 /** Function to upload product image file
  * @param $mode -- mode :: Type string
  * @param $id -- id :: Type integer
- * @returns $ret_array -- return array:: Type array
+ * @return $ret_array -- return array:: Type array
  * @deprecated
  */
 function upload_product_image_file($mode, $id) {
@@ -1206,7 +1206,7 @@ function getProductImageName($id, $deleted_array = array()) {
 
 /** Function to get Contact images
  * @param $id -- id :: Type integer
- * @returns $imagename -- imagename:: Type string
+ * @return $imagename -- imagename:: Type string
  */
 function getContactImageName($id) {
 	global $log, $adb;
@@ -1247,7 +1247,7 @@ function updateSubTotal($module, $tablename, $colname, $colname1, $entid_fld, $e
 /** Function to get Inventory Total
  * @param $return_module -- return module :: Type string
  * @param $id -- entity id :: Type integer
- * @returns $total -- total:: Type integer
+ * @return $total -- total:: Type integer
  * *** FUNCTION NOT USED IN THE APPLICATION > left only in case it is used by some extension
  */
 function getInventoryTotal($return_module, $id) {
@@ -1297,7 +1297,7 @@ function updateProductQty($product_id, $upd_qty) {
 
 /** Function to get account information
  * @param $parent_id -- parent id :: Type integer
- * @returns $accountid -- accountid:: Type integer
+ * @return $accountid -- accountid:: Type integer
  */
 function get_account_info($parent_id) {
 	global $log, $adb;
@@ -1319,7 +1319,7 @@ function getFolderSize($dir) {
 /** Function to get email text field
  * @param $module -- module name :: Type name
  * @param $id -- entity id :: Type integer
- * @returns $hidden -- hidden:: Type string
+ * @return $hidden -- hidden:: Type string
  */
 //Added to get the parents list as hidden for Emails -- 09-11-2005
 function getEmailParentsList($module, $id, $focus = false) {
@@ -1458,7 +1458,7 @@ function getDateFromDateAndtime($date_time) {
 
 /** Function to get header for block in edit/create and detailview
  * @param $header_label -- header label :: Type string
- * @returns $output -- output:: Type string
+ * @return $output -- output:: Type string
  */
 function getBlockTableHeader($header_label) {
 	global $log, $mod_strings;
@@ -1519,7 +1519,7 @@ function getModuleForField($fieldid) {
  * @param $tabid -- tabid :: Type integer
  * @param $parModId -- parent module id :: Type integer
  * @param $record_id -- record id :: Type integer
- * @returns $parentRecOwner -- parentRecOwner:: Type integer
+ * @return $parentRecOwner -- parentRecOwner:: Type integer
  */
 function getParentRecordOwner($tabid, $parModId, $record_id) {
 	global $log;
@@ -1538,7 +1538,7 @@ function getParentRecordOwner($tabid, $parModId, $record_id) {
 
 /** Function to get potential related accounts
  * @param $record_id -- record id :: Type integer
- * @returns $accountid -- accountid:: Type integer
+ * @return $accountid -- accountid:: Type integer
  */
 function getPotentialsRelatedAccounts($record_id) {
 	global $log, $adb;
@@ -1551,7 +1551,7 @@ function getPotentialsRelatedAccounts($record_id) {
 
 /** Function to get email related accounts
  * @param $record_id -- record id :: Type integer
- * @returns $accountid -- accountid:: Type integer
+ * @return $accountid -- accountid:: Type integer
  */
 function getEmailsRelatedAccounts($record_id) {
 	global $log, $adb;
@@ -1568,7 +1568,7 @@ function getEmailsRelatedAccounts($record_id) {
 }
 /** Function to get email related Leads
  * @param $record_id -- record id :: Type integer
- * @returns $leadid -- leadid:: Type integer
+ * @return $leadid -- leadid:: Type integer
  */
 function getEmailsRelatedLeads($record_id) {
 	global $log, $adb;
@@ -1586,7 +1586,7 @@ function getEmailsRelatedLeads($record_id) {
 
 /** Function to get HelpDesk related Accounts
  * @param $record_id -- record id :: Type integer
- * @returns $accountid -- accountid:: Type integer
+ * @return $accountid -- accountid:: Type integer
  */
 function getHelpDeskRelatedAccounts($record_id) {
 	global $log, $adb;
@@ -1604,7 +1604,7 @@ function getHelpDeskRelatedAccounts($record_id) {
 
 /** Function to get Quotes related Accounts
  * @param $record_id -- record id :: Type integer
- * @returns $accountid -- accountid:: Type integer
+ * @return $accountid -- accountid:: Type integer
  */
 function getQuotesRelatedAccounts($record_id) {
 	global $log, $adb;
@@ -1617,7 +1617,7 @@ function getQuotesRelatedAccounts($record_id) {
 
 /** Function to get Quotes related Potentials
  * @param $record_id -- record id :: Type integer
- * @returns $potid -- potid:: Type integer
+ * @return $potid -- potid:: Type integer
  */
 function getQuotesRelatedPotentials($record_id) {
 	global $log, $adb;
@@ -1630,7 +1630,7 @@ function getQuotesRelatedPotentials($record_id) {
 
 /** Function to get Quotes related Potentials
  * @param $record_id -- record id :: Type integer
- * @returns $accountid -- accountid:: Type integer
+ * @return $accountid -- accountid:: Type integer
  */
 function getSalesOrderRelatedAccounts($record_id) {
 	global $log, $adb;
@@ -1643,7 +1643,7 @@ function getSalesOrderRelatedAccounts($record_id) {
 
 /** Function to get SalesOrder related Potentials
  * @param $record_id -- record id :: Type integer
- * @returns $potid -- potid:: Type integer
+ * @return $potid -- potid:: Type integer
  */
 function getSalesOrderRelatedPotentials($record_id) {
 	global $log, $adb;
@@ -1656,7 +1656,7 @@ function getSalesOrderRelatedPotentials($record_id) {
 
 /** Function to get SalesOrder related Quotes
  * @param $record_id -- record id :: Type integer
- * @returns $qtid -- qtid:: Type integer
+ * @return $qtid -- qtid:: Type integer
  */
 function getSalesOrderRelatedQuotes($record_id) {
 	global $log, $adb;
@@ -1669,7 +1669,7 @@ function getSalesOrderRelatedQuotes($record_id) {
 
 /** Function to get Invoice related Accounts
  * @param $record_id -- record id :: Type integer
- * @returns $accountid -- accountid:: Type integer
+ * @return $accountid -- accountid:: Type integer
  */
 function getInvoiceRelatedAccounts($record_id) {
 	global $log, $adb;
@@ -1682,7 +1682,7 @@ function getInvoiceRelatedAccounts($record_id) {
 
 /** Function to get Invoice related SalesOrder
  * @param $record_id -- record id :: Type integer
- * @returns $soid -- soid:: Type integer
+ * @return $soid -- soid:: Type integer
  */
 function getInvoiceRelatedSalesOrder($record_id) {
 	global $log, $adb;
@@ -1782,10 +1782,7 @@ function start_end_dates($period) {
 	return $datevalues;
 }
 
-/** Function to get the Graph and vtiger_table format for a particular date based upon the period
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- */
+/** Function to get the Graph and table format for a particular date based upon the period */
 function Graph_n_table_format($period_type, $date_value) {
 	global $log;
 	$log->debug('> Graph_n_table_format '.$period_type.','.$date_value);
@@ -1806,8 +1803,8 @@ function Graph_n_table_format($period_type, $date_value) {
 }
 
 /** Function to get image count for a given product
- * @param $id -- product id :: Type integer
- * @returns count -- count:: Type integer
+ * @param integer product id
+ * @return integer count
  */
 function getImageCount($id) {
 	global $log, $adb;
@@ -1822,7 +1819,7 @@ function getImageCount($id) {
 
 /** Function to get user image for a given user
  * @param $id -- user id :: Type integer
- * @returns $image_name -- image name:: Type string
+ * @return $image_name -- image name:: Type string
  */
 function getUserImageName($id) {
 	global $log, $adb;
@@ -1834,7 +1831,7 @@ function getUserImageName($id) {
 }
 
 /** Function to get all user images for displaying it in listview
- * @returns $image_name -- image name:: Type array
+ * @return $image_name -- image name:: Type array
  */
 function getUserImageNames() {
 	global $log, $adb;
@@ -1867,7 +1864,7 @@ function strip_selected_tags($text, $tags = array()) {
 }
 
 /** Function to check whether user has opted for internal mailer
- * @returns $int_mailer -- int mailer:: Type boolean
+ * @return $int_mailer -- int mailer:: Type boolean
  */
 function useInternalMailer() {
 	global $current_user,$adb;
@@ -3320,7 +3317,7 @@ function is_attachmentid($id) {
 
 /** Function to set date values compatible to database (YY_MM_DD)
  * @param $value -- value :: Type string
- * @returns $insert_date -- insert_date :: Type string
+ * @return $insert_date -- insert_date :: Type string
  */
 function getValidDBInsertDateValue($value) {
 	global $log;
@@ -3431,7 +3428,7 @@ function sanitizeUploadFileName($fileName, $badFileExtensions) {
 
 /** Function to get the tab meta information for a given id
  * @param $tabId -- tab id :: Type integer
- * @returns $tabInfo -- array of preference name to preference value :: Type array
+ * @return $tabInfo -- array of preference name to preference value :: Type array
  */
 function getTabInfo($tabId) {
 	global $adb;
