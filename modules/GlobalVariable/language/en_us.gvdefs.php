@@ -1054,6 +1054,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'If set to the string "true", the Contact section will be selected when converting a Lead. By default, the section is selected.',
 ),
+'Lead_Convert_AssignedUser' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'any user ID | current_user',
+	'definition' => 'User ID to set the assigned user picklist to when converting a Lead. If set to "current_user" the current user will be used. By default, the user assigned to the lead record is used.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',

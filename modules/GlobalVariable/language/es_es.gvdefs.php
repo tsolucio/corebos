@@ -1053,6 +1053,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'Si se establece a "true", la sección del Contacto se seleccionará al convertir un PreContacto. De forma predeterminada, la sección está activada.',
 ),
+'Lead_Convert_AssignedUser' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'cualquier ID de usuario | current_user',
+	'definition' => 'Establece la lista de selección de usuario a este ID de usuario al convertir un potencial. Si se establece en "current_user", se utilizará el usuario actual. De forma predeterminada, se utiliza el usuario asignado al registro de cliente potencial.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',

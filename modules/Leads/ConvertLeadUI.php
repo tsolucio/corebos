@@ -183,8 +183,13 @@ class ConvertLeadUI {
 			$owner = get_group_array(false, 'Active', $this->row['smownerid'], $private);
 		}
 		$owner_list = array();
+		$assignuser = GlobalVariable::getVariable('Lead_Convert_AssignedUser', $this->row['smownerid'], 'Leads');
+		if (strtolower($assignuser)=='current_user') {
+			global $current_user;
+			$assignuser = $current_user->id;
+		}
 		foreach ($owner as $id => $name) {
-			if ($id == $this->row['smownerid']) {
+			if ($id == $assignuser) {
 				$owner_list[] = array($type . 'id' => $id, $type . 'name' => $name, 'selected' => true);
 			} else {
 				$owner_list[] = array($type . 'id' => $id, $type . 'name' => $name, 'selected' => false);
