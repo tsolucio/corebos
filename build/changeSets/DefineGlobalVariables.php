@@ -194,6 +194,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Lead_Convert_TransferToAccount',
 				'Lead_Convert_OpportunitySelected',
 				'Lead_Convert_ContactSelected',
+				'Lead_Convert_AssignedUser',
 				'PBX_Get_Line_Prefix',
 				'PBX_Unknown_CallerID',
 				'PBX_callerNumberField',

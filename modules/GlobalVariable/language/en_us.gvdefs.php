@@ -617,8 +617,8 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Show or hide Shipping and Handling charges',
 ),
 'Application_Global_Search_Active' => array(
-	'valuetype' => 'Booleano',
-	'category' => 'Aplicación',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Displays (1) or hides (0) the global search functionality. It can be combined with the global search autocomplete map to offer a reduced search option.',
 ),
@@ -1053,6 +1053,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'false | true',
 	'definition' => 'If set to the string "true", the Contact section will be selected when converting a Lead. By default, the section is selected.',
+),
+'Lead_Convert_AssignedUser' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'any user ID | current_user',
+	'definition' => 'User ID to set the assigned user picklist to when converting a Lead. If set to "current_user" the current user will be used. By default, the user assigned to the lead record is used.',
 ),
 'Product_Show_Subproducts_Popup' => array(
 	'valuetype' => 'Boolean',

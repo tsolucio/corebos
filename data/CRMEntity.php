@@ -25,7 +25,7 @@ class CRMEntity {
 	public $DirectImageFieldValues = array();
 	public $HasDirectImageField = false;
 	public $crmentityTable = 'vtiger_crmentity';
-	public $crmEntityTableAlias;
+	public $crmentityTableAlias;
 	public $denormalized = false;
 	protected static $methods = array();
 	protected static $dbvalues = array();
