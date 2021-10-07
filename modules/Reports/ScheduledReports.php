@@ -330,6 +330,7 @@ class VTScheduledReport extends Reports {
 
 	public static function getAvailableUsersHTML() {
 		$userDetails = getAllUserName();
+		natcasesort($userDetails);
 		$usersHTML = '<select id="availableRecipients" name="availableRecipients" multiple size="10" class="small crmFormList">';
 		foreach ($userDetails as $userId => $userName) {
 			$usersHTML .= VTScheduledReport::generateRecipientOption('users', $userId, $userName);
@@ -340,6 +341,7 @@ class VTScheduledReport extends Reports {
 
 	public static function getAvailableGroupsHTML() {
 		$grpDetails = getAllGroupName();
+		natcasesort($grpDetails);
 		$groupsHTML = '<select id="availableRecipients" name="availableRecipients" multiple size="10" class="small crmFormList">';
 		foreach ($grpDetails as $groupId => $groupName) {
 			$groupsHTML .= VTScheduledReport::generateRecipientOption('groups', $groupId, $groupName);
