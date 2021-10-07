@@ -204,9 +204,9 @@ class ConvertLeadUI {
 			$userprivs = $user->getPrivileges();
 			$Acc_tabid = getTabid('Accounts');
 			$con_tabid = getTabid('Contacts');
-			if ($userprivs->getModuleSharingPermission($Acc_tabid) === 0 || $userprivs->getModuleSharingPermission($Acc_tabid) == 3) {
-				$private = 'private';
-			} elseif ($userprivs->getModuleSharingPermission($con_tabid) === 0 || $userprivs->getModuleSharingPermission($con_tabid) == 3) {
+			if ($userprivs->getModuleSharingPermission($Acc_tabid) === 0 || $userprivs->getModuleSharingPermission($Acc_tabid) == 3
+				|| $userprivs->getModuleSharingPermission($con_tabid) === 0 || $userprivs->getModuleSharingPermission($con_tabid) == 3
+			) {
 				$private = 'private';
 			}
 		}
