@@ -7,4 +7,27 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-Pivot
+{if $showDesert}
+	{assign var='DESERTInfo' value='LBL_NO_DATA'|@getTranslatedString:$MODULE}
+	{include file='Components/Desert.tpl'}
+{else}
+<script src="include/pivottable/pivot.js"></script>
+<link href="include/pivottable/pivot.css" rel="stylesheet">
+
+<script type="text/javascript">
+{literal}
+    $(function(){
+        $("#output").pivot(
+            [
+               {/literal}{$RECORDS}{literal}
+            ],
+            {
+                rows: [{/literal}{$ROWS}{literal}],
+                cols: [{/literal}{$COLS}{literal}]
+            }
+        );
+     });
+{/literal}
+</script>
+<div id="output" style="margin: 30px;"></div>
+{/if}
