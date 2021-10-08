@@ -1068,8 +1068,8 @@ class ModuleBuilder {
 		$search_fields = "'MODULE_NAME_LABEL'=> array('MODULE_NAME_LOWERCASE' => 'MODULE_REFERENCE_FIELD')";
 		$list_fields_name = "'MODULE_NAME_LABEL'=> 'MODULE_REFERENCE_FIELD',";
 		$search_fields_name = "'MODULE_NAME_LABEL'=> 'MODULE_REFERENCE_FIELD'";
-		$replist_fields .= "'".$map['name']."'=> array('MODULE_NAME_LOWERCASE' => '".strtolower($module)."no'),\n\t\t";
-		$replist_fields_name .= "'".$map['label']."'=> '".strtolower($module)."no',\n\t\t";
+		$replist_fields .= "'".$map['label']." no'=> array('MODULE_NAME_LOWERCASE' => '".strtolower($module)."no'),\n\t\t";
+		$replist_fields_name .= "'".$map['label']." no'=> '".strtolower($module)."no',\n\t\t";
 		foreach ($customviews as $key => $value) {
 			foreach ($fields as $f => $name) {
 				if ($name['fieldname'] == $value) {
