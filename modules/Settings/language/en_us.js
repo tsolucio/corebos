@@ -11,7 +11,7 @@ var mod_alert_arr = {
 	'Related_module_label': 'Related module or label can\'t be empty',
 	'ChoseField': 'Please choose at least one field to continue',
 	'Related_modlabel': 'Module hasn\'t relations fields please finish the module',
-	'FirstFilterAll_msg': 'First Filter should be All',
+	'FirstFilterAll_msg': 'Filter "All" is mandatory',
 	'WasSaved': 'was successfully saved',
 	'LBL_MB_SAVEFIELD': 'Save field',
 	'ModuleName': 'Module Name',
