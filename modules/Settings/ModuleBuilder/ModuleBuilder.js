@@ -1956,6 +1956,7 @@ const mb = {
 				};
 				//blocks and fields
 				let blocks = [];
+				let defaultRL = [];
 				for (let i = 0; i < res.blocks.length; i++) {
 					const blocks_label = res.blocks[i].blocks_label;
 					const blockObj = {
@@ -1970,6 +1971,9 @@ const mb = {
 						if (blocks_label == field[j].blockname) {
 							field[j].sequence = j;
 							fields.push(field[j]);
+							if (field[j].uitype == '10') {
+								defaultRL.push(field[j]);
+							}
 						}
 					}
 					blockObj.block.fields = fields;
@@ -1999,6 +2003,7 @@ const mb = {
 				//relatedlists
 				const lists = res.lists.data.contents;
 				let relatedlists = [];
+				let tempIndex = 0;
 				for (let i = 0; i < lists.length; i++) {
 					const actions = lists[i].actions.split(',');
 					const listObj = {
@@ -2010,6 +2015,25 @@ const mb = {
 						relatedmodule: lists[i].relatedmodule,
 					};
 					relatedlists.push(listObj);
+					tempIndex++;
+				}
+				for (let r = 0; r < defaultRL.length; r++) {
+					const relatedmodules = defaultRL[r].relatedmodules.split(',');
+					if (relatedmodules.length > 0) {
+						for (let i = 0; i < relatedmodules.length; i++) {
+							if (relatedmodules[i] != '') {
+								const listObj = {
+									function: 'get_dependents_list',
+									label: relatedmodules[i],
+									sequence: parseInt(tempIndex) + parseInt(i),
+									presence: 0,
+									actions: ['ADD'],
+									relatedmodule: relatedmodules[i],
+								};
+								relatedlists.push(listObj);
+							}
+						}			
+					}
 				}
 				modObj.relatedlists = relatedlists;
 				modObj.sharingaccess = res.info.sharingaccess;
