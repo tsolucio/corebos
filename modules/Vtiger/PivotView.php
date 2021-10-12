@@ -21,7 +21,6 @@ $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getM
 if ($cbMapid) {
 	$cbMap = cbMap::getMapByID($cbMapid);
 	$cbMapKb = $cbMap->Pivot();
-
 	if (empty($cbMapKb)) {
 		$smarty->assign('showDesert', true);
 	} else {
@@ -70,6 +69,8 @@ if ($cbMapid) {
 		$smarty->assign('COLS', $namecl);
 		$smarty->assign('RECORDS', $recordsimpl);
 	}
+} else {
+	$smarty->assign('showDesert', true);
 }
 
 $smarty->assign('moduleView', 'Pivot');
