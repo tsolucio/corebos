@@ -47,6 +47,7 @@ if ($cbMapid) {
 		} else {
 			$queryGenerator->initForDefaultCustomView();
 		}
+		$queryGenerator->setFields(array_merge($queryGenerator->getFields(), $namerow, $namecol));
 		$list_query = $adb->pquery($queryGenerator->getQuery(), array());
 		$count = $adb->num_rows($list_query);
 		for ($i = 0; $i < $count; $i++) {
