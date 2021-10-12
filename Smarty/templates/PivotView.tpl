@@ -29,5 +29,5 @@
      });
 {/literal}
 </script>
-<div id="output" style="margin: 30px;"></div>
+<div id="output" style="margin: 30px;overflow-x: scroll; width:1000px; "></div>
 {/if}
