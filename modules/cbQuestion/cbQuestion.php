@@ -164,6 +164,9 @@ class cbQuestion extends CRMEntity {
 		if (empty($q->id) || isPermitted('cbQuestion', 'DetailView', $q->id) != 'yes') {
 			return getTranslatedString('SQLError', 'cbQuestion').': PERMISSION';
 		}
+		if ($q->column_fields['qtype']=='Global Search') {
+				return 'select "<b>Global Search</b>";';
+		}
 		include_once 'include/Webservices/Query.php';
 		include_once 'include/Webservices/VtigerModuleOperation.php';
 		if ($q->column_fields['sqlquery']=='1') {
@@ -381,6 +384,27 @@ class cbQuestion extends CRMEntity {
 				'properties' => $graph,
 				'answer' => 'graph '.$graph."\n\n".html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset)."\n".$nodeStyle. "\n".$linkStyle,
 			);
+		} elseif ($q->column_fields['qtype']=='Global Search') {
+			include_once 'include/Webservices/CustomerPortalWS.php';
+			$propsjson = preg_replace("/[\n\r\s]+/", ' ', html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset));
+			$props = json_decode($propsjson, true);
+			$restrictionids = array();
+			if (!empty($props['user'])) {
+				$restrictionids['userId'] = vtws_getWSID($props['user']);
+			}
+			if (!empty($props['account'])) {
+				$restrictionids['accountId'] = vtws_getWSID($props['account']);
+			}
+			if (!empty($props['contact'])) {
+				$restrictionids['contactId'] = vtws_getWSID($props['contact']);
+			}
+			return array(
+				'columns' => html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
+				'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
+				'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
+				'properties' => $propsjson,
+				'answer' => cbwsgetSearchResultsWithTotals($props['query'], $props['searchin'], $restrictionids, $current_user),
+			);
 		} else {
 			include_once 'include/Webservices/Query.php';
 			if ($q->column_fields['sqlquery']=='0') {
@@ -449,6 +473,9 @@ class cbQuestion extends CRMEntity {
 				break;
 			case 'Number':
 				$ret = array_pop($ans['answer'][0]);
+				break;
+			case 'Global Search':
+				$ret = array_pop($ans['answer']['records']);
 				break;
 			case 'Pie':
 				$ret = self::getChartFromAnswer($ans);
