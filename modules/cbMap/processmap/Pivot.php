@@ -71,8 +71,8 @@ class Pivot extends processcbMap {
 				}
 			}
 		}
-				$this->mapping['rows'] = $rows;
-				$this->mapping['cols'] = $cols;
+		$this->mapping['rows'] = $rows;
+		$this->mapping['cols'] = $cols;
 		return $this->mapping;
 	}
 }
