@@ -62,7 +62,7 @@ $mod_strings = array(
 'LBL_EXPRESSION'=>'Espressione',
 'LBL_SET_EXPRESSION'=>'Imposta Espressione',
 
-'LBL_MANUAL'=>'Sistema. Mass Actions.',
+'LBL_MANUAL'=>'Sistema. Mass Actions',
 'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nuovo Gruppo di Condizioni',
 
