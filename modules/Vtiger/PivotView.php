@@ -23,17 +23,17 @@ if ($cbMapid) {
 	$cbMapKb = $cbMap->Pivot();
 
 	if (empty($cbMapKb)) {
-			$smarty->assign('showDesert', true);
+		$smarty->assign('showDesert', true);
 	} else {
-			$smarty->assign('showDesert', false);
+		$smarty->assign('showDesert', false);
 
-			$viewid = $cbMapKb['filter'];
-			$rows = $cbMapKb['rows'];
-			$cols = $cbMapKb['cols'];
+		$viewid = $cbMapKb['filter'];
+		$rows = $cbMapKb['rows'];
+		$cols = $cbMapKb['cols'];
 
-			$namerow = array();
-			$namecol = array();
-			$record = array();
+		$namerow = array();
+		$namecol = array();
+		$record = array();
 
 		foreach ($rows as $rw) {
 			$namerow[] = $rw['name'];
@@ -41,7 +41,7 @@ if ($cbMapid) {
 		foreach ($cols as $cl) {
 			$namecol[] = $cl['name'];
 		}
-			$queryGenerator = new QueryGenerator($currentModule, $current_user);
+		$queryGenerator = new QueryGenerator($currentModule, $current_user);
 		if ($viewid != '0') {
 			$queryGenerator->initForCustomViewById($viewid);
 		} else {
@@ -60,11 +60,11 @@ if ($cbMapid) {
 				$record[$rec] = $cl['name'].':"'.$adb->query_result($list_query, $i, $cl['name']).'"';
 				$rec++;
 			}
-			$records[$i] = implode(",", $record);
+			$records[$i] = implode(',', $record);
 		}
-		$recordsimpl = "{".implode("},{", $records)."}";
-		$namerw = '"'.implode("\",\"", $namerow).'"';
-		$namecl = '"'.implode("\",\"", $namecol).'"';
+		$recordsimpl = '{'.implode('},{', $records).'}';
+		$namerw = '"'.implode('","', $namerow).'"';
+		$namecl = '"'.implode('","', $namecol).'"';
 
 		$smarty->assign('ROWS', $namerw);
 		$smarty->assign('COLS', $namecl);

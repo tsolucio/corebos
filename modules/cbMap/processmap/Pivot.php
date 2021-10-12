@@ -23,13 +23,13 @@
 	<rows>
 		<row>
 			<name>value of module field name</name>
-						<label>label of field in the table</label>
+			<label>label of field in the table</label>
 		</row>
 	</rows>
 	<cols>
 		<col>
 			<name>value of module field name</name>
-						<label>label of field in the table</label>
+			<label>label of field in the table</label>
 		</col>
 	</cols>
 </map>
