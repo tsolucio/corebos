@@ -252,6 +252,18 @@ function checkevvtMenuInstalled() {
 	if (!in_array('relatemodule', $cnmsg)) {
 		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
 	}
+	if (!in_array('options', $cnmsg)) {
+		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `options` varchar(100) default NULL;');
+	}
+	if (!in_array('cbquestion', $cnmsg)) {
+		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `cbquestion` int(11) default NULL;');
+	}
+	if (!in_array('recordset', $cnmsg)) {
+		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `recordset` int(11) default NULL;');
+	}
+	if (!in_array('onerecord', $cnmsg)) {
+		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `onerecord` int(11) default NULL;');
+	}
 	$cnmsg = $adb->getColumnNames('vtiger_profile2field');
 	if (!in_array('summary', $cnmsg)) {
 		$adb->query("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");

@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2021 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class addWorkflowMassActionsColumns extends cbupdaterWorker {
+class WorkflowMassActionChanges extends cbupdaterWorker {
 
 	public function applyChange() {
 		global $adb;
@@ -25,11 +25,23 @@ class addWorkflowMassActionsColumns extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD options VARCHAR(100);");
-			$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD cbquestion INT(15);");
-			$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD recordset INT(15);");
-			$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD onerecord INT(15);");
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD cbquestion INT(11);");
+			$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD recordset INT(11);");
+			$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD onerecord INT(11);");
+			$this->ExecuteQuery("UPDATE com_vtiger_workflows SET options='conditions';");
+			$cbmq = coreBOS_MQTM::getInstance();
+			$cbmq->subscribeToChannel(
+				'wfLaunchNowChannel',
+				'malaunchnow',
+				'malaunchnow',
+				array(
+					'file'=>'modules/com_vtiger_workflow/cbmqtm_malaunchnow.php',
+					'class'=>'cbmqtm_malaunchnow',
+					'method'=>'MALaunchNow'
+				)
+			);
+			$this->sendMsg('Changeset '.get_class($this).' applied! <strong>If there are errors adding workflow columns it is not a problem.</strong>');
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

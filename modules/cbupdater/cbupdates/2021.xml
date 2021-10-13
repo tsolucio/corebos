@@ -154,4 +154,11 @@
 	<classname>addGSPLValueOnQuestion</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Workflow Mass Action changes: columns and queue</description>
+	<filename>build/changeSets/2021/WorkflowMassActionChanges.php</filename>
+	<classname>WorkflowMassActionChanges</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
