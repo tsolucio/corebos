@@ -77,9 +77,9 @@ const ListView = {
 			ListView.RenderFilter(url);
 			ListView.updateData();
 		} else {
-			if (lvmodule != '' && lvmodule != undefined) {
+			if (lvmodule != '' && lvmodule != undefined && lvmodule != 'RecycleBin') {
 				ListView.ListViewDefault(lvmodule, url);
-			} else if (gVTModule == 'RecycleBin') {
+			} else if (lvmodule == 'RecycleBin') {
 				const select_module = document.getElementById('select_module').value;
 				url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+select_module+'&lastPage='+lastPage+'&isRecycleModule=true';
 				ListView.ListViewDefault(select_module, url);
@@ -705,7 +705,9 @@ const ListView = {
 		select.setAttribute('style', 'max-width:240px;');
 		select.setAttribute('onchange', 'showDefaultCustomView(this, "'+lvmodule+'", "")');
 		select.innerHTML = filters.customview_html;
-		document.getElementById('filterOptions').appendChild(select);
+		if (document.getElementById('filterOptions') !== null) {
+			document.getElementById('filterOptions').appendChild(select);
+		}
 
 		//create filterActions
 		let fedit = document.createElement('span');
@@ -725,7 +727,9 @@ const ListView = {
 		} else {
 			fedit.innerHTML = `| ${alert_arr['LNK_EDIT_ACTION']} |`;
 		}
-		document.getElementById('filterEditActions').appendChild(fedit);
+		if (document.getElementById('filterEditActions') !== null) {
+			document.getElementById('filterEditActions').appendChild(fedit);
+		}
 		//delete a filter
 		let fdelete = document.createElement('span');
 		edit_query = {
@@ -743,7 +747,9 @@ const ListView = {
 		} else {
 			fdelete.innerHTML = `${alert_arr['LNK_DELETE_ACTION']}`;
 		}
-		document.getElementById('filterDeleteActions').appendChild(fdelete);
+		if (document.getElementById('filterDeleteActions') !== null) {
+			document.getElementById('filterDeleteActions').appendChild(fdelete);
+		}
 	},
 	/**
 	 * Build query
