@@ -415,14 +415,6 @@ const ListView = {
 				filteredData.innerHTML = '';
 			}
 		});
-		document.addEventListener('click', function (e) {
-			[...document.getElementById('listview-tui-grid').getElementsByClassName('slds-dropdown_right')].forEach(dd => {
-				if (!e.target.classList.contains('listview-actions-opener')) {
-					dd.classList.remove('slds-is-open');
-					findUp(dd, '.tui-grid-cell').classList.remove('tui-grid-cell-has-overflow');
-				}
-			});
-		}, false);
 	},
 	/**
 	 * Get the new headers in a onchange search
@@ -935,6 +927,9 @@ const ListView = {
 	 * @param {String} recordid
 	 */
 	RenderActions: (recordid) => {
+		if (document.getElementById(`list__${recordid}`) !== null) {
+			return false;
+		}
 		[...document.getElementById('listview-tui-grid').getElementsByClassName('slds-dropdown_right')].forEach(dd => {
 			if (dd.id != `dropdown-${recordid}`) {
 				dd.classList.remove('slds-is-open');
@@ -951,7 +946,7 @@ const ListView = {
 				credentials: 'same-origin',
 			}
 		).then(response => response.json()).then(response => {
-			let button_template = '<ul class="slds-dropdown__list" role="menu">';
+			let button_template = `<ul class="slds-dropdown__list" role="menu" id="list__${recordid}">`;
 			if (response == true) { //recycle bin module
 				const select_module = document.getElementById('select_module').value;
 				button_template += `
@@ -1029,7 +1024,7 @@ const ListView = {
 			}
 			let ddWrapper = document.getElementById(`dropdown-${recordid}`);
 			ddWrapper.innerHTML = button_template;
-			findUp(ddWrapper, '.slds-dropdown-trigger_click').classList.add('slds-is-open');
+			findUp(ddWrapper, '.slds-dropdown-trigger_hover').classList.add('slds-is-open');
 			findUp(ddWrapper, '.tui-grid-cell').classList.add('tui-grid-cell-has-overflow');
 		});
 	},
