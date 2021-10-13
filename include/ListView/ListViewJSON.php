@@ -402,7 +402,7 @@ function getListViewHeaders($currentModule, $tabid) {
 			}, $picklistValues);
 			$lv_arr = array(
 				'fieldname' => $fName,
-				'fieldvalue' => $fValue,
+				'fieldvalue' => html_entity_decode($fValue),
 				'uitype' => $fieldType,
 				'picklist' => $picklistEditor,
 				'tooltip' => $tooltip,
@@ -412,7 +412,7 @@ function getListViewHeaders($currentModule, $tabid) {
 			$users = get_user_array();
 			$lv_arr = array(
 				'fieldname' => $fName,
-				'fieldvalue' => $fValue,
+				'fieldvalue' => html_entity_decode($fValue),
 				'uitype' => $fieldType,
 				'picklist' => $users,
 				'tooltip' => $tooltip,
@@ -421,7 +421,7 @@ function getListViewHeaders($currentModule, $tabid) {
 		} else {
 			$lv_arr = array(
 				'fieldname' => $fName,
-				'fieldvalue' => $fValue,
+				'fieldvalue' => html_entity_decode($fValue),
 				'uitype' => $fieldType,
 				'tooltip' => $tooltip,
 				'edit' => $edit,
