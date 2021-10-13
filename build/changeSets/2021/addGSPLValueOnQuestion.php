@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2021 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -13,48 +13,28 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-
-class cbMapAddMapTypes extends cbupdaterWorker {
-
+class addGSPLValueOnQuestion extends cbupdaterWorker {
 	public function applyChange() {
-		global $adb;
 		if ($this->hasError()) {
 			$this->sendError();
 		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$cbmaptypes = array(
-				'Record Access Control',
-				'Record Set Mapping',
-				'Module Set Mapping',
-				'ListColumns',
-				'DuplicateRelations',
-				'MasterDetailLayout',
-				'IOMap',
-				'FieldDependency',
-				'Validations',
-				'Import',
-				'RelatedPanes',
-				'FieldInfo',
-				'GlobalSearchAutocomplete',
-				'Field Set Mapping',
-				'Detail View Layout Mapping',
-				'DecisionTable',
-				'Webservice Mapping',
-				'InformationMap',
-				'Kanban',
-				'Pivot',
-				'ApplicationMenu',
-			);
-			$moduleInstance = Vtiger_Module::getInstance('cbMap');
-			$field = Vtiger_Field::getInstance('maptype', $moduleInstance);
-			if ($field) {
-				$field->setPicklistValues($cbmaptypes);
+			$module = Vtiger_Module::getInstance('cbQuestion');
+			if ($module) {
+				$field = Vtiger_Field::getInstance('qtype', $module);
+				if ($field) {
+					// Adding picklist value to Question Types
+					$field->setPicklistValues(array('Global Search'));
+				}
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied(false);
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' could not be applied yet. Please launch again.');
 			}
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
 }
+?>
