@@ -255,6 +255,9 @@ $mod_strings = array(
 'LBL_SELECT_SENDGRID_EMAIL_TEMPLATE' => 'Selecciona Plantilla de SendGrid',
 'LBL_LOAD_SENDGRID_TEMPLATES' => 'Cargar Plantillas de SendGrid',
 'LBL_PREVIEW_BUTTON' => 'Previsualizar',
+'Records execution success' => 'Proceso de ejecución correcta',
+'Records put in queue' => 'Registros insertados en la cola de trabajo',
+'Records' => 'Registros:',
 'CBUpsertTask' => 'Upsert',
 );
 ?>

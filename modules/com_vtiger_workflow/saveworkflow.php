@@ -146,20 +146,46 @@ function vtWorkflowSave($adb, $request) {
 	if (isset($request['btnmalaunch']) && $options && $options != 'conditions') {
 		$wsid = vtws_getEntityId($moduleName).'x';
 		$context = '[]';
-		$crmids = array();
+		$crmids = $crmnames = array();
 		if ($options == 'onerecord') {
-			$crmids[] = $wsid.$onerecord;
-			cbwsExecuteWorkflowWithContext($wf->id, json_encode($crmids), $context, $current_user);
+			$se = getSalesEntityType($onerecord);
+			$dp = getEntityName($se, $onerecord);
+			$crmnames[] = '<a href="index.php?module='.$se.'&action=DetailView&record='.$onerecord.'">'.$dp[$onerecord].'</a>';
+			cbwsExecuteWorkflowWithContext($wf->id, json_encode([$onerecord]), $context, $current_user);
 		} else {
 			$ids = null;
 			if ($options == 'cbquestion') {
-				$ids = cbwsGetAnswer(vtws_getEntityId('cbQuestion').'x'.$cbquestion, '', $current_user);
+				$ids = cbQuestion::getAnswer($cbquestion, '');
+				if (getSingleFieldValue('vtiger_cbquestion', 'qtype', 'cbquestionid', $cbquestion)=='Global Search') {
+					array_walk($ids['answer']['records'], function (&$val) {
+						$val = $val['id'];
+					});
+					$ids = $ids['answer']['records'];
+				} else {
+					array_walk($ids['answer'], function (&$val) {
+						$val = $val['id'];
+					});
+					$ids = $ids['answer'];
+				}
 			} elseif ($options == 'recordset') {
-				$ids = cbws_cbRule(vtws_getEntityId('cbMap').'x'.$recordset, array(), $current_user);
+				$cbmap = cbMap::getMapByID($recordset);
+				$rsm = $cbmap->RecordSetMapping();
+				$ids = $rsm->getRecordSet('include');
 			}
 			if ($ids) {
 				foreach ($ids as $crmid) {
+					if (strpos($crmid, 'x')) {
+						list($void, $crmid) = explode('x', $crmid);
+					}
 					$crmids[] = $wsid.$crmid;
+					$se = getSalesEntityType($crmid);
+					$dp = getEntityName($se, $crmid);
+					if (count($crmnames)<10) {
+						$crmnames[] = '<a href="index.php?module='.$se.'&action=DetailView&record='.$crmid.'">'.$dp[$crmid].'</a>';
+					}
+				}
+				if (count($crmnames)==10) {
+					$crmnames[] = (count($crmids)-10).' '.getTranslatedString('LBL_MORE');
 				}
 				$cbmq = coreBOS_MQTM::getInstance();
 				$msg = array(
@@ -169,8 +195,8 @@ function vtWorkflowSave($adb, $request) {
 				$cbmq->sendMessage('wfLaunchNowChannel', 'malaunchnow', 'malaunchnow', 'Data', '1:M', 0, 8640000, 0, 0, json_encode($msg));
 			}
 		}
-		if (count($crmids) > 0) {
-			coreBOS_Session::set('malaunch_records', $crmids);
+		if (!empty($crmnames)) {
+			coreBOS_Session::set('malaunch_records', $crmnames);
 		}
 	}
 	?>
