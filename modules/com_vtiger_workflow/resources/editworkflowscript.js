@@ -718,42 +718,7 @@ function editworkflowscript($, conditions) {
 						if (!fieldValidator.validate()) {
 							return false;
 						}
-						var conditions = [];
-						i=0;
-						$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
-							$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
-								$(conditiongroup).children().each(function (l) {
-									var fieldname = this.querySelector('div > .cefieldname').value;
-									var operation = this.querySelector('div > .ceoperation').value;
-									var value = this.querySelector('div > .ceexpressionvalue').value;
-									var valuetype = this.querySelector('div > .ceexpressiontype').value;
-									var joincondition = this.querySelector('div > .cejoincondition').value;
-									var groupid = this.querySelector('div > .groupid').value;
-									var groupjoin = '';
-									if (groupid != '') {
-										let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
-										if (scgj != null) {
-											groupjoin = scgj.value;
-										}
-									}
-									var condition = {
-										fieldname:fieldname,
-										operation:operation,
-										value:value,
-										valuetype:valuetype,
-										joincondition:joincondition,
-										groupid:groupid,
-										groupjoin:groupjoin
-									};
-									conditions[i++]=condition;
-								});
-							});
-						});
-						var out = '';
-						if (conditions.length!=0) {
-							var out = JSON.stringify(conditions);
-						}
-						$('#save_conditions_json').val(out);
+						editWFSaveConditions();
 						document.forms['EditView'].submit();
 					});
 					pageLoadingPopup.close();
@@ -763,6 +728,45 @@ function editworkflowscript($, conditions) {
 			}));
 		}));
 	});
+}
+
+function editWFSaveConditions() {
+	var conditions = [];
+	var i=0;
+	$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
+		$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
+			$(conditiongroup).children().each(function (l) {
+				var fieldname = this.querySelector('div > .cefieldname').value;
+				var operation = this.querySelector('div > .ceoperation').value;
+				var value = this.querySelector('div > .ceexpressionvalue').value;
+				var valuetype = this.querySelector('div > .ceexpressiontype').value;
+				var joincondition = this.querySelector('div > .cejoincondition').value;
+				var groupid = this.querySelector('div > .groupid').value;
+				var groupjoin = '';
+				if (groupid != '') {
+					let scgj = document.getElementById('save_condition_group_'+groupid+'_joincondition');
+					if (scgj != null) {
+						groupjoin = scgj.value;
+					}
+				}
+				var condition = {
+					fieldname:fieldname,
+					operation:operation,
+					value:value,
+					valuetype:valuetype,
+					joincondition:joincondition,
+					groupid:groupid,
+					groupjoin:groupjoin
+				};
+				conditions[i++]=condition;
+			});
+		});
+	});
+	var out = '';
+	if (conditions.length!=0) {
+		out = JSON.stringify(conditions);
+	}
+	$('#save_conditions_json').val(out);
 }
 
 function moveWorkflowTaskUpDown(direction, task_id) {

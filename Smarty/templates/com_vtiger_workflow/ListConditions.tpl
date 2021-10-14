@@ -204,7 +204,7 @@
 			</span>
 			</div>
 			<span class="slds-p-top_small slds-align_absolute-center">
-			<button class="slds-button slds-button_success" id="btnmalaunch" name="btnmalaunch">{'Launch Now'|getTranslatedString:'com_vtiger_workflow'}</button>
+			<button class="slds-button slds-button_success" id="btnmalaunch" name="btnmalaunch" onclick="editWFSaveConditions();">{'Launch Now'|getTranslatedString:'com_vtiger_workflow'}</button>
 			</span>
 		</fieldset>
 	</div>

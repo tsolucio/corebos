@@ -15,6 +15,7 @@ require_once 'VTWorkflowManager.inc';
 require_once 'VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
 require_once 'include/Webservices/ExecuteWorkflow.php';
+require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
 
 function vtWorkflowSave($adb, $request) {
 	global $current_language, $current_user;
@@ -143,7 +144,7 @@ function vtWorkflowSave($adb, $request) {
 		$returnUrl=$module->editWorkflowUrl($wf->id);
 	}
 
-	if (isset($request['btnmalaunch']) && $options && $options != 'conditions') {
+	if (isset($request['btnmalaunch']) && $options) {
 		$wsid = vtws_getEntityId($moduleName).'x';
 		$context = '[]';
 		$crmids = $crmnames = array();
@@ -166,6 +167,21 @@ function vtWorkflowSave($adb, $request) {
 						$val = $val['id'];
 					});
 					$ids = $ids['answer'];
+				}
+			} elseif ($options == 'conditions') {
+				$workflowScheduler = new WorkFlowScheduler($adb);
+				$query = $workflowScheduler->getWorkflowQuery($wf);
+				try {
+					$rs = $adb->query($query);
+					if ($rs && $adb->num_rows($rs)>0) {
+						$ids = array();
+						while ($row = $adb->fetch_array($rs)) {
+							$ids[] = $row[0]; // will be the ID field
+						}
+					}
+				} catch (\Throwable $th) {
+					global $log;
+					$log->fatal('Mass Action condition query failed: '.$query);
 				}
 			} elseif ($options == 'recordset') {
 				$cbmap = cbMap::getMapByID($recordset);
