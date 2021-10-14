@@ -80,6 +80,22 @@ $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('n
 if (!($adb->num_rows($result))) {
 	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD nexttrigger_time DATETIME", array());
 }
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('options'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery('ALTER TABLE com_vtiger_workflows ADD options VARCHAR(100)', array());
+}
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('cbquestion'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery('ALTER TABLE com_vtiger_workflows ADD cbquestion INT(11)', array());
+}
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('recordset'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery('ALTER TABLE com_vtiger_workflows ADD recordset INT(11)', array());
+}
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('onerecord'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery('ALTER TABLE com_vtiger_workflows ADD onerecord INT(11)', array());
+}
 $result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
 if (!($adb->num_rows($result))) {
 	ExecuteQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());

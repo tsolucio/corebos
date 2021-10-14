@@ -171,6 +171,18 @@ if (!in_array('active', $cnmsg)) {
 if (!in_array('relatemodule', $cnmsg)) {
 	ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
 }
+if (!in_array('options', $cnmsg)) {
+	ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `options` varchar(100) default NULL;');
+}
+if (!in_array('cbquestion', $cnmsg)) {
+	ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `cbquestion` int(11) default NULL;');
+}
+if (!in_array('recordset', $cnmsg)) {
+	ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `recordset` int(11) default NULL;');
+}
+if (!in_array('onerecord', $cnmsg)) {
+	ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `onerecord` int(11) default NULL;');
+}
 $taskTypes = array();
 $defaultModules = array('include' => array(), 'exclude'=>array());
 $createToDoModules = array('include' => array("Leads","Accounts","Potentials","Contacts","HelpDesk","Campaigns","Quotes","PurchaseOrder","SalesOrder","Invoice"), 'exclude'=>array("Calendar", "FAQ", "Events"));

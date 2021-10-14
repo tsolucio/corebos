@@ -14,9 +14,11 @@ require_once 'VTWorkflowApplication.inc';
 require_once 'VTWorkflowManager.inc';
 require_once 'VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
+require_once 'include/Webservices/ExecuteWorkflow.php';
+require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
 
 function vtWorkflowSave($adb, $request) {
-	global $current_language;
+	global $current_language, $current_user;
 	$util = new VTWorkflowUtils();
 	$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist';
 	$module = new VTWorkflowApplication('saveworkflow', $edit_return_url);
@@ -37,6 +39,19 @@ function vtWorkflowSave($adb, $request) {
 	$conditions = $request['conditions'];
 	$saveType = $request['save_type'];
 	$executionCondition = $request['execution_condition'];
+	$options = isset($request['options']) ? $request['options'] : null;
+	$cbquestion = $request['cbquestion'];
+	$recordset = $request['recordset'];
+	$onerecord = $request['onerecord'];
+	if ($options == 'conditions') {
+		$cbquestion = $recordset = $onerecord = null;
+	} elseif ($options == 'cbquestion') {
+		$recordset = $onerecord = null;
+	} elseif ($options == 'recordset') {
+		$cbquestion = $onerecord = null;
+	} elseif ($options == 'onerecord') {
+		$cbquestion = $recordset = null;
+	}
 	$schdayofweek = array();
 	if (isset($request['sun_flag']) && $_REQUEST['sun_flag'] != null) {
 		$schdayofweek[] = 1;
@@ -92,6 +107,10 @@ function vtWorkflowSave($adb, $request) {
 		$wf->schannualdates = $schannualdates;
 		$wf->schminuteinterval = $schminuteinterval;
 		$wf->relatemodule = $relatemodule;
+		$wf->options = $options;
+		$wf->cbquestion = ($cbquestion !== '') ? $cbquestion : null;
+		$wf->recordset = ($recordset !== '') ? $recordset : null;
+		$wf->onerecord = ($onerecord !== '') ? $onerecord : null;
 		$wm->save($wf);
 	} elseif ($saveType == 'edit') {
 		$wf = $wm->retrieve($request['workflow_id']);
@@ -110,6 +129,10 @@ function vtWorkflowSave($adb, $request) {
 		$wf->schannualdates = $schannualdates;
 		$wf->schminuteinterval = $schminuteinterval;
 		$wf->relatemodule = $relatemodule;
+		$wf->options = $options;
+		$wf->cbquestion = ($cbquestion !== '') ? $cbquestion : null;
+		$wf->recordset = ($recordset !== '') ? $recordset : null;
+		$wf->onerecord = ($onerecord !== '') ? $onerecord : null;
 		$wm->save($wf);
 	} else {
 		throw new InvalidArgumentException();
@@ -119,6 +142,78 @@ function vtWorkflowSave($adb, $request) {
 	} else {
 		$module->setReturnUrl('');
 		$returnUrl=$module->editWorkflowUrl($wf->id);
+	}
+
+	if (isset($request['btnmalaunch']) && $options) {
+		$wsid = vtws_getEntityId($moduleName).'x';
+		$context = '[]';
+		$crmids = $crmnames = array();
+		if ($options == 'onerecord') {
+			$se = getSalesEntityType($onerecord);
+			$dp = getEntityName($se, $onerecord);
+			$crmnames[] = '<a href="index.php?module='.$se.'&action=DetailView&record='.$onerecord.'">'.$dp[$onerecord].'</a>';
+			cbwsExecuteWorkflowWithContext($wf->id, json_encode([$onerecord]), $context, $current_user);
+		} else {
+			$ids = null;
+			if ($options == 'cbquestion') {
+				$ids = cbQuestion::getAnswer($cbquestion, '');
+				if (getSingleFieldValue('vtiger_cbquestion', 'qtype', 'cbquestionid', $cbquestion)=='Global Search') {
+					array_walk($ids['answer']['records'], function (&$val) {
+						$val = $val['id'];
+					});
+					$ids = $ids['answer']['records'];
+				} else {
+					array_walk($ids['answer'], function (&$val) {
+						$val = $val['id'];
+					});
+					$ids = $ids['answer'];
+				}
+			} elseif ($options == 'conditions') {
+				$workflowScheduler = new WorkFlowScheduler($adb);
+				$query = $workflowScheduler->getWorkflowQuery($wf);
+				try {
+					$rs = $adb->query($query);
+					if ($rs && $adb->num_rows($rs)>0) {
+						$ids = array();
+						while ($row = $adb->fetch_array($rs)) {
+							$ids[] = $row[0]; // will be the ID field
+						}
+					}
+				} catch (\Throwable $th) {
+					global $log;
+					$log->fatal('Mass Action condition query failed: '.$query);
+				}
+			} elseif ($options == 'recordset') {
+				$cbmap = cbMap::getMapByID($recordset);
+				$rsm = $cbmap->RecordSetMapping();
+				$ids = $rsm->getRecordSet('include');
+			}
+			if ($ids) {
+				foreach ($ids as $crmid) {
+					if (strpos($crmid, 'x')) {
+						list($void, $crmid) = explode('x', $crmid);
+					}
+					$crmids[] = $wsid.$crmid;
+					$se = getSalesEntityType($crmid);
+					$dp = getEntityName($se, $crmid);
+					if (count($crmnames)<10) {
+						$crmnames[] = '<a href="index.php?module='.$se.'&action=DetailView&record='.$crmid.'">'.$dp[$crmid].'</a>';
+					}
+				}
+				if (count($crmnames)==10) {
+					$crmnames[] = (count($crmids)-10).' '.getTranslatedString('LBL_MORE');
+				}
+				$cbmq = coreBOS_MQTM::getInstance();
+				$msg = array(
+					'wfid' => $wf->id,
+					'crmids' => $crmids,
+				);
+				$cbmq->sendMessage('wfLaunchNowChannel', 'malaunchnow', 'malaunchnow', 'Data', '1:M', 0, 8640000, 0, 0, json_encode($msg));
+			}
+		}
+		if (!empty($crmnames)) {
+			coreBOS_Session::set('malaunch_records', $crmnames);
+		}
 	}
 	?>
 	<script type="text/javascript" charset="utf-8">

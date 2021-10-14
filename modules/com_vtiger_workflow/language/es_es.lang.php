@@ -60,7 +60,7 @@ $mod_strings = array(
 'LBL_EXPRESSION'=>'Expresión',
 'LBL_SET_EXPRESSION'=>'Expresión Asignación',
 
-'LBL_MANUAL'=>'Sistema. Acciones Masivas.',
+'LBL_MANUAL'=>'Sistema. Acciones Masivas',
 'LBL_RECORD_ACCESS_CONTROL' => 'Control de Acceso a Registro',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Añadir Condición de Grupo',
 
@@ -255,6 +255,9 @@ $mod_strings = array(
 'LBL_SELECT_SENDGRID_EMAIL_TEMPLATE' => 'Selecciona Plantilla de SendGrid',
 'LBL_LOAD_SENDGRID_TEMPLATES' => 'Cargar Plantillas de SendGrid',
 'LBL_PREVIEW_BUTTON' => 'Previsualizar',
+'Records execution success' => 'Proceso de ejecución correcta',
+'Records put in queue' => 'Registros insertados en la cola de trabajo',
+'Records' => 'Registros:',
 'CBUpsertTask' => 'Upsert',
 );
 ?>
