@@ -398,8 +398,11 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		$field_list .= 'vtiger_crmentity.crmid';
 
 		$listquery = 'select '.$field_list.substr($listquery, stripos($listquery, ' from '));
-
-		$where = getUnifiedWhere($listquery, $module, $query);
+		if (strtolower(substr($query, 0, 5))=='tag::') {
+			$where = getTagWhere(substr($query, 5), $user->id);
+		} else {
+			$where = getUnifiedWhere($listquery, $module, $query);
+		}
 		if ($where != '') {
 			$listquery .= ' and ('.$where.')';
 		}
