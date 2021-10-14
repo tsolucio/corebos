@@ -82,16 +82,6 @@
 <table border=0 cellspacing=1 cellpadding=0 width=100% class="lvtBg">
 <tr>
 	<td>
-		<table border=0 cellspacing=0 cellpadding=2 width=100%>
-			<tr>
-			<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
-			<td align="right" width=40%>&nbsp;</td>
-			</tr>
-		</table>
-	</td>
-</tr>
-<tr>
-	<td>
 		<table width="100%">
 			<tr>
 			<td class="small" nowrap align="left"><span id="gridRecordCountFooter"></span></td>

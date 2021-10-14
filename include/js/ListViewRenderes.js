@@ -168,12 +168,12 @@ class ActionRender {
 		let recordid = props.grid.getValue(rowKey, 'recordid');
 		let el = document.createElement('span');
 		let actions = `
-			<div class="slds-dropdown-trigger slds-dropdown-trigger_click">
+			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
 				<button
 					class="slds-button slds-button_icon slds-button_icon-border-filled listview-actions-opener"
 					aria-haspopup="true"
 					title="Show More"
-					onclick="ListView.RenderActions(${recordid});"
+					onmouseover="ListView.RenderActions(${recordid});"
 				>
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
