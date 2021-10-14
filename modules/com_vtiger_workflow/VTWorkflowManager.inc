@@ -348,8 +348,8 @@ class VTWorkflowManager {
 	 *
 	 * Returns null if the workflow doesn't exist.
 	 *
-	 * @param The id of the workflow
-	 * @return A workflow object.
+	 * @param integer id of the workflow
+	 * @return Workflow object.
 	 */
 	public function retrieve($id) {
 		$result = $this->adb->pquery('select * from com_vtiger_workflows where workflow_id=?', array($id));
@@ -391,8 +391,11 @@ class VTWorkflowManager {
 		$workflow->active = 'true';
 		$workflow->options = '';
 		$workflow->cbquestion = null;
+		$workflow->cbquestiondisplay = '';
 		$workflow->recordset = null;
+		$workflow->recordsetdisplay = '';
 		$workflow->onerecord = null;
+		$workflow->onerecorddisplay = '';
 		return $workflow;
 	}
 
@@ -420,8 +423,26 @@ class VTWorkflowManager {
 		$exp['active']=$workflow->active;
 		$exp['options']=$workflow->options;
 		$exp['cbquestion']=$workflow->cbquestion;
+		if (empty($workflow->cbquestion)) {
+			$exp['cbquestiondisplay'] = '';
+		} else {
+			$dp = getEntityName('cbQuestion', $workflow->cbquestion);
+			$exp['cbquestiondisplay'] = $dp[$workflow->cbquestion];
+		}
 		$exp['recordset']=$workflow->recordset;
+		if (empty($workflow->recordset)) {
+			$exp['recordsetdisplay'] = '';
+		} else {
+			$dp = getEntityName('cbMap', $workflow->recordset);
+			$exp['recordsetdisplay'] = $dp[$workflow->recordset];
+		}
 		$exp['onerecord']=$workflow->onerecord;
+		if (empty($workflow->onerecord)) {
+			$exp['onerecorddisplay'] = '';
+		} else {
+			$dp = getEntityName(getSalesEntityType($workflow->onerecord), $workflow->onerecord);
+			$exp['onerecorddisplay'] = $dp[$workflow->onerecord];
+		}
 		$exp['tasks'] = array();
 		$tm = new VTTaskManager($this->adb);
 		$tasks = $tm->getTasksForWorkflow($workflow->id);
@@ -456,8 +477,11 @@ class VTWorkflowManager {
 		$workflow->active = $data['active'];
 		$workflow->options = $data['options'];
 		$workflow->cbquestion = $data['cbquestion'];
+		$workflow->cbquestiondisplay = $data['cbquestiondisplay'];
 		$workflow->recordset = $data['recordset'];
+		$workflow->recordsetdisplay = $data['recordsetdisplay'];
 		$workflow->onerecord = $data['onerecord'];
+		$workflow->onerecorddisplay = $data['onerecorddisplay'];
 		$this->save($workflow);
 		$tm = new VTTaskManager($this->adb);
 		$tasks = $data['tasks'];

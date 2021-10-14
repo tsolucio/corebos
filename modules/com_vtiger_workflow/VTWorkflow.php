@@ -167,8 +167,26 @@ class Workflow {
 		$this->nexttrigger_time = isset($row['nexttrigger_time']) ? $row['nexttrigger_time'] : '';
 		$this->options = isset($row['options']) ? $row['options'] : '';
 		$this->cbquestion = isset($row['cbquestion']) ? $row['cbquestion'] : null;
+		if (empty($this->cbquestion)) {
+			$this->cbquestiondisplay = '';
+		} else {
+			$dp = getEntityName('cbQuestion', $this->cbquestion);
+			$this->cbquestiondisplay = $dp[$this->cbquestion];
+		}
 		$this->recordset = isset($row['recordset']) ? $row['recordset'] : null;
+		if (empty($this->recordset)) {
+			$this->recordsetdisplay = '';
+		} else {
+			$dp = getEntityName('cbMap', $this->recordset);
+			$this->recordsetdisplay = $dp[$this->recordset];
+		}
 		$this->onerecord = isset($row['onerecord']) ? $row['onerecord'] : null;
+		if (empty($this->onerecord)) {
+			$this->onerecorddisplay = '';
+		} else {
+			$dp = getEntityName(getSalesEntityType($this->onerecord), $this->onerecord);
+			$this->onerecorddisplay = $dp[$this->onerecord];
+		}
 		if ($row['execution_condition']==VTWorkflowManager::$ON_RELATE || $row['execution_condition']==VTWorkflowManager::$ON_UNRELATE) {
 			$this->relatemodule = isset($row['relatemodule']) ? $row['relatemodule'] : '';
 		} else {

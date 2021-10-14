@@ -90,7 +90,6 @@
 	</div>
 {if $RecordSetTab}
 	<div class="slds-col slds-size_1-of-2 slds-page-header__meta-text">
-	{$workflow->options}
 		<fieldset class="slds-form-element" id="fsmalaunch" style="{if $workflow->executionCondition eq 6 or $workflow->executionCondition eq 7}display:block;{else}display:none;{/if}">
 			<legend class="slds-form-element__legend slds-form-element__label">{'Select where to get the records from'|@getTranslatedString:$MODULE_NAME}</legend>
 			<div class="slds-form-element__control">
@@ -117,7 +116,7 @@
 					type="text"
 					style="border:1px solid #bababa;"
 					onclick='return vtlib_open_popup_window("", "cbquestion", "cbQuestion", "{$workflow->cbquestion}");'
-					value="">&nbsp;
+					value="{$workflow->cbquestiondisplay}">&nbsp;
 				<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("", "cbquestion", "cbQuestion", "");'>
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
@@ -150,7 +149,7 @@
 					type="text"
 					style="border:1px solid #bababa;"
 					onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=EditView&forfield=recordset&query=true&search=true&searchtype=BasicSearch&search_field=maptype&search_text=Record%20Set%20Mapping', '', cbPopupWindowSettings);"
-					value="">&nbsp;
+					value="{$workflow->recordsetdisplay}">&nbsp;
 				<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=EditView&forfield=recordset&query=true&search=true&searchtype=BasicSearch&search_field=maptype&search_text=Record%20Set%20Mapping', '', cbPopupWindowSettings);">
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
@@ -176,7 +175,7 @@
 			<span class="slds-form-element__label">
 				<span style="width:150px;display:inline-block;">{'record'|@getTranslatedString}</span>
 				<input type='hidden' class='small' name="onerecord_type" id="onerecord_type" value={$workflow->moduleName}>
-				<input id="onerecord" name="onerecord" type="hidden" value="">
+				<input id="onerecord" name="onerecord" type="hidden" value="{$workflow->onerecord}">
 				<input
 					id="onerecord_display"
 					name="onerecord_display"
@@ -184,7 +183,7 @@
 					type="text"
 					style="border:1px solid #bababa;"
 					onclick='return vtlib_open_popup_window("", "onerecord", "{$workflow->moduleName}", "{$workflow->onerecord}");'
-					value="">&nbsp;
+					value="{$workflow->onerecorddisplay}">&nbsp;
 				<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("", "onerecord", "{$workflow->moduleName}", "{$workflow->onerecord}");'>
 				<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
