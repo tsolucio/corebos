@@ -27,6 +27,7 @@ if ($cbMapid) {
 		$smarty->assign('showDesert', false);
 
 		$viewid = $cbMapKb['filter'];
+		$fieldaggr = $cbMapKb['aggregate'];
 		$rows = $cbMapKb['rows'];
 		$cols = $cbMapKb['cols'];
 
@@ -39,6 +40,14 @@ if ($cbMapid) {
 		}
 		foreach ($cols as $cl) {
 			$namecol[] = $cl['name'];
+			$namecolaggr[] = $cl['name'];
+		}
+
+		if (isset($fieldaggr) && $fieldaggr!='') {
+			$aggreg='aggregator: sum(intFormat)(["'.$fieldaggr.'"])';
+			$namecolaggr[] = $fieldaggr;
+		} else {
+			$aggreg = '';
 		}
 		$queryGenerator = new QueryGenerator($currentModule, $current_user);
 		if ($viewid != '0') {
@@ -46,7 +55,7 @@ if ($cbMapid) {
 		} else {
 			$queryGenerator->initForDefaultCustomView();
 		}
-		$queryGenerator->setFields(array_merge($queryGenerator->getFields(), $namerow, $namecol));
+		$queryGenerator->setFields(array_merge($queryGenerator->getFields(), $namerow, $namecolaggr));
 		$list_query = $adb->pquery($queryGenerator->getQuery(), array());
 		$count = $adb->num_rows($list_query);
 		for ($i = 0; $i < $count; $i++) {
@@ -59,12 +68,16 @@ if ($cbMapid) {
 				$record[$rec] = $cl['name'].':"'.$adb->query_result($list_query, $i, $cl['name']).'"';
 				$rec++;
 			}
+			if (isset($fieldaggr) && $fieldaggr!='') {
+				$record[$rec] = $fieldaggr.':"'.$adb->query_result($list_query, $i, $fieldaggr).'"';
+			}
 			$records[$i] = implode(',', $record);
 		}
 		$recordsimpl = '{'.implode('},{', $records).'}';
 		$namerw = '"'.implode('","', $namerow).'"';
 		$namecl = '"'.implode('","', $namecol).'"';
 
+		$smarty->assign('aggreg', $aggreg);
 		$smarty->assign('ROWS', $namerw);
 		$smarty->assign('COLS', $namecl);
 		$smarty->assign('RECORDS', $recordsimpl);
