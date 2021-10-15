@@ -2033,7 +2033,7 @@ const mb = {
 								};
 								defaultrelatedlists.push(listObj);
 							}
-						}			
+						}
 					}
 				}
 				modObj.relatedlists = relatedlists;
