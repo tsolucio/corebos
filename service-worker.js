@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "d6dba707e6ffb8142053145754967ad7"
 }, {
   "url": "include/js/general.js",
-  "revision": "c164363e2afd4c92f65fce8845990e15"
+  "revision": "96bbfd8137c87e4c4b50a240ff6fe42a"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "ce80de25f73e55ce40a8b1c4ac68f70a"
@@ -9332,10 +9332,10 @@ precacheAndRoute([{
   "revision": "6626f0f78193fd6d9f22cf7e9fc8c6ec"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "f6416e5421c268f75a20aaee59f603ef"
+  "revision": "d3e7355f4d578da3a0763d3f9b20ab3f"
 }, {
   "url": "include/js/ListViewRenderes.js",
-  "revision": "201ef2ff1db5677b0162877700b55959"
+  "revision": "a90bae142252ea4ba9675bd0c6ed7bec"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
@@ -9401,7 +9401,7 @@ precacheAndRoute([{
   "revision": "05becc7a0a84cda65e7fec3e97ff7933"
 }, {
   "url": "include/components/ldsmodal.js",
-  "revision": "910f00c9a82b42a54eac03949a08b062"
+  "revision": "7dfd6f1a5414ea716cabb1982cbdcbac"
 }, {
   "url": "include/components/ldsprompt.js",
   "revision": "dcff6c137f5d5a9669c75dd4a719f2b0"
@@ -9533,7 +9533,7 @@ precacheAndRoute([{
   "revision": "f81b5a4264ea41a328d5db7c318851f1"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
-  "revision": "9ad990a1b14ea75c3d8e10ee616ce9c5"
+  "revision": "1f4424f72609c356317ea1f8c15a5a5d"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
   "revision": "fc683735b7a78c8fc840d73220632b65"
