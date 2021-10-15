@@ -2017,6 +2017,7 @@ const mb = {
 					relatedlists.push(listObj);
 					tempIndex++;
 				}
+				let defaultrelatedlists = [];
 				for (let r = 0; r < defaultRL.length; r++) {
 					const relatedmodules = defaultRL[r].relatedmodules.split(',');
 					if (relatedmodules.length > 0) {
@@ -2030,12 +2031,13 @@ const mb = {
 									actions: ['ADD'],
 									relatedmodule: relatedmodules[i],
 								};
-								relatedlists.push(listObj);
+								defaultrelatedlists.push(listObj);
 							}
 						}			
 					}
 				}
 				modObj.relatedlists = relatedlists;
+				modObj.defaultrelatedlists = defaultrelatedlists;
 				modObj.sharingaccess = res.info.sharingaccess;
 				modObj.actions = {
 					'Merge': res.info.actions.merge,

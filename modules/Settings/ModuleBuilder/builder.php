@@ -258,7 +258,7 @@ class ModuleBuilder {
 		} elseif ($step == 5) {
 			$recordid = vtlib_purify($_REQUEST['recordid']);
 			if ($recordid > 0) {
-				$adb->pquery('UPDATE vtiger_modulebuilder_relatedlists SET function=?, label=?, actions=?, relatedmodule=? WHERE relatedlistid=?', array(
+				$adb->pquery('UPDATE vtiger_modulebuilder_relatedlists SET `function`=?, label=?, actions=?, relatedmodule=? WHERE relatedlistid=?', array(
 					$this->column_data['name'],
 					$this->column_data['label'],
 					$this->column_data['actions'],
@@ -267,7 +267,7 @@ class ModuleBuilder {
 				));
 			} else {
 				if (isset($this->column_data['name']) && $this->column_data['name'] != '') {
-					$adb->pquery('INSERT INTO vtiger_modulebuilder_relatedlists (function, label, actions, relatedmodule, moduleid) VALUES(?,?,?,?,?)', array(
+					$adb->pquery('INSERT INTO vtiger_modulebuilder_relatedlists (`function`, `label`, `actions`, `relatedmodule`, `moduleid`) VALUES(?,?,?,?,?)', array(
 						$this->column_data['name'],
 						$this->column_data['label'],
 						$this->column_data['actions'],
@@ -399,17 +399,18 @@ class ModuleBuilder {
 		if ($query == '' || strlen($query) < 2) {
 			return array();
 		}
-		$function = $adb->pquery("SELECT relatedmodules FROM vtiger_modulebuilder_fields WHERE uitype = 10 AND moduleid = ? ORDER BY fieldsid DESC", array($this->id));
+		$function = $adb->pquery("SELECT modulename FROM vtiger_entityname WHERE modulename LIKE ?", array('%'.$query.'%'));
 		$module = array();
 		while ($row = $function->FetchRow()) {
-			$relatedmodules = explode(',', $row['relatedmodules']);
-			foreach ($relatedmodules as $key => $value) {
-				if (strpos(strtolower($value), strtolower($query)) !== false) {
-					array_push($module, $value);
+			$modulename = $row['modulename'];
+			$rl = $adb->pquery('SELECT relatedmodule FROM vtiger_modulebuilder_relatedlists WHERE moduleid=?', array($this->id));
+			while ($r = $rl->FetchRow()) {
+				if ($r['relatedmodule'] != $modulename && !in_array($modulename, $module)) {
+					array_push($module, $modulename);
 				}
 			}
 		}
-		return array_unique($module);
+		return $module;
 	}
 
 	public function getUitypeNumber($mod) {
@@ -1090,6 +1091,52 @@ class ModuleBuilder {
 		$newContent = str_replace('MODULE_NAME_LABEL', $map['label'], $newContent);
 		$newContent = str_replace("'icon'=>'account'", "'icon'=>'".$map['icon']."'", $newContent);
 		$moduleFile = fopen($path.'/modules/'.$module.'/'.$module.'.php', "w");
+		$lists = $template['lists']['data']['contents'];
+		$rel_str = '$moduleInstance = Vtiger_Module::getInstance("'.$module.'");';
+		if (isset($_REQUEST['map']['defaultrelatedlists'])) {
+			$defaultrelatedlists = $_REQUEST['map']['defaultrelatedlists'];
+			foreach ($defaultrelatedlists as $list) {
+				$relatedmodule = $list['relatedmodule'];
+				$functionname = $list['function'];
+				$rel_str .= '
+			$mod'.$relatedmodule.' = Vtiger_Module::getInstance("'.$relatedmodule.'");
+			if ($mod'.$relatedmodule.') {
+				$mod'.$relatedmodule.'->setRelatedList($moduleInstance, "'.$module.'", array("ADD"), "get_dependents_list");
+			}';
+			}
+		}
+		foreach ($lists as $list) {
+			$relatedmodule = $list['relatedmodule'];
+			$functionname = $list['functionname'];
+			if ($functionname == 'get_relatedlist_list') {
+				$rel_str .= '
+			$mod'.$relatedmodule.' = Vtiger_Module::getInstance("'.$relatedmodule.'");
+			if ($mod'.$relatedmodule.') {
+				$mod'.$relatedmodule.'->setRelatedList($moduleInstance, "'.$module.'", array("ADD,SELECT"), "get_relatedlist_list");
+			}
+				';
+			} else {
+				$blockname = $this->getBlockName($relatedmodule);
+				$rel_str .= '
+			$mod'.$relatedmodule.' = Vtiger_Module::getInstance("'.$relatedmodule.'");
+			if ($mod'.$relatedmodule.') {
+				$blockInstance = Vtiger_Block::getInstance("'.$blockname.'", $mod'.$relatedmodule.');
+				$field = new Vtiger_Field();
+				$field->name = "'.strtolower($module).'_relation";
+				$field->label= "'.$module.'";
+				$field->column = "'.strtolower($module).'_relation";
+				$field->columntype = "INT(20)";
+				$field->uitype = 10;
+				$field->displaytype = 1;
+				$field->typeofdata = "V~O";
+				$field->presence = 0;
+				$blockInstance->addField($field);
+				$field->setRelatedModules(array("'.$module.'"));
+			}
+				';
+			}
+		}
+		$newContent = str_replace("// Handle post installation actions", $rel_str, $newContent);
 		fwrite($moduleFile, $newContent);
 		fclose($moduleFile);
 		$this->zipModule($path, $module);
@@ -1106,6 +1153,13 @@ class ModuleBuilder {
 		$adb->pquery('DELETE FROM vtiger_modulebuilder_name WHERE moduleid=?', array($moduleid));
 		$adb->pquery('DELETE FROM vtiger_modulebuilder_relatedlists WHERE moduleid=?', array($moduleid));
 		return !$adb->database->_errorMsg;
+	}
+
+	public function getBlockName($module) {
+		global $adb;
+		$tabid = getTabId($module);
+		$rs = $adb->pquery('SELECT blocklabel FROM vtiger_blocks WHERE tabid=? LIMIT 1', array($tabid));
+		return $adb->query_result($rs, 0, 'blocklabel');
 	}
 }
 ?>
