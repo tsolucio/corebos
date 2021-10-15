@@ -17,13 +17,17 @@
 <script type="text/javascript">
 {literal}
     $(function(){
+        var sum = $.pivotUtilities.aggregatorTemplates.sum;
+        var numberFormat = $.pivotUtilities.numberFormat;
+        var intFormat = numberFormat({digitsAfterDecimal: 0});
         $("#output").pivot(
             [
                {/literal}{$RECORDS}{literal}
             ],
             {
                 rows: [{/literal}{$ROWS}{literal}],
-                cols: [{/literal}{$COLS}{literal}]
+                cols: [{/literal}{$COLS}{literal}],
+                {/literal}{$aggreg}{literal}
             }
         );
      });

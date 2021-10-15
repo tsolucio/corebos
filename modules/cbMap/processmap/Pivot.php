@@ -20,6 +20,7 @@
 <map>
 	<module>Module name</module>
 	<filter>filter name</filter>
+	<aggregate>aggregator</aggregate>
 	<rows>
 		<row>
 			<name>value of module field name</name>
@@ -50,6 +51,7 @@ class Pivot extends processcbMap {
 		$i = 0;
 		$j = 0;
 		$this->mapping['module'] = (string)$xml->module;
+		$this->mapping['aggregate'] = (string)$xml->aggregate;
 		$customView = new CustomView($this->mapping['module']);
 		$rows = array();
 		$this->mapping['filter'] = $customView->getViewIdByName((string)$xml->filter, $this->mapping['module']);
