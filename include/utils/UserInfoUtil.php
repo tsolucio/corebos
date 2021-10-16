@@ -1352,8 +1352,8 @@ function getAllRoleDetails() {
 	global $log, $adb;
 	$log->debug('> getAllRoleDetails');
 	$role_det = array();
-	$query = 'select * from vtiger_role';
-	$result = $adb->pquery($query, array());
+	$immediatesubordinates = 'select roleid from vtiger_role where parentrole like ? and depth=?';
+	$result = $adb->pquery('select * from vtiger_role', array());
 	$num_rows = $adb->num_rows($result);
 	for ($i=0; $i<$num_rows; $i++) {
 		$each_role_det = array();
@@ -1364,9 +1364,7 @@ function getAllRoleDetails() {
 		$parentrole=$adb->query_result($result, $i, 'parentrole');
 		$sub_role='';
 
-		//getting the immediate subordinates
-		$query1='select roleid from vtiger_role where parentrole like ? and depth=?';
-		$res1 = $adb->pquery($query1, array($parentrole.'::%', $sub_roledepth));
+		$res1 = $adb->pquery($immediatesubordinates, array($parentrole.'::%', $sub_roledepth));
 		$num_roles = $adb->num_rows($res1);
 		if ($num_roles > 0) {
 			for ($j=0; $j<$num_roles; $j++) {
