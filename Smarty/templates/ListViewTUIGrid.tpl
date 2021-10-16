@@ -47,7 +47,7 @@
 						<span id="filterOptions"></span>
 						</td>
 						<td style="padding-left:5px;padding-right:5px;width:45%;" align="center">
-						<a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
+						<a href="index.php?module={$MODULE}&action=CustomView">{$APP.LNK_CV_CREATEVIEW}</a>
 						<span id="filterEditActions"></span>
 						<span id="filterDeleteActions"></span>
 						</td>
