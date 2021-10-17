@@ -983,7 +983,7 @@ function getProfile2FieldList($fld_module, $profileid) {
 /** Function to insert value to profile2fieldPermissions table
  * @param string field module
  * @param integer profileid
- * @return string return_data
+ * @return array return_data
  */
 function getProfile2FieldPermissionList($fld_module, $profileid) {
 	global $log;

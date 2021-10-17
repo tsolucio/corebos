@@ -1043,8 +1043,8 @@ class CRMEntity {
 	}
 
 	/** Function to retrieve the information of the given recordid
-	 * @param $record -- Id:: Type Integer
-	 * @param $module -- module:: Type String
+	 * @param integer Id
+	 * @param string module
 	 * This function retrieves the information from the database and sets the value in the class column_fields array
 	 */
 	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false, $throwexception = false) {
@@ -1172,8 +1172,8 @@ class CRMEntity {
 	}
 
 	/** Function to retrieve the information of the given recordidS
-	 * @param $records -- Array of CRMIds
-	 * @param $module -- String module
+	 * @param array of CRMIds
+	 * @param string module
 	 * This function retrieves the information from the database and sets the value in the class fetched_records array
 	 */
 	public function retrieve_entities_info($records, $module, $from_wf = false) {

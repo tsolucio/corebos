@@ -427,9 +427,9 @@ $__htmlpurifier_instance = false;
 /**
  * Purify (Cleanup) malicious snippets of code from the input
  *
- * @param String $value
- * @param Boolean $ignore Skip cleaning of the input
- * @return String
+ * @param string value to clean
+ * @param boolean ignore skip cleaning of the input
+ * @return string sanitized
  */
 function vtlib_purify($input, $ignore = false) {
 	global $__htmlpurifier_instance, $root_directory, $default_charset;
