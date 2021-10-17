@@ -691,7 +691,9 @@ function decide_to_html() {
 	$action = vtlib_purify($request['action']);
 	$search = vtlib_purify($request['search']);
 	$ajax_action = '';
-	if ($request['module'] != 'Settings' && $request['file'] != 'ListView' && $request['module'] != 'Portal' && $request['module'] != 'Reports') {
+	if ($request['file']!='ActivityReminderCallbackAjax' && $request['module']!='Settings' && $request['file']!='ListView'
+		&& $request['module']!='Portal' && $request['module']!='Reports'
+	) {
 		$ajax_action = $request['module'].'Ajax';
 	}
 	if (($action != 'CustomView' && $action != 'Export' && $action != $ajax_action && $action != 'LeadConvertToEntities' && $action != 'CreatePDF'

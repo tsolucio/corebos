@@ -176,10 +176,10 @@ function printToDoList($activities_reminder) {
 		$smarty->assign('TASKItemRead', $ACTIVITY['cbreaded']);
 		$smarty->assign('TASKImage', $ACTIVITY['activityimage']);
 		$smarty->assign('TASKType', $ACTIVITY['activitytype']);
-		$smarty->assign('TASKTitle', $ACTIVITY['cbsubject']);
-		$smarty->assign('TASKSubtitle', $ACTIVITY['activitytype'].' - '.$ACTIVITY['cbstatus']);
-		$smarty->assign('TASKSubtitleColor', $ACTIVITY['cbcolor']);
-		$smarty->assign('TASKStatus', $ACTIVITY['cbdate'].' '.$ACTIVITY['cbtime']);
+		$smarty->assign('TASKTitle', vtlib_purify($ACTIVITY['cbsubject']));
+		$smarty->assign('TASKSubtitle', vtlib_purify($ACTIVITY['activitytype'].' - '.$ACTIVITY['cbstatus']));
+		$smarty->assign('TASKSubtitleColor', vtlib_purify($ACTIVITY['cbcolor']));
+		$smarty->assign('TASKStatus', vtlib_purify($ACTIVITY['cbdate'].' '.$ACTIVITY['cbtime']));
 		$actions = array();
 		$actions[getTranslatedString('LBL_VIEW', 'Settings')] = array(
 			'type' => 'link',
