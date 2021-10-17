@@ -1,0 +1,9 @@
+<updatesChangeLog>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Module Builder to Settings</description>
+	<filename>build/changeSets/2020/addModuleBuilder.php</filename>
+	<classname>addModuleBuilder</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>
