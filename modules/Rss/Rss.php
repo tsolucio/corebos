@@ -203,7 +203,7 @@ class vtigerRSS extends CRMEntity {
 				} else {
 					$shtml .= "<img src=\"". vtiger_imageurl('unstarred.gif', $theme) ."\" align=\"absmiddle\">";
 				}
-				$shtml .= "<a href=\"".$this->rss_object[link]."\"> ".$rssrow['rsstitle']."</a>
+				$shtml .= "<a href=\"".$this->rss_object['link']."\"> ".$rssrow['rsstitle']."</a>
 					</td>
 					</tr>
 					</table>";
