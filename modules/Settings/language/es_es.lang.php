@@ -639,7 +639,7 @@ $mod_strings = array (
 	'VTLIB_LBL_MODULE_MANAGER_STANDARDMOD'=>'Módulos Estándar',
 	'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'No se han encontrado módulos personalizados! Crea o Importa uno nuevo...',
 
-	// vtmailscanner START
+	// mail converter START
 	'LBL_MAIL_SCANNER'=>'Clasificar Correos',
 	'MailScanner' =>'Clasificar Correos',
 	'LBL_MAIL_SCANNER_DESCRIPTION'=>'Configura el buzón para clasificación',
@@ -857,7 +857,6 @@ $mod_strings = array (
 
 	'ERR_INVALID_PROFILE_ID' => 'Identificador perfil inválido. Por favor, indica un identificador válido',
 
-	// Customization
 	'LBL_ALREADY_EXISTS' => 'Ya Existe',
 	'LBL_EXTENSION_INCOMPATIBLE' => 'Extensión Incompatible',
 	'LBL_INSTALL' => 'Instalar',
@@ -996,13 +995,13 @@ $mod_strings = array (
 	'LBL_MB_LISTRLISTS' => 'LISTA DE LISTAS RELACIONADAS',
 	'LBL_MB_LISTVIEWS' => 'LISTA DE FILTROS',
 	'LBL_MB_LISTFIELDS' => 'LISTA DE CAMPOS',
-	'LBL_CUSTOM_INFORMATION' => 'CUSTOM INFORMATION',
-	'LBL_SHARING_ACCESS' => 'SHARING ACCESS',
-	'LBL_PRIVATE' => 'Private',
-	'LBL_PUBLIC' => 'Public',
-	'LBL_ACTIONS' => 'ACTIONS',
-	'LBL_MERGE' => 'Merge',
-	'LBL_IMPORT' => 'Import',
-	'LBL_EXPORT' => 'Export',
+	'LBL_CUSTOM_INFORMATION' => 'INFORMACION PERSONALIZADA',
+	'LBL_SHARING_ACCESS' => 'ACCESO COMPARTIDO',
+	'LBL_PRIVATE' => 'Privado',
+	'LBL_PUBLIC' => 'Público',
+	'LBL_ACTIONS' => 'ACCIONES',
+	'LBL_MERGE' => 'Combinar',
+	'LBL_IMPORT' => 'Importar',
+	'LBL_EXPORT' => 'Exportar',
 );
 ?>
