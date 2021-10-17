@@ -1146,9 +1146,9 @@ class CustomView extends CRMEntity {
 		// Tabid mapped to the list of block labels to be skipped for that tab.
 		$showUserAdvancedBlock = GlobalVariable::getVariable('Webservice_showUserAdvancedBlock', 0);
 		if ($showUserAdvancedBlock) {
-			$userNoShowBlocks = array('LBL_USER_IMAGE_INFORMATION','Asterisk Configuration');
+			$userNoShowBlocks = array('LBL_USER_IMAGE_INFORMATION');
 		} else {
-			$userNoShowBlocks = array('LBL_USER_IMAGE_INFORMATION','LBL_USER_ADV_OPTIONS','Asterisk Configuration');
+			$userNoShowBlocks = array('LBL_USER_IMAGE_INFORMATION','LBL_USER_ADV_OPTIONS');
 		}
 		$skipBlocksList = array(
 			getTabid('HelpDesk') => array('LBL_COMMENTS'),
