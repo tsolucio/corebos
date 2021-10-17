@@ -112,7 +112,7 @@ class Emails extends CRMEntity {
 		$InsertRelationSQL = 'insert into vtiger_seactivityrel values(?,?)';
 		$DeleteRelationSQL = 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
 		if (!empty($_REQUEST['module']) && $_REQUEST['module'] == 'Emails' && !$this->plugin_save) {
-			if ($_REQUEST['currentid'] != '') {
+			if (!empty($_REQUEST['currentid'])) {
 				$actid = $_REQUEST['currentid'];
 			} else {
 				$actid = $_REQUEST['record'];
