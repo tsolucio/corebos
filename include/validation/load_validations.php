@@ -21,6 +21,7 @@ class cbValidator extends Validator {
 	public $CustomValidations = array(
 		'IBAN_BankAccount' => 'validate_IBAN_BankAccount',
 		'EU_VAT' => 'validate_EU_VAT',
+		'EU_VAT_NotBlank' => 'validate_EU_VAT_NotBlank',
 		'notDuplicate' => 'validate_notDuplicate',
 		'expression' => 'validate_expression',
 		'cbtaxclassrequired' => 'cbTaxclassRequired',
