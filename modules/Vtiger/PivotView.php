@@ -37,12 +37,13 @@ if ($cbMapid) {
 
 		foreach ($rows as $rw) {
 			$namerow[] = $rw['name'];
+			$namelabelrow[] = getTranslatedString($rw['label']);
 		}
 		foreach ($cols as $cl) {
 			$namecol[] = $cl['name'];
+			$namelabelcol[] = getTranslatedString($cl['label']);
 			$namecolaggr[] = $cl['name'];
 		}
-
 		if (isset($fieldaggr) && $fieldaggr!='') {
 			$aggreg='aggregator: sum(intFormat)(["'.$fieldaggr.'"])';
 			$namecolaggr[] = $fieldaggr;
@@ -61,11 +62,11 @@ if ($cbMapid) {
 		for ($i = 0; $i < $count; $i++) {
 			$rec = 0;
 			foreach ($rows as $rw) {
-				$record[$rec] = $rw['name'].':"'.$adb->query_result($list_query, $i, $rw['name']).'"';
+				$record[$rec] = getTranslatedString($rw['label']).':"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $rw['name']))).'"';
 				$rec++;
 			}
 			foreach ($cols as $cl) {
-				$record[$rec] = $cl['name'].':"'.$adb->query_result($list_query, $i, $cl['name']).'"';
+				$record[$rec] = getTranslatedString($cl['label']).':"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $cl['name']))).'"';
 				$rec++;
 			}
 			if (isset($fieldaggr) && $fieldaggr!='') {
@@ -74,8 +75,8 @@ if ($cbMapid) {
 			$records[$i] = implode(',', $record);
 		}
 		$recordsimpl = '{'.implode('},{', $records).'}';
-		$namerw = '"'.implode('","', $namerow).'"';
-		$namecl = '"'.implode('","', $namecol).'"';
+		$namerw = '"'.implode('","', $namelabelrow).'"';
+		$namecl = '"'.implode('","', $namelabelcol).'"';
 
 		$smarty->assign('aggreg', $aggreg);
 		$smarty->assign('ROWS', $namerw);
