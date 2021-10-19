@@ -724,52 +724,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<input name="bccmail" type="text" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"  value="">
 			</td>
 			</tr>
-
-		{elseif $uitype eq 55 || $uitype eq 255}
-			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-			{if $MASS_EDIT eq '1' && $fldvalue neq ''}
-				{$APP.Salutation}<input type="checkbox" name="salutationtype_mass_edit_check" id="salutationtype_mass_edit_check" class="small" ><br />
-			{/if}
-			{if $uitype eq 55}
-				{$usefldlabel}{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			{elseif $uitype eq 255}
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			{/if}
-			</td>
-
-			<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
-			<span style='display:none;' id='{$fldname}_hidden'></span>
-			{if $fldvalue neq ''}
-			<select name="salutationtype" class="small">
-				{foreach item=arr from=$fldvalue}
-				<option value="{$arr[1]}" {$arr[2]}>
-				{$arr[0]}
-				</option>
-				{/foreach}
-			</select>
-			{if $MASS_EDIT eq '1'}<br />{/if}
-			{/if}
-			{if (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']))}
-				{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
-				<div style="position: relative;">
-				<input
-					type="text"
-					name="{$fldname}"
-					id="{$fldname}"
-					tabindex="{$vt_tab}"
-					value="{$secondvalue}"
-					tabindex="{$vt_tab}"
-					autocomplete="off"
-					class="autocomplete-input detailedViewTextBox"
-					data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}' />
-					<div id="listbox-unique-id" role="listbox" class="">
-						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
-					</div>
-				</div>
-			{else}
-				<input type="text" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" style="width:58%;" value= "{$secondvalue}" >
-			{/if}
-			</td>
 		{elseif $uitype eq 14}
 			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {"LBL_TIMEFIELD"|@getTranslatedString}{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
