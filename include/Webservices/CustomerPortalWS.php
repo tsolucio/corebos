@@ -623,7 +623,8 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $company
 				$condition .= ($condition=='' ? '' : ' or ').$col.(is_array($contactId) ? ' IN ('.implode(',', $contactId).')' : '='.$contactId);
 			}
 	}
-	return $condition;
+	$filtered = cbEventHandler::do_filter('corebos.filter.portalmodulerestrictions', array($module, $accountId, $contactId, $companyAccess, $condition));
+	return $filtered[4];
 }
 
 // To get the modules allowed for global search
