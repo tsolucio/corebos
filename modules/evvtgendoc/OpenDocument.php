@@ -2823,7 +2823,7 @@ class OpenDocument {
 			for ($x = 1; $x <= $retries; $x++) {
 				$post = $client->doPost(array());
 				$rsp = json_decode($post, true);
-				if (empty($rsp['error'])) {
+				if (json_last_error() === JSON_ERROR_NONE) {
 					break;
 				}
 			}
