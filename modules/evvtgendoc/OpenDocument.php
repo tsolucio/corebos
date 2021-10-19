@@ -2819,7 +2819,14 @@ class OpenDocument {
 		} elseif (GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc')!='') {
 			$client = new Vtiger_Net_Client(GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc').'/unoconv/'.$format);
 			$client->setFileUpload('file', $frompath, 'file');
-			$post = $client->doPost(array());
+			$retries = GlobalVariable::getVariable('GenDoc_PDFConversion_Retries', 1, 'evvtgendoc');
+			for ($x = 1; $x <= $retries; $x++) {
+				$post = $client->doPost(array());
+				$rsp = json_decode($post, true);
+				if (empty($rsp['error'])) {
+					break;
+				}
+			}
 			file_put_contents($topath, $post);
 		} else {
 			$cmd = 'unoconv -v -f '.escapeshellarg($format) . ' ' . escapeshellarg($frompath) . ' 2>&1';
