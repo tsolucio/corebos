@@ -355,43 +355,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$options[] = array($pickListValue => $chk_val );
 		}
 		$fieldvalue[] = $options;
-	} elseif ($uitype == 55 || $uitype == 255) {
-		require_once 'modules/PickList/PickListUtils.php';
-		if ($uitype==255) {
-			$fieldpermission = getFieldVisibilityPermission($module_name, $current_user->id, 'firstname', 'readwrite');
-		}
-		if ($uitype == 255 && $fieldpermission == '0') {
-			$fieldvalue[] = '';
-		} else {
-			$fieldpermission = getFieldVisibilityPermission($module_name, $current_user->id, 'salutationtype', 'readwrite');
-			if ($fieldpermission == '0') {
-				$roleid=$current_user->roleid;
-				$picklistValues = getAssignedPicklistValues('salutationtype', $roleid, $adb);
-				$pickcount = 0;
-				$salt_value = (isset($col_fields['salutationtype']) ? $col_fields['salutationtype'] : '');
-				foreach ($picklistValues as $pickListValue) {
-					if ($salt_value == trim($pickListValue)) {
-						$chk_val = 'selected';
-						$pickcount++;
-					} else {
-						$chk_val = '';
-					}
-					if (isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate') {
-						$options[] = array(htmlentities(getTranslatedString($pickListValue, 'Contacts'), ENT_QUOTES, $default_charset),$pickListValue,$chk_val );
-					} else {
-						$options[] = array(getTranslatedString($pickListValue, 'Contacts'),$pickListValue,$chk_val);
-					}
-				}
-				if ($pickcount == 0 && $salt_value != '') {
-					$options[] = array($app_strings['LBL_NOT_ACCESSIBLE'],$salt_value,'selected');
-				}
-				$fieldvalue [] = $options;
-			} else {
-				$fieldvalue[] = '';
-			}
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 63) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		if ($value=='') {

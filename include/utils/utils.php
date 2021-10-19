@@ -2006,7 +2006,7 @@ function generateQuestionMarks($items_list) {
 function is_uitype($uitype, $reqtype) {
 	$ui_type_arr = array(
 		'_date_' => array(5, 6, 23, 70),
-		'_picklist_' => array(15, 16, 55, 63, 115, 357),
+		'_picklist_' => array(15, 16, 63, 115, 357),
 		'_users_list_' => array(52, 53, 77, 98, 101,),
 	);
 
@@ -2133,7 +2133,7 @@ function getAccessPickListValues($module) {
 	$id = getTabid($module);
 	$query = "select fieldname,columnname,fieldid,fieldlabel,tabid,uitype
 		from vtiger_field
-		where tabid = ? and uitype in ('15','33','55') and vtiger_field.presence in (0,2)";
+		where tabid = ? and uitype in ('15','33') and vtiger_field.presence in (0,2)";
 	$result = $adb->pquery($query, array($id));
 
 	$roleid = $current_user->roleid;
@@ -2188,8 +2188,6 @@ function getAccessPickListValues($module) {
 		}
 		if ($uitype == 33) {
 			$fieldlists[1][$keyvalue] = $fieldvalues;
-		} elseif ($uitype == 55 && $fieldname == 'salutationtype') {
-			$fieldlists[$keyvalue] = $fieldvalues;
 		} elseif ($uitype == 15) {
 			$fieldlists[$keyvalue] = $fieldvalues;
 		}
