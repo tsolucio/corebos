@@ -1372,6 +1372,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'URL',
 	'definition' => 'URL al servidor de conversión: https://github.com/sfoxdev/docker-unoconv',
 ),
+'GenDoc_PDFConversion_Retries' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Extensión',
+	'values' => 'Entero positivo',
+	'definition' => 'El número máximo de reintentos al convertir la plantilla a PDF si falla la conversión.',
+),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Aplicación',

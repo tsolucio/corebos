@@ -1375,8 +1375,8 @@ $GlobalVariableDefinitons = array(
 'GenDoc_PDFConversion_Retries' => array(
 	'valuetype' => 'Integer',
 	'category' => 'Extension',
-	'values' => 'Any Integer',
-	'definition' => 'The minimal number of retries when PDF conversion fails.',
+	'values' => 'Positive Integer',
+	'definition' => 'The maximum number of retries when PDF conversion fails.',
 ),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Integer',
