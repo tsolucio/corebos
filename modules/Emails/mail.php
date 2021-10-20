@@ -132,7 +132,7 @@ function send_mail(
 
 	// Add main HTML tags when missing
 	if (!preg_match('/^\s*<\!DOCTYPE/', $contents) && !preg_match('/^\s*<html/i', $contents)) {
-		$contents = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head><body>" . $contents . "</body></html>";
+		$contents = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head><body>'.$contents.'</body></html>';
 	}
 	if ($module != 'Calendar') {
 		$contents = addSignature($contents, $from_name);
@@ -154,7 +154,7 @@ function send_mail(
 		$systemEmailClassName = 'Emails'; // default system method
 	}
 
-	$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', "");
+	$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', '');
 
 	if (!empty($inBucketServeUrl)) {
 		$systemEmailClassName = 'Emails';
@@ -203,7 +203,7 @@ function getUserEmailId($name, $val) {
 		$adb->println('< getUserEmailId '.$email);
 		return $email;
 	} else {
-		$adb->println("< getUserEmailId User id is empty ''");
+		$adb->println('< getUserEmailId User id is empty');
 		return '';
 	}
 }
@@ -260,10 +260,10 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 	$mail->Subject = $subject;
 	$mail->Body = $contents;
 	//$mail->Body = html_entity_decode(nl2br($contents));	//if we get html tags in mail then we will use this line
-	$mail->AltBody = strip_tags(preg_replace(array("/<p>/i","/<br>/i","/<br \/>/i"), array("\n","\n","\n"), $contents));
+	$mail->AltBody = strip_tags(preg_replace(array('/<p>/i', '/<br>/i', '/<br \/>/i'), array("\n", "\n", "\n"), $contents));
 
 	$mail->IsSMTP();		//set mailer to use SMTP
-	//$mail->Host = "smtp1.example.com;smtp2.example.com";  // specify main and backup server
+	//$mail->Host = 'smtp1.example.com;smtp2.example.com';  // specify main and backup server
 
 	setMailServerProperties($mail);
 
@@ -348,11 +348,11 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 function setMailServerProperties($mail) {
 	global $adb,$default_charset, $current_user;
 
-	$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', "");
+	$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', '');
 	if (!empty($inBucketServeUrl)) {
 		$mail->Host = $inBucketServeUrl; // Url for InBucket Server
-		$mail->Username = "";	// SMTP username
-		$mail->Password = "" ;	// SMTP password
+		$mail->Username = '';	// SMTP username
+		$mail->Password = '' ;	// SMTP password
 		$mail->SMTPAuth = false;
 	} else {
 		$adb->println('> setMailServerProperties');
