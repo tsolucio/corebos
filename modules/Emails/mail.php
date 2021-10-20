@@ -121,7 +121,7 @@ function send_mail(
 		//setting from _email to the defined email address in the outgoing server configuration
 		$from_email = $from_email_field;
 	}
-	$user_mail_config = $adb->pquery('select * from vtiger_mail_accounts where user_id=? AND og_server_status=1', array($current_user->id));
+	$user_mail_config = $adb->pquery('select og_server_username from vtiger_mail_accounts where user_id=? AND og_server_status=1', array($current_user->id));
 	if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
 		$from_email = $adb->query_result($user_mail_config, 0, 'og_server_username');
 	}
