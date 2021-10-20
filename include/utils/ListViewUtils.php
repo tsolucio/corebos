@@ -1282,7 +1282,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$value = $dt . ' ' . $curr_time . $time_format;
 			}
 		}
-	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == 'salutationtype') || $uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
+	} elseif ($uitype == 15 || $uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
 		$value = getTranslatedString($field_valEncoded, $module);
 		$value = textlength_check($value);
 	} elseif ($uitype == 1616) {
