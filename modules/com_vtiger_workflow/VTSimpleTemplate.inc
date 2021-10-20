@@ -40,7 +40,7 @@ class VTSimpleTemplate {
 				$module_focus = Vtiger_Module::getInstance($moduleName);
 				$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
 				$uitype = $field_focus->uitype;
-				if ($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype')) {
+				if ($uitype == '15' || $uitype == '33') {
 					$result = getTranslatedString($data[$fieldname], $moduleName);
 				} elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
 					$date = new DateTimeField($data[$fieldname]);
@@ -96,7 +96,7 @@ class VTSimpleTemplate {
 									$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
 									$uitype = $field_focus->uitype;
 								}
-								if ($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype')) {
+								if ($uitype == '15' || $uitype == '33') {
 									$result = getTranslatedString($data[$fieldname], $referenceModule);
 								} elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
 									$date = new DateTimeField($data[$fieldname]);
