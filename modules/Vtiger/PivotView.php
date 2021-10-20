@@ -72,6 +72,9 @@ if ($cbMapid) {
 			if (isset($fieldaggr) && $fieldaggr!='') {
 				$record[$rec] = $fieldaggr.':"'.$adb->query_result($list_query, $i, $fieldaggr).'"';
 			}
+			$rec++;
+			$mainfield = getEntityField($currentModule)['fieldname'];
+			$record[$rec] = 'Name:"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $mainfield))).'"';
 			$records[$i] = implode(',', $record);
 		}
 		$recordsimpl = '{'.implode('},{', $records).'}';
