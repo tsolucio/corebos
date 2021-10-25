@@ -1352,11 +1352,29 @@
 			var fieldType = Field.getType(this.cond.fieldCombo.getVal()),
 				curVal    = this.input.value;
 
+			if (!this.doValidate(fieldType)) {
+				return !this.setError(false);
+			}
 			if (cbVal(fieldType, curVal)) {
 				return !this.setError(false);
 			} else {
 				return !this.setError(true);
 			}
+		},
+
+		/*
+		* method: doValidate
+		* Decide to do the validation for a field or no
+		*
+		* @param : (string)
+		* @return: (bool)
+		*/
+		doValidate: function (fieldtype) {
+			const doNotValid = ['E'];
+			if (doNotValid.includes(fieldtype)) {
+				return false;
+			}
+			return true;
 		},
 
 		/*
