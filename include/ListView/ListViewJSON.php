@@ -31,9 +31,6 @@ function getListViewJSON($currentModule, $tabid, $entries = 20, $orderBy = 'DESC
 	} else {
 		$order_by = $focus->getOrderBy();
 	}
-
-	coreBOS_Session::set($currentModule.'_Order_By', $order_by);
-
 	$sql_error = false;
 	$queryGenerator = new QueryGenerator($currentModule, $current_user);
 	try {
@@ -105,7 +102,7 @@ function getListViewJSON($currentModule, $tabid, $entries = 20, $orderBy = 'DESC
 
 	// Sorting
 	if (!empty($order_by)) {
-		$list_query.=' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.coreBOS_Session::get($currentModule.'_Sort_Order');
+		$list_query.=' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$orderBy;
 	}
 
 	if (isset($_REQUEST['isRecycleModule'])) {
