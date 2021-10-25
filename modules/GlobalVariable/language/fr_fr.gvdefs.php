@@ -208,6 +208,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Montre (1) ou cache (0) le widget calendrier dans la barre d\'outils. La valeur par défaut est (1).',
 ),
+'Application_Display_QuickCreate' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or Hide Quick Create options in menu',
+),
 'Application_Use_RTE' => array(
 	'valuetype' => 'Booléen',
 	'category' => 'Application',

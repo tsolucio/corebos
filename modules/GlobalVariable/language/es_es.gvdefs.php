@@ -208,6 +208,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar o Esconder el Calendario en la barra de herramientas',
 ),
+'Application_Display_QuickCreate' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Mostrar o Esconder las opciones de Creación Rápida en el menú',
+),
 'Application_Use_RTE' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',

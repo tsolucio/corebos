@@ -6496,7 +6496,8 @@ const pageHeader = {
 	},
 	'OnDownScroll' : () => {
 		if (pageHeader.node() !== null) {
-			if (window.scrollY > (pageHeader.stickPoint + 2) && !pageHeader.isSticky) {
+			pageHeader.collapse();
+			if (window.scrollY > (pageHeader.stickPoint + 2)) {
 				pageHeader.isSticky = true;
 				pageHeader.node().classList.add('page-header_sticky');
 				pageHeader.node().classList.add('slds-is-fixed');
@@ -6513,11 +6514,9 @@ const pageHeader = {
 			pageHeader.expand();
 			if (window.scrollY < (pageHeader.stickPoint - 2) && pageHeader.isSticky) {
 				pageHeader.isSticky = false;
-				window.setTimeout(function () {
-					pageHeader.node().classList.remove('page-header_sticky');
-					pageHeader.node().classList.remove('slds-is-fixed');
-					pageHeader.placeholder().style.height = '0px';
-				}, 80);
+				pageHeader.node().classList.remove('page-header_sticky');
+				pageHeader.node().classList.remove('slds-is-fixed');
+				pageHeader.placeholder().style.height = '0px';
 				pageHeader.node().style.transform = 'translateY(0px)';
 			}
 		}
@@ -6554,9 +6553,10 @@ const pageHeader = {
 	}
 };
 
+var isWaiting = false;
 function headerOnDownScroll() {
 	var h = document.getElementById('global-header');
-	if (h !== null) {
+	if (h !== null && !isWaiting) {
 		h.classList.add('header-scrolling');
 		h.dispatchEvent(headerCollapse);
 		if ($(document).scrollLeft() >= 0 && $(document).scrollTop() == 0) {
@@ -6567,12 +6567,15 @@ function headerOnDownScroll() {
 window.cbOnDownScrollers.push(headerOnDownScroll, pageHeader.OnDownScroll);
 
 function headerOnUpScroll() {
-	var h = document.getElementById('global-header'),
-		csy = window.scrollY;
-
+	var h = document.getElementById('global-header');
 	if (h !== null) {
+		isWaiting = true;
+		setTimeout(() => {
+			isWaiting = false;
+		}, 80);
 		h.classList.remove('header-scrolling');
 		h.dispatchEvent(headerExpand);
+		h.style.transition = 'none';
 	}
 }
 
