@@ -31,6 +31,7 @@ uasort($qc_modules, function ($a, $b) {
 	return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;
 });
 $smarty->assign('QCMODULE', $qc_modules);
+$smarty->assign('SHOWQUICKCREATE', (count($qc_modules) && GlobalVariable::getVariable('Application_Display_QuickCreate', 1)));
 $smarty->assign('APP', $app_strings);
 $smarty->assign('LBL_CHARSET', $default_charset);
 $cnt = count($qc_modules);

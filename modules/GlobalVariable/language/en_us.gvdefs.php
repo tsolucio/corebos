@@ -208,6 +208,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show or Hide mini Calendar widget in toolbar',
 ),
+'Application_Display_QuickCreate' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or Hide Quick Create options in menu',
+),
 'Application_Use_RTE' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',

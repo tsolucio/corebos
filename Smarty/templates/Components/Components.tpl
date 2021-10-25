@@ -37,6 +37,7 @@
 		{$i = $i+1}
 	{/foreach}
 	</ul>
+	{if $SHOWQUICKCREATE}
 	<div class="slds-context-bar__tertiary" style="float:left; margin-top:auto; margin-bottom:auto;">
 		<div class="slds-form-element">
 			<div class="slds-form-element__control">
@@ -51,6 +52,7 @@
 			</div>
 		</div>
 	</div>
+	{/if}
 </nav>
 {/function}
 
