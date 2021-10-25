@@ -46,12 +46,12 @@ class VTTaskQueue {
 		$adb = $this->adb;
 		$time = time();
 		$result = $adb->pquery('select task_id, entity_id from com_vtiger_workflowtask_queue where do_after<?', array($time));
+		$adb->pquery('delete from com_vtiger_workflowtask_queue where do_after<?', array($time));
 		$it =  new SqlResultIterator($adb, $result);
 		$arr = array();
 		foreach ($it as $row) {
 			$arr[]=array($row->task_id, $row->entity_id);
 		}
-		$adb->pquery('delete from com_vtiger_workflowtask_queue where do_after<?', array($time));
 		return $arr;
 	}
 }
