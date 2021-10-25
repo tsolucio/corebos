@@ -19,8 +19,8 @@ class Vtiger_Access {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 */
 	public static function log($message, $delim = true) {
 		Vtiger_Utils::Log($message, $delim);
@@ -49,7 +49,7 @@ class Vtiger_Access {
 	/**
 	 * Enable or Disable sharing access control to module
 	 * @param Vtiger_Module Instance of the module to use
-	 * @param Boolean true to enable sharing access, false disable sharing access
+	 * @param boolean true to enable sharing access, false disable sharing access
 	 * @access private
 	 */
 	public static function allowSharing($moduleInstance, $enable = true) {
@@ -93,7 +93,7 @@ class Vtiger_Access {
 	/**
 	 * Set default sharing for a module
 	 * @param Vtiger_Module Instance of the module
-	 * @param String Permission text should be one of ['Public_ReadWriteDelete', 'Public_ReadOnly', 'Public_ReadWrite', 'Private']
+	 * @param string Permission text should be one of ['Public_ReadWriteDelete', 'Public_ReadOnly', 'Public_ReadWrite', 'Private']
 	 * @access private
 	 */
 	public static function setDefaultSharing($moduleInstance, $permission_text = 'Public_ReadWriteDelete') {
@@ -133,9 +133,9 @@ class Vtiger_Access {
 	/**
 	 * Enable tool for module.
 	 * @param Vtiger_Module Instance of module to use
-	 * @param String Tool (action name) like Import, Export, Merge
-	 * @param Boolean true to enable tool, false to disable
-	 * @param Integer (optional) profile id to use, false applies to all profile.
+	 * @param string Tool (action name) like Import, Export, Merge
+	 * @param boolean true to enable tool, false to disable
+	 * @param integer (optional) profile id to use, false applies to all profile.
 	 * @access private
 	 */
 	public static function updateTool($moduleInstance, $toolAction, $flag, $profileid = false) {

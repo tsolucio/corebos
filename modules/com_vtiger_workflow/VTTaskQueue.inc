@@ -20,9 +20,9 @@ class VTTaskQueue {
 	/**
 	 * Queue a task for execution.
 	 *
-	 * @param $taskId The id of the task to queue
-	 * @param $entityId The id of the crm entity the task is assiciated with.
-	 * @param $when The time after which the task should be executed. This is an optional value with a default value of 0.
+	 * @param integer id of the task to queue
+	 * @param integer id of the crm entity the task is associated with
+	 * @param integer time after which the task should be executed. This is an optional value with a default value of 0
 	 */
 	public function queueTask($taskId, $entityId, $when = 0) {
 		$adb = $this->adb;
@@ -40,7 +40,7 @@ class VTTaskQueue {
 	 *
 	 * The method fetches task id/entity id where the when timestamp is less than the current time when the method was called.
 	 *
-	 * @return A list of pairs of the form array(taskId, entityId)
+	 * @return array list of pairs of the form [taskId, entityId]
 	 */
 	public function getReadyTasks() {
 		$adb = $this->adb;
