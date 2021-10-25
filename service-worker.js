@@ -9266,7 +9266,7 @@ precacheAndRoute([{
   "revision": "321798c3a4f90cafc07df60d8a8f0f2f"
 }, {
   "url": "include/js/advancefilter.js",
-  "revision": "6b856eb91378ff91e148795ef68303fc"
+  "revision": "f4f644da14380adddaa05f60ff8854c0"
 }, {
   "url": "include/js/asterisk.js",
   "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "d6dba707e6ffb8142053145754967ad7"
 }, {
   "url": "include/js/general.js",
-  "revision": "96bbfd8137c87e4c4b50a240ff6fe42a"
+  "revision": "a90674aafd2400d8e721d4cb716f5c59"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "ce80de25f73e55ce40a8b1c4ac68f70a"
