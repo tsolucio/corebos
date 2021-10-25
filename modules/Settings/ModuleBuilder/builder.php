@@ -541,7 +541,7 @@ class ModuleBuilder {
 			if ($recordid > 0) {
 				$viewSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_customview WHERE moduleid=? AND customviewid=?', array(
 					$moduleid, $recordid
-				));				
+				));
 			} else {
 				$viewSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_customview WHERE moduleid=?', array(
 					$moduleid
@@ -805,7 +805,7 @@ class ModuleBuilder {
 					$fieldlength = $info['fieldlength'] == 0 ? 20 : $info['fieldlength'];
 					if (in_array($uitype, $textfield)) {
 						$table .= "`".strtolower($fieldname)."` VARCHAR(".$fieldlength.") DEFAULT NULL,\n";
-					} else if (in_array($uitype, $decimalfield)) {
+					} elseif (in_array($uitype, $decimalfield)) {
 						$table .= "`".strtolower($fieldname)."` DECIMAL(".$fieldlength.") DEFAULT NULL,\n";
 					} else {
 						$table .= "`".strtolower($fieldname)."` ".$this->typeofdata[$uitype][0]." DEFAULT NULL,\n";
