@@ -1786,6 +1786,8 @@ class QueryGenerator {
 			} else {
 				if (!$this->isNumericType($type) && !$this->isDateType($type)) {
 					$operator = 'c';
+				} else if ($this->isDateType($type)) {
+					$operator = 'e';
 				} else {
 					$operator = 'h';
 				}
