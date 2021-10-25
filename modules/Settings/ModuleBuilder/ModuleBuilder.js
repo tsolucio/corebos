@@ -1647,100 +1647,79 @@ const mb = {
 	 * Generate related lists for step 5
 	 */
 	generateRelatedList: (relatedid = 0) => {
-		const modulename = mb.loadElement('modulename');
-		const _mod = {
-			modulename: modulename
-		};
-		jQuery.ajax({
-			method: 'POST',
-			url: url+'&methodName=getUitypeNumber',
-			data: _mod
-		}).done(function (response) {
-			document.getElementsByName('uitype_no').value = response;
-			let proceed = true;
-			if (response == 0) {
-				mb.loadMessage(mod_alert_arr.Related_modlabel, true, 'error');
-				proceed = false;
-			} else {
-				if (relatedid > 0) {
-					mb.clearList(1);
-				}
-				const LIST_COUNT = mb.autoIncrementIds('LIST_COUNT');
-				const table = mb.getTable('RelatedLists');
-				if (document.getElementById('for-related-1') && relatedid == 0) {
-					const msg = mod_alert_arr.relatedprocces;
-					mb.loadMessage(msg, true, 'error');
-					return;
-				}
-				const row = mb.createRow(table, 0, 'for-related-', LIST_COUNT);
-				const cell = mb.createCell(row, 0, 'related_inputs_', LIST_COUNT);
-
-				let listTemplate = `
-				<div class="slds-grid slds-gutters">
-					<div class="slds-col">
-						<div class="slds-form-element">
-							<label class="slds-form-element__label" for="autocomplete-related-${LIST_COUNT}">
-								<abbr class="slds-required" title="required">* </abbr> Function name
-							</label>
-							<div class="slds-form-element__control">
-								<div class="slds-select_container">
-									<select name="related-function-${LIST_COUNT}" id="autocomplete-related-${LIST_COUNT}" class="slds-select">
-										<option value="get_dependents_list">get_dependents_list</option>
-										<option value="get_relatedlist_list">get_relatedlist_list</option>
-									</select>
-								</div>
-							</div>
+		if (relatedid > 0) {
+			mb.clearList(1);
+		}
+		const LIST_COUNT = mb.autoIncrementIds('LIST_COUNT');
+		const table = mb.getTable('RelatedLists');
+		if (document.getElementById('for-related-1') && relatedid == 0) {
+			const msg = mod_alert_arr.relatedprocces;
+			mb.loadMessage(msg, true, 'error');
+			return;
+		}
+		const row = mb.createRow(table, 0, 'for-related-', LIST_COUNT);
+		const cell = mb.createCell(row, 0, 'related_inputs_', LIST_COUNT);
+		let listTemplate = `
+		<div class="slds-grid slds-gutters">
+			<div class="slds-col">
+				<div class="slds-form-element">
+					<label class="slds-form-element__label" for="autocomplete-related-${LIST_COUNT}">
+						<abbr class="slds-required" title="required">* </abbr> Function name
+					</label>
+					<div class="slds-form-element__control">
+						<div class="slds-select_container">
+							<select name="related-function-${LIST_COUNT}" id="autocomplete-related-${LIST_COUNT}" class="slds-select">
+								<option value="get_dependents_list">get_dependents_list</option>
+								<option value="get_relatedlist_list">get_relatedlist_list</option>
+							</select>
 						</div>
 					</div>
-					<div class="slds-col">
-						<div class="slds-form-element">
-							<label class="slds-form-element__label" for="related-label-${LIST_COUNT}">
-								<abbr class="slds-required" title="required">* </abbr> Label
-							</label>
-							<div class="slds-form-element__control">
-							<input type="text" name="related-label-${LIST_COUNT}" id="related-label-${LIST_COUNT}" class="slds-input" />
-							</div>
-						</div>
+				</div>
+			</div>
+			<div class="slds-col">
+				<div class="slds-form-element">
+					<label class="slds-form-element__label" for="related-label-${LIST_COUNT}">
+						<abbr class="slds-required" title="required">* </abbr> Label
+					</label>
+					<div class="slds-form-element__control">
+					<input type="text" name="related-label-${LIST_COUNT}" id="related-label-${LIST_COUNT}" class="slds-input" />
 					</div>
-					<div class="slds-col">
-						<div class="slds-form-element">
-							<label class="slds-form-element__label" for="related-action-${LIST_COUNT}">
-								<abbr class="slds-required" title="required">* </abbr> Related module
-							</label>
-							<div class="slds-form-element__control">
-							<input type="text" onkeyup="mb.autocomplete(this, 'module')" name="related-module-${LIST_COUNT}" id="autocomplete-module-${LIST_COUNT}" class="slds-input" />
-							</div>
-							<span id="autocomplete-modulespan-${LIST_COUNT}"></span>
-						</div>
+				</div>
+			</div>
+			<div class="slds-col">
+				<div class="slds-form-element">
+					<label class="slds-form-element__label" for="related-action-${LIST_COUNT}">
+						<abbr class="slds-required" title="required">* </abbr> Related module
+					</label>
+					<div class="slds-form-element__control">
+					<input type="text" onkeyup="mb.autocomplete(this, 'module')" name="related-module-${LIST_COUNT}" id="autocomplete-module-${LIST_COUNT}" class="slds-input" />
 					</div>
-				</div><br>
-				<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-list-${LIST_COUNT}" onclick="mb.SaveModule(5, false, this.id, ${relatedid})">
-					<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
-					</svg>${mod_alert_arr.LBL_MB_SAVE}
-				</button>
-				<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-list-${LIST_COUNT}" onclick="mb.clearList(${LIST_COUNT})">
-					<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
-					</svg>${mod_alert_arr.LBL_MB_CLEAR}
-				</button>`;
-				mb.loadElement(`related_inputs_${LIST_COUNT}`, true).innerHTML = listTemplate;
-				if (relatedid > 0) {
-					jQuery.ajax({
-						method: 'GET',
-						url: url+'&methodName=loadTemplate&recordid='+relatedid,
-					}).done(function (response) {
-						const state = JSON.parse(response).lists.data.contents[0];
-						document.getElementById(`autocomplete-related-${LIST_COUNT}`).value = state.functionname;
-						document.getElementById(`related-label-${LIST_COUNT}`).value = state.label;
-						document.getElementById(`autocomplete-module-${LIST_COUNT}`).value = state.relatedmodule;
-					});
-				}
-			}
-			if (!proceed) {
-				return false;
-			}
-		});
+					<span id="autocomplete-modulespan-${LIST_COUNT}"></span>
+				</div>
+			</div>
+		</div><br>
+		<button class="slds-button slds-button_neutral slds-button_dual-stateful" id="save-btn-for-list-${LIST_COUNT}" onclick="mb.SaveModule(5, false, this.id, ${relatedid})">
+			<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+			</svg>${mod_alert_arr.LBL_MB_SAVE}
+		</button>
+		<button class="slds-button slds-button_destructive slds-button_dual-stateful" id="clear-btn-for-list-${LIST_COUNT}" onclick="mb.clearList(${LIST_COUNT})">
+			<svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+			</svg>${mod_alert_arr.LBL_MB_CLEAR}
+		</button>`;
+		mb.loadElement(`related_inputs_${LIST_COUNT}`, true).innerHTML = listTemplate;
+		if (relatedid > 0) {
+			jQuery.ajax({
+				method: 'GET',
+				url: url+'&methodName=loadTemplate&recordid='+relatedid,
+			}).done(function (response) {
+				const state = JSON.parse(response).lists.data.contents[0];
+				document.getElementById(`autocomplete-related-${LIST_COUNT}`).value = state.functionname;
+				document.getElementById(`related-label-${LIST_COUNT}`).value = state.label;
+				document.getElementById(`autocomplete-module-${LIST_COUNT}`).value = state.relatedmodule;
+			});
+		}
 	},
 	/**
 	 * Create html labels

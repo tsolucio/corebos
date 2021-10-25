@@ -402,13 +402,7 @@ class ModuleBuilder {
 		$function = $adb->pquery("SELECT modulename FROM vtiger_entityname WHERE modulename LIKE ?", array('%'.$query.'%'));
 		$module = array();
 		while ($row = $function->FetchRow()) {
-			$modulename = $row['modulename'];
-			$rl = $adb->pquery('SELECT relatedmodule FROM vtiger_modulebuilder_relatedlists WHERE moduleid=?', array($this->id));
-			while ($r = $rl->FetchRow()) {
-				if ($r['relatedmodule'] != $modulename && !in_array($modulename, $module)) {
-					array_push($module, $modulename);
-				}
-			}
+			array_push($module, $row['modulename']);
 		}
 		return $module;
 	}
@@ -547,7 +541,7 @@ class ModuleBuilder {
 			if ($recordid > 0) {
 				$viewSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_customview WHERE moduleid=? AND customviewid=?', array(
 					$moduleid, $recordid
-				));				
+				));
 			} else {
 				$viewSql = $adb->pquery('SELECT * FROM vtiger_modulebuilder_customview WHERE moduleid=?', array(
 					$moduleid
@@ -811,7 +805,7 @@ class ModuleBuilder {
 					$fieldlength = $info['fieldlength'] == 0 ? 20 : $info['fieldlength'];
 					if (in_array($uitype, $textfield)) {
 						$table .= "`".strtolower($fieldname)."` VARCHAR(".$fieldlength.") DEFAULT NULL,\n";
-					} else if (in_array($uitype, $decimalfield)) {
+					} elseif (in_array($uitype, $decimalfield)) {
 						$table .= "`".strtolower($fieldname)."` DECIMAL(".$fieldlength.") DEFAULT NULL,\n";
 					} else {
 						$table .= "`".strtolower($fieldname)."` ".$this->typeofdata[$uitype][0]." DEFAULT NULL,\n";
