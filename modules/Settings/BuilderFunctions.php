@@ -76,7 +76,7 @@ switch ($methodName) {
 	case 'loadTemplate':
 		$modId = vtlib_purify($_REQUEST['modId']);
 		if (isset($_REQUEST['recordid'])) {
-			$recordid = vtlib_purify($_REQUEST['recordid']);;
+			$recordid = vtlib_purify($_REQUEST['recordid']);
 			$ret = $mb->loadTemplate($modId, $recordid);
 		} else {
 			$ret = $mb->loadTemplate($modId);

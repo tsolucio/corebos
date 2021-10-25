@@ -27,7 +27,19 @@
             {
                 rows: [{/literal}{$ROWS}{literal}],
                 cols: [{/literal}{$COLS}{literal}],
-                {/literal}{$aggreg}{literal}
+                {/literal}{$aggreg}{literal},
+                    rendererOptions: {
+                    table: {
+                        clickCallback: function(e, value, filters, pivotData){
+                            var names = [];
+                            pivotData.forEachMatchingRecord(filters,
+                                function(record){ names.push(record.Name);});
+                                document.getElementById('pivotdetail').style.display = 'block';
+                                document.getElementById('pivotdetailname').innerHTML = '<br>'+names.join(" <br><br> ")+'<br><br>';
+                           // alert(names.join("\n"));
+                        }
+                    }
+                }
             }
         );
      });
@@ -35,3 +47,6 @@
 </script>
 <div id="output" style="margin: 30px;overflow-x: scroll; width:1000px; "></div>
 {/if}
+<div id="pivotdetail" class="layerPopup" style="display:none;position: fixed; left: 1100px; top: 500px; visibility: visible; z-index:10000000">
+{include file="Pivotdetail.tpl"}
+</div>
