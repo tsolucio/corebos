@@ -402,13 +402,7 @@ class ModuleBuilder {
 		$function = $adb->pquery("SELECT modulename FROM vtiger_entityname WHERE modulename LIKE ?", array('%'.$query.'%'));
 		$module = array();
 		while ($row = $function->FetchRow()) {
-			$modulename = $row['modulename'];
-			$rl = $adb->pquery('SELECT relatedmodule FROM vtiger_modulebuilder_relatedlists WHERE moduleid=?', array($this->id));
-			while ($r = $rl->FetchRow()) {
-				if ($r['relatedmodule'] != $modulename && !in_array($modulename, $module)) {
-					array_push($module, $modulename);
-				}
-			}
+			array_push($module, $row['modulename']);
 		}
 		return $module;
 	}
