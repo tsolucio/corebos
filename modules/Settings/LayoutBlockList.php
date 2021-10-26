@@ -703,7 +703,7 @@ function updateFieldProperties() {
 	if ($oldquickcreate != 3) {
 		if ($quickcreate_checked == 'true' || $quickcreate_checked == '') {
 			$qcdata = 2;
-			$quickcreateseq_Query = 'select max(quickcreatesequence) as maxseq from vtiger_field where tabid = ?';
+			$quickcreateseq_Query = 'select coalesce(max(quickcreatesequence), 0) as maxseq from vtiger_field where tabid=?';
 			$res = $adb->pquery($quickcreateseq_Query, array($tabid));
 			$maxseq = $adb->query_result($res, 0, 'maxseq');
 		} else {
