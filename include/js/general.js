@@ -6496,7 +6496,6 @@ const pageHeader = {
 	},
 	'OnDownScroll' : () => {
 		if (pageHeader.node() !== null) {
-			pageHeader.collapse();
 			if (window.scrollY > (pageHeader.stickPoint + 2)) {
 				pageHeader.isSticky = true;
 				pageHeader.node().classList.add('page-header_sticky');
