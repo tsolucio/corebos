@@ -39,18 +39,14 @@
 	<td>{$def.category}</td>
 	</tr>
 {/foreach}
-<span id="action" action="{$Action}" style="display:none"></span>
 </tbody>
 </table>
 </div>
-{literal}
 <script type="text/javascript">
 jQuery('#gvdefstable').tablesorter();
-var action = jQuery('#action').attr('action');
 function changeval(val_){
-	if (action=='EditView'){
-		document.getElementById('gvname').value = val_;
-	}
+    if ('{$Action}'=='EditView'){
+        document.getElementById('gvname').value = val_;
+    }
 }
 </script>
-{/literal}
