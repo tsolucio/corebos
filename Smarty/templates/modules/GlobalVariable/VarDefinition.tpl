@@ -28,7 +28,11 @@
 <tbody>
 {foreach item=def key=var from=$GlobalVariableDefinitons}
 	<tr class="{cycle values=" ,alt"}">
-	<td><b><a name="{$var}"></a>{$var}</b></td>
+	{if $Action eq 'EditView'}
+	<td><b><a name="{$var}"  class='gvname' id='gvname' href="javascript: changeval('{$var}');">{$var}</a></b></td>
+	{else}
+	<td><b><a name="{$var}"  class='gvname' id='gvname' href="index.php?module=GlobalVariable&action=EditView&return_action=DetailView&gvname={$var}">{$var}</a></b></td>
+	{/if}
 	<td>{$def.valuetype}</td>
 	<td>{$def.values}</td>
 	<td>{$def.definition}</td>
@@ -38,8 +42,11 @@
 </tbody>
 </table>
 </div>
-{literal}
 <script type="text/javascript">
 jQuery('#gvdefstable').tablesorter();
+function changeval(val_){
+    if ('{$Action}'=='EditView'){
+        document.getElementById('gvname').value = val_;
+    }
+}
 </script>
-{/literal}
