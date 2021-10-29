@@ -312,11 +312,12 @@ class WorkFlowScheduler {
 					}
 					$wfscenv = new cbexpsql_environmentstub($queryGenerator->getModule(), '0x0');
 					$wfscenv->returnReferenceValue = false;
-					$substExpressions['::#'.$substExpressionsIndex] = $exprEvaluater->evaluate($wfscenv, true);
-					if (is_object($substExpressions['::#'.$substExpressionsIndex])) {
-						$substExpressions['::#'.$substExpressionsIndex] = $substExpressions['::#'.$substExpressionsIndex]->value;
+					$substExpression = sprintf('%03d', $substExpressionsIndex);
+					$substExpressions['::#'.$substExpression] = $exprEvaluater->evaluate($wfscenv, true);
+					if (is_object($substExpressions['::#'.$substExpression])) {
+						$substExpressions['::#'.$substExpression] = $substExpressions['::#'.$substExpression]->value;
 					}
-					$value = '::#'.$substExpressionsIndex;
+					$value = '::#'.$substExpression;
 					$substExpressionsIndex++;
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
 					if (count($matches) != 0) {
