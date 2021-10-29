@@ -141,10 +141,13 @@ function getNonAdminAccessControlQuery($module, $user, $scope = '') {
 function getFromClauseAlreadyPresent($parsed, $fromClause) {
 	$found = '';
 	if (isset($parsed['FROM'])) {
-		$fromClause = substr($fromClause, stripos($fromClause, ' join ')+6); // strip join
-		$fromClause = str_replace(' ', '', $fromClause);
+		$whereisjoin = stripos($fromClause, ' join ');
+		$fromClause = substr($fromClause, $whereisjoin+6, stripos($fromClause, ' on ')-$whereisjoin-2);
+		$fromClause = strtolower(str_replace(' ', '', $fromClause));
 		foreach ($parsed['FROM'] as $clause) {
-			if ($clause['ref_type']=='ON' && str_replace(' ', '', $clause['base_expr'])==$fromClause) {
+			$existingClause = substr($clause['base_expr'], 0, stripos($clause['base_expr'], ' on ')+4); // strip tables
+			$existingClause = strtolower(str_replace(' ', '', $existingClause));
+			if ($clause['ref_type']=='ON' && $existingClause==$fromClause) {
 				return ($clause['join_type']=='JOIN' ? 'INNER' : $clause['join_type']).' join '.$clause['base_expr'];
 			}
 		}
