@@ -37,5 +37,6 @@ function vtDeleteWorkflow($adb, $request) {
 	</script>
 	<?php
 }
+Vtiger_Request::validateRequest();
 vtDeleteWorkflow($adb, $_REQUEST);
 ?>
