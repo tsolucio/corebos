@@ -257,8 +257,8 @@ function popup_from_html($string, $encode = true) {
 }
 
 /** To get the Currency of the specified user
- * @param $id -- The user Id:: Type integer
- * @returns  currencyid :: Type integer
+ * @param integer user ID
+ * @return integer currency ID
  */
 function fetchCurrency($id) {
 	global $log;
@@ -284,9 +284,8 @@ function fetchCurrency($id) {
 }
 
 /** Function to get the Currency name from the vtiger_currency_info
- * @param $currencyid -- currencyid:: Type integer
- * @returns $currencyname -- Currency Name:: Type varchar
- *
+ * @param integer currency ID
+ * @return string Currency Name
  */
 function getCurrencyName($currencyid, $show_symbol = true) {
 	global $log;

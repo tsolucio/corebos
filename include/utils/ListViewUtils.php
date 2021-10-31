@@ -216,13 +216,13 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	return $list_header;
 }
 
-/* * This function is used to get the list view header in popup
- * Param $focus - module object
- * Param $module - module name
- * Param $sort_qry - sort by value
- * Param $sorder - sorting order (asc/desc)
- * Param $order_by - order by
- * Returns the listview header values in an array
+/** This function is used to get the list view header in popup
+ * @param object module object
+ * @param string module name
+ * @param string sort by value
+ * @param string sorting order (asc/desc)
+ * @param string order by
+ * @return array listview header values
  */
 function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order_by = '') {
 	global $log, $adb, $theme, $current_user;
@@ -347,14 +347,12 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 	return $list_header;
 }
 
-/* * This function generates the navigation array in a listview
- * Param $display - start value of the navigation
- * Param $noofrows - no of records
- * Param $limit - no of entries per page
- * Returns an array type
+/** This function generates the navigation array in a listview
+ * @param integer start value of the navigation
+ * @param integer no of records
+ * @param integer no of entries per page
+ * @return array of navigation values
  */
-
-//code contributed by raju for improved pagination
 function getNavigationValues($display, $noofrows, $limit) {
 	global $log;
 	$log->debug('> getNavigationValues ' . $display . ',' . $noofrows . ',' . $limit);
@@ -1156,19 +1154,19 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	return $list;
 }
 
-/* * This function generates the value for a given field name
- * Param $field_result - vtiger_field result in array
- * Param $list_result - resultset of a listview query
- * Param $fieldname - field name
- * Param $focus - module object
- * Param $module - module name
- * Param $entity_id - entity id
- * Param $list_result_count - row of the field to use
- * Param $mode - mode type
- * Param $popuptype - popup type
- * Param $returnset - list query parameters in url string
- * Param $viewid - custom view id
- * Returns an string value
+/** This function generates the value for a given field name
+ * @param $field_result - vtiger_field result in array
+ * @param $list_result - resultset of a listview query
+ * @param $fieldname - field name
+ * @param $focus - module object
+ * @param $module - module name
+ * @param $entity_id - entity id
+ * @param $list_result_count - row of the field to use
+ * @param $mode - mode type
+ * @param $popuptype - popup type
+ * @param $returnset - list query parameters in url string
+ * @param integer custom view id
+ * @return string value
  */
 function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype) {
 	global $log, $app_strings, $current_language, $currentModule, $adb, $current_user, $default_charset;
@@ -2315,9 +2313,9 @@ function getListQuery($module, $where = '') {
 	return $query;
 }
 
-/* * Function returns the list of records which an user is entiled to view
- * Param $module - module name
- * Returns a database query - type string
+/** Function returns the list of records which an user is entiled to view
+ * @param string module name
+ * @return string a database query
  */
 function getReadEntityIds($module) {
 	global $log, $current_user;
@@ -2411,18 +2409,18 @@ function getReadEntityIds($module) {
 }
 
 /** Function to get alphabetical search links
- * Param $module - module name
- * Param $action - action
- * Param $fieldname - vtiger_field name
- * Param $query - query
- * Param $type - search type
- * Param $popuptype - popup type
- * Param $recordid - record id
- * Param $return_module - return module
- * Param $append_url - url string to be appended
- * Param $viewid - custom view id
- * Param $groupid - group id
- * Returns an string value
+ * @param string module name
+ * @param string action
+ * @param string field name
+ * @param string query
+ * @param string search type
+ * @param string popup type
+ * @param integer record id
+ * @param string return module
+ * @param string url string to be appended
+ * @param integer custom view id
+ * @param integer group id
+ * @return string value
  */
 function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popuptype = '', $recordid = '', $return_module = '', $append_url = '', $viewid = '', $groupid = '') {
 	global $log;
@@ -2544,13 +2542,13 @@ function getRelatedTo($module, $list_result, $rset) {
 	return $parent_value;
 }
 
-/* * Function to get the table headers for a listview
- * Param $navigation_arrray - navigation values in array
- * Param $url_qry - url string
- * Param $module - module name
- * Param $action- action file name
- * Param $viewid - view id
- * Returns an string value
+/** Function to get the table headers for a listview
+ * @param $navigation_arrray - navigation values in array
+ * @param $url_qry - url string
+ * @param $module - module name
+ * @param $action- action file name
+ * @param $viewid - view id
+ * @return string value
  */
 function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
 	global $log, $app_strings, $theme, $current_user;
@@ -3422,13 +3420,13 @@ function VT_getSimpleNavigationValues($start, $size, $total) {
 		'prev' => $prev, 'next' => $next, 'verylast' => $lastPage);
 }
 
-/* * Function to get the simplified table headers for a listview
- * Param $navigation_arrray - navigation values in array
- * Param $url_qry - url string
- * Param $module - module name
- * Param $action- action file name
- * Param $viewid - view id
- * Returns an string value
+/** Function to get the simplified table headers for a listview
+ * @param array navigation values
+ * @param string url
+ * @param string module name
+ * @param string action file name
+ * @param integer view id
+ * @return string HTML for header
  */
 function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
 	global $app_strings, $theme, $current_user;
