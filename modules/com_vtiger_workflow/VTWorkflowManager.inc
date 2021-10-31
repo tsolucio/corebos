@@ -366,12 +366,17 @@ class VTWorkflowManager {
 	public function delete($id) {
 		global $current_user;
 		$dwf = is_admin($current_user) ? '!=1' : '=2';
-		$this->adb->pquery(
-			'DELETE FROM com_vtiger_workflowtasks WHERE workflow_id IN
-				(SELECT workflow_id FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.'))',
-			array($id)
-		);
-		$this->adb->pquery('DELETE FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.')', array($id));
+		$count = $this->adb->pquery('SELECT count(*) FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.')', array($id));
+		$count = (int)$this->adb->query_result($count, 0, 0);
+		if ($count) {
+			$this->adb->pquery(
+				'DELETE FROM com_vtiger_workflowtasks WHERE workflow_id IN
+					(SELECT workflow_id FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.'))',
+				array($id)
+			);
+			$this->adb->pquery('DELETE FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.')', array($id));
+		}
+		return $count;
 	}
 
 	public function newWorkflow($moduleName) {

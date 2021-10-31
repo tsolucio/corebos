@@ -24,8 +24,12 @@ function vtDeleteWorkflow($adb, $request) {
 	}
 
 	$wm = new VTWorkflowManager($adb);
-	$wm->delete($request['workflow_id']);
-
+	$affected = $wm->delete($request['workflow_id']);
+	if ($affected==0) {
+		$errorUrl = $module->errorPageUrl(getTranslatedString('LBL_PERMISSION', $module->name));
+		$util->redirectTo($errorUrl, getTranslatedString('LBL_PERMISSION', $module->name));
+		return;
+	}
 	if (isset($request['return_url'])) {
 		$returnUrl=$request['return_url'];
 	} else {
