@@ -111,7 +111,7 @@ function vtws_revise($element, $user) {
 			$listofrelfields[] = $entity[$relfield];
 		}
 	}
-	if (count($listofrelfields)>0) {
+	if (!empty($listofrelfields)) {
 		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
 		foreach ($r as $relfield => $mods) {
 			if (!empty($entity[$relfield]) && !empty($deref[$entity[$relfield]])) {
