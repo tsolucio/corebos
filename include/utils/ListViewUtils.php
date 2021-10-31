@@ -320,8 +320,6 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 	$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 	foreach ($focus->search_fields as $name => $tableinfo) {
 		$fieldname = $focus->search_fields_name[$name];
-		$tabid = getTabid($module);
-
 		if ($hasGlobalReadPermission || in_array($fieldname, $field) || $module == 'Users') {
 			if (isset($focus->sortby_fields) && $focus->sortby_fields != '') {
 				foreach ($focus->search_fields[$name] as $col) {
@@ -3155,7 +3153,6 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
  * 	return string	$edit_link	- url string which contains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=EditView&record=10
  */
 function getListViewEditLink($module, $entity_id, $relatedlist, $returnset) {
-	global $adb;
 	$return_action = 'index';
 	$edit_link = "index.php?module=$module&action=EditView&record=$entity_id";
 	$url = getBasic_Advance_SearchURL();
