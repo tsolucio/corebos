@@ -194,6 +194,11 @@ class Workflow {
 		}
 	}
 
+	public function checkNonAdminAccess() {
+		global $current_user;
+		return (is_admin($current_user) || $this->defaultworkflow != 1);
+	}
+
 	public function evaluate($entityCache, $id) {
 		if ($this->test=='') {
 			return true;

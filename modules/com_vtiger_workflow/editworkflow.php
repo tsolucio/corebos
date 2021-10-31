@@ -45,6 +45,11 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	} else {
 		if (isset($request['workflow_id'])) {
 			$workflow = $wfs->retrieve($request['workflow_id']);
+			if (!$workflow->checkNonAdminAccess()) {
+				$errorUrl = $module->errorPageUrl(getTranslatedString('LBL_PERMISSION'));
+				$util->redirectTo($errorUrl, getTranslatedString('LBL_PERMISSION'));
+				return;
+			}
 			if ($workflow->executionCondition!=VTWorkflowManager::$ON_SCHEDULE) {
 				$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
 			} else {
