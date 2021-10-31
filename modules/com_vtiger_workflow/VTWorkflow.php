@@ -386,7 +386,7 @@ class Workflow {
 
 	/**
 	 * Function gets the next trigger for the workflows
-	 * @global <String> $default_timezone
+	 * @global string $default_timezone
 	 * @return string time
 	 */
 	public function getNextTriggerTime() {
@@ -449,7 +449,7 @@ class Workflow {
 	 * get next trigger Time For weekly
 	 * @param integer $scheduledDaysOfWeek
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForWeekly($scheduledDaysOfWeek, $scheduledTime) {
 		$weekDays = array('0' => 'Sunday', '1' => 'Monday', '2' => 'Tuesday', '3' => 'Wednesday', '4' => 'Thursday', '5' => 'Friday', '6' => 'Saturday', '7' => 'Sunday');
@@ -504,7 +504,7 @@ class Workflow {
 	 * get next triggertime for monthly
 	 * @param integer $scheduledDayOfMonth
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForMonthlyByDate($scheduledDayOfMonth, $scheduledTime) {
 		$currentDayOfMonth = date('j', time());
@@ -548,7 +548,7 @@ class Workflow {
 	 * to get next trigger time for weekday of the month
 	 * @param integer $scheduledWeekDayOfMonth
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForMonthlyByWeekDay($scheduledWeekDayOfMonth, $scheduledTime) {
 		$currentTime = time();
@@ -571,7 +571,7 @@ class Workflow {
 	 * to get next trigger time
 	 * @param string $annualDates
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForAnnualDates($annualDates, $scheduledTime) {
 		if ($annualDates) {
