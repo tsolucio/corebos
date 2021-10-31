@@ -225,7 +225,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
  * @return array listview header values
  */
 function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order_by = '') {
-	global $log, $adb, $theme, $current_user;
+	global $log, $adb, $theme, $current_user, $default_charset;
 	$log->debug('> getSearchListViewHeader ' . get_class($focus) . ',' . $module . ',' . $sort_qry . ',' . $sorder . ',' . $order_by);
 	$arrow = '';
 	$list_header = array();
@@ -251,15 +251,22 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 		$pass_url .='&parent_module=Accounts&relmod_id=' . vtlib_purify($_REQUEST['acc_id']);
 	}
 
-	$pass_url .= '&form=' . (isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
-		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
-		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
-		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
+	$forform = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
+	$forform = htmlspecialchars($forform, ENT_QUOTES, $default_charset);
+	$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
+	$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
+	$srcmodule = isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '';
+	$srcmodule = htmlspecialchars($srcmodule, ENT_QUOTES, $default_charset);
+	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '';
+	$forrecord = htmlspecialchars($forrecord, ENT_QUOTES, $default_charset);
+	$pass_url .= '&form='.$forform.'&forfield='.$forfield.'&srcmodule='.$srcmodule.'&forrecord='.$forrecord;
 	//Get custom paramaters to pass_url
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
 		foreach ($cbcustompopupinfo as $param_name) {
-			$pass_url .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '');
+			$param = isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '';
+			$param = htmlspecialchars($param, ENT_QUOTES, $default_charset);
+			$pass_url .= '&'.$param_name.'='.$param;
 		}
 	}
 
@@ -2423,7 +2430,7 @@ function getReadEntityIds($module) {
  * @return string value
  */
 function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popuptype = '', $recordid = '', $return_module = '', $append_url = '', $viewid = '', $groupid = '') {
-	global $log;
+	global $log, $default_charset;
 	$log->debug("> AlphabeticalSearch $module,$action,$fieldname,$query,$type,$popuptype,$recordid,$return_module,$append_url,$viewid,$groupid");
 	if ($type == 'advanced') {
 		$flag = '&advanced=true';
@@ -2444,16 +2451,23 @@ function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popupt
 		$returnvalue .= '&return_module=' . $return_module;
 	}
 
-	$returnvalue .= '&form=' . (isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
-		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
-		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
-		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
+	$forform = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
+	$forform = htmlspecialchars($forform, ENT_QUOTES, $default_charset);
+	$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
+	$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
+	$srcmodule = isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '';
+	$srcmodule = htmlspecialchars($srcmodule, ENT_QUOTES, $default_charset);
+	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '';
+	$forrecord = htmlspecialchars($forrecord, ENT_QUOTES, $default_charset);
+	$returnvalue .= '&form='.$forform.'&forfield='.$forfield.'&srcmodule='.$srcmodule.'&forrecord='.$forrecord;
 
 	//Get custom paramaters to returnvalue
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
 		foreach ($cbcustompopupinfo as $param_name) {
-			$returnvalue .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '');
+			$param = isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '';
+			$param = htmlspecialchars($param, ENT_QUOTES, $default_charset);
+			$returnvalue .= '&'.$param_name.'='.$param;
 		}
 	}
 	$list = '';
@@ -2551,7 +2565,7 @@ function getRelatedTo($module, $list_result, $rset) {
  * @return string value
  */
 function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
-	global $log, $app_strings, $theme, $current_user;
+	global $log, $app_strings, $theme, $default_charset;
 	$log->debug('> getTableHeaderNavigation');
 	if ($module == 'Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents')) {
 		$output = '<td class="mailSubHeader" width="100%" align="center">';
@@ -2559,19 +2573,23 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 		$output = '<td align="right" style="padding: 5px;">';
 	}
 	$search_tag = isset($_REQUEST['search_tag']) ? $_REQUEST['search_tag'] : '';
-
-	$url_string = '';
-
-	$url_string .= '&form='.(isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
-		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
-		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '') .
-		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
+	$forform = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
+	$forform = htmlspecialchars($forform, ENT_QUOTES, $default_charset);
+	$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
+	$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
+	$srcmodule = isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '';
+	$srcmodule = htmlspecialchars($srcmodule, ENT_QUOTES, $default_charset);
+	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '';
+	$forrecord = htmlspecialchars($forrecord, ENT_QUOTES, $default_charset);
+	$url_string = '&form='.$forform.'&forfield='.$forfield.'&srcmodule='.$srcmodule.'&forrecord='.$forrecord;
 
 	//Get custom paramaters to url_string
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
 		foreach ($cbcustompopupinfo as $param_name) {
-			$url_string .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '');
+			$param = isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '';
+			$param = htmlspecialchars($param, ENT_QUOTES, $default_charset);
+			$url_string .= '&'.$param_name.'='.$param;
 		}
 	}
 
@@ -3429,19 +3447,22 @@ function VT_getSimpleNavigationValues($start, $size, $total) {
  * @return string HTML for header
  */
 function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
-	global $app_strings, $theme, $current_user;
+	global $app_strings, $theme, $default_charset;
 	if ($module=='Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents') && isset($_REQUEST['action']) && $_REQUEST['action']!='UnifiedSearch') {
 		$output = '<td class="mailSubHeader" width="40%" align="right">';
 	} else {
 		$output = '<td align="right" style="padding: 5px;">';
 	}
 	$search_tag = isset($_REQUEST['search_tag']) ? $_REQUEST['search_tag'] : '';
-	$url_string = '';
-
-	$url_string .= '&form=' . (isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
-		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
-		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
-		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
+	$forform = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
+	$forform = htmlspecialchars($forform, ENT_QUOTES, $default_charset);
+	$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
+	$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
+	$srcmodule = isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '';
+	$srcmodule = htmlspecialchars($srcmodule, ENT_QUOTES, $default_charset);
+	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '';
+	$forrecord = htmlspecialchars($forrecord, ENT_QUOTES, $default_charset);
+	$url_string = '&form='.$forform.'&forfield='.$forfield.'&srcmodule='.$srcmodule.'&forrecord='.$forrecord;
 
 	if (isset($_REQUEST['popuptype']) && $_REQUEST['popuptype'] == 'set_return_emails' && isset($_REQUEST['email_field'])) {
 		$url_string .='&email_field=' . (isset($_REQUEST['email_field']) ? vtlib_purify($_REQUEST['email_field']) : '');
@@ -3450,7 +3471,9 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
 		foreach ($cbcustompopupinfo as $param_name) {
-			$url_string .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? urlencode(vtlib_purify($_REQUEST[$param_name])) : '');
+			$param = isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '';
+			$param = htmlspecialchars($param, ENT_QUOTES, $default_charset);
+			$url_string .= '&'.$param_name.'='.$param;
 		}
 	}
 
