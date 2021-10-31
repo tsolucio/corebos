@@ -222,6 +222,6 @@ function vtWorkflowSave($adb, $request) {
 	<a href="<?php echo urldecode($returnUrl)?>">Return</a>
 	<?php
 }
-
+Vtiger_Request::validateRequest();
 vtWorkflowSave($adb, $_REQUEST);
 ?>
