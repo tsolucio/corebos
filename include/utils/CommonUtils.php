@@ -2339,7 +2339,7 @@ function validateImageFile($file_details) {
 		}
 		$filetype = strtolower($filetype);
 	}
-	if ($filetype == 'jpeg' || $filetype == 'png' || $filetype == 'jpg' || $filetype == 'pjpeg' || $filetype == 'x-png' || $filetype == 'gif' || $filetype == 'bmp') {
+	if (in_array($filetype, ['jpeg', 'png', 'jpg', 'pjpeg', 'x-png', 'gif', 'bmp', 'svg', 'svg+xml'])) {
 		$saveimage = 'true';
 	} else {
 		$saveimage = 'false';
@@ -2395,11 +2395,15 @@ function validateImageContents($filename) {
 		case 'loose':
 			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
 				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
+				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
+				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
 				|| stripos($contents, '<?php ') !== false;
 			break;
 		case 'clean':
 			// Must be Revisited
-			/*try {
+			/*
+			image sanitizing for binary images
+			try {
 				$img = new Imagick($filename);
 				$img->stripImage();
 				$img->writeImage($filename);
@@ -2408,13 +2412,17 @@ function validateImageContents($filename) {
 				$check = false;
 			} catch (Exception $e) {
 				$check = true;
-			}*/
+			}
+			image sanitizing for svg > use https://github.com/darylldoyle/svg-sanitizer
+			*/
 			return false;
 			break;
 		case 'strict':
 		default:
 			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
 				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
+				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
+				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
 				|| stripos($contents, '<?=') !== false
 				|| stripos($contents, '<%=') !== false
 				|| stripos($contents, '<? ') !== false
