@@ -3306,11 +3306,11 @@ function checkFileAccessForInclusion($filepath) {
 			echo '<pre>';
 			debug_print_backtrace();
 			echo '</pre>';
+			echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
+			echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';
+			echo 'Root dir path: '.htmlspecialchars($rootdirpath, ENT_QUOTES, $default_charset).'<br>';
 		}
-		echo 'Sorry! Attempt to access restricted file.<br>';
-		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
-		echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';
-		echo 'Root dir path: '.htmlspecialchars($rootdirpath, ENT_QUOTES, $default_charset).'<br>';
+		echo 'Attempt to access restricted file.';
 		die();
 	}
 }
@@ -3341,10 +3341,15 @@ function checkFileAccessForDeletion($filepath) {
 
 	if (stripos($realfilepath, $rootdirpath) !== 0 || !in_array($filePathParts[0], $safeDirectories)) {
 		global $default_charset;
-		echo 'Sorry! Attempt to access restricted file.<br>';
-		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
-		echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';
-		echo 'Root dir path: '.htmlspecialchars($rootdirpath, ENT_QUOTES, $default_charset).'<br>';
+		if (GlobalVariable::getVariable('Debug_Access_Restricted_File', 0)) {
+			echo '<pre>';
+			debug_print_backtrace();
+			echo '</pre>';
+			echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
+			echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';
+			echo 'Root dir path: '.htmlspecialchars($rootdirpath, ENT_QUOTES, $default_charset).'<br>';
+		}
+		echo 'Attempt to access restricted file.';
 		die();
 	}
 }
@@ -3352,9 +3357,7 @@ function checkFileAccessForDeletion($filepath) {
 /** Function to check the file access is made within web root directory. */
 function checkFileAccess($filepath) {
 	if (!isInsideApplication($filepath)) {
-		global $default_charset;
-		echo 'Sorry! Attempt to access restricted file.<br>';
-		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
+		echo 'Attempt to access restricted file.<br>';
 		die();
 	}
 }
