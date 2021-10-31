@@ -131,9 +131,9 @@ if (isset($_SESSION['authenticated_user_id']) && (isset($_SESSION['app_unique_ke
 }
 
 // Prevent loading Login again if there is an authenticated user in the session.
-if (isset($_SESSION["authenticated_user_id"]) && isset($module) && $module == 'Users' && $action == 'Login') {
-	$default_action = GlobalVariable::getVariable('Application_Default_Action', 'index', 'Home', $_SESSION["authenticated_user_id"]);
-	$default_module = GlobalVariable::getVariable('Application_Default_Module', 'Home', 'Home', $_SESSION["authenticated_user_id"]);
+if (isset($_SESSION['authenticated_user_id']) && isset($module) && $module == 'Users' && $action == 'Login') {
+	$default_action = GlobalVariable::getVariable('Application_Default_Action', 'index', 'Home', $_SESSION['authenticated_user_id']);
+	$default_module = GlobalVariable::getVariable('Application_Default_Module', 'Home', 'Home', $_SESSION['authenticated_user_id']);
 	$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($default_module));
 	if (!$result || $adb->num_rows($result)==0) {
 		$default_module = 'Home';
@@ -144,7 +144,7 @@ if (isset($_SESSION["authenticated_user_id"]) && isset($module) && $module == 'U
 if ($use_current_login) {
 	//getting the internal_mailer flag
 	if (!isset($_SESSION['internal_mailer'])) {
-		$qry_res = $adb->pquery("select internal_mailer from vtiger_users where id=?", array($_SESSION["authenticated_user_id"]));
+		$qry_res = $adb->pquery('select internal_mailer from vtiger_users where id=?', array($_SESSION['authenticated_user_id']));
 		coreBOS_Session::set('internal_mailer', $adb->query_result($qry_res, 0, 'internal_mailer'));
 	}
 	$log->debug('authenticated user: '.$_SESSION['authenticated_user_id']);
@@ -152,7 +152,7 @@ if ($use_current_login) {
 		include 'modules/Vtiger/maintenance.php';
 		exit;
 	}
-} elseif (isset($action) && isset($module) && $action=="Authenticate" && $module=="Users") {
+} elseif (isset($action) && isset($module) && $action=='Authenticate' && $module=='Users') {
 	$log->debug('authenticating user');
 } else {
 	if (!isset($_REQUEST['action']) || ($_REQUEST['action'] != 'Logout' && $_REQUEST['action'] != 'Login')) {
