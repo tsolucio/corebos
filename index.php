@@ -141,7 +141,7 @@ if (isset($_SESSION['authenticated_user_id']) && isset($module) && $module == 'U
 	header("Location: index.php?action=$default_action&module=$default_module");
 }
 
-if ($use_current_login) {
+if ($use_current_login && coreBOS_Settings::SettingExists('cbodUserConnection'.$_SESSION['authenticated_user_id'])) {
 	//getting the internal_mailer flag
 	if (!isset($_SESSION['internal_mailer'])) {
 		$qry_res = $adb->pquery('select internal_mailer from vtiger_users where id=?', array($_SESSION['authenticated_user_id']));
@@ -163,6 +163,7 @@ if ($use_current_login) {
 		echo 'Login';
 		die();
 	}
+	coreBOS_Session::delete('authenticated_user_id');
 	$action = 'Login';
 	$module = 'Users';
 	include 'modules/Users/Login.php';

@@ -1499,6 +1499,12 @@ class Users extends CRMEntity {
 		$adb->pquery('delete from vtiger_users where id=?', array($userId));
 		//Delete user extension in asterisk.
 		$adb->pquery('delete from vtiger_asteriskextensions where userid=?', array($userId));
+		// close user session
+		coreBOS_Settings::delSetting('cbodUserConnection'.$userId);
+		coreBOS_Settings::delSetting('cbodLastLoginTime'.$userId);
+		// delete user files if they exist
+		@unlink('user_privileges/sharing_privileges_'.$userId.'.php');
+		@unlink('user_privileges/user_privileges_'.$userId.'.php');
 	}
 
 	/**
