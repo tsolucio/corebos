@@ -2320,9 +2320,9 @@ function decideFilePath() {
 }
 
 /**
- * 	This function is used to check whether the attached file is a image file or not
- * 	@param array $file_details - files array which contains all the uploaded file details
- * 	@return string $save_image - true or false. if the image can be uploaded then true will return otherwise false.
+ * This function is used to check whether the attached file is a image file or not
+ * @param array files array which contains all the uploaded file details
+ * @return string if the image can be uploaded then 'true' will be returned otherwise 'false'
  */
 function validateImageFile($file_details) {
 	global $log, $app_strings;
@@ -2345,7 +2345,7 @@ function validateImageFile($file_details) {
 		$saveimage = 'false';
 		$imgtypeerror = coreBOS_Session::get('image_type_error');
 		coreBOS_Session::set('image_type_error', $imgtypeerror.'<br> &nbsp;&nbsp;<b>' . $file_details['name'] . '</b>' . $app_strings['MSG_IS_NOT_UPLOADED']);
-		$log->debug("Invalid Image type == $filetype");
+		$log->debug("Invalid Image type $filetype");
 	}
 
 	$log->debug("< validateImageFile saveimage=$saveimage");
@@ -2380,9 +2380,9 @@ function validateImageMetadata($data) {
 }
 
 /**
- * 	This function is used to check whether the attached file has not malicious code injected
- * 	@param string $filename - files array which contains all the uploaded file details
- * 	return bool - true or false. if the image can be uploaded then true will return otherwise false.
+ * This function is used to check whether the attached file has no malicious code injected
+ * @param string file path to file to validate
+ * @return boolean if the image can be uploaded then true will be returned otherwise false
  */
 function validateImageContents($filename) {
 	if (!file_exists($filename)) {
@@ -2465,9 +2465,9 @@ function validateImageContents($filename) {
 }
 
 /**
- * 	This function is used to get the Email Template Details like subject and content for particular template.
- * 	@param integer $templateid  - Template Id for an Email Template
- * 	return array $returndata - Returns Subject, Body of Template of the the particular email template.
+ * This function is used to get the Email Template Details like subject and content for particular template.
+ * @param integer Template Id for an Email Template
+ * @return array Returns Subject, Body of Template of the the particular email template.
  */
 function getTemplateDetails($templateid, $crmid = null) {
 	global $adb, $log, $current_user;
@@ -3361,9 +3361,9 @@ function checkFileAccess($filepath) {
 
 /**
  * function to return whether the file access is made within vtiger root directory and it exists.
- * @global String $root_directory vtiger root directory as given in config.inc.php file.
- * @param String $filepath relative path to the file which need to be verified
- * @return Boolean true if file is a valid file within vtiger root directory, false otherwise.
+ * @global string root directory as given in config.inc.php file
+ * @param string relative path to the file which need to be verified
+ * @return boolean true if file is a valid file within vtiger root directory, false otherwise
  * @deprecated
  */
 function isFileAccessible($filepath) {
@@ -3422,7 +3422,7 @@ function getOwnerNameList($idList) {
 
 /**
  * This function is used to get the blockid of the settings block for a given label.
- * @param $label - settings label
+ * @param string settings label
  * @return string type value
  */
 function getSettingsBlockId($label) {
@@ -3450,8 +3450,8 @@ function isModuleSettingPermitted($module) {
 
 /**
  * this function returns the entity field name for a given module; for e.g. for Contacts module it return concat(lastname, ' ', firstname)
- * @param string $module - the module name
- * @return string $fieldsname - the entity field name for the module
+ * @param string module name
+ * @return string entity field name for the module
  */
 function getEntityField($module, $fqn = false) {
 	global $adb;
@@ -3481,8 +3481,8 @@ function getEntityField($module, $fqn = false) {
 /**
  * this function returns the entity information for a given module; for e.g. for Contacts module
  * it returns the information of tablename, modulename, fieldsname and id gets from vtiger_entityname
- * @param string $module - the module name
- * @return array $data - the entity information for the module
+ * @param string module name
+ * @return array entity information for the module
  */
 function getEntityFieldNames($module) {
 	global $adb;
@@ -3511,9 +3511,9 @@ function getEntityFieldNames($module) {
 
 /**
  * this function returns the fieldsname and its values in a array for the given ids
- * @param1 array $entity_field_info - field information having modulename, tablename, fieldname, recordid
- * @param2 array $ids_list - record ids
- * @return array $entity_info - array of fieldname and its value with key as record id
+ * @param array field information having modulename, tablename, fieldname, recordid
+ * @param array record ids
+ * @return array of fieldname and its value with key as record id
  */
 function getEntityFieldValues($entity_field_info, $ids_list) {
 	global $adb;
@@ -3546,10 +3546,10 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 
 /**
  * this function returns the entity field name for a given module; for e.g. for Contacts module it return concat(lastname, ' ', firstname)
- * @param string $module - name of the module
- * @param array $fieldsName - fieldname with respect to module (ex : 'Accounts' - 'accountname', 'Contacts' - 'lastname','firstname')
- * @param array $fieldValues - array of fieldname and its value
- * @return string $fieldConcatName - the entity field name for the module
+ * @param string name of the module
+ * @param array fieldname with respect to module (ex : 'Accounts' - 'accountname', 'Contacts' - 'lastname','firstname')
+ * @param array of fieldname and its value
+ * @return string entity field name for the module
  */
 function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 	global $current_user;
@@ -3660,7 +3660,7 @@ function getModuleSequenceNumber($module, $recordId) {
 	return $moduleSeqNo;
 }
 
-/* tries to return info@your_domain email for return path
+/** tries to return info@your_domain email for return path
  * but it doesn't get it right because the only way to get a TLD is comparing against a list of existing ones
  * not used anywhere anymore due to RFC5321 section 4.4
  * @deprecated
@@ -3696,7 +3696,7 @@ function fetch_logo($type) {
 	return $logoname;
 }
 
-/* added to get mail info for portal user
+/** added to get mail info for portal user
  * type argument included when addin customizable tempalte for sending portal login details
  * @deprecated
  */

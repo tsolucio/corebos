@@ -1292,7 +1292,7 @@ class CRMEntity {
 		}
 	}
 
-	/* Validate values trying to be saved.
+	/** Validate values trying to be saved.
 	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
 	 * @return array
 	 *   saveerror: true if error false if not
@@ -1317,7 +1317,7 @@ class CRMEntity {
 		return array($saveerror,$errormessage,$error_action,$returnvalues);
 	}
 
-	/* Validate record trying to be deleted.
+	/** Validate record trying to be deleted.
 	 * @return array
 	 *   delerror: true if error false if not
 	 *   errormessage: message to return to user if error, empty otherwise
