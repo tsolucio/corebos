@@ -146,9 +146,9 @@ class Vtiger_Mailer extends PHPMailer {
 
 	/**
 	 * Send mail using the email template
-	 * @param String Recipient email
-	 * @param String Recipient name
-	 * @param String vtiger CRM Email template name to use
+	 * @param string Recipient email
+	 * @param string Recipient name
+	 * @param string Email template name to use
 	 */
 	public function SendTo($toemail, $toname = '', $emailtemplate = false, $linktoid = false, $sync = false) {
 		if (empty($toname)) {

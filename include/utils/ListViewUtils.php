@@ -2884,11 +2884,11 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 	return $where;
 }
 
-/* * This function return the entity ids that need to be excluded in popup listview for a given record
-  Param $currentmodule - modulename of the entity to be selected
-  Param $returnmodule - modulename for which the entity is assingned
-  Param $recordid - the record id for which the entity is assigned
-  Return type string.
+/** This function return the entity ids that need to be excluded in popup listview for a given record
+ * @param string module name of the entity to be selected
+ * @param string module name for which the entity is assingned
+ * @param integer the record id for which the entity is assigned
+ * @return string
  */
 function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	global $log, $adb;
@@ -3020,13 +3020,13 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	return $where_relquery;
 }
 
-/* * This function stores the variables in session sent in list view url string.
- * Param $lv_array - list view session array
- * Param $noofrows - no of rows
- * Param $max_ent - maximum entires
- * Param $module - module name
- * Param $related - related module
- * Return type void.
+/** This function stores the variables in session sent in list view url string.
+ * @param array list view session
+ * @param integer no of rows
+ * @param integer maximum entires
+ * @param string module name
+ * @param string related module
+ * @return void
  */
 function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = '') {
 	global $currentModule;
@@ -3066,13 +3066,13 @@ function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = 
 	}
 }
 
-/* * Function to get the table headers for related listview
- * Param $navigation_arrray - navigation values in array
- * Param $url_qry - url string
- * Param $module - module name
- * Param $related_module - related module name
- * Param $recordid - related record id
- * Returns an string value
+/** Function to get the table headers for related listview
+ * @param array navigation values
+ * @param string url
+ * @param string module name
+ * @param string related module name
+ * @param integer related record id
+ * @return string value
  */
 function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $related_module, $recordid) {
 	global $log, $app_strings, $adb, $theme;
@@ -3144,13 +3144,13 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 	}
 }
 
-/** 	Function to get the Edit link details for ListView and RelatedListView
- * 	@param string 	$module 	- module name
- * 	@param int 	$entity_id 	- record id
- * 	@param string 	$relatedlist 	- string 'relatedlist' or may be empty. if empty means ListView else relatedlist
- * 	@param string 	$returnset 	- may be empty in case of ListView.
- * 		For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
- * 	return string	$edit_link	- url string which contains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=EditView&record=10
+/** Function to get the Edit link details for ListView and RelatedListView
+ * @param string module name
+ * @param int record id
+ * @param string 'relatedlist' or may be empty. if empty means ListView else relatedlist
+ * @param string may be empty in case of ListView.
+ * 	For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
+ * @return string url string which contains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=EditView&record=10
  */
 function getListViewEditLink($module, $entity_id, $relatedlist, $returnset) {
 	$return_action = 'index';
@@ -3175,12 +3175,12 @@ function getListViewEditLink($module, $entity_id, $relatedlist, $returnset) {
 }
 
 /** Function to get the Del link details for ListView and RelatedListView
- * 	@param string 	$module 	- module name
- * 	@param int 	$entity_id 	- record id
- * 	@param string 	$relatedlist 	- string 'relatedlist' or may be empty. if empty means ListView else relatedlist
- * 	@param string 	$returnset 	- may be empty in case of ListView
- * 		For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
- * 	return string	$del_link	- url string which cotains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=Delete&record=10
+ * @param string module name
+ * @param int record id
+ * @param string string 'relatedlist' or may be empty. if empty means ListView else relatedlist
+ * @param string may be empty in case of ListView
+ * 	For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
+ * @return string url string which cotains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=Delete&record=10
  */
 function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $linkstart) {
 	$current_module = vtlib_purify($_REQUEST['module']);
@@ -3371,10 +3371,9 @@ function getMergeFields($module, $str) {
 }
 
 /**
- * this function accepts a module name and a field name and returns the first related module for it
- * it expects the uitype of the field to be 10
- * @param string $module - the modulename
- * @param string $fieldname - the field name
+ * this function accepts a module name and a field name and returns the first related module for it it expects the uitype of the field to be 10
+ * @param string module name
+ * @param string field name
  * @return string the first related module in the field or empty if not found
  */
 function getFirstModule($module, $fieldname) {
@@ -3392,8 +3391,8 @@ function getFirstModule($module, $fieldname) {
 
 /**
  * this function accepts a module name and a related modulen ame and returns the first uitype 10 field that relates them
- * @param string $module - the module name
- * @param string $relmodule - the related module
+ * @param string module name
+ * @param string related module
  * @return string the first uitype 10 field that relates the two modules or an empty string
  */
 function getFirstFieldForModule($module, $relmodule) {

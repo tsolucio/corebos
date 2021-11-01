@@ -120,7 +120,7 @@ class Vtiger_Menu {
 
 	/**
 	 * Get instance of menu by label
-	 * @param String Menu label
+	 * @param string Menu label
 	 */
 	public static function getInstance($value) {
 		global $adb;
@@ -184,8 +184,8 @@ class Vtiger_Menu {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 */
 	public static function log($message, $delim = true) {
 		Vtiger_Utils::Log($message, $delim);
