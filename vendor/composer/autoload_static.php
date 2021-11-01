@@ -8,12 +8,17 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
 {
     public static $files = array (
         '7e9bd612cc444b3eed788ebbe46263a0' => __DIR__ . '/..' . '/laminas/laminas-zendframework-bridge/src/autoload.php',
-        '78d47739fff607f33066e6259f091845' => __DIR__ . '/..' . '/laminas/laminas-cache/autoload/patternPluginManagerPolyfill.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '78d47739fff607f33066e6259f091845' => __DIR__ . '/..' . '/laminas/laminas-cache/autoload/patternPluginManagerPolyfill.php',
+        '9c67151ae59aff4788964ce8eb2a0f43' => __DIR__ . '/..' . '/clue/stream-filter/src/functions_include.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        '8cff32064859f4559445b89279f3199c' => __DIR__ . '/..' . '/php-http/message/src/filters.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '383eaff206634a77a1be54e64e6459c7' => __DIR__ . '/..' . '/sabre/uri/lib/functions.php',
         '2b9d0f43f9552984cfa82fee95491826' => __DIR__ . '/..' . '/sabre/event/lib/coroutine.php',
         'd81bab31d3feb45bfe2f283ea3c8fdf7' => __DIR__ . '/..' . '/sabre/event/lib/Loop/functions.php',
@@ -36,7 +41,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         ),
         'S' => 
         array (
+            'Symfony\\Polyfill\\Php80\\' => 23,
+            'Symfony\\Polyfill\\Php73\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Component\\OptionsResolver\\' => 34,
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\Console\\' => 26,
             'Stripe\\' => 7,
@@ -65,6 +73,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
+            'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
             'ParagonIE\\ConstantTime\\' => 23,
@@ -94,16 +103,37 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             'Interop\\Container\\' => 18,
         ),
+        'H' => 
+        array (
+            'Http\\Promise\\' => 13,
+            'Http\\Message\\' => 13,
+            'Http\\Discovery\\' => 15,
+            'Http\\Client\\Curl\\' => 17,
+            'Http\\Client\\' => 12,
+            'Http\\Adapter\\Guzzle6\\' => 21,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
             'Google\\Auth\\' => 12,
+            'Geocoder\\Provider\\Pelias\\' => 25,
+            'Geocoder\\Provider\\OpenRouteService\\' => 35,
+            'Geocoder\\Provider\\Nominatim\\' => 28,
+            'Geocoder\\Provider\\Mapbox\\' => 25,
+            'Geocoder\\Provider\\Here\\' => 23,
+            'Geocoder\\Provider\\GoogleMaps\\' => 29,
+            'Geocoder\\Http\\' => 14,
+            'Geocoder\\' => 9,
         ),
         'F' => 
         array (
             'Firebase\\JWT\\' => 13,
+        ),
+        'C' => 
+        array (
+            'Clue\\StreamFilter\\' => 18,
         ),
         'A' => 
         array (
@@ -120,9 +150,21 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             0 => __DIR__ . '/..' . '/twilio/sdk/src/Twilio',
         ),
+        'Symfony\\Polyfill\\Php80\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+        ),
+        'Symfony\\Polyfill\\Php73\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php73',
+        ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Component\\OptionsResolver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/options-resolver',
         ),
         'Symfony\\Component\\Debug\\' => 
         array (
@@ -210,7 +252,12 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Http\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
         'Psr\\Container\\' => 
         array (
@@ -266,21 +313,21 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         ),
         'Laminas\\Cache\\Storage\\Adapter\\' => 
         array (
-            0 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-zend-server/src',
-            1 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-xcache/src',
-            2 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-wincache/src',
-            3 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-session/src',
-            4 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-redis/src',
-            5 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-mongodb/src',
-            6 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memory/src',
+            0 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apc/src',
+            1 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apcu/src',
+            2 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-blackhole/src',
+            3 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-dba/src',
+            4 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-ext-mongodb/src',
+            5 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-filesystem/src',
+            6 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcache/src',
             7 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcached/src',
-            8 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memcache/src',
-            9 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-filesystem/src',
-            10 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-ext-mongodb/src',
-            11 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-dba/src',
-            12 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-blackhole/src',
-            13 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apcu/src',
-            14 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-apc/src',
+            8 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-memory/src',
+            9 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-mongodb/src',
+            10 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-redis/src',
+            11 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-session/src',
+            12 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-wincache/src',
+            13 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-xcache/src',
+            14 => __DIR__ . '/..' . '/laminas/laminas-cache-storage-adapter-zend-server/src',
         ),
         'Laminas\\Cache\\' => 
         array (
@@ -289,6 +336,31 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'Interop\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
+        ),
+        'Http\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-http/promise/src',
+        ),
+        'Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-http/message/src',
+            1 => __DIR__ . '/..' . '/php-http/message-factory/src',
+        ),
+        'Http\\Discovery\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-http/discovery/src',
+        ),
+        'Http\\Client\\Curl\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-http/curl-client/src',
+        ),
+        'Http\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-http/httplug/src',
+        ),
+        'Http\\Adapter\\Guzzle6\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-http/guzzle6-adapter/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -306,9 +378,45 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             0 => __DIR__ . '/..' . '/google/auth/src',
         ),
+        'Geocoder\\Provider\\Pelias\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/geocoder-php/pelias-provider',
+        ),
+        'Geocoder\\Provider\\OpenRouteService\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/geocoder-php/openrouteservice-provider',
+        ),
+        'Geocoder\\Provider\\Nominatim\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/geocoder-php/nominatim-provider',
+        ),
+        'Geocoder\\Provider\\Mapbox\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/geocoder-php/mapbox-provider',
+        ),
+        'Geocoder\\Provider\\Here\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/geocoder-php/here-provider',
+        ),
+        'Geocoder\\Provider\\GoogleMaps\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/geocoder-php/google-maps-provider',
+        ),
+        'Geocoder\\Http\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/geocoder-php/common-http',
+        ),
+        'Geocoder\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/willdurand/geocoder',
+        ),
         'Firebase\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
+        'Clue\\StreamFilter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/clue/stream-filter/src',
         ),
         'Automattic\\WooCommerce\\' => 
         array (
@@ -367,14 +475,17 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
     );
 
     public static $classMap = array (
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BaseSendGridClientInterface' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/BaseSendGridClientInterface.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
         'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
         'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
+        'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
         'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
         'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
         'SendGrid' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/SendGrid.php',
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'TCPDF' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf.php',
         'TCPDF2DBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_2d.php',
         'TCPDFBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_1d.php',
@@ -387,6 +498,8 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'TCPDF_PARSER' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_parser.php',
         'TCPDF_STATIC' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_static.php',
         'TwilioEmail' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/TwilioEmail.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
