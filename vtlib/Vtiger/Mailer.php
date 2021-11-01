@@ -201,7 +201,7 @@ class Vtiger_Mailer extends PHPMailer {
 	public function __AddToQueue($linktoid) {
 		if ($this->__initializeQueue()) {
 			global $adb;
-			$uniqueid = self::__getUniqueId();
+			$uniqueid = $this->__getUniqueId();
 			$adb->pquery(
 				'INSERT INTO vtiger_mailer_queue(id,fromname,fromemail,content_type,subject,body,mailer,relcrmid) VALUES(?,?,?,?,?,?,?,?)',
 				array($uniqueid, $this->FromName, $this->From, $this->ContentType, $this->Subject, $this->Body, $this->Mailer, $linktoid)
