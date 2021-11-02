@@ -6715,7 +6715,7 @@ function findUp(element, searchterm) {
 	* Static properties
 	*/
 	cbVal.validCheckBoxVals = ['yes', 'no', '1', '0', 0, 1];
-	cbVal.notAllowedInVarchar = ['\\', '/', '<', '>', '+', "'", '"'];
+	cbVal.notAllowedInVarchar = ['\\', '<', '>', '+', '"'];
 
 	/*
 	* Static methods
