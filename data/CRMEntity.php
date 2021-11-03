@@ -65,8 +65,7 @@ class CRMEntity {
 	}
 
 	/**
-	 * Detect if we are in bulk save mode, where some features can be turned-off
-	 * to improve performance.
+	 * Detect if we are in bulk save mode, where some features can be turned-off to improve performance
 	 */
 	public static function isBulkSaveMode() {
 		global $VTIGER_BULK_SAVE_MODE;
@@ -317,10 +316,10 @@ class CRMEntity {
 
 	/**
 	 * function used to upload the attachment in the server and save that attachment information in db.
-	 * @param int $id - entity id to which the file will be uploaded
-	 * @param string $module - the current module name
-	 * @param array $file_details - contains the file information (name, type, size, tmp_name and error)
-	 * @return boolean - true if uploaded, false if the image is not secure or some other error occured
+	 * @param integer entity id to which the file will be uploaded
+	 * @param string the current module name
+	 * @param array contains the file information (name, type, size, tmp_name and error)
+	 * @return boolean true if uploaded, false if the image is not secure or some other error occured
 	 */
 	public function uploadAndSaveFile($id, $module, $file_details, $attachmentname = '', $direct_import = false, $forfield = '') {
 		global $log, $adb, $current_user, $upload_badext;
@@ -442,7 +441,7 @@ class CRMEntity {
 	}
 
 	/** Function to insert values in the crmentity table for the specified module
-	 * @param $module -- module:: Type varchar
+	 * @param string module
 	 */
 	private function insertIntoCrmEntity($module) {
 		global $adb, $current_user;
@@ -594,8 +593,8 @@ class CRMEntity {
 	}
 
 	/** Function to insert values in the specifed table for the specified module
-	 * @param $table_name -- table name:: Type varchar
-	 * @param $module -- module:: Type varchar
+	 * @param string table name
+	 * @param string module
 	 */
 	private function insertIntoEntityTable($table_name, $module) {
 		global $log, $current_user, $app_strings, $from_wf, $adb;
@@ -969,10 +968,10 @@ class CRMEntity {
 	}
 
 	/** Function to retrieve maximum decimal values of currency field on save
-	 * @param $fieldname currency field name
-	 * @param $fldvalue currency value they want to save
-	 * @param $tabid tabID of the module the field is on
-	 * @return field value from database with maximum decimals if it is the same as value being saved
+	 * @param string currency field name
+	 * @param float currency value they want to save
+	 * @param integer tabID of the module the field is on
+	 * @return float field value from database with maximum decimals if it is the same as value being saved
 	 */
 	public function adjustCurrencyField($fieldname, $fldvalue, $tabid) {
 		global $adb, $log, $current_user;
@@ -1008,8 +1007,8 @@ class CRMEntity {
 	}
 
 	/** Function to delete a record in the specifed table
-	 * @param $table_name -- table name:: Type varchar
-	 * The function will delete a record .The id is obtained from the class variable $this->id and the columnname got from $this->tab_name_index[$table_name]
+	 * @param string table name
+	 * The function will delete a record. The id is obtained from the class variable $this->id and the columnname got from $this->tab_name_index[$table_name]
 	 */
 	public function deleteRelation($table_name) {
 		global $adb;
@@ -1024,7 +1023,7 @@ class CRMEntity {
 	}
 
 	/** Function to attachment filename of the given entity
-	 * @param $notesid -- crmid:: Type Integer
+	 * @param integer crm ID
 	 * The function will get the attachmentsid for the given entityid from vtiger_seattachmentsrel table and get the attachmentsname from vtiger_attachments table
 	 * returns the 'filename'
 	 */
@@ -1327,7 +1326,7 @@ class CRMEntity {
 		return array($delerror,$errormessage);
 	}
 
-	/* Check launched when entering Edit View, called after creating object and loading variables. Will be empty on create
+	/** Check launched when entering Edit View, called after creating object and loading variables. Will be empty on create
 	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
 	 * @param object smarty template object in order to load variables for output
 	 * @return void
@@ -1337,7 +1336,7 @@ class CRMEntity {
 		return '';
 	}
 
-	/* Check launched when entering full Record View, called after creating object and loading variables.
+	/** Check launched when entering full Record View, called after creating object and loading variables.
 	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
 	 * @param object smarty template object in order to load variables for output
 	 * @return void
@@ -1348,7 +1347,7 @@ class CRMEntity {
 	}
 
 	/** Function to saves the values in all the tables mentioned in the class variable $tab_name for the specified module
-	 * @param $module_name -- module:: Type varchar
+	 * @param string module
 	 */
 	public function save($module_name) {
 		global $current_user, $adb;
@@ -1507,7 +1506,9 @@ class CRMEntity {
 
 	/**
 	 * Track the viewing of a detail record.
-	 * params $user_id - The user that is viewing the record.
+	 * @param integer user that is viewing the record
+	 * @param string module
+	 * @param integer record ID
 	 */
 	public function track_view($user_id, $current_module, $id = '') {
 		$tracker = new Tracker();
@@ -1516,11 +1517,11 @@ class CRMEntity {
 
 	/**
 	 * Function to get the column value of a field when the field value is empty ''
-	 * @param $columnname -- Column name for the field
-	 * @param $fldvalue -- Input value for the field taken from the User
-	 * @param $fieldname -- Name of the Field
-	 * @param $uitype -- UI type of the field
-	 * @return Column value of the field.
+	 * @param string column name for the field
+	 * @param string input value for the field taken from the User
+	 * @param string name of the Field
+	 * @param string UI type of the field
+	 * @return string column value of the field
 	 */
 	public function get_column_value($columnname, $fldvalue, $fieldname, $uitype, $datatype = '') {
 		global $log, $current_user;
@@ -1961,8 +1962,8 @@ class CRMEntity {
 	}
 
 	/** Function to restore a deleted record of specified module with given crmid
-	 * @param $module -- module name:: Type varchar
-	 * @param $id -- list of crmids :: Array
+	 * @param string module name
+	 * @param array list of crmids
 	 */
 	public function restore($module, $id) {
 		global $current_user, $adb;
@@ -2273,8 +2274,8 @@ class CRMEntity {
 	}
 
 	/** Returns a list of the associated emails
-	 * @param integer $id - entityid
-	 * returns related emails record in array format
+	 * @param integer entity ID
+	 * @return array related emails record
 	 */
 	public function get_emails($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -2397,9 +2398,9 @@ class CRMEntity {
 
 	/**
 	 * Save the related module record information. Triggered from CRMEntity->saveentity method or updateRelations.php
-	 * @param String This module name
-	 * @param Integer This module record number
-	 * @param String Related module name
+	 * @param string This module name
+	 * @param integer This module record number
+	 * @param string Related module name
 	 * @param mixed Integer or Array of related module record number
 	 */
 	public function save_related_module($module, $crmid, $with_module, $with_crmid) {
@@ -2436,9 +2437,9 @@ class CRMEntity {
 
 	/**
 	 * Delete the related module record information. Triggered from updateRelations.php
-	 * @param String This module name
-	 * @param Integer This module record number
-	 * @param String Related module name
+	 * @param string This module name
+	 * @param integer This module record number
+	 * @param string Related module name
 	 * @param mixed Integer or Array of related module record number
 	 */
 	public function delete_related_module($module, $crmid, $with_module, $with_crmid) {
@@ -2877,9 +2878,9 @@ class CRMEntity {
 
 	/**
 	 * Move the related records of the specified list of id's to the given record.
-	 * @param String This module name
-	 * @param Array List of Entity Id's from which related records need to be transfered
-	 * @param Integer Id of the the Record to which the related records are to be moved
+	 * @param string This module name
+	 * @param array List of Entity Id's from which related records need to be transfered
+	 * @param integer Id of the the Record to which the related records are to be moved
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
@@ -2956,10 +2957,10 @@ class CRMEntity {
 		$log->debug('< transferRelatedRecords');
 	}
 
-	/*
+	/**
 	 * Function to get the primary query part of a report
-	 * @param - $module Primary module name
-	 * returns the query string formed on fetching the related data for report for primary module
+	 * @param string primary module name
+	 * @return string query string formed on fetching the related data for report for primary module
 	 */
 	public function generateReportsQuery($module, $queryPlanner) {
 		global $adb;
@@ -3073,11 +3074,11 @@ class CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsSecQuery($module, $secmodule, $queryPlanner, $type = '', $where_condition = '') {
 		global $adb;
@@ -3185,10 +3186,10 @@ class CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the security query part of a report
-	 * @param - $module primary module name
-	 * returns the query string formed on fetching the related data for report for security of the module
+	 * @param string primary module name
+	 * @return string query string formed on fetching the related data for report for security of the module
 	 */
 	public function getListViewSecurityParameter($module) {
 		global $current_user;
@@ -3246,11 +3247,11 @@ class CRMEntity {
 		return $sec_query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on relating the primary module and secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string query string formed on relating the primary module and secondary module
 	 */
 	public function getRelationQuery($module, $secmodule, $table_name, $column_name, $queryPlanner) {
 		global $adb;
@@ -3335,14 +3336,14 @@ class CRMEntity {
 	/**
 	 * To keep track of action of field filtering and avoiding doing more than once.
 	 *
-	 * @var Boolean
+	 * @var boolean
 	 */
 	public $__inactive_fields_filtered = false;
 
 	/**
 	 * Filter in-active fields based on type
 	 *
-	 * @param String $module
+	 * @param string $module
 	 */
 	public function filterInactiveFields($module) {
 		if ($this->__inactive_fields_filtered) {
@@ -3439,8 +3440,8 @@ class CRMEntity {
 
 	/**
 	 *
-	 * @param String $tableName
-	 * @return String
+	 * @param string $tableName
+	 * @return string
 	 */
 	public function getJoinClause($tableName) {
 		if (strripos($tableName, 'rel') === (strlen($tableName) - 3)) {
@@ -3452,10 +3453,10 @@ class CRMEntity {
 
 	/**
 	 *
-	 * @param <type> $module
-	 * @param <type> $user
-	 * @param <type> $parentRole
-	 * @param <type> $userGroups
+	 * @param string module
+	 * @param object Users
+	 * @param string parentRole
+	 * @param string userGroups comma-separated list
 	 */
 	public function getNonAdminAccessQuery($module, $user, $parentRole, $userGroups) {
 		$query = $this->getNonAdminUserAccessQuery($user, $parentRole, $userGroups);
@@ -3470,9 +3471,9 @@ class CRMEntity {
 
 	/**
 	 *
-	 * @param <type> $user
-	 * @param <type> $parentRole
-	 * @param <type> $userGroups
+	 * @param object Users
+	 * @param string parentRole
+	 * @param string userGroups comma-separated list
 	 */
 	public function getNonAdminUserAccessQuery($user, $parentRole, $userGroups) {
 		$query = "(SELECT $user->id as id) UNION (SELECT vtiger_user2role.userid AS userid FROM vtiger_user2role"
@@ -3485,8 +3486,8 @@ class CRMEntity {
 
 	/**
 	 *
-	 * @param <type> $module
-	 * @param <type> $user
+	 * @param string module
+	 * @param object Users
 	 */
 	public function getNonAdminModuleAccessQuery($module, $user) {
 		$userprivs = $user->getPrivileges();
@@ -3504,10 +3505,10 @@ class CRMEntity {
 
 	/**
 	 *
-	 * @param <type> $module
-	 * @param <type> $user
-	 * @param <type> $parentRole
-	 * @param <type> $userGroups
+	 * @param string module
+	 * @param object Users
+	 * @param string parentRole
+	 * @param string userGroups comma-separated list
 	 */
 	protected function setupTemporaryTable($tableName, $sharedmodule, $user, $parentRole, $userGroups) {
 		$module = null;
@@ -3523,9 +3524,9 @@ class CRMEntity {
 
 	/**
 	 *
-	 * @param String $module - module name for which query needs to be generated.
-	 * @param Users $user - user for which query needs to be generated.
-	 * @return String Access control Query for the user.
+	 * @param string module name for which query needs to be generated
+	 * @param Users user for which query needs to be generated
+	 * @return string Access control Query for the user
 	 */
 	public function getNonAdminAccessControlQuery($module, $user, $scope = '') {
 		global $currentModule;
@@ -3593,10 +3594,10 @@ class CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules between module and this module
-	 * @param String $secmodule - $secmodule secondary module name
-	 * @return Array returns the array with table names and fieldnames storing relations
+	 * @param string secondary module name
+	 * @return array table names and fieldnames storing relations
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array(
@@ -3625,7 +3626,7 @@ class CRMEntity {
 
 	/**
 	 * Function to get sort order
-	 * return string $sorder    - sortorder string either 'ASC' or 'DESC'
+	 * @return string sortorder string either 'ASC' or 'DESC'
 	 */
 	public function getSortOrder() {
 		global $log, $adb;
@@ -3643,7 +3644,7 @@ class CRMEntity {
 
 	/**
 	 * Function to get order by
-	 * return string $order_by    - fieldname(eg: 'accountname')
+	 * @return string fieldname(eg: 'accountname')
 	 */
 	public function getOrderBy() {
 		global $log, $adb;
@@ -3665,7 +3666,7 @@ class CRMEntity {
 
 	/**
 	 * Function to Listview buttons
-	 * return array $list_buttons - for module (eg: 'Accounts')
+	 * @return array $list_buttons - for module
 	 */
 	public function getListButtons($app_strings) {
 		global $currentModule;
