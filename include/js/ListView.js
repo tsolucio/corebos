@@ -192,10 +192,10 @@ function activateCustomSearch(module) {
 				} else if (p4.value == 'select' || p4.value == 'owner' || p4.value == 'checkbox') {
 					var tks_array = '';
 					jQuery('select#tks_'+p1.value+' option:selected').map(function () {
-						tks_array += (jQuery(this).val())+',';
+						tks_array += (jQuery(this).val())+String.fromCharCode(7);
 					});
 
-					var temp_array = tks_array.split(',');
+					var temp_array = tks_array.split(String.fromCharCode(7));
 					var comp = 'e';
 
 					if ((temp_array.length) - 1 > 1) {
