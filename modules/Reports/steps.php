@@ -222,10 +222,11 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$rel_fields = getRelatedFieldColumns();
 			echo json_encode(
 				array(
-				'BLOCKJS'=>$BLOCK1,
-				'BLOCKCRITERIA'=>$BLOCKCRITERIA,
-				'COLUMNS_BLOCK'=>$COLUMNS_BLOCK,
-				'REL_FIELDS'=>json_encode($rel_fields)
+					'BLOCKJS'=>$BLOCK1,
+					'BLOCKCRITERIA'=>$BLOCKCRITERIA,
+					'COLUMNS_BLOCK'=>$COLUMNS_BLOCK,
+					'REL_FIELDS'=>json_encode($rel_fields),
+					'CRITERIA_GROUPS' => $oReport->advft_criteria
 				)
 			);
 		}

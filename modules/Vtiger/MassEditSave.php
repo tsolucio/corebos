@@ -39,7 +39,7 @@ $url = getBasic_Advance_SearchURL();
 if (isset($params['start']) && $params['start']!='') {
 	$rstart = '&start=' . urlencode(vtlib_purify($params['start']));
 }
-if (isset($idlist)) {
+if (!empty($idlist)) {
 	$_REQUEST['action'] = 'MassEditSave';
 
 	// Replacing params action value
@@ -104,7 +104,7 @@ if (isset($idlist)) {
 		$progress = round($recordprocessed / $recordcount * 100, 0);
 		send_message($id++, $msg, $progress, $recordprocessed, $recordcount);
 	}
+	send_message('CLOSE', $app_strings['processcomplete'], 100, $recordcount, $recordcount);
+	coreBOS_Settings::delSetting('masseditids'.$params['corebos_browsertabID']);
 }
-send_message('CLOSE', $app_strings['processcomplete'], 100, $recordcount, $recordcount);
-coreBOS_Settings::delSetting('masseditids'.$params['corebos_browsertabID']);
 ?>

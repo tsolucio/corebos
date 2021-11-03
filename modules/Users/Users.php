@@ -131,9 +131,6 @@ class Users extends CRMEntity {
 	 */
 	private $privileges;
 
-	/** constructor function for the main user class
-	 instantiates the Logger class and PearDatabase Class
-	 */
 	public function __construct() {
 		global $log;
 		$log->debug('> Users');
@@ -148,7 +145,7 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to get sort order
-	 * return string  $sorder    - sortorder string either 'ASC' or 'DESC'
+	 * @return string sort order string either 'ASC' or 'DESC'
 	 */
 	public function getSortOrder() {
 		global $log, $adb;
@@ -164,7 +161,7 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to get order by
-	 * return string  $order_by    - fieldname(eg: 'subject')
+	 * @return string order by fieldname (eg: 'subject')
 	 */
 	public function getOrderBy() {
 		global $log, $adb;
@@ -185,8 +182,8 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to set the user preferences in the session
-	 * @param $name -- name:: Type varchar
-	 * @param $value -- value:: Type varchar
+	 * @param string name
+	 * @param string value
 	 */
 	public function setPreference($name, $value) {
 		if (!isset($this->user_preferences)) {
@@ -276,7 +273,7 @@ class Users extends CRMEntity {
 	 * Checks the User_AuthenticationType global variavle value for login type and forks off to the proper module
 	 *
 	 * @param string $user_password - The password of the user to authenticate
-	 * @return true if the user is authenticated, false otherwise
+	 * @return boolean true if the user is authenticated, false otherwise
 	 */
 	public function doLogin($user_password) {
 		global $log, $adb;
@@ -371,7 +368,7 @@ class Users extends CRMEntity {
 
 	/**
 	 * Load a user based on the user_name in $this
-	 * @return -- this if load was successul and null if load failed.
+	 * @return mixed Users if load was successul and null if load failed
 	 */
 	public function load_user($user_password) {
 		global $log, $adb;
@@ -522,11 +519,11 @@ class Users extends CRMEntity {
 	}
 
 	/**
-	 * @param string $user name - Must be non null and at least 1 character.
-	 * @param string $user_password - Must be non null and at least 1 character.
-	 * @param string $new_password - Must be non null and at least 1 character.
-	 * @return boolean - If passwords pass verification and query succeeds, return true, else return false.
-	 * @desc Verify that the current password is correct and write the new password to the DB.
+	 * Verify that the current password is correct and write the new password to the database
+	 * @param string $user name - Must be non null and at least 1 character
+	 * @param string $user_password - Must be non null and at least 1 character
+	 * @param string $new_password - Must be non null and at least 1 character
+	 * @return boolean If passwords pass verification and query succeeds, return true, else return false
 	 */
 	public function change_password($user_password, $new_password, $dieOnError = true) {
 		global $current_user, $log, $adb;
@@ -630,8 +627,8 @@ class Users extends CRMEntity {
 	}
 
 	/** gives the user id for the specified user name
-	 * @param $user_name -- user name:: Type varchar
-	 * @returns user id
+	 * @param string user name
+	 * @return integer user id
 	 */
 	public function retrieve_user_id($user_name) {
 		global $adb;
@@ -647,7 +644,7 @@ class Users extends CRMEntity {
 
 	/** check if given number is a valid and active user ID
 	 * @param integer $userid
-	 * @returns boolean
+	 * @return boolean
 	 */
 	public static function is_ActiveUserID($userid) {
 		global $adb;
@@ -660,7 +657,7 @@ class Users extends CRMEntity {
 	}
 
 	/**
-	 * @return -- returns a list of all users in the system.
+	 * @return boolean user name exists already or not
 	 */
 	public function verify_data() {
 		global $mod_strings, $log, $adb;
@@ -671,7 +668,7 @@ class Users extends CRMEntity {
 		$dup_users = $adb->fetchByAssoc($result);
 
 		$query = "SELECT user_name from vtiger_users where is_admin = 'on' AND deleted=0";
-		$result = $adb->pquery($query, array(), true, 'Error selecting possible duplicate vtiger_users: ');
+		$result = $adb->pquery($query, array(), true, 'Error selecting possible duplicate users: ');
 		$last_admin = $adb->fetchByAssoc($result);
 
 		$log->debug('last admin length: ' . count($last_admin));
@@ -758,7 +755,7 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to save the user information into the database
-	 * @param $module -- module name:: Type varchar
+	 * @param string module name
 	 */
 	public function saveentity($module, $fileid = '') {
 		global $adb;
@@ -802,8 +799,8 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to insert values in the specifed table for the specified module
-	 * @param $table_name -- table name:: Type varchar
-	 * @param $module -- module:: Type varchar
+	 * @param string table name
+	 * @param string module
 	 */
 	public function insertIntoEntityTable($table_name, $module, $fileid = '') {
 		global $log, $app_strings, $adb;
@@ -967,8 +964,8 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to insert values into the attachment table
-	 * @param $id -- entity id:: Type integer
-	 * @param $module -- module:: Type varchar
+	 * @param integer entity id
+	 * @param string module
 	 */
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log;
@@ -984,9 +981,9 @@ class Users extends CRMEntity {
 		$log->debug('< insertIntoAttachment');
 	}
 
-	/** Function to retreive the user info of the specifed user id The user info will be available in $this->column_fields array
-	 * @param $record -- record id:: Type integer
-	 * @param $module -- module:: Type varchar
+	/** Function to retrieve the user information of the given user ID which will be loaded into the $this->column_fields array
+	 * @param integer record ID
+	 * @param string module
 	 */
 	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false, $throwexception = false) {
 		global $adb, $log;
@@ -1048,9 +1045,9 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to upload the file to the server and add the file details in the attachments table
-	 * @param $id -- user id:: Type varchar
-	 * @param $module -- module name:: Type varchar
-	 * @param $file_details -- file details array:: Type array
+	 * @param integer user id
+	 * @param string module name
+	 * @param array file details
 	 */
 	public function uploadAndSaveFile($id, $module, $file_details, $attachmentname = '', $direct_import = false, $forfield = '') {
 		global $log, $current_user, $upload_badext, $adb;
@@ -1107,7 +1104,7 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to save the user information into the database
-	 * @param $module -- module name:: Type varchar
+	 * @param string module name
 	 */
 	public function save($module_name, $fileid = '') {
 		global $adb, $current_user, $cbodUserLog;
@@ -1188,8 +1185,8 @@ class Users extends CRMEntity {
 
 	/**
 	 * gives the order in which the modules have to be displayed in the home page for the specified user id
-	 * @param $id -- user id:: Type integer
-	 * @returns the customized home page order in $return_array
+	 * @param integer user id
+	 * @return array the customized home page order
 	 */
 	public function getHomeStuffOrder($id) {
 		global $adb;
@@ -1376,7 +1373,7 @@ class Users extends CRMEntity {
 	}
 
 	/** function to save the order in which the modules have to be displayed in the home page for the specified user id
-	 * @param $id -- user id:: Type integer
+	 * @param integer user id
 	 */
 	public function saveHomeStuffOrder($id) {
 		global $log, $adb;
@@ -1402,7 +1399,7 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to reset the Reminder Interval setup and update the time for next reminder interval
-	 * @param $prev_reminder_interval -- Last Reminder Interval on which the reminder popup's were triggered.
+	 * @param integer Last Reminder Interval on which the reminder popup's were triggered
 	 */
 	public function resetReminderInterval($prev_reminder_interval) {
 		global $adb;
@@ -1498,15 +1495,21 @@ class Users extends CRMEntity {
 			$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
 		}
 
-		//delete from user vtiger_table;
+		//delete from user table;
 		$adb->pquery('delete from vtiger_users where id=?', array($userId));
 		//Delete user extension in asterisk.
 		$adb->pquery('delete from vtiger_asteriskextensions where userid=?', array($userId));
+		// close user session
+		coreBOS_Settings::delSetting('cbodUserConnection'.$userId);
+		coreBOS_Settings::delSetting('cbodLastLoginTime'.$userId);
+		// delete user files if they exist
+		@unlink('user_privileges/sharing_privileges_'.$userId.'.php');
+		@unlink('user_privileges/user_privileges_'.$userId.'.php');
 	}
 
 	/**
 	 * This function should be overridden in each module. It marks an item as deleted.
-	 * @param <type> $id
+	 * @param integer $id
 	 */
 	public function mark_deleted($id) {
 		global $current_user, $adb;
@@ -1517,7 +1520,7 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to get the user id of the active admin user.
-	 * @return Integer - Active Admin User ID
+	 * @return integer active Admin User ID
 	 */
 	public static function getActiveAdminId() {
 		global $adb;
@@ -1533,7 +1536,7 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to get the active admin user object
-	 * @return Users - Active Admin User Instance
+	 * @return Users Active Admin User Instance
 	 */
 	public static function getActiveAdminUser() {
 		$adminId = self::getActiveAdminId();
@@ -1581,7 +1584,7 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to get the Headers of Users Information like User ID, Name, Role, Email.
-	 * Returns Header Values like User ID, Email etc in an array format.
+	 * @return array Header Values like User ID, Email etc
 	**/
 	public function getUserListHeader() {
 		global $log;

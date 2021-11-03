@@ -61,7 +61,7 @@ $mod_strings = array(
 	'LBL_FIELD' => 'Mező',
 	'LBL_EXPRESSION' => 'Kifejezés',
 	'LBL_SET_EXPRESSION' => 'Kifejezést megad',
-	'LBL_MANUAL' => 'Rendszer. Mass Actions.',
+	'LBL_MANUAL' => 'Rendszer. Mass Actions',
 	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' => 'Új Feltétel csoport',
 	'VTUpdateFieldsTask' => 'Mezők frissítése',
@@ -241,6 +241,9 @@ $mod_strings = array(
 	'LBL_SELECT_SENDGRID_EMAIL_TEMPLATE' => 'Select SendGrid Email Template',
 	'LBL_LOAD_SENDGRID_TEMPLATES' => 'Load SendGrid Templates',
 	'LBL_PREVIEW_BUTTON' => 'Preview',
+	'Records execution success' => 'Records execution success',
+	'Records put in queue' => 'Records put in queue',
+	'Records' => 'Records:',
 	'CBUpsertTask' => 'Upsert',
 );
 ?>

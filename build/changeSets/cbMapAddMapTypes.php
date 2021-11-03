@@ -44,6 +44,7 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 				'Webservice Mapping',
 				'InformationMap',
 				'Kanban',
+				'Pivot',
 				'ApplicationMenu',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');

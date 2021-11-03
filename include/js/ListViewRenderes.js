@@ -52,13 +52,16 @@ class CheckboxRender {
 class LinkRender {
 
 	constructor(props) {
-		let el;
-		let module = document.getElementById('curmodule').value;
+		let el, edit_query, edit_query_string, module;
+		if (document.getElementById('curmodule')) {
+			module = document.getElementById('curmodule').value;
+		} else if (document.getElementById('select_module')) {
+			module = document.getElementById('select_module').value;
+		}
 		let rowKey = props.rowKey;
 		let columnName = props.columnInfo.name;
 		let recordid = props.grid.getValue(rowKey, 'recordid');
-		let referenceField = props.grid.getValue(rowKey, 'reference');
-		let referenceValue = props.grid.getValue(rowKey, referenceField);
+		let referenceField = props.grid.getValue(rowKey, 'reference_field');
 		let relatedRows = props.grid.getValue(rowKey, 'relatedRows');
 		const { tooltip } = props.columnInfo.renderer.options;
 		if (tooltip) {
@@ -71,16 +74,22 @@ class LinkRender {
 				<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 				</svg>
-			</span>
-			`;
+			</span>`;
 		}
-		if (columnName == referenceField) {
+		if (referenceField.includes(columnName)) {
 			el = document.createElement('a');
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
 			}
-			el.href = `index.php?module=${module}&action=DetailView&record=`+recordid;
+			edit_query = {
+				'module': module,
+				'action': 'DetailView',
+				'record': recordid,
+			};
+			edit_query_string = ListView.encodeQueryData(edit_query);
+			el.href = `index.php?${edit_query_string}`;
 			el.innerHTML = String(props.value);
+			el.style.marginLeft = '5px';
 			this.el = el;
 			this.render(props);
 		} else if (relatedRows[columnName] != undefined) {
@@ -90,16 +99,50 @@ class LinkRender {
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
 			}
-			el.href = `index.php?module=${moduleName}&action=DetailView&record=`+fieldId;
+			edit_query = {
+				'module': moduleName,
+				'action': 'DetailView',
+				'record': fieldId,
+			};
+			edit_query_string = ListView.encodeQueryData(edit_query);
+			el.href = `index.php?${edit_query_string}`;
 			el.innerHTML = String(props.value);
+			el.style.marginLeft = '5px';
 			this.el = el;
 			this.render(props);
 		} else {
-			el = document.createElement('span');
-			if (tooltip) {
-				el.id = `tooltip-el-${recordid}-${columnName}`;
+			if (columnName == 'filename' && module == 'Documents') {
+				el = document.createElement('a');
+				if (tooltip) {
+					el.id = `tooltip-el-${recordid}-${columnName}`;
+				}
+				el.setAttribute('onclick', `javascript:dldCntIncrease(${recordid})`);
+				edit_query = {
+					'module': 'Utilities',
+					'action': 'UtilitiesAjax',
+					'file': 'ExecuteFunctions',
+					'functiontocall': 'downloadfile',
+					'entityid': recordid,
+					'fileid': props.grid.getValue(rowKey, 'fileid'),
+				};
+				edit_query_string = ListView.encodeQueryData(edit_query);
+				el.href = `index.php?${edit_query_string}`;
+			} else {
+				let fieldType = props.grid.getValue(rowKey, 'uitype_'+columnName);
+				let fieldValue = props.grid.getValue(rowKey, columnName);
+				if (fieldType == '17') {
+					el = document.createElement('a');
+					el.href = fieldValue;
+					el.target = '_blank';
+				} else {
+					el = document.createElement('span');
+					if (tooltip) {
+						el.id = `tooltip-el-${recordid}-${columnName}`;
+					}
+				}
 			}
 			el.innerHTML = String(props.value);
+			el.style.marginLeft = '5px';
 			this.el = el;
 			this.render(props);
 		}
@@ -121,136 +164,24 @@ class LinkRender {
 class ActionRender {
 
 	constructor(props) {
-		let el;
-		let module = document.getElementById('curmodule').value;
 		let rowKey = props.rowKey;
 		let recordid = props.grid.getValue(rowKey, 'recordid');
-		let actionPermission = props.grid.getValue(rowKey, 'action');
-		el = document.createElement('span');
-		let actions = '<div class="slds-button-group" role="group">';
-		const str = '|';
-		const editUrl = `index.php?module=${module}&action=EditView&record=${recordid}&return_module=${module}&return_action=index`;
-		const deleteUrl = `javascript:confirmdelete('index.php?module=${module}&action=Delete&record=${recordid}&return_module=${module}&return_action=index&parenttab=ptab');`;
-		let status = '';
-		if (actionPermission.cbCalendar.status != undefined) {
-			status = `
-			<li class="slds-dropdown__item" role="presentation">
-				<a onclick="ajaxChangeCalendarStatus('${actionPermission.cbCalendar.status}',${recordid});" role="menuitem" tabindex="-1">
-					<span class="slds-truncate" title="Close">
-					    <svg class="slds-button__icon" aria-hidden="true">
-					        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-					    </svg>
-						Close
-					</span>
-				</a>
-			</li>`;
-
-		}
-		let modified = '';
-		if (actionPermission.isModified) {
-			modified = `
-	          	<li class="slds-dropdown__item" role="presentation">
-					<a role="menuitem" tabindex="-1">
-						<span class="slds-truncate" title="Notification">
-					        <svg class="slds-button__icon" aria-hidden="true">
-					          <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#notification"></use>
-					        </svg>
-							Modified
-						</span>
-					</a>
-	          	</li>`;
-		}
-		let customActions = '';
-		if (modified != '' && status != '') {
-			customActions += `
-				<a onclick="ajaxChangeCalendarStatus('${actionPermission.cbCalendar.status}',${recordid});" class="slds-button slds-button_icon slds-button_icon-border-filled">
-				    <svg class="slds-button__icon" aria-hidden="true">
-				      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-				    </svg>
-				    Close
-				</a>
-				<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-button_last">
-			    <button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="Show More">
-			        <svg class="slds-button__icon" aria-hidden="true">
-			          <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-			        </svg>
-			        <span class="slds-assistive-text">Show More</span>
-			    </button>
-				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions">
-					<ul class="slds-dropdown__list" role="menu">
-						${modified}
-			        </ul>
-			    </div>
+		let el = document.createElement('span');
+		let actions = `
+			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
+				<button
+					class="slds-button slds-button_icon slds-button_icon-border-filled listview-actions-opener"
+					aria-haspopup="true"
+					title="Show More"
+					onmouseover="ListView.RenderActions(${recordid});"
+				>
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
+					</svg>
+					<span class="slds-assistive-text">Show More</span>
+				</button>
+				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" id="dropdown-${recordid}">
 			</div>`;
-		} else if (modified == '' && status != '') {
-			customActions += `
-				<a onclick="ajaxChangeCalendarStatus('${actionPermission.cbCalendar.status}',${recordid});" class="slds-button slds-button_icon slds-button_icon-border-filled">
-				    <svg class="slds-button__icon" aria-hidden="true">
-				      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-				    </svg>
-				    Close
-				</a>`;
-		} else if (modified != '' && status == '') {
-			customActions += `
-				<a class="slds-button slds-button_icon slds-button_icon-border-filled">
-					<span class="slds-truncate" title="Notification">
-				        <svg class="slds-button__icon" aria-hidden="true">
-				          <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#notification"></use>
-				        </svg>
-					</span>
-				</a>`;
-		}
-		if (actionPermission.edit && actionPermission.delete) {
-			actions += `
-				<a class="slds-button slds-button_icon slds-button_icon-border-filled" href="${editUrl}">
-				    <svg class="slds-button__icon" aria-hidden="true">
-				      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-				    </svg>
-				</a>
-				<a class="slds-button slds-button_icon slds-button_icon-border-filled" href="${deleteUrl}">
-				    <svg class="slds-button__icon" aria-hidden="true">
-				      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-				    </svg>
-				</a>`;
-			if (modified != '' || status != '') {
-				actions += `
-					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-button_last">
-				    <button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="Show More">
-				        <svg class="slds-button__icon" aria-hidden="true">
-				          <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-				        </svg>
-				        <span class="slds-assistive-text">Show More</span>
-				    </button>
-					<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions">
-						<ul class="slds-dropdown__list" role="menu">
-							${modified}
-				          	${status}
-				        </ul>
-				    </div>
-				</div>`;
-			}
-		} else if (!actionPermission.edit && actionPermission.delete) {
-			actions += `
-				<a class="slds-button slds-button_icon slds-button_icon-border-filled" href="${deleteUrl}">
-				    <svg class="slds-button__icon" aria-hidden="true">
-				      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-				    </svg>
-				</a>
-				${customActions}
-			`;
-		} else if (actionPermission.edit && !actionPermission.delete) {
-			actions += `
-				<a class="slds-button slds-button_icon slds-button_icon-border-filled" href="${editUrl}">
-				    <svg class="slds-button__icon" aria-hidden="true">
-				      <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-				    </svg>
-				</a>
-				${customActions}
-			`;
-		} else {
-			actions += customActions;
-		}
-		actions += '</div>';
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);

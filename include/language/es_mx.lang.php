@@ -1364,6 +1364,8 @@ $app_strings = array (
 
 	//List view popup content
 	'LBL_SEND_TO' => 'ENVIAR A',
+	'LNK_ALPHABETICAL_SEARCH' => 'Búsqueda Alfabética',
+	'ERR_SITE_URL_MISMATCH' => 'URL configurada no concuerda con utilizada',
 );
 
 // Translation for currency names

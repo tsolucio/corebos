@@ -77,7 +77,7 @@ var TOOLTIP = {
 		if (typeof(TOOLTIP._cache[module]) == 'undefined') {
 			TOOLTIP._cache[module] = {};
 		}
-		if (!TOOLTIP._cache[module][fieldname]) {
+		if (!TOOLTIP._cache[module][fieldname] && TOOLTIP._cache[module][fieldname] !== undefined) {
 			if (!this._relinguishStatusControl) {
 				document.getElementById('status').style.display = 'none';
 			}

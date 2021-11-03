@@ -208,6 +208,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show or Hide mini Calendar widget in toolbar',
 ),
+'Application_Display_QuickCreate' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or Hide Quick Create options in menu',
+),
 'Application_Use_RTE' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
@@ -617,8 +623,8 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Show or hide Shipping and Handling charges',
 ),
 'Application_Global_Search_Active' => array(
-	'valuetype' => 'Booleano',
-	'category' => 'Aplicación',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Displays (1) or hides (0) the global search functionality. It can be combined with the global search autocomplete map to offer a reduced search option.',
 ),
@@ -1054,6 +1060,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'If set to the string "true", the Contact section will be selected when converting a Lead. By default, the section is selected.',
 ),
+'Lead_Convert_AssignedUser' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'any user ID | current_user',
+	'definition' => 'User ID to set the assigned user picklist to when converting a Lead. If set to "current_user" the current user will be used. By default, the user assigned to the lead record is used.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
@@ -1365,6 +1377,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Extension',
 	'values' => 'URL',
 	'definition' => 'URL to the conversion server: https://github.com/sfoxdev/docker-unoconv',
+),
+'GenDoc_PDFConversion_Retries' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Extension',
+	'values' => 'Positive Integer',
+	'definition' => 'The maximum number of retries when PDF conversion fails.',
 ),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Integer',

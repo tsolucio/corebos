@@ -165,11 +165,38 @@ class Workflow {
 		$this->wfendon = isset($row['wfendon']) ? $row['wfendon'] : '';
 		$this->active = isset($row['active']) ? $row['active'] : '';
 		$this->nexttrigger_time = isset($row['nexttrigger_time']) ? $row['nexttrigger_time'] : '';
+		$this->options = isset($row['options']) ? $row['options'] : '';
+		$this->cbquestion = isset($row['cbquestion']) ? $row['cbquestion'] : null;
+		if (empty($this->cbquestion)) {
+			$this->cbquestiondisplay = '';
+		} else {
+			$dp = getEntityName('cbQuestion', $this->cbquestion);
+			$this->cbquestiondisplay = $dp[$this->cbquestion];
+		}
+		$this->recordset = isset($row['recordset']) ? $row['recordset'] : null;
+		if (empty($this->recordset)) {
+			$this->recordsetdisplay = '';
+		} else {
+			$dp = getEntityName('cbMap', $this->recordset);
+			$this->recordsetdisplay = $dp[$this->recordset];
+		}
+		$this->onerecord = isset($row['onerecord']) ? $row['onerecord'] : null;
+		if (empty($this->onerecord)) {
+			$this->onerecorddisplay = '';
+		} else {
+			$dp = getEntityName(getSalesEntityType($this->onerecord), $this->onerecord);
+			$this->onerecorddisplay = $dp[$this->onerecord];
+		}
 		if ($row['execution_condition']==VTWorkflowManager::$ON_RELATE || $row['execution_condition']==VTWorkflowManager::$ON_UNRELATE) {
 			$this->relatemodule = isset($row['relatemodule']) ? $row['relatemodule'] : '';
 		} else {
 			$this->relatemodule = '';
 		}
+	}
+
+	public function checkNonAdminAccess() {
+		global $current_user;
+		return (is_admin($current_user) || $this->defaultworkflow != 1);
 	}
 
 	public function evaluate($entityCache, $id) {
@@ -359,7 +386,7 @@ class Workflow {
 
 	/**
 	 * Function gets the next trigger for the workflows
-	 * @global <String> $default_timezone
+	 * @global string $default_timezone
 	 * @return string time
 	 */
 	public function getNextTriggerTime() {
@@ -422,7 +449,7 @@ class Workflow {
 	 * get next trigger Time For weekly
 	 * @param integer $scheduledDaysOfWeek
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForWeekly($scheduledDaysOfWeek, $scheduledTime) {
 		$weekDays = array('0' => 'Sunday', '1' => 'Monday', '2' => 'Tuesday', '3' => 'Wednesday', '4' => 'Thursday', '5' => 'Friday', '6' => 'Saturday', '7' => 'Sunday');
@@ -477,7 +504,7 @@ class Workflow {
 	 * get next triggertime for monthly
 	 * @param integer $scheduledDayOfMonth
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForMonthlyByDate($scheduledDayOfMonth, $scheduledTime) {
 		$currentDayOfMonth = date('j', time());
@@ -521,7 +548,7 @@ class Workflow {
 	 * to get next trigger time for weekday of the month
 	 * @param integer $scheduledWeekDayOfMonth
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForMonthlyByWeekDay($scheduledWeekDayOfMonth, $scheduledTime) {
 		$currentTime = time();
@@ -544,7 +571,7 @@ class Workflow {
 	 * to get next trigger time
 	 * @param string $annualDates
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForAnnualDates($annualDates, $scheduledTime) {
 		if ($annualDates) {

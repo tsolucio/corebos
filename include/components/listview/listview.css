@@ -47,3 +47,66 @@
 #ttmodcomments .dataLabel {
   white-space: normal;
 }
+
+.tui-grid-cell-has-overflow {
+  overflow: visible;
+}
+
+#listview-tui-grid .tui-grid-cell {
+  padding-left: calc(0.7rem - 5px);
+}
+#listview-tui-grid .tui-grid-cell-header {
+  padding-left: 0.7rem;
+}
+
+/* ---- CBDS tooltip ---- */
+.cbds-tooltip__trigger .cbds-tooltip__wrapper {
+  left: 1000000000000000px;
+  z-index: 100000;
+  position: absolute;
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+.cbds-tooltip__trigger:hover .cbds-tooltip__wrapper {
+  left: auto;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 100ms linear 50ms, transform 100ms linear 50ms;
+}
+
+.cbds-tooltip__wrapper--inner {
+  position:absolute;
+  color: #080707 !important;
+  padding-bottom: 1rem;
+  -webkit-transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
+  -moz-transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
+  transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
+}
+
+/* ---- CBDS loader ---- */
+.cbds-loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #006dcc;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-left: 45%;
+  margin-top: 5%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.tui-grid-body-area,
+.tui-grid-rside-area,
+[data-column-name="cblvactioncolumn"] {
+  overflow: visible !important;
+}

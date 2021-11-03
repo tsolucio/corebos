@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contribuitor: Ranieri Slemer | 25-06-2021 | Translate Brazilian Portuguese | www.ecrmweb.com.br
+ * Contribuitor: Ranieri Slemer | 28-10-2021 | Translate Brazilian Portuguese | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -320,7 +320,7 @@ $mod_strings = array(
 'PurchaseOrder'=>'Pedido compra',
 'SalesOrder'=>'Pedido venda',
 'Invoice'=>'Fatura',
-'LBL_FRONT_LOGO' => 'Logotipo da frente',
+'LBL_FRONT_LOGO' => 'Logotipo entrada',
 'LBL_FAVICON_LOGO' => 'Logo favicon',
 
 //For Custom Fields
@@ -881,7 +881,7 @@ $mod_strings = array(
 'LBL_ACTIVE' => 'Ativo',
 'LBL_QUICK_CREATE' => 'Criar rápido',
 'LBL_MASS_EDIT' => 'Editar em massa',
-'LBL_LONG_FIELD' => 'Long Field',
+'LBL_LONG_FIELD' => 'Campo Longo',
 'LBL_BLOCK_NAME' => 'Nome bloco',
 'AFTER' => 'Depois',
 'ADD_BLOCK' => 'Adicionar bloco',
@@ -994,5 +994,37 @@ $mod_strings = array(
 'SM_SorryInconvenience' => 'Estamos fazendo uma manutenção no momento. Estaremos de volta on-line o mais breve possível!',
 'LBL_CC' => 'CC',
 'Not Labeled' => 'Sem descrição',
+'LBL_MB_MODULENAME' => 'Nome módulo',
+'LBL_MB_MODULELABEL' => 'Nome módulo',
+'LBL_MB_MODULEFIELDS' => 'Campos módulo',
+'LBL_MB_PARENTMENU' => 'Menu pai',
+'LBL_MB_MODULEICON' => 'Icone módulo',
+'LBL_MB_NEXT' => 'PRÓXIMO',
+'LBL_MB_MODULEBLOCKS' => 'Blocos módulo',
+'LBL_MB_DATECREATED' => 'Data & hora criação',
+'LBL_MB_COMPLETED' => 'Completado',
+'LBL_MB_EXPORT' => 'Exportiar',
+'LBL_MB_STARTEDITING' => 'Iniciar edição',
+'LBL_MB_CLOSE' => 'Fechado',
+'LBL_MB_LISTMODULES' => 'Lista de modulos',
+'LBL_MB_GENERAL' => 'Informação geral',
+'LBL_MB_LISTICONS' => 'Lista dos icones',
+'LBL_MB_BLOCKLABEL' => 'Nome bloco',
+'LBL_MB_NEWBLOCK' => 'Novo bloco',
+'LBL_MB_ADDFIELD' => 'ADICIONAR CAMPO',
+'LBL_MB_ALLMODULES' => 'Todos módulos',
+'LBL_MB_PROGRESS' => 'Progresso',
+'LBL_MB_STATUS' => 'Status',
+'LBL_MODULE_BUILDER' => 'Criador de módulos',
+'LBL_MODULE_BUILDER_DESCRIPTION' => 'Criar novo módulo',
+'LBL_MB_RELATEDLISTS' => 'Listas relacionadas',
+'LBL_MB_NEWRL' => 'Adic lista relacionada',
+'LBL_MB_FINISH' => 'Finalizar',
+'LBL_MB_BACK' => 'VOLTAR',
+'LBL_CUSTOM_INFORMATION' => 'INFORMAÇÃO CUSTOMIZADA',
+'LBL_ACTIONS' => 'AÇÕES',
+'LBL_MERGE' => 'Mesclar',
+'LBL_IMPORT' => 'Importar',
+'LBL_EXPORT' => 'Exportar',
 );
 ?>

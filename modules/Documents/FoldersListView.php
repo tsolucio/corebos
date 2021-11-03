@@ -98,7 +98,6 @@ $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('BUTTONS', $other_text);
 $smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
 $smarty->assign('Document_Folder_View', 1);
-//Retreive the list from Database
 //<<<<<<<<<customview>>>>>>>>>
 global $current_user;
 $queryGenerator = new QueryGenerator($currentModule, $current_user);
@@ -136,7 +135,6 @@ if ($viewid ==0) {
 	exit;
 }
 
-//Retreive the List View Table Header
 if ($viewid !='') {
 	$url_string .='&viewname='.$viewid;
 }
@@ -185,7 +183,6 @@ if ($foldercount > 0) {
 			$query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 			$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 		}
-		//Retreiving the no of rows
 		$count_result = $adb->query(mkCountQuery($query));
 		$num_records = $adb->query_result($count_result, 0, 'count');
 		if ($num_records > 0) {

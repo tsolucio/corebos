@@ -24,9 +24,9 @@ if ($cbaction == 'POSTPONE' && !empty($cbmodule) && !empty($cbrecord)) {
 			'UPDATE vtiger_activity_reminder_popup set status=0 WHERE reminderid=? AND semodule=? AND recordid=?',
 			array($reminderid, $cbmodule, $cbrecord)
 		);
-		echo ":#:SUCCESS";
+		echo ':#:SUCCESS';
 	} else {
-		echo ":#:FAILURE";
+		echo ':#:FAILURE';
 	}
 }
 ?>

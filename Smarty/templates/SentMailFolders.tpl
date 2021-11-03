@@ -1,5 +1,4 @@
 <script type="text/javascript" src="modules/Emails/Emails.js"></script>
-
 <script>
 function ShowFolders(folderid)
 {ldelim}
@@ -40,7 +39,7 @@ function ShowFolders(folderid)
 
 	jQuery.ajax({ldelim}
 		method:'POST',
-		url:'index.php?module=Emails&ajax=true&action=EmailsAjax&file=ListView&folderid='+folderid
+		url:'index.php?module=MailManager&ajax=true&action=MailManagerAjax&file=ListView&emailfilter=1&folderid='+folderid
 	{rdelim}).done(function(response) {ldelim}
 		document.getElementById('status').style.display='none';
 		if (document.getElementById('mail_fldrname')!=null){ldelim}

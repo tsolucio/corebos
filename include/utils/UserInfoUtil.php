@@ -14,10 +14,10 @@ require_once 'include/DatabaseUtil.php';
 include 'config.inc.php';
 global $log;
 
-/** To retreive the mail server info resultset for the specified user
-  * @param object user object
-  * @return object mail server database information resultset
- */
+/** To retrieve the mail server info resultset for the specified user
+ * @param object user object
+ * @return object mail server database information resultset
+*/
 function getMailServerInfo($user) {
 	global $log, $adb;
 	$log->debug('> getMailServerInfo '.$user->user_name);
@@ -85,8 +85,8 @@ function fetchUserGroupids($userid) {
 }
 
 /** Function to get all the vtiger_tab permission for the specified vtiger_profile
-  * @param $profileid -- Profile Id:: Type integer
-  * @returns  TabPermission Array in the following format:
+  * @param integer Profile Id
+  * @return array TabPermission array in the following format:
   * $tabPermission = Array($tabid1=>permission,
   *                        $tabid2=>permission,
   *                                |
@@ -108,8 +108,8 @@ function getAllTabsPermission($profileid) {
 }
 
 /** Function to get all the tab permission for the specified profile other than tabid 15
-  * @param $profileid -- Profile Id:: Type integer
-  * @returns  TabPermission Array in the following format:
+  * @param integer Profile Id
+  * @return array TabPermission array in the following format:
   * $tabPermission = Array($tabid1=>permission,
   *                        $tabid2=>permission,
   *                                |
@@ -135,8 +135,8 @@ function getTabsPermission($profileid) {
 }
 
  /** Function to get all the vtiger_tab standard action permission for the specified vtiger_profile
-  * @param $profileid -- Profile Id:: Type integer
-  * @returns  Tab Action Permission Array in the following format:
+  * @param integer Profile Id
+  * @return array Tab Action Permission array in the following format:
   * $tabPermission = Array($tabid1=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
   *                        $tabid2=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
   *                                |
@@ -166,8 +166,8 @@ function getTabsActionPermission($profileid) {
 }
 
 /** Function to get all the vtiger_tab utility action permission for the specified vtiger_profile
-  * @param $profileid -- Profile Id:: Type integer
-  * @returns  Tab Utility Action Permission Array in the following format:
+  * @param integer Profile Id
+  * @return array Tab Utility Action Permission array in the following format:
   * $tabPermission = Array($tabid1=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
   *                        $tabid2=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
   *                                |
@@ -196,17 +196,16 @@ function getTabsUtilityActionPermission($profileid) {
 	return $check;
 }
 
- /** This Function returns the Default Organization Sharing Action array for all modules whose sharing actions are editable
-  * @return array with following format:
-  * Arr=(tabid1=>Sharing Action Id,
-  *      tabid2=>Sharing Action Id,
-  *            |
-  *      tabidn=>Sharing Acion Id)
-  */
+/** This Function returns the Default Organization Sharing Action array for all modules whose sharing actions are editable
+ * @return array with following format:
+ * Arr=(tabid1=>Sharing Action Id,
+ *      tabid2=>Sharing Action Id,
+ *            |
+ *      tabidn=>Sharing Acion Id)
+ */
 function getDefaultSharingEditAction() {
 	global $log, $adb;
 	$log->debug('> getDefaultSharingEditAction');
-	//retreiving the standard permissions
 	$copy = array();
 	$result = $adb->pquery('select tabid,permission from vtiger_def_org_share where editstatus=0', array());
 	while ($permissionRow=$adb->fetch_array($result)) {
@@ -237,19 +236,18 @@ function getDefaultSharingAction() {
 }
 
 /** This Function returns the Default Organisation Sharing Action array for all modules
-  * @return array with following format:
-  * Arr=(tabid1=>Sharing Action Id,
-  *      tabid2=>SharingAction Id,
-  *            |
-  *            |
-  *            |
-  *      tabid3=>SharingAcion Id)
-  */
+ * @return array with following format:
+ * Arr=(tabid1=>Sharing Action Id,
+ *      tabid2=>SharingAction Id,
+ *            |
+ *            |
+ *            |
+ *      tabid3=>SharingAcion Id)
+ */
 function getAllDefaultSharingAction() {
 	global $log,$adb;
 	$log->debug('> getAllDefaultSharingAction');
 	$copy=array();
-	//retreiving the standard permissions
 	$result = $adb->pquery('select tabid, permission from vtiger_def_org_share', array());
 	$num_rows=$adb->num_rows($result);
 	for ($i=0; $i<$num_rows; $i++) {
@@ -297,9 +295,9 @@ function createRole($roleName, $parentRoleId, $roleProfileArray) {
 }
 
 /** Function to update the role
- * @param $roleName -- Role Name:: Type varchar
- * @param $roleId -- Role Id:: Type varchar
- * @param $roleProfileArray -- Profile to be associated with this role:: Type Array
+ * @param string Role Name
+ * @param string Role Id
+ * @param array Profile to be associated with this role
  */
 function updateRole($roleId, $roleName, $roleProfileArray) {
 	global $log,$adb;
@@ -321,19 +319,18 @@ function updateRole($roleId, $roleName, $roleProfileArray) {
 }
 
 /** Function to add the role to profile relation
- * @param $profileId -- Profile Id:: Type integer
- * @param $roleId -- Role Id:: Type varchar
+ * @param integer Profile Id
+ * @param string Role Id
  */
 function insertRole2ProfileRelation($roleId, $profileId) {
 	global $log, $adb;
-	$log->debug('> insertRole2ProfileRelation '.$roleId.','.$profileId);
 	$adb->pquery('insert into vtiger_role2profile values(?,?)', array($roleId,$profileId));
-	$log->debug('< insertRole2ProfileRelation');
+	$log->debug('>< insertRole2ProfileRelation'.$roleId.','.$profileId);
 }
 
 /** Function to get the roleid from rolename
- * @param $rolename -- Role Name:: Type varchar
- * @returns Role Id:: Type varchar
+ * @param string Role Name
+ * @return string Role Id
  */
 function fetchRoleId($rolename) {
 	global $log, $adb;
@@ -345,8 +342,8 @@ function fetchRoleId($rolename) {
 }
 
 /** Function to update user to role mapping based on the userid
- * @param $roleid -- Role Id:: Type varchar
- * @param $userid User Id:: Type integer
+ * @param string Role Id
+ * @param integer User Id
  */
 function updateUser2RoleMapping($roleid, $userid) {
 	global $log, $adb;
@@ -361,8 +358,8 @@ function updateUser2RoleMapping($roleid, $userid) {
 }
 
 /** Function to update user to group mapping based on the userid
- * @param $groupname -- Group Name:: Type varchar
- * @param $userid User Id:: Type integer
+ * @param string Group Name
+ * @param integer User Id
  */
 function updateUsers2GroupMapping($groupname, $userid) {
 	global $log, $adb;
@@ -373,8 +370,8 @@ function updateUsers2GroupMapping($groupname, $userid) {
 }
 
 /** Function to add user to role mapping
- * @param $roleid -- Role Id:: Type varchar
- * @param $userid User Id:: Type integer
+ * @param string Role Id
+ * @param integer User Id
  */
 function insertUser2RoleMapping($roleid, $userid) {
 	global $log, $adb;
@@ -384,8 +381,8 @@ function insertUser2RoleMapping($roleid, $userid) {
 }
 
 /** Function to add user to group mapping
- * @param $groupname -- Group Name:: Type varchar
- * @param $userid User Id:: Type integer
+ * @param string Group Name
+ * @param integer User Id
  */
 function insertUsers2GroupMapping($groupname, $userid) {
 	global $log, $adb;
@@ -395,8 +392,8 @@ function insertUsers2GroupMapping($groupname, $userid) {
 }
 
 /** Function to get the word template resultset
- * @param $module -- Module Name:: Type varchar
- * @returns Type:: resultset
+ * @param string Module Name
+ * @return resultset
  */
 function fetchWordTemplateList($module) {
 	global $log, $adb;
@@ -414,8 +411,8 @@ function fetchWordTemplateList($module) {
 }
 
 /** Function to get the email template iformation
- * @param $templateName -- Template Name:: Type varchar
- * @returns Type:: resultset
+ * @param string Template Name
+ * @return resultset
  */
 function fetchEmailTemplateInfo($templateName, $desired_lang = null, $default_lang = null) {
 	require_once 'modules/cbtranslation/cbtranslation.php';
@@ -442,8 +439,8 @@ function fetchEmailTemplateInfo($templateName, $desired_lang = null, $default_la
 }
 
 /** Function to substitute the tokens in the specified file
- * @param $templateName -- Template Name:: Type varchar
- * @param $globals
+ * @param string Template Name
+ * @param array globals
  * @deprecated
  */
 function substituteTokens($filename, $globals) {
@@ -841,11 +838,11 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 }
 
 /** Function to check if the currently logged in user has Read Access due to Sharing for the specified record
- * @param $module -- Module Name:: Type varchar
- * @param $actionid -- Action Id:: Type integer
- * @param $recordid -- Record Id:: Type integer
- * @param $tabid -- Tab Id:: Type integer
- * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
+ * @param string Module Name
+ * @param integer Action Id
+ * @param integer Record Id
+ * @param integer Tab Id
+ * @return string 'yes' or 'no'. 'yes' means the action is allowed for the currently logged in user. 'no' means the action is not allowed for the currently logged in user
  */
 function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 	global $log, $current_user;
@@ -943,11 +940,11 @@ function isReadPermittedBySharing($module, $tabid, $actionid, $record_id) {
 }
 
 /** Function to check if the currently logged in user has Write Access due to Sharing for the specified record
- * @param $module -- Module Name:: Type varchar
- * @param $actionid -- Action Id:: Type integer
- * @param $recordid -- Record Id:: Type integer
- * @param $tabid -- Tab Id:: Type integer
- * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
+ * @param string Module Name
+ * @param integer Action Id
+ * @param integer Record Id
+ * @param integer Tab Id
+ * @return 'yes' or 'no'. 'yes' means the action is allowed for the currently logged in user. 'no' means the action is not allowed for the currently logged in user
  */
 function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 	global $log, $current_user;
@@ -1047,10 +1044,10 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
 }
 
 /** Function to check if the outlook user is permitted to perform the specified action
- * @param $module -- Module Name:: Type varchar
- * @param $actionname -- Action Name:: Type varchar
- * @param $recordid -- Record Id:: Type integer
- * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
+ * @param string Module Name
+ * @param string Action Name
+ * @param integer Record Id
+ * @return 'yes' or 'no'. 'yes' means the action is allowed for the currently logged in user. 'no' means this action is not allowed for the currently logged in user
  */
 function isAllowed_Outlook($module, $action, $user_id, $record_id) {
 	global $log;
@@ -1120,9 +1117,9 @@ function isAllowed_Outlook($module, $action, $user_id, $record_id) {
 	return $permission;
 }
 
-/** Function to get the Profile Global Information for the specified vtiger_profileid
- * @param $profileid -- Profile Id:: Type integer
- * @returns Profile Gloabal Permission Array in the following format:
+/** Function to get the Profile Global Information for the specified profileid
+ * @param integer Profile Id
+ * @return array Profile Gloabal Permission array in the following format:
  * $profileGloblaPermisson=Array($viewall_actionid=>permission, $editall_actionid=>permission)
  */
 function getProfileGlobalPermission($profileid) {
@@ -1141,9 +1138,9 @@ function getProfileGlobalPermission($profileid) {
 	return $copy;
 }
 
-/** Function to get the Profile Tab Permissions for the specified vtiger_profileid
- * @param $profileid -- Profile Id:: Type integer
- * @returns Profile Tabs Permission Array in the following format:
+/** Function to get the Profile Tab Permissions for the specified profileid
+ * @param integer Profile Id
+ * @return array Profile Tabs Permission array in the following format:
  * $profileTabPermisson=Array($tabid1=>permission, $tabid2=>permission,........., $tabidn=>permission)
  */
 function getProfileTabsPermission($profileid) {
@@ -1162,9 +1159,9 @@ function getProfileTabsPermission($profileid) {
 	return $copy;
 }
 
-/** Function to get the Profile Action Permissions for the specified vtiger_profileid
- * @param $profileid -- Profile Id:: Type integer
- * @returns Profile Tabs Action Permission Array in the following format:
+/** Function to get the Profile Action Permissions for the specified profileid
+ * @param integer Profile Id
+ * @return array Profile Tabs Action Permission array in the following format:
  *    $tabActionPermission = Array($tabid1=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
  *                        $tabid2=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
  *                                |
@@ -1192,9 +1189,9 @@ function getProfileActionPermission($profileid) {
 	return $check;
 }
 
-/** Function to get the Standard and Utility Profile Action Permissions for the specified vtiger_profileid
-  * @param $profileid -- Profile Id:: Type integer
-  * @returns Profile Tabs Action Permission Array in the following format:
+/** Function to get the Standard and Utility Profile Action Permissions for the specified profileid
+  * @param integer Profile Id
+  * @return array Profile Tabs Action Permission array in the following format:
   *    $tabActionPermission = Array($tabid1=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
   *                        $tabid2=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
   *                                |
@@ -1216,9 +1213,9 @@ function getProfileAllActionPermission($profileid) {
 	return $actionArr;
 }
 
-/** Function to create vtiger_profile
-  * @param $profilename -- Profile Name:: Type varchar
-  * @param $parentProfileId -- Profile Id:: Type integer
+/** Function to create profile
+  * @param string Profile Name
+  * @param integer Profile Id
  */
 function createProfile($profilename, $parentProfileId, $description) {
 	global $log, $adb;
@@ -1226,7 +1223,6 @@ function createProfile($profilename, $parentProfileId, $description) {
 	//Inserting values into Profile Table
 	$adb->pquery('insert into vtiger_profile values(?,?,?)', array('', $profilename, $description));
 
-	//Retreiving the vtiger_profileid
 	$result2 = $adb->pquery('select max(profileid) as current_id from vtiger_profile', array());
 	$current_profile_id = $adb->query_result($result2, 0, 'current_id');
 
@@ -1296,9 +1292,9 @@ function createProfile($profilename, $parentProfileId, $description) {
 	$log->debug('< createProfile');
 }
 
-/** Function to delete vtiger_profile
- * @param $transfer_profileid -- Profile Id to which the existing vtiger_role2profile relationships are to be transferred :: Type varchar
- * @param $prof_id -- Profile Id to be deleted:: Type integer
+/** Function to delete profile
+ * @param string Profile Id to which the existing vtiger_role2profile relationships are to be transferred
+ * @param integer Profile Id to be deleted
  */
 function deleteProfile($prof_id, $transfer_profileid = '') {
 	global $log, $adb;
@@ -1356,8 +1352,8 @@ function getAllRoleDetails() {
 	global $log, $adb;
 	$log->debug('> getAllRoleDetails');
 	$role_det = array();
-	$query = 'select * from vtiger_role';
-	$result = $adb->pquery($query, array());
+	$immediatesubordinates = 'select roleid from vtiger_role where parentrole like ? and depth=?';
+	$result = $adb->pquery('select * from vtiger_role', array());
 	$num_rows = $adb->num_rows($result);
 	for ($i=0; $i<$num_rows; $i++) {
 		$each_role_det = array();
@@ -1368,9 +1364,7 @@ function getAllRoleDetails() {
 		$parentrole=$adb->query_result($result, $i, 'parentrole');
 		$sub_role='';
 
-		//getting the immediate subordinates
-		$query1='select roleid from vtiger_role where parentrole like ? and depth=?';
-		$res1 = $adb->pquery($query1, array($parentrole.'::%', $sub_roledepth));
+		$res1 = $adb->pquery($immediatesubordinates, array($parentrole.'::%', $sub_roledepth));
 		$num_roles = $adb->num_rows($res1);
 		if ($num_roles > 0) {
 			for ($j=0; $j<$num_roles; $j++) {
@@ -1391,7 +1385,7 @@ function getAllRoleDetails() {
 }
 
 /** Function to get all the profile information
- * @returns array $allProfileInfoArray -- Array will contain the details of all the profiles. Profile ID will be the key
+ * @return array will contain the details of all the profiles. Profile ID will be the key
  */
 function getAllProfileInfo() {
 	global $log, $adb;
@@ -1647,8 +1641,8 @@ function getRoleAndSubordinatesHierarchy() {
 }
 
 /** Function to get delete the specified role
- * @param $roleid -- RoleId :: Type varchar
- * @param $transferRoleId -- RoleId to which users of the role that is being deleted are transferred:: Type varchar
+ * @param string RoleId
+ * @param string RoleId to which users of the role that is being deleted are transferred
  */
 function deleteRole($roleId, $transferRoleId) {
 	global $log, $adb;
@@ -1675,7 +1669,7 @@ function deleteRole($roleId, $transferRoleId) {
 }
 
 /** Function to delete the role related sharing rules
- * @param $roleid -- RoleId :: Type varchar
+ * @param string RoleId
  */
 function deleteRoleRelatedSharingRules($roleId) {
 	global $log, $adb;
@@ -1709,7 +1703,7 @@ function deleteRoleRelatedSharingRules($roleId) {
 }
 
 /** Function to delete the group related sharing rules
- * @param $roleid -- RoleId :: Type varchar
+ * @param string Role Id
  */
 function deleteGroupRelatedSharingRules($grpId) {
 	global $log, $adb;
@@ -1739,7 +1733,7 @@ function deleteGroupRelatedSharingRules($grpId) {
 }
 
 /** Function to get userid and username of all users
-  * @returns $userArray -- User Array in the following format:
+  * @return array User array in the following format:
   * $userArray=Array($userid1=>$username, $userid2=>$username,............,$useridn=>$username);
  */
 function getAllUserName() {
@@ -1758,7 +1752,7 @@ function getAllUserName() {
 }
 
 /** Function to get groupid and groupname of all groups
-  * @returns $grpArray -- Group Array in the following format:
+  * @return array Group array in the following format:
   * $grpArray=Array($grpid1=>$grpname, $grpid2=>$grpname,............,$grpidn=>$grpname);
  */
 function getAllGroupName() {
@@ -1777,7 +1771,7 @@ function getAllGroupName() {
 }
 
 /** Function to get groupid and groupname of all for the given groupid
- * @returns $grpArray -- Group Array in the following format:
+ * @return array Group array in the following format:
  * $grpArray=Array($grpid1=>$grpname);
  */
 function getGroupDetails($id) {
@@ -1798,7 +1792,7 @@ function getGroupDetails($id) {
 }
 
 /** Function to get group information of all groups
- * @returns $grpInfoArray -- Group Informaton array in the following format:
+ * @return array Group Informaton array in the following format:
  * $grpInfoArray=Array($grpid1=>Array($grpname,description) $grpid2=>Array($grpname,description),............,$grpidn=>Array($grpname,description));
  */
 function getAllGroupInfo() {
@@ -1822,10 +1816,10 @@ function getAllGroupInfo() {
 }
 
 /** Function to create a group
- * @param $groupName -- Group Name :: Type varchar
- * @param $groupMemberArray -- Group Members (Groups,Roles,RolesAndsubordinates,Users)
- * @param $groupName -- Group Name :: Type varchar
- * @returns $groupId -- Group Id :: Type integer
+ * @param string Group Name
+ * @param array Group Members (Groups,Roles,RolesAndsubordinates,Users)
+ * @param string Group Description
+ * @return integer Group Id
  */
 function createGroup($groupName, $groupMemberArray, $description) {
 	global $log, $adb;
@@ -1864,8 +1858,8 @@ function createGroup($groupName, $groupMemberArray, $description) {
 }
 
 /** Function to insert group to group relation
- * @param $groupId -- Group Id :: Type integer
- * @param $containsGroupId -- Group Id :: Type integer
+ * @param integer Group Id
+ * @param integer Group Id
  */
 function insertGroupToGroupRelation($groupId, $containsGroupId) {
 	global $log, $adb;
@@ -1875,8 +1869,8 @@ function insertGroupToGroupRelation($groupId, $containsGroupId) {
 }
 
 /** Function to insert group to role relation
- * @param $groupId -- Group Id :: Type integer
- * @param $roleId -- Role Id :: Type varchar
+ * @param integer Group Id
+ * @param string Role Id
  */
 function insertGroupToRoleRelation($groupId, $roleId) {
 	global $log, $adb;
@@ -1886,8 +1880,8 @@ function insertGroupToRoleRelation($groupId, $roleId) {
 }
 
 /** Function to insert group to role & subordinate relation
- * @param $groupId -- Group Id :: Type integer
- * @param $rsId -- Role Sub Id :: Type varchar
+ * @param integer Group Id
+ * @param string Role Sub Id
  */
 function insertGroupToRsRelation($groupId, $rsId) {
 	global $log, $adb;
@@ -1897,8 +1891,8 @@ function insertGroupToRsRelation($groupId, $rsId) {
 }
 
 /** Function to insert group to user relation
- * @param $groupId -- Group Id :: Type integer
- * @param $userId -- User Id :: Type varchar
+ * @param integer Group Id
+ * @param string User Id
  */
 function insertGroupToUserRelation($groupId, $userId) {
 	global $log, $adb;
@@ -1908,8 +1902,8 @@ function insertGroupToUserRelation($groupId, $userId) {
 }
 
 /** Function to get the group Information of the specified group
- * @param $groupId -- Group Id :: Type integer
- * @returns Group Detail Array in the following format:
+ * @param integer Group Id
+ * @return array Group Detail array in the following format:
  *   $groupDetailArray=Array($groupName,$description,$groupMembers);
  */
 function getGroupInfo($groupId) {
@@ -1934,8 +1928,8 @@ function getGroupInfo($groupId) {
 }
 
 /** Function to fetch the group name of the specified group
-  * @param $groupId -- Group Id :: Type integer
-  * @returns Group Name :: Type varchar
+  * @param integer Group Id
+  * @return string Group Name
  */
 function fetchGroupName($groupId) {
 	global $log, $adb;
@@ -1948,8 +1942,8 @@ function fetchGroupName($groupId) {
 }
 
 /** Function to fetch the group members of the specified group
-  * @param $groupId -- Group Id :: Type integer
-  * @returns Group Member Array in the follwing format:
+  * @param integer Group Id
+  * @return array Group Member array in the follwing format:
   *  $groupMemberArray=Array([groups]=>Array(groupid1,groupid2,groupid3,.....,groupidn),
   *                          [roles]=>Array(roleid1,roleid2,roleid3,.....,roleidn),
   *                          [rs]=>Array(roleid1,roleid2,roleid3,.....,roleidn),
@@ -1974,8 +1968,8 @@ function getGroupMembers($groupId) {
 }
 
 /** Function to get the group related roles of the specified group
-  * @param $groupId -- Group Id :: Type integer
-  * @returns Group Related Role Array in the follwing format:
+  * @param integer Group Id
+  * @return array Group Related Role array in the follwing format:
   *  $groupRoles=Array(roleid1,roleid2,roleid3,.....,roleidn);
  */
 function getGroupRelatedRoles($groupId) {
@@ -1993,8 +1987,8 @@ function getGroupRelatedRoles($groupId) {
 }
 
 /** Function to get the group related roles and subordinates of the specified group
-  * @param $groupId -- Group Id :: Type integer
-  * @returns Group Related Roles & Subordinate Array in the follwing format:
+  * @param integer Group Id
+  * @return array Group Related Roles & Subordinate array in the follwing format:
   *  $groupRoleSubordinates=Array(roleid1,roleid2,roleid3,.....,roleidn);
  */
 function getGroupRelatedRoleSubordinates($groupId) {
@@ -2012,8 +2006,8 @@ function getGroupRelatedRoleSubordinates($groupId) {
 }
 
 /** Function to get the group related groups
-  * @param $groupId -- Group Id :: Type integer
-  * @returns Group Related Groups Array in the follwing format:
+  * @param integer Group Id
+  * @return array Group Related Groups array in the follwing format:
   *  $groupGroups=Array(grpid1,grpid2,grpid3,.....,grpidn);
  */
 function getGroupRelatedGroups($groupId) {
@@ -2031,8 +2025,8 @@ function getGroupRelatedGroups($groupId) {
 }
 
 /** Function to get the group related users
-  * @param $userId -- User Id :: Type integer
-  * @returns Group Related Users Array in the follwing format:
+  * @param integer User Id
+  * @return array Group Related Users array in the follwing format:
   *  $groupUsers=Array(userid1,userid2,userid3,.....,useridn);
  */
 function getGroupRelatedUsers($groupId) {
@@ -2050,10 +2044,10 @@ function getGroupRelatedUsers($groupId) {
 }
 
 /** Function to update the group
-  * @param $groupId -- Group Id :: Type integer
-  * @param $groupName -- Group Name :: Type varchar
-  * @param $groupMemberArray -- Group Members Array :: Type array
-  * @param $description -- Description :: Type text
+  * @param integer Group Id
+  * @param string Group Name
+  * @param array Group Members
+  * @param string Description
  */
 function updateGroup($groupId, $groupName, $groupMemberArray, $description) {
 	global $log, $adb;
@@ -2095,8 +2089,8 @@ function updateGroup($groupId, $groupName, $groupMemberArray, $description) {
 }
 
 /** Function to delete the specified group
-  * @param $groupId -- Group Id :: Type integer
-  * @param $transferId --  Id of the group/user to which record ownership is to be transferred:: Type integer
+  * @param integer Group Id
+  * @param integer Id of the group/user to which record ownership is to be transferred
  */
 function deleteGroup($groupId, $transferId) {
 	global $log, $adb;
@@ -2120,8 +2114,8 @@ function deleteGroup($groupId, $transferId) {
 }
 
 /** Function to transfer the ownership of records owned by a particular group to the specified group
-  * @param $groupId -- Group Id of the group which's record ownership has to be transferred:: Type integer
-  * @param $transferId --  Id of the group/user to which record ownership is to be transferred:: Type integer
+  * @param integer Group Id of the group which's record ownership has to be transferred
+  * @param integer Id of the group/user to which record ownership is to be transferred
  */
 function tranferGroupOwnership($groupId, $transferId) {
 	global $log, $adb;
@@ -2146,7 +2140,7 @@ function tranferGroupOwnership($groupId, $transferId) {
 }
 
 /** Function to delete group to group relation of the  specified group
- * @param $groupId -- Group Id :: Type integer
+ * @param integer Group Id
  */
 function deleteGroupRelatedGroups($groupId) {
 	global $log, $adb;
@@ -2156,7 +2150,7 @@ function deleteGroupRelatedGroups($groupId) {
 }
 
 /** Function to delete group to role relation of the  specified group
- * @param $groupId -- Group Id :: Type integer
+ * @param integer Group Id
  */
 function deleteGroupRelatedRoles($groupId) {
 	global $log, $adb;
@@ -2166,7 +2160,7 @@ function deleteGroupRelatedRoles($groupId) {
 }
 
 /** Function to delete group to role and subordinates relation of the  specified group
- * @param $groupId -- Group Id :: Type integer
+ * @param integer Group Id
  */
 function deleteGroupRelatedRolesAndSubordinates($groupId) {
 	global $log, $adb;
@@ -2176,7 +2170,7 @@ function deleteGroupRelatedRolesAndSubordinates($groupId) {
 }
 
 /** Function to delete group to user relation of the  specified group
- * @param $groupId -- Group Id :: Type integer
+ * @param integer Group Id
  */
 function deleteGroupRelatedUsers($groupId) {
 	global $log, $adb;
@@ -2186,8 +2180,8 @@ function deleteGroupRelatedUsers($groupId) {
 }
 
 /** This function returns the Default Organisation Sharing Action Name
-  * @param $share_action_id -- It takes the Default Organisation Sharing ActionId as input :: Type Integer
-  * @returns The sharing Action Name :: Type Varchar
+  * @param integer It takes the Default Organisation Sharing ActionId as input
+  * @return string sharing Action Name
   */
 function getDefOrgShareActionName($share_action_id) {
 	global $log, $adb;
@@ -2199,8 +2193,8 @@ function getDefOrgShareActionName($share_action_id) {
 }
 
 /** This function returns the Default Organisation Sharing Action Array for the specified Module
-  * It takes the module tabid as input and constructs the array.
-  * The output array consists of the 'Default Organisation Sharing Id'=>'Default Organisation Sharing Action' mapping for all the sharing actions available for the module
+  * @param integer the module tabid
+  * @return array consists of the 'Default Organisation Sharing Id'=>'Default Organisation Sharing Action' mapping for all the sharing actions available for the module
   * The output Array will be in the following format:
   *    Array = (Default Org ActionId1=>Default Org ActionName1,
   *             Default Org ActionId2=>Default Org ActionName2,
@@ -2228,16 +2222,15 @@ function getModuleSharingActionArray($tabid) {
 }
 
 /** This function adds a organisation level sharing rule for the specified Module
-  * It takes the following input parameters:
-  * 	$tabid -- Module tabid - Datatype::Integer
-  * 	$shareEntityType -- The Entity Type may be vtiger_groups,roles,rs and vtiger_users - Datatype::String
-  * 	$toEntityType -- The Entity Type may be vtiger_groups,roles,rs and vtiger_users - Datatype::String
-  * 	$shareEntityId -- The id of the group,role,rs,user to be shared
-  * 	$toEntityId -- The id of the group,role,rs,user to which the specified entity is to be shared
-  * 	$sharePermisson -- This can have the following values:
-  *                       0 - Read Only
-  *                       1 - Read/Write
-  * This function will return the shareid as output
+  * @param integer module tabid
+  * @param string Entity Type may be groups,roles,rs and users
+  * @param string Entity Type may be groups,roles,rs and users
+  * @param integer The id of the group,role,rs,user to be shared
+  * @param integer id of the group,role,rs,user to which the specified entity is to be shared
+  * @param integer This can have the following values:
+  *               0 - Read Only
+  *               1 - Read/Write
+  * @return integer shareid
   */
 function addSharingRule($tabid, $shareEntityType, $toEntityType, $shareEntityId, $toEntityId, $sharePermission) {
 	global $log, $adb;
@@ -2281,17 +2274,16 @@ function addSharingRule($tabid, $shareEntityType, $toEntityType, $shareEntityId,
 }
 
 /** This function is to update the organisation level sharing rule
-  * It takes the following input parameters:
-  *     $shareid -- Id of the Sharing Rule to be updated
-  * 	$tabid -- Module tabid - Datatype::Integer
-  * 	$shareEntityType -- The Entity Type may be vtiger_groups,roles,rs and vtiger_users - Datatype::String
-  * 	$toEntityType -- The Entity Type may be vtiger_groups,roles,rs and vtiger_users - Datatype::String
-  * 	$shareEntityId -- The id of the group,role,rs,user to be shared
-  * 	$toEntityId -- The id of the group,role,rs,user to which the specified entity is to be shared
-  * 	$sharePermisson -- This can have the following values:
-  *                       0 - Read Only
-  *                       1 - Read/Write
-  * This function will return the shareid as output
+  * @param integer Id of the Sharing Rule to be updated
+  * @param integer module tabid
+  * @param string Entity Type may be groups,roles,rs and users
+  * @param string Entity Type may be groups,roles,rs and users
+  * @param integer id of the group,role,rs,user to be shared
+  * @param integer id of the group,role,rs,user to which the specified entity is to be shared
+  * @param integer This can have the following values:
+  *                0 - Read Only
+  *                1 - Read/Write
+  * @return integer shareid
   */
 function updateSharingRule($shareid, $tabid, $shareEntityType, $toEntityType, $shareEntityId, $toEntityId, $sharePermission) {
 	global $log, $adb;
@@ -2338,8 +2330,7 @@ function updateSharingRule($shareid, $tabid, $shareEntityType, $toEntityType, $s
 }
 
 /** This function is to delete the organisation level sharing rule
-  * It takes the following input parameters:
-  *     $shareid -- Id of the Sharing Rule to be updated
+  * @param integer Id of the Sharing Rule to be updated
   */
 function deleteSharingRule($shareid) {
 	global $log, $adb;
@@ -2355,7 +2346,7 @@ function deleteSharingRule($shareid) {
 }
 
 /** Function get the Data Share Table and their columns
-  * @returns -- Data Share Table and Column Array in the following format:
+  * @return array Data Share Table and Column array in the following format:
   *  $dataShareTableColArr=Array();
   */
 function getDataShareTableandColumnArray() {
@@ -2376,8 +2367,8 @@ function getDataShareTableandColumnArray() {
 }
 
 /** Function get the Data Share Column Names for the specified Table Name
- *  @param $tableName -- DataShare Table Name :: Type Varchar
- *  @returns Column Name -- Type Varchar
+ *  @param string DataShare Table Name
+ *  @return string Column Name
  */
 function getDSTableColumns($tableName) {
 	global $log;
@@ -2390,7 +2381,7 @@ function getDSTableColumns($tableName) {
 }
 
 /** Function get the Data Share Table Names
- *  @returns the following Date Share Table Name Array:
+ *  @return array Date Share Table Name array:
  *  $dataShareTableColArr=Array();
  */
 function getDataShareTableName() {
@@ -2411,8 +2402,8 @@ function getDataShareTableName() {
 }
 
 /** Function to get the Data Share Table Name from the speciified type string
- *  @param $typeString -- Datashare Type Sting :: Type Varchar
- *  @returns Table Name -- Type Varchar
+ *  @param string Datashare Type
+ *  @return string Table Name
  */
 function getDSTableNameForType($typeString) {
 	global $log;
@@ -2424,8 +2415,8 @@ function getDSTableNameForType($typeString) {
 }
 
 /** Function to get the Entity type from the specified DataShare Table Column Name
- *  @param $colname -- Datashare Table Column Name :: Type Varchar
- *  @returns The entity type. The entity type may be vtiger_groups or vtiger_roles or rs -- Type Varchar
+ *  @param string Datashare Table Column Name
+ *  @return string The entity type. The entity type may be vtiger_groups or vtiger_roles or rs
  */
 function getEntityTypeFromCol($colName) {
 	global $log;
@@ -2442,9 +2433,9 @@ function getEntityTypeFromCol($colName) {
 }
 
 /** Function to get the Entity Display Link
- *  @param $entityid -- Entity Id
- *  @params $entityType --  The entity type may be vtiger_groups or vtiger_roles or rs -- Type Varchar
- *  @returns the Entity Display link
+ *  @param integer Entity Id
+ *  @param string The entity type may be groups or roles or rs
+ *  @return string the Entity Display link
  */
 function getEntityDisplayLink($entityType, $entityid) {
 	global $log;
@@ -2464,8 +2455,8 @@ function getEntityDisplayLink($entityType, $entityid) {
 }
 
 /** Function to get the Sharing rule Info
- *  @param $shareId -- Sharing Rule Id
- *  @returns Sharing Rule Information Array in the following format:
+ *  @param integer Sharing Rule ID
+ *  @return array Sharing Rule Information in the following format:
  *    $shareRuleInfoArr=Array($shareId, $tabid, $type, $share_ent_type, $to_ent_type, $share_entity_id, $to_entity_id,$permission);
  */
 function getSharingRuleInfo($shareId) {
@@ -2475,23 +2466,23 @@ function getSharingRuleInfo($shareId) {
 	$shareRuleInfoArr=array();
 	$query='select tabid, relationtype from vtiger_datashare_module_rel where shareid=?';
 	$result=$adb->pquery($query, array($shareId));
-	//Retreving the Sharing Tabid
+	//Retrieving the Sharing Tabid
 	$tabid=$adb->query_result($result, 0, 'tabid');
 	$type=$adb->query_result($result, 0, 'relationtype');
 
-	//Retreiving the Sharing Table Name
+	//Retrieving the Sharing Table Name
 	$tableName=getDSTableNameForType($type);
 
-	//Retreiving the Sharing Col Names
+	//Retrieving the Sharing Col Names
 	$dsTableColArr=getDSTableColumns($tableName);
 	$share_ent_col=$dsTableColArr[0];
 	$to_ent_col=$dsTableColArr[1];
 
-	//Retreiving the Sharing Entity Col Types
+	//Retrieving the Sharing Entity Col Types
 	$share_ent_type=getEntityTypeFromCol($share_ent_col);
 	$to_ent_type=getEntityTypeFromCol($to_ent_col);
 
-	//Retreiving the Value from Table
+	//Retrieving the Value from Table
 	$query1="select * from $tableName where shareid=?";
 	$result1=$adb->pquery($query1, array($shareId));
 	$share_id=$adb->query_result($result1, 0, $share_ent_col);
@@ -2512,10 +2503,10 @@ function getSharingRuleInfo($shareId) {
 	return $shareRuleInfoArr;
 }
 
-/** This function is to retreive the list of related sharing modules for the specifed module
-  * It takes the following input parameters:
-  *     $tabid -- The module tabid:: Type Integer
-  */
+/** This function is to retrieve the list of related sharing modules for the specifed module
+ * @param integer module tab id
+ * @return array related tab id indexed array of sharing table database key
+ */
 function getRelatedSharingModules($tabid) {
 	global $log, $adb;
 	$log->debug('> getRelatedSharingModules '.$tabid);
@@ -2532,13 +2523,12 @@ function getRelatedSharingModules($tabid) {
 }
 
 /** This function is to add the related module sharing permission for a particulare Sharing Rule
-  * It takes the following input parameters:
-  *     $shareid -- The Sharing Rule Id:: Type Integer
-  *     $tabid -- The module tabid:: Type Integer
-  *     $relatedtabid -- The related module tabid:: Type Integer
-  * 	$sharePermisson -- This can have the following values:
-  *                       0 - Read Only
-  *                       1 - Read/Write
+  * @param integer Sharing Rule Id
+  * @param integer module tabid
+  * @param integer related module tabid
+  * @param integer This can have the following values:
+  *                0 - Read Only
+  *                1 - Read/Write
   */
 function addRelatedModuleSharingPermission($shareid, $tabid, $relatedtabid, $sharePermission) {
 	global $log, $adb;
@@ -2549,13 +2539,12 @@ function addRelatedModuleSharingPermission($shareid, $tabid, $relatedtabid, $sha
 }
 
 /** This function is to update the related module sharing permission for a particulare Sharing Rule
-  * It takes the following input parameters:
-  *     $shareid -- The Sharing Rule Id:: Type Integer
-  *     $tabid -- The module tabid:: Type Integer
-  *     $relatedtabid -- The related module tabid:: Type Integer
-  * 	$sharePermisson -- This can have the following values:
-  *                       0 - Read Only
-  *                       1 - Read/Write
+  * @param integer Sharing Rule Id
+  * @param integer module tabid
+  * @param integer related module tabid
+  * @param integer This can have the following values:
+  *                0 - Read Only
+  *                1 - Read/Write
   */
 function updateRelatedModuleSharingPermission($shareid, $tabid, $relatedtabid, $sharePermission) {
 	global $log, $adb;
@@ -2566,12 +2555,11 @@ function updateRelatedModuleSharingPermission($shareid, $tabid, $relatedtabid, $
 	$log->debug('< updateRelatedModuleSharingPermission');
 }
 
-/** This function is to retreive the Related Module Sharing Id
-  * It takes the following input parameters:
-  *     $tabid -- The module tabid:: Type Integer
-  *     $related_tabid -- The related module tabid:: Type Integer
-  * This function returns the Related Module Sharing Id
-  */
+/** Retrieve the Related Module Sharing Id
+ * @param integer module tabid
+ * @param integer related module tabid
+ * @return integer the Related Module Sharing ID
+*/
 function getRelatedModuleSharingId($tabid, $related_tabid) {
 	global $log, $adb;
 	$log->debug('> getRelatedModuleSharingId '.$tabid.','.$related_tabid);
@@ -2582,16 +2570,15 @@ function getRelatedModuleSharingId($tabid, $related_tabid) {
 	return $relatedModuleSharingId;
 }
 
-/** This function is to retreive the Related Module Sharing Permissions for the specified Sharing Rule
-  * It takes the following input parameters:
-  *     $shareid -- The Sharing Rule Id:: Type Integer
-  *This function will return the Related Module Sharing permissions in an Array in the following format:
-  *     $PermissionArray=($relatedTabid1=>$sharingPermission1,
-  *			  $relatedTabid2=>$sharingPermission2,
-  *					|
-  *                                     |
-  *                       $relatedTabid-n=>$sharingPermission-n)
-  */
+/** Retrieve the Related Module Sharing Permissions for the specified Sharing Rule
+ * @param integer Sharing Rule ID
+ * @return array Related Module Sharing permissions in the following format:
+ *     $PermissionArray=(
+ *        $relatedTabid1=>$sharingPermission1,
+ *          |
+ *        $relatedTabid-n=>$sharingPermission-n,
+ *     )
+*/
 function getRelatedModuleSharingPermission($shareid) {
 	global $log, $adb;
 	$log->debug('> getRelatedModuleSharingPermission '.$shareid);
@@ -2611,12 +2598,11 @@ function getRelatedModuleSharingPermission($shareid) {
 	return $relatedSharingModulePermissionArray;
 }
 
-/** This function is to retreive the vtiger_profiles associated with the  the specified user
-  * It takes the following input parameters:
-  *     $userid -- The User Id:: Type Integer
-  *This function will return the vtiger_profiles associated to the specified vtiger_users in an Array in the following format:
-  *     $userProfileArray=(profileid1,profileid2,profileid3,...,profileidn);
-  */
+/** This function is to retrieve the profiles associated with the given user
+ * @param integer User ID
+ * @return array profiles associated to the specified user in the following format:
+ *     $userProfileArray=(profileid1,profileid2,profileid3,...,profileidn);
+ */
 function getUserProfile($userId) {
 	global $log, $adb;
 	$log->debug('> getUserProfile '.$userId);
@@ -2637,12 +2623,11 @@ function getUserProfile($userId) {
 	return $profArr;
 }
 
-/** To retreive the global permission of the specifed user from the various vtiger_profiles associated with the user
-  * @param $userid -- The User Id:: Type Integer
-  * @returns  user global permission  array in the following format:
-  *     $gloabalPerrArray=(view all action id=>permission,
-			   edit all action id=>permission)
-  */
+/** Retrieve the global permission of the specifed user from the various profiles associated with the user
+ * @param integer User ID
+ * @return array user global permission in the following format:
+ *     $gloabalPerrArray=(view all action id=>permission, edit all action id=>permission)
+ */
 function getCombinedUserGlobalPermissions($userId) {
 	global $log;
 	$log->debug('> getCombinedUserGlobalPermissions '.$userId);
@@ -2666,12 +2651,11 @@ function getCombinedUserGlobalPermissions($userId) {
 	return $userGlobalPerrArr;
 }
 
-/** To retreive the vtiger_tab permissions of the specifed user from the various vtiger_profiles associated with the user
-  * @param $userid -- The User Id:: Type Integer
-  * @returns  user global permission  array in the following format:
-  *     $tabPerrArray=(tabid1=>permission,
-  *			   tabid2=>permission)
-  */
+/** retrieve the tab permissions of the specifed user from the various profiles associated with the user
+ * @param integer User ID
+ * @return array user global permission in the following format:
+ *     $tabPerrArray=(tabid1=>permission, tabid2=>permission)
+ */
 function getCombinedUserTabsPermissions($userId) {
 	global $log;
 	$log->debug('> getCombinedUserTabsPermissions '.$userId);
@@ -2700,12 +2684,11 @@ function getCombinedUserTabsPermissions($userId) {
 	return $userTabPerrArr;
 }
 
-/** To retreive the vtiger_tab acion permissions of the specifed user from the various vtiger_profiles associated with the user
-  * @param $userid -- The User Id:: Type Integer
-  * @returns  user global permission  array in the following format:
-  *     $actionPerrArray=(tabid1=>permission,
-  *			   tabid2=>permission);
- */
+/** To retrieve the tab action permissions of the specifed user from the various profiles associated with the user
+ * @param integer User ID
+ * @return array user global permission in the following format:
+ *     $actionPerrArray=(tabid1=>permission, tabid2=>permission);
+*/
 function getCombinedUserActionPermissions($userId) {
 	global $log;
 	$log->debug('> getCombinedUserActionPermissions '.$userId);
@@ -2732,11 +2715,11 @@ function getCombinedUserActionPermissions($userId) {
 	return $actionPerrArr;
 }
 
-/** To retreive the parent vtiger_role of the specified vtiger_role
-  * @param $roleid -- The Role Id:: Type varchar
-  * @returns  parent vtiger_role array in the following format:
-  *     $parentRoleArray=(roleid1,roleid2,.......,roleidn);
- */
+/** Retrieve the parent role of the specified role
+ * @param string Role ID
+ * @return array parent role array in the following format:
+ *     $parentRoleArray=(roleid1,roleid2,.......,roleidn);
+*/
 function getParentRole($roleId) {
 	global $log;
 	$log->debug('> getParentRole '.$roleId);
@@ -2759,16 +2742,15 @@ function getParentRole($roleId) {
 	return $parentRoleArr;
 }
 
-/** To retreive the subordinate vtiger_roles of the specified parent vtiger_role
-  * @param $roleid -- The Role Id:: Type varchar
-  * @returns  subordinate vtiger_role array in the following format:
-  *     $subordinateRoleArray=(roleid1,roleid2,.......,roleidn);
- */
+/** Retrieve the subordinate roles of the specified parent role
+ * @param string Role ID
+ * @return array subordinate role array in the following format:
+ *     $subordinateRoleArray=(roleid1,roleid2,.......,roleidn);
+*/
 function getRoleSubordinates($roleId) {
 	global $log;
 	$log->debug('> getRoleSubordinates '.$roleId);
 
-	// Look at cache first for information
 	$roleSubordinates = VTCacheUtils::lookupRoleSubordinates($roleId);
 
 	if ($roleSubordinates === false) {
@@ -2791,15 +2773,15 @@ function getRoleSubordinates($roleId) {
 	return $roleSubordinates;
 }
 
-/** To retreive the subordinate vtiger_roles and vtiger_users of the specified parent vtiger_role
-  * @param $roleid -- The Role Id:: Type varchar
-  * @returns  subordinate vtiger_role array in the following format:
-  *     $subordinateRoleUserArray=(roleid1=>Array(userid1,userid2,userid3),
-							   vtiger_roleid2=>Array(userid1,userid2,userid3)
-								|
-						|
-				   vtiger_roleidn=>Array(userid1,userid2,userid3));
- */
+/** Retrieve the subordinate roles and users of the specified parent role
+ * @param string Role ID
+ * @return array subordinate role array in the following format:
+ *     $subordinateRoleUserArray=(
+ *        roleid1=>Array(userid1,userid2,userid3),
+ *        |
+ *        roleidn=>Array(userid1,userid2,userid3),
+ *     );
+*/
 function getSubordinateRoleAndUsers($roleId, $users = true) {
 	global $log;
 	$log->debug('> getSubordinateRoleAndUsers '.$roleId);
@@ -2977,9 +2959,10 @@ function get_current_user_access_groups($module) {
 	$log->debug('< get_current_user_access_groups');
 	return $result;
 }
+
 /** Function to get the Group Id for a given group groupname
- *  @param $groupname -- Groupname
- *  @returns Group Id -- Type Integer
+ *  @param string Group name
+ *  @return integer Group Id
  */
 function getGrpId($groupname) {
 	global $log, $adb;
@@ -3078,10 +3061,10 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 }
 
 /** Function to check permission to access the column for a given user
- * @param $userid -- User Id :: Type integer
- * @param $tablename -- tablename :: Type String
- * @param $columnname -- columnname :: Type String
- * @param $module -- Module Name :: Type varchar
+ * @param integer User Id
+ * @param string tablename
+ * @param string columnname
+ * @param string Module Name
  */
 function getColumnVisibilityPermission($userid, $columnname, $module, $accessmode = 'readonly') {
 	global $adb;
@@ -3100,7 +3083,7 @@ function getColumnVisibilityPermission($userid, $columnname, $module, $accessmod
 }
 
 /** Function to get the field access module array
-  * @returns The field Access module Array :: Type Array
+  * @return array The field Access module array
  */
 function getFieldModuleAccessArray() {
 	global $log, $adb;
@@ -3119,7 +3102,7 @@ function getFieldModuleAccessArray() {
 }
 
 /** Function to get the module access array
-  * @returns The Module Access Array :: Type Array
+  * @return array The Module Access array
  */
 function getModuleAccessArray() {
 	global $log, $adb;
@@ -3139,6 +3122,7 @@ function getModuleAccessArray() {
 
 /**
  * this function returns presence information of all active modules
+ * @return array
  */
 function getTabSequence() {
 	global $adb;
@@ -3157,7 +3141,7 @@ function getTabSequence() {
 }
 
 /** Function to get the permitted module name Array with presence as 0
-  * @returns permitted module name Array :: Type Array
+  * @return array permitted module name array
  */
 function getPermittedModuleNames() {
 	global $log, $adb, $current_user;
@@ -3197,7 +3181,7 @@ function getPermittedModuleNames() {
 
 /** Function to get the permitted module id Array with presence as 0
  * @global Users $current_user
- * @return Array Array of accessible tabids.
+ * @return array array of accessible tabids.
  */
 function getPermittedModuleIdList() {
 	global $current_user, $adb;
@@ -3247,7 +3231,7 @@ function RecalculateSharingRules($roleId = 0) {
 }
 
 /** Function to get the list of module for which the user defined sharing rules can be defined
-  * @returns Array:: Type array
+  * @return array
   */
 function getSharingModuleList($eliminateModules = false) {
 	global $adb;
@@ -3289,7 +3273,7 @@ function isCalendarPermittedBySharing($recordId) {
 	return $permission;
 }
 
-/* Function to populate default entries for the picklist while creating a new role */
+/** Function to populate default entries for the picklist while creating a new role */
 function insertRole2Picklist($roleid, $parentroleid) {
 	global $adb,$log;
 	$log->debug("> insertRole2Picklist $roleid,$parentroleid");
@@ -3299,7 +3283,7 @@ function insertRole2Picklist($roleid, $parentroleid) {
 }
 
 /** Function to delete group to report relation of the  specified group
- * @param $groupId -- Group Id :: Type integer
+ * @param integer Group Id
  */
 function deleteGroupReportRelations($groupId) {
 	global $log, $adb;

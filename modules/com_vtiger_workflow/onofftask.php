@@ -32,5 +32,6 @@ function onoffTask($adb, $request) {
 	</script>
 	<?php
 }
+Vtiger_Request::validateRequest();
 onoffTask($adb, $_REQUEST);
 ?>

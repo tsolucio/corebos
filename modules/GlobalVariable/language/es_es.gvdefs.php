@@ -208,6 +208,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar o Esconder el Calendario en la barra de herramientas',
 ),
+'Application_Display_QuickCreate' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Mostrar o Esconder las opciones de Creación Rápida en el menú',
+),
 'Application_Use_RTE' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
@@ -917,8 +923,8 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Cada hora en el calendario se dividirá en este número de minutos. El valor predeterminado es 15 minutos, lo que crea 4 divisiones por hora.',
 ),
 'Calendar_Slot_Event_Overlap' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Determina si los eventos en la vista de agenda deben superponerse visualmente. Cuando se establece en 1 (el valor predeterminado), los eventos se superpondrán entre si. Cuando se establece en 0, no habrá absolutamente ninguna superposición.',
 ),
@@ -979,6 +985,7 @@ $GlobalVariableDefinitons = array(
 'Calendar_Notification_Sound' => array(
 	'valuetype' => 'Camino Fichero',
 	'category' => 'Aplicación',
+	'values' => 'Camino al fichero de audio',
 	'definition' => 'Camino al fichero de audio que sonará al llegar un nuevo evento.',
 ),
 'CronTasks_cronWatcher_mailto' => array(
@@ -1052,6 +1059,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'false | true',
 	'definition' => 'Si se establece a "true", la sección del Contacto se seleccionará al convertir un PreContacto. De forma predeterminada, la sección está activada.',
+),
+'Lead_Convert_AssignedUser' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'cualquier ID de usuario | current_user',
+	'definition' => 'Establece la lista de selección de usuario a este ID de usuario al convertir un potencial. Si se establece en "current_user", se utilizará el usuario actual. De forma predeterminada, se utiliza el usuario asignado al registro de cliente potencial.',
 ),
 'Product_Show_Subproducts_Popup' => array(
 	'valuetype' => 'Booleano',
@@ -1364,6 +1377,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Extensión',
 	'values' => 'URL',
 	'definition' => 'URL al servidor de conversión: https://github.com/sfoxdev/docker-unoconv',
+),
+'GenDoc_PDFConversion_Retries' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Extensión',
+	'values' => 'Entero positivo',
+	'definition' => 'El número máximo de reintentos al convertir la plantilla a PDF si falla la conversión.',
 ),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Entero',

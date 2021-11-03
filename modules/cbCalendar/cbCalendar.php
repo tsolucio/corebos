@@ -847,7 +847,7 @@ class cbCalendar extends CRMEntity {
 					$task->test = '';
 					$task->reevaluate = 1;
 					$taskId = $taskManager->saveTask($task);
-					//Retreive original to replace the old fieldnames and update the new task with it
+					//Retrieve original to replace the old fieldnames and update the new task with it
 					$tasktoedit = $taskManager->retrieveTask($caltk['task_id']);
 					$tasktoedit->workflowId = $calendarWorkflow->id;
 					$tasktoedit->id = $taskId;

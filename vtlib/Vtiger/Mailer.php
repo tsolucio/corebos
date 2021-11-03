@@ -146,9 +146,9 @@ class Vtiger_Mailer extends PHPMailer {
 
 	/**
 	 * Send mail using the email template
-	 * @param String Recipient email
-	 * @param String Recipient name
-	 * @param String vtiger CRM Email template name to use
+	 * @param string Recipient email
+	 * @param string Recipient name
+	 * @param string Email template name to use
 	 */
 	public function SendTo($toemail, $toname = '', $emailtemplate = false, $linktoid = false, $sync = false) {
 		if (empty($toname)) {
@@ -201,7 +201,7 @@ class Vtiger_Mailer extends PHPMailer {
 	public function __AddToQueue($linktoid) {
 		if ($this->__initializeQueue()) {
 			global $adb;
-			$uniqueid = self::__getUniqueId();
+			$uniqueid = $this->__getUniqueId();
 			$adb->pquery(
 				'INSERT INTO vtiger_mailer_queue(id,fromname,fromemail,content_type,subject,body,mailer,relcrmid) VALUES(?,?,?,?,?,?,?,?)',
 				array($uniqueid, $this->FromName, $this->From, $this->ContentType, $this->Subject, $this->Body, $this->Mailer, $linktoid)

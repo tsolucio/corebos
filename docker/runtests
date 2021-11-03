@@ -1,0 +1,12 @@
+build/coreBOSTests/phpunit -c build/coreBOSTests/phpunit.xml --prepend build/coreBOSTests/xdebug-filter.php
+if [ $? -ne 0 ]
+then
+	echo "PHP errors"
+else
+	cd build/coreBOSTests
+	npm test
+	if [ $? -ne 0 ]
+	then
+		echo "Javascript errors"
+	fi
+fi

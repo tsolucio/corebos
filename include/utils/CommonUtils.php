@@ -257,8 +257,8 @@ function popup_from_html($string, $encode = true) {
 }
 
 /** To get the Currency of the specified user
- * @param $id -- The user Id:: Type integer
- * @returns  currencyid :: Type integer
+ * @param integer user ID
+ * @return integer currency ID
  */
 function fetchCurrency($id) {
 	global $log;
@@ -284,9 +284,8 @@ function fetchCurrency($id) {
 }
 
 /** Function to get the Currency name from the vtiger_currency_info
- * @param $currencyid -- currencyid:: Type integer
- * @returns $currencyname -- Currency Name:: Type varchar
- *
+ * @param integer currency ID
+ * @return string Currency Name
  */
 function getCurrencyName($currencyid, $show_symbol = true) {
 	global $log;
@@ -1957,14 +1956,14 @@ function create_parenttab_data_file() {
 }
 
 /**
- * This function is used to get the all the modules that have Quick Create Feature.
- * Returns Tab Name and Tablabel.
+ * This function is used to get all the modules that have Quick Create feature
+ * @return array Tab Name and Tab label
  */
 function getQuickCreateModules() {
 	global $log, $adb;
 	$log->debug('> getQuickCreateModules');
 
-	$qc_query = 'select distinct vtiger_tab.tablabel,vtiger_tab.name
+	$qc_query = 'select distinct vtiger_tab.name
 		from vtiger_field
 		inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid 
 		where quickcreate in (0,2) and vtiger_tab.presence != 1';
@@ -1973,12 +1972,9 @@ function getQuickCreateModules() {
 	$noofrows = $adb->num_rows($result);
 	$return_qcmodule = array();
 	for ($i = 0; $i < $noofrows; $i++) {
-		$tablabel = $adb->query_result($result, $i, 'tablabel');
-
 		$tabname = $adb->query_result($result, $i, 'name');
-		$tablabel = getTranslatedString("SINGLE_$tabname", $tabname);
 		if (isPermitted($tabname, 'CreateView', '') == 'yes') {
-			$return_qcmodule[] = $tablabel;
+			$return_qcmodule[] = getTranslatedString("SINGLE_$tabname", $tabname);
 			$return_qcmodule[] = $tabname;
 		}
 	}
@@ -2323,9 +2319,9 @@ function decideFilePath() {
 }
 
 /**
- * 	This function is used to check whether the attached file is a image file or not
- * 	@param array $file_details - files array which contains all the uploaded file details
- * 	@return string $save_image - true or false. if the image can be uploaded then true will return otherwise false.
+ * This function is used to check whether the attached file is a image file or not
+ * @param array files array which contains all the uploaded file details
+ * @return string if the image can be uploaded then 'true' will be returned otherwise 'false'
  */
 function validateImageFile($file_details) {
 	global $log, $app_strings;
@@ -2342,13 +2338,13 @@ function validateImageFile($file_details) {
 		}
 		$filetype = strtolower($filetype);
 	}
-	if ($filetype == 'jpeg' || $filetype == 'png' || $filetype == 'jpg' || $filetype == 'pjpeg' || $filetype == 'x-png' || $filetype == 'gif' || $filetype == 'bmp') {
+	if (in_array($filetype, ['jpeg', 'png', 'jpg', 'pjpeg', 'x-png', 'gif', 'bmp', 'svg', 'svg+xml'])) {
 		$saveimage = 'true';
 	} else {
 		$saveimage = 'false';
 		$imgtypeerror = coreBOS_Session::get('image_type_error');
 		coreBOS_Session::set('image_type_error', $imgtypeerror.'<br> &nbsp;&nbsp;<b>' . $file_details['name'] . '</b>' . $app_strings['MSG_IS_NOT_UPLOADED']);
-		$log->debug("Invalid Image type == $filetype");
+		$log->debug("Invalid Image type $filetype");
 	}
 
 	$log->debug("< validateImageFile saveimage=$saveimage");
@@ -2383,9 +2379,9 @@ function validateImageMetadata($data) {
 }
 
 /**
- * 	This function is used to check whether the attached file has not malicious code injected
- * 	@param string $filename - files array which contains all the uploaded file details
- * 	return bool - true or false. if the image can be uploaded then true will return otherwise false.
+ * This function is used to check whether the attached file has no malicious code injected
+ * @param string file path to file to validate
+ * @return boolean if the image can be uploaded then true will be returned otherwise false
  */
 function validateImageContents($filename) {
 	if (!file_exists($filename)) {
@@ -2398,11 +2394,15 @@ function validateImageContents($filename) {
 		case 'loose':
 			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
 				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
+				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
+				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
 				|| stripos($contents, '<?php ') !== false;
 			break;
 		case 'clean':
 			// Must be Revisited
-			/*try {
+			/*
+			image sanitizing for binary images
+			try {
 				$img = new Imagick($filename);
 				$img->stripImage();
 				$img->writeImage($filename);
@@ -2411,13 +2411,17 @@ function validateImageContents($filename) {
 				$check = false;
 			} catch (Exception $e) {
 				$check = true;
-			}*/
+			}
+			image sanitizing for svg > use https://github.com/darylldoyle/svg-sanitizer
+			*/
 			return false;
 			break;
 		case 'strict':
 		default:
 			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
 				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
+				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
+				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
 				|| stripos($contents, '<?=') !== false
 				|| stripos($contents, '<%=') !== false
 				|| stripos($contents, '<? ') !== false
@@ -2460,9 +2464,9 @@ function validateImageContents($filename) {
 }
 
 /**
- * 	This function is used to get the Email Template Details like subject and content for particular template.
- * 	@param integer $templateid  - Template Id for an Email Template
- * 	return array $returndata - Returns Subject, Body of Template of the the particular email template.
+ * This function is used to get the Email Template Details like subject and content for particular template.
+ * @param integer Template Id for an Email Template
+ * @return array Returns Subject, Body of Template of the the particular email template.
  */
 function getTemplateDetails($templateid, $crmid = null) {
 	global $adb, $log, $current_user;
@@ -2781,9 +2785,10 @@ function getrecurringObjValue() {
 	}
 }
 
-/** Function used to get the translated string to the input string
- * 	@param string $str - input string which we want to translate
- * 	@return string $str - translated string, if the translated string is available then the translated string other wise original string will be returned
+/** get the translated string of the input string
+ * @param string input string which we want to translate
+ * @param string module name to start search from
+ * @return string translated string, if the translated string is available then the translated string otherwise the original string will be returned
  */
 function getTranslatedString($str, $module = '') {
 	global $app_strings, $mod_strings, $current_language;
@@ -2793,8 +2798,8 @@ function getTranslatedString($str, $module = '') {
 
 /**
  * Get translated currency name string.
- * @param String $str - input currency name
- * @return String $str - translated currency name
+ * @param string input currency name
+ * @return string translated currency name
  */
 function getTranslatedCurrencyString($str) {
 	global $app_currency_strings;
@@ -3300,11 +3305,11 @@ function checkFileAccessForInclusion($filepath) {
 			echo '<pre>';
 			debug_print_backtrace();
 			echo '</pre>';
+			echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
+			echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';
+			echo 'Root dir path: '.htmlspecialchars($rootdirpath, ENT_QUOTES, $default_charset).'<br>';
 		}
-		echo 'Sorry! Attempt to access restricted file.<br>';
-		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
-		echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';
-		echo 'Root dir path: '.htmlspecialchars($rootdirpath, ENT_QUOTES, $default_charset).'<br>';
+		echo 'Attempt to access restricted file.';
 		die();
 	}
 }
@@ -3335,10 +3340,15 @@ function checkFileAccessForDeletion($filepath) {
 
 	if (stripos($realfilepath, $rootdirpath) !== 0 || !in_array($filePathParts[0], $safeDirectories)) {
 		global $default_charset;
-		echo 'Sorry! Attempt to access restricted file.<br>';
-		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
-		echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';
-		echo 'Root dir path: '.htmlspecialchars($rootdirpath, ENT_QUOTES, $default_charset).'<br>';
+		if (GlobalVariable::getVariable('Debug_Access_Restricted_File', 0)) {
+			echo '<pre>';
+			debug_print_backtrace();
+			echo '</pre>';
+			echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
+			echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';
+			echo 'Root dir path: '.htmlspecialchars($rootdirpath, ENT_QUOTES, $default_charset).'<br>';
+		}
+		echo 'Attempt to access restricted file.';
 		die();
 	}
 }
@@ -3346,18 +3356,16 @@ function checkFileAccessForDeletion($filepath) {
 /** Function to check the file access is made within web root directory. */
 function checkFileAccess($filepath) {
 	if (!isInsideApplication($filepath)) {
-		global $default_charset;
-		echo 'Sorry! Attempt to access restricted file.<br>';
-		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
+		echo 'Attempt to access restricted file.<br>';
 		die();
 	}
 }
 
 /**
  * function to return whether the file access is made within vtiger root directory and it exists.
- * @global String $root_directory vtiger root directory as given in config.inc.php file.
- * @param String $filepath relative path to the file which need to be verified
- * @return Boolean true if file is a valid file within vtiger root directory, false otherwise.
+ * @global string root directory as given in config.inc.php file
+ * @param string relative path to the file which need to be verified
+ * @return boolean true if file is a valid file within vtiger root directory, false otherwise
  * @deprecated
  */
 function isFileAccessible($filepath) {
@@ -3416,7 +3424,7 @@ function getOwnerNameList($idList) {
 
 /**
  * This function is used to get the blockid of the settings block for a given label.
- * @param $label - settings label
+ * @param string settings label
  * @return string type value
  */
 function getSettingsBlockId($label) {
@@ -3444,8 +3452,8 @@ function isModuleSettingPermitted($module) {
 
 /**
  * this function returns the entity field name for a given module; for e.g. for Contacts module it return concat(lastname, ' ', firstname)
- * @param string $module - the module name
- * @return string $fieldsname - the entity field name for the module
+ * @param string module name
+ * @return string entity field name for the module
  */
 function getEntityField($module, $fqn = false) {
 	global $adb;
@@ -3475,8 +3483,8 @@ function getEntityField($module, $fqn = false) {
 /**
  * this function returns the entity information for a given module; for e.g. for Contacts module
  * it returns the information of tablename, modulename, fieldsname and id gets from vtiger_entityname
- * @param string $module - the module name
- * @return array $data - the entity information for the module
+ * @param string module name
+ * @return array entity information for the module
  */
 function getEntityFieldNames($module) {
 	global $adb;
@@ -3505,9 +3513,9 @@ function getEntityFieldNames($module) {
 
 /**
  * this function returns the fieldsname and its values in a array for the given ids
- * @param1 array $entity_field_info - field information having modulename, tablename, fieldname, recordid
- * @param2 array $ids_list - record ids
- * @return array $entity_info - array of fieldname and its value with key as record id
+ * @param array field information having modulename, tablename, fieldname, recordid
+ * @param array record ids
+ * @return array of fieldname and its value with key as record id
  */
 function getEntityFieldValues($entity_field_info, $ids_list) {
 	global $adb;
@@ -3540,10 +3548,10 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 
 /**
  * this function returns the entity field name for a given module; for e.g. for Contacts module it return concat(lastname, ' ', firstname)
- * @param string $module - name of the module
- * @param array $fieldsName - fieldname with respect to module (ex : 'Accounts' - 'accountname', 'Contacts' - 'lastname','firstname')
- * @param array $fieldValues - array of fieldname and its value
- * @return string $fieldConcatName - the entity field name for the module
+ * @param string name of the module
+ * @param array fieldname with respect to module (ex : 'Accounts' - 'accountname', 'Contacts' - 'lastname','firstname')
+ * @param array of fieldname and its value
+ * @return string entity field name for the module
  */
 function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 	global $current_user;
@@ -3654,7 +3662,7 @@ function getModuleSequenceNumber($module, $recordId) {
 	return $moduleSeqNo;
 }
 
-/* tries to return info@your_domain email for return path
+/** tries to return info@your_domain email for return path
  * but it doesn't get it right because the only way to get a TLD is comparing against a list of existing ones
  * not used anywhere anymore due to RFC5321 section 4.4
  * @deprecated
@@ -3690,7 +3698,7 @@ function fetch_logo($type) {
 	return $logoname;
 }
 
-/* added to get mail info for portal user
+/** added to get mail info for portal user
  * type argument included when addin customizable tempalte for sending portal login details
  * @deprecated
  */

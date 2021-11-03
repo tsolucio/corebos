@@ -62,6 +62,11 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 		$util->redirectTo($errorUrl, $mod['LBL_ERROR_NO_WORKFLOW']);
 		return;
 	}
+	if (!$workflow->checkNonAdminAccess()) {
+		$errorUrl = $module->errorPageUrl(getTranslatedString('LBL_PERMISSION'));
+		$util->redirectTo($errorUrl, getTranslatedString('LBL_PERMISSION'));
+		return;
+	}
 
 	$module->setReturnUrl('');
 	$returnUrl = $module->editWorkflowUrl($task->workflowId);

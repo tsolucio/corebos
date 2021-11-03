@@ -65,13 +65,26 @@ class VTWorkflowManager {
 		if (!isset($workflow->wfendon)) {
 			$workflow->wfendon = '';
 		}
+		if (!isset($workflow->options)) {
+			$workflow->options = '';
+		}
+		if (!isset($workflow->cbquestion)) {
+			$workflow->cbquestion = null;
+		}
+		if (!isset($workflow->recordset)) {
+			$workflow->recordset = null;
+		}
+		if (!isset($workflow->onerecord)) {
+			$workflow->onerecord = null;
+		}
 		$wf=$workflow;
 		if (!empty($workflow->id)) {
 			$adb->pquery(
 				'update com_vtiger_workflows set
 					module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
 					schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=?,
-					purpose=?, relatemodule=?, wfstarton=?, wfendon=?, active=? where workflow_id=?',
+					purpose=?, relatemodule=?, wfstarton=?, wfendon=?, active=?, options=?, cbquestion=?,
+					recordset=?, onerecord=? where workflow_id=?',
 				array(
 					$wf->moduleName,
 					$wf->description,
@@ -89,6 +102,10 @@ class VTWorkflowManager {
 					empty($wf->wfstarton) ? null : $wf->wfstarton,
 					empty($wf->wfendon) ? null : $wf->wfendon,
 					(empty($wf->active) || $wf->active=='true' ? 'true' : 'false'),
+					$wf->options,
+					$wf->cbquestion,
+					$wf->recordset,
+					$wf->onerecord,
 					$wf->id,
 				)
 			);
@@ -101,7 +118,8 @@ class VTWorkflowManager {
 				$adb->pquery(
 					'insert into com_vtiger_workflows
 						(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow, schtypeid, schtime, schdayofmonth,
-						schdayofweek, schannualdates, schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+						schdayofweek, schannualdates, schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active, options, cbquestion, recordset, onerecord)
+						values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 					array(
 						$workflowId,
 						$wf->moduleName,
@@ -121,13 +139,18 @@ class VTWorkflowManager {
 						empty($wf->wfstarton) ? null : $wf->wfstarton,
 						empty($wf->wfendon) ? null : $wf->wfendon,
 						(empty($wf->active) || $wf->active=='true' ? 'true' : 'false'),
+						$wf->options,
+						$wf->cbquestion,
+						$wf->recordset,
+						$wf->onerecord,
 					)
 				);
 			} else {
 				$adb->pquery(
 					'insert into com_vtiger_workflows
 						(workflow_id, module_name, summary, test, execution_condition, defaultworkflow, schtypeid, schtime, schdayofmonth, schdayofweek,
-						schdayofweek, schannualdates,schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+						schdayofweek, schannualdates,schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active, options, cbquestion, recordset, onerecord)
+						values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 					array(
 						$workflowId,
 						$wf->moduleName,
@@ -146,6 +169,10 @@ class VTWorkflowManager {
 						empty($wf->wfstarton) ? null : $wf->wfstarton,
 						empty($wf->wfendon) ? null : $wf->wfendon,
 						(empty($wf->active) || $wf->active=='true' ? 'true' : 'false'),
+						$wf->options,
+						$wf->cbquestion,
+						$wf->recordset,
+						$wf->onerecord,
 					)
 				);
 			}
@@ -157,7 +184,7 @@ class VTWorkflowManager {
 		global $current_user;
 		$where = is_admin($current_user) ? '' : ' where defaultworkflow=2';
 		$result = $this->adb->query(
-			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose, relatemodule, wfstarton, wfendon, active from com_vtiger_workflows'.$where
+			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose, relatemodule, wfstarton, wfendon, active, options, cbquestion, recordset, onerecord from com_vtiger_workflows'.$where
 		);
 		return $this->getWorkflowsForResult($result);
 	}
@@ -205,7 +232,7 @@ class VTWorkflowManager {
 			$where .= " and active='true'";
 		}
 		$result = $this->adb->pquery(
-			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose, wfstarton, wfendon, active from com_vtiger_workflows where module_name=?'.$where,
+			'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose, wfstarton, wfendon, active, options, cbquestion, recordset, onerecord from com_vtiger_workflows where module_name=?'.$where,
 			array($moduleName)
 		);
 		return $this->getWorkflowsForResult($result);
@@ -321,8 +348,8 @@ class VTWorkflowManager {
 	 *
 	 * Returns null if the workflow doesn't exist.
 	 *
-	 * @param The id of the workflow
-	 * @return A workflow object.
+	 * @param integer id of the workflow
+	 * @return Workflow object.
 	 */
 	public function retrieve($id) {
 		$result = $this->adb->pquery('select * from com_vtiger_workflows where workflow_id=?', array($id));
@@ -339,12 +366,17 @@ class VTWorkflowManager {
 	public function delete($id) {
 		global $current_user;
 		$dwf = is_admin($current_user) ? '!=1' : '=2';
-		$this->adb->pquery(
-			'DELETE FROM com_vtiger_workflowtasks WHERE workflow_id IN
-				(SELECT workflow_id FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.'))',
-			array($id)
-		);
-		$this->adb->pquery('DELETE FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.')', array($id));
+		$count = $this->adb->pquery('SELECT count(*) FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.')', array($id));
+		$count = (int)$this->adb->query_result($count, 0, 0);
+		if ($count) {
+			$this->adb->pquery(
+				'DELETE FROM com_vtiger_workflowtasks WHERE workflow_id IN
+					(SELECT workflow_id FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.'))',
+				array($id)
+			);
+			$this->adb->pquery('DELETE FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow'.$dwf.')', array($id));
+		}
+		return $count;
 	}
 
 	public function newWorkflow($moduleName) {
@@ -362,6 +394,13 @@ class VTWorkflowManager {
 		$workflow->wfstarton = '';
 		$workflow->wfendon = '';
 		$workflow->active = 'true';
+		$workflow->options = '';
+		$workflow->cbquestion = null;
+		$workflow->cbquestiondisplay = '';
+		$workflow->recordset = null;
+		$workflow->recordsetdisplay = '';
+		$workflow->onerecord = null;
+		$workflow->onerecorddisplay = '';
 		return $workflow;
 	}
 
@@ -387,6 +426,28 @@ class VTWorkflowManager {
 		$exp['wfstarton']=$workflow->wfstarton;
 		$exp['wfendon']=$workflow->wfendon;
 		$exp['active']=$workflow->active;
+		$exp['options']=$workflow->options;
+		$exp['cbquestion']=$workflow->cbquestion;
+		if (empty($workflow->cbquestion)) {
+			$exp['cbquestiondisplay'] = '';
+		} else {
+			$dp = getEntityName('cbQuestion', $workflow->cbquestion);
+			$exp['cbquestiondisplay'] = $dp[$workflow->cbquestion];
+		}
+		$exp['recordset']=$workflow->recordset;
+		if (empty($workflow->recordset)) {
+			$exp['recordsetdisplay'] = '';
+		} else {
+			$dp = getEntityName('cbMap', $workflow->recordset);
+			$exp['recordsetdisplay'] = $dp[$workflow->recordset];
+		}
+		$exp['onerecord']=$workflow->onerecord;
+		if (empty($workflow->onerecord)) {
+			$exp['onerecorddisplay'] = '';
+		} else {
+			$dp = getEntityName(getSalesEntityType($workflow->onerecord), $workflow->onerecord);
+			$exp['onerecorddisplay'] = $dp[$workflow->onerecord];
+		}
 		$exp['tasks'] = array();
 		$tm = new VTTaskManager($this->adb);
 		$tasks = $tm->getTasksForWorkflow($workflow->id);
@@ -419,6 +480,13 @@ class VTWorkflowManager {
 		$workflow->wfstarton = $data['wfstarton'];
 		$workflow->wfendon = $data['wfendon'];
 		$workflow->active = $data['active'];
+		$workflow->options = $data['options'];
+		$workflow->cbquestion = $data['cbquestion'];
+		$workflow->cbquestiondisplay = $data['cbquestiondisplay'];
+		$workflow->recordset = $data['recordset'];
+		$workflow->recordsetdisplay = $data['recordsetdisplay'];
+		$workflow->onerecord = $data['onerecord'];
+		$workflow->onerecorddisplay = $data['onerecorddisplay'];
 		$this->save($workflow);
 		$tm = new VTTaskManager($this->adb);
 		$tasks = $data['tasks'];

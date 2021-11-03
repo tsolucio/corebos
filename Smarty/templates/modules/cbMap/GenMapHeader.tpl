@@ -49,7 +49,6 @@
 	<img src="{'layerPopupBg.gif'|@vtiger_imageurl:$THEME}" style="display: none;"/>
 <script>
 	function saveMapAction(parameters) {
-		var url = 
 		fetch(
 			'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=saveMap',
 			{

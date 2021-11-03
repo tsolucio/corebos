@@ -16,7 +16,7 @@ require_once 'include/utils/GetGroupUsers.php';
 
 /** Creates a file with all the user, user-role,user-profile, user-groups informations
   * @param $userid -- user id:: Type integer
-  * @returns user_privileges_userid file under the user_privileges directory
+  * @return user_privileges_userid file under the user_privileges directory
  */
 function createUserPrivilegesfile($userid) {
 	global $root_directory;
@@ -24,7 +24,7 @@ function createUserPrivilegesfile($userid) {
 	if (empty($userid)) {
 		return false;
 	}
-	$handle=@fopen($root_directory.'user_privileges/user_privileges_'.$userid.'.php', "w+");
+	$handle=@fopen($root_directory.'user_privileges/user_privileges_'.$userid.'.php', 'w+');
 
 	if ($handle) {
 		$newbuf='';
@@ -45,9 +45,9 @@ function createUserPrivilegesfile($userid) {
 		if ($user_focus->is_admin == 'on') {
 			$newbuf .= "\$is_admin=true;\n";
 			$newbuf .="\n";
-			$newbuf .= "\$user_info=".constructSingleStringKeyValueArray($userInfo).";\n";
+			$newbuf .= '$user_info='.constructSingleStringKeyValueArray($userInfo).";\n";
 			$newbuf .= "\n";
-			$newbuf .= "?>";
+			$newbuf .= '?>';
 		} else {
 			$newbuf .= "\$is_admin=false;\n";
 			$newbuf .= "\n";
@@ -106,7 +106,7 @@ function createUserSharingPrivilegesfile($userid) {
 	}
 	checkFileAccessForInclusion('user_privileges/user_privileges_'.$userid.'.php');
 	require 'user_privileges/user_privileges_'.$userid.'.php';
-	$handle=@fopen($root_directory.'user_privileges/sharing_privileges_'.$userid.'.php', "w+");
+	$handle=@fopen($root_directory.'user_privileges/sharing_privileges_'.$userid.'.php', 'w+');
 
 	if ($handle) {
 		$newbuf='';
@@ -399,7 +399,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 		$rs_write_per=array();
 		$grp_read_per=array();
 		$grp_write_per=array();
-		//Retreiving from vtiger_role to vtiger_role
 		$query='select vtiger_datashare_role2role.*
 			from vtiger_datashare_role2role
 			inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_role2role.shareid
@@ -432,7 +431,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			}
 		}
 
-		//Retreiving from role to rs
 		$parRoleList = array();
 		foreach ($parent_roles as $par_role_id) {
 			$parRoleList[] = $par_role_id;
@@ -519,7 +517,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			}
 		}
 
-		//Retreiving from rs to vtiger_role
 		$query='select vtiger_datashare_rs2role.*
 			from vtiger_datashare_rs2role
 			inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_rs2role.shareid
@@ -557,7 +554,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			$share_id_members[$shareid]=$share_id_role_members;
 		}
 
-		//Retreiving from rs to rs
 		$parRoleList = array();
 		foreach ($parent_roles as $par_role_id) {
 			$parRoleList[] = $par_role_id;
@@ -644,7 +640,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 		$mod_share_read_permission['ROLE']=$role_read_per;
 		$mod_share_write_permission['ROLE']=$role_write_per;
 
-		//Retreiving from the grp2role sharing
 		$query='select vtiger_datashare_grp2role.*
 			from vtiger_datashare_grp2role
 			inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_grp2role.shareid
@@ -709,7 +704,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			$share_id_members[$shareid]=$share_id_grp_members;
 		}
 
-		//Retreiving from the grp2rs sharing
 		$query='select vtiger_datashare_grp2rs.*
 			from vtiger_datashare_grp2rs
 			inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_grp2rs.shareid
@@ -773,8 +767,6 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
 			$share_id_grp_members['GROUP']=$share_id_grps;
 			$share_id_members[$shareid]=$share_id_grp_members;
 		}
-
-		//Retreiving from the grp2grp sharing
 
 		$query = 'select vtiger_datashare_grp2grp.*
 			from vtiger_datashare_grp2grp
@@ -860,7 +852,7 @@ function getUserModuleSharingObjects($module, $userid, $def_org_share, $current_
   * @param $mod_sharingrule_members -- Sharing Rule Members array:: Type array
   * @param $$mod_share_read_per -- Sharing Module Read Permission array:: Type array
   * @param $$mod_share_write_per -- Sharing Module Write Permission array:: Type array
-  * @returns $related_mod_sharing_permission; -- array which contains the id of roles,group and users related module data to be shared
+  * @return $related_mod_sharing_permission; -- array which contains the id of roles,group and users related module data to be shared
  */
 function getRelatedModuleSharingArray($par_mod, $share_mod, $mod_sharingrule_members, $mod_share_read_per, $mod_share_write_per, $def_org_share) {
 	global $adb;
@@ -997,7 +989,7 @@ function getRelatedModuleSharingArray($par_mod, $share_mod, $mod_sharingrule_mem
 
 /** Converts the input array to a single string to facilitate the writing of the input array in a flat file
   * @param $var -- input array:: Type array
-  * @returns $code -- contains the whole array in a single string:: Type array
+  * @return $code -- contains the whole array in a single string:: Type array
  */
 function constructArray($var) {
 	if (is_array($var)) {
@@ -1012,7 +1004,7 @@ function constructArray($var) {
 
 /** Converts the input array to a single string to facilitate the writing of the input array in a flat file
   * @param $var -- input array:: Type array
-  * @returns $code -- contains the whole array in a single string:: Type array
+  * @return $code -- contains the whole array in a single string:: Type array
  */
 function constructSingleStringValueArray($var) {
 	$size = count($var);
@@ -1034,7 +1026,7 @@ function constructSingleStringValueArray($var) {
 
 /** Converts the input array to a single string to facilitate the writing of the input array in a flat file
   * @param $var -- input array:: Type array
-  * @returns $code -- contains the whole array in a single string:: Type array
+  * @return $code -- contains the whole array in a single string:: Type array
  */
 function constructSingleStringKeyAndValueArray($var) {
 	$size = count($var);
@@ -1056,7 +1048,7 @@ function constructSingleStringKeyAndValueArray($var) {
 
 /** Converts the input array to a single string to facilitate the writing of the input array in a flat file
   * @param $var -- input array:: Type array
-  * @returns $code -- contains the whole array in a single string:: Type array
+  * @return $code -- contains the whole array in a single string:: Type array
  */
 function constructSingleStringKeyValueArray($var) {
 	global $adb;
@@ -1081,7 +1073,7 @@ function constructSingleStringKeyValueArray($var) {
 
 /** Converts the input array to a single string to facilitate the writing of the input array in a flat file
   * @param $var -- input array:: Type array
-  * @returns $code -- contains the whole array in a single string:: Type array
+  * @return $code -- contains the whole array in a single string:: Type array
  */
 function constructSingleArray($var) {
 	if (is_array($var)) {
@@ -1096,7 +1088,7 @@ function constructSingleArray($var) {
 
 /** Converts the input array to a single string to facilitate the writing of the input array in a flat file
   * @param $var -- input array:: Type array
-  * @returns $code -- contains the whole array in a single string:: Type array
+  * @return $code -- contains the whole array in a single string:: Type array
  */
 function constructSingleCharArray($var) {
 	if (is_array($var)) {
@@ -1111,7 +1103,7 @@ function constructSingleCharArray($var) {
 
 /** Converts the input array to a single string to facilitate the writing of the input array in a flat file
   * @param $var -- input array:: Type array
-  * @returns $code -- contains the whole array in a single string:: Type array
+  * @return $code -- contains the whole array in a single string:: Type array
  */
 function constructTwoDimensionalArray($var) {
 	if (is_array($var)) {
@@ -1130,7 +1122,7 @@ function constructTwoDimensionalArray($var) {
 
 /** Converts the input array to a single string to facilitate the writing of the input array in a flat file
   * @param $var -- input array:: Type array
-  * @returns $code -- contains the whole array in a single string:: Type array
+  * @return $code -- contains the whole array in a single string:: Type array
  */
 function constructTwoDimensionalValueArray($var) {
 	if (is_array($var)) {
@@ -1149,7 +1141,7 @@ function constructTwoDimensionalValueArray($var) {
 
 /** Converts the input array to a single string to facilitate the writing of the input array in a flat file
   * @param $var -- input array:: Type array
-  * @returns $code -- contains the whole array in a single string:: Type array
+  * @return $code -- contains the whole array in a single string:: Type array
  */
 function constructTwoDimensionalCharIntSingleArray($var) {
 	if (is_array($var)) {
@@ -1168,7 +1160,7 @@ function constructTwoDimensionalCharIntSingleArray($var) {
 
 /** Converts the input array to a single string to facilitate the writing of the input array in a flat file
   * @param $var -- input array:: Type array
-  * @returns $code -- contains the whole array in a single string:: Type array
+  * @return $code -- contains the whole array in a single string:: Type array
  */
 function constructTwoDimensionalCharIntSingleValueArray($var) {
 	if (is_array($var)) {
@@ -1354,7 +1346,7 @@ function populateRelatedSharingPrivileges($enttype, $userid, $module, $relmodule
 		}
 		$user_arr=array();
 		if (count($var_name_arr['ROLE']) > 0) {
-			$query="insert into ".$table_name." values ";
+			$query="insert into $table_name values ";
 			$has_values = false;
 			foreach ($var_name_arr['ROLE'] as $roleusers) {
 				foreach ($roleusers as $user_id) {

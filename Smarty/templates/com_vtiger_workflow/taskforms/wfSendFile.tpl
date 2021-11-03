@@ -66,5 +66,5 @@ var wfexeexppressions = null;
 			<input type="hidden" name="exptype" id="exptype" value="{$task->exptype}"/>
 			</div>
 		</div>
-	</div>	
+	</div>
 </div>

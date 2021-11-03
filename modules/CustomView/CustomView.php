@@ -287,13 +287,15 @@ class CustomView extends CRMEntity {
 	/** to get the getColumnsListbyBlock for the given module and Block
 	 * @param string module
 	 * @param integer block
+	 * @param boolean mark mandatory
+	 * @param boolean return field properties as associative array (true) or colon separated (false)
 	 * @return array in the format
 	 * $columnlist = Array ($fieldlabel =>'$fieldtablename:$fieldcolname:$fieldname:$module_$fieldlabel1:$fieldtypeofdata',
 	  $fieldlabel1 =>'$fieldtablename1:$fieldcolname1:$fieldname1:$module_$fieldlabel11:$fieldtypeofdata1',
 	  |
 	  $fieldlabeln =>'$fieldtablenamen:$fieldcolnamen:$fieldnamen:$module_$fieldlabel1n:$fieldtypeofdatan')
 	 */
-	public function getColumnsListbyBlock($module, $block, $markMandatory = true) {
+	public function getColumnsListbyBlock($module, $block, $markMandatory = true, $assocArray = false) {
 		global $adb, $current_user;
 		$module_columnlist = null;
 		$block_ids = explode(',', $block);
@@ -372,11 +374,26 @@ class CustomView extends CRMEntity {
 				$this->data_type[$fieldlabel] = $fieldtype[1];
 			}
 		}
+		if ($assocArray) {
+			$mod_columnlist_array = array();
+			foreach ($module_columnlist as $optval => $fldname) {
+				list($table, $column, $fldname, $mod_fldlbl, $tod) = explode(':', $optval);
+				$fldlbl = str_replace('_', ' ', str_replace($module . '_', '', $mod_fldlbl));
+				$mod_columnlist_array[$fldname] = array(
+					'label' => getTranslatedString($fldlbl, $module),
+					'value' => $optval,
+					'selected' => '',
+					'typeofdata' => $tod
+				);
+			}
+			$module_columnlist = $mod_columnlist_array;
+		}
 		return $module_columnlist;
 	}
 
 	/** to get the getModuleColumnsList for the given module
 	 * @param string module
+	 * @param boolean return field properties as associative array (true) or colon separated (false)
 	 * @return array in the following format
 	 * $ret_module_list =
 	  Array ('module' =>
@@ -391,11 +408,11 @@ class CustomView extends CRMEntity {
 	  Array('$fieldtablename:$fieldcolname:$fieldname:$module_$fieldlabel1:$fieldtypeofdata'=>$fieldlabel,
 	  Array('$fieldtablename1:$fieldcolname1:$fieldname1:$module_$fieldlabel11:$fieldtypeofdata1'=>$fieldlabel1,
 	 */
-	public function getModuleColumnsList($module) {
+	public function getModuleColumnsList($module, $assocArray = false) {
 		global $current_user;
 		$this->getCustomViewModuleInfo($module);
 		foreach ($this->module_list[$module] as $key => $value) {
-			$columnlist = $this->getColumnsListbyBlock($module, $value, true);
+			$columnlist = $this->getColumnsListbyBlock($module, $value, true, $assocArray);
 			if (isset($columnlist)) {
 				$ret_module_list[$module][$key] = $columnlist;
 			}
@@ -413,7 +430,7 @@ class CustomView extends CRMEntity {
 				}
 				$this->getCustomViewModuleInfo($mod);
 				foreach ($this->module_list[$mod] as $key => $value) {
-					$columnlist = $this->getColumnsListbyBlock($mod, $value, false);
+					$columnlist = $this->getColumnsListbyBlock($mod, $value, false, $assocArray);
 					if (isset($columnlist)) {
 						$ret_module_list[$mod][$key] = $columnlist;
 					}
@@ -431,7 +448,7 @@ class CustomView extends CRMEntity {
 			'vtiger_users:department:department:Users_Department:V',
 		);
 		foreach ($this->module_list[$mod] as $key => $value) {
-			$columnlist = $this->getColumnsListbyBlock($mod, $value, false);
+			$columnlist = $this->getColumnsListbyBlock($mod, $value, false, $assocArray);
 			if (isset($columnlist)) {
 				foreach ($columnlist as $col => $label) {
 					if (!in_array($col, $userFilterFields)) {
@@ -1129,9 +1146,9 @@ class CustomView extends CRMEntity {
 		// Tabid mapped to the list of block labels to be skipped for that tab.
 		$showUserAdvancedBlock = GlobalVariable::getVariable('Webservice_showUserAdvancedBlock', 0);
 		if ($showUserAdvancedBlock) {
-			$userNoShowBlocks = array('LBL_USER_IMAGE_INFORMATION','Asterisk Configuration');
+			$userNoShowBlocks = array('LBL_USER_IMAGE_INFORMATION');
 		} else {
-			$userNoShowBlocks = array('LBL_USER_IMAGE_INFORMATION','LBL_USER_ADV_OPTIONS','Asterisk Configuration');
+			$userNoShowBlocks = array('LBL_USER_IMAGE_INFORMATION','LBL_USER_ADV_OPTIONS');
 		}
 		$skipBlocksList = array(
 			getTabid('HelpDesk') => array('LBL_COMMENTS'),

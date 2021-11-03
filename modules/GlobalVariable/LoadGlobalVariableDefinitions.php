@@ -25,5 +25,6 @@ if (!file_exists($moduleFilepath)) {
 }
 require_once $moduleFilepath;
 ksort($GlobalVariableDefinitons);
+$smarty->assign('Action', vtlib_purify($_REQUEST['action']));
 $smarty->assign('GlobalVariableDefinitonsHeader', $GlobalVariableDefinitonsHeader);
 $smarty->assign('GlobalVariableDefinitons', $GlobalVariableDefinitons);

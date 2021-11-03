@@ -86,7 +86,7 @@ function callSearch(searchtype) {
 	if (searchtype == 'Basic') {
 		urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
 	} else if (searchtype == 'Advanced') {
-		checkAdvancedFilter();
+		AdvancedFilter.updateHiddenFields();
 		var advft_criteria = document.getElementById('advft_criteria').value;
 		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 		urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups;
@@ -218,7 +218,7 @@ function getListViewEntries_js(module, url) {
 			urlstring += '&search=true&query=true&search_field='+search_fld_val+'&searchtype=BasicSearch&search_text=' + search_txt_val;
 		}
 	} else if (searchtype == 'advance') {
-		checkAdvancedFilter();
+		AdvancedFilter.updateHiddenFields();
 		var advft_criteria = document.getElementById('advft_criteria').value;
 		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 		urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups;

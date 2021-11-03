@@ -420,4 +420,11 @@ var alert_arr = {
 	'LNK_EDIT': 'edit',
 	'LNK_EDIT_ACTION': 'Edit',
 	'LNK_DELETE_ACTION': 'Delete',
+	'LBL_MODIFIED': 'Modified',
+	'LBL_CREATE': 'Create a',
+	'LBL_IMPORT': 'Import',
+	'LBL_NO_DATA': 'No Data Found',
+	'filterApplied': 'Filter applied',
+	'QuickView': 'Quick view',
+	'Restore': 'Restore',
 };
