@@ -1058,5 +1058,7 @@ $mod_strings = array(
 'LBL_MERGE' => 'Merge',
 'LBL_IMPORT' => 'Import',
 'LBL_EXPORT' => 'Export',
+'SyncHelpDesk' => 'Synchronize Support Tickets',
+'SyncHelpDeskDescription' => 'Synchronize with Support Tickets Time and Effort',
 );
 ?>
