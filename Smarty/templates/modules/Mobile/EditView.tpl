@@ -207,7 +207,7 @@
 									</div>
 								{/if}
 								{if $_FIELD->uitype() eq '56'}
-									<div>
+									<div style="display:inline-flex">
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 										<input type="checkbox" name="{$_FIELD->name()}" id="{$_FIELD->name()}" {if $_FIELD->value() eq 1} checked {/if} class="custom" />
 									</div>
