@@ -9314,7 +9314,7 @@ precacheAndRoute([{
   "revision": "d6dba707e6ffb8142053145754967ad7"
 }, {
   "url": "include/js/general.js",
-  "revision": "a90674aafd2400d8e721d4cb716f5c59"
+  "revision": "bdf2db9a2a739c9c4f268441b31eea1c"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "ce80de25f73e55ce40a8b1c4ac68f70a"
@@ -9329,7 +9329,7 @@ precacheAndRoute([{
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "6626f0f78193fd6d9f22cf7e9fc8c6ec"
+  "revision": "541b4892d15bd0c1f92c1af51947514f"
 }, {
   "url": "include/js/ListViewJSON.js",
   "revision": "d3e7355f4d578da3a0763d3f9b20ab3f"
