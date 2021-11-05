@@ -29,7 +29,12 @@ if (!empty($_REQUEST['record'])) {
 	$smarty->assign('ID', vtlib_purify($_REQUEST['record']));
 	$mode='edit';
 	if (!is_admin($current_user) && $_REQUEST['record'] != $current_user->id) {
-		die('Unauthorized access to user administration.');
+		$smarty = new vtigerCRM_Smarty();
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+		$smarty->assign('ERROR_MESSAGE', 'Unauthorized access to user administration.');
+		$smarty->display('applicationmessage.tpl');
+		die();
 	}
 	$focus->retrieve_entity_info(vtlib_purify($_REQUEST['record']), 'Users');
 	$smarty->assign('USERNAME', getFullNameFromArray('Users', $focus->column_fields));
