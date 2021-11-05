@@ -2232,7 +2232,7 @@ function getEntityNameWorkflow($ids_list) {
 	return $entityDisplay;
 }
 
-/*
+/**
  * @deprecated
  */
 function getAllParenttabmoduleslist() {
@@ -2248,8 +2248,8 @@ function isOnDemandActive() {
 }
 
 /**
- * 	This function is used to decide the File Storage Path in where we will upload the file in the server.
- * 	return string $filepath  - filepath inwhere the file should be stored in the server will be return
+ * This function is used to decide the File Storage Path in where we will upload the file in the server
+ * @return string filepath where the file should be stored in the server
  */
 function decideFilePath() {
 	global $log;
@@ -2354,7 +2354,7 @@ function validateImageFile($file_details) {
 /**
  * Validate image metadata.
  * @param mixed $data
- * @return bool
+ * @return boolean
  */
 function validateImageMetadata($data) {
 	if (is_array($data)) {
@@ -2653,11 +2653,11 @@ function getMergedDescriptionForURL($url, $id, $parent_type) {
 }
 
 /** Function used to retrieve a single field value from database
- * @param string $tablename - tablename from which we will retrieve the field value
- * @param string $fieldname - fieldname of which we want to get the value from database
- * @param string $idname	 - the name of the primary key field in the table like, inoviceid, quoteid, etc.,
- * @param int    $id	 - entity id crmid of the record we want to get the value from
- * @return string $fieldval  - field value of the fieldname from database
+ * @param string table name from which we will retrieve the field value
+ * @param string field name of which we want to get the value from database
+ * @param string the name of the primary key field in the table like, inoviceid, quoteid, etc.,
+ * @param integer entity id of the record we want to get the value from
+ * @return string field value of the fieldname from database
  */
 function getSingleFieldValue($tablename, $fieldname, $idname, $id) {
 	global $log, $adb;
@@ -2692,8 +2692,8 @@ function getModuleIcon($module) {
 }
 
 /**
- *  Function to get recurring info depending on the recurring type
- *  return  $recurObj       - Object of class RecurringType
+ * Function to get recurring info depending on the recurring type
+ * @return RecurringType
  */
 function getrecurringObjValue() {
 	$recurring_data = array();
@@ -2809,10 +2809,10 @@ function getTranslatedCurrencyString($str) {
 	return $str;
 }
 
-/** 	function used to get the list of importable fields
- * 	@param string $module - module name
- * 	@return array $fieldslist - array with list of fieldnames and the corresponding translated fieldlabels.
- *  The return array will be in the format of [fieldname]=>[fieldlabel] where as the fieldlabel will be translated
+/** function used to get the list of importable fields
+ * @param string module name
+ * @return array with list of field names and the corresponding translated field labels
+ * The return array will be in the format of [fieldname]=>[fieldlabel] where as the fieldlabel will be translated
  */
 function getImportFieldsList($module) {
 	global $adb, $log;
@@ -2850,10 +2850,10 @@ function getImportFieldsList($module) {
 	return $fieldslist;
 }
 
-/**     Function to get all the comments for a troubleticket
- *     @param int $ticketid -- troubleticket id
- *     return all the comments as a sequencial string which are related to this ticket
- * */
+/** Function to get all the comments for a troubleticket
+ * @param integer trouble ticket id
+ * @return string the comments as a sequential string which are related to this ticket
+ */
 function getTicketComments($ticketid) {
 	global $log;
 	$log->debug('> getTicketComments ' . $ticketid);
@@ -2899,8 +2899,7 @@ function makeRandomPassword() {
 }
 
 /**
- * Function to get the columnname for a certain fieldname, given
- * the fieldname and the module name
+ * Function to get the columnname for a certain fieldname, given the fieldname and the module name
  */
 function getColumnnameByFieldname($tabid, $fieldname) {
 	global $log;
@@ -2920,8 +2919,9 @@ function getColumnnameByFieldname($tabid, $fieldname) {
 
 /**
  * Function to get the UItype for a field by the fieldname.
- * Takes the input as $module - module name,and fieldname of the field
- * returns the uitype, integer type
+ * @param string module name
+ * @param string field name
+ * @return string uitype
  */
 function getUItypeByFieldName($module, $fieldname) {
 	global $log, $adb;
@@ -2936,9 +2936,10 @@ function getUItypeByFieldName($module, $fieldname) {
 }
 
 /**
- * Function to get the Type of data for a field by the fieldname.
- * Takes the input as $module - module name,and fieldname of the field
- * returns the type of data, varchar type
+ * Function to get the Type of data for a field by the fieldname
+ * @param string module name
+ * @param string field name
+ * @return string type of data
  */
 function getTypeOfDataByFieldName($module, $fieldname) {
 	global $log, $adb;
@@ -2955,8 +2956,9 @@ function getTypeOfDataByFieldName($module, $fieldname) {
 
 /**
  * Function to get the UItype for a field.
- * Takes the input as $module - module name,and columnname of the field
- * returns the uitype, integer type
+ * @param string module name
+ * @param string column name
+ * @return string uitype
  */
 function getUItype($module, $columnname) {
 	global $log, $adb;
@@ -3013,8 +3015,8 @@ function getCvIdOfAll($module) {
 }
 
 /** gives the option  to display  the tagclouds or not for the given user
- * @param $id -- user id:: Type integer
- * @returns boolean
+ * @param integer user ID
+ * @return boolean
  */
 function getTagCloudView($id = '') {
 	global $log, $adb;
@@ -3057,8 +3059,8 @@ function SaveTagCloudView($id = '') {
 }
 
 /** retrieve show tag cloud as for given user
- ** @param $id -- user id:: Type integer
- ** @returns show tag cloud type
+ ** @param integer user ID
+ ** @return string show tag cloud type
  **/
 function getTagCloudShowAs($id) {
 	global $log, $adb;
@@ -3191,8 +3193,7 @@ function ChangeTypeOfData_Filter($table_name, $column_name, $type_of_data) {
 	return $type_of_data;
 }
 
-/** Returns the URL for Basic and Advance Search
- */
+/** Returns the URL for Basic and Advanced Search */
 function getBasic_Advance_SearchURL() {
 	$url = '';
 	if (!isset($_REQUEST['searchtype'])) {
@@ -3257,8 +3258,8 @@ function getEmailTemplateVariables($modules_list = null) {
 
 /** Function to get picklist values for the given field that are accessible for the given role NOT including subordinate roles
  * use getAssignedPicklistValues if you need also subordinate roles
- *  @param string $tablename picklist fieldname
- *  @param string $roleid user role
+ *  @param string picklist fieldname
+ *  @param string user role ID
  *  @return array picklist values accessible by the user. array(0=>value,1=>value1,-------------,n=>valuen)
  */
 function getPickListValues($tablename, $roleid) {
