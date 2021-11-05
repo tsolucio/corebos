@@ -46,7 +46,8 @@ if (!empty($_REQUEST['record'])) {
 	}
 }
 
-if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
+$canDuplicate = (is_admin($current_user) && isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true');
+if ($canDuplicate) {
 	$focus->id = '';
 	$focus->user_name = '';
 	$mode='create';
@@ -88,7 +89,7 @@ if (isset($_REQUEST['return_action'])) {
 	$smarty->assign('RETURN_ACTION', vtlib_purify($_REQUEST['return_action']));
 	$RETURN_ACTION = vtlib_purify($_REQUEST['return_action']);
 }
-if ((empty($_REQUEST['isDuplicate']) || $_REQUEST['isDuplicate'] != 'true') && isset($_REQUEST['return_id'])) {
+if (!$canDuplicate && isset($_REQUEST['return_id'])) {
 	$smarty->assign('RETURN_ID', vtlib_purify($_REQUEST['return_id']));
 	$RETURN_ID = vtlib_purify($_REQUEST['return_id']);
 } else {
@@ -111,7 +112,7 @@ if (isset($_REQUEST['Edit']) && $_REQUEST['Edit'] == ' Edit ') {
 	$smarty->assign('READONLY', 'readonly');
 	$smarty->assign('USERNAME_READONLY', 'readonly');
 }
-if ((empty($_REQUEST['isDuplicate']) || $_REQUEST['isDuplicate'] != 'true') && isset($_REQUEST['record'])) {
+if (!$canDuplicate && isset($_REQUEST['record'])) {
 	$smarty->assign('USERNAME_READONLY', 'readonly');
 }
 $HomeValues = $focus->getHomeStuffOrder($focus->id);
@@ -127,7 +128,7 @@ $smarty->assign('tagshow_options', array(
  'hcylinder' => $mod_strings['hcylinder'],
  'vcylinder' => $mod_strings['vcylinder'],
 ));
-$smarty->assign('DUPLICATE', (isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : ''));
+$smarty->assign('DUPLICATE', $canDuplicate);
 $smarty->assign('USER_MODE', $mode);
 coreBOS_Session::set('Users_FORM_TOKEN', rand(5, 2000) * rand(2, 7));
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
