@@ -126,7 +126,7 @@ function changepassword(is_admin, userid) {
 				document.getElementById('show-err_msg').style.display = 'block';
 				document.getElementById('err_msg').innerHTML = alert_arr['Old password is incorrect'];
 			} else {
-				window.location.href = `index.php?module=Users&action=DetailView&record=${userid}&modechk=prefview`;
+				window.location.href = `index.php?module=Users&action=DetailView&record=${userid}`;
 			}
 		});
 	}

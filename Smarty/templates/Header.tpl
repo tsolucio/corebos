@@ -295,7 +295,7 @@
 				{/if}
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-						<button class="slds-button slds-global-actions__avatar slds-global-actions__item-action" title="{$USER}" aria-haspopup="true" onclick="window.location.assign('index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview')">
+						<button class="slds-button slds-global-actions__avatar slds-global-actions__item-action" title="{$USER}" aria-haspopup="true" onclick="window.location.assign('index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}')">
 							<span class="slds-avatar slds-avatar_circle slds-avatar_medium">
 								{if $CURRENT_USER_IMAGE}
 								<img alt="{$USER}" src="{$CURRENT_USER_IMAGE}" />
@@ -307,13 +307,13 @@
 						<div class="slds-dropdown slds-dropdown_right">
 							<ul class="slds-dropdown__list" role="menu" aria-label="Show More">
 								<li class="slds-dropdown__item" role="presentation">
-									<a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview" role="menuitem" tabindex="0">
+									<a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}" role="menuitem" tabindex="0">
 										<span class="slds-truncate" title="{$USER}"><strong>{$USER}</strong></span>
 									</a>
 								</li>
 								<li class="slds-has-divider_top-space" role="separator"></li>
 								<li class="slds-dropdown__item" role="presentation">
-									<a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview" role="menuitem" tabindex="0">
+									<a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}" role="menuitem" tabindex="0">
 										<span class="slds-truncate" title="{$APP.LBL_MY_PREFERENCES}">{$APP.LBL_MY_PREFERENCES}</span>
 									</a>
 								</li>
