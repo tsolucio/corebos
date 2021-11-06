@@ -244,7 +244,8 @@ class GlobalVariable extends CRMEntity {
 		for ($i=0; $i<$adb->num_rows($query); $i++) {
 			self::$validationinfo[] = 'evaluate candidate <a href="index.php?action=DetailView&record='.$adb->query_result($query, $i, 'globalvariableid').
 				'&module=GlobalVariable">'.$adb->query_result($query, $i, 'globalno').'</a>';
-			if ($adb->query_result($query, $i, 'module_list')=='') {
+			$in_module_list=$adb->query_result($query, $i, 'in_module_list');
+			if ($in_module_list=='0' || $adb->query_result($query, $i, 'module_list')=='') {
 				if ($isBusinessMapping) {
 					$value = $adb->query_result($query, $i, 'bmapid');
 				} else {
@@ -255,9 +256,8 @@ class GlobalVariable extends CRMEntity {
 				}
 				$list_of_modules['Default']=$value;
 			} else {
-				$in_module_list=$adb->query_result($query, $i, 'in_module_list');
 				$modules_list=array_map('trim', explode('|##|', $adb->query_result($query, $i, 'module_list')));
-				if ($in_module_list==1) {
+				if ($in_module_list=='1') {
 					$nummods = count($modules_list);
 					for ($j=0; $j < $nummods; $j++) {
 						if ($isBusinessMapping) {
