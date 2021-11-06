@@ -3733,8 +3733,8 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 function getSearchModulesCommon($filter = array()) {
 	global $adb;
 	// Ignore disabled administrative modules
-	$doNotSearchThese = array('Dashboard','Home','Calendar','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
-		'PBXManager','VtigerBackup','WSAPP','cbupdater','CronTasks','RecycleBin','Tooltip','Webforms','Calendar4You','GlobalVariable','cbMap','evvtMenu','cbAuditTrail',
+	$doNotSearchThese = array('Dashboard','Home','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker','cbAuditTrail',
+		'PBXManager','VtigerBackup','WSAPP','cbupdater','CronTasks','RecycleBin','Tooltip','Webforms','Calendar4You','GlobalVariable','cbMap','evvtMenu',
 		'cbLoginHistory','cbtranslation','BusinessActions','cbCVManagement');
 	$doNotSearchTheseTabids = array();
 	foreach ($doNotSearchThese as $mname) {
