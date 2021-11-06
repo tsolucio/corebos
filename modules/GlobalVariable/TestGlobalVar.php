@@ -20,7 +20,7 @@ require_once 'include/Webservices/getmaxloadsize.php';
 require_once 'include/utils/CommonUtils.php';
 
 function gv_getGVVarNames() {
-	global $current_user, $adb;
+	global $current_user, $adb, $default_charset;
 	require_once 'modules/PickList/PickListUtils.php';
 	$roleid=$current_user->roleid;
 	$picklistValues = getAssignedPicklistValues('gvname', $roleid, $adb);
@@ -30,7 +30,12 @@ function gv_getGVVarNames() {
 		}
 	}
 	asort($options);
-	$options = get_select_options_with_id($options, '--none--');
+	if (empty($_REQUEST['gvname'])) {
+		$selected = '--none--';
+	} else {
+		$selected = htmlspecialchars(vtlib_purify($_REQUEST['gvname']), ENT_QUOTES, $default_charset);
+	}
+	$options = get_select_options_with_id($options, $selected);
 	return $options;
 }
 $phpmaxsize = get_maxloadsize();
