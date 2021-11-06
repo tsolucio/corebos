@@ -54,29 +54,7 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 		} else {
 			$current_user = $this->getActiveUser();
 			$response = false;
-			$total_record_count = 0;
 			$query_string = trim($request->get('query_string'));
-			$curModule = 'Home';
-
-			function getSearchModules($filter = array()) {
-				$db = PearDatabase::getInstance();
-				// vtlib customization: Ignore disabled modules.
-				$sql = 'select distinct vtiger_field.tabid,name
-					from vtiger_field
-					inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
-					where vtiger_tab.tabid != 29 and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
-				$result = $db->pquery($sql, array());
-				while ($module_result = $db->fetch_array($result)) {
-					$modulename = $module_result['name'];
-					// Do we need to filter the module selection?
-					if (!empty($filter) && is_array($filter) && !in_array($modulename, $filter)) {
-						continue;
-					}
-					$return_arr[$modulename] = $modulename;
-				}
-				return $return_arr;
-			}
-
 			if (isset($query_string) && $query_string != '') {
 				// limit search to modules enabled for crmtogo
 				$search_onlyin = $request->get('search_onlyin');
@@ -90,12 +68,13 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 				} else {
 					$search_onlyin = $searchmodule;
 				}
-				$object_array = getSearchModules($search_onlyin);
+				$object_array = getSearchModulesCommon($search_onlyin);
 				$search_val = $query_string;
 				$i = 0;
 				$moduleRecordCount = array();
 				foreach ($object_array as $module => $object_name) {
-					$focus = CRMEntity::getInstance($module);
+					checkFileAccessForInclusion("modules/$module/$module.php");
+					require_once "modules/$module/$module.php";
 					if (isPermitted($module, 'index') == 'yes') {
 						$listquery = getListQuery($module);
 						$oCustomView = '';
@@ -116,8 +95,6 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 						$noofrows = $db->num_rows($count_result);
 
 						$moduleRecordCount[$module]['count'] = $noofrows;
-						$list_result = $db->query($listquery);
-
 						$listview_entries = $db->pquery($listquery, array());
 						$entity='select id from vtiger_ws_entity where ismodule=1 and name=?';
 						$ws_entity=$db->pquery($entity, array($module));
