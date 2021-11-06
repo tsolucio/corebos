@@ -17,8 +17,8 @@ class Vtiger_Webservice {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 */
 	public static function log($message, $delim = true) {
 		Vtiger_Utils::Log($message, $delim);

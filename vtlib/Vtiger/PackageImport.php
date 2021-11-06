@@ -60,7 +60,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * XPath evaluation on the root module node.
-	 * @param String Path expression
+	 * @param string Path expression
 	 */
 	public function xpath($path) {
 		return $this->_modulexml->xpath($path);
@@ -68,7 +68,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Get the value of matching path (instead of complete xpath result)
-	 * @param String Path expression for which value is required
+	 * @param string Path expression for which value is required
 	 */
 	public function xpath_value($path) {
 		$xpathres = $this->xpath($path);
@@ -98,9 +98,9 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	}
 
 	/**
-	 * checks whether a package is module bundle or not.
-	 * @param String $zipfile - path to the zip file.
-	 * @return Boolean - true if given zipfile is a module bundle and false otherwise.
+	 * checks whether a package is module bundle or not
+	 * @param string path to the zip file
+	 * @return boolean true if given zipfile is a module bundle and false otherwise
 	 */
 	public function isModuleBundle($zipfile = null) {
 		// If data is not yet available
@@ -111,7 +111,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	}
 
 	/**
-	 * @return Array module list available in the module bundle.
+	 * @return array module list available in the module bundle
 	 */
 	public function getAvailableModuleInfoFromModuleBundle() {
 		$list = (array)$this->_modulexml->modulelist;
@@ -240,7 +240,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * returns the name of the module.
-	 * @return String - name of the module as given in manifest file.
+	 * @return string - name of the module as given in manifest file.
 	 */
 	public function getModuleName() {
 		return (string)$this->_modulexml->name;
@@ -309,6 +309,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	public function getTemporaryFilePath($filepath = false) {
 		return 'cache/'. $filepath;
 	}
+
 	/**
 	 * Get dependent version
 	 */
@@ -332,8 +333,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Import Module from zip file
-	 * @param String Zip file name
-	 * @param Boolean True for overwriting existing module
+	 * @param string Zip file name
+	 * @param boolean True for overwriting existing module
 	 *
 	 * @todo overwrite feature is not functionally currently.
 	 */
@@ -386,7 +387,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Import Module from manifest.xml file. Other files should already be in place
-	 * @param String manifest.xml file path
+	 * @param string manifest.xml file path
 	 */
 	public function importManifest($manifestfile) {
 		global $adb;
@@ -414,7 +415,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Load manifest.xml from specified file.
-	 * @param String manifest.xml file path
+	 * @param string manifest.xml file path
 	 */
 	public function loadManifestFromFile($manifestfile) {
 		if (!is_file($manifestfile)) {

@@ -45,7 +45,7 @@ class Vtiger_Unzip {
 
 	/**
 	 * Check if the file path is directory
-	 * @param String Zip file path
+	 * @param string Zip file path
 	 */
 	public function isdir($filepath) {
 		if (substr($filepath, -1, 1) == '/') {

@@ -46,7 +46,7 @@ class Vtiger_FieldBasic {
 
 	/**
 	 * Initialize this instance
-	 * @param Array
+	 * @param array
 	 * @param Vtiger_Module Instance of module to which this field belongs
 	 * @param Vtiger_Block Instance of block to which this field belongs
 	 * @access private
@@ -362,7 +362,7 @@ class Vtiger_FieldBasic {
 
 	/**
 	 * Set Help Information for this instance.
-	 * @param String Help text (content)
+	 * @param string Help text (content)
 	 */
 	public function setHelpInfo($helptext) {
 		// Make sure to initialize the core tables first
@@ -375,7 +375,7 @@ class Vtiger_FieldBasic {
 
 	/**
 	 * Set Masseditable information for this instance.
-	 * @param Integer Masseditable value
+	 * @param integer Masseditable value
 	 */
 	public function setMassEditable($value) {
 		global $adb;
@@ -385,8 +385,8 @@ class Vtiger_FieldBasic {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 * @access public
 	 */
 	public static function log($message, $delim = true) {

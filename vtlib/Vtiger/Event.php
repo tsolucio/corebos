@@ -30,8 +30,8 @@ class Vtiger_Event {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 * @access private
 	 */
 	public static function log($message, $delim = true) {
@@ -39,7 +39,7 @@ class Vtiger_Event {
 	}
 
 	/**
-	 * Check if vtiger CRM support Events
+	 * Check if application support Events
 	 */
 	public static function hasSupport() {
 		if (self::$is_supported === '') {
@@ -51,10 +51,10 @@ class Vtiger_Event {
 	/**
 	 * Handle event registration for module
 	 * @param Vtiger_Module Instance of the module to use
-	 * @param String Name of the Event like vtiger.entity.aftersave, vtiger.entity.beforesave
-	 * @param String Name of the Handler class (should extend VTEventHandler)
-	 * @param String File path which has Handler class definition
-	 * @param String Condition for the event to trigger (default blank)
+	 * @param string Name of the Event like vtiger.entity.aftersave, vtiger.entity.beforesave
+	 * @param string Name of the Handler class (should extend VTEventHandler)
+	 * @param string File path which has Handler class definition
+	 * @param string Condition for the event to trigger (default blank)
 	 */
 	public static function register($moduleInstance, $eventname, $classname, $filename, $condition = '') {
 		// Security check on fileaccess, don't die if it fails
@@ -70,8 +70,8 @@ class Vtiger_Event {
 
 	/**
 	 * Trigger event based on CRM Record
-	 * @param String Name of the Event to trigger
-	 * @param Integer CRM record id on which event needs to be triggered.
+	 * @param string Name of the Event to trigger
+	 * @param integer CRM record id on which event needs to be triggered.
 	 */
 	public static function trigger($eventname, $crmid) {
 		if (!self::hasSupport()) {

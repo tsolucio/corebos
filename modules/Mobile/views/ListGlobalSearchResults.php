@@ -37,7 +37,6 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 		}
 		return $searchFilter;
 	}
-	/** END */
 
 	public function process(crmtogo_API_Request $request) {
 		$db = PearDatabase::getInstance();
