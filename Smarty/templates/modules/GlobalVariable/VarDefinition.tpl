@@ -30,7 +30,7 @@
 	<tr class="{cycle values=" ,alt"}">
 	<td>
 		<strong>
-		<a name="{$var}" class='gvname' id='gvname' href="{if $Action eq 'EditView'}javascript:changeval('{$var}');{else}index.php?module=GlobalVariable&action=EditView&return_action=DetailView&gvname={$var}{/if}">
+		<a name="{$var}" class='gvname' href="{if $Action eq 'EditView'}javascript:changeval('{$var}');{else}index.php?module=GlobalVariable&action=EditView&return_action=DetailView&gvname={$var}{/if}">
 		{$var}
 		</a>
 		</strong>
