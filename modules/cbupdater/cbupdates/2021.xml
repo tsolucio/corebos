@@ -15,6 +15,12 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>mocodertz</author>
+	<description>Install Send OneSignal Notification workflow task</description>
+	<filename>build/changeSets/2021/installSendOneSignalNotificationWorkFlowTask.php</filename>
+	<classname>installSendOneSignalNotificationWorkFlowTask</classname>
+</changeSet>
+<changeSet>
 	<author>denaldhushi</author>
 	<description>Add workflow Upsert task</description>
 	<filename>build/changeSets/2021/addExeWFUpsertTask.php</filename>

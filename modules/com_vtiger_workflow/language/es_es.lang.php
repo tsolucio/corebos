@@ -94,7 +94,7 @@ $mod_strings = array(
 'Site Url' => 'Url CRM',
 'Portal Url' => 'Url Portal',
 'groupEmailList' => 'Emails de Grupo',
-
+'groupUsersWsIdList' => 'IDs de Usuarios en Grupo',
 'Recommended frequency for Workflow is 15 mins' => 'La frecuencia recomendada para los Flujos de Trabajo es de 15 minutos',
 'Workflow'=>'Flujo de Trabajo',
 'WORKFLOW_DELETE_CONFIRMATION' => '¿Seguro que quieres eliminar este flujo de trabajo?',
@@ -258,6 +258,13 @@ $mod_strings = array(
 'Records execution success' => 'Proceso de ejecución correcta',
 'Records put in queue' => 'Registros insertados en la cola de trabajo',
 'Records' => 'Registros:',
+'LBL_ONESIGNAL_NOTIFICATION_HEADING' => 'Cabecera Notificación',
+'LBL_ONESIGNAL_NOTIFICATION_SUBTITLE' => 'Subtítulo Notificación',
+'LBL_NOTIFICATION_CONTENT' => 'Contenido Notificación',
+'LBL_ONESIGNAL_NOTIFICATION_INCLUDE_SEGMENT' => 'Incluir Segmentos',
+'LBL_ONESIGNAL_NOTIFICATION_EXCLUDED_SEGMENT' => 'Excluir Segmentos',
+'CBSendOneSignalNotificationWorkFlowTask' => 'Enviar Notificación OneSignal',
+'Send OneSignal Notification' => 'Enviar Notificación OneSignal',
 'CBUpsertTask' => 'Upsert',
 );
 ?>
