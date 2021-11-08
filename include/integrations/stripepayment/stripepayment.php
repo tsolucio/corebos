@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2020 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
+ * Copyright 2021 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -61,26 +61,27 @@ class corebos_stripepayment {
 				return 'MISSING_EMAIL';
 			}
 			$customerId = $this->retrieveCustomer($data);
-			if (!$customerId) {
+			if (!$customerId[0]) {
 				return 'MISSING_CUSTOMER';
 			}
+			if (isset($customerId[1]['error'])) {
+				return $customerId[1]['error'];
+			}
 			if (isset($customerId[0])) {
-				$customerId = $customerId[0]->id;
+				$customerId = $customerId[0][0]->id;
 			} else {
-				$customerId = $customerId->id;
+				$customerId = $customerId[0]->id;
 			}
 			$paymentMethod = $this->getCustomerStripePaymentMethod($customerId);
-			if (!empty($paymentMethod)) {
+			if (!empty($paymentMethod) && !isset($data['payment_method'])) {
 				$data['payment_method'] = $paymentMethod;
 			}
 			\Stripe\Stripe::setApiKey(coreBOS_Settings::getSetting(self::KEY_STRIPE_API_KEY, ''));
 			try {
-				$data['currency'] = 'EUR';
 				$data['payment_method_types'] = ['card'];
 				$data['customer'] = $customerId;
-				$data['capture_method'] = 'automatic';
-				unset($data['token']);
 				unset($data['email']);
+				unset($data['fullname']);
 				$intentres = \Stripe\PaymentIntent::create($data);
 				if ($intentres->status == 'requires_confirmation') {
 					return $intentres->confirm();
@@ -88,10 +89,46 @@ class corebos_stripepayment {
 				return $intentres;
 			} catch (Exception $e) {
 				$logbg->debug('createPaymentIntent failed:: '. $e->getMessage());
-				return $e->getMessage();
+				$body = $e->getJsonBody();
+				return $body;
 			}
 		}
 		return 0;
+	}
+
+	public function capturePaymentIntent($data) {
+		global $logbg;
+		$stripe = new \Stripe\StripeClient(coreBOS_Settings::getSetting(self::KEY_STRIPE_API_KEY, ''));
+		if (self::checkStripeConfiguration()) {
+			try {
+				$intentres = $stripe->paymentIntents->capture(
+					$data['paymentid'],
+					[]
+				);
+				return $intentres;
+			} catch (Exception $e) {
+				$logbg->debug('capturePaymentIntent failed:: '. $e->getMessage());
+				return $e->getMessage();
+			}
+		}
+		return false;
+	}
+
+	public function retrieveCards($data) {
+		global $logbg;
+		$stripe = new \Stripe\StripeClient(coreBOS_Settings::getSetting(self::KEY_STRIPE_API_KEY, ''));
+		if (self::checkStripeConfiguration()) {
+			try {
+				$cards = $stripe->customers->allSources(
+					$data['customerid']
+				);
+				return $cards;
+			} catch (Exception $e) {
+				$logbg->debug('retrieveCards failed:: '. $e->getMessage());
+				return $e->getMessage();
+			}
+		}
+		return false;
 	}
 
 	public function retrieveCustomer($data) {
@@ -104,11 +141,38 @@ class corebos_stripepayment {
 			}
 			return false;
 		}, $customers['data']);
-		$customer = array_filter($customer);
+		$filter_customer = array_filter($customer);
+		$customer = array_values($filter_customer);
 		if (!$customer[0]) {
 			$customer = $this->createCustomer($data);
+		} else {
+			//add a new payment method to the exsisting customer
+			$payment = $this->attachPaymentToCustomer($customer, $data);
 		}
-		return $customer;
+		return array($customer, $payment);
+	}
+
+	public function attachPaymentToCustomer($customer, $data) {
+		global $logbg;
+		$stripe = new \Stripe\StripeClient(coreBOS_Settings::getSetting(self::KEY_STRIPE_API_KEY, ''));
+		try {
+			if (isset($customer[0])) {
+				$customerId = $customer[0]->id;
+			} else {
+				$customerId = $customer->id;
+			}
+			if (isset($data['payment_method'])) {
+				$payment = $stripe->customers->createSource(
+					$customerId,
+					['source' => $data['payment_method']]
+				);
+				return $payment;
+			}
+		} catch (Exception $e) {
+			$logbg->debug('attachPaymentToCustomer failed:: '. $e->getMessage());
+			$body = $e->getJsonBody();
+			return $body;
+		}		
 	}
 
 	public function createCustomer($data) {
@@ -116,8 +180,9 @@ class corebos_stripepayment {
 		$stripe = new \Stripe\StripeClient(coreBOS_Settings::getSetting(self::KEY_STRIPE_API_KEY, ''));
 		try {
 			$customer = $stripe->customers->create([
-				'source' => $data['token'],
-				'email' => $data['email']
+				'source' => $data['payment_method'],
+				'email' => $data['email'],
+				'name' => $data['fullname']
 			]);
 			return $customer;
 		} catch (Exception $e) {

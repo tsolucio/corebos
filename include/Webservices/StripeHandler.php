@@ -25,10 +25,16 @@ function StripeHandler($method, $data, $stripeObject, $user) {
 		throw new WebServiceException(WebServiceErrorCode::$VALIDATION_FAILED, 'Data specified is empty');
 	}
 	$stripe = new corebos_stripepayment();
+	$data = json_decode($data, true);
 	switch ($method) {
-		case 'payment_intent':
-			$data = json_decode($data, true);
+		case 'create_payment_intent':
 			$ret = $stripe->createPaymentIntent($data);
+			break;
+		case 'capture_payment_intent':
+			$ret = $stripe->capturePaymentIntent($data);
+			break;
+		case 'retrieve_cards':
+			$ret = $stripe->retrieveCards($data);
 			break;
 		default:
 			$ret = 'MISSING_METHOD';
