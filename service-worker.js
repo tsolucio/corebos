@@ -9332,7 +9332,7 @@ precacheAndRoute([{
   "revision": "541b4892d15bd0c1f92c1af51947514f"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "d3e7355f4d578da3a0763d3f9b20ab3f"
+  "revision": "9b03d8872a5abd29ecd03c5c0a870516"
 }, {
   "url": "include/js/ListViewRenderes.js",
   "revision": "a90bae142252ea4ba9675bd0c6ed7bec"
@@ -9570,6 +9570,12 @@ precacheAndRoute([{
 }, {
   "url": "modules/com_vtiger_workflow/resources/many2manyrelation.js",
   "revision": "8778e149e296ca91f9c4c941007fc17c"
+}, {
+  "url": "modules/com_vtiger_workflow/resources/onesignalckeditor.js",
+  "revision": "db5bb45a2c7939934e6903c9818790bb"
+}, {
+  "url": "modules/com_vtiger_workflow/resources/onesignalworkflowtaskscript.js",
+  "revision": "3510b916b211fa90839f375cba24edc2"
 }, {
   "url": "modules/com_vtiger_workflow/resources/parallelexecuter.js",
   "revision": "c75586a43f6d52d0528ae16a16ea689b"
@@ -10082,7 +10088,7 @@ precacheAndRoute([{
   "revision": "aba71d0bc4a7c39fed8e8e9e421d5b35"
 }, {
   "url": "modules/Users/ChangePassword.js",
-  "revision": "19f8daa8f0800aac710c871199ea47d4"
+  "revision": "8b4a47f4e5623c26de63201baa017a76"
 }, {
   "url": "modules/Utilities/Utilities.js",
   "revision": "18844ee70d6993cd1e9bbb8bb412d097"
