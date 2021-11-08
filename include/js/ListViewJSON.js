@@ -19,7 +19,7 @@ let lvtuiGrid = tui.Grid;
 let lvdataGridInstance;
 let SearchColumns = 0;
 let ListViewCopy = 0;
-let Application_Filter_All_Edit = 0;
+let Application_Filter_All_Edit = 1;
 let lastPage = sessionStorage.getItem(lvmodule+'_lastPage');
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, lvmodule, '').then(function (response) {
 	let obj = JSON.parse(response);
@@ -29,7 +29,7 @@ GlobalVariable_getVariable('Application_ListView_SearchColumns', 0).then(functio
 	let obj = JSON.parse(response);
 	SearchColumns = obj.Application_ListView_SearchColumns;
 });
-GlobalVariable_getVariable('Application_Filter_All_Edit', 0).then(function (response) {
+GlobalVariable_getVariable('Application_Filter_All_Edit', 1).then(function (response) {
 	let obj = JSON.parse(response);
 	Application_Filter_All_Edit = obj.Application_Filter_All_Edit;
 });
