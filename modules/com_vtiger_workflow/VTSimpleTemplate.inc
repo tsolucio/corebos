@@ -657,6 +657,10 @@ class VTSimpleTemplate {
 			$groupname = trim(str_replace('_', ' ', substr($fieldname, 14)));
 			$fieldname = 'groupEmailList';
 		}
+		if (substr($fieldname, 0, 18)=='groupUsersWsIdList') {
+			$groupname = trim(str_replace('_', ' ', substr($fieldname, 18)));
+			$fieldname = 'groupUsersWsIdList';
+		}
 		if (substr($fieldname, 0, 8)=='comments' || strpos($fieldname, '_comments')>0) {
 			if (strpos($fieldname, '_')>0) {
 				$commspec = explode('_', $fieldname);
@@ -809,6 +813,8 @@ class VTSimpleTemplate {
 				return $this->getInventoryDetails($format, $field);
 			case 'groupEmailList':
 				return $this->getGroupFieldList($groupname, 'email1');
+			case 'groupUsersWsIdList':
+				return $this->getGroupFieldList($groupname, 'id');
 			case 'Events_Users_Invited':
 				return $this->getinvitedUsersList($this->parent->getId());
 			case 'Events_Related_Contacts':
