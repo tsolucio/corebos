@@ -83,7 +83,6 @@ function OneSignalPushNotificationTask($) {
 			};
 		}
 		var parent = modules[parentModule];
-		var fields = parent['fields'];
 		function filteredFields(fields) {
 			return filter(
 				function (e) {
@@ -159,7 +158,6 @@ function OneSignalPushNotificationTask($) {
 		}
 	}
 
-
 	function getDescribeObjects(accessibleModules, moduleName, callback) {
 		vtinst.describeObject(moduleName, handleError(function (result) {
 			var parent = referencify(result);
@@ -185,7 +183,7 @@ function OneSignalPushNotificationTask($) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];
@@ -202,8 +200,8 @@ function OneSignalPushNotificationTask($) {
 			}
 			var p = parallelExecuter(executer, relatedModules.length);
 			$.each(relatedModules, function (i, v) {
-				p(function (callback) {
-					vtinst.describeObject(v, callback);
+				p(function (cb) {
+					vtinst.describeObject(v, cb);
 				});
 			});
 		}));

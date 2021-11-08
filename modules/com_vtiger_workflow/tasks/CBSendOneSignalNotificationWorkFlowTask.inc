@@ -15,8 +15,11 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('notification_heading', 'notification_subtitle', 'notification_include_segment',
-		 'notification_excluded_segment', 'notification_web_url', 'notification_content', 'external_user_id');
+		return array(
+			'notification_heading', 'notification_subtitle',
+			'notification_include_segment', 'notification_excluded_segment',
+			'notification_web_url', 'notification_content', 'external_user_id'
+		);
 	}
 
 	public function doTask(&$entityData) {
@@ -72,7 +75,7 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 				);
 			} catch (Exception $e) {
 				global $log;
-				$log->debug("Error on Send OneSignal Notification Task");
+				$log->debug('Error on Send OneSignal Notification Task');
 			}
 		}
 	}
