@@ -99,7 +99,7 @@ $mod_strings = array(
 	'Site Url' => 'Webadresse',
 	'Portal Url' => 'Portaladresse',
 	'groupEmailList' => 'Group Email List',
-
+	'groupUsersWsIdList' => 'Group Users Web Service Id List',
 	'Recommended frequency for Workflow is 15 mins' => 'Recommended frequency for Workflow is 15 mins',
 	'Workflow'=>'Workflow',
 	'WORKFLOW_DELETE_CONFIRMATION' => 'Sind Sie sicher, dass Sie diesen Workflow löschen möchten?',
@@ -258,6 +258,13 @@ $mod_strings = array(
 	'Records execution success' => 'Records execution success',
 	'Records put in queue' => 'Records put in queue',
 	'Records' => 'Records:',
+	'LBL_ONESIGNAL_NOTIFICATION_HEADING' => 'Notification Heading',
+	'LBL_ONESIGNAL_NOTIFICATION_SUBTITLE' => 'Notification Subtitle',
+	'LBL_NOTIFICATION_CONTENT' => 'Notification Content',
+	'LBL_ONESIGNAL_NOTIFICATION_INCLUDE_SEGMENT' => 'Included Segments',
+	'LBL_ONESIGNAL_NOTIFICATION_EXCLUDED_SEGMENT' => 'Excluded Segments',
+	'CBSendOneSignalNotificationWorkFlowTask' => 'Send OneSignal Notification',
+	'Send OneSignal Notification' => 'Send OneSignal Notification',
 	'CBUpsertTask' => 'Upsert',
 );
 ?>
