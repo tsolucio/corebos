@@ -85,8 +85,8 @@ PRIMARY KEY (`cbcredentialsid`)
           <displaytype>1</displaytype>
           <masseditable>1</masseditable>
           <entityidentifier>
-            <entityidfield>cbcredentialsno</entityidfield>
-            <entityidcolumn>cbcredentialsno</entityidcolumn>
+            <entityidfield>cbcredentialsid</entityidfield>
+            <entityidcolumn>cbcredentialsid</entityidcolumn>
           </entityidentifier>
         </field>
         <field>
