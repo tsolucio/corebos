@@ -23,15 +23,14 @@ class modifyGlobalVariableBussinessAction extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
-            
-            $link_url = 'javascript:gotourl("index.php?module=GlobalVariable&action=TestGlobalVar&gvname=$gvname")';
-            $this->ExecuteQuery(
-                "UPDATE vtiger_businessactions SET linkurl=? WHERE elementtype_action='DETAILVIEWBASIC' AND module_list='GlobalVariable'",
-                array($link_url)
-            );
-            $this->sendMsg('Changeset ' . get_class($this) . ' applied!');
+			$link_url = 'javascript:gotourl("index.php?module=GlobalVariable&action=TestGlobalVar&gvname=$gvname")';
+			$this->ExecuteQuery(
+				"UPDATE vtiger_businessactions SET linkurl=? WHERE elementtype_action='DETAILVIEWBASIC' AND module_list='GlobalVariable'",
+				array($link_url)
+			);
+			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
-	   }
+	}
 }
