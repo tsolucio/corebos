@@ -167,4 +167,11 @@
 	<classname>WorkflowMassActionChanges</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>xhildashazivari</author>
+	<description>Update linkurl in BusinessActions of module GlobalVariable</description>
+	<filename>build/changeSets/2021/modifyGlobalVariableBA.php</filename>
+	<classname>modifyGlobalVariableBA</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
