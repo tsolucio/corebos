@@ -162,17 +162,23 @@ class corebos_stripepayment {
 				$customerId = $customer->id;
 			}
 			if (isset($data['payment_method'])) {
-				$payment = $stripe->customers->createSource(
-					$customerId,
-					['source' => $data['payment_method']]
+				$payment = $stripe->sources->retrieve(
+					$data['payment_method'],
+					[]
 				);
+				if (empty($payment->customer)) {
+					$payment = $stripe->customers->createSource(
+						$customerId,
+						['source' => $data['payment_method']]
+					);
+				}
 				return $payment;
 			}
 		} catch (Exception $e) {
 			$logbg->debug('attachPaymentToCustomer failed:: '. $e->getMessage());
 			$body = $e->getJsonBody();
 			return $body;
-		}		
+		}
 	}
 
 	public function createCustomer($data) {
