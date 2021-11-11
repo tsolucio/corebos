@@ -23,11 +23,12 @@ class modifyGlobalVariableBA extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
-			$link_url = "javascript:gotourl('index.php?module=GlobalVariable&action=TestGlobalVar&gvname=$gvname')";
-			$oldlink_url = "javascript:gotourl('index.php?module=GlobalVariable&action=TestGlobalVar&parenttab=Tools')";
+			$newlink_url = 'javascript:gotourl(\'index.php?module=GlobalVariable&action=TestGlobalVar&gvname=$gvname\')';
+			$oldlink_url = 'javascript:gotourl(\'index.php?module=GlobalVariable&action=TestGlobalVar&parenttab=Tools\')';
 
 			$this->ExecuteQuery(
-				"UPDATE vtiger_businessactions SET linkurl=? WHERE elementtype_action='DETAILVIEWBASIC' AND module_list='GlobalVariable' AND linkurl=?", array($link_url,$oldlink_url)
+				"UPDATE vtiger_businessactions SET linkurl=? WHERE elementtype_action='DETAILVIEWBASIC' AND module_list='GlobalVariable' AND linkurl=?",
+				array($newlink_url,$oldlink_url)
 			);
 			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
 			$this->markApplied();
