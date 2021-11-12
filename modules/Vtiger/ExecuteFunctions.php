@@ -497,7 +497,7 @@ switch ($functiontocall) {
 	case 'deleteModule':
 		$modname = vtlib_purify($_REQUEST['formodule']);
 		$module = Vtiger_Module::getInstance($modname);
-		if ($module) {
+		if ($module && is_admin($current_user)) {
 			require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
 			$ev = new VTEventsManager($adb);
 			$handlers = $ev->listHandlersForModule($modname);
