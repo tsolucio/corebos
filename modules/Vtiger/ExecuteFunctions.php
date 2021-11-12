@@ -494,6 +494,33 @@ switch ($functiontocall) {
 		$rdo = vtlib_isModuleActive($mod);
 		$ret = array('isactive'=>$rdo);
 		break;
+	case 'deleteModule':
+		$modname = vtlib_purify($_REQUEST['formodule']);
+		$module = Vtiger_Module::getInstance($modname);
+		if ($module) {
+			require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
+			$ev = new VTEventsManager($adb);
+			$handlers = $ev->listHandlersForModule($modname);
+			if (!empty($handlers)) {
+				foreach ($handlers as $className) {
+					$ev->unregisterHandler('CalendarSyncHandler');
+				}
+			}
+			$module->deleteRelatedLists();
+			$module->deleteLinks();
+			$module->deinitWebservice();
+			$module->delete();
+			$ret = array(
+				'success' => true,
+				'message' => 'Module '.getTranslatedString($modname, $modname).' EXTERMINATED!'
+			);
+		} else {
+			$ret = array(
+				'success' => false,
+				'message' => 'Failed to find '.getTranslatedString($modname, $modname).' module.'
+			);
+		}
+		break;
 	default:
 		$ret = '';
 		break;
