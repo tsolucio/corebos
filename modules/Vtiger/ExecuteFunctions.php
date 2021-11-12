@@ -503,7 +503,7 @@ switch ($functiontocall) {
 			$handlers = $ev->listHandlersForModule($modname);
 			if (!empty($handlers)) {
 				foreach ($handlers as $className) {
-					$ev->unregisterHandler('CalendarSyncHandler');
+					$ev->unregisterHandler($className);
 				}
 			}
 			$module->deleteRelatedLists();
