@@ -19,6 +19,17 @@
  *               : http://www.javascriptsource.com/passwords/random-password-generator.html
  *************************************************************************************************/
 
+var gvPasswordLength = 10;
+
+document.addEventListener('DOMContentLoaded', function () {
+ GlobalVariable_getVariable('Application_MinimumPasswordLength', 10, 'Users', gVTUserID).then(function (response) {
+	 var obj = JSON.parse(response);
+	 gvPasswordLength = parseInt(obj.Application_MinimumPasswordLength);
+ }, function (error) {
+	gvPasswordLength = 10;
+ });
+});
+
 var corebos_Password = {
 
 	getRandomNum: function (lbound, ubound) {
@@ -128,7 +139,7 @@ var corebos_Password = {
 		var containsSpecialChar = this.checkSpecialChar(passwordValue);
 
 		//COMPLEX PASSWORD: Minimum 8 characters, and three of the four conditions needs to be ok --> Capital, Lowercase, Special Character, Number
-		if (passwordLength < 8) {
+		if (passwordLength < gvPasswordLength) {
 			return false;
 		} else {
 			//Combination Match All

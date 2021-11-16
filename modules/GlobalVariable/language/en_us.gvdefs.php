@@ -814,6 +814,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The number of days after which the user will be forced to change his password. To switch on this feature you must activate the Expire Password scheduled task.',
 ),
+'Application_MinimumPasswordLength' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'The minimum number of characters to accept a password.',
+),
 'SalesOrder_StatusOnInvoiceSave' => array(
 	'valuetype' => 'string',
 	'category' => 'Application',

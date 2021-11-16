@@ -51,6 +51,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_OpenRecordInNewXOnListView',
 				'Application_MaxFailedLoginAttempts',
 				'Application_ExpirePasswordAfterDays',
+				'Application_MinimumPasswordLength',
 				'Application_AdminLoginIPs',
 				'Application_UserLoginIPs',
 				'Application_DetailView_Inline_Edit',

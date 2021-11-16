@@ -814,6 +814,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'El número de días después de los cuales el usuario se verá obligado a cambiar su contraseña. Para activar esta funcionalidad, debes activar la tarea programada Expirar contraseña.',
 ),
+'Application_MinimumPasswordLength' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'El número mínimo de caracteres para aceptar una contraseña.',
+),
 'SalesOrder_StatusOnInvoiceSave' => array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',

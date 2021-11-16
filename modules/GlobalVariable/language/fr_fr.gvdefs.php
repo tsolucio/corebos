@@ -814,6 +814,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre de jours après lesquels les utilisateurs seront forcés de changer leur mot de passer. Pour activer cette variable il est nécessaire d\'activer la tâche programmée "Expiration Mot de Passe" sous Configuration CRM > Planificateur.',
 ),
+'Application_MinimumPasswordLength' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'The minimum number of characters to accept a password.',
+),
 'SalesOrder_StatusOnInvoiceSave' => array(
 	'valuetype' => 'Chaîne',
 	'category' => 'Application',
