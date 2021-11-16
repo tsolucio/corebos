@@ -30,13 +30,15 @@ class validatorESIDNumber {
 		'NIE' => 'getNIECode',
 		'NIF' => 'getNIFCode',
 		'CIFN' => 'getCIFCode',
+		'CIFM' => 'getCIFCode',
 		'CIFL' => 'getCIFCode',
 	);
 	private static $patterns = array(
 		'DNI'  => "~^\\d{8,8}[TRWAGMYFPDXBNJZSQVHLCKE]?$~",
 		'NIE'  => "~^[XYZ]\\d{7,7}[TRWAGMYFPDXBNJZSQVHLCKE]?$~",
 		'NIF'  => "~^[KLM]\\d{7,7}[ABCDEFGHIJ]?$~",
-		'CIFN' => "~^[ABCDEFGHJUV]\\d{7,7}\\d?$~",
+		'CIFN' => "~^[ABEH]\\d{7,7}\\d?$~",
+		'CIFM' => "~^[CDFGJUV]\\d{7,7}[ABCDEFGHIJ0123456789]?$~",
 		'CIFL' => "~^[NPQRSW]\\d{7,7}[ABCDEFGHIJ]?$~",
 	);
 
@@ -84,6 +86,14 @@ class validatorESIDNumber {
 	 * @param string $documentId
 	 * @return bool
 	 */
+	private function isCIFM($documentId) {
+		 return 1 === preg_match(self::$patterns['CIFM'], $documentId);
+	}
+
+	/**
+	 * @param string $documentId
+	 * @return bool
+	 */
 	public function isPersonalFormat($documentId) {
 		 return $this->isDNIFormat($documentId) || $this->isNIEFormat($documentId) || $this->isNIFFormat($documentId);
 	}
@@ -93,7 +103,7 @@ class validatorESIDNumber {
 	 * @return bool
 	 */
 	public function isCIFFormat($documentId) {
-		return $this->isCIFL($documentId) || $this->isCIFN($documentId);
+		return $this->isCIFL($documentId) || $this->isCIFN($documentId) || $this->isCIFM($documentId);
 	}
 
 	/**
@@ -165,8 +175,12 @@ class validatorESIDNumber {
 			return false;
 		}
 		$documentFirstEightChars = substr($documentId, 0, static::DOCUMENT_LENGTH_WITHOUT_CODE);
-		$code = $this->getCIFCode($documentFirstEightChars);
+		$modulo = $this->getCIFCode($documentFirstEightChars);
 		$lastChar = $this->getLastCharOfString($documentId);
+		$code = $modulo[0];
+		if (1 === preg_match(self::$patterns['CIFL'], $documentId) || (1 === preg_match(self::$patterns['CIFM'], $documentId) && !is_numeric($lastChar))) {
+			$code = $modulo[1];
+		}
 		return ($code === $lastChar || strtolower($code) === $lastChar);
 	}
 
@@ -251,11 +265,7 @@ class validatorESIDNumber {
 			return '';
 		}
 		$modulo = $this->calculateModule($documentId);
-		$code = $modulo[0];
-		if (1 === preg_match(self::$patterns['CIFL'], $documentId)) {
-			$code = $modulo[1];
-		}
-		return $code;
+		return $modulo;
 	}
 
 	private function calculateModule($documentId) {
