@@ -138,7 +138,7 @@ var corebos_Password = {
 		//Special Char?
 		var containsSpecialChar = this.checkSpecialChar(passwordValue);
 
-		//COMPLEX PASSWORD: Minimum 8 characters, and three of the four conditions needs to be ok --> Capital, Lowercase, Special Character, Number
+		//COMPLEX PASSWORD: Minimum gvPasswordLength characters, and three of the four conditions needs to be ok --> Capital, Lowercase, Special Character, Number
 		if (passwordLength < gvPasswordLength) {
 			return false;
 		} else {
