@@ -13,14 +13,14 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'modules/PickList/DependentPickListUtils.php';
 
 /** This function returns the field details for a given fieldname.
-  * Param $uitype - UI type of the field
-  * Param $fieldname - Form field name
-  * Param $fieldlabel - Form field label name
-  * Param $maxlength - maximum length of the field
-  * Param $col_fields - array contains the fieldname and values
-  * Param $generatedtype - Field generated type (default is 1)
-  * Param $module_name - module name
-  * Return type is an array
+  * @param string UI type of the field
+  * @param string Form field name
+  * @param string Form field label name
+  * @param integer maximum length of the field
+  * @param array contains the fieldname and values
+  * @param integer Field generated type (default is 1)
+  * @param string module name
+  * @return array
   */
 function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name, $mode = '', $typeofdata = null, $cbMapFI = array()) {
 	global $log,$app_strings, $adb,$default_charset, $current_user;

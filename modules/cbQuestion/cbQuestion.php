@@ -165,7 +165,7 @@ class cbQuestion extends CRMEntity {
 			return getTranslatedString('SQLError', 'cbQuestion').': PERMISSION';
 		}
 		if ($q->column_fields['qtype']=='Global Search') {
-				return 'select "<b>Global Search</b>";';
+			return 'select "<b>Global Search</b>";';
 		}
 		include_once 'include/Webservices/Query.php';
 		include_once 'include/Webservices/VtigerModuleOperation.php';

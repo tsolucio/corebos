@@ -13,14 +13,14 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'vtlib/Vtiger/Language.php';
 require_once 'modules/PickList/PickListUtils.php';
 
-/** This function returns the detail view form vtiger_field and and its properties in array format.
- * Param $uitype - UI type of the vtiger_field
- * Param $fieldname - Form vtiger_field name
- * Param $fieldlabel - Form vtiger_field label name
- * Param $col_fields - array contains the vtiger_fieldname and values
- * Param $generatedtype - Field generated type (default is 1)
- * Param $tabid - vtiger_tab id to which the Field belongs to (default is "")
- * Return type is an array
+/** This function returns the detail view form field and and its properties in array format
+ * @param string UI type of the field
+ * @param string field name
+ * @param string field label name
+ * @param array contains the field name and values
+ * @param integer field generated type (default is 1)
+ * @param integer tab id to which the field belongs to (default is '')
+ * @return array
  */
 function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid = '', $module = '', $cbMapFI = array()) {
 	global $log, $adb, $mod_strings, $app_strings, $current_user, $theme, $default_charset;
@@ -968,9 +968,9 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 }
 
 /** This function returns a HTML output of associated products for a given entity (Quotes,Invoice,Sales order or Purchase order)
- * Param $module - module name
- * Param $focus - module object
- * Return type string
+ * @param string module name
+ * @param object module
+ * @return string
  */
 function getDetailAssociatedProducts($module, $focus) {
 	global $log, $adb, $theme, $app_strings;
@@ -1508,11 +1508,11 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 }
 
 /** This function returns the detailed block information of a record in a module.
- * Param $module - module name
- * Param $block - block id
- * Param $col_fields - column vtiger_fields array for the module
- * Param $tabid - vtiger_tab id
- * Return type is an array
+ * @param string module name
+ * @param integer block id
+ * @param array column fields array for the module
+ * @param integer tab id
+ * @return array
  */
 function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label) {
 	global $log, $adb;
