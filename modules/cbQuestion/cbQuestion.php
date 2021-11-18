@@ -9,6 +9,8 @@
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
+include_once 'vtlib/Vtiger/Utils/StringTemplate.php';
+include_once 'vtlib/Vtiger/LinkData.php';
 use \PHPSQLParser\PHPSQLParser;
 use \PHPSQLParser\utils\ExpressionType;
 
@@ -466,7 +468,7 @@ class cbQuestion extends CRMEntity {
 		$ans = self::getAnswer($qid, $params);
 		switch ($ans['type']) {
 			case 'File':
-				$ret = self::getFileFromAnswer($ans);
+				$ret = self::getFileFromAnswer($ans, $params);
 				break;
 			case 'Table':
 				$ret = self::getTableFromAnswer($ans);
@@ -505,7 +507,7 @@ class cbQuestion extends CRMEntity {
 	/**
 	 * properties: see wiki for the latest definition
 	 */
-	public static function getFileFromAnswer($ans) {
+	public static function getFileFromAnswer($ans, $params = array()) {
 		$bqfiles = 'cache/bqfiles';
 		if (!is_dir($bqfiles)) {
 			mkdir($bqfiles, 0777, true);
@@ -514,12 +516,20 @@ class cbQuestion extends CRMEntity {
 		if (!empty($ans)) {
 			$properties = json_decode($ans['properties']);
 			if (!empty($properties->filename)) {
+				$fname = utf8_decode($properties->filename);
+				if (!empty($params) && is_array($params)) {
+					$strtemplate = new Vtiger_StringTemplate();
+					foreach ($params as $key => $value) {
+						$strtemplate->assign($key, $value);
+					}
+					$fname = $strtemplate->merge($fname);
+				}
 				if (empty($properties->filenamedateformat)) {
 					$now = date('YmdHis');
 				} else {
 					$now = date($properties->filenamedateformat);
 				}
-				$fname = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%]/', '', $properties->filename));
+				$fname = preg_replace('/[^a-zA-Z0-9_\.\%]/', '', $fname);
 				if (strpos($fname, '%s')===false) {
 					$fname .= '_%s';
 				} else {
