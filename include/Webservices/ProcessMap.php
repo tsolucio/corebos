@@ -27,6 +27,17 @@
 function cbwsProcessMap($mapid, $parameters, $user) {
 	global $adb, $log;
 	$mapid = vtws_getWSID($mapid);
+	if ($mapid===false || $mapid=='0x0') {
+		// we try to search it as a string
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
+		$maprs = $adb->pquery(
+			'select cbmapid from vtiger_cbmap inner join '.$crmEntityTable.' on crmid=cbmapid where deleted=0 and mapname=?',
+			array($mapid)
+		);
+		if ($maprs && $adb->num_rows($maprs)>0) {
+			$mapid = vtws_getEntityId('cbMap').'x'.$maprs->fields['cbmapid'];
+		}
+	}
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $mapid);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
@@ -97,6 +108,8 @@ class cbwsProcessMapWorker {
 		switch ($this->maptype) {
 			case 'Mapping':
 				return $this->processMapping();
+			case 'Detail View Layout Mapping':
+				return $this->mapobj->DetailViewLayoutMapping();
 			case 'ApplicationMenu':
 				return $this->mapobj->ApplicationMenu();
 			default:

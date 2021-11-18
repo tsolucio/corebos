@@ -67,7 +67,7 @@ class DetailViewLayoutMapping extends processcbMap {
 	}
 
 	public function processMap($arguments) {
-		return $this->convertMap2Array($arguments[0]);
+		return $this->convertMap2Array(empty($arguments) ? 0 : $arguments[0]);
 	}
 
 	private function convertMap2Array($crmid) {
