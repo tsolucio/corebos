@@ -152,5 +152,11 @@ $mod_strings = array(
 	'Stripe Payment Activation' => 'Stripe Payment Activation',
 	'StripePayment_Desc' => 'Configure Stripe Payment Entry',
 	'stripe_Key' => 'Stripe API Key',
+	'ClickHouse_Desc' => 'Configure ClickHouse',
+	'clickhouse_host' => 'clickhouse host',
+	'clickhouse_port' => 'clickhouse port',
+	'clickhouse_username' => 'clickhouse username',
+	'clickhouse_password' => 'clickhouse password',
+	'clickhouse_active' => 'clickhouse active'
 );
 ?>

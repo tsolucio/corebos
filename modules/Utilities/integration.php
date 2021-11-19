@@ -126,6 +126,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigwc':
 		include_once 'include/integrations/woocommerce/settings.php';
 		break;
+	case 'getconfigsclickhouse':
+	case 'setconfigsclickhouse':
+		include_once 'include/integrations/clickhouse/settings.php';
+		break;
 	case 'getconfigmailup':
 	case 'setconfigmailup':
 		include_once 'include/integrations/mailup/settings.php';
@@ -229,6 +233,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('Stripe Payment Activation', 'Utilities'),
 				'desc' => getTranslatedString('StripePayment_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigstripepayment',
+			),
+			array(
+				'abbr' => 'CH',
+				'title' => getTranslatedString('ClickHouse', 'Utilities'),
+				'desc' => getTranslatedString('ClickHouse_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsclickhouse',
 			),
 		);
 		if (file_exists('build/wsChanges/LoginSession.php')) {
