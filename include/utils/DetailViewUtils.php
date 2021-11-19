@@ -363,7 +363,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			} else {
 				$group_array = get_group_array(false, 'Active', $current_user->id);
 			}
-			$groups_combo = get_select_options_array($group_array, $current_user->id);
+			$groups_combo = get_select_options_array($group_array, $owner_id);
 		}
 		if (GlobalVariable::getVariable('Application_Group_Selection_Permitted', 1)!=1) {
 			$groups_combo = '';
