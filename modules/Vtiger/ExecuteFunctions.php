@@ -483,10 +483,10 @@ switch ($functiontocall) {
 			if ($ret) {
 				$ret = array('password'=>$ret);
 			} else {
-				$ret = array('password'=>false);
+				$ret = array('password'=>false, 'msg' => $focus->error_string);
 			}
 		} else {
-			$ret = array('password'=>false);
+			$ret = array('password'=>false, 'msg' => $focus->error_string);
 		}
 		break;
 	case 'ismoduleactive':

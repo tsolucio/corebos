@@ -174,4 +174,11 @@
 	<classname>modifyGlobalVariableBA</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Password History check table and Failed Login Attempts for contacts</description>
+	<filename>build/changeSets/2021/PasswordHistoryFailedLoginAttempts.php</filename>
+	<classname>PasswordHistoryFailedLoginAttempts</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

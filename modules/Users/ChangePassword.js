@@ -124,7 +124,8 @@ function changepassword(is_admin, userid) {
 			const res = JSON.parse(response);
 			if (!res.password) {
 				document.getElementById('show-err_msg').style.display = 'block';
-				document.getElementById('err_msg').innerHTML = alert_arr['Old password is incorrect'];
+				let msg = typeof(res.msg) == 'undefined' ? alert_arr['Old password is incorrect'] : res.msg;
+				document.getElementById('err_msg').innerHTML = msg;
 			} else {
 				window.location.href = `index.php?module=Users&action=DetailView&record=${userid}`;
 			}

@@ -111,6 +111,7 @@ $mod_strings = array (
 	'ERR_PASSWORD_CHANGE_FAILED_2' => ' échec. Le nouveau mot de passe doit être établi.',
 	'ERR_PASSWORD_INCORRECT_OLD' => 'Ancient mot de passe incorrect pour $this->user_name. Re-saisissez votre mot de passe.',
 	'ERR_PASSWORD_NOT_CHANGED' => 'L\'ancien et le nouveau mot de passe sont les mêmes. Veuillez utiliser un mot de passe différent.',
+	'ERR_PASSWORD_REPEATED' => 'You have used this password before. Please use a different password.',
 	'ERR_USER_DOESNOT_EXISTS'=>'Cet utilisateur n\'existe pas.',
 	'ERR_USER_NAME_EXISTS_1' => 'Le nom d\'utilisateur ',
 	'ERR_USER_NAME_EXISTS_2' => ' existe déjà. Les doublons de noms d\'utilisateurs ne sont pas autorisés.<br>Changez de nom de manière à le rendre unique.',

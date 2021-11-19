@@ -538,7 +538,18 @@ class Users extends CRMEntity {
 		//set new password
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		$encrypted_new_password = $this->encrypt_password($new_password, $crypt_type);
-
+		$passhistory = $adb->pquery(
+			'select 1 from password_history where crmid=? and crmtype=? and pass=?',
+			array($this->id, 'U', $encrypted_new_password)
+		);
+		if (!$passhistory || $adb->num_rows($passhistory) > 0) {
+			$this->error_string = getTranslatedString('ERR_PASSWORD_REPEATED', 'Users');
+			return false;
+		}
+		$adb->pquery(
+			'insert into password_history values (?,?,?)',
+			array($this->id, 'U', $encrypted_new_password)
+		);
 		if (GlobalVariable::getVariable('Application_SendUserPasswordByEmail', 0, 'Users')) {
 			require_once 'modules/Emails/Emails.php';
 			$context = array(

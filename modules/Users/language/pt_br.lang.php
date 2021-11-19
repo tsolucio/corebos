@@ -121,6 +121,7 @@ $mod_strings = array(
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' falhou. Nova senha deve ser definida.',
 'ERR_PASSWORD_INCORRECT_OLD'=>'Senha antiga incorreta para usuário especificado. Entre novamente com a informação de senha.',
 'ERR_PASSWORD_NOT_CHANGED' => 'Antiga e nova senha são iguais. Por favor, use senhas diferentes.',
+'ERR_PASSWORD_REPEATED' => 'You have used this password before. Please use a different password.',
 'ERR_USER_DOESNOT_EXISTS'=>'Usuário não existe.',
 'ERR_USER_NAME_EXISTS_1'=>'O nome de usuário',
 'ERR_USER_NAME_EXISTS_2'=>' já existe.  Nomes de usuários duplicados não são permitidos.<br>Mude o nome de usuário de forma que seja único.',
