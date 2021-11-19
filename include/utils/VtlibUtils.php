@@ -427,9 +427,9 @@ $__htmlpurifier_instance = false;
 /**
  * Purify (Cleanup) malicious snippets of code from the input
  *
- * @param String $value
- * @param Boolean $ignore Skip cleaning of the input
- * @return String
+ * @param mixed value(s) to clean
+ * @param boolean ignore skip cleaning of the input
+ * @return mixed sanitized
  */
 function vtlib_purify($input, $ignore = false) {
 	global $__htmlpurifier_instance, $root_directory, $default_charset;
@@ -488,7 +488,7 @@ function vtlib_purify($input, $ignore = false) {
 /**
  * Process the UI Widget requested
  * @param Vtiger_Link $widgetLinkInfo
- * @param Current Smarty Context $context
+ * @param Smarty Context
  * @return
  */
 function vtlib_process_widget($widgetLinkInfo, $context = false) {
@@ -526,10 +526,10 @@ function vtlib_module_icon($modulename) {
 }
 
 /**
- * Function to return the valid SQl input.
- * @param <String> $string
- * @param <Boolean> $skipEmpty Skip the check if string is empty.
- * @return <String> $string/false
+ * Function to return the valid SQL input
+ * @param string SQL
+ * @param boolean Skip the check if string is empty
+ * @return string sanitized SQL or false
  */
 function vtlib_purifyForSql($string, $skipEmpty = true) {
 	$pattern = '/^[_a-zA-Z0-9.]+$/';

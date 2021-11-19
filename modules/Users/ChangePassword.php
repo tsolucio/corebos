@@ -11,10 +11,10 @@ require_once 'modules/Users/Users.php';
 require_once 'include/logging.php';
 
 global $theme, $app_strings, $mod_strings, $default_charset;
-
+$minchars = GlobalVariable::getVariable('Application_MinimumPasswordLength', 10, 'Users');
 $badpassword = $mod_strings['PASSWORD REQUIREMENTS'].'<br>----------------------------------------<br>';
 $badpassword.= $mod_strings['REQUIRED'].':<br>~ ';
-$badpassword.= $mod_strings['Min. 8 characters'].'<br><br>';
+$badpassword.= str_replace('8', $minchars, $mod_strings['Min. 8 characters']).'<br><br>';
 $badpassword.= $mod_strings['Contains3of4'].'<br>~ ';
 $badpassword.= $mod_strings['Min. 1 uppercase'].'<br>~ ';
 $badpassword.= $mod_strings['Min. 1 lowercase'].'<br>~ ';

@@ -1308,6 +1308,8 @@ $app_strings = array(
 
 	//List view popup content
 	'LBL_SEND_TO' => 'SEND TO',
+	'LNK_ALPHABETICAL_SEARCH' => 'Alpabetical Search',
+	'ERR_SITE_URL_MISMATCH' => 'Site URL mismatch',
 );
 
 // Translation for currency names

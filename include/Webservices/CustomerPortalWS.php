@@ -398,8 +398,11 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		$field_list .= 'vtiger_crmentity.crmid';
 
 		$listquery = 'select '.$field_list.substr($listquery, stripos($listquery, ' from '));
-
-		$where = getUnifiedWhere($listquery, $module, $query);
+		if (strtolower(substr($query, 0, 5))=='tag::') {
+			$where = getTagWhere(substr($query, 5), $user->id);
+		} else {
+			$where = getUnifiedWhere($listquery, $module, $query);
+		}
 		if ($where != '') {
 			$listquery .= ' and ('.$where.')';
 		}
@@ -620,7 +623,8 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId, $company
 				$condition .= ($condition=='' ? '' : ' or ').$col.(is_array($contactId) ? ' IN ('.implode(',', $contactId).')' : '='.$contactId);
 			}
 	}
-	return $condition;
+	$filtered = cbEventHandler::do_filter('corebos.filter.portalmodulerestrictions', array($module, $accountId, $contactId, $companyAccess, $condition));
+	return $filtered[4];
 }
 
 // To get the modules allowed for global search
@@ -1011,10 +1015,10 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 }
 
 /**
- * @param String $term: search term
- * @param Array $returnfields: array of fields to return as result, maybe for the future
- * @param Number $limit: maximum number of values to return
- * @return Array values found
+ * @param string $term: search term
+ * @param array $returnfields: array of fields to return as result, maybe for the future
+ * @param integer $limit: maximum number of values to return
+ * @return array values found
  */
 function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 5) {
 	global $adb, $current_user;
@@ -1311,14 +1315,14 @@ function getFieldAutocompleteQuery($term, $filter, $searchinmodule, $fields, $re
 }
 
 /**
- * @param String $term: search term
- * @param String $filter: operator to use: eq, neq, startswith, endswith, contains
- * @param String $searchinmodule: valid module to search in
- * @param String $fields: comma separated list of fields to search in
- * @param String $returnfields: comma separated list of fields to return as result, if empty $fields will be returned
- * @param Number $limit: maximum number of values to return
+ * @param string $term: search term
+ * @param string $filter: operator to use: eq, neq, startswith, endswith, contains
+ * @param string $searchinmodule: valid module to search in
+ * @param string $fields: comma separated list of fields to search in
+ * @param string $returnfields: comma separated list of fields to return as result, if empty $fields will be returned
+ * @param integer $limit: maximum number of values to return
  * @param Users $user
- * @return Array values found: crmid => array($returnfields)
+ * @return array values found: crmid => array($returnfields)
  */
 function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnfields, $limit, $user) {
 	global $current_user, $adb, $default_charset;
@@ -1367,14 +1371,14 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 }
 
 /**
- * @param String $term: search term
- * @param String $filter: operator to use: eq, neq, startswith, endswith, contains
- * @param String $searchinmodule: valid module to search in
- * @param String $fields: comma separated list of fields to search in
- * @param String $returnfields: comma separated list of fields to return as result, if empty $fields will be returned
- * @param Number $limit: maximum number of values to return
+ * @param string $term: search term
+ * @param string $filter: operator to use: eq, neq, startswith, endswith, contains
+ * @param string $searchinmodule: valid module to search in
+ * @param string $fields: comma separated list of fields to search in
+ * @param string $returnfields: comma separated list of fields to return as result, if empty $fields will be returned
+ * @param integer $limit: maximum number of values to return
  * @param Users $user
- * @return Array values found: crmid => array($returnfields)
+ * @return array values found: crmid => array($returnfields)
  */
 function getGlobalSearch($term, $searchin, $limit, $user) {
 	global $current_user,$adb,$default_charset;

@@ -106,6 +106,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigloginsync':
 		include_once 'include/integrations/loginsync/settings.php';
 		break;
+	case 'getconfigstripepayment':
+	case 'setconfigstripepayment':
+		include_once 'include/integrations/stripepayment/settings.php';
+		break;
 	case 'getconfigdenormalization':
 	case 'setconfigdenormalization':
 		include_once 'include/integrations/denormalize/settings.php';
@@ -221,10 +225,10 @@ switch ($_REQUEST['_op']) {
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigwc',
 			),
 			array(
-				'abbr' => 'MU',
-				'title' => getTranslatedString('Mailup Activation', 'Utilities'),
-				'desc' => getTranslatedString('Mailup Activation_Desc', 'Utilities'),
-				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigmailup',
+				'abbr' => 'SP',
+				'title' => getTranslatedString('Stripe Payment Activation', 'Utilities'),
+				'desc' => getTranslatedString('StripePayment_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigstripepayment',
 			),
 		);
 		if (file_exists('build/wsChanges/LoginSession.php')) {

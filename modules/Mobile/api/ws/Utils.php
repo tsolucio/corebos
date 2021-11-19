@@ -691,7 +691,6 @@ class crmtogo_WS_Utils {
 			//initialize config for new user assuming admin has all available modules in use
 			$result = $db->pquery('SELECT * FROM berli_crmtogo_modules where crmtogo_user = 1 order by order_num', array());
 			$noofrows = $db->num_rows($result);
-			$module = array ();
 			$incl_sql = 'INSERT INTO berli_crmtogo_modules ( crmtogo_user, crmtogo_module, crmtogo_active , order_num ) VALUES (?,?,?,?)';
 			for ($i=0; $i<$noofrows; $i++) {
 				$module = $db->query_result($result, $i, 'crmtogo_module');

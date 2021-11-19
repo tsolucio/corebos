@@ -1,0 +1,47 @@
+{
+    "name": "willdurand/geocoder",
+    "type": "library",
+    "description": "Common files for PHP Geocoder",
+    "keywords": [
+        "geocoder",
+        "geocoding",
+        "abstraction",
+        "geoip"
+    ],
+    "homepage": "http://geocoder-php.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "William Durand",
+            "email": "william.durand1@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.3 || ^8.0"
+    },
+    "require-dev": {
+        "nyholm/nsa": "^1.1",
+        "phpunit/phpunit": "^9.5",
+        "symfony/stopwatch": "~2.5"
+    },
+    "suggest": {
+        "symfony/stopwatch": "If you want to use the TimedGeocoder"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.1-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Geocoder\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-ci": "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml"
+    }
+}

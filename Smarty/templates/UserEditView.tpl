@@ -138,7 +138,7 @@ function check_duplicate() {ldelim}
 			<td rowspan="2" width="50"><img src="{'ico-users.gif'|@vtiger_imageurl:$THEME}" align="absmiddle"></td>
 			<td>
 				<span class="lvtHeaderText">
-				{if $PARENTTAB neq ''}
+				{if $IS_ADMIN}
 				<b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Users&action=index">{$MOD.LBL_USERS}</a> &gt;
 					{if $MODE eq 'edit'}
 						{$UMOD.LBL_EDITING} "{$USERNAME}"
@@ -149,7 +149,7 @@ function check_duplicate() {ldelim}
 						{$APP.LBL_DUPLICATING} "{$USERNAME}"
 						{/if}
 					{/if}
-					</b></span>
+				</b></span>
 				{else}
 					<span class="lvtHeaderText"><b>{$APP.LBL_MY_PREFERENCES}</b></span>
 				{/if}

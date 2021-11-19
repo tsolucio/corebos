@@ -27,21 +27,21 @@ var relrecords = {$task->relrecords|json_encode};
 <fieldset class="slds-form-element">
   <div class="slds-form-element__control">
     <span class="slds-radio">
-      <input type="radio" id="radio-3" name="relAction" {if ($task->selAct eq "addrel")}{"checked"}{/if} value="addrel" />
+      <input type="radio" id="radio-3" name="relAction" {if isset($task->selAct) && $task->selAct eq "addrel"}{"checked"}{/if} value="addrel" />
       <label class="slds-radio__label" for="radio-3">
         <span class="slds-radio_faux"></span>
         <span class="slds-form-element__label">{'Add Relation'|@getTranslatedString}</span>
       </label>
     </span>
     <span class="slds-radio">
-      <input type="radio" id="radio-4" name="relAction" {if ($task->selAct eq "delrel")}{"checked"}{/if} value="delrel" />
+      <input type="radio" id="radio-4" name="relAction" {if isset($task->selAct) && $task->selAct eq "delrel"}{"checked"}{/if} value="delrel" />
       <label class="slds-radio__label" for="radio-4">
         <span class="slds-radio_faux"></span>
         <span class="slds-form-element__label">{'Delete Relation'|@getTranslatedString}</span>
       </label>
     </span>
     <span class="slds-radio">
-      <input type="radio" id="radio-5" name="relAction" {if ($task->selAct eq "delAllrel")}{"checked"}{/if} value="delAllrel" />
+      <input type="radio" id="radio-5" name="relAction" {if isset($task->selAct) && $task->selAct eq "delAllrel"}{"checked"}{/if} value="delAllrel" />
       <label class="slds-radio__label" for="radio-5">
         <span class="slds-radio_faux"></span>
         <span class="slds-form-element__label">{'Delete All Relation'|@getTranslatedString}&nbsp;

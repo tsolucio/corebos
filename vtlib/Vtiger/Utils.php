@@ -26,9 +26,9 @@ class Vtiger_Utils {
 
 	/**
 	 * Implode the prefix and suffix as string for given number of times
-	 * @param String prefix to use
-	 * @param Integer Number of times
-	 * @param String suffix to use (optional)
+	 * @param string prefix to use
+	 * @param integer Number of times
+	 * @param string suffix to use (optional)
 	 */
 	public static function implodestr($prefix, $count, $suffix = false) {
 		$strvalue = '';
@@ -43,8 +43,8 @@ class Vtiger_Utils {
 
 	/**
 	 * Function to check the file access is made within web root directory as well as is safe for php inclusion
-	 * @param String File path to check
-	 * @param Boolean False to avoid die() if check fails
+	 * @param string File path to check
+	 * @param boolean False to avoid die() if check fails
 	 */
 	public static function checkFileAccessForInclusion($filepath, $dieOnFail = true) {
 		global $root_directory;
@@ -85,8 +85,8 @@ class Vtiger_Utils {
 
 	/**
 	 * Function to check the file access is made within web root directory.
-	 * @param String File path to check
-	 * @param Boolean False to avoid die() if check fails
+	 * @param string File path to check
+	 * @param boolean False to avoid die() if check fails
 	 */
 	public static function checkFileAccess($filepath, $dieOnFail = true) {
 		global $root_directory;
@@ -123,8 +123,8 @@ class Vtiger_Utils {
 
 	/**
 	 * Log the debug message
-	 * @param String Log message
-	 * @param Boolean true to append end-of-line, false otherwise
+	 * @param string Log message
+	 * @param boolean true to append end-of-line, false otherwise
 	 */
 	public static function Log($message, $delimit = true) {
 		global $Vtiger_Utils_Log, $log;
@@ -146,7 +146,7 @@ class Vtiger_Utils {
 
 	/**
 	 * Escape the string to avoid SQL Injection attacks.
-	 * @param String Sql statement string
+	 * @param string Sql statement string
 	 */
 	public static function SQLEscape($value) {
 		if ($value == null) {
@@ -158,7 +158,7 @@ class Vtiger_Utils {
 
 	/**
 	 * Check if table is present in database
-	 * @param String tablename to check
+	 * @param string tablename to check
 	 */
 	public static function CheckTable($tablename) {
 		global $adb;
@@ -179,10 +179,9 @@ class Vtiger_Utils {
 
 	/**
 	 * Create table (supressing failure)
-	 * @param String tablename to create
-	 * @param String table creation criteria like '(columnname columntype, ....)'
-	 * @param String Optional suffix to add during table creation
-	 * will be appended to CREATE TABLE $tablename SQL
+	 * @param string tablename to create
+	 * @param string table creation criteria like '(columnname columntype, ....)'
+	 * @param string Optional suffix to add during table creation will be appended to CREATE TABLE $tablename SQL
 	 */
 	public static function CreateTable($tablename, $criteria, $suffixTableMeta = false) {
 		global $adb;
@@ -206,9 +205,8 @@ class Vtiger_Utils {
 
 	/**
 	 * Alter existing table
-	 * @param String tablename to alter
-	 * @param String alter criteria like ' ADD columnname columntype' <br>
-	 * will be appended to ALTER TABLE $tablename SQL
+	 * @param string tablename to alter
+	 * @param string alter criteria like ' ADD columnname columntype' <br> will be appended to ALTER TABLE $tablename SQL
 	 */
 	public static function AlterTable($tablename, $criteria) {
 		global $adb;
@@ -217,9 +215,9 @@ class Vtiger_Utils {
 
 	/**
 	 * Add column to existing table
-	 * @param String tablename to alter
-	 * @param String columnname to add
-	 * @param String columntype (criteria like 'VARCHAR(100)')
+	 * @param string tablename to alter
+	 * @param string columnname to add
+	 * @param string columntype (criteria like 'VARCHAR(100)')
 	 */
 	public static function AddColumn($tablename, $columnname, $criteria) {
 		global $adb;
@@ -230,7 +228,7 @@ class Vtiger_Utils {
 
 	/**
 	 * Get SQL query
-	 * @param String SQL query statement
+	 * @param string SQL query statement
 	 */
 	public static function ExecuteQuery($sqlquery, $supressdie = false) {
 		global $adb;
@@ -248,7 +246,7 @@ class Vtiger_Utils {
 
 	/**
 	 * Get CREATE SQL for given table
-	 * @param String tablename for which CREATE SQL is requried
+	 * @param string tablename for which CREATE SQL is requried
 	 */
 	public static function CreateTableSql($tablename) {
 		global $adb;
@@ -262,7 +260,7 @@ class Vtiger_Utils {
 
 	/**
 	 * Check if the given SQL is a CREATE statement
-	 * @param String SQL String
+	 * @param string SQL String
 	 */
 	public static function IsCreateSql($sql) {
 		if (preg_match('/(CREATE TABLE)/', strtoupper($sql))) {
@@ -273,7 +271,7 @@ class Vtiger_Utils {
 
 	/**
 	 * Check if the given SQL is destructive (DELETE's DATA)
-	 * @param String SQL String
+	 * @param string SQL String
 	 */
 	public static function IsDestructiveSql($sql) {
 		if (preg_match(

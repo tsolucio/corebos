@@ -51,7 +51,6 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 			$response = $wsResponse;
 		} else {
 			$wsResponseResult = $wsResponse->getResult();
-			$CATEGORY = getParentTabFromModule($wsResponseResult['module']);
 			if ($request->get('compact') !='true') {
 				$customView = new CustomView($wsResponseResult['module']);
 				$id1=$request->get('viewName');
@@ -155,7 +154,6 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 			$viewer->assign('PAGELIMIT', $config['NavigationLimit']);
 			$viewer->assign('_MODULE', $this->cachedModule($wsResponseResult['module']));
 			$viewer->assign('_MODE', $request->get('mode'));
-			$viewer->assign('_CATEGORY', $CATEGORY);
 			$viewer->assign('_CUSTOMVIEW_OPTION', $customview_html);
 			$viewer->assign('_SEARCH', $request->get('search'));
 			$viewer->assign('LANGUAGE', $current_language);

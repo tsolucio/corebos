@@ -9,7 +9,7 @@
  ********************************************************************************/
 -->*}
 <style>
-#adv_filter_div > table:first-child td, 
+#adv_filter_div > table:first-child td,
 #adv_filter_div > div:nth-child(3) > table:first-child tr:first-child td,
 .dvtCellLabel {
   text-align: unset;

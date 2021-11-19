@@ -14,7 +14,6 @@ require_once 'include/ListView/ListView.php';
 require_once 'include/utils/utils.php';
 require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
 global $app_strings, $default_charset, $currentModule, $current_user, $theme, $adb;
-
 $url_string = '';
 $smarty = new vtigerCRM_Smarty;
 if (!isset($where)) {
@@ -24,7 +23,6 @@ if (!isset($where)) {
 $url = '';
 $popuptype = '';
 $popuptype = isset($_REQUEST['popuptype']) ? vtlib_purify($_REQUEST['popuptype']) : '';
-$smarty->assign('QCMODULEARRAY', array());
 
 // Pass on the authenticated user language
 global $current_language;
@@ -45,6 +43,9 @@ $hdrcustomlink_params = array('MODULE'=>$currentModule);
 $COMMONHDRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, array('HEADERSCRIPT_POPUP', 'HEADERCSS_POPUP'), $hdrcustomlink_params);
 $smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT_POPUP']);
 $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS_POPUP']);
+$smarty->assign('SET_CSS_PROPERTIES', GlobalVariable::getVariable('Application_CSS_Properties', 'include/LD/assets/styles/properties.php'));
+
+$smarty->assign('QCMODULEARRAY', array());
 
 // This is added to support the type of popup and callback
 if (isset($_REQUEST['popupmode']) && isset($_REQUEST['callback'])) {
@@ -75,7 +76,6 @@ if (isset($_REQUEST['select'])) {
 
 $smarty->assign('RETURN_ACTION', isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '');
 
-//Retreive the list from Database
 $where_relquery = '';
 if (!empty($_REQUEST['recordid'])) {
 	$recid = vtlib_purify($_REQUEST['recordid']);
@@ -124,15 +124,13 @@ if (isset($order_by) && $order_by != '') {
 
 // vtlib customization: To override module specific popup query for a given field
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
-//Retreiving the start value from request
+$count_result = $adb->pquery(mkCountQuery($query), array());
+$noofrows = $adb->query_result($count_result, 0, 'count');
+
 if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 	$start = vtlib_purify($_REQUEST['start']);
-	if ($start == 'last') {
-		$count_result = $adb->pquery(mkCountQuery($query), array());
-		$noofrows = $adb->query_result($count_result, 0, 'count');
-		if ($noofrows > 0) {
-			$start = ceil($noofrows/$list_max_entries_per_page);
-		}
+	if ($start == 'last' && $noofrows > 0) {
+		$start = ceil($noofrows/$list_max_entries_per_page);
 	}
 	if (!is_numeric($start)) {
 		$start = 1;
@@ -145,18 +143,13 @@ if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 }
 $limstart=($start-1)*$list_max_entries_per_page;
 $query.=" LIMIT $limstart,$list_max_entries_per_page";
-$query = 'SELECT SQL_CALC_FOUND_ROWS'.substr($query, 6);
 $list_result = $adb->pquery($query, array());
-$count_result = $adb->query('SELECT FOUND_ROWS();');
-$noofrows = $adb->query_result($count_result, 0, 0);
 if (GlobalVariable::getVariable('Debug_Popup_Query', '0')=='1') {
 	echo '<br>'.$query.'<br>';
 }
 
-//Retreive the Navigation array
 $navigation_array = getNavigationValues($start, $noofrows, $list_max_entries_per_page);
 
-//Retreive the List View Table Header
 $url_string .='&popuptype='.$popuptype;
 if (isset($_REQUEST['select']) && $_REQUEST['select'] == 'enable') {
 	$url_string .='&select=enable';

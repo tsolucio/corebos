@@ -31,9 +31,6 @@
 							<input type="hidden" name="isDuplicate" value=false style="margin:0px">
 							<input type="hidden" name="action" style="margin:0px">
 							<input type="hidden" name="changepassword" style="margin:0px">
-							{if $PARENTTAB neq 'Settings'}
-								<input type="hidden" name="modechk" value="prefview" style="margin:0px">
-							{/if}
 							<input type="hidden" name="old_password" style="margin:0px">
 							<input type="hidden" name="new_password" style="margin:0px">
 							<input type="hidden" name="return_module" value="Users" style="margin:0px">
@@ -53,9 +50,13 @@
 									<tr>
 										<td width=50 rowspan="2" class="cblds-p_none"><img src="{'ico-users.gif'|@vtiger_imageurl:$THEME}" align="absmiddle"></td>
 										<td>
-											{if $PARENTTAB eq 'Settings'}
+											{if $IS_ADMIN eq 'true'}
 											<span class="heading2">
-											<b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Users&action=index"> {$MOD.LBL_USERS} </a>&gt;"{$USERNAME}" </b></span>
+											<b>
+											<a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt;
+											<a href="index.php?module=Users&action=index"> {$MOD.LBL_USERS} </a>&gt;"{$USERNAME}"
+											</b>
+											</span>
 											{else}
 											<span class="heading2">
 											<b>{$APP.LBL_MY_PREFERENCES}</b>

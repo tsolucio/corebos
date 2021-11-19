@@ -13,8 +13,8 @@ require_once 'modules/Settings/MailScanner/core/MailScannerInfo.php';
 require_once 'modules/Settings/MailScanner/core/MailBox.php';
 require_once 'modules/Settings/MailScanner/core/MailScanner.php';
 
-//Added as sometimes the php.ini file used for command line php and
-//for Apache php is different.
+$app_strings = return_application_language($default_language);
+$mod_strings = return_module_language($default_language, 'Settings');
 if (!function_exists('imap_open')) {
 	echo $app_strings['LBL_NO'].' '.$mod_strings['LBL_IMAP_SUPPORT'];
 } elseif (!function_exists('openssl_encrypt')) {

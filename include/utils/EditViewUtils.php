@@ -13,14 +13,14 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'modules/PickList/DependentPickListUtils.php';
 
 /** This function returns the field details for a given fieldname.
-  * Param $uitype - UI type of the field
-  * Param $fieldname - Form field name
-  * Param $fieldlabel - Form field label name
-  * Param $maxlength - maximum length of the field
-  * Param $col_fields - array contains the fieldname and values
-  * Param $generatedtype - Field generated type (default is 1)
-  * Param $module_name - module name
-  * Return type is an array
+  * @param string UI type of the field
+  * @param string Form field name
+  * @param string Form field label name
+  * @param integer maximum length of the field
+  * @param array contains the fieldname and values
+  * @param integer Field generated type (default is 1)
+  * @param string module name
+  * @return array
   */
 function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name, $mode = '', $typeofdata = null, $cbMapFI = array()) {
 	global $log,$app_strings, $adb,$default_charset, $current_user;
@@ -904,10 +904,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 }
 
 /** This function returns the invoice object populated with the details from sales order object.
-* Param $focus - Invoice object
-* Param $so_focus - Sales order focus
-* Param $soid - sales order id
-* Return type is an object array
+* @param object Invoice
+* @param object Sales order
+* @param integer sales order id
+* @return object Invoice
 */
 function getConvertSoToInvoice($focus, $so_focus, $soid) {
 	global $log,$current_user;
@@ -959,10 +959,10 @@ function getConvertSoToInvoice($focus, $so_focus, $soid) {
 }
 
 /** This function returns the invoice object populated with the details from quote object.
-* Param $focus - Invoice object
-* Param $quote_focus - Quote order focus
-* Param $quoteid - quote id
-* Return type is an object array
+* @param object Invoice
+* @param object Quote order
+* @param integer quote id
+* @return object Invoice
 */
 function getConvertQuoteToInvoice($focus, $quote_focus, $quoteid) {
 	global $log,$current_user;
@@ -1008,10 +1008,10 @@ function getConvertQuoteToInvoice($focus, $quote_focus, $quoteid) {
 }
 
 /** This function returns the sales order object populated with the details from quote object.
-* Param $focus - Sales order object
-* Param $quote_focus - Quote order focus
-* Param $quoteid - quote id
-* Return type is an object array
+* @param object Sales order
+* @param object Quote order
+* @param integer quote id
+* @return object Sales order
 */
 function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 	global $log,$current_user;
@@ -1060,10 +1060,10 @@ function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 }
 
 /** This function returns the detailed list of products associated to a given entity or a record.
-* Param $module - module name
-* Param $focus - module object
-* Param $seid - sales entity id
-* Return type is an object array
+* @param string module name
+* @param object module
+* @param integer sales entity id
+* @return array of related products and services
 */
 function getAssociatedProducts($module, $focus, $seid = '') {
 	global $log, $adb, $currentModule, $current_user;
@@ -1553,10 +1553,10 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 }
 
 /** This function returns the no of products associated to the given entity or a record.
-* Param $module - module name
-* Param $focus - module object
-* Param $seid - sales entity id
-* Return type is an object array
+* @param string module name
+* @param object module object
+* @param integer sales entity id
+* @return integer count of related products
 */
 function getNoOfAssocProducts($module, $focus, $seid = '') {
 	global $log, $adb;
@@ -1607,13 +1607,13 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 }
 
 /** This function returns the detail block information of a record for given block id.
-* Param $module - module name
-* Param $block - block name
-* Param $mode - view type (detail/edit/create)
-* Param $col_fields - fields array
-* Param $tabid - tab id
-* Param $info_type - information type (basic/advance) default ''
-* Return type is an object array
+* @param string module name
+* @param string block name
+* @param string view type (detail/edit/create)
+* @param array fields array
+* @param integer tab id
+* @param string information type (basic/advance) default ''
+* @return array
 */
 function getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode) {
 	global $log, $adb;
@@ -1707,8 +1707,8 @@ function getBlockInformation($module, $result, $col_fields, $tabid, $block_label
 }
 
 /** This function returns the data type of the fields, with field label, which is used for javascript validation.
-* Param $validationData - array of fieldnames with datatype
-* Return type array
+* @param array of fieldnames with datatype
+* @return array
 */
 function split_validationdataArray($validationData) {
 	global $log;

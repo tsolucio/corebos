@@ -140,7 +140,7 @@ class Vtiger_Block {
 
 	/**
 	 * Delete block instance
-	 * @param Boolean True to delete associated fields, False to avoid it
+	 * @param boolean True to delete associated fields, False to avoid it
 	 */
 	public function delete($recursive = true) {
 		if ($recursive) {
@@ -157,7 +157,7 @@ class Vtiger_Block {
 	/**
 	 * Add field to this block
 	 * @param Vtiger_Field Instance of field to add to this block.
-	 * @return Reference to this block instance
+	 * @return Vtiger_Block Reference to this block instance
 	 */
 	public function addField($fieldInstance) {
 		$fieldInstance->save($this);
@@ -166,8 +166,8 @@ class Vtiger_Block {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 */
 	public static function log($message, $delim = true) {
 		Vtiger_Utils::Log($message, $delim);
@@ -176,8 +176,8 @@ class Vtiger_Block {
 	/**
 	 * Get instance of block
 	 * @param mixed block id or block label
-	 * @param object Vtiger_Module Instance of the module if block label is passed
-	 * @return object Vtiger_Block or false if block not found
+	 * @param Vtiger_Module Instance of the module if block label is passed
+	 * @return Vtiger_Block or false if block not found
 	 */
 	public static function getInstance($value, $moduleInstance = false) {
 		global $adb;
@@ -223,7 +223,7 @@ class Vtiger_Block {
 	/**
 	 * Delete all blocks associated with module
 	 * @param Vtiger_Module Instnace of module to use
-	 * @param Boolean true to delete associated fields, false otherwise
+	 * @param boolean true to delete associated fields, false otherwise
 	 * @access private
 	 */
 	public static function deleteForModule($moduleInstance, $recursive = true) {

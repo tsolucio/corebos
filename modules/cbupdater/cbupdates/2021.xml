@@ -15,6 +15,12 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>mocodertz</author>
+	<description>Install Send OneSignal Notification workflow task</description>
+	<filename>build/changeSets/2021/installSendOneSignalNotificationWorkFlowTask.php</filename>
+	<classname>installSendOneSignalNotificationWorkFlowTask</classname>
+</changeSet>
+<changeSet>
 	<author>denaldhushi</author>
 	<description>Add workflow Upsert task</description>
 	<filename>build/changeSets/2021/addExeWFUpsertTask.php</filename>
@@ -120,6 +126,13 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>Geofrey Bundala</author>
+	<description>add fields on vtiger_notificationdrivers table</description>
+	<filename>build/changeSets/2021/addColumnsToNotification.php</filename>
+	<classname>addColumnsToNotification</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>joebordes</author>
 	<description>Add Import Merge Condition Column</description>
 	<filename>build/changeSets/2021/AddImportMergeConditionColumn.php</filename>
@@ -138,6 +151,27 @@
 	<description>Add missing primary indexes</description>
 	<filename>build/changeSets/2021/AddMissingPrimaryIndexes.php</filename>
 	<classname>AddMissingPrimaryIndexes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Global Search Question type</description>
+	<filename>build/changeSets/2021/addGSPLValueOnQuestion.php</filename>
+	<classname>addGSPLValueOnQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Workflow Mass Action changes: columns and queue</description>
+	<filename>build/changeSets/2021/WorkflowMassActionChanges.php</filename>
+	<classname>WorkflowMassActionChanges</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>xhildashazivari</author>
+	<description>Update linkurl in BusinessActions of module GlobalVariable</description>
+	<filename>build/changeSets/2021/modifyGlobalVariableBA.php</filename>
+	<classname>modifyGlobalVariableBA</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>

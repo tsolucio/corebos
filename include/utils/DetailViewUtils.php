@@ -13,14 +13,14 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'vtlib/Vtiger/Language.php';
 require_once 'modules/PickList/PickListUtils.php';
 
-/** This function returns the detail view form vtiger_field and and its properties in array format.
- * Param $uitype - UI type of the vtiger_field
- * Param $fieldname - Form vtiger_field name
- * Param $fieldlabel - Form vtiger_field label name
- * Param $col_fields - array contains the vtiger_fieldname and values
- * Param $generatedtype - Field generated type (default is 1)
- * Param $tabid - vtiger_tab id to which the Field belongs to (default is "")
- * Return type is an array
+/** This function returns the detail view form field and and its properties in array format
+ * @param string UI type of the field
+ * @param string field name
+ * @param string field label name
+ * @param array contains the field name and values
+ * @param integer field generated type (default is 1)
+ * @param integer tab id to which the field belongs to (default is '')
+ * @return array
  */
 function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid = '', $module = '', $cbMapFI = array()) {
 	global $log, $adb, $mod_strings, $app_strings, $current_user, $theme, $default_charset;
@@ -632,80 +632,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		} else {
 			$label_fld[] = '';
 		}
-	} elseif ($uitype == 62) {
-		$value = $col_fields[$fieldname];
-		if ($value != '') {
-			$parent_module = getSalesEntityType($value);
-			if ($parent_module == "Leads") {
-				$label_fld[] = $app_strings['LBL_LEAD_NAME'];
-				$displayValueArray = getEntityName($parent_module, $value);
-				if (!empty($displayValueArray)) {
-					foreach ($displayValueArray as $field_value) {
-						$lead_name = $field_value;
-					}
-				}
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $lead_name . '</a>';
-			} elseif ($parent_module == "Accounts") {
-				$label_fld[] = $app_strings['LBL_ACCOUNT_NAME'];
-				$sql = "select accountname from vtiger_account where accountid=?";
-				$result = $adb->pquery($sql, array($value));
-				$account_name = $adb->query_result($result, 0, "accountname");
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $account_name . '</a>';
-			} elseif ($parent_module == "Potentials") {
-				$label_fld[] = $app_strings['LBL_POTENTIAL_NAME'];
-				$sql = "select potentialname from vtiger_potential where potentialid=?";
-				$result = $adb->pquery($sql, array($value));
-				$potentialname = $adb->query_result($result, 0, "potentialname");
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $potentialname . '</a>';
-			} elseif ($parent_module == "Products") {
-				$label_fld[] = $app_strings['LBL_PRODUCT_NAME'];
-				$sql = "select productname from vtiger_products where productid=?";
-				$result = $adb->pquery($sql, array($value));
-				$productname = $adb->query_result($result, 0, "productname");
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $productname . '</a>';
-			} elseif ($parent_module == "PurchaseOrder") {
-				$label_fld[] = $app_strings['LBL_PORDER_NAME'];
-				$sql = "select subject from vtiger_purchaseorder where purchaseorderid=?";
-				$result = $adb->pquery($sql, array($value));
-				$pordername = $adb->query_result($result, 0, "subject");
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $pordername . '</a>';
-			} elseif ($parent_module == "SalesOrder") {
-				$label_fld[] = $app_strings['LBL_SORDER_NAME'];
-				$sql = "select subject from vtiger_salesorder where salesorderid=?";
-				$result = $adb->pquery($sql, array($value));
-				$sordername = $adb->query_result($result, 0, "subject");
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $sordername . '</a>';
-			} elseif ($parent_module == "Invoice") {
-				$label_fld[] = $app_strings['LBL_INVOICE_NAME'];
-				$sql = "select subject from vtiger_invoice where invoiceid=?";
-				$result = $adb->pquery($sql, array($value));
-				$invoicename = $adb->query_result($result, 0, "subject");
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $invoicename . '</a>';
-			} elseif ($parent_module == "Quotes") {
-				$label_fld[] = $app_strings['LBL_QUOTES_NAME'];
-				$sql = "select subject from vtiger_quotes where quoteid=?";
-				$result = $adb->pquery($sql, array($value));
-				$quotename = $adb->query_result($result, 0, "subject");
-
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $quotename . '</a>';
-			} elseif ($parent_module == "HelpDesk") {
-				$label_fld[] = $app_strings['LBL_HELPDESK_NAME'];
-				$sql = "select title from vtiger_troubletickets where ticketid=?";
-				$result = $adb->pquery($sql, array($value));
-				$title = $adb->query_result($result, 0, "title");
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $title . '</a>';
-			}
-		} else {
-			$label_fld[] = getTranslatedString($fieldlabel, $module);
-			$label_fld[] = $value;
-		}
 	} elseif ($uitype == 105) {//Added for user image
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$sql = 'select vtiger_attachments.attachmentsid, vtiger_attachments.path, vtiger_attachments.name
@@ -968,9 +894,9 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 }
 
 /** This function returns a HTML output of associated products for a given entity (Quotes,Invoice,Sales order or Purchase order)
- * Param $module - module name
- * Param $focus - module object
- * Return type string
+ * @param string module name
+ * @param object module
+ * @return string
  */
 function getDetailAssociatedProducts($module, $focus) {
 	global $log, $adb, $theme, $app_strings;
@@ -1508,11 +1434,11 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 }
 
 /** This function returns the detailed block information of a record in a module.
- * Param $module - module name
- * Param $block - block id
- * Param $col_fields - column vtiger_fields array for the module
- * Param $tabid - vtiger_tab id
- * Return type is an array
+ * @param string module name
+ * @param integer block id
+ * @param array column fields array for the module
+ * @param integer tab id
+ * @return array
  */
 function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label) {
 	global $log, $adb;

@@ -292,15 +292,17 @@ class RunWebserviceWorkflowTask extends VTTask {
 							} else {
 								$r = $response;
 							}
-							if ($r->$fld != null) {
+							if (isset($r->$fld) && $r->$fld != null) {
 								$r2 = $r->$fld;
 							} else {
-								foreach ($r as $v1) {
-									$r2 = $v1->$fld;
+								if (is_array($r)) {
+									foreach ($r as $v1) {
+										$r2 = $v1->$fld;
+									}
 								}
 							}
 						}
-						if ((string)$r2 == 'null' || is_null($r2)) {
+						if (!isset($r2) || (string)$r2 == 'null' || is_null($r2)) {
 							$r2 = '';
 						}
 						if (!empty($v['field'])) {

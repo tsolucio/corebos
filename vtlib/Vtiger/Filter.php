@@ -162,10 +162,9 @@ class Vtiger_Filter {
 	/**
 	 * Add rule to this filter instance
 	 * @param Vtiger_Field Instance of the field
-	 * @param String One of [EQUALS, NOT_EQUALS, STARTS_WITH, ENDS_WITH, CONTAINS, DOES_NOT_CONTAINS, LESS_THAN,
-	 *                       GREATER_THAN, LESS_OR_EQUAL, GREATER_OR_EQUAL]
-	 * @param String Value to use for comparision
-	 * @param Integer Index count to use
+	 * @param string One of [EQUALS, NOT_EQUALS, STARTS_WITH, ENDS_WITH, CONTAINS, DOES_NOT_CONTAINS, LESS_THAN, GREATER_THAN, LESS_OR_EQUAL, GREATER_OR_EQUAL]
+	 * @param string Value to use for comparision
+	 * @param integer Index count to use
 	 */
 	public function addRule($fieldInstance, $comparator, $comparevalue, $index = 0, $group = 1, $condition = 'and') {
 		global $adb;
@@ -192,9 +191,9 @@ class Vtiger_Filter {
 
 	/**
 	 * Add group to this filter instance
-	 * @param Number group
-	 * @param Condition [AND,OR] if after an other group is added
-	 * @param String Value condition expresion between the fields that group contain
+	 * @param integer group
+	 * @param string [AND,OR] glue for the next group that may be added
+	 * @param string condition expression between the fields that are in the group
 	 */
 	public function addGroup($groupid = '1', $group_condition = '', $condition_expression = '') {
 		global $adb;
@@ -280,8 +279,8 @@ class Vtiger_Filter {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 * @access private
 	 */
 	public static function log($message, $delim = true) {

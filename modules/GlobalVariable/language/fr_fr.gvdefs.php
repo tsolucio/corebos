@@ -208,6 +208,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Montre (1) ou cache (0) le widget calendrier dans la barre d\'outils. La valeur par défaut est (1).',
 ),
+'Application_Display_QuickCreate' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or Hide Quick Create options in menu',
+),
 'Application_Use_RTE' => array(
 	'valuetype' => 'Booléen',
 	'category' => 'Application',
@@ -279,6 +285,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Activate "Save and Repeat" action in edit mode. Default deactivated',
+),
+'Application_ListView_Layout' => array(
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'table|tuigrid',
+	'definition' => 'Show the classic table-based view (default) or the TUIGrid view.',
 ),
 'Application_ListView_Max_Text_Length' => array(
 	'valuetype' => 'Entier',
@@ -802,6 +814,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre de jours après lesquels les utilisateurs seront forcés de changer leur mot de passer. Pour activer cette variable il est nécessaire d\'activer la tâche programmée "Expiration Mot de Passe" sous Configuration CRM > Planificateur.',
 ),
+'Application_MinimumPasswordLength' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'The minimum number of characters to accept a password.',
+),
 'SalesOrder_StatusOnInvoiceSave' => array(
 	'valuetype' => 'Chaîne',
 	'category' => 'Application',
@@ -1047,6 +1065,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'false | true',
 	'definition' => 'If set to the string "true", the Contact section will be selected when converting a Lead. By default, the section is selected.',
+),
+'Lead_Convert_AssignedUser' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'any user ID | current_user',
+	'definition' => 'User ID to set the assigned user picklist to when converting a Lead. If set to "current_user" the current user will be used. By default, the user assigned to the lead record is used.',
 ),
 'Product_Show_Subproducts_Popup' => array(
 	'valuetype' => 'Booléen',
@@ -1359,6 +1383,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Extension',
 	'values' => 'URL',
 	'definition' => 'URL to the conversion server: https://github.com/sfoxdev/docker-unoconv',
+),
+'GenDoc_PDFConversion_Retries' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Extension',
+	'values' => 'Positive Integer',
+	'definition' => 'The maximum number of retries when PDF conversion fails.',
 ),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Integer',

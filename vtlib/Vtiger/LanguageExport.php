@@ -93,7 +93,7 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 
 	/**
 	 * De-Register language pack information
-	 * @param String Language prefix like (de_de) etc
+	 * @param string Language prefix like (de_de) etc
 	 */
 	public static function deregister($prefix) {
 		$prefix = trim($prefix);
@@ -111,7 +111,7 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 
 	/**
 	 * Get all the language information
-	 * @param Boolean true to include in-active languages also, false (default)
+	 * @param boolean true to include in-active languages also, false (default)
 	 */
 	public static function getAll($includeInActive = false) {
 		global $adb;

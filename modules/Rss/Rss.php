@@ -60,8 +60,13 @@ class vtigerRSS extends CRMEntity {
 				$rss_title= ltrim(rtrim($stringConvert));
 				$i = $i + 1;
 				$shtml .= "<tr class='prvPrfHoverOff' onmouseover=\"this.className='prvPrfHoverOn'\" onmouseout=\"this.className='prvPrfHoverOff'\">";
-				$shtml .= "<td><a href=\"javascript:display('".$item->get_permalink()."','feedlist_".$i."')\"; id='feedlist_".$i."' class=\"rssNews\">";
-				$shtml .= $rss_title."</a></td><td>".$this->rss_title."</td></tr>";
+				$cleanJS = vtlib_purify('<a href="'.$item->get_permalink().'"></a>');
+				if (strlen($cleanJS)>10) {
+					$cleanJS = substr(vtlib_purify($cleanJS), 9); // strip a href
+					$cleanJS = substr($cleanJS, 0, strlen($cleanJS)-6); // strip </a>
+				}
+				$shtml .= "<td><a href=\"javascript:display('".$cleanJS."','feedlist_".$i."')\"; id='feedlist_".$i."' class=\"rssNews\">";
+				$shtml .= $rss_title."</a></td><td>".vtlib_purify($this->rss_title)."</td></tr>";
 				if ($i == 10) {
 					return $shtml;
 				}
@@ -198,7 +203,7 @@ class vtigerRSS extends CRMEntity {
 				} else {
 					$shtml .= "<img src=\"". vtiger_imageurl('unstarred.gif', $theme) ."\" align=\"absmiddle\">";
 				}
-				$shtml .= "<a href=\"".$this->rss_object[link]."\"> ".$rssrow['rsstitle']."</a>
+				$shtml .= "<a href=\"".$this->rss_object['link']."\"> ".$rssrow['rsstitle']."</a>
 					</td>
 					</tr>
 					</table>";

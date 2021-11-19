@@ -1,0 +1,55 @@
+{
+  "name": "laminas/laminas-cache-storage-adapter-apc",
+  "description": "Laminas cache adapter",
+  "keywords": [
+    "laminas",
+    "cache"
+  ],
+  "license": "BSD-3-Clause",
+  "require": {
+    "php": "^5.6 || ^7.0"
+  },
+  "conflict": {
+    "laminas/laminas-cache": "<2.10"
+  },
+  "provide": {
+    "laminas/laminas-cache-storage-implementation": "1.0"
+  },
+  "require-dev": {
+    "laminas/laminas-cache": "^2.10",
+    "laminas/laminas-cache-storage-adapter-test": "^1.0@dev",
+    "laminas/laminas-coding-standard": "~1.0.0",
+    "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2"
+  },
+  "suggest": {
+    "ext-apc": "APC or compatible extension, to use the APC storage adapter"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {},
+  "autoload": {
+    "psr-4": {
+      "Laminas\\Cache\\Storage\\Adapter\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "LaminasTest\\Cache\\Storage\\Adapter\\": "test/unit",
+      "LaminasTest\\Cache\\Psr\\": "test/integration/Psr"
+    }
+  },
+  "scripts": {
+    "cs-check": "phpcs",
+    "cs-fix": "phpcbf",
+    "test": "phpunit --colors=always",
+    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+  },
+  "support": {
+    "issues": "https://github.com/laminas/laminas-cache-storage-adapter-apc/issues",
+    "forum": "https://discourse.laminas.dev/",
+    "source": "https://github.com/laminas/laminas-cache-storage-adapter-apc",
+    "docs": "https://docs.laminas.dev/laminas-cache-storage-adapter-apc/",
+    "rss": "https://github.com/laminas/laminas-cache-storage-adapter-apc/releases.atom"
+  }
+}

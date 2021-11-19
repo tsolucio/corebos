@@ -29,7 +29,11 @@ if ($ajaxaction == 'DETAILVIEW') {
 			$modObj->save($currentModule);
 			if ($modObj->id != '') {
 				echo ':#:SUCCESS:#:';
+				$_REQUEST['action'] = $currentModule;
+				decide_to_html();
 				require_once 'modules/'.$currentModule.'/DetailView.php';
+				$_REQUEST['action'] = $currentModule.'Ajax';
+				decide_to_html();
 			} else {
 				echo ':#:FAILURE';
 			}
@@ -39,7 +43,11 @@ if ($ajaxaction == 'DETAILVIEW') {
 	}
 } elseif ($ajaxaction == 'DETAILVIEWLOAD') {
 	echo ':#:SUCCESS:#:';
+	$_REQUEST['action'] = $currentModule;
+	decide_to_html();
 	require_once 'modules/'.$currentModule.'/DetailView.php';
+	$_REQUEST['action'] = $currentModule.'Ajax';
+	decide_to_html();
 } elseif ($ajaxaction == 'LOADRELATEDLIST' || $ajaxaction == 'DISABLEMODULE') {
 	require_once 'include/ListView/RelatedListViewContents.php';
 }

@@ -384,6 +384,67 @@ switch ($functiontocall) {
 		$rdo = isPermitted($mod, $act, $rec)=='yes';
 		$ret = array('isPermitted'=>$rdo);
 		break;
+	case 'checkButton':
+		$mod = vtlib_purify($_REQUEST['formodule']);
+		$ret = Button_Check($mod);
+		break;
+	case 'getRecordActions':
+		include_once 'include/ListView/ListViewJSON.php';
+		$mod = vtlib_purify($_REQUEST['formodule']);
+		$recordid = vtlib_purify($_REQUEST['recordid']);
+		$ret = getRecordActions($mod, $recordid);
+		break;
+	case 'listViewJSON':
+		include_once 'include/ListView/ListViewJSON.php';
+		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateDataListView') {
+			updateDataListView();
+			$ret = array();
+		} else {
+			$orderBy = ' DESC';
+			$entries = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
+			$formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
+			$columns = isset($_REQUEST['columns']) ? vtlib_purify($_REQUEST['columns']) : '';
+			$beforeFilter = isset($_REQUEST['beforeFilter']) ? vtlib_purify($_REQUEST['beforeFilter']) : '';
+			$tabid = getTabid($formodule);
+			if (isset($_REQUEST['perPage'])) {
+				//get data
+				$perPage = isset($_REQUEST['perPage']) ? vtlib_purify($_REQUEST['perPage']) : $entries;
+				$sortAscending = isset($_REQUEST['sortAscending']) ? vtlib_purify($_REQUEST['sortAscending']) : '';
+				$sortColumn = isset($_REQUEST['sortColumn']) ? vtlib_purify($_REQUEST['sortColumn']) : '';
+				$page = isset($_REQUEST['page']) ? vtlib_purify($_REQUEST['page']) : 1;
+				$search = isset($_REQUEST['search']) ? vtlib_purify($_REQUEST['search']) : '';
+				$searchtype = isset($_REQUEST['searchtype']) ? vtlib_purify($_REQUEST['searchtype']) : '';
+				$session_sort = coreBOS_Session::get($formodule.'_Sort_Order');
+				if ($session_sort != '') {
+					if ($session_sort == ' ASC' && $sortAscending == 'true') {
+						$orderBy = ' ASC';
+					} elseif ($session_sort == ' ASC' && $sortAscending == 'false') {
+						$orderBy = ' DESC';
+					} elseif ($session_sort == ' DESC' && $sortAscending == 'true') {
+						$orderBy = ' ASC';
+					} elseif ($session_sort == ' DESC' && $sortAscending == 'false') {
+						$orderBy = ' DESC';
+					} elseif ($sortAscending == '') {
+						$orderBy = $session_sort;
+					}
+				} else {
+					if ($sortAscending == 'true') {
+						$orderBy = ' ASC';
+					}
+				}
+				coreBOS_Session::set($formodule.'_Sort_Order', $orderBy);
+				$LV = getListViewJSON($formodule, $tabid, $perPage, $orderBy, $sortColumn, $page, $search, $searchtype);
+			} else {
+				//get headers
+				$LV = getListViewHeaders($formodule, $tabid);
+			}
+			if (isset($columns) && $columns == 'true') {
+				$ret = array($LV['headers'], $LV['customview']);
+			} else {
+				$ret = $LV['data'];
+			}
+		}
+		break;
 	case 'getUserName':
 		$ret = getUserName(vtlib_purify($_REQUEST['userid']));
 		break;
@@ -428,47 +489,37 @@ switch ($functiontocall) {
 			$ret = array('password'=>false);
 		}
 		break;
-	case 'listViewJSON':
-		include_once 'include/ListView/ListViewJSON.php';
-		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateDataListView') {
-			updateDataListView();
-			$ret = array();
-		} else {
-			$orderBy = ' DESC';
-			$entries = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
-			$formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
-			$columns = isset($_REQUEST['columns']) ? vtlib_purify($_REQUEST['columns']) : '';
-			$beforeFilter = isset($_REQUEST['beforeFilter']) ? vtlib_purify($_REQUEST['beforeFilter']) : '';
-			if (isset($_REQUEST['perPage'])) {
-				//get data
-				$perPage = isset($_REQUEST['perPage']) ? vtlib_purify($_REQUEST['perPage']) : $entries;
-				$sortAscending = isset($_REQUEST['sortAscending']) ? vtlib_purify($_REQUEST['sortAscending']) : '';
-				$sortColumn = isset($_REQUEST['sortColumn']) ? vtlib_purify($_REQUEST['sortColumn']) : '';
-				$page = isset($_REQUEST['page']) ? vtlib_purify($_REQUEST['page']) : 1;
-				$search = isset($_REQUEST['search']) ? vtlib_purify($_REQUEST['search']) : '';
-				$searchtype = isset($_REQUEST['searchtype']) ? vtlib_purify($_REQUEST['searchtype']) : '';
-				if ($sortAscending == 'true') {
-					$orderBy = ' ASC';
-				}
-				if ($perPage == 0) {
-					$perPage = $list_max_entries_per_page;
-				}
-				$LV = getListViewJSON($formodule, $perPage, $orderBy, $sortColumn, $page, $search, $searchtype);
-			} else {
-				//get headers
-				$LV = getListViewJSON($formodule);
-			}
-			if (isset($columns) && $columns == 'true') {
-				$ret = array($LV['headers'], $LV['data']['customview'], $LV['data']['export_where']);
-			} else {
-				$ret = $LV['data'];
-			}
-		}
-		break;
 	case 'ismoduleactive':
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
 		$rdo = vtlib_isModuleActive($mod);
 		$ret = array('isactive'=>$rdo);
+		break;
+	case 'deleteModule':
+		$modname = vtlib_purify($_REQUEST['formodule']);
+		$module = Vtiger_Module::getInstance($modname);
+		if ($module && is_admin($current_user)) {
+			require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
+			$ev = new VTEventsManager($adb);
+			$handlers = $ev->listHandlersForModule($modname);
+			if (!empty($handlers)) {
+				foreach ($handlers as $className) {
+					$ev->unregisterHandler($className);
+				}
+			}
+			$module->deleteRelatedLists();
+			$module->deleteLinks();
+			$module->deinitWebservice();
+			$module->delete();
+			$ret = array(
+				'success' => true,
+				'message' => 'Module '.getTranslatedString($modname, $modname).' EXTERMINATED!'
+			);
+		} else {
+			$ret = array(
+				'success' => false,
+				'message' => 'Failed to find '.getTranslatedString($modname, $modname).' module.'
+			);
+		}
 		break;
 	default:
 		$ret = '';

@@ -15,3 +15,21 @@ function getData(fieldname, modulename, divid) {
 		}
 	});
 }
+
+function deleteModule(modulename) {
+	const url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=deleteModule&formodule='+modulename;
+	if (confirm(alert_arr.ARE_YOU_SURE)) {
+		jQuery.ajax({
+			method: 'GET',
+			url: url,
+		}).done(function (response) {
+			const state = JSON.parse(response);
+			if (state.success) {
+				ldsPrompt.show('Success', state.message, 'success');
+				document.getElementById(`module_${modulename}`).remove();
+			} else {
+				ldsPrompt.show('Error', state.message, 'error');
+			}
+		});
+	}
+}

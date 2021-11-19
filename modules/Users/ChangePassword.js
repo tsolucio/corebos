@@ -29,7 +29,7 @@ function loadPassword(userid) {
 				${alert_arr['PASSWORD REQUIREMENTS']}
 				<br>----------------------------------------<br>
 				${alert_arr['REQUIRED']}:<br> 
-				${alert_arr['Min. 8 characters']}<br><br>
+				${alert_arr['Min. 8 characters'].replace('8', gvPasswordLength)}<br><br>
 				${alert_arr['Contains3of4']}<br> 
 				${alert_arr['Min. 1 uppercase']}<br> 
 				${alert_arr['Min. 1 lowercase']}<br> 
@@ -126,7 +126,7 @@ function changepassword(is_admin, userid) {
 				document.getElementById('show-err_msg').style.display = 'block';
 				document.getElementById('err_msg').innerHTML = alert_arr['Old password is incorrect'];
 			} else {
-				window.location.href = `index.php?module=Users&action=DetailView&record=${userid}&modechk=prefview`;
+				window.location.href = `index.php?module=Users&action=DetailView&record=${userid}`;
 			}
 		});
 	}

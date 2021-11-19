@@ -161,6 +161,15 @@ function showSelect() {
 	}
 }
 
+function showHideDivs(showdiv, hidediv) {
+	if (document.getElementById(showdiv)) {
+		document.getElementById(showdiv).style.display = 'block';
+	}
+	if (document.getElementById(hidediv)) {
+		document.getElementById(hidediv).style.display = 'none';
+	}
+}
+
 function getObj(n, d) {
 	var p, i, x;
 
@@ -1295,62 +1304,71 @@ function run_massedit() {
 		}
 
 		ExecuteFunctions('setSetting', 'skey=masseditids'+corebos_browsertabID+'&svalue='+sentForm['massedit_recordids']).then(function (response) {
+			if (!response.trim()) {
+				document.getElementById('appnotifydiv').innerHTML = response;
+				document.getElementById('appnotifydiv').style.display = 'block';
+				return false;
+			}
+			progressMassEditDetails(sentForm);
 		}, function (error) {
 			console.log('error', error);
 		});
-		delete sentForm['massedit_recordids'];
-		delete sentForm['idstring'];
-		sentForm.corebos_browsertabID= corebos_browsertabID;
-
-		var rdo = document.getElementById('relresultssection');
-		rdo.style.visibility = 'visible';
-		rdo.style.display = 'block';
-		document.getElementById('massedit').style.display = 'none';
-
-		var worker  = new Worker('massedit-worker.js');
-		//a message is received
-		sentForm.SSE_SOURCE_ACTION = 'MassEditSave';
-		worker.postMessage(sentForm);
-		worker.addEventListener('message', function (e) {
-			var message = e.data;
-			if (e.data == 'CLOSE') {
-				if (document.basicSearch) {
-					var srch = document.basicSearch.searchtype.searchlaunched;
-					if (srch=='basic') {
-						callSearch('Basic');
-					} else if (srch=='advance') {
-						callSearch('Advanced');
-					} else {
-						jQuery.ajax({
-							method: 'POST',
-							url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
-						}).done(function (response) {
-							var result = response.split('&#&#&#');
-							if (Application_Landing_View=='table') {
-								document.getElementById('ListViewContents').innerHTML= result[2];
-							} else {
-								ListView.ListViewJSON('massedit');
-							}
-							if (result[1] != '') {
-								ldsPrompt.show(alert_arr['ERROR'], result[1]);
-							}
-						});
-					}
-				}
-				__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
-				var pBar = document.getElementById('progressor');
-				pBar.value = pBar.max; //max out the progress bar
-			} else {
-				__addLog(message.message);
-				var pBar = document.getElementById('progressor');
-				pBar.value = message.progress;
-				var perc = document.getElementById('percentage');
-				perc.innerHTML   = message.progress  + '% &nbsp;&nbsp;' + message.processed + '/' + message.total;
-				perc.style.width = (Math.floor(pBar.clientWidth * (message.progress/100)) + 15) + 'px';
-			}
-		}, false);
-		worker.postMessage(true);
 	}
+}
+
+function progressMassEditDetails(sentForm) {
+	delete sentForm['massedit_recordids'];
+	delete sentForm['idstring'];
+	sentForm.corebos_browsertabID= corebos_browsertabID;
+
+	var rdo = document.getElementById('relresultssection');
+	rdo.style.visibility = 'visible';
+	rdo.style.display = 'block';
+	document.getElementById('massedit').style.display = 'none';
+
+	var worker  = new Worker('massedit-worker.js');
+	//a message is received
+	sentForm.SSE_SOURCE_ACTION = 'MassEditSave';
+	worker.postMessage(sentForm);
+	worker.addEventListener('message', function (e) {
+		var message = e.data;
+		if (e.data == 'CLOSE') {
+			if (document.basicSearch) {
+				var srch = document.basicSearch.searchtype.searchlaunched;
+				if (srch=='basic') {
+					callSearch('Basic');
+				} else if (srch=='advance') {
+					callSearch('Advanced');
+				} else {
+					jQuery.ajax({
+						method: 'POST',
+						url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
+					}).done(function (response) {
+						var result = response.split('&#&#&#');
+						if (Application_Landing_View=='table') {
+							document.getElementById('ListViewContents').innerHTML= result[2];
+						} else {
+							ListView.ListViewJSON('massedit');
+						}
+						if (result[1] != '') {
+							ldsPrompt.show(alert_arr['ERROR'], result[1]);
+						}
+					});
+				}
+			}
+			__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
+			var pBar = document.getElementById('progressor');
+			pBar.value = pBar.max; //max out the progress bar
+		} else {
+			__addLog(message.message);
+			var pBar = document.getElementById('progressor');
+			pBar.value = message.progress;
+			var perc = document.getElementById('percentage');
+			perc.innerHTML   = message.progress  + '% &nbsp;&nbsp;' + message.processed + '/' + message.total;
+			perc.style.width = (Math.floor(pBar.clientWidth * (message.progress/100)) + 15) + 'px';
+		}
+	}, false);
+	worker.postMessage(true);
 }
 
 function stopTask() {
@@ -5895,7 +5913,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 			_on(this.input, 'blur', this.close, this);
 		}
 
-		if (this.parentForm !== undefined) {
+		if (this.parentForm !== undefined && this.parentForm !== null) {
 			_on(this.parentForm, 'keydown', this.preventFormSubmit, this);
 		}
 
@@ -6207,6 +6225,16 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		},
 
 		/*
+		 * Method: 'getVal'
+		 * Returns the 'hidden' currently selected value, similar to
+		 * the 'value' property of a normal <option> element
+		 *
+		 */
+		getVal: function () {
+			return this._val;
+		},
+
+		/*
 		 * Method: 'getCurSelIndexVal'
 		 * Gets the new value, based on the currently selected option node.
 		 * Respects the 'isMulti' flag in that it will update the comma separated
@@ -6319,6 +6347,24 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 				n.getElementsByClassName('slds-listbox__option')[0].classList.remove('slds-is-selected');
 				n.getElementsByClassName('slds-icon_container')[0].classList.add('slds-hide');
 			}
+		},
+
+		/*
+		 * Method: 'setByVal'
+		 * Allow the combobox to be set from the outside by the
+		 * value (the 'data-value' attribute on the option node)
+		 *
+		 * @param: value (string)
+		 */
+		setByVal: function (value) {
+			const option = this.optionNodes.filter((node) => {
+				return node.getAttribute('data-value') === value;
+			});
+			if (option.length === 1) {
+				this.curSelIndex = this.getIndexByNode(option[0]);
+				this.curSel = option[0].getElementsByClassName('slds-truncate')[0].innerText;
+				this.select();
+			}
 		}
 	};
 
@@ -6334,17 +6380,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	}
 
 	function _findUp(element, searchterm) {
-		element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
-		while (element = element.parentElement) {
-			if ((searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
-				|| (searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
-				|| (searchterm.charAt(0) === '$' && element.tagName === searchterm.slice(1))
-				|| (element.hasAttribute(searchterm)))) {
-				return element;
-			} else if (element == document.body) {
-				break;
-			}
-		}
+		return findUp(element, searchterm);
 	}
 
 	/*
@@ -6460,7 +6496,7 @@ const pageHeader = {
 	},
 	'OnDownScroll' : () => {
 		if (pageHeader.node() !== null) {
-			if (window.scrollY > (pageHeader.stickPoint + 2) && !pageHeader.isSticky) {
+			if (window.scrollY > (pageHeader.stickPoint + 2)) {
 				pageHeader.isSticky = true;
 				pageHeader.node().classList.add('page-header_sticky');
 				pageHeader.node().classList.add('slds-is-fixed');
@@ -6477,11 +6513,9 @@ const pageHeader = {
 			pageHeader.expand();
 			if (window.scrollY < (pageHeader.stickPoint - 2) && pageHeader.isSticky) {
 				pageHeader.isSticky = false;
-				window.setTimeout(function () {
-					pageHeader.node().classList.remove('page-header_sticky');
-					pageHeader.node().classList.remove('slds-is-fixed');
-					pageHeader.placeholder().style.height = '0px';
-				}, 80);
+				pageHeader.node().classList.remove('page-header_sticky');
+				pageHeader.node().classList.remove('slds-is-fixed');
+				pageHeader.placeholder().style.height = '0px';
 				pageHeader.node().style.transform = 'translateY(0px)';
 			}
 		}
@@ -6518,9 +6552,10 @@ const pageHeader = {
 	}
 };
 
+var isWaiting = false;
 function headerOnDownScroll() {
 	var h = document.getElementById('global-header');
-	if (h !== null) {
+	if (h !== null && !isWaiting) {
 		h.classList.add('header-scrolling');
 		h.dispatchEvent(headerCollapse);
 		if ($(document).scrollLeft() >= 0 && $(document).scrollTop() == 0) {
@@ -6531,12 +6566,15 @@ function headerOnDownScroll() {
 window.cbOnDownScrollers.push(headerOnDownScroll, pageHeader.OnDownScroll);
 
 function headerOnUpScroll() {
-	var h = document.getElementById('global-header'),
-		csy = window.scrollY;
-
+	var h = document.getElementById('global-header');
 	if (h !== null) {
+		isWaiting = true;
+		setTimeout(() => {
+			isWaiting = false;
+		}, 80);
 		h.classList.remove('header-scrolling');
 		h.dispatchEvent(headerExpand);
+		h.style.transition = 'none';
 	}
 }
 
@@ -6596,3 +6634,404 @@ function checkOneRevisionSelected() {
 		return true;
 	}
 }
+
+function findUp(element, searchterm) {
+	element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
+	while (element = element.parentElement) {
+		if (element == document.body) {
+			break;
+		}
+		if ((searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
+			|| (searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
+			|| (searchterm.charAt(0) === '$' && element.tagName === searchterm.slice(1))
+			|| (element.hasAttribute(searchterm)))
+		) {
+			return element;
+		}
+	}
+	return undefined;
+}
+
+/****
+* cbVal
+* @author: MajorLabel <info@majorlabel.nl>
+* @license MIT
+*/
+(function cbvalModule(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(factory);
+	} else if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
+		module.exports = factory();
+	} else {
+		window['cbVal'] = factory();
+	}
+})(function cbvalFactory() {
+	/**
+	 * @class cbVal
+	 *
+	 * @param : typeofdata (string) (http://corebos.org/documentation/doku.php?id=en:devel:field_structure&s[]=typeofdata)
+	 * @param : value to validate
+	 *
+	 * @return: does the value validate? (bool)
+	 */
+	function cbVal(type, val) {
+		switch (type) {
+		case 'N':
+			// Check if valid number
+			return cbVal.isNum(val);
+		case 'NN':
+			// Check if valid negative no.
+			return cbVal.isNegNum(val);
+		case 'I':
+			// Check if valid Integer
+			return cbVal.isInt(val);
+		case 'D':
+			// Check if valid date
+			return cbVal.isDate(val);
+		case 'DT':
+			// Check if valid datetime
+			return cbVal.isDateTime(val);
+		case 'C':
+			// Check if valid checkbox
+			return cbVal.isValidCheckBoxVal(val);
+		case 'E':
+			// Check if valid email
+			return cbVal.isEmail(val);
+		case 'T':
+			// Check if valid time
+			return cbVal.isTime(val);
+		case 'V':
+			// Check if valid varchar
+			return cbVal.isValidVarchar(val);
+		case 'O':
+			// Check if valid RecurringType/Duration_minutes
+			break;
+		default:
+			return false;
+		}
+	}
+
+	/*
+	* Static properties
+	*/
+	cbVal.validCheckBoxVals = ['yes', 'no', '1', '0', 0, 1];
+	cbVal.notAllowedInVarchar = ['\\', '<', '>', '+', '"'];
+
+	/*
+	* Static methods
+	*/
+
+	/*
+	* isNum
+	*--------------------------
+	* Is this a number? Either a float or integer
+	*
+	* @return: (bool)
+	*/
+	cbVal.isNum = function (val) {
+		return (cbNumber.isFloat(val) || cbNumber.isInt(val));
+	};
+
+	/*
+	* isNegNum
+	*--------------------------
+	* Is this a negative number? Either a float or integer
+	*
+	* @return: (bool)
+	*/
+	cbVal.isNegNum = function (val) {
+		return cbVal.isNum(val);
+	};
+
+	/*
+	* isInt
+	*--------------------------
+	* Is this an integer?
+	*
+	* @return: (bool)
+	*/
+	cbVal.isInt = function (val) {
+		return (cbNumber.isInt(val));
+	};
+
+	/*
+	* isValidCheckBoxVal
+	*--------------------------
+	* Is this a valid checkbox value?
+	*
+	* @return: (bool)
+	*/
+	cbVal.isValidCheckBoxVal = function (val) {
+		return cbVal.validCheckBoxVals.indexOf(val) > -1 ? true : false;
+	};
+
+	/*
+	* isEmail
+	*--------------------------
+	* Is this a valid e-mail address?
+	*
+	* @return: (bool)
+	*/
+	cbVal.isEmail = function (val) {
+		return /[\w\.]+\@[\w]+\.[a-zA-Z]{2,3}(\.[a-zA-Z]{2,3})?/.test(val);
+	};
+
+	/*
+	* isTime
+	*--------------------------
+	* Is this a valid time? Takes the current user
+	* time format into account
+	*
+	* @return: (bool)
+	*/
+	cbVal.isTime = function (val) {
+		var hours  = window.userHourFormat == 'am/pm' ? 12 : 23,
+			patt   = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}$/ : /^[0-9]{1,2}\:[0-9]{2}[ ]?(am|pm)?$/,
+			isTime = false; // Assume the worst
+
+		if (patt.test(val) && parseInt(val.split(':')[0]) <= hours && parseInt(val.split(':')[1]) <= 59) {
+			isTime = true;
+		}
+		return isTime;
+	};
+
+	/*
+	* isDate
+	*--------------------------
+	* Is this a valid date? Takes the current user
+	* date format into account
+	*
+	* @return: (bool)
+	*/
+	cbVal.isDate = function (val) {
+		var df   = window.userDateFormat,
+			splt = df.charAt(/[-/ ]/.exec(df).index), // get format splitter
+			dArr = val.split(splt), // date array
+			fArr = df.split(splt), // format array
+			yI	 = fArr.indexOf('yyyy'),
+			mI	 = fArr.indexOf('mm'),
+			dI	 = fArr.indexOf('dd'),
+			flg  = false; // Flag setup
+
+		if (val.indexOf(splt) === -1) {
+			return false; // If splitter is not present return right away
+		}
+
+		// Check if all the right numbers are in the right places
+		flg = (parseInt(dArr[dI]) > 0 && parseInt(dArr[dI]) <= 31 && dArr[dI].length < 3);
+		if (!flg) {
+			return false;
+		}
+		flg = (parseInt(dArr[mI]) > 0 && parseInt(dArr[mI]) <= 12 && dArr[mI].length < 3);
+		if (!flg) {
+			return false;
+		}
+		flg = (parseInt(dArr[yI]) > 0 && parseInt(dArr[yI]) < 3000 && dArr[yI].length == 4);
+		if (!flg) {
+			return false;
+		}
+		// Does the date match the max. no. in the month?
+		flg = dArr[fArr.indexOf('dd')] <= cbVal.daysInMonth(dArr[fArr.indexOf('mm')], dArr[fArr.indexOf('yyyy')]);
+		return flg;
+	};
+
+	/*
+	* isDateTime
+	*--------------------------
+	* Is this a valid datetime? Takes the current user
+	* date and time format into account
+	*
+	* @return: (bool)
+	*/
+	cbVal.isDateTime = function (val) {
+		var d = val.split(' ')[0],
+			t = val.split(' ')[1];
+		return (cbVal.isDate(d) && cbVal.isTime(t));
+	};
+
+	/*
+	* isValidVarchar
+	*--------------------------
+	* Is this a valid varchar?
+	*
+	* @return: (bool)
+	*/
+	cbVal.isValidVarchar = function (val) {
+		var flg = true;
+		var i = 0;
+		while (i < cbVal.notAllowedInVarchar.length && flg) {
+			flg = (val.indexOf(cbVal.notAllowedInVarchar[i]) === -1);
+			i++;
+		}
+		return flg;
+	};
+
+	/*
+	* daysInMonth
+	*--------------------------
+	* Return the days in a certain month of a certain year
+	*
+	* @param : month (int)
+	* @param : year (int)
+	* @return: (int)
+	*/
+	cbVal.daysInMonth = function (month, year) {
+		return new Date(year, month, 0).getDate();
+	};
+
+	cbVal.prototype = {
+		constructor: cbVal,
+	};
+
+	/*
+	* Export
+	*/
+	return cbVal;
+});
+
+/****
+* cbNumber
+* @author: MajorLabel <info@majorlabel.nl>
+* @license MIT
+*/
+(function cbnumberModule(factory) {
+
+	if (typeof define === 'function' && define.amd) {
+		define(factory);
+	} else if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
+		module.exports = factory();
+	} else {
+		window['cbNumber'] = factory();
+	}
+
+})(function cbnumberFactory() {
+
+	/**
+	 * @class ldsCheckbox
+	 */
+	function cbNumber() {
+		/* Public attributes */
+	}
+
+	/*
+	* Static properties
+	*/
+	cbNumber.decSep = window.userDecimalSeparator;
+	cbNumber.curSep = window.userCurrencySeparator;
+	cbNumber.decNum = Number(window.userNumberOfDecimals);
+
+	/*
+	* Static methods
+	*/
+
+	/*
+	* curToNumString
+	*--------------------------
+	* Turns a currency formatted string into a number formatted
+	* string. Respects the currently selected user format
+	*
+	* @return: Number formatted string
+	*/
+	cbNumber.curToNumString = function (cur) {
+		var c = cur.toString(),
+			curR = new RegExp('\\'+this.curSep, 'g'),
+			decR = new RegExp('(\\'+this.decSep+')([0-9]{2})', 'g');
+		c = c.replace(curR, '').replace(decR, '.$2');
+		return parseFloat(c).toFixed(this.decNum).toString();
+	};
+
+	/*
+	* curToNum
+	*--------------------------
+	* Turns a currency formatted string into a number.
+	* Respects the currently selected user format
+	*
+	* @return: Number
+	*/
+	cbNumber.curToNum = function (cur) {
+		return parseFloat(cbNumber.curToNumString(cur));
+	};
+
+	/*
+	* isCur
+	*--------------------------
+	* Tests if a string is formatted to the current
+	* user's currency settings. Respects the fact that
+	* decimals are optional. Also respects negative
+	* currencies.
+	*
+	* @return: Bool
+	*/
+	cbNumber.isCurr = function (cur) {
+		cur = cur.replace(/^-/, '');
+		var r = new RegExp('^\\d{1,3}(\\' + this.curSep + '\\d{3})*(\\' + this.decSep + '\\d{' + this.decNum + '})?$', '');
+		return (cur.match(r) || []).length == 0 ? false : true;
+	};
+
+	/*
+	* numToCurr
+	*--------------------------
+	* Turns a number into a currencu formatted string.
+	* Respects the user settings, but does NOT add decimals
+	* if the number is an integer
+	*
+	* @return: Currency formatted string
+	*/
+	cbNumber.numToCurr = function (n) {
+		var c = cbNumber.decimalNum(n) == 0 ? 0 : 2,
+			d = this.decSep == undefined ? '.' : this.decSep,
+			t = this.curSep == undefined ? ',' : this.curSep,
+			s = n < 0 ? '-' : '',
+			i = String(parseInt(Math.abs(Number(n) || 0).toFixed(c))),
+			j = (j = i.length) > 3 ? j % 3 : 0;
+		return s + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '');
+	};
+
+	/*
+	* decimalNum
+	*--------------------------
+	* Takes a number (or string formatted as a number)
+	* and returns the number of decimals it has
+	*
+	*/
+	cbNumber.decimalNum = function (num) {
+		var match = (''+num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+		if (!match) {
+			return 0;
+		}
+		return Math.max(0, (match[1] ? match[1].length : 0) - (match[2] ? +match[2] : 0));
+	};
+
+	/*
+	* isFloat
+	*--------------------------
+	* Takes a number (or string formatted as a number)
+	* and returns a boolean indicating whether it's a
+	* floating point no. or not
+	*
+	*/
+	cbNumber.isFloat = function (num) {
+		return this.decimalNum(num) > 0 ? true : false;
+	};
+
+	/*
+	* isInt
+	*--------------------------
+	* Takes a number (or string formatted as a number)
+	* and returns a boolean indicating whether it's a
+	* integer or not
+	*
+	*/
+	cbNumber.isInt = function (num) {
+		return this.decimalNum(num) === 0 && !isNaN(num) ? true : false;
+	};
+
+	cbNumber.prototype = {
+		constructor: cbNumber,
+	};
+
+	/*
+	* Export
+	*/
+	return cbNumber;
+});

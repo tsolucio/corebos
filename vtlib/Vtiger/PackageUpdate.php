@@ -66,8 +66,8 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	/**
 	 * Update Module from zip file
 	 * @param Vtiger_Module Instance of the module to update
-	 * @param String Zip file name
-	 * @param Boolean True for overwriting existing module
+	 * @param string Zip file name
+	 * @param boolean True for overwriting existing module
 	 */
 	public function update($moduleInstance, $zipfile, $overwrite = true) {
 		$module = $this->getModuleNameFromZip($zipfile);

@@ -216,16 +216,16 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	return $list_header;
 }
 
-/* * This function is used to get the list view header in popup
- * Param $focus - module object
- * Param $module - module name
- * Param $sort_qry - sort by value
- * Param $sorder - sorting order (asc/desc)
- * Param $order_by - order by
- * Returns the listview header values in an array
+/** This function is used to get the list view header in popup
+ * @param object module object
+ * @param string module name
+ * @param string sort by value
+ * @param string sorting order (asc/desc)
+ * @param string order by
+ * @return array listview header values
  */
 function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order_by = '') {
-	global $log, $adb, $theme, $current_user;
+	global $log, $adb, $theme, $current_user, $default_charset;
 	$log->debug('> getSearchListViewHeader ' . get_class($focus) . ',' . $module . ',' . $sort_qry . ',' . $sorder . ',' . $order_by);
 	$arrow = '';
 	$list_header = array();
@@ -251,15 +251,22 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 		$pass_url .='&parent_module=Accounts&relmod_id=' . vtlib_purify($_REQUEST['acc_id']);
 	}
 
-	$pass_url .= '&form=' . (isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
-		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
-		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
-		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
+	$forform = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
+	$forform = htmlspecialchars($forform, ENT_QUOTES, $default_charset);
+	$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
+	$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
+	$srcmodule = isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '';
+	$srcmodule = htmlspecialchars($srcmodule, ENT_QUOTES, $default_charset);
+	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '';
+	$forrecord = htmlspecialchars($forrecord, ENT_QUOTES, $default_charset);
+	$pass_url .= '&form='.$forform.'&forfield='.$forfield.'&srcmodule='.$srcmodule.'&forrecord='.$forrecord;
 	//Get custom paramaters to pass_url
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
 		foreach ($cbcustompopupinfo as $param_name) {
-			$pass_url .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '');
+			$param = isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '';
+			$param = htmlspecialchars($param, ENT_QUOTES, $default_charset);
+			$pass_url .= '&'.$param_name.'='.$param;
 		}
 	}
 
@@ -313,8 +320,6 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 	$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 	foreach ($focus->search_fields as $name => $tableinfo) {
 		$fieldname = $focus->search_fields_name[$name];
-		$tabid = getTabid($module);
-
 		if ($hasGlobalReadPermission || in_array($fieldname, $field) || $module == 'Users') {
 			if (isset($focus->sortby_fields) && $focus->sortby_fields != '') {
 				foreach ($focus->search_fields[$name] as $col) {
@@ -347,14 +352,12 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 	return $list_header;
 }
 
-/* * This function generates the navigation array in a listview
- * Param $display - start value of the navigation
- * Param $noofrows - no of records
- * Param $limit - no of entries per page
- * Returns an array type
+/** This function generates the navigation array in a listview
+ * @param integer start value of the navigation
+ * @param integer no of records
+ * @param integer no of entries per page
+ * @return array of navigation values
  */
-
-//code contributed by raju for improved pagination
 function getNavigationValues($display, $noofrows, $limit) {
 	global $log;
 	$log->debug('> getNavigationValues ' . $display . ',' . $noofrows . ',' . $limit);
@@ -1156,19 +1159,19 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	return $list;
 }
 
-/* * This function generates the value for a given field name
- * Param $field_result - vtiger_field result in array
- * Param $list_result - resultset of a listview query
- * Param $fieldname - field name
- * Param $focus - module object
- * Param $module - module name
- * Param $entity_id - entity id
- * Param $list_result_count - row of the field to use
- * Param $mode - mode type
- * Param $popuptype - popup type
- * Param $returnset - list query parameters in url string
- * Param $viewid - custom view id
- * Returns an string value
+/** This function generates the value for a given field name
+ * @param $field_result - vtiger_field result in array
+ * @param $list_result - resultset of a listview query
+ * @param $fieldname - field name
+ * @param $focus - module object
+ * @param $module - module name
+ * @param $entity_id - entity id
+ * @param $list_result_count - row of the field to use
+ * @param $mode - mode type
+ * @param $popuptype - popup type
+ * @param $returnset - list query parameters in url string
+ * @param integer custom view id
+ * @return string value
  */
 function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype) {
 	global $log, $app_strings, $current_language, $currentModule, $adb, $current_user, $default_charset;
@@ -2315,9 +2318,9 @@ function getListQuery($module, $where = '') {
 	return $query;
 }
 
-/* * Function returns the list of records which an user is entiled to view
- * Param $module - module name
- * Returns a database query - type string
+/** Function returns the list of records which an user is entiled to view
+ * @param string module name
+ * @return string a database query
  */
 function getReadEntityIds($module) {
 	global $log, $current_user;
@@ -2411,21 +2414,21 @@ function getReadEntityIds($module) {
 }
 
 /** Function to get alphabetical search links
- * Param $module - module name
- * Param $action - action
- * Param $fieldname - vtiger_field name
- * Param $query - query
- * Param $type - search type
- * Param $popuptype - popup type
- * Param $recordid - record id
- * Param $return_module - return module
- * Param $append_url - url string to be appended
- * Param $viewid - custom view id
- * Param $groupid - group id
- * Returns an string value
+ * @param string module name
+ * @param string action
+ * @param string field name
+ * @param string query
+ * @param string search type
+ * @param string popup type
+ * @param integer record id
+ * @param string return module
+ * @param string url string to be appended
+ * @param integer custom view id
+ * @param integer group id
+ * @return string value
  */
 function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popuptype = '', $recordid = '', $return_module = '', $append_url = '', $viewid = '', $groupid = '') {
-	global $log;
+	global $log, $default_charset;
 	$log->debug("> AlphabeticalSearch $module,$action,$fieldname,$query,$type,$popuptype,$recordid,$return_module,$append_url,$viewid,$groupid");
 	if ($type == 'advanced') {
 		$flag = '&advanced=true';
@@ -2446,16 +2449,23 @@ function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popupt
 		$returnvalue .= '&return_module=' . $return_module;
 	}
 
-	$returnvalue .= '&form=' . (isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
-		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
-		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
-		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
+	$forform = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
+	$forform = htmlspecialchars($forform, ENT_QUOTES, $default_charset);
+	$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
+	$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
+	$srcmodule = isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '';
+	$srcmodule = htmlspecialchars($srcmodule, ENT_QUOTES, $default_charset);
+	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '';
+	$forrecord = htmlspecialchars($forrecord, ENT_QUOTES, $default_charset);
+	$returnvalue .= '&form='.$forform.'&forfield='.$forfield.'&srcmodule='.$srcmodule.'&forrecord='.$forrecord;
 
 	//Get custom paramaters to returnvalue
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
 		foreach ($cbcustompopupinfo as $param_name) {
-			$returnvalue .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '');
+			$param = isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '';
+			$param = htmlspecialchars($param, ENT_QUOTES, $default_charset);
+			$returnvalue .= '&'.$param_name.'='.$param;
 		}
 	}
 	$list = '';
@@ -2544,16 +2554,16 @@ function getRelatedTo($module, $list_result, $rset) {
 	return $parent_value;
 }
 
-/* * Function to get the table headers for a listview
- * Param $navigation_arrray - navigation values in array
- * Param $url_qry - url string
- * Param $module - module name
- * Param $action- action file name
- * Param $viewid - view id
- * Returns an string value
+/** Function to get the table headers for a listview
+ * @param $navigation_arrray - navigation values in array
+ * @param $url_qry - url string
+ * @param $module - module name
+ * @param $action- action file name
+ * @param $viewid - view id
+ * @return string value
  */
 function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
-	global $log, $app_strings, $theme, $current_user;
+	global $log, $app_strings, $theme, $default_charset;
 	$log->debug('> getTableHeaderNavigation');
 	if ($module == 'Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents')) {
 		$output = '<td class="mailSubHeader" width="100%" align="center">';
@@ -2561,19 +2571,23 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 		$output = '<td align="right" style="padding: 5px;">';
 	}
 	$search_tag = isset($_REQUEST['search_tag']) ? $_REQUEST['search_tag'] : '';
-
-	$url_string = '';
-
-	$url_string .= '&form='.(isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
-		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
-		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '') .
-		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
+	$forform = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
+	$forform = htmlspecialchars($forform, ENT_QUOTES, $default_charset);
+	$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
+	$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
+	$srcmodule = isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '';
+	$srcmodule = htmlspecialchars($srcmodule, ENT_QUOTES, $default_charset);
+	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '';
+	$forrecord = htmlspecialchars($forrecord, ENT_QUOTES, $default_charset);
+	$url_string = '&form='.$forform.'&forfield='.$forfield.'&srcmodule='.$srcmodule.'&forrecord='.$forrecord;
 
 	//Get custom paramaters to url_string
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
 		foreach ($cbcustompopupinfo as $param_name) {
-			$url_string .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '');
+			$param = isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '';
+			$param = htmlspecialchars($param, ENT_QUOTES, $default_charset);
+			$url_string .= '&'.$param_name.'='.$param;
 		}
 	}
 
@@ -2870,11 +2884,11 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 	return $where;
 }
 
-/* * This function return the entity ids that need to be excluded in popup listview for a given record
-  Param $currentmodule - modulename of the entity to be selected
-  Param $returnmodule - modulename for which the entity is assingned
-  Param $recordid - the record id for which the entity is assigned
-  Return type string.
+/** This function return the entity ids that need to be excluded in popup listview for a given record
+ * @param string module name of the entity to be selected
+ * @param string module name for which the entity is assingned
+ * @param integer the record id for which the entity is assigned
+ * @return string
  */
 function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	global $log, $adb;
@@ -3006,13 +3020,13 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	return $where_relquery;
 }
 
-/* * This function stores the variables in session sent in list view url string.
- * Param $lv_array - list view session array
- * Param $noofrows - no of rows
- * Param $max_ent - maximum entires
- * Param $module - module name
- * Param $related - related module
- * Return type void.
+/** This function stores the variables in session sent in list view url string.
+ * @param array list view session
+ * @param integer no of rows
+ * @param integer maximum entires
+ * @param string module name
+ * @param string related module
+ * @return void
  */
 function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = '') {
 	global $currentModule;
@@ -3052,13 +3066,13 @@ function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = 
 	}
 }
 
-/* * Function to get the table headers for related listview
- * Param $navigation_arrray - navigation values in array
- * Param $url_qry - url string
- * Param $module - module name
- * Param $related_module - related module name
- * Param $recordid - related record id
- * Returns an string value
+/** Function to get the table headers for related listview
+ * @param array navigation values
+ * @param string url
+ * @param string module name
+ * @param string related module name
+ * @param integer related record id
+ * @return string value
  */
 function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $related_module, $recordid) {
 	global $log, $app_strings, $adb, $theme;
@@ -3130,16 +3144,15 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 	}
 }
 
-/** 	Function to get the Edit link details for ListView and RelatedListView
- * 	@param string 	$module 	- module name
- * 	@param int 	$entity_id 	- record id
- * 	@param string 	$relatedlist 	- string 'relatedlist' or may be empty. if empty means ListView else relatedlist
- * 	@param string 	$returnset 	- may be empty in case of ListView.
- * 		For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
- * 	return string	$edit_link	- url string which contains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=EditView&record=10
+/** Function to get the Edit link details for ListView and RelatedListView
+ * @param string module name
+ * @param int record id
+ * @param string 'relatedlist' or may be empty. if empty means ListView else relatedlist
+ * @param string may be empty in case of ListView.
+ * 	For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
+ * @return string url string which contains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=EditView&record=10
  */
 function getListViewEditLink($module, $entity_id, $relatedlist, $returnset) {
-	global $adb;
 	$return_action = 'index';
 	$edit_link = "index.php?module=$module&action=EditView&record=$entity_id";
 	$url = getBasic_Advance_SearchURL();
@@ -3162,12 +3175,12 @@ function getListViewEditLink($module, $entity_id, $relatedlist, $returnset) {
 }
 
 /** Function to get the Del link details for ListView and RelatedListView
- * 	@param string 	$module 	- module name
- * 	@param int 	$entity_id 	- record id
- * 	@param string 	$relatedlist 	- string 'relatedlist' or may be empty. if empty means ListView else relatedlist
- * 	@param string 	$returnset 	- may be empty in case of ListView
- * 		For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
- * 	return string	$del_link	- url string which cotains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=Delete&record=10
+ * @param string module name
+ * @param int record id
+ * @param string string 'relatedlist' or may be empty. if empty means ListView else relatedlist
+ * @param string may be empty in case of ListView
+ * 	For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
+ * @return string url string which cotains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=Delete&record=10
  */
 function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $linkstart) {
 	$current_module = vtlib_purify($_REQUEST['module']);
@@ -3358,10 +3371,9 @@ function getMergeFields($module, $str) {
 }
 
 /**
- * this function accepts a module name and a field name and returns the first related module for it
- * it expects the uitype of the field to be 10
- * @param string $module - the modulename
- * @param string $fieldname - the field name
+ * this function accepts a module name and a field name and returns the first related module for it it expects the uitype of the field to be 10
+ * @param string module name
+ * @param string field name
  * @return string the first related module in the field or empty if not found
  */
 function getFirstModule($module, $fieldname) {
@@ -3379,8 +3391,8 @@ function getFirstModule($module, $fieldname) {
 
 /**
  * this function accepts a module name and a related modulen ame and returns the first uitype 10 field that relates them
- * @param string $module - the module name
- * @param string $relmodule - the related module
+ * @param string module name
+ * @param string related module
  * @return string the first uitype 10 field that relates the two modules or an empty string
  */
 function getFirstFieldForModule($module, $relmodule) {
@@ -3422,28 +3434,31 @@ function VT_getSimpleNavigationValues($start, $size, $total) {
 		'prev' => $prev, 'next' => $next, 'verylast' => $lastPage);
 }
 
-/* * Function to get the simplified table headers for a listview
- * Param $navigation_arrray - navigation values in array
- * Param $url_qry - url string
- * Param $module - module name
- * Param $action- action file name
- * Param $viewid - view id
- * Returns an string value
+/** Function to get the simplified table headers for a listview
+ * @param array navigation values
+ * @param string url
+ * @param string module name
+ * @param string action file name
+ * @param integer view id
+ * @return string HTML for header
  */
 function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
-	global $app_strings, $theme, $current_user;
+	global $app_strings, $theme, $default_charset;
 	if ($module=='Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents') && isset($_REQUEST['action']) && $_REQUEST['action']!='UnifiedSearch') {
 		$output = '<td class="mailSubHeader" width="40%" align="right">';
 	} else {
 		$output = '<td align="right" style="padding: 5px;">';
 	}
 	$search_tag = isset($_REQUEST['search_tag']) ? $_REQUEST['search_tag'] : '';
-	$url_string = '';
-
-	$url_string .= '&form=' . (isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
-		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
-		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
-		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
+	$forform = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
+	$forform = htmlspecialchars($forform, ENT_QUOTES, $default_charset);
+	$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
+	$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
+	$srcmodule = isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '';
+	$srcmodule = htmlspecialchars($srcmodule, ENT_QUOTES, $default_charset);
+	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '';
+	$forrecord = htmlspecialchars($forrecord, ENT_QUOTES, $default_charset);
+	$url_string = '&form='.$forform.'&forfield='.$forfield.'&srcmodule='.$srcmodule.'&forrecord='.$forrecord;
 
 	if (isset($_REQUEST['popuptype']) && $_REQUEST['popuptype'] == 'set_return_emails' && isset($_REQUEST['email_field'])) {
 		$url_string .='&email_field=' . (isset($_REQUEST['email_field']) ? vtlib_purify($_REQUEST['email_field']) : '');
@@ -3452,7 +3467,9 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	if (isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != '') {
 		$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
 		foreach ($cbcustompopupinfo as $param_name) {
-			$url_string .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? urlencode(vtlib_purify($_REQUEST[$param_name])) : '');
+			$param = isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '';
+			$param = htmlspecialchars($param, ENT_QUOTES, $default_charset);
+			$url_string .= '&'.$param_name.'='.$param;
 		}
 	}
 

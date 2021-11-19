@@ -6,15 +6,15 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
 * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
-* Contributor(s): Ranieri/Translate terms eCRM web | 20/08/2020 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+* Contributor(s): Ranieri/Translate terms eCRM web | 29/10/2021 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
 ********************************************************************************/
 
 $mod_strings = array(
 	'PBX Manager' => 'Gerenciador iPBX',
 	'PBXManager' => 'Gerenciador iPBX',
 	'SINGLE_PBXManager' => 'Gerenciador iPBX',
-	'Asterisk' => 'Asterisk',
-	'LBL_ASTERISK_INFORMATION' => 'Informação ASTERISK',
+	'Asterisk' => 'Issabel',
+	'LBL_ASTERISK_INFORMATION' => 'Informação Issabel',
 	'LBL_CALL_INFORMATION' => 'Informação da chamada',
 
 	'Call From'=>'Chamada a partir de',

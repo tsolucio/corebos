@@ -169,7 +169,9 @@ class MailManager_RelationController extends MailManager_Controller {
 
 				case 'ModComments':
 				default:
-					$focus->column_fields['assigned_user_id'] = $current_user->id;
+					if (empty($focus->column_fields['assigned_user_id'])) {
+						$focus->column_fields['assigned_user_id'] = $current_user->id;
+					}
 					$focus->column_fields['creator'] = $current_user->id;
 					$focus->column_fields['related_to'] = $parent;
 					break;

@@ -55,17 +55,6 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('ID', $focus->id);
 
-if (!empty($_REQUEST['modechk'])) {
-	if ($_REQUEST['modechk'] == 'prefview') {
-		$parenttab = '';
-	} else {
-		$parenttab = 'Settings';
-	}
-} else {
-	$parenttab = 'Settings';
-}
-
-$smarty->assign('PARENTTAB', $parenttab);
 $smarty->assign('CHANGE_PW_BUTTON', '');
 if ((is_admin($current_user) || $_REQUEST['record'] == $current_user->id)
 		&& isset($default_user_name)

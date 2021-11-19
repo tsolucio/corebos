@@ -149,12 +149,8 @@ $mod_strings = array(
 	'DENORMALIZE' => 'Denormalize',
 	'DENORMALIZED' => 'Denormalized',
 	'SELECT_OPERATION' => 'Select Operation',
-	'Mailup Activation_Desc' => 'Send emails using Mailup',
-	'mailup_active' => 'Integration active',
-	'mailup_apiurl' => 'API Domain',
-	'mailup_client_id' => 'Mailup Client ID',
-	'mailup_client_secret' => 'Mailup Client Secret',
-	'mailup_username' => 'Mailup Username',
-	'mailup_password' => 'Mailup Password',
+	'Stripe Payment Activation' => 'Stripe Payment Activation',
+	'StripePayment_Desc' => 'Configure Stripe Payment Entry',
+	'stripe_Key' => 'Stripe API Key',
 );
 ?>

@@ -61,6 +61,13 @@ function validate_IBAN_BankAccount($field, $iban, $params, $fields) {
 	return false;
 }
 
+function validate_EU_VAT_NotBlank($field, $num_tva, $params, $fields) {
+	if ($num_tva=='') {
+		return false;
+	}
+	return validate_EU_VAT($field, $num_tva, $params, $fields);
+}
+
 // Intra-Community VAT number verification - www.bigotconsulting.fr (thanks)
 function validate_EU_VAT($field, $num_tva, $params, $fields) {
 	if ($num_tva=='') {

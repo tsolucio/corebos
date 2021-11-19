@@ -141,41 +141,6 @@ if ($sql_error) {
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.after', $queryGenerator);
 	$list_query = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.query', $list_query);
 	$where = $queryGenerator->getConditionalWhere();
-	if ($currentModule=='Emails' && isset($_REQUEST['folderid'])) {
-		$emailwhere = $queryGenerator->getWhereClause();
-		$addseactrel = false;
-		$addsemanrel = false;
-		switch ($_REQUEST['folderid']) {
-			case '2':
-				$emailwhere .= " AND vtiger_seactivityrel.crmid in (select contactid from vtiger_contactdetails) AND vtiger_emaildetails.email_flag !='WEBMAIL'";
-				$addseactrel = true;
-				break;
-			case '3':
-				$emailwhere .= ' AND vtiger_seactivityrel.crmid in (select accountid from vtiger_account)';
-				$addseactrel = true;
-				break;
-			case '4':
-				$emailwhere .= ' AND vtiger_seactivityrel.crmid in (select leadid from vtiger_leaddetails)';
-				$addseactrel = true;
-				break;
-			case '5':
-				$emailwhere .= ' AND vtiger_salesmanactivityrel.smid in (select id from vtiger_users)';
-				$addsemanrel = true;
-				break;
-			case '6':
-				$emailwhere .= " AND vtiger_emaildetails.email_flag ='WEBMAIL'";
-				break;
-		}
-		if ($addseactrel || $addsemanrel) {
-			$list_query = 'SELECT '.$queryGenerator->getSelectClauseColumnSQL().' '.$queryGenerator->getFromClause();
-			if ($addseactrel) {
-				$list_query.= 'INNER JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid=vtiger_activity.activityid';
-			} else {
-				$list_query.= 'INNER JOIN vtiger_salesmanactivityrel ON vtiger_salesmanactivityrel.activityid=vtiger_activity.activityid';
-			}
-			$list_query.= $emailwhere;
-		}
-	}
 	if (isset($where) && $where != '') {
 		coreBOS_Session::set('export_where', $where);
 	} else {
@@ -194,10 +159,9 @@ if ($sql_error) {
 		$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
 		$start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, $viewid, $queryMode);
 		$limit_start_rec = ($start-1) * $list_max_entries_per_page;
-		$list_query = 'SELECT SQL_CALC_FOUND_ROWS'.substr($list_query, 6);
 		$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
-		$count_result = $adb->query('SELECT FOUND_ROWS();');
 		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
+			$count_result = $adb->query(mkCountQuery($list_query));
 			$noofrows = $adb->query_result($count_result, 0, 0);
 		} else {
 			$noofrows = null;
@@ -242,8 +206,10 @@ if ($sql_error) {
 	// Module Search
 		$alphabetical = AlphabeticalSearch($currentModule, 'index', $focus->def_basicsearch_col, 'true', 'basic', '', '', '', '', $viewid);
 		$fieldnames = $controller->getAdvancedSearchOptionString();
+		$fieldnames_array = $controller->getAdvancedSearchOptionArray();
 		$smarty->assign('ALPHABETICAL', $alphabetical);
 		$smarty->assign('FIELDNAMES', $fieldnames);
+		$smarty->assign('FIELDNAMES_ARRAY', $fieldnames_array);
 
 		$smarty->assign('AVALABLE_FIELDS', getMergeFields($currentModule, 'available_fields'));
 		$smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fields_to_merge'));

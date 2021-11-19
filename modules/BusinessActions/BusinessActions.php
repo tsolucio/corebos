@@ -147,8 +147,8 @@ class BusinessActions extends CRMEntity {
 
 	/**
 	 * Invoked when special actions are performed on the module.
-	 * @param String Module name
-	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 * @param string Module name
+	 * @param string Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
@@ -169,11 +169,11 @@ class BusinessActions extends CRMEntity {
 
 	/**
 	 * Get all the link related to module based on type
-	 * @param Integer Module ID
+	 * @param integer Module ID
 	 * @param mixed String or List of types to select
-	 * @param Map Key-Value pair to use for formating the link url
-	 * @param Integer User Id
-	 * @param Integer Record Id
+	 * @param array Key-Value pair to use for formating the link url
+	 * @param integer User Id
+	 * @param integer Record Id
 	 */
 	public static function getAllByType($tabid, $type = false, $parameters = false, $userid = null, $recordid = null) {
 		global $adb, $current_user, $currentModule;
@@ -321,12 +321,12 @@ class BusinessActions extends CRMEntity {
 
 	/**
 	 * Add link given module
-	 * @param Integer Module ID
-	 * @param String Link Type (like DETAILVIEW). Useful for grouping based on pages.
-	 * @param String Label to display
-	 * @param String HREF value or URL to use for the link
-	 * @param String ICON to use on the display
-	 * @param Integer Order or sequence of displaying the link
+	 * @param integer Module ID
+	 * @param string Link Type (like DETAILVIEW). Useful for grouping based on pages.
+	 * @param string Label to display
+	 * @param string HREF value or URL to use for the link
+	 * @param string ICON to use on the display
+	 * @param integer Order or sequence of displaying the link
 	 */
 	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false, $brmap = 0) {
 		global $adb;
@@ -371,10 +371,10 @@ class BusinessActions extends CRMEntity {
 
 	/**
 	 * Delete link of the module
-	 * @param Integer Module ID
-	 * @param String Link Type (like DETAILVIEW). Useful for grouping based on pages.
-	 * @param String Display label
-	 * @param String URL of link to lookup while deleting
+	 * @param integer Module ID
+	 * @param string Link Type (like DETAILVIEW). Useful for grouping based on pages.
+	 * @param string Display label
+	 * @param string URL of link to lookup while deleting
 	 */
 	public static function deleteLink($tabid, $type, $label, $url = false) {
 		global $adb;
@@ -414,7 +414,7 @@ class BusinessActions extends CRMEntity {
 
 	/**
 	 * Delete all links related to module
-	 * @param Integer Module ID.
+	 * @param integer Module ID
 	 */
 	public static function deleteAll($tabid) {
 		global $adb;

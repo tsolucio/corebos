@@ -256,6 +256,7 @@ abstract class VTTask {
 			'Comments' => '(general : (__VtigerMeta__) comments)',
 			'InventoryDetails' => '(general : (__VtigerMeta__) inventorydetails)',
 			'groupEmailList' => '(general : (__VtigerMeta__) groupEmailList_Put_Group_Name_Here)',
+			'groupUsersWsIdList' => '(general : (__VtigerMeta__) groupUsersWsIdList_Put_Group_Name_Here)',
 			'invitedUsers' => '(general : (__VtigerMeta__) Events_Users_Invited)',
 			'relatedContacts' => '(general : (__VtigerMeta__) Events_Related_Contacts)',
 			'WorkflowFunction' => '(general : (__WorkflowFunction__) Put_Function_Here )',

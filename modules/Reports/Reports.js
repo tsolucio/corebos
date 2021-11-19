@@ -835,7 +835,7 @@ function setStepData(step) {
  * @return {bool}
  */
 function validateDate() {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
 	var date1=getObj('startdate');
@@ -973,7 +973,11 @@ function fillFilterInfo(response) {
 	fillList(response.BLOCKJS, 'stdDateFilterField');
 	fillList(response.BLOCKCRITERIA, 'stdDateFilter');
 	if (Object.prototype.hasOwnProperty.call(response, 'CRITERIA_GROUPS') && !updated_grouping_criteria ) {
-		add_grouping_criteria(response.CRITERIA_GROUPS);
+		cbAdvancedFilter.fillFieldTemplate(response.COLUMNS_BLOCK);
+		cbAdvancedFilter.comparisonFields = flattenComparisonFields(response.REL_FIELDS);
+		document.getElementById('cbds-advfilt_existing-conditions').value = JSON.stringify(response.CRITERIA_GROUPS);
+		var advancedFilter = document.getElementById("cbds-advanced-search");
+		window.AdvancedFilter = new cbAdvancedFilter(advancedFilter);
 		updated_grouping_criteria = true;
 	}
 	if (Object.prototype.hasOwnProperty.call(response, 'STARTDATE') && Object.prototype.hasOwnProperty.call(response, 'ENDDATE')) {
@@ -983,6 +987,18 @@ function fillFilterInfo(response) {
 		$('#jscal_trigger_date_end').css('visibility', 'visible');
 	}
 	return true;
+}
+
+function flattenComparisonFields(fields) {
+	var retFields = [],
+		fields = JSON.parse(fields);
+	for (tod in fields) {
+		fields[tod].forEach((field) => {
+			let fieldComponents = field.split('::');
+			retFields.push({'value': fieldComponents[0], 'label': fieldComponents[1]});
+		});
+	}
+	return retFields;
 }
 
 /**
@@ -1006,9 +1022,10 @@ function fillGroupingInfo(response) {
 }
 
 function CrearEnlace(tipo, id) {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 	var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 	return 'index.php?module=Reports&action=ReportsAjax&file='+tipo+'&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups;
@@ -1049,9 +1066,10 @@ function createDuplicateReport(id) {
 	var newreportdescription = document.getElementById('newreportdescription').value;
 	var newreportfolder = document.getElementById('reportfolder').value;
 
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 
 	var advft_criteria = document.getElementById('advft_criteria').value;
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
@@ -1073,9 +1091,10 @@ function createDuplicateReport(id) {
 }
 
 function generateReport(id) {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 
 	VtigerJS_DialogBox.block();
 
@@ -1104,9 +1123,10 @@ function generateReport(id) {
 }
 
 function saveReportAdvFilter(id) {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 
 	VtigerJS_DialogBox.block();
 
@@ -1139,9 +1159,10 @@ function selectReport() {
 
 /* @deprecated: use duplicateReport */
 function SaveAsReport(id) {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 	var reportname = prompt(alert_arr.LBL_REPORT_NAME);
 	if (reportname !== null  && reportname !=='' && reportname!== undefined) {
 		document.getElementById('newreportname').value = reportname;
@@ -1163,9 +1184,10 @@ function SaveAsReport(id) {
 }
 
 function goToPrintReport(id) {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 	var advft_criteria = document.getElementById('advft_criteria').value;
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 	window.open('index.php?module=Reports&action=ReportsAjax&file=PrintReport&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups, i18nLBL_PRINT_REPORT, cbPopupWindowSettings+',resizable=1,scrollbars=1');

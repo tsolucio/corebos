@@ -40,15 +40,23 @@ class Vtiger_PackageExport {
 
 	/** Output Handlers */
 
-	/** @access private */
+	/**
+	 * @access private
+	 */
 	private function openNode($node, $delimiter = "\n") {
 		$this->__write("<$node>$delimiter");
 	}
-	/** @access private */
+
+	/**
+	 * @access private
+	 */
 	private function closeNode($node, $delimiter = "\n") {
 		$this->__write("</$node>$delimiter");
 	}
-	/** @access private */
+
+	/**
+	 * @access private
+	 */
 	private function outputNode($value, $node = '') {
 		if ($node != '') {
 			$this->openNode($node, '');
@@ -58,7 +66,10 @@ class Vtiger_PackageExport {
 			$this->closeNode($node);
 		}
 	}
-	/** @access private */
+
+	/**
+	 * @access private
+	 */
 	private function __write($value) {
 		fwrite($this->_export_modulexml_file, $value);
 	}
@@ -111,9 +122,9 @@ class Vtiger_PackageExport {
 	/**
 	 * Export Module as a zip file.
 	 * @param Vtiger_Module Instance of module
-	 * @param Path Output directory path
-	 * @param String Zipfilename to use
-	 * @param Boolean True for sending the output as download
+	 * @param string Output directory path
+	 * @param string Zipfilename to use
+	 * @param boolean True for sending the output as download
 	 */
 	public function export($moduleInstance, $todir = '', $zipfilename = '', $directDownload = false) {
 		global $cbodBlockModuleExport;
@@ -788,8 +799,8 @@ class Vtiger_PackageExport {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 */
 	public static function log($message, $delim = true) {
 		Vtiger_Utils::Log($message, $delim);

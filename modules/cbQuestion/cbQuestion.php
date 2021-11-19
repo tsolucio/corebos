@@ -9,6 +9,8 @@
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
+include_once 'vtlib/Vtiger/Utils/StringTemplate.php';
+include_once 'vtlib/Vtiger/LinkData.php';
 use \PHPSQLParser\PHPSQLParser;
 use \PHPSQLParser\utils\ExpressionType;
 
@@ -163,6 +165,9 @@ class cbQuestion extends CRMEntity {
 		$q->id = (empty($q->column_fields['record_id']) ? 0 : $q->column_fields['record_id']);
 		if (empty($q->id) || isPermitted('cbQuestion', 'DetailView', $q->id) != 'yes') {
 			return getTranslatedString('SQLError', 'cbQuestion').': PERMISSION';
+		}
+		if ($q->column_fields['qtype']=='Global Search') {
+			return 'select "<b>Global Search</b>";';
 		}
 		include_once 'include/Webservices/Query.php';
 		include_once 'include/Webservices/VtigerModuleOperation.php';
@@ -381,6 +386,27 @@ class cbQuestion extends CRMEntity {
 				'properties' => $graph,
 				'answer' => 'graph '.$graph."\n\n".html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset)."\n".$nodeStyle. "\n".$linkStyle,
 			);
+		} elseif ($q->column_fields['qtype']=='Global Search') {
+			include_once 'include/Webservices/CustomerPortalWS.php';
+			$propsjson = preg_replace("/[\n\r\s]+/", ' ', html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset));
+			$props = json_decode($propsjson, true);
+			$restrictionids = array();
+			if (!empty($props['user'])) {
+				$restrictionids['userId'] = vtws_getWSID($props['user']);
+			}
+			if (!empty($props['account'])) {
+				$restrictionids['accountId'] = vtws_getWSID($props['account']);
+			}
+			if (!empty($props['contact'])) {
+				$restrictionids['contactId'] = vtws_getWSID($props['contact']);
+			}
+			return array(
+				'columns' => html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
+				'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
+				'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
+				'properties' => $propsjson,
+				'answer' => cbwsgetSearchResultsWithTotals($props['query'], $props['searchin'], $restrictionids, $current_user),
+			);
 		} else {
 			include_once 'include/Webservices/Query.php';
 			if ($q->column_fields['sqlquery']=='0') {
@@ -442,13 +468,16 @@ class cbQuestion extends CRMEntity {
 		$ans = self::getAnswer($qid, $params);
 		switch ($ans['type']) {
 			case 'File':
-				$ret = self::getFileFromAnswer($ans);
+				$ret = self::getFileFromAnswer($ans, $params);
 				break;
 			case 'Table':
 				$ret = self::getTableFromAnswer($ans);
 				break;
 			case 'Number':
 				$ret = array_pop($ans['answer'][0]);
+				break;
+			case 'Global Search':
+				$ret = array_pop($ans['answer']['records']);
 				break;
 			case 'Pie':
 				$ret = self::getChartFromAnswer($ans);
@@ -478,7 +507,7 @@ class cbQuestion extends CRMEntity {
 	/**
 	 * properties: see wiki for the latest definition
 	 */
-	public static function getFileFromAnswer($ans) {
+	public static function getFileFromAnswer($ans, $params = array()) {
 		$bqfiles = 'cache/bqfiles';
 		if (!is_dir($bqfiles)) {
 			mkdir($bqfiles, 0777, true);
@@ -487,12 +516,20 @@ class cbQuestion extends CRMEntity {
 		if (!empty($ans)) {
 			$properties = json_decode($ans['properties']);
 			if (!empty($properties->filename)) {
+				$fname = utf8_decode($properties->filename);
+				if (!empty($params) && is_array($params)) {
+					$strtemplate = new Vtiger_StringTemplate();
+					foreach ($params as $key => $value) {
+						$strtemplate->assign($key, $value);
+					}
+					$fname = $strtemplate->merge($fname);
+				}
 				if (empty($properties->filenamedateformat)) {
 					$now = date('YmdHis');
 				} else {
 					$now = date($properties->filenamedateformat);
 				}
-				$fname = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%]/', '', $properties->filename));
+				$fname = preg_replace('/[^a-zA-Z0-9_\.\%]/', '', $fname);
 				if (strpos($fname, '%s')===false) {
 					$fname .= '_%s';
 				} else {

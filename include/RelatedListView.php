@@ -140,7 +140,6 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	$url_qry ='&order_by='.$order_by.'&sorder='.$sorder;
 	$computeCount = isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : '';
 	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $module) || (boolean)$computeCount) {
-		// Retreiving the no of rows
 		list($specialPermissionWithDuplicateRows,$cached) = VTCacheUtils::lookupCachedInformation('SpecialPermissionWithDuplicateRows');
 		if (false && $specialPermissionWithDuplicateRows) {
 			// FIXME FIXME FIXME FIXME
@@ -183,7 +182,6 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	ListViewSession::setSessionQuery($relatedmodule, $query, $relviewId);
 	coreBOS_Session::set('lvs^'.$relatedmodule.'^'.$relviewId.'^start', $start);
 
-	//Retrieve the List View Table Header
 	$id = vtlib_purify($_REQUEST['record']);
 	$listview_header = getListViewHeader($focus, $relatedmodule, '', $sorder, $order_by, $id, '', $module, $skipActions);//"Accounts");
 	if ($noofrows > 15) {

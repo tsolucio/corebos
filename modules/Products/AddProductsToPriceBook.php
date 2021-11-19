@@ -67,7 +67,6 @@ if (isset($_REQUEST['sorder']) && $_REQUEST['sorder'] != '') {
 	$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 }
 
-//Retreive the list of Pdo/Srv
 $list_query = getListQuery($currentModule);
 
 if (isset($order_by) && $order_by != '') {
@@ -78,7 +77,7 @@ $list_query .= ' and '.$tablename.'.discontinued<>0 group by vtiger_crmentity.cr
 $list_result = $adb->query($list_query);
 $num_rows = $adb->num_rows($list_result);
 
-//Retreiving the array of already releated Pdo/Srv
+//Retrieving the array of already related Pdo/Srv
 $sql1 = 'select productid
 	FROM vtiger_pricebookproductrel
 	INNER JOIN vtiger_crmobject ON vtiger_crmobject.crmid = vtiger_pricebookproductrel.productid
@@ -114,8 +113,6 @@ $other_text .='
 	</table>';
 
 $smarty->assign('PRODUCTLISTHEADER', "<img height='1' src='themes/images/blank.gif'>\n" . $other_text);
-
-//Retreive the List View Table Header
 
 $list_header = '';
 $list_header .= '<tr>';

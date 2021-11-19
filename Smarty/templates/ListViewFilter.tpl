@@ -1,8 +1,8 @@
 {if !isset($moduleShowFilter) || $moduleShowFilter}
-<table width="100%" class="layerPopupTransport">
+<table style="width:100%;" class="slds-card">
 	<tr>
 		<td width="25%" class="small" nowrap align="left">{$recordListRange}</td>
-		<td><table align="center">
+		<td><table>
 				<tr>
 					<td>
 						<!-- Filters -->
@@ -10,10 +10,11 @@
 						<table cellpadding="5" cellspacing="0" class="small cblds-table-border_sep cblds-table-bordersp_medium">
 							<tr>
 								<td style="padding-left:5px;padding-right:5px" align="center">
-									<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" style="max-width:240px;" onchange="showDefaultCustomView(this, '{$MODULE}')">{$CUSTOMVIEW_OPTION}</SELECT>
+									<strong>{$APP.LBL_VIEW}</strong>
+									<select name="viewname" id="viewname" class="slds-select" style="max-width:240px;" onchange="showDefaultCustomView(this, '{$MODULE}')">{$CUSTOMVIEW_OPTION}</select>
 								</td>
 								{if isset($ALL) && $ALL eq 'All'}
-								<td style="padding-left:5px;padding-right:5px" align="center"><a href="index.php?module={$MODULE}&action=CustomView">{$APP.LNK_CV_CREATEVIEW}</a>
+								<td style="padding-left:5px;padding-right:5px;width:45%;" align="center"><a href="index.php?module={$MODULE}&action=CustomView">{$APP.LNK_CV_CREATEVIEW}</a>
 									<span class="small">|</span>
 									{if isset($EDIT_FILTER_ALL) && $EDIT_FILTER_ALL eq '1'}
 										<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}&permitall=true">{$APP.LNK_CV_EDIT}</a>

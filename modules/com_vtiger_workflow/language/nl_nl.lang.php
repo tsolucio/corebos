@@ -62,7 +62,7 @@ $mod_strings = array(
 'LBL_EXPRESSION'=>'Formule',
 'LBL_SET_EXPRESSION'=>'Stel Formule in',
 
-'LBL_MANUAL'=>'Systeem. Mass Actions.',
+'LBL_MANUAL'=>'Systeem. Mass Actions',
 'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nieuwe Conditiegroep',
 
@@ -95,7 +95,7 @@ $mod_strings = array(
 'Site Url' => 'Site URL',
 'Portal Url' => 'Portaal URL',
 'groupEmailList' => 'Group Email List',
-
+'groupUsersWsIdList' => 'Group Users Web Service Id List',
 'Recommended frequency for Workflow is 15 mins' => 'Recommended frequency for Workflow is 15 mins',
 'Workflow'=>'Werkstroom',
 'WORKFLOW_DELETE_CONFIRMATION' => 'Are you sure you want to delete this Workflow?',
@@ -257,6 +257,16 @@ $mod_strings = array(
 'LBL_SELECT_SENDGRID_EMAIL_TEMPLATE' => 'Select SendGrid Email Template',
 'LBL_LOAD_SENDGRID_TEMPLATES' => 'Load SendGrid Templates',
 'LBL_PREVIEW_BUTTON' => 'Preview',
+'Records execution success' => 'Records execution success',
+'Records put in queue' => 'Records put in queue',
+'Records' => 'Records:',
+'LBL_ONESIGNAL_NOTIFICATION_HEADING' => 'Notification Heading',
+'LBL_ONESIGNAL_NOTIFICATION_SUBTITLE' => 'Notification Subtitle',
+'LBL_NOTIFICATION_CONTENT' => 'Notification Content',
+'LBL_ONESIGNAL_NOTIFICATION_INCLUDE_SEGMENT' => 'Included Segments',
+'LBL_ONESIGNAL_NOTIFICATION_EXCLUDED_SEGMENT' => 'Excluded Segments',
+'CBSendOneSignalNotificationWorkFlowTask' => 'Send OneSignal Notification',
+'Send OneSignal Notification' => 'Send OneSignal Notification',
 'CBUpsertTask' => 'Upsert',
 );
 ?>

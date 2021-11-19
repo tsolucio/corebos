@@ -98,7 +98,7 @@
 <table border=0 cellspacing=0 cellpadding=3 width=100% class="listRow" id="modmgr_custom">
 <tr>
 	<td class="big tableHeading" colspan=2 align="center">{$MOD.VTLIB_LBL_MODULE_MANAGER_CUSTOMMOD}</td>
-	<td class="big tableHeading" colspan=4 align="center">&nbsp;</td>
+	<td class="big tableHeading" colspan=5 align="center">&nbsp;</td>
 </tr>
 
 {assign var="totalCustomModules" value=0}
@@ -108,7 +108,7 @@
 	{assign var="totalCustomModules" value=$totalCustomModules+1}
 
 	{assign var="modulelabel" value=$modulename|getTranslatedString:$modulename}
-	<tr height="30px">
+	<tr height="30px" id="module_{$modulename}">
 		<td class="cellText small" width="20px"><img src="{'uparrow.gif'|@vtiger_imageurl:$THEME}" border="0"></td>
 		<td class="cellLabel small"{if $modinfo.presence eq 0 && $modinfo.hassettings} onclick="location.href='index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}';"{/if}>{$modulelabel}</td>
 		<td class="cellText small" width="15px" align=center>
@@ -134,6 +134,11 @@
 			{if $modinfo.presence eq 0 && $modinfo.hassettings}<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}" title="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}"></a>
 			{elseif $modinfo.hassettings eq false}&nbsp;
 			{/if}
+		</td>
+		<td class="cellText small" width="15px" align=center>
+			<a onclick="deleteModule('{$modulename}');">
+				<img src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$modulelabel} {'LBL_DELETE'|@getTranslatedString}" title="{$modulelabel} {'LBL_DELETE'|@getTranslatedString}">
+			</a>
 		</td>
 	</tr>
 {/if}

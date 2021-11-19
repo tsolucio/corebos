@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+require_once 'Smarty_setup.php';
 require_once 'modules/Users/Users.php';
 require_once 'include/logging.php';
 require_once 'include/utils/UserInfoUtil.php';
@@ -38,24 +39,11 @@ if (isset($_REQUEST['dup_check']) && $_REQUEST['dup_check'] != '') {
 }
 if (!empty($_REQUEST['user_role']) && !is_admin($current_user) && $_REQUEST['user_role'] != $current_user->roleid) {
 	$log->fatal('SECURITY:Non-Admin user:'. $current_user->id . ' attempted to change user role');
-	$theme = basename(vtlib_purify($theme));
-	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
-	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) . "' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-			<span class='genHeaderSmall'>SECURITY: Non-Admin user attempted to change user role</span>
-		</td>
-		</tr>
-		<tr>
-		<td class='small' align='right' nowrap='nowrap'>
-		<a href='index.php?module=Users&action=Logout'> ".$app_strings['LBL_GO_BACK'].'</a><br></td>
-		</tr>
-		</tbody></table>
-		</div>
-		</td></tr></table>';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+	$smarty->assign('ERROR_MESSAGE', 'SECURITY: Non-Admin user attempted to change user role.');
+	$smarty->display('applicationmessage.tpl');
 	exit;
 }
 
@@ -67,7 +55,12 @@ if ((empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN']!==(in
 }
 
 if ((isset($_POST['record']) && !is_admin($current_user) && $_POST['record'] != $current_user->id) || (!isset($_POST['record']) && !is_admin($current_user))) {
-	echo 'Unauthorized access to user administration.';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+	$smarty->assign('ERROR_MESSAGE', 'Unauthorized access to user administration.');
+	$smarty->display('applicationmessage.tpl');
+	exit;
 }
 
 $focus = new Users();

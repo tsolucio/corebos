@@ -102,5 +102,6 @@ function vtSaveTask($adb, $request) {
 	</script>
 	<?php
 }
+Vtiger_Request::validateRequest();
 vtSaveTask($adb, $_REQUEST);
 ?>

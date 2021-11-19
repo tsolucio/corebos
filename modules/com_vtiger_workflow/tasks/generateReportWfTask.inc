@@ -80,7 +80,7 @@ class generateReportWfTask extends VTTask {
 					$this->qnfield = $adb->query_result($res, 0, 'cbquestionid');
 				}
 			}
-			$res = cbQuestion::getFormattedAnswer((int)$this->qnfield, array());
+			$res = cbQuestion::getFormattedAnswer((int)$this->qnfield, $entity->WorkflowContext);
 			if ($res) {
 				$lines = file($res);
 				if (count($lines) < 2) {

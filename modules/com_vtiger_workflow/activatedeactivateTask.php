@@ -31,5 +31,6 @@ function activatedeactivateTask($adb, $request) {
 	</script>
 	<?php
 }
+Vtiger_Request::validateRequest();
 activatedeactivateTask($adb, $_REQUEST);
 ?>

@@ -90,7 +90,18 @@
 	</tr>
 	<tr>
 		<td colspan="2" valign="top">
-			{include file='AdvanceFilter.tpl' SOURCE='reports'}
+			<div class="slds-grid slds-m-top_small cbds-advanced-search--active" id="cbds-advanced-search">
+				<div class="slds-col">
+					<div class="slds-expression slds-p-bottom_xx-large slds-p-horizontal_small">
+						<input type="hidden" name="advft_criteria" id="advft_criteria" value="">
+						<input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value="">
+						<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css">
+						<link rel="stylesheet" href="include/style.css" type="text/css">
+						<script src="include/components/ldsmodal.js"></script>
+						{include file='AdvanceFilter.tpl' SOURCE='reports-modal' MODULES_BLOCK=[]}
+					</div>
+				</div>
+			</div>
 		</td>
 	</tr>
 </table>

@@ -36,8 +36,8 @@ class Vtiger_LanguageImport extends Vtiger_LanguageExport {
 
 	/**
 	 * Import Module from zip file
-	 * @param String Zip file name
-	 * @param Boolean True for overwriting existing module
+	 * @param string Zip file name
+	 * @param boolean True for overwriting existing module
 	 */
 	public function import($zipfile, $overwrite = false) {
 		$this->initImport($zipfile, $overwrite);
@@ -47,9 +47,9 @@ class Vtiger_LanguageImport extends Vtiger_LanguageExport {
 
 	/**
 	 * Update Module from zip file
-	 * @param Object Instance of Language (to keep Module update API consistent)
-	 * @param String Zip file name
-	 * @param Boolean True for overwriting existing module
+	 * @param object Instance of Language (to keep Module update API consistent)
+	 * @param string Zip file name
+	 * @param boolean True for overwriting existing module
 	 */
 	public function update($instance, $zipfile, $overwrite = true) {
 		$this->import($zipfile, $overwrite);

@@ -18,7 +18,6 @@ if ($foldercount > 0) {
 		$query = substr($list_query, 0, stripos($list_query, ' WHERE '));
 		$folder_id = $adb->query_result($result, $i, 'folderid');
 		$query .= " where vtiger_crmentity.deleted=0 and vtiger_notes.folderid = $folder_id";
-		//Retreiving the no of rows
 		$count_result = $adb->query(mkCountQuery($query));
 		$num_records = $adb->query_result($count_result, 0, 'count');
 		if ($num_records > 0) {

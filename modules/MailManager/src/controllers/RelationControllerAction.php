@@ -48,6 +48,13 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 			'saved_toid' => $mailrecord->_to[0],
 			'ccmail' => empty($mailrecord->_cc) ? '' : implode(',', $mailrecord->_cc),
 			'bccmail' => empty($mailrecord->_bcc) ? '' : implode(',', $mailrecord->_bcc),
+			'bounced' => '0',
+			'clicked' => '0',
+			'spamreport' => '0',
+			'delivered' => '1',
+			'dropped' => '0',
+			'open' => '1',
+			'unsubscribe' => '0',
 		);
 		$focus = createEmailRecordWithSave($element);
 		$emailid = $focus->id;

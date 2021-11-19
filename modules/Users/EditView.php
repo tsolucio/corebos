@@ -29,7 +29,12 @@ if (!empty($_REQUEST['record'])) {
 	$smarty->assign('ID', vtlib_purify($_REQUEST['record']));
 	$mode='edit';
 	if (!is_admin($current_user) && $_REQUEST['record'] != $current_user->id) {
-		die('Unauthorized access to user administration.');
+		$smarty = new vtigerCRM_Smarty();
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+		$smarty->assign('ERROR_MESSAGE', 'Unauthorized access to user administration.');
+		$smarty->display('applicationmessage.tpl');
+		die();
 	}
 	$focus->retrieve_entity_info(vtlib_purify($_REQUEST['record']), 'Users');
 	$smarty->assign('USERNAME', getFullNameFromArray('Users', $focus->column_fields));
@@ -41,7 +46,8 @@ if (!empty($_REQUEST['record'])) {
 	}
 }
 
-if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
+$canDuplicate = (is_admin($current_user) && isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true');
+if ($canDuplicate) {
 	$focus->id = '';
 	$focus->user_name = '';
 	$mode='create';
@@ -83,7 +89,7 @@ if (isset($_REQUEST['return_action'])) {
 	$smarty->assign('RETURN_ACTION', vtlib_purify($_REQUEST['return_action']));
 	$RETURN_ACTION = vtlib_purify($_REQUEST['return_action']);
 }
-if ((empty($_REQUEST['isDuplicate']) || $_REQUEST['isDuplicate'] != 'true') && isset($_REQUEST['return_id'])) {
+if (!$canDuplicate && isset($_REQUEST['return_id'])) {
 	$smarty->assign('RETURN_ID', vtlib_purify($_REQUEST['return_id']));
 	$RETURN_ID = vtlib_purify($_REQUEST['return_id']);
 } else {
@@ -106,7 +112,7 @@ if (isset($_REQUEST['Edit']) && $_REQUEST['Edit'] == ' Edit ') {
 	$smarty->assign('READONLY', 'readonly');
 	$smarty->assign('USERNAME_READONLY', 'readonly');
 }
-if ((empty($_REQUEST['isDuplicate']) || $_REQUEST['isDuplicate'] != 'true') && isset($_REQUEST['record'])) {
+if (!$canDuplicate && isset($_REQUEST['record'])) {
 	$smarty->assign('USERNAME_READONLY', 'readonly');
 }
 $HomeValues = $focus->getHomeStuffOrder($focus->id);
@@ -122,18 +128,8 @@ $smarty->assign('tagshow_options', array(
  'hcylinder' => $mod_strings['hcylinder'],
  'vcylinder' => $mod_strings['vcylinder'],
 ));
-$smarty->assign('DUPLICATE', (isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : ''));
+$smarty->assign('DUPLICATE', $canDuplicate);
 $smarty->assign('USER_MODE', $mode);
-if (!empty($_REQUEST['modechk'])) {
-	if ($_REQUEST['modechk'] == 'prefview') {
-		$parenttab = '';
-	} else {
-		$parenttab = 'Settings';
-	}
-} else {
-	$parenttab = 'Settings';
-}
-$smarty->assign('PARENTTAB', $parenttab);
 coreBOS_Session::set('Users_FORM_TOKEN', rand(5, 2000) * rand(2, 7));
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
@@ -156,6 +152,6 @@ if ($mode == 'create') {
 	}
 }
 $smarty->assign('LDAP_BUTTON', $LdapBtnText);
-
+$smarty->assign('IS_ADMIN', is_admin($current_user));
 $smarty->display('UserEditView.tpl');
 ?>

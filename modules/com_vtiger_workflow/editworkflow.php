@@ -45,6 +45,11 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	} else {
 		if (isset($request['workflow_id'])) {
 			$workflow = $wfs->retrieve($request['workflow_id']);
+			if (!$workflow->checkNonAdminAccess()) {
+				$errorUrl = $module->errorPageUrl(getTranslatedString('LBL_PERMISSION'));
+				$util->redirectTo($errorUrl, getTranslatedString('LBL_PERMISSION'));
+				return;
+			}
 			if ($workflow->executionCondition!=VTWorkflowManager::$ON_SCHEDULE) {
 				$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
 			} else {
@@ -158,6 +163,27 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$smarty->assign('workflow', $workflow);
 	$smarty->assign('saveType', !empty($workflow->id) ? 'edit' : 'new');
 	$smarty->assign('module', $module);
+
+	if (coreBOS_Session::has('malaunch_records')) {
+		$malaunch_records = coreBOS_Session::get('malaunch_records');
+		$smarty->assign('malaunch_records', $malaunch_records);
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-success');
+		if ($workflow->options=='onerecord') {
+			$msg = $mod['Records execution success'];
+		} else {
+			$msg = $mod['Records put in queue'];
+		}
+		$msg .= '<br />';
+		$msg .= $mod['Records'];
+		$msg .= '<br />';
+		$msg .= '<ul>';
+		foreach ($malaunch_records as $record) {
+			$msg .= '<li>'.$record.'</li>';
+		}
+		$msg .= '</ul>';
+		$smarty->assign('ERROR_MESSAGE', $msg);
+		coreBOS_Session::delete('malaunch_records');
+	}
 
 	$smarty->display("{$module->name}/EditWorkflow.tpl");
 }
