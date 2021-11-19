@@ -26,8 +26,8 @@
  */
 function cbwsProcessMap($mapid, $parameters, $user) {
 	global $adb, $log;
-	$mapid = vtws_getWSID($mapid);
-	if ($mapid===false || $mapid=='0x0') {
+	$bmapid = vtws_getWSID($mapid);
+	if ($bmapid===false || $bmapid=='0x0') {
 		// we try to search it as a string
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$maprs = $adb->pquery(
@@ -35,9 +35,10 @@ function cbwsProcessMap($mapid, $parameters, $user) {
 			array($mapid)
 		);
 		if ($maprs && $adb->num_rows($maprs)>0) {
-			$mapid = vtws_getEntityId('cbMap').'x'.$maprs->fields['cbmapid'];
+			$bmapid = vtws_getEntityId('cbMap').'x'.$maprs->fields['cbmapid'];
 		}
 	}
+	$mapid = $bmapid;
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $mapid);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
