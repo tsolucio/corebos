@@ -87,7 +87,7 @@ if (isset($_REQUEST['deleteImage']) && $_REQUEST['deleteImage'] == 'true') {
 if (isset($_REQUEST['changepassword']) && $_REQUEST['changepassword'] == 'true') {
 	$focus->retrieve_entity_info($_REQUEST['record'], 'Users');
 	$focus->id = vtlib_purify($_REQUEST['record']);
-	if (isset($_REQUEST['new_password']) && !$focus->change_password(vtlib_purify($_REQUEST['old_password']), vtlib_purify($_REQUEST['new_password']))) {
+	if (isset($_REQUEST['new_password']) && !$focus->change_password(vtlib_purify($_REQUEST['old_password']), vtlib_purify(substr($_REQUEST['new_password'], 0, 1024)))) {
 		header('Location: index.php?action=DetailView&module=Users&record='.$focus->id.'&error_string='.urlencode($focus->error_string));
 		exit;
 	}

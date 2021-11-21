@@ -522,7 +522,7 @@ class Users extends CRMEntity {
 	 * @param string new password
 	 * @return boolean If passwords pass verification and query succeeds, return true, else return false
 	 */
-	public function change_password($user_password, $new_password, $dieOnError = true) {
+	public function change_password($user_password, $new_password) {
 		global $current_user, $log, $adb;
 		$usr_name = $this->column_fields['user_name'];
 		$log->debug("Starting password change for $usr_name");

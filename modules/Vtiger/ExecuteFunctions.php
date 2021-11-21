@@ -479,7 +479,7 @@ switch ($functiontocall) {
 			$focus->mode='edit';
 			$focus->id = $userid;
 			$focus->retrieve_entity_info($userid, 'Users');
-			$ret = $focus->change_password('old_password', vtlib_purify($_REQUEST['new_password']));
+			$ret = $focus->change_password('old_password', vtlib_purify(substr($_REQUEST['new_password'], 0, 1024)));
 			if ($ret) {
 				$ret = array('password'=>$ret);
 			} else {

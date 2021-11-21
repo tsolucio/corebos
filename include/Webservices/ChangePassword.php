@@ -47,7 +47,8 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 			$db = PearDatabase::getInstance();
 			$db->dieOnError = false;
 			$db->startTransaction();
-			$success = $newUser->change_password($oldPassword, $newPassword, false);
+			$newPassword = substr($newPassword, 0, 1024);
+			$success = $newUser->change_password($oldPassword, $newPassword);
 			$error = $db->hasFailedTransaction();
 			$db->completeTransaction();
 			VTWS_PreserveGlobal::flush();

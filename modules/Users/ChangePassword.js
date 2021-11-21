@@ -106,6 +106,7 @@ function changepassword(is_admin, userid) {
 		document.getElementById('err_msg').innerHTML = err_msg;
 		return;
 	}
+	new_password = new_password.substring(0, 1024);
 	let password = corebos_Password.passwordChecker(new_password);
 	if (!password) {
 		err_msg = alert_arr['PASSWORD REQUIREMENTS NOT MET'];
