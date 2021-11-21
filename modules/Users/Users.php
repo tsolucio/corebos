@@ -228,9 +228,9 @@ class Users extends CRMEntity {
 
 	/**
 	 * Take an unencrypted username and password and return the encrypted password
-	 * @return string encrypted password for storage in DB and comparison against DB password.
-	 * @param string $user_name - Must be non null and at least 2 characters
-	 * @param string $user_password - Must be non null and at least 1 character.
+	 * @param string user password - Must be non null and at least 1 character
+	 * @param string encryption type
+	 * @return string encrypted password for storage in DB and comparison against DB password
 	 */
 	public function encrypt_password($user_password, $crypt_type = '') {
 		// encrypt the password.
@@ -241,15 +241,13 @@ class Users extends CRMEntity {
 			$crypt_type = $this->get_user_crypt_type();
 		}
 
-		// For more details on salt format look at: http://in.php.net/crypt
 		if ($crypt_type == 'MD5') {
 			$salt = '$1$' . $salt . '$';
 		} elseif ($crypt_type == 'BLOWFISH') {
 			$salt = '$2$' . $salt . '$';
 		} elseif ($crypt_type == 'PHP5.3MD5') {
-			//only change salt for php 5.3 or higher version for backward
-			//compactibility.
-			//crypt API is lot stricter in taking the value for salt.
+			//only change salt for php 5.3 or higher version for backward compatibility
+			//crypt API is lot stricter in taking the value for salt
 			$salt = '$1$' . str_pad($salt, 9, '0');
 		}
 		return crypt($user_password, $salt);
@@ -520,9 +518,8 @@ class Users extends CRMEntity {
 
 	/**
 	 * Verify that the current password is correct and write the new password to the database
-	 * @param string $user name - Must be non null and at least 1 character
-	 * @param string $user_password - Must be non null and at least 1 character
-	 * @param string $new_password - Must be non null and at least 1 character
+	 * @param string current password
+	 * @param string new password
 	 * @return boolean If passwords pass verification and query succeeds, return true, else return false
 	 */
 	public function change_password($user_password, $new_password, $dieOnError = true) {

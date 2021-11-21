@@ -9,10 +9,10 @@
  *********************************************************************************/
 
 /**
- * @param String web service ID
- * @param String old password
- * @param String new password
- * @param String confirm password
+ * @param string web service ID
+ * @param string old password
+ * @param string new password
+ * @param string confirm password
  * @param Users curent user
  */
 function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, $user) {
