@@ -32,6 +32,7 @@ class corebos_clickhouse {
 	// Configuration Keys
 	const KEY_ISACTIVE = 'clickhouse_isactive';
 	const HOST = 'clickhouse_host';
+	const DATABASE = 'clickhouse_database';
 	const USERNAME = 'clickhouse_username';
 	const PASSWORD = 'clickhouse_password';
 	const PORT = 'clickhouse_port';
@@ -53,14 +54,17 @@ class corebos_clickhouse {
 	public function initGlobalScope() {
 		$this->clickhouse_host = coreBOS_Settings::getSetting(self::HOST, '');
 		$this->clickhouse_port = coreBOS_Settings::getSetting(self::PORT, '');
-		$this->clickhouse_username = coreBOS_Settings::getSetting(self::USERNAME, '');
+		$this->clickhouse_database = coreBOS_Settings::getSetting(self::DATABASE, '');
+		$this->clickhouse_username = coreBOS_Settings::getSetting(self::USERNAME, 'default');
 		$this->clickhouse_password = coreBOS_Settings::getSetting(self::PASSWORD, '');
 	}
 
-	public function saveSettings($isactive, $host, $port, $username, $password) {
+	public function saveSettings($isactive, $host, $port, $database, $username, $password) {
+		global $adb;
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::HOST, $host);
 		coreBOS_Settings::setSetting(self::PORT, $port);
+		coreBOS_Settings::setSetting(self::DATABASE, $database);
 		coreBOS_Settings::setSetting(self::USERNAME, $username);
 		coreBOS_Settings::setSetting(self::PASSWORD, $password);
 
@@ -77,6 +81,7 @@ class corebos_clickhouse {
 			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
 			'clickhouse_host' => coreBOS_Settings::getSetting(self::HOST, ''),
 			'clickhouse_port' => coreBOS_Settings::getSetting(self::PORT, ''),
+			'clickhouse_database' => coreBOS_Settings::getSetting(self::DATABASE, ''),
 			'clickhouse_username' => coreBOS_Settings::getSetting(self::USERNAME, ''),
 			'clickhouse_password' => coreBOS_Settings::getSetting(self::PASSWORD, '')
 		);
@@ -91,9 +96,25 @@ class corebos_clickhouse {
 		$clickhouse = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
 		$host = coreBOS_Settings::getSetting(self::HOST, '');
 		$port = coreBOS_Settings::getSetting(self::PORT, '');
-		$user = coreBOS_Settings::getSetting(self::USERNAME, '');
+		$database = coreBOS_Settings::getSetting(self::DATABASE, '');
+		$user = coreBOS_Settings::getSetting(self::USERNAME, 'default');
 		$pass = coreBOS_Settings::getSetting(self::PASSWORD, '');
-		return ($clickhouse != '0' && $usetrans != '' && $user !='' && $pass !='');
+		return ($clickhouse != '0' && $host != '' && $port != '' && $database != '' );
+	}
+
+	public static function connectToClickhouse() {
+		$config = [
+			'host' => coreBOS_Settings::getSetting(self::HOST, ''),
+			'port' => coreBOS_Settings::getSetting(self::PORT, ''),
+			'username' => coreBOS_Settings::getSetting(self::PASSWORD, ''),
+			'password' => coreBOS_Settings::getSetting(self::PASSWORD, '')
+		];
+		$db = new ClickHouseDB\Client($config);
+		$db->database('aaa');
+		$db->setTimeout(1.5);      // 1500 ms
+		$db->setTimeout(10);       // 10 seconds
+		$db->setConnectTimeOut(5);
+		return $db;
 	}
 }
 ?>

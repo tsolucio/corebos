@@ -41,6 +41,12 @@
 			</div>
 		</div>
 		<div class="slds-form-element slds-m-top--small">
+			<label class="slds-form-element__label" for="database">{'clickhouse_database'|@getTranslatedString:$MODULE}</label>
+			<div class="slds-form-element__control">
+				<input type="text" id="clickhouse_database" name="clickhouse_database" class="slds-input" value="{$clickhouse_database}" />
+			</div>
+		</div>
+		<div class="slds-form-element slds-m-top--small">
 			<label class="slds-form-element__label" for="username">{'clickhouse_username'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="clickhouse_username" name="clickhouse_username" class="slds-input" value="{$clickhouse_username}" />
