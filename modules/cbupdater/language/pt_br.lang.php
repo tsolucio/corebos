@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger
  * Portions created by JPL TSolucio, S.L are Copyright (C) JPL TSolucio, S.L.
  * All Rights Reserved.
- * Contributor: Ranieri Slemer at 25-03-2020
+ * Contributor: Ranieri Slemer at 22-11-2021
  ************************************************************************************/
 
 $mod_strings = array(
@@ -22,20 +22,20 @@ $mod_strings = array(
 	'author' => 'Autor',
 	'filename' => 'Nome do arquivo',
 	'classname' => 'Classe',
-	'execstate' => 'Estado',
+	'execstate' => 'Status',
 	'execdate' => 'Data de execução',
 	'execorder' => 'Ordem de execução',
-	'systemupdate' => 'Atualização do sistema',
+	'systemupdate' => 'Atualização de sistema',
 	'Pending' => 'Pendente',
 	'Executed' => 'Executado',
-	'Continuous' => 'Em execução',
-	'Error' => 'Erro',
+	'Continuous' => 'Contínuo',
+	'Error' => 'ERRO',
 	'perspective' => 'Perspetiva',
-	'blocked' => 'Bloqueado',
-	'Block Changeset' => 'Bloquear configuração de alterações',
-	'UnBlock Changeset' => 'Desbloquear configuração de alterações',
+	'blocked' => 'Travado',
+	'Block Changeset' => 'Travar configuração de alterações',
+	'UnBlock Changeset' => 'Destravar configuração de alterações',
 	'Execute' => 'Executar',
-	'Undo' => 'Refazer',
+	'Undo' => 'Desfazer',
 	'ExportXML' => 'Exportar alterações',
 	'GetUpdates' => 'Importar atualizações',
 	'Apply' => 'Aplicar',
@@ -45,7 +45,7 @@ $mod_strings = array(
 	'Importing' => 'A Importar',
 	'Processing' => 'A processar',
 	'CleanUp' => 'Limpar',
-	'Deleting' => 'Apagar',
+	'Deleting' => 'Apagando',
 	'ImportDone' => 'Importação concluída',
 	'ImportError' => 'Erro ao importar',
 	'err_noupdatefile' => 'Arquivo atualizado não existe: Por favor reveja a sua instalação.',
