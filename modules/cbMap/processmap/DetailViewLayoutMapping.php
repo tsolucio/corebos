@@ -51,15 +51,18 @@ class DetailViewLayoutMapping extends processcbMap {
 		$mlist_ids=array();
 		foreach ($mlist as $rellabel) {
 			$tid=getTabid($rellabel);
+			$sql = 'select relation_id,fieldname from vtiger_relatedlists
+				left join vtiger_field on relationfieldid=fieldid where tabid=? and ';
 			if (is_numeric($tid)) {
-				$resid=$adb->pquery('select relation_id,label from vtiger_relatedlists where tabid=? and related_tabid=?', array($origintab,$tid));
+				$resid=$adb->pquery($sql.'related_tabid=?', array($origintab, $tid));
 			} else {
-				$resid=$adb->pquery('select relation_id,label from vtiger_relatedlists where tabid=? and label=?', array($origintab,$rellabel));
+				$resid=$adb->pquery($sql.'label=?', array($origintab, $rellabel));
 			}
 			if ($resid) {
 				$relid=$adb->fetch_row($resid);
 				if ($relid) {
 					$mlist_ids[$rellabel]=$relid[0];
+					$mlist_ids['fieldname']=$relid[1];
 				}
 			}
 		}
@@ -99,6 +102,7 @@ class DetailViewLayoutMapping extends processcbMap {
 				if (empty($block['label'])) {
 					$block['label'] = getTranslatedString($block['loadfrom'], $block['loadfrom']);
 				}
+				$block['relatedfield'] = $rels['fieldname'];
 				if (!empty($rels[$block['loadfrom']])) {
 					$block['relatedid'] = $rels[$block['loadfrom']];
 					$restrictedRelations[] = $rels[$block['loadfrom']];
