@@ -782,6 +782,15 @@
             'reference' => 'ec72a99028ba5e21a0acad92047b85e128cbf81f',
             'dev_requirement' => false,
         ),
+        'smi2/phpclickhouse' => array(
+            'pretty_version' => '1.4.1',
+            'version' => '1.4.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../smi2/phpclickhouse',
+            'aliases' => array(),
+            'reference' => '17aea5a0c90f7aa9541d74f7567849938eccfcce',
+            'dev_requirement' => false,
+        ),
         'starkbank/ecdsa' => array(
             'pretty_version' => '0.0.5',
             'version' => '0.0.5.0',
