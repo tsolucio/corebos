@@ -71,5 +71,6 @@ return array(
     'Geocoder\\' => array($vendorDir . '/willdurand/geocoder'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Clue\\StreamFilter\\' => array($vendorDir . '/clue/stream-filter/src'),
+    'ClickHouseDB\\' => array($vendorDir . '/smi2/phpclickhouse/src'),
     'Automattic\\WooCommerce\\' => array($vendorDir . '/automattic/woocommerce/src/WooCommerce'),
 );
