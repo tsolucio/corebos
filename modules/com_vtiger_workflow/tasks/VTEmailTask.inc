@@ -396,6 +396,7 @@ class VTEmailTask extends VTTask {
 		$focus = new Messages();
 
 		$focus->column_fields['messagename'] = $to_name;
+		$focus->column_fields['messagesrelatedto'] = $to_id;
 		$no_message = false;
 		switch ($to_module) {
 			case 'Accounts':
