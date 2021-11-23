@@ -52,7 +52,7 @@ class DetailViewLayoutMapping extends processcbMap {
 		foreach ($mlist as $rellabel) {
 			$tid=getTabid($rellabel);
 			$sql = 'select relation_id,fieldname from vtiger_relatedlists
-				left join vtiger_field on relationfieldid=fieldid where tabid=? and ';
+				left join vtiger_field on relationfieldid=fieldid where vtiger_relatedlists.tabid=? and ';
 			if (is_numeric($tid)) {
 				$resid=$adb->pquery($sql.'related_tabid=?', array($origintab, $tid));
 			} else {
@@ -102,7 +102,7 @@ class DetailViewLayoutMapping extends processcbMap {
 				if (empty($block['label'])) {
 					$block['label'] = getTranslatedString($block['loadfrom'], $block['loadfrom']);
 				}
-				$block['relatedfield'] = $rels['fieldname'];
+				$block['relatedfield'] = empty($rels['fieldname']) ? '' : $rels['fieldname'];
 				if (!empty($rels[$block['loadfrom']])) {
 					$block['relatedid'] = $rels[$block['loadfrom']];
 					$restrictedRelations[] = $rels[$block['loadfrom']];
