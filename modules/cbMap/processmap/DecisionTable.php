@@ -71,7 +71,7 @@ require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 
 class DecisionTable extends processcbMap {
 
-	const DOESNOTPASS = 'constant value';
+	const DOESNOTPASS = '__DoesNotPass__';
 
 	public function processMap($ctx) {
 		global $adb, $current_user;
