@@ -2314,7 +2314,12 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 	$col_arr=$field_values_array['columnnames_array'];
 	$fld_labl_arr=$field_values_array['fieldlabels_array'];
 	$ui_type=$field_values_array['fieldname_uitype'];
-
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns()->getDeduplcationFields();
+	}
 	$dup_query = getDuplicateQuery($module, $field_values, $ui_type);
 	// added for page navigation
 	$dup_count_query = substr($dup_query, stripos($dup_query, 'FROM'), strlen($dup_query));
@@ -2339,7 +2344,6 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 	if ($use_limit) {
 		$dup_query .= " LIMIT $limit_start_rec, $list_max_entries_per_page";
 	}
-
 	$nresult=$adb->query($dup_query);
 	$no_rows=$adb->num_rows($nresult);
 	if ($no_rows == 0) {
@@ -2442,6 +2446,13 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 			}
 
 			$fld_values[$grp][$ii][$fld_labl_arr[$k]] = $result[$col_arr[$k]];
+		}
+		if (isset($cbMapLC)) {
+			foreach ($cbMapLC['ListFields'] as $label => $field) {
+				$modObj = CRMEntity::getInstance($module);
+				$modObj->retrieve_entity_info($result['recordid'], $module);
+				$fld_values[$grp][$ii][$label] = $modObj->column_fields[$field];
+			}
 		}
 		$fld_values[$grp][$ii]['Entity Type'] = $result['deleted'];
 		$ii++;
