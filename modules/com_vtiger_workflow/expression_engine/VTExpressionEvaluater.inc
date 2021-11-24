@@ -126,6 +126,8 @@ class VTFieldExpressionEvaluater {
 			'max' => '__cb_max',
 			'sub_workdays' => '__cb_sub_workdays',
 			'average' => 'cb_average',
+			'getCurrentConfiguredTaxValues' => '__cb_getCurrentConfiguredTaxValues',
+			'getCurrencyConversionValue' => '__cb_getCurrencyConversionValue',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',
