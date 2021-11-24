@@ -32,7 +32,7 @@ class VTUpdateFieldsTask extends VTTask {
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 		$isqueue=$entity->isqueue;
-		$taskQueue = new VTTaskQueue($adb);
+		$cbmq = coreBOS_MQTM::getInstance();
 		$moduleName = $entity->getModuleName();
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
@@ -91,7 +91,12 @@ class VTUpdateFieldsTask extends VTTask {
 					}
 					if (count($relmodule)>3 && !$isqueue) {
 						$delay = strtotime(' +5 minutes');
-						$taskQueue->queueTask($this->id, $entityId, $delay);
+						$msg = array(
+							'taskId' => $this->id,
+							'entityId' => $entityId,
+							'when' => $delay
+						);
+						$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, 8640000, 0, 0, json_encode($msg));
 						return;
 					}
 					$moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, Users::getActiveAdminUser());
