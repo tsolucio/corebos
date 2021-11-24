@@ -17,7 +17,6 @@
 global $adb;
 $bmapname = $currentModule.'_Pivot';
 $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
-
 if ($cbMapid) {
 	$cbMap = cbMap::getMapByID($cbMapid);
 	$cbMapKb = $cbMap->Pivot();
@@ -62,15 +61,15 @@ if ($cbMapid) {
 		for ($i = 0; $i < $count; $i++) {
 			$rec = 0;
 			foreach ($rows as $rw) {
-				$record[$rec] = getTranslatedString($rw['label']).':"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $rw['name']))).'"';
+				$record[$rec] = '"'.getTranslatedString($rw['label']).'":"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $rw['name']))).'"';
 				$rec++;
 			}
 			foreach ($cols as $cl) {
-				$record[$rec] = getTranslatedString($cl['label']).':"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $cl['name']))).'"';
+				$record[$rec] = '"'.getTranslatedString($cl['label']).'":"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $cl['name']))).'"';
 				$rec++;
 			}
 			if (isset($fieldaggr) && $fieldaggr!='') {
-				$record[$rec] = $fieldaggr.':"'.$adb->query_result($list_query, $i, $fieldaggr).'"';
+				$record[$rec] = '"'.$fieldaggr.'":"'.$adb->query_result($list_query, $i, $fieldaggr).'"';
 			}
 			$rec++;
 			$mainfield = getEntityField($currentModule)['fieldname'];
