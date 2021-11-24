@@ -2073,8 +2073,10 @@ class ReportRun extends CRMEntity {
 				$i18nheaderLabel = getTranslatedString($headerLabel, $module);
 				$moduleLabel = '';
 				if (!empty($this->secondarymodule) && in_array($module, $modules_selected)) {
-					$headerLabel = $module.' '.$headerLabel;
-					$i18nheaderLabel = getTranslatedString($module, $module).' '.$i18nheaderLabel;
+					if ($module != $this->primarymodule) {
+						$headerLabel = $module.' '.$headerLabel;
+						$i18nheaderLabel = getTranslatedString($module, $module).' '.$i18nheaderLabel;
+					}
 				}
 				if ($fld->name=='LBL_ACTION') {
 					$jsonheader[] = 'reportrowaction';
@@ -2197,7 +2199,9 @@ class ReportRun extends CRMEntity {
 						$headerLabel = str_replace('_', ' ', $fld->name);
 					}
 					if (!empty($this->secondarymodule) && in_array($module, $modules_selected)) {
-						$headerLabel = $module.' '.$headerLabel;
+						if ($module != $this->primarymodule) {
+							$headerLabel = $module.' '.$headerLabel;
+						}
 					}
 					$header[] = $headerLabel;
 				}
@@ -2299,7 +2303,9 @@ class ReportRun extends CRMEntity {
 							$headerLabel = getTranslatedString(str_replace('_', ' ', $fld->name));
 						}
 						if (!empty($this->secondarymodule) && $moduleLabel != '') {
-							$headerLabel = $moduleLabel.' '. $headerLabel;
+							if ($moduleLabel != $this->primarymodule) {
+								$headerLabel = $module.' '.$headerLabel;
+							}
 						}
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
 						if (empty($returnfieldinfo[$headerLabel]) && !empty($field)) {
@@ -2585,7 +2591,9 @@ class ReportRun extends CRMEntity {
 						$headerLabel = getTranslatedString(str_replace('_', ' ', $fld->name));
 					}
 					if (!empty($this->secondarymodule) && $moduleLabel != '') {
-						$headerLabel = $moduleLabel.' '.$headerLabel;
+						if ($moduleLabel != $this->primarymodule) {
+							$headerLabel = $module.' '.$headerLabel;
+						}
 					}
 					$header .= '<th>'.$headerLabel.'</th>';
 				}
