@@ -19,6 +19,7 @@
 include_once 'vtlib/Vtiger/Module.php';
 require_once 'include/Webservices/Revise.php';
 require_once 'include/Webservices/Create.php';
+require_once 'include/integrations/clickhouse/chchangeset.php';
 
 
 class corebos_clickhouse {
@@ -27,6 +28,7 @@ class corebos_clickhouse {
 	private $clickhouse_port = '';
 	private $clickhouse_password = '';
 	private $clickhouse_username = '';
+	private $clickhouse_database;
 	private $mailup;
 
 	// Configuration Keys
@@ -45,6 +47,7 @@ class corebos_clickhouse {
 	public static $ERROR_NOTCONFIGURED = 1;
 	public static $ERROR_NOACCESSTOKEN = 2;
 
+	private $messagequeue = null;
 
 	public function __construct() {
 		$this->initGlobalScope();
@@ -57,6 +60,7 @@ class corebos_clickhouse {
 		$this->clickhouse_database = coreBOS_Settings::getSetting(self::DATABASE, '');
 		$this->clickhouse_username = coreBOS_Settings::getSetting(self::USERNAME, 'default');
 		$this->clickhouse_password = coreBOS_Settings::getSetting(self::PASSWORD, '');
+		$this->messagequeue = coreBOS_MQTM::getInstance();
 	}
 
 	public function saveSettings($isactive, $host, $port, $database, $username, $password) {
@@ -69,9 +73,13 @@ class corebos_clickhouse {
 		coreBOS_Settings::setSetting(self::PASSWORD, $password);
 
 		$em = new VTEventsManager($adb);
+		$cs = new clickhousechangeset(0, false);
 		if (self::useClickHouseHook()) {
+			$cs->applyChange();
 			$em->registerHandler('corebos.filter.massageQueueLogger', 'include/integrations/clickhouse/clickhouse.php', 'corebos_clickhouse');
+			self::createClickhouseDB();
 		} else {
+			$cs->undoChange();
 			$em->unregisterHandler('corebos_clickhouse');
 		}
 	}
@@ -81,8 +89,8 @@ class corebos_clickhouse {
 			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
 			'clickhouse_host' => coreBOS_Settings::getSetting(self::HOST, ''),
 			'clickhouse_port' => coreBOS_Settings::getSetting(self::PORT, ''),
-			'clickhouse_database' => coreBOS_Settings::getSetting(self::DATABASE, ''),
-			'clickhouse_username' => coreBOS_Settings::getSetting(self::USERNAME, ''),
+			'clickhouse_database' => coreBOS_Settings::getSetting(self::DATABASE, 'default'),
+			'clickhouse_username' => coreBOS_Settings::getSetting(self::USERNAME, 'default'),
 			'clickhouse_password' => coreBOS_Settings::getSetting(self::PASSWORD, '')
 		);
 	}
@@ -96,7 +104,7 @@ class corebos_clickhouse {
 		$clickhouse = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
 		$host = coreBOS_Settings::getSetting(self::HOST, '');
 		$port = coreBOS_Settings::getSetting(self::PORT, '');
-		$database = coreBOS_Settings::getSetting(self::DATABASE, '');
+		$database = coreBOS_Settings::getSetting(self::DATABASE, 'default');
 		$user = coreBOS_Settings::getSetting(self::USERNAME, 'default');
 		$pass = coreBOS_Settings::getSetting(self::PASSWORD, '');
 		return ($clickhouse != '0' && $host != '' && $port != '' && $database != '' );
@@ -109,12 +117,50 @@ class corebos_clickhouse {
 			'username' => coreBOS_Settings::getSetting(self::PASSWORD, ''),
 			'password' => coreBOS_Settings::getSetting(self::PASSWORD, '')
 		];
-		$db = new ClickHouseDB\Client($config);
-		$db->database('aaa');
-		$db->setTimeout(1.5);      // 1500 ms
-		$db->setTimeout(10);       // 10 seconds
-		$db->setConnectTimeOut(5);
-		return $db;
+		$chInstance = new ClickHouseDB\Client($config);
+		$chInstance->setTimeout(1.5);      // 1500 ms
+		$chInstance->setTimeout(10);       // 10 seconds
+		$chInstance->setConnectTimeOut(5);
+		return $chInstance;
+	}
+
+	public static function createClickhouseDB() {
+		$chInstance = self::connectToClickhouse();
+		$chInstance->database(coreBOS_Settings::getSetting(self::DATABASE, 'default'));
+	}
+
+	public function createClickHouseTables($query) {
+		$chInstance = self::connectToClickhouse();
+		$chInstance->write($query);
+	}
+
+	public function ClickHouseSync() {
+		$this->initGlobalScope();
+		if (!$this->isActive()) {
+			return;
+		}
+		$cbmq = $this->messagequeue;
+		$db = coreBOS_Settings::getSetting(self::DATABASE, 'default');
+		while ($msg = $cbmq->getMessage('ClickhouseChannel', 'ClickHouseSync', 'ClickHouseHandler')) {
+			$change = unserialize($msg['information']);
+			$table = $change['table'];
+			$columns = [];
+			$values = [];
+			foreach ($change['data'] as $column => $value) {
+				array_push($columns, $columns);
+				array_push($values, $value);
+			}
+			$this->sendDataToclickHouse($db, $table, $columns, $values);
+		}
+	}
+
+	public function sendDataToclickHouse($db, $table, $columns, $values) {
+		$chInstance = self::connectToClickhouse();
+		$stat = $chInstance->insert(
+			$table.$db,
+			[ $values ],
+			$columns
+		);
 	}
 }
 ?>
