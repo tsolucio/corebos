@@ -225,6 +225,8 @@ class VTExpressionsManager {
 			'min' => 'min(fieldname)',
 			'max' => 'max(fieldname)',
 			'average' => 'average(number,...)',
+			'getCurrentConfiguredTaxValues' => 'getCurrentConfiguredTaxValues(taxname)',
+			'getCurrencyConversionValue' => 'getCurrencyConversionValue(currency_code)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

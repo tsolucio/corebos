@@ -2219,6 +2219,38 @@ $WFExpressionFunctionDefinitons = array(
 		'max(employees, breakpoint)',
 	),
 ),
+'getCurrentConfiguredTaxValues' => array(
+	'name' => 'getCurrentConfiguredTaxValues(taxname)',
+	'desc' => 'This function returns the Current Configured Tax Values.',
+	'params' => array(
+		array(
+			'name' => 'taxname',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'fields that contain the tax name',
+		),
+	),
+	'categories' => array('Information'),
+	'examples' => array(
+		"getCurrentConfiguredTaxValues('taxname')"
+	),
+),
+'getCurrencyConversionValue' => array(
+	'name' => 'getCurrencyConversionValue(currency_code)',
+	'desc' => 'This function returns the Currency Conversion Value.',
+	'params' => array(
+		array(
+			'name' => 'Currency code',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'fields that contain the currency code',
+		),
+	),
+	'categories' => array('Information'),
+	'examples' => array(
+		"getCurrencyConversionValue('currency_code')"
+	),
+),
 );
 
 foreach (glob('modules/com_vtiger_workflow/language/en_us.fndefs.*.php', GLOB_BRACE) as $tcode) {

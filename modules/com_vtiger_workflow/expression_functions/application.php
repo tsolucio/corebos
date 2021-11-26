@@ -317,4 +317,30 @@ function __cb_executesql($arr) {
 	}
 	return $rdo;
 }
+
+function __cb_getCurrentConfiguredTaxValues($arr) {
+	global $adb;
+	$tax = '0.00';
+	if (empty($arr) || empty($arr[0])) {
+		return $tax;
+	}
+	$res = $adb->pquery("SELECT percentage from vtiger_inventorytaxinfo WHERE taxlabel=?", array($arr[0]));
+	if ($res && $adb->num_rows($res)>0) {
+		$tax = $adb->query_result($res, 0, 'percentage');
+	}
+	return $tax;
+}
+
+function __cb_getCurrencyConversionValue($arr) {
+	global $adb;
+	$currencyvalue = '0.00';
+	if (empty($arr) || empty($arr[0])) {
+		return $currencyvalue;
+	}
+	$res = $adb->pquery("SELECT conversion_rate from vtiger_currency_info WHERE currency_code=?", array($arr[0]));
+	if ($res && $adb->num_rows($res)>0) {
+		$currencyvalue = $adb->query_result($res, 0, 'conversion_rate');
+	}
+	return $currencyvalue;
+}
 ?>
