@@ -2232,7 +2232,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Information'),
 	'examples' => array(
-		"getCurrentConfiguredTaxValues(taxname)"
+		"getCurrentConfiguredTaxValues('taxname')"
 	),
 ),
 'getCurrencyConversionValue' => array(
@@ -2248,7 +2248,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Information'),
 	'examples' => array(
-		"getCurrencyConversionValue(currency_code)"
+		"getCurrencyConversionValue('currency_code')"
 	),
 ),
 );
