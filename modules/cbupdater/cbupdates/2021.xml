@@ -181,4 +181,11 @@
 	<classname>PasswordHistoryFailedLoginAttempts</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Email Field to DisplayType 4 and Review FailedLoginAttempts</description>
+	<filename>build/changeSets/2021/EmailField2DisplayType4andReviewFailedLoginAttempts.php</filename>
+	<classname>EmailField2DisplayType4andReviewFailedLoginAttempts</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
