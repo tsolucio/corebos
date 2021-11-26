@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | 04-06-2021 | www.ecrmweb.com.br
+ * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | 25-1106-2021 | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -121,7 +121,7 @@ $mod_strings = array(
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' falhou. Nova senha deve ser definida.',
 'ERR_PASSWORD_INCORRECT_OLD'=>'Senha antiga incorreta para usuário especificado. Entre novamente com a informação de senha.',
 'ERR_PASSWORD_NOT_CHANGED' => 'Antiga e nova senha são iguais. Por favor, use senhas diferentes.',
-'ERR_PASSWORD_REPEATED' => 'You have used this password before. Please use a different password.',
+'ERR_PASSWORD_REPEATED' => 'Você já usou essa senha antes. Por favor, use uma senha diferente.',
 'ERR_USER_DOESNOT_EXISTS'=>'Usuário não existe.',
 'ERR_USER_NAME_EXISTS_1'=>'O nome de usuário',
 'ERR_USER_NAME_EXISTS_2'=>' já existe.  Nomes de usuários duplicados não são permitidos.<br>Mude o nome de usuário de forma que seja único.',
@@ -243,10 +243,10 @@ $mod_strings = array(
 'LBL_NAME'=>'Nome',
 
 // Added fields in TabCustomise.php,html and UpdateTab.php,html
-'LBL_CUSTOMISE_TABS'=>'Customizar tabs',
-'LBL_CHOOSE_TABS'=>'Escolher tABS',
-'LBL_AVAILABLE_TABS'=>'TABS disponíveis',
-'LBL_SELECTED_TABS'=>'TABS Selecionadas',
+'LBL_CUSTOMISE_TABS'=>'Customizar TABs',
+'LBL_CHOOSE_TABS'=>'Escolher TABs',
+'LBL_AVAILABLE_TABS'=>'TABs disponíveis',
+'LBL_SELECTED_TABS'=>'TABs Selecionadas',
 'LBL_USER'=>'Usuário',
 'LBL_TAB_MENU_UPDATED'=>'Menu TAB atualizado! Por gentileza, siga para',
 'LBL_TO_VIEW_CHANGES'=>' para visualizar as mudanças',
@@ -348,7 +348,7 @@ $mod_strings = array(
 'LBL_NOTIFICATION'=>'Notificação',
 'LBL_DESCRIPTION'=>'Descrição',
 'LBL_TASK_NOTIFICATION'=>'Notificação de tarefas atrasadas',
-'LBL_TASK_NOTIFICATION_DESCRITPION'=>'Notificação para tarefa atrasada há mais de 24 h',
+'LBL_TASK_NOTIFICATION_DESCRITPION'=>'Notificação para tarefa atrasada há mais de 24h',
 'LBL_MANY_TICKETS'=>'Notificação de excesso de tickets',
 'LBL_MANY_TICKETS_DESCRIPTION'=>'Notificar quando forem alocados tickets em excesso a uma entidade particular, ultrapassando o limite, podendo comprometer a qualidade do serviço',
 'LBL_PENDING_TICKETS'=>'Notificação de tickets pendentes',
@@ -356,8 +356,8 @@ $mod_strings = array(
 'LBL_START_NOTIFICATION'=>'Notificação de começo do Suporte',
 'LBL_START_DESCRIPTION'=>'Notificação da situação de começo do suporte/serviço',
 'LBL_BIG_DEAL'=>'Notificação de grande negócio',
-'LBL_BIG_DEAL_DESCRIPTION'=>'Notificação para quando existe um Grande Negócio',
-'LBL_SUPPORT_NOTICIATION'=>'Notificação de Fim do Suporte',
+'LBL_BIG_DEAL_DESCRIPTION'=>'Notificação para quando existe um grande negócio',
+'LBL_SUPPORT_NOTICIATION'=>'Notificação de fim do suporte',
 'LBL_SUPPORT_DESCRIPTION'=>'Notificação para quando o Suporte estiver quase terminado',
 'LBL_BUTTON_UPDATE'=>'Atualizar',
 'LBL_MODULENAMES'=>'Módulo',
@@ -433,7 +433,7 @@ $mod_strings = array(
 'LBL_ACCOUNT_FIELD_ACCESS'=>'Acesso campos de conta',
 'LBL_CONTACT_FIELD_ACCESS'=>'Acesso campos contato',
 'LBL_OPPORTUNITY_FIELD_ACCESS'=>'Acesso campos oportunidade',
-'LBL_HELPDESK_FIELD_ACCESS'=>'Acesso campos Helpdesk',
+'LBL_HELPDESK_FIELD_ACCESS'=>'Acesso campos helpdesk',
 'LBL_PRODUCT_FIELD_ACCESS'=>'Acesso campos de produto',
 'LBL_NOTE_FIELD_ACCESS'=>'Acesso campos documento',
 'LBL_EMAIL_FIELD_ACCESS'=>'Acesso campos de e-mail',
@@ -604,9 +604,9 @@ $mod_strings = array(
 'LBL_INT_MAILER_USE'=>'Sim',
 'LBL_INT_MAILER_NOUSE'=>'Não',
 'LBL_VAL_SSL_CERT'=>'Validar SSL',
-'LBL_DONOT_VAL_SSL_CERT'=>'Não Validar SSL',
-'LBL_WEB_MAIL_CONFIG'=>'Configuração do Webmail',
-'LBL_CONFIGURE_WEB_MAIL'=>' - Configurar Webmail',
+'LBL_DONOT_VAL_SSL_CERT'=>'Não validar SSL',
+'LBL_WEB_MAIL_CONFIG'=>'Configuração do webmail',
+'LBL_CONFIGURE_WEB_MAIL'=>' - Configurar webmail',
 'LBL_LIST_MAIL_ACCOUNT'=>'  Lista conta de correio',
 'LBL_MY_MAIL_SERVER_DET'=>'Detalhes do servidor de receção de correio',
 'LBL_MY_DETAILS'=>'Os meus detalhes',
