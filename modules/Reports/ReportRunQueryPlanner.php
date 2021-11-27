@@ -163,7 +163,7 @@ class ReportRunQueryPlanner {
 	 * Function to get report condition query for generating temporary table based on condition given on report.
 	 * It generates condition query by considering fields of $module's base table or vtiger_crmentity table fields.
 	 * It doesn't add condition for reference fields in query.
-	 * @param String $module Module name for which temporary table is generated (Reports secondary module)
+	 * @param string $module Module name for which temporary table is generated (Reports secondary module)
 	 * @return string Returns condition query for generating temporary table.
 	 */
 	private function getReportConditions($module) {

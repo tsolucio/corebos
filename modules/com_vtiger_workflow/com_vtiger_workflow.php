@@ -75,7 +75,7 @@ class com_vtiger_workflow extends CRMEntity {
 	}
 
 	/**
-	 * @param String $module - module name for which query needs to be generated.
+	 * @param string $module - module name for which query needs to be generated.
 	 * @param Users $user - user for which query needs to be generated.
 	 * @return String Access control Query for the user.
 	 */

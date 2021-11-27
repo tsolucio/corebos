@@ -438,7 +438,7 @@ class UserPrivilegesWriter {
 	/**
 	 * Method to generate a given module sharing privileges
 	 *
-	 * @param String 	$module
+	 * @param string 	$module
 	 * @param Array 	$sharePerm
 	 * @param Array 	$sharingPrivs
 	 *

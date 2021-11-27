@@ -493,7 +493,7 @@ class Reports extends CRMEntity {
 
 	/**
 	 *
-	 * @param String $module
+	 * @param string $module
 	 * @param array $blockIdList
 	 * @param Array $currentFieldList
 	 * @return Array

@@ -244,9 +244,9 @@ class Documents extends CRMEntity {
 
 	/**
 	* Save the related module record information. Triggered from CRMEntity->saveentity method or updateRelations.php
-	* @param String This module name
+	* @param string This module name
 	* @param Integer This module record number
-	* @param String Related module name
+	* @param string Related module name
 	* @param mixed Integer or Array of related module record number
 	*/
 	public function save_related_module($module, $crmid, $with_module, $with_crmid) {

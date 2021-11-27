@@ -21,7 +21,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	 * Create new Email record (and link to given record) including attachments
 	 * @global Users $current_user
 	 * @param  MailManager_Model_Message $mailrecord
-	 * @param String $module
+	 * @param string $module
 	 * @param CRMEntity $linkfocus
 	 * @return Integer
 	 */
@@ -67,7 +67,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	 * @global PearDataBase $adb
 	 * @global String $root_directory
 	 * @param MailManager_Model_Message $mailrecord
-	 * @param String $basemodule
+	 * @param string $basemodule
 	 * @param CRMEntity $basefocus
 	 */
 	public function __SaveAttachements($mailrecord, $basemodule, $basefocus, $relate2module = '', $relate2focus = '') {
@@ -191,9 +191,9 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 
 	/**
 	 * Returns the information about the Parent
-	 * @param String $module
+	 * @param string $module
 	 * @param Integer $record
-	 * @param String $label
+	 * @param string $label
 	 * @return Array
 	 */
 	public static function buildDetailViewLink($module, $record, $label) {

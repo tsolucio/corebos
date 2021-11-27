@@ -204,7 +204,7 @@ class MailManager_Connector {
 
 	/**
 	 * Returns MailManager_Model_Folder Instance
-	 * @param String $name - folder name
+	 * @param string $name - folder name
 	 */
 	public function folderInstance($name) {
 		return new MailManager_Model_Folder($name);
@@ -212,7 +212,7 @@ class MailManager_Connector {
 
 	/**
 	 * Sets a list of mails with paging
-	 * @param String $folder - MailManager_Model_Folder Instance
+	 * @param string $folder - MailManager_Model_Folder Instance
 	 * @param Integer $start  - Page number
 	 * @param Integer $maxLimit - Number of mails
 	 */
@@ -275,7 +275,7 @@ class MailManager_Connector {
 
 	/**
 	 * Function which deletes the mails
-	 * @param String $msgno - List of message number seperated by commas.
+	 * @param string $msgno - List of message number seperated by commas.
 	 */
 	public function deleteMail($msgno) {
 		$msgno = trim($msgno, ',');
@@ -288,8 +288,8 @@ class MailManager_Connector {
 
 	/**
 	 * Function which moves mail to another folder
-	 * @param String $msgno - List of message number separated by commas
-	 * @param String $folderName - folder name
+	 * @param string $msgno - List of message number separated by commas
+	 * @param string $folderName - folder name
 	 */
 	public function moveMail($msgno, $folderName) {
 		$msgno = trim($msgno, ',');
@@ -303,7 +303,7 @@ class MailManager_Connector {
 
 	/**
 	 * Creates an instance of Message
-	 * @param String $msgno - Message number
+	 * @param string $msgno - Message number
 	 * @return MailManager_Model_Message
 	 */
 	public function openMail($msgno) {
@@ -322,7 +322,7 @@ class MailManager_Connector {
 
 	/**
 	 * Marks the mail as Read
-	 * @param String $msgno - Message Number
+	 * @param string $msgno - Message Number
 	 */
 	public function markMailRead($msgno) {
 		imap_setflag_full($this->mBox, $msgno, '\\Seen');
@@ -331,7 +331,7 @@ class MailManager_Connector {
 
 	/**
 	 * Searches the Mail Box with the query
-	 * @param String $query - imap search format
+	 * @param string $query - imap search format
 	 * @param MailManager_Model_Folder $folder - folder instance
 	 * @param Integer $start - Page number
 	 * @param Integer $maxLimit - Number of mails

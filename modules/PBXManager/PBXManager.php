@@ -149,8 +149,8 @@ class PBXManager extends CRMEntity {
 
 	/**
 	* Invoked when special actions are performed on the module.
-	* @param String Module name
-	* @param String Event Type
+	* @param string Module name
+	* @param string Event Type
 	*/
 	public function vtlib_handler($moduleName, $eventType) {
 		require_once 'include/utils/utils.php';

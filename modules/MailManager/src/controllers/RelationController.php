@@ -332,9 +332,9 @@ class MailManager_RelationController extends MailManager_Controller {
 
 	/**
 	* Funtion used to build Web services query
-	* @param String $module - Name of the module
-	* @param String $text - Search String
-	* @param String $type - Tyoe of fields Phone, Email etc
+	* @param string $module - Name of the module
+	* @param string $text - Search String
+	* @param string $type - Tyoe of fields Phone, Email etc
 	* @return String
 	*/
 	public function buildSearchQuery($module, $text, $type) {
@@ -360,7 +360,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	/**
 	* Returns the List of Matching records with the Email Address
 	* @global Users Instance $current_user
-	* @param String $module
+	* @param string $module
 	* @param Email Address $email
 	* @return Array
 	*/

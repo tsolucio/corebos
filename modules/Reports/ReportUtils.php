@@ -47,7 +47,7 @@ function isPicklistUIType($uitype) {
  * @param Array $picklistArray
  * @param ADOFieldObject $dbField
  * @param Array $valueArray
- * @param String $fieldName
+ * @param string $fieldName
  * @return String
  */
 function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fieldName) {

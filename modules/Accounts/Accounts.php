@@ -112,8 +112,8 @@ class Accounts extends CRMEntity {
 	}
 
 	/** Returns a list of the associated Campaigns
-	 * @param $id -- campaign id :: Type Integer
-	 * @returns list of campaigns in array format
+	 * @param integer campaign id
+	 * @return array list of campaigns in array format
 	 */
 	public function get_campaigns($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
@@ -322,8 +322,8 @@ class Accounts extends CRMEntity {
 
 	/**
 	* Function to get Account related Invoices
-	* @param  integer   $id      - accountid
-	* returns related Invoices record in array format
+	* @param integer accountid
+	* @return array related Invoices record in array format
 	*/
 	public function get_invoices($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
@@ -384,8 +384,8 @@ class Accounts extends CRMEntity {
 
 	/**
 	* Function to get Account related Products
-	* @param  integer   $id      - accountid
-	* returns related Products record in array format
+	* @param integer accountid
+	* @return array related Products record in array format
 	*/
 	public function get_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
@@ -445,8 +445,8 @@ class Accounts extends CRMEntity {
 	}
 
 	/** Function to export the account records in CSV Format
-	* @param reference variable - where condition is passed when the query is executed
-	* Returns Export Accounts Query.
+	* @param string reference variable - where condition is passed when the query is executed
+	* @return string Export Accounts Query
 	*/
 	public function create_export_query($where) {
 		global $log, $current_user;
@@ -482,7 +482,7 @@ class Accounts extends CRMEntity {
 		return $query;
 	}
 
-	/** Function to get the Columnnames of the Account Record
+	/** Function to get the column names of the Account Record
 	* Used By vtigerCRM Word Plugin
 	* Returns the Merge Fields for Word Plugin
 	*/
@@ -522,9 +522,9 @@ class Accounts extends CRMEntity {
 
 	/**
 	 * Move the related records of the specified list of id's to the given record.
-	 * @param String This module name
-	 * @param Array List of Entity Id's from which related records need to be transfered
-	 * @param Integer Id of the the Record to which the related records are to be moved
+	 * @param string This module name
+	 * @param array List of Entity Id's from which related records need to be transfered
+	 * @param integer Id of the the Record to which the related records are to be moved
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
@@ -581,10 +581,10 @@ class Accounts extends CRMEntity {
 		$log->debug('< transferRelatedRecords');
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -601,11 +601,11 @@ class Accounts extends CRMEntity {
 		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
-	/*
+	/**
 	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsSecQuery($module, $secmodule, $queryPlanner, $type = '', $where_condition = '') {
 		$query = parent::generateReportsSecQuery($module, $secmodule, $queryPlanner, $type, $where_condition);
@@ -626,8 +626,8 @@ class Accounts extends CRMEntity {
 
 	/**
 	* Function to get Account hierarchy of the given Account
-	* @param  integer   $id      - accountid
-	* returns Account hierarchy in array format
+	* @param integer accountid
+	* @return array Account hierarchy in array format
 	*/
 	public function getAccountHierarchy($id) {
 		global $log, $current_user;
@@ -692,9 +692,9 @@ class Accounts extends CRMEntity {
 
 	/**
 	* Function to Recursively get all the upper accounts of a given Account
-	* @param  integer   $id      - accountid
-	* @param  array   $parent_accounts   - Array of all the parent accounts
-	* returns All the parent accounts of the given accountid in array format
+	* @param integer accountid
+	* @param array of all the parent accounts
+	* @return array All the parent accounts of the given accountid in array format
 	*/
 	public function __getParentAccounts($id, &$parent_accounts, &$encountered_accounts) {
 		global $log, $adb;
@@ -715,17 +715,17 @@ class Accounts extends CRMEntity {
 		}
 
 		$query = "SELECT vtiger_account.*, vtiger_accountbillads.*," .
-				" CASE when (vtiger_users.user_name not like '') THEN vtiger_users.ename ELSE vtiger_groups.groupname END as user_name " .
-				" FROM vtiger_account" .
-				" INNER JOIN ".$this->crmentityTableAlias.
-				" ON vtiger_crmentity.crmid = vtiger_account.accountid" .
-				" INNER JOIN vtiger_accountbillads" .
-				" ON vtiger_account.accountid = vtiger_accountbillads.accountaddressid " .
-				" LEFT JOIN vtiger_groups" .
-				" ON vtiger_groups.groupid = vtiger_crmentity.smownerid" .
-				" LEFT JOIN vtiger_users" .
-				" ON vtiger_users.id = vtiger_crmentity.smownerid" .
-				" WHERE vtiger_crmentity.deleted = 0 and vtiger_account.accountid = ?";
+			" CASE when (vtiger_users.user_name not like '') THEN vtiger_users.ename ELSE vtiger_groups.groupname END as user_name " .
+			" FROM vtiger_account" .
+			" INNER JOIN ".$this->crmentityTableAlias.
+			" ON vtiger_crmentity.crmid = vtiger_account.accountid" .
+			" INNER JOIN vtiger_accountbillads" .
+			" ON vtiger_account.accountid = vtiger_accountbillads.accountaddressid " .
+			" LEFT JOIN vtiger_groups" .
+			" ON vtiger_groups.groupid = vtiger_crmentity.smownerid" .
+			" LEFT JOIN vtiger_users" .
+			" ON vtiger_users.id = vtiger_crmentity.smownerid" .
+			" WHERE vtiger_crmentity.deleted = 0 and vtiger_account.accountid = ?";
 		$params = array($id);
 		$res = $adb->pquery($query, $params);
 
@@ -750,10 +750,10 @@ class Accounts extends CRMEntity {
 
 	/**
 	* Function to Recursively get all the child accounts of a given Account
-	* @param  integer   $id      - accountid
-	* @param  array   $child_accounts   - Array of all the child accounts
-	* @param  integer   $depth          - Depth at which the particular account has to be placed in the hierarchy
-	* returns All the child accounts of the given accountid in array format
+	* @param integer accountid
+	* @param array of all the child accounts
+	* @param integer Depth at which the particular account has to be placed in the hierarchy
+	* @return array All the child accounts of the given accountid in array format
 	*/
 	public function __getChildAccounts($id, &$child_accounts, $depth) {
 		global $log, $adb;

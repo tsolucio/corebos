@@ -110,7 +110,7 @@ class MailManager {
 	/**
 	 * function to check the read access for the current user
 	 * @global Users Instance $current_user
-	 * @param String $module - Name of the module
+	 * @param string $module - Name of the module
 	 * @return Boolean
 	 */
 	public static function checkModuleReadAccessForCurrentUser($module) {
@@ -119,8 +119,8 @@ class MailManager {
 
 	/**
 	 * Invoked when special actions are performed on the module.
-	 * @param String $modulename - Module name
-	 * @param String $event_type - Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 * @param string $modulename - Module name
+	 * @param string $event_type - Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {

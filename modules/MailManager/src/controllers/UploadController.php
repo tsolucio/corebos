@@ -169,7 +169,7 @@ class MailManager_UploadFileForm extends MailManager_UploadFile {
 	/**
 	 * Saves the uploaded file
 	 * @global String $root_directory
-	 * @param String $path
+	 * @param string $path
 	 * @return Boolean
 	 */
 	public function save($path) {
@@ -216,7 +216,7 @@ class MailManager_Uploader {
 
 	/**
 	* Function used to handle the upload
-	* @param String $uploadDirectory
+	* @param string $uploadDirectory
 	* @param Boolean $replaceOldFile
 	* @return Array
 	*/

@@ -39,7 +39,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 
 	/**
 	 * Constructor which gets the Mail details from the server
-	 * @param String $mBox - Mail Box Connection string
+	 * @param string $mBox - Mail Box Connection string
 	 * @param Integer $msgno - Mail Message Number
 	 * @param Boolean $fetchbody - Used to save the mail information to DB
 	 */
@@ -71,7 +71,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 
 	/**
 	 * Gets the Mail Body and Attachments
-	 * @param String $imap - Mail Box connection string
+	 * @param string $imap - Mail Box connection string
 	 * @param Integer $messageid - Mail Number
 	 * @param Object $p
 	 * @param Integer $partno
@@ -237,7 +237,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @global Users Instance $current_user
 	 * @global Array $upload_badext - List of bad extensions
 	 * @param Boolean $withContent - Used to load the Attachments with/withoud content
-	 * @param String $aName - Attachment Name
+	 * @param string $aName - Attachment Name
 	 */
 	protected function loadAttachmentsFromDB($withContent, $aName = false) {
 		global $adb, $current_user, $upload_badext;
@@ -344,7 +344,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @global PearDataBase Instance $adb
 	 * @global Users Instance $current_user
 	 * @global Array $upload_badext
-	 * @param String $filename - name of the file
+	 * @param string $filename - name of the file
 	 * @param Text $filecontent
 	 * @return Array with attachment information
 	 */
@@ -382,7 +382,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	/**
 	 * Gets the Mail Attachments
 	 * @param Boolean $withContent
-	 * @param String $aName
+	 * @param string $aName
 	 * @return List of Attachments
 	 */
 	public function attachments($withContent = true, $aName = false) {
@@ -404,7 +404,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 
 	/**
 	 * Sets the Mail Subject
-	 * @param String $subject
+	 * @param string $subject
 	 */
 	public function setSubject($subject) {
 		$this->_subject = @self::__mime_decode($subject);

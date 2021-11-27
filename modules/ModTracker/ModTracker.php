@@ -40,8 +40,8 @@ class ModTracker {
 
 	/**
 	* Invoked when special actions are performed on the module.
-	* @param String Module name
-	* @param String Event Type
+	* @param string Module name
+	* @param string Event Type
 	*/
 	public function vtlib_handler($moduleName, $eventType) {
 		global $adb;
@@ -147,7 +147,7 @@ class ModTracker {
 
 	/**
 	 *Invoked to check if tracking is enabled or disabled for the module.
-	 * @param String $modulename
+	 * @param string $modulename
 	 */
 	public static function isTrackingEnabledForModule($modulename) {
 		global $adb;
