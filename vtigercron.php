@@ -62,10 +62,12 @@ if (PHP_SAPI === 'cli' || PHP_SAPI === 'cgi-fcgi' || PHP_SAPI === 'apache2handle
 						$run_task = true;
 					}
 				}
-				if (!$run_task && !$quiet) {
-					$msg = sprintf("[INFO]: %s - not ready to run as the time to run again is not completed\n", $cronTask->getName());
-					echo $msg;
-					$logbg->info($msg);
+				if (!$run_task) {
+					if (!$quiet) {
+						$msg = sprintf("[INFO]: %s - not ready to run as the time to run again is not completed\n", $cronTask->getName());
+						echo $msg;
+						$logbg->info($msg);
+					}
 					continue;
 				}
 			}
