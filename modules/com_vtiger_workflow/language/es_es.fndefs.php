@@ -2217,35 +2217,35 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'getCurrentConfiguredTaxValues' => array(
-	'name' => 'getCurrentConfiguredTaxValues(taxname)',
-	'desc' => 'This function returns the Current Configured Tax Values.',
+	'name' => 'getCurrentConfiguredTaxValues(impuesto)',
+	'desc' => 'Devuelve el valor numérico del impuesto dado.',
 	'params' => array(
 		array(
-			'name' => 'taxname',
-			'type' => 'String',
+			'name' => 'impuesto',
+			'type' => 'Texto',
 			'optional' => false,
-			'desc' => 'fields that contain the tax name',
+			'desc' => 'nombre del impuesto',
 		),
 	),
 	'categories' => array('Information'),
 	'examples' => array(
-		"getCurrentConfiguredTaxValues('taxname')"
+		"getCurrentConfiguredTaxValues('impuesto')"
 	),
 ),
 'getCurrencyConversionValue' => array(
-	'name' => 'getCurrencyConversionValue(currency_code)',
-	'desc' => 'This function returns the Currency Conversion Value.',
+	'name' => 'getCurrencyConversionValue(moneda)',
+	'desc' => 'Devuelve el valor numérico de la moneda dada.',
 	'params' => array(
 		array(
-			'name' => 'Currency code',
-			'type' => 'String',
+			'name' => 'moneda',
+			'type' => 'Texto',
 			'optional' => false,
-			'desc' => 'fields that contain the currency code',
+			'desc' => 'nombre de la moneda',
 		),
 	),
 	'categories' => array('Information'),
 	'examples' => array(
-		"getCurrencyConversionValue('currency_code')"
+		"getCurrencyConversionValue('moneda')"
 	),
 ),
 );
