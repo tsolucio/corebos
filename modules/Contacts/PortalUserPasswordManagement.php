@@ -5,6 +5,9 @@ require_once 'Smarty_setup.php';
 $crmid = vtlib_purify($_REQUEST['recordid']);
 $mod = getSalesEntityType($crmid);
 if (!empty($crmid) && isPermitted($mod, 'Save', $crmid)=='yes') {
+	$addError = false;
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
 	sendPPJavascript();
 	if (!empty($_REQUEST['ppaction'])) {
 		switch ($_REQUEST['ppaction']) {
@@ -15,7 +18,21 @@ if (!empty($crmid) && isPermitted($mod, 'Save', $crmid)=='yes') {
 			case 'sav':
 				if (!empty($_REQUEST['ppasswd'])) {
 					$pppasswd = vtlib_purify(urldecode($_REQUEST['ppasswd']));
-					$adb->pquery('update vtiger_portalinfo set user_password=? where id=?', array($pppasswd, $crmid));
+					$passhistory = $adb->pquery(
+						'select 1 from password_history where crmid=? and crmtype=? and pass=?',
+						array($crmid, 'C', $pppasswd)
+					);
+					if (!$passhistory || $adb->num_rows($passhistory) > 0) {
+						$addError = true;
+						$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+						$smarty->assign('ERROR_MESSAGE', getTranslatedString('ERR_PASSWORD_REPEATED', 'Users'));
+					} else {
+						$adb->pquery(
+							'insert into password_history values (?,?,?)',
+							array($crmid, 'C', $pppasswd)
+						);
+						$adb->pquery('update vtiger_portalinfo set user_password=? where id=?', array($pppasswd, $crmid));
+					}
 				}
 				break;
 			default:
@@ -23,12 +40,10 @@ if (!empty($crmid) && isPermitted($mod, 'Save', $crmid)=='yes') {
 		}
 	}
 	$rs = $adb->pquery('select user_password from vtiger_portalinfo where id=?', array($crmid));
-	$smarty = new vtigerCRM_Smarty();
-	$smarty->assign('APP', $app_strings);
 	if (empty($rs->fields) || empty($rs->fields['user_password'])) {
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
 		$smarty->assign('ERROR_MESSAGE', getTranslatedString('ppnotset', 'Contacts'));
-	} else {
+	} elseif (!$addError) {
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-success');
 		$smarty->assign('ERROR_MESSAGE', getTranslatedString('ppset', 'Contacts'));
 	}
@@ -94,7 +109,7 @@ function sendPPJavascript() {
 	?>
 	<script>
 	window.doppGenerate = function () {
-		document.getElementById('ppasswd').innerHTML = corebos_Password.getPassword(12, true, true, true, true, false, true, true, true, false);
+		document.getElementById('ppasswd').value = corebos_Password.getPassword(12, true, true, true, true, false, true, true, true, false);
 	}
 	window.doppDelete = function () {
 		var params = `&${csrfMagicName}=${csrfMagicToken}`;

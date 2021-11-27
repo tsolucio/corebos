@@ -20,5 +20,6 @@
 $Vtiger_Utils_Log = false;
 include_once 'vtlib/Vtiger/Module.php';
 global $adb;
-$adb->pquery('update vtiger_users set failed_login_attempts=0 where failed_login_attempts <> ?', array(0));
+$adb->query('update vtiger_users set failed_login_attempts=0 where failed_login_attempts<>0');
+$adb->query('update vtiger_portalinfo set failed_login_attempts=0 where failed_login_attempts<>0');
 ?>
