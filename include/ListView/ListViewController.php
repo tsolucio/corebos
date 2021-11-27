@@ -572,6 +572,7 @@ class ListViewController {
 					$nameFieldList = explode(',', $nameFields);
 					if (($fieldName == $focus->list_link_field || in_array($fieldName, $nameFieldList)) && $module != 'Emails') {
 						$opennewtab = GlobalVariable::getVariable('Application_OpenRecordInNewXOnListView', '', $module);
+						$value = trim(gtltTagsToHTML($value));
 						if ($opennewtab=='') {
 							$value = "<a href='index.php?module=$module&action=DetailView&record=".
 								"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
