@@ -138,7 +138,7 @@ function vtws_loginportalincfailed($id, $type) {
 function vtws_loginportalgetfailed($id, $type) {
 	global $adb;
 	$fa = $adb->pquery(
-		'selet failed_login_attempts from vtiger_portalinfo where id=? and type=?',
+		'select failed_login_attempts from vtiger_portalinfo where id=? and type=?',
 		array($id, $type)
 	);
 	if ($fa && $adb->num_rows($fa)==1) {
