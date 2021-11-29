@@ -264,6 +264,25 @@ class corebos_sendgrid {
 	 */
 	public static function convertAttachmentArray($attachments) {
 		$atts = array();
+		if (isset($attachments['direct']) && $attachments['direct']) {
+			foreach ($attachments as $att) {
+				if (empty($att)) {
+					continue;
+				}
+				if (is_array($att)) {
+					foreach ($att as $file) {
+						$atts[] = array(
+							base64_encode(file_get_contents($file['name'])),
+							mime_content_type($file['name']),
+							isset($file['filename']) ? $file['filename'] : $file['name'],
+							'attachment',
+							''
+						);
+					}
+				}
+			}
+			return $atts;
+		}
 		foreach ($attachments as $att) {
 			if (empty($att)) {
 				continue;
