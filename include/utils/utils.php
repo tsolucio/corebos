@@ -2448,8 +2448,8 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 			$fld_values[$grp][$ii][$fld_labl_arr[$k]] = $result[$col_arr[$k]];
 		}
 		if (isset($cbMapLC)) {
+			$modObj = CRMEntity::getInstance($module);
 			foreach ($cbMapLC['ListFields'] as $label => $field) {
-				$modObj = CRMEntity::getInstance($module);
 				$modObj->retrieve_entity_info($result['recordid'], $module);
 				$fld_values[$grp][$ii][$label] = $modObj->column_fields[$field];
 			}
