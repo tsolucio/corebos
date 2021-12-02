@@ -100,6 +100,33 @@
 					<template>[[item.{$dtheader}]]</template>
 				</vaadin-grid-column>
 			</vaadin-grid-column-group>
+		{elseif $dtheader=='Status'}
+			<vaadin-grid-column-group resizable>
+				<vaadin-grid-column>
+					<template class="header">
+						<vaadin-grid-sorter path="{$dtheader}" header="{$APP.LBL_STATUS}">{$APP.LBL_STATUS}</vaadin-grid-sorter><br>
+						<vaadin-grid-filter id="wfstatusfilter" path="{$dtheader}" value="">
+							<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;" slot="filter">
+								<div class="slds-form-element__control slds-grid slds-box_border">
+									<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
+										<svg aria-hidden="true" class="slds-input__icon">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+										</svg>
+										<select name="status_list" id="status_list" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
+											aria-owns="status_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list"
+											onchange="document.getElementById('wfstatusfilter').value=this.value">
+											<option value="true" selected="false">{$APP.LBL_ACTIVE_PICKLIST}</option>
+											<option value="false" selected="false">{$APP.LBL_INACTIVE_PICKLIST}</option>
+											<option value="all" selected="true">{$APP.LBL_ALLPICKLIST}</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</vaadin-grid-filter>
+					</template>
+					<template>[[item.{$dtheader}]]</template>
+				</vaadin-grid-column>
+			</vaadin-grid-column>
 		{elseif $dtheader=='Trigger'}
 			<vaadin-grid-column-group resizable>
 				<vaadin-grid-column>
