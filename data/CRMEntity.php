@@ -1692,7 +1692,7 @@ class CRMEntity {
 	/**
 	 * Create query to export the records.
 	 */
-	public function create_export_query($where) {
+	public function create_export_query($join, $where) {
 		global $current_user, $adb;
 		$thismodule = $_REQUEST['module'];
 
@@ -1743,6 +1743,9 @@ class CRMEntity {
 			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $tablename.$columnname";
 		}
 
+		if ($join  != '') {
+			$query .= $join;
+		}
 		$query .= $this->getNonAdminAccessControlQuery($thismodule, $current_user);
 		$where_auto = ' '.$this->crmentityTable.'.deleted=0';
 
