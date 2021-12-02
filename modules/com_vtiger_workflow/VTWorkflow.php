@@ -37,6 +37,7 @@ class Workflow {
 		'Description' => array('com_vtiger_workflows'=>'summary'),
 		'Purpose' => array('com_vtiger_workflows'=>'purpose'),
 		'Trigger' => array('com_vtiger_workflows'=> 'execution_condition'),
+		'Status' => array('com_vtiger_workflows'=> 'active'),
 		'Tools' => array('com_vtiger_workflows'=>'workflow_id'),
 	);
 	public $list_fields_name = array(
@@ -44,6 +45,7 @@ class Workflow {
 		'Description' => 'summary',
 		'Purpose' =>'purpose',
 		'Trigger' => 'execution_condition',
+		'Status' => 'active',
 		'Tools' => 'workflow_id',
 	);
 
@@ -86,6 +88,7 @@ class Workflow {
 			$app_strings['LBL_DESCRIPTION'],
 			$app_strings['LBL_PURPOSE'],
 			$app_strings['LBL_TRIGGER'],
+			$app_strings['LBL_STATUS'],
 			$app_strings['LBL_TOOLS'],
 		);
 		$log->debug('< getWorkListHeader');
@@ -693,7 +696,13 @@ class Workflow {
 			if ($i18n==$workflow_execution_condtion_list[$lgn['execution_condition']]) {
 				$i18n = getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'com_vtiger_workflow');
 			}
+			if ($lgn['active'] == 'true') {
+				$active = 'Active';
+			} else {
+				$active = 'Inactive';
+			}
 			$entry['Trigger'] = $i18n;
+			$entry['Status'] = $active;
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getWorkFlowJSON');

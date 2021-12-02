@@ -61,6 +61,12 @@ if (!empty($_REQUEST['filters'])) {
 						$params[] = $filter['value'];
 					}
 					break;
+				case 'Status':
+					if (!empty($filter['value']) && $filter['value'] != 'all') {
+						$conds[] = 'active=?';
+						$params[] = $filter['value'];
+					}
+					break;
 				default:
 			}
 		}
