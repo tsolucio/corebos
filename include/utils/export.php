@@ -111,8 +111,23 @@ function export($type, $format = 'CSV') {
 	} else {
 		$where = '';
 	}
-
-	$query = $focus->create_export_query($where);
+	$join = '';
+	if ($where) {
+		$fld_str = substr(strpbrk($where, 'v'), 0, strpos(strpbrk($where, 'v'), "."));
+		$fieldName = explode("vtiger_users", $fld_str);
+		if ($fieldName[1]) {
+			$tabid = getTabid($type);
+			$field = $fieldName[1];
+			$result = $adb->pquery('select columnname, tablename from vtiger_field where tabid=? and fieldname=?', array($tabid, $field));
+			if ($result) {
+				$colum = $adb->query_result($result, 0, 'columnname');
+				$table = $adb->query_result($result, 0, 'tablename');
+				$where = str_replace("vtiger_users".$field, "vtiger_users".$colum, $where);
+				$join = " LEFT JOIN vtiger_users as vtiger_users".$colum." ON vtiger_users".$colum.".id=".$table.".".$colum;
+			}
+		}
+	}
+	$query = $focus->create_export_query($join, $where);
 	if ($search_type != 'includesearch') {
 		$stdfiltersql = $oCustomView->getCVStdFilterSQL($viewid);
 		$advfiltersql = $oCustomView->getCVAdvFilterSQL($viewid);
