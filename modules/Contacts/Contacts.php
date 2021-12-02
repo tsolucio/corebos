@@ -579,7 +579,7 @@ class Contacts extends CRMEntity {
 	* @param reference variable - where condition is passed when the query is executed
 	* Returns Export Contacts Query.
 	*/
-	public function create_export_query($where) {
+	public function create_export_query($join, $where) {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
@@ -602,6 +602,10 @@ class Contacts extends CRMEntity {
 			left join vtiger_customerdetails on vtiger_customerdetails.customerid=vtiger_contactdetails.contactid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_contactdetails vtiger_contactdetails2 ON vtiger_contactdetails2.contactid = vtiger_contactdetails.reportsto";
+		
+		if ($join  != '') {
+			$query .= $join;
+		}
 		$query .= getNonAdminAccessControlQuery('Contacts', $current_user);
 		$where_auto = ' vtiger_crmentity.deleted = 0 ';
 		if ($where != '') {

@@ -1569,7 +1569,7 @@ class Users extends CRMEntity {
 	* @param string where condition is passed when the query is executed
 	* @return string Users SQL Query.
 	*/
-	public function create_export_query($where) {
+	public function create_export_query($join, $where) {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 		$query = '';
@@ -1581,6 +1581,9 @@ class Users extends CRMEntity {
 				FROM vtiger_users
 				INNER JOIN vtiger_user2role ON vtiger_user2role.userid = vtiger_users.id
 				LEFT JOIN vtiger_asteriskextensions ON vtiger_asteriskextensions.userid = vtiger_users.id";
+			if ($join  != '') {
+				$query .= $join;
+			}
 			$query .= $this->getNonAdminAccessControlQuery('Users', $current_user);
 			if ($where != '') {
 				$query .= " WHERE ($where)";

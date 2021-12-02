@@ -339,7 +339,7 @@ class Quotes extends CRMEntity {
 	* @param reference variable - where condition is passed when the query is executed
 	* Returns Export Quotes Query.
 	*/
-	public function create_export_query($where) {
+	public function create_export_query($join, $where) {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
@@ -367,6 +367,9 @@ class Quotes extends CRMEntity {
 			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
 			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 
+		if ($join  != '') {
+			$query .= $join;
+		}
 		$query .= $this->getNonAdminAccessControlQuery('Quotes', $current_user);
 		$where_auto = ' vtiger_crmentity.deleted=0';
 

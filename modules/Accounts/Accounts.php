@@ -448,7 +448,7 @@ class Accounts extends CRMEntity {
 	* @param reference variable - where condition is passed when the query is executed
 	* Returns Export Accounts Query.
 	*/
-	public function create_export_query($where) {
+	public function create_export_query($join, $where) {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
@@ -469,6 +469,10 @@ class Accounts extends CRMEntity {
 				LEFT JOIN vtiger_account vtiger_account2 ON vtiger_account2.accountid = vtiger_account.parentid
 				LEFT JOIN vtiger_account vtiger_accountaccount_id ON vtiger_account.parentid = vtiger_accountaccount_id.accountid";
 				// vtiger_account2 is added to get the Member of account
+		
+		if ($join  != '') {
+			$query .= $join;
+		}
 		$query .= $this->getNonAdminAccessControlQuery('Accounts', $current_user);
 		$where_auto = ' vtiger_crmentity.deleted = 0 ';
 

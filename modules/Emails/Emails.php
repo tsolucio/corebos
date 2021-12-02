@@ -418,7 +418,7 @@ class Emails extends CRMEntity {
 	/**
 	 * Returns a list of the Emails to be exported
 	 */
-	public function create_export_query($where) {
+	public function create_export_query($join, $where) {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
@@ -442,6 +442,10 @@ class Emails extends CRMEntity {
 			LEFT JOIN vtiger_emaildetails ON vtiger_emaildetails.emailid = vtiger_activity.activityid
 			LEFT JOIN vtiger_seattachmentsrel ON vtiger_activity.activityid=vtiger_seattachmentsrel.crmid
 			LEFT JOIN vtiger_attachments ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid";
+		
+		if ($join  != '') {
+			$query .= $join;
+		}
 		$query .= getNonAdminAccessControlQuery('Emails', $current_user);
 		$query .= "WHERE vtiger_activity.activitytype='Emails' AND vtiger_crmentity.deleted=0 ";
 

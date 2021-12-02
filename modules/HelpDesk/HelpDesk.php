@@ -375,7 +375,7 @@ class HelpDesk extends CRMEntity {
 	 * @param reference variable - where condition is passed when the query is executed
 	 * Returns Export Tickets Query.
 	 */
-	public function create_export_query($where) {
+	public function create_export_query($join, $where) {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
@@ -401,6 +401,10 @@ class HelpDesk extends CRMEntity {
 			LEFT JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid =vtiger_troubletickets.ticketid
 			LEFT JOIN vtiger_attachments ON vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
 			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_troubletickets.product_id";
+		
+		if ($join  != '') {
+			$query .= $join;
+		}
 		$query .= getNonAdminAccessControlQuery('HelpDesk', $current_user);
 		$where_auto=" vtiger_crmentity.deleted = 0 ";
 

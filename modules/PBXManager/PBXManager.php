@@ -100,7 +100,7 @@ class PBXManager extends CRMEntity {
 	/**
 	 * Create query to export the records.
 	 */
-	public function create_export_query($where) {
+	public function create_export_query($join, $where) {
 		global $current_user;
 		$thismodule = $_REQUEST['module'];
 
@@ -129,6 +129,9 @@ class PBXManager extends CRMEntity {
 		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
 		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
 
+		if ($join  != '') {
+			$query .= $join;
+		}
 		$where_auto = ' vtiger_crmentity.deleted=0';
 
 		if ($where != '') {
