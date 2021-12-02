@@ -24,7 +24,7 @@ class com_vtiger_workflow extends CRMEntity {
 	public function track_view($user_id, $current_module, $id = '') {
 	}
 
-	public function create_export_query($where) {
+	public function create_export_query($join, $where) {
 		global $adb;
 		$search_type = vtlib_purify($_REQUEST['search_type']);
 		$filters = isset($_REQUEST['filters']) ? vtlib_purify($_REQUEST['filters']) : '';
