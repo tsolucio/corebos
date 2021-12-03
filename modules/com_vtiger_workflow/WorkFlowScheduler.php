@@ -88,7 +88,8 @@ class WorkFlowScheduler {
 					if (!empty($valuematches)) {
 						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
 					}
-					$selectFields[] = $substExpsSelect["::#$selectExpsCounter"]." AS $selectExpression->fieldname";
+					$substExpression = sprintf('%03d', $selectExpsCounter);
+					$selectFields[] = $substExpsSelect["::#$substExpression"]." AS $selectExpression->fieldname";
 					$selectExpsCounter++;
 				} else {
 					$selectFields[] = $selectExpression->value;
