@@ -34,6 +34,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Send_VtigerCron_Error',
 				'Debug_Send_AdminLoginIPAuth_Error',
 				'Debug_Send_UserLoginIPAuth_Error',
+				'Debug_Send_WebService_Error',
+				'Debug_WebService_Errors',
 				'Debug_Calculate_Response_Time',
 				'Debug_ActivityReminder_Deactivated',
 				'Debug_Access_Restricted_File',

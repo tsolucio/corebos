@@ -163,20 +163,32 @@ $GlobalVariableDefinitons = array(
 'Debug_Send_VtigerCron_Error' => array(
 	'valuetype' => 'CSV EMail',
 	'category' => 'Depuración',
-	'values' => 'comma separated list of valid emails',
+	'values' => 'lista de emails separados por comma',
 	'definition' => 'Todas las direcciones de emails en esta lista recibirán un email cuando el proceso de tareas programadas produce un error',
 ),
 'Debug_Send_AdminLoginIPAuth_Error' => array(
 	'valuetype' => 'CSV EMail',
 	'category' => 'Depuración',
-	'values' => 'comma separated list of valid emails',
+	'values' => 'lista de emails separados por comma',
 	'definition' => 'Todas las direcciones de emails en esta lista recibirán un email cuando un usuario administrador intenta acceder a la aplicación desde una IP no autorizada',
 ),
 'Debug_Send_UserLoginIPAuth_Error' => array(
 	'valuetype' => 'CSV EMail',
 	'category' => 'Depuración',
-	'values' => 'comma separated list of valid emails',
+	'values' => 'lista de emails separados por comma',
 	'definition' => 'Todas las direcciones de emails en esta lista recibirán un email cuando un usuario intenta acceder a la aplicación desde una IP no autorizada',
+),
+'Debug_Send_WebService_Error' => array(
+	'valuetype' => 'CSV EMail',
+	'category' => 'Depuración',
+	'values' => 'lista de emails separados por comma',
+	'definition' => 'Todos los emails de esta lista recibirán un correo electrónico cuando se produzca un error en una llamada de Web Service. Puedes seleccionar los errores sobre los que quieres recibir notificaciones utilizando la variable global Debug_WebService_Errors',
+),
+'Debug_WebService_Errors' => array(
+	'valuetype' => 'CSV Errors',
+	'category' => 'Depuración',
+	'values' => 'lista de propiedades de error separados por comma',
+	'definition' => 'Los nombres de las propiedades del código de error se pueden encontrar en el archivo include/Webservices/WebServiceErrorCode.php file. Por ejemplo; `DATABASEQUERYERROR,INVALIDID`',
 ),
 'Application_Announcement' => array(
 	'valuetype' => 'Texto',

@@ -85,6 +85,31 @@ function writeErrorOutput($operationManager, $error) {
 	$state->error = $error;
 	unset($state->result);
 	$output = $operationManager->encode($state);
+	//Send email with error.
+	$mailto = GlobalVariable::getVariable('Debug_Send_WebService_Error', '');
+	if ($mailto != '') {
+		$wserror = GlobalVariable::getVariable('Debug_WebService_Errors', '*');
+		$wsproperty = false;
+		if ($wserror != '*') {
+			$wsprops = explode(',', $wserror);
+			foreach ($wsprops as $wsprop) {
+				if (property_exists('WebServiceErrorCode', $wsprop)) {
+					$wsproperty = true;
+					break;
+				}
+			}
+		}
+		if ($wserror == '*' || $wsproperty) {
+			global $site_URL;
+			require_once 'modules/Emails/mail.php';
+			require_once 'modules/Emails/Emails.php';
+			$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
+			$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
+			$mailsubject = '[ERROR]: '.$error->code.' - web service call throwed exception.';
+			$mailcontent = '[ERROR]: '.$error->code.' '.$error->message."\n<br>".$site_URL;
+			send_mail('Emails', $mailto, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $mailsubject, $mailcontent);
+		}
+	}
 	echo $output;
 }
 

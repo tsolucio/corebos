@@ -178,6 +178,18 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Liste CSV d\'adresses email valides',
 	'definition' => 'Toutes les adresses email sur cette liste recevront un email lorsqu\'un utilisateur essaye de s\'identifier à partir d\'une adresse IP invalide.',
 ),
+'Debug_Send_WebService_Error' => array(
+	'valuetype' => 'CSV EMail',
+	'category' => 'Debug',
+	'values' => 'comma separated list of valid emails',
+	'definition' => 'All the email addresses on this list will receive an email when an error occurs in a web service call. You can select the errors you want to get notified on using the global variable Debug_WebService_Errors',
+),
+'Debug_WebService_Errors' => array(
+	'valuetype' => 'CSV Errors',
+	'category' => 'Debug',
+	'values' => 'comma separated list of error properties',
+	'definition' => 'Error code property names can be found in the include/Webservices/WebServiceErrorCode.php file. For example; `DATABASEQUERYERROR,INVALIDID`',
+),
 'Application_Announcement' => array(
 	'valuetype' => 'Chaîne',
 	'category' => 'Application',
