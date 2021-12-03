@@ -23,7 +23,8 @@ class WorkFlowScheduler {
 		'less than or equal to' => 'm',
 		'greater than or equal to' => 'h',
 		'is' => 'e',
-		'contains' => 'c',
+		'contains' => 'c', // comma separation as ORs
+		'containsnc' => 'cnc', // contains with no comma separation
 		'does not contain' => 'k',
 		'starts with' => 's',
 		'ends with' => 'ew',

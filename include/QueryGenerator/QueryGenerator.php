@@ -1249,7 +1249,7 @@ class QueryGenerator {
 		$operator = strtolower($operator);
 		$db = PearDatabase::getInstance();
 		$noncommaSeparatedFieldTypes = array('currency','percentage','double','number');
-		$likeOperators = array('s','ew','c','k','dnsw','dnew');
+		$likeOperators = array('s','ew','c','cnc','k','dnsw','dnew');
 
 		// if ($field->getFieldDataType() == 'multipicklist' && in_array($operator, array('e', 'n'))) {
 			// $valueArray = getCombinations($valueArray);
@@ -1257,7 +1257,7 @@ class QueryGenerator {
 				// $valueArray[$key] = ltrim($value, ' |##| ');
 			// }
 		// } else
-		if (is_string($value) && $operator != 'e' && !in_array($field->getFieldDataType(), $noncommaSeparatedFieldTypes)) {
+		if (is_string($value) && $operator != 'e' && $operator != 'cnc' && !in_array($field->getFieldDataType(), $noncommaSeparatedFieldTypes)) {
 			$valueArray = explode(',', $value);
 		} else {
 			$valueArray = (array)$value;
@@ -1382,7 +1382,7 @@ class QueryGenerator {
 				$value = $db->sql_escape_string($value);
 			}
 
-			if (trim($value) == '' && ($operator == 's' || $operator == 'ew' || $operator == 'c')
+			if (trim($value) == '' && ($operator == 's' || $operator == 'ew' || $operator == 'c' || $operator == 'cnc')
 					&& ($this->isStringType($field->getFieldDataType()) ||
 					$field->getFieldDataType() == 'picklist' ||
 					$field->getFieldDataType() == 'multipicklist')) {
@@ -1411,6 +1411,7 @@ class QueryGenerator {
 					$value = "%$value";
 					break;
 				case 'c':
+				case 'cnc':
 					$sqlOperator = 'LIKE';
 					$value = "%$value%";
 					break;
@@ -1507,7 +1508,7 @@ class QueryGenerator {
 		return in_array($operator, $nonDaySearchOperators);
 	}
 	private function requiresQuoteSearchOperators($operator) {
-		$requiresQuote = array('s','ew','c','k');
+		$requiresQuote = array('s','ew','c','cnc','k');
 		return in_array($operator, $requiresQuote);
 	}
 	private function requiresREGEXP($operator) {
