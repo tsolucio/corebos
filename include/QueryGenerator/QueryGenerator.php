@@ -87,7 +87,7 @@ class QueryGenerator {
 
 	/**
 	 *
-	 * @param String:ModuleName $module
+	 * @param string Module Name
 	 * @return EntityMeta
 	 */
 	public function getMeta($module) {
@@ -1172,8 +1172,8 @@ class QueryGenerator {
 
 	/**
 	 * Function returns table column for the given sort field name
-	 * @param <String> $fieldName
-	 * @return <String> columnname
+	 * @param string field name
+	 * @return string column name
 	 */
 	public function getOrderByColumn($fieldName) {
 		$fieldList = $this->getModuleFields();
@@ -1242,7 +1242,7 @@ class QueryGenerator {
 	/**
 	 *
 	 * @param mixed $value
-	 * @param String $operator
+	 * @param string $operator
 	 * @param WebserviceField $field
 	 */
 	private function getConditionValue($value, $operator, $field, $referenceFieldName = '') {

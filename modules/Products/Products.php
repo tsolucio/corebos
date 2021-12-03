@@ -299,8 +299,8 @@ class Products extends CRMEntity {
 	}
 
 	/**	function used to get the list of leads which are related to the product
-	 *	@param int $id - product id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param integer product id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_leads($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -365,8 +365,8 @@ class Products extends CRMEntity {
 	}
 
 	/**	function used to get the list of accounts which are related to the product
-	 *	@param int $id - product id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param integer product id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_accounts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -429,8 +429,8 @@ class Products extends CRMEntity {
 	}
 
 	/**	function used to get the list of contacts which are related to the product
-	 *	@param int $id - product id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param integer product id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -497,8 +497,8 @@ class Products extends CRMEntity {
 	}
 
 	/**	function used to get the list of potentials which are related to the product
-	 *	@param int $id - product id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param integer product id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_opportunities($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -561,8 +561,8 @@ class Products extends CRMEntity {
 	}
 
 	/**	function used to get the list of tickets which are related to the product
-	 *	@param int $id - product id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param integer product id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_tickets($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
@@ -627,8 +627,8 @@ class Products extends CRMEntity {
 	}
 
 	/**	function used to get the list of quotes which are related to the product
-	 *	@param int $id - product id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param integer product id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_quotes($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -693,8 +693,8 @@ class Products extends CRMEntity {
 	}
 
 	/**	function used to get the list of purchase orders which are related to the product
-	 *	@param int $id - product id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param integer product id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_purchase_orders($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -754,8 +754,8 @@ class Products extends CRMEntity {
 	}
 
 	/**	function used to get the list of sales orders which are related to the product
-	 *	@param int $id - product id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param integer product id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_salesorder($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -816,8 +816,8 @@ class Products extends CRMEntity {
 	}
 
 	/**	function used to get the list of invoices which are related to the product
-	 *	@param int $id - product id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param integer product id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_invoices($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -878,8 +878,8 @@ class Products extends CRMEntity {
 	}
 
 	/**	function used to get the list of pricebooks which are related to the product
-	 *	@param int $id - product id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param integer product id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_product_pricebooks($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log,$singlepane_view,$currentModule;
@@ -926,8 +926,8 @@ class Products extends CRMEntity {
 	}
 
 	/**	function used to get the number of vendors which are related to the product
-	 *	@param int $id - product id
-	 *	@return int number of rows - return the number of products which do not have relationship with vendor
+	 *	@param integer product id
+	 *	@return integer number of rows - return the number of products which do not have relationship with vendor
 	 */
 	public function product_novendor() {
 		global $log, $adb;
@@ -1042,8 +1042,7 @@ class Products extends CRMEntity {
 		return GetRelatedList('Products', 'ProductComponent', $focus, $query, $button, $returnset);
 	}
 
-	/** Function to check if the product is parent of any other product
-	*/
+	/** Function to check if the product is parent of any other product */
 	public function isparent_check() {
 		global $adb;
 		if (!vtlib_isModuleActive('ProductComponent')) {
@@ -1060,8 +1059,7 @@ class Products extends CRMEntity {
 		return (int)$adb->query_result($isparent_query, 0, 0);
 	}
 
-	/** Function to check if the product is member of other product
-	*/
+	/** Function to check if the product is member of other product */
 	public function ismember_check() {
 		global $adb;
 		if (!vtlib_isModuleActive('ProductComponent')) {
