@@ -392,6 +392,7 @@ class HTTP_Request2_Adapter_Curl extends HTTP_Request2_Adapter
             $canonicalName = implode('-', array_map('ucfirst', explode('-', $name)));
             $headersFmt[]  = $canonicalName . ': ' . $value;
         }
+        $headersFmt[] = 'Transfer-Encoding:';
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headersFmt);
 
         return $ch;
