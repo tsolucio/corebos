@@ -318,7 +318,7 @@
 									</a>
 								</li>
 								<li class="slds-dropdown__item" role="presentation">
-									<a href="index.php?module=Users&action=Logout" role="menuitem" tabindex="-1">
+									<a href="index.php?module=Users&action=Logout&{$CSRFNAME}={''|csrf_get_tokens}" role="menuitem" tabindex="-1">
 										<span class="slds-truncate" title="{$APP.LBL_LOGOUT}">{$APP.LBL_LOGOUT}</span>
 									</a>
 								</li>

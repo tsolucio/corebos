@@ -25,6 +25,7 @@ $smarty->assign('HEADERS', $header_array);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGEPATH', $image_path);
 $smarty->assign('USER', $userName);
+$smarty->assign('CSRFNAME', $GLOBALS['csrf']['input-name']);
 
 $qc_modules = getQuickCreateModules();
 uasort($qc_modules, function ($a, $b) {

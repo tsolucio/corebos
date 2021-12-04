@@ -14,6 +14,9 @@ require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/Session.php';
 include_once 'include/integrations/saml/saml.php';
 global $adb,$current_user;
+$_SERVER['REQUEST_METHOD'] = 'POST';
+$_POST[$GLOBALS['csrf']['input-name']] = empty($_REQUEST[$GLOBALS['csrf']['input-name']]) ? '' : $_REQUEST[$GLOBALS['csrf']['input-name']];
+Vtiger_Request::validateRequest();
 
 // Recording Logout Info
 $loghistory=new LoginHistory();
