@@ -24,7 +24,7 @@ $smarty->assign('evvtAdminMenu', $header_array);
 $smarty->assign('HEADERS', $header_array);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGEPATH', $image_path);
-$smarty->assign('USER', $userName);
+$smarty->assign('USER', trim(gtltTagsToHTML($userName)));
 $smarty->assign('CSRFNAME', $GLOBALS['csrf']['input-name']);
 
 $qc_modules = getQuickCreateModules();
