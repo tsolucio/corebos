@@ -188,4 +188,11 @@
 	<classname>EmailField2DisplayType4andReviewFailedLoginAttempts</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Update cbCredentials Entity Fields</description>
+	<filename>build/changeSets/2021/updatecbCredentialsEntity.php</filename>
+	<classname>updatecbCredentialsEntityFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
