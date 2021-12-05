@@ -2422,6 +2422,7 @@ function validateImageContents($filename) {
 				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
 				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
 				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
+				|| preg_match('/<\s*script\s*>/i', $contents) === 1
 				|| stripos($contents, '<?=') !== false
 				|| stripos($contents, '<%=') !== false
 				|| stripos($contents, '<? ') !== false
