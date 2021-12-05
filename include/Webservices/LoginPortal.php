@@ -73,6 +73,7 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 				$accessCrypt = hash('sha512', $token.$pwd);
 				break;
 			case 'md5':
+				// deepcode ignore InsecureHash: backward compatibility, more secure methods are available
 				$accessCrypt = md5($token.$pwd);
 				break;
 			case 'plaintext':
@@ -124,7 +125,9 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSER, 'Given user is inactive');
 		}
 	}
-	vtws_loginportalincfailed($ctors->fields['id'], $entityType);
+	if ($ctors && !empty($ctors->fields['id'])) {
+		vtws_loginportalincfailed($ctors->fields['id'], $entityType);
+	}
 	throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'User incorrect or deactivated access.');
 }
 

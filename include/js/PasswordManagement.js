@@ -22,12 +22,12 @@
 var gvPasswordLength = 10;
 
 document.addEventListener('DOMContentLoaded', function () {
- GlobalVariable_getVariable('Application_MinimumPasswordLength', 10, 'Users', gVTUserID).then(function (response) {
-	 var obj = JSON.parse(response);
-	 gvPasswordLength = parseInt(obj.Application_MinimumPasswordLength);
- }, function (error) {
-	gvPasswordLength = 10;
- });
+	GlobalVariable_getVariable('Application_MinimumPasswordLength', 10, 'Users', gVTUserID).then(function (response) {
+		var obj = JSON.parse(response);
+		gvPasswordLength = parseInt(obj.Application_MinimumPasswordLength);
+	}, function (error) {
+		gvPasswordLength = 10;
+	});
 });
 
 var corebos_Password = {

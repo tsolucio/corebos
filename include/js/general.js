@@ -1047,7 +1047,7 @@ function numValidate(fldName, fldLabel, format, neg) {
 			}
 		} else {
 			var splitval=val.split('.');
-			if (splitval[0]>18446744073709551615) {
+			if (splitval[0] > Number.MAX_VALUE) {
 				ldsPrompt.show(alert_arr['ERROR'], fldLabel + alert_arr.EXCEEDS_MAX);
 				return false;
 			}
@@ -4556,7 +4556,7 @@ function validateInputData(value, fieldLabel, typeofdata) {
 			var splitval = value.split('.');
 			var arr_len = splitval.length;
 			var len = 0;
-			if (splitval[0] > 18446744073709551615) {
+			if (splitval[0] > Number.MAX_VALUE) {
 				ldsPrompt.show(alert_arr['ERROR'], fieldLabel + alert_arr.EXCEEDS_MAX);
 				return false;
 			}
