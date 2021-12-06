@@ -67,10 +67,11 @@ class changeLabelTaxHandler extends VTEventHandler {
 			global $adb;
 			require_once 'vtlib/Vtiger/Module.php';
 
-			$r = $adb->pquery('SELECT taxid FROM vtiger_inventorytaxinfo WHERE taxlabel = ?', array($eventData['new_label']));
+			$r = $adb->pquery('SELECT taxid, taxname FROM vtiger_inventorytaxinfo WHERE taxlabel = ?', array($eventData['new_label']));
 			if ($r && $adb->num_rows($r)>0) {
 				$taxid = $adb->query_result($r, 0, 'taxid');
 				$fieldname = 'id_tax' . $taxid . '_perc';
+				$taxname = $adb->query_result($r, 0, 'taxname');
 
 				$r = $adb->pquery('SELECT presence FROM vtiger_field WHERE fieldname = ?', array($fieldname));
 				$presence = $adb->query_result($r, 0, 'presence');
@@ -80,6 +81,22 @@ class changeLabelTaxHandler extends VTEventHandler {
 				$field->label = $eventData['new_label'];
 				$field->presence = $presence;
 				$field->save();
+
+				$fieldname = 'sum_'.$taxname;
+				$r = $adb->pquery('SELECT presence FROM vtiger_field WHERE fieldname = ?', array($fieldname));
+				$presence = $adb->query_result($r, 0, 'presence');
+
+				$imods = getInventoryModules();
+				foreach ($imods as $mod) {
+					$module = Vtiger_Module::getInstance($mod);
+
+					$field1 = Vtiger_Field::getInstance($fieldname, $module);
+					if (!empty($field1)) {
+						$field1->label = $eventData['new_label'];
+						$field1->presence = $presence;
+						$field1->save();
+					}
+				}
 			}
 		}
 	}
