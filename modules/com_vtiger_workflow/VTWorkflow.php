@@ -623,7 +623,7 @@ class Workflow {
 	}
 
 	public function getWorkFlowJSON($conds, $params, $page, $order_by) {
-		global $log, $adb, $current_user;
+		global $log, $adb, $current_user, $app_strings;
 		$log->debug('> getWorkFlowJSON');
 
 		$workflow_execution_condtion_list = self::geti18nTriggerLabels();
@@ -697,9 +697,9 @@ class Workflow {
 				$i18n = getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'com_vtiger_workflow');
 			}
 			if ($lgn['active'] == 'true') {
-				$active = 'Active';
+				$active = $app_strings['LBL_ACTIVE_PICKLIST'];
 			} else {
-				$active = 'Inactive';
+				$active = $app_strings['LBL_INACTIVE_PICKLIST'];
 			}
 			$entry['Trigger'] = $i18n;
 			$entry['Status'] = $active;
