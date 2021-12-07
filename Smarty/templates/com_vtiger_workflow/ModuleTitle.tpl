@@ -81,7 +81,12 @@
 							{$MOD.LBL_NEW_TEMPLATE}
 						</button>
 						{/if}
-						<button class="slds-button slds-button_success" type="button" id='save_submit' style="display:none;">
+						<button class="slds-button slds-button_success" type="button" id='save_submit' style="display:none;" {if $workflow->executionConditionAsLabel() eq 'MANUAL'} onclick="return confirm_changing()"{/if}>
+							<script type="text/javascript">
+								function confirm_changing() {
+									return confirm('You are changing the title of a manual trigger point workflow');
+								}
+							</script>
 							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 							</svg>
