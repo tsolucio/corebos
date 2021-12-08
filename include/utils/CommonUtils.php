@@ -3587,8 +3587,24 @@ function suppressAllButFirst($occurence, $from) {
 	return substr($from, 0, $spos+$slen).str_replace($occurence, '', substr($from, $spos+$slen));
 }
 
-function vt_suppressHTMLTags($string) {
-	return preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
+function vt_deleteHTMLTags($string, $singleQuote = false) {
+	$from = array('<', '>', '"');
+	$to = array('', '', '');
+	if ($singleQuote) {
+		$from[] = "'";
+		$to[] = '';
+	}
+	return str_replace($from, $to, $string);
+}
+
+function vt_suppressHTMLTags($string, $singleQuote = false) {
+	$from = array('/</', '/>/', '/"/');
+	$to = array('&lt;', '&gt;', '&quot;');
+	if ($singleQuote) {
+		$from[] = "/'/";
+		$to[] = '&#39;';
+	}
+	return preg_replace($from, $to, $string);
 }
 
 function gtltTagsToHTML($string) {
