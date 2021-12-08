@@ -10637,7 +10637,7 @@ precacheAndRoute([{
   "revision": "f09b1b73041383bfe8a85ccce9641617"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "759bdc2774349582eead689e9e535297"
+  "revision": "0272d3eb62e4f24d22c294cb9c84233e"
 }, {
   "url": "include/js/en_gb.lang.js",
   "revision": "a9dbe7f077b6447e94024363030684ec"
