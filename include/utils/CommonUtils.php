@@ -1793,27 +1793,36 @@ function setObjectValuesFromRequest($focus) {
 	global $log;
 	$moduleName = get_class($focus);
 	$log->debug("> setObjectValuesFromRequest $moduleName");
+	$editing = $_REQUEST['action']=='EditView';
 	if (isset($_REQUEST['record']) && (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')) {
-		$focus->id = vtlib_purify($_REQUEST['record']);
+		$focus->id = preg_replace('/[^0-9]+/', '', vtlib_purify($_REQUEST['record']));
 	}
 	if (isset($_REQUEST['mode'])) {
-		$focus->mode = vtlib_purify($_REQUEST['mode']);
+		$focus->mode = vt_deleteHTMLTags(vtlib_purify($_REQUEST['mode']), true);
 	}
 	foreach ($focus->column_fields as $fieldname => $val) {
 		if (isset($_REQUEST[$fieldname])) {
 			if (is_array($_REQUEST[$fieldname])) {
 				$value = $_REQUEST[$fieldname];
 			} else {
-				$value = trim($_REQUEST[$fieldname]);
+				if ($editing) {
+					$value = trim(vt_suppressHTMLTags($_REQUEST[$fieldname], true));
+				} else {
+					$value = trim($_REQUEST[$fieldname]);
+				}
 			}
 			$focus->column_fields[$fieldname] = $value;
 		} elseif (isset($_REQUEST[$fieldname.'_hidden'])) {
-			$value = trim($_REQUEST[$fieldname.'_hidden']);
+			if ($editing) {
+				$focus->column_fields[$fieldname] = trim(vt_suppressHTMLTags($_REQUEST[$fieldname.'_hidden'], true));
+			} else {
+				$value = trim($_REQUEST[$fieldname.'_hidden']);
+			}
 			$focus->column_fields[$fieldname] = $value;
 		}
 	}
 	if (!empty($_REQUEST['cbuuid'])) {
-		$focus->column_fields['cbuuid'] = vtlib_purify($_REQUEST['cbuuid']);
+		$focus->column_fields['cbuuid'] = vt_deleteHTMLTags(vtlib_purify($_REQUEST['cbuuid']), true);
 	}
 	if (!empty($_REQUEST['savefromqc']) || !empty($_REQUEST['FILTERFIELDSMAP'])) {
 		foreach (getFieldsWithDefaultValue(getTabid($moduleName)) as $fname => $fvalue) {
