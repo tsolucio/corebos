@@ -233,11 +233,11 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	} else if (uitype == 15 || uitype == 16 || uitype == 1613 || uitype == 1614 || uitype == 1615) {
 		var txtBox= 'txtbox_'+ fieldLabel;
 		var not_access =document.getElementById(txtBox);
-		var pickval = not_access.options[not_access.selectedIndex].value;
-		if (pickval == alert_arr.LBL_NOT_ACCESSIBLE) {
+		if (not_access.options[not_access.selectedIndex]==undefined || not_access.options[not_access.selectedIndex].value == alert_arr.LBL_NOT_ACCESSIBLE) {
 			document.getElementById(editArea).style.display='none';
 			document.getElementById(dtlView).style.display='block';
 			itsonview=false; //to show the edit link again after hiding the editdiv.
+			alert(alert_arr.ERR_FIELD_SELECTION);
 			return false;
 		}
 	} else if (globaluitype == 33 || globaluitype == 3313 || globaluitype == 3314) {
@@ -461,6 +461,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			} else { //Error
 				alert(msg);
 			}
+			VtigerJS_DialogBox.unblock();
 		}).fail(function () {
 			//Error while asking file
 			VtigerJS_DialogBox.unblock();
