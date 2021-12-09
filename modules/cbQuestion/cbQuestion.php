@@ -849,5 +849,17 @@ class cbQuestion extends CRMEntity {
 		fclose($handle);
 		return $contents;
 	}
+
+	public static function getQnDelimeterProperty($qnid) {
+		$ans = self::getAnswer($qnid);
+		$delim = ',';
+		if (!empty($ans)) {
+			$properties = json_decode($ans['properties']);
+			if ($properties && !empty($properties->delimiter)) {
+				$delim = $properties->delimiter;
+			}
+		}
+		return $delim;
+	}
 }
 ?>
