@@ -58,22 +58,6 @@
 					</div>
 				</td>
 			</tr>
-			<tr>
-				<td>
-					<label class="slds-form-element__label" for="file_type">{'Select File Type'|@getTranslatedString}</label>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<div class="slds-select_container">
-						<select class="slds-select" name ="file_type"  id="file_type">
-							<option {if ($task->file_type eq "pdf")}{"selected"}{/if} value="pdf">{'PDF'|@getTranslatedString}</option>
-							<option {if ($task->file_type eq "csv")}{"selected"}{/if} value="csv">{'CSV'|@getTranslatedString}</option>
-							<option {if ($task->file_type eq "excel")}{"selected"}{/if} value="excel">{'Excel'|@getTranslatedString}</option>
-						</select>
-					</div>
-				</td>
-			</tr>
 		</table>
 		<table class="slds-table slds-table_cell-buffer" id="questionDiv" style="width:100%; display:none;">
 			<tr>
@@ -106,6 +90,24 @@
 						</span>
 				</td>
 			</tr><br/>
+		</table>
+		<table class="slds-table slds-table_cell-buffer" id="fileTypeDiv" style="width:100%;">
+			<tr>
+				<td>
+					<label class="slds-form-element__label" for="file_type">{'Select File Type'|@getTranslatedString}</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="slds-select_container">
+						<select class="slds-select" name ="file_type"  id="file_type">
+							<option {if ($task->file_type eq "csv")}{"selected"}{/if} value="csv">{'CSV'|@getTranslatedString}</option>
+							<option {if ($task->file_type eq "excel")}{"selected"}{/if} value="excel">{'Excel'|@getTranslatedString}</option>
+							<option {if ($task->file_type eq "pdf")}{"selected"}{/if} value="pdf">{'PDF'|@getTranslatedString}</option>
+						</select>
+					</div>
+				</td>
+			</tr>
 		</table>
 	</div>
 </div>
