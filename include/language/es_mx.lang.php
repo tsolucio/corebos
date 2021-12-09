@@ -1355,6 +1355,7 @@ $app_strings = array (
 	'VALIDATION_FAILED' => 'Validación errónea',
 	'Select Module To Upsert' => 'Selecciona Módulo',
 	'LBL_FIX_NOW' => 'Arreglar Ahora',
+	'LBL_HIERARCHY' => 'Hierarchy',
 
 	//login translation
 	'LBL_Please_login_to_your_account' => 'Por favor accede a tu cuenta',
