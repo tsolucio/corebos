@@ -94,7 +94,7 @@
 			<legend class="slds-form-element__legend slds-form-element__label">{'Select where to get the records from'|@getTranslatedString:$MODULE_NAME}</legend>
 			<div class="slds-form-element__control">
 			<span class="slds-radio slds-p-top_xx-small">
-				<input type="radio" id="radio-4" value="conditions" name="options" {if $workflow->options eq 'conditions'}checked="checked"{/if} />
+				<input type="radio" id="radio-4" value="conditions" name="options" {if $workflow->options eq 'conditions' || $workflow->options eq ''}checked="checked"{/if} />
 				<label class="slds-radio__label" for="radio-4">
 				<span class="slds-radio_faux"></span>
 				<span class="slds-form-element__label">
