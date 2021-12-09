@@ -3791,16 +3791,16 @@ class CRMEntity {
 			}
 		}
 		$referenceField = $this->getSelfRelationField($currentModule);
-		$accounts_list = array();
+		$records_list = array();
 		$encountered_records = array($id);
 		if ($referenceField) {
-			$accounts_list = $this->__getParentRecords($id, $accounts_list, $encountered_records, $referenceField, $currentModule);
-			$accounts_list = $this->__getChildRecords($id, $accounts_list, $accounts_list[$id]['depth'], $referenceField , $currentModule);
+			$records_list = $this->__getParentRecords($id, $records_list, $encountered_records, $referenceField, $currentModule);
+			$records_list = $this->__getChildRecords($id, $records_list, $records_list[$id]['depth'], $referenceField , $currentModule);
 		}
-		if (isset($accounts_list) && !empty($accounts_list)) {
+		if (isset($records_list) && !empty($records_list)) {
 			$entityField = getEntityField($currentModule);
 			$entityField = $entityField['fieldname'];
-			foreach ($accounts_list as $recordID => $dep) {
+			foreach ($records_list as $recordID => $dep) {
 				$depth = $dep['depth'];
 				$fieldsOf = __cb_getfieldsof(array(
 					$recordID, $currentModule, implode(',', $listview_colname)
