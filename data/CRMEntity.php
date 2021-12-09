@@ -3736,7 +3736,7 @@ class CRMEntity {
 		if ($num_rows > 0) {
 			$depth = $depth + 1;
 			for ($i=0; $i < $adb->num_rows($rs); $i++) {
-				$recordid = $adb->query_result($rs,$i, 0);
+				$recordid = $adb->query_result($rs, $i, 0);
 				if (array_key_exists($recordid, $child_records)) {
 					continue;
 				}
@@ -3767,7 +3767,7 @@ class CRMEntity {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$cbMapLC = $cbMap->ListColumns()->getListFieldsFor($currentModule);
 			$linkfield = $cbMap->ListColumns()->getListLinkFor($currentModule);
-			if (!empty($cbMapLC)) {			
+			if (!empty($cbMapLC)) {		
 				unset($this->list_fields_name);
 				foreach ($cbMapLC as $label => $fields) {
 					$tmp_field = '';
@@ -3785,8 +3785,8 @@ class CRMEntity {
 					$colname = 'smownerid';
 				}
 				$listview_header[] = array(
- 					'name' => $colname,
- 					'header' => getTranslatedString($fieldname)
+					'name' => $colname,
+					'header' => getTranslatedString($fieldname)
 				);
 			}
 		}
@@ -3795,7 +3795,7 @@ class CRMEntity {
 		$encountered_records = array($id);
 		if ($referenceField) {
 			$records_list = $this->__getParentRecords($id, $records_list, $encountered_records, $referenceField, $currentModule);
-			$records_list = $this->__getChildRecords($id, $records_list, $records_list[$id]['depth'], $referenceField , $currentModule);
+			$records_list = $this->__getChildRecords($id, $records_list, $records_list[$id]['depth'], $referenceField, $currentModule);
 		}
 		if (isset($records_list) && !empty($records_list)) {
 			$entityField = getEntityField($currentModule);
@@ -3819,7 +3819,7 @@ class CRMEntity {
 					$gridVal = getDataGridValue($currentModule, $recordID, $fieldinfo, $fieldValue);
 					$record_depth = str_repeat(' .. ', $depth * 2);
 					if ($entityField == $field) {
-						$fieldVal = $record_depth.$gridVal[0];	
+						$fieldVal = $record_depth.$gridVal[0];
 					} else {
 						$fieldVal = $gridVal[0];
 						if ($linkfield == $field) {
