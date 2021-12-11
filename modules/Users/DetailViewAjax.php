@@ -61,7 +61,11 @@ if ($ajaxaction == 'DETAILVIEW') {
 		$userObj->save('Users');
 		if ($userObj->id != '') {
 			echo ':#:SUCCESS:#:';
+			$_REQUEST['action'] = $currentModule;
+			decide_to_html();
 			require_once 'modules/'.$currentModule.'/DetailView.php';
+			$_REQUEST['action'] = $currentModule.'Ajax';
+			decide_to_html();
 		} else {
 			echo ':#:FAILURE';
 		}
