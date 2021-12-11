@@ -3322,18 +3322,15 @@ function textlength_check($field_val, $overrideLength = 0) {
 	}
 	$field_val = decode_html($field_val);
 	if ($listview_max_textlength && $listview_max_textlength > 0) {
-		$temp_val = preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $field_val);
 		if (function_exists('mb_strlen')) {
-			if (mb_strlen($temp_val) > $listview_max_textlength) {
-				$temp_val = mb_substr(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $field_val), 0, $listview_max_textlength, $default_charset) . '...';
+			if (mb_strlen($field_val) > $listview_max_textlength) {
+				$field_val = mb_substr($field_val, 0, $listview_max_textlength, $default_charset) . '...';
 			}
 		} elseif (strlen($field_val) > $listview_max_textlength) {
-			$temp_val = substr(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $field_val), 0, $listview_max_textlength) . '...';
+			$field_val = substr($field_val, 0, $listview_max_textlength) . '...';
 		}
-	} else {
-		$temp_val = $field_val;
 	}
-	return gtltTagsToHTML($temp_val);
+	return gtltTagsToHTML($field_val);
 }
 
 /** Function to get permitted fields of current user of a particular module to find duplicate records */
