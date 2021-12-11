@@ -195,4 +195,11 @@
 	<classname>updatecbCredentialsEntityFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Change Contact/Lead Firstname and Salutation uitypes</description>
+	<filename>build/changeSets/2021/changefieldFirstNameAndSalutationOnContactAndLeadToUitype1and15.php</filename>
+	<classname>changefieldFirstNameAndSalutationOnContactAndLeadToUitype1and15</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

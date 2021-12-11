@@ -24,7 +24,7 @@ function getCustomFieldTypeName($uitype) {
 	 * salutation type is an exception where the uitype 55 is considered to be as text.
 	 */
 
-	if ($uitype == 1 || $uitype == 2 || $uitype == 55 || $uitype == 255) {
+	if ($uitype == 1 || $uitype == 2) {
 		$fldname = $mod_strings['Text'];
 	} elseif ($uitype == 7) {
 		$fldname = $mod_strings['Number'];
