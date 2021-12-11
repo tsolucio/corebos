@@ -256,6 +256,7 @@ class ListViewController {
 				} else {
 					$value = $rawValue;
 				}
+				$cleanValue = trim(gtltTagsToHTML($value));
 
 				if (($module == 'Documents' && $fieldName == 'filename') || $fieldName == 'Documents.filename') {
 					if ($fieldName == 'Documents.filename') {
@@ -284,10 +285,10 @@ class ListViewController {
 						if ($downloadtype == 'I') {
 							$value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile".
 								"&entityid=$docid&fileid=$fileId' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module).
-								"' onclick='javascript:dldCntIncrease($docid);'>".textlength_check($value).'</a>';
+								"' onclick='javascript:dldCntIncrease($docid);'>".textlength_check($cleanValue).'</a>';
 						} elseif ($downloadtype == 'E') {
 							$value = "<a target='_blank' href='$fileName' onclick='javascript:".
-								"dldCntIncrease($docid);' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module)."'>".textlength_check($value).'</a>';
+								"dldCntIncrease($docid);' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module)."'>".textlength_check($cleanValue).'</a>';
 						} else {
 							$value = ' --';
 						}
@@ -363,18 +364,18 @@ class ListViewController {
 					$matchPattern = "^[\w]+:\/\/^";
 					preg_match($matchPattern, $rawValue, $matches);
 					if (!empty($matches[0])) {
-						$value = '<a href="'.$rawValue.'" target="_blank">'.textlength_check($value).'</a>';
+						$value = '<a href="'.$rawValue.'" target="_blank">'.textlength_check($cleanValue).'</a>';
 					} else {
-						$value = '<a href="http://'.$rawValue.'" target="_blank">'.textlength_check($value).'</a>';
+						$value = '<a href="http://'.$rawValue.'" target="_blank">'.textlength_check($cleanValue).'</a>';
 					}
 				} elseif ($field->getFieldDataType() == 'email') {
 					if ($_SESSION['internal_mailer'] == 1) {
 						//check added for email link in user detailview
 						$fieldId = $field->getFieldId();
 						$value = "<a href=\"javascript:InternalMailer($recordId,$fieldId,".
-						"'$fieldName','$module','record_id');\">".textlength_check($value).'</a>';
+						"'$fieldName','$module','record_id');\">".textlength_check($cleanValue).'</a>';
 					} else {
-						$value = '<a href="mailto:'.$rawValue.'">'.textlength_check($value).'</a>';
+						$value = '<a href="mailto:'.$rawValue.'">'.textlength_check($cleanValue).'</a>';
 					}
 				} elseif ($field->getFieldDataType() == 'boolean') {
 					$value = BooleanField::getBooleanDisplayValue($value, $module);
@@ -446,7 +447,7 @@ class ListViewController {
 							}
 						}
 						$value = implode(', ', $tmpArray);
-						$value = textlength_check($value);
+						$value = trim(gtltTagsToHTML(textlength_check($value)));
 					}
 				} elseif ($uitype == 1616) {
 					$cvrs = $adb->pquery('select viewname,entitytype from vtiger_customview where cvid=?', array($value));
@@ -493,12 +494,14 @@ class ListViewController {
 					$value = textlength_check($value);
 				} elseif ($field->getFieldDataType() == 'picklist') {
 					$value = getTranslatedString($value, $module);
-					$value = textlength_check($value);
+					$value = trim(gtltTagsToHTML(textlength_check($value)));
 				} elseif ($field->getFieldDataType() == 'skype') {
-					$value = ($value != '') ? "<a href='skype:$value?call'>".textlength_check($value).'</a>' : '';
+					$value = trim(vt_deleteHTMLTags($value, true));
+					$value = ($value != '') ? "<a href='skype:$value?call'>".textlength_check($cleanValue).'</a>' : '';
 				} elseif ($field->getFieldDataType() == 'phone') {
 					if ($useAsterisk == 'true') {
-						$value = "<a href='javascript:;' onclick='startCall(&quot;$value&quot;, &quot;$recordId&quot;)'>".textlength_check($value).'</a>';
+						$value = trim(vt_deleteHTMLTags($value, true));
+						$value = "<a href='javascript:;' onclick='startCall(&quot;$value&quot;, &quot;$recordId&quot;)'>".textlength_check($cleanValue).'</a>';
 					} else {
 						$value = textlength_check($value);
 					}
@@ -532,7 +535,7 @@ class ListViewController {
 							$value = textlength_check($this->nameList[$fieldName][$value]);
 							if ($parentMeta->isModuleEntity() && $parentModule != 'Users') {
 								$value = "<a href='index.php?module=$parentModule&action=DetailView&".
-									"record=$rawValue' title='".getTranslatedString($parentModule, $parentModule)."'>$value</a>";
+									"record=$rawValue' title='".getTranslatedString($parentModule, $parentModule)."'>".$cleanValue.'</a>';
 								$modMetaInfo=getEntityFieldNames($parentModule);
 								$fieldName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
 								// vtlib customization: For listview javascript triggers
@@ -555,14 +558,12 @@ class ListViewController {
 						$value = vt_suppressHTMLTags(implode(',', json_decode($temp_val, true)));
 					}
 				} elseif (in_array($uitype, array(7,9,90))) {
-					$value = "<span align='right'>".textlength_check($value).'</div>';
-				} elseif ($field->getUIType() == 55) {
-					$value = getTranslatedString($value, $currentModule);
+					$value = "<span align='right'>".textlength_check($cleanValue).'</div>';
 				} elseif ($module == 'Emails' && ($fieldName == 'subject')) {
-						$value = '<a href="javascript:;" onClick="ShowEmail(\'' . $recordId . '\');">' . textlength_check($value) . '</a>';
+					$value = '<a href="javascript:;" onClick="ShowEmail(\'' . $recordId . '\');">' . textlength_check($cleanValue) . '</a>';
 				} else {
-					$field_val = vtlib_purify($value);
-					$value = textlength_check($value);
+					$field_val = trim(gtltTagsToHTML(vtlib_purify($value)));
+					$value = textlength_check($cleanValue);
 					if (substr($value, -3) == '...') {
 						$value = '<span title="'.$field_val.'">'.$value.'<span>';
 					}
@@ -572,7 +573,6 @@ class ListViewController {
 					$nameFieldList = explode(',', $nameFields);
 					if (($fieldName == $focus->list_link_field || in_array($fieldName, $nameFieldList)) && $module != 'Emails') {
 						$opennewtab = GlobalVariable::getVariable('Application_OpenRecordInNewXOnListView', '', $module);
-						$value = trim(gtltTagsToHTML($value));
 						if ($opennewtab=='') {
 							$value = "<a href='index.php?module=$module&action=DetailView&record=".
 								"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
