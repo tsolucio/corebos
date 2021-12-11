@@ -10,7 +10,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="listview">
+        <xs:element name="listview" minOccurs="0" maxOccurs="1">
           <xs:complexType mixed="true">
             <xs:sequence>
               <xs:choice maxOccurs="4" minOccurs="1">
@@ -39,6 +39,7 @@
         <xs:element name="detailview" minOccurs="0">
           <xs:complexType mixed="true">
             <xs:sequence>
+            <xs:element type="xs:string" name="modulename" minOccurs="0"/>
             <xs:choice maxOccurs="4" minOccurs="1">
               <xs:element type="xs:byte" name="c"/>
               <xs:element type="xs:byte" name="r"/>
@@ -51,7 +52,7 @@
         <xs:element name="relatedlists" minOccurs="0">
           <xs:complexType mixed="true">
             <xs:sequence>
-              <xs:element name="relatedlist">
+              <xs:element name="relatedlist" maxOccurs="unbounded" minOccurs="1" >
                 <xs:complexType mixed="true">
                   <xs:sequence>
                     <xs:element type="xs:string" name="modulename"/>
