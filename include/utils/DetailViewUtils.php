@@ -254,16 +254,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 19) {
 		$col_fields[$fieldname] = decode_html($col_fields[$fieldname]); // undo database encoding
 		if ($fieldname=='notecontent' || $module=='Emails' || ($fieldname=='signature' && $module=='Users') || (isset($cbMapFI['RTE']) && $cbMapFI['RTE'] && vt_hasRTE())) {
-			//$col_fields[$fieldname] = htmlentities($col_fields[$fieldname]); // prepare for output
-			$col_fields[$fieldname] = from_html($col_fields[$fieldname]);
+			$col_fields[$fieldname] = vtlib_purify($col_fields[$fieldname]);
 		} else {
-			//$col_fields[$fieldname] = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $col_fields[$fieldname]);
-			$col_fields[$fieldname] = htmlentities($col_fields[$fieldname], ENT_QUOTES, $default_charset); // prepare for output
+			$col_fields[$fieldname] = htmlentities($col_fields[$fieldname], ENT_QUOTES, $default_charset);
 		}
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	} elseif ($uitype == 21) {
-		$col_fields[$fieldname] = nl2br($col_fields[$fieldname]);
+		$col_fields[$fieldname] = nl2br(vtlib_purify($col_fields[$fieldname]));
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	} elseif ($uitype == 52 || $uitype == 77 || $uitype == 101) {
