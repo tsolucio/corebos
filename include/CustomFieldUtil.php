@@ -19,11 +19,6 @@ function getCustomFieldTypeName($uitype) {
 	global $mod_strings, $log;
 	$log->debug('> getCustomFieldTypeName '.$uitype);
 	$fldname = '';
-
-	/*
-	 * salutation type is an exception where the uitype 55 is considered to be as text.
-	 */
-
 	if ($uitype == 1 || $uitype == 2) {
 		$fldname = $mod_strings['Text'];
 	} elseif ($uitype == 7) {
