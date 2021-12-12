@@ -254,16 +254,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 19) {
 		$col_fields[$fieldname] = decode_html($col_fields[$fieldname]); // undo database encoding
 		if ($fieldname=='notecontent' || $module=='Emails' || ($fieldname=='signature' && $module=='Users') || (isset($cbMapFI['RTE']) && $cbMapFI['RTE'] && vt_hasRTE())) {
-			//$col_fields[$fieldname] = htmlentities($col_fields[$fieldname]); // prepare for output
-			$col_fields[$fieldname] = from_html($col_fields[$fieldname]);
+			$col_fields[$fieldname] = vtlib_purify($col_fields[$fieldname]);
 		} else {
-			//$col_fields[$fieldname] = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $col_fields[$fieldname]);
-			$col_fields[$fieldname] = htmlentities($col_fields[$fieldname], ENT_QUOTES, $default_charset); // prepare for output
+			$col_fields[$fieldname] = htmlentities($col_fields[$fieldname], ENT_QUOTES, $default_charset);
 		}
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	} elseif ($uitype == 21) {
-		$col_fields[$fieldname] = nl2br($col_fields[$fieldname]);
+		$col_fields[$fieldname] = nl2br(vtlib_purify($col_fields[$fieldname]));
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	} elseif ($uitype == 52 || $uitype == 77 || $uitype == 101) {
@@ -370,48 +368,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 		$label_fld ['options'][] = $users_combo;
 		$label_fld ['options'][] = $groups_combo;
-	} elseif ($uitype == 55 || $uitype == 255) {
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$value = $col_fields[$fieldname];
-		if ($uitype == 255) {
-			global $currentModule;
-			$fieldpermission = getFieldVisibilityPermission($currentModule, $current_user->id, 'firstname');
-		}
-		if ($uitype == 255 && $fieldpermission == 0 && $fieldpermission != '') {
-			$fieldvalue[] = '';
-		} else {
-			if ($userprivs->hasGlobalReadPermission()) {
-				$pick_query = 'select salutationtype from vtiger_salutationtype order by salutationtype';
-				$params = array();
-			} else {
-				$pick_query = "select salutationtype
-					from vtiger_salutationtype
-					left join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid=vtiger_salutationtype.picklist_valueid
-					where picklistid in (select picklistid from vtiger_picklist where name='salutationtype') and roleid=?
-					order by salutationtype";
-				$params = array($current_user->roleid);
-			}
-			$pickListResult = $adb->pquery($pick_query, $params);
-			$noofpickrows = $adb->num_rows($pickListResult);
-			$sal_value = empty($col_fields['salutationtype']) ? '' : $col_fields['salutationtype'];
-			$salcount = 0;
-			for ($j = 0; $j < $noofpickrows; $j++) {
-				$pickListValue = $adb->query_result($pickListResult, $j, 'salutationtype');
-				if ($sal_value == $pickListValue) {
-					$salcount++;
-				}
-			}
-			$notacc = '';
-			if ($salcount == 0 && $sal_value != '') {
-				$notacc = $app_strings['LBL_NOT_ACCESSIBLE'];
-			}
-			if ($sal_value == '--None--') {
-				$sal_value = '';
-			}
-			$label_fld['salut'] = getTranslatedString($sal_value);
-			$label_fld['notaccess'] = $notacc;
-		}
-		$label_fld[] = $value;
 	} elseif ($uitype == 56) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$value = $col_fields[$fieldname];

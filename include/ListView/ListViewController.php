@@ -559,9 +559,9 @@ class ListViewController {
 				} elseif ($field->getUIType() == 55) {
 					$value = getTranslatedString($value, $currentModule);
 				} elseif ($module == 'Emails' && ($fieldName == 'subject')) {
-						$value = '<a href="javascript:;" onClick="ShowEmail(\'' . $recordId . '\');">' . textlength_check($value) . '</a>';
+					$value = '<a href="javascript:;" onClick="ShowEmail(\'' . $recordId . '\');">' . textlength_check($value) . '</a>';
 				} else {
-					$field_val = vtlib_purify($value);
+					$field_val = trim(vt_suppressHTMLTags(vtlib_purify($value), true));
 					$value = textlength_check($value);
 					if (substr($value, -3) == '...') {
 						$value = '<span title="'.$field_val.'">'.$value.'<span>';
@@ -572,7 +572,6 @@ class ListViewController {
 					$nameFieldList = explode(',', $nameFields);
 					if (($fieldName == $focus->list_link_field || in_array($fieldName, $nameFieldList)) && $module != 'Emails') {
 						$opennewtab = GlobalVariable::getVariable('Application_OpenRecordInNewXOnListView', '', $module);
-						$value = trim(gtltTagsToHTML($value));
 						if ($opennewtab=='') {
 							$value = "<a href='index.php?module=$module&action=DetailView&record=".
 								"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
