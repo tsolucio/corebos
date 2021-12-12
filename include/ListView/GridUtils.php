@@ -423,6 +423,9 @@ function gridInlineCellEdit($request) {
 	$fieldname = vtlib_purify($request['fldName']);
 	$fieldvalue = vtlib_purify($request['fieldValue']);
 	$modInstance = CRMEntity::getInstance($module);
+	if (isPermitted($module, 'EditView', $crmid)!='yes') {
+		return array('success' => false, 'msg' => getTranslatedString('LBL_PERMISSION'));
+	}
 	if ($crmid != '') {
 		$modInstance->retrieve_entity_info($crmid, $module);
 		$modInstance->column_fields[$fieldname] = $fieldvalue;
@@ -452,10 +455,13 @@ function gridInlineCellEdit($request) {
 
 function gridDeleteRow($adb, $request) {
 	global $log;
+	$relmodule = empty($request['detail_module']) ? '' : vtlib_purify($_REQUEST['detail_module']);
+	$relid = empty($request['detail_id']) ? '' : vtlib_purify($_REQUEST['detail_id']);
+	if (empty($relmodule) || empty($relid) || isPermitted($relmodule, 'Delete', $relid)!='yes') {
+		return array('success' => false, 'msg' => getTranslatedString('LBL_PERMISSION'));
+	}
 	$result = array('success'=> false, 'msg' => 'failed');
-	if (!empty($request['detail_module']) && !empty($request['detail_id']) && !empty($request['mapname'])) {
-		$relmodule = vtlib_purify($_REQUEST['detail_module']);
-		$relid = vtlib_purify($_REQUEST['detail_id']);
+	if (!empty($request['mapname'])) {
 		$mapname = vtlib_purify($_REQUEST['mapname']);
 		try {
 			$relfocus = CRMEntity::getInstance($relmodule);
@@ -487,11 +493,14 @@ function gridDeleteRow($adb, $request) {
 }
 
 function gridMoveRowUpDown($adb, $request) {
+	$recordid = empty($_REQUEST['recordid']) ? '' : vtlib_purify($_REQUEST['recordid']);
+	$module = empty($_REQUEST['detail_module']) ? '' : vtlib_purify($_REQUEST['detail_module']);
+	if (empty($recordid) || empty($module) || isPermitted($module, 'EditView', $recordid)!='yes') {
+		return array('success' => false, 'msg' => getTranslatedString('LBL_PERMISSION'));
+	}
 	$result = array('success' => false, 'msg' => 'failed');
-	if (!empty($request['mapname']) && !empty($_REQUEST['recordid']) && !empty($_REQUEST['detail_module']) && !empty($_REQUEST['direction'])) {
+	if (!empty($request['mapname']) && !empty($_REQUEST['direction'])) {
 		$mapname = vtlib_purify($_REQUEST['mapname']);
-		$recordid = vtlib_purify($_REQUEST['recordid']);
-		$module = vtlib_purify($_REQUEST['detail_module']);
 		$direction = vtlib_purify($_REQUEST['direction']);
 		$cbMap = cbMap::getMapByName($mapname);
 		if ($cbMap) {
@@ -523,6 +532,6 @@ function gridMoveRowUpDown($adb, $request) {
 				}
 			}
 		}
-		return $result;
 	}
+	return $result;
 }
