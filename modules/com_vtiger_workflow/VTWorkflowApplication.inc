@@ -72,7 +72,7 @@ class VTWorkflowApplication {
 	}
 
 	public function activatedeactivateTaskUrl($id, $active) {
-		$idPart="&workflow_id=$id";
+		$idPart="&workflow_id=$id&".$GLOBALS['csrf']['input-name'].'='.csrf_get_tokens();
 		return "index.php?module={$this->name}&action=activatedeactivateTask$idPart&active=$active&return_url=".urlencode($this->returnUrl());
 	}
 }
