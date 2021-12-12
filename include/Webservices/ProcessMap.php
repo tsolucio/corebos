@@ -111,6 +111,8 @@ class cbwsProcessMapWorker {
 				return $this->processMapping();
 			case 'Detail View Layout Mapping':
 				return $this->mapobj->DetailViewLayoutMapping();
+			case 'ListColumns':
+				return $this->mapobj->ListColumns()->getCompleteMapping();
 			case 'ApplicationMenu':
 				return $this->mapobj->ApplicationMenu();
 			default:
