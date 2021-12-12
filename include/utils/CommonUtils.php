@@ -218,6 +218,7 @@ function parse_calendardate($local_format) {
 
 /**
  * Rudimentary/Trusted input clean up for XSS
+ * @deprecated use vtlib_purify
  * @param string to be cleaned
  * @return string the cleaned value
  */
