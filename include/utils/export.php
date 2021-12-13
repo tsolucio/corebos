@@ -111,7 +111,6 @@ function export($type, $format = 'CSV') {
 	} else {
 		$where = '';
 	}
-	$join = '';
 	if ($where) {
 		$fld_str = substr(strpbrk($where, 'v'), 0, strpos(strpbrk($where, 'v'), "."));
 		$fieldName = explode("vtiger_users", $fld_str);
@@ -127,7 +126,7 @@ function export($type, $format = 'CSV') {
 			}
 		}
 	}
-	$query = $focus->create_export_query($join, $where);
+	$query = $focus->create_export_query($where, $join);
 	if ($search_type != 'includesearch') {
 		$stdfiltersql = $oCustomView->getCVStdFilterSQL($viewid);
 		$advfiltersql = $oCustomView->getCVAdvFilterSQL($viewid);
