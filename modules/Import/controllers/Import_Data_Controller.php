@@ -228,7 +228,7 @@ class Import_Data_Controller {
 						$queryGenerator->initForDefaultCustomView();
 						$fieldsList = array('id');
 						$queryGenerator->setFields($fieldsList);
-						if (!empty($this->mergeFields)) {		
+						if (!empty($this->mergeFields)) {
 							foreach ($this->mergeFields as $mergeField) {
 								if (!isset($fieldData[$mergeField])) {
 									continue;
