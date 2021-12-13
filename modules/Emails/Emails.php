@@ -418,7 +418,7 @@ class Emails extends CRMEntity {
 	/**
 	 * Returns a list of the Emails to be exported
 	 */
-	public function create_export_query($join, $where) {
+	public function create_export_query($where, $join = '') {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 

@@ -100,7 +100,7 @@ class PBXManager extends CRMEntity {
 	/**
 	 * Create query to export the records.
 	 */
-	public function create_export_query($join, $where) {
+	public function create_export_query($where, $join = '') {
 		global $current_user;
 		$thismodule = $_REQUEST['module'];
 

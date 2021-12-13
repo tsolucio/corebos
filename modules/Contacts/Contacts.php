@@ -579,7 +579,7 @@ class Contacts extends CRMEntity {
 	* @param reference variable - where condition is passed when the query is executed
 	* Returns Export Contacts Query.
 	*/
-	public function create_export_query($join, $where) {
+	public function create_export_query($where, $join = '') {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
