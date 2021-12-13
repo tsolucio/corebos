@@ -110,8 +110,9 @@ class Import_Index_Controller {
 
 	public function getEntityFields($moduleName) {
 		$moduleFields = $this->getAccessibleFields($moduleName);
+		$forceDuplicated = GlobalVariable::getVariable('Import_ForceDuplicateRecord_Handling', 0);
 		$entityColumnNames = GlobalVariable::getVariable('Import_DuplicateRecordHandling_Fields', '');
-		if ($entityColumnNames != '') {
+		if ($entityColumnNames != '' || $forceDuplicated == '1') {
 			$entityColumnNames = explode(',', $entityColumnNames);
 		} else {
 			$entityColumnNames = vtws_getEntityNameFields($moduleName);
@@ -148,7 +149,12 @@ class Import_Index_Controller {
 		} elseif ($STEP3_HANDLETYPE=='merge') {
 			$STEP3_HANDLETYPE = 3;
 		}
+		$ForceDuplicateRecord = GlobalVariable::getVariable('Import_ForceDuplicateRecord_Handling', 0);
+		if ($ForceDuplicateRecord == '1') {
+			$STEP3_HANDLETYPE = 1;
+		}
 		$viewer->assign('STEP3_HANDLETYPE', $STEP3_HANDLETYPE);
+		$viewer->assign('HIDE_STEP3', $ForceDuplicateRecord);
 		$viewer->display('ImportBasic.tpl');
 	}
 
@@ -168,12 +174,18 @@ class Import_Index_Controller {
 		$hasHeader = $fileReader->hasHeader();
 		$rowData = $fileReader->getFirstRowData($hasHeader);
 
-		$autoMerge = $userInputObject->get('auto_merge');
-		if (!$autoMerge) {
-			$userInputObject->set('merge_type', 0);
+		$forceDuplicated = GlobalVariable::getVariable('Import_ForceDuplicateRecord_Handling', 0);
+		if ($forceDuplicated == '1') {
+			$userInputObject->set('auto_merge', 'on');
+			$userInputObject->set('merge_type', '1');
 			$userInputObject->set('merge_fields', '');
+		} else {
+			$autoMerge = $userInputObject->get('auto_merge');
+			if (!$autoMerge) {
+				$userInputObject->set('merge_type', 0);
+				$userInputObject->set('merge_fields', '');
+			}
 		}
-
 		$viewer = new Import_UI_Viewer();
 		$viewer->assign('FOR_MODULE', $moduleName);
 		$viewer->assign('AVAILABLE_FIELDS', $indexController->getImportableFields($moduleName));

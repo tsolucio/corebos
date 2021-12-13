@@ -286,6 +286,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Security_ImageCheck',
 				'MasterDetail_ReloadScreenAfterEdit',
 				'MasterDetail_Pagination',
+				'Import_ForceDuplicateRecord_Handling'
 			);
 			$delete_these = array(
 				'preload_prototype',

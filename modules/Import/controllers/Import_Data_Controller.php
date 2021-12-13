@@ -228,28 +228,29 @@ class Import_Data_Controller {
 						$queryGenerator->initForDefaultCustomView();
 						$fieldsList = array('id');
 						$queryGenerator->setFields($fieldsList);
-
-						foreach ($this->mergeFields as $mergeField) {
-							if (!isset($fieldData[$mergeField])) {
-								continue;
-							}
-							$comparisonValue = $fieldData[$mergeField];
-							$fieldInstance = $moduleFields[$mergeField];
-							if ($fieldInstance->getFieldDataType() == 'owner') {
-								$userId = getUserId_Ol($comparisonValue);
-								$comparisonValue = getUserFullName($userId);
-							}
-							if ($fieldInstance->getFieldDataType() == 'reference') {
-								if (strpos($comparisonValue, '::::') > 0) {
-									$referenceFileValueComponents = explode('::::', $comparisonValue);
-								} else {
-									$referenceFileValueComponents = explode(':::', $comparisonValue);
+						if (!empty($this->mergeFields)) {		
+							foreach ($this->mergeFields as $mergeField) {
+								if (!isset($fieldData[$mergeField])) {
+									continue;
 								}
-								if (count($referenceFileValueComponents) > 1) {
-									$comparisonValue = trim($referenceFileValueComponents[1]);
+								$comparisonValue = $fieldData[$mergeField];
+								$fieldInstance = $moduleFields[$mergeField];
+								if ($fieldInstance->getFieldDataType() == 'owner') {
+									$userId = getUserId_Ol($comparisonValue);
+									$comparisonValue = getUserFullName($userId);
 								}
+								if ($fieldInstance->getFieldDataType() == 'reference') {
+									if (strpos($comparisonValue, '::::') > 0) {
+										$referenceFileValueComponents = explode('::::', $comparisonValue);
+									} else {
+										$referenceFileValueComponents = explode(':::', $comparisonValue);
+									}
+									if (count($referenceFileValueComponents) > 1) {
+										$comparisonValue = trim($referenceFileValueComponents[1]);
+									}
+								}
+								$queryGenerator->addCondition($mergeField, $comparisonValue, 'e', QueryGenerator::$AND);
 							}
-							$queryGenerator->addCondition($mergeField, $comparisonValue, 'e', QueryGenerator::$AND);
 						}
 						$query = $queryGenerator->getQuery();
 					} else {

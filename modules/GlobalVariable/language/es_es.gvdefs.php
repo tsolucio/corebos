@@ -1528,6 +1528,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número de filas para mostrar por página en la lista de filas maestro-detalle.',
 ),
+'Import_ForceDuplicateRecord_Handling' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Control if the duplicate handling should be forced.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {
