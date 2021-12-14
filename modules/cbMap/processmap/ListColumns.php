@@ -51,6 +51,16 @@
 	 ...
 	</columns>
   </popup>
+  <deduplication>
+	<linkfield></linkfield>
+	<columns>
+	 <field>
+	  <label><label>
+	  <name><name>
+	 </field>
+	 ...
+	</columns>
+  </deduplication>
  </map>
  *************************************************************************************************/
 require_once 'modules/cbMap/cbMap.php';
@@ -117,6 +127,10 @@ class ListColumns extends processcbMap {
 
 	public function getSummaryBody() {
 		return $this->mapping['cbmapSUMMARY']['BODY'];
+	}
+
+	public function getDeduplcationFields() {
+		return $this->mapping['cbmapDEDUPLICATION'];
 	}
 
 	private function convertMap2Array() {
@@ -225,6 +239,22 @@ class ListColumns extends processcbMap {
 				foreach ($v->field as $vf) {
 					$this->mapping['cbmapSUMMARY']['BODY']['ListFields'][(string)$vf->label] = (string)$vf->name;
 				}
+			}
+		}
+		if (isset($xml->deduplication)) {
+			$linkfield = (string)$xml->deduplication->linkfield;
+			$cachedModuleFields = VTCacheUtils::lookupFieldInfo($tabid, $linkfield);
+			if (!$cachedModuleFields) {
+				$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $linkfield);
+				if ($cachedModuleFields) {
+					$linkfield = $cachedModuleFields['fieldname'];
+				}
+			}
+			$this->mapping['cbmapDEDUPLICATION']['LINKFIELD'] = (!empty($linkfield) ? $linkfield : $f->list_link_field);
+			foreach ($xml->deduplication->columns->field as $v) {
+				$label = empty($v->label) ? '' : (string)$v->label;
+				$name = empty($v->name) ? '' : (string)$v->name;
+				$this->mapping['cbmapDEDUPLICATION']['ListFields'][$label] = $name;
 			}
 		}
 	}
