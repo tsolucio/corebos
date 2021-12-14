@@ -849,5 +849,20 @@ class cbQuestion extends CRMEntity {
 		fclose($handle);
 		return $contents;
 	}
+
+	public static function getQuestionProperties($qnid) {
+		global $adb;
+		$propertyody = null;
+		$res = $adb->pquery('SELECT typeprops FROM vtiger_cbquestion WHERE cbquestionid = ? LIMIT 1', array($qnid));
+		if ($res && $adb->num_rows($res) > 0) {
+			$propertyody = json_decode(html_entity_decode($adb->query_result($res, 0, 'typeprops')));
+		}
+		return $propertyody;
+	}
+
+	public static function getQnDelimeterProperty($qnid) {
+		$propertyody = self::getQuestionProperties($qnid);
+		return ($propertyody && !empty($propertyody->delimiter)) ? $propertyody->delimiter : ',';
+	}
 }
 ?>
