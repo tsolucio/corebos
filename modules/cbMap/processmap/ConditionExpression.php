@@ -82,7 +82,12 @@ class ConditionExpression extends processcbMap {
 				$entity->setData(array_merge($entity->data, $arguments[0]));
 			}
 		} else {
-			$inModule = empty($arguments[0]['module']) ? vtlib_purify($_REQUEST['module']) : $arguments[0]['module'];
+			if (empty($arguments[0]['module']) && empty($_REQUEST['module'])) {
+				$mapFields = $this->getMap();
+				$inModule = $mapFields->column_fields['targetname'];
+			} else {
+				$inModule = empty($arguments[0]['module']) ? vtlib_purify($_REQUEST['module']) : $arguments[0]['module'];
+			}
 			$entity = new cbexpsql_environmentstub($inModule, 0);
 			$entity->setData($arguments[0]);
 		}
