@@ -127,11 +127,13 @@ class ReportRunQueryPlanner {
 				$query1 = sprintf('CREATE TEMPORARY TABLE %s AS %s %s', $uniqueName, $tempTableInfo['query'], $reportConditions);
 			}
 			$adb->pquery($query1, array());
-
+			$cntmp = $adb->getColumnNames($uniqueName);
 			$keyColumns = $tempTableInfo['keycolumns'];
 			foreach ($keyColumns as $keyColumn) {
-				$query2 = sprintf('ALTER TABLE %s ADD INDEX (%s)', $uniqueName, $keyColumn);
-				$adb->pquery($query2, array());
+				if (!empty($cntmp[$keyColumn])) {
+					$query2 = sprintf('ALTER TABLE %s ADD INDEX (%s)', $uniqueName, $keyColumn);
+					$adb->pquery($query2, array());
+				}
 			}
 		}
 
