@@ -463,7 +463,7 @@ class Vtiger_PackageExport {
 			$this->outputNode($fieldresultrow['columnname'], 'columnname');
 			$this->outputNode($fieldresultrow['tablename'], 'tablename');
 			$this->outputNode($fieldresultrow['generatedtype'], 'generatedtype');
-			$this->outputNode($fieldresultrow['fieldlabel'], 'fieldlabel');
+			$this->outputNode('<![CDATA['.$fieldresultrow['fieldlabel'].']]>', 'fieldlabel');
 			$this->outputNode($fieldresultrow['readonly'], 'readonly');
 			$this->outputNode($fieldresultrow['presence'], 'presence');
 			$this->outputNode($fieldresultrow['defaultvalue'], 'defaultvalue');
