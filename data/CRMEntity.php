@@ -3767,7 +3767,7 @@ class CRMEntity {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$cbMapLC = $cbMap->ListColumns()->getListFieldsFor($currentModule);
 			$linkfield = $cbMap->ListColumns()->getListLinkFor($currentModule);
-			if (!empty($cbMapLC)) {		
+			if (!empty($cbMapLC)) {
 				unset($this->list_fields_name);
 				foreach ($cbMapLC as $label => $fields) {
 					$tmp_field = '';
