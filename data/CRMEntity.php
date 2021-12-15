@@ -3772,6 +3772,7 @@ class CRMEntity {
 		$listview_colname = array();
 		$bmapname = $currentModule.'_ListColumns';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		$linkfield = $this->list_link_field;
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$cbMapLC = $cbMap->ListColumns()->getListFieldsFor($currentModule);
