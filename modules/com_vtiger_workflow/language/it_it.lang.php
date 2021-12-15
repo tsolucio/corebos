@@ -21,6 +21,7 @@ $mod_strings = array(
 'LBL_EDIT_WORKFLOW_TITLE'=>'Modifica una workflow esistente o creane uno nuovo',
 'LBL_FROM_TEMPLATE'=>'Dal Template',
 'LBL_NEW_WORKFLOW'=>'Nuovo Workflow',
+'LBL_WF_MANUAL_WARNING'=>'You are changing the title of a manual trigger point workflow. If it is used in a web service call, you may break it.',
 'LBL_NEW_TEMPLATE'=>'Salva come Template',
 'LBL_CREATE_WORKFLOW_FOR'=>'Crea un workflow per',
 'LBL_FOR_MODULE'=>'Per il Modulo',

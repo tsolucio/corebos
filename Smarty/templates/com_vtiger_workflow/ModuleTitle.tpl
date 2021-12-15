@@ -89,10 +89,8 @@
 						</button>
 						<script type="text/javascript">
 							function confirm_changing() {
-								var comp_val = document.getElementById('save_description').value;
-								var comp_val2 = document.getElementById('hidden_description').value;
-								if (comp_val != comp_val2) {
-									window.alert('{$MOD.LBL_WF_MANUAL_WARNING}');
+								if (document.getElementById('save_description').value != document.getElementById('hidden_description').value) {
+									alert('{$MOD.LBL_WF_MANUAL_WARNING}');
 								}
 							}
 						</script>

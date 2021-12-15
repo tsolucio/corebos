@@ -18,6 +18,7 @@ $mod_strings = array(
 'LBL_EDIT_WORKFLOW_TITLE'=>'Editar un flujo de trabajo existente o crear uno nuevo',
 'LBL_FROM_TEMPLATE'=>'Basado en plantilla',
 'LBL_NEW_WORKFLOW'=>'Nuevo Flujo de Trabajo',
+'LBL_WF_MANUAL_WARNING'=>'Estás cambiando el título de un flujo de trabajo manual. Si se utiliza en una llamada de servicio web, puedes romperlo.',
 'LBL_NEW_TEMPLATE'=>'Guardar como Plantilla',
 'LBL_CREATE_WORKFLOW_FOR'=>'Crear un flujo de trabajo para',
 'LBL_FOR_MODULE'=>'Para Módulo',

@@ -22,6 +22,7 @@ $mod_strings = array(
 	'LBL_EDIT_WORKFLOW_TITLE' => 'Létező Automatikus Művelet szerkesztése vagy egy Új Automatikus Művelet létrehozása',
 	'LBL_FROM_TEMPLATE' => 'Sablonnak',
 	'LBL_NEW_WORKFLOW' => 'Új Automatikus Művelet',
+	'LBL_WF_MANUAL_WARNING'=>'You are changing the title of a manual trigger point workflow. If it is used in a web service call, you may break it.',
 	'LBL_NEW_TEMPLATE' => 'Mentés Sablonként',
 	'LBL_CREATE_WORKFLOW_FOR' => 'Automatikus Művelet Létrehozása neki',
 	'LBL_FOR_MODULE' => 'Modulnak',
