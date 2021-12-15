@@ -602,15 +602,11 @@ class Contacts extends CRMEntity {
 			left join vtiger_customerdetails on vtiger_customerdetails.customerid=vtiger_contactdetails.contactid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_contactdetails vtiger_contactdetails2 ON vtiger_contactdetails2.contactid = vtiger_contactdetails.reportsto";
-		
 		include_once 'include/fields/metainformation.php';
 		$tabid = getTabid('Contacts');
 		$result = $adb->pquery('select tablename, fieldname, columnname from vtiger_field where tabid=? and uitype=?', array($tabid, Field_Metadata::UITYPE_ACTIVE_USERS));
 		while ($row = $adb->fetchByAssoc($result)) {
-			$tableName = $row['tablename'];
-			$fieldName = $row['fieldname'];
-			$columName = $row['columnname'];
-			$query .= ' LEFT JOIN vtiger_users as vtiger_users'.$fieldName.' ON vtiger_users'.$fieldName.'.id='.$tableName.'.'.$columName;
+			$query .= ' LEFT JOIN vtiger_users as vtiger_users'.$row['fieldname'].' ON vtiger_users'.$row['fieldname'].'.id='.$row['tablename'].'.'.$row['columnname'];
 		}
 		$query .= getNonAdminAccessControlQuery('Contacts', $current_user);
 		$where_auto = ' vtiger_crmentity.deleted = 0 ';
