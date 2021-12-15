@@ -580,7 +580,7 @@ class Contacts extends CRMEntity {
 	* Returns Export Contacts Query.
 	*/
 	public function create_export_query($where) {
-		global $log, $current_user;
+		global $log, $current_user, $adb;
 		$log->debug('> create_export_query '.$where);
 
 		include_once 'include/utils/ExportUtils.php';
@@ -602,6 +602,16 @@ class Contacts extends CRMEntity {
 			left join vtiger_customerdetails on vtiger_customerdetails.customerid=vtiger_contactdetails.contactid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_contactdetails vtiger_contactdetails2 ON vtiger_contactdetails2.contactid = vtiger_contactdetails.reportsto";
+		
+		include_once 'include/fields/metainformation.php';
+		$tabid = getTabid('Contacts');
+		$result = $adb->pquery('select tablename, fieldname, columnname from vtiger_field where tabid=? and uitype=?', array($tabid, Field_Metadata::UITYPE_ACTIVE_USERS));
+		while ($row = $adb->fetchByAssoc($result)) {
+			$tableName = $row['tablename'];
+			$fieldName = $row['fieldname'];
+			$columName = $row['columnname'];
+			$query .= ' LEFT JOIN vtiger_users as vtiger_users'.$fieldName.' ON vtiger_users'.$fieldName.'.id='.$tableName.'.'.$columName;
+		}
 		$query .= getNonAdminAccessControlQuery('Contacts', $current_user);
 		$where_auto = ' vtiger_crmentity.deleted = 0 ';
 		if ($where != '') {
@@ -814,7 +824,7 @@ class Contacts extends CRMEntity {
 
 	/**
 	 * Move the related records of the specified list of id's to the given record.
-	 * @param string This module name
+	 * @param String This module name
 	 * @param Array List of Entity Id's from which related records need to be transfered
 	 * @param Integer Id of the the Record to which the related records are to be moved
 	 */
