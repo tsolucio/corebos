@@ -10,10 +10,10 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="relatedlists">
+        <xs:element name="relatedlists" minOccurs="0" maxOccurs="1">
           <xs:complexType mixed="true">
             <xs:sequence>
-              <xs:element name="relatedlist">
+              <xs:element name="relatedlist" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element type="xs:string" name="module"/>

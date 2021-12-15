@@ -1046,8 +1046,8 @@ class Common_Install_Wizard_Utils {
 
 	/**
 	 *
-	 * @param String $packagepath - path to the package file.
-	 * @return Array
+	 * @param string $packagepath - path to the package file.
+	 * @return array
 	 */
 	public static function getOptionalModuleDetails($package, $optionalModulesInfo) {
 		global $optionalModuleStrings;
@@ -1216,13 +1216,12 @@ class Common_Install_Wizard_Utils {
 
 		foreach ($languagePacks as $module => $packagepath) {
 			self::installVtlibModule($module, $packagepath);
-			continue;
 		}
 	}
 
-	/* Function to install Vtlib Compliant modules
-	 * @param - $packagename - Name of the module
-	 * @param - $packagepath - Complete path to the zip file of the Module
+	/** Function to install Vtlib Compliant modules
+	 * @param string Name of the module
+	 * @param string Complete path to the zip file of the Module
 	 */
 	public static function installVtlibModule($packagename, $packagepath) {
 		global $log;
@@ -1252,7 +1251,7 @@ class Common_Install_Wizard_Utils {
 			$log->fatal("$module already exists!");
 			$module_exists = true;
 		}
-		if ($module_exists == false) {
+		if (!$module_exists) {
 			$log->debug("$module - Installation starts here");
 			$package->import($packagepath, true);
 			$moduleInstance = Vtiger_Module::getInstance($module);
@@ -1262,9 +1261,9 @@ class Common_Install_Wizard_Utils {
 		}
 	}
 
-	/* Function to update Vtlib Compliant modules
-	 * @param - $module - Name of the module
-	 * @param - $packagepath - Complete path to the zip file of the Module
+	/** Function to update Vtlib Compliant modules
+	 * @param string Name of the module
+	 * @param string Complete path to the zip file of the Module
 	 */
 	public static function updateVtlibModule($module, $packagepath) {
 		global $log;

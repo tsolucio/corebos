@@ -271,6 +271,9 @@ class Products extends CRMEntity {
 				}
 				$files['original_name'] = str_replace('"', '', $files['original_name']);
 				$file_saved = $this->uploadAndSaveFile($id, $module, $files, '', $direct_import, 'imagename');
+				if (!$file_saved) {
+					return false;
+				}
 			}
 			unset($_FILES[$fileindex]);
 		}
@@ -296,6 +299,7 @@ class Products extends CRMEntity {
 			parent::insertIntoAttachment($id, $module, $direct_import);
 		}
 		$log->debug('< insertIntoAttachment');
+		return true;
 	}
 
 	/**	function used to get the list of leads which are related to the product

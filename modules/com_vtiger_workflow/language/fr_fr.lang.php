@@ -20,6 +20,7 @@ $mod_strings = array(
 	'LBL_EDIT_WORKFLOW'=>'Editer le flux de travail',
 	'LBL_EDIT_WORKFLOW_TITLE'=>'Editez un flux de travail ou créez en un',
 	'LBL_NEW_WORKFLOW'=>'Nouveau flux de travail',
+	'LBL_WF_MANUAL_WARNING'=>'You are changing the title of a manual trigger point workflow. If it is used in a web service call, you may break it.',
 	'LBL_NEW_TEMPLATE'=>'Enregistrer comme Template',
 	'LBL_CREATE_WORKFLOW_FOR'=>'Créer un flux de travail pour',
 	'LBL_FOR_MODULE'=>'Pour le module',

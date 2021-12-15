@@ -163,8 +163,8 @@ class ChartUtils {
 		$lbls = implode(',', $labels);
 		$vals = str_replace('::', ',', $values);
 		$realvals = explode(',', $vals);
-		$minscale = max(0, min($realvals)-2);
-		$maxnum = max($realvals);
+		$minscale = max(0, (int)min($realvals)-2);
+		$maxnum = (int)max($realvals);
 		$maxgrph = ceil($maxnum + (5 * $maxnum / 100));
 		$maxscale = $maxgrph;
 		$lnks = array();

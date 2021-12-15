@@ -21,6 +21,7 @@ $mod_strings = array(
 'LBL_EDIT_WORKFLOW_TITLE'=>'Bewerk een bestaande werkstroom of maak een nieuwe aan',
 'LBL_FROM_TEMPLATE'=>'Van Sjabloon',
 'LBL_NEW_WORKFLOW'=>'Nieuwe Werkstroom',
+'LBL_WF_MANUAL_WARNING'=>'You are changing the title of a manual trigger point workflow. If it is used in a web service call, you may break it.',
 'LBL_NEW_TEMPLATE'=>'Bewaar als Sjabloon',
 'LBL_CREATE_WORKFLOW_FOR'=>'Maak een Werkstroom voor',
 'LBL_FOR_MODULE'=>'Voor Module',

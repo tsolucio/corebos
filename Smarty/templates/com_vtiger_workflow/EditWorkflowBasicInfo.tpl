@@ -37,7 +37,8 @@
 		{$APP.LBL_UPD_DESC}
 		</label>
 		<div class="slds-form-element__control slds-m-top_x-small">
-			<input type="text" name="description" id="save_description" class="slds-input slds-page-header__meta-text" value="{$workflow->description}" {if $workflow->executionConditionAsLabel() eq 'MANUAL'} readonly{/if}>
+			<input type="text" name="description" id="save_description" class="slds-input slds-page-header__meta-text" value="{$workflow->description}">
+			<input type="hidden" name="hidden_description" id="hidden_description" value="{$workflow->description}">
 		</div>
 		<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small">
 		&nbsp;&nbsp;{$APP.LBL_MODULE}

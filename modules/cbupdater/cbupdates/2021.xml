@@ -196,6 +196,20 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Change Contact/Lead Firstname and Salutation uitypes</description>
+	<filename>build/changeSets/2021/changefieldFirstNameAndSalutationOnContactAndLeadToUitype1and15.php</filename>
+	<classname>changefieldFirstNameAndSalutationOnContactAndLeadToUitype1and15</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>finish migrate UIType 58 and 68 to 10 after all this time</description>
+	<filename>build/changeSets/2021/finishMigrateUIType58and68to10.php</filename>
+	<classname>finishMigrateUIType58and68to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>denaldhushi</author>
 	<description>Uupdate Accounts And Contacts Business Actions Hierarchy</description>
 	<filename>build/changeSets/2021/updateAccountsAndContactsHierarchy.php</filename>

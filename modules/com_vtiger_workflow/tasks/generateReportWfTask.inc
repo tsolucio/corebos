@@ -22,7 +22,7 @@ class generateReportWfTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $root_directory;
+		global $adb, $logbg, $root_directory;
 		$path = '';
 		$name = '';
 		$hascontent = 1;
@@ -89,6 +89,23 @@ class generateReportWfTask extends VTTask {
 				$path_parts = pathinfo($res);
 				$name = $path_parts['basename'];
 				$path =str_replace($root_directory, '', $path_parts['dirname']).'/';
+				if ($this->file_type  == 'excel') {
+					$csvpath = $path.$name;
+					$xelpath = $path.$name.'.xls';
+					require_once 'include/PhpSpreadsheet/autoload.php';
+					try {
+						$workbookReader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Csv');
+						$delim = cbQuestion::getQnDelimeterProperty((int)$this->qnfield);
+						$workbookReader->setDelimiter($delim);
+						$objPHPExcel = $workbookReader->load($res);
+						$objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($objPHPExcel, 'Xls');
+						$objWriter->save($xelpath);
+						$name .= '.xls';
+						unlink($csvpath);
+					} catch (Exception $e) {
+						$logbg->debug('generateReportWfTask > '. $e->getMessage());
+					}
+				}
 			}
 		}
 		if (empty($entity->WorkflowContext['wfgenerated_file'])) {

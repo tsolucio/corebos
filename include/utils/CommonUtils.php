@@ -218,6 +218,7 @@ function parse_calendardate($local_format) {
 
 /**
  * Rudimentary/Trusted input clean up for XSS
+ * @deprecated use vtlib_purify
  * @param string to be cleaned
  * @return string the cleaned value
  */
@@ -1711,9 +1712,9 @@ function SaveImage($files, $module, $id, $mode) {
 }
 
 /**
- * This function is used to generate file name if more than one image with same name is added to a given Product.
- * Param $filename - product file name
- * Param $exist - number time the file name is repeated.
+ * This function is used to generate file name if more than one image with same name is added to a given Product
+ * @param string product file name
+ * @param integer number of times the file name is repeated
  */
 function file_exist_fn($filename, $exist) {
 	global $log, $uploaddir;
@@ -1793,27 +1794,36 @@ function setObjectValuesFromRequest($focus) {
 	global $log;
 	$moduleName = get_class($focus);
 	$log->debug("> setObjectValuesFromRequest $moduleName");
+	$editing = $_REQUEST['action']=='EditView';
 	if (isset($_REQUEST['record']) && (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')) {
-		$focus->id = vtlib_purify($_REQUEST['record']);
+		$focus->id = preg_replace('/[^0-9]+/', '', vtlib_purify($_REQUEST['record']));
 	}
 	if (isset($_REQUEST['mode'])) {
-		$focus->mode = vtlib_purify($_REQUEST['mode']);
+		$focus->mode = vt_deleteHTMLTags(vtlib_purify($_REQUEST['mode']), true);
 	}
 	foreach ($focus->column_fields as $fieldname => $val) {
 		if (isset($_REQUEST[$fieldname])) {
 			if (is_array($_REQUEST[$fieldname])) {
 				$value = $_REQUEST[$fieldname];
 			} else {
-				$value = trim($_REQUEST[$fieldname]);
+				if ($editing) {
+					$value = trim(vt_suppressHTMLTags($_REQUEST[$fieldname], true));
+				} else {
+					$value = trim($_REQUEST[$fieldname]);
+				}
 			}
 			$focus->column_fields[$fieldname] = $value;
 		} elseif (isset($_REQUEST[$fieldname.'_hidden'])) {
-			$value = trim($_REQUEST[$fieldname.'_hidden']);
+			if ($editing) {
+				$focus->column_fields[$fieldname] = trim(vt_suppressHTMLTags($_REQUEST[$fieldname.'_hidden'], true));
+			} else {
+				$value = trim($_REQUEST[$fieldname.'_hidden']);
+			}
 			$focus->column_fields[$fieldname] = $value;
 		}
 	}
 	if (!empty($_REQUEST['cbuuid'])) {
-		$focus->column_fields['cbuuid'] = vtlib_purify($_REQUEST['cbuuid']);
+		$focus->column_fields['cbuuid'] = vt_deleteHTMLTags(vtlib_purify($_REQUEST['cbuuid']), true);
 	}
 	if (!empty($_REQUEST['savefromqc']) || !empty($_REQUEST['FILTERFIELDSMAP'])) {
 		foreach (getFieldsWithDefaultValue(getTabid($moduleName)) as $fname => $fvalue) {
@@ -2338,7 +2348,8 @@ function validateImageFile($file_details) {
 		}
 		$filetype = strtolower($filetype);
 	}
-	if (in_array($filetype, ['jpeg', 'png', 'jpg', 'pjpeg', 'x-png', 'gif', 'bmp', 'svg', 'svg+xml'])) {
+	if (in_array($filetype, ['jpeg', 'png', 'jpg', 'pjpeg', 'x-png', 'gif', 'bmp', 'svg', 'svg+xml', 'xml', 'text/xml'])) {
+		// we add XML to the array in order to apply validation rules to that type as it can contain executable code
 		$saveimage = 'true';
 	} else {
 		$saveimage = 'false';
@@ -2422,6 +2433,7 @@ function validateImageContents($filename) {
 				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
 				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
 				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
+				|| preg_match('/<\s*html\s*:\s*script\s*>/i', $contents) === 1 // XML
 				|| preg_match('/<\s*script\s*>/i', $contents) === 1
 				|| stripos($contents, '<?=') !== false
 				|| stripos($contents, '<%=') !== false
@@ -3587,8 +3599,24 @@ function suppressAllButFirst($occurence, $from) {
 	return substr($from, 0, $spos+$slen).str_replace($occurence, '', substr($from, $spos+$slen));
 }
 
-function vt_suppressHTMLTags($string) {
-	return preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
+function vt_deleteHTMLTags($string, $singleQuote = false) {
+	$from = array('<', '>', '"');
+	$to = array('', '', '');
+	if ($singleQuote) {
+		$from[] = "'";
+		$to[] = '';
+	}
+	return str_replace($from, $to, $string);
+}
+
+function vt_suppressHTMLTags($string, $singleQuote = false) {
+	$from = array('/</', '/>/', '/"/');
+	$to = array('&lt;', '&gt;', '&quot;');
+	if ($singleQuote) {
+		$from[] = "/'/";
+		$to[] = '&#39;';
+	}
+	return preg_replace($from, $to, $string);
 }
 
 function gtltTagsToHTML($string) {

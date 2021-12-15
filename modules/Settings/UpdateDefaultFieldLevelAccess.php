@@ -31,7 +31,7 @@ foreach ($field_module as $fld_module => $fld_name) {
 		$fieldname = $adb->query_result($fieldListResult, $i, 'fieldname');
 		$typeofdata = $adb->query_result($fieldListResult, $i, 'typeofdata');
 		$fieldtype = explode('~', $typeofdata);
-		if (($fieldname == 'salutationtype' && $uitype == 55) || (isset($fieldtype[1]) && $fieldtype[1] == 'M')  || $displaytype == 3 || $fieldname == 'activitytype') {
+		if ((isset($fieldtype[1]) && $fieldtype[1] == 'M')  || $displaytype == 3 || $fieldname == 'activitytype') {
 			$visible_value = 0;
 		}
 		//Updating the database

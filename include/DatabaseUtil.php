@@ -129,9 +129,9 @@ function mkCountWithFullQuery($query) {
 }
 
 /**
- * @param String $module - module name for which query needs to be generated.
- * @param Users $user - user for which query needs to be generated.
- * @return String Access control Query for the user.
+ * @param string module name for which query needs to be generated
+ * @param Users user for which query needs to be generated
+ * @return string Access control Query for the user
  */
 function getNonAdminAccessControlQuery($module, $user, $scope = '') {
 	$instance = CRMEntity::getInstance($module);

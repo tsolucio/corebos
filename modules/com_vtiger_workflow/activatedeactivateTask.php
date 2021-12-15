@@ -18,6 +18,7 @@ function activatedeactivateTask($adb, $request) {
 	$vtw = new VTWorkflowApplication('edittask');
 	$tm = new VTTaskManager($adb);
 	$tasks = $tm->getTasksForWorkflow($request['workflow_id']);
+	$returnUrl = '';
 	foreach ($tasks as $task) {
 		$t = $tm->retrieveTask($task->id);
 		$t->active = $status;
@@ -27,10 +28,13 @@ function activatedeactivateTask($adb, $request) {
 	}
 	?>
 	<script type="text/javascript" charset="utf-8">
-		window.location="<?php echo $returnUrl?>";
+		window.location="<?php echo urldecode($returnUrl); ?>";
 	</script>
 	<?php
 }
+$_SERVER['REQUEST_METHOD'] = 'POST';
+$_POST[$GLOBALS['csrf']['input-name']] = empty($_REQUEST[$GLOBALS['csrf']['input-name']]) ? '' : $_REQUEST[$GLOBALS['csrf']['input-name']];
 Vtiger_Request::validateRequest();
+$_SERVER['REQUEST_METHOD'] = 'GET';
 activatedeactivateTask($adb, $_REQUEST);
 ?>

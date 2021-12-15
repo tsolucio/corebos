@@ -1743,6 +1743,15 @@ class CRMEntity {
 			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $tablename.$columnname";
 		}
 
+		include_once 'include/fields/metainformation.php';
+		$tabid = getTabid($thismodule);
+		$result = $adb->pquery('select tablename, fieldname, columnname from vtiger_field where tabid=? and uitype=?', array($tabid, Field_Metadata::UITYPE_ACTIVE_USERS));
+		while ($row = $adb->fetchByAssoc($result)) {
+			$tableName = $row['tablename'];
+			$fieldName = $row['fieldname'];
+			$columName = $row['columnname'];
+			$query .= ' LEFT JOIN vtiger_users as vtiger_users'.$fieldName.' ON vtiger_users'.$fieldName.'.id='.$tableName.'.'.$columName;
+		}
 		$query .= $this->getNonAdminAccessControlQuery($thismodule, $current_user);
 		$where_auto = ' '.$this->crmentityTable.'.deleted=0';
 

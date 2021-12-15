@@ -463,7 +463,7 @@ class Vtiger_PackageExport {
 			$this->outputNode($fieldresultrow['columnname'], 'columnname');
 			$this->outputNode($fieldresultrow['tablename'], 'tablename');
 			$this->outputNode($fieldresultrow['generatedtype'], 'generatedtype');
-			$this->outputNode($fieldresultrow['fieldlabel'], 'fieldlabel');
+			$this->outputNode('<![CDATA['.$fieldresultrow['fieldlabel'].']]>', 'fieldlabel');
 			$this->outputNode($fieldresultrow['readonly'], 'readonly');
 			$this->outputNode($fieldresultrow['presence'], 'presence');
 			$this->outputNode($fieldresultrow['defaultvalue'], 'defaultvalue');
@@ -488,7 +488,7 @@ class Vtiger_PackageExport {
 			}
 
 			// Export picklist values for picklist fields
-			if ($uitype == '15' || $uitype == '16' || $uitype == '111' || $uitype == '33' || $uitype == '55') {
+			if ($uitype == '15' || $uitype == '16' || $uitype == '111' || $uitype == '33') {
 				if ($uitype == '16') {
 					$picklistvalues = vtlib_getPicklistValues($fieldname);
 				} else {
