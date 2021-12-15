@@ -1125,7 +1125,7 @@ function getDetailAssociatedProducts($module, $focus) {
 	$output .= '</table>';
 
 	//$netTotal should be equal to $focus->column_fields['hdnSubTotal']
-	$netTotal = $focus->column_fields['hdnSubTotal'];
+	$netTotal = empty($focus->column_fields['hdnSubTotal']) ? $focus->column_fields['hdnsubtotal'] : $focus->column_fields['hdnSubTotal'];
 
 	//Display the total, adjustment, S&H details
 	$output .= '<table width="100%" border="0" cellspacing="0" cellpadding="5" class="crmTable detailview_inventory_totals">';
@@ -1137,12 +1137,14 @@ function getDetailAssociatedProducts($module, $focus) {
 	//Decide discount
 	$finalDiscount = '0.00';
 	$final_discount_info = '0';
-	if ($focus->column_fields['hdnDiscountPercent'] != '0') {
-		$finalDiscount = ($netTotal * $focus->column_fields['hdnDiscountPercent'] / 100);
-		$final_discount_info = $focus->column_fields['hdnDiscountPercent'] . ' % ' . $app_strings['LBL_LIST_OF'] . ' '
+	$hdnDiscountPercent = empty($focus->column_fields['hdnDiscountPercent']) ? $focus->column_fields['hdndiscountpercent'] : $focus->column_fields['hdnDiscountPercent'];
+	$hdnDiscountAmount = empty($focus->column_fields['hdnDiscountAmount']) ? $focus->column_fields['hdndiscountamount'] : $focus->column_fields['hdnDiscountAmount'];
+	if ($hdnDiscountPercent != '0') {
+		$finalDiscount = ($netTotal * $hdnDiscountPercent / 100);
+		$final_discount_info = $hdnDiscountPercent . ' % ' . $app_strings['LBL_LIST_OF'] . ' '
 			.CurrencyField::convertToUserFormat($netTotal, null, true) . ' = '. CurrencyField::convertToUserFormat($finalDiscount, null, true);
-	} elseif ($focus->column_fields['hdnDiscountAmount'] != '0') {
-		$finalDiscount = $focus->column_fields['hdnDiscountAmount'];
+	} elseif ($hdnDiscountAmount != '0') {
+		$finalDiscount = $hdnDiscountAmount;
 		$final_discount_info = CurrencyField::convertToUserFormat($finalDiscount, null, true);
 	}
 
@@ -1188,7 +1190,8 @@ function getDetailAssociatedProducts($module, $focus) {
 		$output .= '</tr>';
 	}
 
-	$shAmount = ($focus->column_fields['hdnS_H_Amount'] != '') ? $focus->column_fields['hdnS_H_Amount'] : '0.00';
+	$hdnS_H_Amount = empty($focus->column_fields['hdnS_H_Amount']) ? $focus->column_fields['hdns_h_amount'] : $focus->column_fields['hdnS_H_Amount'];
+	$shAmount = ($hdnS_H_Amount != '') ? $hdnS_H_Amount : '0.00';
 	if (GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $module)) {
 		$output .= '<tr id="detailview_inventory_shippingrow">';
 		$output .= '<td align="right" class="crmTableRow small">(+)&nbsp;<b>' . $app_strings['LBL_SHIPPING_AND_HANDLING_CHARGES'] . '</b></td>';
@@ -1221,13 +1224,15 @@ function getDetailAssociatedProducts($module, $focus) {
 		$output .= '</tr>';
 	}
 
-	$adjustment = ($focus->column_fields['txtAdjustment'] != '') ? $focus->column_fields['txtAdjustment'] : '0.00';
+	$txtAdjustment = empty($focus->column_fields['txtAdjustment']) ? $focus->column_fields['txtadjustment'] : $focus->column_fields['txtAdjustment'];
+	$adjustment = ($txtAdjustment != '') ? $txtAdjustment : '0.00';
 	$output .= '<tr id="detailview_inventory_adjustrow">';
 	$output .= '<td align="right" class="crmTableRow small">&nbsp;<b>' . $app_strings['LBL_ADJUSTMENT'] . '</b></td>';
 	$output .= '<td align="right" class="crmTableRow small">' . CurrencyField::convertToUserFormat($adjustment, null, true) . '</td>';
 	$output .= '</tr>';
 
-	$grandTotal = ($focus->column_fields['hdnGrandTotal'] != '') ? $focus->column_fields['hdnGrandTotal'] : '0.00';
+	$hdnGrandTotal = empty($focus->column_fields['hdnGrandTotal']) ? $focus->column_fields['hdngrandtotal'] : $focus->column_fields['hdnGrandTotal'];
+	$grandTotal = ($hdnGrandTotal != '') ? $hdnGrandTotal : '0.00';
 	$output .= '<tr id="detailview_inventory_grandtotrow">';
 	$output .= '<td align="right" class="crmTableRow small lineOnTop"><b>' . $app_strings['LBL_GRAND_TOTAL'] . '</b></td>';
 	$output .= '<td align="right" class="crmTableRow small lineOnTop" data-qagrandtotal="'.$grandTotal.'">' . CurrencyField::convertToUserFormat($grandTotal, null, true) . '</td>';
