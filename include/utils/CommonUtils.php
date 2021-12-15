@@ -1712,9 +1712,9 @@ function SaveImage($files, $module, $id, $mode) {
 }
 
 /**
- * This function is used to generate file name if more than one image with same name is added to a given Product.
- * Param $filename - product file name
- * Param $exist - number time the file name is repeated.
+ * This function is used to generate file name if more than one image with same name is added to a given Product
+ * @param string product file name
+ * @param integer number of times the file name is repeated
  */
 function file_exist_fn($filename, $exist) {
 	global $log, $uploaddir;
