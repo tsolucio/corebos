@@ -209,4 +209,11 @@
 	<classname>finishMigrateUIType58and68to10</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Uupdate Accounts And Contacts Business Actions Hierarchy</description>
+	<filename>build/changeSets/2021/updateAccountsAndContactsHierarchy.php</filename>
+	<classname>updateAccountsAndContactsHierarchy</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

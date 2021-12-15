@@ -3706,6 +3706,166 @@ class CRMEntity {
 		$adb->pquery('UPDATE '.$this->crmentityTable.' SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($currentTime, $current_user->id, $crmid));
 	}
 
+	public function getParentRecords($id, &$parent_records, &$encountered_records, $refField, $currentModule) {
+		global $log, $adb, $current_user;
+		$qg = new QueryGenerator($currentModule, $current_user);
+		$qg->setFields(array('*'));
+		$qg->addCondition('id', $id, 'e');
+		$params = array($id);
+		$query = $qg->getQuery();
+		$res = $adb->query($query);
+		if ($adb->num_rows($res) > 0 &&
+			$adb->query_result($res, 0, $refField) != '' && $adb->query_result($res, 0, $refField) != 0 &&
+			!in_array($adb->query_result($res, 0, $refField), $encountered_records)) {
+			$recid = $adb->query_result($res, 0, $refField);
+			$encountered_records[] = $recid;
+			$this->getParentRecords($recid, $parent_records, $encountered_records, $refField, $currentModule);
+		}
+		$depth = 0;
+		$parent_record_info = array();
+		$immediate_recordid = $adb->query_result($res, 0, $refField);
+		if (isset($parent_records[$immediate_recordid])) {
+			$depth = $parent_records[$immediate_recordid]['depth'] + 1;
+		}
+		$parent_record_info['depth'] = $depth;
+		$parent_records[$id] = $parent_record_info;
+		return $parent_records;
+	}
+
+	public function getChildRecords($id, &$child_records, $depth, $referenceField, $currentModule) {
+		global $log, $adb, $current_user;
+		$log->debug('> getChildRecords '.$id);
+		$entity = getEntityField($currentModule);
+		$entityid = $entity['entityid'];
+		$tablename = $entity['tablename'];
+		$crmentityTable = $this->getcrmEntityTableAlias($currentModule);
+		$query = $adb->convert2Sql("select {$tablename}.{$entityid} from {$tablename} inner join {$crmentityTable} on {$tablename}.{$entityid} = vtiger_crmentity.crmid where vtiger_crmentity.deleted=0 and {$tablename}.{$referenceField}=? and {$tablename}.{$entityid} > 0", array($id));
+		$rs = $adb->query($query);
+		$num_rows = $adb->num_rows($rs);
+		if ($num_rows > 0) {
+			$depth = $depth + 1;
+			for ($i=0; $i < $adb->num_rows($rs); $i++) {
+				$recordid = $adb->query_result($rs, $i, 0);
+				if (array_key_exists($recordid, $child_records)) {
+					continue;
+				}
+				$child_record_info = array();
+				$child_record_info['depth'] = $depth;
+				$child_records[$recordid] = $child_record_info;
+				$this->getChildRecords($recordid, $child_records, $depth, $referenceField, $currentModule);
+			}
+		}
+		return $child_records;
+	}
+
+	/**
+	* Function to get Module hierarchy of the given record
+	* @param integer recorid
+	* @return array Module hierarchy in array format
+	*/
+	public function getHierarchy($id, $currentModule) {
+		global $log, $current_user;
+		$log->debug('> getHierarchy '.$id);
+		require_once 'include/ListView/GridUtils.php';
+		$listview_header = array();
+		$listview_entries = array();
+		$listview_colname = array();
+		$bmapname = $currentModule.'_ListColumns';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapLC = $cbMap->ListColumns()->getListFieldsFor($currentModule);
+			$linkfield = $cbMap->ListColumns()->getListLinkFor($currentModule);
+			if (!empty($cbMapLC)) {
+				unset($this->list_fields_name);
+				foreach ($cbMapLC as $label => $fields) {
+					$tmp_field = '';
+					foreach ($fields as $fieldname) {
+						$tmp_field = $fieldname;
+					}
+					$this->list_fields_name[$label] = $tmp_field;
+				}
+			}
+		}
+		foreach ($this->list_fields_name as $fieldname => $colname) {
+			if (getFieldVisibilityPermission($currentModule, $current_user->id, $colname) == '0') {
+				$listview_colname[] = $colname;
+				if ($colname == 'assigned_user_id') {
+					$colname = 'smownerid';
+				}
+				$listview_header[] = array(
+					'name' => $colname,
+					'header' => getTranslatedString($fieldname)
+				);
+			}
+		}
+		$referenceField = $this->getSelfRelationField($currentModule);
+		$records_list = array();
+		$encountered_records = array($id);
+		if ($referenceField) {
+			$records_list = $this->getParentRecords($id, $records_list, $encountered_records, $referenceField, $currentModule);
+			$records_list = $this->getChildRecords($id, $records_list, $records_list[$id]['depth'], $referenceField, $currentModule);
+		}
+		if (isset($records_list) && !empty($records_list)) {
+			$entityField = getEntityField($currentModule);
+			$entityField = $entityField['fieldname'];
+			foreach ($records_list as $recordID => $dep) {
+				$depth = $dep['depth'];
+				$fieldsOf = __cb_getfieldsof(array(
+					$recordID, $currentModule, implode(',', $listview_colname)
+				));
+				foreach ($fieldsOf as $field => $fieldValue) {
+					$UIType = getUItype($currentModule, $field);
+					$tabid = getTabid($currentModule);
+					$fieldid = getFieldid($tabid, $field);
+					$fieldinfo = array(
+						'fieldtype' => 'corebos',
+						'fieldinfo' => '',
+						'name' => $field,
+						'uitype' => $UIType,
+						'fieldid' => $fieldid
+					);
+					$gridVal = getDataGridValue($currentModule, $recordID, $fieldinfo, $fieldValue);
+					$record_depth = str_repeat(' .. ', $depth * 2);
+					if ($entityField == $field) {
+						$fieldVal = $record_depth.$gridVal[0];
+					} else {
+						$fieldVal = $gridVal[0];
+						if ($linkfield == $field) {
+							$fieldVal = '<a href="index.php?module='.$currentModule.'&action=DetailView&record='.$recordID.'">'.$record_depth.$fieldValue.'</a>';
+						}
+					}
+					if (isset($gridVal[1]) && !empty($gridVal[1])) {
+						$target = '';
+						if (isset($gridVal[1][0]['mdTarget'])) {
+							$target = $gridVal[1][0]['mdTarget'];
+						}
+						$fieldVal = '<a href="'.$gridVal[1][0]['mdLink'].'" '.$target.'>'.$fieldVal.'</a>';
+					}
+					if ($field == 'assigned_user_id') {
+						$field = 'smownerid';
+					}
+					$fieldsOf[$field] = $fieldVal;
+				}
+				$listview_entries[] = $fieldsOf;
+			}
+		}
+		$account_hierarchy = array('header'=>$listview_header,'entries'=>$listview_entries);
+		$log->debug('< getHierarchy');
+		return $account_hierarchy;
+	}
+
+	public function getSelfRelationField($module) {
+		global $log, $adb;
+		$log->debug('> getSelfRelationField');
+		$rs = $adb->pquery('select columnname from vtiger_fieldmodulerel fl left join vtiger_field f on fl.fieldid=f.fieldid where fl.module=? and fl.relmodule=?', array($module, $module));
+		if ($adb->num_rows($rs) == 1) {
+			return $adb->query_result($rs, 0, 0);
+		}
+		$log->debug('< getSelfRelationField');
+		return false;
+	}
+
 	public static function getcrmEntityTableAlias($modulename, $isaliasset = false) {
 		$modObj = CRMEntity::getInstance($modulename);
 		if ($isaliasset) {

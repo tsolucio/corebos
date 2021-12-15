@@ -188,7 +188,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 	static $ownerNameList = array();
 	$fieldAttrs = array();
 	$fieldtype = $fieldinfo['fieldtype'];
-	$fieldinfo = $fieldinfo['fieldinfo'];
+	$fieldInfo = $fieldinfo['fieldinfo'];
 	$fieldName = $fieldinfo['name'];
 	switch ($fieldinfo['uitype']) {
 		case Field_Metadata::UITYPE_CHECKBOX:
