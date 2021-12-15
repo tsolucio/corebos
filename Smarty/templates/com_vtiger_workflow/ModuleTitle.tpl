@@ -81,12 +81,21 @@
 							{$MOD.LBL_NEW_TEMPLATE}
 						</button>
 						{/if}
-						<button class="slds-button slds-button_success" type="button" id='save_submit' style="display:none;">
+						<button class="slds-button slds-button_success" type="button" id='save_submit' style="display:none;" {if $workflow->executionConditionAsLabel() eq 'MANUAL'} onclick="return confirm_changing()"{/if}>
 							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 							</svg>
 							{$APP.LBL_SAVE_LABEL}
 						</button>
+						<script type="text/javascript">
+							function confirm_changing() {
+								var comp_val = document.getElementById('save_description').value;
+								var comp_val2 = document.getElementById('hidden_description').value;
+								if (comp_val != comp_val2) {
+									window.alert('{$MOD.LBL_WF_MANUAL_WARNING}');
+								}
+							}
+						</script>
 						<button class="slds-button slds-button_destructive" type="button" onclick="window.location.href='index.php?module=com_vtiger_workflow&action=workflowlist'">
 							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
