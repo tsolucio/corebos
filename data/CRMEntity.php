@@ -3697,7 +3697,7 @@ class CRMEntity {
 		$adb->pquery('UPDATE '.$this->crmentityTable.' SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($currentTime, $current_user->id, $crmid));
 	}
 
-	public function __getParentRecords($id, &$parent_records, &$encountered_records, $refField, $currentModule) {
+	public function getParentRecords($id, &$parent_records, &$encountered_records, $refField, $currentModule) {
 		global $log, $adb, $current_user;
 		$qg = new QueryGenerator($currentModule, $current_user);
 		$qg->setFields(array('*'));
@@ -3710,11 +3710,11 @@ class CRMEntity {
 			!in_array($adb->query_result($res, 0, $refField), $encountered_records)) {
 			$recid = $adb->query_result($res, 0, $refField);
 			$encountered_records[] = $recid;
-			$this->__getParentRecords($recid, $parent_records, $encountered_records, $refField, $currentModule);
+			$this->getParentRecords($recid, $parent_records, $encountered_records, $refField, $currentModule);
 		}
 		$depth = 0;
 		$parent_record_info = array();
-		$immediate_recordid = $adb->query_result($res, 0, 'parentid');
+		$immediate_recordid = $adb->query_result($res, 0, $refField);
 		if (isset($parent_records[$immediate_recordid])) {
 			$depth = $parent_records[$immediate_recordid]['depth'] + 1;
 		}
@@ -3723,9 +3723,9 @@ class CRMEntity {
 		return $parent_records;
 	}
 
-	public function __getChildRecords($id, &$child_records, $depth, $referenceField, $currentModule) {
+	public function getChildRecords($id, &$child_records, $depth, $referenceField, $currentModule) {
 		global $log, $adb, $current_user;
-		$log->debug('> __getChildRecords '.$id);
+		$log->debug('> getChildRecords '.$id);
 		$entity = getEntityField($currentModule);
 		$entityid = $entity['entityid'];
 		$tablename = $entity['tablename'];
@@ -3743,7 +3743,7 @@ class CRMEntity {
 				$child_record_info = array();
 				$child_record_info['depth'] = $depth;
 				$child_records[$recordid] = $child_record_info;
-				$this->__getChildRecords($recordid, $child_records, $depth, $referenceField, $currentModule);
+				$this->getChildRecords($recordid, $child_records, $depth, $referenceField, $currentModule);
 			}
 		}
 		return $child_records;
@@ -3794,8 +3794,8 @@ class CRMEntity {
 		$records_list = array();
 		$encountered_records = array($id);
 		if ($referenceField) {
-			$records_list = $this->__getParentRecords($id, $records_list, $encountered_records, $referenceField, $currentModule);
-			$records_list = $this->__getChildRecords($id, $records_list, $records_list[$id]['depth'], $referenceField, $currentModule);
+			$records_list = $this->getParentRecords($id, $records_list, $encountered_records, $referenceField, $currentModule);
+			$records_list = $this->getChildRecords($id, $records_list, $records_list[$id]['depth'], $referenceField, $currentModule);
 		}
 		if (isset($records_list) && !empty($records_list)) {
 			$entityField = getEntityField($currentModule);
@@ -3853,8 +3853,8 @@ class CRMEntity {
 		if ($adb->num_rows($rs) == 1) {
 			return $adb->query_result($rs, 0, 0);
 		}
-		return false;
 		$log->debug('< getSelfRelationField');
+		return false;
 	}
 
 	public static function getcrmEntityTableAlias($modulename, $isaliasset = false) {
