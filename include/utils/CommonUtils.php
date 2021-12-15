@@ -2348,7 +2348,8 @@ function validateImageFile($file_details) {
 		}
 		$filetype = strtolower($filetype);
 	}
-	if (in_array($filetype, ['jpeg', 'png', 'jpg', 'pjpeg', 'x-png', 'gif', 'bmp', 'svg', 'svg+xml'])) {
+	if (in_array($filetype, ['jpeg', 'png', 'jpg', 'pjpeg', 'x-png', 'gif', 'bmp', 'svg', 'svg+xml', 'xml', 'text/xml'])) {
+		// we add XML to the array in order to apply validation rules to that type as it can contain executable code
 		$saveimage = 'true';
 	} else {
 		$saveimage = 'false';
@@ -2432,6 +2433,7 @@ function validateImageContents($filename) {
 				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
 				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
 				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
+				|| preg_match('/<\s*html\s*:\s*script\s*>/i', $contents) === 1 // XML
 				|| preg_match('/<\s*script\s*>/i', $contents) === 1
 				|| stripos($contents, '<?=') !== false
 				|| stripos($contents, '<%=') !== false

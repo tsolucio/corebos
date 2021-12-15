@@ -510,6 +510,8 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 
 				$imagepath_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
+			global $site_URL;
+			$baseimgurl = $site_URL.'/index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&entityid=';
 			if (count($image_array) > 1) {
 				if (count($image_array) < 4) {
 					$sides = count($image_array) * 2;
@@ -522,14 +524,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 					</div><script>var Car_NoOfSides=' . $sides . '; Car_Image_Sources=new Array(';
 
 				for ($image_iter = 0, $image_iterMax = count($image_array); $image_iter < $image_iterMax; $image_iter++) {
-					$images[] = '"' . $imagepath_array[$image_iter] . $image_id_array[$image_iter] . "_" . $image_array[$image_iter] . '","'
-						. $imagepath_array[$image_iter] . $image_id_array[$image_iter] . "_" . $image_array[$image_iter] . '"';
+					$imgurl = $baseimgurl.((int)$image_id_array[$image_iter]-1).'&fileid='.$image_id_array[$image_iter];
+					$images[] = '"' . $imgurl . '","' . $imgurl . '"';
 				}
 				$image_lists .= implode(',', $images) . ');</script>';
 				$image_lists .= '<script type="text/javascript" src="modules/Products/Productsslide.js"></script><script type="text/javascript">Carousel();</script>';
 				$label_fld[] = $image_lists;
 			} elseif (count($image_array) == 1) {
-				$label_fld[] = '<img src="' . $imagepath_array[0] . $image_id_array[0] .'_'. $image_array[0] . '" border="0" style="max-width:300px; max-height:300px">';
+				$label_fld[]='<img src="'.$baseimgurl.((int)$image_id_array[0]-1).'&fileid='.$image_id_array[0].'" border="0" style="max-width:300px; max-height:300px">';
 			} else {
 				$label_fld[] = '';
 			}
