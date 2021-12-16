@@ -150,13 +150,17 @@ function vtlib_toggleModuleAccess($module, $enable_disable, $noevents = false) {
 
 	if ($enable_disable === true) {
 		$enable_disable = 0;
+		$enable_disable_BA = 1;
 		$event_type = Vtiger_Module::EVENT_MODULE_ENABLED;
 	} elseif ($enable_disable === false) {
 		$enable_disable = 1;
+		$enable_disable_BA = 0;
 		$event_type = Vtiger_Module::EVENT_MODULE_DISABLED;
 	}
 
 	$adb->pquery('UPDATE vtiger_tab set presence = ? WHERE name = ?', array($enable_disable,$module));
+
+	$adb->pquery('UPDATE vtiger_businessactions  set active = ?  WHERE linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'[^a-zA-Z0-9_.]" OR linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'$" OR linkurl RLIKE  "^'.$module.'[^a-zA-Z0-9_.]"',array($enable_disable_BA));
 
 	$__cache_module_activeinfo[$module] = $enable_disable;
 
