@@ -1352,7 +1352,7 @@
 			var fieldType = Field.getType(this.cond.fieldCombo.getVal()),
 				curVal    = this.input.value;
 
-			if (!this.doValidate(fieldType) || !this.allowedChars(curVal)) {
+			if (!this.doValidate(fieldType) || this.allowedChars(curVal)) {
 				return !this.setError(false);
 			}
 			if (cbVal(fieldType, curVal)) {
@@ -1387,9 +1387,9 @@
 		allowedChars: function (char) {
 			const chars = ['$'];
 			if (chars.includes(char)) {
-				return false;
+				return true;
 			}
-			return true;
+			return false;
 		},
 
 		/*
