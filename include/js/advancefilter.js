@@ -1352,7 +1352,7 @@
 			var fieldType = Field.getType(this.cond.fieldCombo.getVal()),
 				curVal    = this.input.value;
 
-			if (!this.doValidate(fieldType)) {
+			if (!this.doValidate(fieldType) || !this.allowedChars(curVal)) {
 				return !this.setError(false);
 			}
 			if (cbVal(fieldType, curVal)) {
@@ -1372,6 +1372,21 @@
 		doValidate: function (fieldtype) {
 			const doNotValid = ['E'];
 			if (doNotValid.includes(fieldtype)) {
+				return false;
+			}
+			return true;
+		},
+
+		/*
+		* method: allowedChars
+		* Allowed chars to search in advanced search
+		*
+		* @param : (string)
+		* @return: (bool)
+		*/
+		allowedChars: function (char) {
+			const chars = ['$'];
+			if (chars.includes(char)) {
 				return false;
 			}
 			return true;
