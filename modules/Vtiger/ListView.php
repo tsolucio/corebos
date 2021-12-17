@@ -174,6 +174,12 @@ if ($sql_error) {
 	if ($sql_error) {
 		$smarty->assign('ERROR', getTranslatedString('ERROR_GETTING_FILTER'));
 		$smarty->assign('CUSTOMVIEW_OPTION', $customview_html);
+		$smarty->assign('recordListRange', '');
+		$smarty->assign('NAVIGATION', '');
+		$smarty->assign('CUSTOM_LINKS', '');
+		$smarty->assign('LISTHEADER', '');
+		$smarty->assign('FIELDNAMES', '');
+		$smarty->assign('LISTENTITY', '');
 	} else {
 		$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
 		$smarty->assign('recordListRange', $recordListRangeMsg);
@@ -227,7 +233,7 @@ if ($sql_error) {
 	}
 } // try query
 $smarty->assign('IS_ADMIN', is_admin($current_user));
-if (is_array($listview_header_search)) {
+if (isset($listview_header_search) && is_array($listview_header_search)) {
 	require_once 'include/utils/ListViewUtils.php';
 	$tks_list = getListColumnSearch($listview_header_search, $currentModule);
 	$smarty->assign('TKS_LIST_SEARCH', $tks_list);
