@@ -697,9 +697,9 @@ class Workflow {
 				$i18n = getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'com_vtiger_workflow');
 			}
 			if ($lgn['active'] == 'true') {
-				$active = $app_strings['LBL_ACTIVE'];
+				$active = $app_strings['Active'];
 			} else {
-				$active = $app_strings['LBL_INACTIVE'];
+				$active = $app_strings['Inactive'];
 			}
 			$entry['Trigger'] = $i18n;
 			$entry['Status'] = $active;

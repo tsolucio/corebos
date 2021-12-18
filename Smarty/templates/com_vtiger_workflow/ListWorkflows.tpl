@@ -115,8 +115,8 @@
 										<select name="status_list" id="status_list" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
 											aria-owns="status_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list"
 											onchange="document.getElementById('wfstatusfilter').value=this.value">
-											<option value="true" selected="false">{$APP.LBL_ACTIVE}</option>
-											<option value="false" selected="false">{$APP.LBL_INACTIVE}</option>
+											<option value="true" selected="false">{$APP.Active}</option>
+											<option value="false" selected="false">{$APP.Inactive}</option>
 											<option value="all" selected="true">{$APP.LBL_ALLPICKLIST}</option>
 										</select>
 									</div>
