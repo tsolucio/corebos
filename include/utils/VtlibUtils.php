@@ -158,13 +158,14 @@ function vtlib_toggleModuleAccess($module, $enable_disable, $noevents = false) {
 		$event_type = Vtiger_Module::EVENT_MODULE_DISABLED;
 	}
 
-	$adb->pquery('UPDATE vtiger_tab set presence = ? WHERE name = ?', array($enable_disable,$module));
-
-	$adb->pquery('UPDATE vtiger_businessactions  set active = ?  WHERE linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'[^a-zA-Z0-9_.]" OR linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'$" OR linkurl RLIKE  "^'.$module.'[^a-zA-Z0-9_.]"',array($enable_disable_BA));
+	$adb->pquery('UPDATE vtiger_tab set presence=? WHERE name=?', array($enable_disable,$module));
+	$adb->pquery(
+		'UPDATE vtiger_businessactions set active=? WHERE linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'[^a-zA-Z0-9_.]" OR linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'$" OR linkurl RLIKE  "^'.$module.'[^a-zA-Z0-9_.]"',
+		array($enable_disable_BA)
+	);
 
 	$__cache_module_activeinfo[$module] = $enable_disable;
 
-	create_parenttab_data_file();
 	vtlib_RecreateUserPrivilegeFiles();
 
 	if (!$noevents) {
