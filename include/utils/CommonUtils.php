@@ -1807,7 +1807,7 @@ function setObjectValuesFromRequest($focus) {
 				$value = $_REQUEST[$fieldname];
 			} else {
 				if ($editing) {
-					$value = trim(vt_suppressHTMLTags($_REQUEST[$fieldname], true));
+					$value = trim(vt_suppressHTMLTags(vtlib_purify($_REQUEST[$fieldname]), true));
 				} else {
 					$value = trim($_REQUEST[$fieldname]);
 				}

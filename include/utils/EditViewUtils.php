@@ -197,7 +197,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$valueArr = array();
 		}
 		foreach ($valueArr as $key => $value) {
-			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
+			$valueArr[$key] = trim(vt_suppressHTMLTags(vtlib_purify(html_entity_decode($value, ENT_QUOTES, $default_charset))));
 		}
 		if ($uitype == 15) {
 			if (!empty($valueArr)) {
