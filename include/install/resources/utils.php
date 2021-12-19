@@ -1318,17 +1318,6 @@ class Common_Install_Wizard_Utils {
 			}
 		}
 
-		$ins_dir_renamed = true;
-		if (!@rename("modules/Migration/", $renamefile."Migration/")) {
-			if (@copy("modules/Migration/", $renamefile."Migration/")) {
-				if (!@unlink("modules/Migration/")) {
-					$ins_dir_renamed = false;
-				}
-			} else {
-				$ins_dir_renamed = false;
-			}
-		}
-
 		$result = array();
 		$result['renamefile'] = $renamefile;
 		$result['install_file_renamed'] = $ins_file_renamed;
