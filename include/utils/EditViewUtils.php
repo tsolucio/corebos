@@ -208,15 +208,16 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$options = array();
 		if (!empty($picklistValues)) {
 			foreach ($picklistValues as $pickListValue) {
-				if (in_array(trim($pickListValue), $valueArr)) {
+				$plvalenc = vt_suppressHTMLTags(trim($pickListValue));
+				if (in_array($plvalenc, $valueArr)) {
 					$chk_val = 'selected';
 				} else {
 					$chk_val = '';
 				}
 				if (isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate') {
-					$options[] = array(htmlentities(getTranslatedString($pickListValue), ENT_QUOTES, $default_charset),$pickListValue,$chk_val);
+					$options[] = array(htmlentities(getTranslatedString($pickListValue), ENT_QUOTES, $default_charset), $plvalenc, $chk_val);
 				} else {
-					$options[] = array(getTranslatedString($pickListValue),$pickListValue,$chk_val);
+					$options[] = array(getTranslatedString($pickListValue), $plvalenc, $chk_val);
 				}
 			}
 		}

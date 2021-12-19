@@ -150,23 +150,24 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld[] = $col_fields[$fieldname];
 		$roleid = $current_user->roleid;
 
-		$valueArr = trim($col_fields[$fieldname]);
+		$valueArr = $col_fields[$fieldname];
 		$picklistValues = getAssignedPicklistValues($fieldname, $roleid, $adb);
 
 		$options = array();
 		if (!empty($picklistValues)) {
 			$pickcount = 0;
 			foreach ($picklistValues as $pickListValue) {
-				if (trim($pickListValue) == $valueArr) {
+				$plvalenc = vt_suppressHTMLTags(trim($pickListValue));
+				if ($plvalenc == $valueArr) {
 					$chk_val = 'selected';
 					$pickcount++;
 				} else {
 					$chk_val = '';
 				}
 				if (isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate') {
-					$options[] = array(htmlentities(getTranslatedString($pickListValue, $module), ENT_QUOTES, $default_charset), $pickListValue, $chk_val);
+					$options[] = array(htmlentities(getTranslatedString($pickListValue, $module), ENT_QUOTES, $default_charset), $plvalenc, $chk_val);
 				} else {
-					$options[] = array(getTranslatedString($pickListValue, $module), $pickListValue, $chk_val);
+					$options[] = array(getTranslatedString($pickListValue, $module), $plvalenc, $chk_val);
 				}
 			}
 
