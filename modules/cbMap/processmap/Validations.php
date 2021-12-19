@@ -406,6 +406,20 @@ class Validations extends processcbMap {
 		$validationData = getDBValidationData(array(), $tabid);
 		foreach ($validationData as $fname => $finfo) {
 			foreach ($finfo as $fvalidation) {
+				if (substr($fvalidation, 0, 2)=='I~') {
+					if (isset($mapping['fields'][$fname])) {
+						$mapping['fields'][$fname][] = array('rule'=>'integer', 'rst'=>array());
+					} else {
+						$mapping['fields'][$fname] = array(array('rule'=>'integer', 'rst'=>array()));
+					}
+				}
+				if (substr($fvalidation, 0, 2)=='N~') {
+					if (isset($mapping['fields'][$fname])) {
+						$mapping['fields'][$fname][] = array('rule'=>'min', 'rst'=>array(0));
+					} else {
+						$mapping['fields'][$fname] = array(array('rule'=>'min', 'rst'=>array(0)));
+					}
+				}
 				if (strpos($fvalidation, '~M')) {
 					if ($fname=='taxclass') {
 						unset($mapping['fields'][$fname]);
@@ -464,31 +478,13 @@ class Validations extends processcbMap {
 		return $mapping;
 	}
 
+	/**
+	 * We just return true because all modules have some validation now that we are checking them all again
+	 * at the very least they are going to have the MySQL varchar limit check and that is in the case that
+	 * all other validations on the module are deactivated (integer, number, ...)
+	 */
 	public static function ValidationsExist($module) {
-		global $adb, $current_user;
-		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
-		$q = "select 1
-			from vtiger_cbmap
-			inner join ".$crmEntityTable." on vtiger_crmentity.crmid=cbmapid
-			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations' limit 1";
-		$rs = $adb->pquery($q, array('Validations',$module));
-		if ($rs && $adb->num_rows($rs)==1) {
-			return true;
-		}
-		$crmGvEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
-		$q = 'select globalvariableid
-			from vtiger_globalvariable
-			inner join '.$crmGvEntityTable.' on vtiger_crmentity.crmid=globalvariableid
-			where vtiger_crmentity.deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
-		$rs = $adb->pquery($q, array('BusinessMapping_Validations', $module));
-		if ($rs && $adb->num_rows($rs)>0) {
-			while ($gv = $adb->fetch_array($rs)) {
-				if (GlobalVariable::isAppliable($gv['globalvariableid'], $module, $current_user->id)) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return true;
 	}
 
 	public static function recordIsAssignedToInactiveUser() {

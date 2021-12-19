@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+require_once 'modules/Vtiger/ExecuteFunctionsfromphp.php';
 global $current_user, $currentModule, $singlepane_view;
 
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
@@ -93,6 +94,14 @@ if (empty($_REQUEST['assigned_user_id']) && empty($_REQUEST['assigned_group_id']
 	}
 }
 list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
+if (!$saveerror) { // if there is no error we still check the defined validations again
+	$validation = executefunctionsvalidate('ValidationLoad', $currentModule, json_encode(vtlib_purify($_REQUEST)));
+	if ($validation != '%%%OK%%%') {
+		$saveerror = true;
+		$errormessage = $validation;
+		$error_action = '';
+	}
+}
 if ($saveerror) { // there is an error so we go back to EditView.
 	$return_module=$return_id=$return_action='';
 	if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
