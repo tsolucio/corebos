@@ -201,9 +201,15 @@ class Import_Data_Controller {
 				$this->mergeCondition = 0;
 			}
 		}
+		$ForceDuplicateRecord = GlobalVariable::getVariable('Import_ForceDuplicateRecord_Handling', 0);
 		$afterImportRecordExists = method_exists($focus, 'afterImportRecord');
 		$fieldColumnMapping = $moduleMeta->getFieldColumnMapping();
 		$fieldColumnMapping['cbuuid'] = 'cbuuid';
+		if ($ForceDuplicateRecord == '1') {
+			$entityColumnNames = GlobalVariable::getVariable('Import_DuplicateRecordHandling_Fields', '');
+			$this->mergeType = '1';
+			$this->mergeFields = explode(',', $entityColumnNames);
+		}
 		$merge_type = $this->mergeType;
 		$customImport = method_exists($focus, 'importRecord');
 		$applyValidations = GlobalVariable::getVariable('Import_ApplyValidationRules', 0, $moduleName, $this->user->id);
