@@ -35,11 +35,13 @@
 			{include file='modules/Import/Import_Step2.tpl'}
 			</td>
 		</tr>
+		{if $HIDE_STEP3 eq '0'}
 		<tr>
 			<td class="leftFormBorder1 cblds-m_x-large" colspan="2" valign="top">
 			{include file='modules/Import/Import_Step3.tpl'}
 			</td>
 		</tr>
+		{/if}
 		<tr>
 			<td align="right" colspan="2" class="cblds-t-align_right cblds-m_x-large">
 			{include file='modules/Import/Import_Basic_Buttons.tpl'}

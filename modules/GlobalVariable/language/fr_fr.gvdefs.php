@@ -1528,6 +1528,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Number of rows to show per page in the master detail list view grid.',
 ),
+'Import_ForceDuplicateRecord_Handling' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Control if the duplicate handling should be forced.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {

@@ -201,9 +201,15 @@ class Import_Data_Controller {
 				$this->mergeCondition = 0;
 			}
 		}
+		$ForceDuplicateRecord = GlobalVariable::getVariable('Import_ForceDuplicateRecord_Handling', 0);
 		$afterImportRecordExists = method_exists($focus, 'afterImportRecord');
 		$fieldColumnMapping = $moduleMeta->getFieldColumnMapping();
 		$fieldColumnMapping['cbuuid'] = 'cbuuid';
+		if ($ForceDuplicateRecord == '1') {
+			$entityColumnNames = GlobalVariable::getVariable('Import_DuplicateRecordHandling_Fields', '');
+			$this->mergeType = '1';
+			$this->mergeFields = explode(',', $entityColumnNames);
+		}
 		$merge_type = $this->mergeType;
 		$customImport = method_exists($focus, 'importRecord');
 		$applyValidations = GlobalVariable::getVariable('Import_ApplyValidationRules', 0, $moduleName, $this->user->id);
@@ -228,28 +234,29 @@ class Import_Data_Controller {
 						$queryGenerator->initForDefaultCustomView();
 						$fieldsList = array('id');
 						$queryGenerator->setFields($fieldsList);
-
-						foreach ($this->mergeFields as $mergeField) {
-							if (!isset($fieldData[$mergeField])) {
-								continue;
-							}
-							$comparisonValue = $fieldData[$mergeField];
-							$fieldInstance = $moduleFields[$mergeField];
-							if ($fieldInstance->getFieldDataType() == 'owner') {
-								$userId = getUserId_Ol($comparisonValue);
-								$comparisonValue = getUserFullName($userId);
-							}
-							if ($fieldInstance->getFieldDataType() == 'reference') {
-								if (strpos($comparisonValue, '::::') > 0) {
-									$referenceFileValueComponents = explode('::::', $comparisonValue);
-								} else {
-									$referenceFileValueComponents = explode(':::', $comparisonValue);
+						if (!empty($this->mergeFields)) {
+							foreach ($this->mergeFields as $mergeField) {
+								if (!isset($fieldData[$mergeField])) {
+									continue;
 								}
-								if (count($referenceFileValueComponents) > 1) {
-									$comparisonValue = trim($referenceFileValueComponents[1]);
+								$comparisonValue = $fieldData[$mergeField];
+								$fieldInstance = $moduleFields[$mergeField];
+								if ($fieldInstance->getFieldDataType() == 'owner') {
+									$userId = getUserId_Ol($comparisonValue);
+									$comparisonValue = getUserFullName($userId);
 								}
+								if ($fieldInstance->getFieldDataType() == 'reference') {
+									if (strpos($comparisonValue, '::::') > 0) {
+										$referenceFileValueComponents = explode('::::', $comparisonValue);
+									} else {
+										$referenceFileValueComponents = explode(':::', $comparisonValue);
+									}
+									if (count($referenceFileValueComponents) > 1) {
+										$comparisonValue = trim($referenceFileValueComponents[1]);
+									}
+								}
+								$queryGenerator->addCondition($mergeField, $comparisonValue, 'e', QueryGenerator::$AND);
 							}
-							$queryGenerator->addCondition($mergeField, $comparisonValue, 'e', QueryGenerator::$AND);
 						}
 						$query = $queryGenerator->getQuery();
 					} else {
