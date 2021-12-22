@@ -198,6 +198,9 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
 				if (responsibleConfig['actions']['appear'] !== undefined && responsibleConfig['actions']['appear'].length > 0) {
 					this.blockAppear(responsibleConfig['actions']['appear']);
 				}
+				if (responsibleConfig['actions']['setclass'] !== undefined && responsibleConfig['actions']['setclass'].length > 0) {
+					this.addCSS(responsibleConfig['actions']['setclass']);
+				}
 				if (responsibleConfig['actions']['function'] !== undefined && responsibleConfig['actions']['function'].length > 0) {
 					this.callFunc(sourcename, responsibleConfig['actions']['function']);
 				}
@@ -213,6 +216,9 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
 				}
 				if (responsibleConfig['actions']['disappear'] !== undefined && responsibleConfig['actions']['disappear'].length > 0) {
 					this.blockAppear(responsibleConfig['actions']['disappear']);
+				}
+				if (responsibleConfig['actions']['setclass'] !== undefined && responsibleConfig['actions']['setclass'].length > 0) {
+					this.removeCSS(responsibleConfig['actions']['setclass']);
 				}
 			}
 		}
@@ -311,6 +317,28 @@ FieldDependencies.prototype.fieldShow = function (hideFields) {
 		field=hideFields[i]['field'];
 		document.getElementById('td_'+field).style.visibility='visible';
 		document.getElementById('td_val_'+field).style.visibility='visible';
+	}
+};
+
+FieldDependencies.prototype.addCSS = function (setClasses) {
+	fieldclass=setClasses[setClasses.length - 2]['fieldclass'];
+	labelclass=setClasses[setClasses.length - 1]['labelclass'];
+	var field='';
+	for (var i=0; i<setClasses.length - 2; i++) {
+		field=setClasses[i]['field'];
+		document.getElementById('td_'+field).classList.add(labelclass);
+		document.getElementById('td_val_'+field).classList.add(fieldclass);
+	}
+};
+
+FieldDependencies.prototype.removeCSS = function (setClasses) {
+	fieldclass=setClasses[setClasses.length - 2]['fieldclass'];
+	labelclass=setClasses[setClasses.length - 1]['labelclass'];
+	var field='';
+	for (var i=0; i<setClasses.length - 2; i++) {
+		field=setClasses[i]['field'];
+		document.getElementById('td_'+field).classList.remove(labelclass);
+		document.getElementById('td_val_'+field).classList.remove(fieldclass);
 	}
 };
 
