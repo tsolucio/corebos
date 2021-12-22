@@ -199,6 +199,13 @@ class FieldDependency extends processcbMap {
 					$actions['appear'][] = array('block'=>$bname);
 				}
 			}
+			foreach ($v->actions->setclass as $action) {
+				foreach ($action->field as $name) {
+					$actions['setclass'][] = array('field'=>(string)$name);
+				}
+				$actions['setclass'][] = array('fieldclass'=>(string)$action->fieldclass);
+				$actions['setclass'][] = array('labelclass'=>(string)$action->labelclass);
+			}
 			foreach ($v->actions->function as $action) {
 				$params=array();
 				if (isset($action->parameters)) {
