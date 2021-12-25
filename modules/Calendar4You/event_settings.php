@@ -132,7 +132,7 @@ if ($mode != 'user' && $id != 'invite' && $mode != 'module') {
 
 			$sql_field = "SELECT fieldid, uitype, fieldname, fieldlabel
 				FROM vtiger_field
-				WHERE tabid=? and (displaytype != 3 OR uitype = 55) and vtiger_field.fieldname not in ('notime') ORDER BY sequence ASC";
+				WHERE tabid=? and displaytype != 3 and vtiger_field.fieldname not in ('notime') ORDER BY sequence ASC";
 			$res_field = $adb->pquery($sql_field, array($tabid));
 			$num_field = $adb->num_rows($res_field);
 			$Fields_Array = array();
