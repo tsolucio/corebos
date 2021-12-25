@@ -7,95 +7,196 @@
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
  ********************************************************************************/
--->*}
-<table style="width:98%;margin:auto;" class="showPanelBg">
-	<tbody><tr>
-	<td valign="top" width="50%" style="padding: 10px;border-right:1px dashed #CCCCCC">
-	<!-- Reports Table Starts Here  -->
-	{assign var=poscount value=0}
-	{foreach item=reportfolder from=$REPT_FLDR}
-	{assign var=poscount value=$poscount+1}
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="reportsListTable">
-		<tr>
-		<td class="mailSubHeader"><b>
-		<span id='folder{$reportfolder.id}'>{$reportfolder.name|@getTranslatedString:$MODULE}</span>
-		</b>
-		<i><font color='#C0C0C0'> - {$reportfolder.description|@getTranslatedString:$MODULE}</font></i>
-		</td>
-		</tr>
-		<tr>
-			<td class="hdrNameBg" colspan="3" style="padding: 5px;" align="right" >
-				<table width="100%" border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td id="repposition{$poscount}" width="5%" align="right">
-						<input name="newReportInThisModule" value="{$MOD.LBL_CREATE_REPORT}..." class="crmButton small create" onclick="gcurrepfolderid={$reportfolder.id};fnvshobj(this,'reportLay')" type="button">
-					</td>
-					<td width="75%" align="right">
-						<input type="button" name="Edit" value=" {$MOD.LBL_RENAME_FOLDER} " class="crmbutton small edit" onClick='EditFolder("{$reportfolder.id}","{$reportfolder.fname}","{$reportfolder.fdescription}"),fnvshobj(this,"orgLay");'>&nbsp;
-					</td>
-					<td align="right">
-						{if $ISADMIN}<input type="button" name="delete" value=" {$MOD.LBL_DELETE_FOLDER} " class="crmbutton small delete" onClick="DeleteFolder('{$reportfolder.id}');">{/if}
-					</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-		<td>
-		<table class="small" border="0" cellpadding="5" cellspacing="1" width="100%">
-			<tbody>
-			<tr>
-			<td class="lvtCol" width="5%">#</td>
-			<td class="lvtCol" width="35%">{$MOD.LBL_REPORT_NAME}</td>
-			<td class="lvtCol" width="50%">{$MOD.LBL_DESCRIPTION}</td>
-			<td class="lvtCol" width="10%">{$MOD.LBL_TOOLS}</td>
-			</tr>
-			{foreach name=reportdtls item=reportdetails from=$reportfolder.details}
-				<tr class="lvtColData" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'" bgcolor="white">
-				<td>{$smarty.foreach.reportdtls.iteration}</td>
-				<td>
-				{if $reportdetails.cbreporttype eq 'external'}
-					<a href="{$reportdetails.moreinfo}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
-				{else}
-					<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
-				{/if}
-				{if $reportdetails.sharingtype eq 'Shared'}
-					<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
-				{/if}
-				</td>
-				<td>{$reportdetails.description|@getTranslatedString:$MODULE}</td>
-				<td align="center" nowrap>
-					{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
-						<a href="javascript:;" onClick="editReport('{$reportdetails.reportid}');"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_CUSTOMIZE_BUTTON}..." border="0"></a>
-					{/if}
-					{if $ISADMIN || ($reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true')}
-						&nbsp;|&nbsp;<a href="javascript:;" onclick="DeleteReport('{$reportdetails.reportid}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_DELETE}..." border="0"></a>
-					{/if}
-					{if $reportdetails.cbreporttype neq 'external' && $reportdetails.export eq 'yes'}
-					&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');"><img src="{'csv_text.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
-					&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreateXL&record={$reportdetails.reportid}');"><img src="{'excel.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}" border="0"></a>
-					&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreatePDF&record={$reportdetails.reportid}');"><img src="{'pdf.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>
-					{/if}
-				</td>
-				</tr>
-			{/foreach}
-			</tbody>
-		</table>
-		</td>
-		</tr>
-	</table>
-	<br />
-	{/foreach}
-	<!-- Reports Table Ends Here  -->
-	</td>
-	<td style="padding:10px;" valign="top" align="center" width="50%">
-	<div id="customizedrep">
-		{include file="ReportsCustomize.tpl"}
+-->*} 
+<script src="include/gridstack/js/gridstack.js" type="text/javascript"></script>
+<script src="include/gridstack/js/reports_flexible.js" type="text/javascript"></script>
+<script src="include/gridstack/js/gridstack.jQueryUI.js" type="text/javascript"></script>
+<link rel="stylesheet" href="include/gridstack/css/gridstack.css" type="text/css">
+<link rel="stylesheet" href="include/gridstack/css/gridstack-extra.css" type="text/css">
+
+ 
+
+<div class="slds-grid reportsideexpandable">
+	<a class="btn closeside">
+		<svg class="slds-icon slds-icon_x-small slds-icon-text-light leftchevronlds expandthis_svg" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
+		</svg>
+		<svg class="slds-icon slds-icon_x-small slds-icon-text-light rightchevronlds hidethis_svg" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+		</svg>
+	</a>
+	<div class="slds-col slds-size_2-of-12 draggable_bordered sidebar2" id="sidebar2">
+		<div class="slds-grid columnsideitem">
+			<div class="slds-col slds-size_1-of-1">
+				<h4> <strong> {$MOD.LBL_MODULE_NAME} </strong></h4>
+			</div>
+		</div>
 	</div>
-	</td>
-	</tr>
-	<tr>
-	<td colspan="2" align="center">&nbsp;</td>
-	</tr>
-	</tbody>
-</table>
+	<div class="slds-col slds-size_10-of-12 mainbar" id="mainbar">
+		<div class="slds-grid slds-gutters">
+			<div class="slds-col slds-size_1-of-1">
+				<div id="customizedrep">
+					{include file="ReportsCustomize.tpl"}
+				</div>
+			</div>
+		</div>
+		<div class="grid-stack" data-gs-animate="yes">
+			{assign var=poscount value=0}
+			{foreach item=reportfolder from=$REPT_FLDR}
+			{assign var=poscount value=$poscount+1}
+			<div class="grid-stack-item" data-gs-x="10" data-gs-y="0" data-gs-width="12" data-gs-height="4" id="gridcard{$poscount}">
+				<div class="grid-stack-item-content draggable_bordered"> 
+					<div class="slds-grid">
+						<div class="slds-col slds-size_1-of-1">
+							<div class="slds-page-header">
+								<div class="slds-grid">
+									<div class="slds-col slds-size_1-of-2 slds-p-vertical_small">
+										<div class="slds-page-header__col-title">
+											<div class="slds-page-header__name">
+												<div class="slds-text-title">
+													<h1>
+														<span id='folder{$reportfolder.id}'>{$reportfolder.name|@getTranslatedString:$MODULE} <span class="slds-text-color_weak"><em> - {$reportfolder.description|@getTranslatedString:$MODULE} </em></span> </span>
+													</h1>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="slds-col slds-size_1-of-2 slds-p-vertical_small slds-text-align_right">
+										<a class="cardinner maximize minmaxtoggle" onclick="toggleGridCard({$poscount})"> 
+											<svg class="slds-icon slds-icon_x-small slds-icon-text-light minimizereport expandthis_svg" aria-hidden="true" >
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#contract"></use> 
+											</svg>
+											<svg class="slds-icon slds-icon_x-small slds-icon-text-light maximizereport hidethis_svg" aria-hidden="true" >
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#expand"></use> 
+											</svg>
+										</a>
+									</div>
+								</div>
+								<div class="slds-grid">
+									<div class="slds-col slds-size_7-of-12" id="repposition{$poscount}">
+										<button class="slds-button slds-button_brand" name="newReportInThisModule" onclick="gcurrepfolderid={$reportfolder.id};fnvshobj(this,'reportLay')" type="button"> {$MOD.LBL_CREATE_REPORT}... </button>
+									</div>
+									<div class="slds-col slds-size_5-of-12">
+										<div class="slds-grid slds-grid_align-end">
+											<div class="slds-col slds-size_1-of-2 slds-text-align_right">
+												<button class="slds-button slds-button_success" name="Edit" onClick='EditFolder("{$reportfolder.id}","{$reportfolder.fname}","{$reportfolder.fdescription}"),fnvshobj(this,"orgLay");'> {$MOD.LBL_RENAME_FOLDER} </button>
+											</div>
+											<div class="slds-col slds-size_1-of-2 slds-text-align_right">
+												{if $ISADMIN} <button class="slds-button slds-button_destructive" name="delete" onClick="DeleteFolder('{$reportfolder.id}');">  {$MOD.LBL_DELETE_FOLDER} </button> {/if}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="slds-grid grid_reports_container">
+								<div class="slds-col slds-size_1-of-1">
+									<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped" role="grid">
+										<thead>
+											<tr class="slds-line-height_reset">
+												<th class="" scope="col" width="5%">
+													<div class="slds-truncate" title="#">#</div>
+												</th>
+												<th class="" scope="col" width="35%">
+													<div class="slds-truncate" title="{$MOD.LBL_REPORT_NAME}">{$MOD.LBL_REPORT_NAME}</div>
+												</th>
+												<th class="" scope="col" width="50%">
+													<div class="slds-truncate" title="{$MOD.LBL_DESCRIPTION}">{$MOD.LBL_DESCRIPTION}</div>
+												</th>
+												<th class="" scope="col" width="10%">
+													<div class="slds-truncate" title="{$MOD.LBL_TOOLS}">
+														{$MOD.LBL_TOOLS}
+													</div>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											{foreach name=reportdtls item=reportdetails from=$reportfolder.details}
+												<tr class="lvtColData slds-hint-parent" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'" bgcolor="white">
+													<td>{$smarty.foreach.reportdtls.iteration}</td>
+													<td>
+													{if $reportdetails.cbreporttype eq 'external'}
+														<a href="{$reportdetails.moreinfo}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
+													{else}
+														<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
+													{/if}
+													{if $reportdetails.sharingtype eq 'Shared'}
+														<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
+													{/if}
+													</td>
+													<td>{$reportdetails.description|@getTranslatedString:$MODULE}</td>
+													<td align="center" nowrap>
+														{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
+															<a href="javascript:;" title="{$MOD.LBL_CUSTOMIZE_BUTTON}..." class="slds-button" onClick="editReport('{$reportdetails.reportid}');">
+																<svg class="slds-icon slds-icon_x-small slds-icon-text-light" aria-hidden="true" >
+																	<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#edit"></use> 
+																</svg>
+															</a>
+														{/if}
+														{if $ISADMIN || ($reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true')}
+															<a href="javascript:;" title="{$MOD.LBL_DELETE}..." class="slds-button" onclick="DeleteReport('{$reportdetails.reportid}');">
+																<svg class="slds-icon slds-icon_x-small slds-icon-text-light" aria-hidden="true" >
+																	<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use> 
+																</svg>
+															</a>
+														{/if}
+														{if $reportdetails.cbreporttype neq 'external' && $reportdetails.export eq 'yes'}
+														
+														<a href="javascript:void(0);" class="slds-button" title="{$MOD.LBL_EXPORTCSV}" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');">
+															<svg class="slds-icon slds-icon_x-small" aria-hidden="true" >
+																<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#csv"></use> 
+															</svg>
+														</a>
+														<a href="javascript:void(0);" class="slds-button" title="{$MOD.LBL_EXPORTXL_BUTTON}" onclick="gotourl('index.php?module=Reports&action=CreateXL&record={$reportdetails.reportid}');">
+															<svg class="slds-icon slds-icon_x-small" aria-hidden="true" >
+																<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#excel"></use> 
+															</svg>
+														</a>
+														<a href="javascript:void(0);" class="slds-button" title="{$MOD.LBL_EXPORTPDF_BUTTON}" onclick="gotourl('index.php?module=Reports&action=CreatePDF&record={$reportdetails.reportid}');">
+															<svg class="slds-icon slds-icon_x-small" aria-hidden="true" >
+																<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#pdf"></use> 
+															</svg>
+														</a>
+														{/if}
+													</td>
+												</tr>
+											{/foreach}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/foreach}
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+var grid = GridStack.init({
+	alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+	navigator.userAgent
+	),
+	resizable: {
+	handles: 'e, se, s, sw, w'
+	},
+	removable: '#trash',
+	removeTimeout: 100,
+	acceptWidgets: '.newWidget'
+});
+
+grid.on('added removed change', function(e, items) {
+	var str = '';
+	items.forEach(function(item) { str += ' (x,y)=' + item.x + ',' + item.y; });
+	console.log(e.type + ' ' + items.length + ' items:' + str );
+});
+
+// TODO: switch jquery-ui out
+$('.newWidget').draggable({
+	revert: 'invalid',
+	scroll: false,
+	appendTo: 'body',
+	helper: 'clone'
+});
+</script>
