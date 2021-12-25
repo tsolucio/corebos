@@ -17,9 +17,9 @@ $focus = new Reports();
 
 $rfid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 0;
 $mode = vtlib_purify($_REQUEST['savemode']);
-$foldername = vtlib_purify($_REQUEST["foldername"]);
+$foldername = vtlib_purify($_REQUEST['foldername']);
 $foldername = function_exists('iconv') ? @iconv('UTF-8', $default_charset, $foldername) : $foldername;
-$folderdesc = vtlib_purify($_REQUEST["folderdesc"]);
+$folderdesc = vtlib_purify($_REQUEST['folderdesc']);
 $foldername = str_replace('*amp*', '&', $foldername);
 $folderdesc = str_replace('*amp*', '&', $folderdesc);
 

@@ -23,20 +23,18 @@ if ($rfid != '') {
 		if ($result) {
 			$res = $adb->pquery('delete from vtiger_report where folderid=?', array($rfid));
 			if ($res != '') {
-				header("Location: index.php?action=ReportsAjax&mode=ajax&file=ListView&module=Reports");
+				header('Location: index.php?action=ReportsAjax&mode=ajax&file=ListView&module=Reports');
 			} else {
 				include 'modules/Vtiger/header.php';
-				$errormessage = "<font color='red'><b>".getTranslatedString('Error Message', 'Settings')."<ul>
-					<li><font color='red'>".getTranslatedString('LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER', 'Reports')."</font>
-					</ul></b></font> <br>" ;
-				echo $errormessage;
+				echo "<font color='red'><b>"
+					.getTranslatedString('Error Message', 'Settings')."<ul><li><font color='red'>"
+					.getTranslatedString('LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER', 'Reports').'</font></ul></b></font> <br>';
 			}
 		} else {
 			include 'modules/Vtiger/header.php';
-			$errormessage = "<font color='red'><b>".getTranslatedString('Error Message', 'Settings')."<ul>
-				<li><font color='red'>".getTranslatedString('LBL_ERROR_WHILE_DELETING_FOLDER', 'Reports')."</font>
-				</ul></b></font> <br>" ;
-			echo $errormessage;
+			echo "<font color='red'><b>"
+				.getTranslatedString('Error Message', 'Settings')."<ul><li><font color='red'>"
+				.getTranslatedString('LBL_ERROR_WHILE_DELETING_FOLDER', 'Reports').'</font></ul></b></font> <br>';
 		}
 	}
 }
