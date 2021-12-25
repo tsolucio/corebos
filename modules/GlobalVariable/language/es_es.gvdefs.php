@@ -1529,10 +1529,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Número de filas para mostrar por página en la lista de filas maestro-detalle.',
 ),
 'Import_ForceDuplicateRecord_Handling' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'Control if the duplicate handling should be forced.',
+	'definition' => 'Fuerza la utilización de la deduplicación mientras se realiza una importación independientemente de lo que se haya seleccionado en pantalla.',
 ),
 );
 
