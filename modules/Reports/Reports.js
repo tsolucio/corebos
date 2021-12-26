@@ -1385,10 +1385,9 @@ function AddFolder() {
 			var folderid = getObj('folder_id').value;
 			var resresult =response.split('::');
 			var mode = getObj('fldrsave_mode').value;
-			if (resresult[0] != 0 && mode =='save' && resresult[0] != 999) {
-				alert(i18nReportStrings.FOLDER_NAME_ALREADY_EXISTS);
-				return false;
-			} else if (((resresult[0]!=1 && resresult[0]!=0) || (resresult[0]==1 && resresult[0]!=0 && resresult[1]!=folderid)) && mode=='Edit' && resresult[0]!=999) {
+			if ((resresult[0] != 0 && mode =='save' && resresult[0] != 999)
+				|| (((resresult[0]!=1 && resresult[0]!=0) || (resresult[0]==1 && resresult[1]!=folderid)) && mode=='Edit' && resresult[0]!=999)
+			) {
 				alert(i18nReportStrings.FOLDER_NAME_ALREADY_EXISTS);
 				return false;
 			} else if (response == 999) { // 999 check for special chars
@@ -1403,19 +1402,16 @@ function AddFolder() {
 				foldername = foldername.replace(/&/gi, '*amp*');
 				folderdesc = folderdesc.replace(/^\s+/g, '').replace(/\s+$/g, '');
 				folderdesc = folderdesc.replace(/&/gi, '*amp*');
+				let url ='&savemode=Edit&foldername='+foldername+'&folderdesc='+folderdesc+'&record='+folderid;
 				if (mode == 'save') {
 					url ='&savemode=Save&foldername='+foldername+'&folderdesc='+folderdesc;
-				} else {
-					var folderid = getObj('folder_id').value;
-					url ='&savemode=Edit&foldername='+foldername+'&folderdesc='+folderdesc+'&record='+folderid;
 				}
 				getObj('fldrsave_mode').value = 'save';
 				jQuery.ajax({
 					method: 'POST',
 					url: 'index.php?action=ReportsAjax&mode=ajax&file=SaveReportFolder&module=Reports'+url
-				}).done(function (response) {
-					var item = response;
-					getObj('reportContents').innerHTML = item;
+				}).done(function (saveresponse) {
+					getObj('reportContents').innerHTML = saveresponse;
 				});
 			}
 		});
@@ -1493,24 +1489,21 @@ function MoveReport(id, foldername) {
 	var folderids = getObj('folder_ids').value;
 	var folderid_array = folderids.split(',');
 	var idstring = '';
-	var count = 0;
-	for (i=0; i < folderid_array.length; i++) {
+	for (let i=0; i < folderid_array.length; i++) {
 		var selectopt_id = 'selected_id'+folderid_array[i];
 		var objSelectopt = getObj(selectopt_id);
 		if (objSelectopt != null) {
 			var length_folder = getObj(selectopt_id).length;
 			if (length_folder != undefined) {
 				var cur_rep = getObj(selectopt_id);
-				for (row = 0; row < length_folder; row++) {
+				for (let row = 0; row < length_folder; row++) {
 					var currep_id = cur_rep[row].value;
 					if (cur_rep[row].checked) {
-						count++;
 						idstring = currep_id +':'+idstring;
 					}
 				}
 			} else {
 				if (getObj(selectopt_id).checked) {
-					count++;
 					idstring = getObj(selectopt_id).value +':'+idstring;
 				}
 			}
