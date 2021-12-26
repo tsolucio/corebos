@@ -1339,16 +1339,18 @@ function ReportssetValueFromCapture(recordid, value, target_fieldname) {
 
 function createrepFolder(oLoc, divid) {
 	document.getElementById('editfolder_info').innerHTML=i18nReportStrings.LBL_ADD_NEW_GROUP;
+	fnvshobj(oLoc, divid);
+	document.getElementById(divid).style.left = (parseInt(document.getElementById(divid).style.left)-300)+'px';
+	jQuery('#'+divid).draggable();
 	getObj('fldrsave_mode').value = 'save';
 	document.getElementById('folder_id').value = '';
 	document.getElementById('folder_name').value = '';
 	document.getElementById('folder_desc').value='';
-	fnvshobj(oLoc, divid);
 }
 
 function DeleteFolder(id) {
 	var title = 'folder'+id;
-	var fldr_name = getObj(title).innerHTML;
+	var fldr_name = getObj(title).innerText;
 	if (confirm(i18nReportStrings.DELETE_FOLDER_CONFIRMATION+fldr_name +"' ?")) {
 		jQuery.ajax({
 			method: 'POST',
@@ -1420,6 +1422,7 @@ function AddFolder() {
 
 function EditFolder(id, name, desc) {
 	document.getElementById('editfolder_info').innerHTML= i18nReportStrings.LBL_RENAME_FOLDER;
+	jQuery('#orgLay').draggable();
 	getObj('folder_name').value = name;
 	getObj('folder_desc').value = desc;
 	getObj('folder_id').value = id;
@@ -1521,7 +1524,7 @@ function MoveReport(id, foldername) {
 			return false;
 		}
 	} else {
-		alert('{$APP.SELECT_ATLEAST_ONE_REPORT}');
+		alert(i18nReportStrings.SELECT_ATLEAST_ONE_REPORT);
 		return false;
 	}
 }

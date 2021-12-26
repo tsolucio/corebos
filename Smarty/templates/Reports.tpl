@@ -107,19 +107,19 @@
 <!-- END OF POPUP LAYER -->
 
 <!-- Add new Folder UI starts -->
-<div id="orgLay" style="display:none;" class="layerPopup slds-p-around_x-small">
+<div id="orgLay" style="display:none;cursor:move;" class="layerPopup slds-p-around_x-small">
 	<div class="slds-page-header">
 		<div class="slds-grid">
 			<div class="slds-col slds-size_1-of-2 slds-p-vertical_small">
 				<div class="slds-page-header__col-title">
 					<div class="slds-page-header__name">
 						<div class="slds-text-title">
-							<h1 id="cportatereor_info"> <strong> {$MOD.LBL_ADD_NEW_GROUP} </strong> </h1>
+							<h1> <strong id="editfolder_info"> {$MOD.LBL_ADD_NEW_GROUP} </strong> </h1>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="slds-col slds-size_1-of-2 slds-p-vertical_small slds-text-align_right">
+			<div class="slds-col slds-size_1-of-2 slds-p-vertical_small slds-text-align_right" style="cursor:pointer;">
 				<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true" onClick="closeEditReport();">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use> 
 				</svg>
@@ -160,7 +160,6 @@
 <!-- Add new folder UI ends -->
 
 {*<!-- Contents -->*}
-{literal}
 <script>
 var i18nReportStrings = {
 	'LBL_ADD_NEW_GROUP': '{$MOD.LBL_ADD_NEW_GROUP}',
@@ -179,4 +178,3 @@ var i18nReportStrings = {
 	'SELECT_ATLEAST_ONE_REPORT': '{$APP.SELECT_ATLEAST_ONE_REPORT}',
 }
 </script>
-{/literal}

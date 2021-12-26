@@ -11,10 +11,9 @@
 <link rel="stylesheet" href="include/gridstack/gridstack.min.css" type="text/css">
 <link rel="stylesheet" href="include/gridstack/gridstack-extra.min.css" type="text/css">
 <script src="include/gridstack/gridstack-h5.js" type="text/javascript"></script>
-<script src="include/gridstack/js/reports_flexible.js" type="text/javascript"></script>
 
 <div class="slds-grid reportsideexpandable">
-	<div class="slds-col slds-size_10-of-12 mainbar" id="mainbar">
+	<div class="slds-col slds-size_12-of-12 mainbar" id="mainbar">
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col slds-size_1-of-1">
 				<div id="customizedrep">
@@ -93,7 +92,7 @@
 										</thead>
 										<tbody>
 											{foreach name=reportdtls item=reportdetails from=$reportfolder.details}
-												<tr class="lvtColData slds-hint-parent" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'" bgcolor="white">
+												<tr class="lvtColData slds-hint-parent" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'">
 													<td>{$smarty.foreach.reportdtls.iteration}</td>
 													<td>
 													{if $reportdetails.cbreporttype eq 'external'}

@@ -142,10 +142,6 @@
 		</div>
 	</div>
 <br />
-{foreachelse}
-<div align="center" class="createbtn_design">
-<a href="javascript:;" onclick="fnvshobj(this,'orgLay');">{$MOD.LBL_CLICK_HERE}</a>&nbsp;{$MOD.LBL_TO_ADD_NEW_GROUP}
-</div>
 {/foreach}
 </form>
 <!-- Customized Reports Table Ends Here  -->
