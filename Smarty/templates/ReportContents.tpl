@@ -63,7 +63,9 @@
 												<button class="slds-button slds-button_success" name="Edit" onClick='EditFolder("{$reportfolder.id}","{$reportfolder.fname}","{$reportfolder.fdescription}"),fnvshobj(this,"orgLay");'> {$MOD.LBL_RENAME_FOLDER} </button>
 											</div>
 											<div class="slds-col slds-size_1-of-2 slds-text-align_right">
-												{if $ISADMIN} <button class="slds-button slds-button_destructive" name="delete" onClick="DeleteFolder('{$reportfolder.id}');">  {$MOD.LBL_DELETE_FOLDER} </button> {/if}
+												{if $ISADMIN}
+												<button class="slds-button slds-button_destructive" name="delete" onClick="DeleteFolder('{$reportfolder.id}');">  {$MOD.LBL_DELETE_FOLDER} </button>
+												{/if}
 											</div>
 										</div>
 									</div>

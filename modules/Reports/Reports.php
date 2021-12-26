@@ -286,7 +286,7 @@ class Reports extends CRMEntity {
 	}
 
 	/** Get the information to generate the Listview of Reports per folder
-	 *  param $mode type of reports to return
+	 * @param string type of reports to return
 	 */
 	public function sgetRptFldr($mode = '') {
 		global $adb,$log,$mod_strings;
@@ -326,8 +326,8 @@ class Reports extends CRMEntity {
 	}
 
 	/** Get Report information for reports inside each folder
-	 *  param folderid if not given will return all folders
-	 *  returns only the reports the current user has access to
+	 * @param integer folderid, if not given will return all folders
+	 * @return array of the reports the current user has access to
 	 */
 	public function sgetRptsforFldr($rpt_fldr_id) {
 		global $adb, $log, $current_user;
@@ -428,7 +428,7 @@ class Reports extends CRMEntity {
 			$returndata = $returndata[$rpt_fldr_id];
 		}
 
-		$log->debug('Reports :: sgetRptsforFldr -> returned report folder information');
+		$log->debug('Reports::sgetRptsforFldr returned report folder information');
 		return $returndata;
 	}
 

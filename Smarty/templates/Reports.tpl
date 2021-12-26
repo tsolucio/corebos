@@ -130,11 +130,11 @@
 		<div class="slds-col slds-size_1-of-1 slds-p-vertical_small">
 			<div class="slds-form-element">
 				<label class="slds-form-element__label" for="text-input-id-1"> {$MOD.LBL_REP_FOLDER_NAME} </label>
-					<div class="slds-form-element__control">
-						<input id="folder_id" class="slds-input" name="folderId" type="hidden" value=''>
-						<input id="fldrsave_mode" name="folderId" type="hidden" value='save' class="slds-input">
-						<input id="folder_name" name="folderName" type="text" class="slds-input">
-					</div>
+				<div class="slds-form-element__control">
+					<input id="folder_id" class="slds-input" name="folderId" type="hidden" value=''>
+					<input id="fldrsave_mode" name="folderId" type="hidden" value='save' class="slds-input">
+					<input id="folder_name" name="folderName" type="text" class="slds-input">
+				</div>
 			</div>
 		</div>
 	</div>
@@ -142,9 +142,9 @@
 		<div class="slds-col slds-size_1-of-1 slds-p-vertical_small">
 			<div class="slds-form-element">
 				<label class="slds-form-element__label" for="text-input-id-1"> {$MOD.LBL_REP_FOLDER_DESC} </label>
-					<div class="slds-form-element__control">
-						<input id="folder_desc" name="folderDesc" type="text" class="slds-input">
-					</div>
+				<div class="slds-form-element__control">
+					<input id="folder_desc" name="folderDesc" type="text" class="slds-input">
+				</div>
 			</div>
 		</div>
 	</div>
