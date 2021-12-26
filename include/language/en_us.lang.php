@@ -1232,6 +1232,8 @@ $app_strings = array(
 'PRIVATE_FILTER'=>'Private',
 'SHARE_FILTER'=>'Share',
 'PUBLIC_FILTER'=>'Public',
+'Shared' => 'Shared',
+'Scheduled' => 'Scheduled',
 
 // Account Hierarchy
 'LBL_ACCOUNT_HIERARCHY' => 'Organization Hierarchy',

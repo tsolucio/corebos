@@ -1165,6 +1165,8 @@ $app_strings = array(
 	'PRIVATE_FILTER' => 'Privé',
 	'SHARE_FILTER' => 'Partager',
 	'PUBLIC_FILTER' => 'Public',
+	'Shared' => 'Shared',
+	'Scheduled' => 'Scheduled',
 
 	'LBL_ACCOUNT_HIERARCHY' => 'Hiérarchie de compte',
 

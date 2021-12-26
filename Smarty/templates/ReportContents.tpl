@@ -102,7 +102,18 @@
 														<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
 													{/if}
 													{if $reportdetails.sharingtype eq 'Shared'}
-														<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
+														<svg class="slds-icon slds-icon_x-small slds-icon-text-light" aria-hidden="true" alt="shared">
+															<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#privately_shared">
+																<title>{'Shared'|@getTranslatedString}</title>
+															</use>
+														</svg>
+													{/if}
+													{if $reportdetails.isscheduled}
+														<svg class="slds-icon slds-icon_x-small slds-icon-text-light" aria-hidden="true" >
+															<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clock">
+																<title>{'Scheduled'|@getTranslatedString}</title>
+															</use>
+														</svg>
 													{/if}
 													</td>
 													<td>{$reportdetails.description|@getTranslatedString:$MODULE}</td>

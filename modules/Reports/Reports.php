@@ -10,6 +10,7 @@
 require_once 'include/database/PearDatabase.php';
 require_once 'data/CRMEntity.php';
 require_once 'modules/Reports/ReportUtils.php';
+require_once 'modules/Reports/ScheduledReports.php';
 require_once 'modules/Reports/ReportRun.php';
 global $app_strings,$mod_strings, $modules, $blocks, $adv_filter_options;
 global $log, $report_modules, $related_modules;
@@ -396,6 +397,7 @@ class Reports extends CRMEntity {
 				$report_details['description'] = $report['description'];
 				$report_details['reportname'] = $report['reportname'];
 				$report_details['sharingtype'] = $report['sharingtype'];
+				$report_details['isscheduled'] = VTScheduledReport::isReportScheduled($report['reportid']);
 				$report_details['reporttype'] = $report['reporttype'];
 				$report_details['cbreporttype'] = $report['cbreporttype'];
 				if ($report['cbreporttype']=='external') {

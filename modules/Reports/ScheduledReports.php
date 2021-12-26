@@ -370,6 +370,12 @@ class VTScheduledReport extends Reports {
 		return $rolesAndSubHTML;
 	}
 
+	public static function isReportScheduled($reportid) {
+		global $adb;
+		$rs = $adb->pquery('select 1 from vtiger_scheduled_reports where reportid=?', array($reportid));
+		return ($rs && $adb->num_rows($rs)>0);
+	}
+
 	public static function getScheduledReports($adb, $user) {
 		$result = $adb->pquery('SELECT * FROM vtiger_scheduled_reports WHERE next_trigger_time <= ?', array(date('Y-m-d H:i:s')));
 		$scheduledReports = array();
