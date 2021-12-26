@@ -8,30 +8,12 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*} 
-<script src="include/gridstack/js/gridstack.js" type="text/javascript"></script>
+<link rel="stylesheet" href="include/gridstack/gridstack.min.css" type="text/css">
+<link rel="stylesheet" href="include/gridstack/gridstack-extra.min.css" type="text/css">
+<script src="include/gridstack/gridstack-h5.js" type="text/javascript"></script>
 <script src="include/gridstack/js/reports_flexible.js" type="text/javascript"></script>
-<script src="include/gridstack/js/gridstack.jQueryUI.js" type="text/javascript"></script>
-<link rel="stylesheet" href="include/gridstack/css/gridstack.css" type="text/css">
-<link rel="stylesheet" href="include/gridstack/css/gridstack-extra.css" type="text/css">
-
- 
 
 <div class="slds-grid reportsideexpandable">
-	<a class="btn closeside">
-		<svg class="slds-icon slds-icon_x-small slds-icon-text-light leftchevronlds expandthis_svg" aria-hidden="true">
-			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
-		</svg>
-		<svg class="slds-icon slds-icon_x-small slds-icon-text-light rightchevronlds hidethis_svg" aria-hidden="true">
-			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-		</svg>
-	</a>
-	<div class="slds-col slds-size_2-of-12 draggable_bordered sidebar2" id="sidebar2">
-		<div class="slds-grid columnsideitem">
-			<div class="slds-col slds-size_1-of-1">
-				<h4> <strong> {$MOD.LBL_MODULE_NAME} </strong></h4>
-			</div>
-		</div>
-	</div>
 	<div class="slds-col slds-size_10-of-12 mainbar" id="mainbar">
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col slds-size_1-of-1">
@@ -44,24 +26,24 @@
 			{assign var=poscount value=0}
 			{foreach item=reportfolder from=$REPT_FLDR}
 			{assign var=poscount value=$poscount+1}
-			<div class="grid-stack-item" data-gs-x="10" data-gs-y="0" data-gs-width="12" data-gs-height="4" id="gridcard{$poscount}">
+			<div class="grid-stack-item" gs-min-w="6" gs-w="6" gs-min-h="2" gs-h="3" id="gridcard{$poscount}">
 				<div class="grid-stack-item-content draggable_bordered"> 
 					<div class="slds-grid">
 						<div class="slds-col slds-size_1-of-1">
 							<div class="slds-page-header">
 								<div class="slds-grid">
-									<div class="slds-col slds-size_1-of-2 slds-p-vertical_small">
+									<div class="slds-col slds-size_5-of-6 slds-p-vertical_small">
 										<div class="slds-page-header__col-title">
 											<div class="slds-page-header__name">
 												<div class="slds-text-title">
 													<h1>
-														<span id='folder{$reportfolder.id}'>{$reportfolder.name|@getTranslatedString:$MODULE} <span class="slds-text-color_weak"><em> - {$reportfolder.description|@getTranslatedString:$MODULE} </em></span> </span>
+														<span id='folder{$reportfolder.id}'><strong>{$reportfolder.name|@getTranslatedString:$MODULE}</strong> <span class="slds-text-color_weak"><em> - {$reportfolder.description|@getTranslatedString:$MODULE} </em></span> </span>
 													</h1>
 												</div>
 											</div>
 										</div>
 									</div>
-									<div class="slds-col slds-size_1-of-2 slds-p-vertical_small slds-text-align_right">
+									<div class="slds-col slds-size_1-of-6 slds-p-vertical_small slds-text-align_right">
 										<a class="cardinner maximize minmaxtoggle" onclick="toggleGridCard({$poscount})"> 
 											<svg class="slds-icon slds-icon_x-small slds-icon-text-light minimizereport expandthis_svg" aria-hidden="true" >
 												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#contract"></use> 
@@ -176,16 +158,16 @@
 <script type="text/javascript">
 var grid = GridStack.init({
 	alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-	navigator.userAgent
+		navigator.userAgent
 	),
 	resizable: {
-	handles: 'e, se, s, sw, w'
+		handles: 'e, se, s, sw, w'
 	},
+	cellHeight: 'auto',
 	removable: '#trash',
 	removeTimeout: 100,
 	acceptWidgets: '.newWidget'
 });
-
 grid.on('added removed change', function(e, items) {
 	var str = '';
 	items.forEach(function(item) { str += ' (x,y)=' + item.x + ',' + item.y; });
