@@ -595,7 +595,6 @@ $mod_strings = array(
 'try_file_smaller'=>'Please try a file smaller than 800000 bytes',
 'Problems_in_upload'=>'Problems in file upload',
 'Please_try_again'=>'Please try again!',
-//5.0.3 fixes
 'LBL_TESTMAILSTATUS'=>'Test Mail Status : ',
 'LBL_CHECK_ASSIGNEDTO_MAILID'=>'Please check the assigned-to emailid',
 'LBL_MAILSENDERROR'=>'Mail could not be sent to the admin user. Please check the admin emailid/Server settings',

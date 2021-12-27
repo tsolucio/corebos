@@ -14,6 +14,8 @@ require_once 'modules/Reports/ReportUtils.php';
 require_once 'modules/Reports/CustomReportUtils.php';
 
 global $adb, $log,$current_user;
+$errormessage = '<strong>'.getTranslatedString('Error_Message', 'Settings').'</strong><ul><li>'
+	.getTranslatedString('LBL_ERROR_WHILE_INSERTING_RECORD', 'Reports').'</li></ul>';
 $reportid = vtlib_purify($_REQUEST['record']);
 
 //<<<<<<<selectcolumn>>>>>>>>>
@@ -231,18 +233,12 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 					}
 					//<<<<step7 scheduledReport>>>>>>>
 				} else {
-					$errormessage = "<font color='red'><B>Error Message<ul>
-						<li><font color='red'>Error while inserting the record</font>
-						</ul></B></font> <br>" ;
-					echo $errormessage;
+					saveReportErrorMessage($errormessage);
 					die;
 				}
 			}
 		} else {
-			$errormessage = "<font color='red'><B>Error Message<ul>
-				<li><font color='red'>Error while inserting the record</font>
-				</ul></B></font> <br>" ;
-			echo $errormessage;
+			saveReportErrorMessage($errormessage);
 			die;
 		}
 
@@ -373,19 +369,24 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			}
 			//<<<<step7 scheduledReport>>>>>>>
 		} else {
-			$errormessage = "<font color='red'><B>Error Message<ul>
-				<li><font color='red'>Error while inserting the record</font>
-				</ul></B></font> <br>" ;
-			echo $errormessage;
+			saveReportErrorMessage($errormessage);
 			die;
 		}
 	} else {
-		$errormessage = "<font color='red'><B>Error Message<ul>
-			<li><font color='red'>Error while inserting the record</font>
-			</ul></B></font> <br>" ;
-		echo $errormessage;
+		saveReportErrorMessage($errormessage);
 		die;
 	}
 	echo '<script>window.opener.location.href = window.opener.location.href;self.close();</script>';
+}
+
+function saveReportErrorMessage($msg) {
+	global $app_strings;
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+	$smarty->assign('ERROR_MESSAGE', $msg);
+	echo '<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />';
+	$smarty->display('applicationmessage.tpl');
 }
 ?>
