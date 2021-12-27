@@ -12,6 +12,7 @@ require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
 
 global $adb, $default_charset;
+Vtiger_Request::validateRequest();
 $local_log = LoggerManager::getLogger('index');
 $focus = new Reports();
 

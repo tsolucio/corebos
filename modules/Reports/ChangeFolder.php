@@ -10,7 +10,7 @@
 require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
 $folderid = vtlib_purify($_REQUEST['folderid']);
-
+Vtiger_Request::validateRequest();
 if (isset($_REQUEST['idlist']) && $_REQUEST['idlist']!= '') {
 	$id_array = array();
 	$id_array = explode(':', $_REQUEST['idlist']);
