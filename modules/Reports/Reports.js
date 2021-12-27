@@ -1336,3 +1336,208 @@ function ReportssetValueFromCapture(recordid, value, target_fieldname) {
 		});
 	}
 }
+
+function createrepFolder(oLoc, divid) {
+	document.getElementById('editfolder_info').innerHTML=i18nReportStrings.LBL_ADD_NEW_GROUP;
+	fnvshobj(oLoc, divid);
+	document.getElementById(divid).style.left = (parseInt(document.getElementById(divid).style.left)-300)+'px';
+	jQuery('#'+divid).draggable();
+	getObj('fldrsave_mode').value = 'save';
+	document.getElementById('folder_id').value = '';
+	document.getElementById('folder_name').value = '';
+	document.getElementById('folder_desc').value='';
+}
+
+function DeleteFolder(id) {
+	var title = 'folder'+id;
+	var fldr_name = getObj(title).innerText;
+	if (confirm(i18nReportStrings.DELETE_FOLDER_CONFIRMATION+fldr_name +"' ?")) {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&mode=ajax&file=DeleteReportFolder&module=Reports&record='+id
+		}).done(function (response) {
+			var item = trim(response);
+			if (item.charAt(0)=='<') {
+				gridReload(item);
+			} else {
+				alert(item);
+			}
+		});
+	} else {
+		return false;
+	}
+}
+
+function AddFolder() {
+	if (getObj('folder_name').value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0) {
+		alert(i18nReportStrings.FOLDERNAME_CANNOT_BE_EMPTY);
+		return false;
+	} else if (getObj('folder_name').value.replace(/^\s+/g, '').replace(/\s+$/g, '').length > 20 ) {
+		alert(i18nReportStrings.FOLDER_NAME_ALLOW_20CHARS);
+		return false;
+	} else if ((getObj('folder_name').value).match(/['"<>/\+]/) || (getObj('folder_desc').value).match(/['"<>/\+]/)) {
+		alert(alert_arr.SPECIAL_CHARS+' '+alert_arr.NOT_ALLOWED+alert_arr.NAME_DESC);
+		return false;
+	} else {
+		var foldername = encodeURIComponent(getObj('folder_name').value);
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=folderCheck&folderName='+foldername
+		}).done(function (response) {
+			var folderid = getObj('folder_id').value;
+			var resresult =response.split('::');
+			var mode = getObj('fldrsave_mode').value;
+			if ((resresult[0] != 0 && mode =='save' && resresult[0] != 999)
+				|| (((resresult[0]!=1 && resresult[0]!=0) || (resresult[0]==1 && resresult[1]!=folderid)) && mode=='Edit' && resresult[0]!=999)
+			) {
+				alert(i18nReportStrings.FOLDER_NAME_ALREADY_EXISTS);
+				return false;
+			} else if (response == 999) { // 999 check for special chars
+				alert(i18nReportStrings.SPECIAL_CHARS_NOT_ALLOWED);
+				return false;
+			} else {
+				fninvsh('orgLay');
+				var folderdesc = encodeURIComponent(getObj('folder_desc').value);
+				getObj('folder_name').value = '';
+				getObj('folder_desc').value = '';
+				foldername = foldername.replace(/^\s+/g, '').replace(/\s+$/g, '');
+				foldername = foldername.replace(/&/gi, '*amp*');
+				folderdesc = folderdesc.replace(/^\s+/g, '').replace(/\s+$/g, '');
+				folderdesc = folderdesc.replace(/&/gi, '*amp*');
+				let url ='&savemode=Edit&foldername='+foldername+'&folderdesc='+folderdesc+'&record='+folderid;
+				if (mode == 'save') {
+					url ='&savemode=Save&foldername='+foldername+'&folderdesc='+folderdesc;
+				}
+				getObj('fldrsave_mode').value = 'save';
+				jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?action=ReportsAjax&mode=ajax&file=SaveReportFolder&module=Reports'+url
+				}).done(function (saveresponse) {
+					gridReload(saveresponse);
+				});
+			}
+		});
+	}
+}
+
+function gridReload(contents) {
+	grid.destroy();
+	getObj('reportContents').innerHTML = contents;
+	vtlib_executeJavascriptInElement(document.getElementById('reportContents'));
+}
+
+function EditFolder(id, name, desc) {
+	document.getElementById('editfolder_info').innerHTML= i18nReportStrings.LBL_RENAME_FOLDER;
+	jQuery('#orgLay').draggable();
+	getObj('folder_name').value = name;
+	getObj('folder_desc').value = desc;
+	getObj('folder_id').value = id;
+	getObj('fldrsave_mode').value = 'Edit';
+}
+
+function massDeleteReport() {
+	var folderids = getObj('folder_ids').value;
+	var folderid_array = folderids.split(',');
+	var idstring = '';
+	var count = 0;
+	for (let i=0; i < folderid_array.length; i++) {
+		var selectopt_id = 'selected_id'+folderid_array[i];
+		var objSelectopt = getObj(selectopt_id);
+		if (objSelectopt != null) {
+			var length_folder = getObj(selectopt_id).length;
+			if (length_folder != undefined) {
+				var cur_rep = getObj(selectopt_id);
+				for (let row = 0; row < length_folder; row++) {
+					var currep_id = cur_rep[row].value;
+					if (cur_rep[row].checked) {
+						count++;
+						idstring = currep_id +':'+idstring;
+					}
+				}
+			} else {
+				if (getObj(selectopt_id).checked) {
+					count++;
+					idstring = getObj(selectopt_id).value +':'+idstring;
+				}
+			}
+		}
+	}
+	if (idstring != '') {
+		if (confirm(i18nReportStrings.DELETE_CONFIRMATION+count+i18nReportStrings.RECORDS)) {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?action=ReportsAjax&mode=ajax&file=Delete&module=Reports&idlist='+idstring
+			}).done(function (response) {
+				gridReload(response);
+			});
+		} else {
+			return false;
+		}
+	} else {
+		alert(i18nReportStrings.SELECT_ATLEAST_ONE_REPORT);
+		return false;
+	}
+}
+
+function DeleteReport(id) {
+	if (confirm(i18nReportStrings.DELETE_REPORT_CONFIRMATION)) {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&file=Delete&module=Reports&record='+id
+		}).done(function (response) {
+			gridReload(response);
+		});
+	} else {
+		return false;
+	}
+}
+
+function MoveReport(id, foldername) {
+	fninvsh('folderLay');
+	var folderids = getObj('folder_ids').value;
+	var folderid_array = folderids.split(',');
+	var idstring = '';
+	for (let i=0; i < folderid_array.length; i++) {
+		var selectopt_id = 'selected_id'+folderid_array[i];
+		var objSelectopt = getObj(selectopt_id);
+		if (objSelectopt != null) {
+			var length_folder = getObj(selectopt_id).length;
+			if (length_folder != undefined) {
+				var cur_rep = getObj(selectopt_id);
+				for (let row = 0; row < length_folder; row++) {
+					var currep_id = cur_rep[row].value;
+					if (cur_rep[row].checked) {
+						idstring = currep_id +':'+idstring;
+					}
+				}
+			} else {
+				if (getObj(selectopt_id).checked) {
+					idstring = getObj(selectopt_id).value +':'+idstring;
+				}
+			}
+		}
+	}
+	if (idstring != '') {
+		if (confirm(i18nReportStrings.MOVE_REPORT_CONFIRMATION+foldername+i18nReportStrings.FOLDER)) {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?action=ReportsAjax&file=ChangeFolder&module=Reports&folderid='+id+'&idlist='+idstring
+			}).done(function (response) {
+				gridReload(response);
+			});
+		} else {
+			return false;
+		}
+	} else {
+		alert(i18nReportStrings.SELECT_ATLEAST_ONE_REPORT);
+		return false;
+	}
+}
+
+function saveReportGridLayout(event, items) {
+	let glayout = encodeURIComponent(JSON.stringify(grid.save(false, false)));
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?action=ReportsAjax&file=SaveReportFolder&module=Reports&foldername=&folderdesc=&savemode=Layout&layout='+glayout
+	});
+}

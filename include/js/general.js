@@ -1918,6 +1918,9 @@ function toggleSelectAll(relCheckName, selectAllName, el = '') {
 }
 
 function orderByUserClick(relCheckName, el) {
+	if (getObj('idlist')==undefined) {
+		return;
+	}
 	let idlist = getObj('idlist').value.split(';');
 	if (el.checked) {
 		idlist.push(el.value);

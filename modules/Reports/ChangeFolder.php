@@ -10,7 +10,7 @@
 require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
 $folderid = vtlib_purify($_REQUEST['folderid']);
-
+Vtiger_Request::validateRequest();
 if (isset($_REQUEST['idlist']) && $_REQUEST['idlist']!= '') {
 	$id_array = array();
 	$id_array = explode(':', $_REQUEST['idlist']);
@@ -25,9 +25,9 @@ if (isset($_REQUEST['idlist']) && $_REQUEST['idlist']!= '') {
 }
 
 /** To Change the Report to another folder
-  * @param $reportid -- The report id
-  * @param $folderid -- The folderid the which the report to be moved
-  * @returns nothing
+  * @param integer report id
+  * @param integer folder id to which the report will be moved
+  * @return void
  */
 function ChangeFolder($reportid, $folderid) {
 	global $adb;

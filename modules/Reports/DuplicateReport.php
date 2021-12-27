@@ -12,7 +12,7 @@ require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
 
 global $adb,$mod_strings,$app_strings;
-
+Vtiger_Request::validateRequest();
 $reportid = vtlib_purify($_REQUEST['record']);
 $newreportname = vtlib_purify($_REQUEST['newreportname']);
 $newreportdescription = vtlib_purify($_REQUEST['newreportdescription']);

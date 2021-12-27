@@ -10,6 +10,7 @@
 require_once 'include/database/PearDatabase.php';
 require_once 'data/CRMEntity.php';
 require_once 'modules/Reports/ReportUtils.php';
+require_once 'modules/Reports/ScheduledReports.php';
 require_once 'modules/Reports/ReportRun.php';
 global $app_strings,$mod_strings, $modules, $blocks, $adv_filter_options;
 global $log, $report_modules, $related_modules;
@@ -285,16 +286,16 @@ class Reports extends CRMEntity {
 	}
 
 	/** Get the information to generate the Listview of Reports per folder
-	 *  param $mode type of reports to return
+	 * @param string type of reports to return
 	 */
 	public function sgetRptFldr($mode = '') {
 		global $adb,$log,$mod_strings;
 		$returndata = array();
 		$result = $adb->pquery('select * from vtiger_reportfolder order by folderid', array());
 		$reportfldrow = $adb->fetch_array($result);
+		// Fetch details of all reports of folder at once
+		$reportsInAllFolders = $this->sgetRptsforFldr(false);
 		if ($mode != '') {
-			// Fetch detials of all reports of folder at once
-			$reportsInAllFolders = $this->sgetRptsforFldr(false);
 			do {
 				if ($reportfldrow['state'] == $mode) {
 					$details = array();
@@ -317,6 +318,7 @@ class Reports extends CRMEntity {
 				$details['description'] = $reportfldrow['description'];
 				$details['fname'] = popup_decode_html($details['name']);
 				$details['fdescription'] = popup_decode_html($reportfldrow['description']);
+				$details['details'] = isset($reportsInAllFolders[$reportfldrow['folderid']]) ? $reportsInAllFolders[$reportfldrow['folderid']] : array();
 				$returndata[] = $details;
 			} while ($reportfldrow = $adb->fetch_array($result));
 		}
@@ -325,8 +327,8 @@ class Reports extends CRMEntity {
 	}
 
 	/** Get Report information for reports inside each folder
-	 *  param folderid if not given will return all folders
-	 *  returns only the reports the current user has access to
+	 * @param integer folderid, if not given will return all folders
+	 * @return array of the reports the current user has access to
 	 */
 	public function sgetRptsforFldr($rpt_fldr_id) {
 		global $adb, $log, $current_user;
@@ -396,6 +398,7 @@ class Reports extends CRMEntity {
 				$report_details['description'] = $report['description'];
 				$report_details['reportname'] = $report['reportname'];
 				$report_details['sharingtype'] = $report['sharingtype'];
+				$report_details['isscheduled'] = VTScheduledReport::isReportScheduled($report['reportid']);
 				$report_details['reporttype'] = $report['reporttype'];
 				$report_details['cbreporttype'] = $report['cbreporttype'];
 				if ($report['cbreporttype']=='external') {
@@ -426,7 +429,7 @@ class Reports extends CRMEntity {
 			$returndata = $returndata[$rpt_fldr_id];
 		}
 
-		$log->debug('Reports :: sgetRptsforFldr -> returned report folder information');
+		$log->debug('Reports::sgetRptsforFldr returned report folder information');
 		return $returndata;
 	}
 

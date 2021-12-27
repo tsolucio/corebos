@@ -11,7 +11,7 @@ require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
 
 global $adb,$mod_strings;
-
+Vtiger_Request::validateRequest();
 $local_log = LoggerManager::getLogger('index');
 $rfid = vtlib_purify($_REQUEST['record']);
 if ($rfid != '') {
@@ -23,19 +23,14 @@ if ($rfid != '') {
 		if ($result) {
 			$res = $adb->pquery('delete from vtiger_report where folderid=?', array($rfid));
 			if ($res != '') {
-				header('Location: index.php?action=ReportsAjax&mode=ajax&file=ListView&module=Reports');
+				$del_denied='';
 			} else {
-				include 'modules/Vtiger/header.php';
-				echo "<font color='red'><b>"
-					.getTranslatedString('Error Message', 'Settings')."<ul><li><font color='red'>"
-					.getTranslatedString('LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER', 'Reports').'</font></ul></b></font> <br>';
+				$del_denied=getTranslatedString('LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER', 'Reports');
 			}
 		} else {
-			include 'modules/Vtiger/header.php';
-			echo "<font color='red'><b>"
-				.getTranslatedString('Error Message', 'Settings')."<ul><li><font color='red'>"
-				.getTranslatedString('LBL_ERROR_WHILE_DELETING_FOLDER', 'Reports').'</font></ul></b></font> <br>';
+			$del_denied=getTranslatedString('LBL_ERROR_WHILE_DELETING_FOLDER', 'Reports');
 		}
+		header('Location: index.php?action=ReportsAjax&mode=ajax&file=ListView&module=Reports&del_denied='.urlencode($del_denied));
 	}
 }
 ?>
