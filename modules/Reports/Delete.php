@@ -32,29 +32,29 @@ if (isset($_REQUEST['idlist']) && $_REQUEST['idlist']!= '') {
 
 	for ($i=0; $i<count($id_array)-1; $i++) {
 		$own_query = $adb->pquery('SELECT reportname,owner FROM vtiger_report WHERE reportid=?', array($id_array[$i]));
-		$owner = $adb->query_result($own_query, 0, "owner");
+		$owner = $adb->query_result($own_query, 0, 'owner');
 		if (is_admin($current_user) || in_array($owner, $subordinate_users) || $owner==$current_user->id) {
 			DeleteReport($id_array[$i]);
 		} else {
-			$del_failed[]= $adb->query_result($own_query, 0, "reportname");
+			$del_failed[]= $adb->query_result($own_query, 0, 'reportname');
 		}
 	}
 
 	if (!empty($del_failed)) {
-		header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports&del_denied='.urlencode(implode(",", $del_failed)));
+		header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports&del_denied='.urlencode(implode(',', $del_failed)));
 	} else {
 		header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports');
 	}
 } elseif (isset($_REQUEST['record']) && $_REQUEST['record']!= '') {
-	$id = vtlib_purify($_REQUEST["record"]);
+	$id = vtlib_purify($_REQUEST['record']);
 	DeleteReport($id);
 	header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajaxdelete&module=Reports');
 }
 
 /** To Delete a Report
-  * @param $reportid -- The report id
-  * @returns nothing
-  */
+ * @param integer report id
+ * @return void
+ */
 function DeleteReport($reportid) {
 	global $adb;
 	$adb->pquery('delete from vtiger_selectquery where queryid=?', array($reportid));

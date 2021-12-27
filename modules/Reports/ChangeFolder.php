@@ -25,9 +25,9 @@ if (isset($_REQUEST['idlist']) && $_REQUEST['idlist']!= '') {
 }
 
 /** To Change the Report to another folder
-  * @param $reportid -- The report id
-  * @param $folderid -- The folderid the which the report to be moved
-  * @returns nothing
+  * @param integer report id
+  * @param integer folder id to which the report will be moved
+  * @return void
  */
 function ChangeFolder($reportid, $folderid) {
 	global $adb;
