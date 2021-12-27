@@ -308,6 +308,8 @@ $mod_strings = array(
 'LBL_COLUMNS_COUNT'=>'Contar',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error eliminando la carpeta.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error eliminando los informes de la carpeta',
+'LBL_ERROR_WHILE_INSERTING_RECORD' => 'Error insertando registro',
+'LBL_ERROR_WHILE_UPDATING_RECORD' => 'Error actualizando registro',
 'ERR_CREATE_REPORT' => 'Error creando el informe.',
 'Select Report' => 'Selecciona informe',
 );

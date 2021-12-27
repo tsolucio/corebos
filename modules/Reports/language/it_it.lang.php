@@ -294,6 +294,8 @@ $mod_strings = array (
 'LBL_COLUMNS_COUNT'=>'Count',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Errore mentre si eliminava la cartella.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Errore mentre si eliminivano i report della cartella',
+'LBL_ERROR_WHILE_INSERTING_RECORD' => 'Error while inserting the record',
+'LBL_ERROR_WHILE_UPDATING_RECORD' => 'Error while updating the record',
 'ERR_CREATE_REPORT' => 'Error creating the report.',
 'Select Report' => 'Select report',
 );

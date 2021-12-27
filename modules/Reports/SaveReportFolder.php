@@ -30,7 +30,7 @@ if ($mode=='Save') {
 		$sql_params = array(trim($foldername), $folderdesc, 'CUSTOMIZED');
 		$result = $adb->pquery($sql, $sql_params);
 		if (!$result) {
-			$_REQUEST['del_denied'] = 'Error while inserting the record';
+			$_REQUEST['del_denied'] = getTranslatedString('LBL_ERROR_WHILE_INSERTING_RECORD', 'Reports');
 		}
 		$_REQUEST['file'] = 'ListView';
 		include 'modules/Reports/ListView.php';
@@ -41,7 +41,7 @@ if ($mode=='Save') {
 		$params = array(trim($foldername), $folderdesc, $rfid);
 		$result = $adb->pquery($sql, $params);
 		if (!$result) {
-			$_REQUEST['del_denied'] = 'Error while updating the record';
+			$_REQUEST['del_denied'] = getTranslatedString('LBL_ERROR_WHILE_UPDATING_RECORD', 'Reports');
 		}
 		$_REQUEST['file'] = 'ListView';
 		include 'modules/Reports/ListView.php';
