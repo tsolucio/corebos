@@ -48,9 +48,7 @@ $fldrsreps = $repObj->sgetRptFldr('');
 $list_report_form->assign('REPT_FLDR', $fldrsreps);
 $fldrids_lists = array();
 foreach ($fldrsreps as $entries) {
-	if ($entries['state']!='SAVED') {
-		$fldrids_lists[] =$entries['id'];
-	}
+	$fldrids_lists[] =$entries['id'];
 }
 
 $list_report_form->assign('FOLDE_IDS', implode(',', $fldrids_lists));

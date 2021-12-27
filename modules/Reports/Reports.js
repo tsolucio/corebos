@@ -1468,8 +1468,7 @@ function massDeleteReport() {
 				method: 'POST',
 				url: 'index.php?action=ReportsAjax&mode=ajax&file=Delete&module=Reports&idlist='+idstring
 			}).done(function (response) {
-				var item = response;
-				getObj('customizedrep').innerHTML = item;
+				gridReload(response);
 			});
 		} else {
 			return false;
