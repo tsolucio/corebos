@@ -66,7 +66,7 @@ $list_report_form->assign('DEFAULT_LAYOUT', 'gs-min-w="4" gs-w="6" gs-min-h="2" 
 $list_report_form->assign('FOLDE_IDS', implode(',', $fldrids_lists));
 $list_report_form->assign('REPT_MODULES', getReportsModuleList($repObj));
 $list_report_form->assign('REPT_FOLDERS', $fldrsreps);
-if (isset($_REQUEST['del_denied'])) {
+if (!empty($_REQUEST['del_denied'])) {
 	$list_report_form->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
 	$list_report_form->assign('ERROR_MESSAGE', $mod_strings['LBL_PERM_DENIED'].' '.vtlib_purify($_REQUEST['del_denied']));
 }

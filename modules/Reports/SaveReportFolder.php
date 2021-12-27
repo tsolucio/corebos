@@ -29,32 +29,22 @@ if ($mode=='Save') {
 		$sql = 'INSERT INTO vtiger_reportfolder (foldername,description,state) VALUES (?,?,?)';
 		$sql_params = array(trim($foldername), $folderdesc, 'CUSTOMIZED');
 		$result = $adb->pquery($sql, $sql_params);
-		if ($result) {
-			$_REQUEST['file'] = 'ListView';
-			include 'modules/Reports/ListView.php';
-		} else {
-			include 'modules/Vtiger/header.php';
-			$errormessage = "<font color='red'><B>Error Message<ul>
-			<li><font color='red'>Error while inserting the record</font>
-			</ul></B></font> <br>" ;
-			echo $errormessage;
+		if (!$result) {
+			$_REQUEST['del_denied'] = 'Error while inserting the record';
 		}
+		$_REQUEST['file'] = 'ListView';
+		include 'modules/Reports/ListView.php';
 	}
 } elseif ($mode=='Edit') {
 	if (!empty($rfid)) {
 		$sql = 'update vtiger_reportfolder set foldername=?, description=? where folderid=?';
 		$params = array(trim($foldername), $folderdesc, $rfid);
 		$result = $adb->pquery($sql, $params);
-		if ($result) {
-			$_REQUEST['file'] = 'ListView';
-			include 'modules/Reports/ListView.php';
-		} else {
-			include 'modules/Vtiger/header.php';
-			$errormessage = "<font color='red'><B>Error Message<ul>
-			<li><font color='red'>Error while updating the record</font>
-			</ul></B></font> <br>" ;
-			echo $errormessage;
+		if (!$result) {
+			$_REQUEST['del_denied'] = 'Error while updating the record';
 		}
+		$_REQUEST['file'] = 'ListView';
+		include 'modules/Reports/ListView.php';
 	}
 } elseif ($mode=='Layout') {
 	coreBOS_Settings::setSetting('ReportGridLayout'.$current_user->id, $_REQUEST['layout']);
