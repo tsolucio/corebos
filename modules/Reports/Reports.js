@@ -1533,3 +1533,11 @@ function MoveReport(id, foldername) {
 		return false;
 	}
 }
+
+function saveReportGridLayout(event, items) {
+	let glayout = encodeURIComponent(JSON.stringify(grid.save(false, false)));
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?action=ReportsAjax&file=SaveReportFolder&module=Reports&foldername=&folderdesc=&savemode=Layout&layout='+glayout
+	});
+}

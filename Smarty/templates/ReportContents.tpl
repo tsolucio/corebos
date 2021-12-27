@@ -31,10 +31,12 @@
 	<div class="slds-col slds-size_12-of-12 mainbar" id="mainbar">
 		<div class="grid-stack" data-gs-animate="yes">
 			<input id="folder_ids" class="slds-input" name="folderId" type="hidden" value='{$FOLDE_IDS}'>
+			{assign var=BOXEXPAND value="{ 'w':6,'h':3 }"}
+			{assign var=BOXCOLLAPSE value="{ 'w':4,'h':2 }"}
 			{assign var=poscount value=0}
 			{foreach item=reportfolder from=$REPT_FLDR}
 			{assign var=poscount value=$poscount+1}
-			<div class="grid-stack-item" gs-min-w="6" gs-w="6" gs-min-h="2" gs-h="3" id="gridcard{$poscount}">
+			<div class="grid-stack-item" {if isset($REPORT_LAYOUT[$reportfolder.id])}{$REPORT_LAYOUT[$reportfolder.id]}{else}{$DEFAULT_LAYOUT}{/if} gs-id="{$reportfolder.id}" id="gridcard{$poscount}">
 				<div class="grid-stack-item-content draggable_bordered"> 
 					<div class="slds-grid">
 						<div class="slds-col slds-size_1-of-1">
@@ -52,14 +54,12 @@
 										</div>
 									</div>
 									<div class="slds-col slds-size_1-of-6 slds-p-vertical_small slds-text-align_right">
-										<a class="cardinner maximize minmaxtoggle" onclick="toggleGridCard({$poscount})"> 
-											<svg class="slds-icon slds-icon_x-small slds-icon-text-light minimizereport expandthis_svg" aria-hidden="true" >
-												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#contract"></use> 
-											</svg>
-											<svg class="slds-icon slds-icon_x-small slds-icon-text-light maximizereport hidethis_svg" aria-hidden="true" >
-												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#expand"></use> 
-											</svg>
-										</a>
+										<svg class="slds-icon slds-icon_x-small slds-icon-text-light" aria-hidden="true" onclick="grid.update('gridcard{$poscount}', {$BOXCOLLAPSE})">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#contract"></use>
+										</svg>
+										<svg class="slds-icon slds-icon_x-small slds-icon-text-light" aria-hidden="true" onclick="grid.update('gridcard{$poscount}', {$BOXEXPAND})">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#expand"></use>
+										</svg>
 									</div>
 								</div>
 								<div class="slds-grid">
@@ -200,12 +200,5 @@ var grid = GridStack.init({
 	removeTimeout: 100,
 	acceptWidgets: '.newWidget'
 });
-
-// TODO: switch jquery-ui out
-$('.newWidget').draggable({
-	revert: 'invalid',
-	scroll: false,
-	appendTo: 'body',
-	helper: 'clone'
-});
+grid.on('change', saveReportGridLayout);
 </script>

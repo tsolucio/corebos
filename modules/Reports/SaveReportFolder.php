@@ -55,5 +55,7 @@ if ($mode=='Save') {
 			echo $errormessage;
 		}
 	}
+} elseif ($mode=='Layout') {
+	coreBOS_Settings::setSetting('ReportGridLayout'.$current_user->id, $_REQUEST['layout']);
 }
 ?>

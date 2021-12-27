@@ -50,7 +50,19 @@ $fldrids_lists = array();
 foreach ($fldrsreps as $entries) {
 	$fldrids_lists[] =$entries['id'];
 }
-
+$replayout = json_decode(coreBOS_Settings::getSetting('ReportGridLayout'.$current_user->id, '[]'), true);
+$report_layout = array();
+foreach ($replayout as $folderlayout) { // index by folder
+	$ly = 'gs-min-w="'.$folderlayout['minW'].'"';
+	$ly.= ' gs-w="'.$folderlayout['w'].'"';
+	$ly.= ' gs-min-h="'.$folderlayout['minH'].'"';
+	$ly.= ' gs-h="'.$folderlayout['h'].'"';
+	$ly.= ' gs-x="'.$folderlayout['x'].'"';
+	$ly.= ' gs-y="'.$folderlayout['y'].'"';
+	$report_layout[$folderlayout['id']]=$ly;
+}
+$list_report_form->assign('REPORT_LAYOUT', $report_layout);
+$list_report_form->assign('DEFAULT_LAYOUT', 'gs-min-w="4" gs-w="6" gs-min-h="2" gs-h="3"');
 $list_report_form->assign('FOLDE_IDS', implode(',', $fldrids_lists));
 $list_report_form->assign('REPT_MODULES', getReportsModuleList($repObj));
 $list_report_form->assign('REPT_FOLDERS', $fldrsreps);
