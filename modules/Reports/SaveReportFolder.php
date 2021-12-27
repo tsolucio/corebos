@@ -24,12 +24,13 @@ $foldername = str_replace('*amp*', '&', $foldername);
 $folderdesc = str_replace('*amp*', '&', $folderdesc);
 
 if ($mode=='Save') {
-	if ($rfid=='') {
-		$sql = 'INSERT INTO vtiger_reportfolder (FOLDERNAME,DESCRIPTION,STATE) VALUES (?,?,?)';
+	if (empty($rfid)) {
+		$sql = 'INSERT INTO vtiger_reportfolder (foldername,description,state) VALUES (?,?,?)';
 		$sql_params = array(trim($foldername), $folderdesc, 'CUSTOMIZED');
 		$result = $adb->pquery($sql, $sql_params);
 		if ($result) {
-			header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports');
+			$_REQUEST['file'] = 'ListView';
+			include 'modules/Reports/ListView.php';
 		} else {
 			include 'modules/Vtiger/header.php';
 			$errormessage = "<font color='red'><B>Error Message<ul>
@@ -39,12 +40,13 @@ if ($mode=='Save') {
 		}
 	}
 } elseif ($mode=='Edit') {
-	if ($rfid != '') {
-		$sql = 'update vtiger_reportfolder set FOLDERNAME=?, DESCRIPTION=? where folderid=?';
+	if (!empty($rfid)) {
+		$sql = 'update vtiger_reportfolder set foldername=?, description=? where folderid=?';
 		$params = array(trim($foldername), $folderdesc, $rfid);
 		$result = $adb->pquery($sql, $params);
 		if ($result) {
-			header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports');
+			$_REQUEST['file'] = 'ListView';
+			include 'modules/Reports/ListView.php';
 		} else {
 			include 'modules/Vtiger/header.php';
 			$errormessage = "<font color='red'><B>Error Message<ul>

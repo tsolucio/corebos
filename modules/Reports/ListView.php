@@ -44,20 +44,22 @@ $list_report_form->assign('IMAGE_PATH', $image_path);
 $list_report_form->assign('MODULE', $currentModule);
 $list_report_form->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $repObj = new Reports();
-$list_report_form->assign('REPT_FLDR', $repObj->sgetRptFldr('SAVED'));
-$cusFldrDtls = array();
-$cusFldrDtls = $repObj->sgetRptFldr('CUSTOMIZED');
-$list_report_form->assign('REPT_CUSFLDR', $cusFldrDtls);
+$fldrsreps = $repObj->sgetRptFldr('');
+$list_report_form->assign('REPT_FLDR', $fldrsreps);
 $fldrids_lists = array();
-foreach ($cusFldrDtls as $entries) {
-	$fldrids_lists[] =$entries['id'];
+foreach ($fldrsreps as $entries) {
+	if ($entries['state']!='SAVED') {
+		$fldrids_lists[] =$entries['id'];
+	}
 }
 
 $list_report_form->assign('FOLDE_IDS', implode(',', $fldrids_lists));
 $list_report_form->assign('REPT_MODULES', getReportsModuleList($repObj));
-$list_report_form->assign('REPT_FOLDERS', $repObj->sgetRptFldr());
-$list_report_form->assign('DEL_DENIED', isset($_REQUEST['del_denied']) ? vtlib_purify($_REQUEST['del_denied']) : '');
-
+$list_report_form->assign('REPT_FOLDERS', $fldrsreps);
+if (isset($_REQUEST['del_denied'])) {
+	$list_report_form->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+	$list_report_form->assign('ERROR_MESSAGE', $mod_strings['LBL_PERM_DENIED'].' '.vtlib_purify($_REQUEST['del_denied']));
+}
 $list_report_form->assign('ISADMIN', is_admin($current_user));
 
 if (isset($_REQUEST['mode']) && ($_REQUEST['mode'] == 'ajax' || $_REQUEST['mode'] == 'ajaxdelete')) {

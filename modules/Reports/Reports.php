@@ -293,9 +293,9 @@ class Reports extends CRMEntity {
 		$returndata = array();
 		$result = $adb->pquery('select * from vtiger_reportfolder order by folderid', array());
 		$reportfldrow = $adb->fetch_array($result);
+		// Fetch details of all reports of folder at once
+		$reportsInAllFolders = $this->sgetRptsforFldr(false);
 		if ($mode != '') {
-			// Fetch detials of all reports of folder at once
-			$reportsInAllFolders = $this->sgetRptsforFldr(false);
 			do {
 				if ($reportfldrow['state'] == $mode) {
 					$details = array();
@@ -318,6 +318,7 @@ class Reports extends CRMEntity {
 				$details['description'] = $reportfldrow['description'];
 				$details['fname'] = popup_decode_html($details['name']);
 				$details['fdescription'] = popup_decode_html($reportfldrow['description']);
+				$details['details'] = isset($reportsInAllFolders[$reportfldrow['folderid']]) ? $reportsInAllFolders[$reportfldrow['folderid']] : array();
 				$returndata[] = $details;
 			} while ($reportfldrow = $adb->fetch_array($result));
 		}

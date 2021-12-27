@@ -1358,7 +1358,7 @@ function DeleteFolder(id) {
 		}).done(function (response) {
 			var item = trim(response);
 			if (item.charAt(0)=='<') {
-				getObj('reportContents').innerHTML = item;
+				gridReload(item);
 			} else {
 				alert(item);
 			}
@@ -1413,11 +1413,17 @@ function AddFolder() {
 					method: 'POST',
 					url: 'index.php?action=ReportsAjax&mode=ajax&file=SaveReportFolder&module=Reports'+url
 				}).done(function (saveresponse) {
-					getObj('reportContents').innerHTML = saveresponse;
+					gridReload(saveresponse);
 				});
 			}
 		});
 	}
+}
+
+function gridReload(contents) {
+	grid.destroy();
+	getObj('reportContents').innerHTML = contents;
+	vtlib_executeJavascriptInElement(document.getElementById('reportContents'));
 }
 
 function EditFolder(id, name, desc) {
@@ -1480,7 +1486,7 @@ function DeleteReport(id) {
 			method: 'POST',
 			url: 'index.php?action=ReportsAjax&file=Delete&module=Reports&record='+id
 		}).done(function (response) {
-			getObj('reportContents').innerHTML = response;
+			gridReload(response);
 		});
 	} else {
 		return false;
@@ -1518,7 +1524,7 @@ function MoveReport(id, foldername) {
 				method: 'POST',
 				url: 'index.php?action=ReportsAjax&file=ChangeFolder&module=Reports&folderid='+id+'&idlist='+idstring
 			}).done(function (response) {
-				getObj('reportContents').innerHTML = response;
+				gridReload(response);
 			});
 		} else {
 			return false;

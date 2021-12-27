@@ -12,16 +12,25 @@
 <link rel="stylesheet" href="include/gridstack/gridstack-extra.min.css" type="text/css">
 <script src="include/gridstack/gridstack-h5.js" type="text/javascript"></script>
 
+<div style="display: none;left:193px;top:106px;width:155px;" id="folderLay" onmouseout="fninvsh('folderLay')" onmouseover="fnvshNrm('folderLay')">
+	<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tr><td style="border-bottom: 1px solid rgb(204, 204, 204); padding: 5px;" align="left"><b>{$MOD.LBL_MOVE_TO} :</b></td></tr>
+		<tr>
+		<td align="left">
+		{foreach item=folder from=$REPT_FOLDERS}
+		<a href="javascript:;" onClick='MoveReport("{$folder.id}","{$folder.fname}");' class="drop_down">- {$folder.name}</a>
+		{/foreach}
+		</td>
+		</tr>
+	</table>
+</div>
+
+{include file='applicationmessage.tpl'}
+<form onsubmit="return false;">
 <div class="slds-grid reportsideexpandable">
 	<div class="slds-col slds-size_12-of-12 mainbar" id="mainbar">
-		<div class="slds-grid slds-gutters">
-			<div class="slds-col slds-size_1-of-1">
-				<div id="customizedrep">
-					{include file="ReportsCustomize.tpl"}
-				</div>
-			</div>
-		</div>
 		<div class="grid-stack" data-gs-animate="yes">
+			<input id="folder_ids" class="slds-input" name="folderId" type="hidden" value='{$FOLDE_IDS}'>
 			{assign var=poscount value=0}
 			{foreach item=reportfolder from=$REPT_FLDR}
 			{assign var=poscount value=$poscount+1}
@@ -77,7 +86,13 @@
 										<thead>
 											<tr class="slds-line-height_reset">
 												<th class="" scope="col" width="5%">
-													<div class="slds-truncate" title="#">#</div>
+													<div class="slds-truncate" title="#">
+														{if $reportfolder.state neq 'SAVED'}
+														<input type="checkbox" name="selectall" onclick='toggleSelect(this.checked, "selected_id{$reportfolder.id}")' value="checkbox" />
+														{else}
+														#
+														{/if}
+													</div>
 												</th>
 												<th class="" scope="col" width="35%">
 													<div class="slds-truncate" title="{$MOD.LBL_REPORT_NAME}">{$MOD.LBL_REPORT_NAME}</div>
@@ -95,7 +110,13 @@
 										<tbody>
 											{foreach name=reportdtls item=reportdetails from=$reportfolder.details}
 												<tr class="lvtColData slds-hint-parent" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'">
-													<td>{$smarty.foreach.reportdtls.iteration}</td>
+													<td>
+														{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
+														<input name="selected_id{$reportfolder.id}" value="{$reportdetails.reportid}" onclick='toggleSelectAll(this.name, "selectall")' type="checkbox">
+														{else}
+														{$smarty.foreach.reportdtls.iteration}
+														{/if}
+													</td>
 													<td>
 													{if $reportdetails.cbreporttype eq 'external'}
 														<a href="{$reportdetails.moreinfo}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
@@ -134,7 +155,6 @@
 															</a>
 														{/if}
 														{if $reportdetails.cbreporttype neq 'external' && $reportdetails.export eq 'yes'}
-														
 														<a href="javascript:void(0);" class="slds-button" title="{$MOD.LBL_EXPORTCSV}" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');">
 															<svg class="slds-icon slds-icon_x-small" aria-hidden="true" >
 																<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#csv"></use> 
@@ -166,7 +186,7 @@
 		</div>
 	</div>
 </div>
-
+</form>
 <script type="text/javascript">
 var grid = GridStack.init({
 	alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -179,11 +199,6 @@ var grid = GridStack.init({
 	removable: '#trash',
 	removeTimeout: 100,
 	acceptWidgets: '.newWidget'
-});
-grid.on('added removed change', function(e, items) {
-	var str = '';
-	items.forEach(function(item) { str += ' (x,y)=' + item.x + ',' + item.y; });
-	console.log(e.type + ' ' + items.length + ' items:' + str );
 });
 
 // TODO: switch jquery-ui out
