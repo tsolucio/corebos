@@ -44,7 +44,7 @@
  * Class FieldDependencies
  * @param datasource
  */
-function FieldDependencies(datasource) {
+ function FieldDependencies(datasource) {
 	this.baseform = false;
 	this.DS = {};
 	this.initDS(datasource);
@@ -68,11 +68,10 @@ FieldDependencies.prototype.initDS = function (datasource) {
  */
 FieldDependencies.prototype.setup = function (sourceform, datasource) {
 	var thisContext = this;
-
 	if (typeof(sourceform) == 'undefined') {
 		this.baseform = document.forms['EditView'];
 	} else {
-		this.baseform = sourceform;
+		this.baseform = document.forms['DetailView'];
 	}
 
 	this.initDS(datasource);
@@ -81,6 +80,7 @@ FieldDependencies.prototype.setup = function (sourceform, datasource) {
 		return;
 	}
 
+	thisContext.actOnDetailViewLoad();
 	var nodelist = document.querySelectorAll('input,select');
 	for (var i = 0; i < nodelist.length; i++) {
 		// we should use addEventListener here but it doesn't work on the jscalendar element nor on the initial loading of the page
@@ -104,6 +104,100 @@ FieldDependencies.prototype.init = function (sourceform, datasource) {
 	this.setup(sourceform, datasource);
 	for (var sourcename in this.DS) {
 		jQuery('[name="'+sourcename+'"]', this.baseform).trigger('change');
+	}
+};
+
+FieldDependencies.prototype.actOnDetailViewLoad = function () {
+	var responsibleConfig=this.DS;
+	var sourcename = Object.keys(responsibleConfig)[0];
+	var sourcevalue = '';
+	var field, comparator, value, columncondition, fieldName, groupid, conditionCurr, newGroup;
+	var i=0;
+	var conditions=new Array();
+	if (this.DS[sourcename]!==undefined) {
+		for (i=0; i<this.DS[sourcename].length; i++) {
+			var responsibleConfig=this.DS[sourcename][i];
+			conditions=responsibleConfig['conditions']!=='' ?  JSON.parse(responsibleConfig['conditions']) : conditions;
+			var conditionResp='';
+			var condArray=new Array();
+			var condOperatorArray=new Array();
+			for (var j=0; j<conditions.length; j++) {
+				newGroup=false;
+				field=conditions[j]['columnname'];
+				comparator=conditions[j]['comparator'];
+				value=conditions[j]['value'];
+				columncondition=conditions[j]['columncondition'];
+				groupid=conditions[j]['groupid'];
+				fieldName=field.split(':');
+				field=fieldName[1];
+				sourcevalue=this.getFieldValue(field);
+				switch (comparator) {
+				case 'e': conditionResp+= sourcevalue===value; break;
+				case 'n': conditionResp+= sourcevalue!==value; break;
+				case 's': conditionResp+= sourcevalue.startsWith(value); break;
+				case 'Ns': conditionResp+= !sourcevalue.startsWith(value); break;
+				case 'ew': conditionResp+= sourcevalue.endsWith(value); break;
+				case 'New': conditionResp+= !sourcevalue.endsWith(value); break;
+				case 'c': conditionResp+= sourcevalue.indexOf(value)!==-1; break;
+				case 'k': conditionResp+= sourcevalue.indexOf(value)===-1; break;
+				case 'l': conditionResp+= parseInt(sourcevalue) < parseInt(value); break;
+				case 'g': conditionResp+= parseInt(sourcevalue) > parseInt(value); break;
+				case 'm': conditionResp+= parseInt(sourcevalue) <= parseInt(value); break;
+				case 'h': conditionResp+= parseInt(sourcevalue) >= parseInt(value); break;
+				default:
+					conditionResp+=false; break;
+				}
+				if (j<conditions.length - 1 && groupid!=conditions[j+1]['groupid']) {
+					condArray.push(conditionResp);
+					conditionCurr=conditions[j]['columncondition'].toLowerCase()==='or' ? ' || ' : ' && ';
+					condOperatorArray.push(conditionCurr);
+					conditionResp='';
+					newGroup=true;
+				}
+				if (columncondition!=='' && !newGroup) {
+					columncondition=conditions[j]['columncondition'].toLowerCase()==='or' ? ' || ' : ' && ';
+					conditionResp +=' '+columncondition+' ';
+				} else if (columncondition=='') {
+					condArray.push(conditionResp);
+					condOperatorArray.push('');
+				}
+
+			}
+			conditionResp='';
+			for (j=0; j<condArray.length; j++) {
+				conditionResp +='('+condArray[j]+')'+condOperatorArray[j];
+			}
+			if (eval(conditionResp) || conditions.length===0) {
+				if (responsibleConfig['actions']['hide'] !== undefined && responsibleConfig['actions']['hide'].length > 0) {
+					this.fieldHide(responsibleConfig['actions']['hide']);
+				}
+				if (responsibleConfig['actions']['collapse'] !== undefined && responsibleConfig['actions']['collapse'].length > 0) {
+					this.blockCollapse(responsibleConfig['actions']['collapse']);
+				}
+				if (responsibleConfig['actions']['open'] !== undefined && responsibleConfig['actions']['open'].length > 0) {
+					this.blockOpen(responsibleConfig['actions']['open']);
+				}
+				if (responsibleConfig['actions']['disappear'] !== undefined && responsibleConfig['actions']['disappear'].length > 0) {
+					this.blockDisappear(responsibleConfig['actions']['disappear']);
+				}
+				if (responsibleConfig['actions']['appear'] !== undefined && responsibleConfig['actions']['appear'].length > 0) {
+					this.blockAppear(responsibleConfig['actions']['appear']);
+				}
+				if (responsibleConfig['actions']['setclass'] !== undefined && responsibleConfig['actions']['setclass'].length > 0) {
+					this.addCSS(responsibleConfig['actions']['setclass']);
+				}
+			} else {
+				if (responsibleConfig['actions']['hide'] !== undefined && responsibleConfig['actions']['hide'].length > 0) {
+					this.fieldShow(responsibleConfig['actions']['hide']);
+				}
+				if (responsibleConfig['actions']['disappear'] !== undefined && responsibleConfig['actions']['disappear'].length > 0) {
+					this.blockAppear(responsibleConfig['actions']['disappear']);
+				}
+				if (responsibleConfig['actions']['setclass'] !== undefined && responsibleConfig['actions']['setclass'].length > 0) {
+					this.removeCSS(responsibleConfig['actions']['setclass']);
+				}
+			}
+		}
 	}
 };
 
@@ -303,6 +397,15 @@ FieldDependencies.prototype.getFieldValue = function (field) {
 };
 
 FieldDependencies.prototype.fieldHide = function (hideFields) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+        this.fieldHideEditView(hideFields);
+    } 
+	if (document.forms['EditView'] == undefined && document.forms['DetailView'] != undefined) {
+        this.fieldHideDetailView(hideFields);
+    }
+};
+
+FieldDependencies.prototype.fieldHideEditView = function (hideFields) {
 	var field='';
 	for (var i=0; i<hideFields.length; i++) {
 		field=hideFields[i]['field'];
@@ -311,7 +414,25 @@ FieldDependencies.prototype.fieldHide = function (hideFields) {
 	}
 };
 
+FieldDependencies.prototype.fieldHideDetailView = function (hideFields) {
+	var field='';
+	for (var i=0; i<hideFields.length; i++) {
+		field=hideFields[i]['field'];
+		document.getElementById('mouseArea_'+field).style.visibility='hidden';
+		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.style.visibility='hidden';
+	}
+};
+
 FieldDependencies.prototype.fieldShow = function (hideFields) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+        this.fieldShowEditView(hideFields);
+    } 
+	if (document.forms['EditView'] == undefined && document.forms['DetailView'] != undefined) {
+        this.fieldShowDetailView(hideFields);
+    }
+};
+
+FieldDependencies.prototype.fieldShowEditView = function (hideFields) {
 	var field='';
 	for (var i=0; i<hideFields.length; i++) {
 		field=hideFields[i]['field'];
@@ -320,7 +441,25 @@ FieldDependencies.prototype.fieldShow = function (hideFields) {
 	}
 };
 
+FieldDependencies.prototype.fieldShowDetailView = function (hideFields) {
+	var field='';
+	for (var i=0; i<hideFields.length; i++) {
+		field=hideFields[i]['field'];
+		document.getElementById('mouseArea_'+field).style.visibility='visible';
+		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.style.visibility='visible';
+	}
+};
+
 FieldDependencies.prototype.addCSS = function (setClasses) {
+    if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+        this.addCSSEditView(setClasses);
+    } 
+	if (document.forms['EditView'] == undefined && document.forms['DetailView'] != undefined) {
+        this.addCSSDetailView(setClasses);
+    }
+};
+
+FieldDependencies.prototype.addCSSEditView = function (setClasses) {
 	fieldclass=setClasses[setClasses.length - 2]['fieldclass'];
 	labelclass=setClasses[setClasses.length - 1]['labelclass'];
 	var field='';
@@ -331,7 +470,27 @@ FieldDependencies.prototype.addCSS = function (setClasses) {
 	}
 };
 
+FieldDependencies.prototype.addCSSDetailView = function (setClasses) {
+	fieldclass=setClasses[setClasses.length - 2]['fieldclass'];
+	labelclass=setClasses[setClasses.length - 1]['labelclass'];
+	var field='';
+	for (var i=0; i<setClasses.length - 2; i++) {
+		field=setClasses[i]['field'];
+		document.getElementById('mouseArea_'+field).classList.add(fieldclass);
+		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.classList.add(labelclass);
+	}
+};
+
 FieldDependencies.prototype.removeCSS = function (setClasses) {
+    if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+        this.removeCSSEditView(setClasses);
+    } 
+	if (document.forms['EditView'] == undefined && document.forms['DetailView'] != undefined) {
+        this.removeCSSDetailView(setClasses);
+    }
+};
+
+FieldDependencies.prototype.removeCSSEditView = function (setClasses) {
 	fieldclass=setClasses[setClasses.length - 2]['fieldclass'];
 	labelclass=setClasses[setClasses.length - 1]['labelclass'];
 	var field='';
@@ -339,6 +498,17 @@ FieldDependencies.prototype.removeCSS = function (setClasses) {
 		field=setClasses[i]['field'];
 		document.getElementById('td_'+field).classList.remove(labelclass);
 		document.getElementById('td_val_'+field).classList.remove(fieldclass);
+	}
+};
+
+FieldDependencies.prototype.removeCSSDetailView = function (setClasses) {
+	fieldclass=setClasses[setClasses.length - 2]['fieldclass'];
+	labelclass=setClasses[setClasses.length - 1]['labelclass'];
+	var field='';
+	for (var i=0; i<setClasses.length - 2; i++) {
+		field=setClasses[i]['field'];
+		document.getElementById('mouseArea_'+field).classList.remove(fieldclass);
+		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.classList.remove(labelclass);
 	}
 };
 
@@ -362,6 +532,15 @@ FieldDependencies.prototype.fieldEditable = function (readonlyFields) {
 };
 
 FieldDependencies.prototype.blockCollapse = function (collapseBlocks) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+        this.blockCollapseEditView(collapseBlocks);
+    } 
+	if (document.forms['EditView'] == undefined && document.forms['DetailView'] != undefined) {
+        this.blockCollapseDetailView(collapseBlocks);
+    }
+};
+
+FieldDependencies.prototype.blockCollapseEditView = function (collapseBlocks) {
 	var block='', elements;
 	for (var i=0; i<collapseBlocks.length; i++) {
 		block=collapseBlocks[i]['block'];
@@ -372,7 +551,25 @@ FieldDependencies.prototype.blockCollapse = function (collapseBlocks) {
 	}
 };
 
+FieldDependencies.prototype.blockCollapseDetailView = function (collapseBlocks) {
+	var block='', elements;
+	for (var i=0; i<collapseBlocks.length; i++) {
+		block=collapseBlocks[i]['block'];
+		elements=document.getElementById('tbl'+block);
+		elements.style.display='none';
+	}
+};
+
 FieldDependencies.prototype.blockOpen = function (openBlocks) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+        this.blockOpenEditView(openBlocks);
+    } 
+	if (document.forms['EditView'] == undefined && document.forms['DetailView'] != undefined) {
+        this.blockOpenDetailView(openBlocks);
+    }
+};
+
+FieldDependencies.prototype.blockOpenEditView = function (openBlocks) {
 	var block='', elements;
 	for (var i=0; i<openBlocks.length; i++) {
 		block=openBlocks[i]['block'];
@@ -382,7 +579,26 @@ FieldDependencies.prototype.blockOpen = function (openBlocks) {
 		}
 	}
 };
+
+FieldDependencies.prototype.blockOpenDetailView = function (openBlocks) {
+	var block='', elements;
+	for (var i=0; i<openBlocks.length; i++) {
+		block=openBlocks[i]['block'];
+		elements=document.getElementById('tbl'+block);
+		elements.style.display='';
+	}
+};
+
 FieldDependencies.prototype.blockDisappear = function (disappBlock) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+        this.blockDisappearEditView(disappBlock);
+    } 
+	if (document.forms['EditView'] == undefined && document.forms['DetailView'] != undefined) {
+        this.blockDisappearDetailView(disappBlock);
+    }
+};
+
+FieldDependencies.prototype.blockDisappearEditView = function (disappBlock) {
 	var block='', elements;
 	for (var i=0; i<disappBlock.length; i++) {
 		block=disappBlock[i]['block'];
@@ -390,12 +606,30 @@ FieldDependencies.prototype.blockDisappear = function (disappBlock) {
 		for (var j=0; j<elements.length; j++) {
 			elements[j].style.display='none';
 		}
-
 		document.getElementById('tbl'+block+'Head').style.display='none';
 	}
 };
 
+FieldDependencies.prototype.blockDisappearDetailView = function (disappBlock) {
+	var block='', elements;
+	for (var i=0; i<disappBlock.length; i++) {
+		block=disappBlock[i]['block'];
+		elements=document.getElementById('tbl'+block);
+		elements.style.display='none';
+		document.getElementById('tbl'+block).previousSibling.previousSibling.style.display='none';
+	}
+};
+
 FieldDependencies.prototype.blockAppear = function (appBlock) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+        this.blockAppearEditView(appBlock);
+    } 
+	if (document.forms['EditView'] == undefined && document.forms['DetailView'] != undefined) {
+        this.blockAppearDetailView(appBlock);
+    }
+};
+
+FieldDependencies.prototype.blockAppearEditView = function (appBlock) {
 	var block='', elements;
 	for (var i=0; i<appBlock.length; i++) {
 		block=appBlock[i]['block'];
@@ -403,7 +637,17 @@ FieldDependencies.prototype.blockAppear = function (appBlock) {
 		for (var j=0; j<elements.length; j++) {
 			elements[j].style.display='';
 		}
-		document.getElementById('tbl'+block+'Head').style.display='';
+		document.getElementById('tbl'+block).style.display='';
+	}
+};
+
+FieldDependencies.prototype.blockAppearDetailView = function (appBlock) {
+	var block='', elements;
+	for (var i=0; i<appBlock.length; i++) {
+		block=appBlock[i]['block'];
+		elements=document.getElementById('tbl'+block);
+		document.getElementById('tbl'+block).style.display='';
+		elements.previousSibling.previousSibling.style.display='';
 	}
 };
 
