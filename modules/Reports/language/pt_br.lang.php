@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri/Translate terms | 23-set-2021 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
+ * Contributor(s): Ranieri/Translate terms | 28-11-2021 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -268,7 +268,7 @@ $mod_strings = array(
 'WEEKDAY_STRINGS' => array('Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'),
 'MONTH_STRINGS' => array('Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'),
 
-'LBL_TIME_FORMAT_MSG' => 'hh:mm (Formato 24 horas - considerar fuso horário UTC)',
+'LBL_TIME_FORMAT_MSG' => 'hh:mm (Formato 24 horas)',
 'LBL_RELOAD_REPORT' => 'Recarregar relatório',
 'LBL_SAVE_REPORT' => 'Salvar',
 'LBL_SAVE_REPORT_AS' => 'Salvar relatório como...',
@@ -303,8 +303,8 @@ $mod_strings = array(
 'LBL_COLUMNS_COUNT'=>'Contagem',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Erro enquanto a pasta era apagada.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Erro ao excluir os relatórios da pasta',
-'LBL_ERROR_WHILE_INSERTING_RECORD' => 'Error while inserting the record',
-'LBL_ERROR_WHILE_UPDATING_RECORD' => 'Error while updating the record',
+'LBL_ERROR_WHILE_INSERTING_RECORD' => 'Erro ao inserir o registro',
+'LBL_ERROR_WHILE_UPDATING_RECORD' => 'Erro ao atualizar o registro',
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Este é um e-mail gerado automaticamente em nome de um relatório agendado.',
 'LBL_DESCRIPTION'=>'Descrição',
 'ERR_CREATE_REPORT' => 'Erro ao criar o relatório.',
