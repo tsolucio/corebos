@@ -73,6 +73,34 @@
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
+		<td class="cblds-t-align_right cblds-p-v_mediumsmall">
+			<input type="checkbox" name="exec_wf" id="exec_wf" class="small" />
+			<span class="small">{'LBL_EXECUTE_WF'|@getTranslatedString:$MODULE}</span>&nbsp; : &nbsp;
+				<input id="wfid" name="wfid" type="hidden" value ="">
+				<input type='hidden' class='small' name="wfid_type" id="wfid_type" value="com_vtiger_workflow">
+				<input
+					id="wfid_display"
+					name="wfid_display"
+					readonly
+					type="text"
+					style="border:1px solid #bababa;"
+					onclick='return vtlib_open_popup_window("importAdvanced", "wfid", "com_vtiger_workflow", "");'
+					value ="">&nbsp;
+					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("importAdvanced", "wfid", "com_vtiger_workflow", "");'>
+						<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+						</svg>
+					</span>
+					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('wfid').value=''; document.getElementById('wfid_display').value=''; return false;">
+						<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+						</svg>
+					</span>
+		</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
 		<td align="right" class="cblds-t-align_right cblds-p-v_mediumsmall">
 			<input type="checkbox" name="save_map" id="save_map" class="small" />
 			<span class="small">{'LBL_SAVE_AS_CUSTOM_MAPPING'|@getTranslatedString:$MODULE}</span>&nbsp; : &nbsp;

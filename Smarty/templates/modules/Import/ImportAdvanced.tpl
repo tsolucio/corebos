@@ -10,7 +10,7 @@
 -->*}
 <script type="text/javascript" src="modules/Import/resources/Import.js"></script>
 
-<form onsubmit="VtigerJS_DialogBox.block();" action="index.php" enctype="multipart/form-data" method="POST" name="importAdvanced">
+<form onsubmit="VtigerJS_DialogBox.block();" action="index.php" enctype="multipart/form-data" method="POST" id="importAdvanced" name="importAdvanced">
 	<input type="hidden" name="module" value="{$FOR_MODULE}" />
 	<input type="hidden" name="action" value="Import" />
 	<input type="hidden" name="mode" value="import" />
