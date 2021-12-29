@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 02/09/2021 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 28/11/2021 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -1214,8 +1214,8 @@ $app_strings = array (
 'PRIVATE_FILTER'=>'Particular',
 'SHARE_FILTER'=>'Compartilhar',
 'PUBLIC_FILTER'=>'Público',
-'Shared' => 'Shared',
-'Scheduled' => 'Scheduled',
+'Shared' => 'Compartilhado',
+'Scheduled' => 'Agendado',
 
 // Account Hierarchy
 'LBL_ACCOUNT_HIERARCHY' => 'Hierarquia conta',
