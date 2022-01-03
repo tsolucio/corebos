@@ -527,6 +527,9 @@ class Validations extends processcbMap {
 	public static function processAllValidationsFor($module) {
 		global $adb, $current_user;
 		$screen_values = json_decode($_REQUEST['structure'], true);
+		$handler = vtws_getModuleHandlerFromName($module, $current_user);
+		$meta = $handler->getMeta();
+		$screen_values = DataTransform::sanitizeCurrencyFieldsForDB($screen_values, $meta);
 		if (in_array($module, getInventoryModules())) {
 			$screen_values['pdoInformation'] = Validations::loadProductValuesFromScreenValues($screen_values);
 		}
