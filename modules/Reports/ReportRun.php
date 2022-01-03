@@ -694,7 +694,7 @@ class ReportRun extends CRMEntity {
 						} elseif ($comparator == 'e' && (trim($value) == 'NULL' || trim($value) == '')) {
 							$fieldvalue = '('.$selectedfields[0].'.'.$selectedfields[1].' IS NULL OR '.$selectedfields[0].'.'.$selectedfields[1]." = '')";
 						} elseif ($comparator == 'e' && $datatype == 'D' && (trim($value) == '--$' || trim($value) == '$')) {
-							$fieldvalue = '('.$selectedfields[0].'.'.$selectedfields[1].' IS NULL OR '.$selectedfields[0].'.'.$selectedfields[1]." = '')";
+							$fieldvalue = '('.$selectedfields[0].'.'.$selectedfields[1].' IS NULL )';
 						} elseif (substr($selectedfields[0], 0, 26) == 'vtiger_inventoryproductrel' && ($selectedfields[1] == 'productid' || $selectedfields[1] == 'serviceid' || $selectedfields[1] == 'discount')) {
 							$invmod = (in_array($this->primarymodule, getInventoryModules()) ? $this->primarymodule : $this->secondarymodule);
 							if ($selectedfields[1] == 'productid') {
