@@ -1359,9 +1359,9 @@ class QueryGenerator {
 				}
 				if (empty($value)) {
 					if ($operator == 'n') {
-						$sql[] = 'IS NOT NULL and '.$field->getTableName().'.'.$field->getColumnName()." <> ''";
+						$sql[] = 'IS NOT NULL';
 					} else {
-						$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getColumnName()." = ''";
+						$sql[] = 'IS NULL';
 					}
 					return $sql;
 				}
