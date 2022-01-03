@@ -273,8 +273,8 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get field columns based on profile
-	 *  @ param $module : Type string
-	 *  returns permitted fields in array format
+	 * @param string module
+	 * @return array permitted fields
 	 */
 	public function getaccesfield($module) {
 		global $adb;
@@ -311,8 +311,8 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get Escapedcolumns for the field in case of multiple parents
-	 *  @ param $selectedfields : Type Array
-	 *  returns the case query for the escaped columns
+	 * @param array of selected fields
+	 * @return string the case query for the escaped columns
 	 */
 	public function getEscapedColumns($selectedfields) {
 		$tableName = $selectedfields[0];
@@ -343,8 +343,8 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get selected columns for the given report
-	 *  @param integer report id
-	 *  @return string query of columnlist for the selected columns
+	 * @param integer report id
+	 * @return string query of columnlist for the selected columns
 	 */
 	public function getSelectedColumnsList($reportid) {
 		global $adb, $log;
@@ -388,9 +388,9 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get advanced comparator in query form for the given Comparator and value
-	 *  @ param $comparator : Type String
-	 *  @ param $value : Type String
-	 *  returns the check query for the comparator
+	 * @param string comparator
+	 * @param string value
+	 * @return string the check query for the comparator
 	 */
 	public function getAdvComparator($comparator, $value, $datatype = '') {
 		global $log,$adb,$default_charset;
@@ -868,12 +868,11 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get the RunTime filter columns for the given $filtercolumn,$filter,$startdate,$enddate
-	 *  @ param $filtercolumn : Type String
-	 *  @ param $filter : Type String
-	 *  @ param $startdate: Type String
-	 *  @ param $enddate : Type String
-	 *  This function returns  $stdfilterlist Array($columnname => $tablename:$columnname:$fieldlabel=>$tablename.$columnname 'between' $startdate 'and' $enddate)
-	 *
+	 * @param string filter column
+	 * @param string filter
+	 * @param string start date
+	 * @param string end date
+	 * @return array ($columnname => $tablename:$columnname:$fieldlabel=>$tablename.$columnname 'between' $startdate 'and' $enddate)
 	 */
 	public function RunTimeFilter($filtercolumn, $filter, $startdate, $enddate) {
 		$stdfilterlist = array();
@@ -900,9 +899,9 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get the RunTime Advanced filter conditions
-	 *  @param array $advft_criteria
-	 *  @param array $advft_criteria_groups
-	 *  @return string $advfiltersql
+	 * @param array $advft_criteria
+	 * @param array $advft_criteria_groups
+	 * @return string $advfiltersql
 	 */
 	public function RunTimeAdvFilter($advft_criteria, $advft_criteria_groups) {
 		$adb = PearDatabase::getInstance();
@@ -997,8 +996,8 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get standardfilter for the given reportid
-	 *  @ param $reportid : Type Integer
-	 *  returns the query of columnlist for the selected columns
+	 * @param integer report id
+	 * @return string the query of columnlist for the selected columns
 	 */
 	public function getStandardCriterialSql($reportid) {
 		global $adb, $log;
@@ -1050,20 +1049,19 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get standardfilter startdate and enddate for the given type
-	 *  @ param $type : Type String
-	 *  returns the $datevalue Array in the given format
-	 * 		$datevalue = Array(0=>$startdate,1=>$enddate)
+	 * @param string type
+	 * @return array $datevalue = Array(0=>$startdate,1=>$enddate)
 	 */
 	public function getStandarFiltersStartAndEndDate($type) {
 		return getDateforStdFilterBytype($type);
 	}
 
 	/** Function to get getGroupingList for the given reportid
-	 *  @ param $reportid : Type Integer
-	 *  returns the $grouplist Array in the following format
-	 *  		$grouplist = Array($tablename:$columnname:$fieldlabel:fieldname:typeofdata=>$tablename:$columnname $sorder,
-	 *				   $tablename1:$columnname1:$fieldlabel1:fieldname1:typeofdata1=>$tablename1:$columnname1 $sorder,
-	 *				   $tablename2:$columnname2:$fieldlabel2:fieldname2:typeofdata2=>$tablename2:$columnname2 $sorder)
+	 * @param integer report id
+	 * @return array in the following format
+	 * 	$grouplist = Array($tablename:$columnname:$fieldlabel:fieldname:typeofdata=>$tablename:$columnname $sorder,
+	 *	   $tablename1:$columnname1:$fieldlabel1:fieldname1:typeofdata1=>$tablename1:$columnname1 $sorder,
+	 *	   $tablename2:$columnname2:$fieldlabel2:fieldname2:typeofdata2=>$tablename2:$columnname2 $sorder)
 	 * This function also sets the return value in the class variable $this->groupbylist
 	 */
 	public function getGroupingList($reportid) {
@@ -1139,8 +1137,8 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** function to replace special characters
-	 *  @ param $selectedfield : type string
-	 *  this returns the string for grouplist
+	 * @param string selected field
+	 * @return string for grouplist
 	 */
 	public static function replaceSpecialChar($selectedfield) {
 		$selectedfield = decode_html(decode_html($selectedfield));
@@ -1197,9 +1195,9 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** function to get secondary Module for the given Primary module and secondary module
-	 *  @ param $module : type String
-	 *  @ param $secmodule : type String
-	 *  this returns join query for the given secondary module
+	 * @param string module
+	 * @param string secondary module
+	 * @return string join query for the given secondary module
 	 */
 	public function getRelatedModulesQuery($module, $secmodule, $type = '', $where_condition = '') {
 		global $log,$current_user;
@@ -1218,8 +1216,8 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** function to get report query for the given module
-	 *  @ param $module : type String
-	 *  this returns join query for the given module
+	 * @param string module
+	 * @return string join query for the given module
 	 */
 	public function getReportsQuery($module, $type = '', $where_condition = '') {
 		global $log, $current_user;
@@ -1598,11 +1596,11 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** function to get query for the given reportid,filterlist,type
-	 * @param $reportid : integer
-	 * @param $filtersql : Array
-	 * @param $type : String output format of the report
-	 * @param $chartReport : boolean
-	 *  this returns join query for the report
+	 * @param integer report id
+	 * @param array filtersql
+	 * @param string output format of the report
+	 * @param boolean chart report
+	 * @return string join query for the report
 	 */
 	public function sGetSQLforReport($reportid, $filtersql, $type = '', $chartReport = false) {
 		global $log;
@@ -1762,17 +1760,15 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** function to get the report output in HTML,PDF,TOTAL,PRINT,PRINTTOTAL formats depends on the argument $outputformat
-	 *  @ param $outputformat : Type String (valid parameters HTML,PDF,TOTAL,PRINT,PRINT_TOTAL)
-	 *  @ param $filtersql : Type String
-	 *  This returns HTML Report if $outputformat is HTML
+	 * @param string outputformat (valid parameters HTML,PDF,TOTAL,PRINT,PRINT_TOTAL)
+	 * @param string filtersql
+	 * @return string HTML Report if $outputformat is HTML
 	 *  		Array for PDF if  $outputformat is PDF
 	 *		HTML strings for TOTAL if $outputformat is TOTAL
 	 *		Array for PRINT if $outputformat is PRINT
 	 *		HTML strings for TOTAL fields  if $outputformat is PRINTTOTAL
 	 *		HTML strings for
 	 */
-
-	// Performance Optimization: Added parameter directOutput to avoid building big-string!
 	public function GenerateReport($outputformat, $filtersql, $directOutput = false, &$returnfieldinfo = array()) {
 		global $adb, $current_user, $php_max_execution_time, $modules, $app_strings, $mod_strings;
 		$userprivs = $current_user->getPrivileges();
@@ -2900,8 +2896,8 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** function to get query for the columns to total for the given reportid
-	 *  @ param $reportid : Type integer
-	 *  This returns columnstoTotal query for the reportid
+	 * @param integer report id
+	 * @return string columnstoTotal query for the reportid
 	 */
 	public function getColumnsToTotalColumns($reportid) {
 		global $adb, $log;
