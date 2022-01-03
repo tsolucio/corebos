@@ -10613,7 +10613,7 @@ precacheAndRoute([{
   "revision": "321798c3a4f90cafc07df60d8a8f0f2f"
 }, {
   "url": "include/js/advancefilter.js",
-  "revision": "f4f644da14380adddaa05f60ff8854c0"
+  "revision": "62ce9d3ed36571c6949c7a4750a8ec88"
 }, {
   "url": "include/js/asterisk.js",
   "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
@@ -10661,7 +10661,7 @@ precacheAndRoute([{
   "revision": "d6dba707e6ffb8142053145754967ad7"
 }, {
   "url": "include/js/general.js",
-  "revision": "555f09ebe9723df3f335bbd2fe7db00d"
+  "revision": "a1b34eb6297ff4aa6ab0347d250fb7e6"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "ce80de25f73e55ce40a8b1c4ac68f70a"
@@ -11450,7 +11450,7 @@ precacheAndRoute([{
   "revision": "65682db92a471ba46f12737f6f6b3e4d"
 }, {
   "url": "modules/Reports/Reports.js",
-  "revision": "45cd14c79fc04f48bfa17126811cc8e2"
+  "revision": "6f79422b9a80f2a8c68196bad5376eac"
 }, {
   "url": "modules/Reports/ReportsSteps.js",
   "revision": "9eb56ccf0c9161a66bdbd8170be17d3f"
