@@ -19,6 +19,7 @@ require_once 'modules/Import/resources/Utils.php';
 require_once 'modules/Import/controllers/Import_Lock_Controller.php';
 require_once 'modules/Import/controllers/Import_Queue_Controller.php';
 require_once 'vtlib/Vtiger/Mailer.php';
+require_once 'include/Webservices/ExecuteWorkflow.php';
 $CURRENTLY_IMPORTING = false; // import working global variable
 
 class Import_Data_Controller {
@@ -35,6 +36,8 @@ class Import_Data_Controller {
 	public $importedRecordInfo = array();
 	public $batchImport = true;
 	private $logImport;
+	public $executeWf = false;
+	public $wfId;
 
 	public static $IMPORT_RECORD_NONE = 0;
 	public static $IMPORT_RECORD_CREATED = 1;
@@ -56,6 +59,8 @@ class Import_Data_Controller {
 		$this->defaultValues = $importInfo['default_values'];
 		$this->user = $user;
 		$this->logImport = LoggerManager::getLogger('IMPORT');
+		$this->wfId = isset($importInfo['wf_id']) ? $importInfo['wf_id'] : '';
+		$this->executeWf = (isset($importInfo['exec_wf']) && $importInfo['exec_wf'] == 'on') ? true: false;
 	}
 
 	public function getDefaultFieldValues($moduleMeta) {
@@ -319,6 +324,10 @@ class Import_Data_Controller {
 								if ($validation===true) {
 									try {
 										$entityInfo = vtws_update($fieldData, $this->user);
+										if ($this->executeWf && isset($entityInfo['id']) && !empty($this->wfId)) {
+											$crmid = json_encode(array($entityInfo['id']));
+											cbwsExecuteWorkflow($this->wfId, $crmid, $this->user);
+										}
 										$entityInfo['status'] = self::$IMPORT_RECORD_UPDATED;
 										$this->logImport->debug('updated record overwrite', $entityInfo);
 									} catch (\Throwable $th) {
@@ -367,6 +376,10 @@ class Import_Data_Controller {
 								if ($validation===true) {
 									try {
 										$entityInfo = vtws_revise($filteredFieldData, $this->user);
+										if ($this->executeWf && isset($entityInfo['id']) && !empty($this->wfId)) {
+											$crmid = json_encode(array($entityInfo['id']));
+											cbwsExecuteWorkflow($this->wfId, $crmid, $this->user);
+										}
 										$entityInfo['status'] = self::$IMPORT_RECORD_MERGED;
 										$this->logImport->debug('updated record merge', $entityInfo);
 									} catch (\Throwable $th) {
@@ -419,6 +432,10 @@ class Import_Data_Controller {
 							}
 							if ($validation===true) {
 								$entityInfo = vtws_create($moduleName, $fieldData, $this->user);
+								if ($this->executeWf && isset($entityInfo['id']) && !empty($this->wfId)) {
+									$crmid = json_encode(array($entityInfo['id']));
+									cbwsExecuteWorkflow($this->wfId, $crmid, $this->user);
+								}
 								$entityInfo['status'] = self::$IMPORT_RECORD_CREATED;
 								$this->logImport->debug('created record', $entityInfo);
 							} else {
