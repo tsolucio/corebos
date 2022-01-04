@@ -101,5 +101,6 @@ Te rog asigurate ca serverul de Iesire si adresa ta de email sunt configurate pe
 	'LBL_IMPORT_DIRECTORY_NOT_WRITABLE' => 'Directorul de Import nu e inscriptibil',
 	'LBL_IMPORT_FILE_COPY_FAILED' => 'Eroare in copierea fisierului de import. Verificati permisiunile sistemului',
 	'ImportInfo' => 'Aceasta extensie adauga functionalitatea de import in aplicatie si se acceseaza prin icoana din fiecare modul - nu direct, deci poate fi eliminata din meniu.',
+	'LBL_EXECUTE_WF' => 'Execute Workflow',
 );
 ?>

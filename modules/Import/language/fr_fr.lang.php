@@ -95,5 +95,6 @@ $mod_strings = array (
 	'LBL_IMPORT_DIRECTORY_NOT_WRITABLE' => 'Le répertoire d\'import n\'a pas les droits d\'écriture necessaire',
 	'LBL_IMPORT_FILE_COPY_FAILED' => 'Erreur lors de la copie du fichier à importer. Vérifiez les permissions système.',
 	'ImportInfo' => 'Cette extension ajoute des fonctionnalités d\'importation à l\'application et est accessible via l\'icône sur chaque module pas directement. Vous pouvez donc l\'éliminer du menu.',
+	'LBL_EXECUTE_WF' => 'Execute Workflow',
 );
 ?>

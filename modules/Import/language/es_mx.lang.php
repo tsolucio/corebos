@@ -95,5 +95,6 @@ $mod_strings = array (
 	'LBL_IMPORT_DIRECTORY_NOT_WRITABLE' => 'El directorio temporal de importación no tiene suficientes permisos de escritura.',
 	'LBL_IMPORT_FILE_COPY_FAILED' => 'Error copiando el fichero a importar. Revisa los permisos del sistema',
 	'ImportInfo' => 'Esta extensión añade la funcionalidad de importación a la aplicación a la que se accede mediante el icono en cada módulo no directamente, así que puedes eliminarlo del menú.',
+	'LBL_EXECUTE_WF' => 'Ejecutar Flujo de Trabajo',
 );
 ?>

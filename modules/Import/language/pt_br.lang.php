@@ -97,5 +97,6 @@ $mod_strings = array (
 	'LBL_IMPORT_DIRECTORY_NOT_WRITABLE' => 'Diretório de importação não permite gravação',
 	'LBL_IMPORT_FILE_COPY_FAILED' => 'Erro ao copiar arquivo para importar. Verifique as permissões do sistema de arquivos',
 	'ImportInfo' => 'Esta extensão adiciona a funcionalidade de importação à aplicação e é acessivel indiretamente através do icon em cada módulo, por isso pode eliminá-la a partir do menu.',
+	'LBL_EXECUTE_WF' => 'Execute Workflow',
 );
 ?>
