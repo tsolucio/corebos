@@ -95,7 +95,8 @@ if (empty($_REQUEST['assigned_user_id']) && empty($_REQUEST['assigned_group_id']
 }
 list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
 if (!$saveerror) { // if there is no error we still check the defined validations again
-	$validation = executefunctionsvalidate('ValidationLoad', $currentModule, json_encode(vtlib_purify($_REQUEST)));
+	include_once 'modules/cbMap/processmap/Validations.php';
+	$validation = executefunctionsvalidate('ValidationLoad', $currentModule, json_encode(vtlib_purify(Validations::flattenMultipicklistArrays($_REQUEST))));
 	if ($validation != '%%%OK%%%') {
 		$saveerror = true;
 		$errormessage = $validation;

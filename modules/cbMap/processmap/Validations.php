@@ -614,5 +614,14 @@ class Validations extends processcbMap {
 		}
 		return nl2br($error);
 	}
+
+	public static function flattenMultipicklistArrays($fields) {
+		return array_map(
+			function ($value) {
+				return is_array($value) ? implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value) : $value;
+			},
+			$fields
+		);
+	}
 }
 ?>
