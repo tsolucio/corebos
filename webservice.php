@@ -107,6 +107,8 @@ function writeErrorOutput($operationManager, $error) {
 			$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
 			$mailsubject = '[ERROR]: '.$error->code.' - web service call throwed exception.';
 			$mailcontent = '[ERROR]: '.$error->code.' '.$error->message."\n<br>".$site_URL;
+			unset($_REQUEST['sessionName']);
+			$mailcontent.= var_export($_REQUEST, true);
 			send_mail('Emails', $mailto, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $mailsubject, $mailcontent);
 		}
 	}
