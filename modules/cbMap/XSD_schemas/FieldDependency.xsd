@@ -115,7 +115,6 @@
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
-                          </xs:element>
                           <xs:element name="setclass" maxOccurs="unbounded" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
