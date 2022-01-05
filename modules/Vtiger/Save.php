@@ -111,7 +111,7 @@ if ($saveerror) { // there is an error so we go back to EditView.
 	$field_values_passed = '';
 	foreach ($focus->column_fields as $fieldname => $val) {
 		if (isset($_REQUEST[$fieldname])) {
-			$field_values_passed.="&";
+			$field_values_passed.='&';
 			if ($fieldname == 'assigned_user_id') { // assigned_user_id already set correctly above
 				$value = vtlib_purify($focus->column_fields['assigned_user_id']);
 			} else {
@@ -120,7 +120,7 @@ if ($saveerror) { // there is an error so we go back to EditView.
 			if (is_array($value)) {
 				$value = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value); // for multipicklists
 			}
-			$field_values_passed.=$fieldname."=".urlencode($value);
+			$field_values_passed.=$fieldname.'='.urlencode($value);
 		}
 	}
 	$encode_field_values=base64_encode($field_values_passed);

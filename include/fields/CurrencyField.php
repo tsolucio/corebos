@@ -29,7 +29,7 @@ class CurrencyField {
 
 	/**
 	 * Decimal Separator for example (dot, comma, space)
-	 * @var <type>
+	 * @var string
 	 */
 	public $decimalSeparator = '.';
 
@@ -64,7 +64,7 @@ class CurrencyField {
 
 	/**
 	 * Value to be converted
-	 * @param float $value
+	 * @param float
 	 */
 	public $value = null;
 
@@ -76,7 +76,7 @@ class CurrencyField {
 
 	/**
 	 * Constructor
-	 * @param float $value
+	 * @param float
 	 */
 	public function __construct($val) {
 		$this->value = $val;

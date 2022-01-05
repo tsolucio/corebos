@@ -207,7 +207,7 @@ class VTWorkflowManager {
 
 	/**
 	 * Function to get the number of scheduled workflows
-	 * @return Integer
+	 * @return integer
 	 */
 	public function getScheduledWorkflowsCount() {
 		$result = $this->adb->pquery(
@@ -219,7 +219,7 @@ class VTWorkflowManager {
 
 	/**
 	 * Function returns the maximum allowed scheduled workflows
-	 * @return int
+	 * @return integer
 	 */
 	public function getMaxAllowedScheduledWorkflows() {
 		return GlobalVariable::getVariable('Workflow_Maximum_Scheduled', 10);

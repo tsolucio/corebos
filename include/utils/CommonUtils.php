@@ -371,8 +371,8 @@ function getTabid($module) {
 /**
  * Function to get the fieldid
  *
- * @param Integer $tabid
- * @param Boolean $onlyactive
+ * @param integer $tabid
+ * @param boolean $onlyactive
  */
 function getFieldid($tabid, $fieldname, $onlyactive = true) {
 	// Look up information at cache first
@@ -396,7 +396,7 @@ function getFieldid($tabid, $fieldname, $onlyactive = true) {
 
 /**
  * Function to get a list of fields with default values and their value
- * @param Integer $tabid
+ * @param integer $tabid
  * @return array list of default values indexed by fieldname
  */
 function getFieldsWithDefaultValue($tabid) {
@@ -711,8 +711,8 @@ function getQuoteName($quote_id) {
 
 /**
  * Function to get the PriceBook Name when a pricebook id is given
- * Takes the input as $pricebook_id - pricebook id
- * returns the PriceBook Name in string format.
+ * @param integer pricebook id
+ * @return string PriceBook Name
  */
 function getPriceBookName($pricebookid) {
 	global $log, $adb;
@@ -724,8 +724,8 @@ function getPriceBookName($pricebookid) {
 }
 
 /** This Function returns the Purchase Order Name.
- * The following is the input parameter for the function
- *  $po_id --> Purchase Order Id, Type:Integer
+ * @param integer Purchase Order Id
+ * @return string Purchase Order Name
  */
 function getPoName($po_id) {
 	global $log, $adb;
@@ -739,8 +739,8 @@ function getPoName($po_id) {
 
 /**
  * Function to get the Sales Order Name when a salesorder id is given
- * Takes the input as $salesorder_id - salesorder id
- * returns the Salesorder Name in string format.
+ * @param integer salesorder id
+ * @return string Sales Order Name
  */
 function getSoName($so_id) {
 	global $log, $adb;

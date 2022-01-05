@@ -41,9 +41,8 @@ function getfiltersbymodule($module, $user) {
 }
 
 /** to get the customviewCombo for the class variable customviewmodule
- * @param $viewid :: Type Integer
- * $viewid will make the corresponding selected
- * @returns  $customviewCombo :: Type String
+ * @param integer will make the corresponding selected
+ * @return string $customviewCombo
  */
 function cbws_getCustomViewCombo($viewid, $module, $customView) {
 	global $adb, $current_user, $app_strings;

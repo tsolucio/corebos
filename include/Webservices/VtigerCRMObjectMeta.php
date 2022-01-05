@@ -54,7 +54,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 
 	/**
 	 * returns tabid of the current object.
-	 * @return Integer
+	 * @return integer
 	 */
 	public function getTabId() {
 		if ($this->tabId == null) {
@@ -65,7 +65,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 
 	/**
 	 * returns tabid that can be consumed for database lookup
-	 * @return Integer
+	 * @return integer
 	 */
 	public function getEffectiveTabId() {
 		return getTabid($this->getTabName());

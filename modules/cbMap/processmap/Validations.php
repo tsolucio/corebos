@@ -605,7 +605,7 @@ class Validations extends processcbMap {
 			foreach ($errs as $err) {
 				$error.= $err . "\n";
 			}
-			if (strpos($error, "{custommsg|") > 0) {
+			if (strpos($error, '{custommsg|') > 0) {
 				preg_match_all('/{(.*)}/', $error, $match);
 				$res = explode('|', $match[1][0]);
 				include_once 'include/validation/'.$res[1].'.php';
