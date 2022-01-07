@@ -119,7 +119,7 @@
 									{/foreach}
 									</table>
 								{else}
-									{$xmliinfo}
+									{$xmliinfo|json_encode}
 								{/if}
 							</td>
 						</tr>
