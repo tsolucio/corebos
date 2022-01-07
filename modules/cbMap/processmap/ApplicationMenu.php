@@ -39,7 +39,20 @@ class ApplicationMenu extends processcbMap {
 			array($mname, $mname)
 		);
 		if ($resu && $adb->num_rows($resu)>0) {
-			$structure = decode_html($adb->query_result($resu, 0, 'structure'));
+			$menu = json_decode(decode_html($adb->query_result($resu, 0, 'structure')), true);
+			foreach ($menu as $key => $menuentry) {
+				if ($menuentry[1]=='module') {
+					try {
+						$mod = CRMEntity::getInstance($menuentry[2]);
+						if (!empty($mod->moduleIcon)) {
+							$menu[$key][]=$mod->moduleIcon;
+						}
+					} catch (\Throwable $th) {
+						continue;
+					}
+				}
+			}
+			$structure = json_encode($menu);
 		}
 		return $structure;
 	}
