@@ -109,10 +109,10 @@ if ($cvmodule != '') {
 	//<<<<<<<standardfilters>>>>>>>>>
 
 	//<<<<<<<advancedfilter>>>>>>>>>
-	$advft_criteria = isset($_REQUEST['advft_criteria']) ? $_REQUEST['advft_criteria'] : '';
+	$advft_criteria = isset($_REQUEST['advft_criteria']) ? htmlentities($_REQUEST['advft_criteria']) : '';
 	$advft_criteria = json_decode($advft_criteria, true);
 
-	$advft_criteria_groups = isset($_REQUEST['advft_criteria_groups']) ? $_REQUEST['advft_criteria_groups'] : '';
+	$advft_criteria_groups = isset($_REQUEST['advft_criteria_groups']) ? htmlentities($_REQUEST['advft_criteria_groups']) : '';
 	$advft_criteria_groups = json_decode($advft_criteria_groups, true);
 	//<<<<<<<advancedfilter>>>>>>>>
 
