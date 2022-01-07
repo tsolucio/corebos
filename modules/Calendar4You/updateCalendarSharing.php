@@ -19,7 +19,10 @@ if (!empty($_REQUEST['hour_format'])) {
 
 $activity_view = $_REQUEST['activity_view'];
 
-$user_view = $_REQUEST['user_view'];
+$result = $adb->pquery("SELECT user_view FROM its4you_calendar4you_settings WHERE userid=? limit 1", array($current_user->id));
+if ($adb->num_rows($result) > 0) {
+	$user_view = $adb->query_result($result, 0, 'user_view');
+}
 
 $adb->pquery('delete from vtiger_sharedcalendar where userid=?', array($_REQUEST['current_userid']));
 

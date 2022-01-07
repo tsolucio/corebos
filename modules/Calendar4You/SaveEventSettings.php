@@ -10,7 +10,10 @@
 require_once 'include/database/PearDatabase.php';
 global $adb,$current_user;
 
-$user_view_type = $_REQUEST['user_view_type'];
+$result = $adb->pquery("SELECT user_view FROM its4you_calendar4you_settings WHERE userid=? limit 1", array($current_user->id));
+if ($adb->num_rows($result) > 0) {
+	$user_view_type = $adb->query_result($result, 0, 'user_view');
+}
 
 $mode = vtlib_purify($_REQUEST['mode']);
 if ($mode=='module') {
