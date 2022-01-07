@@ -114,7 +114,16 @@
                                 <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
-                          </xs:element>  
+                          </xs:element>
+                          <xs:element name="setclass" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="unbounded"/>
+                                <xs:element type="xs:string" name="fieldclass" minOccurs="1" maxOccurs="unbounded"/>
+                                <xs:element type="xs:string" name="labelclass" minOccurs="1" maxOccurs="unbounded"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element> 
                         </xs:choice>
                       </xs:complexType>
                     </xs:element>
