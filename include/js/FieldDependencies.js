@@ -68,11 +68,11 @@ FieldDependencies.prototype.initDS = function (datasource) {
  */
 FieldDependencies.prototype.setup = function (sourceform, datasource) {
 	var thisContext = this;
-
 	if (typeof(sourceform) == 'undefined') {
 		this.baseform = document.forms['EditView'];
 	} else {
 		this.baseform = sourceform;
+		thisContext.actOnDetailViewLoad();
 	}
 
 	this.initDS(datasource);
@@ -108,11 +108,26 @@ FieldDependencies.prototype.init = function (sourceform, datasource) {
 };
 
 /**
+ * On Loading of Page handler of detail view.
+ */
+FieldDependencies.prototype.actOnDetailViewLoad = function () {
+	var sourcename = Object.keys(this.DS)[0];
+	this.controlActions(sourcename);
+};
+
+/**
  * On Change handler for select box.
  */
 FieldDependencies.prototype.actOnSelectChange = function (event) {
 	var sourcenode = event.target;
 	var sourcename = sourcenode.name;
+	this.controlActions(sourcename);
+};
+
+/**
+ * Control all actions performed on both edit and detail views.
+ */
+FieldDependencies.prototype.controlActions = function (sourcename) {
 	var sourcevalue ='';
 	var field, comparator, value, columncondition, fieldName, groupid, conditionCurr, newGroup;
 	var i=0;
@@ -198,6 +213,9 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
 				if (responsibleConfig['actions']['appear'] !== undefined && responsibleConfig['actions']['appear'].length > 0) {
 					this.blockAppear(responsibleConfig['actions']['appear']);
 				}
+				if (responsibleConfig['actions']['setclass'] !== undefined && responsibleConfig['actions']['setclass'].length > 0) {
+					this.addCSS(responsibleConfig['actions']['setclass']);
+				}
 				if (responsibleConfig['actions']['function'] !== undefined && responsibleConfig['actions']['function'].length > 0) {
 					this.callFunc(sourcename, responsibleConfig['actions']['function']);
 				}
@@ -213,6 +231,9 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
 				}
 				if (responsibleConfig['actions']['disappear'] !== undefined && responsibleConfig['actions']['disappear'].length > 0) {
 					this.blockAppear(responsibleConfig['actions']['disappear']);
+				}
+				if (responsibleConfig['actions']['setclass'] !== undefined && responsibleConfig['actions']['setclass'].length > 0) {
+					this.removeCSS(responsibleConfig['actions']['setclass']);
 				}
 			}
 		}
@@ -297,6 +318,14 @@ FieldDependencies.prototype.getFieldValue = function (field) {
 };
 
 FieldDependencies.prototype.fieldHide = function (hideFields) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+		this.fieldHideEditView(hideFields);
+	} else {
+		this.fieldHideDetailView(hideFields);
+	}
+};
+
+FieldDependencies.prototype.fieldHideEditView = function (hideFields) {
 	var field='';
 	for (var i=0; i<hideFields.length; i++) {
 		field=hideFields[i]['field'];
@@ -305,7 +334,24 @@ FieldDependencies.prototype.fieldHide = function (hideFields) {
 	}
 };
 
+FieldDependencies.prototype.fieldHideDetailView = function (hideFields) {
+	var field='';
+	for (var i=0; i<hideFields.length; i++) {
+		field=hideFields[i]['field'];
+		document.getElementById('mouseArea_'+field).style.visibility='hidden';
+		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.style.visibility='hidden';
+	}
+};
+
 FieldDependencies.prototype.fieldShow = function (hideFields) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+		this.fieldShowEditView(hideFields);
+	} else {
+		this.fieldShowDetailView(hideFields);
+	}
+};
+
+FieldDependencies.prototype.fieldShowEditView = function (hideFields) {
 	var field='';
 	for (var i=0; i<hideFields.length; i++) {
 		field=hideFields[i]['field'];
@@ -314,7 +360,84 @@ FieldDependencies.prototype.fieldShow = function (hideFields) {
 	}
 };
 
+FieldDependencies.prototype.fieldShowDetailView = function (hideFields) {
+	var field='';
+	for (var i=0; i<hideFields.length; i++) {
+		field=hideFields[i]['field'];
+		document.getElementById('mouseArea_'+field).style.visibility='visible';
+		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.style.visibility='visible';
+	}
+};
+
+FieldDependencies.prototype.addCSS = function (setClasses) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+		this.addCSSEditView(setClasses);
+	} else {
+		this.addCSSDetailView(setClasses);
+	}
+};
+
+FieldDependencies.prototype.addCSSEditView = function (setClasses) {
+	fieldclass=setClasses[setClasses.length - 2]['fieldclass'];
+	labelclass=setClasses[setClasses.length - 1]['labelclass'];
+	var field='';
+	for (var i=0; i<setClasses.length - 2; i++) {
+		field=setClasses[i]['field'];
+		document.getElementById('td_'+field).classList.add(labelclass);
+		document.getElementById('td_val_'+field).classList.add(fieldclass);
+	}
+};
+
+FieldDependencies.prototype.addCSSDetailView = function (setClasses) {
+	fieldclass=setClasses[setClasses.length - 2]['fieldclass'];
+	labelclass=setClasses[setClasses.length - 1]['labelclass'];
+	var field='';
+	for (var i=0; i<setClasses.length - 2; i++) {
+		field=setClasses[i]['field'];
+		document.getElementById('mouseArea_'+field).classList.add(fieldclass);
+		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.classList.add(labelclass);
+	}
+};
+
+FieldDependencies.prototype.removeCSS = function (setClasses) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+		this.removeCSSEditView(setClasses);
+	} else {
+		this.removeCSSDetailView(setClasses);
+	}
+};
+
+FieldDependencies.prototype.removeCSSEditView = function (setClasses) {
+	fieldclass=setClasses[setClasses.length - 2]['fieldclass'];
+	labelclass=setClasses[setClasses.length - 1]['labelclass'];
+	var field='';
+	for (var i=0; i<setClasses.length - 2; i++) {
+		field=setClasses[i]['field'];
+		document.getElementById('td_'+field).classList.remove(labelclass);
+		document.getElementById('td_val_'+field).classList.remove(fieldclass);
+	}
+};
+
+FieldDependencies.prototype.removeCSSDetailView = function (setClasses) {
+	fieldclass=setClasses[setClasses.length - 2]['fieldclass'];
+	labelclass=setClasses[setClasses.length - 1]['labelclass'];
+	var field='';
+	for (var i=0; i<setClasses.length - 2; i++) {
+		field=setClasses[i]['field'];
+		document.getElementById('mouseArea_'+field).classList.remove(fieldclass);
+		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.classList.remove(labelclass);
+	}
+};
+
 FieldDependencies.prototype.fieldReadonly = function (readonlyFields) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+		this.fieldReadonlyEditView(readonlyFields);
+	} else {
+		this.fieldReadonlyDetailView(readonlyFields);
+	}
+};
+
+FieldDependencies.prototype.fieldReadonlyEditView = function (readonlyFields) {
 	var field='';
 	for (var i=0; i<readonlyFields.length; i++) {
 		field=readonlyFields[i]['field'];
@@ -324,7 +447,25 @@ FieldDependencies.prototype.fieldReadonly = function (readonlyFields) {
 	}
 };
 
+FieldDependencies.prototype.fieldReadonlyDetailView = function (readonlyFields) {
+	var field='';
+	for (var i=0; i<readonlyFields.length; i++) {
+		field=readonlyFields[i]['field'];
+		document.getElementById('dtlview_'+field).innerHTML=document.getElementsByName(field).item(0).value;
+		document.getElementById('dtlview_'+field).style.display='inline';
+		document.getElementsByName(field).item(0).style.display='none';
+	}
+};
+
 FieldDependencies.prototype.fieldEditable = function (readonlyFields) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+		this.fieldEditableEditView(readonlyFields);
+	} else {
+		this.fieldEditableDetailView(readonlyFields);
+	}
+};
+
+FieldDependencies.prototype.fieldEditableEditView = function (readonlyFields) {
 	var field='';
 	for (var i=0; i<readonlyFields.length; i++) {
 		field=readonlyFields[i]['field'];
@@ -333,7 +474,24 @@ FieldDependencies.prototype.fieldEditable = function (readonlyFields) {
 	}
 };
 
+FieldDependencies.prototype.fieldEditableDetailView = function (readonlyFields) {
+	var field='';
+	for (var i=0; i<readonlyFields.length; i++) {
+		field=readonlyFields[i]['field'];
+		document.getElementsByName(field).item(0).style.display='inline';
+		document.getElementById('dtlview_'+field).style.display='none';
+	}
+};
+
 FieldDependencies.prototype.blockCollapse = function (collapseBlocks) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+		this.blockCollapseEditView(collapseBlocks);
+	} else {
+		this.blockCollapseDetailView(collapseBlocks);
+	}
+};
+
+FieldDependencies.prototype.blockCollapseEditView = function (collapseBlocks) {
 	var block='', elements;
 	for (var i=0; i<collapseBlocks.length; i++) {
 		block=collapseBlocks[i]['block'];
@@ -344,7 +502,24 @@ FieldDependencies.prototype.blockCollapse = function (collapseBlocks) {
 	}
 };
 
+FieldDependencies.prototype.blockCollapseDetailView = function (collapseBlocks) {
+	var block='', elements;
+	for (var i=0; i<collapseBlocks.length; i++) {
+		block=collapseBlocks[i]['block'];
+		elements=document.getElementById('tbl'+block);
+		elements.style.display='none';
+	}
+};
+
 FieldDependencies.prototype.blockOpen = function (openBlocks) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+		this.blockOpenEditView(openBlocks);
+	} else {
+		this.blockOpenDetailView(openBlocks);
+	}
+};
+
+FieldDependencies.prototype.blockOpenEditView = function (openBlocks) {
 	var block='', elements;
 	for (var i=0; i<openBlocks.length; i++) {
 		block=openBlocks[i]['block'];
@@ -354,7 +529,25 @@ FieldDependencies.prototype.blockOpen = function (openBlocks) {
 		}
 	}
 };
+
+FieldDependencies.prototype.blockOpenDetailView = function (openBlocks) {
+	var block='', elements;
+	for (var i=0; i<openBlocks.length; i++) {
+		block=openBlocks[i]['block'];
+		elements=document.getElementById('tbl'+block);
+		elements.style.display='';
+	}
+};
+
 FieldDependencies.prototype.blockDisappear = function (disappBlock) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+		this.blockDisappearEditView(disappBlock);
+	} else {
+		this.blockDisappearDetailView(disappBlock);
+	}
+};
+
+FieldDependencies.prototype.blockDisappearEditView = function (disappBlock) {
 	var block='', elements;
 	for (var i=0; i<disappBlock.length; i++) {
 		block=disappBlock[i]['block'];
@@ -362,12 +555,29 @@ FieldDependencies.prototype.blockDisappear = function (disappBlock) {
 		for (var j=0; j<elements.length; j++) {
 			elements[j].style.display='none';
 		}
-
 		document.getElementById('tbl'+block+'Head').style.display='none';
 	}
 };
 
+FieldDependencies.prototype.blockDisappearDetailView = function (disappBlock) {
+	var block='', elements;
+	for (var i=0; i<disappBlock.length; i++) {
+		block=disappBlock[i]['block'];
+		elements=document.getElementById('tbl'+block);
+		elements.style.display='none';
+		document.getElementById('tbl'+block).previousSibling.previousSibling.style.display='none';
+	}
+};
+
 FieldDependencies.prototype.blockAppear = function (appBlock) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+		this.blockAppearEditView(appBlock);
+	} else {
+		this.blockAppearDetailView(appBlock);
+	}
+};
+
+FieldDependencies.prototype.blockAppearEditView = function (appBlock) {
 	var block='', elements;
 	for (var i=0; i<appBlock.length; i++) {
 		block=appBlock[i]['block'];
@@ -375,7 +585,17 @@ FieldDependencies.prototype.blockAppear = function (appBlock) {
 		for (var j=0; j<elements.length; j++) {
 			elements[j].style.display='';
 		}
-		document.getElementById('tbl'+block+'Head').style.display='';
+		document.getElementById('tbl'+block).style.display='';
+	}
+};
+
+FieldDependencies.prototype.blockAppearDetailView = function (appBlock) {
+	var block='', elements;
+	for (var i=0; i<appBlock.length; i++) {
+		block=appBlock[i]['block'];
+		elements=document.getElementById('tbl'+block);
+		document.getElementById('tbl'+block).style.display='';
+		elements.previousSibling.previousSibling.style.display='';
 	}
 };
 
