@@ -1370,7 +1370,7 @@ function getTagWhere($search_val, $current_user_id) {
 
 /**
  * This function will return the script to set the start data and end date for the standard selection criteria
- * @returns  $jsStr : Type String
+ * @return string
  */
 function getCriteriaJS($formName) {
 	$todayDateTime = new DateTimeField(date('Y-m-d H:i:s'));

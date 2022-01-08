@@ -631,7 +631,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 
 /**	function used to get the tax type for the Inventory module entity
  *	@param string $module - module name
- *	@param int $id - id of the Inventory module
+ *	@param integer $id - id of the Inventory module
  *	@return string $taxtype - taxtype for the given entity which will be individual or group
  */
 function getInventoryTaxType($module, $id) {
@@ -647,7 +647,7 @@ function getInventoryTaxType($module, $id) {
 
 /**	function used to get the price type for the entity (PO, SO, Quotes or Invoice)
  *	@param string $module - module name
- *	@param int $id - id of the PO or SO or Quotes or Invoice
+ *	@param integer $id - id of the PO or SO or Quotes or Invoice
  *	@return string $pricetype - pricetype for the given entity which will be unitprice or secondprice
  */
 function getInventoryCurrencyInfo($module, $id) {
@@ -657,8 +657,8 @@ function getInventoryCurrencyInfo($module, $id) {
 }
 
 /**	function used to get the taxvalue which is associated with a product for PO/SO/Quotes or Invoice
- *	@param int $id - id of PO/SO/Quotes or Invoice
- *	@param int $productid - product id
+ *	@param integer $id - id of PO/SO/Quotes or Invoice
+ *	@param integer $productid - product id
  *	@param string $taxname - taxname to which we want the value
  *	@return float $taxvalue - tax value
  */
@@ -679,7 +679,7 @@ function getInventoryProductTaxValue($id, $productid, $taxname) {
 }
 
 /**	function used to get the shipping & handling tax percentage for the given inventory id and taxname
- *	@param int $id - entity id which will be PO/SO/Quotes or Invoice id
+ *	@param integer $id - entity id which will be PO/SO/Quotes or Invoice id
  *	@param string $taxname - shipping and handling taxname
  *	@return float $taxpercentage - shipping and handling taxpercentage which is associated with the given entity
  */
@@ -730,8 +730,8 @@ function getAllCurrencies($available = 'available') {
 }
 
 /**	Function used to get all the price details for different currencies which are associated to the given product
- *	@param int $productid - product id to which we want to get all the associated prices
- *  @param decimal $unit_price - Unit price of the product
+ *	@param integer $productid - product id to which we want to get all the associated prices
+ *  @param float $unit_price - Unit price of the product
  *  @param string $available - available or available_associated where as default is available,
  *  	if available then the prices in the currencies which are available now will be returned,
  *  	otherwise if the value is available_associated then prices of all the associated currencies will be returned
@@ -842,8 +842,8 @@ function getPriceDetailsForProduct($productid, $unit_price, $available = 'availa
 }
 
 /**	Function used to get the base currency used for the given Product
- *	@param int $productid - product id for which we want to get the id of the base currency
- *  @return int $currencyid - id of the base currency for the given product
+ *	@param integer $productid - product id for which we want to get the id of the base currency
+ *  @return integer $currencyid - id of the base currency for the given product
  */
 function getProductBaseCurrency($productid, $module = 'Products') {
 	global $adb;
@@ -857,7 +857,7 @@ function getProductBaseCurrency($productid, $module = 'Products') {
 }
 
 /**	Function used to get the conversion rate for the product base currency with respect to the CRM base currency
- *	@param int $productid - product id for which we want to get the conversion rate of the base currency
+ *	@param integer $productid - product id for which we want to get the conversion rate of the base currency
  *  @param string $mode - Mode in which the function is called
  *  @return float $conversion_rate - conversion rate of the base currency for the given product based on the CRM base currency
  */
@@ -889,7 +889,7 @@ function getBaseConversionRateForProduct($productid, $mode = 'edit', $module = '
 }
 
 /**	Function used to get the prices for the given list of products based in the specified currency
- *	@param int $currencyid - currency id based on which the prices have to be provided
+ *	@param integer $currencyid - currency id based on which the prices have to be provided
  *	@param array $product_ids - List of product id's for which we want to get the price based on given currency
  *  @return array $prices_list - List of prices for the given list of products based on the given currency in the form of 'product id' mapped to 'price value'
  */
@@ -938,8 +938,8 @@ function getPricesForProducts($currencyid, $product_ids, $module = 'Products', $
 }
 
 /**	Function used to get the currency used for the given Price book
- *	@param int $pricebook_id - pricebook id for which we want to get the id of the currency used
- *  @return int $currencyid - id of the currency used for the given pricebook
+ *	@param integer $pricebook_id - pricebook id for which we want to get the id of the currency used
+ *  @return integer $currencyid - id of the currency used for the given pricebook
  */
 function getPriceBookCurrency($pricebook_id) {
 	global $adb;

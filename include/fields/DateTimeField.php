@@ -16,7 +16,7 @@ class DateTimeField {
 
 	/**
 	 *
-	 * @param datetime $value
+	 * @param datetime
 	 */
 	public function __construct($value = '') {
 		if (empty($value)) {
@@ -28,8 +28,8 @@ class DateTimeField {
 	}
 
 	/** Function to set date values compatible to database (YY_MM_DD)
-	 * @param $user -- value :: Type Users
-	 * @returns $insert_date -- insert_date :: Type string
+	 * @param Users
+	 * @return string insert date
 	 */
 	public function getDBInsertDateValue($user = null) {
 		global $log;
@@ -51,8 +51,8 @@ class DateTimeField {
 
 	/**
 	 *
-	 * @param Users $user
-	 * @return String
+	 * @param Users
+	 * @return string
 	 */
 	public function getDBInsertDateTimeValue($user = null) {
 		return $this->getDBInsertDateValue($user) . ' ' . $this->getDBInsertTimeValue($user);
@@ -268,7 +268,7 @@ class DateTimeField {
 	/**
 	 *
 	 * @param Mixed $date
-	 * @return Array
+	 * @return array
 	 */
 	public static function convertToInternalFormat($date) {
 		if (!is_array($date)) {
@@ -282,7 +282,7 @@ class DateTimeField {
 	 * @global Users $current_user
 	 * @param datetime $date in ISO Y-m-d format
 	 * @param Users $user
-	 * @return type
+	 * @return string
 	 */
 	public static function convertToUserFormat($date, $user = null) {
 		global $current_user;
@@ -299,8 +299,8 @@ class DateTimeField {
 	/**
 	 *
 	 * @param datetime $date in ISO Y-m-d format
-	 * @param type $format
-	 * @return type
+	 * @param string $format
+	 * @return string
 	 */
 	public static function __convertToUserFormat($date, $format) {
 		if (empty($date)) {
@@ -358,8 +358,8 @@ class DateTimeField {
 	/**
 	 *
 	 * @param datetime $time
-	 * @param type $sourceTimeZoneName
-	 * @param type $targetTimeZoneName
+	 * @param string $sourceTimeZoneName
+	 * @param string $targetTimeZoneName
 	 * @return DateTime
 	 */
 	public static function convertTimeZone($time, $sourceTimeZoneName, $targetTimeZoneName) {
@@ -397,8 +397,8 @@ class DateTimeField {
 	}
 
 	/** Function to set time values compatible to database (GMT)
-	 * @param $user -- value :: Type Users
-	 * @returns $insert_date -- insert_date :: Type string
+	 * @param Users
+	 * @return string insert date
 	 */
 	public function getDBInsertTimeValue($user = null) {
 		global $log;
@@ -410,7 +410,7 @@ class DateTimeField {
 
 	/**
 	 * This function returns the date in user specified format.
-	 * @global type $log
+	 * @global Object $log
 	 * @global Users $current_user
 	 * @return string
 	 */
