@@ -26,5 +26,6 @@ $mod_strings = array(
 	'User name or password were not accepted' => 'User name or password were not accepted',
 	'Incorrect Folder' => 'Folder does not exist or specified path is not a folder',
 	'Access Denied to write in specified folder' => 'Access Denied to write in specified folder',
+	'LBL_DIFFERENT_MACHINE'=>'Different Machine',
 );
 ?>
