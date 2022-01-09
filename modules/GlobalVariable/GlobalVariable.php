@@ -120,6 +120,8 @@ class GlobalVariable extends CRMEntity {
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'gvname');
 
 	private static $validationinfo = array();
+	public static $scriptOverride = array();
+	public static $currentScript = '';
 	const USE_DESCRIPTION_IDENTIFIER = '[[Use Description]]';
 
 	public function save_module($module) {
@@ -315,6 +317,9 @@ class GlobalVariable extends CRMEntity {
 	 */
 	public static function getVariable($var, $default, $module = '', $gvuserid = '') {
 		global $adb, $current_user, $currentModule, $installationStrings;
+		if (isset(self::$scriptOverride[self::$currentScript][$var])) {
+			return self::$scriptOverride[self::$currentScript][$var];
+		}
 		if (empty($gvuserid) && !empty($current_user)) {
 			$gvuserid = $current_user->id;
 		}
