@@ -56,10 +56,14 @@ class VTEntityDelta extends VTEventHandler {
 	}
 
 	public function fetchEntity($moduleName, $recordId) {
+		global $CURRENTLY_IMPORTING;
 		$adb = PearDatabase::getInstance();
 		$entityData = VTEntityData::fromEntityId($adb, $recordId);
 		if ($moduleName == 'HelpDesk') {
 			$entityData->set('comments', getTicketComments($recordId));
+		}
+		if ($CURRENTLY_IMPORTING) {
+			self::$newEntity[$moduleName] = array();
 		}
 		self::$newEntity[$moduleName][$recordId] = $entityData;
 	}
