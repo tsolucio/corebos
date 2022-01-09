@@ -52,10 +52,12 @@ class DataTransform {
 		return $newRow;
 	}
 
-	public static function sanitizeRetrieveEntityInfo($newRow, $meta) {
+	public static function sanitizeRetrieveEntityInfo($newRow, $meta, $sanitizeText = true) {
 		$newRow = DataTransform::sanitizeDateFieldsForInsert($newRow, $meta);
 		$newRow = DataTransform::sanitizeCurrencyFieldsForInsert($newRow, $meta);
-		$newRow = DataTransform::sanitizeTextFieldsForInsert($newRow, $meta);
+		if ($sanitizeText) {
+			$newRow = DataTransform::sanitizeTextFieldsForInsert($newRow, $meta);
+		}
 		return $newRow;
 	}
 

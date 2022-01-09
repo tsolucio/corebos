@@ -165,6 +165,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Webservice_Sync_RecordLimit',
 				'Webservice_Sync_RecordLimitStreaming',
 				'Webservice_GenDocConversion_Active',
+				'Webservice_Return_FormattedValues',
 				'SOAP_CustomerPortal_Enabled',
 				'SOAP_Outlook_Enabled',
 				'WEBDAV_Enabled',

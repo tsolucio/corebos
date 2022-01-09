@@ -12,11 +12,13 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	protected $tabId;
 	protected $isEntity = true;
 	private $queryTotalRows = 0;
+	private $returnFormattedValues = 0;
 
 	public function __construct($webserviceObject, $user, $adb, $log) {
 		parent::__construct($webserviceObject, $user, $adb, $log);
 		$this->meta = $this->getMetaInstance();
 		$this->tabId = $this->meta->getTabId();
+		$this->returnFormattedValues = (int)GlobalVariable::getVariable('Webservice_Return_FormattedValues', 0);
 	}
 
 	protected function getMetaInstance() {
@@ -67,6 +69,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 
 		$fields = $crmObject->getFields();
 		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		if ($this->returnFormattedValues) {
+			$return = DataTransform::sanitizeRetrieveEntityInfo($return, $this->meta, false);
+		}
 		if (isset($fields['cbuuid'])) {
 			$return['cbuuid'] = $fields['cbuuid'];
 		}
@@ -84,6 +89,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 		$fields = $crmObject->getFields();
 		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		if ($this->returnFormattedValues) {
+			$return = DataTransform::sanitizeRetrieveEntityInfo($return, $this->meta, false);
+		}
 		if (isset($fields['cbuuid'])) {
 			$return['cbuuid'] = $fields['cbuuid'];
 		}
@@ -115,6 +123,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 		$fields = $crmObject->getFields();
 		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		if ($this->returnFormattedValues) {
+			$return = DataTransform::sanitizeRetrieveEntityInfo($return, $this->meta, false);
+		}
 		if (isset($fields['cbuuid'])) {
 			$return['cbuuid'] = $fields['cbuuid'];
 		}
@@ -317,6 +328,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				$newrow = $row;
 			} else {
 				$newrow = DataTransform::sanitizeDataWithColumn($row, $meta);
+				if ($this->returnFormattedValues) {
+					$newrow = DataTransform::sanitizeRetrieveEntityInfo($newrow, $meta, false);
+				}
 				if ($isRelatedQuery) {
 					if ($invlines) {
 						$newrow = $row;
