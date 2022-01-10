@@ -435,7 +435,7 @@ function getListViewHeaders($currentModule, $tabid) {
 
 function getRecordActions($module, $recordId) {
 	global $adb, $current_user;
-	if ($module == '') {
+	if ($module == '' || $module == 'RecycleBin') {
 		return true;
 	}
 	$queryGenerator = new QueryGenerator($module, $current_user);
