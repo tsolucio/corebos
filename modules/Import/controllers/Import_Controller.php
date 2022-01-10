@@ -44,8 +44,9 @@ class Import_Controller {
 
 	public function triggerImport($batchImport = false, $setBatchImport = false) {
 		$importInfo = Import_Queue_Controller::getImportInfo($this->userInputObject->get('module'), $this->user);
-		$importInfo['exec_wf'] = $this->userInputObject->get('exec_wf');
-		$importInfo['wf_id'] = $this->userInputObject->get('wfid');
+		$exec_wf = $this->userInputObject->get('workflow');
+		$importInfo['workflowid'] = $this->userInputObject->get('workflowid');
+		$importInfo['workflow'] = ($exec_wf == 'yes' || $exec_wf == 'on') ? true : false;
 		$importDataController = new Import_Data_Controller($importInfo, $this->user);
 
 		if (!$batchImport && !$importDataController->initializeImport()) {

@@ -74,9 +74,9 @@
 	<tr>
 		<td>&nbsp;</td>
 		<td class="cblds-t-align_right cblds-p-v_mediumsmall">
-			<input type="checkbox" name="exec_wf" id="exec_wf" class="small" />
+			<input type="checkbox" name="workflow" id="workflow" class="small" />
 			<span class="small">{'LBL_EXECUTE_WF'|@getTranslatedString:$MODULE}</span>&nbsp; : &nbsp;
-				<input id="wfid" name="wfid" type="hidden" value ="">
+				<input id="workflowid" name="workflowid" type="hidden" value ="">
 				<input type='hidden' class='small' name="wfid_type" id="wfid_type" value="com_vtiger_workflow">
 				<input
 					id="wfid_display"

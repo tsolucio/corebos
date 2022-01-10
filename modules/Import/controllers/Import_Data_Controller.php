@@ -59,8 +59,8 @@ class Import_Data_Controller {
 		$this->defaultValues = $importInfo['default_values'];
 		$this->user = $user;
 		$this->logImport = LoggerManager::getLogger('IMPORT');
-		$this->wfId = isset($importInfo['wf_id']) ? $importInfo['wf_id'] : '';
-		$this->executeWf = (isset($importInfo['exec_wf']) && $importInfo['exec_wf'] == 'on') ? true: false;
+		$this->wfId = isset($importInfo['workflowid']) ? (int)$importInfo['workflowid'] : 0;
+		$this->executeWf = isset($importInfo['workflow']) ? $importInfo['workflow']: false;
 	}
 
 	public function getDefaultFieldValues($moduleMeta) {

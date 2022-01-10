@@ -141,6 +141,8 @@ class Import extends processcbMap {
 			'mapname' => $mapname,
 			'mapid' => $rs->fields['id'],
 			'delimiter' => (empty($xml->delimiter)) ? ',' : (string)$xml->delimiter,
+			'workflow' => (!isset($xml->workflow)) ? 'no' : (string)$xml->workflow,
+			'workflowid' => (!isset($xml->workflowid)) ? 0 : (int)$xml->workflowid,
 			'duphandling' => 'none',
 			'dupmatches' => array(),
 		);
@@ -397,6 +399,8 @@ class Import extends processcbMap {
 			'merge_fields' => '',
 			'skipcreate' => empty($this->mapping['skipcreate']) ? 0 : $this->mapping['skipcreate'],
 			'importmergecondition' => empty($this->mapping['importmergecondition']) ? 0 : $this->mapping['importmergecondition'],
+			'workflowid' => isset($this->mapping['workflowid']) ? $this->mapping['workflowid'] : 0,
+			'workflow' => isset($this->mapping['workflow']) ? $this->mapping['workflow'] : 'no',
 		);
 		if ($this->mapping['duphandling']!='none') {
 			switch ($this->mapping['duphandling']) {
