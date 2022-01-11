@@ -521,6 +521,44 @@ switch ($functiontocall) {
 			);
 		}
 		break;
+	case 'getMapByName':
+		$mapname = vtlib_purify($_REQUEST['mapname']);
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+		$content = '';
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$mtype = $cbMap->column_fields['maptype'];
+			$content = $cbMap->$mtype();		
+		}
+		$ret = array(
+			'content' => $content
+		);
+		break;
+	case 'getFieldsAttributes':
+		$fields = vtlib_purify($_REQUEST['fields']);
+		$modulename = vtlib_purify($_REQUEST['modulename']);
+		$tabid = getTabid($modulename);
+		$fields = explode(',', $fields);
+		$fieldsIn = '';
+		foreach ($fields as $field) {
+			$fieldsIn .= "'$field',";
+		}
+		$rs = $adb->pquery('SELECT tablename, fieldname, columnname, fieldlabel, typeofdata FROM vtiger_field WHERE tabid=? AND fieldname IN ('.rtrim($fieldsIn, ',').')', array($tabid));
+		$fieldInfo = array();
+		while ($row = $rs->FetchRow()) {
+			$typeofdata = explode('~', $row['typeofdata']);
+			$fieldInfo[] = array(
+				'tablename' => $row['tablename'],
+				'fieldname' => $row['fieldname'],
+				'columnname' => $row['columnname'],
+				'fieldlabel' => $row['fieldlabel'],
+				'typeofdata' => $typeofdata[0]
+			);
+		}
+		$ret = array(
+			'fields' => $fieldInfo,
+		);
+		break;
 	default:
 		$ret = '';
 		break;
