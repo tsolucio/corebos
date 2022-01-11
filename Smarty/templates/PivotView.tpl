@@ -18,6 +18,7 @@
 <link href="include/pivottable/nrecopivottableext.css" rel="stylesheet">
 <link href="include/pivottable/pivot.css" rel="stylesheet">
 <script type="text/javascript">
+{literal}
 $(function() {
 	let url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getMapByName&mapname=${gVTModule}_Pivot`;
 	fetch(
