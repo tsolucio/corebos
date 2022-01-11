@@ -528,7 +528,7 @@ switch ($functiontocall) {
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$mtype = $cbMap->column_fields['maptype'];
-			$content = $cbMap->$mtype();		
+			$content = $cbMap->$mtype();
 		}
 		$ret = array(
 			'content' => $content
