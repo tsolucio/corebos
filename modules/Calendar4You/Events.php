@@ -271,9 +271,12 @@ foreach ($Users_Ids as $userid) {
 			}
 			if (!$invites) {
 				if ($showGroupEvents && $groups != '') {
-					$list_query.= ' AND vtiger_crmentity.smownerid IN (' . $userid . ',' . $groups . ')';
+					$list_query.= ' AND vtiger_crmentity.smownerid IN (' . generateQuestionMarks($userid) . ',' . generateQuestionMarks($groups) . ')';
+					$list_array = array_merge($list_array, $userid);
+					$list_array = array_merge($list_array, $groups);
 				} else {
-					$list_query.= " AND vtiger_crmentity.smownerid = '" . $userid . "'";
+					$list_query.= " AND vtiger_crmentity.smownerid = '" . generateQuestionMarks($userid) . "'";
+					$list_array = array_merge($list_array, $userid);
 				}
 				$list_query .= ' AND vtiger_activity.activitytype = ?';
 				$list_array = array($activitytype);
