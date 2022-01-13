@@ -71,7 +71,7 @@ class Calendar4You extends CRMEntity {
 
 	public function setgoogleaccessparams($userid) {
 		global $adb;
-		$conf=$adb->query("select * from its4you_googlesync4you_access where userid=$userid and service='$this->service'");
+		$conf=$adb->pquery("select * from its4you_googlesync4you_access where userid=? and service='$this->service'", array($userid));
 		$admin=$adb->query("select * from its4you_googlesync4you_access where userid=1 and service='$this->service'");
 		if ($adb->num_rows($conf)==0 && $adb->num_rows($admin)>0) {
 			$google_login=$adb->query_result($admin, 0, 'google_login');
