@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor: Ranieri Slemer | Translate Brazilian Portuguese, missed terms | 28-10-2021 | www.ecrmweb.com.br
+ * Contributor: Ranieri Slemer | Translate Brazilian Portuguese, missed terms | 12-01-2022 | www.ecrmweb.com.br
  *************************************************************************************/
 
 $mod_strings = array (
@@ -16,18 +16,18 @@ $mod_strings = array (
 	'LBL_IMPORT_STEP_3' => 'Passo 3',
 	'LBL_IMPORT_STEP_4' => 'Passo 4',
 	'LBL_IMPORT_STEP_1_DESCRIPTION' => 'Selecione arquivo',
-	'LBL_IMPORT_STEP_2_DESCRIPTION' => 'Especifique formato',
-	'LBL_IMPORT_STEP_3_DESCRIPTION' => 'Manipulação do registo duplicado',
+	'LBL_IMPORT_STEP_2_DESCRIPTION' => 'Informe o formato',
+	'LBL_IMPORT_STEP_3_DESCRIPTION' => 'Tratamento para o registo duplicado',
 	'LBL_IMPORT_STEP_4_DESCRIPTION' => 'Mapear as colunas para os campos do módulo',
 	'Skip' => 'Pular',
 	'Overwrite' => 'Regravar',
 	'Merge' => 'Mesclar',
 	'LBL_IMPORT_SUPPORTED_FILE_TYPES' => 'Tipo de arquivos suportados(s): .CSV, .VCF',
-	'LBL_IMPORT_STEP_3_DESCRIPTION_DETAILED' => 'Selecione esta opção para ativar e definir o como mesclar registros duplicado',
+	'LBL_IMPORT_STEP_3_DESCRIPTION_DETAILED' => 'Selecione esta opção para ativar e definir o como mesclar registros duplicados',
 	'LBL_CHARACTER_ENCODING' => 'Codificação caracteres',
 	'LBL_DELIMITER' => 'Delimitador:',
 	'LBL_HAS_HEADER' => 'Possui cabeçalho?',
-	'LBL_SPECIFY_MERGE_TYPE' => 'Selecione como registros duplicados devem ser manuseados',
+	'LBL_SPECIFY_MERGE_TYPE' => 'Selecione como registros duplicados devem ser tratados',
 	'LBL_SELECT_MERGE_FIELDS' => 'Selecionar os campos correspondentes para encontrar registros duplicados',
 	'LBL_SELECT_MERGE_CONDITION' => 'Ou selecione uma regra para decidir se o registro é duplicado ou não',
 	'LBL_SKIP_CREATE' => 'Não criar registros novos (apenas atualização)',
@@ -38,7 +38,7 @@ $mod_strings = array (
 	'comma' => ', (vírgula)',
 	'semicolon' => '; (ponto e vírgula)',
 	'pipe' => '| (pipe)',
-	'caret' => '^ (caret)',
+	'caret' => '^ (circuflexo)',
 	'tab' => '\t (tab)',
 	'LBL_USE_SAVED_MAPPING' => 'Usar mapeamento salvo:',
 	'LBL_SAVE_AS_CUSTOM_MAPPING' => 'Salvar como mapeamento personalizado',
@@ -60,7 +60,7 @@ $mod_strings = array (
 	'ERR_FILE_DOESNT_EXIST' => "Arquivo não existe",
 	'ERR_CANT_OPEN_FILE' => "Não é possível ler o arquivo para leitura",
 	'ERR_UNIMPORTED_RECORDS_IN_QUEUE' => 'Usuário tem uma fila de registros ainda sem importação.',
-	'ERR_FILE_READ_FAILED' => 'Leitura do aqruivo falhou',
+	'ERR_FILE_READ_FAILED' => 'Leitura do arquivo falhou',
 	'LBL_IMPORT_SCHEDULED' => 'Importação agendada',
 	'Scheduled Import' => 'Importação agendada',
 	'LBL_SCHEDULED_IMPORT_DETAILS' => 'A sua importação foi agendada; uma vez concluída a importação receberá um e-mail. <br>
@@ -92,7 +92,7 @@ $mod_strings = array (
 	'csv' => 'CSV',
 	'vcf' => 'VCard',
 	'LBL_FILE_UPLOAD_FAILED' => 'Falha no upload do arquivo',
-	'LBL_IMPORT_ERROR_LARGE_FILE' => 'O Arquivo é demasiado grande para ser carregado. O tamanho máximo permitido é (',
+	'LBL_IMPORT_ERROR_LARGE_FILE' => 'O Arquivo é muito grande para ser carregado. O tamanho máximo permitido é (',
 	'LBL_IMPORT_CHANGE_UPLOAD_SIZE' => ') pode ser necessário aumentar na sua configuração do PHP',
 	'LBL_IMPORT_DIRECTORY_NOT_WRITABLE' => 'Diretório de importação não permite gravação',
 	'LBL_IMPORT_FILE_COPY_FAILED' => 'Erro ao copiar arquivo para importar. Verifique as permissões do sistema de arquivos',
