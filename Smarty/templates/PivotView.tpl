@@ -59,30 +59,24 @@ $(function() {
 				table: {
 					clickCallback: function(e, value, filters, pivotData) {
 						let names = Array();
-						let rows = Array();
 						let fields = Array();
 						//get rows and cols from map
 						Object.keys(mapContent).map(function(key, index) {
 							if (typeof mapContent[key] == 'object') {
 								for (let i in mapContent[key]) {
-									rows.push(mapContent[key][i]);
+									if (filters[mapContent[key][i].label] !== undefined) {
+										fields.push(mapContent[key][i].name);
+										advFilter.push({
+											'columnname': mapContent[key][i].name,
+											'comparator': 'e',
+											'value': filters[mapContent[key][i].label],
+											'groupid': 1,
+											'columncondition': 'and'
+										});
+									}
 								}
 							}
 						});
-						for (let label in filters) {
-							Object.keys(rows).map(function(key, index) {
-								if (label == rows[key].label) {
-									fields.push(rows[key].name);
-									advFilter.push({
-										'columnname': rows[key].name,
-										'comparator': 'e',
-										'value': filters[label],
-										'groupid': 1,
-										'columncondition': 'and'
-									});
-								}
-							});
-						}
 						let url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldsAttributes&modulename=${gVTModule}&fields=${fields}`;
 						getData(url, advFilter).then(res => {
 							res[0].fields.map(function(cValue) {
@@ -112,10 +106,11 @@ async function getData(url, filter) {
 		filter
 	);
 }
+let pageWidth = document.querySelector('#page-header');let screenWidth = pageWidth.offsetWidth - 100;document.documentElement.style.setProperty(`--screenWidth`, `${screenWidth}px`);
 {/literal}
 </script>
-<div id="output" style="margin: 30px;overflow-x: scroll; width:1000px; "></div>
+<div id="output"></div>
 {/if}
-<div id="pivotdetail" class="layerPopup" style="display:none;position: fixed; left: 1100px; top: 500px; visibility: visible; z-index:10000000">
+<div id="pivotdetail" class="layerPopup">
 {include file="Pivotdetail.tpl"}
 </div>
