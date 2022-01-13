@@ -4,6 +4,8 @@
       <xs:sequence>
         <xs:element type="xs:string" name="mapname" minOccurs="0" maxOccurs="1"/>
         <xs:element type="xs:string" name="delimiter" minOccurs="0" maxOccurs="1"/>
+        <xs:element type="xs:string" name="workflow" minOccurs="0" maxOccurs="1"/>
+        <xs:element type="xs:string" name="workflowid" minOccurs="0" maxOccurs="1"/>
         <xs:element name="duplicates" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:sequence>
