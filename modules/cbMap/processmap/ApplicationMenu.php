@@ -41,7 +41,7 @@ class ApplicationMenu extends processcbMap {
 		if ($resu && $adb->num_rows($resu)>0) {
 			$menu = json_decode(decode_html($adb->query_result($resu, 0, 'structure')), true);
 			foreach ($menu as $key => $menuentry) {
-				if ($menuentry[1]=='module') {
+				if ($menuentry[1]=='module' && vtlib_isModuleActive($menuentry[2])) {
 					try {
 						$mod = CRMEntity::getInstance($menuentry[2]);
 						if (!empty($mod->moduleIcon)) {
