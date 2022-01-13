@@ -21,6 +21,7 @@ let SearchColumns = 0;
 let ListViewCopy = 0;
 let Application_Filter_All_Edit = 1;
 let lastPage = sessionStorage.getItem(lvmodule+'_lastPage');
+let urlParams = new URLSearchParams(window.location.search);
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, lvmodule, '').then(function (response) {
 	let obj = JSON.parse(response);
 	PageSize = obj.Application_ListView_PageSize;
@@ -332,7 +333,7 @@ const ListView = {
 				data: {
 					api: {
 						readData: {
-							url: url,
+							url: `${url}&search=${urlParams.get('advft_criteria')}&advft_criteria_groups=${urlParams.get('advft_criteria_groups')}&searchtype=${urlParams.get('searchtype')}`,
 							method: 'GET'
 						}
 					}
@@ -969,7 +970,7 @@ const ListView = {
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 						</svg>
-						${alert_arr.LNK_EDIT_ACTION}
+						${alert_arr.LNK_DELETE_ACTION}
 					</a>
 				</li>`;
 			} else {

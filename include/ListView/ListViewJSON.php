@@ -44,34 +44,41 @@ function getListViewJSON($currentModule, $tabid, $entries = 20, $orderBy = 'DESC
 	}
 	$search_mode = false;
 	if ($searchtype == 'Basic' && $searchUrl != '') {
+		$searchUrl = urldecode($searchUrl);
 		$search = explode('&', $searchUrl);
 		foreach ($search as $value) {
-			if ($value != '') {
-				$arg = explode('=', $value)[0];
-				$val = explode('=', urldecode($value))[1];
-				$_search[$arg] = $val;
+			if (!empty($value)) {
+				$param = explode('=', $value);
+				$searchCriteria[$param[0]] = $param[1];
 			}
 		}
-		$_search['action'] = $currentModule.'Ajax';
-		$_search['module'] = $currentModule;
-		$_search['search'] = 'true';
+		$searchCriteria['action'] = $currentModule.'Ajax';
+		$searchCriteria['module'] = $currentModule;
+		$searchCriteria['search'] = 'true';
 		$search_mode = true;
-	} elseif ($searchtype == 'Advanced' && $searchUrl != '') {
+	} elseif (($searchtype == 'Advanced' || $searchtype == 'advance') && $searchUrl != '') {
+		$searchUrl = urldecode($searchUrl);
 		$search = explode('&', $searchUrl);
-		$_search['advft_criteria'] = urldecode(explode('=', $search[1])[1]);
-		$_search['advft_criteria_groups'] = urldecode(explode('=', $search[2])[1]);
-		$_search['searchtype'] = explode('=', $search[3])[1];
-		$_search['action'] = $currentModule.'Ajax';
-		$_search['module'] = $currentModule;
-		$_search['query'] = 'true';
-		$_search['search'] = 'true';
+		foreach ($search as $value) {
+			if (!empty($value)) {
+				$param = explode('=', $value);
+				$searchCriteria[$param[0]] = $param[1];
+			}
+		}
+		if ($searchtype == 'advance') {
+			$searchCriteria['advft_criteria'] = $searchUrl;
+			$searchCriteria['advft_criteria_groups'] = vtlib_purify($_REQUEST['advft_criteria_groups']);
+			$searchCriteria['searchtype'] = $searchtype;
+		}
+		$searchCriteria['action'] = $currentModule.'Ajax';
+		$searchCriteria['module'] = $currentModule;
+		$searchCriteria['query'] = 'true';
+		$searchCriteria['search'] = 'true';
 		$search_mode = true;
 	}
-
 	if ((isset($searchUrl) && $searchUrl != '')) {
-		$queryGenerator->addUserSearchConditions($_search);
+		$queryGenerator->addUserSearchConditions($searchCriteria);
 	}
-
 	if (!empty($order_by)) {
 		$queryGenerator->addWhereField($order_by);
 	}
@@ -327,7 +334,7 @@ function getListViewJSON($currentModule, $tabid, $entries = 20, $orderBy = 'DESC
 			'search_mode' => $search_mode,
 		);
 	}
-
+	$res['query'] = $list_query;
 	return array('data'=>$res);
 }
 
@@ -435,7 +442,7 @@ function getListViewHeaders($currentModule, $tabid) {
 
 function getRecordActions($module, $recordId) {
 	global $adb, $current_user;
-	if ($module == '') {
+	if ($module == '' || $module == 'RecycleBin') {
 		return true;
 	}
 	$queryGenerator = new QueryGenerator($module, $current_user);
