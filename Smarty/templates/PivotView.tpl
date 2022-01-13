@@ -106,7 +106,9 @@ async function getData(url, filter) {
 		filter
 	);
 }
-let pageWidth = document.querySelector('#page-header');let screenWidth = pageWidth.offsetWidth - 100;document.documentElement.style.setProperty(`--screenWidth`, `${screenWidth}px`);
+let pageWidth = document.querySelector('#page-header');
+let screenWidth = pageWidth.offsetWidth - 100;
+document.documentElement.style.setProperty(`--screenWidth`, `${screenWidth}px`);
 {/literal}
 </script>
 <div id="output"></div>
