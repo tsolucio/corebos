@@ -2187,6 +2187,34 @@ $WFExpressionFunctionDefinitons = array(
 		"allrelatedare('Contacts', 'accountname', 'Chemex Labs Ltd')",
 	),
 ),
+'allrelatedarethesame' => array(
+	'name' => 'allrelatedarethesame(relatedmodule, fieldname, value)',
+	'desc' => 'This function checks if all records on the related module have only one unique value in the given field. If a value is given, the unique value in the related records must match the given value to return true.',
+	'params' => array(
+		array(
+			'name' => 'relatedmodule',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'related module',
+		),
+		array(
+			'name' => 'fieldname',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'field to filter records',
+		),
+		array(
+			'name' => 'value',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'value of the field',
+		),
+	),
+	'categories' => array('Logical'),
+	'examples' => array(
+		"allrelatedarethesame('Contacts', 'accountname', 'Chemex Labs Ltd')",
+	),
+),
 'min' => array(
 	'name' => 'min(value1, value2, values)',
 	'desc' => 'This function returns the minimum value of the given values.',

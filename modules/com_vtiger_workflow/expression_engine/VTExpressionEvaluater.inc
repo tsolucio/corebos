@@ -120,6 +120,7 @@ class VTFieldExpressionEvaluater {
 			'exists' => '__cb_exists',
 			'existsrelated' => '__cb_existsrelated',
 			'allrelatedare' => '__cb_allrelatedare',
+			'allrelatedarethesame' => '__cb_allrelatedarethesame',
 			'add_workdays' => '__cb_add_workdays',
 			'number_format' => '__cb_number_format',
 			'min' => '__cb_min',
@@ -247,6 +248,7 @@ class VTFieldExpressionEvaluater {
 			'__cb_exists',
 			'__cb_existsrelated',
 			'__cb_allrelatedare',
+			'__cb_allrelatedarethesame',
 			'__cb_evaluateRule',
 			'__cb_getrelatedids',
 		);

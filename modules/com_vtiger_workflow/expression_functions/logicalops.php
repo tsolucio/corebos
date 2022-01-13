@@ -81,6 +81,10 @@ function __cb_allrelatedare($params) {
 	return __cb_relatedevaluations('allrelatedare', $params);
 }
 
+function __cb_allrelatedarethesame($params) {
+	return __cb_relatedevaluations('allrelatedarethesame', $params);
+}
+
 function __cb_relatedevaluations($evaluation, $params) {
 	global $adb;
 	$return = false;
@@ -147,6 +151,24 @@ function __cb_relatedevaluations($evaluation, $params) {
 				$result = $adb->pquery($query, array($params[2]));
 				if ($result) {
 					$return = ($adb->num_rows($result) == 0);
+				}
+				break;
+			case 'allrelatedarethesame':
+				$query = mkXQuery($relationData['query'], $fld->table.'.'.$fld->column);
+				$query = stripTailCommandsFromQuery($query).$conditions.' GROUP BY '.$fld->table.'.'.$fld->column. ' LIMIT 2';
+				$result = $adb->pquery($query, array());
+				if ($result) {
+					if ($adb->num_rows($result)==2) {
+						$return = false;
+					} elseif ($adb->num_rows($result)==1) {
+						if ($params[2]=='') {
+							$return = true;
+						} else {
+							$return = ($adb->query_result($result, 0, 0) == $params[2]);
+						}
+					} else {
+						$return = true;
+					}
 				}
 				break;
 			default:

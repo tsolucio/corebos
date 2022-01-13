@@ -120,6 +120,7 @@ function cbexpsql_supportedFunctions() {
 		// 'exists' => 'exists(fieldname, value)',
 		// 'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 		// 'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
+		// 'allrelatedarethesame' => 'allrelatedarethesame(relatedmodule, fieldname, value)',
 		'average' => 'average(number,...)'
 	);
 }
