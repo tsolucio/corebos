@@ -86,7 +86,7 @@ function vtws_convertlead($entityvalues, $user) {
 			require_once $handlerPath;
 
 			$entityHandler = new $handlerClass($entityObject, $user, $adb, $log);
-
+			$meta = $entityHandler->getMeta();
 			$entityObjectValues = array();
 			$entityObjectValues['assigned_user_id'] = $entityvalues['assignedTo'];
 			$entityObjectValues = vtws_populateConvertLeadEntities($entityvalue, $entityObjectValues, $entityHandler, $leadHandler, $leadInfo);
@@ -118,7 +118,8 @@ function vtws_convertlead($entityvalues, $user) {
 				}
 			}
 			if ($create) {
-				$screen_values = $entityObjectValues;
+				$screen_values = DataTransform::sanitizeReferencesForDB($entityObjectValues, $meta);
+				$screen_values = DataTransform::sanitizeOwnerFieldsForDB($screen_values, $meta);
 				$screen_values['module'] = $entityvalue['name'];
 				$holdRecord = isset($_REQUEST['record']) ? $_REQUEST['record'] : '';
 				unset($screen_values['name'], $_REQUEST['record']);
