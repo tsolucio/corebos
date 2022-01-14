@@ -12,38 +12,35 @@ include_once 'vtlib/Vtiger/Net/Client.php';
 
 class TextAnywhere implements ISMSProvider {
 
-	private $_username;
-	private $_password;
-	private $_parameters = array();
+	private $username;
+	private $password;
+	private $parameters = array();
 	public $helpURL = 'https://www.textanywhere.com/';
 	public $helpLink = 'TextAnywhere';
 
 	const SERVICE_URI = 'https://www.textapp.net/webservice/httpservice.aspx';
 	private static $REQUIRED_PARAMETERS = array('Originator', 'CharacterSet');
 
-	public function __construct() {
-	}
-
 	/**
 	 * Function to get provider name
-	 * @return <String> provider name
+	 * @return string provider name
 	 */
 	public function getName() {
 		return $this->helpLink;
 	}
 
 	public function setAuthParameters($username, $password) {
-		$this->_username = $username;
-		$this->_password = $password;
+		$this->username = $username;
+		$this->password = $password;
 	}
 
 	public function setParameter($key, $value) {
-		$this->_parameters[$key] = $value;
+		$this->parameters[$key] = $value;
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if (isset($this->_parameters[$key])) {
-			return $this->_parameters[$key];
+		if (isset($this->parameters[$key])) {
+			return $this->parameters[$key];
 		}
 		return $defvalue;
 	}
@@ -60,6 +57,7 @@ class TextAnywhere implements ISMSProvider {
 				case self::SERVICE_SEND:
 					return self::SERVICE_URI . '?method=SendSMS&';
 				case self::SERVICE_QUERY:
+				default:
 					return self::SERVICE_URI . '?method=GetSMSStatus&';
 			}
 		}
@@ -158,8 +156,8 @@ class TextAnywhere implements ISMSProvider {
 
 		$serviceURL = $this->getServiceURL(self::SERVICE_SEND);
 		$serviceURL = $serviceURL . 'returnCSVString=true&';
-		$serviceURL = $serviceURL . 'externalLogin=' . urlencode($this->_username) . '&';
-		$serviceURL = $serviceURL . 'password=' . urlencode($this->_password) . '&';
+		$serviceURL = $serviceURL . 'externalLogin=' . urlencode($this->username) . '&';
+		$serviceURL = $serviceURL . 'password=' . urlencode($this->password) . '&';
 		$serviceURL = $serviceURL . 'clientBillingReference=' . urlencode($current_user->user_name) . '&';
 		$serviceURL = $serviceURL . 'clientMessageReference=' . urlencode($clientMessageReference) . '&';
 		$serviceURL = $serviceURL . 'originator=' . urlencode($originator) . '&';
@@ -216,8 +214,8 @@ class TextAnywhere implements ISMSProvider {
 	private function queryMessage($clientMessageReference) {
 		$serviceURL = $this->getServiceURL(self::SERVICE_QUERY);
 		$serviceURL = $serviceURL . 'returnCSVString=true&';
-		$serviceURL = $serviceURL . 'externalLogin=' . urlencode($this->_username) . '&';
-		$serviceURL = $serviceURL . 'password=' . urlencode($this->_password) . '&';
+		$serviceURL = $serviceURL . 'externalLogin=' . urlencode($this->username) . '&';
+		$serviceURL = $serviceURL . 'password=' . urlencode($this->password) . '&';
 		$serviceURL = $serviceURL . 'clientMessageReference=' . urlencode($clientMessageReference);
 
 		$httpClient = new Vtiger_Net_Client($serviceURL);

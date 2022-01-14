@@ -21,12 +21,9 @@ class TestFunctionality implements ISMSProvider {
 	const SERVICE_URI = 'http://localhost/';
 	private static $REQUIRED_PARAMETERS = array('app_id');
 
-	public function __construct() {
-	}
-
 	/**
 	 * Function to get provider name
-	 * @return <String> provider name
+	 * @return string provider name
 	 */
 	public function getName() {
 		return $this->helpLink;

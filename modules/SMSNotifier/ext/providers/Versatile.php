@@ -20,12 +20,9 @@ class Versatile implements ISMSProvider {
 	const SERVICE_URI = 'https://sms.versatilesmshub.com/api/mt';
 	private static $REQUIRED_PARAMETERS = array('senderid', 'channel', 'DCS', 'flashsms', 'route');
 
-	public function __construct() {
-	}
-
 	/**
 	 * Function to get provider name
-	 * @return <String> provider name
+	 * @return string provider name
 	 */
 	public function getName() {
 		return $this->helpLink;
@@ -33,8 +30,8 @@ class Versatile implements ISMSProvider {
 
 	/**
 	 * Function to set authentication parameters
-	 * @param <String> $userName
-	 * @param <String> $password
+	 * @param string $userName
+	 * @param string $password
 	 */
 	public function setAuthParameters($userName, $password) {
 		$this->userName = $userName;
@@ -43,8 +40,8 @@ class Versatile implements ISMSProvider {
 
 	/**
 	 * Function to set non-auth parameter.
-	 * @param <String> $key
-	 * @param <String> $value
+	 * @param string $key
+	 * @param string $value
 	 */
 	public function setParameter($key, $value) {
 		$this->parameters[$key] = $value;
@@ -52,9 +49,9 @@ class Versatile implements ISMSProvider {
 
 	/**
 	 * Function to get parameter value
-	 * @param <String> $key
-	 * @param <String> $defaultValue
-	 * @return <String> value/$default value
+	 * @param string $key
+	 * @param string $defaultValue
+	 * @return string value/$default value
 	 */
 	public function getParameter($key, $defaultValue = false) {
 		if (isset($this->parameters[$key])) {
@@ -65,7 +62,7 @@ class Versatile implements ISMSProvider {
 
 	/**
 	 * Function to get required parameters other than (userName, password)
-	 * @return <array> required parameters list
+	 * @return array required parameters list
 	 */
 	public function getRequiredParams() {
 		return self::$REQUIRED_PARAMETERS;
@@ -73,7 +70,7 @@ class Versatile implements ISMSProvider {
 
 	/**
 	 * Function to get service URL to use for a given type
-	 * @param <String> $type like SEND, PING, QUERY
+	 * @param string $type like SEND, PING, QUERY
 	 */
 	public function getServiceURL($type = false) {
 		if ($type) {
@@ -83,6 +80,7 @@ class Versatile implements ISMSProvider {
 				case self::SERVICE_SEND:
 					return  self::SERVICE_URI . '/SendSMS';
 				case self::SERVICE_QUERY:
+				default:
 					return self::SERVICE_URI . '/http/querymsg';
 			}
 		}
@@ -91,7 +89,7 @@ class Versatile implements ISMSProvider {
 
 	/**
 	 * Function to prepare parameters
-	 * @return <Array> parameters
+	 * @return array parameters
 	 */
 	protected function prepareParameters() {
 		$params = array('user' => $this->userName, 'password' => $this->password);
@@ -103,8 +101,8 @@ class Versatile implements ISMSProvider {
 
 	/**
 	 * Function to handle SMS Send operation
-	 * @param <String> $message
-	 * @param <Mixed> $toNumbers One or Array of numbers
+	 * @param string $message
+	 * @param mixed $toNumbers One or Array of numbers
 	 */
 	public function send($message, $toNumbers) {
 		$toNumbers = (array)$toNumbers;
@@ -150,7 +148,7 @@ class Versatile implements ISMSProvider {
 
 	/**
 	 * Function to get query for status using messgae id
-	 * @param <Number> $messageId
+	 * @param integer $messageId
 	 */
 	public function query($messageId) {
 		$params = $this->prepareParameters();

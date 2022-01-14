@@ -12,9 +12,9 @@ include_once 'vtlib/Vtiger/Net/Client.php';
 
 class ClickATellREST implements ISMSProvider {
 
-	private $_username;
-	private $_password;
-	private $_parameters = array();
+	private $username;
+	private $password;
+	private $parameters = array();
 	public $helpURL = 'https://archive.clickatell.com/developers/2015/10/08/rest-api/';
 	public $helpLink = 'ClickATell REST';
 
@@ -23,24 +23,24 @@ class ClickATellREST implements ISMSProvider {
 
 	/**
 	 * Function to get provider name
-	 * @return <String> provider name
+	 * @return string provider name
 	 */
 	public function getName() {
 		return $this->helpLink;
 	}
 
 	public function setAuthParameters($username, $password) {
-		$this->_username = $username;
-		$this->_password = $password;
+		$this->username = $username;
+		$this->password = $password;
 	}
 
 	public function setParameter($key, $value) {
-		$this->_parameters[$key] = $value;
+		$this->parameters[$key] = $value;
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if (isset($this->_parameters[$key])) {
-			return $this->_parameters[$key];
+		if (isset($this->parameters[$key])) {
+			return $this->parameters[$key];
 		}
 		return $defvalue;
 	}
@@ -57,6 +57,7 @@ class ClickATellREST implements ISMSProvider {
 				case self::SERVICE_SEND:
 					return  self::SERVICE_URI . '/messages';
 				case self::SERVICE_QUERY:
+				default:
 					return self::SERVICE_URI . '/message';
 			}
 		}
@@ -64,7 +65,7 @@ class ClickATellREST implements ISMSProvider {
 	}
 
 	protected function prepareParameters() {
-		$params = array('user' => $this->_username, 'password' => $this->_password);
+		$params = array('user' => $this->username, 'password' => $this->password);
 		foreach (self::$REQUIRED_PARAMETERS as $key) {
 			$params[$key] = $this->getParameter($key);
 		}
@@ -84,7 +85,7 @@ class ClickATellREST implements ISMSProvider {
 			'Content-Type' => 'application/json',
 			'Accept' => 'application/json',
 			'X-Version' => 1,
-			'Authorization' => $this->_parameters['api_id'],
+			'Authorization' => $this->parameters['api_id'],
 		));
 		$httpClient->setBody(json_encode($params));
 		$response = $httpClient->doPost(false);

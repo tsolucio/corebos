@@ -1,5 +1,5 @@
 <?php
-/*************************************************************************************************
+/**
  * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
@@ -18,9 +18,9 @@ include_once 'vtlib/Vtiger/Net/Client.php';
 
 class SMSMasivos implements ISMSProvider {
 
-	private $_username;
-	private $_password;
-	private $_parameters = array('numregion');
+	private $username;
+	private $password;
+	private $parameters = array('numregion');
 	public $helpURL = 'https://www.smasivos.com';
 	public $helpLink = 'SMSMasivos';
 
@@ -29,24 +29,24 @@ class SMSMasivos implements ISMSProvider {
 
 	/**
 	 * Function to get provider name
-	 * @return <String> provider name
+	 * @return string provider name
 	 */
 	public function getName() {
 		return $this->helpLink;
 	}
 
 	public function setAuthParameters($username, $password) {
-		$this->_username = $username;
-		$this->_password = $password;
+		$this->username = $username;
+		$this->password = $password;
 	}
 
 	public function setParameter($key, $value) {
-		$this->_parameters[$key] = $value;
+		$this->parameters[$key] = $value;
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if (isset($this->_parameters[$key])) {
-			return $this->_parameters[$key];
+		if (isset($this->parameters[$key])) {
+			return $this->parameters[$key];
 		}
 		return $defvalue;
 	}
@@ -63,6 +63,7 @@ class SMSMasivos implements ISMSProvider {
 				case self::SERVICE_SEND:
 					return  self::SERVICE_URI . '/sms/api.envio.php';
 				case self::SERVICE_QUERY:
+				default:
 					return self::SERVICE_URI . '/http/querymsg';
 			}
 		}
@@ -70,7 +71,7 @@ class SMSMasivos implements ISMSProvider {
 	}
 
 	protected function prepareParameters() {
-		$params = array('usuario' => $this->_username, 'password' => $this->_password);
+		$params = array('usuario' => $this->username, 'password' => $this->password);
 		foreach (self::$REQUIRED_PARAMETERS as $key) {
 			$params[$key] = $this->getParameter($key);
 		}
@@ -95,7 +96,6 @@ class SMSMasivos implements ISMSProvider {
 			$serviceURL = $this->getServiceURL(self::SERVICE_SEND);
 			$httpClient = new Vtiger_Net_Client($serviceURL);
 			$response = $httpClient->doPost($params);
-			$responseobj = json_decode($response);
 			$responseLines = explode("\n", $response);
 			$i = 0;
 			foreach ($responseLines as $responseLine) {

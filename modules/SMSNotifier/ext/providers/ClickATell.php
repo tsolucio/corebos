@@ -12,38 +12,35 @@ include_once 'vtlib/Vtiger/Net/Client.php';
 
 class ClickATell implements ISMSProvider {
 
-	private $_username;
-	private $_password;
-	private $_parameters = array();
+	private $username;
+	private $password;
+	private $parameters = array();
 	public $helpURL = 'https://archive.clickatell.com/developers/2015/10/08/http/s/';
 	public $helpLink = 'ClickATell HTTP';
 
 	const SERVICE_URI = 'https://api.clickatell.com';
 	private static $REQUIRED_PARAMETERS = array('api_id', 'from', 'mo');
 
-	public function __construct() {
-	}
-
 	/**
 	 * Function to get provider name
-	 * @return <String> provider name
+	 * @return string provider name
 	 */
 	public function getName() {
 		return $this->helpLink;
 	}
 
 	public function setAuthParameters($username, $password) {
-		$this->_username = $username;
-		$this->_password = $password;
+		$this->username = $username;
+		$this->password = $password;
 	}
 
 	public function setParameter($key, $value) {
-		$this->_parameters[$key] = $value;
+		$this->parameters[$key] = $value;
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if (isset($this->_parameters[$key])) {
-			return $this->_parameters[$key];
+		if (isset($this->parameters[$key])) {
+			return $this->parameters[$key];
 		}
 		return $defvalue;
 	}
@@ -60,6 +57,7 @@ class ClickATell implements ISMSProvider {
 				case self::SERVICE_SEND:
 					return  self::SERVICE_URI . '/http/sendmsg';
 				case self::SERVICE_QUERY:
+				default:
 					return self::SERVICE_URI . '/http/querymsg';
 			}
 		}
@@ -67,7 +65,7 @@ class ClickATell implements ISMSProvider {
 	}
 
 	protected function prepareParameters() {
-		$params = array('user' => $this->_username, 'password' => $this->_password);
+		$params = array('user' => $this->username, 'password' => $this->password);
 		foreach (self::$REQUIRED_PARAMETERS as $key) {
 			$params[$key] = $this->getParameter($key);
 		}
@@ -143,14 +141,10 @@ class ClickATell implements ISMSProvider {
 				$result['status'] = self::MSG_STATUS_DISPATCHED;
 				$result['needlookup'] = 0;
 			} else {
-				$statusMessage = "";
+				$statusMessage = '';
 				switch ($status) {
 					case '001':
 						$statusMessage = 'Message unknown';
-						$needlookup = 0;
-						break;
-					case '005':
-						$statusMessage = 'Error with message';
 						$needlookup = 0;
 						break;
 					case '006':
@@ -171,6 +165,11 @@ class ClickATell implements ISMSProvider {
 						break;
 					case '012':
 						$statusMessage = 'Out of credit';
+						$needlookup = 0;
+						break;
+					case '005':
+					default:
+						$statusMessage = 'Error with message';
 						$needlookup = 0;
 						break;
 				}
