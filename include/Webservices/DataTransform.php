@@ -352,6 +352,38 @@ class DataTransform {
 		return $row;
 	}
 
+	public static function sanitizeReferencesForDB($row, $meta) {
+		$references = $meta->getReferenceFieldDetails();
+		$mname = strtolower($meta->getEntityName());
+		foreach ($references as $field => $typeList) {
+			if ($mname == 'emails' && $field=='parent_id' && isset($row['parent_id']) && strpos($row['parent_id'], '|')) {
+				$row['parent_id'] = explode('|', trim($row['parent_id'], '|'));
+			}
+			if (!empty($row[$field])) {
+				$setref = array();
+				foreach ((array) $row[$field] as $refval) {
+					list($wsid, $crmid) = explode('x', $refval);
+					$setref[] = $crmid;
+				}
+				$row[$field] = implode('|', $setref);
+			}
+			if ($row[$field]=='') {
+				$row[$field] = null;
+			}
+		}
+		return $row;
+	}
+
+	public static function sanitizeOwnerFieldsForDB($row, $meta) {
+		$ownerFields = $meta->getOwnerFields();
+		foreach ($ownerFields as $field) {
+			if (!empty($row[$field])) {
+				list($wsid, $row[$field]) = explode('x', $row[$field]);
+			}
+		}
+		return $row;
+	}
+
 	public static function sanitizeTextFieldsForInsert($row, $meta) {
 		global $default_charset;
 		$moduleFields = $meta->getModuleFields();
