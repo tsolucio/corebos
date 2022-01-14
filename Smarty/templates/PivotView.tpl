@@ -61,6 +61,9 @@ $(function() {
 						let names = Array();
 						let fields = Array();
 						//get rows and cols from map
+						if (typeof mapContent == 'string' && mapContent == 'NOT_PERMITTED') {
+							return;
+						}
 						Object.keys(mapContent).map(function(key, index) {
 							if (typeof mapContent[key] == 'object') {
 								for (let i in mapContent[key]) {

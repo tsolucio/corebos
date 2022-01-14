@@ -524,8 +524,8 @@ switch ($functiontocall) {
 	case 'getMapByName':
 		$mapname = vtlib_purify($_REQUEST['mapname']);
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
-		$content = '';
-		if ($cbMapid) {
+		$content = 'NOT_PERMITTED';
+		if ($cbMapid && isPermitted('cbMap', 'DetailView', $cbMapid)=='yes') {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$mtype = $cbMap->column_fields['maptype'];
 			$content = $cbMap->$mtype();
