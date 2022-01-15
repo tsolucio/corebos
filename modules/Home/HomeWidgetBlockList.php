@@ -27,7 +27,7 @@ $smarty->assign('IMAGE_PATH', $image_path);
 
 foreach ($widgetInfoList as $widgetInfo) {
 	$widgetType = $widgetInfo['widgetType'];
-	$widgetId = $widgetInfo['widgetId'];
+	$widgetId = (int)preg_replace('/\D/', '', vtlib_purify($widgetInfo['widgetId'])); // overcomplicated security
 	$homestuff_values = '';
 	if ($widgetType=='Tag Cloud') {
 		$freetag = new freetag();
