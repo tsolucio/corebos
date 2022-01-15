@@ -14,6 +14,11 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 -->*}
+{if !empty($APMSG_LOADLDS)}
+	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
+	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
+	<link rel="stylesheet" href="include/style.css" type="text/css" />
+{/if}
 {assign var="slds_role" value=""}
 {if !empty($ERROR_MESSAGE)}
 {if empty($ERROR_MESSAGE_CLASS) || $ERROR_MESSAGE_CLASS eq "cb-alert-danger"}
