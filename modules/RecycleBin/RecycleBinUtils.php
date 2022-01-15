@@ -44,9 +44,9 @@ function RBSearch($module) {
 			$where=basicRBsearch($module, $search_column, $search_string);
 		}
 
-		$url_string = "&search_field=".$search_column."&search_text=".$search_string."&searchtype=BasicSearch";
-		if (isset($_REQUEST['type']) && $_REQUEST['type'] != '') {
-			$url_string .= "&type=".vtlib_purify($_REQUEST['type']);
+		$url_string = '&search_field='.$search_column.'&search_text='.$search_string.'&searchtype=BasicSearch';
+		if (!empty($_REQUEST['type'])) {
+			$url_string .= '&type='.substr(trim($_REQUEST['type']), 0, 5)=='alpbt' ? 'alpbt' : 'entchar';
 		}
 		$log->debug('< RBSearch');
 		return $where.'#@@#'.$url_string;

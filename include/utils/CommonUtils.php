@@ -3217,7 +3217,12 @@ function getBasic_Advance_SearchURL() {
 	if ($_REQUEST['searchtype'] == 'BasicSearch') {
 		$url .= (isset($_REQUEST['search_field'])) ? '&search_field=' . urlencode(vtlib_purify($_REQUEST['search_field'])) : '';
 		$url .= (isset($_REQUEST['search_text'])) ? '&search_text=' . to_html(vtlib_purify($_REQUEST['search_text'])) : '';
-		$url .= (isset($_REQUEST['type'])) ? '&type=' . vtlib_purify($_REQUEST['type']) : '';
+		if (isset($_REQUEST['type'])) {
+			$srchtype = (substr(trim($_REQUEST['type']), 0, 5)=='alpbt' ? 'alpbt' : 'entchar');
+		} else {
+			$srchtype = '';
+		}
+		$url .= '&type='.$srchtype;
 	} elseif ($_REQUEST['searchtype'] == 'advance') {
 		$count = empty($_REQUEST['search_cnt']) ? 0 : vtlib_purify($_REQUEST['search_cnt']);
 		for ($i = 0; $i < $count; $i++) {
