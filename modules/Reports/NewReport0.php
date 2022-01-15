@@ -49,22 +49,10 @@ if ($recordid!='') {
 		}
 	}
 	if (!vtlib_isModuleActive($oRep->primodule)) {
-		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 80%; position: relative; z-index: 10000000;'>
-		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-			<span class='genHeaderSmall'>".$mod_strings['LBL_NO_ACCESS']." : ".$oRep->primodule." </span>
-		</td>
-		</tr>
-		<tr>
-		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.close();'>".$app_strings['LBL_CLOSE']."</a><br></td>
-		</tr>
-		</tbody></table>
-		</div>
-		</td></tr></table>";
+		$list_report_form->assign('APMSG_LOADLDS', 1);
+		$list_report_form->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+		$list_report_form->assign('ERROR_MESSAGE', $mod_strings['LBL_NO_ACCESS'].' : '.getTranslatedString($oRep->primodule, $oRep->primodule));
+		$list_report_form->display('applicationmessage.tpl');
 		die();
 	}
 	$list_report_form->assign('RELATEDMODULES', getReportRelatedModules($oRep->primodule, $oRep));
@@ -108,22 +96,10 @@ if ($recordid!='') {
 }
 if (!empty($_REQUEST['reportmodule'])) {
 	if (!vtlib_isModuleActive($_REQUEST['reportmodule']) || isPermitted($_REQUEST['reportmodule'], 'index')!= 'yes') {
-		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 80%; position: relative; z-index: 10000000;'>
-		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-			<span class='genHeaderSmall'>".$mod_strings['LBL_NO_ACCESS']." : ".getTranslatedString($_REQUEST['reportmodule'], $_REQUEST['reportmodule'])." </span>
-		</td>
-		</tr>
-		<tr>
-		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.close();'>".$app_strings['LBL_CLOSE']."</a><br></td>
-		</tr>
-		</tbody></table>
-		</div>
-		</td></tr></table>";
+		$list_report_form->assign('APMSG_LOADLDS', 1);
+		$list_report_form->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+		$list_report_form->assign('ERROR_MESSAGE', $mod_strings['LBL_NO_ACCESS'].' : '.getTranslatedString($_REQUEST['reportmodule'], $_REQUEST['reportmodule']));
+		$list_report_form->display('applicationmessage.tpl');
 		die();
 	}
 	$list_report_form->assign('RELATEDMODULES', getReportRelatedModules($_REQUEST['reportmodule'], $repObj));
