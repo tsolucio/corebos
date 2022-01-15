@@ -272,14 +272,13 @@ foreach ($Users_Ids as $userid) {
 			if (!$invites) {
 				if ($showGroupEvents && $groups != '') {
 					$list_query.= ' AND vtiger_crmentity.smownerid IN (' . generateQuestionMarks($userid) . ',' . generateQuestionMarks($groups) . ')';
-					$list_array = array_merge($list_array, $userid);
-					$list_array = array_merge($list_array, $groups);
+					$list_array = array_merge($list_array, explode(',', $userid), explode(',', $groups));
 				} else {
-					$list_query.= " AND vtiger_crmentity.smownerid = '" . generateQuestionMarks($userid) . "'";
-					$list_array = array_merge($list_array, $userid);
+					$list_query.= ' AND vtiger_crmentity.smownerid=?';
+					$list_array[] = $userid;
 				}
-				$list_query .= ' AND vtiger_activity.activitytype = ?';
-				$list_array = array($activitytype);
+				$list_query .= ' AND vtiger_activity.activitytype=?';
+				$list_array[] = $activitytype;
 			}
 			if (!empty($Event_Status)) {
 				$list_query .= ' AND (vtiger_activity.eventstatus NOT IN (' . generateQuestionMarks($Event_Status) . ') OR vtiger_activity.eventstatus IS NULL)';
