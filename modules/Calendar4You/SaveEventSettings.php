@@ -10,7 +10,7 @@
 require_once 'include/database/PearDatabase.php';
 global $adb,$current_user;
 
-$user_view_type = $_REQUEST['user_view_type'];
+$user_view_type = vtlib_purify($_REQUEST['user_view_type']);
 
 $mode = vtlib_purify($_REQUEST['mode']);
 if ($mode=='module') {
@@ -29,7 +29,7 @@ foreach ($Save_Colors as $type => $color) {
 }
 
 $Save_Data = array();
-$save_fields = $_REQUEST['save_fields'];
+$save_fields = vtlib_purify($_REQUEST['save_fields']);
 
 if ($save_fields == '1') {
 	$event = $entity;
@@ -40,9 +40,9 @@ if ($save_fields == '1') {
 	$Views = array('day','week','month');
 
 	foreach ($Views as $view) {
-		$Save_Data[] = array($userid,$event,'1',$view,$_REQUEST[$view.'_showed_field']);
+		$Save_Data[] = array($userid,$event,'1',$view,vtlib_purify($_REQUEST[$view.'_showed_field']));
 
-		$Selected_Fields = explode(';', $_REQUEST[$view.'_selected_fields']);
+		$Selected_Fields = explode(';', vtlib_purify($_REQUEST[$view.'_selected_fields']));
 
 		if (count($Selected_Fields) > 0) {
 			foreach ($Selected_Fields as $fieldname) {

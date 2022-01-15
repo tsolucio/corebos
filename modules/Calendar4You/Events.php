@@ -26,12 +26,12 @@ $user_view_type = vtlib_purify($_REQUEST['user_view_type']);
 $save = (isset($_REQUEST['save']) ? vtlib_purify($_REQUEST['save']) : '');
 $full_calendar_view = vtlib_purify($_REQUEST['view']);
 if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
-	$record = $_REQUEST['record'];
+	$record = vtlib_purify($_REQUEST['record']);
 }
 
 if (!empty($_REQUEST['usersids'])) {
 	$all_users = true;
-	$Users_Ids = explode(',', $_REQUEST['usersids']);
+	$Users_Ids = explode(',', vtlib_purify($_REQUEST['usersids']));
 } else {
 	$all_users = false;
 	if ($user_view_type != 'all') {
@@ -169,7 +169,7 @@ if (count($Load_Task_Priority) > 0) {
 $showGroupEvents = GlobalVariable::getVariable('Calendar_Show_Group_Events', 1);
 $modtab = array_flip($tasklabel);
 foreach ($Users_Ids as $userid) {
-	if (!$userid) {
+	if (empty($userid) || !is_numeric($userid)) {
 		continue;
 	}
 	if ($showGroupEvents) {
@@ -264,10 +264,12 @@ foreach ($Users_Ids as $userid) {
 		} else {
 			$list_query = getCalendar4YouListQuery($userid, $invites);
 			if ($record != '') {
-				$list_query .= " AND vtiger_crmentity.crmid = '".$record."'";
+				$list_query .= ' AND vtiger_crmentity.crmid=?';
+				$list_array[] = $record;
 			} else {
-				$list_query .= " AND vtiger_activity.dtstart <= '".$usredtime."'";
-				$list_query .= " AND vtiger_activity.dtend >= '".$usrsttime."'";
+				$list_query .= ' AND vtiger_activity.dtstart<=? AND vtiger_activity.dtend>=?';
+				$list_array[] = $usredtime;
+				$list_array[] = $usrsttime;
 			}
 			if (!$invites) {
 				if ($showGroupEvents && $groups != '') {

@@ -17,28 +17,28 @@ if (!empty($_REQUEST['hour_format'])) {
 	$hour_format = '12';
 }
 
-$activity_view = $_REQUEST['activity_view'];
+$activity_view = vtlib_purify($_REQUEST['activity_view']);
 
-$user_view = $_REQUEST['user_view'];
+$user_view = vtlib_purify($_REQUEST['user_view']);
 
-$adb->pquery('delete from vtiger_sharedcalendar where userid=?', array($_REQUEST['current_userid']));
+$adb->pquery('delete from vtiger_sharedcalendar where userid=?', array(vtlib_purify($_REQUEST['current_userid'])));
 
-$selectedid = $_REQUEST['shar_userid'];
+$selectedid = vtlib_purify($_REQUEST['shar_userid']);
 $sharedid = explode(';', $selectedid);
 if (isset($sharedid) && $sharedid != null) {
 	foreach ($sharedid as $sid) {
 		if ($sid != '') {
-			$adb->pquery('insert into vtiger_sharedcalendar values (?,?)', array($_REQUEST['current_userid'], $sid));
+			$adb->pquery('insert into vtiger_sharedcalendar values (?,?)', array(vtlib_purify($_REQUEST['current_userid']), $sid));
 		}
 	}
 }
 if (isset($_REQUEST['start_hour']) && $_REQUEST['start_hour'] != '') {
-	$adb->pquery('update vtiger_users set start_hour=? where id=?', array($_REQUEST['start_hour'], $current_user->id));
+	$adb->pquery('update vtiger_users set start_hour=? where id=?', array(vtlib_purify($_REQUEST['start_hour']), $current_user->id));
 }
 
 $adb->pquery('update vtiger_users set hour_format=?, activity_view=? where id=?', array($hour_format, $activity_view, $current_user->id));
 
-$dayoftheweek = $_REQUEST['dayoftheweek'];
+$dayoftheweek = vtlib_purify($_REQUEST['dayoftheweek']);
 
 if (isset($_REQUEST['show_weekends']) && $_REQUEST['show_weekends'] == '1') {
 	$show_weekends = '1';
@@ -57,7 +57,7 @@ if ($num_rows2 > 0) {
 	$adb->pquery($sql3, array($current_user->id, $dayoftheweek, $show_weekends, $user_view));
 }
 
-$update_google_account = (isset($_REQUEST['update_google_account']) ? $_REQUEST['update_google_account'] : '0');
+$update_google_account = (isset($_REQUEST['update_google_account']) ? vtlib_purify($_REQUEST['update_google_account']) : '0');
 
 if ($update_google_account == '1') {
 	$google_login = vtlib_purify($_REQUEST['google_login']);
@@ -92,6 +92,6 @@ if ($update_google_account == '1') {
 
 RecalculateSharingRules();
 $url = 'Location: index.php?action=index&module=Calendar4You&viewOption='.vtlib_purify($_REQUEST['view']).'&hour='.vtlib_purify($_REQUEST['hour'])
-	.'&day='.vtlib_purify($_REQUEST['day']).'&month='.vtlib_purify($_REQUEST['month']).'&year='.vtlib_purify($_REQUEST['year']).'&user_view_type='.$user_view;
+	.'&day='.vtlib_purify($_REQUEST['day']).'&month='.vtlib_purify($_REQUEST['month']).'&year='.vtlib_purify($_REQUEST['year']).'&user_view_type='.urlencode($user_view);
 header($url);
 ?>

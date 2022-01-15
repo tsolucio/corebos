@@ -206,7 +206,7 @@ $Activity_Types['invite'] = array(
 );
 
 if (isset($_REQUEST['viewOption']) && $_REQUEST['viewOption']!= '') {
-	$default_view = $_REQUEST['viewOption'];
+	$default_view = vtlib_purify($_REQUEST['viewOption']);
 } else {
 	if ($current_user->activity_view == 'This Year') {
 		$default_view = 'month';
@@ -228,7 +228,7 @@ $smarty->assign('upMODULEBLOCK_DISPLAY', isset($Ch_Views['7']) ? $Ch_Views['7'] 
 $smarty->assign('upESTATUSBLOCK_DISPLAY', isset($Ch_Views['8']) ? $Ch_Views['8'] : 'block');
 $smarty->assign('upTPRIORITYBLOCK_DISPLAY', isset($Ch_Views['9']) ? $Ch_Views['9'] : 'block');
 if (isset($_REQUEST['user_view_type']) && $_REQUEST['user_view_type'] != '') {
-	$user_view_type = $_REQUEST['user_view_type'];
+	$user_view_type = vtlib_purify($_REQUEST['user_view_type']);
 } else {
 	if ($Calendar_Settings['user_view']== 'all') {
 		$user_view_type = 'all';
