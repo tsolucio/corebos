@@ -150,19 +150,19 @@ if (!empty($_REQUEST['showmaxval']) && !empty($_REQUEST['sid'])) {
 }
 
 if (!empty($_REQUEST['dashVal'])) {
-	$did = vtlib_purify($_REQUEST['did']);
+	$did = urlencode(vtlib_purify($_REQUEST['did']));
 	$res=$adb->pquery('update vtiger_homedashbd set dashbdtype=? where stuffid=?', array($_REQUEST['dashVal'], $did));
 	echo 'loadStuff('.$did.",'DashBoard')";
 }
 
 if (!empty($_REQUEST['reportVal'])) {
-	$stuffid = vtlib_purify($_REQUEST['stuffid']);
+	$stuffid = urlencode(vtlib_purify($_REQUEST['stuffid']));
 	$res=$adb->pquery('update vtiger_homereportchart set reportcharttype=? where stuffid=?', array($_REQUEST['reportVal'], $stuffid));
 	echo 'loadStuff('.$stuffid.",'ReportCharts')";
 }
 
 if (!empty($_REQUEST['homestuffid'])) {
-	$sid=$_REQUEST['homestuffid'];
+	$sid=vtlib_purify($_REQUEST['homestuffid']);
 	$rs = $adb->pquery('select stufftype from vtiger_homestuff where stuffid=?', array($sid));
 	$res=$adb->query_result($rs, 0, 'stufftype');
 	if ($res=='CustomWidget') {
