@@ -149,15 +149,15 @@ function doNothing() {
 
 function hideSelect() {
 	var oselect_array = document.getElementsByTagName('SELECT');
-	for (var i=0; i<oselect_array.length; i++) {
-		oselect_array[i].style.display = 'none';
+	for (const oselect of oselect_array) {
+		oselect.style.display = 'none';
 	}
 }
 
 function showSelect() {
 	var oselect_array = document.getElementsByTagName('SELECT');
-	for (var i=0; i<oselect_array.length; i++) {
-		oselect_array[i].style.display = 'block';
+	for (const oselect of oselect_array) {
+		oselect.style.display = 'block';
 	}
 }
 
