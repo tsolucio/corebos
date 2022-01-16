@@ -33,3 +33,82 @@ function deleteModule(modulename) {
 		});
 	}
 }
+
+function hideSelect() {
+	var oselect_array = document.getElementsByTagName('SELECT');
+	for (const oselect of oselect_array) {
+		oselect.style.display = 'none';
+	}
+}
+
+function showSelect() {
+	var oselect_array = document.getElementsByTagName('SELECT');
+	for (const oselect of oselect_array) {
+		oselect.style.display = 'block';
+	}
+}
+
+function callEditDiv(obj, modulename, mode, id) {
+	document.getElementById('status').style.display='inline';
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?module=Settings&action=SettingsAjax&orgajax=true&mode='+mode+'&sharing_module='+modulename+'&shareid='+id,
+	}).done(function (response) {
+		document.getElementById('status').style.display='none';
+		document.getElementById('tempdiv').innerHTML=response;
+		fnvshobj(obj, 'tempdiv');
+		if (mode == 'edit') {
+			setTimeout('', 10000);
+			var related = document.getElementById('rel_module_lists').value;
+			fnwriteRules(modulename, related);
+		}
+	});
+}
+
+function fnwriteRules(module, related) {
+	var modulelists = related.split('###');
+	var relatedstring ='';
+	var relatedtag;
+	var relatedselect;
+	var modulename;
+	for (let i=0; i < modulelists.length-1; i++) {
+		modulename = modulelists[i]+'_accessopt';
+		relatedtag = document.getElementById(modulename);
+		relatedselect = relatedtag.options[relatedtag.selectedIndex].text;
+		relatedstring += modulelists[i]+':'+relatedselect+' ';
+	}
+	var tagName = document.getElementById(module+'_share');
+	var tagName2 = document.getElementById(module+'_access');
+	var tagName3 = document.getElementById('share_memberType');
+	var soucre =  document.getElementById('rules');
+	var soucre1 =  document.getElementById('relrules');
+	var select1 = tagName.options[tagName.selectedIndex].text;
+	var select2 = tagName2.options[tagName2.selectedIndex].text;
+	var select3 = tagName3.options[tagName3.selectedIndex].text;
+
+	if (module == i18nOrgSharing.Accounts) {
+		module = i18nOrgSharing.Accounts + ' & ' + i18nOrgSharing.Contacts;
+	}
+
+	soucre.innerHTML = module + ' ' + i18nOrgSharing.LBL_LIST_OF + ' <b>"' + select1 + '"</b> ' + i18nOrgSharing.LBL_CAN_BE_ACCESSED
+		+ ' <b>"' +select2 + '"</b> ' + i18nOrgSharing.LBL_IN_PERMISSION + ' ' + select3;
+	soucre1.innerHTML = '<b>'+i18nOrgSharing.LBL_RELATED_MODULE_RIGHTS+'</b> '+relatedstring;
+}
+
+function disableStyle(id) {
+	document.getElementById('orgSharingform').action.value = 'RecalculateSharingRules';
+	document.getElementById('orgSharingform').submit();
+	document.getElementById(id).style.display = 'none';
+	document.getElementById('divId').style.display = 'block';
+}
+
+function freezeBackground() {
+	var oFreezeLayer = document.createElement('div');
+	oFreezeLayer.id = 'freeze';
+	oFreezeLayer.className = 'small veil';
+	oFreezeLayer.style.height = document.body.offsetHeight + 'px';
+	oFreezeLayer.style.width = '100%';
+	document.body.appendChild(oFreezeLayer);
+	document.getElementById('confId').style.display = 'block';
+	hideSelect();
+}

@@ -215,68 +215,12 @@ DIV.fixedLay {
 </div>
 </section>
 <script>
-function callEditDiv(obj, modulename, mode,id) {ldelim}
-	document.getElementById('status').style.display='inline';
-	jQuery.ajax({ldelim}
-		method: 'POST',
-		url: 'index.php?module=Settings&action=SettingsAjax&orgajax=true&mode='+mode+'&sharing_module='+modulename+'&shareid='+id,
-	{rdelim}).done(function (response) {ldelim}
-		document.getElementById('status').style.display='none';
-		document.getElementById('tempdiv').innerHTML=response;
-		fnvshobj(obj, 'tempdiv');
-		if (mode == 'edit') {ldelim}
-			setTimeout('',10000);
-			var related = document.getElementById('rel_module_lists').value;
-			fnwriteRules(modulename, related);
-		{rdelim}
-	{rdelim});
-{rdelim}
-
-function fnwriteRules(module, related) {ldelim}
-	var modulelists = new Array();
-	modulelists = related.split('###');
-	var relatedstring ='';
-	var relatedtag;
-	var relatedselect;
-	var modulename;
-	for(i=0;i < modulelists.length-1;i++) {ldelim}
-		modulename = modulelists[i]+'_accessopt';
-		relatedtag = document.getElementById(modulename);
-		relatedselect = relatedtag.options[relatedtag.selectedIndex].text;
-		relatedstring += modulelists[i]+':'+relatedselect+' ';
-	{rdelim}
-	var tagName = document.getElementById(module+'_share');
-	var tagName2 = document.getElementById(module+'_access');
-	var tagName3 = document.getElementById('share_memberType');
-	var soucre =  document.getElementById('rules');
-	var soucre1 =  document.getElementById('relrules');
-	var select1 = tagName.options[tagName.selectedIndex].text;
-	var select2 = tagName2.options[tagName2.selectedIndex].text;
-	var select3 = tagName3.options[tagName3.selectedIndex].text;
-
-	if (module == '{$APP.Accounts}') {ldelim}
-		module = '{$APP.Accounts} & {$APP.Contacts}';
-	{rdelim}
-
-	soucre.innerHTML = module +" {$APP.LBL_LIST_OF} <b>\"" + select1 + "\"</b> {$CMOD.LBL_CAN_BE_ACCESSED} <b>\"" +select2 + "\"</b> {$CMOD.LBL_IN_PERMISSION} "+select3;
-	soucre1.innerHTML = "<b>{$CMOD.LBL_RELATED_MODULE_RIGHTS}</b> " + relatedstring;
-{rdelim}
-
-function disableStyle(id) {ldelim}
-	document.getElementById('orgSharingform').action.value = 'RecalculateSharingRules';
-	document.getElementById('orgSharingform').submit();
-	document.getElementById(id).style.display = 'none';
-	document.getElementById('divId').style.display = 'block';
-{rdelim}
-
-function freezeBackground() {ldelim}
-	var oFreezeLayer = document.createElement('div');
-	oFreezeLayer.id = 'freeze';
-	oFreezeLayer.className = 'small veil';
-	oFreezeLayer.style.height = document.body.offsetHeight + 'px';
-	oFreezeLayer.style.width = '100%';
-	document.body.appendChild(oFreezeLayer);
-	document.getElementById('confId').style.display = 'block';
-	hideSelect();
-{rdelim}
+var i18nOrgSharing = {
+	'Accounts': '{$APP.Accounts}',
+	'Contacts': '{$APP.Contacts}',
+	'LBL_LIST_OF': '{$APP.LBL_LIST_OF}',
+	'LBL_CAN_BE_ACCESSED': '{$CMOD.LBL_CAN_BE_ACCESSED}',
+	'LBL_IN_PERMISSION': '{$CMOD.LBL_IN_PERMISSION}',
+	'LBL_RELATED_MODULE_RIGHTS': '{$CMOD.LBL_RELATED_MODULE_RIGHTS}',
+};
 </script>

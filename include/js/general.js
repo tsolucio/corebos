@@ -145,20 +145,7 @@ if (document.all) {
 var gBrowserAgent = navigator.userAgent.toLowerCase();
 
 function doNothing() {
-}
-
-function hideSelect() {
-	var oselect_array = document.getElementsByTagName('SELECT');
-	for (const oselect of oselect_array) {
-		oselect.style.display = 'none';
-	}
-}
-
-function showSelect() {
-	var oselect_array = document.getElementsByTagName('SELECT');
-	for (const oselect of oselect_array) {
-		oselect.style.display = 'block';
-	}
+	// just as name indicates
 }
 
 function showHideDivs(showdiv, hidediv) {
