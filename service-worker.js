@@ -10661,7 +10661,7 @@ precacheAndRoute([{
   "revision": "d6dba707e6ffb8142053145754967ad7"
 }, {
   "url": "include/js/general.js",
-  "revision": "4d87f89bcd0520548185946b48ba8120"
+  "revision": "cb217cb6f1440f686d22b20a8b4cdfab"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "ce80de25f73e55ce40a8b1c4ac68f70a"
@@ -11168,7 +11168,7 @@ precacheAndRoute([{
   "revision": "16492cb9a5e8791e2b8f443f5aedac2f"
 }, {
   "url": "modules/Settings/Settings.js",
-  "revision": "9ae7543b24b8764b0363541818343ed5"
+  "revision": "c081711ead8af84fe7f995d23462f0e7"
 }, {
   "url": "modules/Settings/profilePrivileges.js",
   "revision": "e8735c467cb77eab04e51f77a14ca87b"
