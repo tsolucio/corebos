@@ -8,11 +8,13 @@ require_once 'vtlib/Vtiger/Package.php';
 global $current_user,$adb;
 set_time_limit(0);
 ini_set('memory_limit', '1024M');
+error_reporting(-1);
+ini_set('display_errors', 1);
 $current_user = new Users();
 $current_user->retrieveCurrentUserInfoFromFile(Users::getActiveAdminId());
 $package = new Vtiger_Package();
-//$rdo = $package->importManifest('modules/cbupdater/manifest.xml');
+$rdo = $package->importManifest('modules/DiscountLine/manifest.xml');
 //$rdo = $package->importManifest('modules/Webforms/manifest.xml');
 //$package->initImport('TSEmail_540.zip', true);
-$rdo = $package->importManifest('include/language/it_it.manifest.xml');
+//$rdo = $package->importManifest('include/language/it_it.manifest.xml');
 ?>
