@@ -399,10 +399,10 @@ class ModTracker {
 		global $log, $adb, $currentModule;
 		$log->debug('> getModTrackerJSON');
 
-		$where = ' where 1 ';
+		$where = '';
 		$params = array();
 		if (!empty($crmid)) {
-			$where .= ' and crmid = ? ';
+			$where .= 'where crmid=?';
 			array_push($params, $crmid);
 		}
 
@@ -420,7 +420,7 @@ class ModTracker {
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
 		$result = $adb->pquery($list_query.$limit, $params);
-		$count_result = $adb->query(mkCountQuery($list_query));
+		$count_result = $adb->query(mkCountQuery($adb->convert2sql($list_query, $params)));
 		$noofrows = $adb->query_result($count_result, 0, 0);
 		if ($result) {
 			if ($noofrows>0) {
