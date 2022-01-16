@@ -166,7 +166,7 @@ $output .= '<td align="right" class="small"><img src="'. vtiger_imageurl('close.
 		<td style="padding-left:20px;text-align:left;">';
 //combovalues
 		$i18nmod = getTranslatedString($sharing_module, $sharing_module);
-		$output.='<select id="'.$i18nmod.'_share" name="'.$sharing_module.'_share" onChange="fnwriteRules(\''.$i18nmod.'\',\''.$relatedmodule.'\')";>';
+		$output.='<select id="'.$sharing_module.'_share" name="'.$sharing_module.'_share" onChange="fnwriteRules(\''.$sharing_module.'\',\''.$relatedmodule.'\', \''.$i18nmod.'\')";>';
 		$output.=$fromComboValues.'</select>';
 		$output.='</td>
 
@@ -180,14 +180,14 @@ $output .= '<td align="right" class="small"><img src="'. vtiger_imageurl('close.
 	<tr>
 		<td style="padding-left:20px;text-align:left;">
 
-		<select id="'.$i18nmod.'_access" name="'.$sharing_module.'_access" onChange="fnwriteRules(\''.$i18nmod.'\',\''.$relatedmodule.'\')";>';
+		<select id="'.$sharing_module.'_access" name="'.$sharing_module.'_access" onChange="fnwriteRules(\''.$sharing_module.'\',\''.$relatedmodule.'\', \''.$i18nmod.'\')";>';
 
 		$output.=$toComboValues.'</select>
 
 		</td>
 		<td>
 
-		<select	id="share_memberType" name="share_memberType" onChange="fnwriteRules(\''.$i18nmod.'\',\''.$relatedmodule.'\')";>';
+		<select	id="share_memberType" name="share_memberType" onChange="fnwriteRules(\''.$sharing_module.'\',\''.$relatedmodule.'\', \''.$i18nmod.'\')";>';
 		$output .= $sharPerCombo;
 		$output .= '</select>
 

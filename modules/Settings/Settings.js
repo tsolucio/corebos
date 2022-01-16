@@ -48,7 +48,7 @@ function showSelect() {
 	}
 }
 
-function callEditDiv(obj, modulename, mode, id) {
+function callEditDiv(obj, modulename, mode, id, modulei18n) {
 	document.getElementById('status').style.display='inline';
 	jQuery.ajax({
 		method: 'POST',
@@ -60,12 +60,12 @@ function callEditDiv(obj, modulename, mode, id) {
 		if (mode == 'edit') {
 			setTimeout('', 10000);
 			var related = document.getElementById('rel_module_lists').value;
-			fnwriteRules(modulename, related);
+			fnwriteRules(modulename, related, modulei18n);
 		}
 	});
 }
 
-function fnwriteRules(module, related) {
+function fnwriteRules(module, related, modulei18n) {
 	var modulelists = related.split('###');
 	var relatedstring ='';
 	var relatedtag;
@@ -86,11 +86,11 @@ function fnwriteRules(module, related) {
 	var select2 = tagName2.options[tagName2.selectedIndex].text;
 	var select3 = tagName3.options[tagName3.selectedIndex].text;
 
-	if (module == i18nOrgSharing.Accounts) {
-		module = i18nOrgSharing.Accounts + ' & ' + i18nOrgSharing.Contacts;
+	if (modulei18n == i18nOrgSharing.Accounts) {
+		modulei18n = i18nOrgSharing.Accounts + ' & ' + i18nOrgSharing.Contacts;
 	}
 
-	soucre.innerHTML = module + ' ' + i18nOrgSharing.LBL_LIST_OF + ' <b>"' + select1 + '"</b> ' + i18nOrgSharing.LBL_CAN_BE_ACCESSED
+	soucre.innerHTML = modulei18n + ' ' + i18nOrgSharing.LBL_LIST_OF + ' <b>"' + select1 + '"</b> ' + i18nOrgSharing.LBL_CAN_BE_ACCESSED
 		+ ' <b>"' +select2 + '"</b> ' + i18nOrgSharing.LBL_IN_PERMISSION + ' ' + select3;
 	soucre1.innerHTML = '<b>'+i18nOrgSharing.LBL_RELATED_MODULE_RIGHTS+'</b> '+relatedstring;
 }
