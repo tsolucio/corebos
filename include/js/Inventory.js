@@ -787,7 +787,7 @@ function fnAddProductRow(module) {
 		</tr>
 		<tr>
 			<td style="padding:5px;" nowrap>
-				(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'discount_div${count}','discount',${count})" >'${product_labelarr.DISCOUNT}</a> : </b>
+				(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'discount_div${count}','discount',${count})" >${product_labelarr.DISCOUNT}</a> : </b>
 				<div class="discountUI" id="discount_div${count}">
 					<input type="hidden" id="discount_type${count}" name="discount_type${count}" value="">
 					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
