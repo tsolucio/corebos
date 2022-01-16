@@ -10667,7 +10667,7 @@ precacheAndRoute([{
   "revision": "ce80de25f73e55ce40a8b1c4ac68f70a"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "8e9eb87b941b83b57b5bc54b32b719cf"
+  "revision": "995e82a81fff28de27f58d755cf5a793"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "1d5691c2d90699d8204d031a38af5478"
@@ -11180,7 +11180,7 @@ precacheAndRoute([{
   "revision": "d9dc85cdf658755d29cdb4704fea4882"
 }, {
   "url": "modules/Products/Products.js",
-  "revision": "5338644db016b93e59ed8f3b7765e3fe"
+  "revision": "29db48a0b8fbbc9343053da72fde421d"
 }, {
   "url": "modules/ModComments/ModComments.js",
   "revision": "253c82414388480dd8d07ec5f899968d"
@@ -11420,7 +11420,7 @@ precacheAndRoute([{
   "revision": "f7fa08f24ea66f67c5b455f7562ad998"
 }, {
   "url": "modules/Services/Services.js",
-  "revision": "dbc6730984e47cdd99f254cd5a58a1ee"
+  "revision": "d5416dde0172cf49c505a0d4daf4c14d"
 }, {
   "url": "modules/Vendors/Vendors.js",
   "revision": "29077a91b5317da8237274d0436bbc73"
