@@ -44,10 +44,16 @@ function set_return_specific(product_id, product_name) {
 function set_return_inventory(product_id, product_name, unitprice, qtyinstock, taxstr, curr_row, desc, subprod_id, dto) {
 	getOpenerObj('qtyInStock'+curr_row).innerHTML = qtyinstock;
 	set_return_inventory_po(product_id, product_name, unitprice, taxstr, curr_row, desc, subprod_id);
-	if (dto!=0) {
+	if (dto==0) {
+		window.opener.document.EditView.elements['discount'+curr_row][0].checked = true;
+		window.opener.document.EditView.elements['discount'+curr_row][1].checked = false;
+		window.opener.document.EditView.elements['discount'+curr_row][2].checked = false;
+	} else {
+		window.opener.document.EditView.elements['discount'+curr_row][0].checked = false;
 		window.opener.document.EditView.elements['discount'+curr_row][1].checked = true;
-		window.opener.document.EditView.elements['discount_percentage'+curr_row].value = dto;
+		window.opener.document.EditView.elements['discount'+curr_row][2].checked = false;
 	}
+	window.opener.document.EditView.elements['discount_percentage'+curr_row].value = dto;
 	var func = window.opener.gVTModule + 'setValueFromCapture';
 	if (typeof window.opener[func] == 'function') {
 		window.opener[func](product_id, product_name, 'productName'+curr_row);

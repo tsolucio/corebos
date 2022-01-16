@@ -46,10 +46,16 @@ function set_return_inventory(product_id, product_name, unitprice, taxstr, curr_
 	window.opener.document.EditView.elements['hdnProductId'+curr_row].value = product_id;
 	window.opener.document.EditView.elements['listPrice'+curr_row].value = unitprice;
 	window.opener.document.EditView.elements['comment'+curr_row].value = desc;
-	if (dto!=0) {
+	if (dto==0) {
+		window.opener.document.EditView.elements['discount'+curr_row][0].checked = true;
+		window.opener.document.EditView.elements['discount'+curr_row][1].checked = false;
+		window.opener.document.EditView.elements['discount'+curr_row][2].checked = false;
+	} else {
+		window.opener.document.EditView.elements['discount'+curr_row][0].checked = false;
 		window.opener.document.EditView.elements['discount'+curr_row][1].checked = true;
-		window.opener.document.EditView.elements['discount_percentage'+curr_row].value = dto;
+		window.opener.document.EditView.elements['discount'+curr_row][2].checked = false;
 	}
+	window.opener.document.EditView.elements['discount_percentage'+curr_row].value = dto;
 	// Apply decimal round-off to value
 	if (!isNaN(parseFloat(unitprice))) {
 		unitprice = roundPriceValue(unitprice);
