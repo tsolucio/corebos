@@ -196,7 +196,7 @@ const ListView = {
 							}
 						},
 					};
-					if ((fieldname == 'modifiedtime' || fieldname == 'modifiedby') && lvmodule == '') {
+					if ((fieldname == 'modifiedtime' || fieldname == 'modifiedby') && (lvmodule == '' || lvmodule == 'RecycleBin')) {
 						header = {
 							name: fieldname,
 							header: fieldvalue,
@@ -314,6 +314,12 @@ const ListView = {
 				credentials: 'same-origin',
 			}
 		).then(response => response.json()).then(response => {
+			const advft_criteria = urlParams.get('advft_criteria');
+			const advft_criteria_groups = urlParams.get('advft_criteria_groups');
+			const searchtype = urlParams.get('searchtype');
+			if (advft_criteria != null && searchtype == null) {
+				url += `&search=${advft_criteria}&advft_criteria_groups=${advft_criteria_groups}&searchtype=${searchtype}`;
+			}
 			let headers = ListView.getColumnHeaders(response[0]);
 			let filters = response[1];
 			ListView.setFilters(filters);
@@ -333,7 +339,7 @@ const ListView = {
 				data: {
 					api: {
 						readData: {
-							url: `${url}&search=${urlParams.get('advft_criteria')}&advft_criteria_groups=${urlParams.get('advft_criteria_groups')}&searchtype=${urlParams.get('searchtype')}`,
+							url: url,
 							method: 'GET'
 						}
 					}

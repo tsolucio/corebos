@@ -345,6 +345,7 @@ function getListViewHeaders($currentModule, $tabid) {
 	require_once "modules/$currentModule/$currentModule.php";
 	$profileid = getUserProfile($current_user->id);
 	$profileid = reset($profileid);
+	$isRecycleModule = isset($_REQUEST['isRecycleModule']) ? vtlib_purify($_REQUEST['isRecycleModule']): '';
 	if ($currentModule == 'Utilities') {
 		$currentModule = vtlib_purify($_REQUEST['formodule']);
 	}
@@ -378,7 +379,7 @@ function getListViewHeaders($currentModule, $tabid) {
 	//add action in header
 	$actionPermission = getTabsActionPermission($profileid)[$tabid];
 	$edit = true;
-	if ($actionPermission[1]) {
+	if ($actionPermission[1] || $isRecycleModule == 'true') {
 		$edit = false;
 	}
 	$controller = new ListViewController($adb, $current_user, $queryGenerator);
