@@ -11,7 +11,7 @@
 	{assign var='DESERTInfo' value='LBL_NO_DATA'|@getTranslatedString:$MODULE}
 	{include file='Components/Desert.tpl'}
 {else}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script type="text/javascript" src="include/pivottable/d3/d3.min.js"></script>
 <script src="include/pivottable/Plotly/plotly-2.8.3.min.js"></script>
 <script src="include/pivottable/pivot.js"></script>
 <script src="include/pivottable/d3_renderers.js"></script>
