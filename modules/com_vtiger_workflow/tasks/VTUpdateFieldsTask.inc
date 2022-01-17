@@ -9,7 +9,6 @@
  ************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
-require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 
 class VTUpdateFieldsTask extends VTTask {
 

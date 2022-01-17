@@ -191,7 +191,6 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	echo '</span>';
 }
 $tm = new VTTaskManager($adb);
-$taskQueue = new VTTaskQueue($adb);
 $tasks = $tm->getTasksForWorkflow($workflow->id);
 foreach ($tasks as $task) {
 	if (is_object($task) && $task->active && get_class($task) == 'VTEmailTask') {

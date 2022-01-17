@@ -17,7 +17,6 @@
  *************************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
-require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 require_once 'modules/cbMap/cbMap.php';
 require_once 'include/events/include.inc';
 

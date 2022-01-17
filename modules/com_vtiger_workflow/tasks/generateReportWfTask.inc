@@ -9,7 +9,6 @@
  ************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
-require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 require_once 'modules/Reports/Reports.php';
 require_once 'modules/Reports/ReportRun.php';
 require_once 'modules/cbQuestion/cbQuestion.php';
