@@ -11,7 +11,12 @@
 	{assign var='DESERTInfo' value='LBL_NO_DATA'|@getTranslatedString:$MODULE}
 	{include file='Components/Desert.tpl'}
 {else}
+<script type="text/javascript" src="include/pivottable/d3/d3.min.js"></script>
+<script src="include/pivottable/Plotly/plotly-2.8.3.min.js"></script>
 <script src="include/pivottable/pivot.js"></script>
+<script src="include/pivottable/d3_renderers.js"></script>
+<script src="include/pivottable/plotly_renderers.js"></script>
+<script src="include/pivottable/export_renderers.js"></script>
 <link href="include/pivottable/pivot.css" rel="stylesheet">
 <script src="include/pivottable/export_renderers.min.js"></script>
 <script src="include/pivottable/nrecopivottableext.js"></script>
@@ -36,8 +41,12 @@ $(function() {
 		var sum = $.pivotUtilities.aggregatorTemplates.sum;
 		var numberFormat = $.pivotUtilities.numberFormat;
 		var intFormat = numberFormat({digitsAfterDecimal: 0});
-		var stdRendererNames = ["Table","Table Barchart","Heatmap","Row Heatmap","Col Heatmap"];
-		var wrappedRenderers = $.extend( {}, $.pivotUtilities.renderers);
+		var renderers = $.extend(
+			$.pivotUtilities.renderers,
+			$.pivotUtilities.plotly_renderers,
+			$.pivotUtilities.d3_renderers,
+			$.pivotUtilities.export_renderers
+		);
 		var nrecoPivotExt = new NRecoPivotTableExtensions({
 			drillDownHandler: function (dataFilter) {
 				var filterParts = [];
@@ -46,15 +55,11 @@ $(function() {
 				}
 			}
 		});
-		$.each(stdRendererNames, function() {
-			var rName = this;
-			wrappedRenderers[rName] = nrecoPivotExt.wrapPivotExportRenderer(nrecoPivotExt.wrapTableRenderer(wrappedRenderers[rName]));
-		});
 		$("#output").pivotUI([{/literal}{$RECORDS}{literal}], {
 			rows: [{/literal}{$ROWS}{literal}],
 			cols: [{/literal}{$COLS}{literal}],
 			{/literal}{$aggreg}{literal},
-			renderers: wrappedRenderers,
+			renderers: renderers,
 			rendererOptions: {
 				table: {
 					clickCallback: function(e, value, filters, pivotData) {

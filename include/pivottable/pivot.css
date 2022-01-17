@@ -149,3 +149,11 @@ table.pvtTable tbody tr td {
 	visibility: visible;
 	z-index:10000000 ; 
 }
+.node {
+	border: solid 1px white;
+	font: 10px sans-serif;
+	line-height: 12px;
+	overflow: hidden;
+	position: absolute;
+	text-indent: 2px;
+}
