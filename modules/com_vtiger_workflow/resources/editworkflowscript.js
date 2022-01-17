@@ -792,8 +792,10 @@ function onschedule_preparescreen(radiobutton) {
 	const val = jQuery(radiobutton).val();
 	if (val=='ON_SCHEDULE') {
 		jQuery('#scheduleBox').show();
+		jQuery('#wf_run_once').show();
 	} else {
 		jQuery('#scheduleBox').hide();
+		jQuery('#wf_run_once').hide();
 	}
 	if (val=='ON_SCHEDULE' || val=='MANUAL') {
 		jQuery('#fsmalaunch').show();

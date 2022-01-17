@@ -202,6 +202,17 @@
 			</span>
 			</label>
 			</span>
+			<span class="slds-radio slds-p-top_xx-small" id="wf_run_once">
+			<input type="radio" id="radio-8" value="executeonce" name="options"  {if $workflow->options eq 'executeonce'}checked="checked"{/if}  />
+			<label class="slds-radio__label" for="radio-8">
+			<span class="slds-radio_faux"></span>
+			<span class="slds-form-element__label">
+				<span style="width:150px;display:inline-block;">{'Execute once'|@getTranslatedString}</span>
+				<input type='hidden' class='small' name="executeonce_type" id="executeonce_type" value={$workflow->moduleName}>
+				<input id="executeonce" name="executeonce" type="hidden" value="{$workflow->executeonce}">
+			</span>
+			</label>
+			</span>
 			</div>
 			<span class="slds-p-top_small slds-align_absolute-center">
 			<button class="slds-button slds-button_success" id="btnmalaunch" name="btnmalaunch" onclick="editWFSaveConditions();">{'Launch Now'|getTranslatedString:'com_vtiger_workflow'}</button>

@@ -230,6 +230,7 @@ class WorkFlowScheduler {
 					}
 				}
 			}
+			if ($workflow->options != 'executeonce')
 			$vtWorflowManager->updateNexTriggerTime($workflow);
 		}
 		if (!empty($errortasks)) {
