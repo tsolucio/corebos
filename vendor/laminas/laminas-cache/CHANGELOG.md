@@ -2,6 +2,149 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.10.3 - 2021-05-03
+
+
+-----
+
+### Release Notes for [2.10.3](https://github.com/laminas/laminas-cache/milestone/6)
+
+2.10.x bugfix release (patch)
+
+### Fixes
+- Fixes a `PSR-6` deletion regression which was introduced in 2.10.2. The `CacheItemPoolDecorator` now verifies that all keys are absent from the storage. This is now in sync with the `SimpleCacheDecorator`.
+
+### 2.10.3
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
+
+#### Bug
+
+ - [100: bugfix: `CacheItemPoolDecorator` uses `StorageItemInterface::hasItems` to verify deletion](https://github.com/laminas/laminas-cache/pull/100) thanks to @boesing
+
+## 2.10.2 - 2021-04-29
+
+
+-----
+
+### Release Notes for [2.10.2](https://github.com/laminas/laminas-cache/milestone/5)
+
+2.10.x bugfix release (patch)
+
+### Fixed
+- The decorator for PSR-6 `CacheItemPool` assumed that a deletion was successful even if the underlying storage failed to delete these items.
+
+### 2.10.2
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **2**
+- Total contributors: **1**
+
+#### Bug
+
+ - [85: bugfix: remove items returned true even when removal failed](https://github.com/laminas/laminas-cache/pull/85) thanks to @boesing
+
+#### Documentation
+
+ - [81: docs: add example `composer.json` for required cache adapters](https://github.com/laminas/laminas-cache/pull/81) thanks to @boesing
+
+## 2.10.1 - 2021-02-25
+
+
+-----
+
+### Release Notes for [2.10.1](https://github.com/laminas/laminas-cache/milestone/4)
+
+2.10.x bugfix release (patch)
+
+### Added
+
+- Added documentation for `BlackHole` Adapter
+
+### 2.10.1
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
+
+#### Documentation
+
+ - [68: docs: add `BlackHole` adapter docs](https://github.com/laminas/laminas-cache/pull/68) thanks to @boesing
+
+## 2.10.0 - 2020-11-08
+
+**As decided within the [TSC meeting in November 2020](https://github.com/laminas/technical-steering-committee/blob/main/meetings/minutes/2020-11-02-TSC-Minutes.md#cache-adapters), v2.10 is the last minor version in the v2 series.**
+
+### Added
+
+- [#21](https://github.com/laminas/laminas-cache/pull/21) Adds new `PluginAwareInterface` and `PluginCapableInterface` to provide better typehinting against plugin capable storage adapters
+- [#40](https://github.com/laminas/laminas-cache/pull/40) Adds installation instructions to documentation.
+
+### Changed
+
+- [#23](https://github.com/laminas/laminas-cache/pull/23) Move APC adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-apc)
+- [#24](https://github.com/laminas/laminas-cache/pull/24) Move APCu adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-apcu)
+- [#25](https://github.com/laminas/laminas-cache/pull/25) Move BlackHole adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-blackhole)
+- [#27](https://github.com/laminas/laminas-cache/pull/27) Move DBA adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-dba)
+- [#28](https://github.com/laminas/laminas-cache/pull/28) Move ExtMongodb adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-ext-mongodb)
+- [#29](https://github.com/laminas/laminas-cache/pull/29) Move Filesystem adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-filesystem)
+- [#30](https://github.com/laminas/laminas-cache/pull/30) Move Memcache adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-memcache)
+- [#31](https://github.com/laminas/laminas-cache/pull/30) Move Memcached adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-memcached)
+- [#32](https://github.com/laminas/laminas-cache/pull/32) Move Memory adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-memory)
+- [#33](https://github.com/laminas/laminas-cache/pull/28) Move Mongodb adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-mongodb)
+- [#34](https://github.com/laminas/laminas-cache/pull/34) Move Redis adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-redis)
+- [#35](https://github.com/laminas/laminas-cache/pull/35) Move Session adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-session)
+- [#36](https://github.com/laminas/laminas-cache/pull/36) Move WinCache adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-wincache)
+- [#37](https://github.com/laminas/laminas-cache/pull/37) Move XCache adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-xcache)
+- [#38](https://github.com/laminas/laminas-cache/pull/38) Move ZendServer adapter to its own [satellite package](https://github.com/laminas/laminas-cache-storage-adapter-zend-server)
+
+### Deprecated
+
+- [#21](https://github.com/laminas/laminas-cache/pull/21) In case the `StorageFactory` has to create a custom `StorageAdapterInterface` implementation which does not extend the `AbstractAdapter`, the factory will trigger a deprecation message due to the missing `PluginAwareInterface` implementation when a `plugins` configuration was provided.
+
+### Removed
+
+- [#45](https://github.com/laminas/laminas-cache/pull/45) Removed abstract test classes as they're moved to an [own package](https://github.com/laminas/laminas-cache-storage-adapter-test).
+
+
+-----
+
+### Release Notes for [2.10.0](https://github.com/laminas/laminas-cache/milestone/1)
+
+Initial release to introduce `laminas-cache-storage-adapter-*` satellite packages
+
+### 2.10.0
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **18**
+- Total contributors: **2**
+
+#### Enhancement
+
+ - [45: Remove test files](https://github.com/laminas/laminas-cache/pull/45) thanks to @boesing
+ - [38: Switch to `laminas/laminas-cache-storage-adapter-zend-server`](https://github.com/laminas/laminas-cache/pull/38) thanks to @boesing
+ - [37: Switch to `laminas/laminas-cache-storage-adapter-xcache`](https://github.com/laminas/laminas-cache/pull/37) thanks to @boesing
+ - [36: Switch to `laminas/laminas-cache-storage-adapter-wincache`](https://github.com/laminas/laminas-cache/pull/36) thanks to @boesing
+ - [35: Switch to `laminas/laminas-cache-storage-adapter-session`](https://github.com/laminas/laminas-cache/pull/35) thanks to @boesing
+ - [34: Switch to `laminas/laminas-cache-storage-adapter-redis`](https://github.com/laminas/laminas-cache/pull/34) thanks to @boesing
+ - [33: Switch to `laminas/laminas-cache-storage-adapter-mongodb`](https://github.com/laminas/laminas-cache/pull/33) thanks to @boesing
+ - [32: Switch to `laminas/laminas-cache-storage-adapter-memory`](https://github.com/laminas/laminas-cache/pull/32) thanks to @boesing
+ - [31: Switch to `laminas/laminas-cache-storage-adapter-memcached`](https://github.com/laminas/laminas-cache/pull/31) thanks to @boesing
+ - [30: Switch to `laminas/laminas-cache-storage-adapter-memcache`](https://github.com/laminas/laminas-cache/pull/30) thanks to @boesing
+ - [29: Switch to `laminas/laminas-cache-storage-adapter-filesystem`](https://github.com/laminas/laminas-cache/pull/29) thanks to @boesing
+ - [28: Switch to `laminas/laminas-cache-storage-adapter-ext-mongodb`](https://github.com/laminas/laminas-cache/pull/28) thanks to @boesing
+ - [27: Switch to `laminas/laminas-cache-storage-adapter-dba`](https://github.com/laminas/laminas-cache/pull/27) thanks to @boesing
+ - [25: Switch to `laminas/laminas-cache-storage-adapter-blackhole`](https://github.com/laminas/laminas-cache/pull/25) thanks to @boesing
+ - [24: Switch to `laminas/laminas-cache-storage-adapter-apcu`](https://github.com/laminas/laminas-cache/pull/24) thanks to @boesing
+ - [23: Switch to `laminas/laminas-cache-storage-adapter-apc`](https://github.com/laminas/laminas-cache/pull/23) thanks to @boesing
+ - [21: Added plugin interfaces and marked `EventsCapableInterface` as deprecated](https://github.com/laminas/laminas-cache/pull/21) thanks to @boesing
+
+#### Documentation,Enhancement
+
+ - [40: Adds new page for installation to documentation](https://github.com/laminas/laminas-cache/pull/40) thanks to @froschdesign
+
 ## 2.9.0 - 2019-08-29
 
 ### Added

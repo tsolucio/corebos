@@ -25,16 +25,17 @@ class Question
     private $attempts;
     private $hidden = false;
     private $hiddenFallback = true;
-    private $autocompleterValues;
+    private $autocompleterCallback;
     private $validator;
     private $default;
     private $normalizer;
+    private $trimmable = true;
 
     /**
      * @param string $question The question to ask to the user
      * @param mixed  $default  The default answer to return if the user enters nothing
      */
-    public function __construct($question, $default = null)
+    public function __construct(string $question, $default = null)
     {
         $this->question = $question;
         $this->default = $default;
@@ -81,7 +82,7 @@ class Question
      */
     public function setHidden($hidden)
     {
-        if ($this->autocompleterValues) {
+        if ($this->autocompleterCallback) {
             throw new LogicException('A hidden question cannot use the autocompleter.');
         }
 
@@ -121,34 +122,60 @@ class Question
      */
     public function getAutocompleterValues()
     {
-        return $this->autocompleterValues;
+        $callback = $this->getAutocompleterCallback();
+
+        return $callback ? $callback('') : null;
     }
 
     /**
      * Sets values for the autocompleter.
      *
-     * @param iterable|null $values
-     *
      * @return $this
      *
-     * @throws InvalidArgumentException
      * @throws LogicException
      */
-    public function setAutocompleterValues($values)
+    public function setAutocompleterValues(?iterable $values)
     {
         if (\is_array($values)) {
             $values = $this->isAssoc($values) ? array_merge(array_keys($values), array_values($values)) : array_values($values);
+
+            $callback = static function () use ($values) {
+                return $values;
+            };
+        } elseif ($values instanceof \Traversable) {
+            $valueCache = null;
+            $callback = static function () use ($values, &$valueCache) {
+                return $valueCache ?? $valueCache = iterator_to_array($values, false);
+            };
+        } else {
+            $callback = null;
         }
 
-        if (null !== $values && !\is_array($values) && !$values instanceof \Traversable) {
-            throw new InvalidArgumentException('Autocompleter values can be either an array, `null` or a `Traversable` object.');
-        }
+        return $this->setAutocompleterCallback($callback);
+    }
 
-        if ($this->hidden) {
+    /**
+     * Gets the callback function used for the autocompleter.
+     */
+    public function getAutocompleterCallback(): ?callable
+    {
+        return $this->autocompleterCallback;
+    }
+
+    /**
+     * Sets the callback function used for the autocompleter.
+     *
+     * The callback is passed the user input as argument and should return an iterable of corresponding suggestions.
+     *
+     * @return $this
+     */
+    public function setAutocompleterCallback(callable $callback = null): self
+    {
+        if ($this->hidden && null !== $callback) {
             throw new LogicException('A hidden question cannot use the autocompleter.');
         }
 
-        $this->autocompleterValues = $values;
+        $this->autocompleterCallback = $callback;
 
         return $this;
     }
@@ -180,13 +207,11 @@ class Question
      *
      * Null means an unlimited number of attempts.
      *
-     * @param int|null $attempts
-     *
      * @return $this
      *
      * @throws InvalidArgumentException in case the number of attempts is invalid
      */
-    public function setMaxAttempts($attempts)
+    public function setMaxAttempts(?int $attempts)
     {
         if (null !== $attempts && $attempts < 1) {
             throw new InvalidArgumentException('Maximum number of attempts must be a positive value.');
@@ -235,8 +260,23 @@ class Question
         return $this->normalizer;
     }
 
-    protected function isAssoc($array)
+    protected function isAssoc(array $array)
     {
         return (bool) \count(array_filter(array_keys($array), 'is_string'));
+    }
+
+    public function isTrimmable(): bool
+    {
+        return $this->trimmable;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setTrimmable(bool $trimmable): self
+    {
+        $this->trimmable = $trimmable;
+
+        return $this;
     }
 }

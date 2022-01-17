@@ -22,10 +22,6 @@
         "sort-packages": true
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "2.9.x-dev",
-            "dev-develop": "2.10.x-dev"
-        },
         "laminas": {
             "component": "Laminas\\Cache",
             "config-provider": "Laminas\\Cache\\ConfigProvider"
@@ -33,6 +29,21 @@
     },
     "require": {
         "php": "^5.6 || ^7.0",
+        "laminas/laminas-cache-storage-adapter-apc": "^1.0",
+        "laminas/laminas-cache-storage-adapter-apcu": "^1.0",
+        "laminas/laminas-cache-storage-adapter-blackhole": "^1.0",
+        "laminas/laminas-cache-storage-adapter-dba": "^1.0",
+        "laminas/laminas-cache-storage-adapter-ext-mongodb": "^1.0",
+        "laminas/laminas-cache-storage-adapter-filesystem": "^1.0",
+        "laminas/laminas-cache-storage-adapter-memcache": "^1.0",
+        "laminas/laminas-cache-storage-adapter-memcached": "^1.0",
+        "laminas/laminas-cache-storage-adapter-memory": "^1.0",
+        "laminas/laminas-cache-storage-adapter-mongodb": "^1.0",
+        "laminas/laminas-cache-storage-adapter-redis": "^1.0",
+        "laminas/laminas-cache-storage-adapter-session": "^1.0",
+        "laminas/laminas-cache-storage-adapter-wincache": "^1.0",
+        "laminas/laminas-cache-storage-adapter-xcache": "^1.0",
+        "laminas/laminas-cache-storage-adapter-zend-server": "^1.0",
         "laminas/laminas-eventmanager": "^2.6.3 || ^3.2",
         "laminas/laminas-servicemanager": "^2.7.8 || ^3.3",
         "laminas/laminas-stdlib": "^3.2.1",
@@ -44,7 +55,6 @@
         "cache/integration-tests": "^0.16",
         "laminas/laminas-coding-standard": "~1.0.0",
         "laminas/laminas-serializer": "^2.6",
-        "laminas/laminas-session": "^2.7.4",
         "phpbench/phpbench": "^0.13",
         "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2"
     },
@@ -53,20 +63,7 @@
         "psr/simple-cache-implementation": "1.0"
     },
     "suggest": {
-        "ext-apc": "APC or compatible extension, to use the APC storage adapter",
-        "ext-apcu": "APCU >= 5.1.0, to use the APCu storage adapter",
-        "ext-dba": "DBA, to use the DBA storage adapter",
-        "ext-memcache": "Memcache >= 2.0.0 to use the Memcache storage adapter",
-        "ext-memcached": "Memcached >= 1.0.0 to use the Memcached storage adapter",
-        "ext-mongo": "Mongo, to use MongoDb storage adapter",
-        "ext-mongodb": "MongoDB, to use the ExtMongoDb storage adapter",
-        "ext-redis": "Redis, to use Redis storage adapter",
-        "ext-wincache": "WinCache, to use the WinCache storage adapter",
-        "ext-xcache": "XCache, to use the XCache storage adapter",
-        "laminas/laminas-serializer": "Laminas\\Serializer component",
-        "laminas/laminas-session": "Laminas\\Session component",
-        "mongodb/mongodb": "Required for use with the ext-mongodb adapter",
-        "mongofill/mongofill": "Alternative to ext-mongo - a pure PHP implementation designed as a drop in replacement"
+        "laminas/laminas-serializer": "Laminas\\Serializer component"
     },
     "autoload": {
         "files": [
@@ -96,6 +93,6 @@
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
     },
     "replace": {
-        "zendframework/zend-cache": "self.version"
+        "zendframework/zend-cache": "^2.9.0"
     }
 }
