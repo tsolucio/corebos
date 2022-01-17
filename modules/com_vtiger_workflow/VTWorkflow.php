@@ -245,10 +245,9 @@ class Workflow {
 		$entityCache = new VTEntityCache($user);
 		$util->revertUser();
 		require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
-		require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 
 		$tm = new VTTaskManager($adb);
-		$taskQueue = new VTTaskQueue($adb);
+		$cbmq = coreBOS_MQTM::getInstance();
 		$tasks = $tm->getTasksForWorkflow($this->id);
 		$errortasks = array();
 		foreach ($tasks as $task) {
@@ -271,7 +270,12 @@ class Workflow {
 					// may change during the delay. This is for some certain types of updates, generally
 					// absolute updates. You MUST know what you are doing when creating workflows.
 					if ($delay!=0 && (get_class($task) == 'VTUpdateFieldsTask' || get_class($task) == 'VTCreateEntityTask')) {
-						$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
+						$msg = array(
+							'taskId' => $task->id,
+							'entityId' => $entityData->getId(),
+							'when' => $delay
+						);
+						$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, 8640000, 0, 0, json_encode($msg));
 					} else {
 						$entityCache->emptyCache($entityData->getId());
 						if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
@@ -290,7 +294,12 @@ class Workflow {
 						}
 					}
 				} else {
-					$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
+					$msg = array(
+						'taskId' => $task->id,
+						'entityId' => $entityData->getId(),
+						'when' => $delay
+					);
+					$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, 8640000, 0, 0, json_encode($msg));
 				}
 			}
 		}

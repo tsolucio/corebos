@@ -39,13 +39,13 @@ require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/include.inc';
+require_once 'modules/com_vtiger_workflow/cbmqtm_wftaskqueue.php';
 
 function vtRunTaskJob($adb) {
 	global $logbg;
 	$util = new VTWorkflowUtils();
 	$adminUser = $util->adminUser();
-	$tq = new VTTaskQueue($adb);
-	$readyTasks = $tq->getReadyTasks();
+	$readyTasks = cbmqtm_wftaskqueue::WFTaskQueue();
 	$logbg->debug('WF Cron:: Ready Tasks from the queue');
 	$logbg->debug($readyTasks);
 	$tm = new VTTaskManager($adb);

@@ -216,4 +216,11 @@
 	<classname>updateAccountsAndContactsHierarchy</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>MessageQueue channel subscription for Workflow Task Queue</description>
+	<filename>build/changeSets/2021/WorkflowTaskMessageQueueChannelSubscription.php</filename>
+	<classname>WorkflowTaskMessageQueueChannelSubscription</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

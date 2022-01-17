@@ -188,6 +188,7 @@ class WorkFlowScheduler {
 				continue;
 			}
 			$tm = new VTTaskManager($adb);
+			$cbmq = coreBOS_MQTM::getInstance();
 			$tasks = $tm->getTasksForWorkflow($workflow->id);
 			if ($tasks) {
 				$records = $this->getEligibleWorkflowRecords($workflow);
@@ -224,7 +225,12 @@ class WorkFlowScheduler {
 									}
 								}
 							} else {
-								$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
+								$msg = array(
+									'taskId' => $task->id,
+									'entityId' => $entityData->getId(),
+									'when' => $delay
+								);
+								$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, 8640000, 0, 0, json_encode($msg));
 							}
 						}
 					}
