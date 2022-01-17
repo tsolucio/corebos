@@ -59,16 +59,17 @@ function getListViewJSON($currentModule, $tabid, $entries = 20, $orderBy = 'DESC
 	} elseif (($searchtype == 'Advanced' || $searchtype == 'advance') && $searchUrl != '') {
 		$searchUrl = urldecode($searchUrl);
 		$search = explode('&', $searchUrl);
-		foreach ($search as $value) {
-			if (!empty($value)) {
-				$param = explode('=', $value);
-				$searchCriteria[$param[0]] = $param[1];
-			}
-		}
 		if ($searchtype == 'advance') {
 			$searchCriteria['advft_criteria'] = $searchUrl;
 			$searchCriteria['advft_criteria_groups'] = vtlib_purify($_REQUEST['advft_criteria_groups']);
 			$searchCriteria['searchtype'] = $searchtype;
+		} else {
+			foreach ($search as $value) {
+				if (!empty($value)) {
+					$param = explode('=', $value);
+					$searchCriteria[$param[0]] = $param[1];
+				}
+			}
 		}
 		$searchCriteria['action'] = $currentModule.'Ajax';
 		$searchCriteria['module'] = $currentModule;
