@@ -24,17 +24,19 @@ class WorkflowTaskMessageQueueChannelSubscription extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
+			// migrate existing work to new queue
 			$cbmq = coreBOS_MQTM::getInstance();
-			$cbmq->subscribeToChannel(
-				'wfTaskQueueChannel',
-				'wftaskqueue',
-				'wftaskqueue',
-				array(
-					'file'=>'modules/com_vtiger_workflow/cbmqtm_wftaskqueue.php',
-					'class'=>'cbmqtm_wftaskqueue',
-					'method'=>'WFTaskQueue'
-				)
-			);
+			$result = $adb->pquery('select * from com_vtiger_workflowtask_queue', array());
+			$it = new SqlResultIterator($adb, $result);
+			foreach ($it as $row) {
+				$msg = array(
+					'taskId' => $row->task_id,
+					'entityId' => $row->entity_id,
+				);
+				$delay = max($row->do_after-time(), 0);
+				$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, 0, json_encode($msg));
+			}
+			$this->ExecuteQuery('delete from com_vtiger_workflowtask_queue', array());
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}

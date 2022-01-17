@@ -90,13 +90,12 @@ class VTUpdateFieldsTask extends VTTask {
 						$focusrel[$fieldmodule]->clearSingletonSaveFields();
 					}
 					if (count($relmodule)>3 && !$isqueue) {
-						$delay = strtotime(' +5 minutes');
+						$delay = 5*60; // 5 minutes from now
 						$msg = array(
 							'taskId' => $this->id,
 							'entityId' => $entityId,
-							'when' => $delay
 						);
-						$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, 8640000, 0, 0, json_encode($msg));
+						$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, 0, json_encode($msg));
 						return;
 					}
 					$moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, Users::getActiveAdminUser());

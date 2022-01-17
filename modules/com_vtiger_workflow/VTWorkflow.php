@@ -273,9 +273,9 @@ class Workflow {
 						$msg = array(
 							'taskId' => $task->id,
 							'entityId' => $entityData->getId(),
-							'when' => $delay
 						);
-						$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, 8640000, 0, 0, json_encode($msg));
+						$delay = max($delay-time(), 0);
+						$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, 0, json_encode($msg));
 					} else {
 						$entityCache->emptyCache($entityData->getId());
 						if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
@@ -297,9 +297,9 @@ class Workflow {
 					$msg = array(
 						'taskId' => $task->id,
 						'entityId' => $entityData->getId(),
-						'when' => $delay
 					);
-					$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, 8640000, 0, 0, json_encode($msg));
+					$delay = max($delay-time(), 0);
+					$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, 0, json_encode($msg));
 				}
 			}
 		}
