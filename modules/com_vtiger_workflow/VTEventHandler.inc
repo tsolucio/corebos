@@ -79,14 +79,12 @@ class VTWorkflowEventHandler extends VTEventHandler {
 				default:
 					throw new LogicException('Should never come here! Execution Condition:' . $workflow->executionCondition);
 			}
-			if ($doEvaluate && $workflow->evaluate($entityCache, $entityData->getId())) {
+			if ($doEvaluate && $workflow->activeWorkflow() && $workflow->evaluate($entityCache, $entityData->getId())) {
+				$entity_id = vtws_getIdComponents($entityData->getId());
+				$entity_id = $entity_id[1];
+				$workflow->performTasks($entityData);
 				if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
-					$entity_id = vtws_getIdComponents($entityData->getId());
-					$entity_id = $entity_id[1];
 					$workflow->markAsCompletedForRecord($entity_id);
-				}
-				if ($workflow->activeWorkflow()) {
-					$workflow->performTasks($entityData);
 				}
 			}
 		}

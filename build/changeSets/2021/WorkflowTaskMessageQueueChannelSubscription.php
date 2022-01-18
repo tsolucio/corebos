@@ -13,6 +13,7 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
+include_once 'modules/com_vtiger_workflow/VTWorkflow.php';
 
 class WorkflowTaskMessageQueueChannelSubscription extends cbupdaterWorker {
 
@@ -25,8 +26,14 @@ class WorkflowTaskMessageQueueChannelSubscription extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			// migrate existing work to new queue
-			$cbmq = coreBOS_MQTM::getInstance();
-			$result = $adb->pquery('select * from com_vtiger_workflowtask_queue', array());
+			$this->ExecuteQuery('ALTER TABLE com_vtiger_workflow_activatedonce ADD pending tinyint default 0;');
+			$result = $adb->pquery(
+				'select com_vtiger_workflowtask_queue.task_id, entity_id, do_after, com_vtiger_workflows.workflow_id, execution_condition
+				from com_vtiger_workflowtask_queue
+				inner join com_vtiger_workflowtasks on com_vtiger_workflowtasks.task_id=com_vtiger_workflowtask_queue.task_id
+				inner join com_vtiger_workflows on com_vtiger_workflows.workflow_id=com_vtiger_workflowtasks.workflow_id',
+				array()
+			);
 			$it = new SqlResultIterator($adb, $result);
 			foreach ($it as $row) {
 				$msg = array(
@@ -34,7 +41,7 @@ class WorkflowTaskMessageQueueChannelSubscription extends cbupdaterWorker {
 					'entityId' => $row->entity_id,
 				);
 				$delay = max($row->do_after-time(), 0);
-				$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, 0, json_encode($msg));
+				Workflow::pushWFTaskToQueue($row->workflow_id, $row->execution_condition, $row->entity_id, $msg, $delay);
 			}
 			$this->ExecuteQuery('delete from com_vtiger_workflowtask_queue', array());
 			$this->ExecuteQuery('drop table com_vtiger_workflowtask_queue', array());

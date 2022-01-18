@@ -26,11 +26,7 @@ function vtDeleteWorkflow($adb, $request) {
 	}
 	$wm = new VTTaskManager($adb);
 	$wfid = $wm->deleteTask($request['task_id']);
-
-	$queue_tasks = $adb->pquery('SELECT * FROM com_vtiger_workflowtask_queue WHERE task_id=?', array($request['task_id']));
-	if ($adb->num_rows($queue_tasks)>0) {
-		$adb->pquery('DELETE FROM com_vtiger_workflowtask_queue WHERE task_id=?', array($request['task_id']));
-	}
+	// We should empty cb_messagequeue of any message related to this task but that is not supported
 	if (isset($request['return_url'])) {
 		$returnUrl=$request['return_url'];
 	} else {

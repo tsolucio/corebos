@@ -13,6 +13,7 @@ require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 class VTWorkflowEntity {
 	private $isDeleted = false;
 	public $formatReferenceValues = true;
+	public $WorkflowID = 0;
 	public $WorkflowEvent = 0;
 	public $WorkflowContext = array();
 

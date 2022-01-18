@@ -48,12 +48,13 @@ function vtRunTaskJob($adb) {
 	$cbmq = coreBOS_MQTM::getInstance();
 	$tm = new VTTaskManager($adb);
 	while ($msg = $cbmq->getMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue')) {
-		list($taskId, $entityId) = json_decode($msg['information'], true);
+		$msginfo  = json_decode($msg['information'], true);
+		$taskId   = $msginfo['taskId'];
+		$entityId = $msginfo['entityId'];
 		$logbg->debug('WF Cron:: Task '.$taskId.' will be executed with entityId: '.$entityId);
 		$task = $tm->retrieveTask($taskId);
 		if (empty($task)) { //If task is not there then continue
-			$logbg->debug('WF Cron:: Task: '.$taskId.' fail when was retrieve');
-			$adb->pquery('delete from com_vtiger_workflowtask_queue where task_id=?', array($taskId));
+			$logbg->debug('WF Cron:: Task: '.$taskId.' could not be found');
 			continue;
 		}
 		list($moduleId, $crmId) = explode('x', $entityId);

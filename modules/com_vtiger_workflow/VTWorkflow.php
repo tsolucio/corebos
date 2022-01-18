@@ -214,19 +214,21 @@ class Workflow {
 	public function isCompletedForRecord($recordId) {
 		global $adb;
 		$result = $adb->pquery('SELECT 1 FROM com_vtiger_workflow_activatedonce WHERE entity_id=? and workflow_id=?', array($recordId, $this->id));
-		$result2=$adb->pquery(
-			'SELECT 1
-			FROM com_vtiger_workflowtasks
-			INNER JOIN com_vtiger_workflowtask_queue ON com_vtiger_workflowtasks.task_id=com_vtiger_workflowtask_queue.task_id
-			WHERE workflow_id=? AND entity_id=?',
-			array($this->id, $recordId)
-		);
-		return !($adb->num_rows($result)===0 && $adb->num_rows($result2)===0); // Workflow not done for specified record
+		return $adb->num_rows($result)>0; // Workflow done for specified record
 	}
 
 	public function markAsCompletedForRecord($recordId) {
 		global $adb;
-		$adb->pquery('INSERT INTO com_vtiger_workflow_activatedonce (entity_id, workflow_id) VALUES (?,?)', array($recordId, $this->id));
+		$adb->pquery('UPDATE com_vtiger_workflow_activatedonce set pending=0 WHERE entity_id=? and workflow_id=?', array($recordId, $this->id));
+	}
+
+	public static function pushWFTaskToQueue($workflowid, $wfexecutionCondition, $entityid, $msg, $delay = 0) {
+		global $adb;
+		$cbmq = coreBOS_MQTM::getInstance();
+		$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, 0, json_encode($msg));
+		if (VTWorkflowManager::$ONCE == $wfexecutionCondition) {
+			$adb->pquery('INSERT INTO com_vtiger_workflow_activatedonce (entity_id, workflow_id, pending) VALUES (?,?,1)', array(vtws_getCRMID($entityid), $workflowid));
+		}
 	}
 
 	public function performTasks(&$entityData, $context = array(), $webservice = false) {
@@ -237,6 +239,7 @@ class Workflow {
 		if ($wf && $adb->num_rows($wf)>0) {
 			$wflaunch = $wf->fields['execution_condition'];
 		}
+		$entityData->WorkflowID = $this->id;
 		$entityData->WorkflowEvent = $wflaunch;
 		$entityData->WorkflowContext = $context;
 		$data = $entityData->getData();
@@ -247,7 +250,6 @@ class Workflow {
 		require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
 
 		$tm = new VTTaskManager($adb);
-		$cbmq = coreBOS_MQTM::getInstance();
 		$tasks = $tm->getTasksForWorkflow($this->id);
 		$errortasks = array();
 		foreach ($tasks as $task) {
@@ -275,7 +277,7 @@ class Workflow {
 							'entityId' => $entityData->getId(),
 						);
 						$delay = max($delay-time(), 0);
-						$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, 0, json_encode($msg));
+						Workflow::pushWFTaskToQueue($this->id, $this->executionCondition, $entityData->getId(), $msg, $delay);
 					} else {
 						$entityCache->emptyCache($entityData->getId());
 						if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
@@ -299,7 +301,7 @@ class Workflow {
 						'entityId' => $entityData->getId(),
 					);
 					$delay = max($delay-time(), 0);
-					$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, 0, json_encode($msg));
+					Workflow::pushWFTaskToQueue($this->id, $this->executionCondition, $entityData->getId(), $msg, $delay);
 				}
 			}
 		}
