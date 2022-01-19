@@ -171,7 +171,6 @@ class WorkFlowScheduler {
 		$user = $util->adminUser();
 
 		$vtWorflowManager = new VTWorkflowManager($adb);
-		$taskQueue = new VTTaskQueue($adb);
 		$entityCache = new VTEntityCache($user);
 
 		// set the time zone to the admin's time zone, this is needed so that the scheduled workflow will be triggered
@@ -224,7 +223,12 @@ class WorkFlowScheduler {
 									}
 								}
 							} else {
-								$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
+								$msg = array(
+									'taskId' => $task->id,
+									'entityId' => $entityData->getId(),
+								);
+								$delay = max($delay-time(), 0);
+								Workflow::pushWFTaskToQueue($workflow->id, $workflow->executionCondition, $entityData->getId(), $msg, $delay);
 							}
 						}
 					}

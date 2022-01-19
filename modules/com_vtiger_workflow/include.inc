@@ -11,5 +11,4 @@ require_once 'include/events/SqlResultIterator.inc';
 require_once 'VTWorkflowManager.inc';
 require_once 'VTTaskManager.inc';
 require_once 'VTWorkflowTemplateManager.inc';
-require_once 'VTTaskQueue.inc';
 ?>

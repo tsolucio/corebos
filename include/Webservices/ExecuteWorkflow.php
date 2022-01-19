@@ -81,22 +81,17 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 		$entityData = $entityCache->forId($crmid);
 		$modPrefix = $entityData->getModuleName(); // it return module from webservice
 		if ($workflow_mod == $modPrefix) { // compare workflow module with webservice module to execute
-			if (isPermitted($workflow_mod, 'DetailView', $crmid)=='no' || isPermitted($workflow_mod, 'Save', $crmid)=='no') {
-				$errortasks[$crmid] = "Permission to access $crmid is denied";
+			if ($workflow->isCompletedForRecord($crmid) || isPermitted($workflow_mod, 'DetailView', $crmid)=='no' || isPermitted($workflow_mod, 'Save', $crmid)=='no') {
+				$errortasks[$crmid] = "Permission to access $crmid is denied or workflow already applied";
 				continue;
 			}
 			if ($workflow->evaluate($entityCache, $entityData->getId())) {
-				if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
-					$entity_id = vtws_getIdComponents($entityData->getId());
-					$entity_id = $entity_id[1];
-					if ($workflow->isCompletedForRecord($entity_id)) {
-						continue;
-					}
-					$workflow->markAsCompletedForRecord($entity_id);
-				}
 				try {
 					if ($workflow->activeWorkflow()) {
 						$workflow->performTasks($entityData, $ctx, true);
+					}
+					if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
+						$workflow->markAsCompletedForRecord($crmid);
 					}
 				} catch (WebServiceException $e) {
 					$errortasks[$crmid] = $e->getMessage();

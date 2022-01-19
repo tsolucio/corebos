@@ -123,6 +123,7 @@ class Field_Metadata {
 	const MULTIPICKLIST_SEPARATOR = ' |##| ';
 	const PICKLIST_EMPTY_VALUE = '#__empty__#';
 	const ATTACHMENT_ENTITY = ' Attachment';
+	const FAR_FAR_AWAY_FROM_NOW = 883612800; // TWENTY EIGHT YEARS
 	const USER_TYPES = array(
 		self::UITYPE_USER_REFERENCE,
 		self::UITYPE_ASSIGNED_TO_PICKLIST,

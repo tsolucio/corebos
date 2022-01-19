@@ -9,7 +9,6 @@
  ************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
-require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 
 class VTUpdateFieldsTask extends VTTask {
 
@@ -32,7 +31,6 @@ class VTUpdateFieldsTask extends VTTask {
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 		$isqueue=$entity->isqueue;
-		$taskQueue = new VTTaskQueue($adb);
 		$moduleName = $entity->getModuleName();
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
@@ -90,8 +88,12 @@ class VTUpdateFieldsTask extends VTTask {
 						$focusrel[$fieldmodule]->clearSingletonSaveFields();
 					}
 					if (count($relmodule)>3 && !$isqueue) {
-						$delay = strtotime(' +5 minutes');
-						$taskQueue->queueTask($this->id, $entityId, $delay);
+						$delay = 5*60; // 5 minutes from now
+						$msg = array(
+							'taskId' => $this->id,
+							'entityId' => $entityId,
+						);
+						Workflow::pushWFTaskToQueue($entity->WorkflowID, $entity->WorkflowEvent, $entityId, $msg, $delay);
 						return;
 					}
 					$moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, Users::getActiveAdminUser());
