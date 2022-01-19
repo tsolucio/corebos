@@ -137,10 +137,8 @@ if (vtlib_isModuleActive('cbCalendar')) {
 						$workflow = reset($workflows);
 						$wsid = vtws_getWebserviceEntityId('cbCalendar', $activity_id);
 						$entityData = $entityCache->forId($wsid);
-						if ($workflow->evaluate($entityCache, $entityData->getId())) {
-							if ($workflow->activeWorkflow()) {
-								$workflow->performTasks($entityData);
-							}
+						if ($workflow->activeWorkflow() && $workflow->evaluate($entityCache, $entityData->getId())) {
+							$workflow->performTasks($entityData);
 						}
 						$util->revertUser();
 					}

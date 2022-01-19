@@ -226,9 +226,9 @@ function compile($text, $id, $module, $changeamp = false, $applyformat = true) {
 			} elseif ($changeamp) {
 				$compiled_marc = retrieve_from_db($marcador, $id, $module, $applyformat);
 				$encoding = mb_detect_encoding($compiled_marc);
-				if($encoding != 'UTF-8'){
+				if ($encoding != 'UTF-8') {
 					$compiledtext = mb_convert_encoding($compiled_marc, 'UTF-8', 'HTML-ENTITIES');
-				}else{
+				} else {
 					$compiledtext = $compiled_marc;
 				}
 				$compiledtext = str_replace('<br>', '<text:line-break/>', $compiledtext);
