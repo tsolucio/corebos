@@ -17,9 +17,9 @@ if (!empty($_REQUEST['hour_format'])) {
 	$hour_format = '12';
 }
 
-$activity_view = vtlib_purify($_REQUEST['activity_view']);
+$activity_view = isset($_REQUEST['activity_view']) ? vtlib_purify($_REQUEST['activity_view']) : 'This Week';
 
-$user_view = vtlib_purify($_REQUEST['user_view']);
+$user_view = isset($_REQUEST['user_view']) ? vtlib_purify($_REQUEST['user_view']) : 'me';
 
 $adb->pquery('delete from vtiger_sharedcalendar where userid=?', array(vtlib_purify($_REQUEST['current_userid'])));
 
@@ -38,7 +38,7 @@ if (isset($_REQUEST['start_hour']) && $_REQUEST['start_hour'] != '') {
 
 $adb->pquery('update vtiger_users set hour_format=?, activity_view=? where id=?', array($hour_format, $activity_view, $current_user->id));
 
-$dayoftheweek = vtlib_purify($_REQUEST['dayoftheweek']);
+$dayoftheweek = isset($_REQUEST['dayoftheweek']) ? vtlib_purify($_REQUEST['dayoftheweek']) : 0;
 
 if (isset($_REQUEST['show_weekends']) && $_REQUEST['show_weekends'] == '1') {
 	$show_weekends = '1';

@@ -385,9 +385,6 @@ class Calendar4You extends CRMEntity {
 
 	public function getDayNumber($day) {
 		switch ($day) {
-			case 'Sunday':
-				$dn = '0';
-				break;
 			case 'Monday':
 				$dn = '1';
 				break;
@@ -405,6 +402,10 @@ class Calendar4You extends CRMEntity {
 				break;
 			case 'Saturday':
 				$dn = '6';
+				break;
+			case 'Sunday':
+			default:
+				$dn = '0';
 				break;
 		}
 		return $dn;

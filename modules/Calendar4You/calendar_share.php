@@ -45,7 +45,7 @@ $smarty->display('Components/PageSubTitle.tpl');
 <div class="slds-form-element slds-form-element_horizontal slds-m-bottom_none">
 	<label class="slds-form-element__label" for="activity_view"><?php echo $users_mod_strings['LBL_ACTIVITY_VIEW']; ?></label>
 	<div class="slds-form-element__control">
-		<select name="activity_view" <?php echo $current_user->start_hour == '' ? 'disabled' : ''; ?> class="slds-select slds-truncate_container_50">
+		<select name="activity_view" id="activity_view" <?php echo $current_user->start_hour == '' ? 'disabled' : ''; ?> class="slds-select slds-truncate_container_50">
 			<option value="Today" <?php echo ($current_user->activity_view == 'Today' ? 'selected' : ''); ?>><?php echo $app_strings['Today']?></option>
 			<option value="This Week" <?php echo $current_user->activity_view == 'This Week' ? 'selected' : '';?>><?php echo $app_strings['This Week']?></option>
 			<option value="This Month" <?php echo $current_user->activity_view=='This Month' ? 'selected' : '';?>><?php echo $app_strings['This Month']?></option>
@@ -62,7 +62,7 @@ $smarty->display('Components/PageSubTitle.tpl');
 				<span class="slds-checkbox_faux"></span>
 				<span class="slds-form-element__label">
 					<?php echo $c_mod_strings['LBL_CALSTART']; ?>
-					<select name="start_hour" <?php echo $current_user->start_hour == '' ? 'disabled' : ''; ?> class="slds-select slds-truncate_container_25">
+					<select name="start_hour" id="start_hour" <?php echo $current_user->start_hour == '' ? 'disabled' : ''; ?> class="slds-select slds-truncate_container_25">
 					<?php
 					for ($i=0; $i <= 23; $i++) {
 						if ($i == 0) {
@@ -101,7 +101,7 @@ $smarty->display('Components/PageSubTitle.tpl');
 <div class="slds-form-element slds-form-element_horizontal slds-m-bottom_none">
 	<label class="slds-form-element__label" for="dayoftheweek"><?php echo $mod_strings['LBL_WEEK_STARTS_AT']; ?></label>
 	<div class="slds-form-element__control">
-		<select name="dayoftheweek" <?php echo $current_user->start_hour == '' ? 'disabled' : ''; ?> class="slds-select slds-truncate_container_50">
+		<select name="dayoftheweek" id="dayoftheweek" <?php echo $current_user->start_hour == '' ? 'disabled' : ''; ?> class="slds-select slds-truncate_container_50">
 		<?php
 		foreach ($Days_Values as $day_key => $day_label) {
 			if ($Calendar_Settings["dayoftheweek"] == $day_key) {
@@ -135,7 +135,7 @@ $smarty->display('Components/PageSubTitle.tpl');
 <div class="slds-form-element slds-form-element_horizontal slds-m-bottom_none">
 	<label class="slds-form-element__label" for="user_view"><?php echo $mod_strings['LBL_DEFAULT_USER_VIEW']; ?></label>
 	<div class="slds-form-element__control">
-		<select name="user_view" <?php echo $current_user->start_hour == '' ? 'disabled' : ''; ?> class="slds-select slds-truncate_container_50">
+		<select name="user_view" id="user_view" <?php echo $current_user->start_hour == '' ? 'disabled' : ''; ?> class="slds-select slds-truncate_container_50">
 			<option value="me" <?php echo $Calendar_Settings['user_view'] == 'me' ? 'selected' : ''; ?>><?php echo $mod_strings['LBL_ME']; ?></option>
 			<option value="all" <?php echo $Calendar_Settings['user_view'] == 'all' ? 'selected' : ''; ?>><?php echo $mod_strings['LBL_ALL_USERS']; ?></option>
 		</select>

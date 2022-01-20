@@ -92,6 +92,10 @@ function enableCalstarttime() {
 var moveupLinkObj, moveupDisabledObj, movedownLinkObj, movedownDisabledObj;
 
 function userEventSharing(selectedusrid, selcolid) {
+	document.getElementById('activity_view').disabled=false;
+	document.getElementById('dayoftheweek').disabled=false;
+	document.getElementById('user_view').disabled=false;
+	document.getElementById('start_hour').disabled=false;
 	formSelectColumnString(selectedusrid, selcolid);
 }
 
