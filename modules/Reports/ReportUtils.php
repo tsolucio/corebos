@@ -44,11 +44,11 @@ function isPicklistUIType($uitype) {
  *
  * @global Users $current_user
  * @param ReportRun $report
- * @param Array $picklistArray
+ * @param array $picklistArray
  * @param ADOFieldObject $dbField
- * @param Array $valueArray
+ * @param array $valueArray
  * @param string $fieldName
- * @return String
+ * @return string
  */
 function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fieldName) {
 	global $current_user;
