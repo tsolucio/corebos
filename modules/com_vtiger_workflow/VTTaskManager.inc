@@ -25,9 +25,9 @@ class VTTaskManager {
 	 * When a new task is saved for the first time a field is added to it called
 	 * id that stores the task id used in the database.
 	 *
-	 * @param $summary A summary of the task instance.
-	 * @param $task The task instance to save.
-	 * @return The id of the task
+	 * @param string summary of the task instance
+	 * @param object the task instance to save
+	 * @return integer the id of the task
 	 */
 	public function saveTask($task) {
 		$adb = $this->adb;
@@ -69,7 +69,7 @@ class VTTaskManager {
 		$orderrs = $adb->pquery('select executionorder,workflow_id from com_vtiger_workflowtasks where task_id=?', array($taskId));
 		$order = $adb->query_result($orderrs, 0, 0);
 		$wfid = $adb->query_result($orderrs, 0, 1);
-		$orderrs = $adb->pquery('update com_vtiger_workflowtasks set executionorder=executionorder-1 where workflow_id=? and executionorder>?', array($wfid, $order));
+		$adb->pquery('update com_vtiger_workflowtasks set executionorder=executionorder-1 where workflow_id=? and executionorder>?', array($wfid, $order));
 		$adb->pquery('delete from com_vtiger_workflowtasks where task_id=?', array($taskId));
 		return $wfid;
 	}
@@ -99,8 +99,8 @@ class VTTaskManager {
 	/**
 	 * Retrieve a task from the database
 	 *
-	 * @param $taskId The id of the task to retrieve.
-	 * @return VTTask The retrieved task.
+	 * @param integer id of the task to retrieve
+	 * @return VTTask the retrieved task
 	 */
 	public function retrieveTask($taskId) {
 		$adb = $this->adb;
