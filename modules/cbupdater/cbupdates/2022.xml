@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate vtigerCRM references from workflow templates</description>
+	<filename>build/changeSets/2022/eliminateVtigerCRMReferencesfromWF.php</filename>
+	<classname>eliminateVtigerCRMReferencesfromWF</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>
