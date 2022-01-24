@@ -122,6 +122,89 @@ function __cb_getrelatedids($arr) {
 	return $relids;
 }
 
+function __cb_getRelatedMassCreateArray($arr) {
+	global $current_user,$log;
+	$masscreateArray = array();
+	if (count($arr)<2 || empty($arr[0])) {
+		return $masscreateArray;
+	}
+	if (is_string($arr[1]) || is_numeric($arr[1])) {
+		$recordid = $arr[1];
+		$mainmodule = getSalesEntityType($arr[1]);
+	} else {
+		$env = $arr[1];
+		$data = $env->getData();
+		$recordid = $data['id'];
+		if (isset($env->moduleName)) {
+			$mainmodule = $env->moduleName;
+		} else {
+			$mainmodule = $env->getModuleName();
+		}
+	}
+	$relmodule = $arr[0];
+
+	try {
+		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, [], $current_user);
+	} catch (\Throwable $th) {
+		return $relrecords;
+	}
+
+	foreach ($relrecords['records'] as $record) {
+		$mcreateFormat = [
+			'elementType' => $relmodule,
+			'referenceId' => $record['id'],
+			'element' => $record
+		];
+
+		$masscreateArray[] = $mcreateFormat;
+	}
+	return $masscreateArray;
+}
+
+function __cb_getRelatedMassCreateArrayConverting($arr) {
+	global $current_user,$log;
+	$masscreateArray = array();
+	$relrecords = array();
+	if (count($arr)<4 || empty($arr[0])) {
+		return $masscreateArray;
+	}
+
+	if (is_string($arr[3]) || is_numeric($arr[3])) {
+		$recordid = $arr[3];
+		$mainmodule = getSalesEntityType($arr[3]);
+	} else {
+		$env = $arr[3];
+		$data = $env->getData();
+		$recordid = $data['id'];
+		if (isset($env->moduleName)) {
+			$mainmodule = $env->moduleName;
+		} else {
+			$mainmodule = $env->getModuleName();
+		}
+	}
+
+	$relmodule = $arr[0];
+
+	try {
+		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, [], $current_user);
+	} catch (\Throwable $th) {
+		return $relrecords;
+	}
+
+	$cbMap = cbMap::getMapByName($arr[1].'2'.$arr[2]);
+
+	foreach ($relrecords['records'] as $record) {
+		$fields = $cbMap->Mapping($records, []);
+		$mcreateFormat = [
+			'elementType' => $relmodule,
+			'referenceId' => $record['id'],
+			'element' => $fields
+		];
+		$masscreateArray[] = $mcreateFormat;
+	}
+	return $masscreateArray;
+}
+
 function __cb_getidof($arr) {
 	global $current_user, $adb;
 	$qg = new QueryGenerator($arr[0], $current_user);
