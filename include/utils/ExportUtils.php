@@ -207,7 +207,7 @@ function exportExcelFileRows($rowsonfo, $totalxclinfo, $fldname, $fieldinfo, $mo
 						$value = ($value==$BoolTrue ? 1:0);
 						break;
 					case 'double':
-						$value = str_replace(',', '.', $value);
+						$value = CurrencyField::convertToDBFormat($value);
 						// fall through intentional
 					case 'integer':
 					case 'currency':
