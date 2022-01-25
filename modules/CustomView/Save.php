@@ -109,10 +109,10 @@ if ($cvmodule != '') {
 	//<<<<<<<standardfilters>>>>>>>>>
 
 	//<<<<<<<advancedfilter>>>>>>>>>
-	$advft_criteria = isset($_REQUEST['advft_criteria']) ? htmlentities($_REQUEST['advft_criteria']) : '';
+	$advft_criteria = isset($_REQUEST['advft_criteria']) ? $_REQUEST['advft_criteria'] : '';
 	$advft_criteria = json_decode($advft_criteria, true);
 
-	$advft_criteria_groups = isset($_REQUEST['advft_criteria_groups']) ? htmlentities($_REQUEST['advft_criteria_groups']) : '';
+	$advft_criteria_groups = isset($_REQUEST['advft_criteria_groups']) ? $_REQUEST['advft_criteria_groups'] : '';
 	$advft_criteria_groups = json_decode($advft_criteria_groups, true);
 	//<<<<<<<advancedfilter>>>>>>>>
 
@@ -146,7 +146,7 @@ if ($cvmodule != '') {
 			if ($customviewresult && isset($columnslist)) {
 				for ($i=0; $i<count($columnslist); $i++) {
 					$columnsql = 'INSERT INTO vtiger_cvcolumnlist (cvid, columnindex, columnname) VALUES (?,?,?)';
-					$columnparams = array($genCVid, $i, $columnslist[$i]);
+					$columnparams = array($genCVid, $i, htmlentities($columnslist[$i]));
 					$columnresult = $adb->pquery($columnsql, $columnparams);
 				}
 				if (!empty($std_filter_list['columnname'])) {
@@ -166,8 +166,7 @@ if ($cvmodule != '') {
 						if (empty($column_condition)) {
 							continue;
 						}
-
-						$adv_filter_column = $column_condition['columnname'];
+						$adv_filter_column = htmlentities($column_condition['columnname']);
 						$adv_filter_comparator = $column_condition['comparator'];
 						$adv_filter_value = $column_condition['value'];
 						$adv_filter_column_condition = $column_condition['columncondition'];
@@ -259,8 +258,8 @@ if ($cvmodule != '') {
 							array(
 								$group_index,
 								$genCVid,
-								$group_condition_info['groupcondition'],
-								$group_condition_info['conditionexpression'],
+								htmlentities($group_condition_info['groupcondition']),
+								htmlentities($group_condition_info['conditionexpression']),
 							)
 						);
 					}
@@ -312,7 +311,7 @@ if ($cvmodule != '') {
 			if ($updatecvresult && isset($columnslist)) {
 				for ($i=0; $i<count($columnslist); $i++) {
 					$columnsql = 'INSERT INTO vtiger_cvcolumnlist (cvid, columnindex, columnname) VALUES (?,?,?)';
-					$columnparams = array($genCVid, $i, $columnslist[$i]);
+					$columnparams = array($genCVid, $i, htmlentities($columnslist[$i]));
 					$columnresult = $adb->pquery($columnsql, $columnparams);
 				}
 				if (!empty($std_filter_list['columnname'])) {
@@ -332,7 +331,7 @@ if ($cvmodule != '') {
 							continue;
 						}
 
-						$adv_filter_column = $column_condition['columnname'];
+						$adv_filter_column = htmlentities($column_condition['columnname']);
 						$adv_filter_comparator = $column_condition['comparator'];
 						$adv_filter_value = $column_condition['value'];
 						$adv_filter_column_condition = $column_condition['columncondition'];
@@ -425,8 +424,8 @@ if ($cvmodule != '') {
 							array(
 								$group_index,
 								$genCVid,
-								$group_condition_info['groupcondition'],
-								$group_condition_info['conditionexpression'],
+								htmlentities($group_condition_info['groupcondition']),
+								htmlentities($group_condition_info['conditionexpression']),
 							)
 						);
 					}
