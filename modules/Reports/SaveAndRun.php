@@ -150,7 +150,7 @@ if ($numOfRows > 0) {
 		$list_report_form->assign('REP_FOLDERS', $ogReport->sgetRptFldr());
 
 		$list_report_form->assign('REPORTNAME', htmlspecialchars($ogReport->reportname, ENT_QUOTES, $default_charset));
-		$jsonheaders = $oReportRun->GenerateReport('HEADERS', '');
+		$jsonheaders = $oReportRun->GenerateReport('HEADERS', $filtersql);
 		$list_report_form->assign('TABLEHEADERS', $jsonheaders['i18nheaders']);
 		$list_report_form->assign('JSONHEADERS', $jsonheaders['jsonheaders']);
 		if ($jsonheaders['has_contents']) {
