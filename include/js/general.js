@@ -5879,7 +5879,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		/* Public attributes */
 		this.el = el;
 		this.input = el.getElementsByClassName('slds-combobox__input')[0];
-		this.specialKeys = ['up', 'down', 'enter', 'esc'];
+		this.specialKeys = ['esc'];
 		this.optionNodes = this.getOptionNodes();
 		this.active = false;
 		this.curSel = this.input.value;
@@ -6640,6 +6640,19 @@ function findUp(element, searchterm) {
 		}
 	}
 	return undefined;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+	initSelect2();
+});
+
+function initSelect2() {
+	const bas_searchfield = document.getElementById('bas_searchfield');
+	if (bas_searchfield !== undefined && bas_searchfield !== null) {
+		$('#bas_searchfield').select2({
+			width: '100%',
+		});
+	}
 }
 
 /****
