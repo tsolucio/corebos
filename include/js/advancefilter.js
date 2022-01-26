@@ -1056,6 +1056,10 @@
 		*/
 		replOps: function (val) {
 			this.opWrapper.innerHTML = '';
+			const el = this.op.combo.el.querySelectorAll('li:first-child,input');
+			const childrens = el[2].getElementsByTagName('span');
+			el[0].value = childrens[2].innerHTML;
+			el[1].value = el[2].dataset.value;
 			this.opWrapper.appendChild(this.op.combo.el);
 		},
 
