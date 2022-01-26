@@ -4,3 +4,4 @@
 <link rel="stylesheet" href="include/components/toast-ui/grid/tui-grid.min.css" type="text/css" />
 <link rel="stylesheet" href="include/components/Colorizer/listview.css" type="text/css" />
 <link rel="stylesheet" href="include/components/listview/listview.css" type="text/css" />
+<link rel="stylesheet" href="include/components/Select2/css/select2.css" type="text/css" />
