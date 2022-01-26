@@ -125,6 +125,7 @@ function __cb_getrelatedids($arr) {
 function __cb_getRelatedMassCreateArray($arr) {
 	global $current_user,$log;
 	$masscreateArray = array();
+	$relrecords = array();
 	if (count($arr)<2 || empty($arr[0])) {
 		return $masscreateArray;
 	}
@@ -142,6 +143,16 @@ function __cb_getRelatedMassCreateArray($arr) {
 		}
 	}
 	$relmodule = $arr[0];
+	$mainrecord = CRMEntity::getInstance($mainmodule);
+	$mainrecord->retrieve_entity_info($recordid, $mainmodule);
+	$mainrecord = $mainrecord->column_fields;
+	$parentrecord = [
+		'elementType' => $mainmodule,
+		'referenceId' => $recordid,
+		'element' => $mainrecord
+	];
+
+	$masscreateArray[] = $parentrecord;
 
 	try {
 		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, [], $current_user);
@@ -150,12 +161,12 @@ function __cb_getRelatedMassCreateArray($arr) {
 	}
 
 	foreach ($relrecords['records'] as $record) {
+		$record[strtolower($mainmodule).'_id'] = '@{'.$recordid.'}';
 		$mcreateFormat = [
 			'elementType' => $relmodule,
 			'referenceId' => $record['id'],
 			'element' => $record
 		];
-
 		$masscreateArray[] = $mcreateFormat;
 	}
 	return $masscreateArray;
@@ -184,21 +195,33 @@ function __cb_getRelatedMassCreateArrayConverting($arr) {
 	}
 
 	$relmodule = $arr[0];
+	$mainrecord = CRMEntity::getInstance($mainmodule);
+	$mainrecord->retrieve_entity_info($recordid, $mainmodule);
+	$mainrecord = $mainrecord->column_fields;
+	$cbMap = cbMap::getMapByName($mainmodule.'2'.$arr[1]);
+	$mappedMainRecords = $cbMap->Mapping($mainrecord, []);
+
+	$parentrecord = [
+		'elementType' => $mainmodule,
+		'referenceId' => $recordid,
+		'element' => $mappedMainRecords
+	];
+
+	$masscreateArray[] = $parentrecord;
 
 	try {
 		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, [], $current_user);
 	} catch (\Throwable $th) {
-		return $relrecords;
+		return $masscreateArray;
 	}
 
-	$cbMap = cbMap::getMapByName($arr[1].'2'.$arr[2]);
-
+	$cbMap = cbMap::getMapByName($arr[1].'2'.$arr[3]);
 	foreach ($relrecords['records'] as $record) {
-		$fields = $cbMap->Mapping($records, []);
+		$records = $cbMap->Mapping($records, []);
+		$record[strtolower($mainmodule).'_id'] = '@{'.$recordid.'}';
 		$mcreateFormat = [
 			'elementType' => $relmodule,
-			'referenceId' => $record['id'],
-			'element' => $fields
+			'element' => $records
 		];
 		$masscreateArray[] = $mcreateFormat;
 	}
