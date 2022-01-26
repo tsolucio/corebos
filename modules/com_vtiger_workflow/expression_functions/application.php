@@ -146,13 +146,12 @@ function __cb_getRelatedMassCreateArray($arr) {
 	$mainrecord = CRMEntity::getInstance($mainmodule);
 	$mainrecord->retrieve_entity_info($recordid, $mainmodule);
 	$mainrecord = $mainrecord->column_fields;
-	$parentrecord = [
+
+	$masscreateArray[] = [
 		'elementType' => $mainmodule,
 		'referenceId' => $recordid,
 		'element' => $mainrecord
 	];
-
-	$masscreateArray[] = $parentrecord;
 
 	try {
 		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, [], $current_user);
@@ -160,15 +159,17 @@ function __cb_getRelatedMassCreateArray($arr) {
 		return $relrecords;
 	}
 
+	$tab = getRelationTables($mainmodule, $relmodule);
+	$reference_field = $tab[array_key_first($tab)][0];
 	foreach ($relrecords['records'] as $record) {
-		$record[strtolower($mainmodule).'_id'] = '@{'.$recordid.'}';
-		$mcreateFormat = [
+		$record[$reference_field] = '@{'.$recordid.'}';
+		$masscreateArray[] = [
 			'elementType' => $relmodule,
 			'referenceId' => $record['id'],
 			'element' => $record
 		];
-		$masscreateArray[] = $mcreateFormat;
 	}
+
 	return $masscreateArray;
 }
 
@@ -198,16 +199,15 @@ function __cb_getRelatedMassCreateArrayConverting($arr) {
 	$mainrecord = CRMEntity::getInstance($mainmodule);
 	$mainrecord->retrieve_entity_info($recordid, $mainmodule);
 	$mainrecord = $mainrecord->column_fields;
-	$cbMap = cbMap::getMapByName($mainmodule.'2'.$arr[1]);
-	$mappedMainRecords = $cbMap->Mapping($mainrecord, []);
 
-	$parentrecord = [
+	$cbMap = cbMap::getMapByName('Workflow_'.$mainmodule.'2'.$arr[1]);
+	$mappedMainRecords = empty($cbMap) ? $mainrecord : $cbMap->Mapping($mainrecord, []);
+
+	$masscreateArray[] = [
 		'elementType' => $mainmodule,
 		'referenceId' => $recordid,
 		'element' => $mappedMainRecords
 	];
-
-	$masscreateArray[] = $parentrecord;
 
 	try {
 		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, [], $current_user);
@@ -215,15 +215,17 @@ function __cb_getRelatedMassCreateArrayConverting($arr) {
 		return $masscreateArray;
 	}
 
-	$cbMap = cbMap::getMapByName($arr[1].'2'.$arr[3]);
+	$cbMap = cbMap::getMapByName('Workflow_'.$arr[1].'2'.$arr[3]);
+
+	$tab = getRelationTables($mainmodule, $relmodule);
+	$reference_field = $tab[array_key_first($tab)][0];
 	foreach ($relrecords['records'] as $record) {
-		$records = $cbMap->Mapping($records, []);
-		$record[strtolower($mainmodule).'_id'] = '@{'.$recordid.'}';
-		$mcreateFormat = [
+		$records = empty($cbMap) ? $record : $cbMap->Mapping($record, []);
+		$records[$reference_field] = '@{'.$recordid.'}';
+		$masscreateArray[] = [
 			'elementType' => $relmodule,
 			'element' => $records
 		];
-		$masscreateArray[] = $mcreateFormat;
 	}
 	return $masscreateArray;
 }
