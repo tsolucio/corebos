@@ -14,7 +14,7 @@ require_once 'modules/Emails/Emails.php';
 /** Function used to send an email
  * $module     - module: only used to add signature if it is different than "Calendar"
  * $to_email   - "TO" email address
- * $from_name  - name that will be shown in the "From", it  will also  be used to search for the user signature
+ * $from_name  - name that will be shown in the "From", it will also be used to search for the user signature
  * $from_email - email address from which the email will come from, if left empty we will search for a username equal to
 					$from_name, if found that email will be used, if not we will use $HELPDESK_SUPPORT_EMAIL_ID
 					if the "FROM EMAIL" field in set in Settings Outgoing Server, that one will be used
@@ -47,8 +47,8 @@ require_once 'modules/Emails/Emails.php';
 						<img src="cid:logo" />
 					wherever you want the logo to appear
  * $replyto    - email address that an automatic "reply to" will be sent
- * $qrScan     - if we should load qrcode images from cache directory   <img src="cid:qrcode{$fname}" />
- * $brScan     - if we should load barcode images from cache directory   <img src="cid:barcode{$fname}" />
+ * $qrScan     - if we should load qrcode images from cache directory <img src="cid:qrcode{$fname}" />
+ * $brScan     - if we should load barcode images from cache directory <img src="cid:barcode{$fname}" />
  */
 function send_mail(
 	$module,
@@ -183,9 +183,9 @@ function send_mail(
 }
 
 /** Function to get the user Email id based on column name and column value
-  * $name -- column name of the vtiger_users vtiger_table
-  * $val  -- column value
-  */
+ * @param string column name of the vtiger_users table
+ * @param string column value
+ */
 function getUserEmailId($name, $val) {
 	global $adb;
 	$adb->println('> getUserEmailId '.$name.', '.$val);
@@ -209,9 +209,9 @@ function getUserEmailId($name, $val) {
 }
 
 /** Funtion to add the user's signature with the content passed
-  * $contents -- where we want to add the signature
-  * $fromname -- which user's signature will be added to the contents
-  */
+ * @param string where we want to add the signature
+ * @param string which user's signature will be added to the contents
+ */
 function addSignature($contents, $fromname) {
 	global $adb, $default_charset, $current_user;
 	$adb->println('> addSignature');
@@ -228,16 +228,16 @@ function addSignature($contents, $fromname) {
 }
 
 /** Function to set all the Mailer properties
-  * $mail		-- reference of the mail object
-  * $subject	-- subject of the email you want to send
-  * $contents	-- body of the email you want to send
-  * $from_email	-- from email id which will be displayed in the mail
-  * $from_name	-- from name which will be displayed in the mail
-  * $to_email	-- to email address  -- This can be an email in a single string, a comma separated
-  * 		   list of emails or an array of email addresses
-  * $attachment	-- see sendmail explanation
-  * $emailid	-- id of the email object which will be used to get the vtiger_attachments - optional
-  */
+ * $mail		-- reference of the mail object
+ * $subject	-- subject of the email you want to send
+ * $contents	-- body of the email you want to send
+ * $from_email	-- from email id which will be displayed in the mail
+ * $from_name	-- from name which will be displayed in the mail
+ * $to_email	-- to email address -- This can be an email in a single string, a comma separated
+ * 		   list of emails or an array of email addresses
+ * $attachment	-- see sendmail explanation
+ * $emailid	-- id of the email object which will be used to get the attachments - optional
+ */
 function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $logo = '', $qrScan = '', $brScan = '') {
 	global $adb;
 	$adb->println('> setMailerProperties');
@@ -343,8 +343,8 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 }
 
 /** Function to set the Mail Server Properties in the object passed
-  * $mail -- reference of the mailobject
-  */
+ * @param object reference of the mailobject
+ */
 function setMailServerProperties($mail) {
 	global $adb,$default_charset, $current_user;
 
@@ -439,10 +439,10 @@ function setMailServerProperties($mail) {
 }
 
 /** Function to add the file as attachment with the mail object
-  * $mail -- reference of the mail object
-  * $filename -- filename which is going to added with the mail
-  * $record -- id of the record - optional
-  */
+ * @param object reference of the mail object
+ * @param string filename which is going to added with the mail
+ * @param integer id of the record - optional
+ */
 function addAttachment($mail, $filename, $record) {
 	global $adb, $root_directory;
 	$adb->println('> addAttachment '.$filename);
@@ -473,10 +473,10 @@ function addAttachment($mail, $filename, $record) {
 }
 
 /** Function to add the file as attachment with the mail object
-  * $mail -- reference of the mail object
-  * $filename -- filename which is going to added with the mail
-  * $data -- file contents to attach
-  */
+ * @param object reference of the mail object
+ * @param string filename which is going to added with the mail
+ * @param string file contents to attach
+ */
 function addStringAttachment($mail, $filename, $data) {
 	global $adb;
 	$adb->println('> addStringAttachment '.$filename);
@@ -484,9 +484,9 @@ function addStringAttachment($mail, $filename, $data) {
 }
 
 /** Function to add all the files as attachment with the mail object
-  * $mail -- reference of the mail object
-  * $record -- email id ie., record id which is used to get the all vtiger_attachments from database
-  */
+ * @param object reference of the mail object
+ * @param integer email id, record id which is used to get all attachments from database
+ */
 function addAllAttachments($mail, $record) {
 	global $adb, $root_directory;
 	$adb->println('> addAllAttachments');
@@ -515,7 +515,7 @@ function addAllAttachments($mail, $record) {
 }
 
 /** Function to get all the related files as attachments
- * @param integer $record - email id: record id which is used to get all the related attachments
+ * @param integer email id: record id which is used to get all the related attachments
  */
 function getAllAttachments($record) {
 	global $adb, $log, $root_directory;
@@ -543,10 +543,10 @@ function getAllAttachments($record) {
 }
 
 /** Function to set the CC or BCC addresses in the mail
-  * $mail -- reference of the mail object
-  * $cc_mod -- mode to set the address ie., cc or bcc
-  * $cc_val -- addresss with comma seperated to set as CC or BCC in the mail
-  */
+ * @param object reference of the mail object
+ * @param string mode to set the address ie., cc or bcc
+ * @param string addresss with comma seperated to set as CC or BCC in the mail
+ */
 function setCCAddress($mail, $cc_mod, $cc_val) {
 	global $adb;
 	$adb->println('> setCCAddress');
@@ -575,8 +575,8 @@ function setCCAddress($mail, $cc_mod, $cc_val) {
 }
 
 /** Function to send the mail which will be called after set all the mail object values
-  * $mail -- reference of the mail object
-  */
+ * @param object reference of the mail object
+ */
 function MailSend($mail) {
 	global $log;
 	$log->debug('> MailSend');
@@ -590,9 +590,9 @@ function MailSend($mail) {
 }
 
 /** Function to get the Parent email id from HelpDesk to send the details about the ticket via email
-  * $returnmodule -- Parent module value. Contact or Account for send email about the ticket details
-  * $parentid -- id of the parent ie., contact or vtiger_account
-  */
+ * @param string Parent module value. Contact or Account for which we send email about the ticket details
+ * @param integer id of the parent ie., contact or account
+ */
 function getParentMailId($parentmodule, $parentid) {
 	global $adb;
 	$adb->println('> getParentMailId '.$parentmodule.', '.$parentid);
@@ -623,10 +623,10 @@ function getParentMailId($parentmodule, $parentid) {
 }
 
 /** Function to parse and get the mail error
-  * $mail -- reference of the mail object
-  * $mail_status -- status of the mail which is sent or not
-  * return -- Mail error occured during the mail sending process
-  */
+ * @param object reference of the mail object
+ * @param string status of the mail which is sent or not
+ * @return string Mail error occured during the mail sending process
+ */
 function getMailError($mail, $mail_status) {
 	//Error types in class.phpmailer.php
 	/*
@@ -654,9 +654,9 @@ function getMailError($mail, $mail_status) {
 }
 
 /** Function to get the mail status string (string of sent mail status)
-  * $mail_status_str -- concatenated string with all the error messages with &&& seperation
-  * return - the error status as a encoded string
-  */
+ * @param string concatenated string with all the error messages with &&& separation
+ * @return string the error status as a encoded string
+ */
 function getMailErrorString($mail_status_str) {
 	global $adb;
 	$adb->println('> getMailErrorString '.$mail_status_str);
@@ -680,9 +680,9 @@ function getMailErrorString($mail_status_str) {
 }
 
 /** Function to parse the error string
-  * $mail_error_str -- base64 encoded string which contains the mail sending errors as concatenated with &&&
-  * return - Error message to display
-  */
+ * @param string base64 encoded string which contains the mail sending errors as concatenated with &&&
+ * @return string Error message to display
+ */
 function parseEmailErrorString($mail_error_str) {
 	global $adb;
 	$adb->println('> parseEmailErrorString '.$mail_error_str);
