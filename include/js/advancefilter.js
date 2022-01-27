@@ -367,13 +367,11 @@
 			for (let i = 0; i < li.length; i++) {
 				if (li[i].getElementsByTagName('span').length == 3) {
 					const list = li[i].getElementsByTagName('span')[2];
-					setTimeout(function() {
-						if (list.innerHTML.toLowerCase().startsWith(el.value.toLowerCase()) && list.innerHTML.toLowerCase().indexOf(el.value.toLowerCase()) > -1) {
-							li[i].style.display = '';
-						} else {
-							li[i].style.display = 'none';
-						}
-					}, 10);
+					if (list.innerHTML.toLowerCase().startsWith(el.value.toLowerCase()) && list.innerHTML.toLowerCase().indexOf(el.value.toLowerCase()) > -1) {
+						li[i].style.display = '';
+					} else {
+						li[i].style.display = 'none';
+					}
 				} else {
 					li[i].style.display = 'none';
 					if (el.value == '') {
