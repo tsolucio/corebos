@@ -52,7 +52,9 @@ function isPicklistUIType($uitype) {
  */
 function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fieldName) {
 	global $current_user;
-
+	if (empty($valueArray) || !isset($valueArray[$fieldName])) {
+		return '';
+	}
 	$db = PearDatabase::getInstance();
 	$value = $valueArray[$fieldName];
 	$fld_type = $dbField->type;
