@@ -622,6 +622,7 @@ function showDefaultCustomView(selectView, module) {
 		} else {
 			ListView.ListViewJSON('filter');
 		}
+		initSelect2();
 		if (result[1] != '') {
 			ldsPrompt.show(alert_arr['ERROR'], result[1]);
 		}

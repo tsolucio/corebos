@@ -357,6 +357,31 @@
 		},
 
 		/*
+			* Method: 'searchFields'
+			* Search fields into advanced filter
+			*/
+		searchFields: function (el) {
+			const dataValue = el.dataset.colId.replace('column', 'value');
+			const dataValueId = this.el.querySelector(`ul[data-value-id="${dataValue}"]`);
+			const li = dataValueId.getElementsByTagName('li');
+			for (let i = 0; i < li.length; i++) {
+				if (li[i].getElementsByTagName('span').length == 3) {
+					const list = li[i].getElementsByTagName('span')[2];
+					if (list.innerHTML.toLowerCase().startsWith(el.value.toLowerCase()) && list.innerHTML.toLowerCase().indexOf(el.value.toLowerCase()) > -1) {
+						li[i].style.display = '';
+					} else {
+						li[i].style.display = 'none';
+					}
+				} else {
+					li[i].style.display = 'none';
+					if (el.value == '') {
+						li[i].style.display = '';
+					}
+				}
+			}
+		},
+
+		/*
 			* Method: 'validate'
 			* Validate ALL the values in the block
 			*
@@ -489,6 +514,8 @@
 		this.condCount = null;
 		this.glueCombo = null;
 		this.preExist  = existing;
+		this.dataVal = null;
+		this.dataCols = null;
 	}
 
 	/* Group static methods */
@@ -569,8 +596,12 @@
 		* @param : (int)
 		*/
 		setCondCount: function (no) {
+			this.dataCols = this.el.querySelectorAll('input[data-cols="search"]');
+			this.dataVal = this.el.querySelectorAll('ul[data-col-value="search-value"]');
 			this.el.setAttribute('data-condcount', no);
 			this.condCount = no;
+			this.dataCols[no-1].setAttribute('data-col-id', `column__${no}_${this.el.getAttribute('data-group-no')}`);
+			this.dataVal[no-1].setAttribute('data-value-id', `value__${no}_${this.el.getAttribute('data-group-no')}`);
 		},
 
 		/*
@@ -1023,6 +1054,10 @@
 		*/
 		replOps: function (val) {
 			this.opWrapper.innerHTML = '';
+			const el = this.op.combo.el.querySelectorAll('li:first-child,input');
+			const childrens = el[2].getElementsByTagName('span');
+			el[0].value = childrens[2].innerHTML;
+			el[1].value = el[2].dataset.value;
 			this.opWrapper.appendChild(this.op.combo.el);
 		},
 

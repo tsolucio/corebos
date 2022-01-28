@@ -180,7 +180,7 @@
 							<div class="slds-combobox_container">
 								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click cbds-advfilt-cond__field" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-										<input class="slds-input slds-combobox__input slds-combobox__input-value" autocomplete="off" role="textbox" type="text" placeholder="{if !empty($SELECTEDFIELD)}{$SELECTEDFIELD.label}{/if}" readonly="" value="{if !empty($SELECTEDFIELD)}{$SELECTEDFIELD.label}{/if}" data-valueholder="nextsibling" />
+										<input class="slds-input slds-combobox__input slds-combobox__input-value" autocomplete="none" data-cols="search" role="textbox" data-col-id="" type="text" oninput="AdvancedFilter.searchFields(this)" placeholder="{if !empty($SELECTEDFIELD)}{$SELECTEDFIELD.label}{/if}" data-valueholder="nextsibling" />
 										<input type="hidden" value="{if !empty($SELECTEDFIELD)}{$SELECTEDFIELD.value}{/if}" />
 										<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
 											<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
@@ -191,7 +191,7 @@
 									<div class="slds-dropdown slds-dropdown_length-7 slds-dropdown_fluid" role="listbox">
 										{if $SOURCE != 'reports-modal'}
 											{foreach from=$MODULES_BLOCK item='COLUMNS_BLOCK' key='MODLABEL'}
-												<ul class="slds-listbox slds-listbox_vertical" role="group">
+												<ul class="slds-listbox slds-listbox_vertical" role="group" data-value-id="" data-col-value="search-value">
 												<li role="presentation" class="slds-listbox__item cbds-bg-blue--dark">
 													<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
 														<h3 class="slds-text-title_caps slds-text-color_inverse" role="presentation">{$MODLABEL|@getTranslatedString:$MODULE}</h3>
