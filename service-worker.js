@@ -10613,7 +10613,7 @@ precacheAndRoute([{
   "revision": "321798c3a4f90cafc07df60d8a8f0f2f"
 }, {
   "url": "include/js/advancefilter.js",
-  "revision": "62ce9d3ed36571c6949c7a4750a8ec88"
+  "revision": "c1badb70952c1a8bfe4a1c18c90d92e8"
 }, {
   "url": "include/js/asterisk.js",
   "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
@@ -10661,7 +10661,7 @@ precacheAndRoute([{
   "revision": "d6dba707e6ffb8142053145754967ad7"
 }, {
   "url": "include/js/general.js",
-  "revision": "cb217cb6f1440f686d22b20a8b4cdfab"
+  "revision": "0e5c6ff04687ad3a294498783221d52a"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "ce80de25f73e55ce40a8b1c4ac68f70a"
@@ -10676,7 +10676,7 @@ precacheAndRoute([{
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "541b4892d15bd0c1f92c1af51947514f"
+  "revision": "2c8eaf1212ca5004069a2ac77291889c"
 }, {
   "url": "include/js/ListViewJSON.js",
   "revision": "7080fa29f42f6daf6721bcce2bf4e9a9"
@@ -10758,6 +10758,12 @@ precacheAndRoute([{
 }, {
   "url": "include/components/loadjs.js",
   "revision": "03a39dd327aca956ea9448782aca04eb"
+}, {
+  "url": "include/components/Select2/css/select2.css",
+  "revision": "675de2a347f3407251629544a114be97"
+}, {
+  "url": "include/components/Select2/js/select2.min.js",
+  "revision": "3e6e33cd306b1235add3d25fcda8541d"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.css",
   "revision": "5794620d5e2be6ceccf5c7e8a3b203c7"
