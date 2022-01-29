@@ -12,6 +12,8 @@ class DataTransform {
 
 	public static $recordString = 'record_id';
 	public static $recordModuleString = 'record_module';
+	public static $donottrimuitype = array(Field_Metadata::UITYPE_FULL_WIDTH_TEXT_AREA, Field_Metadata::UITYPE_HALF_WIDTH_TEXT_AREA);
+	public static $donottrimftype = array('currency', 'double', 'integer', 'date', 'time');
 
 	public static function sanitizeDataWithColumn($row, $meta) {
 		$newRow = array();
@@ -142,11 +144,24 @@ class DataTransform {
 				$row['parent_id'] .= "@$fieldId|";
 			}
 		}
+		$row = DataTransform::trimTextFields($row, $meta);
 		if (isset($row['id'])) {
 			unset($row['id']);
 		}
 		if (isset($row[$meta->getObectIndexColumn()])) {
 			unset($row[$meta->getObectIndexColumn()]);
+		}
+		return $row;
+	}
+
+	public static function trimTextFields($row, $meta) {
+		$moduleFields = $meta->getModuleFields();
+		foreach ($moduleFields as $fieldName => $fieldObj) {
+			$ftype = $fieldObj->getFieldDataType();
+			$uitype = $fieldObj->getUIType();
+			if (!empty($row[$fieldName]) && !in_array($ftype, self::$donottrimftype) && !in_array($uitype, self::$donottrimuitype)) {
+				$row[$fieldName] = trim($row[$fieldName]);
+			}
 		}
 		return $row;
 	}
