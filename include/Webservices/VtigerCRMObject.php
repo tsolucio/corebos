@@ -103,9 +103,7 @@ class VtigerCRMObject {
 		global $adb;
 
 		$error = false;
-		foreach ($element as $k => $v) {
-			$this->instance->column_fields[$k] = $v;
-		}
+		$this->instance->column_fields = array_merge($this->instance->column_fields, $element);
 
 		$adb->startTransaction();
 		try {
@@ -122,9 +120,7 @@ class VtigerCRMObject {
 		global $adb;
 		$error = false;
 
-		foreach ($element as $k => $v) {
-			$this->instance->column_fields[$k] = $v;
-		}
+		$this->instance->column_fields = array_merge($this->instance->column_fields, $element);
 
 		$adb->startTransaction();
 		$this->instance->mode = 'edit';
