@@ -19,9 +19,9 @@ include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
  * Save the attachment to the database
  */
 function SaveAttachmentDB($element) {
-	global $adb;
+	global $adb, $upload_badext;
 	$attachid = $adb->getUniqueId('vtiger_crmentity');
-	$filename = $element['name'];
+	$filename = sanitizeUploadFileName($element['name'], $upload_badext);
 	$description = $filename;
 	$date_var = $adb->formatDate(date('YmdHis'), true);
 	$usetime = $adb->formatDate($date_var, true);

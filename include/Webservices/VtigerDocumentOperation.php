@@ -26,7 +26,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		$this->tabId = $this->meta->getTabId();
 	}
 
-	/*
+	/**
 	 * This create function supports a few virtual fields for the attachment and the related entities
 	 * so it expects and $element array with the normal Document fields and these additional ones:
 	 *
@@ -40,16 +40,17 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 	 *     *** this is done by the main vtws_create() function  ***
 	 */
 	public function create($elementType, $element) {
-		global $adb, $default_charset;
+		global $adb, $default_charset, $upload_badext;
 		$crmObject = new VtigerCRMObject($elementType, false);
 
 		if ($element['filelocationtype']=='I' && !empty($element['filename']) && is_array($element['filename'])) {
 			$file = $element['filename'];
+			$file['name']= sanitizeUploadFileName(str_replace(array('../', '..', ' ', '/'), '_', $file['name']), $upload_badext);
 			$file['assigned_user_id'] = $element['assigned_user_id'];
 			$file['setype'] = 'Documents Attachment';
 			$attachid = SaveAttachmentDB($file);
 			$element['filetype']=$file['type'];
-			$element['filename']= str_replace(array(' ','/'), '_', $file['name']);  // no spaces nor slashes
+			$element['filename']= $file['name'];
 			$element['filesize']=$file['size'];
 			if ($element['filesize']==0) {
 				$result = $adb->pquery('SELECT name,path FROM vtiger_attachments WHERE attachmentsid=?', array($attachid));
@@ -126,7 +127,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		}
 	}
 
-	/*
+	/**
 	 * This method accepts the same virtual fields that the create method does (see create)
 	 *
 	 * It will first eliminate the current related attachement and then relate the new attachment
@@ -135,16 +136,17 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 	 * so ALL relations that are needed must sent in again each time
 	 */
 	public function update($element) {
-		global $adb;
+		global $adb, $upload_badext;
 		$ids = vtws_getIdComponents($element['id']);
 		if ($element['filelocationtype']=='I' && !empty($element['filename']) && is_array($element['filename'])) {
 			$file = $element['filename'];
 			$element['filesize']=$file['size'];
+			$file['name']= sanitizeUploadFileName(str_replace(array('../', '..', ' ', '/'), '_', $file['name']), $upload_badext);
 			$file['assigned_user_id'] = $element['assigned_user_id'];
 			$file['setype'] = 'Documents Attachment';
 			$attachid = SaveAttachmentDB($file);
 			$element['filetype']=$file['type'];
-			$element['filename']= str_replace(' ', '_', $file['name']);
+			$element['filename']= $file['name'];
 		}
 
 		$element = DataTransform::sanitizeForInsert($element, $this->meta);
