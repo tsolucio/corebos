@@ -28,7 +28,7 @@ class createContacts2cbCalendarBusinessMap extends cbupdaterWorker {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
 			$module_name = 'cbMap';
-
+			vtlib_toggleModuleAccess($module_name, true);
 			if ($this->isModuleInstalled($module_name)) {
 				$focusnew = new cbMap();
 				$focusnew->column_fields['assigned_user_id'] = Users::getActiveAdminID();

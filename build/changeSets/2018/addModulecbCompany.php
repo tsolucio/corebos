@@ -32,7 +32,7 @@ class addModulecbCompany extends cbupdaterWorker {
 					$this->installManifestModule($module);
 				}
 				// remove the company settings section
-				$this->ExecuteQuery('update vtiger_settings_field set active = 1  where name = "LBL_COMPANY_DETAILS"', array());
+				$this->ExecuteQuery('update vtiger_settings_field set active=1 where name="LBL_COMPANY_DETAILS"', array());
 
 				global $adb, $default_charset;
 				require_once "modules/$module/$module.php";
