@@ -20,7 +20,7 @@
 function getMenuBranch($mparent) {
 	global $adb;
 	$menustructure = array();
-	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = $mparent order by mseq");
+	$menurs = $adb->pquery('select * from vtiger_evvtmenu where mparent=? order by mseq', array($mparent));
 	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			switch ($menu['mtype']) {
@@ -123,7 +123,7 @@ function getMenuArray($mparent) {
 	global $adb,$current_user;
 	$is_admin = is_admin($current_user);
 	$menustructure = array();
-	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = $mparent and mvisible=1 order by mseq");
+	$menurs = $adb->pquery('select * from vtiger_evvtmenu where mparent=? and mvisible=1 order by mseq', array($mparent));
 	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			if (empty($menu['mpermission']) && $menu['mtype']=='module') {
@@ -189,7 +189,7 @@ function getMenuPicklist($mparent, $level) {
 function getAdminevvtMenu() {
 	global $adb;
 	$rdo = array();
-	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = (select evvtmenuid from vtiger_evvtmenu where mlabel ='Settings') and mvisible=1 order by mseq");
+	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent=(select evvtmenuid from vtiger_evvtmenu where mlabel='Settings') and mvisible=1 order by mseq");
 	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			switch ($menu['mtype']) {
@@ -204,6 +204,8 @@ function getAdminevvtMenu() {
 				case 'module':
 					$label = getTranslatedString($menu['mvalue'], $menu['mvalue']);
 					$url = 'index.php?action=index&module='.$menu['mvalue'];
+					break;
+				default:
 					break;
 			}
 			$rdo[$label] = $url;

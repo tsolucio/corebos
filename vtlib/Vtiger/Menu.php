@@ -154,10 +154,10 @@ class Vtiger_Menu {
 			}
 			$mnu = $adb->fetch_array($rsmnu);
 			$mnuinfo = array_merge($mnuinfo, array(
-				'menuid' => $mnu['evvtmenuid'],
+				'menuid' => isset($mnu['evvtmenuid']) ? $mnu['evvtmenuid'] : 0,
 				'menulabel' => $plabel,
-				'menusequence' => $mnu['mseq'],
-				'menuvisible' => $mnu['mvisible'],
+				'menusequence' => isset($mnu['mseq']) ? $mnu['mseq'] : 1,
+				'menuvisible' => isset($mnu['mvisible']) ? $mnu['mvisible'] : 1,
 			));
 			$instance = new self();
 			$instance->initialize($mnuinfo);
