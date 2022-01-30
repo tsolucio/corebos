@@ -9,5 +9,13 @@
  ********************************************************************************/
 
 class Webmails extends CRMEntity {
+	public $table_name = '';
+	public $table_index= '';
+	public $column_fields = array();
+	public $tab_name = array();
+
+	/** Indicator if this is a custom module or standard module */
+	public $IsCustomModule = true;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-list_email', 'class' => 'slds-icon', 'icon'=>'list_email');
 }
 ?>

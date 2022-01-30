@@ -11,6 +11,14 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class cbLoginHistory extends CRMEntity {
+	public $table_name = '';
+	public $table_index= '';
+	public $column_fields = array();
+	public $tab_name = array();
+
+	/** Indicator if this is a custom module or standard module */
+	public $IsCustomModule = true;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-channel_program_history', 'class' => 'slds-icon', 'icon'=>'channel_program_history');
 
 	/**
 	 * Invoked when special actions are performed on the module.

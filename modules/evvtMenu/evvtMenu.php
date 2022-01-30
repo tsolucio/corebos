@@ -18,6 +18,14 @@
  *************************************************************************************************/
 
 class evvtMenu {
+	public $table_name = '';
+	public $table_index= '';
+	public $column_fields = array();
+	public $tab_name = array();
+
+	/** Indicator if this is a custom module or standard module */
+	public $IsCustomModule = true;
+	public $moduleIcon = array('library' => 'utility', 'containerClass' => 'slds-icon_container slds-icon-utility-threedots_vertical', 'class' => 'slds-icon', 'icon'=>'threedots_vertical');
 
 	/**
 	* Invoked when special actions are performed on the module.
