@@ -175,7 +175,7 @@ ExecuteQuery("DELETE FROM vtiger_field WHERE tablename = 'vtiger_inventoryproduc
 ?>
 </table>
 <br /><br />
-<b style="color:#FF0000">Failed Queries Log</b>
+<strong style="color:#FF0000">Failed Queries Log</strong>
 <div id="failedLog" style="border:1px solid #666666;width:90%;position:relative;height:200px;overflow:auto;left:5%;top:10px;">
 <?php
 foreach ($failure_query_array as $failed_query) {
@@ -190,7 +190,7 @@ foreach ($failure_query_array as $failed_query) {
 		Total Number of queries executed :
 	</td>
 	<td width="25%" align="left">
-		<b><?php echo $query_count;?> </b>
+		<strong><?php echo $query_count;?> </strong>
 	</td>
    </tr>
    <tr>
@@ -198,9 +198,9 @@ foreach ($failure_query_array as $failed_query) {
 		Queries Succeeded :
 	</td>
 	<td align="left">
-		<b style="color:#006600;">
+		<strong style="color:#006600;">
 		<?php echo $success_query_count;?>
-		</b>
+		</strong>
 	</td>
    </tr>
    <tr>
@@ -208,9 +208,9 @@ foreach ($failure_query_array as $failed_query) {
 		Queries Failed :
 	</td>
 	<td align="left">
-		<b style="color:#FF0000;">
+		<strong style="color:#FF0000;">
 		<?php echo $failure_query_count ;?>
-			</b>
+		</strong>
 	</td>
    </tr>
 </table>
