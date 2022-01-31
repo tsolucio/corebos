@@ -131,11 +131,6 @@ class Assets extends CRMEntity {
 		return $query;
 	}
 
-	// Function to unlink all the dependent entities of the given Entity by Id
-	public function unlinkDependencies($module, $id) {
-		parent::unlinkDependencies($module, $id);
-	}
-
 	/**
 	* Invoked when special actions are performed on the module.
 	* @param string Module name
@@ -195,11 +190,11 @@ class Assets extends CRMEntity {
 				$maxSequenceQuery = $adb->query("SELECT max(sequence) as maxsequence FROM vtiger_customerportal_tabs");
 				$maxSequence = $adb->query_result($maxSequenceQuery, 0, 'maxsequence');
 				$nextSequence = $maxSequence+1;
-				$adb->query("INSERT INTO vtiger_customerportal_tabs(tabid,visible,sequence) VALUES ($assetsTabId,1,$nextSequence)");
+				$adb->pquery('INSERT INTO vtiger_customerportal_tabs(tabid,visible,sequence) VALUES (?,1,?)', array($assetsTabId, $nextSequence));
 			}
 			$checkAlreadyExists = $adb->pquery('SELECT 1 FROM vtiger_customerportal_prefs WHERE tabid=?', array($assetsTabId));
 			if ($checkAlreadyExists && $adb->num_rows($checkAlreadyExists) < 1) {
-				$adb->query("INSERT INTO vtiger_customerportal_prefs(tabid,prefkey,prefvalue) VALUES ($assetsTabId,'showrelatedinfo',1)");
+				$adb->pquery("INSERT INTO vtiger_customerportal_prefs(tabid,prefkey,prefvalue) VALUES (?,'showrelatedinfo',1)", array($assetsTabId));
 			}
 		}
 	}
