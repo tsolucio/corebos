@@ -91,12 +91,41 @@ function kbUpdateAfterDrop(el, target) {
 	let dstboard = document.getElementById(target.parentElement.getAttribute('data-id')+'lane');
 	let dstlane = dstboard.getAttribute('data-lane');
 	let srclane = el.getAttribute('data-lane');
-	if (dstlane==srclane) {
-		// use kanbansequence table and order the cards > seems difficult
-	} else {
-		dtlViewAjaxDirectFieldSave(dstlane, module, '', fieldName, crmid, '');
-		el.setAttribute('data-lane', dstlane);
-	}
+	const sentForm = {
+		"from_link":"DetailView",
+		"cbfromid":crmid,
+		"module":module,
+		"record":crmid,
+		"action":"DetailViewEdit",
+		"dtlview_edit_fieldcheck":fieldName
+	};
+	sentForm[csrfMagicName] = csrfMagicToken;
+	sentForm[fieldName] = dstlane;
+	(async () => {
+		const response = await fetch(
+			'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+module,
+			{
+				method: 'post',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+				},
+				credentials: 'same-origin',
+				body: `&${csrfMagicName}=${csrfMagicToken}&structure=${JSON.stringify(sentForm)}`
+			}
+		);
+		const msg = await response.text();
+		if (msg == '%%%OK%%%') {
+			if (dstlane==srclane) {
+				// use kanbansequence table and order the cards > seems difficult
+			} else {
+				dtlViewAjaxDirectFieldSave(dstlane, module, '', fieldName, crmid, '');
+				el.setAttribute('data-lane', dstlane);
+			}
+		} else {
+			ldsPrompt.show(alert_arr.VALID_DATA, msg, 'error');
+			kbMoveTile(kanbanID, srclane, module, crmid);
+		}
+	})();
 }
 
 function kbDeleteElement(module, record, kanbanID) {
