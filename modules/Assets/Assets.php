@@ -165,13 +165,13 @@ class Assets extends CRMEntity {
 			$assetLabel = 'Assets';
 
 			$accountInstance = Vtiger_Module::getInstance('Accounts');
-			$accountInstance->setRelatedlist($assetInstance, $assetLabel, array(ADD), 'get_dependents_list');
+			$accountInstance->setRelatedlist($assetInstance, $assetLabel, array('ADD'), 'get_dependents_list');
 
 			$productInstance = Vtiger_Module::getInstance('Products');
-			$productInstance->setRelatedlist($assetInstance, $assetLabel, array(ADD), 'get_dependents_list');
+			$productInstance->setRelatedlist($assetInstance, $assetLabel, array('ADD'), 'get_dependents_list');
 
 			$InvoiceInstance = Vtiger_Module::getInstance('Invoice');
-			$InvoiceInstance->setRelatedlist($assetInstance, $assetLabel, array(ADD), 'get_dependents_list');
+			$InvoiceInstance->setRelatedlist($assetInstance, $assetLabel, array('ADD'), 'get_dependents_list');
 		} elseif ($eventType == 'module.disabled') {
 		// Handle actions when this module is disabled.
 		} elseif ($eventType == 'module.enabled') {

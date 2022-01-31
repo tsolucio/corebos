@@ -100,8 +100,8 @@ class Leads extends CRMEntity {
 	}
 
 	/** Function to export the lead records in CSV Format
-	* @param reference variable - where condition is passed when the query is executed
-	* Returns Export Leads Query.
+	* @param string reference variable - where condition is passed when the query is executed
+	* @return string Export Leads Query
 	*/
 	public function create_export_query($where) {
 		global $log, $current_user;
@@ -137,8 +137,8 @@ class Leads extends CRMEntity {
 	}
 
 	/** Returns a list of the associated Campaigns
-	 * @param $id -- campaign id :: Type Integer
-	 * @returns list of campaigns in array format
+	 * @param integer campaign id
+	 * @return array list of campaigns
 	 */
 	public function get_campaigns($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -155,9 +155,7 @@ class Leads extends CRMEntity {
 			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
 		}
 
-		$button = '';
-
-		$button .= '<input type="hidden" name="email_directing_module"><input type="hidden" name="record">';
+		$button = '<input type="hidden" name="email_directing_module"><input type="hidden" name="record">';
 
 		if ($actions) {
 			if (is_string($actions)) {
@@ -196,8 +194,8 @@ class Leads extends CRMEntity {
 
 	/**
 	* Function to get lead related Products
-	* @param  integer   $id      - leadid
-	* returns related Products record in array format
+	* @param  integer lead id
+	* @return array related Products record
 	*/
 	public function get_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -259,7 +257,7 @@ class Leads extends CRMEntity {
 
 	/** Function to get the Combo List Values of Leads Field
 	 * @param string $list_option
-	 * Returns Combo List Options
+	 * @return string Combo List Options
 	*/
 	public function get_lead_field_options($list_option) {
 		global $log;
@@ -310,8 +308,8 @@ class Leads extends CRMEntity {
 	/**
 	 * Move the related records of the specified list of id's to the given record.
 	 * @param string This module name
-	 * @param Array List of Entity Id's from which related records need to be transfered
-	 * @param Integer Id of the the Record to which the related records are to be moved
+	 * @param array List of Entity Id's from which related records need to be transfered
+	 * @param integer Id of the the Record to which the related records are to be moved
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
@@ -356,11 +354,11 @@ class Leads extends CRMEntity {
 		$log->debug('< transferRelatedRecords');
 	}
 
-	/*
+	/**
 	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsSecQuery($module, $secmodule, $queryPlanner, $type = '', $where_condition = '') {
 		$query = parent::generateReportsSecQuery($module, $secmodule, $queryPlanner, $type, $where_condition);
@@ -376,10 +374,10 @@ class Leads extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -439,7 +437,6 @@ class Leads extends CRMEntity {
 	}
 
 	public function get_searchbyemailid($username, $emailaddress) {
-		//crm-now added $adb to provide db access
 		global $log, $adb, $current_user;
 		require_once 'modules/Users/Users.php';
 		$seed_user=new Users();

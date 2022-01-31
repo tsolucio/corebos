@@ -118,8 +118,8 @@ class Contacts extends CRMEntity {
 	public $mandatory_fields = array('lastname', 'createdtime', 'modifiedtime');
 
 	/** Function to get the number of Contacts assigned to a particular User.
-	*  @param varchar $user name - Assigned to User
-	*  Returns the count of contacts assigned to user.
+	*  @param string assigned to user name
+	*  @return integer the count of contacts assigned to user
 	*/
 	public function getCount($user_name) {
 		global $log, $adb;
@@ -136,8 +136,8 @@ class Contacts extends CRMEntity {
 	}
 
 	/** Function to process list query for Plugin with Security Parameters for a given query
-	 *  @param $query
-	 *  Returns the results of query in array format
+	 *  @param string query
+	 *  @return array results of query
 	 */
 	public function plugin_process_list_query($query) {
 		global $log, $adb, $current_user,$currentModule;
@@ -263,8 +263,8 @@ class Contacts extends CRMEntity {
 
 	 /**
 	 * Function to get Contact related Products
-	 * @param  integer   $id  - contactid
-	 * returns related Products record in array format
+	 * @param integer contact id
+	 * @return array related Products record
 	 */
 	public function get_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
@@ -324,8 +324,8 @@ class Contacts extends CRMEntity {
 
 	/**
 	 * Function to get Contact related PurchaseOrder
-	 * @param  integer   $id  - contactid
-	 * returns related PurchaseOrder record in array format
+	 * @param integer contact id
+	 * @return array related PurchaseOrder record
 	 */
 	public function get_purchase_orders($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
@@ -388,8 +388,8 @@ class Contacts extends CRMEntity {
 	}
 
 	/** Returns a list of the associated Campaigns
-	 * @param $id -- campaign id :: Type Integer
-	 * @returns list of campaigns in array format
+	 * @param integer campaign id
+	 * @return array list of campaigns
 	 */
 	public function get_campaigns($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -451,8 +451,8 @@ class Contacts extends CRMEntity {
 
 	/**
 	* Function to get Contact related Invoices
-	* @param  integer   $id      - contactid
-	* returns related Invoices record in array format
+	* @param integer contact id
+	* @return array related Invoices record
 	*/
 	public function get_invoices($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
@@ -516,8 +516,8 @@ class Contacts extends CRMEntity {
 
 	/**
 	* Function to get Contact related vendors.
-	* @param  integer   $id      - contactid
-	* returns related vendor records in array format
+	* @param integer contact id
+	* @return array related vendor records
 	*/
 	public function get_vendors($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
@@ -576,8 +576,8 @@ class Contacts extends CRMEntity {
 	}
 
 	/** Function to export the contact records in CSV Format
-	* @param reference variable - where condition is passed when the query is executed
-	* Returns Export Contacts Query.
+	* @param string reference variable - where condition is passed when the query is executed
+	* @return string Export Contacts Query
 	*/
 	public function create_export_query($where) {
 		global $log, $current_user, $adb;
@@ -658,10 +658,10 @@ class Contacts extends CRMEntity {
 	}
 
 	/** Function to get the Contacts assigned to a user with a valid email address.
-	* @param string $username - User Name
-	* @param string $emailaddress - Email Addr for each contact.
+	* @param string User Name
+	* @param string Email Address for each contact
 	* Used By vtigerCRM Outlook Plugin
-	* Returns the Query
+	* @return string query
 	*/
 	public function get_searchbyemailid($username, $emailaddress) {
 		global $log, $current_user, $adb;
@@ -707,8 +707,8 @@ class Contacts extends CRMEntity {
 	}
 
 	/** Function to get the Contacts associated with the particular User Name.
-	*  @param varchar $user_name - User Name
-	*  Returns query
+	*  @param string User Name
+	*  @return string query
 	*/
 	public function get_contactsforol($user_name) {
 		global $log,$adb, $current_user;
@@ -784,7 +784,7 @@ class Contacts extends CRMEntity {
 		$this->insertIntoAttachment($this->id, $module);
 	}
 
-	/* Validate values trying to be saved.
+	/** Validate values trying to be saved
 	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
 	 * @return array
 	 *   saveerror: true if error false if not
@@ -884,11 +884,11 @@ class Contacts extends CRMEntity {
 		$log->debug('< transferRelatedRecords');
 	}
 
-	/*
+	/**
 	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string the query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsSecQuery($module, $secmodule, $queryplanner, $type = '', $where_condition = '') {
 		$query = parent::generateReportsSecQuery($module, $secmodule, $queryplanner, $type, $where_condition);
@@ -913,10 +913,10 @@ class Contacts extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -1114,13 +1114,10 @@ class Contacts extends CRMEntity {
 		return $list_buttons;
 	}
 
-//////////////////////////////////////////////////////////////////////////
-// pag 2012-Jan-18 contacts hierarchy deducted from accounts hierarchy  //
-//////////////////////////////////////////////////////////////////////////
 	/**
 	* Function to get Contact hierarchy of the given Contact
-	* @param  integer   $id      - contactid
-	* returns Contact hierarchy in array format
+	* @param integer contact id
+	* @return array Contact hierarchy
 	*/
 	public function getContactHierarchy($id) {
 		global $log, $current_user;
@@ -1182,9 +1179,9 @@ class Contacts extends CRMEntity {
 
 	/**
 	* Function to Recursively get all the upper contacts of a given Contact
-	* @param  integer   $id            - contactid
-	* @param  array   $parent_contacts - Array of all the parent contacts
-	* returns All the parent contacts of the given contactid in array format
+	* @param integer contact id
+	* @param array all the parent contacts
+	* @return array all the parent contacts of the given contactid
 	*/
 	public function __getParentContacts($id, &$parent_contacts, &$encountered_contacts) {
 		global $log, $adb;
@@ -1239,10 +1236,10 @@ class Contacts extends CRMEntity {
 
 	/**
 	* Function to Recursively get all the child contacts of a given Contact
-	* @param  integer   $id           - contactid
-	* @param  array   $child_contacts - Array of all the child contacts
-	* @param  integer   $depth        - Depth at which the particular contact has to be placed in the hierarchy
-	* returns All the child contacts of the given contactid in array format
+	* @param integer contact id
+	* @param array all the child contacts
+	* @param integer septh at which the particular contact has to be placed in the hierarchy
+	* @return array all the child contacts of the given contactid
 	*/
 	public function __getChildContacts($id, &$child_contacts, $depth) {
 		global $log, $adb;
@@ -1287,9 +1284,6 @@ class Contacts extends CRMEntity {
 		$log->debug('< __getChildContacts');
 		return $child_contacts;
 	}
-//////////////////////////////////////////////////////////////////////////////
-// END pag 2012-Jan-18 contacts hierarchy deducted from accounts hierarchy  //
-//////////////////////////////////////////////////////////////////////////////
 
 	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
 		if ($basemodule=='Issuecards') {

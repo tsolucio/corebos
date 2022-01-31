@@ -146,7 +146,7 @@ class HelpDesk extends CRMEntity {
 	public function save_related_module($module, $crmid, $with_module, $with_crmid) {
 		parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 		if ($with_module == 'ServiceContracts') {
-			$serviceContract = CRMEntity::getInstance("ServiceContracts");
+			$serviceContract = CRMEntity::getInstance('ServiceContracts');
 			$serviceContract->updateHelpDeskRelatedTo($with_crmid, $crmid);
 			$serviceContract->updateServiceContractState($with_crmid);
 		}
@@ -199,11 +199,11 @@ class HelpDesk extends CRMEntity {
 		$log->debug('> get_ticket_history '.$ticketid);
 
 		$result=$adb->pquery('select title,update_log from vtiger_troubletickets where ticketid=?', array($ticketid));
-		$update_log = $adb->query_result($result, 0, "update_log");
+		$update_log = $adb->query_result($result, 0, 'update_log');
 
 		$splitval = explode('--//--', trim($update_log, '--//--'));
 
-		$header[] = $adb->query_result($result, 0, "title");
+		$header[] = $adb->query_result($result, 0, 'title');
 
 		$return_value = array('header'=>$header,'entries'=>$splitval,'navigation'=>array('',''));
 
@@ -284,7 +284,7 @@ class HelpDesk extends CRMEntity {
 		$custom_fields = array();
 		for ($i=0; $i < $numRows; $i++) {
 			$custom_fields[$i] = $adb->query_result($result, $i, 'fieldlabel');
-			$custom_fields[$i] = preg_replace("/\s+/", "", $custom_fields[$i]);
+			$custom_fields[$i] = preg_replace("/\s+/", '', $custom_fields[$i]);
 			$custom_fields[$i] = strtoupper($custom_fields[$i]);
 		}
 		$mergeflds = $custom_fields;
@@ -372,8 +372,8 @@ class HelpDesk extends CRMEntity {
 	}
 
 	/** Function to export the ticket records in CSV Format
-	 * @param reference variable - where condition is passed when the query is executed
-	 * Returns Export Tickets Query.
+	 * @param string reference variable - where condition is passed when the query is executed
+	 * @return string Export Tickets Query
 	 */
 	public function create_export_query($where) {
 		global $log, $current_user;
@@ -382,7 +382,7 @@ class HelpDesk extends CRMEntity {
 		include_once 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery("HelpDesk", "detail_view");
+		$sql = getPermittedFieldsQuery('HelpDesk', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		//Ticket changes--5198
 		$fields_list = str_replace(",vtiger_ticketcomments.comments as 'Add Comment'", ' ', $fields_list);
@@ -402,7 +402,7 @@ class HelpDesk extends CRMEntity {
 			LEFT JOIN vtiger_attachments ON vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
 			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_troubletickets.product_id";
 		$query .= getNonAdminAccessControlQuery('HelpDesk', $current_user);
-		$where_auto=" vtiger_crmentity.deleted = 0 ";
+		$where_auto=' vtiger_crmentity.deleted=0 ';
 
 		if ($where != '') {
 			$query .= " WHERE ($where) AND ".$where_auto;
@@ -415,7 +415,7 @@ class HelpDesk extends CRMEntity {
 	}
 
 	/** Function to get the update ticket history for the specified ticketid
-	 * @param $id -- $ticketid:: Type Integer
+	 * @param integer ticket id
 	 */
 	public function constructUpdateLog($focus, $mode, $assigned_group_name, $assigntype) {
 		if ($mode != 'edit') {
@@ -483,15 +483,15 @@ class HelpDesk extends CRMEntity {
 			$updatelog .= ' Category Changed to '.$column_fields['ticketcategories'].'\.';
 		}
 
-		$updatelog .= ' -- '.date("l dS F Y h:i:s A").' by '.$current_user->user_name.'--//--';
+		$updatelog .= ' -- '.date('l dS F Y h:i:s A').' by '.$current_user->user_name.'--//--';
 		return $updatelog;
 	}
 
 	/**
 	 * Move the related records of the specified list of id's to the given record.
 	 * @param string This module name
-	 * @param Array List of Entity Id's from which related records need to be transfered
-	 * @param Integer Id of the the Record to which the related records are to be moved
+	 * @param array List of Entity Id's from which related records need to be transfered
+	 * @param integer Id of the the Record to which the related records are to be moved
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
@@ -530,64 +530,64 @@ class HelpDesk extends CRMEntity {
 		$log->debug('< transferRelatedRecords');
 	}
 
-	/*
+	/**
 	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsSecQuery($module, $secmodule, $queryplanner, $type = '', $where_condition = '') {
 		$matrix = $queryplanner->newDependencyMatrix();
-		$matrix->setDependency("vtiger_crmentityHelpDesk", array("vtiger_groupsHelpDesk","vtiger_usersHelpDesk","vtiger_lastModifiedByHelpDesk"));
-		$matrix->setDependency("vtiger_crmentityRelHelpDesk", array("vtiger_accountRelHelpDesk","vtiger_contactdetailsRelHelpDesk"));
+		$matrix->setDependency('vtiger_crmentityHelpDesk', array('vtiger_groupsHelpDesk','vtiger_usersHelpDesk','vtiger_lastModifiedByHelpDesk'));
+		$matrix->setDependency('vtiger_crmentityRelHelpDesk', array('vtiger_accountRelHelpDesk','vtiger_contactdetailsRelHelpDesk'));
 
 		if (!$queryplanner->requireTable('vtiger_troubletickets', $matrix) && !$queryplanner->requireTable('vtiger_ticketcf', $matrix)) {
 			return '';
 		}
 
-		$matrix->setDependency("vtiger_troubletickets", array("vtiger_crmentityHelpDesk","vtiger_ticketcf","vtiger_crmentityRelHelpDesk","vtiger_productsRel"));
+		$matrix->setDependency('vtiger_troubletickets', array('vtiger_crmentityHelpDesk','vtiger_ticketcf','vtiger_crmentityRelHelpDesk','vtiger_productsRel'));
 
-		$query = $this->getRelationQuery($module, $secmodule, "vtiger_troubletickets", "ticketid", $queryplanner);
+		$query = $this->getRelationQuery($module, $secmodule, 'vtiger_troubletickets', 'ticketid', $queryplanner);
 
-		if ($queryplanner->requireTable("vtiger_crmentityHelpDesk", $matrix)) {
+		if ($queryplanner->requireTable('vtiger_crmentityHelpDesk', $matrix)) {
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk', true);
-			$query .=" left join ".$crmEntityTable." as vtiger_crmentityHelpDesk on vtiger_crmentityHelpDesk.crmid=vtiger_troubletickets.ticketid and vtiger_crmentityHelpDesk.deleted=0";
+			$query .=' left join '.$crmEntityTable.' as vtiger_crmentityHelpDesk on vtiger_crmentityHelpDesk.crmid=vtiger_troubletickets.ticketid and vtiger_crmentityHelpDesk.deleted=0';
 		}
-		if ($queryplanner->requireTable("vtiger_ticketcf")) {
-			$query .=" left join vtiger_ticketcf on vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid";
+		if ($queryplanner->requireTable('vtiger_ticketcf')) {
+			$query .=' left join vtiger_ticketcf on vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid';
 		}
-		if ($queryplanner->requireTable("vtiger_crmentityRelHelpDesk", $matrix)) {
+		if ($queryplanner->requireTable('vtiger_crmentityRelHelpDesk', $matrix)) {
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('HelpDesk');
 			$query .=' left join '.$crmEntityTable.' as vtiger_crmentityRelHelpDesk on vtiger_crmentityRelHelpDesk.crmid=vtiger_troubletickets.parent_id';
 		}
-		if ($queryplanner->requireTable("vtiger_accountRelHelpDesk")) {
-			$query .=" left join vtiger_account as vtiger_accountRelHelpDesk on vtiger_accountRelHelpDesk.accountid=vtiger_crmentityRelHelpDesk.crmid";
+		if ($queryplanner->requireTable('vtiger_accountRelHelpDesk')) {
+			$query .=' left join vtiger_account as vtiger_accountRelHelpDesk on vtiger_accountRelHelpDesk.accountid=vtiger_crmentityRelHelpDesk.crmid';
 		}
-		if ($queryplanner->requireTable("vtiger_contactdetailsRelHelpDesk")) {
-			$query .=" left join vtiger_contactdetails as vtiger_contactdetailsRelHelpDesk on vtiger_contactdetailsRelHelpDesk.contactid= vtiger_troubletickets.contact_id";
+		if ($queryplanner->requireTable('vtiger_contactdetailsRelHelpDesk')) {
+			$query .=' left join vtiger_contactdetails as vtiger_contactdetailsRelHelpDesk on vtiger_contactdetailsRelHelpDesk.contactid= vtiger_troubletickets.contact_id';
 		}
-		if ($queryplanner->requireTable("vtiger_productsRel")) {
-			$query .=" left join vtiger_products as vtiger_productsRel on vtiger_productsRel.productid = vtiger_troubletickets.product_id";
+		if ($queryplanner->requireTable('vtiger_productsRel')) {
+			$query .=' left join vtiger_products as vtiger_productsRel on vtiger_productsRel.productid = vtiger_troubletickets.product_id';
 		}
-		if ($queryplanner->requireTable("vtiger_groupsHelpDesk")) {
-			$query .=" left join vtiger_groups as vtiger_groupsHelpDesk on vtiger_groupsHelpDesk.groupid = vtiger_crmentityHelpDesk.smownerid";
+		if ($queryplanner->requireTable('vtiger_groupsHelpDesk')) {
+			$query .=' left join vtiger_groups as vtiger_groupsHelpDesk on vtiger_groupsHelpDesk.groupid = vtiger_crmentityHelpDesk.smownerid';
 		}
-		if ($queryplanner->requireTable("vtiger_usersHelpDesk")) {
-			$query .=" left join vtiger_users as vtiger_usersHelpDesk on vtiger_usersHelpDesk.id = vtiger_crmentityHelpDesk.smownerid";
+		if ($queryplanner->requireTable('vtiger_usersHelpDesk')) {
+			$query .=' left join vtiger_users as vtiger_usersHelpDesk on vtiger_usersHelpDesk.id = vtiger_crmentityHelpDesk.smownerid';
 		}
-		if ($queryplanner->requireTable("vtiger_lastModifiedByHelpDesk")) {
-			$query .=" left join vtiger_users as vtiger_lastModifiedByHelpDesk on vtiger_lastModifiedByHelpDesk.id = vtiger_crmentityHelpDesk.modifiedby ";
+		if ($queryplanner->requireTable('vtiger_lastModifiedByHelpDesk')) {
+			$query .=' left join vtiger_users as vtiger_lastModifiedByHelpDesk on vtiger_lastModifiedByHelpDesk.id = vtiger_crmentityHelpDesk.modifiedby ';
 		}
-		if ($queryplanner->requireTable("vtiger_CreatedByHelpDesk")) {
-			$query .= " left join vtiger_users as vtiger_CreatedByHelpDesk on vtiger_CreatedByHelpDesk.id = vtiger_crmentityHelpDesk.smcreatorid ";
+		if ($queryplanner->requireTable('vtiger_CreatedByHelpDesk')) {
+			$query .= ' left join vtiger_users as vtiger_CreatedByHelpDesk on vtiger_CreatedByHelpDesk.id = vtiger_crmentityHelpDesk.smcreatorid ';
 		}
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -635,7 +635,7 @@ class HelpDesk extends CRMEntity {
 			$temp = getTranslatedString('Re', $moduleName);
 		} else {
 			$reply = getTranslatedString('created', $moduleName);
-			$temp = " ";
+			$temp = ' ';
 		}
 
 		$wsParentId = $entityData->get('parent_id');
@@ -690,7 +690,7 @@ class HelpDesk extends CRMEntity {
 		}
 		$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
 		$portalUrl = "<a href='" . $PORTAL_URL . '/index.php?module=HelpDesk&action=index&ticketid=' . $entityId . "&fun=detail'>"
-			. getTranslatedString('LBL_TICKET_DETAILS', $moduleName) . "</a>";
+			. getTranslatedString('LBL_TICKET_DETAILS', $moduleName) . '</a>';
 		$contents = getTranslatedString('Dear', $moduleName) . ' ' . getParentName($parentId) . ',<br><br>';
 		$contents .= getTranslatedString('reply', $moduleName) . ' <b>' . $entityData->get('ticket_title')
 			. '</b>' . getTranslatedString('customer_portal', $moduleName);
