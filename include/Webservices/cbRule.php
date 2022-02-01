@@ -18,10 +18,11 @@
 include_once 'vtlib/Vtiger/Module.php';
 include_once 'modules/cbMap/cbRule.php';
 
-/*
- * cbRule
- * conditionid: ID of the map
- * context: array variables for the rule evaluation
+/**
+ * coreBOS Rule Evaluation
+ * @param integer conditionid: ID of the map
+ * @param array context: variables for the rule evaluation
+ * @return mixed result of the evaluation of the rule
  */
 function cbws_cbRule($conditionid, $context, $user) {
 	global $adb, $log;

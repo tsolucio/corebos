@@ -120,9 +120,9 @@ class Services extends CRMEntity {
 	}
 
 	/**	function to save the service tax information in vtiger_servicetaxrel table
-	 *	@param string $tablename - vtiger_tablename to save the service tax relationship (servicetaxrel)
-	 *	@param string $module	 - current module name
-	 *	$return void
+	 *	@param string table name to save the service tax relationship (servicetaxrel)
+	 *	@param string current module name
+	 *	@return void
 	*/
 	public function insertTaxInformation($tablename, $module) {
 		global $adb, $log;
@@ -169,9 +169,9 @@ class Services extends CRMEntity {
 	}
 
 	/**	function to save the service price information in vtiger_servicecurrencyrel table
-	 *	@param string $tablename - vtiger_tablename to save the service currency relationship (servicecurrencyrel)
-	 *	@param string $module	 - current module name
-	 *	$return void
+	 *	@param string table name to save the service currency relationship (servicecurrencyrel)
+	 *	@param string current module name
+	 *	@return void
 	*/
 	public function insertPriceInformation($tablename, $module) {
 		global $adb, $log;
@@ -228,8 +228,8 @@ class Services extends CRMEntity {
 	}
 
 	/**	function used to get the list of quotes which are related to the service
-	 *	@param int $id - service id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param int service id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_quotes($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -291,8 +291,8 @@ class Services extends CRMEntity {
 	}
 
 	/**	function used to get the list of purchase orders which are related to the service
-	 *	@param int $id - service id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param int service id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_purchase_orders($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -352,8 +352,8 @@ class Services extends CRMEntity {
 	}
 
 	/**	function used to get the list of sales orders which are related to the service
-	 *	@param int $id - service id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param int service id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_salesorder($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -413,8 +413,8 @@ class Services extends CRMEntity {
 	}
 
 	/**	function used to get the list of invoices which are related to the service
-	 *	@param int $id - service id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param int service id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_invoices($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -474,8 +474,8 @@ class Services extends CRMEntity {
 	}
 
 	/**	function used to get the list of pricebooks which are related to the service
-	 *	@param int $id - service id
-	 *	@return array - array which will be returned from the function GetRelatedList
+	 *	@param int service id
+	 *	@return array which will be returned from the function GetRelatedList
 	 */
 	public function get_service_pricebooks($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $currentModule, $log, $singlepane_view;
@@ -524,10 +524,10 @@ class Services extends CRMEntity {
 	}
 
 	/**	Function to display the Services which are related to the PriceBook
-	 *	@param string $query - query to get the list of products which are related to the current PriceBook
-	 *	@param object $focus - PriceBook object which contains all the information of the current PriceBook
-	 *	@param string $returnset - return_module, return_action and return_id which are sequenced with & to pass to the URL which is optional
-	 *	@return array $return_data which will be formed like array('header'=>$header, 'entries'=>$entries_list)
+	 *	@param string query to get the list of products which are related to the current PriceBook
+	 *	@param object PriceBook object which contains all the information of the current PriceBook
+	 *	@param string return_module, return_action and return_id which are sequenced with & to pass to the URL which is optional
+	 *	@return array array('header'=>$header, 'entries'=>$entries_list)
 	 *		where $header contains all the header columns and $entries_list will contain all the Service entries
 	 */
 	public function getPriceBookRelatedServices($query, $focus, $returnset = '') {
