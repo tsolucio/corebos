@@ -104,22 +104,24 @@ class ConditionExpression extends processcbMap {
 				$entity->data['record_module'] = $entity->getModuleName();
 			}
 			$function = (string)$xml->function->name;
-			$testexpression = '$exprEvaluation = ' . $function . '(';
+			$params = array();
 			if (isset($xml->function->parameters) && isset($xml->function->parameters->parameter)) {
 				$GLOBALS['currentuserID'] = $current_user->id;
 				foreach ($xml->function->parameters->parameter as $v) {
 					if (isset($entity->data[(string)$v])) {
-						$testexpression.= "'" . $entity->data[(string)$v] . "',";
+						$params[] = $entity->data[(string)$v];
 					} elseif (isset($GLOBALS[(string)$v])) {
-						$testexpression.= "'" . $GLOBALS[(string)$v] . "',";
+						$params[] = $GLOBALS[(string)$v];
 					} else {
-						$testexpression.= "'" . (string)$v . "',";
+						$params[] = (string)$v;
 					}
 				}
 				unset($GLOBALS['currentuserID']);
 			}
-			$testexpression = trim($testexpression, ',') . ');';
-			eval($testexpression);
+			$exprFunction = function ($f, $p) {
+				return call_user_func_array($f, $p);
+			};
+			$exprEvaluation = $exprFunction($function, $params);
 		} elseif (isset($xml->template)) {
 			$testexpression = (string)$xml->template;
 			$entityCache = new VTEntityCache($current_user);
