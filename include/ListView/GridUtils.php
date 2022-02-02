@@ -141,8 +141,14 @@ function getEmptyDataGridResponse() {
 function getDataGridResponse($mdmap) {
 	global $adb, $current_user;
 	$qg = new QueryGenerator($mdmap['targetmodule'], $current_user);
-	$qg->setFields(array('*'));
+	$qg->setFields(array_merge(['id'], $mdmap['listview']['fieldnames']));
 	$qg->addReferenceModuleFieldCondition($mdmap['originmodule'], $mdmap['linkfields']['targetfield'], 'id', vtlib_purify($_REQUEST['pid']), 'e', QueryGenerator::$AND);
+	$conditions = $mdmap['condition'];
+	$conditions = json_decode(decode_html($conditions));
+	if (!empty($conditions)) {
+		$workflowScheduler = new WorkFlowScheduler($adb);
+		$workflowScheduler->addWorkflowConditionsToQueryGenerator($qg, $conditions);
+	}
 	$sql = $qg->getQuery(); // No conditions
 	$countsql = mkCountQuery($sql);
 	$rs = $adb->query($countsql);
@@ -153,7 +159,6 @@ function getDataGridResponse($mdmap) {
 	}
 	$rs = $adb->query($sql);
 	$ret = array();
-	$cbMapid = $mdmap['condition'];
 	while ($row = $adb->fetch_array($rs)) {
 		$r = array(
 			'record_module' => $mdmap['targetmodule'],
@@ -168,13 +173,6 @@ function getDataGridResponse($mdmap) {
 			'delete' => isPermitted($mdmap['targetmodule'], 'Delete', $row[$mdmap['targetmoduleidfield']]),
 			'edit' => isPermitted($mdmap['targetmodule'], 'EditView', $row[$mdmap['targetmoduleidfield']])
 		);
-		$row['record_id'] = $r['record_id'];
-		if (!empty($cbMapid)) {
-			$result = coreBOS_Rule::evaluate($cbMapid, $row);
-			if ((!$result && !is_array($result)) || (is_array($result) && !empty($result))) {
-				continue;
-			}
-		}
 		$ret[] = $r;
 	}
 	return json_encode(
