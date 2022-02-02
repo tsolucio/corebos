@@ -24,6 +24,7 @@
   <linkfields>
   <originfield>designquotesid</originfield>
   <targetfield>designquotesid</targetfield>
+  <condition>mapid|mapname</condition>
   </linkfields>
   <sortfield>designquotesid</sortfield>
   <toolbar>
@@ -111,6 +112,7 @@ class MasterDetailLayout extends processcbMap {
 		$mapping_arr['mapname'] = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $mapping_arr['mapnameraw'])); // Removes special chars.
 		$mapping_arr['originmodule'] = (string)$xml->originmodule;
 		$mapping_arr['targetmodule'] = (string)$xml->targetmodule;
+		$mapping_arr['condition'] = (string)$xml->condition;
 		$this->detailModule = $mapping_arr['targetmodule'];
 		$dmf = CRMEntity::getInstance($this->detailModule);
 		$mapping_arr['targetmoduleidfield'] = $dmf->table_index;

@@ -141,7 +141,7 @@ function getEmptyDataGridResponse() {
 function getDataGridResponse($mdmap) {
 	global $adb, $current_user;
 	$qg = new QueryGenerator($mdmap['targetmodule'], $current_user);
-	$qg->setFields(array_merge(['id'], $mdmap['listview']['fieldnames']));
+	$qg->setFields(array('*'));
 	$qg->addReferenceModuleFieldCondition($mdmap['originmodule'], $mdmap['linkfields']['targetfield'], 'id', vtlib_purify($_REQUEST['pid']), 'e', QueryGenerator::$AND);
 	$sql = $qg->getQuery(); // No conditions
 	$countsql = mkCountQuery($sql);
@@ -153,6 +153,7 @@ function getDataGridResponse($mdmap) {
 	}
 	$rs = $adb->query($sql);
 	$ret = array();
+	$cbMapid = $mdmap['condition'];
 	while ($row = $adb->fetch_array($rs)) {
 		$r = array(
 			'record_module' => $mdmap['targetmodule'],
@@ -167,6 +168,13 @@ function getDataGridResponse($mdmap) {
 			'delete' => isPermitted($mdmap['targetmodule'], 'Delete', $row[$mdmap['targetmoduleidfield']]),
 			'edit' => isPermitted($mdmap['targetmodule'], 'EditView', $row[$mdmap['targetmoduleidfield']])
 		);
+		$row['record_id'] = $r['record_id'];
+		if (!empty($cbMapid)) {
+			$result = coreBOS_Rule::evaluate($cbMapid, $row);
+			if ((!$result && !is_array($result)) || (is_array($result) && !empty($result))) {
+				continue;
+			}
+		}
 		$ret[] = $r;
 	}
 	return json_encode(
@@ -189,8 +197,8 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 	$fieldAttrs = array();
 	$fieldtype = $fieldinfo['fieldtype'];
 	$fieldInfo = $fieldinfo['fieldinfo'];
-	$fieldName = $fieldinfo['name'];
-	switch ($fieldinfo['uitype']) {
+	$fieldName = $fieldInfo['name'];
+	switch ($fieldInfo['uitype']) {
 		case Field_Metadata::UITYPE_CHECKBOX:
 			$return = BooleanField::getBooleanDisplayValue($fieldValue, $module);
 			break;
@@ -283,7 +291,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			if (!empty($fieldValue) && $fieldValue != '0000-00-00' && $fieldValue != '0000-00-00 00:00') {
 				$date = new DateTimeField($fieldValue);
 				$return = $date->getDisplayDate();
-				if ($fieldinfo['uitype'] != Field_Metadata::UITYPE_DATE) {
+				if ($fieldInfo['uitype'] != Field_Metadata::UITYPE_DATE) {
 					$return .= ' ' . $date->getDisplayTime();
 					$user_format = ($current_user->hour_format=='24' ? '24' : '12');
 					if ($user_format != '24') {
