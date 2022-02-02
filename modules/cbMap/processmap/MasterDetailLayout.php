@@ -24,7 +24,7 @@
   <linkfields>
   <originfield>designquotesid</originfield>
   <targetfield>designquotesid</targetfield>
-  <condition>mapid|mapname</condition>
+  <condition>querycondition</condition>
   </linkfields>
   <sortfield>designquotesid</sortfield>
   <toolbar>
