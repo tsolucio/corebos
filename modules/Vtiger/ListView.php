@@ -123,7 +123,7 @@ if ($sql_error) {
 	$smarty->assign('recordListRange', '');
 	$smarty->assign('CUSTOM_LINKS', '');
 	$smarty->assign('LISTHEADER', '');
-	$smarty->assign('LISTENTITY', '');
+	$smarty->assign('LISTENTITY', array());
 } else {
 // Enabling Module Search
 	$url_string = '';
@@ -174,12 +174,19 @@ if ($sql_error) {
 	if ($sql_error) {
 		$smarty->assign('ERROR', getTranslatedString('ERROR_GETTING_FILTER'));
 		$smarty->assign('CUSTOMVIEW_OPTION', $customview_html);
-		$smarty->assign('recordListRange', '');
+		$smarty->assign('SEARCHLISTHEADER', array());
+		$smarty->assign('FIELDNAMES', array());
+		$smarty->assign('CRITERIA', array());
+		$smarty->assign('SEARCH_URL', '');
+		$smarty->assign('export_where', '');
+		$smarty->assign('SELECTEDIDS', '');
+		$smarty->assign('ALLSELECTEDIDS', '');
+		$smarty->assign('CURRENT_PAGE_BOXES', '');
 		$smarty->assign('NAVIGATION', '');
+		$smarty->assign('recordListRange', '');
 		$smarty->assign('CUSTOM_LINKS', '');
 		$smarty->assign('LISTHEADER', '');
-		$smarty->assign('FIELDNAMES', '');
-		$smarty->assign('LISTENTITY', '');
+		$smarty->assign('LISTENTITY', array());
 	} else {
 		$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
 		$smarty->assign('recordListRange', $recordListRangeMsg);
