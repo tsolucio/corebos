@@ -382,7 +382,7 @@ class DataTransform {
 				}
 				$row[$field] = implode('|', $setref);
 			}
-			if ($row[$field]=='') {
+			if (isset($row[$field]) && $row[$field]=='') {
 				$row[$field] = null;
 			}
 		}

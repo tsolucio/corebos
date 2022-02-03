@@ -600,8 +600,12 @@
 			this.dataVal = this.el.querySelectorAll('ul[data-col-value="search-value"]');
 			this.el.setAttribute('data-condcount', no);
 			this.condCount = no;
-			this.dataCols[no-1].setAttribute('data-col-id', `column__${no}_${this.el.getAttribute('data-group-no')}`);
-			this.dataVal[no-1].setAttribute('data-value-id', `value__${no}_${this.el.getAttribute('data-group-no')}`);
+			if (this.dataCols[no-1]) {
+				this.dataCols[no-1].setAttribute('data-col-id', `column__${no}_${this.el.getAttribute('data-group-no')}`);
+			}
+			if (this.dataVal[no-1]) {
+				this.dataVal[no-1].setAttribute('data-value-id', `value__${no}_${this.el.getAttribute('data-group-no')}`);
+			}
 		},
 
 		/*

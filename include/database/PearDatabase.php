@@ -1058,7 +1058,7 @@ class PearDatabase {
 	public function getColumnNames($tablename) {
 		$this->println('DB getColumnNames table='.$tablename);
 		$this->checkConnection();
-		$adoflds = $this->database->MetaColumns($tablename);
+		$adoflds = @$this->database->MetaColumns($tablename);
 		$i=0;
 		$colNames = array();
 		if (is_array($adoflds)) {
