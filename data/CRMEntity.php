@@ -2575,10 +2575,15 @@ class CRMEntity {
 		} else {
 			$returnset = "&return_module=$currentModule&return_action=CallRelatedList&return_id=$id";
 		}
-
-		$query = 'SELECT vtiger_crmentity.* ';
-
-		$q_elsegroupname = $related_module != 'Users' ? 'ELSE vtiger_groups.groupname ' : '';
+		if ($related_module == 'Users') {
+			$query = 'SELECT vtiger_users.* ';
+			$maintableid = 'vtiger_users.id';
+			$q_elsegroupname = '';
+		} else {
+			$query = 'SELECT vtiger_crmentity.* ';
+			$maintableid = 'vtiger_crmentity.crmid';
+			$q_elsegroupname = 'ELSE vtiger_groups.groupname ';
+		}
 		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.ename {$q_elsegroupname}END AS user_name";
 
 		$more_relation = '';
@@ -2604,8 +2609,10 @@ class CRMEntity {
 		}
 		$query .= ', '.$other->table_name.'.*';
 		$query .= " FROM $other->table_name";
-		$query .= ' INNER JOIN '.$other->crmentityTableAlias." ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
-		$query .= ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid = vtiger_crmentity.crmid)';
+		if ($related_module != 'Users') {
+			$query .= ' INNER JOIN '.$other->crmentityTableAlias." ON vtiger_crmentity.crmid=$other->table_name.$other->table_index";
+		}
+		$query .= ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid='.$maintableid.' OR vtiger_crmentityrel.crmid='.$maintableid.')';
 		$query .= $more_relation;
 		if ($related_module != 'Users') {
 			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$other->crmentityTable.'.smownerid';
