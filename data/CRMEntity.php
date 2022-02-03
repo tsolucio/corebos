@@ -3512,12 +3512,13 @@ class CRMEntity {
 		return $query;
 	}
 
-	/**
-	 *
-	 * @param string module
-	 * @param object Users
-	 * @param string parentRole
-	 * @param string userGroups comma-separated list
+	/** Creates a temporary table with permission IDs
+	 * @param string temporary table name to create
+	 * @param string module name for the permissions
+	 * @param object Users to calculate the permissions for
+	 * @param string parent Role of the user
+	 * @param string user Groups comma-separated list of groups the user belongs to
+	 * @return boolean if temporary table has been created or not
 	 */
 	protected function setupTemporaryTable($tableName, $sharedmodule, $user, $parentRole, $userGroups) {
 		$module = null;

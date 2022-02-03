@@ -92,12 +92,12 @@ function kbUpdateAfterDrop(el, target) {
 	let dstlane = dstboard.getAttribute('data-lane');
 	let srclane = el.getAttribute('data-lane');
 	const sentForm = {
-		"from_link":"DetailView",
-		"cbfromid":crmid,
-		"module":module,
-		"record":crmid,
-		"action":"DetailViewEdit",
-		"dtlview_edit_fieldcheck":fieldName
+		'from_link':'DetailView',
+		'cbfromid':crmid,
+		'module':module,
+		'record':crmid,
+		'action':'DetailViewEdit',
+		'dtlview_edit_fieldcheck':fieldName
 	};
 	sentForm[csrfMagicName] = csrfMagicToken;
 	sentForm[fieldName] = dstlane;
