@@ -4,6 +4,7 @@
       <xs:sequence>
         <xs:element type="xs:string" name="originmodule"/>
         <xs:element type="xs:string" name="targetmodule"/>
+        <xs:element type="xs:string" name="condition"/>
         <xs:element name="linkfields">
           <xs:complexType>
             <xs:sequence>

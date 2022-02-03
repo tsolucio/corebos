@@ -143,6 +143,12 @@ function getDataGridResponse($mdmap) {
 	$qg = new QueryGenerator($mdmap['targetmodule'], $current_user);
 	$qg->setFields(array_merge(['id'], $mdmap['listview']['fieldnames']));
 	$qg->addReferenceModuleFieldCondition($mdmap['originmodule'], $mdmap['linkfields']['targetfield'], 'id', vtlib_purify($_REQUEST['pid']), 'e', QueryGenerator::$AND);
+	$conditions = $mdmap['condition'];
+	$conditions = json_decode(decode_html($conditions));
+	if (!empty($conditions)) {
+		$workflowScheduler = new WorkFlowScheduler($adb);
+		$workflowScheduler->addWorkflowConditionsToQueryGenerator($qg, $conditions);
+	}
 	$sql = $qg->getQuery(); // No conditions
 	$countsql = mkCountQuery($sql);
 	$rs = $adb->query($countsql);
@@ -189,8 +195,8 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 	$fieldAttrs = array();
 	$fieldtype = $fieldinfo['fieldtype'];
 	$fieldInfo = $fieldinfo['fieldinfo'];
-	$fieldName = $fieldinfo['name'];
-	switch ($fieldinfo['uitype']) {
+	$fieldName = $fieldInfo['name'];
+	switch ($fieldInfo['uitype']) {
 		case Field_Metadata::UITYPE_CHECKBOX:
 			$return = BooleanField::getBooleanDisplayValue($fieldValue, $module);
 			break;
@@ -283,7 +289,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 			if (!empty($fieldValue) && $fieldValue != '0000-00-00' && $fieldValue != '0000-00-00 00:00') {
 				$date = new DateTimeField($fieldValue);
 				$return = $date->getDisplayDate();
-				if ($fieldinfo['uitype'] != Field_Metadata::UITYPE_DATE) {
+				if ($fieldInfo['uitype'] != Field_Metadata::UITYPE_DATE) {
 					$return .= ' ' . $date->getDisplayTime();
 					$user_format = ($current_user->hour_format=='24' ? '24' : '12');
 					if ($user_format != '24') {
