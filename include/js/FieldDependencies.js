@@ -245,6 +245,14 @@ FieldDependencies.prototype.controlActions = function (sourcename) {
  * trigger dependent:change event if (Event.fire API is available - Prototype 1.6)
  */
 FieldDependencies.prototype.fieldOptions = function (sourcename, targetFields, type) {
+	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
+		this.fieldOptionsEditView(sourcename, targetFields, type);
+	} else {
+		this.fieldOptionsDetailView(sourcename, targetFields, type);
+	}
+};
+
+FieldDependencies.prototype.fieldOptionsEditView = function (sourcename, targetFields, type) {
 	if (targetFields != null && targetFields != undefined) {
 		for (var i=0; i<targetFields.length; i++) {
 			var targetname=targetFields[i]['field'];
@@ -271,6 +279,54 @@ FieldDependencies.prototype.fieldOptions = function (sourcename, targetFields, t
 					var targetoption = jQuery(targetoptions[index]);
 					// Show the option if field mapping matches the option value or there is not field mapping available.
 					if ((!targetvalues || targetvalues.indexOf(targetoption.val()) !== -1) && type==='setoptions') {
+						var optionNode = jQuery(document.createElement('option'));
+						targetnode.append(optionNode);
+						optionNode.text(targetoption.text());
+						optionNode.val(targetoption.val());
+					} else if ((targetvalues.indexOf(targetoption.val()) === -1) && type==='deloptions') {
+						var optionNode = jQuery(document.createElement('option'));
+						targetnode.append(optionNode);
+						optionNode.text(targetoption.text());
+						optionNode.val(targetoption.val());
+					}
+				}
+				targetnode.val(selectedtargetvalue);
+				targetnode.trigger('change');
+			}
+		}
+	}
+};
+
+FieldDependencies.prototype.fieldOptionsDetailView = function (sourcename, targetFields, type) {
+	if (targetFields != null && targetFields != undefined) {
+		for (var i=0; i<targetFields.length; i++) {
+			var targetname=targetFields[i]['field'];
+			var targetElem=document.getElementById('txtbox_'+targetname);
+			if (targetname != sourcename && targetElem!=undefined) { // avoid loop, target field can not be the same as responsible field
+				var targetvalues=targetFields[i]['options'];
+				var targetnode = jQuery('[name="'+targetname+'"]', this.baseform);
+				targetnode.push(targetElem);
+				var selectedtargetvalue = targetvalues[0];
+
+				// In IE we cannot hide the options!, the only way to achieve this effect is recreating the options list again.
+				// To maintain implementation consistency, let us keep copy of options in select node and use it for re-creation
+				if (typeof(targetnode.data('allOptions')) == 'undefined') {
+					var allOptions = [];
+					jQuery('option', targetnode).each(function (index, option) {
+						allOptions.push(option);
+					});
+					targetnode.data('allOptions', allOptions);
+				}
+				var targetoptions = targetnode.data('allOptions');
+				// Remove the existing options nodes from the target selection
+				jQuery('option', targetnode).remove();
+
+				for (var index = 0; index < targetoptions.length; ++index) {
+					var targetoption = jQuery(targetoptions[index]);
+					// Show the option if field mapping matches the option value or there is not field mapping available.
+					if ((!targetvalues || targetvalues.indexOf(targetoption.val()) !== -1) && type==='setoptions') {
+						// document.getElementById('dtlview_'+targetname).value = targetoption.val();
+						document.getElementById('dtlview_'+targetname).innerText = targetoption.val();
 						var optionNode = jQuery(document.createElement('option'));
 						targetnode.append(optionNode);
 						optionNode.text(targetoption.text());
