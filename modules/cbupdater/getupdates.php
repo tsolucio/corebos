@@ -115,19 +115,20 @@ if (!empty($cbupdate_files)) {
 	$error = true;
 	$errmsg = getTranslatedString('err_noupdatefile', $currentModule);
 }
-
-$smarty = new vtigerCRM_Smarty();
-$smarty->assign('APP', $app_strings);
-$smarty->assign('MOD', $mod_strings);
-$smarty->assign('MODULE', $currentModule);
-$smarty->assign('CUSTOM_MODULE', true);
-$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
-$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-$smarty->assign('THEME', $theme);
-$smarty->assign('ERROR', $error);
-$smarty->assign('ERRORMSG', $errmsg);
-$smarty->assign('CBUPDATES', $cbupdatesfound);
-include 'modules/cbupdater/cbupdButtons.php';
-$smarty->assign('CHECK', $tool_buttons);
-$smarty->display('modules/cbupdater/getupdates.tpl');
+if (!isset($DONOTDISPLAYUPDATES)) {
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('MOD', $mod_strings);
+	$smarty->assign('MODULE', $currentModule);
+	$smarty->assign('CUSTOM_MODULE', true);
+	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
+	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+	$smarty->assign('THEME', $theme);
+	$smarty->assign('ERROR', $error);
+	$smarty->assign('ERRORMSG', $errmsg);
+	$smarty->assign('CBUPDATES', $cbupdatesfound);
+	include 'modules/cbupdater/cbupdButtons.php';
+	$smarty->assign('CHECK', $tool_buttons);
+	$smarty->display('modules/cbupdater/getupdates.tpl');
+}
 ?>
