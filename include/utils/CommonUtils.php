@@ -345,8 +345,8 @@ function get_group_options() {
 
 /**
  * Function to get the tabid
- * Takes the input as $module - module name
- * returns the tabid, integer type
+ * @param string module name
+ * @return integer the tabid
  */
 function getTabid($module) {
 	global $log;
