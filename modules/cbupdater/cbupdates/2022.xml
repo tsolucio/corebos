@@ -7,4 +7,11 @@
 	<classname>eliminateVtigerCRMReferencesfromWF</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add pathname to updater search index</description>
+	<filename>build/changeSets/2022/addPathName2FindupdateIndex.php</filename>
+	<classname>addPathName2FindupdateIndex</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
