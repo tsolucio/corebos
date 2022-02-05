@@ -1,23 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head><title>TSolucio::coreBOS Customizations</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" media="all" href="themes/softed/style.css">
-<style type="text/css">br { display: block; margin: 2px; }</style>
-</head><body class=small style="font-size: 12px; margin: 2px; padding: 2px; background-color:#f7fff3; ">
-<table width="100%" border=0><tr><td><span style='color:red;float:right;margin-right:30px;'><h2>Proud member of the <a href='http://corebos.org'>coreBOS</a> family!</h2></span></td></tr></table>
-<hr style="height: 1px">
 <?php
+$moduleTitle="TSolucio::coreBOS Customizations: upgrade old coreBOS installs";
+echo '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+echo "<html><head><title>vtlib $moduleTitle</title>";
+echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
+echo '<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />';
+echo '<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />';
+echo '<link rel="stylesheet" href="include/style.css" type="text/css" />';
+echo '<link rel="stylesheet" type="text/css" media="all" href="themes/softed/style.css">';
+echo '<style type="text/css">br { display: block; margin: 2px; }</style>';
+echo '</head><body class=small style="font-size: 12px; margin: 2px; padding: 2px; background-color:#f7fff3; ">';
+echo '<table width=100% border=0><tr><td align=left>';
+echo '</td><td align=center style="background-image: url(\'vtlogowmg.png\'); background-repeat: no-repeat; background-position: center;">';
+echo "<b><H1>$moduleTitle</H1></b>";
+echo '</td><td align=right>';
+echo '<a href="corebos.org"><img src="include/install/images/app_logo.png" alt="coreBOS" title="coreBOS" border=0></a>';
+echo '</td></tr></table>';
+echo '<hr style="height: 1px">';
+
 // Turn on debugging level
 $Vtiger_Utils_Log = true;
 
 require_once 'include/utils/utils.php';
 include_once 'vtlib/Vtiger/Module.php';
-require 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
-global $current_user,$adb;
+include_once 'vtlib/Vtiger/Cron.php';
+require_once 'modules/com_vtiger_workflow/include.inc';
+require_once 'modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc';
+require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
+require_once 'include/Webservices/Utils.php';
+@include_once 'include/events/include.inc';
+global $current_user, $adb;
 set_time_limit(0);
+error_reporting(-1);
+ini_set('display_errors', 1);
 ini_set('memory_limit', '1024M');
 
-$current_user = Users::getActiveAdminUser();
+$current_user = new Users();
+$current_user->retrieveCurrentUserInfoFromFile(Users::getActiveAdminId());
 if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
 	$current_language = $_SESSION['authenticated_user_language'];
 } else {
@@ -35,34 +53,34 @@ $failure_query_count=0;
 $success_query_array=array();
 $failure_query_array=array();
 
-function ExecuteQuery($query) {
+function ExecuteQuery($query, $params = array()) {
 	global $adb,$log;
 	global $query_count, $success_query_count, $failure_query_count, $success_query_array, $failure_query_array;
-
-	$status = $adb->query($query);
+	$paramstring = (count($params)>0 ? '&nbsp;&nbsp;'.print_r($params, true) : '');
+	$status = $adb->pquery($query, $params);
 	$query_count++;
 	if (is_object($status)) {
 		echo '
-		<tr width="100%">
-		<td width="10%">'.get_class($status).'</td>
-		<td width="10%"><font color="green"> S </font></td>
-		<td width="80%">'.$query.'</td>
-		</tr>';
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_2-of-8">'.get_class($status).'</div>
+	<div class="slds-col slds-size_1-of-8"><span style="color:green"> S </span></div>
+	<div class="slds-col slds-size_5-of-8">'.$query.$paramstring.'</div>
+	</div>';
 		$success_query_array[$success_query_count++] = $query;
 		$log->debug("Query Success ==> $query");
 	} else {
 		echo '
-		<tr width="100%">
-		<td width="25%">'.$status.'</td>
-		<td width="5%"><font color="red"> F </font></td>
-		<td width="70%">'.$query.'</td>
-		</tr>';
-		$failure_query_array[$failure_query_count++] = $query;
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_2-of-8">'.$status.'</div>
+	<div class="slds-col slds-size_1-of-8"><span style="color:red"> F </span></div>
+	<div class="slds-col slds-size_5-of-8">'.$query.$paramstring.'</div>
+	</div>';
+		$failure_query_array[$failure_query_count++] = $query.$paramstring;
 		$log->debug("Query Failed ==> $query \n Error is ==> [".$adb->database->ErrorNo()."]".$adb->database->ErrorMsg());
 	}
 }
 function putMsg($msg) {
-	echo '<tr width="100%"><td colspan=3>'.$msg.'</td></tr>';
+	echo '<div class="slds-col slds-size_10-of-10">'.$msg.'</div>';
 }
 
 function installManifestModule($module) {
@@ -79,10 +97,9 @@ function installManifestModule($module) {
 	}
 }
 
-echo "<table width=80% align=center border=1>";
+echo '<article class="slds-card slds-m-left_x-large slds-p-left_small slds-m-right_x-large slds-p-right_small slds-p-bottom_small slds-m-top_small">';
 
 //Mandatory migration changes
-
 ExecuteQuery("update vtiger_crmentity set smcreatorid=smownerid where smcreatorid=0 and smownerid!=0");
 ExecuteQuery("update vtiger_crmentity set smcreatorid=1 where smcreatorid=0");
 ExecuteQuery("update vtiger_crmentity set smownerid=smcreatorid where smownerid=0 and smcreatorid!=0");
@@ -94,8 +111,32 @@ ExecuteQuery("update vtiger_troubletickets set parent_id=0 where parent_id=''");
 ExecuteQuery("update vtiger_troubletickets set product_id=0 where product_id=''");
 ExecuteQuery("update vtiger_cron_task set laststart=null where laststart=''");
 ExecuteQuery("update vtiger_cron_task set lastend=null where lastend=''");
+// Some records in VT6x are incorrectly assigned to inexistent users so we fix that before starting by assigning them to the admin user
+ExecuteQuery(
+	'update vtiger_crmentity
+		set smownerid=?
+		where smownerid not in (select id from vtiger_users union select groupid from vtiger_groups);',
+	array($current_user->id)
+);
+ExecuteQuery(
+	'update vtiger_crmentity
+		set smcreatorid=?
+		where smcreatorid not in (select id from vtiger_users union select groupid from vtiger_groups);',
+	array($current_user->id)
+);
+ExecuteQuery(
+	'update vtiger_crmentity
+		set modifiedby=?
+		where modifiedby not in (select id from vtiger_users union select groupid from vtiger_groups);',
+	array($current_user->id)
+);
+ExecuteQuery('ALTER TABLE vtiger_cbupdater DROP INDEX `findupdate`, ADD UNIQUE `findupdate` (`filename`, `classname`, `pathfilename`) USING BTREE;');
+ExecuteQuery('CREATE TABLE IF NOT EXISTS `cb_settings` (
+	`setting_key` varchar(200) NOT NULL,
+	`setting_value` varchar(1000) NOT NULL,
+	PRIMARY KEY (`setting_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8');
 
-global $adb;
 ExecuteQuery('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
 	crmid int(19),
 	cbuuid char(40),
@@ -109,52 +150,70 @@ ExecuteQuery('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
 	INDEX (setype)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8');
 
+$cncrm = $adb->getColumnNames('vtiger_users');
+if (!in_array('ename', $cncrm)) {
+	$adb->query('ALTER TABLE `vtiger_users` ADD `ename` varchar(200) default "";');
+}
+$cncrm = $adb->getColumnNames('vtiger_crmentity');
+if (!in_array('cbuuid', $cncrm)) {
+	ExecuteQuery('ALTER TABLE `vtiger_crmentity` ADD `cbuuid` char(40) default "";');
+}
+ExecuteQuery("CREATE TABLE IF NOT EXISTS `com_vtiger_workflows_expfunctions` (
+	`expname` varchar(180) NOT NULL,
+	`expinfo` varchar(250) NOT NULL,
+	`funcname` varchar(180) NOT NULL,
+	`funcfile` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+ExecuteQuery("ALTER TABLE `com_vtiger_workflows_expfunctions` ADD PRIMARY KEY (`expname`);");
 $result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
 if (!($adb->num_rows($result))) {
 	ExecuteQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());
 	ExecuteQuery('ALTER TABLE `com_vtiger_workflowtasks` ADD INDEX(`executionorder`)');
 }
-$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schminuteinterval'));
-if (!($adb->num_rows($result))) {
-	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schminuteinterval VARCHAR(200)", array());
-}
-ExecuteQuery("CREATE TABLE IF NOT EXISTS com_vtiger_workflow_tasktypes (
-				id int(11) NOT NULL,
-				tasktypename varchar(255) NOT NULL,
-				label varchar(255),
-				classname varchar(255),
-				classpath varchar(255),
-				templatepath varchar(255),
-				modules text(500),
-				sourcemodule varchar(255)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8", array());
-$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schtypeid'));
+ExecuteQuery(
+	"CREATE TABLE IF NOT EXISTS com_vtiger_workflow_tasktypes (
+		id int(11) NOT NULL,
+		tasktypename varchar(255) NOT NULL,
+		label varchar(255),
+		classname varchar(255),
+		classpath varchar(255),
+		templatepath varchar(255),
+		modules text(500),
+		sourcemodule varchar(255)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8",
+	array()
+);
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('schtypeid'));
 if (!($adb->num_rows($result))) {
 	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schtypeid INT(10)", array());
 }
-$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schtime'));
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('schminuteinterval'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schminuteinterval VARCHAR(200)", array());
+}
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('schtime'));
 if (!($adb->num_rows($result))) {
 	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schtime TIME", array());
 } else {
 	ExecuteQuery('ALTER TABLE com_vtiger_workflows CHANGE schtime schtime TIME NULL DEFAULT NULL', array());
 }
-$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schdayofmonth'));
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('schdayofmonth'));
 if (!($adb->num_rows($result))) {
 	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schdayofmonth VARCHAR(200)", array());
 }
-$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schdayofweek'));
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('schdayofweek'));
 if (!($adb->num_rows($result))) {
 	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schdayofweek VARCHAR(200)", array());
 }
-$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schannualdates'));
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('schannualdates'));
 if (!($adb->num_rows($result))) {
 	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schannualdates VARCHAR(200)", array());
 }
-$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('nexttrigger_time'));
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('nexttrigger_time'));
 if (!($adb->num_rows($result))) {
 	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD nexttrigger_time DATETIME", array());
 }
-$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('purpose'));
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('purpose'));
 if (!($adb->num_rows($result))) {
 	ExecuteQuery("ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;", array());
 }
@@ -206,107 +265,131 @@ $cnmsg = $adb->getColumnNames('vtiger_profile2field');
 if (!in_array('summary', $cnmsg)) {
 	$adb->query("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");
 }
-$cncrm = $adb->getColumnNames('vtiger_crmentity');
-if (!in_array('cbuuid', $cncrm)) {
-	ExecuteQuery('ALTER TABLE `vtiger_crmentity` ADD `cbuuid` char(40) default "";');
-}
 
-ExecuteQuery('CREATE TABLE `cb_settings` (
-	`setting_key` varchar(200) NOT NULL,
-	`setting_value` varchar(1000) NOT NULL,
-	PRIMARY KEY (`setting_key`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8');
-
+ExecuteQuery("DELETE FROM vtiger_def_org_share WHERE vtiger_def_org_share.tabid not in (select tabid from vtiger_tab)");
+ExecuteQuery("update vtiger_users set theme='softed'");
+ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.5.0' where id=1");
+ExecuteQuery("DELETE FROM vtiger_field WHERE tablename = 'vtiger_inventoryproductrel'");
 installManifestModule('cbupdater');
 
-ob_start();
-include 'modules/cbupdater/getupdatescli.php';
-ob_end_clean();
-$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='mysqlstrictNO_ZERO_IN_DATE'");
-$updid = $adb->query_result($rsup, 0, 0);
-$argv[0] = 'doworkcli';
-$argv[1] = 'apply';
-$argv[2] = $updid;
-include 'modules/cbupdater/doworkcli.php';
-$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='ldMenu'");
-$updid = $adb->query_result($rsup, 0, 0);
-$argv[0] = 'doworkcli';
-$argv[1] = 'apply';
-$argv[2] = $updid;
-include 'modules/cbupdater/doworkcli.php';
-vtlib_toggleModuleAccess('evvtMenu', true); // in case changeset is applied but module deactivated
-$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installglobalvars'");
-$updid = $adb->query_result($rsup, 0, 0);
-$argv[0] = 'doworkcli';
-$argv[1] = 'apply';
-$argv[2] = $updid;
-include 'modules/cbupdater/doworkcli.php';
-vtlib_toggleModuleAccess('GlobalVariable', true); // in case changeset is applied but module deactivated
-$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='addModulecbCompany'");
-$updid = $adb->query_result($rsup, 0, 0);
-$argv[0] = 'doworkcli';
-$argv[1] = 'apply';
-$argv[2] = $updid;
-include 'modules/cbupdater/doworkcli.php';
-vtlib_toggleModuleAccess('cbCompany', true); // in case changeset is applied but module deactivated
-$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='modbusinessactions'");
-$updid = $adb->query_result($rsup, 0, 0);
-$argv[0] = 'doworkcli';
-$argv[1] = 'apply';
-$argv[2] = $updid;
-include 'modules/cbupdater/doworkcli.php';
-vtlib_toggleModuleAccess('BusinessActions', true); // in case changeset is applied but module deactivated
-$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installcbmap'");
-$updid = $adb->query_result($rsup, 0, 0);
-$argv[0] = 'doworkcli';
-$argv[1] = 'apply';
-$argv[2] = $updid;
-include 'modules/cbupdater/doworkcli.php';
-vtlib_toggleModuleAccess('cbMap', true); // in case changeset is applied but module deactivated
+require_once 'Smarty_setup.php';
+$adb->query("SET sql_mode=''");
+$currentModule = $_REQUEST['module'] = 'cbupdater';
+$_REQUEST['action'] = 'getupdates';
+// temporarily deactivate Calendar
+vtlib_toggleModuleAccess('Calendar', false);
+$DONOTDISPLAYUPDATES = 1;
+include 'modules/cbupdater/getupdates.php';
+vtlib_toggleModuleAccess('Calendar', true);
+$_REQUEST['action'] = 'apply';
+
+$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='mysqlstrictNO_ZERO_IN_DATE'");
+if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
+	$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
+	$_REQUEST['idstring'] = $updid;
+	include 'modules/cbupdater/dowork.php';
+}
+$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='denormalizechangeset'");
+if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
+	$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
+	$_REQUEST['idstring'] = $updid;
+	include 'modules/cbupdater/dowork.php';
+}
+if (!vtlib_isModuleActive('GlobalVariable')) {
+	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installglobalvars'");
+	$updid = $adb->query_result($rsup, 0, 0);
+	$_REQUEST['idstring'] = $updid;
+	include 'modules/cbupdater/dowork.php';
+	vtlib_toggleModuleAccess('GlobalVariable', true); // in case changeset is applied but module deactivated
+}
+if (!vtlib_isModuleActive('evvtMenu')) {
+	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='ldMenu'");
+	$updid = $adb->query_result($rsup, 0, 0);
+	$_REQUEST['idstring'] = $updid;
+	include 'modules/cbupdater/dowork.php';
+	vtlib_toggleModuleAccess('evvtMenu', true); // in case changeset is applied but module deactivated
+}
+if (!vtlib_isModuleActive('cbCompany')) {
+	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='addModulecbCompany'");
+	$updid = $adb->query_result($rsup, 0, 0);
+	$_REQUEST['idstring'] = $updid;
+	include 'modules/cbupdater/dowork.php';
+	vtlib_toggleModuleAccess('cbCompany', true); // in case changeset is applied but module deactivated
+}
+if (!vtlib_isModuleActive('cbMap')) {
+	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installcbmap'");
+	$updid = $adb->query_result($rsup, 0, 0);
+	$_REQUEST['idstring'] = $updid;
+	include 'modules/cbupdater/dowork.php';
+	vtlib_toggleModuleAccess('cbMap', true); // in case changeset is applied but module deactivated
+}
+if (!vtlib_isModuleActive('BusinessActions')) {
+	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='modbusinessactions'");
+	$updid = $adb->query_result($rsup, 0, 0);
+	$_REQUEST['idstring'] = $updid;
+	include 'modules/cbupdater/dowork.php';
+	vtlib_toggleModuleAccess('BusinessActions', true); // in case changeset is applied but module deactivated
+}
+if (!vtlib_isModuleActive('cbTermConditions')) {
+	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installcbTermConditions'");
+	$updid = $adb->query_result($rsup, 0, 0);
+	$_REQUEST['idstring'] = $updid;
+	include 'modules/cbupdater/dowork.php';
+	vtlib_toggleModuleAccess('cbTermConditions', true); // in case changeset is applied but module deactivated
+}
+
+if (file_exists('modules/cbupdater/cbupdates/coreboscrm.xml')) {
+	// Install and setup new modules
+	define('postINSTALL', 'postINSTALL');
+	require 'install_modules.php';
+}
+
+$activeModules = array(
+	'BusinessActions',
+	'cbCompany',
+	'cbCVManagement',
+	'cbMap',
+	'cbtranslation',
+	'cbupdater',
+	'com_vtiger_workflow',
+	'evvtMenu',
+	'GlobalVariable',
+);
+
+foreach ($activeModules as $activateModule) {
+	vtlib_toggleModuleAccess($activateModule, true);
+}
 
 // Recalculate permissions  RecalculateSharingRules
 RecalculateSharingRules();
-?>
-</table>
-<br /><br />
+
+putMsg("<H1 style='color:red'>NOW LOG IN AND APPLY ALL THE UPDATES AS USUAL</H1>");
+echo '</article>';
+if (count($failure_query_array)>0) {
+	echo <<<EOT
+<article class="slds-card slds-m-left_x-large slds-m-right_x-large slds-m-top_small slds-m-bottom_x-large slds-p-around_small">
 <b style="color:#FF0000">Failed Queries Log</b>
-<div id="failedLog" style="border:1px solid #666666;width:90%;position:relative;height:200px;overflow:auto;left:5%;top:10px;">
-	<?php
+<div id="failedLog" class="slds-m-left_small slds-m-top_x-small" style="height:200px;overflow:auto;">
+EOT;
 	foreach ($failure_query_array as $failed_query) {
-		echo '<br><font color="red">'.$failed_query.'</font>';
+		echo '<span style="color:red">'.$failed_query.'</span><br>';
 	}
-	?>
-</div>
-<br /><br />
-<table width="35%" border="0" cellpadding="5" cellspacing="0" align="center" class="small">
-   <tr>
-	<td width="75%" align="right" nowrap>
-		Total Number of queries executed : 
-	</td>
-	<td width="25%" align="left">
-		<b><?php echo $query_count;?> </b>
-	</td>
-   </tr>
-   <tr>
-	<td align="right">
-		Queries Succeeded : 
-	</td>
-	<td align="left">
-		<b style="color:#006600;">
-		<?php echo $success_query_count;?>
-		</b>
-	</td>
-   </tr>
-   <tr>
-	<td align="right">
-		Queries Failed : 
-	</td>
-	<td align="left">
-		<b style="color:#FF0000;">
-		<?php echo $failure_query_count ;?>
-		</b>
-	</td>
-   </tr>
-</table>
+	echo '</div></article>';
+}
+	echo <<<EOT
+<article class="slds-card slds-m-left_x-large slds-m-right_x-large slds-m-top_small slds-m-bottom_x-large slds-p-around_small">
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_2-of-8">Total Number of queries executed : </div>
+	<div class="slds-col slds-size_6-of-8"><b>{$query_count}</b></div>
+	</div>
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_2-of-8">Queries Succeeded : </div>
+	<div class="slds-col slds-size_6-of-8"><b style="color:#006600;">{$success_query_count}</b></div>
+	</div>
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_2-of-8">Queries Failed : </div>
+	<div class="slds-col slds-size_6-of-8"><b style="color:#FF0000;">{$failure_query_count}</b></div>
+	</div>
+</article>
 </body>
 </html>
