@@ -32,7 +32,7 @@ class workflowexpressionfunctions extends cbupdaterWorker {
 ");
 			$this->ExecuteQuery("ALTER TABLE `com_vtiger_workflows_expfunctions` ADD PRIMARY KEY (`expname`);");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

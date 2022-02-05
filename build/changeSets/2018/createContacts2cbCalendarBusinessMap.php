@@ -32,10 +32,10 @@ class createContacts2cbCalendarBusinessMap extends cbupdaterWorker {
 			if ($this->isModuleInstalled($module_name)) {
 				$focusnew = new cbMap();
 				$focusnew->column_fields['assigned_user_id'] = Users::getActiveAdminID();
-				$focusnew->column_fields['mapname'] = "Contacts2cbCalendar";
-				$focusnew->column_fields['maptype'] = "Mapping";
-				$focusnew->column_fields['targetname'] = "Contacts";
-				$focusnew->column_fields['content'] = "<map>
+				$focusnew->column_fields['mapname'] = 'Contacts2cbCalendar';
+				$focusnew->column_fields['maptype'] = 'Mapping';
+				$focusnew->column_fields['targetname'] = 'Contacts';
+				$focusnew->column_fields['content'] = '<map>
   <originmodule>
     <originname>Contacts</originname>
   </originmodule>
@@ -60,7 +60,7 @@ class createContacts2cbCalendarBusinessMap extends cbupdaterWorker {
       </Orgfields>
     </field>
   </fields>
-</map>";
+</map>';
 				$focusnew->save($module_name);
 
 				$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
