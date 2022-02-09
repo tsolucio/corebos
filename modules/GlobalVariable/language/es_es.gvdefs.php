@@ -1534,6 +1534,18 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Fuerza la utilización de la deduplicación mientras se realiza una importación independientemente de lo que se haya seleccionado en pantalla.',
 ),
+'Calendar_Start_Hour' => array(
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Hora en formato HH:MM:SS',
+	'definition' => 'Hora de inicio que mostrará el calendario, por defecto será la hora definida en la configuración del calendario por usuario.',
+),
+'Calendar_End_Hour' => array(
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Hora en formato HH:MM:SS',
+	'definition' => 'Hora de finalización que mostrará el calendario, por defecto será 24:00:00.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

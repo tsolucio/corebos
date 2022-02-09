@@ -331,8 +331,8 @@ class Calendar4You extends CRMEntity {
 		$Settings['hour_format'] = $current_user->hour_format;
 		$sthour = explode(':', $current_user->start_hour);
 		$h = $sthour[0];
-		$Settings['start_hour'] = $h.':00:00';
-		$Settings['end_hour'] = '24:00:00';
+		$Settings['start_hour'] = GlobalVariable::getVariable('Calendar_Start_Hour', $h.':00:00', '', $current_user->id);
+		$Settings['end_hour'] = GlobalVariable::getVariable('Calendar_End_Hour', '24:00:00', '', $current_user->id);
 		$Settings['dayoftheweek'] = 'Sunday';
 		$Settings['number_dayoftheweek'] = '0';
 		$Settings['show_weekends'] = 'true';
