@@ -439,7 +439,7 @@ switch ($functiontocall) {
 				$LV = getListViewHeaders($formodule, $tabid);
 			}
 			if (isset($columns) && $columns == 'true') {
-				$ret = array($LV['headers'], $LV['customview']);
+				$ret = array($LV['headers'], $LV['customview'], $LV['folders']);
 			} else {
 				$ret = $LV['data'];
 			}

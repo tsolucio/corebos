@@ -8,9 +8,17 @@
  * All Rights Reserved.
  ************************************************************************************/
 $Document_Folder_View = GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents');
+$moduleView = GlobalVariable::getVariable('Application_ListView_Layout', 'table');
 if ($Document_Folder_View) {
-	include_once 'modules/Documents/FoldersListView.php';
+	if ($moduleView == 'tuigrid') {
+		//tuigrid with folders
+		include_once 'modules/Vtiger/ListView.php';
+	} else {
+		//standart listview with folders
+		include_once 'modules/Documents/FoldersListView.php';
+	}
 } else {
+	//tuigrid or standard without folders
 	include_once 'modules/Vtiger/ListView.php';
 }
 ?>
