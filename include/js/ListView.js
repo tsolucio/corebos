@@ -116,7 +116,7 @@ function disableEnterKey(e, mod) {
 	return (key != 13);
 }
 
-/* function for column header list view searching and loading the results in listviewcontent div */
+/* function to searching the records and loding the ajax result in listviewcontent div*/
 function activateCustomSearch(module) {
 	var urlstring			= '';
 	var groupid				= 1;
@@ -1020,6 +1020,10 @@ function callSearch(searchtype) {
 			processQuickSearchResponse(response);
 		});
 	} else {
+		if (gVTModule == 'Documents') {
+			DocumentsView.Search(urlstring, searchtype);
+			return false;
+		}
 		ListView.ListViewJSON('search', urlstring, searchtype);
 	}
 	return false;

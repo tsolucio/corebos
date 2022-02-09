@@ -16,10 +16,11 @@ loadJS('index.php?module=cbQuestion&action=cbQuestionAjax&file=getjslanguage');
 let lvmodule = gVTModule;
 let PageSize = 20;
 let lvtuiGrid = tui.Grid;
-let lvdataGridInstance;
+let lvdataGridInstance = Array();
 let SearchColumns = 0;
 let ListViewCopy = 0;
 let Application_Filter_All_Edit = 1;
+let DocumentFolderView = 1;
 let lastPage = sessionStorage.getItem(lvmodule+'_lastPage');
 let urlParams = new URLSearchParams(window.location.search);
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, lvmodule, '').then(function (response) {
@@ -34,6 +35,10 @@ GlobalVariable_getVariable('Application_Filter_All_Edit', 1).then(function (resp
 	let obj = JSON.parse(response);
 	Application_Filter_All_Edit = obj.Application_Filter_All_Edit;
 });
+GlobalVariable_getVariable('Document_Folder_View', 1).then(function (response) {
+	let obj = JSON.parse(response);
+	DocumentFolderView = obj.Document_Folder_View;
+});
 document.addEventListener('DOMContentLoaded', function () {
 	ListView.loader('show');
 	ListView.ListViewJSON();
@@ -46,43 +51,47 @@ const ListView = {
 	 * @param {String} urlstring
 	 * @param {String} searchtype
 	 */
-	ListViewJSON: (actionType = false, urlstring = '', searchtype = '') => {
+	ListViewJSON: (actionType = false, urlstring = '', searchtype = '', idIns = 1) => {
 		if (document.getElementById('curmodule') != undefined) {
 			lvmodule = document.getElementById('curmodule').value;
 		}
 		if (!lastPage) {
 			lastPage = 1;
 		}
-		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+lvmodule+'&lastPage='+lastPage;
+		let url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule=${lvmodule}&lastPage=${lastPage}`;
 		if (actionType == 'filter') {
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 			document.basicSearch.search_text.value = '';
 			ListView.ListViewFilter(url);
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'search') {
-			ListView.ListViewSearch(url, urlstring, searchtype);
+			ListView.ListViewSearch(url, urlstring, searchtype, idIns);
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'alphabetic') {
 			ListView.ListViewAlpha(urlstring);
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'massedit') {
 			//use this function to reload data in every change
-			ListView.ListViewReloadData(lastPage, true);
+			ListView.ListViewReloadData(idIns, lastPage, true);
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'RecycleBin') {
-			lvdataGridInstance.destroy();
+			lvdataGridInstance[idIns].destroy();
 			const select_module = document.getElementById('select_module').value;
-			url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+select_module+'&lastPage='+lastPage+'&isRecycleModule=true';
+			url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule=${select_module}&lastPage=${lastPage}&isRecycleModule=true`;
 			ListView.loader('show');
 			ListView.ListViewDefault(select_module, url);
 			ListView.RenderFilter(url);
-			ListView.updateData();
+			ListView.updateData(idIns);
 		} else {
 			if (lvmodule != '' && lvmodule != undefined && lvmodule != 'RecycleBin') {
-				ListView.ListViewDefault(lvmodule, url);
+				if (lvmodule == 'Documents' && DocumentFolderView == 1) {
+					DocumentsView.Show(url);
+				} else {
+					ListView.ListViewDefault(lvmodule, url);
+				}
 			} else if (lvmodule == 'RecycleBin') {
 				const select_module = document.getElementById('select_module').value;
-				url = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule='+select_module+'&lastPage='+lastPage+'&isRecycleModule=true';
+				url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule=${select_module}&lastPage=${lastPage}&isRecycleModule=true`;
 				ListView.ListViewDefault(select_module, url);
 			}
 		}
@@ -110,7 +119,7 @@ const ListView = {
 	 * Get all headers for table
 	 * @param {Object} headerObj
 	 */
-	getColumnHeaders: (headerObj) => {
+	getColumnHeaders: (headerObj, idIns = 1) => {
 		let res = [];
 		let header = {};
 		let filter = {};
@@ -185,9 +194,9 @@ const ListView = {
 						filter: filter,
 						whiteSpace: 'normal',
 						onAfterChange(ev) {
-							const idx = lvdataGridInstance.getIndexOfRow(ev.rowKey);
-							const referenceField = lvdataGridInstance.getValue(idx, 'reference_field');
-							ListView.updateFieldData(ev, idx);
+							const idx = lvdataGridInstance[idIns].getIndexOfRow(ev.rowKey);
+							const referenceField = lvdataGridInstance[idIns].getValue(idx, 'reference_field');
+							ListView.updateFieldData(ev, idx, idIns);
 						},
 						renderer: {
 							type: LinkRender,
@@ -215,9 +224,9 @@ const ListView = {
 						editor: editor,
 						whiteSpace: 'normal',
 						onAfterChange(ev) {
-							const idx = lvdataGridInstance.getIndexOfRow(ev.rowKey);
-							const referenceField = lvdataGridInstance.getValue(idx, 'reference_field');
-							ListView.updateFieldData(ev, idx);
+							const idx = lvdataGridInstance[idIns].getIndexOfRow(ev.rowKey);
+							const referenceField = lvdataGridInstance[idIns].getValue(idx, 'reference_field');
+							ListView.updateFieldData(ev, idx, idIns);
 						},
 						renderer: {
 							type: LinkRender,
@@ -303,7 +312,7 @@ const ListView = {
 	 * @param {String} module
 	 * @param {String} url
 	 */
-	ListViewDefault: (module, url) => {
+	ListViewDefault: (module, url, idIns=1) => {
 		fetch(
 			url+'&columns=true',
 			{
@@ -323,17 +332,20 @@ const ListView = {
 			let headers = ListView.getColumnHeaders(response[0]);
 			let filters = response[1];
 			ListView.setFilters(filters);
-			lvdataGridInstance = new lvtuiGrid({
+			lvdataGridInstance[idIns] = new lvtuiGrid({
 				el: document.getElementById('listview-tui-grid'),
 				columns: headers,
 				rowHeaders: [{
 					type: 'checkbox',
 					header: `
 						<label for="all-checkbox" class="checkbox">
-							<input type="checkbox" id="selectCurrentPageRec" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id[]');ListView.getCheckedRows('currentPage', this);" name="_checked" />
+							<input type="checkbox" id="selectCurrentPageRec" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id[]');ListView.getCheckedRows('currentPage', this, ${idIns});" name="_checked" />
 						</label>`,
 					renderer: {
-						type: CheckboxRender
+						type: CheckboxRender,
+						options: {
+							idIns: idIns
+						}
 					}
 				}],
 				data: {
@@ -360,9 +372,9 @@ const ListView = {
 					valign: 'top'
 				},
 				onGridUpdated: (ev) => {
-					const lastPage = lvdataGridInstance.getPagination()._currentPage;
+					const lastPage = lvdataGridInstance[idIns].getPagination()._currentPage;
 					sessionStorage.setItem(module+'_lastPage', lastPage);
-					ListView.updateData();
+					ListView.updateData(idIns);
 					const rows = document.getElementById('allselectedboxes').value;
 					if (rows != '') {
 						ListView.checkRows();
@@ -371,7 +383,7 @@ const ListView = {
 			});
 			ListView.loader('hide');
 			//load empty create new record template
-			ListView.noData();
+			ListView.noData(idIns);
 			ListView.registerEvent(url);
 			tui.Grid.applyTheme('striped');
 		});
@@ -380,8 +392,8 @@ const ListView = {
 	 * Register a grid event
 	 * @param {String} url
 	 */
-	registerEvent: (url) => {
-		lvdataGridInstance.on('filter', (ev) => {
+	registerEvent: (url, idIns=1) => {
+		lvdataGridInstance[idIns].on('filter', (ev) => {
 			const operatorData = {
 				eq: 'e',
 				contain: 'c',
@@ -399,14 +411,14 @@ const ListView = {
 			const operator = operatorData[ev.filterState[0].state[0]['code']];
 			const urlstring = `&query=true&search_field=${ev.columnName}&search_text=${ev.filterState[0].state[0]['value']}&searchtype=BasicSearch&operator=${operator}`;
 			const searchtype = 'Basic';
-			ListView.ListViewSearch(url, urlstring, searchtype);
+			ListView.ListViewSearch(url, urlstring, searchtype, idIns);
 		});
-		lvdataGridInstance.on('click', (ev) => {
+		lvdataGridInstance[idIns].on('click', (ev) => {
 			if (ev.nativeEvent.target.innerText == 'Clear') {
-				ListView.ListViewReloadData();
+				ListView.ListViewReloadData(idIns);
 			}
 		});
-		lvdataGridInstance.on('successResponse', function (data) {
+		lvdataGridInstance[idIns].on('successResponse', function (data) {
 			const filteredData = document.getElementById('filteredData');
 			const res = JSON.parse(data.xhr.response);
 			const search_mode = res.search_mode;
@@ -429,7 +441,7 @@ const ListView = {
 	 * @param {String} urlstring
 	 * @param {String} searchtype
 	 */
-	ListViewSearch: (url, urlstring, searchtype) => {
+	ListViewSearch: (url, urlstring, searchtype, idIns=1) => {
 		//set search_url value to input
 		if (searchtype == 'Basic') {
 			const parseUrl = urlstring.split('&');
@@ -442,12 +454,14 @@ const ListView = {
 		} else {
 			document.getElementById('search_url').value = urlstring + '&query=true';
 		}
-		lvdataGridInstance.clear();
-		lvdataGridInstance.setRequestParams({'search': urlstring, 'searchtype': searchtype});
-		//update pagination onchange
-		lvdataGridInstance.setPerPage(parseInt(PageSize));
-		ListView.updateData();
-		ListView.noData();
+		if (lvdataGridInstance[idIns]) {
+			lvdataGridInstance[idIns].clear();
+			lvdataGridInstance[idIns].setRequestParams({'search': urlstring, 'searchtype': searchtype});
+			//update pagination onchange
+			lvdataGridInstance[idIns].setPerPage(parseInt(PageSize));
+			ListView.updateData(idIns);
+			ListView.noData(idIns);
+		}
 	},
 	/**
 	 * Get results for alphabetic search
@@ -457,39 +471,45 @@ const ListView = {
 		//set search_url value to input
 		const parseUrl = url.split('&');
 		let urlArr = [];
-		for (arg in parseUrl) {
+		for (let arg in parseUrl) {
 			const URI = parseUrl[arg].split('=');
 			urlArr[URI[0]] = URI[1];
 		}
 		document.getElementById('search_url').value = `&query=true&search_field=${urlArr['search_field']}&search_text=${urlArr['search_text']}&searchtype=BasicSearch&type=alpbt&operator=${urlArr['operator']}`;
-		lvdataGridInstance.clear();
-		lvdataGridInstance.setRequestParams({'search': url, 'searchtype': 'Basic'});
-		lvdataGridInstance.on('successResponse', function (data) {
-			const res = JSON.parse(data.xhr.response);
-			const export_where = res.export_where;
-			if (export_where && lvmodule != '') {
-				document.getElementsByName('where_export')[0].value = export_where;
-			}
-		});
-		//update pagination onchange
-		lvdataGridInstance.setPerPage(parseInt(PageSize));
-		ListView.updateData();
-		ListView.noData();
+		for (let idIns in lvdataGridInstance) {
+			lvdataGridInstance[idIns].clear();
+			lvdataGridInstance[idIns].setRequestParams({'search': url, 'searchtype': 'Basic'});
+			lvdataGridInstance[idIns].on('successResponse', function (data) {
+				const res = JSON.parse(data.xhr.response);
+				const export_where = res.export_where;
+				if (export_where && lvmodule != '') {
+					document.getElementsByName('where_export')[0].value = export_where;
+				}
+			});
+			//update pagination onchange
+			lvdataGridInstance[idIns].setPerPage(parseInt(PageSize));
+			ListView.updateData(idIns);
+			ListView.noData(idIns);
+		}
 	},
 	/**
 	 * Get the new headers in a onchange data
 	 */
-	ListViewReloadData: (lastPage = 1, reload = true) => {
-		lvdataGridInstance.clear();
+	ListViewReloadData: (idIns=1, lastPage = 1, reload = true) => {
+		if (lvmodule == 'Documents' && DocumentFolderView == 1) {
+			DocumentsView.Reload(lastPage, reload);
+			return false;
+		}
+		lvdataGridInstance[idIns].clear();
 		if (reload) {
-			lvdataGridInstance.setRequestParams({'search': '', 'searchtype': '', 'page': lastPage});
+			lvdataGridInstance[idIns].setRequestParams({'search': '', 'searchtype': '', 'page': lastPage});
 		} else {
-			lvdataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
+			lvdataGridInstance[idIns].setRequestParams({'search': '', 'searchtype': ''});
 		}
 		document.getElementsByName('search_text')[0].value = '';
 		//update pagination onchange
 		if (reload) {
-			lvdataGridInstance.setPerPage(parseInt(PageSize));
+			lvdataGridInstance[idIns].setPerPage(parseInt(PageSize));
 		}
 		const content = document.getElementsByClassName('tui-grid-content-area');
 		if (lvmodule == '') {
@@ -504,15 +524,15 @@ const ListView = {
 				content[0].style.height = 'auto';
 			}
 		}
-		ListView.updateData();
+		ListView.updateData(idIns);
 	},
 	/**
 	 * Get the new headers in a onchange filter
 	 * @param {String} url
 	 */
-	ListViewFilter: (url) => {
-		lvdataGridInstance.setRequestParams({'search': '', 'searchtype': ''});
-		lvdataGridInstance.clear();
+	ListViewFilter: (url, idIns=1) => {
+		lvdataGridInstance[idIns].setRequestParams({'search': '', 'searchtype': ''});
+		lvdataGridInstance[idIns].clear();
 		fetch(
 			url+'&columns=true',
 			{
@@ -536,12 +556,12 @@ const ListView = {
 				}
 			}
 			ListView.setFilters(filters, true);
-			lvdataGridInstance.setColumns(headers);
-			ListView.noData();
+			lvdataGridInstance[idIns].setColumns(headers);
+			ListView.noData(idIns);
 		});
-		ListView.updateData();
+		ListView.updateData(idIns);
 		//update pagination onchange
-		lvdataGridInstance.setPerPage(parseInt(PageSize));
+		lvdataGridInstance[idIns].setPerPage(parseInt(PageSize));
 	},
 	/**
 	 * Get columns for RecycleBin filter
@@ -600,13 +620,13 @@ const ListView = {
 	 * @param {Object} type
 	 * @param {String} el
 	 */
-	getCheckedRows: (type, el = '') => {
+	getCheckedRows: (type, el = '', idIns=1) => {
 		let checkedRows = ListView.getAllCheckedRows(type, el);
 		let ids = [];
 		let rowKeys = [];
 		//add checked rows for current page
 		for (let id in checkedRows) {
-			let recordId = lvdataGridInstance.getValue(parseInt(checkedRows[id]), 'recordid');
+			let recordId = lvdataGridInstance[idIns].getValue(parseInt(checkedRows[id]), 'recordid');
 			ids.push(recordId);
 			rowKeys.push(checkedRows[id]);
 		}
@@ -631,13 +651,13 @@ const ListView = {
 		//remove id for current unchecked row
 		if (!el.checked) {
 			let removeId = el.id;
-			let recordId = lvdataGridInstance.getValue(parseInt(removeId), 'recordid');
+			let recordId = lvdataGridInstance[idIns].getValue(parseInt(removeId), 'recordid');
 			select_options = select_options.replace(recordId+';', '');
 		}
 		//remove all ids for current page if header checkbox is unchecked
 		if (checkedRows.length == 0) {
 			for (let i = 0; i < PageSize; i++) {
-				let recordId = lvdataGridInstance.getValue(parseInt(i), 'recordid');
+				let recordId = lvdataGridInstance[idIns].getValue(parseInt(i), 'recordid');
 				select_options = select_options.replace(recordId+';', '');
 			}
 		}
@@ -651,9 +671,9 @@ const ListView = {
 	 * Remove all checked rows
 	 * @param {String} selectedType
 	 */
-	removeRows: (selectedType = '') => {
-		lvdataGridInstance.reloadData();
-		lvdataGridInstance.removeCheckedRows();
+	removeRows: (selectedType = '', idIns=1) => {
+		lvdataGridInstance[idIns].reloadData();
+		lvdataGridInstance[idIns].removeCheckedRows();
 		document.getElementById('status').style.display = 'none';
 		if (selectedType == 'all') {
 			document.getElementById('gridRecordCountHeader').innerHTML = '';
@@ -661,23 +681,26 @@ const ListView = {
 			document.getElementById('numOfRows').value = '';
 			document.getElementById('linkForSelectAll').style.display = 'none';
 		} else {
-			ListView.updateData();
+			ListView.updateData(idIns);
 			document.getElementById('linkForSelectAll').style.display = 'none';
 		}
 	},
 	/**
 	 * Update data in every change
 	 */
-	updateData: () => {
-		if (Object.keys(lvdataGridInstance).length == 0) {
+	updateData: (idIns=1) => {
+		if (lvmodule == 'Documents' && DocumentFolderView == 1) {
+			return false;
+		}
+		if (Object.keys(lvdataGridInstance[idIns]).length == 0) {
 			document.getElementById('gridRecordCountHeader').innerHTML = '';
 			document.getElementById('gridRecordCountFooter').innerHTML = '';
 			return 0;
 		}
-		const gridInstance = lvdataGridInstance.store.data.pageOptions;
+		const gridInstance = lvdataGridInstance[idIns].store.data.pageOptions;
 		const page = gridInstance.page;
 		const totalCount = gridInstance.totalCount;
-		const currentPageSize = lvdataGridInstance.getRowCount();
+		const currentPageSize = lvdataGridInstance[idIns].getRowCount();
 		const limit_start_rec = (page-1) * PageSize;
 		const currentPage = (limit_start_rec + 1) + ' - ' + (limit_start_rec + currentPageSize);
 		if (totalCount > 0) {
@@ -771,11 +794,11 @@ const ListView = {
 	/**
 	 * Check rows in grid
 	 */
-	checkRows: () => {
+	checkRows: (idIns=1) => {
 		let actualVal = document.getElementById('allselectedboxes');
 		let idsArr = actualVal.value.split(';');
 		for (let i = 0; i <= PageSize; i++) {
-			let recordId = lvdataGridInstance.getValue(parseInt(i), 'recordid');
+			let recordId = lvdataGridInstance[idIns].getValue(parseInt(i), 'recordid');
 			if (idsArr.includes(recordId)) {
 				document.getElementById(i).checked = true;
 			}
@@ -786,8 +809,8 @@ const ListView = {
 	 * @param {Object} ev
 	 * @param {String|Number} idx
 	 */
-	updateFieldData: (ev, idx) => {
-		const recordid = lvdataGridInstance.getValue(idx, 'recordid');
+	updateFieldData: (ev, idx, idIns=1) => {
+		const recordid = lvdataGridInstance[idIns].getValue(idx, 'recordid');
 		const columnName = ev.columnName;
 		const value = ev.value;
 		const preValue = ev.preValue;
@@ -876,9 +899,18 @@ const ListView = {
 	/**
 	 * Show No Data message in listview
 	 */
-	noData: () => {
-		const nr_records = lvdataGridInstance.store.data.rawData.length;
+	noData: (idIns=1) => {
+		const nr_records = lvdataGridInstance[idIns].store.data.rawData.length;
 		if (nr_records == 0) {
+			let nr = 0;
+			let index = 0;
+			for (let currentIdx in lvdataGridInstance) {
+				if (currentIdx == idIns) {
+					index = nr;
+					break;
+				}
+				nr++;
+			}
 			fetch(
 				'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=checkButton&formodule='+lvmodule,
 				{
@@ -889,9 +921,9 @@ const ListView = {
 					credentials: 'same-origin',
 				}
 			).then(response => response.json()).then(response => {
-				const no_data_template = document.getElementsByClassName('tui-grid-layer-state-content')[0];
-				const grid_template = document.getElementsByClassName('tui-grid-content-area')[0];
-				const mod_label = document.getElementsByClassName('hdrLink')[0].innerText;
+				const no_data_template = document.getElementsByClassName('tui-grid-layer-state-content')[index];
+				const grid_template = document.getElementsByClassName('tui-grid-content-area')[index];
+				const mod_label = document.getElementsByClassName('hdrLink')[index].innerText;
 				grid_template.style.height = '240px';
 				let create_template = '';
 				let import_template = '';
@@ -1056,7 +1088,9 @@ const ListView = {
 		} else if (type == 'hide' && tuiId) {
 			const loader = document.getElementById('cbds-loader');
 			tuiId.style.height = 'auto';
-			loader.remove();
+			if (loader) {
+				loader.remove();
+			}
 		}
 	},
 	/**
@@ -1071,3 +1105,108 @@ const ListView = {
 	 */
 	loadedTooltips: []
 };
+
+
+const DocumentsView = {
+
+	Show: (url) => {
+		fetch(
+			`${url}&columns=true`,
+			{
+				method: 'get',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+				},
+				credentials: 'same-origin',
+			}
+		).then(response => response.json()).then(response => {
+			const childNames = Object.keys(response[0]).map((key) => response[0][key].fieldname);
+			let filters = response[1];
+			let folders = response[2];
+			ListView.setFilters(filters);
+			for(let id in folders) {
+				let headers = ListView.getColumnHeaders(response[0], folders[id][0]);
+				lvdataGridInstance[folders[id][0]] = new lvtuiGrid({
+					el: document.getElementById('listview-tui-grid'),
+					columns: headers,
+					rowHeaders: [{
+						type: 'checkbox',
+						header: `
+							<label for="all-checkbox" class="checkbox">
+								<input type="checkbox" id="currentPageRec_selectall${folders[id][0]}" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id${folders[id][0]}', 'selectall${folders[id][0]}');ListView.getCheckedRows('currentPage', this, ${folders[id][0]});" name="_checked" />
+							</label>`,
+						renderer: {
+							type: CheckboxRender,
+							options: {
+								idIns: folders[id][0]
+							}
+						}
+					}],
+					data: {
+						api: {
+							readData: {
+								url: `${url}&perPage=${PageSize}&folderid=${folders[id][0]}`,
+								method: 'GET'
+							}
+						}
+					},
+					useClientSort: false,
+					pageOptions: {
+						perPage: PageSize
+					},
+					rowHeight: 'auto',
+					bodyHeight: 'auto',
+					scrollX: false,
+					scrollY: false,
+					columnOptions: {
+						resizable: true
+					},
+					header: {
+						align: 'left',
+						valign: 'top',
+						height: 70,
+						complexColumns: [{
+							header: folders[id][1],
+							name: 'basic',
+							childNames: childNames
+						}]
+					},
+					onGridUpdated: (ev) => {
+						const lastPage = lvdataGridInstance[folders[id][0]].getPagination()._currentPage;
+						sessionStorage.setItem(`Documents_${folders[id][0]}_lastPage`, lastPage);
+						ListView.updateData(folders[id][0]);
+						const rows = document.getElementById('allselectedboxes').value;
+						if (rows != '') {
+							ListView.checkRows(folders[id][0]);
+						}
+					}
+				});
+				ListView.loader('hide');
+				ListView.registerEvent(url, folders[id][0]);
+				tui.Grid.applyTheme('striped');
+			}
+		});	
+	},
+
+	Search: (urlstring, searchtype) => {
+		for (let ins in lvdataGridInstance) {
+			ListView.ListViewJSON('search', urlstring, searchtype, ins);
+		}
+	},
+
+	Reload: (lastPage=1, reload=true) => {
+		for (let idIns in lvdataGridInstance) {
+			lvdataGridInstance[idIns].clear();
+			if (reload) {
+				lvdataGridInstance[idIns].setRequestParams({'search': '', 'searchtype': '', 'page': lastPage});
+			} else {
+				lvdataGridInstance[idIns].setRequestParams({'search': '', 'searchtype': ''});
+			}
+			document.getElementsByName('search_text')[0].value = '';
+			if (reload) {
+				lvdataGridInstance[idIns].setPerPage(parseInt(PageSize));
+			}
+			ListView.updateData(idIns);
+		}
+	}
+}
