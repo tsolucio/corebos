@@ -40,6 +40,7 @@ require_once 'DirectoryModule.php';
 require_once 'Browser.php';
 require_once 'DirectoryLetter.php';
 require_once 'DirectoryRecord.php';
+require_once 'DirectoryModuleList.php';
 require_once 'DirectoryFolder.php';
 require_once 'DirectoryGroup.php';
 require_once 'CRMFile.php';

@@ -238,6 +238,18 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Activate browser\'s spellchecker in the Rich Text Editor.',
 ),
+'WEBDAV_Module_View' => array(
+	'valuetype' => 'String',
+	'category' => 'WebDav',
+	'values' => 'Letter | Files',
+	'definition' => 'Letter groups records by alphabet. Files pages the records.',
+),
+'WEBDAV_Enabled' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'WebDav',
+	'values' => '0 | 1',
+	'definition' => 'Completely disables or enables webdav access.',
+),
 'Webservice_Enabled' => array(
 	'valuetype' => 'Booléen',
 	'category' => 'Webservice',

@@ -43,13 +43,21 @@ class DirectoryModule extends Sabre\DAV\Collection {
 	}
 
 	public function getChildren() {
-		// select letters
-		$letters = DirectoryModule::getLetterArray($this->getModuleName(), '');
-		$dirs = array();
-		foreach ($letters as $letter) {
-			$dirs[] = new DirectoryLetter($this->tabid, $letter);
+		switch (GlobalVariable::getVariable('WEBDAV_Module_View', 'Letter', $this->getModuleName())) {
+			case 'Files':
+				$dml = new DirectoryModuleList($this->tabid);
+				return $dml->getChildren();
+				break;
+			case 'Letter':
+			default:
+				// select letters
+				$letters = DirectoryModule::getLetterArray($this->getModuleName(), '');
+				$dirs = array();
+				foreach ($letters as $letter) {
+					$dirs[] = new DirectoryLetter($this->tabid, $letter);
+				}
+				return $dirs;
 		}
-		return $dirs;
 	}
 
 	public function getChild($name) {
