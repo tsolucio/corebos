@@ -1,7 +1,9 @@
 {if !isset($moduleShowFilter) || $moduleShowFilter}
 <table style="width:100%;" class="slds-card">
 	<tr>
-		<td width="25%" class="small" nowrap align="left">{$recordListRange}</td>
+		<td width="25%" class="small" nowrap align="left">
+			{if $MODULE neq 'Documents'}{$recordListRange}{/if}
+		</td>
 		<td><table>
 				<tr>
 					<td>
@@ -55,10 +57,12 @@
 		</td>
 		<!-- Page Navigation -->
 		<td nowrap align="right" width="25%" class="cblds-t-align_right">
+			{if $MODULE neq 'Documents'}
 			{if !isset($SHOWPAGENAVIGATION) || $SHOWPAGENAVIGATION}
 			<table border=0 cellspacing=0 cellpadding=0 class="small" style="display: inline-block;">
 				<tr>{$NAVIGATION}</tr>
 			</table>
+			{/if}
 			{/if}
 		</td>
 	</tr>
