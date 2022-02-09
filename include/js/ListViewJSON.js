@@ -1124,7 +1124,7 @@ const DocumentsView = {
 			let filters = response[1];
 			let folders = response[2];
 			ListView.setFilters(filters);
-			for(let id in folders) {
+			for (let id in folders) {
 				let headers = ListView.getColumnHeaders(response[0], folders[id][0]);
 				lvdataGridInstance[folders[id][0]] = new lvtuiGrid({
 					el: document.getElementById('listview-tui-grid'),
@@ -1185,7 +1185,7 @@ const DocumentsView = {
 				ListView.registerEvent(url, folders[id][0]);
 				tui.Grid.applyTheme('striped');
 			}
-		});	
+		});
 	},
 
 	Search: (urlstring, searchtype) => {
@@ -1209,4 +1209,4 @@ const DocumentsView = {
 			ListView.updateData(idIns);
 		}
 	}
-}
+};

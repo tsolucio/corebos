@@ -309,7 +309,6 @@ function getListViewHeaders($currentModule, $tabid) {
 	}
 	$folders = array();
 	if ($currentModule == 'Documents') {
-		include_once 'modules/Documents/ListViewTuiGrid.php';
 		$folders = findDocumentFolders();
 	}
 	return array(
