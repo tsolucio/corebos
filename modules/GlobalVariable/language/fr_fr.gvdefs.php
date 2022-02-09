@@ -1534,6 +1534,18 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Control if the duplicate handling should be forced.',
 ),
+'Calendar_Start_Hour' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Hour in format HH:MM:SS',
+	'definition' => 'Start hour to show in Calendar, by default will be the hour defined on Calendar Settings per user.',
+),
+'Calendar_End_Hour' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Hour in format HH:MM:SS',
+	'definition' => 'End hour to show in Calendar, by default will be 24:00:00.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {

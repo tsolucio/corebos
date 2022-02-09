@@ -1538,14 +1538,15 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => 'Hour in format HH:MM:SS',
-	'definition' => 'Star hour to show in Calendar, by default will be the hour defined on Calendar Settings per user.',
+	'definition' => 'Start hour to show in Calendar, by default will be the hour defined on Calendar Settings per user.',
 ),
 'Calendar_End_Hour' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => 'Hour in format HH:MM:SS',
 	'definition' => 'End hour to show in Calendar, by default will be 24:00:00.',
-),);
+),
+);
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
 	include $tcode;
