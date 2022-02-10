@@ -122,7 +122,7 @@ function getListViewJSON($currentModule, $tabid, $entries = 20, $orderBy = 'DESC
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($currentModule, true);
 		$list_query = preg_replace("/$crmEntityTable.deleted\s*=\s*0/i", $crmEntityTable.'.deleted = 1', $list_query);
 	}
-	if (!isset($_REQUEST['fromPagination'])) {
+	if (!isset($_REQUEST['fromInstance'])) {
 		$currentPage = $lastPage;
 	}
 	$limit = ($currentPage-1) * $entries;
