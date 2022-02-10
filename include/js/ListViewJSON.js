@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const ListView = {
 
+	Action: '',
+
 	Request: async (url, method, body = {}) => {
 		let headers = {
 			'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -71,6 +73,7 @@ const ListView = {
 	 * @param {String} searchtype
 	 */
 	Show: (actionType = false, urlstring = '', searchtype = '', idIns = 1) => {
+		ListView.Action = actionType;
 		if (document.getElementById('curmodule') != undefined) {
 			lvmodule = document.getElementById('curmodule').value;
 		}
@@ -386,7 +389,7 @@ const ListView = {
 					sessionStorage.setItem(module+'_lastPage', lastPage);
 					ListView.updateData(idIns);
 					const rows = document.getElementById('allselectedboxes').value;
-					if (rows != '') {
+					if (rows != '' && ListView.Action != 'massedit') {
 						ListView.checkRows();
 					}
 					lvdataGridInstance[idIns].setRequestParams({
@@ -540,6 +543,9 @@ const ListView = {
 			}
 		}
 		ListView.updateData(idIns);
+		if (ListView.Action != 'massedit') {
+			document.getElementById('allselectedboxes').value = '';
+		}
 	},
 	/**
 	 * Get the new headers in a onchange filter
@@ -1087,7 +1093,10 @@ const DocumentsView = {
 			let folders = response[2];
 			ListView.setFilters(filters);
 			for (let id in folders) {
-				const lastPage = sessionStorage.getItem(`Documents_${folders[id][0]}_lastPage`);
+				let lastPage = sessionStorage.getItem(`Documents_${folders[id][0]}_lastPage`);
+				if (lastPage == null) {
+					lastPage = 1;
+				}
 				let headers = ListView.getColumnHeaders(response[0], folders[id][0]);
 				lvdataGridInstance[folders[id][0]] = new lvtuiGrid({
 					el: document.getElementById('listview-tui-grid'),
@@ -1139,7 +1148,7 @@ const DocumentsView = {
 						sessionStorage.setItem(`Documents_${folders[id][0]}_lastPage`, lastPage);
 						ListView.updateData(folders[id][0]);
 						const rows = document.getElementById('allselectedboxes').value;
-						if (rows != '') {
+						if (rows != '' && ListView.Action != 'massedit') {
 							ListView.checkRows(folders[id][0]);
 						}
 						lvdataGridInstance[folders[id][0]].setRequestParams({
@@ -1173,6 +1182,9 @@ const DocumentsView = {
 				lvdataGridInstance[idIns].setPerPage(parseInt(PageSize));
 			}
 			ListView.updateData(idIns);
+			if (ListView.Action != 'massedit') {
+				document.getElementById('allselectedboxes').value = '';
+			}
 		}
 	}
 };
