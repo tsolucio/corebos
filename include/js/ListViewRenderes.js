@@ -77,6 +77,9 @@ class LinkRender {
 				</svg>
 			</span>`;
 		}
+		if (module == 'Documents' && referenceField == 'title') {
+			referenceField = 'notes_title';
+		}
 		if (referenceField.includes(columnName)) {
 			el = document.createElement('a');
 			if (tooltip) {

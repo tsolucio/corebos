@@ -1335,7 +1335,7 @@ function progressMassEditDetails(sentForm) {
 						if (Application_Landing_View=='table') {
 							document.getElementById('ListViewContents').innerHTML= result[2];
 						} else {
-							ListView.ListViewJSON('massedit');
+							ListView.Show('massedit');
 						}
 						if (result[1] != '') {
 							ldsPrompt.show(alert_arr['ERROR'], result[1]);
@@ -3596,7 +3596,7 @@ function ajaxChangeCalendarStatus(statusname, activityid, from) {
 				document.getElementById('basicsearchcolumns').innerHTML = '';
 			}
 		} else {
-			ListView.ListViewJSON('massedit');
+			ListView.Show('massedit');
 		}
 		if (result[1] && result[1] != '') {
 			ldsPrompt.show(alert_arr['ERROR'], result[1]);

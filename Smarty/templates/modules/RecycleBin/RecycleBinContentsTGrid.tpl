@@ -36,7 +36,7 @@
 			<!-- Page Navigation -->
 			<td width=100% align="right" class="cblds-t-align_right">
 				<b>{$MOD.LBL_SELECT_MODULE} : </b>
-				<select id="select_module" onChange="ListView.ListViewJSON('RecycleBin');" class="small">
+				<select id="select_module" onChange="ListView.Show('RecycleBin');" class="small">
 				{foreach key=mod_name item=module from=$MODULE_NAME}
 				{assign var="modulelabel" value=$module|@getTranslatedString:$module}
 				{if $module eq $SELECTED_MODULE}

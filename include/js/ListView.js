@@ -620,7 +620,7 @@ function showDefaultCustomView(selectView, module) {
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 			document.basicSearch.search_text.value = '';
 		} else {
-			ListView.ListViewJSON('filter');
+			ListView.Show('filter');
 		}
 		initSelect2();
 		if (result[1] != '') {
@@ -1024,7 +1024,7 @@ function callSearch(searchtype) {
 			DocumentsView.Search(urlstring, searchtype);
 			return false;
 		}
-		ListView.ListViewJSON('search', urlstring, searchtype);
+		ListView.Show('search', urlstring, searchtype);
 	}
 	return false;
 }
@@ -1055,7 +1055,7 @@ function alphabetic(module, url, dataid) {
 			processQuickSearchResponse(response);
 		});
 	} else {
-		ListView.ListViewJSON('alphabetic', url);
+		ListView.Show('alphabetic', url);
 	}
 }
 
