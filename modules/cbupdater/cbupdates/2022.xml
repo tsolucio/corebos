@@ -14,4 +14,18 @@
 	<classname>addPathName2FindupdateIndex</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Document Subfolders!</description>
+	<filename>build/changeSets/2022/installDocumentFolders.php</filename>
+	<classname>installDocumentFolders</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate Document folders</description>
+	<filename>build/changeSets/2022/migrateDocumentFolders.php</filename>
+	<classname>migrateDocumentFolders</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

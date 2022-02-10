@@ -251,7 +251,7 @@ class Documents extends CRMEntity {
 	*/
 	public function save_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if ($module=='Documents') {
+		if ($module=='Documents' && $with_module!='DocumentFolders') {
 			// in this case we have to turn the parameters around to call the parent method correctly
 			$with_crmid = (array)$with_crmid;
 			foreach ($with_crmid as $relcrmid) {
