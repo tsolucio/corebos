@@ -13,6 +13,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 loadJS('index.php?module=cbQuestion&action=cbQuestionAjax&file=getjslanguage');
+const defaultURL = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions';
 let lvmodule = gVTModule;
 let PageSize = 20;
 let lvtuiGrid = tui.Grid;
@@ -76,7 +77,7 @@ const ListView = {
 		if (!lastPage) {
 			lastPage = 1;
 		}
-		let url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule=${lvmodule}&lastPage=${lastPage}`;
+		let url = `${defaultURL}&functiontocall=listViewJSON&formodule=${lvmodule}&lastPage=${lastPage}`;
 		if (actionType == 'filter') {
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 			document.basicSearch.search_text.value = '';
@@ -95,7 +96,7 @@ const ListView = {
 		} else if (actionType == 'RecycleBin') {
 			lvdataGridInstance[idIns].destroy();
 			const select_module = document.getElementById('select_module').value;
-			url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule=${select_module}&lastPage=${lastPage}&isRecycleModule=true`;
+			url = `${defaultURL}&functiontocall=listViewJSON&formodule=${select_module}&lastPage=${lastPage}&isRecycleModule=true`;
 			ListView.loader('show');
 			ListView.Default(select_module, url);
 			ListView.RenderFilter(url);
@@ -109,7 +110,7 @@ const ListView = {
 				}
 			} else if (lvmodule == 'RecycleBin') {
 				const select_module = document.getElementById('select_module').value;
-				url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&formodule=${select_module}&lastPage=${lastPage}&isRecycleModule=true`;
+				url = `${defaultURL}&functiontocall=listViewJSON&formodule=${select_module}&lastPage=${lastPage}&isRecycleModule=true`;
 				ListView.Default(select_module, url);
 			}
 		}
@@ -388,6 +389,9 @@ const ListView = {
 					if (rows != '') {
 						ListView.checkRows();
 					}
+					lvdataGridInstance[idIns].setRequestParams({
+						'fromPagination': true
+					});
 				}
 			});
 			ListView.loader('hide');
@@ -809,7 +813,7 @@ const ListView = {
 		if (value != preValue) {
 			jQuery.ajax({
 				method: 'POST',
-				url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=listViewJSON&method=updateDataListView',
+				url: `${defaultURL}&functiontocall=listViewJSON&method=updateDataListView`,
 				data: {
 					modulename: lvmodule,
 					value: value,
@@ -894,7 +898,7 @@ const ListView = {
 				}
 				nr++;
 			}
-			const url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=checkButton&formodule=${lvmodule}`;
+			const url = `${defaultURL}&functiontocall=checkButton&formodule=${lvmodule}`;
 			ListView.Request(url, 'get').then(function(response) {
 				const no_data_template = document.getElementsByClassName('tui-grid-layer-state-content')[index];
 				const grid_template = document.getElementsByClassName('tui-grid-content-area')[index];
@@ -956,7 +960,7 @@ const ListView = {
 				findUp(dd, '.tui-grid-cell').classList.remove('tui-grid-cell-has-overflow');
 			}
 		});
-		const url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getRecordActions&formodule=${lvmodule}&recordid=${recordid}`;
+		const url = `${defaultURL}&functiontocall=getRecordActions&formodule=${lvmodule}&recordid=${recordid}`;
 		ListView.Request(url, 'get').then(function(response) {
 			let button_template = `<ul class="slds-dropdown__list" role="menu" id="list__${recordid}">`;
 			if (response == true) { //recycle bin module
@@ -1083,6 +1087,7 @@ const DocumentsView = {
 			let folders = response[2];
 			ListView.setFilters(filters);
 			for (let id in folders) {
+				const lastPage = sessionStorage.getItem(`Documents_${folders[id][0]}_lastPage`);
 				let headers = ListView.getColumnHeaders(response[0], folders[id][0]);
 				lvdataGridInstance[folders[id][0]] = new lvtuiGrid({
 					el: document.getElementById('listview-tui-grid'),
@@ -1103,7 +1108,7 @@ const DocumentsView = {
 					data: {
 						api: {
 							readData: {
-								url: `${url}&perPage=${PageSize}&folderid=${folders[id][0]}`,
+								url: `${url}&perPage=${PageSize}&folderid=${folders[id][0]}&lastPage=${lastPage}`,
 								method: 'GET'
 							}
 						}
@@ -1137,6 +1142,9 @@ const DocumentsView = {
 						if (rows != '') {
 							ListView.checkRows(folders[id][0]);
 						}
+						lvdataGridInstance[folders[id][0]].setRequestParams({
+							'fromPagination': true
+						});
 					}
 				});
 				ListView.loader('hide');

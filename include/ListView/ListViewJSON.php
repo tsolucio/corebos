@@ -122,21 +122,9 @@ function getListViewJSON($currentModule, $tabid, $entries = 20, $orderBy = 'DESC
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($currentModule, true);
 		$list_query = preg_replace("/$crmEntityTable.deleted\s*=\s*0/i", $crmEntityTable.'.deleted = 1', $list_query);
 	}
-	$start = coreBOS_Session::get('lvs^'.$currentModule.'^'.$viewid.'^start', 1);
-	if ($currentPage == 1) {
-		if ($lastPage == 1) {
-			coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^start', (int)$lastPage);
-		} else {
-			if ($start > 1) {
-				coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^start', (int)$start);
-			} else {
-				coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^start', 1);
-			}
-		}
-	} else {
-		coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^start', (int)$currentPage);
+	if (!isset($_REQUEST['fromPagination'])) {
+		$currentPage = $lastPage;
 	}
-	$currentPage = coreBOS_Session::get('lvs^'.$currentModule.'^'.$viewid.'^start');
 	$limit = ($currentPage-1) * $entries;
 	$list_query .= ' LIMIT '.$limit.','.$entries;
 	//get entityfieldid
