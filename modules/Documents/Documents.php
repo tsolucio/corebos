@@ -105,7 +105,7 @@ class Documents extends CRMEntity {
 							$filesize = $_FILES[$filename_fieldname]['size'];
 							$filelocationtype = 'I';
 							$binFile = sanitizeUploadFileName($filename, $upload_badext);
-							$filename = ltrim(basename(" ".$binFile)); //allowed filename like UTF-8 characters
+							$filename = ltrim(basename(' '.$binFile)); //allowed filename like UTF-8 characters
 						}
 					}
 				}
@@ -177,7 +177,7 @@ class Documents extends CRMEntity {
 		}
 	}
 
-	/* Validate values trying to be saved.
+	/** Validate values trying to be saved.
 	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
 	 * @return array
 	 *   saveerror: true if error false if not
@@ -245,13 +245,13 @@ class Documents extends CRMEntity {
 	/**
 	* Save the related module record information. Triggered from CRMEntity->saveentity method or updateRelations.php
 	* @param string This module name
-	* @param Integer This module record number
+	* @param integer This module record number
 	* @param string Related module name
 	* @param mixed Integer or Array of related module record number
 	*/
 	public function save_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if ($module=='Documents') {
+		if ($module=='Documents' && $with_module!='DocumentFolders') {
 			// in this case we have to turn the parameters around to call the parent method correctly
 			$with_crmid = (array)$with_crmid;
 			foreach ($with_crmid as $relcrmid) {
@@ -269,14 +269,14 @@ class Documents extends CRMEntity {
 
 	/**
 	 * Function used to get the sort order for Documents listview
-	 * @return String $sorder - sort order for a given folder.
+	 * @return string sort order for a given folder
 	 */
 	public function getSortOrderForFolder($folderId) {
 		global $adb;
 		if (isset($_REQUEST['sorder']) && $_REQUEST['folderid'] == $folderId) {
 			$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 		} elseif (isset($_SESSION['NOTES_FOLDER_SORT_ORDER']) && is_array($_SESSION['NOTES_FOLDER_SORT_ORDER']) && !empty($_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId])) {
-				$sorder = $_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId];
+			$sorder = $_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId];
 		} else {
 			$sorder = $this->default_sort_order;
 		}
@@ -285,7 +285,7 @@ class Documents extends CRMEntity {
 
 	/**
 	 * Function used to get the order by value for Documents listview
-	 * @return String order by column for a given folder.
+	 * @return string order by column for a given folder
 	 */
 	public function getOrderByForFolder($folderId) {
 		global $adb;
@@ -307,8 +307,8 @@ class Documents extends CRMEntity {
 	}
 
 	/** Function to export the notes in CSV Format
-	* @param reference variable - where condition is passed when the query is executed
-	* Returns Export Documents Query.
+	* @param string where condition is passed when the query is executed
+	* @return string Export Documents Query
 	*/
 	public function create_export_query($where) {
 		global $log,$current_user;
@@ -334,10 +334,10 @@ class Documents extends CRMEntity {
 				LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid ";
 		$query .= getNonAdminAccessControlQuery('Documents', $current_user);
 		$where_auto=' vtiger_crmentity.deleted=0';
-		if ($where != "") {
+		if ($where != '') {
 			$query .= " WHERE ($where) AND ".$where_auto;
 		} else {
-			$query .= " WHERE ".$where_auto;
+			$query .= ' WHERE '.$where_auto;
 		}
 		$log->debug('< create_export_query');
 		return $query;
@@ -345,7 +345,7 @@ class Documents extends CRMEntity {
 
 	public function del_create_def_folder($query) {
 		global $adb;
-		$dbQuery = $query." and vtiger_attachmentsfolder.folderid = 0";
+		$dbQuery = $query.' and vtiger_attachmentsfolder.folderid=0';
 		$dbresult = $adb->pquery($dbQuery, array());
 		$noofnotes = $adb->num_rows($dbresult);
 		if ($noofnotes > 0) {
@@ -378,10 +378,10 @@ class Documents extends CRMEntity {
 		return false;
 	}
 
-	/*
+	/**
 	 * Function to get the primary query part of a report
-	 * @param - $module Primary module name
-	 * returns the query string formed on fetching the related data for report for primary module
+	 * @param string Primary module name
+	 * @return string query formed on fetching the related data for report for primary module
 	 */
 	public function generateReportsQuery($module, $queryplanner) {
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($module);
@@ -389,43 +389,43 @@ class Documents extends CRMEntity {
 		$moduleindex = $this->tab_name_index[$moduletable];
 		$query = "from $moduletable
 			inner join $crmEntityTable on vtiger_crmentity.crmid=$moduletable.$moduleindex";
-		if ($queryplanner->requireTable("vtiger_attachmentsfolder")) {
+		if ($queryplanner->requireTable('vtiger_attachmentsfolder')) {
 			$query .= " inner join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=$moduletable.folderid";
 		}
 		if ($queryplanner->requireTable('vtiger_CreatedBy'.$module)) {
 			$query .= " LEFT JOIN vtiger_users AS vtiger_CreatedBy$module ON vtiger_CreatedBy$module.id = vtiger_crmentity.smcreatorid";
 		}
-		if ($queryplanner->requireTable("vtiger_users".$module) || $queryplanner->requireTable("vtiger_groups".$module)) {
-			$query .= " left join vtiger_users as vtiger_users".$module." on vtiger_users".$module.".id = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_groups as vtiger_groups".$module." on vtiger_groups".$module.".groupid = vtiger_crmentity.smownerid";
+		if ($queryplanner->requireTable('vtiger_users'.$module) || $queryplanner->requireTable('vtiger_groups'.$module)) {
+			$query .= ' left join vtiger_users as vtiger_users'.$module.' on vtiger_users'.$module.'.id = vtiger_crmentity.smownerid';
+			$query .= ' left join vtiger_groups as vtiger_groups'.$module.' on vtiger_groups'.$module.'.groupid = vtiger_crmentity.smownerid';
 		}
-		$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-		$query .= " left join vtiger_notescf on vtiger_notes.notesid = vtiger_notescf.notesid";
-		$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
-		if ($queryplanner->requireTable("vtiger_lastModifiedBy".$module)) {
-			$query .= " left join vtiger_users as vtiger_lastModifiedBy".$module." on vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby ";
+		$query .= ' left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid';
+		$query .= ' left join vtiger_notescf on vtiger_notes.notesid = vtiger_notescf.notesid';
+		$query .= ' left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid';
+		if ($queryplanner->requireTable('vtiger_lastModifiedBy'.$module)) {
+			$query .= ' left join vtiger_users as vtiger_lastModifiedBy'.$module.' on vtiger_lastModifiedBy'.$module.'.id = vtiger_crmentity.modifiedby ';
 		}
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsSecQuery($module, $secmodule, $queryplanner, $type = '', $where_condition = '') {
 		$query = parent::generateReportsSecQuery($module, $secmodule, $queryplanner, $type, $where_condition);
-		if ($queryplanner->requireTable("vtiger_attachmentsfolder")) {
+		if ($queryplanner->requireTable('vtiger_attachmentsfolder')) {
 			$query .= ' left join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=vtiger_notes.folderid';
 		}
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		return '';
@@ -440,7 +440,7 @@ class Documents extends CRMEntity {
 		if ($adb->num_rows($se_res) > 0) {
 			for($k=0;$k < $adb->num_rows($se_res);$k++)
 			{
-				$se_id = $adb->query_result($se_res,$k,"crmid");
+				$se_id = $adb->query_result($se_res,$k,'crmid');
 				$params = array($id, RB_RECORD_DELETED, 'vtiger_senotesrel', 'notesid', 'crmid', $se_id);
 				$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 			}
@@ -500,7 +500,7 @@ class Documents extends CRMEntity {
 	 */
 	public function isFolderPresent($folderid) {
 		global $adb;
-		$result = $adb->pquery("SELECT folderid FROM vtiger_attachmentsfolder WHERE folderid = ?", array($folderid));
+		$result = $adb->pquery('SELECT folderid FROM vtiger_attachmentsfolder WHERE folderid=?', array($folderid));
 		if (!empty($result) && $adb->num_rows($result) > 0) {
 			return true;
 		}
@@ -537,12 +537,12 @@ class Documents extends CRMEntity {
 		parent::restore($modulename, $id);
 
 		global $adb;
-		$fresult = $adb->pquery("SELECT folderid FROM vtiger_notes WHERE notesid = ?", array($id));
+		$fresult = $adb->pquery('SELECT folderid FROM vtiger_notes WHERE notesid=?', array($id));
 		if (!empty($fresult) && $adb->num_rows($fresult)) {
 			$folderid = $adb->query_result($fresult, 0, 'folderid');
 			if (!$this->isFolderPresent($folderid)) {
 				// Re-link to default folder
-				$adb->pquery("UPDATE vtiger_notes set folderid = 1 WHERE notesid = ?", array($id));
+				$adb->pquery('UPDATE vtiger_notes set folderid=1 WHERE notesid=?', array($id));
 			}
 		}
 	}
@@ -560,10 +560,10 @@ class Documents extends CRMEntity {
 		$related_module='Documents';
 		$currentModule='Documents';
 		if (isPermitted($related_module, 4, '') == 'yes') {
-			$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' " .
+			$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module). "' class='crmbutton small edit' " .
 				" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview".
 				"&select=enable&form=EditView&form_submit=false&recordid=$id', 'test', cbPopupWindowSettings);\"" .
-				" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+				" value='". getTranslatedString('LBL_SELECT'). ' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
 		$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name, crm2.crmid, crm2.setype

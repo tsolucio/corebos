@@ -29,7 +29,8 @@ class VTWorkflowEventHandler extends VTEventHandler {
 
 	/**
 	 * Push tasks to the task queue if the conditions are true
-	 * @param $entityData A VTEntityData object representing the entity.
+	 * @param string event name being triggered
+	 * @param VTEntityData object representing the entity
 	 */
 	public function handleEvent($eventName, $entityData) {
 		$util = new VTWorkflowUtils();

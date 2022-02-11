@@ -238,6 +238,18 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Activa el corrector ortográfico del navegador en el editor de textos enriquecido.',
 ),
+'WEBDAV_Module_View' => array(
+	'valuetype' => 'Cadena',
+	'category' => 'WebDav',
+	'values' => 'Letter | Files',
+	'definition' => 'Letter agrupa registros por alfabeto. Files pagina los registros.',
+),
+'WEBDAV_Enabled' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'WebDav',
+	'values' => '0 | 1',
+	'definition' => 'Habilita o Deshabilita el acceso al servicio de WebDav.',
+),
 'Webservice_Enabled' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Webservice',

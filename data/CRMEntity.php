@@ -101,7 +101,7 @@ class CRMEntity {
 		if (empty($refval)) {
 			return '';
 		}
-		$nocbuuid = array('Users', 'Currency', 'DocumentFolders', 'Groups', '');
+		$nocbuuid = array('Users', 'Currency', 'Groups', '');
 		list($wsid, $crmid) = explode('x', $refval);
 		if (in_array(vtws_getEntityName($wsid), $nocbuuid)) {
 			return '';

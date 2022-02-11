@@ -108,6 +108,8 @@ function cbexpsql_supportedFunctions() {
 		'getIDof' => 'getIDof(module, searchon, searchfor)',
 		'executeSQL' => 'executeSQL(query, parameters...)',
 		//'getRelatedIDs' => 'getRelatedIDs(module)',
+		// 'getRelatedMassCreateArray' => 'getRelatedMassCreateArray(module,recordid)',
+		// 'getRelatedMassCreateArrayConverting' => 'getRelatedMassCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)'
 		// 'getFromContext' => 'getFromContext(variablename)',
 		// 'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
 		// 'setToContext' => 'setToContext(variablename, value)',

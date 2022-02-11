@@ -196,6 +196,8 @@ class VTExpressionsManager {
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
 			'getIDof' => 'getIDof(module, searchon, searchfor)',
 			'getRelatedIDs' => 'getRelatedIDs(module, recordid)',
+			'getRelatedMassCreateArray' => 'getRelatedMassCreateArray(module,recordid)',
+			'getRelatedMassCreateArrayConverting' => 'getRelatedMassCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
 			'getFieldsOF' => 'getFieldsOF(id, module, fields)',
 			'getFromContext' => 'getFromContext(variablename)',
 			'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
