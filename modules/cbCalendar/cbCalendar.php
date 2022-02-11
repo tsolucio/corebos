@@ -293,12 +293,14 @@ class cbCalendar extends CRMEntity {
 	  * @param string module
 	 */
 	public function insertIntoActivityReminderPopup($cbmodule) {
-		global $adb;
+		self::addNotificationReminder($cbmodule, $this->id, $this->column_fields['dtstart']);
+	}
 
-		$cbrecord = $this->id;
+	public static function addNotificationReminder($cbmodule, $cbrecord, $dtstart) {
+		global $adb;
 		coreBOS_Session::delete('next_reminder_time');
 		if (isset($cbmodule) && isset($cbrecord)) {
-			list($cbdate,$cbtime) = explode(' ', $this->column_fields['dtstart']);
+			list($cbdate,$cbtime) = explode(' ', $dtstart);
 
 			$reminder_query = 'SELECT reminderid FROM vtiger_activity_reminder_popup WHERE recordid=?';
 			$reminder_params = array($cbrecord);
