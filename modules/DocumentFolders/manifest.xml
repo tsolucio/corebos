@@ -290,7 +290,7 @@
 </actions>
 <relatedlists>
 <relatedlist>
-<function>get_related_lists</function>
+<function>get_related_list</function>
 <label>Documents</label>
 <sequence>1</sequence>
 <presence>0</presence>
