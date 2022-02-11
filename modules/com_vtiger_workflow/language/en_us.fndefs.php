@@ -1639,6 +1639,62 @@ $WFExpressionFunctionDefinitons = array(
 		"getRelatedIDs('Contacts', 943)",
 	),
 ),
+'getRelatedMassCreateArray' => array(
+	'name' => 'getRelatedMassCreateArray(module, recordid)',
+	'desc' => 'This function returns an array of record IDs in the given module, related to the record triggering the workflow',
+	'params' => array(
+		array(
+			'name' => 'module',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the related module name to search in.',
+		),
+		array(
+			'name' => 'recordid',
+			'type' => 'Integer',
+			'optional' => true,
+			'desc' => 'the main record ID to get the related records from, if not given the current record triggering the workflow will be used',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRelatedMassCreateArray('Contacts', 943)",
+	),
+),
+'getRelatedMassCreateArrayConverting' => array(
+	'name' => 'getRelatedMassCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
+	'desc' => 'This function returns an array of record IDs in the given module, related to the record triggering the workflow',
+	'params' => array(
+		array(
+			'name' => 'module',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the related module name to search in.',
+		),
+		array(
+			'name' => 'MainModuleDestination',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'main Module destination',
+		),
+		array(
+			'name' => 'RelatedModuleDestination',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the related module destination',
+		),
+		array(
+			'name' => 'recordid',
+			'type' => 'Integer',
+			'optional' => true,
+			'desc' => 'the main record ID to get the related records from, if not given the current record triggering the workflow will be used',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder', ,943)",
+	),
+),
 'getFieldsOF' => array(
 	'name' => 'getFieldsOF(id, module, fields)',
 	'desc' => 'Given the ID of an existent record, this function will return an array with all the values of the fields the user has access to. If you specify the fields you want in the function, only those values will be returned.',
