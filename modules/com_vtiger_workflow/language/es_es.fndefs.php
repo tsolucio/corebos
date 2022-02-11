@@ -1636,6 +1636,62 @@ $WFExpressionFunctionDefinitons = array(
 		"getRelatedIDs('Contacts', 943)",
 	),
 ),
+'getRelatedMassCreateArray' => array(
+	'name' => 'getRelatedMassCreateArray(module, recordid)',
+	'desc' => 'Obtener una estructura JSON de creación masiva de servicio web para el ID de registro dado y sus registros de módulo relacionados',
+	'params' => array(
+		array(
+			'name' => 'module',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'el nombre del módulo relacionado para obtener registros de',
+		),
+		array(
+			'name' => 'recordid',
+			'type' => 'Entero',
+			'optional' => true,
+			'desc' => 'el ID del registro principal para obtener los registros relacionados, si no se proporciona el registro actual que desencadena el flujo de trabajo, se utilizará',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRelatedMassCreateArray('Contacts', 943)",
+	),
+),
+'getRelatedMassCreateArrayConverting' => array(
+	'name' => 'getRelatedMassCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
+	'desc' => 'Obtener una estructura JSON de creación masiva de servicio web para el ID de registro dado y sus registros de módulo relacionados aplicando mapas de conversión',
+	'params' => array(
+		array(
+			'name' => 'module',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'el nombre del módulo relacionado para obtener registros de',
+		),
+		array(
+			'name' => 'MainModuleDestination',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'módulo destino registros del módulo principal',
+		),
+		array(
+			'name' => 'RelatedModuleDestination',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'módulo destino para módulos relacionados',
+		),
+		array(
+			'name' => 'recordid',
+			'type' => 'Entero',
+			'optional' => true,
+			'desc' => 'el ID del registro principal para obtener los registros relacionados, si no se proporciona el registro actual que desencadena el flujo de trabajo, se utilizará',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder', ,943)",
+	),
+),
 'getFieldsOF' => array(
 	'name' => 'getFieldsOF(id, módulo, campos)',
 	'desc' => 'Dado el ID de un registro existente, esta función devolverá una matriz con todos los valores de los campos a los que tiene acceso el usuario. Si especificas los campos que quieres en la función, solo se devolverán esos valores.',

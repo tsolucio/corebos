@@ -1641,13 +1641,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getRelatedMassCreateArray' => array(
 	'name' => 'getRelatedMassCreateArray(module, recordid)',
-	'desc' => 'This function returns an array of record IDs in the given module, related to the record triggering the workflow',
+	'desc' => 'Obtain a web service Mass Create JSON structure for the given recordid and its related module records',
 	'params' => array(
 		array(
 			'name' => 'module',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'the related module name to search in.',
+			'desc' => 'the related module name to get records from',
 		),
 		array(
 			'name' => 'recordid',
@@ -1663,25 +1663,25 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getRelatedMassCreateArrayConverting' => array(
 	'name' => 'getRelatedMassCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
-	'desc' => 'This function returns an array of record IDs in the given module, related to the record triggering the workflow',
+	'desc' => 'Obtain a web service Mass Create JSON structure for the given recordid and its related module records applying conversion mappings',
 	'params' => array(
 		array(
 			'name' => 'module',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'the related module name to search in.',
+			'desc' => 'the related module name to get records from',
 		),
 		array(
 			'name' => 'MainModuleDestination',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'main Module destination',
+			'desc' => 'Destination module for main module',
 		),
 		array(
 			'name' => 'RelatedModuleDestination',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'the related module destination',
+			'desc' => 'Destination module for the related modules',
 		),
 		array(
 			'name' => 'recordid',
