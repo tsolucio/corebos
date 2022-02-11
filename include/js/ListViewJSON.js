@@ -96,6 +96,7 @@ const ListView = {
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'massedit') {
 			//use this function to reload data in every change
+			lastPage = sessionStorage.getItem(ListView.Module+'_lastPage');
 			ListView.Reload(lastPage, true);
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'RecycleBin') {
@@ -537,19 +538,21 @@ const ListView = {
 			return false;
 		}
 		lvdataGridInstance[ListView.Instance].clear();
+		let RequestParams = {
+			'search': '',
+			'searchtype': '',
+		};
 		if (reload) {
-			lvdataGridInstance[ListView.Instance].setRequestParams({
-				'search': '',
-				'searchtype': '',
-				'page': lastPage,
-				'fromInstance': true
-			});
+			if (ListView.Action == 'massedit') {
+				RequestParams.lastPage = lastPage;
+			} else {
+				RequestParams.page = lastPage;
+				RequestParams.fromInstance = true;
+			}
+			lvdataGridInstance[ListView.Instance].setRequestParams(RequestParams);
 		} else {
-			lvdataGridInstance[ListView.Instance].setRequestParams({
-				'search': '',
-				'searchtype': '',
-				'fromInstance': true
-			});
+			RequestParams.fromInstance = true;
+			lvdataGridInstance[ListView.Instance].setRequestParams(RequestParams);
 		}
 		document.getElementsByName('search_text')[0].value = '';
 		//update pagination onchange
@@ -939,13 +942,13 @@ const ListView = {
 				grid_template.style.height = '240px';
 				let create_template = '';
 				let import_template = '';
-				if (response.CreateView == 'yes' && ListView.Module != '') {
+				if (response.CreateView == 'yes' && ListView.Module != '' && gVTModule != 'RecycleBin') {
 					create_template = `
 					<a href="index.php?module=${ListView.Module}&action=EditView&return_action=DetailView">
 						<button class="slds-button slds-button_neutral">${alert_arr.LBL_CREATE} ${mod_label}</button>
 					</a>`;
 				}
-				if (response.Import == 'yes' && ListView.Module != '') {
+				if (response.Import == 'yes' && ListView.Module != '' && gVTModule != 'RecycleBin') {
 					import_template = `
 					<a class="slds-card__footer-action" href="index.php?module=${ListView.Module}&action=Import&step=1&return_module=${ListView.Module}&return_action=ListView">
 						${alert_arr.LBL_IMPORT} ${mod_label}
@@ -993,8 +996,13 @@ const ListView = {
 				findUp(dd, '.tui-grid-cell').classList.remove('tui-grid-cell-has-overflow');
 			}
 		});
+		let currentModule = ListView.Module;
+		if (gVTModule == 'RecycleBin') {
+			ListView.Module = gVTModule;
+		}
 		const url = `${defaultURL}&functiontocall=getRecordActions&formodule=${ListView.Module}&recordid=${recordid}`;
 		ListView.Request(url, 'get').then(function(response) {
+			ListView.Module = currentModule;
 			let button_template = `<ul class="slds-dropdown__list" role="menu" id="list__${recordid}">`;
 			if (response == true) { //recycle bin module
 				const select_module = document.getElementById('select_module').value;
