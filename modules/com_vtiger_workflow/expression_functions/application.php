@@ -122,6 +122,116 @@ function __cb_getrelatedids($arr) {
 	return $relids;
 }
 
+function __cb_getRelatedMassCreateArray($arr) {
+	global $current_user,$log;
+	$masscreateArray = array();
+	$relrecords = array();
+	if (count($arr)<2 || empty($arr[0])) {
+		return $masscreateArray;
+	}
+	if (is_string($arr[1]) || is_numeric($arr[1])) {
+		$recordid = $arr[1];
+		$mainmodule = getSalesEntityType($arr[1]);
+	} else {
+		$env = $arr[1];
+		$data = $env->getData();
+		$recordid = $data['id'];
+		if (isset($env->moduleName)) {
+			$mainmodule = $env->moduleName;
+		} else {
+			$mainmodule = $env->getModuleName();
+		}
+	}
+	$relmodule = $arr[0];
+	$mainrecord = CRMEntity::getInstance($mainmodule);
+	$mainrecord->retrieve_entity_info($recordid, $mainmodule);
+	$mainrecord = $mainrecord->column_fields;
+
+	$masscreateArray[] = [
+		'elementType' => $mainmodule,
+		'referenceId' => $recordid,
+		'element' => $mainrecord
+	];
+
+	try {
+		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, [], $current_user);
+	} catch (\Throwable $th) {
+		return $relrecords;
+	}
+
+	$tab = getRelationTables($mainmodule, $relmodule);
+	$reference_field = $tab[array_key_first($tab)][0];
+	foreach ($relrecords['records'] as $record) {
+		$record[$reference_field] = '@{'.$recordid.'}';
+		$masscreateArray[] = [
+			'elementType' => $relmodule,
+			'referenceId' => $record['id'],
+			'element' => $record
+		];
+	}
+
+	return $masscreateArray;
+}
+
+function __cb_getRelatedMassCreateArrayConverting($arr) {
+	global $current_user,$log;
+	$masscreateArray = array();
+	$relrecords = array();
+	if (count($arr)<4 || empty($arr[0])) {
+		return $masscreateArray;
+	}
+
+	if (is_string($arr[3]) || is_numeric($arr[3])) {
+		$recordid = $arr[3];
+		$mainmodule = getSalesEntityType($arr[3]);
+	} else {
+		$env = $arr[3];
+		$data = $env->getData();
+		$recordid = $data['id'];
+		if (isset($env->moduleName)) {
+			$mainmodule = $env->moduleName;
+		} else {
+			$mainmodule = $env->getModuleName();
+		}
+	}
+
+	$relmodule = $arr[0];
+	$mainrecord = CRMEntity::getInstance($mainmodule);
+	$mainrecord->retrieve_entity_info($recordid, $mainmodule);
+	$mainrecord = $mainrecord->column_fields;
+
+	$cbMap = cbMap::getMapByName('Workflow_'.$mainmodule.'2'.$relmodule);
+	$mfocus = CRMEntity::getInstance($relmodule);
+	$mappedMainRecords = empty($cbMap) ? array_merge($mfocus->column_fields, $mainrecord) : $cbMap->Mapping($mainrecord, $mfocus->column_fields);
+
+	$masscreateArray[] = [
+		'elementType' => $mainmodule,
+		'referenceId' => $recordid,
+		'element' => $mappedMainRecords
+	];
+
+	try {
+		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, [], $current_user);
+	} catch (\Throwable $th) {
+		return $masscreateArray;
+	}
+
+	$cbMap = cbMap::getMapByName('Workflow_'.$arr[1].'2'.$arr[2]);
+
+	$tab = getRelationTables($mainmodule, $relmodule);
+	$reference_field = $tab[array_key_first($tab)][0];
+	$mfocus = CRMEntity::getInstance($arr[2]);
+	foreach ($relrecords['records'] as $record) {
+		$records = empty($cbMap) ? array_merge($mfocus->column_fields, $record): $cbMap->Mapping($record, $mfocus->column_fields);
+		$records[$reference_field] = '@{'.$recordid.'}';
+		$masscreateArray[] = [
+			'elementType' => $relmodule,
+			'element' => $records
+		];
+	}
+	return $masscreateArray;
+}
+
 function __cb_getidof($arr) {
 	global $current_user, $adb;
 	$qg = new QueryGenerator($arr[0], $current_user);
