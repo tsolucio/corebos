@@ -61,8 +61,8 @@ class VTEntityMethodManager {
 
 	/**
 	 * Function to remove workflowtasks entity method
-	 * @param <String> Module Name
-	 * @param <String> Entity Method Name.
+	 * @param string Module Name
+	 * @param string Entity Method Name.
 	 */
 	public function removeEntityMethod($moduleName, $methodName) {
 		$this->adb->pquery('DELETE FROM com_vtiger_workflowtasks_entitymethod WHERE module_name = ? and method_name= ?', array($moduleName, $methodName));
