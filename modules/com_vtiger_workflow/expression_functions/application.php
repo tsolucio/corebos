@@ -143,9 +143,12 @@ function __cb_getRelatedMassCreateArray($arr) {
 		}
 	}
 	$relmodule = $arr[0];
-	$mainrecord = CRMEntity::getInstance($mainmodule);
-	$mainrecord->retrieve_entity_info($recordid, $mainmodule);
-	$mainrecord = $mainrecord->column_fields;
+	$mainrecord = vtws_retrieve($recordid, $current_user);
+	foreach ($mainrecord as $field => $value) {
+		if (is_array($value)) {
+			unset($mainrecord[$field]);
+		}
+	}
 
 	$masscreateArray[] = [
 		'elementType' => $mainmodule,
@@ -155,6 +158,14 @@ function __cb_getRelatedMassCreateArray($arr) {
 
 	try {
 		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, [], $current_user);
+		foreach ($relrecords['records'] as $recordkey => $record) {
+			$keys = array_keys($record);
+			foreach ($keys as $key) {
+				if (is_numeric($key)) {
+					unset($relrecords['records'][$recordkey][$key]);
+				}
+			}
+		}
 	} catch (\Throwable $th) {
 		return $relrecords;
 	}
@@ -174,7 +185,7 @@ function __cb_getRelatedMassCreateArray($arr) {
 }
 
 function __cb_getRelatedMassCreateArrayConverting($arr) {
-	global $current_user,$log;
+	global $current_user;
 	$masscreateArray = array();
 	$relrecords = array();
 	if (count($arr)<4 || empty($arr[0])) {
@@ -196,36 +207,50 @@ function __cb_getRelatedMassCreateArrayConverting($arr) {
 	}
 
 	$relmodule = $arr[0];
-	$mainrecord = CRMEntity::getInstance($mainmodule);
-	$mainrecord->retrieve_entity_info($recordid, $mainmodule);
-	$mainrecord = $mainrecord->column_fields;
+	$mainrecord = vtws_retrieve($recordid, $current_user);
+	foreach ($mainrecord as $field => $value) {
+		if (is_array($value)) {
+			unset($mainrecord[$field]);
+		}
+	}
 
-	$cbMap = cbMap::getMapByName('Workflow_'.$mainmodule.'2'.$relmodule);
-	$mfocus = CRMEntity::getInstance($relmodule);
-	$mappedMainRecords = empty($cbMap) ? array_merge($mfocus->column_fields, $mainrecord) : $cbMap->Mapping($mainrecord, $mfocus->column_fields);
+	$cbMap = cbMap::getMapByName('Workflow_'.$mainmodule.'2'.$arr[1]);
+	$mfocus = CRMEntity::getInstance($arr[1]);
+	$commonFields = array_intersect($mfocus->column_fields, $mainrecord);
+	$mappedMainRecords = empty($cbMap) ? array_merge($mfocus->column_fields, $commonFields) : $cbMap->Mapping($mainrecord, $mfocus->column_fields);
 
 	$masscreateArray[] = [
-		'elementType' => $mainmodule,
+		'elementType' => $arr[1],
 		'referenceId' => $recordid,
 		'element' => $mappedMainRecords
 	];
 
 	try {
 		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, [], $current_user);
+		foreach ($relrecords['records'] as $recordkey => $record) {
+			$keys = array_keys($record);
+			foreach ($keys as $key) {
+				if (is_numeric($key)) {
+					unset($relrecords['records'][$recordkey][$key]);
+				}
+			}
+		}
 	} catch (\Throwable $th) {
 		return $masscreateArray;
 	}
 
-	$cbMap = cbMap::getMapByName('Workflow_'.$arr[1].'2'.$arr[2]);
+	$cbMap = cbMap::getMapByName('Workflow_'.$arr[0].'2'.$arr[2]);
 
 	$tab = getRelationTables($mainmodule, $relmodule);
 	$reference_field = $tab[array_key_first($tab)][0];
 	$mfocus = CRMEntity::getInstance($arr[2]);
 	foreach ($relrecords['records'] as $record) {
-		$records = empty($cbMap) ? array_merge($mfocus->column_fields, $record): $cbMap->Mapping($record, $mfocus->column_fields);
+		$commonFields = array_intersect($mfocus->column_fields, $record);
+		$records = empty($cbMap) ? array_merge($mfocus->column_fields, $commonFields): $cbMap->Mapping($record, $mfocus->column_fields);
 		$records[$reference_field] = '@{'.$recordid.'}';
 		$masscreateArray[] = [
-			'elementType' => $relmodule,
+			'elementType' => $arr[2],
+			'referenceId' => $record['id'],
 			'element' => $records
 		];
 	}
