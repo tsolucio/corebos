@@ -66,8 +66,7 @@ switch ($dosaved) {
 		$data = array();
 		if ($result && $adb->num_rows($result)>0) {
 			while ($row = $adb->fetch_array($result)) {
-				$savedm = array($row['evvtmenuid'], $row['mtype'], $row['mvalue'], $row['mlabel'], $row['mparent'], $row['mseq'], $row['mvisible'], $row['mpermission']);
-				$data[] = $savedm;
+				$data[] = array($row['evvtmenuid'], $row['mtype'], $row['mvalue'], $row['mlabel'], $row['mparent'], $row['mseq'], $row['mvisible'], $row['mpermission']);
 			}
 			$structuremenu = json_encode($data, JSON_FORCE_OBJECT);
 			$menuname = empty($_REQUEST['menuname']) ? 'menu_'.date('YmdHis') : vtlib_purify($_REQUEST['menuname']);
