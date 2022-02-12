@@ -198,9 +198,9 @@ switch ($do) {
 		$treeIds = vtlib_purify($_REQUEST['treeIds']);
 		$treeParents = vtlib_purify($_REQUEST['treeParents']);
 		$treePositions = vtlib_purify($_REQUEST['treePositions']);
-		$ids = explode(",", $treeIds);
-		$parents = explode(",", $treeParents);
-		$positions = explode(",", $treePositions);
+		$ids = explode(',', $treeIds);
+		$parents = explode(',', $treeParents);
+		$positions = explode(',', $treePositions);
 		for ($i=0; $i<count($positions); $i++) {
 			$id = $ids[$i];
 			$parent = $parents[$i];
