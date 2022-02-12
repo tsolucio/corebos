@@ -39,7 +39,7 @@ class migrateDocumentFolders extends cbupdaterWorker {
 					$df->mode='';
 					unset($df->id);
 					$df->save('DocumentFolders');
-					$adb->pquery('update vtiger_crmentity set smcreatorid=?', array($fldr['createdby']));
+					$adb->pquery('update vtiger_crmentity set smcreatorid=? where crmid=?', array($fldr['createdby'], $df->id));
 					$adb->pquery(
 						'insert into vtiger_crmentityrel (crmid, module, relcrmid, relmodule) (select ?,?,notesid,? from vtiger_notes where folderid=?)',
 						array($df->id, $modulename, 'Documents', $fldr['folderid'])
