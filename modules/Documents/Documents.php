@@ -365,11 +365,11 @@ class Documents extends CRMEntity {
 			$params = array();
 			$sqlfid = 'select max(folderid) from vtiger_attachmentsfolder';
 			$rs = $adb->pquery($sqlfid, $params);
-			$fid = $adb->query_result($rs, 0, 0) + 1;
+			$fid = (int)$adb->query_result($rs, 0, 0) + 1;
 			$params = array();
 			$sqlseq = 'select max(sequence) from vtiger_attachmentsfolder';
 			$rs = $adb->pquery($sqlseq, $params);
-			$sequence=$adb->query_result($rs, 0, 0) + 1;
+			$sequence=(int)$adb->query_result($rs, 0, 0) + 1;
 			$sql = 'insert into vtiger_attachmentsfolder (folderid,foldername,description,createdby,sequence) values (?,?,?,?,?)';
 			$params = array($fid, $fname, '', $current_user->id, $sequence);
 			$result = $adb->pquery($sql, $params);

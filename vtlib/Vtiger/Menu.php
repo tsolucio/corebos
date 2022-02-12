@@ -77,7 +77,7 @@ class Vtiger_Menu {
 			$relsequence = $this->__getNextRelSequence();
 			$adb->pquery('INSERT INTO vtiger_parenttabrel (parenttabid,tabid,sequence) VALUES(?,?,?)', array($this->id, $moduleInstance->id, $relsequence));
 			$pmenuidrs = $adb->pquery('select max(mseq) from vtiger_evvtmenu where mparent=?', array($this->menuid));
-			$mseq = $adb->query_result($pmenuidrs, 0, 0) + 1;
+			$mseq = (int)$adb->query_result($pmenuidrs, 0, 0) + 1;
 			$adb->pquery(
 				'insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values (?,?,?,?,?,?,?)',
 				array('module',$moduleInstance->name,$moduleInstance->name,$this->menuid,$mseq,1,'')
