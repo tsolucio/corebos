@@ -6,17 +6,21 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Translate by Ranieri Slemer
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Módulo',
-	'SINGLE_ModuleName' => 'Nome Módulo',
-	'ModuleName ID' => 'ID Nome Módulo',
+	'DocumentFolders' => 'Pastas',
+	'SINGLE_DocumentFolders' => 'Pasta',
+	'DocumentFolders ID' => 'ID Pasta',
 
-	'LBL_CUSTOM_INFORMATION' => 'Imformação Customizada',
-	'LBL_MODULEBLOCK_INFORMATION' => 'Informação Bloco Módulo',
+	'LBL_CUSTOM_INFORMATION' => 'Informação customizada',
+	'LBL_DOCUMENTFOLDERS_INFORMATION' => 'Informação pastas',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
 
-	'ModuleFieldLabel' => 'Texto Etiqueta Campo Módulo',
+	'foldername' => 'Nome pasta',
+	'documentfolders_no' => 'Nº Pasta',
+	'parentfolder' => 'Pasta raiz',
+	'sequence' => 'Sequencia',
 );
 ?>
