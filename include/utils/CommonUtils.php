@@ -1306,10 +1306,11 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	}
 	$tabid = getTabid($module);
 	$getBlockInfo = array();
-	$query = "select blockid,blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
+	$query = "select blockid,blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible=0 order by sequence";
 	$result = $adb->pquery($query, array($tabid));
 	$noofrows = $adb->num_rows($result);
 	$blockid_list = array();
+	$block_label = array();
 	$aBlockStatus = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		$blockid = $adb->query_result($result, $i, 'blockid');
