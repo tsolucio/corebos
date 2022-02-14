@@ -1245,9 +1245,9 @@ function getDetailAssociatedProducts($module, $focus) {
 }
 
 /** This function returns the related tab details for a given entity or a module.
- * Param $module - module name
- * Param $focus - module object
- * Return type is an array
+ * @param string module name
+ * @param object module object
+ * @return array
  * @deprecated
  */
 function getRelatedListsInformation($module, $focus) {
@@ -1284,10 +1284,10 @@ function getRelatedListsInformation($module, $focus) {
 }
 
 /** This function returns the related vtiger_tab details for a given entity or a module.
- * Param $module - module name
- * Param $focus - module object
- * Param $restrictedRelations - array of related list IDs that you want to access
- * Return type is an array
+ * @param string module name
+ * @param object module object
+ * @param array of related list IDs that you want to access
+ * @return array
  */
 function getRelatedLists($module, $focus, $restrictedRelations = null) {
 	global $log, $adb, $current_user;
@@ -1328,8 +1328,8 @@ function getRelatedLists($module, $focus, $restrictedRelations = null) {
 }
 
 /** This function returns whether related lists block is present for this particular module or not
- * Param $module - module name
- * Return true if at least one block exists, false otherwise
+ * @param string module name
+ * @return boolean true if at least one block exists, false otherwise
  */
 function isPresentRelatedListBlock($module) {
 	global $adb;
@@ -1338,9 +1338,9 @@ function isPresentRelatedListBlock($module) {
 }
 
 /** This function returns whether a related lists block is present for this particular module with another or not
- * Param $originModule - origin module name
- * Param $relatedModule - related module name
- * Return true if related list block exists between origin and related modules, false otherwise
+ * @param string origin module name
+ * @param string related module name
+ * @return boolean true if related list block exists between origin and related modules, false otherwise
  */
 function isPresentRelatedListBlockWithModule($originModule, $relatedModule) {
 	global $adb;

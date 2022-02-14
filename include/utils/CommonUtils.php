@@ -1274,8 +1274,11 @@ function getBlockOpenClosedStatus($module, $disp_view) {
 
 /**
  * This function returns the blocks and its related information for given module.
- * Input Parameter are $module - module name, $disp_view = display view (edit,detail or create),$mode - edit, $col_fields - * column_fields/
- * This function returns an array
+ * @param string module name
+ * @param string display view (edit,detail or create)
+ * @param string edit
+ * @param array column_fields
+ * @return array
  */
 function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = '') {
 	global $log, $adb, $current_user;
