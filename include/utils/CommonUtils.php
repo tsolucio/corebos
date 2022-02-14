@@ -1357,7 +1357,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			$sql = "SELECT distinct $selectSql, '0' as readonly
 				FROM vtiger_field WHERE $uniqueFieldsRestriction $fieldsin AND vtiger_field.block IN (".
 				generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and vtiger_field.presence in (0,2) ORDER BY block,sequence';
-			$params = array($tabid, $blockid_list);
+			$params = array_merge(array($tabid), $blockid_list);
 		} elseif ($userprivs->hasGlobalViewPermission()) { // view all
 			$profileList = getCurrentUserProfileList();
 			$sql = "SELECT distinct $selectSql, vtiger_profile2field.readonly
@@ -1365,7 +1365,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 				WHERE vtiger_field.tabid=? $fieldsin AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
 					'vtiger_field.presence in (0,2) AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') ORDER BY block,sequence';
-			$params = array($tabid, $blockid_list, $profileList);
+			$params = array_merge(array($tabid), $blockid_list, $profileList);
 		} else {
 			$profileList = getCurrentUserProfileList();
 			$sql = "SELECT distinct $selectSql, vtiger_profile2field.readonly
@@ -1375,7 +1375,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				WHERE vtiger_field.tabid=? $fieldsin AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
 					'vtiger_field.presence in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('.
 					generateQuestionMarks($profileList) . ') ORDER BY block,sequence';
-			$params = array($tabid, $blockid_list, $profileList);
+			$params = array_merge(array($tabid), $blockid_list, $profileList);
 		}
 		$result = $adb->pquery($sql, $params);
 
