@@ -193,7 +193,8 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																										{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
 																										{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX}
 																									{/if}
-																								{{/foreach}}
+																									{break}
+																								{/foreach}
 																							{else}
 																								{foreach item=detailInfo from=$detail}
 																									<tr style="height:25px" class="detailview_row">
