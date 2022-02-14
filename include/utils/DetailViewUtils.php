@@ -1296,7 +1296,7 @@ function getRelatedLists($module, $focus, $restrictedRelations = null) {
 	$is_admin = is_admin($current_user);
 
 	$cur_tab_id = getTabid($module);
-
+	$userTabId = getTabid('Users');
 	//To select several specific Lists
 	$sel_list = '';
 	if (is_array($restrictedRelations) && count($restrictedRelations)>0) {
@@ -1316,7 +1316,7 @@ function getRelatedLists($module, $focus, $restrictedRelations = null) {
 		$relationId = $adb->query_result($result, $i, 'relation_id');
 		// vtlib customization: Send more information (from module, related module) to the callee
 		if ($rel_tab_id != 0) {
-			if ($is_admin || ($userprivs->hasModuleAccess($rel_tab_id) && $userprivs->getModulePermission($rel_tab_id, 3) == 0)) {
+			if ($is_admin || ($userTabId==$rel_tab_id) || ($userprivs->hasModuleAccess($rel_tab_id) && $userprivs->getModulePermission($rel_tab_id, 3) == 0)) {
 				$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'relationId' => $relationId, 'actions' => $actions);
 			}
 		} else {

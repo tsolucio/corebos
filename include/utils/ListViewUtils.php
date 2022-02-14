@@ -79,7 +79,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	}
 	$field = array();
 	if (!is_admin($current_user)) {
-		if ($module == 'Emails') {
+		if ($module == 'Emails' || $module == 'Users') {
 			$query = 'SELECT fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
 			$params = array($tabid);
 		} else {
@@ -497,8 +497,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	}
 	$field = array();
 	if (!is_admin($current_user)) {
-		if ($module == 'Emails') {
-			$query = 'SELECT fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
+		if ($module == 'Emails' || $module == 'Users') {
+			$query = 'SELECT fieldname FROM vtiger_field WHERE tabid=? and vtiger_field.presence in (0,2)';
 			$params = array($tabid);
 		} else {
 			$profileList = getCurrentUserProfileList();
