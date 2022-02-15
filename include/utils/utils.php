@@ -2320,9 +2320,7 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 	}
 	$dup_query = getDuplicateQuery($module, $field_values, $ui_type);
 	// added for page navigation
-	$dup_count_query = substr($dup_query, stripos($dup_query, 'FROM'), strlen($dup_query));
-	$dup_count_query = 'SELECT count(*) as count '.$dup_count_query;
-	$count_res = $adb->query($dup_count_query);
+	$count_res = $adb->query(mkCountQuery($dup_query, false));
 	$no_of_rows = $adb->query_result($count_res, 0, 'count');
 
 	if ($no_of_rows <= $list_max_entries_per_page) {
