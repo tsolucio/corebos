@@ -42,11 +42,19 @@
 									{assign var=label value=$data.name|@getTranslatedString:'Settings'}
 									{/if}
 									{assign var=count value=$smarty.foreach.itr.iteration}
+									{assign var="customlink_icon" value=$CUSTOMLINK->linkicon}
+								
 									<td width="74px" rowspan=2 valign=top>
 										<a href="{$data.link}">
-											<img src="{$data.icon|@vtiger_imageurl:$THEME}" alt="{$label}" width="48" height="48" border=0 title="{$label}">
+										<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="User(s)">
+											<svg class="slds-icon slds-icon_large" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$data.icon}"></use>
+											</svg>
+										</span>
+											
 										</a>
 									</td>
+
 									<td class=big valign=top>
 										<a href="{$data.link}">
 											{$label}
