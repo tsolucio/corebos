@@ -112,7 +112,7 @@ function mkCountQuery($query, $eliminateGroupBy = true) {
 	if (stripos($query, ' ORDER BY ') > 0) {
 		$query = substr($query, 0, stripos($query, ' ORDER BY '));
 	}
-	return ($query);
+	return $query;
 }
 
 // Make a count query with FULL query

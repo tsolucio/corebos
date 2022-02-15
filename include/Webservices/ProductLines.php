@@ -114,10 +114,10 @@ if ($taxtype == 'individual') {
 	$tax_val = 0;
 	foreach (getAllTaxes('available', '') as $availableTax) {
 		$keytax = 'tax'.$availableTax['taxid'].'_group_percentage';
-		if(array_key_exists($keytax, $element)){
+		if (array_key_exists($keytax, $element)) {
 			$tax_val += $element[$keytax];
 			$_REQUEST[$keytax] = $element[$keytax];
-		}else{
+		} else {
 			$tax_val += $availableTax['percentage'];
 		}
 	}
