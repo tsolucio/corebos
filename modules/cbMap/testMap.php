@@ -89,7 +89,7 @@ switch ($focus->column_fields['maptype']) {
 		$currentModule = getSalesEntityType($testrecord);
 		$mapinfo = (array) $focus->ConditionQuery($testrecord);
 		$currentModule = 'cbMap';
-		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
+		$mapinfo['TEST RECORD'] = "<p class='slds-app-launcher__tile-body'>Testing with $testrecord</p>";
 		break;
 	case 'Condition Expression':
 		if (!empty($_REQUEST['testrecord'])) {
@@ -104,7 +104,7 @@ switch ($focus->column_fields['maptype']) {
 		$currentModule = getSalesEntityType($crmid);
 		$mapinfo = (array) $focus->ConditionExpression($testrecord);
 		$currentModule = 'cbMap';
-		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
+		$mapinfo['TEST RECORD'] = "<p class='slds-app-launcher__tile-body'>Testing with $testrecord</p>";
 		break;
 	case 'Mapping':
 		if (!empty($_REQUEST['testrecord'])) {
