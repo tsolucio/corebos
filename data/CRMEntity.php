@@ -3714,7 +3714,7 @@ class CRMEntity {
 		$adb->pquery('UPDATE '.$this->crmentityTable.' SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($currentTime, $current_user->id, $crmid));
 	}
 
-	public function getParentRecords($id, &$parent_records, &$encountered_records, $refField, $currentModule) {
+	public function getParentRecords($id, &$parent_records, &$encountered_records, $refField, $currentModule, $tree=false) {
 		global $log, $adb, $current_user;
 		$qg = new QueryGenerator($currentModule, $current_user);
 		$qg->setFields(array('*'));
@@ -3732,15 +3732,23 @@ class CRMEntity {
 		$depth = 0;
 		$parent_record_info = array();
 		$immediate_recordid = $adb->query_result($res, 0, $refField);
-		if (isset($parent_records[$immediate_recordid])) {
+		if (isset($parent_records[$immediate_recordid]) && !$tree) {
 			$depth = $parent_records[$immediate_recordid]['depth'] + 1;
 		}
-		$parent_record_info['depth'] = $depth;
-		$parent_records[$id] = $parent_record_info;
+		if (is_array($tree)) {
+			$cvtreecolumn = getEntityName($tree[0], $id);
+			$parent_record_info[$tree[1]] = $cvtreecolumn[$id];
+			$parent_record_info['id'] = $id;
+			$parent_record_info['parent'] = $id;
+			$parent_records[] = $parent_record_info;
+		} else {
+			$parent_record_info['depth'] = $depth;
+			$parent_records[$id] = $parent_record_info;	
+		}
 		return $parent_records;
 	}
 
-	public function getChildRecords($id, &$child_records, $depth, $referenceField, $currentModule) {
+	public function getChildRecords($id, &$child_records, $depth, $referenceField, $currentModule, $tree=false) {
 		global $log, $adb, $current_user;
 		$log->debug('> getChildRecords '.$id);
 		$entity = getEntityField($currentModule);
@@ -3751,16 +3759,26 @@ class CRMEntity {
 		$rs = $adb->query($query);
 		$num_rows = $adb->num_rows($rs);
 		if ($num_rows > 0) {
-			$depth = $depth + 1;
+			if (!$tree) {
+				$depth = $depth + 1;
+			}
 			for ($i=0; $i < $adb->num_rows($rs); $i++) {
 				$recordid = $adb->query_result($rs, $i, 0);
 				if (array_key_exists($recordid, $child_records)) {
 					continue;
 				}
 				$child_record_info = array();
-				$child_record_info['depth'] = $depth;
-				$child_records[$recordid] = $child_record_info;
-				$this->getChildRecords($recordid, $child_records, $depth, $referenceField, $currentModule);
+				if (is_array($tree)) {
+					$cvtreecolumn = getEntityName($tree[0], $recordid);
+					$child_record_info[$tree[1]] = $cvtreecolumn[$recordid];
+					$child_record_info['id'] = $recordid;
+					$child_record_info['parent'] = $id;
+					$child_records[] = $child_record_info;
+				} else {
+					$child_record_info['depth'] = $depth;
+					$child_records[$recordid] = $child_record_info;
+				}
+				$this->getChildRecords($recordid, $child_records, $depth, $referenceField, $currentModule, $tree);
 			}
 		}
 		return $child_records;
