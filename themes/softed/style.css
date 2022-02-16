@@ -1784,7 +1784,7 @@ ul {
 }
 
 .heading2 {
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 16px;
 	line-height: 16px;
 	font-weight:bold;
@@ -1800,7 +1800,7 @@ ul {
 
 .settingsTabHeader {
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 12px;
 	line-height:22px;
 	font-weight:bold;
@@ -1813,7 +1813,7 @@ ul {
 
 .settingsTabList {
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:20px;
 	font-weight:normal;
@@ -1828,7 +1828,7 @@ ul {
 
 .settingsTabSelected {
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:20px;
 	font-weight:bold;
@@ -1846,7 +1846,7 @@ ul {
 }
 
 .settingsIconDisplay {
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:14px;
 	padding:10px;
@@ -2196,7 +2196,7 @@ a.customMnuSelected{
 a.drop_down{
 	width:150px;
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:20px;
 	font-weight:normal;
@@ -2220,7 +2220,7 @@ a.drop_down:Hover{
 a.drop_downnew_parent{
 	width:100px;
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 12px;
 	line-height:20px;
 	font-weight:bold;
@@ -2329,7 +2329,7 @@ a.drop_downnew_parent{
 .show_tab{display:inline-table;}
 
 .mailSelected {
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-weight:bold;
 	font-size: 11px;
 	padding-left:10px;
@@ -2341,7 +2341,7 @@ a.drop_downnew_parent{
 .mailSelected_select {
 	background:#E1DCB3 url(images/tabSelectedBg.gif) repeat-x;
 	background-color:#1F5EFF;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-weight:bold;
 	font-size: 11px;
 	padding-left:10px;
@@ -2736,7 +2736,7 @@ a.drop_downnew:Hover{
 }
 a.drop_down_usersettings{
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:20px;
 	color:#33338c;
@@ -2755,7 +2755,7 @@ a.drop_down_usersettings:Hover{
 }
 a.drop_down_usersettings_name{
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:20px;
 	color:#33338c;

@@ -19,8 +19,16 @@
 
 			<table class="settingsSelUITopLine" align="center" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tr>
-					<td rowspan="2" valign="top" width="50"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.VTLIB_LBL_MODULE_MANAGER}" title="{$MOD.VTLIB_LBL_MODULE_MANAGER}" border="0" height="48" width="48"></td>
-					<td class="heading2" valign="bottom"> <b><a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; {$MODULE_LBL} </td>
+					<td rowspan="2" valign="top" width="50">
+						<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="{$MOD.VTLIB_LBL_MODULE_MANAGER}">
+							<svg class="slds-icon slds-icon_large" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#bundle_config"></use>
+							</svg>
+						</span>
+					</td>
+					<td class="heading2" valign="bottom"> <b>
+						<a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> 
+					&gt; {$MODULE_LBL} </td>
 				</tr>
 				<tr>
 					<td class="small" valign="top">{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</td>
@@ -42,9 +50,14 @@
 											<tr>
 												{assign var=count value=$smarty.foreach.itr.iteration}
 												<td rowspan=2 valign=top width="20%">
-													<a href="{$mod_array.location}">
-													<img src="{$mod_array.image_src}" alt="{$mod_array.label}" width="48" height="48" border=0 title="{$mod_array.label}">
-													</a>
+												<a href="{$mod_array.location}">
+													<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="{$mod_array.label}">
+														<svg class="slds-icon slds-icon_large" aria-hidden="true">
+															<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$mod_array.image_src}"></use>
+														</svg>
+													</span>
+												</a>
+													
 												</td>
 												<td class=big valign=top>
 													<a href="{$mod_array.location}">
