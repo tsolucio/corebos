@@ -3714,6 +3714,7 @@ class CRMEntity {
 		$adb->pquery('UPDATE '.$this->crmentityTable.' SET modifiedtime=?, modifiedby=? WHERE crmid=?', array($currentTime, $current_user->id, $crmid));
 	}
 
+
 	public function getParentRecords($id, &$parent_records, &$encountered_records, $refField, $currentModule, $tree=false) {
 		global $log, $adb, $current_user;
 		$qg = new QueryGenerator($currentModule, $current_user);
@@ -3732,7 +3733,7 @@ class CRMEntity {
 		$depth = 0;
 		$parent_record_info = array();
 		$immediate_recordid = $adb->query_result($res, 0, $refField);
-		if (isset($parent_records[$immediate_recordid]) && !$tree) {
+		if (isset($parent_records[$immediate_recordid])) {
 			$depth = $parent_records[$immediate_recordid]['depth'] + 1;
 		}
 		if (is_array($tree)) {
@@ -3759,9 +3760,7 @@ class CRMEntity {
 		$rs = $adb->query($query);
 		$num_rows = $adb->num_rows($rs);
 		if ($num_rows > 0) {
-			if (!$tree) {
-				$depth = $depth + 1;
-			}
+			$depth = $depth + 1;
 			for ($i=0; $i < $adb->num_rows($rs); $i++) {
 				$recordid = $adb->query_result($rs, $i, 0);
 				if (array_key_exists($recordid, $child_records)) {
