@@ -12,7 +12,7 @@ $moduleView = GlobalVariable::getVariable('Application_ListView_Layout', 'table'
 if ($Document_Folder_View) {
 	if ($moduleView == 'tuigrid') {
 		//tuigrid with folders
-		include_once 'modules/Vtiger/ListView.php';
+		include_once 'modules/Documents/ToastListView.php';
 	} else {
 		//standart listview with folders
 		include_once 'modules/Documents/FoldersListView.php';
