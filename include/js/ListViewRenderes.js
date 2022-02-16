@@ -80,7 +80,7 @@ class LinkRender {
 		if (module == 'Documents' && referenceField == 'title') {
 			referenceField = 'notes_title';
 		}
-		if (referenceField.includes(columnName)) {
+		if (referenceField != undefined && referenceField.includes(columnName) && props.value != null) {
 			el = document.createElement('a');
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
@@ -96,7 +96,7 @@ class LinkRender {
 			el.style.marginLeft = '5px';
 			this.el = el;
 			this.render(props);
-		} else if (relatedRows[columnName] != undefined) {
+		} else if (relatedRows != undefined && relatedRows[columnName] != undefined) {
 			let moduleName = relatedRows[columnName][0];
 			let fieldId = relatedRows[columnName][1];
 			el = document.createElement('a');
@@ -145,6 +145,9 @@ class LinkRender {
 					}
 				}
 			}
+			if (props.value == null) {
+				props.value = '';
+			}
 			el.innerHTML = String(props.value);
 			el.style.marginLeft = '5px';
 			this.el = el;
@@ -186,6 +189,9 @@ class ActionRender {
 				</button>
 				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" id="dropdown-${recordid}">
 			</div>`;
+		if (recordid == null) {
+			actions = '';
+		}
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);

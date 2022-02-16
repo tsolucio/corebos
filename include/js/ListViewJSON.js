@@ -150,6 +150,7 @@ const ListView = {
 		let res = [];
 		let header = {};
 		let filter = {};
+		let sortable = true;
 		for (let index in headerObj) {
 			const fieldname = headerObj[index].fieldname;
 			const fieldvalue = headerObj[index].fieldvalue;
@@ -164,6 +165,10 @@ const ListView = {
 			}
 			if (ListView.deniedMods().includes(ListView.Module) || ListView.Module == '') {
 				edit = false;
+			}
+			if (DocumentFolderView == 1 && ListView.Module == 'Documents') {
+				edit = false;
+				sortable = false;
 			}
 			if (edit) {
 				editor = ListView.getEditorType(uitype, values, fieldname);
@@ -215,14 +220,13 @@ const ListView = {
 						name: fieldname,
 						header: fieldvalue,
 						sortingType: 'desc',
-						sortable: true,
+						sortable: sortable,
 						formatter: formatter,
 						editor: editor,
 						filter: filter,
 						whiteSpace: 'normal',
 						onAfterChange(ev) {
 							const idx = lvdataGridInstance[ListView.Instance].getIndexOfRow(ev.rowKey);
-							const referenceField = lvdataGridInstance[ListView.Instance].getValue(idx, 'reference_field');
 							ListView.updateFieldData(ev, idx);
 						},
 						renderer: {
@@ -246,13 +250,12 @@ const ListView = {
 						name: fieldname,
 						header: fieldvalue,
 						sortingType: 'desc',
-						sortable: true,
+						sortable: sortable,
 						formatter: formatter,
 						editor: editor,
 						whiteSpace: 'normal',
 						onAfterChange(ev) {
 							const idx = lvdataGridInstance[ListView.Instance].getIndexOfRow(ev.rowKey);
-							const referenceField = lvdataGridInstance[ListView.Instance].getValue(idx, 'reference_field');
 							ListView.updateFieldData(ev, idx);
 						},
 						renderer: {
@@ -488,7 +491,11 @@ const ListView = {
 			};
 			lvdataGridInstance[ListView.Instance].setRequestParams(ListView.SearchParams);
 			//update pagination onchange
-			lvdataGridInstance[ListView.Instance].setPerPage(parseInt(PageSize));
+			if (ListView.Module == 'Documents' && DocumentFolderView == 1) {
+				lvdataGridInstance[ListView.Instance].reloadData();
+			} else {
+				lvdataGridInstance[ListView.Instance].setPerPage(parseInt(PageSize));
+			}
 			ListView.updateData();
 			ListView.noData();
 		}
@@ -523,7 +530,11 @@ const ListView = {
 				}
 			});
 			//update pagination onchange
-			lvdataGridInstance[ListView.Instance].setPerPage(parseInt(PageSize));
+			if (ListView.Module == 'Documents' && DocumentFolderView == 1) {
+				lvdataGridInstance[ListView.Instance].reloadData();
+			} else {
+				lvdataGridInstance[ListView.Instance].setPerPage(parseInt(PageSize));
+			}
 			ListView.updateData();
 			ListView.noData();
 		}
@@ -652,7 +663,8 @@ const ListView = {
 	 * @param {Object} type
 	 * @param {String} el
 	 */
-	getCheckedRows: (type, el = '') => {
+	getCheckedRows: (type, el = '', instance = 1) => {
+		ListView.Instance = instance;
 		let checkedRows = ListView.getAllCheckedRows(type, el);
 		let ids = [];
 		let rowKeys = [];
@@ -1140,6 +1152,10 @@ const DocumentsView = {
 				lvdataGridInstance[ListView.Instance] = new lvtuiGrid({
 					el: document.getElementById('listview-tui-grid'),
 					columns: headers,
+					treeColumnOptions: {
+						name: childNames[0],
+						useCascadingCheckbox: false
+					},
 					rowHeaders: [{
 						type: 'checkbox',
 						header: `
@@ -1161,10 +1177,6 @@ const DocumentsView = {
 							}
 						}
 					},
-					useClientSort: false,
-					pageOptions: {
-						perPage: PageSize
-					},
 					rowHeight: 'auto',
 					bodyHeight: 'auto',
 					scrollX: false,
@@ -1184,8 +1196,6 @@ const DocumentsView = {
 					},
 					onGridUpdated: (ev) => {
 						ListView.Instance = folders[id][0];
-						const lastPage = lvdataGridInstance[ListView.Instance].getPagination()._currentPage;
-						sessionStorage.setItem(`Documents_${ListView.Instance}_lastPage`, lastPage);
 						ListView.updateData(folders[id][0]);
 						const rows = document.getElementById('allselectedboxes').value;
 						if (rows != '' && ListView.Action != 'massedit') {
@@ -1226,7 +1236,7 @@ const DocumentsView = {
 			}
 			document.getElementsByName('search_text')[0].value = '';
 			if (reload) {
-				lvdataGridInstance[ListView.Instance].setPerPage(parseInt(PageSize));
+				lvdataGridInstance[ListView.Instance].reloadData();
 			}
 			ListView.updateData();
 			if (ListView.Action != 'massedit') {

@@ -98,11 +98,6 @@ function getListViewJSON($currentModule, $tabid, $entries = 20, $orderBy = 'DESC
 	}
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.before', $queryGenerator);
 	$list_query = $queryGenerator->getQuery();
-	$folderid = '';
-	if (isset($_REQUEST['folderid']) && $currentModule == 'Documents') {
-		$folderid = vtlib_purify($_REQUEST['folderid']);
-		$list_query .= " and vtiger_notes.folderid = $folderid";
-	}
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.after', $queryGenerator);
 	$list_query = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.query', $list_query);
 	$where = $queryGenerator->getConditionalWhere();
@@ -125,8 +120,10 @@ function getListViewJSON($currentModule, $tabid, $entries = 20, $orderBy = 'DESC
 	if (!isset($_REQUEST['fromInstance'])) {
 		$currentPage = $lastPage;
 	}
-	$limit = ($currentPage-1) * $entries;
-	$list_query .= ' LIMIT '.$limit.','.$entries;
+	if (isset($entries) && !empty($entries)) {
+		$limit = ($currentPage-1) * $entries;
+		$list_query .= ' LIMIT '.$limit.','.$entries;
+	}
 	//get entityfieldid
 	$entityField = getEntityField($currentModule);
 	$entityidfield = $entityField['entityid'];
@@ -145,8 +142,15 @@ function getListViewJSON($currentModule, $tabid, $entries = 20, $orderBy = 'DESC
 	} catch (Exception $e) {
 		$sql_error = true;
 	}
+	$folderid = '';
 	$field_types = ListViewColumns($listviewcolumns, $tabid);
-	$data = processResults($result, $field_types, $currentModule);
+	if (isset($_REQUEST['folderid']) && $currentModule == 'Documents') {
+		$folderid = vtlib_purify($_REQUEST['folderid']);
+		$whereClause = $queryGenerator->getWhereClause();
+		$data = getTreeStructure($field_types, $folderid, 'DocumentFolders', 'parentfolder', $whereClause);
+	} else {
+		$data = processResults($result, $field_types, $currentModule);
+	}
 	if ($result && $sql_error != true) {
 		if ($noofrows>0) {
 			$res = array(
@@ -209,23 +213,15 @@ function getListViewHeaders($currentModule, $tabid) {
 	if ($currentModule == 'Utilities') {
 		$currentModule = vtlib_purify($_REQUEST['formodule']);
 	}
-
-	$customViewarr = array();
 	$customView = new CustomView($currentModule);
 	$viewid = $customView->getViewId($currentModule);
-	$customview_html = $customView->getCustomViewCombo($viewid);
-	$viewinfo = $customView->getCustomViewByCvid($viewid);
-	// Approving or Denying status-public by the admin in CustomView
-	$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status'], $viewid);
-	// To check if a user is able to edit/delete a CustomView
-	$edit_permit = $customView->isPermittedCustomView($viewid, 'EditView', $currentModule);
-	$delete_permit = $customView->isPermittedCustomView($viewid, 'Delete', $currentModule);
-	$customViewarr['viewid'] = $viewid;
-	$customViewarr['viewinfo'] = $viewinfo;
-	$customViewarr['edit_permit'] = $edit_permit;
-	$customViewarr['delete_permit'] = $delete_permit;
-	$customViewarr['customview_html'] = $customview_html;
-
+	$cv = array(
+		'viewid' => $viewid,
+		'viewinfo' => $customView->getCustomViewByCvid($viewid),
+		'edit_permit' => $customView->isPermittedCustomView($viewid, 'EditView', $currentModule),
+		'delete_permit' => $customView->isPermittedCustomView($viewid, 'Delete', $currentModule),
+		'customview_html' => $customView->getCustomViewCombo($viewid)
+	);
 	$queryGenerator = new QueryGenerator($currentModule, $current_user);
 	try {
 		if ($viewid != '0') {
@@ -301,10 +297,79 @@ function getListViewHeaders($currentModule, $tabid) {
 	}
 	return array(
 		'headers' => $listview_header_arr,
-		'customview' => $customViewarr,
+		'customview' => $cv,
 		'result' => true,
 		'folders' => $folders //for Documents module
 	);
+}
+
+function getDocuments($id, $field_types, $whereClause = '') {
+	global $adb;
+	if (!empty($whereClause)) {
+		$whereClause = ' and '.str_replace('WHERE', '', $whereClause);
+	}
+	$query = 'select vtiger_notes.*, vtiger_crmentity.*, vtiger_notescf.* from vtiger_notes
+		inner join vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_notes.notesid
+		inner join vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid)
+		inner join vtiger_notescf ON vtiger_notescf.notesid = vtiger_notes.notesid
+		left join vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+		left join vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+		where vtiger_crmentity.deleted=0 and (vtiger_crmentityrel.crmid=? OR vtiger_crmentityrel.relcrmid=?) '.$whereClause;
+	$rs = $adb->pquery($query, array($id, $id));
+	$numOfRows = $adb->num_rows($rs);
+	$data = array();
+	if ($numOfRows > 0) {
+		$listviewcolumns = $adb->getFieldsArray($rs);
+		$data[] = processResults($rs, $field_types, 'Documents');
+	}
+	return $data;
+}
+
+function findChilds($records_list, $parentId, $field_types, $whereClause = '') {
+	$tree = array();
+	foreach ($records_list as $list) {
+		if ($list['parent'] == $parentId) {
+			$children = findChilds($records_list,$list['id'], $field_types, $whereClause);
+			$data = getDocuments($list['id'], $field_types, $whereClause);
+			if ($children) {
+				$tmpChildren = $children;
+				if (!empty($data)) {
+					$children = array();
+					$children = array_merge($data[0], $tmpChildren);
+				}
+				$list['_children'] = $children;
+				unset($tmpChildren);
+			} else {
+				if (!empty($data)) {
+					$list['_children'] = $data[0];
+				}
+			}
+			$tree[] = $list;
+		}
+	}
+	return $tree;
+}
+
+function getTreeStructure($field_types, $id, $currentModule, $referenceField, $whereClause = '') {
+	global $adb;
+	$records_list = array();
+	$encountered_records = array($id);
+	$treeAttr = array(
+		$currentModule, $field_types[0]['fieldname']
+	);
+	$focus = new $currentModule();
+	$records_list = $focus->getParentRecords($id, $records_list, $encountered_records, $referenceField, $currentModule, $treeAttr);
+	$parent = $records_list[0]['id'];
+	$records_list = array();
+	$records_list = $focus->getChildRecords($id, $records_list, 0, $referenceField, $currentModule, $treeAttr);
+	$parents = getDocuments($parent, $field_types, $whereClause);
+	$note_no = getEntityName($currentModule, $parent);
+	$top_parents = array();
+	if (isset($parents[0])) {
+		$top_parents = $parents[0];
+	}
+	$parents = findChilds($records_list, $parent, $field_types, $whereClause);
+	return array_merge($top_parents, $parents);
 }
 
 function processResults($result, $field_types, $currentModule) {
@@ -326,6 +391,9 @@ function processResults($result, $field_types, $currentModule) {
 			$columnName = $val['columnname'];
 			$fieldName = $val['fieldname'];
 			$fieldType = $val['fieldtype'];
+			if ($columnName == 'notes_title') {
+				$columnName = 'title';
+			}
 			$fieldValue = $adb->query_result($result, $i, $columnName);
 			$recordID = $adb->query_result($result, $i, $entityidfield);
 			$smownerid = $adb->query_result($result, $i, 'smownerid');
@@ -657,38 +725,21 @@ function enableColorizer($row, $tabid) {
 
 function findDocumentFolders() {
 	global $current_user, $adb;
-	$currentModule = 'Documents';
-	$focus = new Documents();
-	$focus->initSortbyField($currentModule);
-	$CustomView = new CustomView('Documents');
-	$viewid = $CustomView->getViewId($currentModule);
-	$queryGenerator = new QueryGenerator($currentModule, $current_user);
-	if ($viewid != '0') {
-		$queryGenerator->initForCustomViewById($viewid);
-	} else {
-		$queryGenerator->initForDefaultCustomView();
-	}
+	$focus = new DocumentFolders();
+	$referenceField = 'parentfolder';
+	$queryGenerator = new QueryGenerator('DocumentFolders', $current_user);
+	$queryGenerator->setFields(array('id','foldername'));
+	$queryGenerator->addCondition('parentfolder', '', 'e');
 	$list_query = $queryGenerator->getQuery();
-	$queryGenerator->getConditionalWhere();
-	$result = $adb->pquery('select * from vtiger_attachmentsfolder', array());
+	$result = $adb->pquery($list_query.' order by vtiger_documentfolders.sequence', array());
 	$foldercount = $adb->num_rows($result);
 	$folders = array();
+	$records_list = array();
 	if ($foldercount > 0) {
 		for ($i=0; $i<$foldercount; $i++) {
-			$displayFolder = false;
-			$query = $list_query;
-			$folder_id = $adb->query_result($result, $i, 'folderid');
+			$id = $adb->query_result($result, $i, 'documentfoldersid');
 			$foldername = $adb->query_result($result, $i, 'foldername');
-			$query .= " and vtiger_notes.folderid = $folder_id";
-			try {
-				$count_result = $adb->query(mkCountQuery($query));
-				$num_records = $adb->query_result($count_result, 0, 'count');
-				if ($num_records > 0) {
-					$folders[] = array($folder_id, $foldername);
-				}
-			} catch (Exception $e) {
-				//sql error
-			}
+			$folders[] = array($id, $foldername);
 		}
 	}
 	if (empty($folders)) {
