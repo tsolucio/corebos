@@ -17,7 +17,7 @@
 		{* Loop here for block *}
 		{foreach key=BLOCKID item=BLOCKLABEL from=$BLOCKS}
 			{if $BLOCKLABEL neq 'LBL_MODULE_MANAGER'}
-				<div class="slds-modal__content slds-app-launcher__content slds-p-around_medium" id="modal-content-id-1">
+				<div class="slds-modal__content slds-app-launcher__content slds-p-around_x-large" id="modal-content-id-1">
 					<div class="slds-section slds-is-open">
 						<h3 class="slds-section__title">
 							<button aria-controls="appsContent" aria-expanded="true"
@@ -44,7 +44,7 @@
 									{assign var=count value=$smarty.foreach.itr.iteration}
 									{assign var="customlink_icon" value=$CUSTOMLINK->linkicon}
 									{* Item *}
-									<li class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3">
+									<li  onclick="gotourl('{$data.link}')" class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3">
 										<div class="slds-app-launcher__tile slds-text-link_reset ">
 											<div class="slds-app-launcher__tile-figure" style="color: #0070ba;">
 											{* Icon *}
