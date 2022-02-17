@@ -1274,8 +1274,11 @@ function getBlockOpenClosedStatus($module, $disp_view) {
 
 /**
  * This function returns the blocks and its related information for given module.
- * Input Parameter are $module - module name, $disp_view = display view (edit,detail or create),$mode - edit, $col_fields - * column_fields/
- * This function returns an array
+ * @param string module name
+ * @param string display view (edit,detail or create)
+ * @param string edit
+ * @param array column_fields
+ * @return array
  */
 function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = '') {
 	global $log, $adb, $current_user;
@@ -1303,10 +1306,11 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	}
 	$tabid = getTabid($module);
 	$getBlockInfo = array();
-	$query = "select blockid,blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
+	$query = "select blockid,blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible=0 order by sequence";
 	$result = $adb->pquery($query, array($tabid));
 	$noofrows = $adb->num_rows($result);
 	$blockid_list = array();
+	$block_label = array();
 	$aBlockStatus = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		$blockid = $adb->query_result($result, $i, 'blockid');
@@ -1353,7 +1357,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			$sql = "SELECT distinct $selectSql, '0' as readonly
 				FROM vtiger_field WHERE $uniqueFieldsRestriction $fieldsin AND vtiger_field.block IN (".
 				generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and vtiger_field.presence in (0,2) ORDER BY block,sequence';
-			$params = array($tabid, $blockid_list);
+			$params = array_merge(array($tabid), $blockid_list);
 		} elseif ($userprivs->hasGlobalViewPermission()) { // view all
 			$profileList = getCurrentUserProfileList();
 			$sql = "SELECT distinct $selectSql, vtiger_profile2field.readonly
@@ -1361,7 +1365,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 				WHERE vtiger_field.tabid=? $fieldsin AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
 					'vtiger_field.presence in (0,2) AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') ORDER BY block,sequence';
-			$params = array($tabid, $blockid_list, $profileList);
+			$params = array_merge(array($tabid), $blockid_list, $profileList);
 		} else {
 			$profileList = getCurrentUserProfileList();
 			$sql = "SELECT distinct $selectSql, vtiger_profile2field.readonly
@@ -1371,7 +1375,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				WHERE vtiger_field.tabid=? $fieldsin AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
 					'vtiger_field.presence in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('.
 					generateQuestionMarks($profileList) . ') ORDER BY block,sequence';
-			$params = array($tabid, $blockid_list, $profileList);
+			$params = array_merge(array($tabid), $blockid_list, $profileList);
 		}
 		$result = $adb->pquery($sql, $params);
 

@@ -33,7 +33,7 @@ class moveDVBtoEnd extends cbupdaterWorker {
 				if ($link['tabid']!=$tabid) {
 					$tabid = $link['tabid'];
 					$rsseq = $adb->pquery('select max(sequence) from vtiger_blocks where tabid=?', array($tabid));
-					$cnt = $adb->query_result($rsseq, 0, 0)+1;
+					$cnt = (int)$adb->query_result($rsseq, 0, 0)+1;
 				}
 				$this->ExecuteQuery('update vtiger_links set sequence=? where linkid=?', array($cnt,$link['linkid']));
 				$cnt++;

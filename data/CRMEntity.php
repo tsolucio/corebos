@@ -101,7 +101,7 @@ class CRMEntity {
 		if (empty($refval)) {
 			return '';
 		}
-		$nocbuuid = array('Users', 'Currency', 'DocumentFolders', 'Groups', '');
+		$nocbuuid = array('Users', 'Currency', 'Groups', '');
 		list($wsid, $crmid) = explode('x', $refval);
 		if (in_array(vtws_getEntityName($wsid), $nocbuuid)) {
 			return '';
@@ -2416,7 +2416,7 @@ class CRMEntity {
 		global $adb;
 		$with_crmid = (array)$with_crmid;
 		foreach ($with_crmid as $relcrmid) {
-			if ($with_module == 'Documents') {
+			if ($with_module == 'Documents' && $module!='DocumentFolders') {
 				$checkpresence = $adb->pquery('SELECT 1 FROM vtiger_senotesrel WHERE crmid=? AND notesid=?', array($crmid, $relcrmid));
 				// Relation already exists? No need to add again
 				if ($checkpresence && $adb->num_rows($checkpresence)) {

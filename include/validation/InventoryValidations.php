@@ -14,7 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 require_once 'modules/cbMap/processmap/Validations.php';
- global $log,$currentModule,$adb,$current_user;
+global $log,$currentModule,$adb,$current_user;
 
 $screen_values = json_decode($_REQUEST['structure'], true);
 $message = '%%%OK%%%';

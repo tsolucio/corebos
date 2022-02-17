@@ -113,7 +113,13 @@ if ($taxtype == 'individual') {
 	}
 	$tax_val = 0;
 	foreach (getAllTaxes('available', '') as $availableTax) {
-		$tax_val += $availableTax['percentage'];
+		$keytax = 'tax'.$availableTax['taxid'].'_group_percentage';
+		if (array_key_exists($keytax, $element)) {
+			$tax_val += $element[$keytax];
+			$_REQUEST[$keytax] = $element[$keytax];
+		} else {
+			$tax_val += $availableTax['percentage'];
+		}
 	}
 	$totaldoc=$totaldoc+($totaldoc*$tax_val/100);
 }

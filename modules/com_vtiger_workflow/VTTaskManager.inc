@@ -214,6 +214,10 @@ abstract class VTTask {
 		$from_wf = false;
 	}
 
+	public function isHealthy() {
+		return true;
+	}
+
 	public function after_retrieve() {
 	}
 

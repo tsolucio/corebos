@@ -86,9 +86,6 @@ class VtigerCRMActorMeta extends EntityMeta {
 	public function computePermissionModule($webserviceObject) {
 		$moduleName = $webserviceObject->getEntityName();
 		switch ($moduleName) {
-			case 'DocumentFolders':
-				$permModule = 'Documents';
-				break;
 			case 'CompanyDetails':
 				$permModule = 'cbCompany';
 				break;
@@ -125,9 +122,6 @@ class VtigerCRMActorMeta extends EntityMeta {
 			return;
 		}
 		switch ($moduleName) {
-			case 'DocumentFolders':
-				$permModule = 'Documents';
-				break;
 			case 'CompanyDetails':
 				$permModule = 'cbCompany';
 				break;
@@ -232,10 +226,6 @@ class VtigerCRMActorMeta extends EntityMeta {
 
 	public function getFilterFields($elementType) {
 		switch ($elementType) {
-			case 'DocumentFolders':
-				$fields = array('id','foldername','description');
-				$linkfd = array('id');
-				break;
 			case 'Currency':
 				$fields = array('id','currency_name','currency_code','currency_symbol','conversion_rate','currency_position','currency_status');
 				$linkfd = array('id');

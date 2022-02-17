@@ -119,7 +119,11 @@
 									{/foreach}
 									</table>
 								{else}
-									{$xmliinfo|json_encode}
+									{if $xmlikey=='TEST RECORD'}
+										{$xmliinfo}
+									{else}
+										{$xmliinfo|json_encode}
+									{/if}
 								{/if}
 							</td>
 						</tr>

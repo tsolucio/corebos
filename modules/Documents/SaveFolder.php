@@ -26,8 +26,8 @@ if (isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'Save') {
 			echo 'DUPLICATE_FOLDERNAME';
 		} else {
 			$rs = $adb->pquery('select max(folderid),max(sequence) from vtiger_attachmentsfolder', array());
-			$fid = $adb->query_result($rs, 0, 0) + 1;
-			$sequence = $adb->query_result($rs, 0, 1) + 1;
+			$fid = (int)$adb->query_result($rs, 0, 0) + 1;
+			$sequence = (int)$adb->query_result($rs, 0, 1) + 1;
 			$sql = 'insert into vtiger_attachmentsfolder (folderid,foldername,description,createdby,sequence) values (?,?,?,?,?)';
 			$params = array($fid, $foldername, $folderdesc, $current_user->id, $sequence);
 			$result = $adb->pquery($sql, $params);

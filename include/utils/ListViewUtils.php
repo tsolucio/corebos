@@ -79,7 +79,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	}
 	$field = array();
 	if (!is_admin($current_user)) {
-		if ($module == 'Emails') {
+		if ($module == 'Emails' || $module == 'Users') {
 			$query = 'SELECT fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
 			$params = array($tabid);
 		} else {
@@ -497,12 +497,11 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	}
 	$field = array();
 	if (!is_admin($current_user)) {
-		if ($module == 'Emails') {
-			$query = 'SELECT fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
+		if ($module == 'Emails' || $module == 'Users') {
+			$query = 'SELECT fieldname FROM vtiger_field WHERE tabid=? and vtiger_field.presence in (0,2)';
 			$params = array($tabid);
 		} else {
 			$profileList = getCurrentUserProfileList();
-			$params = array();
 			$query = 'SELECT DISTINCT vtiger_field.fieldname
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
@@ -520,14 +519,11 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				}
 			}
 			$query .=' WHERE vtiger_field.tabid in (' . generateQuestionMarks($tabids) . ') and vtiger_field.presence in (0,2)';
-			$params[] = $tabids;
-
 			$query .=' AND vtiger_profile2field.visible = 0
-					AND vtiger_def_org_field.visible = 0
-					AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ')
-					AND vtiger_field.fieldname IN (' . generateQuestionMarks($field_list) . ')';
-
-			array_push($params, $profileList, $field_list);
+				AND vtiger_def_org_field.visible = 0
+				AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ')
+				AND vtiger_field.fieldname IN (' . generateQuestionMarks($field_list) . ')';
+			$params = array_merge($tabids, $profileList, $field_list);
 		}
 
 		$result = $adb->pquery($query, $params);
@@ -538,7 +534,6 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	//constructing the uitype and columnname array
 	$ui_col_array = array();
 
-	$params = array();
 	$query = 'SELECT uitype, columnname, fieldname, typeofdata FROM vtiger_field ';
 
 	$tabids = array($tabid);
@@ -553,10 +548,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		}
 	}
 	$query .= ' WHERE vtiger_field.tabid in (' . generateQuestionMarks($tabids) . ') and vtiger_field.presence in (0,2)';
-	$params = $tabids;
 	$query .= ' AND fieldname IN (' . generateQuestionMarks($field_list) . ') ';
-	$params[] = $field_list;
-
+	$params = array_merge($tabids, $field_list);
 	$result = $adb->pquery($query, $params);
 	$num_rows = $adb->num_rows($result);
 	for ($i = 0; $i < $num_rows; $i++) {

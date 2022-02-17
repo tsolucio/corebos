@@ -108,8 +108,7 @@ function getMenuElements() {
 
 function getsavedMenu() {
 	global $adb;
-	$sql = "SELECT savemenuid,menuname FROM `vtiger_savemenu`";
-	$result = $adb->query($sql);
+	$result = $adb->query('SELECT savemenuid,menuname FROM vtiger_savemenu');
 	$savedm = array();
 	if ($result && $adb->num_rows($result)>0) {
 		while ($res = $adb->fetch_array($result)) {

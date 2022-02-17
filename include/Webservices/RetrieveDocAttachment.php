@@ -116,7 +116,7 @@ function vtws_retrievedocattachment_get_attachment($fileid, $nr = false, $return
 		}
 		if ($fileContent != '') {
 			$rsn = $adb->pquery('select filedownloadcount from vtiger_notes where notesid= ?', array($fileid));
-			$download_count = $adb->query_result($rsn, 0, 'filedownloadcount') + 1;
+			$download_count = (int)$adb->query_result($rsn, 0, 'filedownloadcount') + 1;
 			$adb->pquery('update vtiger_notes set filedownloadcount= ? where notesid= ?', array($download_count, $fileid));
 		}
 		$recordpdf['recordid'] = $fileid;

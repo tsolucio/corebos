@@ -101,18 +101,18 @@ function stripTailCommandsFromQuery($query, $stripgroup = true) {
 }
 
 //Make a count query
-function mkCountQuery($query) {
+function mkCountQuery($query, $eliminateGroupBy = true) {
 	$query = mkXQuery($query, 'count(*) AS count');
 
 	// Strip off any "GROUP BY" clause
-	if (stripos($query, ' GROUP BY ') > 0) {
+	if ($eliminateGroupBy && stripos($query, ' GROUP BY ') > 0) {
 		$query = substr($query, 0, stripos($query, ' GROUP BY '));
 	}
 	// Strip off any "ORDER BY" clause
 	if (stripos($query, ' ORDER BY ') > 0) {
 		$query = substr($query, 0, stripos($query, ' ORDER BY '));
 	}
-	return ($query);
+	return $query;
 }
 
 // Make a count query with FULL query

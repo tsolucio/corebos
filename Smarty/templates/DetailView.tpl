@@ -188,8 +188,13 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																							{if !empty($CUSTOMBLOCKS.$header.custom)}
 																								{include file=$CUSTOMBLOCKS.$header.tpl}
 																							{elseif isset($BLOCKS.$header.relatedlist) && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-																								{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
-																								{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX}
+																								{foreach key=bhkey item=bhitem from=$BLOCKS.$header}
+																									{if isPermitted($bhkey, 'index')=='yes'}
+																										{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
+																										{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX}
+																									{/if}
+																									{break}
+																								{/foreach}
 																							{else}
 																								{foreach item=detailInfo from=$detail}
 																									<tr style="height:25px" class="detailview_row">
