@@ -50,6 +50,7 @@ const ListView = {
 	Module: gVTModule,
 	Instance: 1,
 	SearchParams: false,
+	CheckedRows: [],
 
 	Request: async (url, method, body = {}) => {
 		let headers = {
@@ -360,7 +361,7 @@ const ListView = {
 					type: 'checkbox',
 					header: `
 						<label for="all-checkbox" class="checkbox">
-							<input type="checkbox" id="selectCurrentPageRec" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id[]');ListView.getCheckedRows('currentPage', this, ${ListView.Instance});" name="_checked" />
+							<input type="checkbox" id="selectCurrentPageRec" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id[]');" name="_checked" />
 						</label>`,
 					renderer: {
 						type: CheckboxRender,
@@ -420,8 +421,8 @@ const ListView = {
 	 * Register a grid event
 	 * @param {String} url
 	 */
-	registerEvent: (url) => {
-		lvdataGridInstance[ListView.Instance].on('filter', (ev) => {
+	registerEvent: (url, instance = 1) => {
+		lvdataGridInstance[instance].on('filter', (ev) => {
 			const operatorData = {
 				eq: 'e',
 				contain: 'c',
@@ -441,12 +442,12 @@ const ListView = {
 			const searchtype = 'Basic';
 			ListView.Search(url, urlstring, searchtype);
 		});
-		lvdataGridInstance[ListView.Instance].on('click', (ev) => {
+		lvdataGridInstance[instance].on('click', (ev) => {
 			if (ev.nativeEvent.target.innerText == 'Clear') {
 				ListView.Reload();
 			}
 		});
-		lvdataGridInstance[ListView.Instance].on('successResponse', function (data) {
+		lvdataGridInstance[instance].on('successResponse', function (data) {
 			const filteredData = document.getElementById('filteredData');
 			const res = JSON.parse(data.xhr.response);
 			const search_mode = res.search_mode;
@@ -461,6 +462,22 @@ const ListView = {
 			} else {
 				filteredData.innerHTML = '';
 			}
+		});
+		lvdataGridInstance[instance].on('checkAll', (ev) => {
+			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
+			ListView.getCheckedRows(checkedRows, 'check', instance);
+		});
+		lvdataGridInstance[instance].on('check', (ev) => {
+			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
+			ListView.getCheckedRows(checkedRows, 'check', instance);
+		});
+		lvdataGridInstance[instance].on('uncheckAll', (ev) => {
+			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
+			ListView.getCheckedRows(checkedRows, 'uncheck', instance);
+		});
+		lvdataGridInstance[instance].on('uncheck', (ev) => {
+			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
+			ListView.getCheckedRows(checkedRows, 'uncheck', instance);
 		});
 	},
 	/**
@@ -634,88 +651,41 @@ const ListView = {
 		});
 	},
 	/**
-	 * Get all checked rows
-	 * @param {Object} type
-	 * @param {String} el
-	 */
-	getAllCheckedRows: (type, el) => {
-		let checkboxes = document.getElementsByName('selected_id[]');
-		let checkboxesChecked = [];
-		if (type == 'currentPage') {
-			for (let i = 0; i < checkboxes.length; i++) {
-				if (el != '' && el.checked == true) {
-					checkboxesChecked.push(checkboxes[i].id);
-				} else {
-					checkboxesChecked = [];
-				}
-			}
-		} else {
-			for (let i = 0; i < checkboxes.length; i++) {
-				if (checkboxes[i].checked) {
-					checkboxesChecked.push(checkboxes[i].id);
-				}
-			}
-		}
-		return checkboxesChecked;
-	},
-	/**
 	 * Get all checked rows to delete them
 	 * @param {Object} type
 	 * @param {String} el
 	 */
-	getCheckedRows: (type, el = '', instance = 1) => {
+	getCheckedRows: (checkedRows, event, instance = 1) => {
+		let currentRows = [];
+		let	select_options = '';
 		ListView.Instance = instance;
-		let checkedRows = ListView.getAllCheckedRows(type, el);
-		let ids = [];
-		let rowKeys = [];
-		//add checked rows for current page
 		for (let id in checkedRows) {
 			let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'recordid');
-			ids.push(recordId);
-			rowKeys.push(checkedRows[id]);
+			currentRows.push(recordId);
 		}
-		let actualVal = document.getElementById('allselectedboxes');
-		let	select_options = ids.join(';');
-		//get checked rows and add new rows from other pages
+		ListView.CheckedRows[instance] = currentRows.filter(Number);
+		ListView.CheckedRows.map(function(currentValue, index, arr) {
+			if (select_options != '') {
+				select_options += ';';
+			}
+			select_options += currentValue.join(';');
+		});
 		if (!select_options.endsWith(';') && select_options != '') {
 			select_options += ';';
-		}
-		select_options += actualVal.value;
-		let actualArr = select_options.split(';');
-		let newIds = [];
-		for (var index in actualArr) {
-			if (!newIds.includes(actualArr[index])) {
-				newIds.push(actualArr[index]);
-			}
-		}
-		select_options = newIds.join(';');
-		if (!select_options.endsWith(';') && select_options != '') {
-			select_options += ';';
-		}
-		//remove id for current unchecked row
-		if (!el.checked) {
-			let removeId = el.id;
-			let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(removeId), 'recordid');
-			select_options = select_options.replace(recordId+';', '');
-		}
-		//remove all ids for current page if header checkbox is unchecked
-		if (checkedRows.length == 0) {
-			for (let i = 0; i < PageSize; i++) {
-				let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(i), 'recordid');
-				select_options = select_options.replace(recordId+';', '');
-			}
 		}
 		document.getElementById('allselectedboxes').value = select_options;
-		if (select_options.indexOf('on;') !== -1) {
-			document.getElementById('allselectedboxes').value = select_options.slice(0, -3);
-		}
-		return rowKeys;
 	},
 	/**
 	 * Remove all checked rows
 	 * @param {String} selectedType
 	 */
 	removeRows: (selectedType = '') => {
+		let RequestParams = {};
+		if (ListView.SearchParams) {
+			RequestParams.search = ListView.SearchParams.search;
+			RequestParams.searchtype = ListView.SearchParams.searchtype;
+			lvdataGridInstance[ListView.Instance].setRequestParams(RequestParams);
+		}
 		lvdataGridInstance[ListView.Instance].reloadData();
 		lvdataGridInstance[ListView.Instance].removeCheckedRows();
 		document.getElementById('status').style.display = 'none';
@@ -1154,13 +1124,13 @@ const DocumentsView = {
 					columns: headers,
 					treeColumnOptions: {
 						name: childNames[0],
-						useCascadingCheckbox: false
+						useCascadingCheckbox: true
 					},
 					rowHeaders: [{
 						type: 'checkbox',
 						header: `
 							<label for="all-checkbox" class="checkbox">
-								<input type="checkbox" id="currentPageRec_selectall${ListView.Instance}" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id${ListView.Instance}', 'selectall${ListView.Instance}');ListView.getCheckedRows('currentPage', this, ${ListView.Instance});" name="_checked" />
+								<input type="checkbox" id="currentPageRec_selectall${ListView.Instance}" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id${ListView.Instance}', 'selectall${ListView.Instance}');" name="_checked" />
 							</label>`,
 						renderer: {
 							type: CheckboxRender,
