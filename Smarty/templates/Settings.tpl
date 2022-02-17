@@ -17,8 +17,8 @@
 		{* Loop here for block *}
 		{foreach key=BLOCKID item=BLOCKLABEL from=$BLOCKS}
 			{if $BLOCKLABEL neq 'LBL_MODULE_MANAGER'}
-				<div class="slds-modal__content slds-app-launcher__content slds-p-around_x-large" id="modal-content-id-1">
-					<div class="slds-section slds-is-open">
+				<div class="slds-modal__content slds-app-launcher__content " id="modal-content-id-1">
+					<div class="slds-section slds-is-open slds-p-around_x-large">
 						<h3 class="slds-section__title">
 							<button aria-controls="appsContent" aria-expanded="true"
 								class="slds-button slds-section__title-action">
