@@ -10,85 +10,80 @@
 -->*}
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43" aria-modal="true">
-<div class="slds-modal__container slds-p-around_none">
-<table style="border:0;padding: 2px 10px;">
-<tbody><tr>
-	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-	<br>
-	<table border=0 cellspacing=0 cellpadding=20 width=90% class="settingsUI">
-	<tr>
-		<td>
-		<table border=0 cellspacing=0 cellpadding=0 width=100%>
-			{foreach key=BLOCKID item=BLOCKLABEL from=$BLOCKS}
-				{if $BLOCKLABEL neq 'LBL_MODULE_MANAGER'}
-				<tr>
-					<td class="settingsTabHeader">
-						{$MOD.$BLOCKLABEL}
-					</td>
-				</tr>
-				<tr>
-				<td class="settingsIconDisplay small">
-					<table border=0 cellspacing=0 cellpadding=10 width=100%>
-						<tr>
-						{foreach item=data from=$FIELDS.$BLOCKID name=itr}
-							<td width=25% valign=top>
-							{if $data.name eq ''}
-								&nbsp;
-							{else}
-							<table border=0 cellspacing=0 cellpadding=5 width=100%>
-								<tr>
+	<div class="slds-modal__container slds-p-around_none">
+		<div class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+			<h2 id="header43" class="slds-text-heading_medium">coreBOS Settings</h2>
+		</div>
+		{* Loop here for block *}
+		{foreach key=BLOCKID item=BLOCKLABEL from=$BLOCKS}
+			{if $BLOCKLABEL neq 'LBL_MODULE_MANAGER'}
+				<div class="slds-modal__content slds-app-launcher__content slds-p-around_medium" id="modal-content-id-1">
+					<div class="slds-section slds-is-open">
+						<h3 class="slds-section__title">
+							<button aria-controls="appsContent" aria-expanded="true"
+								class="slds-button slds-section__title-action">
+								<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left"
+									aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+								</svg>
+								<span class="slds-truncate" title="{$MOD.$BLOCKLABEL}">{$MOD.$BLOCKLABEL}</span>
+							</button>
+						</h3>
+						<div aria-hidden="false" class="slds-section__content" id="appsContent">
+							<div class="slds-assistive-text" id="drag-live-region" aria-live="assertive"></div>
+							<ul class="slds-grid slds-grid_pull-padded slds-wrap">
+							{* loop here for fields *}
+							{foreach item=data from=$FIELDS.$BLOCKID name=itr}
+								{if $data.name eq ''}
+									&nbsp;
+								{else}
 									{assign var=label value=$data.name|@getTranslatedString:$data.module}
 									{if $data.name eq $label}
 									{assign var=label value=$data.name|@getTranslatedString:'Settings'}
 									{/if}
 									{assign var=count value=$smarty.foreach.itr.iteration}
 									{assign var="customlink_icon" value=$CUSTOMLINK->linkicon}
-								
-									<td width="74px" rowspan=2 valign=top>
-										<a href="{$data.link}">
-										<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="User(s)">
-											<svg class="slds-icon slds-icon_large" aria-hidden="true">
-												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$data.icon}"></use>
-											</svg>
-										</span>
-											
-										</a>
-									</td>
+									{* Item *}
+									<li class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3">
+										<div class="slds-app-launcher__tile slds-text-link_reset ">
+											<div class="slds-app-launcher__tile-figure" style="color: #0070ba;">
+											{* Icon *}
+												<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="User(s)">
+													<svg class="slds-icon slds-icon_large" aria-hidden="true">
+														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$data.icon}"></use>
+													</svg>
+												</span>
+											{* Icon End *}
+											</div>
+											<div class="slds-app-launcher__tile-body">
+												<a href="{$data.link}">{$label}</a>
+												{* Description *}
+												{assign var=description value=$data.description|@getTranslatedString:$data.module}
+												{if $data.description eq $description}
+												{assign var=description value=$data.description|@getTranslatedString:'Settings'}
+												{/if}
 
-									<td class=big valign=top>
-										<a href="{$data.link}">
-											{$label}
-										</a>
-									</td>
-								</tr>
-								<tr>
-									{assign var=description value=$data.description|@getTranslatedString:$data.module}
-									{if $data.description eq $description}
-									{assign var=description value=$data.description|@getTranslatedString:'Settings'}
-									{/if}
-									<td class="small" valign=top>
-										{$description}
-									</td>
-								</tr>
-							</table>
-							{/if}
-							</td>
-						{if $count mod $NUMBER_OF_COLUMNS eq 0}
-							</tr><tr>
-						{/if}
-				{/foreach}
-						</table>
-					</td>
-					</tr>
-				{/if}
-			{/foreach}
-		</table>
-		</td>
-	</tr>
-	</table>
-	</td>
-</tr>
-</table>
+												<p>
+													{$description}
+												</p>
 
+												<div class="slds-popover slds-popover_tooltip slds-nubbin_top-right slds-hide" role="tooltip" id="help-0" style="position:absolute;top:80px;right:30px">
+													<div class="slds-popover__body"></div>
+												</div>
+											</div>
+										</div>
+									</li>
+									{* Item End *}
+								{/if}
+							{/foreach}
+							</ul>
+						</div>
+					</div>
+					<hr />
+				</div>
+			{/if}
+		{/foreach}
 	</div>
 </section>
+
+			

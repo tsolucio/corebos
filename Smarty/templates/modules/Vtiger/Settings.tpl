@@ -21,14 +21,18 @@
 				<tr>
 					<td rowspan="2" valign="top" width="50">
 						<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="{$MOD.VTLIB_LBL_MODULE_MANAGER}">
-							<svg class="slds-icon slds-icon_large" aria-hidden="true">
+							<svg class="slds-icon slds-icon_small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#bundle_config"></use>
 							</svg>
 						</span>
 					</td>
 					<td class="heading2" valign="bottom"> <b>
 						<a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> 
-					&gt; {$MODULE_LBL} </td>
+						<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="{$MOD.VTLIB_LBL_MODULE_MANAGER}">
+							<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+							</svg>
+						</span> {$MODULE_LBL} </td>
 				</tr>
 				<tr>
 					<td class="small" valign="top">{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</td>
@@ -49,7 +53,7 @@
 										<table border=0 cellspacing=0 cellpadding=5 width="100%">
 											<tr>
 												{assign var=count value=$smarty.foreach.itr.iteration}
-												<td rowspan=2 valign=top width="20%">
+												<td rowspan=2 valign=top width="10%">
 												<a href="{$mod_array.location}">
 													<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="{$mod_array.label}">
 														<svg class="slds-icon slds-icon_large" aria-hidden="true">

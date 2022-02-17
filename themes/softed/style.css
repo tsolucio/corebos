@@ -22,7 +22,7 @@ html{
 .big {
 	
 	font-size: var(--cbsofted-big-fontsize, 12px);
-	line-height: 18px;
+	line-height: 10px;
 	color: #000000;
 	font-weight:bold;
 }
