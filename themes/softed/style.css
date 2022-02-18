@@ -10,6 +10,10 @@
  ********************************************************************************/
 
 /* SOFTED  - COLOR THEME*/
+@font-face {
+	font-family: 'Montserrat';
+	src: url(fonts/Montserrat-VariableFont_wght.ttf);
+  }
 html{
 	font-family: 'Montserrat' !important;
 }
