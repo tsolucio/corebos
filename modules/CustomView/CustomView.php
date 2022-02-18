@@ -701,6 +701,7 @@ class CustomView extends CRMEntity {
 
 			while ($relcriteriarow = $adb->fetch_array($result)) {
 				$criteria = array();
+				$full_name = array();
 				$criteria['columnname'] = html_entity_decode($relcriteriarow['columnname'], ENT_QUOTES, $default_charset);
 				$criteria['comparator'] = $relcriteriarow['comparator'];
 				$advfilterval = html_entity_decode($relcriteriarow['value'], ENT_QUOTES, $default_charset);
@@ -724,12 +725,34 @@ class CustomView extends CRMEntity {
 				}
 				$uitype = getUItypeByFieldName($this->customviewmodule, $col[2]);
 				if (($col[1]=='smownerid' || $col[1]=='smcreatorid' || $col[1]=='modifiedby' || $uitype==101)
-					&& $advfilterval=='current_user' && (empty($_REQUEST['action']) || $_REQUEST['action']!='CustomView') && empty($_REQUEST['record'])
+					&& ($advfilterval=='current_user' || $advfilterval=='current_userandgroup') && (empty($_REQUEST['action']) || $_REQUEST['action']!='CustomView') && empty($_REQUEST['record'])
 				) {
-					$advfilterval = trim($current_user->first_name.' '.$current_user->last_name);
+					if ($advfilterval=='current_user') {
+						$advfilterval = trim($current_user->first_name.' '.$current_user->last_name);
+					} else {
+						global $adb;
+						$result = $adb->pquery('select roleid from vtiger_users2group inner join vtiger_group2role on vtiger_users2group.groupid = vtiger_group2role.groupid where userid=?', array($current_user->id));
+						$num_rows=$adb->num_rows($result);
+						for ($i=0; $i<$num_rows; $i++) {
+							$user_roleid=$adb->query_result($result, $i, 'roleid');
+						}
+						$result = $adb->pquery('select first_name, last_name from vtiger_users inner join vtiger_user2role on vtiger_users.id = vtiger_user2role.userid where roleid=?', array($user_roleid));
+						$num_rows=$adb->num_rows($result);
+						for ($i=0; $i<$num_rows; $i++) {
+							$full_name[] = trim($adb->query_result($result, $i, 'first_name').' '.$adb->query_result($result, $i, 'last_name'));
+						}
+					}
 					$advfilterval = decode_html($advfilterval);
 				}
-				$criteria['value'] = $advfilterval;
+				if (count($full_name) > 1) {
+					$advfilterval = array();
+					foreach ($full_name as $names) {
+						$advfilterval[] = decode_html($names);
+					}
+					$criteria['value'] = $advfilterval;
+				} else {
+					$criteria['value'] = $advfilterval;
+				}
 				$criteria['column_condition'] = $relcriteriarow['column_condition'];
 
 				$advft_criteria[$i]['columns'][$j] = $criteria;
