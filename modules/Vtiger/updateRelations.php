@@ -52,6 +52,6 @@ if ($mode == 'delete') {
 	coreBOS_Settings::delSetting('RLERRORMESSAGECLASS');
 }
 if ($actionType != 'listview') {
-header('Location: index.php?module='.urlencode($currentModule).'&record='.urlencode($forCRMRecord)."&action=$action".$errinfo);
+	header('Location: index.php?module='.urlencode($currentModule).'&record='.urlencode($forCRMRecord)."&action=$action".$errinfo);
 }
 ?>
