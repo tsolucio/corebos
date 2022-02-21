@@ -729,30 +729,24 @@ class CustomView extends CRMEntity {
 				) {
 					if ($advfilterval=='current_user') {
 						$advfilterval = trim($current_user->first_name.' '.$current_user->last_name);
+						$advfilterval = decode_html($advfilterval);
 					} else {
 						global $adb;
-						$result = $adb->pquery('select roleid from vtiger_users2group inner join vtiger_group2role on vtiger_users2group.groupid = vtiger_group2role.groupid where userid=?', array($current_user->id));
+						$advfilterval = array();
+						$result = $adb->pquery('select distinct roleid from vtiger_users2group inner join vtiger_group2role on vtiger_users2group.groupid = vtiger_group2role.groupid where userid=?', array($current_user->id));
 						$num_rows=$adb->num_rows($result);
 						for ($i=0; $i<$num_rows; $i++) {
 							$user_roleid=$adb->query_result($result, $i, 'roleid');
 						}
-						$result = $adb->pquery('select first_name, last_name from vtiger_users inner join vtiger_user2role on vtiger_users.id = vtiger_user2role.userid where roleid=?', array($user_roleid));
+
+						$result = $adb->pquery('select distinct ename from vtiger_users inner join vtiger_user2role on vtiger_users.id = vtiger_user2role.userid where roleid=?', array($user_roleid));
 						$num_rows=$adb->num_rows($result);
 						for ($i=0; $i<$num_rows; $i++) {
-							$full_name[] = trim($adb->query_result($result, $i, 'first_name').' '.$adb->query_result($result, $i, 'last_name'));
+							$advfilterval[] = decode_html($adb->query_result($result, $i, 'ename'));
 						}
 					}
-					$advfilterval = decode_html($advfilterval);
 				}
-				if (count($full_name) > 1) {
-					$advfilterval = array();
-					foreach ($full_name as $names) {
-						$advfilterval[] = decode_html($names);
-					}
-					$criteria['value'] = $advfilterval;
-				} else {
-					$criteria['value'] = $advfilterval;
-				}
+				$criteria['value'] = $advfilterval;
 				$criteria['column_condition'] = $relcriteriarow['column_condition'];
 
 				$advft_criteria[$i]['columns'][$j] = $criteria;
