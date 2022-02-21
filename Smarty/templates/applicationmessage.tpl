@@ -38,7 +38,7 @@
 	<h2>
 		<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true">
 		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$slds_role}"></use>
-		</svg>{if !empty($ERROR_MESSAGE)}{$ERROR_MESSAGE}{/if}
+		</svg>{if !empty($ERROR_MESSAGE)}{$ERROR_MESSAGE|vtlib_purify}{/if}
 	</h2>
 	</div>
 </div>
