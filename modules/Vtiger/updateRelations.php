@@ -15,6 +15,7 @@ $destinationModule = vtlib_purify($_REQUEST['destination_module']);
 
 $forCRMRecord = vtlib_purify($_REQUEST['parentid']);
 $mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
+$actionType = isset($_REQUEST['actionType']) ? $_REQUEST['actionType'] : '';
 if (isset($override_action)) {
 	$action = $override_action;
 } elseif ($singlepane_view == 'true' || isPresentRelatedListBlockWithModule($currentModule, $destinationModule)) {
@@ -50,5 +51,7 @@ if ($mode == 'delete') {
 	coreBOS_Settings::delSetting('RLERRORMESSAGE');
 	coreBOS_Settings::delSetting('RLERRORMESSAGECLASS');
 }
+if ($actionType != 'listview') {
 header('Location: index.php?module='.urlencode($currentModule).'&record='.urlencode($forCRMRecord)."&action=$action".$errinfo);
+}
 ?>

@@ -1110,7 +1110,11 @@ const DocumentsView = {
 			let folders = response[2];
 			ListView.setFilters(filters);
 			for (let id in folders) {
-				ListView.Instance = folders[id][0];
+				let fldId= folders[id][0];
+				if (folders[id][0] === undefined) {
+					fldId = '__empty__';
+				};
+				ListView.Instance = fldId;
 				let lastPage = sessionStorage.getItem(`Documents_${ListView.Instance}_lastPage`);
 				if (lastPage == null) {
 					lastPage = 1;
@@ -1142,7 +1146,7 @@ const DocumentsView = {
 					data: {
 						api: {
 							readData: {
-								url: `${url}&perPage=${PageSize}&folderid=${folders[id][0]}&lastPage=${lastPage}`,
+								url: `${url}&perPage=${PageSize}&folderid=${fldId}&lastPage=${lastPage}`,
 								method: 'GET'
 							}
 						}
@@ -1165,11 +1169,11 @@ const DocumentsView = {
 						}]
 					},
 					onGridUpdated: (ev) => {
-						ListView.Instance = folders[id][0];
-						ListView.updateData(folders[id][0]);
+						ListView.Instance = fldId;
+						ListView.updateData(fldId);
 						const rows = document.getElementById('allselectedboxes').value;
 						if (rows != '' && ListView.Action != 'massedit') {
-							ListView.checkRows(folders[id][0]);
+							ListView.checkRows(fldId);
 						}
 						let RequestParams = {
 							'fromInstance': true
@@ -1182,7 +1186,7 @@ const DocumentsView = {
 					}
 				});
 				ListView.loader('hide');
-				ListView.registerEvent(url, folders[id][0]);
+				ListView.registerEvent(url, fldId);
 				tui.Grid.applyTheme('striped');
 			}
 		});
@@ -1213,5 +1217,65 @@ const DocumentsView = {
 				document.getElementById('allselectedboxes').value = '';
 			}
 		}
+	},
+
+	MoveFile: () => {
+		let url = `${defaultURL}&functiontocall=listViewJSON&formodule=${ListView.Module}`;
+		let checkedRows = document.getElementById('allselectedboxes').value.split(';');
+		checkedRows = checkedRows.filter(Number);
+		if (checkedRows.length == 0) {
+			ldsPrompt.show(alert_arr.ERROR, alert_arr.SELECT);
+			return false;
+		}
+		ListView.Request(`${url}&columns=true`, 'get').then(function(response) {
+			let content = `${alert_arr.LBL_NO_DATA}! ${alert_arr.LBL_CREATE}`;
+			if (response[2].length > 0) {
+				let list = ``;
+				response[2].map(function(currentValue, index, arr){
+					list += `
+					<li class="slds-item" data-id="${currentValue[0]}" onclick="DocumentsView.Move(this)">
+						<a>${currentValue[1]}</a>
+					</li>
+					`;
+				});
+				content = `
+				<ul class="slds-has-dividers_top slds-has-block-links_space">
+					${list}
+				</ul>
+				`;
+			}
+			ldsModal.show('Move file', content, 'small');
+		});
+	},
+
+	Move: (el) => {
+		const docid = el.dataset.id;
+		let url = '';
+		let checkedRows = document.getElementById('allselectedboxes').value.split(';');
+		checkedRows = checkedRows.filter(Number);
+		ListView.CheckedRows.map(function(currentValue, index) {
+			DocumentsView.RemoveFromRelatedList(currentValue.join(';'), index);
+		});
+		checkedRows.map(function(currentValue) {
+			DocumentsView.AddToRelatedList(docid,currentValue);
+		});
+		DocumentsView.Reload();
+		ldsModal.close();
+	},
+
+	AddToRelatedList: (entity_id, recordid) => {
+		const url = `index.php?module=Documents&destination_module=DocumentFolders&entityid=${entity_id}&parentid=${recordid}`;
+		jQuery.ajax({
+			method: 'POST',
+			url: `${url}&action=DocumentsAjax&file=updateRelations&mode=Ajax&actionType=listview`
+		});
+	},
+
+	RemoveFromRelatedList: (idlist, recordid) => {
+		const url = `index.php?module=Documents&destination_module=DocumentFolders&idlist=${idlist}&parentid=${recordid}`;
+		jQuery.ajax({
+			method: 'POST',
+			url: `${url}&action=DocumentsAjax&file=updateRelations&mode=delete&actionType=listview`
+		});
 	}
 };

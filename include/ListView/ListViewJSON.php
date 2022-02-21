@@ -152,11 +152,14 @@ class GridListView {
 			$sql_error = true;
 		}
 		$folderid = '';
+		$data = array();
 		$field_types = $this->ListViewColumns($listviewcolumns);
 		if (isset($_REQUEST['folderid']) && $this->module == 'Documents') {
 			$folderid = vtlib_purify($_REQUEST['folderid']);
-			$whereClause = $queryGenerator->getWhereClause();
-			$data = $this->TreeStructure($field_types, $folderid, 'DocumentFolders', 'parentfolder', $whereClause);
+			if ($folderid != '__empty__') {
+				$whereClause = $queryGenerator->getWhereClause();
+				$data = $this->TreeStructure($field_types, $folderid, 'DocumentFolders', 'parentfolder', $whereClause);
+			}
 		} else {
 			$data = $this->processResults($result, $field_types, $this->module);
 		}

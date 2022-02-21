@@ -2461,12 +2461,12 @@ class CRMEntity {
 		foreach ($with_crmid as $relcrmid) {
 			$data['destinationRecordId'] = $relcrmid;
 			cbEventHandler::do_action('corebos.entity.link.delete', $data);
-			if ($with_module == 'Documents') {
+			if ($with_module == 'Documents' && $module != 'DocumentFolders') {
 				$adb->pquery('DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?', array($crmid, $relcrmid));
 			} else {
 				$adb->pquery(
 					'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND module=? AND relcrmid=? AND relmodule=?) OR (relcrmid=? AND relmodule=? AND crmid=? AND module=?)',
-					array($crmid, $module, $relcrmid, $with_module,$crmid, $module, $relcrmid, $with_module)
+					array($crmid, $with_module, $relcrmid, $module, $crmid, $with_module, $relcrmid, $module)
 				);
 			}
 			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
