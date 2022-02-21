@@ -34,17 +34,11 @@ error_reporting(-1);
 ini_set('display_errors', 1);
 ini_set('memory_limit', '1024M');
 
+ExecuteQuery('UPDATE vtiger_users SET language=? WHERE vtiger_users.is_admin=?', array('en_us', 'on'));
 $current_user = new Users();
 $current_user->retrieveCurrentUserInfoFromFile(Users::getActiveAdminId());
-if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
-	$current_language = $_SESSION['authenticated_user_language'];
-} else {
-	if (!empty($current_user->language)) {
-		$current_language = $current_user->language;
-	} else {
-		$current_language = $default_language;
-	}
-}
+$default_language = 'en_us';
+$current_language = 'en_us';
 $app_strings = return_application_language($current_language);
 
 $query_count=0;
@@ -98,8 +92,17 @@ function installManifestModule($module) {
 }
 
 echo '<article class="slds-card slds-m-left_x-large slds-p-left_small slds-m-right_x-large slds-p-right_small slds-p-bottom_small slds-m-top_small">';
+$startTime = microtime(true);
+//////////////
+// Put your custom migration steps here
+//////////////
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 
 //Mandatory migration changes
+$rs = $adb->query('select max(id) from vtiger_ws_entity');
+$max = (int)$adb->query_result($rs, 0, 0)+2;
+ExecuteQuery('ALTER TABLE vtiger_ws_entity MODIFY id int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT='.$max);
+ExecuteQuery('UPDATE vtiger_ws_entity_seq SET id='.$max);
 ExecuteQuery("update vtiger_crmentity set smcreatorid=smownerid where smcreatorid=0 and smownerid!=0");
 ExecuteQuery("update vtiger_crmentity set smcreatorid=1 where smcreatorid=0");
 ExecuteQuery("update vtiger_crmentity set smownerid=smcreatorid where smownerid=0 and smcreatorid!=0");
@@ -272,6 +275,7 @@ ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.
 ExecuteQuery("DELETE FROM vtiger_field WHERE tablename = 'vtiger_inventoryproductrel'");
 installManifestModule('cbupdater');
 
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 require_once 'Smarty_setup.php';
 $adb->query("SET sql_mode=''");
 $currentModule = $_REQUEST['module'] = 'cbupdater';
@@ -283,18 +287,21 @@ include 'modules/cbupdater/getupdates.php';
 vtlib_toggleModuleAccess('Calendar', true);
 $_REQUEST['action'] = 'apply';
 
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 $rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='mysqlstrictNO_ZERO_IN_DATE'");
 if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
 	$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
 	$_REQUEST['idstring'] = $updid;
 	include 'modules/cbupdater/dowork.php';
 }
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 $rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='denormalizechangeset'");
 if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
 	$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
 	$_REQUEST['idstring'] = $updid;
 	include 'modules/cbupdater/dowork.php';
 }
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 if (!vtlib_isModuleActive('GlobalVariable')) {
 	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installglobalvars'");
 	$updid = $adb->query_result($rsup, 0, 0);
@@ -302,6 +309,7 @@ if (!vtlib_isModuleActive('GlobalVariable')) {
 	include 'modules/cbupdater/dowork.php';
 	vtlib_toggleModuleAccess('GlobalVariable', true); // in case changeset is applied but module deactivated
 }
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 if (!vtlib_isModuleActive('evvtMenu')) {
 	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='ldMenu'");
 	$updid = $adb->query_result($rsup, 0, 0);
@@ -309,6 +317,7 @@ if (!vtlib_isModuleActive('evvtMenu')) {
 	include 'modules/cbupdater/dowork.php';
 	vtlib_toggleModuleAccess('evvtMenu', true); // in case changeset is applied but module deactivated
 }
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 if (!vtlib_isModuleActive('cbCompany')) {
 	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='addModulecbCompany'");
 	$updid = $adb->query_result($rsup, 0, 0);
@@ -316,6 +325,16 @@ if (!vtlib_isModuleActive('cbCompany')) {
 	include 'modules/cbupdater/dowork.php';
 	vtlib_toggleModuleAccess('cbCompany', true); // in case changeset is applied but module deactivated
 }
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
+$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='addFieldAppTocbUpdater'");
+$updid = $adb->query_result($rsup, 0, 0);
+$_REQUEST['idstring'] = $updid;
+include 'modules/cbupdater/dowork.php';
+$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='addIsRelatedListBlock'");
+$updid = $adb->query_result($rsup, 0, 0);
+$_REQUEST['idstring'] = $updid;
+include 'modules/cbupdater/dowork.php';
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 if (!vtlib_isModuleActive('cbMap')) {
 	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installcbmap'");
 	$updid = $adb->query_result($rsup, 0, 0);
@@ -323,6 +342,7 @@ if (!vtlib_isModuleActive('cbMap')) {
 	include 'modules/cbupdater/dowork.php';
 	vtlib_toggleModuleAccess('cbMap', true); // in case changeset is applied but module deactivated
 }
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 if (!vtlib_isModuleActive('BusinessActions')) {
 	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='modbusinessactions'");
 	$updid = $adb->query_result($rsup, 0, 0);
@@ -330,6 +350,7 @@ if (!vtlib_isModuleActive('BusinessActions')) {
 	include 'modules/cbupdater/dowork.php';
 	vtlib_toggleModuleAccess('BusinessActions', true); // in case changeset is applied but module deactivated
 }
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 if (!vtlib_isModuleActive('cbTermConditions')) {
 	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installcbTermConditions'");
 	$updid = $adb->query_result($rsup, 0, 0);
@@ -360,9 +381,11 @@ foreach ($activeModules as $activateModule) {
 	vtlib_toggleModuleAccess($activateModule, true);
 }
 
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 // Recalculate permissions  RecalculateSharingRules
 RecalculateSharingRules();
 
+echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 putMsg("<H1 style='color:red'>NOW LOG IN AND APPLY ALL THE UPDATES AS USUAL</H1>");
 echo '</article>';
 if (count($failure_query_array)>0) {
