@@ -28,7 +28,7 @@ class SendEmailFromAddress extends cbupdaterWorker {
 		} else {
 			$this->ExecuteQuery('ALTER TABLE vtiger_emailtemplates ADD sendemailfrom VARCHAR(250) NULL');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(); // this should not be done if changeset is Continuous
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

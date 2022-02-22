@@ -26,7 +26,7 @@ class user_showtagas extends cbupdaterWorker {
 		} else {
 			$this->ExecuteQuery("ALTER TABLE `vtiger_users` ADD `showtagas` VARCHAR(20) NOT NULL DEFAULT 'hring'");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

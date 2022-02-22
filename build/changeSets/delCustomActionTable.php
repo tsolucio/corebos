@@ -25,7 +25,7 @@ class delCustomActionTable extends cbupdaterWorker {
 		} else {
 			$this->ExecuteQuery("DROP TABLE vtiger_customaction");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

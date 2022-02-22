@@ -26,7 +26,7 @@ class addUIType1613and3313WebserviceFieldType extends cbupdaterWorker {
 			$this->ExecuteQuery('insert into vtiger_ws_fieldtype(uitype,fieldtype) values(?,?)', array('3313', 'multipicklist'));
 			$this->ExecuteQuery('insert into vtiger_ws_fieldtype(uitype,fieldtype) values(?,?)', array('1613', 'picklist'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

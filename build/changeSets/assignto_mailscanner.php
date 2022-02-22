@@ -39,7 +39,7 @@ class assignto_mailscanner extends cbupdaterWorker {
 			$block_hd->addField($field1);
 			$this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_rules ADD assign_to INT(11)');
 			$this->sendMsg('Changeset assignto_mailscanner applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
