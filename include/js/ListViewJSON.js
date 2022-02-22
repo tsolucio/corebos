@@ -51,6 +51,7 @@ const ListView = {
 	Instance: 1,
 	SearchParams: false,
 	CheckedRows: [],
+	RelationRows: [],
 
 	Request: async (url, method, body = {}) => {
 		let headers = {
@@ -657,13 +658,19 @@ const ListView = {
 	 */
 	getCheckedRows: (checkedRows, event, instance = 1) => {
 		let currentRows = [];
+		let relationRows = [];
 		let	select_options = '';
 		ListView.Instance = instance;
 		for (let id in checkedRows) {
 			let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'recordid');
-			currentRows.push(recordId);
+			let parent = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'parent');
+			if (!recordId.includes('parent_')) {
+				currentRows.push(recordId);
+			}
+			relationRows.push(`${parent}__${recordId}`);
 		}
 		ListView.CheckedRows[instance] = currentRows.filter(Number);
+		ListView.RelationRows[instance] = relationRows;
 		ListView.CheckedRows.map(function(currentValue, index, arr) {
 			if (select_options != '') {
 				select_options += ';';
@@ -1227,7 +1234,7 @@ const DocumentsView = {
 			ldsPrompt.show(alert_arr.ERROR, alert_arr.SELECT);
 			return false;
 		}
-		ListView.Request(`${url}&columns=true`, 'get').then(function(response) {
+		ListView.Request(`${url}&columns=true&folders=all`, 'get').then(function(response) {
 			let content = `${alert_arr.LBL_NO_DATA}! ${alert_arr.LBL_CREATE}`;
 			if (response[2].length > 0) {
 				let list = ``;
@@ -1253,21 +1260,24 @@ const DocumentsView = {
 		let url = '';
 		let checkedRows = document.getElementById('allselectedboxes').value.split(';');
 		checkedRows = checkedRows.filter(Number);
-		ListView.CheckedRows.map(function(currentValue, index) {
-			DocumentsView.RemoveFromRelatedList(currentValue.join(';'), index);
+		ListView.RelationRows.map(function(currentValue, index) {
+			for (let i in currentValue) {
+				if (!currentValue[i].includes('parent')) {
+					const parent = currentValue[i].split('__');
+					DocumentsView.RemoveFromRelatedList(parent[1], parent[0]);
+				}
+			}
 		});
-		checkedRows.map(function(currentValue) {
-			DocumentsView.AddToRelatedList(docid,currentValue);
-		});
+		DocumentsView.AddToRelatedList(checkedRows.join(';'),docid);
 		DocumentsView.Reload();
 		ldsModal.close();
 	},
 
 	AddToRelatedList: (entity_id, recordid) => {
-		const url = `index.php?module=Documents&destination_module=DocumentFolders&entityid=${entity_id}&parentid=${recordid}`;
+		const url = `index.php?module=Documents&destination_module=DocumentFolders&idlist=${entity_id}&parentid=${recordid}`;
 		jQuery.ajax({
 			method: 'POST',
-			url: `${url}&action=DocumentsAjax&file=updateRelations&mode=Ajax&actionType=listview`
+			url: `${url}&action=DocumentsAjax&file=updateDocumentsRelations&mode=Ajax&actionType=listview`
 		});
 	},
 
@@ -1275,7 +1285,7 @@ const DocumentsView = {
 		const url = `index.php?module=Documents&destination_module=DocumentFolders&idlist=${idlist}&parentid=${recordid}`;
 		jQuery.ajax({
 			method: 'POST',
-			url: `${url}&action=DocumentsAjax&file=updateRelations&mode=delete&actionType=listview`
+			url: `${url}&action=DocumentsAjax&file=updateDocumentsRelations&mode=delete&actionType=listview`
 		});
 	}
 };

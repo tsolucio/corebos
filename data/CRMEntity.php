@@ -2461,12 +2461,12 @@ class CRMEntity {
 		foreach ($with_crmid as $relcrmid) {
 			$data['destinationRecordId'] = $relcrmid;
 			cbEventHandler::do_action('corebos.entity.link.delete', $data);
-			if ($with_module == 'Documents' && $module != 'DocumentFolders') {
+			if ($with_module == 'Documents') {
 				$adb->pquery('DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?', array($crmid, $relcrmid));
 			} else {
 				$adb->pquery(
 					'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND module=? AND relcrmid=? AND relmodule=?) OR (relcrmid=? AND relmodule=? AND crmid=? AND module=?)',
-					array($crmid, $with_module, $relcrmid, $module, $crmid, $with_module, $relcrmid, $module)
+					array($crmid, $module, $relcrmid, $with_module,$crmid, $module, $relcrmid, $with_module)
 				);
 			}
 			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
@@ -3740,6 +3740,7 @@ class CRMEntity {
 			$parent_record_info[$tree[1]] = $cvtreecolumn[$id];
 			$parent_record_info['id'] = $id;
 			$parent_record_info['parent'] = $id;
+			$parent_record_info['recordid'] = 'parent_'.$id;
 			$parent_records[] = $parent_record_info;
 		} else {
 			$parent_record_info['depth'] = $depth;
@@ -3771,6 +3772,7 @@ class CRMEntity {
 					$child_record_info[$tree[1]] = $cvtreecolumn[$recordid];
 					$child_record_info['id'] = $recordid;
 					$child_record_info['parent'] = $id;
+					$child_record_info['recordid'] = 'parent_'.$recordid;
 					$child_records[] = $child_record_info;
 				} else {
 					$child_record_info['depth'] = $depth;

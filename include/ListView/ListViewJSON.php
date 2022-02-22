@@ -156,12 +156,13 @@ class GridListView {
 		$field_types = $this->ListViewColumns($listviewcolumns);
 		if (isset($_REQUEST['folderid']) && $this->module == 'Documents') {
 			$folderid = vtlib_purify($_REQUEST['folderid']);
+			//totalCount to be fixed
 			if ($folderid != '__empty__') {
 				$whereClause = $queryGenerator->getWhereClause();
 				$data = $this->TreeStructure($field_types, $folderid, 'DocumentFolders', 'parentfolder', $whereClause);
 			}
 		} else {
-			$data = $this->processResults($result, $field_types, $this->module);
+			$data = $this->processResults($result, $field_types);
 		}
 		if ($result && $sql_error != true) {
 			if ($noofrows>0) {
@@ -312,7 +313,7 @@ class GridListView {
 		);
 	}
 
-	public function processResults($result, $field_types) {
+	public function processResults($result, $field_types, $parentid = 0) {
 		global $adb, $current_user;
 		$Colorizer = false;
 		if (vtlib_isModuleActive('Colorizer')) {
@@ -329,9 +330,6 @@ class GridListView {
 				$columnName = $val['columnname'];
 				$fieldName = $val['fieldname'];
 				$fieldType = $val['fieldtype'];
-				// if ($columnName == 'notes_title') {
-				// 	$columnName = 'title';
-				// }
 				$fieldValue = $adb->query_result($result, $i, $columnName);
 				$recordID = $adb->query_result($result, $i, $this->entityidfield);
 				$smownerid = $adb->query_result($result, $i, 'smownerid');
@@ -427,6 +425,9 @@ class GridListView {
 				$rows['recordid'] = $recordID;
 				$rows['reference_field'] = $reference_field['fieldname'];
 				$rows['relatedRows'] = $linkRow;
+				if ($this->module == 'Documents') {
+					$rows['parent'] = $parentid;
+				}
 			}
 			if ($Colorizer) {
 				$className = $this->enableColorizer($colorizer_row);
@@ -501,7 +502,7 @@ class GridListView {
 		$data = array();
 		if ($numOfRows > 0) {
 			$listviewcolumns = $adb->getFieldsArray($rs);
-			$data[] = $this->processResults($rs, $field_types, 'Documents');
+			$data[] = $this->processResults($rs, $field_types, $id);
 		}
 		return $data;
 	}
@@ -732,7 +733,9 @@ class GridListView {
 		$referenceField = 'parentfolder';
 		$queryGenerator = new QueryGenerator('DocumentFolders', $current_user);
 		$queryGenerator->setFields(array('id','foldername'));
-		$queryGenerator->addCondition('parentfolder', '', 'e');
+		if (!isset($_REQUEST['folders'])) {
+			$queryGenerator->addCondition('parentfolder', '', 'e');
+		}
 		$list_query = $queryGenerator->getQuery();
 		$result = $adb->pquery($list_query.' order by vtiger_documentfolders.sequence', array());
 		$foldercount = $adb->num_rows($result);
