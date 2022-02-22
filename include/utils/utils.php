@@ -2344,22 +2344,11 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 	$no_rows=$adb->num_rows($nresult);
 	if ($no_rows == 0) {
 		if ($_REQUEST['action'] == 'FindDuplicateRecords') {
-			echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-			echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-				<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-				<tbody><tr>
-				<td rowspan='2' width='11%'><img src='" . vtiger_imageurl('empty.jpg', $theme) . "' ></td>
-				<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-					<span class='genHeaderSmall'>".$app_strings['LBL_NO_DUPLICATE']."</span>
-				</td>
-				</tr>
-				<tr>
-				<td class='small' align='right' nowrap='nowrap'>
-				<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK'].'</a><br></td>
-				</tr>
-				</tbody></table>
-				</div>
-				</td></tr></table>';
+			$smarty = new vtigerCRM_Smarty();
+			$smarty->assign('APP', $app_strings);
+			$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');
+			$smarty->assign('ERROR_MESSAGE', $app_strings['LBL_NO_DUPLICATE']. "<br /><a href='javascript:window.history.back();' class='slds-has-blur-focus'>".$app_strings['LBL_GO_BACK']."</a><br /><br />");
+			$smarty->display('applicationmessage.tpl');
 			exit();
 		} else {
 			echo "<br><br><table align='center' class='reportCreateBottom big' width='95%'><tr><td align='center'>".$app_strings['LBL_NO_DUPLICATE'].'</td></tr></table>';
