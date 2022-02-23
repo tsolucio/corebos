@@ -365,6 +365,14 @@ if (file_exists('modules/cbupdater/cbupdates/coreboscrm.xml')) {
 	require 'install_modules.php';
 }
 
+// Delete all changesets that do not have a file
+$cs = $adb->query('select cbupdaterid,pathfilename from vtiger_cbupdater inner join vtiger_crmentity on crmid=cbupdaterid where deleted=0');
+while ($cbupd = $adb->fetch_array($cs)) {
+	if (!file_exists($cbupd['pathfilename'])) {
+		ExecuteQuery('update vtiger_crmentity set deleted=1 where crmid='.$cbupd['cbupdaterid']);
+	}
+}
+ExecuteQuery('update vtiger_cbupdater set blocked=0,execstate=? where filename=? and classname=?', array('Pending', 'picklist_translations', 'picklist_translations'));
 $activeModules = array(
 	'BusinessActions',
 	'cbCompany',
