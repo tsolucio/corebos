@@ -2347,8 +2347,8 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 			$smarty = new vtigerCRM_Smarty();
 			$smarty->assign('APP', $app_strings);
 			$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');
-			$smarty->assign('ERROR_MESSAGE', $app_strings['LBL_NO_DUPLICATE']. "<br /><a href='javascript:window.history.back();' class='slds-has-blur-focus'>".$app_strings['LBL_GO_BACK']."</a><br /><br />");
-			$smarty->display('applicationmessage.tpl');
+			$smarty->assign('OPERATION_MESSAGE', $app_strings['LBL_NO_DUPLICATE']);
+			$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 			exit();
 		} else {
 			echo "<br><br><table align='center' class='reportCreateBottom big' width='95%'><tr><td align='center'>".$app_strings['LBL_NO_DUPLICATE'].'</td></tr></table>';
