@@ -14,7 +14,7 @@
 	<h2>
 		<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true">
 		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#ban"></use>
-		</svg>{if isset($OPERATION_MESSAGE)}{$OPERATION_MESSAGE}{else}{$APP.LBL_PERMISSION}{/if}<br>
+		</svg>{if isset($OPERATION_MESSAGE)}{$OPERATION_MESSAGE|vtlib_purify}{else}{$APP.LBL_PERMISSION}{/if}<br>
 		{if !isset($PUT_BACK_ACTION)}
 		<a href='javascript:window.history.back();'>{$APP.LBL_GO_BACK}</a>
 		{/if}
