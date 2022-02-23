@@ -701,6 +701,7 @@ class CustomView extends CRMEntity {
 
 			while ($relcriteriarow = $adb->fetch_array($result)) {
 				$criteria = array();
+				$full_name = array();
 				$criteria['columnname'] = html_entity_decode($relcriteriarow['columnname'], ENT_QUOTES, $default_charset);
 				$criteria['comparator'] = $relcriteriarow['comparator'];
 				$advfilterval = html_entity_decode($relcriteriarow['value'], ENT_QUOTES, $default_charset);
@@ -724,10 +725,26 @@ class CustomView extends CRMEntity {
 				}
 				$uitype = getUItypeByFieldName($this->customviewmodule, $col[2]);
 				if (($col[1]=='smownerid' || $col[1]=='smcreatorid' || $col[1]=='modifiedby' || $uitype==101)
-					&& $advfilterval=='current_user' && (empty($_REQUEST['action']) || $_REQUEST['action']!='CustomView') && empty($_REQUEST['record'])
+					&& ($advfilterval=='current_user' || $advfilterval=='current_userandgroup') && (empty($_REQUEST['action']) || $_REQUEST['action']!='CustomView') && empty($_REQUEST['record'])
 				) {
-					$advfilterval = trim($current_user->first_name.' '.$current_user->last_name);
-					$advfilterval = decode_html($advfilterval);
+					if ($advfilterval=='current_user') {
+						$advfilterval = trim($current_user->first_name.' '.$current_user->last_name);
+						$advfilterval = decode_html($advfilterval);
+					} else {
+						global $adb;
+						$advfilterval = array();
+						$result = $adb->pquery('select distinct roleid from vtiger_users2group inner join vtiger_group2role on vtiger_users2group.groupid = vtiger_group2role.groupid where userid=?', array($current_user->id));
+						$num_rows=$adb->num_rows($result);
+						for ($i=0; $i<$num_rows; $i++) {
+							$user_roleid=$adb->query_result($result, $i, 'roleid');
+						}
+
+						$result = $adb->pquery('select distinct ename from vtiger_users inner join vtiger_user2role on vtiger_users.id = vtiger_user2role.userid where roleid=?', array($user_roleid));
+						$num_rows=$adb->num_rows($result);
+						for ($i=0; $i<$num_rows; $i++) {
+							$advfilterval[] = decode_html($adb->query_result($result, $i, 'ename'));
+						}
+					}
 				}
 				$criteria['value'] = $advfilterval;
 				$criteria['column_condition'] = $relcriteriarow['column_condition'];
