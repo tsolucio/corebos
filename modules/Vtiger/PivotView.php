@@ -15,7 +15,11 @@
 *************************************************************************************************/
 
 global $adb;
-$bmapname = $currentModule.'_Pivot';
+if (isset($_REQUEST['bmapname'])) {
+	$bmapname = vtlib_purify($_REQUEST['bmapname']);
+} else {
+	$bmapname = $currentModule.'_Pivot';
+}
 $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
 if ($cbMapid) {
 	$cbMap = cbMap::getMapByID($cbMapid);
