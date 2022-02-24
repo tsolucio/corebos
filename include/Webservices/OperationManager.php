@@ -93,16 +93,7 @@ class OperationManager {
 	}
 
 	public function getOperationInput() {
-		switch (strtolower($this->type)) {
-			case 'get':
-				$input = &$_GET;
-				break;
-			case 'post':
-				$input = &$_POST;
-				break;
-			default:
-				$input = &$_REQUEST;
-		}
+		$input = &$_REQUEST;
 		return $input;
 	}
 
