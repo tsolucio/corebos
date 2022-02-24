@@ -10,23 +10,29 @@
  ********************************************************************************/
 
 /* SOFTED  - COLOR THEME*/
-
+@font-face {
+	font-family: 'Montserrat';
+	src: url(fonts/Montserrat-VariableFont_wght.ttf);
+  }
+html{
+	font-family: 'Montserrat' !important;
+}
 .small {
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: var(--cbsofted-small-fontsize, 11px);
 	color: #000000;
 }
 
 .big {
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: var(--cbsofted-big-fontsize, 12px);
-	line-height: 18px;
+	line-height: 10px;
 	color: #000000;
 	font-weight:bold;
 }
 
 .componentName {
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 18px;
 	line-height: 18px;
 	color: #33338c;
@@ -36,7 +42,7 @@
 }
 
 .genHeaderBig{
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 16px;
 	line-height: 19px;
 	color: #000000;
@@ -44,7 +50,7 @@
 }
 
 .genHeaderSmall{
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 14px;
 	line-height: 16px;
 	color: #000000;
@@ -52,7 +58,7 @@
 }
 
 .moduleName {
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 16px;
 	color: #33338c;
 	font-weight:bold;
@@ -71,7 +77,7 @@
 .tabSelected {
 	background: #fff url(images/toolbar-bg_selected.png) bottom repeat-x;
 	background-color:#fff;
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-weight:bold;
 	font-size: 11px;
 	padding-left:10px;
@@ -91,7 +97,7 @@
 .tabUnSelected {
 	background: #fff url(images/toolbar-bg.png) bottom repeat-x;
 	background-color:#fff;
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	padding-left:10px;
 	padding-right:10px;
@@ -101,7 +107,7 @@
 }
 
 .tabUnSelected a{
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 12px;
 	color:white;
 	font-weight:bold;
@@ -118,7 +124,7 @@
 }
 
 .level2text {
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	padding-left:15px;
 	padding-right:15px;
@@ -140,7 +146,7 @@
 
 .level2Bg {
 	background:#fff url(images/level2Bg.gif) bottom repeat-x;
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	border-top:1px solid #b8b8b8;
 	border-bottom:1px solid #bfbfbf;
@@ -191,7 +197,7 @@ a:hover {
 }
 
 .hdrLink {
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 16px;
 	text-decoration:none;
 	color:#0070BA;
@@ -203,7 +209,7 @@ a:hover {
 #border2pxpopup{ border:2px solid #dddddd;}
 
 .hdrLink:hover {
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 16px;
 	text-decoration:underline;
 	color:#33338c;
@@ -212,7 +218,7 @@ a:hover {
 
 .searchBox {
 	border: 0px solid #0000aa;
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	padding-left:2px;
 	width:300px;
@@ -221,7 +227,7 @@ a:hover {
 
 .searchBtn {
 	border :0px #cccccc solid;
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	font-weight:bold;
 	background: #578FC8 url(images/button_serach.gif) bottom repeat-x;
@@ -239,7 +245,7 @@ a:hover {
 }
 
 .lvtHeaderText {
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 14px;
 	font-weight:bold;
 }
@@ -265,7 +271,7 @@ a:hover {
 
 /* Detailed View classes starts +++++++++++++++++++++++ */
 .dvHeaderText{
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 14px;
 	color:#000000;
 	font-weight:bold;
@@ -402,7 +408,7 @@ a:hover {
 }
 
 .detailedViewTextBox {
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: var(--cbsofted-detailedViewTextBox-fontsize, 11px);
 	color: #000000;
 	border:1px solid #bababa;
@@ -414,7 +420,7 @@ a:hover {
 }
 
 .detailedViewTextBoxOn {
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: var(--cbsofted-detailedViewTextBoxOn-fontsize, 11px);
 	color: #000000;
 	border:1px solid #bababa;
@@ -454,7 +460,7 @@ a:hover {
 .textbox {
 	border:1px solid #999999;
 	background-color:#ffffff;
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	width:120px;
 	padding:2px;
@@ -982,7 +988,7 @@ a.submenu:Hover{
 /* profile */
 
 .prvPrfBigText {
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 14px;
 }
 
@@ -1115,7 +1121,7 @@ a.submenu:Hover{
 }
 
 .genHeaderGray{
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 14px;
 	line-height: 16px;
 	color: #888888;
@@ -1123,7 +1129,7 @@ a.submenu:Hover{
 }
 
 .genHeaderGrayBig{
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 18px;
 	line-height: 16px;
 	color: #888888;
@@ -1748,7 +1754,7 @@ footer {
 .tagCloudDisplay {
 	background-color:#fff;
 	padding:10px;
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height: 14px;
 	color: #000000;
@@ -1782,7 +1788,7 @@ ul {
 }
 
 .heading2 {
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 16px;
 	line-height: 16px;
 	font-weight:bold;
@@ -1798,7 +1804,7 @@ ul {
 
 .settingsTabHeader {
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 12px;
 	line-height:22px;
 	font-weight:bold;
@@ -1811,7 +1817,7 @@ ul {
 
 .settingsTabList {
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:20px;
 	font-weight:normal;
@@ -1826,7 +1832,7 @@ ul {
 
 .settingsTabSelected {
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:20px;
 	font-weight:bold;
@@ -1844,7 +1850,7 @@ ul {
 }
 
 .settingsIconDisplay {
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:14px;
 	padding:10px;
@@ -2194,7 +2200,7 @@ a.customMnuSelected{
 a.drop_down{
 	width:150px;
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:20px;
 	font-weight:normal;
@@ -2218,7 +2224,7 @@ a.drop_down:Hover{
 a.drop_downnew_parent{
 	width:100px;
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 12px;
 	line-height:20px;
 	font-weight:bold;
@@ -2327,7 +2333,7 @@ a.drop_downnew_parent{
 .show_tab{display:inline-table;}
 
 .mailSelected {
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-weight:bold;
 	font-size: 11px;
 	padding-left:10px;
@@ -2339,7 +2345,7 @@ a.drop_downnew_parent{
 .mailSelected_select {
 	background:#E1DCB3 url(images/tabSelectedBg.gif) repeat-x;
 	background-color:#1F5EFF;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-weight:bold;
 	font-size: 11px;
 	padding-left:10px;
@@ -2689,7 +2695,7 @@ input {
 .mm_tableHeadBg{
 	background-color:#C9E0F0;
 	height:25px;
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size:11px;
 	color:#000066;
 }
@@ -2714,7 +2720,7 @@ a.drop_downnew{
 	width:100px;
 	text-align:left;
 	font-size: 12px;
-	font-family: Arial, Helvetica, sans-serif;
+	
 	line-height:20px;
 	font-weight:normal;
 	color:#33338c;
@@ -2734,7 +2740,7 @@ a.drop_downnew:Hover{
 }
 a.drop_down_usersettings{
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:20px;
 	color:#33338c;
@@ -2753,7 +2759,7 @@ a.drop_down_usersettings:Hover{
 }
 a.drop_down_usersettings_name{
 	text-align:left;
-	font-family:  Arial, Helvetica, sans-serif;
+	
 	font-size: 11px;
 	line-height:20px;
 	color:#33338c;
@@ -2817,7 +2823,7 @@ a.allMnu:Hover{
 	margin-top: 0px; /* added */
 }
 .userName{
-	font-family: Arial, Helvetica, sans-serif;
+	
 	font-size: 12px;
 	line-height: 16px;
 	color: #000000;
