@@ -61,7 +61,7 @@ const ListView = {
 			method: method,
 			credentials: 'same-origin',
 			headers: headers
-		}
+		};
 		if (method == 'post') {
 			headers['Content-Type'] = 'application/json';
 			options.body = JSON.stringify(body);
@@ -345,7 +345,7 @@ const ListView = {
 	 * @param {String} url
 	 */
 	Default: (url) => {
-		ListView.Request(`${url}&columns=true`, 'get').then(function(response) {
+		ListView.Request(`${url}&columns=true`, 'get').then( function(response) {
 			const advft_criteria = urlParams.get('advft_criteria');
 			const advft_criteria_groups = urlParams.get('advft_criteria_groups');
 			const searchtype = urlParams.get('searchtype');
@@ -404,7 +404,7 @@ const ListView = {
 					}
 					let RequestParams = {
 						'fromInstance': true
-					}
+					};
 					if (ListView.SearchParams) {
 						RequestParams.search = ListView.SearchParams.search;
 						RequestParams.searchtype = ListView.SearchParams.searchtype;
@@ -613,7 +613,7 @@ const ListView = {
 	Filter: (url) => {
 		lvdataGridInstance[ListView.Instance].setRequestParams({'search': '', 'searchtype': ''});
 		lvdataGridInstance[ListView.Instance].clear();
-		ListView.Request(`${url}&columns=true`, 'get').then(function(response) {
+		ListView.Request(`${url}&columns=true`, 'get').then( function(response) {
 			let headers = ListView.getColumnHeaders(response[0]);
 			let filters = response[1];
 			//update options for basic search
@@ -638,7 +638,7 @@ const ListView = {
 	 * @param {String} url
 	 */
 	RenderFilter: (url) => {
-		ListView.Request(`${url}&columns=true`, 'get').then(function(response) {
+		ListView.Request(`${url}&columns=true`, 'get').then( function(response) {
 			let headers = ListView.getColumnHeaders(response[0]);
 			document.getElementById('bas_searchfield').innerHTML = '';
 			for (let h in headers) {
@@ -671,7 +671,7 @@ const ListView = {
 		}
 		ListView.CheckedRows[instance] = currentRows.filter(Number);
 		ListView.RelationRows[instance] = relationRows;
-		ListView.CheckedRows.map(function(currentValue, index, arr) {
+		ListView.CheckedRows.map( function(currentValue, index, arr) {
 			if (select_options != '') {
 				select_options += ';';
 			}
@@ -859,7 +859,7 @@ const ListView = {
 		let getId = document.getElementById(`tooltip-${recordid}-${fieldname}`);
 		if (!ListView.isTooltipLoaded(recordid)) {
 			ListView.loadedTooltips.push(recordid);
-			ListView.Request(`${tooltipUrl}&returnarray=true`, 'get').then(function(response) {
+			ListView.Request(`${tooltipUrl}&returnarray=true`, 'get').then( function(response) {
 				if (getId != null) {
 					getId.remove();
 				}
@@ -924,7 +924,7 @@ const ListView = {
 				nr++;
 			}
 			const url = `${defaultURL}&functiontocall=checkButton&formodule=${ListView.Module}`;
-			ListView.Request(url, 'get').then(function(response) {
+			ListView.Request(url, 'get').then( function(response) {
 				const no_data_template = document.getElementsByClassName('tui-grid-layer-state-content')[index];
 				const grid_template = document.getElementsByClassName('tui-grid-content-area')[index];
 				const mod_label = document.getElementsByClassName('hdrLink')[0].innerText;
@@ -990,7 +990,7 @@ const ListView = {
 			ListView.Module = gVTModule;
 		}
 		const url = `${defaultURL}&functiontocall=getRecordActions&formodule=${ListView.Module}&recordid=${recordid}`;
-		ListView.Request(url, 'get').then(function(response) {
+		ListView.Request(url, 'get').then( function(response) {
 			ListView.Module = currentModule;
 			let button_template = `<ul class="slds-dropdown__list" role="menu" id="list__${recordid}">`;
 			if (response == true) { //recycle bin module
@@ -1111,7 +1111,7 @@ const ListView = {
 const DocumentsView = {
 
 	Show: (url) => {
-		ListView.Request(`${url}&columns=true`, 'get').then(function(response) {
+		ListView.Request(`${url}&columns=true`, 'get').then( function(response) {
 			const childNames = Object.keys(response[0]).map((key) => response[0][key].fieldname);
 			let filters = response[1];
 			let folders = response[2];
@@ -1120,7 +1120,7 @@ const DocumentsView = {
 				let fldId= folders[id][0];
 				if (folders[id][0] === undefined) {
 					fldId = '__empty__';
-				};
+				}
 				ListView.Instance = fldId;
 				let lastPage = sessionStorage.getItem(`Documents_${ListView.Instance}_lastPage`);
 				if (lastPage == null) {
@@ -1184,7 +1184,7 @@ const DocumentsView = {
 						}
 						let RequestParams = {
 							'fromInstance': true
-						}
+						};
 						if (ListView.SearchParams) {
 							RequestParams.search = ListView.SearchParams.search;
 							RequestParams.searchtype = ListView.SearchParams.searchtype;
@@ -1234,11 +1234,11 @@ const DocumentsView = {
 			ldsPrompt.show(alert_arr.ERROR, alert_arr.SELECT);
 			return false;
 		}
-		ListView.Request(`${url}&columns=true&folders=all`, 'get').then(function(response) {
+		ListView.Request(`${url}&columns=true&folders=all`, 'get').then( function(response) {
 			let content = `${alert_arr.LBL_NO_DATA}! ${alert_arr.LBL_CREATE}`;
 			if (response[2].length > 0) {
 				let list = ``;
-				response[2].map(function(currentValue, index, arr){
+				response[2].map( function(currentValue, index, arr) {
 					list += `
 					<li class="slds-item" data-id="${currentValue[0]}" onclick="DocumentsView.Move(this)">
 						<a>${currentValue[1]}</a>
@@ -1260,7 +1260,7 @@ const DocumentsView = {
 		let url = '';
 		let checkedRows = document.getElementById('allselectedboxes').value.split(';');
 		checkedRows = checkedRows.filter(Number);
-		ListView.RelationRows.map(function(currentValue, index) {
+		ListView.RelationRows.map( function(currentValue, index) {
 			for (let i in currentValue) {
 				if (!currentValue[i].includes('parent')) {
 					const parent = currentValue[i].split('__');
@@ -1268,7 +1268,7 @@ const DocumentsView = {
 				}
 			}
 		});
-		DocumentsView.AddToRelatedList(checkedRows.join(';'),docid);
+		DocumentsView.AddToRelatedList(checkedRows.join(';'), docid);
 		DocumentsView.Reload();
 		ldsModal.close();
 	},

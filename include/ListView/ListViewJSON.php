@@ -490,7 +490,7 @@ class GridListView {
 		if (!empty($whereClause)) {
 			$whereClause = ' and '.str_replace('WHERE', '', $whereClause);
 		}
-		$query = 'select vtiger_notes.*, vtiger_crmentity.*, vtiger_notescf.* from vtiger_notes
+		$query = 'select distinct vtiger_notes.*, vtiger_crmentity.*, vtiger_notescf.* from vtiger_notes
 			inner join vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_notes.notesid
 			inner join vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid)
 			inner join vtiger_notescf ON vtiger_notescf.notesid = vtiger_notes.notesid
