@@ -35,4 +35,11 @@
 	<classname>fixDisplayTypeSalutationAndRelatedListDocFolder</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Terms and Conditions as a detail of Service Contracts</description>
+	<filename>build/changeSets/2022/servicecontracttermsandconditions.php</filename>
+	<classname>servicecontracttermsandconditions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

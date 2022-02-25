@@ -105,8 +105,19 @@ class cbTermConditions extends CRMEntity {
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'cbtandcno');
 
 	public function save_module($module) {
+		global $adb;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
+		}
+		if (!empty($this->column_fields['copyfrom'])) {
+			$descrs = $adb->pquery('select tandc from vtiger_cbtandc where cbtandcid=?', array($this->column_fields['copyfrom']));
+			if ($descrs && $adb->num_rows($descrs)) {
+				$this->column_fields['tandc'] = $adb->query_result($descrs, 0, 0);
+				$adb->pquery(
+					'update vtiger_cbtandc set tandc=? where cbtandcid=?',
+					array($this->column_fields['tandc'], $this->id)
+				);
+			}
 		}
 	}
 
