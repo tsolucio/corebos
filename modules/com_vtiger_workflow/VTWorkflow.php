@@ -219,7 +219,11 @@ class Workflow {
 
 	public function markAsCompletedForRecord($recordId) {
 		global $adb;
-		$adb->pquery('UPDATE com_vtiger_workflow_activatedonce set pending=0 WHERE entity_id=? and workflow_id=?', array($recordId, $this->id));
+		if ($this->isCompletedForRecord($recordId)) {
+			$adb->pquery('UPDATE com_vtiger_workflow_activatedonce set pending=0 WHERE entity_id=? and workflow_id=?', array($recordId, $this->id));
+		} else {
+			$adb->pquery('INSERT INTO com_vtiger_workflow_activatedonce (entity_id, workflow_id, pending) VALUES (?,?,0)', array($recordId, $this->id));
+		}
 	}
 
 	public static function pushWFTaskToQueue($workflowid, $wfexecutionCondition, $entityid, $msg, $delay = 0) {
@@ -227,7 +231,13 @@ class Workflow {
 		$cbmq = coreBOS_MQTM::getInstance();
 		$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, 0, json_encode($msg));
 		if (VTWorkflowManager::$ONCE == $wfexecutionCondition) {
-			$adb->pquery('INSERT INTO com_vtiger_workflow_activatedonce (entity_id, workflow_id, pending) VALUES (?,?,1)', array(vtws_getCRMID($entityid), $workflowid));
+			$recordId = vtws_getCRMID($entityid);
+			$result = $adb->pquery('SELECT 1 FROM com_vtiger_workflow_activatedonce WHERE entity_id=? and workflow_id=?', array($recordId, $workflowid));
+			if ($adb->num_rows($result)>0) {
+				$adb->pquery('UPDATE com_vtiger_workflow_activatedonce set pending=1 WHERE entity_id=? and workflow_id=?', array($recordId, $workflowid));
+			} else {
+				$adb->pquery('INSERT INTO com_vtiger_workflow_activatedonce (entity_id, workflow_id, pending) VALUES (?,?,1)', array($recordId, $workflowid));
+			}
 		}
 	}
 
