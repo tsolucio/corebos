@@ -392,12 +392,14 @@ switch ($functiontocall) {
 		include_once 'include/ListView/ListViewJSON.php';
 		$mod = vtlib_purify($_REQUEST['formodule']);
 		$recordid = vtlib_purify($_REQUEST['recordid']);
-		$ret = getRecordActions($mod, $recordid);
+		$grid = new GridListView($mod);
+		$ret = $grid->Actions($recordid);
 		break;
 	case 'listViewJSON':
 		include_once 'include/ListView/ListViewJSON.php';
 		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateDataListView') {
-			updateDataListView();
+			$grid = new GridListView($_REQUEST['modulename']);
+			$grid->Update();
 			$ret = array();
 		} else {
 			$orderBy = ' DESC';
@@ -406,6 +408,7 @@ switch ($functiontocall) {
 			$columns = isset($_REQUEST['columns']) ? vtlib_purify($_REQUEST['columns']) : '';
 			$beforeFilter = isset($_REQUEST['beforeFilter']) ? vtlib_purify($_REQUEST['beforeFilter']) : '';
 			$tabid = getTabid($formodule);
+			$grid = new GridListView($formodule);
 			if (isset($_REQUEST['perPage'])) {
 				//get data
 				$perPage = isset($_REQUEST['perPage']) ? vtlib_purify($_REQUEST['perPage']) : $entries;
@@ -433,15 +436,22 @@ switch ($functiontocall) {
 					}
 				}
 				coreBOS_Session::set($formodule.'_Sort_Order', $orderBy);
-				$LV = getListViewJSON($formodule, $tabid, $perPage, $orderBy, $sortColumn, $page, $search, $searchtype);
+				$grid->tabid = $tabid;
+				$grid->entries = $perPage;
+				$grid->orderBy = $orderBy;
+				$grid->sortColumn =  $sortColumn;
+				$grid->currentPage = $page;
+				$grid->searchUrl = $search;
+				$grid->searchtype = $searchtype;
+				$lv = $grid->Show();
 			} else {
-				//get headers
-				$LV = getListViewHeaders($formodule, $tabid);
+				$grid->tabid = $tabid;
+				$lv = $grid->Headers();
 			}
 			if (isset($columns) && $columns == 'true') {
-				$ret = array($LV['headers'], $LV['customview']);
+				$ret = array($lv['headers'], $lv['customview'], $lv['folders']);
 			} else {
-				$ret = $LV['data'];
+				$ret = $lv['data'];
 			}
 		}
 		break;
