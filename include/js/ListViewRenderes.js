@@ -188,7 +188,7 @@ class ActionRender {
 				</button>
 				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" id="dropdown-${recordid}">
 			</div>`;
-		if (recordid == null) {
+		if (recordid.includes('parent')) {
 			actions = '';
 		}
 		el.innerHTML = actions;
