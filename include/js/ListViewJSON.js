@@ -88,7 +88,11 @@ const ListView = {
 		if (actionType == 'filter') {
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 			document.basicSearch.search_text.value = '';
-			ListView.Filter(url);
+			if (ListView.Module == 'Documents' && DocumentFolderView == 1) {
+				DocumentsView.Show(url);
+			} else {
+				ListView.Filter(url);
+			}
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'search') {
 			ListView.Search(url, urlstring, searchtype);
@@ -757,6 +761,7 @@ const ListView = {
 		select.setAttribute('onchange', 'showDefaultCustomView(this, "'+ListView.Module+'", "")');
 		select.innerHTML = filters.customview_html;
 		if (document.getElementById('filterOptions') !== null) {
+			document.getElementById('filterOptions').innerHTML = '';
 			document.getElementById('filterOptions').appendChild(select);
 		}
 
@@ -779,6 +784,7 @@ const ListView = {
 			fedit.innerHTML = `| ${alert_arr['LNK_EDIT_ACTION']} |`;
 		}
 		if (document.getElementById('filterEditActions') !== null) {
+			document.getElementById('filterEditActions').innerHTML = '';
 			document.getElementById('filterEditActions').appendChild(fedit);
 		}
 		//delete a filter
@@ -799,6 +805,7 @@ const ListView = {
 			fdelete.innerHTML = `${alert_arr['LNK_DELETE_ACTION']}`;
 		}
 		if (document.getElementById('filterDeleteActions') !== null) {
+			document.getElementById('filterDeleteActions').innerHTML = '';
 			document.getElementById('filterDeleteActions').appendChild(fdelete);
 		}
 	},
@@ -1118,6 +1125,9 @@ const DocumentsView = {
 			ListView.setFilters(filters);
 			for (let id in folders) {
 				let fldId= folders[id][0];
+				if (ListView.Action == 'filter') {
+					lvdataGridInstance[fldId].destroy();
+				}
 				if (folders[id][0] === undefined) {
 					fldId = '__empty__';
 				}
