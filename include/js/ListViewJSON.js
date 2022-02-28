@@ -88,7 +88,11 @@ const ListView = {
 		if (actionType == 'filter') {
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 			document.basicSearch.search_text.value = '';
-			ListView.Filter(url);
+			if (ListView.Module == 'Documents' && DocumentFolderView == 1) {
+				DocumentsView.Show(url);
+			} else {
+				ListView.Filter(url);
+			}
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'search') {
 			ListView.Search(url, urlstring, searchtype);
@@ -345,7 +349,7 @@ const ListView = {
 	 * @param {String} url
 	 */
 	Default: (url) => {
-		ListView.Request(`${url}&columns=true`, 'get').then( function(response) {
+		ListView.Request(`${url}&columns=true`, 'get').then(function(response) {
 			const advft_criteria = urlParams.get('advft_criteria');
 			const advft_criteria_groups = urlParams.get('advft_criteria_groups');
 			const searchtype = urlParams.get('searchtype');
@@ -613,7 +617,7 @@ const ListView = {
 	Filter: (url) => {
 		lvdataGridInstance[ListView.Instance].setRequestParams({'search': '', 'searchtype': ''});
 		lvdataGridInstance[ListView.Instance].clear();
-		ListView.Request(`${url}&columns=true`, 'get').then( function(response) {
+		ListView.Request(`${url}&columns=true`, 'get').then(function(response) {
 			let headers = ListView.getColumnHeaders(response[0]);
 			let filters = response[1];
 			//update options for basic search
@@ -638,7 +642,7 @@ const ListView = {
 	 * @param {String} url
 	 */
 	RenderFilter: (url) => {
-		ListView.Request(`${url}&columns=true`, 'get').then( function(response) {
+		ListView.Request(`${url}&columns=true`, 'get').then(function(response) {
 			let headers = ListView.getColumnHeaders(response[0]);
 			document.getElementById('bas_searchfield').innerHTML = '';
 			for (let h in headers) {
@@ -757,6 +761,7 @@ const ListView = {
 		select.setAttribute('onchange', 'showDefaultCustomView(this, "'+ListView.Module+'", "")');
 		select.innerHTML = filters.customview_html;
 		if (document.getElementById('filterOptions') !== null) {
+			document.getElementById('filterOptions').innerHTML = '';
 			document.getElementById('filterOptions').appendChild(select);
 		}
 
@@ -779,6 +784,7 @@ const ListView = {
 			fedit.innerHTML = `| ${alert_arr['LNK_EDIT_ACTION']} |`;
 		}
 		if (document.getElementById('filterEditActions') !== null) {
+			document.getElementById('filterEditActions').innerHTML = '';
 			document.getElementById('filterEditActions').appendChild(fedit);
 		}
 		//delete a filter
@@ -799,6 +805,7 @@ const ListView = {
 			fdelete.innerHTML = `${alert_arr['LNK_DELETE_ACTION']}`;
 		}
 		if (document.getElementById('filterDeleteActions') !== null) {
+			document.getElementById('filterDeleteActions').innerHTML = '';
 			document.getElementById('filterDeleteActions').appendChild(fdelete);
 		}
 	},
@@ -859,7 +866,7 @@ const ListView = {
 		let getId = document.getElementById(`tooltip-${recordid}-${fieldname}`);
 		if (!ListView.isTooltipLoaded(recordid)) {
 			ListView.loadedTooltips.push(recordid);
-			ListView.Request(`${tooltipUrl}&returnarray=true`, 'get').then( function(response) {
+			ListView.Request(`${tooltipUrl}&returnarray=true`, 'get').then(function(response) {
 				if (getId != null) {
 					getId.remove();
 				}
@@ -924,7 +931,7 @@ const ListView = {
 				nr++;
 			}
 			const url = `${defaultURL}&functiontocall=checkButton&formodule=${ListView.Module}`;
-			ListView.Request(url, 'get').then( function(response) {
+			ListView.Request(url, 'get').then(function(response) {
 				const no_data_template = document.getElementsByClassName('tui-grid-layer-state-content')[index];
 				const grid_template = document.getElementsByClassName('tui-grid-content-area')[index];
 				const mod_label = document.getElementsByClassName('hdrLink')[0].innerText;
@@ -990,7 +997,7 @@ const ListView = {
 			ListView.Module = gVTModule;
 		}
 		const url = `${defaultURL}&functiontocall=getRecordActions&formodule=${ListView.Module}&recordid=${recordid}`;
-		ListView.Request(url, 'get').then( function(response) {
+		ListView.Request(url, 'get').then(function(response) {
 			ListView.Module = currentModule;
 			let button_template = `<ul class="slds-dropdown__list" role="menu" id="list__${recordid}">`;
 			if (response == true) { //recycle bin module
@@ -1111,13 +1118,16 @@ const ListView = {
 const DocumentsView = {
 
 	Show: (url) => {
-		ListView.Request(`${url}&columns=true`, 'get').then( function(response) {
+		ListView.Request(`${url}&columns=true`, 'get').then(function(response) {
 			const childNames = Object.keys(response[0]).map((key) => response[0][key].fieldname);
 			let filters = response[1];
 			let folders = response[2];
 			ListView.setFilters(filters);
 			for (let id in folders) {
 				let fldId= folders[id][0];
+				if (ListView.Action == 'filter') {
+					lvdataGridInstance[fldId].destroy();
+				}
 				if (folders[id][0] === undefined) {
 					fldId = '__empty__';
 				}
@@ -1234,7 +1244,7 @@ const DocumentsView = {
 			ldsPrompt.show(alert_arr.ERROR, alert_arr.SELECT);
 			return false;
 		}
-		ListView.Request(`${url}&columns=true&folders=all`, 'get').then( function(response) {
+		ListView.Request(`${url}&columns=true&folders=all`, 'get').then(function(response) {
 			let content = `${alert_arr.LBL_NO_DATA}! ${alert_arr.LBL_CREATE}`;
 			if (response[2].length > 0) {
 				let list = ``;
