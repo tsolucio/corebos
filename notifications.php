@@ -30,7 +30,6 @@ if ($driver && $adb->num_rows($driver)>0) {
 	$function = $adb->query_result($driver, 0, 'functionname');
 	$signedkey = $adb->query_result($driver, 0, 'signedkey');
 	$signedvalue = $adb->query_result($driver, 0, 'signedvalue');
-	include_once $path;
 	if ($type == 'googlecal' || $type == 'googlestorage') {
 		$input = $_GET['code'];
 	} else {
@@ -49,5 +48,6 @@ if ($driver && $adb->num_rows($driver)>0) {
 		}
 	}
 	//run function
+	include_once $path;
 	$function($input);
 }
