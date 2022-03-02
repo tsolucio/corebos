@@ -423,7 +423,10 @@ class GridListView {
 				}
 				$rows['assigned_user_id'] = isset($smownerid) ? getUserFullName($smownerid) : '';
 				$rows['recordid'] = $recordID;
-				$rows['reference_field'] = $reference_field['fieldname'];
+				$rows['reference_field'] = array(
+					'columnname' => $reference_field['fieldname'],
+					'fieldname' => $this->getFieldNameByColumn($reference_field['fieldname'])
+				);
 				$rows['relatedRows'] = $linkRow;
 				if ($this->module == 'Documents') {
 					$rows['parent'] = $parentid;
@@ -436,6 +439,17 @@ class GridListView {
 			array_push($data, $rows);
 		}
 		return $data;
+	}
+
+	public function getFieldNameByColumn($columnname) {
+		global $adb;
+		$rs = $adb->pquery('select fieldname from vtiger_field where columnname=? and tabid=?', array(
+			$columnname, $this->tabid
+		));
+		if ($adb->num_rows($rs) == 1) {
+			return $adb->query_result($rs, 0, 'fieldname');
+		}
+		return false;
 	}
 
 	public function findChilds($records_list, $parentId, $field_types, $whereClause = '') {

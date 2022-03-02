@@ -76,10 +76,7 @@ class LinkRender {
 				</svg>
 			</span>`;
 		}
-		if (module == 'Documents' && referenceField == 'title') {
-			referenceField = 'notes_title';
-		}
-		if (referenceField != undefined && referenceField.includes(columnName) && props.value != null) {
+		if (referenceField != undefined && (referenceField['columnname'].includes(columnName) || referenceField['fieldname'].includes(columnName)) && props.value != null) {
 			el = document.createElement('a');
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
