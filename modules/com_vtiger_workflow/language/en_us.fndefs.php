@@ -1695,6 +1695,34 @@ $WFExpressionFunctionDefinitons = array(
 		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder', ,943)",
 	),
 ),
+'getISODate' => array(
+	'name' => 'getISODate(year, weeks, dayInWeek)',
+	'desc' => 'Obtain DateTime format from given year, weeks and day in a week',
+	'params' => array(
+		array(
+			'name' => 'year',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'Year',
+		),
+		array(
+			'name' => 'weeks',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'number of weeks',
+		),
+		array(
+			'name' => 'dayInWeek',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'number of a day in a week (1-7)',
+		)
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getISODate('2022','10','4',)",
+	),
+),
 'getFieldsOF' => array(
 	'name' => 'getFieldsOF(id, module, fields)',
 	'desc' => 'Given the ID of an existent record, this function will return an array with all the values of the fields the user has access to. If you specify the fields you want in the function, only those values will be returned.',

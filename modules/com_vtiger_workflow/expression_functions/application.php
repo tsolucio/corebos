@@ -258,6 +258,10 @@ function __cb_getRelatedMassCreateArrayConverting($arr) {
 	return $masscreateArray;
 }
 
+function __cb_getISODate($arr) {
+	return (new DateTime())->setISODate($arr[0], $arr[1], $arr[2])->format('Y-m-d');
+}
+
 function __cb_getidof($arr) {
 	global $current_user, $adb;
 	$qg = new QueryGenerator($arr[0], $current_user);

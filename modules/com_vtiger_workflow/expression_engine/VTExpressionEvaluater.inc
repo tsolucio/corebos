@@ -96,6 +96,7 @@ class VTFieldExpressionEvaluater {
 			'getRelatedIDs' => '__cb_getrelatedids',
 			'getRelatedMassCreateArray' => '__cb_getRelatedMassCreateArray',
 			'getRelatedMassCreateArrayConverting' => '__cb_getRelatedMassCreateArrayConverting',
+			'getISODate' => '__cb_getISODate',
 			'getFieldsOF' => '__cb_getfieldsof',
 			'getFromContext' => '__cb_getfromcontext',
 			'getFromContextSearching' => '__cb_getfromcontextsearching',
@@ -255,6 +256,7 @@ class VTFieldExpressionEvaluater {
 			'__cb_getrelatedids',
 			'__cb_getRelatedMassCreateArray',
 			'__cb_getRelatedMassCreateArrayConverting',
+			'__cb_getISODate',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
