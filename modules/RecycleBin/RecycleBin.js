@@ -29,7 +29,7 @@ function callRBSearch(searchtype) {
 			document.getElementById('modules_datas').innerHTML=response;
 			document.getElementById('search_ajax').innerHTML = '';
 		} else {
-			ListView.ListViewJSON('search', urlstring, searchtype);
+			ListView.Show('search', urlstring, searchtype);
 		}
 	});
 }
@@ -99,7 +99,7 @@ function massRestore() {
 					document.getElementById('modules_datas').innerHTML=response;
 					document.getElementById('search_ajax').innerHTML = '';
 				} else {
-					ListView.ListViewReloadData(1, true);
+					ListView.Reload();
 				}
 			});
 		}
@@ -118,7 +118,7 @@ function restore(entityid, select_module) {
 				document.getElementById('modules_datas').innerHTML=response;
 				document.getElementById('search_ajax').innerHTML = '';
 			} else {
-				ListView.ListViewReloadData(1, true);
+				ListView.Reload();
 			}
 		});
 	}
@@ -180,7 +180,7 @@ function alphabetic(module, url, dataid) {
 			document.getElementById('search_ajax').innerHTML = '';
 		});
 	} else {
-		ListView.ListViewJSON('alphabetic', url);
+		ListView.Show('alphabetic', url);
 	}
 }
 
@@ -199,7 +199,7 @@ function emptyRecyclebin(id) {
 			document.getElementById('searchAcc').innerHTML = document.getElementById('search_ajax').innerHTML;
 			document.getElementById('search_ajax').innerHTML = '';
 		} else {
-			ListView.ListViewReloadData(1, true);
+			ListView.Reload();
 		}
 		VtigerJS_DialogBox.hideprogress();
 	});
@@ -273,7 +273,7 @@ function callEmptyRecyclebin(id) {
 					document.getElementById('modules_datas').innerHTML=response;
 					document.getElementById('search_ajax').innerHTML = '';
 				} else {
-					ListView.ListViewReloadData(1, true);
+					ListView.Reload();
 				}
 			});
 		}

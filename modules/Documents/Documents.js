@@ -100,6 +100,10 @@ function DeleteFolder(folderId) {
 		if (item.indexOf('FAILURE') > -1) {
 			alert(alert_arr.LBL_ERROR_WHILE_DELETING_FOLDER);
 		} else {
+			if (typeof DocumentFolderView !== 'undefined' && DocumentFolderView == 1 && Application_Landing_View=='tuigrid') {
+				DocumentsView.Reload();
+				return false;
+			}
 			document.getElementById('ListViewContents').innerHTML = item.replace('&#&#&#&#&#&#', '');
 		}
 	});
@@ -212,6 +216,10 @@ function MoveFile(id, foldername) {
 						document.getElementById('lblError').innerHTML = '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>' + alert_arr.NOT_PERMITTED + '</b></font></td></tr></table>';
 						setTimeout(hidelblError, 3000);
 					} else {
+						if (typeof DocumentFolderView !== 'undefined' && DocumentFolderView == 1 && Application_Landing_View=='tuigrid') {
+							DocumentsView.Reload();
+							return false;
+						}
 						getObj('ListViewContents').innerHTML = item.replace('&#&#&#&#&#&#', '');
 					}
 				});
@@ -237,13 +245,18 @@ function dldCntIncrease(fileid) {
 
 function massDownload() {
 	var arrayobj = {};
-	var obj = document.getElementsByName('folderidVal');
-	if (obj) {
-		for (var i = 0; i < obj.length; i++) {
-			var id = obj[i].value;
-			var values = document.getElementById('selectedboxes_selectall' + id).value;
-			if (values) {
-				arrayobj[id] = values;
+	if (typeof DocumentFolderView !== 'undefined' && DocumentFolderView == 1 && Application_Landing_View=='tuigrid') {
+		let idlist = document.getElementById('allselectedboxes').value;
+		arrayobj = idlist.split(';').filter(id => id);
+	} else {
+		var obj = document.getElementsByName('folderidVal');
+		if (obj) {
+			for (var i = 0; i < obj.length; i++) {
+				var id = obj[i].value;
+				var values = document.getElementById('selectedboxes_selectall' + id).value;
+				if (values) {
+					arrayobj[id] = values;
+				}
 			}
 		}
 	}

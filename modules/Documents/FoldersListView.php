@@ -263,14 +263,15 @@ $smarty->assign('CURRENT_PAGE_BOXES', '');
 ListViewSession::setSessionQuery($currentModule, $focus->query, $viewid);
 
 $alphabetical = AlphabeticalSearch($currentModule, 'index', 'notes_title', 'true', 'basic', '', '', '', '', $viewid);
-$fieldnames = $controller->getAdvancedSearchOptionString();
+$fieldnames_array = $controller->getAdvancedSearchOptionArray();
 $smarty->assign('ALPHABETICAL', $alphabetical);
-$smarty->assign('FIELDNAMES', $fieldnames);
+$smarty->assign('FIELDNAMES_ARRAY', $fieldnames_array);
 $adminuser = is_admin($current_user);
 $smarty->assign('IS_ADMIN', $adminuser);
 
 $check_button = Button_Check($module);
 $smarty->assign('CHECK', $check_button);
+$smarty->assign('moduleView', GlobalVariable::getVariable('Application_ListView_Layout', 'table'));
 
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';

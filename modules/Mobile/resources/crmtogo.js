@@ -118,6 +118,7 @@
 						}
 					}).done(function (msg) {
 						$('option:not(:selected)', selectmenu).remove();
+						selectmenu.selectmenu('refresh');
 						$.each(msg, function () {
 							var key = this[0];
 							var value = this[1];

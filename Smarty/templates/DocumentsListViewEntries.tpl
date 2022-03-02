@@ -11,54 +11,6 @@
 {if isset($smarty.request.ajax) && $smarty.request.ajax neq ''}
 &#&#&#{$ERROR}&#&#&#
 {/if}
-<table class="layerPopupTransport" width="100%">
-    <tr>
-        <td class="small" nowrap="" width="25%"></td>
-        <td>
-            <!-- Filters -->
-			{if empty($HIDE_CUSTOM_LINKS) || $HIDE_CUSTOM_LINKS neq '1'}
-				<table border=0 cellspacing=0 cellpadding=0 class="small" align="center">
-					<tr>
-						<td align="center" style="padding-left:5px;padding-right:5px">
-							<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" onchange="showDefaultCustomView(this, '{$MODULE}')">{$CUSTOMVIEW_OPTION}</SELECT>
-						</td>
-						{if isset($ALL) && $ALL eq 'All'}
-							<td align="center" style="padding-left:5px;padding-right:5px">
-								<a href="index.php?module={$MODULE}&action=CustomView">{$APP.LNK_CV_CREATEVIEW}</a>
-								<span class="small">|</span>
-								<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>
-								<span class="small">|</span>
-								<span class="small" disabled>{$APP.LNK_CV_DELETE}</span>
-							</td>
-						{else}
-							<td>
-								<a href="index.php?module={$MODULE}&action=CustomView">{$APP.LNK_CV_CREATEVIEW}</a>
-								<span class="small">|</span>
-								{if $CV_EDIT_PERMIT neq 'yes'}
-									<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>
-								{else}
-									<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}">{$APP.LNK_CV_EDIT}</a>
-								{/if}
-								<span class="small">|</span>
-								{if $CV_DELETE_PERMIT neq 'yes'}
-									<span class="small" disabled>{$APP.LNK_CV_DELETE}</span>
-								{else}
-									<a href="javascript:confirmdelete('index.php?module=CustomView&action=Delete&dmodule={$MODULE}&record={$VIEWID}')">{$APP.LNK_CV_DELETE}</a>
-								{/if}
-								{if $CUSTOMVIEW_PERMISSION.ChangedStatus neq '' && $CUSTOMVIEW_PERMISSION.Label neq ''}
-									<span class="small">|</span>
-									<a href="#" id="customstatus_id" onClick="ChangeCustomViewStatus({$VIEWID}, {$CUSTOMVIEW_PERMISSION.Status}, {$CUSTOMVIEW_PERMISSION.ChangedStatus}, '{$MODULE}')">{$CUSTOMVIEW_PERMISSION.Label}</a>
-								{/if}
-							</td>
-						{/if}
-					</tr>
-				</table>
-			{/if}
-			<!-- Filters  END-->
-		</td>
-		<td height="38px" class="small" nowrap="" width="25%"> </td>
-	</tr>
-</table>
 <form name="massdelete" method="POST" id="massdelete">
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
 	<input name="idlist" id="idlist" type="hidden">
@@ -89,19 +41,14 @@
 						<tr>
 							<td align="center">
 								<!-- List View's Buttons and Filters starts -->
-								<table border=0 cellspacing=0 cellpadding=2 width=100% class="small">
+								{include file='ListViewFilter.tpl'}
+								<table border=0 cellspacing=0 cellpadding=2 width=100% class="small cblds-table-border_sep cblds-table-bordersp_small">
 									<tr>
-										<td>
-											<table border=0 cellspacing=0 cellpadding=0>
-												<tr>
-													<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
-												</tr>
-											</table>
-										</td>
-										<td width="100%" align="right"></td>
+										<!-- Buttons -->
+										<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
 									</tr>
 								</table>
-	                            <!-- List View's Buttons and Filters ends -->
+								<!-- List View's Buttons and Filters ends -->
 
                                 {foreach item=folder from=$FOLDERS}
 									<!-- folder division starts -->

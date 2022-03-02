@@ -17,12 +17,12 @@ class CheckboxRender {
 
 	constructor(props) {
 		const { grid, rowKey } = props;
+		const { idIns } = props.columnInfo.renderer.options;
 		const label = document.createElement('label');
 		label.className = 'checkbox';
 		label.setAttribute('for', String(rowKey));
 		const Input = document.createElement('input');
 		Input.name = 'selected_id[]';
-		Input.setAttribute('onclick', 'ListView.getCheckedRows("", this);');
 		Input.className = 'hidden-input listview-checkbox';
 		Input.id = String(rowKey);
 		label.appendChild(Input);
@@ -76,7 +76,7 @@ class LinkRender {
 				</svg>
 			</span>`;
 		}
-		if (referenceField.includes(columnName)) {
+		if (referenceField != undefined && (referenceField['columnname'].includes(columnName) || referenceField['fieldname'].includes(columnName)) && props.value != null) {
 			el = document.createElement('a');
 			if (tooltip) {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
@@ -92,7 +92,7 @@ class LinkRender {
 			el.style.marginLeft = '5px';
 			this.el = el;
 			this.render(props);
-		} else if (relatedRows[columnName] != undefined) {
+		} else if (relatedRows != undefined && relatedRows[columnName] != undefined) {
 			let moduleName = relatedRows[columnName][0];
 			let fieldId = relatedRows[columnName][1];
 			el = document.createElement('a');
@@ -141,6 +141,9 @@ class LinkRender {
 					}
 				}
 			}
+			if (props.value == null) {
+				props.value = '';
+			}
 			el.innerHTML = String(props.value);
 			el.style.marginLeft = '5px';
 			this.el = el;
@@ -182,6 +185,9 @@ class ActionRender {
 				</button>
 				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" id="dropdown-${recordid}">
 			</div>`;
+		if (recordid.includes('parent')) {
+			actions = '';
+		}
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);

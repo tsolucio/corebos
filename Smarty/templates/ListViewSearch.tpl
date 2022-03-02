@@ -57,7 +57,7 @@
 				</a>
 				{if !empty($moduleView) && $moduleView=='tuigrid'}
 				<button class="slds-button slds-button_icon slds-button_icon-more" title="{'LBL_CLEAR'|@getTranslatedString}" type="button"
-					onClick="ListView.ListViewReloadData()">
+					onClick="ListView.Reload()">
 					<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 					</svg>

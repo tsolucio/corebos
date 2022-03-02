@@ -8,9 +8,13 @@
 {include file='ListViewCustomButtons.tpl'}
 {if $MODULE eq 'Documents'}
 	{if $CHECK.EditView eq 'yes'}
-		<input type="button" name="move" value="{$MOD.LBL_MOVE}" class="crmbutton small edit" onClick="fnvshNrm('movefolderlist'); posLay(this,'movefolderlist');" title="{$MOD.LBL_MOVE_DOCUMENTS}">
-		<div style="display:none;position:absolute;width:150px;" id="movefolderlist" >
-			<div class="layerPopup thickborder" style="display:block;position:relative;width:250px;">
+		{assign var="customfunction" value="fnvshNrm('movefolderlist'); posLay(this,'movefolderlist');"}
+		{if $moduleView == 'tuigrid'}
+			{assign var="customfunction" value="DocumentsView.MoveFile()"}
+		{/if}
+		<input type="button" name="move" value="{$MOD.LBL_MOVE}" class="crmbutton small edit" onclick="{$customfunction}" title="{$MOD.LBL_MOVE_DOCUMENTS}">
+		<div style="display:none;position:absolute;width:150px;z-index: 9999" id="movefolderlist" >
+			<div class="layerPopup thickborder" style="display:block;position:relative;width:250px;z-index: 9999">
 				<table  class="layerHeadingULine" border="0" cellpadding="5" cellspacing="0" width="100%">
 					<tr>
 						<td class="genHeaderSmall" align="left" width="90%">

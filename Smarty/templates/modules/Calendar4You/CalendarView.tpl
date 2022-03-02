@@ -306,7 +306,8 @@ jQuery(document).ready(function(){
 				left = (jsEvent.clientX - 200);
 			}
 
-			jQuery('#addEventDropDown').css('top', (jsEvent.clientY - xOffset) + 'px').css('left', left + 'px').fadeIn('fast');
+            var top = jsEvent.clientY+window.pageYOffset;
+            jQuery("#addEventDropDown").css("top",(top - xOffset) + "px").css("left",left + "px").fadeIn("fast");
 		},
 
 		eventClick: function (calEvent, jsEvent, view) {

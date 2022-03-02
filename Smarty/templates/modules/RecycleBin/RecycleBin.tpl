@@ -75,7 +75,7 @@ var Application_Landing_View='{$moduleView}';
 								</svg>
 								{$APP.LBL_SEARCH_NOW_BUTTON}
 							</a>
-							<a onClick="ListView.ListViewReloadData()" class="slds-button slds-button_text-destructive">
+							<a onClick="ListView.Reload()" class="slds-button slds-button_text-destructive">
 								<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
 								</svg>
