@@ -1375,6 +1375,10 @@ $app_strings = array (
 	'LBL_SEND_TO' => 'ENVIAR A',
 	'LNK_ALPHABETICAL_SEARCH' => 'Búsqueda Alfabética',
 	'ERR_SITE_URL_MISMATCH' => 'URL configurada no concuerda con utilizada',
+	'Mautic ID' => 'ID Mautic',
+	'Deleted in Mautic' => 'Eliminado en Mautic',
+	'Contact Points' => 'Puntos Contacto',
+	'From External Source' => 'Proviene de Fuente Externa',
 );
 
 // Translation for currency names

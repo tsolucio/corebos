@@ -155,5 +155,18 @@ $mod_strings = array(
 	'Stripe Payment Activation' => 'Activar Pagos con Stripe',
 	'StripePayment_Desc' => 'Configura Pagos con Stripe',
 	'stripe_Key' => 'Clave API Stripe',
+	'Mautic Activation' => 'Activación Mautic',
+	'Mautic Activation_Desc' => 'Configuración de Mautic',
+	'mautic_baseurl' => 'URL Mautic',
+	'mautic_version' => 'Versión',
+	'mautic_version_oauth2' => 'Oauth2',
+	'mautic_clientkey' => 'Clave Cliente',
+	'mautic_clientsecret' => 'Secreto Cliente',
+	'mautic_callback' => 'Volver a',
+	'mautic_sync_with_contacts' => 'Sincronizar Contactos de Mautic con Contactos',
+	'mautic_version_basicauth' => 'Autentificación Basic',
+	'mautic_username' => 'Nombre Usuario',
+	'mautic_password' => 'Contraseña',
+	'mautic_sync_with_accounts' => 'Sincronizar Contactos de Mautic con Cuentas',
 );
 ?>

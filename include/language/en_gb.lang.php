@@ -1278,6 +1278,10 @@ $app_strings = array(
 	'LBL_SEND_TO' => 'SEND TO',
 	'LNK_ALPHABETICAL_SEARCH' => 'Alpabetical Search',
 	'ERR_SITE_URL_MISMATCH' => 'Site URL mismatch',
+	'Mautic ID' => 'Mautic ID',
+	'Deleted in Mautic' => 'Deleted in Mautic',
+	'Contact Points' => 'Contact Points',
+	'From External Source' => 'From External Source',
 );
 
 $app_currency_strings = array(
