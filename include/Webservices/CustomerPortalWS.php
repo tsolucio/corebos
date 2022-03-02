@@ -96,6 +96,7 @@ function vtws_getPortalUserInfo($user) {
 			}
 		}
 	}
+	$usrinfo['profileid'] = getRoleRelatedProfiles($usrinfo['roleid']);
 	$usrinfo['id'] = vtws_getEntityId('Users').'x'.$user->id;
 	return $usrinfo;
 }
