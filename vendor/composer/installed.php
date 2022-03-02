@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '92aa5a8180cec6b6a976e37c0c9c9642c9dbcc95',
+        'reference' => '297e60060ca4e587364105f7bcbc79a4f1937a3b',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '92aa5a8180cec6b6a976e37c0c9c9642c9dbcc95',
+            'reference' => '297e60060ca4e587364105f7bcbc79a4f1937a3b',
             'dev_requirement' => false,
         ),
         'automattic/woocommerce' => array(
@@ -933,6 +933,15 @@
             'install_path' => __DIR__ . '/../twilio/sdk',
             'aliases' => array(),
             'reference' => 'bd5b4d0b49814d04c118f8dc3ea3e2395073ba6d',
+            'dev_requirement' => false,
+        ),
+        'vaites/php-apache-tika' => array(
+            'pretty_version' => 'v1.2.1',
+            'version' => '1.2.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../vaites/php-apache-tika',
+            'aliases' => array(),
+            'reference' => '2649149cf62739b040a66d4e48057806e4e0afa7',
             'dev_requirement' => false,
         ),
         'willdurand/geocoder' => array(

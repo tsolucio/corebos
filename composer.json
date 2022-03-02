@@ -48,6 +48,7 @@
         "geocoder-php/nominatim-provider": "5.5.1",
         "geocoder-php/openrouteservice-provider": "1.2",
         "php-http/curl-client": "2.2",
-        "mautic/api-library": "3.0"
+        "mautic/api-library": "3.0",
+        "vaites/php-apache-tika": "1.2"
     }
 }

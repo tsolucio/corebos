@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php" colors="true"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+    <coverage>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <report>
+            <clover outputFile="reports/coverage.xml"/>
+        </report>
+    </coverage>
+    <php>
+        <env name="APACHE_TIKA_BINARIES" value="bin"/>
+    </php>
+    <testsuites>
+        <testsuite name="php-apache-tika">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <logging>
+        <junit outputFile="reports/logfile.xml"/>
+    </logging>
+</phpunit>

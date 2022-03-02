@@ -1,0 +1,53 @@
+{
+    "name": "vaites/php-apache-tika",
+    "description": "Apache Tika bindings for PHP: extracts text from documents and images (with OCR), metadata and more...",
+    "keywords": [
+        "apache",
+        "tika",
+        "pdf",
+        "doc",
+        "docx",
+        "ppt",
+        "pptx",
+        "odt",
+        "office",
+        "documents",
+        "ocr"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Martínez",
+            "email": "contacto@davidmartinez.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Vaites\\ApacheTika\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Vaites\\ApacheTika\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.3.0",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "nunomaduro/phpinsights": "^1.14",
+        "phpstan/phpstan": "^0.12.26",
+        "symfony/var-dumper": "^5.1",
+        "filp/whoops": "^2.7",
+        "psy/psysh": "^0.10.8"
+    },
+    "extra": {
+        "supported-versions": [
+            "1.15", "1.16", "1.17", "1.18", "1.19", "1.19.1", "1.20",
+            "1.21", "1.22", "1.23", "1.24", "1.24.1", "1.25", "1.26",
+            "1.27", "1.28", "2.0.0", "2.1.0", "2.2.0"
+        ]
+    }
+}
