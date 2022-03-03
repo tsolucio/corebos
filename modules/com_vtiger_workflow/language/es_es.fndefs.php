@@ -1692,6 +1692,34 @@ $WFExpressionFunctionDefinitons = array(
 		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder', ,943)",
 	),
 ),
+'getISODate' => array(
+	'name' => 'getISODate(año, semana, diadesemana)',
+	'desc' => 'Obtiene Fecha en formato ISO a partir de un año, semana y día determinados en una semana',
+	'params' => array(
+		array(
+			'name' => 'year',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'Año',
+		),
+		array(
+			'name' => 'weeks',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'número de semana',
+		),
+		array(
+			'name' => 'dayInWeek',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'número del día de la semana (1-7)',
+		)
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getISODate('2022','10','4',)",
+	),
+),
 'getFieldsOF' => array(
 	'name' => 'getFieldsOF(id, módulo, campos)',
 	'desc' => 'Dado el ID de un registro existente, esta función devolverá una matriz con todos los valores de los campos a los que tiene acceso el usuario. Si especificas los campos que quieres en la función, solo se devolverán esos valores.',

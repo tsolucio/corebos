@@ -1697,7 +1697,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getISODate' => array(
 	'name' => 'getISODate(year, weeks, dayInWeek)',
-	'desc' => 'Obtain DateTime format from given year, weeks and day in a week',
+	'desc' => 'Obtain DateTime in ISO format from given year, weeks and day in a week',
 	'params' => array(
 		array(
 			'name' => 'year',
