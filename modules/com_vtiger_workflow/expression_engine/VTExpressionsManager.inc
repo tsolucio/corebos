@@ -116,6 +116,9 @@ class VTExpressionsManager {
 			}
 		}
 		asort($WFExpressionFunctionDefinitons);
+		foreach ($WFExpressionFunctionDefinitons as $fn => $fdesc) {
+			$WFExpressionFunctionDefinitons[$fn]['nameuc'] = strtoupper($WFExpressionFunctionDefinitons[$fn]['name']);
+		}
 		return $WFExpressionFunctionDefinitons;
 	}
 

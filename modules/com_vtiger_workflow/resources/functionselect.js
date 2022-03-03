@@ -100,8 +100,9 @@ function wffnFilterSearch(srch) {
 	if (srch=='') {
 		fns = wfexpfndefs;
 	} else {
+		srch = srch.toUpperCase();
 		fns = Object.keys(wfexpfndefs)
-			.filter(fn => wfexpfndefs[fn].name.indexOf(srch) > -1)
+			.filter(fn => wfexpfndefs[fn].nameuc.indexOf(srch) > -1)
 			.reduce((res, key) => {
 				res[key] = wfexpfndefs[key];
 				return res;
