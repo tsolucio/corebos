@@ -42,7 +42,6 @@
 									{assign var=label value=$data.name|@getTranslatedString:'Settings'}
 									{/if}
 									{assign var=count value=$smarty.foreach.itr.iteration}
-									{assign var="customlink_icon" value=$CUSTOMLINK->linkicon}
 									{* Item *}
 									<li  onclick="gotourl('{$data.link}')" class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3">
 										<div class="slds-app-launcher__tile slds-text-link_reset ">
