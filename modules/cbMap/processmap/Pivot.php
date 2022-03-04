@@ -21,6 +21,13 @@
 	<module>Module name</module>
 	<filter>filter name</filter>
 	<aggregate>aggregator</aggregate>
+	<aggrgations>
+		<aggregation>
+			<aggType>Sum</aggType>
+			<arguments>estimated_effort</arguments>
+			<name>effort</name>
+		</aggregation>
+	</aggrgations>
 	<rows>
 		<row>
 			<name>value of module field name</name>
@@ -50,11 +57,23 @@ class Pivot extends processcbMap {
 		}
 		$i = 0;
 		$j = 0;
+		$k = 0;
 		$this->mapping['module'] = (string)$xml->module;
 		$this->mapping['aggregate'] = (string)$xml->aggregate;
 		$customView = new CustomView($this->mapping['module']);
 		$rows = array();
+		$aggregations = array();
 		$this->mapping['filter'] = $customView->getViewIdByName((string)$xml->filter, $this->mapping['module']);
+		if (isset($xml->aggregations) && is_object($xml->aggrgations)) {
+			foreach ($xml->aggregations as $v) {
+				foreach ($v->aggregation as $x) {
+					$aggregations[$k]['aggType'] = (string)$x->aggType;
+					$aggregations[$k]['arguments'] = [(string)$x->arguments];
+					$aggregations[$k]['name'] = (string)$x->name;
+					$k++;
+				}
+			}
+		}
 		if (isset($xml->rows) && is_object($xml->rows)) {
 			foreach ($xml->rows as $v) {
 				foreach ($v->row as $x) {
@@ -75,6 +94,7 @@ class Pivot extends processcbMap {
 		}
 		$this->mapping['rows'] = $rows;
 		$this->mapping['cols'] = $cols;
+		$this->mapping['aggregations'] = $aggregations;
 		return $this->mapping;
 	}
 }

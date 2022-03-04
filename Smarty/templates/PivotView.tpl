@@ -17,9 +17,9 @@
 <script src="include/pivottable/d3_renderers.js"></script>
 <script src="include/pivottable/plotly_renderers.js"></script>
 <script src="include/pivottable/export_renderers.js"></script>
-<link href="include/pivottable/pivot.css" rel="stylesheet">
 <script src="include/pivottable/export_renderers.min.js"></script>
 <script src="include/pivottable/nrecopivottableext.js"></script>
+<script src="include/pivottable/multifact-pivottable.js"></script>
 <link href="include/pivottable/nrecopivottableext.css" rel="stylesheet">
 <link href="include/pivottable/pivot.css" rel="stylesheet">
 <script type="text/javascript">
@@ -47,6 +47,19 @@ $(function() {
 			$.pivotUtilities.d3_renderers,
 			$.pivotUtilities.export_renderers
 		);
+		let multiAggs = {};
+		const aggMap = {/literal}{$aggregations}{literal};
+		if (aggMap.length > 0) {
+			multiAggs['Multifact Aggregators'] = $.pivotUtilities.multifactAggregatorGenerator(aggMap,[]);
+			$.pivotUtilities.multiAggs = multiAggs;
+			renderers = $.extend(
+				$.pivotUtilities.renderers,
+				$.pivotUtilities.plotly_renderers,
+				$.pivotUtilities.d3_renderers,
+				$.pivotUtilities.export_renderers,
+				$.pivotUtilities.gtRenderers
+			);
+		}
 		var nrecoPivotExt = new NRecoPivotTableExtensions({
 			drillDownHandler: function (dataFilter) {
 				var filterParts = [];
@@ -59,8 +72,12 @@ $(function() {
 			rows: [{/literal}{$ROWS}{literal}],
 			cols: [{/literal}{$COLS}{literal}],
 			{/literal}{$aggreg}{literal},
+			aggregators: $.extend($.pivotUtilities.aggregators, $.pivotUtilities.multiAggs),
 			renderers: renderers,
 			rendererOptions: {
+				aggregations : {
+					defaultAggregations : aggMap
+				},
 				table: {
 					clickCallback: function(e, value, filters, pivotData) {
 						let names = Array();

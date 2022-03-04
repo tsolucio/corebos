@@ -28,9 +28,9 @@ if ($cbMapid) {
 		$smarty->assign('showDesert', true);
 	} else {
 		$smarty->assign('showDesert', false);
-
 		$viewid = $cbMapKb['filter'];
 		$fieldaggr = $cbMapKb['aggregate'];
+		$aggregations = $cbMapKb['aggregations'];
 		$rows = $cbMapKb['rows'];
 		$cols = $cbMapKb['cols'];
 
@@ -83,8 +83,8 @@ if ($cbMapid) {
 		$recordsimpl = '{'.implode('},{', $records).'}';
 		$namerw = '"'.implode('","', $namelabelrow).'"';
 		$namecl = '"'.implode('","', $namelabelcol).'"';
-
 		$smarty->assign('aggreg', $aggreg);
+		$smarty->assign('aggregations', json_encode($aggregations));
 		$smarty->assign('ROWS', $namerw);
 		$smarty->assign('COLS', $namecl);
 		$smarty->assign('RECORDS', $recordsimpl);
