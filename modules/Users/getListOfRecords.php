@@ -70,19 +70,21 @@ if (!empty($_SESSION[$sModule.'_DetailView_Navigation'.$viewId])) {
 } else {
 	$recordList = array();
 }
-$output = '<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine"> 
-	<tr><td width="60%" align="left" style="font-size:12px;font-weight:bold;">'.$app_strings['LBL_JUMP_To'].' '.getTranslatedString($sModule, $sModule).':</td>
-	<td width="5%" align="right"><a href="javascript:fninvsh(\'lstRecordLayout\');">
-	<img src="'. vtiger_imageurl('close.gif', $theme).'" border="0" align="absmiddle" /></a>
-	</td>
-	</tr>
-	</table><table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
-		<tr>
-			<td class="small">
-				<table border=0 celspacing=0 cellpadding=0 width=100% align=center>
-					<tr><td>';
-$output .= '<div style="height:270px;overflow-y:auto;">';
-$output .= '<table cellpadding="2">';
+$output = '<section aria-describedby="dialog-body-id-114" aria-labelledby="dialog-heading-id-3" class="slds-popover slds-popover_walkthrough slds-nubbin_left" role="dialog">
+				<a class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close slds-button_icon-inverse" href="javascript:fninvsh(\'lstRecordLayout\');" title="Close dialog">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+					</svg>
+					<span class="slds-assistive-text">Close dialog</span>
+				</a>
+				<header class="slds-popover__header slds-p-vertical_medium">
+				<h2 id="dialog-heading-id-3" class="slds-text-heading_medium">'.$app_strings['LBL_JUMP_To'].'</h2>
+				</header>
+				<div class="slds-popover__body" id="dialog-body-id-114">
+					
+						<p>'.getTranslatedString($sModule, $sModule).':</p>
+						';
+
 
 if (!empty($recordList)) {
 	$displayRecordCount = 10;
@@ -111,15 +113,15 @@ if (!empty($recordList)) {
 	}
 	foreach ($idsArray as $id) {
 		if ($id===$iCurRecord) {
-			$output .= '<tr><td style="text-align:left;font-weight:bold;">'.$recordNameMapping[$id].'</td></tr>';
+			$output .= '<ul><li>'.$recordNameMapping[$id].'</li></ul>';
 		} else {
-			$output .= '<tr><td style="text-align:left;"><a href="index.php?module='.$sModule.
-				'&action=DetailView&record='.$id.'&start='.$recordPageMapping[$id].'">'.$recordNameMapping[$id].'</a></td></tr>';
+			$output .= '<ul><li><a href="index.php?module='.$sModule.
+				'&action=DetailView&record='.$id.'&start='.$recordPageMapping[$id].'">'.$recordNameMapping[$id].'</a></li></ul>';
 		}
 	}
 }
-$output .= '</table>';
-$output .= '</div></td></tr></table></td></tr></table>';
+$output .= '</div>';
+$output .= '</section>';
 
 echo $output;
 ?>
