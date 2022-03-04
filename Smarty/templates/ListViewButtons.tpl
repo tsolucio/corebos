@@ -1,14 +1,14 @@
 <div class="slds-button-group" role="group">
 	{foreach key=button_check item=button_label from=$BUTTONS}
 		{if $button_check eq 'del'}
-			<button class="slds-button slds-button_text-destructive" onclick="return massDelete('{$MODULE}')">
+			<button type="button" class="slds-button slds-button_text-destructive" onclick="return massDelete('{$MODULE}')">
 				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 				</svg>
 			{$button_label}
 		</button>
 		{elseif $button_check eq 'mass_edit'}
-			<button class="slds-button slds-button_success" onclick="return mass_edit(this, 'massedit', '{$MODULE}')" style="color: #ffffff">
+			<button type="button" class="slds-button slds-button_success" onclick="return mass_edit(this, 'massedit', '{$MODULE}')" style="color: #ffffff">
 				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 				</svg>
@@ -23,7 +23,7 @@
 			{if $moduleView == 'tuigrid'}
 				{assign var="customfunction" value="DocumentsView.MoveFile()"}
 			{/if}
-			<button name="move" class="slds-button slds-button_neutral" onClick="{$customfunction}" title="{$MOD.LBL_MOVE_DOCUMENTS}">
+			<button type="button" name="move" class="slds-button slds-button_neutral" onclick="{$customfunction}" title="{$MOD.LBL_MOVE_DOCUMENTS}">
 				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#touch_action"></use>
 				</svg>
@@ -55,7 +55,7 @@
 					</div>
 				</div>
 			</div>
-			<button name="add" class="slds-button slds-button_neutral" onClick="fnvshobj(this,'orgLay');" title="{$MOD.LBL_ADD_NEW_FOLDER}">
+			<button type="button" name="add" class="slds-button slds-button_neutral" onclick="fnvshobj(this,'orgLay');" title="{$MOD.LBL_ADD_NEW_FOLDER}">
 				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#touch_action"></use>
 				</svg>
@@ -99,7 +99,7 @@
 			</div>
 		{/if}
 		{if $EMPTY_FOLDERS|@count gt 0}
-			<button name="show" class="slds-button slds-button_neutral" onClick="fnvshobj(this,'emptyfolder');" title="{$MOD.LBL_VIEW_EMPTY_FOLDERS}">
+			<button type="button" name="show" class="slds-button slds-button_neutral" onclick="fnvshobj(this,'emptyfolder');" title="{$MOD.LBL_VIEW_EMPTY_FOLDERS}">
 				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#touch_action"></use>
 				</svg>

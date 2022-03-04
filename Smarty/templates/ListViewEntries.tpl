@@ -133,7 +133,7 @@
 
 			<table border=0 cellspacing=0 cellpadding=2 width=100%>
 			<tr>
-				<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
+				<td style="padding-right:20px" nowrap></td>
 				<td align="right" width=40%>&nbsp;</td>
 			</tr>
 			</table>

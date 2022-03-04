@@ -14,7 +14,7 @@
         {if $customlink_icon eq ''}
             {assign var="customlink_icon" value='touch_action'}
         {/if}
-        <button id="LISTVIEWBASIC_{$customlink_id}" class="slds-button slds-button_neutral" onclick="{$customlink_href}">
+        <button type="button" id="LISTVIEWBASIC_{$customlink_id}" class="slds-button slds-button_neutral" onclick="{$customlink_href}">
             <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$customlink_icon}"></use>
             </svg>
