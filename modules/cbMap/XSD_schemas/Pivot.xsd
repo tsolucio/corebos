@@ -5,6 +5,8 @@
         <xs:element type="xs:string" name="module"/>
         <xs:element type="xs:string" name="filter"/>
         <xs:element type="xs:string" name="aggregate"/>
+        <xs:element type="xs:string" name="aggregatorName"/>
+        <xs:element type="xs:string" name="rendererName"/>
         <xs:element name="aggrgations">
           <xs:complexType>
             <xs:sequence>

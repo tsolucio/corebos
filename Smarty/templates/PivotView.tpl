@@ -60,7 +60,7 @@ $(function() {
 				$.pivotUtilities.gtRenderers
 			);
 		}
-		var nrecoPivotExt = new NRecoPivotTableExtensions({
+		const nrecoPivotExt = new NRecoPivotTableExtensions({
 			drillDownHandler: function (dataFilter) {
 				var filterParts = [];
 				for (var k in dataFilter) {
@@ -68,10 +68,10 @@ $(function() {
 				}
 			}
 		});
-		$("#output").pivotUI([{/literal}{$RECORDS}{literal}], {
+		let pivotConfig = {
 			rows: [{/literal}{$ROWS}{literal}],
 			cols: [{/literal}{$COLS}{literal}],
-			{/literal}{$aggreg}{literal},
+			{/literal}{$aggreg}{literal}
 			aggregators: $.extend($.pivotUtilities.aggregators, $.pivotUtilities.multiAggs),
 			renderers: renderers,
 			rendererOptions: {
@@ -121,7 +121,16 @@ $(function() {
 					}
 				}
 			}
-		});
+		};
+		const aggregatorName = {/literal}'{$aggregatorName}'{literal};
+		const rendererName = {/literal}'{$rendererName}'{literal};
+		if (aggregatorName != '') {
+			pivotConfig.aggregatorName = aggregatorName;
+		}
+		if (rendererName != '') {
+			pivotConfig.rendererName = rendererName;
+		}
+		$("#output").pivotUI([{/literal}{$RECORDS}{literal}], pivotConfig);
 	});
 });
 async function getData(url, filter) {

@@ -21,13 +21,15 @@
 	<module>Module name</module>
 	<filter>filter name</filter>
 	<aggregate>aggregator</aggregate>
-	<aggrgations>
+	<rendererName>Multifact Aggregators</rendererName>
+	<aggregatorName>GT Table Heatmap and Barchart</aggregatorName>
+	<aggregations>
 		<aggregation>
 			<aggType>Sum</aggType>
 			<arguments>estimated_effort</arguments>
 			<name>effort</name>
 		</aggregation>
-	</aggrgations>
+	</aggregations>
 	<rows>
 		<row>
 			<name>value of module field name</name>
@@ -60,6 +62,8 @@ class Pivot extends processcbMap {
 		$k = 0;
 		$this->mapping['module'] = (string)$xml->module;
 		$this->mapping['aggregate'] = (string)$xml->aggregate;
+		$this->mapping['aggregatorName'] = (string)$xml->aggregatorName;
+		$this->mapping['rendererName'] = (string)$xml->rendererName;
 		$customView = new CustomView($this->mapping['module']);
 		$rows = array();
 		$aggregations = array();
