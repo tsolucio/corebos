@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '297e60060ca4e587364105f7bcbc79a4f1937a3b',
+        'reference' => '980cd9a5da5f936982fdb62037d7b73d013bbcee',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '297e60060ca4e587364105f7bcbc79a4f1937a3b',
+            'reference' => '980cd9a5da5f936982fdb62037d7b73d013bbcee',
             'dev_requirement' => false,
         ),
         'automattic/woocommerce' => array(
@@ -789,6 +789,15 @@
             'install_path' => __DIR__ . '/../smalot/pdfparser',
             'aliases' => array(),
             'reference' => 'ec72a99028ba5e21a0acad92047b85e128cbf81f',
+            'dev_requirement' => false,
+        ),
+        'smi2/phpclickhouse' => array(
+            'pretty_version' => '1.4.2',
+            'version' => '1.4.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../smi2/phpclickhouse',
+            'aliases' => array(),
+            'reference' => 'be186633af4c79e63f760f83030557b62bdd7eba',
             'dev_requirement' => false,
         ),
         'starkbank/ecdsa' => array(

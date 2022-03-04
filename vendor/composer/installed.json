@@ -4802,6 +4802,68 @@
             "install-path": "../smalot/pdfparser"
         },
         {
+            "name": "smi2/phpclickhouse",
+            "version": "1.4.2",
+            "version_normalized": "1.4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smi2/phpClickHouse.git",
+                "reference": "be186633af4c79e63f760f83030557b62bdd7eba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smi2/phpClickHouse/zipball/be186633af4c79e63f760f83030557b62bdd7eba",
+                "reference": "be186633af4c79e63f760f83030557b62bdd7eba",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^8.2",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^9.5",
+                "sebastian/comparator": "^4.0"
+            },
+            "time": "2022-02-11T14:42:16+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "ClickHouseDB\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Strykhar",
+                    "email": "isublimity@gmail.com",
+                    "homepage": "https://github.com/isublimity"
+                }
+            ],
+            "description": "PHP ClickHouse Client",
+            "homepage": "https://github.com/smi2/phpClickHouse",
+            "keywords": [
+                "clickhouse",
+                "client",
+                "curl",
+                "driver",
+                "http",
+                "http client",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/smi2/phpClickHouse/issues",
+                "source": "https://github.com/smi2/phpClickHouse/tree/1.4.2"
+            },
+            "install-path": "../smi2/phpclickhouse"
+        },
+        {
             "name": "starkbank/ecdsa",
             "version": "0.0.5",
             "version_normalized": "0.0.5.0",

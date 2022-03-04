@@ -148,6 +148,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'C' => 
         array (
             'Clue\\StreamFilter\\' => 18,
+            'ClickHouseDB\\' => 13,
         ),
         'A' => 
         array (
@@ -459,6 +460,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'Clue\\StreamFilter\\' => 
         array (
             0 => __DIR__ . '/..' . '/clue/stream-filter/src',
+        ),
+        'ClickHouseDB\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/smi2/phpclickhouse/src',
         ),
         'Automattic\\WooCommerce\\' => 
         array (
