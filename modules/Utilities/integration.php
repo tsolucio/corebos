@@ -110,6 +110,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigstripepayment':
 		include_once 'include/integrations/stripepayment/settings.php';
 		break;
+	case 'getconfigsclickhouse':
+	case 'setconfigsclickhouse':
+		include_once 'include/integrations/clickhouse/settings.php';
+		break;
 	case 'getconfigdenormalization':
 	case 'setconfigdenormalization':
 		include_once 'include/integrations/denormalize/settings.php';
@@ -235,6 +239,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('Mautic Activation', 'Utilities'),
 				'desc' => getTranslatedString('Mautic Activation_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigmautic',
+			),
+			array(
+				'abbr' => 'CH',
+				'title' => getTranslatedString('ClickHouse', 'Utilities'),
+				'desc' => getTranslatedString('ClickHouse_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsclickhouse',
 			),
 		);
 		if (file_exists('build/wsChanges/LoginSession.php')) {

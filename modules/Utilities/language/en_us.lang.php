@@ -165,5 +165,12 @@ $mod_strings = array(
 	'mautic_username' => 'Username',
 	'mautic_password' => 'Password',
 	'mautic_sync_with_accounts' => 'Sync Mautic Leads with Accounts',
+	'ClickHouse_Desc' => 'Configure ClickHouse',
+	'clickhouse_host' => 'Host',
+	'clickhouse_port' => 'Port',
+	'clickhouse_username' => 'Username',
+	'clickhouse_password' => 'Password',
+	'clickhouse_active' => 'Active',
+	'clickhouse_database' => 'Database',
 );
 ?>

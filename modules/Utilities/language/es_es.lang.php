@@ -167,5 +167,12 @@ $mod_strings = array(
 	'mautic_username' => 'Nombre Usuario',
 	'mautic_password' => 'Contraseña',
 	'mautic_sync_with_accounts' => 'Sincronizar Contactos de Mautic con Cuentas',
+	'ClickHouse_Desc' => 'Configurar ClickHouse',
+	'clickhouse_host' => 'Servidor',
+	'clickhouse_port' => 'Puerto',
+	'clickhouse_username' => 'Nombre Usuario',
+	'clickhouse_password' => 'Contraseña',
+	'clickhouse_active' => 'Activado',
+	'clickhouse_database' => 'Base de Datos',
 );
 ?>
