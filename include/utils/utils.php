@@ -3787,7 +3787,11 @@ function retrieveCompanyDetails() {
 				$companyDetails['favicon'] = $path.$attachmentsid.'_'.$favicon;
 			}
 			if ($name == $companylogo && !isset($companyDetails['companylogo'])) {
-				$companyDetails['companylogo'] = $path.$attachmentsid.'_'.$companylogo;
+				if (file_exists($path.$attachmentsid.'_'.$companylogo)) {
+					$companyDetails['companylogo'] = $path.$attachmentsid.'_'.$companylogo;
+				} else {
+					$companyDetails['companylogo'] = 'themes/images/coreboslogo.png';
+				}
 			}
 			if ($name == $applogo && !isset($companyDetails['applogo'])) {
 				$companyDetails['applogo'] = $path.$attachmentsid.'_'.$applogo;
