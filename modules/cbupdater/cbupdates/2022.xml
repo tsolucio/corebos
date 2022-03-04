@@ -42,4 +42,11 @@
 	<classname>servicecontracttermsandconditions</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>egimata</author>
+	<description>Update Settings Icons</description>
+	<filename>build/changeSets/2022/updateSettingsIcons.php</filename>
+	<classname>updateSettingsIcons</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
