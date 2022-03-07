@@ -275,11 +275,9 @@ class corebos_mautic {
 			$iniAuth = new ApiAuth();
 			$version = $this->getSettings('version');
 			if ($version == 'BasicAuth') {
-				$auth = $iniAuth->newAuth($this->getSettings(), 'BasicAuth');
-				return $auth;
+				return $iniAuth->newAuth($this->getSettings(), 'BasicAuth');
 			} elseif ($version == 'OAuth2') {
-				$auth = $iniAuth->newAuth($this->getSettings());
-				return $auth;
+				return $iniAuth->newAuth($this->getSettings());
 				try {
 					if ($auth->validateAccessToken()) {
 						if ($auth->accessTokenUpdated()) {
@@ -317,8 +315,8 @@ class corebos_mautic {
 						$mauticdata[$field['alias']] = $field['value'];
 					}
 
-					if ($mauticdata['corebos_id'] == '') {
-						if ($mauticdata['lastname'] != '' && $mauticdata['email'] != '') {
+					if (empty($mauticdata['corebos_id'])) {
+						if (!empty($mauticdata['lastname']) && !empty($mauticdata['email'])) {
 							$record = $this->createCBContact($contact_id, $mauticdata);
 							// Update corebos_id
 							if ($record) {
@@ -400,8 +398,6 @@ class corebos_mautic {
 			$companies = $companyApi->getList();
 			if (!empty($companies['companies'])) {
 				foreach ($companies['companies'] as $company_id => $company) {
-					var_dump($company);
-					die();
 					$core_fields = $company['fields']['core'];
 					$professional_fields = $company['fields']['professional'];
 					$fields = array_merge($core_fields, $professional_fields);
@@ -411,8 +407,8 @@ class corebos_mautic {
 						$mauticdata[$field['alias']] = $field['value'];
 					}
 
-					if ($mauticdata['company_corebos_id'] == '') {
-						if ($mauticdata['accountname'] != '') {
+					if (empty($mauticdata['company_corebos_id'])) {
+						if (!empty($mauticdata['accountname'])) {
 							$record = $this->createCBAccount($company_id, $mauticdata);
 							// Update company_corebos_id
 							if ($record) {
