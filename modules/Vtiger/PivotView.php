@@ -28,9 +28,11 @@ if ($cbMapid) {
 		$smarty->assign('showDesert', true);
 	} else {
 		$smarty->assign('showDesert', false);
-
 		$viewid = $cbMapKb['filter'];
 		$fieldaggr = $cbMapKb['aggregate'];
+		$aggregations = $cbMapKb['aggregations'];
+		$aggregatorName = $cbMapKb['aggregatorName'];
+		$rendererName = $cbMapKb['rendererName'];
 		$rows = $cbMapKb['rows'];
 		$cols = $cbMapKb['cols'];
 
@@ -48,7 +50,7 @@ if ($cbMapid) {
 			$namecolaggr[] = $cl['name'];
 		}
 		if (isset($fieldaggr) && $fieldaggr!='') {
-			$aggreg='aggregator: sum(intFormat)(["'.$fieldaggr.'"])';
+			$aggreg='aggregator: sum(intFormat)(["'.$fieldaggr.'"]),';
 			$namecolaggr[] = $fieldaggr;
 		} else {
 			$aggreg = '';
@@ -83,8 +85,10 @@ if ($cbMapid) {
 		$recordsimpl = '{'.implode('},{', $records).'}';
 		$namerw = '"'.implode('","', $namelabelrow).'"';
 		$namecl = '"'.implode('","', $namelabelcol).'"';
-
 		$smarty->assign('aggreg', $aggreg);
+		$smarty->assign('aggregations', json_encode($aggregations));
+		$smarty->assign('aggregatorName', $aggregatorName);
+		$smarty->assign('rendererName', $rendererName);
 		$smarty->assign('ROWS', $namerw);
 		$smarty->assign('COLS', $namecl);
 		$smarty->assign('RECORDS', $recordsimpl);

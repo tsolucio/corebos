@@ -5,6 +5,23 @@
         <xs:element type="xs:string" name="module"/>
         <xs:element type="xs:string" name="filter"/>
         <xs:element type="xs:string" name="aggregate"/>
+        <xs:element type="xs:string" name="aggregatorName"/>
+        <xs:element type="xs:string" name="rendererName"/>
+        <xs:element name="aggrgations">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="aggregation" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="aggType"/>
+                    <xs:element type="xs:string" name="arguments"/>
+                    <xs:element type="xs:string" name="name"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
         <xs:element name="rows">
           <xs:complexType>
             <xs:sequence>
@@ -22,7 +39,7 @@
         <xs:element name="cols">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="col">
+              <xs:element name="col" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element type="xs:string" name="name"/>
