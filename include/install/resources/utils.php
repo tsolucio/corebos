@@ -724,15 +724,7 @@ class ConfigFile_Utils {
 	}
 
 	public static function getDbDefaultPort($dbType) {
-		if (Common_Install_Wizard_Utils::isMySQL($dbType)) {
-			return "3306";
-		}
-		if (Common_Install_Wizard_Utils::isPostgres($dbType)) {
-			return "5432";
-		}
-		if (Common_Install_Wizard_Utils::isOracle($dbType)) {
-			return '1521';
-		}
+		return '3306';
 	}
 
 	public function createConfigFile() {
@@ -948,14 +940,6 @@ class Common_Install_Wizard_Utils {
 
 	public static function isMySQL($dbType) {
 		return (stripos($dbType, 'mysql') === 0);
-	}
-
-	public static function isOracle($dbType) {
-		return $dbType == 'oci8';
-	}
-
-	public static function isPostgres($dbType) {
-		return $dbType == 'pgsql';
 	}
 
 	public static function getInstallableModulesFromPackages() {

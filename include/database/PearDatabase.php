@@ -179,7 +179,7 @@ class PearDatabase {
 	}
 
 	/**
-	 * Reset query result for resuing if cache is enabled.
+	 * Reset query result for reusing if cache is enabled
 	 */
 	public function resetQueryResultToEOF(&$result) {
 		if ($result && $result->MoveLast()) {
@@ -189,12 +189,6 @@ class PearDatabase {
 
 	public function isMySQL() {
 		return (stripos($this->dbType, 'mysql') === 0);
-	}
-	public function isOracle() {
-		return $this->dbType=='oci8';
-	}
-	public function isPostgres() {
-		return $this->dbType=='pgsql';
 	}
 
 	public function println($msg) {
@@ -289,7 +283,7 @@ class PearDatabase {
 	 */
 	public function logSqlTiming($startat, $endat, $sql, $params = false) {
 		global $logsqltm, $SQL_LOG_INCLUDE_CALLER;
-		// Specifically for timing the SQL execution, you need to enable DEBUG in log4php.properties
+		// Specifically for timing the SQL execution, you need to enable DEBUG in logging system
 		if ($logsqltm->isDebugEnabled()) {
 			if (!empty($SQL_LOG_INCLUDE_CALLER)) {
 				$callers = debug_backtrace();
@@ -759,15 +753,7 @@ class PearDatabase {
 	}
 
 	public function sql_concat($list) {
-		switch ($this->dbType) {
-			case 'mysql':
-			case 'mysqli':
-				return 'concat('.implode(',', $list).')';
-			case 'pgsql':
-				return '('.implode('||', $list).')';
-			default:
-				throw new InvalidArgumentException('unsupported dbtype: '.$this->dbType);
-		}
+		return 'concat('.implode(',', $list).')';
 	}
 
 	public function query_result(&$result, $row, $col = 0) {
@@ -974,9 +960,7 @@ class PearDatabase {
 	public function disconnect() {
 		$this->println('DB disconnect');
 		if (isset($this->database)) {
-			if ($this->dbType == 'mysql') {
-				mysql_close($this->database);
-			} elseif ($this->dbType == 'mysqli') {
+			if ($this->dbType == 'mysqli') {
 				mysqli_close($this->database);
 			} else {
 				$this->database->disconnect();
