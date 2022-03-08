@@ -55,13 +55,19 @@ if ($cbMapid) {
 		} else {
 			$aggreg = '';
 		}
+		$aggcols = array();
+		if (!empty($aggregations)) {
+			foreach ($aggregations as $agg) {
+				$aggcols[] = $agg['arguments'][0];
+			}
+		}
 		$queryGenerator = new QueryGenerator($currentModule, $current_user);
 		if ($viewid != '0') {
 			$queryGenerator->initForCustomViewById($viewid);
 		} else {
 			$queryGenerator->initForDefaultCustomView();
 		}
-		$queryGenerator->setFields(array_merge($queryGenerator->getFields(), $namerow, $namecolaggr));
+		$queryGenerator->setFields(array_merge($queryGenerator->getFields(), $namerow, $namecolaggr, $aggcols));
 		$list_query = $adb->pquery($queryGenerator->getQuery(), array());
 		$count = $adb->num_rows($list_query);
 		for ($i = 0; $i < $count; $i++) {
@@ -79,7 +85,14 @@ if ($cbMapid) {
 			}
 			$rec++;
 			$mainfield = getEntityField($currentModule)['fieldname'];
-			$record[$rec] = 'Name:"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $mainfield))).'"';
+			$record[$rec] = '"Name":"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $mainfield))).'"';
+			if (!empty($aggregations)) {
+				$currentRow = array();
+				foreach ($aggregations as $agg) {
+					$currentRow[] = '"'.$agg['name'].'":"'.html_entity_decode($adb->query_result($list_query, $i, $agg['arguments'][0])).'"';
+				}
+				$record[$rec] .= ','.implode(',', $currentRow);
+			}
 			$records[$i] = implode(',', $record);
 		}
 		$recordsimpl = '{'.implode('},{', $records).'}';
@@ -92,6 +105,7 @@ if ($cbMapid) {
 		$smarty->assign('ROWS', $namerw);
 		$smarty->assign('COLS', $namecl);
 		$smarty->assign('RECORDS', $recordsimpl);
+		$smarty->assign('bmapname', $bmapname);
 	}
 } else {
 	$smarty->assign('showDesert', true);
