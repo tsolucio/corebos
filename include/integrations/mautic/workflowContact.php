@@ -106,7 +106,7 @@ function mauticContactDelete($entity) {
 	if (!$mautic->isActive()) {
 		return;
 	}
-	if (isset($entity->data['mautic_id']) && $entity->data['mautic_id'] != '') {
+	if (!empty($entity->data['mautic_id'])) {
 		$send2mautic = array();
 		$send2mautic['corebos_id'] = '';
 		$send2mautic['ipAddress'] = $_SERVER['REMOTE_ADDR'];
