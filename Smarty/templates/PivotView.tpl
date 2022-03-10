@@ -24,8 +24,9 @@
 <link href="include/pivottable/pivot.css" rel="stylesheet">
 <script type="text/javascript">
 {literal}
+const bmapname = {/literal}'{$bmapname}'{literal};
 $(function() {
-	let url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getMapByName&mapname=${gVTModule}_Pivot`;
+	let url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getMapByName&mapname=${bmapname}`;
 	fetch(
 		url,
 		{
