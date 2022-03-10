@@ -10,6 +10,10 @@
 
 //check for mail server configuration through ajax
 if (isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true') {
+	if (GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', '')!='') {
+		echo 'SUCCESS';
+		die();
+	}
 	list($systemEmailClassName, $systemEmailClassPath)=cbEventHandler::do_filter('corebos.filter.systemEmailClass.getname', array('Emails', 'modules/Emails/Emails.php'));
 	require_once $systemEmailClassPath;
 	if (call_user_func(array($systemEmailClassName, 'emailServerCheck'))) {
