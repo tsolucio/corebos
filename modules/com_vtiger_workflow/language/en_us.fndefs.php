@@ -1114,7 +1114,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'conditions',
 			'type' => 'String',
 			'optional' => true,
-			'desc' => 'optional condition used to filter the records: [field,op,value,glue],[...]',
+			'desc' => 'optional condition used to filter the records: [field,op,value,glue],[...] Note that the evaluation of the value is done with a simple render that does not support functions, if you need to use workflow expression language you must add a parameter with the word "expression" to force the evaluation of the value as an expression.',
 		),
 	),
 	'categories' => array('Statistics'),

@@ -1111,7 +1111,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'conditions',
 			'type' => 'Texto',
 			'optional' => true,
-			'desc' => 'condición opcional usada para filtrar los registros: [field,op,value,glue],[...]',
+			'desc' => 'condición opcional usada para filtrar los registros: [field,op,value,glue],[...] Ten en cuenta que la evaluación del valor se realiza con un proceso simple que no admite funciones, si necesitas usar el lenguaje de expresión de flujos de trabajo, tienes que añadir un parámetro con la palabra "expression" para forzar la evaluación del valor como una expresión.',
 		),
 	),
 	'categories' => array('Statistics'),
