@@ -50,6 +50,6 @@
         "php-http/curl-client": "2.2",
         "mautic/api-library": "3.0",
         "vaites/php-apache-tika": "1.2.1",
-        "smi2/phpclickhouse": "^1.4"
+        "smi2/phpclickhouse": "1.4.1"
     }
 }
