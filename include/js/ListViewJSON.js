@@ -1297,5 +1297,21 @@ const DocumentsView = {
 			method: 'POST',
 			url: `${url}&action=DocumentsAjax&file=updateDocumentsRelations&mode=delete&actionType=listview`
 		});
+	},
+
+	SearchDocuments: () => {
+		const search_text = document.getElementById('search_text').value;
+		if (search_text != '') {
+			for (let idIns in lvdataGridInstance) {
+				ListView.Instance = idIns;
+				lvdataGridInstance[ListView.Instance].clear();
+				lvdataGridInstance[ListView.Instance].setRequestParams({
+					'search': '',
+					'searchtype': '',
+					'searchFullDocuments': search_text
+				});
+				lvdataGridInstance[ListView.Instance].reloadData();
+			}
+		}
 	}
 };

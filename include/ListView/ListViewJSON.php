@@ -316,8 +316,12 @@ class GridListView {
 	public function processResults($result, $field_types, $parentid = 0) {
 		global $adb, $current_user;
 		$Colorizer = false;
+		$ids = array();
 		if (vtlib_isModuleActive('Colorizer')) {
 			$Colorizer = true;
+		}
+		if (isset($_REQUEST['searchFullDocuments']) && !empty($_REQUEST['searchFullDocuments'])) {
+			$ids = $this->SearchFullDocuments($_REQUEST['searchFullDocuments']);
 		}
 		$data = array();
 		$reference_field = getEntityFieldNames($this->module);
@@ -435,6 +439,11 @@ class GridListView {
 			if ($Colorizer) {
 				$className = $this->enableColorizer($colorizer_row);
 				$rows['_attributes'] = $className;
+			}
+			if (!$ids && isset($_REQUEST['searchFullDocuments']) && !empty($_REQUEST['searchFullDocuments'])) {
+				continue;
+			} elseif (isset($_REQUEST['searchFullDocuments']) && !empty($_REQUEST['searchFullDocuments']) && is_array($ids) && !in_array($rows['recordid'], $ids)) {
+				continue;
 			}
 			array_push($data, $rows);
 		}
@@ -744,6 +753,7 @@ class GridListView {
 	}
 
 	public function findDocumentFolders() {
+		require_once 'modules/DocumentFolders/DocumentFolders.php';
 		global $current_user, $adb;
 		$focus = new DocumentFolders();
 		$referenceField = 'parentfolder';
@@ -768,6 +778,22 @@ class GridListView {
 			$folders[] = 1;
 		}
 		return $folders;
+	}
+
+	public function SearchFullDocuments($text) {
+		global $adb;
+		$this->DocumentSearch = true;
+		$result = $adb->pquery('select * from vtiger_documentsearchinfo where text LIKE ?', array(
+			'%'.$text.'%'
+		));
+		if ($adb->num_rows($result) > 0) {
+			$ids = array();
+			while ($row = $result->FetchRow()) {
+				$ids[] = $row['documentid'];
+			}
+			return $ids;
+		}
+		return false;
 	}
 }
 ?>
