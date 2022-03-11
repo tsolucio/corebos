@@ -55,6 +55,18 @@
 					</svg>
 					{$APP.LBL_SEARCH_NOW_BUTTON}
 				</a>
+				{if isset($Apache_Tika_URL) && $MODULE == 'Documents'}
+				{assign var="searchfunction" value="callSearch('Basic', 'SearchDocuments');document.basicSearch.searchtype.searchlaunched='basic';"}
+				{if $moduleView=='tuigrid'}
+					{assign var="searchfunction" value="DocumentsView.SearchDocuments()"}
+				{/if}
+				<button class="slds-button slds-button_icon slds-button_icon-more" type="button" onclick="{$searchfunction}">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+					</svg>
+					Search Documents
+				</button>
+				{/if}
 				{if !empty($moduleView) && $moduleView=='tuigrid'}
 				<button class="slds-button slds-button_icon slds-button_icon-more" title="{'LBL_CLEAR'|@getTranslatedString}" type="button"
 					onClick="ListView.Reload()">
