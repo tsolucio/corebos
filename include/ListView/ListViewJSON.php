@@ -325,6 +325,7 @@ class GridListView {
 		}
 		$data = array();
 		$reference_field = getEntityFieldNames($this->module);
+		$columnnameVal = $this->getFieldNameByColumn($reference_field['fieldname']);
 		$rowCount = $adb->num_rows($result);
 		for ($i=0; $i < $rowCount; $i++) {
 			$rows = array();
@@ -429,7 +430,7 @@ class GridListView {
 				$rows['recordid'] = $recordID;
 				$rows['reference_field'] = array(
 					'columnname' => $reference_field['fieldname'],
-					'fieldname' => $this->getFieldNameByColumn($reference_field['fieldname'])
+					'fieldname' => $columnnameVal
 				);
 				$rows['relatedRows'] = $linkRow;
 				if ($this->module == 'Documents') {
