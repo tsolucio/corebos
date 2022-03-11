@@ -123,6 +123,10 @@ if (isset($query_string) && $query_string != '') {
 				if ($where != '') {
 					$listquery .= ' and ('.$where.')';
 				}
+				$Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '');
+				if (!empty($Apache_Tika_URL)) {
+					$listquery .= ' OR vtiger_documentsearchinfo.text LIKE "%'.$search_val.'%"';
+				}
 				if (!(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')) {
 					$count_result = $adb->query($listquery);
 					$noofrows = $adb->num_rows($count_result);
