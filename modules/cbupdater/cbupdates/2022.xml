@@ -49,4 +49,11 @@
 	<classname>updateSettingsIcons</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Register Apache Tika Service(Cron)</description>
+	<filename>build/changeSets/2022/cronApacheTika.php</filename>
+	<classname>cronApacheTika</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

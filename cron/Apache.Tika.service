@@ -1,0 +1,54 @@
+<?php
+/*************************************************************************************************
+ * Copyright 2022 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
+require_once 'include/utils/utils.php';
+global $adb;
+$current_user = Users::getActiveAdminUser();
+$Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '');
+if (empty($Apache_Tika_URL)) {
+	exit;
+}
+$client = \Vaites\ApacheTika\Client::make($Apache_Tika_URL);
+$client = \Vaites\ApacheTika\Client::prepare($Apache_Tika_URL);
+$documents = $adb->pquery('
+	select path,attach.attachmentsid,name,modifiedtime,deleted,rel.crmid from vtiger_notes notes
+	inner join vtiger_crmentity crmentity on crmentity.crmid=notes.notesid
+	inner join vtiger_seattachmentsrel rel on rel.crmid=notes.notesid
+	inner join vtiger_attachments attach on rel.attachmentsid=attach.attachmentsid
+	', array());
+while ($row = $documents->FetchRow()) {
+	$filename = $row['path'].$row['attachmentsid'].'_'.$row['name'];
+	$modifiedtime = $row['modifiedtime'];
+	$crmid = $row['crmid'];
+	$deleted = $row['deleted'];
+	if (file_exists($filename)) {
+		$language = $client->getLanguage($filename);
+		$text = $client->getText($filename);
+		if ($deleted == '1') {
+			$adb->pquery('delete from vtiger_documentsearchinfo where documentid=?', array(
+				$crmid
+			));
+		} else {
+			$rs = $adb->pquery('select * from vtiger_documentsearchinfo where documentid=?', array(
+				$crmid
+			));
+			if ($adb->num_rows($rs) == 0) {
+				$adb->pquery('insert into vtiger_documentsearchinfo (documentid,language,text) values(?,?,?)', array(
+					$crmid, $language, $text
+				));
+			}
+		}
+	}
+}
