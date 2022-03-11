@@ -657,73 +657,75 @@ class GridListView {
 				));
 				$numOfRows = $adb->num_rows($sql);
 				if ($numOfRows > 0) {
-					$condition = $adb->query_result($sql, 0, 'condition');
-					$additional = $adb->query_result($sql, 0, 'additional');
-					$className = $adb->query_result($sql, 0, 'classname');
-					$additional = json_decode($additional, true);
-					$condition = json_decode($condition, true);
-					if (!empty($condition)) {
-						$conditionRes = array();
-						foreach ($condition as $value) {
-							$field = $value['field'];
-							$not = $value['not'] == 1 ? true : false;
-							$condition = $value['condition'];
-							$parameter = isset($value['parameter']) ? $value['parameter'][0] : '';
-							$fieldType = getUItypeByFieldName($this->module, $field);
-							if ($fieldType == '10' && ($row[$field] != 0 || $row[$field] != null)) {
-								$parent_module = getSalesEntityType($row[$field]);
-								if ($parent_module != '') {
-									$displayValueArray = getEntityName($parent_module, $row[$field]);
-									$field10Value = '';
-									if (!empty($displayValueArray)) {
-										$field10Value = $displayValueArray[$row[$field]];
-										if ($field != $fieldName) {
-											$row[$field] = $field10Value;
-										} else {
-											$fieldValue = $field10Value;
+					for ($i=0; $i < $numOfRows; $i++) {
+						$condition = $adb->query_result($sql, $i, 'condition');
+						$additional = $adb->query_result($sql, $i, 'additional');
+						$className = $adb->query_result($sql, $i, 'classname');
+						$additional = json_decode($additional, true);
+						$condition = json_decode($condition, true);
+						if (!empty($condition)) {
+							$conditionRes = array();
+							foreach ($condition as $value) {
+								$field = $value['field'];
+								$not = $value['not'] == 1 ? true : false;
+								$condition = $value['condition'];
+								$parameter = isset($value['parameter']) ? $value['parameter'][0] : '';
+								$fieldType = getUItypeByFieldName($this->module, $field);
+								if ($fieldType == '10' && ($row[$field] != 0 || $row[$field] != null)) {
+									$parent_module = getSalesEntityType($row[$field]);
+									if ($parent_module != '') {
+										$displayValueArray = getEntityName($parent_module, $row[$field]);
+										$field10Value = '';
+										if (!empty($displayValueArray)) {
+											$field10Value = $displayValueArray[$row[$field]];
+											if ($field != $fieldName) {
+												$row[$field] = $field10Value;
+											} else {
+												$fieldValue = $field10Value;
+											}
 										}
 									}
 								}
+								if ($field != $fieldName) {
+									if ($field == 'assigned_user_id') {
+										$row[$field] = getUserFullName($row[$field]);
+									}
+									if (!isset($row[$field])) {
+										$field = getColumnnameByFieldname($tabid, $field);
+									}
+									$res = processConditions($condition, $field, $not, $parameter, $row[$field]);
+									array_push($conditionRes, $res);
+								} else {
+									if ($field == 'assigned_user_id') {
+										$fieldValue = getUserFullName($fieldValue);
+									}
+									$res = processConditions($condition, $field, $not, $parameter, $fieldValue);
+									array_push($conditionRes, $res);
+								}
 							}
-							if ($field != $fieldName) {
-								if ($field == 'assigned_user_id') {
-									$row[$field] = getUserFullName($row[$field]);
+							if ($additional['listviewrow'] == 0) {
+								if (!in_array(false, $conditionRes)) {
+									$fields = $fieldName.'::'.$className;
+									array_push($classNames, $fields);
 								}
-								if (!isset($row[$field])) {
-									$field = getColumnnameByFieldname($tabid, $field);
-								}
-								$res = processConditions($condition, $field, $not, $parameter, $row[$field]);
-								array_push($conditionRes, $res);
 							} else {
-								if ($field == 'assigned_user_id') {
-									$fieldValue = getUserFullName($fieldValue);
+								if (!in_array(false, $conditionRes)) {
+									$fields = array(
+										'row' => array($className)
+									);
+									array_push($classNames, $fields);
 								}
-								$res = processConditions($condition, $field, $not, $parameter, $fieldValue);
-								array_push($conditionRes, $res);
-							}
-						}
-						if ($additional['listviewrow'] == 0) {
-							if (!in_array(false, $conditionRes)) {
-								$fields = $fieldName.'::'.$className;
-								array_push($classNames, $fields);
 							}
 						} else {
-							if (!in_array(false, $conditionRes)) {
+							if ($additional['listviewrow'] == 0) {
+								$fields = $fieldName.'::'.$className;
+								array_push($classNames, $fields);
+							} else {
 								$fields = array(
 									'row' => array($className)
 								);
 								array_push($classNames, $fields);
 							}
-						}
-					} else {
-						if ($additional['listviewrow'] == 0) {
-							$fields = $fieldName.'::'.$className;
-							array_push($classNames, $fields);
-						} else {
-							$fields = array(
-								'row' => array($className)
-							);
-							array_push($classNames, $fields);
 						}
 					}
 				}
