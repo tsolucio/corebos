@@ -49,4 +49,11 @@
 	<classname>updateSettingsIcons</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>xhildashazivari</author>
+	<description>Update vtiger_cron_task Table</description>
+	<filename>build/changeSets/2022/updateCronTaskTable.php</filename>
+	<classname>updateCronTaskTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
