@@ -187,6 +187,18 @@ function vtws_getParameter($parameterArray, $paramName, $default = null) {
 	return $param;
 }
 
+function vtws_logcalls($input) {
+	global $current_user, $application_unique_key;
+	if (GlobalVariable::getVariable('Webservice_LogCallsToQueue', '')!='') {
+		$appname = GlobalVariable::getVariable('Application_Unique_Identifier', $application_unique_key);
+		$input['application'] = $appname;
+		$input['donefrom'] = $_SERVER['REMOTE_ADDR'];
+		unset($input['sessionName']);
+		$cbmq = coreBOS_MQTM::getInstance();
+		$cbmq->sendMessage('WebServiceLogCalls', 'logwscall', 'logwscall', 'WSCall', '1:M', 1, 172800, 0, $current_user->id, json_encode($input));
+	}
+}
+
 function vtws_getEntityNameFields($moduleName) {
 	global $adb;
 	$query = 'select fieldname,tablename,entityidfield from vtiger_entityname where modulename = ?';
