@@ -53,6 +53,7 @@ class QueryGenerator {
 	public static $OR = 'OR';
 	private $customViewFields;
 	public $limit = '';
+	private $SearchDocuments = false;
 
 	public function __construct($module, $user) {
 		$this->module = $module;
@@ -524,7 +525,12 @@ class QueryGenerator {
 
 			$sql_query  = $this->getSelectClauseColumnSQL();
 			$sql_query .= $this->getFromClause();
-			$sql_query .= $this->getWhereClause();
+			if ($this->meta->getTabName() == 'Documents' && $this->SearchDocuments) {
+				$search_text = vtlib_purify($_REQUEST['search_text']);
+				$sql_query .= ' WHERE vtiger_documentsearchinfo.text LIKE "%'.$search_text.'%" AND vtiger_notes.notesid>0';
+			} else {
+				$sql_query .= $this->getWhereClause();
+			}
 			list($specialPermissionWithDuplicateRows,$cached) = VTCacheUtils::lookupCachedInformation('SpecialPermissionWithDuplicateRows');
 			$sql_query = 'SELECT '.(($distinct || $specialPermissionWithDuplicateRows) ? 'DISTINCT ' : '') . $sql_query;
 			if ($limit!='') {
@@ -893,6 +899,9 @@ class QueryGenerator {
 		}
 
 		$sql .= $this->meta->getEntityAccessControlQuery();
+		if ($this->meta->getTabName() == 'Documents' && $this->SearchDocuments) {
+			$sql .= ' LEFT JOIN vtiger_documentsearchinfo ON vtiger_documentsearchinfo.documentid=vtiger_notes.notesid ';
+		}
 		$this->fromClause = $sql;
 		return $sql;
 	}
@@ -1792,6 +1801,9 @@ class QueryGenerator {
 				} else {
 					$operator = 'h';
 				}
+			}
+			if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'SearchDocuments') {
+				$this->SearchDocuments = true;
 			}
 			$this->addCondition($fieldName, $value, $operator);
 			$this->endGroup();
