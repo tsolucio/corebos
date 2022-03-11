@@ -668,8 +668,8 @@ class GridListView {
 				$numOfRows = $adb->num_rows($sql);
 				if ($numOfRows > 0) {
 					for ($i=0; $i < $numOfRows; $i++) {
-						$condition = $adb->query_result($sql, $i, 'condition');
-						$additional = $adb->query_result($sql, $i, 'additional');
+						$condition = html_entity_decode($adb->query_result($sql, $i, 'condition'));
+						$additional = html_entity_decode($adb->query_result($sql, $i, 'additional'));
 						$className = $adb->query_result($sql, $i, 'classname');
 						$additional = json_decode($additional, true);
 						$condition = json_decode($condition, true);
