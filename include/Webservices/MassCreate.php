@@ -64,6 +64,12 @@ function MassCreate($elements, $user) {
 			$updatedfields = implode(',', array_keys($record['element'])); // all fields
 			if (!empty($record['searchon'])) {
 				$searchOn = $record['searchon'];
+				if (!empty($record['condition'])) {
+					$searchOn = [
+						'searchon' => $record['searchon'],
+						'condition' => $record['condition'],
+					];
+				}
 			} else {
 				$searchOn = $updatedfields;
 			}
