@@ -68,7 +68,7 @@ class coreBOS_Rule {
 		}
 
 		if (is_array($context)) {
-			if (empty($context['record_id']) && $cbmap->column_fields['maptype'] != 'DecisionTable') {
+			if (empty($context['record_id']) && $cbmap->column_fields['maptype'] == 'Condition Query') {
 				cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, WebServiceErrorCode::$INVALIDID, $mapvalues, false, date('Y-m-d H:i:s')));
 				throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'No record_id value given in context array.');
 			}
