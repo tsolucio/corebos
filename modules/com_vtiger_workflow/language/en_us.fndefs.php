@@ -806,6 +806,29 @@ $WFExpressionFunctionDefinitons = array(
 		'power(2, 3)',
 	),
 ),
+'log' => array(
+	'name' => 'log(number, base)',
+	'desc' => 'This function is used to calculate the logarithm of any number with the given base.',
+	'params' => array(
+		array(
+			'name' => 'number',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'the number to logarithm',
+		),
+		array(
+			'name' => 'base',
+			'type' => 'Integer',
+			'optional' => true,
+			'desc' => 'logarithm base, if not given the natural logarithm will be used',
+		),
+	),
+	'categories' => array('Math'),
+	'examples' => array(
+		'log(10)',
+		'log(10, 10)',
+	),
+),
 'substring' => array(
 	'name' => 'substring(stringfield,start,length)',
 	'desc' => 'This function returns the portion of stringfield specified by the start and length parameters.',
