@@ -20,35 +20,29 @@ $Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '');
 if (empty($Apache_Tika_URL)) {
 	exit;
 }
+$ApacheTikaLastScan = coreBOS_Settings::getSetting('ApacheTikaLastScan');
 $client = \Vaites\ApacheTika\Client::make($Apache_Tika_URL);
 $client = \Vaites\ApacheTika\Client::prepare($Apache_Tika_URL);
-$documents = $adb->pquery('
-	select path,attach.attachmentsid,name,modifiedtime,deleted,rel.crmid from vtiger_notes notes
+$query = 'select path,attach.attachmentsid,name,modifiedtime,deleted,rel.crmid from vtiger_notes notes
 	inner join vtiger_crmentity crmentity on crmentity.crmid=notes.notesid
 	inner join vtiger_seattachmentsrel rel on rel.crmid=notes.notesid
-	inner join vtiger_attachments attach on rel.attachmentsid=attach.attachmentsid
-	', array());
+	inner join vtiger_attachments attach on rel.attachmentsid=attach.attachmentsid where deleted=0';
+if (!empty($ApacheTikaLastScan)) {
+	$query .= $adb->convert2Sql(' and modifiedtime>=?', array($ApacheTikaLastScan));
+	$adb->pquery('delete from vtiger_documentsearchinfo where documentid in (select crmid from vtiger_crmentity where setype=? and deleted=0 and modifiedtime>=?)', array('Documents', $ApacheTikaLastScan));
+	$adb->pquery('delete from vtiger_documentsearchinfo where documentid in (select crmid from vtiger_crmentity where setype=? and deleted=1)', array('Documents'));
+}
+$documents = $adb->pquery($query, array());
 while ($row = $documents->FetchRow()) {
 	$filename = $row['path'].$row['attachmentsid'].'_'.$row['name'];
-	$modifiedtime = $row['modifiedtime'];
 	$crmid = $row['crmid'];
-	$deleted = $row['deleted'];
 	if (file_exists($filename)) {
 		$language = $client->getLanguage($filename);
 		$text = $client->getText($filename);
-		if ($deleted == '1') {
-			$adb->pquery('delete from vtiger_documentsearchinfo where documentid=?', array(
-				$crmid
-			));
-		} else {
-			$rs = $adb->pquery('select * from vtiger_documentsearchinfo where documentid=?', array(
-				$crmid
-			));
-			if ($adb->num_rows($rs) == 0) {
-				$adb->pquery('insert into vtiger_documentsearchinfo (documentid,language,text) values(?,?,?)', array(
-					$crmid, $language, $text
-				));
-			}
-		}
+		$metadata = $client->getMetadata($filename);
+		$adb->pquery('insert into vtiger_documentsearchinfo (documentid,language,text,metadata) values(?,?,?)', array(
+			$crmid, $language, $text, $metadata
+		));
 	}
 }
+coreBOS_Settings::setSetting('ApacheTikaLastScan', date('Y-m-d h:i:s'));

@@ -25,9 +25,8 @@ class addDocumentSearchInfoTable extends cbupdaterWorker {
 				CREATE TABLE `vtiger_documentsearchinfo` (
 					`documentid` int NOT NULL,
 					`language` varchar(10) DEFAULT NULL,
-					`text` varchar(100) DEFAULT NULL,
-					`metadata` text,
-					`html` text,
+					`text` text DEFAULT NULL,
+					`metadata` text DEFAULT NULL
 					PRIMARY KEY (`documentid`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
