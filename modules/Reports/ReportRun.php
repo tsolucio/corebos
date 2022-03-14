@@ -3094,10 +3094,10 @@ class ReportRun extends CRMEntity {
 	}
 
 	public function writeReportToExcelFile($fileName, $filterlist = '', $modulename = '') {
-		$fieldinfo = array();
 		$arr_val = $this->GenerateReport('PDF', $filterlist, false, $fieldinfo);
 		$totalxls = $this->GenerateReport('TOTALXLS', $filterlist);
 		require_once 'include/utils/ExportUtils.php';
+		$fieldinfo = array();
 		$workbook = exportExcelFileRows($arr_val, $totalxls, $this->reportname, $fieldinfo);
 		$workbookWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($workbook, 'Xls');
 		$workbookWriter->save($fileName);
