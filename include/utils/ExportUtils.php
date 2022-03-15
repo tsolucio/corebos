@@ -217,19 +217,23 @@ function exportExcelFileRows($rowsonfo, $totalxclinfo, $fldname, $fieldinfo, $mo
 					case 'time':
 						try {
 							if ($value!='-') {
-								if (strpos($value, ':')>0 && (strpos($value, '-')===false)) {
-									// only time, no date
-									$dt = new DateTime("1970-01-01 $value");
-								} elseif (strpos($value, ':')>0 && (strpos($value, '-')>0)) {
-									// date and time
-									$dt = new DateTime($value);
-									$datetime = true;
+								if (!empty($value)) {
+									if (strpos($value, ':')>0 && (strpos($value, '-')===false)) {
+										// only time, no date
+										$dt = new DateTime("1970-01-01 $value");
+									} elseif (strpos($value, ':')>0 && (strpos($value, '-')>0)) {
+										// date and time
+										$dt = new DateTime($value);
+										$datetime = true;
+									} else {
+										$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
+										$dt = new DateTime($value);
+									}
+									$value = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($dt);
+									$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC;
 								} else {
-									$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
-									$dt = new DateTime($value);
+									$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NULL;
 								}
-								$value = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($dt);
-								$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC;
 							} else {
 								$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
 							}
