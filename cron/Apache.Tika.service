@@ -20,7 +20,7 @@ $Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '');
 if (empty($Apache_Tika_URL)) {
 	exit;
 }
-$ApacheTikaLastScan = coreBOS_Settings::getSetting('ApacheTikaLastScan');
+$ApacheTikaLastScan = coreBOS_Settings::getSetting('ApacheTikaLastScan', '');
 $client = \Vaites\ApacheTika\Client::make($Apache_Tika_URL);
 $client = \Vaites\ApacheTika\Client::prepare($Apache_Tika_URL);
 $query = 'select path,attach.attachmentsid,name,modifiedtime,deleted,rel.crmid from vtiger_notes notes
@@ -40,8 +40,8 @@ while ($row = $documents->FetchRow()) {
 		$language = $client->getLanguage($filename);
 		$text = $client->getText($filename);
 		$metadata = $client->getMetadata($filename);
-		$adb->pquery('insert into vtiger_documentsearchinfo (documentid,language,text,metadata) values(?,?,?)', array(
-			$crmid, $language, $text, $metadata
+		$adb->pquery('insert into vtiger_documentsearchinfo (documentid,language,text,metadata) values(?,?,?,?)', array(
+			$crmid, $language, $text, json_encode($metadata)
 		));
 	}
 }
