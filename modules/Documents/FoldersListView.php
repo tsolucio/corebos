@@ -272,6 +272,7 @@ $smarty->assign('IS_ADMIN', $adminuser);
 $check_button = Button_Check($module);
 $smarty->assign('CHECK', $check_button);
 $smarty->assign('moduleView', GlobalVariable::getVariable('Application_ListView_Layout', 'table'));
+$smarty->assign('Apache_Tika_URL', GlobalVariable::getVariable('Apache_Tika_URL', ''));
 
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';

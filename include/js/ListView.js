@@ -996,7 +996,7 @@ function mailer_export() {
 	return false;
 }
 
-function callSearch(searchtype) {
+function callSearch(searchtype, mode = '') {
 	for (var i = 1; i <= 26; i++) {
 		getObj('alpha_' + i).className = 'searchAlph';
 	}
@@ -1006,6 +1006,9 @@ function callSearch(searchtype) {
 	var urlstring = '';
 	if (searchtype == 'Basic') {
 		urlstring = 'search_field=' + search_fld_val + '&searchtype=BasicSearch&search_text=' + search_txt_val + '&';
+		if (mode == 'SearchDocuments') {
+			urlstring += 'mode=SearchDocuments&';
+		}
 	} else if (searchtype == 'Advanced') {
 		var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
 		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;

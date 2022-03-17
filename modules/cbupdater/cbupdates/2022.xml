@@ -50,6 +50,20 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>denaldhushi</author>
+	<description>Register Apache Tika Service(Cron)</description>
+	<filename>build/changeSets/2022/cronApacheTika.php</filename>
+	<classname>cronApacheTika</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add vtiger_documentsearchinfo Table</description>
+	<filename>build/changeSets/2022/addDocumentSearchInfoTable.php</filename>
+	<classname>addDocumentSearchInfoTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>xhildashazivari</author>
 	<description>Update vtiger_cron_task Table</description>
 	<filename>build/changeSets/2022/updateCronTaskTable.php</filename>

@@ -316,11 +316,16 @@ class GridListView {
 	public function processResults($result, $field_types, $parentid = 0) {
 		global $adb, $current_user;
 		$Colorizer = false;
+		$ids = array();
 		if (vtlib_isModuleActive('Colorizer')) {
 			$Colorizer = true;
 		}
+		if (isset($_REQUEST['searchFullDocuments']) && !empty($_REQUEST['searchFullDocuments'])) {
+			$ids = $this->SearchFullDocuments($_REQUEST['searchFullDocuments']);
+		}
 		$data = array();
 		$reference_field = getEntityFieldNames($this->module);
+		$columnnameVal = $this->getFieldNameByColumn($reference_field['fieldname']);
 		$rowCount = $adb->num_rows($result);
 		for ($i=0; $i < $rowCount; $i++) {
 			$rows = array();
@@ -425,7 +430,7 @@ class GridListView {
 				$rows['recordid'] = $recordID;
 				$rows['reference_field'] = array(
 					'columnname' => $reference_field['fieldname'],
-					'fieldname' => $this->getFieldNameByColumn($reference_field['fieldname'])
+					'fieldname' => $columnnameVal
 				);
 				$rows['relatedRows'] = $linkRow;
 				if ($this->module == 'Documents') {
@@ -435,6 +440,11 @@ class GridListView {
 			if ($Colorizer) {
 				$className = $this->enableColorizer($colorizer_row);
 				$rows['_attributes'] = $className;
+			}
+			if (!$ids && isset($_REQUEST['searchFullDocuments']) && !empty($_REQUEST['searchFullDocuments'])) {
+				continue;
+			} elseif (isset($_REQUEST['searchFullDocuments']) && !empty($_REQUEST['searchFullDocuments']) && is_array($ids) && !in_array($rows['recordid'], $ids)) {
+				continue;
 			}
 			array_push($data, $rows);
 		}
@@ -658,8 +668,8 @@ class GridListView {
 				$numOfRows = $adb->num_rows($sql);
 				if ($numOfRows > 0) {
 					for ($i=0; $i < $numOfRows; $i++) {
-						$condition = $adb->query_result($sql, $i, 'condition');
-						$additional = $adb->query_result($sql, $i, 'additional');
+						$condition = html_entity_decode($adb->query_result($sql, $i, 'condition'));
+						$additional = html_entity_decode($adb->query_result($sql, $i, 'additional'));
 						$className = $adb->query_result($sql, $i, 'classname');
 						$additional = json_decode($additional, true);
 						$condition = json_decode($condition, true);
@@ -744,6 +754,7 @@ class GridListView {
 	}
 
 	public function findDocumentFolders() {
+		require_once 'modules/DocumentFolders/DocumentFolders.php';
 		global $current_user, $adb;
 		$focus = new DocumentFolders();
 		$referenceField = 'parentfolder';
@@ -768,6 +779,22 @@ class GridListView {
 			$folders[] = 1;
 		}
 		return $folders;
+	}
+
+	public function SearchFullDocuments($text) {
+		global $adb;
+		$this->DocumentSearch = true;
+		$result = $adb->pquery('select * from vtiger_documentsearchinfo where text LIKE ?', array(
+			'%'.$text.'%'
+		));
+		if ($adb->num_rows($result) > 0) {
+			$ids = array();
+			while ($row = $result->FetchRow()) {
+				$ids[] = $row['documentid'];
+			}
+			return $ids;
+		}
+		return false;
 	}
 }
 ?>

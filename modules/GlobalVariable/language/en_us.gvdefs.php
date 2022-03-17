@@ -1564,6 +1564,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Hour in format HH:MM:SS',
 	'definition' => 'End hour to show in Calendar, by default will be 24:00:00.',
 ),
+'Apache_Tika_URL' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Set URL where Tika is running',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
