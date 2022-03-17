@@ -26,7 +26,7 @@ class addDocumentSearchInfoTable extends cbupdaterWorker {
 					`documentid` int NOT NULL,
 					`language` varchar(10) DEFAULT NULL,
 					`text` text DEFAULT NULL,
-					`metadata` text DEFAULT NULL
+					`metadata` text DEFAULT NULL,
 					PRIMARY KEY (`documentid`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
