@@ -639,8 +639,62 @@ $helpDeskInstance->setRelatedList($serviceContractsInstance, 'Service Contracts'
 ExecuteQuery("UPDATE vtiger_field SET uitype=11 WHERE fieldname IN ('phone_work', 'phone_mobile', 'phone_fax', 'phone_home', 'phone_other')
 							AND tabid IN (SELECT tabid FROM vtiger_tab WHERE name='Users')", array());
 
-require_once 'install/installAddons.php';
-installAddons();
+$packageList = array('module' => array(
+	'Import',
+	'MailManager',
+	'Mobile',
+	'ModTracker',
+	'PBXManager',
+	'ServiceContracts',
+	'Services',
+	'VtigerBackup',
+	'WSAPP',
+	'cbupdater',
+	'CobroPago' => false,
+	'Assets' => false,
+	'CronTasks' => true,
+	'CustomerPortal' => false,
+	'ModComments' => true,
+	'ProjectMilestone' => false,
+	'ProjectTask' => false,
+	'Project' => false,
+	'RecycleBin' => true,
+	'SMSNotifier' => false,
+	'Tooltip' => false,
+	'Webforms' => false,
+),
+'lang' => array(
+	'it_it' => false,
+	'pt_br' => false,
+	'en_gb' => false,
+	'de_de' => false,
+	'nl_nl' => false,
+	'fr_fr' => false,
+	'hu_hu' => false,
+	'es_mx' => false,
+	'es_es' => false,
+));
+
+$packageImport = new Vtiger_PackageImport();
+foreach ($packageList as $type => $packages) {
+	foreach ($packages as $package => $enabled) {
+		if (is_numeric($package)) {
+			$package = $enabled;
+			$enabled = true;
+		}
+		switch ($type) {
+			case 'module':
+				$packageImport->importManifest('modules/' . $package);
+				vtlib_toggleModuleAccess($package, $enabled, true);
+				break;
+			case 'lang':
+				$packageImport->importManifest('include/language/' . $package . '.manifest.xml');
+				vtlib_toggleLanguageAccess($package, $enabled);
+				break;
+		}
+	}
+}
+
 ExecuteQuery("update vtiger_version set old_version='5.3.0', current_version='5.4.0' where id=1");
 
 $migrationlog->debug("\n\nDB Changes from 5.3.0 to 5.4.0 -------- Ends \n\n");
