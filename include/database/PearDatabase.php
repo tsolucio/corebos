@@ -224,7 +224,7 @@ class PearDatabase {
 	}
 
 	public function getDataSourceName() {
-		return 	$this->dbType. '://'.$this->userName.':'.$this->userPassword.'@'. $this->dbHostName . '/'. $this->dbName;
+		return $this->dbType. '://'.$this->userName.':'.$this->userPassword.'@'. $this->dbHostName . '/'. $this->dbName;
 	}
 
 	public function startTransaction() {
