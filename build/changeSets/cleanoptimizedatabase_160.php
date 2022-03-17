@@ -32,7 +32,7 @@ class cleanoptimizedatabase_160 extends cbupdaterWorker {
 			$this->ExecuteQuery('ALTER TABLE `vtiger_potstagehistory` CHANGE `amount` `amount` DECIMAL(28,6) NULL DEFAULT NULL');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_potstagehistory` CHANGE `expectedrevenue` `expectedrevenue` DECIMAL(28,6) NULL DEFAULT NULL');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
