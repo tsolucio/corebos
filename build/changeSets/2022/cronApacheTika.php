@@ -27,7 +27,7 @@ class cronApacheTika extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			Vtiger_Cron::register('Read Documents Content - ApacheTika', 'cron/Apache.Tika.service', 1800, 'Home', Vtiger_Cron::$STATUS_ENABLED, 0, 'Read Documents Content - ApacheTika.');
+			Vtiger_Cron::register('Read Documents Content - ApacheTika', 'cron/Apache.Tika.service', 1800, 'Home', Vtiger_Cron::$STATUS_DISABLED, 0, 'Read Documents Content - ApacheTika.');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
