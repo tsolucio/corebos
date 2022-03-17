@@ -14,35 +14,43 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 require_once 'include/utils/utils.php';
-global $adb;
-$current_user = Users::getActiveAdminUser();
+global $adb, $current_user;
+if (empty($current_user)) {
+	$current_user = Users::getActiveAdminUser();
+}
 $Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '');
 if (empty($Apache_Tika_URL)) {
 	exit;
 }
-$ApacheTikaLastScan = coreBOS_Settings::getSetting('ApacheTikaLastScan', '');
-$client = \Vaites\ApacheTika\Client::make($Apache_Tika_URL);
-$client = \Vaites\ApacheTika\Client::prepare($Apache_Tika_URL);
-$query = 'select path,attach.attachmentsid,name,modifiedtime,deleted,rel.crmid from vtiger_notes notes
-	inner join vtiger_crmentity crmentity on crmentity.crmid=notes.notesid
-	inner join vtiger_seattachmentsrel rel on rel.crmid=notes.notesid
-	inner join vtiger_attachments attach on rel.attachmentsid=attach.attachmentsid where deleted=0';
-if (!empty($ApacheTikaLastScan)) {
-	$query .= $adb->convert2Sql(' and modifiedtime>=?', array($ApacheTikaLastScan));
-	$adb->pquery('delete from vtiger_documentsearchinfo where documentid in (select crmid from vtiger_crmentity where setype=? and deleted=0 and modifiedtime>=?)', array('Documents', $ApacheTikaLastScan));
-	$adb->pquery('delete from vtiger_documentsearchinfo where documentid in (select crmid from vtiger_crmentity where setype=? and deleted=1)', array('Documents'));
-}
-$documents = $adb->pquery($query, array());
-while ($row = $documents->FetchRow()) {
-	$filename = $row['path'].$row['attachmentsid'].'_'.$row['name'];
-	$crmid = $row['crmid'];
-	if (file_exists($filename)) {
-		$language = $client->getLanguage($filename);
-		$text = $client->getText($filename);
-		$metadata = $client->getMetadata($filename);
-		$adb->pquery('insert into vtiger_documentsearchinfo (documentid,language,text,metadata) values(?,?,?,?)', array(
-			$crmid, $language, $text, json_encode($metadata)
-		));
+try {
+	$ApacheTikaLastScan = coreBOS_Settings::getSetting('ApacheTikaLastScan', '');
+	$client = \Vaites\ApacheTika\Client::make($Apache_Tika_URL);
+	$client = \Vaites\ApacheTika\Client::prepare($Apache_Tika_URL);
+	$client->setTimeout(60);
+	$query = 'select path,attach.attachmentsid,name,modifiedtime,deleted,rel.crmid from vtiger_notes notes
+		inner join vtiger_crmentity crmentity on crmentity.crmid=notes.notesid
+		inner join vtiger_seattachmentsrel rel on rel.crmid=notes.notesid
+		inner join vtiger_attachments attach on rel.attachmentsid=attach.attachmentsid where deleted=0';
+	if (!empty($ApacheTikaLastScan)) {
+		$query .= $adb->convert2Sql(' and modifiedtime>=?', array($ApacheTikaLastScan));
+		$adb->pquery('delete from vtiger_documentsearchinfo where documentid in (select crmid from vtiger_crmentity where setype=? and deleted=0 and modifiedtime>=?)', array('Documents', $ApacheTikaLastScan));
+		$adb->pquery('delete from vtiger_documentsearchinfo where documentid in (select crmid from vtiger_crmentity where setype=? and deleted=1)', array('Documents'));
 	}
+	$documents = $adb->pquery($query, array());
+	while ($row = $documents->FetchRow()) {
+		$filename = $row['path'].$row['attachmentsid'].'_'.$row['name'];
+		$crmid = $row['crmid'];
+		if (file_exists($filename)) {
+			$language = $client->getLanguage($filename);
+			$text = $client->getText($filename);
+			$metadata = $client->getMetadata($filename);
+			$adb->pquery('insert into vtiger_documentsearchinfo (documentid,language,text,metadata) values(?,?,?,?)', array(
+				$crmid, $language, $text, json_encode($metadata)
+			));
+		}
+	}
+} catch(Exception $e) {
+	$cbmq = coreBOS_MQTM::getInstance();
+	$cbmq->sendMessage('TikaDocumentSearchLog', 'apachetika', 'apachetika', 'Cron', '1:M', 1, 172800, 0, $current_user->id, $e->getMessage().' for id '.$crmid);
 }
 coreBOS_Settings::setSetting('ApacheTikaLastScan', date('Y-m-d h:i:s'));
