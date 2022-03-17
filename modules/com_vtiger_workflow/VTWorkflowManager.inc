@@ -115,65 +115,67 @@ class VTWorkflowManager {
 
 			$result=$adb->getColumnNames('com_vtiger_workflows');
 			if (in_array('type', $result)) {
+				$vals = array(
+					$workflowId,
+					$wf->moduleName,
+					$wf->description,
+					$wf->test,
+					$wf->executionCondition,
+					$wf->type,
+					(isset($wf->defaultworkflow) ? $wf->defaultworkflow : (is_admin($current_user) ? 0 : 2)),
+					$wf->schtypeid,
+					$wf->schtime,
+					$wf->schdayofmonth,
+					$wf->schdayofweek,
+					$wf->schannualdates,
+					$wf->schminuteinterval,
+					$wf->purpose,
+					$wf->relatemodule,
+					empty($wf->wfstarton) ? null : $wf->wfstarton,
+					empty($wf->wfendon) ? null : $wf->wfendon,
+					(empty($wf->active) || $wf->active=='true' ? 'true' : 'false'),
+					$wf->options,
+					$wf->cbquestion,
+					$wf->recordset,
+					$wf->onerecord,
+				);
 				$adb->pquery(
 					'insert into com_vtiger_workflows
 						(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow, schtypeid, schtime, schdayofmonth,
 						schdayofweek, schannualdates, schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active, options, cbquestion, recordset, onerecord)
-						values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-					array(
-						$workflowId,
-						$wf->moduleName,
-						$wf->description,
-						$wf->test,
-						$wf->executionCondition,
-						$wf->type,
-						(isset($wf->defaultworkflow) ? $wf->defaultworkflow : (is_admin($current_user) ? 0 : 2)),
-						$wf->schtypeid,
-						$wf->schtime,
-						$wf->schdayofmonth,
-						$wf->schdayofweek,
-						$wf->schannualdates,
-						$wf->schminuteinterval,
-						$wf->purpose,
-						$wf->relatemodule,
-						empty($wf->wfstarton) ? null : $wf->wfstarton,
-						empty($wf->wfendon) ? null : $wf->wfendon,
-						(empty($wf->active) || $wf->active=='true' ? 'true' : 'false'),
-						$wf->options,
-						$wf->cbquestion,
-						$wf->recordset,
-						$wf->onerecord,
-					)
+						values ('.generateQuestionMarks($vals).')',
+					$vals
 				);
 			} else {
+				$vals = array(
+					$workflowId,
+					$wf->moduleName,
+					$wf->description,
+					$wf->test,
+					$wf->executionCondition,
+					(isset($wf->defaultworkflow) ? $wf->defaultworkflow : (is_admin($current_user) ? 0 : 2)),
+					$wf->schtypeid,
+					$wf->schtime,
+					$wf->schdayofmonth,
+					$wf->schdayofweek,
+					$wf->schannualdates,
+					$wf->schminuteinterval,
+					$wf->purpose,
+					$wf->relatemodule,
+					empty($wf->wfstarton) ? null : $wf->wfstarton,
+					empty($wf->wfendon) ? null : $wf->wfendon,
+					(empty($wf->active) || $wf->active=='true' ? 'true' : 'false'),
+					$wf->options,
+					$wf->cbquestion,
+					$wf->recordset,
+					$wf->onerecord,
+				);
 				$adb->pquery(
 					'insert into com_vtiger_workflows
 						(workflow_id, module_name, summary, test, execution_condition, defaultworkflow, schtypeid, schtime, schdayofmonth, schdayofweek,
 						schdayofweek, schannualdates,schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active, options, cbquestion, recordset, onerecord)
-						values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-					array(
-						$workflowId,
-						$wf->moduleName,
-						$wf->description,
-						$wf->test,
-						$wf->executionCondition,
-						(isset($wf->defaultworkflow) ? $wf->defaultworkflow : (is_admin($current_user) ? 0 : 2)),
-						$wf->schtypeid,
-						$wf->schtime,
-						$wf->schdayofmonth,
-						$wf->schdayofweek,
-						$wf->schannualdates,
-						$wf->schminuteinterval,
-						$wf->purpose,
-						$wf->relatemodule,
-						empty($wf->wfstarton) ? null : $wf->wfstarton,
-						empty($wf->wfendon) ? null : $wf->wfendon,
-						(empty($wf->active) || $wf->active=='true' ? 'true' : 'false'),
-						$wf->options,
-						$wf->cbquestion,
-						$wf->recordset,
-						$wf->onerecord,
-					)
+						values ('.generateQuestionMarks($vals).')',
+					$vals
 				);
 			}
 		}
