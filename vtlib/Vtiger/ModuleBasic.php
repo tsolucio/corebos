@@ -72,7 +72,7 @@ class Vtiger_ModuleBasic {
 		$this->presence = $valuemap['presence'];
 		$this->ownedby = $valuemap['ownedby'];
 		$this->tabsequence = $valuemap['tabsequence'];
-		$this->parent = $valuemap['parent'];
+		$this->parent = isset($valuemap['parent']) ? $valuemap['parent'] : '';
 
 		$this->isentitytype = $valuemap['isentitytype'];
 

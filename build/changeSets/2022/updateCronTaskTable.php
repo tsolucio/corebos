@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2022 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class cleanoptimizedatabase_160 extends cbupdaterWorker {
+class updateCronTaskTable extends cbupdaterWorker {
 
 	public function applyChange() {
 		if ($this->hasError()) {
@@ -23,16 +23,9 @@ class cleanoptimizedatabase_160 extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('ALTER TABLE `vtiger_assets` ADD INDEX ( `account` )');
-			$this->ExecuteQuery('ALTER TABLE `vtiger_project` ADD INDEX ( `linktoaccountscontacts` )');
-			$this->ExecuteQuery('ALTER TABLE `vtiger_invoicestatushistory` CHANGE `total` `total` DECIMAL(28,6) NULL DEFAULT NULL');
-			$this->ExecuteQuery('ALTER TABLE `vtiger_sostatushistory` CHANGE `total` `total` DECIMAL(28,6) NULL DEFAULT NULL');
-			$this->ExecuteQuery('ALTER TABLE `vtiger_quotestagehistory` CHANGE `total` `total` DECIMAL(28,6) NULL DEFAULT NULL');
-			$this->ExecuteQuery('ALTER TABLE `vtiger_postatushistory` CHANGE `total` `total` DECIMAL(28,6) NULL DEFAULT NULL');
-			$this->ExecuteQuery('ALTER TABLE `vtiger_potstagehistory` CHANGE `amount` `amount` DECIMAL(28,6) NULL DEFAULT NULL');
-			$this->ExecuteQuery('ALTER TABLE `vtiger_potstagehistory` CHANGE `expectedrevenue` `expectedrevenue` DECIMAL(28,6) NULL DEFAULT NULL');
+			$this->ExecuteQuery("update vtiger_cron_task set module = 'cbCalendar' where name = 'SendReminder' and handler_file = 'cron/SendReminder.service'");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(false);
+			$this->markApplied();
 		}
 		$this->finishExecution();
 	}

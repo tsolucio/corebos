@@ -1,5 +1,5 @@
 <?php
-$moduleTitle="coreBOS Customizations: upgrade old coreBOS installs";
+$moduleTitle="coreBOS Customizations: migrate from vtiger CRM 5.x";
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
 echo "<html><head><title>vtlib $moduleTitle</title>";
 echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
@@ -29,12 +29,12 @@ require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
 require_once 'include/Webservices/Utils.php';
 @include_once 'include/events/include.inc';
 global $current_user, $adb;
+$migrationlog = LoggerManager::getLogger('MIGRATION');
 set_time_limit(0);
 error_reporting(-1);
 ini_set('display_errors', 1);
 ini_set('memory_limit', '1024M');
 
-ExecuteQuery('UPDATE vtiger_users SET language=? WHERE vtiger_users.is_admin=?', array('en_us', 'on'));
 $current_user = new Users();
 $current_user->retrieveCurrentUserInfoFromFile(Users::getActiveAdminId());
 $default_language = 'en_us';
@@ -78,6 +78,11 @@ function putMsg($msg) {
 	echo '<div class="slds-col slds-size_10-of-10">'.$msg.'</div>';
 }
 
+function deleteWorkflow($wfid) {
+	ExecuteQuery("DELETE FROM com_vtiger_workflowtasks WHERE workflow_id = $wfid");
+	ExecuteQuery("DELETE FROM com_vtiger_workflows WHERE workflow_id = $wfid");
+}
+
 function installManifestModule($module) {
 	$package = new Vtiger_Package();
 	ob_start();
@@ -94,9 +99,6 @@ function installManifestModule($module) {
 
 echo '<article class="slds-card slds-m-left_x-large slds-p-left_small slds-m-right_x-large slds-p-right_small slds-p-bottom_small slds-m-top_small">';
 $startTime = microtime(true);
-//////////////
-// Put your custom migration steps here
-//////////////
 echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
 
 //Mandatory migration changes
@@ -104,6 +106,9 @@ $rs = $adb->query('select max(id) from vtiger_ws_entity');
 $max = (int)$adb->query_result($rs, 0, 0)+2;
 ExecuteQuery('ALTER TABLE vtiger_ws_entity MODIFY id int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT='.$max);
 ExecuteQuery('UPDATE vtiger_ws_entity_seq SET id='.$max);
+$rs = $adb->query('select max(fieldid) from vtiger_settings_field');
+$max = (int)$adb->query_result($rs, 0, 0)+2;
+ExecuteQuery('UPDATE vtiger_settings_field_seq SET id='.$max);
 ExecuteQuery("update vtiger_crmentity set smcreatorid=smownerid where smcreatorid=0 and smownerid!=0");
 ExecuteQuery("update vtiger_crmentity set smcreatorid=1 where smcreatorid=0");
 ExecuteQuery("update vtiger_crmentity set smownerid=smcreatorid where smownerid=0 and smcreatorid!=0");
@@ -115,7 +120,27 @@ ExecuteQuery("update vtiger_troubletickets set parent_id=0 where parent_id=''");
 ExecuteQuery("update vtiger_troubletickets set product_id=0 where product_id=''");
 ExecuteQuery("update vtiger_cron_task set laststart=null where laststart=''");
 ExecuteQuery("update vtiger_cron_task set lastend=null where lastend=''");
-// Some records in VT6x are incorrectly assigned to inexistent users so we fix that before starting by assigning them to the admin user
+// Some records in VT5x are incorrectly assigned to inexistent users so we fix that before starting by assigning them to the admin user
+$smrs = $adb->query('SELECT @@SESSION.sql_mode');
+$sm = $adb->query_result($smrs, 0, 0);
+$adb->query("SET SESSION sql_mode = ''");
+ExecuteQuery('ALTER TABLE `vtiger_email_access` CHANGE `accesstime` `accesstime` TIME NULL DEFAULT NULL');
+ExecuteQuery('ALTER TABLE `vtiger_users` CHANGE `date_entered` `date_entered` DATETIME NOT NULL');
+ExecuteQuery('ALTER TABLE `vtiger_users` CHANGE `date_modified` `date_modified` TIMESTAMP on update CURRENT_TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;');
+ExecuteQuery('ALTER TABLE `vtiger_import_maps` CHANGE `date_entered` `date_entered` DATETIME NOT NULL');
+ExecuteQuery('ALTER TABLE `vtiger_import_maps` CHANGE `date_modified` `date_modified` TIMESTAMP on update CURRENT_TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;');
+ExecuteQuery('ALTER TABLE `vtiger_loginhistory` CHANGE `login_time` `login_time` TIMESTAMP NULL DEFAULT NULL;');
+ExecuteQuery('ALTER TABLE `vtiger_loginhistory` CHANGE `logout_time` `logout_time` TIMESTAMP NULL DEFAULT NULL');
+ExecuteQuery("UPDATE `vtiger_users` set date_modified=date_entered");
+ExecuteQuery("UPDATE `vtiger_import_maps` set date_modified=date_entered");
+ExecuteQuery("UPDATE `vtiger_loginhistory` set login_time=null where login_time='0000-00-00 00:00:00'");
+ExecuteQuery("UPDATE `vtiger_loginhistory` set logout_time=null where logout_time='0000-00-00 00:00:00'");
+ExecuteQuery("UPDATE `vtiger_crmentity` set modifiedtime=createdtime where modifiedtime='0000-00-00 00:00:00'");
+ExecuteQuery("UPDATE `vtiger_salesorder` set duedate=null where duedate='0000-00-00 00:00:00'");
+ExecuteQuery("UPDATE `vtiger_portalinfo` set login_time=null where login_time='0000-00-00 00:00:00'");
+ExecuteQuery("UPDATE `vtiger_portalinfo` set last_login_time=null where last_login_time='0000-00-00 00:00:00'");
+ExecuteQuery("UPDATE `vtiger_portalinfo` set logout_time=null where logout_time='0000-00-00 00:00:00'");
+$adb->query("SET SESSION sql_mode = '$sm'");
 ExecuteQuery(
 	'update vtiger_crmentity
 		set smownerid=?
@@ -134,13 +159,6 @@ ExecuteQuery(
 		where modifiedby not in (select id from vtiger_users union select groupid from vtiger_groups);',
 	array($current_user->id)
 );
-ExecuteQuery('ALTER TABLE vtiger_cbupdater DROP INDEX `findupdate`, ADD UNIQUE `findupdate` (`filename`, `classname`, `pathfilename`) USING BTREE;');
-ExecuteQuery('CREATE TABLE IF NOT EXISTS `cb_settings` (
-	`setting_key` varchar(200) NOT NULL,
-	`setting_value` varchar(1000) NOT NULL,
-	PRIMARY KEY (`setting_key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8');
-
 ExecuteQuery('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
 	crmid int(19),
 	cbuuid char(40),
@@ -156,7 +174,13 @@ ExecuteQuery('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
 
 $cncrm = $adb->getColumnNames('vtiger_users');
 if (!in_array('ename', $cncrm)) {
-	$adb->query('ALTER TABLE `vtiger_users` ADD `ename` varchar(200) default "";');
+	ExecuteQuery('ALTER TABLE `vtiger_users` ADD `ename` varchar(200) default "";');
+}
+if (!in_array('time_zone', $cncrm)) {
+	ExecuteQuery('ALTER TABLE `vtiger_users` ADD `time_zone` varchar(200) default "UTC";');
+}
+if (!in_array('currency_grouping_pattern', $cncrm)) {
+	ExecuteQuery('ALTER TABLE `vtiger_users` ADD `currency_grouping_pattern` varchar(100) default "123,456,789";');
 }
 $cncrm = $adb->getColumnNames('vtiger_crmentity');
 if (!in_array('cbuuid', $cncrm)) {
@@ -237,29 +261,29 @@ if (!in_array('relatemodule', $cnmsg)) {
 if (!in_array('options', $cnmsg)) {
 	ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `options` varchar(100) default NULL;');
 }
-if (!in_array('cbquestion', $cnmsg)) {
-	ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `cbquestion` int(11) default NULL;');
+$cnmsg = $adb->getColumnNames('vtiger_profile2field');
+if (!in_array('summary', $cnmsg)) {
+	$adb->query("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");
 }
-if (!in_array('recordset', $cnmsg)) {
-	ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `recordset` int(11) default NULL;');
-}
-if (!in_array('onerecord', $cnmsg)) {
-	ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `onerecord` int(11) default NULL;');
-}
-$taskTypes = array();
-$defaultModules = array('include' => array(), 'exclude'=>array());
-$createToDoModules = array('include' => array("Leads","Accounts","Potentials","Contacts","HelpDesk","Campaigns","Quotes","PurchaseOrder","SalesOrder","Invoice"), 'exclude'=>array("Calendar", "FAQ", "Events"));
-$createEventModules = array('include' => array("Leads","Accounts","Potentials","Contacts","HelpDesk","Campaigns"), 'exclude'=>array("Calendar", "FAQ", "Events"));
 
-$taskTypes[] = array("name"=>"VTEmailTask", "label"=>"Send Mail", "classname"=>"VTEmailTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTEmailTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTEmailTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
-$taskTypes[] = array("name"=>"VTEntityMethodTask", "label"=>"Invoke Custom Function", "classname"=>"VTEntityMethodTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTEntityMethodTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
-$taskTypes[] = array("name"=>"VTCreateTodoTask", "label"=>"Create Todo", "classname"=>"VTCreateTodoTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTCreateTodoTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTCreateTodoTask.tpl", "modules"=>$createToDoModules, "sourcemodule"=>'');
-$taskTypes[] = array("name"=>"VTUpdateFieldsTask", "label"=>"Update Fields", "classname"=>"VTUpdateFieldsTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTUpdateFieldsTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTUpdateFieldsTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
-$taskTypes[] = array("name"=>"VTCreateEntityTask", "label"=>"Create Entity", "classname"=>"VTCreateEntityTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTCreateEntityTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTCreateEntityTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
-$taskTypes[] = array("name"=>"VTSMSTask", "label"=>"SMS Task", "classname"=>"VTSMSTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTSMSTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTSMSTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'SMSNotifier');
+$force = (isset($_REQUEST['force']) ? 1 : 0);
 
-foreach ($taskTypes as $taskType) {
-	VTTaskType::registerTaskType($taskType);
+$cver = vtws_getVtigerVersion();
+if ($cver=='5.1.0' || $force) {
+	putMsg('<h2>** Starting Migration to 5.2 **</h2>');
+	include 'build/migrate5/migrate_to_vt52.php';
+}
+
+$cver = vtws_getVtigerVersion();
+if ($cver=='5.2.0' || $cver=='5.2.1' || $force) {
+	putMsg('<h2>** Starting Migration to 5.3 **</h2>');
+	include 'build/migrate5/migrate_to_vt53.php';
+}
+
+$cver = vtws_getVtigerVersion();
+if ($cver=='5.3.0' || $force) {
+	putMsg('<h2>** Starting Migration to 5.4 **</h2>');
+	include 'build/migrate5/migrate_to_vt54.php';
 }
 
 ExecuteQuery('ALTER TABLE `vtiger_currency_info` ADD `currency_position` CHAR(4) NOT NULL;');
@@ -274,128 +298,18 @@ ExecuteQuery("DELETE FROM vtiger_def_org_share WHERE vtiger_def_org_share.tabid 
 ExecuteQuery("update vtiger_users set theme='softed'");
 ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.5.0' where id=1");
 ExecuteQuery("DELETE FROM vtiger_field WHERE tablename = 'vtiger_inventoryproductrel'");
+$delmodules = array('DocExport', 'ImporterXML', 'NewsExport');
+foreach ($delmodules as $modname) {
+	$tabrs = $adb->pquery('select count(*) from vtiger_tab where name=?', array($modname));
+	if ($tabrs && $adb->query_result($tabrs, 0, 0)==1) {
+		$module = Vtiger_Module::getInstance($modname);
+		$module->delete();
+	}
+}
 installManifestModule('cbupdater');
 
 echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-require_once 'Smarty_setup.php';
-$adb->query("SET sql_mode=''");
-$currentModule = $_REQUEST['module'] = 'cbupdater';
-$_REQUEST['action'] = 'getupdates';
-// temporarily deactivate Calendar
-vtlib_toggleModuleAccess('Calendar', false);
-$DONOTDISPLAYUPDATES = 1;
-include 'modules/cbupdater/getupdates.php';
-vtlib_toggleModuleAccess('Calendar', true);
-$_REQUEST['action'] = 'apply';
-
-echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='mysqlstrictNO_ZERO_IN_DATE'");
-if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
-	$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
-	$_REQUEST['idstring'] = $updid;
-	include 'modules/cbupdater/dowork.php';
-}
-echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='denormalizechangeset'");
-if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
-	$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
-	$_REQUEST['idstring'] = $updid;
-	include 'modules/cbupdater/dowork.php';
-}
-echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-if (!vtlib_isModuleActive('GlobalVariable')) {
-	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installglobalvars'");
-	$updid = $adb->query_result($rsup, 0, 0);
-	$_REQUEST['idstring'] = $updid;
-	include 'modules/cbupdater/dowork.php';
-	vtlib_toggleModuleAccess('GlobalVariable', true); // in case changeset is applied but module deactivated
-}
-echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-if (!vtlib_isModuleActive('evvtMenu')) {
-	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='ldMenu'");
-	$updid = $adb->query_result($rsup, 0, 0);
-	$_REQUEST['idstring'] = $updid;
-	include 'modules/cbupdater/dowork.php';
-	vtlib_toggleModuleAccess('evvtMenu', true); // in case changeset is applied but module deactivated
-}
-echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-if (!vtlib_isModuleActive('cbCompany')) {
-	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='addModulecbCompany'");
-	$updid = $adb->query_result($rsup, 0, 0);
-	$_REQUEST['idstring'] = $updid;
-	include 'modules/cbupdater/dowork.php';
-	vtlib_toggleModuleAccess('cbCompany', true); // in case changeset is applied but module deactivated
-}
-echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='addFieldAppTocbUpdater'");
-$updid = $adb->query_result($rsup, 0, 0);
-$_REQUEST['idstring'] = $updid;
-include 'modules/cbupdater/dowork.php';
-$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='addIsRelatedListBlock'");
-$updid = $adb->query_result($rsup, 0, 0);
-$_REQUEST['idstring'] = $updid;
-include 'modules/cbupdater/dowork.php';
-echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-if (!vtlib_isModuleActive('cbMap')) {
-	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installcbmap'");
-	$updid = $adb->query_result($rsup, 0, 0);
-	$_REQUEST['idstring'] = $updid;
-	include 'modules/cbupdater/dowork.php';
-	vtlib_toggleModuleAccess('cbMap', true); // in case changeset is applied but module deactivated
-}
-echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-if (!vtlib_isModuleActive('BusinessActions')) {
-	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='modbusinessactions'");
-	$updid = $adb->query_result($rsup, 0, 0);
-	$_REQUEST['idstring'] = $updid;
-	include 'modules/cbupdater/dowork.php';
-	vtlib_toggleModuleAccess('BusinessActions', true); // in case changeset is applied but module deactivated
-}
-echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-if (!vtlib_isModuleActive('cbTermConditions')) {
-	$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installcbTermConditions'");
-	$updid = $adb->query_result($rsup, 0, 0);
-	$_REQUEST['idstring'] = $updid;
-	include 'modules/cbupdater/dowork.php';
-	vtlib_toggleModuleAccess('cbTermConditions', true); // in case changeset is applied but module deactivated
-}
-
-if (file_exists('modules/cbupdater/cbupdates/coreboscrm.xml')) {
-	// Install and setup new modules
-	define('postINSTALL', 'postINSTALL');
-	require 'install_modules.php';
-}
-
-// Delete all changesets that do not have a file
-$cs = $adb->query('select cbupdaterid,pathfilename from vtiger_cbupdater inner join vtiger_crmentity on crmid=cbupdaterid where deleted=0');
-while ($cbupd = $adb->fetch_array($cs)) {
-	if (!file_exists($cbupd['pathfilename'])) {
-		ExecuteQuery('update vtiger_crmentity set deleted=1 where crmid='.$cbupd['cbupdaterid']);
-	}
-}
-ExecuteQuery('update vtiger_cbupdater set blocked=0,execstate=? where filename=? and classname=?', array('Pending', 'picklist_translations', 'picklist_translations'));
-$activeModules = array(
-	'BusinessActions',
-	'cbCompany',
-	'cbCVManagement',
-	'cbMap',
-	'cbtranslation',
-	'cbupdater',
-	'com_vtiger_workflow',
-	'evvtMenu',
-	'GlobalVariable',
-);
-
-foreach ($activeModules as $activateModule) {
-	vtlib_toggleModuleAccess($activateModule, true);
-}
-
-echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-// Recalculate permissions  RecalculateSharingRules
-RecalculateSharingRules();
-
-echo '<strong>&nbsp;&nbsp;time: '.round(microtime(true) - $startTime, 2).' seconds.</strong>';
-putMsg("<H1 style='color:red'>NOW LOG IN AND APPLY ALL THE UPDATES AS USUAL</H1>");
+putMsg("<H1 style='color:red'>NOW RUN THE installupdater.php script</H1>");
 echo '</article>';
 if (count($failure_query_array)>0) {
 	echo <<<EOT

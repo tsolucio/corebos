@@ -231,7 +231,7 @@ try {
 	} else {
 		$current_user = null;
 	}
-
+	vtws_logcalls($_REQUEST);
 	$operationInput = $operationManager->sanitizeOperation($input);
 	$includes = $operationManager->getOperationIncludes();
 

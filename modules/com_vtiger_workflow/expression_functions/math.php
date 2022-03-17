@@ -109,6 +109,18 @@ function __cb_number_format($arr) {
 	}
 }
 
+function __cb_logarithm($arr) {
+	if (empty($arr)) {
+		return 0;
+	} else {
+		if (empty($arr[1])) {
+			return log($arr[0]);
+		} else {
+			return log($arr[0], $arr[1]);
+		}
+	}
+}
+
 function cb_average($arr) {
 	if (empty($arr)) {
 		return null;

@@ -51,6 +51,7 @@ class VTFieldExpressionEvaluater {
 			'add_time' => '__vt_add_time',
 			'sub_time' => '__vt_sub_time',
 			'power' => '__vt_power',
+			'log' => '__cb_logarithm',
 			'substring' => '__vt_substring',
 			'stringposition' => '__cb_stringposition',
 			'stringlength' => '__cb_stringlength',

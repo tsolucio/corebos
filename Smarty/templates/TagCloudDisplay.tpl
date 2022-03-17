@@ -13,15 +13,33 @@
 <!-- Tag cloud display -->
 	<table border=0 cellspacing=0 cellpadding=0 width=100% class="tagCloud">
 	<tr>
-		<td class="tagCloudTopBg"><img src="{$IMAGE_PATH}tagCloudName.gif" border=0></td>
-	</tr>
-	<tr>
 		<td>
 		<div id="tagdiv" style="display:visible;">
 		<form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();">
-			<input class="textbox" type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;">
-			&nbsp;&nbsp;
-			<input name="button_tagfileds" type="submit" class="crmbutton small save" value="{$APP.LBL_TAG_IT}"/>
+			<div class="slds-form-element">
+				<label 
+					class="slds-form-element__label" 
+					for="text-input-id-47" 
+					style="font-weight: 700; padding-left: 3px;"
+					>
+					{$APP.LBL_TAG_CLOUD}
+				</label>
+				<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left-right">
+					<svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+					</svg>
+					<input value="{$APP.LBL_TAG_IT}" type="text"  id="txtbox_tagfields" placeholder="Add Tag…" value="" class="slds-input"/>
+					<button 
+						class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+						title="{$APP.LBL_TAG_IT}"
+						value="{$APP.LBL_TAG_IT}">
+						<svg class="slds-button__icon slds-icon-text-light" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#touch_action"></use>
+						</svg>
+						<span class="slds-assistive-text">{$APP.LBL_TAG_IT}</span>
+					</button>
+				</div>
+			</div>
 		</form>
 		</div>
 		</td>

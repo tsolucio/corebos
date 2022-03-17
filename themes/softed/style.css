@@ -1740,7 +1740,17 @@ footer {
 }
 
 .tagCloud {
-	border:1px solid #ddd;
+	margin-top: 20px;
+}
+
+.tagit{
+	font-size: 15px !important;
+    text-decoration: none;
+	padding-right: 6px;
+	transition: all 0.2s ease-in-out;
+}
+.tagit:hover{
+	text-decoration: none;
 }
 
 .tagCloudTopBg {

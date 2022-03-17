@@ -57,6 +57,7 @@ class Vtiger_FieldBasic {
 		$this->label = $valuemap['fieldlabel'];
 		$this->column = $valuemap['columnname'];
 		$this->table = $valuemap['tablename'];
+		$this->presence = $valuemap['presence'];
 		$this->uitype = $valuemap['uitype'];
 		$this->typeofdata = $valuemap['typeofdata'];
 		$this->helpinfo = $valuemap['helpinfo'];

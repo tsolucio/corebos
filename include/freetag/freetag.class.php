@@ -1033,8 +1033,18 @@ class freetag {
 		if($module != 'All') {
 			foreach ($tag_list[0] as $tag => $qty) {
 				$size = $min_font_size + ($qty - $min_qty) * $step;
-				$cloud_span[] = '<span id="tag_'.$tag_list[1][$tag].'" class="' . $span_class . '" onMouseOver=jQuery("#tagspan_'.$tag_list[1][$tag].'").show(); onMouseOut=jQuery("#tagspan_'.$tag_list[1][$tag].'").hide();><a class="tagit" href="index.php?module=Utilities&action=UnifiedSearch&search_module='.$module.'&search_tag=tag_search&query_string='. urlencode($tag) . '" style="font-size: '. $size . $font_units . '">' . htmlspecialchars(stripslashes($tag)) . '</a><span class="'. $span_class .'" id="tagspan_'.$tag_list[1][$tag].'" style="display:none;cursor:pointer;" onClick="DeleteTag('.$tag_list[1][$tag].','.$obj_id.');"><img src="' . vtiger_imageurl('del_tag.gif', $theme) . '"></span></span>';
-
+				$cloud_span[] = '
+				<span id="tag_'.$tag_list[1][$tag].'" class="' . $span_class . '" onMouseOver=jQuery("#tagspan_'.$tag_list[1][$tag].'").show(); onMouseOut=jQuery("#tagspan_'.$tag_list[1][$tag].'").hide();>
+					<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" id="tagspan_'.$tag_list[1][$tag].'" style="display:none;cursor:pointer;" onClick="DeleteTag('.$tag_list[1][$tag].','.$obj_id.');">
+						<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+						</svg>
+						<span class="slds-assistive-text">Delete Tag</span>
+					</span>
+					<a class="tagit" href="index.php?module=Utilities&action=UnifiedSearch&search_module='.$module.'&search_tag=tag_search&query_string='. urlencode($tag) . '" style="font-size: '. $size . $font_units . '">
+						'. htmlspecialchars(stripslashes($tag)) . '
+					</a>
+				</span>';
 			}
 		} else {
 			foreach($tag_list[0] as $tag => $qty) {
