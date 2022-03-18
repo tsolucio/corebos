@@ -49,7 +49,7 @@ try {
 			));
 		}
 	}
-} catch(Exception $e) {
+} catch (Exception $e) {
 	$cbmq = coreBOS_MQTM::getInstance();
 	$cbmq->sendMessage('TikaDocumentSearchLog', 'apachetika', 'apachetika', 'Cron', '1:M', 1, 172800, 0, $current_user->id, $e->getMessage().' for id '.$crmid);
 }
