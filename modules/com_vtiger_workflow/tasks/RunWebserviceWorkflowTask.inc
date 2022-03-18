@@ -136,6 +136,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 				$conds = array();
 				if ($outputtype == 'JSON') {
 					foreach ($target_fields['Response'] as $fld => $v) {
+						if ($fld == '.') { // they are asking for the full result
+							$entity->WorkflowContext[$v['context']] = $conds[$v['field']] = $respp;
+							continue;
+						}
 						$r2 = '';
 						if (is_array($response2)) {
 							if (strpos($fld, '.')) {
@@ -168,6 +172,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 					$json = json_encode($xml);
 					$response2 = json_decode($json, true);
 					foreach ($target_fields['Response'] as $fld => $v) {
+						if ($fld == '.') { // they are asking for the full result
+							$entity->WorkflowContext[$v['context']] = $conds[$v['field']] = $respp;
+							continue;
+						}
 						if (strpos($fld, '.')) {
 							list ($elemresponse, $elemfield) = explode('.', $fld);
 							if (is_array($response2[$elemresponse])) {
