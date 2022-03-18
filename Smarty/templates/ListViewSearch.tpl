@@ -64,7 +64,7 @@
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 					</svg>
-					Search Documents
+					{$APP.LBL_SEARCH_DOCUMENTS_BUTTON}
 				</button>
 				{/if}
 				{if !empty($moduleView) && $moduleView=='tuigrid'}

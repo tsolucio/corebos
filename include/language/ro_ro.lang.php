@@ -1250,6 +1250,7 @@ $app_strings = array(
 	'Select Module To Upsert' => 'Select Module To Upsert',
 	'LBL_FIX_NOW' => 'Fix Now',
 	'LBL_HIERARCHY' => 'Hierarchy',
+	'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Search Documents',
 
 	//login translation
 	'LBL_Please_login_to_your_account' => 'Please login to your account',

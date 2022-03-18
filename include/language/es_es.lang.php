@@ -1366,6 +1366,7 @@ $app_strings = array (
 	'Select Module To Upsert' => 'Selecciona Módulo',
 	'LBL_FIX_NOW' => 'Arreglar Ahora',
 	'LBL_HIERARCHY' => 'Jerarquía',
+	'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Search Documents',
 	//login translation
 	'LBL_Please_login_to_your_account' => 'Por favor accede a tu cuenta',
 	'LBL_Bussiness'	=> 'Haz que tu negocio funcione sin problemas',
