@@ -1565,10 +1565,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Hora de finalización que mostrará el calendario, por defecto será 24:00:00.',
 ),
 'Apache_Tika_URL' => array(
-	'valuetype' => 'String',
-	'category' => 'Application',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
 	'values' => '',
-	'definition' => 'Set URL where Tika is running',
+	'definition' => 'Indica la URL donde Apache Tika está operando',
 ),
 );
 
