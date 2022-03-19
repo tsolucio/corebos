@@ -10,3 +10,5 @@ Allow from all
 Satisfy Any
 </FilesMatch>
 
+RedirectMatch 403 ^/.*/\.git/.*$
+RedirectMatch 403 ^/\.git/.*$
