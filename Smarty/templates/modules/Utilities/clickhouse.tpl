@@ -18,48 +18,52 @@
 		<input type="hidden" name="action" value="integration">
 		<input type="hidden" name="_op" value="setconfigsclickhouse">
 		<div class="slds-form-element">
-			<label class="slds-checkbox--toggle slds-grid">
-			<span class="slds-form-element__label slds-m-bottom--none">{'clickhouse_active'|@getTranslatedString:$MODULE}</span>
+			<label class="slds-checkbox_toggle slds-grid">
+			<span class="slds-form-element__label slds-m-bottom_none">{'clickhouse_active'|@getTranslatedString:$MODULE}</span>
 			<input type="checkbox" name="clickhouse_active" aria-describedby="toggle-desc" {if $isActive}checked{/if} />
-			<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-				<span class="slds-checkbox--faux"></span>
-				<span class="slds-checkbox--on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
-				<span class="slds-checkbox--off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
+			<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+				<span class="slds-checkbox_faux"></span>
+				<span class="slds-checkbox_on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
+				<span class="slds-checkbox_off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
 			</span>
 			</label>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-grid slds-gutters">
+			<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-3">
 			<label class="slds-form-element__label" for="clickhouse_host">{'clickhouse_host'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="clickhouse_host" name="clickhouse_host" class="slds-input" value="{$clickhouse_host}" />
 			</div>
-		</div>
-		<div class="slds-form-element slds-m-top--small">
+			</div>
+			<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-3">
 			<label class="slds-form-element__label" for="clickhouse_port">{'clickhouse_port'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="clickhouse_port" name="clickhouse_port" class="slds-input" value="{$clickhouse_port}" />
 			</div>
-		</div>
-		<div class="slds-form-element slds-m-top--small">
-			<label class="slds-form-element__label" for="database">{'clickhouse_database'|@getTranslatedString:$MODULE}</label>
-			<div class="slds-form-element__control">
-				<input type="text" id="clickhouse_database" name="clickhouse_database" class="slds-input" value="{$clickhouse_database}" />
+			</div>
+			<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-3">
+				<label class="slds-form-element__label" for="database">{'clickhouse_database'|@getTranslatedString:$MODULE}</label>
+				<div class="slds-form-element__control">
+					<input type="text" id="clickhouse_database" name="clickhouse_database" class="slds-input" value="{$clickhouse_database}" />
+				</div>
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
-			<label class="slds-form-element__label" for="username">{'clickhouse_username'|@getTranslatedString:$MODULE}</label>
-			<div class="slds-form-element__control">
-				<input type="text" id="clickhouse_username" name="clickhouse_username" class="slds-input" value="{$clickhouse_username}" />
+		<div class="slds-grid slds-gutters">
+			<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-2">
+				<label class="slds-form-element__label" for="username">{'clickhouse_username'|@getTranslatedString:$MODULE}</label>
+				<div class="slds-form-element__control">
+					<input type="text" id="clickhouse_username" name="clickhouse_username" class="slds-input" value="{$clickhouse_username}" />
+				</div>
+			</div>
+			<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-2">
+				<label class="slds-form-element__label" for="clickhouse_password">{'clickhouse_password'|@getTranslatedString:$MODULE}</label>
+				<div class="slds-form-element__control">
+					<input type="text" id="clickhouse_password" name="clickhouse_password" class="slds-input" value="{$clickhouse_password}" />
+				</div>
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
-			<label class="slds-form-element__label" for="clickhouse_password">{'clickhouse_password'|@getTranslatedString:$MODULE}</label>
-			<div class="slds-form-element__control">
-				<input type="text" id="clickhouse_password" name="clickhouse_password" class="slds-input" value="{$clickhouse_password}" />
-			</div>
-		</div>
-		<div class="slds-m-top--large">
-			<button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+		<div class="slds-m-top_large">
+			<button type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 		</div>
 		</form>
 	{/if}
