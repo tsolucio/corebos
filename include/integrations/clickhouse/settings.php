@@ -17,13 +17,14 @@
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
 include_once 'include/integrations/clickhouse/clickhouse.php';
+include_once 'include/database/ClickHouseDatabase.php';
 
 $smarty = new vtigerCRM_Smarty();
 $mu = new corebos_clickhouse();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin && isset($_REQUEST['clickhouse_active'])) {
+if ($isadmin && isset($_REQUEST['clickhouse_active']) && isset($_REQUEST['btnchsave'])) {
 	$isActive = ((empty($_REQUEST['clickhouse_active']) || $_REQUEST['clickhouse_active']!='on') ? '0' : '1');
 	$clickhouse_database = (empty($_REQUEST['clickhouse_database']) ? '' : vtlib_purify($_REQUEST['clickhouse_database']));
 	$clickhouse_username = (empty($_REQUEST['clickhouse_username']) ? '' : vtlib_purify($_REQUEST['clickhouse_username']));
@@ -50,5 +51,20 @@ $smarty->assign('THEME', $theme);
 include 'include/integrations/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('ISADMIN', $isadmin);
+if (!isset($_REQUEST['btnchquery']) || empty($_REQUEST['chquery']) || !$mu->isActive()) {
+	$smarty->assign('CHQUERYRDO', []);
+} else {
+	$r = $cdb->query($_REQUEST['chquery']);
+	$rdo = [];
+	$limit = 0;
+	while ($rw = $cdb->fetch_array($r)) {
+		$rdo[] = json_encode($rw);
+		if ($limit++ > 100) {
+			break;
+		}
+	}
+	$smarty->assign('CHQUERY', $_REQUEST['chquery']);
+	$smarty->assign('CHQUERYRDO', $rdo);
+}
 $smarty->display('modules/Utilities/clickhouse.tpl');
 ?>

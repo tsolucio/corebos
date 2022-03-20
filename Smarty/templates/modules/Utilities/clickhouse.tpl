@@ -63,7 +63,23 @@
 			</div>
 		</div>
 		<div class="slds-m-top_large">
-			<button type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+			<button type="submit" name="btnchsave" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+		</div>
+		<div class="slds-grid slds-gutters">
+			<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-1">
+				<label class="slds-form-element__label" for="chquery">{'clickhouse_query'|@getTranslatedString:$MODULE}</label>
+				<div class="slds-form-element__control">
+					<textarea id="chquery" name="chquery" class="slds-input">{$CHQUERY}</textarea>
+				</div>
+			</div>
+		</div>
+		<div class="slds-m-top_large">
+			<button type="submit" name="btnchquery" class="slds-button slds-button_brand">{'LBL_QUERY'|@getTranslatedString:'Users'}</button>
+		</div>
+		<div class="slds-m-top_large" id="chqueryresults">
+		{foreach from=$CHQUERYRDO item=item}
+			<div>{$item}</div>
+		{/foreach}
 		</div>
 		</form>
 	{/if}

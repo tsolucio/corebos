@@ -170,5 +170,6 @@ $mod_strings = array(
 	'clickhouse_password' => 'Password',
 	'clickhouse_active' => 'Active',
 	'clickhouse_database' => 'Database',
+	'clickhouse_query' => 'ClickHouse Query (limited to 100 rows)',
 );
 ?>

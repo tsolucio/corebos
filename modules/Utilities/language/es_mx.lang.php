@@ -175,5 +175,6 @@ $mod_strings = array(
 	'clickhouse_password' => 'Contraseña',
 	'clickhouse_active' => 'Activado',
 	'clickhouse_database' => 'Base de Datos',
+	'clickhouse_query' => 'Consulta ClickHouse (limitado a 100 filas)',
 );
 ?>
