@@ -566,11 +566,10 @@ class PearDatabase {
 	}
 
 	public function getFieldsArray(&$result) {
-		$field_array = array();
-		if (! isset($result) || empty($result)) {
+		if (!isset($result) || empty($result)) {
 			return 0;
 		}
-
+		$field_array = array();
 		$i = 0;
 		$n = $result->FieldCount();
 		while ($i < $n) {
