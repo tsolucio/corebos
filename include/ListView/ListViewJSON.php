@@ -225,12 +225,15 @@ class GridListView {
 		$isRecycleModule = isset($_REQUEST['isRecycleModule']) ? vtlib_purify($_REQUEST['isRecycleModule']): '';
 		$customView = new CustomView($this->module);
 		$viewid = $customView->getViewId($this->module);
+		$viewinfo = $customView->getCustomViewByCvid($viewid);
+		$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status'], $viewid);
 		$cv = array(
 			'viewid' => $viewid,
-			'viewinfo' => $customView->getCustomViewByCvid($viewid),
+			'viewinfo' => $viewinfo,
 			'edit_permit' => $customView->isPermittedCustomView($viewid, 'EditView', $this->module),
 			'delete_permit' => $customView->isPermittedCustomView($viewid, 'Delete', $this->module),
-			'customview_html' => $customView->getCustomViewCombo($viewid)
+			'customview_html' => $customView->getCustomViewCombo($viewid),
+			'setpublic' => $statusdetails
 		);
 		$queryGenerator = new QueryGenerator($this->module, $current_user);
 		try {
