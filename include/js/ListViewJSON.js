@@ -576,7 +576,7 @@ const ListView = {
 			'searchtype': '',
 		};
 		if (reload) {
-			if (ListView.Action == 'massedit') {
+			if (ListView.Action == 'massedit' || ListView.Action == 'inlineedit') {
 				RequestParams.lastPage = lastPage;
 			} else {
 				RequestParams.page = lastPage;
@@ -852,6 +852,10 @@ const ListView = {
 					columnName: columnName,
 					recordid: recordid,
 				}
+			}).then(function(response) {
+				const lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
+				ListView.Action = 'inlineedit';
+				ListView.Reload(lastPage);
 			});
 		}
 	},
