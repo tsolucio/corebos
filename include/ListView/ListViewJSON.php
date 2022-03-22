@@ -649,7 +649,7 @@ class GridListView {
 		$focus->retrieve_entity_info($recordid, $this->module);
 		$focus->column_fields[$columnName] = $value;
 		$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
-		$focus->saveentity($this->module);
+		$focus->save($this->module);
 	}
 
 	public function enableColorizer($row) {
