@@ -264,8 +264,12 @@ class GridListView {
 		}
 		$listview_header_search['cblvactioncolumn'] = $app_strings['LBL_ACTION'];
 		$listview_header_arr = array();
+		$findRelatedModule = '';
 		foreach ($listview_header_search as $fName => $fValue) {
 			$fieldType = getUItypeByFieldName($this->module, $fName);
+			if ($fieldType == '10') {
+				$findRelatedModule = $this->findRelatedModule($fName);
+			}
 			$tooltip = ToolTipExists($fName, $this->tabid);
 			if ($fieldType == '15' || $fieldType == '16') {
 				$picklistValues = vtlib_getPicklistValues($fName);
@@ -293,6 +297,15 @@ class GridListView {
 					'tooltip' => $tooltip,
 					'edit' => $edit,
 				);
+			} elseif ($fieldType == '10') {
+				$lv_arr = array(
+					'fieldname' => $fName,
+					'fieldvalue' => html_entity_decode($fValue),
+					'uitype' => $fieldType,
+					'tooltip' => $tooltip,
+					'edit' => $edit,
+					'relatedModule' => $findRelatedModule
+				);
 			} else {
 				$lv_arr = array(
 					'fieldname' => $fName,
@@ -314,6 +327,30 @@ class GridListView {
 			'result' => true,
 			'folders' => $folders //for Documents module
 		);
+	}
+
+	public function findRelatedModule($fName) {
+		global $adb;
+		$rs = $adb->pquery('select fieldid, tabid from vtiger_field where fieldname=? and tabid=?', array($fName, $this->tabid));
+		$noofrows = $adb->num_rows($rs);
+		if ($noofrows > 0) {
+			$modules = array();
+			for ($i=0; $i < $noofrows; $i++) {
+				$fieldid = $adb->query_result($rs, $i, 'fieldid');
+				$tabid = $adb->query_result($rs, $i, 'tabid');
+				$rel = $adb->pquery('select * from vtiger_fieldmodulerel where fieldid=? and module=?', array(
+					$fieldid, $this->module
+				));
+				$noofrows = $adb->num_rows($rel);
+				if ($noofrows > 0) {
+					for ($j=0; $j<$noofrows; $j++) {
+						$modules[] = $adb->query_result($rel, $j, 'relmodule');
+					}
+				}
+			}
+			return $modules;
+		}
+		return false;
 	}
 
 	public function processResults($result, $field_types, $parentid = 0) {
@@ -456,6 +493,9 @@ class GridListView {
 
 	public function getFieldNameByColumn($columnname) {
 		global $adb;
+		if (is_array($columnname)) {
+			$columnname = $columnname[0];
+		}
 		$rs = $adb->pquery('select fieldname from vtiger_field where columnname=? and tabid=?', array(
 			$columnname, $this->tabid
 		));

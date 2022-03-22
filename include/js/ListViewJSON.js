@@ -52,6 +52,7 @@ const ListView = {
 	SearchParams: false,
 	CheckedRows: [],
 	RelationRows: [],
+	RelatedModule: '',
 
 	Request: async (url, method, body = {}) => {
 		let headers = {
@@ -177,6 +178,9 @@ const ListView = {
 				sortable = false;
 			}
 			if (edit) {
+				if (uitype == 10) {
+					ListView.RelatedModule = headerObj[index].relatedModule;
+				}
 				editor = ListView.getEditorType(uitype, values, fieldname);
 			} else {
 				editor = false;
@@ -290,7 +294,16 @@ const ListView = {
 					]
 				}
 			};
-		} else if (uitype == '10' || uitype == '4' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
+		} else if (uitype == '10') {
+			editor = {
+				type: UIType10Editor,
+				options: {
+					customTextEditorOptions: {
+						relatedModule: ListView.RelatedModule
+					}
+				}
+			}      
+		} else if (uitype == '4' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
 			editor = false;
 		} else if (uitype == '15' || uitype == '16') {
 			let listItems = [];
@@ -1126,7 +1139,28 @@ const ListView = {
 	/**
 	 * Keep track of already loaded tooltips
 	 */
-	loadedTooltips: []
+	loadedTooltips: [],
+
+	SaveRelatedRows: (recordid, fieldname) => {
+		const relatedRow = document.getElementById(`txtbox_${fieldname}_${recordid}`).value;
+		if (relatedRow == '') {
+			return false;
+		}
+		jQuery.ajax({
+			method: 'POST',
+			url: `${defaultURL}&functiontocall=listViewJSON&method=updateDataListView`,
+			data: {
+				modulename: ListView.Module,
+				value: relatedRow,
+				columnName: fieldname,
+				recordid: recordid,
+			}
+		}).then(function(response) {
+			const lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
+			ListView.Action = 'inlineedit';
+			ListView.Reload(lastPage);
+		});
+	}
 };
 
 

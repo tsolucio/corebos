@@ -201,3 +201,120 @@ class ActionRender {
 		this.el.value = String(props.value);
 	}
 }
+
+class UIType10Editor {
+
+	constructor(props) {
+		const { grid, rowKey } = props;
+		const customOptions = props.columnInfo.editor.options.customTextEditorOptions;
+		const relatedModule = customOptions.relatedModule;
+		let columnName = props.columnInfo.name;
+		let recordid = props.grid.getValue(rowKey, 'recordid');
+		let relatedRows = props.grid.getValue(rowKey, 'relatedRows');
+		let currentFieldName = props.columnInfo.name;
+		let el = document.createElement('div');
+		el.id = `popover-${recordid}-${currentFieldName}`;
+		let options, template = '';
+		if (relatedModule && relatedModule.length > 1) {
+			for (let i in relatedModule) {
+				options += `<option value="${relatedModule[i]}">${relatedModule[i]}</option>`;
+			}
+			template += `
+			<div id="editarea_related_to">
+				<div class="slds-grid">
+					<div class="slds-col slds-size_2-of-3">
+						<select id="${currentFieldName}_type_${recordid}" name="${currentFieldName}_type" class="slds-select">
+							${options}
+						</select>
+						<input id="txtbox_${currentFieldName}_${recordid}" name="${currentFieldName}" type="hidden" value="">
+					</div>
+					<div class="slds-col">
+						${this.buttons(recordid, `'${currentFieldName}'`)}
+					</div>
+				</div>
+				<div class="slds-grid">
+					<div class="slds-col">
+						<span id="txtbox_${currentFieldName}_${recordid}_display">${props.value}</span>
+					</div>
+				</div>
+			</div>`;
+		} else if (relatedModule && relatedModule.length == 1) {
+			template += `
+			<div id="editarea_related_to">
+				<div class="slds-grid">
+					<div class="slds-col slds-size_2-of-3">
+						<span id="txtbox_${currentFieldName}_${recordid}_display">${props.value}</span>
+						<input id="txtbox_${currentFieldName}_${recordid}" name="${currentFieldName}" type="hidden" value="">
+					</div>
+					<div class="slds-col">
+						${this.buttons(recordid, `'${currentFieldName}'`, `'${relatedModule}'`)}
+					</div>
+				</div>
+			</div>
+			`;
+		}
+		let popover = `
+		<section class="slds-popover slds-nubbin_bottom slds-popover_medium" role="dialog" style="margin-top: -22%">
+			<div class="slds-popover__body">
+				<div class="slds-media">
+					<div class="slds-media__body">
+						${template}
+					</div>
+				</div>
+			</div>
+		</section>`;
+		el.innerHTML = popover;
+		this.el = el;
+		this.render(props);
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	getValue() {
+		return this.el.value;
+	}
+
+	render(props) {
+		this.el.value = String(props.value);
+	}
+
+	buttons(id, fieldname, relatedModule = '') {
+		return `
+		<div class="slds-button-group" role="group">
+		<button class="slds-button slds-button_icon slds-button_icon-border-filled" title="Charts" aria-pressed="false" onclick="openUIype10Modal(${id}, ${fieldname}, ${relatedModule})">
+			<svg class="slds-button__icon" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+			</svg>
+			<span class="slds-assistive-text">Select</span>
+		</button>
+		<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false" onclick="ListView.SaveRelatedRows(${id}, ${fieldname})">
+			<svg class="slds-button__icon" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+			</svg>
+			<span class="slds-assistive-text">Save</span>
+		</button>
+		<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-pressed="false" onclick="CloseUIType10Editor(${id}, ${fieldname})">
+			<svg class="slds-button__icon" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+			</svg>
+			<span class="slds-assistive-text">Close</span>
+		</button>
+		</div>`;
+	}
+}
+
+function CloseUIType10Editor(id, fieldname) {
+	let lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
+	document.getElementById(`popover-${id}-${fieldname}`).remove();
+	ListView.Action = 'inlineedit';
+	ListView.Reload(lastPage);
+}
+
+function openUIype10Modal(id, fieldname, relatedModule = '') {
+	if (relatedModule == '') {
+		relatedModule = document.getElementById(`${fieldname}_type_${id}`).value;
+	}
+	window.open(`index.php?module=${relatedModule}&action=Popup&html=Popup_picker&form=ListView&forfield=${fieldname}&srcmodule=${gVTModule}&forrecord=${id}`, 'vtlibui10', cbPopupWindowSettings);
+}

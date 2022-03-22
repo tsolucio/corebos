@@ -1024,6 +1024,8 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 							$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
 							$forform = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
 							$forform = htmlspecialchars($forform, ENT_QUOTES, $default_charset);
+							$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '';
+							$forrecord = htmlspecialchars($forrecord, ENT_QUOTES, $default_charset);
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $i, 'search', $focus->popup_type);
 							if (isset($forfield) && $forfield != '' && $focus->popup_type != 'detailview') {
 								$value1 = strip_tags($value);
@@ -1033,7 +1035,11 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 								if (property_exists($focus, 'popup_function') && !empty($focus->popup_function)) {
 									$value = "<a href='javascript:void(0);' onclick='return ".$focus->popup_function."($entity_id, \"$value\", \"$forfield\"".(empty($forform)?'':',"'.$forform.'"').")' id =$count >$value1</a>";
 								} else {
-									$value = "<a href='javascript:if (document.getElementById(\"closewindow\").value==\"true\") {window.close();}' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\"".(empty($forform)?'':',"'.$forform.'"').")' id =$count >$value1</a>";
+									if ($forform == 'ListView') {
+										$value = "<a href='javascript:if (document.getElementById(\"closewindow\").value==\"true\") {window.close();}' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\"".(empty($forform)?'':',"'.$forform.'"').",$forrecord)' id =$count >$value1</a>";
+									} else {
+										$value = "<a href='javascript:if (document.getElementById(\"closewindow\").value==\"true\") {window.close();}' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\"".(empty($forform)?'':',"'.$forform.'"').")' id =$count >$value1</a>";
+									}
 								}
 							}
 						} else {
