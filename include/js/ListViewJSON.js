@@ -21,6 +21,7 @@ let SearchColumns = 0;
 let ListViewCopy = 0;
 let Application_Filter_All_Edit = 1;
 let DocumentFolderView = 1;
+let Application_MassAction_Multipage = 0;
 let lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
 let urlParams = new URLSearchParams(window.location.search);
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, gVTModule, '').then(function (response) {
@@ -38,6 +39,10 @@ GlobalVariable_getVariable('Application_Filter_All_Edit', 1).then(function (resp
 GlobalVariable_getVariable('Document_Folder_View', 1).then(function (response) {
 	let obj = JSON.parse(response);
 	DocumentFolderView = obj.Document_Folder_View;
+});
+GlobalVariable_getVariable('Application_MassAction_Multipage', 0).then(function (response) {
+	let obj = JSON.parse(response);
+	Application_MassAction_Multipage = obj.Application_MassAction_Multipage;
 });
 document.addEventListener('DOMContentLoaded', function () {
 	ListView.loader('show');
@@ -483,19 +488,19 @@ const ListView = {
 		});
 		lvdataGridInstance[instance].on('checkAll', (ev) => {
 			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
-			ListView.getCheckedRows(checkedRows, 'check', instance);
+			ListView.getCheckedRows(checkedRows, 'check', instance, ev);
 		});
 		lvdataGridInstance[instance].on('check', (ev) => {
 			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
-			ListView.getCheckedRows(checkedRows, 'check', instance);
+			ListView.getCheckedRows(checkedRows, 'check', instance, ev);
 		});
 		lvdataGridInstance[instance].on('uncheckAll', (ev) => {
 			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
-			ListView.getCheckedRows(checkedRows, 'uncheck', instance);
+			ListView.getCheckedRows(checkedRows, 'uncheck', instance, ev);
 		});
 		lvdataGridInstance[instance].on('uncheck', (ev) => {
 			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
-			ListView.getCheckedRows(checkedRows, 'uncheck', instance);
+			ListView.getCheckedRows(checkedRows, 'uncheck', instance, ev);
 		});
 	},
 	/**
@@ -619,8 +624,12 @@ const ListView = {
 			}
 		}
 		ListView.updateData();
-		if (ListView.Action != 'massedit') {
+		if (ListView.Action == 'massedit') {
 			document.getElementById('allselectedboxes').value = '';
+			document.getElementById('idstring').value = '';
+			document.getElementsByName('massedit_recordids')[0].value = '';
+			ListView.CheckedRows = [];
+			ListView.Action = '';
 		}
 	},
 	/**
@@ -673,27 +682,60 @@ const ListView = {
 	 * @param {Object} type
 	 * @param {String} el
 	 */
-	getCheckedRows: (checkedRows, event, instance = 1) => {
+	getCheckedRows: (checkedRows, event, instance = 1, ev) => {
 		let currentRows = [];
 		let relationRows = [];
 		let	select_options = '';
 		ListView.Instance = instance;
-		for (let id in checkedRows) {
-			let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'recordid');
-			let parent = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'parent');
-			if (!recordId.includes('parent_')) {
-				currentRows.push(recordId);
+		const selectCurrentPageRec = document.getElementById('selectCurrentPageRec');
+		if (Application_MassAction_Multipage == 0 || (DocumentFolderView == 1 && ListView.Module == 'Documents')) {
+			for (let id in checkedRows) {
+				let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'recordid');
+				let parent = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'parent');
+				if (!recordId.includes('parent_')) {
+					currentRows.push(recordId);
+				}
+				relationRows.push(`${parent}__${recordId}`);
 			}
-			relationRows.push(`${parent}__${recordId}`);
+			ListView.CheckedRows[instance] = currentRows.filter(Number);
+			ListView.CheckedRows.map(function (currentValue, index, arr) {
+				if (select_options != '') {
+					select_options += ';';
+				}
+				select_options += currentValue.join(';');
+			});
+			ListView.RelationRows[instance] = relationRows;
+		} else {
+			let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(ev.rowKey), 'recordid');
+			if (event == 'uncheck' || event == 'uncheckAll') {
+				if (checkedRows.length == 0) {
+					for (let i = 0; i < PageSize; i++) {
+						recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(i), 'recordid');
+						const idx = ListView.CheckedRows.indexOf(recordId);
+						delete ListView.CheckedRows[idx];
+					}
+				} else {
+					const idx = ListView.CheckedRows.indexOf(recordId);
+					delete ListView.CheckedRows[idx];
+				}
+				selectCurrentPageRec.checked = false;
+			} else {
+				if (checkedRows.length == PageSize) {
+					for (let id in checkedRows) {
+						recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'recordid');
+						if (!ListView.CheckedRows.includes(recordId)) {
+							ListView.CheckedRows.push(recordId);
+						}
+					}
+					selectCurrentPageRec.checked = true;
+				} else {
+					if (!ListView.CheckedRows.includes(recordId)) {
+						ListView.CheckedRows.push(recordId);
+					}
+				}
+			}
+			select_options = ListView.CheckedRows.filter(Number).join(';');
 		}
-		ListView.CheckedRows[instance] = currentRows.filter(Number);
-		ListView.RelationRows[instance] = relationRows;
-		ListView.CheckedRows.map(function (currentValue, index, arr) {
-			if (select_options != '') {
-				select_options += ';';
-			}
-			select_options += currentValue.join(';');
-		});
 		if (!select_options.endsWith(';') && select_options != '') {
 			select_options += ';';
 		}
@@ -849,11 +891,19 @@ const ListView = {
 	checkRows: () => {
 		let actualVal = document.getElementById('allselectedboxes');
 		let idsArr = actualVal.value.split(';');
+		let j = 0;
 		for (let i = 0; i <= PageSize; i++) {
 			let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(i), 'recordid');
 			if (idsArr.includes(recordId)) {
 				document.getElementById(i).checked = true;
+				j++;
 			}
+		}
+		const selectCurrentPageRec = document.getElementById('selectCurrentPageRec');
+		if (j == parseInt(PageSize)) {
+			selectCurrentPageRec.checked = true;
+		} else {
+			selectCurrentPageRec.checked = false;
 		}
 	},
 	/**
