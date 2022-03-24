@@ -821,16 +821,16 @@ const ListView = {
 			document.getElementById('filterDeleteActions').innerHTML = '';
 			document.getElementById('filterDeleteActions').appendChild(fdelete);
 		}
-		let public = document.createElement('span');
+		let fpublic = document.createElement('span');
 		if (filters.setpublic.ChangedStatus != '') {
-			public.innerHTML = `|
+			fpublic.innerHTML = `|
 			<a id="customstatus_id" onclick="ChangeCustomViewStatus(${filters.viewid}, ${filters.setpublic.Status}, ${filters.setpublic.ChangedStatus}, '${ListView.Module}')">
 				${filters.setpublic.Label}
 			</a>`;
 		}
 		if (document.getElementById('filterPublicActions') !== null) {
 			document.getElementById('filterPublicActions').innerHTML = '';
-			document.getElementById('filterPublicActions').appendChild(public);
+			document.getElementById('filterPublicActions').appendChild(fpublic);
 		}
 	},
 	/**
