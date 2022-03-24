@@ -307,7 +307,7 @@ const ListView = {
 						relatedModule: ListView.RelatedModule
 					}
 				}
-			}      
+			};
 		} else if (uitype == '4' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
 			editor = false;
 		} else if (uitype == '15' || uitype == '16') {
@@ -926,7 +926,7 @@ const ListView = {
 					columnName: columnName,
 					recordid: recordid,
 				}
-			}).then(function(response) {
+			}).then(function (response) {
 				const lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
 				ListView.Action = 'inlineedit';
 				ListView.Reload(lastPage);
@@ -1205,7 +1205,7 @@ const ListView = {
 				columnName: fieldname,
 				recordid: recordid,
 			}
-		}).then(function(response) {
+		}).then(function (response) {
 			const lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
 			ListView.Action = 'inlineedit';
 			ListView.Reload(lastPage);
