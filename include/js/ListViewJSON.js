@@ -21,6 +21,7 @@ let SearchColumns = 0;
 let ListViewCopy = 0;
 let Application_Filter_All_Edit = 1;
 let DocumentFolderView = 1;
+let Application_MassAction_Multipage = 0;
 let lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
 let urlParams = new URLSearchParams(window.location.search);
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, gVTModule, '').then(function (response) {
@@ -39,6 +40,10 @@ GlobalVariable_getVariable('Document_Folder_View', 1).then(function (response) {
 	let obj = JSON.parse(response);
 	DocumentFolderView = obj.Document_Folder_View;
 });
+GlobalVariable_getVariable('Application_MassAction_Multipage', 0).then(function (response) {
+	let obj = JSON.parse(response);
+	Application_MassAction_Multipage = obj.Application_MassAction_Multipage;
+});
 document.addEventListener('DOMContentLoaded', function () {
 	ListView.loader('show');
 	ListView.Show();
@@ -52,6 +57,7 @@ const ListView = {
 	SearchParams: false,
 	CheckedRows: [],
 	RelationRows: [],
+	RelatedModule: '',
 
 	Request: async (url, method, body = {}) => {
 		let headers = {
@@ -177,6 +183,9 @@ const ListView = {
 				sortable = false;
 			}
 			if (edit) {
+				if (uitype == 10) {
+					ListView.RelatedModule = headerObj[index].relatedModule;
+				}
 				editor = ListView.getEditorType(uitype, values, fieldname);
 			} else {
 				editor = false;
@@ -290,7 +299,16 @@ const ListView = {
 					]
 				}
 			};
-		} else if (uitype == '10' || uitype == '4' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
+		} else if (uitype == '10') {
+			editor = {
+				type: UIType10Editor,
+				options: {
+					customTextEditorOptions: {
+						relatedModule: ListView.RelatedModule
+					}
+				}
+			};
+		} else if (uitype == '4' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
 			editor = false;
 		} else if (uitype == '15' || uitype == '16') {
 			let listItems = [];
@@ -470,19 +488,19 @@ const ListView = {
 		});
 		lvdataGridInstance[instance].on('checkAll', (ev) => {
 			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
-			ListView.getCheckedRows(checkedRows, 'check', instance);
+			ListView.getCheckedRows(checkedRows, 'check', instance, ev);
 		});
 		lvdataGridInstance[instance].on('check', (ev) => {
 			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
-			ListView.getCheckedRows(checkedRows, 'check', instance);
+			ListView.getCheckedRows(checkedRows, 'check', instance, ev);
 		});
 		lvdataGridInstance[instance].on('uncheckAll', (ev) => {
 			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
-			ListView.getCheckedRows(checkedRows, 'uncheck', instance);
+			ListView.getCheckedRows(checkedRows, 'uncheck', instance, ev);
 		});
 		lvdataGridInstance[instance].on('uncheck', (ev) => {
 			const checkedRows = lvdataGridInstance[instance].getCheckedRowKeys();
-			ListView.getCheckedRows(checkedRows, 'uncheck', instance);
+			ListView.getCheckedRows(checkedRows, 'uncheck', instance, ev);
 		});
 	},
 	/**
@@ -576,7 +594,7 @@ const ListView = {
 			'searchtype': '',
 		};
 		if (reload) {
-			if (ListView.Action == 'massedit') {
+			if (ListView.Action == 'massedit' || ListView.Action == 'inlineedit') {
 				RequestParams.lastPage = lastPage;
 			} else {
 				RequestParams.page = lastPage;
@@ -606,8 +624,12 @@ const ListView = {
 			}
 		}
 		ListView.updateData();
-		if (ListView.Action != 'massedit') {
+		if (ListView.Action == 'massedit') {
 			document.getElementById('allselectedboxes').value = '';
+			document.getElementById('idstring').value = '';
+			document.getElementsByName('massedit_recordids')[0].value = '';
+			ListView.CheckedRows = [];
+			ListView.Action = '';
 		}
 	},
 	/**
@@ -660,27 +682,60 @@ const ListView = {
 	 * @param {Object} type
 	 * @param {String} el
 	 */
-	getCheckedRows: (checkedRows, event, instance = 1) => {
+	getCheckedRows: (checkedRows, event, instance = 1, ev) => {
 		let currentRows = [];
 		let relationRows = [];
 		let	select_options = '';
 		ListView.Instance = instance;
-		for (let id in checkedRows) {
-			let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'recordid');
-			let parent = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'parent');
-			if (!recordId.includes('parent_')) {
-				currentRows.push(recordId);
+		const selectCurrentPageRec = document.getElementById('selectCurrentPageRec');
+		if (Application_MassAction_Multipage == 0 || (DocumentFolderView == 1 && ListView.Module == 'Documents')) {
+			for (let id in checkedRows) {
+				let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'recordid');
+				let parent = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'parent');
+				if (!recordId.includes('parent_')) {
+					currentRows.push(recordId);
+				}
+				relationRows.push(`${parent}__${recordId}`);
 			}
-			relationRows.push(`${parent}__${recordId}`);
+			ListView.CheckedRows[instance] = currentRows.filter(Number);
+			ListView.CheckedRows.map(function (currentValue, index, arr) {
+				if (select_options != '') {
+					select_options += ';';
+				}
+				select_options += currentValue.join(';');
+			});
+			ListView.RelationRows[instance] = relationRows;
+		} else {
+			let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(ev.rowKey), 'recordid');
+			if (event == 'uncheck' || event == 'uncheckAll') {
+				if (checkedRows.length == 0) {
+					for (let i = 0; i < PageSize; i++) {
+						recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(i), 'recordid');
+						const idx = ListView.CheckedRows.indexOf(recordId);
+						delete ListView.CheckedRows[idx];
+					}
+				} else {
+					const idx = ListView.CheckedRows.indexOf(recordId);
+					delete ListView.CheckedRows[idx];
+				}
+				selectCurrentPageRec.checked = false;
+			} else {
+				if (checkedRows.length == PageSize) {
+					for (let id in checkedRows) {
+						recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(checkedRows[id]), 'recordid');
+						if (!ListView.CheckedRows.includes(recordId)) {
+							ListView.CheckedRows.push(recordId);
+						}
+					}
+					selectCurrentPageRec.checked = true;
+				} else {
+					if (!ListView.CheckedRows.includes(recordId)) {
+						ListView.CheckedRows.push(recordId);
+					}
+				}
+			}
+			select_options = ListView.CheckedRows.filter(Number).join(';');
 		}
-		ListView.CheckedRows[instance] = currentRows.filter(Number);
-		ListView.RelationRows[instance] = relationRows;
-		ListView.CheckedRows.map(function (currentValue, index, arr) {
-			if (select_options != '') {
-				select_options += ';';
-			}
-			select_options += currentValue.join(';');
-		});
 		if (!select_options.endsWith(';') && select_options != '') {
 			select_options += ';';
 		}
@@ -808,6 +863,17 @@ const ListView = {
 			document.getElementById('filterDeleteActions').innerHTML = '';
 			document.getElementById('filterDeleteActions').appendChild(fdelete);
 		}
+		let fpublic = document.createElement('span');
+		if (filters.setpublic.ChangedStatus != '') {
+			fpublic.innerHTML = `|
+			<a id="customstatus_id" onclick="ChangeCustomViewStatus(${filters.viewid}, ${filters.setpublic.Status}, ${filters.setpublic.ChangedStatus}, '${ListView.Module}')">
+				${filters.setpublic.Label}
+			</a>`;
+		}
+		if (document.getElementById('filterPublicActions') !== null) {
+			document.getElementById('filterPublicActions').innerHTML = '';
+			document.getElementById('filterPublicActions').appendChild(fpublic);
+		}
 	},
 	/**
 	 * Build query
@@ -825,11 +891,19 @@ const ListView = {
 	checkRows: () => {
 		let actualVal = document.getElementById('allselectedboxes');
 		let idsArr = actualVal.value.split(';');
+		let j = 0;
 		for (let i = 0; i <= PageSize; i++) {
 			let recordId = lvdataGridInstance[ListView.Instance].getValue(parseInt(i), 'recordid');
 			if (idsArr.includes(recordId)) {
 				document.getElementById(i).checked = true;
+				j++;
 			}
+		}
+		const selectCurrentPageRec = document.getElementById('selectCurrentPageRec');
+		if (j == parseInt(PageSize)) {
+			selectCurrentPageRec.checked = true;
+		} else {
+			selectCurrentPageRec.checked = false;
 		}
 	},
 	/**
@@ -852,6 +926,10 @@ const ListView = {
 					columnName: columnName,
 					recordid: recordid,
 				}
+			}).then(function (response) {
+				const lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
+				ListView.Action = 'inlineedit';
+				ListView.Reload(lastPage);
 			});
 		}
 	},
@@ -1111,7 +1189,28 @@ const ListView = {
 	/**
 	 * Keep track of already loaded tooltips
 	 */
-	loadedTooltips: []
+	loadedTooltips: [],
+
+	SaveRelatedRows: (recordid, fieldname) => {
+		const relatedRow = document.getElementById(`txtbox_${fieldname}_${recordid}`).value;
+		if (relatedRow == '') {
+			return false;
+		}
+		jQuery.ajax({
+			method: 'POST',
+			url: `${defaultURL}&functiontocall=listViewJSON&method=updateDataListView`,
+			data: {
+				modulename: ListView.Module,
+				value: relatedRow,
+				columnName: fieldname,
+				recordid: recordid,
+			}
+		}).then(function (response) {
+			const lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
+			ListView.Action = 'inlineedit';
+			ListView.Reload(lastPage);
+		});
+	}
 };
 
 

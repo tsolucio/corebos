@@ -50,6 +50,7 @@
 						<a href="index.php?module={$MODULE}&action=CustomView">{$APP.LNK_CV_CREATEVIEW}</a>
 						<span id="filterEditActions"></span>
 						<span id="filterDeleteActions"></span>
+						<span id="filterPublicActions"></span>
 						</td>
 					</tr>
 				</table>

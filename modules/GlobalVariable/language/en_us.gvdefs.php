@@ -1570,6 +1570,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Set URL where Tika is running',
 ),
+'Application_MassAction_Multipage' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Define if we want to mass edit records that we select on many pages or allow us only to mass edit only on the page we are.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {

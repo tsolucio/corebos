@@ -344,9 +344,6 @@ function mass_edit1x1(obj) {
 
 function mass_edit(obj, divid, module) {
 	var select_options = document.getElementById('allselectedboxes').value;
-	if (select_options != 'all' && Application_Landing_View!='table') {
-		ListView.getCheckedRows();
-	}
 	var numOfRows = document.getElementById('numOfRows').value;
 	var excludedRecords = document.getElementById('excludedRecords').value;
 	var count = 0;
