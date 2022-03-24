@@ -1271,14 +1271,13 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$image_path = $adb->query_result($image_res, 0, 'path');
 		$image_name = decode_html($adb->query_result($image_res, 0, 'name'));
 		$imgpath = $image_path . $image_id . '_' . urlencode($image_name);
-		
 		if ($image_name != '') {
 			$ftype = $adb->query_result($image_res, 0, 'type');
 			$isimage = stripos($ftype, 'image') !== false;
 			if ($isimage) {
 				$imgtxt = getTranslatedString('SINGLE_'.$module, $module).' '.getTranslatedString('Image');
-				$value = '<div style="width:100%;text-align:center;"><img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "'.
-						$imgtxt . '" style="max-width: 50px;"></div>';
+				$value = '<div style="width:100%;text-align:center;"><img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "'
+					.$imgtxt.'" style="max-width: 50px;"></div>';
 			} else {
 				$imgtxt = getTranslatedString('SINGLE_'.$module, $module).' '.getTranslatedString('SINGLE_Documents');
 				$value = '<a href="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" target="_blank">'.$image_name.'</a>';
