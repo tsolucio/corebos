@@ -292,7 +292,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'MasterDetail_ReloadScreenAfterEdit',
 				'MasterDetail_Pagination',
 				'Import_ForceDuplicateRecord_Handling',
-				'Apache_Tika_URL'
+				'Apache_Tika_URL',
+				'Application_MassAction_Multipage',
 			);
 			$delete_these = array(
 				'preload_prototype',

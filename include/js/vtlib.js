@@ -10,9 +10,16 @@
 /**
  * Generic uitype popup selection handler
  */
-function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname) {
+function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname, currentID = 0) {
 	var ret = false;
 	var wodform = false;
+	if (formname == 'ListView') {
+		var domnode_id = window.opener.document.getElementById(`txtbox_${target_fieldname}_${currentID}`);
+		var domnode_display = window.opener.document.getElementById(`txtbox_${target_fieldname}_${currentID}_display`);
+		domnode_id.value = recordid;
+		domnode_display.innerHTML = value;
+		return true;
+	}
 	if (window.opener.document.forms[formname]) {
 		wodform = window.opener.document.forms[formname];
 		ret = true;
