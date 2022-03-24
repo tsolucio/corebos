@@ -1571,10 +1571,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Indica la URL donde Apache Tika está operando',
 ),
 'Application_MassAction_Multipage' => array(
-	'valuetype' => 'String',
-	'category' => 'Application',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'Define if we want to mass edit records that we select on many pages or allow us only to mass edit only on the page we are.',
+	'definition' => 'Definir si queremos editar en masa registros que seleccionamos en muchas páginas o solo editar en masa la página en la que estamos.',
 ),
 );
 
