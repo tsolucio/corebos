@@ -54,14 +54,18 @@ $smarty->assign('ISADMIN', $isadmin);
 if (!isset($_REQUEST['btnchquery']) || empty($_REQUEST['chquery']) || !$mu->isActive()) {
 	$smarty->assign('CHQUERYRDO', []);
 } else {
-	$r = $cdb->query($_REQUEST['chquery']);
 	$rdo = [];
-	$limit = 0;
-	while ($rw = $cdb->fetch_array($r)) {
-		$rdo[] = json_encode($rw);
-		if ($limit++ > 100) {
-			break;
+	try {
+		$r = $cdb->query($_REQUEST['chquery']);
+		$limit = 0;
+		while ($rw = $cdb->fetch_array($r)) {
+			$rdo[] = json_encode($rw);
+			if ($limit++ > 100) {
+				break;
+			}
 		}
+	} catch (\Throwable $th) {
+		$rdo[] = '<span style="color:red;">'.$cdb->getErrorMsg().'</span>';
 	}
 	$smarty->assign('CHQUERY', $_REQUEST['chquery']);
 	$smarty->assign('CHQUERYRDO', $rdo);

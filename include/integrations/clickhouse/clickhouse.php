@@ -102,8 +102,6 @@ class corebos_clickhouse {
 		$host = coreBOS_Settings::getSetting(self::HOST, '');
 		$port = coreBOS_Settings::getSetting(self::PORT, '');
 		$database = coreBOS_Settings::getSetting(self::DATABASE, 'default');
-		$user = coreBOS_Settings::getSetting(self::USERNAME, 'default');
-		$pass = coreBOS_Settings::getSetting(self::PASSWORD, '');
 		return ($clickhouse != '0' && $host != '' && $port != '' && $database != '' );
 	}
 
@@ -111,13 +109,14 @@ class corebos_clickhouse {
 		$config = [
 			'host' => coreBOS_Settings::getSetting(self::HOST, ''),
 			'port' => coreBOS_Settings::getSetting(self::PORT, ''),
-			'username' => coreBOS_Settings::getSetting(self::PASSWORD, ''),
-			'password' => coreBOS_Settings::getSetting(self::PASSWORD, '')
+			'username' => coreBOS_Settings::getSetting(self::USERNAME, ''),
+			'password' => coreBOS_Settings::getSetting(self::PASSWORD, ''),
+			'readonly' => false,
 		];
 		$chInstance = new ClickHouseDB\Client($config);
-		$chInstance->setTimeout(1.5);      // 1500 ms
-		$chInstance->setTimeout(10);       // 10 seconds
-		$chInstance->setConnectTimeOut(5);
+		$chInstance->setTimeout(20); // seconds
+		$chInstance->setConnectTimeOut(10);
+		$chInstance->settings()->set('allow_ddl', 1);
 		return $chInstance;
 	}
 
