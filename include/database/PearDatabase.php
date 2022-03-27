@@ -1023,19 +1023,16 @@ class PearDatabase {
 		$this->println('DB alterTableTable table='.$tablename.' flds='.$flds.' oper='.$oper);
 		$this->checkConnection();
 		$dict = NewDataDictionary($this->database);
-
 		if ($oper == 'Add_Column') {
 			$sqlarray = $dict->AddColumnSQL($tablename, $flds);
 		} elseif ($oper == 'Delete_Column') {
 			$sqlarray = $dict->DropColumnSQL($tablename, $flds);
 		}
-		$this->println('sqlarray');
-		$this->println($sqlarray);
-
-		$result = $dict->ExecuteSQLArray($sqlarray);
-
-		$this->println('DB alterTableTable table='.$tablename.' flds='.$flds.' oper='.$oper.' status='.$result);
-		return $result;
+		if (!empty($sqlarray)) {
+			$this->println($sqlarray);
+			return $dict->ExecuteSQLArray($sqlarray);
+		}
+		return false;
 	}
 
 	public function getColumnNames($tablename) {
