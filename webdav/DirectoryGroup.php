@@ -67,16 +67,16 @@ class DirectoryGroup extends Sabre\DAV\Collection {
 	public function getDocumentFolder() {
 		global $adb;
 		$folder = array();
-		$records = $adb->query('select * from vtiger_attachmentsfolder ORDER BY sequence');
+		$records = $adb->query('select * from vtiger_documentfolders inner join vtiger_crmentity on crmid=documentfoldersid where deleted=0 and parentfolder=0 order by sequence');
 		while ($row = $adb->fetch_array($records)) {
-			$folder[] = new DirectoryFolder($row['foldername'], $row['folderid']);
+			$folder[] = new DirectoryFolder($row['foldername'], $row['documentfoldersid']);
 		}
 		return $folder;
 	}
 
 	public function createDirectory($name) {
-		include_once 'modules/Documents/Documents.php';
-		if (!Documents::createFolder($name)) {
+		include_once 'modules/DocumentFolders/DocumentFolders.php';
+		if (!DocumentFolders::createFolder($name)) {
 			throw new Sabre\DAV\Exception\Forbidden('Permission denied to create Subdrectories');
 		}
 	}
@@ -106,10 +106,10 @@ class DirectoryGroup extends Sabre\DAV\Collection {
 				break;
 		}
 		if (!empty($this->mode) && $this->mode == 'folder') {
-			$result = $adb->pquery('SELECT folderid, foldername FROM vtiger_attachmentsfolder WHERE foldername=?', array($name));
+			$result = $adb->pquery('SELECT documentfoldersid, foldername FROM vtiger_documentfolders INNER JOIN vtiger_crmentity ON crmid=documentfoldersid WHERE foldername=?', array($name));
 			if ($adb->num_rows($result) > 0) {
 				$row = $adb->fetch_array($result);
-				return new DirectoryFolder($row['foldername'], $row['folderid']);
+				return new DirectoryFolder($row['foldername'], $row['documentfoldersid']);
 			} else {
 				throw new Sabre\DAV\Exception\NotFound('Folder not found: ' . $name);
 			}
@@ -127,7 +127,7 @@ class DirectoryGroup extends Sabre\DAV\Collection {
 	public function childExists($name) {
 		if ($this->mode == 'folder') {
 			global $adb;
-			$records = $adb->pquery('select 1 from vtiger_attachmentsfolder WHERE foldername=?'. array($name));
+			$records = $adb->pquery('select 1 from vtiger_documentfolders innter join vtiger_crmentity on crmid=documentfoldersid WHERE deleted=0 and foldername=?'. array($name));
 			return ($adb->num_rows($records) > 0);
 		}
 		return true;
