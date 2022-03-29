@@ -139,7 +139,8 @@ function vtws_getEntityName($entityId) {
 
 function vtws_getWSID($id) {
 	if (strlen($id)==40) {
-		return CRMEntity::getWSIDfromUUID($id);
+		$return = CRMEntity::getWSIDfromUUID($id);
+		return ($return=='' ? '0x0' : $return);
 	} elseif (preg_match('/^[0-9]+x[0-9]+$/', $id)) {
 		return $id;
 	} elseif (is_numeric($id)) {
