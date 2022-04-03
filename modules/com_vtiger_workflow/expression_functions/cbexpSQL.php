@@ -655,6 +655,10 @@ class cbexpsql_environmentstub {
 		$this->data = $data;
 	}
 
+	public function getId() {
+		return $this->crmid;
+	}
+
 	public function get($fieldName) {
 		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
 		if ($this->returnReferenceValue && count($matches)>0) {
@@ -668,6 +672,14 @@ class cbexpsql_environmentstub {
 
 	public function set($fieldName, $value) {
 		$this->data[$fieldName] = $value;
+	}
+
+	public function getContext() {
+		return $this->WorkflowContext;
+	}
+
+	public function setContext($WorkflowContext) {
+		$this->WorkflowContext = $WorkflowContext;
 	}
 }
 ?>

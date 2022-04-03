@@ -34,9 +34,16 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$mapid = $this->bmapid;
 		$cbMap = cbMap::getMapByID($mapid);
 
-		$focus2 = CRMEntity::getInstance($origin_module);
-		$focus2->retrieve_entity_info($therecid, $origin_module);
-		$target_fields = $cbMap->WebserviceMapping($focus2->column_fields, $entity->WorkflowContext);
+		$WSCall_ReturnResultWithNoSave = isset($entity->WorkflowContext['WSCall_ReturnResultWithNoSave']);
+		unset($entity->WorkflowContext['WSCall_ReturnResultWithNoSave']);
+		if (empty($therecid)) {
+			$mergewith = [];
+		} else {
+			$focus2 = CRMEntity::getInstance($origin_module);
+			$focus2->retrieve_entity_info($therecid, $origin_module);
+			$mergewith = $focus2->column_fields;
+		}
+		$target_fields = $cbMap->WebserviceMapping($mergewith, $entity->WorkflowContext);
 
 		$wsconfig = $target_fields['WSConfig'];
 		$url = $this->substituteSetting($wsconfig['wsurl']);
@@ -195,7 +202,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$entity->WorkflowContext[$v['context']] = $r2;
 					}
 				}
-				if (!empty($conds)) {
+				if (!empty($conds) && !$WSCall_ReturnResultWithNoSave) {
 					$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
 					$table = $adb->query_result($q, 0, 'tablename');
 					$id = $adb->query_result($q, 0, 'entityidfield');
@@ -317,7 +324,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 						}
 						$entity->WorkflowContext[$v['context']] = $r2;
 					}
-					if (!empty($conds)) {
+					if (!empty($conds) && !$WSCall_ReturnResultWithNoSave) {
 						$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
 						$table = $adb->query_result($q, 0, 'tablename');
 						$id = $adb->query_result($q, 0, 'entityidfield');
@@ -349,6 +356,9 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 		$util->revertUser();
 		$logbg->debug('< RunWebservice');
+		if ($WSCall_ReturnResultWithNoSave) {
+			return $conds;
+		}
 	}
 
 	public function substituteSetting($url) {

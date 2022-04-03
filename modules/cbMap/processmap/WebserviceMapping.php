@@ -189,6 +189,7 @@ require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 require_once 'modules/com_vtiger_workflow/VTSimpleTemplateOnData.inc';
+include_once 'modules/com_vtiger_workflow/expression_functions/cbexpSQL.php';
 require_once 'include/Webservices/Retrieve.php';
 
 class WebserviceMapping extends processcbMap {
@@ -257,7 +258,11 @@ class WebserviceMapping extends processcbMap {
 						if (empty($ofields['record_id'])) {
 							$exprEvaluation = $exprEvaluater->evaluate(false);
 						} else {
-							$entity = new VTWorkflowEntity($current_user, $entityId);
+							if ($ofields['record_id']=='0x0') {
+								$entity = new cbexpsql_environmentstub($mapping['origin'], '0x0');
+							} else {
+								$entity = new VTWorkflowEntity($current_user, $entityId);
+							}
 							$entity->setContext($ctx);
 							$exprEvaluation = $exprEvaluater->evaluate($entity);
 						}
