@@ -520,17 +520,17 @@ class Calendar4You extends CRMEntity {
 				$roleids = $roleid;
 			}
 
-			if (count($roleids) > 1) {
+			if (empty($roleids)) {
 				$q="select $fieldname, picklist_valueid
 					from $tablename
 					inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid
-					where roleid in (\"". implode('","', $roleids) ."\") and picklistid in (select picklistid from $tablename)
+					where roleid ='".$roleid."' and picklistid in (select picklistid from $tablename)
 					order by sortid asc";
 			} else {
 				$q="select $fieldname, picklist_valueid
 					from $tablename
 					inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid
-					where roleid ='".$roleid."' and picklistid in (select picklistid from $tablename)
+					where roleid in (\"". implode('","', (array)$roleids) ."\") and picklistid in (select picklistid from $tablename)
 					order by sortid asc";
 			}
 		}

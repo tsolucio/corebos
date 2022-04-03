@@ -68,11 +68,11 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 } elseif (isset($_REQUEST['sendmail']) && $_REQUEST['sendmail'] !='') {
 	$mailids = get_to_emailids($_REQUEST['pmodule']);
 	$to_add = '';
-	if ($mailids['mailds'] != '') {
+	if (!empty($mailids['mailds'])) {
 		$to_add = trim($mailids['mailds'], ',').',';
 	}
 	$smarty->assign('TO_MAIL', $to_add);
-	$smarty->assign('IDLISTS', $mailids['idlists']);
+	$smarty->assign('IDLISTS', (empty($mailids['idlists']) ? '' : $mailids['idlists']));
 	if (!empty($_REQUEST['idlist']) && $_REQUEST['pmodule'] != 'Accounts'
 		&& $_REQUEST['pmodule'] != 'Contacts' && $_REQUEST['pmodule'] != 'Leads' && $_REQUEST['pmodule'] != 'Vendors') {
 		$smarty->assign('relateemailwith', $_REQUEST['idlist']);
@@ -133,11 +133,11 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	$_REQUEST['idlist']=$emailcrmid;
 	$mailids = get_to_emailids($pmodule);
 	$to_add = '';
-	if ($mailids['mailds'] != '') {
+	if (!empty($mailids['mailds'])) {
 		$to_add = trim($mailids['mailds'], ',').',';
 	}
 	$smarty->assign('TO_MAIL', $to_add);
-	$smarty->assign('IDLISTS', $mailids['idlists']);
+	$smarty->assign('IDLISTS', (empty($mailids['idlists']) ? '' : $mailids['idlists']));
 	if (!empty($_REQUEST['templatename'])) {
 		$Users_Default_Send_Email_Template = vtlib_purify($_REQUEST['templatename']);
 	} else {

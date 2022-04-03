@@ -537,8 +537,8 @@ class Emails extends CRMEntity {
 	}
 }
 
-/** Function to get the emailids for the given ids form the request parameters
- *  It returns an array which contains the mailids and the parentidlists
+/** Function to get the emailids for the given ids from the request parameters
+ *  @return array with the mailids and the parentidlists
  */
 function get_to_emailids($module) {
 	global $adb, $current_user;
@@ -578,7 +578,7 @@ function get_to_emailids($module) {
 		}
 	}
 	if (empty($emailFields)) {
-		return false;
+		return [];
 	}
 	$params = $idlist;
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias($module);
