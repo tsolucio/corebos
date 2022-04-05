@@ -112,6 +112,9 @@ class RunWebserviceWorkflowTask extends VTTask {
 			curl_setopt($channel, CURLOPT_HTTPHEADER, $headers);
 			curl_setopt($channel, CURLOPT_SSL_VERIFYHOST, $certinsecure);
 			curl_setopt($channel, CURLOPT_SSL_VERIFYPEER, $certinsecure);
+			if ($certtype !== null) {
+				curl_setopt($channel, CURLOPT_PROXY_SSLCERTTYPE, $certtype);
+			}
 			if ($cert !== null) {
 				curl_setopt($channel, CURLOPT_SSLCERT, $cert);
 			}
