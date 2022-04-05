@@ -169,11 +169,8 @@ class ServiceContracts extends CRMEntity {
 
 	/**
 	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
 	 */
 	public function save_related_module($module, $crmid, $with_module, $with_crmids) {
-
 		$with_crmids = (array)$with_crmids;
 		foreach ($with_crmids as $with_crmid) {
 			parent::save_related_module($module, $crmid, $with_module, $with_crmid);
@@ -188,16 +185,15 @@ class ServiceContracts extends CRMEntity {
 	public function updateHelpDeskRelatedTo($focusId, $entityIds) {
 		global $log, $adb;
 		$log->debug('> updateHelpDeskRelatedTo');
-
 		$entityIds = (array)$entityIds;
-		$selectTicketsQuery="SELECT ticketid FROM vtiger_troubletickets WHERE (parent_id IS NULL OR parent_id=0) AND ticketid IN (".generateQuestionMarks($entityIds).')';
+		$selectTicketsQuery='SELECT ticketid FROM vtiger_troubletickets WHERE (parent_id IS NULL OR parent_id=0) AND ticketid IN ('.generateQuestionMarks($entityIds).')';
 		$selectTicketsResult = $adb->pquery($selectTicketsQuery, array($entityIds));
 		$noOfTickets = $adb->num_rows($selectTicketsResult);
 		for ($i=0; $i < $noOfTickets; ++$i) {
 			$ticketId = $adb->query_result($selectTicketsResult, $i, 'ticketid');
-			$updateQuery = "UPDATE vtiger_troubletickets, vtiger_servicecontracts SET parent_id=vtiger_servicecontracts.sc_related_to" .
-				" WHERE vtiger_servicecontracts.sc_related_to IS NOT NULL AND vtiger_servicecontracts.sc_related_to != 0" .
-				" AND vtiger_servicecontracts.servicecontractsid = ? AND vtiger_troubletickets.ticketid = ?";
+			$updateQuery = 'UPDATE vtiger_troubletickets, vtiger_servicecontracts SET parent_id=vtiger_servicecontracts.sc_related_to'
+				.' WHERE vtiger_servicecontracts.sc_related_to IS NOT NULL AND vtiger_servicecontracts.sc_related_to!=0'
+				.' AND vtiger_servicecontracts.servicecontractsid=? AND vtiger_troubletickets.ticketid=?';
 			$adb->pquery($updateQuery, array($focusId, $ticketId));
 		}
 		$log->debug('< updateHelpDeskRelatedTo');
@@ -208,7 +204,6 @@ class ServiceContracts extends CRMEntity {
 		global $adb;
 		$this->id = $focusId;
 		$this->retrieve_entity_info($focusId, 'ServiceContracts');
-
 		$contractTicketsResult = $adb->pquery(
 			"SELECT relcrmid FROM vtiger_crmentityrel WHERE module = 'ServiceContracts' AND relmodule = 'HelpDesk' AND crmid = ?
 			UNION
@@ -229,7 +224,6 @@ class ServiceContracts extends CRMEntity {
 			}
 		}
 		$this->updateUsedUnits($totalUsedUnits);
-
 		$this->calculateProgress();
 	}
 
@@ -237,7 +231,6 @@ class ServiceContracts extends CRMEntity {
 	public function computeUsedUnits($ticketData, $operator = '+') {
 		$trackingUnit = strtolower($this->column_fields['tracking_unit']);
 		$workingHoursPerDay = 24;
-
 		$usedUnits = 0;
 		if ($trackingUnit == 'incidents') {
 			$usedUnits = 1;
@@ -261,7 +254,7 @@ class ServiceContracts extends CRMEntity {
 	public function updateUsedUnits($usedUnits) {
 		global $adb;
 		$this->column_fields['used_units'] = $usedUnits;
-		$updateQuery = "UPDATE vtiger_servicecontracts SET used_units = $usedUnits WHERE servicecontractsid = ?";
+		$updateQuery = "UPDATE vtiger_servicecontracts SET used_units=$usedUnits WHERE servicecontractsid=?";
 		$adb->pquery($updateQuery, array($this->id));
 	}
 
@@ -294,7 +287,7 @@ class ServiceContracts extends CRMEntity {
 
 		// Calculate the Planned Duration based on Due date and Start date. (in days)
 		if (!empty($dueDate) && !empty($startDate)) {
-			$plannedDurationUpdate = " planned_duration = (TO_DAYS(due_date)-TO_DAYS(start_date)+1)";
+			$plannedDurationUpdate = ' planned_duration = (TO_DAYS(due_date)-TO_DAYS(start_date)+1)';
 		} else {
 			$plannedDurationUpdate = " planned_duration = ''";
 		}
@@ -302,7 +295,7 @@ class ServiceContracts extends CRMEntity {
 
 		// Calculate the Actual Duration based on End date and Start date. (in days)
 		if (!empty($endDate) && !empty($startDate)) {
-			$actualDurationUpdate = "actual_duration = (TO_DAYS(end_date)-TO_DAYS(start_date)+1)";
+			$actualDurationUpdate = 'actual_duration = (TO_DAYS(end_date)-TO_DAYS(start_date)+1)';
 		} else {
 			$actualDurationUpdate = "actual_duration = ''";
 		}
@@ -328,8 +321,6 @@ class ServiceContracts extends CRMEntity {
 
 	/**
 	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
 	 */
 	public function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		parent::delete_related_module($module, $crmid, $with_module, $with_crmid);

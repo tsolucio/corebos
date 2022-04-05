@@ -330,7 +330,7 @@ FieldDependencies.prototype.handleEditViewSetOptions = function (targetFields) {
 			}
 		}
 	}
-}
+};
 
 FieldDependencies.prototype.fieldOptionsDetailView = function (sourcename, targetFields, type) {
 	if (targetFields != null && targetFields != undefined) {
