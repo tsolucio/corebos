@@ -220,6 +220,9 @@ FieldDependencies.prototype.controlActions = function (sourcename) {
 					this.callFunc(sourcename, responsibleConfig['actions']['function']);
 				}
 			} else {
+				if ((responsibleConfig['actions']['setoptions']) !== undefined && responsibleConfig['actions']['setoptions'].length > 0) {
+					this.handleEditViewSetOptions(responsibleConfig['actions']['setoptions']);
+				}
 				if (responsibleConfig['actions']['hide'] !== undefined && responsibleConfig['actions']['hide'].length > 0) {
 					this.fieldShow(responsibleConfig['actions']['hide']);
 				}
@@ -296,6 +299,38 @@ FieldDependencies.prototype.fieldOptionsEditView = function (sourcename, targetF
 		}
 	}
 };
+
+FieldDependencies.prototype.handleEditViewSetOptions = function (targetFields) {
+	if (targetFields != null && targetFields != undefined) {
+		for (var i=0; i<targetFields.length; i++) {
+			var targetname=targetFields[i]['field'];
+			var targetvalues=targetFields[i]['options'];
+			var targetselected = $('#'+targetname).find(":selected").text();
+			var targetnode = jQuery('[name="'+targetname+'"]', this.baseform);
+			if (targetselected == targetvalues[i]) {
+				if (typeof(targetnode.data('allOptions')) == 'undefined') {
+					var allOptions = [];
+					jQuery('option', targetnode).each(function (index, option) {
+						allOptions.push(option);
+					});
+					targetnode.data('allOptions', allOptions);
+				}
+				var targetoptions = targetnode.data('allOptions');
+				jQuery('option', targetnode).remove();
+				for (var index = 0; index < targetoptions.length; ++index) {
+					var targetoption = jQuery(targetoptions[index]);
+					var optionNode = jQuery(document.createElement('option'));
+					targetnode.append(optionNode);
+					optionNode.text(targetoption.text());
+					optionNode.val(targetoption.val());
+				}
+				var firstval_as_selected = jQuery(targetoptions[0]);
+				targetnode.val(firstval_as_selected.val());
+				targetnode.trigger('change');
+			}
+		}
+	}
+}
 
 FieldDependencies.prototype.fieldOptionsDetailView = function (sourcename, targetFields, type) {
 	if (targetFields != null && targetFields != undefined) {
