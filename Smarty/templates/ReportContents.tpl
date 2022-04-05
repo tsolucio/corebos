@@ -81,7 +81,7 @@
 								</div>
 							</div>
 							<div class="slds-grid grid_reports_container">
-								<div class="slds-col slds-size_1-of-1">
+								<div class="slds-col slds-size_1-of-1" style="overflow-x: auto;">
 									<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped" role="grid">
 										<thead>
 											<tr class="slds-line-height_reset">
