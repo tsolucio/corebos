@@ -261,6 +261,13 @@ class ServiceContracts extends CRMEntity {
 	// Function to Calculate the End Date, Planned Duration, Actual Duration and Progress of a Service Contract
 	public function calculateProgress() {
 		global $adb;
+		$result = $adb->pquery(
+			'SELECT is_active FROM vtiger_eventhandlers WHERE event_name=? AND handler_path=? AND handler_class=? limit 1',
+			array('vtiger.entity.aftersave', 'modules/ServiceContracts/ServiceContractsHandler.php', 'ServiceContractsHandler')
+		);
+		if ($adb->num_rows($result)===0) {
+			return; // event handler is not installed so calculations are wrong anyway
+		}
 		$updateCols = array();
 		$updateParams = array();
 
