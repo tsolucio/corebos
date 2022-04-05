@@ -55,6 +55,9 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$headers = $wsconfig['wsheader'];
 		$wsuser = $wsconfig['wsuser'];
 		$wspass = $wsconfig['wspass'];
+		$certtype = isset($wsconfig['certtype']) ? $wsconfig['certtype'] : null;
+		$cert = isset($wsconfig['cert']) ? $wsconfig['cert'] : null;
+		$certinsecure = isset($wsconfig['certinsecure']) ? $wsconfig['certinsecure'] : 0;
 
 		$handler = vtws_getModuleHandlerFromName($origin_module, $current_user);
 		$meta = $handler->getMeta();
@@ -107,8 +110,14 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$channel = curl_init();
 			curl_setopt($channel, CURLOPT_URL, $url);
 			curl_setopt($channel, CURLOPT_HTTPHEADER, $headers);
-			curl_setopt($channel, CURLOPT_SSL_VERIFYHOST, 0);
-			curl_setopt($channel, CURLOPT_SSL_VERIFYPEER, 0);
+			curl_setopt($channel, CURLOPT_SSL_VERIFYHOST, $certinsecure);
+			curl_setopt($channel, CURLOPT_SSL_VERIFYPEER, $certinsecure);
+			if ($certtype !== null) {
+				curl_setopt($channel, CURLOPT_PROXY_SSLCERTTYPE, $certtype);
+			}
+			if ($cert !== null) {
+				curl_setopt($channel, CURLOPT_SSLCERT, $cert);
+			}
 			if ($method == 'POST') {
 				curl_setopt($channel, CURLOPT_POST, true);
 			} else {
