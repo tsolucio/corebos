@@ -25,7 +25,7 @@ include_once 'modules/cbQuestion/cbQuestion.php';
 function cbwsGetAnswer($qid, $params, $user) {
 	global $adb, $log;
 	$result_array = array();
-
+	$qid = explode(',', $qid);
 	foreach ((array)$qid as $id) {
 		$qwsid = vtws_getWSID($id);
 		if ($qwsid===false || $qwsid=='0x0') {
