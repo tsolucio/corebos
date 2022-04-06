@@ -9,7 +9,6 @@
  ********************************************************************************/
 include_once 'config.inc.php';
 require_once 'include/logging.php';
-require_once 'include/logging.php';
 require_once 'include/ListView/ListView.php';
 require_once 'include/database/PearDatabase.php';
 
@@ -105,25 +104,26 @@ class AuditTrail {
 			return $entries_list;
 		}
 	}
-
 	public function getAuditJSON($userid, $page, $order_by = 'actiondate', $sorder = 'DESC', $action_search = '') {
 		global $log, $adb;
+		require_once 'include/ListView/ListViewJSON.php';
 		$log->debug('> getAuditJSON');
-		$where = ' where 1';
-		$params = array();
+		$where = '';
 		if (!empty($userid)) {
-			$where .= ' and userid=?';
-			array_push($params, $userid);
+			$where .=  $adb->convert2Sql(' where userid=?', array($userid));
 		}
 		if (!empty($action_search)) {
-			$where .= ' and action like ?';
-			array_push($params, '%' . $action_search . '%');
+			if (empty($where)) {
+				$where .= ' where ';
+			}
+			$where .=  $adb->convert2Sql(' and action like ?', array('%' . $action_search . '%'));
 		}
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "select * from vtiger_audit_trial $where order by $order_by $sorder";
 		} else {
 			$list_query = "select * from vtiger_audit_trial $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
+		
 		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
 			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
 		} else {
@@ -131,80 +131,20 @@ class AuditTrail {
 		}
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
-		$result = $adb->pquery($list_query.$limit, $params);
-		$count_result = $adb->pquery('SELECT count(*) FROM vtiger_audit_trial '.$where, $params);
-		$noofrows = $adb->query_result($count_result, 0, 0);
-		if ($result) {
-			if ($noofrows>0) {
-				$entries_list = array(
-					'data' => array(
-						'contents' => array(),
-						'pagination' => array(
-							'page' => (int)$page,
-							'totalCount' => (int)$noofrows,
-						),
-					),
-					'result' => true,
-				);
-				$unames = array();
-				while ($lgn = $adb->fetch_array($result)) {
-					$entry = array();
-					if (!isset($unames[$lgn['userid']])) {
-						$unames[$lgn['userid']] = getUserFullName($lgn['userid']);
-					}
-					$entry['User Name'] = $unames[$lgn['userid']];
-					$entry['Module'] = $lgn['module'];
-					$entry['Action'] = $lgn['action'];
-					if (empty($lgn['recordid'])) {
-						$rurl = '';
-					} else {
-						if ($lgn['module']=='Reports') {
-							$rname = $adb->pquery('select vtiger_report.reportname from vtiger_report where vtiger_report.reportid=?', array($lgn['recordid']));
-							$rurl = '<a href="index.php?module=Reports&action=SaveAndRun&record='.$lgn['recordid'].'">'.$rname->fields['reportname'].'</a>';
-						} else {
-							$rinfo = getEntityName($lgn['module'], $lgn['recordid']);
-							if (empty($rinfo)) {
-								$rurl = $lgn['recordid'];
-							} else {
-								$rurl = '<a href="index.php?module='.$lgn['module'].'&action=DetailView&record='.$lgn['recordid'].'">'.$rinfo[$lgn['recordid']].'</a>';
-							}
-						}
-					}
-					$entry['Record'] = $rurl;
-					$entry['RecordDetail'] = $lgn['recordid'];
-					$entry['Action Date'] = $lgn['actiondate'];
-					$entries_list['data']['contents'][] = $entry;
-				}
-			} else {
-				$entries_list = array(
-					'data' => array(
-						'contents' => array(),
-						'pagination' => array(
-							'page' => 1,
-							'totalCount' => 0,
-						),
-					),
-					'result' => false,
-					'message' => getTranslatedString('NoData', 'cbAuditTrail'),
-				);
-			}
-		} else {
-			$entries_list = array(
-				'data' => array(
-					'contents' => array(),
-					'pagination' => array(
-						'page' => 1,
-						'totalCount' => 0,
-					),
-				),
-				'result' => false,
-				'message' => getTranslatedString('ERR_SQL', 'cbAuditTrail'),
-				'debug_query' => $list_query.$limit,
-				'debug_params' => print_r($params, true),
-			);
-		}
+		$q = $list_query.$limit;
+		$grid = new GridListView('cbAuditTrail');
+		$grid->currentPage = $page;
+		$entries_list = $grid->gridTableBasedEntries($q,$this->list_fields,$this->table_name);
 		$log->debug('< getAuditJSON');
 		return json_encode($entries_list);
 	}
+	/*
+				 if (empty($rinfo)) {
+					 $rurl = $lgn['recordid'];
+				 } else {
+					 $rurl = '<a href="index.php?module='.$lgn['module'].'&action=DetailView&record='.$lgn['recordid'].'">'.$rinfo[$lgn['recordid']].'</a>';
+					}
+*/
+
 }
 ?>
