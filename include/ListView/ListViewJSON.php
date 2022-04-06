@@ -855,18 +855,18 @@ class GridListView {
 						$currentRow[$label] = $username;
 					}
 			}	
-				array_push($data, $currentRow);
+			array_push($data, $currentRow);
 		}
-			return array(
-				'data' => array(
-					'contents' => $data,
-					'pagination' => array(
-						'page' => (int)$this->currentPage,
-						'totalCount' => (int)$noofrows,
-					),
+		return array(
+			'data' => array(
+				'contents' => $data,
+				'pagination' => array(
+					'page' => (int)$this->currentPage,
+					'totalCount' => (int)$noofrows,
 				),
-				'result' => true,
-			);
+			),
+			'result' => true,
+		);
 	}
 }
 ?>

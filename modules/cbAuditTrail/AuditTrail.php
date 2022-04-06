@@ -123,7 +123,6 @@ class AuditTrail {
 		} else {
 			$list_query = "select * from vtiger_audit_trial $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
-		
 		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
 			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
 		} else {
@@ -138,13 +137,5 @@ class AuditTrail {
 		$log->debug('< getAuditJSON');
 		return json_encode($entries_list);
 	}
-	/*
-				 if (empty($rinfo)) {
-					 $rurl = $lgn['recordid'];
-				 } else {
-					 $rurl = '<a href="index.php?module='.$lgn['module'].'&action=DetailView&record='.$lgn['recordid'].'">'.$rinfo[$lgn['recordid']].'</a>';
-					}
-*/
-
 }
 ?>

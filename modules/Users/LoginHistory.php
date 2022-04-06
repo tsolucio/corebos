@@ -12,7 +12,6 @@ require_once 'include/ListView/ListView.php';
 require_once 'include/database/PearDatabase.php';
 require_once 'include/ListView/ListViewJSON.php';
 
-
 /** This class is used to store and display the login history of all the Users.
  * An Admin User can view his login history details  and of all the other users as well.
 * StandardUser is allowed to view only his login history details.
@@ -207,7 +206,7 @@ class LoginHistory {
 				$row = $adb->fetch_array($result);
 				$login_delay = time() - strtotime($row['login_time']);
 				// User not logged out and is within expected delay?
-		if (empty($row['logout_time']) && $login_delay < $accept_delay_seconds) {
+				if (empty($row['logout_time']) && $login_delay < $accept_delay_seconds) {
 					$firstTimeLoginStatus = true;
 				}
 			}
