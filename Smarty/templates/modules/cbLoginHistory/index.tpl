@@ -15,9 +15,7 @@
  ********************************************************************************/
 -->*}
 <script src="modules/cbLoginHistory/cbLoginHistory.js"></script>
-
 {include file='BrowserVariables.tpl'}
-
 <style>
 {literal}
 	.arrow-up:after,
