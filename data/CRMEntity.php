@@ -27,6 +27,8 @@ class CRMEntity {
 	public $crmentityTable = 'vtiger_crmentity';
 	public $crmentityTableAlias;
 	public $denormalized = false;
+	public $translateString = false;
+	public $language = 'en_us';
 	protected static $methods = array();
 	protected static $dbvalues = array();
 	protected static $todvalues = array();
@@ -1152,6 +1154,9 @@ class CRMEntity {
 					$adb->println("There is no entry for this entity $record ($module) in the table $tablename");
 					$fld_value = '';
 				}
+				if ($this->translateString) {
+					$fld_value = $this->readTranslation($fieldname, $record, $module, $fld_value);
+				}
 				$this->column_fields[$fieldname] = $fld_value;
 			}
 		}
@@ -1168,6 +1173,40 @@ class CRMEntity {
 		$this->column_fields['record_id'] = $record;
 		$this->column_fields['record_module'] = $module;
 		$this->column_fields['cbuuid'] = $adb->query_result($result[$this->crmentityTable], 0, 'cbuuid');
+	}
+
+	/** Function to retrieve translation for a field in cbtranslation module
+	 * @param string forField
+	 * @param string forRecord
+	 * @param string forModule
+	 * @param string forValue
+	 */
+	public function readTranslation($forField, $forRecord, $forModule, $forValue) {
+		global $adb;
+		$rs = $adb->pquery('select * from vtiger_cbtranslation where forfield=? and translates=? and translation_module=? and translation_key=? and locale=?', array(
+			$forField, $forRecord, $forModule, $forValue, $this->language
+		));
+		if ($adb->num_rows($rs) == 1) {
+			$forValue = $adb->query_result($rs, 0, 'i18n');
+		}
+		return $forValue;
+	}
+
+	/** Function to retrieve translations for a row in cbtranslation module
+	 * @param array of currentRow
+	 * @param string rowcrmid
+	 * @param string relatedModule optional
+	 */
+	public function translateRow($currentRow, $rowcrmid, $relatedModule = '') {
+		global $currentModule;
+		if (empty($currentModule)) {
+			$currentModule = $relatedModule;
+		}
+		$row = array();
+		foreach ($currentRow as $field => $value) {
+			$row[$field] = $this->readTranslation($field, $rowcrmid, $currentModule, $value);
+		}
+		return $row;
 	}
 
 	/** Function to retrieve the information of the given recordidS
