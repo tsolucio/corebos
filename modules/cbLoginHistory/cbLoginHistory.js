@@ -26,35 +26,34 @@ document.addEventListener('DOMContentLoaded', function (event) {
 					sortingType: 'desc',
 					sortable: true
 				},
-					{
-						name: 'User IP',
-						header: mod_alert_arr.LBL_USER_IP,
-						whiteSpace: 'normal',
-						sortingType: 'desc',
-						sortable: true
+				{
+					name: 'User IP',
+					header: mod_alert_arr.LBL_USER_IP,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					sortable: true
 				},
-					{
-						name: 'Signin Time',
-						header: mod_alert_arr.LBL_SIGN_IN_TIME,
-						whiteSpace: 'normal',
-						sortingType: 'desc',
-						sortable: true
+				{
+					name: 'Signin Time',
+					header: mod_alert_arr.LBL_SIGN_IN_TIME,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					sortable: true
 				},
-					{
-						name: 'Signout Time',
-						header: mod_alert_arr.LBL_SIGN_OUT_TIME,
-						whiteSpace: 'normal',
-						sortingType: 'desc',
-						sortable: true
+				{
+					name: 'Signout Time',
+					header: mod_alert_arr.LBL_SIGN_OUT_TIME,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					sortable: true
 				},
-					{
-						name: 'Status',
-						header: mod_alert_arr.LBL_STATUS,
-						whiteSpace: 'normal',
-						sortingType: 'desc',
-						sortable: true
-				}
-				],
+				{
+					name: 'Status',
+					header: mod_alert_arr.LBL_STATUS,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					sortable: true
+				}],
 				data: {
 					api: {
 						readData: {
