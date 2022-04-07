@@ -86,10 +86,12 @@ class VtigerCRMObject {
 	}
 
 	public function read($id, $deleted = false) {
-		global $adb;
+		global $adb, $current_user;
 		$error = false;
 		$adb->startTransaction();
 		try {
+			$this->instance->translateString = true;
+			$this->instance->language = $current_user->language;
 			$this->instance->retrieve_entity_info($id, $this->moduleName, $deleted);
 			$error = $adb->hasFailedTransaction();
 		} catch (\Throwable $th) {
