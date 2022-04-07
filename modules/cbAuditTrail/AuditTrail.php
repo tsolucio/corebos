@@ -114,7 +114,7 @@ class AuditTrail {
 		}
 		if (!empty($action_search)) {
 			if (empty($where)) {
-				$where .= ' where ';
+				$where .= ' where 1';
 			}
 			$where .=  $adb->convert2Sql(' and action like ?', array('%' . $action_search . '%'));
 		}
