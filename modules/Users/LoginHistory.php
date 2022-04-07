@@ -123,7 +123,6 @@ class LoginHistory {
 	public function getHistoryJSON($userid, $page, $order_by = 'login_time', $sorder = 'DESC') {
 		global $log, $adb;
 		$log->debug('> getHistoryJSON');
-
 		$where = '';
 		if (!empty($userid)) {
 			$username = getUserName($userid);
@@ -139,13 +138,12 @@ class LoginHistory {
 		} else {
 			$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
 		}
-		
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
 		$q = $list_query.$limit;
 		$grid = new GridListView('cbLoginHistory');
 		$grid->currentPage = $page;
-		$entries_list = $grid->gridTableBasedEntries($q,$this->list_fields,$this->table_name);
+		$entries_list = $grid->gridTableBasedEntries($q, $this->list_fields, $this->table_name);
 		$log->debug('< getHistoryJSON');
 		return json_encode($entries_list);
 	}
