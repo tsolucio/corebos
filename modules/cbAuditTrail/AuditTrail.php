@@ -133,9 +133,28 @@ class AuditTrail {
 		$q = $list_query.$limit;
 		$grid = new GridListView('cbAuditTrail');
 		$grid->currentPage = $page;
-		$entries_list = $grid->gridTableBasedEntries($q,$this->list_fields,$this->table_name);
+		$entries_list = $grid->gridTableBasedEntries($q, $this->list_fields, $this->table_name, ['userid'=>'getUserFullName','recordid'=>'formatRecordIdAuditTrail']);
 		$log->debug('< getAuditJSON');
 		return json_encode($entries_list);
 	}
+}
+function formatRecordIdAuditTrail($recordid, $row) {
+		global $adb;
+	if (empty($recordid)) {
+			$rurl = '';
+	} else {
+		if ($row['Module']=='Reports') {
+				$rname = $adb->pquery('select vtiger_report.reportname from vtiger_report where vtiger_report.reportid=?', array($recordid));
+				$rurl = '<a href="index.php?module=Reports&action=SaveAndRun&record='.$recordid.'">'.$rname->fields['reportname'].'</a>';
+		} else {
+				$rinfo = getEntityName($row['Module'], $recordid);
+			if (empty($rinfo)) {
+					$rurl = $recordid;
+			} else {
+					$rurl = '<a href="index.php?module='.$row['Module'].'&action=DetailView&record='.$recordid.'">'.$rinfo[$recordid].'</a>';
+			}
+		}
+	}
+			return $rurl;
 }
 ?>

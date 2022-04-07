@@ -23,7 +23,7 @@ class GridListView {
 	public $currentPage = '';
 	public $searchUrl = '';
 	public $searchtype = 'Basic';
-	
+
 	function __construct($module) {
 		$this->module = $module;
 		if ($this->module == 'Utilities') {
@@ -840,7 +840,7 @@ class GridListView {
 		return false;
 	}
 
-	public function gridTableBasedEntries($q,$columns,$table_name){
+	public function gridTableBasedEntries($q, $columns, $table_name, $column_format = []) {
 		global $adb;
 		$result = $adb->pquery($q, array());
 		$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($q, false), 'count(*) AS count'));
@@ -848,13 +848,12 @@ class GridListView {
 		$data  = array();
 		for ($i=0; $i < $adb->num_rows($result); $i++) {
 			$currentRow = array();
-			foreach($columns as $label => $col) {
+			foreach ($columns as $label => $col) {
 				$currentRow[$label] = $adb->query_result($result, $i, $col[$table_name]);
-					if ($col[$table_name] == 'userid') {
-						$username = getUserFullName($currentRow[$label]);
-						$currentRow[$label] = $username;
-					}
-			}	
+				if (!empty($column_format[$col[$table_name]])) {
+					$currentRow[$label] = $column_format[$col[$table_name]]($currentRow[$label],$currentRow);
+				}
+			}
 			array_push($data, $currentRow);
 		}
 		return array(
