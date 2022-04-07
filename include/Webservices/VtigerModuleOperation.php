@@ -286,7 +286,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {
-		global $site_URL, $adb, $default_charset, $currentModule;
+		global $site_URL, $adb, $default_charset, $currentModule, $current_user;
 		$holdCM = $currentModule;
 		$currentModule = $meta->getEntityName();
 		if (strpos($mysql_query, 'vtiger_inventoryproductrel')) {
@@ -318,12 +318,15 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$streamraw = (isset($_REQUEST['format']) && strtolower($_REQUEST['format'])=='streamraw');
 		$streaming = (isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || $streamraw));
 		$stream = '';
+		$CRMEntity = CRMEntity::getInstance($currentModule);
+		$CRMEntity->language = $current_user->language;
 		for ($i=0; $i<$noofrows; $i++) {
 			$row = $this->pearDB->fetchByAssoc($result, $i);
 			$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $rowcrmid)) {
 				continue;
 			}
+			$row = $CRMEntity->translateRow($row, $rowcrmid);
 			if ($streamraw) {
 				$newrow = $row;
 			} else {
