@@ -47,7 +47,7 @@
 			<div class="slds-media slds-no-space slds-grow">
 				<div class="slds-media__figure">
 					<svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#trail"></use>
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#people"></use>
 					</svg>
 				</div>
 				<div class="slds-media__body">
