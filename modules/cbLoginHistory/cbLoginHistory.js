@@ -8,52 +8,52 @@
 ************************************************************************************/
 
 var Report_ListView_PageSize = 20;
-GlobalVariable_getVariable('Report_ListView_PageSize', 20, 'cbLoginHistory', '').then(function(response) {
+GlobalVariable_getVariable('Report_ListView_PageSize', 20, 'cbLoginHistory', '').then(function (response) {
 	var obj = JSON.parse(response);
 	Report_ListView_PageSize = obj.Report_ListView_PageSize;
 });
 
 var Grid = tui.Grid;
 var gridInstance = {};
-document.addEventListener('DOMContentLoaded', function(event) {
+document.addEventListener('DOMContentLoaded', function (event) {
 	loadJS('index.php?module=cbLoginHistory&action=cbLoginHistoryAjax&file=getjslanguage')
 		.then(() => {
 			gridInstance = new Grid({
 				el: document.getElementById('lhgrid'),
 				columns: [{
-						name: 'User Name',
-						header: mod_alert_arr.LBL_USER_NAME,
-						sortingType: 'desc',
-						sortable: true
-					},
+					name: 'User Name',
+					header: mod_alert_arr.LBL_USER_NAME,
+					sortingType: 'desc',
+					sortable: true
+				},
 					{
 						name: 'User IP',
 						header: mod_alert_arr.LBL_USER_IP,
 						whiteSpace: 'normal',
 						sortingType: 'desc',
 						sortable: true
-					},
+				},
 					{
 						name: 'Signin Time',
 						header: mod_alert_arr.LBL_SIGN_IN_TIME,
 						whiteSpace: 'normal',
 						sortingType: 'desc',
 						sortable: true
-					},
+				},
 					{
 						name: 'Signout Time',
 						header: mod_alert_arr.LBL_SIGN_OUT_TIME,
 						whiteSpace: 'normal',
 						sortingType: 'desc',
 						sortable: true
-					},
+				},
 					{
 						name: 'Status',
 						header: mod_alert_arr.LBL_STATUS,
 						whiteSpace: 'normal',
 						sortingType: 'desc',
 						sortable: true
-					}
+				}
 				],
 				data: {
 					api: {
