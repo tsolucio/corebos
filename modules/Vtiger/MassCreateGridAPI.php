@@ -13,44 +13,34 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-global $currentModule;
-$focus = CRMEntity::getInstance($currentModule);
-$fields = $focus->list_fields;
-$users = get_user_array();
-$items = array();
-foreach ($users as $id => $username) {
-	if (!empty($id)) {
-		$items[] = array(
-			'text' => $username,
-			'value' => $id
-		);
-	}
-}
-$emptydata = array();
-$columns = array();
-foreach ($fields as $label => $value) {
-	$tempColumns = array();
-	foreach ($value as $table => $column) {
-		if ($column == 'smownerid') {
-			$editor = array(
-				'type' => 'select',
-				'options' => array(
-					'listItems' => $items
-				)
-			);
-		} else {
-			$editor = 'text';
+require_once 'Smarty_setup.php';
+require_once 'include/Webservices/MassCreate.php';
+global $current_user;
+Vtiger_Request::validateRequest();
+$module = vtlib_purify($_REQUEST['moduleName']);
+$data = vtlib_purify($_REQUEST['data']);
+$data = json_decode($data, true);
+$newData = array();
+foreach ($data as $row) {
+	unset($row['rowKey']);
+	unset($row['_attributes']);
+	$currentRow = array();
+	foreach ($row as $field => $value) {
+		if (!is_array($value)) {
+			if ($field == 'smownerid') {
+				$value = '19x'.$value;
+				$field = 'assigned_user_id';
+				unset($row['smownerid']);
+			}
+			$currentRow[$field] = $value;
 		}
-		$columns[] = array(
-			'header' => $label,
-			'name' => $column,
-			'editor' => $editor
-		);
-		array_push($emptydata, array($column => ''));
 	}
+	$newData[] = array(
+		'elementType' => $module,
+		'referenceId' => '',
+		'element' => $currentRow
+	);
 }
-$smarty->assign('EmptyData', json_encode($emptydata));
-$smarty->assign('GridColumns', json_encode($columns));
-$smarty->assign('moduleView', 'MassCreateGrid');
-$smarty->assign('moduleShowSearch', false);
+$response = MassCreate($newData, $current_user);
+echo json_encode($response);
 ?>

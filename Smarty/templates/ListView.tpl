@@ -56,6 +56,8 @@ var Application_Landing_View='{$moduleView}';
 			{include file="PivotView.tpl"}
 		{elseif $moduleView=='tuigrid'}
 			{include file="ListViewTUIGrid.tpl"}
+		{elseif $moduleView=='MassCreateGrid'}
+			{include file="MassCreateGridView.tpl"}
 		{/if}
 	{else}
 		{include file="DocumentsListViewEntries.tpl"}
