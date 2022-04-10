@@ -17,26 +17,37 @@ let mcdataGridInstance = Array();
 
 document.addEventListener('DOMContentLoaded', function () {
 	MCGrid.Show();
+	for (let i=0;i<=10;i++) {
+		MCGrid.Append();
+	}
 }, false);
 
 const MCGrid = {
 
 	Show: () => {
 		mcdataGridInstance = new mctuiGrid({
-			el: document.getElementById('ListViewContents'),
-			rowHeaders: ['checkbox'],
+			el: document.getElementById('listview-tui-grid'),
+			rowHeaders: ['rowNum', 'checkbox'],
 			data: [],
 			scrollX: false,
 			scrollY: false,
 			columnOptions: {
 				resizable: true
 			},
-			columns: JSON.parse(GridColumns),
-			onGridUpdated: (ev) => {
-				console.log(ev)
-			}
+			header: {
+				align: 'left'
+			},
+			columns: JSON.parse(GridColumns)
 		});
 		tui.Grid.applyTheme('striped');
+		mcdataGridInstance.on('focusChange', ev => {
+			const rowKey = ev.rowKey + 1;
+			const totalRows = mcdataGridInstance.getRowCount();
+			if (rowKey == totalRows) {
+				MCGrid.Append();
+				window.scrollTo(0, document.body.scrollHeight);
+			}
+		});
 	},
 
 	Append: () => {
@@ -57,8 +68,16 @@ const MCGrid = {
 			}
 		).then(response => response.json()).then(response => {
 			if (response.failed_creates.length == 0) {
-				alert('Created successfully');
+				ldsPrompt.show('Success', 'Created successfully', 'success');
 				mcdataGridInstance.clear();
+			} else {
+				let msg = '<ul class="slds-has-dividers_top-space">';
+				for (let i in response.failed_creates) {
+					msg += `<li class="slds-item"><strong>No. ${response.failed_creates[i].record.element.rowKey+1}:</strong> ${response.failed_creates[i].message}</li>`;
+				}
+				msg += '</ul>';
+				console.log(msg)
+				ldsPrompt.show('Error', msg);
 			}
 		});
 	},
