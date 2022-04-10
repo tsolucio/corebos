@@ -17,9 +17,6 @@ let mcdataGridInstance = Array();
 
 document.addEventListener('DOMContentLoaded', function () {
 	MCGrid.Show();
-	for (let i=0;i<=10;i++) {
-		MCGrid.Append();
-	}
 }, false);
 
 const MCGrid = {
@@ -40,7 +37,7 @@ const MCGrid = {
 			columns: JSON.parse(GridColumns)
 		});
 		tui.Grid.applyTheme('striped');
-		mcdataGridInstance.on('focusChange', ev => {
+		mcdataGridInstance.on('keydown', ev => {
 			const rowKey = ev.rowKey + 1;
 			const totalRows = mcdataGridInstance.getRowCount();
 			if (rowKey == totalRows) {
@@ -76,7 +73,6 @@ const MCGrid = {
 					msg += `<li class="slds-item"><strong>No. ${response.failed_creates[i].record.element.rowKey+1}:</strong> ${response.failed_creates[i].message}</li>`;
 				}
 				msg += '</ul>';
-				console.log(msg)
 				ldsPrompt.show('Error', msg);
 			}
 		});
