@@ -17,10 +17,11 @@ require_once 'Smarty_setup.php';
 require_once 'include/Webservices/MassCreate.php';
 global $current_user;
 Vtiger_Request::validateRequest();
+$newData = array();
+$searchon = array();
 $module = vtlib_purify($_REQUEST['moduleName']);
 $data = vtlib_purify($_REQUEST['data']);
 $data = json_decode($data, true);
-$newData = array();
 foreach ($data as $row) {
 	unset($row['rowKey']);
 	unset($row['_attributes']);
@@ -31,6 +32,8 @@ foreach ($data as $row) {
 				$value = '19x'.$value;
 				$field = 'assigned_user_id';
 				unset($row['smownerid']);
+			} else {
+				$searchon[] = $field;
 			}
 			$currentRow[$field] = $value;
 		}
@@ -38,6 +41,7 @@ foreach ($data as $row) {
 	$newData[] = array(
 		'elementType' => $module,
 		'referenceId' => '',
+		'searchon' => implode(',', $searchon),
 		'element' => $currentRow
 	);
 }
