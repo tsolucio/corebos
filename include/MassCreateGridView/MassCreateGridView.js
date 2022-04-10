@@ -22,23 +22,24 @@ document.addEventListener('DOMContentLoaded', function () {
 const MCGrid = {
 
 	Show: () => {
-	mcdataGridInstance = new mctuiGrid({
-		el: document.getElementById('ListViewContents'),
-		rowHeaders: ['checkbox'],
-		data: [],
-		scrollX: false,
-		scrollY: false,
-		columnOptions: {
-			resizable: true
-		},
-		columns: JSON.parse(GridColumns)
-	});
-    tui.Grid.applyTheme('striped');
+		mcdataGridInstance = new mctuiGrid({
+			el: document.getElementById('ListViewContents'),
+			rowHeaders: ['checkbox'],
+			data: [],
+			scrollX: false,
+			scrollY: false,
+			columnOptions: {
+				resizable: true
+			},
+			columns: JSON.parse(GridColumns),
+			onGridUpdated: (ev) => {
+				console.log(ev)
+			}
+		});
+		tui.Grid.applyTheme('striped');
 	},
 
 	Append: () => {
- var elem=document.getElementById("append-btn");
- alert(elem.accessKey);
 		mcdataGridInstance.appendRow(JSON.parse(EmptyData));
 	},
 
