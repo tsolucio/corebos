@@ -49,6 +49,10 @@ foreach ($fields as $label => $value) {
 		array_push($emptydata, array($column => ''));
 	}
 }
+if (!is_admin($current_user)) {
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	exit;
+}
 $smarty->assign('EmptyData', json_encode($emptydata));
 $smarty->assign('GridColumns', json_encode($columns));
 $smarty->assign('moduleView', 'MassCreateGrid');
