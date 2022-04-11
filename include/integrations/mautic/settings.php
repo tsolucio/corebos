@@ -23,7 +23,7 @@ $mautic = new corebos_mautic();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin && !empty($_REQUEST['baseUrl'])) {
+if ($isadmin && !empty($_REQUEST['baseUrl']) && !empty($_REQUEST['mautic_username']) && !empty($_REQUEST['mautic_password']) && !empty($_REQUEST['mautic_webhook_secret'])) {
 	$isActive = ((empty($_REQUEST['mautic_active']) || $_REQUEST['mautic_active']!='on') ? '0' : '1');
 	$baseUrl = (empty($_REQUEST['baseUrl']) ? '' : vtlib_purify($_REQUEST['baseUrl']));
 	$version = (empty($_REQUEST['version']) ? '' : vtlib_purify($_REQUEST['version']));
@@ -34,7 +34,8 @@ if ($isadmin && !empty($_REQUEST['baseUrl'])) {
 	$companiesSync = ((empty($_REQUEST['mautic_sync_companies']) || $_REQUEST['mautic_sync_companies']!='on') ? '0' : '1');
 	$username = (empty($_REQUEST['mautic_username']) ? '' : vtlib_purify($_REQUEST['mautic_username']));
 	$password = (empty($_REQUEST['mautic_password']) ? '' : vtlib_purify($_REQUEST['mautic_password']));
-	$mautic->saveSettings($isActive, $baseUrl, $version, $clientKey, $clientSecret, $callback, $leadSync, $companiesSync, $username, $password);
+	$webhook_secret = (empty($_REQUEST['mautic_webhook_secret']) ? '' : vtlib_purify($_REQUEST['mautic_webhook_secret']));
+	$mautic->saveSettings($isActive, $baseUrl, $version, $clientKey, $clientSecret, $callback, $leadSync, $companiesSync, $username, $password, $webhook_secret);
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Mautic Activation', $currentModule));
@@ -49,6 +50,7 @@ $smarty->assign('isLeadSyncActive', $mauticSettings['leadSync']);
 $smarty->assign('isCompaniesSyncActive', $mauticSettings['companiesSync']);
 $smarty->assign('mauticUsername', $mauticSettings['userName']);
 $smarty->assign('mauticPassword', $mauticSettings['password']);
+$smarty->assign('mauticWebhookSecret', $mauticSettings['webhookSecret']);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);

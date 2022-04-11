@@ -3820,4 +3820,18 @@ function setDefaultCompanyParams($companyDetails) {
 	}
 	return $companyDetails;
 }
+
+/**
+ * Function to validate mautic secret
+ */
+function validateMauticSecret($signedvalue, $signedkey, $input) {
+	$headers = getallheaders();
+	$receivedSignature = $headers['Webhook-Signature'];
+	$computedSignature = base64_encode(hash_hmac('sha256', $input, $signedvalue, true));
+	if ($receivedSignature === $computedSignature) {
+		return true;
+	} else {
+		return false;
+	}
+}
 ?>
