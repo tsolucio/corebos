@@ -79,6 +79,13 @@
 			</div>
 		</div>
 
+		<div class="slds-form-element slds-m-top_small">
+			<label class="slds-form-element__label" for="mautic_webhook_secret">{'mautic_webhook_secret'|@getTranslatedString:$MODULE}</label>
+			<div class="slds-form-element__control">
+				<input type="text" id="mautic_webhook_secret" name="mautic_webhook_secret" class="slds-input" value="{$mauticWebhookSecret}" />
+			</div>
+		</div>
+
 		<div class="slds-grid slds-gutters slds-m-top_medium">
 			<div class="slds-col">
 				<div class="slds-form-element">
