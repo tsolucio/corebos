@@ -153,6 +153,9 @@ class DocumentFolders extends CRMEntity {
 	public static function createFolder($fname, $fid = 0) {
 		global $adb, $current_user;
 		$dbQuery = 'select 1 from vtiger_documentfolders inner join vtiger_crmentity on crmid=documentfoldersid where foldername=? and deleted=0';
+		if ($fid > 0) {
+			$dbQuery .= $adb->convert2Sql(' and parentfolder=?', array($fid));
+		}
 		$rs = $adb->pquery($dbQuery, array($fname));
 		if ($rs && $adb->num_rows($rs)==0) {
 			$focus = new DocumentFolders();
@@ -160,7 +163,7 @@ class DocumentFolders extends CRMEntity {
 			if ($fid > 0) {
 				$focus->column_fields['parentfolder'] = $fid;
 			}
-			$focus->saveentity('DocumentFolders');
+			$focus->save('DocumentFolders');
 			return true;
 		}
 		return false;

@@ -75,7 +75,7 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 		$query = $this->getDocumentQuery().' and (vtiger_notes.filename=? OR vtiger_attachments.name=?)';
 		$records = $adb->pquery($query, array($this->folderid, $this->folderid, $filename, $filename));
 		if ($adb->num_rows($records) == 0) {
-			$result = $adb->pquery('SELECT documentfoldersid, foldername FROM vtiger_documentfolders INNER JOIN vtiger_crmentity ON crmid=documentfoldersid WHERE foldername=?', array($filename));
+			$result = $adb->pquery('SELECT documentfoldersid, foldername FROM vtiger_documentfolders INNER JOIN vtiger_crmentity ON crmid=documentfoldersid WHERE foldername=? AND parentfolder=?', array($filename, $this->folderid));
 			if ($adb->num_rows($result) > 0) {
 				$row = $adb->fetch_array($result);
 				$this->folderid = $row['documentfoldersid'];
