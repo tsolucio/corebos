@@ -23,8 +23,8 @@ class GridListView {
 	public $currentPage = '';
 	public $searchUrl = '';
 	public $searchtype = 'Basic';
-	
-	function __construct($module) {
+
+	public function __construct($module) {
 		$this->module = $module;
 		if ($this->module == 'Utilities') {
 			$this->module = vtlib_purify($_REQUEST['formodule']);
@@ -527,7 +527,7 @@ class GridListView {
 		$tree = array();
 		foreach ($records_list as $list) {
 			if ($list['parent'] == $parentId) {
-				$children = $this->findChilds($records_list,$list['id'], $field_types, $whereClause);
+				$children = $this->findChilds($records_list, $list['id'], $field_types, $whereClause);
 				$data = $this->getDocuments($list['id'], $field_types, $whereClause);
 				if ($children) {
 					$tmpChildren = $children;
