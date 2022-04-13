@@ -349,22 +349,26 @@ class corebos_mautic {
 		global $adb;
 		$current_user = Users::getActiveAdminUser();
 		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		$send2cb = array();
 		$bmapname = 'MauticToContacts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
-			$send2cb = array();
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-			$send2cb['mautic_id'] = $contact_id;
-			$send2cb['assigned_user_id'] = $usrwsid;
-			$send2cb['from_externalsource'] = 'mautic';
+		} else {
+			$send2cb['firstname'] = $mauticdata['firstname'];
+			$send2cb['lastname'] = $mauticdata['lastname'];
+			$send2cb['email'] = $mauticdata['email'];
+		}
+		$send2cb['mautic_id'] = $contact_id;
+		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['from_externalsource'] = 'mautic';
 
-			$record = vtws_create('Contacts', $send2cb, $current_user);
-			if ($record) {
-				// Reset from_externalsource
-				list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
-				$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
-			}
+		$record = vtws_create('Contacts', $send2cb, $current_user);
+		if ($record) {
+			// Reset from_externalsource
+			list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
+			$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
 			return $record;
 		}
 		return null;
@@ -374,23 +378,27 @@ class corebos_mautic {
 		global $adb;
 		$current_user = Users::getActiveAdminUser();
 		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		$send2cb = array();
 		$bmapname = 'MauticToContacts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
-			$send2cb = array();
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-			$send2cb['mautic_id'] = $contact_id;
-			$send2cb['assigned_user_id'] = $usrwsid;
-			$send2cb['id'] = $mauticdata['corebos_id'];
-			$send2cb['from_externalsource'] = 'mautic';
+		} else {
+			$send2cb['firstname'] = $mauticdata['firstname'];
+			$send2cb['lastname'] = $mauticdata['lastname'];
+			$send2cb['email'] = $mauticdata['email'];
+		}
+		$send2cb['mautic_id'] = $contact_id;
+		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['id'] = $mauticdata['corebos_id'];
+		$send2cb['from_externalsource'] = 'mautic';
 
-			$record = vtws_update($send2cb, $current_user);
-			if ($record) {
-				// Reset from_externalsource
-				list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
-				$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
-			}
+		$record = vtws_update($send2cb, $current_user);
+		if ($record) {
+			// Reset from_externalsource
+			list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
+			$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
 		}
 	}
 
@@ -441,22 +449,24 @@ class corebos_mautic {
 		global $adb;
 		$current_user = Users::getActiveAdminUser();
 		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		$send2cb = array();
 		$bmapname = 'MauticToAccounts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
-			$send2cb = array();
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-			$send2cb['mautic_id'] = $company_id;
-			$send2cb['assigned_user_id'] = $usrwsid;
-			$send2cb['from_externalsource'] = 'mautic';
+		} else {
+			$send2cb['accountname'] = $mauticdata['companyname'];
+		}
+		$send2cb['mautic_id'] = $company_id;
+		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['from_externalsource'] = 'mautic';
 
-			$record = vtws_create('Accounts', $send2cb, $current_user);
-			if ($record) {
-				// Reset from_externalsource
-				list($account_tabid, $account_crmid) = explode('x', $record['id']);
-				$adb->pquery('UPDATE vtiger_account SET from_externalsource=? where accountid=?', array('', $account_crmid));
-			}
+		$record = vtws_create('Accounts', $send2cb, $current_user);
+		if ($record) {
+			// Reset from_externalsource
+			list($account_tabid, $account_crmid) = explode('x', $record['id']);
+			$adb->pquery('UPDATE vtiger_account SET from_externalsource=? where accountid=?', array('', $account_crmid));
 			return $record;
 		}
 		return null;
@@ -466,23 +476,25 @@ class corebos_mautic {
 		global $adb;
 		$current_user = Users::getActiveAdminUser();
 		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		$send2cb = array();
 		$bmapname = 'MauticToAccounts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
-			$send2cb = array();
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-			$send2cb['mautic_id'] = $company_id;
-			$send2cb['assigned_user_id'] = $usrwsid;
-			$send2cb['id'] = $mauticdata['company_corebos_id'];
-			$send2cb['from_externalsource'] = 'mautic';
+		} else {
+			$send2cb['accountname'] = $mauticdata['companyname'];
+		}
+		$send2cb['mautic_id'] = $company_id;
+		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['id'] = $mauticdata['company_corebos_id'];
+		$send2cb['from_externalsource'] = 'mautic';
 
-			$record = vtws_update($send2cb, $current_user);
-			if ($record) {
-				// Reset from_externalsource
-				list($account_tabid, $account_crmid) = explode('x', $record['id']);
-				$adb->pquery('UPDATE vtiger_account SET from_externalsource=? where accountid=?', array('', $account_crmid));
-			}
+		$record = vtws_update($send2cb, $current_user);
+		if ($record) {
+			// Reset from_externalsource
+			list($account_tabid, $account_crmid) = explode('x', $record['id']);
+			$adb->pquery('UPDATE vtiger_account SET from_externalsource=? where accountid=?', array('', $account_crmid));
 		}
 	}
 }
