@@ -5442,7 +5442,7 @@ function AutocompleteRelationPills() {
 	this.template = '';
 }
 
-AutocompleteRelationPills.prototype.removePill = function(ev) {
+AutocompleteRelationPills.prototype.removePill = function (ev) {
 	const field = ev.id.split('_')[0];
 	const id = ev.id.split('_')[1];
 	const inputElement = document.getElementById(field);
@@ -5458,7 +5458,7 @@ AutocompleteRelationPills.prototype.removePill = function(ev) {
 	document.getElementById(field).value = newVal;
 };
 
-AutocompleteRelationPills.prototype.addPill = function() {
+AutocompleteRelationPills.prototype.addPill = function () {
 	if (this.field.includes('_display')) {
 		this.newValue = this.value;
 		this.field = this.field.replace('_display', '');
@@ -5482,7 +5482,7 @@ AutocompleteRelationPills.prototype.addPill = function() {
 		`;
 		if (this.newValue != '') {
 			const p = document.getElementById(`show-1025-pill-${this.field}`);
-			const currentTemplate = p.innerHTML
+			const currentTemplate = p.innerHTML;
 			p.innerHTML = currentTemplate+this.template;
 			AutocompletePills();
 			document.getElementById(`${this.field}_display_1025`).value = '';
