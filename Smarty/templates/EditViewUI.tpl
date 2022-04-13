@@ -193,7 +193,7 @@
 				{if $fromlink eq 'qcreate'}
 				<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
 				{else}
-				<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
+				<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML="";document.getElementById("show-1025-pill-{$fldname}").innerHTML=""'>
 				{/if}
 				{foreach item=option from=$fldlabel.options}
 					<option value="{$option}"
@@ -209,19 +209,48 @@
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
 				<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$fldvalue.entityid}">
-
 				<div style="position: relative;">
 				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
 					{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
+					{assign var="displayvalue1025" value=","|explode:$fldvalue.displayvalue}
+					{assign var="entityid1025" value="|##|"|explode:$fldvalue.entityid}
 					<input
 						id="{$fldname}_display"
 						name="{$fldname}_display"
-						type="text"
+						type="hidden"
 						style="border:1px solid #bababa;"
 						value="{$fldvalue.displayvalue}"
 						autocomplete="off"
-						class="autocomplete-input"
-						data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}'>&nbsp;
+						>&nbsp;
+						{if !empty($displayvalue1025)}
+						<div class="slds-pill_container" style="display: inline-block;word-break: break-word;">
+							<div id="show-1025-pill-{$fldname}">
+							{foreach from=$displayvalue1025 item=$value key=$idx}
+							{if !empty($value)}
+							<span class="slds-pill slds-pill_link" id="pill-{$fldname}-{$entityid1025[$idx]|trim}">
+								<a class="slds-pill__action">
+									<span class="slds-pill__label">{$value}</span>
+								</a>
+								<button type="button" class="slds-button slds-button_icon slds-button_icon slds-pill__remove autocomplete-pills" id="{$fldname}_{$entityid1025[$idx]|trim}">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+									</svg>
+								</button>
+							</span>
+							{/if}
+							{/foreach}
+							</div>
+							<input
+							id="{$fldname}_display_1025"
+							name="{$fldname}_display_1025"
+							type="text"
+							autocomplete="off"
+							class="autocomplete-input"
+							style="border:0px solid #bababa;width: auto !important;"
+							data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}'
+							placeholder="Search...">
+						</div>
+						{/if}
 				{else}
 					<input
 						id="{$fldname}_display"
@@ -230,8 +259,14 @@
 						style="border:1px solid #bababa;"
 						value="{$fldvalue.displayvalue}">&nbsp;
 				{/if}
-				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
-alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+				<input
+					type="image"
+					src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
+					alt="{'LBL_CLEAR'|@getTranslatedString}"
+					title="{'LBL_CLEAR'|@getTranslatedString}"
+					onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value='';document.getElementById('show-1025-pill-{$fldname}').innerHTML=''; return false;"
+					align="absmiddle"
+					style='cursor:hand;cursor:pointer'>&nbsp;
 				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
 					<div id="listbox-unique-id" role="listbox" class="">
 						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%;" role="presentation"></ul>

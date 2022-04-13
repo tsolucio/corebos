@@ -5423,6 +5423,73 @@ function highlightAcItemDown() {
 	}
 }
 
+function AutocompletePills() {
+	const acPills = document.querySelectorAll('.autocomplete-pills');
+	for (var i = 0; i < acPills.length; i++) {
+		(function (_i) {
+			var acp = new AutocompleteRelationPills(acPills[_i], _i);
+			acPills[_i].addEventListener('click', function (e) {
+				throttle(acp.removePill(acPills[_i]), 500);
+			});
+		})(i);
+	}
+}
+
+function AutocompleteRelationPills() {
+	this.field = '';
+	this.value = '';
+	this.newValue = '';
+	this.template = '';
+}
+
+AutocompleteRelationPills.prototype.removePill = function(ev) {
+	const field = ev.id.split('_')[0];
+	const id = ev.id.split('_')[1];
+	const inputElement = document.getElementById(field);
+	const fieldValue = inputElement.value.split(' |##| ');
+	const p = document.getElementById(`pill-${field}-${id}`).remove();
+	let newVal = Array();
+	for (let i in fieldValue) {
+		if (fieldValue[i].trim() != id.trim()) {
+			newVal.push(fieldValue[i]);
+		}
+	}
+	newVal = newVal.join(' |##| ');
+	document.getElementById(field).value = newVal;
+};
+
+AutocompleteRelationPills.prototype.addPill = function() {
+	if (this.field.includes('_display')) {
+		this.newValue = this.value;
+		this.field = this.field.replace('_display', '');
+	}
+	let fId = document.getElementById(this.field).value.split(' |##| ');
+	if (fId.length > 0) {
+		this.value = fId[fId.length-1];
+	}
+	if (document.getElementById(`pill-${this.field}-${this.value}`) === null) {
+		this.template = `
+		<span class="slds-pill slds-pill_link" id="pill-${this.field}-${this.value}">
+			<a class="slds-pill__action" title="Full pill label verbiage mirrored here">
+				<span class="slds-pill__label">${this.newValue}</span>
+			</a>
+			<button type="button" class="slds-button slds-button_icon slds-button_icon slds-pill__remove autocomplete-pills" id="${this.field}_${this.value}">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+				</svg>
+			</button>
+		</span>
+		`;
+		if (this.newValue != '') {
+			const p = document.getElementById(`show-1025-pill-${this.field}`);
+			const currentTemplate = p.innerHTML
+			p.innerHTML = currentTemplate+this.template;
+			AutocompletePills();
+			document.getElementById(`${this.field}_display_1025`).value = '';
+		}
+	}
+};
+
 function AutocompleteRelation(target, i) {
 	this.inputField 	= target;
 	this.data			= JSON.parse(target.getAttribute('data-autocomp'));
@@ -5731,8 +5798,18 @@ AutocompleteRelation.prototype.fillOtherFields = function (data) {
 				array.push(get_field_value);
 				field_element.value = array.join(' |##| ');
 			}
+			var acp = new AutocompleteRelationPills();
+			acp.field = this_field[0];
+			acp.value = get_field_value;
+			acp.addPill();
 		} else {
-			field_element.value = get_field_value;
+			if (field_element !== undefined) {
+				field_element.value = get_field_value;
+				var acp = new AutocompleteRelationPills();
+				acp.field = this_field[0];
+				acp.value = get_field_value;
+				acp.addPill();
+			}
 		}
 	}
 };
