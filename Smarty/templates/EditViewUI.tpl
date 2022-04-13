@@ -248,7 +248,7 @@
 							class="autocomplete-input"
 							style="border:0px solid #bababa;width: auto !important;"
 							data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}'
-							placeholder="Search...">
+							placeholder="{'LBL_SEARCH'|@getTranslatedString}...">
 						</div>
 						{/if}
 				{else}
