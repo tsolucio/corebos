@@ -58,11 +58,6 @@ function mauticAccountCreate($entity) {
 				$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
 
 				$send2cb = array();
-				if ($record) {
-					// Reset from_externalsource
-					list($account_tabid, $account_crmid) = explode('x', $record['id']);
-					$adb->pquery('UPDATE vtiger_account SET from_externalsource=? where accountid=?', array('', $account_crmid));
-				}
 				$bmapname = 'MauticToAccounts';
 				$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 				if ($cbMapid) {
