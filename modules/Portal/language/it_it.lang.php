@@ -24,6 +24,6 @@ $mod_strings = array (
 	'LBL_MANAGE_SITES' => 'Gestione Siti',
 	'LBL_MY_SITES' => 'Siti',
 	'LBL_SET_DEFAULT_BUTTON' => 'Imposta come default',
-	'ERR_NOT_PERMITTED_LOAD' => 'The website you have indicated has blocked loading inside another webpage so it has been opened in another tab.',
+	'ERR_NOT_PERMITTED_LOAD' => 'Il sito Web che hai indicato ha bloccato il caricamento interno di altra pagina Web, quindi è stato aperto in altra scheda.',
 );
 ?>

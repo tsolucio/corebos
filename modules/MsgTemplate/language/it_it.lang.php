@@ -18,6 +18,7 @@ $mod_strings = array(
 	'LBL_MESSAGE_INFORMATION' => 'Informazione Message Template',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrizione',
 
+	'msgtemplateid' => 'ID Template Messaggio',
 	'reference' => 'Nome Template',
 	'msgt_status' => 'Stato',
 	'msgt_type' => 'Tipo',
@@ -34,6 +35,10 @@ $mod_strings = array(
 	'tags' => 'Tags',
 	'Active' => 'Attivo',
 	'Inactive' => 'Inattivo',
+	'Assigned To' => 'Assegnato a',
+	'Created Time' => 'Tempo Creato',
+	'Created By' => 'Creato da',
+	'Description' => 'Descrizione',
 
 	'LBL_MESSAGE'=>'Messaggio',
 	'LBL_MESSAGE_ONLYTEXT'=>'Messaggio Solo Testo',

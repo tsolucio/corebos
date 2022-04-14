@@ -15,10 +15,13 @@ $mod_strings = array (
 'LBL_SERVICE_CONTRACT_INFORMATION' => 'Informazioni Servizio a Contratto',
 'LBL_CUSTOM_INFORMATION' => 'Informazioni Personalizzate',
 
+'servicecontactsid' => 'ID Servizi a Contratto',
 'Contract No' => 'Nr. Contratto',
 'Assigned To' => 'Assegnato a',
+'Created By' => 'Creato da',
 'Created Time' => 'Periodo Creazione',
 'Modified Time' => 'Periodo Modifica',
+'Last Modified By' => 'Ultima Modifica di',
 'Start Date' => 'Data Partenza',
 'Due date' => 'Data Scadenza',
 'End Date' => 'Data Chiusura',
@@ -56,8 +59,8 @@ $mod_strings = array (
 'Incidents'=>'Incidenti',
 'LBL_MODULE_NAME'=>'Servizi a Contratto',
 'Residual Units'=>'Unit&agrave; Residue',
-'Service Requests'=>'Tickets',
-'SyncHelpDesk' => 'Synchronize Support Tickets',
-'SyncHelpDeskDescription' => 'Synchronize with Support Tickets Time and Effort',
+'Service Requests'=>'Biglietti',
+'SyncHelpDesk' => 'Sincronizza Ticket Supporto',
+'SyncHelpDeskDescription' => 'Sincronizza con i Biglietto di Supporto Tempo e Impegno',
 );
 ?>

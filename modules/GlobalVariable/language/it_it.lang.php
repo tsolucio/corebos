@@ -18,6 +18,7 @@ $mod_strings = array(
 	'LBL_DESCRIPTION_INFORMATION'=>'Descrizione',
 	'Definitions' => 'Definizione',
 
+	'grobalvariableid' => 'ID Variabile Globale',
 	'Name' => 'Nome',
 	'Default' => 'Default',
 	'Value' => 'Valore',
@@ -28,6 +29,10 @@ $mod_strings = array(
 	'Category' => 'Categoria',
 	'In Module List' => 'In Lista Moduli',
 	'Globalno' => 'No Globale',
+	'Created Time' => 'Tempo Creato',
+	'Modified Time' => 'Tempo modificato',
+	'Created By' => 'Creato da',
+	'Description' => 'Descrizione',
 	'LBL_MANDATORY_VALUE'=>'Solo un valore <b>obbligatorio</b> è permesso a un modulo e a una specifica variabile',
 	'LBL_MANDATORY_VALUEJS'=>'Solo un valore "obbligatorio" è permesso a un modulo e a una specifica variabile',
 
@@ -40,6 +45,6 @@ $mod_strings = array(
 	'GVarDefinitions' => 'Definizione variabile',
 	'cbMap' => 'Business Map',
 	'Role' => 'Ruolo',
-	'PHP_MAX_UPLOAD' => 'This variable is limited by PHP settings which are set to',
+	'PHP_MAX_UPLOAD' => 'Questa variabile è limitata impostazioni PHP che sono impostate su',
 );
 ?>

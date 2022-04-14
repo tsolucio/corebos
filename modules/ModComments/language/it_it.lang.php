@@ -15,6 +15,7 @@ $mod_strings = array (
 'LBL_OTHER_INFORMATION' => 'Altre Informazioni',
 'LBL_CUSTOM_INFORMATION' => 'Informazioni Personalizzate',
 
+'modcommentsid' => 'ID Commenti',
 'Assigned To' => 'Assegnato a',
 'Created Time' => 'Periodo Creazione',
 'Modified Time' => 'Periodo Modifica',
@@ -26,11 +27,11 @@ $mod_strings = array (
 
 'LBL_ADD_COMMENT' => 'Aggiungi Commento',
 'LBL_AUTHOR' => 'Autore',
-'LBL_ON_DATE' => 'on',
+'LBL_ON_DATE' => 'Su',
 'LBL_MINE' => 'Miei',
 'LBL_LAST5'=> 'Ultimi 5',
-'Related Assigned Email' => 'Related Assigned Email',
-'LBL_CONFIGURATION_DESCRIPTION' => 'Activate/Deactivate the functionality for each module.',
-'LBL_ModComments_SETTINGS' => 'Activated Modules',
+'Related Assigned Email' => 'Email Assegnata Correlata',
+'LBL_CONFIGURATION_DESCRIPTION' => 'Attivare/Disattiva la funzionalità per ogni modulo.',
+'LBL_ModComments_SETTINGS' => 'Moduli Attivati',
 );
 ?>

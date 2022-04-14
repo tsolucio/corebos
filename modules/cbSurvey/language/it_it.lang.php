@@ -9,13 +9,31 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Modulo',
-	'SINGLE_ModuleName' => 'Nome Modulo',
-	'ModuleName ID' => 'ID Nome Modulo',
+	'cbSurvey' => 'Sondaggi',
+	'SINGLE_cbSurvey' => 'Sondaggio',
+	'cbSurvey ID' => 'Sondaggio ID',
 
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
 	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
-
+	'LBL_DESCRIPTION_INFORMATION' => 'Descrizione',
+	
 	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
+
+	'cbsurveyname' => 'Nome Sondaggio',
+	'cbsurvey_no' => 'No. Sondaggio',
+	'cbsurveyprovider' => 'Fornitore Sondaggi',
+	'cbsurveystart' => 'Inizio Sondaggio',
+	'cbsurveyend' => 'Fine Sondaggio',
+	'cbsurveyurl' => 'URL Sondaggio',
+	'total' => 'Totale',
+	'completed' => 'completato',
+	'cbslastsync' => 'Ultima Sincronizzazione',
+	'Assigned To' => 'Assegnato A',
+	'Created By' => 'Creato Da',
+	'Created Time' => 'Tempo Creato',
+	'Modified Time' => 'Tempo Modificato',
+	'Description' => 'Descrizione',
+	'cbsurveyid' => 'ID Sondaggio',
+
 );
 ?>

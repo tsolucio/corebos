@@ -8,13 +8,16 @@
  * All Rights Reserved.
  ************************************************************************************/
 $mod_strings = array (
+'smsnotifierid'               => 'ID SMSInfo',
 'SMSNotifier'                 => 'SMSInfo',
 'SINGLE_SMSNotifier'          => 'SMS Info',
 'LBL_SMSNOTIFIER_INFORMATION' => 'SMS Informazioni',
 'LBL_CUSTOM_INFORMATION'      => 'Informazioni Personalizzate',
 'Assigned To'                 => 'Assegnato A',
+'Created By'                  => 'Creato da',
 'Created Time'                => 'Data Creazione',
 'Modified Time'               => 'Data Modifica',
+'Last Modified By'            => 'Ultima Modifica di',
 'message'                     => 'Messaggio',
 
 'Related To'                  => 'Collegato A',
@@ -31,15 +34,15 @@ $mod_strings = array (
 'LBL_SELECT_ONE'              => 'Seleziona',
 
 'LBL_RECEPIENTS'              => 'Destinatari',
-'SMSCheckStatus'              => 'Check Status',
+'SMSCheckStatus'              => 'Controlla stato',
 'StatusInformation'           => 'Informazioni di stato',
-'NO_ACTIVE_SERVER' => 'We could not find any active server configuration.',
-'ServerNotConfigured' => 'Server Not Configured?',
-'ReviewModuleSettings' => 'Please review SMS Settings.',
-'ContactAdmin' => 'Please contact your administrator.',
-'SelectPhoneNumbers' => 'Select Phone Numbers',
-'SelectNumberTypes' => 'Please select the number types to send the SMS',
-'ComposeSMS' => 'Compose SMS',
-'characters' => 'characters',
+'NO_ACTIVE_SERVER' => 'Non siamo riusciti a trovare alcuna configurazione del server attivo.',
+'ServerNotConfigured' => 'Server non configurato?',
+'ReviewModuleSettings' => 'Si prega di rivedere le impostazioni SMS.',
+'ContactAdmin' => 'Si prega di contattare il proprio amministratore.',
+'SelectPhoneNumbers' => 'Seleziona Numeri Telefono',
+'SelectNumberTypes' => 'Seleziona i tipi di numero per inviare SMS',
+'ComposeSMS' => 'Componi SMS',
+'characters' => 'caratteri',
 );
 ?>
