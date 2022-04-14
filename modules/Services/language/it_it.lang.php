@@ -9,8 +9,8 @@
  ************************************************************************************/
 
 $mod_strings = array(
-'LBL_DESCRIPTION_INFORMATION' => 'Informazioni Descrizione',  
-'LBL_CUSTOM_INFORMATION' => 'Informationi Personalizzate',  
+'LBL_DESCRIPTION_INFORMATION' => 'Informazioni Descrizione',
+'LBL_CUSTOM_INFORMATION' => 'Informationi Personalizzate',
 'LBL_PRICEBOOK_INFORMATION' => 'Informazioni Listino',
 'LBL_SERVICE_INFORMATION' => 'Informazioni Servizio',
 'LBL_PRICING_INFORMATION' => 'Informazioni Prezzo',

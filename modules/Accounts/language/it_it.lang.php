@@ -15,7 +15,7 @@ $mod_strings = array(
 
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
 	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
-	
+
 	'LBL_MODULE_NAME' => 'Aziende',
 	'LBL_MODULE_TITLE' => 'Aziende: Casa',
 	'LBL_SEARCH_FORM_TITLE' => 'Cerca Azienda',

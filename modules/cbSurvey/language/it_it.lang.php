@@ -16,7 +16,7 @@ $mod_strings = array(
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
 	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrizione',
-	
+
 	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
 
 	'cbsurveyname' => 'Nome Sondaggio',

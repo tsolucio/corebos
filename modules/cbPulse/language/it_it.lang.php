@@ -17,7 +17,7 @@ $mod_strings = array(
 	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
 
 	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
-	
+
 
 	'cbpulse_no' => 'NO. Polso',
 	'questionid' => 'ID Domanda',

@@ -23,7 +23,7 @@ $mod_strings = array(
 	'Assigned To' => 'Assegnato a',
 	'Created Time' => 'Tempo Creato',
 	'Modified Time' => 'Tempo Modificato',
-	'Description' => 'Descrizione', 
+	'Description' => 'Descrizione',
 
 	'Required' => 'Obbligatorio',
 	'Optional' => 'Opzionale',

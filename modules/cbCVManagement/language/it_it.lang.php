@@ -41,7 +41,7 @@ $mod_strings = array(
 
 	'Default Views' => 'Visualizzazioni Predefinite',
 	'Permissions' => 'Autorizzazione',
-	
+
 
 	'Test' => 'Test',
 	'Search Value' => 'Cerca valore',
