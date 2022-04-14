@@ -71,8 +71,11 @@ $authBackend = new Authenticate();
 // Creating the plugin. The realm parameter is ignored by the backend
 $authPlugin = new DAV\Auth\Plugin($authBackend, 'Login WebDAV');
 
-// Adding the plugin to the server
-$server->addPlugin($authPlugin);
+coreBOS_Session::init(true, true);
+if (!isset($_SESSION['authenticated_user_id'])) {
+	// Adding the plugin to the server
+	$server->addPlugin($authPlugin);
+}
 
 // All we need to do now, is to fire up the server
 $server->start();
