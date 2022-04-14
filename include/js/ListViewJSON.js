@@ -308,7 +308,7 @@ const ListView = {
 					}
 				}
 			};
-		} else if (uitype == '4' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
+		} else if (uitype == '4' || uitype == '1025' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
 			editor = false;
 		} else if (uitype == '15' || uitype == '16') {
 			let listItems = [];

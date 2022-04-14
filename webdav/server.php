@@ -17,14 +17,14 @@
  *************************************************************************************************/
 use Sabre\DAV;
 
+chdir('..');
 /** All service invocation needs have valid app_key parameter sent */
-require_once '../config.inc.php';
+require_once 'config.inc.php';
 
 /* If app_key is not set, pick the value from cron configuration */
 if (empty($_REQUEST['app_key'])) {
 	$_REQUEST['app_key'] = $application_unique_key;
 }
-chdir('..');
 
 set_include_path(get_include_path().PATH_SEPARATOR.'./Sync/');
 
