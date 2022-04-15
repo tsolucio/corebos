@@ -97,14 +97,16 @@ class CBUpsertTask extends VTTask {
 					$fieldValue['linkmodeid'] = $entity->WorkflowContext['linkmodeid'];
 				}
 				if (empty($crmid)) {
-					$this->upsertData($fieldValue, $relmodule, 'doCreate');
+					$crmid = $this->upsertData($fieldValue, $relmodule, 'doCreate');
 				} else {
 					if ($crmid < 0) {
 						continue;
 					}
 					$this->upsertData($fieldValue, $relmodule, 'doUpdate', $crmid);
 				}
+				$loopContext['upserted_crmids'][]= $crmid;
 			}
+			$entity->WorkflowContext = $loopContext;
 			$util->revertUser();
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 		}
@@ -151,6 +153,7 @@ class CBUpsertTask extends VTTask {
 			}
 		}
 		$logbg->debug('< upsertData');
+		return $focusrel->id;
 	}
 }
 ?>
