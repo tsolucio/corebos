@@ -284,7 +284,8 @@ function __cb_getfieldsof($arr) {
 	} else {
 		$qg->setFields(array('*'));
 	}
-	$qg->addCondition('id', $arr[0], 'e');
+	$crmid = vtws_getCRMID($arr[0]);
+	$qg->addCondition('id', $crmid, 'e');
 	$rs = $adb->query($qg->getQuery(false));
 	if ($rs && $adb->num_rows($rs)>0) {
 		return array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
