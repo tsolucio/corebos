@@ -140,6 +140,11 @@ class FieldDependency extends processcbMap {
 		}
 		$mapping_arr = array();
 		$mapping_arr['origin'] = (string)$xml->originmodule->originname;
+		if (empty($xml->blocktriggerfields)) {
+			$mapping_arr['blocktriggerfields'] = 1;
+		} else {
+			$mapping_arr['blocktriggerfields'] = (int)filter_var(strtolower((string)$xml->blocktriggerfields), FILTER_VALIDATE_BOOLEAN);
+		}
 		$target_fields = array();
 		foreach ($xml->dependencies->dependency as $v) {
 			$conditions = $this->expandConditionColumn((string)$v->condition, $mapping_arr['origin']);
