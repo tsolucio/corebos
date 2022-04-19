@@ -1570,6 +1570,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Define if we want to mass edit records that we select on many pages or allow us only to mass edit only on the page we are.',
 ),
+'Document_DefaultFolder' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'When creating a document, it will be related to the "Default" folder. This variable defines the name of the folder you want the documents to be related to.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {

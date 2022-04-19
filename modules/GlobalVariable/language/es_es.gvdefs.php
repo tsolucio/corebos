@@ -1576,6 +1576,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Definir si queremos editar en masa registros que seleccionamos en muchas páginas o solo editar en masa la página en la que estamos.',
 ),
+'Document_DefaultFolder' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'When creating a document, it will be related to the "Default" folder. This variable defines the name of the folder you want the documents to be related to.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {
