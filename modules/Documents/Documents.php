@@ -158,6 +158,15 @@ class Documents extends CRMEntity {
 		if (!empty($this->parentid)) {
 			$this->save_related_module('Documents', $this->id, getSalesEntityType($this->parentid), $this->parentid);
 		}
+		$Document_DefaultFolder = GlobalVariable::getVariable('Document_DefaultFolder', '');
+		if (empty($this->mode) && !empty($Document_DefaultFolder)) {
+			$folderId = __cb_getidof(array(
+				'DocumentFolders', 'foldername', $Document_DefaultFolder
+			));
+			if ($folderId > 0) {
+				$this->save_related_module('Documents', $this->id, 'DocumentFolders', $folderId);
+			}
+		}
 	}
 
 	/**
