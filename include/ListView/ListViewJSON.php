@@ -529,6 +529,9 @@ class GridListView {
 			if ($list['parent'] == $parentId) {
 				$children = $this->findChilds($records_list, $list['id'], $field_types, $whereClause);
 				$data = $this->getDocuments($list['id'], $field_types, $whereClause);
+				if (!$children && empty($data) && isset($_REQUEST['searchtype']) && !empty($_REQUEST['searchtype'])) {
+					continue;
+				}
 				if ($children) {
 					$tmpChildren = $children;
 					if (!empty($data)) {
