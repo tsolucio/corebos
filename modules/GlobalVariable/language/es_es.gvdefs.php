@@ -1577,10 +1577,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Definir si queremos editar en masa registros que seleccionamos en muchas páginas o solo editar en masa la página en la que estamos.',
 ),
 'Document_DefaultFolder' => array(
-	'valuetype' => 'String',
-	'category' => 'Application',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
 	'values' => '',
-	'definition' => 'When creating a document, it will be related to the "Default" folder. This variable defines the name of the folder you want the documents to be related to.',
+	'definition' => 'Al crear un documento, se relacionará con la carpeta "Predeterminada". Esta variable define el nombre de la carpeta con la que quieres que se relacionen los documentos.',
 ),
 );
 
