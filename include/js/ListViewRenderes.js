@@ -52,11 +52,11 @@ class CheckboxRender {
 class LinkRender {
 
 	constructor(props) {
-		let el, edit_query, edit_query_string, module;
+		let el, edit_query, edit_query_string;
 		if (document.getElementById('curmodule')) {
-			module = document.getElementById('curmodule').value;
+			props.module = document.getElementById('curmodule').value;
 		} else if (document.getElementById('select_module')) {
-			module = document.getElementById('select_module').value;
+			props.module = document.getElementById('select_module').value;
 		}
 		let rowKey = props.rowKey;
 		let columnName = props.columnInfo.name;
@@ -69,7 +69,7 @@ class LinkRender {
 			<span>${props.value}</span>
 			<span class="slds-icon_container slds-icon__svg--default slds-float_right slds-m-right_small cbds-tooltip__trigger slds-p-left_xx-small"
 				id="cbds-tooltip__trigger-${recordid}-${columnName}"
-				onmouseover="ListView.addTooltip('${recordid}', '${columnName}', '${relatedRows[columnName] != undefined ? moduleName : module}')"
+				onmouseover="ListView.addTooltip('${recordid}', '${columnName}', '${relatedRows[columnName] != undefined ? moduleName : props.module}')"
 				onclick="(function(e){e.stopPropagation(); e.preventDefault()})(event)">
 				<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
@@ -82,7 +82,7 @@ class LinkRender {
 				el.id = `tooltip-el-${recordid}-${columnName}`;
 			}
 			edit_query = {
-				'module': module,
+				'module': props.module,
 				'action': 'DetailView',
 				'record': recordid,
 			};
@@ -111,7 +111,7 @@ class LinkRender {
 			this.el = el;
 			this.render(props);
 		} else {
-			if (columnName == 'filename' && module == 'Documents') {
+			if (columnName == 'filename' && props.module == 'Documents') {
 				el = document.createElement('a');
 				if (tooltip) {
 					el.id = `tooltip-el-${recordid}-${columnName}`;
@@ -156,10 +156,14 @@ class LinkRender {
 	}
 
 	render(props) {
-		if (props.formattedValue != '') {
-			this.el.innerHTML = String(props.formattedValue);
+		if (props.module === undefined) {
+			this.el.value = String(props.value);
 		} else {
-			this.el.textContent = String(props.value);
+			if (props.formattedValue != '') {
+				this.el.innerHTML = String(props.formattedValue);
+			} else {
+				this.el.textContent = String(props.value);
+			}
 		}
 	}
 }

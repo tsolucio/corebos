@@ -533,11 +533,12 @@ const ListView = {
 			//update pagination onchange
 			if (ListView.Module == 'Documents' && DocumentFolderView == 1) {
 				lvdataGridInstance[ListView.Instance].reloadData();
+				lvdataGridInstance[ListView.Instance].setPerPage(parseInt(PageSize));
 			} else {
 				lvdataGridInstance[ListView.Instance].setPerPage(parseInt(PageSize));
+				ListView.noData();
 			}
 			ListView.updateData();
-			ListView.noData();
 		}
 	},
 	/**
