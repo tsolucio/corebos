@@ -671,5 +671,23 @@ class cbtranslation extends CRMEntity {
 		$adb->pquery('Delete from vtiger_cbtranslationcf where cbtranslationid=?', array($record));
 		$adb->pquery('Delete from '.$this->crmentityTable.' where crmid=?', array($record));
 	}
+
+	/** Function to retrieve translation for a field in cbtranslation module
+	 * @param string forField
+	 * @param string forRecord
+	 * @param string forModule
+	 * @param string forValue
+	 */
+	public function readtranslation($forField, $forRecord, $forModule, $forValue) {
+		global $adb;
+		$rs = $adb->pquery('select * from vtiger_cbtranslation where forfield=? and translates=? and translation_module=? and translation_key=? and locale=?', array(
+			$forField, $forRecord, $forModule, $forValue, $this->language
+		));
+		$forValue = '';
+		if ($adb->num_rows($rs) == 1) {
+			$forValue = $adb->query_result($rs, 0, 'i18n');
+		}
+		return $forValue;
+	}
 }
 ?>

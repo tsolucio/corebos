@@ -90,7 +90,6 @@ class VtigerCRMObject {
 		$error = false;
 		$adb->startTransaction();
 		try {
-			$this->instance->translateString = true;
 			$this->instance->language = $current_user->language;
 			$this->instance->retrieve_entity_info($id, $this->moduleName, $deleted);
 			$error = $adb->hasFailedTransaction();

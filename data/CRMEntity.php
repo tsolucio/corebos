@@ -53,6 +53,7 @@ class CRMEntity {
 		$this->column_fields = getColumnFields($this_module);
 		$result = $adb->pquery('SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid=? limit 1', array($tabid));
 		$this->HasDirectImageField = ($result && $adb->num_rows($result)==1);
+		$this->translateStrings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
 	}
 
 	public static function registerMethod($method) {
@@ -1157,11 +1158,9 @@ class CRMEntity {
 					$adb->println("There is no entry for this entity $record ($module) in the table $tablename");
 					$fld_value = '';
 				}
-				if ($this->translateString) {
-					$fld_value = $translate->get($fld_value, $module, array(
-						'forfield' => $fieldname,
-						'translates' => $record,
-					));
+				if ($this->translateStrings) {
+					$translated_value = $translate->readtranslation($fieldname, $record, $module, $fld_value);
+					$this->column_fields['i18n'.$fieldname] = $translated_value;
 				}
 				$this->column_fields[$fieldname] = $fld_value;
 			}
@@ -1194,10 +1193,7 @@ class CRMEntity {
 		}
 		$row = array();
 		foreach ($currentRow as $field => $value) {
-			$row[$field] = $translate->get($value, $currentModule, array(
-				'forfield' => $field,
-				'translates' => $rowcrmid,
-			));
+			$row['i18n'.$field] = $translate->readtranslation($field, $rowcrmid, $currentModule, $value);
 		}
 		return $row;
 	}

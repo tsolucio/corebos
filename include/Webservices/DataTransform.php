@@ -41,8 +41,8 @@ class DataTransform {
 		return $newRow;
 	}
 
-	public static function filterAndSanitize($row, $meta) {
-		$row = DataTransform::filterAllColumns($row, $meta);
+	public static function filterAndSanitize($row, $meta, $translate = false) {
+		$row = DataTransform::filterAllColumns($row, $meta, $translate);
 		$row = DataTransform::sanitizeData($row, $meta);
 		return $row;
 	}
@@ -166,13 +166,16 @@ class DataTransform {
 		return $row;
 	}
 
-	public static function filterAllColumns($row, $meta) {
+	public static function filterAllColumns($row, $meta, $translate = false) {
 		$recordString = DataTransform::$recordString;
 
 		$allFields = $meta->getFieldColumnMapping();
 		$newRow = array();
 		foreach ($allFields as $field => $col) {
 			$newRow[$field] = isset($row[$field]) ? $row[$field] : '';
+			if ($translate) {
+				$newRow['i18n'.$field] = isset($row['i18n'.$field]) ? $row['i18n'.$field] : '';
+			}
 		}
 		if (isset($row[$recordString])) {
 			$newRow[$recordString] = $row[$recordString];

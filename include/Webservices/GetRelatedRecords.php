@@ -94,11 +94,17 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 	}
 	$pdowsid = vtws_getEntityID('Products').'x';
 	$srvwsid = vtws_getEntityID('Services').'x';
-	$CRMEntity = CRMEntity::getInstance($relatedModule);
-	$CRMEntity->language = $user->language;
+	$translateStrings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
+	if ($translateStrings) {
+		$CRMEntity = CRMEntity::getInstance($relatedModule);
+		$CRMEntity->language = $user->language;
+	}
 	while ($row = $adb->fetch_array($result)) {
-		$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
-		$row = $CRMEntity->translateRow($row, $rowcrmid, $relatedModule);
+		if ($translateStrings) {
+			$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
+			$translatedRow = $CRMEntity->translateRow($row, $rowcrmid, $relatedModule);
+			$row = array_merge($row, $translatedRow);
+		}
 		if (($module=='HelpDesk' || $module=='Faq') && $relatedModule=='ModComments') {
 			$rec = $row;
 		} else {

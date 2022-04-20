@@ -19,6 +19,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$this->meta = $this->getMetaInstance();
 		$this->tabId = $this->meta->getTabId();
 		$this->returnFormattedValues = (int)GlobalVariable::getVariable('Webservice_Return_FormattedValues', 0);
+		$this->translateStrings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
 	}
 
 	protected function getMetaInstance() {
@@ -88,7 +89,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		$fields = $crmObject->getFields();
-		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		$return = DataTransform::filterAndSanitize($fields, $this->meta, $this->translateStrings);
 		if ($this->returnFormattedValues) {
 			$return = DataTransform::sanitizeRetrieveEntityInfo($return, $this->meta, false);
 		}
@@ -318,15 +319,20 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$streamraw = (isset($_REQUEST['format']) && strtolower($_REQUEST['format'])=='streamraw');
 		$streaming = (isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || $streamraw));
 		$stream = '';
-		$CRMEntity = CRMEntity::getInstance($currentModule);
-		$CRMEntity->language = $current_user->language;
+		if ($this->translateStrings) {
+			$CRMEntity = CRMEntity::getInstance($currentModule);
+			$CRMEntity->language = $current_user->language;
+		}
 		for ($i=0; $i<$noofrows; $i++) {
 			$row = $this->pearDB->fetchByAssoc($result, $i);
 			$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $rowcrmid)) {
 				continue;
 			}
-			$row = $CRMEntity->translateRow($row, $rowcrmid);
+			if ($this->translateStrings) {
+				$translatedRow = $CRMEntity->translateRow($row, $rowcrmid);
+				$row = array_merge($row, $translatedRow);
+			}
 			if ($streamraw) {
 				$newrow = $row;
 			} else {
