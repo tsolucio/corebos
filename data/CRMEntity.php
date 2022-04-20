@@ -27,7 +27,7 @@ class CRMEntity {
 	public $crmentityTable = 'vtiger_crmentity';
 	public $crmentityTableAlias;
 	public $denormalized = false;
-	public $translateString = false;
+	public $translateStrings = false;
 	public $language = 'en_us';
 	protected static $methods = array();
 	protected static $dbvalues = array();
@@ -53,7 +53,6 @@ class CRMEntity {
 		$this->column_fields = getColumnFields($this_module);
 		$result = $adb->pquery('SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid=? limit 1', array($tabid));
 		$this->HasDirectImageField = ($result && $adb->num_rows($result)==1);
-		$this->translateStrings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
 	}
 
 	public static function registerMethod($method) {
@@ -1137,8 +1136,9 @@ class CRMEntity {
 			$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
 		}
 
+		$this->translateStrings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
 		if ($cachedModuleFields) {
-			if ($this->translateString) {
+			if ($this->translateStrings) {
 				$translate = new cbtranslation();
 			}
 			foreach ($cachedModuleFields as $fieldname => $fieldinfo) {

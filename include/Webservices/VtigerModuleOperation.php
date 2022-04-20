@@ -13,13 +13,13 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	protected $isEntity = true;
 	private $queryTotalRows = 0;
 	private $returnFormattedValues = 0;
+	public $translateStrings = false;
 
 	public function __construct($webserviceObject, $user, $adb, $log) {
 		parent::__construct($webserviceObject, $user, $adb, $log);
 		$this->meta = $this->getMetaInstance();
 		$this->tabId = $this->meta->getTabId();
 		$this->returnFormattedValues = (int)GlobalVariable::getVariable('Webservice_Return_FormattedValues', 0);
-		$this->translateStrings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
 	}
 
 	protected function getMetaInstance() {
@@ -89,6 +89,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		$fields = $crmObject->getFields();
+		$this->translateStrings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
 		$return = DataTransform::filterAndSanitize($fields, $this->meta, $this->translateStrings);
 		if ($this->returnFormattedValues) {
 			$return = DataTransform::sanitizeRetrieveEntityInfo($return, $this->meta, false);
@@ -278,6 +279,10 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				$mysql_query = addPortalModuleRestrictions($mysql_query, $meta->getEntityName(), $accountId, $contactId);
 			}
 		}
+		$this->translateStrings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
+		if ($this->translateStrings) {
+			$mysql_query = __ConstructQueryForTranslation($mysql_query, $this->user);
+		}
 		return $mysql_query;
 	}
 
@@ -287,7 +292,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {
-		global $site_URL, $adb, $default_charset, $currentModule, $current_user;
+		global $site_URL, $adb, $default_charset, $currentModule;
 		$holdCM = $currentModule;
 		$currentModule = $meta->getEntityName();
 		if (strpos($mysql_query, 'vtiger_inventoryproductrel')) {
@@ -319,19 +324,11 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$streamraw = (isset($_REQUEST['format']) && strtolower($_REQUEST['format'])=='streamraw');
 		$streaming = (isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || $streamraw));
 		$stream = '';
-		if ($this->translateStrings) {
-			$CRMEntity = CRMEntity::getInstance($currentModule);
-			$CRMEntity->language = $current_user->language;
-		}
 		for ($i=0; $i<$noofrows; $i++) {
 			$row = $this->pearDB->fetchByAssoc($result, $i);
 			$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $rowcrmid)) {
 				continue;
-			}
-			if ($this->translateStrings) {
-				$translatedRow = $CRMEntity->translateRow($row, $rowcrmid);
-				$row = array_merge($row, $translatedRow);
 			}
 			if ($streamraw) {
 				$newrow = $row;

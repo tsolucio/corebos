@@ -849,3 +849,31 @@ function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
 	$workflow->setup($wfvals);
 	return array(trim($workflowScheduler->getWorkflowQuery($workflow, $queryColumns, !$hasGroupBy, $user).$ol_by), $queryRelatedModules);
 }
+
+function __ConstructQueryForTranslation($q, $user) {
+	$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
+	preg_match($moduleRegex, $q, $m);
+	$queryColumns = trim(substr($q, 6, stripos($q, ' from ')-5));
+	$holdColumns = $queryColumns;
+	$queryColumns = explode(',', $queryColumns);
+	$queryColumns = array_map(function($col) use ($user, $m) {
+		if (!strpos($col, 'vtiger_crmentity')) {
+			return __TranslationQuery(trim($col), $m[1], $user);
+		}
+	}, $queryColumns);
+	return str_replace($holdColumns, $holdColumns.','.implode(',', $queryColumns), $q);
+}
+
+function __TranslationQuery($field, $table, $user) {
+	global $adb;
+	$language = $user->language;
+	$entity = getEntityFieldByTable($table);
+	$entityid = $entity['entityid'];
+	if (strpos($field, '.') !== false) {
+		$field = explode('.', $field);
+		$field = $field[1];
+	}
+	$query = '(select vtiger_cbtranslation.i18n FROM vtiger_cbtranslation';
+	$query .= $adb->convert2Sql(" where {$table}.{$entityid}=vtiger_cbtranslation.translates AND vtiger_cbtranslation.locale=? AND vtiger_cbtranslation.forfield=?) AS i18n{$field}", array($language, $field));
+	return $query;
+}
