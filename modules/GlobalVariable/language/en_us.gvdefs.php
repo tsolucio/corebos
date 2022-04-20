@@ -1582,6 +1582,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'When creating a document, it will be related to the "Default" folder. This variable defines the name of the folder you want the documents to be related to.',
 ),
+'Webservice_Translate_Strings' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'This variable enable translation strings in the Webservices.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
