@@ -70,4 +70,11 @@
 	<classname>updateCronTaskTable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Restrict creation of folders with the same name and parent</description>
+	<filename>build/changeSets/2022/addDocumentFolders_Validations.php</filename>
+	<classname>addDocumentFoldersValidations</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

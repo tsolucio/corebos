@@ -114,7 +114,7 @@ class cbwsProcessMapWorker {
 			case 'ListColumns':
 				return $this->mapobj->ListColumns()->getCompleteMapping();
 			case 'ApplicationMenu':
-				return $this->mapobj->ApplicationMenu();
+				return $this->mapobj->ApplicationMenu($this->parameters);
 			case 'FieldDependency':
 				return $this->mapobj->FieldDependency();
 			default:

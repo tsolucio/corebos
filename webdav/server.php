@@ -17,14 +17,14 @@
  *************************************************************************************************/
 use Sabre\DAV;
 
+chdir('..');
 /** All service invocation needs have valid app_key parameter sent */
-require_once '../config.inc.php';
+require_once 'config.inc.php';
 
 /* If app_key is not set, pick the value from cron configuration */
 if (empty($_REQUEST['app_key'])) {
 	$_REQUEST['app_key'] = $application_unique_key;
 }
-chdir('..');
 
 set_include_path(get_include_path().PATH_SEPARATOR.'./Sync/');
 
@@ -71,8 +71,11 @@ $authBackend = new Authenticate();
 // Creating the plugin. The realm parameter is ignored by the backend
 $authPlugin = new DAV\Auth\Plugin($authBackend, 'Login WebDAV');
 
-// Adding the plugin to the server
-$server->addPlugin($authPlugin);
+coreBOS_Session::init(true, true);
+if (!isset($_SESSION['authenticated_user_id'])) {
+	// Adding the plugin to the server
+	$server->addPlugin($authPlugin);
+}
 
 // All we need to do now, is to fire up the server
 $server->start();

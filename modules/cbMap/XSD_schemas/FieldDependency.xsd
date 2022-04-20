@@ -9,6 +9,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element type="xs:string" name="blocktriggerfields" minOccurs="0"/>
         <xs:element name="dependencies">
           <xs:complexType>
             <xs:sequence>

@@ -9,12 +9,26 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Modulo',
-	'SINGLE_ModuleName' => 'Nome Modulo',
-	'ModuleName ID' => 'ID Nome Modulo',
+	'cbtranslation' => 'Traduzioni',
+	'SINGLE_cbtranslation' => 'Traduzione',
+	'cbtranslation ID' => 'Traduzione ID',
 
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
 	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
+
+	'cbtranslation No' => 'No. Traduzione',
+	'Locale' => 'Locale',
+	'Module' => 'Modulo',
+	'Key' => 'Chiave',
+	'Translates' => 'Traduce',
+	'Picklist' => 'Picklist',
+	'Field' => 'Campo',
+	'Proof Read' => 'Lettura Prova',
+	'Assigned To' => 'Assegnato a',
+	'Created Time' => 'Tempo Creato',
+	'Modified Time' => 'Tempo Modificato',
+	'Created By' => 'Creato da',
+	'cbtranslationid' => 'ID Traduzione',
 
 	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
 );

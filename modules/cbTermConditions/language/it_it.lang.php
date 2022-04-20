@@ -9,12 +9,23 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Modulo',
-	'SINGLE_ModuleName' => 'Nome Modulo',
-	'ModuleName ID' => 'ID Nome Modulo',
+	'cbTermConditions' => 'Termini e Condizioni',
+	'SINGLE_cbTermConditions' => 'Termini e Condizioni',
+	'cbTermConditions ID' => 'ID Termini e Condizioni',
 
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
 	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
+
+	'TandC No' => 'No. Termini e Condizioni',
+	'Assigned To' => 'Assegnato a',
+	'Reference' => 'Riferimento',
+	'Created Time' => 'Tempo Creato',
+	'Is Default' => 'è predefinito',
+	'Modified Time' => 'Tempo Modificato',
+	'formodule' => 'per modulo',
+	'Terms and Conditions' => 'Termini e Condizioni',
+	'Description' => 'Descrizione',
+	'cbtandcid' => 'ID Termini e Condizioni',
 
 	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
 );

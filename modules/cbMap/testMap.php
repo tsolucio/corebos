@@ -213,7 +213,11 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo = $fsm->getFieldSet();
 		break;
 	case 'ApplicationMenu':
-		$mapinfo = json_decode($focus->ApplicationMenu());
+		if (!empty($_REQUEST['testrecord'])) {
+			$mapinfo = json_decode($focus->ApplicationMenu(['menuname' => $_REQUEST['testrecord']]));
+		} else {
+			$mapinfo = json_decode($focus->ApplicationMenu());
+		}
 		break;
 	case 'Detail View Layout Mapping':
 		$mapinfo = $focus->DetailViewLayoutMapping();

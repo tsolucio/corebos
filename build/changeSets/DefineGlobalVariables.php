@@ -294,6 +294,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Import_ForceDuplicateRecord_Handling',
 				'Apache_Tika_URL',
 				'Application_MassAction_Multipage',
+				'Document_DefaultFolder',
 			);
 			$delete_these = array(
 				'preload_prototype',

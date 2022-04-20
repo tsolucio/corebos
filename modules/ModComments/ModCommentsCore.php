@@ -108,9 +108,11 @@ class ModCommentsCore extends CRMEntity {
 					WHERE modcommentsid=?',
 				array($this->id)
 			);
-			$relemail = $adb->query_result($relemailrs, 0, 0);
-			$this->column_fields['relatedassignedemail'] = $relemail;
-			$adb->pquery('UPDATE vtiger_modcomments SET relatedassignedemail=? WHERE modcommentsid=?', array($relemail, $this->id));
+			if ($relemailrs && $adb->num_rows($relemailrs)) { // probably assigned to a group
+				$relemail = $adb->query_result($relemailrs, 0, 0);
+				$this->column_fields['relatedassignedemail'] = $relemail;
+				$adb->pquery('UPDATE vtiger_modcomments SET relatedassignedemail=? WHERE modcommentsid=?', array($relemail, $this->id));
+			}
 		}
 	}
 
