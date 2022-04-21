@@ -190,9 +190,7 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	}
 	$smarty->assign('LISTHEADER', $listview_header);
 
-	if ($module == 'Products' && $relatedmodule == 'PriceBooks') {
-		$listview_entries = getListViewEntries($focus, $relatedmodule, $list_result, $navigation_array, 'relatedlist', $returnset, 'EditListPrice', 'DeletePriceBookProductRel', '', '', '', '', $skipActions);
-	} elseif ($relatedmodule == 'SalesOrder') {
+	if ($relatedmodule == 'SalesOrder') {
 		$listview_entries = getListViewEntries($focus, $relatedmodule, $list_result, $navigation_array, 'relatedlist', $returnset, 'SalesOrderEditView', 'DeleteSalesOrder', '', '', '', '', $skipActions);
 	} else {
 		$listview_entries = getListViewEntries($focus, $relatedmodule, $list_result, $navigation_array, 'relatedlist', $returnset, $edit_val, $del_val, '', '', '', '', $skipActions);
@@ -287,124 +285,6 @@ function getHistory($parentmodule, $query, $id) {
 	}
 	$log->debug('< getHistory');
 	return array('header' => $header, 'entries' => $entries_list);
-}
-
-/**	Function to display the Products which are related to the PriceBook
- *	@param string $query - query to get the list of products which are related to the current PriceBook
- *	@param object $focus - PriceBook object which contains all the information of the current PriceBook
- *	@param string $returnset - return_module, return_action and return_id which are sequenced with & to pass to the URL which is optional
- *	@return array $return_data which will be formed like
- *		array('header'=>$header,'entries'=>$entries_list)
- *		where as $header contains all the header columns and $entries_list will contain all the Product entries
- */
-function getPriceBookRelatedProducts($query, $focus, $returnset = '', $relatedmodule = 'Products') {
-	global $log, $adb, $app_strings, $current_user, $theme;
-	$module = 'PriceBooks';
-	$log->debug('> getPriceBookRelatedProducts '.$query.','.$relatedmodule.','.$returnset);
-
-	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $relatedmodule);
-	$pricebook_id = vtlib_purify($_REQUEST['record']);
-
-	$computeCount = (isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : false);
-	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, 'PriceBooks') || ((boolean)$computeCount)) {
-		$rs = $adb->query(mkCountQuery($query));
-		$noofrows = $adb->query_result($rs, 0, 'count');
-	} else {
-		$noofrows = null;
-	}
-
-	if (empty($_SESSION['rlvs'][$module][$relatedmodule])) {
-		$modObj = new ListViewSession();
-		$modObj->sortby = $focus->getOrderBy();
-		$modObj->sorder = $focus->getSortOrder();
-		coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
-	}
-
-	if (isset($_REQUEST['relmodule']) && $_REQUEST['relmodule']!='' && $_REQUEST['relmodule'] == $relatedmodule) {
-		$relmodule = vtlib_purify($_REQUEST['relmodule']);
-		if ($_SESSION['rlvs'][$module][$relmodule]) {
-			setSessionVar($_SESSION['rlvs'][$module][$relmodule], $noofrows, $list_max_entries_per_page, $module, $relmodule);
-		}
-	}
-	global $relationId;
-	$start = RelatedListViewSession::getRequestCurrentPage($relationId, $query);
-	$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
-
-	$limit_start_rec = ($start-1) * $list_max_entries_per_page;
-
-	$list_result = $adb->pquery($query." LIMIT $limit_start_rec, $list_max_entries_per_page", array());
-
-	$header=array();
-	$header[] = getTranslatedString(($relatedmodule=='Products' ? 'LBL_LIST_PRODUCT_NAME' : 'LBL_LIST_SERVICE_NAME'), $relatedmodule);
-	$pdocodevisible = ($relatedmodule=='Products' && getFieldVisibilityPermission('Products', $current_user->id, 'productcode')=='0');
-	if ($pdocodevisible) {
-		$header[] = getTranslatedString('LBL_PRODUCT_CODE', $relatedmodule);
-	}
-	$unitpricevisible = (getFieldVisibilityPermission($relatedmodule, $current_user->id, 'unit_price')=='0');
-	if ($unitpricevisible) {
-		$header[] = getTranslatedString('LBL_PRODUCT_UNIT_PRICE', $module);
-	}
-	$header[] = getTranslatedString('LBL_PB_LIST_PRICE', $module);
-	if (isPermitted('PriceBooks', 'EditView', '') == 'yes' || isPermitted('PriceBooks', 'Delete', '') == 'yes') {
-		$header[] = getTranslatedString('LBL_ACTION', $module);
-	}
-
-	$currency_id = $focus->column_fields['currency_id'];
-	$numRows = $adb->num_rows($list_result);
-	$canEditPB = (isPermitted('PriceBooks', 'EditView', '')=='yes');
-	$canDelPB = (isPermitted('PriceBooks', 'EditView', '')=='yes');
-	$ename = ($relatedmodule=='Products' ? 'productname' : 'servicename');
-	for ($i = 0; $i<$numRows; $i++) {
-		$entity_id = $adb->query_result($list_result, $i, 'crmid');
-		$unit_price = $adb->query_result($list_result, $i, 'unit_price');
-		if ($currency_id != null) {
-			$prod_prices = getPricesForProducts($currency_id, array($entity_id), $relatedmodule);
-			$unit_price = $prod_prices[$entity_id];
-		}
-		$listprice = $adb->query_result($list_result, $i, 'listprice');
-
-		$entries = array();
-		$entries[] = textlength_check($adb->query_result($list_result, $i, $ename));
-		if ($pdocodevisible) {
-			$entries[] = $adb->query_result($list_result, $i, 'productcode');
-		}
-		if ($unitpricevisible) {
-			$entries[] = CurrencyField::convertToUserFormat($unit_price, null, true);
-		}
-
-		$entries[] = CurrencyField::convertToUserFormat($listprice, null, true);
-		$action = '';
-		if ($canEditPB && isPermitted($relatedmodule, 'EditView', $entity_id)=='yes') {
-			$action .= '<img style="cursor:pointer;" src="'. vtiger_imageurl('editfield.gif', $theme)
-				.'" border="0" onClick="fnvshobj(this,\'editlistprice\'),editProductListPrice(\''.$entity_id.'\',\''.$pricebook_id.'\',\''.$listprice.'\')" alt="'
-				.$app_strings['LBL_EDIT_BUTTON'].'" title="'.$app_strings['LBL_EDIT_BUTTON'].'"/>';
-		} else {
-			$action .= '<img src="'. vtiger_imageurl('blank.gif', $theme).'" border="0" />';
-		}
-		if ($canDelPB && isPermitted($relatedmodule, 'Delete', $entity_id)=='yes') {
-			if ($action != '') {
-				$action .= '&nbsp;|&nbsp;';
-			}
-			$action .= '<img src="themes/images/delete.gif" onclick="if(confirm(\''.$app_strings['ARE_YOU_SURE'].'\')) deletePriceBookProductRel('
-				.$entity_id.','.$pricebook_id.');" alt="'.$app_strings['LBL_DELETE'].'" title="'.$app_strings['LBL_DELETE'].'" style="cursor:pointer;" border="0">';
-		}
-		if ($action != '') {
-			$entries[] = $action;
-		}
-		$entries_list[] = $entries;
-	}
-	$navigationOutput[] = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
-	$navigationOutput[] = getRelatedTableHeaderNavigation(
-		$navigation_array,
-		'',
-		$module,
-		$relatedmodule,
-		$focus->id
-	);
-	$return_data = array('header' => $header, 'entries' => $entries_list, 'navigation' => $navigationOutput);
-
-	$log->debug('< getPriceBookRelatedProducts');
-	return $return_data;
 }
 
 function CheckFieldPermission($fieldname, $module) {

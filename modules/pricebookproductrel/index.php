@@ -7,5 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once 'modules/Vtiger/Delete.php';
+global $currentModule;
+
+checkFileAccessForInclusion("modules/$currentModule/ListView.php");
+include_once "modules/$currentModule/ListView.php";
 ?>

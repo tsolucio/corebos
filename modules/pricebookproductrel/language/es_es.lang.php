@@ -7,5 +7,20 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once 'modules/Vtiger/Delete.php';
+
+$mod_strings = array(
+	'pricebookproductrel' => 'Listas de Precios',
+	'SINGLE_pricebookproductrel' => 'Lista de Precio',
+	'pricebookproductrel ID' => 'ID Lista de Precio',
+
+	'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
+	'LBL_PBPDO_INFORMATION' => 'Información Lista de Precio',
+	'LBL_DESCRIPTION_INFORMATION' => 'Descripción',
+
+	'pricebookid' => 'Tarifa',
+	'pricebookproductrel_no' => 'Nº Lista de Precio',
+	'productid' => 'Producto',
+	'listprice' => 'Precio',
+	'usedcurrency' => 'Moneda',
+);
 ?>

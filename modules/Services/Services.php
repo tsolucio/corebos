@@ -473,67 +473,6 @@ class Services extends CRMEntity {
 		return $return_value;
 	}
 
-	/**	function used to get the list of pricebooks which are related to the service
-	 *	@param int service id
-	 *	@return array which will be returned from the function GetRelatedList
-	 */
-	public function get_service_pricebooks($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $currentModule, $log, $singlepane_view;
-		$log->debug('> get_service_pricebooks '.$id);
-
-		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		checkFileAccessForInclusion("modules/$related_module/$related_module.php");
-		require_once "modules/$related_module/$related_module.php";
-		$focus = new $related_module();
-
-		if ($singlepane_view == 'true') {
-			$returnset = "&return_module=$currentModule&return_action=DetailView&return_id=$id";
-		} else {
-			$returnset = "&return_module=$currentModule&return_action=CallRelatedList&return_id=$id";
-		}
-
-		$button = '';
-		if ($actions) {
-			if (is_string($actions)) {
-				$actions = explode(',', strtoupper($actions));
-			}
-			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes' && isPermitted($currentModule, 'EditView', $id) == 'yes') {
-				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_TO'). " ". getTranslatedString($related_module, $related_module).
-					"' class='crmbutton small create'" .
-					" onclick='this.form.action.value=\"AddServiceToPriceBooks\";this.form.module.value=\"$currentModule\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_TO'). " " . $singular_modname ."'>&nbsp;";
-			}
-		}
-		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$query = "SELECT vtiger_crmentity.crmid, vtiger_pricebook.*, vtiger_pricebookproductrel.productid as prodid
-			FROM vtiger_pricebook
-			INNER JOIN $crmtablealias ON vtiger_crmentity.crmid = vtiger_pricebook.pricebookid
-			INNER JOIN vtiger_pricebookproductrel ON vtiger_pricebookproductrel.pricebookid = vtiger_pricebook.pricebookid
-			WHERE vtiger_crmentity.deleted=0 AND vtiger_pricebookproductrel.productid=".$id;
-
-		$return_value = GetRelatedList($currentModule, $related_module, $focus, $query, $button, $returnset);
-
-		if ($return_value == null) {
-			$return_value = array();
-		}
-		$return_value['CUSTOM_BUTTON'] = $button;
-
-		$log->debug('< get_service_pricebooks');
-		return $return_value;
-	}
-
-	/**	Function to display the Services which are related to the PriceBook
-	 *	@param string query to get the list of products which are related to the current PriceBook
-	 *	@param object PriceBook object which contains all the information of the current PriceBook
-	 *	@param string return_module, return_action and return_id which are sequenced with & to pass to the URL which is optional
-	 *	@return array array('header'=>$header, 'entries'=>$entries_list)
-	 *		where $header contains all the header columns and $entries_list will contain all the Service entries
-	 */
-	public function getPriceBookRelatedServices($query, $focus, $returnset = '') {
-		return getPriceBookRelatedProducts($query, $focus, $returnset, 'Services');
-	}
-
 	/**
 	 * Move the related records of the specified list of id's to the given record.
 	 * @param string This module name
@@ -548,15 +487,12 @@ class Services extends CRMEntity {
 			'PurchaseOrder' => 'vtiger_inventoryproductrel',
 			'SalesOrder' => 'vtiger_inventoryproductrel',
 			'Invoice' => 'vtiger_inventoryproductrel',
-			'PriceBooks' => 'vtiger_pricebookproductrel',
 		);
 		$tbl_field_arr = array(
 			'vtiger_inventoryproductrel'=>'id',
-			'vtiger_pricebookproductrel'=>'pricebookid',
 		);
 		$entity_tbl_field_arr = array(
 			'vtiger_inventoryproductrel'=>'productid',
-			'vtiger_pricebookproductrel'=>'productid',
 		);
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
@@ -674,7 +610,6 @@ class Services extends CRMEntity {
 			"PurchaseOrder" => array("vtiger_inventoryproductrel"=>array("productid","id"),"vtiger_service"=>"serviceid"),
 			"SalesOrder" => array("vtiger_inventoryproductrel"=>array("productid","id"),"vtiger_service"=>"serviceid"),
 			"Invoice" => array("vtiger_inventoryproductrel"=>array("productid","id"),"vtiger_service"=>"serviceid"),
-			"PriceBooks" => array("vtiger_pricebookproductrel"=>array("productid","pricebookid"),"vtiger_service"=>"serviceid"),
 			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_service"=>"serviceid"),
 			"Contacts" => array("vtiger_crmentityrel"=>array("crmid","relcrmid"),"vtiger_service"=>"serviceid"),
 		);

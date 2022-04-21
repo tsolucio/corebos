@@ -7,15 +7,6 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-function updateListPrice(unitprice, fieldname, oSelect) {
-	if (oSelect.checked) {
-		document.getElementById(fieldname).style.visibility = 'visible';
-		document.getElementById(fieldname).value = unitprice;
-	} else {
-		document.getElementById(fieldname).style.visibility = 'hidden';
-	}
-}
-
 function set_return(product_id, product_name) {
 	if (document.getElementById('from_link').value != '') {
 		window.opener.document.QcEditView.parent_name.value = product_name;

@@ -7,5 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once 'modules/Vtiger/Delete.php';
+
+$mod_strings = array(
+	'ModuleName' => 'Modulname',
+	'SINGLE_ModuleName' => 'Modulname',
+	'ModuleName ID' => 'Modulname ID',
+
+	'LBL_CUSTOM_INFORMATION' => 'zusätzliche Information',
+	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
+	'LBL_DESCRIPTION_INFORMATION' => 'Beschreibung',
+
+	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+);
 ?>
