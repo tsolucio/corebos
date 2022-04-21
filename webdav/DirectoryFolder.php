@@ -50,7 +50,7 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 				$folder[] = new CRMFile($row, $this->folderid);
 			}
 		}
-		$result = $adb->pquery('SELECT documentfoldersid, foldername FROM vtiger_documentfolders INNER JOIN vtiger_crmentity ON crmid=documentfoldersid WHERE parentfolder=?', array($this->folderid));
+		$result = $adb->pquery('SELECT documentfoldersid, foldername FROM vtiger_documentfolders INNER JOIN vtiger_crmentity ON crmid=documentfoldersid WHERE parentfolder=? AND deleted=0', array($this->folderid));
 		if ($adb->num_rows($result) > 0) {
 			while ($row = $adb->fetch_array($result)) {
 				$folder[] = new DirectoryFolder($row['foldername'], $row['documentfoldersid']);
@@ -100,10 +100,15 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 	public function setName($name) {
 		global $adb;
 		if (!empty($this->folderid) && $this->folderid > 1) {
-			$adb->pquery('UPDATE vtiger_attachmentsfolder SET foldername=? WHERE folderid=?', array($name, intval($this->folderid)));
+			$adb->pquery('UPDATE vtiger_documentfolders SET foldername=? WHERE documentfoldersid=?', array($name, intval($this->folderid)));
 			return true;
 		}
 		throw new Sabre\DAV\Exception\Forbidden('Permission denied to rename default directory');
+	}
+
+	public function delete() {
+		global $adb;
+		$adb->pquery('update vtiger_crmentity set deleted=1 where crmid=?', array($this->folderid));
 	}
 
 	public function createFile($name, $data = null) {
