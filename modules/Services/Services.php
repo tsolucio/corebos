@@ -261,9 +261,9 @@ class Services extends CRMEntity {
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
+					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
@@ -324,9 +324,9 @@ class Services extends CRMEntity {
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
+					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
@@ -384,9 +384,9 @@ class Services extends CRMEntity {
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
+					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
@@ -445,9 +445,9 @@ class Services extends CRMEntity {
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
+					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
 		}
 		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
@@ -533,24 +533,24 @@ class Services extends CRMEntity {
 		);
 		$query = parent::generateReportsQuery($module, $queryPlanner);
 
-		if ($queryPlanner->requireTable("vtiger_seproductsrel")) {
-			$query .= " left join vtiger_seproductsrel on vtiger_seproductsrel.productid= vtiger_service.serviceid";
+		if ($queryPlanner->requireTable('vtiger_seproductsrel')) {
+			$query .= ' left join vtiger_seproductsrel on vtiger_seproductsrel.productid= vtiger_service.serviceid';
 		}
-		if ($queryPlanner->requireTable("vtiger_crmentityRelServices")) {
+		if ($queryPlanner->requireTable('vtiger_crmentityRelServices')) {
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Services');
 			$query .= " left join $crmEntityTable as vtiger_crmentityRelServices on vtiger_crmentityRelServices.crmid=vtiger_seproductsrel.crmid and vtiger_crmentityRelServices.deleted = 0";
 		}
-		if ($queryPlanner->requireTable("vtiger_accountRelServices")) {
-			$query .= " left join vtiger_account as vtiger_accountRelServices on vtiger_accountRelServices.accountid=vtiger_seproductsrel.crmid";
+		if ($queryPlanner->requireTable('vtiger_accountRelServices')) {
+			$query .= ' left join vtiger_account as vtiger_accountRelServices on vtiger_accountRelServices.accountid=vtiger_seproductsrel.crmid';
 		}
-		if ($queryPlanner->requireTable("vtiger_leaddetailsRelServices")) {
-			$query .= " left join vtiger_leaddetails as vtiger_leaddetailsRelServices on vtiger_leaddetailsRelServices.leadid = vtiger_seproductsrel.crmid";
+		if ($queryPlanner->requireTable('vtiger_leaddetailsRelServices')) {
+			$query .= ' left join vtiger_leaddetails as vtiger_leaddetailsRelServices on vtiger_leaddetailsRelServices.leadid = vtiger_seproductsrel.crmid';
 		}
-		if ($queryPlanner->requireTable("vtiger_potentialRelServices")) {
-			$query .= " left join vtiger_potential as vtiger_potentialRelServices on vtiger_potentialRelServices.potentialid = vtiger_seproductsrel.crmid";
+		if ($queryPlanner->requireTable('vtiger_potentialRelServices')) {
+			$query .= ' left join vtiger_potential as vtiger_potentialRelServices on vtiger_potentialRelServices.potentialid = vtiger_seproductsrel.crmid';
 		}
-		if ($queryPlanner->requireTable("innerService")) {
-			$query .= " LEFT JOIN (
+		if ($queryPlanner->requireTable('innerService')) {
+			$query .= ' LEFT JOIN (
 				SELECT vtiger_service.serviceid,
 						(CASE WHEN (vtiger_service.currency_id = 1 ) THEN vtiger_service.unit_price
 							ELSE (vtiger_service.unit_price / vtiger_currency_info.conversion_rate) END
@@ -558,8 +558,8 @@ class Services extends CRMEntity {
 				FROM vtiger_service
 				LEFT JOIN vtiger_currency_info ON vtiger_service.currency_id = vtiger_currency_info.id
 				LEFT JOIN vtiger_productcurrencyrel ON vtiger_service.serviceid = vtiger_productcurrencyrel.productid
-				AND vtiger_productcurrencyrel.currencyid = ". $current_user->currency_id . "
-			) AS innerService ON innerService.serviceid = vtiger_service.serviceid";
+				AND vtiger_productcurrencyrel.currencyid = '. $current_user->currency_id . '
+			) AS innerService ON innerService.serviceid = vtiger_service.serviceid';
 		}
 		return $query;
 	}
@@ -574,7 +574,7 @@ class Services extends CRMEntity {
 		global $current_user;
 		$matrix = $queryPlanner->newDependencyMatrix();
 		$matrix->setDependency('vtiger_crmentityServices', array('vtiger_usersServices','vtiger_groupsServices','vtiger_lastModifiedByServices'));
-		if (!$queryPlanner->requireTable("vtiger_service", $matrix) && !$queryPlanner->requireTable('vtiger_servicecf', $matrix)) {
+		if (!$queryPlanner->requireTable('vtiger_service', $matrix) && !$queryPlanner->requireTable('vtiger_servicecf', $matrix)) {
 			return '';
 		}
 		$matrix->setDependency(
@@ -583,18 +583,18 @@ class Services extends CRMEntity {
 		);
 
 		$query = parent::generateReportsSecQuery($module, $secmodule, $queryPlanner, $type, $where_condition);
-		if ($queryPlanner->requireTable("innerService")) {
-			$query .= " LEFT JOIN (
+		if ($queryPlanner->requireTable('innerService')) {
+			$query .= ' LEFT JOIN (
 				SELECT vtiger_service.serviceid,
-						(CASE WHEN (vtiger_service.currency_id = " . $current_user->currency_id . " ) THEN vtiger_service.unit_price
+						(CASE WHEN (vtiger_service.currency_id = ' . $current_user->currency_id . ' ) THEN vtiger_service.unit_price
 							WHEN (vtiger_productcurrencyrel.actual_price IS NOT NULL) THEN vtiger_productcurrencyrel.actual_price
-							ELSE (vtiger_service.unit_price / vtiger_currency_info.conversion_rate) * ". $current_user->conv_rate . " END
+							ELSE (vtiger_service.unit_price / vtiger_currency_info.conversion_rate) * '. $current_user->conv_rate . ' END
 						) AS actual_unit_price
 				FROM vtiger_service
 				LEFT JOIN vtiger_currency_info ON vtiger_service.currency_id = vtiger_currency_info.id
 				LEFT JOIN vtiger_productcurrencyrel ON vtiger_service.serviceid = vtiger_productcurrencyrel.productid
-				AND vtiger_productcurrencyrel.currencyid = ". $current_user->currency_id . "
-			) AS innerService ON innerService.serviceid = vtiger_service.serviceid";
+				AND vtiger_productcurrencyrel.currencyid = '. $current_user->currency_id . '
+			) AS innerService ON innerService.serviceid = vtiger_service.serviceid';
 		}
 		return $query;
 	}
@@ -606,12 +606,12 @@ class Services extends CRMEntity {
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			"Quotes" => array("vtiger_inventoryproductrel"=>array("productid","id"),"vtiger_service"=>"serviceid"),
-			"PurchaseOrder" => array("vtiger_inventoryproductrel"=>array("productid","id"),"vtiger_service"=>"serviceid"),
-			"SalesOrder" => array("vtiger_inventoryproductrel"=>array("productid","id"),"vtiger_service"=>"serviceid"),
-			"Invoice" => array("vtiger_inventoryproductrel"=>array("productid","id"),"vtiger_service"=>"serviceid"),
-			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_service"=>"serviceid"),
-			"Contacts" => array("vtiger_crmentityrel"=>array("crmid","relcrmid"),"vtiger_service"=>"serviceid"),
+			'Quotes' => array('vtiger_inventoryproductrel'=>array('productid','id'),'vtiger_service'=>'serviceid'),
+			'PurchaseOrder' => array('vtiger_inventoryproductrel'=>array('productid','id'),'vtiger_service'=>'serviceid'),
+			'SalesOrder' => array('vtiger_inventoryproductrel'=>array('productid','id'),'vtiger_service'=>'serviceid'),
+			'Invoice' => array('vtiger_inventoryproductrel'=>array('productid','id'),'vtiger_service'=>'serviceid'),
+			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_service'=>'serviceid'),
+			'Contacts' => array('vtiger_crmentityrel'=>array('crmid','relcrmid'),'vtiger_service'=>'serviceid'),
 		);
 		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
