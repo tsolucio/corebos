@@ -23,7 +23,6 @@ $module = vtlib_purify($_REQUEST['moduleName']);
 $data = vtlib_purify($_REQUEST['data']);
 $data = json_decode($data, true);
 foreach ($data as $row) {
-	unset($row['rowKey']);
 	unset($row['_attributes']);
 	$currentRow = array();
 	foreach ($row as $field => $value) {
