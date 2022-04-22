@@ -84,4 +84,11 @@
 	<classname>convertPricebookToPriceList</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Add ClickHouse webservice</description>
+	<filename>build/changeSets/2022/addWSClickHouse.php</filename>
+	<classname>addWSClickHouse</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
