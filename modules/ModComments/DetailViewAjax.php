@@ -16,7 +16,7 @@ if ($ajaxaction == 'WIDGETADDCOMMENT') {
 	list($void,$canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array(vtlib_purify($_REQUEST['parentid']), true));
 	if (isPermitted($currentModule, 'CreateView', '') == 'yes' && $canaddcomments) {
 		if (empty($_REQUEST['id'])) {
-			$modObj->column_fields['commentcontent'] = htmlentities($_REQUEST['comment'], ENT_QUOTES, $default_charset); // we don't clean to accept all characters in comment
+			$modObj->column_fields['commentcontent'] = $_REQUEST['comment']; // we don't clean to accept all characters in comment
 			$modObj->column_fields['related_to'] = vtlib_purify($_REQUEST['parentid']);
 			$modObj->column_fields['assigned_user_id'] = $current_user->id;
 			$modObj->save($currentModule);
@@ -33,7 +33,7 @@ if ($ajaxaction == 'WIDGETADDCOMMENT') {
 			if ($data) {
 				$newValues = array(
 					'id'=>$data['id'],
-					'commentcontent'=>htmlentities(preg_replace('/\<br(\s*)?\/?\>/i', "\n", $_REQUEST['comment']), ENT_QUOTES, $default_charset),
+					'commentcontent'=>preg_replace('/\<br(\s*)?\/?\>/i', "\n", $_REQUEST['comment']),
 					'assigned_user_id'=>$data['assigned_user_id']
 				);
 				vtws_revise($newValues, $current_user);
