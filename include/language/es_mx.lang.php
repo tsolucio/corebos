@@ -1374,8 +1374,8 @@ $app_strings = array (
 	'Deleted in Mautic' => 'Eliminado en Mautic',
 	'Contact Points' => 'Puntos Contacto',
 	'From External Source' => 'Proviene de Fuente Externa',
-	'LBL_ADD_ROW' => 'Add Row',
-	'LBL_EDIT_COLUMNS' => 'Edit Columns',
+	'LBL_ADD_ROW' => 'Añadir Fila',
+	'LBL_EDIT_COLUMNS' => 'Editar Columnas',
 );
 
 // Translation for currency names
