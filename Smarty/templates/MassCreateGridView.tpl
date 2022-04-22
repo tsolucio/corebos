@@ -26,19 +26,19 @@
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 		</svg>
-		Add Row
+		{$APP.LBL_ADD_ROW}
 	</button>
 	<button class="slds-button slds-button_neutral" onclick="MCGrid.Save()">
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 		</svg>
-		Save
+		{$APP.LBL_SAVE_BUTTON_LABEL}
 	</button>
 	<button class="slds-button slds-button_text-destructive" onclick="MCGrid.Delete()">
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 		</svg>
-		Delete
+		{$APP.LBL_DELETE_BUTTON}
 	</button>
 </div>
 <div class="slds-button-group slds-float_right" role="group" style="margin-bottom: 5px;">
@@ -46,7 +46,7 @@
 		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 		</svg>
-		Edit Columns
+		{$APP.LBL_EDIT_COLUMNS}
 	</button>
 </div>
 </table>

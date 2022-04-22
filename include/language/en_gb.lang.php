@@ -1283,6 +1283,8 @@ $app_strings = array(
 	'Deleted in Mautic' => 'Deleted in Mautic',
 	'Contact Points' => 'Contact Points',
 	'From External Source' => 'From External Source',
+	'LBL_ADD_ROW' => 'Add Row',
+	'LBL_EDIT_COLUMNS' => 'Edit Columns',
 );
 
 $app_currency_strings = array(

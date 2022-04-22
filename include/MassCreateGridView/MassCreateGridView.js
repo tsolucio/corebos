@@ -69,7 +69,7 @@ const MCGrid = {
 			}
 		).then(response => response.json()).then(response => {
 			if (response.failed_creates.length == 0) {
-				ldsPrompt.show('Success', 'Created successfully', 'success');
+				ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 				mcdataGridInstance.clear();
 			} else {
 				let msg = '<ul class="slds-has-dividers_top-space">';
@@ -77,7 +77,7 @@ const MCGrid = {
 					msg += `<li class="slds-item"><strong>No. ${response.failed_creates[i].record.element.rowKey+1}:</strong> ${response.failed_creates[i].message}</li>`;
 				}
 				msg += '</ul>';
-				ldsPrompt.show('Error', msg);
+				ldsPrompt.show(alert_arr.ERROR, msg);
 			}
 			document.getElementById('slds-spinner').style.display = 'none';
 		});
@@ -110,8 +110,7 @@ const MCGrid = {
 			</div>`;
 		});
 		content += `</div>`;
-		const title = 'Select columns to show in grid';
-		ldsModal.show(title, content, 'medium', 'MCGrid.UpdateView()');
+		ldsModal.show(alert_arr.LBL_SELECT_COLUMNS, content, 'medium', 'MCGrid.UpdateView()');
 	},
 
 	UpdateView: () => {
