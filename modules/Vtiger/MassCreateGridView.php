@@ -14,8 +14,20 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 global $currentModule;
-$focus = CRMEntity::getInstance($currentModule);
-$fields = $focus->list_fields;
+if (isset($_REQUEST['bmapname'])) {
+	$bmapname = vtlib_purify($_REQUEST['bmapname']);
+} else {
+	$bmapname = $currentModule.'_MassCreateGrid';
+}
+$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
+if ($cbMapid) {
+	$cbMap = cbMap::getMapByID($cbMapid);
+	$cbMapLC = $cbMap->ListColumns();
+	$fields = $cbMapLC->getSearchFields($currentModule);
+} else {
+	$focus = CRMEntity::getInstance($currentModule);
+	$fields = $focus->list_fields;
+}
 $users = get_user_array();
 $items = array();
 foreach ($users as $id => $username) {
@@ -42,7 +54,7 @@ foreach ($fields as $label => $value) {
 			$editor = 'text';
 		}
 		$columns[] = array(
-			'header' => $label,
+			'header' => getTranslatedString($label, $currentModule),
 			'name' => $column,
 			'editor' => $editor
 		);
@@ -53,8 +65,37 @@ if (!is_admin($current_user)) {
 	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 	exit;
 }
+$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
+$ListFields = array_map(function($key) use ($fields, $items, $currentModule) {
+	$editor = 'text';
+	if ($key['columnname'] == 'smownerid') {
+		$editor = array(
+			'type' => 'select',
+			'options' => array(
+				'listItems' => $items
+			)
+		);
+	}
+	$listFields = array(
+		'header' => getTranslatedString($key['fieldlabel'], $currentModule),
+		'name' => $key['columnname'],
+		'editor' => $editor,
+		'active' => 0
+	);
+	$fields = array_values($fields);
+	foreach ($fields as $value) {
+		foreach ($value as $table => $field) {
+			if ($field == $key['columnname']) {
+				$listFields['active'] = 1;
+				break;
+			}
+		}
+	}
+	return $listFields;
+}, $cachedModuleFields);
 $smarty->assign('EmptyData', json_encode($emptydata));
 $smarty->assign('GridColumns', json_encode($columns));
+$smarty->assign('ListFields', json_encode($ListFields));
 $smarty->assign('moduleView', 'MassCreateGrid');
 $smarty->assign('moduleShowSearch', false);
 ?>
