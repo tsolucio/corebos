@@ -173,5 +173,6 @@ $mod_strings = array(
 	'clickhouse_active' => 'Active',
 	'clickhouse_database' => 'Database',
 	'clickhouse_query' => 'ClickHouse Query (limited to 100 rows)',
+	'mautic_webhook_secret' => 'Webhook Secret',
 );
 ?>

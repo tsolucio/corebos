@@ -51,6 +51,7 @@ class corebos_mautic {
 	private $companiesSync = '0';
 	private $mauticUsername = '';
 	private $mauticPassword = '';
+	private $mauticWebhookSecret = '';
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'mautic_isactive';
@@ -68,6 +69,7 @@ class corebos_mautic {
 	const KEY_COMPANIESSYNC = 'macompaniessync';
 	const KEY_MAUTICUSERNAME = 'mauticusername';
 	const KEY_MAUTICPASSWORD = 'mauticpassword';
+	const KEY_MAUTICWEBHOOKSECRET = 'mauticwebhooksecret';
 
 	// Errors
 	public static $ERROR_NONE = 0;
@@ -93,9 +95,10 @@ class corebos_mautic {
 		$this->companiesSync = coreBOS_Settings::getSetting(self::KEY_COMPANIESSYNC, '');
 		$this->mauticUsername = coreBOS_Settings::getSetting(self::KEY_MAUTICUSERNAME, '');
 		$this->mauticPassword = coreBOS_Settings::getSetting(self::KEY_MAUTICPASSWORD, '');
+		$this->mauticWebhookSecret = coreBOS_Settings::getSetting(self::KEY_MAUTICWEBHOOKSECRET, '');
 	}
 
-	public function saveSettings($isactive, $baseurl, $version, $clientkey, $clientsecret, $callback, $leadsync, $companiessync, $username, $password) {
+	public function saveSettings($isactive, $baseurl, $version, $clientkey, $clientsecret, $callback, $leadsync, $companiessync, $username, $password, $mauticwebhooksecret) {
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::KEY_BASEURL, $baseurl);
 		coreBOS_Settings::setSetting(self::KEY_VERSION, $version);
@@ -106,6 +109,7 @@ class corebos_mautic {
 		coreBOS_Settings::setSetting(self::KEY_COMPANIESSYNC, $leadsync);
 		coreBOS_Settings::setSetting(self::KEY_MAUTICUSERNAME, $username);
 		coreBOS_Settings::setSetting(self::KEY_MAUTICPASSWORD, $password);
+		coreBOS_Settings::setSetting(self::KEY_MAUTICWEBHOOKSECRET, $mauticwebhooksecret);
 
 		if ($isactive == '1') {
 			if ($leadsync == '1') {
@@ -136,6 +140,7 @@ class corebos_mautic {
 			'companiesSync' => coreBOS_Settings::getSetting(self::KEY_COMPANIESSYNC, ''),
 			'userName' => coreBOS_Settings::getSetting(self::KEY_MAUTICUSERNAME, ''),
 			'password' => coreBOS_Settings::getSetting(self::KEY_MAUTICPASSWORD, ''),
+			'webhookSecret' => coreBOS_Settings::getSetting(self::KEY_MAUTICWEBHOOKSECRET, ''),
 		);
 		if (!empty($key)) {
 			return $settings[$key];
@@ -221,13 +226,14 @@ class corebos_mautic {
 		);
 		$cbwrk = new mauticUpdaterWorker();
 		$cbwrk->massCreateFields($fieldLayout);
+		$webhookSecret = $this->getSettings('webhookSecret');
 		$checkrs = $adb->pquery(
 			'select 1 from vtiger_notificationdrivers where path=? and functionname=?',
 			array('include/integrations/mautic/contactsync.php', 'contactsync')
 		);
 		if ($checkrs && $adb->num_rows($checkrs)==0) {
 			$adb->query(
-				"INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('mauticcontact','include/integrations/mautic/contactsync.php','contactsync')"
+				"INSERT INTO vtiger_notificationdrivers (type,path,functionname, signedvalue, signedkey, signedvalidation) VALUES ('mauticcontact','include/integrations/mautic/contactsync.php','contactsync', '$webhookSecret', 'secret', 'validateMauticSecret')"
 			);
 		}
 		$checkrs = $adb->pquery(
@@ -236,7 +242,7 @@ class corebos_mautic {
 		);
 		if ($checkrs && $adb->num_rows($checkrs)==0) {
 			$adb->query(
-				"INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('mauticaccount','include/integrations/mautic/accountsync.php','accountsync')"
+				"INSERT INTO vtiger_notificationdrivers (type,path,functionname, signedvalue, signedkey, signedvalidation) VALUES ('mauticaccount','include/integrations/mautic/accountsync.php','accountsync', '$webhookSecret', 'secret', 'validateMauticSecret')"
 			);
 		}
 	}
@@ -343,22 +349,26 @@ class corebos_mautic {
 		global $adb;
 		$current_user = Users::getActiveAdminUser();
 		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		$send2cb = array();
 		$bmapname = 'MauticToContacts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
-			$send2cb = array();
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-			$send2cb['mautic_id'] = $contact_id;
-			$send2cb['assigned_user_id'] = $usrwsid;
-			$send2cb['from_externalsource'] = 'mautic';
+		} else {
+			$send2cb['firstname'] = $mauticdata['firstname'];
+			$send2cb['lastname'] = $mauticdata['lastname'];
+			$send2cb['email'] = $mauticdata['email'];
+		}
+		$send2cb['mautic_id'] = $contact_id;
+		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['from_externalsource'] = 'mautic';
 
-			$record = vtws_create('Contacts', $send2cb, $current_user);
-			if ($record) {
-				// Reset from_externalsource
-				list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
-				$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
-			}
+		$record = vtws_create('Contacts', $send2cb, $current_user);
+		if ($record) {
+			// Reset from_externalsource
+			list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
+			$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
 			return $record;
 		}
 		return null;
@@ -368,23 +378,27 @@ class corebos_mautic {
 		global $adb;
 		$current_user = Users::getActiveAdminUser();
 		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		$send2cb = array();
 		$bmapname = 'MauticToContacts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
-			$send2cb = array();
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-			$send2cb['mautic_id'] = $contact_id;
-			$send2cb['assigned_user_id'] = $usrwsid;
-			$send2cb['id'] = $mauticdata['corebos_id'];
-			$send2cb['from_externalsource'] = 'mautic';
+		} else {
+			$send2cb['firstname'] = $mauticdata['firstname'];
+			$send2cb['lastname'] = $mauticdata['lastname'];
+			$send2cb['email'] = $mauticdata['email'];
+		}
+		$send2cb['mautic_id'] = $contact_id;
+		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['id'] = $mauticdata['corebos_id'];
+		$send2cb['from_externalsource'] = 'mautic';
 
-			$record = vtws_update($send2cb, $current_user);
-			if ($record) {
-				// Reset from_externalsource
-				list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
-				$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
-			}
+		$record = vtws_update($send2cb, $current_user);
+		if ($record) {
+			// Reset from_externalsource
+			list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
+			$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
 		}
 	}
 
@@ -435,22 +449,24 @@ class corebos_mautic {
 		global $adb;
 		$current_user = Users::getActiveAdminUser();
 		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		$send2cb = array();
 		$bmapname = 'MauticToAccounts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
-			$send2cb = array();
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-			$send2cb['mautic_id'] = $company_id;
-			$send2cb['assigned_user_id'] = $usrwsid;
-			$send2cb['from_externalsource'] = 'mautic';
+		} else {
+			$send2cb['accountname'] = $mauticdata['companyname'];
+		}
+		$send2cb['mautic_id'] = $company_id;
+		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['from_externalsource'] = 'mautic';
 
-			$record = vtws_create('Accounts', $send2cb, $current_user);
-			if ($record) {
-				// Reset from_externalsource
-				list($account_tabid, $account_crmid) = explode('x', $record['id']);
-				$adb->pquery('UPDATE vtiger_account SET from_externalsource=? where accountid=?', array('', $account_crmid));
-			}
+		$record = vtws_create('Accounts', $send2cb, $current_user);
+		if ($record) {
+			// Reset from_externalsource
+			list($account_tabid, $account_crmid) = explode('x', $record['id']);
+			$adb->pquery('UPDATE vtiger_account SET from_externalsource=? where accountid=?', array('', $account_crmid));
 			return $record;
 		}
 		return null;
@@ -460,23 +476,25 @@ class corebos_mautic {
 		global $adb;
 		$current_user = Users::getActiveAdminUser();
 		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		$send2cb = array();
 		$bmapname = 'MauticToAccounts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
-			$send2cb = array();
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-			$send2cb['mautic_id'] = $company_id;
-			$send2cb['assigned_user_id'] = $usrwsid;
-			$send2cb['id'] = $mauticdata['company_corebos_id'];
-			$send2cb['from_externalsource'] = 'mautic';
+		} else {
+			$send2cb['accountname'] = $mauticdata['companyname'];
+		}
+		$send2cb['mautic_id'] = $company_id;
+		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['id'] = $mauticdata['company_corebos_id'];
+		$send2cb['from_externalsource'] = 'mautic';
 
-			$record = vtws_update($send2cb, $current_user);
-			if ($record) {
-				// Reset from_externalsource
-				list($account_tabid, $account_crmid) = explode('x', $record['id']);
-				$adb->pquery('UPDATE vtiger_account SET from_externalsource=? where accountid=?', array('', $account_crmid));
-			}
+		$record = vtws_update($send2cb, $current_user);
+		if ($record) {
+			// Reset from_externalsource
+			list($account_tabid, $account_crmid) = explode('x', $record['id']);
+			$adb->pquery('UPDATE vtiger_account SET from_externalsource=? where accountid=?', array('', $account_crmid));
 		}
 	}
 }

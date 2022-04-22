@@ -9,13 +9,25 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Modulo',
-	'SINGLE_ModuleName' => 'Nome Modulo',
-	'ModuleName ID' => 'ID Nome Modulo',
+	'cbLoginHistory' => 'Cronologia Accessi Utente',
+	'SINGLE_ModuleName' => 'Cronologia Accessi Utente',
+	'ModuleName ID' => 'ID Cronologia Accessi Utente',
 
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
 	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
 
 	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
+
+
+	'login id' => 'ID Accedi',
+	'user name' => 'Nome Utente',
+	'user ip' => 'IP Utente',
+	'logout time' => 'Tempo disconnessione',
+	'login time' => 'Tempo Accedi',
+	'status' => 'Stato',
+
+
+
+
 );
 ?>

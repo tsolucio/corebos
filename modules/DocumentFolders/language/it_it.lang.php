@@ -9,13 +9,25 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Modulo',
-	'SINGLE_ModuleName' => 'Nome Modulo',
-	'ModuleName ID' => 'ID Nome Modulo',
+	'DocumentFolders' => 'Cartelle Documenti',
+	'SINGLE_DocumentFolders' => 'Cartella Documenti',
+	'DocumentFolders ID' => 'Cartella Documenti ID',
 
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
 	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
+	'LBL_DESCRIPTION_INFORMATION' => 'Descrizione',
 
 	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
+
+	'documentfolders_no' => 'NO. Cartella Documenti',
+	'foldername' => 'Nome Cartella',
+	'parentfolder' => 'Genitore Cartella ',
+	'sequence' => 'Sequenza',
+	'Assigned To' => 'Assegnato a',
+	'Created By' => 'Creato da',
+	'Created Time' => 'Tempo Creato',
+	'Modified Time' => 'Tempo Modificato',
+	'Description' => 'Descrizione',
+	'documentfolderid' => 'ID Cartella Documenti',
 );
 ?>

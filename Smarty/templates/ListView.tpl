@@ -56,6 +56,8 @@ var Application_Landing_View='{$moduleView}';
 			{include file="PivotView.tpl"}
 		{elseif $moduleView=='tuigrid'}
 			{include file="ListViewTUIGrid.tpl"}
+		{elseif $moduleView=='MassCreateGrid'}
+			{include file="MassCreateGridView.tpl"}
 		{/if}
 	{else}
 		{include file="DocumentsListViewEntries.tpl"}
@@ -70,7 +72,7 @@ var Application_Landing_View='{$moduleView}';
 {if $MODULE|hasEmailField}
 <form name="SendMail" method="post"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
 {/if}
-{if (vt_hasRTE())}
+{if (vt_hasRTE()) && $moduleView!='MassCreateGrid'}
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 {if vt_hasRTESpellcheck()}
 <script type="text/javascript" src="include/ckeditor/config_spellcheck.js"></script>

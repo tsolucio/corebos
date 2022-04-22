@@ -245,7 +245,7 @@ function vtws_getReferenceValue($strids, $user) {
 			$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($wsid));
 			$modulename = $adb->query_result($rs, 0, 0);
 			if ($modulename=='DocumentFolders') {
-				$rs1 = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid=?', array($realid));
+				$rs1 = $adb->pquery('select foldername from vtiger_documentfolders where documentfoldersid=?', array($realid));
 				$result[$id]=array(
 					'module'=>$modulename,
 					'reference'=>html_entity_decode($adb->query_result($rs1, 0, 0), ENT_QUOTES, $default_charset),

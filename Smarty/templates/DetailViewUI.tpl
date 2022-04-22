@@ -11,60 +11,67 @@
 
 <!-- This file is used to display the fields based on the ui type in detailview -->
 		{if $keyid eq '1' || $keyid eq 2 || $keyid eq '11' || $keyid eq '7' || $keyid eq '9' || $keyid eq '71' || $keyid eq '72' || $keyid eq '103' || $keyid eq '14'} <!--TextBox-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>
+			{if fieldHasDependency($keyfldname,$MODULE)}
+				<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+			{else}
+				<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>
 
-				{if $keyid eq 11 && $USE_ASTERISK eq 'true'}
-					&nbsp;&nbsp;<span id="dtlview_{$keyfldname}"><a href='javascript:;' onclick='startCall("{$keyval}", "{$ID}");event.stopPropagation();'>{$keyval}</a></span>
-				{else}
-					&nbsp;&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
-				{/if}
-                <div id="editarea_{$keyfldname}" style="display:none;">
-                	<input class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" maxlength='100' value="{$keyval}"></input>
-                    <br>
-                    <a href="javascript:;" class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();"/>
-                    	{$APP.LBL_SAVE_LABEL}
-                    </a>
-                    <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">
-                    	{$APP.LBL_CANCEL_BUTTON_LABEL}
-                    </a>
-                </div>
-                {if $keyid eq '72' && $keyfldname eq 'unit_price'}
-                	{if $PRICE_DETAILS|@count > 0}
-						<span id="multiple_currencies" width="38%" style="align:right;">
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggleShowHide('currency_class','multiple_currencies');event.stopPropagation();">{$APP.LBL_MORE_CURRENCIES} &raquo;</a>
-						</span>
-
-						<div id="currency_class" class="multiCurrencyDetailUI">
-							<table width="100%" height="100%" class="small" cellpadding="5">
-							<tr>
-								<th colspan="2">
-									<b>{$MOD.LBL_PRODUCT_PRICES}</b>
-								</th>
-								<th class='cblds-t-align--right' style="text-align:right;">
-									<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');event.stopPropagation();" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
-								</th>
-							</tr>
-							<tr class="detailedViewHeader">
-								<th>{$APP.LBL_CURRENCY}</th>
-								<th colspan="2">{$APP.LBL_PRICE}</th>
-							</tr>
-							{foreach item=price key=count from=$PRICE_DETAILS}
-								<tr>
-									{*if $price.check_value eq 1*}
-									<td class="dvtCellLabel" width="40%">
-										{$price.currencylabel|@getTranslatedCurrencyString} ({$price.currencysymbol})
-									</td>
-									<td class="dvtCellInfo" width="60%" colspan="2">
-										{$price.curvalue}
-									</td>
-								</tr>
-							{/foreach}
-							</table>
-						</div>
+					{if $keyid eq 11 && $USE_ASTERISK eq 'true'}
+						&nbsp;&nbsp;<span id="dtlview_{$keyfldname}"><a href='javascript:;' onclick='startCall("{$keyval}", "{$ID}");event.stopPropagation();'>{$keyval}</a></span>
+					{else}
+						&nbsp;&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
 					{/if}
-                {/if}
-            </td>
+					<div id="editarea_{$keyfldname}" style="display:none;">
+						<input class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" maxlength='100' value="{$keyval}"></input>
+						<br>
+						<a href="javascript:;" class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();"/>
+							{$APP.LBL_SAVE_LABEL}
+						</a>
+						<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">
+							{$APP.LBL_CANCEL_BUTTON_LABEL}
+						</a>
+					</div>
+					{if $keyid eq '72' && $keyfldname eq 'unit_price'}
+						{if $PRICE_DETAILS|@count > 0}
+							<span id="multiple_currencies" width="38%" style="align:right;">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggleShowHide('currency_class','multiple_currencies');event.stopPropagation();">{$APP.LBL_MORE_CURRENCIES} &raquo;</a>
+							</span>
+
+							<div id="currency_class" class="multiCurrencyDetailUI">
+								<table width="100%" height="100%" class="small" cellpadding="5">
+								<tr>
+									<th colspan="2">
+										<b>{$MOD.LBL_PRODUCT_PRICES}</b>
+									</th>
+									<th class='cblds-t-align--right' style="text-align:right;">
+										<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');event.stopPropagation();" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
+									</th>
+								</tr>
+								<tr class="detailedViewHeader">
+									<th>{$APP.LBL_CURRENCY}</th>
+									<th colspan="2">{$APP.LBL_PRICE}</th>
+								</tr>
+								{foreach item=price key=count from=$PRICE_DETAILS}
+									<tr>
+										{*if $price.check_value eq 1*}
+										<td class="dvtCellLabel" width="40%">
+											{$price.currencylabel|@getTranslatedCurrencyString} ({$price.currencysymbol})
+										</td>
+										<td class="dvtCellInfo" width="60%" colspan="2">
+											{$price.curvalue}
+										</td>
+									</tr>
+								{/foreach}
+								</table>
+							</div>
+						{/if}
+					{/if}
+				{/if}
+			</td>
 	{elseif $keyid eq '13'} <!--Email-->
+	{if fieldHasDependency($keyfldname,$MODULE)}
+		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+	{else}
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}">
 				{if $smarty.session.internal_mailer eq 1}
 					<a href="javascript:InternalMailer({$ID},{$keyfldid},'{$keyfldname}','{$MODULE}','record_id');" onclick="event.stopPropagation();">{$keyval}</a>
@@ -78,9 +85,10 @@
                 	<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                 </div>
 				<div id="internal_mailer_{$keyfldname}" style="display: none;">{$keyfldid}####{$smarty.session.internal_mailer}</div>
+	{/if}
 			</td>
 	{elseif ($keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614')} <!--ComboBox-->
-		{if picklistHasDependency($keyfldname,$MODULE)}
+		{if picklistHasDependency($keyfldname,$MODULE) || fieldHasDependency($keyfldname,$MODULE)}
 		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 		{else}
 		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>
@@ -98,6 +106,9 @@
 		</td>
 	{elseif $keyid eq '1615'}
 		{assign var=plinfo value='::'|explode:$keyval}
+		{if fieldHasDependency($keyfldname,$MODULE)}
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+		{else}
 		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}">{if $keyval neq ''}{$plinfo[0]|@getTranslatedString:$plinfo[0]} {$plinfo[1]|@getTranslatedString:$plinfo[0]}{/if}</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small" style="width:280px;">
@@ -114,11 +125,15 @@
 				<br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
 					<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
+		{/if}
 		</td>
 	{elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}<!--Multi Select Combo box-->
 						<!--{assign var="MULTISELECT_COMBO_BOX_ITEM_SEPARATOR_STRING" value=", "}  {* Separates Multi-Select Combo Box items *}
 						{assign var="DETAILVIEW_WORDWRAP_WIDTH" value="70"} {* No. of chars for word wrapping long lines of Multi-Select Combo Box items *}-->
-                                          <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">
+                                    {if fieldHasDependency($keyfldname,$MODULE)}
+										<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+									{else}
+					<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">
 					{assign var=selected_val value=''}
 					{foreach item=sel_val from=$keyoptions }
 						{if $sel_val[2] eq 'selected'}
@@ -142,12 +157,16 @@
 			                                   <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();"/>{$APP.LBL_SAVE_LABEL}</a>
                                               		   <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                     							</div>
+											{/if}
                							</td>
 						{elseif $keyid eq '115'} <!--ComboBox Status edit only for admin Users-->
                							<td width=25% class="dvtCellInfo" align="left">{$keyval}</td>
 						{elseif $keyid eq '117'} <!--ComboBox currency id edit only for admin Users-->
-									<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
-								<div id="editarea_{$keyfldname}" style="display:none;">
+								{if fieldHasDependency($keyfldname,$MODULE)}
+									<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+								{else}
+								<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
+									<div id="editarea_{$keyfldname}" style="display:none;">
                     							   <select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small">
 									{foreach item=arr key=uivalueid from=$keyoptions}
 									{foreach key=sel_value item=value from=$arr}
@@ -158,22 +177,31 @@
                     							   <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
                                               		   <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                     							</div>
+											{/if}
                							</td>
                                              {elseif $keyid eq '17'} <!--WebSite-->
-                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}" style="word-break: break-word;"><a href="{$keyval}" target="_blank" onclick="event.stopPropagation();">{$keyval}</a></span>
-                                              		<div id="editarea_{$keyfldname}" style="display:none;">
+											 {if fieldHasDependency($keyfldname,$MODULE)}
+                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+                                            {else}
+											<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}" style="word-break: break-word;"><a href="{$keyval}" target="_blank" onclick="event.stopPropagation();">{$keyval}</a></span>
+													  <div id="editarea_{$keyfldname}" style="display:none;">
                                               		  <input class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" onkeyup="validateUrl('{$keyfldname}');" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" maxlength='100' value="{$keyval}"></input>
                                               		  <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
                                               		  <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                        </div>
+													   {/if}
                                                   </td>
 					     {elseif $keyid eq '85'}<!--Skype-->
-                                                <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}"><a href="skype:{$keyval}?call" onclick="event.stopPropagation();"><img src="{'skype.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SKYPE}" title="{$APP.LBL_SKYPE}"  align="absmiddle"></img>&nbsp;{$keyval}</a></span>
+						 					{if fieldHasDependency($keyfldname,$MODULE)}
+                                                <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+											{else}
+													<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}"><a href="skype:{$keyval}?call" onclick="event.stopPropagation();"><img src="{'skype.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SKYPE}" title="{$APP.LBL_SKYPE}"  align="absmiddle"></img>&nbsp;{$keyval}</a></span>
                                                         <div id="editarea_{$keyfldname}" style="display:none;">
                                                           <input class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" maxlength='100' value="{$keyval}"></input>
                                                           <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
                                                           <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                        </div>
+													   {/if}
                                                   </td>
                                              {elseif $keyid eq '19'} <!--TextArea/Description-->
 						<!-- we will empty the value of ticket and faq comment -->
@@ -186,6 +214,9 @@
 							<!--To give hyperlink to URL-->
 								<td width="100%" colspan="3" class="dvtCellInfo" align="left">{$keyval|regex_replace:"/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/":"\\1<a href=\"\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/":"\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i":"\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>"|regex_replace:"/,\"|\.\"|\)\"|\)\.\"|\.\)\"/":"\""}&nbsp;</td>
 							{else}
+								{if fieldHasDependency($keyfldname,$MODULE)}
+									<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+								{else}
 								<td width="100%" colspan="3" class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;
 									<span id="dtlview_{$keyfldname}" style="word-break:break-word;">
 										{$keyval|regex_replace:"/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/":"\\1<a href=\"\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/":"\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i":"\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>"|regex_replace:"/,\"|\.\"|\)\"|\)\.\"|\.\)\"/":"\""|replace:"\n":"<br>&nbsp;"}
@@ -195,15 +226,20 @@
 									<br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
 									<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 									</div>
+								{/if}
 								</td>
 							{/if}
                                              {elseif $keyid eq '21'} <!--TextArea/Street-->
-                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}" style="word-break:break-word;">{$keyval}</span>
+											 	{if fieldHasDependency($keyfldname,$MODULE)}
+                                                  	<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+												{else}
+												<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}" style="word-break:break-word;">{$keyval}</span>
                                               		<div id="editarea_{$keyfldname}" style="display:none;">
                                               		  <textarea id="txtbox_{$keyfldname}" name="{$keyfldname}" class="detailedViewTextBox" style="word-break:break-word;" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" rows=2>{$keyval|regex_replace:"/<br\s*\/>/":""}</textarea>
                                               		  <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
                                               		  <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                        </div>
+													   {/if}
                                                   </td>
                                              {elseif $keyid eq 82} <!--Email Body-->
                                                   <td colspan="3" width=100% class="dvtCellInfo" align="left"><div id="dtlview_{$keyfldname}" style="width:100%;height:200px;overflow:hidden;border:1px solid gray" class="detailedViewTextBox" onmouseover="this.className='detailedViewTextBoxOn'" onmouseout="this.className='detailedViewTextBox'">{$keyval}</div>
@@ -212,7 +248,10 @@
                                                   <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
                                                   </td>
 					     {elseif $keyid eq '52' || $keyid eq '77'}
-                                                                <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
+						 									{if fieldHasDependency($keyfldname,$MODULE)}
+                                                                <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+															{else}
+															<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
                                                         <div id="editarea_{$keyfldname}" style="display:none;">
                                                                            <select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small">
                                                                                 {foreach item=arr key=uid from=$keyoptions}
@@ -224,9 +263,13 @@
                                                                            <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
                                                            <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                                         </div>
+																	{/if}
                                                                 </td>
 						{elseif $keyid eq '53'} <!--Assigned To-->
-							<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">
+						{if fieldHasDependency($keyfldname,$MODULE)}
+							<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+						{else}
+						<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">
 							{if $keyadmin eq 1}
 								<a href="{$keyseclink.0}" onclick="event.stopPropagation();">{$keyval}</a>
 							{else}
@@ -272,11 +315,15 @@
                     <a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
                     <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                     </div>
+					{/if}
                     </td>
 						{elseif $keyid eq '99'}<!-- Password Field-->
 						<td width=25% class="dvtCellInfo" align="left">{$CHANGE_PW_BUTTON}</td>
 					    {elseif $keyid eq '56'} <!--CheckBox-->
-                      <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}&nbsp;</span>
+						{if fieldHasDependency($keyfldname,$MODULE)}
+                      <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+					  {else}
+					  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}&nbsp;</span>
                     	<div id="editarea_{$keyfldname}" style="display:none;">
                     	{if $MODULE neq 'Documents'}
                         	{if $keyval eq $APP.yes}
@@ -295,10 +342,14 @@
                          <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
                           <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                         </div>
+						{/if}
                         </td>
 			{elseif $keyid eq '156'} <!--CheckBox for is admin-->
 			{if $smarty.request.record neq $CURRENT_USERID && $keyadmin eq 1}
-                      <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval|getTranslatedString:$MODULE}&nbsp;</span>
+					{if fieldHasDependency($keyfldname,$MODULE)}
+                      <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+					{else}
+					<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval|getTranslatedString:$MODULE}&nbsp;</span>
                     	<div id="editarea_{$keyfldname}" style="display:none;">
                         {if $keyval eq 'on'}
                             <input id="txtbox_{$keyfldname}" name="{$keyfldname}" type="checkbox" style="border:1px solid #bababa;" checked value="1">
@@ -310,6 +361,7 @@
                         </div>
 			{else}
 				 <td width=25% class="dvtCellInfo" align="left">{$keyval}
+			{/if}
 			{/if}
                         </td>
 
@@ -328,6 +380,9 @@
 					{if empty($dateFormat)}
 						{assign var="dateFormat" value=$APP.NTC_DATE_FORMAT|@parse_calendardate}
 					{/if}
+					{if fieldHasDependency($keyfldname,$MODULE)}
+					<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+					{else}
 					<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>
 						&nbsp;&nbsp;<span id="dtlview_{$keyfldname}">
 							{$keyval}
@@ -343,6 +398,7 @@
 								{rdelim})
 							</script>
 						</div>
+						{/if}
 					</td>
 				{elseif $keyid eq 50}
 					{* Initialize the date format if not present *}
@@ -353,6 +409,9 @@
 						{assign var=userFormat value="$user_format"}
 						{assign var=fieldFormat value="$date_format"}
 					{/foreach}
+					{if fieldHasDependency($keyfldname,$MODULE)}
+					<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+					{else}
 					<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>
 						&nbsp;&nbsp;<span id="dtlview_{$keyfldname}">
 							{$keyval}&nbsp;<font size=1><em old="(yyyy-mm-dd)">&nbsp;<span id="timefmt_{$keyfldname}">{if $userFormat neq "24" && !empty($keyval)}{$fieldFormat}{/if}</span></em></font>
@@ -372,6 +431,7 @@
 								{rdelim});
 							</script>
 						</div>
+						{/if}
 					</td>
 
 				{elseif $keyid eq 69 || $keyid eq '69m'}<!-- for Image Reflection -->
@@ -379,6 +439,9 @@
 				{elseif $keyid eq 68 || $keyid eq 101}
 					<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25% onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;{$keyval}</td>
 				{elseif $keyid eq 10}<!-- for vtlib reference field -->
+					{if fieldHasDependency($keyfldname,$MODULE)}
+						<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+					{else}
 					<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25% onmouseover="hndMouseOver({$keyid},'{$keyfldname}');vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="fnhide('crmspanid');vtlib_listview.trigger('cell.onmouseout', this)" onclick='handleEdit(event);'>
 						&nbsp;<span id="dtlview_{$keyfldname}" onclick='event.stopPropagation();'>{$keyval}</span>
 						<div id="editarea_{$keyfldname}" style="display:none;">
@@ -415,6 +478,7 @@
 							<br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
 							<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 						</div>
+						{/if}
 					</td>
 				{else}
 					<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25%>&nbsp;{$keyval}</td>

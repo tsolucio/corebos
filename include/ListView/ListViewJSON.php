@@ -23,8 +23,8 @@ class GridListView {
 	public $currentPage = '';
 	public $searchUrl = '';
 	public $searchtype = 'Basic';
-	
-	function __construct($module) {
+
+	public function __construct($module) {
 		$this->module = $module;
 		if ($this->module == 'Utilities') {
 			$this->module = vtlib_purify($_REQUEST['formodule']);
@@ -371,6 +371,7 @@ class GridListView {
 			$rows = array();
 			$colorizer_row = array();
 			$linkRow = array();
+			$AutocompleteFields = array();
 			foreach ($field_types as $val) {
 				$columnName = $val['columnname'];
 				$fieldName = $val['fieldname'];
@@ -454,6 +455,22 @@ class GridListView {
 					}
 				} elseif ($fieldName == 'modifiedby') {
 						$rows[$fieldName] = getUserFullName($fieldValue);
+				} elseif ($fieldType == '1025') {
+					$field1025Value = array();
+					$fieldValue = explode(' |##| ', $fieldValue);
+					if (!empty($fieldValue)) {
+						$parent_module = getSalesEntityType($fieldValue[0]);
+						foreach ($fieldValue as $id) {
+							$displayValueArray = getEntityName($parent_module, $id);
+							if (!empty($displayValueArray)) {
+								$field1025Value[] = $displayValueArray[$id];
+							}
+							$AutocompleteFields[] = array(
+								$parent_module, $fieldName, $displayValueArray[$id], $id
+							);
+						}
+					}
+					$rows[$fieldName] = implode(',', $field1025Value);
 				} else {
 					if ($fieldName) {
 						$rows[$fieldName] = textlength_check(getTranslatedString($fieldValue, $this->module));
@@ -473,6 +490,7 @@ class GridListView {
 					'fieldname' => $columnnameVal
 				);
 				$rows['relatedRows'] = $linkRow;
+				$rows['autocompleteFields'] = $AutocompleteFields;
 				if ($this->module == 'Documents') {
 					$rows['parent'] = $parentid;
 				}
@@ -509,8 +527,11 @@ class GridListView {
 		$tree = array();
 		foreach ($records_list as $list) {
 			if ($list['parent'] == $parentId) {
-				$children = $this->findChilds($records_list,$list['id'], $field_types, $whereClause);
+				$children = $this->findChilds($records_list, $list['id'], $field_types, $whereClause);
 				$data = $this->getDocuments($list['id'], $field_types, $whereClause);
+				if (!$children && empty($data) && isset($_REQUEST['searchtype']) && !empty($_REQUEST['searchtype'])) {
+					continue;
+				}
 				if ($children) {
 					$tmpChildren = $children;
 					if (!empty($data)) {

@@ -183,7 +183,7 @@ class BusinessActions extends CRMEntity {
 		$module_sql = '';
 		if ($tabid != self::IGNORE_MODULE) {
 			$module_name = getTabModuleName($tabid);
-			$module_sql = " AND (module_list = '".$module_name."' OR module_list LIKE '".$module_name." %' OR module_list LIKE '% ".$module_name." %' OR module_list LIKE '% ".$module_name."') ";
+			$module_sql = " AND (ba.module_list = '".$module_name."' OR ba.module_list LIKE '".$module_name." %' OR ba.module_list LIKE '% ".$module_name." %' OR ba.module_list LIKE '% ".$module_name."') ";
 		}
 
 		$multitype = false;
@@ -202,24 +202,24 @@ class BusinessActions extends CRMEntity {
 			// Multiple link type selection
 			if (is_array($type)) {
 				$multitype = true;
-				$type_sql = $adb->convert2Sql(' AND elementtype_action IN ('.Vtiger_Utils::implodestr('?', count($type), ',') .') ', $adb->flatten_array($type));
+				$type_sql = $adb->convert2Sql(' AND ba.elementtype_action IN ('.Vtiger_Utils::implodestr('?', count($type), ',') .') ', $adb->flatten_array($type));
 				if ($tabid == self::IGNORE_MODULE && !empty($currentModule)) {
-					$module_sql = " AND ((onlyonmymodule AND (module_list = '".$currentModule."' OR module_list LIKE '".$currentModule." %' OR module_list LIKE '% ".$currentModule." %' OR module_list LIKE '% ".$currentModule."')) OR !onlyonmymodule) ";
+					$module_sql = " AND ((ba.onlyonmymodule AND (ba.module_list = '".$currentModule."' OR ba.module_list LIKE '".$currentModule." %' OR ba.module_list LIKE '% ".$currentModule." %' OR ba.module_list LIKE '% ".$currentModule."')) OR !ba.onlyonmymodule) ";
 				}
 			} else {
-				$type_sql = $adb->convert2Sql(' AND elementtype_action = ?', array($type));
+				$type_sql = $adb->convert2Sql(' AND ba.elementtype_action = ?', array($type));
 			}
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
-		$query = 'SELECT businessactionsid, elementtype_action,linklabel,linkurl,linkicon,sequence,handler_path,handler_class,handler,onlyonmymodule,brmap,mandatory
-			FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_businessactions.businessactionsid
-			WHERE vtiger_crmentity.deleted=0 AND active=1 '.$module_sql.$type_sql;
+		$query = 'SELECT ba.businessactionsid, ba.elementtype_action,ba.linklabel,ba.linkurl,ba.linkicon,ba.sequence,ba.handler_path,ba.handler_class,ba.handler,ba.onlyonmymodule,ba.brmap,ba.mandatory
+			FROM vtiger_businessactions as ba INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=ba.businessactionsid
+			WHERE vtiger_crmentity.deleted=0 AND ba.active=1 '.$module_sql.$type_sql;
 
-		$orderby = ' ORDER BY elementtype_action, sequence';
+		$orderby = ' ORDER BY ba.elementtype_action, ba.sequence';
 
 		$role_condition = "EXISTS(SELECT 1
 			FROM vtiger_user2role
-			WHERE vtiger_user2role.userid=? AND vtiger_businessactions.acrole LIKE CONCAT('%', vtiger_user2role.roleid, '%')
+			WHERE vtiger_user2role.userid=? AND ba.acrole LIKE CONCAT('%', vtiger_user2role.roleid, '%')
 		)";
 		$role_condition = $adb->convert2Sql($role_condition, array($userid));
 
@@ -235,7 +235,7 @@ class BusinessActions extends CRMEntity {
 			$group_condition = 'OR vtiger_crmentity.smownerid IN ('.$groups.') ';
 		}
 
-		$where_ext = 'AND (mandatory=1 OR '.$role_condition.' OR '.$user_condition. ' '.$group_condition.')';
+		$where_ext = 'AND (ba.mandatory=1 OR '.$role_condition.' OR '.$user_condition. ' '.$group_condition.')';
 		$sql = $query.$where_ext.$orderby;
 
 		$business_actions = $adb->query($sql);

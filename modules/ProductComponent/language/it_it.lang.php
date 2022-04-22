@@ -20,6 +20,10 @@ $mod_strings = array(
 	'Relation to' => 'Valido al',
 	'quantity' => 'Quantit&agrave;',
 	'instructions' => 'Istruzioni',
+	'Assigned To' => 'Assegnato a',
+	'Created Time' => 'Tempo Creato',
+	'Modified Time' => 'Tempo Modificato',
+	'Description' => 'Descrizione',
 
 	'Required' => 'Obbligatorio',
 	'Optional' => 'Opzionale',

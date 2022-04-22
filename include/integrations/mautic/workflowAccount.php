@@ -26,51 +26,56 @@ function mauticAccountCreate($entity) {
 		return;
 	}
 	if ($entity->data['mautic_id'] == '') {
+		$send2mautic = array();
 		$bmapname = 'AccountsToMautic';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
-			$send2mautic = array();
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$send2mautic = $cbMap->Mapping($entity->data, $send2mautic);
-			$send2mautic['ipAddress'] = $_SERVER['REMOTE_ADDR'];
-			$send2mautic['overwriteWithBlank'] = true;
+		} else {
+			$send2mautic['companyname'] = $entity->data['accountname'];
+		}
+		$send2mautic['ipAddress'] = $_SERVER['REMOTE_ADDR'];
+		$send2mautic['overwriteWithBlank'] = true;
 
-			$auth = $mautic->authenticate();
-			if ($auth) {
-				$apiUrl     = $mautic->getSettings('baseUrl');
-				$api        = new MauticApi();
-				$companyApi = $api->newApi('companies', $auth, $apiUrl);
-				$response = $companyApi->create($send2mautic);
-				$company  = $response[$companyApi->itemName()];
-				if (!empty($company['id'])) {
-					$core_fields = $company['fields']['core'];
-					$professional_fields = $company['fields']['professional'];
-					$fields = array_merge($core_fields, $professional_fields);
+		$auth = $mautic->authenticate();
 
-					$mauticdata = array();
-					foreach ($fields as $field) {
-						$mauticdata[$field['alias']] = $field['value'];
-					}
-					$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		if ($auth) {
+			$apiUrl     = $mautic->getSettings('baseUrl');
+			$api        = new MauticApi();
+			$companyApi = $api->newApi('companies', $auth, $apiUrl);
+			$response = $companyApi->create($send2mautic);
+			$company  = $response[$companyApi->itemName()];
+			if (!empty($company['id'])) {
+				$core_fields = $company['fields']['core'];
+				$professional_fields = $company['fields']['professional'];
+				$fields = array_merge($core_fields, $professional_fields);
 
-					$bmapname = 'MauticToAccounts';
-					$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-					if ($cbMapid) {
-						$send2cb = array();
-						$cbMap = cbMap::getMapByID($cbMapid);
-						$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-						$send2cb['mautic_id'] = $company['id'];
-						$send2cb['assigned_user_id'] = $usrwsid;
-						$send2cb['id'] = $entity->data['id'];
-						$send2cb['from_externalsource'] = 'mautic';
+				$mauticdata = array();
+				foreach ($fields as $field) {
+					$mauticdata[$field['alias']] = $field['value'];
+				}
+				$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
 
-						$record = vtws_update($send2cb, $current_user);
-						if ($record) {
-							// Reset from_externalsource
-							list($account_tabid, $account_crmid) = explode('x', $record['id']);
-							$adb->pquery('UPDATE vtiger_account SET from_externalsource=? where accountid=?', array('', $account_crmid));
-						}
-					}
+				$send2cb = array();
+				$bmapname = 'MauticToAccounts';
+				$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+				if ($cbMapid) {
+					$cbMap = cbMap::getMapByID($cbMapid);
+					$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
+				} else {
+					$send2cb['accountname'] = $mauticdata['companyname'];
+				}
+				$send2cb['mautic_id'] = $company['id'];
+				$send2cb['assigned_user_id'] = $usrwsid;
+				$send2cb['id'] = $entity->data['id'];
+				$send2cb['from_externalsource'] = 'mautic';
+
+				$record = vtws_update($send2cb, $current_user);
+				if ($record) {
+					// Reset from_externalsource
+					list($account_tabid, $account_crmid) = explode('x', $record['id']);
+					$adb->pquery('UPDATE vtiger_account SET from_externalsource=? where accountid=?', array('', $account_crmid));
 				}
 			}
 		}
@@ -82,22 +87,24 @@ function mauticAccountUpdate($entity) {
 	if (!$mautic->isActive()) {
 		return;
 	}
+	$send2mautic = array();
 	$bmapname = 'AccountsToMautic';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
-		$send2mautic = array();
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$send2mautic = $cbMap->Mapping($entity->data, $send2mautic);
-		$send2mautic['ipAddress'] = $_SERVER['REMOTE_ADDR'];
-		$send2mautic['overwriteWithBlank'] = true;
+	} else {
+		$send2mautic['companyname'] = $entity->data['accountname'];
+	}
+	$send2mautic['ipAddress'] = $_SERVER['REMOTE_ADDR'];
+	$send2mautic['overwriteWithBlank'] = true;
 
-		$auth = $mautic->authenticate();
-		if ($auth) {
-			$apiUrl     = $mautic->getSettings('baseUrl');
-			$api        = new MauticApi();
-			$companyApi = $api->newApi('companies', $auth, $apiUrl);
-			$companyApi->edit($entity->data['mautic_id'], $send2mautic);
-		}
+	$auth = $mautic->authenticate();
+	if ($auth) {
+		$apiUrl     = $mautic->getSettings('baseUrl');
+		$api        = new MauticApi();
+		$companyApi = $api->newApi('companies', $auth, $apiUrl);
+		$companyApi->edit($entity->data['mautic_id'], $send2mautic);
 	}
 }
 

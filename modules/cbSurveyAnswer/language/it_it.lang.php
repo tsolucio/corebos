@@ -9,13 +9,31 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Modulo',
-	'SINGLE_ModuleName' => 'Nome Modulo',
-	'ModuleName ID' => 'ID Nome Modulo',
+	'ModuleName' => 'Risposta Sondaggi',
+	'SINGLE_ModuleName' => 'Risposta Sondaggio',
+	'ModuleName ID' => 'ID Risposta Sondaggio',
 
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
 	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
+	'LBL_DESCRIPTION_INFORMATION' => 'Descrizione',
+	'LBL_ANSWER_INFORMATION' => 'Rispondere',
 
 	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
+
+	'relatedwith' => 'Relazione Con',
+	'cbsurveyanswer_no' => 'NO. Risposta Sondaggio',
+	'cbsurvey' => 'Sondaggio',
+	'positive' => 'Positiva',
+	'cbsurveydone' => 'Sondaggio Fatto',
+	'evaluate' => 'Valutare',
+	'cbsurveyq' => 'Domanda',
+	'cbsa_provoderid' => 'ID Fornitore',
+	'Assigned To' => 'Assegnato A',
+	'Created By' => 'Creato Da',
+	'Created Time' => 'Tempo Creato',
+	'Modified Time' => 'Tempo Modificato',
+	'cbsurveyanswer' => 'Risposta Sondaggio',
+	'Description' => 'Descrizione',
+	'cbsurveyanswerid' => 'ID Risposta Sondaggio',
 );
 ?>
