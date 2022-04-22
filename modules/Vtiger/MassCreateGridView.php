@@ -66,7 +66,7 @@ if (!is_admin($current_user)) {
 	exit;
 }
 $cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
-$ListFields = array_map(function($key) use ($fields, $items, $currentModule) {
+$ListFields = array_map(function ($key) use ($fields, $items, $currentModule) {
 	$editor = 'text';
 	if ($key['columnname'] == 'smownerid') {
 		$editor = array(
