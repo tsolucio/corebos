@@ -1159,7 +1159,7 @@ class CRMEntity {
 					$fld_value = '';
 				}
 				if ($this->translateStrings) {
-					$translated_value = $translate->readtranslation($fieldname, $record, $module, $fld_value);
+					$translated_value = $translate->readtranslation($fieldname, $record, $module);
 					$this->column_fields['i18n'.$fieldname] = $translated_value;
 				}
 				$this->column_fields[$fieldname] = $fld_value;
@@ -1193,7 +1193,7 @@ class CRMEntity {
 		}
 		$row = array();
 		foreach ($currentRow as $field => $value) {
-			$row['i18n'.$field] = $translate->readtranslation($field, $rowcrmid, $currentModule, $value);
+			$row['i18n'.$field] = $translate->readtranslation($field, $rowcrmid, $currentModule);
 		}
 		return $row;
 	}
