@@ -43,6 +43,7 @@ $mod_strings = array(
 	'Validations' => 'Validations',
 	'Detail View Layout Mapping' => 'Detail View Layout Mapping',
 	'VALIDATE_MAP'=> 'Validar mapa',
+	'Validate Map'=> 'Validar Mapa',
 	'MAP_NOT_VALID'=> 'Mapa inválido!',
 	'MAP_VALID'=> 'Mapa valido',
 	'MAP_NOT_IMPLEMENTED_YET'=> 'Validação para este tipo de mapa ainda não foi implementada',
