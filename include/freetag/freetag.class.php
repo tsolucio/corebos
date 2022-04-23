@@ -1001,10 +1001,7 @@ class freetag {
 	 * @return string Returns an HTML snippet that can be used directly as a tag cloud.
 	 */
 	function get_tag_cloud_html($module="",$tagger_id = NULL,$obj_id= NULL,$num_tags = 100, $min_font_size = 10, $max_font_size = 20, $font_units = 'px', $span_class = '', $tag_page_url = '/tag/') {
-		global $theme;
-		$theme_path="themes/".$theme."/";
-		$image_path=$theme_path."images/";
-		$tag_list = $this->get_tag_cloud_tags($num_tags, $tagger_id,$module,$obj_id);
+		$tag_list = $this->get_tag_cloud_tags($num_tags, $tagger_id, $module, $obj_id);
 		if (count($tag_list[0])) {
 			// Get the maximum qty of tagged objects in the set
 			$max_qty = max(array_values($tag_list[0]));
