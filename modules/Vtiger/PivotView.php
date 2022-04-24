@@ -73,11 +73,11 @@ if ($cbMapid) {
 		for ($i = 0; $i < $count; $i++) {
 			$rec = 0;
 			foreach ($rows as $rw) {
-				$record[$rec] = '"'.getTranslatedString($rw['label']).'":"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $rw['name']))).'"';
+				$record[$rec] = '"'.getTranslatedString($rw['label']).'":"'.addslashes(getTranslatedString(decode_html($adb->query_result($list_query, $i, $rw['name'])))).'"';
 				$rec++;
 			}
 			foreach ($cols as $cl) {
-				$record[$rec] = '"'.getTranslatedString($cl['label']).'":"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $cl['name']))).'"';
+				$record[$rec] = '"'.getTranslatedString($cl['label']).'":"'.addslashes(getTranslatedString(decode_html($adb->query_result($list_query, $i, $cl['name'])))).'"';
 				$rec++;
 			}
 			if (isset($fieldaggr) && $fieldaggr!='') {
@@ -85,11 +85,11 @@ if ($cbMapid) {
 			}
 			$rec++;
 			$mainfield = getEntityField($currentModule)['fieldname'];
-			$record[$rec] = '"Name":"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $mainfield))).'"';
+			$record[$rec] = '"Name":"'.addslashes(getTranslatedString(decode_html($adb->query_result($list_query, $i, $mainfield)))).'"';
 			if (!empty($aggregations)) {
 				$currentRow = array();
 				foreach ($aggregations as $agg) {
-					$currentRow[] = '"'.$agg['name'].'":"'.html_entity_decode($adb->query_result($list_query, $i, $agg['arguments'][0])).'"';
+					$currentRow[] = '"'.$agg['name'].'":"'.decode_html($adb->query_result($list_query, $i, $agg['arguments'][0])).'"';
 				}
 				$record[$rec] .= ','.implode(',', $currentRow);
 			}
