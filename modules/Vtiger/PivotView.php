@@ -135,7 +135,8 @@ if ($cbMapid) {
 			if (!empty($aggregations)) {
 				$currentRow = array();
 				foreach ($aggregations as $agg) {
-					$currentRow[] = '"'.$agg['name'].'":"'.decode_html($adb->query_result($list_query, $i, $agg['arguments'][0])).'"';
+					$value = $adb->query_result($list_query, $i, $agg['arguments'][0]);
+					$currentRow[] = '"'.$agg['name'].'":'.(is_numeric($value) ? (float)$value : '"'.addslashes($value).'"');
 				}
 				$record[$rec] .= ','.implode(',', $currentRow);
 			}
