@@ -777,7 +777,7 @@ function getGroupName($groupid) {
 function getUserName($userid) {
 	global $adb, $log;
 	$log->debug('> getUserName ' . $userid);
-
+	$user_name = '';
 	if ($userid != '') {
 		$result = $adb->pquery('select user_name from vtiger_users where id=?', array($userid));
 		$user_name = $adb->query_result($result, 0, 'user_name');
