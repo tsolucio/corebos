@@ -11,6 +11,7 @@
 	var GridColumns = '{$GridColumns}';
 	var EmptyData = '{$EmptyData}';
 	var ListFields = '{$ListFields}';
+	var bmapname = '{$bmapname}';
 </script>
 <script src="./include/MassCreateGridView/MassCreateGridView.js"></script>
 <div class="demo-only demo-only_viewport slds-align_absolute-center" id="slds-spinner" style="z-index: 9999;display: none">
