@@ -3858,4 +3858,15 @@ function numberBytes($size) {
 		return round($size);
 	}
 }
+
+function getModuleFieldsInfo($module) {
+	global $adb;
+	$rs = $adb->pquery('SELECT * FROM vtiger_field WHERE tabid=?', array(
+		getTabid($module)
+	));
+	if ($adb->num_rows($rs) > 0) {
+		return $rs->GetRows();
+	}
+	return false;
+}
 ?>
