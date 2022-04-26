@@ -15,35 +15,86 @@
 *************************************************************************************************/
 require_once 'Smarty_setup.php';
 require_once 'include/Webservices/MassCreate.php';
+require_once 'include/Webservices/Update.php';
 global $current_user;
 Vtiger_Request::validateRequest();
-$newData = array();
-$searchon = array();
-$module = vtlib_purify($_REQUEST['moduleName']);
-$data = vtlib_purify($_REQUEST['data']);
-$data = json_decode($data, true);
-foreach ($data as $row) {
-	unset($row['_attributes']);
-	$currentRow = array();
-	foreach ($row as $field => $value) {
-		if (!is_array($value)) {
-			if ($field == 'smownerid') {
-				$value = '19x'.$value;
-				$field = 'assigned_user_id';
-				unset($row['smownerid']);
-			} else {
-				$searchon[] = $field;
+$op = vtlib_purify($_REQUEST['method']);
+switch ($op) {
+	case 'MassCreate':
+		$newData = array();
+		$searchon = array();
+		$module = vtlib_purify($_REQUEST['moduleName']);
+		$data = vtlib_purify($_REQUEST['data']);
+		$data = json_decode($data, true);
+		foreach ($data as $row) {
+			unset($row['_attributes']);
+			$currentRow = array();
+			foreach ($row as $field => $value) {
+				if (!is_array($value)) {
+					if ($field == 'smownerid') {
+						$value = '19x'.$value;
+						$field = 'assigned_user_id';
+						unset($row['smownerid']);
+					} else {
+						$searchon[] = $field;
+					}
+					$currentRow[$field] = $value;
+				}
 			}
-			$currentRow[$field] = $value;
+			$newData[] = array(
+				'elementType' => $module,
+				'referenceId' => '',
+				'searchon' => implode(',', $searchon),
+				'element' => $currentRow
+			);
 		}
-	}
-	$newData[] = array(
-		'elementType' => $module,
-		'referenceId' => '',
-		'searchon' => implode(',', $searchon),
-		'element' => $currentRow
-	);
+		$response = MassCreate($newData, $current_user);
+		break;
+	case 'SaveMap':
+		$moduleName = vtlib_purify($_REQUEST['moduleName']);
+		$mapName = vtlib_purify($_REQUEST['mapName']);
+		$ActiveColumns = vtlib_purify($_REQUEST['ActiveColumns']);
+		$ActiveColumns = json_decode($ActiveColumns, true);
+		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><deletethis/>');
+		$map = $xml->addChild('map');
+		$originmodule = $map->addChild('originmodule');
+		$originname = $originmodule->addChild('originname', $moduleName);
+		$popup = $map->addChild('popup');
+		$columns = $popup->addChild('columns');
+		foreach ($ActiveColumns as $key) {
+			$field = $columns->addChild('field');
+			$name = $field->addChild('name', $key['name']);
+		}
+		$dom = dom_import_simplexml($xml)->ownerDocument;
+		$dom->preserveWhiteSpace = false;
+		$dom->formatOutput = true;
+		$dom->loadXML($xml->asXML());
+		$map = str_replace(
+			array(
+				'<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.'<deletethis>',
+				'</deletethis>',
+			),
+			'',
+			$dom->saveXML()
+		);
+		$mapid = __cb_getidof(array(
+			'cbMap', 'mapname', $mapName
+		));
+		$response = array();
+		if ($mapid > 0) {
+			$tabid = vtyiicpng_getWSEntityId('cbMap');
+			$element = array(
+				'id' => $tabid.$mapid,
+				'content' => trim($map),
+				'mapname' => $mapName,
+				'assigned_user_id' => '19x'.$current_user->id
+			);
+			$response = vtws_update($element, $current_user);
+		}
+		break;
+	default:
+		$response = '';
+		break;
 }
-$response = MassCreate($newData, $current_user);
 echo json_encode($response);
 ?>
