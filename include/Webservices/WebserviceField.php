@@ -373,6 +373,7 @@ class WebserviceField {
 			global $current_user;
 			$types = vtws_listtypes(null, $current_user);
 			$accessibleTypes = $types['types'];
+			$accessibleTypes[] = 'com_vtiger_workflow';
 			if (!is_admin($current_user)) {
 				$accessibleTypes[] = 'Users';
 			}

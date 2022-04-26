@@ -777,7 +777,7 @@ function getGroupName($groupid) {
 function getUserName($userid) {
 	global $adb, $log;
 	$log->debug('> getUserName ' . $userid);
-
+	$user_name = '';
 	if ($userid != '') {
 		$result = $adb->pquery('select user_name from vtiger_users where id=?', array($userid));
 		$user_name = $adb->query_result($result, 0, 'user_name');
@@ -3723,6 +3723,21 @@ function picklistHasDependency($keyfldname, $modulename) {
 		array(getTabid($modulename), $keyfldname, $keyfldname)
 	);
 	return ($adb->num_rows($result) > 0);
+}
+
+function fieldHasDependency($keyfldname, $modulename) {
+	$mapname = $modulename.'_FieldDependency';
+	$hasBlockingAction = false;
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapFDEP = $cbMap->FieldDependency();
+		$cbMapFDEP = $cbMapFDEP['blockedtriggerfields'];
+		if (in_array($keyfldname, $cbMapFDEP)) {
+			$hasBlockingAction = true;
+		}
+	}
+	return $hasBlockingAction;
 }
 
 function fetch_logo($type) {

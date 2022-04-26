@@ -448,18 +448,21 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
 															{/if}
 															<br/>
-															<table border=0 cellspacing=0 cellpadding=0 width=100% class="rightMailMerge" id="{$CUSTOMLINK->linklabel}">
+															<input type="hidden" id="{$CUSTOMLINK->linklabel|replace:' ':''}LINKID" value="{$CUSTOMLINK->linkid}">
+															<table style="border:0;width:100%" class="rightMailMerge" id="{$CUSTOMLINK->linklabel}">
 																<tr>
 																	<td class="rightMailMergeHeader">
-																		<b>{$customlink_label}</b>
-																		<img id="detailview_block_{$CUSTOMLINK_NO}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
+																		<div>
+																		<b>{$customlink_label}</b>&nbsp;
+																		<img id="detailview_block_{$CUSTOMLINK->linkid}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
+																		</div>
 																	</td>
 																</tr>
 																<tr style="height:25px">
-																	<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK_NO}"></div></td>
+																	<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK->linkid}"></div></td>
 																</tr>
 																<script type="text/javascript">
-																	vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
+																	vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK->linkid}", "detailview_block_{$CUSTOMLINK->linkid}_indicator");
 																</script>
 															</table>
 														{/if}

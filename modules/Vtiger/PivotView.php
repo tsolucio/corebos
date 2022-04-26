@@ -27,6 +27,35 @@ if ($cbMapid) {
 	if (empty($cbMapKb)) {
 		$smarty->assign('showDesert', true);
 	} else {
+		function getPivotValue($field, $value) {
+			global $fieldsinfo;
+			if (!empty($fieldsinfo[$field])) {
+				if ($fieldsinfo[$field]->isReferenceField()) {
+					$value = getEntityName(getSalesEntityType($value), $value)[$value];
+				} elseif ($fieldsinfo[$field]->isOwnerField()) {
+					$value = getUserFullName($value);
+				} else {
+					switch ($fieldsinfo[$field]->getUIType()) {
+						case '1613':
+						case '1614':
+						case '1615':
+						case '3313':
+						case '3314':
+						case '1024':
+							$value = getTranslatedString(decode_html($value), $value);
+							break;
+						case '15':
+						case '33':
+							$value = getTranslatedString(decode_html($value));
+							break;
+						default:
+							$value = decode_html($value);
+							break;
+					}
+				}
+			}
+			return addslashes($value);
+		}
 		$smarty->assign('showDesert', false);
 		$viewid = $cbMapKb['filter'];
 		$fieldaggr = $cbMapKb['aggregate'];
@@ -67,17 +96,34 @@ if ($cbMapid) {
 		} else {
 			$queryGenerator->initForDefaultCustomView();
 		}
-		$queryGenerator->setFields(array_merge($queryGenerator->getFields(), $namerow, $namecolaggr, $aggcols));
+		$fields2get = array_merge($queryGenerator->getFields(), $namerow, $namecolaggr, $aggcols);
+		$fieldsinfo = [];
+		$cmodobj = Vtiger_Module::getInstance($currentModule);
+		foreach ($fields2get as $fld) {
+			if ($fld=='smownerid') {
+				$fobj = Vtiger_Field::getInstance('assigned_user_id', $cmodobj);
+			} else {
+				$fobj = Vtiger_Field::getInstance($fld, $cmodobj);
+			}
+			if ($fobj) {
+				$fieldsinfo[$fld] = $fobj->getWebserviceFieldObject();
+			} else {
+				$fieldsinfo[$fld] = null;
+			}
+		}
+		$queryGenerator->setFields($fields2get);
 		$list_query = $adb->pquery($queryGenerator->getQuery(), array());
 		$count = $adb->num_rows($list_query);
 		for ($i = 0; $i < $count; $i++) {
 			$rec = 0;
 			foreach ($rows as $rw) {
-				$record[$rec] = '"'.getTranslatedString($rw['label']).'":"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $rw['name']))).'"';
+				$value = $adb->query_result($list_query, $i, $rw['name']);
+				$record[$rec] = '"'.getTranslatedString($rw['label']).'":"'.getPivotValue($rw['name'], $value).'"';
 				$rec++;
 			}
 			foreach ($cols as $cl) {
-				$record[$rec] = '"'.getTranslatedString($cl['label']).'":"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $cl['name']))).'"';
+				$value = $adb->query_result($list_query, $i, $cl['name']);
+				$record[$rec] = '"'.getTranslatedString($cl['label']).'":"'.getPivotValue($cl['name'], $value).'"';
 				$rec++;
 			}
 			if (isset($fieldaggr) && $fieldaggr!='') {
@@ -85,11 +131,12 @@ if ($cbMapid) {
 			}
 			$rec++;
 			$mainfield = getEntityField($currentModule)['fieldname'];
-			$record[$rec] = '"Name":"'.getTranslatedString(html_entity_decode($adb->query_result($list_query, $i, $mainfield))).'"';
+			$record[$rec] = '"Name":"'.addslashes(getTranslatedString(decode_html($adb->query_result($list_query, $i, $mainfield)))).'"';
 			if (!empty($aggregations)) {
 				$currentRow = array();
 				foreach ($aggregations as $agg) {
-					$currentRow[] = '"'.$agg['name'].'":"'.html_entity_decode($adb->query_result($list_query, $i, $agg['arguments'][0])).'"';
+					$value = $adb->query_result($list_query, $i, $agg['arguments'][0]);
+					$currentRow[] = '"'.$agg['name'].'":'.(is_numeric($value) ? (float)$value : '"'.addslashes($value).'"');
 				}
 				$record[$rec] .= ','.implode(',', $currentRow);
 			}
