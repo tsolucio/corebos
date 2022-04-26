@@ -92,6 +92,43 @@ switch ($op) {
 			$response = vtws_update($element, $current_user);
 		}
 		break;
+	case 'SaveMapFromModule':
+		$MapID = vtlib_purify($_REQUEST['MapID']);
+		$fields = vtlib_purify($_REQUEST['fields']);
+		$fields = json_decode($fields, true);
+		$mapName = vtlib_purify($_REQUEST['mapName']);
+		$moduleName = vtlib_purify($_REQUEST['moduleName']);
+		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><deletethis/>');
+		$map = $xml->addChild('map');
+		$originmodule = $map->addChild('originmodule');
+		$originname = $originmodule->addChild('originname', $moduleName);
+		$popup = $map->addChild('popup');
+		$columns = $popup->addChild('columns');
+		foreach ($fields as $field) {
+			$fld = $columns->addChild('field');
+			$name = $fld->addChild('name', $field);
+		}
+		$dom = dom_import_simplexml($xml)->ownerDocument;
+		$dom->preserveWhiteSpace = false;
+		$dom->formatOutput = true;
+		$dom->loadXML($xml->asXML());
+		$map = str_replace(
+			array(
+				'<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.'<deletethis>',
+				'</deletethis>',
+			),
+			'',
+			$dom->saveXML()
+		);
+		$tabid = vtyiicpng_getWSEntityId('cbMap');
+		$element = array(
+			'id' => $tabid.$MapID,
+			'content' => trim($map),
+			'mapname' => $mapName,
+			'assigned_user_id' => '19x'.$current_user->id
+		);
+		$response = vtws_update($element, $current_user);
+		break;
 	default:
 		$response = '';
 		break;
