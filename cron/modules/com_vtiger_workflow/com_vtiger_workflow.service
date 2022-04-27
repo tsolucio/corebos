@@ -79,6 +79,11 @@ function vtRunTaskJob($adb) {
 			$logbg->debug('WF Cron:: Task '.$taskId.' will call function doTask with entityId: '.$entityId);
 			try {
 				$task->startTask($entity);
+				if (!empty($msginfo['context'])) {
+					$entity->WorkflowContext = $msginfo['context'];
+				} else {
+					$entity->WorkflowContext = [];
+				}
 				$task->doTask($entity);
 				$task->endTask($entity);
 				$logbg->debug('WF Cron:: Task '.$taskId.' executed with success the function doTask with entityId: '.$entityId);

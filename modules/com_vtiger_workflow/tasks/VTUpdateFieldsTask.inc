@@ -92,6 +92,7 @@ class VTUpdateFieldsTask extends VTTask {
 						$msg = array(
 							'taskId' => $this->id,
 							'entityId' => $entityId,
+							'context' => $entity->WorkflowContext,
 						);
 						Workflow::pushWFTaskToQueue($entity->WorkflowID, $entity->WorkflowEvent, $entityId, $msg, $delay);
 						return;

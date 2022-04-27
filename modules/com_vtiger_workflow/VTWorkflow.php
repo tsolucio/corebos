@@ -285,6 +285,7 @@ class Workflow {
 						$msg = array(
 							'taskId' => $task->id,
 							'entityId' => $entityData->getId(),
+							'context' => $entityData->WorkflowContext,
 						);
 						$delay = max($delay-time(), 0);
 						Workflow::pushWFTaskToQueue($this->id, $this->executionCondition, $entityData->getId(), $msg, $delay);
@@ -309,6 +310,7 @@ class Workflow {
 					$msg = array(
 						'taskId' => $task->id,
 						'entityId' => $entityData->getId(),
+						'context' => $entityData->WorkflowContext,
 					);
 					$delay = max($delay-time(), 0);
 					Workflow::pushWFTaskToQueue($this->id, $this->executionCondition, $entityData->getId(), $msg, $delay);
