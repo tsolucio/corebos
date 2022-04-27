@@ -413,6 +413,10 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		if ($limit > 0) {
 			$listquery = $listquery.' limit '.$limit;
 		}
+		$translateStrings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
+		if ($translateStrings) {
+			$listquery = __ConstructQueryForTranslation($listquery, $user);
+		}
 		$list_result = $adb->query($listquery);
 		$noofrows = $adb->num_rows($list_result);
 		if ($noofrows>0) {
