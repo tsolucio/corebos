@@ -16,6 +16,7 @@
 require_once 'Smarty_setup.php';
 require_once 'include/Webservices/MassCreate.php';
 require_once 'include/Webservices/Update.php';
+require_once 'include/ListView/ListViewJSON.php';
 global $current_user;
 Vtiger_Request::validateRequest();
 $op = vtlib_purify($_REQUEST['method']);
@@ -26,10 +27,17 @@ switch ($op) {
 		$module = vtlib_purify($_REQUEST['moduleName']);
 		$data = vtlib_purify($_REQUEST['data']);
 		$data = json_decode($data, true);
+		$grid = new GridListView($module);
+		$grid->tabid = getTabid($module);
 		foreach ($data as $row) {
 			unset($row['_attributes']);
 			$currentRow = array();
 			foreach ($row as $field => $value) {
+				if (is_numeric($field)) {
+					continue;
+				}
+				$fieldName = $grid->getFieldNameByColumn($field);
+				$fieldType = getUItypeByFieldName($module, $fieldName);
 				if (!is_array($value)) {
 					if ($field == 'smownerid') {
 						$value = '19x'.$value;
@@ -37,6 +45,22 @@ switch ($op) {
 						unset($row['smownerid']);
 					} else {
 						$searchon[] = $field;
+					}
+					if ($fieldType == '10') {
+						$relMods = $grid->findRelatedModule($fieldName);
+						if (!empty($relMods)) {
+							foreach ($relMods as $mod) {
+								$reference_field = getEntityFieldNames($mod);
+								$id = __cb_getidof(array(
+									$mod, $reference_field['fieldname'], $value
+								));
+								if ($id > 0) {
+									$tabid = vtyiicpng_getWSEntityId($mod);
+									$value = $tabid.$id;
+									break;
+								}
+							}
+						}
 					}
 					$currentRow[$field] = $value;
 				}
