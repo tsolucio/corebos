@@ -868,7 +868,7 @@ function __TranslationQuery($field, $table, $user) {
 	global $adb;
 	$language = $user->language;
 	$entity = getEntityFieldByTable($table);
-	$entityid = $entity['entityid'];
+	$entityid = $entity['entityidfield'];
 	if (strpos($field, '.') !== false) {
 		$field = explode('.', $field);
 		$field = $field[1];
