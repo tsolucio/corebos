@@ -1376,6 +1376,8 @@ $app_strings = array (
 	'From External Source' => 'Proviene de Fuente Externa',
 	'LBL_ADD_ROW' => 'Añadir Fila',
 	'LBL_EDIT_COLUMNS' => 'Editar Columnas',
+	'LBL_SELECT_COLUMNS' => 'Select columns to show in Mass Create Grid',
+	'LBL_SAVE_MAP' => 'Save Map',
 );
 
 // Translation for currency names

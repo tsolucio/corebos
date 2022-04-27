@@ -32,8 +32,9 @@ class genListColumns extends generatecbMap {
 		$ModuleFields = getModuleFieldsInfo($module);
 		if (isset($xml->popup->columns)) {
 			$fields = (array)$xml->popup->columns;
-			$ListFields = array_map(function ($key) use ($fields) {
+			$ListFields = array_map(function ($key) use ($fields, $module) {
 				$listFields = array(
+					'header' => getTranslatedString($key['fieldlabel'], $module),
 					'name' => $key['columnname'],
 					'active' => 0
 				);
@@ -55,8 +56,9 @@ class genListColumns extends generatecbMap {
 				return $listFields;
 			}, $ModuleFields);
 		} else {
-			$ListFields = array_map(function ($key) {
+			$ListFields = array_map(function ($key) use ($module) {
 				$listFields = array(
+					'header' => getTranslatedString($key['fieldlabel'], $module),
 					'name' => $key['columnname'],
 					'active' => 0
 				);

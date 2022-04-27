@@ -19,7 +19,7 @@
 		<div class="slds-media__body">
 			<h2 class="slds-card__header-title">
 				<a href="#" class="slds-card__header-link slds-truncate" title="Accounts">
-					<span>Select columns to show in Mass Create Grid</span>
+					<span>{$APP.LBL_SELECT_COLUMNS}</span>
 				</a>
 			</h2>
 		</div>
@@ -40,7 +40,7 @@
 							<input type="checkbox" name="grid-fields" id="checkbox-{$i['name']}" value="checkbox-{$i['name']}" {$checked}/>
 							<label class="slds-checkbox__label" for="checkbox-{$i['name']}">
 								<span class="slds-checkbox_faux"></span>
-								<span class="slds-form-element__label">{$i['name']}</span>
+								<span class="slds-form-element__label">{$i['header']}</span>
 							</label>
 						</div>
 					</div>
@@ -50,7 +50,8 @@
 		</div>
 	</div>
 	<footer class="slds-card__footer">
-		<button type="button" class="slds-button slds-button_brand" onclick="LCInstance.SaveMap()">Save Map
+		<button type="button" class="slds-button slds-button_brand" onclick="LCInstance.SaveMap()">
+			{$APP.LBL_SAVE_MAP}
 		</button>
 	</footer>
 </article>
