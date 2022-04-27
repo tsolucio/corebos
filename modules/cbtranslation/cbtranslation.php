@@ -677,10 +677,10 @@ class cbtranslation extends CRMEntity {
 	 * @param string forRecord
 	 * @param string forModule
 	 */
-	public function readtranslation($forField, $forRecord, $forModule) {
-		global $adb;
+	public function readtranslation($forField, $forRecord, $forModule, $language) {
+		global $adb, $current_user;
 		$rs = $adb->pquery('select * from vtiger_cbtranslation where forfield=? and translates=? and translation_module=? and locale=?', array(
-			$forField, $forRecord, $forModule, $this->language
+			$forField, $forRecord, $forModule, $language
 		));
 		$forValue = '';
 		if ($adb->num_rows($rs) == 1) {
