@@ -147,6 +147,11 @@ class VTEmailTask extends VTTask {
 		$cc = trim(preg_replace('/,,+/', ',', $cc), ',');
 		$bcc = preg_replace('/\s+/', '', $bcc);
 		$bcc = trim(preg_replace('/,,+/', ',', $bcc), ',');
+		$Recipients = cbEventHandler::do_filter('corebos.filter.workflowEmail.Recipients', array($to_email, $cc, $bcc, $entity, $this));
+		$to_email = $Recipients[0];
+		$cc = $Recipients[1];
+		$bcc = $Recipients[2];
+		unset($Recipients);
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
 			$util->revertUser();
 			return;
