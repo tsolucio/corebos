@@ -16,6 +16,7 @@
 require_once 'Smarty_setup.php';
 require_once 'include/Webservices/MassCreate.php';
 require_once 'include/Webservices/Update.php';
+require_once 'include/Webservices/Create.php';
 require_once 'include/ListView/ListViewJSON.php';
 global $current_user;
 Vtiger_Request::validateRequest();
@@ -114,6 +115,16 @@ switch ($op) {
 				'assigned_user_id' => '19x'.$current_user->id
 			);
 			$response = vtws_update($element, $current_user);
+		} else {
+			//create a new map
+			$element = array(
+				'content' => trim($map),
+				'mapname' => $mapName,
+				'maptype' => 'ListColumns',
+				'targetname' => $moduleName,
+				'assigned_user_id' => '19x'.$current_user->id
+			);
+			$response = vtws_create('cbMap', $element, $current_user);
 		}
 		break;
 	case 'SaveMapFromModule':
