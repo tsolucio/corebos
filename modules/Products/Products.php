@@ -1195,7 +1195,15 @@ class Products extends CRMEntity {
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
-
+		$customRelModules = ['cbCalendar', 'Accounts', 'Potentials', 'Contacts', 'Leads', 'Vendors', 'Documents'];
+		if (in_array($return_module, $customRelModules)) {
+			$data = array();
+			$data['sourceModule'] = getSalesEntityType($id);
+			$data['sourceRecordId'] = $id;
+			$data['destinationModule'] = $return_module;
+			$data['destinationRecordId'] = $return_id;
+			cbEventHandler::do_action('corebos.entity.link.delete', $data);
+		}
 		if ($return_module == 'cbCalendar') {
 			$sql = 'DELETE FROM vtiger_seactivityrel WHERE crmid = ? AND activityid = ?';
 			$adb->pquery($sql, array($id, $return_id));
@@ -1210,6 +1218,9 @@ class Products extends CRMEntity {
 			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
+		}
+		if (in_array($return_module, $customRelModules)) {
+			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		}
 	}
 
