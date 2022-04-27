@@ -151,6 +151,12 @@ class VTEmailTask extends VTTask {
 			$util->revertUser();
 			return;
 		}
+		if (!empty($entity->WorkflowContext['SendThisSubject'])) {
+			$this->subject = $entity->WorkflowContext['SendThisSubject'];
+		}
+		if (!empty($entity->WorkflowContext['SendThisBody'])) {
+			$this->content = $entity->WorkflowContext['SendThisBody'];
+		}
 		if (!empty($entity->WorkflowContext['SendThisMsgTemplate'])) {
 			if (strpos($entity->WorkflowContext['SendThisMsgTemplate'], 'x')>0) {
 				list($wsid, $entity->WorkflowContext['SendThisMsgTemplate']) = explode('x', $entity->WorkflowContext['SendThisMsgTemplate']);
