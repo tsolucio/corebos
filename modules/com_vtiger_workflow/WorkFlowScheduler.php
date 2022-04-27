@@ -223,6 +223,7 @@ class WorkFlowScheduler {
 									}
 								}
 							} else {
+								$entityData->WorkflowContext['__WorkflowID'] = $workflow->id;
 								$msg = array(
 									'taskId' => $task->id,
 									'entityId' => $entityData->getId(),

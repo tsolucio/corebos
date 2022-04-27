@@ -81,6 +81,9 @@ function vtRunTaskJob($adb) {
 				$task->startTask($entity);
 				if (!empty($msginfo['context'])) {
 					$entity->WorkflowContext = $msginfo['context'];
+					if (!empty($msginfo['context']['__WorkflowID'])) {
+						$entity->WorkflowID = $msginfo['context']['__WorkflowID'];
+					}
 				} else {
 					$entity->WorkflowContext = [];
 				}
