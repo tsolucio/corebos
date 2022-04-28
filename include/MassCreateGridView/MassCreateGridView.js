@@ -98,6 +98,10 @@ const MCGrid = {
 		const activeCols = JSON.parse(ListFields);
 		let content = `<div class="slds-grid slds-wrap">`;
 		activeCols.map(function(currentValue, index) {
+			let typeofdata = '';
+			if (currentValue.typeofdata == 'M') {
+				typeofdata = `<span class="slds-text-color_error">*</span>`;
+			}
 			content += `
 			<div class="slds-col slds-size_3-of-12">
 				<div class="slds-form-element">
@@ -106,7 +110,7 @@ const MCGrid = {
 							<input type="checkbox" name="grid-fields" id="checkbox-${currentValue.name}" value="checkbox-${currentValue.name}" ${currentValue.active == 1 ? 'checked' : ''}/>
 							<label class="slds-checkbox__label" for="checkbox-${currentValue.name}">
 								<span class="slds-checkbox_faux"></span>
-								<span class="slds-form-element__label">${currentValue.header}</span>
+								<span class="slds-form-element__label">${currentValue.header} ${typeofdata}</span>
 							</label>
 						</div>
 					</div>

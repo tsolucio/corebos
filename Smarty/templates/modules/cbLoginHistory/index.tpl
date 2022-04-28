@@ -14,19 +14,8 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  ********************************************************************************/
 -->*}
-<br>
-<link rel="stylesheet" href="include/bunnyjs/css/svg-icons.css">
-<script src="include/bunnyjs/utils-dom.min.js"></script>
-<script src="include/bunnyjs/ajax.min.js"></script>
-<script src="include/bunnyjs/template.min.js"></script>
-<script src="include/bunnyjs/pagination.min.js"></script>
-<script src="include/bunnyjs/url.min.js"></script>
-<script src="include/bunnyjs/utils-svg.min.js"></script>
-<script src="include/bunnyjs/spinner.min.js"></script>
-<script src="include/bunnyjs/datatable.min.js"></script>
-<script src="include/bunnyjs/datatable.icons.min.js"></script>
-<script src="include/bunnyjs/element.min.js"></script>
-<script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
+<script src="modules/cbLoginHistory/cbLoginHistory.js"></script>
+{include file='BrowserVariables.tpl'}
 <style>
 {literal}
 	.arrow-up:after,
@@ -63,18 +52,17 @@
 				</div>
 				<div class="slds-media__body">
 					<h1 class="slds-page-header__title slds-m-right_small slds-align-middle slds-truncate"
-						title="{$MOD.LBL_LOGIN_HISTORY_DETAILS}">{$MOD.LBL_LOGIN_HISTORY_DETAILS}</h1>
+						title="{$MOD.LBL_LOGIN_HISTORY}">{$MOD.LBL_LOGIN_HISTORY}</h1>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher">
 <div class="slds-m-around_small slds-card">
-<div class="rptContainer" style="width:94%;margin:auto;">
-	<datatable url="index.php?module=cbLoginHistory&action=cbLoginHistoryAjax&file=getJSON" template="report_row_template">
-		<header>
-			<div class="slds-form-element slds-lookup" data-select="single" style="width: 400px; margin-bottom: 6px;">
+	<div class="slds-grid slds-gutters slds-m-around_small">
+		<div class="slds-col slds-size_2-of-6">
+			<div class="slds-form-element slds-lookup" data-select="single" style="width: 400px;">
 				<label class="slds-form-element__label" for="lookup-339">{'LBL_SEARCH_FORM_TITLE'|getTranslatedString:'Users'}</label>
 				<div class="slds-form-element__control slds-grid slds-box_border">
 					<div class="slds-dropdown_trigger slds-dropdown-trigger_click slds-align-middle slds-m-left_xx-small slds-shrink-none">
@@ -86,48 +74,17 @@
 						<svg aria-hidden="true" class="slds-input__icon">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 						</svg>
-						<select name="user_list" id="user_list" class="slds-lookup__search-input slds-input_bare" type="search"
-							aria-owns="user_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
+						<select name="user_list" id="user_list" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
+							aria-owns="user_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list"
+							onchange="reloadgriddata();">
 							<option value="none" selected="true">{$APP.LBL_NONE}</option>
 							{$USERLIST}
 						</select>
 					</div>
 				</div>
 			</div>
-		</header>
-		<footer>
-			<pagination limit="12" outer></pagination>
-			<stats></stats>
-		</footer>
-		<table class="rptTable">
-			<tr>
-			{foreach key=dtkey item=dtheader from=$LIST_HEADER}
-				<th pid="{$dtkey}" class="rptCellLabel">{$dtheader}</th>
-			{/foreach}
-			</tr>
-		</table>
-	</datatable>
-</div>
+		</div>
+	</div>
+	<div id="lhgrid" class="rptContainer" style="width:96%;margin:auto;"></div>
 </div>
 </section>
-<table id="report_row_template" hidden>
-	<tr>
-		{foreach key=dtkey item=dtheader from=$LIST_FIELDS}
-			<td v="{$dtkey}" class="rptData"></td>
-		{/foreach}
-	</tr>
-</table>
-<script type="text/javascript">
-{literal}
-Template.define('report_row_template', {});
-{/literal}
-Pagination._config.langFirst = "{$APP.LNK_LIST_START}";
-Pagination._config.langLast = "{$APP.LNK_LIST_END}";
-Pagination._config.langPrevious = "< {$APP.LNK_LIST_PREVIOUS}";
-Pagination._config.langNext = "{$APP.LNK_LIST_NEXT} >";
-{literal}
-Pagination._config.langStats = "{from}-{to} {/literal}{$APP.LBL_LIST_OF}{literal} {total} ({/literal}{$APP.Page}{literal} {currentPage} {/literal}{$APP.LBL_LIST_OF}{literal} {lastPage})";
-//DataTableConfig.loadingImg = 'themes/images/loading.svg';
-DataTableConfig.searchInputName = 'user_list';
-</script>
-{/literal}

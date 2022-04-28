@@ -1,20 +1,20 @@
 <?php
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- ********************************************************************************/
-require_once 'include/logging.php';
+* ("License"); You may not use this file except in compliance with the License
+* The Original Code is:  vtiger CRM Open Source
+* The Initial Developer of the Original Code is vtiger.
+* Portions created by vtiger are Copyright (C) vtiger.
+* All Rights Reserved.
+********************************************************************************/
 require_once 'include/logging.php';
 require_once 'include/ListView/ListView.php';
 require_once 'include/database/PearDatabase.php';
+require_once 'include/ListView/ListViewJSON.php';
 
 /** This class is used to store and display the login history of all the Users.
-  * An Admin User can view his login history details  and of all the other users as well.
-  * StandardUser is allowed to view only his login history details.
+ * An Admin User can view his login history details  and of all the other users as well.
+* StandardUser is allowed to view only his login history details.
 **/
 class LoginHistory {
 	private $db;
@@ -84,11 +84,11 @@ class LoginHistory {
 	}
 
 	/**
-	  * Function to get the Login History values of the User.
-	  * @param $navigation_array - Array values to navigate through the number of entries.
-	  * @param $sortorder - DESC
-	  * @param $order_by - login_time
-	  * Returns the login history entries in an array format.
+	 * Function to get the Login History values of the User.
+	* @param $navigation_array - Array values to navigate through the number of entries.
+	* @param $sortorder - DESC
+	* @param $order_by - login_time
+	* Returns the login history entries in an array format.
 	**/
 	public function getHistoryListViewEntries($username, $navigation_array, $sorder = '', $order_by = '') {
 		global $log, $adb;
@@ -123,63 +123,27 @@ class LoginHistory {
 	public function getHistoryJSON($userid, $page, $order_by = 'login_time', $sorder = 'DESC') {
 		global $log, $adb;
 		$log->debug('> getHistoryJSON');
-
-		if (empty($userid)) {
-			$where = '';
-			$params = array();
-		} else {
-			$where = 'where user_name=?';
+		$where = '';
+		if (!empty($userid)) {
 			$username = getUserName($userid);
-			$params = array($username);
+			$where .=  $adb->convert2Sql(' where user_name=?', array($username));
 		}
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_loginhistory $where order by $order_by $sorder";
 		} else {
 			$list_query = "Select * from vtiger_loginhistory $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
-		$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
+		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
+			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
+		} else {
+			$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
+		}
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
-
-		$result = $adb->pquery($list_query.$limit, $params);
-		$rscnt = $adb->pquery("select count(*) from vtiger_loginhistory $where", array($params));
-		$noofrows = $adb->query_result($rscnt, 0, 0);
-		$last_page = ceil($noofrows/$rowsperpage);
-		if ($page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
-			$islastpage = true;
-			$to = $noofrows;
-		} else {
-			$islastpage = false;
-			$to = $page*$rowsperpage;
-		}
-		$entries_list = array(
-			'total' => $noofrows,
-			'per_page' => $rowsperpage,
-			'current_page' => $page,
-			'last_page' => $last_page,
-			'next_page_url' => '',
-			'prev_page_url' => '',
-			'from' => $from+1,
-			'to' => $to,
-			'data' => array(),
-		);
-		if ($islastpage && $page!=1) {
-			$entries_list['next_page_url'] = null;
-		} else {
-			$entries_list['next_page_url'] = 'index.php?module=cbLoginHistory&action=cbLoginHistoryAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
-		}
-		$entries_list['prev_page_url'] = 'index.php?module=cbLoginHistory&action=cbLoginHistoryAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
-		$in = getTranslatedString('Signed in');
-		$out = getTranslatedString('Signed off');
-		while ($lgn = $adb->fetch_array($result)) {
-			$entry = array();
-			$entry['User Name'] = $lgn['user_name'];
-			$entry['User IP'] = $lgn['user_ip'];
-			$entry['Signin Time'] = $lgn['login_time'];
-			$entry['Signout Time'] = $lgn['logout_time'];
-			$entry['Status'] = ($lgn['status']=='Signed in' ? $in : $out);
-			$entries_list['data'][] = $entry;
-		}
+		$q = $list_query.$limit;
+		$grid = new GridListView('cbLoginHistory');
+		$grid->currentPage = $page;
+		$entries_list = $grid->gridTableBasedEntries($q, $this->list_fields, $this->table_name);
 		$log->debug('< getHistoryJSON');
 		return json_encode($entries_list);
 	}
