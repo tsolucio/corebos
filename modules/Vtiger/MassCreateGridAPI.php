@@ -21,6 +21,8 @@ require_once 'include/ListView/ListViewJSON.php';
 global $current_user;
 Vtiger_Request::validateRequest();
 $op = vtlib_purify($_REQUEST['method']);
+$cbMapTabid = vtws_getEntityId('cbMap');
+$UsersTabid = vtws_getEntityId('Users');
 switch ($op) {
 	case 'MassCreate':
 		$newData = array();
@@ -38,16 +40,19 @@ switch ($op) {
 					continue;
 				}
 				$fieldName = $grid->getFieldNameByColumn($field);
+				if (!$fieldName) {
+					continue;
+				}
 				$fieldType = getUItypeByFieldName($module, $fieldName);
 				if (!is_array($value)) {
 					if ($field == 'smownerid') {
-						$value = '19x'.$value;
+						$value = $UsersTabid.'x'.$value;
 						$field = 'assigned_user_id';
 						unset($row['smownerid']);
 					} else {
-						$searchon[] = $field;
+						$searchon[] = $fieldName;
 					}
-					if ($fieldType == '10') {
+					if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
 						$relMods = $grid->findRelatedModule($fieldName);
 						if (!empty($relMods)) {
 							foreach ($relMods as $mod) {
@@ -59,15 +64,17 @@ switch ($op) {
 										$mod, $reference_field['fieldname'], $value
 									));
 								}
+								$value = 0;
 								if ($id > 0) {
-									$tabid = vtyiicpng_getWSEntityId($mod);
-									$value = $tabid.$id;
+									$tabid = vtws_getEntityId($mod);
+									$value = $tabid.'x'.$id;
 									break;
 								}
 							}
+							$field = $fieldName;
 						}
 					}
-					$currentRow[$field] = $value;
+					$currentRow[$fieldName] = $value;
 				}
 			}
 			$newData[] = array(
@@ -111,12 +118,11 @@ switch ($op) {
 		));
 		$response = array();
 		if ($mapid > 0) {
-			$tabid = vtyiicpng_getWSEntityId('cbMap');
 			$element = array(
-				'id' => $tabid.$mapid,
+				'id' => $cbMapTabid.'x'.$mapid,
 				'content' => trim($map),
 				'mapname' => $mapName,
-				'assigned_user_id' => '19x'.$current_user->id
+				'assigned_user_id' => $UsersTabid.'x'.$current_user->id
 			);
 			$response = vtws_update($element, $current_user);
 		} else {
@@ -159,12 +165,11 @@ switch ($op) {
 			'',
 			$dom->saveXML()
 		);
-		$tabid = vtyiicpng_getWSEntityId('cbMap');
 		$element = array(
-			'id' => $tabid.$MapID,
+			'id' => $cbMapTabid.'x'.$MapID,
 			'content' => trim($map),
 			'mapname' => $mapName,
-			'assigned_user_id' => '19x'.$current_user->id
+			'assigned_user_id' => $UsersTabid.'x'.$current_user->id
 		);
 		$response = vtws_update($element, $current_user);
 		break;
