@@ -38,7 +38,7 @@ class genListColumns extends generatecbMap {
 					'name' => $key['columnname'],
 					'active' => 0
 				);
-				if (isset($fields['field'])) {		
+				if (isset($fields['field'])) {
 					$fields = array_values((array)$fields['field']);
 					if (count($fields) == 1) {
 						if ($fields[0] == $key['columnname']) {
