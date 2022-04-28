@@ -349,10 +349,16 @@ class Vendors extends CRMEntity {
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
-
 		if ($return_module == 'Contacts') {
+			$data = array();
+			$data['sourceModule'] = getSalesEntityType($id);
+			$data['sourceRecordId'] = $id;
+			$data['destinationModule'] = $return_module;
+			$data['destinationRecordId'] = $return_id;
+			cbEventHandler::do_action('corebos.entity.link.delete', $data);
 			$sql = 'DELETE FROM vtiger_vendorcontactrel WHERE vendorid=? AND contactid=?';
 			$adb->pquery($sql, array($id,$return_id));
+			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}
