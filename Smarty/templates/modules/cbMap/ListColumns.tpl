@@ -29,9 +29,13 @@
 	<div class="slds-card__body slds-card__body_inner" style="height: 80vh">
 		<div class="slds-grid slds-wrap">
 			{foreach from=$MapFields item=$i}
-			{assign var='checked' value=''}	
+			{assign var='mandatory' value=''}
+			{assign var='checked' value=''}
 			{if $i['active'] eq 1}
 				{assign var='checked' value='checked'}
+			{/if}
+			{if $i['typeofdata'] eq 'M'}
+				{assign var='mandatory' value='*'}
 			{/if}
 			<div class="slds-col slds-size_3-of-12">
 				<div class="slds-form-element">
@@ -40,7 +44,9 @@
 							<input type="checkbox" name="grid-fields" id="checkbox-{$i['name']}" value="checkbox-{$i['name']}" {$checked}/>
 							<label class="slds-checkbox__label" for="checkbox-{$i['name']}">
 								<span class="slds-checkbox_faux"></span>
-								<span class="slds-form-element__label">{$i['header']}</span>
+								<span class="slds-form-element__label">{$i['header']}
+									<span class="slds-text-color_error">{$mandatory}</span>
+								</span>
 							</label>
 						</div>
 					</div>

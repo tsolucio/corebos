@@ -76,11 +76,13 @@ $ListFields = array_map(function ($key) use ($fields, $items, $currentModule) {
 			)
 		);
 	}
+	$typeofdata = explode('~', $key['typeofdata']);
 	$listFields = array(
 		'header' => getTranslatedString($key['fieldlabel'], $currentModule),
 		'name' => $key['columnname'],
 		'editor' => $editor,
-		'active' => 0
+		'active' => 0,
+		'typeofdata' => $typeofdata[1]
 	);
 	$fields = array_values($fields);
 	foreach ($fields as $value) {
