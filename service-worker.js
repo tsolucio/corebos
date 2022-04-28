@@ -11674,6 +11674,9 @@ precacheAndRoute([{
   "url": "include/csrfmagic/csrf-magic.js",
   "revision": "143302dc3175324824d718937e339fff"
 }, {
+  "url": "include/MassCreateGridView/MassCreateGridView.js",
+  "revision": "d81a369e38b04479dc4a349c4c510058"
+}, {
   "url": "include/style.css",
   "revision": "d366c521d8140f4799b529e65f6d53df"
 }, {
@@ -12156,6 +12159,9 @@ precacheAndRoute([{
 }, {
   "url": "modules/cbMap/generatemap/DuplicateRelations.js",
   "revision": "a2c24e60f601be44f6d8a25b0a5e8431"
+}, {
+  "url": "modules/cbMap/generatemap/ListColumns.js",
+  "revision": "faedf52dc482e2a66b0084b7e8c530e2"
 }, {
   "url": "modules/cbTermConditions/cbTermConditions.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
