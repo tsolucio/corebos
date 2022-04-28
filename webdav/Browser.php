@@ -175,6 +175,17 @@ HTML;
 				</form>';
 			}
 		} else {
+			if (get_class($node)=='DirectoryFolder') {
+				$dg = $node->getData();
+				if (isset($dg['module']) && $dg['module'] == 'Documents') {
+					$output .= '<form method="post" action=""><h3>'
+					.getTranslatedString('Create_New_Folder', 'Reports').'</h3>
+					<input type="hidden" name="sabreAction" value="mkcol" /><label>'
+					.getTranslatedString('Name').':</label> <input type="text" name="name" /><br />
+					<input type="submit" value="'.getTranslatedString('LBL_CREATE').'" />
+					</form>';					
+				}
+			}
 			$output .= '<form method="post" action="" enctype="multipart/form-data"><h3>'
 				.getTranslatedString('LBL_UPLOAD', 'Products').'</h3>
 				<input type="hidden" name="sabreAction" value="put" /><label>'

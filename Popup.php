@@ -144,10 +144,12 @@ if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 	$productid= isset($_REQUEST['productid']) ? vtlib_purify($_REQUEST['productid']) : 0;
 	$currency_id= isset($_REQUEST['currencyid']) ? vtlib_purify($_REQUEST['currencyid']) : fetchCurrency($current_user->id);
 	$crmalias = CRMEntity::getcrmEntityTableAlias('PriceBooks');
+	$pbpdorelcrmentity = CRMEntity::getcrmEntityTableAlias('pricebookproductrel', true);
 	$query = 'select vtiger_pricebook.*, vtiger_pricebookproductrel.productid, vtiger_pricebookproductrel.listprice, ' .
 		'vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime ' .
 		'from vtiger_pricebook inner join vtiger_pricebookproductrel on vtiger_pricebookproductrel.pricebookid = vtiger_pricebook.pricebookid ' .
 		"inner join $crmalias on vtiger_crmentity.crmid = vtiger_pricebook.pricebookid " .
+		"inner join $pbpdorelcrmentity as pbpdocrm on pbpdocrm.crmid = vtiger_pricebookproductrel.pricebookproductrelid " .
 		'where vtiger_crmentity.deleted=0 and vtiger_pricebook.currency_id='.$adb->sql_escape_string($currency_id).' and vtiger_pricebook.active=1';
 	if (!empty($productid)) {
 		$query.= ' and vtiger_pricebookproductrel.productid='.$adb->sql_escape_string($productid);

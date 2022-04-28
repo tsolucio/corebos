@@ -115,6 +115,7 @@ class CRMFile extends Sabre\DAV\File {
 			$document->parentid = $recordid;
 		}
 		$document->save('Documents');
+		$document->save_related_module('Documents', $document->id, 'DocumentFolders', $folderid);
 		unset($_FILES);
 	}
 

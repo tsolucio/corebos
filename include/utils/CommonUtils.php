@@ -777,7 +777,7 @@ function getGroupName($groupid) {
 function getUserName($userid) {
 	global $adb, $log;
 	$log->debug('> getUserName ' . $userid);
-
+	$user_name = '';
 	if ($userid != '') {
 		$result = $adb->pquery('select user_name from vtiger_users where id=?', array($userid));
 		$user_name = $adb->query_result($result, 0, 'user_name');
@@ -1180,16 +1180,24 @@ function getReminderSelectOption($start, $end, $fldname, $selvalue = '', $class 
 	return $OPTION_FLD;
 }
 
-/** This function returns the List price of a given product in a given price book.
- * param $productid - product id.
- * param $pbid - pricebook id.
+/** This function returns the List price of a given product in a given price book
+ * @param integer product id
+ * @param integer pricebook id
+ * @return float list price
  */
 function getListPrice($productid, $pbid) {
 	global $log, $adb;
 	$log->debug('> getListPrice ' . $productid . ',' . $pbid);
-	$result = $adb->pquery('select listprice from vtiger_pricebookproductrel where pricebookid=? and productid=?', array($pbid, $productid));
-	$lp = $adb->query_result($result, 0, 'listprice');
-	$log->debug('< getListPrice');
+	$pbpdorelcrmentity = CRMEntity::getcrmEntityTableAlias('pricebookproductrel');
+	$result = $adb->pquery(
+		'select listprice
+			from vtiger_pricebookproductrel
+			inner join '.$pbpdorelcrmentity.' on vtiger_crmentity.crmid=vtiger_pricebookproductrel.pricebookproductrelid
+			where vtiger_crmentity.deleted=0 and pricebookid=? and productid=?',
+		array($pbid, $productid)
+	);
+	$lp = ($result && $adb->num_rows($result)) ? $adb->query_result($result, 0, 'listprice') : 0;
+	$log->debug('< getListPrice '.$lp);
 	return $lp;
 }
 
@@ -3188,8 +3196,6 @@ function ChangeTypeOfData_Filter($table_name, $column_name, $type_of_data) {
 		'vtiger_leadcontrel:contactid' => 'V',
 		'vtiger_leadpotrel:leadid' => 'V',
 		'vtiger_leadpotrel:potentialid' => 'V',
-		'vtiger_pricebookproductrel:pricebookid' => 'V',
-		'vtiger_pricebookproductrel:productid' => 'V',
 		'vtiger_seactivityrel:crmid' => 'V',
 		'vtiger_seactivityrel:activityid' => 'V',
 		'vtiger_senotesrel:crmid' => 'V',
@@ -3719,6 +3725,21 @@ function picklistHasDependency($keyfldname, $modulename) {
 	return ($adb->num_rows($result) > 0);
 }
 
+function fieldHasDependency($keyfldname, $modulename) {
+	$mapname = $modulename.'_FieldDependency';
+	$hasBlockingAction = false;
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapFDEP = $cbMap->FieldDependency();
+		$cbMapFDEP = $cbMapFDEP['blockedtriggerfields'];
+		if (in_array($keyfldname, $cbMapFDEP)) {
+			$hasBlockingAction = true;
+		}
+	}
+	return $hasBlockingAction;
+}
+
 function fetch_logo($type) {
 	$companyDetails = retrieveCompanyDetails();
 	switch ($type) {
@@ -3836,5 +3857,16 @@ function numberBytes($size) {
 	} else {
 		return round($size);
 	}
+}
+
+function getModuleFieldsInfo($module) {
+	global $adb;
+	$rs = $adb->pquery('SELECT * FROM vtiger_field WHERE tabid=?', array(
+		getTabid($module)
+	));
+	if ($adb->num_rows($rs) > 0) {
+		return $rs->GetRows();
+	}
+	return false;
 }
 ?>

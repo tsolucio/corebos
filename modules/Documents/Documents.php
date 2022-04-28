@@ -158,6 +158,15 @@ class Documents extends CRMEntity {
 		if (!empty($this->parentid)) {
 			$this->save_related_module('Documents', $this->id, getSalesEntityType($this->parentid), $this->parentid);
 		}
+		$Document_DefaultFolder = GlobalVariable::getVariable('Document_DefaultFolder', '');
+		if (empty($this->mode) && !empty($Document_DefaultFolder)) {
+			$folderId = __cb_getidof(array(
+				'DocumentFolders', 'foldername', $Document_DefaultFolder
+			));
+			if ($folderId > 0) {
+				$this->save_related_module('Documents', $this->id, 'DocumentFolders', $folderId);
+			}
+		}
 	}
 
 	/**
@@ -457,10 +466,17 @@ class Documents extends CRMEntity {
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
+		$data = array();
+		$data['sourceModule'] = getSalesEntityType($id);
+		$data['sourceRecordId'] = $id;
+		$data['destinationModule'] = $return_module;
+		$data['destinationRecordId'] = $return_id;
+		cbEventHandler::do_action('corebos.entity.link.delete', $data);
 		$adb->pquery('DELETE FROM vtiger_senotesrel WHERE notesid = ? AND crmid = ?', array($id, $return_id));
 		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
 		$adb->pquery($sql, $params);
+		cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 	}
 
 	// Function to get fieldname for uitype 27 assuming that documents have only one file type field

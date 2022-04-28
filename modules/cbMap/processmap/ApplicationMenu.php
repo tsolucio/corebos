@@ -34,6 +34,9 @@ class ApplicationMenu extends processcbMap {
 			return $structure;
 		}
 		$mname = trim((string)$xml->menuname);
+		if (strtolower($mname)=='get_name_from_menuname_parameter' && !empty($arguments[0]['menuname'])) {
+			$mname = $arguments[0]['menuname'];
+		}
 		$resu = $adb->pquery(
 			'SELECT structure FROM vtiger_savemenu WHERE menuname=? or savemenuid=? limit 1',
 			array($mname, $mname)

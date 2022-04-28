@@ -11447,7 +11447,7 @@ precacheAndRoute([{
   "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "2631e8bcae7c807d04a7bcf0b1863bee"
+  "revision": "5f47a3f54a29de143129fddf15e37a09"
 }, {
   "url": "include/js/dedup.js",
   "revision": "f09b1b73041383bfe8a85ccce9641617"
@@ -11456,16 +11456,16 @@ precacheAndRoute([{
   "revision": "0272d3eb62e4f24d22c294cb9c84233e"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "a9dbe7f077b6447e94024363030684ec"
+  "revision": "dd28fbd69bdf38c4277ee9b2f2cb2eac"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "8068c66eca249bebe36650b2582ea07a"
+  "revision": "74845d1f3fee64e5a57bcbc064e086c9"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "a640236c9403493edf1439acb2ee9f52"
+  "revision": "dd45fa0b328f1324daf392fd01a65dda"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "add68682942f801d7037aaf6661511e7"
+  "revision": "e5c05f41939080261db65aec58535bf8"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "82279fd5e39a3e3f9493f53ae7d51205"
@@ -11474,31 +11474,31 @@ precacheAndRoute([{
   "revision": "c6dd1fa8efe64120bc4721d19987922d"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "d6dba707e6ffb8142053145754967ad7"
+  "revision": "7a0d623894596ddbe19e8538e6c38166"
 }, {
   "url": "include/js/general.js",
-  "revision": "8651f15dd6741aff3668c286bad72be6"
+  "revision": "a7b01e4307ea2963b19ed0e395aebc04"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "ce80de25f73e55ce40a8b1c4ac68f70a"
+  "revision": "25c05eb306fe7f8a2152c7ed46277ccc"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "995e82a81fff28de27f58d755cf5a793"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "1d5691c2d90699d8204d031a38af5478"
+  "revision": "e8308b1c68b4e77267578396af6bdc8b"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "b21472317e372c00d8c6d6e759f92294"
+  "revision": "975140a17e25e72bb265bff5c37ff1b8"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "c78d00804241356132313331f399979e"
+  "revision": "e32af3333475551fafab29912e206c47"
 }, {
   "url": "include/js/ListViewRenderes.js",
-  "revision": "9b1e40e75dba0e32aa35879c09b1b057"
+  "revision": "31a8c317aefb09f55e0fd4aeb581a437"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
@@ -11519,7 +11519,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "4cc157595c3bdaae6787077b5fc2fd59"
+  "revision": "346bb2a2bad839c26ffea5ae7cd35d45"
 }, {
   "url": "include/js/notebook.js",
   "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
@@ -11537,16 +11537,16 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "0f9aa9989789827fd872404af558e058"
+  "revision": "cb3925b58913b9ff2727debf18fa7948"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "9663dd1cea6cb7fb0cfe983e54baa186"
 }, {
   "url": "include/js/RelatedLists.js",
-  "revision": "3794d15286444aab05ed1ec3ec31da22"
+  "revision": "afd1f3cd61451676111b6d7b6adb1e16"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "edf7438272aa97e6b6805a2bbf5ab9c2"
+  "revision": "b4a62b76753cdc597cfb04c9b0e62f31"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -11582,16 +11582,16 @@ precacheAndRoute([{
   "revision": "3e6e33cd306b1235add3d25fcda8541d"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.css",
-  "revision": "5794620d5e2be6ceccf5c7e8a3b203c7"
+  "revision": "4a7f0ca8abc6d524a4231cd5e790211f"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.js",
-  "revision": "d29531b749fc2a5d955fd47c696cc4c0"
+  "revision": "258ee326841cb517d6096471ecf8d632"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.min.css",
-  "revision": "59cedb42938c25aaabe90da607989d1c"
+  "revision": "af7ae0b1f88c7d2c1c1fea9d52b2b744"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.min.js",
-  "revision": "586069b916d3914627e9651bca2f10de"
+  "revision": "ee7c5a46f5d0b0ab56374502fedaefda"
 }, {
   "url": "include/components/toast-ui/pagination/tui-pagination.css",
   "revision": "70ffbb5f994ca8a5038f529254ab0feb"
@@ -11673,6 +11673,9 @@ precacheAndRoute([{
 }, {
   "url": "include/csrfmagic/csrf-magic.js",
   "revision": "143302dc3175324824d718937e339fff"
+}, {
+  "url": "include/MassCreateGridView/MassCreateGridView.js",
+  "revision": "d81a369e38b04479dc4a349c4c510058"
 }, {
   "url": "include/style.css",
   "revision": "d366c521d8140f4799b529e65f6d53df"
@@ -11771,7 +11774,7 @@ precacheAndRoute([{
   "revision": "70312429e9d136159b33fd985ede4ff8"
 }, {
   "url": "modules/com_vtiger_workflow/resources/wfSendFile.js",
-  "revision": "de6c79f2c04aee8faa49e60dead928e7"
+  "revision": "9ca8d03c511c69f165bb5fa56b9c144c"
 }, {
   "url": "modules/com_vtiger_workflow/resources/Whatsappckeditor.js",
   "revision": "fab39532561524488d757c60df5fedd7"
@@ -12002,7 +12005,7 @@ precacheAndRoute([{
   "revision": "d9dc85cdf658755d29cdb4704fea4882"
 }, {
   "url": "modules/Products/Products.js",
-  "revision": "29db48a0b8fbbc9343053da72fde421d"
+  "revision": "df2676fb062d6670d5f0c696bbe74c17"
 }, {
   "url": "modules/ModComments/ModComments.js",
   "revision": "253c82414388480dd8d07ec5f899968d"
@@ -12157,6 +12160,9 @@ precacheAndRoute([{
   "url": "modules/cbMap/generatemap/DuplicateRelations.js",
   "revision": "a2c24e60f601be44f6d8a25b0a5e8431"
 }, {
+  "url": "modules/cbMap/generatemap/ListColumns.js",
+  "revision": "faedf52dc482e2a66b0084b7e8c530e2"
+}, {
   "url": "modules/cbTermConditions/cbTermConditions.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
 }, {
@@ -12242,7 +12248,7 @@ precacheAndRoute([{
   "revision": "f7fa08f24ea66f67c5b455f7562ad998"
 }, {
   "url": "modules/Services/Services.js",
-  "revision": "d5416dde0172cf49c505a0d4daf4c14d"
+  "revision": "8239244f488a12072bf6d22bfcd24f3e"
 }, {
   "url": "modules/Vendors/Vendors.js",
   "revision": "29077a91b5317da8237274d0436bbc73"
@@ -12278,7 +12284,7 @@ precacheAndRoute([{
   "revision": "9eb56ccf0c9161a66bdbd8170be17d3f"
 }, {
   "url": "modules/PriceBooks/PriceBooks.js",
-  "revision": "6e5c8842d705e371945bcb291ddca75c"
+  "revision": "c8af6625b22f69a1f9ff221f2312b252"
 }, {
   "url": "modules/Quotes/Quotes.js",
   "revision": "c2bc50ca831f1b6183c8f806d0c230f6"

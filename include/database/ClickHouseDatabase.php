@@ -400,7 +400,7 @@ class ClickHouseDatabase extends PearDatabase {
 
 	public function connect($dieOnError = false, $dbname = 'default') {
 		global $adb;
-		$this->database = $adb;
+		$this->database = $adb->database;
 		$this->chdatabase = corebos_clickhouse::connectToClickhouse();
 		$this->chdatabase->database($dbname);
 	}

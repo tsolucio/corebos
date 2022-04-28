@@ -14,11 +14,11 @@ $mod_strings = array(
 
 'LBL_ASSET_INFORMATION'=>'Informazioni Installazione',
 'LBL_CUSTOM_INFORMATION'=>'Informazioni Personalizzate',
-'LBL_DESCRIPTION_INFORMATION'=>'Note',
+'LBL_DESCRIPTION_INFORMATION'=>'Nota',
 
 'Assets'=>'Installazioni',
 'Asset Name' => 'Nome Installazione',
-'Customer Name'=>'Azienda',
+'Customer Name'=>'Nome del cliente',
 'Product Name'=>'Prodotto',
 'Serial Number'=>'Numero di Serie',
 'Asset No'=>'Numero Installazione',
@@ -28,10 +28,16 @@ $mod_strings = array(
 'Shipping Method'=>'Metodo di Spedizione',
 'Shipping Tracking Number'=>'Numero di Spedizione',
 'Tag Number'=>'Numero Tag',
-'Notes'=>'Note',
+'Notes'=>'Nota',
 'Invoice Name'=>'Fattura',
+'Assigned To'=>'Assegnato a',
+'Created Time'=>'Tempo Creato',
+'Modified Time'=>'Tempo Modificato',
+'Last Modified By'=>'Ultima Modifica Di',
+'Created By'=>'Creato Da',
 
 'In Service'=>'A Servizio',
 'Out-of-service'=>'Fuori Servizio',
+'Assets ID'=>'Installazione ID',
 );
 ?>

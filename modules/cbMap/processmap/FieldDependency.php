@@ -140,12 +140,22 @@ class FieldDependency extends processcbMap {
 		}
 		$mapping_arr = array();
 		$mapping_arr['origin'] = (string)$xml->originmodule->originname;
+		if (empty($xml->blocktriggerfields)) {
+			$mapping_arr['blocktriggerfields'] = 1;
+		} else {
+			$mapping_arr['blocktriggerfields'] = (int)filter_var(strtolower((string)$xml->blocktriggerfields), FILTER_VALIDATE_BOOLEAN);
+		}
+		$mapping_arr['blockedtriggerfields'] = [];
 		$target_fields = array();
 		foreach ($xml->dependencies->dependency as $v) {
+			$hasBlockingAction = false;
 			$conditions = $this->expandConditionColumn((string)$v->condition, $mapping_arr['origin']);
 			$actions=array();
 			foreach ($v->actions->change as $action) {
 				$actions['change'][] = array('field'=>(string)$action->field,'value'=>(string)$action->value);
+				if ($mapping_arr['blocktriggerfields']) {
+					$hasBlockingAction = true;
+				}
 			}
 			foreach ($v->actions->hide as $action) {
 				foreach ($action->field as $fld => $name) {
@@ -163,6 +173,9 @@ class FieldDependency extends processcbMap {
 					$opt[]=(string)$opt2;
 				}
 				$actions['deloptions'][] = array('field'=>(string)$action->field,'options'=>$opt);
+				if ($mapping_arr['blocktriggerfields']) {
+					$hasBlockingAction = true;
+				}
 			}
 			foreach ($v->actions->setoptions as $action) {
 				$opt=array();
@@ -170,6 +183,9 @@ class FieldDependency extends processcbMap {
 					$opt[]=(string)$opt2;
 				}
 				$actions['setoptions'][] = array('field'=>(string)$action->field,'options'=>$opt);
+				if ($mapping_arr['blocktriggerfields']) {
+					$hasBlockingAction = true;
+				}
 			}
 			foreach ($v->actions->collapse as $action) {
 				foreach ($action->block as $block) {
@@ -218,9 +234,15 @@ class FieldDependency extends processcbMap {
 					'value'=>(string)$action->name,
 					'params'=>$params
 				);
+				if ($mapping_arr['blocktriggerfields']) {
+					$hasBlockingAction = true;
+				}
 			}
 			foreach ($v->field as $fld) {
 				$target_fields[(string)$fld][] = array('conditions'=>$conditions,'actions'=>$actions);
+				if ($mapping_arr['blocktriggerfields'] && $hasBlockingAction) {
+					$mapping_arr['blockedtriggerfields'][] = (string)$fld;
+				}
 			}
 		}
 		$picklistdep = Vtiger_DependencyPicklist::getMapPicklistDependencyDatasource($mapping_arr['origin']);
@@ -229,6 +251,9 @@ class FieldDependency extends processcbMap {
 				$target_fields[$key] = array_merge($value, $target_fields[$key]);
 			} else {
 				$target_fields[$key] = $value;
+			}
+			if ($mapping_arr['blocktriggerfields']) {
+				$mapping_arr['blockedtriggerfields'][] = $key;
 			}
 		}
 		$mapping_arr['fields'] = $target_fields;

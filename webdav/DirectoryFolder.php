@@ -27,17 +27,15 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 
 	private function getDocumentQuery() {
 		global $current_user;
-		$sql = "select vtiger_senotesrel.crmid,case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
-			'Documents' ActivityType,vtiger_attachments.name as file_name, vtiger_attachments.type FileType,crm2.modifiedtime lastmodified,
-			vtiger_seattachmentsrel.attachmentsid attachmentsid, vtiger_notes.notesid crmid, vtiger_notes.notecontent description,vtiger_notes.*
-			from vtiger_notes
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
-			left join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
-			left join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid
+		$sql = "select distinct vtiger_notes.*, vtiger_crmentity.*, vtiger_notescf.* from vtiger_notes
+			inner join vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_notes.notesid
+			inner join vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid)
+			inner join vtiger_notescf ON vtiger_notescf.notesid = vtiger_notes.notesid
 			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
-			left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
-			left join vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid";
+			left join vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+			left join vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+			where vtiger_crmentity.deleted=0 and (vtiger_crmentityrel.crmid=? OR vtiger_crmentityrel.relcrmid=?) ";
 		$instance = CRMEntity::getInstance('Documents');
 		$sql .= $instance->getNonAdminAccessControlQuery('Documents', $current_user);
 		return $sql;
@@ -45,11 +43,17 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 
 	public function getChildren() {
 		global $adb;
-		$query = $this->getDocumentQuery().' where vtiger_notes.folderid=?';
-		$records = $adb->pquery($query, array($this->folderid));
+		$query = $this->getDocumentQuery();
+		$records = $adb->pquery($query, array($this->folderid, $this->folderid));
 		while ($row = $adb->fetch_array($records)) {
 			if ($row['filelocationtype'] == 'I') {
 				$folder[] = new CRMFile($row, $this->folderid);
+			}
+		}
+		$result = $adb->pquery('SELECT documentfoldersid, foldername FROM vtiger_documentfolders INNER JOIN vtiger_crmentity ON crmid=documentfoldersid WHERE parentfolder=? AND deleted=0', array($this->folderid));
+		if ($adb->num_rows($result) > 0) {
+			while ($row = $adb->fetch_array($result)) {
+				$folder[] = new DirectoryFolder($row['foldername'], $row['documentfoldersid']);
 			}
 		}
 		if (empty($folder)) {
@@ -59,8 +63,8 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 	}
 
 	public function createDirectory($name) {
-		include_once 'modules/Documents/Documents.php';
-		if (!Documents::createFolder(htmlentities($name))) {
+		include_once 'modules/DocumentFolders/DocumentFolders.php';
+		if (!DocumentFolders::createFolder(htmlentities($name), $this->folderid)) {
 			throw new Sabre\DAV\Exception\Forbidden('Permission denied to create Subdrectories');
 		}
 	}
@@ -68,9 +72,16 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 	public function getChild($filename) {
 		global $adb;
 		$filename = html_entity_decode(html_entity_decode($filename));
-		$query = $this->getDocumentQuery().' where vtiger_notes.folderid=? AND (filename=? OR vtiger_attachments.name=?)';
-		$records = $adb->pquery($query, array($this->folderid, $filename, $filename));
+		$query = $this->getDocumentQuery().' and (vtiger_notes.filename=? OR vtiger_attachments.name=?)';
+		$records = $adb->pquery($query, array($this->folderid, $this->folderid, $filename, $filename));
 		if ($adb->num_rows($records) == 0) {
+			$result = $adb->pquery('SELECT documentfoldersid, foldername FROM vtiger_documentfolders INNER JOIN vtiger_crmentity ON crmid=documentfoldersid WHERE foldername=? AND parentfolder=?', array($filename, $this->folderid));
+			if ($adb->num_rows($result) > 0) {
+				$row = $adb->fetch_array($result);
+				$this->folderid = $row['documentfoldersid'];
+				$this->foldername = $row['foldername'];
+				return new DirectoryFolder($row['foldername'], $row['documentfoldersid']);
+			}
 			throw new Sabre\DAV\Exception\NotFound('File not found: ' . $filename);
 		}
 		$row = $adb->fetch_array($records);
@@ -89,10 +100,15 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 	public function setName($name) {
 		global $adb;
 		if (!empty($this->folderid) && $this->folderid > 1) {
-			$adb->pquery('UPDATE vtiger_attachmentsfolder SET foldername=? WHERE folderid=?', array($name, intval($this->folderid)));
+			$adb->pquery('UPDATE vtiger_documentfolders SET foldername=? WHERE documentfoldersid=?', array($name, intval($this->folderid)));
 			return true;
 		}
 		throw new Sabre\DAV\Exception\Forbidden('Permission denied to rename default directory');
+	}
+
+	public function delete() {
+		global $adb;
+		$adb->pquery('update vtiger_crmentity set deleted=1 where crmid=?', array($this->folderid));
 	}
 
 	public function createFile($name, $data = null) {
@@ -104,7 +120,7 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 	}
 
 	public function getData() {
-		return array('folderid' => $this->folderid, 'foldername' => $this->foldername, 'filetype' => 'node/directory');
+		return array('folderid' => $this->folderid, 'foldername' => $this->foldername, 'filetype' => 'node/directory', 'module' => 'Documents');
 	}
 
 	public function getName() {

@@ -518,7 +518,12 @@ class ListViewController {
 						}
 						if (!isset($this->nameList[$fieldName][$value]) && !empty($value)) {
 							$en = getEntityName($setype, $value);
-							$this->nameList[$fieldName][$value] = $en[$value];
+							if (empty($en)) {
+								$en = getUserFullName($value);
+								$this->nameList[$fieldName][$value] = $en;
+							} else {
+								$this->nameList[$fieldName][$value] = $en[$value];
+							}
 						}
 					}
 					if (!empty($value) && !empty($this->nameList[$fieldName]) && !empty($this->nameList[$fieldName][$value])) {

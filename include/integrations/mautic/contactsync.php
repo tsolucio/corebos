@@ -54,32 +54,36 @@ function contactsync($input) {
 			foreach ($fields as $field) {
 				$mauticdata[$field['alias']] = $field['value'];
 			}
+			$send2cb = array();
 			$bmapname = 'MauticToContacts';
 			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 			if ($cbMapid) {
-				$send2cb = array();
 				$cbMap = cbMap::getMapByID($cbMapid);
 				$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-				$send2cb['mautic_id'] = $contact['id'];
-				$send2cb['assigned_user_id'] = $usrwsid;
-				$send2cb['from_externalsource'] = 'mautic';
+			} else {
+				$send2cb['firstname'] = $mauticdata['firstname'];
+				$send2cb['lastname'] = $mauticdata['lastname'];
+				$send2cb['email'] = $mauticdata['email'];
+			}
+			$send2cb['mautic_id'] = $contact['id'];
+			$send2cb['assigned_user_id'] = $usrwsid;
+			$send2cb['from_externalsource'] = 'mautic';
 
-				$record = vtws_create('Contacts', $send2cb, $current_user);
-				if ($record) {
-					// Reset from_externalsource
-					list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
-					$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
-					// Update corebos_id
-					$auth = $mautic->authenticate();
-					if ($auth) {
-						$apiUrl     = $mautic->getSettings('baseUrl');
-						$api        = new MauticApi();
-						$contactApi = $api->newApi('contacts', $auth, $apiUrl);
-						$updatedData = [
-							'corebos_id' => $record['id']
-						];
-						$contactApi->edit($contact['id'], $updatedData);
-					}
+			$record = vtws_create('Contacts', $send2cb, $current_user);
+			if ($record) {
+				// Reset from_externalsource
+				list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
+				$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
+				// Update corebos_id
+				$auth = $mautic->authenticate();
+				if ($auth) {
+					$apiUrl     = $mautic->getSettings('baseUrl');
+					$api        = new MauticApi();
+					$contactApi = $api->newApi('contacts', $auth, $apiUrl);
+					$updatedData = [
+						'corebos_id' => $record['id']
+					];
+					$contactApi->edit($contact['id'], $updatedData);
 				}
 			}
 		}
@@ -93,24 +97,27 @@ function contactsync($input) {
 		foreach ($fields as $field) {
 			$mauticdata[$field['alias']] = $field['value'];
 		}
+		$send2cb = array();
 		$bmapname = 'MauticToContacts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-
 		if ($cbMapid) {
-			$send2cb = array();
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$send2cb = $cbMap->Mapping($mauticdata, $send2cb);
-			$send2cb['mautic_id'] = $contact['id'];
-			$send2cb['assigned_user_id'] = $usrwsid;
-			$send2cb['id'] = $fields['corebos_id']['value'];
-			$send2cb['from_externalsource'] = 'mautic';
+		} else {
+			$send2cb['firstname'] = $mauticdata['firstname'];
+			$send2cb['lastname'] = $mauticdata['lastname'];
+			$send2cb['email'] = $mauticdata['email'];
+		}
+		$send2cb['mautic_id'] = $contact['id'];
+		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['id'] = $fields['corebos_id']['value'];
+		$send2cb['from_externalsource'] = 'mautic';
 
-			$record = vtws_update($send2cb, $current_user);
-			if ($record) {
-				// Reset from_externalsource
-				list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
-				$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
-			}
+		$record = vtws_update($send2cb, $current_user);
+		if ($record) {
+			// Reset from_externalsource
+			list($contact_tabid, $contact_crmid) = explode('x', $record['id']);
+			$adb->pquery('UPDATE vtiger_contactdetails SET from_externalsource=? where contactid=?', array('', $contact_crmid));
 		}
 	} elseif ($delete) {
 		$contact = $data['mautic.lead_post_delete'][0]['contact'];
