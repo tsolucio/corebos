@@ -52,9 +52,13 @@ switch ($op) {
 						if (!empty($relMods)) {
 							foreach ($relMods as $mod) {
 								$reference_field = getEntityFieldNames($mod);
-								$id = __cb_getidof(array(
-									$mod, $reference_field['fieldname'], $value
-								));
+								if (is_array($reference_field['fieldname'])) {
+									$id = getEntityId($mod, $value);
+								} else {
+									$id = __cb_getidof(array(
+										$mod, $reference_field['fieldname'], $value
+									));
+								}
 								if ($id > 0) {
 									$tabid = vtyiicpng_getWSEntityId($mod);
 									$value = $tabid.$id;
