@@ -293,7 +293,15 @@ class PurchaseOrder extends CRMEntity {
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
-
+		$customRelModules = ['Contacts', 'Vendors', 'Documents'];
+		if (in_array($return_module, $customRelModules)) {
+			$data = array();
+			$data['sourceModule'] = getSalesEntityType($id);
+			$data['sourceRecordId'] = $id;
+			$data['destinationModule'] = $return_module;
+			$data['destinationRecordId'] = $return_id;
+			cbEventHandler::do_action('corebos.entity.link.delete', $data);
+		}
 		if ($return_module == 'Vendors') {
 			$mtime = $adb->formatDate(date('Y-m-d H:i:s'), true);
 			$adb->pquery('UPDATE vtiger_crmentity SET deleted=1,modifiedtime=? WHERE crmid=?', array($mtime, $id));
@@ -310,6 +318,9 @@ class PurchaseOrder extends CRMEntity {
 			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
+		}
+		if (in_array($return_module, $customRelModules)) {
+			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		}
 	}
 

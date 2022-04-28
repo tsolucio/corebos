@@ -96,6 +96,7 @@ $ListFields = array_map(function ($key) use ($fields, $items, $currentModule) {
 $smarty->assign('EmptyData', json_encode($emptydata));
 $smarty->assign('GridColumns', json_encode($columns));
 $smarty->assign('ListFields', json_encode($ListFields));
+$smarty->assign('bmapname', $bmapname);
 $smarty->assign('moduleView', 'MassCreateGrid');
 $smarty->assign('moduleShowSearch', false);
 ?>

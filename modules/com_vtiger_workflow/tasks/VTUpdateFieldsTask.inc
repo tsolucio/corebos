@@ -89,9 +89,11 @@ class VTUpdateFieldsTask extends VTTask {
 					}
 					if (count($relmodule)>3 && !$isqueue) {
 						$delay = 5*60; // 5 minutes from now
+						$entityData->WorkflowContext['__WorkflowID'] = $entity->WorkflowID;
 						$msg = array(
 							'taskId' => $this->id,
 							'entityId' => $entityId,
+							'context' => $entity->WorkflowContext,
 						);
 						Workflow::pushWFTaskToQueue($entity->WorkflowID, $entity->WorkflowEvent, $entityId, $msg, $delay);
 						return;

@@ -24,7 +24,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const MCGrid = {
 
+	ActiveColumns: [],
+	Module: gVTModule,
+
 	Show: () => {
+		MCGrid.ActiveColumns = JSON.parse(GridColumns);
 		mcdataGridInstance = new mctuiGrid({
 			el: document.getElementById('listview-tui-grid'),
 			rowHeaders: ['rowNum', 'checkbox'],
@@ -37,7 +41,7 @@ const MCGrid = {
 			header: {
 				align: 'left'
 			},
-			columns: JSON.parse(GridColumns)
+			columns: MCGrid.ActiveColumns
 		});
 		tui.Grid.applyTheme('striped');
 		mcdataGridInstance.on('keydown', ev => {
@@ -58,7 +62,7 @@ const MCGrid = {
 		const data = mcdataGridInstance.getData();
 		document.getElementById('slds-spinner').style.display = 'block';
 		fetch(
-			'index.php?module=Utilities&action=UtilitiesAjax&file=MassCreateGridAPI&moduleName='+gVTModule,
+			'index.php?module=Utilities&action=UtilitiesAjax&file=MassCreateGridAPI&moduleName='+gVTModule+'&method=MassCreate',
 			{
 				method: 'post',
 				headers: {
@@ -128,5 +132,26 @@ const MCGrid = {
 		mcdataGridInstance.setColumns(newColumns);
 		ListFields = JSON.stringify(columns);
 		ldsModal.close();
+		MCGrid.ActiveColumns = newColumns;
+		MCGrid.SaveMap();
 	},
+
+	SaveMap: () => {
+		fetch(
+			'index.php?module=Utilities&action=UtilitiesAjax&file=MassCreateGridAPI&method=SaveMap',
+			{
+				method: 'post',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+				},
+				credentials: 'same-origin',
+				body: '&'+csrfMagicName+'='+csrfMagicToken+'&ActiveColumns='+JSON.stringify(MCGrid.ActiveColumns)+'&mapName='+bmapname+'&moduleName='+MCGrid.Module
+			}
+		).then(response => response.json()).then(response => {
+			if (response.length == 0) {
+				mcdataGridInstance.setColumns(JSON.parse(GridColumns));
+				ldsPrompt.show(alert_arr.ERROR, alert_arr.ERROR_WHILE_EDITING);
+			}
+		});
+	}
 };

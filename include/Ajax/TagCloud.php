@@ -38,21 +38,14 @@ if ($ajaxaction == 'SAVETAG') {
 		if ($tagfields != '') {
 			$freetag = new freetag();
 			$freetag->tag_object($userid, $crmid, $tagfields, $module);
-			$tagcloud = $freetag->get_tag_cloud_html($module, $userid, $crmid);
-			echo $tagcloud;
+			echo $freetag->get_tag_cloud_html($module, $userid, $crmid);
 		}
 	} else {
 		echo ':#:FAILURE';
 	}
 } elseif ($ajaxaction == 'GETTAGCLOUD') {
 	$freetag = new freetag();
-	if (trim($module) != '') {
-		$tagcloud = $freetag->get_tag_cloud_html($module, $userid, $crmid);
-		echo $tagcloud;
-	} else {
-		$tagcloud = $freetag->get_tag_cloud_html('', $userid);
-		echo $tagcloud;
-	}
+	echo $freetag->get_tag_cloud_html((trim($module) != '' ? $module : ''), $userid, $crmid);
 } elseif ($ajaxaction == 'DELETETAG') {
 	if (is_numeric($_REQUEST['tagid'])) {
 		$tagid = vtlib_purify($_REQUEST['tagid']);
