@@ -91,4 +91,11 @@
 	<classname>addPLValueGridOnQuestion</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Business Actions types for MassCreateGrid</description>
+	<filename>build/changeSets/2022/addBAtypesForMassCreateGrid.php</filename>
+	<classname>addBAtypesForMassCreateGrid</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
