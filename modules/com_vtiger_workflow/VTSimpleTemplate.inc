@@ -413,7 +413,6 @@ class VTSimpleTemplate {
 		list($wsid,$crmid) = explode('x', $wsid);
 		$maptype = '';
 		if (!empty($rlcondition)) {
-			$log->fatal('rlcondition: '.$rlcondition);
 			$cbmap = cbMap::getMapByID($rlcondition);
 			if ($cbmap) {
 				$maptype = $cbmap->column_fields['maptype'];
