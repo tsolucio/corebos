@@ -41,6 +41,11 @@
 		</svg>
 		{$APP.LBL_DELETE_BUTTON}
 	</button>
+	{if isset($BALinks)}
+		{foreach from=$BALinks item=$i}
+			<a class="slds-button slds-button_neutral" href="{$i->linkurl}">{$i->linklabel}</a>
+		{/foreach}
+	{/if}
 </div>
 <div class="slds-button-group slds-float_right" role="group" style="margin-bottom: 5px;">
 	<button class="slds-button slds-button_neutral" onclick="MCGrid.EditFields()">

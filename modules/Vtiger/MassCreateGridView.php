@@ -95,6 +95,11 @@ $ListFields = array_map(function ($key) use ($fields, $items, $currentModule) {
 	}
 	return $listFields;
 }, $cachedModuleFields);
+$tabid = getTabid($currentModule);
+$linksurls = BusinessActions::getAllByType($tabid, array('MASSUPSERTGRID'));
+if (!empty($linksurls['MASSUPSERTGRID'])) {
+	$smarty->assign('BALinks', $linksurls['MASSUPSERTGRID']);
+}
 $smarty->assign('EmptyData', json_encode($emptydata));
 $smarty->assign('GridColumns', json_encode($columns));
 $smarty->assign('ListFields', json_encode($ListFields));

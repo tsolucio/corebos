@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate missing termsn to Brazilian Portuguese| 07-apr-2018 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate missing terms to Brazilian Portuguese| 28-apr-2022 |Sao Paulo/SP/Brasil.|www.ecrm360.com.br
  ********************************************************************************/
 $mod_strings = array(
 'LBL_MODULE_NAME'=>'Customizar visualização',
@@ -58,6 +58,7 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 'Next 60 Days'=>'Próximos 60 Dias',
 'Next 90 Days'=>'Próximos 90 Dias',
 'Next 120 Days'=>'Próximos 120 Dias',
+'PriorToToday'=>'Até hoje',
 
 'equals'=>'igual',
 'contains'=>'Contém',
