@@ -94,6 +94,8 @@ if ($viewid == 0) {
 global $current_user;
 $sql_error = false;
 $queryGenerator = new QueryGenerator($currentModule, $current_user);
+$Webservice_Translate_Strings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
+$queryGenerator->translateStrings = $Webservice_Translate_Strings;
 try {
 	if ($viewid != '0') {
 		$queryGenerator->initForCustomViewById($viewid);

@@ -81,6 +81,7 @@ class QueryGenerator {
 		$this->groupInfo = '';
 		$this->manyToManyRelatedModuleConditions = array();
 		$this->conditionInstanceCount = 0;
+		$this->translateStrings = false;
 		$this->customViewFields = array();
 		$this->setHasUserReferenceField();
 		$this->setReferenceFields();
@@ -902,6 +903,9 @@ class QueryGenerator {
 		if ($this->meta->getTabName() == 'Documents' && $this->SearchDocuments) {
 			$sql .= ' LEFT JOIN vtiger_documentsearchinfo ON vtiger_documentsearchinfo.documentid=vtiger_notes.notesid ';
 		}
+		if ($this->translateStrings && isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
+			$sql .= ' LEFT JOIN vtiger_cbtranslation ON vtiger_cbtranslation.translates='.$baseTable.'.'.$baseTableIndex;
+		}
 		$this->fromClause = $sql;
 		return $sql;
 	}
@@ -1051,7 +1055,11 @@ class QueryGenerator {
 									.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
 									.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 							} else {
-								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+								if ($this->translateStrings && isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
+									$fieldSql .= "vtiger_cbtranslation.i18n $valueSql AND vtiger_cbtranslation.forfield='".$field->getColumnName()."'";
+								} else {
+									$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+								}
 							}
 						}
 					}
@@ -1176,6 +1184,9 @@ class QueryGenerator {
 		}
 		$sql .= " AND $baseTable.$baseTableIndex > 0";
 		$this->whereClause = $sql;
+		if ($this->translateStrings && isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
+			$sql .= " AND vtiger_cbtranslation.locale='$current_user->language'";
+		}
 		return $sql;
 	}
 

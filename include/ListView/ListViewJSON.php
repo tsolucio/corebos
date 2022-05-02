@@ -31,6 +31,7 @@ class GridListView {
 		}
 		$entityField = getEntityField($this->module);
 		$this->entityidfield = $entityField['entityid'];
+		$this->Webservice_Translate_Strings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
 	}
 
 	public function Show() {
@@ -48,6 +49,7 @@ class GridListView {
 			$order_by = $focus->getOrderBy();
 		}
 		$queryGenerator = new QueryGenerator($this->module, $current_user);
+		$queryGenerator->translateStrings = $this->Webservice_Translate_Strings;
 		try {
 			if ($viewid != '0') {
 				$queryGenerator->initForCustomViewById($viewid);
