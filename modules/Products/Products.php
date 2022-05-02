@@ -881,54 +881,6 @@ class Products extends CRMEntity {
 		return $return_value;
 	}
 
-	/**	function used to get the list of pricebooks which are related to the product
-	 *	@param integer product id
-	 *	@return array which will be returned from the function GetRelatedList
-	 */
-	public function get_product_pricebooks($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $log,$singlepane_view,$currentModule;
-		$log->debug('> get_product_pricebooks '.$id);
-
-		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		checkFileAccessForInclusion("modules/$related_module/$related_module.php");
-		require_once "modules/$related_module/$related_module.php";
-		$focus = new $related_module();
-
-		$button = '';
-		if ($actions) {
-			if (is_string($actions)) {
-				$actions = explode(',', strtoupper($actions));
-			}
-			if (in_array('ADD', $actions) && isPermitted($related_module, 'CreateView', '') == 'yes' && isPermitted($currentModule, 'EditView', $id) == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_ADD_TO').' '.getTranslatedString($related_module, $related_module)."' class='crmbutton small create'"
-					." onclick='this.form.action.value=\"AddProductToPriceBooks\";this.form.module.value=\"$currentModule\"' type='submit' name='button'"
-					." value='". getTranslatedString('LBL_ADD_TO'). ' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
-			}
-		}
-
-		if ($singlepane_view == 'true') {
-			$returnset = '&return_module=Products&return_action=DetailView&return_id='.$id;
-		} else {
-			$returnset = '&return_module=Products&return_action=CallRelatedList&return_id='.$id;
-		}
-		$crmtablealias = CRMEntity::getcrmEntityTableAlias($related_module);
-		$query = 'SELECT vtiger_crmentity.crmid, vtiger_pricebook.*, vtiger_pricebookproductrel.productid as prodid, vtiger_pricebookproductrel.listprice as listprice
-			FROM vtiger_pricebook
-			INNER JOIN '.$crmtablealias.' ON vtiger_crmentity.crmid = vtiger_pricebook.pricebookid
-			INNER JOIN vtiger_pricebookproductrel ON vtiger_pricebookproductrel.pricebookid = vtiger_pricebook.pricebookid
-			WHERE vtiger_crmentity.deleted = 0 AND vtiger_pricebookproductrel.productid = '.$id;
-		$log->debug('< get_product_pricebooks');
-
-		$return_value = GetRelatedList($currentModule, $related_module, $focus, $query, $button, $returnset);
-
-		if ($return_value == null) {
-			$return_value = array();
-		}
-		$return_value['CUSTOM_BUTTON'] = $button;
-
-		return $return_value;
-	}
-
 	/**	function used to get the number of vendors which are related to the product
 	 *	@param integer product id
 	 *	@return integer number of rows - return the number of products which do not have relationship with vendor
@@ -1102,7 +1054,6 @@ class Products extends CRMEntity {
 			'PurchaseOrder'=>'vtiger_inventoryproductrel',
 			'SalesOrder'=>'vtiger_inventoryproductrel',
 			'Invoice'=>'vtiger_inventoryproductrel',
-			'PriceBooks'=>'vtiger_pricebookproductrel',
 			'Leads'=>'vtiger_seproductsrel',
 			'Accounts'=>'vtiger_seproductsrel',
 			'Potentials'=>'vtiger_seproductsrel',
@@ -1112,14 +1063,12 @@ class Products extends CRMEntity {
 			'vtiger_productcomponent'=>'productcomponentid',
 			'vtiger_seattachmentsrel'=>'attachmentsid',
 			'vtiger_inventoryproductrel'=>'id',
-			'vtiger_pricebookproductrel'=>'pricebookid',
 			'vtiger_seproductsrel'=>'crmid',
 		);
 		$entity_tbl_field_arr = array(
 			'vtiger_productcomponent'=>'topdo',
 			'vtiger_seattachmentsrel'=>'crmid',
 			'vtiger_inventoryproductrel'=>'productid',
-			'vtiger_pricebookproductrel'=>'productid',
 			'vtiger_seproductsrel'=>'productid',
 		);
 		foreach ($transferEntityIds as $transferId) {
@@ -1216,7 +1165,6 @@ class Products extends CRMEntity {
 			'Accounts' => array('vtiger_seproductsrel'=>array('productid','crmid'),'vtiger_products'=>'productid'),
 			'Contacts' => array('vtiger_seproductsrel'=>array('productid','crmid'),'vtiger_products'=>'productid'),
 			'Potentials' => array('vtiger_seproductsrel'=>array('productid','crmid'),'vtiger_products'=>'productid'),
-			'PriceBooks' => array('vtiger_pricebookproductrel'=>array('productid','pricebookid'),'vtiger_products'=>'productid'),
 			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_products'=>'productid'),
 		);
 		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
@@ -1247,7 +1195,15 @@ class Products extends CRMEntity {
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
-
+		$customRelModules = ['cbCalendar', 'Accounts', 'Potentials', 'Contacts', 'Leads', 'Vendors', 'Documents'];
+		if (in_array($return_module, $customRelModules)) {
+			$data = array();
+			$data['sourceModule'] = getSalesEntityType($id);
+			$data['sourceRecordId'] = $id;
+			$data['destinationModule'] = $return_module;
+			$data['destinationRecordId'] = $return_id;
+			cbEventHandler::do_action('corebos.entity.link.delete', $data);
+		}
 		if ($return_module == 'cbCalendar') {
 			$sql = 'DELETE FROM vtiger_seactivityrel WHERE crmid = ? AND activityid = ?';
 			$adb->pquery($sql, array($id, $return_id));
@@ -1262,6 +1218,9 @@ class Products extends CRMEntity {
 			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
+		}
+		if (in_array($return_module, $customRelModules)) {
+			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		}
 	}
 

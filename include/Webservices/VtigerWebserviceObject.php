@@ -28,7 +28,9 @@ class VtigerWebserviceObject {
 
 	public static function fromName($adb, $entityName) {
 		$rowData = false;
-
+		if ($entityName=='com_vtiger_workflow') {
+			$entityName = 'Workflow';
+		}
 		// If the information not available in cache?
 		if (!isset(self::$_fromNameCache[$entityName])) {
 			$result = $adb->pquery('select * from vtiger_ws_entity where name=?', array($entityName));

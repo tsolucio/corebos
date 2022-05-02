@@ -77,4 +77,25 @@
 	<classname>addDocumentFoldersValidations</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Convert Price Book to Price List m:m relation</description>
+	<filename>build/changeSets/2022/convertPricebookToPriceList.php</filename>
+	<classname>convertPricebookToPriceList</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Grid Type Picklist Value on Question</description>
+	<filename>build/changeSets/2022/addPLValueGridOnQuestion.php</filename>
+	<classname>addPLValueGridOnQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Business Actions types for MassCreateGrid</description>
+	<filename>build/changeSets/2022/addBAtypesForMassCreateGrid.php</filename>
+	<classname>addBAtypesForMassCreateGrid</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

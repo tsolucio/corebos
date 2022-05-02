@@ -204,9 +204,6 @@ if (isset($action) && isset($module)) {
 		preg_match("/^UpdateProfile/", $action) ||
 		preg_match("/^updateRelations/", $action) ||
 		preg_match("/^Star/", $action) ||
-		preg_match("/^addPbProductRelToDB/", $action) ||
-		preg_match("/^UpdateListPrice/", $action) ||
-		preg_match("/^PriceListPopup/", $action) ||
 		preg_match("/^CreatePDF/", $action) ||
 		preg_match("/^CreateSOPDF/", $action) ||
 		preg_match("/^redirect/", $action) ||

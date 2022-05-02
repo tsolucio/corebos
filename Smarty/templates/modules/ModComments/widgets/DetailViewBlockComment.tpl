@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ************************************************************************************}
 
- {if empty($smarty.request.ajax)}
+{if empty($smarty.request.ajax)}
 	<input type="hidden" id="comments_parentId" value="{$ID}" />
 	<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr class="detailview_block_header comments_block_header">
@@ -34,7 +34,6 @@
 	</tr>
 	</table>
 	{/if}
-	
 	<div id="tbl{$UIKEY}" style="display: {if $BLOCKOPEN}block{else}none{/if};">
 		<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr style="height: 25px;">
@@ -69,7 +68,7 @@
 				<button
 					class="slds-button slds-button_neutral"
 					title="{$APP.LBL_CLEAR_BUTTON_LABEL}"
-					onclick="document.getElementById('txtbox_{$UIKEY}').value='';" 
+					onclick="document.getElementById('txtbox_{$UIKEY}').value='';"
 					style="margin-left: 0;"
 					>
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
@@ -83,4 +82,3 @@
 		{/if}
 		</table>
 	</div>
-	

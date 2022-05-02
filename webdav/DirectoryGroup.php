@@ -106,7 +106,7 @@ class DirectoryGroup extends Sabre\DAV\Collection {
 				break;
 		}
 		if (!empty($this->mode) && $this->mode == 'folder') {
-			$result = $adb->pquery('SELECT documentfoldersid, foldername FROM vtiger_documentfolders INNER JOIN vtiger_crmentity ON crmid=documentfoldersid WHERE foldername=?', array($name));
+			$result = $adb->pquery('SELECT documentfoldersid, foldername FROM vtiger_documentfolders INNER JOIN vtiger_crmentity ON crmid=documentfoldersid WHERE foldername=? AND deleted=0', array($name));
 			if ($adb->num_rows($result) > 0) {
 				$row = $adb->fetch_array($result);
 				return new DirectoryFolder($row['foldername'], $row['documentfoldersid']);

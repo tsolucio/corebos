@@ -586,6 +586,7 @@ class CustomView extends CRMEntity {
 			'lastweek' => '' . $mod_strings['Last Week'] . '',
 			'thisweek' => '' . $mod_strings['Current Week'] . '',
 			'nextweek' => '' . $mod_strings['Next Week'] . '',
+			'priorToToday' => '' . $mod_strings['PriorToToday'] . '',
 			'lastmonth' => '' . $mod_strings['Last Month'] . '',
 			'thismonth' => '' . $mod_strings['Current Month'] . '',
 			'nextmonth' => '' . $mod_strings['Next Month'] . '',

@@ -459,4 +459,7 @@ var alert_arr = {
 	'filterApplied': 'Filter applied',
 	'QuickView': 'Vista rápida',
 	'Restore': 'Restaurar',
+	'LBL_SUCCESS': 'Correcto',
+	'LBL_CREATED_SUCCESS': 'Creado correctamente',
+	'LBL_SELECT_COLUMNS': 'Selecciona las columnas a mostrar en la tabla',
 };
