@@ -258,6 +258,61 @@ function __cb_getRelatedMassCreateArrayConverting($arr) {
 	return $masscreateArray;
 }
 
+function __cb_getRelatedRecordCreateArrayConverting($arr) {
+	global $current_user, $log;
+	$masterDetailArray = array();
+	$relrecordsArray = array();
+	$relrecords = array();
+	if (count($arr)<4 || empty($arr[0])) {
+		return $masterDetailArray;
+	}
+
+	if (is_string($arr[3]) || is_numeric($arr[3])) {
+		$recordid = $arr[3];
+		$mainmodule = getSalesEntityType($arr[3]);
+	} else {
+		$env = $arr[3];
+		$data = $env->getData();
+		$recordid = $data['id'];
+		if (isset($env->moduleName)) {
+			$mainmodule = $env->moduleName;
+		} else {
+			$mainmodule = $env->getModuleName();
+		}
+	}
+
+	$relmodule = $arr[0];
+
+	try {
+		$relrecords = getRelatedRecords($recordid, $mainmodule, $relmodule, [], $current_user);
+		foreach ($relrecords['records'] as $recordkey => $record) {
+			$keys = array_keys($record);
+			foreach ($keys as $key) {
+				if (is_numeric($key)) {
+					unset($relrecords['records'][$recordkey][$key]);
+				}
+			}
+		}
+	} catch (\Throwable $th) {
+		return $th;
+	}
+
+	$cbMap = cbMap::getMapByName('Workflow_'.$arr[0].'2'.$arr[2]);
+
+	$tab = getRelationTables($mainmodule, $relmodule);
+	$reference_field = $tab[array_key_first($tab)][0];
+	$mfocus = CRMEntity::getInstance($arr[2]);
+	foreach ($relrecords['records'] as $record) {
+		$commonFields = array_intersect($mfocus->column_fields, $record);
+		$record['record_id'] = vtws_getCRMID($record['id']);
+		$records = empty($cbMap) ? array_merge($mfocus->column_fields, $commonFields): $cbMap->Mapping($record, $mfocus->column_fields);
+		$records[$reference_field] = '@{'.$recordid.'}';
+		$relrecordsArray[] = $records;
+	}
+
+	return $relrecordsArray;
+}
+
 function __cb_getISODate($arr) {
 	return (new DateTime())->setISODate($arr[0], $arr[1], $arr[2])->format('Y-m-d');
 }

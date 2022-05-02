@@ -1718,6 +1718,40 @@ $WFExpressionFunctionDefinitons = array(
 		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder', ,943)",
 	),
 ),
+'getRelatedRecordCreateArrayConverting' => array(
+	'name' => 'getRelatedRecordCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
+	'desc' => 'Obtain a web service Master-detail JSON structure for the given recordid and its related module records applying conversion mappings',
+	'params' => array(
+		array(
+			'name' => 'module',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the related module name to get records from',
+		),
+		array(
+			'name' => 'MainModuleDestination',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'Destination module for main module',
+		),
+		array(
+			'name' => 'RelatedModuleDestination',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'Destination module for the related modules',
+		),
+		array(
+			'name' => 'recordid',
+			'type' => 'Integer',
+			'optional' => true,
+			'desc' => 'the main record ID to get the related records from, if not given the current record triggering the workflow will be used',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder', ,943)",
+	),
+),
 'getISODate' => array(
 	'name' => 'getISODate(year, weeks, dayInWeek)',
 	'desc' => 'Obtain DateTime in ISO format from given year, weeks and day in a week',
