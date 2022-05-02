@@ -415,9 +415,7 @@ class VTSimpleTemplate {
 		if (!empty($rlcondition)) {
 			$cbmap = cbMap::getMapByID($rlcondition);
 			if ($cbmap) {
-				$maptype = $cbmap->column_fields['maptype'];
-				if ($maptype == 'Condition Query') {
-				}
+				$maptype = $cbmap->column_fields['maptype']; // we can add condition query support here in the future
 			}
 		}
 		$mod->retrieve_entity_info($crmid, $modulename);
