@@ -1715,11 +1715,11 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder', ,943)",
+		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder',943)",
 	),
 ),
 'getRelatedRecordCreateArrayConverting' => array(
-	'name' => 'getRelatedRecordCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
+	'name' => 'getRelatedRecordCreateArrayConverting(module, RelatedModuleDestination, recordid)',
 	'desc' => 'Obtain a web service Master-detail JSON structure for the given recordid and its related module records applying conversion mappings',
 	'params' => array(
 		array(
@@ -1727,12 +1727,6 @@ $WFExpressionFunctionDefinitons = array(
 			'type' => 'String',
 			'optional' => false,
 			'desc' => 'the related module name to get records from',
-		),
-		array(
-			'name' => 'MainModuleDestination',
-			'type' => 'String',
-			'optional' => false,
-			'desc' => 'Destination module for main module',
 		),
 		array(
 			'name' => 'RelatedModuleDestination',
@@ -1749,7 +1743,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder', ,943)",
+		"getRelatedRecordCreateArrayConverting('Contacts','PurchaseOrder',943)",
 	),
 ),
 'getISODate' => array(

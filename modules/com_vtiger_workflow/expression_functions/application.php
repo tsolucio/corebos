@@ -263,15 +263,15 @@ function __cb_getRelatedRecordCreateArrayConverting($arr) {
 	$masterDetailArray = array();
 	$relrecordsArray = array();
 	$relrecords = array();
-	if (count($arr)<4 || empty($arr[0])) {
+	if (count($arr)<3 || empty($arr[0])) {
 		return $masterDetailArray;
 	}
 
-	if (is_string($arr[3]) || is_numeric($arr[3])) {
-		$recordid = $arr[3];
-		$mainmodule = getSalesEntityType($arr[3]);
+	if (is_string($arr[2]) || is_numeric($arr[2])) {
+		$recordid = $arr[2];
+		$mainmodule = getSalesEntityType($arr[2]);
 	} else {
-		$env = $arr[3];
+		$env = $arr[2];
 		$data = $env->getData();
 		$recordid = $data['id'];
 		if (isset($env->moduleName)) {
@@ -297,16 +297,13 @@ function __cb_getRelatedRecordCreateArrayConverting($arr) {
 		return $th;
 	}
 
-	$cbMap = cbMap::getMapByName('Workflow_'.$arr[0].'2'.$arr[2]);
+	$cbMap = cbMap::getMapByName('Workflow_'.$arr[0].'2'.$arr[1]);
 
 	$tab = getRelationTables($mainmodule, $relmodule);
-	$reference_field = $tab[array_key_first($tab)][0];
-	$mfocus = CRMEntity::getInstance($arr[2]);
+	$mfocus = CRMEntity::getInstance($arr[1]);
 	foreach ($relrecords['records'] as $record) {
-		$commonFields = array_intersect($mfocus->column_fields, $record);
 		$record['record_id'] = vtws_getCRMID($record['id']);
-		$records = empty($cbMap) ? array_merge($mfocus->column_fields, $commonFields): $cbMap->Mapping($record, $mfocus->column_fields);
-		$records[$reference_field] = '@{'.$recordid.'}';
+		$records = empty($cbMap) ? $record : $cbMap->Mapping($record, array());
 		$relrecordsArray[] = $records;
 	}
 

@@ -110,7 +110,7 @@ function cbexpsql_supportedFunctions() {
 		//'getRelatedIDs' => 'getRelatedIDs(module)',
 		// 'getRelatedMassCreateArray' => 'getRelatedMassCreateArray(module,recordid)',
 		// 'getRelatedMassCreateArrayConverting' => 'getRelatedMassCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
-		// 'getRelatedRecordCreateArrayConverting' => 'getRelatedRecordCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
+		// 'getRelatedRecordCreateArrayConverting' => 'getRelatedRecordCreateArrayConverting(module, RelatedModuleDestination, recordid)',
 		// 'getISODate' => 'getISODate(year,weeks, dayInweek)',
 		// 'getFromContext' => 'getFromContext(variablename)',
 		// 'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',

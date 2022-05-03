@@ -201,7 +201,7 @@ class VTExpressionsManager {
 			'getRelatedIDs' => 'getRelatedIDs(module, recordid)',
 			'getRelatedMassCreateArray' => 'getRelatedMassCreateArray(module,recordid)',
 			'getRelatedMassCreateArrayConverting' => 'getRelatedMassCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
-			'getRelatedRecordCreateArrayConverting' => 'getRelatedRecordCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
+			'getRelatedRecordCreateArrayConverting' => 'getRelatedRecordCreateArrayConverting(module, RelatedModuleDestination, recordid)',
 			'getISODate' => 'getISODate(year, week, dayOfWeek)',
 			'getFieldsOF' => 'getFieldsOF(id, module, fields)',
 			'getFromContext' => 'getFromContext(variablename)',
