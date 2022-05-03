@@ -89,6 +89,8 @@ class DetailViewLayoutMapping extends processcbMap {
 		foreach ($xml->blocks->block as $value) {
 			$block = array();
 			$block['type'] = (string)$value->type;
+			$block['mode'] = (string)$value->mode;
+			$block['position'] = (string)$value->position;
 			$block['sequence'] = (string)$value->sequence;
 			$block['label'] = getTranslatedString((string)$value->label, $mapping['origin']);
 			$block['loadfrom'] = (string)$value->loadfrom;
