@@ -17,13 +17,15 @@ global $currentModule;
 if (isset($_REQUEST['bmapname'])) {
 	$bmapname = vtlib_purify($_REQUEST['bmapname']);
 } else {
-	$bmapname = $currentModule.'_MassCreateGrid';
+	$bmapname = $currentModule.'_MassUpsertGridView';
 }
 $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
+$match = array();
 if ($cbMapid) {
 	$cbMap = cbMap::getMapByID($cbMapid);
-	$cbMapLC = $cbMap->ListColumns();
-	$fields = $cbMapLC->getSearchFields($currentModule);
+	$MassUpsert = $cbMap->MassUpsertGridView();
+	$fields = $MassUpsert->getColumns();
+	$match = $MassUpsert->getMatchFields();
 } else {
 	$focus = CRMEntity::getInstance($currentModule);
 	$fields = $focus->list_fields;
@@ -95,6 +97,36 @@ $ListFields = array_map(function ($key) use ($fields, $items, $currentModule) {
 	}
 	return $listFields;
 }, $cachedModuleFields);
+if (is_array($match)) {var_dump($match);
+	$MatchFields = array_map(function ($key) use ($match, $currentModule) {
+		$listFields = array(
+			'header' => getTranslatedString($key['fieldlabel'], $currentModule),
+			'name' => $key['columnname'],
+			'active' => 0,
+		);
+		foreach ($match as $value) {
+			if ($value == $key['columnname']) {
+				$listFields['active'] = 1;
+				break;
+			}
+		}
+		return $listFields;
+	}, $cachedModuleFields);	
+} else {
+	$MatchFields = array_map(function ($key) use ($match, $currentModule) {
+		$active = 0;
+		if ($match == $key['columnname']) {
+			$active = 1;
+		}
+		$listFields = array(
+			'header' => getTranslatedString($key['fieldlabel'], $currentModule),
+			'name' => $key['columnname'],
+			'active' => $active,
+		);
+		return $listFields;
+	}, $cachedModuleFields);	
+}
+
 $tabid = getTabid($currentModule);
 $linksurls = BusinessActions::getAllByType($tabid, array('MASSUPSERTGRID'));
 if (!empty($linksurls['MASSUPSERTGRID'])) {
@@ -103,6 +135,7 @@ if (!empty($linksurls['MASSUPSERTGRID'])) {
 $smarty->assign('EmptyData', json_encode($emptydata));
 $smarty->assign('GridColumns', json_encode($columns));
 $smarty->assign('ListFields', json_encode($ListFields));
+$smarty->assign('MatchFields', json_encode($MatchFields));
 $smarty->assign('bmapname', $bmapname);
 $smarty->assign('moduleView', 'MassCreateGrid');
 $smarty->assign('moduleShowSearch', false);
