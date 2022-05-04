@@ -5,7 +5,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|01/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|21/06/2021|Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|04/05/2022|Sao Paulo/SP/Brasil.|www.ecrm360.com.br
  ********************************************************************************/
 
 var alert_arr = {
@@ -455,15 +455,15 @@ var alert_arr = {
 	'LNK_EDIT': 'Editar',
 	'LNK_EDIT_ACTION': 'Editar',
 	'LNK_DELETE_ACTION': 'Apagar',
-	'LBL_MODIFIED': 'Modified',
-	'LBL_CREATE': 'Create a',
-	'LBL_IMPORT': 'Import',
-	'LBL_NO_DATA': 'No Data Found',
-	'filterApplied': 'Filter applied',
-	'QuickView': 'Quick view',
-	'Restore': 'Restore',
-	'LBL_SUCCESS': 'Success',
-	'LBL_CREATED_SUCCESS': 'Created successfully',
-	'LBL_SELECT_COLUMNS': 'Select columns to show in grid',
-	'LBL_MATCH_COLUMNS': 'Select columns to match in grid',
+	'LBL_MODIFIED': 'Modificado',
+	'LBL_CREATE': 'Criado por',
+	'LBL_IMPORT': 'Importar',
+	'LBL_NO_DATA': 'Nenhum dado encontrado',
+	'filterApplied': 'Filtro aplicado',
+	'QuickView': 'Vista rápida',
+	'Restore': 'Recuperar',
+	'LBL_SUCCESS': 'Sucesso',
+	'LBL_CREATED_SUCCESS': 'Criado com sucesso',
+	'LBL_SELECT_COLUMNS': 'Selecione colunas para mostrar na grade',
+	'LBL_MATCH_COLUMNS': 'Selecione colunas para combinar na grade',
 };
