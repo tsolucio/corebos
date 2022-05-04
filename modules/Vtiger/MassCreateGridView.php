@@ -97,7 +97,7 @@ $ListFields = array_map(function ($key) use ($fields, $items, $currentModule) {
 	}
 	return $listFields;
 }, $cachedModuleFields);
-if (is_array($match)) {var_dump($match);
+if (is_array($match)) {
 	$MatchFields = array_map(function ($key) use ($match, $currentModule) {
 		$listFields = array(
 			'header' => getTranslatedString($key['fieldlabel'], $currentModule),
@@ -111,7 +111,7 @@ if (is_array($match)) {var_dump($match);
 			}
 		}
 		return $listFields;
-	}, $cachedModuleFields);	
+	}, $cachedModuleFields);
 } else {
 	$MatchFields = array_map(function ($key) use ($match, $currentModule) {
 		$active = 0;
@@ -124,7 +124,7 @@ if (is_array($match)) {var_dump($match);
 			'active' => $active,
 		);
 		return $listFields;
-	}, $cachedModuleFields);	
+	}, $cachedModuleFields);
 }
 
 $tabid = getTabid($currentModule);

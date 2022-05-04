@@ -93,7 +93,7 @@ class genMassUpsertGridView extends generatecbMap {
 					}
 				}
 				return $listFields;
-			}, $ModuleFields);			
+			}, $ModuleFields);
 		} else {
 			$MatchFields = array_map(function ($key) use ($module) {
 				$listFields = array(
