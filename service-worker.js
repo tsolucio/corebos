@@ -11477,7 +11477,7 @@ precacheAndRoute([{
   "revision": "3a7c77e30de77970d4a03e976f72424f"
 }, {
   "url": "include/js/general.js",
-  "revision": "a7b01e4307ea2963b19ed0e395aebc04"
+  "revision": "a468acf0373ebfd1bd94c5d3c62d2bec"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "0fddd8e06119e7b327d088edc383cea7"
@@ -11537,7 +11537,7 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "79c72d1015187155b62ce7f3e2ca2190"
+  "revision": "597246d51f9902b9646149af148852a6"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "9663dd1cea6cb7fb0cfe983e54baa186"
@@ -11783,7 +11783,7 @@ precacheAndRoute([{
   "revision": "4ba8509ee8c1b014e06df45653e562d5"
 }, {
   "url": "modules/com_vtiger_workflow/resources/workflowlistscript.js",
-  "revision": "8b5c1c927497e4a7203d89fb1d009eba"
+  "revision": "deebc6a6db9909ad860362f26eb864b3"
 }, {
   "url": "modules/GlobalVariable/GlobalVariable.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
