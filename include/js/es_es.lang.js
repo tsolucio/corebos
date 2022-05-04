@@ -464,5 +464,5 @@ var alert_arr = {
 	'LBL_SUCCESS': 'Correcto',
 	'LBL_CREATED_SUCCESS': 'Creado correctamente',
 	'LBL_SELECT_COLUMNS': 'Selecciona las columnas a mostrar en la tabla',
-	'LBL_MATCH_COLUMNS': 'Select columns to match in grid',
+	'LBL_MATCH_COLUMNS': 'Selecciona las columnas a emparejar en la tabla',
 };
