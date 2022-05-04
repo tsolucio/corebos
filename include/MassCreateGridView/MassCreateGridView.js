@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
 const MCGrid = {
 
 	ActiveColumns: [],
+	MatchFields: [],
 	Module: gVTModule,
 
 	Show: () => {
@@ -69,7 +70,7 @@ const MCGrid = {
 					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 				},
 				credentials: 'same-origin',
-				body: '&'+csrfMagicName+'='+csrfMagicToken+'&data='+JSON.stringify(data)
+				body: '&'+csrfMagicName+'='+csrfMagicToken+'&data='+JSON.stringify(data)+'&mapName='+bmapname
 			}
 		).then(response => response.json()).then(response => {
 			if (response.failed_creates.length == 0) {
@@ -96,6 +97,7 @@ const MCGrid = {
 
 	EditFields: () => {
 		const activeCols = JSON.parse(ListFields);
+		const activeMatchFields = JSON.parse(MatchFields);
 		let content = `<div class="slds-grid slds-wrap">`;
 		activeCols.map(function(currentValue, index) {
 			let typeofdata = '';
@@ -117,13 +119,53 @@ const MCGrid = {
 				</div>
 			</div>`;
 		});
+		content += `<br><br>
+		<div class="slds-col slds-size_12-of-12">
+		<header class="slds-media slds-media_center slds-has-flexi-truncate">
+			<div class="slds-media__figure">
+				<span class="slds-icon_container slds-icon-standard-account" title="action_list_component">
+					<svg class="slds-icon slds-icon_small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#action_list_component">
+						</use>
+					</svg>
+					<span class="slds-assistive-text">action_list_component</span>
+				</span>
+				</div>
+				<div class="slds-media__body">
+				<h2 class="slds-card__header-title">
+					<a href="#" class="slds-card__header-link slds-truncate" title="Accounts">
+						<span>${alert_arr.LBL_MATCH_COLUMNS}</span>
+					</a>
+				</h2>
+			</div>
+		</header>
+		</div><br><br>
+		`;
+		activeMatchFields.map(function(currentValue, index) {
+			content += `
+			<div class="slds-col slds-size_3-of-12">
+				<div class="slds-form-element">
+					<div class="slds-form-element__control">
+						<div class="slds-checkbox">
+							<input type="checkbox" name="grid-fields" id="match-${currentValue.name}" value="match-${currentValue.name}" ${currentValue.active == 1 ? 'checked' : ''}/>
+							<label class="slds-checkbox__label" for="match-${currentValue.name}">
+								<span class="slds-checkbox_faux"></span>
+								<span class="slds-form-element__label">${currentValue.header}</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>`;
+		});
 		content += `</div>`;
 		ldsModal.show(alert_arr.LBL_SELECT_COLUMNS, content, 'medium', 'MCGrid.UpdateView()');
 	},
 
 	UpdateView: () => {
 		let columns = JSON.parse(ListFields);
+		let matchColumns = JSON.parse(MatchFields);
 		let newColumns = Array();
+		let newMatchFields = Array();
 		columns.map(function(currentValue, idx) {
 			const checkbox = document.getElementById(`checkbox-${currentValue.name}`);
 			if (checkbox.checked) {
@@ -133,10 +175,21 @@ const MCGrid = {
 				columns[idx].active = 0;
 			}
 		});
+		matchColumns.map(function(currentValue, idx) {
+			const match = document.getElementById(`match-${currentValue.name}`);
+			if (match.checked) {
+				matchColumns[idx].active = 1;
+				newMatchFields.push(currentValue);
+			} else {
+				matchColumns[idx].active = 0;
+			}
+		});
 		mcdataGridInstance.setColumns(newColumns);
 		ListFields = JSON.stringify(columns);
+		MatchFields = JSON.stringify(matchColumns);
 		ldsModal.close();
 		MCGrid.ActiveColumns = newColumns;
+		MCGrid.MatchFields = newMatchFields;
 		MCGrid.SaveMap();
 	},
 
@@ -149,7 +202,7 @@ const MCGrid = {
 					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 				},
 				credentials: 'same-origin',
-				body: '&'+csrfMagicName+'='+csrfMagicToken+'&ActiveColumns='+JSON.stringify(MCGrid.ActiveColumns)+'&mapName='+bmapname+'&moduleName='+MCGrid.Module
+				body: '&'+csrfMagicName+'='+csrfMagicToken+'&ActiveColumns='+JSON.stringify(MCGrid.ActiveColumns)+'&mapName='+bmapname+'&moduleName='+MCGrid.Module+'&match='+JSON.stringify(MCGrid.MatchFields)
 			}
 		).then(response => response.json()).then(response => {
 			if (response.length == 0) {

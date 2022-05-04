@@ -27,11 +27,18 @@ switch ($op) {
 	case 'MassCreate':
 		$newData = array();
 		$searchon = array();
+		$mapName = vtlib_purify($_REQUEST['mapName']);
 		$module = vtlib_purify($_REQUEST['moduleName']);
 		$data = vtlib_purify($_REQUEST['data']);
 		$data = json_decode($data, true);
 		$grid = new GridListView($module);
 		$grid->tabid = getTabid($module);
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$MassUpsert = $cbMap->MassUpsertGridView();
+			$match = $MassUpsert->getMatchFields();
+		}
 		foreach ($data as $row) {
 			unset($row['_attributes']);
 			$currentRow = array();
@@ -77,6 +84,9 @@ switch ($op) {
 					$currentRow[$fieldName] = $value;
 				}
 			}
+			if (isset($match)) {
+				$searchon = $match;
+			}
 			$newData[] = array(
 				'elementType' => $module,
 				'referenceId' => '',
@@ -89,14 +99,21 @@ switch ($op) {
 	case 'SaveMap':
 		$moduleName = vtlib_purify($_REQUEST['moduleName']);
 		$mapName = vtlib_purify($_REQUEST['mapName']);
+		$match = vtlib_purify($_REQUEST['match']);
 		$ActiveColumns = vtlib_purify($_REQUEST['ActiveColumns']);
 		$ActiveColumns = json_decode($ActiveColumns, true);
+		$match = json_decode($match, true);
 		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><deletethis/>');
 		$map = $xml->addChild('map');
 		$originmodule = $map->addChild('originmodule');
 		$originname = $originmodule->addChild('originname', $moduleName);
-		$popup = $map->addChild('popup');
-		$columns = $popup->addChild('columns');
+		if (!empty($match)) {
+			$matchblock = $map->addChild('match');
+			foreach ($match as $field) {
+				$matchblock->addChild('field', $field['name']);
+			}
+		}
+		$columns = $map->addChild('columns');
 		foreach ($ActiveColumns as $key) {
 			$field = $columns->addChild('field');
 			$name = $field->addChild('name', $key['name']);
@@ -130,7 +147,7 @@ switch ($op) {
 			$element = array(
 				'content' => trim($map),
 				'mapname' => $mapName,
-				'maptype' => 'ListColumns',
+				'maptype' => 'MassUpsertGridView',
 				'targetname' => $moduleName,
 				'assigned_user_id' => '19x'.$current_user->id
 			);
@@ -140,15 +157,22 @@ switch ($op) {
 	case 'SaveMapFromModule':
 		$MapID = vtlib_purify($_REQUEST['MapID']);
 		$fields = vtlib_purify($_REQUEST['fields']);
+		$match = vtlib_purify($_REQUEST['match']);
 		$fields = json_decode($fields, true);
+		$match = json_decode($match, true);
 		$mapName = vtlib_purify($_REQUEST['mapName']);
 		$moduleName = vtlib_purify($_REQUEST['moduleName']);
 		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><deletethis/>');
 		$map = $xml->addChild('map');
 		$originmodule = $map->addChild('originmodule');
 		$originname = $originmodule->addChild('originname', $moduleName);
-		$popup = $map->addChild('popup');
-		$columns = $popup->addChild('columns');
+		if (!empty($match)) {
+			$matchblock = $map->addChild('match');
+			foreach ($match as $field) {
+				$matchblock->addChild('field', $field);
+			}
+		}
+		$columns = $map->addChild('columns');
 		foreach ($fields as $field) {
 			$fld = $columns->addChild('field');
 			$name = $fld->addChild('name', $field);

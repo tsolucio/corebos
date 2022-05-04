@@ -1383,6 +1383,7 @@ $app_strings = array (
 	'LBL_ADD_ROW' => 'Añadir Fila',
 	'LBL_EDIT_COLUMNS' => 'Editar Columnas',
 	'LBL_SELECT_COLUMNS' => 'Selecciona las columnas a mostrar en la Rejilla de Creación Masiva',
+	'LBL_MATCH_COLUMNS' => 'Select columns to match in Mass Create Grid',
 	'LBL_SAVE_MAP' => 'Guardar Mapa',
 );
 

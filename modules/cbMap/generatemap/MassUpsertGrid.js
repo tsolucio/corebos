@@ -13,7 +13,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
-const LCInstance = {
+const MGInstance = {
 
 	MapID: 0,
 	MapFields: [],
@@ -22,13 +22,18 @@ const LCInstance = {
 
 	SaveMap: () => {
 		let fields = Array();
-		if (typeof LCInstance.MapFields == 'string') {
-			LCInstance.MapFields = JSON.parse(LCInstance.MapFields);
+		let match = Array();
+		if (typeof MGInstance.MapFields == 'string') {
+			MGInstance.MapFields = JSON.parse(MGInstance.MapFields);
 		}
-		LCInstance.MapFields.map(function(currentValue, idx) {
+		MGInstance.MapFields.map(function(currentValue, idx) {
 			const checkbox = document.getElementById(`checkbox-${currentValue.name}`);
 			if (checkbox.checked) {
 				fields.push(currentValue.name);
+			}
+			const matchCheckbox = document.getElementById(`match-${currentValue.name}`);
+			if (matchCheckbox.checked) {
+				match.push(currentValue.name);
 			}
 		});
 		fetch(
@@ -39,7 +44,7 @@ const LCInstance = {
 					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 				},
 				credentials: 'same-origin',
-				body: '&'+csrfMagicName+'='+csrfMagicToken+'&fields='+JSON.stringify(fields)+'&MapID='+LCInstance.MapID+'&moduleName='+LCInstance.ModuleName+'&mapName='+LCInstance.MapName
+				body: '&'+csrfMagicName+'='+csrfMagicToken+'&fields='+JSON.stringify(fields)+'&MapID='+MGInstance.MapID+'&moduleName='+MGInstance.ModuleName+'&mapName='+MGInstance.MapName+'&match='+JSON.stringify(match)
 			}
 		).then(response => response.json()).then(response => {
 			window.opener.location.reload();
