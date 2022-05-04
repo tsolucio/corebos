@@ -100,6 +100,10 @@ $mod_strings = array(
 'Workflow'=>'Flujo de Trabajo',
 'WORKFLOW_DELETE_CONFIRMATION' => '¿Seguro que quieres eliminar este flujo de trabajo?',
 'LBL_DELETE_WORKFLOW' => 'Eliminar Flujo de Trabajo',
+'WORKFLOW_ACTIVATE_CONFIRMATION' => '¿Seguro que quieres activar este flujo de trabajo?',
+'LBL_ACTIVATE_WORKFLOW' => 'Activar Flujo de Trabajo',
+'WORKFLOW_DEACTIVATE_CONFIRMATION' => '¿Seguro que quieres desactivar este flujo de trabajo?',
+'LBL_DEACTIVATE_WORKFLOW' => 'Desactivar Flujo de Trabajo',
 
 'VTCreateEntityTask' => 'Crear Entidad',
 'LBL_ENTITY_TYPE' => 'Tipo Entidad',

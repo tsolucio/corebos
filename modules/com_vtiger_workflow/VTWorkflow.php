@@ -355,6 +355,11 @@ class Workflow {
 		return $active;
 	}
 
+	public function setActiveStateTo($state) {
+		global $adb;
+		$adb->pquery('update com_vtiger_workflows set active=? where workflow_id=?', [$state, $this->id]);
+	}
+
 	public function executionConditionAsLabel($label = null) {
 		if ($label==null) {
 			$arr=array('ON_FIRST_SAVE', 'ONCE', 'ON_EVERY_SAVE', 'ON_MODIFY', 'ON_DELETE', 'ON_SCHEDULE', 'MANUAL', 'RECORD_ACCESS_CONTROL', 'ON_RELATE', 'ON_UNRELATE');
