@@ -298,9 +298,10 @@ function __cb_getRelatedRecordCreateArrayConverting($arr) {
 	}
 
 	$cbMap = cbMap::getMapByName('Workflow_'.$arr[0].'2'.$arr[1]);
+	$relatedModule = Vtiger_Module::getInstance($arr[1]);
 	foreach ($relrecords['records'] as $record) {
 		$record['record_id'] = vtws_getCRMID($record['id']);
-		$records = empty($cbMap) ? $record : $cbMap->Mapping($record, array());
+		$records = empty($cbMap) || !$relatedModule ? $record : $cbMap->Mapping($record, array());
 		$relrecordsArray[] = $records;
 	}
 	return $relrecordsArray;
