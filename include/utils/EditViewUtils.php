@@ -27,7 +27,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	$log->debug('> getOutputHtml', [$uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name]);
 
 	$userprivs = $current_user->getPrivileges();
-
+	$Webservice_Translate_Strings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
+	if ($Webservice_Translate_Strings) {
+		$col_fields[$fieldname] = getTranslatedString($col_fields[$fieldname], $module_name);
+	}
 	$fieldvalue = array();
 	$final_arr = array();
 	$value = $col_fields[$fieldname];

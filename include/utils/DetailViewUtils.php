@@ -1429,6 +1429,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		$cbMapFI = $cbMap->FieldInfo();
 		$cbMapFI = $cbMapFI['fields'];
 	}
+	$Webservice_Translate_Strings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
 	$noofrows = $adb->num_rows($result);
 	for ($i = 0; $i < $noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result, $i, 'tablename');
@@ -1497,6 +1498,9 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				} else {
 					$extendedfieldinfo = $cbMapFI[$fieldname];
 				}
+			}
+			if ($Webservice_Translate_Strings) {
+				$custfld[1] = getTranslatedString($custfld[1], $module);
 			}
 			$label_data[$block][] = array($custfld[0] => array(
 				'value' => $custfld[1], "ui" => $custfld[2], 'options' => isset($custfld['options']) ? $custfld['options'] : '',
