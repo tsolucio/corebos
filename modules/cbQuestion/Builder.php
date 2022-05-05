@@ -120,7 +120,13 @@ $smarty->assign('bqcollection', $focus->column_fields['qcollection']);
 $smarty->assign('sqlquery', $focus->column_fields['sqlquery']);
 $smarty->assign('qpagesize', $focus->column_fields['qpagesize']);
 $smarty->assign('qtype', empty($focus->column_fields['qtype']) ? 'Table' : $focus->column_fields['qtype']);
-$smarty->assign('typeprops', decode_html($focus->column_fields['typeprops']));
+
+if (empty($focus->column_fields['typeprops']) || $focus->column_fields['typeprops'] == "") {
+	$smarty->assign('typeprops', );
+} else {
+	$smarty->assign('typeprops', decode_html(str_replace('\\', '',$focus->column_fields['typeprops'])));
+}
+
 $smarty->assign('questioncolumns', decode_html($focus->column_fields['qcolumns']));
 $smarty->assign('cbqconditons', empty($focus->column_fields['qcondition']) ? null : decode_html($focus->column_fields['qcondition']));
 $emgr = new VTExpressionsManager($adb);
