@@ -18,7 +18,12 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	private $queryTotalRows = 0;
 
 	public function __construct($webserviceObject, $user, $adb, $log) {
-		parent::__construct($webserviceObject, $user, $adb, $log);
+		global $cdb;
+		if (empty($cdb)) {
+			$cdb = new ClickHouseDatabase();
+			$cdb->connect();
+		}
+		parent::__construct($webserviceObject, $user, $cdb, $log);
 		$this->entityTableName = $this->getActorTables();
 		if ($this->entityTableName === null) {
 			throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, 'Entity is not associated with any tables');
@@ -30,26 +35,28 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	}
 
 	protected function getMetaInstance() {
+		global $adb;
 		if (empty(WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id])) {
 			WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id]
-				= new VtigerCRMActorMeta($this->entityTableName, $this->webserviceObject, $this->pearDB, $this->user);
+				= new VtigerCRMClickHouseMeta($this->entityTableName, $this->webserviceObject, $adb, $this->user);
 		}
 		return WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id];
 	}
 
 	protected function getActorTables() {
+		global $adb;
 		static $actorTables = array();
 
 		if (isset($actorTables[$this->webserviceObject->getEntityName()])) {
 			return $actorTables[$this->webserviceObject->getEntityName()];
 		}
 		$sql = 'select table_name from vtiger_ws_entity_tables where webservice_entity_id=?';
-		$result = $this->pearDB->pquery($sql, array($this->webserviceObject->getEntityId()));
+		$result = $adb->pquery($sql, array($this->webserviceObject->getEntityId()));
 		$tableName = null;
 		if ($result) {
-			$rowCount = $this->pearDB->num_rows($result);
+			$rowCount = $adb->num_rows($result);
 			for ($i=0; $i<$rowCount; ++$i) {
-				$row = $this->pearDB->query_result_rowdata($result, $i);
+				$row = $adb->query_result_rowdata($result, $i);
 				$tableName = $row['table_name'];
 			}
 			// Cache the result for further re-use
@@ -63,7 +70,8 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	}
 
 	protected function getNextId($elementType, $element) {
-		if (strcasecmp($updateelementType, 'Groups') === 0) {
+		global $adb;
+		if (strcasecmp($elementType, 'Groups') === 0) {
 			$tableName='vtiger_users';
 		} else {
 			$tableName = $this->entityTableName;
@@ -71,9 +79,9 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 		$meta = $this->getMeta();
 		if (strcasecmp($elementType, 'Groups') !== 0 && strcasecmp($elementType, 'Users') !== 0) {
 			$sql = 'update '.$tableName.'_seq set id=(select max('.$meta->getIdColumn().") from $tableName)";
-			$this->pearDB->pquery($sql, array());
+			$adb->pquery($sql, array());
 		}
-		return $this->pearDB->getUniqueId($tableName);
+		return $adb->getUniqueId($tableName);
 	}
 
 	public function __create($elementType, $element) {
@@ -90,18 +98,11 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	}
 
 	public function create($elementType, $element) {
-		$element = DataTransform::sanitizeForInsert($element, $this->meta);
-
-		$element = $this->restrictFields($element);
-
-		$success = $this->__create($elementType, $element);
-		if (!$success) {
-			throw new WebServiceException(
-				WebServiceErrorCode::$DATABASEQUERYERROR,
-				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR)
-			);
+		if (isset($element['assigned_user_id'])) {
+			unset($element['assigned_user_id']);
 		}
-		return $this->retrieve(vtws_getId($this->meta->getEntityId(), $this->id));
+		$this->pearDB->run_insert_data($this->entityTableName, $element);
+		return $element;
 	}
 
 	protected function restrictFields($element, $selectedOnly = false) {
@@ -123,11 +124,10 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 		if (!$transactionSuccessful) {
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-		$db = $this->pearDB;
 		if ($result) {
-			$rowCount = $db->num_rows($result);
+			$rowCount = $this->pearDB->num_rows($result);
 			if ($rowCount >0) {
-				$this->element = $db->query_result_rowdata($result, 0);
+				$this->element = $this->pearDB->query_result_rowdata($result, 0);
 				return true;
 			}
 		}
@@ -150,16 +150,15 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	}
 
 	public function massRetrieve($wsIds) {
-		global $adb;
 		$wid = $this->meta->getEntityId();
 		$rdo = array();
 		$query = "select * from {$this->entityTableName} where {$this->meta->getObectIndexColumn()} in (" . generateQuestionMarks($wsIds) . ')';
-		$rs = $adb->pquery($query, $wsIds);
+		$rs = $this->pearDB->pquery($query, $wsIds);
 		while (!$rs->EOF) {
 			$elem = $rs->FetchRow();
 			if (isset($elem['folderid']) && !isset($elem['id'])) {
 				$elem['id'] = $elem['folderid'];
-				unset($eupdatelem['folderid']);
+				unset($elem['folderid']);
 			}
 			$elemid = (empty($elem['id']) ? (empty($elem['groupid']) ? '0' : $elem['groupid']) : $elem['id']);
 			$rdo[$wid.'x'.$elemid] = DataTransform::filterAndSanitize($elem, $this->meta);
@@ -337,8 +336,26 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	}
 
 	public function query($q) {
-		$mysql_query = $this->wsVTQL2SQL($q, $meta, $queryRelatedModules);
-		return $this->querySQLResults($mysql_query, $q, $meta, $queryRelatedModules);
+		$this->pearDB->startTransaction();
+		$mysql_query = str_replace($this->webserviceObject->getEntityName(), $this->entityTableName, $q);
+		$result = $this->pearDB->pquery($mysql_query, array());
+		$error = $this->pearDB->hasFailedTransaction();
+		$this->pearDB->completeTransaction();
+		if ($error) {
+			throw new WebServiceException(
+				WebServiceErrorCode::$DATABASEQUERYERROR,
+				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR)
+			);
+		}
+
+		$noofrows = $this->pearDB->num_rows($result);
+		$output = array();
+		for ($i=0; $i<$noofrows; $i++) {
+			$row = $this->pearDB->fetch_array($result);
+			$output[] = $row;
+			$this->queryTotalRows++;
+		}
+		return $output;
 	}
 
 	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {

@@ -8,6 +8,7 @@
  * All Rights Reserved.
  *************************************************************************************/
 require_once 'include/Webservices/VtigerCRMObjectMeta.php';
+require_once 'include/database/ClickHouseDatabase.php';
 
 class VtigerCRMClickHouseMeta extends EntityMeta {
 	protected $pearDB;
@@ -21,6 +22,11 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 	protected $objectName;
 
 	public function __construct($tableName, $webserviceObject, $adb, $user) {
+		global $cdb;
+		if (empty($cdb)) {
+			$cdb = new ClickHouseDatabase();
+			$cdb->connect();
+		}
 		parent::__construct($webserviceObject, $user);
 		$this->baseTable = $tableName;
 		$this->idColumn = null;
@@ -36,6 +42,7 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 		$this->tableIndexList = array($this->baseTable=>$this->idColumn);
 		$this->defaultTableList = array();
 		$this->objectName = $webserviceObject->getEntityName();
+		$this->computeAccess($webserviceObject, $user);
 	}
 
 	public function addAnotherTable($tableName, $tableIDColumn) {
@@ -79,6 +86,14 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 
 	public function getPermissionModule() {
 		return $this->PermissionModule;
+	}
+
+	private function computeAccess($webserviceObject, $user) {
+		$this->hasAccess = true;
+		$this->hasCreateAccess = true;
+		$this->hasReadAccess = true;
+		$this->hasWriteAccess = true;
+		$this->hasDeleteAccess = false;
 	}
 
 	protected function getTableFieldList($tableName) {
@@ -140,40 +155,42 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 	}
 
 	protected function getReferenceList($dbField, $tableName) {
+		global $adb;
 		static $referenceList = array();
 		if (isset($referenceList[$dbField->name])) {
 			return $referenceList[$dbField->name];
 		}
-		if (!isset(VtigerCRMActorMeta::$fieldTypeMapping[$tableName][$dbField->name])) {
+		if (!isset(VtigerCRMClickHouseMeta::$fieldTypeMapping[$tableName][$dbField->name])) {
 			$this->getFieldType($dbField, $tableName);
 		}
-		$fieldTypeData = VtigerCRMActorMeta::$fieldTypeMapping[$tableName][$dbField->name];
+		$fieldTypeData = VtigerCRMClickHouseMeta::$fieldTypeMapping[$tableName][$dbField->name];
 		$referenceTypes = array();
-		$result = $this->pearDB->pquery('select type from vtiger_ws_entity_referencetype where fieldtypeid=?', array($fieldTypeData['fieldtypeid']));
-		$numRows = $this->pearDB->num_rows($result);
+		$result = $adb->pquery('select type from vtiger_ws_entity_referencetype where fieldtypeid=?', array($fieldTypeData['fieldtypeid']));
+		$numRows = $adb->num_rows($result);
 		for ($i=0; $i<$numRows; ++$i) {
-			$referenceTypes[] = $this->pearDB->query_result($result, $i, 'type');
+			$referenceTypes[] = $adb->query_result($result, $i, 'type');
 		}
 		$referenceList[$dbField->name] = $referenceTypes;
 		return $referenceTypes;
 	}
 
 	protected function getFieldType($dbField, $tableName) {
-		if (isset(VtigerCRMActorMeta::$fieldTypeMapping[$tableName][$dbField->name])) {
-			if (VtigerCRMActorMeta::$fieldTypeMapping[$tableName][$dbField->name] === 'null') {
+		global $adb;
+		if (isset(VtigerCRMClickHouseMeta::$fieldTypeMapping[$tableName][$dbField->name])) {
+			if (VtigerCRMClickHouseMeta::$fieldTypeMapping[$tableName][$dbField->name] === 'null') {
 				return null;
 			}
-			$row = VtigerCRMActorMeta::$fieldTypeMapping[$tableName][$dbField->name];
+			$row = VtigerCRMClickHouseMeta::$fieldTypeMapping[$tableName][$dbField->name];
 			return $row['fieldtype'];
 		}
-		$result = $this->pearDB->pquery('select * from vtiger_ws_entity_fieldtype where table_name=? and field_name=?;', array($tableName,$dbField->name));
-		$rowCount = $this->pearDB->num_rows($result);
+		$result = $adb->pquery('select * from vtiger_ws_entity_fieldtype where table_name=? and field_name=?;', array($tableName,$dbField->name));
+		$rowCount = $adb->num_rows($result);
 		if ($rowCount > 0) {
-			$row = $this->pearDB->query_result_rowdata($result, 0);
-			VtigerCRMActorMeta::$fieldTypeMapping[$tableName][$dbField->name] = $row;
+			$row = $adb->query_result_rowdata($result, 0);
+			VtigerCRMClickHouseMeta::$fieldTypeMapping[$tableName][$dbField->name] = $row;
 			return $row['fieldtype'];
 		} else {
-			VtigerCRMActorMeta::$fieldTypeMapping[$tableName][$dbField->name] = 'null';
+			VtigerCRMClickHouseMeta::$fieldTypeMapping[$tableName][$dbField->name] = 'null';
 			return null;
 		}
 	}
@@ -232,7 +249,7 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 	}
 
 	public function hasAssignPrivilege($ownerWebserviceId) {
-		return false;
+		return true;
 	}
 
 	public function hasDeleteAccess() {
@@ -279,12 +296,13 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 	}
 
 	public function getNameFields() {
-		$result = $this->pearDB->pquery('select name_fields from vtiger_ws_entity_name where entity_id = ?', array($this->objectId));
+		global $adb;
+		$result = $adb->pquery('select name_fields from vtiger_ws_entity_name where entity_id = ?', array($this->objectId));
 		$fieldNames = '';
 		if ($result) {
-			$rowCount = $this->pearDB->num_rows($result);
+			$rowCount = $adb->num_rows($result);
 			if ($rowCount > 0) {
-				$fieldNames = $this->pearDB->query_result($result, 0, 'name_fields');
+				$fieldNames = $adb->query_result($result, 0, 'name_fields');
 			}
 		}
 		return $fieldNames;
