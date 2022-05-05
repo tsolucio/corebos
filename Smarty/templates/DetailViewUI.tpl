@@ -248,7 +248,7 @@
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<input class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'"
 					onBlur="this.className='detailedViewTextBox'" onkeyup="validateUrl('{$keyfldname}');" type="text"
-					id="txtbox_{$keyfldname}" name="{$keyfldname}" maxlength='100' value="{$keyval}"></input>
+					id="txtbox_{$keyfldname}" name="{$keyfldname}" value="{$keyval}"></input>
 				<br><a class="detailview_ajaxbutton ajax_save_detailview"
 					onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
 				<a href="javascript:;"
