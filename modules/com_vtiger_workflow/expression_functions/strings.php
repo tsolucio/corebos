@@ -132,7 +132,7 @@ function __cb_hash($arr) {
 }
 
 function __cb_jsonencode($arr) {
-	return json_encode($arr[0]);
+	return json_encode($arr[0], JSON_NUMERIC_CHECK);
 }
 
 function __cb_jsondecode($arr) {
