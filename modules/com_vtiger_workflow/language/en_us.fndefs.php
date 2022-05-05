@@ -1720,7 +1720,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getRelatedRecordCreateArrayConverting' => array(
 	'name' => 'getRelatedRecordCreateArrayConverting(module, RelatedModuleDestination, recordid)',
-	'desc' => 'Obtain a web service Master-detail JSON structure for the given recordid and its related module records applying conversion mappings',
+	'desc' => 'Obtain a web service Master-Detail JSON structure for the given recordid and its related module records applying conversion mappings',
 	'params' => array(
 		array(
 			'name' => 'module',

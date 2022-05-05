@@ -3,6 +3,14 @@
 <script src="modules/{$module->name}/resources/workflowlistscript.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	fn.addStylesheet('modules/{$module->name}/resources/style.css');
+	var i18nWorkflowActions = {
+		'WORKFLOW_DELETE_CONFIRMATION': '{'WORKFLOW_DELETE_CONFIRMATION'|@getTranslatedString:'com_vtiger_workflow'}',
+		'LBL_DELETE_WORKFLOW': '{'LBL_DELETE_WORKFLOW'|@getTranslatedString:'com_vtiger_workflow'}',
+		'WORKFLOW_ACTIVATE_CONFIRMATION': '{'WORKFLOW_ACTIVATE_CONFIRMATION'|@getTranslatedString:'com_vtiger_workflow'}',
+		'LBL_ACTIVATE_WORKFLOW': '{'LBL_ACTIVATE_WORKFLOW'|@getTranslatedString:'com_vtiger_workflow'}',
+		'WORKFLOW_DEACTIVATE_CONFIRMATION': '{'WORKFLOW_DEACTIVATE_CONFIRMATION'|@getTranslatedString:'com_vtiger_workflow'}',
+		'LBL_DEACTIVATE_WORKFLOW': '{'LBL_DEACTIVATE_WORKFLOW'|@getTranslatedString:'com_vtiger_workflow'}',
+	}
 </script>
 {include file='com_vtiger_workflow/ModuleTitle.tpl' show='wflist'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
@@ -11,10 +19,10 @@
 {include file='com_vtiger_workflow/NewWorkflowPopup.tpl'}
 <!-- Prompt -->
 <div id="confirm-prompt" style="display:none;">
-	<section role="alertdialog" tabindex="0" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+	<section role="alertdialog" tabindex="0" aria-labelledby="modal-wfaction" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
 		<div class="slds-modal__container">
 			<header class="slds-modal__header slds-theme_error slds-theme_alert-texture">
-				<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{'LBL_DELETE_WORKFLOW'|@getTranslatedString:'com_vtiger_workflow'}</h2>
+				<h2 id="modal-wfaction" class="slds-text-heading_medium slds-hyphenate">{'LBL_DELETE_WORKFLOW'|@getTranslatedString:'com_vtiger_workflow'}</h2>
 			</header>
 			<div class="slds-modal__content slds-p-around_medium slds-page-header__title" id="prompt-message-wrapper">
 				<p>{'WORKFLOW_DELETE_CONFIRMATION'|@getTranslatedString:'com_vtiger_workflow'}</p>

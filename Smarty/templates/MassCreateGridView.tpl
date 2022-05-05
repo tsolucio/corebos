@@ -11,6 +11,7 @@
 	var GridColumns = '{$GridColumns}';
 	var EmptyData = '{$EmptyData}';
 	var ListFields = '{$ListFields}';
+	var MatchFields = '{$MatchFields}';
 	var bmapname = '{$bmapname}';
 </script>
 <script src="./include/MassCreateGridView/MassCreateGridView.js"></script>

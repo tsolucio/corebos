@@ -105,6 +105,10 @@ $mod_strings = array(
 	'Workflow'=>'Workflow',
 	'WORKFLOW_DELETE_CONFIRMATION' => 'Sind Sie sicher, dass Sie diesen Workflow löschen möchten?',
 	'LBL_DELETE_WORKFLOW' => 'Workflow löschen',
+	'WORKFLOW_ACTIVATE_CONFIRMATION' => 'Are you sure you want to activate this Workflow?',
+	'LBL_ACTIVATE_WORKFLOW' => 'Activate Workflow',
+	'WORKFLOW_DEACTIVATE_CONFIRMATION' => 'Are you sure you want to deactivate this Workflow?',
+	'LBL_DEACTIVATE_WORKFLOW' => 'Deactivate Workflow',
 
 	'VTCreateEntityTask' => 'erstelle Objekt',
 	'LBL_ENTITY_TYPE' => 'Objekttyp',

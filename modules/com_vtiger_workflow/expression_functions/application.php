@@ -259,7 +259,7 @@ function __cb_getRelatedMassCreateArrayConverting($arr) {
 }
 
 function __cb_getRelatedRecordCreateArrayConverting($arr) {
-	global $current_user, $log;
+	global $current_user;
 	$masterDetailArray = array();
 	$relrecordsArray = array();
 	$relrecords = array();
@@ -298,15 +298,11 @@ function __cb_getRelatedRecordCreateArrayConverting($arr) {
 	}
 
 	$cbMap = cbMap::getMapByName('Workflow_'.$arr[0].'2'.$arr[1]);
-
-	$tab = getRelationTables($mainmodule, $relmodule);
-	$mfocus = CRMEntity::getInstance($arr[1]);
 	foreach ($relrecords['records'] as $record) {
 		$record['record_id'] = vtws_getCRMID($record['id']);
 		$records = empty($cbMap) ? $record : $cbMap->Mapping($record, array());
 		$relrecordsArray[] = $records;
 	}
-
 	return $relrecordsArray;
 }
 

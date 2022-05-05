@@ -10,6 +10,22 @@
 <div class="slds-dropdown slds-dropdown_right">
 <ul class="slds-dropdown__list" role="menu">
 	<li class="slds-dropdown__item" role="presentation">
+	<a href="javascript:void(0);" role="menuitem" onclick="wfActivateList();">
+	<span class="slds-truncate" title="{$APP.LBL_ACTIVATE}">
+	<span class="slds-assistive-text">{$APP.LBL_ACTIVATE}</span>
+	<span>{$APP.LBL_ACTIVATE}</span>
+	</span>
+	</a>
+	</li>
+	<li class="slds-dropdown__item" role="presentation">
+	<a href="javascript:void(0);" role="menuitem" onclick="wfDeactivateList();">
+	<span class="slds-truncate" title="{$APP.LBL_DEACTIVATE}">
+	<span class="slds-assistive-text">{$APP.LBL_DEACTIVATE}</span>
+	<span>{$APP.LBL_DEACTIVATE}</span>
+	</span>
+	</a>
+	</li>
+	<li class="slds-dropdown__item" role="presentation">
 	<a href="javascript:void(0);" role="menuitem" onclick="gotourl('index.php?module=com_vtiger_workflow&action=Import');">
 	<span class="slds-truncate" title="{$APP.LBL_IMPORT}">
 	<span class="slds-assistive-text">{$APP.LBL_IMPORT}</span>

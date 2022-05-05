@@ -15,7 +15,7 @@
  *************************************************************************************************/
 require_once 'Smarty_setup.php';
 
-class genListColumns extends generatecbMap {
+class genMassUpsertGridView extends generatecbMap {
 
 	public function generateMap() {
 		global $adb;
@@ -24,14 +24,14 @@ class genListColumns extends generatecbMap {
 		$xml = $this->getXMLContent();
 		$module = $Map->column_fields['targetname'];
 		$mapname = $Map->column_fields['mapname'];
-		$smarty->assign('maptype', 'ListColumns');
+		$smarty->assign('maptype', 'MassUpsertGridView');
 		$smarty->assign('mapname', $mapname);
 		$smarty->assign('module', $module);
 		$smarty->assign('mapcontent', json_encode($xml));
 		$smarty->assign('MapID', $Map->id);
 		$ModuleFields = getModuleFieldsInfo($module);
-		if (isset($xml->popup->columns)) {
-			$fields = (array)$xml->popup->columns;
+		if (isset($xml->columns)) {
+			$fields = (array)$xml->columns;
 			$ListFields = array_map(function ($key) use ($fields, $module) {
 				$typeofdata = explode('~', $key['typeofdata']);
 				$listFields = array(
@@ -69,8 +69,44 @@ class genListColumns extends generatecbMap {
 				return $listFields;
 			}, $ModuleFields);
 		}
+		if (isset($xml->match)) {
+			$match = (array)$xml->match;
+			$MatchFields = array_map(function ($key) use ($match, $module) {
+				$listFields = array(
+					'header' => getTranslatedString($key['fieldlabel'], $module),
+					'name' => $key['columnname'],
+					'active' => 0
+				);
+				if (isset($match['field'])) {
+					$match = array_values((array)$match['field']);
+					if (count($match) == 1) {
+						if ($match[0] == $key['columnname']) {
+							$listFields['active'] = 1;
+						}
+					} else {
+						foreach ($match as $field) {
+							if ($field == $key['columnname']) {
+								$listFields['active'] = 1;
+								break;
+							}
+						}
+					}
+				}
+				return $listFields;
+			}, $ModuleFields);
+		} else {
+			$MatchFields = array_map(function ($key) use ($module) {
+				$listFields = array(
+					'header' => getTranslatedString($key['fieldlabel'], $module),
+					'name' => $key['columnname'],
+					'active' => 0
+				);
+				return $listFields;
+			}, $ModuleFields);
+		}
 		$smarty->assign('MapFields', $ListFields);
-		$smarty->display('modules/cbMap/ListColumns.tpl');
+		$smarty->assign('MatchFields', $MatchFields);
+		$smarty->display('modules/cbMap/MassUpsertGrid.tpl');
 	}
 }
 ?>
