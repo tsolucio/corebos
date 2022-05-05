@@ -35,7 +35,7 @@
 			<option value="Mrs.">Mrs.</option>
 			<option value="Dr.">Dr.</option>
 			<option value="Prof.">Prof</option>
-		</select>{else}<input type="text" value="" name="{$field->getNeutralizedField()}" {if $field->getRequired() eq 1}required="true"{/if}></input>{/if}{/if}
+		</select>{else}<input type="text" value="" name="{$field->getNeutralizedField()}" {if $field->getRequired() eq 1}required="true"{/if}>{/if}{/if}
 
 	</p>{/foreach}
 

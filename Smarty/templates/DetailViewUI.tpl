@@ -29,7 +29,7 @@
 		<div id="editarea_{$keyfldname}" style="display:none;">
 			<input class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'"
 				onBlur="this.className='detailedViewTextBox'" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}"
-				maxlength='100' value="{$keyval}"></input>
+				maxlength='100' value="{$keyval}">
 			<br>
 			<a href="javascript:;" class="detailview_ajaxbutton ajax_save_detailview"
 				onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();" />
@@ -101,7 +101,7 @@
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<input class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'"
 					onBlur="this.className='detailedViewTextBox'" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}"
-					maxlength='100' value="{$keyval}"></input>
+					maxlength='100' value="{$keyval}">
 				<br><a href="javascript:;" class="detailview_ajaxbutton ajax_save_detailview"
 					onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
 				<a href="javascript:;"
@@ -248,7 +248,7 @@
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<input class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'"
 					onBlur="this.className='detailedViewTextBox'" onkeyup="validateUrl('{$keyfldname}');" type="text"
-					id="txtbox_{$keyfldname}" name="{$keyfldname}" value="{$keyval}"></input>
+					id="txtbox_{$keyfldname}" name="{$keyfldname}" value="{$keyval}">
 				<br><a class="detailview_ajaxbutton ajax_save_detailview"
 					onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
 				<a href="javascript:;"
@@ -271,7 +271,7 @@
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<input class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'"
 					onBlur="this.className='detailedViewTextBox'" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}"
-					maxlength='100' value="{$keyval}"></input>
+					maxlength='100' value="{$keyval}">
 				<br><a class="detailview_ajaxbutton ajax_save_detailview"
 					onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
 				<a href="javascript:;"
@@ -389,7 +389,7 @@
 				{/if}
 				&nbsp;</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
-				<input type="hidden" id="hdtxt_{$keyfldname}" value="{$keyval}"></input>
+				<input type="hidden" id="hdtxt_{$keyfldname}" value="{$keyval}">
 				{if $keyoptions.0 eq 'User'}
 					<input name="assigntype" id="assigntype" checked="checked" value="U"
 						onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');" type="radio">&nbsp;{$APP.LBL_USER}
@@ -540,7 +540,7 @@
 			</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<input style="border:1px solid #bababa;" size="10" maxlength="10" type="text" id="txtbox_{$keyfldname}"
-					name="{$keyfldname}" value="{$keyval|regex_replace:'/[^-]*(--)[^-]*$/':''}"></input>
+					name="{$keyfldname}" value="{$keyval|regex_replace:'/[^-]*(--)[^-]*$/':''}">
 				{include file='Components/DateButton.tpl' fldname=$keyfldname}
 				<br><a class="detailview_ajaxbutton ajax_save_detailview"
 					onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
@@ -578,7 +578,7 @@
 			</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<input style="border:1px solid #bababa;" size="16" maxlength="16" type="text" id="txtbox_{$keyfldname}"
-					name="{$keyfldname}" value="{$keyval|regex_replace:'/[^-]*(--)[^-]*$/':''}"></input>
+					name="{$keyfldname}" value="{$keyval|regex_replace:'/[^-]*(--)[^-]*$/':''}">
 				<input name="timefmt_{$keyfldname}" id="inputtimefmt_{$keyfldname}" type="hidden" value="{$fieldFormat}">
 				{include file='Components/DateButton.tpl' fldname=$keyfldname}
 				<br><a class="detailview_ajaxbutton ajax_save_detailview"
