@@ -1374,6 +1374,11 @@ $app_strings = array (
 	'Deleted in Mautic' => 'Eliminado en Mautic',
 	'Contact Points' => 'Puntos Contacto',
 	'From External Source' => 'Proviene de Fuente Externa',
+	'LBL_ADD_ROW' => 'Añadir Fila',
+	'LBL_EDIT_COLUMNS' => 'Editar Columnas',
+	'LBL_SELECT_COLUMNS' => 'Selecciona las columnas a mostrar en la Rejilla de Creación Masiva',
+	'LBL_MATCH_COLUMNS' => 'Selecciona las columnas clave para emparejar registros',
+	'LBL_SAVE_MAP' => 'Guardar Mapa',
 );
 
 // Translation for currency names

@@ -109,6 +109,11 @@ class Mapping extends processcbMap {
 			$value = '';
 			$delim = (isset($sourcefields['delimiter']) ? $sourcefields['delimiter'] : '');
 			foreach ($sourcefields['merge'] as $fieldinfo) {
+				$postProcess = '';
+				if (!empty($fieldinfo['postProcess'])) {
+					$postProcess = $fieldinfo['postProcess'];
+					unset($fieldinfo['postProcess']);
+				}
 				$idx = array_keys($fieldinfo);
 				if (strtoupper($idx[0])=='CONST') {
 					$const = array_pop($fieldinfo);
@@ -175,8 +180,13 @@ class Mapping extends processcbMap {
 					$fieldname = array_pop($fieldinfo);
 					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
 				}
+				if ($postProcess!='') {
+					$value = Mapping::postProcess($postProcess, $value);
+				}
 			}
-			$value = rtrim($value, $delim);
+			if (is_string($value)) {
+				$value = rtrim($value, $delim);
+			}
 			$tfields[$targetfield] = $value;
 		}
 		return $tfields;
@@ -200,9 +210,13 @@ class Mapping extends processcbMap {
 				if (isset($value->Rule)) {
 					$arr = array(
 						(string)$value->OrgfieldID=>(string)$value->OrgfieldName,
-						"mapid"=>(string)$value->Rule);
+						'mapid' => (string)$value->Rule,
+					);
 				} else {
 					$arr = array((string)$value->OrgfieldID=>(string)$value->OrgfieldName);
+				}
+				if (isset($value->postProcess)) {
+					$arr['postProcess'] = (string)$value->postProcess;
 				}
 				$allmergeFields[] = $arr;
 			}
@@ -218,6 +232,34 @@ class Mapping extends processcbMap {
 		}
 		$mapping['fields'] = $target_fields;
 		return $mapping;
+	}
+
+	public static function postProcess($function, $value) {
+		global $default_charset;
+		switch (trim($function)) {
+			case 'intval':
+			case 'boolval':
+			case 'floatval':
+			case 'addslashes':
+			case 'stripslashes':
+			case 'quotemeta':
+				$value = $function($value);
+				break;
+			case 'htmlentities':
+			case 'html_entity_decode':
+			case 'htmlspecialchars':
+				$value = $function($value, ENT_QUOTES, $default_charset);
+				break;
+			case 'json_decode':
+				$value = $function($value, true);
+				break;
+			case 'json_encode':
+				$value = $function($value, JSON_NUMERIC_CHECK);
+				break;
+			default:
+				break;
+		}
+		return $value;
 	}
 }
 ?>

@@ -473,6 +473,9 @@ class cbQuestion extends CRMEntity {
 			case 'Table':
 				$ret = self::getTableFromAnswer($ans);
 				break;
+			case 'Grid':
+				$ret = self::getGridFromAnswer($qid);
+				break;
 			case 'Number':
 				$ret = array_pop($ans['answer'][0]);
 				break;
@@ -626,6 +629,15 @@ class cbQuestion extends CRMEntity {
 			$table .= '</table>';
 		}
 		return $table;
+	}
+
+	public static function getGridFromAnswer($qid) {
+		$smarty = new vtigerCRM_Smarty();
+		$properties = json_encode(cbQuestion::getQuestionProperties($qid));
+		$smarty->assign('Properties', $properties);
+		$smarty->assign('QuestionID', $qid);
+		$smarty->assign('RowsperPage', GlobalVariable::getVariable('Report_ListView_PageSize', 40));
+		$smarty->display('modules/cbQuestion/Grid.tpl');
 	}
 
 	public static function getChartFromAnswer($ans) {

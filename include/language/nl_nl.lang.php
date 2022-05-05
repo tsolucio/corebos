@@ -1288,6 +1288,11 @@ $app_strings = array(
 	'Deleted in Mautic' => 'Deleted in Mautic',
 	'Contact Points' => 'Contact Points',
 	'From External Source' => 'From External Source',
+	'LBL_ADD_ROW' => 'Add Row',
+	'LBL_EDIT_COLUMNS' => 'Edit Columns',
+	'LBL_SELECT_COLUMNS' => 'Select columns to show in Mass Create Grid',
+	'LBL_MATCH_COLUMNS' => 'Select columns to match in Mass Create Grid',
+	'LBL_SAVE_MAP' => 'Save Map',
 );
 
 // Translation for currency names

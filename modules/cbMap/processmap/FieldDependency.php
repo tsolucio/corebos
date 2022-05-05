@@ -145,9 +145,7 @@ class FieldDependency extends processcbMap {
 		} else {
 			$mapping_arr['blocktriggerfields'] = (int)filter_var(strtolower((string)$xml->blocktriggerfields), FILTER_VALIDATE_BOOLEAN);
 		}
-		if ($mapping_arr['blocktriggerfields']) {
-			$mapping_arr['blockedtriggerfields'] = [];
-		}
+		$mapping_arr['blockedtriggerfields'] = [];
 		$target_fields = array();
 		foreach ($xml->dependencies->dependency as $v) {
 			$hasBlockingAction = false;
@@ -253,6 +251,9 @@ class FieldDependency extends processcbMap {
 				$target_fields[$key] = array_merge($value, $target_fields[$key]);
 			} else {
 				$target_fields[$key] = $value;
+			}
+			if ($mapping_arr['blocktriggerfields']) {
+				$mapping_arr['blockedtriggerfields'][] = $key;
 			}
 		}
 		$mapping_arr['fields'] = $target_fields;

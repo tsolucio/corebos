@@ -282,9 +282,11 @@ class Workflow {
 					// may change during the delay. This is for some certain types of updates, generally
 					// absolute updates. You MUST know what you are doing when creating workflows.
 					if ($delay!=0 && (get_class($task) == 'VTUpdateFieldsTask' || get_class($task) == 'VTCreateEntityTask')) {
+						$entityData->WorkflowContext['__WorkflowID'] = $this->id;
 						$msg = array(
 							'taskId' => $task->id,
 							'entityId' => $entityData->getId(),
+							'context' => $entityData->WorkflowContext,
 						);
 						$delay = max($delay-time(), 0);
 						Workflow::pushWFTaskToQueue($this->id, $this->executionCondition, $entityData->getId(), $msg, $delay);
@@ -306,9 +308,11 @@ class Workflow {
 						}
 					}
 				} else {
+					$entityData->WorkflowContext['__WorkflowID'] = $this->id;
 					$msg = array(
 						'taskId' => $task->id,
 						'entityId' => $entityData->getId(),
+						'context' => $entityData->WorkflowContext,
 					);
 					$delay = max($delay-time(), 0);
 					Workflow::pushWFTaskToQueue($this->id, $this->executionCondition, $entityData->getId(), $msg, $delay);
@@ -349,6 +353,11 @@ class Workflow {
 			$active = false;
 		}
 		return $active;
+	}
+
+	public function setActiveStateTo($state) {
+		global $adb;
+		$adb->pquery('update com_vtiger_workflows set active=? where workflow_id=?', [$state, $this->id]);
 	}
 
 	public function executionConditionAsLabel($label = null) {

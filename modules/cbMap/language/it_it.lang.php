@@ -42,6 +42,7 @@ $mod_strings = array(
 	'Validations' => 'Validazioni',
 	'Detail View Layout Mapping' => 'Vista Dettaglio Layout Mappatura',
 	'VALIDATE_MAP'=> 'Convalida mappa',
+	'Validate Map'=> 'Convalida mappa',
 	'MAP_NOT_VALID'=> 'Mappa non è Valida!',
 	'MAP_VALID'=> 'Mappa è Valida',
 	'MAP_NOT_IMPLEMENTED_YET'=> 'Convalida per questa mappa non è stata ancora implementata',

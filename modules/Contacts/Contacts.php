@@ -1023,7 +1023,15 @@ class Contacts extends CRMEntity {
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
-
+		$customRelModules = ['Accounts', 'Potentials', 'Campaigns', 'Products', 'Vendors', 'Documents'];
+		if (in_array($return_module, $customRelModules)) {
+			$data = array();
+			$data['sourceModule'] = getSalesEntityType($id);
+			$data['sourceRecordId'] = $id;
+			$data['destinationModule'] = $return_module;
+			$data['destinationRecordId'] = $return_id;
+			cbEventHandler::do_action('corebos.entity.link.delete', $data);
+		}
 		if ($return_module == 'Accounts') {
 			$adb->pquery('UPDATE vtiger_contactdetails SET accountid = ? WHERE contactid = ?', array(null, $id));
 		} elseif ($return_module == 'Potentials') {
@@ -1038,6 +1046,9 @@ class Contacts extends CRMEntity {
 			$adb->pquery('DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?', array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
+		}
+		if (in_array($return_module, $customRelModules)) {
+			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		}
 	}
 

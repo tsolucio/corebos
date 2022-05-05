@@ -223,9 +223,11 @@ class WorkFlowScheduler {
 									}
 								}
 							} else {
+								$entityData->WorkflowContext['__WorkflowID'] = $workflow->id;
 								$msg = array(
 									'taskId' => $task->id,
 									'entityId' => $entityData->getId(),
+									'context' => $entityData->WorkflowContext,
 								);
 								$delay = max($delay-time(), 0);
 								Workflow::pushWFTaskToQueue($workflow->id, $workflow->executionCondition, $entityData->getId(), $msg, $delay);

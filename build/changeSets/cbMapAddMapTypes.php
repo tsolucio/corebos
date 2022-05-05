@@ -46,6 +46,7 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 				'Kanban',
 				'Pivot',
 				'ApplicationMenu',
+				'MassUpsertGridView',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');
 			$field = Vtiger_Field::getInstance('maptype', $moduleInstance);

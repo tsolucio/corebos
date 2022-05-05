@@ -777,7 +777,7 @@ function getGroupName($groupid) {
 function getUserName($userid) {
 	global $adb, $log;
 	$log->debug('> getUserName ' . $userid);
-
+	$user_name = '';
 	if ($userid != '') {
 		$result = $adb->pquery('select user_name from vtiger_users where id=?', array($userid));
 		$user_name = $adb->query_result($result, 0, 'user_name');
@@ -3857,5 +3857,16 @@ function numberBytes($size) {
 	} else {
 		return round($size);
 	}
+}
+
+function getModuleFieldsInfo($module) {
+	global $adb;
+	$rs = $adb->pquery('SELECT * FROM vtiger_field WHERE tabid=?', array(
+		getTabid($module)
+	));
+	if ($adb->num_rows($rs) > 0) {
+		return $rs->GetRows();
+	}
+	return false;
 }
 ?>

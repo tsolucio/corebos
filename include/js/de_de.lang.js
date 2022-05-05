@@ -461,4 +461,8 @@ var alert_arr = {
 	'filterApplied': 'Filter applied',
 	'QuickView': 'Quick view',
 	'Restore': 'Restore',
+	'LBL_SUCCESS': 'Success',
+	'LBL_CREATED_SUCCESS': 'Created successfully',
+	'LBL_SELECT_COLUMNS': 'Select columns to show in grid',
+	'LBL_MATCH_COLUMNS': 'Select columns to match in grid',
 };

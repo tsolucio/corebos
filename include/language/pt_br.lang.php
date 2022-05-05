@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 28/11/2021 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 27/04/2022 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -404,7 +404,7 @@ $app_strings = array (
 'Products' => 'Produto',
 'Emails' => 'E-mail',
 'HelpDesk' => 'Tickets',
-'Activities' => 'Atividades',
+'Activities' => 'Tarefas',
 'Events' => 'Eventos',
 'Tasks' => 'Tarefas',
 'Todo' => 'Compromisso',
@@ -892,7 +892,7 @@ $app_strings = array (
 'invoice no'=>'No. fatura',
 'LBL_SELECT_LEAD_BUTTON_LABEL'=>'Selecionar lead',
 'LNK_READ_LICENSE'=>'Ler a licença',
-'ACTIVITIES' => 'Atividades',
+'ACTIVITIES' => 'Tarefas',
 'MAP_NAME_EXISTS'=>'Este nome de mapa já existe. \n Você quer sobrescrever?',
 'FOLDER_NAME_ALLOW_20CHARS'=>'Nome da pasta permite somente 20 caracteres',
 'SPECIAL_CHARS_NOT_ALLOWED'=>'Caracteres especiais não são permitidos. Tente novamente...',
@@ -1387,6 +1387,11 @@ $app_strings = array (
 'Deleted in Mautic' => 'Deleted in Mautic',
 'Contact Points' => 'Contact Points',
 'From External Source' => 'From External Source',
+'LBL_ADD_ROW' => 'Add Row',
+'LBL_EDIT_COLUMNS' => 'Edit Columns',
+'LBL_SELECT_COLUMNS' => 'Select columns to show in Mass Create Grid',
+'LBL_MATCH_COLUMNS' => 'Select columns to match in Mass Create Grid',
+'LBL_SAVE_MAP' => 'Save Map',
 );
 
 // Translation for currency names

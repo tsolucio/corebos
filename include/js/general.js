@@ -157,7 +157,7 @@ function showHideDivs(showdiv, hidediv) {
 	}
 }
 
-function getObj(n, d) {
+function getObj(n, d, returnonlyfield) {
 	var p, i, x;
 
 	if (!d) {
@@ -192,7 +192,7 @@ function getObj(n, d) {
 		x=getObj(n, d.layers[i].document);
 	}
 
-	if (!x && !(x=d[n]) && d.all) {
+	if (!returnonlyfield && !x && !(x=d[n]) && d.all) {
 		x=d.all[n];
 	}
 
@@ -1634,7 +1634,7 @@ function doformValidation(edit_type) {
 				return false;
 			}
 		}
-		if (getObj(fieldname[i]) != null) {
+		if (getObj(fieldname[i], undefined, true) != null) {
 			type=fielddatatype[i].split('~');
 			if (type[1]=='M') {
 				if (!emptyCheck(fieldname[i], fieldlabel[i], getObj(fieldname[i]).type)) {

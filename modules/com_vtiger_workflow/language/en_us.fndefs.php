@@ -1715,7 +1715,35 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder', ,943)",
+		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder',943)",
+	),
+),
+'getRelatedRecordCreateArrayConverting' => array(
+	'name' => 'getRelatedRecordCreateArrayConverting(module, RelatedModuleDestination, recordid)',
+	'desc' => 'Obtain a web service Master-Detail JSON structure for the given recordid and its related module records applying conversion mappings',
+	'params' => array(
+		array(
+			'name' => 'module',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the related module name to get records from',
+		),
+		array(
+			'name' => 'RelatedModuleDestination',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'Destination module for the related modules',
+		),
+		array(
+			'name' => 'recordid',
+			'type' => 'Integer',
+			'optional' => true,
+			'desc' => 'the main record ID to get the related records from, if not given the current record triggering the workflow will be used',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRelatedRecordCreateArrayConverting('Contacts','PurchaseOrder',943)",
 	),
 ),
 'getISODate' => array(

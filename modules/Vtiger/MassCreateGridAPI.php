@@ -15,36 +15,191 @@
 *************************************************************************************************/
 require_once 'Smarty_setup.php';
 require_once 'include/Webservices/MassCreate.php';
+require_once 'include/Webservices/Update.php';
+require_once 'include/Webservices/Create.php';
+require_once 'include/ListView/ListViewJSON.php';
 global $current_user;
 Vtiger_Request::validateRequest();
-$newData = array();
-$searchon = array();
-$module = vtlib_purify($_REQUEST['moduleName']);
-$data = vtlib_purify($_REQUEST['data']);
-$data = json_decode($data, true);
-foreach ($data as $row) {
-	unset($row['rowKey']);
-	unset($row['_attributes']);
-	$currentRow = array();
-	foreach ($row as $field => $value) {
-		if (!is_array($value)) {
-			if ($field == 'smownerid') {
-				$value = '19x'.$value;
-				$field = 'assigned_user_id';
-				unset($row['smownerid']);
-			} else {
-				$searchon[] = $field;
-			}
-			$currentRow[$field] = $value;
+$op = vtlib_purify($_REQUEST['method']);
+$cbMapTabid = vtws_getEntityId('cbMap');
+$UsersTabid = vtws_getEntityId('Users');
+switch ($op) {
+	case 'MassCreate':
+		$newData = array();
+		$searchon = array();
+		$mapName = vtlib_purify($_REQUEST['mapName']);
+		$module = vtlib_purify($_REQUEST['moduleName']);
+		$data = vtlib_purify($_REQUEST['data']);
+		$data = json_decode($data, true);
+		$grid = new GridListView($module);
+		$grid->tabid = getTabid($module);
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$MassUpsert = $cbMap->MassUpsertGridView();
+			$match = $MassUpsert->getMatchFields();
 		}
-	}
-	$newData[] = array(
-		'elementType' => $module,
-		'referenceId' => '',
-		'searchon' => implode(',', $searchon),
-		'element' => $currentRow
-	);
+		foreach ($data as $row) {
+			unset($row['_attributes']);
+			$currentRow = array();
+			foreach ($row as $field => $value) {
+				if (is_numeric($field)) {
+					continue;
+				}
+				$fieldName = $grid->getFieldNameByColumn($field);
+				if (!$fieldName) {
+					continue;
+				}
+				$fieldType = getUItypeByFieldName($module, $fieldName);
+				if (!is_array($value)) {
+					if ($field == 'smownerid') {
+						$value = $UsersTabid.'x'.$value;
+						$field = 'assigned_user_id';
+						unset($row['smownerid']);
+					} else {
+						$searchon[] = $fieldName;
+					}
+					if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
+						$relMods = $grid->findRelatedModule($fieldName);
+						if (!empty($relMods)) {
+							foreach ($relMods as $mod) {
+								$reference_field = getEntityFieldNames($mod);
+								if (is_array($reference_field['fieldname'])) {
+									$id = getEntityId($mod, $value);
+								} else {
+									$id = __cb_getidof(array(
+										$mod, $reference_field['fieldname'], $value
+									));
+								}
+								$value = 0;
+								if ($id > 0) {
+									$tabid = vtws_getEntityId($mod);
+									$value = $tabid.'x'.$id;
+									break;
+								}
+							}
+							$field = $fieldName;
+						}
+					}
+					$currentRow[$fieldName] = $value;
+				}
+			}
+			if (isset($match)) {
+				$searchon = $match;
+			}
+			$newData[] = array(
+				'elementType' => $module,
+				'referenceId' => '',
+				'searchon' => implode(',', $searchon),
+				'element' => $currentRow
+			);
+		}
+		$response = MassCreate($newData, $current_user);
+		break;
+	case 'SaveMap':
+		$moduleName = vtlib_purify($_REQUEST['moduleName']);
+		$mapName = vtlib_purify($_REQUEST['mapName']);
+		$match = vtlib_purify($_REQUEST['match']);
+		$ActiveColumns = vtlib_purify($_REQUEST['ActiveColumns']);
+		$ActiveColumns = json_decode($ActiveColumns, true);
+		$match = json_decode($match, true);
+		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><deletethis/>');
+		$map = $xml->addChild('map');
+		$originmodule = $map->addChild('originmodule');
+		$originname = $originmodule->addChild('originname', $moduleName);
+		if (!empty($match)) {
+			$matchblock = $map->addChild('match');
+			foreach ($match as $field) {
+				$matchblock->addChild('field', $field['name']);
+			}
+		}
+		$columns = $map->addChild('columns');
+		foreach ($ActiveColumns as $key) {
+			$field = $columns->addChild('field');
+			$name = $field->addChild('name', $key['name']);
+		}
+		$dom = dom_import_simplexml($xml)->ownerDocument;
+		$dom->preserveWhiteSpace = false;
+		$dom->formatOutput = true;
+		$dom->loadXML($xml->asXML());
+		$map = str_replace(
+			array(
+				'<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.'<deletethis>',
+				'</deletethis>',
+			),
+			'',
+			$dom->saveXML()
+		);
+		$mapid = __cb_getidof(array(
+			'cbMap', 'mapname', $mapName
+		));
+		$response = array();
+		if ($mapid > 0) {
+			$element = array(
+				'id' => $cbMapTabid.'x'.$mapid,
+				'content' => trim($map),
+				'mapname' => $mapName,
+				'assigned_user_id' => $UsersTabid.'x'.$current_user->id
+			);
+			$response = vtws_update($element, $current_user);
+		} else {
+			//create a new map
+			$element = array(
+				'content' => trim($map),
+				'mapname' => $mapName,
+				'maptype' => 'MassUpsertGridView',
+				'targetname' => $moduleName,
+				'assigned_user_id' => '19x'.$current_user->id
+			);
+			$response = vtws_create('cbMap', $element, $current_user);
+		}
+		break;
+	case 'SaveMapFromModule':
+		$MapID = vtlib_purify($_REQUEST['MapID']);
+		$fields = vtlib_purify($_REQUEST['fields']);
+		$match = vtlib_purify($_REQUEST['match']);
+		$fields = json_decode($fields, true);
+		$match = json_decode($match, true);
+		$mapName = vtlib_purify($_REQUEST['mapName']);
+		$moduleName = vtlib_purify($_REQUEST['moduleName']);
+		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><deletethis/>');
+		$map = $xml->addChild('map');
+		$originmodule = $map->addChild('originmodule');
+		$originname = $originmodule->addChild('originname', $moduleName);
+		if (!empty($match)) {
+			$matchblock = $map->addChild('match');
+			foreach ($match as $field) {
+				$matchblock->addChild('field', $field);
+			}
+		}
+		$columns = $map->addChild('columns');
+		foreach ($fields as $field) {
+			$fld = $columns->addChild('field');
+			$name = $fld->addChild('name', $field);
+		}
+		$dom = dom_import_simplexml($xml)->ownerDocument;
+		$dom->preserveWhiteSpace = false;
+		$dom->formatOutput = true;
+		$dom->loadXML($xml->asXML());
+		$map = str_replace(
+			array(
+				'<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.'<deletethis>',
+				'</deletethis>',
+			),
+			'',
+			$dom->saveXML()
+		);
+		$element = array(
+			'id' => $cbMapTabid.'x'.$MapID,
+			'content' => trim($map),
+			'mapname' => $mapName,
+			'assigned_user_id' => $UsersTabid.'x'.$current_user->id
+		);
+		$response = vtws_update($element, $current_user);
+		break;
+	default:
+		$response = '';
+		break;
 }
-$response = MassCreate($newData, $current_user);
 echo json_encode($response);
 ?>

@@ -323,8 +323,8 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 	}
 
 	/**
-	 * Function to get list of modules the field refernced to
-	 * @return <Array> -  list of modules for which field is refered to
+	 * Function to get list of modules the field referenced to
+	 * @return array list of modules for which field is refered to
 	 */
 	public function getReferenceList($hideDisabledModules = true, $presenceZero = true) {
 		$webserviceFieldInfo = $this->getWebserviceFieldObject();

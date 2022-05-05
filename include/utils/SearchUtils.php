@@ -1374,6 +1374,8 @@ function getTagWhere($search_val, $current_user_id) {
  */
 function getCriteriaJS($formName) {
 	$todayDateTime = new DateTimeField(date('Y-m-d H:i:s'));
+	$bigbang = new DateTimeField(date('Y-m-d', mktime(0, 0, 0, '01', '01', '2000')));
+	$priorToToday = new DateTimeField(date('Y-m-d'));
 
 	$tomorrow = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
 	$tomorrowDateTime = new DateTimeField($tomorrow.' '. date('H:i:s'));
@@ -1558,6 +1560,9 @@ function getCriteriaJS($formName) {
 			} else if( type == "lastmonth" ) {
 				document.'.$formName.'.startdate.value = "'.$lastMonthStartDateTime->getDisplayDate().'";
 				document.'.$formName.'.enddate.value = "'.$lastMonthEndDateTime->getDisplayDate().'";
+			} else if( type == "priorToToday" ) {
+				document.'.$formName.'.startdate.value = "'.$bigbang->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$yesterdayDateTime->getDisplayDate().'";
 			} else if( type == "nextmonth" ) {
 				document.'.$formName.'.startdate.value = "'.$nextMonthStartDateTime->getDisplayDate().'";
 				document.'.$formName.'.enddate.value = "'.$nextMonthEndDateTime->getDisplayDate().'";
@@ -1624,6 +1629,7 @@ function getDateforStdFilterBytype($type) {
 	$today = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y')));
 	$tomorrow  = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
 	$yesterday  = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-1, date('Y')));
+	$bigbang = date('Y-m-d', mktime(0, 0, 0, '01', '01', '2000'));
 
 	$currentmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m'), '01', date('Y')));
 	$currentmonth1 = date('Y-m-t');
@@ -1718,6 +1724,9 @@ function getDateforStdFilterBytype($type) {
 	} elseif ($type == 'nextmonth') {
 		$datevalue[0] = $nextmonth0;
 		$datevalue[1] = $nextmonth1;
+	} elseif ($type == 'priorToToday') {
+		$datevalue[0] = $bigbang;
+		$datevalue[1] = $today;
 	} elseif ($type == 'next7days') {
 		$datevalue[0] = $today;
 		$datevalue[1] = $next7days;

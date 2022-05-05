@@ -53,6 +53,18 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}
 			if ($parent_module=='') {
 				$parent_module = getSalesEntityType($parent_id);
+				$rmods = [];
+				while ($row = $adb->fetch_array($fldrs)) {
+					$rmods[] = $row['relmodule'];
+				}
+				if (!in_array($parent_module, $rmods)) {
+					$wf = getEntityNameWorkflow($parent_id);
+					if (empty($wf)) {
+						$parent_module = 'Users';
+					} else {
+						$parent_module = 'com_vtiger_workflow';
+					}
+				}
 			}
 			$valueTitle = getTranslatedString($parent_module, $parent_module);
 			$displayValueArray = getEntityName($parent_module, $parent_id);
