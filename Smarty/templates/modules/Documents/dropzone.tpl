@@ -14,3 +14,4 @@ var moduleDropzone = new Dropzone('#updoc-dropzone', {
 	uploadMultiple: false
 });
 </script>
+<div contenteditable="true" class="text-dropzone" id="url-zone" onpaste="handlePaste(event)" data-text="Paste the link here"></div> 
