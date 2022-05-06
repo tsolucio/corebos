@@ -369,6 +369,9 @@ class GridListView {
 		$reference_field = getEntityFieldNames($this->module);
 		$columnnameVal = $this->getFieldNameByColumn($reference_field['fieldname']);
 		$rowCount = $adb->num_rows($result);
+		if ($this->Webservice_Translate_Strings) {
+			$translation = new cbtranslation();
+		}
 		for ($i=0; $i < $rowCount; $i++) {
 			$rows = array();
 			$colorizer_row = array();
@@ -476,7 +479,11 @@ class GridListView {
 				} else {
 					if ($fieldName) {
 						if ($this->Webservice_Translate_Strings) {
-							$rows[$fieldName] = textlength_check(getTranslatedString($fieldValue, $this->module));
+							$translatedValue = $translation->readtranslation($fieldName, $recordID, $this->module, $current_user->language);
+							if (empty($translatedValue)) {
+								$translatedValue = $fieldValue;
+							}
+							$rows[$fieldName] = textlength_check($translatedValue);
 						} else {
 							$rows[$fieldName] = textlength_check($fieldValue);
 						}

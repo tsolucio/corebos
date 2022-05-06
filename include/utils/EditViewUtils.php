@@ -29,7 +29,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	$userprivs = $current_user->getPrivileges();
 	$Webservice_Translate_Strings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
 	if ($Webservice_Translate_Strings) {
-		$col_fields[$fieldname] = getTranslatedString($col_fields[$fieldname], $module_name);
+		$translation = new cbtranslation();
+		$translatedValue = $translation->readtranslation($fieldname, $col_fields['record_id'], $module_name, $current_user->language);
+		if (!empty($translatedValue)) {
+			$col_fields[$fieldname] = $translatedValue;
+		}
 	}
 	$fieldvalue = array();
 	$final_arr = array();

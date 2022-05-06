@@ -1417,7 +1417,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
  * @return array
  */
 function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label) {
-	global $log, $adb;
+	global $log, $adb, $current_user;
 	$log->debug('> getDetailBlockInformation', [$module, $result, $col_fields, $tabid, $block_label]);
 	$label_data = array();
 
@@ -1430,6 +1430,9 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		$cbMapFI = $cbMapFI['fields'];
 	}
 	$Webservice_Translate_Strings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
+	if ($Webservice_Translate_Strings) {
+		$translation = new cbtranslation();
+	}
 	$noofrows = $adb->num_rows($result);
 	for ($i = 0; $i < $noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result, $i, 'tablename');
@@ -1501,6 +1504,10 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 			}
 			if ($Webservice_Translate_Strings) {
 				$custfld[1] = getTranslatedString($custfld[1], $module);
+				$translatedValue = $translation->readtranslation($fieldname, $col_fields['record_id'], $module, $current_user->language);
+				if (!empty($translatedValue)) {
+					$custfld[1] = $translatedValue;
+				}
 			}
 			$label_data[$block][] = array($custfld[0] => array(
 				'value' => $custfld[1], "ui" => $custfld[2], 'options' => isset($custfld['options']) ? $custfld['options'] : '',

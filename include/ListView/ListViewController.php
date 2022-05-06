@@ -215,6 +215,9 @@ class ListViewController {
 		include_once 'vtlib/Vtiger/Link.php';
 		$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 		$Webservice_Translate_Strings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
+		if ($Webservice_Translate_Strings) {
+			$translation = new cbtranslation();
+		}
 		for ($i = 0; $i < $rowCount; ++$i) {
 			//Getting the recordId
 			if ($module != 'Users') {
@@ -258,7 +261,10 @@ class ListViewController {
 					$value = $rawValue;
 				}
 				if ($Webservice_Translate_Strings) {
-					$value = getTranslatedString($value, $currentModule);
+					$translatedValue = $translation->readtranslation($fieldName, $recordId, $module, $this->user->language);
+					if (!empty($translatedValue)) {
+						$value = $translatedValue;
+					}
 				}
 				if (($module == 'Documents' && $fieldName == 'filename') || $fieldName == 'Documents.filename') {
 					if ($fieldName == 'Documents.filename') {
