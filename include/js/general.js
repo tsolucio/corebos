@@ -7115,3 +7115,29 @@ function initSelect2() {
 	*/
 	return cbNumber;
 });
+
+function handlePaste(event) {
+	if (event.type != 'paste') {
+		document.getElementById('url-zone').innerText = '';
+		return false;
+	}
+	let url = document.getElementById('url-zone');
+	setTimeout(function() {
+		fetch(
+			'index.php?module=Documents&action=DocumentsAjax&actionname=URLDropzone&method=Save&url='+encodeURI(url.innerText),
+			{
+				method: 'post',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+				},
+				credentials: 'same-origin',
+				body: '&'+csrfMagicName+'='+csrfMagicToken
+			}
+		).then(response => response.json()).then(response => {
+			ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+		}).catch((error) => {
+			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_ERROR_DROPZONE, 'error');
+		});
+		document.getElementById('url-zone').innerText = '';
+	}, 100);
+}
