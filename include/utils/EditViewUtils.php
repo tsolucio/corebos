@@ -28,7 +28,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 	$userprivs = $current_user->getPrivileges();
 	$Webservice_Translate_Strings = boolval(GlobalVariable::getVariable('Webservice_Translate_Strings', 0));
-	if ($Webservice_Translate_Strings) {
+	if ($Webservice_Translate_Strings && !empty($mode)) {
 		$translation = new cbtranslation();
 		$translatedValue = $translation->readtranslation($fieldname, $col_fields['record_id'], $module_name, $current_user->language);
 		if (!empty($translatedValue)) {
