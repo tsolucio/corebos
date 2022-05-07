@@ -7,3 +7,7 @@
 <script src="./include/components/toast-ui/grid/tui-grid.js"></script>
 <script src="./include/components/checkboxrenderer.js"></script>
 <script src="./include/components/Select2/js/select2.min.js"></script>
+<script type="text/javascript">
+<!-- Initialize components -->
+tui.Grid.setLanguage(gVTuserLanguage.substring(0, 2));
+</script>
