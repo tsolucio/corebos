@@ -11537,7 +11537,7 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "597246d51f9902b9646149af148852a6"
+  "revision": "4c00731a23fc591afc161f086dffc8ee"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "9663dd1cea6cb7fb0cfe983e54baa186"
