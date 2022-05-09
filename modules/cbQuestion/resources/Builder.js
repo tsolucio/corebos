@@ -80,7 +80,7 @@ function saveQuestion(update) {
 	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
 
 	var type_properties = new Object();
-	var current_tempqprops_value = checkVal(document.getElementById('qprops').value);
+	var current_tempqprops_value = document.getElementById('qprops').value;
 
 	if (current_tempqprops_value === "" || current_tempqprops_value === "{}" || current_tempqprops_value == undefined) {
 		type_properties = {};
