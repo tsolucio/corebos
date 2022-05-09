@@ -82,13 +82,16 @@ class MassUpsertGridView extends processcbMap {
 			$columns = (array)$xml->columns;
 			foreach ($columns['field'] as $field) {
 				$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, (string)$field->name);
-				if ($cachedModuleFields) {
-					$table = str_replace('vtiger_', '', $cachedModuleFields['tablename']);
-					$columnname = (string)$field->name;
-					$field->name = $cachedModuleFields['fieldname'];
-					$label = $cachedModuleFields['fieldlabel'];
-					$this->mapping['columns'][$label] = array($table => $columnname);
+				if (!$cachedModuleFields) {
+					$grid = new GridListView($this->mapping['module']);
+					$grid->tabid = $tabid;
+					$cachedModuleFields = $grid->getFieldNameByColumn((string)$field->name, 'array');
 				}
+				$table = str_replace('vtiger_', '', $cachedModuleFields['tablename']);
+				$columnname = (string)$field->name;
+				$field->name = $cachedModuleFields['fieldname'];
+				$label = $cachedModuleFields['fieldlabel'];
+				$this->mapping['columns'][$label] = array($table => $columnname);
 			}
 		}
 	}

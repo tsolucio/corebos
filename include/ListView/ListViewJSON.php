@@ -509,15 +509,18 @@ class GridListView {
 		return $data;
 	}
 
-	public function getFieldNameByColumn($columnname) {
+	public function getFieldNameByColumn($columnname, $return = '') {
 		global $adb;
 		if (is_array($columnname)) {
 			$columnname = $columnname[0];
 		}
-		$rs = $adb->pquery('select fieldname from vtiger_field where columnname=? and tabid=?', array(
+		$rs = $adb->pquery('select * from vtiger_field where columnname=? and tabid=?', array(
 			$columnname, $this->tabid
 		));
 		if ($adb->num_rows($rs) == 1) {
+			if ($return == 'array') {
+				return $rs->FetchRow();
+			}
 			return $adb->query_result($rs, 0, 'fieldname');
 		}
 		return false;
