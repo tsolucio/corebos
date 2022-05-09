@@ -121,7 +121,7 @@ $smarty->assign('sqlquery', $focus->column_fields['sqlquery']);
 $smarty->assign('qpagesize', $focus->column_fields['qpagesize']);
 $smarty->assign('qtype', empty($focus->column_fields['qtype']) ? 'Table' : $focus->column_fields['qtype']);
 
-if (empty($focus->column_fields['typeprops']) || $focus->column_fields['typeprops'] == "") {
+if (empty($focus->column_fields['typeprops'])) {
 	$smarty->assign('typeprops', json_decode("{}"));
 } else {
 	$smarty->assign('typeprops', decode_html(str_replace('\\', '', $focus->column_fields['typeprops'])));
