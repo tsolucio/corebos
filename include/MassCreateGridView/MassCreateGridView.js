@@ -101,15 +101,19 @@ const MCGrid = {
 		let content = `<div class="slds-grid slds-wrap">`;
 		activeCols.map(function(currentValue, index) {
 			let typeofdata = '';
+			let checked = '';
+			let disabled = '';
 			if (currentValue.typeofdata == 'M') {
 				typeofdata = `<span class="slds-text-color_error">*</span>`;
+				checked = 'checked';
+				disabled = 'disabled';
 			}
 			content += `
 			<div class="slds-col slds-size_3-of-12">
 				<div class="slds-form-element">
 					<div class="slds-form-element__control">
 						<div class="slds-checkbox">
-							<input type="checkbox" name="grid-fields" id="checkbox-${currentValue.name}" value="checkbox-${currentValue.name}" ${currentValue.active == 1 ? 'checked' : ''}/>
+							<input type="checkbox" name="grid-fields" id="checkbox-${currentValue.name}" value="checkbox-${currentValue.name}" ${currentValue.active == 1 ? 'checked' : ''} ${checked} ${disabled}/>
 							<label class="slds-checkbox__label" for="checkbox-${currentValue.name}">
 								<span class="slds-checkbox_faux"></span>
 								<span class="slds-form-element__label">${currentValue.header} ${typeofdata}</span>
