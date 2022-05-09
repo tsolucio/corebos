@@ -465,4 +465,5 @@ var alert_arr = {
 	'LBL_CREATED_SUCCESS': 'Creado correctamente',
 	'LBL_SELECT_COLUMNS': 'Selecciona las columnas a mostrar en la tabla',
 	'LBL_MATCH_COLUMNS': 'Selecciona las columnas a emparejar en la tabla',
+	'LBL_MATCH_ERROR': 'You can only match the fields you select to show',
 };
