@@ -98,4 +98,11 @@
 	<classname>addBAtypesForMassCreateGrid</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>geofreybundala</author>
+	<description>Add field for saving wfid to Mail Converter</description>
+	<filename>build/changeSets/2022/addColumnToMailConverter.php</filename>
+	<classname>addColumnToMailConverter</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
