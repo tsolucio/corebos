@@ -170,11 +170,14 @@ const MCGrid = {
 		let matchColumns = JSON.parse(MatchFields);
 		let newColumns = Array();
 		let newMatchFields = Array();
+		let ColumnsDiff = Array();
+		let MatchDiff = Array();
 		columns.map(function(currentValue, idx) {
 			const checkbox = document.getElementById(`checkbox-${currentValue.name}`);
 			if (checkbox.checked) {
 				columns[idx].active = 1;
 				newColumns.push(currentValue);
+				ColumnsDiff.push(currentValue.name);
 			} else {
 				columns[idx].active = 0;
 			}
@@ -184,6 +187,7 @@ const MCGrid = {
 			if (match.checked) {
 				matchColumns[idx].active = 1;
 				newMatchFields.push(currentValue);
+				MatchDiff.push(currentValue.name);
 			} else {
 				matchColumns[idx].active = 0;
 			}
@@ -191,6 +195,11 @@ const MCGrid = {
 		mcdataGridInstance.setColumns(newColumns);
 		ListFields = JSON.stringify(columns);
 		MatchFields = JSON.stringify(matchColumns);
+		let difference = MatchDiff.filter(x => ColumnsDiff.indexOf(x) === -1);
+		if (difference.length > 0) {
+			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_MATCH_ERROR);
+			return false;
+		}
 		ldsModal.close();
 		MCGrid.ActiveColumns = newColumns;
 		MCGrid.MatchFields = newMatchFields;
