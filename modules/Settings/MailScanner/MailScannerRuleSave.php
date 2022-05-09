@@ -32,8 +32,9 @@ $scannerrule->matchusing= vtlib_purify($_REQUEST['rule_matchusing']);
 $scannerrule->cc = vtlib_purify($_REQUEST['rule_cc']);
 $scannerrule->assign_to= vtlib_purify(($_REQUEST['assigntype'] == 'U' ? $_REQUEST['assigned_user_id'] : $_REQUEST['assigned_group_id']));
 $scannerrule->add_email_as = (empty($_REQUEST['add_email_as']) ? 'CommentAndEmail' : vtlib_purify($_REQUEST['add_email_as']));
+$scannerrule->workflowid = (empty($_REQUEST['workflowid']) ? NULL : vtlib_purify($_REQUEST['workflowid']));
+$scannerrule->workflowname = (empty($_REQUEST['workflowid_display']) ? NULL : vtlib_purify($_REQUEST['workflowid_display']));
 $scannerrule->must_be_related = (empty($_REQUEST['must_be_related']) ? false : true);
-
 $scannerrule->update();
 
 $scannerrule->updateAction($scanneractionid, vtlib_purify($_REQUEST['rule_actiontext']));

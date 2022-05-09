@@ -17,7 +17,7 @@
 <tr>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 
-	<form action="index.php" method="post" id="form" onsubmit="VtigerJS_DialogBox.block();">
+	<form action="index.php" method="post" id="form" onsubmit="VtigerJS_DialogBox.block();" name="form">
 		<input type='hidden' name='module' value='Settings'>
 		<input type='hidden' name='action' value='MailScanner'>
 		<input type='hidden' name='mode' value='rulesave'>
@@ -168,6 +168,8 @@
 									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_CC}]</option>
 									<option value="CREATE,Messages,SUBJECT" {if $RULEACTIONTEXT eq 'CREATE,Messages,SUBJECT'}selected=true{/if}
 									>{$MOD.LBL_ADD} {'SINGLE_Messages'|getTranslatedString:'Messages'}</option>
+									<option value="CREATE,com_vtiger_workflow,SUBJECT" {if $RULEACTIONTEXT eq 'CREATE,com_vtiger_workflow,SUBJECT'}selected=true{/if}
+									>{'LBL_EXECUTE_WF'|getTranslatedString:'Import'}</option>
 								</select>
 							</td>
 						</tr>
@@ -187,10 +189,34 @@
 								</select>
 							</td>
 						</tr>
+						<tr id="selectworkflow">
+							<td width="20%" nowrap class="small cellLabel"><strong>{'LBL_SELECT'|getTranslatedString} {'Workflow'|getTranslatedString:'com_vtiger_workflow'}</strong></td>
+							<td width="70%" colspan=2>
+								<input id="workflowid" name="workflowid" type="hidden" value ="{if isset($SCANNERRULE->workflowid)}  {$SCANNERRULE->workflowid} {/if}">
+								<input type='hidden' class='small' name="workflowid_type" id="workflowid_type" value="com_vtiger_workflow">
+								<input
+									id="workflowid_display"
+									name="workflowid_display"
+									readonly
+									type="text"
+									style="border:1px solid #bababa;"
+									onclick='return vtlib_open_popup_window("form", "workflowid", "com_vtiger_workflow", "");'
+									value ="{if isset($SCANNERRULE->workflowname)}  {$SCANNERRULE->workflowname} {/if}">&nbsp;
+									<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("form", "workflowid", "com_vtiger_workflow", "");'>
+										<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+										</svg>
+									</span>
+									<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('workflowid').value=''; document.getElementById('workflowid_display').value=''; return false;">
+										<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+										</svg>
+									</span>
+							</td>
+						</tr>
 						<tr id="assign_to_row">
 							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_ASSIGN}</strong></td>
 							<td width="70%" colspan=2>
-
 				{if $SCANNERRULE->assign_to_type eq 'U'}
 					{assign var=select_user value='checked'}
 					{assign var=select_group value=''}
@@ -290,6 +316,11 @@ function checkAction() {
 	} else {
 		jQuery('#updatemustberelated').hide();
 		jQuery('#updateattachemail').hide();
+	}
+	if (jQuery('#rule_actiontext').val() == 'CREATE,com_vtiger_workflow,SUBJECT') {
+		jQuery('#selectworkflow').show();
+	} else {
+		jQuery('#selectworkflow').hide();
 	}
 }
 jQuery('#rule_actiontext').on('change',checkAction);

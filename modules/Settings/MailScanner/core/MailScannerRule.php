@@ -42,6 +42,8 @@ class Vtiger_MailScannerRule {
 	public $assign_to_type = false;
 	public $assign_to_name = false;
 	public $add_email_as = 'CommentAndEmail';
+	public $workflowid = NULL;
+	public $workflowname = '';
 	public $must_be_related = true;
 
 	// associated actions for this rule
@@ -97,6 +99,8 @@ class Vtiger_MailScannerRule {
 			$this->matchusing = $adb->query_result($result, 0, 'matchusing');
 			$this->cc         = $adb->query_result($result, 0, 'cc');
 			$this->add_email_as = $adb->query_result($result, 0, 'add_email_as');
+			$this->workflowid = $adb->query_result($result, 0, 'workflowid');
+			$this->workflowname = $adb->query_result($result, 0, 'workflowname');
 			$this->must_be_related = $adb->query_result($result, 0, 'must_be_related');
 			$this->isvalid    = true;
 			//User | Group to assign
@@ -393,19 +397,20 @@ class Vtiger_MailScannerRule {
 		if ($this->ruleid) {
 			$adb->pquery(
 				'UPDATE vtiger_mailscanner_rules
-					SET scannerid=?,fromaddress=?,toaddress=?,subjectop=?,subject=?,bodyop=?,body=?,matchusing=?,assign_to=?,cc=?,add_email_as=?,must_be_related=?
+					SET scannerid=?,fromaddress=?,toaddress=?,subjectop=?,subject=?,bodyop=?,body=?,matchusing=?,assign_to=?,cc=?,add_email_as=?,must_be_related=?,workflowid=?,workflowname=?
 					WHERE ruleid=?',
 				array(
 					$this->scannerid, $this->fromaddress, $this->toaddress, $this->subjectop, $this->subject, $this->bodyop,
-					$this->body,$this->matchusing,$this->assign_to, $this->cc, $this->add_email_as, $this->must_be_related, $this->ruleid
+					$this->body,$this->matchusing,$this->assign_to, $this->cc, $this->add_email_as, $this->must_be_related,
+					$this->workflowid, $this->workflowname, $this->ruleid
 				)
 			);
 		} else {
 			$this->sequence = $this->__nextsequence();
 			$adb->pquery(
 				'INSERT INTO vtiger_mailscanner_rules
-					(scannerid,fromaddress,toaddress,subjectop,subject,bodyop,body,matchusing,sequence,assign_to,cc,add_email_as,must_be_related)
-					VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',
+					(scannerid,fromaddress,toaddress,subjectop,subject,bodyop,body,matchusing,sequence,assign_to,cc,add_email_as,must_be_related,workflowid,workflowname)
+					VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 				array(
 					$this->scannerid,
 					$this->fromaddress,
@@ -420,6 +425,8 @@ class Vtiger_MailScannerRule {
 					$this->cc,
 					$this->add_email_as,
 					$this->must_be_related,
+					$this->workflowid,
+					$this->workflowname,
 				)
 			);
 			$this->ruleid = $adb->database->Insert_ID();
