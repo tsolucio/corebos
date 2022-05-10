@@ -33,12 +33,15 @@ switch ($op) {
 		$data = json_decode($data, true);
 		$grid = new GridListView($module);
 		$grid->tabid = getTabid($module);
-		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapName, cbMap::getMapIdByName($mapName), $currentModule);
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$MassUpsert = $cbMap->MassUpsertGridView();
+			$ActiveColumns = $MassUpsert->getColumns();
 			$match = $MassUpsert->getMatchFields();
 		}
+		$idx = 0;
+		$currentRowActive = array();
 		foreach ($data as $row) {
 			unset($row['_attributes']);
 			$currentRow = array();
@@ -47,6 +50,15 @@ switch ($op) {
 					continue;
 				}
 				$fieldName = $grid->getFieldNameByColumn($field);
+				//check if fieldname is in active colums
+				if (empty($currentRowActive)) {
+					foreach ($ActiveColumns as $key) {
+						$currentRowActive[] = $grid->getFieldNameByColumn(array_values($key)[0]);
+					}
+				}
+				if (!in_array($fieldName, $currentRowActive)) {
+					continue;
+				}
 				if (!$fieldName) {
 					continue;
 				}
@@ -64,27 +76,40 @@ switch ($op) {
 						if (!empty($relMods)) {
 							foreach ($relMods as $mod) {
 								$reference_field = getEntityFieldNames($mod);
-								if (is_array($reference_field['fieldname'])) {
-									$id = getEntityId($mod, $value);
-								} else {
-									$id = __cb_getidof(array(
-										$mod, $reference_field['fieldname'], $value
-									));
+								$handler = vtws_getModuleHandlerFromName($mod, $current_user);
+								$meta = $handler->getMeta();
+								$mandatoryFieldsList = $meta->getMandatoryFields();
+								if (count($mandatoryFieldsList)) {
+									$element = array();
+									foreach ($mandatoryFieldsList as $field) {
+										$element[$field] = $value;
+										if ($field == 'assigned_user_id') {
+											$element[$field] = $UsersTabid.'x'.$current_user->id;
+										}
+									}
 								}
-								$value = 0;
-								if ($id > 0) {
-									$tabid = vtws_getEntityId($mod);
-									$value = $tabid.'x'.$id;
-									break;
+								if (is_string($reference_field['fieldname'])) {
+									$reference_field['fieldname'] = (array)$reference_field['fieldname'];
 								}
+								$newData[] = array(
+									'elementType' => $mod,
+									'referenceId' => 'rel_entity_'.$fieldName.'_'.$idx,
+									'searchon' => implode(',', $reference_field['fieldname']),
+									'element' => $element
+								);
 							}
 							$field = $fieldName;
+							$value = '@{rel_entity_'.$fieldName.'_'.$idx.'}';
+							$idx++;
 						}
 					}
 					$currentRow[$fieldName] = $value;
 				}
 			}
 			if (isset($match)) {
+				if (is_string($match)) {
+					$match = (array)$match;
+				}
 				$searchon = $match;
 			}
 			$newData[] = array(
@@ -149,7 +174,7 @@ switch ($op) {
 				'mapname' => $mapName,
 				'maptype' => 'MassUpsertGridView',
 				'targetname' => $moduleName,
-				'assigned_user_id' => '19x'.$current_user->id
+				'assigned_user_id' => $UsersTabid.'x'.$current_user->id
 			);
 			$response = vtws_create('cbMap', $element, $current_user);
 		}
