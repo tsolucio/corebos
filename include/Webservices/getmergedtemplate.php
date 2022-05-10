@@ -83,7 +83,7 @@ function cbws_getmergedtemplate($template, $crmids, $output_format, $user) {
 				$pdfname = OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.pdf';
 				$odtout = new OpenDocument;
 				OpenDocument::$debug = false;
-				OpenDocument::$compile_language = $usrlang;
+				OpenDocument::$compile_language = GlobalVariable::getVariable('GenDoc_Default_Compile_Language', $usrlang, $module);
 				if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 					include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
 				} else {
