@@ -1323,6 +1323,7 @@ $app_strings = array(
 	'LBL_SELECT_COLUMNS' => 'Select columns to show in Mass Create Grid',
 	'LBL_MATCH_COLUMNS' => 'Select columns to match in Mass Create Grid',
 	'LBL_SAVE_MAP' => 'Save Map',
+	'Paste the link here' => 'Paste the link here',
 );
 
 // Translation for currency names

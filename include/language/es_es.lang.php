@@ -1385,6 +1385,7 @@ $app_strings = array (
 	'LBL_SELECT_COLUMNS' => 'Selecciona las columnas a mostrar en la Rejilla de Creación Masiva',
 	'LBL_MATCH_COLUMNS' => 'Selecciona las columnas clave para emparejar registros',
 	'LBL_SAVE_MAP' => 'Guardar Mapa',
+	'Paste the link here' => 'Paste the link here',
 );
 
 // Translation for currency names
