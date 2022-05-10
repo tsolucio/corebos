@@ -24,7 +24,7 @@ class addColumnToMailConverter extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_rules ADD workflowid varchar(20);');
-            $this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_rules ADD workflowname varchar(20);');
+			$this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_rules ADD workflowname varchar(255);');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
