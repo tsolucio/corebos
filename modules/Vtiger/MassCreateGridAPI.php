@@ -45,6 +45,8 @@ switch ($op) {
 		foreach ($data as $row) {
 			unset($row['_attributes']);
 			$currentRow = array();
+			//use this to identify failed creates
+			$currentRow['rowKey'] = $row['rowKey'];
 			foreach ($row as $field => $value) {
 				if (is_numeric($field)) {
 					continue;
@@ -74,11 +76,12 @@ switch ($op) {
 					if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
 						$relMods = $grid->findRelatedModule($fieldName);
 						if (!empty($relMods)) {
-							foreach ($relMods as $mod) {
-								$reference_field = getEntityFieldNames($mod);
-								$handler = vtws_getModuleHandlerFromName($mod, $current_user);
+							foreach ($relMods as $relMod) {
+								$reference_field = getEntityFieldNames($relMod);
+								$handler = vtws_getModuleHandlerFromName($relMod, $current_user);
 								$meta = $handler->getMeta();
 								$mandatoryFieldsList = $meta->getMandatoryFields();
+								//create/update related modules with currentModule
 								if (count($mandatoryFieldsList)) {
 									$element = array();
 									foreach ($mandatoryFieldsList as $field) {
@@ -87,14 +90,26 @@ switch ($op) {
 											$element[$field] = $UsersTabid.'x'.$current_user->id;
 										}
 									}
+									//use this to identify failed creates
+									$element['rowKey'] = $row['rowKey'];
 								}
 								if (is_string($reference_field['fieldname'])) {
 									$reference_field['fieldname'] = (array)$reference_field['fieldname'];
 								}
+								$tabid = getTabid($relMod);
+								//find fieldnames for searchon paramter
+								$searchonFields = array();
+								foreach ($reference_field['fieldname'] as $field) {
+									$cachedFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $field);
+									if ($cachedFields) {
+										$field = $cachedFields['fieldname'];
+									}
+									$searchonFields[] = $field;
+								}
 								$newData[] = array(
-									'elementType' => $mod,
+									'elementType' => $relMod,
 									'referenceId' => 'rel_entity_'.$fieldName.'_'.$idx,
-									'searchon' => implode(',', $reference_field['fieldname']),
+									'searchon' => implode(',', $searchonFields),
 									'element' => $element
 								);
 							}
@@ -112,10 +127,20 @@ switch ($op) {
 				}
 				$searchon = $match;
 			}
+			//find fieldnames for searchon paramter
+			$tabid = getTabid($module);
+			$searchonFields = array();
+			foreach ($searchon as $field) {
+				$cachedFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $field);
+				if ($cachedFields) {
+					$field = $cachedFields['fieldname'];
+				}
+				$searchonFields[] = $field;
+			}
 			$newData[] = array(
 				'elementType' => $module,
 				'referenceId' => '',
-				'searchon' => implode(',', $searchon),
+				'searchon' => implode(',', $searchonFields),
 				'element' => $currentRow
 			);
 		}
