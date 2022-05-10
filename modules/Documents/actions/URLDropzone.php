@@ -19,10 +19,14 @@ class URLDropzone_Action extends CoreBOS_ActionController {
 
 	public function Save() {
 		global $current_user;
+		$url = vtlib_purify($_REQUEST['url']);
+		if (!filter_var($url, FILTER_VALIDATE_URL)) {
+			throw new WebServiceException(WebServiceErrorCode::$INVALID_URL, 'Invalid URL specified');
+		}
 		$tabid = vtws_getEntityId('Users');
 		$element = array(
-			'notes_title' => $_REQUEST['url'],
-			'filename'=> $_REQUEST['url'],
+			'notes_title' => $url,
+			'filename'=> $url,
 			'filelocationtype'=> 'E',
 			'filedownloadcount'=> 0,
 			'filestatus'=> 1,

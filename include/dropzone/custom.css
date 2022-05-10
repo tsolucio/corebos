@@ -33,11 +33,13 @@
   background: #f0f0f0;
   border: 2px solid #a8a8a8;
   margin-top: 10px;
+  padding: 10px;
 }
 [contentEditable=true]:empty:not(:focus):before{
   content:attr(data-text);
   display: block;
   font-size: 20px;
-  color: #8b8b88;
+  color: #888888;
   margin: auto;
+  text-align: center;
 }
