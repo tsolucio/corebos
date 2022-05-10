@@ -9,5 +9,9 @@
 <script src="./include/components/Select2/js/select2.min.js"></script>
 <script type="text/javascript">
 <!-- Initialize components -->
-tui.Grid.setLanguage(gVTuserLanguage.substring(0, 2));
+let currentLang = gVTuserLanguage.substring(0, 2);
+if (!['en', 'es', 'ko', 'pt'].includes(currentLang)) {
+	currentLang = 'en';
+}
+tui.Grid.setLanguage(currentLang);
 </script>
