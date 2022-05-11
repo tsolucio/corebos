@@ -13,6 +13,7 @@ require_once 'modules/Users/Users.php';
 require_once 'modules/Documents/Documents.php';
 require_once 'modules/Emails/mail.php';
 require_once 'modules/Messages/Messages.php';
+require_once 'include/Webservices/ExecuteWorkflow.php';
 
 /**
  * Mail Scanner Action
@@ -138,19 +139,32 @@ class Vtiger_MailScannerAction {
 		$returnid = false;
 		$this->otherEmailRelations = array();
 		if ($this->actiontype == 'CREATE') {
-			if ($this->module == 'HelpDesk') {
-				$returnid = $this->__CreateTicket($mailscanner, $mailrecord);
-			} elseif ($this->module == 'Messages') {
-				$returnid = $this->__CreateMessages($mailscanner, $mailrecord);
+			switch($this->module){
+				case 'HelpDesk':
+					$returnid = $this->__CreateTicket($mailscanner, $mailrecord);
+					break;
+				case 'Messages':
+					$returnid = $this->__CreateMessages($mailscanner, $mailrecord);
+					break;
+				case 'com_vtiger_workflow':
+					$this-> __triggerWorkflow($mailscannerrule, $mailrecord);
+					$returnid = $this->__CreateMessages($mailscanner, $mailrecord);
+					break;
+				default:
+					$returnid = false;
 			}
 		} elseif ($this->actiontype == 'LINK') {
 			$returnid = $this->__LinkToRecord($mailscanner, $mailrecord);
 		} elseif ($this->actiontype == 'UPDATE') {
-			if ($this->module == 'HelpDesk') {
-				$returnid = $this->__UpdateTicket($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult), $mailscannerrule);
-			}
-			if ($this->module == 'Project') {
-				$returnid = $this->__UpdateProject($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult), $mailscannerrule);
+			switch($this->module){
+				case 'HelpDesk':
+					$returnid = $this->__UpdateTicket($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult), $mailscannerrule);
+					break;
+				case 'Project':
+					$returnid = $this->__UpdateProject($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult), $mailscannerrule);
+					break;
+				default:
+					$returnid = false;
 			}
 		}
 		return $returnid;
@@ -162,7 +176,6 @@ class Vtiger_MailScannerAction {
 	public function __UpdateTicket($mailscanner, $mailrecord, $regexMatchInfo, $mailscannerrule) {
 		global $adb;
 		$returnid = false;
-
 		$usesubject = false;
 		if ($this->lookup == 'SUBJECT') {
 			// If regex match was performed on subject use the matched group to lookup the ticket record
@@ -510,6 +523,34 @@ class Vtiger_MailScannerAction {
 			'INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?',
 			array($attachid, $filename, $description, $mimetype, $dirname)
 		);
+		return true;
+	}
+	
+	/**
+	 * trigger  workflow 
+	 */
+	public function __triggerWorkflow($mailscannerrule,$mailrecord ) {
+		global $current_user,$log;
+		$workflowid = $mailscannerrule;
+		if(!$workflowid){
+			return false;
+		}
+
+		$context = [
+			'IncomingMail_To' => $mailrecord->_to,
+			'IncomingMail_From' => $mailrecord->_from,
+			'IncomingMail_Body' => $mailrecord->_body,
+			'IncomingMail_CC' => $mailrecord->_cc,
+			'IncomingMail_BCC' => $mailrecord->_bcc,
+			'IncomingMail_ReplyTo' => $mailrecord->_reply_to,
+			'IncomingMail_MessageID' => $mailrecord->_uniqueid,
+			'IncomingMail_Date' => $mailrecord->_date,
+			'IncomingMail_Subject' => $mailrecord->_subject,
+		];
+
+		$context = json_encode($context);
+		cbwsExecuteWorkflowWithContext($workflowid, $mailrecord, $context, $current_user);
+
 		return true;
 	}
 }
