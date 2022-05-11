@@ -463,7 +463,7 @@ class GridListView {
 						foreach ($fieldValue as $id) {
 							$displayValueArray = getEntityName($parent_module, $id);
 							if (!empty($displayValueArray)) {
-								$field1025Value[] = $displayValueArray[$id];
+								$field1025Value[] = '<a href="index.php?module='.$parent_module.'&action=DetailView&record='.$id.'">'.$displayValueArray[$id].'</a>';
 							}
 							$AutocompleteFields[] = array(
 								$parent_module, $fieldName, $displayValueArray[$id], $id
