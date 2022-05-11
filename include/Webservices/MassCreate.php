@@ -27,9 +27,9 @@ function MassCreate($elements, $user) {
 	$mcModules = array();
 	$failedCreates = [];
 	$successCreates = [];
-
+	$countElements = count($elements);
 	foreach ($elements as &$element) {
-		mcProcessReference($element, $elements);
+		mcProcessReference($element, $elements, $countElements);
 	}
 
 	$types = vtws_listtypes(null, $user);
@@ -104,10 +104,10 @@ function mcGetRecordId($arr, $reference) {
 	return $id;
 }
 
-function mcGetReferenceRecord(&$arr, $reference, $lastReferenceId) {
+function mcGetReferenceRecord(&$arr, $reference, $lastReferenceId, $countElements) {
 	$array = array();
 	$index = null;
-	for ($x = 0; $x <= count($arr); $x++) {
+	for ($x = 0; $x <= $countElements; $x++) {
 		if (isset($arr[$x]) && $arr[$x]['referenceId'] == $reference) {
 			if (!mcIsCyclicReference($arr[$x], $lastReferenceId)) {
 				$array = $arr[$x];
@@ -121,16 +121,16 @@ function mcGetReferenceRecord(&$arr, $reference, $lastReferenceId) {
 	return array($index, $array);
 }
 
-function mcProcessReference($element, &$elements) {
+function mcProcessReference($element, &$elements, $countElements) {
 	global $mcProcessedReferences, $mcRecords, $mcModules;
 	foreach ($element['element'] as $value) {
 		if (strpos($value, '@{') !== false) {
 			$reference = trim($value, '{@}');
 			if (!empty($reference) && !in_array($reference, $mcProcessedReferences)) {
 				$lastReferenceId = $element['referenceId'];
-				list($index, $array) = mcGetReferenceRecord($elements, $reference, $lastReferenceId);
+				list($index, $array) = mcGetReferenceRecord($elements, $reference, $lastReferenceId, $countElements);
 				if ($index !== null && $array) {
-					mcProcessReference($array, $elements);
+					mcProcessReference($array, $elements, $countElements);
 					unset($elements[$index]);
 					$mcProcessedReferences[] = $reference;
 				} else {
