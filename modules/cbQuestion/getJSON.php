@@ -49,7 +49,7 @@ if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
 $from = ($page-1)*$rowsperpage;
 $limit = " limit $from,$rowsperpage";
 $qid = $_REQUEST['qid'];
-$q = rtrim(cbQuestion::getSQL($qid), ';').$limit;
+$q = stripTailCommandsFromQuery(rtrim(cbQuestion::getSQL($qid), ';'), false).$limit;
 $grid = new GridListView('cbQuestion');
 $grid->currentPage = $page;
 $index = 'index';
