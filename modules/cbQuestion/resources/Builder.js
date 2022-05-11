@@ -53,15 +53,6 @@ function toggleSQLView() {
 	}
 }
 
-function checkVal(val){
-	if(typeof val === 'string'){
-		try {
-			return JSON.parse(val);
-		} catch(e){}
-  }
-  return val;
-}
-
 function saveQuestion(update) {
 	const qname = document.getElementById('bqname').value;
 	const qmodule = document.getElementById('bqmodule').value;
@@ -80,12 +71,12 @@ function saveQuestion(update) {
 	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
 
 	var type_properties = new Object();
-	var current_tempqprops_value = document.getElementById('qprops').value;
+	var qprops_value = document.getElementById('qprops').value;
 
-	if (current_tempqprops_value === "" || current_tempqprops_value === "{}" || current_tempqprops_value == undefined) {
-		type_properties = {};
+	if (qprops_value === "" || qprops_value === "{}" || qprops_value == undefined) {
+		type_properties = '"{}"';
 	} else {
-		type_properties = current_tempqprops_value;
+		type_properties = qprops_value;
 	}
 	type_properties.context_variables = undefined;
 	if (document.getElementById('sqlquery').checked) {
@@ -99,10 +90,10 @@ function saveQuestion(update) {
 		}
 		type_properties['context_variables'] = context_data_;
 	} else {
-		if (current_tempqprops_value === "" || current_tempqprops_value === "{}" || current_tempqprops_value == undefined) {
-			type_properties = {};
+		if (qprops_value === "" || qprops_value === "{}" || qprops_value == undefined) {
+			type_properties = '"{}"';
 		} else {
-			type_properties = current_tempqprops_value;
+			type_properties = qprops_value;
 		}
 	}
 
