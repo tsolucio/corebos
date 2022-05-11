@@ -474,7 +474,7 @@ class cbQuestion extends CRMEntity {
 				$ret = self::getTableFromAnswer($ans);
 				break;
 			case 'Grid':
-				$ret = self::getGridFromAnswer($qid);
+				$ret = self::getGridFromAnswer($qid, $params);
 				break;
 			case 'Number':
 				$ret = array_pop($ans['answer'][0]);
@@ -631,11 +631,12 @@ class cbQuestion extends CRMEntity {
 		return $table;
 	}
 
-	public static function getGridFromAnswer($qid) {
+	public static function getGridFromAnswer($qid, $params) {
 		$smarty = new vtigerCRM_Smarty();
 		$properties = json_encode(cbQuestion::getQuestionProperties($qid));
 		$smarty->assign('Properties', $properties);
 		$smarty->assign('QuestionID', $qid);
+		$smarty->assign('RecordID', $params['$RECORD$']);
 		$smarty->assign('RowsperPage', GlobalVariable::getVariable('Report_ListView_PageSize', 40));
 		$smarty->display('modules/cbQuestion/Grid.tpl');
 	}

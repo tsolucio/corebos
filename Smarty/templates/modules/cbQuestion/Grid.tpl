@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 		data: {
 			api: {
 				readData: {
-					url: 'index.php?module=cbQuestion&action=cbQuestionAjax&file=getJSON&qid={$QuestionID}',
+					url: 'index.php?module=cbQuestion&action=cbQuestionAjax&file=getJSON&qid={$QuestionID}&recordid={$RecordID}',
 					method: 'GET'
 				}
 			}

@@ -49,6 +49,23 @@ if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
 $from = ($page-1)*$rowsperpage;
 $limit = " limit $from,$rowsperpage";
 $qid = $_REQUEST['qid'];
+$recordid = $_REQUEST['recordid'];
+if (!empty($recordid)) {
+	$ctxtmodule = getSalesEntityType($recordid);
+	$params = array(
+		'$RECORD$' => $recordid,
+		'$MODULE$' => $ctxtmodule,
+		'$USERID$' => $current_user->id,
+	);
+	$ent = CRMEntity::getInstance($ctxtmodule);
+	$ent->id = $recordid;
+	$ent->retrieve_entity_info($recordid, $ctxtmodule, false, true);
+	foreach ($ent->column_fields as $fname => $fvalue) {
+		$params['$'.$fname.'$'] = $fvalue;
+	}
+} else {
+	$params = [];
+}
 $q = stripTailCommandsFromQuery(rtrim(cbQuestion::getSQL($qid), ';'), false).$limit;
 $grid = new GridListView('cbQuestion');
 $grid->currentPage = $page;
