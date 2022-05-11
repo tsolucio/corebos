@@ -42,7 +42,7 @@ class Vtiger_MailScannerRule {
 	public $assign_to_type = false;
 	public $assign_to_name = false;
 	public $add_email_as = 'CommentAndEmail';
-	public $workflowid = NULL;
+	public $workflowid = null;
 	public $workflowname = '';
 	public $must_be_related = true;
 

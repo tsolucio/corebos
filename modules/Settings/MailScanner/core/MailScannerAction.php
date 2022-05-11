@@ -139,7 +139,7 @@ class Vtiger_MailScannerAction {
 		$returnid = false;
 		$this->otherEmailRelations = array();
 		if ($this->actiontype == 'CREATE') {
-			switch($this->module){
+			switch ($this->module) {
 				case 'HelpDesk':
 					$returnid = $this->__CreateTicket($mailscanner, $mailrecord);
 					break;
@@ -156,7 +156,7 @@ class Vtiger_MailScannerAction {
 		} elseif ($this->actiontype == 'LINK') {
 			$returnid = $this->__LinkToRecord($mailscanner, $mailrecord);
 		} elseif ($this->actiontype == 'UPDATE') {
-			switch($this->module){
+			switch ($this->module) {
 				case 'HelpDesk':
 					$returnid = $this->__UpdateTicket($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult), $mailscannerrule);
 					break;
@@ -525,14 +525,14 @@ class Vtiger_MailScannerAction {
 		);
 		return true;
 	}
-	
+
 	/**
-	 * trigger  workflow 
+	 * trigger  workflow
 	 */
-	public function __triggerWorkflow($mailscannerrule,$mailrecord ) {
+	public function __triggerWorkflow($mailscannerrule, $mailrecord) {
 		global $current_user,$log;
 		$workflowid = $mailscannerrule;
-		if(!$workflowid){
+		if (!$workflowid) {
 			return false;
 		}
 
