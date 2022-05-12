@@ -483,7 +483,14 @@ function vtlib_purify($input, $ignore = false) {
 			}
 		}
 	}
-	if (is_string($value)) {
+	if (is_array($value)) {
+		$value = array_map(
+			function ($v) {
+				return str_replace('&amp;', '&', $v);
+			},
+			$value
+		);
+	} elseif (is_string($value)) {
 		$value = str_replace('&amp;', '&', $value);
 	}
 	if (!is_array($input)) {
