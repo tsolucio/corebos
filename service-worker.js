@@ -12059,10 +12059,10 @@ precacheAndRoute([{
   "revision": "45f26b6647e4bb9c319c2623e23281f7"
 }, {
   "url": "modules/cbQuestion/resources/Builder.js",
-  "revision": "89d66d6f63eaae51d909868c78856e44"
+  "revision": "5c1c29a15ca0846167275c8ef8cbb74a"
 }, {
   "url": "modules/cbQuestion/resources/editbuilder.js",
-  "revision": "4850e64dbe1340464e2b9d71738fcb8b"
+  "revision": "581d7a38ba0424597a4cf76897ae493d"
 }, {
   "url": "modules/cbQuestion/resources/mermaid.min.js",
   "revision": "2cb9770b79c455efcb81bc3f58e35ef6"
