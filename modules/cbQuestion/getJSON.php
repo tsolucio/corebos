@@ -66,7 +66,7 @@ if (!empty($recordid)) {
 } else {
 	$params = [];
 }
-$q = stripTailCommandsFromQuery(rtrim(cbQuestion::getSQL($qid), ';'), false).$limit;
+$q = stripTailCommandsFromQuery(rtrim(cbQuestion::getSQL($qid, $params), ';'), false).$limit;
 $grid = new GridListView('cbQuestion');
 $grid->currentPage = $page;
 $index = 'index';
