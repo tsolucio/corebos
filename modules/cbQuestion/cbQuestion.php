@@ -153,7 +153,6 @@ class cbQuestion extends CRMEntity {
 		$q = new cbQuestion();
 		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
 			$q->column_fields = $params['cbQuestionRecord'];
-			unset($params['cbQuestionRecord']);
 			if (isset($params['cbQuestionContext'])) {
 				$qctx = $params['cbQuestionContext'];
 				unset($params['cbQuestionContext']);
@@ -162,6 +161,7 @@ class cbQuestion extends CRMEntity {
 		} else {
 			$q->retrieve_entity_info($qid, 'cbQuestion');
 		}
+		unset($params['cbQuestionRecord']);
 		$q->id = (empty($q->column_fields['record_id']) ? 0 : $q->column_fields['record_id']);
 		if (empty($q->id) || isPermitted('cbQuestion', 'DetailView', $q->id) != 'yes') {
 			return getTranslatedString('SQLError', 'cbQuestion').': PERMISSION';
