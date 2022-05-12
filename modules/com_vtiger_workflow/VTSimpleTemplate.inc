@@ -816,6 +816,9 @@ class VTSimpleTemplate {
 					case 'coreboscp':
 						$purl = $PORTAL_URL.'/index.php#vtentity/'.$moduleName.'/list/'.$wsId.'/dvcpage/0';
 						break;
+					case 'reactadmin':
+						$purl = $PORTAL_URL.'/#/'.$moduleName.'/'.$wsId.'/show';
+						break;
 					case 'vtigercrmportal':
 					default:
 						$purl = $PORTAL_URL.'/index.php?module='.$moduleName.'&action=index&'.$recorIdName.'='.$recordId.'&fun=detail';

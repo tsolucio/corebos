@@ -475,7 +475,7 @@ $GlobalVariableDefinitons = array(
 'Application_Customer_Portal_BeingUsed' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => 'vtigercrmportal | coreboscp',
+	'values' => 'vtigercrmportal | coreboscp | reactadmin',
 	'definition' => 'Indicate the customer portal connected to this coreBOS so we can adapt outputs accordingly. Used mostly for email template communications.',
 ),
 'Debug_Calculate_Response_Time' => array(
