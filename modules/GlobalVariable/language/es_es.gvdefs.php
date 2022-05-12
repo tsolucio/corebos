@@ -250,6 +250,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Habilita o Deshabilita el acceso al servicio de WebDav.',
 ),
+'Notifications_Enabled' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Notifications',
+	'values' => '0 | 1',
+	'definition' => 'Completely disables or enables notifications.',
+),
 'Webservice_LogCallsToQueue' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Webservice',
