@@ -637,7 +637,7 @@ class cbQuestion extends CRMEntity {
 		$smarty->assign('Properties', $properties);
 		$smarty->assign('QuestionID', $qid);
 		$smarty->assign('RecordID', $params['$RECORD$']);
-		$smarty->assign('RowsperPage', GlobalVariable::getVariable('Report_ListView_PageSize', 40));
+		$smarty->assign('RowsperPage', GlobalVariable::getVariable('MasterDetail_Pagination', 40));
 		$smarty->display('modules/cbQuestion/Grid.tpl');
 	}
 
