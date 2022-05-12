@@ -147,8 +147,8 @@ class Vtiger_MailScannerAction {
 					$returnid = $this->__CreateMessages($mailscanner, $mailrecord);
 					break;
 				case 'com_vtiger_workflow':
-					$this-> __triggerWorkflow($mailscannerrule, $mailrecord);
 					$returnid = $this->__CreateMessages($mailscanner, $mailrecord);
+					$this-> __triggerWorkflow($mailscannerrule, $mailrecord, $returnid);
 					break;
 				default:
 					$returnid = false;
@@ -529,8 +529,8 @@ class Vtiger_MailScannerAction {
 	/**
 	 * trigger  workflow
 	 */
-	public function __triggerWorkflow($mailscannerrule, $mailrecord) {
-		global $current_user,$log;
+	public function __triggerWorkflow($mailscannerrule, $mailrecord, $crmid) {
+		global $current_user;
 		$workflowid = $mailscannerrule;
 		if (!$workflowid) {
 			return false;
@@ -549,7 +549,7 @@ class Vtiger_MailScannerAction {
 		];
 
 		$context = json_encode($context);
-		cbwsExecuteWorkflowWithContext($workflowid, $mailrecord, $context, $current_user);
+		cbwsExecuteWorkflowWithContext($workflowid, $crmid, $context, $current_user);
 
 		return true;
 	}
