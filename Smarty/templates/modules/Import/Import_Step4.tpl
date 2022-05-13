@@ -77,21 +77,21 @@
 			<input type="checkbox" name="workflow" id="workflow" class="small" />
 			<span class="small">{'LBL_EXECUTE_WF'|@getTranslatedString:$MODULE}</span>&nbsp; : &nbsp;
 				<input id="workflowid" name="workflowid" type="hidden" value ="">
-				<input type='hidden' class='small' name="workflowid_type" id="workflowid_type" value="com_vtiger_workflow">
+				<input type='hidden' class='small' name="wfid_type" id="wfid_type" value="com_vtiger_workflow">
 				<input
-					id="workflowid_display"
-					name="workflowid_display"
+					id="wfid_display"
+					name="wfid_display"
 					readonly
 					type="text"
 					style="border:1px solid #bababa;"
-					onclick='return vtlib_open_popup_window("importAdvanced", "workflowid", "com_vtiger_workflow", "");'
+					onclick='return vtlib_open_popup_window("importAdvanced", "wfid", "com_vtiger_workflow", "");'
 					value ="">&nbsp;
-					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("importAdvanced", "workflowid", "com_vtiger_workflow", "");'>
+					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("importAdvanced", "wfid", "com_vtiger_workflow", "");'>
 						<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 						</svg>
 					</span>
-					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('workflowid').value=''; document.getElementById('workflowid_display').value=''; return false;">
+					<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_CLEAR'|getTranslatedString}" onclick="document.getElementById('wfid').value=''; document.getElementById('wfid_display').value=''; return false;">
 						<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 						</svg>
