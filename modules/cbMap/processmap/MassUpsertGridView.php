@@ -42,6 +42,9 @@
 			<field>
 				<name>bill_code</name>
 			</field>
+			<field>
+				<name>Contacts.firstname</name>
+			</field>
 		</columns>
 	</grid>
 </map>
@@ -74,7 +77,6 @@ class MassUpsertGridView extends processcbMap {
 		$this->mapping['match'] = array();
 		$this->mapping['columns'] = array();
 		$this->mapping['module'] = (string)$xml->originmodule->originname;
-		$tabid = getTabid($this->mapping['module']);
 		if (isset($xml->match)) {
 			$match = (array)$xml->match;
 			$this->mapping['match'] = $match['field'];
@@ -82,15 +84,28 @@ class MassUpsertGridView extends processcbMap {
 		if (isset($xml->columns)) {
 			$columns = (array)$xml->columns;
 			foreach ($columns['field'] as $field) {
-				$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, (string)$field->name);
+				$module = '';
+				$fName = (string)$field->name;
+				$tabid = getTabid($this->mapping['module']);
+				if (strpos($fName, '.') !== false) {
+					list($module, $fName) = explode('.', $fName);
+					$tabid = getTabid($module);
+				}
+				if ($fName == 'assigned_user_id') {
+					continue;
+				}
+				$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $fName);
 				if (!$cachedModuleFields) {
 					$grid = new GridListView($this->mapping['module']);
 					$grid->tabid = $tabid;
-					$cachedModuleFields = $grid->getFieldNameByColumn((string)$field->name, 'array');
+					$cachedModuleFields = $grid->getFieldNameByColumn($fName, 'array');
 				}
 				$table = str_replace('vtiger_', '', $cachedModuleFields['tablename']);
 				$columnname = (string)$field->name;
 				$field->name = $cachedModuleFields['fieldname'];
+				if (!empty($module)) {
+					$cachedModuleFields['fieldlabel'] = $cachedModuleFields['fieldlabel'].' ('.$module.')';
+				}
 				$label = $cachedModuleFields['fieldlabel'];
 				$this->mapping['columns'][$label] = array($table => $columnname);
 			}

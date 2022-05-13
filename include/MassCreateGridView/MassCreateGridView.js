@@ -109,7 +109,7 @@ const MCGrid = {
 				disabled = 'disabled';
 			}
 			content += `
-			<div class="slds-col slds-size_3-of-12">
+			<div class="slds-col slds-size_4-of-12">
 				<div class="slds-form-element">
 					<div class="slds-form-element__control">
 						<div class="slds-checkbox">
@@ -147,7 +147,7 @@ const MCGrid = {
 		`;
 		activeMatchFields.map(function(currentValue, index) {
 			content += `
-			<div class="slds-col slds-size_3-of-12">
+			<div class="slds-col slds-size_4-of-12">
 				<div class="slds-form-element">
 					<div class="slds-form-element__control">
 						<div class="slds-checkbox">
@@ -192,7 +192,6 @@ const MCGrid = {
 				matchColumns[idx].active = 0;
 			}
 		});
-		mcdataGridInstance.setColumns(newColumns);
 		ListFields = JSON.stringify(columns);
 		MatchFields = JSON.stringify(matchColumns);
 		let difference = MatchDiff.filter(x => ColumnsDiff.indexOf(x) === -1);
@@ -200,7 +199,6 @@ const MCGrid = {
 			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_MATCH_ERROR);
 			return false;
 		}
-		ldsModal.close();
 		MCGrid.ActiveColumns = newColumns;
 		MCGrid.MatchFields = newMatchFields;
 		MCGrid.SaveMap();
@@ -218,10 +216,17 @@ const MCGrid = {
 				body: '&'+csrfMagicName+'='+csrfMagicToken+'&ActiveColumns='+JSON.stringify(MCGrid.ActiveColumns)+'&mapName='+bmapname+'&moduleName='+MCGrid.Module+'&match='+JSON.stringify(MCGrid.MatchFields)
 			}
 		).then(response => response.json()).then(response => {
+			if (typeof response == 'string') {
+				mcdataGridInstance.setColumns(JSON.parse(GridColumns));
+				ldsPrompt.show(alert_arr.ERROR, response);
+				return;
+			}
 			if (response.length == 0) {
 				mcdataGridInstance.setColumns(JSON.parse(GridColumns));
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.ERROR_WHILE_EDITING);
+				return;
 			}
+			window.location.href = '';
 		});
 	}
 };

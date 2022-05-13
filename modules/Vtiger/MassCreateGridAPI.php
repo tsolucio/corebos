@@ -89,6 +89,9 @@ switch ($op) {
 										if ($field == 'assigned_user_id') {
 											$element[$field] = $UsersTabid.'x'.$current_user->id;
 										}
+										if (isset($row[$relMod.'.'.$field])) {
+											$element[$field] = $row[$relMod.'.'.$field];
+										}
 									}
 									//use this to identify failed creates
 									$element['rowKey'] = $row['rowKey'];
@@ -103,6 +106,9 @@ switch ($op) {
 									$cachedFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $field);
 									if ($cachedFields) {
 										$field = $cachedFields['fieldname'];
+									}
+									if (isset($row[$relMod.'.'.$field])) {
+										$element[$field] = $row[$relMod.'.'.$field];
 									}
 									$searchonFields[] = $field;
 								}
@@ -166,7 +172,26 @@ switch ($op) {
 		$columns = $map->addChild('columns');
 		foreach ($ActiveColumns as $key) {
 			$field = $columns->addChild('field');
-			$name = $field->addChild('name', $key['name']);
+			$field->addChild('name', $key['name']);
+			if ($key['uitype'] == Field_Metadata::UITYPE_RECORD_RELATION) {
+				$fields = lookupMandatoryFields($key);
+				if (is_string($fields)) {
+					echo json_encode($fields);
+					exit;
+				}
+				$fields = array_unique($fields);
+				foreach ($fields as $module => $fld) {
+					if (!empty($fld)) {
+						foreach ($fld as $name) {
+							if ($name == 'assigned_user_id') {
+								continue;
+							}
+							$relfield = $columns->addChild('field');
+							$relfield->addChild('name', $module.'.'.$name);
+						}
+					}
+				}
+			}
 		}
 		$dom = dom_import_simplexml($xml)->ownerDocument;
 		$dom->preserveWhiteSpace = false;
@@ -212,6 +237,7 @@ switch ($op) {
 		$match = json_decode($match, true);
 		$mapName = vtlib_purify($_REQUEST['mapName']);
 		$moduleName = vtlib_purify($_REQUEST['moduleName']);
+		$tabid = getTabid($moduleName);
 		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><deletethis/>');
 		$map = $xml->addChild('map');
 		$originmodule = $map->addChild('originmodule');
@@ -226,6 +252,32 @@ switch ($op) {
 		foreach ($fields as $field) {
 			$fld = $columns->addChild('field');
 			$name = $fld->addChild('name', $field);
+			$cachedFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $field);
+			if (!$cachedFields) {
+				$grid = new GridListView($moduleName);
+				$grid->tabid = $tabid;
+				$cachedFields = $grid->getFieldNameByColumn($field, 'array');
+			}
+			$fieldType = getUItypeByFieldName($moduleName, $cachedFields['fieldname']);
+			if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
+				$fieldInfo = lookupMandatoryFields($cachedFields);
+				if (is_string($fieldInfo)) {
+					echo json_encode($fieldInfo);
+					exit;
+				}
+				$fieldInfo = array_unique($fields);
+				foreach ($fieldInfo as $module => $flds) {
+					if (!empty($flds)) {
+						foreach ($flds as $name) {
+							if ($name == 'assigned_user_id') {
+								continue;
+							}
+							$fieldIns = $columns->addChild('field');
+							$fieldIns->addChild('name', $module.'.'.$name);
+						}
+					}
+				}
+			}
 		}
 		$dom = dom_import_simplexml($xml)->ownerDocument;
 		$dom->preserveWhiteSpace = false;
@@ -250,6 +302,58 @@ switch ($op) {
 	default:
 		$response = '';
 		break;
+}
+
+function lookupMandatoryFields($key) {
+	global $current_user;
+	$currentModule = vtlib_getModuleNameById($key['tabid']);
+	$grid = new GridListView($currentModule);
+	$grid->tabid = getTabid($currentModule);
+	$modules = $grid->findRelatedModule($key['fieldname']);
+	if (is_array($modules) && count($modules) == 1) {
+		$reference_field = getEntityFieldNames($modules[0]);
+		$handler = vtws_getModuleHandlerFromName($modules[0], $current_user);
+		$meta = $handler->getMeta();
+		$mandatoryFieldsList = $meta->getMandatoryFields();
+		if (is_string($reference_field['fieldname'])) {
+			$reference_field['fieldname'] = (array)$reference_field['fieldname'];
+		}
+		//no filter so we support modules with more then 1 reference field
+		$filteredData = array();
+		if (count($reference_field['fieldname']) > 1) {
+			$mergeData = array_merge($mandatoryFieldsList, $reference_field['fieldname']);
+			foreach ($mergeData as $field) {
+				$fieldType = getUItype($modules[0], $field);
+				if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
+					return getTranslatedString('LBL_UITYPE10_NOTALLOWED');
+				}
+				if ($field == 'assigned_user_id') {
+					continue;
+				}
+				if (!in_array($field, $filteredData)) {
+					$filteredData[] = $field;
+				}
+			}
+		} else {
+			$mergeData = array_merge(array_diff($mandatoryFieldsList, $reference_field['fieldname']), array_diff($reference_field['fieldname'], $mandatoryFieldsList));
+			foreach ($mergeData as $field) {
+				$fieldType = getUItype($modules[0], $field);
+				if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
+					return getTranslatedString('LBL_UITYPE10_NOTALLOWED');
+				}
+				if ($field == 'assigned_user_id') {
+					continue;
+				}
+				if (!in_array($field, $filteredData) && !in_array($field, $reference_field['fieldname'])) {
+					$filteredData[] = $field;
+				}
+			}
+		}
+		return array(
+			$modules[0] => $filteredData
+		);
+	}
+	return array();
 }
 echo json_encode($response);
 ?>

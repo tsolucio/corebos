@@ -13,6 +13,7 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
+require_once 'include/ListView/ListViewJSON.php';
 global $currentModule;
 if (isset($_REQUEST['bmapname'])) {
 	$bmapname = vtlib_purify($_REQUEST['bmapname']);
@@ -82,9 +83,12 @@ $ListFields = array_map(function ($key) use ($fields, $items, $currentModule) {
 	$listFields = array(
 		'header' => getTranslatedString($key['fieldlabel'], $currentModule),
 		'name' => $key['columnname'],
+		'fieldname' => $key['fieldname'],
 		'editor' => $editor,
 		'active' => 0,
-		'typeofdata' => $typeofdata[1]
+		'typeofdata' => $typeofdata[1],
+		'uitype' => $key['uitype'],
+		'tabid' => $key['tabid'],
 	);
 	$fields = array_values($fields);
 	foreach ($fields as $value) {
@@ -97,35 +101,26 @@ $ListFields = array_map(function ($key) use ($fields, $items, $currentModule) {
 	}
 	return $listFields;
 }, $cachedModuleFields);
-if (is_array($match)) {
-	$MatchFields = array_map(function ($key) use ($match, $currentModule) {
-		$listFields = array(
-			'header' => getTranslatedString($key['fieldlabel'], $currentModule),
-			'name' => $key['columnname'],
-			'active' => 0,
-		);
+$MatchFields = array_map(function ($key) use ($match, $currentModule) {
+	$listFields = array(
+		'header' => getTranslatedString($key['fieldlabel'], $currentModule),
+		'name' => $key['columnname'],
+		'active' => 0,
+	);
+	if (is_array($match)) {
 		foreach ($match as $value) {
 			if ($value == $key['columnname']) {
 				$listFields['active'] = 1;
 				break;
 			}
 		}
-		return $listFields;
-	}, $cachedModuleFields);
-} else {
-	$MatchFields = array_map(function ($key) use ($match, $currentModule) {
-		$active = 0;
+	} else {
 		if ($match == $key['columnname']) {
-			$active = 1;
-		}
-		$listFields = array(
-			'header' => getTranslatedString($key['fieldlabel'], $currentModule),
-			'name' => $key['columnname'],
-			'active' => $active,
-		);
-		return $listFields;
-	}, $cachedModuleFields);
-}
+			$listFields['active'] = 1;
+		}			
+	}
+	return $listFields;
+}, $cachedModuleFields);
 
 $tabid = getTabid($currentModule);
 $linksurls = BusinessActions::getAllByType($tabid, array('MASSUPSERTGRID'));
