@@ -123,6 +123,8 @@ if ($cbMapid) {
 	if (!empty($linksurls['MASSUPSERTGRID'])) {
 		$smarty->assign('BALinks', $linksurls['MASSUPSERTGRID']);
 	}
+	array_multisort($ListFields);
+	array_multisort($MatchFields);
 	$smarty->assign('EmptyData', json_encode($emptydata));
 	$smarty->assign('GridColumns', json_encode($columns));
 	$smarty->assign('ListFields', json_encode($ListFields));

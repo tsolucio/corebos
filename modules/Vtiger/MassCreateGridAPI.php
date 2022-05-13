@@ -171,14 +171,20 @@ switch ($op) {
 		}
 		$columns = $map->addChild('columns');
 		foreach ($ActiveColumns as $key) {
-			$field = $columns->addChild('field');
-			$field->addChild('name', $key['name']);
 			if ($key['uitype'] == Field_Metadata::UITYPE_RECORD_RELATION) {
 				$fields = lookupMandatoryFields($key);
+				if (empty($fields)) {
+					continue;
+				}
 				if (is_string($fields)) {
+					//block save if mandatory fields in related modules are uitype10.
 					echo json_encode($fields);
 					exit;
 				}
+			}
+			$field = $columns->addChild('field');
+			$field->addChild('name', $key['name']);
+			if (isset($fields) && $key['uitype'] == Field_Metadata::UITYPE_RECORD_RELATION) {
 				$fields = array_unique($fields);
 				foreach ($fields as $module => $fld) {
 					if (!empty($fld)) {
@@ -250,8 +256,6 @@ switch ($op) {
 		}
 		$columns = $map->addChild('columns');
 		foreach ($fields as $field) {
-			$fld = $columns->addChild('field');
-			$name = $fld->addChild('name', $field);
 			$cachedFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $field);
 			if (!$cachedFields) {
 				$grid = new GridListView($moduleName);
@@ -261,11 +265,19 @@ switch ($op) {
 			$fieldType = getUItypeByFieldName($moduleName, $cachedFields['fieldname']);
 			if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
 				$fieldInfo = lookupMandatoryFields($cachedFields);
+				if (empty($fieldInfo)) {
+					continue;
+				}
 				if (is_string($fieldInfo)) {
+					//block save if mandatory fields in related modules are uitype10.
 					echo json_encode($fieldInfo);
 					exit;
 				}
-				$fieldInfo = array_unique($fields);
+			}
+			$fld = $columns->addChild('field');
+			$name = $fld->addChild('name', $field);
+			if (isset($fieldInfo) && $fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
+				$fieldInfo = array_unique($fieldInfo);
 				foreach ($fieldInfo as $module => $flds) {
 					if (!empty($flds)) {
 						foreach ($flds as $name) {
