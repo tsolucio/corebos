@@ -1379,6 +1379,7 @@ $app_strings = array (
 	'LBL_SELECT_COLUMNS' => 'Selecciona las columnas a mostrar en la Rejilla de Creación Masiva',
 	'LBL_MATCH_COLUMNS' => 'Selecciona las columnas clave para emparejar registros',
 	'LBL_SAVE_MAP' => 'Guardar Mapa',
+	'LBL_UITYPE10_NOTALLOWED' => 'The related module has a mandatory related field.',
 );
 
 // Translation for currency names
