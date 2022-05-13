@@ -7122,7 +7122,7 @@ function handlePaste(event) {
 		return false;
 	}
 	let url = document.getElementById('url-zone');
-	setTimeout(function() {
+	setTimeout(function () {
 		fetch(
 			'index.php?module=Documents&action=DocumentsAjax&actionname=URLDropzone&method=Save&url='+encodeURI(url.innerText),
 			{
