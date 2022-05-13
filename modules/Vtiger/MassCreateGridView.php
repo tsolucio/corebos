@@ -113,7 +113,7 @@ if ($cbMapid) {
 		} else {
 			if ($match == $key['columnname']) {
 				$listFields['active'] = 1;
-			}			
+			}
 		}
 		return $listFields;
 	}, $cachedModuleFields);
