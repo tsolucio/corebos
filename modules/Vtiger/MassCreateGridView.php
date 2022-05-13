@@ -27,111 +27,111 @@ if ($cbMapid) {
 	$MassUpsert = $cbMap->MassUpsertGridView();
 	$fields = $MassUpsert->getColumns();
 	$match = $MassUpsert->getMatchFields();
-} else {
-	$focus = CRMEntity::getInstance($currentModule);
-	$fields = $focus->list_fields;
-}
-$users = get_user_array();
-$items = array();
-foreach ($users as $id => $username) {
-	if (!empty($id)) {
-		$items[] = array(
-			'text' => $username,
-			'value' => $id
-		);
+	$users = get_user_array();
+	$items = array();
+	foreach ($users as $id => $username) {
+		if (!empty($id)) {
+			$items[] = array(
+				'text' => $username,
+				'value' => $id
+			);
+		}
 	}
-}
-$emptydata = array();
-$columns = array();
-foreach ($fields as $label => $value) {
-	$tempColumns = array();
-	foreach ($value as $table => $column) {
-		if ($column == 'smownerid') {
+	$emptydata = array();
+	$columns = array();
+	foreach ($fields as $label => $value) {
+		$tempColumns = array();
+		foreach ($value as $table => $column) {
+			if ($column == 'smownerid') {
+				$editor = array(
+					'type' => 'select',
+					'options' => array(
+						'listItems' => $items
+					)
+				);
+			} else {
+				$editor = 'text';
+			}
+			$columns[] = array(
+				'header' => getTranslatedString($label, $currentModule),
+				'name' => $column,
+				'editor' => $editor
+			);
+			array_push($emptydata, array($column => ''));
+		}
+	}
+	if (!is_admin($current_user)) {
+		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+		exit;
+	}
+	$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
+	$ListFields = array_map(function ($key) use ($fields, $items, $currentModule) {
+		$editor = 'text';
+		if ($key['columnname'] == 'smownerid') {
 			$editor = array(
 				'type' => 'select',
 				'options' => array(
 					'listItems' => $items
 				)
 			);
+		}
+		$typeofdata = explode('~', $key['typeofdata']);
+		$listFields = array(
+			'header' => getTranslatedString($key['fieldlabel'], $currentModule),
+			'name' => $key['columnname'],
+			'fieldname' => $key['fieldname'],
+			'editor' => $editor,
+			'active' => 0,
+			'typeofdata' => $typeofdata[1],
+			'uitype' => $key['uitype'],
+			'tabid' => $key['tabid'],
+		);
+		$fields = array_values($fields);
+		foreach ($fields as $value) {
+			foreach ($value as $table => $field) {
+				if ($field == $key['columnname']) {
+					$listFields['active'] = 1;
+					break;
+				}
+			}
+		}
+		return $listFields;
+	}, $cachedModuleFields);
+	$MatchFields = array_map(function ($key) use ($match, $currentModule) {
+		$listFields = array(
+			'header' => getTranslatedString($key['fieldlabel'], $currentModule),
+			'name' => $key['columnname'],
+			'active' => 0,
+		);
+		if (is_array($match)) {
+			foreach ($match as $value) {
+				if ($value == $key['columnname']) {
+					$listFields['active'] = 1;
+					break;
+				}
+			}
 		} else {
-			$editor = 'text';
-		}
-		$columns[] = array(
-			'header' => getTranslatedString($label, $currentModule),
-			'name' => $column,
-			'editor' => $editor
-		);
-		array_push($emptydata, array($column => ''));
-	}
-}
-if (!is_admin($current_user)) {
-	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
-	exit;
-}
-$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
-$ListFields = array_map(function ($key) use ($fields, $items, $currentModule) {
-	$editor = 'text';
-	if ($key['columnname'] == 'smownerid') {
-		$editor = array(
-			'type' => 'select',
-			'options' => array(
-				'listItems' => $items
-			)
-		);
-	}
-	$typeofdata = explode('~', $key['typeofdata']);
-	$listFields = array(
-		'header' => getTranslatedString($key['fieldlabel'], $currentModule),
-		'name' => $key['columnname'],
-		'fieldname' => $key['fieldname'],
-		'editor' => $editor,
-		'active' => 0,
-		'typeofdata' => $typeofdata[1],
-		'uitype' => $key['uitype'],
-		'tabid' => $key['tabid'],
-	);
-	$fields = array_values($fields);
-	foreach ($fields as $value) {
-		foreach ($value as $table => $field) {
-			if ($field == $key['columnname']) {
+			if ($match == $key['columnname']) {
 				$listFields['active'] = 1;
-				break;
-			}
+			}			
 		}
-	}
-	return $listFields;
-}, $cachedModuleFields);
-$MatchFields = array_map(function ($key) use ($match, $currentModule) {
-	$listFields = array(
-		'header' => getTranslatedString($key['fieldlabel'], $currentModule),
-		'name' => $key['columnname'],
-		'active' => 0,
-	);
-	if (is_array($match)) {
-		foreach ($match as $value) {
-			if ($value == $key['columnname']) {
-				$listFields['active'] = 1;
-				break;
-			}
-		}
-	} else {
-		if ($match == $key['columnname']) {
-			$listFields['active'] = 1;
-		}			
-	}
-	return $listFields;
-}, $cachedModuleFields);
+		return $listFields;
+	}, $cachedModuleFields);
 
-$tabid = getTabid($currentModule);
-$linksurls = BusinessActions::getAllByType($tabid, array('MASSUPSERTGRID'));
-if (!empty($linksurls['MASSUPSERTGRID'])) {
-	$smarty->assign('BALinks', $linksurls['MASSUPSERTGRID']);
+	$tabid = getTabid($currentModule);
+	$linksurls = BusinessActions::getAllByType($tabid, array('MASSUPSERTGRID'));
+	if (!empty($linksurls['MASSUPSERTGRID'])) {
+		$smarty->assign('BALinks', $linksurls['MASSUPSERTGRID']);
+	}
+	$smarty->assign('EmptyData', json_encode($emptydata));
+	$smarty->assign('GridColumns', json_encode($columns));
+	$smarty->assign('ListFields', json_encode($ListFields));
+	$smarty->assign('MatchFields', json_encode($MatchFields));
+	$smarty->assign('bmapname', $bmapname);
+	$smarty->assign('moduleShowSearch', false);
+	$smarty->assign('showDesert', false);
+} else {
+	$smarty->assign('showDesert', true);
 }
-$smarty->assign('EmptyData', json_encode($emptydata));
-$smarty->assign('GridColumns', json_encode($columns));
-$smarty->assign('ListFields', json_encode($ListFields));
-$smarty->assign('MatchFields', json_encode($MatchFields));
-$smarty->assign('bmapname', $bmapname);
 $smarty->assign('moduleView', 'MassCreateGrid');
-$smarty->assign('moduleShowSearch', false);
 ?>

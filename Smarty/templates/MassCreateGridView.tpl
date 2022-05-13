@@ -7,6 +7,10 @@
  * All Rights Reserved.
 ********************************************************************************/
 -->*}
+{if $showDesert}
+	{assign var='DESERTInfo' value='LBL_NO_DATA'|@getTranslatedString:$MODULE}
+	{include file='Components/Desert.tpl'}
+{else}
 <script type="text/javascript">
 	var GridColumns = '{$GridColumns}';
 	var EmptyData = '{$EmptyData}';
@@ -58,3 +62,4 @@
 </div>
 </table>
 <div id="listview-tui-grid"></div>
+{/if}
