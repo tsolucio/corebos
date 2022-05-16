@@ -98,4 +98,11 @@
 	<classname>addBAtypesForMassCreateGrid</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Update ModTracker changedon column data type</description>
+	<filename>build/changeSets/2022/updateModTrackerChangedOnDateTimeLength.php</filename>
+	<classname>updateModTrackerChangedOnDateTimeLength</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
