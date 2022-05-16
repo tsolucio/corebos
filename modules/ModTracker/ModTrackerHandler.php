@@ -45,9 +45,9 @@ class ModTrackerHandler extends VTEventHandler {
 								$modtime = $adb->query_result($crmrs, 0, 0);
 
 								$modtime_micro = new Datetime($modtime);
-								$modtime_micro->modify('+'.number_format(microtime(),3).' usec');
+								$modtime_micro->modify('+'.number_format(microtime(), 3).' usec');
 								$modtime = $modtime_micro->format('Y-m-d H:i:s.u');
-								
+
 								$this->id = $adb->getUniqueId('vtiger_modtracker_basic');
 								$adb->pquery(
 									'INSERT INTO vtiger_modtracker_basic(id, crmid, module, whodid, changedon, status) VALUES(?,?,?,?,?,?)',
