@@ -202,7 +202,7 @@ const ListView = {
 					},
 				};
 			} else {
-				if (SearchColumns == 0) {
+				if (SearchColumns == 1) {
 					if (uitype == '7' || uitype == '9' || uitype == '71' || uitype == '72') {
 						filter = {
 							type: 'number',
@@ -275,6 +275,9 @@ const ListView = {
 						},
 						renderer: {
 							type: LinkRender,
+							options: {
+								tooltip: tooltip
+							}
 						},
 					};
 				}
