@@ -531,7 +531,7 @@ class Vtiger_MailScannerAction {
 	 */
 	public function __triggerWorkflow($mailscannerrule, $mailrecord, $crmid) {
 		global $current_user;
-		$workflowid = $mailscannerrule;
+		$workflowid = $mailscannerrule->workflowid;
 		if (!$workflowid) {
 			return false;
 		}
@@ -549,7 +549,7 @@ class Vtiger_MailScannerAction {
 		];
 
 		$context = json_encode($context);
-		cbwsExecuteWorkflowWithContext($workflowid, $crmid, $context, $current_user);
+		cbwsExecuteWorkflowWithContext($workflowid, json_encode([$crmid]), $context, $current_user);
 
 		return true;
 	}
