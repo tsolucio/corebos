@@ -51,6 +51,17 @@
 									<span class="slds-text-color_error">{$mandatory}</span>
 								</span>
 							</label>
+							{if !empty($i['relatedModules'])}
+								<select id="selected-{$i['name']}">
+								{foreach from=$i['relatedModules'] item=$module}
+								{if $i['activeModule'] == $module}
+									<option selected value="{$module}">{$module}</option>
+								{else}
+									<option value="{$module}">{$module}</option>
+								{/if}
+								{/foreach}
+								</select>
+							{/if}
 						</div>
 					</div>
 				</div>

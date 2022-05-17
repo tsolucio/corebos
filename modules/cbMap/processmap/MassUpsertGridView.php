@@ -94,12 +94,11 @@ class MassUpsertGridView extends processcbMap {
 				if ($fName == 'assigned_user_id') {
 					continue;
 				}
-				$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $fName);
-				if (!$cachedModuleFields) {
-					$grid = new GridListView($this->mapping['module']);
-					$grid->tabid = $tabid;
-					$cachedModuleFields = $grid->getFieldNameByColumn($fName, 'array');
+				$column = getColumnnameByFieldname($tabid, $fName);
+				if ($column) {
+					$fName = $column;
 				}
+				$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $fName);
 				$table = str_replace('vtiger_', '', $cachedModuleFields['tablename']);
 				$columnname = (string)$field->name;
 				$field->name = $cachedModuleFields['fieldname'];
@@ -107,7 +106,15 @@ class MassUpsertGridView extends processcbMap {
 					$cachedModuleFields['fieldlabel'] = $cachedModuleFields['fieldlabel'].' ('.$module.')';
 				}
 				$label = $cachedModuleFields['fieldlabel'];
-				$this->mapping['columns'][$label] = array($table => $columnname);
+				$this->mapping['columns'][$label] = array(
+					$table => $columnname
+				);
+				if (isset($field->relatedModule)) {
+					$this->mapping['columns'][$label] = array(
+						$table => $columnname,
+						'relatedModule' => (string)$field->relatedModule
+					);
+				}
 			}
 		}
 	}
