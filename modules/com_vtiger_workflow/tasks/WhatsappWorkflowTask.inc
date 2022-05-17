@@ -70,11 +70,10 @@ class WhatsappWorkflowTask extends VTTask {
 			$count = count($this->attachmentsinfo);
 			if ($count>0) {
 				$url = $this->attachmentsinfo;
-				$attachment = explode(",", $this->attachmentids);
+				$attachment = explode(',', $this->attachmentids);
 			} else {
-				$url = "";
-				$attachment = "";
-				$mediaurl = "";
+				$url = '';
+				$attachment = '';
 			}
 			$messageid = array();
 			$phones = $phonest->render($entityCache, $ws_id, [], $entityData->WorkflowContext);
@@ -106,7 +105,7 @@ class WhatsappWorkflowTask extends VTTask {
 							);
 							$messageid[0]['messageid'] = $message->sid;
 							$messageid[0]['body'] = $body;
-							$messageid[0]['attachment'] = "";
+							$messageid[0]['attachment'] = '';
 						} else {
 							if ($body!='') {
 								$message=$client->messages->create(
@@ -119,8 +118,7 @@ class WhatsappWorkflowTask extends VTTask {
 							}
 							$messageid[0]['messageid'] = $message->sid;
 							$messageid[0]['body'] = $body;
-							$messageid[0]['attachment'] = "";
-
+							$messageid[0]['attachment'] = '';
 							for ($j=0; $j<$count; $j++) {
 								$message = $client->messages->create(
 									'whatsapp:'.$phone,
