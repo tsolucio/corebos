@@ -26,6 +26,12 @@ function cbwsGetAnswer($qid, $params, $user) {
 	global $adb, $log;
 	$result_array = array();
 	$qid = explode(',', $qid);
+	if (is_string($params) && substr($params, 0, 1)=='{') {
+		$params = json_decode($params, true);
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			$params = [];
+		}
+	}
 	foreach ((array)$qid as $id) {
 		$qwsid = vtws_getWSID($id);
 		if ($qwsid===false || $qwsid=='0x0') {
@@ -70,15 +76,7 @@ function cbwsGetAnswer($qid, $params, $user) {
 			$result_array[] = new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 			continue;
 		}
-		$parameters = $params[$id];
-		if (is_string($params) && substr($params, 0, 1)=='{') {
-			$params = json_decode($params, true);
-			if (json_last_error() !== JSON_ERROR_NONE) {
-				$result_array[] = new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Invalid Question context');
-				continue;
-			}
-		}
-		$result_array[] = cbQuestion::getAnswer($qidComponents[1], $parameters);
+		$result_array[] = cbQuestion::getAnswer($qidComponents[1], (empty($params[$id]) ? $params : $params[$id]));
 	}
 	if (count($result_array) == 1) {
 		$return = reset($result_array);

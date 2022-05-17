@@ -71,11 +71,12 @@ function saveQuestion(update) {
 	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
 
 	var type_properties = new Object();
-	if (document.getElementById('qprops').value == '') {
-		type_properties = {};
+	var qprops_value = document.getElementById('qprops').value;
 
+	if (qprops_value === "" || qprops_value === "{}" || qprops_value == undefined) {
+		type_properties = '"{}"';
 	} else {
-		type_properties = JSON.parse(document.getElementById('qprops').value);
+		type_properties = qprops_value;
 	}
 	type_properties.context_variables = undefined;
 	if (document.getElementById('sqlquery').checked) {
@@ -89,7 +90,11 @@ function saveQuestion(update) {
 		}
 		type_properties['context_variables'] = context_data_;
 	} else {
-		type_properties = document.getElementById('qprops').value;
+		if (qprops_value === "" || qprops_value === "{}" || qprops_value == undefined) {
+			type_properties = '"{}"';
+		} else {
+			type_properties = qprops_value;
+		}
 	}
 
 	let cbq = {
@@ -112,7 +117,7 @@ function saveQuestion(update) {
 		'orderby': getSQLOrderBy(false).substr(9),
 		'groupby': getSQLGroupBy(false).substr(9),
 		// 'typeprops': document.getElementById('qprops').value,
-		'typeprops': JSON.stringify(type_properties),
+		'typeprops': type_properties,
 		//'description': ,
 		//'id': document.getElementById('wsrecord').value+document.getElementById('record').value,
 		'issqlwsq_disabled': issqlwsq_disabled
@@ -820,7 +825,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 						const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
 						fieldData[idx].instruction = getInstruction(ev.value, fieldData[idx].operators, fieldData[idx].alias);
 						updateFieldData(idx, 'fieldname', ev.value);
-						fieldGridInstance.resetData(fieldData);
+						getQuestionResults();
 					}
 				},
 				{
@@ -839,7 +844,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 						const idx = fieldGridInstance.getIndexOfRow(ev.rowKey);
 						fieldData[idx].instruction = getInstruction(fieldData[idx].fieldname, ev.value, fieldData[idx].alias);
 						updateFieldData(idx, 'operators', ev.value);
-						fieldGridInstance.resetData(fieldData);
+						getQuestionResults();
 					}
 				},
 				{
@@ -947,12 +952,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 			});
 			dataGridInstance = new tuiGrid({
 				el: document.getElementById('resultsgrid'),
-				columns: [{
-					'name': 'empty',
-					'header': 'empty',
-					'whiteSpace': 'normal',
-					'sortable': false
-				}],
+				columns: [],
 				data: {
 					api: {
 						readData: {

@@ -160,7 +160,7 @@
 </div>
 <span id="bqfieldgridblock" {if $sqlquery == '1'} style="display: none;" {/if}>
 <div class="slds-grid slds-gutters slds-m-top_small slds-m-bottom_x-small">
-	<div class="slds-col slds-size_1-of-1 slds-page-header__meta-text slds-m-left_x-small" id="fieldgrid" style="width:99%;"></div>
+	<div class="slds-col slds-size_1-of-1 slds-page-header__meta-text slds-m-left_x-small" id="fieldgrid" style="width:99%; overflow:hidden"></div>
 </div>
 </span>
 

@@ -61,7 +61,7 @@
 				<br>
 
 				<form name="action_form" action="" method="post">
-					<input type="hidden" name="id" value="{$WEBFORMMODEL->getId()}"></input>
+					<input type="hidden" name="id" value="{$WEBFORMMODEL->getId()}">
 				</form>
 				<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
 				<tr>
@@ -72,9 +72,9 @@
 								<td class="dvtSelectedCell" nowrap="nowrap" align="center">{'LBL_MODULE_INFORMATION'|@getTranslatedString:$MODULE}</td>
 								<td class="dvtTabCache" style="width:55%">&nbsp;</td>
 								<td align="right">
-									<input type="button" id="edit_form" name="edit_form" value="{'LBL_EDIT_BUTTON_LABEL'|@getTranslatedString:$MODULE} " class="crmbutton small edit" onclick="Webforms.editForm({$WEBFORMMODEL->getId()})"></input>
-									<input type="button" id="show_html" name="show_html" value="{'LBL_SOURCE'|@getTranslatedString:$MODULE}" class="crmbutton small create" onclick="Webforms.getHTMLSource({$WEBFORMMODEL->getId()})"></input>
-									<input type="button" id="delete_form" name="delete_form" value="{'LBL_DELETE_BUTTON_LABEL'|@getTranslatedString:$MODULE} " class="crmbutton small delete" onclick="return Webforms.deleteForm('action_form',{$WEBFORMMODEL->getId()})"></input>
+									<input type="button" id="edit_form" name="edit_form" value="{'LBL_EDIT_BUTTON_LABEL'|@getTranslatedString:$MODULE} " class="crmbutton small edit" onclick="Webforms.editForm({$WEBFORMMODEL->getId()})">
+									<input type="button" id="show_html" name="show_html" value="{'LBL_SOURCE'|@getTranslatedString:$MODULE}" class="crmbutton small create" onclick="Webforms.getHTMLSource({$WEBFORMMODEL->getId()})">
+									<input type="button" id="delete_form" name="delete_form" value="{'LBL_DELETE_BUTTON_LABEL'|@getTranslatedString:$MODULE} " class="crmbutton small delete" onclick="return Webforms.deleteForm('action_form',{$WEBFORMMODEL->getId()})">
 								</td>
 							</tr>
 						</table>

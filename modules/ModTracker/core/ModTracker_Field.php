@@ -150,6 +150,19 @@ class ModTracker_Field {
 			$value = $ownerName;
 		}
 
+		if ($fieldInstance->getFieldDataType() == 'multireference') {
+			$ids = explode(' |##| ', $value);
+			$value = '';
+			if (count($ids) > 0) {
+				$parent_module = getSalesEntityType($ids[0]);
+				foreach ($ids as $id) {
+					$displayValue = getEntityName($parent_module, $id);
+					$value .= '<a href="index.php?module='.$parent_module.'&action=DetailView&record='.$id.'">'.$displayValue[$id].'</a>, ';
+				}
+				$value = rtrim($value, ', ');
+			}
+		}
+
 		return $value;
 	}
 

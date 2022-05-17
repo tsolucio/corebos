@@ -117,6 +117,7 @@ class ReportRun extends CRMEntity {
 			list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $fieldcolname);
 			$module_field = decode_html($module_field);
 			list($module, $field) = explode('_', $module_field, 2);
+			$fielduitype = getUItype($module, $colname);
 			$inventory_fields = array('quantity', 'listprice', 'serviceid', 'productid', 'discount', 'comment');
 			$inventory_modules = getInventoryModules();
 			if ((!isset($permitted_fields[$module]) || count($permitted_fields[$module]) == 0) && !$userprivs->hasGlobalReadPermission()) {
@@ -216,7 +217,7 @@ class ReportRun extends CRMEntity {
 					} elseif ($selectedfields[0] == 'vtiger_products' && $selectedfields[1] == 'unit_price') {//handled for product fields in Campaigns Module Reports
 						$columnslist[$fieldcolname] = 'concat('.$selectedfields[0].".currency_id,'::',innerProduct.actual_unit_price) as '". $header_label ."'";
 						$this->queryPlanner->addTable('innerProduct');
-					} elseif (in_array($selectedfields[2], $this->append_currency_symbol_to_value)) {
+					} elseif ($fielduitype == '72' || in_array($selectedfields[2], $this->append_currency_symbol_to_value)) {
 						$columnslist[$fieldcolname] = 'concat('.$selectedfields[0].".currency_id,'::',".$selectedfields[0].'.'.$selectedfields[1].") as '" . $header_label ."'";
 					} elseif ($selectedfields[0] == 'vtiger_notes' && ($selectedfields[1] == 'filelocationtype' || $selectedfields[1] == 'filesize' || $selectedfields[1] == 'folderid' || $selectedfields[1]=='filestatus')) {//handled for product fields in Campaigns Module Reports
 						if ($selectedfields[1] == 'filelocationtype') {
@@ -2699,7 +2700,8 @@ class ReportRun extends CRMEntity {
 					$fld_name_1 = $this->primarymodule . '_' . trim($value);
 					$fld_name_2 = $this->secondarymodule . '_' . trim($value);
 					if ($uitype_arr[$key]==71 || $uitype_arr[$key] == 72 ||
-									in_array($fld_name_1, $this->append_currency_symbol_to_value) || in_array($fld_name_2, $this->append_currency_symbol_to_value)) {
+						in_array($fld_name_1, $this->append_currency_symbol_to_value) || in_array($fld_name_2, $this->append_currency_symbol_to_value)
+					) {
 						$col_header .= ' ('.$app_strings['LBL_IN'].' '.$current_user->currency_symbol.')';
 						$convert_price = true;
 					} else {
@@ -2786,6 +2788,7 @@ class ReportRun extends CRMEntity {
 
 		global $adb, $log;
 		static $modulename_cache = array();
+		static $fielduitype_cache = array();
 		$coltotalsql = 'select vtiger_reportsummary.* from vtiger_report';
 		$coltotalsql .= ' inner join vtiger_reportsummary on vtiger_report.reportid = vtiger_reportsummary.reportsummaryid';
 		$coltotalsql .= ' where vtiger_report.reportid =?';
@@ -2814,6 +2817,20 @@ class ReportRun extends CRMEntity {
 				} else {
 					$module_name = $modulename_cache[$cachekey];
 				}
+				if (!isset($fielduitype_cache[$cachekey])) {
+					$mod_query = $adb->pquery(
+						'SELECT uitype from vtiger_field where tablename=? and columnname=?',
+						array($fieldlist[1], $fieldlist[2])
+					);
+					if ($adb->num_rows($mod_query)>0) {
+						$fielduitype_cache[$cachekey] = $adb->query_result($mod_query, 0, 'uitype');
+						$fielduitype = $fielduitype_cache[$cachekey];
+					} else {
+						$fielduitype = 0;
+					}
+				} else {
+					$fielduitype = $fielduitype_cache[$cachekey];
+				}
 
 				$field_columnalias = $module_name.'_'.$fieldlist[3];
 				$field_columnalias = decode_html($field_columnalias);
@@ -2838,7 +2855,8 @@ class ReportRun extends CRMEntity {
 						$seltotalcols['innerService:actual_unit_price:Services_Unit_Price:actual_unit_price:N'] = 'innerService.actual_unit_price AS actual_unit_price';
 					}
 					if (($field_tablename == 'vtiger_invoice' || $field_tablename == 'vtiger_quotes' || $field_tablename == 'vtiger_purchaseorder' || $field_tablename == 'vtiger_salesorder' || $field_tablename == 'vtiger_issuecards')
-							&& ($field_columnname == 'total' || $field_columnname == 'subtotal' || $field_columnname == 'discount_amount' || $field_columnname == 's_h_amount')) {
+						&& ($fielduitype == '72' || $field_columnname=='total' || $field_columnname=='subtotal' || $field_columnname=='discount_amount' || $field_columnname=='s_h_amount')
+					) {
 						$query_columnalias = $query_columnalias.'`/`'.$module_name.'_Conversion_Rate';
 						$seltotalcols[$field_tablename.':conversion_rate:'.$module_name.'_Conversion_Rate:conversion_rate:N'] = "$field_tablename.conversion_rate AS $module_name".'_Conversion_Rate ';
 					}

@@ -2683,8 +2683,8 @@ class CRMEntity {
 					$thistablename = $this->table_name;
 				}
 				$relconds[] = "$thistablename.$this->table_index = $dependentTable.$dependentColumn";
-				$button .= '<input type="hidden" name="' . $dependentColumn . '" id="' . $dependentColumn . '" value="' . $id . '">';
-				$button .= '<input type="hidden" name="' . $dependentColumn . '_type" id="' . $dependentColumn . '_type" value="' . $currentModule . '">';
+				$button .= '<input type="hidden" name="' . $dependentField . '" id="' . $dependentColumn . '" value="' . $id . '">';
+				$button .= '<input type="hidden" name="' . $dependentField . '_type" id="' . $dependentColumn . '_type" value="' . $currentModule . '">';
 			}
 			$relationconditions = '('.implode(' or ', $relconds).')';
 			if ($actions) {

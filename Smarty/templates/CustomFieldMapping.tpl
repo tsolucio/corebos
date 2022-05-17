@@ -40,7 +40,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								<td class="small" align="right">&nbsp;&nbsp;
 									<input title="{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" name="save" value=" &nbsp;{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}&nbsp; " class="crmButton small save" type="submit" onclick ="return validateCustomFieldAccounts();">
 									<input title="{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" name="cancel" value=" {'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE} " onclick = "window.history.back()"  class="crmButton small cancel" type="button">
-									<input title="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" type="button" value="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" onclick="javascript:cloneAndAddLeadMapping('cloneableNode','mapTable')"  class="crmButton small create"></input>
+									<input title="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" type="button" value="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" onclick="javascript:cloneAndAddLeadMapping('cloneableNode','mapTable')" class="crmButton small create">
 							</tr>
 						</table>
 						<table class="listTable" id="mapTable" border="0" cellpadding="5" cellspacing="0" width="100%">
@@ -145,7 +145,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								<td class="small" align="right">&nbsp;&nbsp;
 									<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " class="crmButton small save" type="submit" onclick ="return validateCustomFieldAccounts();">
 									<input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " onclick = "window.history.back()"  class="crmButton small cancel" type="button">
-									<input title="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" type="button" value="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" onclick="javascript:cloneAndAddLeadMapping('cloneableNode','mapTable')"  class="crmButton small create"></input>
+									<input title="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" type="button" value="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" onclick="javascript:cloneAndAddLeadMapping('cloneableNode','mapTable')" class="crmButton small create">
 								</td>
 							</tr>
 						</table>

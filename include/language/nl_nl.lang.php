@@ -1293,6 +1293,7 @@ $app_strings = array(
 	'LBL_SELECT_COLUMNS' => 'Select columns to show in Mass Create Grid',
 	'LBL_MATCH_COLUMNS' => 'Select columns to match in Mass Create Grid',
 	'LBL_SAVE_MAP' => 'Save Map',
+	'LBL_UITYPE10_NOTALLOWED' => 'The related module has a mandatory related field.',
 );
 
 // Translation for currency names

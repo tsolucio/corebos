@@ -33,20 +33,34 @@ switch ($op) {
 		$data = json_decode($data, true);
 		$grid = new GridListView($module);
 		$grid->tabid = getTabid($module);
-		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapName, cbMap::getMapIdByName($mapName), $currentModule);
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$MassUpsert = $cbMap->MassUpsertGridView();
+			$ActiveColumns = $MassUpsert->getColumns();
 			$match = $MassUpsert->getMatchFields();
 		}
+		$idx = 0;
+		$currentRowActive = array();
 		foreach ($data as $row) {
 			unset($row['_attributes']);
 			$currentRow = array();
+			//use this to identify failed creates
+			$currentRow['rowKey'] = $row['rowKey'];
 			foreach ($row as $field => $value) {
 				if (is_numeric($field)) {
 					continue;
 				}
 				$fieldName = $grid->getFieldNameByColumn($field);
+				//check if fieldname is in active colums
+				if (empty($currentRowActive)) {
+					foreach ($ActiveColumns as $key) {
+						$currentRowActive[] = $grid->getFieldNameByColumn(array_values($key)[0]);
+					}
+				}
+				if (!in_array($fieldName, $currentRowActive)) {
+					continue;
+				}
 				if (!$fieldName) {
 					continue;
 				}
@@ -62,35 +76,77 @@ switch ($op) {
 					if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
 						$relMods = $grid->findRelatedModule($fieldName);
 						if (!empty($relMods)) {
-							foreach ($relMods as $mod) {
-								$reference_field = getEntityFieldNames($mod);
-								if (is_array($reference_field['fieldname'])) {
-									$id = getEntityId($mod, $value);
-								} else {
-									$id = __cb_getidof(array(
-										$mod, $reference_field['fieldname'], $value
-									));
+							foreach ($relMods as $relMod) {
+								$reference_field = getEntityFieldNames($relMod);
+								$handler = vtws_getModuleHandlerFromName($relMod, $current_user);
+								$meta = $handler->getMeta();
+								$mandatoryFieldsList = $meta->getMandatoryFields();
+								//create/update related modules with currentModule
+								if (count($mandatoryFieldsList)) {
+									$element = array();
+									foreach ($mandatoryFieldsList as $field) {
+										$element[$field] = $value;
+										if ($field == 'assigned_user_id') {
+											$element[$field] = $UsersTabid.'x'.$current_user->id;
+										}
+										if (isset($row[$relMod.'.'.$field])) {
+											$element[$field] = $row[$relMod.'.'.$field];
+										}
+									}
+									//use this to identify failed creates
+									$element['rowKey'] = $row['rowKey'];
 								}
-								$value = 0;
-								if ($id > 0) {
-									$tabid = vtws_getEntityId($mod);
-									$value = $tabid.'x'.$id;
-									break;
+								if (is_string($reference_field['fieldname'])) {
+									$reference_field['fieldname'] = (array)$reference_field['fieldname'];
 								}
+								$tabid = getTabid($relMod);
+								//find fieldnames for searchon paramter
+								$searchonFields = array();
+								foreach ($reference_field['fieldname'] as $field) {
+									$cachedFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $field);
+									if ($cachedFields) {
+										$field = $cachedFields['fieldname'];
+									}
+									if (isset($row[$relMod.'.'.$field])) {
+										$element[$field] = $row[$relMod.'.'.$field];
+									}
+									$searchonFields[] = $field;
+								}
+								$newData[] = array(
+									'elementType' => $relMod,
+									'referenceId' => 'rel_entity_'.$fieldName.'_'.$idx,
+									'searchon' => implode(',', $searchonFields),
+									'element' => $element
+								);
 							}
 							$field = $fieldName;
+							$value = '@{rel_entity_'.$fieldName.'_'.$idx.'}';
+							$idx++;
 						}
 					}
 					$currentRow[$fieldName] = $value;
 				}
 			}
 			if (isset($match)) {
+				if (is_string($match)) {
+					$match = (array)$match;
+				}
 				$searchon = $match;
+			}
+			//find fieldnames for searchon paramter
+			$tabid = getTabid($module);
+			$searchonFields = array();
+			foreach ($searchon as $field) {
+				$cachedFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $field);
+				if ($cachedFields) {
+					$field = $cachedFields['fieldname'];
+				}
+				$searchonFields[] = $field;
 			}
 			$newData[] = array(
 				'elementType' => $module,
 				'referenceId' => '',
-				'searchon' => implode(',', $searchon),
+				'searchon' => implode(',', $searchonFields),
 				'element' => $currentRow
 			);
 		}
@@ -115,8 +171,33 @@ switch ($op) {
 		}
 		$columns = $map->addChild('columns');
 		foreach ($ActiveColumns as $key) {
+			if ($key['uitype'] == Field_Metadata::UITYPE_RECORD_RELATION) {
+				$fields = lookupMandatoryFields($key);
+				if (empty($fields)) {
+					continue;
+				}
+				if (is_string($fields)) {
+					//block save if mandatory fields in related modules are uitype10.
+					echo json_encode($fields);
+					exit;
+				}
+			}
 			$field = $columns->addChild('field');
-			$name = $field->addChild('name', $key['name']);
+			$field->addChild('name', $key['name']);
+			if (isset($fields) && $key['uitype'] == Field_Metadata::UITYPE_RECORD_RELATION) {
+				$fields = array_unique($fields);
+				foreach ($fields as $module => $fld) {
+					if (!empty($fld)) {
+						foreach ($fld as $name) {
+							if ($name == 'assigned_user_id') {
+								continue;
+							}
+							$relfield = $columns->addChild('field');
+							$relfield->addChild('name', $module.'.'.$name);
+						}
+					}
+				}
+			}
 		}
 		$dom = dom_import_simplexml($xml)->ownerDocument;
 		$dom->preserveWhiteSpace = false;
@@ -149,7 +230,7 @@ switch ($op) {
 				'mapname' => $mapName,
 				'maptype' => 'MassUpsertGridView',
 				'targetname' => $moduleName,
-				'assigned_user_id' => '19x'.$current_user->id
+				'assigned_user_id' => $UsersTabid.'x'.$current_user->id
 			);
 			$response = vtws_create('cbMap', $element, $current_user);
 		}
@@ -162,6 +243,7 @@ switch ($op) {
 		$match = json_decode($match, true);
 		$mapName = vtlib_purify($_REQUEST['mapName']);
 		$moduleName = vtlib_purify($_REQUEST['moduleName']);
+		$tabid = getTabid($moduleName);
 		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><deletethis/>');
 		$map = $xml->addChild('map');
 		$originmodule = $map->addChild('originmodule');
@@ -174,8 +256,40 @@ switch ($op) {
 		}
 		$columns = $map->addChild('columns');
 		foreach ($fields as $field) {
+			$cachedFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, $field);
+			if (!$cachedFields) {
+				$grid = new GridListView($moduleName);
+				$grid->tabid = $tabid;
+				$cachedFields = $grid->getFieldNameByColumn($field, 'array');
+			}
+			$fieldType = getUItypeByFieldName($moduleName, $cachedFields['fieldname']);
+			if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
+				$fieldInfo = lookupMandatoryFields($cachedFields);
+				if (empty($fieldInfo)) {
+					continue;
+				}
+				if (is_string($fieldInfo)) {
+					//block save if mandatory fields in related modules are uitype10.
+					echo json_encode($fieldInfo);
+					exit;
+				}
+			}
 			$fld = $columns->addChild('field');
 			$name = $fld->addChild('name', $field);
+			if (isset($fieldInfo) && $fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
+				$fieldInfo = array_unique($fieldInfo);
+				foreach ($fieldInfo as $module => $flds) {
+					if (!empty($flds)) {
+						foreach ($flds as $name) {
+							if ($name == 'assigned_user_id') {
+								continue;
+							}
+							$fieldIns = $columns->addChild('field');
+							$fieldIns->addChild('name', $module.'.'.$name);
+						}
+					}
+				}
+			}
 		}
 		$dom = dom_import_simplexml($xml)->ownerDocument;
 		$dom->preserveWhiteSpace = false;
@@ -200,6 +314,58 @@ switch ($op) {
 	default:
 		$response = '';
 		break;
+}
+
+function lookupMandatoryFields($key) {
+	global $current_user;
+	$currentModule = vtlib_getModuleNameById($key['tabid']);
+	$grid = new GridListView($currentModule);
+	$grid->tabid = getTabid($currentModule);
+	$modules = $grid->findRelatedModule($key['fieldname']);
+	if (is_array($modules) && count($modules) == 1) {
+		$reference_field = getEntityFieldNames($modules[0]);
+		$handler = vtws_getModuleHandlerFromName($modules[0], $current_user);
+		$meta = $handler->getMeta();
+		$mandatoryFieldsList = $meta->getMandatoryFields();
+		if (is_string($reference_field['fieldname'])) {
+			$reference_field['fieldname'] = (array)$reference_field['fieldname'];
+		}
+		//no filter so we support modules with more then 1 reference field
+		$filteredData = array();
+		if (count($reference_field['fieldname']) > 1) {
+			$mergeData = array_merge($mandatoryFieldsList, $reference_field['fieldname']);
+			foreach ($mergeData as $field) {
+				$fieldType = getUItype($modules[0], $field);
+				if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
+					return getTranslatedString('LBL_UITYPE10_NOTALLOWED');
+				}
+				if ($field == 'assigned_user_id') {
+					continue;
+				}
+				if (!in_array($field, $filteredData)) {
+					$filteredData[] = $field;
+				}
+			}
+		} else {
+			$mergeData = array_merge(array_diff($mandatoryFieldsList, $reference_field['fieldname']), array_diff($reference_field['fieldname'], $mandatoryFieldsList));
+			foreach ($mergeData as $field) {
+				$fieldType = getUItype($modules[0], $field);
+				if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
+					return getTranslatedString('LBL_UITYPE10_NOTALLOWED');
+				}
+				if ($field == 'assigned_user_id') {
+					continue;
+				}
+				if (!in_array($field, $filteredData) && !in_array($field, $reference_field['fieldname'])) {
+					$filteredData[] = $field;
+				}
+			}
+		}
+		return array(
+			$modules[0] => $filteredData
+		);
+	}
+	return array();
 }
 echo json_encode($response);
 ?>

@@ -438,7 +438,7 @@ function editbuilderscript($, conditions) {
 		if (moduleName=='') {
 			return;
 		}
-		if (typeof newconditions!='undefined') {
+		if (!newconditions && typeof newconditions!='undefined') {
 			conditions = newconditions;
 		}
 		pageLoadingPopup.show();
