@@ -90,9 +90,8 @@ if (isset($_REQUEST['module'])) {
 	$module = vtlib_purify($_REQUEST['module']);
 	if (!preg_match('/[\/.]/', $module)) {
 		$dir = @scandir($root_directory.'modules', SCANDIR_SORT_NONE);
-		$in_dir = @scandir($root_directory.'modules/'.$module, SCANDIR_SORT_NONE);
 		$is_module = @in_array($module, $dir);
-		$is_action = @in_array($action.'.php', $in_dir) || file_exists('modules/Vtiger/'.$action.'.php');
+		$is_action = file_exists($root_directory.'modules/'.$module.'/'.$action.'.php') || file_exists('modules/Vtiger/'.$action.'.php');
 	}
 	if (!$is_module) {
 		die('Module name is missing or incorrect. Please check the module name.');

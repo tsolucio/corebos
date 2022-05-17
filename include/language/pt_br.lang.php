@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 27/04/2022 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 13/05/2022 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -37,9 +37,9 @@ $app_strings = array (
 'LBL_APPLY_BUTTON_LABEL' => 'Aplicar',
 'LBL_SEND_MAIL_BUTTON' => 'Enviar e-mail',
 'LBL_SAVE_BUTTON_TITLE' => 'Salvar [Alt+S]',
-'LBL_SAVEREPEAT_BUTTON_TITLE' => 'Save+Repeat [Alt+H]',
-'LBL_SKIP_BUTTON_TITLE' => 'Skip [Alt+K]',
-'LBL_GOBACK_BUTTON_TITLE' => 'Go back [Alt+B]',
+'LBL_SAVEREPEAT_BUTTON_TITLE' => 'Salvar+Repetir [Alt+H]',
+'LBL_SKIP_BUTTON_TITLE' => 'Pular [Alt+K]',
+'LBL_GOBACK_BUTTON_TITLE' => 'Retornat [Alt+B]',
 'LBL_EDIT_BUTTON_TITLE' => 'Editar [Alt+E]',
 'LBL_RECALCULATE_BUTTON_TITLE' => 'Recalcular [Alt+R]',
 'LBL_CONVERTSO_BUTTON_TITLE' => 'Criar pedido venda',
@@ -184,7 +184,7 @@ $app_strings = array (
 'NTC_TIME_FORMAT' => '(24:00)',
 'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 'NTC_DELETE_CONFIRMATION' => 'Você tem certeza que deseja apagar este registro?',
-'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
+'SMTP_DELETE_CONFIRMATION' => 'Tem certeza de que deseja excluir essas configurações de SMTP?',
 'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Apagando esta Conta removerá as oportunidades e cotações relacionadas. Tem certeza que deseja apagar esta conta?',
 'NTC_VENDOR_DELETE_CONFIRMATION' => 'Apagando este fornecedor serão removidas os pedidos de compras relacionados. Tem certeza que deseja apagar este fornecedor?',
 'ERR_DELETE_RECORD' => 'Um registro dever ser especificado para apagar o contato.',
@@ -923,7 +923,7 @@ $app_strings = array (
 'Lost Lead' => 'Lead perdido',
 //Added for incoming mail server settings form js validation
 'ERR_INVALID_PAGE_COUNT' => "Contagem página inválida",
-//'Product Code' => 'Part Number',
+//'Product Code' => 'Cod. Peça',
 'Quotes' => 'Cotações',
 'PurchaseOrder' => 'Pedido compra',
 'SalesOrder' => 'Pedido venda',
@@ -1370,8 +1370,8 @@ $app_strings = array (
 'VALIDATION_FAILED' => 'Falha na validação',
 'Select Module To Upsert' => 'Selecione módulo p/upsert',
 'LBL_FIX_NOW' => 'Fixa Agora',
-'LBL_HIERARCHY' => 'Hierarchy',
-'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Search Documents',
+'LBL_HIERARCHY' => 'Hierarquia',
+'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Procurar documentos',
 
 //login translation
 'LBL_Please_login_to_your_account' => 'Faça login em sua conta',
@@ -1381,17 +1381,18 @@ $app_strings = array (
 
 //List view popup content
 'LBL_SEND_TO' => 'ENVIAR PARA',
-'LNK_ALPHABETICAL_SEARCH' => 'Alpabetical Search',
-'ERR_SITE_URL_MISMATCH' => 'Site URL mismatch',
+'LNK_ALPHABETICAL_SEARCH' => 'Pesquisa alfabética',
+'ERR_SITE_URL_MISMATCH' => 'Incompatibilidade de URL do site',
 'Mautic ID' => 'Mautic ID',
-'Deleted in Mautic' => 'Deleted in Mautic',
-'Contact Points' => 'Contact Points',
-'From External Source' => 'From External Source',
-'LBL_ADD_ROW' => 'Add Row',
-'LBL_EDIT_COLUMNS' => 'Edit Columns',
-'LBL_SELECT_COLUMNS' => 'Select columns to show in Mass Create Grid',
-'LBL_MATCH_COLUMNS' => 'Select columns to match in Mass Create Grid',
-'LBL_SAVE_MAP' => 'Save Map',
+'Deleted in Mautic' => 'Apagado no Mautic',
+'Contact Points' => 'Pontos do contato',
+'From External Source' => 'A partir fonte externa',
+'LBL_ADD_ROW' => 'Adcione linha',
+'LBL_EDIT_COLUMNS' => 'Edite colunas',
+'LBL_SELECT_COLUMNS' => 'Seleciona colunas paraexibir na grade de edição em massa',
+'LBL_MATCH_COLUMNS' => 'Selecione colunas para corresponder na grade de criação em massa',
+'LBL_SAVE_MAP' => 'Salvar mapa',
+'LBL_UITYPE10_NOTALLOWED' => 'O módulo relacionado tem um campo relacionado obrigatório.',
 );
 
 // Translation for currency names

@@ -1562,7 +1562,7 @@ function getCriteriaJS($formName) {
 				document.'.$formName.'.enddate.value = "'.$lastMonthEndDateTime->getDisplayDate().'";
 			} else if( type == "priorToToday" ) {
 				document.'.$formName.'.startdate.value = "'.$bigbang->getDisplayDate().'";
-				document.'.$formName.'.enddate.value = "'.$priorToToday->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$yesterdayDateTime->getDisplayDate().'";
 			} else if( type == "nextmonth" ) {
 				document.'.$formName.'.startdate.value = "'.$nextMonthStartDateTime->getDisplayDate().'";
 				document.'.$formName.'.enddate.value = "'.$nextMonthEndDateTime->getDisplayDate().'";

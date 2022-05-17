@@ -104,6 +104,8 @@ class genMassUpsertGridView extends generatecbMap {
 				return $listFields;
 			}, $ModuleFields);
 		}
+		array_multisort($ListFields);
+		array_multisort($MatchFields);
 		$smarty->assign('MapFields', $ListFields);
 		$smarty->assign('MatchFields', $MatchFields);
 		$smarty->display('modules/cbMap/MassUpsertGrid.tpl');

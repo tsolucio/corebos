@@ -463,7 +463,7 @@ class GridListView {
 						foreach ($fieldValue as $id) {
 							$displayValueArray = getEntityName($parent_module, $id);
 							if (!empty($displayValueArray)) {
-								$field1025Value[] = $displayValueArray[$id];
+								$field1025Value[] = '<a href="index.php?module='.$parent_module.'&action=DetailView&record='.$id.'">'.$displayValueArray[$id].'</a>';
 							}
 							$AutocompleteFields[] = array(
 								$parent_module, $fieldName, $displayValueArray[$id], $id
@@ -509,15 +509,18 @@ class GridListView {
 		return $data;
 	}
 
-	public function getFieldNameByColumn($columnname) {
+	public function getFieldNameByColumn($columnname, $return = '') {
 		global $adb;
 		if (is_array($columnname)) {
 			$columnname = $columnname[0];
 		}
-		$rs = $adb->pquery('select fieldname from vtiger_field where columnname=? and tabid=?', array(
+		$rs = $adb->pquery('select * from vtiger_field where columnname=? and tabid=?', array(
 			$columnname, $this->tabid
 		));
 		if ($adb->num_rows($rs) == 1) {
+			if ($return == 'array') {
+				return $rs->FetchRow();
+			}
 			return $adb->query_result($rs, 0, 'fieldname');
 		}
 		return false;

@@ -613,8 +613,8 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
 		$image_path = $adb->query_result($image_res, 0, 'path');
 		$image_name = $adb->query_result($image_res, 0, 'name');
-		$imgpath = $image_path . $image_id . "_" . $image_name;
-		if ($image_name != '') {
+		$imgpath = $image_path . $image_id . '_' . $image_name;
+		if ($image_name != '' && file_exists($imgpath)) {
 			//Added the following check for the image to retain its in original size.
 			list($pro_image_width, $pro_image_height) = getimagesize(decode_html($imgpath));
 			$label_fld[] = '<a href="' . $imgpath . '" target="_blank"><img src="' . $imgpath . '" width="' . $pro_image_width . '" height="' . $pro_image_height

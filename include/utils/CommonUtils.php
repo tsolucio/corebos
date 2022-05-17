@@ -2270,6 +2270,14 @@ function isOnDemandActive() {
 }
 
 /**
+ * This function is used to hide and show import and export buttons onDemand mode.
+ */
+function isOnDemandNotActive() {
+	global $coreBOSOnDemandActive;
+	return !$coreBOSOnDemandActive;
+}
+
+/**
  * This function is used to decide the File Storage Path in where we will upload the file in the server
  * @return string filepath where the file should be stored in the server
  */

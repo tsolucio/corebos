@@ -429,4 +429,5 @@ var alert_arr = {
 	'LBL_CREATED_SUCCESS': 'Created successfully',
 	'LBL_SELECT_COLUMNS': 'Select columns to show in grid',
 	'LBL_MATCH_COLUMNS': 'Select columns to match in grid',
+	'LBL_MATCH_ERROR': 'You can only match the fields you select to show',
 };

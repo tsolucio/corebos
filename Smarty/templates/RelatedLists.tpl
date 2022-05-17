@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="modules/PriceBooks/PriceBooks.js"></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/RelatedLists.js"></script>
 {include file='Buttons_List.tpl' isDetailView=true}

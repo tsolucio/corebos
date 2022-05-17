@@ -31,17 +31,20 @@
 			{foreach from=$MapFields item=$i}
 			{assign var='mandatory' value=''}
 			{assign var='checked' value=''}
+			{assign var='disabled' value=''}
 			{if $i['active'] eq 1}
 				{assign var='checked' value='checked'}
 			{/if}
 			{if $i['typeofdata'] eq 'M'}
 				{assign var='mandatory' value='*'}
+				{assign var='checked' value='checked'}
+				{assign var='disabled' value='disabled'}
 			{/if}
 			<div class="slds-col slds-size_3-of-12">
 				<div class="slds-form-element">
 					<div class="slds-form-element__control">
 						<div class="slds-checkbox">
-							<input type="checkbox" name="grid-fields" id="checkbox-{$i['name']}" value="checkbox-{$i['name']}" {$checked}/>
+							<input type="checkbox" name="grid-fields" id="checkbox-{$i['name']}" value="checkbox-{$i['name']}" {$checked} {$disabled}/>
 							<label class="slds-checkbox__label" for="checkbox-{$i['name']}">
 								<span class="slds-checkbox_faux"></span>
 								<span class="slds-form-element__label">{$i['header']}

@@ -83,7 +83,7 @@ function cbws_getmergedtemplate($template, $crmids, $output_format, $user) {
 				$pdfname = OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.pdf';
 				$odtout = new OpenDocument;
 				OpenDocument::$debug = false;
-				OpenDocument::$compile_language = $usrlang;
+				OpenDocument::$compile_language = GlobalVariable::getVariable('GenDoc_Default_Compile_Language', $usrlang, $module);
 				if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 					include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
 				} else {
@@ -118,7 +118,15 @@ function cbws_getmergedtemplate($template, $crmids, $output_format, $user) {
 			$pdf = new concat_pdf();
 			$pdf->setFiles($file2merge);
 			$pdf->concat();
-			$filename = $root_directory.OpenDocument::GENDOCCACHE . '/' . $module. '/' . $module . '.pdf';
+			if (empty($crmid)) {
+				$record = '000';
+			} else {
+				$record = preg_replace('/[^0-9]/', '', substr($crmid, strpos($crmid, 'x')));
+			}
+			$filename = $root_directory.OpenDocument::GENDOCCACHE . '/' . $module. '/' . $module . '_' . $record . '.pdf';
+			if (file_exists($filename)) {
+				unlink($filename);
+			}
 			$pdf->Output($filename, 'F');
 			$zipname = $filename;
 		}

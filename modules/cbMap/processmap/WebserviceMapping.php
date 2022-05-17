@@ -191,6 +191,7 @@ require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 require_once 'modules/com_vtiger_workflow/VTSimpleTemplateOnData.inc';
 include_once 'modules/com_vtiger_workflow/expression_functions/cbexpSQL.php';
 require_once 'include/Webservices/Retrieve.php';
+require_once 'modules/cbMap/processmap/Mapping.php';
 
 class WebserviceMapping extends processcbMap {
 
@@ -246,6 +247,11 @@ class WebserviceMapping extends processcbMap {
 
 			if (isset($sourcefields['merge'])) {
 				foreach ($sourcefields['merge'] as $fieldinfo) {
+					$postProcess = '';
+					if (!empty($fieldinfo['postProcess'])) {
+						$postProcess = $fieldinfo['postProcess'];
+						unset($fieldinfo['postProcess']);
+					}
 					$idx = array_keys($fieldinfo);
 					if (strtoupper($idx[0])=='CONST') {
 						$const = array_pop($fieldinfo);
@@ -323,9 +329,12 @@ class WebserviceMapping extends processcbMap {
 						$fieldname = array_pop($fieldinfo);
 						$value.= (isset($ofields[$fieldname]) ? decode_html($ofields[$fieldname]) : '').$delim;
 					}
+					if ($postProcess!='') {
+						$value = Mapping::postProcess($postProcess, $value);
+					}
 				}
 			}
-			if (!is_array($value)) {
+			if (is_string($value)) {
 				$value = rtrim($value, $delim);
 			}
 			if ($targetfield =='Response' || $targetfield =='WSConfig') {
@@ -352,7 +361,11 @@ class WebserviceMapping extends processcbMap {
 			} elseif (!empty($v->Orgfields[0]->Orgfield) && isset($v->Orgfields[0]->Orgfield)) {
 				$allmergeFields = array();
 				foreach ($v->Orgfields->Orgfield as $value) {
-					$allmergeFields[] = array((string)$value->OrgfieldID=>(string)$value->OrgfieldName);
+					$arr = array((string)$value->OrgfieldID=>(string)$value->OrgfieldName);
+					if (isset($value->postProcess)) {
+						$arr['postProcess'] = (string)$value->postProcess;
+					}
+					$allmergeFields[] = $arr;
 				}
 				if (isset($v->Orgfields->delimiter)) {
 					$target_fields[$fieldname]['delimiter'] = (string)$v->Orgfields->delimiter;

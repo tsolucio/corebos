@@ -477,7 +477,7 @@ class ListViewController {
 							}
 						}
 					}
-					$value = textlength_check(implode(', ', $content));
+					$value = implode(', ', $content);
 				} elseif ($field->getUIType() == 3313 || $field->getUIType() == 3314) {
 					require_once 'modules/PickList/PickListUtils.php';
 					$modlist = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value);

@@ -36,6 +36,11 @@ const MGInstance = {
 				match.push(currentValue.name);
 			}
 		});
+		let difference = match.filter(x => fields.indexOf(x) === -1);
+		if (difference.length > 0) {
+			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_MATCH_ERROR);
+			return false;
+		}
 		fetch(
 			'index.php?module=Utilities&action=UtilitiesAjax&file=MassCreateGridAPI&method=SaveMapFromModule',
 			{

@@ -452,7 +452,7 @@ class qactions_Action extends CoreBOS_ActionController {
 		} else {
 			$builderData = $this->getBuilderDataQuery($ret);
 			$result = $adb->query(trim($builderData['query'], ';').$builderData['limit']);
-			$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($list_query, false), 'count(*) AS count'));
+			$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($builderData['query'], false), 'count(*) AS count'));
 			$noofrows = $adb->query_result($count_result, 0, 0);
 			if ($result) {
 				if ($noofrows>0) {

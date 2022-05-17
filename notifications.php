@@ -19,6 +19,10 @@
  *************************************************************************************************/
 include_once 'include/database/PearDatabase.php';
 include_once 'include/utils/utils.php';
+$adminid = Users::getActiveAdminId();
+if (GlobalVariable::getVariable('Notifications_Enabled', 1, 'Users', $adminid)==0) {
+	exit;
+}
 checkFileAccessForInclusion("include/language/$default_language.lang.php");
 require_once "include/language/$default_language.lang.php";
 global $adb, $current_language;
