@@ -51,10 +51,7 @@ class WhatsappWorkflowTask extends VTTask {
 		}
 	}
 	public function doTask(&$entityData) {
-		global $current_user;
-		global $site_URL;
-		$moduleName = $entityData->getModuleName();
-		$data = $entityData->getData();
+		global $current_user, $site_URL, $logbg;
 		$clientclass = new corebos_whatsapp();
 		$client = $clientclass->whatsappclient;
 		$isactive = $clientclass->isActive();
@@ -125,12 +122,11 @@ class WhatsappWorkflowTask extends VTTask {
 							$messageid[0]['attachment'] = "";
 
 							for ($j=0; $j<$count; $j++) {
-								$mediaurl = "$site_URL/$url[$j]";
-								$message=$client->messages->create(
+								$message = $client->messages->create(
 									'whatsapp:'.$phone,
 									array(
-									'from' => 'whatsapp:'.$sender,
-									'mediaurl' => $mediaurl
+										'from' => 'whatsapp:'.$sender,
+										'mediaurl' => "$site_URL/".$url[$j],
 									)
 								);
 								$messageid[$j+1]['messageid'] = $message->sid;
@@ -138,25 +134,21 @@ class WhatsappWorkflowTask extends VTTask {
 								$messageid[$j+1]['attachment'] = $attachment[$j];
 							}
 						}
+						include_once 'modules/Messages/Messages.php';
 						$cnt = count($messageid);
 						for ($i=0; $i<$cnt; $i++) {
-							$messid = $messageid[$i]['messageid'];
-							$bd = $messageid[$i]['body'];
-							$att = $messageid[$i]['attachment'];
-							include_once 'modules/Messages/Messages.php';
 							Messages::createMessage(array(
-							'datenametext' => $phone,
-							'type' => 'Whatsapp',
-							'uniqueid' => $messid,
-							'description' => $bd,
-							'attachment' => $att
+								'datenametext' => $phone,
+								'type' => 'Whatsapp',
+								'uniqueid' => $messageid[$i]['messageid'],
+								'description' => $messageid[$i]['body'],
+								'attachment' => $messageid[$i]['attachment']
 							));
 						}
 					}
 				}
 			} catch (Exception $e) {
-				global $log;
-				$log->debug("Error on Whatsapp Task");
+				$logbg->debug('Error on Whatsapp Task: '. $e->getMessage());
 			}
 		}
 	}
