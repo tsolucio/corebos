@@ -76,7 +76,19 @@ switch ($op) {
 					if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
 						$relMods = $grid->findRelatedModule($fieldName);
 						if (!empty($relMods)) {
+							$currentActiveModule = '';
 							foreach ($relMods as $relMod) {
+								foreach ($ActiveColumns as $label => $val) {
+									foreach ($val as $table => $fldvalue) {
+										if ($field == $fldvalue && isset($val['relatedModule'])) {
+											$currentActiveModule = $val['relatedModule'];
+											break;
+										}
+									}
+								}
+								if (!empty($currentActiveModule) && $currentActiveModule != $relMod) {
+									continue;
+								}
 								$reference_field = getEntityFieldNames($relMod);
 								$handler = vtws_getModuleHandlerFromName($relMod, $current_user);
 								$meta = $handler->getMeta();
@@ -184,6 +196,9 @@ switch ($op) {
 			}
 			$field = $columns->addChild('field');
 			$field->addChild('name', $key['name']);
+			if (isset($key['activeModule'])) {
+				$field->addChild('relatedModule', $key['activeModule']);
+			}
 			if (isset($fields) && $key['uitype'] == Field_Metadata::UITYPE_RECORD_RELATION) {
 				$fields = array_unique($fields);
 				foreach ($fields as $module => $fld) {
@@ -322,6 +337,9 @@ function lookupMandatoryFields($key) {
 	$grid = new GridListView($currentModule);
 	$grid->tabid = getTabid($currentModule);
 	$modules = $grid->findRelatedModule($key['fieldname']);
+	if (isset($key['activeModule'])) {
+		$modules = array($key['activeModule']);
+	}
 	if (is_array($modules) && count($modules) == 1) {
 		$reference_field = getEntityFieldNames($modules[0]);
 		$handler = vtws_getModuleHandlerFromName($modules[0], $current_user);

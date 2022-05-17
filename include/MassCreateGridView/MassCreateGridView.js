@@ -103,10 +103,22 @@ const MCGrid = {
 			let typeofdata = '';
 			let checked = '';
 			let disabled = '';
+			let modules = '';
 			if (currentValue.typeofdata == 'M') {
 				typeofdata = `<span class="slds-text-color_error">*</span>`;
 				checked = 'checked';
 				disabled = 'disabled';
+			}
+			if (currentValue.relatedModules.length > 0) {
+				modules += `<select id="selected-${currentValue.name}">`;
+				for (let i in currentValue.relatedModules) {
+					let selected = '';
+					if (currentValue.activeModule == currentValue.relatedModules[i]) {
+						selected = 'selected';
+					}
+					modules += `<option ${selected} value="${currentValue.relatedModules[i]}">${currentValue.relatedModules[i]}</option>`;
+				}
+				modules += `</select>`;
 			}
 			content += `
 			<div class="slds-col slds-size_4-of-12">
@@ -116,7 +128,7 @@ const MCGrid = {
 							<input type="checkbox" name="grid-fields" id="checkbox-${currentValue.name}" value="checkbox-${currentValue.name}" ${currentValue.active == 1 ? 'checked' : ''} ${checked} ${disabled}/>
 							<label class="slds-checkbox__label" for="checkbox-${currentValue.name}">
 								<span class="slds-checkbox_faux"></span>
-								<span class="slds-form-element__label">${currentValue.header} ${typeofdata}</span>
+								<span class="slds-form-element__label">${currentValue.header} ${typeofdata} ${modules}</span>
 							</label>
 						</div>
 					</div>
@@ -176,6 +188,9 @@ const MCGrid = {
 			const checkbox = document.getElementById(`checkbox-${currentValue.name}`);
 			if (checkbox.checked) {
 				columns[idx].active = 1;
+				if (document.getElementById(`selected-${currentValue.name}`) !== null) {
+					currentValue['activeModule'] = document.getElementById(`selected-${currentValue.name}`).value;
+				}
 				newColumns.push(currentValue);
 				ColumnsDiff.push(currentValue.name);
 			} else {

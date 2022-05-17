@@ -42,6 +42,9 @@ if ($cbMapid) {
 	foreach ($fields as $label => $value) {
 		$tempColumns = array();
 		foreach ($value as $table => $column) {
+			if ($table == 'relatedModule') {
+				continue;
+			}
 			if ($column == 'smownerid') {
 				$editor = array(
 					'type' => 'select',
@@ -85,12 +88,28 @@ if ($cbMapid) {
 			'typeofdata' => $typeofdata[1],
 			'uitype' => $key['uitype'],
 			'tabid' => $key['tabid'],
+			'activeModule' => false,
+			'relatedModules' => array()
 		);
 		$fields = array_values($fields);
 		foreach ($fields as $value) {
 			foreach ($value as $table => $field) {
 				if ($field == $key['columnname']) {
 					$listFields['active'] = 1;
+					break;
+				}
+			}
+		}
+		if ($key['uitype'] == Field_Metadata::UITYPE_RECORD_RELATION) {
+			$grid = new GridListView($currentModule);
+			$grid->tabid = getTabid($currentModule);
+			$modules = $grid->findRelatedModule($key['fieldname']);
+			if (count($modules) > 1) {
+				$listFields['relatedModules'] = $modules;
+			}
+			foreach ($fields as $label => $value) {
+				if (isset($value['relatedModule']) && in_array($value['relatedModule'], $modules)) {
+					$listFields['activeModule'] = $value['relatedModule'];
 					break;
 				}
 			}
