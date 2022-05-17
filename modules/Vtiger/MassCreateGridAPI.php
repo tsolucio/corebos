@@ -86,7 +86,7 @@ switch ($op) {
 										}
 									}
 								}
-								if (!empty($currentActiveModule) && $currentActiveModule != $relMod) {
+								if (count($relMods) > 1 && $currentActiveModule != $relMod) {
 									continue;
 								}
 								$reference_field = getEntityFieldNames($relMod);
@@ -352,8 +352,10 @@ function lookupMandatoryFields($key) {
 		$filteredData = array();
 		if (count($reference_field['fieldname']) > 1) {
 			$mergeData = array_merge($mandatoryFieldsList, $reference_field['fieldname']);
+			$tabid = getTabid($modules[0]);
 			foreach ($mergeData as $field) {
-				$fieldType = getUItype($modules[0], $field);
+				$column = getColumnnameByFieldname($tabid, $field);
+				$fieldType = getUItype($modules[0], $column);
 				if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
 					return getTranslatedString('LBL_UITYPE10_NOTALLOWED');
 				}
@@ -366,8 +368,10 @@ function lookupMandatoryFields($key) {
 			}
 		} else {
 			$mergeData = array_merge(array_diff($mandatoryFieldsList, $reference_field['fieldname']), array_diff($reference_field['fieldname'], $mandatoryFieldsList));
+			$tabid = getTabid($modules[0]);
 			foreach ($mergeData as $field) {
-				$fieldType = getUItype($modules[0], $field);
+				$column = getColumnnameByFieldname($tabid, $field);
+				$fieldType = getUItype($modules[0], $column);
 				if ($fieldType == Field_Metadata::UITYPE_RECORD_RELATION) {
 					return getTranslatedString('LBL_UITYPE10_NOTALLOWED');
 				}
