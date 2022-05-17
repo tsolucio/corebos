@@ -102,7 +102,7 @@
 				{/if}
 				{foreach item=webform from=$WEBFORMS name=pname}
 				<form name="form{$webform->getId()}" action="" method="post">
-					<input type="hidden" name="id" value="{$webform->getId()}"></input>
+					<input type="hidden" name="id" value="{$webform->getId()}">
 				</form>
 				<tr bgcolor="white" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'" id="row_99" class="lvtColData">
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)"><a href="index.php?module=Webforms&amp;action=WebformsDetailView&amp;id={$webform->getId()}&amp;operation=detail" id="{$webform->getId()}">{$webform->getName()}</a></td>

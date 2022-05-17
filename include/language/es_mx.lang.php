@@ -1380,6 +1380,7 @@ $app_strings = array (
 	'LBL_MATCH_COLUMNS' => 'Selecciona las columnas clave para emparejar registros',
 	'LBL_SAVE_MAP' => 'Guardar Mapa',
 	'Paste the link here' => 'Paste the link here',
+	'LBL_UITYPE10_NOTALLOWED' => 'El módulo relacionado tiene un campo relacional obligatorio.',
 );
 
 // Translation for currency names

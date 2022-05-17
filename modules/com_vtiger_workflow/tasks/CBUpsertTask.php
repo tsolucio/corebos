@@ -115,7 +115,7 @@ class CBUpsertTask extends VTTask {
 	}
 
 	public function upsertData($data, $relmodule, $action, $crmid = 0) {
-		global $logbg, $current_user;
+		global $logbg, $current_user, $currentModule;
 		if (strpos($crmid, 'x')>0) {
 			list($void, $crmid) = explode('x', $crmid); // suppport WS ID
 		}
@@ -144,7 +144,11 @@ class CBUpsertTask extends VTTask {
 		$focusrel->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel->column_fields, $handlerMeta);
 		$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 		$_REQUEST['ajxaction'] = 'Workflow';
-		$focusrel->save($relmodule);
+		if ($relmodule == $currentModule) {
+			$focusrel->saveentity($relmodule);
+		} else {
+			$focusrel->save($relmodule);
+		}
 		$_REQUEST['ajxaction'] = $hold_ajxaction;
 		unset($_REQUEST['createmode']);
 		if (!empty($wsAttachments)) {

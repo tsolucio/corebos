@@ -76,7 +76,7 @@
 							<option value="Prof." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Prof."}selected="selected"{/if}>Prof</option>
 						</select>
 					{else}
-						<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$defaultvalue[0]}" style="display:inline;"></input>
+						<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$defaultvalue[0]}" style="display:inline;">
 					{/if}
 			{/if}
 		{else}
@@ -115,7 +115,7 @@
 								<option value="Prof." {if $field.default eq "Prof."}selected="selected"{/if}>Prof</option>
 							</select>
 						{else}
-							<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}" style="display:inline;"></input>
+							<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}" style="display:inline;">
 						{/if}
 				{/if}
 			{else}
@@ -153,7 +153,7 @@
 								<option value="Prof." {if $field.default eq "Prof."}selected="selected"{/if}>Prof</option>
 							</select>
 						{else}
-							<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}" style="display:none;"></input>
+							<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}" style="display:none;">
 						{/if}
 				{/if}
 			{/if}
@@ -162,7 +162,7 @@
 		<td class="dvtCellInfo" align="center" colspan="1">
 			{if $field.mandatory eq 1}
 				<input type="checkbox" checked="checked" disabled="disabled" value="{$field.name}" style="display:inline;" >
-				<input type="hidden" id="required[{$field.name}]" name="required[]" value="{$field.name}"></input>
+				<input type="hidden" id="required[{$field.name}]" name="required[]" value="{$field.name}">
 			{else}
 				{if !empty($WEBFORMID)}
 					{if $WEBFORM->isWebformField($WEBFORMID,$field.name) eq true && $WEBFORM->isRequired($WEBFORMID,$field.name) eq true}

@@ -456,9 +456,9 @@ var alert_arr = {
 	'LNK_EDIT_ACTION': 'Editar',
 	'LNK_DELETE_ACTION': 'Apagar',
 	'LBL_MODIFIED': 'Modificado',
-	'LBL_CREATE': 'Criado por',
+	'LBL_CREATE': 'Criar',
 	'LBL_IMPORT': 'Importar',
-	'LBL_NO_DATA': 'Nenhum dado encontrado',
+	'LBL_NO_DATA': 'Nenhum registro nessa visualização',
 	'filterApplied': 'Filtro aplicado',
 	'QuickView': 'Vista rápida',
 	'Restore': 'Recuperar',
@@ -466,4 +466,5 @@ var alert_arr = {
 	'LBL_CREATED_SUCCESS': 'Criado com sucesso',
 	'LBL_SELECT_COLUMNS': 'Selecione colunas para mostrar na grade',
 	'LBL_MATCH_COLUMNS': 'Selecione colunas para combinar na grade',
+	'LBL_MATCH_ERROR': 'You can only match the fields you select to show',
 };

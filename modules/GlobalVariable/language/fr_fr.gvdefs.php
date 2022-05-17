@@ -250,6 +250,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Completely disables or enables webdav access.',
 ),
+'Notifications_Enabled' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Notifications',
+	'values' => '0 | 1',
+	'definition' => 'Completely disables or enables notifications.',
+),
 'Webservice_Enabled' => array(
 	'valuetype' => 'Booléen',
 	'category' => 'Webservice',
@@ -469,7 +475,7 @@ $GlobalVariableDefinitons = array(
 'Application_Customer_Portal_BeingUsed' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => 'vtigercrmportal | coreboscp',
+	'values' => 'vtigercrmportal | coreboscp | reactadmin',
 	'definition' => 'Indicate the customer portal connected to this coreBOS so we can adapt outputs accordingly. Used mostly for email template communications.',
 ),
 'Debug_Calculate_Response_Time' => array(

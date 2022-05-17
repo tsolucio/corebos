@@ -173,6 +173,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'SOAP_Outlook_Enabled',
 				'WEBDAV_Enabled',
 				'WEBDAV_Module_View',
+				'Notifications_Enabled',
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',

@@ -59,7 +59,7 @@
 										<!-- General details -->
 										<form name="webform_edit" id="webform_edit" action="index.php?module=Webforms&action=Save" method="post">
 											{if $WEBFORM->hasId()}
-											<input type="hidden" name="id" value={$WEBFORM->getId()}></input>
+											<input type="hidden" name="id" value={$WEBFORM->getId()}>
 											{/if}
 											<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 												<tr>
@@ -79,9 +79,9 @@
 													<td colspan="1" class="detailedViewHeader" align="right">
 														{'LBL_ENABLE'|@getTranslatedString:$MODULE}
 														{if $WEBFORM->getEnabled() eq 1}
-															<input type="checkbox" name="enabled" id="enabled" checked="checked"></input>
+															<input type="checkbox" name="enabled" id="enabled" checked="checked">
 														{else}
-															<input type="checkbox" name="enabled" id="enabled" ></input>
+															<input type="checkbox" name="enabled" id="enabled" >
 														{/if}
 													</td>
 													{/if}
@@ -100,7 +100,7 @@
 													<td class="dvtCellInfo" align="left" width="40%">
 														{if $WEBFORM->hasId()}
 															{$WEBFORM->getTargetModule()}
-															<input type="hidden" value="{$WEBFORM->getTargetModule()}" name="targetmodule" id="targetmodule"></input>
+															<input type="hidden" value="{$WEBFORM->getTargetModule()}" name="targetmodule" id="targetmodule">
 														{else}
 															<select id="targetmodule" name="targetmodule" onchange='javascript:Webforms.fetchFieldsView(this.value);' class="small">
 																<option value="">--{'LBL_MODULE'|@getTranslatedString}--</option>

@@ -249,6 +249,22 @@ class Workflow {
 		if ($wf && $adb->num_rows($wf)>0) {
 			$wflaunch = $wf->fields['execution_condition'];
 		}
+		$entityDelta = new VTEntityDelta();
+		list($wsid, $crmid) = explode('x', $entityData->getId());
+		$previousEntityData = $entityDelta->getOldEntity($entityData->getModuleName(), $crmid);
+		if (is_object($previousEntityData)) {
+			$previousData = $previousEntityData->getData();
+			$previousData = array_combine(
+				array_map(
+					function ($fieldname) {
+						return 'previous_' . $fieldname;
+					},
+					array_keys($previousData)
+				),
+				$previousData
+			);
+			$context = array_merge($context, $previousData);
+		}
 		$entityData->WorkflowID = $this->id;
 		$entityData->WorkflowEvent = $wflaunch;
 		$entityData->WorkflowContext = $context;
