@@ -63,7 +63,11 @@ class WhatsappWorkflowTask extends VTTask {
 			$entityCache = new VTEntityCache($current_user);
 			$ws_id = $entityData->getId();
 			$pt = new VTSimpleTemplate($this->messageBody);
-			$body = str_replace(array('<p>','</p>','<strong>','</strong>','<em>','</em>'), array('','','*','*','_','_'), $pt->render($entityCache, $ws_id));
+			$body = str_replace(
+				['<p>','</p>','<strong>','</strong>','<em>','</em>'],
+				['','','*','*','_','_'],
+				$pt->render($entityCache, $ws_id, [], $entityData->WorkflowContext)
+			);
 			$phonest = new VTSimpleTemplate($this->phone);
 			$this->after_retrieve();
 			$count = count($this->attachmentsinfo);
@@ -76,7 +80,7 @@ class WhatsappWorkflowTask extends VTTask {
 				$mediaurl = "";
 			}
 			$messageid = array();
-			$phones = $phonest->render($entityCache, $ws_id);
+			$phones = $phonest->render($entityCache, $ws_id, [], $entityData->WorkflowContext);
 			$phones = trim($phones, ',');
 			try {
 				if ($sender!='' && $phones!='') {

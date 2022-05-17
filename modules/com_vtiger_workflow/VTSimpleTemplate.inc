@@ -25,9 +25,16 @@ class VTSimpleTemplate {
 		$this->formatValue = $formatValue;
 	}
 
-	public function render($entityCache, $entityId, $void = array()) {
+	public function render($entityCache, $entityId, $void = array(), $context = array()) {
 		$this->cache = $entityCache;
 		$this->parent = $this->cache->forId($entityId);
+		if (empty($context['__WorkflowID'])) {
+			$this->parent->WorkflowID = 0;
+		} else {
+			$this->parent->WorkflowID = $context['__WorkflowID'];
+		}
+		$this->parent->WorkflowEvent = '';
+		$this->parent->WorkflowContext = $context;
 		return $this->parseTemplate();
 	}
 

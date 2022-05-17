@@ -2552,12 +2552,13 @@ function getTemplateDetails($templateid, $crmid = null) {
 
 /**
  * This function is used to merge the template with the given record fields
- * @param string $description - body of the template
- * @param integer $id - id of the entity
- * @param string $parent_type - module of the entity
+ * @param string body of the template
+ * @param integer id of the entity
+ * @param string module of the entity
+ * @param array workflow context array to support workflow functions with context
  * @return string template merged with the record values of the given crmid
  */
-function getMergedDescription($description, $id, $parent_type) {
+function getMergedDescription($description, $id, $parent_type, $context = []) {
 	global $adb, $log, $current_user;
 	$log->debug("> getMergedDescription $id, $parent_type");
 	if (empty($parent_type)) {
@@ -2602,7 +2603,7 @@ function getMergedDescription($description, $id, $parent_type) {
 	$entityCache = new VTEntityCache($current_user);
 	if ($parent_type != 'Users' && isPermitted($parent_type, 'DetailView', $id)=='yes') { // && preg_match('/\$\w+-\w+\$/', $description)==0) { // no old format anymore
 		$ct = new VTSimpleTemplate($description, true);
-		$description = $ct->render($entityCache, vtws_getEntityId($parent_type).'x'.$id);
+		$description = $ct->render($entityCache, vtws_getEntityId($parent_type).'x'.$id, [], $context);
 	}
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCompany');
 	$cmprs = $adb->pquery(
@@ -2614,7 +2615,7 @@ function getMergedDescription($description, $id, $parent_type) {
 	);
 	if ($cmprs && $adb->num_rows($cmprs)>0 && isPermitted('cbCompany', 'DetailView', $adb->query_result($cmprs, 0, 0))=='yes') {
 		$ct = new VTSimpleTemplate($description, true);
-		$description = $ct->render($entityCache, vtws_getEntityId('cbCompany').'x'.$adb->query_result($cmprs, 0, 0));
+		$description = $ct->render($entityCache, vtws_getEntityId('cbCompany').'x'.$adb->query_result($cmprs, 0, 0), [], $context);
 	}
 	$log->debug('< getMergedDescription');
 	return $description;

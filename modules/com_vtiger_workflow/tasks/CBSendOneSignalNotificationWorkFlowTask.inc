@@ -29,9 +29,13 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 			$entityCache = new VTEntityCache($current_user);
 			$ws_id = $entityData->getId();
 			$pt = new VTSimpleTemplate($this->notification_content);
-			$body = str_replace(array('<p>','</p>','<strong>','</strong>','<em>','</em>'), array('','','*','*','_','_'), $pt->render($entityCache, $ws_id));
+			$body = str_replace(
+				['<p>','</p>','<strong>','</strong>','<em>','</em>'],
+				['','','*','*','_','_'],
+				$pt->render($entityCache, $ws_id, [], $entityData->WorkflowContext)
+			);
 			$externalUser = new VTSimpleTemplate($this->external_user_id);
-			$users_list = $externalUser->render($entityCache, $ws_id);
+			$users_list = $externalUser->render($entityCache, $ws_id, [], $entityData->WorkflowContext);
 
 			$users_ws_id_list =  explode(',', $users_list);
 			$idsList = array();
