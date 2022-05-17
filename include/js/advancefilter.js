@@ -1480,7 +1480,7 @@
 	}
 
 	var typesofdata = new Array();
-	typesofdata['V'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'c', 'k'];
+	typesofdata['V'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'c', 'k', 'rgxp', 'sx'];
 	typesofdata['N'] = ['e', 'n', 'l', 'g', 'm', 'h'];
 	typesofdata['T'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
 	typesofdata['I'] = ['e', 'n', 'l', 'g', 'm', 'h'];
@@ -1488,7 +1488,7 @@
 	typesofdata['D'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
 	typesofdata['DT'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
 	typesofdata['NN'] = ['e', 'n', 'l', 'g', 'm', 'h'];
-	typesofdata['E'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'c', 'k'];
+	typesofdata['E'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'c', 'k', 'rgxp', 'sx'];
 
 	var fLabels = new Array();
 	fLabels['e'] = alert_arr.EQUALS;
@@ -1506,6 +1506,8 @@
 	fLabels['bw'] = alert_arr.BETWEEN;
 	fLabels['b'] = alert_arr.BEFORE;
 	fLabels['a'] = alert_arr.AFTER;
+	fLabels['rgxp'] = alert_arr.REGEXP;
+	fLabels['sx'] = alert_arr.SOUNDEX;
 
 	/*
 	* Globals
