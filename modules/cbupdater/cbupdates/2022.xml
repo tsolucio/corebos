@@ -99,6 +99,13 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>geofreybundala</author>
+	<description>Add field for saving wfid to Mail Converter</description>
+	<filename>build/changeSets/2022/addColumnToMailConverter.php</filename>
+	<classname>addColumnToMailConverter</classname>
+  <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>timothyanthony</author>
 	<description>Update ModTracker changedon column data type</description>
 	<filename>build/changeSets/2022/updateModTrackerChangedOnDateTimeLength.php</filename>

@@ -146,6 +146,7 @@
 								{elseif $SCANNERRULE->useaction->actiontext eq 'LINK,Contacts,CC'}{$MOD.LBL_ADD} {$MOD.LBL_TO} {$MOD.LBL_CONTACT} [{$MOD.LBL_CC}]
 								{elseif $SCANNERRULE->useaction->actiontext eq 'LINK,Accounts,CC'}{$MOD.LBL_ADD} {$MOD.LBL_TO} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_CC}]
 								{elseif $SCANNERRULE->useaction->actiontext eq 'CREATE,Messages,SUBJECT'}{$MOD.LBL_ADD} {'SINGLE_Messages'|getTranslatedString:'Messages'}
+								{elseif $SCANNERRULE->useaction->actiontext eq 'CREATE,com_vtiger_workflow,SUBJECT'}{$MOD.LBL_ADD} {'LBL_EXECUTE_WF'|getTranslatedString:'Import'}
 								{/if}
 							</td>
 						</tr>
