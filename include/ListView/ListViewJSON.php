@@ -224,7 +224,13 @@ class GridListView {
 		$profileid = reset($profileid);
 		$isRecycleModule = isset($_REQUEST['isRecycleModule']) ? vtlib_purify($_REQUEST['isRecycleModule']): '';
 		$customView = new CustomView($this->module);
-		$viewid = $customView->getViewId($this->module);
+		$viewid = coreBOS_Session::get('lvs^'.$this->module.'^viewname');
+		if (isset($_REQUEST['viewname']) && !empty($_REQUEST['viewname'])) {
+			$viewid = vtlib_purify($_REQUEST['viewname']);
+		} elseif (empty($viewid)) {
+			$viewid = $customView->getViewId($this->module);
+		}
+		coreBOS_Session::set('lvs^'.$this->module.'^viewname', $viewid);
 		$viewinfo = $customView->getCustomViewByCvid($viewid);
 		$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status'], $viewid);
 		$cv = array(
