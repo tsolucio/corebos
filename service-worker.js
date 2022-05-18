@@ -11363,7 +11363,7 @@ precacheAndRoute([{
   "revision": "6c3b63a761701b52fbd0b85c20a0aa98"
 }, {
   "url": "include/dropzone/custom.css",
-  "revision": "d6b63d223d69da7c7f169edbd6b9091d"
+  "revision": "9fed255b112346d1cd1999aaca00d99d"
 }, {
   "url": "include/dropzone/dropzone.css",
   "revision": "5e018ddcbacdc772d8ad3f48b8615657"
@@ -11429,7 +11429,7 @@ precacheAndRoute([{
   "revision": "321798c3a4f90cafc07df60d8a8f0f2f"
 }, {
   "url": "include/js/advancefilter.js",
-  "revision": "4f3191027932451cb3334800e36bb46a"
+  "revision": "27589b8550521582f854f81920830eea"
 }, {
   "url": "include/js/asterisk.js",
   "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
@@ -11477,7 +11477,7 @@ precacheAndRoute([{
   "revision": "c8c108ed8f8825db585fdfd267bde69c"
 }, {
   "url": "include/js/general.js",
-  "revision": "a468acf0373ebfd1bd94c5d3c62d2bec"
+  "revision": "0f5f5cff6bc95344e8eb56f3a7f47216"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "3e3f0e590e523ed226de9b96281caab3"
@@ -11492,10 +11492,10 @@ precacheAndRoute([{
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "975140a17e25e72bb265bff5c37ff1b8"
+  "revision": "051742bf127987d6001740e7aaca79e4"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "e32af3333475551fafab29912e206c47"
+  "revision": "b4d71e2ef2fd2e039d8767d3028ac16c"
 }, {
   "url": "include/js/ListViewRenderes.js",
   "revision": "c0041e798e8f057e992999a883f34cad"
@@ -11675,7 +11675,7 @@ precacheAndRoute([{
   "revision": "143302dc3175324824d718937e339fff"
 }, {
   "url": "include/MassCreateGridView/MassCreateGridView.js",
-  "revision": "ad1b96f4dae15ff524d85fcb5c75e198"
+  "revision": "98a3a4004f9860386f578f51e97b2b95"
 }, {
   "url": "include/style.css",
   "revision": "d366c521d8140f4799b529e65f6d53df"
