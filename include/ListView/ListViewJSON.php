@@ -689,7 +689,7 @@ class GridListView {
 			$focus = new Calendar4You();
 			$focus->GetDefPermission($current_user);
 			if ($focus->CheckPermissions('EDIT', $recordId)) {
-				$focus = new $module();
+				$focus = new cbCalendar();
 				$focus->retrieve_entity_info($recordId, 'cbCalendar');
 				$evstatus = $focus->column_fields['eventstatus'];
 				$activitytype = $focus->column_fields['activitytype'];
