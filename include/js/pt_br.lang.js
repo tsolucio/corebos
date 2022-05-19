@@ -467,4 +467,5 @@ var alert_arr = {
 	'LBL_SELECT_COLUMNS': 'Selecione colunas para mostrar na grade',
 	'LBL_MATCH_COLUMNS': 'Selecione colunas para combinar na grade',
 	'LBL_MATCH_ERROR': 'You can only match the fields you select to show',
+	'ERROR_CREATING_TRY_AGAIN': 'Error while creating. Fields cannot be empty or have a wrong value.',
 };

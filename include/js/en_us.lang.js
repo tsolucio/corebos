@@ -468,4 +468,5 @@ var alert_arr = {
 	'LBL_SELECT_COLUMNS': 'Select columns to show in grid',
 	'LBL_MATCH_COLUMNS': 'Select columns to match in grid',
 	'LBL_MATCH_ERROR': 'You can only match the fields you select to show',
+	'ERROR_CREATING_TRY_AGAIN': 'Error while creating. Fields cannot be empty or have a wrong value.',
 };
