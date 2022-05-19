@@ -992,7 +992,7 @@ class ModuleBuilder {
 		$sharingaccess->addChild('default', $map['sharingaccess']);
 
 		$relatedlists = $xml->addChild('relatedlists');
-		if (isset($map['relatedlists'])) {			
+		if (isset($map['relatedlists'])) {
 			foreach ($map['relatedlists'] as $rList => $rInfo) {
 				$relatedlist = $relatedlists->addChild('relatedlist');
 				$relatedlist->addChild('function', $rInfo['function']);
