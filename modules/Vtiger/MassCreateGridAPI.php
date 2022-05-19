@@ -337,7 +337,7 @@ function lookupMandatoryFields($key) {
 	$grid = new GridListView($currentModule);
 	$grid->tabid = getTabid($currentModule);
 	$modules = $grid->findRelatedModule($key['fieldname']);
-	if (isset($key['activeModule'])) {
+	if (isset($key['activeModule']) && $key['activeModule']) {
 		$modules = array($key['activeModule']);
 	}
 	if (is_array($modules) && count($modules) == 1) {
