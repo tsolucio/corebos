@@ -466,5 +466,5 @@ var alert_arr = {
 	'LBL_SELECT_COLUMNS': 'Selecciona las columnas a mostrar en la tabla',
 	'LBL_MATCH_COLUMNS': 'Selecciona las columnas a emparejar en la tabla',
 	'LBL_MATCH_ERROR': 'Solo puedes emparejar los campos que selecciones mostrar',
-	'ERROR_CREATING_TRY_AGAIN': 'Error while creating. Fields cannot be empty or have a wrong value.',
+	'ERROR_CREATING_TRY_AGAIN': 'Error al crear. Los campos no pueden estar vacíos o tener un valor incorrecto.',
 };
