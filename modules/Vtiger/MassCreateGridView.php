@@ -85,6 +85,7 @@ if ($cbMapid) {
 			'fieldname' => $key['fieldname'],
 			'editor' => $editor,
 			'active' => 0,
+			'type' => $typeofdata,
 			'typeofdata' => $typeofdata[1],
 			'uitype' => $key['uitype'],
 			'tabid' => $key['tabid'],

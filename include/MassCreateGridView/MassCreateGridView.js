@@ -59,8 +59,46 @@ const MCGrid = {
 		mcdataGridInstance.appendRow(JSON.parse(EmptyData));
 	},
 
+	FormValidation: (data) => {
+		let response = Array();
+		data.map(function(row) {
+			for (let field in row) {
+				if (isNaN(field) && field != 'rowKey' && field != '_attributes') {
+					let fieldType = MCGrid.FindFieldType(field);
+					if (fieldType[1] == 'M') {
+						if (row[field] == null || row[field] == '') {
+							response.push(false);
+						}
+					}
+					if (row[field] == null) {
+						row[field] = '';
+					}
+					if (!cbVal(fieldType[0], row[field])) {
+						response.push(false);
+					}
+				}
+			}
+		});
+		return response;
+	},
+
+	FindFieldType: (field) => {
+		let typeofdata = '';
+		let moduleFields = JSON.parse(ListFields);
+		moduleFields.map(function(row) {
+			if (row.name == field) {
+				typeofdata = row.type;
+			}
+		});
+		return typeofdata;
+	},
+
 	Save: () => {
 		const data = mcdataGridInstance.getData();
+		if (MCGrid.FormValidation(data).includes(false)) {
+			ldsPrompt.show(alert_arr.ERROR, alert_arr.ERROR_CREATING_TRY_AGAIN);
+			return;
+		}
 		document.getElementById('slds-spinner').style.display = 'block';
 		fetch(
 			'index.php?module=Utilities&action=UtilitiesAjax&file=MassCreateGridAPI&moduleName='+gVTModule+'&method=MassCreate',
