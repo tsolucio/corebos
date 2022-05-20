@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-global $adb,$current_user,$singlepane_view, $app_strings, $theme, $default_charset;
+global $current_user, $app_strings;
 require_once 'modules/cbtranslation/cbtranslation.php';
 require_once 'include/ListView/ListViewJSON.php';
 require_once 'Smarty_setup.php';
@@ -29,5 +29,6 @@ $smarty->assign('WSID', vtws_getEntityId($formodule).'x'.$forrecord);
 $lv = new GridListView('DocumentFolders');
 $folders = $lv->findDocumentFolders();
 $smarty->assign('FOLDERS', $folders);
+$smarty->assign('USER_LANG', $current_user->language);
 $smarty->display('Smarty/templates/Components/Paint/index.tpl');
 ?>

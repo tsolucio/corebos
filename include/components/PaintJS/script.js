@@ -33,7 +33,7 @@ class PaintDocuments {
 	Create = () => {
 		let cbConn = new Vtiger_WSClient('');
 		if (paint.Title().value == '' || paint.FileName().value == '') {
-			alert('Please fill all required fields.');
+			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_REQUIRED_FIELDS, 'error');
 			return false;
 		}
 		cbConn.extendSession(function(result){
@@ -69,9 +69,9 @@ class PaintDocuments {
 			this.FileName().value = '';
 			this.Description().value = '';
 			this.draw.clear();
-			alert('success');
+			ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 		} else {
-			alert('error');
+			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_ERROR_CREATING, 'error');
 		}		
 	}
 }

@@ -14,6 +14,8 @@
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css">
 	<link rel="stylesheet" href="include/style.css">
 	<script src="include/Webservices/WSClient.js"></script>
+	<script src="include/components/ldsprompt.js"></script>
+	<script type="text/javascript" src="include/js/{$USER_LANG}.lang.js"></script>
 	<script type="text/javascript">
 		const cbUserID = '{$USERID}';
 		const cbFolderID = '{$DOCID}';
@@ -32,7 +34,7 @@
 	<div class="slds-col slds-size_2-of-12">
 		<div class="slds-form-element">
 			<label class="slds-form-element__label" for="form-element-01">
-				Document Title <span style="color: red">*</span>
+				{$APP.LBL_TITLE} <span style="color: red">*</span>
 			</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="title" class="slds-input">
@@ -40,7 +42,7 @@
 		</div>
 		<div class="slds-form-element">
 			<label class="slds-form-element__label" for="form-element-01">
-				Document Description
+				{$APP.LBL_DESCRIPTION}
 			</label>
 			<div class="slds-form-element__control">
 				<textarea id="content" class="slds-input"></textarea>
@@ -48,7 +50,7 @@
 		</div>
 		<div class="slds-form-element">
 			<label class="slds-form-element__label" for="form-element-01">
-				Filename <span style="color: red">*</span>
+				{$APP.LBL_FILENAME} <span style="color: red">*</span>
 			</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="filename" class="slds-input">
@@ -56,7 +58,7 @@
 		</div>
 		<div class="slds-form-element">
 			<label class="slds-form-element__label" for="form-element-01">
-				Folder <span style="color: red">*</span>
+				{$APP.LBL_FOLDER} <span style="color: red">*</span>
 			</label>
 			<div class="slds-form-element__control">
 				<select id="folders"  class="slds-input">
@@ -72,7 +74,7 @@
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 					</svg>
-					save
+					{$APP.LBL_SAVE_LABEL}
 				</button>
 			</div>
 		</div>
