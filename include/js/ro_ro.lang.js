@@ -418,6 +418,7 @@ var alert_arr = {
 	'LNK_EDIT': 'edit',
 	'LNK_EDIT_ACTION': 'Editare',
 	'LNK_DELETE_ACTION': 'Stergere',
+	'LBL_SHOW_MORE':'Show More',
 	'LBL_MODIFIED': 'Modified',
 	'LBL_CREATE': 'Create a',
 	'LBL_IMPORT': 'Import',

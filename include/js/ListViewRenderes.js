@@ -179,13 +179,13 @@ class ActionRender {
 				<button
 					class="slds-button slds-button_icon slds-button_icon-border-filled listview-actions-opener"
 					aria-haspopup="true"
-					title="Show More"
+					title="${alert_arr.LBL_SHOW_MORE}"
 					onmouseover="ListView.RenderActions(${recordid});"
 				>
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
 					</svg>
-					<span class="slds-assistive-text">Show More</span>
+					<span class="slds-assistive-text">${alert_arr.LBL_SHOW_MORE}</span>
 				</button>
 				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" id="dropdown-${recordid}">
 			</div>`;
