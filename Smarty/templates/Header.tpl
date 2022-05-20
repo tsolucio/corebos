@@ -305,7 +305,7 @@
 							</span>
 						</button>
 						<div class="slds-dropdown slds-dropdown_right">
-							<ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+							<ul class="slds-dropdown__list" role="menu" aria-label="{$alert_arr.LBL_SHOW_MORE}">
 								<li class="slds-dropdown__item" role="presentation">
 									<a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}" role="menuitem" tabindex="0">
 										<span class="slds-truncate" title="{$USER}"><strong>{$USER}</strong></span>
