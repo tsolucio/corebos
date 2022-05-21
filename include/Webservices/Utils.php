@@ -172,10 +172,27 @@ function getEmailFieldId($meta, $entityId) {
 	return $adb->query_result($result, 0, 'fieldid');
 }
 
+function vtws_stripSlashesRecursively($p) {
+	if (is_array($p)) {
+		return array_map('vtws_stripSlashesRecursively', $p);
+	} else {
+		return stripslashes($p);
+	}
+}
+
+function vtws_addSlashesRecursively($p) {
+	if (is_array($p)) {
+		$p = array_map('vtws_addSlashesRecursively', $p);
+	} else {
+		$p = addslashes($p);
+	}
+	return $p;
+}
+
 function vtws_getParameter($parameterArray, $paramName, $default = null) {
 	if (isset($parameterArray[$paramName])) {
 		if (is_array($parameterArray[$paramName])) {
-			$param = array_map('addslashes', $parameterArray[$paramName]);
+			$param = vtws_addSlashesRecursively($parameterArray[$paramName]);
 		} else {
 			$param = addslashes($parameterArray[$paramName]);
 		}
