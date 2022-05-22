@@ -2262,6 +2262,12 @@ function getAllParenttabmoduleslist() {
 }
 
 /**
+ * This function does nothing, it is a stub for some places where we need a function but do not want to waste time
+ */
+function doNothing() {
+}
+
+/**
  * This function is used to hide and show import and export buttons onDemand mode.
  */
 function isOnDemandActive() {
