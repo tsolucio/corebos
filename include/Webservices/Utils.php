@@ -1076,8 +1076,8 @@ function setResponseHeaders() {
 	}
 }
 
-function writeErrorOutput($operationManager, $error) {
-	setResponseHeaders();
+function writeErrorOutput($operationManager, $error, $outputmethod = 'echo', $headers = 'setResponseHeaders') {
+	$headers();
 	$state = new State();
 	$state->success = false;
 	$state->error = $error;
@@ -1110,11 +1110,23 @@ function writeErrorOutput($operationManager, $error) {
 			send_mail('Emails', $mailto, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $mailsubject, $mailcontent);
 		}
 	}
-	echo $output;
+	switch ($outputmethod) {
+		case 'return':
+			return $output;
+			break;
+		case 'roadrunner':
+			global $resp;
+			$resp->getBody()->write($output);
+			break;
+		case 'echo':
+		default:
+			echo $output;
+			break;
+	}
 }
 
-function writeOutput($operationManager, $data) {
-	setResponseHeaders();
+function writeOutput($operationManager, $data, $outputmethod = 'echo', $headers = 'setResponseHeaders') {
+	$headers();
 	$state = new State();
 	if (isset($data['wsmoreinfo'])) {
 		$state->moreinfo = $data['wsmoreinfo'];
@@ -1132,6 +1144,18 @@ function writeOutput($operationManager, $data) {
 	}
 	unset($state->error);
 	$output = $operationManager->encode($state);
-	echo $output;
+	switch ($outputmethod) {
+		case 'return':
+			return $output;
+			break;
+		case 'roadrunner':
+			global $resp;
+			$resp->getBody()->write($output);
+			break;
+		case 'echo':
+		default:
+			echo $output;
+			break;
+	}
 }
 ?>
