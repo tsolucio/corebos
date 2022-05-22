@@ -158,6 +158,31 @@ try {
 		$current_user = null;
 	}
 	vtws_logcalls($_REQUEST);
+	if (!empty($input['cbwsOptions'])) {
+		$cbwsOptions = json_decode($input['cbwsOptions'], true);
+		if (json_last_error() === JSON_ERROR_NONE) {
+			$queableCommands = vtws_getQueableCommands();
+			if (isset($cbwsOptions['launchfromqueue']) && $cbwsOptions['launchfromqueue']==1 && in_array($operation, $queableCommands)) {
+				$delay = (empty($cbwsOptions['queuedelay']) ? 0 : (int)$cbwsOptions['queuedelay']);
+				$cbmq = coreBOS_MQTM::getInstance();
+				$opID = uniqid('', true);
+				$msg = json_encode([
+					'operation' => $operation,
+					'operationTrackingID' => $opID,
+					'format' => $format,
+					'request' => $input,
+					'sessionId' => $sessionId,
+					'adoptSession' => $adoptSession,
+					'sessionName' => $sessionName,
+				]);
+				$cbmq->sendMessage('wsOperationChannel', 'wsoperationqueue', 'wsoperationqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, $userid, $msg);
+				writeOutput($operationManager, ['operationTrackingID' => $opID]);
+				exit(0);
+			}
+		}
+		unset($cbwsOptions, $input['cbwsOptions']);
+	}
+
 	$operationInput = $operationManager->sanitizeOperation($input);
 	$includes = $operationManager->getOperationIncludes();
 

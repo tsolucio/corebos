@@ -112,4 +112,11 @@
 	<classname>updateModTrackerChangedOnDateTimeLength</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add web service queable operation column</description>
+	<filename>build/changeSets/2022/AddWSQueableColumn.php</filename>
+	<classname>AddWSQueableColumn</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

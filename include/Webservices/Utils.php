@@ -205,6 +205,16 @@ function vtws_getParameter($parameterArray, $paramName, $default = null) {
 	return $param;
 }
 
+function vtws_getQueableCommands() {
+	global $adb;
+	$wsops = $adb->query('SELECT name FROM vtiger_ws_operation where queable=1');
+	$queable = [];
+	foreach ($adb->rowGenerator($wsops) as $wsop) {
+		$queable[] = $wsop['name'];
+	}
+	return $queable;
+}
+
 function vtws_logcalls($input) {
 	global $current_user, $application_unique_key;
 	if (GlobalVariable::getVariable('Webservice_LogCallsToQueue', '')!='') {
