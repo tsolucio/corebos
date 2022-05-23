@@ -1,0 +1,150 @@
+.paint-canvas {
+	display:block;
+	position:absolute;
+	width:100%;
+	height:100%;
+	top:0;
+	left:0;
+
+	/*
+	    Pixelated rendering
+	*/
+	image-rendering: optimizeSpeed;             /* Older versions of FF          */
+	image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
+	image-rendering: -webkit-optimize-contrast; /* Safari                        */
+	image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+	image-rendering: pixelated;                 /* Awesome future-browsers       */
+	-ms-interpolation-mode: nearest-neighbor;   /* IE                            */
+}
+
+.control-gradient {
+    display: inline-block;
+    width: 20em;
+    height: 1em;
+    vertical-align: top;
+    margin-left: 2em;
+}
+
+.paint-canvas-background {
+	background-image: url("images/transparent.png");
+}
+
+.paint-selected-tool {
+	background:rgb(190, 190, 190);
+}
+
+.paint-selected-tool:hover {
+	background:rgb(180, 180, 180);
+}
+
+input.paint-texttool {
+	position:relative;
+	margin:.2em;
+	padding:.2em;
+	font-size:1.2em;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.mouse-coords {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	background: white;
+	padding: .3em;
+}
+
+.control-integer {
+	position: relative;
+}
+
+.control-integer-output {
+	display: inline-block;
+	position: absolute;
+	left: 42%;
+	width: 38px;
+	text-align: center;
+	color: #456762;
+	pointer-events: none;
+}
+
+.control-integer-input {
+	-webkit-appearance: none;
+	margin: 0px;
+}
+
+.control-integer-input:focus {
+  outline: none; 
+}
+
+.control-integer-input::-ms-track {
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+.control-integer-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 10px;
+  width: 10px;
+  border-radius: 0px;
+  background: #999999;
+  cursor: pointer;
+  margin-top: 0px;
+}
+
+.control-integer-input::-moz-range-thumb {
+  height: 10px;
+  width: 10px;
+  border: none;
+  border-radius: 0px;
+  background: #999999;
+  cursor: pointer;
+}
+
+.control-integer-input::-ms-thumb {
+  height: 10px;
+  width: 10px;
+  border-radius: 0px;
+  background: #999999;
+  cursor: pointer;
+}
+
+.control-integer-input::-webkit-slider-runnable-track {
+  height: 10px;
+  cursor: pointer;
+  background: #cccccc;
+  border-radius: 0px;
+}
+
+.control-integer-input:focus::-webkit-slider-runnable-track {
+  background: #cccccc;
+}
+
+.control-integer-input::-moz-range-track {
+  height: 12px;
+  cursor: pointer;
+  background: #cccccc;
+  border-radius: 0px;
+}
+
+.control-integer-input::-ms-track {
+  height: 10px;
+  cursor: pointer;
+  background: transparent;
+  color: transparent;
+}
+.control-integer-input::-ms-fill-lower {
+  background: #cccccc;
+  border-radius: 0px;
+}
+.control-integer-input:focus::-ms-fill-lower {
+  background: #cccccc;
+}
+.control-integer-input::-ms-fill-upper {
+  background: #cccccc;
+  border-radius: 0px;
+}
+.control-integer-input:focus::-ms-fill-upper {
+  background: #cccccc;
+}

@@ -1,0 +1,24 @@
+.gradient-preview {
+	position:relative;
+	height:3em;
+	width:90%;
+	width:calc(100% - 2em);
+	margin-bottom:2em;
+}
+
+.gradient-stop {
+	position:absolute;
+	height:2em;
+	width:2em;
+	border:1px inset gray;
+	top:3em;
+}
+
+.sp-container {
+	position:relative;
+	top:7em;
+}
+
+.hide {
+	display:none;
+}

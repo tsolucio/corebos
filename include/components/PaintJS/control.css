@@ -1,0 +1,19 @@
+.control-button {
+	display:inline-block;
+	background:rgb(225, 225, 225);
+	cursor:pointer;
+	padding:5px;
+}
+
+.control-button:hover {
+	background:rgb(215, 215, 215);
+}
+
+.control-integer {
+	display:inline-block;
+}
+
+.control-container {
+	position:relative;
+	z-index:100;
+}
