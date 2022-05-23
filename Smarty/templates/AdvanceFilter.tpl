@@ -190,8 +190,8 @@
 									</div>
 									<div class="slds-dropdown slds-dropdown_length-7 slds-dropdown_fluid" role="listbox">
 										{if $SOURCE != 'reports-modal'}
+											<ul class="slds-listbox slds-listbox_vertical" role="group" data-value-id="" data-col-value="search-value">
 											{foreach from=$MODULES_BLOCK item='COLUMNS_BLOCK' key='MODLABEL'}
-												<ul class="slds-listbox slds-listbox_vertical" role="group" data-value-id="" data-col-value="search-value">
 												<li role="presentation" class="slds-listbox__item cbds-bg-blue--dark">
 													<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
 														<h3 class="slds-text-title_caps slds-text-color_inverse" role="presentation">{$MODLABEL|@getTranslatedString:$MODULE}</h3>
@@ -214,8 +214,8 @@
 													</li>
 													{/foreach}
 												{/foreach}
-												</ul>
 											{/foreach}
+											</ul>
 										{else}
 										{* Reports fills the dropdowns through javascript and don't provide a Smarty array *}
 											<ul class="slds-listbox slds-listbox_vertical cbds-advfilt__fieldcombo-list" role="group">
