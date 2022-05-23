@@ -143,7 +143,7 @@ $smarty->assign('NotBlockRelatedModules', $notBlockRelatedModules);
 $curmodsinrel_result = $adb->pquery('SELECT fieldid,relmodule FROM vtiger_fieldmodulerel WHERE module=?', array($fld_module));
 $curmodsinrel = array();
 while ($row = $adb->fetch_array($curmodsinrel_result)) {
-	$curmodsinrel[$row['relmodule']] = $row['fieldid'];
+	$curmodsinrel[$row['fieldid']][] = $row['relmodule'];
 }
 $smarty->assign('curmodsinrel', $curmodsinrel);
 
