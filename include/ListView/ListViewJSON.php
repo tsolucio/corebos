@@ -484,7 +484,7 @@ class GridListView {
 					$rows[$fieldName] = implode(',', $field1025Value);
 				} else {
 					if ($fieldName) {
-						$rows[$fieldName] = textlength_check(getTranslatedString($fieldValue, $this->module));
+						$rows[$fieldName] = textlength_check($fieldValue);
 					}
 				}
 				$rows['uitype_'.$fieldName] = $fieldType;
