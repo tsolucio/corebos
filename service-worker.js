@@ -11447,7 +11447,7 @@ precacheAndRoute([{
   "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "a44419b1d3e19b2889a92913345993cb"
+  "revision": "9e158766a679ca94741946313fbd9505"
 }, {
   "url": "include/js/dedup.js",
   "revision": "f09b1b73041383bfe8a85ccce9641617"
@@ -11456,16 +11456,16 @@ precacheAndRoute([{
   "revision": "42e62b85a43a3e624ee8351c039846bb"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "96117520e520b28f9a58fa36df003711"
+  "revision": "aff679c94ea9eb3794ac550935694468"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "f612af244bdf634f92cc7b069bd3b638"
+  "revision": "5bd3ccb75654a790f677e51ca1521439"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "4d199b16ee01180fb054d1266d16f75c"
+  "revision": "5f4698a8a811c240a82924ac53f97d95"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "1999243fd28049156dd72bee58480a43"
+  "revision": "8cb1ae543c70c46e51bf350a145a8d0e"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "82279fd5e39a3e3f9493f53ae7d51205"
@@ -11474,19 +11474,19 @@ precacheAndRoute([{
   "revision": "c6dd1fa8efe64120bc4721d19987922d"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "a0eb48a24ac59c62e517c3e2b7bd68a7"
+  "revision": "47d7a4074986d4ebff3b960d7c4002e1"
 }, {
   "url": "include/js/general.js",
   "revision": "0f5f5cff6bc95344e8eb56f3a7f47216"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "6327a213e691e233cbbcaec7ca2af837"
+  "revision": "e0baa3a0ac210db95b02c9eb695fa8af"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "995e82a81fff28de27f58d755cf5a793"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "e77f0c7a0cd9eb395882838a2418af16"
+  "revision": "9e9bddb29852aabbdddb5a2242eea8a2"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
@@ -11495,7 +11495,7 @@ precacheAndRoute([{
   "revision": "051742bf127987d6001740e7aaca79e4"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "b4d71e2ef2fd2e039d8767d3028ac16c"
+  "revision": "510877401360ea1c0880f04fdd61a9da"
 }, {
   "url": "include/js/ListViewRenderes.js",
   "revision": "3111bb0321f2065d3b9694836e16d1ee"
@@ -11519,7 +11519,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "fdfcbfde829eadeec6004c1b6ab9cd93"
+  "revision": "05a8d20f6b32a3f97dbbd5bbd970b47a"
 }, {
   "url": "include/js/notebook.js",
   "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
@@ -11537,7 +11537,7 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "a3c63b400543e430798041ca359464ed"
+  "revision": "db2e772bc7d6dc72bde227385df56ba4"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "9663dd1cea6cb7fb0cfe983e54baa186"
@@ -11546,7 +11546,7 @@ precacheAndRoute([{
   "revision": "afd1f3cd61451676111b6d7b6adb1e16"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "68f4fc59ceec3f399c2f12a53ab6f95c"
+  "revision": "19aef31823b4860239e5cad8f6943621"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -11574,6 +11574,72 @@ precacheAndRoute([{
 }, {
   "url": "include/components/loadjs.js",
   "revision": "03a39dd327aca956ea9448782aca04eb"
+}, {
+  "url": "include/components/PaintJS/control.css",
+  "revision": "633a32ba70580b50494e92cf1eceb66d"
+}, {
+  "url": "include/components/PaintJS/gradientcreator.css",
+  "revision": "bef2033786929d2f3889f3f1a118ee83"
+}, {
+  "url": "include/components/PaintJS/images/block.png",
+  "revision": "1b269616a8a6718edbddb9e47c48fbd9"
+}, {
+  "url": "include/components/PaintJS/images/brush.png",
+  "revision": "f0fb641da5e72270add4e9cf6a4b113a"
+}, {
+  "url": "include/components/PaintJS/images/grab.png",
+  "revision": "bf3a09b1ff490703541b37eb5d1de87a"
+}, {
+  "url": "include/components/PaintJS/images/line.png",
+  "revision": "87651d5a2ae6e56c303a500f15898fd8"
+}, {
+  "url": "include/components/PaintJS/images/picker.png",
+  "revision": "bcc9df3deaeb788102cb22d087299325"
+}, {
+  "url": "include/components/PaintJS/images/randomlocation.png",
+  "revision": "bd16a4f26d1c5a656035428bdbf88165"
+}, {
+  "url": "include/components/PaintJS/images/select.png",
+  "revision": "2d7fb763b4d3a5962129fe7e2fd2a5a1"
+}, {
+  "url": "include/components/PaintJS/images/text.png",
+  "revision": "06d323669c1ffdbe9d2d2e0e25c0a83e"
+}, {
+  "url": "include/components/PaintJS/images/transparent.png",
+  "revision": "3c07752b1d92c1ed6217d5451bd72a66"
+}, {
+  "url": "include/components/PaintJS/images/undo.png",
+  "revision": "50db48bed898b31c941546fb39dd7004"
+}, {
+  "url": "include/components/PaintJS/images/zoom.png",
+  "revision": "0347588626a19f83a1a66c78f56513ec"
+}, {
+  "url": "include/components/PaintJS/images/zoomin.png",
+  "revision": "5ba825d630c0a60bee37e8b17828ae96"
+}, {
+  "url": "include/components/PaintJS/images/zoomout.png",
+  "revision": "51642eabf4149bba697d725960a4197a"
+}, {
+  "url": "include/components/PaintJS/images/zoomreset.png",
+  "revision": "14d93ea9cba42407539bee8538d6f73f"
+}, {
+  "url": "include/components/PaintJS/introjs.css",
+  "revision": "4318a4823670d9318f0462560978e233"
+}, {
+  "url": "include/components/PaintJS/paint.css",
+  "revision": "b94db8c78295f03090586ab6457ba0c7"
+}, {
+  "url": "include/components/PaintJS/Paint.min.js",
+  "revision": "60bbe4b642c22f2fa8f3c21fb9166c42"
+}, {
+  "url": "include/components/PaintJS/quicksettings.css",
+  "revision": "1877ec1f864f1a115c0f134e97ef63a4"
+}, {
+  "url": "include/components/PaintJS/script.js",
+  "revision": "94ee218976c17d84c4e88f36e7eb171d"
+}, {
+  "url": "include/components/PaintJS/spectrum.css",
+  "revision": "2a1922c40199c91899ee4c07033b8dfa"
 }, {
   "url": "include/components/Select2/css/select2.css",
   "revision": "675de2a347f3407251629544a114be97"
