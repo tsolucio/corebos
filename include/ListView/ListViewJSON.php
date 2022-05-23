@@ -461,6 +461,11 @@ class GridListView {
 					}
 				} elseif ($fieldName == 'modifiedby') {
 						$rows[$fieldName] = getUserFullName($fieldValue);
+				} elseif ($fieldType == '1024') {
+					if (!empty($fieldValue)) {
+						$fieldValue = implode(', ', array_map('getRoleName', explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue)));
+					}
+					$rows[$fieldName] = textlength_check($fieldValue);
 				} elseif ($fieldType == '1025') {
 					$field1025Value = array();
 					$fieldValue = explode(' |##| ', $fieldValue);
