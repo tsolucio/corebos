@@ -494,7 +494,12 @@ class GridListView {
 					$fileid = $adb->query_result($res, 0, 'attachmentsid');
 					$rows['fileid'] = $fileid;
 				}
-				$rows['assigned_user_id'] = isset($smownerid) ? getUserFullName($smownerid) : '';
+				$group_array = get_group_array();
+				$assigned_user_id = isset($smownerid) ? getUserFullName($smownerid) : false;
+				if (!$assigned_user_id) {
+					$assigned_user_id = $group_array[$smownerid];
+				}
+				$rows['assigned_user_id'] = $assigned_user_id;
 				$rows['recordid'] = $recordID;
 				$rows['reference_field'] = array(
 					'columnname' => $reference_field['fieldname'],
