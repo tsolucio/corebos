@@ -45,6 +45,10 @@ require_once 'DirectoryFolder.php';
 require_once 'DirectoryGroup.php';
 require_once 'CRMFile.php';
 
+global $current_user;
+if (empty($current_user)) {
+	$current_user = Users::getActiveAdminUser();
+}
 // Change public to something else, if you are using a different directory for your files
 // Make sure there is a directory in your current directory named 'public'. We will be exposing that directory to WebDAV
 $publicDir = new DAV\Tree(new DirectoryGroup());
