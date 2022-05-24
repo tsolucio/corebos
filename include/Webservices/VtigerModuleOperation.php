@@ -488,7 +488,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			'nullable' => $webserviceField->isNullable(),
 			'editable' => $editable,
 			'helpinfo' => $webserviceField->getHelpInfo(),
-			'moreinfo' => json_encode($webserviceField->getMoreInfo()),
+			'moreinfo' => $webserviceField->getMoreInfo($this->meta->getTabName()),
 			'uitype' => $webserviceField->getUIType(),
 			'typeofdata' => $webserviceField->getTypeOfData(),
 			'sequence' => $webserviceField->getFieldSequence(),

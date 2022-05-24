@@ -197,16 +197,18 @@ class WebserviceField {
 		return $this->helpinfo;
 	}
 
-	public function getMoreInfo() {
-		$bmapname = $modulename.'_FieldInfo';
+	public function getMoreInfo($module) {
+		$bmapname = $module.'_FieldInfo';
 		$cbMapFI = array();
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$cbMapFI = $cbMap->FieldInfo();
-			$cbMapFI = $cbMapFI['fields'];
+			foreach ($cbMapFI['fields'] as $mapFields) {
+				$cbMapFI[] = $mapFields;
+			}
 		}
-		return $cbMapFI;
+		return json_encode($cbMapFI);
 	}
 
 	public function getFieldId() {
@@ -519,7 +521,13 @@ class WebserviceField {
 				$translated_tooltip = getTranslatedString($picklistValue.'_tooltip', $moduleName);
 				$elem['label'] = $trans_str;
 				$elem['value'] = $picklistValue;
-				$elem['tooltip'] = (isset($picklistValue))? $translated_tooltip : '';
+				if (!empty($translated_tooltip)) {
+					if (preg_match('/_tooltip/i', $translated_tooltip)) {
+						$elem['tooltip'] = '';
+					} else {
+						$elem['tooltip'] = $translated_tooltip;
+					}
+				}
 				$options[] = $elem;
 			}
 		} else {
@@ -534,10 +542,16 @@ class WebserviceField {
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) {
 					$trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				}
-				$translated_tooltip = getTranslatedString($picklistValue.'_tooltip', $moduleName);
+				$translated_tooltip = getTranslatedString($picklistValue.'_tooltip', $moduleName);				
 				$elem['label'] = $trans_str;
 				$elem['value'] = $picklistValue;
-				$elem['tooltip'] = (isset($picklistValue))? $translated_tooltip : '';
+				if (!empty($translated_tooltip)) {
+					if (preg_match('/_tooltip/i', $translated_tooltip)) {
+						$elem['tooltip'] = '';
+					} else {
+						$elem['tooltip'] = $translated_tooltip;
+					}
+				}
 				$options[] = $elem;
 			}
 		}
@@ -564,7 +578,14 @@ class WebserviceField {
 			$elem = array();
 			$translated_tooltip = getTranslatedString($value[1].'_tooltip', $moduleName);
 			$elem['label'] = $value[0];
-			$elem['tooltip'] = (isset($value[1]))? $translated_tooltip : '';
+			$elem['value'] = $value[1];
+			if (!empty($translated_tooltip)) {
+				if (preg_match('/_tooltip/i', $translated_tooltip)) {
+					$elem['tooltip'] = '';
+				} else {
+					$elem['tooltip'] = $translated_tooltip;
+				}
+			}
 			$options[] = $elem;
 		}
 		$purified_plcache[$moduleName.$fName] = $options;
