@@ -9,8 +9,7 @@ function edittaskscript($) {
 		if (value == 'days') {
 			box_max_len = 30;
 			box_rm = 5;
-		}
-		if (value == 'hours') {
+		} else {
 			box_max_len = 24;
 			box_rm = 4;
 		}
@@ -50,8 +49,7 @@ function edittaskscript($) {
 			NumberBox($('#select_date_days'), $('#select_days_hours_option').val());
 			$('#select_date_hours').css('display', 'none');
 			$('#select_date_days').css('display', 'block');
-		}
-		if ($('#select_days_hours_option').val() == 'hours') {
+		} else { // hours and minutes
 			NumberBox($('#select_date_hours'), $('#select_days_hours_option').val());
 			$('#select_date_days').css('display', 'none');
 			$('#select_date_hours').css('display', 'block');
@@ -71,7 +69,7 @@ function edittaskscript($) {
 		} else if ($('#select_date_hours').val() != '') {
 			$('#select_date_hours').css('display', 'block');
 			$('#select_date_days').css('display', 'none');
-			$("select option[value='hours']").attr("selected", "selected");
+			//$("select option[value='hours']").attr("selected", "selected");
 			NumberBox($('#select_date_hours'), $('#select_days_hours_option').val());
 			$('#select_days_hours_option').on('change', changeDelayInput);
 		} else {

@@ -110,8 +110,7 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 				$direction = 'after';
 			}
 			$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction, 'field'=>$trigger['field']));
-		}
-		if (array_key_exists('hours', $trigger)) {
+		} elseif (array_key_exists('hours', $trigger)) {
 			$hours = $trigger['hours'];
 			if ($hours < 0) {
 				$hours*=-1;
@@ -120,6 +119,15 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 				$direction = 'after';
 			}
 			$smarty->assign('trigger', array('hours'=>$hours, 'direction'=>$direction, 'field'=>$trigger['field']));
+		} else {
+			$mins = $trigger['mins'];
+			if ($mins < 0) {
+				$mins*=-1;
+				$direction = 'before';
+			} else {
+				$direction = 'after';
+			}
+			$smarty->assign('trigger', array('mins'=>$mins, 'direction'=>$direction, 'field'=>$trigger['field']));
 		}
 	}
 	$metaVariables = $task->getMetaVariables();

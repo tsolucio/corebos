@@ -282,15 +282,15 @@ class Workflow {
 			if (is_object($task) && $task->active) {
 				$logbg->debug($task->summary);
 				$trigger = (empty($task->trigger) ? null : $task->trigger);
+				$delay = 0;
 				if ($trigger != null) {
-					if (array_key_exists('hours', $trigger)) {
+					if (array_key_exists('mins', $trigger)) {
+						$delay = strtotime($data[$trigger['field']])+$trigger['mins']*60;
+					} elseif (array_key_exists('hours', $trigger)) {
 						$delay = strtotime($data[$trigger['field']])+$trigger['hours']*3600;
-					}
-					if (array_key_exists('days', $trigger)) {
+					} elseif (array_key_exists('days', $trigger)) {
 						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
 					}
-				} else {
-					$delay = 0;
 				}
 				if ($task->executeImmediately || $this->executionCondition==VTWorkflowManager::$MANUAL) {
 					// we permit update field delayed tasks even though some may not make sense

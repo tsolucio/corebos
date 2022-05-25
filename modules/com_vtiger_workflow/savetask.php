@@ -46,13 +46,14 @@ function vtSaveTask($adb, $request) {
 			$trigger = array(
 				'days'=>($request['select_date_direction']=='after'?1:-1)*(int)$request['select_date_days'],
 				'field'=>$request['select_date_field']
-				);
+			);
 		}
 		if ($request['select_date_hours'] != '') {
 			$trigger = array(
-				'hours'=>($request['select_date_direction']=='after'?1:-1)*(int)$request['select_date_hours'],
 				'field'=>$request['select_date_field']
-				);
+			);
+			$triggeridx = ($request['select_days_hours_option']=='hours' ? 'hours' : 'mins');
+			$trigger[$triggeridx] = ($request['select_date_direction']=='after'?1:-1)*(int)$request['select_date_hours'];
 		}
 		$task->trigger=$trigger;
 	} else {
