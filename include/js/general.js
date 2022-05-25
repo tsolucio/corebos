@@ -5956,8 +5956,9 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		/* Public attributes */
 		this.el = el;
 		this.input = el.getElementsByClassName('slds-combobox__input')[0];
-		this.specialKeys = ['esc'];
+		this.specialKeys = ['up', 'down', 'esc', 'enter'];
 		this.optionNodes = this.getOptionNodes();
+		this.holdNodes = this.getOptionNodes();
 		this.active = false;
 		this.curSel = this.input.value;
 		this.fallBackSel = null;
@@ -5970,6 +5971,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		this.isMulti = params.isMulti;
 		this.enabled = params.enabled !== undefined ? params.enabled : true;
 		this.labels = {};
+		this.activeNodes = [];
 
 		/* Instance listeners */
 		if (this.enabled) {
@@ -5978,6 +5980,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 			_on(this.input, 'focus', this.trigger, this);
 			_on(this.input, 'keyup', this.trigger, this);
 			_on(this.input, 'blur', this.close, this);
+			_on(this.input, 'input', this.resetIndex, this);
 		}
 
 		if (this.parentForm !== undefined && this.parentForm !== null) {
@@ -6215,6 +6218,19 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		},
 
 		/*
+		 * Method: 'resetIndex'
+		 * Reset current index every time the search input change the value
+		 *
+		 * @param: Event object
+		 */
+		resetIndex: function (e) {
+			if (this.optionNodes[this.curSelIndex] !== undefined) {
+				this.optionNodes[this.curSelIndex].children[0].classList.remove('slds-has-focus');
+			}
+			this.curSelIndex = -1;
+		},
+
+		/*
 		 * Method: 'setOptionState'
 		 * Sets the state of an option in the dropdown list. Updates both the
 		 * visual frontend side as the instance properties
@@ -6223,6 +6239,11 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * @param: state: either 'selected', or anything else
 		 */
 		setOptionState(index, state) {
+			this.getActiveNodes();
+			this.optionNodes = this.activeNodes;
+			if (this.optionNodes[index] === undefined) {
+				return false;
+			}
 			if (state == 'selected') {
 				this.optionNodes[index].children[0].classList.add('slds-has-focus');
 				this.curSel = this.optionNodes[index].getElementsByClassName('slds-truncate')[0].innerText;
@@ -6234,13 +6255,29 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		},
 
 		/*
+		 * Method: 'getActiveNodes'
+		 * Get a list of active nodes after search action
+		 *
+		 */
+		getActiveNodes() {
+			this.optionNodes = this.el.querySelectorAll('ul')[0];
+			this.optionNodes = this.optionNodes.getElementsByTagName('li');
+			this.activeNodes = [];
+			for (let i = 0; i < this.optionNodes.length; i++) {
+				if (this.optionNodes[i].dataset.value !== undefined && this.optionNodes[i].style.display != 'none') {
+					this.activeNodes.push(this.optionNodes[i]);
+				}
+			}
+		},
+
+		/*
 		 * Method: 'selectPrevious'
 		 * Only used by keyboard. Selects the previous option if
 		 * the current is not the first one.
 		 *
 		 */
 		selectPrevious: function () {
-			if (this.curSelIndex != 0) {
+			if (this.curSelIndex != 0 && this.activeNodes.length <= this.optionNodes.length) {
 				this.setOptionState(this.curSelIndex, 'unselected');
 				this.curSelIndex--;
 				this.setOptionState(this.curSelIndex, 'selected');
@@ -6254,7 +6291,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 */
 		selectNext: function () {
-			if (this.curSelIndex != this.optionNodes.length - 1) {
+			if (this.curSelIndex != this.optionNodes.length - 1 && this.activeNodes.length <= this.optionNodes.length) {
 				this.setOptionState(this.curSelIndex, 'unselected');
 				this.curSelIndex++;
 				this.setOptionState(this.curSelIndex, 'selected');
