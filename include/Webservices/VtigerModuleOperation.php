@@ -481,7 +481,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$blkname = $webserviceField->getBlockName();
 		$describeArray = array(
 			'name' => $webserviceField->getFieldName(),
-			'label' => $fieldLabeli18n,
+			'label' => htmlentities($fieldLabeli18n),
 			'label_raw' => $fieldLabel,
 			'mandatory' => $webserviceField->isMandatory(),
 			'type' => $typeDetails,
