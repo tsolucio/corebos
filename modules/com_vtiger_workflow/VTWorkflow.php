@@ -283,7 +283,7 @@ class Workflow {
 				$logbg->debug($task->summary);
 				$trigger = (empty($task->trigger) ? null : $task->trigger);
 				$delay = 0;
-				if ($trigger != null) {
+				if ($trigger != null && $task->$queable) {
 					if (array_key_exists('mins', $trigger)) {
 						$delay = strtotime($data[$trigger['field']])+$trigger['mins']*60;
 					} elseif (array_key_exists('hours', $trigger)) {
@@ -297,7 +297,7 @@ class Workflow {
 					// for example a mathematical operation or a decision on a value of a field that
 					// may change during the delay. This is for some certain types of updates, generally
 					// absolute updates. You MUST know what you are doing when creating workflows.
-					if ($delay!=0 && (get_class($task) == 'VTUpdateFieldsTask' || get_class($task) == 'VTCreateEntityTask')) {
+					if ($delay!=0 && $task->$queable) {
 						$entityData->WorkflowContext['__WorkflowID'] = $this->id;
 						$msg = array(
 							'taskId' => $task->id,

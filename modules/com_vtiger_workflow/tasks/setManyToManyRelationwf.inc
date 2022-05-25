@@ -23,6 +23,7 @@ require_once 'include/Webservices/SetRelation.php';
 
 class setManyToManyRelationwf extends VTTask {
 	public $executeImmediately = true;
+	public $queable = true;
 
 	public function getFieldNames() {
 		return array('relAction', 'idlist');

@@ -14,8 +14,9 @@ require_once 'modules/Reports/ReportRun.php';
 require_once 'modules/cbQuestion/cbQuestion.php';
 
 class generateReportWfTask extends VTTask {
-
 	public $executeImmediately = true;
+	public $queable = true;
+
 	public function getFieldNames() {
 		return array('case_type', 'file_type', 'report_name', 'qnfield', 'qnfield_display');
 	}

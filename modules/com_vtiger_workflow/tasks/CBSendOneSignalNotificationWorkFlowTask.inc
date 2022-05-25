@@ -11,8 +11,8 @@
 include_once 'include/integrations/onesignal/onesignal.php';
 
 class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
-
 	public $executeImmediately = true;
+	public $queable = true;
 
 	public function getFieldNames() {
 		return array(

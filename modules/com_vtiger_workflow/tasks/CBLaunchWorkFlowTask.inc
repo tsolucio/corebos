@@ -23,6 +23,7 @@ include_once 'include/Webservices/ExecuteWorkflow.php';
 
 class CBLaunchWorkFlowTask extends VTTask {
 	public $executeImmediately = true;
+	public $queable = true;
 
 	public function getFieldNames() {
 		return array(

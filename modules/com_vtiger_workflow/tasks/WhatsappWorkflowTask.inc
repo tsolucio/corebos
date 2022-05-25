@@ -14,8 +14,8 @@ require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 require_once 'vendor/autoload.php';
 
 class WhatsappWorkflowTask extends VTTask {
-
 	public $executeImmediately = true;
+	public $queable = true;
 	public $attachmentsinfo = array();
 	public $dzattinfo = array();
 

@@ -22,6 +22,7 @@ require_once 'vendor/autoload.php';
 
 class wfSendFile extends VTTask {
 	public $executeImmediately = true;
+	public $queable = true;
 	public $_accessToken = array();
 
 	public function getFieldNames() {
