@@ -69,8 +69,8 @@ $mod_strings = array (
 "LBL_UPLOADFILE"=>"Cargar",
 "LBL_GOOGLEFILE"=>'Fichero P12 de Google: ',
 "LBL_GOOGLECLIENTSECRET"=>"Secreto Cliente",
-"LBL_GOOGLEURI"=>"URI de Redirecci&oacute;n",
-"LBL_CONNECT"=>"Autoriza y con&eacute;ctate",
+"LBL_GOOGLEURI"=>"URI de Redirección",
+"LBL_CONNECT"=>"Autoriza y conéctate",
 "LBL_GOOGLEINS"=>"¿Insertar desde Google?",
 'LIST_MODULES' => 'Listado de Módulos',
 
