@@ -337,7 +337,8 @@ function massedit_initOnChangeHandlers() {
 				checkbox.checked = true;
 			}
 		};
-	}}
+	}
+}
 
 function mass_edit1x1(obj) {
 	var select_options = document.getElementById('allselectedboxes').value;
