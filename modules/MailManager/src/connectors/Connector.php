@@ -166,7 +166,7 @@ class MailManager_Connector {
 		$folders = array();
 		foreach ($result as $row) {
 			$folderName = str_replace($ref, '', $row->name);
-			$folder = $this->convertCharacterEncoding($folderName, 'ISO_8859-1', 'UTF7-IMAP'); //Decode folder name
+			$folder = $this->convertCharacterEncoding($folderName, 'ISO-8859-1', 'UTF7-IMAP'); //Decode folder name
 			$folders[] = $this->folderInstance($folder);
 		}
 		$this->mFolders = $folders;
@@ -190,7 +190,7 @@ class MailManager_Connector {
 	 * @param $options imap_status flags like SA_UNSEEN, SA_MESSAGES etc
 	 */
 	public function updateFolder($folder, $options) {
-		$mailbox = $this->convertCharacterEncoding($folder->name($this->mBoxUrl), 'UTF7-IMAP', 'ISO_8859-1'); //Encode folder name
+		$mailbox = $this->convertCharacterEncoding($folder->name($this->mBoxUrl), 'UTF7-IMAP', 'ISO-8859-1'); //Encode folder name
 		$result = @imap_status($this->mBox, $mailbox, $options);
 		if ($result) {
 			if (isset($result->unseen)) {
@@ -379,7 +379,7 @@ class MailManager_Connector {
 			$list = @imap_list($this->mBox, $this->mBoxBaseUrl, '*');
 			if (is_array($list)) {
 				foreach ($list as $val) {
-					$folder = $this->convertCharacterEncoding($val, 'ISO_8859-1', 'UTF7-IMAP'); //Decode folder name
+					$folder = $this->convertCharacterEncoding($val, 'ISO-8859-1', 'UTF7-IMAP'); //Decode folder name
 					$folderList[] =  preg_replace("/{(.*?)}/", "", $folder);
 				}
 			}

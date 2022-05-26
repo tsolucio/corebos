@@ -418,6 +418,7 @@ var alert_arr = {
 	'LNK_EDIT': 'edit',
 	'LNK_EDIT_ACTION': 'Editare',
 	'LNK_DELETE_ACTION': 'Stergere',
+	'LBL_SHOW_MORE':'Show More',
 	'LBL_MODIFIED': 'Modified',
 	'LBL_CREATE': 'Create a',
 	'LBL_IMPORT': 'Import',
@@ -429,4 +430,8 @@ var alert_arr = {
 	'LBL_CREATED_SUCCESS': 'Created successfully',
 	'LBL_SELECT_COLUMNS': 'Select columns to show in grid',
 	'LBL_MATCH_COLUMNS': 'Select columns to match in grid',
+	'LBL_MATCH_ERROR': 'You can only match the fields you select to show',
+	'ERROR_CREATING_TRY_AGAIN': 'Error while creating. Fields cannot be empty or have a wrong value.',
+	'LBL_REQUIRED_FIELDS': 'Please fill all required fields',
+	'LBL_ERROR_CREATING': 'Error while creating. Please try again.',
 };

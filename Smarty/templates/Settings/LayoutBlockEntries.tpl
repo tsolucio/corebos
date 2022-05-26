@@ -409,8 +409,8 @@
 									<select id="dependent_list_{$value.fieldselect}" name="dependent_list_{$value.fieldselect}" rows="10" class="slds-select" multiple="multiple">
 										{foreach from=$entityrelmods key=outerkey item=outervalue}
 											{assign var='isSelected' value=''}
-											{foreach from=$curmodsinrel key=innerkey item=innervalue}
-												{if ($innervalue eq $value.fieldselect) and ($innerkey eq $outerkey)}
+											{foreach from=$curmodsinrel[$value.fieldselect] key=innerkey item=innervalue}
+												{if ($innervalue eq $outerkey)}
 													{assign var='isSelected' value='selected'}
 												{/if}
 											{/foreach}

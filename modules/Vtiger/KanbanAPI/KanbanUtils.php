@@ -11,6 +11,7 @@ include_once 'vtlib/Vtiger/Link.php';
 
 function kbGetItemQuery($module, $limit_start_rec, $boardinfo) {
 	global $current_user;
+	require_once 'modules/'.$module.'/'.$module.'.php';
 	$focus = new $module();
 	$focus->initSortbyField($module);
 	if (ListViewSession::hasViewChanged($module)) {

@@ -63,80 +63,6 @@ function getRequestParamsArrayForOperation($operation) {
 	return $operationInput[$operation];
 }
 
-function setResponseHeaders() {
-	global $cors_enabled_domains;
-	if (isset($_SERVER['HTTP_ORIGIN']) && !empty($cors_enabled_domains)) {
-		$parse = parse_url($_SERVER['HTTP_ORIGIN']);
-		if ($cors_enabled_domains=='*' || strpos($cors_enabled_domains, $parse['host'])!==false) {
-			header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-			header('Access-Control-Allow-Credentials: true');
-			header('Access-Control-Max-Age: 86400');    // cache for 1 day
-		}
-	}
-	if (!(isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || strtolower($_REQUEST['format'])=='streamraw'))) {
-		header('Content-type: application/json');
-	}
-}
-
-function writeErrorOutput($operationManager, $error) {
-	setResponseHeaders();
-	$state = new State();
-	$state->success = false;
-	$state->error = $error;
-	unset($state->result);
-	$output = $operationManager->encode($state);
-	//Send email with error.
-	$mailto = GlobalVariable::getVariable('Debug_Send_WebService_Error', '');
-	if ($mailto != '') {
-		$wserror = GlobalVariable::getVariable('Debug_WebService_Errors', '*');
-		$wsproperty = false;
-		if ($wserror != '*') {
-			$wsprops = explode(',', $wserror);
-			foreach ($wsprops as $wsprop) {
-				if (property_exists('WebServiceErrorCode', $wsprop)) {
-					$wsproperty = true;
-					break;
-				}
-			}
-		}
-		if ($wserror == '*' || $wsproperty) {
-			global $site_URL;
-			require_once 'modules/Emails/mail.php';
-			require_once 'modules/Emails/Emails.php';
-			$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
-			$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
-			$mailsubject = '[ERROR]: '.$error->code.' - web service call throwed exception.';
-			$mailcontent = '[ERROR]: '.$error->code.' '.$error->message."\n<br>".$site_URL;
-			unset($_REQUEST['sessionName']);
-			$mailcontent.= var_export($_REQUEST, true);
-			send_mail('Emails', $mailto, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $mailsubject, $mailcontent);
-		}
-	}
-	echo $output;
-}
-
-function writeOutput($operationManager, $data) {
-	setResponseHeaders();
-	$state = new State();
-	if (isset($data['wsmoreinfo'])) {
-		$state->moreinfo = $data['wsmoreinfo'];
-		unset($data['wsmoreinfo']);
-		if (!isset($data['wssuccess'])) {
-			$data = $data['wsresult'];
-		}
-	}
-	if (isset($data['wsresult']) && isset($data['wssuccess'])) {
-		$state->success = $data['wssuccess'];
-		$state->result = $data['wsresult'];
-	} else {
-		$state->success = true;
-		$state->result = $data;
-	}
-	unset($state->error);
-	$output = $operationManager->encode($state);
-	echo $output;
-}
-
 // some frameworks (namely angularjs and polymer) send information in application/json format, we try to adapt to those system with the next two if
 if (empty($_REQUEST)) {
 	$data = json_decode(file_get_contents('php://input'));
@@ -232,6 +158,31 @@ try {
 		$current_user = null;
 	}
 	vtws_logcalls($_REQUEST);
+	if (!empty($input['cbwsOptions'])) {
+		$cbwsOptions = json_decode($input['cbwsOptions'], true);
+		if (json_last_error() === JSON_ERROR_NONE) {
+			$queableCommands = vtws_getQueableCommands();
+			if (isset($cbwsOptions['launchfromqueue']) && $cbwsOptions['launchfromqueue']==1 && in_array($operation, $queableCommands)) {
+				$delay = (empty($cbwsOptions['queuedelay']) ? 0 : (int)$cbwsOptions['queuedelay']);
+				$cbmq = coreBOS_MQTM::getInstance();
+				$opID = uniqid('', true);
+				$msg = json_encode([
+					'operation' => $operation,
+					'operationTrackingID' => $opID,
+					'format' => $format,
+					'request' => $input,
+					'sessionId' => $sessionId,
+					'adoptSession' => $adoptSession,
+					'sessionName' => $sessionName,
+				]);
+				$cbmq->sendMessage('wsOperationChannel', 'wsoperationqueue', 'wsoperationqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, $userid, $msg);
+				writeOutput($operationManager, ['operationTrackingID' => $opID]);
+				exit(0);
+			}
+		}
+		unset($cbwsOptions, $input['cbwsOptions']);
+	}
+
 	$operationInput = $operationManager->sanitizeOperation($input);
 	$includes = $operationManager->getOperationIncludes();
 

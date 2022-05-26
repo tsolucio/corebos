@@ -25,5 +25,21 @@
   font-size: 0.3em;
 }
 .mmdzmessage {
-	font-size: 1.2em !important;
+  font-size: 1.2em !important;
+}
+.text-dropzone {
+  height: 230px;
+  width: 300px;
+  background: #f0f0f0;
+  border: 2px solid #a8a8a8;
+  margin-top: 10px;
+  padding: 10px;
+}
+[contentEditable=true]:empty:not(:focus):before{
+  content:attr(data-text);
+  display: block;
+  font-size: 20px;
+  color: #888888;
+  margin: auto;
+  text-align: center;
 }

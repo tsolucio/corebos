@@ -452,6 +452,7 @@ var alert_arr = {
 	'LNK_EDIT': 'editar',
 	'LNK_EDIT_ACTION': 'Editar',
 	'LNK_DELETE_ACTION': 'Borrar',
+	'LBL_SHOW_MORE':'Ver más',
 	'LBL_MODIFIED': 'Modificado',
 	'LBL_CREATE': 'Crea un/a',
 	'LBL_IMPORT': 'Importa',
@@ -463,4 +464,8 @@ var alert_arr = {
 	'LBL_CREATED_SUCCESS': 'Creado correctamente',
 	'LBL_SELECT_COLUMNS': 'Selecciona las columnas a mostrar en la tabla',
 	'LBL_MATCH_COLUMNS': 'Selecciona las columnas a emparejar en la tabla',
+	'LBL_MATCH_ERROR': 'Solo puedes emparejar los campos que selecciones mostrar',
+	'ERROR_CREATING_TRY_AGAIN': 'Error al crear. Los campos no pueden estar vacíos o tener un valor incorrecto.',
+	'LBL_REQUIRED_FIELDS': 'Por favor rellena todos los campos obligatorios',
+	'LBL_ERROR_CREATING': 'Error creando. Inténtalo de nuevo.',
 };

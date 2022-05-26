@@ -319,9 +319,13 @@ function __cb_format_date($arr) {
 		return '';
 	}
 	$fmt = empty($arr[1]) ? 'Y-m-d' : $arr[1];
+	$arr[0] = trim($arr[0]);
 	if (strpos($arr[0], ' ')>0) {
 		list($dt, $ht) = explode(' ', $arr[0]);
 		list($h, $i, $s) = explode(':', $ht);
+	} elseif (strpos($arr[0], '-')===false) {
+		$dt = date('Y-m-d');
+		list($h, $i, $s) = explode(':', $arr[0]);
 	} else {
 		$dt = $arr[0];
 		$h = $i = $s = 0;

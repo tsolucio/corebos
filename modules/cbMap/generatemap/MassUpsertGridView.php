@@ -14,6 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 require_once 'Smarty_setup.php';
+require_once 'include/ListView/ListViewJSON.php';
 
 class genMassUpsertGridView extends generatecbMap {
 
@@ -38,7 +39,9 @@ class genMassUpsertGridView extends generatecbMap {
 					'header' => getTranslatedString($key['fieldlabel'], $module),
 					'name' => $key['columnname'],
 					'active' => 0,
-					'typeofdata' => $typeofdata[1]
+					'typeofdata' => $typeofdata[1],
+					'activeModule' => false,
+					'relatedModules' => array()
 				);
 				if (isset($fields['field'])) {
 					$fields = array_values((array)$fields['field']);
@@ -55,6 +58,20 @@ class genMassUpsertGridView extends generatecbMap {
 						}
 					}
 				}
+				if ($key['uitype'] == Field_Metadata::UITYPE_RECORD_RELATION) {
+					$grid = new GridListView($module);
+					$grid->tabid = getTabid($module);
+					$modules = $grid->findRelatedModule($key['fieldname']);
+					if (count($modules) > 1) {
+						$listFields['relatedModules'] = $modules;
+					}
+					foreach ($fields as $label => $value) {
+						if (isset($value->relatedModule) && in_array($value->relatedModule, $modules)) {
+							$listFields['activeModule'] = (string)$value->relatedModule;
+							break;
+						}
+					}
+				}
 				return $listFields;
 			}, $ModuleFields);
 		} else {
@@ -64,8 +81,17 @@ class genMassUpsertGridView extends generatecbMap {
 					'header' => getTranslatedString($key['fieldlabel'], $module),
 					'name' => $key['columnname'],
 					'active' => 0,
-					'typeofdata' => $typeofdata[1]
+					'typeofdata' => $typeofdata[1],
+					'relatedModules' => array()
 				);
+				if ($key['uitype'] == Field_Metadata::UITYPE_RECORD_RELATION) {
+					$grid = new GridListView($module);
+					$grid->tabid = getTabid($module);
+					$modules = $grid->findRelatedModule($key['fieldname']);
+					if (count($modules) > 1) {
+						$listFields['relatedModules'] = $modules;
+					}
+				}
 				return $listFields;
 			}, $ModuleFields);
 		}
@@ -104,6 +130,8 @@ class genMassUpsertGridView extends generatecbMap {
 				return $listFields;
 			}, $ModuleFields);
 		}
+		array_multisort($ListFields);
+		array_multisort($MatchFields);
 		$smarty->assign('MapFields', $ListFields);
 		$smarty->assign('MatchFields', $MatchFields);
 		$smarty->display('modules/cbMap/MassUpsertGrid.tpl');

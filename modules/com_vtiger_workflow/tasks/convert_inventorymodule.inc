@@ -23,8 +23,8 @@ require_once 'modules/Users/Users.php';
 require_once 'include/utils/EditViewUtils.php';
 
 class ConvertInventoryModule extends VTTask {
-
 	public $executeImmediately = true;
+	public $queable = true;
 
 	public function getFieldNames() {
 		return array('convertto');

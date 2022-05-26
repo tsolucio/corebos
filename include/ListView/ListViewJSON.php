@@ -224,7 +224,13 @@ class GridListView {
 		$profileid = reset($profileid);
 		$isRecycleModule = isset($_REQUEST['isRecycleModule']) ? vtlib_purify($_REQUEST['isRecycleModule']): '';
 		$customView = new CustomView($this->module);
-		$viewid = $customView->getViewId($this->module);
+		$viewid = coreBOS_Session::get('lvs^'.$this->module.'^viewname');
+		if (isset($_REQUEST['viewname']) && !empty($_REQUEST['viewname'])) {
+			$viewid = vtlib_purify($_REQUEST['viewname']);
+		} elseif (empty($viewid)) {
+			$viewid = $customView->getViewId($this->module);
+		}
+		coreBOS_Session::set('lvs^'.$this->module.'^viewname', $viewid);
 		$viewinfo = $customView->getCustomViewByCvid($viewid);
 		$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status'], $viewid);
 		$cv = array(
@@ -455,6 +461,11 @@ class GridListView {
 					}
 				} elseif ($fieldName == 'modifiedby') {
 						$rows[$fieldName] = getUserFullName($fieldValue);
+				} elseif ($fieldType == '1024') {
+					if (!empty($fieldValue)) {
+						$fieldValue = implode(', ', array_map('getRoleName', explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue)));
+					}
+					$rows[$fieldName] = textlength_check($fieldValue);
 				} elseif ($fieldType == '1025') {
 					$field1025Value = array();
 					$fieldValue = explode(' |##| ', $fieldValue);
@@ -463,7 +474,7 @@ class GridListView {
 						foreach ($fieldValue as $id) {
 							$displayValueArray = getEntityName($parent_module, $id);
 							if (!empty($displayValueArray)) {
-								$field1025Value[] = $displayValueArray[$id];
+								$field1025Value[] = '<a href="index.php?module='.$parent_module.'&action=DetailView&record='.$id.'">'.$displayValueArray[$id].'</a>';
 							}
 							$AutocompleteFields[] = array(
 								$parent_module, $fieldName, $displayValueArray[$id], $id
@@ -473,7 +484,7 @@ class GridListView {
 					$rows[$fieldName] = implode(',', $field1025Value);
 				} else {
 					if ($fieldName) {
-						$rows[$fieldName] = textlength_check(getTranslatedString($fieldValue, $this->module));
+						$rows[$fieldName] = textlength_check($fieldValue);
 					}
 				}
 				$rows['uitype_'.$fieldName] = $fieldType;
@@ -483,7 +494,12 @@ class GridListView {
 					$fileid = $adb->query_result($res, 0, 'attachmentsid');
 					$rows['fileid'] = $fileid;
 				}
-				$rows['assigned_user_id'] = isset($smownerid) ? getUserFullName($smownerid) : '';
+				$group_array = get_group_array();
+				$assigned_user_id = isset($smownerid) ? getUserFullName($smownerid) : false;
+				if (!$assigned_user_id) {
+					$assigned_user_id = $group_array[$smownerid];
+				}
+				$rows['assigned_user_id'] = $assigned_user_id;
 				$rows['recordid'] = $recordID;
 				$rows['reference_field'] = array(
 					'columnname' => $reference_field['fieldname'],
@@ -509,15 +525,18 @@ class GridListView {
 		return $data;
 	}
 
-	public function getFieldNameByColumn($columnname) {
+	public function getFieldNameByColumn($columnname, $return = '') {
 		global $adb;
 		if (is_array($columnname)) {
 			$columnname = $columnname[0];
 		}
-		$rs = $adb->pquery('select fieldname from vtiger_field where columnname=? and tabid=?', array(
+		$rs = $adb->pquery('select * from vtiger_field where columnname=? and tabid=?', array(
 			$columnname, $this->tabid
 		));
 		if ($adb->num_rows($rs) == 1) {
+			if ($return == 'array') {
+				return $rs->FetchRow();
+			}
 			return $adb->query_result($rs, 0, 'fieldname');
 		}
 		return false;
@@ -680,7 +699,7 @@ class GridListView {
 			$focus = new Calendar4You();
 			$focus->GetDefPermission($current_user);
 			if ($focus->CheckPermissions('EDIT', $recordId)) {
-				$focus = new $module();
+				$focus = new cbCalendar();
 				$focus->retrieve_entity_info($recordId, 'cbCalendar');
 				$evstatus = $focus->column_fields['eventstatus'];
 				$activitytype = $focus->column_fields['activitytype'];

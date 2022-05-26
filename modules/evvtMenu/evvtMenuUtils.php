@@ -269,6 +269,11 @@ function checkevvtMenuInstalled() {
 	if (!in_array('summary', $cnmsg)) {
 		$adb->query("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");
 	}
+	$adb->query(
+		"UPDATE vtiger_cbmap
+		SET content='<map><function><name>isOnDemandNotActive</name></function></map>'
+		WHERE mapname='cbUpdater_ImportExport' AND content LIKE '%<name>!isOnDemandActive</name>%' AND targetname='cbupdater'"
+	);
 	if (vtlib_isModuleActive('cbupdater')) {
 		$holdModule = $currentModule;
 		$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='denormalizechangeset'");

@@ -310,10 +310,15 @@ function massedit_initOnChangeHandlers() {
 		var massedit_input = inputs[index];
 		// TODO Onchange on readonly and hidden fields are to be handled later.
 		massedit_input.onchange = function () {
+			const holdName = this.name;
+			if (this.name.includes('_display_1025')) {
+				this.name = this.name.replace('_display_1025', '');
+			}
 			var checkbox = document.getElementById(this.name + '_mass_edit_check');
 			if (checkbox) {
 				checkbox.checked = true;
 			}
+			this.name = holdName;
 		};
 	}
 	// Setup change handlers for select boxes
@@ -322,6 +327,12 @@ function massedit_initOnChangeHandlers() {
 		var massedit_select = selects[index];
 		massedit_select.onchange = function () {
 			var checkbox = document.getElementById(this.name + '_mass_edit_check');
+			if (this.dataset.uitype !== undefined && this.dataset.uitype == '1025') {
+				id = this.id.replace('_type', '');
+				document.getElementById(`${id}`).value = '';
+				document.getElementById(`${id}_display`).value = '';
+				document.getElementById(`show-1025-pill-${id}`).innerHTML = '';
+			}
 			if (checkbox) {
 				checkbox.checked = true;
 			}
@@ -605,26 +616,26 @@ function massDelete(module) {
 function showDefaultCustomView(selectView, module) {
 	document.getElementById('status').style.display = 'inline';
 	var viewName = encodeURIComponent(selectView.options[selectView.options.selectedIndex].value);
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=ListView&ajax=true&start=1&viewname=' + viewName
-	}).done(function (response) {
-		var result = response.split('&#&#&#');
-		if (Application_Landing_View=='table') {
+	if (Application_Landing_View=='tuigrid') {
+		ListView.Show('filter', viewName);
+	} else {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=ListView&ajax=true&start=1&viewname=' + viewName
+		}).done(function (response) {
+			var result = response.split('&#&#&#');
 			document.getElementById('status').style.display = 'none';
 			document.getElementById('ListViewContents').innerHTML = result[2];
 			vtlib_executeJavascriptInElement(document.getElementById('ListViewContents'));
 			document.getElementById('basicsearchcolumns_real').innerHTML = document.getElementById('basicsearchcolumns').innerHTML;
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 			document.basicSearch.search_text.value = '';
-		} else {
-			ListView.Show('filter');
-		}
-		initSelect2();
-		if (result[1] != '') {
-			ldsPrompt.show(alert_arr['ERROR'], result[1]);
-		}
-	});
+			initSelect2();
+			if (result[1] != '') {
+				ldsPrompt.show(alert_arr['ERROR'], result[1]);
+			}
+		});
+	}
 }
 
 function getListViewEntries_js(module, url) {

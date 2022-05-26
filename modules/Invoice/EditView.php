@@ -294,7 +294,8 @@ if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module']) && $_RE
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 }
 
-if (!empty($_REQUEST['account_id']) && (is_null($record) || (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice'))
+if (!empty($_REQUEST['account_id']) && getSalesEntityType($_REQUEST['account_id'])=='Accounts'
+	&& (is_null($record) || (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice'))
 	&& (empty($_REQUEST['convertmode']) || $_REQUEST['convertmode'] != 'update_so_val')
 ) {
 	require_once 'modules/Accounts/Accounts.php';
@@ -313,7 +314,9 @@ if (!empty($_REQUEST['account_id']) && (is_null($record) || (isset($_REQUEST['co
 	$focus->column_fields['bill_pobox'] = $acct_focus->column_fields['bill_pobox'];
 	$focus->column_fields['ship_pobox'] = $acct_focus->column_fields['ship_pobox'];
 }
-if (!empty($_REQUEST['contact_id']) && (is_null('record') || (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice'))) {
+if (!empty($_REQUEST['contact_id']) && getSalesEntityType($_REQUEST['contact_id'])=='Contacts'
+	&& (is_null('record') || (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice'))
+) {
 	require_once 'modules/Contacts/Contacts.php';
 	$cto_focus = new Contacts();
 	$cto_focus->retrieve_entity_info($_REQUEST['contact_id'], 'Contacts');

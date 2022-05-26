@@ -45,5 +45,6 @@ class WebServiceErrorCode {
 	public static $SEARCH_VALUE_NOT_PROVIDED = 'SEARCH_VALUE_NOT_PROVIDED';
 	public static $WORKFLOW_TASK_FAILED = 'WORKFLOW_TASK_FAILED';
 	public static $VALIDATION_FAILED = 'VALIDATION_FAILED';
+	public static $INVALID_URL = 'INVALID_URL';
 }
 ?>

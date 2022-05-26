@@ -59,8 +59,46 @@ const MCGrid = {
 		mcdataGridInstance.appendRow(JSON.parse(EmptyData));
 	},
 
+	FormValidation: (data) => {
+		let response = Array();
+		data.map(function(row) {
+			for (let field in row) {
+				if (isNaN(field) && field != 'rowKey' && field != '_attributes') {
+					let fieldType = MCGrid.FindFieldType(field);
+					if (fieldType[1] == 'M') {
+						if (row[field] == null || row[field] == '') {
+							response.push(false);
+						}
+					}
+					if (row[field] == null) {
+						row[field] = '';
+					}
+					if (!cbVal(fieldType[0], row[field])) {
+						response.push(false);
+					}
+				}
+			}
+		});
+		return response;
+	},
+
+	FindFieldType: (field) => {
+		let typeofdata = '';
+		let moduleFields = JSON.parse(ListFields);
+		moduleFields.map(function(row) {
+			if (row.name == field) {
+				typeofdata = row.type;
+			}
+		});
+		return typeofdata;
+	},
+
 	Save: () => {
 		const data = mcdataGridInstance.getData();
+		if (MCGrid.FormValidation(data).includes(false)) {
+			ldsPrompt.show(alert_arr.ERROR, alert_arr.ERROR_CREATING_TRY_AGAIN);
+			return;
+		}
 		document.getElementById('slds-spinner').style.display = 'block';
 		fetch(
 			'index.php?module=Utilities&action=UtilitiesAjax&file=MassCreateGridAPI&moduleName='+gVTModule+'&method=MassCreate',
@@ -101,18 +139,34 @@ const MCGrid = {
 		let content = `<div class="slds-grid slds-wrap">`;
 		activeCols.map(function(currentValue, index) {
 			let typeofdata = '';
+			let checked = '';
+			let disabled = '';
+			let modules = '';
 			if (currentValue.typeofdata == 'M') {
 				typeofdata = `<span class="slds-text-color_error">*</span>`;
+				checked = 'checked';
+				disabled = 'disabled';
+			}
+			if (currentValue.relatedModules.length > 0) {
+				modules += `<select id="selected-${currentValue.name}">`;
+				for (let i in currentValue.relatedModules) {
+					let selected = '';
+					if (currentValue.activeModule == currentValue.relatedModules[i]) {
+						selected = 'selected';
+					}
+					modules += `<option ${selected} value="${currentValue.relatedModules[i]}">${currentValue.relatedModules[i]}</option>`;
+				}
+				modules += `</select>`;
 			}
 			content += `
-			<div class="slds-col slds-size_3-of-12">
+			<div class="slds-col slds-size_4-of-12">
 				<div class="slds-form-element">
 					<div class="slds-form-element__control">
 						<div class="slds-checkbox">
-							<input type="checkbox" name="grid-fields" id="checkbox-${currentValue.name}" value="checkbox-${currentValue.name}" ${currentValue.active == 1 ? 'checked' : ''}/>
+							<input type="checkbox" name="grid-fields" id="checkbox-${currentValue.name}" value="checkbox-${currentValue.name}" ${currentValue.active == 1 ? 'checked' : ''} ${checked} ${disabled}/>
 							<label class="slds-checkbox__label" for="checkbox-${currentValue.name}">
 								<span class="slds-checkbox_faux"></span>
-								<span class="slds-form-element__label">${currentValue.header} ${typeofdata}</span>
+								<span class="slds-form-element__label">${currentValue.header} ${typeofdata} ${modules}</span>
 							</label>
 						</div>
 					</div>
@@ -143,7 +197,7 @@ const MCGrid = {
 		`;
 		activeMatchFields.map(function(currentValue, index) {
 			content += `
-			<div class="slds-col slds-size_3-of-12">
+			<div class="slds-col slds-size_4-of-12">
 				<div class="slds-form-element">
 					<div class="slds-form-element__control">
 						<div class="slds-checkbox">
@@ -166,11 +220,17 @@ const MCGrid = {
 		let matchColumns = JSON.parse(MatchFields);
 		let newColumns = Array();
 		let newMatchFields = Array();
+		let ColumnsDiff = Array();
+		let MatchDiff = Array();
 		columns.map(function(currentValue, idx) {
 			const checkbox = document.getElementById(`checkbox-${currentValue.name}`);
 			if (checkbox.checked) {
 				columns[idx].active = 1;
+				if (document.getElementById(`selected-${currentValue.name}`) !== null) {
+					currentValue['activeModule'] = document.getElementById(`selected-${currentValue.name}`).value;
+				}
 				newColumns.push(currentValue);
+				ColumnsDiff.push(currentValue.name);
 			} else {
 				columns[idx].active = 0;
 			}
@@ -180,14 +240,18 @@ const MCGrid = {
 			if (match.checked) {
 				matchColumns[idx].active = 1;
 				newMatchFields.push(currentValue);
+				MatchDiff.push(currentValue.name);
 			} else {
 				matchColumns[idx].active = 0;
 			}
 		});
-		mcdataGridInstance.setColumns(newColumns);
 		ListFields = JSON.stringify(columns);
 		MatchFields = JSON.stringify(matchColumns);
-		ldsModal.close();
+		let difference = MatchDiff.filter(x => ColumnsDiff.indexOf(x) === -1);
+		if (difference.length > 0) {
+			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_MATCH_ERROR);
+			return false;
+		}
 		MCGrid.ActiveColumns = newColumns;
 		MCGrid.MatchFields = newMatchFields;
 		MCGrid.SaveMap();
@@ -205,10 +269,17 @@ const MCGrid = {
 				body: '&'+csrfMagicName+'='+csrfMagicToken+'&ActiveColumns='+JSON.stringify(MCGrid.ActiveColumns)+'&mapName='+bmapname+'&moduleName='+MCGrid.Module+'&match='+JSON.stringify(MCGrid.MatchFields)
 			}
 		).then(response => response.json()).then(response => {
+			if (typeof response == 'string') {
+				mcdataGridInstance.setColumns(JSON.parse(GridColumns));
+				ldsPrompt.show(alert_arr.ERROR, response);
+				return;
+			}
 			if (response.length == 0) {
 				mcdataGridInstance.setColumns(JSON.parse(GridColumns));
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.ERROR_WHILE_EDITING);
+				return;
 			}
+			window.location.href = '';
 		});
 	}
 };

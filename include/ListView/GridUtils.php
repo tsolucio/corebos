@@ -154,8 +154,19 @@ function getDataGridResponse($mdmap) {
 	$rs = $adb->query($countsql);
 	$count = $rs->fields['count'];
 	// if we have to support filtering we would have to add the condtions to $qg here
+	$sort = '';
+	$sortColumn = isset($_REQUEST['sortColumn']) ? vtlib_purify($_REQUEST['sortColumn']) : '';
+	$sortAscending = isset($_REQUEST['sortAscending']) ? vtlib_purify($_REQUEST['sortAscending']) : '';
+	if (!empty($sortAscending) && $sortAscending == 'true') {
+		$sort = ' asc';
+	} elseif (!empty($sortAscending) && $sortAscending == 'false') {
+		$sort = ' desc';
+	}
 	if (!empty($mdmap['sortfield'])) {
-		$sql .= ' ORDER BY '.$qg->getOrderByColumn($mdmap['sortfield']). ' asc';
+		if (!empty($sortColumn)) {
+			$mdmap['sortfield'] = $sortColumn;
+		}
+		$sql .= ' ORDER BY '.$qg->getOrderByColumn($mdmap['sortfield']).$sort;
 	}
 	$rs = $adb->query($sql);
 	$ret = array();

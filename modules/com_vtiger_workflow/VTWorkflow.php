@@ -249,6 +249,22 @@ class Workflow {
 		if ($wf && $adb->num_rows($wf)>0) {
 			$wflaunch = $wf->fields['execution_condition'];
 		}
+		$entityDelta = new VTEntityDelta();
+		list($wsid, $crmid) = explode('x', $entityData->getId());
+		$previousEntityData = $entityDelta->getOldEntity($entityData->getModuleName(), $crmid);
+		if (is_object($previousEntityData)) {
+			$previousData = $previousEntityData->getData();
+			$previousData = array_combine(
+				array_map(
+					function ($fieldname) {
+						return 'previous_' . $fieldname;
+					},
+					array_keys($previousData)
+				),
+				$previousData
+			);
+			$context = array_merge($context, $previousData);
+		}
 		$entityData->WorkflowID = $this->id;
 		$entityData->WorkflowEvent = $wflaunch;
 		$entityData->WorkflowContext = $context;
@@ -266,22 +282,22 @@ class Workflow {
 			if (is_object($task) && $task->active) {
 				$logbg->debug($task->summary);
 				$trigger = (empty($task->trigger) ? null : $task->trigger);
-				if ($trigger != null) {
-					if (array_key_exists('hours', $trigger)) {
+				$delay = 0;
+				if ($trigger != null && $task->$queable) {
+					if (array_key_exists('mins', $trigger)) {
+						$delay = strtotime($data[$trigger['field']])+$trigger['mins']*60;
+					} elseif (array_key_exists('hours', $trigger)) {
 						$delay = strtotime($data[$trigger['field']])+$trigger['hours']*3600;
-					}
-					if (array_key_exists('days', $trigger)) {
+					} elseif (array_key_exists('days', $trigger)) {
 						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
 					}
-				} else {
-					$delay = 0;
 				}
 				if ($task->executeImmediately || $this->executionCondition==VTWorkflowManager::$MANUAL) {
 					// we permit update field delayed tasks even though some may not make sense
 					// for example a mathematical operation or a decision on a value of a field that
 					// may change during the delay. This is for some certain types of updates, generally
 					// absolute updates. You MUST know what you are doing when creating workflows.
-					if ($delay!=0 && (get_class($task) == 'VTUpdateFieldsTask' || get_class($task) == 'VTCreateEntityTask')) {
+					if ($delay!=0 && $task->$queable) {
 						$entityData->WorkflowContext['__WorkflowID'] = $this->id;
 						$msg = array(
 							'taskId' => $task->id,

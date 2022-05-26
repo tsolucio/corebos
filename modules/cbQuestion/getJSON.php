@@ -44,12 +44,29 @@ if (!isset($_REQUEST['sortAscending'])) {
 if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
 	$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
 } else {
-	$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
+	$rowsperpage = GlobalVariable::getVariable('MasterDetail_Pagination', 40);
 }
 $from = ($page-1)*$rowsperpage;
 $limit = " limit $from,$rowsperpage";
 $qid = $_REQUEST['qid'];
-$q = rtrim(cbQuestion::getSQL($qid), ';').$limit;
+$recordid = $_REQUEST['contextid'];
+if (!empty($recordid)) {
+	$ctxtmodule = getSalesEntityType($recordid);
+	$params = array(
+		'$RECORD$' => $recordid,
+		'$MODULE$' => $ctxtmodule,
+		'$USERID$' => $current_user->id,
+	);
+	$ent = CRMEntity::getInstance($ctxtmodule);
+	$ent->id = $recordid;
+	$ent->retrieve_entity_info($recordid, $ctxtmodule, false, true);
+	foreach ($ent->column_fields as $fname => $fvalue) {
+		$params['$'.$fname.'$'] = $fvalue;
+	}
+} else {
+	$params = [];
+}
+$q = stripTailCommandsFromQuery(rtrim(cbQuestion::getSQL($qid, $params), ';'), false).$limit;
 $grid = new GridListView('cbQuestion');
 $grid->currentPage = $page;
 $index = 'index';

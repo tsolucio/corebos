@@ -59,7 +59,7 @@ $req->set('callfrom', isset($_REQUEST['callfrom']) ? $_REQUEST['callfrom'] : '')
 ?>
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <form name="frmrepstr" onsubmit="VtigerJS_DialogBox.block();">
-<input type="hidden" name="subject" value="<?php echo $tpl[2];?>"></input>
+<input type="hidden" name="subject" value="<?php echo $tpl[2];?>">
 <textarea name="repstr" style="visibility:hidden">
 <?php echo htmlentities($tpl[1], ENT_NOQUOTES, $default_charset); ?>
 </textarea>

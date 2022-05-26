@@ -49,7 +49,10 @@ const mb = {
 			var blocks_label = [];
 			const BLOCK_COUNT = mb.loadElement('BLOCK_COUNT');
 			for (var i = 1; i <= BLOCK_COUNT; i++) {
-				blocks_label[i] = mb.loadElement(`blocks_label_${i}`);
+				const blockLabel = mb.loadElement(`blocks_label_${i}`);
+				if (mb.checkBlocks(blockLabel)) {
+					blocks_label[i] = blockLabel;
+				}
 			}
 			data = {
 				blocks: blocks_label,
@@ -270,6 +273,16 @@ const mb = {
 				mb.loadTemplate();
 			}
 		});
+	},
+
+	checkBlocks: (blockLabel) => {
+		const currentBlocks = document.getElementById('ul-block-mb').getElementsByTagName('li');
+		for (let i = 0; i < currentBlocks.length; i++) {
+			if (currentBlocks[i].innerHTML.includes(blockLabel)) {
+				return false;
+			}
+		}
+		return true;
 	},
 
 	getRadioValue: (name) => {
@@ -1671,6 +1684,7 @@ const mb = {
 							<select name="related-function-${LIST_COUNT}" id="autocomplete-related-${LIST_COUNT}" class="slds-select">
 								<option value="get_dependents_list">get_dependents_list</option>
 								<option value="get_relatedlist_list">get_relatedlist_list</option>
+								<option value="get_attachments">get_attachments</option>
 							</select>
 						</div>
 					</div>

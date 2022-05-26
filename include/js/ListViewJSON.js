@@ -95,9 +95,9 @@ const ListView = {
 			document.getElementById('basicsearchcolumns').innerHTML = '';
 			document.basicSearch.search_text.value = '';
 			if (ListView.Module == 'Documents' && DocumentFolderView == 1) {
-				DocumentsView.Show(url);
+				DocumentsView.Show(url, urlstring);
 			} else {
-				ListView.Filter(url);
+				ListView.Filter(url, urlstring);
 			}
 			document.getElementById('status').style.display = 'none';
 		} else if (actionType == 'search') {
@@ -202,7 +202,7 @@ const ListView = {
 					},
 				};
 			} else {
-				if (SearchColumns == 0) {
+				if (SearchColumns == 1) {
 					if (uitype == '7' || uitype == '9' || uitype == '71' || uitype == '72') {
 						filter = {
 							type: 'number',
@@ -275,6 +275,9 @@ const ListView = {
 						},
 						renderer: {
 							type: LinkRender,
+							options: {
+								tooltip: tooltip
+							}
 						},
 					};
 				}
@@ -289,6 +292,7 @@ const ListView = {
 	 * @param {Object} values
 	 */
 	getEditorType: (uitype, values, fieldname) => {
+		const disableEditor = ['4', '1024', '1025', 'createdtime', 'modifiedtime'];
 		if (uitype == '56') {
 			editor =  {
 				type: 'radio',
@@ -308,7 +312,7 @@ const ListView = {
 					}
 				}
 			};
-		} else if (uitype == '4' || uitype == '1025' || fieldname == 'createdtime' || fieldname == 'modifiedtime') {
+		} else if (disableEditor.includes(uitype)) {
 			editor = false;
 		} else if (uitype == '15' || uitype == '16') {
 			let listItems = [];
@@ -637,10 +641,10 @@ const ListView = {
 	 * Get the new headers in a onchange filter
 	 * @param {String} url
 	 */
-	Filter: (url) => {
+	Filter: (url, viewname) => {
 		lvdataGridInstance[ListView.Instance].setRequestParams({'search': '', 'searchtype': ''});
 		lvdataGridInstance[ListView.Instance].clear();
-		ListView.Request(`${url}&columns=true`, 'get').then(function (response) {
+		ListView.Request(`${url}&columns=true&viewname=${viewname}`, 'get').then(function (response) {
 			let headers = ListView.getColumnHeaders(response[0]);
 			let filters = response[1];
 			//update options for basic search
@@ -655,10 +659,9 @@ const ListView = {
 			}
 			ListView.setFilters(filters, true);
 			lvdataGridInstance[ListView.Instance].setColumns(headers);
-			ListView.noData();
+			ListView.updateData();
+			lvdataGridInstance[ListView.Instance].setPerPage(parseInt(PageSize));
 		});
-		ListView.updateData();
-		lvdataGridInstance[ListView.Instance].setPerPage(parseInt(PageSize));
 	},
 	/**
 	 * Get columns for RecycleBin filter
@@ -1217,8 +1220,8 @@ const ListView = {
 
 const DocumentsView = {
 
-	Show: (url) => {
-		ListView.Request(`${url}&columns=true`, 'get').then(function (response) {
+	Show: (url, viewname = '') => {
+		ListView.Request(`${url}&columns=true&viewname=${viewname}`, 'get').then(function (response) {
 			const childNames = Object.keys(response[0]).map((key) => response[0][key].fieldname);
 			let filters = response[1];
 			let folders = response[2];

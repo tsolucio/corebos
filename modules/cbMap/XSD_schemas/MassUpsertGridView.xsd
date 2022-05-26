@@ -24,6 +24,7 @@
 									<xs:complexType mixed="true">
 										<xs:sequence>
 											<xs:element type="xs:string" name="name"/>
+											<xs:element type="xs:string" name="relatedModule" minOccurs="0"/>
 										</xs:sequence>
 									</xs:complexType>
 							</xs:element>

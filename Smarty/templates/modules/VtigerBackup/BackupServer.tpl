@@ -45,9 +45,9 @@
 									</td>
 									<td width='60%' class="small cellText">
 										{if $LOCAL_BACKUP_STATUS eq 'enabled'}
-											<input type="checkbox" checked name="enable_local_backup" onclick="localbackupenabled(this)"></input>
+											<input type="checkbox" checked name="enable_local_backup" onclick="localbackupenabled(this)">
 										{else}
-											<input type="checkbox" name="enable_local_backup" onclick="localbackupenabled(this)"></input>
+											<input type="checkbox" name="enable_local_backup" onclick="localbackupenabled(this)">
 										{/if}
 									</td>
 									<td class="small cellText" align=right width=20%>
@@ -120,9 +120,9 @@
 									<td nowrap class="small cellLabel"><strong>{$MOD.LBL_ENABLE} {$MOD.LBL_BACKUP_SERVER_SETTINGS} ({$MOD.LBL_FTP})</strong></td>
 									<td width="50%" class="small cellText">
 										{if $FTP_BACKUP_STATUS eq 'enabled'}
-											<input type="checkbox" checked name="enable_ftp_backup" onclick="backupenabled(this)"></input>
+											<input type="checkbox" checked name="enable_ftp_backup" onclick="backupenabled(this)">
 										{else}
-											<input type="checkbox" name="enable_ftp_backup" onclick="backupenabled(this)"></input>
+											<input type="checkbox" name="enable_ftp_backup" onclick="backupenabled(this)">
 										{/if}
 									</td>
 									<td class="small cellText" align="right" width="30%">&nbsp;
