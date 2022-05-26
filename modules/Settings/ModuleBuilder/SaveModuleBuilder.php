@@ -43,7 +43,9 @@ function SaveModuleBuilder($step) {
 		case '2':
 			$mb = new ModuleBuilder($moduleid);
 			$mb->mode = 'edit';
-			$mb->column_data['blocks'] = vtlib_purify($_REQUEST['blocks']);
+			if (isset($_REQUEST['blocks'])) {
+				$mb->column_data['blocks'] = vtlib_purify($_REQUEST['blocks']);
+			}
 			$ret = $mb->save($step);
 			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="40" WHERE userid=? AND modulebuilderid=?', array($current_user->id,$moduleid));
 			return $ret;

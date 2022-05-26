@@ -184,6 +184,9 @@ class ModuleBuilder {
 				setcookie($cookie_name, $lastID, time() + ((86400 * 30) * 7), "/");
 			}
 		} elseif ($step == 2) {
+			if (!isset($this->column_data['blocks'])) {
+				return array('moduleid' => $this->id);
+			}
 			foreach ($this->column_data['blocks'] as $key => $value) {
 				if ($value != "") {
 					$adb->pquery('INSERT INTO vtiger_modulebuilder_blocks (blocks_label, moduleid) VALUES (?,?)', array($value,$this->id));
