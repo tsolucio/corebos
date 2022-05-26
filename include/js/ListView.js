@@ -327,12 +327,17 @@ function massedit_initOnChangeHandlers() {
 		var massedit_select = selects[index];
 		massedit_select.onchange = function () {
 			var checkbox = document.getElementById(this.name + '_mass_edit_check');
+			if (this.dataset.uitype !== undefined && this.dataset.uitype == '1025') {
+				id = this.id.replace('_type', '');
+				document.getElementById(`${id}`).value = '';
+				document.getElementById(`${id}_display`).value = '';
+				document.getElementById(`show-1025-pill-${id}`).innerHTML = '';
+			}
 			if (checkbox) {
 				checkbox.checked = true;
 			}
 		};
-	}
-}
+	}}
 
 function mass_edit1x1(obj) {
 	var select_options = document.getElementById('allselectedboxes').value;
