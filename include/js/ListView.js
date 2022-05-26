@@ -310,10 +310,15 @@ function massedit_initOnChangeHandlers() {
 		var massedit_input = inputs[index];
 		// TODO Onchange on readonly and hidden fields are to be handled later.
 		massedit_input.onchange = function () {
+			const holdName = this.name;
+			if (this.name.includes('_display_1025')) {
+				this.name = this.name.replace('_display_1025', '');
+			}
 			var checkbox = document.getElementById(this.name + '_mass_edit_check');
 			if (checkbox) {
 				checkbox.checked = true;
 			}
+			this.name = holdName;
 		};
 	}
 	// Setup change handlers for select boxes
