@@ -1684,6 +1684,7 @@ const mb = {
 							<select name="related-function-${LIST_COUNT}" id="autocomplete-related-${LIST_COUNT}" class="slds-select">
 								<option value="get_dependents_list">get_dependents_list</option>
 								<option value="get_relatedlist_list">get_relatedlist_list</option>
+								<option value="get_attachments">get_attachments</option>
 							</select>
 						</div>
 					</div>
