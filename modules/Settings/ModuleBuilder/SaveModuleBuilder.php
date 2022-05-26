@@ -29,7 +29,8 @@ function SaveModuleBuilder($step) {
 			} else {
 				$mb = new ModuleBuilder();
 			}
-			$mb->column_data['modulename'] = vtlib_purify($_REQUEST['modulename']);
+			$modulename = vtlib_purify($_REQUEST['modulename']);
+			$mb->column_data['modulename'] = str_replace(' ', '', $modulename);
 			$mb->column_data['modulelabel'] = vtlib_purify($_REQUEST['modulelabel']);
 			$mb->column_data['parentmenu'] = vtlib_purify($_REQUEST['parentmenu']);
 			$mb->column_data['moduleicon'] = vtlib_purify($_REQUEST['moduleicon']);
