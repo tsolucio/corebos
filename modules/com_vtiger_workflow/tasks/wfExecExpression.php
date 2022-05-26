@@ -21,6 +21,7 @@ require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 
 class wfExecExpression extends VTTask {
 	public $executeImmediately = true;
+	public $queable = false;
 
 	public function getFieldNames() {
 		return array('wfexeexps');

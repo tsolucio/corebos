@@ -5,7 +5,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|01/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|21/06/2021|Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|20/05/2022|Sao Paulo/SP/Brasil.|www.ecrm360.com.br
  ********************************************************************************/
 
 var alert_arr = {
@@ -326,7 +326,7 @@ var alert_arr = {
 	'LBL_FAQ_TITLE': 'FAQ',
 	'LBL_VIDEO_TITLE': 'Video',
 	'LBL_CLOSE_TITLE': 'Fechar',
-	'LBL_SELECT':'Selecionar o widgets padrão para ser mostrado',
+	'LBL_SELECT':'Selecionar o widget padrão para ser mostrado',
 
 	'ERR_SELECT_ATLEAST_ONE_MERGE_CRITERIA_FIELD' : 'Selecionar pelo menos um campo para os critérios de mesclagem',
 	'ERR_PLEASE_MAP_MANDATORY_FIELDS' : 'Por favor, mapeie os seguintes campos obrigatórios',
@@ -361,7 +361,7 @@ var alert_arr = {
 	'LBL_HAS_CHANGED' : 'foi alterado',
 	'LBL_HAS_CHANGED_TO' : 'foi alterado para',
 	'LBL_WAS' : 'era',
-	'LBL_MONTHDAY' : 'month-day',
+	'LBL_MONTHDAY' : 'mês-dia',
 	'LBL_IS_EMPTY': 'está vazio',
 	'LBL_IS_NOT_EMPTY' : 'não está vazio',
 	'LBL_EQUAL_TO' : 'igual a',
@@ -455,14 +455,20 @@ var alert_arr = {
 	'LNK_EDIT': 'Editar',
 	'LNK_EDIT_ACTION': 'Editar',
 	'LNK_DELETE_ACTION': 'Apagar',
-	'LBL_MODIFIED': 'Modified',
-	'LBL_CREATE': 'Create a',
-	'LBL_IMPORT': 'Import',
-	'LBL_NO_DATA': 'No Data Found',
-	'filterApplied': 'Filter applied',
-	'QuickView': 'Quick view',
-	'Restore': 'Restore',
-	'LBL_SUCCESS': 'Success',
-	'LBL_CREATED_SUCCESS': 'Created successfully',
-	'LBL_SELECT_COLUMNS': 'Select columns to show in grid',
+	'LBL_SHOW_MORE':'Exibir mais',
+	'LBL_MODIFIED': 'Modificado',
+	'LBL_CREATE': 'Criar',
+	'LBL_IMPORT': 'Importar',
+	'LBL_NO_DATA': 'Nenhum registro nessa visualização',
+	'filterApplied': 'Filtro aplicado',
+	'QuickView': 'Vista rápida',
+	'Restore': 'Recuperar',
+	'LBL_SUCCESS': 'Sucesso',
+	'LBL_CREATED_SUCCESS': 'Criado com sucesso',
+	'LBL_SELECT_COLUMNS': 'Selecione colunas para mostrar na grade',
+	'LBL_MATCH_COLUMNS': 'Selecione colunas para combinar na grade',
+	'LBL_MATCH_ERROR': 'Você só pode corresponder com campos selecionados para mostrar',
+	'ERROR_CREATING_TRY_AGAIN': 'Erro ao criar. Os campos não podem estar vazios ou ter um valor errado.',
+	'LBL_REQUIRED_FIELDS': 'Please fill all required fields',
+	'LBL_ERROR_CREATING': 'Error while creating. Please try again.',
 };

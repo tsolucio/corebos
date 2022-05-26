@@ -57,6 +57,7 @@ $mod_strings = array(
 	'Next 60 Days' => 'Következő 60 nap',
 	'Next 90 Days' => 'Következő 90 nap',
 	'Next 120 Days' => 'Következő 120 nap',
+	'PriorToToday'=>'Prior to Today',
 	'equals' => 'egyenlő ezzel',
 	'contains' => 'tartalmazza ezt',
 	'does not contain' => 'nem tartalmazza ezt',

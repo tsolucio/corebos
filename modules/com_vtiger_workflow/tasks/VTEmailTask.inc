@@ -105,33 +105,33 @@ class VTEmailTask extends VTTask {
 		$from_name = $from_email = $replyto = '';
 		if (!empty($this->fromname)) {
 			$fnt = new VTEmailRecipientsTemplate($this->fromname);
-			$from_name = $fnt->render($entityCache, $entity->getId());
+			$from_name = $fnt->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 		}
 		if (!empty($this->fromemail)) {
 			$fet = new VTEmailRecipientsTemplate($this->fromemail);
-			$from_email = $fet->render($entityCache, $entity->getId());
+			$from_email = $fet->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 		}
 		if (!empty($this->replyto)) {
 			$rt = new VTEmailRecipientsTemplate($this->replyto);
-			$replyto = $rt->render($entityCache, $entity->getId());
+			$replyto = $rt->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 		}
 		if (isset($entity->WorkflowContext['SendEmailTo'])) {
 			$et = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendEmailTo']);
 		} else {
 			$et = new VTEmailRecipientsTemplate($this->recepient);
 		}
-		$to_email = $et->render($entityCache, $entity->getId());
+		$to_email = $et->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 		if (empty($this->emailcc)) {
 			$cc = '';
 		} else {
 			$ecct = new VTEmailRecipientsTemplate($this->emailcc);
-			$cc = $ecct->render($entityCache, $entity->getId());
+			$cc = $ecct->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 		}
 		if (empty($this->emailbcc)) {
 			$bcc = '';
 		} else {
 			$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
-			$bcc = $ebcct->render($entityCache, $entity->getId());
+			$bcc = $ebcct->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 		}
 		$mailto = GlobalVariable::getVariable('Workflow_Send_Email_ToCCBCC', '');//For tests
 		if ($mailto != '') {
@@ -147,9 +147,20 @@ class VTEmailTask extends VTTask {
 		$cc = trim(preg_replace('/,,+/', ',', $cc), ',');
 		$bcc = preg_replace('/\s+/', '', $bcc);
 		$bcc = trim(preg_replace('/,,+/', ',', $bcc), ',');
+		$Recipients = cbEventHandler::do_filter('corebos.filter.workflowEmail.Recipients', array($to_email, $cc, $bcc, $entity, $this));
+		$to_email = $Recipients[0];
+		$cc = $Recipients[1];
+		$bcc = $Recipients[2];
+		unset($Recipients);
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
 			$util->revertUser();
 			return;
+		}
+		if (!empty($entity->WorkflowContext['SendThisSubject'])) {
+			$this->subject = $entity->WorkflowContext['SendThisSubject'];
+		}
+		if (!empty($entity->WorkflowContext['SendThisBody'])) {
+			$this->content = $entity->WorkflowContext['SendThisBody'];
 		}
 		if (!empty($entity->WorkflowContext['SendThisMsgTemplate'])) {
 			if (strpos($entity->WorkflowContext['SendThisMsgTemplate'], 'x')>0) {
@@ -203,8 +214,8 @@ class VTEmailTask extends VTTask {
 				if (!empty($msgtemp_res->fields['template'])) {
 					$this->content = $msgtemp_res->fields['template'];
 				}
-				$this->subject = getMergedDescription($this->subject, $record_id, $entity->moduleName);
-				$this->content = getMergedDescription($this->content, $record_id, $entity->moduleName);
+				$this->subject = getMergedDescription($this->subject, $record_id, $entity->moduleName, $entity->WorkflowContext);
+				$this->content = getMergedDescription($this->content, $record_id, $entity->moduleName, $entity->WorkflowContext);
 				$mailtemp_docrs = $adb->pquery(
 					'select notesid
 					from vtiger_senotesrel
@@ -231,8 +242,8 @@ class VTEmailTask extends VTTask {
 			} else {
 				$module = getSalesEntityType($id);
 			}
-			$this->subject = getMergedDescription($this->subject, $id, $module);
-			$this->content = getMergedDescription($this->content, $id, $module);
+			$this->subject = getMergedDescription($this->subject, $id, $module, $entity->WorkflowContext);
+			$this->content = getMergedDescription($this->content, $id, $module, $entity->WorkflowContext);
 		}
 		$this->after_retrieve();
 		if (!empty($entity->WorkflowContext['wfgenerated_file'])) {
@@ -279,7 +290,7 @@ class VTEmailTask extends VTTask {
 				}
 			} else {
 				$attfield = new VTSimpleTemplate('$'.$this->attfieldnames);
-				$pathattfield = $attfield->render($entityCache, $entity->getId());
+				$pathattfield = $attfield->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 				$this->attachmentsinfo[] = $pathattfield;
 			}
 		}
@@ -295,9 +306,9 @@ class VTEmailTask extends VTTask {
 			}
 		}
 		$st = new VTSimpleTemplate($this->subject);
-		$subject = $st->render($entityCache, $entity->getId());
+		$subject = $st->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 		$ct = new VTSimpleTemplate($this->content);
-		$content = $ct->render($entityCache, $entity->getId());
+		$content = $ct->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
 		$qrScan = (strpos($this->content, '(general : (__VtigerMeta__) scanQRCode')===false) ? '' : '1';
 		$brScan = (strpos($this->content, '(general : (__VtigerMeta__) scanBarCode')===false) ? '' : '1';

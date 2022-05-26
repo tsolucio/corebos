@@ -461,7 +461,6 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			} else { //Error
 				alert(msg);
 			}
-			VtigerJS_DialogBox.unblock();
 		}).fail(function () {
 			//Error while asking file
 			VtigerJS_DialogBox.unblock();

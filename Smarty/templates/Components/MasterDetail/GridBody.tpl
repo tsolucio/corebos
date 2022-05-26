@@ -41,7 +41,7 @@ function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 				}
 			}
 		},
-		useClientSort: true,
+		useClientSort: false,
 		pageOptions: pageOptions,
 		rowHeight: 'auto',
 		bodyHeight: 'auto',

@@ -604,7 +604,15 @@ class HelpDesk extends CRMEntity {
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
-
+		$customRelModules = ['Accounts', 'Contacts', 'Products', 'Documents'];
+		if (in_array($return_module, $customRelModules)) {
+			$data = array();
+			$data['sourceModule'] = getSalesEntityType($id);
+			$data['sourceRecordId'] = $id;
+			$data['destinationModule'] = $return_module;
+			$data['destinationRecordId'] = $return_id;
+			cbEventHandler::do_action('corebos.entity.link.delete', $data);
+		}
 		if ($return_module == 'Contacts' || $return_module == 'Accounts') {
 			$sql = 'UPDATE vtiger_troubletickets SET parent_id=? WHERE ticketid=?';
 			$adb->pquery($sql, array(null, $id));
@@ -618,6 +626,9 @@ class HelpDesk extends CRMEntity {
 			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
+		}
+		if (in_array($return_module, $customRelModules)) {
+			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		}
 	}
 

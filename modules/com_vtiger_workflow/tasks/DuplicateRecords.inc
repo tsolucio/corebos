@@ -22,6 +22,7 @@ require_once 'include/utils/duplicate.php';
 
 class DuplicateRecords extends VTTask {
 	public $executeImmediately = true;
+	public $queable = true;
 
 	public function getFieldNames() {
 		return array('bmapid','bmapid_display');

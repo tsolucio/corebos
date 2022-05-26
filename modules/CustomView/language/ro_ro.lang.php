@@ -58,6 +58,7 @@ $mod_strings = array(
 	'Next 60 Days' => 'Urmatoarele 60 Zile',
 	'Next 90 Days' => 'Urmatoarele 90 Zile',
 	'Next 120 Days' => 'Urmatoarele 120 Zile',
+	'PriorToToday'=>'Prior to Today',
 	'equals' => 'egal',
 	'contains' => 'Contine',
 	'does not contain' => 'NU Contine',

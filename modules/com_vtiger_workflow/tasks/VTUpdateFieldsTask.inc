@@ -11,8 +11,8 @@ require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 
 class VTUpdateFieldsTask extends VTTask {
-
 	public $executeImmediately = true;
+	public $queable = true;
 
 	public function getFieldNames() {
 		return array('field_value_mapping', 'launchrelwf');
@@ -89,9 +89,11 @@ class VTUpdateFieldsTask extends VTTask {
 					}
 					if (count($relmodule)>3 && !$isqueue) {
 						$delay = 5*60; // 5 minutes from now
+						$entityData->WorkflowContext['__WorkflowID'] = $entity->WorkflowID;
 						$msg = array(
 							'taskId' => $this->id,
 							'entityId' => $entityId,
+							'context' => $entity->WorkflowContext,
 						);
 						Workflow::pushWFTaskToQueue($entity->WorkflowID, $entity->WorkflowEvent, $entityId, $msg, $delay);
 						return;

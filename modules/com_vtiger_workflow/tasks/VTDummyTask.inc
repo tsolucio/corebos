@@ -10,6 +10,7 @@
 
 class VTDummyTask extends VTTask {
 	public $executeImmediately = true;
+	public $queable = false;
 
 	public function getFieldNames() {
 		return array('statement');

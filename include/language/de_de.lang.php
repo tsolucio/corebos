@@ -1405,6 +1405,11 @@ $app_strings = array(
 'From External Source' => 'From External Source',
 'LBL_ADD_ROW' => 'Add Row',
 'LBL_EDIT_COLUMNS' => 'Edit Columns',
+'LBL_SELECT_COLUMNS' => 'Select columns to show in Mass Create Grid',
+'LBL_MATCH_COLUMNS' => 'Select columns to match in Mass Create Grid',
+'LBL_SAVE_MAP' => 'Save Map',
+'Paste the link here' => 'Paste the link here',
+'LBL_UITYPE10_NOTALLOWED' => 'The related module has a mandatory related field.',
 );
 
 // Translation for currency names

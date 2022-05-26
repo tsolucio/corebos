@@ -11,6 +11,8 @@ require_once 'modules/Users/UserPrivileges.php';
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 include_once 'include/utils/utils.php';
 require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
+require_once 'modules/cbMap/cbMap.php';
+require_once 'include/Webservices/Utils.php';
 use \RobThree\Auth\TwoFactorAuth;
 
 class VTSimpleTemplate {
@@ -23,9 +25,16 @@ class VTSimpleTemplate {
 		$this->formatValue = $formatValue;
 	}
 
-	public function render($entityCache, $entityId, $void = array()) {
+	public function render($entityCache, $entityId, $void = array(), $context = array()) {
 		$this->cache = $entityCache;
 		$this->parent = $this->cache->forId($entityId);
+		if (empty($context['__WorkflowID'])) {
+			$this->parent->WorkflowID = 0;
+		} else {
+			$this->parent->WorkflowID = $context['__WorkflowID'];
+		}
+		$this->parent->WorkflowEvent = '';
+		$this->parent->WorkflowContext = $context;
 		return $this->parseTemplate();
 	}
 
@@ -395,7 +404,7 @@ class VTSimpleTemplate {
 		return $retcm;
 	}
 
-	private function getRelatedList($relmodule, $format, $field) {
+	private function getRelatedList($relmodule, $format, $field, $rlcondition = '') {
 		global $adb, $currentModule;
 		$modulename = $this->parent->getModuleName();
 		$mmtabid = getTabid($modulename);
@@ -409,6 +418,13 @@ class VTSimpleTemplate {
 		$mod = CRMEntity::getInstance($modulename);
 		$wsid = $this->parent->getId();
 		list($wsid,$crmid) = explode('x', $wsid);
+		$maptype = '';
+		if (!empty($rlcondition)) {
+			$cbmap = cbMap::getMapByID($rlcondition);
+			if ($cbmap) {
+				$maptype = $cbmap->column_fields['maptype']; // we can add condition query support here in the future
+			}
+		}
 		$mod->retrieve_entity_info($crmid, $modulename);
 		$mod->id = $crmid;
 		$_REQUEST['relation_id'] = $relid;
@@ -494,7 +510,15 @@ class VTSimpleTemplate {
 		if (!$html && !$table) {
 			$retrl .= "\n";
 		}
-		foreach ($relationData['entries'] as $row) {
+		$relmod_entId = vtws_getEntityId($relmodule);
+		foreach ($relationData['entries'] as $rowindex => $row) {
+			$relrecid = (int) $rowindex;
+			try {
+				if ($maptype == 'Condition Expression' && !$cbmap->ConditionExpression($relmod_entId.'x'.$relrecid)) {
+					continue;
+				}
+			} catch (Exception $e) {
+			}
 			$idx = 1;
 			if ($html) {
 				$retrl .= '<div class="relatedlistrow"><ul class="relatedlistfields">';
@@ -725,8 +749,18 @@ class VTSimpleTemplate {
 		if (substr($fieldname, 0, 11) == 'scanBarCode') {
 			list($fieldname, $codetype, $field) = explode('->', decode_html($fieldname));
 		}
+		$bmapid = '';
 		if (strtolower(substr($fieldname, 0, 11)) == 'relatedlist') {
 			$rlspec = substr($fieldname, 12);
+			if (strpos($rlspec, 'bmap_') !== false) {
+				$maploc = strpos($rlspec, 'bmap_');
+				$mapsec = substr($rlspec, $maploc, strlen($rlspec));
+				$rlspec = trim(str_replace($mapsec, '', $rlspec));
+				list ($identifier, $bmapid) = explode('_', $mapsec);
+				if (!intval($bmapid)) {
+					$bmapid = cbMap::getMapIdByName($bmapid);
+				}
+			}
 			if (strlen($rlspec)>0) {
 				$underscore = strpos($rlspec, '_');
 				if ($underscore!==false) {
@@ -789,6 +823,9 @@ class VTSimpleTemplate {
 					case 'coreboscp':
 						$purl = $PORTAL_URL.'/index.php#vtentity/'.$moduleName.'/list/'.$wsId.'/dvcpage/0';
 						break;
+					case 'reactadmin':
+						$purl = $PORTAL_URL.'/#/'.$moduleName.'/'.$wsId.'/show';
+						break;
 					case 'vtigercrmportal':
 					default:
 						$purl = $PORTAL_URL.'/index.php?module='.$moduleName.'&action=index&'.$recorIdName.'='.$recordId.'&fun=detail';
@@ -820,7 +857,7 @@ class VTSimpleTemplate {
 			case 'Events_Related_Contacts':
 				return $this->getRelatedContactsList($this->parent->getId());
 			case 'RelatedList':
-				return $this->getRelatedList($relmodule, $format, $field);
+				return $this->getRelatedList($relmodule, $format, $field, $bmapid);
 			case 'scanQRCode':
 				$wsId = $this->parent->getId();
 				$parts = explode('x', $wsId);

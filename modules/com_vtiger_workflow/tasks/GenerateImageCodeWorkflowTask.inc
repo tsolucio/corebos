@@ -21,6 +21,7 @@ require_once 'modules/SMSNotifier/SMSNotifier.php';
 class GenerateImageCodeWorkflowTask extends VTTask {
 	public $taskSavedData = array();
 	public $executeImmediately = true;
+	public $queable = false;
 	public $tcpdf1dEncodingTypes = array('EAN8' => 'EAN8','EAN13' => 'EAN13');
 
 	public $tcpdf2dEncodingTypes = array('QRCODE,L' => 'QRCODE,L','QRCODE,M' => 'QRCODE M','QRCODE,Q' => 'QRCODE,Q','QRCODE,H' => 'QRCODE,H');

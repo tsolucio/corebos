@@ -20,6 +20,7 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 
 class CBRelateSales extends VTTask {
 	public $executeImmediately = true;
+	public $queable = true;
 
 	public function getFieldNames() {
 		return array('relpdo','relsrv','withaccvnd','withcto');

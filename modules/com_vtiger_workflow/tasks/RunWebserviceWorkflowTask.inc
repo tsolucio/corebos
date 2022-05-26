@@ -15,6 +15,7 @@ require_once 'modules/com_vtiger_workflow/expression_functions/application.php';
 
 class RunWebserviceWorkflowTask extends VTTask {
 	public $executeImmediately = true;
+	public $queable = true;
 
 	public function getFieldNames() {
 		return array('bmapid', 'bmapid_display');
@@ -70,7 +71,11 @@ class RunWebserviceWorkflowTask extends VTTask {
 				} elseif ($inputtype == 'URL') {
 					$arrconv[] = "$key2=$value2";
 				} elseif ($inputtype == 'URLRESTFUL') {
-					$url = str_replace('$'.$key2, $value2, $url);
+					if (strpos($url, '$'.$key2) !== false) {
+						$url = str_replace('$'.$key2, $value2, $url);
+					} else {
+						$arrconv[$key2] = $value2;
+					}
 				}
 			}
 

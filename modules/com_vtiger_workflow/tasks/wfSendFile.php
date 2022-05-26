@@ -22,6 +22,7 @@ require_once 'vendor/autoload.php';
 
 class wfSendFile extends VTTask {
 	public $executeImmediately = true;
+	public $queable = true;
 	public $_accessToken = array();
 
 	public function getFieldNames() {
@@ -52,7 +53,7 @@ class wfSendFile extends VTTask {
 				$adminUser = $util->adminUser();
 				$entityCache = new VTEntityCache($adminUser);
 				$fn = new VTSimpleTemplate(trim($filename));
-				$filename = $fn->render($entityCache, $entity->getId());
+				$filename = $fn->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 				for ($y=0; $y < count($reportfile_context); $y++) {
 					$workflow_context['wfgenerated_file'][$y]['dest_name'] = empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
 				}

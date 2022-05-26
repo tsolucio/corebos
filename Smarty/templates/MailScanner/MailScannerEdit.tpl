@@ -175,7 +175,7 @@
 								<span id="mailboxinfo_rescan_folders_span">
 								{* Disabling Rescanning of messages for later use *}
 								{* -- START
-								<input type="checkbox" name="mailboxinfo_rescan_folders" value="true" class="small" {if $SCANNERINFO.requireRescan}checked=true{/if}> {$MOD.LBL_INCLUDE} {$MOD.LBL_SKIPPED}</input>
+								<input type="checkbox" name="mailboxinfo_rescan_folders" value="true" class="small" {if $SCANNERINFO.requireRescan}checked=true{/if}> {$MOD.LBL_INCLUDE} {$MOD.LBL_SKIPPED}
 								-- END *}
 								</span>
 							{/if}

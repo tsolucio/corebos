@@ -15,8 +15,9 @@
               <xs:element name="block" minOccurs="1">
                 <xs:complexType mixed="true">
                   <xs:sequence>
-                    <xs:element type="xs:string" name="label"/>
-                    <xs:element type="xs:string" name="sequence"/>    
+                    <xs:element type="xs:string" name="label" maxOccurs="1"/>
+                    <xs:element type="xs:string" name="position" maxOccurs="1"/>
+                    <xs:element type="xs:string" name="sequence" minOccurs="1" maxOccurs="1"/>
                     <xs:element name="type">
                   <xs:simpleType>
                  <xs:restriction base="xs:string">

@@ -799,6 +799,9 @@ class ModuleBuilder {
 			$table .= "`".strtolower($module)."id` INT(11) NOT NULL,\n";
 			$table .= "`".strtolower($module)."no` VARCHAR(255) DEFAULT NULL,\n";
 			foreach ($blocks as $key => $value) {
+				if (!isset($value['block']['fields'])) {
+					continue;
+				}
 				foreach ($value['block']['fields'] as $field => $info) {
 					$fieldname = $info['fieldname'];
 					$uitype = $info['uitype'];
@@ -885,48 +888,53 @@ class ModuleBuilder {
 				$entityidentifier->addChild('entityidfield', strtolower($map['name']).'id');
 				$entityidentifier->addChild('entityidcolumn', strtolower($map['name']).'id');
 			}
-			foreach ($blockInfo['block']['fields'] as $kField => $fValue) {
-				$generatedtype = $fValue['generatedtype'] == 0 ? 1 : $fValue['generatedtype'];
-				$field = $fields->addChild('field');
-				$field->addChild('fieldname', $fValue['fieldname']);
-				$field->addChild('uitype', $fValue['uitype']);
-				$field->addChild('columnname', $fValue['columnname']);
-				$field->addChild('tablename', 'vtiger_'.strtolower($map['name']));
-				$field->addChild('generatedtype', $generatedtype);
-				$field->addChild('fieldlabel', $fValue['fieldlabel']);
-				$field->addChild('presence', $fValue['presence']);
-				if (isset($fValue['fieldlength']) && $fValue['fieldlength'] != '') {
-					$field->addChild('maximumlength', $fValue['fieldlength']);
-				}
-				$field->addChild('readonly', 1);
-				$field->addChild('sequence', $sequence);
-				$field->addChild('typeofdata', $this->typeofdata($fValue['typeofdata'], $fValue['uitype']));
-				$field->addChild('quickcreate', $fValue['quickcreate']);
-				$field->addChild('displaytype', 1);
-				$field->addChild('masseditable', $fValue['masseditable']);
-				if ($fValue['uitype'] == 10) {
-					$relatedmodules = $field->addChild('relatedmodules');
-					$relModules = explode(',', $fValue['relatedmodules']);
-					foreach ($relModules as $rel => $mod) {
-						if ($mod != '') {
-							$relatedmodules->addChild('relatedmodule', $mod);
+			if (isset($blockInfo['block']['fields'])) {
+				foreach ($blockInfo['block']['fields'] as $kField => $fValue) {
+					$generatedtype = $fValue['generatedtype'] == 0 ? 1 : $fValue['generatedtype'];
+					$field = $fields->addChild('field');
+					$field->addChild('fieldname', $fValue['fieldname']);
+					$field->addChild('uitype', $fValue['uitype']);
+					$field->addChild('columnname', $fValue['columnname']);
+					$field->addChild('tablename', 'vtiger_'.strtolower($map['name']));
+					$field->addChild('generatedtype', $generatedtype);
+					$field->addChild('fieldlabel', $fValue['fieldlabel']);
+					$field->addChild('presence', $fValue['presence']);
+					if (isset($fValue['fieldlength']) && $fValue['fieldlength'] != '') {
+						$field->addChild('maximumlength', $fValue['fieldlength']);
+					}
+					$field->addChild('readonly', 1);
+					$field->addChild('sequence', $sequence);
+					$field->addChild('typeofdata', $this->typeofdata($fValue['typeofdata'], $fValue['uitype']));
+					$field->addChild('quickcreate', $fValue['quickcreate']);
+					$field->addChild('displaytype', 1);
+					$field->addChild('masseditable', $fValue['masseditable']);
+					if ($fValue['uitype'] == 10) {
+						$relatedmodules = $field->addChild('relatedmodules');
+						$relModules = explode(',', $fValue['relatedmodules']);
+						foreach ($relModules as $rel => $mod) {
+							if ($mod != '') {
+								$relatedmodules->addChild('relatedmodule', $mod);
+							}
+						}
+					} elseif ($fValue['uitype'] == 15 || $fValue['uitype'] == 16 || $fValue['uitype'] == 33) {
+						$picklistvalues = $field->addChild('picklistvalues');
+						$values = explode(',', $fValue['picklistvalues']);
+						foreach ($values as $i => $list) {
+							$picklistvalues->addChild('picklistvalue', $list);
 						}
 					}
-				} elseif ($fValue['uitype'] == 15 || $fValue['uitype'] == 16 || $fValue['uitype'] == 33) {
-					$picklistvalues = $field->addChild('picklistvalues');
-					$values = explode(',', $fValue['picklistvalues']);
-					foreach ($values as $i => $list) {
-						$picklistvalues->addChild('picklistvalue', $list);
-					}
+					$sequence++;
 				}
-				$sequence++;
 			}
 			if ($blockInfo['block']['label'] == 'LBL_'.strtoupper($map['name']).'_INFORMATION') {
 				foreach ($this->defaultFields as $fieldname => $fieldInfo) {
 					if ($fieldname == 'description') {
 						continue;
 					}
-					$generatedtype = $fieldInfo['generatedtype'] == 0 ? 1 : $fieldInfo['generatedtype'];
+					$generatedtype = 0;
+					if (isset($fieldInfo['generatedtype'])) {
+						$generatedtype = $fieldInfo['generatedtype'] == 0 ? 1 : $fieldInfo['generatedtype'];
+					}
 					$field = $fields->addChild('field');
 					$field->addChild('fieldname', $fieldname);
 					$field->addChild('uitype', $fieldInfo['uitype']);
@@ -984,16 +992,18 @@ class ModuleBuilder {
 		$sharingaccess->addChild('default', $map['sharingaccess']);
 
 		$relatedlists = $xml->addChild('relatedlists');
-		foreach ($map['relatedlists'] as $rList => $rInfo) {
-			$relatedlist = $relatedlists->addChild('relatedlist');
-			$relatedlist->addChild('function', $rInfo['function']);
-			$relatedlist->addChild('label', $rInfo['label']);
-			$relatedlist->addChild('sequence', $rList);
-			$relatedlist->addChild('presence', 0);
-			$relatedlist->addChild('relatedmodule', $rInfo['relatedmodule']);
-			$actions = $relatedlist->addChild('actions');
-			foreach ($rInfo['actions'] as $kAction => $actionVal) {
-				$action = $actions->addChild('action', $actionVal);
+		if (isset($map['relatedlists'])) {
+			foreach ($map['relatedlists'] as $rList => $rInfo) {
+				$relatedlist = $relatedlists->addChild('relatedlist');
+				$relatedlist->addChild('function', $rInfo['function']);
+				$relatedlist->addChild('label', $rInfo['label']);
+				$relatedlist->addChild('sequence', $rList);
+				$relatedlist->addChild('presence', 0);
+				$relatedlist->addChild('relatedmodule', $rInfo['relatedmodule']);
+				$actions = $relatedlist->addChild('actions');
+				foreach ($rInfo['actions'] as $kAction => $actionVal) {
+					$action = $actions->addChild('action', $actionVal);
+				}
 			}
 		}
 

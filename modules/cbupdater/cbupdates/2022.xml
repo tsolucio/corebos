@@ -85,6 +85,41 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>joebordes</author>
+	<description>Add Grid Type Picklist Value on Question</description>
+	<filename>build/changeSets/2022/addPLValueGridOnQuestion.php</filename>
+	<classname>addPLValueGridOnQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Business Actions types for MassCreateGrid</description>
+	<filename>build/changeSets/2022/addBAtypesForMassCreateGrid.php</filename>
+	<classname>addBAtypesForMassCreateGrid</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>geofreybundala</author>
+	<description>Add field for saving wfid to Mail Converter</description>
+	<filename>build/changeSets/2022/addColumnToMailConverter.php</filename>
+	<classname>addColumnToMailConverter</classname>
+  <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Update ModTracker changedon column data type</description>
+	<filename>build/changeSets/2022/updateModTrackerChangedOnDateTimeLength.php</filename>
+	<classname>updateModTrackerChangedOnDateTimeLength</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add web service queable operation column</description>
+	<filename>build/changeSets/2022/AddWSQueableColumn.php</filename>
+	<classname>AddWSQueableColumn</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>timothyanthony</author>
 	<description>Add ClickHouse webservice</description>
 	<filename>build/changeSets/2022/addWSClickHouse.php</filename>

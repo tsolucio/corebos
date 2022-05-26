@@ -170,7 +170,7 @@ if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module']) && $_RE
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 }
 
-if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && $record == '') {
+if (!empty($_REQUEST['account_id']) && $record == '' && getSalesEntityType($_REQUEST['account_id'])=='Accounts') {
 	require_once 'modules/Accounts/Accounts.php';
 	$acct_focus = new Accounts();
 	$acct_focus->retrieve_entity_info($_REQUEST['account_id'], 'Accounts');
@@ -186,7 +186,7 @@ if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && $record =
 	$focus->column_fields['ship_country'] = $acct_focus->column_fields['ship_country'];
 	$focus->column_fields['bill_pobox'] = isset($acct_focus->column_fields['bill_pobox']) ? $acct_focus->column_fields['bill_pobox'] : '';
 	$focus->column_fields['ship_pobox'] = isset($acct_focus->column_fields['ship_pobox']) ? $acct_focus->column_fields['ship_pobox'] : '';
-} elseif (!empty($_REQUEST['contact_id']) && $record == '') {
+} elseif (!empty($_REQUEST['contact_id']) && $record == '' && getSalesEntityType($_REQUEST['contact_id'])=='Contacts') {
 	$cto_focus = CRMEntity::getInstance('Contacts');
 	$cto_focus->retrieve_entity_info($_REQUEST['contact_id'], 'Contacts');
 	$focus->column_fields['bill_city'] = $cto_focus->column_fields['mailingcity'];

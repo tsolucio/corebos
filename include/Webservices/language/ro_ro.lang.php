@@ -9,10 +9,8 @@
   ********************************************************************************/
 $app_strings = array (
 	'Groups'=>'Groups',
-	'DocumentFolders'=>'Document Folders',
 	'Currency'=>'Currency',
 	'SINGLE_Groups'=>'Group',
-	'SINGLE_DocumentFolders'=>'Document Folder',
 	'SINGLE_Currency'=>'Currency',
 );
 

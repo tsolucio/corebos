@@ -4097,7 +4097,7 @@ precacheAndRoute([{
   "revision": "53beeb9c71b1a21aa389919c8c32b7b9"
 }, {
   "url": "modules/Mobile/resources/css/style.css",
-  "revision": "0f03bf37b48e916eedc374fc7181dd7a"
+  "revision": "2d4e606e8e5c04af04ea6baf1c6fa6fd"
 }, {
   "url": "modules/Mobile/resources/css/theme.css",
   "revision": "3ad2cc4a1e7c3b6c566726883e414b15"
@@ -11363,7 +11363,7 @@ precacheAndRoute([{
   "revision": "6c3b63a761701b52fbd0b85c20a0aa98"
 }, {
   "url": "include/dropzone/custom.css",
-  "revision": "d6b63d223d69da7c7f169edbd6b9091d"
+  "revision": "9fed255b112346d1cd1999aaca00d99d"
 }, {
   "url": "include/dropzone/dropzone.css",
   "revision": "5e018ddcbacdc772d8ad3f48b8615657"
@@ -11429,7 +11429,7 @@ precacheAndRoute([{
   "revision": "321798c3a4f90cafc07df60d8a8f0f2f"
 }, {
   "url": "include/js/advancefilter.js",
-  "revision": "4f3191027932451cb3334800e36bb46a"
+  "revision": "27589b8550521582f854f81920830eea"
 }, {
   "url": "include/js/asterisk.js",
   "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
@@ -11447,25 +11447,25 @@ precacheAndRoute([{
   "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "5f47a3f54a29de143129fddf15e37a09"
+  "revision": "9e158766a679ca94741946313fbd9505"
 }, {
   "url": "include/js/dedup.js",
   "revision": "f09b1b73041383bfe8a85ccce9641617"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "0272d3eb62e4f24d22c294cb9c84233e"
+  "revision": "42e62b85a43a3e624ee8351c039846bb"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "dd28fbd69bdf38c4277ee9b2f2cb2eac"
+  "revision": "aff679c94ea9eb3794ac550935694468"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "74845d1f3fee64e5a57bcbc064e086c9"
+  "revision": "5bd3ccb75654a790f677e51ca1521439"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "dd45fa0b328f1324daf392fd01a65dda"
+  "revision": "5f4698a8a811c240a82924ac53f97d95"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "e5c05f41939080261db65aec58535bf8"
+  "revision": "8cb1ae543c70c46e51bf350a145a8d0e"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "82279fd5e39a3e3f9493f53ae7d51205"
@@ -11474,31 +11474,31 @@ precacheAndRoute([{
   "revision": "c6dd1fa8efe64120bc4721d19987922d"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "7a0d623894596ddbe19e8538e6c38166"
+  "revision": "47d7a4074986d4ebff3b960d7c4002e1"
 }, {
   "url": "include/js/general.js",
-  "revision": "a7b01e4307ea2963b19ed0e395aebc04"
+  "revision": "577d9f4ee6638f6fc2f0026c36bc6072"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "25c05eb306fe7f8a2152c7ed46277ccc"
+  "revision": "e0baa3a0ac210db95b02c9eb695fa8af"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "995e82a81fff28de27f58d755cf5a793"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "e8308b1c68b4e77267578396af6bdc8b"
+  "revision": "9e9bddb29852aabbdddb5a2242eea8a2"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "975140a17e25e72bb265bff5c37ff1b8"
+  "revision": "051742bf127987d6001740e7aaca79e4"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "e32af3333475551fafab29912e206c47"
+  "revision": "510877401360ea1c0880f04fdd61a9da"
 }, {
   "url": "include/js/ListViewRenderes.js",
-  "revision": "31a8c317aefb09f55e0fd4aeb581a437"
+  "revision": "3111bb0321f2065d3b9694836e16d1ee"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
@@ -11519,7 +11519,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "346bb2a2bad839c26ffea5ae7cd35d45"
+  "revision": "05a8d20f6b32a3f97dbbd5bbd970b47a"
 }, {
   "url": "include/js/notebook.js",
   "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
@@ -11537,7 +11537,7 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "cb3925b58913b9ff2727debf18fa7948"
+  "revision": "db2e772bc7d6dc72bde227385df56ba4"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "9663dd1cea6cb7fb0cfe983e54baa186"
@@ -11546,7 +11546,7 @@ precacheAndRoute([{
   "revision": "afd1f3cd61451676111b6d7b6adb1e16"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "b4a62b76753cdc597cfb04c9b0e62f31"
+  "revision": "19aef31823b4860239e5cad8f6943621"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -11575,6 +11575,72 @@ precacheAndRoute([{
   "url": "include/components/loadjs.js",
   "revision": "03a39dd327aca956ea9448782aca04eb"
 }, {
+  "url": "include/components/PaintJS/control.css",
+  "revision": "633a32ba70580b50494e92cf1eceb66d"
+}, {
+  "url": "include/components/PaintJS/gradientcreator.css",
+  "revision": "bef2033786929d2f3889f3f1a118ee83"
+}, {
+  "url": "include/components/PaintJS/images/block.png",
+  "revision": "1b269616a8a6718edbddb9e47c48fbd9"
+}, {
+  "url": "include/components/PaintJS/images/brush.png",
+  "revision": "f0fb641da5e72270add4e9cf6a4b113a"
+}, {
+  "url": "include/components/PaintJS/images/grab.png",
+  "revision": "bf3a09b1ff490703541b37eb5d1de87a"
+}, {
+  "url": "include/components/PaintJS/images/line.png",
+  "revision": "87651d5a2ae6e56c303a500f15898fd8"
+}, {
+  "url": "include/components/PaintJS/images/picker.png",
+  "revision": "bcc9df3deaeb788102cb22d087299325"
+}, {
+  "url": "include/components/PaintJS/images/randomlocation.png",
+  "revision": "bd16a4f26d1c5a656035428bdbf88165"
+}, {
+  "url": "include/components/PaintJS/images/select.png",
+  "revision": "2d7fb763b4d3a5962129fe7e2fd2a5a1"
+}, {
+  "url": "include/components/PaintJS/images/text.png",
+  "revision": "06d323669c1ffdbe9d2d2e0e25c0a83e"
+}, {
+  "url": "include/components/PaintJS/images/transparent.png",
+  "revision": "3c07752b1d92c1ed6217d5451bd72a66"
+}, {
+  "url": "include/components/PaintJS/images/undo.png",
+  "revision": "50db48bed898b31c941546fb39dd7004"
+}, {
+  "url": "include/components/PaintJS/images/zoom.png",
+  "revision": "0347588626a19f83a1a66c78f56513ec"
+}, {
+  "url": "include/components/PaintJS/images/zoomin.png",
+  "revision": "5ba825d630c0a60bee37e8b17828ae96"
+}, {
+  "url": "include/components/PaintJS/images/zoomout.png",
+  "revision": "51642eabf4149bba697d725960a4197a"
+}, {
+  "url": "include/components/PaintJS/images/zoomreset.png",
+  "revision": "14d93ea9cba42407539bee8538d6f73f"
+}, {
+  "url": "include/components/PaintJS/introjs.css",
+  "revision": "4318a4823670d9318f0462560978e233"
+}, {
+  "url": "include/components/PaintJS/paint.css",
+  "revision": "b94db8c78295f03090586ab6457ba0c7"
+}, {
+  "url": "include/components/PaintJS/Paint.min.js",
+  "revision": "60bbe4b642c22f2fa8f3c21fb9166c42"
+}, {
+  "url": "include/components/PaintJS/quicksettings.css",
+  "revision": "1877ec1f864f1a115c0f134e97ef63a4"
+}, {
+  "url": "include/components/PaintJS/script.js",
+  "revision": "94ee218976c17d84c4e88f36e7eb171d"
+}, {
+  "url": "include/components/PaintJS/spectrum.css",
+  "revision": "2a1922c40199c91899ee4c07033b8dfa"
+}, {
   "url": "include/components/Select2/css/select2.css",
   "revision": "675de2a347f3407251629544a114be97"
 }, {
@@ -11585,7 +11651,7 @@ precacheAndRoute([{
   "revision": "4a7f0ca8abc6d524a4231cd5e790211f"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.js",
-  "revision": "258ee326841cb517d6096471ecf8d632"
+  "revision": "665e90b14ed8bb8d5785e078e591db31"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.min.css",
   "revision": "af7ae0b1f88c7d2c1c1fea9d52b2b744"
@@ -11674,6 +11740,9 @@ precacheAndRoute([{
   "url": "include/csrfmagic/csrf-magic.js",
   "revision": "143302dc3175324824d718937e339fff"
 }, {
+  "url": "include/MassCreateGridView/MassCreateGridView.js",
+  "revision": "a0ee36da94058a469df96cba89b1910b"
+}, {
   "url": "include/style.css",
   "revision": "d366c521d8140f4799b529e65f6d53df"
 }, {
@@ -11699,7 +11768,7 @@ precacheAndRoute([{
   "revision": "fc6646a77fe08a9ae143dc4384b6844f"
 }, {
   "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
-  "revision": "f81b5a4264ea41a328d5db7c318851f1"
+  "revision": "fa771ef0bc64b0d810f564fe7eef632f"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
   "revision": "1f4424f72609c356317ea1f8c15a5a5d"
@@ -11780,7 +11849,7 @@ precacheAndRoute([{
   "revision": "4ba8509ee8c1b014e06df45653e562d5"
 }, {
   "url": "modules/com_vtiger_workflow/resources/workflowlistscript.js",
-  "revision": "8b5c1c927497e4a7203d89fb1d009eba"
+  "revision": "deebc6a6db9909ad860362f26eb864b3"
 }, {
   "url": "modules/GlobalVariable/GlobalVariable.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"
@@ -12056,10 +12125,10 @@ precacheAndRoute([{
   "revision": "45f26b6647e4bb9c319c2623e23281f7"
 }, {
   "url": "modules/cbQuestion/resources/Builder.js",
-  "revision": "89d66d6f63eaae51d909868c78856e44"
+  "revision": "5c1c29a15ca0846167275c8ef8cbb74a"
 }, {
   "url": "modules/cbQuestion/resources/editbuilder.js",
-  "revision": "4850e64dbe1340464e2b9d71738fcb8b"
+  "revision": "581d7a38ba0424597a4cf76897ae493d"
 }, {
   "url": "modules/cbQuestion/resources/mermaid.min.js",
   "revision": "2cb9770b79c455efcb81bc3f58e35ef6"
@@ -12156,6 +12225,9 @@ precacheAndRoute([{
 }, {
   "url": "modules/cbMap/generatemap/DuplicateRelations.js",
   "revision": "a2c24e60f601be44f6d8a25b0a5e8431"
+}, {
+  "url": "modules/cbMap/generatemap/MassUpsertGrid.js",
+  "revision": "a5f75e9578cc608a1747d58ab810cb24"
 }, {
   "url": "modules/cbTermConditions/cbTermConditions.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"

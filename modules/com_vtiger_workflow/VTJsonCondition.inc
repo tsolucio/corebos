@@ -31,7 +31,7 @@ class VTJsonCondition {
 			} else {
 				list($full, $referenceField, $referenceModule, $fieldname) = $matches;
 				$referenceFieldId = $data[$referenceField];
-				if ($referenceFieldId != 0) {
+				if (!empty($referenceFieldId)) {
 					$entity = $entityCache->forId($data[$referenceField]);
 					if ($entity->getModuleName() == $referenceModule) {
 						$cond['fieldname'] = $fieldname;

@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+require_once 'include/Webservices/Utils.php';
 
 class OperationManager {
 	private $format;
@@ -112,7 +113,7 @@ class OperationManager {
 	}
 
 	public function handleType($type, $value) {
-		$value = stripslashes($value);
+		$value = vtws_stripSlashesRecursively($value);
 		$type = strtolower($type);
 		if (!empty($this->inParamProcess[$type])) {
 			$result = call_user_func($this->inParamProcess[$type], $value);

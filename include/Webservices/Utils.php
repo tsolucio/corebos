@@ -172,10 +172,27 @@ function getEmailFieldId($meta, $entityId) {
 	return $adb->query_result($result, 0, 'fieldid');
 }
 
+function vtws_stripSlashesRecursively($p) {
+	if (is_array($p)) {
+		return array_map('vtws_stripSlashesRecursively', $p);
+	} else {
+		return stripslashes($p);
+	}
+}
+
+function vtws_addSlashesRecursively($p) {
+	if (is_array($p)) {
+		$p = array_map('vtws_addSlashesRecursively', $p);
+	} else {
+		$p = addslashes($p);
+	}
+	return $p;
+}
+
 function vtws_getParameter($parameterArray, $paramName, $default = null) {
 	if (isset($parameterArray[$paramName])) {
 		if (is_array($parameterArray[$paramName])) {
-			$param = array_map('addslashes', $parameterArray[$paramName]);
+			$param = vtws_addSlashesRecursively($parameterArray[$paramName]);
 		} else {
 			$param = addslashes($parameterArray[$paramName]);
 		}
@@ -186,6 +203,16 @@ function vtws_getParameter($parameterArray, $paramName, $default = null) {
 		$param = $default;
 	}
 	return $param;
+}
+
+function vtws_getQueableCommands() {
+	global $adb;
+	$wsops = $adb->query('SELECT name FROM vtiger_ws_operation where queable=1');
+	$queable = [];
+	foreach ($adb->rowGenerator($wsops) as $wsop) {
+		$queable[] = $wsop['name'];
+	}
+	return $queable;
 }
 
 function vtws_logcalls($input) {
@@ -1040,6 +1067,104 @@ function vtws_checkListTypesPermission($moduleName, $user, $return = 'types') {
 		case 'types':
 		default:
 			return $types;
+			break;
+	}
+}
+
+function setResponseHeaders() {
+	global $cors_enabled_domains;
+	if (isset($_SERVER['HTTP_ORIGIN']) && !empty($cors_enabled_domains)) {
+		$parse = parse_url($_SERVER['HTTP_ORIGIN']);
+		if ($cors_enabled_domains=='*' || strpos($cors_enabled_domains, $parse['host'])!==false) {
+			header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+			header('Access-Control-Allow-Credentials: true');
+			header('Access-Control-Max-Age: 86400');    // cache for 1 day
+		}
+	}
+	if (!(isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || strtolower($_REQUEST['format'])=='streamraw'))) {
+		header('Content-type: application/json');
+	}
+}
+
+function writeErrorOutput($operationManager, $error, $outputmethod = 'echo', $headers = 'setResponseHeaders') {
+	$headers();
+	$state = new State();
+	$state->success = false;
+	$state->error = $error;
+	unset($state->result);
+	$output = $operationManager->encode($state);
+	//Send email with error.
+	$mailto = GlobalVariable::getVariable('Debug_Send_WebService_Error', '');
+	if ($mailto != '') {
+		$wserror = GlobalVariable::getVariable('Debug_WebService_Errors', '*');
+		$wsproperty = false;
+		if ($wserror != '*') {
+			$wsprops = explode(',', $wserror);
+			foreach ($wsprops as $wsprop) {
+				if (property_exists('WebServiceErrorCode', $wsprop)) {
+					$wsproperty = true;
+					break;
+				}
+			}
+		}
+		if ($wserror == '*' || $wsproperty) {
+			global $site_URL;
+			require_once 'modules/Emails/mail.php';
+			require_once 'modules/Emails/Emails.php';
+			$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
+			$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
+			$mailsubject = '[ERROR]: '.$error->code.' - web service call throwed exception.';
+			$mailcontent = '[ERROR]: '.$error->code.' '.$error->message."\n<br>".$site_URL;
+			unset($_REQUEST['sessionName']);
+			$mailcontent.= var_export($_REQUEST, true);
+			send_mail('Emails', $mailto, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $mailsubject, $mailcontent);
+		}
+	}
+	switch ($outputmethod) {
+		case 'return':
+			return $output;
+			break;
+		case 'roadrunner':
+			global $resp;
+			$resp->getBody()->write($output);
+			break;
+		case 'echo':
+		default:
+			echo $output;
+			break;
+	}
+}
+
+function writeOutput($operationManager, $data, $outputmethod = 'echo', $headers = 'setResponseHeaders') {
+	$headers();
+	$state = new State();
+	if (isset($data['wsmoreinfo'])) {
+		$state->moreinfo = $data['wsmoreinfo'];
+		unset($data['wsmoreinfo']);
+		if (!isset($data['wssuccess'])) {
+			$data = $data['wsresult'];
+		}
+	}
+	if (isset($data['wsresult']) && isset($data['wssuccess'])) {
+		$state->success = $data['wssuccess'];
+		$state->result = $data['wsresult'];
+	} else {
+		$state->success = true;
+		$state->result = $data;
+	}
+	unset($state->error);
+	$output = $operationManager->encode($state);
+	switch ($outputmethod) {
+		case 'return':
+			return $output;
+			break;
+		case 'roadrunner':
+			global $resp;
+			$resp->getBody()->write($output);
+			break;
+		case 'echo':
+		default:
+			echo $output;
 			break;
 	}
 }

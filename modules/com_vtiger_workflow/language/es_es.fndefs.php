@@ -1712,7 +1712,35 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder', ,943)",
+		"getRelatedMassCreateArrayConverting('Contacts','Products','PurchaseOrder',943)",
+	),
+),
+'getRelatedRecordCreateArrayConverting' => array(
+	'name' => 'getRelatedRecordCreateArrayConverting(module, RelatedModuleDestination, recordid)',
+	'desc' => 'Obtener una estructura JSON de Maestro-Detalle de servicio web para el ID de registro dado y sus registros de módulo relacionados aplicando mapas de conversión',
+	'params' => array(
+		array(
+			'name' => 'module',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'el nombre del módulo relacionado para obtener registros de',
+		),
+		array(
+			'name' => 'RelatedModuleDestination',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'módulo destino para módulos relacionados',
+		),
+		array(
+			'name' => 'recordid',
+			'type' => 'Entero',
+			'optional' => true,
+			'desc' => 'el ID del registro principal para obtener los registros relacionados, si no se proporciona el registro actual que desencadena el flujo de trabajo, se utilizará',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRelatedRecordCreateArrayConverting('Contacts','PurchaseOrder',943)",
 	),
 ),
 'getISODate' => array(

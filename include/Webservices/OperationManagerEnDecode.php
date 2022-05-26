@@ -23,7 +23,11 @@ class OperationManagerEnDecode {
 	}
 
 	public function decode($param) {
-		return json_decode($param, true);
+		if (is_array($param)) {
+			return $param;
+		} else {
+			return json_decode($param, true);
+		}
 	}
 }
 ?>

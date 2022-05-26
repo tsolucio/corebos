@@ -7,10 +7,16 @@
  * All Rights Reserved.
 ********************************************************************************/
 -->*}
+{if $showDesert}
+	{assign var='DESERTInfo' value='LBL_NO_DATA'|@getTranslatedString:$MODULE}
+	{include file='Components/Desert.tpl'}
+{else}
 <script type="text/javascript">
 	var GridColumns = '{$GridColumns}';
 	var EmptyData = '{$EmptyData}';
 	var ListFields = '{$ListFields}';
+	var MatchFields = '{$MatchFields}';
+	var bmapname = '{$bmapname}';
 </script>
 <script src="./include/MassCreateGridView/MassCreateGridView.js"></script>
 <div class="demo-only demo-only_viewport slds-align_absolute-center" id="slds-spinner" style="z-index: 9999;display: none">
@@ -40,6 +46,11 @@
 		</svg>
 		{$APP.LBL_DELETE_BUTTON}
 	</button>
+	{if isset($BALinks)}
+		{foreach from=$BALinks item=$i}
+			<a class="slds-button slds-button_neutral" href="{$i->linkurl}">{$i->linklabel}</a>
+		{/foreach}
+	{/if}
 </div>
 <div class="slds-button-group slds-float_right" role="group" style="margin-bottom: 5px;">
 	<button class="slds-button slds-button_neutral" onclick="MCGrid.EditFields()">
@@ -51,3 +62,4 @@
 </div>
 </table>
 <div id="listview-tui-grid"></div>
+{/if}

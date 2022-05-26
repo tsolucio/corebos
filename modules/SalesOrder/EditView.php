@@ -257,7 +257,7 @@ if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module']) && $_RE
 
 // Get address if account or contact is given
 if (is_null($record) && (empty($_REQUEST['convertmode']) || (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] != 'update_quote_val'))) {
-	if (!empty($_REQUEST['account_id'])) {
+	if (!empty($_REQUEST['account_id']) && getSalesEntityType($_REQUEST['account_id'])=='Accounts') {
 		$acct_focus = CRMEntity::getInstance('Accounts');
 		$acct_focus->retrieve_entity_info($_REQUEST['account_id'], 'Accounts');
 		$focus->column_fields['account_id'] = empty($focus->column_fields['account_id']) ? vtlib_purify($_REQUEST['account_id']) : $focus->column_fields['account_id'];
@@ -273,7 +273,7 @@ if (is_null($record) && (empty($_REQUEST['convertmode']) || (isset($_REQUEST['co
 		$focus->column_fields['ship_code'] = empty($focus->column_fields['ship_code']) ? $acct_focus->column_fields['ship_code'] : $focus->column_fields['ship_code'];
 		$focus->column_fields['bill_country'] = empty($focus->column_fields['bill_country']) ? $acct_focus->column_fields['bill_country'] : $focus->column_fields['bill_country'];
 		$focus->column_fields['ship_country'] = empty($focus->column_fields['ship_country']) ? $acct_focus->column_fields['ship_country'] : $focus->column_fields['ship_country'];
-	} elseif (!empty($_REQUEST['contact_id'])) {
+	} elseif (!empty($_REQUEST['contact_id']) && getSalesEntityType($_REQUEST['contact_id'])=='Contacts') {
 		$cto_focus = CRMEntity::getInstance('Contacts');
 		$cto_focus->retrieve_entity_info($_REQUEST['contact_id'], 'Contacts');
 		$focus->column_fields['contact_id'] = empty($focus->column_fields['contact_id']) ? vtlib_purify($_REQUEST['contact_id']) : $focus->column_fields['contact_id'];

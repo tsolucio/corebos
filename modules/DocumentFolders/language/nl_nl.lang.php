@@ -9,14 +9,17 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Module Name',
-	'SINGLE_ModuleName' => 'Module Name',
-	'ModuleName ID' => 'Module Name ID',
+	'DocumentFolders' => 'Documentmappen',
+	'SINGLE_DocumentFolders' => 'Documentmap',
+	'DocumentFolders ID' => 'Documentmap ID',
 
 	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
+	'LBL_DOCUMENTFOLDERS_INFORMATION' => 'Documentmap Information',
 	'LBL_DESCRIPTION_INFORMATION' => 'Verkoopkans omschrijving',
 
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'foldername' => 'Folder Name',
+	'documentfolders_no' => 'Folder No',
+	'parentfolder' => 'Parent Folder',
+	'sequence' => 'Sequence',
 );
 ?>

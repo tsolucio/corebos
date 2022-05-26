@@ -153,7 +153,6 @@ class cbQuestion extends CRMEntity {
 		$q = new cbQuestion();
 		if (empty($qid) && !empty($params['cbQuestionRecord']) && is_array($params['cbQuestionRecord'])) {
 			$q->column_fields = $params['cbQuestionRecord'];
-			unset($params['cbQuestionRecord']);
 			if (isset($params['cbQuestionContext'])) {
 				$qctx = $params['cbQuestionContext'];
 				unset($params['cbQuestionContext']);
@@ -161,6 +160,9 @@ class cbQuestion extends CRMEntity {
 			}
 		} else {
 			$q->retrieve_entity_info($qid, 'cbQuestion');
+		}
+		if (isset($params['cbQuestionRecord'])) {
+			unset($params['cbQuestionRecord']);
 		}
 		$q->id = (empty($q->column_fields['record_id']) ? 0 : $q->column_fields['record_id']);
 		if (empty($q->id) || isPermitted('cbQuestion', 'DetailView', $q->id) != 'yes') {
@@ -473,6 +475,9 @@ class cbQuestion extends CRMEntity {
 			case 'Table':
 				$ret = self::getTableFromAnswer($ans);
 				break;
+			case 'Grid':
+				$ret = self::getGridFromAnswer($qid, $params);
+				break;
 			case 'Number':
 				$ret = array_pop($ans['answer'][0]);
 				break;
@@ -626,6 +631,16 @@ class cbQuestion extends CRMEntity {
 			$table .= '</table>';
 		}
 		return $table;
+	}
+
+	public static function getGridFromAnswer($qid, $params) {
+		$smarty = new vtigerCRM_Smarty();
+		$properties = json_encode(cbQuestion::getQuestionProperties($qid));
+		$smarty->assign('Properties', $properties);
+		$smarty->assign('QuestionID', $qid);
+		$smarty->assign('RecordID', $params['$RECORD$']);
+		$smarty->assign('RowsperPage', GlobalVariable::getVariable('MasterDetail_Pagination', 40));
+		$smarty->display('modules/cbQuestion/Grid.tpl');
 	}
 
 	public static function getChartFromAnswer($ans) {

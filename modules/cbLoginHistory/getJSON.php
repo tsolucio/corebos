@@ -34,31 +34,20 @@ if (isset($_REQUEST['user_list']) && is_numeric($_REQUEST['user_list'])) {
 } else {
 	$userid = 0;
 }
-if (isset($_REQUEST['order_by']) && is_numeric($_REQUEST['order_by'])) {
-	$order_by = vtlib_purify($_REQUEST['order_by']);
-	switch ($order_by) {
-		case 1:
-			$order_by = $focus->list_fields_name['User IP'];
-			break;
-		case 2:
-			$order_by = $focus->list_fields_name['Signin Time'];
-			break;
-		case 3:
-			$order_by = $focus->list_fields_name['Signout Time'];
-			break;
-		case 4:
-			$order_by = $focus->list_fields_name['Status'];
-			break;
-		default:
-		case 0:
-			$order_by = $focus->list_fields_name['User Name'];
-			break;
+if (isset($_REQUEST['sortColumn'])) {
+	$order_by = vtlib_purify($_REQUEST['sortColumn']);
+	if (isset($focus->list_fields_name[$order_by])) {
+		$order_by = $focus->list_fields_name[$order_by];
+	} else {
+		$order_by = $focus->default_order_by;
 	}
 } else {
 	$order_by = $focus->default_order_by;
 }
-if (isset($_REQUEST['order_rule'])) {
-	$sorder = vtlib_purify($_REQUEST['order_rule']);
+if (!isset($_REQUEST['sortAscending'])) {
+	$sorder = '';
+} elseif ($_REQUEST['sortAscending']=='true') {
+	$sorder = 'ASC';
 } else {
 	$sorder = 'DESC';
 }
