@@ -429,12 +429,14 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	public function describe($elementType) {
 		global $current_user;
 		$wsuserlanguage =$current_user->language;
+		vtws_preserveGlobal('current_language', $wsuserlanguage);
 		vtws_preserveGlobal('current_user', $this->user);
 		$label = getTranslatedString($elementType, $elementType);
 		$createable = strcasecmp(isPermitted($elementType, EntityMeta::$CREATE), 'yes') === 0;
 		$updateable = strcasecmp(isPermitted($elementType, EntityMeta::$UPDATE), 'yes') === 0;
 		$deleteable = $this->meta->hasDeleteAccess();
 		$retrieveable = $this->meta->hasReadAccess();
+		VTWS_PreserveGlobal::restore('current_language');
 		$fields = $this->getModuleFields($wsuserlanguage);
 		return array(
 			'label'=>$label,'label_raw'=>$elementType,'name'=>$elementType,'createable'=>$createable,'updateable'=>$updateable,
@@ -449,7 +451,6 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		if (array_key_exists($mfkey, $purified_mfcache)) {
 			return $purified_mfcache[$mfkey];
 		}
-		vtws_preserveGlobal('current_language', $i18nlanguage);
 		$fields = array();
 		$moduleFields = $this->meta->getModuleFields();
 		foreach ($moduleFields as $webserviceField) {
@@ -458,7 +459,6 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			}
 			$fields[] = $this->getDescribeFieldArray($webserviceField);
 		}
-		VTWS_PreserveGlobal::restore('current_language');
 		$fields[] = $this->getIdField($this->meta->getObectIndexColumn());
 		$purified_mfcache[$mfkey] = $fields;
 		return $fields;
