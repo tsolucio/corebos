@@ -68,6 +68,31 @@ function fieldDep_GetField(change_field, action_field, new_value, old_value, par
 	});
 }
 
+function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_value, parameters) {
+	let searchValue = (parameters[3]=='new value' ? new_value : parameters[3]);
+	ExecuteFunctions(
+		'getFieldValuesFromSearch',
+		'getFieldValuesFrom='+parameters[0]+'&getTheseFields='+parameters[1]+
+		'&getFieldSearchField='+parameters[2]+'&getFieldSearchValue='+searchValue+
+		'&getFieldSearchop='+parameters[4]
+	).then(function (data) {
+		let rdo = JSON.parse(data);
+		let srcfieldids = parameters[1].split(',');
+		let dstfieldids = parameters[5].split(',');
+		for (var f=0; f<srcfieldids.length; f++) {
+			if (CKEDITOR.instances[dstfieldids[f]]!=undefined) {
+				let fld = CKEDITOR.instances[dstfieldids[f]];
+				fld.insertHtml(rdo[srcfieldids[f]]);
+			} else {
+				let fld = document.getElementById(dstfieldids[f]);
+				if (fld) {
+					fld.value = rdo[srcfieldids[f]];
+				}
+			}
+		}
+	});
+}
+
 function fieldDep_AssignNewValue(change_field, action_field, new_value, old_value, parameters) {
 	document.getElementsByName(action_field).item(0).value = new_value;
 }
