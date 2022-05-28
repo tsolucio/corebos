@@ -75,6 +75,14 @@ switch ($functiontocall) {
 		$limit =  isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
 		$ret = getProductServiceAutocomplete($_REQUEST['term'], array(), $limit);
 		break;
+	case 'getEntityName':
+		$ret = '';
+		$crmid = vtlib_purify($_REQUEST['getNameFrom']);
+		if (!empty($crmid)) {
+			$ename = getEntityName(getSalesEntityType($crmid), $crmid);
+			$ret = $ename[$crmid];
+		}
+		break;
 	case 'getFieldValuesFromRecord':
 		$ret = array();
 		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
