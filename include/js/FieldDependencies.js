@@ -389,6 +389,12 @@ FieldDependencies.prototype.fieldValueChange = function (targetFields) {
 			let inputfld = document.getElementsByName(field).item(0);
 			if (inputfld.type == 'checkbox') {
 				inputfld.checked = !(value=='0' || value=='false' || value=='' || value=='null' || value=='yes');
+			} else if (inputfld.type == 'hidden' && document.getElementById(field+'_display')!=null) {
+				// reference field
+				inputfld.value = value;
+				ExecuteFunctions('getEntityName', 'getNameFrom='+value).then(function (data) {
+					document.getElementById(field+'_display').value = JSON.parse(data);
+				});
 			} else {
 				inputfld.value = value;
 			}

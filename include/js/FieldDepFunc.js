@@ -61,7 +61,18 @@ function fieldDep_GetField(change_field, action_field, new_value, old_value, par
 			} else {
 				let fld = document.getElementById(dstfieldids[f]);
 				if (fld) {
-					fld.value = rdo[srcfieldids[f]];
+					if (fld.type == 'checkbox') {
+						fld.checked = !(rdo[srcfieldids[f]]=='0' || rdo[srcfieldids[f]]=='false' || rdo[srcfieldids[f]]=='' || rdo[srcfieldids[f]]=='null' || rdo[srcfieldids[f]]=='yes');
+					} else if (fld.type == 'hidden' && document.getElementById(dstfieldids[f]+'_display')!=null) {
+						// reference field
+						fld.value = rdo[srcfieldids[f]];
+						let dispfname = dstfieldids[f]+'_display';
+						ExecuteFunctions('getEntityName', 'getNameFrom='+fld.value).then(function (ename) {
+							document.getElementById(dispfname).value = JSON.parse(ename);
+						});
+					} else {
+						fld.value = rdo[srcfieldids[f]];
+					}
 				}
 			}
 		}
@@ -86,7 +97,18 @@ function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_valu
 			} else {
 				let fld = document.getElementById(dstfieldids[f]);
 				if (fld) {
-					fld.value = rdo[srcfieldids[f]];
+					if (fld.type == 'checkbox') {
+						fld.checked = !(rdo[srcfieldids[f]]=='0' || rdo[srcfieldids[f]]=='false' || rdo[srcfieldids[f]]=='' || rdo[srcfieldids[f]]=='null' || rdo[srcfieldids[f]]=='yes');
+					} else if (fld.type == 'hidden' && document.getElementById(dstfieldids[f]+'_display')!=null) {
+						// reference field
+						fld.value = rdo[srcfieldids[f]];
+						let dispfname = dstfieldids[f]+'_display';
+						ExecuteFunctions('getEntityName', 'getNameFrom='+fld.value).then(function (ename) {
+							document.getElementById(dispfname).value = JSON.parse(ename);
+						});
+					} else {
+						fld.value = rdo[srcfieldids[f]];
+					}
 				}
 			}
 		}
