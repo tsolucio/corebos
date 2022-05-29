@@ -1,20 +1,19 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-stdlib for the canonical source repository
- * @copyright https://github.com/laminas/laminas-stdlib/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-stdlib/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Stdlib;
 
 use Countable;
 use IteratorAggregate;
+use ReturnTypeWillChange;
 use Serializable;
+use UnexpectedValueException;
 
 use function array_map;
 use function count;
 use function get_class;
+use function is_array;
 use function serialize;
 use function sprintf;
 use function unserialize;
@@ -33,25 +32,28 @@ use function unserialize;
  */
 class PriorityQueue implements Countable, IteratorAggregate, Serializable
 {
-    const EXTR_DATA     = 0x00000001;
-    const EXTR_PRIORITY = 0x00000002;
-    const EXTR_BOTH     = 0x00000003;
+    public const EXTR_DATA     = 0x00000001;
+    public const EXTR_PRIORITY = 0x00000002;
+    public const EXTR_BOTH     = 0x00000003;
 
     /**
      * Inner queue class to use for iteration
+     *
      * @var string
      */
-    protected $queueClass = 'Laminas\Stdlib\SplPriorityQueue';
+    protected $queueClass = SplPriorityQueue::class;
 
     /**
      * Actual items aggregated in the priority queue. Each item is an array
      * with keys "data" and "priority".
+     *
      * @var array
      */
-    protected $items      = [];
+    protected $items = [];
 
     /**
      * Inner queue object
+     *
      * @var SplPriorityQueue
      */
     protected $queue;
@@ -67,7 +69,7 @@ class PriorityQueue implements Countable, IteratorAggregate, Serializable
      */
     public function insert($data, $priority = 1)
     {
-        $priority = (int) $priority;
+        $priority      = (int) $priority;
         $this->items[] = [
             'data'     => $data,
             'priority' => $priority,
@@ -123,7 +125,7 @@ class PriorityQueue implements Countable, IteratorAggregate, Serializable
      */
     public function isEmpty()
     {
-        return (0 === $this->count());
+        return 0 === $this->count();
     }
 
     /**
@@ -131,6 +133,7 @@ class PriorityQueue implements Countable, IteratorAggregate, Serializable
      *
      * @return int
      */
+    #[ReturnTypeWillChange]
     public function count()
     {
         return count($this->items);
@@ -153,7 +156,34 @@ class PriorityQueue implements Countable, IteratorAggregate, Serializable
      */
     public function extract()
     {
-        return $this->getQueue()->extract();
+        $value = $this->getQueue()->extract();
+
+        $keyToRemove     = null;
+        $highestPriority = null;
+        foreach ($this->items as $key => $item) {
+            if ($item['data'] !== $value) {
+                continue;
+            }
+
+            if (null === $highestPriority) {
+                $highestPriority = $item['priority'];
+                $keyToRemove     = $key;
+                continue;
+            }
+
+            if ($highestPriority >= $item['priority']) {
+                continue;
+            }
+
+            $highestPriority = $item['priority'];
+            $keyToRemove     = $key;
+        }
+
+        if ($keyToRemove !== null) {
+            unset($this->items[$keyToRemove]);
+        }
+
+        return $value;
     }
 
     /**
@@ -168,6 +198,7 @@ class PriorityQueue implements Countable, IteratorAggregate, Serializable
      *
      * @return SplPriorityQueue
      */
+    #[ReturnTypeWillChange]
     public function getIterator()
     {
         $queue = $this->getQueue();
@@ -181,7 +212,17 @@ class PriorityQueue implements Countable, IteratorAggregate, Serializable
      */
     public function serialize()
     {
-        return serialize($this->items);
+        return serialize($this->__serialize());
+    }
+
+    /**
+     * Magic method used for serializing of an instance.
+     *
+     * @return array
+     */
+    public function __serialize()
+    {
+        return $this->items;
     }
 
     /**
@@ -194,7 +235,26 @@ class PriorityQueue implements Countable, IteratorAggregate, Serializable
      */
     public function unserialize($data)
     {
-        foreach (unserialize($data) as $item) {
+        $toUnserialize = unserialize($data);
+        if (! is_array($toUnserialize)) {
+            throw new UnexpectedValueException(sprintf(
+                'Cannot deserialize %s instance; corrupt serialization data',
+                self::class
+            ));
+        }
+
+        $this->__unserialize($toUnserialize);
+    }
+
+   /**
+    * Magic method used to rebuild an instance.
+    *
+    * @param array $data Data array.
+    * @return void
+    */
+    public function __unserialize($data)
+    {
+        foreach ($data as $item) {
             $this->insert($item['data'], $item['priority']);
         }
     }

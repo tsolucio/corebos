@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '5173c998fb71aa7d807d122ecfaa67d3d782a4bc',
+        'reference' => '0d45de324e6ef4dd46238ab77871f6c5f08e3c7d',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '5173c998fb71aa7d807d122ecfaa67d3d782a4bc',
+            'reference' => '0d45de324e6ef4dd46238ab77871f6c5f08e3c7d',
             'dev_requirement' => false,
         ),
         'automattic/woocommerce' => array(
@@ -407,12 +407,12 @@
             'dev_requirement' => false,
         ),
         'laminas/laminas-stdlib' => array(
-            'pretty_version' => '3.3.1',
-            'version' => '3.3.1.0',
+            'pretty_version' => '3.7.1',
+            'version' => '3.7.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laminas/laminas-stdlib',
             'aliases' => array(),
-            'reference' => 'd81c7ffe602ed0e6ecb18691019111c0f4bf1efe',
+            'reference' => 'bcd869e2fe88d567800057c1434f2380354fe325',
             'dev_requirement' => false,
         ),
         'laminas/laminas-zendframework-bridge' => array(
@@ -993,12 +993,6 @@
             'dev_requirement' => false,
             'replaced' => array(
                 0 => '^3.4.0',
-            ),
-        ),
-        'zendframework/zend-stdlib' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '^3.2.1',
             ),
         ),
     ),

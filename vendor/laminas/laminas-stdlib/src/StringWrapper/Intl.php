@@ -1,10 +1,6 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-stdlib for the canonical source repository
- * @copyright https://github.com/laminas/laminas-stdlib/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-stdlib/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Stdlib\StringWrapper;
 
@@ -52,11 +48,12 @@ class Intl extends AbstractStringWrapper
      * Returns the length of the given string
      *
      * @param string $str
-     * @return int|false
+     * @return false|int
      */
     public function strlen($str)
     {
-        return grapheme_strlen($str);
+        $len = grapheme_strlen($str);
+        return $len ?? false;
     }
 
     /**

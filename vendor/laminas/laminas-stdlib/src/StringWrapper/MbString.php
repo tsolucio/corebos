@@ -1,10 +1,6 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-stdlib for the canonical source repository
- * @copyright https://github.com/laminas/laminas-stdlib/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-stdlib/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Stdlib\StringWrapper;
 
@@ -24,10 +20,11 @@ class MbString extends AbstractStringWrapper
     /**
      * List of supported character sets (upper case)
      *
-     * @var null|string[]
      * @link http://php.net/manual/mbstring.supported-encodings.php
+     *
+     * @var null|string[]
      */
-    protected static $encodings = null;
+    protected static $encodings;
 
     /**
      * Get a list of supported character encodings
@@ -124,6 +121,7 @@ class MbString extends AbstractStringWrapper
 
         $fromEncoding = $reverse ? $convertEncoding : $encoding;
         $toEncoding   = $reverse ? $encoding : $convertEncoding;
-        return mb_convert_encoding($str, $toEncoding, $fromEncoding);
+
+        return mb_convert_encoding($str, $toEncoding ?? '', $fromEncoding ?? '');
     }
 }
