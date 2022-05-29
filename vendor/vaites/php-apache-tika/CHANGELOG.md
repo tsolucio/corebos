@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.2.4
+
+* Fix known issues before parsing response (see [LOG4J2-2537](https://issues.apache.org/jira/browse/LOG4J2-2537))
+* Tested up to Apache Tika 1.28.2 and 2.4.0
+
+## v1.2.3
+
+* Removed debug statement when the JSON parse fails
+* Added new known issues to README.md
+* Tests runs now on GitHub Actions
+
 ## v1.2.1
 
 * Fix known issues before parsing response (see [LOG4J2-2537](https://issues.apache.org/jira/browse/LOG4J2-2537))
