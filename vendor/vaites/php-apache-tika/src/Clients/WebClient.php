@@ -240,8 +240,6 @@ class WebClient extends Client
 
     /**
      * Get an specified HTTP header
-     *
-     * @return  mixed
      */
     public function getHeader(string $name): ?string
     {

@@ -4860,17 +4860,17 @@
         },
         {
             "name": "smi2/phpclickhouse",
-            "version": "1.4.1",
-            "version_normalized": "1.4.1.0",
+            "version": "1.4.4",
+            "version_normalized": "1.4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smi2/phpClickHouse.git",
-                "reference": "17aea5a0c90f7aa9541d74f7567849938eccfcce"
+                "reference": "e629bad8344d0a742b26955705a8ec1ccb5b40ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smi2/phpClickHouse/zipball/17aea5a0c90f7aa9541d74f7567849938eccfcce",
-                "reference": "17aea5a0c90f7aa9541d74f7567849938eccfcce",
+                "url": "https://api.github.com/repos/smi2/phpClickHouse/zipball/e629bad8344d0a742b26955705a8ec1ccb5b40ae",
+                "reference": "e629bad8344d0a742b26955705a8ec1ccb5b40ae",
                 "shasum": ""
             },
             "require": {
@@ -4884,7 +4884,7 @@
                 "phpunit/phpunit": "^9.5",
                 "sebastian/comparator": "^4.0"
             },
-            "time": "2021-01-20T05:31:30+00:00",
+            "time": "2022-04-23T18:46:17+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4916,7 +4916,7 @@
             ],
             "support": {
                 "issues": "https://github.com/smi2/phpClickHouse/issues",
-                "source": "https://github.com/smi2/phpClickHouse/tree/1.4.1"
+                "source": "https://github.com/smi2/phpClickHouse/tree/1.4.4"
             },
             "install-path": "../smi2/phpclickhouse"
         },
@@ -6103,17 +6103,17 @@
         },
         {
             "name": "vaites/php-apache-tika",
-            "version": "v1.2.1",
-            "version_normalized": "1.2.1.0",
+            "version": "v1.2.4",
+            "version_normalized": "1.2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vaites/php-apache-tika.git",
-                "reference": "2649149cf62739b040a66d4e48057806e4e0afa7"
+                "reference": "dd145e4e8d4595d3bde883b7b4bd0edecaa4df22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vaites/php-apache-tika/zipball/2649149cf62739b040a66d4e48057806e4e0afa7",
-                "reference": "2649149cf62739b040a66d4e48057806e4e0afa7",
+                "url": "https://api.github.com/repos/vaites/php-apache-tika/zipball/dd145e4e8d4595d3bde883b7b4bd0edecaa4df22",
+                "reference": "dd145e4e8d4595d3bde883b7b4bd0edecaa4df22",
                 "shasum": ""
             },
             "require": {
@@ -6122,13 +6122,14 @@
             },
             "require-dev": {
                 "filp/whoops": "^2.7",
+                "nunomaduro/collision": "^5.11",
                 "nunomaduro/phpinsights": "^1.14",
                 "phpstan/phpstan": "^0.12.26",
                 "phpunit/phpunit": "^9.0",
                 "psy/psysh": "^0.10.8",
                 "symfony/var-dumper": "^5.1"
             },
-            "time": "2022-01-15T12:59:00+00:00",
+            "time": "2022-05-04T20:12:52+00:00",
             "type": "library",
             "extra": {
                 "supported-versions": [
@@ -6148,9 +6149,14 @@
                     "1.26",
                     "1.27",
                     "1.28",
+                    "1.28.1",
+                    "1.28.2",
                     "2.0.0",
                     "2.1.0",
-                    "2.2.0"
+                    "2.2.0",
+                    "2.2.1",
+                    "2.3.0",
+                    "2.4.0"
                 ]
             },
             "installation-source": "dist",
@@ -6185,7 +6191,7 @@
             ],
             "support": {
                 "issues": "https://github.com/vaites/php-apache-tika/issues",
-                "source": "https://github.com/vaites/php-apache-tika/tree/v1.2.1"
+                "source": "https://github.com/vaites/php-apache-tika/tree/v1.2.4"
             },
             "install-path": "../vaites/php-apache-tika"
         },
