@@ -51,6 +51,7 @@ return array(
     'Mautic\\' => array($vendorDir . '/mautic/api-library/lib'),
     'Laminas\\ZendFrameworkBridge\\' => array($vendorDir . '/laminas/laminas-zendframework-bridge/src'),
     'Laminas\\Stdlib\\' => array($vendorDir . '/laminas/laminas-stdlib/src'),
+    'Laminas\\Session\\' => array($vendorDir . '/laminas/laminas-session/src'),
     'Laminas\\ServiceManager\\' => array($vendorDir . '/laminas/laminas-servicemanager/src'),
     'Laminas\\Serializer\\' => array($vendorDir . '/laminas/laminas-serializer/src'),
     'Laminas\\Json\\' => array($vendorDir . '/laminas/laminas-json/src'),

@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '0d45de324e6ef4dd46238ab77871f6c5f08e3c7d',
+        'reference' => '42374e714d623b5a7e9cd50d8daa843a0ed37c9b',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '0d45de324e6ef4dd46238ab77871f6c5f08e3c7d',
+            'reference' => '42374e714d623b5a7e9cd50d8daa843a0ed37c9b',
             'dev_requirement' => false,
         ),
         'automattic/woocommerce' => array(
@@ -404,6 +404,15 @@
             'install_path' => __DIR__ . '/../laminas/laminas-servicemanager',
             'aliases' => array(),
             'reference' => '0d4c8628a71fae9f7bd0b1b74b76382e5e9a04b1',
+            'dev_requirement' => false,
+        ),
+        'laminas/laminas-session' => array(
+            'pretty_version' => '2.12.1',
+            'version' => '2.12.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laminas/laminas-session',
+            'aliases' => array(),
+            'reference' => '888c6a344e9a4c9f34ab6e09346640eac9be3fcf',
             'dev_requirement' => false,
         ),
         'laminas/laminas-stdlib' => array(

@@ -106,6 +106,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         array (
             'Laminas\\ZendFrameworkBridge\\' => 28,
             'Laminas\\Stdlib\\' => 15,
+            'Laminas\\Session\\' => 16,
             'Laminas\\ServiceManager\\' => 23,
             'Laminas\\Serializer\\' => 19,
             'Laminas\\Json\\' => 13,
@@ -337,6 +338,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'Laminas\\Stdlib\\' => 
         array (
             0 => __DIR__ . '/..' . '/laminas/laminas-stdlib/src',
+        ),
+        'Laminas\\Session\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-session/src',
         ),
         'Laminas\\ServiceManager\\' => 
         array (
