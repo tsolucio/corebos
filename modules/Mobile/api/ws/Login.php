@@ -46,9 +46,9 @@ class crmtogo_WS_Login extends crmtogo_WS_Controller {
 			$this->setActiveUser($current_user);
 
 			//one day
-			coreBOS_Session::set('__HTTP_Session_Expire_TS', time() + (60 * 60 * 24));
+			coreBOS_Session::set('__CBOSSession_Expire_TS', time() + (60 * 60 * 24));
 			// 1 hour
-			coreBOS_Session::set('__HTTP_Session_Idle_TS', 1*60*60);
+			coreBOS_Session::set('__CBOSSession_Idle_TS', 1*60*60);
 			coreBOS_Session::set('loginattempts', 0);
 			coreBOS_Session::set('_authenticated_user_id', $current_user->id);
 			coreBOS_Session::set('username', $username);

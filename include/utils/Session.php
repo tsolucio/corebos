@@ -21,19 +21,37 @@ class coreBOS_Session {
 	private static $session_name = '';
 
 	/**
+	 * @const STARTED - The session was started with the current request
+	 */
+	private const STARTED = 1;
+
+	/**
+	 * @const CONTINUE - No new session was started with the current request
+	 */
+	private const CONTINUED = 2;
+
+	/**
 	 * Constructor
 	 * Avoid creation of instances.
 	 */
-	private function __construct() {
+	public function __construct() {
 	}
 
 	/**
 	 * Destroy session
 	 */
 	public static function destroy() {
-		self::init();
-		session_regenerate_id(true);
-		session_unset();
+		if (!self::isSessionStarted()) {
+			session_start();
+		}
+		// Unset all of the session variables.
+		$_SESSION = array();
+		// delete the session cookie. Note: This will destroy the session, and not just the session data!
+		if (ini_get('session.use_cookies')) {
+			$params = session_get_cookie_params();
+			setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+		}
+		global $log;$log->fatal(['after', $_SESSION]);
 		session_destroy();
 	}
 
@@ -45,17 +63,121 @@ class coreBOS_Session {
 	/**
 	 * Initialize session
 	 */
-	public static function init($setKCFinder = false, $saveTabValues = false) {
+	public static function init($setKCFinder = false, $saveTabValues = false, $sname = '') {
 		if (!isset($_SESSION)) {
-			session_name(self::getSessionName());
+			$sname = ($sname=='' ? self::getSessionName() : $sname);
+			session_name($sname);
+			session_id($sname);
 		}
-		@session_start();
+		if (!self::isSessionStarted()) {
+			session_start();
+		}
 		if ($setKCFinder) {
 			self::setKCFinderVariables();
 		}
 		if ($saveTabValues) {
 			self::copyTabVariables();
 		}
+		if (!isset($_SESSION['__CBOSSession_Info'])) {
+			$_SESSION['__CBOSSession_Info'] = self::STARTED;
+		} else {
+			$_SESSION['__CBOSSession_Info'] = self::CONTINUED;
+		}
+		return session_id();
+	}
+
+	/**
+	 * Sets the maximum expire time
+	 *
+	 * @param integer $time Time in seconds
+	 * @param bool    $add  Add time to current expire time or not
+	 *
+	 * @return void
+	 */
+	public static function setExpire($time, $add = false) {
+		if ($add && isset($_SESSION['__CBOSSession_Expire'])) {
+			$_SESSION['__CBOSSession_Expire'] += $time;
+		} else {
+			$_SESSION['__CBOSSession_Expire'] = $time;
+		}
+		if (!isset($_SESSION['__CBOSSession_Expire_TS'])) {
+			$_SESSION['__CBOSSession_Expire_TS'] = time();
+		}
+	}
+
+	/**
+	 * Sets the maximum idle time
+	 *
+	 * Sets the time-out period allowed between requests before the session-state
+	 * provider terminates the session.
+	 *
+	 * @param integer $time Time in seconds
+	 * @param bool    $add  Add time to current maximum idle time or not
+	 *
+	 * @return void
+	 */
+	public static function setIdle($time, $add = false) {
+		if ($add && isset($_SESSION['__CBOSSession_Idle'])) {
+			$_SESSION['__CBOSSession_Idle'] += $time;
+		} else {
+			$_SESSION['__CBOSSession_Idle'] = $time;
+		}
+		if (!isset($_SESSION['__CBOSSession_Idle_TS'])) {
+			$_SESSION['__CBOSSession_Idle_TS'] = time();
+		}
+	}
+
+	/**
+	 * Check if session is expired
+	 *
+	 * @return boolean
+	 */
+	public static function isExpired() {
+		return (isset($_SESSION['__CBOSSession_Expire']) && $_SESSION['__CBOSSession_Expire'] > 0 && isset($_SESSION['__CBOSSession_Expire_TS'])
+			&& ($_SESSION['__CBOSSession_Expire_TS'] + $_SESSION['__CBOSSession_Expire']) <= time());
+	}
+
+	/**
+	 * Check if session is idle
+	 *
+	 * @return boolean
+	 */
+	public static function isIdle() {
+		return (isset($_SESSION['__CBOSSession_Idle']) && $_SESSION['__CBOSSession_Idle'] > 0 && isset($_SESSION['__CBOSSession_Idle_TS'])
+			&& ($_SESSION['__CBOSSession_Idle_TS'] + $_SESSION['__CBOSSession_Idle']) <= time());
+	}
+
+	/**
+	 * Gets a value indicating whether the session was created with the current request
+	 *
+	 * You MUST call this method only after you have started the session with the self::start() method.
+	 *
+	 * @return boolean true when the session was created with the current request
+	 *                 false otherwise
+	 *
+	 * @see  self::start()
+	 * @uses self::STARTED
+	 */
+	public static function isNew() {
+		// The best way to check if a session is new is to check for existence of a session data storage
+		// with the current session id, but this is impossible with the default PHP module wich is 'files'.
+		// So we need to emulate it.
+		return !isset($_SESSION['__CBOSSession_Info']) || $_SESSION['__CBOSSession_Info'] == self::STARTED;
+	}
+
+	/**
+	 * Sets new ID of a session
+	 *
+	 * @param string $id New ID of a sesion
+	 *
+	 * @return string Previous ID of a session
+	 * @see    session_id()
+	 */
+	public static function id($id = null) {
+		if (isset($id)) {
+			return session_id($id);
+		}
+		return session_id();
 	}
 
 	/**
@@ -101,9 +223,7 @@ class coreBOS_Session {
 		}
 		$purl = parse_url($URL);
 		$sn = preg_replace('/[^A-Za-z0-9]/', '', (isset($purl['host'])?$purl['host']:'').(isset($purl['path'])?$purl['path']:'').(isset($purl['port'])?$purl['port']:''));
-		if (is_numeric($sn)) {
-			$sn = 'cb'.$sn;
-		}
+		$sn = 'cb'.md5($sn);
 		self::$session_name = $sn;
 		return $sn;
 	}
@@ -239,7 +359,7 @@ class coreBOS_Session {
 
 	/**
 	 * Merge the values of an array on to the SESSION array
-	 * @param Array of key=>value to add to the SESSION
+	 * @param array of key=>value to add to the SESSION
 	 * @param boolean, if true array values have precedence, else the existing SESSION values have precedence
 	 */
 	public static function merge($values, $overwrite_session = false) {

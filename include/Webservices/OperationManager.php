@@ -143,13 +143,13 @@ class OperationManager {
 				if (is_array($userDetails)) {
 					return $userDetails;
 				} else {
-					$this->sessionManager->set('authenticatedUserId', $userDetails->id);
+					$this->sessionManager::set('authenticatedUserId', $userDetails->id);
 					cbEventHandler::do_action('corebos.login', array($userDetails, $this->sessionManager, 'webservice'));
 					global $adb;
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
 					$userId = vtws_getId($webserviceObject->getEntityId(), $userDetails->id);
 					$vtigerVersion = vtws_getVtigerVersion();
-					return array('sessionName'=>$this->sessionManager->getSessionId(), 'userId'=>$userId, 'version'=>$API_VERSION, 'vtigerVersion'=>$vtigerVersion);
+					return array('sessionName'=>$this->sessionManager::id(), 'userId'=>$userId, 'version'=>$API_VERSION, 'vtigerVersion'=>$vtigerVersion);
 				}
 			}
 		} catch (WebServiceException $e) {

@@ -7,36 +7,31 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-ini_set('include_path', ini_get('include_path'). PATH_SEPARATOR . '../../../include/HTTP_Session2');
-include_once __DIR__ . '/../../../include/HTTP_Session2/Session2.php';
 
 class crmtogo_API_Session {
 
-	public function __construct() {
-	}
-
 	public static function destroy($sessionid = false) {
-		HTTP_Session2::destroy($sessionid);
+		coreBOS_Session::destroy($sessionid);
 	}
 
 	public static function init($sessionid = false) {
 		if (empty($sessionid)) {
-			HTTP_Session2::start(null, null);
-			$sessionid = HTTP_Session2::id();
+			coreBOS_Session::init(false, true);
+			$sessionid = coreBOS_Session::getSessionName();
 		} else {
-			HTTP_Session2::start(null, $sessionid);
+			coreBOS_Session::init(false, true, $sessionid);
 		}
-		if (HTTP_Session2::isIdle() || HTTP_Session2::isExpired()) {
+		if (coreBOS_Session::isIdle() || coreBOS_Session::isExpired()) {
 			return false;
 		}
 		return $sessionid;
 	}
 
 	public static function get($key, $defvalue = '') {
-		return HTTP_Session2::get($key, $defvalue);
+		return coreBOS_Session::get($key, $defvalue);
 	}
 
 	public static function set($key, $value) {
-		HTTP_Session2::set($key, $value);
+		coreBOS_Session::set($key, $value);
 	}
 }
