@@ -7,14 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-ini_set('include_path', ini_get('include_path'). PATH_SEPARATOR . 'include/HTTP_Session2');
-require_once 'include/HTTP_Session2/Session2.php';
 
 class SessionManager {
 	private $maxLife;
 	private $idleLife;
-	//Note: the url lookup part of http_session will have String null or this be used as id instead of ignoring it.
-	//private $sessionName = "sessionName";
 	private $sessionVar = '__SessionExists';
 	private $error;
 
@@ -23,35 +19,35 @@ class SessionManager {
 		$this->maxLife = $now + GlobalVariable::getVariable('WebService_Session_Life_Span', 86400);
 		$this->idleLife = $now + GlobalVariable::getVariable('WebService_Session_Idle_Time', 1800);
 
-		if (!coreBOS_Session::isSessionStarted()) {
-			HTTP_Session2::useCookies(false); //disable cookie usage. may this could be moved out constructor?
-		}
+		// if (!coreBOS_Session::isSessionStarted()) {
+		// 	coreBOS_Session::init(false, false, $sname);
+		// }
 		// only first invocation of following method, which is setExpire
 		//have an effect and any further invocation will be have no effect.
-		HTTP_Session2::setExpire($this->maxLife);
+		coreBOS_Session::setExpire($this->maxLife);
 		// this method replaces the new with old time if second params is true
 		//otherwise it subtracts the time from previous time
-		HTTP_Session2::setIdle($this->idleLife, true);
+		coreBOS_Session::setIdle($this->idleLife, true);
 	}
 
 	public function isValid() {
 		$valid = true;
 		// expired
-		if (HTTP_Session2::isExpired()) {
+		if (coreBOS_Session::isExpired()) {
 			$valid = false;
-			HTTP_Session2::destroy();
+			coreBOS_Session::destroy();
 			throw new WebServiceException(WebServiceErrorCode::$SESSLIFEOVER, 'Session life span over, please login again');
 		}
 		// idled
-		if (HTTP_Session2::isIdle()) {
+		if (coreBOS_Session::isIdle()) {
 			$valid = false;
-			HTTP_Session2::destroy();
+			coreBOS_Session::destroy();
 			throw new WebServiceException(WebServiceErrorCode::$SESSIONIDLE, 'Session has been invalidated due to lack of activity');
 		}
 		//invalid sessionId provided.
-		if (!$this->get($this->sessionVar) && !HTTP_Session2::isNew()) {
+		if (!$this->get($this->sessionVar) && !coreBOS_Session::isNew()) {
 			$valid = false;
-			HTTP_Session2::destroy();
+			coreBOS_Session::destroy();
 			throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Session Identifier provided is invalid');
 		}
 		return $valid;
@@ -61,17 +57,15 @@ class SessionManager {
 		if (!$sid || strlen($sid) ===0) {
 			$sid = null;
 		}
-
-		//session name is used for guessing the session id by http_session so pass null.
-		HTTP_Session2::start($sname, $sid);
-
-		$newSID = HTTP_Session2::id();
-
+		global $log;$log->fatal([$sid, $adoptSession, $sname, $_SESSION]);
+		coreBOS_Session::init(false, false, $sid);
+		$newSID = coreBOS_Session::id();
+		$adoptSession=true;
 		if (!$sid || $adoptSession) {
 			$this->set($this->sessionVar, 'true');
 		} else {
 			if (!$this->get($this->sessionVar)) {
-				HTTP_Session2::destroy();
+				coreBOS_Session::destroy();
 				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Session Identifier provided is invalid');
 			}
 		}
@@ -83,15 +77,15 @@ class SessionManager {
 	}
 
 	public function getSessionId() {
-		return HTTP_Session2::id();
+		return coreBOS_Session::id();
 	}
 
 	public function set($var_name, $var_value) {
-		HTTP_Session2::set($var_name, $var_value);
+		coreBOS_Session::set($var_name, $var_value);
 	}
 
 	public function get($name) {
-		return HTTP_Session2::get($name);
+		return coreBOS_Session::get($name);
 	}
 
 	public function getError() {
@@ -99,7 +93,7 @@ class SessionManager {
 	}
 
 	public function destroy() {
-		HTTP_Session2::destroy();
+		coreBOS_Session::destroy();
 	}
 }
 ?>
