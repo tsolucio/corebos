@@ -23,7 +23,7 @@
         "laminas/laminas-stdlib": "3.3.1",
         "psr/container": "1.0.0",
         "laminas/laminas-servicemanager": "3.5.1",
-        "laminas/laminas-eventmanager": "3.3.0",
+        "laminas/laminas-eventmanager": "3.5.0",
         "microsoft/azure-storage-common": "1.5.0",
         "microsoft/azure-storage-blob": "1.5.1",
         "paragonie/random_compat": "9.99.100",

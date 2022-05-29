@@ -2,6 +2,68 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 3.5.0 - 2022-04-06
+
+
+-----
+
+### Release Notes for [3.5.0](https://github.com/laminas/laminas-eventmanager/milestone/7)
+
+### Changed
+
+The `LazyListener`, `LazyEventListener`, and `LazyListenerAggregate` have type-widened their `$container` argument to the official [PSR-11](https://www.php-fig.org/psr/psr-11/) `ContainerInterface` type. Since they previously hinted against the container-interop version 1.2 or greater, and that version extended the PSR-11 interface, the change is backwards compatible.
+
+If you were extending these classes, we recommend updating your definitions to reference PSR-11's types instead.
+
+### 3.5.0
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **2**
+- Total contributors: **2**
+
+#### Enhancement
+
+ - [25: Update to PSR-11 for lazy listener support](https://github.com/laminas/laminas-eventmanager/pull/25) thanks to @weierophinney
+ - [24: Prepare for Renovate with reusable workflows](https://github.com/laminas/laminas-eventmanager/pull/24) thanks to @ghostwriter
+
+## 3.4.0 - 2021-09-07
+
+
+-----
+
+### Release Notes for [3.4.0](https://github.com/laminas/laminas-eventmanager/milestone/2)
+
+
+
+### 3.4.0
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **5**
+- Total contributors: **2**
+
+#### Enhancement
+
+ - [22: Provide PHP 8.1 support](https://github.com/laminas/laminas-eventmanager/pull/22) thanks to @weierophinney
+ - [15: Refactor unit-tests action to automate test matrix](https://github.com/laminas/laminas-eventmanager/pull/15) thanks to @weierophinney
+ - [14: Improve CI workflow](https://github.com/laminas/laminas-eventmanager/pull/14) thanks to @weierophinney
+ - [13: Switch from Travis-Ci to GitHub Actions](https://github.com/laminas/laminas-eventmanager/pull/13) thanks to @weierophinney
+
+#### Duplicate,Enhancement
+
+ - [18: Remove file headers](https://github.com/laminas/laminas-eventmanager/pull/18) thanks to @ghostwriter
+
+## 3.3.1 - 2021-03-08
+
+### Release Notes for [3.3.1](https://github.com/laminas/laminas-eventmanager/milestone/3)
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
+
+#### Bug,Documentation
+
+ - [16: &#91;Doc Tutorial&#93; Add missing , $priority = 1 parameter in example LogEvents::attach()](https://github.com/laminas/laminas-eventmanager/pull/16) thanks to @samsonasik
+
 ## 3.3.0 - 2020-08-25
 
 ### Added
