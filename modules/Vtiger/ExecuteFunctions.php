@@ -112,11 +112,24 @@ switch ($functiontocall) {
 			$fields = explode(',', $fields);
 			$queryGenerator = new QueryGenerator($module, $current_user);
 			$queryGenerator->setFields($fields);
-			$queryGenerator->addCondition(
-				vtlib_purify($_REQUEST['getFieldSearchField']),
-				vtlib_purify($_REQUEST['getFieldSearchValue']),
-				(empty($_REQUEST['getFieldSearchop']) ? 'e' : vtlib_purify($_REQUEST['getFieldSearchop']))
-			);
+			if (strpos($_REQUEST['getFieldSearchField'], ')')) {
+				preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', vtlib_purify($_REQUEST['getFieldSearchField']), $matches);
+				list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+				list($relmod, $relfield) = explode('.', vtlib_purify($_REQUEST['getFieldSearchField']));
+				$queryGenerator->addReferenceModuleFieldCondition(
+					$referenceModule,
+					$referenceField,
+					$fieldname,
+					vtlib_purify($_REQUEST['getFieldSearchValue']),
+					(empty($_REQUEST['getFieldSearchop']) ? 'e' : vtlib_purify($_REQUEST['getFieldSearchop']))
+				);
+			} else {
+				$queryGenerator->addCondition(
+					vtlib_purify($_REQUEST['getFieldSearchField']),
+					vtlib_purify($_REQUEST['getFieldSearchValue']),
+					(empty($_REQUEST['getFieldSearchop']) ? 'e' : vtlib_purify($_REQUEST['getFieldSearchop']))
+				);
+			}
 			$query = $queryGenerator->getQuery();
 			$queryres=$adb->pquery($query, array());
 			if ($adb->num_rows($queryres)>0) {
