@@ -81,10 +81,19 @@ function fieldDep_GetField(change_field, action_field, new_value, old_value, par
 
 function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_value, parameters) {
 	let searchValue = (parameters[3]=='new value' ? new_value : parameters[3]);
+	let searchFields = parameters[2];
+	if (Array.isArray(parameters[2])) {
+		var conds = JSON.parse(JSON.stringify(parameters[2]));
+		conds.forEach((element, index) => {
+			conds[index][1] = (parameters[2][index][1]=='new value' ? new_value : element[1]);
+		});
+		searchFields = encodeURIComponent(JSON.stringify(conds));
+		searchValue = '';
+	}
 	ExecuteFunctions(
 		'getFieldValuesFromSearch',
 		'getFieldValuesFrom='+parameters[0]+'&getTheseFields='+parameters[1]+
-		'&getFieldSearchField='+parameters[2]+'&getFieldSearchValue='+searchValue+
+		'&getFieldSearchField='+searchFields+'&getFieldSearchValue='+searchValue+
 		'&getFieldSearchop='+parameters[4]
 	).then(function (data) {
 		let rdo = JSON.parse(data);

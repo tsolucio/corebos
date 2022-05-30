@@ -112,11 +112,53 @@ switch ($functiontocall) {
 			$fields = explode(',', $fields);
 			$queryGenerator = new QueryGenerator($module, $current_user);
 			$queryGenerator->setFields($fields);
-			$queryGenerator->addCondition(
-				vtlib_purify($_REQUEST['getFieldSearchField']),
-				vtlib_purify($_REQUEST['getFieldSearchValue']),
-				(empty($_REQUEST['getFieldSearchop']) ? 'e' : vtlib_purify($_REQUEST['getFieldSearchop']))
-			);
+			if (substr($_REQUEST['getFieldSearchField'], 0, 1)=='[') {
+				$JSONconditions = json_decode($_REQUEST['getFieldSearchField']);
+				foreach ($JSONconditions as $fconds) {
+					if (empty($fconds[3])) {
+						$glue = QueryGenerator::$AND;
+					} else {
+						$glue = (strtolower(trim($fconds[3]))=='or' ? QueryGenerator::$OR : QueryGenerator::$AND);
+					}
+					if (strpos($fconds[0], ')')) {
+						preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', vtlib_purify($fconds[0]), $matches);
+						list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+						$queryGenerator->addReferenceModuleFieldCondition(
+							$referenceModule,
+							$referenceField,
+							$fieldname,
+							vtlib_purify($fconds[1]),
+							(empty($fconds[2]) ? 'e' : vtlib_purify($fconds[2])),
+							$glue
+						);
+					} else {
+						$queryGenerator->addCondition(
+							vtlib_purify($fconds[0]),
+							vtlib_purify($fconds[1]),
+							(empty($fconds[2]) ? 'e' : vtlib_purify($fconds[2])),
+							$glue
+						);
+					}
+				}
+			} else {
+				if (strpos($_REQUEST['getFieldSearchField'], ')')) {
+					preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', vtlib_purify($_REQUEST['getFieldSearchField']), $matches);
+					list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+					$queryGenerator->addReferenceModuleFieldCondition(
+						$referenceModule,
+						$referenceField,
+						$fieldname,
+						vtlib_purify($_REQUEST['getFieldSearchValue']),
+						(empty($_REQUEST['getFieldSearchop']) ? 'e' : vtlib_purify($_REQUEST['getFieldSearchop']))
+					);
+				} else {
+					$queryGenerator->addCondition(
+						vtlib_purify($_REQUEST['getFieldSearchField']),
+						vtlib_purify($_REQUEST['getFieldSearchValue']),
+						(empty($_REQUEST['getFieldSearchop']) ? 'e' : vtlib_purify($_REQUEST['getFieldSearchop']))
+					);
+				}
+			}
 			$query = $queryGenerator->getQuery();
 			$queryres=$adb->pquery($query, array());
 			if ($adb->num_rows($queryres)>0) {

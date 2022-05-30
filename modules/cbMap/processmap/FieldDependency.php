@@ -226,7 +226,19 @@ class FieldDependency extends processcbMap {
 				$params=array();
 				if (isset($action->parameters)) {
 					foreach ($action->parameters->parameter as $opt2) {
-						$params[]=(string)$opt2;
+						if (isset($opt2->conditions)) {
+							$optconds = array();
+							foreach ($opt2->conditions->condition as $optcond) {
+								$optcondparams = array();
+								foreach ($optcond->parameter as $ocp) {
+									$optcondparams[] = (string)$ocp;
+								}
+								$optconds[] = $optcondparams;
+							}
+							$params[]= $optconds;
+						} else {
+							$params[]=(string)$opt2;
+						}
 					}
 				}
 				$actions['function'][] = array(
