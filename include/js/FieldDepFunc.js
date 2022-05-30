@@ -106,8 +106,11 @@ function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_valu
 	).then(function (data) {
 		let rdo = JSON.parse(data);
 		let srcfieldids = parameters[1].split(',');
-		let dstfieldids = parameters[5].split(',');
+		let dstfieldids = parameters[(Array.isArray(parameters[2]) ? 3 : 5)].split(',');
 		for (var f=0; f<srcfieldids.length; f++) {
+			if (rdo[srcfieldids[f]]==undefined) {
+				continue;
+			}
 			if (CKEDITOR.instances[dstfieldids[f]]!=undefined) {
 				let fld = CKEDITOR.instances[dstfieldids[f]];
 				fld.insertHtml(rdo[srcfieldids[f]]);
