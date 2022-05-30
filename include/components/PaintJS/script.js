@@ -27,7 +27,12 @@ class PaintDocuments {
 	}
 
 	Canvas = () => {
-		return document.getElementsByClassName('paint-canvas')[3].toDataURL('image/png');
+		let canvas = document.getElementById('canvas-context');
+		let context = canvas.getContext('2d');
+		let paint = document.getElementsByClassName('paint-canvas');
+		context.drawImage(paint[3], 0, 0, 640, 480);
+		context.drawImage(paint[4], 0, 0, 640, 480);
+		return canvas.toDataURL('image/png');
 	}
 
 	Create = () => {
@@ -69,9 +74,12 @@ class PaintDocuments {
 			this.FileName().value = '';
 			this.Description().value = '';
 			this.draw.clear();
+			let canvas = document.getElementById('canvas-context');
+			let context = canvas.getContext('2d');
+			context.clearRect(0, 0, 640, 480);
 			ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 		} else {
 			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_ERROR_CREATING, 'error');
-		}		
+		}
 	}
 }
