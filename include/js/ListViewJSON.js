@@ -921,19 +921,25 @@ const ListView = {
 		const value = ev.value;
 		const preValue = ev.preValue;
 		if (value != preValue) {
-			jQuery.ajax({
-				method: 'POST',
-				url: `${defaultURL}&functiontocall=listViewJSON&method=updateDataListView`,
-				data: {
-					modulename: ListView.Module,
-					value: value,
-					columnName: columnName,
-					recordid: recordid,
+			GridValidation(recordid, ListView.Module, columnName, value).then(function(msg) {
+				if (msg == '%%%OK%%%') {
+					jQuery.ajax({
+						method: 'POST',
+						url: `${defaultURL}&functiontocall=listViewJSON&method=updateDataListView`,
+						data: {
+							modulename: ListView.Module,
+							value: value,
+							columnName: columnName,
+							recordid: recordid,
+						}
+					}).then(function (response) {
+						const lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
+						ListView.Action = 'inlineedit';
+						ListView.Reload(lastPage);
+					});
+				} else {
+					ldsPrompt.show(alert_arr.ERROR, msg, 'error');
 				}
-			}).then(function (response) {
-				const lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
-				ListView.Action = 'inlineedit';
-				ListView.Reload(lastPage);
 			});
 		}
 	},
