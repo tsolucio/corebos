@@ -7178,3 +7178,28 @@ function handlePaste(event) {
 		document.getElementById('url-zone').innerText = '';
 	}, 100);
 }
+
+async function GridValidation(recordid, modulename, fieldName, fieldValue) {
+	const sentForm = {
+		'from_link':'DetailView',
+		'cbfromid':recordid,
+		'module':modulename,
+		'record':recordid,
+		'action':'DetailViewEdit',
+		'dtlview_edit_fieldcheck':fieldName
+	};
+	sentForm[csrfMagicName] = csrfMagicToken;
+	sentForm[fieldName] = fieldValue;
+	const response = await fetch(
+		'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule='+modulename,
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: `&${csrfMagicName}=${csrfMagicToken}&structure=${JSON.stringify(sentForm)}`
+		}
+	);
+	return await response.text();
+}

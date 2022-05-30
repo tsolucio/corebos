@@ -82,6 +82,7 @@
 	<div class="slds-col slds-size_10-of-12">
 		<div id="fullscreen" style="position:absolute; left:19%; right:0; top:0; bottom:0;"></div>
 	</div>
+	<canvas id="canvas-context" width="640" height="480" style="display: none"></canvas>
 </div>
 	<script src="include/jquery/jquery.js"></script>
 	<script src="include/components/PaintJS/Paint.min.js"></script>

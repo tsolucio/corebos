@@ -75,6 +75,14 @@ switch ($functiontocall) {
 		$limit =  isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
 		$ret = getProductServiceAutocomplete($_REQUEST['term'], array(), $limit);
 		break;
+	case 'getEntityName':
+		$ret = '';
+		$crmid = vtlib_purify($_REQUEST['getNameFrom']);
+		if (!empty($crmid)) {
+			$ename = getEntityName(getSalesEntityType($crmid), $crmid);
+			$ret = $ename[$crmid];
+		}
+		break;
 	case 'getFieldValuesFromRecord':
 		$ret = array();
 		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
@@ -85,6 +93,30 @@ switch ($functiontocall) {
 			$queryGenerator = new QueryGenerator($module, $current_user);
 			$queryGenerator->setFields($fields);
 			$queryGenerator->addCondition('id', $crmid, 'e');
+			$query = $queryGenerator->getQuery();
+			$queryres=$adb->pquery($query, array());
+			if ($adb->num_rows($queryres)>0) {
+				$col=0;
+				foreach ($fields as $field) {
+					$ret[$field]=$adb->query_result($queryres, 0, $col++);
+				}
+			}
+		}
+		break;
+	case 'getFieldValuesFromSearch':
+		$ret = array();
+		global $current_user, $adb;
+		$module = vtlib_purify($_REQUEST['getFieldValuesFrom']);
+		if (!empty($module) && vtlib_isModuleActive($module)) {
+			$fields = vtlib_purify($_REQUEST['getTheseFields']);
+			$fields = explode(',', $fields);
+			$queryGenerator = new QueryGenerator($module, $current_user);
+			$queryGenerator->setFields($fields);
+			$queryGenerator->addCondition(
+				vtlib_purify($_REQUEST['getFieldSearchField']),
+				vtlib_purify($_REQUEST['getFieldSearchValue']),
+				(empty($_REQUEST['getFieldSearchop']) ? 'e' : vtlib_purify($_REQUEST['getFieldSearchop']))
+			);
 			$query = $queryGenerator->getQuery();
 			$queryres=$adb->pquery($query, array());
 			if ($adb->num_rows($queryres)>0) {
