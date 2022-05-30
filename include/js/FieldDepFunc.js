@@ -85,7 +85,15 @@ function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_valu
 	if (Array.isArray(parameters[2])) {
 		var conds = JSON.parse(JSON.stringify(parameters[2]));
 		conds.forEach((element, index) => {
-			conds[index][1] = (parameters[2][index][1]=='new value' ? new_value : element[1]);
+			if (parameters[2][index][1]=='new value') {
+				conds[index][1] = new_value;
+			} else {
+				if (document.getElementById(element[1])) {
+					conds[index][1] = document.getElementById(element[1]).value;
+				} else {
+					conds[index][1] = element[1];
+				}
+			}
 		});
 		searchFields = encodeURIComponent(JSON.stringify(conds));
 		searchValue = '';
