@@ -921,7 +921,7 @@ const ListView = {
 		const value = ev.value;
 		const preValue = ev.preValue;
 		if (value != preValue) {
-			GridValidation(recordid, ListView.Module, columnName, value).then(function(msg) {
+			GridValidation(recordid, ListView.Module, columnName, value).then(function (msg) {
 				if (msg == '%%%OK%%%') {
 					jQuery.ajax({
 						method: 'POST',

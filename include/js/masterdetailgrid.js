@@ -68,7 +68,7 @@ var masterdetailwork = {
 		let recordid = ev.instance.getValue(rowkey, 'record_id') || '';
 		let fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=inline_edit&recordid='+recordid+'&rec_module='+modulename+'&fldName='+fieldName+'&fieldValue='+encodeURIComponent(fieldValue);
 		if (recordid != '') {
-			GridValidation(recordid, modulename, fieldName, fieldValue).then(function(msg) {
+			GridValidation(recordid, modulename, fieldName, fieldValue).then(function (msg) {
 				if (msg == '%%%OK%%%') {
 					jQuery.ajax({
 						method: 'POST',
