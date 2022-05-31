@@ -587,20 +587,26 @@ const ListView = {
 	/**
 	 * Get the new headers in a onchange data
 	 */
-	Reload: (lastPage = 1, reload = true) => {
-		ListView.SearchParams = false;
+	Reload: (lastPage = 1, reload = true, reset = true) => {
+		let RequestParams = {};
+		if (reset) {
+			ListView.SearchParams = false;
+			RequestParams = {
+				'search': '',
+				'searchtype': '',
+			};
+		} else {
+			RequestParams = ListView.SearchParams;
+		}
 		if (ListView.Module == 'Documents' && DocumentFolderView == 1) {
 			DocumentsView.Reload(lastPage, reload);
 			return false;
 		}
 		lvdataGridInstance[ListView.Instance].clear();
-		let RequestParams = {
-			'search': '',
-			'searchtype': '',
-		};
 		if (reload) {
 			if (ListView.Action == 'massedit' || ListView.Action == 'inlineedit') {
 				RequestParams.lastPage = lastPage;
+				RequestParams.fromInstance = false;
 			} else {
 				RequestParams.page = lastPage;
 				RequestParams.fromInstance = true;
@@ -933,9 +939,9 @@ const ListView = {
 							recordid: recordid,
 						}
 					}).then(function (response) {
-						const lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
+						const lastPage = sessionStorage.getItem(ListView.Module+'_lastPage');
 						ListView.Action = 'inlineedit';
-						ListView.Reload(lastPage);
+						ListView.Reload(lastPage, true, false);
 					});
 				} else {
 					ldsPrompt.show(alert_arr.ERROR, msg, 'error');

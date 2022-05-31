@@ -20,7 +20,7 @@ class GridListView {
 	public $entries = 20;
 	public $orderBy = 'DESC';
 	public $sortColumn = '';
-	public $currentPage = '';
+	public $currentPage = 1;
 	public $searchUrl = '';
 	public $searchtype = 'Basic';
 
@@ -129,7 +129,9 @@ class GridListView {
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias($this->module, true);
 			$list_query = preg_replace("/$crmEntityTable.deleted\s*=\s*0/i", $crmEntityTable.'.deleted = 1', $list_query);
 		}
-		if (!isset($_REQUEST['fromInstance'])) {
+		$fromInstance = isset($_REQUEST['fromInstance']) ? $_REQUEST['fromInstance'] : false;
+		$fromInstance = filter_var($fromInstance, FILTER_VALIDATE_BOOLEAN);
+		if (!$fromInstance) {
 			$this->currentPage = $lastPage;
 		}
 		if (isset($this->entries) && !empty($this->entries)) {
