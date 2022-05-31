@@ -162,6 +162,7 @@ class VTExpressionsManager {
 			'power(base,exponential)' => 'power(base,exponential)',
 			'substring' => 'substring(stringfield,start,length)',
 			'randomstring' => 'randomstring(length)',
+			'randomnumber' => 'randomnumber(min,max)',
 			'uppercase'=>'uppercase(stringfield)',
 			'lowercase'=>'lowercase(stringfield)',
 			'uppercasefirst'=>'uppercasefirst(stringfield)',

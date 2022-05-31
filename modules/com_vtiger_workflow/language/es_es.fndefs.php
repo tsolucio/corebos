@@ -781,6 +781,30 @@ $WFExpressionFunctionDefinitons = array(
 		'randomstring(12)  // 02E373931343',
 	),
 ),
+'randomnumber' => array(
+	'name' => 'randomnumber(min,max)',
+	'desc' => 'This function returns a random number.',
+	'params' => array(
+		array(
+			'name' => 'int',
+			'type' => 'Integer',
+			'optional' => true,
+			'desc' => 'minimum random number to return',
+		),
+		array(
+			'name' => 'int',
+			'type' => 'Integer',
+			'optional' => true,
+			'desc' => 'maximum random number to return. If minimum is given, maximum is mandatory.',
+		),
+	),
+	'categories' => array('Math'),
+	'examples' => array(
+		'randomnumber(12)  // some random number because maximum is missing',
+		'randomnumber()  // some random number',
+		'randomnumber(1,8)  // some random number between 1 and 8 inclusive',
+	),
+),
 'power' => array(
 	'name' => 'power(base, exponential)',
 	'desc' => 'Esta función se usa para calcular la potencia de cualquier número, como calcular cuadrados y cubos en campos enteros.',

@@ -34,6 +34,7 @@ function cbexpsql_supportedFunctions() {
 		'regexreplace' => 'regexreplace(pattern,replace,subject)',
 		'substring' => 'substring(stringfield,start,length)',
 		'randomstring' => 'randomstring(length)',
+		'randomnumber' => 'randomnumber(min,max)',
 		'uppercase'=>'uppercase(stringfield)',
 		'lowercase'=>'lowercase(stringfield)',
 		//'uppercasefirst'=>'uppercasefirst(stringfield)',
@@ -342,6 +343,16 @@ function cbexpsql_randomstring($arr, $mmodule) {
 		$arr[0] = 10;
 	}
 	return 'SUBSTRING(HEX(CONCAT(NOW(), RAND(), UUID())), 1, '.$arr[0].')';
+}
+
+function cbexpsql_randomnumber($arr, $mmodule) {
+	if (is_object($arr[0])) {
+		$b = $arr[0]->value;
+	}
+	if (is_object($arr[1])) {
+		$a = $arr[1]->value;
+	}
+	return 'FLOOR(RAND()*('.$b.'-'.$a.'+1))+'.$a;
 }
 
 function cbexpsql_uppercase($arr, $mmodule) {
