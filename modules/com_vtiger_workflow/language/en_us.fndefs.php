@@ -789,13 +789,13 @@ $WFExpressionFunctionDefinitons = array(
 	'desc' => 'This function returns a random number.',
 	'params' => array(
 		array(
-			'name' => 'int',
+			'name' => 'min',
 			'type' => 'Integer',
 			'optional' => true,
 			'desc' => 'minimum random number to return',
 		),
 		array(
-			'name' => 'int',
+			'name' => 'max',
 			'type' => 'Integer',
 			'optional' => true,
 			'desc' => 'maximum random number to return. If minimum is given, maximum is mandatory.',

@@ -783,26 +783,26 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'randomnumber' => array(
 	'name' => 'randomnumber(min,max)',
-	'desc' => 'This function returns a random number.',
+	'desc' => 'Esta función devuelve un número aleatorio.',
 	'params' => array(
 		array(
-			'name' => 'int',
-			'type' => 'Integer',
+			'name' => 'min',
+			'type' => 'Entero',
 			'optional' => true,
-			'desc' => 'minimum random number to return',
+			'desc' => 'número aleatorio mínimo a devolver',
 		),
 		array(
-			'name' => 'int',
-			'type' => 'Integer',
+			'name' => 'max',
+			'type' => 'Entero',
 			'optional' => true,
-			'desc' => 'maximum random number to return. If minimum is given, maximum is mandatory.',
+			'desc' => 'número aleatorio máximo a devolver. Si se da un mínimo, el máximo es obligatorio.',
 		),
 	),
 	'categories' => array('Math'),
 	'examples' => array(
-		'randomnumber(12)  // some random number because maximum is missing',
-		'randomnumber()  // some random number',
-		'randomnumber(1,8)  // some random number between 1 and 8 inclusive',
+		'randomnumber(12)  // cualquier número aleatorio porque falta el máximo',
+		'randomnumber()  // cualquier número aleatorio',
+		'randomnumber(1,8)  // cualquier número aleatorio entre 1 y 8 inclusivos',
 	),
 ),
 'power' => array(
