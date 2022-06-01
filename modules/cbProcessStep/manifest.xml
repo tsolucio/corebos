@@ -1,0 +1,477 @@
+<?xml version='1.0'?>
+<module>
+<name>cbProcessStep</name>
+<label>cbProcessStep</label>
+<parent>Tools</parent>
+<version>1.0</version>
+<short_description>BPM Process Flow Step module.</short_description>
+<dependencies>
+<vtiger_version>5.4.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<license>
+<inline><![CDATA[/*************************************************************************************************
+ * Copyright 2019 Spike Associates -- This file is a part of coreBOS customizations.
+ * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
+ * Vizsage Public License (the "License"). You may not use this file except in compliance with the
+ * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
+ * and share improvements. However, for proper details please read the full License, available at
+ * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
+ * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
+ * applicable law or agreed to in writing, any software distributed under the License is distributed
+ * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
+ *************************************************************************************************
+ *  Module       : Process Flow Step
+ *  Version      : 5.4.0
+ *  Author       : AT CONSULTING
+ *************************************************************************************************/
+]]></inline>
+</license>
+<tables>
+<table>
+<name>vtiger_cbprocessstep</name>
+<sql><![CDATA[CREATE TABLE `vtiger_cbprocessstep` (
+  `cbprocessstepid` int(11) NOT NULL,
+  `cbprocessstep_no` varchar(65) default NULL,
+  `processflow` int(11) default NULL,
+  `fromstep` varchar(155) DEFAULT NULL,
+  `tostep` varchar(155) DEFAULT NULL,
+  `active` varchar(3) DEFAULT NULL,
+  `validation` int(11) DEFAULT NULL,
+  `context` int(11) DEFAULT NULL,
+  `isactivevalidation` int(11) DEFAULT NULL,
+  `showstepvalidation` int(11) DEFAULT NULL,
+  `defaultpath` varchar(3) DEFAULT NULL,
+  `validdefaultstart` varchar(3) DEFAULT NULL,
+  PRIMARY KEY (`cbprocessstepid`),
+  INDEX(`processflow`,`fromstep`,`tostep`,`active`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_cbprocessstepcf</name>
+<sql><![CDATA[CREATE TABLE `vtiger_cbprocessstepcf` (
+  `cbprocessstepid` int(11) NOT NULL,
+  PRIMARY KEY (`cbprocessstepid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_cbprocesssteprel</name>
+<sql><![CDATA[CREATE TABLE `vtiger_cbprocesssteprel` (
+  `stepid` int(11) NOT NULL,
+  `wfid` int(11) NOT NULL,
+  `positive` tinyint(1) NOT NULL,
+  PRIMARY KEY (`stepid`,`wfid`,`positive`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<blocks>
+<block>
+<label>LBL_CBPROCESSSTEP_INFORMATION</label>
+<fields>
+<field>
+<fieldname>processflow</fieldname>
+<uitype>10</uitype>
+<columnname>processflow</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>processflow</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>cbProcessFlow</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>cbprocessstep_no</fieldname>
+<uitype>4</uitype>
+<columnname>cbprocessstep_no</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>cbprocessstep_no</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>2</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+<entityidentifier>
+<entityidfield>cbprocessstepid</entityidfield>
+<entityidcolumn>cbprocessstepid</entityidcolumn>
+</entityidentifier>
+</field>
+<field>
+<fieldname>fromstep</fieldname>
+<uitype>1</uitype>
+<columnname>fromstep</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>fromstep</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>3</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>validation</fieldname>
+<uitype>10</uitype>
+<columnname>validation</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>validation</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>4</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>cbMap</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>tostep</fieldname>
+<uitype>1</uitype>
+<columnname>tostep</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>tostep</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>5</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>context</fieldname>
+<uitype>10</uitype>
+<columnname>context</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>context</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>6</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>cbMap</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>active</fieldname>
+<uitype>56</uitype>
+<columnname>active</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>active</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>7</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>isactivevalidation</fieldname>
+<uitype>10</uitype>
+<columnname>isactivevalidation</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>isactivevalidation</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>8</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>cbMap</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>showstepvalidation</fieldname>
+<uitype>10</uitype>
+<columnname>showstepvalidation</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>showstepvalidation</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>9</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>cbMap</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>defaultpath</fieldname>
+<uitype>56</uitype>
+<columnname>defaultpath</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Default Path</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>10</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assigned To</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>11</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>validdefaultstart</fieldname>
+<uitype>56</uitype>
+<columnname>validdefaultstart</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Valid Default Start</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>12</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>created_user_id</fieldname>
+<uitype>52</uitype>
+<columnname>smcreatorid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created By</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>13</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>createdtime</fieldname>
+<uitype>70</uitype>
+<columnname>createdtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>14</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>8</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>modifiedtime</fieldname>
+<uitype>70</uitype>
+<columnname>modifiedtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Modified Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>15</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>9</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_CUSTOM_INFORMATION</label>
+</block>
+<block>
+<label>LBL_DESCRIPTION_INFORMATION</label>
+<fields>
+<field>
+<fieldname>description</fieldname>
+<uitype>19</uitype>
+<columnname>description</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Description</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<selected>0</selected>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>10</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+</blocks>
+<customviews>
+<customview>
+<viewname>All</viewname>
+<setdefault>false</setdefault>
+<setmetrics>false</setmetrics>
+<fields>
+<field>
+<fieldname>cbprocessstep_no</fieldname>
+<columnindex>0</columnindex>
+</field>
+<field>
+<fieldname>processflow</fieldname>
+<columnindex>1</columnindex>
+</field>
+<field>
+<fieldname>fromstep</fieldname>
+<columnindex>2</columnindex>
+</field>
+<field>
+<fieldname>tostep</fieldname>
+<columnindex>3</columnindex>
+</field>
+<field>
+<fieldname>active</fieldname>
+<columnindex>4</columnindex>
+</field>
+</fields>
+</customview>
+</customviews>
+<sharingaccess>
+<default>private</default>
+</sharingaccess>
+<actions>
+<action>
+<name><![CDATA[Merge]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Import]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Export]]></name>
+<status>enabled</status>
+</action>
+</actions>
+<relatedlists>
+</relatedlists>
+<events>
+</events>
+<customlinks>
+</customlinks>
+<crons>
+</crons>
+</module>

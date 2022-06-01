@@ -1,0 +1,362 @@
+<?xml version='1.0'?>
+<module>
+<name>ProcessLog</name>
+<label>ProcessLog</label>
+<parent>Tools</parent>
+<version>1.0</version>
+<short_description>BPM Process Step Log module.</short_description>
+<dependencies>
+<vtiger_version>5.4.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<license>
+<inline><![CDATA[/*************************************************************************************************
+ * Copyright 2019 Spike Associates -- This file is a part of coreBOS customizations.
+ * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
+ * Vizsage Public License (the "License"). You may not use this file except in compliance with the
+ * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
+ * and share improvements. However, for proper details please read the full License, available at
+ * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
+ * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
+ * applicable law or agreed to in writing, any software distributed under the License is distributed
+ * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
+ *************************************************************************************************
+ *  Module       : ProcessLog
+ *  Version      : 5.4.0
+ *  Author       : AT CONSULTING
+ *************************************************************************************************/
+]]></inline>
+</license>
+<tables>
+<table>
+<name>vtiger_processlog</name>
+<sql><![CDATA[CREATE TABLE `vtiger_processlog` (
+  `processlogid` int(11) NOT NULL,
+  `relatedflow` int(11) default NULL,
+  `relatedstep` int(11) default NULL,
+  `processlog_no` varchar(56) default NULL,
+  `processlogname` varchar(155) default NULL,
+  `previoussubstatus` varchar(255) default NULL,
+  `nextsubstatus` varchar(255) default NULL,
+  `dtime` datetime,
+  PRIMARY KEY (`processlogid`),
+  index (`dtime`),
+  index (`previoussubstatus`),
+  index (`nextsubstatus`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_processlogcf</name>
+<sql><![CDATA[CREATE TABLE `vtiger_processlogcf` (
+  `processlogid` int(11) NOT NULL,
+  PRIMARY KEY (`processlogid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<blocks>
+<block>
+<label>LBL_PROCESSLOG_INFORMATION</label>
+<fields>
+<field>
+<fieldname>relatedflow</fieldname>
+<uitype>10</uitype>
+<columnname>relatedflow</columnname>
+<tablename>vtiger_processlog</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>relatedflow</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>cbProcessFlow</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>processlog_no</fieldname>
+<uitype>4</uitype>
+<columnname>processlog_no</columnname>
+<tablename>vtiger_processlog</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>processlog_no</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>2</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+<entityidentifier>
+<entityidfield>processlogid</entityidfield>
+<entityidcolumn>processlogid</entityidcolumn>
+</entityidentifier>
+</field>
+<field>
+<fieldname>relatedstep</fieldname>
+<uitype>10</uitype>
+<columnname>relatedstep</columnname>
+<tablename>vtiger_processlog</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>relatedstep</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>3</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>cbProcessStep</relatedmodule>
+<relatedmodule>cbProcessAlert</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>processlogname</fieldname>
+<uitype>1</uitype>
+<columnname>processlogname</columnname>
+<tablename>vtiger_processlog</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>ProcessLog Name</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>4</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>previoussubstatus</fieldname>
+<uitype>1</uitype>
+<columnname>previoussubstatus</columnname>
+<tablename>vtiger_processlog</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Previous Substatus</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>5</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assigned To</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>6</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>nextsubstatus</fieldname>
+<uitype>1</uitype>
+<columnname>nextsubstatus</columnname>
+<tablename>vtiger_processlog</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Next Substatus</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>7</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>createdtime</fieldname>
+<uitype>70</uitype>
+<columnname>createdtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>8</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>8</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>dtime</fieldname>
+<uitype>50</uitype>
+<columnname>dtime</columnname>
+<tablename>vtiger_processlog</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Date Time</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>9</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>modifiedtime</fieldname>
+<uitype>70</uitype>
+<columnname>modifiedtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Modified Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>10</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>9</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_CUSTOM_INFORMATION</label>
+</block>
+<block>
+<label>LBL_DESCRIPTION_INFORMATION</label>
+<fields>
+<field>
+<fieldname>description</fieldname>
+<uitype>19</uitype>
+<columnname>description</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Description</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<selected>0</selected>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>10</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+</blocks>
+<customviews>
+<customview>
+<viewname>All</viewname>
+<setdefault>true</setdefault>
+<setmetrics>false</setmetrics>
+<fields>
+<field>
+<fieldname>processlog_no</fieldname>
+<columnindex>0</columnindex>
+</field>
+<field>
+<fieldname>relatedflow</fieldname>
+<columnindex>1</columnindex>
+</field>
+<field>
+<fieldname>previoussubstatus</fieldname>
+<columnindex>2</columnindex>
+</field>
+<field>
+<fieldname>nextsubstatus</fieldname>
+<columnindex>3</columnindex>
+</field>
+<field>
+<fieldname>dtime</fieldname>
+<columnindex>4</columnindex>
+</field>
+<field>
+<fieldname>processlogname</fieldname>
+<columnindex>5</columnindex>
+</field>
+</fields>
+</customview>
+</customviews>
+<sharingaccess>
+<default>private</default>
+</sharingaccess>
+<actions>
+<action>
+<name><![CDATA[Merge]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Import]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Export]]></name>
+<status>enabled</status>
+</action>
+</actions>
+<relatedlists>
+</relatedlists>
+<events>
+</events>
+<customlinks>
+</customlinks>
+<crons>
+</crons>
+</module>

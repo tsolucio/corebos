@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Initial States field on Process Flow</description>
+	<filename>modules/cbProcessFlow/changesets/addInitialStatesField.php</filename>
+	<classname>addInitialStatesField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Is Active Validation field on Process Flow Step</description>
+	<filename>modules/cbProcessFlow/changesets/addIsActiveValidationField.php</filename>
+	<classname>addIsActiveValidationField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Add Show step validation field on Process Flow Step</description>
+	<filename>modules/cbProcessFlow/changesets/addShowStepValidationField.php</filename>
+	<classname>addShowStepValidationField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>
