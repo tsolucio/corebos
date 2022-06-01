@@ -38,7 +38,7 @@ function gridGetEditor($module, $fieldname, $uitype) {
 			$listItems = [];
 			foreach (getAssignedPicklistValues($fieldname, $current_user->roleid, $adb) as $key => $value) {
 				$listItems[] = [
-					'text' => $value,
+					'text' => getTranslatedString($value, $module),
 					'value' => $key,
 				];
 			}
