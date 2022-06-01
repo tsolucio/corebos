@@ -83,7 +83,7 @@ function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_valu
 	let searchValue = (parameters[3]=='new value' ? new_value : parameters[3]);
 	let searchFields = parameters[2];
 	if (Array.isArray(parameters[2])) {
-		var conds = JSON.parse(JSON.stringify(parameters[2]));
+		let conds = [...parameters[2]];
 		conds.forEach((element, index) => {
 			if (parameters[2][index][1]=='new value') {
 				conds[index][1] = new_value;
