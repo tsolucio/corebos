@@ -108,11 +108,15 @@ class VTExpressionsManager {
 			if (empty($WFExpressionFunctionDefinitons[$func['expname']])) {
 				$WFExpressionFunctionDefinitons[$func['expname']] = array(
 					'name' => $func['expinfo'],
-					'desc' => $func['funcdesc'],
+					'desc' => getTranslatedString($func['funcdesc']),
 					'params' => json_decode(decode_html($func['funcparam']), true),
 					'categories' => json_decode(decode_html($func['funccategory']), true),
 					'examples' => json_decode(decode_html($func['funcexamples']), true),
 				);
+				foreach ($WFExpressionFunctionDefinitons[$func['expname']]['params'] as $idx => $prm) {
+					$WFExpressionFunctionDefinitons[$func['expname']]['params'][$idx]['type'] = getTranslatedString($prm['type']);
+					$WFExpressionFunctionDefinitons[$func['expname']]['params'][$idx]['desc'] = getTranslatedString($prm['desc']);
+				}
 			}
 		}
 		asort($WFExpressionFunctionDefinitons);
