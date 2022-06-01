@@ -176,6 +176,7 @@ class cbQuestion extends CRMEntity {
 		if ($q->column_fields['sqlquery']=='1') {
 			$mod = CRMEntity::getInstance($q->column_fields['qmodule']);
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.$mod->table_name.' ';
+			$query .= getNonAdminAccessControlQuery($q->column_fields['qmodule'], $current_user);
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
 				$queryparams = 'set ';
@@ -244,6 +245,7 @@ class cbQuestion extends CRMEntity {
 						$conds = str_replace($param, $value, $conds);
 					}
 				}
+				$query .= getNonAdminAccessControlQuery($q->column_fields['qmodule'], $current_user);
 				$query .= ' WHERE '.$conds;
 			}
 			if (!empty($q->column_fields['groupby'])) {

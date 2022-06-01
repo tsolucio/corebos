@@ -119,4 +119,18 @@
 	<classname>AddWSQueableColumn</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install AutoNumber Increment module</description>
+	<filename>build/changeSets/2022/installAutonumberInc.php</filename>
+	<classname>installAutonumberInc</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate old AutoNumber Increment prefixes</description>
+	<filename>build/changeSets/2022/migrateAutonumberInc.php</filename>
+	<classname>migrateAutonumberInc</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
