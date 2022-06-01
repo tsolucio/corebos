@@ -13,11 +13,18 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
+include_once 'include/Webservices/ValidateCUR.php';
 include_once 'include/Webservices/Create.php';
 include_once 'include/Webservices/Revise.php';
 
 function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 	global $adb, $log;
+	$cbDORECORDVALIDATION = (
+		empty($element['cbDORECORDVALIDATION']) ?
+		false :
+		filter_var(strtolower((string)$element['cbDORECORDVALIDATION']), FILTER_VALIDATE_BOOLEAN)
+	);
+	unset($element['cbDORECORDVALIDATION']);
 	$action = 'skip';
 	$bmapcond = null;
 	if (is_array($searchOn)) {
@@ -114,7 +121,11 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 		if (isset($element['id'])) {
 			unset($element['id']);
 		}
-		$record = vtws_create($elementType, $element, $user);
+		if ($cbDORECORDVALIDATION) {
+			$record = cbwsCreateWithValidation($elementType, $element, $user);
+		} else {
+			$record = vtws_create($elementType, $element, $user);
+		}
 	} elseif ($action=='update') {
 		//search for updatedfields
 		foreach (array_keys($element) as $key) {
@@ -123,7 +134,11 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 			}
 		}
 		$element['id'] = vtws_getEntityId($elementType).'x'.$crmId;
-		$record = vtws_revise($element, $user);
+		if ($cbDORECORDVALIDATION) {
+			$record = cbwsReviseWithValidation($element, $user);
+		} else {
+			$record = vtws_revise($element, $user);
+		}
 	}
 	return $record;
 }
