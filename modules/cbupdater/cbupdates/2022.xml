@@ -133,4 +133,11 @@
 	<classname>migrateAutonumberInc</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Business Actions type for Kanban</description>
+	<filename>build/changeSets/2022/addBAtypeForKanban.php</filename>
+	<classname>addBAtypeForKanban</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
