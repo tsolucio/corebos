@@ -11636,7 +11636,7 @@ precacheAndRoute([{
   "revision": "1877ec1f864f1a115c0f134e97ef63a4"
 }, {
   "url": "include/components/PaintJS/script.js",
-  "revision": "53f559d62350746020c292879f00e089"
+  "revision": "4799cbba6e6acfc7a1195bb7632d2083"
 }, {
   "url": "include/components/PaintJS/spectrum.css",
   "revision": "2a1922c40199c91899ee4c07033b8dfa"
@@ -12359,7 +12359,7 @@ precacheAndRoute([{
   "revision": "c4d6beb74ea9772d82bdde6a243a16fd"
 }, {
   "url": "include/Webservices/WSClient.js",
-  "revision": "062def9baf01f014c4baf6568704316a"
+  "revision": "bca2ed2d9945ada4a3520584161866c3"
 }, {
   "url": "include/freetag/jquery.tagcanvas.js",
   "revision": "c6e953f037f6294b34a42c9155fc20bf"
