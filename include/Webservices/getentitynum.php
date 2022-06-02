@@ -19,10 +19,15 @@
 function vtws_get_entitynum($user = '') {
 	global $adb;
 	$types = vtws_listtypes(null, $user);
-	$enumres = $adb->pquery(
-		'SELECT semodule, prefix FROM vtiger_modentity_num WHERE active=1 and semodule in ('. generateQuestionMarks($types['types']) .')',
-		$types['types']
-	);
+	if (vtlib_isModuleActive('AutoNumberPrefix')) {
+		$query = 'SELECT semodule, prefix
+			FROM vtiger_autonumberprefix
+			INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid=vtiger_autonumberprefix.autonumberprefixid
+			WHERE deleted=0 and active=1 and semodule in ('. generateQuestionMarks($types['types']) .')';
+	} else {
+		$query = 'SELECT semodule, prefix FROM vtiger_modentity_num WHERE active=1 and semodule in ('. generateQuestionMarks($types['types']) .')';
+	}
+	$enumres = $adb->pquery($query, $types['types']);
 	$entitynum = array();
 	while ($en=$adb->fetch_array($enumres)) {
 		if (empty($entitynum[$en['semodule']])) {
