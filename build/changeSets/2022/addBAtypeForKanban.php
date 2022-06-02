@@ -24,7 +24,7 @@ class addBAtypeForKanban extends cbupdaterWorker {
 			$module = Vtiger_Module::getInstance('BusinessActions');
 			$field = Vtiger_Field::getInstance('linktype', $module);
 			if ($field) {
-				$field->setPicklistValues(array('KANBANBUTTON'));
+				$field->setPicklistValues(array('KANBANBUTTON', 'KANBANHEADER'));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
