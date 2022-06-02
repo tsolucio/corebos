@@ -29,6 +29,23 @@
 			{/if}
 		{/foreach}
 	</style>
+	{if isset($BALinks)}
+		<div class="slds-page-header slds-m-top_small">
+			<div class="slds-page-header__row">
+				<div class="slds-page-header__col-title">
+					<div class="slds-media">
+						<div class="slds-media__body">
+						{foreach from=$BALinks item=$i}
+							<a class="slds-button slds-button_neutral" href="{$i->linkurl}">
+								{$i->linklabel}
+							</a>
+						{/foreach}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{/if}
 	<span>
 	<div id="{{$kanbanID}}" style="max-width: 96vw; min-height:105vh;padding: 20px 0;"></div>
 	<span id="{$kanbanID}Scroll"></span>

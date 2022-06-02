@@ -14,6 +14,9 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 $bmapname = $currentModule.'_Kanban';
+if (isset($_REQUEST['bmapname'])) {
+	$bmapname = vtlib_purify($_REQUEST['bmapname']);
+}
 $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
 if ($cbMapid) {
 	$cbMap = cbMap::getMapByID($cbMapid);
@@ -31,6 +34,11 @@ if (empty($cbMapKb)) {
 	$smarty->assign('moduleShowSearch', $cbMapKb['showsearch']);
 	$smarty->assign('moduleShowFilter', $cbMapKb['showfilter']);
 	$smarty->assign('kbLanes', $cbMapKb['lanes']);
+	$tabid = getTabid($currentModule);
+	$linksurls = BusinessActions::getAllByType($tabid, array('KANBANBUTTON'));
+	if (!empty($linksurls['KANBANBUTTON'])) {
+		$smarty->assign('BALinks', $linksurls['KANBANBUTTON']);
+	}
 }
 $smarty->assign('moduleView', 'Kanban');
 ?>
