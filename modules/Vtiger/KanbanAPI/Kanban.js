@@ -189,9 +189,9 @@ function kbCreateQuestion(status) {
 			'elementType': 'cbQuestion',
 			'referenceId': '',
 			'searchon': 'qname',
-			'element': {			
+			'element': {
 				'assigned_user_id': `${userwsid}x${gVTUserID}`,
-				'qname': `BQ_Kanban_${gVTModule}_${status.replace(/\s/g,'')}`,
+				'qname': `BQ_Kanban_${gVTModule}_${status.replace(/\s/g, '')}`,
 				'qtype': 'Table',
 				'qstatus': 'Active',
 				'sqlquery': 1,
@@ -212,7 +212,7 @@ function kbCreateAction(result) {
 			'elementType': 'BusinessActions',
 			'referenceId': '',
 			'searchon': 'linklabel',
-			'element': {			
+			'element': {
 				'assigned_user_id': `${userwsid}x${gVTUserID}`,
 				'linktype': 'KANBANHEADER',
 				'linklabel': `BA_Kanban_${gVTModule}_${currentStatus}`,
