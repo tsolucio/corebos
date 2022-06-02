@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="include/jkanban/jkanban.js"></script>
 	<script type="text/javascript" src="modules/Vtiger/KanbanAPI/Kanban.js"></script>
 	<script type="text/javascript" src="include/js/dtlviewajax.js"></script>
+	<script type="text/javascript" src="include/Webservices/WSClient.js"></script>
 	<!-- List View's Buttons and Filters starts -->
 	{assign var=SHOWPAGENAVIGATION value=false}
 	{include file='ListViewFilter.tpl'}
@@ -80,5 +81,9 @@
 	});
 	kanbanRefresh('{$kanbanID}');
 	kanbanSetupInfiniteScroll('{$kanbanID}');
+	let lanefield = '{$lanefield}';
+	let userwsid = {$USERSWSID};
+	let currentStatus = '';
+	let cbConn = new Vtiger_WSClient('');
 	</script>
 {/if}

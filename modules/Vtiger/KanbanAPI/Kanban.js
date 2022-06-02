@@ -181,3 +181,49 @@ function kbPopupSaveHook(module, record, mode, kbinfo) {
 		}
 	});
 }
+
+function kbCreateQuestion(status) {
+	currentStatus = status;
+	cbConn.extendSession(function (result) {
+		const map = [{
+			'elementType': 'cbQuestion',
+			'referenceId': '',
+			'searchon': 'qname',
+			'element': {			
+				'assigned_user_id': `${userwsid}x${gVTUserID}`,
+				'qname': `BQ_Kanban_${gVTModule}_${status.replace(/\s/g,'')}`,
+				'qtype': 'Table',
+				'qstatus': 'Active',
+				'sqlquery': 1,
+				'qpagesize': 0,
+				'qmodule': gVTModule,
+				'qcolumns': 'COUNT(*)',
+				'qcondition': `where ${lanefield}='${status}'`,
+			}
+		}];
+		cbConn.doMassCreate(map, kbCreateAction);
+	});
+}
+
+function kbCreateAction(result) {
+	if (result) {
+		const qid = result.success_creates[0].id.split('x')[1];
+		const map = [{
+			'elementType': 'BusinessActions',
+			'referenceId': '',
+			'searchon': 'linklabel',
+			'element': {			
+				'assigned_user_id': `${userwsid}x${gVTUserID}`,
+				'linktype': 'KANBANHEADER',
+				'linklabel': `BA_Kanban_${gVTModule}_${currentStatus}`,
+				'linkurl': `block://bqanswer:modules/cbQuestion/cbQuestionWidget.php:QID=${qid}&RECORDID=$RECORD$`,
+				'active': 1,
+				'module_list': gVTModule,
+			}
+		}];
+		cbConn.doMassCreate(map);
+		window.location.href = '';
+	} else {
+		ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_ERROR_CREATING, 'error');
+	}
+}
