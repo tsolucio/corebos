@@ -1,3 +1,5 @@
+let cbConn = new Vtiger_WSClient('');
+
 class PaintDocuments {
 
 	constructor(cbUserID, cbFolderID, WSID) {
@@ -36,12 +38,11 @@ class PaintDocuments {
 	}
 
 	Create = () => {
-		let cbConn = new Vtiger_WSClient('');
 		if (paint.Title().value == '' || paint.FileName().value == '') {
 			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_REQUIRED_FIELDS, 'error');
 			return false;
 		}
-		cbConn.extendSession(function(result){
+		cbConn.extendSession(function (result) {
 			let fname = paint.FileName().value;
 			if (fname.substr(fname.length - 4) != '.png') {
 				fname = fname + '.png';
@@ -70,6 +71,9 @@ class PaintDocuments {
 
 	Message = (result, args) => {
 		if(result) {
+			const id = result.id.split('x');
+			const folderid = result.folderid.split('x');
+			cbConn.doSetRelated(id[1], folderid[1]);
 			this.Title().value = '';
 			this.FileName().value = '';
 			this.Description().value = '';
