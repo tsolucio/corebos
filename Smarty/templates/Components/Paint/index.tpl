@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Paint to Document</title>
+	<title>{$APP.LBL_PAINT2DOCUMENT}</title>
 	<meta name="viewport" content="width=device-width">
 	<link rel="stylesheet" href="include/components/PaintJS/spectrum.css">
 	<link rel="stylesheet" href="include/components/PaintJS/control.css">

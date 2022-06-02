@@ -1381,6 +1381,7 @@ $app_strings = array (
 	'LBL_SAVE_MAP' => 'Guardar Mapa',
 	'Paste the link here' => 'Pega el enlace aquí',
 	'LBL_UITYPE10_NOTALLOWED' => 'El módulo relacionado tiene un campo relacional obligatorio.',
+	'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 );
 
 // Translation for currency names
