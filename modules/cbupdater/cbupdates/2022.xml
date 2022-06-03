@@ -126,4 +126,11 @@
 	<classname>addWSClickHouse</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Add ClickHouse Table</description>
+	<filename>build/changeSets/2022/addClickHouseTable.php</filename>
+	<classname>addClickHouseTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

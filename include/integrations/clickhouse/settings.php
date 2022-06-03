@@ -70,5 +70,9 @@ if (!isset($_REQUEST['btnchquery']) || empty($_REQUEST['chquery']) || !$mu->isAc
 	$smarty->assign('CHQUERY', $_REQUEST['chquery']);
 	$smarty->assign('CHQUERYRDO', $rdo);
 }
+$clickhouse_tables = $mu->getTables();
+var_dump($clickhouse_tables);
+die();
+$smarty->assign('clickhouse_tables', $clickhouse_tables);
 $smarty->display('modules/Utilities/clickhouse.tpl');
 ?>

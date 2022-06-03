@@ -154,5 +154,29 @@ class corebos_clickhouse {
 		$chInstance = self::connectToClickhouse();
 		$chInstance->insert($table.$db, [ $values ], $columns);
 	}
+
+	public function getTables() {
+		global $adb;
+		$tables = array();
+		$res = $adb->query('select * from vtiger_ws_clickhousetables');
+		while ($row = $adb->fetch_array($res)) {
+			$table = array(
+				'id' => $row['id'],
+				'name' => $row['table_name'],
+				'access' => $row['access'],
+				'create' => $row['create'],
+				'read' => $row['read'],
+				'write' => $row['write'],
+				'delete' => $row['delete'],
+			);
+			$tables[] = $table;
+		}
+		return json_encode($tables);
+	}
+
+	public function deleteTable($id) {
+		global $adb;
+		$res = $adb->pquery('delete from vtiger_ws_clickhousetables where id = ?', array($id));
+	}
 }
 ?>
