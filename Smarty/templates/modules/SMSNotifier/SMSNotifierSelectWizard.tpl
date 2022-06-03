@@ -8,9 +8,9 @@
 * All Rights Reserved.
 *******************************************************************************/
 -->*}
-<div style="width: 400px;">
+<div style="width: 400px;" class=" sdls-card">
 	<form method="POST" action="javascript:void(0);">
-		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerHeadingULine">
+		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerHeadingULine slds-table slds-table_bordered">
 			<tr>
 				<td class="genHeaderSmall" width="90%" align="left">{$MOD.SelectPhoneNumbers}</td>
 				<td width="10%" align="right">
@@ -33,7 +33,14 @@
 								{foreach key=_FIELDLABEL item=_FIELDNAME from=$_FIELDINFO}
 								<tr>
 									<td align="right" width="15%">
-									<input type="checkbox" name="phonetype" value="{$_FIELDNAME}"/>
+										<div class="slds-form-element__control">
+											<div class="slds-checkbox">
+												<input type="checkbox" name="phonetype" id="{$_FIELDNAME}" value="{$_FIELDNAME}" />
+												<label class="slds-checkbox__label" for="{$_FIELDNAME}">
+													<span class="slds-checkbox_faux"></span>
+												</label>
+											</div>
+										</div>
 									</td>
 									<td align="left"><strong>{$_FIELDLABEL}</strong> {if isset($FIELDVALUES.$_FIELDNAME)}
 									<br/>
@@ -49,7 +56,7 @@
 			</tr>
 		</table>
 
-		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerPopupTransport">
+		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerPopupTransport slds-table slds-table_bordered">
 			<tr>
 				<td class="small" align="center">
 				<input type="hidden" name="idstring" value="{$IDSTRING}" />
@@ -57,8 +64,8 @@
 				<input type="hidden" name="viewid" value="{$VIEWID}"/>
 				<input type="hidden" name="searchurl" value="{$SEARCHURL}"/>
 				<input type="hidden" name="sourcemodule" value="{$SOURCEMODULE}" />
-				<input type="button" class="small crmbutton create" onclick="SMSNotifierCommon.displayComposeWizard(this.form);" value="{$APP.LBL_SELECT_BUTTON_LABEL}"/>
-				<input type="button" class="small crmbutton cancel" onclick="SMSNotifierCommon.hideSelectWizard();" value="{$APP.LBL_CANCEL_BUTTON_LABEL}"/>
+				<input type="button" class="slds-button slds-button_brand small crmbutton create" onclick="SMSNotifierCommon.displayComposeWizard(this.form);" value="{$APP.LBL_SELECT_BUTTON_LABEL}"/>
+				<input type="button" class="slds-button slds-button_destructive small crmbutton cancel" onclick="SMSNotifierCommon.hideSelectWizard();" value="{$APP.LBL_CANCEL_BUTTON_LABEL}"/>
 				</td>
 			</tr>
 		</table>
