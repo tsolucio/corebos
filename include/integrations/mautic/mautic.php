@@ -422,7 +422,7 @@ class corebos_mautic {
 					}
 
 					if (empty($mauticdata['company_corebos_id'])) {
-						if (!empty($mauticdata['accountname'])) {
+						if (!empty($mauticdata['companyname'])) {
 							$record = $this->createCBAccount($company_id, $mauticdata);
 							// Update company_corebos_id
 							if ($record) {
