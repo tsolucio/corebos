@@ -137,6 +137,10 @@ function send_mail(
 	if ($module != 'Calendar') {
 		$contents = addSignature($contents, $from_name);
 	}
+	$companyEmailFooter = GlobalVariable::getVariable('EMail_Company_Signature', '', 'Emails');
+	if (!empty($companyEmailFooter)) {
+		$contents.= html_entity_decode('<br>'.$companyEmailFooter);
+	}
 
 	// always merge against user module
 	$rs = $adb->pquery('select id from vtiger_users where email1=? or email2=?', array($from_email, $from_email));
