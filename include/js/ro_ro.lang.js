@@ -434,4 +434,5 @@ var alert_arr = {
 	'ERROR_CREATING_TRY_AGAIN': 'Error while creating. Fields cannot be empty or have a wrong value.',
 	'LBL_REQUIRED_FIELDS': 'Please fill all required fields',
 	'LBL_ERROR_CREATING': 'Error while creating. Please try again.',
+	'LBL_ERROR_DROPZONE': 'Error uploading link. Check the link and try again.',
 };
