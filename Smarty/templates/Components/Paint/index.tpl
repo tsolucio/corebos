@@ -20,6 +20,10 @@
 		const cbUserID = '{$USERID}';
 		const cbFolderID = '{$DOCID}';
 		const WSID = '{$WSID}';
+		let i18nLanguage = '{$USER_LANG}'.substring(0, 2);
+		if (!['en', 'es'].includes(i18nLanguage)) {
+			i18nLanguage = 'en';
+		}
 	</script>
 	<script src="include/components/PaintJS/script.js"></script>
 	<script type="text/javascript">
