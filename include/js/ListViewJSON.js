@@ -297,7 +297,7 @@ const ListView = {
 	 * @param {Object} values
 	 */
 	getEditorType: (uitype, values, fieldname) => {
-		const disableEditor = ['4', '1024', '1025', 'createdtime', 'modifiedtime'];
+		const disableEditor = ['4', '1024', '1025', 'createdtime', 'modifiedtime', '33', '3313', '3314'];
 		if (uitype == '56') {
 			editor =  {
 				type: 'radio',
