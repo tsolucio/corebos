@@ -6,17 +6,26 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * 04/06/2022 - Translated brazilian portuguese - Ranieri - Brazil/Sao Paulo/ ecrmweb.com.br
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Módulo',
-	'SINGLE_ModuleName' => 'Nome Módulo',
-	'ModuleName ID' => 'ID Nome Módulo',
+	'AutoNumberPrefix' => 'Prefixo Auto Num',
+	'Prefix' => 'Prefixo',
+	'SINGLE_AutoNumberPrefix' => 'Prefixo Auto Num',
+	'AutoNumberPrefix ID' => 'Prefixo Auto Num ID',
+	'AutoPrefixNumber No' => 'Prefixo Auto Num Nr',
+	'Active' => 'Active',
+	'Workflow Expression' => 'Expressão Workflow',
+	'Module' => 'Módulo',
+	'Format' => 'Formato',
+	'Current Value' => 'Valor atual',
+	'Default' => 'Default',
+	'FIX_MISSING_NUMBERING' => 'Atualizar sequencia registros faltantes',
+	'LBL_MASSINCERROR' => 'Erro tentando atualizar sequencia faltante',
 
-	'LBL_CUSTOM_INFORMATION' => 'Imformação Customizada',
-	'LBL_MODULEBLOCK_INFORMATION' => 'Informação Bloco Módulo',
+	'LBL_CUSTOM_INFORMATION' => 'Informação customizada',
+	'LBL_AUTO_NUMBER_PREFIX_INFORMATION' => 'Prefixo Informação Auto Num',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
-
-	'ModuleFieldLabel' => 'Texto Etiqueta Campo Módulo',
 );
 ?>
