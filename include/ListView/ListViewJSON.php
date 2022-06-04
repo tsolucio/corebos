@@ -166,7 +166,7 @@ class GridListView {
 		} else {
 			$data = $this->processResults($result, $field_types);
 		}
-		if ($result && $sql_error != true) {
+		if ($result && !$sql_error) {
 			if ($noofrows>0) {
 				$res = array(
 					'data' => array(
@@ -363,11 +363,8 @@ class GridListView {
 
 	public function processResults($result, $field_types, $parentid = 0) {
 		global $adb, $current_user;
-		$Colorizer = false;
 		$ids = array();
-		if (vtlib_isModuleActive('Colorizer')) {
-			$Colorizer = true;
-		}
+		$Colorizer = vtlib_isModuleActive('Colorizer');
 		if (isset($_REQUEST['searchFullDocuments']) && !empty($_REQUEST['searchFullDocuments'])) {
 			$ids = $this->SearchFullDocuments($_REQUEST['searchFullDocuments']);
 		}
@@ -437,7 +434,6 @@ class GridListView {
 						$rows[$fieldName] = '--';
 					}
 				} elseif ($fieldType == '71' || $fieldType == '72' || $fieldType == '7' || $fieldType == '9') {
-					$currencyField = new CurrencyField($fieldValue);
 					if ($fieldType == '72' || $fieldType == '71') {
 						if ($fieldName == 'unit_price') {
 							$currencyId = getProductBaseCurrency($recordID, $this->module);
