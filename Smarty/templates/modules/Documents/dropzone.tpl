@@ -1,3 +1,4 @@
+{if $SHOWDOCS}
 <form action="index.php" class="dropzone" id="updoc-dropzone">
 	<div class="dz-message">
 		<span><img alt="{'Drag file here or click to upload'|@getTranslatedString}" src="include/dropzone/upload_120.png"></span>
@@ -14,4 +15,7 @@ var moduleDropzone = new Dropzone('#updoc-dropzone', {
 	uploadMultiple: false
 });
 </script>
+{/if}
+{if $SHOWLINKS}
 <div contenteditable="true" class="text-dropzone" id="url-zone" ondrop="handlePaste(event)" onpaste="handlePaste(event)" data-text="{'Paste the link here'|@getTranslatedString}"></div>
+{/if}
