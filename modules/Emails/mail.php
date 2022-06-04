@@ -670,7 +670,7 @@ function getMailErrorString($mail_status_str) {
 	foreach ($mail_status_array as $val) {
 		$list = explode('=', $val);
 		$adb->println('Mail id & status ==> '.$list[0].' = '.$list[1]);
-		if ($list[1] == 0) {
+		if ($list[1] == 0 || strpos($list[1], 'error') || strpos($list[1], 'failed')) {
 			$mail_error_str .= $list[0].'='.$list[1].'&&&';
 		}
 	}
