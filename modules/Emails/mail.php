@@ -137,7 +137,7 @@ function send_mail(
 	if ($module != 'Calendar') {
 		$contents = addSignature($contents, $from_name);
 	}
-	$companyEmailFooter = GlobalVariable::getVariable('EMail_Company_Signature', '', 'Emails');
+	$companyEmailFooter = GlobalVariable::getVariable('EMail_Company_Signature', '', $module);
 	if (!empty($companyEmailFooter)) {
 		$contents.= html_entity_decode('<br>'.$companyEmailFooter);
 	}
