@@ -19,18 +19,40 @@ class URLDropzone_Action extends CoreBOS_ActionController {
 
 	public function Save() {
 		global $current_user;
-		$url = vtlib_purify($_REQUEST['url']);
-		if (!filter_var($url, FILTER_VALIDATE_URL)) {
-			throw new WebServiceException(WebServiceErrorCode::$INVALID_URL, 'Invalid URL specified');
+		$noteurl = vtlib_purify($_REQUEST['url']);
+		$notetitle = $noteurl;
+		if (!filter_var($noteurl, FILTER_VALIDATE_URL)) {
+			// we try as HTML for drag and drop
+			$dom = new DOMDocument();
+			$parse = @$dom->loadHTML($noteurl);
+			$error = true;
+			if ($parse) {
+				$links = $dom->getElementsByTagName('a');
+				foreach ($links as $link) {
+					if (!empty($link->getAttribute('href'))) {
+						$noteurl = $link->getAttribute('href');
+						if (empty($link->textContent)) {
+							$notetitle = $noteurl;
+						} else {
+							$notetitle = $link->textContent;
+						}
+						$error = false;
+					}
+					break;
+				}
+			}
+			if ($error) {
+				header('HTTP/1.1 415 Invalid URL specified');
+				die();
+			}
 		}
-		$tabid = vtws_getEntityId('Users');
 		$element = array(
-			'notes_title' => $url,
-			'filename'=> $url,
+			'notes_title' => $notetitle,
+			'filename'=> $noteurl,
 			'filelocationtype'=> 'E',
 			'filedownloadcount'=> 0,
 			'filestatus'=> 1,
-			'assigned_user_id'=> $tabid.'x'.$current_user->id
+			'assigned_user_id'=> vtws_getEntityId('Users').'x'.$current_user->id
 		);
 		$response = vtws_create('Documents', $element, $current_user);
 		echo json_encode($response);
