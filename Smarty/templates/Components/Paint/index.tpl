@@ -81,13 +81,13 @@
 	</div>
 </div>
 <script src="include/jquery/jquery.js"></script>
+<script type="text/javascript" src="include/components/toast-ui/image-editor/script.js"></script>
 <script type="text/javascript" src="include/components/toast-ui/image-editor/FileSaver.min.js"></script>
 <script type="text/javascript" src="include/components/toast-ui/image-editor/fabric.js"></script>
 <script type="text/javascript" src="include/components/toast-ui/tui-code-snippet/tui-code-snippet.js"></script>
 <script type="text/javascript" src="include/components/toast-ui/tui-color-picker/tui-color-picker.js"></script>
 <script type="text/javascript" src="include/components/toast-ui/image-editor/tui-image-editor.js"></script>
 <script type="text/javascript" src="include/components/toast-ui/image-editor/white-theme.js"></script>
-<script src="include/components/PaintJS/script.js"></script>
 <script>
 	// Image editor
 	var imageEditor = new tui.ImageEditor('#tui-image-editor-container', {
