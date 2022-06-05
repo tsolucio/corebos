@@ -20,6 +20,8 @@ require_once 'Smarty_setup.php';
 $smarty = new vtigerCRM_Smarty();
 $formodule = vtlib_purify($_REQUEST['formodule']);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
+$companyDetails = retrieveCompanyDetails();
+$smarty->assign('COMPANY_DETAILS', $companyDetails);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $formodule);
 $smarty->assign('RECORD', $forrecord);

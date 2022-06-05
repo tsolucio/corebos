@@ -8,10 +8,6 @@ class PaintDocuments {
 		this.WSID = WSID;
 	}
 
-	Init = () => {
-		this.draw = new Paint(document.getElementById('fullscreen'));
-	}
-
 	Title = () => {
 		return document.getElementById('title');
 	}
@@ -29,12 +25,7 @@ class PaintDocuments {
 	}
 
 	Canvas = () => {
-		let canvas = document.getElementById('canvas-context');
-		let context = canvas.getContext('2d');
-		let paint = document.getElementsByClassName('paint-canvas');
-		context.drawImage(paint[3], 0, 0, 640, 480);
-		context.drawImage(paint[4], 0, 0, 640, 480);
-		return canvas.toDataURL('image/png');
+		return imageEditor.toDataURL();
 	}
 
 	Create = () => {
@@ -77,10 +68,14 @@ class PaintDocuments {
 			this.Title().value = '';
 			this.FileName().value = '';
 			this.Description().value = '';
-			this.draw.clear();
-			let canvas = document.getElementById('canvas-context');
-			let context = canvas.getContext('2d');
-			context.clearRect(0, 0, 640, 480);
+			imageEditor.clearObjects();
+			setTimeout(
+				() => {
+					imageEditor.loadImageFromURL('include/components/toast-ui/image-editor/blank.png', 'blank');
+				},
+				500
+			);
+			imageEditor.loadImageFromURL('include/components/toast-ui/image-editor/blank.png', 'blank');
 			ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 		} else {
 			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_ERROR_CREATING, 'error');
