@@ -1,3 +1,4 @@
+{if $INWINDOW}
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,9 +11,10 @@
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css">
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css">
 	<link rel="stylesheet" href="include/style.css">
+	<script type="text/javascript" src="include/js/{$USER_LANG}.lang.js"></script>
+{/if}
 	<script src="include/Webservices/WSClient.js"></script>
 	<script src="include/components/ldsprompt.js"></script>
-	<script type="text/javascript" src="include/js/{$USER_LANG}.lang.js"></script>
 	<link rel="stylesheet" type="text/css" href="include/components/toast-ui/tui-color-picker/tui-color-picker.css" />
 	<link type="text/css" href="include/components/toast-ui/image-editor/tui-image-editor.css" rel="stylesheet" />
 	<script type="text/javascript">
@@ -25,9 +27,11 @@
 		}
 	</script>
 	<script type="text/javascript" src="include/components/toast-ui/image-editor/locale.js"></script>
+{if $INWINDOW}
 </head>
 <body class="slds-theme_shade slds-theme_alert-texture" style="height: 800px;">
-<div class="slds-grid" style="padding: 10px;height: 100%">
+{/if}
+<div class="slds-grid" style="padding: 10px;height: 800px;">
 	<div class="slds-col slds-size_2-of-12 slds-p-right_xx-small">
 		<div class="slds-form-element">
 			<label class="slds-form-element__label" for="form-element-01">
@@ -58,7 +62,7 @@
 				{$APP.LBL_FOLDER} <span style="color: red">*</span>
 			</label>
 			<div class="slds-form-element__control">
-				<select id="folders"  class="slds-input">
+				<select id="folders" class="slds-input">
 					{foreach from=$FOLDERS item=name}
 					<option value="{$name[0]}">{$name[1]}</option>
 					{/foreach}
@@ -80,7 +84,9 @@
 	<div id="tui-image-editor-container" class="tui-image-editor" style="height: 500px"><canvas></canvas></div>
 	</div>
 </div>
+{if $INWINDOW}
 <script src="include/jquery/jquery.js"></script>
+{/if}
 <script type="text/javascript" src="include/components/toast-ui/image-editor/script.js"></script>
 <script type="text/javascript" src="include/components/toast-ui/image-editor/FileSaver.min.js"></script>
 <script type="text/javascript" src="include/components/toast-ui/image-editor/fabric.js"></script>
@@ -110,5 +116,7 @@
 	};
 	window.paint = new PaintDocuments(cbUserID, cbFolderID, WSID);
 </script>
+{if $INWINDOW}
 </body>
 </html>
+{/if}
