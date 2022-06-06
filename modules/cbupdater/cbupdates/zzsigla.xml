@@ -1,0 +1,9 @@
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>install cbifurl module</description>
+	<filename>build/changeSets/sigla/installcbifurl.php</filename>
+	<classname>installcbifurl</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>
