@@ -60,6 +60,12 @@ function __cb_randomstring($arr) {
 	return bin2hex(random_bytes($arr[0]));
 }
 
+function __cb_faker($arr) {
+	$faker = Faker\Factory::create();
+	$operation  = array_shift($arr);
+	return call_user_func_array(array($faker,$operation), $arr);
+}
+
 function __vt_uppercase($arr) {
 	if (empty($arr)) {
 		return '';

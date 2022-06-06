@@ -35,6 +35,7 @@ function cbexpsql_supportedFunctions() {
 		'substring' => 'substring(stringfield,start,length)',
 		'randomstring' => 'randomstring(length)',
 		'randomnumber' => 'randomnumber(min,max)',
+		'faker' => 'faker(operation,parameters)',
 		'uppercase'=>'uppercase(stringfield)',
 		'lowercase'=>'lowercase(stringfield)',
 		//'uppercasefirst'=>'uppercasefirst(stringfield)',
@@ -641,6 +642,9 @@ function cbexpsql_and($arr, $mmodule) {
 }
 function cbexpsql_not($arr, $mmodule) {
 	return 'FALSE';
+}
+function cbexpsql_faker($arr, $mmodule) {
+	return 'TRUE';
 }
 
 class cbexpsql_environmentstub {

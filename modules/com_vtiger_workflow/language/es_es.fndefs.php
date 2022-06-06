@@ -805,6 +805,30 @@ $WFExpressionFunctionDefinitons = array(
 		'randomnumber(1,8)  // cualquier número aleatorio entre 1 y 8 inclusivos',
 	),
 ),
+'faker' => array(
+	'name' => 'faker(operation,parameters)',
+	'desc' => 'This function will generate fake data.',
+	'params' => array(
+		array(
+			'name' => 'operation',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'function that you want to use',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'parameters that a specific faker function has',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		'faker(\'sentence\',3)  // Quae eaque adipisci.',
+		'faker(\'randomDigit\')  // 2',
+		'<a href="https://github.com/fzaninotto/Faker">Here, you can find the faker functions.</a>'
+	),
+),
 'power' => array(
 	'name' => 'power(base, exponential)',
 	'desc' => 'Esta función se usa para calcular la potencia de cualquier número, como calcular cuadrados y cubos en campos enteros.',

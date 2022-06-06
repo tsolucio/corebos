@@ -167,6 +167,7 @@ class VTExpressionsManager {
 			'substring' => 'substring(stringfield,start,length)',
 			'randomstring' => 'randomstring(length)',
 			'randomnumber' => 'randomnumber(min,max)',
+			'faker' => 'faker(operation,parameters)',
 			'uppercase'=>'uppercase(stringfield)',
 			'lowercase'=>'lowercase(stringfield)',
 			'uppercasefirst'=>'uppercasefirst(stringfield)',
