@@ -64,7 +64,7 @@
 			<div class="slds-form-element__control">
 				<select id="folders" class="slds-input">
 					{foreach from=$FOLDERS item=name}
-					<option value="{$name[0]}">{$name[1]}</option>
+					<option value="{$name[0]}"{if $FOLDERID==$name[0]} selected{/if}>{$name[1]}</option>
 					{/foreach}
 				</select>
 			</div>

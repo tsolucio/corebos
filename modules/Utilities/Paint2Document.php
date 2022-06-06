@@ -52,6 +52,7 @@ class paint2Document_DetailViewBlock extends DeveloperBlock {
 		$lv = new GridListView('DocumentFolders');
 		$folders = $lv->findDocumentFolders();
 		$smarty->assign('FOLDERS', $folders);
+		$smarty->assign('FOLDERID', $this->getFromContext('folderid'));
 		$smarty->assign('USER_LANG', $current_user->language);
 		return $smarty->fetch('Smarty/templates/Components/Paint/index.tpl');
 	}
