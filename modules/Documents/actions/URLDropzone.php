@@ -54,6 +54,10 @@ class URLDropzone_Action extends CoreBOS_ActionController {
 			'filestatus'=> 1,
 			'assigned_user_id'=> vtws_getEntityId('Users').'x'.$current_user->id
 		);
+		if (!empty($_REQUEST['fromrecord']) && is_numeric($_REQUEST['fromrecord'])) {
+			$cleanID = vtlib_purify($_REQUEST['fromrecord']);
+			$element['relations'] = vtws_getEntityId(getSalesEntityType($cleanID)).'x'.$cleanID;
+		}
 		$response = vtws_create('Documents', $element, $current_user);
 		echo json_encode($response);
 	}

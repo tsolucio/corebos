@@ -7164,9 +7164,13 @@ function handlePaste(event) {
 		prop = 'innerHTML';
 	}
 	let url = document.getElementById('url-zone');
+	let fromrecord = '';
+	if (document.getElementById('record')) {
+		fromrecord = '&fromrecord='+document.getElementById('record').value;
+	}
 	setTimeout(function () {
 		fetch(
-			'index.php?module=Documents&action=DocumentsAjax&actionname=URLDropzone&method=Save&url='+encodeURIComponent(url[prop]),
+			'index.php?module=Documents&action=DocumentsAjax&actionname=URLDropzone&method=Save&url='+encodeURIComponent(url[prop])+fromrecord,
 			{
 				method: 'post',
 				headers: {
