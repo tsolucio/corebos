@@ -11447,7 +11447,7 @@ precacheAndRoute([{
   "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "9e158766a679ca94741946313fbd9505"
+  "revision": "5d79ea2f2f02ad5a83f6b9740350bbe6"
 }, {
   "url": "include/js/dedup.js",
   "revision": "f09b1b73041383bfe8a85ccce9641617"
@@ -11456,16 +11456,16 @@ precacheAndRoute([{
   "revision": "42e62b85a43a3e624ee8351c039846bb"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "aff679c94ea9eb3794ac550935694468"
+  "revision": "0bffe6d3d89b5be48b363163fa074cc3"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "5bd3ccb75654a790f677e51ca1521439"
+  "revision": "34c60e1c64879d8b3a52741e51006646"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "5f4698a8a811c240a82924ac53f97d95"
+  "revision": "e6c9cd38c7387f6d0f126df4399bd64b"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "8cb1ae543c70c46e51bf350a145a8d0e"
+  "revision": "286b54afb8596c81a85438f1360fea47"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "8131530b0e458005e4e4006251df90a7"
@@ -11474,19 +11474,19 @@ precacheAndRoute([{
   "revision": "77fa4e3b1753e8336cb6da29debd444a"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "47d7a4074986d4ebff3b960d7c4002e1"
+  "revision": "81785868abff61b02dbf15761dde7fb2"
 }, {
   "url": "include/js/general.js",
-  "revision": "95a8e2ddaef176ea3bd7583f85e426a4"
+  "revision": "15dcc9a69221b889f3be665762f43721"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "e0baa3a0ac210db95b02c9eb695fa8af"
+  "revision": "466f7e7da385bc410e9195246ca03eb0"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "995e82a81fff28de27f58d755cf5a793"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "9e9bddb29852aabbdddb5a2242eea8a2"
+  "revision": "22c507d5aa95bf1553f74c9b9658c1e4"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
@@ -11519,7 +11519,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "05a8d20f6b32a3f97dbbd5bbd970b47a"
+  "revision": "3b393347db4de0fa32a6f883ddc96b8e"
 }, {
   "url": "include/js/notebook.js",
   "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
@@ -11537,7 +11537,7 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "db2e772bc7d6dc72bde227385df56ba4"
+  "revision": "2d7293347f93362f86ca0028bb7f8733"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "9663dd1cea6cb7fb0cfe983e54baa186"
@@ -11546,7 +11546,7 @@ precacheAndRoute([{
   "revision": "afd1f3cd61451676111b6d7b6adb1e16"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "19aef31823b4860239e5cad8f6943621"
+  "revision": "52c0c777b55d5cf3c5ffb545253c17b2"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -11575,71 +11575,8 @@ precacheAndRoute([{
   "url": "include/components/loadjs.js",
   "revision": "03a39dd327aca956ea9448782aca04eb"
 }, {
-  "url": "include/components/PaintJS/control.css",
-  "revision": "633a32ba70580b50494e92cf1eceb66d"
-}, {
-  "url": "include/components/PaintJS/gradientcreator.css",
-  "revision": "bef2033786929d2f3889f3f1a118ee83"
-}, {
-  "url": "include/components/PaintJS/images/block.png",
-  "revision": "1b269616a8a6718edbddb9e47c48fbd9"
-}, {
-  "url": "include/components/PaintJS/images/brush.png",
-  "revision": "f0fb641da5e72270add4e9cf6a4b113a"
-}, {
-  "url": "include/components/PaintJS/images/grab.png",
-  "revision": "bf3a09b1ff490703541b37eb5d1de87a"
-}, {
-  "url": "include/components/PaintJS/images/line.png",
-  "revision": "87651d5a2ae6e56c303a500f15898fd8"
-}, {
-  "url": "include/components/PaintJS/images/picker.png",
-  "revision": "bcc9df3deaeb788102cb22d087299325"
-}, {
-  "url": "include/components/PaintJS/images/randomlocation.png",
-  "revision": "bd16a4f26d1c5a656035428bdbf88165"
-}, {
-  "url": "include/components/PaintJS/images/select.png",
-  "revision": "2d7fb763b4d3a5962129fe7e2fd2a5a1"
-}, {
-  "url": "include/components/PaintJS/images/text.png",
-  "revision": "06d323669c1ffdbe9d2d2e0e25c0a83e"
-}, {
-  "url": "include/components/PaintJS/images/transparent.png",
-  "revision": "3c07752b1d92c1ed6217d5451bd72a66"
-}, {
-  "url": "include/components/PaintJS/images/undo.png",
-  "revision": "50db48bed898b31c941546fb39dd7004"
-}, {
-  "url": "include/components/PaintJS/images/zoom.png",
-  "revision": "0347588626a19f83a1a66c78f56513ec"
-}, {
-  "url": "include/components/PaintJS/images/zoomin.png",
-  "revision": "5ba825d630c0a60bee37e8b17828ae96"
-}, {
-  "url": "include/components/PaintJS/images/zoomout.png",
-  "revision": "51642eabf4149bba697d725960a4197a"
-}, {
-  "url": "include/components/PaintJS/images/zoomreset.png",
-  "revision": "14d93ea9cba42407539bee8538d6f73f"
-}, {
-  "url": "include/components/PaintJS/introjs.css",
-  "revision": "4318a4823670d9318f0462560978e233"
-}, {
-  "url": "include/components/PaintJS/paint.css",
-  "revision": "b94db8c78295f03090586ab6457ba0c7"
-}, {
-  "url": "include/components/PaintJS/Paint.min.js",
-  "revision": "60bbe4b642c22f2fa8f3c21fb9166c42"
-}, {
-  "url": "include/components/PaintJS/quicksettings.css",
-  "revision": "1877ec1f864f1a115c0f134e97ef63a4"
-}, {
-  "url": "include/components/PaintJS/script.js",
-  "revision": "4799cbba6e6acfc7a1195bb7632d2083"
-}, {
-  "url": "include/components/PaintJS/spectrum.css",
-  "revision": "2a1922c40199c91899ee4c07033b8dfa"
+  "url": "include/components/Photo2Document.js",
+  "revision": "8e0c748f31ea1370873766d08fda7faa"
 }, {
   "url": "include/components/Select2/css/select2.css",
   "revision": "675de2a347f3407251629544a114be97"
@@ -11659,6 +11596,51 @@ precacheAndRoute([{
   "url": "include/components/toast-ui/grid/tui-grid.min.js",
   "revision": "ae9d6408c182bbc7e2492cd66c0e4d65"
 }, {
+  "url": "include/components/toast-ui/image-editor/blank.png",
+  "revision": "4b847b39b6c14fe2ea7bdeebbc7f1a26"
+}, {
+  "url": "include/components/toast-ui/image-editor/fabric.js",
+  "revision": "19e10e17ff18e7179354efcdf223347a"
+}, {
+  "url": "include/components/toast-ui/image-editor/fabric.min.js",
+  "revision": "e3a1c256fd0a3bd17883a7bfcad2d0b5"
+}, {
+  "url": "include/components/toast-ui/image-editor/FileSaver.min.js",
+  "revision": "cf4473afd98b8fcdbf259ad664f10027"
+}, {
+  "url": "include/components/toast-ui/image-editor/locale.js",
+  "revision": "991a585db2b78a2ede5fbf5c1cf1f29a"
+}, {
+  "url": "include/components/toast-ui/image-editor/script.js",
+  "revision": "368b27c6b7451d5273ef01ab0483b4ec"
+}, {
+  "url": "include/components/toast-ui/image-editor/svg/icon-a.svg",
+  "revision": "b70e0c0e87b49a32cc307c72d897a0cd"
+}, {
+  "url": "include/components/toast-ui/image-editor/svg/icon-b.svg",
+  "revision": "b319e9832828175358d552041e2ae4fd"
+}, {
+  "url": "include/components/toast-ui/image-editor/svg/icon-c.svg",
+  "revision": "4c6ddeb14d1ba9fed2d7e6e312f52c17"
+}, {
+  "url": "include/components/toast-ui/image-editor/svg/icon-d.svg",
+  "revision": "597bad21c7aa9eabf14f2721d2a1d931"
+}, {
+  "url": "include/components/toast-ui/image-editor/tui-image-editor.css",
+  "revision": "416a3ff6599fa979976745b6026d1f7e"
+}, {
+  "url": "include/components/toast-ui/image-editor/tui-image-editor.js",
+  "revision": "e05965cf56a1504ac8a43f4997631d60"
+}, {
+  "url": "include/components/toast-ui/image-editor/tui-image-editor.min.css",
+  "revision": "4aa8191ecdf3af98d1eeffe4ea6e5ad9"
+}, {
+  "url": "include/components/toast-ui/image-editor/tui-image-editor.min.js",
+  "revision": "cc477b2bcac2dc2b62f3bf05bfb5fe04"
+}, {
+  "url": "include/components/toast-ui/image-editor/white-theme.js",
+  "revision": "ca9404690bdcac95e74ae53db63279bf"
+}, {
   "url": "include/components/toast-ui/pagination/tui-pagination.css",
   "revision": "70ffbb5f994ca8a5038f529254ab0feb"
 }, {
@@ -11670,6 +11652,24 @@ precacheAndRoute([{
 }, {
   "url": "include/components/toast-ui/pagination/tui-pagination.min.js",
   "revision": "502672ea6d25834d6b694fb592f01b7c"
+}, {
+  "url": "include/components/toast-ui/tui-code-snippet/tui-code-snippet.js",
+  "revision": "395edd0322dc9becce495202a683f5f6"
+}, {
+  "url": "include/components/toast-ui/tui-code-snippet/tui-code-snippet.min.js",
+  "revision": "12e654eeb525f44430182a86368335ad"
+}, {
+  "url": "include/components/toast-ui/tui-color-picker/tui-color-picker.css",
+  "revision": "08bcbde12e14356bb238b1124e100f5f"
+}, {
+  "url": "include/components/toast-ui/tui-color-picker/tui-color-picker.js",
+  "revision": "164fa58a93c9454386713e3085bcf9a5"
+}, {
+  "url": "include/components/toast-ui/tui-color-picker/tui-color-picker.min.css",
+  "revision": "d46e648398e22bfc518cd3b8366161d3"
+}, {
+  "url": "include/components/toast-ui/tui-color-picker/tui-color-picker.min.js",
+  "revision": "8d0171a7928474eabf106c807671a70a"
 }, {
   "url": "include/components/toast-ui/tui-date-picker/tui-date-picker.css",
   "revision": "282a5cb4943a9abaddce76ad0bfe5292"
