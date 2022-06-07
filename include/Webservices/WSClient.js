@@ -405,6 +405,37 @@ var Vtiger_WSClient = function (url) {
 	};
 
 	/**
+	 * Do Mass Create Operation
+	 */
+	this.doMassCreate = function (valuemap, callback) {
+		this.__checkLogin();
+
+		var reqtype = 'POST';
+		var postdata = {
+			'operation'    : 'MassCreate',
+			'sessionName'  : this._sessionid,
+			'elements'     : this.toJSONString(valuemap)
+		};
+
+		jQuery.ajax({
+			url : this._serviceurl,
+			type: reqtype,
+			data: postdata,
+			// Pass reference to the client to use it inside callback function.
+			_wsclient : this,
+			complete : function (res, status) {
+				var usethis = this._wsclient;
+				var resobj = usethis.toJSON(res.responseText);
+				var result = false;
+				if (!usethis.hasError(resobj)) {
+					result = resobj['result'];
+				}
+				usethis.__performCallback(callback, result);
+			}
+		});
+	};
+
+	/**
 	 * Do Update Operation
 	 */
 	this.doUpdate = function (module, valuemap, callback) {

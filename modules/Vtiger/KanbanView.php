@@ -14,6 +14,9 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 $bmapname = $currentModule.'_Kanban';
+if (isset($_REQUEST['bmapname'])) {
+	$bmapname = vtlib_purify($_REQUEST['bmapname']);
+}
 $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
 if ($cbMapid) {
 	$cbMap = cbMap::getMapByID($cbMapid);
@@ -22,6 +25,7 @@ if ($cbMapid) {
 if (empty($cbMapKb)) {
 	$smarty->assign('showDesert', true);
 } else {
+	require_once 'include/utils/VtlibUtils.php';
 	$smarty->assign('showDesert', false);
 	$kanbanID = uniqid('kb'.strtolower($currentModule));
 	$smarty->assign('kanbanID', $kanbanID);
@@ -31,6 +35,31 @@ if (empty($cbMapKb)) {
 	$smarty->assign('moduleShowSearch', $cbMapKb['showsearch']);
 	$smarty->assign('moduleShowFilter', $cbMapKb['showfilter']);
 	$smarty->assign('kbLanes', $cbMapKb['lanes']);
+	$tabid = getTabid($currentModule);
+	$customlink_params = array(
+		'MODULE' => $currentModule,
+		'RECORD' => 2,
+		'ACTION' => vtlib_purify($_REQUEST['action'])
+	);
+	$linksurls = BusinessActions::getAllByType($tabid, array(
+		'KANBANBUTTON',
+		'KANBANHEADER'
+	), $customlink_params);
+	if (!empty($linksurls['KANBANBUTTON'])) {
+		$smarty->assign('BALinks', $linksurls['KANBANBUTTON']);
+	}
+	if (!empty($linksurls['KANBANHEADER'])) {
+		$HeaderAction = array();
+		foreach ($linksurls['KANBANHEADER'] as $row) {
+			$linklabel = explode('_', $row->linklabel);
+			if (isset($linklabel[3])) {
+				$HeaderAction[$linklabel[3]] = strip_tags(vtlib_process_widget($row));
+			}
+		}
+		$smarty->assign('HeaderAction', $HeaderAction);
+	}
+	$smarty->assign('USERSWSID', vtws_getEntityId('Users'));
+	$smarty->assign('lanefield', $cbMapKb['lanefield']);
 }
 $smarty->assign('moduleView', 'Kanban');
 ?>

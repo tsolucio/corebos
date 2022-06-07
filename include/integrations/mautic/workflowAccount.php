@@ -35,6 +35,7 @@ function mauticAccountCreate($entity) {
 		} else {
 			$send2mautic['companyname'] = $entity->data['accountname'];
 		}
+		$send2mautic['company_corebos_id'] = $entity->data['id'];
 		$send2mautic['ipAddress'] = $_SERVER['REMOTE_ADDR'];
 		$send2mautic['overwriteWithBlank'] = true;
 

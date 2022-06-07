@@ -20,10 +20,15 @@ let lvdataGridInstance = Array();
 let SearchColumns = 0;
 let ListViewCopy = 0;
 let Application_Filter_All_Edit = 1;
+let Application_DetailView_Inline_Edit = 1;
 let DocumentFolderView = 1;
 let Application_MassAction_Multipage = 0;
 let lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
 let urlParams = new URLSearchParams(window.location.search);
+GlobalVariable_getVariable('Application_DetailView_Inline_Edit', 1).then(function (response) {
+	let obj = JSON.parse(response);
+	Application_DetailView_Inline_Edit = parseInt(obj.Application_DetailView_Inline_Edit);
+});
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, gVTModule, '').then(function (response) {
 	let obj = JSON.parse(response);
 	PageSize = obj.Application_ListView_PageSize;
@@ -182,7 +187,7 @@ const ListView = {
 				edit = false;
 				sortable = false;
 			}
-			if (edit) {
+			if (edit && Application_DetailView_Inline_Edit) {
 				if (uitype == 10) {
 					ListView.RelatedModule = headerObj[index].relatedModule;
 				}
@@ -292,9 +297,9 @@ const ListView = {
 	 * @param {Object} values
 	 */
 	getEditorType: (uitype, values, fieldname) => {
-		const disableEditor = ['4', '1024', '1025', 'createdtime', 'modifiedtime'];
+		const disableEditor = ['4', '1024', '1025', 'createdtime', 'modifiedtime', '33', '3313', '3314'];
 		if (uitype == '56') {
-			editor =  {
+			editor = {
 				type: 'radio',
 				options: {
 					listItems: [

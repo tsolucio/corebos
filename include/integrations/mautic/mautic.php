@@ -106,7 +106,7 @@ class corebos_mautic {
 		coreBOS_Settings::setSetting(self::KEY_CLIENTSECRET, $clientsecret);
 		coreBOS_Settings::setSetting(self::KEY_CALLBACK, $callback);
 		coreBOS_Settings::setSetting(self::KEY_LEADSYNC, $leadsync);
-		coreBOS_Settings::setSetting(self::KEY_COMPANIESSYNC, $leadsync);
+		coreBOS_Settings::setSetting(self::KEY_COMPANIESSYNC, $companiessync);
 		coreBOS_Settings::setSetting(self::KEY_MAUTICUSERNAME, $username);
 		coreBOS_Settings::setSetting(self::KEY_MAUTICPASSWORD, $password);
 		coreBOS_Settings::setSetting(self::KEY_MAUTICWEBHOOKSECRET, $mauticwebhooksecret);
@@ -422,7 +422,7 @@ class corebos_mautic {
 					}
 
 					if (empty($mauticdata['company_corebos_id'])) {
-						if (!empty($mauticdata['accountname'])) {
+						if (!empty($mauticdata['companyname'])) {
 							$record = $this->createCBAccount($company_id, $mauticdata);
 							// Update company_corebos_id
 							if ($record) {

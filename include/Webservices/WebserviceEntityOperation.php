@@ -127,7 +127,7 @@ abstract class WebserviceEntityOperation {
 			case 'multipicklist':
 			case 'picklist':
 				$typeDetails['picklistValues'] = $webserviceField->getPicklistDetails($webserviceField);
-				if ($webserviceField->hasDefault()) {
+				if ($webserviceField->hasDefault() && $webserviceField->getDefault()!='') {
 					$typeDetails['defaultValue'] = $webserviceField->getDefault();
 				} else {
 					if (empty($typeDetails['picklistValues'])) {

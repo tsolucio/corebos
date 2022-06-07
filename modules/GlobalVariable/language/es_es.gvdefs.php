@@ -1174,6 +1174,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Agrega la firma del usuario antes del texto citado en lugar de al final de todo el correo electrónico.',
 ),
+'EMail_Company_Signature' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'Pie de Emails en HTML',
+	'definition' => 'Agrega el HTML dado al final de todos los correos electrónicos enviados por la aplicación.',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'valuetype' => 'Email CSV',
 	'category' => 'Testing',
