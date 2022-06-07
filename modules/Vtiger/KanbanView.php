@@ -38,7 +38,7 @@ if (empty($cbMapKb)) {
 	$tabid = getTabid($currentModule);
 	$customlink_params = array(
 		'MODULE' => $currentModule,
-		'RECORD' => 2,
+		'RECORD' => '0x0',
 		'ACTION' => vtlib_purify($_REQUEST['action'])
 	);
 	$linksurls = BusinessActions::getAllByType($tabid, array(
