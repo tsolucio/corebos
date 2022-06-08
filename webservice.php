@@ -74,7 +74,7 @@ if (empty($_REQUEST)) {
 $operation = vtws_getParameter($_REQUEST, 'operation');
 $operation = strtolower($operation);
 $format = vtws_getParameter($_REQUEST, 'format', 'json');
-$sessionId = vtws_getParameter($_REQUEST, 'sessionName');
+$sessionId = empty($_SERVER['HTTP_COREBOS_AUTHORIZATION']) ? vtws_getParameter($_REQUEST, 'sessionName') : $_SERVER['HTTP_COREBOS_AUTHORIZATION'];
 $mode = vtws_getParameter($_REQUEST, 'mode', '');
 
 $sessionManager = new SessionManager();
