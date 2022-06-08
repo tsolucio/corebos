@@ -265,3 +265,192 @@ if (typeof(Utilities) == 'undefined') {
 		}
 	};
 }
+
+var Grid = tui.Grid;
+var gridInstance = {};
+
+document.addEventListener('DOMContentLoaded', function (event) {
+	loadJS(
+		'index.php?module=Utilities&action=UtilitiesAjax&file=getjslanguage'
+	).then(() => {
+		gridInstance = new Grid({
+			el: document.getElementById('chgrid'),
+			columns: [
+				{
+					name: 'name',
+					header: mod_alert_arr.LBL_TABLE_NAME,
+					sortingType: 'desc',
+					sortable: true,
+					editor: 'text',
+					onAfterChange(ev) {
+						const idx = gridInstance.getIndexOfRow(ev.rowKey);
+						updateFieldData(ev, idx);
+						console.table(ev)
+					},
+				},
+				{
+					name: 'access',
+					header: mod_alert_arr.LBL_ACCESS,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					sortable: true,
+					renderer: {
+						type: CheckboxWithActionRender,
+					}
+				},
+				{
+					name: 'create',
+					header: mod_alert_arr.LBL_CREATE,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					sortable: true,
+					renderer: {
+						type: CheckboxWithActionRender,
+					}
+				},
+				{
+					name: 'read',
+					header: mod_alert_arr.LBL_READ,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					sortable: true,
+					renderer: {
+						type: CheckboxWithActionRender,
+					}
+				},
+				{
+					name: 'write',
+					header: mod_alert_arr.LBL_WRITE,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					sortable: true,
+					renderer: {
+						type: CheckboxWithActionRender,
+					}
+				},
+				{
+					name: 'action',
+					header: mod_alert_arr.LBL_ACTION,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					sortable: false,
+					renderer: {
+						type: DeleteButtonRender,
+					}
+				},
+			],
+			data:
+				[
+					{
+						id: '1',
+						name: 'vtiger_audit_trail',
+						access: '1',
+						create: '1',
+						read: '1',
+						write: '1',
+						delete: '1',
+					},
+					{
+						id: '2',
+						name: 'marvel',
+						access: '1',
+						create: '1',
+						read: '1',
+						write: '0',
+						delete: '0',
+					},
+					{
+						id: '3',
+						name: 'marvel3',
+						access: '1',
+						create: '0',
+						read: '1',
+						write: '0',
+						delete: '0',
+					},
+				],
+			useClientSort: false,
+			rowHeight: 'auto',
+			bodyHeight: 500,
+			scrollX: false,
+			scrollY: false,
+			header: {
+				align: 'left',
+				valign: 'top',
+			},
+		});
+		tui.Grid.applyTheme('striped');
+	});
+});
+
+
+
+function addRow() {
+	const total_row = gridInstance.getRowCount();
+	const lastrowvalue = gridInstance.getValue(total_row - 1, 'name');
+	if (lastrowvalue === '') return false;
+
+	gridInstance.appendRow(
+		{
+			id: '',
+			name: '',
+			access: '1',
+			create: '1',
+			read: '1',
+			write: '1',
+			delete: '1',
+		})
+}
+
+function changeCheckbox(rowId, fieldName){
+	if(document.getElementById('checkbox-'+fieldName+'-'+rowId).checked){
+		console.log("is true")
+	}else{
+		console.log("is false now")
+	}
+}
+
+function deleteRow(rowId) {
+	const table_name = gridInstance.getValue(rowId, 'name');
+	gridInstance.removeRow(rowId);
+	//send ajax call to delete table
+}
+
+
+function updateFieldData(ev, idx) {
+	const table_name = gridInstance.getValue(idx, 'name');
+	data = {
+		columnName: ev.columnName,
+		column_value: ev.value,
+		table_name
+	}
+	//send update to ajax
+}
+
+
+function showTab(tab) {
+	var hide = '';
+	var show = '';
+	if (tab === 'settings') {
+		hide = 'tables';
+		show = 'settings';
+	} else {
+		hide = 'settings';
+		show = 'tables';
+	}
+	document.getElementById('tab-' + hide).classList.remove('slds-is-active');
+	document.getElementById('tab-' + show).classList.add('slds-is-active');
+
+	document.getElementById('tab-data-' + show).style.visibility = 'visible';
+	document.getElementById('tab-data-' + hide).style.visibility = 'hidden';
+
+	document
+		.getElementById('tab-data-' + show)
+		.classList.remove('slds-is-active');
+	document.getElementById('tab-data-' + show).classList.add('slds-is-active');
+
+	document.getElementById('tab-data-' + show).classList.remove('slds-hide');
+	document.getElementById('tab-data-' + show).classList.add('slds-show');
+	document.getElementById('tab-data-' + hide).classList.remove('slds-show');
+	document.getElementById('tab-data-' + hide).classList.add('slds-hide');
+}
