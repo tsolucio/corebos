@@ -2374,7 +2374,7 @@ function validateImageFile($file_details) {
 		}
 		$filetype = strtolower($filetype);
 	}
-	if (in_array($filetype, ['jpeg', 'png', 'jpg', 'pjpeg', 'x-png', 'gif', 'bmp', 'svg', 'svg+xml', 'xml', 'text/xml'])) {
+	if (in_array($filetype, ['jpeg', 'png', 'jpg', 'pjpeg', 'x-png', 'gif', 'bmp', 'svg', 'svg+xml', 'xml', 'text/xml', 'pdf', 'octet-stream'])) {
 		// we add XML to the array in order to apply validation rules to that type as it can contain executable code
 		$saveimage = 'true';
 	} else {
@@ -2465,7 +2465,8 @@ function validateImageContents($filename) {
 				|| stripos($contents, '<%=') !== false
 				|| stripos($contents, '<? ') !== false
 				|| stripos($contents, '<?php ') !== false
-				|| stripos($contents, '<% ') !== false;
+				|| stripos($contents, '<% ') !== false
+				|| stripos($contents, '<</') !== false;
 	}
 	if ($check) {
 		return false;

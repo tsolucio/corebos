@@ -610,6 +610,9 @@ const ListView = {
 		lvdataGridInstance[ListView.Instance].clear();
 		if (reload) {
 			if (ListView.Action == 'massedit' || ListView.Action == 'inlineedit') {
+				if (!RequestParams) {
+					RequestParams = {};
+				}
 				RequestParams.lastPage = lastPage;
 				RequestParams.fromInstance = false;
 			} else {
