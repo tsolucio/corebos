@@ -28,7 +28,7 @@ $total_num_of_steps = 4;
 	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_INSTALLATION_CHECK']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="include/jquery/jquery.js"></script>
 	<link rel="stylesheet" href="include/install/css/bootstrap.min.css">
 	<link rel="stylesheet" href="include/install/css/bootstrap-theme.min.css">
 </head>

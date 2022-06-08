@@ -147,7 +147,7 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 		if (empty($callerInfo)) {
 			$callerInfo = getCallerInfo($callerNumber);
 		}
-		$focus->column_fields['cto_id'] = $callerInfo['id'];
+		$focus->column_fields['cto_id'] = empty($callerInfo['id']) ? 0 : $callerInfo['id'];
 		$focus->column_fields['rel_id'] = 0;
 	} else {
 		$callerInfo = array();
@@ -161,7 +161,7 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 	$focus->save('cbCalendar');
 	$focus->setActivityReminder('off');
 
-	if ($callerInfo != false) {
+	if ($callerInfo) {
 		$tablename = array(
 			'Contacts'=>'vtiger_cntactivityrel',
 			'Accounts'=>'vtiger_seactivityrel',
@@ -169,7 +169,9 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 			'HelpDesk'=>'vtiger_seactivityrel',
 			'Potentials'=>'vtiger_seactivityrel',
 		);
-		$adb->pquery('insert ignore into '.$tablename[$callerInfo['module']].' values (?,?)', array($callerInfo['id'], $focus->id));
+		if (!empty($callerInfo['id']) && !empty($callerInfo['module'])) {
+			$adb->pquery('insert ignore into '.$tablename[$callerInfo['module']].' values (?,?)', array($callerInfo['id'], $focus->id));
+		}
 	}
 	$callerInfo['activityid'] = $focus->id;
 	$callerInfo['pbxdirection'] = 'IN';

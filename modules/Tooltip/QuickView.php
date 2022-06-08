@@ -17,9 +17,6 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 
-// $module_array=moduleList();
-// $smarty->assign('MODULES', $module_array);
-
 if (!empty($_REQUEST['formodule'])) {
 	$fld_module = vtlib_purify($_REQUEST['formodule']);
 } else {

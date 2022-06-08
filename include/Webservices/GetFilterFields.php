@@ -22,6 +22,10 @@ function vtws_getfilterfields($module, $user) {
 			'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
 		);
 	}
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($module, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($module) is denied");
+	}
 	if (in_array($module, vtws_getActorModules())) {
 		$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
 		$handlerPath = $webserviceObject->getHandlerPath();

@@ -54,7 +54,6 @@ function webforms_getUserData($ownerId, $describeFields, $source) {
 			$userData[$fieldName] = $ownerId;
 			continue;
 		}
-		/* TODO: if($describeFields[$i]['type']['name'] == 'reference'){ continue; }*/
 
 		/**
 		 * Support for specifying (fieldname or label:fieldlabel)
@@ -75,7 +74,7 @@ function webforms_getUserData($ownerId, $describeFields, $source) {
 			if ($value !== null) {
 				$userData[$fieldName] = $value;
 			}
-		} elseif ($describeFields[$i]['mandatory'] == true) {
+		} elseif ($describeFields[$i]['mandatory']) {
 			return null;
 		}
 	}
@@ -139,11 +138,9 @@ function webforms_init() {
 		if ($active === false) {
 			webforms_returnError(array('code'=>'WEBFORMS_DISABLED','message'=>'Webforms module is disabled'), 'Webforms');
 		}
-		if ($enableAppKeyValidation ==true) {
-			if ($application_unique_key !== $_REQUEST['appKey']) {
-				webforms_returnError(array('code'=>'WEBFORMS_INVALID_APPKEY','message'=>'AppKey provided is invalid'), null);
-				return ;
-			}
+		if ($enableAppKeyValidation && $application_unique_key !== $_REQUEST['appKey']) {
+			webforms_returnError(array('code'=>'WEBFORMS_INVALID_APPKEY','message'=>'AppKey provided is invalid'), null);
+			return;
 		}
 		$module = $_REQUEST['moduleName'];
 		$challengeResult = vtws_getchallenge($defaultUserName);

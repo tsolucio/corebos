@@ -25,9 +25,9 @@ class VTTaskManager {
 	 * When a new task is saved for the first time a field is added to it called
 	 * id that stores the task id used in the database.
 	 *
-	 * @param $summary A summary of the task instance.
-	 * @param $task The task instance to save.
-	 * @return The id of the task
+	 * @param string summary of the task instance
+	 * @param object the task instance to save
+	 * @return integer the id of the task
 	 */
 	public function saveTask($task) {
 		$adb = $this->adb;
@@ -39,7 +39,7 @@ class VTTaskManager {
 			$taskId = $adb->getUniqueID('com_vtiger_workflowtasks');
 			$task->id = $taskId;
 			$orderrs = $adb->pquery('select max(executionorder) from com_vtiger_workflowtasks where workflow_id=?', array($task->workflowId));
-			$order = $adb->query_result($orderrs, 0, 0)+1;
+			$order = (int)$adb->query_result($orderrs, 0, 0)+1;
 			$rdo = $adb->pquery(
 				'insert into com_vtiger_workflowtasks (task_id, workflow_id, summary, task, executionorder) values (?, ?, ?, ?, ?)',
 				array($taskId, $task->workflowId, $task->summary, serialize($task), $order)
@@ -69,7 +69,7 @@ class VTTaskManager {
 		$orderrs = $adb->pquery('select executionorder,workflow_id from com_vtiger_workflowtasks where task_id=?', array($taskId));
 		$order = $adb->query_result($orderrs, 0, 0);
 		$wfid = $adb->query_result($orderrs, 0, 1);
-		$orderrs = $adb->pquery('update com_vtiger_workflowtasks set executionorder=executionorder-1 where workflow_id=? and executionorder>?', array($wfid, $order));
+		$adb->pquery('update com_vtiger_workflowtasks set executionorder=executionorder-1 where workflow_id=? and executionorder>?', array($wfid, $order));
 		$adb->pquery('delete from com_vtiger_workflowtasks where task_id=?', array($taskId));
 		return $wfid;
 	}
@@ -99,8 +99,8 @@ class VTTaskManager {
 	/**
 	 * Retrieve a task from the database
 	 *
-	 * @param $taskId The id of the task to retrieve.
-	 * @return VTTask The retrieved task.
+	 * @param integer id of the task to retrieve
+	 * @return VTTask the retrieved task
 	 */
 	public function retrieveTask($taskId) {
 		$adb = $this->adb;
@@ -214,6 +214,10 @@ abstract class VTTask {
 		$from_wf = false;
 	}
 
+	public function isHealthy() {
+		return true;
+	}
+
 	public function after_retrieve() {
 	}
 
@@ -256,7 +260,9 @@ abstract class VTTask {
 			'Comments' => '(general : (__VtigerMeta__) comments)',
 			'InventoryDetails' => '(general : (__VtigerMeta__) inventorydetails)',
 			'groupEmailList' => '(general : (__VtigerMeta__) groupEmailList_Put_Group_Name_Here)',
+			'groupUsersWsIdList' => '(general : (__VtigerMeta__) groupUsersWsIdList_Put_Group_Name_Here)',
 			'invitedUsers' => '(general : (__VtigerMeta__) Events_Users_Invited)',
+			'relatedContacts' => '(general : (__VtigerMeta__) Events_Related_Contacts)',
 			'WorkflowFunction' => '(general : (__WorkflowFunction__) Put_Function_Here )',
 			'scan QRCode' => '(general : (__VtigerMeta__) scanQRCode->FieldName)',
 			'scan BarCode' =>'(general : (__VtigerMeta__) scanBarCode->CodeType->FieldName)'
@@ -337,25 +343,20 @@ class VTTaskType {
 			$includeModules = $modules['include'];
 			$excludeModules = $modules['exclude'];
 
-			if (!empty($sourceModule)) {
-				if (getTabid($sourceModule) == null || !vtlib_isModuleActive($sourceModule)) {
-					continue;
-				}
+			if (!empty($sourceModule) && (getTabid($sourceModule) == null || !vtlib_isModuleActive($sourceModule))) {
+				continue;
 			}
 
 			if (empty($includeModules) && empty($excludeModules)) {
 				$taskTypeInstances[] = $taskName;
-				continue;
 			} elseif (!empty($includeModules)) {
 				if (in_array($moduleName, $includeModules)) {
 					$taskTypeInstances[] = $taskName;
 				}
-				continue;
 			} elseif (!empty($excludeModules)) {
 				if (!(in_array($moduleName, $excludeModules))) {
 					$taskTypeInstances[] = $taskName;
 				}
-				continue;
 			}
 		}
 		return $taskTypeInstances;
@@ -363,7 +364,6 @@ class VTTaskType {
 
 	public static function getInstanceFromTaskType($taskType) {
 		$adb = PearDatabase::getInstance();
-
 		$result = $adb->pquery('SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename=? or classname=? limit 1', array($taskType, $taskType));
 		$taskTypes['name'] = $adb->query_result($result, 0, 'tasktypename');
 		$taskTypes['label'] = $adb->query_result($result, 0, 'label');
@@ -371,9 +371,7 @@ class VTTaskType {
 		$taskTypes['classpath'] = $adb->query_result($result, 0, 'classpath');
 		$taskTypes['templatepath'] = $adb->query_result($result, 0, 'templatepath');
 		$taskTypes['sourcemodule'] = $adb->query_result($result, 0, 'sourcemodule');
-
-		$taskDetails = self::getInstance($taskTypes);
-		return $taskDetails;
+		return self::getInstance($taskTypes);
 	}
 }
 ?>

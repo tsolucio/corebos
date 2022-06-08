@@ -1,0 +1,7 @@
+cd PUT_YOUR_COREBOS_ROOT_DIRECTORY_HERE
+if [ -f include/cbmqtm/coreBOS_MQTMDispatcher.daemon_lock ]
+then
+	/usr/bin/kill -2 `/usr/bin/cat include/cbmqtm/coreBOS_MQTMDispatcher.daemon_lock`
+	/usr/bin/sleep 6
+fi
+/usr/bin/nohup /usr/bin/php include/cbmqtm/run.php -d

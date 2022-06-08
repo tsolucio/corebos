@@ -76,9 +76,7 @@ function MultiSelector( list_target, max ){
 				// Add new element
 				this.parentNode.insertBefore(new_element, this);
 
-				// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4876
 				// SingleQuoted filename cannot be handled using $_FILES, we handle it through hidden field.
-				// http://in.php.net/manual/en/features.file-upload.php#64087
 				var new_element_hdn = null;
 				if (typeof(element.form) != 'undefined') {
 					new_element_hdn = element.form ['\'' + this.name + '_hidden' + '\''];
@@ -92,7 +90,6 @@ function MultiSelector( list_target, max ){
 				if (new_element_hdn.type == 'hidden') {
 					new_element_hdn.value = getFileNameOnly(this.value);
 				}
-				// End
 
 				// Apply 'update' to element
 				this.multi_selector.addElement(new_element);

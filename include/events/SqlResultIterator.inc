@@ -69,7 +69,6 @@ class SqlResultIterator implements Iterator {
 			$arr[]=$rowArr;
 		}
 		return $arr;
-		$this->rewind();
 	}
 }
 

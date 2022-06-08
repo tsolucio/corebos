@@ -19,9 +19,9 @@ require_once 'modules/CustomView/CustomView.php';
 
 $cv_module = vtlib_purify($_REQUEST['module']);
 $recordid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
+$permit_all = isset($_REQUEST['permitall']) ? vtlib_purify($_REQUEST['permitall']) : 'false';
 
 $smarty->assign('MOD', $mod_strings);
-$smarty->assign('CATEGORY', getParentTab());
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
@@ -37,6 +37,7 @@ $smarty->assign('STATUS', '');
 if ($recordid == '') {
 	$oCustomView = new CustomView();
 	$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
+	$modulecollist_array = $oCustomView->getModuleColumnsList($cv_module, true);
 	$log->debug('CustomView :: ColumnsList for the module'.$cv_module);
 	if (isset($modulecollist)) {
 		$choosecolslist = getByModule_ColumnsList($cv_module, $modulecollist);
@@ -59,12 +60,15 @@ if ($recordid == '') {
 	$modulecolumnshtml = getByModule_ColumnsHTML($cv_module, $modulecollist);
 	$smarty->assign('FOPTION', $advfilterhtml);
 	$smarty->assign('COLUMNS_BLOCK', $modulecolumnshtml);
+	$smarty->assign('FIELDNAMES_ARRAY', $modulecollist_array);
+	$smarty->assign('CRITERIA_GROUPS', array());
 
 	$smarty->assign('MANDATORYCHECK', implode(',', array_unique($oCustomView->mandatoryvalues)));
 	$smarty->assign('SHOWVALUES', implode(',', $oCustomView->showvalues));
 	$smarty->assign('EXIST', 'false');
 	$data_type[] = $oCustomView->data_type;
 	$smarty->assign('DATATYPE', $data_type);
+	$smarty->assign('PERMITALL', $permit_all);
 } else {
 	$oCustomView = new CustomView($cv_module);
 	$now_action = vtlib_purify($_REQUEST['action']);
@@ -72,6 +76,7 @@ if ($recordid == '') {
 		$customviewdtls = $oCustomView->getCustomViewByCvid($recordid);
 		$log->debug('CustomView :: ViewDetails for the Viewid'.$recordid);
 		$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
+		$modulecollist_array = $oCustomView->getModuleColumnsList($cv_module, true);
 		$selectedcolumnslist = $oCustomView->getColumnsListByCvid($recordid);
 		$log->debug('CustomView :: ColumnsList for the Viewid'.$recordid);
 
@@ -110,6 +115,7 @@ if ($recordid == '') {
 		$modulecolumnshtml = getByModule_ColumnsHTML($cv_module, $modulecollist);
 		$smarty->assign('FOPTION', $advfilterhtml);
 		$smarty->assign('COLUMNS_BLOCK', $modulecolumnshtml);
+		$smarty->assign('FIELDNAMES_ARRAY', $modulecollist_array);
 		$smarty->assign('CRITERIA_GROUPS', $advfilterlist);
 
 		$smarty->assign('MANDATORYCHECK', implode(',', array_unique($oCustomView->mandatoryvalues)));
@@ -117,6 +123,7 @@ if ($recordid == '') {
 		$smarty->assign('EXIST', 'true');
 		$data_type[] = $oCustomView->data_type;
 		$smarty->assign('DATATYPE', $data_type);
+		$smarty->assign('PERMITALL', $permit_all);
 	} else {
 		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 		exit;
@@ -172,7 +179,7 @@ function getByModule_ColumnsList($mod, $columnslist, $selected = '') {
 						$check_dup[] = $module.$fieldlabel;
 					}
 				}
-				if (count($advfilter)>0) {
+				if (!empty($advfilter)) {
 					$advfilter_out[$modname.' - '.$label]= $advfilter;
 				}
 			}

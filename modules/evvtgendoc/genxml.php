@@ -48,7 +48,6 @@ $odtout = new OpenDocument;
 $bytes = $odtout->GenXML($xmltpl, $crmid, $module);
 $out = '<table class="lvtCol" width="100%"><tr><td>';
 $out.=$mod_strings['LBL_INFORMATION'].$module.$mod_strings['LBL_WITH']." : $crmid ".$mod_strings['LBL_TEMPLATE']." $xmltpl<br/>";
-//$out.="<br/>".$odtout->output().'<br/><br/>';
 $out.= '<a href="cache/genxml/xmlgen'.$crmid.'.xml">'.$app_strings['DownloadMergeFile'].'</a></td></tr></table><br/>';
 echo $out;
 ?>

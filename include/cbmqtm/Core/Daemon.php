@@ -400,7 +400,7 @@ abstract class Core_Daemon
 
         // Handle any calls to __invoke()able objects
         if (in_array($method, $this->workers))
-            return call_user_func_array($this->$method, $args);
+            return call_user_func_array($this->$method, array_values($args));
 
         throw new Exception("Invalid Method Call '$method'");
     }
@@ -500,7 +500,7 @@ abstract class Core_Daemon
                 return;
 
             $callback['call_at'] = time() + (int)$callback['throttle'];
-            call_user_func_array($callback['callback'], $args);
+            call_user_func_array($callback['callback'], array_values($args));
             return;
         }
 
@@ -514,7 +514,7 @@ abstract class Core_Daemon
                 return;
 
             $this->callbacks[$event[0]][$callback_id]['call_at'] = time() + (int)$callback['throttle'];
-            call_user_func_array($callback['callback'], $args);
+            call_user_func_array($callback['callback'], array_values($args));
         }
     }
 
@@ -595,7 +595,7 @@ abstract class Core_Daemon
             $this->workers = $this->stats = array();
 
             try {
-                call_user_func_array($callable, array_slice(func_get_args(), 1));
+                call_user_func_array($callable, array_values(array_slice(func_get_args(), 1)));
             } catch (Exception $e) {
                 $this->error('Exception Caught in Task: ' . $e->getMessage());
             }

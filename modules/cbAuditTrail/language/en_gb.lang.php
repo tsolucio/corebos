@@ -14,5 +14,7 @@ $mod_strings = array(
 	'LBL_AUDIT_TRAIL'=>'Audit Trail',
 	'AuditTrailEnabled' => 'Audit Trail Enabled',
 	'AuditTrailDisabled' => 'Audit Trail Disabled',
+	'ERR_SQL' => 'Error: incorrect database request.',
+	'ERR_NoData' => 'Error: no data found.',
 );
 ?>

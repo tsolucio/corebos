@@ -48,7 +48,6 @@
 			<input type="hidden" name="mobilemode" value="1">
 			<input type="hidden" name="_operation" value="saveRecord">
 			<input type="hidden" name="action">
-			<input type="hidden" name="parenttab" value="Support">
 			<input type="hidden" name="return_module" value="{$_MODULE->name()}">
 			<input type="hidden" name="return_id" value="{$id}">
 			<input type="hidden" name="return_action" value="index">
@@ -65,7 +64,7 @@
 					{foreach item=_FIELD from=$_FIELDS}
 						{if $_FIELD->displaytype() eq '1' || ($_FIELD->name() eq 'time_start' || $_FIELD->name() eq 'time_end' || $_FIELD->name() eq 'date_start' || $_FIELD->name() eq 'due_date' || $_FIELD->name() eq 'followupdt')}
 							<div>
-								{if $_FIELD->uitype() eq '1' || $_FIELD->uitype() eq '2' || $_FIELD->uitype() eq '55' || $_FIELD->uitype() eq '255' || $_FIELD->uitype() eq '11' || $_FIELD->uitype() eq '13' || $_FIELD->uitype() eq '17' || $_FIELD->uitype() eq '72'}
+								{if $_FIELD->uitype() eq '1' || $_FIELD->uitype() eq '2' || $_FIELD->uitype() eq '11' || $_FIELD->uitype() eq '13' || $_FIELD->uitype() eq '17' || $_FIELD->uitype() eq '72'}
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 										<input type="text" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 								{/if}
@@ -208,7 +207,7 @@
 									</div>
 								{/if}
 								{if $_FIELD->uitype() eq '56'}
-									<div>
+									<div style="display:inline-flex">
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 										<input type="checkbox" name="{$_FIELD->name()}" id="{$_FIELD->name()}" {if $_FIELD->value() eq 1} checked {/if} class="custom" />
 									</div>

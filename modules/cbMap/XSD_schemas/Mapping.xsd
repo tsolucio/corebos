@@ -33,7 +33,7 @@
                             <xs:complexType mixed="true">
                               <xs:sequence>
                                 <xs:element type="xs:string" name="OrgfieldName"/>
-                                <xs:element type="xs:string" name="OrgfieldID"/>
+                                <xs:element type="xs:string" name="OrgfieldID" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="Rule" minOccurs="0"/>
                               </xs:sequence>
                             </xs:complexType>

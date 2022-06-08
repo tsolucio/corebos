@@ -1,4 +1,4 @@
-const ldsPrompt = {
+var ldsPrompt = {
 	show : (headText, content, theme) => {
 		theme = theme || 'error';
 		let modal = `<section role="alertdialog" tabindex="0" class="slds-modal slds-fade-in-open slds-modal_prompt" aria-modal="true">

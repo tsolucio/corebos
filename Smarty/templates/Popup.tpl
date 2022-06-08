@@ -14,7 +14,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 	<title>{$MODULE|@getTranslatedString:$MODULE} - {$coreBOS_uiapp_name}</title>
 	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
-	<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/override_lds.css">
 {include file='BrowserVariables.tpl'}
 {include file='Components/Components.tpl'}
 <script type="text/javascript">
@@ -40,9 +39,13 @@ var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
 var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
 var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
+{if !empty($SET_CSS_PROPERTIES) && is_file($SET_CSS_PROPERTIES)}
+	<link rel="stylesheet" type="text/css" media="all" href="{$SET_CSS_PROPERTIES}">
+{/if}
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 <link rel="stylesheet" type="text/css" href="include/LD/assets/styles/salesforce-lightning-design-system.css" />
+<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/override_lds.css">
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->
@@ -58,6 +61,7 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 <script type='text/javascript' src='include/jquery/jquery.js'></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="include/components/ldsprompt.js"></script>
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="include/js/QuickCreate.js"></script>
 <script type="text/javascript" src="include/js/Inventory.js"></script>
@@ -144,7 +148,6 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 								<input name="record_id" id="record_id" type="hidden" value="{$RECORD_ID}">
 								<input name="return_module" id="return_module" type="hidden" value="{$RETURN_MODULE}">
 								<input name="from_link" id="from_link" type="hidden" value="{if isset($smarty.request.fromlink)}{$smarty.request.fromlink|@vtlib_purify}{/if}">
-								<input name="maintab" id="maintab" type="hidden" value="{$MAINTAB}">
 								<input type="hidden" id="relmod" name="{$mod_var_name}" value="{$mod_var_value}">
 								<input type="hidden" id="relrecord_id" name="{$recid_var_name}" value="{$recid_var_value}">
 								<input name="form" id="popupform" type="hidden" value="{$smarty.request.form|@vtlib_purify}">
@@ -212,7 +215,32 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 				<table cellpadding="2" cellspacing="0" width="100%" align="center" class="searchUIAdv2 small" border=0>
 					<tr>
 						<td align="center" class="small" width=90%>
-							{include file='AdvanceFilter.tpl' SOURCE='customview' COLUMNS_BLOCK=$FIELDNAMES}
+							<input type="hidden" name="advft_criteria" id="advft_criteria" value="">
+							<input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value="">
+							<div class="slds-grid slds-m-top_small cbds-advanced-search--inactive" id="cbds-advanced-search">
+								<div class="slds-col">
+									<div class="slds-expression slds-p-bottom_xx-large">
+										<div class="slds-grid">
+											<div class="slds-col slds-size_11-of-12">
+												<div class="slds-text-title_caps slds-align_absolute-center">{$APP.LBL_SEARCH}</div>
+											</div>
+											<div class="slds-col slds-size_1-of-12 slds-clearfix">
+												<button type="button"
+													class="slds-button slds-button_icon slds-button_icon-border slds-float_right"
+													onClick="show('searchAcc');fnhide('advSearch');document.basicSearch.searchtype.value='basic';document.basicSearch.searchtype.searchlaunched='';document.getElementById('cbds-advanced-search').classList.remove('cbds-advanced-search--active')">
+													<svg class="slds-button__icon" aria-hidden="true">
+														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+													</svg>
+													<span class="slds-assistive-text">{$APP.LBL_DELETE_GROUP}</span>
+												</button>
+											</div>
+										</div>
+										<pre>
+										</pre>
+										{include file='AdvanceFilter.tpl' SOURCE='customview' COLUMNS_BLOCK=$FIELDNAMES MODULES_BLOCK=$FIELDNAMES_ARRAY}
+									</div>
+								</div>
+							</div>
 						</td>
 					</tr>
 				</table>

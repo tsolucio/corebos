@@ -42,17 +42,26 @@ class Import_Controller {
 		}
 	}
 
-	public function triggerImport($batchImport = false) {
+	public function triggerImport($batchImport = false, $setBatchImport = false) {
 		$importInfo = Import_Queue_Controller::getImportInfo($this->userInputObject->get('module'), $this->user);
+		$importInfo['workflow'] = $this->userInputObject->get('workflow');
+		if ($importInfo['workflow'] == 'on') {
+			$importInfo['workflow'] = 1;
+		}
+		if ($importInfo['workflow'] == 'off') {
+			$importInfo['workflow'] = 0;
+		}
+		$importInfo['workflowid'] = $this->userInputObject->get('workflowid');
 		$importDataController = new Import_Data_Controller($importInfo, $this->user);
 
-		if (!$batchImport) {
-			if (!$importDataController->initializeImport()) {
-				Import_Utils::showErrorPage(getTranslatedString('ERR_FAILED_TO_LOCK_MODULE', 'Import'));
-				exit;
-			}
+		if (!$batchImport && !$importDataController->initializeImport()) {
+			Import_Utils::showErrorPage(getTranslatedString('ERR_FAILED_TO_LOCK_MODULE', 'Import'));
+			exit;
 		}
-
+		if ($setBatchImport) {
+			$importDataController->batchImport = false;
+		}
+		Import_Queue_Controller::updateStatus($importInfo['id'], Import_Queue_Controller::$IMPORT_STATUS_RUNNING);
 		$importDataController->importData();
 		Import_Queue_Controller::updateStatus($importInfo['id'], Import_Queue_Controller::$IMPORT_STATUS_HALTED);
 		$importInfo = Import_Queue_Controller::getImportInfo($this->userInputObject->get('module'), $this->user);
@@ -75,11 +84,7 @@ class Import_Controller {
 
 		$importStatusCount = $importDataController->getImportStatusCount();
 		$totalRecords = $importStatusCount['TOTAL'];
-		if ($totalRecords > ($importStatusCount['IMPORTED'] + $importStatusCount['FAILED'])) {
-//			if ($importInfo['status'] == Import_Queue_Controller::$IMPORT_STATUS_SCHEDULED) {
-//				self::showScheduledStatus($importInfo);
-//				exit;
-//			}
+		if ($totalRecords > ($importStatusCount['IMPORTED'] + $importStatusCount['FAILED']) && strpos(PHP_SAPI, 'apache')!==false) {
 			self::showCurrentStatus($importInfo, $importStatusCount, $continueImport);
 			exit;
 		} else {
@@ -107,10 +112,10 @@ class Import_Controller {
 		$viewer->assign('OWNER_ID', $ownerId);
 		$viewer->assign('IMPORT_RESULT', $importStatusCount);
 		$viewer->assign('MERGE_ENABLED', $importInfo['merge_type']);
-		if (strpos(PHP_SAPI, 'apache')!==false) {
-			$viewer->display('ImportResult.tpl');
-		} else {
+		if (PHP_SAPI == 'cli') {
 			$viewer->display('ImportResultCLI.tpl');
+		} else {
+			$viewer->display('ImportResult.tpl');
 		}
 	}
 

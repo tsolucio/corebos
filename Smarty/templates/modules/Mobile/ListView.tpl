@@ -49,7 +49,7 @@
 				</select>
 			</div>
 		{/if}
-		{if $_MODULE->name() neq 'Quotes' && $_MODULE->name() neq 'SalesOrder' && $_MODULE->name() neq 'Invoice' && $_MODULE->name() neq 'PurchaseOrder' && $_MODULE->name() neq 'Products'}
+		{if $_MODULE->name() neq 'Quotes' && $_MODULE->name() neq 'SalesOrder' && $_MODULE->name() neq 'Invoice' && $_MODULE->name() neq 'PurchaseOrder'}
 			<a id="create_link" href="?_operation=create&module={$_MODULE->name()}&record=''" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext" data-transition="turn">{$MOD.LBL_NEW}</a>
 		{/if}
 			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>

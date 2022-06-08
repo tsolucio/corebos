@@ -8,7 +8,6 @@ if (!empty($_REQUEST['record'])) {
 ?>
 <input type="hidden" name="mode" value="<?php echo isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : ''; ?>">
 <input type="hidden" name="action" value="<?php echo vtlib_purify($_REQUEST['action']); ?>">
-<input type="hidden" name="parenttab" value="<?php echo vtlib_purify($_REQUEST['parenttab']); ?>">
 <input type="hidden" name="return_module" value="<?php echo vtlib_purify($_REQUEST['return_module']); ?>">
 <input type="hidden" name="return_id" value="<?php echo isset($_REQUEST['return_id']) ? vtlib_purify($_REQUEST['return_id']) : ''; ?>">
 <input type="hidden" name="return_action" value="<?php echo vtlib_purify($_REQUEST['return_action']); ?>">

@@ -14,6 +14,7 @@ class VtigerWebserviceObject {
 	private $name;
 	private $handlerPath;
 	private $handlerClass;
+	public $allDisplayTypes = false;
 
 	private function __construct($entityId, $entityName, $handler_path, $handler_class) {
 		$this->id = $entityId;
@@ -27,7 +28,9 @@ class VtigerWebserviceObject {
 
 	public static function fromName($adb, $entityName) {
 		$rowData = false;
-
+		if ($entityName=='com_vtiger_workflow') {
+			$entityName = 'Workflow';
+		}
 		// If the information not available in cache?
 		if (!isset(self::$_fromNameCache[$entityName])) {
 			$result = $adb->pquery('select * from vtiger_ws_entity where name=?', array($entityName));

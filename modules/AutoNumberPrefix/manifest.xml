@@ -1,0 +1,410 @@
+<?xml version='1.0'?>
+<module>
+<name>AutoNumberPrefix</name>
+<label>AutoNumberPrefix</label>
+<parent>Settings</parent>
+<version>1.0</version>
+<short_description>coreBOS AutoNumber Prefix module</short_description>
+<dependencies>
+<vtiger_version>5.4.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<license>
+<inline><![CDATA[/*************************************************************************************************
+ * Copyright 2015 coreBOS -- This file is a part of TSOLUCIO coreBOS customizations.
+ * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
+ * Vizsage Public License (the "License"). You may not use this file except in compliance with the
+ * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
+ * and share improvements. However, for proper details please read the full License, available at
+ * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
+ * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
+ * applicable law or agreed to in writing, any software distributed under the License is distributed
+ * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
+ *************************************************************************************************
+ *  Module       : coreBOS AutoNumberPrefix
+ *  Version      : 5.4.0
+ *************************************************************************************************/
+]]></inline>
+</license>
+<tables>
+<table>
+<name>vtiger_autonumberprefix</name>
+<sql><![CDATA[CREATE TABLE `vtiger_autonumberprefix` (
+  `autonumberprefixid` int(11) NOT NULL,
+  `autonumberprefixno` varchar(100) DEFAULT NULL,
+  `prefix` varchar(100) NOT NULL,
+  `semodule` varchar(100) NOT NULL,
+  `format` varchar(250) NOT NULL,
+  `active` varchar(3) NOT NULL,
+  `isworkflowexpression` varchar(3) NOT NULL,
+  `current` int(11) NOT NULL,
+  `default1` varchar(3) NOT NULL,
+   index (`autonumberprefixno`),
+   index (`semodule`),
+   index (`active`),
+   index (`default1`),
+  PRIMARY KEY (`autonumberprefixid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_autonumberprefixcf</name>
+<sql><![CDATA[CREATE TABLE `vtiger_autonumberprefixcf` (
+  `autonumberprefixid` int(11) NOT NULL,
+  PRIMARY KEY (`autonumberprefixid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<blocks>
+<block>
+<label>LBL_AUTO_NUMBER_PREFIX_INFORMATION</label>
+<fields>
+<field>
+<fieldname>autonumberprefixno</fieldname>
+<uitype>4</uitype>
+<columnname>autonumberprefixno</columnname>
+<tablename>vtiger_autonumberprefix</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>AutoPrefixNumber No</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+<entityidentifier>
+<entityidfield>autonumberprefixid</entityidfield>
+<entityidcolumn>autonumberprefixid</entityidcolumn>
+</entityidentifier>
+</field>
+<field>
+<fieldname>prefix</fieldname>
+<uitype>1</uitype>
+<columnname>prefix</columnname>
+<tablename>vtiger_autonumberprefix</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Prefix</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>3</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>semodule</fieldname>
+<uitype>3313</uitype>
+<columnname>semodule</columnname>
+<tablename>vtiger_autonumberprefix</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Module</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>2</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>format</fieldname>
+<uitype>1</uitype>
+<columnname>format</columnname>
+<tablename>vtiger_autonumberprefix</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Format</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>4</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>active</fieldname>
+<uitype>56</uitype>
+<columnname>active</columnname>
+<tablename>vtiger_autonumberprefix</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Active</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>5</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>current</fieldname>
+<uitype>7</uitype>
+<columnname>current</columnname>
+<tablename>vtiger_autonumberprefix</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Current Value</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>7</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>I~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>default1</fieldname>
+<uitype>56</uitype>
+<columnname>default1</columnname>
+<tablename>vtiger_autonumberprefix</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Default</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>6</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>isworkflowexpression</fieldname>
+<uitype>56</uitype>
+<columnname>isworkflowexpression</columnname>
+<tablename>vtiger_autonumberprefix</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Workflow Expression</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>8</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assigned To</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>9</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>createdtime</fieldname>
+<uitype>70</uitype>
+<columnname>createdtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>10</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>8</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>modifiedtime</fieldname>
+<uitype>70</uitype>
+<columnname>modifiedtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Modified Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>11</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>9</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>created_user_id</fieldname>
+<uitype>52</uitype>
+<columnname>smcreatorid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created By</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>12</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_CUSTOM_INFORMATION</label>
+</block>
+<block>
+<label>LBL_DESCRIPTION_INFORMATION</label>
+<fields>
+<field>
+<fieldname>description</fieldname>
+<uitype>19</uitype>
+<columnname>description</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Description</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<selected>0</selected>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>10</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+</blocks>
+<customviews>
+<customview>
+<viewname>All</viewname>
+<setdefault>false</setdefault>
+<setmetrics>false</setmetrics>
+<fields>
+<field>
+<fieldname>autonumberprefixno</fieldname>
+<columnindex>0</columnindex>
+</field>
+<field>
+<fieldname>prefix</fieldname>
+<columnindex>1</columnindex>
+</field>
+<field>
+<fieldname>format</fieldname>
+<columnindex>2</columnindex>
+</field>
+<field>
+<fieldname>current</fieldname>
+<columnindex>3</columnindex>
+</field>
+<field>
+<fieldname>semodule</fieldname>
+<columnindex>4</columnindex>
+</field>
+<field>
+<fieldname>active</fieldname>
+<columnindex>5</columnindex>
+</field>
+<field>
+<fieldname>default1</fieldname>
+<columnindex>6</columnindex>
+</field>
+</fields>
+</customview>
+</customviews>
+<sharingaccess>
+<default>public</default>
+</sharingaccess>
+<actions>
+<action>
+<name><![CDATA[Merge]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Import]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Export]]></name>
+<status>enabled</status>
+</action>
+</actions>
+<relatedlists>
+</relatedlists>
+<events>
+</events>
+<customlinks>
+<customlink>
+<linktype>DETAILVIEWBASIC</linktype>
+<linklabel>FIX_MISSING_NUMBERING</linklabel>
+<linkurl><![CDATA[javascript:gotourl('index.php?module=AutoNumberPrefix&action=AutoNumberPrefixAjax&file=massinc&record=$RECORD$')]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
+</customlinks>
+<crons>
+</crons>
+</module>

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 18/03/2020 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 12/04/2021 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -74,7 +74,7 @@ $mod_strings = array(
 'LBL_ALL'=>'Todos',
 'LBL_WON'=>'Vencido',
 'LBL_LOST'=>'Perdido',
-'LBL_VALUE_PROPOSITION'=>'Proposição valor',
+'LBL_VALUE_PROPOSITION'=>'Proposição de valor',
 'LBL_PROSPECTING'=>'Prospectando',
 
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas oportunidade',
@@ -103,8 +103,8 @@ $mod_strings = array(
 'Value Proposition'=>'Proposta valor',
 'Id. Decision Makers'=>'Identif. decisor',
 'Perception Analysis'=>'Análise percepção',
-'Proposal/Price Quote'=>'Proposta/cotação',
-'Negotiation/Review'=>'Negociação/revisão',
+'Proposal/Price Quote'=>'Proposta',
+'Negotiation/Review'=>'Negociação',
 'Closed Won'=>'Fechado vencido',
 'Closed Lost'=>'Fechado perdido',
 

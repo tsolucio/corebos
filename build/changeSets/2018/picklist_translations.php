@@ -56,12 +56,16 @@ class picklist_translations extends cbupdaterWorker {
 					if (file_exists('modules/' . $impmod . '/language/' . $lang . '.lang.php')) {
 						include 'modules/' . $impmod . '/language/' . $lang . '.lang.php';
 						include 'include/language/' . $lang . '.lang.php';
+						if (file_exists("modules/$impmod/language/$lang.custom.php")) {
+							@include "modules/$impmod/language/$lang.custom.php";
+							$mod_strings = $custom_strings + $mod_strings;
+						}
 						$rec['locale'] = $lang;
 						$query = $adb->pquery(
 							"select fieldname
 								from vtiger_tab
 								join vtiger_field on vtiger_tab.tabid=vtiger_field.tabid
-								where (uitype='15' or uitype='16') and name=?",
+								where uitype in ('15','33','16') and name=?",
 							array($impmod)
 						);
 						$count = $adb->num_rows($query);

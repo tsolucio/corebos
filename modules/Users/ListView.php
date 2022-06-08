@@ -26,7 +26,6 @@ global $mod_strings,$adb, $theme, $current_language;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 $mod_strings = return_module_language($current_language, 'Users');
-$category = getParentTab();
 $focus = new Users();
 $no_of_users=UserCount();
 
@@ -181,7 +180,6 @@ $smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 $smarty->assign('CURRENT_USERID', $current_user->id);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('LIST_ADMIN_STATUS', $default_admin_status_value_filters);
 $smarty->assign('LIST_USER_STATUS', $default_user_status_value_filters);
 $smarty->assign('LIST_FIELDS', $focus->list_fields_names);

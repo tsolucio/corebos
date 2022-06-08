@@ -16,26 +16,6 @@
 if (window.cbRelatedListsLoaded == undefined) {
 	window.cbRelatedListsLoaded = 'loaded';
 
-	function editProductListPrice(id, pbid, price) {
-		document.getElementById('status').style.display='inline';
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?action=ProductsAjax&file=EditListPrice&return_action=DetailView&return_module=PriceBooks&module=Products&record='+id+'&pricebook_id='+pbid+'&listprice='+price,
-		}).done(function (response) {
-			document.getElementById('status').style.display='none';
-			document.getElementById('editlistprice').innerHTML= response;
-		});
-	}
-
-	function gotoUpdateListPrice(id, pbid, proid) {
-		document.getElementById('status').style.display='inline';
-		document.getElementById('roleLay').style.display = 'none';
-		var listprice=document.getElementById('list_price').value;
-		var url = 'index.php?module=Products&action=ProductsAjax&file=UpdateListPrice&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&product_id='+proid+'&list_price='+listprice;
-		gotourl(url);
-		return false;
-	}
-
 	function OpenWindow(url) {
 		openPopUp('xAttachFile', this, url, 'attachfileWin', 380, 375, 'menubar=no,toolbar=no,location=no,status=no,resizable=no');
 	}
@@ -61,7 +41,7 @@ if (window.cbRelatedListsLoaded == undefined) {
 
 		var hidedata = 'hide_'+imagesuffix;
 		var hidedata_element = document.getElementById(hidedata);
-		if (isRelatedListBlockLoaded(target, urldata) == true) {
+		if (isRelatedListBlockLoaded(target, urldata)) {
 			jQuery('#'+target).show();
 			jQuery(showdata_element).hide();
 			showdata_element.parentElement.style.display = 'none';
@@ -105,7 +85,6 @@ if (window.cbRelatedListsLoaded == undefined) {
 					}
 				} else {
 					jQuery('#'+imagesuffix+'_linkForSelectAll').hide();
-					//rel_toggleSelect(false,imagesuffix+'_selected_id',relatedModule);
 				}
 				updateParentCheckbox(obj, imagesuffix);
 			}

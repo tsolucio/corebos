@@ -16,7 +16,6 @@ class Asterisk {
 	public $userName;
 	public $password;
 	public $sock;
-	public $db;
 	public $queue;
 	public $strData;
 
@@ -30,7 +29,6 @@ class Asterisk {
 		$this->sock = $sock;
 		$this->address = $server;
 		$this->port = $port;
-		$this->db = PearDatabase::getInstance();
 		$this->queue = array();
 	}
 

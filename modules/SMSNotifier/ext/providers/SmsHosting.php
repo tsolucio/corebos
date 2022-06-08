@@ -14,42 +14,38 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 include_once dirname(__FILE__) . '/../ISMSProvider.php';
-//include_once 'vtlib/Vtiger/Net/Client.php';		// not used
 
 class SmsHosting implements ISMSProvider {
 
-	private $_username;
-	private $_password;
-	private $_parameters = array();
+	private $username;
+	private $password;
+	private $parameters = array();
 	public $helpURL = 'https://www.smshosting.it/en';
 	public $helpLink = 'SmsHosting';
 
 	const SERVICE_URI = 'https://api.smshosting.it/rest/api';
 	private static $REQUIRED_PARAMETERS = array ( 'from', 'prefix' );
 
-	public function __construct() {
-	}
-
 	/**
 	 * Function to get provider name
-	 * @return <String> provider name
+	 * @return string provider name
 	 */
 	public function getName() {
 		return $this->helpLink;
 	}
 
 	public function setAuthParameters($username, $password) {
-		$this->_username = $username;
-		$this->_password = $password;
+		$this->username = $username;
+		$this->password = $password;
 	}
 
 	public function setParameter($key, $value) {
-		$this->_parameters[$key] = $value;
+		$this->parameters[$key] = $value;
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if (isset($this->_parameters[$key])) {
-			return $this->_parameters[$key] ;
+		if (isset($this->parameters[$key])) {
+			return $this->parameters[$key] ;
 		}
 		return $defvalue;
 	}
@@ -66,6 +62,7 @@ class SmsHosting implements ISMSProvider {
 				case self::SERVICE_SEND:
 					return self::SERVICE_URI . '/sms/send';
 				case self::SERVICE_QUERY:
+				default:
 					return self::SERVICE_URI . '/http/querymsg';
 			}
 		}
@@ -73,7 +70,7 @@ class SmsHosting implements ISMSProvider {
 	}
 
 	protected function prepareParameters() {
-		$params = array('username' => $this->_username, 'password' => $this->_password);
+		$params = array('username' => $this->username, 'password' => $this->password);
 		foreach (self::$REQUIRED_PARAMETERS as $key) {
 			$params[$key] = $this->getParameter($key);
 		}
@@ -87,20 +84,20 @@ class SmsHosting implements ISMSProvider {
 
 		$params = $this->prepareParameters();
 
-		# format prefix
+		// format prefix
 		if ($params['prefix']) {
 			$params['prefix'] = preg_replace('/[^0-9]/', '', $params['prefix']);		// prefix has to be numeric (not alphanumeric)...
 			$params['prefix'] = intval($params['prefix']);		//... and integer (without initial 0)
 		}
 
-		# add prefix to recipient numbers
+		// add prefix to recipient numbers
 		foreach ($tonumbers as $num) {
-			$key = (array_keys($tonumbers, $num));	// $tonumbers array keys extraction
-			$key = $key[0];		// the key of every different value
-			$num = trim($num);		// delete spaces
-			$num = preg_replace("/[^0-9]/ ", '', $num);		// delete from recipient all chars but numbers ...
-			$num = $params['prefix'].$num;		// ... add the prefix ...
-			$tonumbers[$key] = $num;		// ... recreate recipients array with 'formatted' numbers
+			$key = (array_keys($tonumbers, $num)); // $tonumbers array keys extraction
+			$key = $key[0]; // the key of every different value
+			$num = trim($num); // delete spaces
+			$num = preg_replace('/[^0-9]/ ', '', $num); // delete from recipient all chars but numbers ...
+			$num = $params['prefix'].$num; // ... add the prefix ...
+			$tonumbers[$key] = $num; // ... recreate recipients array with 'formatted' numbers
 		}
 		$from = $params['from'] ;	// sender alphanumeric string or number
 
@@ -111,7 +108,7 @@ class SmsHosting implements ISMSProvider {
 
 		$results = array() ;
 
-		# response without errors
+		// response without errors
 		if ($response && !$response->errorCode) {
 			foreach ($response->sms as $sms) {
 				if ($sms->status == "INSERTED") {
@@ -155,18 +152,18 @@ class SmsHosting implements ISMSProvider {
 		}
 
 		// URL Encode
-		$from				= urlencode($from);
-		$to					= urlencode($to);
-		$text				= urlencode($text);
+		$from			= urlencode($from);
+		$to				= urlencode($to);
+		$text			= urlencode($text);
 		$statusCallback	= urlencode($statusCallback);
 
 		// Send away!
 		$post = array (
 			'from'				=> $from,
-			'to'					=> $to,
-			'text'					=> $text,
+			'to'				=> $to,
+			'text'				=> $text,
 			'statusCallback'	=> $statusCallback,
-			'type'					=> $containsUnicode ? 'unicode' : 'text'
+			'type'				=> $containsUnicode ? 'unicode' : 'text'
 		);
 
 		$complete_uri = $this->getServiceURL(self::SERVICE_SEND);
@@ -193,7 +190,7 @@ class SmsHosting implements ISMSProvider {
 			curl_setopt($to_smsh, CURLOPT_POST, true);
 			curl_setopt($to_smsh, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($to_smsh, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($to_smsh, CURLOPT_USERPWD, $this->_username.':'. $this->_password);
+			curl_setopt($to_smsh, CURLOPT_USERPWD, $this->username.':'. $this->password);
 			curl_setopt($to_smsh, CURLOPT_POSTFIELDS, $post);
 
 			$from_smsh = curl_exec($to_smsh);
@@ -205,7 +202,7 @@ class SmsHosting implements ISMSProvider {
 				'http' => array(
 					'method' => 'POST',
 					'ignore_errors' => true,
-					'header' => 'Authorization: Basic '.base64_encode($this->_username.':'.$this->_password) . "\r\nContent-type: application/x-www-form-urlencoded",
+					'header' => 'Authorization: Basic '.base64_encode($this->username.':'.$this->password) . "\r\nContent-type: application/x-www-form-urlencoded",
 					'content' => $post
 				)
 			);

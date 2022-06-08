@@ -10,6 +10,7 @@
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
+include_once 'include/Webservices/Revise.php';
 
 class Invoice extends CRMEntity {
 	public $table_name = 'vtiger_invoice';
@@ -100,11 +101,10 @@ class Invoice extends CRMEntity {
 	}
 
 	public function save_module($module) {
-		global $updateInventoryProductRel_deduct_stock, $adb;
+		global $updateInventoryProductRel_deduct_stock, $current_user;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
-		$updateInventoryProductRel_deduct_stock = true;
 		if ($this->mode=='edit' && !empty($this->record_status) && $this->record_status!=$this->column_fields['invoicestatus'] && $this->column_fields['invoicestatus']!='') {
 			$this->registerInventoryHistory();
 		}
@@ -112,13 +112,22 @@ class Invoice extends CRMEntity {
 		if (!empty($this->column_fields['salesorder_id'])) {
 			$newStatus = GlobalVariable::getVariable('SalesOrder_StatusOnInvoiceSave', 'Approved');
 			if ($newStatus!='DoNotChange') {
-				$so_id = $this->column_fields['salesorder_id'];
-				$query1 = 'update vtiger_salesorder set sostatus=? where salesorderid=?';
-				$adb->pquery($query1, array($newStatus, $so_id));
+				$h = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : 'NOTSET';
+				$_REQUEST['ajxaction'] = 'Workflow';
+				try {
+					vtws_revise(array('id'=>vtws_getEntityId('SalesOrder').'x'.$this->column_fields['salesorder_id'], 'sostatus'=>$newStatus), $current_user);
+				} catch (\Throwable $th) {
+				}
+				if ($h=='NOTSET') {
+					unset($_REQUEST['ajxaction']);
+				} else {
+					$_REQUEST['ajxaction'] = $h;
+				}
 			}
 		}
 
 		//in ajax save we should not call this function, because this will delete all the existing product values
+		$updateInventoryProductRel_deduct_stock = true;
 		if (isset($this->_recurring_mode) && $this->_recurring_mode == 'recurringinvoice_from_so' && isset($this->_salesorderid) && $this->_salesorderid!='') {
 			// We are getting called from the RecurringInvoice cron service!
 			$this->createRecurringInvoiceFromSO();
@@ -143,21 +152,20 @@ class Invoice extends CRMEntity {
 
 	public function registerInventoryHistory() {
 		global $app_strings;
-		if (isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
-			if (GlobalVariable::getVariable('Application_B2B', '1')) {
+		if (GlobalVariable::getVariable('Application_B2B', '1')) {
+			if (!empty($this->column_fields['account_id'])) {
 				$relatedname = getAccountName($this->column_fields['account_id']);
 			} else {
+				$relatedname = getAccountName(getSingleFieldValue($this->table_name, 'accountid', $this->table_index, $this->id));
+			}
+		} else {
+			if (!empty($this->column_fields['contact_id'])) {
 				$relatedname = getContactName($this->column_fields['contact_id']);
-			}
-			$total = $this->column_fields['hdnGrandTotal'];
-		} else { //using edit button and save
-			if (GlobalVariable::getVariable('Application_B2B', '1')) {
-				$relatedname = $_REQUEST['account_name'];
 			} else {
-				$relatedname = $_REQUEST['contact_name'];
+				$relatedname = getContactName(getSingleFieldValue($this->table_name, 'contactid', $this->table_index, $this->id));
 			}
-			$total = $_REQUEST['total'];
 		}
+		$total = getSingleFieldValue($this->table_name, 'total', $this->table_index, $this->id);
 		if ($this->column_fields['invoicestatus'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 			//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
 			$stat_value = getSingleFieldValue($this->table_name, 'invoicestatus', $this->table_index, $this->id);
@@ -201,11 +209,11 @@ class Invoice extends CRMEntity {
 	public function get_invoicestatushistory($id) {
 		global $log, $adb, $app_strings, $current_user;
 		$log->debug('> get_invoicestatushistory '.$id);
-
+		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = 'select vtiger_invoicestatushistory.*, vtiger_invoice.invoice_no
 			from vtiger_invoicestatushistory
 			inner join vtiger_invoice on vtiger_invoice.invoiceid = vtiger_invoicestatushistory.invoiceid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_invoice.invoiceid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_invoice.invoiceid
 			where vtiger_crmentity.deleted = 0 and vtiger_invoice.invoiceid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -247,10 +255,8 @@ class Invoice extends CRMEntity {
 
 	// Function to get column name - Overriding function of base class
 	public function get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype = '') {
-		if ($columname == 'salesorderid') {
-			if ($fldvalue == '') {
-				return null;
-			}
+		if ($columname == 'salesorderid' && $fldvalue == '') {
+			return null;
 		}
 		return parent::get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype);
 	}
@@ -322,7 +328,6 @@ class Invoice extends CRMEntity {
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			'Calendar' =>array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_invoice'=>'invoiceid'),
 			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_invoice'=>'invoiceid'),
 			'Accounts' => array('vtiger_invoice'=>array('invoiceid','accountid')),
 			'Contacts' => array('vtiger_invoice'=>array('invoiceid','contactid')),
@@ -336,7 +341,15 @@ class Invoice extends CRMEntity {
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
-
+		$customRelModules = ['Accounts', 'Contacts', 'SalesOrder', 'Documents'];
+		if (in_array($return_module, $customRelModules)) {
+			$data = array();
+			$data['sourceModule'] = getSalesEntityType($id);
+			$data['sourceRecordId'] = $id;
+			$data['destinationModule'] = $return_module;
+			$data['destinationRecordId'] = $return_id;
+			cbEventHandler::do_action('corebos.entity.link.delete', $data);
+		}
 		if ($return_module == 'Accounts' || $return_module == 'Contacts') {
 			$this->trash('Invoice', $id);
 		} elseif ($return_module=='SalesOrder') {
@@ -348,17 +361,22 @@ class Invoice extends CRMEntity {
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
 		}
+		if (in_array($return_module, $customRelModules)) {
+			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
+		}
 	}
 
-	/*
+	/**
 	 * Function to get the relations of salesorder to invoice for recurring invoice procedure
-	 * @param - $salesorder_id Salesorder ID
+	 * @param integer $_salesorderid Salesorder ID through object property
 	 */
 	public function createRecurringInvoiceFromSO() {
 		global $adb;
 		$salesorder_id = $this->_salesorderid;
 		$res = $adb->pquery('SELECT * FROM vtiger_inventoryproductrel WHERE id=?', array($salesorder_id));
 		$no_of_products = $adb->num_rows($res);
+		//To permit Saving InventoryLines && save FinancialInfo
+		$_REQUEST['totalProductCount'] = $no_of_products;
 		$fieldsList = $adb->getFieldsArray($res);
 		$update_stock = array();
 		for ($j=0; $j<$no_of_products; $j++) {
@@ -378,7 +396,7 @@ class Invoice extends CRMEntity {
 					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 				}
 			}
-			if (count($col_value) > 0) {
+			if (!empty($col_value)) {
 				$col_value['id'] = $this->id;
 				$col_value['comment']= decode_html($col_value['comment']);
 				$columns = array_keys($col_value);
@@ -398,9 +416,9 @@ class Invoice extends CRMEntity {
 			$row = $adb->query_result_rowdata($res, $j);
 			$col_value = array();
 			for ($k=0; $k<count($fieldsList); $k++) {
-					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
+				$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 			}
-			if (count($col_value) > 0) {
+			if (!empty($col_value)) {
 				$col_value['id'] = $this->id;
 				$columns = array_keys($col_value);
 				$values = array_values($col_value);
@@ -424,7 +442,7 @@ class Invoice extends CRMEntity {
 					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 				}
 			}
-			if (count($col_value) > 0) {
+			if (!empty($col_value)) {
 				$col_value['id'] = $this->id;
 				$columns = array_keys($col_value);
 				$values = array_values($col_value);
@@ -451,7 +469,7 @@ class Invoice extends CRMEntity {
 			$updatecols[] = "$col=?";
 			$updateparams[] = $this->column_fields[$field];
 		}
-		if (count($updatecols) > 0) {
+		if (!empty($updatecols)) {
 			$updatequery .= implode(',', $updatecols);
 
 			$updatequery .= ' WHERE invoiceid=?';
@@ -476,11 +494,12 @@ class Invoice extends CRMEntity {
 			$em->triggerEvent('vtiger.entity.beforesave', $entityData);
 		}
 		$type = getSalesEntityType($invoiceId);
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('CobroPago', true);
 		if ($type=='Invoice' && self::invoice_control_installed()) {
 			//Sum Credit = 1
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=1";
 			$res = $adb->query($query);
 			$totalCredit = $adb->query_result($res, 0, 0);
@@ -490,7 +509,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 0
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=0";
 			$res = $adb->query($query);
 			$totalNoCredit = $adb->query_result($res, 0, 0);
@@ -530,7 +549,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 0
 			$query = "select sum(amount) as am
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=0";
 			$res = $adb->query($query);
 			$totalNoCredit = $adb->query_result($res, 0, 0);
@@ -540,7 +559,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 1
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=1";
 			$res = $adb->query($query);
 			$totalCredit = $adb->query_result($res, 0, 0);
@@ -578,7 +597,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 1
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=1";
 			$res = $adb->query($query);
 			$totalCredit = $adb->query_result($res, 0, 0);
@@ -588,7 +607,7 @@ class Invoice extends CRMEntity {
 			//Sum Credit = 0
 			$query = "select sum(amount)
 			from vtiger_cobropago cp
-			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			join ".$crmEntityTable." crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
 			where cp.related_id={$invoiceId} and paid=1 and credit=0";
 			$res = $adb->query($query);
 			$totalNoCredit = $adb->query_result($res, 0, 0);
@@ -623,7 +642,8 @@ class Invoice extends CRMEntity {
 		}
 		if ($context=='CobroPago') {
 			//Event triggering code
-			$em->triggerEvent("vtiger.entity.aftersave", $entityData);
+			$em->triggerEvent('vtiger.entity.aftersave', $entityData);
+			$em->triggerEvent('vtiger.entity.aftersave.final', $entityData);
 			//Event triggering code ends
 		}
 	}
@@ -682,14 +702,14 @@ class Invoice extends CRMEntity {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
 
-		include 'include/utils/ExportUtils.php';
+		include_once 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery('Invoice', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
-
-		$query = "SELECT $fields_list FROM vtiger_crmentity
+		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
+		$query = "SELECT $fields_list FROM ".$crmEntityTable." 
 			INNER JOIN vtiger_invoice ON vtiger_invoice.invoiceid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
 			LEFT JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_invoice.salesorderid

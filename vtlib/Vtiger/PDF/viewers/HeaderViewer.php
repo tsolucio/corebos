@@ -43,7 +43,7 @@ class Vtiger_PDF_HeaderViewer extends Vtiger_PDF_Viewer {
 	public function totalHeight($parent) {
 		$height = 10;
 
-		if ($this->model && $this->onEveryPage()) {
+		if ($this->model && $this->onEveryPage) {
 			$pdf = $parent->getPDF();
 
 			$contentText = $this->model->get('content');

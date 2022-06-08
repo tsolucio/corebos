@@ -1001,10 +1001,7 @@ class freetag {
 	 * @return string Returns an HTML snippet that can be used directly as a tag cloud.
 	 */
 	function get_tag_cloud_html($module="",$tagger_id = NULL,$obj_id= NULL,$num_tags = 100, $min_font_size = 10, $max_font_size = 20, $font_units = 'px', $span_class = '', $tag_page_url = '/tag/') {
-		global $theme;
-		$theme_path="themes/".$theme."/";
-		$image_path=$theme_path."images/";
-		$tag_list = $this->get_tag_cloud_tags($num_tags, $tagger_id,$module,$obj_id);
+		$tag_list = $this->get_tag_cloud_tags($num_tags, $tagger_id, $module, $obj_id);
 		if (count($tag_list[0])) {
 			// Get the maximum qty of tagged objects in the set
 			$max_qty = max(array_values($tag_list[0]));
@@ -1033,8 +1030,20 @@ class freetag {
 		if($module != 'All') {
 			foreach ($tag_list[0] as $tag => $qty) {
 				$size = $min_font_size + ($qty - $min_qty) * $step;
-				$cloud_span[] = '<span id="tag_'.$tag_list[1][$tag].'" class="' . $span_class . '" onMouseOver=jQuery("#tagspan_'.$tag_list[1][$tag].'").show(); onMouseOut=jQuery("#tagspan_'.$tag_list[1][$tag].'").hide();><a class="tagit" href="index.php?module=Utilities&action=UnifiedSearch&search_module='.$module.'&search_tag=tag_search&query_string='. urlencode($tag) . '" style="font-size: '. $size . $font_units . '">' . htmlspecialchars(stripslashes($tag)) . '</a><span class="'. $span_class .'" id="tagspan_'.$tag_list[1][$tag].'" style="display:none;cursor:pointer;" onClick="DeleteTag('.$tag_list[1][$tag].','.$obj_id.');"><img src="' . vtiger_imageurl('del_tag.gif', $theme) . '"></span></span>';
-
+				$cloud_span[] = '
+				<span id="tag_'.$tag_list[1][$tag].'" class="' . $span_class
+					.'" onMouseOver=jQuery("#tagspan_'.$tag_list[1][$tag].'").show(); onMouseOut=jQuery("#tagspan_'.$tag_list[1][$tag].'").hide();>
+					<span title="'.getTranslatedString('Delete Tag', 'com_vtiger_workflow').'" class="slds-icon_container slds-icon-utility-announcement slds-current-color"'
+						.' id="tagspan_'.$tag_list[1][$tag].'" style="display:none;cursor:pointer;" onClick="DeleteTag('.$tag_list[1][$tag].','.$obj_id.');">
+						<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+						</svg>
+						<span class="slds-assistive-text">'.getTranslatedString('Delete Tag', 'com_vtiger_workflow').'</span>
+					</span>
+					<a class="tagit" href="index.php?module=Utilities&action=UnifiedSearch&search_module='.$module.'&search_tag=tag_search&query_string='.urlencode($tag)
+						.'" style="font-size: '. $size . $font_units . '" title="'.getTranslatedString('LBL_SEARCH').'">' . htmlspecialchars(stripslashes($tag))
+					.'</a>
+				</span>';
 			}
 		} else {
 			foreach($tag_list[0] as $tag => $qty) {

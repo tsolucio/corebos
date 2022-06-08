@@ -19,6 +19,7 @@
 	<th scope="col" width="9%">{$CMOD.LBL_STATUS}</th>
 	<th scope="col" width="20%">{$MOD.LAST_START}</th>
 	<th scope="col" width="20%">{$MOD.LAST_END}</th>
+	<th scope="col" width='10%'>{$MOD.LBL_NTT}</th>
 	<th scope="col" width='10%'>{$MOD.LBL_SEQUENCE}</th>
 	<th scope="col" width="5%" class="slds-align_absolute-center">{$MOD.LBL_TOOLS}</th>
 	</tr>
@@ -38,6 +39,7 @@
 	{/if}
 	<td>{$elements.laststart}</td>
 	<td>{$elements.lastend}</td>
+	<td>{$elements.ntt}</td>
 	{if $smarty.foreach.cronlist.first neq true}
 		<td>
 			<a href="javascript:move_module('{$elements.id}','Up');">

@@ -33,47 +33,43 @@ function addColumn() {
 }
 
 function addColumnStep1() {
-	//the below line is added for report not woking properly in browser IE7
-	document.getElementById('selectedColumns').style.width='164px';
-
-	if (availListObj.options.selectedIndex > -1) {
-		for (var i=0; i<availListObj.length; i++) {
-			if (availListObj.options[i].selected==true) {
-				var rowFound=false;
-				for (var j=0; j<selectedColumnsObj.length; j++) {
-					if (selectedColumnsObj.options[j].value==availListObj.options[i].value) {
-						var rowFound=true;
-						var existingObj=selectedColumnsObj.options[j];
-						break;
-					}
-				}
-
-				if (rowFound!=true) {
-					var newColObj=document.createElement('OPTION');
-					newColObj.value=availListObj.options[i].value;
-					if (browser_ie) {
-						newColObj.innerText=availListObj.options[i].innerText;
-					} else if (browser_nn4 || browser_nn6) {
-						newColObj.text=availListObj.options[i].text;
-					}
-					selectedColumnsObj.appendChild(newColObj);
-					newColObj.selected=true;
-				} else {
-					existingObj.selected=true;
-				}
-				availListObj.options[i].selected=false;
-				addColumnStep1();
+	if (availListObj.options.selectedIndex < 0) {
+		return;
+	}
+	for (var i=0; i<availListObj.length; i++) {
+		if (!availListObj.options[i].selected) {
+			continue;
+		}
+		var rowFound=false;
+		for (var j=0; j<selectedColumnsObj.length; j++) {
+			if (selectedColumnsObj.options[j].value==availListObj.options[i].value) {
+				rowFound=true;
+				var existingObj=selectedColumnsObj.options[j];
+				break;
 			}
 		}
+
+		if (!rowFound) {
+			var newColObj=document.createElement('OPTION');
+			newColObj.value=availListObj.options[i].value;
+			newColObj.innerText=availListObj.options[i].innerText;
+			selectedColumnsObj.appendChild(newColObj);
+			newColObj.selected=true;
+		} else {
+			existingObj.selected=true;
+		}
+		availListObj.options[i].selected=false;
+		addColumnStep1();
 	}
 }
+
 //this function is done for checking,whether the user has access to edit the field
 function selectedColumnClick(oSel) {
 	var error_msg = '';
 	var error_str = false;
 	if (oSel.selectedIndex > -1) {
 		for (var i = 0; i < oSel.options.length; ++i) {
-			if (oSel.options[i].selected == true && oSel.options[i].disabled == true) {
+			if (oSel.options[i].selected && oSel.options[i].disabled) {
 				error_msg = error_msg + oSel.options[i].text+',';
 				error_str = true;
 				oSel.options[i].selected = false;
@@ -91,7 +87,7 @@ function selectedColumnClick(oSel) {
 function delColumn() {
 	if (selectedColumnsObj.options.selectedIndex > -1) {
 		for (var i=0; i < selectedColumnsObj.options.length; i++) {
-			if (selectedColumnsObj.options[i].selected == true) {
+			if (selectedColumnsObj.options[i].selected) {
 				selectedColumnsObj.remove(i);
 				delColumn();
 			}
@@ -157,7 +153,6 @@ function moveDown() {
 			tempdisabled = selectedColumnsObj.options[nextpos].disabled;
 			selectedColumnsObj.options[nextpos].innerText=selectedColumnsObj.options[currpos].innerText;
 			selectedColumnsObj.options[nextpos].disabled = false;
-			selectedColumnsObj.options[nextpos];
 			selectedColumnsObj.options[currpos].innerText=temp;
 			selectedColumnsObj.options[currpos].disabled = tempdisabled;
 		} else if (browser_nn4 || browser_nn6) {
@@ -165,7 +160,6 @@ function moveDown() {
 			tempdisabled = selectedColumnsObj.options[nextpos].disabled;
 			selectedColumnsObj.options[nextpos].text=selectedColumnsObj.options[currpos].text;
 			selectedColumnsObj.options[nextpos].disabled = false;
-			selectedColumnsObj.options[nextpos];
 			selectedColumnsObj.options[currpos].text=temp;
 			selectedColumnsObj.options[currpos].disabled = tempdisabled;
 		}
@@ -180,7 +174,7 @@ function moveDown() {
 function disableMove() {
 	var cnt=0;
 	for (var i=0; i<selectedColumnsObj.options.length; i++) {
-		if (selectedColumnsObj.options[i].selected==true) {
+		if (selectedColumnsObj.options[i].selected) {
 			cnt++;
 		}
 	}
@@ -196,9 +190,9 @@ function disableMove() {
 function hideTabs() {
 	// Check the selected report type
 	var objreportType = document.forms.NewReport['reportType'];
-	if (objreportType[0].checked == true) {
+	if (objreportType[0].checked) {
 		objreportType = objreportType[0];
-	} else if (objreportType[1].checked == true) {
+	} else if (objreportType[1].checked) {
 		objreportType = objreportType[1];
 	}
 
@@ -236,10 +230,8 @@ function saveas() {
 }
 
 function changeSteps1() {
-	if (getObj('step5').style.display != 'none') {
-		if (!validateDate()) {
-			return false;
-		}
+	if (getObj('step5').style.display != 'none' && !validateDate()) {
+		return false;
 	}
 	if (getObj('step6').style.display != 'none' && document.getElementsByName('record')[0].value!='') {
 		var id = document.getElementById('save_as');
@@ -253,23 +245,24 @@ function changeSteps1() {
 	} else {
 		var cbreporttype = document.getElementById('cbreporttype').value;
 		for (var i = 0; i < divarray.length; i++) {
-			if (getObj(divarray[i]).style.display != 'none') {
-				if (i == 1 && selectedColumnsObj.options.length == 0 && cbreporttype != 'external' && cbreporttype != 'directsql') {
-					alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
-					return false;
-				}
-				if (divarray[i + 1] == 'step7') {
-					document.getElementById('next').value = finish_text;
-				}
-				hide(divarray[i]);
-				show(divarray[i + 1]);
-				var tableid = divarray[i] + 'label';
-				var newtableid = divarray[i + 1] + 'label';
-				getObj(tableid).className = 'settingsTabList';
-				getObj(newtableid).className = 'settingsTabSelected';
-				document.getElementById('back_rep').disabled = false;
-				break;
+			if (getObj(divarray[i]).style.display == 'none') {
+				continue;
 			}
+			if (i == 1 && selectedColumnsObj.options.length == 0 && cbreporttype != 'external' && cbreporttype != 'directsql') {
+				alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
+				return false;
+			}
+			if (divarray[i + 1] == 'step7') {
+				document.getElementById('next').value = finish_text;
+			}
+			hide(divarray[i]);
+			show(divarray[i + 1]);
+			var tableid = divarray[i] + 'label';
+			var newtableid = divarray[i + 1] + 'label';
+			getObj(tableid).className = 'settingsTabList';
+			getObj(newtableid).className = 'settingsTabSelected';
+			document.getElementById('back_rep').disabled = false;
+			break;
 		}
 	}
 }
@@ -364,7 +357,7 @@ function fnPopupWin(winName) {
 }
 
 function re_dateValidate(fldval, fldLabel, type) {
-	if (re_patternValidate(fldval, fldLabel, 'DATE')==false) {
+	if (!re_patternValidate(fldval, fldLabel, 'DATE')) {
 		return false;
 	}
 	dateval=fldval.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -410,11 +403,7 @@ function re_dateValidate(fldval, fldLabel, type) {
 	chkdate.setDate(dd);
 
 	if (type!='OTH') {
-		if (!compareDates(chkdate, fldLabel, currdate, 'current date', type)) {
-			return false;
-		} else {
-			return true;
-		}
+		return compareDates(chkdate, fldLabel, currdate, 'current date', type);
 	} else {
 		return true;
 	}
@@ -422,18 +411,19 @@ function re_dateValidate(fldval, fldLabel, type) {
 
 //Copied from general.js and altered some lines. becos we cant send vales to function present in general.js. it accept only field names.
 function re_patternValidate(fldval, fldLabel, type) {
+	var re;
 	if (type.toUpperCase()=='DATE') {//DATE validation
 		switch (userDateFormat) {
 		case 'yyyy-mm-dd' :
-			var re = /^\d{4}(-)\d{1,2}\1\d{1,2}$/;
+			re = /^\d{4}(-)\d{1,2}\1\d{1,2}$/;
 			break;
 		case 'mm-dd-yyyy' :
 		case 'dd-mm-yyyy' :
-			var re = /^\d{1,2}(-)\d{1,2}\1\d{4}$/;
+			re = /^\d{1,2}(-)\d{1,2}\1\d{4}$/;
 		}
 	}
 	if (type.toUpperCase()=='TIMESECONDS') {//TIME validation
-		var re = new RegExp('^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$|^([0-1][0-9]|[2][0-3]):([0-5][0-9])$');
+		re = new RegExp('^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$|^([0-1][0-9]|[2][0-3]):([0-5][0-9])$');
 	}
 	if (!re.test(fldval)) {
 		alert(alert_arr.ENTER_VALID + fldLabel);
@@ -443,7 +433,6 @@ function re_patternValidate(fldval, fldLabel, type) {
 	}
 }
 
-//added to fix the ticket #5117
 function standardFilterDisplay() {
 	if (document.NewReport.stdDateFilterField.options.length <= 0 || (document.NewReport.stdDateFilterField.selectedIndex > -1 && document.NewReport.stdDateFilterField.options[document.NewReport.stdDateFilterField.selectedIndex].value == 'Not Accessible')) {
 		getObj('stdDateFilter').disabled = true;
@@ -461,6 +450,7 @@ function standardFilterDisplay() {
 
 function updateRelFieldOptions(sel, opSelName) {
 	var selObj = document.getElementById(opSelName);
+	var nMaxVal = selObj.length;
 	var fieldtype = null;
 	var currOption = selObj.options[selObj.selectedIndex];
 	var currField = sel.options[sel.selectedIndex];
@@ -470,7 +460,6 @@ function updateRelFieldOptions(sel, opSelName) {
 		var ops = rel_fields[fieldtype];
 		var off = 0;
 		if (ops != null) {
-			var nMaxVal = selObj.length;
 			for (var nLoop = 0; nLoop < nMaxVal; nLoop++) {
 				selObj.remove(0);
 			}
@@ -494,7 +483,6 @@ function updateRelFieldOptions(sel, opSelName) {
 			}
 		}
 	} else {
-		var nMaxVal = selObj.length;
 		for (nLoop = 0; nLoop < nMaxVal; nLoop++) {
 			selObj.remove(0);
 		}
@@ -689,7 +677,7 @@ function returnList(block) {
 		var $html = $('<select>');
 		for (var i=0; i<list_length; i++) {
 			var option = $('<option>', {'value':list[i].value});
-			if (Object.prototype.hasOwnProperty.call(list[i], 'selected') && list[i].selected == true) {
+			if (Object.prototype.hasOwnProperty.call(list[i], 'selected') && list[i].selected) {
 				option.prop('selected', true);
 			}
 			if (Object.prototype.hasOwnProperty.call(list[i], 'permission')) {
@@ -719,7 +707,7 @@ function setPropertiesOnList(block, selectid) {
 	for (var i=0; i<list_length; i++) {
 		var option = $(selectid + ' option[value="' + block[i].value + '"]');
 		if (option) {
-			if (Object.prototype.hasOwnProperty.call(block[i], 'selected') && block[i].selected == true) {
+			if (Object.prototype.hasOwnProperty.call(block[i], 'selected') && block[i].selected) {
 				option.prop('selected', true);
 			}
 			if (Object.prototype.hasOwnProperty.call(block[i], 'permission')) {
@@ -847,7 +835,7 @@ function setStepData(step) {
  * @return {bool}
  */
 function validateDate() {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
 	var date1=getObj('startdate');
@@ -873,7 +861,12 @@ function validateDate() {
  */
 function ScheduleEmail() {
 	var isScheduledObj = getObj('isReportScheduled');
-	if (isScheduledObj.checked == true) {
+	if (isScheduledObj.checked) {
+		if (document.NewReport.scheduledTime.value == '') {
+			alert(alert_arr.ERR_INVALID_TIME);
+			return false;
+		}
+
 		var selectedRecipientsObj = getObj('selectedRecipients');
 
 		if (selectedRecipientsObj.options.length == 0) {
@@ -980,7 +973,11 @@ function fillFilterInfo(response) {
 	fillList(response.BLOCKJS, 'stdDateFilterField');
 	fillList(response.BLOCKCRITERIA, 'stdDateFilter');
 	if (Object.prototype.hasOwnProperty.call(response, 'CRITERIA_GROUPS') && !updated_grouping_criteria ) {
-		add_grouping_criteria(response.CRITERIA_GROUPS);
+		cbAdvancedFilter.fillFieldTemplate(response.COLUMNS_BLOCK);
+		cbAdvancedFilter.comparisonFields = flattenComparisonFields(response.REL_FIELDS);
+		document.getElementById('cbds-advfilt_existing-conditions').value = JSON.stringify(response.CRITERIA_GROUPS);
+		var advancedFilter = document.getElementById("cbds-advanced-search");
+		window.AdvancedFilter = new cbAdvancedFilter(advancedFilter);
 		updated_grouping_criteria = true;
 	}
 	if (Object.prototype.hasOwnProperty.call(response, 'STARTDATE') && Object.prototype.hasOwnProperty.call(response, 'ENDDATE')) {
@@ -990,6 +987,18 @@ function fillFilterInfo(response) {
 		$('#jscal_trigger_date_end').css('visibility', 'visible');
 	}
 	return true;
+}
+
+function flattenComparisonFields(fields) {
+	var retFields = [],
+		fields = JSON.parse(fields);
+	for (tod in fields) {
+		fields[tod].forEach((field) => {
+			let fieldComponents = field.split('::');
+			retFields.push({'value': fieldComponents[0], 'label': fieldComponents[1]});
+		});
+	}
+	return retFields;
 }
 
 /**
@@ -1013,9 +1022,10 @@ function fillGroupingInfo(response) {
 }
 
 function CrearEnlace(tipo, id) {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 	var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 	return 'index.php?module=Reports&action=ReportsAjax&file='+tipo+'&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups;
@@ -1056,9 +1066,10 @@ function createDuplicateReport(id) {
 	var newreportdescription = document.getElementById('newreportdescription').value;
 	var newreportfolder = document.getElementById('reportfolder').value;
 
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 
 	var advft_criteria = document.getElementById('advft_criteria').value;
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
@@ -1080,9 +1091,10 @@ function createDuplicateReport(id) {
 }
 
 function generateReport(id) {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 
 	VtigerJS_DialogBox.block();
 
@@ -1111,9 +1123,10 @@ function generateReport(id) {
 }
 
 function saveReportAdvFilter(id) {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 
 	VtigerJS_DialogBox.block();
 
@@ -1146,9 +1159,10 @@ function selectReport() {
 
 /* @deprecated: use duplicateReport */
 function SaveAsReport(id) {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 	var reportname = prompt(alert_arr.LBL_REPORT_NAME);
 	if (reportname !== null  && reportname !=='' && reportname!== undefined) {
 		document.getElementById('newreportname').value = reportname;
@@ -1170,9 +1184,10 @@ function SaveAsReport(id) {
 }
 
 function goToPrintReport(id) {
-	if (!checkAdvancedFilter()) {
+	if (!AdvancedFilter.validate()) {
 		return false;
 	}
+	AdvancedFilter.updateHiddenFields();
 	var advft_criteria = document.getElementById('advft_criteria').value;
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 	window.open('index.php?module=Reports&action=ReportsAjax&file=PrintReport&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups, i18nLBL_PRINT_REPORT, cbPopupWindowSettings+',resizable=1,scrollbars=1');
@@ -1225,7 +1240,7 @@ function constructSelectOptions(selectedMemberType, idArr, nameArr) {
 	var findStr=document.NewReport.findStr.value;
 	if (findStr.replace(/^\s+/g, '').replace(/\s+$/g, '').length !=0) {
 		var k=0;
-		for (var i=0; i<nameArr.length; i++) {
+		for (i=0; i<nameArr.length; i++) {
 			if (nameArr[i].indexOf(findStr) == 0) {
 				constructedOptionName[k] = nameArr[i];
 				constructedOptionValue[k] = idArr[i];
@@ -1266,7 +1281,7 @@ function addColumns() {
 	}
 
 	for (i=0; i<availableListObj.length; i++) {
-		if (availableListObj.options[i].selected==true) {
+		if (availableListObj.options[i].selected) {
 			var rowFound=false;
 			var existingObj=null;
 			for (var j=0; j<columnsSelectedObj.length; j++) {
@@ -1277,7 +1292,7 @@ function addColumns() {
 				}
 			}
 
-			if (rowFound!=true) {
+			if (!rowFound) {
 				var newColObj = document.createElement('OPTION');
 				newColObj.value = availableListObj.options[i].value;
 				if (browser_ie) {
@@ -1288,7 +1303,6 @@ function addColumns() {
 				columnsSelectedObj.appendChild(newColObj);
 				availableListObj.options[i].selected = false;
 				newColObj.selected = true;
-				rowFound = false;
 			} else {
 				availableListObj.options[i].selected = false;
 				if (existingObj != null) {
@@ -1321,4 +1335,209 @@ function ReportssetValueFromCapture(recordid, value, target_fieldname) {
 			document.getElementById('directsqlcommand').value = response;
 		});
 	}
+}
+
+function createrepFolder(oLoc, divid) {
+	document.getElementById('editfolder_info').innerHTML=i18nReportStrings.LBL_ADD_NEW_GROUP;
+	fnvshobj(oLoc, divid);
+	document.getElementById(divid).style.left = (parseInt(document.getElementById(divid).style.left)-300)+'px';
+	jQuery('#'+divid).draggable();
+	getObj('fldrsave_mode').value = 'save';
+	document.getElementById('folder_id').value = '';
+	document.getElementById('folder_name').value = '';
+	document.getElementById('folder_desc').value='';
+}
+
+function DeleteFolder(id) {
+	var title = 'folder'+id;
+	var fldr_name = getObj(title).innerText;
+	if (confirm(i18nReportStrings.DELETE_FOLDER_CONFIRMATION+fldr_name +"' ?")) {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&mode=ajax&file=DeleteReportFolder&module=Reports&record='+id
+		}).done(function (response) {
+			var item = trim(response);
+			if (item.charAt(0)=='<') {
+				gridReload(item);
+			} else {
+				alert(item);
+			}
+		});
+	} else {
+		return false;
+	}
+}
+
+function AddFolder() {
+	if (getObj('folder_name').value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0) {
+		alert(i18nReportStrings.FOLDERNAME_CANNOT_BE_EMPTY);
+		return false;
+	} else if (getObj('folder_name').value.replace(/^\s+/g, '').replace(/\s+$/g, '').length > 20 ) {
+		alert(i18nReportStrings.FOLDER_NAME_ALLOW_20CHARS);
+		return false;
+	} else if ((getObj('folder_name').value).match(/['"<>/\+]/) || (getObj('folder_desc').value).match(/['"<>/\+]/)) {
+		alert(alert_arr.SPECIAL_CHARS+' '+alert_arr.NOT_ALLOWED+alert_arr.NAME_DESC);
+		return false;
+	} else {
+		var foldername = encodeURIComponent(getObj('folder_name').value);
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=folderCheck&folderName='+foldername
+		}).done(function (response) {
+			var folderid = getObj('folder_id').value;
+			var resresult =response.split('::');
+			var mode = getObj('fldrsave_mode').value;
+			if ((resresult[0] != 0 && mode =='save' && resresult[0] != 999)
+				|| (((resresult[0]!=1 && resresult[0]!=0) || (resresult[0]==1 && resresult[1]!=folderid)) && mode=='Edit' && resresult[0]!=999)
+			) {
+				alert(i18nReportStrings.FOLDER_NAME_ALREADY_EXISTS);
+				return false;
+			} else if (response == 999) { // 999 check for special chars
+				alert(i18nReportStrings.SPECIAL_CHARS_NOT_ALLOWED);
+				return false;
+			} else {
+				fninvsh('orgLay');
+				var folderdesc = encodeURIComponent(getObj('folder_desc').value);
+				getObj('folder_name').value = '';
+				getObj('folder_desc').value = '';
+				foldername = foldername.replace(/^\s+/g, '').replace(/\s+$/g, '');
+				foldername = foldername.replace(/&/gi, '*amp*');
+				folderdesc = folderdesc.replace(/^\s+/g, '').replace(/\s+$/g, '');
+				folderdesc = folderdesc.replace(/&/gi, '*amp*');
+				let url ='&savemode=Edit&foldername='+foldername+'&folderdesc='+folderdesc+'&record='+folderid;
+				if (mode == 'save') {
+					url ='&savemode=Save&foldername='+foldername+'&folderdesc='+folderdesc;
+				}
+				getObj('fldrsave_mode').value = 'save';
+				jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?action=ReportsAjax&mode=ajax&file=SaveReportFolder&module=Reports'+url
+				}).done(function (saveresponse) {
+					gridReload(saveresponse);
+				});
+			}
+		});
+	}
+}
+
+function gridReload(contents) {
+	grid.destroy();
+	getObj('reportContents').innerHTML = contents;
+	vtlib_executeJavascriptInElement(document.getElementById('reportContents'));
+}
+
+function EditFolder(id, name, desc) {
+	document.getElementById('editfolder_info').innerHTML= i18nReportStrings.LBL_RENAME_FOLDER;
+	jQuery('#orgLay').draggable();
+	getObj('folder_name').value = name;
+	getObj('folder_desc').value = desc;
+	getObj('folder_id').value = id;
+	getObj('fldrsave_mode').value = 'Edit';
+}
+
+function massDeleteReport() {
+	var folderids = getObj('folder_ids').value;
+	var folderid_array = folderids.split(',');
+	var idstring = '';
+	var count = 0;
+	for (let i=0; i < folderid_array.length; i++) {
+		var selectopt_id = 'selected_id'+folderid_array[i];
+		var objSelectopt = getObj(selectopt_id);
+		if (objSelectopt != null) {
+			var length_folder = getObj(selectopt_id).length;
+			if (length_folder != undefined) {
+				var cur_rep = getObj(selectopt_id);
+				for (let row = 0; row < length_folder; row++) {
+					var currep_id = cur_rep[row].value;
+					if (cur_rep[row].checked) {
+						count++;
+						idstring = currep_id +':'+idstring;
+					}
+				}
+			} else {
+				if (getObj(selectopt_id).checked) {
+					count++;
+					idstring = getObj(selectopt_id).value +':'+idstring;
+				}
+			}
+		}
+	}
+	if (idstring != '') {
+		if (confirm(i18nReportStrings.DELETE_CONFIRMATION+count+i18nReportStrings.RECORDS)) {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?action=ReportsAjax&mode=ajax&file=Delete&module=Reports&idlist='+idstring
+			}).done(function (response) {
+				gridReload(response);
+			});
+		} else {
+			return false;
+		}
+	} else {
+		alert(i18nReportStrings.SELECT_ATLEAST_ONE_REPORT);
+		return false;
+	}
+}
+
+function DeleteReport(id) {
+	if (confirm(i18nReportStrings.DELETE_REPORT_CONFIRMATION)) {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&file=Delete&module=Reports&record='+id
+		}).done(function (response) {
+			gridReload(response);
+		});
+	} else {
+		return false;
+	}
+}
+
+function MoveReport(id, foldername) {
+	fninvsh('folderLay');
+	var folderids = getObj('folder_ids').value;
+	var folderid_array = folderids.split(',');
+	var idstring = '';
+	for (let i=0; i < folderid_array.length; i++) {
+		var selectopt_id = 'selected_id'+folderid_array[i];
+		var objSelectopt = getObj(selectopt_id);
+		if (objSelectopt != null) {
+			var length_folder = getObj(selectopt_id).length;
+			if (length_folder != undefined) {
+				var cur_rep = getObj(selectopt_id);
+				for (let row = 0; row < length_folder; row++) {
+					var currep_id = cur_rep[row].value;
+					if (cur_rep[row].checked) {
+						idstring = currep_id +':'+idstring;
+					}
+				}
+			} else {
+				if (getObj(selectopt_id).checked) {
+					idstring = getObj(selectopt_id).value +':'+idstring;
+				}
+			}
+		}
+	}
+	if (idstring != '') {
+		if (confirm(i18nReportStrings.MOVE_REPORT_CONFIRMATION+foldername+i18nReportStrings.FOLDER)) {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?action=ReportsAjax&file=ChangeFolder&module=Reports&folderid='+id+'&idlist='+idstring
+			}).done(function (response) {
+				gridReload(response);
+			});
+		} else {
+			return false;
+		}
+	} else {
+		alert(i18nReportStrings.SELECT_ATLEAST_ONE_REPORT);
+		return false;
+	}
+}
+
+function saveReportGridLayout(event, items) {
+	let glayout = encodeURIComponent(JSON.stringify(grid.save(false, false)));
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?action=ReportsAjax&file=SaveReportFolder&module=Reports&foldername=&folderdesc=&savemode=Layout&layout='+glayout
+	});
 }

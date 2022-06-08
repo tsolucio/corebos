@@ -29,9 +29,9 @@ class prodsubprodhandlerevent extends VTEventHandler {
 			'SELECT sum(vtiger_productcomponent.quantity*vtiger_products.unit_price) AS total
 				FROM vtiger_productcomponent
 				INNER JOIN vtiger_products ON vtiger_productcomponent.topdo = vtiger_products.productid
-				INNER JOIN vtiger_crmentity AS c1 ON vtiger_productcomponent.productcomponentid = c1.crmid
-				INNER JOIN vtiger_crmentity AS c2 ON vtiger_products.productid= c2.crmid
-				WHERE c1.deleted = 0 AND c2.deleted = 0 AND vtiger_productcomponent.frompdo = ?',
+				INNER JOIN vtiger_crmobject AS c1 ON vtiger_productcomponent.productcomponentid=c1.crmid
+				INNER JOIN vtiger_crmobject AS c2 ON vtiger_products.productid=c2.crmid
+				WHERE c1.deleted=0 AND c2.deleted=0 AND vtiger_productcomponent.frompdo=?',
 			array($v)
 		);
 		$res = $adb->query_result($query, 0, 'total');
@@ -56,9 +56,9 @@ class prodsubprodhandlerevent extends VTEventHandler {
 			'SELECT sum(vtiger_productcomponent.quantity*vtiger_products.cost_price) AS totalcost
 				FROM vtiger_productcomponent
 				INNER JOIN vtiger_products ON vtiger_productcomponent.topdo = vtiger_products.productid
-				INNER JOIN vtiger_crmentity AS c1 ON vtiger_productcomponent.productcomponentid = c1.crmid
-				INNER JOIN vtiger_crmentity AS c2 ON vtiger_products.productid= c2.crmid
-				WHERE c1.deleted = 0 AND c2.deleted = 0 AND vtiger_productcomponent.frompdo = ?',
+				INNER JOIN vtiger_crmobject AS c1 ON vtiger_productcomponent.productcomponentid=c1.crmid
+				INNER JOIN vtiger_crmobject AS c2 ON vtiger_products.productid=c2.crmid
+				WHERE c1.deleted=0 AND c2.deleted=0 AND vtiger_productcomponent.frompdo=?',
 			array($v)
 		);
 		$res2 = $adb->query_result($query_new, 0, 'totalcost');

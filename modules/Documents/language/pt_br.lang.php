@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 07-apr-2018 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 27-jul-2021 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -37,7 +37,7 @@ $mod_strings = array(
 
 'Template'=>'Modelo',
 'Template For' => 'Modelo para',
-'Merge Template' => 'Merge Template',
+'Merge Template' => 'Modelo para concatenar',
 'LBL_FILENAME'=>'Anexo:',
 'LBL_NOTE_INFORMATION'=>'Informação do documento',
 'File Information'=>'Informação do arquivo',
@@ -46,10 +46,10 @@ $mod_strings = array(
 'Contact Name'=>'Nome de contato',
 'Related To'=>'Relacionado à',
 'Subject'=>'Assunto',
-'Created Time'=>'Data criação',
-'Modified Time'=>'Data Modificação',
+'Created Time'=>'Data & hora criação',
+'Modified Time'=>'Data & hora Modificação',
 'Document'=>'Documento',
-'Note'=>'Notas',
+'Note'=>'Texto',
 'Related to'=>'Relacionado à',
 'Last Modified'=>'Última modificação',
 'File'=>'Arquivo',
@@ -112,13 +112,14 @@ $mod_strings = array(
 'LBL_NO_DOCUMENTS' => 'Nenhum documento',
 'LBL_DESCRIPTION' => 'Descrição',
 'FILE_HAS_NO_DATA'=>'O arquivo selecionado não possui dados ou o é inválido',
+'NotShared' => 'Arquivo não compartilhado',
 
 'LBL_MAXIMUM_20'=>'Máximo 20',
 'LBL_MAXIMUM_50'=>'Máximo 50',
 
 'Folder Name'=>'Nome da pasta',
 'foldername'=>'Nome da pasta',
-'folderid' => 'Folder ID',
+'folderid' => 'ID pasta',
 'Document No'=>'No. documento',
 
 'Documents' => 'Documentos',
@@ -134,7 +135,7 @@ $mod_strings = array(
 'Free' => 'Espaço em disco disponível',
 'NewSize' => 'Tamanho novo',
 'accept_charge' => 'Eu aceito a alteração da licença e a taxa associada que ela pode ter',
-'LBL_DOCUMENTS_MASSUPLOAD' => 'Mass Upload Documents',
-'LBL_MASSUPLOAD_DESCRIPTION' => 'Activate and deactivate the document mass upload widget on each module.',
+'LBL_DOCUMENTS_MASSUPLOAD' => 'Upload Documentos em massa',
+'LBL_MASSUPLOAD_DESCRIPTION' => 'Ativa e desativa widget de upload em massa para cada módulo.',
 );
 ?>

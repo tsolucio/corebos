@@ -20,7 +20,6 @@
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 		<form action="index.php" method="post" name="new" id="form" onsubmit="VtigerJS_DialogBox.block();">
 		<input type="hidden" name="module" value="Settings">
-		<input type="hidden" name="parenttab" value="Settings">
 		<input type="hidden" name="fld_module" id="fld_module" value="{$DEF_MODULE}">
 		{if $MODE neq 'view'}
 			<input type="hidden" name="action" value="UpdateDefaultFieldLevelAccess">
@@ -29,7 +28,7 @@
 		{/if}
 		<tr>
 			<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MODULE_NAME}" width="48" height="48" border=0 title="{$MOD.LBL_MODULE_NAME}"></td>
-			<td colspan=2 class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_FIELDS_ACCESS} </b></td>
+			<td colspan=2 class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_FIELDS_ACCESS} </b></td>
 			<td rowspan=2 class="small" align=right>&nbsp;</td>
 		</tr>
 		<tr>

@@ -39,7 +39,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 
 	/**
 	 * Constructor which gets the Mail details from the server
-	 * @param String $mBox - Mail Box Connection string
+	 * @param string $mBox - Mail Box Connection string
 	 * @param Integer $msgno - Mail Message Number
 	 * @param Boolean $fetchbody - Used to save the mail information to DB
 	 */
@@ -71,7 +71,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 
 	/**
 	 * Gets the Mail Body and Attachments
-	 * @param String $imap - Mail Box connection string
+	 * @param string $imap - Mail Box connection string
 	 * @param Integer $messageid - Mail Number
 	 * @param Object $p
 	 * @param Integer $partno
@@ -120,7 +120,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			if (!$this->_attachments) {
 				$this->_attachments = array();
 			}
-			$this->_attachments[$filename] = $data;  // TODO: this is a problem if two files have same name
+			$this->_attachments[$filename] = $data;  // this is a problem if two files have same name
 		} elseif ($p->ifdisposition && $p->disposition == 'INLINE' && $p->bytes > 0 && $p->subtype != 'PLAIN' && $p->subtype != 'HTML') {
 			// embedded images right now are treated as attachments
 			$this->_attachments['noname'.$partno. '.' .$p->subtype] = $data;
@@ -211,6 +211,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 
 			$this->_from = json_decode(decode_html($resultrow['mfrom']));
 			$this->_to   = json_decode(decode_html($resultrow['mto']));
+			$this->_reply_to = json_decode(decode_html($resultrow['mreplyto']));
 			$this->_cc   = json_decode(decode_html($resultrow['mcc']));
 			$this->_bcc  = json_decode(decode_html($resultrow['mbcc']));
 
@@ -236,7 +237,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @global Users Instance $current_user
 	 * @global Array $upload_badext - List of bad extensions
 	 * @param Boolean $withContent - Used to load the Attachments with/withoud content
-	 * @param String $aName - Attachment Name
+	 * @param string $aName - Attachment Name
 	 */
 	protected function loadAttachmentsFromDB($withContent, $aName = false) {
 		global $adb, $current_user, $upload_badext;
@@ -297,6 +298,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$params[] = $uid;
 		$params[] = json_encode($this->_from);
 		$params[] = json_encode($this->_to);
+		$params[] = json_encode($this->_reply_to);
 		$params[] = json_encode($this->_cc);
 		$params[] = json_encode($this->_bcc);
 		$params[] = $this->_date;
@@ -311,7 +313,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$params[] = $savedtime;
 
 		$adb->pquery(
-			'INSERT INTO vtiger_mailmanager_mailrecord (userid, muid, mfrom, mto, mcc, mbcc,
+			'INSERT INTO vtiger_mailmanager_mailrecord (userid, muid, mfrom, mto, mreplyto, mcc, mbcc,
 				mdate, msubject, mbody, mcharset, misbodyhtml, mplainmessage, mhtmlmessage, muniqueid,
 				mbodyparsed, lastsavedtime) VALUES ('.generateQuestionMarks($params).')',
 			$params
@@ -342,7 +344,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @global PearDataBase Instance $adb
 	 * @global Users Instance $current_user
 	 * @global Array $upload_badext
-	 * @param String $filename - name of the file
+	 * @param string $filename - name of the file
 	 * @param Text $filecontent
 	 * @return Array with attachment information
 	 */
@@ -374,15 +376,13 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			array($attachid, $binFile, $binFile, $mimetype, $dirname)
 		);
 
-		$attachInfo = array('attachid'=>$attachid, 'path'=>$dirname, 'name'=>$binFile, 'type'=>$mimetype, 'size'=>filesize($saveasfile));
-
-		return $attachInfo;
+		return array('attachid'=>$attachid, 'path'=>$dirname, 'name'=>$binFile, 'type'=>$mimetype, 'size'=>filesize($saveasfile));
 	}
 
 	/**
 	 * Gets the Mail Attachments
 	 * @param Boolean $withContent
-	 * @param String $aName
+	 * @param string $aName
 	 * @return List of Attachments
 	 */
 	public function attachments($withContent = true, $aName = false) {
@@ -396,7 +396,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @return String
 	 */
 	public function subject($safehtml = true) {
-		if ($safehtml==true) {
+		if ($safehtml) {
 			return MailManager_Utils::safe_html_string($this->_subject);
 		}
 		return $this->_subject;
@@ -404,10 +404,9 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 
 	/**
 	 * Sets the Mail Subject
-	 * @param String $subject
+	 * @param string $subject
 	 */
 	public function setSubject($subject) {
-		//$mailSubject = str_replace('_', ' ', $subject);
 		$this->_subject = @self::__mime_decode($subject);
 	}
 
@@ -461,6 +460,14 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 */
 	public function to() {
 		return $this->_to;
+	}
+
+	/**
+	 * Gets the Mail To Email Addresses
+	 * @return Email(s)
+	 */
+	public function replyto() {
+		return $this->_reply_to;
 	}
 
 	/**

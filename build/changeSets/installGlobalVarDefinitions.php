@@ -35,7 +35,7 @@ class installGlobalVarDefinitions extends cbupdaterWorker {
 			if (!empty($block->id)) {
 				$this->ExecuteQuery('update vtiger_blocks set display_status=0 where blockid=?', array($block->id));
 			}
-			$moduleInstance->addLink('LISTVIEWBASIC', 'Definitions', "javascript:gotourl('index.php?module=GlobalVariable&action=GlobalVariableDefinitions&parenttab=Tools')", '', 4);
+			$moduleInstance->addLink('LISTVIEWBASIC', 'Definitions', "javascript:gotourl('index.php?module=GlobalVariable&action=GlobalVariableDefinitions')", '', 4);
 			$field = Vtiger_Field::getInstance('gvname', $moduleInstance);
 			if ($field) {
 				foreach ($global_variables as $gvar) {

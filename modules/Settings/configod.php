@@ -59,3 +59,6 @@ $cbodCSAppSyncUser = array(1);
 
 // Where to save user privileges information
 $cbodUserPrivilegesStorage = 'file'; // file | db
+
+// block module export
+$cbodBlockModuleExport = false;

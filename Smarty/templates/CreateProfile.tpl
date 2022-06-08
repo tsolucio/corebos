@@ -21,7 +21,6 @@
 			<input type="hidden" name="module" value="Settings">
 			<input type="hidden" name="mode" value="{$MODE}">
 			<input type="hidden" name="action" value="profilePrivileges">
-			<input type="hidden" name="parenttab" value="Settings">
 			<input type="hidden" name="parent_profile" value="{$PARENT_PROFILE}">
 			<input type="hidden" name="radio_button" value="{$RADIO_BUTTON}">
 
@@ -29,7 +28,7 @@
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width=50 rowspan=2 valign=top><img src="{'ico-profile.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROFILES}" width="48" height="48" border=0 title="{$MOD.LBL_PROFILES}"></td>
-					<td class=heading2 valign=bottom><b> <a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=ListProfiles&parenttab=Settings">{$CMOD.LBL_PROFILE_PRIVILEGES}</a></b></td>
+					<td class=heading2 valign=bottom><b> <a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=ListProfiles">{$CMOD.LBL_PROFILE_PRIVILEGES}</a></b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small">{$MOD.LBL_PROFILE_DESCRIPTION}</td>

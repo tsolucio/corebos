@@ -70,7 +70,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 									<div class="small detailview_utils_table_top">
 										<div class="detailview_utils_table_tabs noprint">
 											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
-											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
+											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0 && empty($Module_Popup_Edit)}
 												{if $HASRELATEDPANES eq 'true'}
 													{include file='RelatedPanes.tpl' tabposition='top' RETURN_RELATEDPANE=''}
 												{else}
@@ -90,20 +90,13 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 										</div>
 										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
 										<div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions_top">
-												{if $privrecord neq ''}
-													<span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$privrecord}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}"><img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}"  name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
-												{else}
-													<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
-												{/if}
-												{if $privrecord neq '' || $nextrecord neq ''}
-													<span class="detailview_utils_jumpto" id="jumpBtnIdTop" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" title="{$APP.LBL_JUMP_BTN}"><img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" name="jumpBtnIdTop" id="jumpBtnIdTop" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
-												{/if}
-												{if !empty($nextrecord)}
-													<span class="detailview_utils_next" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$nextrecord}&start={if !empty($nextrecordstart)}{$nextrecordstart}{/if}'" title="{$APP.LNK_LIST_NEXT}"><img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}" name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
-												{else}
-													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
-												{/if}
-												<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
+										<div class="slds-button-group" role="group">
+													
+											{if empty($Module_Popup_Edit)}
+												<div class="slds-button-group" role="group">
+													{include file='Components/DetailViewPirvNext.tpl'}
+												</div>
+											{/if}
 										</div>
 									</div>
 								</td>
@@ -135,9 +128,56 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																						<td class="cblds-t-align_right" align=right>
 																							{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') }
 																								{if $MODULE eq 'Leads'}
-																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation('Main')" title="{$APP.LBL_LOCATE_MAP}">
+																								<div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open slds-button_last">
+																									<button
+																										class="slds-button slds-button_neutral "
+																										title="{$APP.LBL_LOCATE_MAP}"
+																										value="{$APP.LBL_LOCATE_MAP}"
+																										onClick="searchMapLocation('Main')"
+																										type="button"
+																										name="mapbutton"
+																										>
+																										<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+																											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+																										</svg>
+																										{$APP.LBL_LOCATE_MAP}
+																									</button>
+																									<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions">
+																										<ul class="slds-dropdown__list" role="menu">
+																											<li class="slds-dropdown__item" role="presentation">
+																											<a href="#" role="menuitem" tabindex="0">
+																												<span class="slds-truncate" title="Overflow Item One">Overflow Item One</span>
+																											</a>
+																											</li>
+																											<li class="slds-dropdown__item" role="presentation">
+																											<a href="#" role="menuitem" tabindex="-1">
+																												<span class="slds-truncate" title="Overflow Item Two">Overflow Item Two</span>
+																											</a>
+																											</li>
+																											<li class="slds-dropdown__item" role="presentation">
+																											<a href="#" role="menuitem" tabindex="-1">
+																												<span class="slds-truncate" title="Overflow Item Three">Overflow Item Three</span>
+																											</a>
+																											</li>
+																										</ul>
+																									</div>
+																								</div>
 																								{else}
-																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="fnvshobj(this,'locateMap');" onMouseOut="fninvsh('locateMap');" title="{$APP.LBL_LOCATE_MAP}">
+																								<div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open slds-button_last">
+																									<button
+																										class="slds-button slds-button_neutral "
+																										title="{$APP.LBL_LOCATE_MAP}"
+																										value="{$APP.LBL_LOCATE_MAP}"
+																										onClick="fnvshobj(this,'locateMap');" onMouseOut="fninvsh('locateMap');"
+																										type="button"
+																										name="mapbutton"
+																										>
+																										<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+																											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+																										</svg>
+																										{$APP.LBL_LOCATE_MAP}
+																									</button>
+																								</div>
 																								{/if}
 																							{/if}
 																						</td>
@@ -186,8 +226,13 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																							{if !empty($CUSTOMBLOCKS.$header.custom)}
 																								{include file=$CUSTOMBLOCKS.$header.tpl}
 																							{elseif isset($BLOCKS.$header.relatedlist) && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-																								{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
-																								{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX}
+																								{foreach key=bhkey item=bhitem from=$BLOCKS.$header}
+																									{if isPermitted($bhkey, 'index')=='yes'}
+																										{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
+																										{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX}
+																									{/if}
+																									{break}
+																								{/foreach}
 																							{else}
 																								{foreach item=detailInfo from=$detail}
 																									<tr style="height:25px" class="detailview_row">
@@ -266,7 +311,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																	{*-- End of Blocks--*}
 
 																	<!-- Inventory - Product Details informations -->
-																	{if isset($ASSOCIATED_PRODUCTS)}
+																	{if isset($ASSOCIATED_PRODUCTS) && $ShowInventoryLines}
 																	<tr><td>
 																		{$ASSOCIATED_PRODUCTS}
 																	</td></tr>
@@ -277,7 +322,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 															</table>
 														</td></tr></table>
 											</td>
-
+											{if empty($Module_Popup_Edit)}
 											<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px;{$DEFAULT_ACTION_PANEL_STATUS}" class="noprint" id="actioncolumn">
 												<!-- right side relevant info -->
 												<table width="100%" border="0" cellpadding="5" cellspacing="0" class="detailview_actionlinks actionlinks_events_todo">
@@ -319,7 +364,9 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																			<span class="slds-assistive-text">{$customlink_label}</span>
 																			</span>
 																		{else}
-																			<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}"></a>
+																			<a class="webMnu" href="{$customlink_href}">
+																			<img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}">
+																			</a>
 																		{/if}
 																	{else}
 																		<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
@@ -401,24 +448,28 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
 															{/if}
 															<br/>
-															<table border=0 cellspacing=0 cellpadding=0 width=100% class="rightMailMerge" id="{$CUSTOMLINK->linklabel}">
+															<input type="hidden" id="{$CUSTOMLINK->linklabel|replace:' ':''}LINKID" value="{$CUSTOMLINK->linkid}">
+															<table style="border:0;width:100%" class="rightMailMerge" id="{$CUSTOMLINK->linklabel}">
 																<tr>
 																	<td class="rightMailMergeHeader">
-																		<b>{$customlink_label}</b>
-																		<img id="detailview_block_{$CUSTOMLINK_NO}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
+																		<div>
+																		<b>{$customlink_label}</b>&nbsp;
+																		<img id="detailview_block_{$CUSTOMLINK->linkid}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
+																		</div>
 																	</td>
 																</tr>
 																<tr style="height:25px">
-																	<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK_NO}"></div></td>
+																	<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK->linkid}"></div></td>
 																</tr>
 																<script type="text/javascript">
-																	vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
+																	vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK->linkid}", "detailview_block_{$CUSTOMLINK->linkid}_indicator");
 																</script>
 															</table>
 														{/if}
 													{/foreach}
 												{/if}
 											</td>
+											{/if}
 										</tr>
 									</table>
 
@@ -428,6 +479,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 							<tr>
 								<td>
 									<div class="small detailview_utils_table_bottom noprint">
+										{if empty($Module_Popup_Edit)}
 										<div class="detailview_utils_table_tabs">
 											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
@@ -440,31 +492,73 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 										</div>
 										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_bottom" id="detailview_utils_table_tabactionsep_bottom"></div>
 										<div class="detailview_utils_table_actions detailview_utils_table_actions_bottom" id="detailview_utils_actions_bottom">
-												{if $EDIT_PERMISSION eq 'yes'}
-													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="submit" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
+												<div class="slds-button-group" role="group">
+													{if $EDIT_PERMISSION eq 'yes'}
+														<button
+															class="slds-button slds-button_neutral"
+															title="{$APP.LBL_EDIT_BUTTON_TITLE}"
+															value="{$APP.LBL_EDIT_BUTTON_TITLE}"
+															accessKey="{$APP.LBL_EDIT_BUTTON_KEY}"
+															onclick="DetailView.return_module.value='{$MODULE}'; 
+																	DetailView.return_action.value='DetailView';
+																	DetailView.return_id.value='{$ID}';
+																	DetailView.module.value='{$MODULE}';
+																	submitFormForAction('DetailView','EditView');"
+															type="button"
+															name="Edit"
+															>
+															<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+																<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+															</svg>
+															{$APP.LBL_EDIT_BUTTON_LABEL}
+														</button>
+													{/if}
+													{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
+														<button
+															class="slds-button slds-button_neutral"
+															title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}"
+															value="{$APP.LBL_DUPLICATE_BUTTON_TITLE}"
+															accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}"
+															onclick="DetailView.return_module.value='{$MODULE}'; 
+																	DetailView.return_action.value='DetailView'; 
+																	DetailView.isDuplicate.value='true';
+																	DetailView.module.value='{$MODULE}'; 
+																	submitFormForAction('DetailView','EditView');" 
+															type="submit"
+															name="Duplicate"
+															>
+															<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+																<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#file"></use>
+															</svg>
+															{$APP.LBL_DUPLICATE_BUTTON_LABEL}
+														</button>
+													{/if}
+													{if $DELETE eq 'permitted'}	
+														<button
+															class="slds-button slds-button_text-destructive"
+															title="{$APP.LBL_DELETE_BUTTON_TITLE}"
+															value="{$APP.LBL_DELETE_BUTTON_TITLE}"
+															accessKey="{$APP.LBL_DELETE_BUTTON_KEY}"
+															onclick="DetailView.return_module.value='{$MODULE}'; 
+																DetailView.return_action.value='index'; 
+																{if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);"
+															type="submit"
+															name="Delete" 
+															>
+															<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+																<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+															</svg>
+															{$APP.LBL_DELETE_BUTTON_LABEL}
+														</button>
+													{/if}
+												</div>
+												{if empty($Module_Popup_Edit)}
+												<div class="slds-button-group" role="group">
+													{include file='Components/DetailViewPirvNext.tpl'}
+												</div>
 												{/if}
-												{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
-													<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" class="crmbutton small create" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="submit" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}">&nbsp;
-												{/if}
-												{if $DELETE eq 'permitted'}
-													<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="crmbutton small delete" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='index'; {if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}">&nbsp;
-												{/if}
-
-												{if $privrecord neq ''}
-													<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$privrecord}'" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}">&nbsp;
-												{else}
-													<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
-												{/if}
-												{if $privrecord neq '' || $nextrecord neq ''}
-													<img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" name="jumpBtnIdBottom" id="jumpBtnIdBottom" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}">&nbsp;
-												{/if}
-												{if $nextrecord neq ''}
-													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$nextrecord}'" name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}">&nbsp;
-												{else}
-													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
-												{/if}
-												<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
-										</div>
+											</div>
+										{/if}
 									</div>
 								</td>
 							</tr>

@@ -182,6 +182,7 @@ $app_strings = array(
 	'NTC_TIME_FORMAT' => '(24:00)',
 	'NTC_DATE_TIME_FORMAT' => '(jj-mm-aaaa 24:00)',
 	'NTC_DELETE_CONFIRMATION' => 'Êtes-vous certain de vouloir supprimer cet enregistrement ?',
+	'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 	'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Supprimer ce compte entrainera la suppression des données en relation (affaires, devis, commandes, facture). Êtes-vous certain de vouloir faire cela ?',
 	'NTC_VENDOR_DELETE_CONFIRMATION' => 'Supprimer ce fournisseur entrainera la suppression des commandes fournisseur en relation. Êtes-vous certain de vouloir faire cela ?',
 	'ERR_DELETE_RECORD' => 'Veuillez sélectionner au moins un enregistrement.',
@@ -862,6 +863,7 @@ $app_strings = array(
 	'MSG_VTIGERTEAM' => 'L\'équipe coreBOS',
 	'MSG_IS_NOT_UPLOADED' => 'n\'a pas été uploadé. Les types d\'image autorisés sont - jpeg, png, jpg, pjpeg, x-png ou gif',
 	'MSG_IMAGE_ERROR' => 'Image non trouvée',
+	'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 	'Information' => 'Information',
 	'Address' => 'Adresse',
 	'Custom Information' => 'Information personnalisée',
@@ -943,6 +945,8 @@ $app_strings = array(
 	'Mailing Po Box' => 'Boite postale',
 	'Other Po Box' => 'Autre boite postale',
 	'Image' => 'Image',
+	'Unknown' => 'Unknown',
+	'Compressed' => 'Compressed',
 	'LBL_EXPORT_TYPE_1' => 'Export Type1 :',
 	'LBL_EXPORT_TYPE_2' => 'Export Type2 :',
 	'LBL_SEARCH_CRITERIA_RECORDS' => 'Exporter les critères de recherche d\'enregistrements',
@@ -952,6 +956,9 @@ $app_strings = array(
 	'LBL_SEARCH_CRITERIA_COLUMNS'=>'Export Filter Columns',
 	'LBL_VISIBLE_COLUMNS'=>'Export only visible columns',
 	'LBL_ALL_DATA' => 'Exporter toutes les données',
+	'LBL_EXPORT_FORMAT' => 'Export Format',
+	'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+	'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 	'LBL_DATA_IN_CURRENT_PAGE' => 'Exporter les données de la page courante',
 	'LBL_ONLY_SELECTED_RECORDS' => 'Exporter les entrées sélectionnées',
 	'LBL_YES' => 'Oui',
@@ -1135,6 +1142,8 @@ $app_strings = array(
 	'LBL_CALLER_INFORMATION'=>'Information correspondant',
 	'LBL_CALLER_NUMBER'=>'Numéro :',
 	'LBL_CALLER_NAME'=>'Nom :',
+	'LBL_VIEW_CONTACT' => 'View Contact',
+	'LBL_CLICK_NOTIFICATION_TO'=> 'Click Notification to ',
 	'LBL_DUPLICATE' => 'Dupliquer',
 	'LBL_CLICK' => 'Clic',
 	'LBL_TO_CONFIGURE' => 'pour configurer le',
@@ -1156,6 +1165,8 @@ $app_strings = array(
 	'PRIVATE_FILTER' => 'Privé',
 	'SHARE_FILTER' => 'Partager',
 	'PUBLIC_FILTER' => 'Public',
+	'Shared' => 'Shared',
+	'Scheduled' => 'Scheduled',
 
 	'LBL_ACCOUNT_HIERARCHY' => 'Hiérarchie de compte',
 
@@ -1293,6 +1304,33 @@ $app_strings = array(
 	'csrf_reload' => 'Rafraichir la page',
 	'LBL_NOPRODUCTS' => 'Ne peut convertir le bon de commande en facture parce qu\'il n\'y a plus de produits à facturer',
 	'VALIDATION_FAILED' => 'Validation failed',
+	'Select Module To Upsert' => 'Select Module To Upsert',
+	'LBL_FIX_NOW' => 'Fix Now',
+	'LBL_HIERARCHY' => 'Hierarchy',
+	'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Search Documents',
+
+	//login translation
+	'LBL_Please_login_to_your_account' => 'Please login to your account',
+	'LBL_Bussiness'	=> 'Make your business run smoothly',
+	'LBL_Management' => 'Intelligent customer management',
+	'LBL_Statistics' => 'Easy to track your statistics',
+
+	//List view popup content
+	'LBL_SEND_TO' => 'SEND TO',
+	'LNK_ALPHABETICAL_SEARCH' => 'Alpabetical Search',
+	'ERR_SITE_URL_MISMATCH' => 'Site URL mismatch',
+	'Mautic ID' => 'Mautic ID',
+	'Deleted in Mautic' => 'Deleted in Mautic',
+	'Contact Points' => 'Contact Points',
+	'From External Source' => 'From External Source',
+	'LBL_ADD_ROW' => 'Add Row',
+	'LBL_EDIT_COLUMNS' => 'Edit Columns',
+	'LBL_SELECT_COLUMNS' => 'Select columns to show in Mass Create Grid',
+	'LBL_MATCH_COLUMNS' => 'Select columns to match in Mass Create Grid',
+	'LBL_SAVE_MAP' => 'Save Map',
+	'Paste the link here' => 'Paste the link here',
+	'LBL_UITYPE10_NOTALLOWED' => 'The related module has a mandatory related field.',
+	'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 );
 
 // Translation for currency names
@@ -1427,5 +1465,7 @@ $app_currency_strings = array(
 	'Malawi, kwacha'		=> 'Malawi, kwacha',
 	'Tunisian, Dinar'		=> 'Tunisian, Dinar',
 	'Moroccan, Dirham'		=> 'Moroccan, Dirham',
+	'Select Module To Upsert' => 'Select Module To Upsert',
+	'LBL_FIX_NOW' => 'Fix Now',
 );
 ?>

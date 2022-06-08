@@ -7,6 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-?>
-<h1>Error</h1>
-<?php echo htmlentities($_REQUEST['message'])?>
+require_once 'Smarty_setup.php';
+$smarty = new vtigerCRM_Smarty();
+$smarty->assign('APP', $app_strings);
+$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+$smarty->assign('ERROR_MESSAGE', htmlentities($_REQUEST['message']));
+$smarty->display('applicationmessage.tpl');

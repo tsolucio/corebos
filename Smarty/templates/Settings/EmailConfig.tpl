@@ -25,7 +25,6 @@
 	{/if}
 			<input type="hidden" id="module" name="module" value="Settings">
 			<input type="hidden" name="action">
-			<input type="hidden" name="parenttab" value="Settings">
 			<input type="hidden" name="return_module" value="Settings">
 			<input type="hidden" name="return_action" value="EmailConfig">
 			<input type="hidden" name="confirmMsg" value="{$MOD.LBL_CONFIRM_DEFAULT_SETTINGS}" id="confirmMsg">
@@ -56,7 +55,7 @@
 						{$APP.LBL_SAVE_BUTTON_LABEL}
 						&nbsp;&nbsp;
 						</button>
-						<button title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="slds-button slds-button_destructive cancel" onclick="window.location.href = 'index.php?module=Settings&action=EmailConfig&parenttab=Settings';" type="button" name="button" >
+						<button title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="slds-button slds-button_destructive cancel" onclick="window.location.href = 'index.php?module=Settings&action=EmailConfig';" type="button" name="button" >
 						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use> </svg>
 						{$APP.LBL_CANCEL_BUTTON_LABEL}
 						</button>

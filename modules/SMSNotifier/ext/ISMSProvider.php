@@ -28,30 +28,30 @@ interface ISMSProvider {
 	/**
 	 * Get service URL to use for a given type
 	 *
-	 * @param String $type like SEND, PING, QUERY
+	 * @param string $type like SEND, PING, QUERY
 	 */
 	public function getServiceURL($type = false);
 
 	/**
 	 * Set authentication parameters
 	 *
-	 * @param String $username
-	 * @param String $password
+	 * @param string $username
+	 * @param string $password
 	 */
 	public function setAuthParameters($username, $password);
 
 	/**
 	 * Set non-auth parameter.
 	 *
-	 * @param String $key
-	 * @param String $value
+	 * @param string $key
+	 * @param string $value
 	 */
 	public function setParameter($key, $value);
 
 	/**
 	 * Handle SMS Send operation
 	 *
-	 * @param String $message
+	 * @param string $message
 	 * @param mixed $tonumbers One or Array of numbers
 	 */
 	public function send($message, $tonumbers);
@@ -59,7 +59,7 @@ interface ISMSProvider {
 	/**
 	 * Query for status using messgae id
 	 *
-	 * @param String $messageid
+	 * @param string $messageid
 	 */
 	public function query($messageid);
 }

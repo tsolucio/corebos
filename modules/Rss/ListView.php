@@ -36,7 +36,6 @@ $image_path='themes/'.$theme.'/images/';
 $rss_form->assign('IMAGE_PATH', $image_path);
 $rss_form->assign('MODULE', $currentModule);
 $rss_form->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$rss_form->assign('CATEGORY', getParenttab());
 $tool_buttons = array(
 	'EditView' => 'no',
 	'CreateView' => 'no',

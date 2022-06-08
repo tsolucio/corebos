@@ -1,3 +1,3 @@
 #!/bin/sh
 set -e
-find . -not -path "./build/WebserviceVQLParser/*" -not -path "./include/PhpSpreadsheet/*" -not -path "./include/install/resources/gdinfo.php" -type f \( -name \*.php -o -name \*.service -o -name \*.inc \) | xargs -n1 php -l > /dev/null
+find . -not -path "./build/WebserviceVQLParser/*" -not -path "./vendor/symfony/*" -not -path "./include/PhpSpreadsheet/*" -not -path "./include/install/resources/gdinfo.php" -type f \( -name \*.php -o -name \*.service -o -name \*.inc \) | xargs -n1 php -l > /dev/null

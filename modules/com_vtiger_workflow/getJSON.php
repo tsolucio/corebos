@@ -61,13 +61,19 @@ if (!empty($_REQUEST['filters'])) {
 						$params[] = $filter['value'];
 					}
 					break;
+				case 'Status':
+					if (!empty($filter['value']) && $filter['value'] != 'all') {
+						$conds[] = 'active=?';
+						$params[] = $filter['value'];
+					}
+					break;
 				default:
 			}
 		}
-		if (count($conds)>0) {
-			$conds = 'where '.implode(' and ', $conds);
-		} else {
+		if (empty($conds)) {
 			$conds = '';
+		} else {
+			$conds = 'where '.implode(' and ', $conds);
 		}
 	}
 }
@@ -84,5 +90,4 @@ if (!empty($_REQUEST['sorder'])) {
 } else {
 	$order_by = $focus->default_order_by.' '.$focus->default_sort_order;
 }
-$response = $focus->getWorkFlowJSON($conds, $params, $page, $order_by);
-echo $response;
+echo $focus->getWorkFlowJSON($conds, $params, $page, $order_by);

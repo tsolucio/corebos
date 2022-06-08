@@ -109,6 +109,11 @@ class Mapping extends processcbMap {
 			$value = '';
 			$delim = (isset($sourcefields['delimiter']) ? $sourcefields['delimiter'] : '');
 			foreach ($sourcefields['merge'] as $fieldinfo) {
+				$postProcess = '';
+				if (!empty($fieldinfo['postProcess'])) {
+					$postProcess = $fieldinfo['postProcess'];
+					unset($fieldinfo['postProcess']);
+				}
 				$idx = array_keys($fieldinfo);
 				if (strtoupper($idx[0])=='CONST') {
 					$const = array_pop($fieldinfo);
@@ -132,7 +137,9 @@ class Mapping extends processcbMap {
 					$testexpression = array_pop($fieldinfo);
 					if (strtoupper($idx[0])=='FIELD') {
 						$testexpression = trim($testexpression);
-						if (substr($testexpression, 0, 1) != '$') {
+						if ($testexpression=='record_id') {
+							$testexpression = $ofields['record_id'];
+						} elseif (substr($testexpression, 0, 1) != '$') {
 							$testexpression = '$' . $testexpression;
 						}
 					}
@@ -173,8 +180,13 @@ class Mapping extends processcbMap {
 					$fieldname = array_pop($fieldinfo);
 					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
 				}
+				if ($postProcess!='') {
+					$value = Mapping::postProcess($postProcess, $value);
+				}
 			}
-			$value = rtrim($value, $delim);
+			if (is_string($value)) {
+				$value = rtrim($value, $delim);
+			}
 			$tfields[$targetfield] = $value;
 		}
 		return $tfields;
@@ -182,37 +194,72 @@ class Mapping extends processcbMap {
 
 	public function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping=$target_fields=array();
-		$mapping['origin'] = (String)$xml->originmodule->originname;
-		$mapping['target'] = (String)$xml->targetmodule->targetname;
+		$mapping['origin'] = (string)$xml->originmodule->originname;
+		$mapping['target'] = (string)$xml->targetmodule->targetname;
 		foreach ($xml->fields->field as $v) {
-			$fieldname = (String)$v->fieldname;
+			$fieldname = (string)$v->fieldname;
 			if (!empty($v->value)) {
-				$target_fields[$fieldname]['value'] = (String)$v->value;
+				$target_fields[$fieldname]['value'] = (string)$v->value;
 			}
 			$allmergeFields=array();
 			foreach ($v->Orgfields->Orgfield as $value) {
 				if (isset($value->Rule)) {
 					$arr = array(
-						(String)$value->OrgfieldID=>(String)$value->OrgfieldName,
-						"mapid"=>(String)$value->Rule);
+						(string)$value->OrgfieldID=>(string)$value->OrgfieldName,
+						'mapid' => (string)$value->Rule,
+					);
 				} else {
-					$arr = array((String)$value->OrgfieldID=>(String)$value->OrgfieldName);
+					$arr = array((string)$value->OrgfieldID=>(string)$value->OrgfieldName);
+				}
+				if (isset($value->postProcess)) {
+					$arr['postProcess'] = (string)$value->postProcess;
 				}
 				$allmergeFields[] = $arr;
 			}
 			if (isset($v->Orgfields->delimiter)) {
-				$target_fields[$fieldname]['delimiter']=(String)$v->Orgfields->delimiter;
+				$target_fields[$fieldname]['delimiter']=(string)$v->Orgfields->delimiter;
 			}
 			$target_fields[$fieldname]['merge']=$allmergeFields;
 			if (isset($v->master)) {
-				$target_fields[$fieldname]['master'] = filter_var((String)$v->master, FILTER_VALIDATE_BOOLEAN);
+				$target_fields[$fieldname]['master'] = filter_var((string)$v->master, FILTER_VALIDATE_BOOLEAN);
 			} else {
 				$target_fields[$fieldname]['master'] = false;
 			}
 		}
 		$mapping['fields'] = $target_fields;
 		return $mapping;
+	}
+
+	public static function postProcess($function, $value) {
+		global $default_charset;
+		switch (trim($function)) {
+			case 'intval':
+			case 'boolval':
+			case 'floatval':
+			case 'addslashes':
+			case 'stripslashes':
+			case 'quotemeta':
+				$value = $function($value);
+				break;
+			case 'htmlentities':
+			case 'html_entity_decode':
+			case 'htmlspecialchars':
+				$value = $function($value, ENT_QUOTES, $default_charset);
+				break;
+			case 'json_decode':
+				$value = $function($value, true);
+				break;
+			case 'json_encode':
+				$value = $function($value, JSON_NUMERIC_CHECK);
+				break;
+			default:
+				break;
+		}
+		return $value;
 	}
 }
 ?>

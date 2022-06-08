@@ -9,13 +9,13 @@
  ************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
-require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 require_once 'modules/cbMap/cbMap.php';
 require_once 'include/events/include.inc';
 
 
 class CBMassiveUpdateRelatedTask extends VTTask {
 	public $executeImmediately = true;
+	public $queable = true;
 
 	public function getFieldNames() {
 		return array('field_value_mapping','bmapid', 'bmapid_display', 'launchrelwf');
@@ -28,8 +28,8 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 		$isqueue=$entity->isqueue;
-		$taskQueue = new VTTaskQueue($adb);
 		$moduleName = $entity->getModuleName();
+		$holdCM = $currentModule;
 		if (empty($currentModule) || $currentModule!=$moduleName) {
 			$currentModule = $moduleName;
 		}
@@ -55,7 +55,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
-		$logbg->debug("field mapping: ".print_r($fieldValueMapping, true));
+		$logbg->debug('field mapping', $fieldValueMapping);
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			include_once 'data/CRMEntity.php';
 			$focus = CRMEntity::getInstance($moduleName);
@@ -76,7 +76,6 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
-				$fieldType = '';
 				$fldmod = '';
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue1 = trim($fieldInfo['value']);
@@ -122,10 +121,12 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				);
 				$relationInfo = $adb->fetch_array($relationResult);
 				$params = array($recordId, $rectabid, $relatedModuleId);
-				$logbg->debug('rel func: '.$relationInfo['name'].', params: '.print_r($params, true));
-				$holdCM = $currentModule;
+				$logbg->debug(['rel func' => $relationInfo['name'], 'params' => $params]);
+				if (empty($holdCM)) {
+					$holdCM = $currentModule;
+				}
 				$currentModule = $moduleName;
-				$relationData = call_user_func_array(array($focus, $relationInfo['name']), $params);
+				$relationData = call_user_func_array(array($focus, $relationInfo['name']), array_values($params));
 				$GetRelatedList_ReturnOnlyQuery = $holdValue;
 				$currentModule = $holdCM;
 				if (isset($relationData['query'])) {
@@ -145,7 +146,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 								$focusrel[$fldmod]->column_fields[$key]=$value;
 							}
 							$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
-							$logbg->debug("Saving: $relmodule, info: ".print_r($focusrel[$fldmod]->column_fields, true));
+							$logbg->debug("Saving: $relmodule", $focusrel[$fldmod]->column_fields);
 							if ($this->launchrelwf) {
 								$focusrel[$fldmod]->save($relmodule);
 							} else {
@@ -162,6 +163,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 					}
 				}
 			}
+			$util->revertUser();
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 		}
 		$util->revertUser();

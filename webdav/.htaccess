@@ -1,0 +1,37 @@
+RewriteEngine On
+
+# BASE
+# You have to set the RewriteBase to the PATH of the webdav folder
+#RewriteBase /coreBOSTest/webdav/
+RewriteBase /
+
+# Store the current location in an environment variable CWD
+RewriteCond $0#%{REQUEST_URI} ([^#]*)#(.*)\1$
+RewriteRule ^.*$ - [E=CWD:%2]
+
+# Just by prefixing the environment variable, we can safely rewrite anything now
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !activate.php$
+RewriteRule ^(.*)$ %{ENV:CWD}server.php [L]
+
+# Don't change this lines!
+#RewriteCond %{REQUEST_URI} !activate.php$
+#RewriteRule ^(.*)$ server.php [L]
+
+# Output buffering needs to be off, to prevent high memory usage
+php_flag output_buffering off
+
+# This is also to prevent high memory usage
+php_flag always_populate_raw_post_data off
+
+# This is almost a given, but magic quotes is *still* on on some
+# linux distributions
+php_flag magic_quotes_gpc off
+
+# SabreDAV is not compatible with mbstring function overloading
+php_flag mbstring.func_overload off
+
+<Limit GET PUT POST DELETE PROPFIND PROPPATCH MKCOL COPY MOVE LOCK UNLOCK>
+order allow,deny
+allow from all
+</Limit>

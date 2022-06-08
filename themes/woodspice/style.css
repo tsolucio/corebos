@@ -771,7 +771,7 @@ a.submenu:Hover{
     border-right: 0px;
     border-bottom: 1px solid #CCC;
     background-color: #FFFFCC;/*CBDFD6*/
-    font-family: Arial;
+    font-family: Arial sans-serif;
     font-size: 10px;
     color: #BBB;
     text-align: left;
@@ -1478,7 +1478,7 @@ a.calMnu:Hover{
 
 /* Level 2 Menu Selected*/
 
-level2Sel{
+.level2Sel {
     color:#000000;
     font-weight:bold;
     text-decoration:underline;
@@ -1566,12 +1566,6 @@ footer {
 	text-decoration: none;
 	background-color: #fff;
 	border: 1px solid #ddd;
-}
-
-datatable stats {
-	float: right;
-	line-height: 2rem;
-	color: #999;
 }
 
 .disabled {
@@ -1871,9 +1865,9 @@ ul {
 
 .listTableRow{
     border-bottom:1px solid #eaeaea;
-    border-right	:1px solid #eaeaea;
-    border-bottom:1px solid #eaeaea;
-    border-bottom:1px solid #eaeaea;
+    border-right:1px solid #eaeaea;
+    border-left:1px solid #eaeaea;
+    border-top:1px solid #eaeaea;
 }
 
 .listRow{
@@ -2051,7 +2045,7 @@ textarea {
     border-left:1px solid #eaeaea;
     border-top:1px solid #eaeaea;
     border-right:1px solid #939271;
-    border-left:1px solid #939271
+    border-bottom:1px solid #939271
 }
 
 .mailClientCSSButton {
@@ -2848,4 +2842,8 @@ a.drop_down_usersettings_name{
 	text-align: center;
 	width: 100%;
 	display: block;
+}
+/* Currency modal LDS width override */
+.custom-width-350 {
+	width: 350px !important;
 }

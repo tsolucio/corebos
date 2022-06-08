@@ -26,7 +26,6 @@ class addCalendarCloseAction extends cbupdaterWorker {
 			global $adb;
 			$modname = 'cbCalendar';
 			if ($this->isModuleInstalled($modname)) {
-				$module = Vtiger_Module::getInstance($modname);
 				$ev = new VTEventsManager($adb);
 				$ev->registerHandler('corebos.filter.listview.render', 'modules/cbCalendar/addCloseOnListView.php', 'cbCalendar_addCloseOnListView');
 			}
@@ -47,7 +46,6 @@ class addCalendarCloseAction extends cbupdaterWorker {
 			global $adb;
 			$modname = 'cbCalendar';
 			if ($this->isModuleInstalled($modname)) {
-				$module = Vtiger_Module::getInstance($modname);
 				$ev = new VTEventsManager($adb);
 				$ev->unregisterHandler('cbCalendar_addCloseOnListView');
 			}

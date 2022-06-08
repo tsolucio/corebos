@@ -7,20 +7,24 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+require_once 'include/Webservices/Utils.php';
 
 class OperationManager {
 	private $format;
-	private $formatsData=array(
-		'json'=>array(
-			'includePath'=>'include/Webservices/OperationManagerEnDecode.php',
-			'class'=>'OperationManagerEnDecode',
-			'encodeMethod'=>'encode',
-			'decodeMethod'=>'decode',
-			'postCreate'=>''
-		)
+	private const FORMATDEFAULTS = array(
+		'includePath'=>'include/Webservices/OperationManagerEnDecode.php',
+		'class'=>'OperationManagerEnDecode',
+		'encodeMethod'=>'encode',
+		'decodeMethod'=>'decode',
+		'postCreate'=>''
 	);
-	private $formatObjects ;
-	private $inParamProcess ;
+	private $formatsData=array(
+		'json'=> self::FORMATDEFAULTS,
+		'stream'=> self::FORMATDEFAULTS,
+		'streamraw'=> self::FORMATDEFAULTS,
+	);
+	private $formatObjects;
+	private $inParamProcess;
 	private $sessionManager;
 	private $pearDB;
 	private $operationName;
@@ -90,18 +94,8 @@ class OperationManager {
 	}
 
 	public function getOperationInput() {
-		$type = strtolower($this->type);
-		switch ($type) {
-			case 'get':
-				$input = &$_GET;
-				return $input;
-			case 'post':
-				$input = &$_POST;
-				return $input;
-			default:
-				$input = &$_REQUEST;
-				return $input;
-		}
+		$input = &$_REQUEST;
+		return $input;
 	}
 
 	public function sanitizeOperation($input) {
@@ -119,7 +113,7 @@ class OperationManager {
 	}
 
 	public function handleType($type, $value) {
-		$value = stripslashes($value);
+		$value = vtws_stripSlashesRecursively($value);
 		$type = strtolower($type);
 		if (!empty($this->inParamProcess[$type])) {
 			$result = call_user_func($this->inParamProcess[$type], $value);
@@ -143,9 +137,9 @@ class OperationManager {
 			}
 			if (!$this->preLogin) {
 				$params['user'] = $user;
-				return call_user_func_array($this->handlerMethod, $params);
+				return call_user_func_array($this->handlerMethod, array_values($params));
 			} else {
-				$userDetails = call_user_func_array($this->handlerMethod, $params);
+				$userDetails = call_user_func_array($this->handlerMethod, array_values($params));
 				if (is_array($userDetails)) {
 					return $userDetails;
 				} else {
@@ -155,8 +149,7 @@ class OperationManager {
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
 					$userId = vtws_getId($webserviceObject->getEntityId(), $userDetails->id);
 					$vtigerVersion = vtws_getVtigerVersion();
-					$resp = array('sessionName'=>$this->sessionManager->getSessionId(),'userId'=>$userId,'version'=>$API_VERSION,'vtigerVersion'=>$vtigerVersion);
-					return $resp;
+					return array('sessionName'=>$this->sessionManager->getSessionId(), 'userId'=>$userId, 'version'=>$API_VERSION, 'vtigerVersion'=>$vtigerVersion);
 				}
 			}
 		} catch (WebServiceException $e) {

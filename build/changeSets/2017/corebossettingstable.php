@@ -24,7 +24,7 @@ class corebossettingstable extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('CREATE TABLE `cb_settings` (
+			$this->ExecuteQuery('CREATE TABLE IF NOT EXISTS `cb_settings` (
 				`setting_key` varchar(200) NOT NULL,
 				`setting_value` varchar(1000) NOT NULL,
 				PRIMARY KEY (`setting_key`)

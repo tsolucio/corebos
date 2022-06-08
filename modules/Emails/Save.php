@@ -10,6 +10,10 @@
 
 //check for mail server configuration through ajax
 if (isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true') {
+	if (GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', '')!='') {
+		echo 'SUCCESS';
+		die();
+	}
 	list($systemEmailClassName, $systemEmailClassPath)=cbEventHandler::do_filter('corebos.filter.systemEmailClass.getname', array('Emails', 'modules/Emails/Emails.php'));
 	require_once $systemEmailClassPath;
 	if (call_user_func(array($systemEmailClassName, 'emailServerCheck'))) {
@@ -28,7 +32,7 @@ if (isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true') {
 require_once 'modules/Emails/Emails.php';
 require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
-
+require_once 'data/CRMEntity.php';
 $focus = new Emails();
 
 global $current_user,$mod_strings,$app_strings;
@@ -46,8 +50,7 @@ $_REQUEST['saved_toid'] = $all_to_ids;
 //we always save the email with 'save' status and when it is sent it is marked as SENT
 $_REQUEST['email_flag'] = 'SAVED';
 setObjectValuesFromRequest($focus);
-//Check if the file is exist or not.
-//$file_name = '';
+//Check if the file exists or not
 if (isset($_REQUEST['filename_hidden'])) {
 	$file_name = $_REQUEST['filename_hidden'];
 } else {
@@ -56,7 +59,7 @@ if (isset($_REQUEST['filename_hidden'])) {
 $errorCode = isset($_FILES['filename']) ? $_FILES['filename']['error'] : 0;
 $errormessage = '';
 if ($file_name != '' && $_FILES['filename']['size'] == 0) {
-	if ($errorCode == 4 || $errorCode == 0) {
+	if ($errorCode == 4 || $errorCode == 0 || $errorCode == 3) {
 		if ($_FILES['filename']['size'] == 0) {
 			$errormessage = '<b><span style="color:red;">'.$mod_strings['LBL_PLEASE_ATTACH'].'</span></b><br>';
 		}
@@ -65,16 +68,13 @@ if ($file_name != '' && $_FILES['filename']['size'] == 0) {
 		$errormessage = '<b><span style="color:red;">'.$mod_strings['LBL_EXCEED_MAX'].$upload_maxsize.$mod_strings['LBL_BYTES'].' </span></b><br>';
 	} elseif ($errorCode == 6) {
 		$errormessage = '<b>'.$mod_strings['LBL_KINDLY_UPLOAD'].'</b> <br>';
-	} elseif ($errorCode == 3) {
-		if ($_FILES['filename']['size'] == 0) {
-			$errormessage = '<b><span style="color:red;">'.$mod_strings['LBL_PLEASE_ATTACH'].'</span></b><br>';
-		}
 	}
 	if ($errormessage != '') {
 		$ret_error = 1;
 		$ret_parentid = vtlib_purify($_REQUEST['parent_id']);
 		$ret_toadd = vtlib_purify($_REQUEST['parent_name']);
 		$ret_subject = vtlib_purify($_REQUEST['subject']);
+		$ret_replyto = vtlib_purify($_REQUEST['replyto']);
 		$ret_ccaddress = vtlib_purify($_REQUEST['ccmail']);
 		$ret_bccaddress = vtlib_purify($_REQUEST['bccmail']);
 		$ret_description = vtlib_purify($_REQUEST['description']);
@@ -99,10 +99,11 @@ if ((isset($_REQUEST['deletebox']) && $_REQUEST['deletebox'] != null) && $_REQUE
 function checkIfContactExists($mailid) {
 	global $log;
 	$log->debug('> checkIfContactExists '.$mailid);
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 	global $adb;
 	$sql = 'select contactid
 		from vtiger_contactdetails
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
+		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 		where vtiger_crmentity.deleted=0 and email= ?';
 	$result = $adb->pquery($sql, array($mailid));
 	$numRows = $adb->num_rows($result);
@@ -123,11 +124,9 @@ $focus->column_fields['activitytype']='Emails';
 $new_date = new DateTimeField(null);
 $focus->column_fields['date_start']= $new_date->getDisplayDate($current_user);//This will be converted to db date format in save
 $focus->column_fields['time_start']= $new_date->getDisplayTime($current_user);
-if (!empty($_REQUEST['record']) && $_REQUEST['send_mail']==false && !empty($_REQUEST['mode'])) {
+if (!empty($_REQUEST['record']) && !$_REQUEST['send_mail'] && !empty($_REQUEST['mode'])) {
 	$focus->mode = 'edit';
-} elseif (empty($_REQUEST['record'])
-	|| (!empty($_REQUEST['record']) && empty($_REQUEST['mode']) && ($_REQUEST['send_mail']==false || $_REQUEST['send_mail']==true))
-) {
+} elseif (empty($_REQUEST['record']) || (empty($_REQUEST['mode']) && (!$_REQUEST['send_mail'] || $_REQUEST['send_mail']))) {
 	$focus->mode = '';
 	$focus->id = '';
 } else {
@@ -135,18 +134,19 @@ if (!empty($_REQUEST['record']) && $_REQUEST['send_mail']==false && !empty($_REQ
 }
 $focus->save('Emails');
 $return_id = $focus->id;
-
+$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Emails', true);
 require_once 'modules/Emails/mail.php';
 if ($current_user->column_fields['send_email_to_sender']=='1' && isset($_REQUEST['send_mail']) && $_REQUEST['send_mail'] && $_REQUEST['parent_id'] != '') {
 	$user_mail_status = send_mail('Emails', $current_user->column_fields['email1'], $current_user->user_name, '', $_REQUEST['subject'], $_REQUEST['description'], $_REQUEST['ccmail'], $_REQUEST['bccmail'], 'all', $focus->id);
 	if ($user_mail_status != 1) {
-		$adb->pquery('delete from vtiger_crmentity where crmid=?', array($focus->id));
+		$adb->pquery('delete from '.$crmEntityTable1.' where crmid=?', array($focus->id));
 		$adb->pquery('delete from vtiger_emaildetails where emailid=?', array($focus->id));
 		$error_msg = '<font color=red><strong>'.$mod_strings['LBL_CHECK_USER_MAILID'].'</strong></font>';
 		$ret_error = 1;
 		$ret_parentid = vtlib_purify($_REQUEST['parent_id']);
 		$ret_toadd = vtlib_purify($_REQUEST['parent_name']);
 		$ret_subject = vtlib_purify($_REQUEST['subject']);
+		$ret_replyto = vtlib_purify($_REQUEST['replyto']);
 		$ret_ccaddress = vtlib_purify($_REQUEST['ccmail']);
 		$ret_bccaddress = vtlib_purify($_REQUEST['bccmail']);
 		$ret_description = vtlib_purify($_REQUEST['description']);

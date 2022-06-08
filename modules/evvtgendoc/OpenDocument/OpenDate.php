@@ -68,32 +68,6 @@ class OpenDocument_TextDate extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document, $content, $dval = '', $fval = '', $style_name = '') {
 		parent::__construct($node, $document);
 		return true;
-		if (empty($style_name)) {
-			$style_name = $this->node->getAttribute('style:data-style-name');
-		}
-		if (empty($style_name)) {
-			$style_name = $this->generateStyleName();
-		}
-		$this->node->setAttribute('style:data-style-name', $style_name);
-
-				$datevalue = $node->getAttributeNS(OpenDocument::NS_TEXT, 'date-value');
-		if (empty($datevalue)) {
-			$datevalue=$dval;
-		}
-		if (!empty($datevalue)) {
-			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'date-value', $datevalue);
-			$this->datevalue = $datevalue;
-		}
-		$fixedvalue = $node->getAttributeNS(OpenDocument::NS_TEXT, 'fixed');
-		if (empty($fixedvalue)) {
-			$fixedvalue=$fval;
-		}
-		if (!empty($fixedvalue)) {
-			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'fixed', $fixedvalue);
-			$this->fixed = $fixedvalue;
-		}
-
-		$this->allowedElements = array();
 	}
 
 	/**

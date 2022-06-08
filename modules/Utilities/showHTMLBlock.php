@@ -27,8 +27,8 @@ class showHTMLBlock {
 }
 
 class showHTMLBlock_DetailViewBlock extends DeveloperBlock {
-	// Implement widget functionality
-	private $widgetName = 'showHTMLBlock';
+
+	protected $widgetName = 'showHTMLBlock';
 
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {

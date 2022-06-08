@@ -42,7 +42,7 @@ class Core_Lib_Command
         if (preg_match($this->regex, $input, $matches) == 1) {
             array_unshift($args, $matches);
             $this->result_input = $input;
-            $this->result = call_user_func_array($this->callable, $args);
+            $this->result = call_user_func_array($this->callable, array_values($args));
             return true;
         }
 

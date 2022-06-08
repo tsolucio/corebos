@@ -38,22 +38,22 @@ class VTScheduledReport extends Reports {
 		if (!empty($this->id)) {
 			$cachedInfo = VTCacheUtils::lookupReport_ScheduledInfo($this->user->id, $this->id);
 
-			if ($cachedInfo == false) {
+			if (!$cachedInfo) {
 				$result = $adb->pquery('SELECT * FROM vtiger_scheduled_reports WHERE reportid=?', array($this->id));
 
 				if ($adb->num_rows($result) > 0) {
 					$reportScheduleInfo = $adb->raw_query_result_rowdata($result, 0);
 
-					$scheduledInterval = (!empty($reportScheduleInfo['schedule']))?json_decode($reportScheduleInfo['schedule'], true):array();
-					$scheduledRecipients = (!empty($reportScheduleInfo['recipients']))?json_decode($reportScheduleInfo['recipients'], true):array();
+					$scheduledIntval = (!empty($reportScheduleInfo['schedule']))?json_decode($reportScheduleInfo['schedule'], true):array();
+					$scheduledRepnts = (!empty($reportScheduleInfo['recipients']))?json_decode($reportScheduleInfo['recipients'], true):array();
 
 					VTCacheUtils::updateReport_ScheduledInfo(
 						$this->user->id,
 						$this->id,
 						true,
 						$reportScheduleInfo['format'],
-						$scheduledInterval,
-						$scheduledRecipients,
+						$scheduledIntval,
+						$scheduledRepnts,
 						$reportScheduleInfo['next_trigger_time']
 					);
 
@@ -121,7 +121,7 @@ class VTScheduledReport extends Reports {
 			}
 		}
 		$recipientsEmails = array();
-		if (!empty($recipientsList) && count($recipientsList) > 0) {
+		if (!empty($recipientsList)) {
 			foreach ($recipientsList as $userId) {
 				$userName = getUserFullName($userId);
 				$userEmail = getUserEmail($userId);
@@ -158,13 +158,11 @@ class VTScheduledReport extends Reports {
 		$contents .='<b>'.getTranslatedString('LBL_REPORT_NAME', $currentModule) .' :</b> '. $printfReportName .'<br/>';
 		$contents .='<b>'.getTranslatedString('LBL_DESCRIPTION', $currentModule).' :</b><br/>'.getTranslatedString($this->reportdescription, $currentModule).'<br/><br/>';
 
-		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%\s]/', '', $this->reportname));
+		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\.\%]/', '', $this->reportname));
 		if (strpos($baseFileName, '%s')===false) {
 			$baseFileName .= '_%s'; // add date at end if not positioned explicitly
 		} else {
-			// make sure there is only one
-			$spos = strpos($baseFileName, '%s');
-			$baseFileName = substr($baseFileName, 0, $spos+2).str_replace('%s', '', substr($baseFileName, $spos+2));
+			$baseFileName = suppressAllButFirst('%s', $baseFileName);
 		}
 		$baseFileName = sprintf($baseFileName, $now);
 
@@ -332,6 +330,7 @@ class VTScheduledReport extends Reports {
 
 	public static function getAvailableUsersHTML() {
 		$userDetails = getAllUserName();
+		natcasesort($userDetails);
 		$usersHTML = '<select id="availableRecipients" name="availableRecipients" multiple size="10" class="small crmFormList">';
 		foreach ($userDetails as $userId => $userName) {
 			$usersHTML .= VTScheduledReport::generateRecipientOption('users', $userId, $userName);
@@ -342,6 +341,7 @@ class VTScheduledReport extends Reports {
 
 	public static function getAvailableGroupsHTML() {
 		$grpDetails = getAllGroupName();
+		natcasesort($grpDetails);
 		$groupsHTML = '<select id="availableRecipients" name="availableRecipients" multiple size="10" class="small crmFormList">';
 		foreach ($grpDetails as $groupId => $groupName) {
 			$groupsHTML .= VTScheduledReport::generateRecipientOption('groups', $groupId, $groupName);
@@ -370,6 +370,12 @@ class VTScheduledReport extends Reports {
 		return $rolesAndSubHTML;
 	}
 
+	public static function isReportScheduled($reportid) {
+		global $adb;
+		$rs = $adb->pquery('select 1 from vtiger_scheduled_reports where reportid=?', array($reportid));
+		return ($rs && $adb->num_rows($rs)>0);
+	}
+
 	public static function getScheduledReports($adb, $user) {
 		$result = $adb->pquery('SELECT * FROM vtiger_scheduled_reports WHERE next_trigger_time <= ?', array(date('Y-m-d H:i:s')));
 		$scheduledReports = array();
@@ -377,14 +383,14 @@ class VTScheduledReport extends Reports {
 		for ($i=0; $i<$noOfScheduledReports; ++$i) {
 			$reportScheduleInfo = $adb->raw_query_result_rowdata($result, $i);
 
-			$scheduledInterval = (!empty($reportScheduleInfo['schedule'])) ? json_decode($reportScheduleInfo['schedule'], true) : array();
-			$scheduledRecipients = (!empty($reportScheduleInfo['recipients'])) ? json_decode($reportScheduleInfo['recipients'], true) : array();
+			$scheduledIntval = (!empty($reportScheduleInfo['schedule'])) ? json_decode($reportScheduleInfo['schedule'], true) : array();
+			$scheduledRepnts = (!empty($reportScheduleInfo['recipients'])) ? json_decode($reportScheduleInfo['recipients'], true) : array();
 
 			$vtScheduledReport = new VTScheduledReport($adb, $user, $reportScheduleInfo['reportid']);
 			$vtScheduledReport->isScheduled			= true;
 			$vtScheduledReport->scheduledFormat		= $reportScheduleInfo['format'];
-			$vtScheduledReport->scheduledInterval	= $scheduledInterval;
-			$vtScheduledReport->scheduledRecipients = $scheduledRecipients;
+			$vtScheduledReport->scheduledInterval	= $scheduledIntval;
+			$vtScheduledReport->scheduledRecipients = $scheduledRepnts;
 			$vtScheduledReport->scheduledTime		= $reportScheduleInfo['next_trigger_time'];
 
 			$scheduledReports[] = $vtScheduledReport;

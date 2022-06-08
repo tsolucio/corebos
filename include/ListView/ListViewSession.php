@@ -101,7 +101,7 @@ class ListViewSession {
 			$instance = CRMEntity::getInstance($currentModule);
 			$instance->getNonAdminAccessControlQuery($currentModule, $current_user);
 			if ($currentModule=='Documents' && !empty($folderId)) {
-				$list_query = preg_replace("/[\n\r\s]+/", " ", $list_query);
+				$list_query = preg_replace("/[\n\r\s]+/", ' ', $list_query);
 				$hasOrderBy = stripos($list_query, 'order by');
 				if ($hasOrderBy>0) {
 					$list_query = substr($list_query, 0, $hasOrderBy-1)." AND vtiger_notes.folderid=$folderId ".substr($list_query, $hasOrderBy);
@@ -173,9 +173,7 @@ class ListViewSession {
 					$start = ceil($noofrows/$list_max_entries_per_page);
 				}
 			}
-			if (!is_numeric($start)) {
-				$start = 1;
-			} elseif ($start < 1) {
+			if (!is_numeric($start) || $start < 1) {
 				$start = 1;
 			}
 			$start = ceil($start);
@@ -189,10 +187,8 @@ class ListViewSession {
 	}
 
 	public static function setSessionQuery($currentModule, $query, $viewid) {
-		if (isset($_SESSION[$currentModule.'_listquery'])) {
-			if ($_SESSION[$currentModule.'_listquery'] != $query) {
-				coreBOS_Session::delete($currentModule.'_DetailView_Navigation'.$viewid);
-			}
+		if (isset($_SESSION[$currentModule.'_listquery']) && $_SESSION[$currentModule.'_listquery'] != $query) {
+			coreBOS_Session::delete($currentModule.'_DetailView_Navigation'.$viewid);
 		}
 		coreBOS_Session::set($currentModule.'_listquery', $query);
 	}

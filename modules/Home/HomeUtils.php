@@ -17,6 +17,7 @@
 function homepage_getUpcomingActivities($maxval, $calCnt) {
 	require_once 'data/Tracker.php';
 	require_once 'include/utils/utils.php';
+	require_once 'data/CRMEntity.php';
 
 	global $adb, $current_user;
 
@@ -30,10 +31,10 @@ function homepage_getUpcomingActivities($maxval, $calCnt) {
 
 	$upcoming_condition = " AND (CAST((CONCAT(date_start,' ',time_start)) AS DATETIME) BETWEEN '$startDateTime' AND '$endDateTime'
 							OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) BETWEEN '$startDateTime' AND '$endDateTime')";
-
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
 	$list_query = " select vtiger_crmentity.crmid,vtiger_crmentity.smownerid,".
 		"vtiger_crmentity.setype, vtiger_recurringevents.recurringdate, vtiger_activity.* ".
-		"from vtiger_activity inner join vtiger_crmentity on vtiger_crmentity.crmid=".
+		"from vtiger_activity inner join ".$crmEntityTable." on vtiger_crmentity.crmid=".
 		"vtiger_activity.activityid LEFT JOIN vtiger_groups ON vtiger_groups.groupid = ".
 		"vtiger_crmentity.smownerid left outer join vtiger_recurringevents on ".
 		"vtiger_recurringevents.activityid=vtiger_activity.activityid";
@@ -89,7 +90,7 @@ function homepage_getUpcomingActivities($maxval, $calCnt) {
  */
 function getActivityEntries($open_activity_list) {
 	global $current_language, $app_strings;
-	$current_module_strings = return_module_language($current_language, 'Calendar');
+	$current_module_strings = return_module_language($current_language, 'cbCalendar');
 	if (!empty($open_activity_list)) {
 		$header=array();
 		$header[] =$current_module_strings['LBL_LIST_SUBJECT'];
@@ -137,6 +138,7 @@ function homepage_getPendingActivities($maxval, $calCnt) {
 	require_once 'data/Tracker.php';
 	require_once 'include/utils/utils.php';
 	require_once 'include/utils/CommonUtils.php';
+	require_once 'data/CRMEntity.php';
 
 	global $adb, $current_user;
 
@@ -151,9 +153,10 @@ function homepage_getPendingActivities($maxval, $calCnt) {
 	$pending_condition = " AND (CAST((CONCAT(date_start,' ',time_start)) AS DATETIME) BETWEEN '$startDateTime' AND '$endDateTime'
 							OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) BETWEEN '$startDateTime' AND '$endDateTime')";
 
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
 	$list_query = "select vtiger_crmentity.crmid,vtiger_crmentity.smownerid,vtiger_crmentity.".
 	"setype, vtiger_recurringevents.recurringdate, vtiger_activity.* from vtiger_activity ".
-	"inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid LEFT ".
+	"inner join ".$crmEntityTable." on vtiger_crmentity.crmid=vtiger_activity.activityid LEFT ".
 	"JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid left outer join ".
 	"vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid";
 	$list_query .= getNonAdminAccessControlQuery('cbCalendar', $current_user);

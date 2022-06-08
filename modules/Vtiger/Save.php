@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+require_once 'modules/Vtiger/ExecuteFunctionsfromphp.php';
 global $current_user, $currentModule, $singlepane_view;
 
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
@@ -82,7 +83,7 @@ if (empty($_REQUEST['assigned_user_id']) && empty($_REQUEST['assigned_group_id']
 	if ($focus->mode != 'edit') {
 		$focus->column_fields['assigned_user_id'] = $current_user->id;
 	} else {
-		$ownerrs = $adb->pquery('select smownerid from vtiger_crmentity where crmid=?', array($focus->id));
+		$ownerrs = $adb->pquery('select smownerid from '.$focus->crmentityTable.' where crmid=?', array($focus->id));
 		$focus->column_fields['assigned_user_id'] = $adb->query_result($ownerrs, 0, 0);
 	}
 } else {
@@ -93,6 +94,15 @@ if (empty($_REQUEST['assigned_user_id']) && empty($_REQUEST['assigned_group_id']
 	}
 }
 list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
+if (!$saveerror) { // if there is no error we still check the defined validations again
+	include_once 'modules/cbMap/processmap/Validations.php';
+	$validation = executefunctionsvalidate('ValidationLoad', $currentModule, json_encode(vtlib_purify(Validations::flattenMultipicklistArrays($_REQUEST))));
+	if ($validation != '%%%OK%%%') {
+		$saveerror = true;
+		$errormessage = $validation;
+		$error_action = '';
+	}
+}
 if ($saveerror) { // there is an error so we go back to EditView.
 	$return_module=$return_id=$return_action='';
 	if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
@@ -101,16 +111,16 @@ if ($saveerror) { // there is an error so we go back to EditView.
 	$field_values_passed = '';
 	foreach ($focus->column_fields as $fieldname => $val) {
 		if (isset($_REQUEST[$fieldname])) {
-			$field_values_passed.="&";
+			$field_values_passed.='&';
 			if ($fieldname == 'assigned_user_id') { // assigned_user_id already set correctly above
 				$value = vtlib_purify($focus->column_fields['assigned_user_id']);
 			} else {
 				$value = vtlib_purify($_REQUEST[$fieldname]);
 			}
 			if (is_array($value)) {
-				$value = implode(' |##| ', $value); // for multipicklists
+				$value = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value); // for multipicklists
 			}
-			$field_values_passed.=$fieldname."=".urlencode($value);
+			$field_values_passed.=$fieldname.'='.urlencode($value);
 		}
 	}
 	$encode_field_values=base64_encode($field_values_passed);
@@ -137,7 +147,13 @@ if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 
 if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
 	if (isset($_REQUEST['Module_Popup_Edit']) && $_REQUEST['Module_Popup_Edit']==1) {
-		echo '<script>window.close();</script>';
+		if (empty($_REQUEST['Module_Popup_Save'])) {
+			echo '<script>window.close();</script>';
+		} else {
+			$saveHook = vtlib_purify($_REQUEST['Module_Popup_Save']);
+			$saveParm = "'$currentModule', $return_id, '$mode', '".(empty($_REQUEST['Module_Popup_Save_Param']) ? '' : vtlib_purify($_REQUEST['Module_Popup_Save_Param']))."'";
+			echo "<script>if (typeof window.opener.$saveHook == 'function') window.opener.$saveHook($saveParm);window.close();</script>";
+		}
 	} else {
 		if (!empty($_REQUEST['saverepeat'])) {
 			$sesreq = coreBOS_Session::get('saverepeatRequest', array());

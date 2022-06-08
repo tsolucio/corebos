@@ -11,5 +11,5 @@ global $php_max_execution_time;
 set_time_limit($php_max_execution_time);
 RecalculateSharingRules();
 
-header("Location: index.php?action=OrgSharingDetailView&parenttab=Settings&module=Settings");
+header("Location: index.php?action=OrgSharingDetailView&module=Settings");
 ?>

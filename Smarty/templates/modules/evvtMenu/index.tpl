@@ -66,7 +66,7 @@
 				<button class="slds-button slds-button_brand" style="float:right;line-height:unset;" onclick="saveTree();">{'LBL_SAVE_LABEL'|getTranslatedString:$MODULE}</button>
 			</div>
 			<div class="evvtmenu_content">
-				<form action="index.php?module={$MODULE}&action=Save&parenttab={$CATEGORY}" method="POST" id="menuconfigform">
+				<form action="index.php?module={$MODULE}&action=Save" method="POST" id="menuconfigform">
 					<input type="hidden" name="evvtmenutree" id="evvtmenutree" value="">
 					<input type="hidden" name="evvtmenudo" value="doSave">
 				</form>
@@ -75,7 +75,7 @@
 		</div>
 		<div class="evvtmenu-form">
 			<div class="evvtmenu_header">{'evvtMenuItemInfo'|getTranslatedString:$MODULE}</div>
-			<form action="index.php?module={$MODULE}&action=Save&parenttab={$CATEGORY}" method="POST" id="menuitemform" style="margin-top:25px">
+			<form action="index.php?module={$MODULE}&action=Save" method="POST" id="menuitemform" style="margin-top:25px">
 				<input type="hidden" name="evvtmenuid" id="evvtmenuid" value="">
 				<input type="hidden" name="evvtmenudo" id="evvtmenudo" value="">
 				<input type="hidden" name="treeIds" id="treeIds" value="">
@@ -186,7 +186,7 @@
 
 		<div class="evvtmenu-form">
 			<div class="evvtmenu_header">{'LBL_ACTIONS'|getTranslatedString:$MODULE}</div>
-				<form action="index.php?module={$MODULE}&action=Save&parenttab={$CATEGORY}" method="POST" ENCTYPE="multipart/form-data" id="savedmenuform" style="margin-top:25px">
+				<form action="index.php?module={$MODULE}&action=Save" method="POST" ENCTYPE="multipart/form-data" id="savedmenuform" style="margin-top:25px">
 					<input type="hidden" name="savemenuid" id="smkey">
 					<input type="hidden" name="savedmenudo" id="savedmenudo" value="">
 					<div class="slds-form_horizontal" style="float:left;margin-left:40px;;width:90%;text-align:left;">

@@ -15,29 +15,21 @@
  *************************************************************************************************/
 
 function __getCurrentUserID() {
-	$user = VTWorkflowUtils::previousUser(2);
-	if ($user) {
-		return vtws_getEntityId('Users').'x'.$user->id;
-	} else {
-		global $current_user;
-		return vtws_getEntityId('Users').'x'.$current_user->id;
-	}
+	global $current_user;
+	return vtws_getEntityId('Users').'x'.$current_user->id;
 }
 
 function __getCurrentUserName($arr) {
 	global $current_user;
-	$user = VTWorkflowUtils::previousUser();
-	$userid = ($user ? $user->id : $current_user->id);
 	if (isset($arr[0]) && strtolower($arr[0])=='full') {
-		return trim(getUserFullName($userid));
+		return trim(getUserFullName($current_user->id));
 	} else {
-		return trim(getUserName($userid));
+		return trim(getUserName($current_user->id));
 	}
 }
 
 function __getCurrentUserField($arr) {
 	global $current_user;
-	VTWorkflowUtils::previousUser();
 	switch (strtolower($arr[0])) {
 		case 'parentrole':
 			$rinfo = getRoleInformation($current_user->column_fields['roleid']);

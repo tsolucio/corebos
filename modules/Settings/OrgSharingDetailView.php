@@ -102,9 +102,8 @@ uksort($custom_access, function ($a, $b) {
 $smarty->assign('MODSHARING', $custom_access);
 
 /** returns the list of sharing rules for the specified module
-  * @param $module -- Module Name:: Type varchar
-  * @returns $access_permission -- sharing rules list info array:: Type array
-  *
+  * @param string Module Name
+  * @return array sharing rules list info
  */
 function getSharingRuleList($module) {
 	global $adb,$mod_strings;
@@ -116,8 +115,7 @@ function getSharingRuleList($module) {
 	$access_permission = array();
 	foreach ($dataShareTableArray as $table_name => $colName) {
 		$colNameArr=explode('::', $colName);
-		$query = 'select '.$table_name.'
-			.* from '.$table_name
+		$query = 'select '.$table_name.'.* from '.$table_name
 			.' inner join vtiger_datashare_module_rel on '.$table_name.'.shareid=vtiger_datashare_module_rel.shareid where vtiger_datashare_module_rel.tabid=?';
 		$result=$adb->pquery($query, array($tabid));
 		$num_rows=$adb->num_rows($result);

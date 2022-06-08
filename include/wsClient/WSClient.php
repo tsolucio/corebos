@@ -467,9 +467,9 @@ class Vtiger_WSClient {
 	/**
 	 * Invoke custom operation
 	 *
-	 * @param String $method Name of the webservice to invoke
-	 * @param Object $type null or parameter values to method
-	 * @param String $params optional (POST/GET)
+	 * @param string $method Name of the webservice to invoke
+	 * @param object $type null or parameter values to method
+	 * @param string $params optional (POST/GET)
 	 */
 	public function doInvoke($method, $params = null, $type = 'POST') {
 		// Perform re-login if required
@@ -524,8 +524,8 @@ class Vtiger_WSClient {
 
 	/**
 	 * Set relation between records.
-	 * param relate_this_id string ID of record we want to related other records with
-	 * param with_this_ids string/array either a string with one unique ID or an array of IDs to relate to the first parameter
+	 * @param string ID of record we want to related other records with
+	 * @param string/array either a string with one unique ID or an array of IDs to relate to the first parameter
 	 */
 	public function doSetRelated($relate_this_id, $with_these_ids) {
 		// Perform re-login if required.

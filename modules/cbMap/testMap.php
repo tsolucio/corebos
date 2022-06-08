@@ -89,7 +89,7 @@ switch ($focus->column_fields['maptype']) {
 		$currentModule = getSalesEntityType($testrecord);
 		$mapinfo = (array) $focus->ConditionQuery($testrecord);
 		$currentModule = 'cbMap';
-		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
+		$mapinfo['TEST RECORD'] = "<p class='slds-app-launcher__tile-body'>Testing with $testrecord</p>";
 		break;
 	case 'Condition Expression':
 		if (!empty($_REQUEST['testrecord'])) {
@@ -104,12 +104,32 @@ switch ($focus->column_fields['maptype']) {
 		$currentModule = getSalesEntityType($crmid);
 		$mapinfo = (array) $focus->ConditionExpression($testrecord);
 		$currentModule = 'cbMap';
-		$mapinfo['TEST RECORD'] = "<h3>Testing with $testrecord</h3>";
+		$mapinfo['TEST RECORD'] = "<p class='slds-app-launcher__tile-body'>Testing with $testrecord</p>";
 		break;
 	case 'Mapping':
-		$sofocus = CRMEntity::getInstance('SalesOrder');
-		$sofocus->retrieve_entity_info(10569, 'SalesOrder');
-		$mapinfo = $focus->Mapping($sofocus->column_fields, array('sentin'=>'notmodified'));
+		if (!empty($_REQUEST['testrecord'])) {
+			$testrecord = vtlib_purify($_REQUEST['testrecord']);
+			if (strpos($testrecord, 'x')>0) {
+				list($wsid, $testrecord) = explode('x', $testrecord);
+			}
+			$testModule = getSalesEntityType($testrecord);
+			$sofocus = CRMEntity::getInstance($testModule);
+			$sofocus->retrieve_entity_info($testrecord, $testModule);
+			$recfields = $sofocus->column_fields;
+		} elseif (isset($_REQUEST['testrecord'])) {
+			$recfields = array();
+		} else {
+			$sofocus = CRMEntity::getInstance('SalesOrder');
+			$sofocus->retrieve_entity_info(10569, 'SalesOrder');
+			$recfields = $sofocus->column_fields;
+		}
+		foreach ($_REQUEST as $key => $value) {
+			if ($key=='module' || $key=='testrecord' || $key=='record' || $key=='action') {
+				continue;
+			}
+			$recfields[$key] = $value;
+		}
+		$mapinfo = $focus->Mapping($recfields, array('sentin'=>'notmodified'));
 		break;
 	case 'Record Access Control':
 		$rac = $focus->RecordAccessControl();
@@ -132,6 +152,9 @@ switch ($focus->column_fields['maptype']) {
 	case 'ListColumns':
 		$rsm = $focus->ListColumns();
 		$mapinfo = $rsm->getCompleteMapping();
+		break;
+	case 'Kanban':
+		$mapinfo = $focus->Kanban();
 		break;
 	case 'DuplicateRelations':
 		$rsm = $focus->DuplicateRelations();
@@ -189,12 +212,28 @@ switch ($focus->column_fields['maptype']) {
 		$fsm = $focus->FieldSetMapping();
 		$mapinfo = $fsm->getFieldSet();
 		break;
+	case 'ApplicationMenu':
+		if (!empty($_REQUEST['testrecord'])) {
+			$mapinfo = json_decode($focus->ApplicationMenu(['menuname' => $_REQUEST['testrecord']]));
+		} else {
+			$mapinfo = json_decode($focus->ApplicationMenu());
+		}
+		break;
 	case 'Detail View Layout Mapping':
 		$mapinfo = $focus->DetailViewLayoutMapping();
 		break;
 	case 'Webservice Mapping':
-		$focus2 = CRMEntity::getInstance('Accounts');
-		$focus2->retrieve_entity_info(74, 'Accounts');
+		if (!empty($_REQUEST['testrecord'])) {
+			$testrecord = vtlib_purify($_REQUEST['testrecord']);
+			if (strpos($testrecord, 'x')>0) {
+				list($wsid, $testrecord) = explode('x', $testrecord);
+			}
+		} else {
+			$testrecord = 74;
+		}
+		$setype = getSalesEntityType($testrecord);
+		$focus2 = CRMEntity::getInstance($setype);
+		$focus2->retrieve_entity_info($testrecord, $setype);
 		$context = array(
 			'myvariable' => 'my var',
 		);
@@ -213,7 +252,10 @@ switch ($focus->column_fields['maptype']) {
 			}
 			$context[$key] = $value;
 		}
-		$mapinfo = $focus->DecisionTable($context);
+		$mapinfo = array(
+			'result' => $focus->DecisionTable($context),
+			'info' => $focus->mapExecutionInfo,
+		);
 		break;
 	default:
 		break;

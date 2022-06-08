@@ -10,11 +10,6 @@
 
 $sql= 'delete from vtiger_salesmanactivityrel where smid=? and activityid = ?';
 $adb->pquery($sql, array(vtlib_purify($_REQUEST['record']), vtlib_purify($_REQUEST['return_id'])));
-
-if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'Calendar') {
-	$mode = '&activity_mode=Events';
-}
-
 $req = new Vtiger_Request();
 $req->set('return_module', $_REQUEST['return_module']);
 $req->set('return_action', $_REQUEST['return_action']);

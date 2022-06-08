@@ -30,7 +30,6 @@ $output = '<div class="layerPopup" style="position:relative; display:block">
 	<input type="hidden" name="module" value="Settings">
 	<input type="hidden" name="action" value="SettingsAjax">
 	<input type="hidden" name="fld_module" value="'.$fieldModule.'">
-	<input type="hidden" name="parenttab" value="Settings">
 	<input type="hidden" name="file" value="UpdateMandatoryFields">
 	<input type="hidden" name="fieldid" value="'.$fieldId.'">
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">

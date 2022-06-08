@@ -17,12 +17,8 @@
 class ZipWrapper {
 	public static function read($archive, $filename) {
 		$zip = new ZipArchive;
-		if (file_exists($archive)) {
-			if ($zip->open(realpath($archive))) {
-				if ($zip->locateName($filename) !== false) {
-					return $zip->getFromName($filename);
-				}
-			}
+		if (file_exists($archive) && $zip->open(realpath($archive)) && $zip->locateName($filename) !== false) {
+			return $zip->getFromName($filename);
 		}
 		return false;
 	}
@@ -45,47 +41,45 @@ class ZipWrapper {
 	public static function copyPictures($origin, $destination, $changedImages = array(), $newImages = array()) {
 		$ziporg = new ZipArchive;
 		$zipdst = new ZipArchive;
-		if (file_exists($origin) && file_exists($destination)) {
-			if ($ziporg->open(realpath($origin)) && $zipdst->open(realpath($destination))) {
-				$tempdir= 'cache/'.uniqid('gendoc');
-				mkdir($tempdir);
-				$ziporg->extractTo($tempdir);
-				$ziporg->close();
-				if (is_dir("$tempdir/Pictures")) { // Tenemos imagenes para copiar y ficheros
-					foreach (new DirectoryIterator("$tempdir/Pictures") as $pictures) {
-						if ($pictures->isDot()) {
-							continue;
-						}
-						$fname=$pictures->getFilename();
-						if (array_key_exists('Pictures/'.$fname, $changedImages)) {
-							$filein=$changedImages['Pictures/'.$fname];
-						} else {
-							$filein="$tempdir/Pictures/".$fname;
-						}
-						$zipdst->addFile($filein, 'Pictures/'.$fname);
+		if (file_exists($origin) && file_exists($destination) && $ziporg->open(realpath($origin)) && $zipdst->open(realpath($destination))) {
+			$tempdir= 'cache/'.uniqid('gendoc');
+			mkdir($tempdir);
+			$ziporg->extractTo($tempdir);
+			$ziporg->close();
+			if (is_dir("$tempdir/Pictures")) { // Tenemos imagenes para copiar y ficheros
+				foreach (new DirectoryIterator("$tempdir/Pictures") as $pictures) {
+					if ($pictures->isDot()) {
+						continue;
 					}
-				}
-				if (count($newImages)>0) { // Imagenes nuevas
-					// Manifest ya esta actualizado, solo hay que añadir estas imagenes
-					foreach ($newImages as $newImage) {
-						$zipdst->addFile(realpath($newImage), 'Pictures/'.basename($newImage));
+					$fname=$pictures->getFilename();
+					if (array_key_exists('Pictures/'.$fname, $changedImages)) {
+						$filein=$changedImages['Pictures/'.$fname];
+					} else {
+						$filein="$tempdir/Pictures/".$fname;
 					}
+					$zipdst->addFile($filein, 'Pictures/'.$fname);
 				}
-				// Now we look for any Object Drawings/Graphs
-				foreach (glob("$tempdir/Object*", GLOB_ONLYDIR) as $ocode) {
-					$dname = str_replace_once(dirname($ocode).'/', '', $ocode);
-					foreach (new DirectoryIterator($ocode) as $pictures) {
-						if ($pictures->isDot()) {
-							continue;
-						}
-						$fname=$pictures->getFilename();
-						$filein=$ocode.'/'.$fname;
-						$zipdst->addFile($filein, $dname.'/'.$fname);
-					}
-				}
-				$zipdst->close();
-				ZipWrapper::unlinkRecursive($tempdir, true); // Elimino directorio temporal
 			}
+			if (count($newImages)>0) { // Imagenes nuevas
+				// Manifest ya esta actualizado, solo hay que añadir estas imagenes
+				foreach ($newImages as $newImage) {
+					$zipdst->addFile(realpath($newImage), 'Pictures/'.basename($newImage));
+				}
+			}
+			// Now we look for any Object Drawings/Graphs
+			foreach (glob("$tempdir/Object*", GLOB_ONLYDIR) as $ocode) {
+				$dname = str_replace_once(dirname($ocode).'/', '', $ocode);
+				foreach (new DirectoryIterator($ocode) as $pictures) {
+					if ($pictures->isDot()) {
+						continue;
+					}
+					$fname=$pictures->getFilename();
+					$filein=$ocode.'/'.$fname;
+					$zipdst->addFile($filein, $dname.'/'.$fname);
+				}
+			}
+			$zipdst->close();
+			ZipWrapper::unlinkRecursive($tempdir, true); // Elimino directorio temporal
 		}
 	}
 
@@ -114,8 +108,6 @@ class ZipWrapper {
 		if ($deleteRootToo) {
 			@rmdir($dir);
 		}
-
-		return;
 	}
 }
 ?>

@@ -15,7 +15,7 @@ require 'modules/Dashboard/graphdefinitions.php';
 
 $log = LoggerManager::getLogger('dashboard');
 if (isset($_REQUEST['type']) && $_REQUEST['type'] != '') {
-	$dashboard_type = $_REQUEST['type'];
+	$dashboard_type = vtlib_purify($_REQUEST['type']);
 } else {
 	$dashboard_type = 'DashboardHome';
 }

@@ -18,20 +18,20 @@ function VTEventConditionParserLexer_DFA9_static() {
 	$specialS = "\xf\xff}>";
 	$transitionS = array(
 		"\x2\xa\x2\xff\x1\xa\x12\xff\x1\xa\x6\xff\x1\x7\x4\xff\x1\x3\x1\xff\x1\x9\x1\xff\xa\x6\x3\xff\x1\x1\x3\xff\x8\x8\x1\x5\x11\x8\x1\x2\x1\xff\x1\x4\x2\xff\x9\x8\x1\x5\x11\x8",
-		"",
-		"",
-		"",
-		"",
+		'',
+		'',
+		'',
+		'',
 		"\x1\xb\x1f\xff\x1\xb",
 		"\xa\x6\x3e\xff\x1\xd",
-		"",
-		"",
-		"",
-		"",
+		'',
+		'',
+		'',
+		'',
 		"\xa\x8\x7\xff\x1a\x8\x4\xff\x1\x8\x1\xff\x1a\x8",
-		"",
-		"",
-		""
+		'',
+		'',
+		''
 	);
 	$arr = array();
 	$arr['eot'] = DFA::unpackEncodedString($eotS);
@@ -90,7 +90,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 	public function reportError($e) {
 		global $log;
 		$log->fatal($e);
-		throw new Exception('The condition you provided is invalid');
+		throw new InvalidArgumentException('The condition you provided is invalid');
 	}
 
 	// delegates
@@ -199,7 +199,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt1=2;
 				$LA1_0 = $this->input->LA(1);
 
-				if ((($LA1_0>=$this->getToken('48') && $LA1_0<=$this->getToken('57')))) {
+				if (($LA1_0>=$this->getToken('48') && $LA1_0<=$this->getToken('57'))) {
 					$alt1=1;
 				}
 
@@ -209,7 +209,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default:
 						if ($cnt1 >= 1) {
-							break 2;//loop1;
+							break 2;//loop1
 						}
 						throw new EarlyExitException(1, $this->input);
 				}
@@ -235,13 +235,13 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt2=3;
 				$LA2_0 = $this->input->LA(1);
 
-				if (($LA2_0==$this->getToken('39'))) {
+				if ($LA2_0==$this->getToken('39')) {
 					$LA2_1 = $this->input->LA(2);
 
-					if (($LA2_1==$this->getToken('39'))) {
+					if ($LA2_1==$this->getToken('39')) {
 						$alt2=2;
 					}
-				} elseif ((($LA2_0>=$this->getToken('0') && $LA2_0<=$this->getToken('38')) || ($LA2_0>=$this->getToken('40') && $LA2_0<=$this->getToken('65534')))) {
+				} elseif (($LA2_0>=$this->getToken('0') && $LA2_0<=$this->getToken('38')) || ($LA2_0>=$this->getToken('40') && $LA2_0<=$this->getToken('65534'))) {
 					$alt2=1;
 				}
 				switch ($alt2) {
@@ -259,7 +259,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default:
 						if ($cnt2 >= 1) {
-							break 2;//loop2;
+							break 2;//loop2
 						}
 						throw new EarlyExitException(2, $this->input);
 				}
@@ -282,9 +282,9 @@ class VTEventConditionParserLexer extends AntlrLexer {
 			$alt5=2;
 			$LA5_0 = $this->input->LA(1);
 
-			if ((($LA5_0>=$this->getToken('65') && $LA5_0<=$this->getToken('90')) || ($LA5_0>=$this->getToken('97') && $LA5_0<=$this->getToken('122')))) {
+			if (($LA5_0>=$this->getToken('65') && $LA5_0<=$this->getToken('90')) || ($LA5_0>=$this->getToken('97') && $LA5_0<=$this->getToken('122'))) {
 				$alt5=1;
-			} elseif (($LA5_0==$this->getToken('96'))) {
+			} elseif ($LA5_0==$this->getToken('96')) {
 				$alt5=2;
 			} else {
 				throw new NoViableAltException('', 5, 0, $this->input);
@@ -297,7 +297,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						$alt3=2;
 						$LA3_0 = $this->input->LA(1);
 
-						if ((($LA3_0>=$this->getToken('48') && $LA3_0<=$this->getToken('57')) || ($LA3_0>=$this->getToken('65') && $LA3_0<=$this->getToken('90')) || $LA3_0==$this->getToken('95') || ($LA3_0>=$this->getToken('97') && $LA3_0<=$this->getToken('122')))) {
+						if (($LA3_0>=$this->getToken('48') && $LA3_0<=$this->getToken('57')) || ($LA3_0>=$this->getToken('65') && $LA3_0<=$this->getToken('90')) || $LA3_0==$this->getToken('95') || ($LA3_0>=$this->getToken('97') && $LA3_0<=$this->getToken('122'))) {
 							$alt3=1;
 						}
 						switch ($alt3) {
@@ -311,7 +311,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 								}
 								break;
 							default:
-								break 2;//loop3;
+								break 2;//loop3
 						}
 					} while (true);
 					break;
@@ -323,7 +323,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						$alt4=2;
 						$LA4_0 = $this->input->LA(1);
 
-						if ((($LA4_0>=$this->getToken('0') && $LA4_0<=$this->getToken('95')) || ($LA4_0>=$this->getToken('97') && $LA4_0<=$this->getToken('65534')))) {
+						if (($LA4_0>=$this->getToken('0') && $LA4_0<=$this->getToken('95')) || ($LA4_0>=$this->getToken('97') && $LA4_0<=$this->getToken('65534'))) {
 							$alt4=1;
 						}
 						switch ($alt4) {
@@ -338,7 +338,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 								break;
 							default:
 								if ($cnt4 >= 1) {
-									break 2;//loop4;
+									break 2;//loop4
 								}
 								throw new EarlyExitException(4, $this->input);
 						}
@@ -381,7 +381,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt6=2;
 				$LA6_0 = $this->input->LA(1);
 
-				if ((($LA6_0>=$this->getToken('48') && $LA6_0<=$this->getToken('57')))) {
+				if ($LA6_0>=$this->getToken('48') && $LA6_0<=$this->getToken('57')) {
 					$alt6=1;
 				}
 				switch ($alt6) {
@@ -390,10 +390,9 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default:
 						if ($cnt6 >= 1) {
-							break 2;//loop6;
+							break 2;//loop6
 						}
-						$eee = new EarlyExitException(6, $this->input);
-						throw $eee;
+						throw new EarlyExitException(6, $this->input);
 				}
 				$cnt6++;
 			} while (true);
@@ -405,7 +404,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt7=2;
 				$LA7_0 = $this->input->LA(1);
 
-				if ((($LA7_0>=$this->getToken('48') && $LA7_0<=$this->getToken('57')))) {
+				if ($LA7_0>=$this->getToken('48') && $LA7_0<=$this->getToken('57')) {
 					$alt7=1;
 				}
 				switch ($alt7) {
@@ -414,10 +413,9 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default:
 						if ($cnt7 >= 1) {
-							break 2;//loop7;
+							break 2;//loop7
 						}
-						$eee = new EarlyExitException(7, $this->input);
-						throw $eee;
+						throw new EarlyExitException(7, $this->input);
 				}
 				$cnt7++;
 			} while (true);
@@ -467,7 +465,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt8=2;
 				$LA8_0 = $this->input->LA(1);
 
-				if ((($LA8_0>=$this->getToken('9') && $LA8_0<=$this->getToken('10')) || $LA8_0==$this->getToken('13') || $LA8_0==$this->getToken('32'))) {
+				if (($LA8_0>=$this->getToken('9') && $LA8_0<=$this->getToken('10')) || $LA8_0==$this->getToken('13') || $LA8_0==$this->getToken('32')) {
 					$alt8=1;
 				}
 				switch ($alt8) {
@@ -482,7 +480,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default:
 						if ($cnt8 >= 1) {
-							break 2;//loop8;
+							break 2;//loop8
 						}
 						throw new EarlyExitException(8, $this->input);
 				}

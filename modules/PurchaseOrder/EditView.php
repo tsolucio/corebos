@@ -53,7 +53,6 @@ if (!empty($_REQUEST['saverepeat'])) {
 }
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
-$category = getParentTab($currentModule);
 $record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
@@ -127,7 +126,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 					case '3313':
 					case '3314':
 						if (is_array($field_value)) {
-							$field_value = implode(' |##| ', $field_value);
+							$field_value = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $field_value);
 						}
 						break;
 				}
@@ -158,18 +157,16 @@ if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] !='') {
 		$_REQUEST['vendor_id'] = $adb->query_result($result, 0, 'vendor_id');
 	}
 }
-if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
-	if ($_REQUEST['return_module'] == 'Services') {
-		$focus->column_fields['product_id'] = vtlib_purify($_REQUEST['parent_id']);
-		$associated_prod = getAssociatedProducts('Services', $focus, $focus->column_fields['product_id']);
-		for ($i=1; $i<=count($associated_prod); $i++) {
-			$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
-			$associated_prod_prices = getPricesForProducts($currencyid, array($associated_prod_id), 'Services');
-			$associated_prod[$i]['listPrice'.$i] = $associated_prod_prices[$associated_prod_id];
-		}
-		$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
-		$smarty->assign('AVAILABLE_PRODUCTS', 'true');
+if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'Services') {
+	$focus->column_fields['product_id'] = vtlib_purify($_REQUEST['parent_id']);
+	$associated_prod = getAssociatedProducts('Services', $focus, $focus->column_fields['product_id']);
+	for ($i=1; $i<=count($associated_prod); $i++) {
+		$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
+		$associated_prod_prices = getPricesForProducts($currencyid, array($associated_prod_id), 'Services');
+		$associated_prod[$i]['listPrice'.$i] = $associated_prod_prices[$associated_prod_id];
 	}
+	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
+	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 }
 
 if (!empty($_REQUEST['vendor_id']) && $_REQUEST['record']=='') {
@@ -193,7 +190,6 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', $focus->id);
@@ -213,39 +209,15 @@ if ($focus->mode == 'edit' || $isduplicate == 'true') {
 if ($focus->mode == 'edit') {
 	$associated_prod = getAssociatedProducts('PurchaseOrder', $focus);
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
+	$smarty->assign('AVAILABLE_PRODUCTS', (empty($associated_prod) ? 'false' : 'true'));
 } elseif ($isduplicate == 'true') {
 	$associated_prod = $PO_associated_prod;
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	$smarty->assign('MODE', $focus->mode);
 }
-$cbMap = cbMap::getMapByName($currentModule.'InventoryDetails', 'MasterDetailLayout');
-$smarty->assign('moreinfofields', '');
-if ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes') {
-	$cbMapFields = $cbMap->MasterDetailLayout();
-	$smarty->assign('moreinfofields', "'".implode("','", $cbMapFields['detailview']['fieldnames'])."'");
-	if (empty($associated_prod) && $isduplicate != 'true') { // creating
-		$product_Detail = $col_fields = array();
-		foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
-			if ($mdfield['fieldinfo']['name']=='id') {
-				continue;
-			}
-			$col_fields[$mdfield['fieldinfo']['name']] = '';
-			$foutput = getOutputHtml(
-				$mdfield['fieldinfo']['uitype'],
-				$mdfield['fieldinfo']['name'],
-				$mdfield['fieldinfo']['label'],
-				100,
-				$col_fields,
-				0,
-				'InventoryDetails',
-				'edit',
-				$mdfield['fieldinfo']['typeofdata']
-			);
-			$product_Detail['moreinfo'][] = $foutput;
-		}
-		$associated_prod = $product_Detail;
-		$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
-	}
+if (empty($associated_prod) && $isduplicate != 'true') { // creating
+	include_once 'modules/cbMap/processmap/MasterDetailLayout.php';
+	$associated_prod = MasterDetailLayout::setCreateAsociatedProductsValue($currentModule, $smarty);
 }
 
 list($v1, $v2, $associated_prod, $customtemplatename) = cbEventHandler::do_filter('corebos.filter.inventory.itemrow.edit', array($currentModule, $focus, $associated_prod, ''));
@@ -298,7 +270,7 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 	if ($adb->num_rows($mod_seq_string) == 0 || $focus->checkModuleSeqNumber($focus->table_name, $mod_seq_field['column'], $mod_seq_prefix.$mod_seq_no)) {
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
 		$smarty->assign('ERROR_MESSAGE', '<b>'. getTranslatedString($mod_seq_field['label']). ' '. getTranslatedString('LBL_NOT_CONFIGURED')
-			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='
+			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&selmodule='
 			.$currentModule.'">'.getTranslatedString('LBL_HERE').'</a> '.getTranslatedString('LBL_TO_CONFIGURE').' '.getTranslatedString($mod_seq_field['label']).'</b>');
 	} else {
 		$smarty->assign('MOD_SEQ_ID', $autostr);
@@ -330,8 +302,6 @@ if ($focus->mode == 'edit') {
 	$smarty->assign('INV_CURRENCY_ID', $currencyid);
 }
 
-$smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : '');
-
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
@@ -348,12 +318,15 @@ $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 //Get Service or Product by default when create
 $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('Inventory_ProductService_Default', 'Products', $currentModule, $current_user->id));
 $smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inventory_ListPrice_ReadOnly', '0', $currentModule, $current_user->id));
+$smarty->assign('Inventory_Comment_Style', GlobalVariable::getVariable('Inventory_Comment_Style', 'width:70%;height:40px;', $currentModule, $current_user->id));
+$smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
 //Set taxt type group or individual by default when create
 $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule, $current_user->id));
 $smarty->assign('TAXFILLINMODE', GlobalVariable::getVariable('Inventory_Tax_FillInMode', 'All', $currentModule, $current_user->id));
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 $smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $currentModule, $current_user->id));
+$smarty->assign('ShowInventoryLines', strpos(GlobalVariable::getVariable('Inventory_DoNotUseLines', '', $currentModule, $current_user->id), $currentModule)===false);
 
 $smarty->display('Inventory/InventoryEditView.tpl');
 ?>

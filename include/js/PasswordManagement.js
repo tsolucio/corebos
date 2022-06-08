@@ -19,6 +19,17 @@
  *               : http://www.javascriptsource.com/passwords/random-password-generator.html
  *************************************************************************************************/
 
+var gvPasswordLength = 10;
+
+document.addEventListener('DOMContentLoaded', function () {
+	GlobalVariable_getVariable('Application_MinimumPasswordLength', 10, 'Users', gVTUserID).then(function (response) {
+		var obj = JSON.parse(response);
+		gvPasswordLength = parseInt(obj.Application_MinimumPasswordLength);
+	}, function (error) {
+		gvPasswordLength = 10;
+	});
+});
+
 var corebos_Password = {
 
 	getRandomNum: function (lbound, ubound) {
@@ -31,16 +42,16 @@ var corebos_Password = {
 		var upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		var otherChars = "`~!@#$%^&*()-_=+[{]}\\|;:'\",<.>/? ";
 		var charSet = extra;
-		if (number == true) {
+		if (number) {
 			charSet += numberChars;
 		}
-		if (lower == true) {
+		if (lower) {
 			charSet += lowerChars;
 		}
-		if (upper == true) {
+		if (upper) {
 			charSet += upperChars;
 		}
-		if (other == true) {
+		if (other) {
 			charSet += otherChars;
 		}
 		return charSet.charAt(this.getRandomNum(0, charSet.length));
@@ -127,32 +138,28 @@ var corebos_Password = {
 		//Special Char?
 		var containsSpecialChar = this.checkSpecialChar(passwordValue);
 
-		//COMPLEX PASSWORD: Minimum 8 characters, and three of the four conditions needs to be ok --> Capital, Lowercase, Special Character, Number
-		if (passwordLength < 8) {
+		//COMPLEX PASSWORD: Minimum gvPasswordLength characters, and three of the four conditions needs to be ok --> Capital, Lowercase, Special Character, Number
+		if (passwordLength < gvPasswordLength) {
 			return false;
 		} else {
 			//Combination Match All
-			if ((containsNumber == true)&&(containsCapital == true)&&(containsLower == true)&&(containsSpecialChar == true)) {
+			if (containsNumber && containsCapital && containsLower && containsSpecialChar) {
 				return true;
 			} else {
 				//Combination 1
-				if ((containsNumber == true)&&(containsCapital == true)&&(containsLower == true)) {
+				if (containsNumber && containsCapital && containsLower) {
 					return true;
 				} else {
 					//Combination 2
-					if ((containsCapital == true)&&(containsLower == true)&&(containsSpecialChar == true)) {
+					if (containsCapital && containsLower && containsSpecialChar) {
 						return true;
 					} else {
 						//Combination 3
-						if ((containsLower == true)&&(containsSpecialChar == true)&&(containsNumber == true)) {
+						if (containsLower && containsSpecialChar && containsNumber) {
 							return true;
 						} else {
 							//Combination 4
-							if ((containsNumber == true)&&(containsCapital == true)&&(containsSpecialChar == true)) {
-								return true;
-							} else {
-								return false;
-							}
+							return (containsNumber && containsCapital && containsSpecialChar);
 						}
 					}
 				}

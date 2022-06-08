@@ -12,8 +12,8 @@ class Tooltip {
 
 	/**
 	* Invoked when special actions are performed on the module.
-	* @param String Module name
-	* @param String Event Type
+	* @param string Module name
+	* @param string Event Type
 	*/
 	public function vtlib_handler($moduleName, $eventType) {
 		require_once 'include/utils/utils.php';
@@ -27,7 +27,7 @@ class Tooltip {
 			$blockname = 'LBL_MODULE_MANAGER';
 			$icon = 'quickview.png';
 			$description = 'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION';
-			$links = 'index.php?module=Tooltip&action=QuickView&parenttab=Settings';
+			$links = 'index.php?module=Tooltip&action=QuickView';
 			$adb->pquery(
 				'INSERT INTO vtiger_settings_field (fieldid, blockid, name, iconpath, description, linkto) VALUES (?,?,?,?,?,?)',
 				array($adb->getUniqueID('vtiger_settings_field'), getSettingsBlockId($blockname), $name, $icon, $description, $links)

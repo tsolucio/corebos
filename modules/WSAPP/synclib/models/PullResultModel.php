@@ -35,5 +35,4 @@ class WSAPP_PullResultModel extends WSAPP_BaseModel {
 		return $this->get('prevsyncstate');
 	}
 }
-
 ?>

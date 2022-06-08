@@ -20,8 +20,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class GlobalVariable extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_globalvariable';
 	public $table_index= 'globalvariableid';
 	public $column_fields = array();
@@ -122,25 +120,29 @@ class GlobalVariable extends CRMEntity {
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'gvname');
 
 	private static $validationinfo = array();
+	public static $scriptOverride = array();
+	public static $currentScript = '';
+	const USE_DESCRIPTION_IDENTIFIER = '[[Use Description]]';
 
 	public function save_module($module) {
 		global $adb;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable', true);
 		if (!empty($this->column_fields['rolegv'])) {
 			foreach ($this->column_fields['rolegv'] as $role) {
 				$user2role_result = $adb->pquery('select userid from vtiger_user2role where roleid =?', array($role));
 				if ($adb->num_rows($user2role_result)> 0) {
 					$userid = $adb->query_result($user2role_result, 0, 0);
-					$adb->pquery('Update vtiger_crmentity set smownerid=? where crmid=?', array($userid, $this->id));
+					$adb->pquery('Update '.$crmEntityTable.' set smownerid=? where crmid=?', array($userid, $this->id));
 					break;
 				}
 			}
 		}
 	}
 
-	/* Validate values trying to be saved.
+	/** Validate values trying to be saved.
 	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
 	 * @return array
 	 *   saveerror: true if error false if not
@@ -161,7 +163,7 @@ class GlobalVariable extends CRMEntity {
 			}
 			$inmodule = $this->column_fields['in_module_list'];
 			$existmod = $adb->pquery('select module_list,in_module_list from vtiger_globalvariable
-				left join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid
+				left join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid
 				where gvname=? and deleted=0 and mandatory=1 and globalvariableid!=?', array($this->column_fields['gvname'],$recordid));
 			$num = $adb->num_rows($existmod);
 			$all_modules=vtws_getModuleNameList();
@@ -194,8 +196,8 @@ class GlobalVariable extends CRMEntity {
 
 	/**
 	 * Invoked when special actions are performed on the module.
-	 * @param String Module name
-	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 * @param string Module name
+	 * @param string Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
@@ -244,27 +246,27 @@ class GlobalVariable extends CRMEntity {
 		for ($i=0; $i<$adb->num_rows($query); $i++) {
 			self::$validationinfo[] = 'evaluate candidate <a href="index.php?action=DetailView&record='.$adb->query_result($query, $i, 'globalvariableid').
 				'&module=GlobalVariable">'.$adb->query_result($query, $i, 'globalno').'</a>';
-			if ($adb->query_result($query, $i, 'module_list')=='') {
-				if ($isBusinessMapping) {
+			$in_module_list=$adb->query_result($query, $i, 'in_module_list');
+			if ($in_module_list=='0' || $adb->query_result($query, $i, 'module_list')=='') {
+				if ($isBusinessMapping && isRecordExists($adb->query_result($query, $i, 'bmapid'))) {
 					$value = $adb->query_result($query, $i, 'bmapid');
 				} else {
 					$value = $adb->query_result($query, $i, 'value');
-					if ($value=='[[Use Description]]') {
+					if ($value==self::USE_DESCRIPTION_IDENTIFIER) {
 						$value = $adb->query_result($query, $i, 'description');
 					}
 				}
 				$list_of_modules['Default']=$value;
 			} else {
-				$in_module_list=$adb->query_result($query, $i, 'in_module_list');
 				$modules_list=array_map('trim', explode('|##|', $adb->query_result($query, $i, 'module_list')));
-				if ($in_module_list==1) {
+				if ($in_module_list=='1') {
 					$nummods = count($modules_list);
 					for ($j=0; $j < $nummods; $j++) {
-						if ($isBusinessMapping) {
+						if ($isBusinessMapping && isRecordExists($adb->query_result($query, $i, 'bmapid'))) {
 							$value = $adb->query_result($query, $i, 'bmapid');
 						} else {
 							$value = $adb->query_result($query, $i, 'value');
-							if ($value=='[[Use Description]]') {
+							if ($value==self::USE_DESCRIPTION_IDENTIFIER) {
 								$value = $adb->query_result($query, $i, 'description');
 							}
 						}
@@ -273,13 +275,12 @@ class GlobalVariable extends CRMEntity {
 				} else {
 					$all_modules=vtws_getModuleNameList();
 					$other_modules=array_diff($all_modules, $modules_list);
-					$nummods = count($other_modules);
 					foreach ($other_modules as $omod) {
-						if ($isBusinessMapping) {
+						if ($isBusinessMapping && isRecordExists($adb->query_result($query, $i, 'bmapid'))) {
 							$value = $adb->query_result($query, $i, 'bmapid');
 						} else {
 							$value = $adb->query_result($query, $i, 'value');
-							if ($value=='[[Use Description]]') {
+							if ($value==self::USE_DESCRIPTION_IDENTIFIER) {
 								$value = $adb->query_result($query, $i, 'description');
 							}
 						}
@@ -288,8 +289,8 @@ class GlobalVariable extends CRMEntity {
 				}
 			}
 		}
-		self::$validationinfo[] = "candidate list of modules to look for $module: ".print_r($list_of_modules, true);
-		if (count($list_of_modules) > 0) {
+		self::$validationinfo[] = "candidate list of modules to look for $module: ".json_encode($list_of_modules);
+		if (!empty($list_of_modules)) {
 			if (array_key_exists($module, $list_of_modules)) {
 				return $list_of_modules[$module];
 			} else {
@@ -299,10 +300,10 @@ class GlobalVariable extends CRMEntity {
 		return '';
 	}
 
-	/* returns the value of a global variable depending on the different escalation options
-	 * param $var: the name of variable
-	 * param $defalt: default value in case the variable is not found in the module
-	 * returns: value of the variable following these rules:
+	/** returns the value of a global variable depending on the different escalation options
+	 * @param string the name of variable
+	 * @param mixed default value in case the variable is not found in the module
+	 * @return mixed value of the variable following these rules:
 	 *   search for and return the first one found:
 	 *   - $var + mandatory=true + ('In Module List' ? $current_module in Module : $current_module not in Module)
 	 *   - $var + mandatory=true
@@ -316,20 +317,17 @@ class GlobalVariable extends CRMEntity {
 	 */
 	public static function getVariable($var, $default, $module = '', $gvuserid = '') {
 		global $adb, $current_user, $currentModule, $installationStrings;
-		if (!is_object($adb) || is_null($adb->database)) {
-			return $default;
+		if (isset(self::$scriptOverride[self::$currentScript][$var])) {
+			return self::$scriptOverride[self::$currentScript][$var];
 		}
-		if (isset($installationStrings)) {
+		if (empty($gvuserid) && !empty($current_user)) {
+			$gvuserid = $current_user->id;
+		}
+		if (!is_object($adb) || is_null($adb->database) || isset($installationStrings) || empty($gvuserid)) {
 			return $default;
 		}
 		self::$validationinfo = array();
 		self::$validationinfo[] = "search for variable '$var' with default value of '$default'";
-		if (empty($gvuserid) && !empty($current_user)) {
-			$gvuserid = $current_user->id;
-		}
-		if (empty($gvuserid)) {
-			return $default;
-		}
 		if (empty($module)) {
 			$module = $currentModule;
 		}
@@ -339,8 +337,9 @@ class GlobalVariable extends CRMEntity {
 			self::$validationinfo[] = 'variable found in cache';
 			return $value;
 		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
 		$value='';
-		$join = ' FROM vtiger_globalvariable INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid ';
+		$join = ' FROM vtiger_globalvariable INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid ';
 		$select = 'select * '.$join;
 		$where = ' where vtiger_crmentity.deleted=0 and gvname=? ';
 
@@ -416,29 +415,27 @@ class GlobalVariable extends CRMEntity {
 		return $default;
 	}
 
-	/* returns true if the given variable affects the given module and user
-	 * param $var: the ID of the variable
-	 * param $module: module to search in
-	 * param $userid: user to apply for
-	 * returns: boolean
+	/** returns true if the given variable affects the given module and user
+	 * @param integer the ID of the variable
+	 * @param string module to search in
+	 * @param integer user ID to apply for
+	 * @return boolean
 	 */
 	public static function isAppliable($var, $module = '', $gvuserid = '') {
 		global $adb, $current_user, $currentModule, $installationStrings;
-		if (!is_object($adb) || is_null($adb->database) || !is_numeric($var) || isset($installationStrings)) {
-			return false;
-		}
 		if (empty($gvuserid) && !empty($current_user)) {
 			$gvuserid = $current_user->id;
 		}
-		if (empty($gvuserid) || !is_numeric($gvuserid) || $gvuserid<0) {
+		if (!is_object($adb) || is_null($adb->database) || !is_numeric($var) || isset($installationStrings) || empty($gvuserid) || !is_numeric($gvuserid) || $gvuserid<0) {
 			return false;
 		}
 		if (empty($module)) {
 			$module = $currentModule;
 		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
 		$sql = 'SELECT default_check,mandatory,module_list,in_module_list,smownerid
 			FROM vtiger_globalvariable
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
 			WHERE vtiger_crmentity.deleted=0 and globalvariableid=?';
 		$rs = $adb->pquery($sql, array($var));
 		if (!$rs || $adb->num_rows($rs)==0) {
@@ -454,7 +451,7 @@ class GlobalVariable extends CRMEntity {
 
 		$sql = 'SELECT 1
 			FROM vtiger_globalvariable
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
+			INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid
 			INNER JOIN vtiger_user2role ON vtiger_user2role.userid=?
 			WHERE globalvariableid=? and '."concat(rolegv, ' ') like concat('%', vtiger_user2role.roleid, ' %')";
 		$rs = $adb->pquery($sql, array($gvuserid, $var));
@@ -475,33 +472,5 @@ class GlobalVariable extends CRMEntity {
 	public static function getValidationInfo() {
 		return self::$validationinfo;
 	}
-
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 }
 ?>

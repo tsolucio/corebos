@@ -6,6 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 30/10/2021 |Sao Paulo/SP/Brasil.| www.ecrm360.com.br
  ************************************************************************************/
 
 $mod_strings = array(
@@ -14,18 +15,18 @@ $mod_strings = array(
 	'evvtMenu ID' => 'ID Edição do menu',
 	'evvtMenuTitle' => 'Edição do menu',
 	'evvtMenuLayout' => 'Visualização do menu',
-	'evvtMenuItemInfo' => 'Itens para o  Menu',
+	'evvtMenuItemInfo' => 'Itens para o  menu',
 	'MenuType' => 'Tipo entrada',
 	'MenuLabel' => 'Nome exibir',
 	'MenuValue' => 'Ação',
 	'MenuVisible' => 'Visivel',
-	'MenuPermission' => 'Permitido p/',
+	'MenuPermission' => 'Permitido p/ (use botões abaixo)',
 	'mt_menu' => 'Menu',
 	'mt_module' => 'Módulo',
 	'mt_url' => 'URL',
 	'mt_separator' => 'Separador',
 	'mt_headertop' => 'Linha Cabeçalho',
-	'mt_headerbottom' => 'Linha Rodapé',
+	'mt_headerbottom' => 'Linha rodapé',
 	'MarkVisibleAndSort' => 'Marque elementos visíveis ou não e ordene-os diretamente na vista em árvore.',
 	'SelectToEditDelete' => 'Selecione quaisquer elementos para atualizar ou apagar da fórmula acima descrita.',
 	'AddNewItem' => 'Adicione novos elementos utilizando a fórmula anterior. Novos elementos serão adicionados ao fim do primeiro menu, pode mover e adaptá-los a partir do mesmo.',

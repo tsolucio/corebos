@@ -58,7 +58,6 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
 	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
-	$smarty->assign('CATEGORY', getParentTab());
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('ID', $focus->id);
@@ -69,11 +68,8 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
 	$parent_email = getEmailParentsList('Contacts', $record, $focus);
 	$smarty->assign('HIDDEN_PARENTS_LIST', $parent_email);
-	$smarty->assign('CONTACT_PERMISSION', CheckFieldPermission('contact_id', 'Calendar'));
 	$smarty->assign('EMAIL', $focus->column_fields['email']);
 	$smarty->assign('SECONDARY_EMAIL', $focus->column_fields['secondaryemail']);
-	$smarty->assign('TODO_PERMISSION', CheckFieldPermission('parent_id', 'Calendar'));
-	$smarty->assign('EVENT_PERMISSION', CheckFieldPermission('parent_id', 'Events'));
 
 	// Module Sequence Numbering
 	$mod_seq_field = getModuleSequenceField($currentModule);
@@ -106,19 +102,12 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 						$i18n = getTranslatedString($blk['label'], $blk['label']);
 						if (empty($rel_array[$i18n])) {
 							if (!empty($blk['relatedid'])) {
-								$found = false;
 								foreach ($rel_array as $RLLabel => $RLDetails) {
 									if ($RLDetails['relationId']==$blk['relatedid']) {
 										$related_array[$RLLabel] = $RLDetails;
-										$found = true;
 										break;
 									}
 								}
-								if (!$found) {
-									continue;
-								}
-							} else {
-								continue;
 							}
 						} else {
 							$related_array[$blk['loadfrom']] = $rel_array[$i18n];

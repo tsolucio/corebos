@@ -9,6 +9,8 @@
  ************************************************************************************/
 $mod_strings = array (
 'Webforms' => 'Webforms',
+'SINGLE_Webforms' => 'Webform',
+'Webforms ID' => 'Webform ID',
 'LBL_SUCCESS' => 'entrada adicionada no vtiger CRM.',
 'LBL_FAILURE' => 'Entrada a ser adicionada no vtiger CRM falhou.',
 'LBL_ERROR_CODE' => 'Código de Erro',

@@ -17,20 +17,23 @@
  * return array $entitynum - numeration of entities
  */
 function vtws_get_entitynum($user = '') {
-	require_once 'include/utils/UserInfoUtil.php';
-	require_once 'modules/Users/Users.php';
 	global $adb;
-
-	$enumres = $adb->query('SELECT semodule, prefix FROM vtiger_modentity_num');
-	$no_of_cont = $adb->num_rows($enumres);
+	$types = vtws_listtypes(null, $user);
+	if (vtlib_isModuleActive('AutoNumberPrefix')) {
+		$query = 'SELECT semodule, prefix
+			FROM vtiger_autonumberprefix
+			INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid=vtiger_autonumberprefix.autonumberprefixid
+			WHERE deleted=0 and active=1 and semodule in ('. generateQuestionMarks($types['types']) .')';
+	} else {
+		$query = 'SELECT semodule, prefix FROM vtiger_modentity_num WHERE active=1 and semodule in ('. generateQuestionMarks($types['types']) .')';
+	}
+	$enumres = $adb->pquery($query, $types['types']);
 	$entitynum = array();
-	for ($i=0; $i<$no_of_cont; $i++) {
-		$module = $adb->query_result($enumres, $i, 'semodule');
-		$prefix = $adb->query_result($enumres, $i, 'prefix');
-		if (empty($entitynum[$module])) {
-			$entitynum[$module] = array($prefix);
+	while ($en=$adb->fetch_array($enumres)) {
+		if (empty($entitynum[$en['semodule']])) {
+			$entitynum[$en['semodule']] = array($en['prefix']);
 		} else {
-			$entitynum[$module][] = $prefix;
+			$entitynum[$en['semodule']][] = $en['prefix'];
 		}
 	}
 	return array($entitynum);

@@ -15,10 +15,7 @@
  *************************************************************************************************/
 
 if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), '7.5.0') >= 0) {
-	header('Content-Type: text/html; charset=UTF-8');
-	$serverPhpVersion = phpversion();
-	require_once 'phpversionfail.php';
-	die();
+	require_once 'modules/Vtiger/phpversionfail.php';
 }
 
 if (!is_file('config.inc.php')) {
@@ -46,7 +43,6 @@ if (isset($_REQUEST['view'])) {
 	coreBOS_Session::set('view', $view);
 }
 
-
 require_once 'include/logging.php';
 require_once 'modules/Users/Users.php';
 $calculate_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time', 0, '', Users::getActiveAdminId());
@@ -54,7 +50,7 @@ if ($calculate_response_time) {
 	$startTime = microtime(true);
 }
 
-$log = LoggerManager::getLogger('index');
+$log = LoggerManager::getLogger('APPLICATION');
 
 global $seclog;
 $seclog = LoggerManager::getLogger('SECURITY');
@@ -94,9 +90,8 @@ if (isset($_REQUEST['module'])) {
 	$module = vtlib_purify($_REQUEST['module']);
 	if (!preg_match('/[\/.]/', $module)) {
 		$dir = @scandir($root_directory.'modules', SCANDIR_SORT_NONE);
-		$in_dir = @scandir($root_directory.'modules/'.$module, SCANDIR_SORT_NONE);
 		$is_module = @in_array($module, $dir);
-		$is_action = @in_array($action.'.php', $in_dir);
+		$is_action = file_exists($root_directory.'modules/'.$module.'/'.$action.'.php') || file_exists('modules/Vtiger/'.$action.'.php');
 	}
 	if (!$is_module) {
 		die('Module name is missing or incorrect. Please check the module name.');
@@ -105,7 +100,7 @@ if (isset($_REQUEST['module'])) {
 		$is_action = false;
 	}
 	if (!$is_action) {
-		die('Action name is missing or incorrect. Please check the action name: '.vtlib_purify($action));
+		die('Action name is missing or incorrect. Please check the action name');
 	}
 }
 
@@ -135,9 +130,9 @@ if (isset($_SESSION['authenticated_user_id']) && (isset($_SESSION['app_unique_ke
 }
 
 // Prevent loading Login again if there is an authenticated user in the session.
-if (isset($_SESSION["authenticated_user_id"]) && isset($module) && $module == 'Users' && $action == 'Login') {
-	$default_action = GlobalVariable::getVariable('Application_Default_Action', 'index', 'Home', $_SESSION["authenticated_user_id"]);
-	$default_module = GlobalVariable::getVariable('Application_Default_Module', 'Home', 'Home', $_SESSION["authenticated_user_id"]);
+if (isset($_SESSION['authenticated_user_id']) && isset($module) && $module == 'Users' && $action == 'Login') {
+	$default_action = GlobalVariable::getVariable('Application_Default_Action', 'index', 'Home', $_SESSION['authenticated_user_id']);
+	$default_module = GlobalVariable::getVariable('Application_Default_Module', 'Home', 'Home', $_SESSION['authenticated_user_id']);
 	$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($default_module));
 	if (!$result || $adb->num_rows($result)==0) {
 		$default_module = 'Home';
@@ -145,10 +140,10 @@ if (isset($_SESSION["authenticated_user_id"]) && isset($module) && $module == 'U
 	header("Location: index.php?action=$default_action&module=$default_module");
 }
 
-if ($use_current_login) {
+if ($use_current_login && coreBOS_Settings::SettingExists('cbodUserConnection'.$_SESSION['authenticated_user_id'])) {
 	//getting the internal_mailer flag
 	if (!isset($_SESSION['internal_mailer'])) {
-		$qry_res = $adb->pquery("select internal_mailer from vtiger_users where id=?", array($_SESSION["authenticated_user_id"]));
+		$qry_res = $adb->pquery('select internal_mailer from vtiger_users where id=?', array($_SESSION['authenticated_user_id']));
 		coreBOS_Session::set('internal_mailer', $adb->query_result($qry_res, 0, 'internal_mailer'));
 	}
 	$log->debug('authenticated user: '.$_SESSION['authenticated_user_id']);
@@ -156,7 +151,7 @@ if ($use_current_login) {
 		include 'modules/Vtiger/maintenance.php';
 		exit;
 	}
-} elseif (isset($action) && isset($module) && $action=="Authenticate" && $module=="Users") {
+} elseif (isset($action) && isset($module) && $action=='Authenticate' && $module=='Users') {
 	$log->debug('authenticating user');
 } else {
 	if (!isset($_REQUEST['action']) || ($_REQUEST['action'] != 'Logout' && $_REQUEST['action'] != 'Login')) {
@@ -167,6 +162,7 @@ if ($use_current_login) {
 		echo 'Login';
 		die();
 	}
+	coreBOS_Session::delete('authenticated_user_id');
 	$action = 'Login';
 	$module = 'Users';
 	include 'modules/Users/Login.php';
@@ -207,9 +203,6 @@ if (isset($action) && isset($module)) {
 		preg_match("/^UpdateProfile/", $action) ||
 		preg_match("/^updateRelations/", $action) ||
 		preg_match("/^Star/", $action) ||
-		preg_match("/^addPbProductRelToDB/", $action) ||
-		preg_match("/^UpdateListPrice/", $action) ||
-		preg_match("/^PriceListPopup/", $action) ||
 		preg_match("/^CreatePDF/", $action) ||
 		preg_match("/^CreateSOPDF/", $action) ||
 		preg_match("/^redirect/", $action) ||
@@ -258,7 +251,7 @@ if (isset($action) && isset($module)) {
 		header('Pragma: no-cache');
 	}
 
-	if (($module == 'Users' || $module == 'Home') && (empty($_REQUEST['parenttab']) || $_REQUEST['parenttab'] != 'Settings')) {
+	if ($module == 'Users' || $module == 'Home') {
 		$skipSecurityCheck=true;
 	}
 
@@ -304,12 +297,9 @@ if ($use_current_login) {
 	coreBOS_Session::setUserGlobalSessionVariables();
 
 	/* Skip audit trail log for special request types */
-	$skip_auditing = false;
-	if (($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
-		$skip_auditing = true;
-	} elseif (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
-		$skip_auditing = true;
-	}
+	$skip_auditing = (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager')
+		||
+		(($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'cbCalendar');
 	$privileges = $current_user->getPrivileges();
 	if (coreBOS_Settings::getSetting('audit_trail', false) && !$skip_auditing) {
 		$auditaction = $action;
@@ -350,7 +340,8 @@ if ($use_current_login) {
 }
 // Force password change
 if ($current_user->mustChangePassword() && $_REQUEST['action']!='Logout' && $_REQUEST['action']!='CalendarAjax' && $_REQUEST['action']!='UsersAjax'
-	&& $_REQUEST['action']!='ChangePassword' && $_REQUEST['action'] != 'PBXManagerAjax' && !($_REQUEST['module']=='Users' && $_REQUEST['action']=='Save')
+	&& ($_REQUEST['action']!='UtilitiesAjax' && (empty($_REQUEST['functiontocall']) || $_REQUEST['functiontocall']!='setNewPassword')) && $_REQUEST['action'] != 'PBXManagerAjax'
+	&& !($_REQUEST['module']=='Users' && $_REQUEST['action']=='Save')
 ) {
 	$currentModule = 'Users';
 	$currentModuleFile = 'modules/Users/DetailView.php';
@@ -405,7 +396,6 @@ $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
 	$sitepath = empty($siteURLParts['path']) ? '' : ' path='.$siteURLParts['path'].';';
 	header('Set-Cookie: ck_login_id_vtiger='.$_SESSION['authenticated_user_id'].'; SameSite=Lax; expires=0;'.$sitepath.' domain='.$cookieDomain, false);
-	//setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'], 0, null, $cookieDomain, false, true);
 }
 
 if ($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile') {
@@ -415,17 +405,8 @@ if ($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile') {
 }
 
 //skip headers for popups, deleting, saving, importing and other actions
-if (!$skipHeaders) {
-	if ($use_current_login) {
-		include 'modules/Vtiger/header.php';
-	}
-} else {
-	/*if(($action != 'mytkt_rss') && ($action != 'home_rss') && ($action != $module."Ajax") && ($action != "body") && ($action != 'ActivityAjax')) {
-		require_once 'Smarty_setup.php';
-		$vartpl = new vtigerCRM_Smarty;
-		getBrowserVariables($vartpl);
-		$vartpl->display('BrowserVariables.tpl');
-	}*/
+if (!$skipHeaders && $use_current_login) {
+	include 'modules/Vtiger/header.php';
 }
 
 //logging the security Information
@@ -444,10 +425,14 @@ if (!$skipSecurityCheck && $use_current_login) {
 	}
 
 	if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
-		$display = isPermitted($module, $now_action, $_REQUEST['record']);
+		if ($now_action=='EditView' && isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate']=='true') {
+			$display = isPermitted($module, 'CreateView', $_REQUEST['record']);
+		} else {
+			$display = isPermitted($module, $now_action, $_REQUEST['record']);
+		}
 	} else {
-		if ($now_action=='EditView' || $now_action=='EventEditView' || $now_action=='Save'
-			|| ($now_action=='DetailViewAjax' && isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction']=='WIDGETADDCOMMENT')
+		if ($now_action=='EditView' || $now_action=='Save' || ($now_action=='DetailViewAjax' && isset($_REQUEST['ajxaction'])
+			&& $_REQUEST['ajxaction']=='WIDGETADDCOMMENT')
 		) {
 			$now_action = 'CreateView';
 		}
@@ -480,10 +465,15 @@ if ($display == 'no'
 	$smarty->assign('OPERATION_MESSAGE', getTranslatedString($currentModule, $currentModule) . $app_strings['VTLIB_MOD_NOT_ACTIVE']);
 	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 } else {
-	include_once $currentModuleFile;
+	if (file_exists($currentModuleFile)) {
+		include_once $currentModuleFile;
+	} elseif (file_exists('modules/Vtiger/'.$action.'.php')) {
+		include_once 'modules/Vtiger/'.$action.'.php';
+	} else {
+		die('Action name is missing or incorrect. Please check the action name: '.vtlib_purify($action));
+	}
 }
 
-//added to get the theme . This is a bad fix as we need to know where the problem lies yet
 if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_authenticated_user_theme'] != '') {
 	$theme = $_SESSION['vtiger_authenticated_user_theme'];
 } else {
@@ -491,23 +481,20 @@ if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_aut
 }
 $theme = basename(vtlib_purify($theme));
 $Ajx_module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $module);
-if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$Ajx_module.'Ajax' && $action!='massdelete' && $action!='DashboardAjax' && $action!='ActivityAjax') {
+if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$Ajx_module.'Ajax' && $action!='massdelete' && $action!='DashboardAjax'
+	&& $action!='ActivityAjax' && empty($_REQUEST['Module_Popup_Edit'])
+) {
 	// ActivityReminder Customization for callback
-	if (!$skipFooters) {
-		if ($current_user->id!=null && isPermitted('cbCalendar', 'index') == 'yes' && vtlib_isModuleActive('cbCalendar')) {
-			echo "<script type='text/javascript'>if(typeof(ActivityReminderCallback) != 'undefined') ";
-			$cur_time = time();
-			$last_reminder_check_time = (isset($_SESSION['last_reminder_check_time']) ? $_SESSION['last_reminder_check_time'] : 0);
-			$next_reminder_interval = (isset($_SESSION['next_reminder_interval']) ? $_SESSION['next_reminder_interval'] : 0);
-			$reminder_interval_reset = ($last_reminder_check_time + $next_reminder_interval - $cur_time) * 1000;
-			if (isset($_SESSION['last_reminder_check_time']) && $reminder_interval_reset > 0) {
-				echo "window.setTimeout(function(){
-						ActivityReminderCallback(false);
-					},$reminder_interval_reset);";
-			} else {
-				echo 'ActivityReminderCallback(false);';
-			}
-			echo '</script>';
+	if (!$skipFooters && $current_user->id!=null && isPermitted('cbCalendar', 'index') == 'yes' && vtlib_isModuleActive('cbCalendar')) {
+		echo "<script type='text/javascript'>if(typeof(ActivityReminderCallback) != 'undefined') ";
+		$cur_time = time();
+		$last_reminder_check_time = (isset($_SESSION['last_reminder_check_time']) ? $_SESSION['last_reminder_check_time'] : 0);
+		$next_reminder_interval = (isset($_SESSION['next_reminder_interval']) ? $_SESSION['next_reminder_interval'] : 0);
+		$reminder_interval_reset = ($last_reminder_check_time + $next_reminder_interval - $cur_time) * 1000;
+		if (isset($_SESSION['last_reminder_check_time']) && $reminder_interval_reset > 0) {
+			echo "window.setTimeout(function(){ActivityReminderCallback(false);},$reminder_interval_reset);</script>";
+		} else {
+			echo 'ActivityReminderCallback(false);</script>';
 		}
 	}
 	if (!$skipFooters && $action!='ChangePassword' && $action!='body' && $action!=$Ajx_module.'Ajax' && $action!='Popup' && $action!='ImportStep3' && $action!='ActivityAjax' && $action!='getListOfRecords') {

@@ -25,7 +25,7 @@ if (isset($_REQUEST['check']) && $_REQUEST['check'] =='true') {
 }
 if ($portlname != '' && $portlurl != '') {
 	if (strtolower(substr($portlurl, 0, 4))!='http') {
-		$portlurl = 'http://' . $portlurl;
+		$portlurl = 'https://' . $portlurl;
 	}
 	if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 		$result=UpdatePortal($portlname, str_replace('#$#$#', '&', $portlurl), $_REQUEST['record']);

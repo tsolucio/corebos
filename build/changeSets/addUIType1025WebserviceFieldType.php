@@ -25,7 +25,7 @@ class addUIType1025WebserviceFieldType extends cbupdaterWorker {
 		} else {
 			$this->ExecuteQuery('insert into vtiger_ws_fieldtype(uitype,fieldtype) values(?,?)', array('1025', 'multireference'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

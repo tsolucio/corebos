@@ -5,7 +5,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|01/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|03/04/2020|Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|20/05/2022|Sao Paulo/SP/Brasil.|www.ecrm360.com.br
  ********************************************************************************/
 
 var alert_arr = {
@@ -174,6 +174,7 @@ var alert_arr = {
 	'SAME_GROUPS': 'você terá que selecionar um registro de em um mesmo grupo para mesclar',
 	'ATLEAST_TWO': 'Selecione pelo menos dois registros para mesclar',
 	'MAX_THREE': 'você tem permissão para selecionar no máximo três registros',
+	'MAX_RECORDS_EXCEEDED': 'You have exceeded the maximum amount of selectable records',
 	'MAX_RECORDS': 'você tem permissão para selecionar no máximo quatro registros',
 	'CON_MANDATORY': 'Selecione o campo obrigatório sobrenome',
 	'LE_MANDATORY': 'Selecione os campos obrigatórios sobrenome e empresa',
@@ -246,7 +247,7 @@ var alert_arr = {
 	'LBL_FOLDER_SHOULD_BE_EMPTY': 'A pasta deve estar limpa para ser removida!',
 
 	'LBL_PLEASE_SELECT_FILE_TO_UPLOAD': 'Por gentileza, selecione o arquivo para transferência.',
-	'LBL_ARE_YOU_SURE_TO_MOVE_TO': 'Tem certeza que desenja mover o(s) arquivo(s) para ',
+	'LBL_ARE_YOU_SURE_TO_MOVE_TO': 'Tem certeza que deseja mover o(s) arquivo(s) para ',
 	'LBL_FOLDER': ' Pasta',
 	'LBL_UNABLE_TO_UPDATE': 'Impossível atualizar! Por favor, tente novamente.',
 	'LBL_BLANK_REPLACEMENT': 'não é permitido selecionar valores em branco para substituição',
@@ -325,7 +326,7 @@ var alert_arr = {
 	'LBL_FAQ_TITLE': 'FAQ',
 	'LBL_VIDEO_TITLE': 'Video',
 	'LBL_CLOSE_TITLE': 'Fechar',
-	'LBL_SELECT':'Selecionar o widgets padrão para ser mostrado',
+	'LBL_SELECT':'Selecionar o widget padrão para ser mostrado',
 
 	'ERR_SELECT_ATLEAST_ONE_MERGE_CRITERIA_FIELD' : 'Selecionar pelo menos um campo para os critérios de mesclagem',
 	'ERR_PLEASE_MAP_MANDATORY_FIELDS' : 'Por favor, mapeie os seguintes campos obrigatórios',
@@ -360,6 +361,7 @@ var alert_arr = {
 	'LBL_HAS_CHANGED' : 'foi alterado',
 	'LBL_HAS_CHANGED_TO' : 'foi alterado para',
 	'LBL_WAS' : 'era',
+	'LBL_MONTHDAY' : 'mês-dia',
 	'LBL_IS_EMPTY': 'está vazio',
 	'LBL_IS_NOT_EMPTY' : 'não está vazio',
 	'LBL_EQUAL_TO' : 'igual a',
@@ -408,6 +410,7 @@ var alert_arr = {
 	'EMAIL_WITH_NO_SUBJECT' : '(sem assunto)',
 	'INTEGERVALS':'Somente valores inteiros são permitidos',
 	'JSLBL_Delete': 'Apagar',
+	'JSLBL_Edit': 'Edit',
 	'JSLBL_Loading': 'Carregando',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'O anexo não pode ser excluído',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Limite de carregamento do arquivo excedido!!',
@@ -428,5 +431,45 @@ var alert_arr = {
 	'Okay': 'Ok',
 	'Failed': 'Falhou',
 	'Warning': 'Alerta',
-	'Copied': 'Copiado'
+	'Copied': 'Copiado',
+	'ERR_PASSWORD_NOT_CHANGED': 'Antiga e nova senha são iguais. Por favor, use senhas diferentes.',
+	'ERR_ENTER_OLD_PASSWORD': 'Por favor entre com sua senha antiga.',
+	'ERR_ENTER_NEW_PASSWORD': 'Por favor entre com sua nova senha.',
+	'PASSWORD REQUIREMENTS NOT MET': 'REQUISITOS DE SENHA NÃO ATENDIDOS',
+	'Old password is incorrect': 'A senha antiga é incorreta.',
+	'LBL_OLD_PASSWORD': 'Senha antiga',
+	'LBL_NEW_PASSWORD': 'Nova senha',
+	'PASSWORD REQUIREMENTS': 'Exigências para a senha',
+	'REQUIRED': 'Exigido',
+	'Min. 8 characters': 'Min. 8 caracteres',
+	'Contains3of4': 'Senha deve conter ao menos três dos seguintes grupos de caracteres',
+	'Min. 1 uppercase': 'Min. 1 letra maiúscula',
+	'Min. 1 lowercase': 'Min. 1 letra minúscula',
+	'Min. 1 number': 'Min. 1 número',
+	'Min. 1 special character': 'Min. 1 caracter especial , ! ? , ; - @ #',
+	'LBL_CHANGE_PASSWORD': 'Mudar senha',
+	'ACT_UNIT_PRICE_MISMATCH': 'O preço real para esta moeda deve ser igual ao preço unitário, mas este não é o caso para este produto ou serviço',
+	'LBL_SHOWING': 'Exibindo Registros ',
+	'LBL_RECORDS': ' de ',
+	'LNK_DELETE': 'Lixeira',
+	'LNK_EDIT': 'Editar',
+	'LNK_EDIT_ACTION': 'Editar',
+	'LNK_DELETE_ACTION': 'Apagar',
+	'LBL_SHOW_MORE':'Exibir mais',
+	'LBL_MODIFIED': 'Modificado',
+	'LBL_CREATE': 'Criar',
+	'LBL_IMPORT': 'Importar',
+	'LBL_NO_DATA': 'Nenhum registro nessa visualização',
+	'filterApplied': 'Filtro aplicado',
+	'QuickView': 'Vista rápida',
+	'Restore': 'Recuperar',
+	'LBL_SUCCESS': 'Sucesso',
+	'LBL_CREATED_SUCCESS': 'Criado com sucesso',
+	'LBL_SELECT_COLUMNS': 'Selecione colunas para mostrar na grade',
+	'LBL_MATCH_COLUMNS': 'Selecione colunas para combinar na grade',
+	'LBL_MATCH_ERROR': 'Você só pode corresponder com campos selecionados para mostrar',
+	'ERROR_CREATING_TRY_AGAIN': 'Erro ao criar. Os campos não podem estar vazios ou ter um valor errado.',
+	'LBL_REQUIRED_FIELDS': 'Please fill all required fields',
+	'LBL_ERROR_CREATING': 'Error while creating. Please try again.',
+	'LBL_ERROR_DROPZONE': 'Error uploading link. Check the link and try again.',
 };

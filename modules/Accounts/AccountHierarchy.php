@@ -16,9 +16,6 @@ if (!isset($where)) {
 	$where = '';
 }
 
-$parent_tab=getParentTab();
-$smarty->assign('CATEGORY', $parent_tab);
-
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 

@@ -44,7 +44,7 @@ DIV.fixedLay {
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'shareaccess.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SHARING_ACCESS} </b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SHARING_ACCESS} </b></td>
 					<td rowspan=2 class="small" align=right>&nbsp;</td>
 				</tr>
 				<tr>
@@ -62,7 +62,6 @@ DIV.fixedLay {
 				<form action="index.php" method="post" name="new" id="orgSharingform" onsubmit="VtigerJS_DialogBox.block();">
 				<input type="hidden" name="module" value="Users">
 				<input type="hidden" name="action" value="OrgSharingEditView">
-				<input type="hidden" name="parenttab" value="Settings">
 				<tr>
 					<td class="big"><strong>1. {$CMOD.LBL_GLOBAL_ACCESS_PRIVILEGES}</strong></td>
 					<td class="small cblds-t-align_right" align=right>
@@ -113,7 +112,7 @@ DIV.fixedLay {
                   		<tr>
 		                    <td  style="padding-left:5px;" class="big"><img src="{'arrow.jpg'|@vtiger_imageurl:$THEME}" width="19" height="21" align="absmiddle" />&nbsp; <b>{$mod_display}</b>&nbsp; </td>
                 		    <td align="right" class="cblds-t-align_right">
-					<input class="crmButton small save" type="button" name="Create" value="{$CMOD.LBL_ADD_PRIVILEGES_BUTTON}" onClick="callEditDiv(this,'{$modulename}','create','')">
+					<input class="crmButton small save" type="button" name="Create" value="{$CMOD.LBL_ADD_PRIVILEGES_BUTTON}" onClick="callEditDiv(this,'{$modulename}','create','','{$MODULELABEL}')">
 				    </td>
                   		</tr>
 			  	</table>
@@ -132,7 +131,7 @@ DIV.fixedLay {
                           <td class="listTableRow small">{$elements.2}</td>
                           <td class="listTableRow small">{$elements.3}</td>
                           <td align="center" class="listTableRow small">
-				<a href="javascript:void(0);" onClick="callEditDiv(this,'{$modulename}','edit','{$elements.0}')"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" title='edit' align="absmiddle" border=0 style="padding-top:3px;"></a>&nbsp;|<a href='javascript:confirmdelete("index.php?module=Users&action=DeleteSharingRule&shareid={$elements.0}")'><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" title='del' align="absmiddle" border=0></a></td>
+				<a href="javascript:void(0);" onClick="callEditDiv(this,'{$modulename}','edit','{$elements.0}','{$MODULELABEL}')"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" title='edit' align="absmiddle" border=0 style="padding-top:3px;"></a>&nbsp;|<a href='javascript:confirmdelete("index.php?module=Users&action=DeleteSharingRule&shareid={$elements.0}")'><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" title='del' align="absmiddle" border=0></a></td>
                         </tr>
 
                      {/foreach}
@@ -149,14 +148,14 @@ DIV.fixedLay {
                       <tr>
                         <td  style="padding-left:5px;" class="big"><img src="{'arrow.jpg'|@vtiger_imageurl:$THEME}" width="19" height="21" align="absmiddle" />&nbsp; <b>{$mod_display}</b>&nbsp; </td>
                         <td align="right" class="cblds-t-align_right">
-				<input class="crmButton small save" type="button" name="Create" value="{$APP.LBL_ADD_ITEM} {$CMOD.LBL_PRIVILEGES}" onClick="callEditDiv(this,'{$modulename}','create','')">
+				<input class="crmButton small save" type="button" name="Create" value="{$APP.LBL_ADD_ITEM} {$CMOD.LBL_PRIVILEGES}" onClick="callEditDiv(this,'{$modulename}','create','','{$MODULELABEL}')">
 			</td>
                       </tr>
 			<table width="100%" cellpadding="5" cellspacing="0">
 			<tr>
 			<td colspan="2"  style="padding:20px;" align="center" class="small cblds-t-align_center">
 			   {$CMOD.LBL_CUSTOM_ACCESS_MESG}
-			   <a href="javascript:void(0);" onClick="callEditDiv(this,'{$modulename}','create','')">{$CMOD.LNK_CLICK_HERE}</a>
+			   <a href="javascript:void(0);" onClick="callEditDiv(this,'{$modulename}','create','','{$MODULELABEL}')">{$CMOD.LNK_CLICK_HERE}</a>
 			   {$CMOD.LBL_CREATE_RULE_MESG}
 			</td>
 			</tr>
@@ -195,7 +194,10 @@ DIV.fixedLay {
 	</td>
 	<br>
 	<tr>
-		<td align="center" class="cblds-t-align_center"><input type="button" style="color: #000000;" value="{$CMOD.LBL_YES}" onclick="return disableStyle('confId');">&nbsp;&nbsp;<input type="button" value="&nbsp;{$CMOD.LBL_NO}&nbsp;" style="color: #000000;" onclick="showSelect();document.getElementById('confId').style.display='none';document.body.removeChild(document.getElementById('freeze'));"></td>
+		<td align="center" class="cblds-t-align_center">
+			<input type="button" style="color: #000000;" value="{$CMOD.LBL_YES}" onclick="return disableStyle('confId');">&nbsp;&nbsp;
+			<input type="button" value="&nbsp;{$CMOD.LBL_NO}&nbsp;" style="color: #000000;" onclick="showSelect();document.getElementById('confId').style.display='none';document.body.removeChild(document.getElementById('freeze'));">
+		</td>
 	</tr>
 </tr>
 </table>
@@ -213,97 +215,12 @@ DIV.fixedLay {
 </div>
 </section>
 <script>
-function callEditDiv(obj,modulename,mode,id)
-	{ldelim}
-		document.getElementById("status").style.display="inline";
-		jQuery.ajax({ldelim}
-			method: 'POST',
-			url: 'index.php?module=Settings&action=SettingsAjax&orgajax=true&mode='+mode+'&sharing_module='+modulename+'&shareid='+id,
-		{rdelim}).done(function (response) {ldelim}
-			document.getElementById("status").style.display="none";
-			document.getElementById("tempdiv").innerHTML=response;
-			fnvshobj(obj,"tempdiv");
-			if(mode == 'edit')
-			{ldelim}
-				setTimeout("",10000);
-				var related = document.getElementById('rel_module_lists').value;
-				fnwriteRules(modulename,related);
-			{rdelim}
-		{rdelim});
-	{rdelim}
-
-function fnwriteRules(module,related)
-{ldelim}
-		var modulelists = new Array();
-		modulelists = related.split('###');
-		var relatedstring ='';
-		var relatedtag;
-		var relatedselect;
-		var modulename;
-		for(i=0;i < modulelists.length-1;i++)
-		{ldelim}
-			modulename = modulelists[i]+"_accessopt";
-			relatedtag = document.getElementById(modulename);
-			relatedselect = relatedtag.options[relatedtag.selectedIndex].text;
-			relatedstring += modulelists[i]+':'+relatedselect+' ';
-		{rdelim}
-		var tagName = document.getElementById(module+"_share");
-		var tagName2 = document.getElementById(module+"_access");
-		var tagName3 = document.getElementById('share_memberType');
-		var soucre =  document.getElementById("rules");
-		var soucre1 =  document.getElementById("relrules");
-		var select1 = tagName.options[tagName.selectedIndex].text;
-		var select2 = tagName2.options[tagName2.selectedIndex].text;
-		var select3 = tagName3.options[tagName3.selectedIndex].text;
-
-		if(module == '{$APP.Accounts}')
-		{ldelim}
-			module = '{$APP.Accounts} & {$APP.Contacts}';
-		{rdelim}
-
-		soucre.innerHTML = module +" {$APP.LBL_LIST_OF} <b>\"" + select1 + "\"</b> {$CMOD.LBL_CAN_BE_ACCESSED} <b>\"" +select2 + "\"</b> {$CMOD.LBL_IN_PERMISSION} "+select3;
-		soucre1.innerHTML = "<b>{$CMOD.LBL_RELATED_MODULE_RIGHTS}</b> " + relatedstring;
-{rdelim}
-
-		function confirmdelete(url)
-		{ldelim}
-			if(confirm("{$APP.ARE_YOU_SURE}"))
-			{ldelim}
-				document.location.href=url;
-			{rdelim}
-		{rdelim}
-
-	function disableStyle(id)
-	{ldelim}
-			document.getElementById('orgSharingform').action.value = 'RecalculateSharingRules';
-			document.getElementById('orgSharingform').submit();
-			document.getElementById(id).style.display = 'none';
-
-			if(browser_ie && (gBrowserAgent.indexOf("msie 7.")!=-1))//for IE 7
-                        {ldelim}
-                                document.body.removeChild(document.getElementById('freeze'));
-                        {rdelim}else if(browser_ie)
-                        {ldelim}
-                             var oDivfreeze = document.getElementById('divId');
-                             oDivfreeze.style.height = document.documentElement['clientHeight'] + 'px';
-
-                        {rdelim}
-                        document.getElementById('divId').style.display = 'block';
-	{rdelim}
-
-	function freezeBackground()
-	{ldelim}
-	    var oFreezeLayer = document.createElement("DIV");
-	    oFreezeLayer.id = "freeze";
-	    oFreezeLayer.className = "small veil";
-
-	     if (browser_ie) oFreezeLayer.style.height = (document.body.offsetHeight + (document.body.scrollHeight - document.body.offsetHeight)) + "px";
-	     else if (browser_nn4 || browser_nn6) oFreezeLayer.style.height = document.body.offsetHeight + "px";
-
-	    oFreezeLayer.style.width = "100%";
-	    document.body.appendChild(oFreezeLayer);
-	    document.getElementById('confId').style.display = 'block';
-	    hideSelect();
-	{rdelim}
-
+var i18nOrgSharing = {
+	'Accounts': '{$APP.Accounts}',
+	'Contacts': '{$APP.Contacts}',
+	'LBL_LIST_OF': '{$APP.LBL_LIST_OF}',
+	'LBL_CAN_BE_ACCESSED': '{$CMOD.LBL_CAN_BE_ACCESSED}',
+	'LBL_IN_PERMISSION': '{$CMOD.LBL_IN_PERMISSION}',
+	'LBL_RELATED_MODULE_RIGHTS': '{$CMOD.LBL_RELATED_MODULE_RIGHTS}',
+};
 </script>

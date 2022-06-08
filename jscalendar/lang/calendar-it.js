@@ -71,9 +71,13 @@ Calendar._TT["MON_FIRST"] = "Parti da lunedì";
 Calendar._TT["SUN_FIRST"] = "Parti da domenica";
 Calendar._TT["CLOSE"] = "Chiudi";
 Calendar._TT["TODAY"] = "Oggi";
+Calendar._TT["DAY_FIRST"] = "Display %s first";
+Calendar._TT["TIME_PART"] = "(Shift-)Click or drag to change value";
+Calendar._TT["WEEKEND"] = "0,6";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%d-%m-%Y";
 Calendar._TT["TT_DATE_FORMAT"] = "%a, %e %b ";
 
 Calendar._TT["WK"] = "Setti";
+Calendar._TT["TIME"] = "Time:";

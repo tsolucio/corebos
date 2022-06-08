@@ -10,7 +10,9 @@
  ************************************************************************************/
 
 $mod_strings = array (
-'Webforms' => 'formulario Web',
+'Webforms' => 'Formularios Web',
+'SINGLE_Webforms' => 'Formulario Web',
+'Webforms ID' => 'ID Formulario Web',
 'Allows you to manage Webforms' => 'Crea y administra formularios web para capturar oportunidades de negocio',
 'LBL_SUCCESS' => 'ha sido agregado a la aplicación.',
 'LBL_FAILURE' => 'No se ha podido agregar la entrada en la aplicación.',

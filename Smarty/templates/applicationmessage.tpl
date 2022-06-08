@@ -14,6 +14,11 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 -->*}
+{if !empty($APMSG_LOADLDS)}
+	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
+	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
+	<link rel="stylesheet" href="include/style.css" type="text/css" />
+{/if}
 {assign var="slds_role" value=""}
 {if !empty($ERROR_MESSAGE)}
 {if empty($ERROR_MESSAGE_CLASS) || $ERROR_MESSAGE_CLASS eq "cb-alert-danger"}
@@ -33,7 +38,7 @@
 	<h2>
 		<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true">
 		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$slds_role}"></use>
-		</svg>{if !empty($ERROR_MESSAGE)}{$ERROR_MESSAGE}{/if}
+		</svg>{if !empty($ERROR_MESSAGE)}{$ERROR_MESSAGE|vtlib_purify}{/if}
 	</h2>
 	</div>
 </div>

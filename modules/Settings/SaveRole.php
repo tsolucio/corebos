@@ -46,5 +46,5 @@ if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit') {
 	}
 }
 
-header('Location: index.php?action=listroles&module=Settings&parenttab=Settings');
+header('Location: index.php?action=listroles&module=Settings');
 ?>

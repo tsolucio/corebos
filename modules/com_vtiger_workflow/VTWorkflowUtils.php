@@ -44,10 +44,15 @@ class VTWorkflowUtils {
 			$fieldtype = '';
 		}
 		if ($fieldValueType == 'fieldname' && !preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue)) {
-			if ($fieldtype === 'currency' || $fieldtype === 'double') {
-				$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue, $focus->column_fields[$fieldValue], $handlerMeta->getTabId());
+			if (substr($fieldValue, 0, 14)=='previousvalue_') {
+				$entityDelta = new VTEntityDelta();
+				$fieldValue = $entityDelta->getOldEntityValue($entity->getModuleName(), $focus->id, substr($fieldValue, 14));
+			} else {
+				if ($fieldtype === 'currency' || $fieldtype === 'double') {
+					$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue, $focus->column_fields[$fieldValue], $handlerMeta->getTabId());
+				}
+				$fieldValue = $focus->column_fields[$fieldValue];
 			}
-			$fieldValue = $focus->column_fields[$fieldValue];
 		} elseif ($fieldValueType == 'expression' || ($fieldValueType == 'fieldname' && preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue))) {
 			include_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 			$fieldValue = preg_replace('/<br(\s+)?\/?>/i', ' ', $fieldValue);
@@ -80,7 +85,7 @@ class VTWorkflowUtils {
 			}
 		}
 
-		if ($fieldtype === 'owner') {
+		if ($fieldtype === 'owner' && !is_numeric($fieldValue)) {
 			$userId = getUserId_Ol($fieldValue);
 			$groupId = getGrpId($fieldValue);
 
@@ -147,17 +152,10 @@ class VTWorkflowUtils {
 
 	/**
 	 * The the webservice entity type of an EntityData object
+	 * @deprecated
 	 */
 	public static function toWSModuleName($entityData) {
-		$moduleName = $entityData->getModuleName();
-		if ($moduleName == 'Activity') {
-			$arr = array('Task' => 'Calendar', 'Emails' => 'Emails');
-			$moduleName = $arr[getActivityType($entityData->getId())];
-			if ($moduleName == null) {
-				$moduleName = 'Events';
-			}
-		}
-		return $moduleName;
+		return $entityData->getModuleName();
 	}
 
 	/**
@@ -185,7 +183,7 @@ class VTWorkflowUtils {
 	public static function checkModuleWorkflow($modulename) {
 		global $adb;
 		$tabid = getTabid($modulename);
-		$modules_not_supported = array('Calendar', 'Faq', 'Events', 'PBXManager', 'Users');
+		$modules_not_supported = array('Faq', 'PBXManager', 'Users');
 		$query = 'SELECT name FROM vtiger_tab WHERE name not in ('.generateQuestionMarks($modules_not_supported).') AND isentitytype=1 AND presence = 0 AND tabid = ?';
 		$result = $adb->pquery($query, array($modules_not_supported, $tabid));
 		$rows = $adb->num_rows($result);
@@ -193,7 +191,7 @@ class VTWorkflowUtils {
 	}
 
 	public static function vtGetModules($adb) {
-		$modules_not_supported = array('Calendar', 'Events', 'PBXManager');
+		$modules_not_supported = array('PBXManager');
 		$sql = 'select distinct vtiger_field.tabid, name
 			from vtiger_field
 			inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid
@@ -213,11 +211,7 @@ class VTWorkflowUtils {
 	}
 
 	public static function vtGetModulesAndExtensions($adb) {
-		$modules_not_supported = array('Calendar', 'Events');
-		$sql = 'select tabid, name
-			from vtiger_tab
-			where vtiger_tab.name not in(' . generateQuestionMarks($modules_not_supported) . ') and vtiger_tab.presence in (0,2)';
-		$it = new SqlResultIterator($adb, $adb->pquery($sql, array($modules_not_supported)));
+		$it = new SqlResultIterator($adb, $adb->pquery('select tabid, name from vtiger_tab where vtiger_tab.presence in (0,2)', array()));
 		$modules = array();
 		foreach ($it as $row) {
 			$modules[] = $row->name;
@@ -232,25 +226,10 @@ class VTWorkflowUtils {
 	}
 
 	public static function getModulesList($adb, $selected = '') {
-		$modules_not_supported = array('Calendar', 'Events', 'PBXManager');
-		$sql = 'select distinct vtiger_field.tabid, name
-			from vtiger_field
-			inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid
-			where vtiger_tab.name not in(' . generateQuestionMarks($modules_not_supported) . ') and vtiger_tab.isentitytype=1 and vtiger_tab.presence in (0,2)';
-		$it = new SqlResultIterator($adb, $adb->pquery($sql, array($modules_not_supported)));
-		$modules = array();
-		foreach ($it as $row) {
-			$modules[] = $row->name;
-		}
-		uasort(
-			$modules,
-			function ($a, $b) {
-				return (strtolower(getTranslatedString($a, $a)) < strtolower(getTranslatedString($b, $b))) ? -1 : 1;
-			}
-		);
-		$module_options = '<option value="all" '.($selected=='' ? 'selected' : '').'>'.getTranslatedString('LBL_ALLPICKLIST').'</option>';
+		$modules = self::vtGetModules($adb);
+		$module_options = '<option value="all"'.($selected=='' ? ' selected' : '').'>'.getTranslatedString('LBL_ALLPICKLIST').'</option>';
 		foreach ($modules as $moduleName) {
-			$module_options .= '<option value="'.$moduleName.'"'.($selected==$moduleName ? 'selected' : '').'>' . getTranslatedString($moduleName, $moduleName) . '</option>';
+			$module_options .= '<option value="'.$moduleName.'"'.($selected==$moduleName ? ' selected' : '').'>' . getTranslatedString($moduleName, $moduleName) . '</option>';
 		}
 		return $module_options;
 	}

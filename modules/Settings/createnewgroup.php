@@ -40,56 +40,43 @@ if (isset($_REQUEST['groupId']) && $_REQUEST['groupId'] != '') {
 //Constructing the Role Array
 $roleDetails=getAllRoleDetails();
 asort($roleDetails);
-$i=0;
-$roleIdStr='';
-$roleNameStr='';
-$userIdStr='';
-$userNameStr='';
-$grpIdStr='';
-$grpNameStr='';
-
+$roleIdStrArr=array();
+$roleNameStrArr=array();
 foreach ($roleDetails as $roleId => $roleInfo) {
 	if ($roleId != 'H1') {
-		if ($i >=1) {
-			$roleIdStr .= ', ';
-			$roleNameStr .= ', ';
-		}
 		$roleName=$roleInfo[0];
-		$roleIdStr .= "'".$roleId."'";
-		$roleNameStr .= "'".addslashes(decode_html($roleName))."'";
+		$roleIdStrArr[] = "'".$roleId."'";
+		$roleNameStrArr[] = "'".addslashes(decode_html($roleName))."'";
 	}
-	$i++;
 }
+$roleIdStr=implode(',', $roleIdStrArr);
+$roleNameStr=implode(',', $roleNameStrArr);
 
 //Constructing the User Array
-$l=0;
 $userDetails=getAllUserName();
 asort($userDetails);
+$userIdStrArr=array();
+$userNameStrArr=array();
 foreach ($userDetails as $userId => $userInfo) {
-	if ($l !=0) {
-		$userIdStr .= ', ';
-		$userNameStr .= ', ';
-	}
-	$userIdStr .= "'".$userId."'";
-	$userNameStr .= "'".addslashes(decode_html($userInfo))."'";
-	$l++;
+	$userIdStrArr[] = "'".$userId."'";
+	$userNameStrArr[] = "'".addslashes(decode_html($userInfo))."'";
 }
+$userIdStr=implode(',', $userIdStrArr);
+$userNameStr=implode(',', $userNameStrArr);
 
 //Constructing the Group Array
-$m=0;
 $grpDetails=getAllGroupName();
 asort($grpDetails);
+$grpIdStrArr=array();
+$grpNameStrArr=array();
 foreach ($grpDetails as $grpId => $grpName) {
-	if (! in_array($grpId, $parentGroupArray)) {
-		if ($m !=0) {
-			$grpIdStr .= ', ';
-			$grpNameStr .= ', ';
-		}
-		$grpIdStr .= "'".$grpId."'";
-		$grpNameStr .= "'".addslashes(decode_html($grpName))."'";
-		$m++;
+	if (!in_array($grpId, $parentGroupArray)) {
+		$grpIdStrArr[] = "'".$grpId."'";
+		$grpNameStrArr[] = "'".addslashes(decode_html($grpName))."'";
 	}
 }
+$grpIdStr=implode(',', $grpIdStrArr);
+$grpNameStr=implode(',', $grpNameStrArr);
 $member = array();
 if ($mode == 'edit') {
 	$groupMemberArr=$groupInfo[2];

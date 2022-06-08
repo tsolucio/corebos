@@ -18,7 +18,6 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 class coreBOSEventsExample extends VTEventHandler {
-	private $_moduleCache = array();
 
 	/**
 	 * @param $handlerType
@@ -45,6 +44,9 @@ class coreBOSEventsExample extends VTEventHandler {
 				break;
 			case 'corebos.audit.login.attempt':
 				$log->fatal('corebos.audit.login.attempt');
+				$log->fatal($entityData);
+				break;
+			case 'corebos.entity.import.skip':
 				$log->fatal($entityData);
 				break;
 			case 'corebos.entity.link.before':
@@ -103,7 +105,7 @@ class coreBOSEventsExample extends VTEventHandler {
 				}
 				if ($currentModule=='Accounts') {
 					$actionpos = count($parameter[0])-1;
-					$parameter[0][$actionpos] = '<a href="index.php?action=CallRelatedList&module=Accounts&record='.$parameter[2].'&parenttab=Marketing">+Info</a> | '.$parameter[0][$actionpos];
+					$parameter[0][$actionpos] = '<a href="index.php?action=CallRelatedList&module=Accounts&record='.$parameter[2].'">+Info</a> | '.$parameter[0][$actionpos];
 					//$actionelem = explode(' | ', $action);
 				}
 				break;

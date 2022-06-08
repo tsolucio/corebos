@@ -21,5 +21,5 @@ if ($assignType == 'T') {
 
 deleteGroup($del_id, $transferId);
 
-header('Location: index.php?action=listgroups&module=Settings&parenttab=Settings');
+header('Location: index.php?action=listgroups&module=Settings');
 ?>

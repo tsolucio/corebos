@@ -45,13 +45,13 @@ var moduleName = '{$entityName}';
 			<input type="radio" name="gdformat" value="0" {if isset($task->gdformat) && $task->gdformat eq 0}checked{/if}> PDF
 		</span>
 	</div>
-	<div class="slds-col slds-size_3-of-8 slds-p-around_x-small">
+	<div class="slds-col slds-size_2-of-8 slds-p-around_x-small">
 		<span>
 			<div class="slds-form-element">
 				<label class="slds-checkbox_toggle slds-grid">
 					<span class="slds-form-element__label slds-m-bottom_none"><b>{'UpdatePrevious'|@getTranslatedString:'evvtgendoc'}</b></span>
 						<input type="checkbox" id="updateOnChange" name="updateOnChange" value="true" {if $task->updateOnChange}checked{/if}>
-							<span id="updateOnChange" class="slds-checkbox_faux_container" aria-live="assertive">
+							<span id="spanupdateOnChange" class="slds-checkbox_faux_container" aria-live="assertive">
 							<span class="slds-checkbox_faux"></span>
 							<span class="slds-checkbox_on"></span>
 							<span class="slds-checkbox_off"></span>
@@ -60,7 +60,22 @@ var moduleName = '{$entityName}';
 			</div>
 		</span>
 	</div>
-	<div class="slds-col slds-size_3-of-8 slds-p-around_x-small"></div>
+	<div class="slds-col slds-size_2-of-8 slds-p-around_x-small">
+		<span>
+			<div class="slds-form-element">
+				<label class="slds-checkbox_toggle slds-grid">
+					<span class="slds-form-element__label slds-m-bottom_none"><b>{'shareOnCreate'|@getTranslatedString:'evvtgendoc'}</b></span>
+						<input type="checkbox" id="shareOnCreate" name="shareOnCreate" value="true" {if $task->shareOnCreate}checked{/if}>
+							<span id="spanshareOnCreate" class="slds-checkbox_faux_container" aria-live="assertive">
+							<span class="slds-checkbox_faux"></span>
+							<span class="slds-checkbox_on"></span>
+							<span class="slds-checkbox_off"></span>
+						</span>
+				</label>
+			</div>
+		</span>
+	</div>
+	<div class="slds-col slds-size_1-of-8 slds-p-around_x-small"></div>
 </div>
 <div class="slds-grid slds-p-horizontal_x-large">
 	<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
@@ -78,7 +93,7 @@ var moduleName = '{$entityName}';
 <div class="slds-grid slds-p-horizontal_x-large">
 	<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
 		<input type="hidden" id="gendoctemplate" name="gendoctemplate" value="{if !empty($task->gendoctemplate)}{$task->gendoctemplate}{/if}">
-		<select class="small" size="18" style="width:540px;overflow:auto;" id="gdtplsel" name="gdtplsel" multiple onchange="fillGenDocTemplate(this);"></select>
+		<select class="slds-select" size="12" style="width:540px;overflow:auto;" id="gdtplsel" name="gdtplsel" multiple onchange="fillGenDocTemplate(this);"></select>
 	</div>
 </div>
 <script type="text/javascript" charset="utf-8">

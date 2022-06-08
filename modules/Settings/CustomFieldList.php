@@ -124,51 +124,13 @@ function getCFLeadMapping($module) {
 	return $cflist;
 }
 
-/**
- * Function to Lead customfield Mapping entries
- * @param integer  $cfid   - Lead customfield id
- * return array    $label  - customfield mapping
- */
-function getListLeadMapping($cfid) {
-	global $adb;
-	$result = $adb->pquery('select * from vtiger_convertleadmapping where cfmid=?', array($cfid));
-	$noofrows = $adb->num_rows($result);
-	for ($i = 0; $i < $noofrows; $i++) {
-		$accountid = $adb->query_result($result, $i, 'accountfid');
-		$contactid = $adb->query_result($result, $i, 'contactfid');
-		$potentialid = $adb->query_result($result, $i, 'potentialfid');
-		if (empty($accountid)) {
-			$label['accountlabel'] = '';
-		} else {
-			$result2 = $adb->pquery('select fieldlabel from vtiger_field where fieldid=?', array($accountid));
-			$accountfield = $adb->query_result($result2, 0, 'fieldlabel');
-			$label['accountlabel'] = getTranslatedString($accountfield, 'Accounts');
-		}
-		if (empty($contactid)) {
-			$label['contactlabel'] = '';
-		} else {
-			$result3 = $adb->pquery('select fieldlabel from vtiger_field where fieldid=?', array($contactid));
-			$contactfield = $adb->query_result($result3, 0, 'fieldlabel');
-			$label['contactlabel'] = getTranslatedString($contactfield, 'Contacts');
-		}
-		if (empty($potentialid)) {
-			$label['potentiallabel'] = '';
-		} else {
-			$result4 = $adb->pquery('select fieldlabel from vtiger_field where fieldid=?', array($potentialid));
-			$potentialfield = $adb->query_result($result4, 0, 'fieldlabel');
-			$label['potentiallabel'] = getTranslatedString($potentialfield, 'Potentials');
-		}
-	}
-	return $label;
-}
-
 /* function to get the modules supports Custom Fields */
 function getCustomFieldSupportedModules() {
 	global $adb;
 	$sql = 'SELECT distinct vtiger_field.tabid,name
 		FROM vtiger_field
 		INNER JOIN vtiger_tab ON vtiger_field.tabid=vtiger_tab.tabid
-		WHERE vtiger_field.tabid NOT IN(9,10,16,29) AND vtiger_tab.presence != 1'; // Both 9 and 16 point to Calendar itself
+		WHERE vtiger_field.tabid NOT IN(10,29) AND vtiger_tab.presence != 1';
 	$result = $adb->pquery($sql, array());
 	$modulelist = array();
 	while ($moduleinfo = $adb->fetch_array($result)) {

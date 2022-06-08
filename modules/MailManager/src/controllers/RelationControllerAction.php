@@ -10,20 +10,18 @@
 require_once 'modules/Settings/MailScanner/core/MailScannerAction.php';
 require_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
 require_once 'include/utils/utils.php';
+require_once 'modules/Emails/mail.php';
 
 /**
  * Class which Creates Emails, Attachments and Documents
  */
 class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 
-	public function __construct() {
-	}
-
 	/**
 	 * Create new Email record (and link to given record) including attachments
 	 * @global Users $current_user
 	 * @param  MailManager_Model_Message $mailrecord
-	 * @param String $module
+	 * @param string $module
 	 * @param CRMEntity $linkfocus
 	 * @return Integer
 	 */
@@ -34,43 +32,33 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		}
 		$handler = vtws_getModuleHandlerFromName('Emails', $current_user);
 		$meta = $handler->getMeta();
-		if ($meta->hasWriteAccess() != true) {
+		if (!$meta->hasWriteAccess()) {
 			return false;
 		}
-
-		$focus = new Emails();
-		$focus->column_fields['activitytype'] = 'Emails';
-		$focus->column_fields['subject'] = $mailrecord->_subject;
-
-		if (!empty($module)) {
-			$focus->column_fields['parent_type'] = $module;
-		}
-		if (!empty($linkfocus->id)) {
-			$focus->column_fields['parent_id'] = "$linkfocus->id@-1|";
-		}
-
-		$focus->column_fields['description'] = $mailrecord->getBodyHTML();
-		$focus->column_fields['assigned_user_id'] = $linkfocus->column_fields['assigned_user_id'];
-		$focus->column_fields["date_start"]= date('Y-m-d', $mailrecord->_date);
-		$focus->column_fields["email_flag"] = 'MailManager';
-
-		$from=$mailrecord->_from[0];
-		$to = $mailrecord->_to[0];
-		$cc = (!empty($mailrecord->_cc))? implode(',', $mailrecord->_cc) : '';
-		$bcc= (!empty($mailrecord->_bcc))? implode(',', $mailrecord->_bcc) : '';
-
-		//emails field were restructured and to,bcc and cc field are JSON arrays
-		$focus->column_fields['from_email'] = $from;
-		$focus->column_fields['saved_toid'] = $to;
-		$focus->column_fields['ccmail'] = $cc;
-		$focus->column_fields['bccmail'] = $bcc;
-		$focus->save('Emails');
-
+		$element = array(
+			'subject' => $mailrecord->_subject,
+			'parent_type' => empty($module) ? '' : $module,
+			'parent_id' => empty($linkfocus->id) ? '' : "$linkfocus->id@-1|",
+			'description' => $mailrecord->getBodyHTML(),
+			'assigned_user_id' => $linkfocus->column_fields['assigned_user_id'],
+			'date_start' => date('Y-m-d', $mailrecord->_date),
+			'email_flag' => 'MailManager',
+			'from_email' => $mailrecord->_from[0],
+			'replyto' => $mailrecord->_reply_to[0],
+			'saved_toid' => $mailrecord->_to[0],
+			'ccmail' => empty($mailrecord->_cc) ? '' : implode(',', $mailrecord->_cc),
+			'bccmail' => empty($mailrecord->_bcc) ? '' : implode(',', $mailrecord->_bcc),
+			'bounced' => '0',
+			'clicked' => '0',
+			'spamreport' => '0',
+			'delivered' => '1',
+			'dropped' => '0',
+			'open' => '1',
+			'unsubscribe' => '0',
+		);
+		$focus = createEmailRecordWithSave($element);
 		$emailid = $focus->id;
-
-		// TODO: Handle attachments of the mail (inline/file)
 		$this->__SaveAttachements($mailrecord, 'Emails', $focus, $module, $linkfocus);
-
 		return $emailid;
 	}
 
@@ -79,7 +67,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	 * @global PearDataBase $adb
 	 * @global String $root_directory
 	 * @param MailManager_Model_Message $mailrecord
-	 * @param String $basemodule
+	 * @param string $basemodule
 	 * @param CRMEntity $basefocus
 	 */
 	public function __SaveAttachements($mailrecord, $basemodule, $basefocus, $relate2module = '', $relate2focus = '') {
@@ -161,7 +149,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		global $current_user;
 		$handler = vtws_getModuleHandlerFromName('Documents', $current_user);
 		$meta = $handler->getMeta();
-		if ($meta->hasWriteAccess() != true) {
+		if (!$meta->hasWriteAccess()) {
 			return false;
 		}
 		$document = CRMEntity::getInstance('Documents');
@@ -184,7 +172,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	 * @return Array
 	 */
 	public static function associate($mailrecord, $linkto) {
-		$instance = new self();
+		$instance = new self(0);
 
 		$modulename = getSalesEntityType($linkto);
 		$linkfocus = CRMEntity::getInstance($modulename);
@@ -198,15 +186,14 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		}
 
 		$name = getEntityName($modulename, $linkto);
-		$detailInformation =  self::buildDetailViewLink($modulename, $linkfocus->id, $name[$linkto]);
-		return $detailInformation;
+		return  self::buildDetailViewLink($modulename, $linkfocus->id, $name[$linkto]);
 	}
 
 	/**
 	 * Returns the information about the Parent
-	 * @param String $module
+	 * @param string $module
 	 * @param Integer $record
-	 * @param String $label
+	 * @param string $label
 	 * @return Array
 	 */
 	public static function buildDetailViewLink($module, $record, $label) {
@@ -236,7 +223,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	 */
 	public static function getSalesEntityInfo($crmid) {
 		global $adb;
-		$result = $adb->pquery('SELECT setype FROM vtiger_crmentity WHERE crmid=? AND deleted=0', array($crmid));
+		$result = $adb->pquery('SELECT setype FROM vtiger_crmobject WHERE crmid=? AND deleted=0', array($crmid));
 		if ($adb->num_rows($result)) {
 			$modulename = $adb->query_result($result, 0, 'setype');
 			$recordlabels = getEntityName($modulename, array($crmid));

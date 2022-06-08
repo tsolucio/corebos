@@ -1,0 +1,112 @@
+.listview-checkbox {
+    position: relative;
+    cursor: pointer;
+}
+
+.listview-checkbox:before {
+    content: "";
+    border: 1px solid #d3d3d3;
+    display: block;
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    top: 0px;
+    left: 0px;
+    background-color:#fff;
+    border-radius: 2px
+}
+
+.listview-checkbox:checked:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    top: 0px;
+    left: 0px;
+    background-color:#509cf1;
+    border-radius: 2px
+}
+
+.listview-checkbox:checked:after {
+    content: "";
+    display: block;
+    width: 4px;
+    height: 7px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: absolute;
+    top: 4px;
+    left: 6px;
+}
+
+#ttmodcomments .dataField,
+#ttmodcomments .dataLabel {
+  white-space: normal;
+}
+
+.tui-grid-cell-has-overflow {
+  overflow: visible;
+}
+
+#listview-tui-grid .tui-grid-cell {
+  padding-left: calc(0.7rem - 5px);
+}
+#listview-tui-grid .tui-grid-cell-header {
+  padding-left: 0.7rem;
+}
+
+/* ---- CBDS tooltip ---- */
+.cbds-tooltip__trigger .cbds-tooltip__wrapper {
+  left: 1000000000000000px;
+  z-index: 100000;
+  position: absolute;
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+.cbds-tooltip__trigger:hover .cbds-tooltip__wrapper {
+  left: auto;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 100ms linear 50ms, transform 100ms linear 50ms;
+}
+
+.cbds-tooltip__wrapper--inner {
+  position:absolute;
+  color: #080707 !important;
+  padding-bottom: 1rem;
+  -webkit-transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
+  -moz-transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
+  transform: translateY(-100%) translateY(-1rem) translateX(-50%) translateX(0.5rem);
+}
+
+/* ---- CBDS loader ---- */
+.cbds-loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #006dcc;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-left: 45%;
+  margin-top: 5%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.tui-grid-body-area,
+.tui-grid-rside-area,
+[data-column-name="cblvactioncolumn"] {
+  overflow: visible !important;
+}

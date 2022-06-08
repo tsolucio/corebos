@@ -12,7 +12,11 @@ require_once 'modules/Users/LoginHistory.php';
 require_once 'modules/Users/Users.php';
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/Session.php';
+include_once 'include/integrations/saml/saml.php';
 global $adb,$current_user;
+$_SERVER['REQUEST_METHOD'] = 'POST';
+$_POST[$GLOBALS['csrf']['input-name']] = empty($_REQUEST[$GLOBALS['csrf']['input-name']]) ? '' : $_REQUEST[$GLOBALS['csrf']['input-name']];
+Vtiger_Request::validateRequest();
 
 // Recording Logout Info
 $loghistory=new LoginHistory();
@@ -24,7 +28,10 @@ $local_log = LoggerManager::getLogger('Logout');
 
 // clear out the autthenticating flag
 coreBOS_Session::destroy();
-
+$saml = new corebos_saml();
+if ($saml->isActive() && !empty($saml->samlclient)) {
+	$saml->logout();
+}
 // go to the login screen.
 header('Location: index.php?action=Login&module=Users');
 ?>

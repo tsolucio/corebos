@@ -86,35 +86,24 @@ function updateModEntityExisting(button, form) {
 {assign var="MODULESECTION" value=$MOD.LBL_CUSTOMIZE_MODENT_NUMBER}
 {assign var="MODULESECTIONDESC" value=$MOD.LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION}
 {include file='SetMenu.tpl'}
-<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
-<div class="slds-modal__container slds-p-around_none slds-card">
-<div align=center>
-	<br>
+<div class="slds-p-around_small slds-card" style="width:98%;margin:auto;">
 	<form method="POST" action="javascript:;" onsubmit="VtigerJS_DialogBox.block();">
-		<table class="slds-table slds-table_cell-buffer slds-table-no_bordered " border="0" cellpadding="5" cellspacing="0">
-			<tr>
-				<td  width="30%" align="left">
-					{$MOD.LBL_SELECT_CF_TEXT}
-					<select name="selmodule" class="slds-select" width="30%" onChange="getModuleEntityNoInfo(this.form)">
-					{foreach key=sel_value item=value from=$MODULES}
-						{if $SELMODULE eq $sel_value}
-							{assign var = "selected_val" value="selected"}
-						{else}
-							{assign var = "selected_val" value=""}
-						{/if}
-						{assign var="MODULE_LABEL" value=$value}
-						{assign var="MODULE_LABEL" value=$value|getTranslatedString:$value}
-						<option value="{$sel_value}" {$selected_val}>{$MODULE_LABEL}</option>
-					{/foreach}
-					</select>
-				</td>
-				<td  width="70%" align="left"></td>
-			</tr>
-		</table>
+		<div class="slds-page-header">
+			{$MOD.LBL_SELECT_CF_TEXT}
+			<select name="selmodule" class="slds-select" width="30%" onChange="getModuleEntityNoInfo(this.form)">
+			{foreach key=sel_value item=value from=$MODULES}
+				{if $SELMODULE eq $sel_value}
+					{assign var = "selected_val" value="selected"}
+				{else}
+					{assign var = "selected_val" value=""}
+				{/if}
+				{assign var="MODULE_LABEL" value=$value|getTranslatedString:$value}
+				<option value="{$sel_value}" {$selected_val}>{$MODULE_LABEL}</option>
+			{/foreach}
+			</select>
+		</div>
 		<div id='customentity_infodiv' class="listRow">
 			{include file='Settings/CustomModEntityNoInfo.tpl'}
 		</div>
 	</form>
 </div>
-</div>
-</section>

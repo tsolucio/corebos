@@ -14,24 +14,16 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 require_once 'config.inc.php';
+require_once 'include/logging/cbLogger.php';
+require_once 'include/logging/cbLoggerStub.php';
 
-// Performance Optimization: Configure the log folder
+global $log;
 if (!empty($LOG4PHP_DEBUG)) {
-	define('LOG4PHP_DIR', 'include/log4php.debug');
-	require_once LOG4PHP_DIR.'/Logger.php';
-	Logger::configure('log4php.properties');
-	class LoggerManager {
-		public static function getlogger($name = 'ROOT') {
-			return Logger::getLogger($name);
-		}
-	}
+	require_once 'include/logging/LoggerManager.php';
 } else {
-	define('LOG4PHP_DIR', 'include/log4php');
-	require_once LOG4PHP_DIR.'/LoggerManager.php';
-	require_once LOG4PHP_DIR.'/LoggerPropertyConfigurator.php';
-	$config = new LoggerPropertyConfigurator();
-	$config->configure('log4php.properties');
+	require_once 'include/logging/LoggerManagerStub.php';
 }
+$log = LoggerManager::getLogger('APPLICATION');
 global $logbg;
 if (empty($logbg)) {
 	$logbg= LoggerManager::getLogger('BACKGROUND');

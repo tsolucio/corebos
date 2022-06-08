@@ -25,16 +25,15 @@ abstract class WSAPP_TargetConnector extends WSAPP_BaseConnector {
 		}
 		return $destinationRecordList;
 	}
+
 	public function transformToSourceRecord($targetRecords) {
 		$sourceRcordList = array();
 		foreach ($targetRecords as $record) {
 			$sourceRecord = clone $record;
-
 			$sourceRecord->setId($record->getOtherAppId())
-						 ->setOtherAppId($record->getId())
-						 ->setModifiedTime($record->getOtherAppModifiedTime())
-						 ->setOtherAppModifiedTIme($record->getModifiedTime());
-
+				->setOtherAppId($record->getId())
+				->setModifiedTime($record->getOtherAppModifiedTime())
+				->setOtherAppModifiedTIme($record->getModifiedTime());
 			$sourceRcordList[] = $sourceRecord;
 		}
 		return $sourceRcordList;

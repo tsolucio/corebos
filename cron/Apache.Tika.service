@@ -1,0 +1,56 @@
+<?php
+/*************************************************************************************************
+ * Copyright 2022 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
+require_once 'include/utils/utils.php';
+global $adb, $current_user;
+if (empty($current_user)) {
+	$current_user = Users::getActiveAdminUser();
+}
+$Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '');
+if (empty($Apache_Tika_URL)) {
+	exit;
+}
+try {
+	$ApacheTikaLastScan = coreBOS_Settings::getSetting('ApacheTikaLastScan', '');
+	$client = \Vaites\ApacheTika\Client::make($Apache_Tika_URL);
+	$client = \Vaites\ApacheTika\Client::prepare($Apache_Tika_URL);
+	$client->setTimeout(60);
+	$query = 'select path,attach.attachmentsid,name,modifiedtime,deleted,rel.crmid from vtiger_notes notes
+		inner join vtiger_crmentity crmentity on crmentity.crmid=notes.notesid
+		inner join vtiger_seattachmentsrel rel on rel.crmid=notes.notesid
+		inner join vtiger_attachments attach on rel.attachmentsid=attach.attachmentsid where deleted=0';
+	if (!empty($ApacheTikaLastScan)) {
+		$query .= $adb->convert2Sql(' and modifiedtime>=?', array($ApacheTikaLastScan));
+		$adb->pquery('delete from vtiger_documentsearchinfo where documentid in (select crmid from vtiger_crmentity where setype=? and deleted=0 and modifiedtime>=?)', array('Documents', $ApacheTikaLastScan));
+		$adb->pquery('delete from vtiger_documentsearchinfo where documentid in (select crmid from vtiger_crmentity where setype=? and deleted=1)', array('Documents'));
+	}
+	$documents = $adb->pquery($query, array());
+	while ($row = $documents->FetchRow()) {
+		$filename = $row['path'].$row['attachmentsid'].'_'.$row['name'];
+		$crmid = $row['crmid'];
+		if (file_exists($filename)) {
+			$language = $client->getLanguage($filename);
+			$text = $client->getText($filename);
+			$metadata = $client->getMetadata($filename);
+			$adb->pquery('insert into vtiger_documentsearchinfo (documentid,language,text,metadata) values(?,?,?,?)', array(
+				$crmid, $language, $text, json_encode($metadata)
+			));
+		}
+	}
+} catch (Exception $e) {
+	$cbmq = coreBOS_MQTM::getInstance();
+	$cbmq->sendMessage('TikaDocumentSearchLog', 'apachetika', 'apachetika', 'Cron', '1:M', 1, 172800, 0, $current_user->id, $e->getMessage().' for id '.$crmid);
+}
+coreBOS_Settings::setSetting('ApacheTikaLastScan', date('Y-m-d h:i:s'));

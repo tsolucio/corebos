@@ -30,7 +30,7 @@ class updateIssuecardsModule extends cbupdaterWorker {
 
 				$moduleInstance = Vtiger_Module::getInstance($module);
 				$package->loadManifestFromFile('modules/'.$module.'/manifest.xml');
-				$rdo = $package->update_Module($moduleInstance);
+				$package->update_Module($moduleInstance);
 
 				$this->sendMsg('Module updated: '.$module);
 			}

@@ -1,5 +1,6 @@
 <?php
 include_once 'include/Webservices/GetRelatedRecords.php';
+require_once 'data/CRMEntity.php';
 global $adb, $current_user;
 if (empty($current_user)) {
 	$current_user = Users::getActiveAdminUser();
@@ -18,16 +19,17 @@ if ($result && $adb->num_rows($result) > 0) {
 		$uniqueid = $adb->query_result($result, $x, 'uniqueid');
 		$qmodule = $adb->query_result($result, $x, 'qmodule');
 		$relatedModules = $adb->query_result($result, $x, 'mvrelated_modulelist');
-		$relatedModulesArr = explode(' |##| ', $relatedModules);
+		$relatedModulesArr = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $relatedModules);
 		$crmentity_table = $adb->query_result($result, $x, 'crmentityalias');
 		$maintablealias = $adb->query_result($result, $x, 'maintablealias');
 		$qid = $adb->query_result($result, $x, 'cbquestionid');
 		$sql = cbQuestion::getSQL($qid);
 		$crmentity_table = !empty($crmentity_table) ? $crmentity_table : 'vtiger_crmentity';
-		if (count($relatedModulesArr) > 0) {
+		if (!empty($relatedModulesArr)) {
 			for ($z = 0; $z < count($relatedModulesArr); $z++) {
 				$setype = $relatedModulesArr[$z];
-				$relatedRecords = $adb->pquery('SELECT crmid from vtiger_crmentity where modifiedtime > ? AND setype = ?', array($lastExecution, $setype));
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias($setype);
+				$relatedRecords = $adb->pquery('SELECT crmid from '.$crmEntityTable.' where modifiedtime > ? AND setype = ?', array($lastExecution, $setype));
 				while ($crmidArr = $adb->fetch_array($relatedRecords)) {
 					$crmid = $crmidArr['crmid'];
 					$crmid = vtws_getEntityId($setype) . 'x'. $crmid;
@@ -40,7 +42,7 @@ if ($result && $adb->num_rows($result) > 0) {
 					$rel_records = getRelatedRecords($crmid, $setype, $qmodule, $queryParameters, $current_user);
 					$rel_recordsArr = $rel_records['records'];
 					$rec_ids = array();
-					if (count($rel_recordsArr) > 0) {
+					if (!empty($rel_recordsArr)) {
 						for ($y = 0; $y < count($rel_recordsArr); $y++) {
 							$rec_id = $rel_recordsArr[$y][0];
 							array_push($rec_ids, $rec_id);

@@ -40,8 +40,8 @@ class ModTracker {
 
 	/**
 	* Invoked when special actions are performed on the module.
-	* @param String Module name
-	* @param String Event Type
+	* @param string Module name
+	* @param string Event Type
 	*/
 	public function vtlib_handler($moduleName, $eventType) {
 		global $adb;
@@ -61,7 +61,7 @@ class ModTracker {
 					$seq = $cur_seq + 1;
 				}
 			}
-			$mturl = 'index.php?module=ModTracker&action=BasicSettings&parenttab=Settings&formodule=ModTracker';
+			$mturl = 'index.php?module=ModTracker&action=BasicSettings&formodule=ModTracker';
 			$adb->pquery(
 				'INSERT INTO vtiger_settings_field(fieldid, blockid, name, iconpath, description, linkto, sequence) VALUES (?,?,?,?,?,?,?)',
 				array($fieldid, $blockid, 'ModTracker', 'set-IcoLoginHistory.gif', 'LBL_MODTRACKER_DESCRIPTION', $mturl, $seq)
@@ -90,6 +90,7 @@ class ModTracker {
 	*/
 	public function getModTrackerEnabledModules() {
 		global $adb;
+		$modules = array();
 		$moduleResult = $adb->pquery('SELECT * FROM vtiger_modtracker_tabs', array());
 		for ($i=0; $i<$adb->num_rows($moduleResult); $i++) {
 			$tabId = $adb->query_result($moduleResult, $i, 'tabid');
@@ -147,7 +148,7 @@ class ModTracker {
 
 	/**
 	 *Invoked to check if tracking is enabled or disabled for the module.
-	 * @param String $modulename
+	 * @param string $modulename
 	 */
 	public static function isTrackingEnabledForModule($modulename) {
 		global $adb;
@@ -198,10 +199,10 @@ class ModTracker {
 	public static function isModtrackerLinkPresent($tabid) {
 		global $adb;
 		$module_name = getTabModuleName($tabid);
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		$rs=$adb->pquery(
 			"SELECT businessactionsid
-			FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
+			FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
 			WHERE deleted = 0 AND elementtype_action='DETAILVIEWBASIC' AND linklabel = 'View History'
 				AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)",
 			array($module_name, $module_name.' %', '% '.$module_name.' %', '% '.$module_name,)
@@ -227,11 +228,7 @@ class ModTracker {
 	 * @param Integer $tabid
 	 */
 	public static function checkModuleInModTrackerCache($tabid) {
-		if (isset(self::$__cache_modtracker[$tabid])) {
-			return true;
-		} else {
-			return false;
-		}
+		return isset(self::$__cache_modtracker[$tabid]);
 	}
 
 	/**
@@ -258,13 +255,13 @@ class ModTracker {
 		$accessibleModules = $this->getModTrackerEnabledModules();
 
 		if (empty($accessibleModules)) {
-			throw new Exception('Modtracker not enabled for any modules');
+			throw new BadMethodCallException('Modtracker not enabled for any modules');
 		}
 
-		$query = 'SELECT id, module, modifiedtime, vtiger_crmentity.crmid, smownerid, vtiger_modtracker_basic.status
+		$query = 'SELECT id, module, modifiedtime, vtiger_crmobject.crmid, smownerid, vtiger_modtracker_basic.status
 			FROM vtiger_modtracker_basic
-			INNER JOIN vtiger_crmentity ON vtiger_modtracker_basic.crmid = vtiger_crmentity.crmid
-				AND vtiger_modtracker_basic.changedon = vtiger_crmentity.modifiedtime
+			INNER JOIN vtiger_crmobject ON vtiger_modtracker_basic.crmid = vtiger_crmobject.crmid
+				AND vtiger_modtracker_basic.changedon = vtiger_crmobject.modifiedtime
 			WHERE id > ? AND changedon >= ? AND module IN ('.generateQuestionMarks($accessibleModules).') ORDER BY id';
 
 		$params = array($uniqueId, $datetime);
@@ -272,7 +269,7 @@ class ModTracker {
 			$params[] = $entityModule;
 		}
 
-		if ($limit != false) {
+		if ($limit) {
 			$query .=" LIMIT $limit";
 		}
 
@@ -403,17 +400,18 @@ class ModTracker {
 		global $log, $adb, $currentModule;
 		$log->debug('> getModTrackerJSON');
 
-		$where = ' where 1 ';
+		$where = '';
 		$params = array();
 		if (!empty($crmid)) {
-			$where .= ' and crmid = ? ';
+			$where .= 'where crmid=?';
 			array_push($params, $crmid);
 		}
 
+		$list_query = "select * from vtiger_modtracker_basic join vtiger_modtracker_detail on vtiger_modtracker_basic.id=vtiger_modtracker_detail.id $where order by ";
 		if ($sorder != '' && $order_by != '') {
-			$list_query = "Select SQL_CALC_FOUND_ROWS * from vtiger_modtracker_basic join vtiger_modtracker_detail on vtiger_modtracker_basic.id=vtiger_modtracker_detail.id $where order by $order_by $sorder";
+			$list_query .= $order_by.' '.$sorder;
 		} else {
-			$list_query = "Select SQL_CALC_FOUND_ROWS * from vtiger_modtracker_basic join vtiger_modtracker_detail on vtiger_modtracker_basic.id=vtiger_modtracker_detail.id $where order by ".$this->default_order_by.' '.$this->default_sort_order;
+			$list_query .= $this->default_order_by.' '.$this->default_sort_order;
 		}
 		if (!empty($_REQUEST['perPage']) && is_numeric($_REQUEST['perPage'])) {
 			$rowsperpage = (int) vtlib_purify($_REQUEST['perPage']);
@@ -423,7 +421,7 @@ class ModTracker {
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
 		$result = $adb->pquery($list_query.$limit, $params);
-		$count_result = $adb->query('SELECT FOUND_ROWS();');
+		$count_result = $adb->query(mkCountQuery($adb->convert2sql($list_query, $params)));
 		$noofrows = $adb->query_result($count_result, 0, 0);
 		if ($result) {
 			if ($noofrows>0) {
@@ -475,7 +473,7 @@ class ModTracker {
 				'result' => false,
 				'message' => getTranslatedString('ERR_SQL', 'ModTracker'),
 				'debug_query' => $list_query.$limit,
-				'debug_params' => print_r($params, true),
+				'debug_params' => json_encode($params),
 			);
 		}
 		$log->debug('< getModTrackerJSON');

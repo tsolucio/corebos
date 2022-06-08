@@ -25,7 +25,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 					<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%" >
 						<tr align="left">
 							<td rowspan="2" valign="top" width="50"><img src="{'custom.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48"></td>
-							<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a>&gt;<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule=Leads&parenttab=Settings">{$MODULE}</a> &gt; {'LBL_FIELD_SETTINGS'|@getTranslatedString:'Leads'}</b></td>
+							<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a>&gt;<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule=Leads">{$MODULE}</a> &gt; {'LBL_FIELD_SETTINGS'|@getTranslatedString:'Leads'}</b></td>
 						</tr>
 						<tr align="left">
 							<td class="small" valign="top">{'LBL_FIELD_MAPPING'|@getTranslatedString:$MODULE}</td>
@@ -40,7 +40,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								<td class="small" align="right">&nbsp;&nbsp;
 									<input title="{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" name="save" value=" &nbsp;{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}&nbsp; " class="crmButton small save" type="submit" onclick ="return validateCustomFieldAccounts();">
 									<input title="{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" name="cancel" value=" {'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE} " onclick = "window.history.back()"  class="crmButton small cancel" type="button">
-									<input title="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" type="button" value="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" onclick="javascript:cloneAndAddLeadMapping('cloneableNode','mapTable')"  class="crmButton small create"></input>
+									<input title="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" type="button" value="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" onclick="javascript:cloneAndAddLeadMapping('cloneableNode','mapTable')" class="crmButton small create">
 							</tr>
 						</table>
 						<table class="listTable" id="mapTable" border="0" cellpadding="5" cellspacing="0" width="100%">
@@ -145,7 +145,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								<td class="small" align="right">&nbsp;&nbsp;
 									<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " class="crmButton small save" type="submit" onclick ="return validateCustomFieldAccounts();">
 									<input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " onclick = "window.history.back()"  class="crmButton small cancel" type="button">
-									<input title="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" type="button" value="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" onclick="javascript:cloneAndAddLeadMapping('cloneableNode','mapTable')"  class="crmButton small create"></input>
+									<input title="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" type="button" value="{'LBL_ADD_MAPPING'|@getTranslatedString:$MODULE}" onclick="javascript:cloneAndAddLeadMapping('cloneableNode','mapTable')" class="crmButton small create">
 								</td>
 							</tr>
 						</table>

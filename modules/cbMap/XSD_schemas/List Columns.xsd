@@ -63,6 +63,27 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="deduplication">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="linkfield"/>
+              <xs:element name="columns">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="field">
+                      <xs:complexType mixed="true">
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="label"/>
+                          <xs:element type="xs:string" name="name"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

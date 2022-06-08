@@ -11,7 +11,7 @@
  * save notebook contents to database
  */
 $status = SaveNotebookContents();
-if ($status == true) {
+if ($status) {
 	require_once 'include/home.php';
 	$homeObj=new Homestuff;
 	$contents = $homeObj->getNoteBookContents($_REQUEST['notebookid']);

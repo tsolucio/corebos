@@ -26,17 +26,8 @@ class DBHealthCheck {
 		return (stripos($this->dbType, 'mysql') === 0);
 	}
 
-	public function isOracle() {
-		return $this->dbType=='oci8';
-	}
-
-	public function isPostgres() {
-		return $this->dbType=='pgsql';
-	}
-
 	public function isDBHealthy() {
-		$tablesList = $this->getUnhealthyTablesList();
-		return !(count($tablesList) > 0);
+		return (count($this->getUnhealthyTablesList()) == 0);
 	}
 
 	public function getUnhealthyTablesList() {

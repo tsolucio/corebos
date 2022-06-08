@@ -24,27 +24,27 @@ class Vtiger_Net_Client {
 
 	/**
 	 * Constructor
-	 * @param String URL of the site
+	 * @param string URL of the site
 	 * Example:
 	 * $client = new Vtiger_Net_Client('http://www.vtiger.com');
 	 */
-	public function __construct($url) {
-		$this->setURL($url);
+	public function __construct($urlpath) {
+		$this->setURL($urlpath);
 	}
 
 	/**
 	 * Set another url for this instance
-	 * @param String URL to use go forward
+	 * @param string URL to use go forward
 	 */
-	public function setURL($url) {
-		$this->url = $url;
+	public function setURL($urlpath) {
+		$this->url = $urlpath;
 		$this->client = new HTTP_Request2();
 		$this->response = false;
 	}
 
 	/**
 	 * Set the body of the request
-	 * $param String body to be sent
+	 * @param string body to be sent
 	 */
 	public function setBody($body) {
 		$this->client->setBody($body);
@@ -74,7 +74,7 @@ class Vtiger_Net_Client {
 	/**
 	 * Perform a GET request
 	 * @param Map key-value pair or false
-	 * @param Integer timeout value
+	 * @param integer timeout value
 	 */
 	public function doGet($params = false, $timeout = null) {
 		if ($timeout) {
@@ -85,9 +85,9 @@ class Vtiger_Net_Client {
 		$this->client->setMethod(HTTP_Request2::METHOD_GET);
 
 		if ($params) {
-			$url = $this->client->getUrl();
+			$urlpath = $this->client->getUrl();
 			foreach ($params as $key => $value) {
-				$url->setQueryVariable($key, $value);
+				$urlpath->setQueryVariable($key, $value);
 			}
 		}
 		try {
@@ -108,7 +108,7 @@ class Vtiger_Net_Client {
 	/**
 	 * Perform a POST request
 	 * @param Map key-value pair or false
-	 * @param Integer timeout value
+	 * @param integer timeout value
 	 */
 	public function doPost($params = false, $timeout = null) {
 		if ($timeout) {

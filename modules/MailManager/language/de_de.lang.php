@@ -75,6 +75,8 @@ $mod_strings = array (
 	'JSLBL_NO_EMAILS_SELECTED' => 'Keine E-Mails ausgewählt.',
 	'JSLBL_ENTER_SOME_VALUE' => 'Bitte geben Sie einen Suchbegriff ein',
 	'JSLBL_DRAFT_MAIL_SAVED'=>'Ihre E-Mail wurde in den Entwürfen gespeichert',
+	'JSLBL_ON'=>'On',
+	'JSLBL_WROTE'=>'wrote',
 
 		// General translations
 	'LBL_Folders'         => 'Ordner',
@@ -84,6 +86,7 @@ $mod_strings = array (
 	'LBL_Go_Back'         => 'Zurück',
 	'LBL_Reply_All'       => 'Allen antworten',
 	'LBL_Reply'           => 'Antworten',
+	'LBL_REPLYTO'         => 'Reply To',
 	'LBL_Mark_As_Unread'  => 'Als ungelesen markieren',
 	'LBL_Previous'        => 'vorheriges',
 	'LBL_Next'            => 'nächstes',

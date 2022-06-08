@@ -1,2 +1,21 @@
 Options -Indexes
-php_flag engine off
+<IfModule mod_php5.c>
+  php_flag engine Off
+</IfModule>
+<IfModule mod_php7.c>
+  php_flag engine Off
+</IfModule>
+<IfModule mod_php8.c>
+  php_flag engine Off
+</IfModule>
+<IfModule mod_cgi.c>
+  Options -ExecCGI
+</IfModule>
+
+RemoveHandler .cgi .pl .py .pyc .pyo .phtml .php .php3 .php4 .php5 .php6 .pcgi .pcgi3 .pcgi4 .pcgi5 .pchi6 .inc
+RemoveType .cgi .pl .py .pyc .pyo .phtml .php .php3 .php4 .php5 .php6 .pcgi .pcgi3 .pcgi4 .pcgi5 .pchi6 .inc
+SetHandler !
+
+# Remove both lines below if you want to render HTML files from the upload folder
+AddType text/plain .html
+AddType text/plain .htm

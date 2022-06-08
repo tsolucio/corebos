@@ -35,10 +35,6 @@ function wfRemoveFromList(delWorkflowURL) {
 	};
 	document.getElementById('yes_button').onclick = function () {
 		document.getElementById('confirm-prompt').style.display = 'none';
-		// var return_url = encodeURIComponent('index.php?module=com_vtiger_workflow&action=workflowlist');
-		//delWorkflowURL = window.location.origin + window.location.pathname + delWorkflowURL;
-		// var idPart= '&workflow_id='+workflow_id;
-		// var deleteURL =base_url + '?module=com_vtiger_workflow&action=deleteworkflow'+idPart+'&return_url='+return_url;
 		window.location.href = delWorkflowURL;
 	};
 }
@@ -64,7 +60,23 @@ function wfExportList() {
 }
 
 function wfDeleteList() {
+	wfDoWorkList(i18nWorkflowActions.WORKFLOW_DELETE_CONFIRMATION, i18nWorkflowActions.LBL_DELETE_WORKFLOW, 'deleteworkflow');
+}
+
+function wfActivateList() {
+	let url = 'activatedeactivateWF&active=true';
+	wfDoWorkList(i18nWorkflowActions.WORKFLOW_ACTIVATE_CONFIRMATION, i18nWorkflowActions.LBL_ACTIVATE_WORKFLOW, url);
+}
+
+function wfDeactivateList() {
+	let url = 'activatedeactivateWF&active=false';
+	wfDoWorkList(i18nWorkflowActions.WORKFLOW_DEACTIVATE_CONFIRMATION, i18nWorkflowActions.LBL_DEACTIVATE_WORKFLOW, url);
+}
+
+function wfDoWorkList(msg, title, action) {
 	if (grid.selectedItems.length) {
+		document.getElementById('prompt-message-wrapper').innerHTML = '<p>'+msg+'</p>';
+		document.getElementById('modal-wfaction').innerHTML = title;
 		document.getElementById('confirm-prompt').style.display = 'block';
 		document.getElementById('no_button').onclick = function () {
 			document.getElementById('confirm-prompt').style.display = 'none';
@@ -72,10 +84,10 @@ function wfDeleteList() {
 		document.getElementById('yes_button').onclick = function () {
 			document.getElementById('confirm-prompt').style.display = 'none';
 			var params = `&${csrfMagicName}=${csrfMagicToken}`;
-			var deleteURL = 'index.php?module=com_vtiger_workflow&action=deleteworkflow&workflow_id=';
+			var workURL = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&wfajax=1&file='+action+'&workflow_id=';
 			grid.selectedItems.forEach(function (item) {
 				fetch(
-					deleteURL+item.workflow_id,
+					workURL+item.workflow_id,
 					{
 						method: 'post',
 						headers: {

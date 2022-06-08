@@ -32,6 +32,6 @@ for ($i=0; $i<$num_rows; $i++) {
 		$adb->pquery($sql8, array($permission));
 	}
 }
-$loc = 'Location: index.php?action=OrgSharingDetailView&module=Settings&parenttab=Settings';
+$loc = 'Location: index.php?action=OrgSharingDetailView&module=Settings';
 header($loc);
 ?>

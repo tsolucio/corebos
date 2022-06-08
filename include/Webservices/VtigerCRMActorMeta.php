@@ -14,6 +14,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 	protected static $fieldTypeMapping = array();
 	private $hasAccess;
 	private $hasReadAccess;
+	private $hasCreateAccess;
 	private $hasWriteAccess;
 	private $hasDeleteAccess;
 	private $PermissionModule = '';
@@ -85,9 +86,6 @@ class VtigerCRMActorMeta extends EntityMeta {
 	public function computePermissionModule($webserviceObject) {
 		$moduleName = $webserviceObject->getEntityName();
 		switch ($moduleName) {
-			case 'DocumentFolders':
-				$permModule = 'Documents';
-				break;
 			case 'CompanyDetails':
 				$permModule = 'cbCompany';
 				break;
@@ -117,15 +115,13 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$moduleName = $webserviceObject->getEntityName();
 		if ($moduleName=='Groups' || $moduleName=='Currency') {
 			$this->hasAccess = true;
+			$this->hasCreateAccess = false;
 			$this->hasReadAccess = true;
 			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
 			return;
 		}
 		switch ($moduleName) {
-			case 'DocumentFolders':
-				$permModule = 'Documents';
-				break;
 			case 'CompanyDetails':
 				$permModule = 'cbCompany';
 				break;
@@ -143,6 +139,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 				break;
 			default:
 				$this->hasAccess = false;
+				$this->hasCreateAccess = false;
 				$this->hasReadAccess = false;
 				$this->hasWriteAccess = false;
 				$this->hasDeleteAccess = false;
@@ -151,6 +148,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		}
 		if (!vtlib_isModuleActive($permModule)) {
 			$this->hasAccess = false;
+			$this->hasCreateAccess = false;
 			$this->hasReadAccess = false;
 			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
@@ -160,17 +158,17 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$userprivs = $user->getPrivileges();
 		if ($userprivs->hasGlobalReadPermission()) {
 			$this->hasAccess = true;
+			$this->hasCreateAccess = false;
 			$this->hasReadAccess = true;
 			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
 		} else {
 			$this->hasAccess = false;
+			$this->hasCreateAccess = false;
 			$this->hasReadAccess = false;
 			$this->hasWriteAccess = false;
 			$this->hasDeleteAccess = false;
 			$tabid = getTabid($permModule);
-			//TODO get or sort out the preference among profile2tab and profile2globalpermissions.
-			//TODO check whether create/edit seperate controls required for web sevices?
 			$profileList = getCurrentUserProfileList();
 
 			$sql = 'select * from vtiger_profile2globalpermissions where profileid in ('.generateQuestionMarks($profileList).');';
@@ -228,10 +226,6 @@ class VtigerCRMActorMeta extends EntityMeta {
 
 	public function getFilterFields($elementType) {
 		switch ($elementType) {
-			case 'DocumentFolders':
-				$fields = array('id','foldername','description');
-				$linkfd = array('id');
-				break;
 			case 'Currency':
 				$fields = array('id','currency_name','currency_code','currency_symbol','conversion_rate','currency_position','currency_status');
 				$linkfd = array('id');
@@ -274,10 +268,9 @@ class VtigerCRMActorMeta extends EntityMeta {
 				if ($this->idColumn === null) {
 					$this->idColumn = $dbField->name;
 				} else {
-					throw new WebServiceException(
-						WebServiceErrorCode::$UNKNOWNENTITY,
-						'Entity table with multi column primary key is not supported'
-					);
+					if ($tableName!='vtiger_modtracker_detail') { // valid table with compound primary key
+						throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, 'Entity table with multi column primary key is not supported');
+					}
 				}
 			}
 			$field = $this->getFieldArrayFromDBField($dbField, $tableName);
@@ -429,6 +422,10 @@ class VtigerCRMActorMeta extends EntityMeta {
 
 	public function hasReadAccess() {
 		return $this->hasReadAccess;
+	}
+
+	public function hasCreateAccess() {
+		return $this->hasCreateAccess;
 	}
 
 	public function hasWriteAccess() {

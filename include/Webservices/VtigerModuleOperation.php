@@ -12,11 +12,13 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	protected $tabId;
 	protected $isEntity = true;
 	private $queryTotalRows = 0;
+	private $returnFormattedValues = 0;
 
 	public function __construct($webserviceObject, $user, $adb, $log) {
 		parent::__construct($webserviceObject, $user, $adb, $log);
 		$this->meta = $this->getMetaInstance();
 		$this->tabId = $this->meta->getTabId();
+		$this->returnFormattedValues = (int)GlobalVariable::getVariable('Webservice_Return_FormattedValues', 0);
 	}
 
 	protected function getMetaInstance() {
@@ -67,6 +69,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 
 		$fields = $crmObject->getFields();
 		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		if ($this->returnFormattedValues) {
+			$return = DataTransform::sanitizeRetrieveEntityInfo($return, $this->meta, false);
+		}
 		if (isset($fields['cbuuid'])) {
 			$return['cbuuid'] = $fields['cbuuid'];
 		}
@@ -84,6 +89,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 		$fields = $crmObject->getFields();
 		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		if ($this->returnFormattedValues) {
+			$return = DataTransform::sanitizeRetrieveEntityInfo($return, $this->meta, false);
+		}
 		if (isset($fields['cbuuid'])) {
 			$return['cbuuid'] = $fields['cbuuid'];
 		}
@@ -96,7 +104,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$crmObject = new VtigerCRMObject($this->tabId, true);
 		$crmObject->setObjectId($ids[1]);
 		$error = $crmObject->read($crmObject->getObjectId());
-		if ($error == false) {
+		if (!$error) {
 			return $error;
 		}
 		$cfields = $crmObject->getFields();
@@ -115,6 +123,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 		$fields = $crmObject->getFields();
 		$return = DataTransform::filterAndSanitize($fields, $this->meta);
+		if ($this->returnFormattedValues) {
+			$return = DataTransform::sanitizeRetrieveEntityInfo($return, $this->meta, false);
+		}
 		if (isset($fields['cbuuid'])) {
 			$return['cbuuid'] = $fields['cbuuid'];
 		}
@@ -162,7 +173,6 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				$addDocGlue = (stripos($docrelcond, ' and ') > 0 || stripos($docrelcond, ' or ') > 0);
 				$mysql_query = substr($mysql_query, 0, stripos($mysql_query, 'where')+6);
 				$relatedCond = '/related.'.$moduleName.'\s*=\s*'.trim($m[2], ')').'/i';
-				// $relatedCond = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
 				$afterwhere=trim(preg_replace($relatedCond, $docrelcond, $afterwhere), ' ;');
 			} else {
 				$addDocGlue = true;
@@ -258,6 +268,15 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$mysql_query = $parser->getSql();
 			$meta = $parser->getObjectMetaData();
 		}
+		if (!empty(coreBOS_Session::get('authenticatedUserIsPortalUser', false))) {
+			$contactId = coreBOS_Session::get('authenticatedUserPortalContact', 0);
+			if (empty($contactId)) {
+				$mysql_query = 'select 1';
+			} else {
+				$accountId = getSingleFieldValue('vtiger_contactdetails', 'accountid', 'contactid', $contactId);
+				$mysql_query = addPortalModuleRestrictions($mysql_query, $meta->getEntityName(), $accountId, $contactId);
+			}
+		}
 		return $mysql_query;
 	}
 
@@ -267,7 +286,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {
-		global $site_URL, $adb, $default_charset;
+		global $site_URL, $adb, $default_charset, $currentModule;
+		$holdCM = $currentModule;
+		$currentModule = $meta->getEntityName();
 		if (strpos($mysql_query, 'vtiger_inventoryproductrel')) {
 			$invlines = true;
 			$pdowsid = vtws_getEntityId('Products');
@@ -281,6 +302,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$this->pearDB->completeTransaction();
 
 		if ($error) {
+			$currentModule = $holdCM;
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		$imageFields = $meta->getImageFields();
@@ -293,66 +315,101 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$isRelatedQuery = __FQNExtendedQueryIsFQNQuery($q);
 		$noofrows = $this->pearDB->num_rows($result);
 		$output = array();
+		$streamraw = (isset($_REQUEST['format']) && strtolower($_REQUEST['format'])=='streamraw');
+		$streaming = (isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || $streamraw));
+		$stream = '';
 		for ($i=0; $i<$noofrows; $i++) {
 			$row = $this->pearDB->fetchByAssoc($result, $i);
 			$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $rowcrmid)) {
 				continue;
 			}
-			$newrow = DataTransform::sanitizeDataWithColumn($row, $meta);
-			if ($isRelatedQuery) {
-				if ($invlines) {
-					$newrow = $row;
-					$newrow['id'] = (getSalesEntityType($newrow['id']) == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['id'];
-				} else {
-					$relflds = array_diff_key($row, $newrow);
-					foreach ($queryRelatedModules as $relmod => $relmeta) {
-						$lrm = strtolower($relmod);
-						$newrflds = array();
-						foreach ($relflds as $fldname => $fldvalue) {
-							$fldmod = substr($fldname, 0, strlen($relmod));
-							if (isset($row[$fldname]) && $fldmod==$lrm) {
-								$newkey = substr($fldname, strlen($lrm));
-								$newrflds[$newkey] = $fldvalue;
+			if ($streamraw) {
+				$newrow = $row;
+			} else {
+				$newrow = DataTransform::sanitizeDataWithColumn($row, $meta);
+				if ($this->returnFormattedValues) {
+					$newrow = DataTransform::sanitizeRetrieveEntityInfo($newrow, $meta, false);
+				}
+				if ($isRelatedQuery) {
+					if ($invlines) {
+						$newrow = $row;
+						if (!empty($newrow['id'])) {
+							$newrow['id'] = vtws_getEntityId(getSalesEntityType($newrow['id'])) . 'x' . $newrow['id'];
+						}
+						$newrow['linetype'] = '';
+						if (!empty($newrow['productid'])) {
+							$newrow['linetype'] = getSalesEntityType($newrow['productid']);
+							$newrow['productid'] = ($newrow['linetype'] == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['productid'];
+						}
+						if (!empty($newrow['serviceid'])) {
+							$newrow['linetype'] = 'Services';
+							$newrow['serviceid'] = $srvwsid . 'x' . $newrow['serviceid'];
+						}
+					} else {
+						$relflds = array_diff_key($row, $newrow);
+						foreach ($queryRelatedModules as $relmod => $relmeta) {
+							$lrm = strtolower($relmod);
+							$newrflds = array();
+							foreach ($relflds as $fldname => $fldvalue) {
+								$fldmod = substr($fldname, 0, strlen($relmod));
+								if (isset($row[$fldname]) && $fldmod==$lrm) {
+									$newkey = substr($fldname, strlen($lrm));
+									$newrflds[$newkey] = $fldvalue;
+								}
+							}
+							$relrow = DataTransform::sanitizeDataWithColumn($newrflds, $relmeta);
+							$newrelrow = array();
+							foreach ($relrow as $key => $value) {
+								$newrelrow[$lrm.$key] = $value;
+							}
+							$newrow = array_merge($newrow, $newrelrow);
+						}
+					}
+				}
+				if ($isDocModule) {
+					$relatt=$adb->pquery('SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid=?', array($rowcrmid));
+					if ($relatt && $adb->num_rows($relatt)==1) {
+						$fileid = $adb->query_result($relatt, 0, 0);
+						$attrs=$adb->pquery('SELECT * FROM vtiger_attachments WHERE attachmentsid=?', array($fileid));
+						if ($attrs && $adb->num_rows($attrs) == 1) {
+							$name = @$adb->query_result($attrs, 0, 'name');
+							$filepath = @$adb->query_result($attrs, 0, 'path');
+							$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
+							$newrow['_downloadurl'] = $site_URL.'/'.$filepath.$fileid.'_'.$name;
+							$newrow['filename'] = $name;
+						}
+					}
+				} elseif (!empty($imageFields)) {
+					foreach ($imageFields as $imgvalue) {
+						$newrow[$imgvalue.'fullpath'] = ''; // initialize so we have same number of columns in all rows
+					}
+					$result_image = $adb->pquery($imgquery, array($rowcrmid));
+					while ($img = $adb->fetch_array($result_image)) {
+						foreach ($imageFields as $imgvalue) {
+							if (!empty($row[$imgvalue]) && ($img['name'] == $row[$imgvalue] || $img['name'] == str_replace(' ', '_', $row[$imgvalue]))) {
+								$newrow[$imgvalue.'fullpath'] = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
+								break;
 							}
 						}
-						$relrow = DataTransform::sanitizeDataWithColumn($newrflds, $relmeta);
-						$newrelrow = array();
-						foreach ($relrow as $key => $value) {
-							$newrelrow[$lrm.$key] = $value;
-						}
-						$newrow = array_merge($newrow, $newrelrow);
 					}
 				}
 			}
-			if ($isDocModule) {
-				$relatt=$adb->pquery('SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid=?', array($rowcrmid));
-				if ($relatt && $adb->num_rows($relatt)==1) {
-					$fileid = $adb->query_result($relatt, 0, 0);
-					$attrs=$adb->pquery('SELECT * FROM vtiger_attachments WHERE attachmentsid=?', array($fileid));
-					if ($attrs && $adb->num_rows($attrs) == 1) {
-						$name = @$adb->query_result($attrs, 0, 'name');
-						$filepath = @$adb->query_result($attrs, 0, 'path');
-						$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
-						$newrow['_downloadurl'] = $site_URL.'/'.$filepath.$fileid.'_'.$name;
-						$newrow['filename'] = $name;
-					}
+			if ($streaming) {
+				$stream .= json_encode($newrow)."\n";
+				if (($i % 500)==0) {
+					echo $stream;
+					flush();
+					$stream = '';
 				}
-			} elseif (!empty($imageFields)) {
-				foreach ($imageFields as $imgvalue) {
-					$newrow[$imgvalue.'fullpath'] = ''; // initialize so we have same number of columns in all rows
-				}
-				$result_image = $adb->pquery($imgquery, array($rowcrmid));
-				while ($img = $adb->fetch_array($result_image)) {
-					foreach ($imageFields as $imgvalue) {
-						if ($img['name'] == $row[$imgvalue]) {
-							$newrow[$imgvalue.'fullpath'] = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
-							break;
-						}
-					}
-				}
+			} else {
+				$output[] = $newrow;
 			}
-			$output[] = $newrow;
+		}
+		if ($stream!='') {
+			echo $stream;
+			flush();
+			$stream = '';
 		}
 		$mysql_query = mkXQuery(stripTailCommandsFromQuery($mysql_query, false), 'count(*) AS cnt');
 		$result = $this->pearDB->pquery($mysql_query, array());
@@ -361,6 +418,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		} else {
 			$this->queryTotalRows = 0;
 		}
+		$currentModule = $holdCM;
 		return $output;
 	}
 
@@ -369,13 +427,17 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function describe($elementType) {
+		global $current_user;
+		$wsuserlanguage =$current_user->language;
+		vtws_preserveGlobal('current_language', $wsuserlanguage);
 		vtws_preserveGlobal('current_user', $this->user);
 		$label = getTranslatedString($elementType, $elementType);
 		$createable = strcasecmp(isPermitted($elementType, EntityMeta::$CREATE), 'yes') === 0;
 		$updateable = strcasecmp(isPermitted($elementType, EntityMeta::$UPDATE), 'yes') === 0;
 		$deleteable = $this->meta->hasDeleteAccess();
 		$retrieveable = $this->meta->hasReadAccess();
-		$fields = $this->getModuleFields();
+		VTWS_PreserveGlobal::restore('current_language');
+		$fields = $this->getModuleFields($wsuserlanguage);
 		return array(
 			'label'=>$label,'label_raw'=>$elementType,'name'=>$elementType,'createable'=>$createable,'updateable'=>$updateable,
 			'deleteable'=>$deleteable,'retrieveable'=>$retrieveable,'fields'=>$fields,
@@ -383,7 +445,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		);
 	}
 
-	public function getModuleFields() {
+	public function getModuleFields($i18nlanguage) {
 		static $purified_mfcache = array();
 		$mfkey = $this->meta->getTabName();
 		if (array_key_exists($mfkey, $purified_mfcache)) {

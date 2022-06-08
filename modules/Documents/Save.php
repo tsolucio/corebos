@@ -7,7 +7,12 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-if ($_REQUEST['mode'] != 'edit' && $_REQUEST['filelocationtype'] == 'I' && $_FILES['filename']['error'] == 4 && $_FILES['filename']['size'] == 0) {
+if (empty($_REQUEST['filelocationtype']) ||
+	((empty($_REQUEST['mode']) || $_REQUEST['mode'] != 'edit')
+	&& (empty($_REQUEST['filelocationtype']) || $_REQUEST['filelocationtype'] == 'I')
+	&& !empty($_FILES['filename']['error']) && $_FILES['filename']['error'] == 4
+	&& empty($_FILES['filename']['size']))
+) {
 	$_REQUEST['filelocationtype'] = 'E';
 }
 if (isset($_REQUEST['notecontent']) && $_REQUEST['notecontent'] != '') {

@@ -9,6 +9,7 @@
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
 
 class cbCalendar extends CRMEntity {
 	public $table_name = 'vtiger_activity';
@@ -156,7 +157,7 @@ class cbCalendar extends CRMEntity {
 		//Handling for invitees
 		$selected_users_string = isset($_REQUEST['inviteesid']) ? $_REQUEST['inviteesid'] : '';
 		$invitees_array = explode(';', $selected_users_string);
-		$this->insertIntoInviteeTable('Calendar', $invitees_array);
+		$this->insertIntoInviteeTable('cbCalendar', $invitees_array);
 
 		//Inserting into sales man activity rel
 		$this->insertIntoSmActivityRel();
@@ -165,7 +166,7 @@ class cbCalendar extends CRMEntity {
 			unset($_REQUEST['recurringcheck']);
 			$this->column_fields['parent_id'] = $this->column_fields['rel_id'];
 			$this->column_fields['contact_id'] = $this->column_fields['cto_id'];
-			include_once 'modules/Calendar/RepeatEvents.php';
+			include_once 'modules/cbCalendar/RepeatEvents.php';
 			Calendar_RepeatEvents::repeatFromRequest($this);
 			//Insert into vtiger_recurring event table
 			if (isset($this->column_fields['recurringtype']) && $this->column_fields['recurringtype']!='' && $this->column_fields['recurringtype']!='--None--') {
@@ -289,30 +290,32 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to insert values in activity_reminder_popup table for the specified module
-	  * @param $cbmodule -- module:: Type varchar
+	  * @param string module
 	 */
 	public function insertIntoActivityReminderPopup($cbmodule) {
-		global $adb;
+		self::addNotificationReminder($cbmodule, $this->id, $this->column_fields['dtstart']);
+	}
 
-		$cbrecord = $this->id;
+	public static function addNotificationReminder($cbmodule, $cbrecord, $dtstart) {
+		global $adb;
 		coreBOS_Session::delete('next_reminder_time');
 		if (isset($cbmodule) && isset($cbrecord)) {
-			list($cbdate,$cbtime) = explode(' ', $this->column_fields['dtstart']);
+			list($cbdate,$cbtime) = explode(' ', $dtstart);
 
-			$reminder_query = "SELECT reminderid FROM vtiger_activity_reminder_popup WHERE recordid = ?";
+			$reminder_query = 'SELECT reminderid FROM vtiger_activity_reminder_popup WHERE recordid=?';
 			$reminder_params = array($cbrecord);
 			$reminderidres = $adb->pquery($reminder_query, $reminder_params);
 
 			$reminderid = null;
 			if ($adb->num_rows($reminderidres) > 0) {
-				$reminderid = $adb->query_result($reminderidres, 0, "reminderid");
+				$reminderid = $adb->query_result($reminderidres, 0, 'reminderid');
 			}
 
 			if (isset($reminderid)) {
-				$callback_query = "UPDATE vtiger_activity_reminder_popup set status = 0, date_start = ?, time_start = ? WHERE reminderid = ?";
+				$callback_query = 'UPDATE vtiger_activity_reminder_popup set status=0, date_start=?, time_start=? WHERE reminderid=?';
 				$callback_params = array($cbdate, $cbtime, $reminderid);
 			} else {
-				$callback_query = "INSERT INTO vtiger_activity_reminder_popup (semodule, recordid, date_start, time_start, status) VALUES (?,?,?,?,0)";
+				$callback_query = 'INSERT INTO vtiger_activity_reminder_popup (semodule, recordid, date_start, time_start, status) VALUES (?,?,?,?,0)';
 				$callback_params = array($cbmodule, $cbrecord, $cbdate, $cbtime);
 			}
 
@@ -391,7 +394,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function insertIntoInviteeTable($module, $invitees_array) {
 		global $log,$adb;
-		$log->debug('> insertIntoInviteeTable '.$module.','.print_r($invitees_array, true));
+		$log->debug('> insertIntoInviteeTable', [$module, $invitees_array]);
 		if ($this->mode == 'edit') {
 			$adb->pquery('delete from vtiger_invitees where activityid=?', array($this->id));
 		}
@@ -450,11 +453,12 @@ class cbCalendar extends CRMEntity {
 			if ($id != '') {
 				$displayValueArray = getEntityName('Contacts', $id);
 				if (!empty($displayValueArray)) {
+					$contact_name = '';
 					foreach ($displayValueArray as $field_value) {
 						$contact_name = $field_value;
 					}
+					$cont_name .= $contact_name .', ';
 				}
-				$cont_name .= $contact_name .', ';
 			}
 		}
 		$cont_name  = trim($cont_name, ', ');
@@ -491,55 +495,15 @@ class cbCalendar extends CRMEntity {
 		require_once 'modules/Emails/mail.php';
 		$invites = getTranslatedString('INVITATION', 'cbCalendar');
 		$invitees_array = explode(';', $inviteesid);
-		$subject = $invites.' : '.$subject;
+		$subject = $invites.' : '.vtlib_purify($subject);
 		foreach ($invitees_array as $inviteeid) {
+			$inviteeid = vtlib_purify($inviteeid);
 			if (!empty($inviteeid)) {
 				$description = getActivityDetails($desc, $inviteeid, 'invite');
 				$to_email = getUserEmailId('id', $inviteeid);
 				send_mail('Calendar', $to_email, $current_user->user_name, '', $subject, $description);
 			}
 		}
-	}
-
-	/**
-	 * Apply security restriction (sharing privilege) query part for List view.
-	 */
-	public function getListViewSecurityParameter($module) {
-		global $current_user;
-		$userprivs = $current_user->getPrivileges();
-
-		$sec_query = '';
-		$tabid = getTabid($module);
-
-		if ($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabid] == 3) {
-			$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
-				(
-					SELECT vtiger_user2role.userid FROM vtiger_user2role
-					INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
-					INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
-					WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%'
-				)
-				OR vtiger_crmentity.smownerid IN
-				(
-					SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
-					WHERE userid=".$current_user->id." AND tabid=".$tabid."
-				)
-				OR (";
-
-			// Build the query based on the group association of current user.
-			if ($userprivs->hasGroups()) {
-				$sec_query .= ' vtiger_groups.groupid IN ('. implode(',', $userprivs->getGroups()) .') OR ';
-			}
-			$sec_query .= ' vtiger_groups.groupid IN
-				(
-					SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
-					FROM vtiger_tmp_read_group_sharing_per
-					WHERE userid='.$current_user->id.' and tabid='.$tabid.'
-				)';
-			$sec_query .= ')
-			)';
-		}
-		return $sec_query;
 	}
 
 	/**
@@ -594,8 +558,7 @@ class cbCalendar extends CRMEntity {
 
 		$query = 'select vtiger_contactdetails.*, vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime';
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name','last_name' => 'vtiger_users.last_name'), 'Users');
-		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
+		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.ename ELSE vtiger_groups.groupname END AS user_name";
 
 		$more_relation = '';
 		if (!empty($other->related_tables)) {
@@ -612,9 +575,10 @@ class cbCalendar extends CRMEntity {
 			}
 		}
 
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$query .= ' FROM vtiger_contactdetails
 			inner join vtiger_cntactivityrel on vtiger_cntactivityrel.contactid=vtiger_contactdetails.contactid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 			left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 			left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid';
 		$query .= $more_relation;
@@ -630,8 +594,8 @@ class cbCalendar extends CRMEntity {
 
 	/**
 	 * Invoked when special actions are performed on the module.
-	 * @param String Module name
-	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 * @param string Module name
+	 * @param string Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
@@ -647,9 +611,10 @@ class cbCalendar extends CRMEntity {
 			while ($act = $adb->fetch_array($rs)) {
 				$adb->pquery($upd, array($act['crmid'],$act['activityid']));
 			}
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 			$rs = $adb->query('select activityid, contactid
 					from vtiger_cntactivityrel
-					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cntactivityrel.contactid
+					inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_cntactivityrel.contactid
 					where deleted=0');
 			$upd = 'update vtiger_activity set cto_id=? where activityid=?';
 			$actid = 0;
@@ -786,7 +751,6 @@ class cbCalendar extends CRMEntity {
 				$field1->label= $fldrow['fieldlabel'];
 				$field1->column = $fldrow['columnname'];
 				$field1->table = $fldrow['tablename'];
-				//$field1->columntype = 'VARCHAR(28)';
 				$field1->uitype = $fldrow['uitype'];
 				$field1->typeofdata = $fldrow['typeofdata'];
 				$field1->displaytype = $fldrow['displaytype'];
@@ -885,7 +849,7 @@ class cbCalendar extends CRMEntity {
 					$task->test = '';
 					$task->reevaluate = 1;
 					$taskId = $taskManager->saveTask($task);
-					//Retreive original to replace the old fieldnames and update the new task with it
+					//Retrieve original to replace the old fieldnames and update the new task with it
 					$tasktoedit = $taskManager->retrieveTask($caltk['task_id']);
 					$tasktoedit->workflowId = $calendarWorkflow->id;
 					$tasktoedit->id = $taskId;
@@ -962,20 +926,6 @@ class cbCalendar extends CRMEntity {
 		}
 	}
 
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
 	public static function getCalendarActivityType($record) {
 		if (empty($record) || !is_numeric($record)) {
 			return 'Call';
@@ -997,16 +947,11 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function setActivityReminder($status) {
 		global $adb;
-		if ($status == 'on') {
-			$flag = 0;
-		} elseif ($status == 'off') {
-			$flag = 1;
-		} else {
-			return false;
+		if ($status == 'on' || $status == 'off') {
+			$adb->pquery('update vtiger_activity_reminder_popup set status=1 where recordid=?', array($this->id));
+			return true;
 		}
-		$sql = 'update vtiger_activity_reminder_popup set status=1 where recordid=?';
-		$adb->pquery($sql, array($this->id));
-		return true;
+		return false;
 	}
 
 	public function clearSingletonSaveFields() {
@@ -1025,8 +970,12 @@ class cbCalendar extends CRMEntity {
 			'id' => vtws_getEntityId('cbCalendar') . 'x' . $activityid,
 			'eventstatus' => $status
 		);
-		vtws_revise($element, $current_user);
-		$log->debug('< changeStatus');
+		try {
+			vtws_revise($element, $current_user);
+			$log->debug('< changeStatus');
+		} catch (\Throwable $th) {
+			$log->debug('< changeStatus ERROR: '.json_encode($element));
+		}
 	}
 
 	/*
@@ -1043,6 +992,74 @@ class cbCalendar extends CRMEntity {
 			$query .= ' left join vtiger_recurringevents on vtiger_recurringevents.activityid = vtiger_activity.activityid';
 		}
 		return $query;
+	}
+
+	/*
+	 * Function to get iCalendar formatted event
+	 * returns relative filepath formatted iCalendar
+	 */
+	public function getiCalendar($activityData, $sendtobrowser = false) {
+		global $default_timezone;
+		if (!defined('_BENNU_VERSION')) {
+			define('_BENNU_VERSION', '0.1');
+		}
+		require_once 'include/utils/utils.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_rfc2445.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_components.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_properties.php';
+		require_once 'modules/cbCalendar/iCal/iCalendar_parameters.php';
+		$todo = array();
+		if (!empty($activityData->column_fields)) {
+			$temp = $activityData->column_fields;
+			$recordid = $temp['record_id'];
+			$filename = 'icalfile_'.$recordid.'.ics';
+			$temp['id'] = $recordid;
+			unset($temp['record_id']);
+			$tz = new iCalendar_timezone;
+			if (!empty($default_timezone)) {
+				$tzid = explode('/', $default_timezone);
+			} else {
+				$default_timezone = date_default_timezone_get();
+				$tzid = explode('/', $default_timezone);
+			}
+			if (!empty($tzid[1])) {
+				$tz->add_property('TZID', $tzid[1]);
+			} else {
+				$tz->add_property('TZID', $tzid[0]);
+			}
+			$tz->add_property('TZOFFSETTO', date('O'));
+			if (date('I')==1) {
+				$tz->add_property('DAYLIGHTC', date('I'));
+			} else {
+				$tz->add_property('STANDARDC', date('I'));
+			}
+			$myical = new iCalendar;
+			$myical->add_component($tz);
+			$temp['visibility'] = 'yes';
+			$todo = $temp;
+			if (isset($todo['taskpriority'])) {
+				$todo['priority'] = $todo['taskpriority'];
+				unset($todo['taskpriority']);
+			}
+			$ev = new iCalendar_event;
+			$ev->assign_values($todo);
+			$al = new iCalendar_alarm;
+			$al->assign_values($todo);
+			$ev->add_component($al);
+			$myical->add_component($ev);
+			if ($sendtobrowser) {
+				echo $myical->serialize();
+			} else {
+				$filepath = 'cache/'.$filename;
+				header('Content-type: text/calendar');
+				header('Content-Disposition: attachment; filename='.$filename);
+				$res = file_put_contents($filepath, $myical->serialize());
+				if ($res) {
+					return $filepath;
+				}
+			}
+			return '';
+		}
 	}
 }
 ?>

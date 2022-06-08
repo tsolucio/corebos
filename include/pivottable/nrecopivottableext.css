@@ -1,0 +1,119 @@
+﻿
+/*nreco extension styles*/
+.pvtValDrillDown .pvtVal:hover, .pvtValDrillDown .pvtTotal:hover {
+	cursor:pointer;
+	background-color:#F0F0F0;
+}
+	.pvtValDrillDown .pvtVal[data-value="null"]:hover, .pvtValDrillDown .pvtTotal[data-value="null"]:hover {
+		cursor:default;
+		background-color:inherit;
+	}
+
+.pvtColLabel.pvtSortable, .pvtRowLabel.pvtSortable, .pvtTotalColSortable, .pvtTotalRowSortable, .pvtAxisLabel.pvtSortableCol, .pvtAxisLabel.pvtSortableRow {
+	cursor:pointer;
+}
+	table.pvtTable:not(.pvtFixedHeader) .pvtColLabel.pvtSortable.pvtSortDesc::after, 
+	table.pvtTable:not(.pvtFixedHeader) .pvtTotalRowSortable.pvtSortDesc::after, 
+	table.pvtTable:not(.pvtFixedHeader) .pvtAxisLabel.pvtSortableRow.pvtSortDesc::after,
+	
+	table.pvtTable.pvtFixedHeader .pvtColLabel.pvtSortable.pvtSortDesc>div.pvtFixedHeader::after, 
+	table.pvtTable.pvtFixedHeader .pvtTotalRowSortable.pvtSortDesc>div.pvtFixedHeader::after, 
+	table.pvtTable.pvtFixedHeader .pvtAxisLabel.pvtSortableRow.pvtSortDesc>div.pvtFixedHeader::after
+	{
+		content:" ↓";
+	}
+
+	table.pvtTable:not(.pvtFixedHeader) .pvtColLabel.pvtSortable.pvtSortAsc::after, 
+	table.pvtTable:not(.pvtFixedHeader) .pvtTotalRowSortable.pvtSortAsc::after,
+	table.pvtTable:not(.pvtFixedHeader) .pvtAxisLabel.pvtSortableRow.pvtSortAsc::after,
+
+	table.pvtTable.pvtFixedHeader .pvtColLabel.pvtSortable.pvtSortAsc>div.pvtFixedHeader::after, 
+	table.pvtTable.pvtFixedHeader .pvtTotalRowSortable.pvtSortAsc>div.pvtFixedHeader::after,
+	table.pvtTable.pvtFixedHeader .pvtAxisLabel.pvtSortableRow.pvtSortAsc>div.pvtFixedHeader::after
+	{
+		content:" ↑";
+	}
+
+	table.pvtTable:not(.pvtFixedHeader) .pvtRowLabel.pvtSortable.pvtSortDesc::after,
+	table.pvtTable:not(.pvtFixedHeader) .pvtTotalColSortable.pvtSortDesc::after,
+	table.pvtTable:not(.pvtFixedHeader) .pvtAxisLabel.pvtSortableCol.pvtSortDesc::after,
+	
+	table.pvtTable.pvtFixedHeader .pvtRowLabel.pvtSortable.pvtSortDesc>div.pvtFixedHeader::after,
+	table.pvtTable.pvtFixedHeader .pvtTotalColSortable.pvtSortDesc>div.pvtFixedHeader::after,
+	table.pvtTable.pvtFixedHeader .pvtAxisLabel.pvtSortableCol.pvtSortDesc>div.pvtFixedHeader::after	
+	{
+		content:" →";
+	}
+
+	table.pvtTable:not(.pvtFixedHeader) .pvtRowLabel.pvtSortable.pvtSortAsc::after, 
+	table.pvtTable:not(.pvtFixedHeader) .pvtTotalColSortable.pvtSortAsc::after,
+	table.pvtTable:not(.pvtFixedHeader) .pvtAxisLabel.pvtSortableCol.pvtSortAsc::after,
+
+	table.pvtTable.pvtFixedHeader .pvtRowLabel.pvtSortable.pvtSortAsc>div.pvtFixedHeader::after, 
+	table.pvtTable.pvtFixedHeader .pvtTotalColSortable.pvtSortAsc>div.pvtFixedHeader::after,
+	table.pvtTable.pvtFixedHeader .pvtAxisLabel.pvtSortableCol.pvtSortAsc>div.pvtFixedHeader::after
+	{
+		content:" ←";
+	}
+
+
+/* fixed headers styles */
+.pvtFixedHeaderOuterContainer {
+	border:1px solid #CDCDCD;
+	overflow:auto;
+}
+.pvtFixedHeaderOuterContainer table.pvtTable {
+	border-width: 0px;
+	width:100%;
+	position:relative;
+}
+
+.pvtFixedHeaderOuterContainer table.pvtTable tr>th.pvtTotalRowSortable:last-child>div.pvtFixedHeader {
+	border-right-color:#f9f9f9;
+}
+.pvtFixedHeaderOuterContainer table.pvtTable tr>td:last-child
+{
+	border-right-color:transparent;
+}
+.pvtFixedHeaderOuterContainer table.pvtTable>tbody>tr:last-child>th>div.pvtFixedHeader,
+.pvtFixedHeaderOuterContainer table.pvtTable>tbody>tr:last-child>td
+{
+	border-bottom-color:transparent;
+}
+table.pvtTable.pvtFixedHeader th {
+	overflow-y:visible;
+}
+
+table.pvtTable.pvtFixedHeader th>div.pvtFixedHeader {
+	z-index:91;
+	position:relative;
+	box-sizing: border-box;
+	border-bottom:1px solid #CDCDCD;
+	border-right:1px solid #CDCDCD;
+	padding:5px 5px 5px 4px;
+	margin:0px;
+	top:1px;
+	left:1px;
+	overflow:visible;
+}
+table.pvtTable.pvtFixedHeader th.pvtColLabel>div.pvtFixedHeader, table.pvtTable.pvtFixedHeader th.pvtRowLabel>div.pvtFixedHeader, table.pvtTable.pvtFixedHeader th.pvtTotalLabel>div.pvtFixedHeader {
+	z-index:89;
+}
+
+table.pvtTable.pvtFixedHeader th {
+	padding:0px !important;
+	vertical-align:bottom !important;
+	border-top-color:transparent;
+	z-index:80;
+}
+div.pvtFixedHeaderPanel {
+	background-color:#f9f9f9;
+	position:relative;
+	z-index: 79;
+}
+div.pvtFixedHeaderPanel.pvtTopLeftFixedHeaderPanel {
+	z-index:90;
+}
+
+
+

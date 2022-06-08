@@ -37,5 +37,6 @@ $mod_strings = array(
 	'LBL_COMPANY_LOGO' => 'Company Logo',
 	'LBL_APPLICATION_LOGOS' => 'Application Logos',
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
+	'LBL_COMPANY_LEGAL' => 'Legal Information',
 );
 ?>

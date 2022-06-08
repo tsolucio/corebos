@@ -184,7 +184,7 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 					$focusnew->column_fields['handler'] = $link['handler'];
 					$focusnew->column_fields['active'] = 1;
 					if (isset($brules[$link['linklabel']])) {
-						if (($link['linklabel']=='Create Invoice' && $link['module_list']!='Potentials')) {
+						if ($link['linklabel']=='Create Invoice' && $link['module_list']!='Potentials') {
 							$focusnew->column_fields['brmap'] = 0;
 						} else {
 							list($wsid, $brid) = explode('x', $brules[$focusnew->column_fields['linklabel']]);

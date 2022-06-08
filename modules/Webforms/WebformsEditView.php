@@ -31,12 +31,11 @@ if ($isCreate) {
 	$smarty->assign('usr_selected', $cnt);
 }
 
-$category = getParentTab();
 $targetModules = array('Leads','Contacts','Accounts','Potentials','HelpDesk');
 
 $usersList = get_user_array(false);
 $groupsList = get_group_array(false);
-if (isset($tool_buttons)==false) {
+if (!isset($tool_buttons)) {
 	$tool_buttons = Button_Check($currentModule);
 }
 $smarty->assign('CHECK', $tool_buttons);
@@ -49,7 +48,6 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('CALENDAR_LANG', 'en');
 $smarty->assign('LANGUAGE', $current_language);

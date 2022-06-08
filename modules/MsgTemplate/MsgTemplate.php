@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class MsgTemplate extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_msgtemplate';
 	public $table_index= 'msgtemplateid';
 	public $column_fields = array();
@@ -127,19 +125,19 @@ class MsgTemplate extends CRMEntity {
 		$query_module_cond = '';
 		if (isset($_REQUEST['relmod_id']) && !empty($srcrecord)) {
 			if (preg_match('/^[a-zA-Z]+$/', $srcrecord)) {
-				$module = vtlib_purify($srcrecord);
+				$mod = vtlib_purify($srcrecord);
 			} else {
-				$module = getSalesEntityType($srcrecord);
+				$mod = getSalesEntityType($srcrecord);
 			}
-			$query_module_cond = "vtiger_msgtemplate.msgt_module='".$module."' and ";
+			$query_module_cond = "vtiger_msgtemplate.msgt_module='$mod' and ";
 		}
 		return $query_body." vtiger_msgtemplate.msgt_status='Active' and ".$query_module_cond.$query_cond;
 	}
 
 	/**
 	 * Invoked when special actions are performed on the module.
-	 * @param String Module name
-	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 * @param string Module name
+	 * @param string Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
@@ -213,33 +211,5 @@ class MsgTemplate extends CRMEntity {
 			// Handle actions after this module is updated.
 		}
 	}
-
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 }
 ?>

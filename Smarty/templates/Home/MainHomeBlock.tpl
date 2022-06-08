@@ -19,7 +19,7 @@
 				</a>
 {else}
 			{if $tablestuff.Stufftitle eq $keymetrics_title}
-				<a style='cursor:pointer;' href="index.php?module=Home&action=HomeBlock&homestuffid={$tablestuff.Stuffid}&blockstufftype={$tablestuff.Stufftype}" target="_blank">
+				<a style='cursor:pointer;' href="index.php?module=Home&action=HomeBlock&homestuffid={$tablestuff.Stuffid}&blockstufftype={$tablestuff.Stufftype}&standalone=1" target="_blank">
 					<img src="{'webmail_uparrow.gif'|@vtiger_imageurl:$THEME}" border="0" alt="Open" title="Open"  hspace="2" align="absmiddle"/>
 				</a>
 			{/if}

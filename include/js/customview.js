@@ -94,7 +94,7 @@ function validate(blockid) {
 		if (decimallength == '') {
 			decimallength = 0;
 		}
-		nummaxlength = 65 - (eval(decimallength) + 1);
+		nummaxlength = 65 - (+decimallength + 1); // plus sign to convert to number
 	}
 	var lengthObj = document.getElementById('lengthdetails_'+blockid);
 	if ( lengthObj != null && lengthObj.style.display == 'table-row' && !numConstComp('fldLength_'+blockid, 'Length', 'LE', nummaxlength)) {
@@ -154,15 +154,8 @@ var fieldTypeArr=new Array('text', 'number', 'percent', 'currency', 'date', 'ema
 var currFieldIdx=0, totFieldType;
 var focusFieldType;
 
-/*function init() {
-	lengthLayer=getObj("lengthdetails")
-	decimalLayer=getObj("decimaldetails")
-	pickListLayer=getObj("picklist")
-	totFieldType=fieldTypeArr.length-1
-}*/
-
 function setVisible() {
-	if (focusFieldType==true) {
+	if (focusFieldType) {
 		var selFieldType=fieldLayer.getObj('field'+currFieldIdx);
 		var height=findPosY(selFieldType)+selFieldType.offsetHeight;
 
@@ -241,23 +234,22 @@ function selFieldType(id, scrollLayer, bool, blockid) {
 
 function srchFieldType(ev) {
 	var keyCode='';
+	var currElement;
 	var doSearch = false;
 	if (browser_ie) {
 		keyCode=window.fieldLayer.event.keyCode;
-		var currElement=window.fieldLayer.event.srcElement;
+		currElement=window.fieldLayer.event.srcElement;
 		doSearch = (currElement.id.indexOf('field')>=0);
 		window.fieldLayer.event.cancelBubble=true;
 	} else if (browser_nn4 || browser_nn6) {
 		keyCode=ev.which;
-		var currElement=ev.target;
-		if (currElement.type) {
-			doSearch=false;
-		} else {
+		currElement=ev.target;
+		if (!currElement.type) {
 			doSearch=true;
 		}
 	}
 
-	if (doSearch==true) {
+	if (doSearch) {
 		switch (keyCode) {
 		case 9  : //Reset Field Type
 			resetFieldTypeHilite();
@@ -391,7 +383,6 @@ function validateTypeforCFMapping(leadtype, leadtypeofdata, type, typeofdata, fi
 						document.getElementById(field_name).value = '';
 						return false;
 					}
-					break;
 				case 'N':
 					if (lead_tod[2].indexOf(',')>0) {
 						var lead_dec = lead_tod[2].split(',');
@@ -413,7 +404,6 @@ function validateTypeforCFMapping(leadtype, leadtypeofdata, type, typeofdata, fi
 						document.getElementById(field_name).value = '';
 						return false;
 					}
-					break;
 				}
 			}
 		} else {

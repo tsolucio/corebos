@@ -73,14 +73,13 @@ function hndMouseOver(uitype, fieldLabel) {
 		var assigntype = document.getElementsByName('assigntype');
 		if (assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
+			var assign_type_G = false;
 			if (assigntype[1]!=undefined) {
-				var assign_type_G = assigntype[1].checked;
-			} else {
-				var assign_type_G = false;
+				assign_type_G = assigntype[1].checked;
 			}
-			if (assign_type_U == true) {
+			if (assign_type_U) {
 				globaltxtboxid= 'txtbox_U'+fieldLabel;
-			} else if (assign_type_G == true) {
+			} else if (assign_type_G) {
 				globaltxtboxid= 'txtbox_G'+fieldLabel;
 			}
 		} else {
@@ -92,14 +91,10 @@ function hndMouseOver(uitype, fieldLabel) {
 	} else {
 		globaltxtboxid='txtbox_'+ fieldLabel;//textboxpanid;
 	}
-	divObj = getObj('crmspanid');
+	var divObj = getObj('crmspanid');
 	var crmy = findPosY(getObj(mouseArea));
 	var crmx = findPosX(getObj(mouseArea));
-	if (document.all) {
-		divObj.onclick=handleEdit;
-	} else {
-		divObj.setAttribute('onclick', 'handleEdit();');
-	}
+	divObj.setAttribute('onclick', 'handleEdit();');
 	divObj.style.left=(crmx+getObj(mouseArea).offsetWidth -divObj.offsetWidth)+'px';
 	divObj.style.top=crmy+'px';
 }
@@ -130,7 +125,6 @@ function handleCopyClipboard(event) {
 			document.getElementById('clipcopylink').dataset.clipboardText = assigne_value;
 		}
 	}
-	//if (event) event.stopPropagation();
 	return false;
 }
 
@@ -141,7 +135,7 @@ function handleEdit(event) {
 	show(globaleditareaspanid);
 	fnhide(globaldtlviewspanid);
 	if (((globaluitype == 15 || globaluitype == 16 || globaluitype == 1613 || globaluitype == 1614 || globaluitype == 1615) && globaltempvalue == '') ||
-			(globaluitype != 53 && globaluitype != 15 && globaluitype != 16 && globaluitype != 1613 && globaluitype != 1614 && globaluitype != 1615)
+		(globaluitype != 53 && globaluitype != 15 && globaluitype != 16 && globaluitype != 1613 && globaluitype != 1614 && globaluitype != 1615)
 	) {
 		globaltempvalue = getObj(globaltxtboxid).value;
 		if (getObj(globaltxtboxid).type != 'hidden') {
@@ -156,7 +150,7 @@ function handleEdit(event) {
 	return false;
 }
 
-//Asha: Function changed to trim both leading and trailing spaces.
+// trim both leading and trailing spaces
 function trim(str) {
 	var s = str.replace(/\s+$/, '');
 	s = s.replace(/^\s+/, '');
@@ -183,8 +177,7 @@ function dtlViewAjaxDirectFieldSave(fieldValue, module, tableName, fieldName, cr
 		if (response.indexOf(':#:FAILURE')>-1) {
 			alert(alert_arr.ERROR_WHILE_EDITING);
 		} else if (response.indexOf(':#:ERR')>-1) {
-			alert_str = response.replace(':#:ERR', '');
-			alert(alert_str);
+			alert(response.replace(':#:ERR', ''));
 			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			//For HD & FAQ - comments, we should empty the field value
@@ -230,9 +223,9 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		} else {
 			var assign_type_U = assigntype[0].checked;
 		}
-		if (assign_type_U == true) {
+		if (assign_type_U) {
 			var txtBox= 'txtbox_U'+fieldLabel;
-		} else if (assign_type_G == true) {
+		} else if (assign_type_G) {
 			var txtBox= 'txtbox_G'+fieldLabel;
 			var group_id = encodeURIComponent(document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text);
 			groupurl = '&assigned_group_id='+group_id+'&assigntype=T';
@@ -240,11 +233,11 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	} else if (uitype == 15 || uitype == 16 || uitype == 1613 || uitype == 1614 || uitype == 1615) {
 		var txtBox= 'txtbox_'+ fieldLabel;
 		var not_access =document.getElementById(txtBox);
-		var pickval = not_access.options[not_access.selectedIndex].value;
-		if (pickval == alert_arr.LBL_NOT_ACCESSIBLE) {
+		if (not_access.options[not_access.selectedIndex]==undefined || not_access.options[not_access.selectedIndex].value == alert_arr.LBL_NOT_ACCESSIBLE) {
 			document.getElementById(editArea).style.display='none';
 			document.getElementById(dtlView).style.display='block';
 			itsonview=false; //to show the edit link again after hiding the editdiv.
+			alert(alert_arr.ERR_FIELD_SELECTION);
 			return false;
 		}
 	} else if (globaluitype == 33 || globaluitype == 3313 || globaluitype == 3314) {
@@ -266,7 +259,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 
 	//overriden the tagValue based on UI Type for checkbox
 	if (uitype == '56') {
-		if (document.getElementById(txtBox).checked == true) {
+		if (document.getElementById(txtBox).checked) {
 			if (module == 'Contacts') {
 				var obj = getObj('email');
 				if ((fieldName == 'portal') && (obj == null || obj.value == '')) {
@@ -283,7 +276,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			tagValue = '0';
 		}
 	} else if (uitype == '156') {
-		if (document.getElementById(txtBox).checked == true) {
+		if (document.getElementById(txtBox).checked) {
 			tagValue = 'on';
 		} else {
 			tagValue = 'off';
@@ -299,7 +292,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		if (module == 'Contacts') {
 			if (getObj('portal')) {
 				var port_obj = getObj('portal').checked;
-				if (fieldName == 'email' && tagValue == '' && port_obj == true) {
+				if (fieldName == 'email' && tagValue == '' && port_obj) {
 					alert(alert_arr.PORTAL_PROVIDE_EMAILID);
 					return false;
 				}
@@ -324,8 +317,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		if (response.indexOf(':#:FAILURE')>-1) {
 			alert(alert_arr.ERROR_WHILE_EDITING);
 		} else if (response.indexOf(':#:ERR')>-1) {
-			alert_str = response.replace(':#:ERR', '');
-			alert(alert_str);
+			alert(response.replace(':#:ERR', ''));
 			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			var result = response.split(':#:');
@@ -390,11 +382,11 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 					notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
 				}
 			}
-			sentForm[fieldName] = r;
+			sentForm[fieldName] = r.join(' |##| ');
 			break;
 		case '56':
 		case 56:
-			if (document.getElementById('txtbox_'+fieldName).checked == true) {
+			if (document.getElementById('txtbox_'+fieldName).checked) {
 				sentForm[fieldName] = 1;
 			} else {
 				sentForm[fieldName] = 0;
@@ -417,10 +409,10 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			} else {
 				var assign_type_U = assigntype[0].checked;
 			}
-			if (assign_type_U == true) {
+			if (assign_type_U) {
 				var txtBox= 'txtbox_U'+fieldLabel;
 				sentForm['assign_type'] = 'U';
-			} else if (assign_type_G == true) {
+			} else if (assign_type_G) {
 				var txtBox= 'txtbox_G'+fieldLabel;
 				sentForm['assign_type'] = 'T';
 			}
@@ -506,9 +498,9 @@ function setSelectValue(fieldLabel) {
 			if (assigntype[1]!=undefined) {
 				assign_type_G = assigntype[1].checked;
 			}
-			if (assign_type_U == true) {
+			if (assign_type_U) {
 				selCombo= 'txtbox_U'+fieldLabel;
-			} else if (assign_type_G == true) {
+			} else if (assign_type_G) {
 				selCombo= 'txtbox_G'+fieldLabel;
 			}
 		} else {
@@ -525,8 +517,6 @@ function setSelectValue(fieldLabel) {
 
 //Added to ajax edit the folder name in Documents Module
 function hndMouseClick(fieldLabel) {
-	var mouseArea='';
-	mouseArea='mouseArea_'+ fieldLabel;
 	if (itsonview) {
 		return;
 	}
@@ -553,14 +543,13 @@ function setCoOrdinate(elemId) {
 	tagName.style.left= leftpos - 276 + 'px';
 }
 
-function getListOfRecords(obj, sModule, iId, sParentTab) {
+function getListOfRecords(obj, sModule, iId) {
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
+		url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId,
 	}).done(function (response) {
 		document.getElementById('lstRecordLayout').innerHTML = response;
-		Lay = 'lstRecordLayout';
-		var tagName = document.getElementById(Lay);
+		var tagName = document.getElementById('lstRecordLayout');
 		var leftSide = findPosX(obj);
 		var topSide = findPosY(obj);
 		var maxW = tagName.style.width;

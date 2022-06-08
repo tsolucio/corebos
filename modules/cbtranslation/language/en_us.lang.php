@@ -28,5 +28,6 @@ $mod_strings = array(
 	'Translates' => 'Translates',
 	'Field' => 'Field',
 	'Picklist' => 'Picklist',
+	'LBL_INVALID_FORMAT' => 'Invalid export format',
 );
 ?>

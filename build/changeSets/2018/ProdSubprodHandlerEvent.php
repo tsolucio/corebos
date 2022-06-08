@@ -26,7 +26,6 @@ class ProdSubprodHandlerEvent extends cbupdaterWorker {
 			global $adb;
 			$modname = 'ProductComponent';
 			if ($this->isModuleInstalled($modname)) {
-				$module = Vtiger_Module::getInstance($modname);
 				$ev = new VTEventsManager($adb);
 				$ev->registerHandler('vtiger.entity.aftersave', 'modules/ProductComponent/handlers/prodsubprodhandlerevent.php', 'prodsubprodhandlerevent');
 				$ev->registerHandler('vtiger.entity.afterdelete', 'modules/ProductComponent/handlers/prodsubprodhandlerevent.php', 'prodsubprodhandlerevent');
@@ -48,7 +47,6 @@ class ProdSubprodHandlerEvent extends cbupdaterWorker {
 			global $adb;
 			$modname = 'ProductComponent';
 			if ($this->isModuleInstalled($modname)) {
-				$module = Vtiger_Module::getInstance($modname);
 				$ev = new VTEventsManager($adb);
 				$ev->unregisterHandler('prodsubprodhandlerevent');
 			}

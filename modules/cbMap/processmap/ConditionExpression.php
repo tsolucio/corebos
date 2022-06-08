@@ -82,13 +82,18 @@ class ConditionExpression extends processcbMap {
 				$entity->setData(array_merge($entity->data, $arguments[0]));
 			}
 		} else {
-			$inModule = empty($arguments[0]['module']) ? vtlib_purify($_REQUEST['module']) : $arguments[0]['module'];
+			if (empty($arguments[0]['module']) && empty($_REQUEST['module'])) {
+				$mapFields = $this->getMap();
+				$inModule = $mapFields->column_fields['targetname'];
+			} else {
+				$inModule = empty($arguments[0]['module']) ? vtlib_purify($_REQUEST['module']) : $arguments[0]['module'];
+			}
 			$entity = new cbexpsql_environmentstub($inModule, 0);
 			$entity->setData($arguments[0]);
 		}
 		$current_user = $holduser;
 		if (isset($xml->expression)) {
-			$testexpression = (String)$xml->expression;
+			$testexpression = (string)$xml->expression;
 			$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
 			$expression = $parser->expression();
 			$exprEvaluater = new VTFieldExpressionEvaluater($expression);
@@ -98,25 +103,27 @@ class ConditionExpression extends processcbMap {
 				list($void,$entity->data['record_id']) = explode('x', $entity->data['id']);
 				$entity->data['record_module'] = $entity->getModuleName();
 			}
-			$function = (String)$xml->function->name;
-			$testexpression = '$exprEvaluation = ' . $function . '(';
+			$function = (string)$xml->function->name;
+			$params = array();
 			if (isset($xml->function->parameters) && isset($xml->function->parameters->parameter)) {
 				$GLOBALS['currentuserID'] = $current_user->id;
 				foreach ($xml->function->parameters->parameter as $v) {
-					if (isset($entity->data[(String)$v])) {
-						$testexpression.= "'" . $entity->data[(String)$v] . "',";
-					} elseif (isset($GLOBALS[(String)$v])) {
-						$testexpression.= "'" . $GLOBALS[(String)$v] . "',";
+					if (isset($entity->data[(string)$v])) {
+						$params[] = $entity->data[(string)$v];
+					} elseif (isset($GLOBALS[(string)$v])) {
+						$params[] = $GLOBALS[(string)$v];
 					} else {
-						$testexpression.= "'" . (String)$v . "',";
+						$params[] = (string)$v;
 					}
 				}
 				unset($GLOBALS['currentuserID']);
 			}
-			$testexpression = trim($testexpression, ',') . ');';
-			eval($testexpression);
+			$exprFunction = function ($f, $p) {
+				return call_user_func_array($f, $p);
+			};
+			$exprEvaluation = $exprFunction($function, $params);
 		} elseif (isset($xml->template)) {
-			$testexpression = (String)$xml->template;
+			$testexpression = (string)$xml->template;
 			$entityCache = new VTEntityCache($current_user);
 			$ct = new VTSimpleTemplate($testexpression);
 			$exprEvaluation = $ct->render($entityCache, $entityId);

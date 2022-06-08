@@ -94,8 +94,8 @@ if ($mode == 'view') {
 	$global_per_arry = getProfileGlobalPermission($profileId);
 	$view_all_per = $global_per_arry[1];
 	$edit_all_per = $global_per_arry[2];
-	$privileges_global[]=getGlobalDisplayValue($view_all_per, 1);
-	$privileges_global[]=getGlobalDisplayValue($edit_all_per, 2);
+	$privileges_global[]=getDisplayValue($view_all_per);
+	$privileges_global[]=getDisplayValue($edit_all_per);
 } elseif ($mode == 'edit') {
 	$global_per_arry = getProfileGlobalPermission($profileId);
 	$view_all_per = $global_per_arry[1];
@@ -118,6 +118,7 @@ if ($mode == 'view') {
 $smarty->assign('GLOBAL_PRIV', $privileges_global);
 
 //standard privileges
+$privileges_stand = array();
 if ($mode == 'view') {
 	$act_perr_arry = getTabsActionPermission($profileId);
 	foreach ($act_perr_arry as $tabid => $action_array) {
@@ -125,16 +126,16 @@ if ($mode == 'view') {
 		$entity_name = getTabModuleName($tabid);
 		//Create Permission
 		$tab_create_per_id = $action_array['7'];
-		$tab_create_per = getDisplayValue($tab_create_per_id, $tabid, '7');
+		$tab_create_per = getDisplayValue($tab_create_per_id);
 		//Edit Permission
 		$tab_edit_per_id = $action_array['1'];
-		$tab_edit_per_id = getDisplayValue($tab_edit_per_id, $tabid, '1');
+		$tab_edit_per_id = getDisplayValue($tab_edit_per_id);
 		//Delete Permission
 		$tab_delete_per_id = $action_array['2'];
-		$tab_delete_per = getDisplayValue($tab_delete_per_id, $tabid, '2');
+		$tab_delete_per = getDisplayValue($tab_delete_per_id);
 		//View Permission
 		$tab_view_per_id = $action_array['4'];
-		$tab_view_per = getDisplayValue($tab_view_per_id, $tabid, '4');
+		$tab_view_per = getDisplayValue($tab_view_per_id);
 
 		$stand[]=$entity_name;
 		$stand[]=$tab_edit_per_id;
@@ -234,7 +235,7 @@ if ($mode == 'view') {
 		$tab=array();
 		$entity_name = getTabModuleName($tabid);
 		$tab_allow_per_id = $tab_perr_array[$tabid];
-		$tab_allow_per = getDisplayValue($tab_allow_per_id, $tabid, '');
+		$tab_allow_per = getDisplayValue($tab_allow_per_id);
 		$tab[]=$entity_name;
 		$tab[]=$tab_allow_per;
 		$privileges_tab[$tabid]=$tab;
@@ -295,7 +296,7 @@ if ($mode == 'view') {
 		foreach ($action_array as $action_id => $act_per) {
 			$action_name = getActionname($action_id);
 			$tab_util_act_per = $action_array[$action_id];
-			$tab_util_per = getDisplayValue($tab_util_act_per, $tabid, $action_id);
+			$tab_util_per = getDisplayValue($tab_util_act_per);
 			$util[]=$action_name;
 			$util[]=$tab_util_per;
 		}
@@ -394,7 +395,6 @@ if ($mode=='view') {
 				} else {
 					$visible = "<img src='".vtiger_imageurl('unlocked.png', $theme)."'>";
 				}
-				//$visible = "<img src='".vtiger_imageurl('prvPrfSelectedTick.gif', $theme)."'>";
 			} else {
 				$visible = "<img src='".vtiger_imageurl('no.gif', $theme)."'>";
 			}
@@ -757,27 +757,17 @@ if ($mode == 'view') {
 	$smarty->display('EditProfile.tpl');
 }
 
-/** returns html image code based on the input id
- * @param $id -- Role Name:: Type varchar
- * @returns $value -- html image code:: Type varcha:w
+/** use getDisplayValue
+ * @deprecated
  */
 function getGlobalDisplayValue($id, $actionid) {
-	global $theme;
-	if ($id == '') {
-		$value = '&nbsp;';
-	} elseif ($id == 0) {
-		$value = '<img src="' . vtiger_imageurl('prvPrfSelectedTick.gif', $theme) . '">';
-	} elseif ($id == 1) {
-		$value = '<img src="' . vtiger_imageurl('no.gif', $theme) . '">';
-	} else {
-		$value = '&nbsp;';
-	}
-	return $value;
+	return getDisplayValue($id);
 }
 
 /** returns html check box code based on the input id
- * @param $id -- Role Name:: Type varchar
- * @returns $value -- html check box code:: Type varcha:w
+ * @param integer yes/no
+ * @param integer view/edit
+ * @return string html check box code
  */
 function getGlobalDisplayOutput($id, $actionid) {
 	if ($actionid == '1') {
@@ -797,14 +787,12 @@ function getGlobalDisplayOutput($id, $actionid) {
 }
 
 /** returns html image code based on the input id
- * @param $id -- Role Name:: Type varchar
- * @returns $value -- html image code:: Type varcha:w
+ * @param integer next/prev image URL
+ * @return string html image code
  */
 function getDisplayValue($id) {
 	global $theme;
-	if ($id == '') {
-		$value = '&nbsp;';
-	} elseif ($id == 0) {
+	if ($id == 0) {
 		$value = '<img src="' . vtiger_imageurl('prvPrfSelectedTick.gif', $theme) .'">';
 	} elseif ($id == 1) {
 		$value = '<img src="' . vtiger_imageurl('no.gif', $theme) .'">';
@@ -815,8 +803,10 @@ function getDisplayValue($id) {
 }
 
 /** returns html check box code based on the input id
- * @param $id -- Role Name:: Type varchar
- * @returns $value -- html check box code:: Type varcha:w
+ * @param integer yes/no
+ * @param integer module tab ID
+ * @param integer action
+ * @return string html check box code
  */
 function getDisplayOutput($id, $tabid, $actionid) {
 	if ($actionid == '') {

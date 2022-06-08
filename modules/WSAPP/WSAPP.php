@@ -14,8 +14,8 @@ class WSAPP {
 
 	/**
 	 * Invoked when special actions are performed on the module.
-	 * @param String Module name
-	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 * @param string Module name
+	 * @param string Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
@@ -26,16 +26,12 @@ class WSAPP {
 			$this->registerSynclibEventHandler();
 		} elseif ($event_type == 'module.disabled') {
 			// Handle actions when this module is disabled.
-			return;
 		} elseif ($event_type == 'module.enabled') {
 			// Handle actions when this module is enabled.
-			return;
 		} elseif ($event_type == 'module.preuninstall') {
 			// Handle actions when this module is about to be deleted.
-			return;
 		} elseif ($event_type == 'module.preupdate') {
 			// Handle actions before this module is updated.
-			return;
 		} elseif ($event_type == 'module.postupdate') {
 			$this->registerSynclibEventHandler();
 		}
@@ -74,11 +70,11 @@ class WSAPP {
 		global $adb;
 
 		foreach ($operations as $operation_name => $operation_info) {
-			$checkres = $adb->pquery("SELECT operationid FROM vtiger_ws_operation WHERE name=?", array($operation_name));
+			$checkres = $adb->pquery('SELECT operationid FROM vtiger_ws_operation WHERE name=?', array($operation_name));
 			if ($checkres && $adb->num_rows($checkres) < 1) {
 				$operation_id = $adb->getUniqueId('vtiger_ws_operation');
 				$adb->pquery(
-					"INSERT INTO vtiger_ws_operation (operationid, name, handler_path, handler_method, type, prelogin) VALUES (?,?,?,?,?,?)",
+					'INSERT INTO vtiger_ws_operation (operationid, name, handler_path, handler_method, type, prelogin) VALUES (?,?,?,?,?,?)',
 					array($operation_id, $operation_name, $operation_info['file'], $operation_info['handler'], $operation_info['reqtype'], $operation_info['prelogin'])
 				);
 
@@ -86,7 +82,7 @@ class WSAPP {
 				$parameter_index = 0;
 				foreach ($operation_parameters as $parameter_name => $parameter_type) {
 					$adb->pquery(
-						"INSERT INTO vtiger_ws_operation_parameters (operationid, name, type, sequence) VALUES(?,?,?,?)",
+						'INSERT INTO vtiger_ws_operation_parameters (operationid, name, type, sequence) VALUES(?,?,?,?)',
 						array($operation_id, $parameter_name, $parameter_type, ($parameter_index+1))
 					);
 					++$parameter_index;

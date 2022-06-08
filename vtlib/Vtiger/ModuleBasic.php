@@ -72,7 +72,7 @@ class Vtiger_ModuleBasic {
 		$this->presence = $valuemap['presence'];
 		$this->ownedby = $valuemap['ownedby'];
 		$this->tabsequence = $valuemap['tabsequence'];
-		$this->parent = $valuemap['parent'];
+		$this->parent = isset($valuemap['parent']) ? $valuemap['parent'] : '';
 
 		$this->isentitytype = $valuemap['isentitytype'];
 
@@ -112,7 +112,7 @@ class Vtiger_ModuleBasic {
 	 */
 	public function __getNextSequence() {
 		global $adb;
-		$result = $adb->pquery("SELECT MAX(tabsequence) AS max_tabseq FROM vtiger_tab", array());
+		$result = $adb->pquery('SELECT MAX(tabsequence) AS max_tabseq FROM vtiger_tab', array());
 		$maxtabseq = $adb->query_result($result, 0, 'max_tabseq');
 		return ++$maxtabseq;
 	}
@@ -266,8 +266,8 @@ class Vtiger_ModuleBasic {
 
 	/**
 	 * Initialize table required for the module
-	 * @param String Base table name (default modulename in lowercase)
-	 * @param String Base table column (default modulenameid in lowercase)
+	 * @param string Base table name (default modulename in lowercase)
+	 * @param string Base table column (default modulenameid in lowercase)
 	 *
 	 * Creates basetable, customtable, grouptable <br>
 	 * customtable name is basetable + 'cf'<br>
@@ -357,7 +357,7 @@ class Vtiger_ModuleBasic {
 
 	/**
 	 * Configure default sharing access for the module
-	 * @param String Permission text should be one of ['Public_ReadWriteDelete', 'Public_ReadOnly', 'Public_ReadWrite', 'Private']
+	 * @param string Permission text should be one of ['Public_ReadWriteDelete', 'Public_ReadOnly', 'Public_ReadWrite', 'Private']
 	 */
 	public function setDefaultSharing($permission_text = 'Public_ReadWriteDelete') {
 		Vtiger_Access::setDefaultSharing($this, $permission_text);
@@ -423,7 +423,8 @@ class Vtiger_ModuleBasic {
 
 	/**
 	 * Get all the fields of the module or block
-	 * @param Vtiger_Block Instance of block to use to get fields, false to get all the block fields
+	 * @param Vtiger_Block Instance of block to get fields from, false to get all the fields of the module
+	 * @return array of Vtiger_Field objects
 	 */
 	public function getFields($blockInstance = false) {
 		$fields = false;
@@ -437,8 +438,8 @@ class Vtiger_ModuleBasic {
 
 	/**
 	 * Function to get fields based on the type
-	 * @param <String> $type - field type
-	 * @return <Array of Vtiger_Field> - list of field models
+	 * @param string field type
+	 * @return array of Vtiger_Field list of field models
 	 */
 	public function getFieldsByType($type) {
 		global $adb;
@@ -459,7 +460,7 @@ class Vtiger_ModuleBasic {
 
 	/**
 	 * Function to get array of fields indexed by fieldid
-	 * @return <Vtiger_Field> with fieldid as key
+	 * @return Vtiger_Field with fieldid as key
 	 */
 	public function getFieldsById() {
 		$fields = $this->getFields();
@@ -473,7 +474,7 @@ class Vtiger_ModuleBasic {
 
 	/**
 	 * Function to get array of fields indexed by label
-	 * @return <Vtiger_Field> with field label as key
+	 * @return Vtiger_Field with field label as key
 	 */
 	public function getFieldsByLabel() {
 		$fields = $this->getFields();
@@ -487,8 +488,8 @@ class Vtiger_ModuleBasic {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 * @access private
 	 */
 	public static function log($message, $delimit = true) {
@@ -501,7 +502,7 @@ class Vtiger_ModuleBasic {
 	 */
 	public static function syncfile() {
 		self::log('Updating tabdata file ... ', false);
-		create_tab_data_file();
+		// used to create tab_data file
 		self::log('DONE');
 	}
 }

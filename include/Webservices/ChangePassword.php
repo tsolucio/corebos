@@ -9,11 +9,11 @@
  *********************************************************************************/
 
 /**
- * @param WebserviceId $id
- * @param String $oldPassword
- * @param String $newPassword
- * @param String $confirmPassword
- * @param Users $user
+ * @param string web service ID
+ * @param string old password
+ * @param string new password
+ * @param string confirm password
+ * @param Users curent user
  */
 function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, $user) {
 	vtws_preserveGlobal('current_user', $user);
@@ -26,6 +26,10 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 		if (!Users::is_ActiveUserID($idComponents[1])) {
 			VTWS_PreserveGlobal::flush();
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSER, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$INVALIDUSER));
+		}
+		if (preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/i', $newPassword) != 1) {
+			VTWS_PreserveGlobal::flush();
+			throw new WebServiceException(WebServiceErrorCode::$PASSWORDNOTSTRONG, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$PASSWORDNOTSTRONG));
 		}
 		$newUser = new Users();
 		$newUser->retrieveCurrentUserInfoFromFile($idComponents[1]);
@@ -43,7 +47,8 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 			$db = PearDatabase::getInstance();
 			$db->dieOnError = false;
 			$db->startTransaction();
-			$success = $newUser->change_password($oldPassword, $newPassword, false);
+			$newPassword = substr($newPassword, 0, 1024);
+			$success = $newUser->change_password($oldPassword, $newPassword);
 			$error = $db->hasFailedTransaction();
 			$db->completeTransaction();
 			VTWS_PreserveGlobal::flush();
@@ -57,7 +62,10 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 			VTWS_PreserveGlobal::flush();
 			throw new WebServiceException(WebServiceErrorCode::$CHANGEPASSWORDFAILURE, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$CHANGEPASSWORDFAILURE));
 		}
-		return array('message' => 'Changed password successfully');
+		return array(
+			'message' => 'Changed password successfully. Save your new Access Key, you will not see it again.',
+			'accesskey' => getSingleFieldValue('vtiger_users', 'accesskey', 'id', $idComponents[1]),
+		);
 	} else {
 		VTWS_PreserveGlobal::flush();
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'You do not have permission to change the password.');

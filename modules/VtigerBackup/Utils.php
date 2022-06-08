@@ -35,8 +35,7 @@ class Vtiger_BackupUtils {
 	public static function getLocalBackupPath() {
 		$db = PearDatabase::getInstance();
 		$path_query = $db->pquery('SELECT * FROM vtiger_systems WHERE server_type = ?', array('local_backup'));
-		$path = $db->query_result($path_query, 0, 'server_path');
-		return $path;
+		return $db->query_result($path_query, 0, 'server_path');
 	}
 }
 ?>

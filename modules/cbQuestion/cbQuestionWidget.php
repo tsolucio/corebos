@@ -25,6 +25,8 @@ class bqanswer {
 
 class bqAnswer_DetailViewBlock extends DeveloperBlock {
 
+	protected $widgetName = 'BusinessQuestionAnswer';
+
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {
 		global $current_user, $currentModule;
@@ -41,7 +43,7 @@ class bqAnswer_DetailViewBlock extends DeveloperBlock {
 				'$MODULE$' => $module,
 				'$USERID$' => $current_user->id,
 			);
-			if (isset($recordid)) {
+			if (isset($recordid) && $recordid != '0x0') {
 				$ctxtmodule = getSalesEntityType($recordid);
 				$params['$MODULE$'] = $ctxtmodule;
 				$ent = CRMEntity::getInstance($ctxtmodule);

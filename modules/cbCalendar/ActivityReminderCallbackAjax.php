@@ -12,7 +12,7 @@ global $app_strings, $currentModule, $image_path, $theme, $adb, $current_user;
 require_once 'Smarty_setup.php';
 require_once 'data/Tracker.php';
 require_once 'include/utils/utils.php';
-require_once 'modules/Calendar/Activity.php';
+require_once 'modules/cbCalendar/CalendarCommon.php';
 
 $cur_time = time();
 coreBOS_Session::set('last_reminder_check_time', $cur_time);
@@ -46,18 +46,19 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 		$date = date('Y-m-d', strtotime("+$intervalInMinutes minutes", $time));
 		$date_inpast = date('Y-m-d', strtotime('-'.$Calendar_PopupReminder_DaysPast.' day', $time));
 		$time = date('H:i', strtotime("+$intervalInMinutes minutes", $time));
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
 		$callback_query =
-		"SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed, vtiger_crmentity.*" .
-		" FROM vtiger_activity_reminder_popup" .
-		" inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid " .
-		" inner join vtiger_activity on vtiger_activity.activityid = vtiger_activity_reminder_popup.recordid ".
-		" WHERE vtiger_crmentity.smownerid = ".$current_user->id." and vtiger_crmentity.deleted = 0 " .
-		" AND (vtiger_activity.activitytype not in ('Emails') and vtiger_activity.eventstatus not in ('','Held','Completed','Deferred'))".
-		" and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date .
-		"' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')" .
-		" or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')" .
-		" AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "')))
-		ORDER BY vtiger_activity_reminder_popup.date_start DESC limit 0, ".$list_max_entries_per_page;
+			'SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed, vtiger_crmentity.*'
+			.' FROM vtiger_activity_reminder_popup'
+			.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
+			.' inner join vtiger_activity on vtiger_activity.activityid = vtiger_activity_reminder_popup.recordid '
+			.' WHERE vtiger_crmentity.smownerid = '.$current_user->id.' and vtiger_crmentity.deleted = 0 '
+			." AND (vtiger_activity.activitytype not in ('Emails') and vtiger_activity.eventstatus not in ('','Held','Completed','Deferred'))"
+			." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
+			."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
+			." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
+			." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "')))"
+			.' ORDER BY vtiger_activity_reminder_popup.date_start DESC limit 0, '.$list_max_entries_per_page;
 
 		$result = $adb->query($callback_query);
 
@@ -175,10 +176,10 @@ function printToDoList($activities_reminder) {
 		$smarty->assign('TASKItemRead', $ACTIVITY['cbreaded']);
 		$smarty->assign('TASKImage', $ACTIVITY['activityimage']);
 		$smarty->assign('TASKType', $ACTIVITY['activitytype']);
-		$smarty->assign('TASKTitle', $ACTIVITY['cbsubject']);
-		$smarty->assign('TASKSubtitle', $ACTIVITY['activitytype'].' - '.$ACTIVITY['cbstatus']);
-		$smarty->assign('TASKSubtitleColor', $ACTIVITY['cbcolor']);
-		$smarty->assign('TASKStatus', $ACTIVITY['cbdate'].' '.$ACTIVITY['cbtime']);
+		$smarty->assign('TASKTitle', vtlib_purify($ACTIVITY['cbsubject']));
+		$smarty->assign('TASKSubtitle', vtlib_purify($ACTIVITY['activitytype'].' - '.$ACTIVITY['cbstatus']));
+		$smarty->assign('TASKSubtitleColor', vtlib_purify($ACTIVITY['cbcolor']));
+		$smarty->assign('TASKStatus', vtlib_purify($ACTIVITY['cbdate'].' '.$ACTIVITY['cbtime']));
 		$actions = array();
 		$actions[getTranslatedString('LBL_VIEW', 'Settings')] = array(
 			'type' => 'link',

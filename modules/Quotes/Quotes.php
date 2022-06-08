@@ -28,7 +28,10 @@ class Quotes extends CRMEntity {
 	 */
 	public $customFieldTable = array('vtiger_quotescf', 'quoteid');
 	// Uncomment the line below to support custom field columns on related lists
-	public $related_tables = array('vtiger_account'=>array('accountid'));
+	public $related_tables = array(
+		'vtiger_quotesbillads' => array('quotebilladdressid', 'vtiger_quotes', 'quoteid', 'Quotes'),
+		'vtiger_quotesshipads' => array('quoteshipaddressid', 'vtiger_quotes', 'quoteid', 'Quotes'),
+	);
 
 	public $tab_name = array('vtiger_crmentity','vtiger_quotes','vtiger_quotesbillads','vtiger_quotesshipads','vtiger_quotescf');
 
@@ -124,21 +127,20 @@ class Quotes extends CRMEntity {
 
 	public function registerInventoryHistory() {
 		global $app_strings;
-		if (isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
-			if (GlobalVariable::getVariable('Application_B2B', '1')) {
+		if (GlobalVariable::getVariable('Application_B2B', '1')) {
+			if (!empty($this->column_fields['account_id'])) {
 				$relatedname = getAccountName($this->column_fields['account_id']);
 			} else {
+				$relatedname = getAccountName(getSingleFieldValue($this->table_name, 'accountid', $this->table_index, $this->id));
+			}
+		} else {
+			if (!empty($this->column_fields['contact_id'])) {
 				$relatedname = getContactName($this->column_fields['contact_id']);
-			}
-			$total = $this->column_fields['hdnGrandTotal'];
-		} else { //using edit button and save
-			if (GlobalVariable::getVariable('Application_B2B', '1')) {
-				$relatedname = $_REQUEST['account_name'];
 			} else {
-				$relatedname = $_REQUEST['contact_name'];
+				$relatedname = getContactName(getSingleFieldValue($this->table_name, 'contactid', $this->table_index, $this->id));
 			}
-			$total = $_REQUEST['total'];
 		}
+		$total = getSingleFieldValue($this->table_name, 'total', $this->table_index, $this->id);
 		if ($this->column_fields['quotestage'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 			//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
 			$stat_value = getSingleFieldValue($this->table_name, 'quotestage', $this->table_index, $this->id);
@@ -146,43 +148,6 @@ class Quotes extends CRMEntity {
 			$stat_value = $this->column_fields['quotestage'];
 		}
 		addInventoryHistory(get_class($this), $this->id, $relatedname, $total, $stat_value);
-	}
-
-	/**	function used to get the list of sales orders which are related to the Quotes
-	 *	@param int $id - quote id
-	 *	@return array - return an array which will be returned from the function GetRelatedList
-	 */
-	public function get_salesorder($id) {
-		global $log,$singlepane_view;
-		$log->debug('> get_salesorder '.$id);
-		require_once 'modules/SalesOrder/SalesOrder.php';
-		$focus = new SalesOrder();
-
-		$button = '';
-
-		if ($singlepane_view == 'true') {
-			$returnset = '&return_module=Quotes&return_action=DetailView&return_id='.$id;
-		} else {
-			$returnset = '&return_module=Quotes&return_action=CallRelatedList&return_id='.$id;
-		}
-
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "select vtiger_crmentity.*, vtiger_salesorder.*, vtiger_quotes.subject as quotename
-			, vtiger_account.accountname,case when (vtiger_users.user_name not like '') then
-			$userNameSql else vtiger_groups.groupname end as user_name
-		from vtiger_salesorder
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_salesorder.salesorderid
-		left outer join vtiger_quotes on vtiger_quotes.quoteid=vtiger_salesorder.quoteid
-		left outer join vtiger_account on vtiger_account.accountid=vtiger_salesorder.accountid
-		left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
-		LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
-		LEFT JOIN vtiger_invoice_recurring_info ON vtiger_invoice_recurring_info.start_period = vtiger_salesorder.salesorderid
-		LEFT JOIN vtiger_sobillads ON vtiger_sobillads.sobilladdressid = vtiger_salesorder.salesorderid
-		LEFT JOIN vtiger_soshipads ON vtiger_soshipads.soshipaddressid = vtiger_salesorder.salesorderid
-		left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
-		where vtiger_crmentity.deleted=0 and vtiger_salesorder.quoteid = ".$id;
-		$log->debug('< get_salesorder');
-		return GetRelatedList('Quotes', 'SalesOrder', $focus, $query, $button, $returnset);
 	}
 
 	/**	Function used to get the Quote Stage history of the Quotes
@@ -197,7 +162,7 @@ class Quotes extends CRMEntity {
 		$query = 'select vtiger_quotestagehistory.*, vtiger_quotes.quote_no
 			from vtiger_quotestagehistory
 			inner join vtiger_quotes on vtiger_quotes.quoteid = vtiger_quotestagehistory.quoteid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_quotes.quoteid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid = vtiger_quotes.quoteid
 			where vtiger_crmentity.deleted = 0 and vtiger_quotes.quoteid = ?';
 		$result=$adb->pquery($query, array($id));
 		$header = array();
@@ -240,10 +205,8 @@ class Quotes extends CRMEntity {
 
 	// Function to get column name - Overriding function of base class
 	public function get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype = '') {
-		if ($columname == 'potentialid' || $columname == 'contactid') {
-			if ($fldvalue == '') {
-				return null;
-			}
+		if (($columname == 'potentialid' || $columname == 'contactid') && $fldvalue == '') {
+			return null;
 		}
 		return parent::get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype);
 	}
@@ -319,7 +282,6 @@ class Quotes extends CRMEntity {
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
 			'SalesOrder' =>array('vtiger_salesorder'=>array('quoteid','salesorderid'),'vtiger_quotes'=>'quoteid'),
-			'Calendar' =>array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_quotes'=>'quoteid'),
 			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_quotes'=>'quoteid'),
 			'Accounts' => array('vtiger_quotes'=>array('quoteid','accountid')),
 			'Contacts' => array('vtiger_quotes'=>array('quoteid','contactid')),
@@ -334,7 +296,15 @@ class Quotes extends CRMEntity {
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
-
+		$customRelModules = ['Accounts', 'Potentials', 'Contacts', 'Documents'];
+		if (in_array($return_module, $customRelModules)) {
+			$data = array();
+			$data['sourceModule'] = getSalesEntityType($id);
+			$data['sourceRecordId'] = $id;
+			$data['destinationModule'] = $return_module;
+			$data['destinationRecordId'] = $return_id;
+			cbEventHandler::do_action('corebos.entity.link.delete', $data);
+		}
 		if ($return_module == 'Accounts') {
 			$this->trash('Quotes', $id);
 		} elseif ($return_module == 'Potentials') {
@@ -348,6 +318,9 @@ class Quotes extends CRMEntity {
 			$adb->pquery($sql, array($id, $return_id));
 		} else {
 			parent::unlinkRelationship($id, $return_module, $return_id);
+		}
+		if (in_array($return_module, $customRelModules)) {
+			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		}
 	}
 
@@ -378,19 +351,18 @@ class Quotes extends CRMEntity {
 	* Returns Export Quotes Query.
 	*/
 	public function create_export_query($where) {
-		global $log, $current_user;
+		global $log, $current_user, $adb;
 		$log->debug('> create_export_query '.$where);
 
-		include 'include/utils/ExportUtils.php';
+		include_once 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery('Quotes', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
-		$query = "SELECT $fields_list FROM vtiger_crmentity
-			INNER JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_crmentity.crmid
+		$query = "SELECT $fields_list FROM ".$this->crmentityTableAlias
+			." INNER JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_quotescf ON vtiger_quotescf.quoteid = vtiger_quotes.quoteid
 			LEFT JOIN vtiger_quotesbillads ON vtiger_quotesbillads.quotebilladdressid = vtiger_quotes.quoteid
 			LEFT JOIN vtiger_quotesshipads ON vtiger_quotesshipads.quoteshipaddressid = vtiger_quotes.quoteid
@@ -406,6 +378,15 @@ class Quotes extends CRMEntity {
 			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
 			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 
+		include_once 'include/fields/metainformation.php';
+		$tabid = getTabid('Quotes');
+		$result = $adb->pquery('select tablename, fieldname, columnname from vtiger_field where tabid=? and uitype=?', array($tabid, Field_Metadata::UITYPE_ACTIVE_USERS));
+		while ($row = $adb->fetchByAssoc($result)) {
+			$tableName = $row['tablename'];
+			$fieldName = $row['fieldname'];
+			$columName = $row['columnname'];
+			$query .= ' LEFT JOIN vtiger_users as vtiger_users'.$fieldName.' ON vtiger_users'.$fieldName.'.id='.$tableName.'.'.$columName;
+		}
 		$query .= $this->getNonAdminAccessControlQuery('Quotes', $current_user);
 		$where_auto = ' vtiger_crmentity.deleted=0';
 

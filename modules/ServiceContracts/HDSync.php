@@ -46,7 +46,6 @@ if (!is_admin($current_user)) {
 		array('vtiger.entity.aftersave', 'modules/ServiceContracts/ServiceContractsHandler.php', 'ServiceContractsHandler')
 	);
 	$smarty->assign('hdsyncactive', ($adb->num_rows($result)===0 ? '' : 'checked'));
-	$smarty->display('SetMenu.tpl');
 	$smarty->display('modules/ServiceContracts/SyncwithHelpDesk.tpl');
 }
 ?>

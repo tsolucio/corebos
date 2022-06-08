@@ -627,7 +627,7 @@
 <customlink>
 <linktype>DETAILVIEWBASIC</linktype>
 <linklabel>Test</linklabel>
-<linkurl><![CDATA[javascript:gotourl('index.php?module=cbCVManagement&action=TestPermission&parenttab=Tools')]]></linkurl>
+<linkurl><![CDATA[javascript:gotourl('index.php?module=cbCVManagement&action=TestPermission')]]></linkurl>
 <linkicon><![CDATA[]]></linkicon>
 <sequence>0</sequence>
 <handler_path><![CDATA[]]></handler_path>
@@ -637,7 +637,7 @@
 <customlink>
 <linktype>LISTVIEWBASIC</linktype>
 <linklabel>Test</linklabel>
-<linkurl><![CDATA[javascript:gotourl('index.php?module=cbCVManagement&action=TestPermission&parenttab=Tools')]]></linkurl>
+<linkurl><![CDATA[javascript:gotourl('index.php?module=cbCVManagement&action=TestPermission')]]></linkurl>
 <linkicon><![CDATA[]]></linkicon>
 <sequence>0</sequence>
 <handler_path><![CDATA[]]></handler_path>

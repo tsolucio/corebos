@@ -12,46 +12,41 @@ require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
 
 global $adb, $default_charset;
+Vtiger_Request::validateRequest();
 $local_log = LoggerManager::getLogger('index');
 $focus = new Reports();
 
 $rfid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 0;
 $mode = vtlib_purify($_REQUEST['savemode']);
-$foldername = vtlib_purify($_REQUEST["foldername"]);
+$foldername = vtlib_purify($_REQUEST['foldername']);
 $foldername = function_exists('iconv') ? @iconv('UTF-8', $default_charset, $foldername) : $foldername;
-$folderdesc = vtlib_purify($_REQUEST["folderdesc"]);
+$folderdesc = vtlib_purify($_REQUEST['folderdesc']);
 $foldername = str_replace('*amp*', '&', $foldername);
 $folderdesc = str_replace('*amp*', '&', $folderdesc);
 
 if ($mode=='Save') {
-	if ($rfid=='') {
-		$sql = 'INSERT INTO vtiger_reportfolder (FOLDERNAME,DESCRIPTION,STATE) VALUES (?,?,?)';
+	if (empty($rfid)) {
+		$sql = 'INSERT INTO vtiger_reportfolder (foldername,description,state) VALUES (?,?,?)';
 		$sql_params = array(trim($foldername), $folderdesc, 'CUSTOMIZED');
 		$result = $adb->pquery($sql, $sql_params);
-		if ($result!=false) {
-			header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports');
-		} else {
-			include 'modules/Vtiger/header.php';
-			$errormessage = "<font color='red'><B>Error Message<ul>
-			<li><font color='red'>Error while inserting the record</font>
-			</ul></B></font> <br>" ;
-			echo $errormessage;
+		if (!$result) {
+			$_REQUEST['del_denied'] = getTranslatedString('LBL_ERROR_WHILE_INSERTING_RECORD', 'Reports');
 		}
+		$_REQUEST['file'] = 'ListView';
+		include 'modules/Reports/ListView.php';
 	}
 } elseif ($mode=='Edit') {
-	if ($rfid != '') {
-		$sql = 'update vtiger_reportfolder set FOLDERNAME=?, DESCRIPTION=? where folderid=?';
+	if (!empty($rfid)) {
+		$sql = 'update vtiger_reportfolder set foldername=?, description=? where folderid=?';
 		$params = array(trim($foldername), $folderdesc, $rfid);
 		$result = $adb->pquery($sql, $params);
-		if ($result!=false) {
-			header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports');
-		} else {
-			include 'modules/Vtiger/header.php';
-			$errormessage = "<font color='red'><B>Error Message<ul>
-			<li><font color='red'>Error while updating the record</font>
-			</ul></B></font> <br>" ;
-			echo $errormessage;
+		if (!$result) {
+			$_REQUEST['del_denied'] = getTranslatedString('LBL_ERROR_WHILE_UPDATING_RECORD', 'Reports');
 		}
+		$_REQUEST['file'] = 'ListView';
+		include 'modules/Reports/ListView.php';
 	}
+} elseif ($mode=='Layout') {
+	coreBOS_Settings::setSetting('ReportGridLayout'.$current_user->id, $_REQUEST['layout']);
 }
 ?>

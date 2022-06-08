@@ -31,7 +31,7 @@ class cbQuestionContextParameter extends cbupdaterWorker {
 					$this->ExecuteQuery("INSERT INTO vtiger_ws_operation_parameters (`operationid`,`name`,`type`,`sequence`) VALUES ($operationid,'params','String',2);");
 				}
 				$this->sendMsg('Changeset '.get_class($this).' applied!');
-				$this->markApplied();
+				$this->markApplied(false);
 			} else {
 				$this->sendMsgError('Changeset '.get_class($this).' could not be applied yet. Please launch again.');
 			}

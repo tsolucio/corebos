@@ -16,7 +16,7 @@ $userGroups = new GetUserGroups();
 $userGroups->getAllUserGroups($current_user->id);
 $user_groups = $userGroups->user_groups;
 $user_group_query = '';
-if (!empty($user_groups) && is_admin($current_user)==false) {
+if (!empty($user_groups) && !is_admin($current_user)) {
 	$user_group_query = " (shareid IN (".generateQuestionMarks($user_groups).") AND setype='groups') OR";
 	$params[] = $user_groups;
 }
@@ -27,7 +27,7 @@ $non_admin_query = " vtiger_report.reportid IN (SELECT reportid from vtiger_repo
 if (!is_admin($current_user)) {
 	$summaryReportQuery .= " and ( (".$non_admin_query.") or vtiger_report.sharingtype='Public' or vtiger_report.owner = ? or";
 	$summaryReportQuery .= " vtiger_report.owner in (select vtiger_user2role.userid from vtiger_user2role
-		inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
+		inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 		where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 	$params[] = $current_user->id;
 	$params[] = $current_user->id;

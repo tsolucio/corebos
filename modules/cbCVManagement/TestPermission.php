@@ -46,7 +46,7 @@ function gvSearchVariableValue() {
 			out = out + val + '<br>';
 		});
 		out = out + 'Time spent: ' + obj.timespent + ' msec<br>';
-		jQuery("#gvtestresults").html(out);
+		jQuery('#gvtestresults').html(out);
 	});
 }
 </script>
@@ -57,41 +57,69 @@ function gvSearchVariableValue() {
 	padding-left:10px;
 	padding-right:20px;
 }
-.gvmodulename {
-	padding-left:36px;
-	padding-right:50px;
-	height:32px;
-	background: url(modules/cbCVManagement/cbCVManagement.png) left center no-repeat;
-}
 #gvtestresults {
 	width: 96%;
 	margin: auto;
 	font-size: medium;
 }
 </style>
-<table width="98%" align="center" border="0" cellspacing="0" cellpadding="0" class="small">
-<tbody><tr><td style="height:2px"></td></tr>
-<tr>
-	<td nowrap="" class="moduleName gvmodulename">
-	<a href="index.php?module=cbCVManagement&action=index">
-	<?php echo getTranslatedString('cbCVManagement', 'cbCVManagement').'&nbsp;-&nbsp;'.getTranslatedString('Test', 'cbCVManagement');?>
-	</a>
-	</td>
-</tr>
-<tr><td style="height:2px"></td></tr>
-</tbody></table>
-<table width="560px" border="0" cellspacing="0" cellpadding="0">
-<tr>
-	<td class='gvtestlabeltext'><?php echo getTranslatedString('SINGLE_cbCVManagement', 'cbCVManagement');?></td>
-	<td><select name="vlist" id="vlist" style='width: 250px;'><?php echo cv_getCVNames();?></select></td>
-</tr>
-<tr>
-	<td class='gvtestlabeltext'><?php echo getTranslatedString('User', 'cbCVManagement');?></td>
-	<td><select name="ulist" id="ulist" style='width: 250px;'><?php echo getUserslist();?></select></td>
-</tr>
-<tr>
-	<td class='gvtestlabeltext'><?php echo getTranslatedString('Module', 'cbCVManagement');?></td>
-	<td><select name="mlist" id="mlist" style='width: 250px;'>
+<div id="page-header-placeholder"></div>
+<div id="page-header" class="slds-page-header slds-m-vertical_medium">
+	<div class="slds-page-header__row">
+		<div class="slds-page-header__col-title">
+			<div class="slds-media">
+				<div class="slds-media__figure">
+					<a class="hdrLink" href="index.php?action=index&module=cbCVManagement">
+						<span class="slds-icon_container slds-icon-standard-calibration" title="<?php echo getTranslatedString('cbCVManagement', 'cbCVManagement'); ?>">
+							<svg class="slds-icon slds-page-header__icon" id="page-header-icon" aria-hidden="true">
+								<use xmlns:xlink="http://www.w3.org/1999/xlink"
+									xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#calibration" />
+							</svg>
+							<span class="slds-assistive-text"><?php echo getTranslatedString('cbCVManagement', 'cbCVManagement'); ?></span>
+						</span>
+					</a>
+				</div>
+				<div class="slds-media__body">
+					<div class="slds-page-header__name">
+						<div class="slds-page-header__name-title">
+							<h1>
+								<span><?php echo getTranslatedString('cbCVManagement', 'cbCVManagement'); ?></span>
+								<span class="slds-page-header__title slds-truncate" title="<?php echo getTranslatedString('cbCVManagement', 'cbCVManagement'); ?>">
+									<a class="hdrLink" href="index.php?action=index&module=cbCVManagement"><?php echo getTranslatedString('cbCVManagement', 'cbCVManagement'); ?></a>
+								</span>
+							</h1>
+							<p class="slds-page-header__row slds-page-header__name-meta">
+							<?php echo getTranslatedString('cbCVManagement', 'cbCVManagement').'&nbsp;-&nbsp;'.getTranslatedString('Test', 'cbCVManagement');?>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="slds-page-header__col-actions">
+		</div>
+		<div id="page-header-surplus">
+		</div>
+	</div>
+</div>
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<div id="view" class="slds-modal__container slds-p-around_none slds-card">
+<div class="slds-form-element">
+	<label class="slds-form-element__label gvtestlabeltext" for="vlist"><?php echo getTranslatedString('SINGLE_cbCVManagement', 'cbCVManagement');?></label>
+	<div class="slds-form-element__control">
+		<select name="vlist" id="vlist" class='slds-select slds-m-left_large slds-page-header__meta-text' style="width:40%;"><?php echo cv_getCVNames();?></select>
+	</div>
+</div>
+<div class="slds-form-element">
+	<label class="slds-form-element__label gvtestlabeltext" for="ulist"><?php echo getTranslatedString('User', 'cbCVManagement');?></label>
+	<div class="slds-form-element__control">
+		<select name="ulist" id="ulist" class='slds-select slds-m-left_large slds-page-header__meta-text' style="width:40%;"><?php echo getUserslist();?></select>
+	</div>
+</div>
+<div class="slds-form-element">
+	<label class="slds-form-element__label gvtestlabeltext" for="mlist"><?php echo getTranslatedString('Module', 'cbCVManagement');?></label>
+	<div class="slds-form-element__control">
+		<select name="mlist" id="mlist" class='slds-select slds-m-left_large slds-page-header__meta-text' style="width:40%;">
 <?php
 $mlist = getAllowedPicklistModules(1);
 $modlist = array();
@@ -100,12 +128,16 @@ foreach ($mlist as $mod) {
 }
 asort($modlist);
 echo get_select_options_with_id($modlist, '');
-?></select></td>
-</tr>
-<tr><td style="height:6px"></td></tr>
-<tr>
-	<td colspan="2" align="center"><button onclick="javascript:gvSearchVariableValue();"><?php echo getTranslatedString('Search Value', 'cbCVManagement');?></button></td>
-</tr>
-<tr><td style="height:6px"></td></tr>
-</table>
+?>
+		</select>
+	</div>
+</div>
+<div class="slds-form-element slds-m-around_large">
+	<button class="slds-button slds-button_neutral" type="button" onclick="javascript:gvSearchVariableValue();">
+		<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+		</svg>
+		<?php echo getTranslatedString('Search Value', 'cbCVManagement');?>
+	</button>
+</div>
 <div name="gvtestresults" id="gvtestresults"></div>

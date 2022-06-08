@@ -32,22 +32,24 @@ if (!is_admin($current_user)) {
 		coreBOS_Settings::setSetting('cbgendoc_user', $_REQUEST['user']);
 		coreBOS_Settings::setSetting('cbgendoc_accesskey', $_REQUEST['key']);
 	}
-	if (isset($_REQUEST['pdflinkactive']) && $_REQUEST['pdflinkactive'] == 'on') {
-		coreBOS_Settings::setSetting('cbgendoc_showpdflinks', 1);
-	} else {
-		coreBOS_Settings::delSetting('cbgendoc_showpdflinks');
+	if (isset($_REQUEST['mode'])) {
+		if (isset($_REQUEST['pdflinkactive']) && $_REQUEST['pdflinkactive'] == 'on') {
+			coreBOS_Settings::setSetting('cbgendoc_showpdflinks', 1);
+		} else {
+			coreBOS_Settings::delSetting('cbgendoc_showpdflinks');
+		}
 	}
 
 	$module = empty($_REQUEST['formodule']) ? 'evvtgendoc' : vtlib_purify($_REQUEST['formodule']);
 
 	$menu_array = array();
 
-	$menu_array['CONFIGURATION']['location'] = 'index.php?module=evvtgendoc&action=BasicSettings&parenttab=Settings&formodule=evvtgendoc';
+	$menu_array['CONFIGURATION']['location'] = 'index.php?module=evvtgendoc&action=BasicSettings&formodule=evvtgendoc';
 	$menu_array['CONFIGURATION']['image_src']= 'modules/evvtgendoc/images/oomerge.jpg';
 	$menu_array['CONFIGURATION']['desc'] = getTranslatedString('LBL_CONFIGURATION_DESCRIPTION', 'evvtgendoc');
 	$menu_array['CONFIGURATION']['label']= getTranslatedString('LBL_evvtgendoc_SETTINGS', 'evvtgendoc');
 
-	$menu_array['SERVERCONFIGURATION']['location'] = 'index.php?module=evvtgendoc&action=ServerSettings&parenttab=Settings&formodule=evvtgendoc';
+	$menu_array['SERVERCONFIGURATION']['location'] = 'index.php?module=evvtgendoc&action=ServerSettings&formodule=evvtgendoc';
 	$menu_array['SERVERCONFIGURATION']['image_src']= 'modules/evvtgendoc/images/gendoc_server.png';
 	$menu_array['SERVERCONFIGURATION']['desc'] = getTranslatedString('LBL_SERVERCONFIGURATION_DESCRIPTION', 'evvtgendoc');
 	$menu_array['SERVERCONFIGURATION']['label']= getTranslatedString('LBL_evvtgendoc_SERVERSETTINGS', 'evvtgendoc');

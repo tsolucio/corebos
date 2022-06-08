@@ -48,7 +48,7 @@ var SpecialSearch = encodeURI(advSearch);
 							<span class="slds-form-element__addon" id="fixed-text-addon-post">
 								<button type="image" class="slds-button" alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.bmapid.value=''; this.form.bmapid_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 									<svg class="slds-icon slds-icon_small slds-icon-text-light" aria-hidden="true" >
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use> 
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 									</svg>
 								</button>
 							</span>

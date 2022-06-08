@@ -11,6 +11,9 @@ class com_vtiger_workflow extends CRMEntity {
 
 	public $table_name = 'com_vtiger_workflows';
 	public $table_index= 'workflow_id';
+	public $tab_name = array('com_vtiger_workflows');
+	public $tab_name_index = array('com_vtiger_workflows' => 'workflow_id');
+	public $list_link_field = 'summary';
 	public $default_order_by = 'summary';
 	public $default_sort_order='ASC';
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-document', 'class' => 'slds-icon', 'icon'=>'process');
@@ -57,13 +60,19 @@ class com_vtiger_workflow extends CRMEntity {
 								$params[] = $filter['value'];
 							}
 							break;
+						case 'Status':
+							if (!empty($filter['value']) && $filter['value'] != 'all') {
+								$conds[] = 'active=?';
+								$params[] = $filter['value'];
+							}
+							break;
 						default:
 					}
 				}
-				if (count($conds)>0) {
-					$conds = 'where '.$adb->convert2Sql(implode(' and ', $conds), $params);
-				} else {
+				if (empty($conds)) {
 					$conds = '';
+				} else {
+					$conds = 'where '.$adb->convert2Sql(implode(' and ', $conds), $params);
 				}
 			}
 			return 'select * from com_vtiger_workflows '.$conds;
@@ -73,7 +82,7 @@ class com_vtiger_workflow extends CRMEntity {
 	}
 
 	/**
-	 * @param String $module - module name for which query needs to be generated.
+	 * @param string $module - module name for which query needs to be generated.
 	 * @param Users $user - user for which query needs to be generated.
 	 * @return String Access control Query for the user.
 	 */

@@ -6,7 +6,12 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Zendesk\\Console\\' => array($vendorDir . '/zendesk/zendesk_api_client_php/src'),
+    'Zendesk\\API\\' => array($vendorDir . '/zendesk/zendesk_api_client_php/src'),
     'Smalot\\PdfParser\\' => array($vendorDir . '/smalot/pdfparser/src'),
+    'PHPSQLParser\\' => array($vendorDir . '/greenlion/php-sql-parser/src'),
+    'Inflect' => array($vendorDir . '/mmucklo/inflect/src'),
     'Google_Service_' => array($vendorDir . '/google/apiclient-services/src'),
     'Google_' => array($vendorDir . '/google/apiclient/src'),
+    'Gaufrette' => array($vendorDir . '/knplabs/gaufrette/src'),
 );

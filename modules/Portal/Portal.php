@@ -41,5 +41,6 @@ require_once 'data/Tracker.php';
 
 class Portal extends CRMEntity {
 	public $moduleIcon = array('library' => 'action', 'containerClass' => 'slds-icon_container slds-icon-standard-account', 'class' => 'slds-icon', 'icon'=>'web_link');
+	public $tab_name = array();
 }
 ?>

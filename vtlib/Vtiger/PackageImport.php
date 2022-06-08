@@ -38,13 +38,6 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	private $_licensetext = false;
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Parse the manifest file
 	 * @access private
 	 */
@@ -67,7 +60,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * XPath evaluation on the root module node.
-	 * @param String Path expression
+	 * @param string Path expression
 	 */
 	public function xpath($path) {
 		return $this->_modulexml->xpath($path);
@@ -75,7 +68,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Get the value of matching path (instead of complete xpath result)
-	 * @param String Path expression for which value is required
+	 * @param string Path expression for which value is required
 	 */
 	public function xpath_value($path) {
 		$xpathres = $this->xpath($path);
@@ -91,13 +84,10 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * Are we trying to import language package?
 	 */
 	public function isLanguageType($zipfile = null) {
-		if (!empty($zipfile)) {
-			if (!$this->checkZip($zipfile)) {
-				return false;
-			}
+		if (!empty($zipfile) && !$this->checkZip($zipfile)) {
+			return false;
 		}
 		$packagetype = $this->type();
-
 		if ($packagetype) {
 			$lcasetype = strtolower($packagetype);
 			if ($lcasetype == 'language') {
@@ -108,27 +98,24 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	}
 
 	/**
-	 * checks whether a package is module bundle or not.
-	 * @param String $zipfile - path to the zip file.
-	 * @return Boolean - true if given zipfile is a module bundle and false otherwise.
+	 * checks whether a package is module bundle or not
+	 * @param string path to the zip file
+	 * @return boolean true if given zipfile is a module bundle and false otherwise
 	 */
 	public function isModuleBundle($zipfile = null) {
 		// If data is not yet available
-		if (!empty($zipfile)) {
-			if (!$this->checkZip($zipfile)) {
-				return false;
-			}
+		if (!empty($zipfile) && !$this->checkZip($zipfile)) {
+			return false;
 		}
-
 		return (boolean)$this->_modulexml->modulebundle;
 	}
 
 	/**
-	 * @return Array module list available in the module bundle.
+	 * @return array module list available in the module bundle
 	 */
 	public function getAvailableModuleInfoFromModuleBundle() {
-		$list = (Array)$this->_modulexml->modulelist;
-		return (Array)$list['dependent_module'];
+		$list = (array)$this->_modulexml->modulelist;
+		return (array)$list['dependent_module'];
 	}
 
 	/**
@@ -183,7 +170,6 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			preg_match("/modules\/([^\/]+)\/language\/en_us.lang.php/", $filename, $matches);
 			if (count($matches)) {
 				$language_modulename = $matches[1];
-				continue;
 			}
 		}
 
@@ -203,18 +189,16 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			$validzip = true;
 		}
 
-		if ($validzip) {
-			if (!empty($this->_modulexml->license)) {
-				if (!empty($this->_modulexml->license->inline)) {
-					$this->_licensetext = $this->_modulexml->license->inline;
-				} elseif (!empty($this->_modulexml->license->file)) {
-					$licensefile = $this->_modulexml->license->file;
-					$licensefile = "$licensefile";
-					if (!empty($filelist[$licensefile])) {
-						$this->_licensetext = $unzip->unzip($licensefile);
-					} else {
-						$this->_licensetext = "Missing $licensefile!";
-					}
+		if ($validzip && !empty($this->_modulexml->license)) {
+			if (!empty($this->_modulexml->license->inline)) {
+				$this->_licensetext = $this->_modulexml->license->inline;
+			} elseif (!empty($this->_modulexml->license->file)) {
+				$licensefile = $this->_modulexml->license->file;
+				$licensefile = "$licensefile";
+				if (!empty($filelist[$licensefile])) {
+					$this->_licensetext = $unzip->unzip($licensefile);
+				} else {
+					$this->_licensetext = "Missing $licensefile!";
 				}
 			}
 		}
@@ -256,7 +240,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * returns the name of the module.
-	 * @return String - name of the module as given in manifest file.
+	 * @return string - name of the module as given in manifest file.
 	 */
 	public function getModuleName() {
 		return (string)$this->_modulexml->name;
@@ -286,7 +270,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 			// Unzip selectively
 			$unzip->unzipAllEx(
-				".",
+				'.',
 				array(
 					// Include only file/folders that need to be extracted
 					'include' => array('templates', "modules/$module", 'cron','manifest.xml'),
@@ -325,6 +309,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	public function getTemporaryFilePath($filepath = false) {
 		return 'cache/'. $filepath;
 	}
+
 	/**
 	 * Get dependent version
 	 */
@@ -348,8 +333,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Import Module from zip file
-	 * @param String Zip file name
-	 * @param Boolean True for overwriting existing module
+	 * @param string Zip file name
+	 * @param boolean True for overwriting existing module
 	 *
 	 * @todo overwrite feature is not functionally currently.
 	 */
@@ -362,21 +347,9 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				$this->__parseManifestFile($unzip);
 			}
 
-			$buildModuleArray = array();
-			$installSequenceArray = array();
 			$moduleBundle = (boolean)$this->_modulexml->modulebundle;
-			if ($moduleBundle == true) {
-				$moduleList = (Array)$this->_modulexml->modulelist;
-				foreach ($moduleList as $moduleInfos) {
-					foreach ($moduleInfos as $moduleInfo) {
-						$moduleInfo = (Array)$moduleInfo;
-						$buildModuleArray[] = $moduleInfo;
-						$installSequenceArray[] = $moduleInfo['install_sequence'];
-					}
-				}
-				sort($installSequenceArray);
-				$unzip = new Vtiger_Unzip($zipfile);
-				$unzip->unzipAllEx($this->getTemporaryFilePath());
+			if ($moduleBundle) {
+				list($buildModuleArray, $installSequenceArray) = $this->prepareBundleForProcessing($zipfile);
 				foreach ($installSequenceArray as $sequence) {
 					foreach ($buildModuleArray as $moduleInfo) {
 						if ($moduleInfo['install_sequence'] == $sequence) {
@@ -385,7 +358,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 					}
 				}
 			} else {
-				$module = $this->initImport($zipfile, $overwrite);
+				$this->initImport($zipfile, $overwrite);
 				// Call module import function
 				$this->import_Module();
 			}
@@ -393,8 +366,28 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	}
 
 	/**
+	 * unpacks a module bundle and returns informtion for processing
+	 */
+	public function prepareBundleForProcessing($zipfile) {
+		$buildModuleArray = array();
+		$installSequenceArray = array();
+		$moduleList = (array)$this->_modulexml->modulelist;
+		foreach ($moduleList as $moduleInfos) {
+			foreach ($moduleInfos as $moduleInfo) {
+				$moduleInfo = (array)$moduleInfo;
+				$buildModuleArray[] = $moduleInfo;
+				$installSequenceArray[] = $moduleInfo['install_sequence'];
+			}
+		}
+		sort($installSequenceArray);
+		$unzip = new Vtiger_Unzip($zipfile);
+		$unzip->unzipAllEx($this->getTemporaryFilePath());
+		return array($buildModuleArray, $installSequenceArray);
+	}
+
+	/**
 	 * Import Module from manifest.xml file. Other files should already be in place
-	 * @param String manifest.xml file path
+	 * @param string manifest.xml file path
 	 */
 	public function importManifest($manifestfile) {
 		global $adb;
@@ -422,7 +415,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Load manifest.xml from specified file.
-	 * @param String manifest.xml file path
+	 * @param string manifest.xml file path
 	 */
 	public function loadManifestFromFile($manifestfile) {
 		if (!is_file($manifestfile)) {
@@ -458,25 +451,20 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$moduleInstance = new Vtiger_Module();
 		$moduleInstance->name = $tabname;
 		$moduleInstance->label= $tablabel;
-		if ($menuInstance = Vtiger_Menu::getInstance($parenttab)) {
-			$moduleInstance->parent=$parenttab;
-		} else {
-			$moduleInstance->parent='Tools';
+		$menuInstance = Vtiger_Menu::getInstance($parenttab);
+		if (!$menuInstance) {
+			self::log("Module attached to Tools because $parenttab does not exist");
+			$parenttab = 'Tools';
+			$menuInstance = Vtiger_Menu::getInstance($parenttab);
 		}
-		$moduleInstance->isentitytype = ($isextension != true);
+		$moduleInstance->parent = $parenttab;
+		$moduleInstance->isentitytype = !$isextension;
 		$moduleInstance->version = (!$tabversion)? 0 : $tabversion;
 		$moduleInstance->minversion = (!$vtigerMinVersion)? false : $vtigerMinVersion;
 		$moduleInstance->maxversion = (!$vtigerMaxVersion)?  false : $vtigerMaxVersion;
 		$moduleInstance->save();
 
-		if (!empty($parenttab)) {
-			$menuInstance = Vtiger_Menu::getInstance($parenttab);
-			if ($menuInstance == null) {
-				$menuInstance = Vtiger_Menu::getInstance('Tools');
-				self::log("Module attached to Tools because $parenttab does not exist");
-			}
-			$menuInstance->addModule($moduleInstance);
-		}
+		$menuInstance->addModule($moduleInstance);
 
 		$this->import_Tables($this->_modulexml);
 		$this->import_Blocks($this->_modulexml, $moduleInstance);
@@ -540,7 +528,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				} else {
 					self::log("SQL: $tablesql ... ", false);
 					Vtiger_Utils::ExecuteQuery($tablesql);
-					self::log("DONE");
+					self::log('DONE');
 				}
 			}
 		}
@@ -863,7 +851,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			} else {
 				$cronTask->status = Vtiger_Cron::$STATUS_ENABLED;
 			}
-			if ((empty($cronTask->sequence))) {
+			if (empty($cronTask->sequence)) {
 				$cronTask->sequence=Vtiger_Cron::nextSequence();
 			}
 			Vtiger_Cron::register("$cronTask->name", "$cronTask->handler", "$cronTask->frequency", "$modulenode->name", "$cronTask->status", "$cronTask->sequence", "$cronTask->description");

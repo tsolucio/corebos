@@ -23,7 +23,5 @@ if (isPermitted('Emails', 'CreateView', '') == 'yes') {
 	$smarty->assign('HIDDEN_PARENTS_LIST', $parent_email);
 }
 
-$smarty->assign('CONTACT_PERMISSION', CheckFieldPermission('contact_id', 'Calendar'));
-
 $smarty->display('DetailView.tpl');
 ?>

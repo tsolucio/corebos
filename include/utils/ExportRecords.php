@@ -13,10 +13,9 @@ require_once 'include/utils/utils.php';
 global $app_strings,$mod_strings, $currentModule, $theme, $current_language, $current_user;
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
 $smarty = new vtigerCRM_Smarty();
-$category = getParentTab();
 
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $idstring = getSelectedRecords(
 	$_REQUEST,
@@ -45,7 +44,6 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('THEME', $theme_path);
 $smarty->assign('IMAGE_PATH', $image_path);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('MODULELABEL', getTranslatedString($currentModule));
 $smarty->assign('IDSTRING', $idstring);

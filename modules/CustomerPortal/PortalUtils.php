@@ -45,9 +45,9 @@ function cp_saveCustomerPortalSettings($input) {
 			$adb->pquery("UPDATE vtiger_customerportal_prefs SET prefvalue = 0  WHERE prefkey = 'showrelatedinfo' and tabid = ?", array($tabid));
 		}
 		if ($visible == 'on') {
-			$updatevisibility = $adb->pquery('UPDATE vtiger_customerportal_tabs SET visible = 1 WHERE tabid = ?', array($tabid));
+			$adb->pquery('UPDATE vtiger_customerportal_tabs SET visible=1 WHERE tabid=?', array($tabid));
 		} else {
-			$updatevisibility = $adb->pquery('UPDATE vtiger_customerportal_tabs SET visible = 0 WHERE tabid = ?', array($tabid));
+			$adb->pquery('UPDATE vtiger_customerportal_tabs SET visible=0 WHERE tabid=?', array($tabid));
 		}
 		$adb->pquery('UPDATE vtiger_customerportal_tabs set sequence=? WHERE tabid = ?', array($sequence, $tabid));
 	}

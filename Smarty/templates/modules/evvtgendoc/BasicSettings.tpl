@@ -9,31 +9,15 @@
 ********************************************************************************/
 -->*}
 <script type="text/javascript" src="modules/evvtgendoc/evvtgendoc.js"></script>
+{assign var='MODULESECTIONDESC' value=$MOD.LBL_CONFIGURATION_DESCRIPTION}
+{assign var='MODULESECTION' value=''}
 {include file='SetMenu.tpl'}
-<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher">
 <div class="slds-modal__container slds-p-around_none">
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tr>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-	<br>
-
 	<div align="center">
-
-		<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
-		<tr>
-			<td rowspan="2" valign="top" width="50">
-			<img src="modules/evvtgendoc/images/oomerge.jpg" alt="{$MOD.evvtgendoc}" title="{$MOD.evvtgendoc}" border="0" height="48" width="48">
-			</td>
-			<td class="heading2" valign="bottom">
-			<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$APP.LBL_SETTINGS}</a> &gt; {$MOD.evvtgendoc}</b>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="small" valign="top">{$MOD.LBL_CONFIGURATION_DESCRIPTION}</td>
-		</tr>
-		</table>
-
 		<table border=0 cellspacing=1 cellpadding=0 width="100%" class="lvtBg">
 		<tr>
 			<td>

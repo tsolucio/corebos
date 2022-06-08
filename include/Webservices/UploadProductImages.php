@@ -29,33 +29,36 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 	$entityName = $meta->getObjectEntityName($recordID);
 	$types = vtws_listtypes(null, $user);
 	if ($entityName != 'Products' || !in_array($entityName, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation is denied");
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 	}
 
 	if ($entityName !== $webserviceObject->getEntityName()) {
-		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, "Id specified is incorrect");
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
 
 	if (!$meta->hasPermission(EntityMeta::$UPDATE, $recordID)) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to read given object is denied");
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
 	}
 
 	if (!$meta->exists($idList[1])) {
-		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, "Record you are trying to access is not found");
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 	}
 
 	if ($meta->hasWriteAccess() !== true) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to write is denied");
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied');
 	}
 
 	$crmid = $idList[1];
 	// Check for maximum number of images
 	$maximages = GlobalVariable::getVariable('Product_Maximum_Number_Images', 6, 'Products');
-	$rsimg = $adb->pquery('select count(*) as cnt
-		from vtiger_attachments
-		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-		inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
-		where deleted=0 and vtiger_crmentity.setype LIKE "Products Image" and vtiger_seattachmentsrel.crmid=?', array($crmid));
+	$rsimg = $adb->pquery(
+		'select count(*) as cnt
+			from vtiger_attachments
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+			inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+			where deleted=0 and vtiger_crmentity.setype LIKE "Products Image" and vtiger_seattachmentsrel.crmid=?',
+		array($crmid)
+	);
 	$numimages = (int)$adb->query_result($rsimg, 0, 'cnt');
 	if ($numimages >= $maximages) {
 		return array(
@@ -95,30 +98,27 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 			break;
 		}
 	}
-	$rsimg = $adb->pquery('select count(*) as cnt
-		from vtiger_attachments
-		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-		inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
-		where deleted=0 and vtiger_crmentity.setype LIKE "Products Image" and vtiger_seattachmentsrel.crmid=?', array($crmid));
+	$rsimg = $adb->pquery(
+		'select count(*) as cnt
+			from vtiger_attachments
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+			inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+			where deleted=0 and vtiger_crmentity.setype LIKE "Products Image" and vtiger_seattachmentsrel.crmid=?',
+		array($crmid)
+	);
 	$finalnumimages = $adb->query_result($rsimg, 0, 'cnt');
 
 	// Check that final total of images equals the start number plus the file count
 	if ($finalnumimages == ($numimages + count($fileData))) {
 		$myResult['Error'] = '0';
-		$myResult['ImagesAtStart'] = $numimages;
-		$myResult['NumberToAdd'] = count($fileData);
-		$myResult['ImagesAtFinish'] = $newnumimages;
-		$myResult['MaxImages'] = $maximages;
 	} else { // If not return the images actually inserted and an error code
 		$myResult['Error'] = '1';
 		$myResult['ErrorStr'] = 'Maximum number of images has been reached';
-		$myResult['ImagesAtStart'] = $numimages;
-		$myResult['NumberToAdd'] = count($fileData);
-		$myResult['ImagesAtFinish'] = $newnumimages;
-		$myResult['MaxImages'] = $maximages;
 	}
-
+	$myResult['ImagesAtStart'] = $numimages;
+	$myResult['NumberToAdd'] = count($fileData);
+	$myResult['ImagesAtFinish'] = $newnumimages;
+	$myResult['MaxImages'] = $maximages;
 	return $myResult;
 }
-
 ?>

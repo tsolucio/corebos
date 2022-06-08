@@ -23,7 +23,7 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 $stuffid = '';
 if (!empty($_REQUEST['homestuffid'])) {
-	$stuffid = vtlib_purify($_REQUEST['homestuffid']);
+	$stuffid = (int)preg_replace('/\D/', '', vtlib_purify($_REQUEST['homestuffid']));
 }
 $stufftype = '';
 if (!empty($_REQUEST['blockstufftype'])) {

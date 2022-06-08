@@ -20,38 +20,33 @@ require_once 'include/utils/CommonUtils.php';
 global $adb, $log, $current_user;
 
 function executefunctionsvalidate($functiontocall, $module, $structure = null) {
-	switch ($functiontocall) {
-		case 'ValidationExists':
-			$valmod = vtlib_purify($module);
-			if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
+	include_once 'modules/cbMap/processmap/Validations.php';
+	$valmod = vtlib_purify($module);
+	if ($functiontocall ==  'ValidationExists') {
+		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
+			return 'yes';
+		} else {
+			if (Validations::ValidationsExist($valmod)) {
 				return 'yes';
 			} else {
-				include_once 'modules/cbMap/processmap/Validations.php';
-				if (Validations::ValidationsExist($valmod)) {
-					return 'yes';
-				} else {
-					return 'no';
-				}
+				return 'no';
 			}
-			break;
-		case 'ValidationLoad':
-			$valmod = vtlib_purify($module);
-			include_once 'modules/cbMap/processmap/Validations.php';
-			$_REQUEST['structure'] = $structure;
-			if (Validations::ValidationsExist($valmod)) {
-				$validation = Validations::processAllValidationsFor($valmod);
-				if ($validation!==true) {
-					return Validations::formatValidationErrors($validation, $valmod);
-				}
+		}
+	} elseif ($functiontocall ==  'ValidationLoad') {
+		$_REQUEST['structure'] = $structure;
+		if (Validations::ValidationsExist($valmod)) {
+			$validation = Validations::processAllValidationsFor($valmod);
+			if ($validation!==true) {
+				return Validations::formatValidationErrors($validation, $valmod);
 			}
-			if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
-				ob_start();
-				include "modules/{$valmod}/{$valmod}Validation.php";
-				return ob_get_clean();
-			} else {
-				return '%%%OK%%%';
-			}
-			break;
+		}
+		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
+			ob_start();
+			include "modules/{$valmod}/{$valmod}Validation.php";
+			return ob_get_clean();
+		} else {
+			return '%%%OK%%%';
+		}
 	}
 }
 ?>

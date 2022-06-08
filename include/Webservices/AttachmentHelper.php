@@ -19,9 +19,9 @@ include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
  * Save the attachment to the database
  */
 function SaveAttachmentDB($element) {
-	global $adb;
+	global $adb, $upload_badext;
 	$attachid = $adb->getUniqueId('vtiger_crmentity');
-	$filename = $element['name'];
+	$filename = sanitizeUploadFileName($element['name'], $upload_badext);
 	$description = $filename;
 	$date_var = $adb->formatDate(date('YmdHis'), true);
 	$usetime = $adb->formatDate($date_var, true);
@@ -57,7 +57,7 @@ function SaveAttachmentFile($attachid, $filename, $filecontent) {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission denied, could not open file to save attachment: '.$saveasfile);
 		}
 		preg_match('/^data:\w+\/\w+;base64,/', $filecontent, $matches);
-		if (count($matches)>0) {
+		if (!empty($matches)) {
 			// Base64 Encoded HTML5 Canvas image or similar coming from javascript
 			$filecontent = str_replace($matches[0], '', $filecontent);
 			$filecontent = str_replace(' ', '+', $filecontent);

@@ -109,7 +109,7 @@ if (isset($_REQUEST['og_mail_server_active']) && $_REQUEST['og_mail_server_activ
 
 if (isset($_REQUEST['ic_mail_server_active']) && $_REQUEST['ic_mail_server_active'] == 'on') {
 	$ic_verification_status_object = verifyIncomingMailServer();
-	if (($ic_verification_status_object['ic_server_message'] == 'Success')) {
+	if ($ic_verification_status_object['ic_server_message'] == 'Success') {
 		$ic_config_validation_error_message = 'success';
 		$ic_config_has_error = false;
 	} else {

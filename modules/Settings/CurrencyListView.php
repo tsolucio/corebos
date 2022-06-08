@@ -30,9 +30,15 @@ do {
 	if ($temprow["defaultid"] != '-11') {
 		$currency_element['name']  = '<a href=index.php?module=Settings&action=CurrencyEditView&record='.$temprow['id'].'&detailview=detail_view>';
 		$currency_element['name'] .= getTranslatedCurrencyString($temprow['currency_name']).'</a>';
-		$currency_element['tool']  = '<a href=index.php?module=Settings&action=CurrencyEditView&record='.$temprow['id'].'><span class="slds-icon_container slds-icon_container_circle slds-icon-action-edit" title="Edit"><svg class="slds-icon slds-icon_xx-small" aria-hidden="true"><use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#edit"></use></svg><span class="slds-assistive-text">Edit</span></span></a>';
+		$currency_element['tool']  = '<a href=index.php?module=Settings&action=CurrencyEditView&record='.$temprow['id']
+			.'><span class="slds-icon_container slds-icon_container_circle slds-icon-action-edit" title="'.getTranslatedString('LBL_EDIT_BUTTON')
+			.'"><svg class="slds-icon slds-icon_xx-small" aria-hidden="true"><use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#edit"></use></svg>'
+			.'<span class="slds-assistive-text">'.getTranslatedString('LBL_EDIT_BUTTON').'</span></span></a>';
 		$currency_element['tool'] .= '&nbsp;&nbsp;<a style="cursor:pointer;" onClick="fnvshobj(this,\'currencydiv\');';
-		$currency_element['tool'] .= 'deleteCurrency(\''.$temprow['id'].'\');"<span class="slds-icon_container slds-icon_container_circle slds-icon-action-delete" title="Edit"><svg class="slds-icon  slds-icon_xx-small" aria-hidden="true"><use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#delete"></use></svg><span class="slds-assistive-text">Delete</span></span></a>';
+		$currency_element['tool'] .= 'deleteCurrency(\''.$temprow['id'].'\');"<span class="slds-icon_container slds-icon_container_circle slds-icon-action-delete"'
+			.' title="'.getTranslatedString('LBL_DELETE').'"><svg class="slds-icon  slds-icon_xx-small" aria-hidden="true">'
+			.'<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#delete"></use></svg><span class="slds-assistive-text">'
+			.getTranslatedString('LBL_DELETE').'</span></span></a>';
 	} else {
 		$currency_element['tool']= '';
 	}

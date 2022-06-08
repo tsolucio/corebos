@@ -50,14 +50,16 @@ class cbMapcore {
 		$explodedxml = explode('r', $xml);
 		$badxml = $explodedxml[($error->line)-1];
 
-		$message = $error->message . ' at line ' . $error->line . '. Bad XML: ' . htmlentities($badxml);
-		return $message;
+		return $error->message . ' at line ' . $error->line . '. Bad XML: ' . htmlentities($badxml);
 	}
 
 	public function getMap() {
 		return $this->Map;
 	}
 
+	/**
+	 * @return object parsed XML object
+	 */
 	public function getXMLContent() {
 		$xmlcontent=html_entity_decode($this->Map->column_fields['content'], ENT_QUOTES, 'UTF-8');
 		if (self::isXML($xmlcontent)) {

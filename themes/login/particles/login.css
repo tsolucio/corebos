@@ -1,0 +1,38 @@
+a {
+	color: #0070d2;
+}
+#content, .container {
+	background-color: rgba(255,255,255,0.30);
+	padding-top: 20px;
+}
+#header {
+	color: #16325c;
+}
+body {
+	display: table;
+	width: 100%;
+	background: linear-gradient(180deg,rgba(4,87,233,0.66) 0%, #f4f6f9 85%);
+}
+#content {
+	margin-bottom: 20px;
+}
+#wrap {
+	height: 100%;
+}
+#right {
+	vertical-align: middle;
+}
+.errorMessage {
+	font-size: 12px;
+	color: #982121;
+}
+#left {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100%;
+}
+canvas {
+	background: linear-gradient(#0070d2, #9198e5);
+}

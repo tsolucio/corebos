@@ -1,6 +1,6 @@
 /*!
  * TOAST UI Date Picker
- * @version 4.0.3
+ * @version 4.2.0
  * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
@@ -217,7 +217,18 @@ module.exports = {
   CLASS_NAME_PREV_MONTH_BTN: 'tui-calendar-btn-prev-month',
   CLASS_NAME_PREV_YEAR_BTN: 'tui-calendar-btn-prev-year',
   CLASS_NAME_NEXT_YEAR_BTN: 'tui-calendar-btn-next-year',
-  CLASS_NAME_NEXT_MONTH_BTN: 'tui-calendar-btn-next-month'
+  CLASS_NAME_NEXT_MONTH_BTN: 'tui-calendar-btn-next-month',
+
+  DEFAULT_WEEK_START_DAY: 'Sun',
+  WEEK_START_DAY_MAP: {
+    sun: 0,
+    mon: 1,
+    tue: 2,
+    wed: 3,
+    thu: 4,
+    fri: 5,
+    sat: 6
+  }
 };
 
 
@@ -568,7 +579,7 @@ var utils = {
     var firstDayOfMonth = new Date(year, month - 1).getDay();
     var dateOffset = firstDayOfMonth - dayNumber - 1;
 
-    return new Date(year, month - 1, (weekNumber * 7) - dateOffset);
+    return new Date(year, month - 1, weekNumber * 7 - dateOffset);
   },
 
   /**
@@ -2340,6 +2351,7 @@ var mouseTouchEvent = __webpack_require__(19);
 var tmpl = __webpack_require__(58);
 var DatePickerInput = __webpack_require__(59);
 
+var DEFAULT_WEEK_START_DAY = constants.DEFAULT_WEEK_START_DAY;
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 var TYPE_DATE = constants.TYPE_DATE;
 var TYPE_MONTH = constants.TYPE_MONTH;
@@ -2385,7 +2397,8 @@ var mergeDefaultOption = function(option) {
       selectableRanges: null,
       openers: [],
       autoClose: true,
-      usageStatistics: true
+      usageStatistics: true,
+      weekStartDay: DEFAULT_WEEK_START_DAY
     },
     option
   );
@@ -2416,40 +2429,44 @@ var mergeDefaultOption = function(option) {
 
 /**
  * @class
- * @param {HTMLElement|string} container - Container element or selector of datepicker
+ * @description
+ * Create a date picker.
+ * @see {@link /tutorial-example01-basic DatePicker example}
+ * @param {HTMLElement|string} container - Container element or selector of DatePicker
  * @param {Object} [options] - Options
- *      @param {Date|number} [options.date] - Initial date. Default - null for no initial date
- *      @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
- *      @param {string} [options.language='en'] - Language key
- *      @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. This option's name is changed from 'timepicker' and 'timepicker' will be deprecated in v5.0.0.
- *      @param {object} [options.calendar] - {@link Calendar} options
+ *      @param {Date|number} [options.date = null] - Initial date. Set by a Date instance or a number(timestamp). (default: no initial date)
+ *      @param {('date'|'month'|'year')} [options.type = 'date'] - DatePicker type. Determine whether to choose a date, month, or year.
+ *      @param {string} [options.language='en'] - Language code. English('en') and Korean('ko') are provided as default. To set to the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
+ *      @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. Refer to the [TimePicker instance's options](https://nhn.github.io/tui.time-picker/latest/TimePicker). To create the TimePicker without customization, set to true.
+ *      @param {object} [options.calendar] - {@link Calendar} options. Refer to the {@link Calendar Calendar instance's options}.
  *      @param {object} [options.input] - Input option
  *      @param {HTMLElement|string} [options.input.element] - Input element or selector
- *      @param {string} [options.input.format = 'yyyy-mm-dd'] - Date string format
+ *      @param {string} [options.input.format = 'yyyy-mm-dd'] - Format of the Date string
  *      @param {Array.<Array.<Date|number>>} [options.selectableRanges = 1900/1/1 ~ 2999/12/31]
- *                                                                      - Selectable date ranges.
- *      @param {Array} [options.openers = []] - Opener button list (example - icon, button, etc.)
- *      @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
- *      @param {boolean} [options.autoClose = true] - Close after click a date
- *      @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics (default value is true)
+ *        - Ranges of selectable date. Set by Date instances or numbers(timestamp).
+ *      @param {Array<HTMLElement|string>} [options.openers = []] - List of the openers to open the DatePicker (example - icon, button, etc.)
+ *      @param {boolean} [options.showAlways = false] - Show the DatePicker always
+ *      @param {boolean} [options.autoClose = true] - Close the DatePicker after clicking the date
+ *      @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
+ *      @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
- * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
+ * import DatePicker from 'tui-date-picker' // ES6
+ * // const DatePicker = require('tui-date-picker'); // CommonJS
+ * // const DatePicker = tui.DatePicker;
  *
- * var range1 = [new Date(2015, 2, 1), new Date(2015, 3, 1)];
- * var range2 = [1465570800000, 1481266182155]; // timestamps
+ * const range1 = [new Date(2015, 2, 1), new Date(2015, 3, 1)];
+ * const range2 = [1465570800000, 1481266182155]; // timestamps
  *
- * var picker1 = new DatePicker('#datepicker-container1', {
+ * const picker1 = new DatePicker('#datepicker-container1', {
  *     showAlways: true
  * });
  *
- * var picker2 = new DatePicker('#datepicker-container2', {
+ * const picker2 = new DatePicker('#datepicker-container2', {
  *    showAlways: true,
  *    timePicker: true
  * });
  *
- * var picker3 = new DatePicker('#datepicker-container3', {
- *     // There are two supporting types by default - 'en' and 'ko'.
- *     // See "{@link DatePicker.localeTexts}"
+ * const picker3 = new DatePicker('#datepicker-container3', {
  *     language: 'ko',
  *     calendar: {
  *         showToday: true
@@ -2464,28 +2481,27 @@ var mergeDefaultOption = function(option) {
  *         format: 'yyyy년 MM월 dd일 hh:mm A'
  *     }
  *     type: 'date',
- *     date: new Date(2015, 0, 1) // or timestamp. (default: null-(no initial date))
+ *     date: new Date(2015, 0, 1)
  *     selectableRanges: [range1, range2],
- *     openers: ['#opener']
+ *     openers: ['#opener'],
+ *     weekStartDay: 'Mon',
  * });
  */
 var DatePicker = defineClass(
   /** @lends DatePicker.prototype */ {
     static: {
       /**
-       * Locale text data
+       * Locale text data. English('en') and Korean('ko') are provided as default.
        * @type {object}
        * @memberof DatePicker
        * @static
        * @example
-       * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
-       *
        * DatePicker.localeTexts['customKey'] = {
        *     titles: {
        *         // days
        *         DD: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
        *         // daysShort
-       *         D: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fir', 'Sat'],
+       *         D: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
        *         // months
        *         MMMM: [
        *             'January', 'February', 'March', 'April', 'May', 'June',
@@ -2500,7 +2516,7 @@ var DatePicker = defineClass(
        *     time: 'Time'
        * };
        *
-       * var datepicker = new tui.DatePicker('#datepicker-container', {
+       * const datepicker = new DatePicker('#datepicker-container', {
        *     language: 'customKey'
        * });
        */
@@ -2522,9 +2538,11 @@ var DatePicker = defineClass(
        * @private
        */
       this._container = util.getElement(container);
-      this._container.innerHTML = tmpl(extend(options, {
-        isTab: options.timePicker && options.timePicker.layoutType === 'tab'
-      }));
+      this._container.innerHTML = tmpl(
+        extend(options, {
+          isTab: options.timePicker && options.timePicker.layoutType === 'tab'
+        })
+      );
 
       /**
        * DatePicker element
@@ -2541,7 +2559,8 @@ var DatePicker = defineClass(
       this._calendar = new Calendar(
         this._element.querySelector(SELECTOR_CALENDAR_CONTAINER),
         extend(options.calendar, {
-          usageStatistics: options.usageStatistics
+          usageStatistics: options.usageStatistics,
+          weekStartDay: options.weekStartDay
         })
       );
 
@@ -2589,8 +2608,8 @@ var DatePicker = defineClass(
 
       /**
        * ID of instance
-       * @private
        * @type {number}
+       * @private
        */
       this._id = 'tui-datepicker-' + util.generateId();
 
@@ -2753,10 +2772,7 @@ var DatePicker = defineClass(
         this._calendar.hide();
         this._timePicker.show();
       }
-      removeClass(
-        this._element.querySelector('.' + CLASS_NAME_CHECKED),
-        CLASS_NAME_CHECKED
-      );
+      removeClass(this._element.querySelector('.' + CLASS_NAME_CHECKED), CLASS_NAME_CHECKED);
       addClass(selectedBtn, CLASS_NAME_CHECKED);
     },
 
@@ -3002,17 +3018,22 @@ var DatePicker = defineClass(
       this._setDisplayHeadButtons();
 
       /**
-       * Fires after calendar drawing
+       * Occur after the calendar is drawn.
        * @event DatePicker#draw
-       * @type {Object} evt - See {@link Calendar#event:draw}
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @property {Date} date - Calendar date
-       * @property {string} type - Calendar type
-       * @property {HTMLElement} dateElements - Calendar date elements
+       * @property {('date'|'month'|'year')} type - Calendar type
+       * @property {HTMLElement[]} dateElements - elements for dates
        * @example
-       *
-       * datepicker.on('draw', function(evt) {
-       *     console.log(evt.date);
+       * // bind the 'draw' event
+       * datepicker.on('draw', function(event) {
+       *     console.log(`Draw the ${event.type} calendar and its date is ${event.date}.`);
        * });
+       *
+       * // unbind the 'draw' event
+       * datepicker.off('draw');
        */
       this.fire('draw', eventData);
     },
@@ -3102,24 +3123,24 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns current calendar type
-     * @returns {'date'|'month'|'year'}
+     * Return the current calendar's type.
+     * @returns {('date'|'month'|'year')}
      */
     getCalendarType: function() {
       return this._calendar.getType();
     },
 
     /**
-     * Returns datepicker type
-     * @returns {'date'|'month'|'year'}
+     * Return the date picker's type.
+     * @returns {('date'|'month'|'year')}
      */
     getType: function() {
       return this._type;
     },
 
     /**
-     * Whether the date is selectable
-     * @param {Date} date - Date instance
+     * Return whether the date is selectable.
+     * @param {Date} date - Date to check
      * @returns {boolean}
      */
     isSelectable: function(date) {
@@ -3136,8 +3157,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns whether the date is selected
-     * @param {Date} date - Date instance
+     * Return whether the date is selected.
+     * @param {Date} date - Date to check
      * @returns {boolean}
      */
     isSelected: function(date) {
@@ -3145,10 +3166,9 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Set selectable ranges (prev ranges will be removed)
-     * @param {Array.<Array<Date|number>>} ranges - (2d-array) Selectable ranges
+     * Set selectable ranges. Previous ranges will be removed.
+     * @param {Array.<Array<Date|number>>} ranges - Selectable ranges. Use Date instances or numbers(timestamp).
      * @example
-     *
      * datepicker.setRanges([
      *     [new Date(2017, 0, 1), new Date(2018, 0, 2)],
      *     [new Date(2015, 2, 3), new Date(2016, 4, 2)]
@@ -3168,8 +3188,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Set calendar type
-     * @param {string} type - set type
+     * Set the calendar's type.
+     * @param {('date'|'month'|'year')} type - Calendar type
      * @example
      * datepicker.setType('month');
      */
@@ -3178,12 +3198,12 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Add a range
-     * @param {Date|number} start - startDate
-     * @param {Date|number} end - endDate
+     * Add a selectable range. Use Date instances or numbers(timestamp).
+     * @param {Date|number} start - the start date
+     * @param {Date|number} end - the end date
      * @example
-     * var start = new Date(2015, 1, 3);
-     * var end = new Date(2015, 2, 6);
+     * const start = new Date(2015, 1, 3);
+     * const end = new Date(2015, 2, 6);
      *
      * datepicker.addRange(start, end);
      */
@@ -3196,13 +3216,13 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Remove a range
-     * @param {Date|number} start - startDate
-     * @param {Date|number} end - endDate
-     * @param {null|'date'|'month'|'year'} type - Range type, If falsy -> Use strict timestamp;
+     * Remove a range. Use Date instances or numbers(timestamp).
+     * @param {Date|number} start - the start date
+     * @param {Date|number} end - the end date
+     * @param {null|'date'|'month'|'year'} type - Range type. If falsy, start and end values are considered as timestamp
      * @example
-     * var start = new Date(2015, 1, 3);
-     * var end = new Date(2015, 2, 6);
+     * const start = new Date(2015, 1, 3);
+     * const end = new Date(2015, 2, 6);
      *
      * datepicker.removeRange(start, end);
      */
@@ -3221,8 +3241,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Add opener
-     * @param {HTMLElement|string} opener - element or selector
+     * Add an opener.
+     * @param {HTMLElement|string} opener - element or selector of opener
      */
     addOpener: function(opener) {
       opener = util.getElement(opener);
@@ -3234,8 +3254,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Remove opener
-     * @param {HTMLElement|string} opener - element or selector
+     * Remove an opener.
+     * @param {HTMLElement|string} opener - element or selector of opener
      */
     removeOpener: function(opener) {
       var index;
@@ -3250,7 +3270,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Remove all openers
+     * Remove all openers.
      */
     removeAllOpeners: function() {
       forEachArray(
@@ -3264,7 +3284,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Open datepicker
+     * Open the date picker.
      * @example
      * datepicker.open();
      */
@@ -3284,19 +3304,26 @@ var DatePicker = defineClass(
       }
 
       /**
+       * Occur after the date picker opens.
        * @event DatePicker#open
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @example
+       * // bind the 'open' event
        * datepicker.on('open', function() {
        *     alert('open');
        * });
+       *
+       * // unbind the 'open' event
+       * datepicker.off('open');
        */
       this.fire('open');
     },
 
     /**
-     * Raise calendar type
-     *  - DATE --> MONTH --> YEAR
-     * @param {Date} date - Date
+     * Raise the calendar type. (date -> month -> year)
+     * @param {Date} [date] - Date to set
      */
     drawUpperCalendar: function(date) {
       var calendarType = this.getCalendarType();
@@ -3315,9 +3342,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Lower calendar type
-     *  - YEAR --> MONTH --> DATE
-     * @param {Date} date - Date
+     * Lower the calendar type. (year -> month -> date)
+     * @param {Date} [date] - Date to set
      */
     drawLowerCalendar: function(date) {
       var calendarType = this.getCalendarType();
@@ -3342,7 +3368,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Close datepicker
+     * Close the date picker.
      * @exmaple
      * datepicker.close();
      */
@@ -3354,18 +3380,25 @@ var DatePicker = defineClass(
       this._hide();
 
       /**
-       * Close event - DatePicker
+       * Occur after the date picker closes.
        * @event DatePicker#close
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
        * @example
+       * // bind the 'close' event
        * datepicker.on('close', function() {
        *     alert('close');
        * });
+       *
+       * // unbind the 'close' event
+       * datepicker.off('close');
        */
       this.fire('close');
     },
 
     /**
-     * Toggle: open-close
+     * Toggle the date picker.
      * @example
      * datepicker.toggle();
      */
@@ -3378,8 +3411,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns date object
-     * @returns {?Date} - Date
+     * Return the selected date.
+     * @returns {?Date} - selected date
      * @example
      * // 2015-04-13
      * datepicker.getDate(); // new Date(2015, 3, 13)
@@ -3393,8 +3426,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Set date and then fire 'update' custom event
-     * @param {Date|number} date - Date instance or timestamp
+     * Select the date.
+     * @param {Date|number} date - Date instance or timestamp to set
      * @example
      * datepicker.setDate(new Date()); // Set today
      */
@@ -3415,29 +3448,33 @@ var DatePicker = defineClass(
       if (shouldUpdate) {
         newDate = new Date(date);
         this._date = newDate;
-        this._calendar.draw({date: newDate});
+        this._calendar.draw({ date: newDate });
         if (this._timePicker) {
           this._timePicker.setTime(newDate.getHours(), newDate.getMinutes());
         }
         this._syncToInput();
 
         /**
-         * Change event
+         * Occur after the selected date is changed.
          * @event DatePicker#change
+         * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on datepicker.on()} to bind event handlers.
+         * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off datepicker.off()} to unbind event handlers.
+         * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. DatePicker mixes in the methods from CustomEvents.
          * @example
-         *
+         * // bind the 'change' event
          * datepicker.on('change', function() {
-         *     var newDate = datepicker.getDate();
-         *
-         *     console.log(newDate);
+         *     console.log(`Selected date: ${datepicker.getDate()}`);
          * });
+         *
+         * // unbind the 'change' event
+         * datepicker.off('change');
          */
         this.fire('change');
       }
     },
 
     /**
-     * Set null date
+     * Set no date to be selected. (Selected date: null)
      */
     setNull: function() {
       var calendarDate = this._calendar.getDate();
@@ -3467,8 +3504,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Set or update date-form
-     * @param {String} [format] - date-format
+     * Select the date by the date string format.
+     * @param {String} [format] - Date string format
      * @example
      * datepicker.setDateFormat('yyyy-MM-dd');
      * datepicker.setDateFormat('MM-dd, yyyy');
@@ -3481,7 +3518,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Return whether the datepicker is opened or not
+     * Return whether the datepicker opens or not
      * @returns {boolean}
      * @example
      * datepicker.close();
@@ -3495,17 +3532,19 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns timePicker instance
+     * Return the time picker instance
      * @returns {?TimePicker} - TimePicker instance
+     * @see {@link https://nhn.github.io/tui.time-picker/latest tui-time-picker}
      * @example
-     * var timePicker = this.getTimePicker();
+     * const timePicker = this.getTimePicker();
      */
     getTimePicker: function() {
       return this._timePicker;
     },
 
     /**
-     * Returns calendar instance
+     * Return the calendar instance.
+     * @see {@link calendar Calendar}
      * @returns {Calendar}
      */
     getCalendar: function() {
@@ -3513,7 +3552,8 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns locale text object
+     * Return the locale text object.
+     * @see {@link DatePicker#localeTexts DatePicker.localeTexts}
      * @returns {object}
      */
     getLocaleText: function() {
@@ -3521,11 +3561,11 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Set input element
+     * Set the input element
      * @param {string|HTMLElement} element - Input element or selector
      * @param {object} [options] - Input option
-     * @param {string} [options.format = prevInput.format] - Input text format
-     * @param {boolean} [options.syncFromInput = false] - Set date from input value
+     * @param {string} [options.format = prevInput.format] - Format of the Date string in the input
+     * @param {boolean} [options.syncFromInput = false] - Whether set the date from the input
      */
     setInput: function(element, options) {
       var prev = this._datepickerInput;
@@ -3560,10 +3600,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Enable
-     * @example
-     * datepicker.disable();
-     * datepicker.enable();
+     * Enable the date picker.
      */
     enable: function() {
       if (this._isEnabled) {
@@ -3583,10 +3620,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Disable
-     * @example
-     * datepicker.enable();
-     * datepicker.disable();
+     * Disable the date picker.
      */
     disable: function() {
       if (!this._isEnabled) {
@@ -3608,7 +3642,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns whether the datepicker is disabled
+     * Return whether the date picker is disabled
      * @returns {boolean}
      */
     isDisabled: function() {
@@ -3617,7 +3651,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Add datepicker css class
+     * Apply a CSS class to the date picker.
      * @param {string} className - Class name
      */
     addCssClass: function(className) {
@@ -3625,7 +3659,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Remove datepicker css class
+     * Remove a CSS class from the date picker.
      * @param {string} className - Class name
      */
     removeCssClass: function(className) {
@@ -3633,7 +3667,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns date elements on calendar
+     * Return the date elements on the calendar.
      * @returns {HTMLElement[]}
      */
     getDateElements: function() {
@@ -3641,10 +3675,10 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Returns the first overlapped range from the point or range
+     * Return the first overlapped range from the point or range.
      * @param {Date|number} startDate - Start date to find overlapped range
      * @param {Date|number} endDate - End date to find overlapped range
-     * @returns {Array.<Date>} - [startDate, endDate]
+     * @returns {Array.<Date>} - \[startDate, endDate]
      */
     findOverlappedRange: function(startDate, endDate) {
       var startTimestamp = new Date(startDate).getTime();
@@ -3655,9 +3689,9 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Change language
-     * @param {string} language - Language
-     * @see {@link DatePicker#localeTexts}
+     * Change language.
+     * @param {string} language - Language code. English('en') and Korean('ko') are provided as default.
+     * @see To set to the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
      */
     changeLanguage: function(language) {
       this._language = language;
@@ -3671,7 +3705,7 @@ var DatePicker = defineClass(
     },
 
     /**
-     * Destroy
+     * Destroy the date picker.
      */
     destroy: function() {
       this._removeDocumentEvents();
@@ -3686,17 +3720,7 @@ var DatePicker = defineClass(
       removeElement(this._element);
       this.removeAllOpeners();
 
-      this._calendar
-        = this._timePicker
-        = this._datepickerInput
-        = this._container
-        = this._element
-        = this._date
-        = this._rangeModel
-        = this._openers
-        = this._isEnabled
-        = this._id
-        = null;
+      this._calendar = this._timePicker = this._datepickerInput = this._container = this._element = this._date = this._rangeModel = this._openers = this._isEnabled = this._id = null;
     }
   }
 );
@@ -3983,6 +4007,7 @@ var constants = __webpack_require__(1);
 var dateUtil = __webpack_require__(5);
 var util = __webpack_require__(4);
 
+var DEFAULT_WEEK_START_DAY = constants.DEFAULT_WEEK_START_DAY;
 var DEFAULT_LANGUAGE_TYPE = constants.DEFAULT_LANGUAGE_TYPE;
 
 var TYPE_DATE = constants.TYPE_DATE;
@@ -4002,33 +4027,39 @@ var HEADER_SELECTOR = '.tui-calendar-header';
 var BODY_SELECTOR = '.tui-calendar-body';
 
 /**
- * Calendar class
- * @constructor
- * @param {HTMLElement|string} wrapperElement - Wrapper element or selector
- * @param {Object} [options] - Options for initialize
- *     @param {string} [options.language = 'en'] - Calendar language - {@link Calendar.localeTexts}
- *     @param {boolean} [options.showToday] - If true, shows today
- *     @param {boolean} [options.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
- *     @param {Date} [options.date = new Date()] - Initial date
- *     @param {string} [options.type = 'date'] - Calendar types - 'date', 'month', 'year'
- *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics (default value is true)
+ * @class
+ * @description
+ * Create a calendar by {@link DatePicker#createCalendar DatePicker.createCalendar()}.
+ * @see {@link /tutorial-example07-calendar Calendar example}
+ * @param {HTMLElement|string} container - Container or selector of the Calendar
+ * @param {Object} [options] - Calendar options
+ *     @param {Date} [options.date = new Date()] - Initial date (default: today)
+ *     @param {('date'|'month'|'year')} [options.type = 'date'] - Calendar type. Determine whether to show a date, month, or year.
+ *     @param {string} [options.language = 'en'] - Language code. English('en') and Korean('ko') are provided as default. To use the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
+ *     @param {boolean} [options.showToday = true] - Show today.
+ *     @param {boolean} [options.showJumpButtons = false] - Show the yearly jump buttons (move to the previous and next year in 'date' Calendar)
+ *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
+ *     @param {string} [options.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  * @example
- * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
- * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
- *     language: 'en', // There are two supporting types by default - 'en' and 'ko'.
+ * import DatePicker from 'tui-date-picker' // ES6
+ * // const DatePicker = require('tui-date-picker'); // CommonJS
+ * // const DatePicker = tui.DatePicker;
+ *
+ * const calendar = DatePicker.createCalendar('#calendar-wrapper', {
+ *     language: 'en',
  *     showToday: true,
  *     showJumpButtons: false,
  *     date: new Date(),
- *     type: 'date'
+ *     type: 'date',
+ *     weekStartDay: 'Mon',
  * });
  *
  * calendar.on('draw', function(event) {
- *     var i, len;
  *     console.log(event.date);
  *     console.log(event.type);
- *     for (i = 0, len = event.dateElements.length; i < len; i += 1) {
- *         var el = event.dateElements[i];
- *         var date = new Date(getData(el, 'timestamp'));
+ *     for (let i = 0, len = event.dateElements.length; i < len; i += 1) {
+ *         const el = event.dateElements[i];
+ *         const date = new Date(getData(el, 'timestamp'));
  *         console.log(date);
  *     }
  * });
@@ -4036,36 +4067,6 @@ var BODY_SELECTOR = '.tui-calendar-body';
 var Calendar = defineClass(
   /** @lends Calendar.prototype */ {
     static: {
-      /**
-       * Locale text data
-       * @type {object}
-       * @memberof Calendar
-       * @static
-       * @example
-       * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
-       *
-       * DatePicker.localeTexts['customKey'] = {
-       *     titles: {
-       *         // days
-       *         DD: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-       *         // daysShort
-       *         D: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fir', 'Sat'],
-       *         // months
-       *         MMMM: [
-       *             'January', 'February', 'March', 'April', 'May', 'June',
-       *             'July', 'August', 'September', 'October', 'November', 'December'
-       *         ],
-       *         // monthsShort
-       *         MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-       *     },
-       *     titleFormat: 'MMM yyyy',
-       *     todayFormat: 'D, MMMM dd, yyyy'
-       * };
-       *
-       * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
-       *     language: 'customKey',
-       * });
-       */
       localeTexts: localeTexts
     },
     init: function(container, options) {
@@ -4076,7 +4077,8 @@ var Calendar = defineClass(
           showJumpButtons: false,
           date: new Date(),
           type: TYPE_DATE,
-          usageStatistics: true
+          usageStatistics: true,
+          weekStartDay: DEFAULT_WEEK_START_DAY
         },
         options
       );
@@ -4088,10 +4090,10 @@ var Calendar = defineClass(
        */
       this._container = util.getElement(container);
       this._container.innerHTML =
-          '<div class="tui-calendar">'
-        + '    <div class="tui-calendar-header"></div>'
-        + '    <div class="tui-calendar-body"></div>'
-        + '</div>';
+        '<div class="tui-calendar">' +
+        '    <div class="tui-calendar-header"></div>' +
+        '    <div class="tui-calendar-body"></div>' +
+        '</div>';
 
       /**
        * Wrapper element
@@ -4278,10 +4280,11 @@ var Calendar = defineClass(
     },
 
     /**
-     * Draw calendar
-     * @param {?object} options - Draw options
+     * Draw the calendar.
+     * @param {Object} [options] - Draw options
+     *   @param {Date} [options.date] - Date to set
+     *   @param {('date'|'month'|'year')} [options.type = 'date'] - Calendar type. Determine whether to show a date, month, or year.
      * @example
-     *
      * calendar.draw();
      * calendar.draw({
      *     date: new Date()
@@ -4308,15 +4311,22 @@ var Calendar = defineClass(
       }
 
       /**
+       * Occur after the calendar draws.
        * @event Calendar#draw
-       * @type {object} evt
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on calendar.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off calendar.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents from tui-code-snippet} for more methods. Calendar mixes in the methods from CustomEvents.
        * @property {Date} date - Calendar date
-       * @property {string} type - Calendar type
-       * @property {HTMLElement} dateElements - Calendar date elements
+       * @property {('date'|'month'|'year')} type - Calendar type
+       * @property {HTMLElement[]} dateElements - elements for dates
        * @example
-       * calendar.on('draw', function(evt) {
-       *     console.error(evt.date);
+       * // bind the 'draw' event
+       * calendar.on('draw', function({type, date}) {
+       *     console.log(`Draw the ${type} calendar and its date is ${date}.`);
        * });
+       *
+       * // unbind the 'draw' event
+       * calendar.off('draw');
        */
       this.fire('draw', {
         date: this._date,
@@ -4326,24 +4336,21 @@ var Calendar = defineClass(
     },
 
     /**
-     * Show calendar
+     * Show the calendar.
      */
     show: function() {
       removeClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
-     * Hide calendar
+     * Hide the calendar.
      */
     hide: function() {
       addClass(this._element, CLASS_NAME_HIDDEN);
     },
 
     /**
-     * Draw next page
-     * @example
-     *
-     * calendar.drawNext();
+     * Draw the next page.
      */
     drawNext: function() {
       this.draw({
@@ -4352,11 +4359,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Draw previous page
-     *
-     * @example
-     *
-     * calendar.drawPrev();
+     * Draw the previous page.
      */
     drawPrev: function() {
       this.draw({
@@ -4365,7 +4368,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns next date
+     * Return the next date.
      * @returns {Date}
      */
     getNextDate: function() {
@@ -4377,7 +4380,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns prev date
+     * Return the previous date.
      * @returns {Date}
      */
     getPrevDate: function() {
@@ -4389,7 +4392,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns next year date
+     * Return the date a year later.
      * @returns {Date}
      */
     getNextYearDate: function() {
@@ -4405,7 +4408,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns prev year date
+     * Return the date a year previously.
      * @returns {Date}
      */
     getPrevYearDate: function() {
@@ -4421,9 +4424,9 @@ var Calendar = defineClass(
     },
 
     /**
-     * Change language
-     * @param {string} language - Language
-     * @see {@link Calendar#localeTexts}
+     * Change language.
+     * @param {string} language - Language code. English('en') and Korean('ko') are provided as default.
+     * @see To set to the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
      */
     changeLanguage: function(language) {
       this._header.changeLanguage(language);
@@ -4432,7 +4435,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns rendered date
+     * Return the rendered date.
      * @returns {Date}
      */
     getDate: function() {
@@ -4440,7 +4443,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns rendered layer type
+     * Return the calendar's type.
      * @returns {('date'|'month'|'year')}
      */
     getType: function() {
@@ -4448,7 +4451,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Returns date elements on body
+     * Returns HTML elements for dates.
      * @returns {HTMLElement[]}
      */
     getDateElements: function() {
@@ -4456,7 +4459,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Add calendar css class
+     * Apply a CSS class to the calendar.
      * @param {string} className - Class name
      */
     addCssClass: function(className) {
@@ -4464,7 +4467,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Remove calendar css class
+     * Remove a CSS class from the calendar.
      * @param {string} className - Class name
      */
     removeCssClass: function(className) {
@@ -4472,7 +4475,7 @@ var Calendar = defineClass(
     },
 
     /**
-     * Destroy calendar
+     * Destroy the calendar.
      */
     destroy: function() {
       this._header.destroy();
@@ -5077,20 +5080,15 @@ var Calendar = __webpack_require__(29);
 __webpack_require__(61);
 
 /**
- * Create a calendar component
+ * Create a calendar.
+ * @see {@link Calendar}
+ * @see {@link /tutorial-example07-calendar Calendar example}
  * @static
- * @param {HTMLElement|string} wrapperElement - Wrapper element or selector
- *     @param {Object} [options] - Options for initialize
- *     @param {string} [options.language = 'en'] - Calendar language - {@link Calendar.localeTexts}
- *     @param {boolean} [options.showToday] - If true, shows today
- *     @param {boolean} [options.showJumpButtons] - If true, shows jump buttons (next,prev-year in 'date'-Calendar)
- *     @param {Date} [options.date = new Date()] - Initial date
- *     @param {string} [options.type = 'date'] - Calendar types - 'date', 'month', 'year'
- *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
- * @returns {Calendar} Instance of Calendar
+ * @param {HTMLElement|string} wrapperElement - Container element or selector of the Calendar
+ * @param {Object} [options] - {@link Calendar} options. Refer to the {@link Calendar Calendar instance's options}.
+ * @returns {Calendar}
  * @example
- * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
- * var calendar = DatePicker.createCalendar('#calendar-wrapper', {
+ * const calendar = DatePicker.createCalendar('#calendar-wrapper', {
  *    language: 'en',
  *    showToday: true,
  *    showJumpButtons: false,
@@ -5103,28 +5101,14 @@ DatePicker.createCalendar = function(wrapperElement, options) {
 };
 
 /**
- * Create a calendar component
+ * Create a date-range picker.
+ * @see {@link DateRangePicker}
+ * @see {@link /tutorial-example08-daterangepicker DateRangePicker example}
  * @static
- * @param {object} options - Date-Range picker options
- *     @param {object} options.startpicker - Startpicker options
- *     @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
- *     @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
- *     @param {object} options.endpicker - Endpicker options
- *     @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
- *     @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
- *     @param {string} options.format - Input date-string format
- *     @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
- *     @param {string} [options.language='en'] - Language key
- *     @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. This option's name is changed from 'timepicker' and 'timepicker' will be deprecated in v5.0.0.
- *     @param {object} [options.calendar] - {@link Calendar} option
- *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
- *     @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
- *     @param {boolean} [options.autoClose = true] - Close after click a date
- *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
- * @returns {DateRangePicker} Instance of DateRangePicker
+ * @param {object} options - {@link DateRangePicker} options. Refer to the {@link DateRangePicker DateRangePicker instance's options}.
+ * @returns {DateRangePicker}
  * @example
- * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
- * var rangepicker = DatePicker.createRangePicker({
+ * const rangepicker = DatePicker.createRangePicker({
  *     startpicker: {
  *         input: '#start-input',
  *         container: '#start-container'
@@ -5684,15 +5668,7 @@ var Header = defineClass(
       this._removeEvents();
       removeElement(this._innerElement);
       removeElement(this._infoElement);
-      this._container
-        = this._showToday
-        = this._showJumpButtons
-        = this._yearMonthTitleFormatter
-        = this._yearTitleFormatter
-        = this._todayFormatter
-        = this._innerElement
-        = this._infoElement
-        = null;
+      this._container = this._showToday = this._showJumpButtons = this._yearMonthTitleFormatter = this._yearTitleFormatter = this._todayFormatter = this._innerElement = this._infoElement = null;
     }
   }
 );
@@ -5712,34 +5688,34 @@ var template = __webpack_require__(11);
 
 module.exports = function(context) {
   var source =
-      '{{if isDateCalendar}}'
-    + '  {{if showJumpButtons}}'
-    + '    <div class="tui-calendar-header-inner tui-calendar-has-btns">'
-    + '      <button class="tui-calendar-btn tui-calendar-btn-prev-year">Prev year</button>'
-    + '      <button class="tui-calendar-btn tui-calendar-btn-prev-month">Prev month</button>'
-    + '      <em class="tui-calendar-title {{titleClass}}">{{title}}</em>'
-    + '      <button class="tui-calendar-btn tui-calendar-btn-next-month">Next month</button>'
-    + '      <button class="tui-calendar-btn tui-calendar-btn-next-year">Next year</button>'
-    + '    </div>'
-    + '  {{else}}'
-    + '    <div class="tui-calendar-header-inner">'
-    + '      <button class="tui-calendar-btn tui-calendar-btn-prev-month">Prev month</button>'
-    + '      <em class="tui-calendar-title {{titleClass}}">{{title}}</em>'
-    + '      <button class="tui-calendar-btn tui-calendar-btn-next-month">Next month</button>'
-    + '    </div>'
-    + '  {{/if}}'
-    + '{{else}}'
-    + '  <div class="tui-calendar-header-inner">'
-    + '    <button class="tui-calendar-btn tui-calendar-btn-prev-year">Prev year</button>'
-    + '    <em class="tui-calendar-title {{titleClass}}">{{title}}</em>'
-    + '    <button class="tui-calendar-btn tui-calendar-btn-next-year">Next year</button>'
-    + '  </div>'
-    + '{{/if}}'
-    + '{{if showToday}}'
-    + '  <div class="tui-calendar-header-info">'
-    + '    <p class="tui-calendar-title-today">{{todayText}}</p>'
-    + '  </div>'
-    + '{{/if}}';
+    '{{if isDateCalendar}}' +
+    '  {{if showJumpButtons}}' +
+    '    <div class="tui-calendar-header-inner tui-calendar-has-btns">' +
+    '      <button class="tui-calendar-btn tui-calendar-btn-prev-year">Prev year</button>' +
+    '      <button class="tui-calendar-btn tui-calendar-btn-prev-month">Prev month</button>' +
+    '      <em class="tui-calendar-title {{titleClass}}">{{title}}</em>' +
+    '      <button class="tui-calendar-btn tui-calendar-btn-next-month">Next month</button>' +
+    '      <button class="tui-calendar-btn tui-calendar-btn-next-year">Next year</button>' +
+    '    </div>' +
+    '  {{else}}' +
+    '    <div class="tui-calendar-header-inner">' +
+    '      <button class="tui-calendar-btn tui-calendar-btn-prev-month">Prev month</button>' +
+    '      <em class="tui-calendar-title {{titleClass}}">{{title}}</em>' +
+    '      <button class="tui-calendar-btn tui-calendar-btn-next-month">Next month</button>' +
+    '    </div>' +
+    '  {{/if}}' +
+    '{{else}}' +
+    '  <div class="tui-calendar-header-inner">' +
+    '    <button class="tui-calendar-btn tui-calendar-btn-prev-year">Prev year</button>' +
+    '    <em class="tui-calendar-title {{titleClass}}">{{title}}</em>' +
+    '    <button class="tui-calendar-btn tui-calendar-btn-next-year">Next year</button>' +
+    '  </div>' +
+    '{{/if}}' +
+    '{{if showToday}}' +
+    '  <div class="tui-calendar-header-info">' +
+    '    <p class="tui-calendar-title-today">{{todayText}}</p>' +
+    '  </div>' +
+    '{{/if}}';
 
   return template(source, context);
 };
@@ -5936,8 +5912,9 @@ var TYPE_YEAR = constants.TYPE_YEAR;
  */
 var Body = defineClass(
   /** @lends Body.prototype */ {
-    init: function(bodyContainer, option) {
-      var language = option.language;
+    init: function(bodyContainer, options) {
+      var language = options.language;
+      var weekStartDay = options.weekStartDay;
 
       /**
        * Body container element
@@ -5951,7 +5928,7 @@ var Body = defineClass(
        * @type {DateLayer}
        * @private
        */
-      this._dateLayer = new DateLayer(language);
+      this._dateLayer = new DateLayer(language, weekStartDay);
 
       /**
        * MonthLayer
@@ -6070,8 +6047,10 @@ var dateUtil = __webpack_require__(5);
 var bodyTmpl = __webpack_require__(51);
 var LayerBase = __webpack_require__(20);
 var TYPE_DATE = __webpack_require__(1).TYPE_DATE;
+var WEEK_START_DAY_MAP = __webpack_require__(1).WEEK_START_DAY_MAP;
 
 var DATE_SELECTOR = '.tui-calendar-date';
+var DAYS_OF_WEEK = 7;
 
 /**
  * @ignore
@@ -6082,8 +6061,10 @@ var DATE_SELECTOR = '.tui-calendar-date';
 var DateLayer = defineClass(
   LayerBase,
   /** @lends DateLayer.prototype */ {
-    init: function(language) {
+    init: function(language, weekStartDay) {
       LayerBase.call(this, language);
+
+      this.weekStartDay = WEEK_START_DAY_MAP[String(weekStartDay).toLowerCase()] || 0;
     },
 
     /**
@@ -6100,11 +6081,19 @@ var DateLayer = defineClass(
      */
     _makeContext: function(date) {
       var daysShort = this._localeText.titles.D;
-      var year, month;
+      var year, month, days, i;
 
       date = date || new Date();
       year = date.getFullYear();
       month = date.getMonth() + 1;
+
+      if (this.weekStartDay) {
+        days = daysShort.slice();
+        for (i = 0; i < this.weekStartDay; i += 1) {
+          days.push(days.shift());
+        }
+        daysShort = days;
+      }
 
       return {
         Sun: daysShort[0],
@@ -6131,14 +6120,24 @@ var DateLayer = defineClass(
       var weekNumber = 0;
       var weeksCount = 6; // Fix for no changing height
       var weeks = [];
-      var dates, i;
+      var week, dates, i;
 
-      for (; weekNumber < weeksCount; weekNumber += 1) {
+      while (weekNumber < weeksCount) {
         dates = [];
-        for (i = 0; i < 7; i += 1) {
+
+        for (i = this.weekStartDay; i < DAYS_OF_WEEK + this.weekStartDay; i += 1) {
           dates.push(dateUtil.getDateOfWeek(year, month, weekNumber, i));
         }
-        weeks.push(this._getWeek(year, month, dates));
+
+        week = this._getWeek(year, month, dates);
+
+        if (this.weekStartDay && !_isFirstWeek(weekNumber, week[0].dayInMonth)) {
+          weeks.push(this._getFirstWeek(year, month));
+          weeksCount -= 1; // Fix for no changing height
+        }
+
+        weeks.push(week);
+        weekNumber += 1;
       }
 
       return weeks;
@@ -6146,8 +6145,8 @@ var DateLayer = defineClass(
 
     /**
      * week (templating) for date-calendar
-     * @param {number} currentYear 
-     * @param {number} currentMonth 
+     * @param {number} currentYear
+     * @param {number} currentMonth
      * @param {Array.<Date>} dates
      * @private
      */
@@ -6207,9 +6206,24 @@ var DateLayer = defineClass(
      */
     getDateElements: function() {
       return this._element.querySelectorAll(DATE_SELECTOR);
+    },
+
+    _getFirstWeek: function(year, month) {
+      var firstWeekDates = [];
+      var i;
+
+      for (i = this.weekStartDay; i < DAYS_OF_WEEK + this.weekStartDay; i += 1) {
+        firstWeekDates.push(dateUtil.getDateOfWeek(year, month, -1, i));
+      }
+
+      return this._getWeek(year, month, firstWeekDates);
     }
   }
 );
+
+function _isFirstWeek(weekIndex, dayInMonth) {
+  return weekIndex || dayInMonth === 1 || dayInMonth > DAYS_OF_WEEK;
+}
 
 module.exports = DateLayer;
 
@@ -6225,29 +6239,29 @@ var template = __webpack_require__(11);
 
 module.exports = function(context) {
   var source =
-      '<table class="tui-calendar-body-inner" cellspacing="0" cellpadding="0">'
-    + '  <caption><span>Dates</span></caption>'
-    + '  <thead class="tui-calendar-body-header">'
-    + '    <tr>'
-    + '      <th class="tui-sun" scope="col">{{Sun}}</th>'
-    + '      <th scope="col">{{Mon}}</th>'
-    + '      <th scope="col">{{Tue}}</th>'
-    + '      <th scope="col">{{Wed}}</th>'
-    + '      <th scope="col">{{Thu}}</th>'
-    + '      <th scope="col">{{Fri}}</th>'
-    + '      <th class="tui-sat" scope="col">{{Sat}}</th>'
-    + '    </tr>'
-    + '  </thead>'
-    + '  <tbody>'
-    + '    {{each weeks}}'
-    + '    <tr class="tui-calendar-week">'
-    + '      {{each @this}}'
-    + '      <td class="{{@this["className"]}}" data-timestamp="{{@this["timestamp"]}}">{{@this["dayInMonth"]}}</td>'
-    + '      {{/each}}'
-    + '    </tr>'
-    + '    {{/each}}'
-    + '  </tbody>'
-    + '</table>';
+    '<table class="tui-calendar-body-inner" cellspacing="0" cellpadding="0">' +
+    '  <caption><span>Dates</span></caption>' +
+    '  <thead class="tui-calendar-body-header">' +
+    '    <tr>' +
+    '      <th class="tui-sun" scope="col">{{Sun}}</th>' +
+    '      <th scope="col">{{Mon}}</th>' +
+    '      <th scope="col">{{Tue}}</th>' +
+    '      <th scope="col">{{Wed}}</th>' +
+    '      <th scope="col">{{Thu}}</th>' +
+    '      <th scope="col">{{Fri}}</th>' +
+    '      <th class="tui-sat" scope="col">{{Sat}}</th>' +
+    '    </tr>' +
+    '  </thead>' +
+    '  <tbody>' +
+    '    {{each weeks}}' +
+    '    <tr class="tui-calendar-week">' +
+    '      {{each @this}}' +
+    '      <td class="{{@this["className"]}}" data-timestamp="{{@this["timestamp"]}}">{{@this["dayInMonth"]}}</td>' +
+    '      {{/each}}' +
+    '    </tr>' +
+    '    {{/each}}' +
+    '  </tbody>' +
+    '</table>';
 
   return template(source, context);
 };
@@ -6358,29 +6372,29 @@ var template = __webpack_require__(11);
 
 module.exports = function(context) {
   var source =
-      '<table class="tui-calendar-body-inner">'
-    + '  <caption><span>Months</span></caption>'
-    + '  <tbody>'
-    + '    <tr class="tui-calendar-month-group">'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 0}}>{{Jan}}</td>'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 1}}>{{Feb}}</td>'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 2}}>{{Mar}}</td>'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 3}}>{{Apr}}</td>'
-    + '    </tr>'
-    + '    <tr class="tui-calendar-month-group">'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 4}}>{{May}}</td>'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 5}}>{{Jun}}</td>'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 6}}>{{Jul}}</td>'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 7}}>{{Aug}}</td>'
-    + '    </tr>'
-    + '    <tr class="tui-calendar-month-group">'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 8}}>{{Sep}}</td>'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 9}}>{{Oct}}</td>'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 10}}>{{Nov}}</td>'
-    + '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 11}}>{{Dec}}</td>'
-    + '    </tr>'
-    + '  </tbody>'
-    + '</table>';
+    '<table class="tui-calendar-body-inner">' +
+    '  <caption><span>Months</span></caption>' +
+    '  <tbody>' +
+    '    <tr class="tui-calendar-month-group">' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 0}}>{{Jan}}</td>' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 1}}>{{Feb}}</td>' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 2}}>{{Mar}}</td>' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 3}}>{{Apr}}</td>' +
+    '    </tr>' +
+    '    <tr class="tui-calendar-month-group">' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 4}}>{{May}}</td>' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 5}}>{{Jun}}</td>' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 6}}>{{Jul}}</td>' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 7}}>{{Aug}}</td>' +
+    '    </tr>' +
+    '    <tr class="tui-calendar-month-group">' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 8}}>{{Sep}}</td>' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 9}}>{{Oct}}</td>' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 10}}>{{Nov}}</td>' +
+    '      <td class="tui-calendar-month" data-timestamp={{getFirstDayTimestamp year 11}}>{{Dec}}</td>' +
+    '    </tr>' +
+    '  </tbody>' +
+    '</table>';
 
   return template(source, context);
 };
@@ -6483,20 +6497,20 @@ var template = __webpack_require__(11);
 
 module.exports = function(context) {
   var source =
-      '<table class="tui-calendar-body-inner">'
-    + '  <caption><span>Years</span></caption>'
-    + '  <tbody>'
-    + '    {{each yearGroups}}'
-    + '    <tr class="tui-calendar-year-group">'
-    + '      {{each @this}}'
-    + '      <td class="tui-calendar-year" data-timestamp={{getFirstDayTimestamp @this 0}}>'
-    + '        {{@this}}'
-    + '      </td>'
-    + '      {{/each}}'
-    + '    </tr>'
-    + '    {{/each}}'
-    + '  </tbody>'
-    + '</table>';
+    '<table class="tui-calendar-body-inner">' +
+    '  <caption><span>Years</span></caption>' +
+    '  <tbody>' +
+    '    {{each yearGroups}}' +
+    '    <tr class="tui-calendar-year-group">' +
+    '      {{each @this}}' +
+    '      <td class="tui-calendar-year" data-timestamp={{getFirstDayTimestamp @this 0}}>' +
+    '        {{@this}}' +
+    '      </td>' +
+    '      {{/each}}' +
+    '    </tr>' +
+    '    {{/each}}' +
+    '  </tbody>' +
+    '</table>';
 
   return template(source, context);
 };
@@ -6824,35 +6838,35 @@ var template = __webpack_require__(11);
 
 module.exports = function(context) {
   var source =
-      '<div class="tui-datepicker">'
-    + '  {{if timePicker}}'
-    + '    {{if isTab}}'
-    + '      <div class="tui-datepicker-selector">'
-    + '        <button type="button" class="tui-datepicker-selector-button tui-is-checked" aria-label="selected">'
-    + '          <span class="tui-ico-date"></span>{{localeText["date"]}}'
-    + '        </button>'
-    + '        <button type="button" class="tui-datepicker-selector-button">'
-    + '          <span class="tui-ico-time"></span>{{localeText["time"]}}'
-    + '        </button>'
-    + '      </div>'
-    + '      <div class="tui-datepicker-body">'
-    + '        <div class="tui-calendar-container"></div>'
-    + '        <div class="tui-timepicker-container"></div>'
-    + '      </div>'
-    + '    {{else}}'
-    + '      <div class="tui-datepicker-body">'
-    + '        <div class="tui-calendar-container"></div>'
-    + '      </div>'
-    + '      <div class="tui-datepicker-footer">'
-    + '        <div class="tui-timepicker-container"></div>'
-    + '      </div>'
-    + '    {{/if}}'
-    + '  {{else}}'
-    + '    <div class="tui-datepicker-body">'
-    + '      <div class="tui-calendar-container"></div>'
-    + '    </div>'
-    + '  {{/if}}'
-    + '</div>';
+    '<div class="tui-datepicker">' +
+    '  {{if timePicker}}' +
+    '    {{if isTab}}' +
+    '      <div class="tui-datepicker-selector">' +
+    '        <button type="button" class="tui-datepicker-selector-button tui-is-checked" aria-label="selected">' +
+    '          <span class="tui-ico-date"></span>{{localeText["date"]}}' +
+    '        </button>' +
+    '        <button type="button" class="tui-datepicker-selector-button">' +
+    '          <span class="tui-ico-time"></span>{{localeText["time"]}}' +
+    '        </button>' +
+    '      </div>' +
+    '      <div class="tui-datepicker-body">' +
+    '        <div class="tui-calendar-container"></div>' +
+    '        <div class="tui-timepicker-container"></div>' +
+    '      </div>' +
+    '    {{else}}' +
+    '      <div class="tui-datepicker-body">' +
+    '        <div class="tui-calendar-container"></div>' +
+    '      </div>' +
+    '      <div class="tui-datepicker-footer">' +
+    '        <div class="tui-timepicker-container"></div>' +
+    '      </div>' +
+    '    {{/if}}' +
+    '  {{else}}' +
+    '    <div class="tui-datepicker-body">' +
+    '      <div class="tui-calendar-container"></div>' +
+    '    </div>' +
+    '  {{/if}}' +
+    '</div>';
 
   return template(source, context);
 };
@@ -7099,32 +7113,45 @@ var CLASS_NAME_SELECTED_RANGE = 'tui-is-selected-range';
 
 /**
  * @class
- * @param {object} options - Date-Range picker options
+ * @description
+ * Create a date-range picker by {@link DatePicker#createRangePicker DatePicker.createRangePicker()}.
+ * @see {@link /tutorial-example08-daterangepicker DateRangePicker example}
+ * @param {object} options - DateRangePicker options
  *     @param {object} options.startpicker - Startpicker options
- *     @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
- *     @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
+ *         @param {HTMLElement|string} options.startpicker.input - Startpicker input element or selector
+ *         @param {HTMLElement|string} options.startpicker.container - Startpicker container element or selector
+ *         @param {Date|number} [options.startpicker.date] - Initial date of the start picker. Set by a Date instance or a number(timestamp). (default: no initial date)
+ *         @param {string} [options.startpicker.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
  *     @param {object} options.endpicker - Endpicker options
- *     @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
- *     @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
- *     @param {string} options.format - Input date-string format
- *     @param {string} [options.type = 'date'] - DatePicker type - ('date' | 'month' | 'year')
- *     @param {string} [options.language='en'] - Language key
- *     @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. This option's name is changed from 'timepicker' and 'timepicker' will be deprecated in v5.0.0.
- *     @param {object} [options.calendar] - {@link Calendar} options
- *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Selectable ranges
- *     @param {boolean} [options.showAlways = false] - Whether the datepicker shows always
- *     @param {boolean} [options.autoClose = true] - Close after click a date
- *     @param {Boolean} [options.usageStatistics=true|false] send hostname to google analytics [default value is true]
+ *         @param {HTMLElement|string} options.endpicker.input - Endpicker input element or selector
+ *         @param {HTMLElement|string} options.endpicker.container - Endpicker container element or selector
+ *         @param {Date|number} [options.endpicker.date] - Initial date of the end picker. Set by a Date instance or a number(timestamp). (default: no initial date)
+ *         @param {string} [options.endpicker.weekStartDay = 'Sun'] - Start of the week. 'Sun', 'Mon', ..., 'Sat'(default: 'Sun'(start on Sunday))
+ *     @param {('date'|'month'|'year')} [options.type = 'date'] - DatePicker type. Determine whether to choose a date, month, or year.
+ *     @param {string} [options.language='en'] - Language code. English('en') and Korean('ko') are provided as default. To use the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
+ *     @param {object|boolean} [options.timePicker] - [TimePicker](https://nhn.github.io/tui.time-picker/latest) options. Refer to the [TimePicker instance's options](https://nhn.github.io/tui.time-picker/latest/TimePicker). To create the TimePicker without customization, set to true.
+ *     @param {object} [options.calendar] - {@link Calendar} options. Refer to the {@link Calendar Calendar instance's options}.
+ *     @param {string} [options.format = 'yyyy-mm-dd'] - Format of the Date string
+ *     @param {Array.<Array.<Date|number>>} [options.selectableRanges] - Ranges of selectable date. Set by Date instances or numbers(timestamp).
+ *     @param {boolean} [options.showAlways = false] - Show the DateRangePicker always
+ *     @param {boolean} [options.autoClose = true] - Close the DateRangePicker after clicking the date
+ *     @param {boolean} [options.usageStatistics = true] - Send a hostname to Google Analytics (default: true)
  * @example
- * var DatePicker = tui.DatePicker; // or require('tui-date-picker');
- * var rangepicker = DatePicker.createRangePicker({
+ * import DatePicker from 'tui-date-picker' // ES6
+ * // const DatePicker = require('tui-date-picker'); // CommonJS
+ * // const DatePicker = tui.DatePicker;
+ *
+ * const rangePicker = DatePicker.createRangePicker({
  *     startpicker: {
  *         input: '#start-input',
  *         container: '#start-container'
+ *         date: new Date(2019, 3, 1),
+ *         weekStartDay: 'Mon',
  *     },
  *     endpicker: {
  *         input: '#end-input',
- *         container: '#end-container'
+ *         container: '#end-container',
+ *         weekStartDay: 'Mon',
  *     },
  *     type: 'date',
  *     format: 'yyyy-MM-dd'
@@ -7165,8 +7192,6 @@ var DateRangePicker = defineClass(
       this._endpicker = null;
 
       this._initializePickers(options);
-      this.setStartDate(startpickerOpt.date);
-      this.setEndDate(endpickerOpt.date);
       this._syncRangesToEndpicker();
     },
 
@@ -7185,13 +7210,17 @@ var DateRangePicker = defineClass(
         input: {
           element: startInput,
           format: options.format
-        }
+        },
+        date: options.startpicker.date,
+        weekStartDay: options.startpicker.weekStartDay
       });
       var endpickerOpt = extend({}, options, {
         input: {
           element: endInput,
           format: options.format
-        }
+        },
+        date: options.endpicker.date,
+        weekStartDay: options.endpicker.weekStartDay
       });
 
       this._startpicker = new DatePicker(startpickerContainer, startpickerOpt);
@@ -7297,12 +7326,19 @@ var DateRangePicker = defineClass(
     _onChangeStartpicker: function() {
       this._syncRangesToEndpicker();
       /**
+       * Occur after the start date is changed.
        * @event DateRangePicker#change:start
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on rangePicker.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off rangePicker.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} for more methods. DateRangePicker mixes in the methods from CustomEvents.
        * @example
-       *
-       * rangepicker.on('change:start', function() {
-       *     console.log(rangepicker.getStartDate());
+       * // bind the 'change:start' event
+       * rangePicker.on('change:start', function() {
+       *     console.log(`Start date: ${rangePicker.getStartDate()}`);
        * });
+       *
+       * // unbind the 'change:start' event
+       * rangePicker.off('change:start');
        */
       this.fire('change:start');
     },
@@ -7313,18 +7349,25 @@ var DateRangePicker = defineClass(
      */
     _onChangeEndpicker: function() {
       /**
+       * Occur after the end date is changed.
        * @event DateRangePicker#change:end
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on rangePicker.on()} to bind event handlers.
+       * @see {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off rangePicker.off()} to unbind event handlers.
+       * @see Refer to {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} for more methods. DateRangePicker mixes in the methods from CustomEvents.
        * @example
-       *
-       * rangepicker.on('change:end', function() {
-       *     console.log(rangepicker.getEndDate());
+       * // bind the 'change:end' event
+       * rangePicker.on('change:end', function() {
+       *     console.log(`End date: ${rangePicker.getEndDate()}`);
        * });
+       *
+       * // unbind the 'change:end' event
+       * rangePicker.off('change:end');
        */
       this.fire('change:end');
     },
 
     /**
-     * Returns start-datepicker
+     * Return a start-datepicker.
      * @returns {DatePicker}
      */
     getStartpicker: function() {
@@ -7332,7 +7375,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Returns end-datepicker
+     * Return a end-datepicker.
      * @returns {DatePicker}
      */
     getEndpicker: function() {
@@ -7340,7 +7383,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Set start date
+     * Set the start date.
      * @param {Date} date - Start date
      */
     setStartDate: function(date) {
@@ -7348,7 +7391,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Returns start-date
+     * Return the start date.
      * @returns {?Date}
      */
     getStartDate: function() {
@@ -7356,7 +7399,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Returns end-date
+     * Return the end date.
      * @returns {?Date}
      */
     getEndDate: function() {
@@ -7364,7 +7407,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Set end date
+     * Set the end date.
      * @param {Date} date - End date
      */
     setEndDate: function(date) {
@@ -7372,9 +7415,8 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Set selectable ranges
-     * @param {Array.<Array.<number|Date>>} ranges - Selectable ranges
-     * @see {@link DatePicker#setRanges}
+     * Set selectable ranges.
+     * @param {Array.<Array.<number|Date>>} ranges - Selectable ranges. Use Date instances or numbers(timestamp).
      */
     setRanges: function(ranges) {
       this._startpicker.setRanges(ranges);
@@ -7382,10 +7424,9 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Add a range
-     * @param {Date|number} start - startDate
-     * @param {Date|number} end - endDate
-     * @see {@link DatePicker#addRange}
+     * Add a selectable range. Use Date instances or numbers(timestamp).
+     * @param {Date|number} start - the start date
+     * @param {Date|number} end - the end date
      */
     addRange: function(start, end) {
       this._startpicker.addRange(start, end);
@@ -7393,11 +7434,10 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Remove a range
-     * @param {Date|number} start - startDate
-     * @param {Date|number} end - endDate
-     * @param {null|'date'|'month'|'year'} type - Range type, If falsy -> Use strict timestamp;
-     * @see {@link DatePicker#removeRange}
+     * Remove a range. Use Date instances or numbers(timestamp).
+     * @param {Date|number} start - the start date
+     * @param {Date|number} end - the end date
+     * @param {null|'date'|'month'|'year'} type - Range type. If falsy, start and end values are considered as timestamp
      */
     removeRange: function(start, end, type) {
       this._startpicker.removeRange(start, end, type);
@@ -7405,9 +7445,9 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Change language
-     * @param {string} language - Language
-     * @see {@link DatePicker#localeTexts}
+     * Change language.
+     * @param {string} language - Language code. English('en') and Korean('ko') are provided as default.
+     * @see To set to the other languages, use {@link DatePicker#localeTexts DatePicker.localeTexts}.
      */
     changeLanguage: function(language) {
       this._startpicker.changeLanguage(language);
@@ -7415,7 +7455,7 @@ var DateRangePicker = defineClass(
     },
 
     /**
-     * Destroy date-range picker
+     * Destroy the date-range picker.
      */
     destroy: function() {
       this.off();

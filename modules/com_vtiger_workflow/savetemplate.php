@@ -42,5 +42,6 @@ function vtSaveWorkflowTemplate($adb, $request) {
 		<a href="<?php echo $returnUrl?>">Return</a>
 	<?php
 }
+Vtiger_Request::validateRequest();
 vtSaveWorkflowTemplate($adb, $_REQUEST);
 ?>

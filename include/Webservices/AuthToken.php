@@ -19,8 +19,8 @@ function vtws_getchallenge($username) {
 	$userid = $user->retrieve_user_id($username);
 	if (empty($userid)) {
 		$prtrs = $adb->pquery(
-			'select id from vtiger_portalinfo inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_portalinfo.id
-				where vtiger_crmentity.deleted=0 and user_name=? and isactive=1',
+			'select id from vtiger_portalinfo inner join vtiger_crmobject on vtiger_crmobject.crmid=vtiger_portalinfo.id
+				where vtiger_crmobject.deleted=0 and user_name=? and isactive=1',
 			array($username)
 		);
 		if ($prtrs && $adb->num_rows($prtrs)==1) {

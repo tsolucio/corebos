@@ -13,7 +13,7 @@
 				<img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.VTLIB_LBL_MODULE_MANAGER}" title="{$MOD.VTLIB_LBL_MODULE_MANAGER}" border="0" height="48" width="48">
 			</td>
 			<td class="heading2" valign="bottom">
-				<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.VTLIB_LBL_MODULE_MANAGER}</b>
+				<b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.VTLIB_LBL_MODULE_MANAGER}</b>
 			</td>
 		</tr>
 		<tr>

@@ -42,7 +42,7 @@ $smarty->assign('coreBOS_app_name', GlobalVariable::getVariable('Application_UI_
 $companyDetails = retrieveCompanyDetails();
 $smarty->assign('COMPANY_DETAILS', $companyDetails);
 
-$smarty->assign('HELP_URL', GlobalVariable::getVariable('Application_Help_URL', 'http://corebos.org/documentation'));
+$smarty->assign('HELP_URL', GlobalVariable::getVariable('Application_Help_URL', 'https://corebos.org/documentation'));
 getBrowserVariables($smarty);
 $smarty->display('Maintenance.tpl');
 ?>

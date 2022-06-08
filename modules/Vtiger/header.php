@@ -24,13 +24,15 @@ $smarty->assign('evvtAdminMenu', $header_array);
 $smarty->assign('HEADERS', $header_array);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGEPATH', $image_path);
-$smarty->assign('USER', $userName);
+$smarty->assign('USER', trim(gtltTagsToHTML($userName)));
+$smarty->assign('CSRFNAME', $GLOBALS['csrf']['input-name']);
 
 $qc_modules = getQuickCreateModules();
 uasort($qc_modules, function ($a, $b) {
 	return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;
 });
 $smarty->assign('QCMODULE', $qc_modules);
+$smarty->assign('SHOWQUICKCREATE', (count($qc_modules) && GlobalVariable::getVariable('Application_Display_QuickCreate', 1)));
 $smarty->assign('APP', $app_strings);
 $smarty->assign('LBL_CHARSET', $default_charset);
 $cnt = count($qc_modules);
@@ -43,7 +45,6 @@ $smarty->assign('CURRENT_USER_MAIL', $current_user->email1);
 $smarty->assign('CURRENT_USER', $current_user->user_name);
 $smarty->assign('CURRENT_USER_ID', $current_user->id);
 $smarty->assign('CURRENT_USER_IMAGE', ($current_user->column_fields['imagenameimageinfo']!='' ? $current_user->column_fields['imagenameimageinfo']['path'] : ''));
-$smarty->assign('CATEGORY', getParentTab());
 $smarty->assign('CALC', get_calc($image_path));
 $smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 
@@ -106,11 +107,19 @@ $Application_Global_Search_Active = GlobalVariable::getVariable('Application_Glo
 $smarty->assign('Application_Global_Search_Active', $Application_Global_Search_Active);
 
 $smarty->assign('HELP_URL', GlobalVariable::getVariable('Application_Help_URL', 'https://corebos.org/documentation'));
+$smarty->assign('SET_CSS_PROPERTIES', GlobalVariable::getVariable('Application_CSS_Properties', 'include/LD/assets/styles/properties.php'));
 ob_start();
 cbEventHandler::do_action('corebos.header.premenu');
 $smarty->assign('COREBOS_HEADER_PREMENU', ob_get_clean());
 getBrowserVariables($smarty);
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
+
+if (coreBOS_Settings::getSetting('onesignal_isactive', '0') == '1') {
+	$smarty->assign('ONESIGNAL_APP_ID', coreBOS_Settings::getSetting('onesignal_app_id', ''));
+	$smarty->assign('ONESIGNAL_IS_ACTIVE', true);
+} else {
+	$smarty->assign('ONESIGNAL_IS_ACTIVE', false);
+}
 
 $smarty->display('Header.tpl');
 ?>

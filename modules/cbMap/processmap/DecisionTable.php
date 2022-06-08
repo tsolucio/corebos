@@ -71,9 +71,14 @@ require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 
 class DecisionTable extends processcbMap {
 
+	const DOESNOTPASS = '__DoesNotPass__';
+
 	public function processMap($ctx) {
 		global $adb, $current_user;
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return self::DOESNOTPASS;
+		}
 		$context = $ctx[0];
 		$holduser = $current_user;
 		$current_user = Users::getActiveAdminUser(); // in order to retrieve all entity data for evaluation
@@ -87,35 +92,41 @@ class DecisionTable extends processcbMap {
 				$entity->setData($context);
 			}
 		} else {
+			if (empty($context['module'])) {
+				$context['module'] = 'Accounts'; // should be set, but... so we just pick one
+			}
 			$entity = new cbexpsql_environmentstub($context['module'], 0);
 			$entity->setData($context);
 		}
 		$current_user = $holduser;
 		$outputs = array();
-		$hitpolicy = (String)$xml->hitPolicy;
+		$hitpolicy = (string)$xml->hitPolicy;
 		$mapvalues = array(
 			'context' => $context,
 			'hitpolicy' => $hitpolicy,
 		);
 		if ($hitpolicy == 'G') {
-			$aggregate = (String)$xml->aggregate;
+			$aggregate = (string)$xml->aggregate;
 		}
 		$rules = array();
-		foreach ($xml->rules->rule as $key => $value) {
-			$sequence = (String)$value->sequence;
-			$ruleOutput = (String)$value->output;
+		foreach ($xml->rules->rule as $value) {
+			$sequence = (string)$value->sequence;
+			$ruleOutput = (string)$value->output;
 			$rule = array(
 				'sequence' => $sequence,
 				'ruleOutput' => $ruleOutput,
 			);
 			$eval = '';
 			if (isset($value->expression)) {
-				$testexpression = (String)$value->expression;
+				$this->mapExecutionInfo['type'] = 'Expression';
+				$testexpression = (string)$value->expression;
 				$rule['type'] = 'expression';
 				$rule['valueraw'] = $testexpression;
 				if (is_array($context)) {
-					foreach ($context as $key => $value) {
-						$testexpression = str_ireplace('$['.$key.']', $value, $testexpression);
+					foreach ($context as $ctxkey => $ctxvalue) {
+						if (!is_array($ctxvalue) && !is_object($ctxvalue)) {
+							$testexpression = str_ireplace('$['.$ctxkey.']', $ctxvalue, $testexpression);
+						}
 					}
 				}
 				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
@@ -131,10 +142,11 @@ class DecisionTable extends processcbMap {
 					$crmobj->retrieve_entity_info($eval);
 					$outputs[$sequence] = $crmobj;
 				} else {
-					$outputs[$sequence] = '__DoesNotPass__';
+					$outputs[$sequence] = self::DOESNOTPASS;
 				}
 			} elseif (isset($value->mapid)) {
-				$mapid = (String)$value->mapid;
+				$this->mapExecutionInfo['type'] = 'Map';
+				$mapid = (string)$value->mapid;
 				$eval = coreBOS_Rule::evaluate($mapid, $context);
 				$rule['type'] = 'map';
 				$rule['valueraw'] = $mapid;
@@ -146,26 +158,28 @@ class DecisionTable extends processcbMap {
 					$crmobj->retrieve_entity_info($eval);
 					$outputs[$sequence] = $crmobj;
 				} else {
-					$outputs[$sequence] = '__DoesNotPass__';
+					$outputs[$sequence] = self::DOESNOTPASS;
 				}
 			} elseif (isset($value->decisionTable)) {
-				$module = (String)$value->decisionTable->module;
+				$this->mapExecutionInfo['type'] = 'DecisionTable';
+				$this->mapExecutionInfo['queries'] = array();
+				$module = (string)$value->decisionTable->module;
 				$queryGenerator = new QueryGenerator($module, $current_user);
 				if (isset($value->decisionTable->conditions)) {
 					foreach ($value->decisionTable->conditions->condition as $v) {
-						$cval = isset($context[(String)$v->input]) ? $context[(String)$v->input] : (String)$v->input;
-						$queryGenerator->addCondition((String)$v->field, $cval, (String)$v->operation, $queryGenerator::$AND);
+						$cval = isset($context[(string)$v->input]) ? $context[(string)$v->input] : (string)$v->input;
+						$queryGenerator->addCondition((string)$v->field, $cval, (string)$v->operation, $queryGenerator::$AND);
 					}
 				}
 				if (isset($value->decisionTable->searches)) {
 					foreach ($value->decisionTable->searches->search as $s) {
 						foreach ($s->condition as $v) {
-							if (isset($context[(String)$v->input]) && $context[(String)$v->input]!='__IGNORE__') {
+							if (isset($context[(string)$v->input]) && $context[(string)$v->input]!='__IGNORE__') {
 								if (empty($v->preprocess)) {
-									$conditionvalue = $context[(String)$v->input];
+									$conditionvalue = $context[(string)$v->input];
 								} else {
 									if (is_array($context)) {
-										$v->preprocess = (String)$v->preprocess;
+										$v->preprocess = (string)$v->preprocess;
 										foreach ($context as $ckey => $cval) {
 											if (is_array($cval)) {
 												continue;
@@ -173,34 +187,33 @@ class DecisionTable extends processcbMap {
 											$v->preprocess = str_ireplace('$['.$ckey.']', $cval, $v->preprocess);
 										}
 									}
-									$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer((String)$v->preprocess)));
+									$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer((string)$v->preprocess)));
 									$expression = $parser->expression();
 									$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 									$conditionvalue = $exprEvaluater->evaluate($entity);
 								}
-								$uitype = getUItypeByFieldName($module, (String)$v->field);
+								$uitype = getUItypeByFieldName($module, (string)$v->field);
 								$queryGenerator->startGroup($queryGenerator::$AND);
 								if ($uitype==10) {
-									if (!empty($conditionvalue)) {
-										if (strpos($conditionvalue, 'x') > 0) {
-											list($wsid, $crmid) = explode('x', $conditionvalue);
-										} else {
-											$crmid = $conditionvalue;
-										}
-										$relmod = getSalesEntityType($crmid);
-										$queryGenerator->addReferenceModuleFieldCondition($relmod, (String)$v->field, 'id', $crmid, (String)$v->operation);
+									if (strpos($conditionvalue, 'x') > 0) {
+										list($wsid, $crmid) = explode('x', $conditionvalue);
+									} else {
+										$crmid = $conditionvalue;
 									}
+										$relmod = getSalesEntityType($crmid);
+										$queryGenerator->addReferenceModuleFieldCondition($relmod, (string)$v->field, 'id', $crmid, (string)$v->operation);
+										$queryGenerator->addReferenceModuleFieldCondition($relmod, (string)$v->field, 'id', '', 'y', $queryGenerator::$OR);
 								} else {
-									$queryGenerator->addCondition((String)$v->field, $conditionvalue, (String)$v->operation);
+									$queryGenerator->addCondition((string)$v->field, $conditionvalue, (string)$v->operation);
+									$queryGenerator->addCondition((string)$v->field, '__IGNORE__', 'e', $queryGenerator::$OR);
 								}
-								$queryGenerator->addCondition((String)$v->field, '__IGNORE__', 'e', $queryGenerator::$OR);
 								$queryGenerator->endGroup();
 							}
 						}
 					}
 				}
-				$field = (String)$value->decisionTable->output;
-				$orderby = (String)$value->decisionTable->orderby;
+				$field = (string)$value->decisionTable->output;
+				$orderby = (string)$value->decisionTable->orderby;
 				if (strpos($field, ',')) {
 					$queryFields = explode(',', $field);
 				} else {
@@ -215,6 +228,7 @@ class DecisionTable extends processcbMap {
 					$query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($orderby);
 				}
 				$result = $adb->pquery($query, array());
+				$this->mapExecutionInfo['queries'][] = $query;
 				$rule['type'] = 'module';
 				$rule['valueraw'] = $module;
 				$rule['valueevaluate'] = $query;
@@ -243,7 +257,7 @@ class DecisionTable extends processcbMap {
 							$crmobj->retrieve_entity_info($eval);
 							$outputs[$seqidx] = $crmobj;
 						} else {
-							$outputs[$seqidx] = '__DoesNotPass__';
+							$outputs[$seqidx] = self::DOESNOTPASS;
 						}
 					}
 				}
@@ -258,8 +272,8 @@ class DecisionTable extends processcbMap {
 			$desiredoutput = null;
 			$unique = false;
 			$count = 0;
-			foreach ($outputs as $k => $v) {
-				if ($v != '__DoesNotPass__') {
+			foreach ($outputs as $v) {
+				if ($v != self::DOESNOTPASS) {
 					if (!$desiredoutput) {
 						$desiredoutput = $v;
 						$unique = true;
@@ -275,23 +289,23 @@ class DecisionTable extends processcbMap {
 				$output = $desiredoutput;
 			}
 		} elseif ($hitpolicy == 'F') {
-			foreach ($outputs as $k => $v) {
-				if ($v != '__DoesNotPass__') {
+			foreach ($outputs as $v) {
+				if ($v != self::DOESNOTPASS) {
 					$output = $v;
 					break;
 				}
 			}
 		} elseif ($hitpolicy == 'C') {
-			foreach ($outputs as $k => $v) {
-				if ($v != '__DoesNotPass__') {
+			foreach ($outputs as $v) {
+				if ($v != self::DOESNOTPASS) {
 					$output[] = $v;
 				}
 			}
 		} elseif ($hitpolicy == 'A') {
 			$desiredoutput = null;
 			$sameoutput = false;
-			foreach ($outputs as $k => $v) {
-				if ($v != '__DoesNotPass__') {
+			foreach ($outputs as $v) {
+				if ($v != self::DOESNOTPASS) {
 					if (!$desiredoutput) {
 						$desiredoutput = $v;
 						$sameoutput = true;
@@ -306,8 +320,8 @@ class DecisionTable extends processcbMap {
 			}
 		} elseif ($hitpolicy == 'R') {
 			ksort($outputs);
-			foreach ($outputs as $k => $v) {
-				if ($v != '__DoesNotPass__') {
+			foreach ($outputs as $v) {
+				if ($v != self::DOESNOTPASS) {
 					$output[] = $v;
 				}
 			}
@@ -315,7 +329,7 @@ class DecisionTable extends processcbMap {
 			if (isset($aggregate)) {
 				if ($aggregate == 'sum') {
 					$sum = 0;
-					foreach ($outputs as $k => $v) {
+					foreach ($outputs as $v) {
 						if (is_numeric($v)) {
 							$sum += $v;
 						}
@@ -323,7 +337,7 @@ class DecisionTable extends processcbMap {
 					$output = $sum;
 				} elseif ($aggregate == 'min') {
 					$min = null;
-					foreach ($outputs as $k => $v) {
+					foreach ($outputs as $v) {
 						if (is_numeric($v)) {
 							if (!$min) {
 								$min = $v;
@@ -336,7 +350,7 @@ class DecisionTable extends processcbMap {
 					$output = $min;
 				} elseif ($aggregate == 'max') {
 					$max = null;
-					foreach ($outputs as $k => $v) {
+					foreach ($outputs as $v) {
 						if (is_numeric($v)) {
 							if (!$max) {
 								$max = $v;
@@ -349,7 +363,7 @@ class DecisionTable extends processcbMap {
 					$output = $max;
 				} elseif ($aggregate == 'count') {
 					$count = 0;
-					foreach ($outputs as $k => $v) {
+					foreach ($outputs as $v) {
 						if (is_numeric($v)) {
 							$count++;
 						}
@@ -359,7 +373,7 @@ class DecisionTable extends processcbMap {
 			}
 		}
 		if (!$output) {
-			$output = '__DoesNotPass__';
+			$output = self::DOESNOTPASS;
 		}
 		cbEventHandler::do_action('corebos.audit.decision', array($current_user->id, $ctx, $mapvalues, $output, date('Y-m-d H:i:s')));
 		return $output;

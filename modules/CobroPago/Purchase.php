@@ -170,7 +170,7 @@ class Purchase {
 		$cobropago = $this->ws->doRetrieve($cobropagoId);
 
 		if (empty($cobropago) || $cobropago['paid'] || !$cobropago['credit']) {
-			throw new Exception('CPID_ERROR');
+			throw new InvalidArgumentException('CPID_ERROR');
 		}
 
 		$contactId = $cobropago['parent_id'];

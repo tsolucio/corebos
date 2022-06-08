@@ -33,12 +33,13 @@ class MailManager_Model_DraftEmail {
 		} else {
 			$where = $type ." LIKE '%". $q ."%'" ;
 		}
-		$where = " AND ".$where;
+		$where = ' AND '.$where;
 		return $this->getDrafts($page, $limit, $folder, $where);
 	}
 
 	public function constructAllClause($query) {
 		$fields = array('bccmail','ccmail','subject','saved_toid','description');
+		$clause = '';
 		for ($i=0; $i<count($fields); $i++) {
 			if ($i == count($fields)-1) {
 				$clause .=  $fields[$i]." LIKE '%".$query."%'";
@@ -123,10 +124,11 @@ class MailManager_Model_DraftEmail {
 		if (empty($crmid)) {
 			return false;
 		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 		$documentRes = $adb->pquery(
 			'SELECT *
 				FROM vtiger_senotesrel
-				INNER JOIN vtiger_crmentity ON vtiger_senotesrel.notesid = vtiger_crmentity.crmid AND vtiger_senotesrel.crmid = ?
+				INNER JOIN '.$crmEntityTable.' ON vtiger_senotesrel.notesid = vtiger_crmentity.crmid AND vtiger_senotesrel.crmid = ?
 				INNER JOIN vtiger_notes ON vtiger_notes.notesid = vtiger_senotesrel.notesid
 				INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid = vtiger_notes.notesid
 				INNER JOIN vtiger_attachments ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid
@@ -154,8 +156,6 @@ class MailManager_Model_DraftEmail {
 		if (!MailManager::checkModuleWriteAccessForCurrentUser('Emails')) {
 			return false;
 		}
-
-		$email = CRMEntity::getInstance('Emails');
 
 		$to_string = rtrim($request->get('to'), ',');
 		$cc_string = rtrim($request->get('cc'), ',');
@@ -230,8 +230,8 @@ class MailManager_Model_DraftEmail {
 
 		$emailId = $this->saveDraft($request);
 
-		if ($emailId != false) {
-			if ($uploadResponse && $uploadResponse['success'] == true) {
+		if ($emailId) {
+			if ($uploadResponse && $uploadResponse['success']) {
 				// Link document to base record
 				if (!empty($uploadResponse['docid'])) {
 					$this->saveEmailDocumentRel($emailId, $uploadResponse['docid']);
@@ -316,14 +316,7 @@ class MailManager_Model_DraftEmail {
 	}
 
 	public function getFormattedFileSize($filesize) {
-		if ($filesize < 1024) {
-			$filesize = sprintf('%0.2f', round($filesize, 2)).'b';
-		} elseif ($filesize > 1024 && $filesize < 1048576) {
-			$filesize = sprintf('%0.2f', round($filesize/1024, 2)).'kB';
-		} elseif ($filesize > 1048576) {
-			$filesize = sprintf('%0.2f', round($filesize/(1024*1024), 2)).'MB';
-		}
-		return $filesize;
+		return FileField::getFileSizeDisplayValue($filesize);
 	}
 }
 ?>

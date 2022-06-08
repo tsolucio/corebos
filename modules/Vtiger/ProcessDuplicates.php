@@ -24,7 +24,6 @@ $mode = vtlib_purify($_REQUEST['mergemode']);
 if ($mode == 'mergesave') {
 	$return_module = vtlib_purify($_REQUEST['return_module']);
 	$return_action = vtlib_purify($_REQUEST['return_action']);
-	$parenttab     = vtlib_purify($_REQUEST['parent']);
 	$merge_id      = vtlib_purify($_REQUEST['record']);
 	$recordids     = vtlib_purify($_REQUEST['pass_rec']);
 	// Here we check if user have the rights to see this data.
@@ -36,7 +35,7 @@ if ($mode == 'mergesave') {
 		exit;
 	}
 
-	$result = $adb->pquery('SELECT count(*) AS count FROM vtiger_crmentity WHERE crmid=? and deleted=0', array($merge_id));
+	$result = $adb->pquery('SELECT count(*) AS count FROM vtiger_crmobject WHERE crmid=? and deleted=0', array($merge_id));
 	$count = $adb->query_result($result, 0, 'count');
 
 	if ($count > 0) {
@@ -67,7 +66,6 @@ if ($mode == 'mergesave') {
 	echo '<script>window.opener.location.href=window.opener.location.href;window.self.close();</script>';
 } elseif ($mode == 'mergefields') {
 	$idstring   = vtlib_purify($_REQUEST['passurl']);
-	$parent_tab = getParentTab();
 
 	$exploded_id=explode(',', $idstring, -1);
 	$record_count = count($exploded_id);
@@ -125,7 +123,6 @@ if ($mode == 'mergesave') {
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('MODULENAME', $module);
-	$smarty->assign('PARENT_TAB', $parent_tab);
 	$smarty->assign('JS_ARRAY', $js_arr);
 	$smarty->assign('ID_ARRAY', $exploded_id);
 	$smarty->assign('IDSTRING', $idstring);

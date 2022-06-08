@@ -7,15 +7,6 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-function updateListPrice(unitprice, fieldname, oSelect) {
-	if (oSelect.checked == true) {
-		document.getElementById(fieldname).style.visibility = 'visible';
-		document.getElementById(fieldname).value = unitprice;
-	} else {
-		document.getElementById(fieldname).style.visibility = 'hidden';
-	}
-}
-
 function set_return(product_id, product_name) {
 	if (document.getElementById('from_link').value != '') {
 		window.opener.document.QcEditView.parent_name.value = product_name;
@@ -46,10 +37,16 @@ function set_return_inventory(product_id, product_name, unitprice, taxstr, curr_
 	window.opener.document.EditView.elements['hdnProductId'+curr_row].value = product_id;
 	window.opener.document.EditView.elements['listPrice'+curr_row].value = unitprice;
 	window.opener.document.EditView.elements['comment'+curr_row].value = desc;
-	if (dto!=0) {
+	if (dto==0) {
+		window.opener.document.EditView.elements['discount'+curr_row][0].checked = true;
+		window.opener.document.EditView.elements['discount'+curr_row][1].checked = false;
+		window.opener.document.EditView.elements['discount'+curr_row][2].checked = false;
+	} else {
+		window.opener.document.EditView.elements['discount'+curr_row][0].checked = false;
 		window.opener.document.EditView.elements['discount'+curr_row][1].checked = true;
-		window.opener.document.EditView.elements['discount_percentage'+curr_row].value = dto;
+		window.opener.document.EditView.elements['discount'+curr_row][2].checked = false;
 	}
+	window.opener.document.EditView.elements['discount_percentage'+curr_row].value = dto;
 	// Apply decimal round-off to value
 	if (!isNaN(parseFloat(unitprice))) {
 		unitprice = roundPriceValue(unitprice);
@@ -74,7 +71,7 @@ function set_return_inventory_po(product_id, product_name, unitprice, taxstr, cu
 	set_return_inventory(product_id, product_name, unitprice, taxstr, curr_row, desc);
 }
 
-function InventorySelectAllServices(mod, z, image_pth) {
+function InventorySelectAllServices(mod) {
 	if (document.selectall.selected_id != undefined) {
 		var x = document.selectall.selected_id.length;
 		var y=0;
@@ -111,7 +108,7 @@ function InventorySelectAllServices(mod, z, image_pth) {
 					var desc = prod_array['desc'];
 					var dto = prod_array['dto'];
 					if (y>0) {
-						var row_id = window.opener.fnAddServiceRow(mod, image_pth);
+						var row_id = window.opener.fnAddServiceRow(mod);
 					} else {
 						var row_id = prod_array['rowid'];
 					}
@@ -140,16 +137,7 @@ function set_return_product(product_id, product_name) {
 	}
 }
 function getImageListBody() {
-	if (browser_ie) {
-		var ImageListBody=getObj('ImageList');
-	} else if (browser_nn4 || browser_nn6) {
-		if (getObj('ImageList').childNodes.item(0).tagName=='TABLE') {
-			var ImageListBody=getObj('ImageList');
-		} else {
-			var ImageListBody=getObj('ImageList');
-		}
-	}
-	return ImageListBody;
+	return getObj('ImageList');
 }
 
 // Function to Round off the Price Value
@@ -170,7 +158,7 @@ function roundPriceValue(val) {
 	return val;
 }
 
-function fnAddServiceRow(module, image_path) {
+function fnAddServiceRow(module) {
 	rowCnt++;
 
 	var tableName = document.getElementById('proTab');
@@ -199,7 +187,7 @@ function fnAddServiceRow(module, image_path) {
 
 	//Delete link
 	colone.className = 'crmTableRow small';
-	colone.innerHTML='<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+count+',\''+image_path+'\')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+count+'" name="deleted'+count+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+count+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
+	colone.innerHTML='<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+count+')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+count+'" name="deleted'+count+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+count+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
 	/* Product Re-Ordering Feature Code Addition Starts */
 	if (iPrevCount != 1) {
 		oPrevRow.cells[0].innerHTML = '<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+iPrevCount+')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+iPrevCount+'" name="deleted'+iPrevCount+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+iPrevCount+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>&nbsp;&nbsp;<a href="javascript:moveUpDown(\'DOWN\',\''+module+'\','+iPrevCount+')" title="'+alert_arr.MoveDown+'"><img src="themes/images/down_layout.gif" border="0"></a>';
@@ -210,15 +198,57 @@ function fnAddServiceRow(module, image_path) {
 
 	//Product Name with Popup image to select product
 	coltwo.className = 'crmTableRow small';
-	coltwo.innerHTML= '<table border="0" cellpadding="1" cellspacing="0" width="100%"><tr><td class="small"><div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">'+
-					'<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">'+
-					'<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none"><input id="productName'+count+'" name="productName'+count+'" class="slds-input slds-combobox__input '+
-					'cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="'+inventoryi18n.typetosearch_prodser+'" value="" '+
-					'type="text" style="box-shadow: none;"></div></div></div>'+
-					'&nbsp;<img id="searchIcon'+count+'" title="'+alert_arr.Services+'" src="themes/images/services.gif" style="cursor: pointer;" onclick="servicePickList(this,\''+module+'\','+count+')" align="absmiddle">'+
-					'<input id="hdnProductId'+count+'" name="hdnProductId'+count+'" value="" type="hidden" /><input type="hidden" id="lineItemType'+count+'" name="lineItemType'+count+'" value="Services" />'+
-					'</td></tr><tr><td class="small"><input type="hidden" value="" id="subproduct_ids'+count+'" name="subproduct_ids'+count+'" /><span id="subprod_names'+count+'" name="subprod_names'+count+'" style="color:#C0C0C0;font-style:italic;"> </span>'+
-					'</td></tr><tr><td class="small" id="setComment'+count+'"><textarea id="comment'+count+'" name="comment'+count+'" class=small style="width:70%;height:40px"></textarea><img src="themes/images/clear_field.gif" onClick="getObj(\'comment'+count+'\').value=\'\'"; style="cursor:pointer;" /></td></tr></tbody></table>';
+	coltwo.innerHTML= `<table border="0" cellpadding="1" cellspacing="0" width="100%">
+					<tbody>
+						<tr>
+							<td class="small">
+								<div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">
+									<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+										<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+											<input id="productName${count}"
+													name="productName${count}"
+													class="slds-input slds-combobox__input cbds-inventoryline__input--name"
+													aria-autocomplete="list"
+													aria-controls="listbox-unique-id"
+													autocomplete="off"
+													role="textbox"
+													placeholder="${inventoryi18n.typetosearch_prodser}" value=""
+													type="text"
+													style="box-shadow: none;">
+												<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+													<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+													</svg>
+												</span>
+												<div class="slds-input__icon-group slds-input__icon-group_right">
+													<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small slds-input__spinner slds-hide">
+														<span class="slds-assistive-text">Loading</span>
+														<div class="slds-spinner__dot-a"></div>
+														<div class="slds-spinner__dot-b"></div>
+													</div>
+												</div>
+										</div>
+									</div>
+								</div>&nbsp;
+								<img id="searchIcon${count}" title="${alert_arr.Services}" src="themes/images/services.gif" style="cursor: pointer;" onclick="servicePickList(this,'${module}',${count})" align="absmiddle">
+								<input id="hdnProductId${count}" name="hdnProductId${count}" value="" type="hidden">
+								<input type="hidden" id="lineItemType${count}" name="lineItemType${count}" value="Services" />
+							</td>
+						</tr>
+						<tr>
+							<td class="small">
+								<input type="hidden" value="" id="subproduct_ids${count}" name="subproduct_ids${count}" />
+								<span id="subprod_names${count}" name="subprod_names${count}" style="color:#C0C0C0;font-style:italic;"></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="small" id="setComment${count}">
+								<textarea id="comment${count}" name="comment${count}" class=small style="${Inventory_Comment_Style}"></textarea>
+								<img src="themes/images/clear_field.gif" onClick="getObj('comment${count}').value=''"; style="cursor:pointer;" />
+							</td>
+						</tr>
+					</tbody>
+				</table>`;
 
 	//Additional information column
 	colthree.className = 'crmTableRow small';

@@ -76,24 +76,6 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document, $colspan = '', $rowspan = '') {
 		parent::__construct($node, $document);
 		return true;
-		$numbercolumnsspanned = $node->getAttributeNS(OpenDocument::NS_TABLE, 'number-columns-spanned');
-		if (empty($numbercolumnsspanned)) {
-			$numbercolumnsspanned=$colspan;
-		}
-		if (!empty($numbercolumnsspanned)) {
-			$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'number-columns-spanned', $numbercolumnsspanned);
-			$this->numbercolumnsspanned = $numbercolumnsspanned;
-		}
-		$numberrowsspanned = $node->getAttributeNS(OpenDocument::NS_TABLE, 'number-rows-spanned');
-		if (empty($numberrowsspanned)) {
-			$numberrowsspanned=$rowspan;
-		}
-		if (!empty($numberrowsspanned)) {
-			$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'number-rows-spanned', $numberrowsspanned);
-			$this->numberrowsspanned = $numberrowsspanned;
-		}
-
-		$this->allowedElements = array();
 	}
 
 	/**

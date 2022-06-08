@@ -19,7 +19,6 @@
 <thead>
 	<tr>
 		<th>{'Name'|@getTranslatedString}</th>
-		<th>{'LBL_STATUS'|@getTranslatedString}</th>
 		<th>{$GlobalVariableDefinitonsHeader.valuetype}</th>
 		<th>{$GlobalVariableDefinitonsHeader.values}</th>
 		<th>{$GlobalVariableDefinitonsHeader.definition}</th>
@@ -29,8 +28,13 @@
 <tbody>
 {foreach item=def key=var from=$GlobalVariableDefinitons}
 	<tr class="{cycle values=" ,alt"}">
-	<td><b><a name="{$var}"></a>{$var}</b></td>
-	<td>{$def.status}</td>
+	<td>
+		<strong>
+		<a name="{$var}" class='gvname' href="{if $Action eq 'EditView'}javascript:changeval('{$var}');{else}index.php?module=GlobalVariable&action=EditView&return_action=DetailView&gvname={$var}{/if}">
+		{$var}
+		</a>
+		</strong>
+	</td>
 	<td>{$def.valuetype}</td>
 	<td>{$def.values}</td>
 	<td>{$def.definition}</td>
@@ -40,8 +44,11 @@
 </tbody>
 </table>
 </div>
-{literal}
 <script type="text/javascript">
 jQuery('#gvdefstable').tablesorter();
+function changeval(val_) {
+	if ('{$Action}'=='EditView') {
+		document.getElementById('gvname').value = val_;
+	}
+}
 </script>
-{/literal}

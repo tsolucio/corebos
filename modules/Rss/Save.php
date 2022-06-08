@@ -17,7 +17,7 @@ if (isset($_REQUEST['rssurl'])) {
 
 $oRss = new vtigerRSS();
 if ($oRss->setRSSUrl($newRssUrl)) {
-	if ($oRss->saveRSSUrl($newRssUrl) == false) {
+	if (!$oRss->saveRSSUrl($newRssUrl)) {
 		echo $mod_strings['UNABLE_TO_SAVE'];
 	}
 } else {

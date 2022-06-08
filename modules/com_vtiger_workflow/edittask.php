@@ -15,6 +15,7 @@ require_once 'VTWorkflowApplication.inc';
 require_once 'VTTaskManager.inc';
 require_once 'VTWorkflowManager.inc';
 require_once 'VTWorkflowUtils.php';
+require_once 'modules/com_vtiger_workflow/expression_engine/VTExpressionsManager.inc';
 
 function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 	global $theme, $current_user;
@@ -61,6 +62,11 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 		$util->redirectTo($errorUrl, $mod['LBL_ERROR_NO_WORKFLOW']);
 		return;
 	}
+	if (!$workflow->checkNonAdminAccess()) {
+		$errorUrl = $module->errorPageUrl(getTranslatedString('LBL_PERMISSION'));
+		$util->redirectTo($errorUrl, getTranslatedString('LBL_PERMISSION'));
+		return;
+	}
 
 	$module->setReturnUrl('');
 	$returnUrl = $module->editWorkflowUrl($task->workflowId);
@@ -95,14 +101,34 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 
 	if (isset($task->trigger) && $task->trigger!=null) {
 		$trigger = $task->trigger;
-		$days = $trigger['days'];
-		if ($days < 0) {
-			$days*=-1;
-			$direction = 'before';
+		if (array_key_exists('days', $trigger)) {
+			$days = $trigger['days'];
+			if ($days < 0) {
+				$days*=-1;
+				$direction = 'before';
+			} else {
+				$direction = 'after';
+			}
+			$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction, 'field'=>$trigger['field']));
+		} elseif (array_key_exists('hours', $trigger)) {
+			$hours = $trigger['hours'];
+			if ($hours < 0) {
+				$hours*=-1;
+				$direction = 'before';
+			} else {
+				$direction = 'after';
+			}
+			$smarty->assign('trigger', array('hours'=>$hours, 'direction'=>$direction, 'field'=>$trigger['field']));
 		} else {
-			$direction = 'after';
+			$mins = $trigger['mins'];
+			if ($mins < 0) {
+				$mins*=-1;
+				$direction = 'before';
+			} else {
+				$direction = 'after';
+			}
+			$smarty->assign('trigger', array('mins'=>$mins, 'direction'=>$direction, 'field'=>$trigger['field']));
 		}
-		$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction, 'field'=>$trigger['field']));
 	}
 	$metaVariables = $task->getMetaVariables();
 
@@ -113,7 +139,7 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 	$smarty->assign('USER_DATE', $date->getDisplayDate());
 	$smarty->assign('MOD', array_merge(
 		return_module_language($current_language, 'Settings'),
-		return_module_language($current_language, 'Calendar'),
+		return_module_language($current_language, 'cbCalendar'),
 		return_module_language($current_language, $module->name)
 	));
 	$smarty->assign('APP', $app_strings);
@@ -124,6 +150,9 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 	$smarty->assign('MODULE_NAME', $module->label);
 	$smarty->assign('PAGE_NAME', $mod['LBL_EDIT_TASK']);
 	$smarty->assign('PAGE_TITLE', $mod['LBL_EDIT_TASK_TITLE']);
+	$emgr = new VTExpressionsManager($adb);
+	$smarty->assign('FNDEFS', json_encode($emgr->expressionFunctionDetails()));
+	$smarty->assign('FNCATS', $emgr->expressionFunctionCategories());
 
 	$users = array();
 	$users['user'] = get_user_array();

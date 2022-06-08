@@ -49,7 +49,7 @@ $entityId = '12x136';
 $task = $tm->retrieveTask($taskId);
 if (!empty($task)) {
 	list($moduleId, $crmId) = explode('x', $entityId);
-	$query = "select deleted from vtiger_crmentity where crmid={$crmId}";
+	$query = "select deleted from vtiger_crmobject where crmid={$crmId}";
 	$res = $adb->query($query);
 	if ($adb->num_rows($res) == 0 || $adb->query_result($res, 0, 0)) {
 		echo "Deleted Record\n";

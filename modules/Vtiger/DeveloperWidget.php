@@ -16,7 +16,7 @@ require_once 'Smarty_setup.php';
 
 class DeveloperBlock {
 	// Implement widget functionality
-	private $widgetName = 'NameYourWidget';
+	protected $widgetName = 'NameYourWidget';
 	private $myModule = '';
 	protected $context = false;
 

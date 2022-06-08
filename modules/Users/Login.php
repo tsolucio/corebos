@@ -11,7 +11,27 @@ header('X-Frame-Options: DENY');
 define('IN_LOGIN', true);
 
 include_once 'vtlib/Vtiger/Language.php';
+include_once 'include/integrations/saml/saml.php';
 
+$saml = new corebos_saml();
+if ($saml->isActive() && !empty($saml->samlclient) && empty($_REQUEST['nativelogin'])) {
+	if (!empty($_SESSION['samlUserdata'])) {
+		$saml->authenticate($_SESSION['samlUserdata']);
+	} else {
+		if (!empty($_REQUEST['mode'])) {
+			if ($_REQUEST['mode']=='acs') {
+				$saml->acs();
+			} elseif ($_REQUEST['mode']=='metadata') {
+				$saml->metadata();
+			} elseif ($_REQUEST['mode']=='slo') {
+				$saml->logout();
+			}
+		} else {
+			$saml->login();
+		}
+	}
+	die();
+}
 // Retrieve username and password from the session if possible.
 if (isset($_SESSION['login_user_name'])) {
 	if (isset($_REQUEST['default_user_name'])) {

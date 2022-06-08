@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class PriceBooks extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_pricebook';
 	public $table_index= 'pricebookid';
 	public $column_fields = array();
@@ -106,157 +104,41 @@ class PriceBooks extends CRMEntity {
 		$log->debug('< function updateListPrices');
 	}
 
-	/**	function used to get the products which are related to the pricebook
-	 *	@param int $id - pricebook id
-	 *	@return array - return an array which will be returned from the function getPriceBookRelatedProducts
-	 **/
-	public function get_pricebook_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $log, $singlepane_view,$currentModule,$current_user;
-		$log->debug('> get_pricebook_products '.$id);
-		$this_module = $currentModule;
-
-		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once "modules/$related_module/$related_module.php";
-
-		if ($singlepane_view == 'true') {
-			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
-		} else {
-			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
-		}
-		$button = '';
-
-		if ($actions) {
-			if (is_string($actions)) {
-				$actions = explode(',', strtoupper($actions));
-			}
-			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
-					"' class='crmbutton small edit' type='submit' name='button' onclick=\"this.form.action.value='AddProductsToPriceBook';".
-					"this.form.module.value='$related_module';this.form.return_module.value='$currentModule';this.form.return_action.value='PriceBookDetailView'\" ".
-					"value='". getTranslatedString('LBL_SELECT'). ' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
-			}
-		}
-
-		$query = 'SELECT vtiger_products.productid, vtiger_products.productname, vtiger_products.productcode, vtiger_products.commissionrate,
-					vtiger_products.qty_per_unit, vtiger_products.unit_price, vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_pricebookproductrel.listprice
-				FROM vtiger_products
-				INNER JOIN vtiger_pricebookproductrel ON vtiger_products.productid = vtiger_pricebookproductrel.productid
-				INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid = vtiger_products.productid
-				INNER JOIN vtiger_pricebook on vtiger_pricebook.pricebookid = vtiger_pricebookproductrel.pricebookid
-				LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid '
-				. getNonAdminAccessControlQuery($related_module, $current_user) .'
-				WHERE vtiger_pricebook.pricebookid = '.$id.' and vtiger_crmentity.deleted = 0';
-
-		$this->retrieve_entity_info($id, $this_module);
-		$return_value = getPriceBookRelatedProducts($query, $this, $returnset);
-
-		if ($return_value == null) {
-			$return_value = array();
-		}
-		$return_value['CUSTOM_BUTTON'] = $button;
-
-		$log->debug('< get_pricebook_products');
-		return $return_value;
-	}
-
-	/**	function used to get the services which are related to the pricebook
-	 *	@param int $id - pricebook id
-	 *	@return array - return an array which will be returned from the function getPriceBookRelatedServices
-	 **/
-	public function get_pricebook_services($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $log, $singlepane_view,$currentModule,$current_user;
-		$log->debug('> get_pricebook_services '.$id);
-		$this_module = $currentModule;
-
-		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once "modules/$related_module/$related_module.php";
-		$other = new $related_module();
-
-		if ($singlepane_view == 'true') {
-			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
-		} else {
-			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
-		}
-		$button = '';
-
-		if ($actions) {
-			if (is_string($actions)) {
-				$actions = explode(',', strtoupper($actions));
-			}
-			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
-					"' class='crmbutton small edit' type='submit' name='button' onclick=\"this.form.action.value='AddServicesToPriceBook';".
-					"this.form.module.value='$related_module';this.form.return_module.value='$currentModule';this.form.return_action.value='PriceBookDetailView'\" ".
-					"value='". getTranslatedString('LBL_SELECT'). ' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
-			}
-		}
-
-		$query = 'SELECT vtiger_service.serviceid, vtiger_service.servicename, vtiger_service.commissionrate, vtiger_service.qty_per_unit,
-				vtiger_service.unit_price, vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_pricebookproductrel.listprice
-			FROM vtiger_service
-			INNER JOIN vtiger_pricebookproductrel on vtiger_service.serviceid = vtiger_pricebookproductrel.productid
-			INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid = vtiger_service.serviceid
-			INNER JOIN vtiger_pricebook on vtiger_pricebook.pricebookid = vtiger_pricebookproductrel.pricebookid
-			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid '
-			. getNonAdminAccessControlQuery($related_module, $current_user) .'
-			WHERE vtiger_pricebook.pricebookid = '.$id.' and vtiger_crmentity.deleted = 0';
-
-		$this->retrieve_entity_info($id, $this_module);
-		$return_value = $other->getPriceBookRelatedServices($query, $this, $returnset);
-
-		if ($return_value == null) {
-			$return_value = array();
-		}
-		$return_value['CUSTOM_BUTTON'] = $button;
-
-		$log->debug('< get_pricebook_services');
-		return $return_value;
-	}
-
-	/**	function used to get whether the pricebook has related with a product or not
-	 *	@param int $id - product id
-	 *	@return true or false - if there are no pricebooks available or associated pricebooks for the product is equal to total number of pricebooks
-	 *		then return false, else return true
+	/**	return if product is related to ALL pricebooks or not
+	 *	@param integer product id
+	 *	@return boolean false if there are no pricebooks available or associated pricebooks for the product is equal to total number of pricebooks, else return true
 	 */
 	public function get_pricebook_noproduct($id) {
-		global $log;
-		$log->debug('> get_pricebook_noproduct '.$id);
-
-		$query = 'select vtiger_crmentity.crmid, vtiger_pricebook.*
+		global $adb;
+		$pbpdorelcrmentity = CRMEntity::getcrmEntityTableAlias('pricebookproductrel', true);
+		$query = 'select 1
 			from vtiger_pricebook
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
+			inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
 			where vtiger_crmentity.deleted=0';
-		$result = $this->db->pquery($query, array());
-		$no_count = $this->db->num_rows($result);
+		$result = $adb->pquery($query, array());
+		$no_count = $adb->num_rows($result);
 		if ($no_count !=0) {
 			$pb_query = 'select vtiger_crmentity.crmid, vtiger_pricebook.pricebookid,vtiger_pricebookproductrel.productid
 				from vtiger_pricebook
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
+				inner join '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid
 				inner join vtiger_pricebookproductrel on vtiger_pricebookproductrel.pricebookid=vtiger_pricebook.pricebookid
-				where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
-			$result_pb = $this->db->pquery($pb_query, array($id));
-			if ($no_count == $this->db->num_rows($result_pb)) {
-				$log->debug('< get_pricebook_noproduct F');
+				inner join '.$pbpdorelcrmentity.' as pbpdocrm on pbpdocrm.crmid=vtiger_pricebookproductrel.pricebookproductrelid
+				where vtiger_crmentity.deleted=0 and pbpdocrm.deleted=0 and vtiger_pricebookproductrel.productid=?';
+			$result_pb = $adb->pquery($pb_query, array($id));
+			if ($no_count == $adb->num_rows($result_pb)) {
 				return false;
-			} elseif ($this->db->num_rows($result_pb) == 0) {
-				$log->debug('< get_pricebook_noproduct T');
-				return true;
-			} elseif ($this->db->num_rows($result_pb) < $no_count) {
-				$log->debug('< get_pricebook_noproduct T');
+			} elseif ($adb->num_rows($result_pb) == 0 || $adb->num_rows($result_pb) < $no_count) {
 				return true;
 			}
 		} else {
-			$log->debug('< get_pricebook_noproduct F');
 			return false;
 		}
 	}
 
-	/*
+	/**
 	 * Function to get the primary query part of a report
-	 * @param - $module Primary module name
-	 * returns the query string formed on fetching the related data for report for primary module
+	 * @param string Primary module name
+	 * @return string query string formed on fetching the related data for report for primary module
 	 */
 	public function generateReportsQuery($module, $queryplanner) {
 		$moduletable = $this->table_name;
@@ -268,9 +150,9 @@ class PriceBooks extends CRMEntity {
 		if (isset($modulecftable) && $queryplanner->requireTable($modulecftable)) {
 			$cfquery = "inner join $modulecftable as $modulecftable on $modulecftable.$modulecfindex=$moduletable.$moduleindex";
 		}
-
+		$crmtablealias = CRMEntity::getcrmEntityTableAlias($module);
 		$query = "from $moduletable $cfquery
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex";
+			inner join $crmtablealias on vtiger_crmentity.crmid=$moduletable.$moduleindex";
 		if ($queryplanner->requireTable("vtiger_currency_info$module")) {
 			$query .= "  left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = $moduletable.currency_id";
 		}
@@ -290,19 +172,6 @@ class PriceBooks extends CRMEntity {
 			$query .= " left join vtiger_users as vtiger_CreatedBy".$module." on vtiger_CreatedBy".$module.".id = vtiger_crmentity.smcreatorid";
 		}
 		return $query;
-	}
-
-	/*
-	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
-	 */
-	public function setRelationTables($secmodule) {
-		$rel_tables = array (
-			'Products' => array('vtiger_pricebookproductrel' => array('pricebookid', 'productid'), 'vtiger_pricebook' => 'pricebookid'),
-			'Services' => array('vtiger_pricebookproductrel' => array('pricebookid', 'productid'), 'vtiger_pricebook' => 'pricebookid'),
-		);
-		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 }
 ?>

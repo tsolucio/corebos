@@ -10,9 +10,16 @@
 /**
  * Generic uitype popup selection handler
  */
-function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname) {
+function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname, currentID = 0) {
 	var ret = false;
 	var wodform = false;
+	if (formname == 'ListView') {
+		var domnode_id = window.opener.document.getElementById(`txtbox_${target_fieldname}_${currentID}`);
+		var domnode_display = window.opener.document.getElementById(`txtbox_${target_fieldname}_${currentID}_display`);
+		domnode_id.value = recordid;
+		domnode_display.innerHTML = value;
+		return true;
+	}
 	if (window.opener.document.forms[formname]) {
 		wodform = window.opener.document.forms[formname];
 		ret = true;
@@ -190,7 +197,7 @@ var vtlib_listview = {
 					break;
 				}
 			}
-			if (cellhandler == false) {
+			if (!cellhandler) {
 				return;
 			}
 			event_params = {
@@ -218,7 +225,7 @@ var vtlib_listview = {
 						break;
 					}
 				}
-				if (cellhandler == false) {
+				if (!cellhandler) {
 					return;
 				}
 				var event_params = {
@@ -268,15 +275,16 @@ function vtlib_loadDetailViewWidget(urldata, target, indicator) {
 			}
 		}
 	});
-	return false; // To stop event propogation
+	return false; // To stop event propagation
 }
 
 function vtlib_executeJavascriptInElement(element) {
 	// Evaluate all the script tags in the element.
 	var scriptTags = element.getElementsByTagName('script');
 	for (var i = 0; i< scriptTags.length; i++) {
-		var scriptTag = scriptTags[i];
-		eval(scriptTag.innerHTML);
+		if (scriptTags[i].innerHTML != '') {
+			eval(scriptTags[i].innerHTML);
+		}
 	}
 }
 
@@ -286,27 +294,6 @@ function vtlib_executeJavascriptInElement(element) {
  */
 function vtlib_vtiger_imageurl(theme) {
 	return 'themes/'+theme+'/images';
-}
-
-/*
- * getElementsByClassName fix for I.E 8
- */
-function vtlib_getElementsByClassName(obj, className, tagName) {
-	//Use getElementsByClassName if it is supported
-	if ( typeof(obj.getElementsByClassName) != 'undefined' ) {
-		return obj.getElementsByClassName(className);
-	}
-
-	// Otherwise search for all tags of type tagname with class "className"
-	var returnList = new Array();
-	var nodes = obj.getElementsByTagName(tagName);
-	var max = nodes.length;
-	for (var i = 0; i < max; i++) {
-		if ( nodes[i].className == className ) {
-			returnList[returnList.length] = nodes[i];
-		}
-	}
-	return returnList;
 }
 
 function convertArrayOfJsonObjectsToString(arrayofjson) {
@@ -320,18 +307,9 @@ function convertArrayOfJsonObjectsToString(arrayofjson) {
 }
 
 function ExecuteFunctions(functiontocall, params) {
-	// params += `&${csrfMagicName}=${csrfMagicToken}`;
-	// return fetch(
-	// 	'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall='+functiontocall,
-	// 	{
-	// 		method: 'post',
-	// 		headers: {
-	// 			'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-	// 		},
-	// 		credentials: "same-origin",
-	// 		body: params
-	// 	}
-	// ).then(response => response.text());
+	if (typeof coreBOS_runningUnitTests != 'undefined') {
+		return Promise.resolve(true);
+	}
 	var baseurl = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions';
 
 	// Return a new promise avoiding jquery and prototype
@@ -374,6 +352,6 @@ function vtlib_toggleModule(module, action, type) {
 	}).done(function (response) {
 		VtigerJS_DialogBox.unblock();
 		// Reload the page to apply the effect of module setting
-		window.location.href = 'index.php?module=Settings&action=ModuleManager&parenttab=Settings';
+		window.location.href = 'index.php?module=Settings&action=ModuleManager';
 	});
 }

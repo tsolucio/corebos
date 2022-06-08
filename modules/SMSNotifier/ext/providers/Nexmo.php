@@ -13,38 +13,33 @@ include_once 'vtlib/Vtiger/Net/Client.php';
 
 class Nexmo implements ISMSProvider {
 
-	private $_username;
-	private $_password;
-	private $_parameters = array();
+	private $parameters = array();
 	public $helpURL = 'https://www.nexmo.com/';
 	public $helpLink = 'nexmo';
 
 	const SERVICE_URI = 'https://rest.nexmo.com';
 	private static $REQUIRED_PARAMETERS = array('api_key', 'api_secret','from');
 
-	public function __construct() {
-	}
-
 	/**
 	 * Function to get provider name
-	 * @return <String> provider name
+	 * @return string provider name
 	 */
 	public function getName() {
 		return $this->helpLink;
 	}
 
 	public function setAuthParameters($username, $password) {
-		$this->_username = $username;
-		$this->_password = $password;
+		$this->api_key = $username;
+		$this->api_secret = $password;
 	}
 
 	public function setParameter($key, $value) {
-		$this->_parameters[$key] = $value;
+		$this->parameters[$key] = $value;
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if (isset($this->_parameters[$key])) {
-			return $this->_parameters[$key];
+		if (isset($this->parameters[$key])) {
+			return $this->parameters[$key];
 		}
 		return $defvalue;
 	}
@@ -61,6 +56,7 @@ class Nexmo implements ISMSProvider {
 				case self::SERVICE_SEND:
 					return  self::SERVICE_URI . '/sms/json';
 				case self::SERVICE_QUERY:
+				default:
 					return self::SERVICE_URI . '/search/message';
 			}
 		}
@@ -68,7 +64,6 @@ class Nexmo implements ISMSProvider {
 	}
 
 	protected function prepareParameters() {
-		//$params = array('user' => $this->_username, 'pwd' => $this->_password);
 		$params = array();
 		foreach (self::$REQUIRED_PARAMETERS as $key) {
 			$params[$key] = $this->getParameter($key);
@@ -96,7 +91,6 @@ class Nexmo implements ISMSProvider {
 
 		foreach ($response_arr as $message_response) {
 			$message_content = get_object_vars($message_response['messages'][0]);
-			//if(empty($message_response)) continue;
 			$result = array( 'error' => false, 'statusmessage' => '' );
 			if (isset($message_content['error-text'])) {
 				$result['error'] = true;

@@ -22,7 +22,7 @@ if (!isset($_REQUEST['step']) && !isset($_REQUEST['mode'])) {
 	global $current_user, $VTIGER_BULK_SAVE_MODE;
 
 	$previousBulkSaveMode = isset($VTIGER_BULK_SAVE_MODE) ? $VTIGER_BULK_SAVE_MODE : false;
-	$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $_REQUEST['module'])=='no'); //true;
+	$VTIGER_BULK_SAVE_MODE = (GlobalVariable::getVariable('Import_Launch_EventsAndWorkflows', 'no', $_REQUEST['module'])=='no');
 	$requestObject = new Import_API_Request($_REQUEST);
 	Import_Index_Controller::process($requestObject, $current_user);
 	$VTIGER_BULK_SAVE_MODE = $previousBulkSaveMode;

@@ -38,7 +38,7 @@ $p2->style->copy($p1->style);
 //insert space into paragraph
 $p1->createTextElement(' ');
 //create a link inside a paragraph
-$a1 = $p1->createHyperlink('', 'http://ya.ru', 'simple', '_self', 'link');
+$a1 = $p1->createHyperlink('', 'https://ya.ru', 'simple', '_self', 'link');
 //insert text in link
 $span = $a1->createSpan('Ya.ru');
 //apply color to text
@@ -46,7 +46,7 @@ $span->style->color = '#000099';
 //insert space to heading
 $h->createTextElement(' ');
 //create link in heading
-$a2 = $h->createHyperlink('Ya.ru', 'http://ya.ru');
+$a2 = $h->createHyperlink('Ya.ru', 'https://ya.ru');
 //apply underline color to link
 $a2->style->underlineColor = '#990000';
 //save as test.odt

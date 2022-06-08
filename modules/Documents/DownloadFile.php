@@ -39,7 +39,7 @@ if ($result && $adb->num_rows($result) == 1) {
 	if ($fileContent != '') {
 		$log->debug('About to update download count');
 		$rs = $adb->pquery('select filedownloadcount from vtiger_notes where notesid= ?', array($fileid));
-		$download_count = $adb->query_result($rs, 0, 'filedownloadcount') + 1;
+		$download_count = (int)$adb->query_result($rs, 0, 'filedownloadcount') + 1;
 		$res=$adb->pquery('update vtiger_notes set filedownloadcount= ? where notesid= ?', array($download_count, $fileid));
 	}
 

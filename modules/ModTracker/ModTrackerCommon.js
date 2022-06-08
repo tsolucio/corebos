@@ -44,7 +44,7 @@ var ModTrackerCommon = {
 		var direction = atpoint > ModTrackerCommon.atpoint ? 'back' : 'forwards';
 		ModTrackerCommon.atpoint = atpoint;
 		var url = 'index.php?module=ModTracker&action=ModTrackerAjax&file=ShowDiff&mode=history&id=' + encodeURIComponent(record) + '&atpoint=' + encodeURIComponent(atpoint) + '&highlight=' + encodeURIComponent(highlight);
-		if (complete == true) {
+		if (complete) {
 			url = 'index.php?module=ModTracker&action=ModTrackerAjax&file=ShowDiff&mode=complete&record=' + encodeURIComponent(record);
 
 			const modalTitle = modtrackerarr['History'];
@@ -175,7 +175,7 @@ var ModTrackerCommon = {
 								},
 								{
 									name: 'oldval',
-									header: modtrackerarr['Previous value'],
+									header: modtrackerarr['Earlier value'],
 									whiteSpace: 'normal'
 								},
 								{

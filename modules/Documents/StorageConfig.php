@@ -1,5 +1,3 @@
-<div style="margin:2em;">
-<script type="text/javascript" src="include/chart.js/Chart.bundle.js"></script>
 <?php
 /*+***********************************************************************************
  * Copyright 2012 JPL TSolucio, S.L.  --  This file is a part of coreBOS.
@@ -26,22 +24,22 @@ $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('CMOD', $mod_strings);
 $smarty->assign('MODULE_LBL', $currentModule);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 // Operation to be restricted for non-admin users.
 if (!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
 } else {
 	$smarty->assign('THEME', $theme);
-	$smarty->display('SetMenu.tpl');
+	$smarty->assign('coreBOSOnDemandActive', $coreBOSOnDemandActive);
+	$smarty->assign('LICENSEFILE', "modules/Documents/language/$current_language.showLicense.html");
 	$sistoragesize = coreBOS_Settings::getSetting('cbod_storagesize', 0);
 	$sistoragesizelimit = coreBOS_Settings::getSetting('cbod_storagesizelimit', $cbodStorageSizeLimit);
-
 	$newsize = isset($_REQUEST['storagenewsize']) ? vtlib_purify($_REQUEST['storagenewsize']) : $sistoragesizelimit;
 	if (empty($newsize)) {
 		$newsize = $sistoragesizelimit;
 	}
-
 	$mode = isset($_REQUEST['mode']) ? trim(vtlib_purify($_REQUEST['mode'])) : '';
-
 	if (!empty($mode) && $mode == trim($app_strings['LBL_SAVE_BUTTON_LABEL'])) {
 		if ($newsize >= $sistoragesizelimit) {
 			coreBOS_Settings::setSetting('cbod_storagesizelimit', $newsize);
@@ -52,72 +50,8 @@ if (!is_admin($current_user)) {
 				getTranslatedString('StorageMustIncrement', $currentModule).'</div></div>';
 		}
 	}
-	?>
-<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
-<tr>
-	<td width=50 rowspan=2 valign=top>
-	<img src="modules/Documents/images/HardDrive4848.png" alt="<?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?>" width="48" height="48" border=0 title="<?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?>">
-	</td>
-	<td class=heading2 valign=bottom>
-	<b><a href="index.php?module=Settings&action=index&parenttab=Settings"><?php echo getTranslatedString('LBL_SETTINGS');?></a> > <?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?> </b>
-	</td>
-</tr>
-<tr>
-	<td valign=top class="small"><?php echo getTranslatedString('STORAGESIZE_CONFIGURATION_DESCRIPTION');?></td>
-</tr>
-</table>
-<form name="myform" action="index.php" method="GET">
-<input type="hidden" name="module" value="Documents">
-<input type="hidden" name="action" value="StorageConfig">
-<input type="hidden" name="parenttab" value="Settings">
-<input type="hidden" name="formodule" value="Documents">
-<input type="hidden" name="mode" value="Save">
-<table>
-	<tr>
-		<td>
-		<canvas id="chart-area" width="570" height="285" style="display: block; width: 570px; height: 285px;"></canvas>
-		<b><?php echo getTranslatedString('Total', 'Documents').':</b>&nbsp;&nbsp;'.$sistoragesizelimit;?> Gb<br>
-		<b><?php echo getTranslatedString('Occupied', 'Documents').':</b>&nbsp;&nbsp;'.$sistoragesize;?> Gb<br>
-		<b><?php echo getTranslatedString('Free', 'Documents').':</b>&nbsp;&nbsp;'.($sistoragesizelimit-$sistoragesize);?> Gb<br>
-		</td>
-	<?php if (!empty($coreBOSOnDemandActive)) {?>
-		<td valign="bottom">
-		<?php echo getTranslatedString('NewSize', 'Documents');?>: <input type="text" name='storagenewsize' id='storagenewsize' style="width:30px;" maxlength=2 value="<?php echo $sistoragesizelimit; ?>"> <b>Gb</b><br>
-		<p width=90% align=center><input type="checkbox" id="accept_charge"><span style="font-size: 12px;font-weight: bold;"><?php echo getTranslatedString('accept_charge', 'Documents'); ?></span><br/><input title="<?php echo $app_strings['LBL_SAVE_BUTTON_TITLE']; ?>" accessKey="<?php echo $app_strings['LBL_SAVE_BUTTON_KEY']; ?>" class="crmbutton small save" type="submit" name="button" value="  <?php echo trim($app_strings['LBL_SAVE_BUTTON_LABEL']); ?>  " style="width:70px;" align=center onclick="return jQuery('#accept_charge').is(':checked');"></p>
-		<?php include "modules/Documents/language/{$current_language}.showLicense.html";?><br/><br/><br/>
-		</td>
-	<?php } ?>
-	</tr>
-</table>
-</form>
-<script type="text/javascript">
-	var config = {
-		type: 'pie',
-		data: {
-			datasets: [{
-				data: [
-					<?php echo $sistoragesize;?>,
-					<?php echo $sistoragesizelimit-$sistoragesize;?>
-				],
-				backgroundColor: [
-					'#A52A2A',
-					'#228B22'
-				],
-				label: '<?php echo getTranslatedString('Total', 'Documents'); ?>'
-			}],
-			labels: [
-				"<?php echo getTranslatedString('Occupied', 'Documents'); ?>",
-				"<?php echo getTranslatedString('Free', 'Documents'); ?>"
-			]
-		},
-		options: {
-			responsive: true
-		}
-	};
-	var ctx = document.getElementById("chart-area").getContext("2d");
-	var storagegrph = new Chart(ctx, config);
-</script>
-	<?php
+	$smarty->assign('SISTORAGESIZE', $sistoragesize);
+	$smarty->assign('SISTORAGESIZELIMIT', $sistoragesizelimit);
+	$smarty->display('modules/Documents/StorageConfig.tpl');
 }
 ?>
-</div>

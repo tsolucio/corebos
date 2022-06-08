@@ -69,7 +69,7 @@ class cbupdaterWorker {
 	public $failure_query_count=0;
 	public $failure_query_array=array();
 
-	public function __construct($cbid = 0) {
+	public function __construct($cbid = 0, $dieonerror = true) {
 		global $adb;
 		echo '<article class="slds-card slds-m-left_x-large slds-p-left_small slds-m-right_x-large slds-p-right_small slds-p-bottom_small">';
 		if ($cbid>0) {
@@ -94,7 +94,9 @@ class cbupdaterWorker {
 			$this->execdate = $cbu['execdate'];
 			$this->updError = false;
 		} else {  // it doesn't exist, we fail because it MUST exist
-			$this->sendError();
+			if ($dieonerror) {
+				$this->sendError();
+			}
 		}
 	}
 
@@ -384,7 +386,7 @@ class cbupdaterWorker {
 							$newfield->typeofdata = $fieldinfo['typeofdata'];
 							$newfield->uitype = $fieldinfo['uitype'];
 							$newfield->displaytype = (empty($fieldinfo['displaytype']) ? '1' : $fieldinfo['displaytype']);
-							$newfield->masseditable = (empty($fieldinfo['massedit']) ? '0' : $fieldinfo['massedit']);
+							$newfield->masseditable = (empty($fieldinfo['massedit']) ? '1' : $fieldinfo['massedit']);
 							$block->addField($newfield);
 							if ($fieldinfo['uitype']=='10' && !empty($fieldinfo['mods'])) {
 								$newfield->setRelatedModules($fieldinfo['mods']);
@@ -519,13 +521,11 @@ class cbupdaterWorker {
 						$seq = 1;
 						foreach ($fields as $fname) {
 							$field = Vtiger_Field::getInstance($fname, $moduleInstance);
-							if ($field) {
-								if ($field->block->id == $block->id) {
-									$this->ExecuteQuery('UPDATE vtiger_field SET sequence = ? WHERE fieldid=?', array($seq, $field->id));
-									$seq++;
-									if (isset($currentSequence[$field->name])) {
-										unset($currentSequence[$field->name]);
-									}
+							if ($field && $field->block->id == $block->id) {
+								$this->ExecuteQuery('UPDATE vtiger_field SET sequence = ? WHERE fieldid=?', array($seq, $field->id));
+								$seq++;
+								if (isset($currentSequence[$field->name])) {
+									unset($currentSequence[$field->name]);
 								}
 							}
 						}

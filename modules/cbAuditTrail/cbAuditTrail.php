@@ -11,11 +11,19 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class cbAuditTrail extends CRMEntity {
+	public $table_name = '';
+	public $table_index= '';
+	public $column_fields = array();
+	public $tab_name = array();
+
+	/** Indicator if this is a custom module or standard module */
+	public $IsCustomModule = true;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-asset_audit', 'class' => 'slds-icon', 'icon'=>'asset_audit');
 
 	/**
 	 * Invoked when special actions are performed on the module.
-	 * @param String Module name
-	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 * @param string Module name
+	 * @param string Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {

@@ -158,7 +158,7 @@ $mod_strings = array(
 'LBL_INVALID_IMAGE'=>'Archivo inválido o sin datos',
 'LBL_EMAIL'=>'Email',
 'Product'=>'Producto',
-'LBL_EDITLISTPRICE'=>'Editar Tarifas',
+'LBL_EDITLISTPRICE'=>'Editar Tarifa',
 
 //Added for existing picklist entries
 

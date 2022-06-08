@@ -82,6 +82,7 @@ class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller {
 								$searchqueryresult[$res_index]['id'],
 								decode_html(getTranslatedString($modulename).' :: '.decode_html($searchqueryresult[$i]['lastname']).', '.decode_html($searchqueryresult[$res_index]['firstname']))
 							);
+							$res_index++;
 						}
 						break;
 					case 'Users':
@@ -94,6 +95,7 @@ class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller {
 								$searchqueryresult[$res_index]['id'],
 								decode_html(getTranslatedString($modulename).' :: '.decode_html($searchqueryresult[$i]['last_name']).', '.decode_html($searchqueryresult[$res_index]['first_name']))
 							);
+							$res_index++;
 						}
 						break;
 					case 'HelpDesk':
@@ -138,6 +140,7 @@ class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller {
 								$searchqueryresult[$res_index]['id'],
 								decode_html(getTranslatedString($modulename).' :: '.decode_html($searchqueryresult[$i]['reference']).', '.decode_html($searchqueryresult[$res_index]['cyp_no']))
 							);
+							$res_index++;
 						}
 						break;
 					default:

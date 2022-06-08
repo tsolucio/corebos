@@ -51,6 +51,9 @@
 		return isDialog;
 	}
 	function updateOnlineStatus(event) {
+		if (event.srcElement.origin !== window.location.origin) {
+			return;
+		}
 		var condition = navigator.onLine ? 'online' : 'offline';
 		if (condition == 'offline') {
 			jQuery.blockUI({
@@ -115,6 +118,7 @@
 						}
 					}).done(function (msg) {
 						$('option:not(:selected)', selectmenu).remove();
+						selectmenu.selectmenu('refresh');
 						$.each(msg, function () {
 							var key = this[0];
 							var value = this[1];
@@ -193,7 +197,7 @@
 			if ( !pageIsSelectmenuDialog(data.prevPage) ) {
 				return;
 			}
-			listview = data.prevPage.jqmData('listview'),
+			listview = data.prevPage.jqmData('listview');
 			form = listview.jqmData('filter-form');
 			// Put the form back in the popup. It goes ahead of the listview.
 			listview.before(form);
@@ -207,7 +211,7 @@ var crmtogo_Index_Js = {
 		var tmp_date = new Date();
 		var module = $('#modulename').val();
 		var view = $('#view').val();
-		if (module != 'Calendar' && module != 'cbCalendar') {
+		if (module != 'cbCalendar') {
 			$('#searchInputField').css('display', 'block');
 			$('#inputer').css('display', 'block');
 			$('#viewname-button').css('display', 'block');
@@ -413,7 +417,7 @@ var crmtogo_Index_Js = {
 			if (mandatoryvalid) {
 				if ($('#module').val()=='cbCalendar') {
 					var datetimevaild = crmtogo_Index_Js.calendarvalidation();
-					if (datetimevaild == true) {
+					if (datetimevaild) {
 						$('#EditView').submit();
 						return true;
 					} else {

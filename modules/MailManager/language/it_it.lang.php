@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 $mod_strings = array (
-	'MailManager' => 'Mail Manager',
+	'MailManager' => 'Gestore Mail',
 
 	// Translations for JS (please use the prefix JSLBL in key)
 	'JSLBL_Loading_Please_Wait'  => 'Attendere il caricamento',
@@ -28,7 +28,7 @@ $mod_strings = array (
 	'JSLBL_Replied'              => 'Replica',
 	'JSLBL_Failed_To_Send_Mail'  => 'Invio mail non riuscito',
 	'JSLBL_Recepient_Cannot_Be_Empty' => 'Destinatario non può essere vuoto',
-	'JSLBL_SendWith_EmptySubject'     => 'Inviare con Oggetto vuoto?',
+	'JSLBL_SendWith_EmptySubject'     => 'Inviare con soggetto vuoto?',
 	'JSLBL_Removing'                  => 'Rimozione',
 	'JSLBL_Choose_Server_Type'        => 'Scegli il tipo di server',
 	'JSLBL_Other'                     => 'Altro',
@@ -48,7 +48,7 @@ $mod_strings = array (
 	'JSLBL_UPLOAD_FILE'=>'Carica',
 	'JSLBL_UPLOAD_DELETE'=>'[x]',
 	'JSLBL_UPLOAD_FAILED'=>'Non riuscito',
-	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED'=>'Limite di file upload superato!!',
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED'=>'Limite caricamento file superato!!',
 	'JSLBL_MAIL_SENT'=>'Mail Inviata',
 	'JSLBL_EMAIL_FORMAT_INCORRECT'=>'Si prega di fornire un indirizzo di posta elettronica corretto',
 	'JSLBL_SaveWith_EmptySubject'=>'Salvare con Oggetto vuoto?',
@@ -75,6 +75,8 @@ $mod_strings = array (
 	'JSLBL_NO_EMAILS_SELECTED' => 'Nessuna email selezionata.',
 	'JSLBL_ENTER_SOME_VALUE' => 'Inserisci testo da ricercare',
 	'JSLBL_DRAFT_MAIL_SAVED'=>'La mail &egrave; stata salvata sotto bozze',
+	'JSLBL_ON'=>'Su',
+	'JSLBL_WROTE'=>'Scrisse',
 
 		// General translations
 	'LBL_Folders'         => 'Cartelle',
@@ -84,6 +86,7 @@ $mod_strings = array (
 	'LBL_Go_Back'         => 'Indietro',
 	'LBL_Reply_All'       => 'Rispondi a tutti',
 	'LBL_Reply'           => 'Rispondi',
+	'LBL_REPLYTO'         => 'Rispondi a',
 	'LBL_Mark_As_Unread'  => 'Segna come non letto',
 	'LBL_Previous'        => 'precedente',
 	'LBL_Next'            => 'prossimo',
@@ -119,7 +122,7 @@ $mod_strings = array (
 	'LBL_Certificate_Validations' => 'Validazioni Certificato e-mail',
 	'LBL_Validate_Cert'           => 'Valida certificato',
 	'LBL_Do_Not_Validate_Cert'    => 'Non validare certificato',
-	'LBL_SELECT_ACCOUNT_TYPE'     => 'Seleziona tipo account',
+	'LBL_SELECT_ACCOUNT_TYPE'     => 'Seleziona tipo Account',
 
 	'LBL_FROM'        => 'Da',
 	'LBL_TO'          => 'A',
@@ -145,7 +148,7 @@ $mod_strings = array (
 	'LBL_WRITE_ACCESS_FOR'	=>'Permessi di Scrittura per',
 	'LBL_READ_ACCESS_FOR'	=>'Permessi di Lettura per',
 	'LBL_MODULE_DENIED' => 'Modulo negato!',
-	'LBL_REFRESH_TIME'=>'Refresh Time',
+	'LBL_REFRESH_TIME'=>'Rinfresca Tempo',
 	'LBL_NONE' => 'Nessuno',
 	'LBL_5_MIN' => '5 Minuti',
 	'LBL_10_MIN' => '10 Minuti',
@@ -153,14 +156,14 @@ $mod_strings = array (
 	'LBL_MAILMANAGER_ADD_Contacts' => 'Aggiungi Contatto',
 	'LBL_MAILMANAGER_ADD_Accounts' => 'Aggiungi Account',
 	'LBL_MAILMANAGER_ADD_Leads' => 'Aggiungi Lead',
-	'LBL_MAILMANAGER_ADD_Calendar' => 'Aggiungi ToDo',
-	'LBL_MAILMANAGER_ADD_cbCalendar' => 'Aggiungi ToDo',
-	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Aggiungi Ticket',
+	'LBL_MAILMANAGER_ADD_Calendar' => 'Aggiungi Da fare',
+	'LBL_MAILMANAGER_ADD_cbCalendar' => 'Aggiungi Da fare',
+	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Aggiungi Biglietto',
 	'LBL_MAILMANAGER_ADD_Emails' => 'Allega Email',
 	'LBL_MAILMANAGER_ADD_ModComments' => 'Aggiungi Commento',
-	'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potential',
-	'LBL_MAILMANAGER_ADD_Project' => 'Add Project',
-	'LBL_MAILMANAGER_ADD_ProjectTask' => 'Add Project Task',
+	'LBL_MAILMANAGER_ADD_Potentials' => 'Aggiungi Potenziale',
+	'LBL_MAILMANAGER_ADD_Project' => 'Aggiungi Progetto',
+	'LBL_MAILMANAGER_ADD_ProjectTask' => 'Aggiungi Compiti Progetto',
 	'LBL_ADD' => 'Aggiungi',
 
 	'JSLBL_SendWith_EmptyText' => 'Inviare la mail senza testo?',

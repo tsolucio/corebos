@@ -9,6 +9,7 @@
 ********************************************************************************/
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/MergeUtils.php';
+require_once 'data/CRMEntity.php';
 global $app_strings, $default_charset;
 
 $randomfilename = 'vt_' . str_replace(array('.',' '), '', microtime());
@@ -37,7 +38,6 @@ if ($mass_merge != '') {
 	if (array_pop($temp_mass_merge)=='') {
 		array_pop($mass_merge);
 	}
-	//$mass_merge = implode(',',$mass_merge);
 } elseif ($single_record != '') {
 	$mass_merge = $single_record;
 } else {
@@ -71,26 +71,22 @@ if ($userprivs->hasGlobalReadPermission() || $module == 'Users' || $module == 'E
 }
 $result = $adb->pquery($query1, $params1);
 $y=$adb->num_rows($result);
-$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-$accountUserNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'usersAccounts.first_name', 'last_name' => 'usersAccounts.last_name'), 'Users');
 
 for ($x=0; $x<$y; $x++) {
 	$tablename = $adb->query_result($result, $x, 'tablename');
 	$columnname = $adb->query_result($result, $x, 'columnname');
 	$modulename = $adb->query_result($result, $x, 'name');
 
-	if ($tablename == 'crmentity') {
-		if ($modulename == 'Accounts') {
-			$tablename = 'crmentityAccounts';
-		}
+	if ($tablename == 'crmentity' && $modulename == 'Accounts') {
+		$tablename = 'crmentityAccounts';
 	}
 	$querycolumns[$x] = $tablename.'.'.$columnname;
 	if ($columnname == 'smownerid') {
 		if ($modulename == 'Accounts') {
-			$querycolumns[$x]="case when (usersAccounts.user_name not like '') then $accountUserNameSql else groupsAccounts.groupname end as username";
+			$querycolumns[$x]="case when (usersAccounts.user_name not like '') then usersAccounts.ename else groupsAccounts.groupname end as username";
 		}
 		if ($modulename == 'Contacts') {
-			$querycolumns[$x]="case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as usercname,vtiger_users.first_name,"
+			$querycolumns[$x]="case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as usercname,vtiger_users.first_name,"
 				.'vtiger_users.last_name,vtiger_users.user_name,vtiger_users.secondaryemail,vtiger_users.title,vtiger_users.phone_work,vtiger_users.department,'
 				.'vtiger_users.phone_mobile,vtiger_users.phone_other,vtiger_users.phone_fax,vtiger_users.email1,vtiger_users.phone_home,vtiger_users.email2,'
 				.'vtiger_users.address_street,vtiger_users.address_city,vtiger_users.address_state,vtiger_users.address_postalcode,vtiger_users.address_country';
@@ -140,11 +136,12 @@ $csvheader = implode(',', $field_label);
 // check if custom field CONTACT_MAILINGADDRESS exists and is not empty
 // if not empty remove all other relevant address fields fom $csvheader & query
 
-if (count($querycolumns) > 0) {
+if (!empty($querycolumns)) {
 	$selectcolumns = implode(',', $querycolumns);
-
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
+	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Accounts', true);
 	$query = "select $selectcolumns from vtiger_contactdetails
-		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+		inner join $crmEntityTable on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 		inner join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid
 		inner join vtiger_contactsubdetails on vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid
 		inner join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid
@@ -154,7 +151,7 @@ if (count($querycolumns) > 0) {
 		left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		left join vtiger_account on vtiger_account.accountid = vtiger_contactdetails.accountid
-		left join vtiger_crmentity as crmentityAccounts on crmentityAccounts.crmid=vtiger_account.accountid
+		left join $crmEntityTable1 as crmentityAccounts on crmentityAccounts.crmid=vtiger_account.accountid
 		left join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid
 		left join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid
 		left join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid
@@ -170,12 +167,8 @@ if (count($querycolumns) > 0) {
 		for ($x=0; $x<$y; $x++) {
 			$value = $columnValues[$x];
 			foreach ($columnValues as $key => $val) {
-				if ($val == $value && $value != '') {
-					if (array_key_exists($key, $avail_pick_arr)) {
-						if (!in_array($val, $avail_pick_arr[$key])) {
-							$value = 'Not Accessible';
-						}
-					}
+				if ($val == $value && $value != '' && array_key_exists($key, $avail_pick_arr) && !in_array($val, $avail_pick_arr[$key])) {
+					$value = 'Not Accessible';
 				}
 			}
 			//<<<<<<<<<<<<<<< For blank Fields >>>>>>>>>>>>>>>>>>>>>>>>>>>>

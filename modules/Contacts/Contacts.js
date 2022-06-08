@@ -92,28 +92,6 @@ function set_return(product_id, product_name) {
 	}
 }
 
-function add_data_to_relatedlist_incal(id, name) {
-	var idval = window.opener.document.EditView.contactidlist.value;
-	var nameval = window.opener.document.EditView.contactlist.value;
-	if (idval != '') {
-		if (idval.indexOf(id) != -1) {
-			window.opener.document.EditView.contactidlist.value = idval;
-			window.opener.document.EditView.contactlist.value = nameval;
-		} else {
-			window.opener.document.EditView.contactidlist.value = idval+';'+id;
-			if (name != '') {
-				// this has been modified to provide delete option for Contacts in Calendar
-				//this function is defined in script.js
-				window.opener.addOption(id, name);
-			}
-		}
-	} else {
-		window.opener.document.EditView.contactidlist.value = id;
-		if (name != '') {
-			window.opener.addOption(id, name);
-		}
-	}
-}
 function set_return_specific(product_id, product_name) {
 	//Used for DetailView, Removed 'EditView' formname hardcoding
 	var fldName = getOpenerObj('contact_name');
@@ -470,16 +448,6 @@ function doSaveSettings() {
 	var form = container.find('form[name="contactsyncsettings"]');
 	var fieldMapping = packFieldmappingsForSubmit(container);
 	form.find('#user_field_mapping').val(fieldMapping);
-	//    var serializedFormData = JSON.stringify(form);
-	//    var form = document.forms['contactsyncsettings'];
-	//    form.submit();
-	//    jQuery.ajax({
-	//            type : 'post',
-	//            data :  serializedFormData,
-	//            url : "index.php?module=Contacts&action=ContactsAjax&file=GSaveSyncSettings"
-	//    }).done(function(msg) {
-	//        alert('sdfsfdsf');
-	//    });
 	return true;
 }
 

@@ -9,13 +9,13 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="modules/Services/Services.js"></script>
-<script type="text/javascript" src="include/js/Inventory.js"></script>
 {if $FIELD_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
 <script type="text/javascript" src="include/js/FieldDepFunc.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$FIELD_DEPENDENCY_DATASOURCE})).init() {rdelim});
 	var Inventory_ListPrice_ReadOnly = '{if isset($Inventory_ListPrice_ReadOnly)}{$Inventory_ListPrice_ReadOnly}{/if}';
+	var Inventory_Comment_Style = '{if isset($Inventory_Comment_Style)}{$Inventory_Comment_Style}{else}width:70%;height:40px;{/if}';
 </script>
 {/if}
 {if vt_hasRTE()}
@@ -108,18 +108,14 @@
 										{/foreach}
 
 										<!-- Added to display the Product Details in Inventory-->
-										{if in_array($MODULE, getInventoryModules())}
+										{if in_array($MODULE, getInventoryModules()) && $ShowInventoryLines}
 										<tr>
 										<td colspan=4>
-										{if $OP_MODE eq 'create_view'}
 											{if isset($AVAILABLE_PRODUCTS) && $AVAILABLE_PRODUCTS eq 'true'}
 												{include file="Inventory/ProductDetailsEditView.tpl"}
 											{else}
 												{include file="Inventory/ProductDetails.tpl"}
 											{/if}
-										{else}
-											{include file="Inventory/ProductDetailsEditView.tpl"}
-										{/if}
 										</td>
 										</tr>
 										{/if}
@@ -156,18 +152,13 @@
 		PERCENT_OF_PRICE:'{$APP.LBL_OF_PRICE}',
 		DIRECT_PRICE_REDUCTION:'{$APP.LBL_DIRECT_PRICE_REDUCTION}'
 	{rdelim};
-	var ProductImages=new Array();
-	var count=0;
-	function delRowEmt(imagename) {ldelim}
-		ProductImages[count++]=imagename;
-		multi_selector.current_element.disabled = false;
-		multi_selector.count--;
-	{rdelim}
-	function displaydeleted() {ldelim}
-		if (ProductImages.length > 0) {ldelim}
-			document.EditView.del_file_list.value=ProductImages.join('###');
-		{rdelim}
-	{rdelim}
+	{if !empty($smarty.request.MDGridInfo)}
+	{assign var='mdgridinfo' value=$smarty.request.MDGridInfo|json_decode:true}
+	function windowopenermasterdetailworksave() {
+		window.opener.masterdetailwork.save('{$mdgridinfo.name|vtlib_purify}', '{$mdgridinfo.module|vtlib_purify}');
+	}
+	corebosjshook.after(window, 'corebosjshook_submitFormForAction', windowopenermasterdetailworksave);
+	{/if}
 </script>
 
 <!-- vtlib customization: Help information assocaited with the fields -->

@@ -24,7 +24,7 @@ function getTopInvoice($maxval, $calCnt) {
 	$order_by = '';
 	$oCustomView = new CustomView('Invoice');
 	$oCustomView->getCustomViewCombo();
-	if (isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='') {
+	if (!isset($_REQUEST['viewname']) || $_REQUEST['viewname']=='') {
 		if ($oCustomView->setdefaultviewid != "") {
 			$viewid = $oCustomView->setdefaultviewid;
 		} else {
@@ -32,7 +32,6 @@ function getTopInvoice($maxval, $calCnt) {
 		}
 	}
 
-	//Retreive the list from Database
 	//<<<<<<<<<customview>>>>>>>>>
 	$currentModule = 'Invoice';
 	$viewId = getCvIdOfAll($currentModule);
@@ -71,17 +70,14 @@ function getTopInvoice($maxval, $calCnt) {
 
 	$list_result = $adb->query($query);
 
-	//Retreiving the no of rows
 	$noofrows = $adb->num_rows($list_result);
 
-	//Retreiving the start value from request
 	if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 		$start = vtlib_purify($_REQUEST['start']);
 	} else {
 		$start = 1;
 	}
 
-	//Retreive the Navigation array
 	$navigation_array = getNavigationValues($start, $noofrows, $list_max_entries_per_page);
 
 	if ($navigation_array['start'] == 1) {
@@ -108,7 +104,6 @@ function getTopInvoice($maxval, $calCnt) {
 	$focus = new Invoice();
 
 	$title=array('myTopInvoices.gif',$current_module_strings['LBL_MY_TOP_INVOICE'],'home_mytopinv');
-	//Retreive the List View Table Header
 	$controller = new ListViewController($adb, $current_user, $queryGenerator);
 	$controller->setHeaderSorting(false);
 	$header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, true);
@@ -121,8 +116,7 @@ function getTopInvoice($maxval, $calCnt) {
 		true
 	);
 
-	$values=array('ModuleName'=>'Invoice', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
-	return $values;
+	return array('ModuleName'=>'Invoice', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
 }
 
 function getTopInvoiceSearch($output) {

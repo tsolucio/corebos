@@ -32,63 +32,7 @@
 		<tr>
 			<td>
 				<!-- List View's Buttons and Filters starts -->
-				<table width="100%" class="layerPopupTransport">
-					<tr>
-						<td width="25%" class="small" nowrap align="left">{$recordListRange}</td>
-						<td><table align="center">
-								<tr>
-									<td>
-										<!-- Filters -->
-										{if empty($HIDE_CUSTOM_LINKS) || $HIDE_CUSTOM_LINKS neq '1'}
-										<table cellpadding="5" cellspacing="0" class="small cblds-table-border_sep cblds-table-bordersp_medium">
-											<tr>
-												<td style="padding-left:5px;padding-right:5px" align="center">
-													<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" style="max-width:240px;" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
-												</td>
-												{if isset($ALL) && $ALL eq 'All'}
-												<td style="padding-left:5px;padding-right:5px" align="center"><a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
-													<span class="small">|</span>
-													<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>
-													<span class="small">|</span>
-													<span class="small" disabled>{$APP.LNK_CV_DELETE}</span>
-												</td>
-												{else}
-												<td style="padding-left:5px;padding-right:5px" align="center">
-													<a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
-													<span class="small">|</span>
-													{if $CV_EDIT_PERMIT neq 'yes' || $SQLERROR}
-														<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>
-													{else}
-														<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}&parenttab={$CATEGORY}">{$APP.LNK_CV_EDIT}</a>
-													{/if}
-													<span class="small">|</span>
-													{if $CV_DELETE_PERMIT neq 'yes'}
-														<span class="small" disabled>{$APP.LNK_CV_DELETE}</span>
-													{else}
-														<a href="javascript:confirmdelete('index.php?module=CustomView&action=Delete&dmodule={$MODULE}&record={$VIEWID}&parenttab={$CATEGORY}')">{$APP.LNK_CV_DELETE}</a>
-													{/if}
-													{if $CUSTOMVIEW_PERMISSION.ChangedStatus neq '' && $CUSTOMVIEW_PERMISSION.Label neq ''}
-														<span class="small">|</span>
-														<a href="#" id="customstatus_id" onClick="ChangeCustomViewStatus({$VIEWID},{$CUSTOMVIEW_PERMISSION.Status},{$CUSTOMVIEW_PERMISSION.ChangedStatus},'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_PERMISSION.Label}</a>
-													{/if}
-												</td>
-												{/if}
-											</tr>
-										</table>
-										<!-- Filters END-->
-										{/if}
-									</td>
-								</tr>
-							</table>
-						</td>
-						<!-- Page Navigation -->
-						<td nowrap align="right" width="25%" class="cblds-t-align_right">
-							<table border=0 cellspacing=0 cellpadding=0 class="small" style="display: inline-block;">
-								<tr>{$NAVIGATION}</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
+				{include file='ListViewFilter.tpl'}
 				<table border=0 cellspacing=0 cellpadding=2 width=100% class="small cblds-table-border_sep cblds-table-bordersp_small">
 					<tr>
 						<!-- Buttons -->
@@ -155,18 +99,13 @@
 						</tr>
 						<tr>
 							<td class="small" align="left" nowrap="nowrap">
-								{if $MODULE neq 'Calendar'}
-									<b><a class="nef_action" href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf}
-										{$MODULE_CREATE|@getTranslatedString:$MODULE}
-										{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents'}
-										</a></b><br>
-										<b><a class="nef_action" href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView&parenttab={$CATEGORY}">{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
-										{/if}
+								<b><a class="nef_action" href="index.php?module={$MODULE}&action=EditView&return_action=DetailView">{$APP.LBL_CREATE} {$APP.$vowel_conf}
+									{$MODULE_CREATE|@getTranslatedString:$MODULE}
+									{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents'}
 									</a></b><br>
-								{else}
-									<b><a class="nef_action" href="index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Events&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_AN} {$APP.Event}</a></b><br>
-									<b><a class="nef_action" href="index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Task&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_A} {$APP.Task}</a></b>
-								{/if}
+									<b><a class="nef_action" href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView">{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
+									{/if}
+								</a></b><br>
 							</td>
 						</tr>
 						</table>
@@ -194,7 +133,7 @@
 
 			<table border=0 cellspacing=0 cellpadding=2 width=100%>
 			<tr>
-				<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
+				<td style="padding-right:20px" nowrap></td>
 				<td align="right" width=40%>&nbsp;</td>
 			</tr>
 			</table>
@@ -216,4 +155,8 @@
 		</tr>
 	</table>
 </form>
-<div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options options=$SEARCHLISTHEADER}</select></div>
+<div id="basicsearchcolumns" style="display:none;">
+	<select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">
+	{html_options options=$SEARCHLISTHEADER}
+	</select>
+</div>

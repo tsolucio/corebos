@@ -44,6 +44,7 @@ $mod_strings = array(
 'LBL_DEBUG' => 'Depurar',
 'LBL_LANG' => 'Idioma',
 'UpdatePrevious' => 'Actualizar combinación anterior',
+'shareOnCreate' => 'Compartir Después de Crear',
 'is set to' => 'Establecido a',
 'is not set' => 'NO tiene valor',
 );

@@ -9,7 +9,6 @@
 <form action="index.php" method="post" name="form" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="fld_module" value="{$MODULE}">
 	<input type="hidden" name="module" value="Settings">
-	<input type="hidden" name="parenttab" value="Settings">
 	{assign var=entries value=$CFENTRIES}
 	<br>
 	<br>

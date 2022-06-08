@@ -107,7 +107,7 @@ function saveDependency(module) {
 	document.getElementById('status').style.display='inline';
 
 	var dependencyMapping = serializeData();
-	if (dependencyMapping == false) {
+	if (!dependencyMapping) {
 		document.getElementById('status').style.display='none';
 		return false;
 	}

@@ -194,6 +194,7 @@ $app_strings = array (
 	'NTC_TIME_FORMAT' => '(24:00)',
 	'NTC_DATE_TIME_FORMAT' => '(aaaa-mm-dd 24:00)',
 	'NTC_DELETE_CONFIRMATION' => '¿Está seguro que desea eliminar este registro?',
+	'SMTP_DELETE_CONFIRMATION' => '¿Está seguro que desea eliminar esta configuración SMTP?',
 	'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Borrar esta cuenta eliminará sus relaciones con Oportunidades, Cotizaciones, Pedidos y Facturas. ¿Quiere Borrar la Cuenta?',
 	'NTC_VENDOR_DELETE_CONFIRMATION' => 'Borrar este proveedor eliminará sus relaciones con Oportunidades, Cotizaciones, Pedidos y Facturas. ¿Quiere Borrar el Proveedor?',
 	'ERR_DELETE_RECORD' => ' Debe especificar un registro para poder eliminar el contacto.',
@@ -875,6 +876,7 @@ $app_strings = array (
 	'MSG_VTIGERTEAM' => 'coreBOS Team',
 	'MSG_IS_NOT_UPLOADED' => 'no se ha subido. Las extensiones permitidas son jpeg, png, jpg, pjpeg, x-png o gif',
 	'MSG_IMAGE_ERROR' => 'Imagen no encontrada',
+	'LBL_IMAGESECURITY_ERROR' => 'Imagen inválida: contiene elementos potencialmente maliciosos',
 	'Information' => 'Información',
 	'Address' => 'Dirección',
 	'Custom Information' => 'Información Personalizada',
@@ -954,6 +956,8 @@ $app_strings = array (
 	'Mailing Po Box' => 'Apdo. Postal (Envío)',
 	'Other Po Box' => 'Apdo. Postal (Alternativa)',
 	'Image' => 'Imagen',
+	'Unknown' => 'Desconocido',
+	'Compressed' => 'Comprimido',
 	'LBL_EXPORT_TYPE_1' => 'Tipo de Exportación 1:',
 	'LBL_EXPORT_TYPE_2' => 'Tipo de Exportación 2:',
 	'LBL_SEARCH_CRITERIA_RECORDS' => 'Exportar registros asociados a la búsqueda',
@@ -963,6 +967,9 @@ $app_strings = array (
 	'LBL_SEARCH_CRITERIA_COLUMNS'=>'Exportar Columnas del Filtro',
 	'LBL_VISIBLE_COLUMNS'=>'Exportar solo columnas visibles',
 	'LBL_ALL_DATA' => 'Exporta todos los datos',
+	'LBL_EXPORT_FORMAT' => 'Formato Exportación',
+	'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+	'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 	'LBL_DATA_IN_CURRENT_PAGE' => 'Exportar dato de la página actual',
 	'LBL_ONLY_SELECTED_RECORDS' => 'Export Registros seleccionados',
 	'LBL_YES' => 'Si',
@@ -1163,6 +1170,8 @@ $app_strings = array (
 	'LBL_CALLER_INFORMATION'=>'Información Llamada Entrante',
 	'LBL_CALLER_NUMBER'=>'Número :',
 	'LBL_CALLER_NAME'=>'Nombre :',
+	'LBL_VIEW_CONTACT' => 'Ver Contacto',
+	'LBL_CLICK_NOTIFICATION_TO'=> 'Haz click para ',
 	//asterisk integration ends
 
 	// Module Sequence Numbering
@@ -1195,6 +1204,8 @@ $app_strings = array (
 	'PRIVATE_FILTER'=>'Privado',
 	'SHARE_FILTER'=>'Compartido',
 	'PUBLIC_FILTER'=>'Publico',
+	'Shared' => 'Compartido',
+	'Scheduled' => 'Programado',
 
 	// Account Hierarchy
 	'LBL_ACCOUNT_HIERARCHY' => 'Jerarquía de Cuentas',
@@ -1344,6 +1355,33 @@ $app_strings = array (
 	'csrf_reload' => 'Cargar de nuevo la página',
 	'LBL_NOPRODUCTS' => 'No se puede convertir la Orden de Venta ya que no hay lineas facturables.',
 	'VALIDATION_FAILED' => 'Validación errónea',
+	'Select Module To Upsert' => 'Selecciona Módulo',
+	'LBL_FIX_NOW' => 'Arreglar Ahora',
+	'LBL_HIERARCHY' => 'Jerarquía',
+	'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Buscar Documentos',
+
+	//login translation
+	'LBL_Please_login_to_your_account' => 'Por favor accede a tu cuenta',
+	'LBL_Bussiness'	=> 'Haz que tu negocio funcione sin problemas',
+	'LBL_Management' => 'Gestión inteligente de clientes',
+	'LBL_Statistics' => 'Fácil de rastrear tus estadísticas',
+
+	//List view popup content
+	'LBL_SEND_TO' => 'ENVIAR A',
+	'LNK_ALPHABETICAL_SEARCH' => 'Búsqueda Alfabética',
+	'ERR_SITE_URL_MISMATCH' => 'URL configurada no concuerda con utilizada',
+	'Mautic ID' => 'ID Mautic',
+	'Deleted in Mautic' => 'Eliminado en Mautic',
+	'Contact Points' => 'Puntos Contacto',
+	'From External Source' => 'Proviene de Fuente Externa',
+	'LBL_ADD_ROW' => 'Añadir Fila',
+	'LBL_EDIT_COLUMNS' => 'Editar Columnas',
+	'LBL_SELECT_COLUMNS' => 'Selecciona las columnas a mostrar en la Rejilla de Creación Masiva',
+	'LBL_MATCH_COLUMNS' => 'Selecciona las columnas clave para emparejar registros',
+	'LBL_SAVE_MAP' => 'Guardar Mapa',
+	'Paste the link here' => 'Pega el enlace aquí',
+	'LBL_UITYPE10_NOTALLOWED' => 'El módulo relacionado tiene un campo relacional obligatorio.',
+	'LBL_PAINT2DOCUMENT' => 'Dibujo a Documento',
 );
 
 // Translation for currency names

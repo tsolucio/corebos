@@ -22,13 +22,15 @@ class AddGenDocMergeDIV extends VTEventHandler {
 	 * @param $entityData VTEntityData
 	 */
 	public function handleEvent($handlerType, $entityData) {
+		require_once 'data/CRMEntity.php';
 		global $adb, $currentModule;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		if ($handlerType == 'corebos.header') {
 			$mname = (isset($currentModule) ? $currentModule : '');
 			$checkres = $adb->pquery(
 				"SELECT businessactionsid
 					FROM vtiger_businessactions
-					INNER JOIN vtiger_crmentity ON crmid=businessactionsid
+					INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid=businessactionsid
 					WHERE module_list like '%".vtlib_purify($mname)."%' AND elementtype_action=? AND linklabel=?",
 				array('DETAILVIEWWIDGET', 'Generate Document')
 			);

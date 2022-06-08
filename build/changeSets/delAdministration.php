@@ -23,7 +23,7 @@ class delAdministration extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("update vtiger_settings_field set linkto='index.php?module=Users&action=index&parenttab=Settings' where name='LBL_USERS'");
+			$this->ExecuteQuery("update vtiger_settings_field set linkto='index.php?module=Users&action=index' where name='LBL_USERS'");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}

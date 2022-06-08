@@ -24,7 +24,6 @@ class add_workflow_selectcbmap extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
-			$taskTypes = array();
 			$defaultModules = array('include' => array(), 'exclude'=>array());
 			$taskType= array("name"=>"CBSelectcbMap", "label"=>"CBSelectcbMap", "classname"=>"CBSelectcbMap",
 					 "classpath"=>"modules/com_vtiger_workflow/tasks/CBSelectcbMap.inc",

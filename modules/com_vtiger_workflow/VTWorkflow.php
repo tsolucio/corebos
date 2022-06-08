@@ -37,6 +37,7 @@ class Workflow {
 		'Description' => array('com_vtiger_workflows'=>'summary'),
 		'Purpose' => array('com_vtiger_workflows'=>'purpose'),
 		'Trigger' => array('com_vtiger_workflows'=> 'execution_condition'),
+		'Status' => array('com_vtiger_workflows'=> 'active'),
 		'Tools' => array('com_vtiger_workflows'=>'workflow_id'),
 	);
 	public $list_fields_name = array(
@@ -44,6 +45,7 @@ class Workflow {
 		'Description' => 'summary',
 		'Purpose' =>'purpose',
 		'Trigger' => 'execution_condition',
+		'Status' => 'active',
 		'Tools' => 'workflow_id',
 	);
 
@@ -86,6 +88,7 @@ class Workflow {
 			$app_strings['LBL_DESCRIPTION'],
 			$app_strings['LBL_PURPOSE'],
 			$app_strings['LBL_TRIGGER'],
+			$app_strings['LBL_STATUS'],
 			$app_strings['LBL_TOOLS'],
 		);
 		$log->debug('< getWorkListHeader');
@@ -93,7 +96,7 @@ class Workflow {
 	}
 
 	public function filterInactiveFields($module) {
-		return;
+		// none
 	}
 
 	/**
@@ -165,11 +168,38 @@ class Workflow {
 		$this->wfendon = isset($row['wfendon']) ? $row['wfendon'] : '';
 		$this->active = isset($row['active']) ? $row['active'] : '';
 		$this->nexttrigger_time = isset($row['nexttrigger_time']) ? $row['nexttrigger_time'] : '';
+		$this->options = isset($row['options']) ? $row['options'] : '';
+		$this->cbquestion = isset($row['cbquestion']) ? $row['cbquestion'] : null;
+		if (empty($this->cbquestion)) {
+			$this->cbquestiondisplay = '';
+		} else {
+			$dp = getEntityName('cbQuestion', $this->cbquestion);
+			$this->cbquestiondisplay = $dp[$this->cbquestion];
+		}
+		$this->recordset = isset($row['recordset']) ? $row['recordset'] : null;
+		if (empty($this->recordset)) {
+			$this->recordsetdisplay = '';
+		} else {
+			$dp = getEntityName('cbMap', $this->recordset);
+			$this->recordsetdisplay = $dp[$this->recordset];
+		}
+		$this->onerecord = isset($row['onerecord']) ? $row['onerecord'] : null;
+		if (empty($this->onerecord)) {
+			$this->onerecorddisplay = '';
+		} else {
+			$dp = getEntityName(getSalesEntityType($this->onerecord), $this->onerecord);
+			$this->onerecorddisplay = $dp[$this->onerecord];
+		}
 		if ($row['execution_condition']==VTWorkflowManager::$ON_RELATE || $row['execution_condition']==VTWorkflowManager::$ON_UNRELATE) {
 			$this->relatemodule = isset($row['relatemodule']) ? $row['relatemodule'] : '';
 		} else {
 			$this->relatemodule = '';
 		}
+	}
+
+	public function checkNonAdminAccess() {
+		global $current_user;
+		return (is_admin($current_user) || $this->defaultworkflow != 1);
 	}
 
 	public function evaluate($entityCache, $id) {
@@ -183,25 +213,32 @@ class Workflow {
 
 	public function isCompletedForRecord($recordId) {
 		global $adb;
-		$result = $adb->pquery('SELECT * FROM com_vtiger_workflow_activatedonce WHERE entity_id=? and workflow_id=?', array($recordId, $this->id));
-		$result2=$adb->pquery(
-			'SELECT *
-			FROM com_vtiger_workflowtasks
-			INNER JOIN com_vtiger_workflowtask_queue ON com_vtiger_workflowtasks.task_id= com_vtiger_workflowtask_queue.task_id
-			WHERE workflow_id=? AND entity_id=?',
-			array($this->id, $recordId)
-		);
-
-		if ($adb->num_rows($result)===0 && $adb->num_rows($result2)===0) { // Workflow not done for specified record
-			return false;
-		} else {
-			return true;
-		}
+		$result = $adb->pquery('SELECT 1 FROM com_vtiger_workflow_activatedonce WHERE entity_id=? and workflow_id=?', array($recordId, $this->id));
+		return $adb->num_rows($result)>0; // Workflow done for specified record
 	}
 
 	public function markAsCompletedForRecord($recordId) {
 		global $adb;
-		$adb->pquery('INSERT INTO com_vtiger_workflow_activatedonce (entity_id, workflow_id) VALUES (?,?)', array($recordId, $this->id));
+		if ($this->isCompletedForRecord($recordId)) {
+			$adb->pquery('UPDATE com_vtiger_workflow_activatedonce set pending=0 WHERE entity_id=? and workflow_id=?', array($recordId, $this->id));
+		} else {
+			$adb->pquery('INSERT INTO com_vtiger_workflow_activatedonce (entity_id, workflow_id, pending) VALUES (?,?,0)', array($recordId, $this->id));
+		}
+	}
+
+	public static function pushWFTaskToQueue($workflowid, $wfexecutionCondition, $entityid, $msg, $delay = 0) {
+		global $adb;
+		$cbmq = coreBOS_MQTM::getInstance();
+		$cbmq->sendMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, 0, json_encode($msg));
+		if (VTWorkflowManager::$ONCE == $wfexecutionCondition) {
+			$recordId = vtws_getCRMID($entityid);
+			$result = $adb->pquery('SELECT 1 FROM com_vtiger_workflow_activatedonce WHERE entity_id=? and workflow_id=?', array($recordId, $workflowid));
+			if ($adb->num_rows($result)>0) {
+				$adb->pquery('UPDATE com_vtiger_workflow_activatedonce set pending=1 WHERE entity_id=? and workflow_id=?', array($recordId, $workflowid));
+			} else {
+				$adb->pquery('INSERT INTO com_vtiger_workflow_activatedonce (entity_id, workflow_id, pending) VALUES (?,?,1)', array($recordId, $workflowid));
+			}
+		}
 	}
 
 	public function performTasks(&$entityData, $context = array(), $webservice = false) {
@@ -212,6 +249,23 @@ class Workflow {
 		if ($wf && $adb->num_rows($wf)>0) {
 			$wflaunch = $wf->fields['execution_condition'];
 		}
+		$entityDelta = new VTEntityDelta();
+		list($wsid, $crmid) = explode('x', $entityData->getId());
+		$previousEntityData = $entityDelta->getOldEntity($entityData->getModuleName(), $crmid);
+		if (is_object($previousEntityData)) {
+			$previousData = $previousEntityData->getData();
+			$previousData = array_combine(
+				array_map(
+					function ($fieldname) {
+						return 'previous_' . $fieldname;
+					},
+					array_keys($previousData)
+				),
+				$previousData
+			);
+			$context = array_merge($context, $previousData);
+		}
+		$entityData->WorkflowID = $this->id;
 		$entityData->WorkflowEvent = $wflaunch;
 		$entityData->WorkflowContext = $context;
 		$data = $entityData->getData();
@@ -220,28 +274,38 @@ class Workflow {
 		$entityCache = new VTEntityCache($user);
 		$util->revertUser();
 		require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
-		require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 
 		$tm = new VTTaskManager($adb);
-		$taskQueue = new VTTaskQueue($adb);
 		$tasks = $tm->getTasksForWorkflow($this->id);
 		$errortasks = array();
 		foreach ($tasks as $task) {
 			if (is_object($task) && $task->active) {
 				$logbg->debug($task->summary);
 				$trigger = (empty($task->trigger) ? null : $task->trigger);
-				if ($trigger != null) {
-					$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
-				} else {
-					$delay = 0;
+				$delay = 0;
+				if ($trigger != null && $task->$queable) {
+					if (array_key_exists('mins', $trigger)) {
+						$delay = strtotime($data[$trigger['field']])+$trigger['mins']*60;
+					} elseif (array_key_exists('hours', $trigger)) {
+						$delay = strtotime($data[$trigger['field']])+$trigger['hours']*3600;
+					} elseif (array_key_exists('days', $trigger)) {
+						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
+					}
 				}
-				if ($task->executeImmediately==true || $this->executionCondition==VTWorkflowManager::$MANUAL) {
+				if ($task->executeImmediately || $this->executionCondition==VTWorkflowManager::$MANUAL) {
 					// we permit update field delayed tasks even though some may not make sense
 					// for example a mathematical operation or a decision on a value of a field that
 					// may change during the delay. This is for some certain types of updates, generally
 					// absolute updates. You MUST know what you are doing when creating workflows.
-					if ($delay!=0 && get_class($task) == 'VTUpdateFieldsTask') {
-						$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
+					if ($delay!=0 && $task->$queable) {
+						$entityData->WorkflowContext['__WorkflowID'] = $this->id;
+						$msg = array(
+							'taskId' => $task->id,
+							'entityId' => $entityData->getId(),
+							'context' => $entityData->WorkflowContext,
+						);
+						$delay = max($delay-time(), 0);
+						Workflow::pushWFTaskToQueue($this->id, $this->executionCondition, $entityData->getId(), $msg, $delay);
 					} else {
 						$entityCache->emptyCache($entityData->getId());
 						if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
@@ -260,17 +324,24 @@ class Workflow {
 						}
 					}
 				} else {
-					$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
+					$entityData->WorkflowContext['__WorkflowID'] = $this->id;
+					$msg = array(
+						'taskId' => $task->id,
+						'entityId' => $entityData->getId(),
+						'context' => $entityData->WorkflowContext,
+					);
+					$delay = max($delay-time(), 0);
+					Workflow::pushWFTaskToQueue($this->id, $this->executionCondition, $entityData->getId(), $msg, $delay);
 				}
 			}
 		}
-		if (count($errortasks)>0) {
+		if (!empty($errortasks)) {
 			$logbg->fatal('> *** Workflow Tasks Errors:');
 			$logbg->fatal($errortasks);
 			$logbg->fatal('> **************************');
 			if ($webservice) {
 				require_once 'include/Webservices/WebServiceError.php';
-				throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, print_r($errortasks, true));
+				throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, json_encode($errortasks));
 			}
 		}
 	}
@@ -298,6 +369,11 @@ class Workflow {
 			$active = false;
 		}
 		return $active;
+	}
+
+	public function setActiveStateTo($state) {
+		global $adb;
+		$adb->pquery('update com_vtiger_workflows set active=? where workflow_id=?', [$state, $this->id]);
 	}
 
 	public function executionConditionAsLabel($label = null) {
@@ -359,7 +435,7 @@ class Workflow {
 
 	/**
 	 * Function gets the next trigger for the workflows
-	 * @global <String> $default_timezone
+	 * @global string $default_timezone
 	 * @return string time
 	 */
 	public function getNextTriggerTime() {
@@ -372,11 +448,11 @@ class Workflow {
 		$scheduleMinute= $this->getScheduleMinute();
 		$nextTime = date('Y-m-d H:i:s');
 		if ($scheduleType==Workflow::$SCHEDULED_BY_MINUTE) {
-			$nextTime=date("Y-m-d H:i:s", strtotime("+ $scheduleMinute minutes"));
+			$nextTime=date('Y-m-d H:i:s', strtotime("+ $scheduleMinute minutes"));
 		}
 
 		if ($scheduleType == Workflow::$SCHEDULED_HOURLY) {
-			$nextTime = date("Y-m-d H:i:s", strtotime("+1 hour"));
+			$nextTime = date('Y-m-d H:i:s', strtotime('+1 hour'));
 		}
 
 		if ($scheduleType == Workflow::$SCHEDULED_DAILY) {
@@ -422,7 +498,7 @@ class Workflow {
 	 * get next trigger Time For weekly
 	 * @param integer $scheduledDaysOfWeek
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForWeekly($scheduledDaysOfWeek, $scheduledTime) {
 		$weekDays = array('0' => 'Sunday', '1' => 'Monday', '2' => 'Tuesday', '3' => 'Wednesday', '4' => 'Thursday', '5' => 'Friday', '6' => 'Saturday', '7' => 'Sunday');
@@ -477,7 +553,7 @@ class Workflow {
 	 * get next triggertime for monthly
 	 * @param integer $scheduledDayOfMonth
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForMonthlyByDate($scheduledDayOfMonth, $scheduledTime) {
 		$currentDayOfMonth = date('j', time());
@@ -521,22 +597,21 @@ class Workflow {
 	 * to get next trigger time for weekday of the month
 	 * @param integer $scheduledWeekDayOfMonth
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForMonthlyByWeekDay($scheduledWeekDayOfMonth, $scheduledTime) {
 		$currentTime = time();
 		$currentDayOfMonth = date('j', $currentTime);
-		$scheduledTime = $this->getWFScheduleTime();
 		if ($scheduledWeekDayOfMonth == $currentDayOfMonth) {
-			$nextTime = date("Y-m-d H:i:s", strtotime('+1 month '.$scheduledTime));
+			$nextTime = date('Y-m-d H:i:s', strtotime('+1 month '.$scheduledTime));
 		} else {
 			$monthInFullText = date('F', $currentTime);
 			$yearFullNumberic = date('Y', $currentTime);
 			if ($scheduledWeekDayOfMonth < $currentDayOfMonth) {
-				$nextMonth = date("Y-m-d H:i:s", strtotime('next month'));
+				$nextMonth = date('Y-m-d H:i:s', strtotime('next month'));
 				$monthInFullText = date('F', strtotime($nextMonth));
 			}
-			$nextTime = date("Y-m-d H:i:s", strtotime($scheduledWeekDayOfMonth.' '.$monthInFullText.' '.$yearFullNumberic.' '.$scheduledTime));
+			$nextTime = date('Y-m-d H:i:s', strtotime($scheduledWeekDayOfMonth.' '.$monthInFullText.' '.$yearFullNumberic.' '.$scheduledTime));
 		}
 		return $nextTime;
 	}
@@ -545,7 +620,7 @@ class Workflow {
 	 * to get next trigger time
 	 * @param string $annualDates
 	 * @param string $scheduledTime
-	 * @return <time>
+	 * @return DateTime
 	 */
 	public function getNextTriggerTimeForAnnualDates($annualDates, $scheduledTime) {
 		if ($annualDates) {
@@ -594,7 +669,7 @@ class Workflow {
 	}
 
 	public function getWorkFlowJSON($conds, $params, $page, $order_by) {
-		global $log, $adb, $current_user;
+		global $log, $adb, $current_user, $app_strings;
 		$log->debug('> getWorkFlowJSON');
 
 		$workflow_execution_condtion_list = self::geti18nTriggerLabels();
@@ -667,7 +742,13 @@ class Workflow {
 			if ($i18n==$workflow_execution_condtion_list[$lgn['execution_condition']]) {
 				$i18n = getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'com_vtiger_workflow');
 			}
+			if ($lgn['active'] == 'true') {
+				$active = $app_strings['Active'];
+			} else {
+				$active = $app_strings['Inactive'];
+			}
 			$entry['Trigger'] = $i18n;
+			$entry['Status'] = $active;
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getWorkFlowJSON');

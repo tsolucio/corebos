@@ -181,6 +181,7 @@ $app_strings = array(
 'NTC_TIME_FORMAT'=>'(24:00)',
 'NTC_DATE_TIME_FORMAT'=>'(dd-mm-yyyy 24:00)',
 'NTC_DELETE_CONFIRMATION'=>'Wollen Sie diesen Eintrag löschen?',
+'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Wenn Sie diese Organisation löschen, werden auch die darauf bezogenen Einträge in den Potentialen und Angeboten gelöscht. Sind Sie sicher, dass Sie diese Organisation wirklich löschen wollen?',
 'NTC_VENDOR_DELETE_CONFIRMATION' => 'Wenn Sie diese Organisation löschen, werden auch die darauf bezogenen Einträge in den Einkaufsbestellungen gelöscht. Sind Sie sicher, dass Sie diesen Lieferanten wirklich löschen wollen?',
 'ERR_DELETE_RECORD'=>'Zum Löschen muss mindestens ein Eintrag markiert sein.',
@@ -875,7 +876,7 @@ $app_strings = array(
 'MSG_VTIGERTEAM'=>' coreBOS Team',
 'MSG_IS_NOT_UPLOADED'=>'wurde nicht geladen. Zulässige Dateitypen - jpeg, png, jpg, pjpeg, x-png oder gif',
 'MSG_IMAGE_ERROR'=>'Das Bild wurde nicht gefunden.',
-
+'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 'Information'=>'Information',
 'Address'=>'Adresse',
 'Custom Information'=>'Information',
@@ -968,6 +969,8 @@ $app_strings = array(
 'Mailing Po Box'=>'Postfach',
 'Other Po Box'=>'Weiteres Postfach',
 'Image' => 'Bild',
+'Unknown' => 'Unknown',
+'Compressed' => 'Compressed',
 
 //Export Records STARTS--->
 'LBL_EXPORT_TYPE_1'=>'Export Typ 1:',
@@ -979,6 +982,9 @@ $app_strings = array(
 'LBL_SEARCH_CRITERIA_COLUMNS'=>'Export Filter Columns',
 'LBL_VISIBLE_COLUMNS'=>'Export only visible columns',
 'LBL_ALL_DATA'=>'Exportiere alle Daten',
+'LBL_EXPORT_FORMAT' => 'Export Format',
+'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 'LBL_DATA_IN_CURRENT_PAGE'=>'Exportiere Daten dieser Seite',
 'LBL_ONLY_SELECTED_RECORDS'=>'Exportiere ausgewählte Daten',
 'LBL_YES'=>'Ja',
@@ -1192,6 +1198,8 @@ $app_strings = array(
 'LBL_CALLER_INFORMATION'=>'Information über Anrufer',
 'LBL_CALLER_NUMBER'=>'Nummer:',
 'LBL_CALLER_NAME'=>'Name:',
+'LBL_VIEW_CONTACT' => 'View Contact',
+'LBL_CLICK_NOTIFICATION_TO'=> 'Click Notification to ',
 
 //asterisk integration ends
 
@@ -1225,6 +1233,8 @@ $app_strings = array(
 'PRIVATE_FILTER'=>'Privat',
 'SHARE_FILTER'=>'Veröffentlichen',
 'PUBLIC_FILTER'=>'Öffentlich',
+'Shared' => 'Shared',
+'Scheduled' => 'Scheduled',
 
 // Account Hierarchy
 'LBL_ACCOUNT_HIERARCHY' => 'Unternehmenshierarchie',
@@ -1374,6 +1384,33 @@ $app_strings = array(
 'Entity Name' => 'Entity Name',
 'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 'VALIDATION_FAILED' => 'Validation failed',
+'Select Module To Upsert' => 'Select Module To Upsert',
+'LBL_FIX_NOW' => 'Fix Now',
+'LBL_HIERARCHY' => 'Hierarchy',
+'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Search Documents',
+
+//login translation
+'LBL_Please_login_to_your_account' => 'Please login to your account',
+'LBL_Bussiness'	=> 'Make your business run smoothly',
+'LBL_Management' => 'Intelligent customer management',
+'LBL_Statistics' => 'Easy to track your statistics',
+
+//List view popup content
+'LBL_SEND_TO' => 'SEND TO',
+'LNK_ALPHABETICAL_SEARCH' => 'Alpabetical Search',
+'ERR_SITE_URL_MISMATCH' => 'Site URL mismatch',
+'Mautic ID' => 'Mautic ID',
+'Deleted in Mautic' => 'Deleted in Mautic',
+'Contact Points' => 'Contact Points',
+'From External Source' => 'From External Source',
+'LBL_ADD_ROW' => 'Add Row',
+'LBL_EDIT_COLUMNS' => 'Edit Columns',
+'LBL_SELECT_COLUMNS' => 'Select columns to show in Mass Create Grid',
+'LBL_MATCH_COLUMNS' => 'Select columns to match in Mass Create Grid',
+'LBL_SAVE_MAP' => 'Save Map',
+'Paste the link here' => 'Paste the link here',
+'LBL_UITYPE10_NOTALLOWED' => 'The related module has a mandatory related field.',
+'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 );
 
 // Translation for currency names

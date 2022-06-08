@@ -15,26 +15,7 @@
 
 function getBusinessActions($view, $module, $id, $linktype, $user) {
 	global $adb, $log;
-
-	// pickup meta data of module
-	$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
-	$handlerPath = $webserviceObject->getHandlerPath();
-	$handlerClass = $webserviceObject->getHandlerClass();
-	require_once $handlerPath;
-	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
-	$meta = $handler->getMeta();
-	$mainModule = $meta->getTabName();  // normalize module name
-	// check modules
-	if (!$meta->isModuleEntity()) {
-		throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
-	}
-
-	// check permission on module
-	$entityName = $meta->getEntityName();
-	$types = vtws_listtypes(null, $user);
-	if (!in_array($entityName, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
-	}
+	vtws_checkListTypesPermission($module, $user);
 	$tabid = getTabid($module);
 	$type = explode(',', $linktype);
 	$action = vtlib_purify($view);
@@ -68,6 +49,5 @@ function getBusinessActions($view, $module, $id, $linktype, $user) {
 		}
 	}
 
-	$businessActions = Vtiger_Link::getAllByType($tabid, $type, $parameters, $user->id, $recordId);
-	return $businessActions;
+	return Vtiger_Link::getAllByType($tabid, $type, $parameters, $user->id, $recordId);
 }

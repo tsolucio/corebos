@@ -18,15 +18,14 @@ class VTEntityData {
 	/**
 	 * Get an entity data object.
 	 *
-	 * @param $adb Pear database instance.
-	 * @param $entityId The id of the entity to load.
-	 * @return The new entity data object.
+	 * @param object Pear database instance
+	 * @param integer The id of the entity to load
+	 * @return VTEntityData new entity data object
 	 */
 	public static function fromEntityId($adb, $entityId) {
 		$obj = new VTEntityData();
 		$obj->entityId = $entityId;
-		$result = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($entityId));
-		$setype = $adb->query_result($result, 0, 'setype');
+		$setype = getSalesEntityType($entityId);
 		$obj->moduleName = $setype;
 
 		require_once 'data/CRMEntity.php';
@@ -41,9 +40,9 @@ class VTEntityData {
 
 	/**
 	 * Get an entity data object.
-	 * @param $adb Pear database instance.
-	 * @param $userId The id of the entity to load.
-	 * @return The new entity data object.
+	 * @param object Pear database instance
+	 * @param integer The id of the entity to load
+	 * @return VTEntityData new entity data object
 	 */
 	public static function fromUserId($adb, $userId) {
 		$obj = new VTEntityData();
@@ -64,8 +63,8 @@ class VTEntityData {
 	/**
 	 * Get an entity data object from a crmentity object
 	 *
-	 * @param $crmEntity The CRMEntity instance.
-	 * @return The new entity data object.
+	 * @param CRMEntity instance
+	 * @return CRMEntity new entity data object
 	 */
 	public static function fromCRMEntity($crmEntity) {
 		$obj = new VTEntityData();
@@ -77,7 +76,7 @@ class VTEntityData {
 	/**
 	 * Get the data from the entity object as an array.
 	 *
-	 * @return An array representation of the module data.
+	 * @return array representation of the module data
 	 */
 	public function getData() {
 		return $this->focus->column_fields;
@@ -86,7 +85,7 @@ class VTEntityData {
 	/**
 	 * Get the entity id.
 	 *
-	 * @return The entity id.
+	 * @return integer entity id
 	 */
 	public function getId() {
 		return (isset($this->focus->id) ? $this->focus->id : 0);
@@ -95,7 +94,7 @@ class VTEntityData {
 	/**
 	 * Get the name of the module represented by the entity data object.
 	 *
-	 * @return The module name.
+	 * @return string module name
 	 */
 	public function getModuleName() {
 		$className = get_class($this->focus);
@@ -127,7 +126,7 @@ class VTEntityData {
 	/**
 	 * Check whether the object is stored on the database.
 	 *
-	 * @return True if the object is saved false otherwiser.
+	 * @return boolean true if the object is saved false otherwiser
 	 */
 	public function isSaved() {
 		return isset($this->focus->id);
@@ -136,7 +135,7 @@ class VTEntityData {
 	/**
 	* Check whether the object is new.
 	*
-	* @return True if the object is new, false otherwise.
+	* @return boolean true if the object is new, false otherwise
 	*/
 	public function isNew() {
 		return $this->isNew;
@@ -144,7 +143,7 @@ class VTEntityData {
 
 	/**
 	* Check whether the object has been deleted.
-	* @return True if the object has been deleted, false otherwise.
+	* @return boolen true if the object has been deleted, false otherwise
 	*/
 	public function isDeleted() {
 		return $this->isDeleted;

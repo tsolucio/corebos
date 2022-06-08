@@ -25,7 +25,6 @@ $focus = new AuditTrail();
 
 $smarty = new vtigerCRM_Smarty();
 
-$category = getParenttab();
 $current_module_strings = return_module_language($current_language, 'Settings');
 
 $smarty->assign('CMOD', $mod_strings);
@@ -33,7 +32,6 @@ $smarty->assign('MOD', $current_module_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('USERLIST', getUserslist(false));
 $smarty->assign('LIST_HEADER', $focus->getAuditTrailHeader());
 $smarty->assign('LIST_FIELDS', $focus->list_fields_name);

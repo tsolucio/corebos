@@ -34,7 +34,7 @@ class DatabaseConfig {
 	 */
 	public static function getInstanceFromConfigFile() {
 		require 'config.inc.php';
-		$config = new DatabaseConfig(
+		return new DatabaseConfig(
 			$dbconfig['db_hostname'],
 			$dbconfig['db_username'],
 			$dbconfig['db_password'],
@@ -43,7 +43,6 @@ class DatabaseConfig {
 			$dbconfig['db_username'],
 			$dbconfig['db_password']
 		);
-		return $config;
 	}
 
 	/**
@@ -52,7 +51,7 @@ class DatabaseConfig {
 	 * @return DatabaseConfig
 	 */
 	public static function getInstanceFromOtherConfig($config) {
-		$newConfig = new DatabaseConfig(
+		return new DatabaseConfig(
 			$config->getHostName(),
 			$config->getUsername(),
 			$config->getPassword(),
@@ -61,7 +60,6 @@ class DatabaseConfig {
 			$config->getRootUsername(),
 			$config->getRootUsername()
 		);
-		return $newConfig;
 	}
 
 	public function getHostName() {

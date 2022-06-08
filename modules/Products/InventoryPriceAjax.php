@@ -21,7 +21,7 @@ if (empty($products_list)) {
 
 	$price_list = array();
 
-	if (count($product_ids) > 0) {
+	if (!empty($product_ids)) {
 		$prices_for_products = getPricesForProducts($currencyid, $product_ids);
 		$prices_for_services = getPricesForProducts($currencyid, $product_ids, 'Services');
 	}

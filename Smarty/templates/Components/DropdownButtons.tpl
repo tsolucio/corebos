@@ -2,17 +2,27 @@
 /*********************************************************************************
   ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
    * ("License"); You may not use this file except in compliance with the License
-   * The Original Code is:  vtiger CRM Open Source
-   * The Initial Developer of the Original Code is vtiger.
-   * Portions created by vtiger are Copyright (C) vtiger.
+   * The Original Code is:  coreBOS Open Source
+   * The Initial Developer of the Original Code is coerBOS.
    * All Rights Reserved.
  ********************************************************************************/
 -->
 *}
 
 <div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-button_last">
-<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="{$MENULABEL|@getTranslatedString}" style="color:#0070d2;width:5rem;" type="button">
+{if isset($MENUIMAGE)}
+	{assign var='MENUBUTTONWIDTH' value=3}
+{else}
+	{assign var='MENUBUTTONWIDTH' value=5}
+{/if}
+<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="{$MENULABEL|@getTranslatedString}" style="color:#0070d2;width:{$MENUBUTTONWIDTH}rem;" type="button">
+{if isset($MENUIMAGE)}
+<svg class="slds-button__icon" aria-hidden="true">
+<use xlink:href="include/LD/assets/icons/{$MENUIMAGE.library}-sprite/svg/symbols.svg#{$MENUIMAGE.icon}"></use>
+</svg>
+{else}
 {$MENULABEL|@getTranslatedString}
+{/if}
 <svg class="slds-button__icon" aria-hidden="true">
 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
 </svg>
@@ -21,6 +31,7 @@
 <div class="slds-dropdown slds-dropdown_right">
 <ul class="slds-dropdown__list" role="menu">
 	{foreach item=CUSTOMLINK from=$MENUBUTTONS}
+	{if is_object($CUSTOMLINK)}
 		{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 		{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
 		{assign var="customlink_id" value=$CUSTOMLINK->linklabel|replace:' ':''}
@@ -44,6 +55,9 @@
 				</span>
 			</a>
 		</li>
+	{else}
+		{$CUSTOMLINK}
+	{/if}
 	{/foreach}
 </ul>
 </div>

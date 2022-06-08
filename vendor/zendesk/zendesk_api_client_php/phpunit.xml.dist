@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit bootstrap="tests/bootstrap.php" colors="true" backupGlobals="false" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true">
+    <php>
+        <env name="SUBDOMAIN" value=""/>
+        <env name="USERNAME" value="blah@zendesk.com"/>
+        <env name="TOKEN" value="testtoken"/>
+        <env name="OAUTH_SECRET" value="testsecret"/>
+        <env name="OAUTH_TOKEN" value="testtoken"/>
+        <env name="END_USER_USERNAME" value="php@zendesk.com"/>
+        <env name="END_USER_PASSWORD" value="123456"/>
+        <env name="END_USER_OAUTH_TOKEN" value="testtoken"/>
+        <env name="SCHEME" value="http"/>
+        <env name="HOSTNAME" value="localhost"/>
+        <env name="PORT" value="8080"/>
+        <env name="AUTH_STRATEGY" value="oauth"/>
+    </php>
+
+    <testsuites>
+        <testsuite name="Zendesk API Unit Test Suites">
+            <directory>./tests/Zendesk/API/UnitTests</directory>
+        </testsuite>
+        <testsuite name="Zendesk API Live Test Suites">
+            <directory>./tests/Zendesk/API/LiveTests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

@@ -197,8 +197,8 @@ function csrf_ob_handler($buffer, $flags) {
 
 /**
  * Checks if this is a post request, and if it is, checks if the nonce is valid.
- * @param bool $fatal Whether or not to fatally error out if there is a problem.
- * @return True if check passes or is not necessary, false if failure.
+ * @param boolean whether or not to fatally error out if there is a problem.
+ * @return boolean true if check passes or is not necessary, false if failure.
  */
 function csrf_check($fatal = true) {
 	if (empty($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -209,6 +209,13 @@ function csrf_check($fatal = true) {
 		$rem_ip = gethostbyname(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST));
 		if (in_array($rem_ip, $valid_ips)) {
 			return true;
+		}
+	}
+	if (isset($_REQUEST['mode'])) {
+		$mode = urldecode(base64_decode($_REQUEST['mode']));
+		if (substr($mode, 0, 4)=='acs_') {
+			$_POST[$GLOBALS['csrf']['input-name']] = substr($mode, 4);
+			$_REQUEST['mode'] = 'acs';
 		}
 	}
 	$exceptions = array(
@@ -283,8 +290,10 @@ function csrf_get_tokens() {
 	}
 	if ($GLOBALS['csrf']['cookie']) {
 		$val = csrf_generate_secret();
-		header('Set-Cookie: '.$GLOBALS['csrf']['cookie'].'='.$val.'; SameSite=Strict', false);
-		//setcookie($GLOBALS['csrf']['cookie'], $val);
+		if (!headers_sent()) {
+			header('Set-Cookie: '.$GLOBALS['csrf']['cookie'].'='.$val.'; SameSite=Strict', false);
+			//setcookie($GLOBALS['csrf']['cookie'], $val);
+		}
 		return 'cookie:' . csrf_hash($val) . $ip;
 	}
 	if ($GLOBALS['csrf']['key']) {

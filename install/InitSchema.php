@@ -60,7 +60,7 @@ class Install_InitSchema {
 		foreach ($queries as $query) {
 			// Trim any whitespace.
 			$query = trim($query);
-			if (!empty($query) && ($query{0} != '#') && ($query{0} != '-')) {
+			if (!empty($query) && (substr($query, 0, 1) != '#') && (substr($query, 0, 1) != '-')) {
 				try {
 					$this->db->query($query);
 					$executed_query++;
@@ -121,7 +121,7 @@ class Install_InitSchema {
 			}
 			$buffer[1] = $query[$i];
 		}
-		// If the is anything left over, add it to the queries.
+		// If there is anything left over, add it to the queries.
 		if (!empty($query)) {
 			$queries[] = $query;
 		}

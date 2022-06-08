@@ -29,6 +29,24 @@ class coreBOS_Rule {
 			'context' => $context,
 		);
 
+		$cache = new corebos_cache();
+		if ($cache->isUsable()) {
+			$cacheKey = md5(implode('', $adb->flatten_array($params)));
+			$query = '(select vtiger_crmentity.modifiedtime
+				from vtiger_crmentity
+				inner join vtiger_cbmap on (vtiger_cbmap.targetname=vtiger_crmentity.setype and vtiger_cbmap.cbmapid=?)
+				where vtiger_crmentity.deleted=0 order by modifiedtime desc limit 1)
+				UNION
+				(select vtiger_crmentity.modifiedtime
+				from vtiger_crmentity
+				where vtiger_crmentity.deleted=0 and vtiger_crmentity.crmid=?) order by modifiedtime desc limit 1';
+			if ($cache->getCacheClient()->hasWithQueryCheck($cacheKey, $query, [$conditionid, $conditionid])) {
+				$cacheValue = $cache->getCacheClient()->get($cacheKey);
+				cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, false, 'Cache', $cacheValue, date('Y-m-d H:i:s')));
+				return $cacheValue;
+			}
+		}
+
 		// check that cbmapid is correct and load it
 		if (preg_match('/^[0-9]+x[0-9]+$/', $conditionid)) {
 			list($cbmapws, $conditionid) = explode('x', $conditionid);
@@ -50,7 +68,7 @@ class coreBOS_Rule {
 		}
 
 		if (is_array($context)) {
-			if (empty($context['record_id']) && $cbmap->column_fields['maptype'] != 'DecisionTable') {
+			if (empty($context['record_id']) && $cbmap->column_fields['maptype'] == 'Condition Query') {
 				cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, WebServiceErrorCode::$INVALIDID, $mapvalues, false, date('Y-m-d H:i:s')));
 				throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'No record_id value given in context array.');
 			}
@@ -111,6 +129,9 @@ class coreBOS_Rule {
 				break;
 		}
 		cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, false, $mapvalues, $ruleinfo, date('Y-m-d H:i:s')));
+		if ($cache->isUsable()) {
+			$cache->getCacheClient()->setMultiple([$cacheKey => $ruleinfo, $cacheKey.$cache->getCacheClient()->getModifiedTimePostfix() => date('YmdHis')]);
+		}
 		return $ruleinfo;
 	}
 }

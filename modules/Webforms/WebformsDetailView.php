@@ -22,7 +22,6 @@ if (isset($_REQUEST['id'])) {
 	$webform=new Webforms();
 	$smarty = new vtigerCRM_Smarty();
 
-	$category = getParentTab();
 	$username = getUserFullName($webformModel->getOwnerId());
 	if (empty($username)) {
 		list($username) = getGroupName($webformModel->getOwnerId());
@@ -36,11 +35,10 @@ if (isset($_REQUEST['id'])) {
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MODULE', $currentModule);
 	$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-	if (isset($tool_buttons)==false) {
+	if (!isset($tool_buttons)) {
 		$tool_buttons = Button_Check($currentModule);
 	}
 	$smarty->assign('CHECK', $tool_buttons);
-	$smarty->assign('CATEGORY', $category);
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('WEBFORMFIELDS', Webforms::getFieldInfos($webformModel->getTargetModule()));
 	$smarty->assign('ACTIONPATH', $site_URL.'/modules/Webforms/capture.php');

@@ -80,11 +80,11 @@ class Vtiger_Role {
 	public function moveTo($role) {
 		global $adb;
 		//parent role has current role id in parent role sequence, remove current role id.
-		$parentRoleSequence = $role->getParentRole().'::'.$this->getId();
+		$parentRoleSeq = $role->getParentRole().'::'.$this->getId();
 		$subDepth=$role->getDepth() + 1;
-		$adb->pquery('update vtiger_role set parentrole=?,depth=? where roleid=?', array($parentRoleSequence, $subDepth, $this->getId()));
+		$adb->pquery('update vtiger_role set parentrole=?,depth=? where roleid=?', array($parentRoleSeq, $subDepth, $this->getId()));
 		$this->setDepty($subDepth);
-		$this->setParentRole($parentRoleSequence);
+		$this->setParentRole($parentRoleSeq);
 	}
 
 	public function delete($role) {
@@ -107,7 +107,6 @@ class Vtiger_Role {
 		$db->pquery('delete from vtiger_role where roleid=?', array($this->getId()));
 
 		$targetParentRoleSequence = $role->getParentRole();
-		$parentRoleSequence = $this->getParentRole();
 		$roleInfoList = getRoleAndSubordinatesInformation($role->getId());
 		$query='update vtiger_role set parentrole=?,depth=? where roleid=?';
 		foreach ($roleInfoList as $roleId => $roleInfo) {
@@ -117,7 +116,7 @@ class Vtiger_Role {
 				continue;
 			}
 			$currentParentRoleSequence = $roleInfo[1];
-			$currentParentRoleSequence = str_replace($parentRoleSequence, $targetParentRoleSequence, $currentParentRoleSequence);
+			$currentParentRoleSequence = str_replace($this->getParentRole(), $targetParentRoleSequence, $currentParentRoleSequence);
 			$subDepth = count(explode('::', $currentParentRoleSequence))-1;
 			$db->pquery($query, array($currentParentRoleSequence, $subDepth, $roleId));
 		}

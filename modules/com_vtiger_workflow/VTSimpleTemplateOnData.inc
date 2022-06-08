@@ -26,9 +26,16 @@ require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
  */
 class VTSimpleTemplateOnData extends VTSimpleTemplate {
 
-	public function render($entityCache, $modulename, $data = array()) {
+	public function render($entityCache, $modulename, $data = array(), $context = array()) {
 		$this->cache = $entityCache;
 		$this->parent = $this;
+		if (empty($context['__WorkflowID'])) {
+			$this->parent->WorkflowID = 0;
+		} else {
+			$this->parent->WorkflowID = $context['__WorkflowID'];
+		}
+		$this->parent->WorkflowEvent = '';
+		$this->parent->WorkflowContext = $context;
 		$this->data = $data;
 		$this->moduleName = $modulename;
 		return $this->parseTemplate();

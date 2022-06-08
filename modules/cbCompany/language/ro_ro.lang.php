@@ -42,6 +42,7 @@ $mod_strings = array(
 	'LBL_COMPANY_LOGO' => 'Logo Firma',
 	'LBL_APPLICATION_LOGOS' => 'Logo-uri Aplicatie',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descriere',
+	'LBL_COMPANY_LEGAL' => 'Textele legale',
 	'Assigned To' => 'Asignata Lui',
 	'Created By' => 'Creata de',
 	'Created Time' => 'Ora Creare',

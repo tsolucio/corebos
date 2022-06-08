@@ -23,17 +23,20 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 
 	$current_date = date('Y-m-d');
 	if (strtolower($entity)=='employee') {
+		$entityType = 'E';
 		$epflds = $adb->getColumnNames('vtiger_cbemployee');
 		if (!in_array('portalpasswordtype', $epflds)) {
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD, 'Necessary portal login fields are not created on employee module');
 		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbEmployee');
 		$sql = 'select id, template_language, user_password, portalpasswordtype, portalloginuser
 			from vtiger_portalinfo
 			inner join vtiger_cbemployee on vtiger_portalinfo.id=vtiger_cbemployee.cbemployeeid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_portalinfo.id
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_portalinfo.id
 			where vtiger_crmentity.deleted=0 and user_name=? and isactive=1 and vtiger_cbemployee.portal=1
 				and vtiger_cbemployee.support_start_date <= ? and vtiger_cbemployee.support_end_date >= ?';
 	} else {
+		$entityType = 'C';
 		$additionalfields = '';
 		$cnflds = $adb->getColumnNames('vtiger_contactdetails');
 		if (in_array('portalpasswordtype', $cnflds)) {
@@ -44,18 +47,20 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 			}
 			$additionalfields = ", 'md5' as portalpasswordtype, $userId as portalloginuser";
 		}
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 		$sql = "select id, template_language, user_password $additionalfields
 			from vtiger_portalinfo
 			inner join vtiger_customerdetails on vtiger_portalinfo.id=vtiger_customerdetails.customerid
 			inner join vtiger_contactdetails on vtiger_portalinfo.id=vtiger_contactdetails.contactid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_portalinfo.id
+			inner join ".$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_portalinfo.id
 			where vtiger_crmentity.deleted=0 and user_name=? and isactive=1 and vtiger_customerdetails.portal=1
-				and vtiger_customerdetails.support_start_date <= ? and vtiger_customerdetails.support_end_date >= ?";
+				and vtiger_customerdetails.support_start_date <= ? and vtiger_customerdetails.support_end_date >= ?';
 	}
 	$ctors = $adb->pquery($sql, array($username, $current_date, $current_date));
 	if ($ctors && $adb->num_rows($ctors)==1) {
 		$token = vtws_getActiveToken(-$ctors->fields['id']);
 		if ($token == null) {
+			vtws_loginportalincfailed($ctors->fields['id'], $entityType);
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN, 'Specified token is invalid or expired');
 		}
 		$pwdtype = $ctors->fields ['portalpasswordtype'];
@@ -68,6 +73,7 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 				$accessCrypt = hash('sha512', $token.$pwd);
 				break;
 			case 'md5':
+				// deepcode ignore InsecureHash: backward compatibility, more secure methods are available
 				$accessCrypt = md5($token.$pwd);
 				break;
 			case 'plaintext':
@@ -76,6 +82,7 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 				break;
 		}
 		if (!hash_equals($accessCrypt, $password)) {
+			vtws_loginportalincfailed($ctors->fields['id'], $entityType);
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD, 'Invalid username or password');
 		}
 		if (!empty($ctors->fields ['portalloginuser'])) {
@@ -96,21 +103,58 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 			if (!$sid) {
 				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Could not create session');
 			}
+			if (vtws_loginportalgetfailed($ctors->fields['id'], $entityType)>GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5)) {
+				throw new WebServiceException(WebServiceErrorCode::$AUTHFAILURE, 'Maximum number of failed attempts reached.');
+			}
 			$sessionManager->set('authenticatedUserId', $userId);
+			$sessionManager->set('authenticatedUserIsPortalUser', 1);
+			$sessionManager->set('authenticatedUserPortalContact', $ctocmrid);
+			vtws_loginportalsetfailed($ctors->fields['id'], $entityType);
 			$accessinfo = array();
 			$accessinfo['sessionName'] = $sessionManager->getSessionId();
 			$accessinfo['user'] = array(
 				'id' => vtws_getEntityId('Users').'x'.$userId,
 				'user_name' => $user->column_fields['user_name'],
-				'accesskey' => $user->column_fields['accesskey'],
+				//'accesskey' => $user->column_fields['accesskey'],
 				'contactid' => vtws_getEntityId(getSalesEntityType($ctocmrid)).'x'.$ctocmrid,
 				'language' => $ctors->fields ['template_language'],
 			);
 			return $accessinfo;
 		} else {
+			vtws_loginportalincfailed($ctors->fields['id'], $entityType);
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSER, 'Given user is inactive');
 		}
 	}
+	if ($ctors && !empty($ctors->fields['id'])) {
+		vtws_loginportalincfailed($ctors->fields['id'], $entityType);
+	}
 	throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'User incorrect or deactivated access.');
+}
+
+function vtws_loginportalincfailed($id, $type) {
+	global $adb;
+	$adb->pquery(
+		'update vtiger_portalinfo set failed_login_attempts=failed_login_attempts+1 where id=? and type=?',
+		array($id, $type)
+	);
+}
+function vtws_loginportalgetfailed($id, $type) {
+	global $adb;
+	$fa = $adb->pquery(
+		'select failed_login_attempts from vtiger_portalinfo where id=? and type=?',
+		array($id, $type)
+	);
+	if ($fa && $adb->num_rows($fa)==1) {
+		return $adb->query_result($fa, 0, 0);
+	} else {
+		return 10000; //big number to block access
+	}
+}
+function vtws_loginportalsetfailed($id, $type) {
+	global $adb;
+	$adb->pquery(
+		'update vtiger_portalinfo set failed_login_attempts=0 where id=? and type=?',
+		array($id, $type)
+	);
 }
 ?>

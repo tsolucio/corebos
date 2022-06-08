@@ -21,7 +21,7 @@ if ($coreBOS_uiapp_showgitversion || $coreBOS_uiapp_showgitdate) {
 	echo '&nbsp;('.($coreBOS_uiapp_showgitversion ? $gitversion : '').($coreBOS_uiapp_showgitdate ? $gitdate : '').')';
 }
 if ($calculate_response_time) {
-	echo('&nbsp;&nbsp;Server response time: '.round(microtime(true) - $startTime, 2).' seconds.');
+	echo '&nbsp;&nbsp;Server response time: '.round(microtime(true) - $startTime, 2).' seconds.';
 }
 ?>
 	</span>
@@ -29,7 +29,7 @@ if ($calculate_response_time) {
 </div>
 <div class="slds-col slds-size_1-of-2 cblds-t-align_right">
 <span class='cblds-t-align_right small slds-p-right_small'>
-	&copy; 2004-<?php echo date('Y'); ?> <a href='<?php echo $coreBOS_uiapp_url; ?>' target='_blank'><?php echo $coreBOS_uiapp_companyname; ?></a>
+	&copy; 2004-<?php echo date('Y'); ?> <a href='<?php echo $coreBOS_uiapp_url; ?>' target='_blank' rel='noopener'><?php echo $coreBOS_uiapp_companyname; ?></a>
 </span>
 </div>
 </footer>

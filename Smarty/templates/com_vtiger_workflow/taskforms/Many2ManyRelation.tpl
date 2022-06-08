@@ -21,27 +21,27 @@
 <script src="modules/com_vtiger_workflow/resources/many2manyrelation.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" charset="utf-8">
-var relrecords = {$task->relrecords|json_encode};
+var relrecords = {if empty($task->relrecords)}[]{else}{$task->relrecords|json_encode}{/if};
 </script>
-<br/>
+<div class="slds-p-around_small">
 <fieldset class="slds-form-element">
   <div class="slds-form-element__control">
     <span class="slds-radio">
-      <input type="radio" id="radio-3" name="relAction" {if ($task->selAct eq "addrel")}{"checked"}{/if} value="addrel" />
+      <input type="radio" id="radio-3" name="relAction" {if isset($task->relAction) && $task->relAction eq "addrel"}{"checked"}{/if} value="addrel" />
       <label class="slds-radio__label" for="radio-3">
         <span class="slds-radio_faux"></span>
         <span class="slds-form-element__label">{'Add Relation'|@getTranslatedString}</span>
       </label>
     </span>
     <span class="slds-radio">
-      <input type="radio" id="radio-4" name="relAction" {if ($task->selAct eq "delrel")}{"checked"}{/if} value="delrel" />
+      <input type="radio" id="radio-4" name="relAction" {if isset($task->relAction) && $task->relAction eq "delrel"}{"checked"}{/if} value="delrel" />
       <label class="slds-radio__label" for="radio-4">
         <span class="slds-radio_faux"></span>
         <span class="slds-form-element__label">{'Delete Relation'|@getTranslatedString}</span>
       </label>
     </span>
     <span class="slds-radio">
-      <input type="radio" id="radio-5" name="relAction" {if ($task->selAct eq "delAllrel")}{"checked"}{/if} value="delAllrel" />
+      <input type="radio" id="radio-5" name="relAction" {if isset($task->relAction) && $task->relAction eq "delAllrel"}{"checked"}{/if} value="delAllrel" />
       <label class="slds-radio__label" for="radio-5">
         <span class="slds-radio_faux"></span>
         <span class="slds-form-element__label">{'Delete All Relation'|@getTranslatedString}&nbsp;
@@ -114,3 +114,4 @@ var relrecords = {$task->relrecords|json_encode};
   <tbody id="selected_recordsDiv">
   </tbody>
 </table>
+</div>

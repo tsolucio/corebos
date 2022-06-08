@@ -66,7 +66,7 @@ class ModComments_DetailViewBlockCommentWidget {
 
 	protected function getModels($parentRecordId, $criteria) {
 		global $adb, $current_user;
-
+		$instances = array();
 		$moduleName = 'ModComments';
 		if (vtlib_isModuleActive($moduleName)) {
 			$entityInstance = CRMEntity::getInstance($moduleName);
@@ -80,7 +80,7 @@ class ModComments_DetailViewBlockCommentWidget {
 					$queryCriteria =  sprintf(' ORDER BY %s.%s DESC LIMIT 5', $entityInstance->table_name, $entityInstance->table_index) ;
 					break;
 				case 'Mine':
-					$queryCriteria = ' AND vtiger_crmentity.smcreatorid=' . $current_user->id.
+					$queryCriteria = ' AND '.$entityInstance->crmentityTable.'.smcreatorid=' . $current_user->id.
 						sprintf(' ORDER BY %s.%s DESC ', $entityInstance->table_name, $entityInstance->table_index);
 					break;
 			}
@@ -88,7 +88,6 @@ class ModComments_DetailViewBlockCommentWidget {
 			$query = $entityInstance->getListQuery($moduleName, sprintf(' AND %s.related_to=?', $entityInstance->table_name));
 			$query .= $queryCriteria;
 			$result = $adb->pquery($query, array($parentRecordId));
-			$instances = array();
 			if ($adb->num_rows($result)) {
 				while ($resultrow = $adb->fetch_array($result)) {
 					$instances[] = new ModComments_CommentsModel($resultrow);
@@ -115,7 +114,7 @@ class ModComments_DetailViewBlockCommentWidget {
 		$BLOCKOPEN = GlobalVariable::getVariable('ModComments_DefaultBlockStatus', 1);
 		$viewer->assign('BLOCKOPEN', $BLOCKOPEN);
 		list($void, $canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array($sourceRecordId, true));
-		$viewer->assign('CANADDCOMMENTS', ($canaddcomments ? 'YES' : 'NO'));
+		$viewer->assign('CANADDCOMMENTS', ($canaddcomments && isPermitted('ModComments', 'CreateView', $sourceRecordId) === 'yes' ? 'YES' : 'NO'));
 		$viewer->assign('COMMENTS', $this->getModels($sourceRecordId, $usecriteria));
 
 		return $viewer->fetch(vtlib_getModuleTemplate('ModComments', 'widgets/DetailViewBlockComment.tpl'));

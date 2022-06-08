@@ -38,7 +38,6 @@ function changeEndtime_StartTime() {
 	let mm1 = dateelements1[1];
 	let yyyy1 = dateelements1[2];
 	let date1 = new Date();
-	//date1.setDate(dd1+1);
 	date1.setYear(yyyy1);
 	date1.setMonth(mm1 - 1, dd1 + 1);
 	let tempdate = getdispDate(date1);
@@ -53,11 +52,9 @@ function changeEndtime_StartTime() {
 			if (hour >= day_change_hour) {
 				date = tempdate;
 				hour = hour - +day_change_hour;
-				//min = min;
 				fmt = 'AM';
 			} else if (hour == 12) {
 				hour = 1;
-				//min = min;
 				fmt = 'PM';
 			} else {
 				hour = +hour + +calendar_other_default_duration;
@@ -68,11 +65,9 @@ function changeEndtime_StartTime() {
 		} else if (fmt == 'AM') {
 			if (hour >= day_change_hour) {
 				hour = hour - +day_change_hour;
-				//min = min;
 				fmt = 'PM';
 			} else if (hour == 12) {
 				hour = 1;
-				//min = min;
 				fmt = 'AM';
 			} else {
 				hour = +hour + +calendar_other_default_duration;

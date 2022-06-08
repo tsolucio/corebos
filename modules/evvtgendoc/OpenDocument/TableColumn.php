@@ -67,16 +67,6 @@ class OpenDocument_TableColumn extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document, $numcols = '') {
 		parent::__construct($node, $document);
 		return true;
-		$numcolsrepeated = $node->getAttributeNS(OpenDocument::NS_TABLE, 'number-columns-repeated');
-		if (empty($numcolsrepeated)) {
-			$numcolsrepeated=$numcols;
-		}
-		if (!empty($numcolsrepeated)) {
-			$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'number-columns-repeated', $numcolsrepeated);
-			$this->numcolsrepeated = $numcolsrepeated;
-		}
-
-		$this->allowedElements = array();
 	}
 
 	/**
@@ -111,14 +101,11 @@ class OpenDocument_TableColumn extends OpenDocument_StyledElement {
 	 * @param mixed $value
 	 */
 	public function __set($name, $value) {
-		switch ($name) {
-			case 'numcolsrepeated':
-				if (!is_int($value) && !ctype_digit($value)) {
-					$value = 1;
-				}
-				$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'number-columns-repeated', $value);
-				break;
-			default:
+		if ($name=='numcolsrepeated') {
+			if (!is_int($value) && !ctype_digit($value)) {
+				$value = 1;
+			}
+			$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'number-columns-repeated', $value);
 		}
 	}
 

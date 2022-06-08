@@ -163,7 +163,7 @@ function isDate(dtStr) {
 		alert(alert_arr.ERR_INVALID_YEAR);
 		return false;
 	}
-	if (dtStr.indexOf(dtCh, pos2+1)!=-1 || isInteger(stripCharsInBag(dtStr, dtCh))==false) {
+	if (dtStr.indexOf(dtCh, pos2+1)!=-1 || !isInteger(stripCharsInBag(dtStr, dtCh))) {
 		alert(alert_arr.ERR_INVALID_DATE);
 		return false;
 	}
@@ -171,9 +171,9 @@ function isDate(dtStr) {
 }
 
 function verify_chart_data(form) {
-	if (form.date_start.value == '' && isDate(form.date_start.value)==false) {
+	if (form.date_start.value == '' && !isDate(form.date_start.value)) {
 		return false;
-	} else if (form.date_end.value == '' && isDate(form.date_end.value)==false) {
+	} else if (form.date_end.value == '' && !isDate(form.date_end.value)) {
 		return false;
 	} else {
 		return true;

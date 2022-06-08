@@ -39,10 +39,7 @@ class crmtogo_UI_BlockModel {
 	}
 
 	public function initCreateData($blockData) {
-		$this->_label = $blockData['label'];
-		if (isset($blockData['fields'])) {
-			$this->_fields = crmtogo_UI_FieldModel::buildModelsFromResponse($blockData['fields']);
-		}
+		$this->initData($blockData);
 	}
 
 	public static function buildCreateModel($blocks) {

@@ -58,7 +58,7 @@ class VTExpressionTokenizer {
 		preg_match_all($tokenRe, $expr, $matches, PREG_SET_ORDER);
 		if (strpos($expr, "''")) {
 			foreach ($matches as &$match) {
-				foreach ($match as $key => $value) {
+				foreach ($match as $value) {
 					if (count($match) == 1 && $value == "''") {
 						$match[] = '';
 						$match[] = '';

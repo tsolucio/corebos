@@ -46,18 +46,24 @@
 	<td class="lvtCol" width="15%" height="70px" style="padding: 5px;" align="right"><b>{$MOD.LBL_TO}</b></td>
 	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$TO_MAIL}</td>
 	</tr>
-		{if 'ccmail'|@emails_checkFieldVisiblityPermission eq '0'}
+	{if 'replyto'|@emails_checkFieldVisiblityPermission eq '0'}
+		<tr>
+		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.replyto}</b></td>
+		<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$REPLYTO}</td>
+		</tr>
+	{/if}
+	{if 'ccmail'|@emails_checkFieldVisiblityPermission eq '0'}
 		<tr>
 		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_CC}</b></td>
 		<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$CC_MAIL}</td>
 		</tr>
-		{/if}
-		{if 'bccmail'|@emails_checkFieldVisiblityPermission eq '0'}
+	{/if}
+	{if 'bccmail'|@emails_checkFieldVisiblityPermission eq '0'}
 		<tr>
 		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_BCC}</b></td>
 		<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$BCC_MAIL}</td>
 		</tr>
-		{/if}
+	{/if}
 	<tr>
 		<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_DATE}</b></td>
 		<td class="dvtCellLabel" style="padding: 5px;">{$DATE_START}&nbsp;</td>
@@ -68,7 +74,7 @@
 	</tr>
 	<tr>
 	<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_SUBJECT}</b></td>
-	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$elements.value}</td>
+	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$elements.value|vtlib_purify}</td>
 	</tr>
 	<tr>
 	<td colspan=3><table width="100%" border=0>
@@ -102,7 +108,7 @@
 	</tr>
 	{elseif $elements.fldname eq 'description'}
 	<tr>
-	<td style="padding: 5px;" colspan="3" valign="top"><div style="overflow:auto;height:415px;width:100%;">{$elements.value}</div></td>
+	<td style="padding: 5px;" colspan="3" valign="top"><div style="overflow:auto;height:415px;width:100%;">{$elements.value|vtlib_purify}</div></td>
 	</tr>
 	{elseif $elements.fldname eq 'filename'}
 	<tr><td colspan="3">

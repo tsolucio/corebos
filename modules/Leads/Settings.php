@@ -9,7 +9,7 @@
  ************************************************************************************/
 global $theme;
 $custom_menu_array = array();
-$custom_menu_array['LeadsMapping']['location'] = 'index.php?module=Settings&action=CustomFieldList&parenttab=Settings&formodule=Leads';
+$custom_menu_array['LeadsMapping']['location'] = 'index.php?module=Settings&action=CustomFieldList&formodule=Leads';
 $custom_menu_array['LeadsMapping']['image_src'] = vtiger_imageurl('custom.gif', $theme);
 $custom_menu_array['LeadsMapping']['desc'] = getTranslatedString('LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION', 'Settings');
 $custom_menu_array['LeadsMapping']['label'] = getTranslatedString('LEADS_CUSTOM_FIELD_MAPPING', 'Settings');

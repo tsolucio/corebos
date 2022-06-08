@@ -14,26 +14,26 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
-require_once 'include/Webservices/Create.php';
+require_once 'include/Webservices/upsert.php';
 
 $mcProcessedReferences = array();
 $mcRecords = array();
 $mcModules = array();
 
 function MassCreate($elements, $user) {
-	global $mcRecords, $mcModules, $adb, $log;
+	global $mcProcessedReferences, $mcRecords, $mcModules, $adb, $log;
 	$mcProcessedReferences = array();
 	$mcRecords = array();
 	$mcModules = array();
 	$failedCreates = [];
 	$successCreates = [];
-
+	$countElements = count($elements);
 	foreach ($elements as &$element) {
-		mcProcessReference($element, $elements);
+		mcProcessReference($element, $elements, $countElements);
 	}
 
 	$types = vtws_listtypes(null, $user);
-	if ($mcModules && count($mcModules) > 0) {
+	if ($mcModules && !empty($mcModules)) {
 		foreach ($mcModules as $module) {
 			if (!in_array($module, $types['types'])) {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied on module'.$module);
@@ -44,7 +44,7 @@ function MassCreate($elements, $user) {
 			require_once $handlerPath;
 			$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 			$meta = $handler->getMeta();
-			if ($meta->hasWriteAccess() !== true) {
+			if ($meta->hasCreateAccess() !== true) {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied on module '.$module);
 			}
 		}
@@ -53,18 +53,30 @@ function MassCreate($elements, $user) {
 	foreach ($mcRecords as &$record) {
 		foreach ($record['element'] as $key => $value) {
 			if (strpos($value, '@{') !== false) {
-				$start = '@{';
-				$end = '}';
-				preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
-				if (isset($match[1][0])) {
-					$reference = $match[1][0];
+				$reference = trim($value, '@{}');
+				if (!empty($reference)) {
 					$id = mcGetRecordId($mcRecords, $reference);
 					$record['element'][$key] = $id;
 				}
 			}
 		}
 		try {
-			$rec = vtws_create($record['elementType'], $record['element'], $user);
+			$updatedfields = implode(',', array_keys($record['element'])); // all fields
+			if (!empty($record['searchon'])) {
+				$searchOn = $record['searchon'];
+				if (!empty($record['condition'])) {
+					$searchOn = [
+						'searchon' => $record['searchon'],
+						'condition' => $record['condition'],
+					];
+				}
+			} else {
+				$searchOn = $updatedfields;
+			}
+			if (!empty($record['validate'])) {
+				$record['element']['cbDORECORDVALIDATION'] = true;
+			}
+			$rec = vtws_upsert($record['elementType'], $record['element'], $searchOn, $updatedfields, $user);
 			$record['id'] = $rec['id'];
 			$successCreates[] = $rec;
 		} catch (Exception $e) {
@@ -95,44 +107,37 @@ function mcGetRecordId($arr, $reference) {
 	return $id;
 }
 
-function mcGetReferenceRecord(&$arr, $reference, $lastReferenceId) {
+function mcGetReferenceRecord(&$arr, $reference, $lastReferenceId, $countElements) {
 	$array = array();
 	$index = null;
-	for ($x = 0; $x <= count($arr); $x++) {
-		if (isset($arr[$x])) {
-			if ($arr[$x]['referenceId'] == $reference) {
-				if (!mcIsCyclicReference($arr[$x], $lastReferenceId)) {
-					$array = $arr[$x];
-					$index = $x;
-					break;
-				} else {
-					throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
-				}
+	for ($x = 0; $x <= $countElements; $x++) {
+		if (isset($arr[$x]) && $arr[$x]['referenceId'] == $reference) {
+			if (!mcIsCyclicReference($arr[$x], $lastReferenceId)) {
+				$array = $arr[$x];
+				$index = $x;
+				break;
+			} else {
+				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
 			}
 		}
 	}
 	return array($index, $array);
 }
 
-function mcProcessReference($element, &$elements) {
+function mcProcessReference($element, &$elements, $countElements) {
 	global $mcProcessedReferences, $mcRecords, $mcModules;
 	foreach ($element['element'] as $value) {
 		if (strpos($value, '@{') !== false) {
-			$start = '@{';
-			$end = '}';
-			preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
-			if (isset($match[1][0])) {
-				$reference = $match[1][0];
-				if (!in_array($reference, $mcProcessedReferences)) {
-					$lastReferenceId = $element['referenceId'];
-					list($index, $array) = mcGetReferenceRecord($elements, $reference, $lastReferenceId);
-					if ($index !== null && $array) {
-						mcProcessReference($array, $elements);
-						unset($elements[$index]);
-						$mcProcessedReferences[] = $reference;
-					} else {
-						throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
-					}
+			$reference = trim($value, '{@}');
+			if (!empty($reference) && !in_array($reference, $mcProcessedReferences)) {
+				$lastReferenceId = $element['referenceId'];
+				list($index, $array) = mcGetReferenceRecord($elements, $reference, $lastReferenceId, $countElements);
+				if ($index !== null && $array) {
+					mcProcessReference($array, $elements, $countElements);
+					unset($elements[$index]);
+					$mcProcessedReferences[] = $reference;
+				} else {
+					throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, 'Invalid reference specified');
 				}
 			}
 		}
@@ -150,7 +155,6 @@ function mcInArray($needle, $arrays) {
 		foreach ($arrays as $array) {
 			if ($array === $needle) {
 				return true;
-				break;
 			}
 		}
 	}
@@ -160,14 +164,9 @@ function mcInArray($needle, $arrays) {
 function mcIsCyclicReference($array, $lastReferenceId) {
 	foreach ($array['element'] as $value) {
 		if (strpos($value, '@{') !== false) {
-			$start = '@{';
-			$end = '}';
-			preg_match_all("/$start([a-zA-Z0-9_]*)$end/", $value, $match);
-			if (isset($match[1][0])) {
-				if ($match[1][0] == $lastReferenceId) {
-					return true;
-					break;
-				}
+			$reference = trim($value, '{@}');
+			if (!empty($reference) && $reference == $lastReferenceId) {
+				return true;
 			}
 		}
 	}

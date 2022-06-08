@@ -18,6 +18,8 @@ function getNewLeads($maxval, $calCnt) {
 	$log->debug('> getNewLeads');
 	require_once 'data/Tracker.php';
 	require_once 'include/utils/utils.php';
+	require_once 'data/CRMEntity.php';
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
 
 	$current_module_strings = return_module_language($current_language, 'Leads');
 
@@ -44,7 +46,7 @@ function getNewLeads($maxval, $calCnt) {
 
 	$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 	$list_query = 'select vtiger_leaddetails.firstname, vtiger_leaddetails.lastname, vtiger_leaddetails.leadid, vtiger_leaddetails.company
-		from vtiger_leaddetails inner join vtiger_crmentity on vtiger_leaddetails.leadid = vtiger_crmentity.crmid
+		from vtiger_leaddetails inner join '.$crmEntityTable.' on vtiger_leaddetails.leadid = vtiger_crmentity.crmid
 		where vtiger_crmentity.deleted =0 AND vtiger_leaddetails.converted = '.$val_conv.' AND vtiger_leaddetails.leadid > 0 AND
 		vtiger_leaddetails.leadstatus not in ("Lost Lead", "Junk Lead","'.$current_module_strings['Lost Lead'].'","'.$current_module_strings['Junk Lead'].'")
 		AND vtiger_crmentity.createdtime >=? AND vtiger_crmentity.smownerid = ?';
@@ -125,8 +127,6 @@ function getNewLeads($maxval, $calCnt) {
 
 	$values=array('ModuleName'=>'Leads','Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 	$log->debug('< getNewLeads');
-	if ((count($entries) == 0 ) || (count($entries)>0)) {
-		return $values;
-	}
+	return $values;
 }
 ?>

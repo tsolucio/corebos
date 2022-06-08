@@ -51,7 +51,7 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 		return $this->meta;
 	}
 
-	public function create($elementType, $element) {
+	public function create($elementType, $elem) {
 		throw new WebServiceException(
 			WebServiceErrorCode::$OPERATIONNOTSUPPORTED,
 			vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$OPERATIONNOTSUPPORTED)
@@ -86,9 +86,7 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 		if (!$success) {
 			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record not found');
 		}
-		$element = $this->getElement();
-		//var_dump($this->meta->getModuleFields());
-		return DataTransform::filterAndSanitize($element, $this->meta);
+		return DataTransform::filterAndSanitize($this->getElement(), $this->meta);
 	}
 
 	public function massRetrieve($wsIds) {
@@ -109,20 +107,19 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 		);
 		$rs = $adb->pquery($query, $wsIds);
 		while (!$rs->EOF) {
-			$element = $rs->FetchRow();
-			$rdo[] = DataTransform::filterAndSanitize($element, $this->meta);
+			$rdo[] = DataTransform::filterAndSanitize($rs->FetchRow(), $this->meta);
 		}
 		return $rdo;
 	}
 
-	public function update($element) {
+	public function update($elem) {
 		throw new WebServiceException(
 			WebServiceErrorCode::$OPERATIONNOTSUPPORTED,
 			vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$OPERATIONNOTSUPPORTED)
 		);
 	}
 
-	public function revise($element) {
+	public function revise($elem) {
 		throw new WebServiceException(
 			WebServiceErrorCode::$OPERATIONNOTSUPPORTED,
 			vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$OPERATIONNOTSUPPORTED)
@@ -140,7 +137,7 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 		$app_strings = VTWS_PreserveGlobal::getGlobal('app_strings');
 		vtws_preserveGlobal('current_user', $this->user);
 		$label = (isset($app_strings[$elementType])) ? $app_strings[$elementType] : $elementType;
-		$createable = $this->meta->hasWriteAccess();
+		$createable = $this->meta->hasCreateAccess();
 		$updateable = $this->meta->hasWriteAccess();
 		$deleteable = $this->meta->hasDeleteAccess();
 		$retrieveable = $this->meta->hasReadAccess();
@@ -171,8 +168,7 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 	public function getModuleFields() {
 		if ($this->moduleFields === null) {
 			$fields = array();
-			$moduleFields = $this->meta->getModuleFields();
-			foreach ($moduleFields as $webserviceField) {
+			foreach ($this->meta->getModuleFields() as $webserviceField) {
 				$fields[] = $this->getDescribeFieldArray($webserviceField);
 			}
 			$this->moduleFields = $fields;
@@ -233,15 +229,16 @@ class ModTrackerOperation extends WebserviceEntityOperation {
 			return $parser->getError();
 		}
 		$mysql_query = $parser->getSql();
-		//$mysql_query = appendFromClauseToQuery($mysql_query, ' inner join vtiger_users on vtiger_users.id=whodid');
 		$meta = $parser->getObjectMetaData();
 		return $mysql_query;
 	}
 
 	public function query($q) {
-		$meta = null;
-		$queryRelatedModules = array();
 		$mysql_query = $this->wsVTQL2SQL($q, $meta, $queryRelatedModules);
+		return $this->querySQLResults($mysql_query, $q, $meta, $queryRelatedModules);
+	}
+
+	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {
 		$this->pearDB->startTransaction();
 		$result = $this->pearDB->pquery($mysql_query, array());
 		$error = $this->pearDB->hasFailedTransaction();

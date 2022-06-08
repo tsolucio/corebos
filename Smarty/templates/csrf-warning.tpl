@@ -16,7 +16,7 @@
 						<p>{$csrfWarning}</p>
 					</div>
 					<footer class="slds-modal__footer slds-theme_default">
-						<button class="slds-button slds-button_neutral" onclick="location.reload()">{$csrfReload}</button>
+						<button class="slds-button slds-button_neutral" onclick="window.history.back()">{$csrfReload}</button>
 					</footer>
 				</div>
 			</section>

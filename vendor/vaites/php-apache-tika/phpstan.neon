@@ -1,0 +1,5 @@
+parameters:
+    checkMissingIterableValueType: false
+    level: 8
+    paths:
+        - src

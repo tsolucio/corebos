@@ -26,7 +26,6 @@ if (isset($_REQUEST['return_action']) && $_REQUEST['return_action']!= '') {
 	$return_action = 'ListProfiles';
 }
 
-//Retreiving the vtiger_tabs permission array
 $tab_perr_result = $adb->pquery('select * from vtiger_profile2tab where profileid=?', array($profileid));
 $act_perr_result = $adb->pquery('select * from vtiger_profile2standardpermissions where profileid=?', array($profileid));
 $act_utility_result = $adb->pquery('select * from vtiger_profile2utility where profileid=?', array($profileid));
@@ -145,9 +144,9 @@ foreach ($modArr as $fld_module => $fld_label) {
 	}
 }
 if ($return_action == 'profilePrivileges' || $return_action == 'ListProfiles') {
-	$loc="index.php?action=$return_action&module=Settings&mode=view&parenttab=Settings&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
+	$loc="index.php?action=$return_action&module=Settings&mode=view&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
 } else {
-	$loc="index.php?action=$return_action&module=Users&mode=view&parenttab=Settings&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
+	$loc="index.php?action=$return_action&module=Users&mode=view&profileid=$profileid&selected_tab=$def_tab&selected_module=$def_module";
 }
 echo $loc;
 

@@ -45,7 +45,7 @@
   `handler` varchar(250) default NULL,
   `active` varchar(250) default NULL,
   `acrole` varchar(250) default NULL,
-  `mandatory` varchar(250) default NULL,
+  `mandatory` varchar(3) default NULL,
   `brmap` int(11) default NULL,
   `businessactions_no` varchar(56) default NULL,
   PRIMARY KEY (`businessactionsid`),

@@ -54,12 +54,7 @@ class ReportRunQueryPlanner {
 	}
 
 	public function requireTable($table, $dependencies = null) {
-
-		if ($this->disablePlanner) {
-			return true;
-		}
-
-		if (isset($this->tables[$table])) {
+		if ($this->disablePlanner || isset($this->tables[$table])) {
 			return true;
 		}
 		if (is_array($dependencies)) {
@@ -95,7 +90,6 @@ class ReportRunQueryPlanner {
 
 			$keyColumns = is_array($keyColumns) ? array_unique($keyColumns) : array($keyColumns);
 
-			// Minor optimization to avoid re-creating similar temporary table.
 			$uniqueName = null;
 			foreach ($this->tempTables as $tmpUniqueName => $tmpTableInfo) {
 				if (strcasecmp($query, $tmpTableInfo['query']) === 0 && $tmpTableInfo['module'] == $module) {
@@ -108,8 +102,6 @@ class ReportRunQueryPlanner {
 
 			// Nothing found?
 			if ($uniqueName === null) {
-				// TODO Adding randomness in name to avoid concurrency
-				// even when same-user opens the report multiple instances at same-time.
 				$uniqueName = $this->tempTablePrefix . str_replace('.', '', uniqid($current_user->id, true)) . (self::$tempTableCounter++);
 				$this->tempTables[$uniqueName] = array(
 					'query' => $query,
@@ -135,11 +127,13 @@ class ReportRunQueryPlanner {
 				$query1 = sprintf('CREATE TEMPORARY TABLE %s AS %s %s', $uniqueName, $tempTableInfo['query'], $reportConditions);
 			}
 			$adb->pquery($query1, array());
-
+			$cntmp = $adb->getColumnNames($uniqueName);
 			$keyColumns = $tempTableInfo['keycolumns'];
 			foreach ($keyColumns as $keyColumn) {
-				$query2 = sprintf('ALTER TABLE %s ADD INDEX (%s)', $uniqueName, $keyColumn);
-				$adb->pquery($query2, array());
+				if (!empty($cntmp[$keyColumn])) {
+					$query2 = sprintf('ALTER TABLE %s ADD INDEX (%s)', $uniqueName, $keyColumn);
+					$adb->pquery($query2, array());
+				}
 			}
 		}
 
@@ -171,7 +165,7 @@ class ReportRunQueryPlanner {
 	 * Function to get report condition query for generating temporary table based on condition given on report.
 	 * It generates condition query by considering fields of $module's base table or vtiger_crmentity table fields.
 	 * It doesn't add condition for reference fields in query.
-	 * @param String $module Module name for which temporary table is generated (Reports secondary module)
+	 * @param string $module Module name for which temporary table is generated (Reports secondary module)
 	 * @return string Returns condition query for generating temporary table.
 	 */
 	private function getReportConditions($module) {
@@ -197,7 +191,7 @@ class ReportRunQueryPlanner {
 				$columnName = $condition['columnname'];
 				$columnParts = explode(':', $columnName);
 				list($moduleName, $fieldLabel) = explode('_', $columnParts[2], 2);
-				$fieldInfo = getFieldByReportLabel($moduleName, $columnParts[3], 'name');
+				$fieldInfo = getFieldByReportLabel($moduleName, $columnParts[3]);
 				if (!empty($fieldInfo)) {
 					$fieldInstance = WebserviceField::fromArray($db, $fieldInfo);
 					$dataType = $fieldInstance->getFieldDataType();

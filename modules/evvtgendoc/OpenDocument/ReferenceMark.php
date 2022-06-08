@@ -106,11 +106,8 @@ class OpenDocument_ReferenceMark extends OpenDocument_StyledElement {
 	 * @param mixed $value
 	 */
 	public function __set($name, $value) {
-		switch ($name) {
-			case 'name':
-				$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'name', $value);
-				break;
-			default:
+		if ($name=='name') {
+			$this->node->setAttributeNS(OpenDocument::NS_TEXT, 'name', $value);
 		}
 	}
 

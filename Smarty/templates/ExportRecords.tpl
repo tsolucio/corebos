@@ -9,9 +9,6 @@
  ********************************************************************************/
 -->*}
 
-<script type="text/javascript" src="include/js/general.js"></script>
-
-<!-- header - level 2 tabs -->
 {include file='Buttons_List.tpl'}
 
 <table class="slds-m-around_medium" style="width: 98%; maring: auto;">
@@ -100,17 +97,38 @@
 												</td>
 												{/if}
 											</tr>
-											<tr>
-												<td colspan="2" align="left" valign="top" style="padding-left:40px;">
-													<span class="genHeaderSmall">{$APP.LBL_SEARCH_CRITERIA_COLUMNS}:</span>
-												</td>
-											</tr>
-											<tr>
-												<td width="50%" class="small cblds-p_large cblds-t-align_right">{$APP.LBL_VISIBLE_COLUMNS}</td>
-												<td width="5%" class="small cblds-p_large">
-													<input type="checkbox" name="visiblecolumns">
-												</td>
-											</tr>
+											{if $MODULE eq 'Users' || $MODULE eq 'Workflow'}
+												<input type="hidden" name="exportfile" value="exportcsvfile">
+											{else}
+												<tr>
+													<td colspan="2" align="left" valign="top" style="padding-left:40px;">
+														<span class="genHeaderSmall">{$APP.LBL_SEARCH_CRITERIA_COLUMNS}:</span>
+													</td>
+												</tr>
+												<tr>
+													<td width="50%" class="small cblds-p_large cblds-t-align_right">{$APP.LBL_VISIBLE_COLUMNS}</td>
+													<td width="5%" class="small cblds-p_large">
+														<input type="checkbox" name="visiblecolumns">
+													</td>
+												</tr>
+												<tr>
+													<td colspan="2" align="left" valign="top" style="padding-left:40px;">
+														<span class="genHeaderSmall">{$APP.LBL_EXPORT_FORMAT}:</span>
+													</td>
+												</tr>
+												<tr>
+													<td align="right" valign="top" width="50%" class="small cblds-p_large cblds-t-align_right">{$APP.LBL_EXPORT_FILE_IN_EXCEL_FORMAT}</td>
+													<td align="left" valign="top" width="5%" class="small cblds-p_large">
+														<input type="radio" name="exportfile" value="exportexcelfile">
+													</td>
+												</tr>
+												<tr>
+													<td align="right" valign="top" width="50%" class="small cblds-p_large cblds-t-align_right">{$APP.LBL_EXPORT_FILE_IN_CSV_FORMAT}</td>
+													<td align="left" valign="top" width="5%" class="small cblds-p_large">
+														<input type="radio" name="exportfile" value="exportcsvfile" checked>
+													</td>
+												</tr>
+											{/if}
 										</table>
 									</td>
 									<td border="0" cellpadding="5" cellspacing="0" width="50%">
@@ -123,7 +141,7 @@
 								</tr>
 								<tr>
 									<td align="center" colspan="2" border=0 cellspacing=0 cellpadding=5 width=98% class="layerPopupTransport cblds-p_large cblds-t-align_center">
-										<input type="button" name="{$APP.LBL_EXPORT}" value="{$APP.LBL_EXPORT} {$MODULELABEL} " class="crmbutton small create" onclick="record_export('{$MODULE}','{$CATEGORY}',this.form,'{if isset($smarty.request.idstring)}{$smarty.request.idstring}{/if}')"/>&nbsp;&nbsp;
+										<input type="button" name="{$APP.LBL_EXPORT}" value="{$APP.LBL_EXPORT} {$MODULELABEL} " class="crmbutton small create" onclick="record_export('{$MODULE}', this.form, '{if isset($smarty.request.idstring)}{$smarty.request.idstring}{/if}')"/>&nbsp;&nbsp;
 										<input type="button" name="{$APP.LBL_CANCEL_BUTTON_LABEL}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="window.history.back()" />
 									</td>
 								</tr>

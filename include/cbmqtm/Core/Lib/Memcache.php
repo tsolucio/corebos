@@ -136,9 +136,9 @@ final class Core_Lib_Memcache extends Memcached
 		return parent::increment($this->key($key), $value);
 	}	
 	
-	public function delete($key)
+	public function delete($key, $time = null)
 	{
-		return parent::delete($this->key($key));
+		return parent::delete($this->key($key), $time);
 	}	
 	
 	public function replace($key, $var, $flags = null, $expire = null)

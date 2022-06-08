@@ -9,11 +9,10 @@
  ************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
-require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 
 class VTUpdateFieldsTask extends VTTask {
-
 	public $executeImmediately = true;
+	public $queable = true;
 
 	public function getFieldNames() {
 		return array('field_value_mapping', 'launchrelwf');
@@ -26,13 +25,12 @@ class VTUpdateFieldsTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $logbg,$from_wf;
+		global $adb, $current_user, $logbg,$from_wf, $currentModule;
 		$from_wf = true;
 		$logbg->debug('> VTUpdateFieldsTask');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 		$isqueue=$entity->isqueue;
-		$taskQueue = new VTTaskQueue($adb);
 		$moduleName = $entity->getModuleName();
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
@@ -52,8 +50,8 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->mode = 'edit';
 			$focus->retrieve_entity_info($recordId, $moduleName);
 			$focus->clearSingletonSaveFields();
-			$logbg->debug('field values pre: '.print_r($focus->column_fields, true));
-			$logbg->debug('update info: '.print_r($fieldValueMapping, true));
+			$logbg->debug('field values pre', $focus->column_fields);
+			$logbg->debug('update info', $fieldValueMapping);
 
 			$hold_user = $current_user;
 			$util->loggedInUser();
@@ -89,9 +87,15 @@ class VTUpdateFieldsTask extends VTTask {
 						$focusrel[$fieldmodule]->retrieve_entity_info($relId, $fieldmodule, false, $from_wf);
 						$focusrel[$fieldmodule]->clearSingletonSaveFields();
 					}
-					if (count($relmodule)>3 && $isqueue==false) {
-						$delay = strtotime(' +5 minutes');
-						$taskQueue->queueTask($this->id, $entityId, $delay);
+					if (count($relmodule)>3 && !$isqueue) {
+						$delay = 5*60; // 5 minutes from now
+						$entityData->WorkflowContext['__WorkflowID'] = $entity->WorkflowID;
+						$msg = array(
+							'taskId' => $this->id,
+							'entityId' => $entityId,
+							'context' => $entity->WorkflowContext,
+						);
+						Workflow::pushWFTaskToQueue($entity->WorkflowID, $entity->WorkflowEvent, $entityId, $msg, $delay);
 						return;
 					}
 					$moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, Users::getActiveAdminUser());
@@ -108,14 +112,15 @@ class VTUpdateFieldsTask extends VTTask {
 					$focusrel[$fieldmodule]->column_fields[$fldrelname]=$fieldValue;
 				}
 			}
-
 			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+			$holdCM = $currentModule;
 			$_REQUEST['ajxaction'] = 'Workflow';
-			$logbg->debug('field values presave: '.print_r($focus->column_fields, true));
+			$logbg->debug('field values presave', $focus->column_fields);
 			$focus->saveentity($moduleName);
-			if (count($relmodule)>0 && $relId!='' && $relId!=0) {
+			if (!empty($relmodule) && !empty($relId)) {
 				foreach ($relmodule as $mod) {
+					$currentModule = $mod;
 					$focusrel[$mod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$mod]->column_fields, $handlerMetarel[$mod]);
 					if ($this->launchrelwf) {
 						$focusrel[$mod]->save($mod);
@@ -134,8 +139,9 @@ class VTUpdateFieldsTask extends VTTask {
 				}
 			}
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
+			$currentModule = $holdCM;
 			$util->revertUser();
-			$logbg->debug('field values postsave: '.print_r($focus->column_fields, true));
+			$logbg->debug('field values postsave', $focus->column_fields);
 		}
 		$util->revertUser();
 		$from_wf = false;

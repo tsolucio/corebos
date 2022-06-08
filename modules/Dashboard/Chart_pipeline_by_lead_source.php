@@ -73,7 +73,7 @@ if (isPermitted('Potentials', 'index')=='yes') {
 	}
 
 	echo DashboardCharts::pipeline_by_lead_source($datax, $date_start, $date_end, $ids, $width, $height);
-	echo "<P><font size='1'><em>".$current_module_strings['LBL_LEAD_SOURCE_FORM_DESC']."</em></font></P>";
+	echo "<p><span style='font-size:1em'><em>".$current_module_strings['LBL_LEAD_SOURCE_FORM_DESC']."</em></span></p>";
 	if (isset($_REQUEST['pbls_edit']) && $_REQUEST['pbls_edit'] == 'true') {
 		?>
 	<form action="index.php" method="post" >
@@ -110,10 +110,10 @@ if (isPermitted('Potentials', 'index')=='yes') {
 	</form>
 	<?php } else {
 		?>
-<div align=right><FONT size='1'>
+<div align=right><span style="font-size:1em">
 [<a href="javascript:void(0)" onClick="changeView('<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
 [<a href="index.php?module=<?php echo $currentModule;?>&action=index&pbls_edit=true&display_view=<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>"><?php echo $current_module_strings['LBL_EDIT'];?></a>]
-</FONT></div>
+</span></div>
 	<?php }
 } else {
 	echo $mod_strings['LBL_NO_PERMISSION'];

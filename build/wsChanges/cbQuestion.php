@@ -21,5 +21,6 @@ $operationInfo = array(
 	'type'    => 'GET',
 	'parameters' => array(
 		array('name' => 'qid','type' => 'string'),
+		array('name' => 'params','type' => 'encoded'),
 	)
 );

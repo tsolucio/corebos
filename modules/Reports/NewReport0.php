@@ -28,15 +28,15 @@ $list_report_form->assign('LANGUAGE', $current_language);
 $list_report_form->assign('MOD', $mod_strings);
 $list_report_form->assign('APP', $app_strings);
 $list_report_form->assign('LBL_CHARSET', $default_charset);
-$list_report_form->assign('REPORTTYPE', isset($_REQUEST['reporttype']) ? vtlib_purify($_REQUEST['reporttype']) : '');
-$list_report_form->assign('REPORTTYPE2', isset($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : '');
+$list_report_form->assign('REPORTTYPE', isset($_REQUEST['reporttype']) ? htmlentities(vtlib_purify($_REQUEST['reporttype']), ENT_QUOTES) : '');
+$list_report_form->assign('REPORTTYPE2', isset($_REQUEST['cbreporttype']) ? htmlentities(vtlib_purify($_REQUEST['cbreporttype']), ENT_QUOTES) : '');
 $repObj = new Reports();
 $folderid = 0;
 if ($recordid!='') {
 	$oRep = new Reports($recordid);
 	$sec_module = array();
 	if ($oRep->secmodule!='') {
-		$sec_mod = explode(":", $oRep->secmodule);
+		$sec_mod = explode(':', $oRep->secmodule);
 		$rel_modules = getReportRelatedModules($oRep->primodule, $oRep);
 		if (!empty($sec_mod)) {
 			foreach ($sec_mod as $module) {
@@ -48,23 +48,11 @@ if ($recordid!='') {
 			}
 		}
 	}
-	if (vtlib_isModuleActive($oRep->primodule)==false) {
-		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 80%; position: relative; z-index: 10000000;'>
-		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-			<span class='genHeaderSmall'>".$mod_strings['LBL_NO_ACCESS']." : ".$oRep->primodule." </span>
-		</td>
-		</tr>
-		<tr>
-		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.close();'>".$app_strings['LBL_CLOSE']."</a><br></td>
-		</tr>
-		</tbody></table>
-		</div>
-		</td></tr></table>";
+	if (!vtlib_isModuleActive($oRep->primodule)) {
+		$list_report_form->assign('APMSG_LOADLDS', 1);
+		$list_report_form->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+		$list_report_form->assign('ERROR_MESSAGE', $mod_strings['LBL_NO_ACCESS'].' : '.getTranslatedString($oRep->primodule, $oRep->primodule));
+		$list_report_form->display('applicationmessage.tpl');
 		die();
 	}
 	$list_report_form->assign('RELATEDMODULES', getReportRelatedModules($oRep->primodule, $oRep));
@@ -107,23 +95,11 @@ if ($recordid!='') {
 	$list_report_form->assign('RESTRICTEDMODULES', '');
 }
 if (!empty($_REQUEST['reportmodule'])) {
-	if (vtlib_isModuleActive($_REQUEST['reportmodule'])==false || isPermitted($_REQUEST['reportmodule'], 'index')!= "yes") {
-		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 80%; position: relative; z-index: 10000000;'>
-		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-			<span class='genHeaderSmall'>".$mod_strings['LBL_NO_ACCESS']." : ".getTranslatedString($_REQUEST['reportmodule'], $_REQUEST['reportmodule'])." </span>
-		</td>
-		</tr>
-		<tr>
-		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.close();'>".$app_strings['LBL_CLOSE']."</a><br></td>
-		</tr>
-		</tbody></table>
-		</div>
-		</td></tr></table>";
+	if (!vtlib_isModuleActive($_REQUEST['reportmodule']) || isPermitted($_REQUEST['reportmodule'], 'index')!= 'yes') {
+		$list_report_form->assign('APMSG_LOADLDS', 1);
+		$list_report_form->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+		$list_report_form->assign('ERROR_MESSAGE', $mod_strings['LBL_NO_ACCESS'].' : '.getTranslatedString($_REQUEST['reportmodule'], $_REQUEST['reportmodule']));
+		$list_report_form->display('applicationmessage.tpl');
 		die();
 	}
 	$list_report_form->assign('RELATEDMODULES', getReportRelatedModules($_REQUEST['reportmodule'], $repObj));
@@ -185,6 +161,7 @@ $list_report_form->assign('DATEFORMAT', $current_user->date_format);
 $list_report_form->assign('JS_DATEFORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 $list_report_form->assign('MODULE', 'Reports');
 $list_report_form->assign('COMPANY_DETAILS', retrieveCompanyDetails());
+$list_report_form->assign('CRITERIA_GROUPS', array());
 
 $list_report_form->display('ReportsStep0.tpl');
 ?>

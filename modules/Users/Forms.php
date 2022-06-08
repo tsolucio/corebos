@@ -82,7 +82,7 @@ function get_validate_record_js() {
 	$esteriskmessage = addslashes($mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings['LBL_FORUSER']);
 //check asteriskdetails end
 
-	$the_script = <<<EOQ
+	return <<<EOQ
 <script type="text/javascript">
 function set_fieldfocus(errorMessage,oMiss_field){
 	alert("$err_missing_required_fields" + errorMessage);
@@ -202,6 +202,5 @@ function verify_data(form) {
 }
 </script>
 EOQ;
-	return $the_script;
 }
 ?>

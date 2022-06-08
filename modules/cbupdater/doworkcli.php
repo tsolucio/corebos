@@ -17,7 +17,8 @@
 *  Version      : 5.5.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-
+require_once 'data/CRMEntity.php';
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbupdater');
 $totalops = 0;
 $totalopsok = 0;
 if (count($argv)!=3) {
@@ -38,8 +39,8 @@ if (count($argv)!=3) {
 		$adb->pquery("ALTER TABLE vtiger_cbupdater ADD COLUMN appcs varchar(3) DEFAULT '1'", array());
 		$currentModule = 'cbupdater';
 		$sql = 'select cbupdaterid,filename,pathfilename,classname, cbupd_no, description, appcs from vtiger_cbupdater
-				inner join vtiger_crmentity on crmid=cbupdaterid
-				where deleted=0 and ';
+				inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbupdaterid
+				where vtiger_crmentity.deleted=0 and ';
 		if (strtolower($ids)=='all') {
 			$sql .= "execstate in ('Pending','Continuous')";
 		} else {

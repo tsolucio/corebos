@@ -16,8 +16,7 @@ if (!empty($_REQUEST['stufftype'])) {
 
 if (!empty($_REQUEST['stufftitle'])) {
 	if (strlen($_REQUEST['stufftitle'])>100) {
-		$temp_str = substr($_REQUEST['stufftitle'], 0, 97).'...';
-		$oHomestuff->stufftitle= $temp_str;
+		$oHomestuff->stufftitle= vtlib_purify(substr($_REQUEST['stufftitle'], 0, 97)).'...';
 	} else {
 		$oHomestuff->stufftitle = vtlib_purify($_REQUEST['stufftitle']);
 	}

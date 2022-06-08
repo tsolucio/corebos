@@ -226,5 +226,7 @@ $mod_strings = array(
 'Free Space' => 'Espacio Libre',
 'Space Consumed' => 'Espacio Consumido',
 'Frequency' => 'Frecuencia de Facturación',
+'ship_countrycode' => 'Código País Envío',
+'bill_countrycode' => 'Código País Facturación',
 );
 ?>

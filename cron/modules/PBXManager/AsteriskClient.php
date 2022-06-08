@@ -74,7 +74,6 @@ function asterisk_IncomingEventCleanup($adb) {
  * Grab the events from server, parse it and process it.
  */
 function asterisk_handleEvents($asterisk, $adb, $version = '1.4') {
-	$fnEntryTime = time();
 	$state = ($version == '1.6')? 'ChannelStateDesc' : 'State';
 	//values of flag for asteriskincomingevents(-1 for stray calls, 0 for incoming calls, 1 for outgoing call)
 	do {
@@ -92,7 +91,6 @@ function asterisk_handleEvents($asterisk, $adb, $version = '1.4') {
 			break;
 		}
 	} while (true);
-
 	return false;
 }
 
@@ -157,6 +155,7 @@ function asterisk_handleResponse2($mainresponse, $adb, $asterisk, $state) {
 				} else {
 					$query = 'INSERT INTO vtiger_asteriskincomingcalls (refuid, from_number, from_name, to_number, callertype, flag, timer) VALUES(?,?,?,?,?,?,?)';
 					$adb->pquery($query, array($uniqueid, $callerNumber, $callerName, $extension, $callerType, 0, time()));
+					sendPBXNotification($callerNumber, $callerName, $extension);
 				}
 			}
 		}
@@ -210,6 +209,7 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk) {
 			if (checkExtension($extensionCalled, $adb)) {
 				$query = 'INSERT INTO vtiger_asteriskincomingcalls (refuid, from_number, from_name, to_number, callertype, flag, timer) VALUES(?,?,?,?,?,?,?)';
 				$adb->pquery($query, array($uid, $callerNumber, $checkresrow['from_name'], $extensionCalled, '', 0, time()));
+				sendPBXNotification($callerNumber, $checkresrow['from_name'], $extensionCalled);
 			}
 		}
 	} elseif ($mainresponse['Event']== 'Newexten' && $mainresponse['AppData'] == 'DIALSTATUS=CONGESTION' || $mainresponse['Event'] == 'Hangup') {
@@ -259,11 +259,40 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk) {
  * Check if extension is configured to user in vtiger
  */
 function checkExtension($ext, $adb) {
-	$sql = 'select 1 from vtiger_asteriskextensions where asterisk_extension=?';
-	$result = $adb->pquery($sql, array($ext));
-	if ($adb->num_rows($result)>0) {
-		return true;
-	} else {
-		return false;
+	$result = $adb->pquery('select 1 from vtiger_asteriskextensions where asterisk_extension=?', array($ext));
+	return ($adb->num_rows($result)>0);
+}
+
+function sendPBXNotification($callerNumber, $callerName, $extensionCalled) {
+	global $adb;
+	if (coreBOS_Settings::getSetting('onesignal_isactive', '') == '1') {
+		$user = $adb->pquery('select userid from vtiger_asteriskextensions where asterisk_extension=?', array($extensionCalled));
+		if ($user && $adb->num_rows($user)>0) {
+			$userid = $adb->query_result($user, 0, 'userid');
+		} else {
+			return;
+		}
+		if (empty($userid)) {
+			return;
+		}
+		require_once 'include/integrations/onesignal/onesignal.php';
+		$message = $app_strings['LBL_CALLER_NUMBER'].':'.$callerNumber .'	'.$app_strings['LBL_CALLER_NAME'].':'.$callerName;
+		$contents = array('en' => $message);
+		$headings = array('en' => $app_strings['LBL_INCOMING_CALL']);
+		$subtitle = array('en' => $app_strings['LBL_CALLER_INFORMATION']);
+		$external_user_id = array($userid);
+		$web_url = '';
+		$web_buttons = array();
+		$filters = array();
+
+		corebos_onesignal::sendDesktopNotification(
+			$contents,
+			$headings,
+			$subtitle,
+			$filters,
+			$external_user_id,
+			$web_url,
+			$web_buttons
+		);
 	}
 }

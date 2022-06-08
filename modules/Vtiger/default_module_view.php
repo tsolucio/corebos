@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+include_once 'modules/GlobalVariable/GlobalVariable.php';
 global $currentModule;
 $singlepane_view = GlobalVariable::getVariable('Application_Single_Pane_View', 0, $currentModule);
 $singlepane_view = empty($singlepane_view) ? 'false' : 'true';

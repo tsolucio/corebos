@@ -167,7 +167,7 @@ class UserPrivilegesWriter {
 		$userFocus->id = $userId;
 		$userFocus->retrieve_entity_info($userId, 'Users');
 		if ($userFocus->is_admin == 'on') {
-			return;
+			return false;
 		}
 
 		$sharingPrivs['defaultOrgSharingPermission'] = getAllDefaultSharingAction();
@@ -438,7 +438,7 @@ class UserPrivilegesWriter {
 	/**
 	 * Method to generate a given module sharing privileges
 	 *
-	 * @param String 	$module
+	 * @param string 	$module
 	 * @param Array 	$sharePerm
 	 * @param Array 	$sharingPrivs
 	 *

@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
-* Copyright 2012-2013 OpenCubed  --  This file is a part of vtMktDashboard.
+* Copyright 2021 Spike
 * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
 * Vizsage Public License (the "License"). You may not use this file except in compliance with the
 * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -12,13 +12,13 @@
 * See the License for the specific language governing permissions and limitations under the
 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************
-*  Module       : MarketingDashboard
-*  Version      : 1.9
-*  Author       : OpenCubed
+*  Module       : Sendgrid Notifications
 *************************************************************************************************/
-
+require_once 'vendor/autoload.php';
 $Vtiger_Utils_Log = false;
 include_once 'vtlib/Vtiger/Module.php';
+use SendGrid\EventWebhook\EventWebhook;
+use SendGrid\EventWebhook\EventWebhookHeader;
 
 function evvtWrite2Log($msg) {
 	$writeLog = true;
@@ -42,7 +42,7 @@ array(
 )
 */
 function sendgridsync($input) {
-	global $adb, $current_user;
+	global $adb, $current_user,$log;
 	$sendgridevents = json_decode($input);
 
 	$date=date('l jS \of F Y h:i:s A');
@@ -51,6 +51,7 @@ function sendgridsync($input) {
 		evvtWrite2Log("$LogContent Error Input Information");
 		return 1;
 	}
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Messages', true);
 	foreach ($sendgridevents as $request) {
 		foreach ($request as $key => $value) {
 			if (!is_object($value)) {
@@ -157,7 +158,7 @@ function sendgridsync($input) {
 			case 'click':
 				$query="Update $updtable set clicked=clicked+1 where $updindex=?";
 				if ($crmtype=='Messages') {
-					$rsdesc = $adb->pquery('select description from vtiger_crmentity where crmid=?', array($crmid));
+					$rsdesc = $adb->pquery('select description from '.$crmEntityTable.' where crmid=?', array($crmid));
 					$desc = $adb->query_result($rsdesc, 0, 'description');
 					$msg = $desc.$request->url.';';
 					$adb->pquery('update vtiger_messages set lasturlclicked=? where messagesid=?', array($request->url, $crmid));
@@ -166,13 +167,15 @@ function sendgridsync($input) {
 		evvtWrite2Log($query);
 		if ((!empty($query) || !empty($msg)) && $crmtype=='Messages') {
 			if (!empty($msg)) {
-				$adb->pquery('update vtiger_crmentity set description=? where crmid=?', array($msg, $crmid));
+				$adb->pquery('update '.$crmEntityTable.' set description=? where crmid=?', array($msg, $crmid));
 			}
 			$adb->pquery('update vtiger_messages set lasteventtime=now() where messagesid=?', array($crmid));
 		}
 		if (!empty($query)) {
 			$adb->pquery($query, array($crmid));
-			$adb->pquery('update vtiger_crmentity set modifiedtime=now() where crmid=?', array($crmid));
+			$mtime = date('Y-m-d H:i:s');
+			$adb->pquery('update '.$crmEntityTable.' set modifiedtime=? where crmid=?', array($crmid, $mtime));
+			$adb->pquery('update vtiger_crmobject set modifiedtime=? where crmid=?', array($crmid, $mtime));
 			//Event triggering code
 			$em->triggerEvent('vtiger.entity.aftersave', $entityData);
 			//Event triggering code ends
@@ -189,5 +192,17 @@ function sendgridsync($input) {
 		);
 		cbEventHandler::do_action('sendgrid.NotificationHook', $notificationInfo);
 	} // foreach all events
+}
+
+function validateSignedNotification($publicValue, $publicKey, $payload) {
+	$headers =getallheaders();
+	$eventWebhook = new EventWebhook();
+	$ecPublicKey = $eventWebhook->convertPublicKeyToECDSA($publicKey);
+	return $eventWebhook->verifySignature(
+		$ecPublicKey,
+		$payload,
+		$headers[EventWebhookHeader::SIGNATURE],
+		$headers[EventWebhookHeader::TIMESTAMP]
+	);
 }
 ?>

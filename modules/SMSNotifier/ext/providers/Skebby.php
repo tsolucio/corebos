@@ -15,14 +15,12 @@
  *************************************************************************************************/
 include_once __DIR__ . '/../ISMSProvider.php';
 
-//include_once 'vtlib/Vtiger/Net/Client.php'; // not used
-
 define('NET_ERROR', 'Errore+di+rete+impossibile+spedire+il+messaggio');
 define('SENDER_ERROR', 'Puoi+specificare+solo+un+tipo+di+mittente,+numerico+o+alfanumerico');
 
-define('SMS_TYPE_CLASSIC', 'classic');
-define('SMS_TYPE_CLASSIC_PLUS', 'classic_plus');
-define('SMS_TYPE_BASIC', 'basic');
+define('SMS_TYPE_CLASSIC', 'TI');
+define('SMS_TYPE_CLASSIC_PLUS', 'GP');
+define('SMS_TYPE_BASIC', 'SI');
 
 /**
  *	Skebby Implementation on corebos plugin
@@ -34,42 +32,39 @@ define('SMS_TYPE_BASIC', 'basic');
  */
 class Skebby implements ISMSProvider {
 
-	private $_username;
-	private $_password;
-	private $_parameters = array();
+	private $userName;
+	private $password;
+	private $parameters = array();
 	private $enableLogging = false;
 	public $helpURL = 'https://www.skebby.com/';
 	public $helpLink = 'Skebby';
 
 	// Skebby gateway
-	const SERVICE_URI = 'https://gateway.skebby.it/';
+	const SERVICE_URI = 'https://api.skebby.it/API/v1.0/REST/';
 	private static $REQUIRED_PARAMETERS = array('Type','From','Prefix'); // parameters specific of Skebby
-
-	public function __construct() {
-	}
 
 	/**
 	 * Function to get provider name
-	 * @return <String> provider name
+	 * @return string provider name
 	 */
 	public function getName() {
 		return $this->helpLink;
 	}
 
 	public function setAuthParameters($username, $password) {
-		$this->_username = $username;
-		$this->_password = $password;
+		$this->userName = $username;
+		$this->password = $password;
 	}
 
 	public function setParameter($key, $value) {
-		$this->_parameters[$key] = $value;
+		$this->parameters[$key] = $value;
 	}
 
-	public function getParameter($key, $defvalue = false) {
-		if (isset($this->_parameters[$key])) {
-			return $this->_parameters[$key];
+	public function getParameter($key, $defaultValue = false) {
+		if (isset($this->parameters[$key])) {
+			return $this->parameters[$key];
 		}
-		return $defvalue;
+		return $defaultValue;
 	}
 
 	public function getRequiredParams() {
@@ -80,22 +75,59 @@ class Skebby implements ISMSProvider {
 		if ($type) {
 			switch (strtoupper($type)) {
 				case self::SERVICE_AUTH:
-					return  self::SERVICE_URI . '/unsupported/vtiger/auth';
+					return self::SERVICE_URI . '/http/auth';
 				case self::SERVICE_SEND:
-					return  self::SERVICE_URI . '/api/send/smseasy/advanced/http.php';
+					return self::SERVICE_URI . '/api/send/smseasy/advanced/http.php';
 				case self::SERVICE_QUERY:
-					return self::SERVICE_URI . '/unsupported/vtiger/querymsg';
+				default:
+					return self::SERVICE_URI . '/http/querymsg';
 			}
 		}
 		return false;
 	}
 
 	protected function prepareParameters() {
-		$params = array('username' => $this->_username, 'password' => $this->_password);
+		$params = array('username' => $this->userName, 'password' => $this->password);
 		foreach (self::$REQUIRED_PARAMETERS as $key) {
 			$params[$key] = $this->getParameter($key);
 		}
 		return $params;
+	}
+
+	private function loginSkebby($username, $password) {
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, self::SERVICE_URI . 'login');
+		curl_setopt($ch, CURLOPT_USERPWD, $username.':'.$password);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($ch);
+		$info = curl_getinfo($ch);
+		curl_close($ch);
+		if ($info['http_code'] != 200) {
+			return array(
+				'errormessage' => $info['url'],
+				'errorcode' => $info['http_code'],
+			);
+		}
+		return explode(';', $response);
+	}
+
+	/**
+	 * Sends an SMS message
+	 */
+	private function sendSMSSkebby($auth, $sendSMS) {
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, self::SERVICE_URI . 'sms');
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'Content-type: application/json',
+			'user_key: ' . $auth[0],
+			'Session_key: ' . $auth[1]
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($sendSMS));
+		$response = curl_exec($ch);
+		curl_close($ch);
+		return json_decode($response, true);
 	}
 
 	public function send($message, $recipients) {
@@ -114,18 +146,16 @@ class Skebby implements ISMSProvider {
 			}
 		}
 
-		$smsType = $params['Type'] ? strtolower($params['Type']) : 'classic_plus';
-
+		$sender = $params['From'] ? $params['From'] : 'SMS';
+		$smsType = $params['Type'] ? strtoupper($params['Type']) : 'GP';
 		switch ($smsType) {
-			case 'basic':
-				$response = $this->skebbyGatewaySendSMS($params['username'], $params['password'], $recipients, $message, SMS_TYPE_BASIC);
+			case 'SI':
+				$response = $this->skebbyGatewaySendSMS($params['username'], $params['password'], $recipients, $message, SMS_TYPE_BASIC, $sender);
 				break;
-			case 'classic':
-			case 'classic_plus':
+			case 'TI':
+			case 'GP':
 			default:
-				$typeToSend = 'classic' == $smsType ? SMS_TYPE_CLASSIC : SMS_TYPE_CLASSIC_PLUS;
-				$sender = $params['From'] ? $params['From'] : 'SMS';
-
+				$typeToSend = 'TI' == $smsType ? SMS_TYPE_CLASSIC : SMS_TYPE_CLASSIC_PLUS;
 				if (is_numeric($sender)) {
 					// Invio SMS con mittente personalizzato di tipo numerico
 					$response = $this->skebbyGatewaySendSMS($params['username'], $params['password'], $recipients, $message, $typeToSend, $sender);
@@ -137,31 +167,40 @@ class Skebby implements ISMSProvider {
 		}
 
 		$this->log('response: ' . print_r($response, true));
-
 		$results = array();
-		foreach ($recipients as $to) {
-			$result = array(  'to' => $to );
-			if ('success' == $response['status']) {
-				$result['id'] = $response['id'] ? $response['id'] : $to;
-				$result['status'] = self::MSG_STATUS_DISPATCHED;
-				$result['error'] = false;
-				$result['statusmessage'] = 'Sent';
-			} else {
-				$result['status'] = self::MSG_STATUS_FAILED;
-				$result['error'] = true;
-				$result['statusmessage'] = $result['message'];
+		if (isset($response['errorcode'])) {
+			$results[] = array(
+				'status' => self::MSG_STATUS_FAILED,
+				'error' => true,
+				'statusmessage' => $response['errorcode'].' - '.$response['errormessage'],
+			);
+		} else {
+			foreach ($recipients as $to) {
+				$result = array('to' => $to);
+				if ('OK' == $response['result']) {
+					$result['id'] = $response['order_id'] ? $response['order_id'] : $to;
+					$result['status'] = self::MSG_STATUS_DISPATCHED;
+					$result['error'] = false;
+					$result['statusmessage'] = 'Sent';
+				} else {
+					$result['status'] = self::MSG_STATUS_FAILED;
+					$result['error'] = true;
+					$result['statusmessage'] = $result['message'];
+				}
+				$results[] = $result;
 			}
-			$results[] = $result;
 		}
 		$this->log('results: ' . print_r($results, true));
 		return $results;
 	}
 
 	public function query($messageid) {
-		$result = array( 'error' => false, 'needlookup' => 1 );
-		$result['status'] = self::MSG_STATUS_DISPATCHED;
-		$result['needlookup'] = 0;
-		return $result;
+		return array(
+			'error' => false,
+			'needlookup' => 1,
+			'status' => self::MSG_STATUS_DISPATCHED,
+			'needlookup' => 0,
+		);
 	}
 
 	public function do_post_request($url, $data, $optional_headers = null) {
@@ -208,68 +247,40 @@ class Skebby implements ISMSProvider {
 	}
 
 	public function skebbyGatewaySendSMS($username, $password, $recipients, $text, $sms_type = SMS_TYPE_CLASSIC, $sender_number = '', $sender_string = '', $user_reference = '', $charset = '', $optional_headers = null) {
-		$url = $this->getServiceUrl(self::SERVICE_SEND);
-
-		switch ($sms_type) {
-			case SMS_TYPE_CLASSIC:
-			default:
-				$method='send_sms_classic';
-				break;
-			case SMS_TYPE_CLASSIC_PLUS:
-				$method='send_sms_classic_report';
-				break;
-			case SMS_TYPE_BASIC:
-				$method='send_sms_basic';
-				break;
+		$auth = $this->loginSkebby($username, $password);
+		$this->log('AUTH: '. print_r($auth, true));
+		if (isset($auth['errorcode'])) {
+			return $auth;
 		}
-
-		$parameters = 'method='
-			.urlencode($method).'&'
-			.'username='.urlencode($username).'&'
-			.'password='.urlencode($password).'&'
-			.'text='.urlencode($text).'&'
-			.'recipients[]='.implode('&recipients[]=', $recipients);
-
 		if ($sender_number != '' && $sender_string != '') {
-			parse_str('status=failed&message='.SENDER_ERROR, $result);
-			return $result;
+			return array(
+				'errormessage' => SENDER_ERROR,
+				'errorcode' => 'failed',
+			);
 		}
-		$parameters .= $sender_number != '' ? '&sender_number='.urlencode($sender_number) : '';
-		$parameters .= $sender_string != '' ? '&sender_string='.urlencode($sender_string) : '';
-
-		$parameters .= $user_reference != '' ? '&user_reference='.urlencode($user_reference) : '';
-
-		switch ($charset) {
-			case 'UTF-8':
-				$parameters .= '&charset='.urlencode('UTF-8');
-				break;
-			case '':
-			case 'ISO-8859-1':
-			default:
-				break;
+		if (!in_array($sms_type, array(SMS_TYPE_CLASSIC_PLUS, SMS_TYPE_BASIC, SMS_TYPE_CLASSIC))) {
+			$sms_type = SMS_TYPE_CLASSIC;
 		}
-
-		$this->log('request'. $parameters);
-
-		parse_str($this->do_post_request($url, $parameters, $optional_headers), $result);
-
-		return $result;
+		$msg = array(
+			'message' => $text,
+			'message_type' => $sms_type,
+			'returnCredits' => true,
+			'recipient' => $recipients,
+			'sender' => ($sender_string != '' ? urlencode($sender_string) : ''),
+			'encoding' => 'UCS2',
+		);
+		$this->log('MESSAGE: '. print_r($msg, true));
+		return $this->sendSMSSkebby($auth, $msg);
 	}
 
 	public function skebbyGatewayGetCredit($username, $password, $charset = '') {
 		$url = $this->getServiceUrl(self::SERVICE_SEND);
 		$method = 'get_credit';
-
-		$parameters = 'method='.urlencode($method).'&username='.urlencode($username).'&password='.urlencode($password);
-
-		switch ($charset) {
-			case 'UTF-8':
-				$parameters .= '&charset='.urlencode('UTF-8');
-				break;
-			default:
+		$params = 'method='.urlencode($method).'&username='.urlencode($username).'&password='.urlencode($password);
+		if ($charset == 'UTF-8') {
+			$params .= '&charset='.urlencode('UTF-8');
 		}
-
-		parse_str($this->do_post_request($url, $parameters), $result);
+		parse_str($this->do_post_request($url, $params), $result);
 		return $result;
 	}
 

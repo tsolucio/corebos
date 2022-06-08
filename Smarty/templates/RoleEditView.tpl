@@ -67,7 +67,6 @@ function validate()
 				{/literal}
 				<input type="hidden" name="module" value="Settings">
 				<input type="hidden" name="action" value="SaveRole">
-				<input type="hidden" name="parenttab" value="Settings">
 				<input type="hidden" name="returnaction" value="{$RETURN_ACTION}">
 				<input type="hidden" name="roleid" value="{$ROLEID}">
 				<input type="hidden" name="mode" value="{$MODE}">
@@ -75,9 +74,9 @@ function validate()
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ico-roles.gif'|@vtiger_imageurl:$THEME}" alt="{$CMOD.LBL_ROLES}" width="48" height="48" border=0 title="{$CMOD.LBL_ROLES}"></td>
 					{if $MODE eq 'edit'}
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listroles&parenttab=Settings">{$CMOD.LBL_ROLES}</a> &gt; {$MOD.LBL_EDIT} &quot;{$ROLENAME}&quot; </b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listroles">{$CMOD.LBL_ROLES}</a> &gt; {$MOD.LBL_EDIT} &quot;{$ROLENAME}&quot; </b></td>
 					{else}
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listroles&parenttab=Settings">{$CMOD.LBL_ROLES}</a> &gt; {$CMOD.LBL_CREATE_NEW_ROLE}</b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listroles">{$CMOD.LBL_ROLES}</a> &gt; {$CMOD.LBL_CREATE_NEW_ROLE}</b></td>
 					{/if}
 				</tr>
 				<tr>

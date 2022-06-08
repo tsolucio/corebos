@@ -32,7 +32,6 @@ $smod_strings = return_module_language($current_language, 'Settings');
 $smarty->assign('MOD', $smod_strings);
 $smarty->assign('MODULE', 'Settings');
 $smarty->assign('IMAGE_PATH', $image_path);
-$smarty->assign('PARENTTAB', $_REQUEST['parenttab']);
 $smarty->assign('APP', $app_strings);
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
@@ -283,7 +282,7 @@ if (!empty($filter)) {
 				$hidden_fields[$key][2]=$resulttrl[2];
 				$hidden_fields[$key][3]=$resulttrl[3];
 			}
-		} elseif (($filter=='fieldstranslated')) {
+		} elseif ($filter=='fieldstranslated') {
 			if ($resulttrl[3]=='fieldstranslated') {
 				$resultft[$key][0]=$resulttrl[0];
 				$resultft[$key][1]=$resulttrl[1];

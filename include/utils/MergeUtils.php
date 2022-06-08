@@ -121,7 +121,7 @@ function utf8ToUnicode($str) {
 		if ($thisValue < 128) {
 			$unicode[] = $thisValue;
 		} else {
-			if (count($values) == 0) {
+			if (empty($values)) {
 				$lookingFor = ( $thisValue < 224 ) ? 2 : 3;
 			}
 

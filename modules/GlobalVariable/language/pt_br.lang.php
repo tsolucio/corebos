@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor: Ranieri Slemer -- translate Portuguese - pt_br - 28-03-2020 -- Sao Paulo/SP/Brazil/www.slemernet.com.br
+ * Contributor: Ranieri Slemer -- translate Portuguese - pt_br - 30-10-2021 -- Sao Paulo/SP/Brazil/www.ecrm360.com.br
  ************************************************************************************/
 
 $mod_strings = array(
@@ -20,21 +20,22 @@ $mod_strings = array(
 	'Definitions' => 'Definições',
 
 	'Name' => 'Variável',
-	'Default' => 'Padrão',
+	'Default' => 'Default',
 	'Value' => 'Valor',
-	'Mandatory' => 'Obrigatório',
-	'User' => 'Atribuída ao Usuário',
+	'Mandatory' => 'Mandatório',
+	'User' => 'Atribuída ao usuário',
 	'Blocked' => 'Agrupado',
 	'Module List' => 'Lista de módulos',
-	'Category' => 'Categoria',
+	'Category' => 'Agrupar pela categoria',
 	'In Module List' => 'Especificar módulos na lista',
 	'Globalno' => 'Nr. variável',
 	'Test' => 'Testar',
 	'Search Value' => 'Procurar valor',
-	'LBL_MANDATORY_VALUE'=>'Apenas um valor <b> obrigatório </ b> é permitido para um determinado módulo e variável',
-	'LBL_MANDATORY_VALUEJS'=>'É permitido um valor "obrigatório" para um determinado módulo e variável',
+	'LBL_MANDATORY_VALUE'=>'Apenas um valor <b> mandatório </ b> é permitido para um determinado módulo e variável',
+	'LBL_MANDATORY_VALUEJS'=>'É permitido um valor "mandatório" para um determinado módulo e variável',
 
 	'System' => 'Sistema',
+	'Application' => 'Aplicação',
 	'User Interface' => 'Interface do usuário',
 	'Performance' => 'Performance',
 	'Module Functionality' => 'Funcionalidade do módulo',

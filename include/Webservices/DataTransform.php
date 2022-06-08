@@ -12,6 +12,8 @@ class DataTransform {
 
 	public static $recordString = 'record_id';
 	public static $recordModuleString = 'record_module';
+	public static $donottrimuitype = array(Field_Metadata::UITYPE_FULL_WIDTH_TEXT_AREA, Field_Metadata::UITYPE_HALF_WIDTH_TEXT_AREA);
+	public static $donottrimftype = array('currency', 'double', 'integer', 'date', 'time');
 
 	public static function sanitizeDataWithColumn($row, $meta) {
 		$newRow = array();
@@ -49,14 +51,15 @@ class DataTransform {
 		$newRow = DataTransform::sanitizeReferences($newRow, $meta);
 		$newRow = DataTransform::sanitizeOwnerFields($newRow, $meta, $t);
 		$newRow = DataTransform::sanitizeFields($newRow, $meta);
-		//$newRow = DataTransform::sanitizeCurrencyFieldsForDisplay($newRow,$meta);
 		return $newRow;
 	}
 
-	public static function sanitizeRetrieveEntityInfo($newRow, $meta) {
+	public static function sanitizeRetrieveEntityInfo($newRow, $meta, $sanitizeText = true) {
 		$newRow = DataTransform::sanitizeDateFieldsForInsert($newRow, $meta);
 		$newRow = DataTransform::sanitizeCurrencyFieldsForInsert($newRow, $meta);
-		$newRow = DataTransform::sanitizeTextFieldsForInsert($newRow, $meta);
+		if ($sanitizeText) {
+			$newRow = DataTransform::sanitizeTextFieldsForInsert($newRow, $meta);
+		}
 		return $newRow;
 	}
 
@@ -64,14 +67,12 @@ class DataTransform {
 		global $adb;
 		$associatedToUser = false;
 		$parentTypeId = null;
-		if (strtolower($meta->getEntityName()) == 'emails') {
-			if (isset($row['parent_id'])) {
-				$components = vtws_getIdComponents($row['parent_id']);
-				$userObj = VtigerWebserviceObject::fromName($adb, 'Users');
-				$parentTypeId = $components[0];
-				if ($components[0] == $userObj->getEntityId()) {
-					$associatedToUser = true;
-				}
+		if (strtolower($meta->getEntityName()) == 'emails' && isset($row['parent_id'])) {
+			$components = vtws_getIdComponents($row['parent_id']);
+			$userObj = VtigerWebserviceObject::fromName($adb, 'Users');
+			$parentTypeId = $components[0];
+			if ($components[0] == $userObj->getEntityId()) {
+				$associatedToUser = true;
 			}
 		}
 		// added to handle the setting reminder time
@@ -81,7 +82,6 @@ class DataTransform {
 				$_REQUEST['mode'] = 'edit';
 
 				$reminder = $row['reminder_time'];
-				$seconds = (int)$reminder%60;
 				$minutes = (int)($reminder/60)%60;
 				$hours = (int)($reminder/(60*60))%24;
 				$days = (int)($reminder/(60*60*24));
@@ -132,30 +132,37 @@ class DataTransform {
 				$row[$field] = $ownerDetails[1];
 			}
 		}
-		if (strtolower($meta->getEntityName()) == 'emails') {
-			if (isset($row['parent_id'])) {
-				if ($associatedToUser === true) {
-					$_REQUEST['module'] = 'Emails';
-					$row['parent_id'] = $row['parent_id'].'@-1|';
-					$_REQUEST['parent_id'] = $row['parent_id'];
-				} else {
-					$referenceHandler = vtws_getModuleHandlerFromId($parentTypeId, $meta->getUser());
-					$referenceMeta = $referenceHandler->getMeta();
-					$fieldId = getEmailFieldId($referenceMeta, $row['parent_id']);
-					$row['parent_id'] .= "@$fieldId|";
-				}
+		if (strtolower($meta->getEntityName()) == 'emails' && isset($row['parent_id'])) {
+			if ($associatedToUser === true) {
+				$_REQUEST['module'] = 'Emails';
+				$row['parent_id'] = $row['parent_id'].'@-1|';
+				$_REQUEST['parent_id'] = $row['parent_id'];
+			} else {
+				$referenceHandler = vtws_getModuleHandlerFromId($parentTypeId, $meta->getUser());
+				$referenceMeta = $referenceHandler->getMeta();
+				$fieldId = getEmailFieldId($referenceMeta, $row['parent_id']);
+				$row['parent_id'] .= "@$fieldId|";
 			}
 		}
+		$row = DataTransform::trimTextFields($row, $meta);
 		if (isset($row['id'])) {
 			unset($row['id']);
 		}
 		if (isset($row[$meta->getObectIndexColumn()])) {
 			unset($row[$meta->getObectIndexColumn()]);
 		}
+		return $row;
+	}
 
-		//$row = DataTransform::sanitizeDateFieldsForInsert($row,$meta);
-		//$row = DataTransform::sanitizeCurrencyFieldsForInsert($row,$meta);
-
+	public static function trimTextFields($row, $meta) {
+		$moduleFields = $meta->getModuleFields();
+		foreach ($moduleFields as $fieldName => $fieldObj) {
+			$ftype = $fieldObj->getFieldDataType();
+			$uitype = $fieldObj->getUIType();
+			if (!empty($row[$fieldName]) && !in_array($ftype, self::$donottrimftype) && !in_array($uitype, self::$donottrimuitype)) {
+				$row[$fieldName] = trim($row[$fieldName]);
+			}
+		}
 		return $row;
 	}
 
@@ -183,10 +190,8 @@ class DataTransform {
 			unset($row[$recordModuleString]);
 		}
 
-		if (isset($row['id'])) {
-			if (strpos($row['id'], 'x')===false) {
-				$row['id'] = vtws_getId($meta->getEntityId(), $row['id']);
-			}
+		if (isset($row['id']) && strpos($row['id'], 'x')===false) {
+			$row['id'] = vtws_getId($meta->getEntityId(), $row['id']);
 		}
 
 		if (isset($row[$recordString])) {
@@ -283,17 +288,13 @@ class DataTransform {
 		global $current_user;
 		$moduleFields = $meta->getModuleFields();
 		foreach ($moduleFields as $fieldName => $fieldObj) {
-			if ($fieldObj->getFieldDataType()=='date') {
-				if (!empty($row[$fieldName])) {
-					$dateFieldObj = new DateTimeField($row[$fieldName]);
-					$row[$fieldName] = $dateFieldObj->getDBInsertDateValue($current_user);
-				}
+			if ($fieldObj->getFieldDataType()=='date' && !empty($row[$fieldName])) {
+				$dateFieldObj = new DateTimeField($row[$fieldName]);
+				$row[$fieldName] = $dateFieldObj->getDBInsertDateValue($current_user);
 			}
-			if ($fieldObj->getFieldDataType()=='datetime') {
-				if (!empty($row[$fieldName])) {
-					$dateFieldObj = new DateTimeField($row[$fieldName]);
-					$row[$fieldName] = substr($dateFieldObj->getDBInsertDateTimeValue(), 0, 16);
-				}
+			if ($fieldObj->getFieldDataType()=='datetime' && !empty($row[$fieldName])) {
+				$dateFieldObj = new DateTimeField($row[$fieldName]);
+				$row[$fieldName] = substr($dateFieldObj->getDBInsertDateTimeValue(), 0, 16);
 			}
 		}
 		return $row;
@@ -303,17 +304,13 @@ class DataTransform {
 		global $current_user;
 		$moduleFields = $meta->getModuleFields();
 		foreach ($moduleFields as $fieldName => $fieldObj) {
-			if ($fieldObj->getFieldDataType()=='date') {
-				if (!empty($row[$fieldName])) {
-					$dateFieldObj = new DateTimeField($row[$fieldName]);
-					$row[$fieldName] = $dateFieldObj->getDisplayDate($current_user);
-				}
+			if ($fieldObj->getFieldDataType()=='date' && !empty($row[$fieldName])) {
+				$dateFieldObj = new DateTimeField($row[$fieldName]);
+				$row[$fieldName] = $dateFieldObj->getDisplayDate($current_user);
 			}
-			if ($fieldObj->getFieldDataType()=='datetime') {
-				if (!empty($row[$fieldName])) {
-					$dateFieldObj = new DateTimeField($row[$fieldName]);
-					$row[$fieldName] = substr($dateFieldObj->getDisplayDateTimeValue(), 0, 16);
-				}
+			if ($fieldObj->getFieldDataType()=='datetime' && !empty($row[$fieldName])) {
+				$dateFieldObj = new DateTimeField($row[$fieldName]);
+				$row[$fieldName] = substr($dateFieldObj->getDisplayDateTimeValue(), 0, 16);
 			}
 		}
 		return $row;
@@ -361,11 +358,42 @@ class DataTransform {
 		$moduleFields = $meta->getModuleFields();
 		foreach ($moduleFields as $fieldName => $fieldObj) {
 			if (($fieldObj->getFieldDataType()=='currency' || $fieldObj->getFieldDataType()=='double') && !empty($row[$fieldName])) {
-				$uitype = $fieldObj->getUIType();
 				$cryFields = new CurrencyField($row[$fieldName]);
 				$cryFields->initialize($current_user);
 				$cryFields->setNumberofDecimals($cryFields::$maxNumberOfDecimals);
 				$row[$fieldName] = $cryFields->getDBInsertedValue($current_user, true);
+			}
+		}
+		return $row;
+	}
+
+	public static function sanitizeReferencesForDB($row, $meta) {
+		$references = $meta->getReferenceFieldDetails();
+		$mname = strtolower($meta->getEntityName());
+		foreach ($references as $field => $typeList) {
+			if ($mname == 'emails' && $field=='parent_id' && isset($row['parent_id']) && strpos($row['parent_id'], '|')) {
+				$row['parent_id'] = explode('|', trim($row['parent_id'], '|'));
+			}
+			if (!empty($row[$field])) {
+				$setref = array();
+				foreach ((array) $row[$field] as $refval) {
+					list($wsid, $crmid) = explode('x', $refval);
+					$setref[] = $crmid;
+				}
+				$row[$field] = implode('|', $setref);
+			}
+			if (isset($row[$field]) && $row[$field]=='') {
+				$row[$field] = null;
+			}
+		}
+		return $row;
+	}
+
+	public static function sanitizeOwnerFieldsForDB($row, $meta) {
+		$ownerFields = $meta->getOwnerFields();
+		foreach ($ownerFields as $field) {
+			if (!empty($row[$field])) {
+				list($wsid, $row[$field]) = explode('x', $row[$field]);
 			}
 		}
 		return $row;

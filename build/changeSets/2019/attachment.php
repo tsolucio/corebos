@@ -24,21 +24,26 @@ class Attachment extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$mod = Vtiger_Module::getInstance("Messages");
-			$block = Vtiger_Block::getInstance('LBL_MESSAGE_INFORMATION', $mod);
-			$field = new Vtiger_Field();
-			$field->name = 'attachment';
-			$field->label = 'Document';
-			$field->column = 'attachment';
-			$field->table = 'vtiger_messages';
-			$field->columntype = 'INT(9)';
-			$field->typeofdata = 'I~O';
-			$field->uitype = '10';
-			$block->addField($field);
-			$field->setRelatedModules(array('Documents'));
-
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$mod = Vtiger_Module::getInstance('Messages');
+			if ($mod) {
+				$block = Vtiger_Block::getInstance('LBL_MESSAGE_INFORMATION', $mod);
+				if (!$block) {
+					$blocks = Vtiger_Block::getAllForModule($mod);
+					$block = reset($blocks);
+				}
+				$field = new Vtiger_Field();
+				$field->name = 'attachment';
+				$field->label = 'Document';
+				$field->column = 'attachment';
+				$field->table = 'vtiger_messages';
+				$field->columntype = 'INT(9)';
+				$field->typeofdata = 'I~O';
+				$field->uitype = '10';
+				$block->addField($field);
+				$field->setRelatedModules(array('Documents'));
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			}
 		}
 		$this->finishExecution();
 	}

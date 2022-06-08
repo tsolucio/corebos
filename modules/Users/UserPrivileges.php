@@ -89,8 +89,8 @@ class UserPrivileges {
 	private function loadSharingPrivilegesFile($userid) {
 		checkFileAccessForInclusion('user_privileges/sharing_privileges_' . $userid . '.php');
 		require "user_privileges/sharing_privileges_$userid.php";
-		$this->defaultOrgSharingPermission = $defaultOrgSharingPermission;
-		$this->related_module_share = $related_module_share;
+		$this->defaultOrgSharingPermission = (empty($defaultOrgSharingPermission) ? [] : $defaultOrgSharingPermission);
+		$this->related_module_share = (empty($related_module_share) ? [] : $related_module_share);
 		$ignore = array('GLOBALS', 'argv', 'argc', '_POST', '_GET', '_COOKIE', '_FILES', '_SERVER', 'userid', 'defaultOrgSharingPermission', 'related_module_share');
 		foreach (get_defined_vars() as $var => $val) {
 			if (!in_array($var, $ignore) && preg_match('/.+_share_\w+_permission/', $var)) {
@@ -178,13 +178,13 @@ class UserPrivileges {
 	 * @return int - SHARING_* const
 	 */
 	public function getModuleSharingPermission($tabid) {
-		return $this->defaultOrgSharingPermission[$tabid];
+		return (isset($this->defaultOrgSharingPermission[$tabid]) ? $this->defaultOrgSharingPermission[$tabid] : null);
 	}
 
 	/**
-	 * @param $tabname - module name
-	 * @param $permission - read|write|delete
-	 * @return array(TODO)
+	 * @param string module name
+	 * @param string read|write|delete
+	 * @return array of module sharing rules
 	 */
 	public function getModuleSharingRules($tabname, $permission) {
 		$varname = $tabname . '_share_' . $permission . '_permission';
@@ -278,7 +278,7 @@ class UserPrivileges {
 	}
 
 	public function hasModuleAccess($tabid) {
-		return ($this->isAdmin() || (!is_null($tabid) && 0 == $this->profileTabsPermission[$tabid]));
+		return ($this->isAdmin() || (!is_null($tabid) && (isset($this->profileTabsPermission[$tabid]) && 0 == $this->profileTabsPermission[$tabid])));
 	}
 
 	public function hasModulePermission($tabid, $actionid) {

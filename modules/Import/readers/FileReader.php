@@ -36,9 +36,7 @@ class Import_File_Reader {
 	}
 
 	public function hasHeader() {
-		return $this->userInputObject->get('has_header') == 'on'
-				|| $this->userInputObject->get('has_header') == 1
-				|| $this->userInputObject->get('has_header') == true;
+		return $this->userInputObject->get('has_header')=='on' || $this->userInputObject->get('has_header')==1 || $this->userInputObject->get('has_header');
 	}
 
 	public function getFirstRowData($hasHeader = true) {
@@ -92,7 +90,7 @@ class Import_File_Reader {
 
 		$columnsListQuery = 'id INT PRIMARY KEY AUTO_INCREMENT, status INT DEFAULT 0, recordid INT';
 		foreach ($fieldMapping as $fieldName => $index) {
-			$columnsListQuery .= ','.$fieldName.' TEXT';
+			$columnsListQuery .= ','.$fieldName.' MEDIUMTEXT';
 		}
 		$createTableQuery = 'CREATE TABLE '. $tableName . ' ('.$columnsListQuery.')';
 		$adb->query($createTableQuery);

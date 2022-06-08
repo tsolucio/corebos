@@ -92,7 +92,6 @@ function cbws_getViewsInformation($viewids, $module) {
 			'name' => $cvrow['viewname'],
 			'status' => $cvrow['status'],
 		);
-		//$advft_criteria = json_encode($customView->getAdvFilterByCvid($cvrow['cvid']));
 		$advft_criteria = $customView->getAdvFilterByCvid($cvrow['cvid']);
 		$advft = array();
 		$groupnum = 1;

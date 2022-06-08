@@ -9,10 +9,13 @@
  ********************************************************************************/
 
 if (isset($_REQUEST['file']) && ($_REQUEST['file'] !='')) {
-	checkFileAccessForInclusion('modules/Settings/'.vtlib_purify($_REQUEST['file']).'.php');
-	require_once 'modules/Settings/'.vtlib_purify($_REQUEST['file']).'.php';
-}
-if (isset($_REQUEST['orgajax']) && ($_REQUEST['orgajax'] !='')) {
+	$moduleFilepath = 'modules/Settings/'.vtlib_purify($_REQUEST['file']).'.php';
+	if (file_exists($moduleFilepath) == false) {
+		$moduleFilepath = 'modules/Vtiger/'.$_REQUEST['file'].'.php';
+	}
+	checkFileAccessForInclusion($moduleFilepath);
+	require_once $moduleFilepath;
+} elseif (isset($_REQUEST['orgajax']) && ($_REQUEST['orgajax'] !='')) {
 	checkFileAccessForInclusion('modules/Settings/CreateSharingRule.php');
 	require_once 'modules/Settings/CreateSharingRule.php';
 }

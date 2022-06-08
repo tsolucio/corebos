@@ -106,6 +106,7 @@ $mod_strings = array(
 	'LBL_NO_DOCUMENTS' => 'Nici un Document',
 	'LBL_DESCRIPTION' => 'Descriere',
 	'FILE_HAS_NO_DATA' => 'Fisierul selectat nu contine date sau e invalid',
+	'NotShared' => 'File not shared',
 	'LBL_MAXIMUM_20' => 'Maxim 20',
 	'LBL_MAXIMUM_50' => 'Maxim 50',
 	'Folder Name' => 'Nume Dosar',

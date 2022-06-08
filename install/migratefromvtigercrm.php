@@ -27,6 +27,18 @@ $current_user = Users::getActiveAdminUser();
 
 @include_once 'install/config.db.php';
 $adb->query("SET SESSION sql_mode = ''");
+$adb->query('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
+	crmid int(19),
+	cbuuid char(40),
+	deleted tinyint(1),
+	setype varchar(100),
+	smownerid int(19),
+	modifiedtime datetime,
+	PRIMARY KEY (crmid),
+	INDEX (cbuuid),
+	INDEX (deleted),
+	INDEX (setype)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8');
 
 // mandatory coreBOS DB changes
 $result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
@@ -50,37 +62,53 @@ $adb->query("CREATE TABLE IF NOT EXISTS com_vtiger_workflow_tasktypes (
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8", array());
 $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schtypeid'));
 if (!($adb->num_rows($result))) {
-	$adb->query("ALTER TABLE com_vtiger_workflows ADD schtypeid INT(10)", array());
+	$adb->query("ALTER TABLE com_vtiger_workflows ADD schtypeid INT(10)");
 }
 $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schtime'));
 if (!($adb->num_rows($result))) {
-	$adb->query("ALTER TABLE com_vtiger_workflows ADD schtime TIME", array());
+	$adb->query("ALTER TABLE com_vtiger_workflows ADD schtime TIME");
 } else {
-	$adb->query('ALTER TABLE com_vtiger_workflows CHANGE schtime schtime TIME NULL DEFAULT NULL', array());
+	$adb->query('ALTER TABLE com_vtiger_workflows CHANGE schtime schtime TIME NULL DEFAULT NULL');
 }
 $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schdayofmonth'));
 if (!($adb->num_rows($result))) {
-	$adb->query("ALTER TABLE com_vtiger_workflows ADD schdayofmonth VARCHAR(200)", array());
+	$adb->query("ALTER TABLE com_vtiger_workflows ADD schdayofmonth VARCHAR(200)");
 }
 $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schdayofweek'));
 if (!($adb->num_rows($result))) {
-	$adb->query("ALTER TABLE com_vtiger_workflows ADD schdayofweek VARCHAR(200)", array());
+	$adb->query("ALTER TABLE com_vtiger_workflows ADD schdayofweek VARCHAR(200)");
 }
 $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schannualdates'));
 if (!($adb->num_rows($result))) {
-	$adb->query("ALTER TABLE com_vtiger_workflows ADD schannualdates VARCHAR(200)", array());
+	$adb->query("ALTER TABLE com_vtiger_workflows ADD schannualdates VARCHAR(200)");
 }
 $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('nexttrigger_time'));
 if (!($adb->num_rows($result))) {
-	$adb->query("ALTER TABLE com_vtiger_workflows ADD nexttrigger_time DATETIME", array());
+	$adb->query("ALTER TABLE com_vtiger_workflows ADD nexttrigger_time DATETIME");
 }
 $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('purpose'));
 if (!($adb->num_rows($result))) {
-	$adb->query("ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;", array());
+	$adb->query("ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;");
 }
 $result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('relatemodule'));
 if (!($adb->num_rows($result))) {
-	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;', array());
+	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
+}
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('options'));
+if (!($adb->num_rows($result))) {
+	$adb->query('ALTER TABLE com_vtiger_workflows ADD options VARCHAR(100)');
+}
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('cbquestion'));
+if (!($adb->num_rows($result))) {
+	$adb->query('ALTER TABLE com_vtiger_workflows ADD cbquestion INT(11)');
+}
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('recordset'));
+if (!($adb->num_rows($result))) {
+	$adb->query('ALTER TABLE com_vtiger_workflows ADD recordset INT(11)');
+}
+$result = $adb->pquery('show columns from com_vtiger_workflows like ?', array('onerecord'));
+if (!($adb->num_rows($result))) {
+	$adb->query('ALTER TABLE com_vtiger_workflows ADD onerecord INT(11)');
 }
 $taskTypes = array();
 $defaultModules = array('include' => array(), 'exclude'=>array());

@@ -183,6 +183,19 @@ class Vtiger_Cron {
 	}
 
 	/**
+	 * Calculate next trigger time
+	 */
+	public function getNextTriggerTime() {
+		if (!$this->isDisabled() && !$this->isRunning()) {
+			$lastTime = ($this->getLastEnd() > 0) ? $this->getLastEnd() : $this->getLastStart();
+			$ntt = max($this->getFrequency() + $lastTime, $this->getFrequency() - time());
+		} else {
+			$ntt = time();
+		}
+		return $ntt;
+	}
+
+	/**
 	 * Helper function to check the status value.
 	 */
 	public function statusEqual($value) {
@@ -221,7 +234,7 @@ class Vtiger_Cron {
 			case self::$STATUS_RUNNING:
 				break;
 			default:
-				throw new Exception('Invalid status');
+				throw new InvalidArgumentException('Invalid status');
 		}
 		self::querySilent('UPDATE vtiger_cron_task SET status=? WHERE id=?', array($status, $this->getId()));
 	}
@@ -332,14 +345,17 @@ class Vtiger_Cron {
 
 	public static function nextSequence() {
 		global $adb;
-		$result = self::querySilent('SELECT MAX(sequence) FROM vtiger_cron_task ORDER BY SEQUENCE');
+		$result = self::querySilent('SELECT MAX(sequence) as mx FROM vtiger_cron_task');
 		if ($result && $adb->num_rows($result)) {
 			$row = $adb->fetch_array($result);
+			if (empty($row['mx'])) {
+				$row['mx'] = 1;
+			}
+		} else {
+			$row = array();
+			$row['mx'] = 1;
 		}
-		if ($row == null) {
-			$row['max(sequence)'] = 1;
-		}
-		return $row['max(sequence)']+1;
+		return $row['mx']+1;
 	}
 
 	/**
@@ -348,7 +364,7 @@ class Vtiger_Cron {
 	public static function register($name, $handler_file, $frequency, $module = 'Home', $status = 1, $sequence = 0, $description = '', $alerttime = 0) {
 		self::initializeSchema();
 		self::getInstance($name);
-		if ($sequence == 0) {
+		if (empty($sequence)) {
 			$sequence = self::nextSequence();
 		}
 		self::querySilent(

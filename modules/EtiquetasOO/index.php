@@ -108,12 +108,10 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	}
 	$etiq_tab = (empty($app_strings[$tab['tablabel']]) ? $tab['tablabel'] : $app_strings[$tab['tablabel']] );
 	$arr_options[$tab['name']] = $etiq_tab;
-	//echo '<option value="'.$tab['name'].'">'.$etiq_tab.'</option>';
 }
 foreach ($special_modules as $sp_key => $sp_value) {
 	$etiq_tab = $sp_key;
 	$arr_options[$sp_key] = $etiq_tab;
-	//echo '<option value="'.$sp_value.'">'.$etiq_tab.'</option>';
 }
 array_multisort($arr_options);
 echo '<option value="top">'.$eoo_strings['ElijaModulo'].'</option>';
@@ -209,7 +207,6 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	echo '</li>';
 }
 foreach ($special_modules as $sp_key => $sp_value) {
-	//$mod_strings = return_module_language($current_language, $sp_value);
 	$etiq_tab = $sp_key;
 	echo '<li><a name="'.$sp_key.'"></a>';
 	outputOONoIconHeader($etiq_tab);

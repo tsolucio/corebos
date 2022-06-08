@@ -16,7 +16,7 @@
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
-if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+if (isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') {
 	$toggle_historicos = 'Ver Prospectos SIN Convertir';
 	$toggle_name = 'Prospectos Históricos';
 } else {

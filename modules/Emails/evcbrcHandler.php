@@ -17,7 +17,7 @@ class evcbrcHandler extends VTEventHandler {
 
 	public function handleEvent($eventName, $entityData) {
 
-		if ($eventName == 'vtiger.entity.aftersave') {
+		if ($eventName == 'vtiger.entity.aftersave.first') {
 			// Entity has been saved, take next action
 			global $adb;
 			$moduleName = $entityData->getModuleName();

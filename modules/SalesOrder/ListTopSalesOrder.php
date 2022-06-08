@@ -29,7 +29,7 @@ function getTopSalesOrder($maxval, $calCnt) {
 	$order_by = '';
 	$oCustomView = new CustomView("SalesOrder");
 	$oCustomView->getCustomViewCombo();
-	if (isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='') {
+	if (!isset($_REQUEST['viewname']) || $_REQUEST['viewname']=='') {
 		if ($oCustomView->setdefaultviewid != "") {
 			$viewid = $oCustomView->setdefaultviewid;
 		} else {
@@ -37,7 +37,6 @@ function getTopSalesOrder($maxval, $calCnt) {
 		}
 	}
 
-	//Retreive the list from Database
 	//<<<<<<<<<customview>>>>>>>>>
 	$currentModule = 'SalesOrder';
 	$viewId = getCvIdOfAll($currentModule);
@@ -76,17 +75,14 @@ function getTopSalesOrder($maxval, $calCnt) {
 
 	$list_result = $adb->query($query);
 
-	//Retreiving the no of rows
 	$noofrows = $adb->num_rows($list_result);
 
-	//Retreiving the start value from request
 	if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 		$start = vtlib_purify($_REQUEST['start']);
 	} else {
 		$start = 1;
 	}
 
-	//Retreive the Navigation array
 	$navigation_array = getNavigationValues($start, $noofrows, $list_max_entries_per_page);
 
 	if ($navigation_array['start'] == 1) {
@@ -112,7 +108,6 @@ function getTopSalesOrder($maxval, $calCnt) {
 
 	$focus = new SalesOrder();
 
-	//Retreive the List View Table Header
 	$title=array('myTopSalesOrders.gif',$current_module_strings['LBL_MY_TOP_SO'],'home_mytopso');
 	$controller = new ListViewController($adb, $current_user, $queryGenerator);
 	$controller->setHeaderSorting(false);
@@ -120,8 +115,7 @@ function getTopSalesOrder($maxval, $calCnt) {
 
 	$entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, true);
 
-	$values=array('ModuleName'=>'SalesOrder','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-	return $values;
+	return array('ModuleName'=>'SalesOrder', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
 }
 
 function getTopSalesOrderSearch($output) {

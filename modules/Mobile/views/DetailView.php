@@ -52,7 +52,6 @@ class crmtogo_UI_DetailView extends crmtogo_WS_FetchRecordDetails {
 				//module currently not supported
 				$current_module_strings = return_module_language($current_language, 'Mobile');
 				$viewer->assign('MESSAGE', $current_module_strings['LBL_NOT_SUPPORTED']);
-				//$response = $viewer->process('Unsupported.tpl');
 				return $response;
 			}
 			$record = crmtogo_UI_ModuleRecordModel::buildModelFromResponse($wsResponseResult['record']);

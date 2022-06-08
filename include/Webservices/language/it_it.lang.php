@@ -9,10 +9,8 @@
   ********************************************************************************/
 $app_strings = array (
 	'Groups'=>'Gruppi',
-	'DocumentFolders'=>'Cartelle Documenti',
 	'Currency'=>'Valute',
 	'SINGLE_Groups'=>'Gruppo',
-	'SINGLE_DocumentFolders'=>'Cartella Documento',
 	'SINGLE_Currency'=>'Valuta',
 );
 
@@ -21,5 +19,6 @@ $webservice_strings = array(
 	'LBL_NEW_PASSWORD_MISMATCH' => "La nuova password e la conferma della nuova password non coincidono",
 	'LBL_DATABASE_QUERY_ERROR' => 'Errore del database durante l\'esecuione dell\'operazione',
 	'LBL_CHANGE_PASSWORD_FAILURE' => 'Errore nella modifica della password',
+	'LBL_PASSWORD_NOT_STRONG' => 'To keep your data safe, we suggest that you use a strong password. Password should be at least 8 characters long, include one number, one lowercase alphabet character, one uppercase alphabet character and one special character',
 );
 ?>

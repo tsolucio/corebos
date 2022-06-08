@@ -28,9 +28,11 @@ class ConvertLeadUI {
 
 	public function __construct($leadid, $current_user) {
 		global $adb;
+		require_once 'data/CRMEntity.php';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
 		$this->leadid = $leadid;
 		$this->current_user = $current_user;
-		$sql = 'SELECT * FROM vtiger_leaddetails,vtiger_leadscf,vtiger_crmentity
+		$sql = 'SELECT * FROM vtiger_leaddetails,vtiger_leadscf,'.$crmEntityTable.'
 			WHERE vtiger_leaddetails.leadid=vtiger_leadscf.leadid
 			AND vtiger_leaddetails.leadid=vtiger_crmentity.crmid
 			AND vtiger_leaddetails.leadid =?';
@@ -44,20 +46,13 @@ class ConvertLeadUI {
 
 	public function isModuleActive($module) {
 		include_once 'include/utils/VtlibUtils.php';
-		return vtlib_isModuleActive($module) && ((isPermitted($module, 'EditView') == 'yes'));
+		return vtlib_isModuleActive($module) && (isPermitted($module, 'EditView') == 'yes');
 	}
 
 	public function isActive($field, $mod) {
 		global $adb;
-		$tabid = getTabid($mod);
-		$query = 'select * from vtiger_field where fieldname = ? and tabid = ? and presence in (0,2)';
-		$res = $adb->pquery($query, array($field, $tabid));
-		$rows = $adb->num_rows($res);
-		if ($rows > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		$res = $adb->pquery('select 1 from vtiger_field where fieldname=? and tabid=? and presence in (0,2)', array($field, getTabid($mod)));
+		return ($adb->num_rows($res) > 0);
 	}
 
 	public function isMandatory($module, $fieldname) {
@@ -81,10 +76,9 @@ class ConvertLeadUI {
 
 	public function setAssignedToInfo() {
 		$userid = $this->row['smownerid'];
-		//Retreiving the current user id
 		if ($userid != '') {
 			global $adb;
-			$res = $adb->pquery('SELECT * from vtiger_users WHERE id = ?', array($userid));
+			$res = $adb->pquery('SELECT * from vtiger_users WHERE id=?', array($userid));
 			$rows = $adb->num_rows($res);
 			$this->leadowner = $userid;
 			if ($rows > 0) {
@@ -118,7 +112,6 @@ class ConvertLeadUI {
 	}
 
 	public function getLeadInfo() {
-		//Retreive lead details from database
 		return $this->row;
 	}
 
@@ -188,8 +181,13 @@ class ConvertLeadUI {
 			$owner = get_group_array(false, 'Active', $this->row['smownerid'], $private);
 		}
 		$owner_list = array();
+		$assignuser = GlobalVariable::getVariable('Lead_Convert_AssignedUser', $this->row['smownerid'], 'Leads');
+		if (strtolower($assignuser)=='current_user') {
+			global $current_user;
+			$assignuser = $current_user->id;
+		}
 		foreach ($owner as $id => $name) {
-			if ($id == $this->row['smownerid']) {
+			if ($id == $assignuser) {
 				$owner_list[] = array($type . 'id' => $id, $type . 'name' => $name, 'selected' => true);
 			} else {
 				$owner_list[] = array($type . 'id' => $id, $type . 'name' => $name, 'selected' => false);
@@ -204,9 +202,9 @@ class ConvertLeadUI {
 			$userprivs = $user->getPrivileges();
 			$Acc_tabid = getTabid('Accounts');
 			$con_tabid = getTabid('Contacts');
-			if ($userprivs->getModuleSharingPermission($Acc_tabid) === 0 || $userprivs->getModuleSharingPermission($Acc_tabid) == 3) {
-				$private = 'private';
-			} elseif ($userprivs->getModuleSharingPermission($con_tabid) === 0 || $userprivs->getModuleSharingPermission($con_tabid) == 3) {
+			if ($userprivs->getModuleSharingPermission($Acc_tabid) === 0 || $userprivs->getModuleSharingPermission($Acc_tabid) == 3
+				|| $userprivs->getModuleSharingPermission($con_tabid) === 0 || $userprivs->getModuleSharingPermission($con_tabid) == 3
+			) {
 				$private = 'private';
 			}
 		}

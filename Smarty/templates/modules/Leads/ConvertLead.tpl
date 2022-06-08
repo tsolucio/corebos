@@ -16,7 +16,6 @@
 	<input type="hidden" name="transferToName" value="{$row.company}">
 	<input type="hidden" name="record" value="{$UIINFO->getLeadId()}">
 	<input type="hidden" name="action">
-	<input type="hidden" name="parenttab" value="{$CATEGORY}">
 	<input type="hidden" name="current_user_id" value="{$UIINFO->getUserId()}'">
 	<span id="convertLeadHeaderTitle" style="display:none;">
 		<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">

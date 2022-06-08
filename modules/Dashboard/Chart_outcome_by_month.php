@@ -81,7 +81,7 @@ if (isPermitted('Potentials', 'index')=='yes') {
 	}
 
 	echo DashboardCharts::outcome_by_month($date_start, $date_end, $ids, $width, $height);
-	echo "<P><font size='1'><em>".$current_module_strings['LBL_MONTH_BY_OUTCOME_DESC']."</em></font></P>";
+	echo "<p><span style='font-size:1em'><em>".$current_module_strings['LBL_MONTH_BY_OUTCOME_DESC']."</em></span></p>";
 	if (isset($_REQUEST['obm_edit']) && $_REQUEST['obm_edit'] == 'true') {
 		$cal_lang = "en";
 		$cal_dateformat = parse_calendardate($app_strings['NTC_DATE_FORMAT']);
@@ -102,14 +102,14 @@ if (isPermitted('Potentials', 'index')=='yes') {
 <td valign='top' ><input class="text" name="obm_date_start" size='12' maxlength='10' id='date_start' value='<?php
 if (isset($_SESSION['obm_date_start'])) {
 	echo vtlib_purify($_SESSION['obm_date_start']);
-}?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_start_trigger"> </td>
+}?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_start_trigger" alt="date"> </td>
 </tr><tr>
 <tr>
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_DATE_END'];?><br><em><?php echo $app_strings['NTC_DATE_FORMAT']?></em></td>
 <td valign='top' ><input class="text" name="obm_date_end" size='12' maxlength='10' id='date_end' value='<?php
 if (isset($_SESSION['obm_date_end'])) {
 	echo vtlib_purify($_SESSION['obm_date_end']);
-}?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_end_trigger"> </td>
+}?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_end_trigger" alt="date"> </td>
 </tr><tr>
 <td nowrap><?php echo $current_module_strings['LBL_USERS'];?></td>
 		<?php
@@ -142,10 +142,10 @@ if (isset($_SESSION['obm_date_end'])) {
 
 	<?php } else {
 		?>
-<div align=right><FONT size='1'>
+<div align=right><span style="font-size:1em">
 [<a href="javascript:;" onClick="changeView('<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
 [<a href="index.php?module=<?php echo $currentModule;?>&action=index&obm_edit=true&display_view=<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>"><?php echo $current_module_strings['LBL_EDIT'];?></a>]
-</FONT></div>
+</span></div>
 	<?php }
 } else {
 	echo $mod_strings['LBL_NO_PERMISSION'];

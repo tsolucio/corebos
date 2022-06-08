@@ -39,7 +39,7 @@ function changeInstallType(obj) {
 		<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tr>
 			<td rowspan="2" valign="top" width="50" class="cblds-p_none"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48"></td>
-			<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.VTLIB_LBL_MODULE_MANAGER} &gt; {$MOD.LBL_UPGRADE} </b></td>
+			<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.VTLIB_LBL_MODULE_MANAGER} &gt; {$MOD.LBL_UPGRADE} </b></td>
 		</tr>
 
 		<tr>
@@ -84,7 +84,6 @@ function changeInstallType(obj) {
 								<input type="hidden" name="module" value="Settings">
 								<input type="hidden" name="action" value="ModuleManager">
 								<input type="hidden" name="module_update" value="Step2">
-								<input type="hidden" name="parenttab" value="Settings">
 								<input type="hidden" name="target_modulename" value="{$smarty.request.src_module|@vtlib_purify}">
 								<input type="submit" class="crmbutton small edit" value="{$MOD.LBL_UPGRADE}" onclick="return modulemanager_update_validate(this.form)">
 								<input type="submit" class="crmbutton small delete" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onclick="this.form.module_update.value='';">

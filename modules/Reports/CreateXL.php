@@ -62,6 +62,5 @@ header('Content-Length: '.@filesize($fname));
 header('Content-disposition: attachment; filename="'.$oReportRun->getReportName(true, true).'.xls"');
 $fh=fopen($fname, 'rb');
 fpassthru($fh);
-//unlink($fname);
 exit();
 ?>

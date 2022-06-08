@@ -27,10 +27,10 @@ class VTSMSTask extends VTTask {
 			$ws_id = $entity->getId();
 			$entityCache = new VTEntityCache($admin);
 			$et = new VTSimpleTemplate($this->sms_recepient);
-			$recepient = $et->render($entityCache, $ws_id);
+			$recepient = $et->render($entityCache, $ws_id, [], $entity->WorkflowContext);
 			$recepients = explode(',', $recepient);
 			$ct = new VTSimpleTemplate($this->content);
-			$content = $ct->render($entityCache, $ws_id);
+			$content = $ct->render($entityCache, $ws_id, [], $entity->WorkflowContext);
 			$relatedCRMid = substr($ws_id, stripos($ws_id, 'x')+1);
 			$relatedModule = $entity->getModuleName();
 			/** Pickup only non-empty numbers */
@@ -43,6 +43,7 @@ class VTSMSTask extends VTTask {
 			if (!empty($tonumbers)) {
 				SMSNotifier::sendsms($content, $tonumbers, $current_user->id, $relatedCRMid, $relatedModule);
 			}
+			$util->revertUser();
 		}
 	}
 }

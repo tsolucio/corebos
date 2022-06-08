@@ -13,9 +13,6 @@ require_once 'include/utils/utils.php';
 include_once 'vtlib/Vtiger/Module.php';
 
 class cbPulse extends CRMEntity {
-
-	public $db;
-
 	public $table_name = 'vtiger_cbpulse';
 	public $table_index= 'cbpulseid';
 	public $column_fields = array();
@@ -108,8 +105,8 @@ class cbPulse extends CRMEntity {
 	}
 	/**
 	 * Invoked when special actions are performed on the module.
-	 * @param String Module name
-	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 * @param string Module name
+	 * @param string Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {

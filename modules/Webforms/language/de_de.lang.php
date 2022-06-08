@@ -9,6 +9,8 @@
  ************************************************************************************/
 $mod_strings = array (
 	'Webforms' => 'Webformulare',
+	'SINGLE_Webforms' => 'Webformulare',
+	'Webforms ID' => 'Webformulare ID',
 	'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
 	'LBL_SUCCESS' => 'Vielen Dank. Ihre Nachricht wurde empfangen und wird von uns umgehend bearbeitet.',
 	'LBL_FAILURE' => 'Fehler bei der Übertragung. Bitte noch einmal versuchen.',

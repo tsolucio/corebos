@@ -9,18 +9,32 @@
  ************************************************************************************/
 require_once 'modules/Users/UserPrivileges.php';
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
+include_once 'include/utils/utils.php';
+require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
+require_once 'modules/cbMap/cbMap.php';
+require_once 'include/Webservices/Utils.php';
 use \RobThree\Auth\TwoFactorAuth;
 
 class VTSimpleTemplate {
 
-	public function __construct($templateString, $keepvariable = false) {
+	private $formatValue = true;
+
+	public function __construct($templateString, $keepvariable = false, $formatValue = true) {
 		$this->template = $templateString;
 		$this->keepvariable = $keepvariable;
+		$this->formatValue = $formatValue;
 	}
 
-	public function render($entityCache, $entityId, $void = array()) {
+	public function render($entityCache, $entityId, $void = array(), $context = array()) {
 		$this->cache = $entityCache;
 		$this->parent = $this->cache->forId($entityId);
+		if (empty($context['__WorkflowID'])) {
+			$this->parent->WorkflowID = 0;
+		} else {
+			$this->parent->WorkflowID = $context['__WorkflowID'];
+		}
+		$this->parent->WorkflowEvent = '';
+		$this->parent->WorkflowContext = $context;
 		return $this->parseTemplate();
 	}
 
@@ -30,12 +44,14 @@ class VTSimpleTemplate {
 		if (count($matches)==0) {
 			$fieldname = $match[1];
 			$data = $this->parent->getData();
-			if ($this->useValue($data, $fieldname)) {
+			if ($fieldname=='recordid') {
+				list($void, $result) = explode('x', $data['id']);
+			} elseif ($this->useValue($data, $fieldname)) {
 				$moduleName = $this->parent->getModuleName();
 				$module_focus = Vtiger_Module::getInstance($moduleName);
 				$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
 				$uitype = $field_focus->uitype;
-				if ($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype')) {
+				if ($uitype == '15' || $uitype == '33') {
 					$result = getTranslatedString($data[$fieldname], $moduleName);
 				} elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
 					$date = new DateTimeField($data[$fieldname]);
@@ -91,7 +107,7 @@ class VTSimpleTemplate {
 									$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
 									$uitype = $field_focus->uitype;
 								}
-								if ($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype')) {
+								if ($uitype == '15' || $uitype == '33') {
 									$result = getTranslatedString($data[$fieldname], $referenceModule);
 								} elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
 									$date = new DateTimeField($data[$fieldname]);
@@ -100,6 +116,9 @@ class VTSimpleTemplate {
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayDateTimeValue($current_user);
 								} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9') {
+									if (!$this->formatValue) {
+										return $data[$fieldname];
+									}
 									$currencyField = new CurrencyField($data[$fieldname]);
 									$result = $currencyField->getDisplayValue(null, true);
 								} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == 'time_start' || $fieldname == 'time_end'))) { // time
@@ -289,6 +308,7 @@ class VTSimpleTemplate {
 
 	private function getInventoryDetails($format, $field) {
 		global $adb, $current_user;
+		require_once 'data/CRMEntity.php';
 		$format = strtolower($format);
 		if ($format!='html' && $format!='text'&& $format!='table') {
 			$format = 'html';
@@ -316,15 +336,19 @@ class VTSimpleTemplate {
 		$singlefield = (count($fields)==1);
 		// Checking if field present in the table.
 		// To Do.
-
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 		$wsid = $this->parent->getId();
 		list($wsid,$crmid) = explode('x', $wsid);
+		$relfield = getFirstFieldForModule('InventoryDetails', $this->parent->getModuleName());
+		if ($relfield=='') {
+			return '';
+		}
 		$cmsqlws = 'SELECT '.$field.'
 			FROM vtiger_inventorydetails
-			INNER JOIN vtiger_crmentity ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
+			INNER JOIN '.$crmEntityTable.' ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
 			LEFT JOIN vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
 			LEFT JOIN vtiger_service ON vtiger_inventorydetails.productid=vtiger_service.serviceid
-			WHERE related_to=? order by sequence_no';
+			WHERE vtiger_inventorydetails.'.$relfield.'=? order by vtiger_inventorydetails.sequence_no';
 		$retcm = '';
 		$wsid = $this->parent->getId();
 		$cmrs = $adb->pquery($cmsqlws, array($crmid));
@@ -382,30 +406,210 @@ class VTSimpleTemplate {
 		return $retcm;
 	}
 
-	private function getinvitedUsersList($recid) {
+	private function getRelatedList($relmodule, $format, $field, $rlcondition = '') {
+		global $adb, $currentModule;
+		$modulename = $this->parent->getModuleName();
+		$mmtabid = getTabid($modulename);
+		$rmtabid = getTabid($relmodule);
+		$rs = $adb->pquery('select relation_id,name from vtiger_relatedlists where tabid=? and related_tabid=? limit 1', array($mmtabid, $rmtabid));
+		if ($adb->num_rows($rs)==0) {
+			return '';
+		}
+		$func = $adb->query_result($rs, 0, 'name');
+		$relid = $adb->query_result($rs, 0, 'relation_id');
+		$mod = CRMEntity::getInstance($modulename);
+		$wsid = $this->parent->getId();
+		list($wsid,$crmid) = explode('x', $wsid);
+		$maptype = '';
+		if (!empty($rlcondition)) {
+			$cbmap = cbMap::getMapByID($rlcondition);
+			if ($cbmap) {
+				$maptype = $cbmap->column_fields['maptype']; // we can add condition query support here in the future
+			}
+		}
+		$mod->retrieve_entity_info($crmid, $modulename);
+		$mod->id = $crmid;
+		$_REQUEST['relation_id'] = $relid;
+		$_REQUEST['module'] = $modulename;
+		$_REQUEST['record'] = $crmid;
+		$_REQUEST['action'] = 'CallRelatedList';
+		$hold = isset($currentModule) ? $currentModule : '';
+		$currentModule = $modulename;
+		$params = array($crmid, $mmtabid, $rmtabid);
+		$relationData = call_user_func_array(array($mod, $func), array_values($params));
+		$currentModule = $hold;
+		if (empty($relationData['entries'])) {
+			return '';
+		}
+		$fields = array();
+		$idx = 1;
+		$firstentry = reset($relationData['entries']);
+		foreach ($firstentry as $row) {
+			$matches = preg_match_all("/vtfieldname='(.+?)'/", $row, $fname);
+			if ($matches) {
+				$fields[$idx] = $fname[1][0];
+			} else {
+				$fields[$idx] = 'nodef';
+			}
+			$idx++;
+		}
+		if ($field!='*') {
+			$fields2show = explode(',', $field);
+		} else {
+			$fields2show = $fields;
+		}
+		$format = strtolower($format);
+		if ($format!='html' && $format!='text' && $format!='table') {
+			$format = 'html';
+		}
+		$html = ($format == 'html');
+		$table = ($format == 'table');
+		$retrl = '';
+		if ($html) {
+			$retrl .= '<div class="relatedlist">';
+		}
+		if ($table) {
+			$retrl .= '<table class="relatedlist"><tbody>';
+		}
+		$numelems = count($relationData['header']);
+		$idx = 1;
+		if ($html) {
+			$retrl .= '<div class="relatedlistheaderrow"><ul class="relatedlistheaderfields">';
+		}
+		if ($table) {
+			$retrl .= '<tr class="relatedlistheaderrow">';
+		}
+		foreach ($relationData['header'] as $row) {
+			if ($idx==$numelems) {
+				$idx++;
+				continue;
+			}
+			if (!in_array($fields[$idx], $fields2show)) {
+				$idx++;
+				continue;
+			}
+			if ($html) {
+				$retrl .= '<li class="relatedlistheaderfield">';
+			}
+			if ($table) {
+				$retrl .= '<td class="relatedlistheaderfield">';
+			}
+			$retrl .= vtlib_purify(evvt_strip_html_links($row));
+			if ($html) {
+				$retrl .= '</li>';
+			}
+			if ($table) {
+				$retrl .= '</td>';
+			}
+			$idx++;
+		}
+		if ($html) {
+			$retrl .= '</ul></div>';
+		}
+		if ($table) {
+			$retrl .= '</tr>';
+		}
+		if (!$html && !$table) {
+			$retrl .= "\n";
+		}
+		$relmod_entId = vtws_getEntityId($relmodule);
+		foreach ($relationData['entries'] as $rowindex => $row) {
+			$relrecid = (int) $rowindex;
+			try {
+				if ($maptype == 'Condition Expression' && !$cbmap->ConditionExpression($relmod_entId.'x'.$relrecid)) {
+					continue;
+				}
+			} catch (Exception $e) {
+			}
+			$idx = 1;
+			if ($html) {
+				$retrl .= '<div class="relatedlistrow"><ul class="relatedlistfields">';
+			}
+			if ($table) {
+				$retrl .= '<tr class="relatedlistrow">';
+			}
+			foreach ($row as $fieldvalue) {
+				if ($idx==$numelems) {
+					$idx++;
+					continue;
+				}
+				if (!in_array($fields[$idx], $fields2show)) {
+					$idx++;
+					continue;
+				}
+				if ($html) {
+					$retrl .= '<li class="relatedlistfield">';
+				}
+				if ($table) {
+					$retrl .= '<td class="relatedlistfield">';
+				}
+				$retrl .= str_replace('<span></span>', '', vtlib_purify(evvt_strip_html_links($fieldvalue)));
+				if ($html) {
+					$retrl .= '</li>';
+				}
+				if ($table) {
+					$retrl .= '</td>';
+				}
+				$idx++;
+			}
+			if (!$html && !$table) {
+				$retrl .= "\n";
+			}
+			if ($html) {
+				$retrl .= '</ul></div>';
+			}
+			if ($table) {
+				$retrl .= '</tr>';
+			}
+		}
+		if ($html) {
+			$retrl .= '</div>';
+		}
+		if ($table) {
+			$retrl .= '</tbody></table>';
+		}
+		return $retrl;
+	}
+
+	private function getActivityRelatedEmailList($recid, $query) {
 		global $adb;
 		$modulename = $this->parent->getModuleName();
-		if ($modulename!='Events') {
+		if ($modulename!='cbCalendar') {
 			return '';
 		}
 		list($wsid,$activity_id) = explode('x', $recid);
-		$user_result = $adb->pquery(
-			'SELECT vtiger_users.email1
-			FROM vtiger_salesmanactivityrel
-			inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid
-			where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0',
-			array($activity_id)
-		);
+		$user_result = $adb->pquery($query, array($activity_id));
 		$ulist = array();
 		while ($user_result_row = $adb->fetch_array($user_result)) {
 			if (!in_array($user_result_row['email1'], $ulist)) {
 				$ulist[] = $user_result_row['email1'];
 			}
 		}
-		if (count($ulist)>0) {
+		if (!empty($ulist)) {
 			return implode(',', $ulist);
 		}
 		return '';
+	}
+
+	private function getinvitedUsersList($recid) {
+		return $this->getActivityRelatedEmailList(
+			$recid,
+			'SELECT vtiger_users.email1
+			FROM vtiger_salesmanactivityrel
+			inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid
+			where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0'
+		);
+	}
+
+	private function getRelatedContactsList($recid) {
+		return $this->getActivityRelatedEmailList(
+			$recid,
+			'SELECT email
+			FROM vtiger_contactdetails
+			inner join vtiger_cntactivityrel on vtiger_cntactivityrel.contactid=vtiger_contactdetails.contactid
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+			where vtiger_cntactivityrel.activityid=? and vtiger_crmentity.deleted=0'
+		);
 	}
 
 	public function getGroupFieldList($groupref, $fieldname) {
@@ -431,8 +635,7 @@ class VTSimpleTemplate {
 				$parts[] = $data[$fieldname];
 			}
 		}
-		$result = implode(',', $parts);
-		return $result;
+		return implode(',', $parts);
 	}
 
 	protected function useValue($data, $fieldname) {
@@ -479,6 +682,10 @@ class VTSimpleTemplate {
 		if (substr($fieldname, 0, 14)=='groupEmailList') {
 			$groupname = trim(str_replace('_', ' ', substr($fieldname, 14)));
 			$fieldname = 'groupEmailList';
+		}
+		if (substr($fieldname, 0, 18)=='groupUsersWsIdList') {
+			$groupname = trim(str_replace('_', ' ', substr($fieldname, 18)));
+			$fieldname = 'groupUsersWsIdList';
 		}
 		if (substr($fieldname, 0, 8)=='comments' || strpos($fieldname, '_comments')>0) {
 			if (strpos($fieldname, '_')>0) {
@@ -544,6 +751,46 @@ class VTSimpleTemplate {
 		if (substr($fieldname, 0, 11) == 'scanBarCode') {
 			list($fieldname, $codetype, $field) = explode('->', decode_html($fieldname));
 		}
+		$bmapid = '';
+		if (strtolower(substr($fieldname, 0, 11)) == 'relatedlist') {
+			$rlspec = substr($fieldname, 12);
+			if (strpos($rlspec, 'bmap_') !== false) {
+				$maploc = strpos($rlspec, 'bmap_');
+				$mapsec = substr($rlspec, $maploc, strlen($rlspec));
+				$rlspec = trim(str_replace($mapsec, '', $rlspec));
+				list ($identifier, $bmapid) = explode('_', $mapsec);
+				if (!intval($bmapid)) {
+					$bmapid = cbMap::getMapIdByName($bmapid);
+				}
+			}
+			if (strlen($rlspec)>0) {
+				$underscore = strpos($rlspec, '_');
+				if ($underscore!==false) {
+					$relmodule = substr($rlspec, 0, $underscore);
+					$rlspec = substr($rlspec, $underscore+1);
+					if (strlen($rlspec)>0) {
+						$underscore = strpos($rlspec, '_');
+						if ($underscore!==false) {
+							$format = substr($rlspec, 0, $underscore);
+							$field = substr($rlspec, $underscore+1);
+						} else {
+							$format = $rlspec;
+							$field = '*';
+						}
+					} else {
+						$format = 'html';
+						$field = '*';
+					}
+				} else {
+					$relmodule = $rlspec;
+					$format = 'html';
+					$field = '*';
+				}
+			} else {
+				return '';
+			}
+			$fieldname = 'RelatedList';
+		}
 		switch ($fieldname) {
 			case 'date':
 				return getNewDisplayDate();
@@ -556,11 +803,7 @@ class VTSimpleTemplate {
 				$parts = explode('x', $wsId);
 				$recordId = $parts[1];
 				$moduleName = $this->parent->getModuleName();
-				if ($moduleName == 'Calendar') {
-					return $site_URL.'/index.php?action=DetailView&module=cbCalendar&record='.$recordId;
-				} else {
-					return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
-				}
+				return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
 			case 'portaldetailviewurl':
 				$wsId = $this->parent->getId();
 				$parts = explode('x', $wsId);
@@ -576,11 +819,14 @@ class VTSimpleTemplate {
 				if ($moduleName == 'Products') {
 					$recorIdName = 'productid';
 				}
-				$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
+				$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'https://your_support_domain.tld/customerportal');
 				$PORTALUSED = GlobalVariable::getVariable('Application_Customer_Portal_BeingUsed', 'vtigercrmportal');
 				switch ($PORTALUSED) {
 					case 'coreboscp':
 						$purl = $PORTAL_URL.'/index.php#vtentity/'.$moduleName.'/list/'.$wsId.'/dvcpage/0';
+						break;
+					case 'reactadmin':
+						$purl = $PORTAL_URL.'/#/'.$moduleName.'/'.$wsId.'/show';
 						break;
 					case 'vtigercrmportal':
 					default:
@@ -590,7 +836,7 @@ class VTSimpleTemplate {
 			case 'siteurl':
 				return $site_URL;
 			case 'portalurl':
-				return GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
+				return GlobalVariable::getVariable('Application_Customer_Portal_URL', 'https://your_support_domain.tld/customerportal');
 			case 'logo':
 				return '<img src="cid:logo" />';
 			case 'recordId':
@@ -606,8 +852,14 @@ class VTSimpleTemplate {
 				return $this->getInventoryDetails($format, $field);
 			case 'groupEmailList':
 				return $this->getGroupFieldList($groupname, 'email1');
+			case 'groupUsersWsIdList':
+				return $this->getGroupFieldList($groupname, 'id');
 			case 'Events_Users_Invited':
 				return $this->getinvitedUsersList($this->parent->getId());
+			case 'Events_Related_Contacts':
+				return $this->getRelatedContactsList($this->parent->getId());
+			case 'RelatedList':
+				return $this->getRelatedList($relmodule, $format, $field, $bmapid);
 			case 'scanQRCode':
 				$wsId = $this->parent->getId();
 				$parts = explode('x', $wsId);
@@ -656,7 +908,7 @@ class VTSimpleTemplate {
 					return '';
 				}
 			default:
-				'';
+				return '';
 		}
 	}
 
@@ -664,8 +916,7 @@ class VTSimpleTemplate {
 		$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($tplexpression)));
 		$expression = $parser->expression();
 		$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-		$exprEvaluation = $exprEvaluater->evaluate($this->parent);
-		return $exprEvaluation;
+		return $exprEvaluater->evaluate($this->parent);
 	}
 }
 ?>

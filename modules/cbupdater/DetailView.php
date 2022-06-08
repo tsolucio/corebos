@@ -24,12 +24,9 @@ if (!empty($_REQUEST['record'])) {
 
 			$singlepane_view = 'true';
 			$smarty->assign('SinglePane_View', $singlepane_view);
-			$smarty->assign('TODO_PERMISSION', 'no');
-			$smarty->assign('EVENT_PERMISSION', 'no');
 			$smarty->assign('EDIT_PERMISSION', 'no');
 			$smarty->assign('CREATE_PERMISSION', 'no');
 			$smarty->assign('DELETE', 'notpermitted');
-			$smarty->assign('CONTACT_PERMISSION', 'notpermitted');
 			$smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
 		} else {
 			require_once 'modules/Vtiger/DetailView.php';

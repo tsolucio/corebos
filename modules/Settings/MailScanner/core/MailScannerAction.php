@@ -11,6 +11,9 @@ require_once 'modules/Emails/Emails.php';
 require_once 'modules/HelpDesk/HelpDesk.php';
 require_once 'modules/Users/Users.php';
 require_once 'modules/Documents/Documents.php';
+require_once 'modules/Emails/mail.php';
+require_once 'modules/Messages/Messages.php';
+require_once 'include/Webservices/ExecuteWorkflow.php';
 
 /**
  * Mail Scanner Action
@@ -136,17 +139,32 @@ class Vtiger_MailScannerAction {
 		$returnid = false;
 		$this->otherEmailRelations = array();
 		if ($this->actiontype == 'CREATE') {
-			if ($this->module == 'HelpDesk') {
-				$returnid = $this->__CreateTicket($mailscanner, $mailrecord);
+			switch ($this->module) {
+				case 'HelpDesk':
+					$returnid = $this->__CreateTicket($mailscanner, $mailrecord);
+					break;
+				case 'Messages':
+					$returnid = $this->__CreateMessages($mailscanner, $mailrecord);
+					break;
+				case 'com_vtiger_workflow':
+					$returnid = $this->__CreateMessages($mailscanner, $mailrecord);
+					$this-> __triggerWorkflow($mailscannerrule, $mailrecord, $returnid);
+					break;
+				default:
+					$returnid = false;
 			}
 		} elseif ($this->actiontype == 'LINK') {
 			$returnid = $this->__LinkToRecord($mailscanner, $mailrecord);
 		} elseif ($this->actiontype == 'UPDATE') {
-			if ($this->module == 'HelpDesk') {
-				$returnid = $this->__UpdateTicket($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult), $mailscannerrule);
-			}
-			if ($this->module == 'Project') {
-				$returnid = $this->__UpdateProject($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult), $mailscannerrule);
+			switch ($this->module) {
+				case 'HelpDesk':
+					$returnid = $this->__UpdateTicket($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult), $mailscannerrule);
+					break;
+				case 'Project':
+					$returnid = $this->__UpdateProject($mailscanner, $mailrecord, $mailscannerrule->hasRegexMatch($matchresult), $mailscannerrule);
+					break;
+				default:
+					$returnid = false;
 			}
 		}
 		return $returnid;
@@ -158,11 +176,9 @@ class Vtiger_MailScannerAction {
 	public function __UpdateTicket($mailscanner, $mailrecord, $regexMatchInfo, $mailscannerrule) {
 		global $adb;
 		$returnid = false;
-
 		$usesubject = false;
 		if ($this->lookup == 'SUBJECT') {
-			// If regex match was performed on subject use the matched group
-			// to lookup the ticket record
+			// If regex match was performed on subject use the matched group to lookup the ticket record
 			if ($regexMatchInfo) {
 				$usesubject = $regexMatchInfo['matches'];
 			} else {
@@ -173,7 +189,6 @@ class Vtiger_MailScannerAction {
 			$fromemail = $mailrecord->_from[0];
 
 			$linkfocus = $mailscanner->GetTicketRecord($usesubject, $fromemail, $mailscannerrule->must_be_related);
-//			$relatedid = $linkfocus->column_fields['parent_id'];
 			$relatedid = $mailscanner->linkedid;
 			$this->otherEmailRelations = $mailscanner->otherEmailRelations;
 
@@ -196,7 +211,7 @@ class Vtiger_MailScannerAction {
 				// Set the ticket status to Open if its Closed
 				$adb->pquery("UPDATE vtiger_troubletickets set status=? WHERE ticketid=? AND status='Closed'", array('Open', $linkfocus->id));
 			} else {
-				// TODO If matching ticket was not found, create ticket?
+				// If matching ticket was not found, create ticket?
 				// $returnid = $this->__CreateTicket($mailscanner, $mailrecord);
 			}
 		}
@@ -241,16 +256,54 @@ class Vtiger_MailScannerAction {
 					$comment->save('ModComments');
 				}
 			} else {
-				// TODO If matching ticket was not found, create ticket?
-				// $returnid = $this->__CreateTicket($mailscanner, $mailrecord);
+				// If matching project was not found, create project?
 			}
 		}
 		return $returnid;
 	}
 
 	/**
-	 * Create ticket action.
+	 * Create Messages action.
 	 */
+	public function __CreateMessages($mailscanner, $mailrecord) {
+		// Prepare data to create trouble ticket
+		$usetitle = $mailrecord->_subject;
+		$description = $mailrecord->getBodyText();
+
+		// There will be only on FROM address to email, so pick the first one
+		$fromemail = $mailrecord->_from[0];
+		$linktoid = $mailscanner->LookupContact($fromemail);
+		if (!$linktoid) {
+			$linktoid = $mailscanner->LookupAccount($fromemail);
+		}
+		/** Now Create Ticket **/
+		global $current_user;
+		if (!$current_user) {
+			$current_user = Users::getActiveAdminUser();
+		}
+		if (!empty($mailrecord->_assign_to)) {
+			$usr = $mailrecord->_assign_to;
+		} else {
+			$usr = $current_user->id;
+		}
+
+		// Create message record
+		$messages = new Messages();
+		$messages->column_fields['messagename'] = $usetitle;
+		$messages->column_fields['description'] = $description;
+		$messages->column_fields['messagetype'] = 'Email';
+		$messages->column_fields['assigned_user_id'] = $usr;
+		if ($linktoid) {
+			$messages->column_fields['contact_message'] = $linktoid;
+		}
+		$messages->save('Messages');
+
+		// Associate any attachement of the email to messages
+		$this->__SaveAttachements($mailrecord, 'Messages', $messages);
+
+		return $messages->id;
+	}
+
 	public function __CreateTicket($mailscanner, $mailrecord) {
 		global $adb;
 		// Prepare data to create trouble ticket
@@ -351,41 +404,31 @@ class Vtiger_MailScannerAction {
 			$referenceMeta = $referenceHandler->getMeta();
 			$relid = getEmailFieldId($referenceMeta, $linkfocus->id);
 		}
-		$focus = new Emails();
-		$focus->column_fields['parent_type'] = $module;
-		$focus->column_fields['activitytype'] = 'Emails';
-		$focus->column_fields['parent_id'] = "$linkfocus->id@$relid|";
+		$parent_id = "$linkfocus->id@$relid|";
 		foreach ((array)$this->otherEmailRelations as $crmid) {
 			$relmod = getSalesEntityType($crmid);
 			$referenceHandler = vtws_getModuleHandlerFromId(vtws_getEntityId($relmod).'x'.$crmid, $current_user);
 			$referenceMeta = $referenceHandler->getMeta();
 			$relid = getEmailFieldId($referenceMeta, $crmid);
-			$focus->column_fields['parent_id'] .= "$crmid@$relid|";
+			$parent_id .= "$crmid@$relid|";
 		}
-		$_REQUEST['parent_id'] = $focus->column_fields['parent_id'];
-		$_REQUEST['module'] = 'Emails';
-		$focus->column_fields['subject'] = $mailrecord->_subject;
-
-		$focus->column_fields['description'] = $mailrecord->getBodyHTML();
-		$focus->column_fields['assigned_user_id'] = $linkfocus->column_fields['assigned_user_id'];
-		$focus->column_fields['date_start'] = date('Y-m-d', $mailrecord->_date);
-		$focus->column_fields['email_flag'] = 'MAILSCANNER';
-
-		$from=$mailrecord->_from[0];
-		$to = $mailrecord->_to[0];
-		$cc = (!empty($mailrecord->_cc))? implode(',', $mailrecord->_cc) : '';
-		$bcc= (!empty($mailrecord->_bcc))? implode(',', $mailrecord->_bcc) : '';
-		//emails field were restructured and to,bcc and cc field are JSON arrays
-		$focus->column_fields['from_email'] = $from;
-		$focus->column_fields['saved_toid'] = $to;
-		$focus->column_fields['ccmail'] = $cc;
-		$focus->column_fields['bccmail'] = $bcc;
-		$focus->save('Emails');
-
+		$element = array(
+			'subject' => $mailrecord->_subject,
+			'parent_type' => empty($module) ? '' : $module,
+			'parent_id' => $parent_id,
+			'description' => $mailrecord->getBodyHTML(),
+			'assigned_user_id' => $linkfocus->column_fields['assigned_user_id'],
+			'date_start' => date('Y-m-d', $mailrecord->_date),
+			'email_flag' => 'MAILSCANNER',
+			'from_email' => $mailrecord->_from[0],
+			'replyto' => $mailrecord->_reply_to[0],
+			'saved_toid' => $mailrecord->_to[0],
+			'ccmail' => empty($mailrecord->_cc) ? '' : implode(',', $mailrecord->_cc),
+			'bccmail' => empty($mailrecord->_bcc) ? '' : implode(',', $mailrecord->_bcc),
+		);
+		$focus = createEmailRecordWithSave($element);
 		$emailid = $focus->id;
 		$this->log("Created [$focus->id]: $mailrecord->_subject linked it to " . $linkfocus->id);
-
-		// TODO: Handle attachments of the mail (inline/file)
 		$this->__SaveAttachements($mailrecord, 'Emails', $focus);
 		$_REQUEST['module'] = $reqModule;
 		return $emailid;
@@ -425,7 +468,7 @@ class Vtiger_MailScannerAction {
 				$document = new Documents();
 				$document->column_fields['notes_title']      = $filename;
 				$document->column_fields['filename']         = $filename;
-				$document->column_fields['filesize']         = filesize($this->STORAGE_FOLDER.$attachid.'_'.$filename);
+				$document->column_fields['filesize']         = filesize($this->STORAGE_FOLDER.$attachid.'_'.str_replace(' ', '-', $filename));
 				$document->column_fields['filestatus']       = 1;
 				$document->column_fields['filelocationtype'] = 'I';
 				$document->column_fields['folderid']         = 1; // Default Folder
@@ -480,6 +523,34 @@ class Vtiger_MailScannerAction {
 			'INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?',
 			array($attachid, $filename, $description, $mimetype, $dirname)
 		);
+		return true;
+	}
+
+	/**
+	 * trigger  workflow
+	 */
+	public function __triggerWorkflow($mailscannerrule, $mailrecord, $crmid) {
+		global $current_user;
+		$workflowid = $mailscannerrule->workflowid;
+		if (!$workflowid) {
+			return false;
+		}
+
+		$context = [
+			'IncomingMail_To' => $mailrecord->_to,
+			'IncomingMail_From' => $mailrecord->_from,
+			'IncomingMail_Body' => $mailrecord->_body,
+			'IncomingMail_CC' => $mailrecord->_cc,
+			'IncomingMail_BCC' => $mailrecord->_bcc,
+			'IncomingMail_ReplyTo' => $mailrecord->_reply_to,
+			'IncomingMail_MessageID' => $mailrecord->_uniqueid,
+			'IncomingMail_Date' => $mailrecord->_date,
+			'IncomingMail_Subject' => $mailrecord->_subject,
+		];
+
+		$context = json_encode($context);
+		cbwsExecuteWorkflowWithContext($workflowid, json_encode([$crmid]), $context, $current_user);
+
 		return true;
 	}
 }

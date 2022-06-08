@@ -6,13 +6,12 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 10/12/2017 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 13-mar-2020 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 08-06-2021 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 $mod_strings = array (
-'SINGLE_ModTracker' => 'Registro histórico - auditoria',
-'ModTracker' => 'Histórico - Auditoria',
-'Visible'=>'Visibilidade dos módulos',
+'SINGLE_ModTracker' => 'Controle de mudanças',
+'ModTracker' => 'Controle de mudanças',
+'Visible'=>'Visibilidade dos Módulos',
 'LBL_DISABLE'=>'Desabilitado',
 'LBL_ENABLE' =>'Habilitado',
 'LBL_MODULE'=>'Módulo',
@@ -20,7 +19,7 @@ $mod_strings = array (
 'LBL_TURN_OFF_HIGHLIGHTING' => 'Desligar os destacados',
 'LBL_TURN_ON_HIGHLIGHTING' => 'Ligar os destacados',
 'LBL_BASIC_SETTINGS'=>'Configuração básica',
-'LBL_Field'   => 'Falhou',
+'LBL_Field'   => 'Campo',
 'LBL_Earlier' => 'Valor anterior',
 'LBL_Present' => 'Valor atual',
 'LBL_YOUR_CHANGES'  => 'Suas mudanças',

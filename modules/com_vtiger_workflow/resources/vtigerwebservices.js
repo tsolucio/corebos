@@ -39,7 +39,7 @@ function vtigerwebservicesproto() {
 
 	function get(operation, parameters, callback) {
 		this.doGet(mergeObjects(parameters, {'operation':operation, 'sessionName':this.sessionId}), function (response) {
-			if (response['success']==true) {
+			if (response['success']) {
 				callback(true, response['result']);
 			} else {
 				callback(false, response['error']);
@@ -49,7 +49,7 @@ function vtigerwebservicesproto() {
 
 	function post(operation, parameters, callback) {
 		this.doPost(mergeObjects(parameters, {'operation':operation, 'sessionName':this.sessionId}), function (response) {
-			if (response['success']==true) {
+			if (response['success']) {
 				callback(true, response['result']);
 			} else {
 				callback(false, response['error']);
@@ -60,11 +60,11 @@ function vtigerwebservicesproto() {
 	function login(callback) {
 		var self = this;
 		this.doGet({operation:'getchallenge', username:this.username}, function (response) {
-			if (response['success']==true) {
+			if (response['success']) {
 				var token = response['result']['token'];
 				var encodedKey = md5(token+self.accessKey);
 				self.doPost({operation:'login', username: self.username, accessKey: encodedKey}, function (response) {
-					if (response['success']==true) {
+					if (response['success']) {
 						self.sessionId = response['result']['sessionName'];
 						self.userId = response['result']['userId'];
 						callback(true);
@@ -126,7 +126,7 @@ function vtigerwebservicesproto() {
 		this.doPost({operation: 'extendsession'}, function (response) {
 			var status = response['success'];
 			var result = response['result'];
-			if (status==true) {
+			if (status) {
 				self.sessionId = result['sessionName'];
 				self.userId = result['userId'];
 				callback(true, result);

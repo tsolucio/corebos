@@ -9,6 +9,7 @@
 ********************************************************************************/
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/MergeUtils.php';
+require_once 'data/CRMEntity.php';
 global $app_strings, $default_charset;
 
 $randomfilename = 'vt_' . str_replace(array('.',' '), '', microtime());
@@ -37,7 +38,6 @@ if ($mass_merge != '') {
 	if (array_pop($temp_mass_merge)=='') {
 		array_pop($mass_merge);
 	}
-	//$mass_merge = implode(',',$mass_merge);
 } elseif ($single_record != '') {
 	$mass_merge = $single_record;
 } else {
@@ -45,14 +45,15 @@ if ($mass_merge != '') {
 }
 
 //for setting vtiger_accountid=0 for the contacts which are deleted
-$ct_query = "select crmid from vtiger_crmentity where setype='Contacts' and deleted=1";
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
+$ct_query = "select vtiger_crmentity.crmid from ".$crmEntityTable." where setype='Contacts' and deleted=1";
 $result = $adb->pquery($ct_query, array());
 $deleted_id = array();
 while ($row = $adb->fetch_array($result)) {
 	$deleted_id[] = $row['crmid'];
 }
 
-if (count($deleted_id) > 0) {
+if (!empty($deleted_id)) {
 	$update_query = "update vtiger_contactdetails set accountid = 0 where contactid in (". generateQuestionMarks($deleted_id) .")";
 	$result = $adb->pquery($update_query, array($deleted_id));
 }
@@ -85,30 +86,26 @@ if ($userprivs->hasGlobalReadPermission() || $module == 'Users' || $module == 'E
 }
 $result = $adb->pquery($query1, $params1);
 $y=$adb->num_rows($result);
-$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-$contactUserNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'usersContacts.first_name', 'last_name' => 'usersContacts.last_name'), 'Users');
 
 for ($x=0; $x<$y; $x++) {
 	$tablename = $adb->query_result($result, $x, 'tablename');
 	$columnname = $adb->query_result($result, $x, 'columnname');
 	$modulename = $adb->query_result($result, $x, 'name');
 
-	if ($tablename == 'crmentity') {
-		if ($modulename == 'Contacts') {
-			$tablename = 'vtiger_crmentityContacts';
-		}
+	if ($tablename == 'crmentity' && $modulename == 'Contacts') {
+		$tablename = 'vtiger_crmentityContacts';
 	}
 	$querycolumns[$x] = $tablename.'.'.$columnname;
 	if ($columnname == 'smownerid') {
 		if ($modulename == 'Accounts') {
-			$querycolumns[$x] = "case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as userjoinname,"
+			$querycolumns[$x] = "case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as userjoinname,"
 				.'vtiger_users.first_name,vtiger_users.last_name,vtiger_users.user_name,vtiger_users.secondaryemail,vtiger_users.title,vtiger_users.phone_work,'
 				.'vtiger_users.department,vtiger_users.phone_mobile,vtiger_users.phone_other,vtiger_users.phone_fax,vtiger_users.email1,vtiger_users.phone_home,'
 				.'vtiger_users.email2,vtiger_users.address_street,vtiger_users.address_city,vtiger_users.address_state,vtiger_users.address_postalcode,'
 				.'vtiger_users.address_country';
 		}
 		if ($modulename == 'Contacts') {
-			$querycolumns[$x] = "case when (usersContacts.user_name not like '') then $contactUserNameSql else groupsContacts.groupname end as userjoincname";
+			$querycolumns[$x] = "case when (usersContacts.user_name not like '') then usersContacts.ename else groupsContacts.groupname end as userjoincname";
 		}
 	}
 	if ($columnname == 'parentid') {
@@ -149,11 +146,12 @@ $labels_length=array_reverse($labels_length);
 $csvheader = implode(',', $field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
 
-if (count($querycolumns) > 0) {
+if (!empty($querycolumns)) {
 	$selectcolumns = implode(',', $querycolumns);
-
+	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Accounts');
+	$crmEntityTable2 = CRMEntity::getcrmEntityTableAlias('Contacts', true);
 	$query = "select  $selectcolumns from vtiger_account
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
+		inner join $crmEntityTable1 on vtiger_crmentity.crmid=vtiger_account.accountid
 		inner join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid
 		inner join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid
 		inner join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid
@@ -161,7 +159,7 @@ if (count($querycolumns) > 0) {
 		left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		left join vtiger_contactdetails on vtiger_contactdetails.accountid=vtiger_account.accountid
-		left join vtiger_crmentity as vtiger_crmentityContacts on vtiger_crmentityContacts.crmid = vtiger_contactdetails.contactid
+		left join $crmEntityTable2 as vtiger_crmentityContacts on vtiger_crmentityContacts.crmid = vtiger_contactdetails.contactid
 		left join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid
 		left join vtiger_contactsubdetails on vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid
 		left join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid
@@ -179,12 +177,8 @@ if (count($querycolumns) > 0) {
 		for ($x=0; $x<$y; $x++) {
 			$value = $columnValues[$x];
 			foreach ($columnValues as $key => $val) {
-				if ($val == $value && $value != '') {
-					if (array_key_exists($key, $avail_pick_arr)) {
-						if (!in_array($val, $avail_pick_arr[$key])) {
-							$value = 'Not Accessible';
-						}
-					}
+				if ($val == $value && $value != '' && array_key_exists($key, $avail_pick_arr) && !in_array($val, $avail_pick_arr[$key])) {
+					$value = 'Not Accessible';
 				}
 			}
 			//<<<<<<<<<<<<<<< For blank Fields >>>>>>>>>>>>>>>>>>>>>>>>>>>>

@@ -48,7 +48,6 @@ class addNumberDecimalPlaces extends cbupdaterWorker {
 			$result = $adb->pquery("SELECT fieldname,tablename,columnname FROM vtiger_field WHERE uitype IN (?,?)", array('71','72'));
 			$count = $adb->num_rows($result);
 			for ($i=0; $i<$count; $i++) {
-				$fieldName = $adb->query_result($result, $i, 'fieldname');
 				$tableName = $adb->query_result($result, $i, 'tablename');
 				$columnName = $adb->query_result($result, $i, 'columnname');
 				$tableAndColumnSize = array();

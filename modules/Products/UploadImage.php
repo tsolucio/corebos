@@ -21,6 +21,11 @@ if (!empty($_REQUEST['record'])) {
 	$record = vtlib_purify($_REQUEST['record']);
 	$product = CRMEntity::getInstance('Products');
 	$product->retrieve_entity_info($record, 'Products');
-	$product->insertIntoAttachment($record, 'Products');
+	$file_saved = $product->insertIntoAttachment($record, 'Products');
+	if (!$file_saved) {
+		http_response_code(401);
+		header('Content-Type: text/plain; charset=utf-8');
+		echo getTranslatedString('LBL_IMAGESECURITY_ERROR');
+	}
 }
 ?>

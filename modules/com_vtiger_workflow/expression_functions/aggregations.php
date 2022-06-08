@@ -15,6 +15,8 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
+use \PHPSQLParser\PHPSQLParser;
+use \PHPSQLParser\utils\ExpressionType;
 
 /*
  * function to aggregate a set of records related to a main record
@@ -86,9 +88,14 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 		return 0;
 	}
 	$sep = '';
+	$useNamesForUIType10 = false;
 	if ($operation=='group_concat') { // to support 'separator'
 		if (stripos($arr[2], 'separator')!==false) {
 			$sep = ' '.trim(substr($arr[2], strpos($arr[2], ' ')));
+			if (strtolower(substr($sep, -4))=='name') {
+				$useNamesForUIType10 = true;
+				$sep = ' '.trim(substr($sep, 0, strlen($sep)-4));
+			}
 			$arr[2] = trim(substr($arr[2], 0, strpos($arr[2], ' ')));
 		} else {
 			$arr[2] = trim($arr[2]);
@@ -127,7 +134,7 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 		$hold = isset($currentModule) ? $currentModule : '';
 		$currentModule = $mainmodule;
 		$GetRelatedList_ReturnOnlyQuery = true;
-		$relationData = call_user_func_array(array($moduleInstance,$relationInfo['name']), $params);
+		$relationData = call_user_func_array(array($moduleInstance,$relationInfo['name']), array_values($params));
 		$currentModule = $hold;
 		unset($GetRelatedList_ReturnOnlyQuery);
 		if (!isset($relationData['query'])) {
@@ -135,11 +142,16 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 		}
 		$query = $relationData['query'];
 		$query = str_replace(array("\n", "\t", "\r"), ' ', $query);
+		$query = stripTailCommandsFromQuery($query);
 		if (!empty($arr[3])) {
-			$query .= ' and ('.__cb_aggregation_getconditions($arr[3], $relmodule, $mainmodule, $crmid).')';
+			global $__cb_aggregation_condition_joins;
+			$conditions = __cb_aggregation_getconditions($arr[3], $relmodule, $mainmodule, $crmid);
+			$query = __cb_aggregation_mergejoins($query, $__cb_aggregation_condition_joins);
+			$query .= ' and ('.$conditions.')';
 		}
 	} elseif ($mainmodule==$relmodule) {
 		$query = __cb_aggregation_queryonsamemodule($arr[3], $mainmodule, $relfield, $crmid);
+		$query = stripTailCommandsFromQuery($query);
 	} else {
 		return 0; // MODULES_NOT_RELATED
 	}
@@ -147,14 +159,21 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 	if ($userdefinedoperation) {
 		$query = 'select '.$operation.'('.$relfields_operation.') as aggop '.$qfrom;
 	} else {
-		$query = 'select '.$operation.'('.$rfield->table.'.'.$rfield->column.$sep.') as aggop '.$qfrom;
+		if ($useNamesForUIType10 && $rfield->uitype==Field_Metadata::UITYPE_RECORD_RELATION) {
+			$secLevelRel = getFirstModule($relmodule, $rfield->name);
+			$einfo = getEntityField($secLevelRel, true);
+			$fname = $einfo['fieldname'];
+		} else {
+			$fname = $rfield->table.'.'.$rfield->column;
+		}
+		$query = 'select '.$operation.'('.$fname.$sep.') as aggop '.$qfrom;
 	}
 	$logbg->debug("Agg query: $query");
 	return $query;
 }
 
 function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $recordid) {
-	global $current_user;
+	global $current_user, $__cb_aggregation_condition_joins;
 	$c = explode('],[', $conditions);
 	array_walk($c, function (&$v, $k) {
 		$v = trim($v, '[');
@@ -165,18 +184,56 @@ function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $reco
 	$entityCache = new VTEntityCache($current_user);
 	$qg = new QueryGenerator($module, $current_user);
 	$qg->setFields(array('id'));
+	$qg->startGroup();
 	foreach ($c as $cond) {
-		$cndparams = explode(',', $cond);
-		if (!$SQLGenerationMode) {
-			$ct = new VTSimpleTemplate($cndparams[2]);
-			$value = $ct->render($entityCache, $entityId);
+		$cndparams = preg_split('~,(?![^()]*\))~', $cond);
+		if (isset($cndparams[4]) && $cndparams[4] == 'expression') {
+			$adminUser = Users::getActiveAdminUser();
+			$entity = new VTWorkflowEntity($adminUser, $entityId);
+			$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer(rawurldecode($cndparams[2]))));
+			$expression = $parser->expression();
+			$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+			$value = $exprEvaluater->evaluate($entity);
 		} else {
-			$value = $cndparams[2];
+			if (!$SQLGenerationMode) {
+				$ct = new VTSimpleTemplate($cndparams[2]);
+				$value = $ct->render($entityCache, $entityId);
+			} else {
+				$value = $cndparams[2];
+			}
 		}
 		$qg->addCondition($cndparams[0], $value, $cndparams[1], $cndparams[3]);
 	}
+	$qg->endGroup();
 	$where = $qg->getWhereClause();
+	$__cb_aggregation_condition_joins = $qg->getFromClause();
 	return substr($where, stripos($where, 'where ')+6);
+}
+
+function __cb_aggregation_mergejoins($query, $__cb_aggregation_condition_joins) {
+	$parser = new PHPSQLParser();
+	$q = $parser->parse($query);
+	$j = $parser->parse('select * '.$__cb_aggregation_condition_joins);
+	$qt = $jt = array();
+	foreach ($q['FROM'] as $jinfo) {
+		$qt[] = $jinfo['table'];
+	}
+	foreach ($j['FROM'] as $jinfo) {
+		$jt[] = $jinfo['table'];
+	}
+	$missing = array_diff($jt, $qt);
+	if (count($missing)>0) {
+		$mjoin = '';
+		foreach ($missing as $mtable) {
+			foreach ($j['FROM'] as $jinfo) {
+				if ($jinfo['table']==$mtable) {
+					$mjoin .= ' '.($jinfo['join_type']=='JOIN' ? 'INNER JOIN ' : $jinfo['join_type'].' JOIN ').$jinfo['base_expr'];
+				}
+			}
+		}
+		$query = appendFromClauseToQuery($query, $mjoin.' ');
+	}
+	return $query;
 }
 
 function __cb_aggregation_queryonsamemodule($conditions, $module, $relfield, $recordid) {
@@ -198,7 +255,20 @@ function __cb_aggregation_queryonsamemodule($conditions, $module, $relfield, $re
 			if ($cnd == $numconds) {
 				$cndparams[3] = QueryGenerator::$AND;
 			}
-			$ct = new VTSimpleTemplate($cndparams[2]);
+			$adminUser = Users::getActiveAdminUser();
+			$entity = new VTWorkflowEntity($adminUser, $entityId);
+			$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer(rawurldecode($cndparams[2]))));
+			$expression = $parser->expression();
+			$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+			$value = $exprEvaluater->evaluate($entity);
+			if (empty($value)) {
+				$value = $cndparams[2];
+			}
+			if ($cndparams[2] == 'id') {
+				$tmp_value = explode('x', $value);
+				$value = $tmp_value[1];
+			}
+			$ct = new VTSimpleTemplate($value);
 			$value = $ct->render($entityCache, $entityId);
 			$qg->addCondition($cndparams[0], $value, $cndparams[1], $cndparams[3]);
 			$cnd++;

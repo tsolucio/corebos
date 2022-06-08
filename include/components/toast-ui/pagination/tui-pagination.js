@@ -1,6 +1,6 @@
 /*!
  * TOAST UI Pagination
- * @version 3.4.0
+ * @version 3.3.3
  * @author NHN FE Development Team <dl_javascript@nhn.com>
  * @license MIT
  */

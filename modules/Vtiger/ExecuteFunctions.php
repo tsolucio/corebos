@@ -75,6 +75,14 @@ switch ($functiontocall) {
 		$limit =  isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
 		$ret = getProductServiceAutocomplete($_REQUEST['term'], array(), $limit);
 		break;
+	case 'getEntityName':
+		$ret = '';
+		$crmid = vtlib_purify($_REQUEST['getNameFrom']);
+		if (!empty($crmid)) {
+			$ename = getEntityName(getSalesEntityType($crmid), $crmid);
+			$ret = $ename[$crmid];
+		}
+		break;
 	case 'getFieldValuesFromRecord':
 		$ret = array();
 		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
@@ -85,6 +93,72 @@ switch ($functiontocall) {
 			$queryGenerator = new QueryGenerator($module, $current_user);
 			$queryGenerator->setFields($fields);
 			$queryGenerator->addCondition('id', $crmid, 'e');
+			$query = $queryGenerator->getQuery();
+			$queryres=$adb->pquery($query, array());
+			if ($adb->num_rows($queryres)>0) {
+				$col=0;
+				foreach ($fields as $field) {
+					$ret[$field]=$adb->query_result($queryres, 0, $col++);
+				}
+			}
+		}
+		break;
+	case 'getFieldValuesFromSearch':
+		$ret = array();
+		global $current_user, $adb;
+		$module = vtlib_purify($_REQUEST['getFieldValuesFrom']);
+		if (!empty($module) && vtlib_isModuleActive($module)) {
+			$fields = vtlib_purify($_REQUEST['getTheseFields']);
+			$fields = explode(',', $fields);
+			$queryGenerator = new QueryGenerator($module, $current_user);
+			$queryGenerator->setFields($fields);
+			if (substr($_REQUEST['getFieldSearchField'], 0, 1)=='[') {
+				$JSONconditions = json_decode($_REQUEST['getFieldSearchField']);
+				foreach ($JSONconditions as $fconds) {
+					if (empty($fconds[3])) {
+						$glue = QueryGenerator::$AND;
+					} else {
+						$glue = (strtolower(trim($fconds[3]))=='or' ? QueryGenerator::$OR : QueryGenerator::$AND);
+					}
+					if (strpos($fconds[0], ')')) {
+						preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', vtlib_purify($fconds[0]), $matches);
+						list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+						$queryGenerator->addReferenceModuleFieldCondition(
+							$referenceModule,
+							$referenceField,
+							$fieldname,
+							vtlib_purify($fconds[1]),
+							(empty($fconds[2]) ? 'e' : vtlib_purify($fconds[2])),
+							$glue
+						);
+					} else {
+						$queryGenerator->addCondition(
+							vtlib_purify($fconds[0]),
+							vtlib_purify($fconds[1]),
+							(empty($fconds[2]) ? 'e' : vtlib_purify($fconds[2])),
+							$glue
+						);
+					}
+				}
+			} else {
+				if (strpos($_REQUEST['getFieldSearchField'], ')')) {
+					preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', vtlib_purify($_REQUEST['getFieldSearchField']), $matches);
+					list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+					$queryGenerator->addReferenceModuleFieldCondition(
+						$referenceModule,
+						$referenceField,
+						$fieldname,
+						vtlib_purify($_REQUEST['getFieldSearchValue']),
+						(empty($_REQUEST['getFieldSearchop']) ? 'e' : vtlib_purify($_REQUEST['getFieldSearchop']))
+					);
+				} else {
+					$queryGenerator->addCondition(
+						vtlib_purify($_REQUEST['getFieldSearchField']),
+						vtlib_purify($_REQUEST['getFieldSearchValue']),
+						(empty($_REQUEST['getFieldSearchop']) ? 'e' : vtlib_purify($_REQUEST['getFieldSearchop']))
+					);
+				}
+			}
 			$query = $queryGenerator->getQuery();
 			$queryres=$adb->pquery($query, array());
 			if ($adb->num_rows($queryres)>0) {
@@ -112,11 +186,35 @@ switch ($functiontocall) {
 		$emltplid = vtlib_purify($_REQUEST['templateid']);
 		$emltpl = getTemplateDetails($emltplid);
 		$ret = array();
-		if (count($emltpl)>0) {
+		if (!empty($emltpl)) {
 			$ret['subject'] = $emltpl[2];
 			$ret['body'] = $emltpl[1];
 			$ret['from_email'] = $emltpl[3];
 		}
+		break;
+	case 'exportUserComments':
+		$recordid = vtlib_purify($_REQUEST['record']);
+		$module = vtlib_purify($_REQUEST['module']);
+		include_once 'include/utils/ExportUtils.php';
+		if (GlobalVariable::getVariable('ModComments_Export_Format', 'CSV', $module) == 'CSV') {
+			header('Content-Disposition:attachment;filename="Comments'.$recordid.'.csv"');
+			header('Content-Type:text/csv;charset=UTF-8');
+			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+			header('Cache-Control: post-check=0, pre-check=0', false);
+			exportUserCommentsForModule($module, $recordid, 'CSV');
+		} else {
+			global $root_directory, $cache_dir;
+			$fname = tempnam($root_directory.$cache_dir, 'comm.xls');
+			$xlsobject = exportUserCommentsForModule($module, $recordid, 'XLS');
+			$xlsobject->save($fname);
+			header('Content-Type: application/x-msexcel');
+			header('Content-Length: '.@filesize($fname));
+			header('Content-disposition: attachment; filename="Comments'.$recordid.'.xls"');
+			$fh=fopen($fname, 'rb');
+			fpassthru($fh);
+		}
+		exit;
 		break;
 	case 'ValidationExists':
 		$valmod = vtlib_purify($_REQUEST['valmodule']);
@@ -206,6 +304,7 @@ switch ($functiontocall) {
 		die();
 		break;
 	case 'delImage':
+		Vtiger_Request::validateRequest();
 		include_once 'include/utils/DelImage.php';
 		$id = vtlib_purify($_REQUEST['recordid']);
 		$id = preg_replace('/[^0-9]/', '', $id);
@@ -251,13 +350,15 @@ switch ($functiontocall) {
 		$term = vtlib_purify($data['term']);
 		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
 		$ret = array();
-		foreach ($retvals['data'] as $value) {
-			$ret[] = array(
-				'crmid' => $value['crmid'],
-				'crmmodule' => $value['crmmodule'],
-				'query_string' => $value['query_string'],
-				'total' => $retvals['total']
-			) + $value['crmfields'];
+		if (!empty($retvals['data'])) {
+			foreach ($retvals['data'] as $value) {
+				$ret[] = array(
+					'crmid' => $value['crmid'],
+					'crmmodule' => $value['crmmodule'],
+					'query_string' => $value['query_string'],
+					'total' => $retvals['total']
+				) + $value['crmfields'];
+			}
 		}
 		break;
 	case 'getRelatedListInfo':
@@ -293,13 +394,17 @@ switch ($functiontocall) {
 		}
 		break;
 	case 'setSetting':
+		Vtiger_Request::validateRequest();
 		$skey = vtlib_purify($_REQUEST['skey']);
 		$svalue = vtlib_purify($_REQUEST['svalue']);
-		$ret = coreBOS_Settings::setSetting($skey, $svalue);
+		coreBOS_Settings::setSetting($skey, $svalue);
+		$ret = '';
 		break;
 	case 'delSetting':
+		Vtiger_Request::validateRequest();
 		$skey = vtlib_purify($_REQUEST['skey']);
-		$ret = coreBOS_Settings::delSetting($skey);
+		coreBOS_Settings::delSetting($skey);
+		$ret = '';
 		break;
 	case 'getTranslatedStrings':
 		global $currentModule;
@@ -353,17 +458,195 @@ switch ($functiontocall) {
 		$rdo = isPermitted($mod, $act, $rec)=='yes';
 		$ret = array('isPermitted'=>$rdo);
 		break;
+	case 'checkButton':
+		$mod = vtlib_purify($_REQUEST['formodule']);
+		$ret = Button_Check($mod);
+		break;
+	case 'getRecordActions':
+		include_once 'include/ListView/ListViewJSON.php';
+		$mod = vtlib_purify($_REQUEST['formodule']);
+		$recordid = vtlib_purify($_REQUEST['recordid']);
+		$grid = new GridListView($mod);
+		$ret = $grid->Actions($recordid);
+		break;
+	case 'listViewJSON':
+		include_once 'include/ListView/ListViewJSON.php';
+		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateDataListView') {
+			$grid = new GridListView($_REQUEST['modulename']);
+			$grid->Update();
+			$ret = array();
+		} else {
+			$orderBy = ' DESC';
+			$entries = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
+			$formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
+			$columns = isset($_REQUEST['columns']) ? vtlib_purify($_REQUEST['columns']) : '';
+			$beforeFilter = isset($_REQUEST['beforeFilter']) ? vtlib_purify($_REQUEST['beforeFilter']) : '';
+			$tabid = getTabid($formodule);
+			$grid = new GridListView($formodule);
+			if (isset($_REQUEST['perPage'])) {
+				//get data
+				$perPage = isset($_REQUEST['perPage']) ? vtlib_purify($_REQUEST['perPage']) : $entries;
+				$sortAscending = isset($_REQUEST['sortAscending']) ? vtlib_purify($_REQUEST['sortAscending']) : '';
+				$sortColumn = isset($_REQUEST['sortColumn']) ? vtlib_purify($_REQUEST['sortColumn']) : '';
+				$page = isset($_REQUEST['page']) ? vtlib_purify($_REQUEST['page']) : 1;
+				$search = isset($_REQUEST['search']) ? vtlib_purify($_REQUEST['search']) : '';
+				$searchtype = isset($_REQUEST['searchtype']) ? vtlib_purify($_REQUEST['searchtype']) : '';
+				$session_sort = coreBOS_Session::get($formodule.'_Sort_Order');
+				if ($session_sort != '') {
+					if ($session_sort == ' ASC' && $sortAscending == 'true') {
+						$orderBy = ' ASC';
+					} elseif ($session_sort == ' ASC' && $sortAscending == 'false') {
+						$orderBy = ' DESC';
+					} elseif ($session_sort == ' DESC' && $sortAscending == 'true') {
+						$orderBy = ' ASC';
+					} elseif ($session_sort == ' DESC' && $sortAscending == 'false') {
+						$orderBy = ' DESC';
+					} elseif ($sortAscending == '') {
+						$orderBy = $session_sort;
+					}
+				} else {
+					if ($sortAscending == 'true') {
+						$orderBy = ' ASC';
+					}
+				}
+				coreBOS_Session::set($formodule.'_Sort_Order', $orderBy);
+				$grid->tabid = $tabid;
+				$grid->entries = $perPage;
+				$grid->orderBy = $orderBy;
+				$grid->sortColumn =  $sortColumn;
+				$grid->currentPage = $page;
+				$grid->searchUrl = $search;
+				$grid->searchtype = $searchtype;
+				$lv = $grid->Show();
+			} else {
+				$grid->tabid = $tabid;
+				$lv = $grid->Headers();
+			}
+			if (isset($columns) && $columns == 'true') {
+				$ret = array($lv['headers'], $lv['customview'], $lv['folders']);
+			} else {
+				$ret = $lv['data'];
+			}
+		}
+		break;
 	case 'getUserName':
 		$ret = getUserName(vtlib_purify($_REQUEST['userid']));
 		break;
+	case 'getImageInfoFor':
+		$id = vtlib_purify($_REQUEST['record']);
+		$imageinfo = array();
+		if (isPermitted(getSalesEntityType($id), 'DetailView', $id)=='yes') {
+			require_once 'include/Webservices/getRecordImages.php';
+			$imageinfo = cbws_getrecordimageinfo($id, $current_user);
+		}
+		header('Content-Type: application/json');
+		if ((int)$imageinfo['results'] > 0) {
+			$ret = $imageinfo;
+		} else {
+			$ret = '';
+		}
+		break;
+	case 'isAdmin':
+		if (is_admin($current_user)) {
+			$ret = array('admin' => 'on');
+		} else {
+			$ret = array('admin' => 'off');
+		}
+		break;
+	case 'setNewPassword':
+		Vtiger_Request::validateRequest();
+		require_once 'modules/Users/Users.php';
+		require_once 'include/utils/UserInfoUtil.php';
+		$userid = vtlib_purify($_REQUEST['record']);
+		if (is_admin($current_user) || $current_user->id==$userid) {
+			$focus = new Users();
+			$focus->mode='edit';
+			$focus->id = $userid;
+			$focus->retrieve_entity_info($userid, 'Users');
+			$ret = $focus->change_password('old_password', vtlib_purify(substr($_REQUEST['new_password'], 0, 1024)));
+			if ($ret) {
+				$ret = array('password'=>$ret);
+			} else {
+				$ret = array('password'=>false, 'msg' => $focus->error_string);
+			}
+		} else {
+			$ret = array('password'=>false, 'msg' => $focus->error_string);
+		}
+		break;
 	case 'ismoduleactive':
-	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
 		$rdo = vtlib_isModuleActive($mod);
 		$ret = array('isactive'=>$rdo);
 		break;
+	case 'deleteModule':
+		$modname = vtlib_purify($_REQUEST['formodule']);
+		$module = Vtiger_Module::getInstance($modname);
+		if ($module && is_admin($current_user)) {
+			require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
+			$ev = new VTEventsManager($adb);
+			$handlers = $ev->listHandlersForModule($modname);
+			if (!empty($handlers)) {
+				foreach ($handlers as $className) {
+					$ev->unregisterHandler($className);
+				}
+			}
+			$module->deleteRelatedLists();
+			$module->deleteLinks();
+			$module->deinitWebservice();
+			$module->delete();
+			$ret = array(
+				'success' => true,
+				'message' => 'Module '.getTranslatedString($modname, $modname).' EXTERMINATED!'
+			);
+		} else {
+			$ret = array(
+				'success' => false,
+				'message' => 'Failed to find '.getTranslatedString($modname, $modname).' module.'
+			);
+		}
+		break;
+	case 'getMapByName':
+		$mapname = vtlib_purify($_REQUEST['mapname']);
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+		$content = 'NOT_PERMITTED';
+		if ($cbMapid && isPermitted('cbMap', 'DetailView', $cbMapid)=='yes') {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$mtype = $cbMap->column_fields['maptype'];
+			$content = $cbMap->$mtype();
+		}
+		$ret = array(
+			'content' => $content
+		);
+		break;
+	case 'getFieldsAttributes':
+		$fields = vtlib_purify($_REQUEST['fields']);
+		$modulename = vtlib_purify($_REQUEST['modulename']);
+		$tabid = getTabid($modulename);
+		$fields = explode(',', $fields);
+		$fieldsIn = '';
+		foreach ($fields as $field) {
+			$fieldsIn .= "'$field',";
+		}
+		$rs = $adb->pquery('SELECT tablename, fieldname, columnname, fieldlabel, typeofdata FROM vtiger_field WHERE tabid=? AND fieldname IN ('.rtrim($fieldsIn, ',').')', array($tabid));
+		$fieldInfo = array();
+		while ($row = $rs->FetchRow()) {
+			$typeofdata = explode('~', $row['typeofdata']);
+			$fieldInfo[] = array(
+				'tablename' => $row['tablename'],
+				'fieldname' => $row['fieldname'],
+				'columnname' => $row['columnname'],
+				'fieldlabel' => $row['fieldlabel'],
+				'typeofdata' => $typeofdata[0]
+			);
+		}
+		$ret = array(
+			'fields' => $fieldInfo,
+		);
+		break;
+	default:
+		$ret = '';
+		break;
 }
-
 echo json_encode($ret);
 die();
 ?>

@@ -9,6 +9,8 @@
 
 $mod_strings = array (
 	'Webforms' => 'Formulaire Web',
+	'SINGLE_Webforms' => 'Webform',
+	'Webforms ID' => 'Webform ID',
 	'Allows you to manage Webforms' => 'Gérer les webforms pour acquérir des leads sur votre site web',
 	'LBL_SUCCESS' => 'ajouté à l\'application.',
 	'LBL_FAILURE' => 'Erreur pendant l\'ajout à l\'application.',

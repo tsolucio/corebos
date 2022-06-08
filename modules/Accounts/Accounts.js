@@ -415,8 +415,3 @@ function searchMapLocation(addressType) {
 	mapParameter = removeHTMLFormatting(mapParameter);
 	window.open('https://maps.google.com/maps?q=' + mapParameter, 'goolemap', cbPopupWindowSettings+',titlebar,location');
 }
-
-function set_return_todo(product_id, product_name) {
-	window.opener.document.createTodo.task_parent_name.value = product_name;
-	window.opener.document.createTodo.task_parent_id.value = product_id;
-}

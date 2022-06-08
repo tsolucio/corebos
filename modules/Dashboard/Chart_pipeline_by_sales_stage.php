@@ -100,7 +100,7 @@ if (isPermitted('Potentials', 'index')=='yes') {
 	}
 
 	echo DashboardCharts::pipeline_by_sales_stage($datax, $date_start, $date_end, $ids, $width, $height);
-	echo "<P><font size='1'><em>".$current_module_strings['LBL_SALES_STAGE_FORM_DESC']."</em></font></P>";
+	echo "<p><span style='font-size:1em'><em>".$current_module_strings['LBL_SALES_STAGE_FORM_DESC']."</em></span></p>";
 	if (isset($_REQUEST['pbss_edit']) && $_REQUEST['pbss_edit'] == 'true') {
 		$cal_lang = "en";
 		$cal_dateformat = parse_calendardate($app_strings['NTC_DATE_FORMAT']);
@@ -123,7 +123,7 @@ if (isPermitted('Potentials', 'index')=='yes') {
 <td valign='top' ><input class="text" name="pbss_date_start" size='12' maxlength='10' id='date_start' value='<?php
 if (isset($_SESSION['pbss_date_start'])) {
 	echo vtlib_purify($_SESSION['pbss_date_start']);
-} ?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_start_trigger">
+} ?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_start_trigger" alt="date">
 </td>
 </tr><tr>
 <tr>
@@ -131,7 +131,7 @@ if (isset($_SESSION['pbss_date_start'])) {
 <td valign='top' ><input class="text" name="pbss_date_end" size='12' maxlength='10' id='date_end' value='<?php
 if (isset($_SESSION['pbss_date_end'])) {
 	echo vtlib_purify($_SESSION['pbss_date_end']);
-} ?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_end_trigger">
+} ?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_end_trigger" alt="date">
 </td>
 </tr><tr>
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_SALES_STAGES'];?></td>
@@ -168,10 +168,10 @@ if (isset($_SESSION['pbss_date_end'])) {
 
 	<?php } else {
 		?>
-<div align=right><FONT size='1'>
+<div align=right><span style="font-size:1em">
 [<a href="javascript:;" onClick="changeView('<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
 [<a href="index.php?module=<?php echo $currentModule;?>&action=index&display_view=<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>&pbss_edit=true"><?php echo $current_module_strings['LBL_EDIT'];?></a>]
-</FONT></div>
+</span></div>
 	<?php }
 } else {
 	echo $mod_strings['LBL_NO_PERMISSION'];

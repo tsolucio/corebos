@@ -193,7 +193,7 @@
 				{if $fromlink eq 'qcreate'}
 				<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
 				{else}
-				<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
+				<select id="{$fldname}_type" class="small" name="{$fldname}_type" data-uitype="1025" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML="";document.getElementById("show-1025-pill-{$fldname}").innerHTML=""'>
 				{/if}
 				{foreach item=option from=$fldlabel.options}
 					<option value="{$option}"
@@ -209,19 +209,48 @@
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
 				<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$fldvalue.entityid}">
-
 				<div style="position: relative;">
 				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
 					{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
+					{assign var="displayvalue1025" value=","|explode:$fldvalue.displayvalue}
+					{assign var="entityid1025" value="|##|"|explode:$fldvalue.entityid}
 					<input
 						id="{$fldname}_display"
 						name="{$fldname}_display"
-						type="text"
+						type="hidden"
 						style="border:1px solid #bababa;"
 						value="{$fldvalue.displayvalue}"
 						autocomplete="off"
-						class="autocomplete-input"
-						data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}'>&nbsp;
+						>&nbsp;
+						{if !empty($displayvalue1025)}
+						<div class="slds-pill_container" style="display: inline-block;word-break: break-word;">
+							<div id="show-1025-pill-{$fldname}">
+							{foreach from=$displayvalue1025 item=$value key=$idx}
+							{if !empty($value)}
+							<span class="slds-pill slds-pill_link" id="pill-{$fldname}-{$entityid1025[$idx]|trim}">
+								<a class="slds-pill__action">
+									<span class="slds-pill__label">{$value}</span>
+								</a>
+								<button type="button" class="slds-button slds-button_icon slds-button_icon slds-pill__remove autocomplete-pills" id="{$fldname}_{$entityid1025[$idx]|trim}">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+									</svg>
+								</button>
+							</span>
+							{/if}
+							{/foreach}
+							</div>
+							<input
+							id="{$fldname}_display_1025"
+							name="{$fldname}_display_1025"
+							type="text"
+							autocomplete="off"
+							class="autocomplete-input"
+							style="border:0px solid #bababa;width: auto !important;"
+							data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}'
+							placeholder="{'LBL_SEARCH'|@getTranslatedString}...">
+						</div>
+						{/if}
 				{else}
 					<input
 						id="{$fldname}_display"
@@ -230,8 +259,14 @@
 						style="border:1px solid #bababa;"
 						value="{$fldvalue.displayvalue}">&nbsp;
 				{/if}
-				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
-alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+				<input
+					type="image"
+					src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
+					alt="{'LBL_CLEAR'|@getTranslatedString}"
+					title="{'LBL_CLEAR'|@getTranslatedString}"
+					onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value='';document.getElementById('show-1025-pill-{$fldname}').innerHTML=''; return false;"
+					align="absmiddle"
+					style='cursor:hand;cursor:pointer'>&nbsp;
 				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
 					<div id="listbox-unique-id" role="listbox" class="">
 						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%;" role="presentation"></ul>
@@ -242,13 +277,39 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		{elseif $uitype eq 3 || $uitype eq 4}<!-- Non Editable field, only configured value will be loaded -->
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">{/if}</td>
 			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo"><span style='display:none;' id='{$fldname}_hidden'></span><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
-		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 13 || $uitype eq 7}
+		{elseif $uitype eq 11 || $uitype eq 13 || $uitype eq 7}
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
 			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo"><span style='display:none;' id='{$fldname}_hidden'></span><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
+		{elseif $uitype eq 1}
+			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
+			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo">
+				<span style='display:none;' id='{$fldname}_hidden'></span>
+				<div style="position: relative;">
+					<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}"
+					{if isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['combobox'])}
+						autocomplete="off"
+						class="autocomplete-input detailedViewTextBox"
+						data-autocomp='{$maindata['extendedfieldinfo']['combobox']|@json_encode}' />
+						<div id="listbox-unique-id-{$fldname}" role="listbox" class="">
+							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
+						</div>
+					{elseif ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
+					{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
+						autocomplete="off"
+						class="autocomplete-input detailedViewTextBox"
+						data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}' />
+						<div id="listbox-unique-id" role="listbox" class="">
+							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
+						</div>
+					{else}
+						class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" />
+					{/if}
+				</div>
+			</td>
 		{elseif $uitype eq 9}
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {$APP.COVERED_PERCENTAGE} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
 			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo"><span style='display:none;' id='{$fldname}_hidden'></span><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
-		{elseif $uitype eq 19 || $uitype eq 20}
+		{elseif $uitype eq 19}
 			<!-- In Add Comment we should not display anything -->
 			{assign var="i18nAddComment" value='LBL_ADD_COMMENT'|@getTranslatedString:$MODULE}
 			{if $fldlabel eq $i18nAddComment}
@@ -260,7 +321,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td id="td_val_{$fldname}" colspan=3 class="dvtCellInfo">
 				<span style='display:none;' id='{$fldname}_hidden'></span>
-				<textarea class="detailedViewTextBox" tabindex="{$vt_tab}" onFocus="this.className='detailedViewTextBoxOn'" name="{$fldname}" id="{$fldname}" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8">{$fldvalue}</textarea>
+				<textarea class="detailedViewTextBox" tabindex="{$vt_tab}" onFocus="this.className='detailedViewTextBoxOn'" name="{$fldname}" id="{$fldname}" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8" style="{$Application_Textarea_Style}">{$fldvalue}</textarea>
 				{assign var="i18nSolution" value='Solution'|@getTranslatedString:$MODULE}
 				{if $fldlabel eq $i18nSolution}
 				<input type="hidden" name="helpdesk_solution" id="helpdesk_solution" value='{$fldvalue}'>
@@ -291,7 +352,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/if}
 				{/if}
 			</td>
-		{elseif $uitype eq 21 || $uitype eq 24}
+		{elseif $uitype eq 21}
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 					<font color="red">{$mandatory_field}</font>
 				{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
@@ -307,11 +368,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
 				<span style='display:none;' id='{$fldname}_hidden'></span>
-				{if $MODULE eq 'Calendar'}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:160px;">
-				{else}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
-				{/if}
+				<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
 				{foreach item=arr from=$fldvalue}
 					<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				{foreachelse}
@@ -566,7 +623,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<span style='display:none;' id='{$fldname}_hidden'></span>
 						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</td>
-				{elseif $fldname eq 'filestatus'&& $MODE eq 'create'}
+				{elseif $fldname eq 'filestatus'&& ($MODE eq 'create' || $MODE eq '')}
 					<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
 						<span style='display:none;' id='{$fldname}_hidden'></span>
 						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
@@ -702,61 +759,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<input name="bccmail" type="text" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"  value="">
 			</td>
 			</tr>
-
-		{elseif $uitype eq 55 || $uitype eq 255}
-			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-			{if $MASS_EDIT eq '1' && $fldvalue neq ''}
-				{$APP.Salutation}<input type="checkbox" name="salutationtype_mass_edit_check" id="salutationtype_mass_edit_check" class="small" ><br />
-			{/if}
-			{if $uitype eq 55}
-				{$usefldlabel}{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			{elseif $uitype eq 255}
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			{/if}
-			</td>
-
-			<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
-			<span style='display:none;' id='{$fldname}_hidden'></span>
-			{if $fldvalue neq ''}
-			<select name="salutationtype" class="small">
-				{foreach item=arr from=$fldvalue}
-				<option value="{$arr[1]}" {$arr[2]}>
-				{$arr[0]}
-				</option>
-				{/foreach}
-			</select>
-			{if $MASS_EDIT eq '1'}<br />{/if}
-			{/if}
-			{if (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']))}
-				{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
-				<div style="position: relative;">
-				<input
-					type="text"
-					name="{$fldname}"
-					id="{$fldname}"
-					tabindex="{$vt_tab}"
-					value="{$secondvalue}"
-					tabindex="{$vt_tab}"
-					autocomplete="off"
-					class="autocomplete-input detailedViewTextBox"
-					data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}' />
-					<div id="listbox-unique-id" role="listbox" class="">
-						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
-					</div>
-				</div>
-			{else}
-				<input type="text" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" style="width:58%;" value= "{$secondvalue}" >
-			{/if}
-			</td>
-
-		{elseif $uitype eq 22}
-			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
-				<span style='display:none;' id='{$fldname}_hidden'></span>
-				<textarea name="{$fldname}" cols="30" tabindex="{$vt_tab}" rows="2">{$fldvalue}</textarea>
-			</td>
 		{elseif $uitype eq 14}
 			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {"LBL_TIMEFIELD"|@getTranslatedString}{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
@@ -778,7 +780,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<input name="del_file_list" type="hidden" value="">
 					<div id="files_list" style="border: 1px solid grey; width: 500px; padding: 5px; background: rgb(255, 255, 255) none repeat scroll 0%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: x-small">
 						<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}, {$APP.Files_Maximum}{$Product_Maximum_Number_Images}</span>
-						<input id="my_file_element" type="file" name="file_1" tabindex="{$vt_tab}"  onchange="validateFilename(this)"/>
+						<input id="my_file_element" type="file" name="file_1" tabindex="{$vt_tab}" onchange="validateFilename(this)"/>
 						<!--input type="hidden" name="file_1_hidden" value=""/-->
 						{assign var=image_count value=0}
 						{if isset($maindata[3].0.name) && $maindata[3].0.name neq '' && $DUPLICATE neq 'true'}
@@ -793,10 +795,18 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 					<script>
 						{*<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->*}
-						var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), {$Product_Maximum_Number_Images} );
+						var multi_selector = new MultiSelector(document.getElementById('files_list'), {$Product_Maximum_Number_Images});
 						multi_selector.count = {$image_count};
 						{*<!-- Pass in the file element -->*}
-						multi_selector.addElement( document.getElementById( 'my_file_element' ) );
+						multi_selector.addElement(document.getElementById('my_file_element'));
+						var ProductImages=new Array();
+						var ProductImagesCount=0;
+						function delRowEmt(imagename) {ldelim}
+							ProductImages[ProductImagesCount++]=imagename;
+							multi_selector.current_element.disabled = false;
+							multi_selector.count--;
+							document.EditView.del_file_list.value=ProductImages.join('###');
+						{rdelim}
 					</script>
 				{/if}
 			</td>
@@ -804,7 +814,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 				{if $MASS_EDIT eq '1'}
-					<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small"  >
+					<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">
 				{/if}
 			</td>
 			<td id="td_val_{$fldname}" colspan="1" width="30%" align=left class="dvtCellInfo">

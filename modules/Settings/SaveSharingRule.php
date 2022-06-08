@@ -45,5 +45,5 @@ if ($mode == 'create') {
 	}
 }
 
-header('Location: index.php?action=OrgSharingDetailView&module=Settings&parenttab=Settings');
+header('Location: index.php?action=OrgSharingDetailView&module=Settings');
 ?>

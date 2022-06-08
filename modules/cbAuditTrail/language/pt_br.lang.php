@@ -6,6 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 20/05/2021 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ************************************************************************************/
 
 $mod_strings = array(
@@ -14,5 +15,7 @@ $mod_strings = array(
 	'LBL_AUDIT_TRAIL'=>'Informação sobre Auditoria',
 	'AuditTrailEnabled' => 'Auditoria ativa',
 	'AuditTrailDisabled' => 'Auditoria desativada',
+	'ERR_SQL' => 'Erro: requisicao errada ao database.',
+	'ERR_NoData' => 'Erro: nenhum dado encontrado.',
 );
 ?>

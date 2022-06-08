@@ -6,6 +6,8 @@ build/createLanguage.sh
 build/HelperScripts
 build/migrate6
 build/migrate_from_vt6.php
+build/migrate5
+build/migrate_from_vt5.php
 build/missingLanguage.sh
 build/oo-merge
 build/InstallRESTChanges.php
@@ -17,8 +19,7 @@ include/install/resources/utils.php
 include/utils/DBHealthCheck.php
 install
 install.php
-modules/Users/authTypes/adldap_test.php
-modules/Migration"
+modules/Users/authTypes/adldap_test.php"
 for f in $FILES
 do
 	if [ -e $f ]
@@ -28,6 +29,11 @@ do
 	fi
 done
 chmod 444 config.inc.php
+if [ -e .git ]
+then
+	echo "Protecting .git"
+	cp backup/.htaccess .git
+fi
 echo
 echo "Deactivate all modules you are not using. Besides being more secure the application will be faster."
 echo "Optionally you can"

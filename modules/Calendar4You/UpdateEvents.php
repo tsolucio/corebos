@@ -13,7 +13,7 @@ require_once 'modules/Calendar4You/CalendarUtils.php';
 
 global $adb, $current_user, $default_timezone;
 
-$currentModule = 'Calendar';
+$currentModule = 'cbCalendar';
 
 $controltime = strtotime('-6 month');
 $controldate = date('Y-m-d', $controltime);
@@ -59,15 +59,8 @@ if ($num_rows1 > 0) {
 							$record = $row2['crmid'];
 							$activitytype = $row2['activitytype'];
 
-							if ($activitytype == 'Task') {
-								$tab_type = 'Calendar';
-							} else {
-								$tab_type = 'Events';
-							}
-
 							$focus = CRMEntity::getInstance($currentModule);
-
-							$focus->retrieve_entity_info($record, $tab_type);
+							$focus->retrieve_entity_info($record, $currentModule);
 							$focus->id = $record;
 							$focus->mode = 'edit';
 

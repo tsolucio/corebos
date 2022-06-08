@@ -20,10 +20,11 @@
 global $current_language;
 $moduleFilepath = 'modules/GlobalVariable/language/'.$current_language.'.gvdefs.php';
 
-if (file_exists($moduleFilepath) == false) {
+if (!file_exists($moduleFilepath)) {
 	$moduleFilepath = 'modules/GlobalVariable/language/en_us.gvdefs.php';
 }
 require_once $moduleFilepath;
 ksort($GlobalVariableDefinitons);
+$smarty->assign('Action', vtlib_purify($_REQUEST['action']));
 $smarty->assign('GlobalVariableDefinitonsHeader', $GlobalVariableDefinitonsHeader);
 $smarty->assign('GlobalVariableDefinitons', $GlobalVariableDefinitons);

@@ -15,7 +15,7 @@ if (isset($_REQUEST['templateid']) && $_REQUEST['templateid'] != '') {
 }
 ?>
 <form name="frmrepstr" onsubmit="VtigerJS_DialogBox.block();">
-<input type="hidden" name="subject" value="<?php echo $templatedetails[2];?>"></input>
+<input type="hidden" name="subject" value="<?php echo $templatedetails[2];?>">
 <textarea name="repstr" style="visibility:hidden">
 <?php echo htmlentities($templatedetails[1], ENT_NOQUOTES, $default_charset); ?>
 </textarea>

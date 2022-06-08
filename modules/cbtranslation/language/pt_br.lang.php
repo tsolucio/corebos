@@ -29,5 +29,6 @@ $mod_strings = array(
 	'Export CSV' => 'Exportar CSV',
 	'Export JSON' => 'Exportar JSON',
 	'Translates' => 'Traduções',
+	'LBL_INVALID_FORMAT' => 'Invalid export format',
 );
 ?>

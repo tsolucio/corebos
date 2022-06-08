@@ -34,7 +34,7 @@ class updateMobileModuleToCrmNow2 extends cbupdaterWorker {
 
 					$moduleInstance = Vtiger_Module::getInstance($module);
 					$package->loadManifestFromFile('modules/'.$module.'/manifest.xml');
-					$rdo = $package->update_Module($moduleInstance);
+					$package->update_Module($moduleInstance);
 					//delete unused table
 					$this->ExecuteQuery("DROP TABLE vtiger_mobile_alerts");
 					$this->sendMsg('Module updated: '.$module);

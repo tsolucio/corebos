@@ -31,29 +31,28 @@ $shownoimage = (empty($_REQUEST['shownoimage']) ? true : vtlib_purify($_REQUEST[
 $pdoimgid = vtlib_purify($_REQUEST['imageid']);
 if (!empty($pdoimgid)) {
 	$query = 'select vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.type
-			 from vtiger_attachments
-			 inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-			 where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment")
-			  and deleted=0 and vtiger_attachments.attachmentsid=?';
+		from vtiger_attachments
+		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+		where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment") and deleted=0 and vtiger_attachments.attachmentsid=?';
 	$result_image = $adb->pquery($query, array($pdoimgid));
 	if ($result_image && $adb->num_rows($result_image)==1) {
 		$image_orgname = decode_html($adb->query_result($result_image, 0, 'name'));
 		$imagepath = $adb->query_result($result_image, 0, 'path');
 		$imagetype = $adb->query_result($result_image, 0, 'type');
-		$image = $imagepath.$pdoimgid."_".urlencode($image_orgname);
+		$image = $imagepath.$pdoimgid.'_'.urlencode($image_orgname);
 		$shownoimage = false;
 	}
 }
 
 if ($shownoimage) {
-	header("Content-Type: image/png");
-	header("Pragma: public");
-	header("Cache-Control: private");
-	header("Content-Disposition: filename=noimage.png");
-	header("Content-Description: php/coreBOS Generated Data");
+	header('Content-Type: image/png');
+	header('Pragma: public');
+	header('Cache-Control: private');
+	header('Content-Disposition: filename=noimage.png');
+	header('Content-Description: php/coreBOS Generated Data');
 	$im = @imagecreate(110, 110);
 	if (!$im) {
-		die("Cannot Initialize new GD image stream");
+		die('Cannot Initialize new GD image stream');
 	}
 	$background_color = imagecolorallocate($im, 255, 255, 255);
 	$text_color = imagecolorallocate($im, 0, 0, 0);
@@ -63,10 +62,10 @@ if ($shownoimage) {
 	imagedestroy($im);
 } else {
 	header("Content-Type: $imagetype");
-	header("Pragma: public");
-	header("Cache-Control: private");
+	header('Pragma: public');
+	header('Cache-Control: private');
 	header("Content-Disposition: filename=$image_orgname");
-	header("Content-Description: php/coreBOS Generated Data");
+	header('Content-Description: php/coreBOS Generated Data');
 	readfile($image);
 }
 ?>

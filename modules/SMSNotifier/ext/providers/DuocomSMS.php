@@ -12,38 +12,35 @@ include_once 'vtlib/Vtiger/Net/Client.php';
 
 class DuocomSMS implements ISMSProvider {
 
-	private $_username;
-	private $_password;
-	private $_parameters = array();
+	private $username;
+	private $password;
+	private $parameters = array();
 	public $helpURL = 'https://www.telefacil.com/wiki/index.php/Integraci%C3%B3n_con_Mensajer%C3%ADa_SMS_(SMSNotifier)';
 	public $helpLink = 'TeleFacil';
 
 	const SERVICE_URI = 'https://scgi.duocom.es/cgi-bin/telefacil2/apisms';
 	private static $REQUIRED_PARAMETERS = array('mascara');
 
-	public function __construct() {
-	}
-
 	/**
 	 * Function to get provider name
-	 * @return <String> provider name
+	 * @return string provider name
 	 */
 	public function getName() {
 		return $this->helpLink;
 	}
 
 	public function setAuthParameters($username, $password) {
-		$this->_username = $username;
-		$this->_password = $password;
+		$this->username = $username;
+		$this->password = $password;
 	}
 
 	public function setParameter($key, $value) {
-		$this->_parameters[$key] = $value;
+		$this->parameters[$key] = $value;
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if (isset($this->_parameters[$key])) {
-			return $this->_parameters[$key];
+		if (isset($this->parameters[$key])) {
+			return $this->parameters[$key];
 		}
 		return $defvalue;
 	}
@@ -61,6 +58,7 @@ class DuocomSMS implements ISMSProvider {
 				case self::SERVICE_SEND:
 					return  self::SERVICE_URI;
 				case self::SERVICE_QUERY:
+				default:
 					return self::SERVICE_URI . '/http/querymsg';
 			}
 		}
@@ -68,7 +66,7 @@ class DuocomSMS implements ISMSProvider {
 	}
 
 	protected function prepareParameters() {
-		$params = array('user' => $this->_username, 'pwd' => $this->_password);
+		$params = array('user' => $this->username, 'pwd' => $this->password);
 		foreach (self::$REQUIRED_PARAMETERS as $key) {
 			$params[$key] = $this->getParameter($key);
 		}
@@ -81,8 +79,8 @@ class DuocomSMS implements ISMSProvider {
 		$params = $this->prepareParameters();
 		$params['mensaje'] = $message;
 		$params['accion'] = 'enviar';
-		$params['principal'] = $this->_username;
-		$params['pin'] = $this->_password;
+		$params['principal'] = $this->username;
+		$params['pin'] = $this->password;
 
 		if (count($tonumbers) <= 5) { //envio normal
 			for ($i = 1; $i <= count($tonumbers); $i++) {

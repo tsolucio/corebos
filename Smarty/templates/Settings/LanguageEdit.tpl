@@ -39,7 +39,6 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 var k=0;
 function changeModule(form) {
 	form.action.value='LanguageEdit';
-	form.parenttab.value='Settings';
 	form.submit();
 }
 function addLabel() {
@@ -62,7 +61,6 @@ function addLabel() {
 						<input type="hidden" name="module" value="Settings">
 						<input type="hidden" name="file">
 						<input type="hidden" name="languageid" value="{$LANGUAGEID}">
-						<input type="hidden" name="parenttab" value="Settings">
 						<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 							<tbody>
 								<tr>
@@ -109,7 +107,7 @@ function addLabel() {
 							{$UMOD.LBL_TRADE_PERCENTAGE} <strong>{$PERC_TRANSALTED}</strong>
 							<input value="{$APP.LBL_ADD_BUTTON}" class="crmButton small save" onclick="addLabel();" type="button"/>
 							<input value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick="this.form.file.value='LanguageSave';" type="submit"/>
-							<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick="gotourl('index.php?module=Settings&action=ModuleManager&parenttab=Settings')"/>
+							<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick="gotourl('index.php?module=Settings&action=ModuleManager')"/>
 						</div>
 						<div style="text-align:right;margin:3px;"> {$APP.LBL_VIEW}
 							<select name='filter_translate' id='filter_translate' class="importBox" onchange='changeModule(this.form);'>

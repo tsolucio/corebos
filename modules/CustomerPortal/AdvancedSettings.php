@@ -23,12 +23,10 @@ $mode = $_REQUEST['mode'];
 if ($mode !='' && $mode == 'save') {
 	cp_saveAdvancedSettings($_REQUEST);
 }
-$category = getParentTab();
 $smarty->assign('THEME', $theme);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('BUTTONS', $list_buttons);
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");

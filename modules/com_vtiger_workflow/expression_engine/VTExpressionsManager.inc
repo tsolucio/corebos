@@ -96,12 +96,32 @@ class VTExpressionsManager {
 	}
 
 	public function expressionFunctionDetails() {
-		global $current_language;
+		global $current_language, $adb;
 		$fname = 'modules/com_vtiger_workflow/language/'.$current_language.'.fndefs.php';
 		if (file_exists($fname) && isInsideApplication($fname)) {
 			include $fname;
 		} else {
 			include 'modules/com_vtiger_workflow/language/en_us.fndefs.php';
+		}
+		$wfexpfuncs = $adb->query('select expname,expinfo,funcdesc,funccategory,funcparam,funcexamples from com_vtiger_workflows_expfunctions');
+		while ($func = $adb->fetch_array($wfexpfuncs)) {
+			if (empty($WFExpressionFunctionDefinitons[$func['expname']])) {
+				$WFExpressionFunctionDefinitons[$func['expname']] = array(
+					'name' => $func['expinfo'],
+					'desc' => getTranslatedString($func['funcdesc']),
+					'params' => json_decode(decode_html($func['funcparam']), true),
+					'categories' => json_decode(decode_html($func['funccategory']), true),
+					'examples' => json_decode(decode_html($func['funcexamples']), true),
+				);
+				foreach ($WFExpressionFunctionDefinitons[$func['expname']]['params'] as $idx => $prm) {
+					$WFExpressionFunctionDefinitons[$func['expname']]['params'][$idx]['type'] = getTranslatedString($prm['type']);
+					$WFExpressionFunctionDefinitons[$func['expname']]['params'][$idx]['desc'] = getTranslatedString($prm['desc']);
+				}
+			}
+		}
+		asort($WFExpressionFunctionDefinitons);
+		foreach ($WFExpressionFunctionDefinitons as $fn => $fdesc) {
+			$WFExpressionFunctionDefinitons[$fn]['nameuc'] = strtoupper($WFExpressionFunctionDefinitons[$fn]['name']);
 		}
 		return $WFExpressionFunctionDefinitons;
 	}
@@ -119,12 +139,14 @@ class VTExpressionsManager {
 			'time_diffweekdays(a)' => 'time_diffweekdays(a)',
 			'holidaydifference' => 'holidaydifference(startDate, endDate, include_saturdays, holidays)',
 			'networkdays' => 'networkdays(startDate, endDate, holidays)',
+			'isholidaydate' => 'isholidaydate(date, saturdayisholiday, holidays)',
 			'time_diff(a,b)' => 'time_diff(a,b)',
 			'time_diff(a)' => 'time_diff(a)',
 			'aggregate_time' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
 			'add_days' => 'add_days(datefield, noofdays)',
 			'add_workdays' => 'add_workdays(date, numofdays, addsaturday, holidays)',
 			'sub_days' => 'sub_days(datefield, noofdays)',
+			'sub_workdays' => 'sub_workdays(date, numofdays, removesaturday, holidays)',
 			'add_months' => 'add_months(datefield, noofmonths)',
 			'sub_months' => 'sub_months(datefield, noofmonths)',
 			'add_time(timefield, minutes)' => 'add_time(timefield, minutes)',
@@ -140,8 +162,12 @@ class VTExpressionsManager {
 			'stringposition' => 'stringposition(haystack,needle)',
 			'stringlength' => 'stringlength(string)',
 			'stringreplace' => 'stringreplace(search,replace,subject)',
+			'regexreplace' => 'regexreplace(pattern,replace,subject)',
 			'power(base,exponential)' => 'power(base,exponential)',
 			'substring' => 'substring(stringfield,start,length)',
+			'randomstring' => 'randomstring(length)',
+			'randomnumber' => 'randomnumber(min,max)',
+			'faker' => 'faker(operation,parameters)',
 			'uppercase'=>'uppercase(stringfield)',
 			'lowercase'=>'lowercase(stringfield)',
 			'uppercasefirst'=>'uppercasefirst(stringfield)',
@@ -152,7 +178,7 @@ class VTExpressionsManager {
 			'round' => 'round(numericfield,decimals)',
 			'ceil' => 'ceil(numericfield)',
 			'floor' => 'floor(numericfield)',
-			'modulo' => 'modulo(numericfield)',
+			'modulo' => 'modulo(numericfield,numericfield)',
 			'hash' => 'hash(field, method)',
 			'globalvariable' => 'globalvariable(gvname)',
 			'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
@@ -160,6 +186,7 @@ class VTExpressionsManager {
 			'getCurrentUserID' => 'getCurrentUserID()',
 			'getCurrentUserName' => 'getCurrentUserName({full})',
 			'getCurrentUserField' => 'getCurrentUserField(fieldname)',
+			'getCRMIDFromWSID' => 'getCRMIDFromWSID(id)',
 			'getEntityType'=>'getEntityType(field)',
 			'getimageurl'=>'getimageurl(field)',
 			'getLatitude' => 'getLatitude(address)',
@@ -176,15 +203,29 @@ class VTExpressionsManager {
 			'getGEODistanceFromUser2ContactShipping' => 'getGEODistanceFromUser2ContactShipping(contact,address_specification)',
 			'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
+			'getIDof' => 'getIDof(module, searchon, searchfor)',
+			'getRelatedIDs' => 'getRelatedIDs(module, recordid)',
+			'getRelatedMassCreateArray' => 'getRelatedMassCreateArray(module,recordid)',
+			'getRelatedMassCreateArrayConverting' => 'getRelatedMassCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
+			'getRelatedRecordCreateArrayConverting' => 'getRelatedRecordCreateArrayConverting(module, RelatedModuleDestination, recordid)',
+			'getISODate' => 'getISODate(year, week, dayOfWeek)',
+			'getFieldsOF' => 'getFieldsOF(id, module, fields)',
 			'getFromContext' => 'getFromContext(variablename)',
+			'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
 			'setToContext' => 'setToContext(variablename, value)',
+			'jsonEncode' => 'jsonEncode(field)',
+			'jsonDecode' => 'jsonDecode(field)',
+			'implode' => 'implode(delimiter, field)',
+			'explode' => 'explode(delimiter, field)',
 			'sendMessage' => 'sendMessage(message, channel, time)',
 			'readMessage' => 'readMessage(channel)',
 			'getSetting' => "getSetting('setting_key', 'default')",
 			'setSetting' => "setSetting('setting_key', value)",
 			'delSetting' => "delSetting('setting_key')",
 			'evaluateRule' => 'evaluateRule(ruleID)',
+			'executeSQL' => 'executeSQL(query, parameters...)',
 			'getCRUDMode' => 'getCRUDMode()',
+			'Importing' => 'Importing()',
 			'isNumeric' => 'isNumeric(fieldname)',
 			'isString' => 'isString(fieldname)',
 			'OR' => 'OR(condition1, condition2)',
@@ -194,8 +235,12 @@ class VTExpressionsManager {
 			'exists' => 'exists(fieldname, value)',
 			'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
+			'allrelatedarethesame' => 'allrelatedarethesame(relatedmodule, fieldname, value)',
 			'min' => 'min(fieldname)',
 			'max' => 'max(fieldname)',
+			'average' => 'average(number,...)',
+			'getCurrentConfiguredTaxValues' => 'getCurrentConfiguredTaxValues(taxname)',
+			'getCurrencyConversionValue' => 'getCurrencyConversionValue(currency_code)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

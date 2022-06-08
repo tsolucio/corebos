@@ -120,7 +120,7 @@
  *************************************************************************************************/
 
 include_once 'include/validation/load_validations.php';
-
+require_once 'data/CRMEntity.php';
 class Validations extends processcbMap {
 
 	/*
@@ -130,7 +130,7 @@ class Validations extends processcbMap {
 	public function processMap($arguments) {
 		$mapping=$this->convertMap2Array();
 		$tabid = getTabid($mapping['origin']);
-		if (isset($arguments[2]) && $arguments[2]==true) {
+		if (isset($arguments[2]) && $arguments[2]) {
 			$mapping = self::addFieldValidations($mapping, $tabid);
 		}
 		return self::doValidations($mapping, $arguments[0], $arguments[1], $tabid);
@@ -276,7 +276,7 @@ class Validations extends processcbMap {
 						}
 						break;
 					case 'creditCard':
-						if (count($restrictions)>0) {
+						if (!empty($restrictions)) {
 							if (isset($val['msg'])) {
 								$v->rule($rule, $valfield, $restrictions)->message($val['msg'])->label($i18n);
 							} else {
@@ -342,7 +342,6 @@ class Validations extends processcbMap {
 						}
 						break;
 					default:
-						//continue;
 						break;
 				}
 			}
@@ -359,36 +358,39 @@ class Validations extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
+		if (empty($xml)) {
+			return array();
+		}
 		$mapping=$val_fields=array();
-		$mapping['origin'] = (String)$xml->originmodule->originname;
+		$mapping['origin'] = (string)$xml->originmodule->originname;
 		foreach ($xml->fields->field as $v) {
-			$fieldname = (String)$v->fieldname;
+			$fieldname = (string)$v->fieldname;
 			if (empty($fieldname)) {
 				continue;
 			}
 			$allvals=array();
 			foreach ($v->validations->validation as $val) {
 				$retval = array();
-				$retval['rule'] = (String)$val->rule;
+				$retval['rule'] = (string)$val->rule;
 				if (empty($retval['rule'])) {
 					continue;
 				}
 				$rst = array();
 				if (isset($val->restrictions)) {
 					foreach ($val->restrictions->restriction as $rv) {
-						$rst[]=(String)$rv;
+						$rst[]=(string)$rv;
 					}
 					if (isset($val->restrictions->parameters)) {
 						$params = array();
 						foreach ($val->restrictions->parameters->parameter as $prm) {
-							$params[(String)$prm->name]=(String)$prm->value;
+							$params[(string)$prm->name]=(string)$prm->value;
 						}
 						$rst[]=$params;
 					}
 				}
 				$retval['rst'] = $rst;
 				if (isset($val->message)) {
-					$retval['msg']=(String)$val->message;
+					$retval['msg']=(string)$val->message;
 				}
 				$allvals[]=$retval;
 			}
@@ -404,6 +406,20 @@ class Validations extends processcbMap {
 		$validationData = getDBValidationData(array(), $tabid);
 		foreach ($validationData as $fname => $finfo) {
 			foreach ($finfo as $fvalidation) {
+				if (substr($fvalidation, 0, 2)=='I~') {
+					if (isset($mapping['fields'][$fname])) {
+						$mapping['fields'][$fname][] = array('rule'=>'integer', 'rst'=>array());
+					} else {
+						$mapping['fields'][$fname] = array(array('rule'=>'integer', 'rst'=>array()));
+					}
+				}
+				if (substr($fvalidation, 0, 2)=='N~') {
+					if (isset($mapping['fields'][$fname])) {
+						$mapping['fields'][$fname][] = array('rule'=>'min', 'rst'=>array(0));
+					} else {
+						$mapping['fields'][$fname] = array(array('rule'=>'min', 'rst'=>array(0)));
+					}
+				}
 				if (strpos($fvalidation, '~M')) {
 					if ($fname=='taxclass') {
 						unset($mapping['fields'][$fname]);
@@ -462,29 +478,13 @@ class Validations extends processcbMap {
 		return $mapping;
 	}
 
+	/**
+	 * We just return true because all modules have some validation now that we are checking them all again
+	 * at the very least they are going to have the MySQL varchar limit check and that is in the case that
+	 * all other validations on the module are deactivated (integer, number, ...)
+	 */
 	public static function ValidationsExist($module) {
-		global $adb, $current_user;
-		$q = "select 1
-			from vtiger_cbmap
-			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations' limit 1";
-		$rs = $adb->pquery($q, array('Validations',$module));
-		if ($rs && $adb->num_rows($rs)==1) {
-			return true;
-		}
-		$q = 'select globalvariableid
-			from vtiger_globalvariable
-			inner join vtiger_crmentity on crmid=globalvariableid
-			where deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
-		$rs = $adb->pquery($q, array('BusinessMapping_Validations', $module));
-		if ($rs && $adb->num_rows($rs)>0) {
-			while ($gv = $adb->fetch_array($rs)) {
-				if (GlobalVariable::isAppliable($gv['globalvariableid'], $module, $current_user->id)) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return true;
 	}
 
 	public static function recordIsAssignedToInactiveUser() {
@@ -496,11 +496,7 @@ class Validations extends processcbMap {
 				return ($adb->query_result($usrrs, 0, 'status')!='Active');
 			} else {
 				$grprs = $adb->pquery('select 1 from vtiger_groups where groupid=?', array($screen_values['assigned_user_id']));
-				if ($grprs && $adb->num_rows($grprs)==1) {
-					return false;
-				} else {
-					return true;
-				}
+				return !($grprs && $adb->num_rows($grprs)==1);
 			}
 		} elseif ($screen_values['module']=='Users') {
 			return false;
@@ -509,24 +505,33 @@ class Validations extends processcbMap {
 		}
 	}
 
+	public static function loadProductValuesFromScreenValues($screen_values) {
+		$products = array();
+		foreach ($screen_values as $sv_name => $sv) {
+			if (strpos($sv_name, 'hdnProductId') !== false) {
+				$i = substr($sv_name, 12);
+				$qty_i = 'qty'.$i;
+				$name_i = 'productName'.$i;
+				$type_i = 'lineItemType'.$i;
+				$deleted_i = 'deleted'.$i;
+				$products[$i]['crmid'] = $sv;
+				$products[$i]['qty'] = $screen_values[$qty_i];
+				$products[$i]['name'] = $screen_values[$name_i];
+				$products[$i]['type'] = $screen_values[$type_i];
+				$products[$i]['deleted'] = $screen_values[$deleted_i];
+			}
+		}
+		return $products;
+	}
+
 	public static function processAllValidationsFor($module) {
 		global $adb, $current_user;
 		$screen_values = json_decode($_REQUEST['structure'], true);
+		$handler = vtws_getModuleHandlerFromName($module, $current_user);
+		$meta = $handler->getMeta();
+		$screen_values = DataTransform::sanitizeCurrencyFieldsForDB($screen_values, $meta);
 		if (in_array($module, getInventoryModules())) {
-			$products = array();
-			foreach ($screen_values as $sv_name => $sv) {
-				if (strpos($sv_name, 'hdnProductId') !== false) {
-					$i = substr($sv_name, 12);
-					$qty_i = 'qty'.$i;
-					$name_i = 'productName'.$i;
-					$type_i = 'lineItemType'.$i;
-					$products[$i]['crmid'] = $sv;
-					$products[$i]['qty'] = $screen_values[$qty_i];
-					$products[$i]['name'] = $screen_values[$name_i];
-					$products[$i]['type'] = $screen_values[$type_i];
-				}
-			}
-			$screen_values['pdoInformation'] = $products;
+			$screen_values['pdoInformation'] = Validations::loadProductValuesFromScreenValues($screen_values);
 		}
 		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
 		if (!empty($record)) {
@@ -548,18 +553,20 @@ class Validations extends processcbMap {
 			}
 		}
 		$valmaps = array();
-		$q = "select cbmapid
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
+		$q = 'select cbmapid
 			from vtiger_cbmap
-			inner join vtiger_crmentity on crmid=cbmapid
+			inner join '.$crmEntityTable." on vtiger_crmentity.crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations'";
 		$rs = $adb->pquery($q, array('Validations', $module));
 		while ($val = $adb->fetch_array($rs)) {
 			$valmaps[] = $val['cbmapid'];
 		}
+		$crmGvEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
 		$q = 'select globalvariableid, bmapid
 			from vtiger_globalvariable
-			inner join vtiger_crmentity on crmid=globalvariableid
-			where deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
+			inner join '.$crmGvEntityTable.' on vtiger_crmentity.crmid=globalvariableid
+			where vtiger_crmentity.deleted=0 and gvname=? and module_list=? and bmapid!=0 and bmapid is not null';
 		$rs = $adb->pquery($q, array('BusinessMapping_Validations', $module));
 		if ($rs && $adb->num_rows($rs)>0) {
 			while ($gv = $adb->fetch_array($rs)) {
@@ -570,7 +577,7 @@ class Validations extends processcbMap {
 		}
 		$valmaps = array_unique($valmaps);
 		$validation = true;
-		if (count($valmaps)>0) {
+		if (!empty($valmaps)) {
 			$focus = new cbMap();
 			$focus->mode = '';
 			$addFieldValidations = true;
@@ -598,7 +605,7 @@ class Validations extends processcbMap {
 			foreach ($errs as $err) {
 				$error.= $err . "\n";
 			}
-			if (strpos($error, "{custommsg|") > 0) {
+			if (strpos($error, '{custommsg|') > 0) {
 				preg_match_all('/{(.*)}/', $error, $match);
 				$res = explode('|', $match[1][0]);
 				include_once 'include/validation/'.$res[1].'.php';
@@ -606,6 +613,15 @@ class Validations extends processcbMap {
 			}
 		}
 		return nl2br($error);
+	}
+
+	public static function flattenMultipicklistArrays($fields) {
+		return array_map(
+			function ($value) {
+				return is_array($value) ? implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $value) : $value;
+			},
+			$fields
+		);
 	}
 }
 ?>

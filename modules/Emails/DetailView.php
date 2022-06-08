@@ -9,7 +9,6 @@
  ************************************************************************************/
 require_once 'Smarty_setup.php';
 require_once 'data/Tracker.php';
-require_once 'include/upload_file.php';
 require_once 'include/utils/utils.php';
 
 global $log, $app_strings, $mod_strings, $currentModule, $theme, $default_charset;
@@ -31,6 +30,7 @@ if (isset($_REQUEST['record'])) {
 	$to_email = json_decode($adb->query_result($result, 0, 'to_email'), true);
 	$cc_email = json_decode($adb->query_result($result, 0, 'cc_email'), true);
 	$smarty->assign('TO_MAIL', vt_suppressHTMLTags(@implode(',', $to_email)));
+	$smarty->assign('REPLYTO', $adb->query_result($result, 0, 'replyto'));
 	$smarty->assign('CC_MAIL', vt_suppressHTMLTags(@implode(',', $cc_email)));
 	$bcc_email = json_decode($adb->query_result($result, 0, 'bcc_email'), true);
 	$smarty->assign('BCC_MAIL', vt_suppressHTMLTags(@implode(',', $bcc_email)));

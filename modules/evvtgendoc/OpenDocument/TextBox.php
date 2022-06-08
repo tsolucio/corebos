@@ -81,14 +81,6 @@ class OpenDocument_FrameTextBox extends OpenDocument_StyledElement {
 			'OpenDocument_Hyperlink',
 		);
 		return true;
-		$height = $node->getAttributeNS(OpenDocument::NS_FO, 'min-height');
-		if (empty($height)) {
-			$height=$aminheight;
-		}
-		if (!empty($height)) {
-			$this->node->setAttribute('fo:min-height', $height);
-			$this->minheight = $height;
-		}
 	}
 
 	/**

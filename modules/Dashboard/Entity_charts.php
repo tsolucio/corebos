@@ -9,7 +9,7 @@
  ********************************************************************************/
 require_once 'include/utils/utils.php';
 require_once "include/utils/ChartUtils.php";
-
+require_once 'data/CRMEntity.php';
 /* Function to get the Account name for a given account id
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
@@ -47,24 +47,28 @@ function module_Chart_HomePageDashboard($userinfo) {
 
 	// Leads module
 	$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 'le.converted = 1' : 'le.converted = 0 OR le.converted IS NULL');
-	$leadcountres = $adb->query("SELECT count(*) as count FROM vtiger_crmentity se INNER JOIN vtiger_leaddetails le on le.leadid = se.crmid
-		WHERE se.deleted = 0 AND se.smownerid = $user_id AND ($val_conv)");
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
+	$leadcountres = $adb->query("SELECT count(*) as count FROM ".$crmEntityTable." INNER JOIN vtiger_leaddetails le on le.leadid = vtiger_crmentity.crmid
+		WHERE vtiger_crmentity.deleted = 0 AND vtiger_crmentity.smownerid = $user_id AND ($val_conv)");
 	$modrecords['Leads'] = $adb->query_result($leadcountres, 0, 'count');
 
 	// HelpDesk module
-	$helpdeskcountres = $adb->query("SELECT count(*) as count FROM vtiger_crmentity se INNER JOIN vtiger_troubletickets tt ON tt.ticketid = se.crmid
-		WHERE se.deleted = 0 AND se.smownerid = $user_id AND (tt.status != 'Closed' OR tt.status IS NULL)");
+	$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('HelpDesk');
+	$helpdeskcountres = $adb->query("SELECT count(*) as count FROM ".$crmEntityTable1." INNER JOIN vtiger_troubletickets tt ON tt.ticketid = vtiger_crmentity.crmid
+		WHERE vtiger_crmentity.deleted = 0 AND vtiger_crmentity.smownerid = $user_id AND (tt.status != 'Closed' OR tt.status IS NULL)");
 	$modrecords['HelpDesk']=$adb->query_result($helpdeskcountres, 0, 'count');
 
 	// Potentials module
-	$potcountres = $adb->query("SELECT count(*) as count FROM vtiger_crmentity se INNER JOIN vtiger_potential pot ON pot.potentialid = se.crmid
-		WHERE se.deleted = 0 AND se.smownerid = $user_id AND (pot.sales_stage NOT IN ('".$app_strings['LBL_CLOSE_WON']."','".
+	$crmEntityTable2 = CRMEntity::getcrmEntityTableAlias('Potentials');
+	$potcountres = $adb->query("SELECT count(*) as count FROM ".$crmEntityTable2." INNER JOIN vtiger_potential pot ON pot.potentialid = vtiger_crmentity.crmid
+		WHERE vtiger_crmentity.deleted = 0 AND vtiger_crmentity.smownerid = $user_id AND (pot.sales_stage NOT IN ('".$app_strings['LBL_CLOSE_WON']."','".
 		$app_strings['LBL_CLOSE_LOST']."') OR pot.sales_stage IS NULL)");
 	$modrecords['Potentials']= $adb->query_result($potcountres, 0, 'count');
 
 	// Calendar moudule
-	$calcountres = $adb->pquery("SELECT count(*) as count FROM vtiger_crmentity se INNER JOIN vtiger_activity act ON act.activityid = se.crmid
-		WHERE se.deleted = 0 AND se.smownerid = ? AND act.activitytype != 'Emails' AND
+	$crmEntityTable3 = CRMEntity::getcrmEntityTableAlias('cbCalendar');
+	$calcountres = $adb->pquery("SELECT count(*) as count FROM ".$crmEntityTable3." INNER JOIN vtiger_activity act ON act.activityid = vtiger_crmentity.crmid
+		WHERE vtiger_crmentity.deleted = 0 AND vtiger_crmentity.smownerid = ? AND act.activitytype != 'Emails' AND
 			(act.eventstatus NOT IN ('Completed', 'Deferred', 'Held', 'Not Held') OR act.eventstatus IS NULL)", array($user_id));
 	$modrecords['Calendar']= $adb->query_result($calcountres, 0, 'count');
 
@@ -83,7 +87,7 @@ function module_Chart_HomePageDashboard($userinfo) {
 	}
 
 	// Get count for module that needs special conditions
-	$query = "SELECT setype, count(setype) setype_count FROM vtiger_crmentity se WHERE
+	$query = "SELECT setype, count(setype) setype_count FROM vtiger_crmobject se WHERE
 		se.deleted = 0 AND se.smownerid=$user_id AND se.setype in ($inmodulestr) GROUP BY se.setype";
 	$queryres = $adb->query($query);
 	while ($resrow = $adb->fetch_array($queryres)) {
@@ -204,10 +208,10 @@ function module_Chart($user_id, $date_start = '2000-01-01', $end_date = '2017-01
 
 			$mod_tot_cnt_array[$crtd_date]+=1;
 
-			if (in_array($mod_name, $mod_name_array) == false) {
+			if (!in_array($mod_name, $mod_name_array)) {
 				$mod_name_array[] = $mod_name;
 			}
-			if (in_array($search_str, $search_str_array) == false) {
+			if (!in_array($search_str, $search_str_array)) {
 				$search_str_array[] = $search_str;
 			}
 
@@ -367,16 +371,13 @@ function module_Chart($user_id, $date_start = '2000-01-01', $end_date = '2017-01
 				if ($graph_for == 'parent_id' || $graph_for == 'related_to') {
 					$seType = getSalesEntityType($mod_name);
 					if ($seType == 'Contacts') {
-						$query = "SELECT lastname, firstname FROM vtiger_contactdetails
-							WHERE contactid=?";
+						$query = 'SELECT lastname, firstname FROM vtiger_contactdetails WHERE contactid=?';
 						$result = $adb->pquery($query, array($mod_name));
 						$name_val = $adb->query_result($result, 0, "lastname");
-						if ($name_val!="") {
-							if (getFieldVisibilityPermission('Contacts', $current_user->id, 'firstname') == '0') {
-								$first_name = $adb->query_result($result, 0, 'firstname');
-								if ($first_name != '') {
-									$name_val .= ' '.$first_name;
-								}
+						if ($name_val!='' && getFieldVisibilityPermission('Contacts', $current_user->id, 'firstname') == '0') {
+							$first_name = $adb->query_result($result, 0, 'firstname');
+							if ($first_name != '') {
+								$name_val .= ' '.$first_name;
 							}
 						}
 					} else {
@@ -427,7 +428,6 @@ function module_Chart($user_id, $date_start = '2000-01-01', $end_date = '2017-01
 						$link_val="index.php?module=".$module."&action=ListView&from_dashboard=true&type=dbrd&query=true&".$searchField."=".$id_name."&viewname=".$cvid;
 					} else {
 						$esc_search_str = urlencode(vtlib_purify($search_str));
-						//$esc_search_str = htmlentities($search_str, ENT_QUOTES, $default_charset);
 						$link_val="index.php?module=".$module."&action=index&from_dashboard=true&search_text=".$esc_search_str."&search_field=".$searchField
 							.'&searchtype=BasicSearch&query=true&type=entchar&operator=e&viewname='.$cvid;
 					}
@@ -499,10 +499,6 @@ function get_graph_by_type($graph_by, $graph_title, $module, $where, $query, $wi
 		$values = $graph_details[1];
 		$graph_title = $graph_details[2];
 		$target_values = ChartUtils::convertToArray($graph_details[3], false, true);
-		//$graph_date = $graph_details[4];
-		//$urlstring = $graph_details[5];
-		//$cnt_table = $graph_details[6];
-		//$test_target_val = $graph_details[7];
 
 		if (isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX') {
 			$width = 450;

@@ -14,7 +14,8 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 global $adb;
-$uid=vtlib_purify($_REQUEST['uid']);
-$service="GoogleCalendar";
-$a=$adb->pquery("update its4you_googlesync4you_access set refresh_token='', synctoken='' where userid=? and service=?", array($uid,$service));
-$token=coreBOS_Session::set('token', '');
+$adb->pquery(
+	"update its4you_googlesync4you_access set refresh_token='', synctoken='' where userid=? and service=?",
+	array(vtlib_purify($_REQUEST['uid']), 'GoogleCalendar')
+);
+coreBOS_Session::set('token', '');

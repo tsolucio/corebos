@@ -8,13 +8,10 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/jquery/jquery.js"></script>
-<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 <script type="text/javaScript" src="include/js/dedup.js"></script>
 
 <form enctype="multipart/form-data" name="mergeDuplicates" method="post" action="index.php?module={$MODULE}&action=FindDuplicateRecords" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="module" value="{$MODULE}">
-	<input type="hidden" name="parenttab" value="{$CATEGORY}">
 	<input type="hidden" name="action" value="FindDuplicateRecords">
 	<input type="hidden" name="selectedColumnsString"/>
 	<table class="searchUIBasic small" border="0" cellpadding="5" cellspacing="0" width="80%" height="10" align="center">

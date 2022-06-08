@@ -53,9 +53,7 @@ function vtlib_getModuleNameById($tabid) {
  * NOTE: Ignore the standard modules which is already handled.
  */
 function vtlib_getModuleNameForSharing() {
-	$std_modules = array('Calendar','Leads','Accounts','Contacts','Potentials',
-		'HelpDesk','Campaigns','Quotes','PurchaseOrder','SalesOrder','Invoice','Events');
-	return getSharingModuleList($std_modules);
+	return getSharingModuleList(array('Leads','Accounts','Contacts','Potentials','HelpDesk','Campaigns','Quotes','PurchaseOrder','SalesOrder','Invoice'));
 }
 
 /**
@@ -95,7 +93,9 @@ function vtlib_prefetchModuleActiveInfo($force = true) {
  */
 function vtlib_isModuleActive($module) {
 	global $__cache_module_activeinfo, $adb;
-
+	if (is_numeric($module) || empty($module)) {
+		return false;
+	}
 	if (in_array($module, vtlib_moduleAlwaysActive())) {
 		return true;
 	}
@@ -133,10 +133,9 @@ function vtlib_RecreateUserPrivilegeFiles() {
  * Get list module names which are always active (cannot be disabled)
  */
 function vtlib_moduleAlwaysActive() {
-	$modules = array (
+	return array (
 		'CustomView', 'Settings', 'Users', 'Migration', 'Utilities', 'Import', 'com_vtiger_workflow', 'PickList',
 	);
-	return $modules;
 }
 
 /**
@@ -151,18 +150,22 @@ function vtlib_toggleModuleAccess($module, $enable_disable, $noevents = false) {
 
 	if ($enable_disable === true) {
 		$enable_disable = 0;
+		$enable_disable_BA = 1;
 		$event_type = Vtiger_Module::EVENT_MODULE_ENABLED;
 	} elseif ($enable_disable === false) {
 		$enable_disable = 1;
+		$enable_disable_BA = 0;
 		$event_type = Vtiger_Module::EVENT_MODULE_DISABLED;
 	}
 
-	$adb->pquery('UPDATE vtiger_tab set presence = ? WHERE name = ?', array($enable_disable,$module));
+	$adb->pquery('UPDATE vtiger_tab set presence=? WHERE name=?', array($enable_disable,$module));
+	$adb->pquery(
+		'UPDATE vtiger_businessactions set active=? WHERE linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'[^a-zA-Z0-9_.]" OR linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'$" OR linkurl RLIKE  "^'.$module.'[^a-zA-Z0-9_.]"',
+		array($enable_disable_BA)
+	);
 
 	$__cache_module_activeinfo[$module] = $enable_disable;
 
-	create_tab_data_file();
-	create_parenttab_data_file();
 	vtlib_RecreateUserPrivilegeFiles();
 
 	if (!$noevents) {
@@ -180,7 +183,7 @@ function vtlib_getToggleModuleInfo() {
 	$sqlresult = $adb->query(
 		"SELECT name, presence, customized, isentitytype
 		FROM vtiger_tab
-		WHERE name NOT IN ('Users','Calendar') AND presence IN (0,1) ORDER BY name"
+		WHERE name NOT IN ('Users') AND presence IN (0,1) ORDER BY name"
 	);
 	$num_rows  = $adb->num_rows($sqlresult);
 	for ($idx = 0; $idx < $num_rows; ++$idx) {
@@ -429,9 +432,9 @@ $__htmlpurifier_instance = false;
 /**
  * Purify (Cleanup) malicious snippets of code from the input
  *
- * @param String $value
- * @param Boolean $ignore Skip cleaning of the input
- * @return String
+ * @param mixed value(s) to clean
+ * @param boolean ignore skip cleaning of the input
+ * @return mixed sanitized
  */
 function vtlib_purify($input, $ignore = false) {
 	global $__htmlpurifier_instance, $root_directory, $default_charset;
@@ -451,7 +454,7 @@ function vtlib_purify($input, $ignore = false) {
 	$value = $input;
 	if (!$ignore) {
 		// Initialize the instance if it has not yet done
-		if ($__htmlpurifier_instance == false) {
+		if (!$__htmlpurifier_instance) {
 			if (empty($use_charset)) {
 				$use_charset = 'UTF-8';
 			}
@@ -480,7 +483,16 @@ function vtlib_purify($input, $ignore = false) {
 			}
 		}
 	}
-	$value = str_replace('&amp;', '&', $value);
+	if (is_array($value)) {
+		$value = array_map(
+			function ($v) {
+				return str_replace('&amp;', '&', $v);
+			},
+			$value
+		);
+	} elseif (is_string($value)) {
+		$value = str_replace('&amp;', '&', $value);
+	}
 	if (!is_array($input)) {
 		$purified_cache[$md5OfInput] = $value;
 	}
@@ -490,7 +502,7 @@ function vtlib_purify($input, $ignore = false) {
 /**
  * Process the UI Widget requested
  * @param Vtiger_Link $widgetLinkInfo
- * @param Current Smarty Context $context
+ * @param Smarty Context
  * @return
  */
 function vtlib_process_widget($widgetLinkInfo, $context = false) {
@@ -521,9 +533,6 @@ function vtlib_process_widget($widgetLinkInfo, $context = false) {
 }
 
 function vtlib_module_icon($modulename) {
-	if ($modulename == 'Events') {
-		return 'modules/Calendar/Events.png';
-	}
 	if (file_exists("modules/$modulename/$modulename.png")) {
 		return "modules/$modulename/$modulename.png";
 	}
@@ -531,10 +540,10 @@ function vtlib_module_icon($modulename) {
 }
 
 /**
- * Function to return the valid SQl input.
- * @param <String> $string
- * @param <Boolean> $skipEmpty Skip the check if string is empty.
- * @return <String> $string/false
+ * Function to return the valid SQL input
+ * @param string SQL
+ * @param boolean Skip the check if string is empty
+ * @return string sanitized SQL or false
  */
 function vtlib_purifyForSql($string, $skipEmpty = true) {
 	$pattern = '/^[_a-zA-Z0-9.]+$/';

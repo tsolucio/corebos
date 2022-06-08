@@ -20,7 +20,6 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 
-//$smarty->assign('HOME_STUFF',$homestuff_values);
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->display('Home/MainHomeBlock.tpl');
 ?>

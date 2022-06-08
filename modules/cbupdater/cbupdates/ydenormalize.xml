@@ -1,0 +1,9 @@
+<updatesChangeLog>
+	<changeSet>
+		<author>joebordes</author>
+		<description>coreBOS database changes to support Denormalized modules</description>
+		<filename>include/integrations/denormalize/denormalizechangeset.php</filename>
+		<classname>denormalizechangeset</classname>
+		<systemupdate>true</systemupdate>
+	</changeSet>
+</updatesChangeLog>	

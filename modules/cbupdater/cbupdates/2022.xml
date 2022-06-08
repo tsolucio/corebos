@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate vtigerCRM references from workflow templates</description>
+	<filename>build/changeSets/2022/eliminateVtigerCRMReferencesfromWF.php</filename>
+	<classname>eliminateVtigerCRMReferencesfromWF</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add pathname to updater search index</description>
+	<filename>build/changeSets/2022/addPathName2FindupdateIndex.php</filename>
+	<classname>addPathName2FindupdateIndex</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Document Subfolders!</description>
+	<filename>build/changeSets/2022/installDocumentFolders.php</filename>
+	<classname>installDocumentFolders</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate Document folders</description>
+	<filename>build/changeSets/2022/migrateDocumentFolders.php</filename>
+	<classname>migrateDocumentFolders</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix DisplayType of Salutation and Related List of Document folders</description>
+	<filename>build/changeSets/2022/fixDisplayTypeSalutationAndRelatedListDocFolder.php</filename>
+	<classname>fixDisplayTypeSalutationAndRelatedListDocFolder</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Terms and Conditions as a detail of Service Contracts</description>
+	<filename>build/changeSets/2022/servicecontracttermsandconditions.php</filename>
+	<classname>servicecontracttermsandconditions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>egimata</author>
+	<description>Update Settings Icons</description>
+	<filename>build/changeSets/2022/updateSettingsIcons.php</filename>
+	<classname>updateSettingsIcons</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Register Apache Tika Service(Cron)</description>
+	<filename>build/changeSets/2022/cronApacheTika.php</filename>
+	<classname>cronApacheTika</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add vtiger_documentsearchinfo Table</description>
+	<filename>build/changeSets/2022/addDocumentSearchInfoTable.php</filename>
+	<classname>addDocumentSearchInfoTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>xhildashazivari</author>
+	<description>Update vtiger_cron_task Table</description>
+	<filename>build/changeSets/2022/updateCronTaskTable.php</filename>
+	<classname>updateCronTaskTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Restrict creation of folders with the same name and parent</description>
+	<filename>build/changeSets/2022/addDocumentFolders_Validations.php</filename>
+	<classname>addDocumentFoldersValidations</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Convert Price Book to Price List m:m relation</description>
+	<filename>build/changeSets/2022/convertPricebookToPriceList.php</filename>
+	<classname>convertPricebookToPriceList</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Grid Type Picklist Value on Question</description>
+	<filename>build/changeSets/2022/addPLValueGridOnQuestion.php</filename>
+	<classname>addPLValueGridOnQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Business Actions types for MassCreateGrid</description>
+	<filename>build/changeSets/2022/addBAtypesForMassCreateGrid.php</filename>
+	<classname>addBAtypesForMassCreateGrid</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>geofreybundala</author>
+	<description>Add field for saving wfid to Mail Converter</description>
+	<filename>build/changeSets/2022/addColumnToMailConverter.php</filename>
+	<classname>addColumnToMailConverter</classname>
+  <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Update ModTracker changedon column data type</description>
+	<filename>build/changeSets/2022/updateModTrackerChangedOnDateTimeLength.php</filename>
+	<classname>updateModTrackerChangedOnDateTimeLength</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add web service queable operation column</description>
+	<filename>build/changeSets/2022/AddWSQueableColumn.php</filename>
+	<classname>AddWSQueableColumn</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install AutoNumber Increment module</description>
+	<filename>build/changeSets/2022/installAutonumberInc.php</filename>
+	<classname>installAutonumberInc</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate old AutoNumber Increment prefixes</description>
+	<filename>build/changeSets/2022/migrateAutonumberInc.php</filename>
+	<classname>migrateAutonumberInc</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Business Actions type for Kanban</description>
+	<filename>build/changeSets/2022/addBAtypeForKanban.php</filename>
+	<classname>addBAtypeForKanban</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

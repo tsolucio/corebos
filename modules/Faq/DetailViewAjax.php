@@ -41,6 +41,9 @@ if ($ajaxaction == 'DETAILVIEW') {
 	} else {
 		echo ':#:FAILURE';
 	}
+} elseif ($ajaxaction == 'DETAILVIEWLOAD') {
+	echo ':#:SUCCESS:#:';
+	require_once 'modules/'.$currentModule.'/DetailView.php';
 } elseif ($ajaxaction == 'LOADRELATEDLIST' || $ajaxaction == 'DISABLEMODULE') {
 	require_once 'include/ListView/RelatedListViewContents.php';
 }

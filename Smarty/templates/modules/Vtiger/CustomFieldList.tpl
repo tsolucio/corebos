@@ -36,7 +36,7 @@ function getCustomFieldList(customField) {
 	document.getElementById('module_info').innerHTML = '{$MOD.LBL_CUSTOM_FILED_IN} "'+modulelabel+'" {$APP.LBL_MODULE}';
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=CustomFieldList&fld_module='+modulename+'&parenttab=Settings&ajax=true'
+		url:'index.php?module=Settings&action=SettingsAjax&file=CustomFieldList&fld_module='+modulename+'&ajax=true'
 	}).done(function (response) {
 		document.getElementById('cfList').innerHTML=response;
 	});
@@ -47,27 +47,6 @@ function deleteCustomField(id, fld_module, colName, uitype) {
 		document.form.action='index.php?module=Settings&action=DeleteCustomField&fld_module='+fld_module+'&fld_id='+id+'&colName='+colName+'&uitype='+uitype;
 		document.form.submit();
 	}
-}
-
-function getCreateCustomFieldForm(customField, id, tabid, ui) {
-	var modulename = customField;
-	//To handle Events and Todo's separately while adding Custom fields
-	var activitytype = '';
-	var activityobj = document.getElementsByName('activitytype');
-	if (activityobj != null) {
-		for (var i=0; i<activityobj.length; i++) {
-			if (activityobj[i].checked == true) {
-				activitytype = activityobj[i].value;
-			}
-		}
-	}
-	jQuery.ajax({
-		method:'POST',
-		url:'index.php?module=Settings&action=SettingsAjax&file=CreateCustomField&fld_module='+customField+'&parenttab=Settings&ajax=true&fieldid='+id+'&tabid='+tabid+'&uitype='+ui+'&activity_type='+activitytype
-	}).done(function (response) {
-		document.getElementById('createcf').innerHTML=response;
-		gselected_fieldtype = '';
-	});
 }
 
 function makeFieldSelected(oField, fieldid, blockid) {
@@ -104,7 +83,7 @@ var gselected_fieldtype = '';
 					<tbody>
 						<tr align="left">
 							<td rowspan="2" valign="top" width="50"><img src="{'custom.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48" onmouseover="tooltip.tip(this,'{'LBL_FIELD_SETTINGS'|@getTranslatedString:'Leads'}');" onmouseout="tooltip.untip(true);"></td>
-							<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; <a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{$MODULE|@getTranslatedString:$MODULE}</a> &gt; {'LBL_FIELD_SETTINGS'|@getTranslatedString:'Leads'}</b></td>
+							<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; <a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}">{$MODULE|@getTranslatedString:$MODULE}</a> &gt; {'LBL_FIELD_SETTINGS'|@getTranslatedString:'Leads'}</b></td>
 						</tr>
 					</tbody>
 				</table>

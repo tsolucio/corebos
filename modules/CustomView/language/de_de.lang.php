@@ -55,6 +55,7 @@ $mod_strings = array(
 	'Next 60 Days'=>'nächsten 60 Tage',
 	'Next 90 Days'=>'nächsten 90 Tage',
 	'Next 120 Days'=>'nächsten 120 Tage',
+	'PriorToToday'=>'Prior to Today',
 
 	'equals'=>'gleich zu',
 	'contains'=>'enthält',

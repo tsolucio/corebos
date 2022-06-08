@@ -62,7 +62,7 @@ window.__smsHelpInfo = {$SMSHELPINFO};
 	<tr>
 		<td width="33%" nowrap="nowrap" align="right" class="cellLabel small"><b>{$MOD.LBL_PASWRD}</b></td>
 		<td align="left" class="cellText small">
-			<input type="password" class="detailedViewTextBox" name="smsserver_password" value="{if isset($SMSSERVERINFO.password)}{$SMSSERVERINFO.password}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'">
+			<input type="password" class="detailedViewTextBox" name="smsserver_password" value="{if isset($SMSSERVERINFO.password)}{$SMSSERVERINFO.password|htmlentities}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'">
 		</td>
 	</tr>
 

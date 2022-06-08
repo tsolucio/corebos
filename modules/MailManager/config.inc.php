@@ -30,10 +30,8 @@ class ConfigPrefs {
 	 */
 	public static function get($key, $defvalue = false) {
 		global $MAILMANAGER_CONFIG;
-		if (isset($MAILMANAGER_CONFIG)) {
-			if (isset($MAILMANAGER_CONFIG[$key])) {
-				return $MAILMANAGER_CONFIG[$key];
-			}
+		if (isset($MAILMANAGER_CONFIG) && isset($MAILMANAGER_CONFIG[$key])) {
+			return $MAILMANAGER_CONFIG[$key];
 		}
 		return $defvalue;
 	}

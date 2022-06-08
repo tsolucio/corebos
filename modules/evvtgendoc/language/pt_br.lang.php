@@ -12,17 +12,18 @@
  * either express or implied. See the License for the specific language governing
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ * Colaborator: Ranieri Slemer - translate terms - 30/07/2021 - Sao Paulo/Brazil - www.ecrmweb.com.br
  *************************************************************************************************/
 $mod_strings = array(
 'SINGLE_evvtgendoc'=>'Criar Documentos',
 'evvtgendoc'=>'Criar Documentos',
 'OOMerge GENDOC'=>'Criar Documentos',
-'LBL_SELECT_TEMPLATE'=>'Por favor selecione um template!',
+'LBL_SELECT_TEMPLATE'=>'Por favor selecione um modelo!',
 'LBL_INFORMATION'=>"Informação para ",
 'LBL_WITH'=>' com ID',
-'LBL_TEMPLATE'=>'utilizando o template',
-'LBL_DOCUMENT_TEMPLATE'=>'Template do Documento:',
-'LBL_NOTEMPLATE'=>'Não existe qualquer template! Por favor adicione um novo template de documento.',
+'LBL_TEMPLATE'=>'utilizando o modelo',
+'LBL_DOCUMENT_TEMPLATE'=>'Documento modelo:',
+'LBL_NOTEMPLATE'=>'Não existe qualquer modelo! Por favor adicione um novo documento modelo.',
 'GenXMLTplRequired' => 'Nome do documento XML Template necessário como parâmetro: genxmltemplate',
 'GenXMLIDRequired' => 'Entidade CRMID XML Template necessária como parâmetro: recordval',
 'Export PDF' => 'Exportar PDF',
@@ -42,7 +43,8 @@ $mod_strings = array(
 'External Server' => 'Utilizar Servidor Externo',
 'LBL_DEBUG' => 'Depurar',
 'LBL_LANG' => 'Linguagem',
-'UpdatePrevious' => 'Update Previous Merge',
-'is set to' => 'Is set to',
-'is not set' => 'Is NOT set',
+'UpdatePrevious' => 'Atualizar com o merge anterior',
+'shareOnCreate' => 'Compartilhar após criar',
+'is set to' => 'Está configurado para',
+'is not set' => 'NÃO está definido',
 );

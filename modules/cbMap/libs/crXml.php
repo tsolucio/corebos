@@ -339,7 +339,7 @@ class crxml implements arrayAccess, iterator
 				while($this->_getChildrenForNode($this->parent->_getNode(),$this->nodeName)->length < $offset) {
 					$element=$this->_getNewElement($this->nodeName);
 					$this->parent->_getNode()->appendChild($element);
-				}					  
+				}
 				$element=$this->_getNewElement($this->nodeName);
 				$lastNode=$this->parent->_getNode()->appendChild($element);
 				$this->_assignValue($element,$value);

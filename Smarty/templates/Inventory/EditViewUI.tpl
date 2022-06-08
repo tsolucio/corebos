@@ -111,7 +111,7 @@
 				<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$fldvalue.entityid}">
 				<input id="{$fldname}_display" name="{$fldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$fldvalue.displayvalue}">&nbsp;
 				<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}"
-alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{$ID}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("{if isset($fromlink)}{$fromlink}{/if}","{$fldname}","{$MODULE}","{$ID}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
 alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 			</span>
@@ -390,29 +390,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<option value="{$labelval}" {$selectval}>{$labelval}</option>
 					{/foreach}
 				</select>
-
-		{elseif $uitype eq 55 || $uitype eq 255}
-			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-			{if $uitype eq 55}
-				{$usefldlabel}
-			{elseif $uitype eq 255}
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
-			{/if}
-			</span>
-
-			<span width="30%" class="mdCellInfo">
-			{if $fldvalue neq ''}
-			<select name="salutationtype" class="small">
-				{foreach item=arr from=$fldvalue}
-				<option value="{$arr[1]}" {$arr[2]}>
-				{$arr[0]}
-				</option>
-				{/foreach}
-			</select>
-			{/if}
-			<input type="text" name="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" style="width:58%;" value= "{$secondvalue}" >
-			</span>
-
 		{elseif $uitype eq 22}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}

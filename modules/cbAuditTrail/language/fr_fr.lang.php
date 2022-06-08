@@ -14,5 +14,7 @@ $mod_strings = array(
 	'LBL_AUDIT_TRAIL' => 'Journal d\'audit',
 	'AuditTrailEnabled' => 'Audit Activé',
 	'AuditTrailDisabled' => 'Audit Désactivé',
+	'ERR_SQL' => 'Error: incorrect database request.',
+	'ERR_NoData' => 'Error: no data found.',
 );
 ?>

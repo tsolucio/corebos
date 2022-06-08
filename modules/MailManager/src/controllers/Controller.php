@@ -40,7 +40,7 @@ abstract class MailManager_Controller {
 	/**
 	 * Function which fetches the template file
 	 * @global String $currentModule
-	 * @param String $filename
+	 * @param string $filename
 	 * @return template file
 	 */
 	public function getModuleTpl($filename) {
@@ -88,12 +88,12 @@ abstract class MailManager_Controller {
 
 	/**
 	 * Returns a Connector to either MailBox or Internal Drafts
-	 * @param String $folder - Name of the folder
+	 * @param string $folder - Name of the folder
 	 * @return MailManager_Connector
 	 */
 	protected function getConnector($folder = '') {
 		if (!$this->mConnector || ($this->mFolder != $folder)) {
-			if ($folder == "__vt_drafts") {
+			if ($folder == '__vt_drafts') {
 				$draftController = new MailManager_DraftController();
 				$this->mConnector = $draftController->connectorWithModel();
 			} else {

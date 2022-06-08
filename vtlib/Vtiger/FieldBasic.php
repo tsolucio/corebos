@@ -46,7 +46,7 @@ class Vtiger_FieldBasic {
 
 	/**
 	 * Initialize this instance
-	 * @param Array
+	 * @param array
 	 * @param Vtiger_Module Instance of module to which this field belongs
 	 * @param Vtiger_Block Instance of block to which this field belongs
 	 * @access private
@@ -57,6 +57,7 @@ class Vtiger_FieldBasic {
 		$this->label = $valuemap['fieldlabel'];
 		$this->column = $valuemap['columnname'];
 		$this->table = $valuemap['tablename'];
+		$this->presence = $valuemap['presence'];
 		$this->uitype = $valuemap['uitype'];
 		$this->typeofdata = $valuemap['typeofdata'];
 		$this->helpinfo = $valuemap['helpinfo'];
@@ -175,7 +176,7 @@ class Vtiger_FieldBasic {
 				$this->uitype,
 				$this->name,
 				$this->label,
-				$this->readonly,
+				isset($this->readonly) ? $this->readonly : 1,
 				$this->presence,
 				$this->defaultvalue,
 				$this->maximumlength,
@@ -218,10 +219,8 @@ class Vtiger_FieldBasic {
 			Vtiger_Profile::initForField($this);
 		}
 		$colrs = $adb->getColumnNames($this->table);
-		if (!in_array($this->column, $colrs)) {
-			if (!empty($this->columntype)) {
-				Vtiger_Utils::AddColumn($this->table, $this->column, $this->columntype);
-			}
+		if (!in_array($this->column, $colrs) && !empty($this->columntype)) {
+			Vtiger_Utils::AddColumn($this->table, $this->column, $this->columntype);
 		}
 		if (!empty($result)) {
 			self::log("Creating Field $this->name ... DONE");
@@ -231,7 +230,7 @@ class Vtiger_FieldBasic {
 			if (!empty($params)) {
 				self::log(print_r($params, true));
 			} else {
-				self::log("A field with that name or label already exists.");
+				self::log('A field with that name or label already exists.');
 			}
 		}
 	}
@@ -364,7 +363,7 @@ class Vtiger_FieldBasic {
 
 	/**
 	 * Set Help Information for this instance.
-	 * @param String Help text (content)
+	 * @param string Help text (content)
 	 */
 	public function setHelpInfo($helptext) {
 		// Make sure to initialize the core tables first
@@ -377,7 +376,7 @@ class Vtiger_FieldBasic {
 
 	/**
 	 * Set Masseditable information for this instance.
-	 * @param Integer Masseditable value
+	 * @param integer Masseditable value
 	 */
 	public function setMassEditable($value) {
 		global $adb;
@@ -387,8 +386,8 @@ class Vtiger_FieldBasic {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 * @access public
 	 */
 	public static function log($message, $delim = true) {

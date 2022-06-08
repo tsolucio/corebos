@@ -44,22 +44,21 @@ function vtRunTaskJob($adb) {
 	global $logbg;
 	$util = new VTWorkflowUtils();
 	$adminUser = $util->adminUser();
-	$tq = new VTTaskQueue($adb);
-	$readyTasks = $tq->getReadyTasks();
-	$logbg->debug('WF Cron:: Ready Tasks from the queue');
-	$logbg->debug($readyTasks);
+	$logbg->debug('WF Cron:: Start processing tasks from the queue');
+	$cbmq = coreBOS_MQTM::getInstance();
 	$tm = new VTTaskManager($adb);
-	foreach ($readyTasks as $pair) {
-		list($taskId, $entityId) = $pair;
+	while ($msg = $cbmq->getMessage('wfTaskQueueChannel', 'wftaskqueue', 'wftaskqueue')) {
+		$msginfo  = json_decode($msg['information'], true);
+		$taskId   = $msginfo['taskId'];
+		$entityId = $msginfo['entityId'];
 		$logbg->debug('WF Cron:: Task '.$taskId.' will be executed with entityId: '.$entityId);
 		$task = $tm->retrieveTask($taskId);
 		if (empty($task)) { //If task is not there then continue
-			$logbg->debug('WF Cron:: Task: '.$taskId.' fail when was retrieve');
-			$adb->pquery('delete from com_vtiger_workflowtask_queue where task_id=?', array($taskId));
+			$logbg->debug('WF Cron:: Task: '.$taskId.' could not be found');
 			continue;
 		}
 		list($moduleId, $crmId) = explode('x', $entityId);
-		$res = $adb->pquery('select deleted from vtiger_crmentity where crmid=?', array($crmId));
+		$res = $adb->pquery('select deleted from vtiger_crmobject where crmid=?', array($crmId));
 		if ($adb->num_rows($res) == 0) {
 			$logbg->debug('WF Cron:: CRMID '.$crmId.' was totally deleted');
 			continue;
@@ -68,12 +67,11 @@ function vtRunTaskJob($adb) {
 		}
 		$entity = new VTWorkflowEntity($adminUser, $entityId, $isDeleted, true);
 		$entityCache = new VTEntityCache($adminUser);
-		$wsModuleName = $util->toWSModuleName($entity);
+		$wsModuleName = $entity->getModuleName();
 		if (!vtlib_isModuleActive($wsModuleName)) {
 			$logbg->debug('WF Cron:: Module is not active: '.$wsModuleName);
 			continue;
 		}
-		//$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
 		if (empty($task->test)
 			|| (isset($task->reevaluate) && $task->reevaluate==0)
 			|| ((!isset($task->reevaluate) || $task->reevaluate==1) && $task->evaluate($entityCache, $entity->getId()))
@@ -81,6 +79,14 @@ function vtRunTaskJob($adb) {
 			$logbg->debug('WF Cron:: Task '.$taskId.' will call function doTask with entityId: '.$entityId);
 			try {
 				$task->startTask($entity);
+				if (!empty($msginfo['context'])) {
+					$entity->WorkflowContext = $msginfo['context'];
+					if (!empty($msginfo['context']['__WorkflowID'])) {
+						$entity->WorkflowID = $msginfo['context']['__WorkflowID'];
+					}
+				} else {
+					$entity->WorkflowContext = [];
+				}
 				$task->doTask($entity);
 				$task->endTask($entity);
 				$logbg->debug('WF Cron:: Task '.$taskId.' executed with success the function doTask with entityId: '.$entityId);

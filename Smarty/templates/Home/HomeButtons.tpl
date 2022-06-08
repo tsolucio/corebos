@@ -15,10 +15,11 @@
 			<div class="slds-media">
 				<div class="slds-media__figure">
 					<a class="hdrLink" href="index.php?action=index&module={$MODULE}">
-						<span class="slds-icon_container slds-icon-standard-home" title="{$MODULE|@getTranslatedString:$MODULE}">
+						{assign var='MODULEICON' value=$MODULE|@getModuleIcon}
+						<span class="{$MODULEICON.__ICONContainerClass}" title="{$MODULE|@getTranslatedString:$MODULE}">
 							<svg class="slds-icon slds-page-header__icon" id="page-header-icon" aria-hidden="true">
 								<use xmlns:xlink="http://www.w3.org/1999/xlink"
-									xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#home" />
+									xlink:href="include/LD/assets/icons/{$MODULEICON.__ICONLibrary}-sprite/svg/symbols.svg#{$MODULEICON.__ICONName}" />
 							</svg>
 							<span class="slds-assistive-text">{$MODULE|@getTranslatedString:$MODULE}</span>
 						</span>
@@ -76,7 +77,7 @@
 						#marquee span {
 							display: inline-block;
 							padding-left: 100%;
-							animation: marquee {$ANNOUNCEMENT|count_characters / 3}s linear infinite;
+							animation: marquee {math equation="max(15, y/3)" y=$ANNOUNCEMENT|count_characters}s linear infinite;
 						}
 						#marquee span:hover {
 							animation-play-state: paused

@@ -5,6 +5,7 @@
 <script src="modules/{$module->name}/resources/parallelexecuter.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/{$module->name}/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/editworkflowscript.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	fn.addStylesheet('modules/{$module->name}/resources/style.css');
@@ -113,12 +114,17 @@
 					</div>
 					<div class="slds-col slds-size_2-of-3 slds-text-align_center" id="select_date" {if empty($trigger)}style="display:none;"{/if}>
 						<div class="slds-grid slds-gutters slds-grid_vertical-align-center">
-							<!-- Date/Days -->
+							<!-- Date/Days_Hours -->
 							<div class="slds-col slds-size_1-of-3 slds-text-align_center">
 								<div class="slds-form-element">
 									<div class="slds-form-element__control slds-input-has-fixed-addon">
-										<input type="text" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="slds-input">
-										<span class="slds-form-element__addon" id="fixed-text-addon-post"> {$MOD.LBL_DAYS} </span>
+										<input type="number" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="slds-input">
+										<input type="number" name="select_date_hours" value="{if isset($trigger.hours)}{$trigger.hours}{/if}{if isset($trigger.mins)}{$trigger.mins}{/if}" id="select_date_hours" class="slds-input">
+										<select class="slds-select slds-page-header__meta-text" name="select_days_hours_option" id="select_days_hours_option" onselect="evaluatedatehoursoptions();">
+											<option {if isset($trigger.days)}selected{/if} value='days'>{$MOD.LBL_DAYS}</option>
+											<option {if isset($trigger.hours)}selected{/if} value='hours'>{$MOD.LBL_HOURS}</option>
+											<option {if isset($trigger.mins)}selected{/if} value='mins'>{'LBL_MINUTES'|@getTranslatedString:'CronTasks'}</option>
+										</select>
 									</div>
 								</div>
 							</div>

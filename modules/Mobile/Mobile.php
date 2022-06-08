@@ -38,8 +38,8 @@ class Mobile {
 
 	/**
 	 * Invoked when special actions are performed on the module.
-	 * @param String Module name
-	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 * @param string Module name
+	 * @param string Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
@@ -54,7 +54,7 @@ class Mobile {
 			);
 			$seq = 0;
 			$supported_module = array(
-				'Contacts','Accounts','Leads','Calendar','Potentials','HelpDesk','Vendors','Assets','Faq','Documents',
+				'Contacts','Accounts','Leads','cbCalendar','Potentials','HelpDesk','Vendors','Assets','Faq','Documents',
 				'Quotes','SalesOrder','Invoice','Products','Project','ProjectMilestone','ProjectTask','Events'
 			);
 			foreach ($supported_module as $mdulename) {

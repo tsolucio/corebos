@@ -105,6 +105,7 @@ $mod_strings = array(
 	'LBL_NO_DOCUMENTS' => 'Nincs dokumentum',
 	'LBL_DESCRIPTION' => 'Leírás',
 	'FILE_HAS_NO_DATA' => 'A kiválasztott fájl sérült, vagy nem tartalmaz adatot',
+	'NotShared' => 'File not shared',
 	'LBL_MAXIMUM_20' => 'Maximum 20',
 	'LBL_MAXIMUM_50' => 'Maximum 50',
 	'Folder Name' => 'Mappa neve',

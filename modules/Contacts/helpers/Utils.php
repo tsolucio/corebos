@@ -21,7 +21,6 @@ class Google_Utils_Helper {
 	public static function updateSyncTime($sourceModule, $modifiedTime = false) {
 		$db = PearDatabase::getInstance();
 		self::intialiseUpdateSchema();
-		//$user = Users_Record_Model::getCurrentUserModel();
 		global $current_user;
 		$user = $current_user;
 		if (!$modifiedTime) {
@@ -58,11 +57,9 @@ class Google_Utils_Helper {
 	 */
 	public static function getSyncTime($sourceModule) {
 		global $current_user;
-		$user = $current_user;
 		$db = PearDatabase::getInstance();
 		self::intialiseUpdateSchema();
-		$user = $current_user;//Users_Record_Model::getCurrentUserModel();
-		$result = $db->pquery('SELECT synctime FROM vtiger_google_sync WHERE user=? AND googlemodule=?', array($user->id, $sourceModule));
+		$result = $db->pquery('SELECT synctime FROM vtiger_google_sync WHERE user=? AND googlemodule=?', array($current_user->id, $sourceModule));
 		if ($result && $db->num_rows($result) > 0) {
 			$row = $db->fetch_array($result);
 			return $row['synctime'];
@@ -77,12 +74,10 @@ class Google_Utils_Helper {
 	 *  @return <date> last syncronazation time OR <boolean> false when date not present
 	 */
 	public static function getLastSyncTime($sourceModule) {
-		$db = PearDatabase::getInstance();
 		global $current_user;
-		$user = $current_user;
+		$db = PearDatabase::getInstance();
 		self::intialiseUpdateSchema();
-		//$user = Users_Record_Model::getCurrentUserModel();
-		$result = $db->pquery('SELECT lastsynctime FROM vtiger_google_sync WHERE user=? AND googlemodule=?', array($user->id, $sourceModule));
+		$result = $db->pquery('SELECT lastsynctime FROM vtiger_google_sync WHERE user=? AND googlemodule=?', array($current_user->id, $sourceModule));
 		if ($result && $db->num_rows($result) > 0) {
 			$row = $db->fetch_array($result);
 			return $row['lastsynctime'];
@@ -110,13 +105,12 @@ class Google_Utils_Helper {
 
 	public static function hasSettingsForUser($userId) {
 		$db = PearDatabase::getInstance();
-		$result = $db->pquery('SELECT 1 FROM ' . self::SETTINGS_TABLE_NAME . ' WHERE user = ?', array($userId));
+		$result = $db->pquery('SELECT 1 FROM ' . self::SETTINGS_TABLE_NAME . ' WHERE user=?', array($userId));
 		return $db->num_rows($result) > 0;
 	}
 
 	public static function saveSettings($request) {
 		$db = PearDatabase::getInstance();
-		//$user = Users_Record_Model::getCurrentUserModel();
 		global $current_user;
 		$user = $current_user;
 		$userId = $user->id;
@@ -124,7 +118,7 @@ class Google_Utils_Helper {
 		$google_group = $request['google_group'];
 		$sync_direction = $request['sync_direction'];
 		if (Google_Utils_Helper::hasSettingsForUser($userId)) {
-			$sql = 'UPDATE ' . self::SETTINGS_TABLE_NAME . ' SET clientgroup = ?, direction = ?';
+			$sql = 'UPDATE ' . self::SETTINGS_TABLE_NAME . ' SET clientgroup=?, direction=?';
 			$params = array($google_group,$sync_direction);
 		} else {
 			$sql = 'INSERT INTO ' . self::SETTINGS_TABLE_NAME . ' VALUES (?,?,?,?)';
@@ -135,14 +129,13 @@ class Google_Utils_Helper {
 
 	public static function saveFieldMappings($sourceModule, $fieldMappings) {
 		$db = PearDatabase::getInstance();
-		//$user = Users_Record_Model::getCurrentUserModel();
 		global $current_user;
 		$user = $current_user;
-		$sql = 'SELECT 1 FROM ' . self::FIELDMAPPING_TABLE_NAME . ' WHERE user = ?';
+		$sql = 'SELECT 1 FROM ' . self::FIELDMAPPING_TABLE_NAME . ' WHERE user=?';
 		$res = $db->pquery($sql, array($user->id));
 		$sqlParams = array();
 		if ($db->num_rows($res)) {
-			$sql = 'DELETE FROM ' . self::FIELDMAPPING_TABLE_NAME . ' WHERE user = ?';
+			$sql = 'DELETE FROM ' . self::FIELDMAPPING_TABLE_NAME . ' WHERE user=?';
 			$db->pquery($sql, array($user->id));
 		}
 		$sql = 'INSERT INTO ' . self::FIELDMAPPING_TABLE_NAME . ' (vtiger_field,google_field,google_field_type,google_custom_label,user) VALUES ';
@@ -163,33 +156,38 @@ class Google_Utils_Helper {
 
 	public static function getSelectedContactGroupForUser($user = false) {
 		global $current_user;
-
-		$user = $current_user;
+		if (empty($user) || !is_object($user) || get_class($user)!='Users') {
+			$user = $current_user;
+		}
 		$userId = $user->id;
 		if (!Google_Utils_Helper::hasSettingsForUser($userId)) {
 			return ''; // defaults to all - other contacts groups
 		} else {
 			$db = PearDatabase::getInstance();
-			$result = $db->pquery('SELECT clientgroup FROM ' . self::SETTINGS_TABLE_NAME . ' WHERE user = ?', array($userId));
+			$result = $db->pquery('SELECT clientgroup FROM ' . self::SETTINGS_TABLE_NAME . ' WHERE user=?', array($userId));
 			return $db->query_result($result, 0, 'clientgroup');
 		}
 	}
 
 	public static function getSyncDirectionForUser($user = false) {
 		global $current_user;
-		$user = $current_user;
+		if (empty($user) || !is_object($user) || get_class($user)!='Users') {
+			$user = $current_user;
+		}
 		if (!Google_Utils_Helper::hasSettingsForUser($user->id)) {
 			return '11'; // defaults to bi-directional sync
 		} else {
 			$db = PearDatabase::getInstance();
-			$result = $db->pquery('SELECT direction FROM ' . self::SETTINGS_TABLE_NAME . ' WHERE user = ?', array($user->id));
+			$result = $db->pquery('SELECT direction FROM ' . self::SETTINGS_TABLE_NAME . ' WHERE user=?', array($user->id));
 			return $db->query_result($result, 0, 'direction');
 		}
 	}
 
 	public static function getFieldMappingForUser($user = false) {
 		global $current_user;
-		$user = $current_user;
+		if (empty($user) || !is_object($user) || get_class($user)!='Users') {
+			$user = $current_user;
+		}
 		$db = PearDatabase::getInstance();
 		$fieldmapping = array(
 			'salutationtype' => array(
@@ -263,7 +261,7 @@ class Google_Utils_Helper {
 				'google_custom_label' => ''
 			)
 		);
-		$sql = 'SELECT vtiger_field,google_field,google_field_type,google_custom_label FROM ' . self::FIELDMAPPING_TABLE_NAME . ' WHERE user = ?';
+		$sql = 'SELECT vtiger_field,google_field,google_field_type,google_custom_label FROM ' . self::FIELDMAPPING_TABLE_NAME . ' WHERE user=?';
 		$result = $db->pquery($sql, array($user->id));
 		for ($i=0; $i<$db->num_rows($result); $i++) {
 			$row = $db->fetch_row($result);

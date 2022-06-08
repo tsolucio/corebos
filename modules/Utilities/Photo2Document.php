@@ -13,176 +13,54 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-global $adb,$current_user,$singlepane_view, $app_strings, $theme, $default_charset;
-$formodule = vtlib_purify($_REQUEST['formodule']);
-$forrecord = vtlib_purify($_REQUEST['forrecord']);
-$wsuserid = vtws_getEntityId('Users').'x'.$current_user->id;
-$wsfolderid = vtws_getEntityId('DocumentFolders').'x';
-$wsrecid = vtws_getEntityId($formodule).'x'.$forrecord;
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $default_charset; ?>">
-	<title><?php echo $app_strings['Photo2Document']; ?></title>
-	<link rel="stylesheet" type="text/css" media="all" href="themes/<?php echo $theme; ?>/style.css">
-	<script type="text/javascript" src="include/jquery/jquery.js"></script>
-	<script src="include/Webservices/WSClient.js" type="text/javascript" charset="utf-8"></script>
-<style>
-<!--
-.videobox {
-	display: flex;
-	flex-direction: row;
-	width:100%;
-}
-.buttonbox {
-	display: flex;
-	flex-direction: column;
-	width:18%;
-	align-self: flex-end;
-}
-.buttonbox button {
-	margin: 6px;
-}
-.fieldrow {
-	display: flex;
-	flex-direction: row;
-	width:100%;
-	padding: 6px;
-}
-.fieldlabel {
-	padding-top:6px;
-	width:180px;
-}
-.fieldinput {
-	padding-top:6px;
-}
-.fieldinput input, .fieldinput select, .fieldinput textarea {
-	width:280px;
-}
-.header {
-	display: block;
-	font-size: 1.5em;
-	font-weight: bold;
-	background-color: #e2e5ff;
-	width:98%;
-	padding: 8px;
-	border-radius: 3px;
-}
--->
-</style>
-</head>
-<body style="background-color: whitesmoke">
-<div class="header"><?php echo $app_strings['Photo2Document']; ?></div>
-<div class="videobox">
-	<div style="width:90%">
-		<video id="video" width="640" height="480" autoplay></video>
-		<canvas id="canvas" width="640" height="480" style="display:none"></canvas>
-	</div>
-	<div class="buttonbox">
-		<button id="snap"><?php echo $app_strings['Snap Photo']; ?></button>
-		<button id="clearp"><?php echo $app_strings['Clear Photo']; ?></button>
-	</div>
-</div>
-<div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('Subject', 'Documents'); ?></span>
-	<span class="fieldinput"><input type="text" id="docname" name="docname"></span>
-</div>
-<div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('LBL_FILE_NAME', 'Documents'); ?></span>
-	<span class="fieldinput"><input type="text" id="filename" name="filename" value="Photo2Document.png"></span>
-</div>
-<div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('LBL_FOLDER_NAME', 'Documents'); ?></span>
-	<span class="fieldinput"><select id="docfolder" name="docfolder">
-<?php
-$sql='select foldername,folderid from vtiger_attachmentsfolder order by foldername';
-$res=$adb->pquery($sql, array());
-for ($i=0; $i<$adb->num_rows($res); $i++) {
-	echo '<option value="'.$adb->query_result($res, $i, 'folderid').'">'.$adb->query_result($res, $i, 'foldername').'</option>';
-}
-?>
-	</select>
-	</span>
-</div>
-<div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('LBL_DESCRIPTION', 'Documents'); ?></span>
-	<span class="fieldinput"><textarea id="docdesc" name="docdesc" row=3></textarea></span>
-</div>
-<div align="center" style="padding:10px;">
-	<input title="<?php echo $app_strings['LBL_SAVE_BUTTON_TITLE']; ?>" accessKey="<?php echo $app_strings['LBL_SAVE_BUTTON_KEY']; ?>" class="crmbutton small save" onclick="createdoc();" type="button" name="button" value="  <?php echo $app_strings['LBL_SAVE_BUTTON_LABEL']; ?>  ">
-	<input title="<?php echo $app_strings['LBL_CLOSE']; ?>" accessKey="<?php echo $app_strings['LBL_CANCEL_BUTTON_KEY']; ?>" class="crmbutton small cancel" onclick="window.close();" type="button" name="button" value="  <?php echo $app_strings['LBL_CLOSE']; ?>  ">
-</div>
-<script type="text/javascript">
-function convertCanvasToImage(canvas) {
-	var image = new Image();
-	image.src = canvas.toDataURL("image/png");
-	return image;
-}
-function createdoc() {
-	var cbUserID = '<?php echo $wsuserid; ?>';
-	var cbFolderID = '<?php echo $wsfolderid; ?>';
-	var cbconn = new Vtiger_WSClient('');
-	cbconn.extendSession(function(result){
-		var fname = document.getElementById('filename').value;
-		if (fname.substr(fname.length - 4) != '.png') {
-			fname = fname + '.png';
-		}
-		var model_filename={
-			'name' : fname,
-			'size' : 0,
-			'type' : "image/png",
-			'content' : document.getElementById('canvas').toDataURL("image/png")
-		};
-		var module = 'Documents';
-		var valuesmap = {
-			'assigned_user_id' : cbUserID,
-			'notes_title' : document.getElementById('docname').value,
-			'notecontent' : document.getElementById('docdesc').value,
-			'filename' : model_filename,
-			'filetype' : "image/png",
-			'filesize' : 0,
-			'filelocationtype' : 'I',
-			'filedownloadcount' : 0,
-			'filestatus' : 1,
-			'folderid'  : cbFolderID+document.getElementById('docfolder').value,
-			'relations' : '<?php echo $wsrecid; ?>'
-		};
-		cbconn.doCreate(module, valuesmap, afterCreateRecord);
-	});
-}
-function afterCreateRecord(result, args) {
-	if(result) {
-		alert('<?php echo $app_strings['DocumentCreatedRelated']; ?>!!');
-	} else {
-		alert('<?php echo $app_strings['ERROR'].' '.$app_strings['LBL_CREATING']; ?>!!');
+// block://photo2Document:modules/Utilities/Photo2Document.php:forrecord=$RECORD$&formodule=$MODULE$
+// javascript:window.open('index.php?module=Utilities&action=UtilitiesAjax&file=Photo2Document&formodule=$MODULE$&forrecord=$RECORD$&inwindow=1','photo2doc','width=1100,height=700');
+// themes/images/webcam16.png
+// {"library":"utility", "icon":"photo"}
+
+require_once 'modules/cbtranslation/cbtranslation.php';
+require_once 'include/ListView/ListViewJSON.php';
+require_once 'modules/Vtiger/DeveloperWidget.php';
+global $currentModule;
+
+class photo2Document {
+	// Get class name of the object that will implement the widget functionality
+	public static function getWidget($name) {
+		return (new photo2Document_DetailViewBlock());
 	}
 }
 
+class photo2Document_DetailViewBlock extends DeveloperBlock {
 
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-	// Elements for taking the snapshot
-	var canvas = document.getElementById('canvas');
-	var context = canvas.getContext('2d');
-	var video = document.getElementById('video');
-	// Not adding `{ audio: true }` since we only want video now
-	navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-		video.srcObject = stream;
-		video.play();
-	});
+	protected $widgetName = 'Photo2Document';
+
+	// This one is called to get the contents to show on screen
+	public function process($context = false) {
+		global $current_user, $app_strings;
+		$this->context = $context;
+		$smarty = $this->getViewer();
+		$inwindow = $this->getFromContext('inwindow');
+		$formodule = $this->getFromContext('formodule');
+		$forrecord = $this->getFromContext('forrecord');
+		$companyDetails = retrieveCompanyDetails();
+		$smarty->assign('COMPANY_DETAILS', $companyDetails);
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('INWINDOW', $inwindow);
+		$smarty->assign('MODULE', $formodule);
+		$smarty->assign('RECORD', $forrecord);
+		$smarty->assign('USERID', vtws_getEntityId('Users').'x'.$current_user->id);
+		$smarty->assign('DOCID', vtws_getEntityId('DocumentFolders').'x');
+		$smarty->assign('WSID', vtws_getEntityId($formodule).'x'.$forrecord);
+		$lv = new GridListView('DocumentFolders');
+		$folders = $lv->findDocumentFolders();
+		$smarty->assign('FOLDERS', $folders);
+		$smarty->assign('FOLDERID', $this->getFromContext('folderid'));
+		$smarty->assign('USER_LANG', $current_user->language);
+		return $smarty->fetch('Smarty/templates/Components/Photo2Doc/index.tpl');
+	}
 }
 
-// Trigger photo take
-document.getElementById("snap").addEventListener("click", function() {
-	context.drawImage(video, 0, 0, 640, 480);
-	video.style.display = 'none';
-	canvas.style.display = 'block';
-});
-// clear photo
-document.getElementById("clearp").addEventListener("click", function() {
-	video.style.display = 'block';
-	canvas.style.display = 'none';
-});
-</script>
-</body>
-</html>
+if (isset($_REQUEST['action']) && $_REQUEST['action']==$currentModule.'Ajax') {
+	$smq = new photo2Document_DetailViewBlock();
+	echo $smq->process($_REQUEST);
+}

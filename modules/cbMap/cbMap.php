@@ -13,8 +13,6 @@ require_once 'modules/cbMap/processmap/processMap.php';
 include_once 'modules/cbMap/cbRule.php';
 
 class cbMap extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_cbmap';
 	public $table_index= 'cbmapid';
 	public $column_fields = array();
@@ -111,6 +109,7 @@ class cbMap extends CRMEntity {
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'mapname');
+	public $mapExecutionInfo = array();
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
@@ -126,8 +125,8 @@ class cbMap extends CRMEntity {
 
 	/**
 	 * Invoked when special actions are performed on the module.
-	 * @param String Module name
-	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 * @param string Module name
+	 * @param string Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
@@ -164,34 +163,6 @@ class cbMap extends CRMEntity {
 		}
 	}
 
-	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
 	public function retrieve_entity_info($cbmapid, $mname, $deleted = false, $from_wf = false, $throwexception = false) {
 		global $current_user;
 		$holduser = $current_user;
@@ -203,12 +174,15 @@ class cbMap extends CRMEntity {
 	public function __call($name, $arguments) {
 		require_once 'modules/cbMap/processmap/'.$name.'.php';
 		$processmap = new $name($this);
-		return $processmap->processMap($arguments);
+		$return = $processmap->processMap($arguments);
+		$this->mapExecutionInfo = $processmap->mapExecutionInfo;
+		return $return;
 	}
 
 	public static function getMapByID($cbmapid) {
 		global $adb;
-		$query = 'SELECT crmid,setype FROM vtiger_crmentity where crmid=? AND deleted=0';
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap', true);
+		$query = 'SELECT crmid,setype FROM '.$crmEntityTable.' where crmid=? AND deleted=0';
 		$result = $adb->pquery($query, array($cbmapid));
 		if ($result && $adb->num_rows($result)>0 && $adb->query_result($result, 0, 'setype') == 'cbMap') {
 			$cbmap = new cbMap();
@@ -219,12 +193,33 @@ class cbMap extends CRMEntity {
 		}
 	}
 
+	public static function getMapsByType($type, $module = '') {
+		global $adb;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
+		$sql = 'select cbmapid,mapname
+			from vtiger_cbmap
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
+			where vtiger_crmentity.deleted=0 and maptype=?';
+		$prm = array($type);
+		if ($module!='') {
+			$sql .= ' and targetname=?';
+			$prm[] = $module;
+		}
+		$mrs = $adb->pquery($sql, $prm);
+		$maps = array();
+		while ($map = $adb->fetch_array($mrs)) {
+			$maps[$map['cbmapid']] = $map['mapname'];
+		}
+		return $maps;
+	}
+
 	public static function getMapByName($name, $type = '') {
 		global $adb;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$sql = 'select cbmapid
 			from vtiger_cbmap
-			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and mapname=?';
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
+			where vtiger_crmentity.deleted=0 and mapname=?';
 		$prm = array($name);
 		if ($type!='') {
 			$sql .= ' and maptype=?';
@@ -243,11 +238,12 @@ class cbMap extends CRMEntity {
 
 	public static function getMapIdByName($name) {
 		global $adb;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$mrs = $adb->pquery(
 			'select cbmapid
 			from vtiger_cbmap
-			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and mapname=?',
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
+			where vtiger_crmentity.deleted=0 and mapname=?',
 			array($name)
 		);
 		if ($mrs && $adb->num_rows($mrs)>0) {

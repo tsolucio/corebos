@@ -9,21 +9,21 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'SINGLE_EtiquetasOO' => "Merge Labels",
-	'EtiquetasOO' => 'Merge Labels',
-	'OOMerge Labels'=>'Merge Labels',
-	'EOO_Title'=>'OpenOffice Document Merge Labels',
-	'ElijaModulo'=>'Pick module:',
-	'RelatedModules'=>'Related Modules',
-	'OneEntity'=>'With one entity:',
-	'VariosEntity'=>'With various entities:',
-	'Back'=>'Back',
-	'Up'=>'Top',
-	'SpecialVars' => 'Special Variables',
-	'LBL_COPY_BUTTON'=>'Copy',
-	'WorkflowExpresion' => 'workflow expression',
-	'format' => 'format',
-	'field' => 'field',
+	'SINGLE_EtiquetasOO' => "Etichette Unione",
+	'EtiquetasOO' => 'Etichette Unione',
+	'OOMerge Labels'=>'Etichette Unione',
+	'EOO_Title'=>'Etichette Unione Documenti OpenOffice',
+	'ElijaModulo'=>'Scegli Modulo:',
+	'RelatedModules'=>'Moduli Relativi',
+	'OneEntity'=>'Con uno entità:',
+	'VariosEntity'=>'Con varie entità:',
+	'Back'=>'Indietro',
+	'Up'=>'Su',
+	'SpecialVars' => 'Variabili Speciali',
+	'LBL_COPY_BUTTON'=>'Copia',
+	'WorkflowExpresion' => 'Espressione Flusso di Lavoro',
+	'format' => 'formato',
+	'field' => 'campo',
 );
 
 ?>

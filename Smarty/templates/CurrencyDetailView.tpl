@@ -17,7 +17,6 @@
 <div align=center>
 	<form action="index.php" method="post" name="index" id="form" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="module" value="Settings">
-	<input type="hidden" name="parenttab" value="{$PARENTTAB}">
 	<input type="hidden" name="action" value="index">
 	<input type="hidden" name="record" value="{$ID}">
 
@@ -30,7 +29,7 @@
 		<div class="slds-col slds-size_4-of-12 slds-p-bottom_large"></div>
 		<div class="slds-col slds-size_11-of-12 slds-p-bottom_large">
 			<br>
-			<button type="submit" class="slds-button slds-button_success edit" onclick="this.form.action.value='CurrencyEditView'; this.form.parenttab.value='Settings'; this.form.record.value='{$ID}'">
+			<button type="submit" class="slds-button slds-button_success edit" onclick="this.form.action.value='CurrencyEditView'; this.form.record.value='{$ID}'">
 			<svg class="slds-button__icon slds-icon-text-success slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use> </svg>
 			&nbsp;Edit
 			</button>

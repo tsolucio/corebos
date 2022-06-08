@@ -58,7 +58,7 @@ if ($numOfRows > 0) {
 	$modules_permitted = true;
 	$modules_export_permitted = true;
 	foreach ($rep_modules as $mod) {
-		if (isPermitted($mod, 'index')!= 'yes' || vtlib_isModuleActive($mod)==false) {
+		if (isPermitted($mod, 'index')!= 'yes' || !vtlib_isModuleActive($mod)) {
 			$modules_permitted = false;
 			$restrictedmodules[] = $mod;
 		}
@@ -67,7 +67,7 @@ if ($numOfRows > 0) {
 		}
 	}
 
-	if (isPermitted($primarymodule, 'index') == 'yes' && $modules_permitted == true) {
+	if (isPermitted($primarymodule, 'index') == 'yes' && $modules_permitted) {
 		$oReportRun = new ReportRun($reportid);
 		$groupBy = $oReportRun->getGroupingList($reportid);
 		$showCharts = (count($groupBy) > 0);
@@ -91,21 +91,18 @@ if ($numOfRows > 0) {
 
 		$list_report_form = new vtigerCRM_Smarty;
 		$list_report_form->assign('THEME', $theme);
-		if ($showCharts == true) {
+		if ($showCharts) {
 			require_once 'modules/Reports/CustomReportUtils.php';
 			require_once 'include/utils/ChartUtils.php';
 
 			$groupBy = $oReportRun->getGroupingList($reportid);
 			if (count($groupBy) > 0) {
 				foreach ($groupBy as $key => $value) {
-					//$groupByConditon = explode(" ",$value);
-					//$groupByNew = explode("'",$groupByConditon[0]);
-					list($tablename,$colname,$module_field,$fieldname,$single) = explode(":", $key);
-					list($module,$field)= explode("_", $module_field);
+					list($tablename,$colname,$module_field,$fieldname,$single) = explode(':', $key);
+					list($module,$field)= explode('_', $module_field);
 					$fieldDetails = $key;
 					break;
 				}
-				//$groupByField = $oReportRun->GetFirstSortByField($reportid);
 				$queryReports = CustomReportUtils::getCustomReportsQuery($Report_ID, $filtersql);
 				$queryResult = $adb->pquery($queryReports, array());
 				if ($queryResult && $adb->num_rows($queryResult)) {
@@ -131,6 +128,10 @@ if ($numOfRows > 0) {
 		$COLUMNS_BLOCK .= getSecondaryColumns_AdvFilter_HTML($ogReport->secmodule, $ogReport);
 		$list_report_form->assign('COLUMNS_BLOCK', $COLUMNS_BLOCK);
 
+		$COLUMNS_BLOCK_ARRAY = getPrimaryColumns_AdvFilter_HTML($ogReport->primodule, $ogReport, '', true);
+		$SEC_COLUMNS_BLOCK_ARRAY = getSecondaryColumns_AdvFilter_HTML($ogReport->secmodule, $ogReport, '', true);
+		$list_report_form->assign('COLUMNS_BLOCK_ARRAY', array_merge($COLUMNS_BLOCK_ARRAY, $SEC_COLUMNS_BLOCK_ARRAY));
+
 		$FILTER_OPTION = Reports::getAdvCriteriaHTML();
 		$list_report_form->assign('FOPTION', $FILTER_OPTION);
 
@@ -149,7 +150,7 @@ if ($numOfRows > 0) {
 		$list_report_form->assign('REP_FOLDERS', $ogReport->sgetRptFldr());
 
 		$list_report_form->assign('REPORTNAME', htmlspecialchars($ogReport->reportname, ENT_QUOTES, $default_charset));
-		$jsonheaders = $oReportRun->GenerateReport('HEADERS', '');
+		$jsonheaders = $oReportRun->GenerateReport('HEADERS', $filtersql);
 		$list_report_form->assign('TABLEHEADERS', $jsonheaders['i18nheaders']);
 		$list_report_form->assign('JSONHEADERS', $jsonheaders['jsonheaders']);
 		if ($jsonheaders['has_contents']) {
@@ -189,16 +190,16 @@ if ($numOfRows > 0) {
 		<tbody><tr>
 		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
 		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-			<span class='genHeaderSmall'>".$mod_strings['LBL_NO_ACCESS']." : ".implode(',', $restrictedmodules)." </span>
+			<span class='genHeaderSmall'>".$mod_strings['LBL_NO_ACCESS'].' : '.implode(',', $restrictedmodules)." </span>
 		</td>
 		</tr>
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br></td>
+		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK'].'</a><br></td>
 		</tr>
 		</tbody></table>
 		</div>
-		</td></tr></table>";
+		</td></tr></table>';
 	}
 } else {
 	$theme = vtlib_purify($theme);
@@ -212,37 +213,38 @@ if ($numOfRows > 0) {
 	</tr>
 	<tr>
 	<td class='small' align='right' nowrap='nowrap'>
-	<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br></td>
+	<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK'].'</a><br></td>
 	</tr>
 	</tbody></table>
 	</div>
-	</td></tr></table>";
+	</td></tr></table>';
 }
 
 /** Function to get the StdfilterHTML strings for the given  primary module
- *  @ param $module : Type String
- *  @ param $selected : Type String(optional)
  *  This Generates the HTML Combo strings for the standard filter for the given reports module
- *  This Returns a HTML sring
+ *  @param string module
+ *  @param string selected optional
+ *  @return string HTML
  */
-function getPrimaryStdFilterHTML($module, $selected = "") {
+function getPrimaryStdFilterHTML($module, $selected = '') {
 	global $ogReport, $current_language;
 	$ogReport->oCustomView=new CustomView();
 	$result = $ogReport->oCustomView->getStdCriteriaByModule($module);
 	$mod_strings = return_module_language($current_language, $module);
+	$shtml = '';
 	if (isset($result)) {
 		foreach ($result as $key => $value) {
 			if (isset($mod_strings[$value])) {
 				if ($key == $selected) {
-					$shtml .= "<option selected value=\"".$key."\">".getTranslatedString($module, $module)." - ".$mod_strings[$value]."</option>";
+					$shtml .= '<option selected value="'.$key.'">'.getTranslatedString($module, $module).' - '.$mod_strings[$value].'</option>';
 				} else {
-					$shtml .= "<option value=\"".$key."\">".getTranslatedString($module, $module)." - ".$mod_strings[$value]."</option>";
+					$shtml .= '<option value="'.$key.'">'.getTranslatedString($module, $module).' - '.$mod_strings[$value].'</option>';
 				}
 			} else {
 				if ($key == $selected) {
-					$shtml .= "<option selected value=\"".$key."\">".getTranslatedString($module, $module)." - ".$value."</option>";
+					$shtml .= '<option selected value="'.$key.'">'.getTranslatedString($module, $module).' - '.$value.'</option>';
 				} else {
-					$shtml .= "<option value=\"".$key."\">".getTranslatedString($module, $module)." - ".$value."</option>";
+					$shtml .= '<option value="'.$key.'">'.getTranslatedString($module, $module).' - '.$value.'</option>';
 				}
 			}
 		}
@@ -251,16 +253,17 @@ function getPrimaryStdFilterHTML($module, $selected = "") {
 }
 
 /** Function to get the StdfilterHTML strings for the given secondary module
- *  @ param $module : Type String
- *  @ param $selected : Type String(optional)
  *  This Generates the HTML Combo strings for the standard filter for the given reports module
- *  This Returns a HTML sring
+ *  @param string module
+ *  @param string selected optional
+ *  @return string HTML
  */
 function getSecondaryStdFilterHTML($module, $selected = '') {
 	global $ogReport, $current_language;
 	$ogReport->oCustomView=new CustomView();
+	$shtml = '';
 	if ($module != '') {
-		$secmodule = explode(":", $module);
+		$secmodule = explode(':', $module);
 		for ($i=0; $i < count($secmodule); $i++) {
 			$result =  $ogReport->oCustomView->getStdCriteriaByModule($secmodule[$i]);
 			$mod_strings = return_module_language($current_language, $secmodule[$i]);
@@ -268,15 +271,15 @@ function getSecondaryStdFilterHTML($module, $selected = '') {
 				foreach ($result as $key => $value) {
 					if (isset($mod_strings[$value])) {
 						if ($key == $selected) {
-							$shtml .= "<option selected value=\"".$key."\">".getTranslatedString($secmodule[$i], $secmodule[$i])." - ".$mod_strings[$value]."</option>";
+							$shtml .= '<option selected value="'.$key.'">'.getTranslatedString($secmodule[$i], $secmodule[$i]).' - '.$mod_strings[$value].'</option>';
 						} else {
-							$shtml .= "<option value=\"".$key."\">".getTranslatedString($secmodule[$i], $secmodule[$i])." - ".$mod_strings[$value]."</option>";
+							$shtml .= '<option value="'.$key.'">'.getTranslatedString($secmodule[$i], $secmodule[$i]).' - '.$mod_strings[$value].'</option>';
 						}
 					} else {
 						if ($key == $selected) {
-							$shtml .= "<option selected value=\"".$key."\">".getTranslatedString($secmodule[$i], $secmodule[$i])." - ".$value."</option>";
+							$shtml .= '<option selected value="'.$key.'">'.getTranslatedString($secmodule[$i], $secmodule[$i]).' - '.$value.'</option>';
 						} else {
-							$shtml .= "<option value=\"".$key."\">".getTranslatedString($secmodule[$i], $secmodule[$i])." - ".$value."</option>";
+							$shtml .= '<option value="'.$key.'">'.getTranslatedString($secmodule[$i], $secmodule[$i]).' - '.$value.'</option>';
 						}
 					}
 				}
@@ -286,44 +289,59 @@ function getSecondaryStdFilterHTML($module, $selected = '') {
 	return $shtml;
 }
 
-function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected = '') {
+function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected = '', $array = false) {
 	global $current_language;
 	$mod_strings = return_module_language($current_language, $module);
 	$block_listed = array();
 	$shtml = '';
+	$return_array = array();
 	foreach ($ogReport->module_list[$module] as $value) {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && empty($block_listed[$value])) {
 			$block_listed[$value] = true;
+			$fields_array = array();
 			$shtml .= '<optgroup label="'.getTranslatedString($module, $module).' '.getTranslatedString($value).'" class="select" style="border:none">';
 			foreach ($ogReport->pri_module_columnslist[$module][$value] as $field => $fieldlabel) {
+				list($table, $column, $mod_fldlbl, $fldname, $tod) = explode(':', $field);
+				$field_array = array(
+					'label' => isset($mod_strings[$fieldlabel]) ? $mod_strings[$fieldlabel] : $fieldlabel,
+					'value' => $field,
+					'selected' => $selected == $field ? '1' : '',
+					'typeofdata' => $tod
+				);
+				$fields_array[$fldname] = $field_array;
 				if (isset($mod_strings[$fieldlabel])) {
 					//fix for ticket 5191
 					$selected = decode_html($selected);
 					$field = decode_html($field);
 					//fix ends
 					if ($selected == $field) {
-						$shtml .= "<option selected value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
+						$shtml .= '<option selected value="'.$field.'">'.$mod_strings[$fieldlabel].'</option>';
 					} else {
-						$shtml .= "<option value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
+						$shtml .= '<option value="'.$field.'">'.$mod_strings[$fieldlabel].'</option>';
 					}
 				} else {
 					if ($selected == $field) {
-						$shtml .= "<option selected value=\"".$field."\">".$fieldlabel."</option>";
+						$shtml .= '<option selected value="'.$field.'">'.$fieldlabel.'</option>';
 					} else {
-						$shtml .= "<option value=\"".$field."\">".$fieldlabel."</option>";
+						$shtml .= '<option value="'.$field.'">'.$fieldlabel.'</option>';
 					}
 				}
 			}
+			if (count($fields_array) > 0) {
+				$blockname = getTranslatedString($value);
+				$return_array[$module][$blockname] = $fields_array;
+			}
 		}
 	}
-	return $shtml;
+	return $array == true ? $return_array : $shtml;
 }
 
-function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected = "") {
+function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected = '', $array = false) {
 	global $current_language;
 	$shtml = '';
+	$return_array = array();
 	if ($module != '') {
-		$secmodule = explode(":", $module);
+		$secmodule = explode(':', $module);
 		for ($i=0; $i < count($secmodule); $i++) {
 			$mod_strings = return_module_language($current_language, $secmodule[$i]);
 			if (vtlib_isModuleActive($secmodule[$i])) {
@@ -331,36 +349,50 @@ function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected = "") 
 				foreach ($ogReport->module_list[$secmodule[$i]] as $value) {
 					if (isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && empty($block_listed[$value])) {
 						$block_listed[$value] = true;
+						$fields_array = array();
 						$shtml .= '<optgroup label="'.getTranslatedString($secmodule[$i], $secmodule[$i]).' '.getTranslatedString($value).'" class="select" style="border:none">';
 						foreach ($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field => $fieldlabel) {
+							list($table, $column, $mod_fldlbl, $fldname, $tod) = explode(':', $field);
+							$field_array = array(
+								'label' => isset($mod_strings[$fieldlabel]) ? $mod_strings[$fieldlabel] : $fieldlabel,
+								'value' => $field,
+								'selected' => $selected == $field ? '1' : '',
+								'typeofdata' => $tod
+							);
+							$fields_array[$fldname] = $field_array;
 							if (isset($mod_strings[$fieldlabel])) {
 								if ($selected == $field) {
-									$shtml .= "<option selected value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
+									$shtml .= '<option selected value="'.$field.'">'.$mod_strings[$fieldlabel].'</option>';
 								} else {
-									$shtml .= "<option value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
+									$shtml .= '<option value="'.$field.'">'.$mod_strings[$fieldlabel].'</option>';
 								}
 							} else {
 								if ($selected == $field) {
-									$shtml .= "<option selected value=\"".$field."\">".$fieldlabel."</option>";
+									$shtml .= '<option selected value="'.$field.'">'.$fieldlabel.'</option>';
 								} else {
-									$shtml .= "<option value=\"".$field."\">".$fieldlabel."</option>";
+									$shtml .= '<option value="'.$field.'">'.$fieldlabel.'</option>';
 								}
 							}
 						}
+					}
+					if (count($fields_array) > 0) {
+						$blockname = getTranslatedString($value);
+						$return_array[$secmodule[$i]][$blockname] = $fields_array;
 					}
 				}
 			}
 		}
 	}
-	return $shtml;
+	return $array == true ? $return_array : $shtml;
 }
 
-function getAdvCriteria_HTML($adv_filter_options, $selected = "") {
+function getAdvCriteria_HTML($adv_filter_options, $selected = '') {
+	$shtml = '';
 	foreach ($adv_filter_options as $key => $value) {
 		if ($selected == $key) {
-			$shtml .= "<option selected value=\"".$key."\">".$value."</option>";
+			$shtml .= '<option selected value="'.$key.'">'.$value.'</option>';
 		} else {
-			$shtml .= "<option value=\"".$key."\">".$value."</option>";
+			$shtml .= '<option value="'.$key.'">'.$value.'</option>';
 		}
 	}
 	return $shtml;

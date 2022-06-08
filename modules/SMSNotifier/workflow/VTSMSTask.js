@@ -185,7 +185,7 @@ function SMSTask($) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;
+					return !e[0];
 				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];

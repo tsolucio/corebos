@@ -12,7 +12,7 @@
 
 class VTEventConditionParserParser extends AntlrParser {
 	public static $tokenNames = array(
-		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "SYMBOL", "IN", "STRING", "DIGIT", "INTEGER", "LETTER", "DOT", "ELEMENT_ID", "WHITESPACE", "'=='", "'['", "','", "']'"
+		'<invalid>', '<EOR>', '<DOWN>', '<UP>', 'SYMBOL', 'IN', 'STRING', 'DIGIT', 'INTEGER', 'LETTER', 'DOT', 'ELEMENT_ID', 'WHITESPACE', "'=='", "'['", "','", "']'"
 	);
 	public $INTEGER=8;
 	public $T__16=16;
@@ -59,7 +59,7 @@ class VTEventConditionParserParser extends AntlrParser {
 	}
 
 	public function getGrammarFileName() {
-		return "VTEventConditionParser.g";
+		return 'VTEventConditionParser.g';
 	}
 
 	protected function mismatch($input, $ttype, $follow) {
@@ -70,7 +70,7 @@ class VTEventConditionParserParser extends AntlrParser {
 		throw $e;
 	}
 
-	// $ANTLR start "statement"
+	// $ANTLR start 'statement'
 	///* VTEventConditionParser.g:33:1: statement returns [result] : (exp= comparision | exp= inclause ) ; */
 	public function statement() {
 		$result = null;
@@ -80,28 +80,26 @@ class VTEventConditionParserParser extends AntlrParser {
 			$alt1=2;
 			$LA1_0 = $this->input->LA(1);
 
-			if (($LA1_0==$this->getToken('SYMBOL'))) {
+			if ($LA1_0==$this->getToken('SYMBOL')) {
 				$LA1_1 = $this->input->LA(2);
 
-				if (($LA1_1==$this->getToken('13'))) {
+				if ($LA1_1==$this->getToken('13')) {
 					$alt1=1;
-				} elseif (($LA1_1==$this->getToken('IN'))) {
+				} elseif ($LA1_1==$this->getToken('IN')) {
 					$alt1=2;
 				} else {
 					if ($this->state->backtracking>0) {
 						$this->state->failed=true;
 						return $result;
 					}
-					$nvae = new NoViableAltException("", 1, 1, $this->input);
-					throw $nvae;
+					throw new NoViableAltException('', 1, 1, $this->input);
 				}
 			} else {
 				if ($this->state->backtracking>0) {
 					$this->state->failed=true;
 					return $result;
 				}
-				$nvae = new NoViableAltException("", 1, 0, $this->input);
-				throw $nvae;
+				throw new NoViableAltException('', 1, 0, $this->input);
 			}
 			switch ($alt1) {
 				case 1:
@@ -132,9 +130,9 @@ class VTEventConditionParserParser extends AntlrParser {
 
 		return $result;
 	}
-	// $ANTLR end "statement"
+	// $ANTLR end 'statement'
 
-	// $ANTLR start "comparision"
+	// $ANTLR start 'comparision'
 	///* VTEventConditionParser.g:35:1: comparision returns [result] : lhs= SYMBOL '==' rhs= value ; */
 	public function comparision() {
 		$result = null;
@@ -165,9 +163,9 @@ class VTEventConditionParserParser extends AntlrParser {
 		}
 		return $result;
 	}
-	// $ANTLR end "comparision"
+	// $ANTLR end 'comparision'
 
-	// $ANTLR start "inclause"
+	// $ANTLR start 'inclause'
 	///* VTEventConditionParser.g:38:1: inclause returns [result] : lhs= SYMBOL IN rhs= listelement ; */
 	public function inclause() {
 		$result = null;
@@ -198,9 +196,9 @@ class VTEventConditionParserParser extends AntlrParser {
 		}
 		return $result;
 	}
-	// $ANTLR end "inclause"
+	// $ANTLR end 'inclause'
 
-	// $ANTLR start "listelement"
+	// $ANTLR start 'listelement'
 	///* VTEventConditionParser.g:40:1: listelement returns [result] : '[' val= value ( ',' val= value )* ']' ; */
 	public function listelement() {
 		$result = null;
@@ -224,7 +222,7 @@ class VTEventConditionParserParser extends AntlrParser {
 				$alt2=2;
 				$LA2_0 = $this->input->LA(1);
 
-				if (($LA2_0==$this->getToken('15'))) {
+				if ($LA2_0==$this->getToken('15')) {
 					$alt2=1;
 				}
 
@@ -245,7 +243,7 @@ class VTEventConditionParserParser extends AntlrParser {
 						}
 						break;
 					default:
-						break 2;//loop2;
+						break 2;//loop2
 				}
 			} while (true);
 
@@ -260,9 +258,9 @@ class VTEventConditionParserParser extends AntlrParser {
 		}
 		return $result;
 	}
-	// $ANTLR end "listelement"
+	// $ANTLR end 'listelement'
 
-	// $ANTLR start "value"
+	// $ANTLR start 'value'
 	///* VTEventConditionParser.g:44:1: value returns [result] : val= STRING ; */
 	public function value() {
 		$result = null;
@@ -282,7 +280,7 @@ class VTEventConditionParserParser extends AntlrParser {
 		}
 		return $result;
 	}
-	// $ANTLR end "value"
+	// $ANTLR end 'value'
 
 	// Delegated rules
 }

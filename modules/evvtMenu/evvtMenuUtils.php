@@ -20,7 +20,7 @@
 function getMenuBranch($mparent) {
 	global $adb;
 	$menustructure = array();
-	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = $mparent order by mseq");
+	$menurs = $adb->pquery('select * from vtiger_evvtmenu where mparent=? order by mseq', array($mparent));
 	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			switch ($menu['mtype']) {
@@ -108,8 +108,7 @@ function getMenuElements() {
 
 function getsavedMenu() {
 	global $adb;
-	$sql = "SELECT savemenuid,menuname FROM `vtiger_savemenu`";
-	$result = $adb->query($sql);
+	$result = $adb->query('SELECT savemenuid,menuname FROM vtiger_savemenu');
 	$savedm = array();
 	if ($result && $adb->num_rows($result)>0) {
 		while ($res = $adb->fetch_array($result)) {
@@ -123,7 +122,7 @@ function getMenuArray($mparent) {
 	global $adb,$current_user;
 	$is_admin = is_admin($current_user);
 	$menustructure = array();
-	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = $mparent and mvisible=1 order by mseq");
+	$menurs = $adb->pquery('select * from vtiger_evvtmenu where mparent=? and mvisible=1 order by mseq', array($mparent));
 	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			if (empty($menu['mpermission']) && $menu['mtype']=='module') {
@@ -189,7 +188,7 @@ function getMenuPicklist($mparent, $level) {
 function getAdminevvtMenu() {
 	global $adb;
 	$rdo = array();
-	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = (select evvtmenuid from vtiger_evvtmenu where mlabel ='Settings') and mvisible=1 order by mseq");
+	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent=(select evvtmenuid from vtiger_evvtmenu where mlabel='Settings') and mvisible=1 order by mseq");
 	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			switch ($menu['mtype']) {
@@ -205,6 +204,8 @@ function getAdminevvtMenu() {
 					$label = getTranslatedString($menu['mvalue'], $menu['mvalue']);
 					$url = 'index.php?action=index&module='.$menu['mvalue'];
 					break;
+				default:
+					break;
 			}
 			$rdo[$label] = $url;
 		}
@@ -215,7 +216,23 @@ function getAdminevvtMenu() {
 }
 
 function checkevvtMenuInstalled() {
-	global $adb, $current_user;
+	global $adb, $current_user, $currentModule;
+	$adb->query('CREATE TABLE IF NOT EXISTS vtiger_crmobject (
+		crmid int(19),
+		cbuuid char(40),
+		deleted tinyint(1),
+		setype varchar(100),
+		smownerid int(19),
+		modifiedtime datetime,
+		PRIMARY KEY (crmid),
+		INDEX (cbuuid),
+		INDEX (deleted),
+		INDEX (setype)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8');
+	$cncrm = $adb->getColumnNames('vtiger_users');
+	if (!in_array('ename', $cncrm)) {
+		$adb->query('ALTER TABLE `vtiger_users` ADD `ename` varchar(200) default "";');
+	}
 	$cncrm = $adb->getColumnNames('vtiger_crmentity');
 	if (!in_array('cbuuid', $cncrm)) {
 		$adb->query('ALTER TABLE `vtiger_crmentity` ADD `cbuuid` char(40) default "";');
@@ -236,12 +253,42 @@ function checkevvtMenuInstalled() {
 	if (!in_array('relatemodule', $cnmsg)) {
 		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `relatemodule` varchar(100) default NULL;');
 	}
+	if (!in_array('options', $cnmsg)) {
+		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `options` varchar(100) default NULL;');
+	}
+	if (!in_array('cbquestion', $cnmsg)) {
+		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `cbquestion` int(11) default NULL;');
+	}
+	if (!in_array('recordset', $cnmsg)) {
+		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `recordset` int(11) default NULL;');
+	}
+	if (!in_array('onerecord', $cnmsg)) {
+		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `onerecord` int(11) default NULL;');
+	}
 	$cnmsg = $adb->getColumnNames('vtiger_profile2field');
 	if (!in_array('summary', $cnmsg)) {
 		$adb->query("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");
 	}
+	$adb->query(
+		"UPDATE vtiger_cbmap
+		SET content='<map><function><name>isOnDemandNotActive</name></function></map>'
+		WHERE mapname='cbUpdater_ImportExport' AND content LIKE '%<name>!isOnDemandActive</name>%' AND targetname='cbupdater'"
+	);
 	if (vtlib_isModuleActive('cbupdater')) {
-		// first we make sure we have Global Variable
+		$holdModule = $currentModule;
+		$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='denormalizechangeset'");
+		if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
+			$holduser = $current_user;
+			ob_start();
+			include 'modules/cbupdater/getupdatescli.php';
+			$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
+			$argv[0] = 'doworkcli';
+			$argv[1] = 'apply';
+			$argv[2] = $updid;
+			include 'modules/cbupdater/doworkcli.php';
+			ob_end_clean();
+			$current_user = $holduser;
+		}
 		if (!vtlib_isModuleActive('GlobalVariable')) {
 			$holduser = $current_user;
 			ob_start();
@@ -284,6 +331,7 @@ function checkevvtMenuInstalled() {
 			ob_end_clean();
 			$current_user = $holduser;
 		}
+		$currentModule = $holdModule;
 	}
 }
 

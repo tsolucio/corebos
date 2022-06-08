@@ -18,18 +18,19 @@ include_once 'vtlib/Vtiger/Module.php';
 
 if (empty($argv[1]) || empty($argv[2])) {
 	echo "\n";
-	echo $argv[0]." sourceTimezone destinationTimezone\n";
+	echo $argv[0]." sourceTimezone destinationTimezone crmentitytable\n";
 	echo "\n";
 	echo "Missing parameters!\n";
-	echo 'For example, '.$argv[0]." UTC CET\n";
+	echo 'For example, '.$argv[0]." UTC CET vtiger_account\n";
 	die();
 }
 $sourceTimeZoneName = $argv[1];
 $sourceTimeZone = new DateTimeZone($sourceTimeZoneName);
 $targetTimeZoneName = $argv[2];
 $targetTimeZone = new DateTimeZone($targetTimeZoneName);
+$crmtable = (empty($argv[3]) ? 'vtiger_crmentity' : $argv[3]);
 // crmentity
-$crme = $adb->pquery('select crmid,createdtime,modifiedtime,viewedtime from vtiger_crmentity', array());
+$crme = $adb->pquery('select crmid,createdtime,modifiedtime,viewedtime from '.$crmtable, array());
 while ($rec = $adb->fetch_array($crme)) {
 	$cTime = new DateTime($rec['createdtime'], $sourceTimeZone);
 	$cTime->setTimeZone($targetTimeZone);
@@ -38,11 +39,12 @@ while ($rec = $adb->fetch_array($crme)) {
 	$vTime = new DateTime($rec['viewedtime'], $sourceTimeZone);
 	$vTime->setTimeZone($targetTimeZone);
 	$adb->pquery(
-		'update vtiger_crmentity set createdtime=?, modifiedtime=?, viewedtime=? where crmid=?',
+		'update '.$crmtable.' set createdtime=?, modifiedtime=?, viewedtime=? where crmid=?',
 		array($cTime->format('Y-m-d H:i:s'), $mTime->format('Y-m-d H:i:s'), $vTime->format('Y-m-d H:i:s'), $rec['crmid'])
 	);
+	$adb->pquery('update vtiger_crmobject set modifiedtime=? where crmid=?', array($mTime->format('Y-m-d H:i:s')));
 	echo $adb->convert2Sql(
-		'update vtiger_crmentity set createdtime=?, modifiedtime=?, viewedtime=? where crmid=?',
+		'update '.$crmtable.' set createdtime=?, modifiedtime=?, viewedtime=? where crmid=?',
 		array($cTime->format('Y-m-d H:i:s'), $mTime->format('Y-m-d H:i:s'), $vTime->format('Y-m-d H:i:s'), $rec['crmid'])
 	)."\n";
 }

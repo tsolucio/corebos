@@ -7,15 +7,6 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-function updateListPrice(unitprice, fieldname, oSelect) {
-	if (oSelect.checked == true) {
-		document.getElementById(fieldname).style.visibility = 'visible';
-		document.getElementById(fieldname).value = unitprice;
-	} else {
-		document.getElementById(fieldname).style.visibility = 'hidden';
-	}
-}
-
 function set_return(product_id, product_name) {
 	if (document.getElementById('from_link').value != '') {
 		window.opener.document.QcEditView.parent_name.value = product_name;
@@ -44,10 +35,16 @@ function set_return_specific(product_id, product_name) {
 function set_return_inventory(product_id, product_name, unitprice, qtyinstock, taxstr, curr_row, desc, subprod_id, dto) {
 	getOpenerObj('qtyInStock'+curr_row).innerHTML = qtyinstock;
 	set_return_inventory_po(product_id, product_name, unitprice, taxstr, curr_row, desc, subprod_id);
-	if (dto!=0) {
+	if (dto==0) {
+		window.opener.document.EditView.elements['discount'+curr_row][0].checked = true;
+		window.opener.document.EditView.elements['discount'+curr_row][1].checked = false;
+		window.opener.document.EditView.elements['discount'+curr_row][2].checked = false;
+	} else {
+		window.opener.document.EditView.elements['discount'+curr_row][0].checked = false;
 		window.opener.document.EditView.elements['discount'+curr_row][1].checked = true;
-		window.opener.document.EditView.elements['discount_percentage'+curr_row].value = dto;
+		window.opener.document.EditView.elements['discount'+curr_row][2].checked = false;
 	}
+	window.opener.document.EditView.elements['discount_percentage'+curr_row].value = dto;
 	var func = window.opener.gVTModule + 'setValueFromCapture';
 	if (typeof window.opener[func] == 'function') {
 		window.opener[func](product_id, product_name, 'productName'+curr_row);
@@ -63,7 +60,6 @@ function set_return_inventory_po(product_id, product_name, unitprice, taxstr, cu
 	window.opener.document.EditView.elements['hdnProductId'+curr_row].value = product_id;
 	window.opener.document.EditView.elements['listPrice'+curr_row].value = unitprice;
 	window.opener.document.EditView.elements['comment'+curr_row].value = desc;
-	//getOpenerObj("unitPrice"+curr_row).innerHTML = unitprice;
 
 	// Apply decimal round-off to value
 	if (!isNaN(parseFloat(unitprice))) {
@@ -92,16 +88,7 @@ function set_return_product(product_id, product_name) {
 }
 
 function getImageListBody() {
-	if (browser_ie) {
-		var ImageListBody=getObj('ImageList');
-	} else if (browser_nn4 || browser_nn6) {
-		if (getObj('ImageList').childNodes.item(0).tagName=='TABLE') {
-			var ImageListBody=getObj('ImageList');
-		} else {
-			var ImageListBody=getObj('ImageList');
-		}
-	}
-	return ImageListBody;
+	return getObj('ImageList');
 }
 
 // Function to Round off the Price Value

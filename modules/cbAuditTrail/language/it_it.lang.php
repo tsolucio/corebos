@@ -9,10 +9,22 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'cbAuditTrail' => 'User Audit Trail',
-	'SINGLE_cbAuditTrail' => 'User Audit Trail',
+	'cbAuditTrail' => 'Traccia di Controllo dUtente',
+	'SINGLE_cbAuditTrail' => 'Traccia di Controllo dUtente',
 	'LBL_AUDIT_TRAIL'=>'Informazioni di Controllo Utente',
-	'AuditTrailEnabled' => 'Audit Trail Enabled',
-	'AuditTrailDisabled' => 'Audit Trail Disabled',
+	'AuditTrailEnabled' => 'Traccia Audit Abilitata ',
+	'AuditTrailDisabled' => 'Traccia Audit Disabilitata',
+	'ERR_SQL' => 'Errore: richiesta database errata.',
+	'ERR_NoData' => 'Errore: nessun dato trovato.',
+
+	'Auditid' => 'ID Audit',
+	'userid' => 'ID Utente',
+	'module' => 'Modulo',
+	'action' => 'Azione',
+	'actiondate'  => 'Data Azione',
+	'Record' => 'Recordati',
+
+
+
 );
 ?>

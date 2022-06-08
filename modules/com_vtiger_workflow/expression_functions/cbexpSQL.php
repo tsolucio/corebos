@@ -31,7 +31,11 @@ function cbexpsql_supportedFunctions() {
 		'stringposition' => 'stringposition(haystack,needle)',
 		'stringlength' => 'stringlength(string)',
 		'stringreplace' => 'stringreplace(search,replace,subject)',
+		'regexreplace' => 'regexreplace(pattern,replace,subject)',
 		'substring' => 'substring(stringfield,start,length)',
+		'randomstring' => 'randomstring(length)',
+		'randomnumber' => 'randomnumber(min,max)',
+		'faker' => 'faker(operation,parameters)',
 		'uppercase'=>'uppercase(stringfield)',
 		'lowercase'=>'lowercase(stringfield)',
 		//'uppercasefirst'=>'uppercasefirst(stringfield)',
@@ -44,6 +48,7 @@ function cbexpsql_supportedFunctions() {
 		'time_diffyears(a,b)' => 'time_diffyears(a,b)',
 		//'time_diffweekdays(a)' => 'time_diffweekdays(a)',
 		//'time_diffweekdays(a,b)' => 'time_diffweekdays(a,b)',
+		'networkdays' => 'networkdays(startDate, endDate, holidays)',
 		'add_days' => 'add_days(datefield, noofdays)',
 		'sub_days' => 'sub_days(datefield, noofdays)',
 		'add_months' => 'add_months(datefield, noofmonths)',
@@ -85,6 +90,7 @@ function cbexpsql_supportedFunctions() {
 		// 'getCurrentUserID' => 'getCurrentUserID()',
 		// 'getCurrentUserName' => 'getCurrentUserName({full})',
 		// 'getCurrentUserField' => 'getCurrentUserField(fieldname)',
+		'getCRMIDFromWSID' => 'getCRMIDFromWSID(id)',
 		// 'getEntityType'=>'getEntityType(field)',
 		// 'getimageurl'=>'getimageurl(field)',
 		// 'getLatitude' => 'getLatitude(address)',
@@ -101,7 +107,15 @@ function cbexpsql_supportedFunctions() {
 		// 'getGEODistanceFromUser2ContactShipping' => 'getGEODistanceFromUser2ContactShipping(contact,address_specification)',
 		// 'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 		// 'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
+		'getIDof' => 'getIDof(module, searchon, searchfor)',
+		'executeSQL' => 'executeSQL(query, parameters...)',
+		//'getRelatedIDs' => 'getRelatedIDs(module)',
+		// 'getRelatedMassCreateArray' => 'getRelatedMassCreateArray(module,recordid)',
+		// 'getRelatedMassCreateArrayConverting' => 'getRelatedMassCreateArrayConverting(module, MainModuleDestination, RelatedModuleDestination, recordid)',
+		// 'getRelatedRecordCreateArrayConverting' => 'getRelatedRecordCreateArrayConverting(module, RelatedModuleDestination, recordid)',
+		// 'getISODate' => 'getISODate(year,weeks, dayInweek)',
 		// 'getFromContext' => 'getFromContext(variablename)',
+		// 'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
 		// 'setToContext' => 'setToContext(variablename, value)',
 		'getSetting' => "getSetting('setting_key', 'default')",
 		// 'setSetting' => 'setSetting('setting_key', value)',
@@ -112,6 +126,8 @@ function cbexpsql_supportedFunctions() {
 		// 'exists' => 'exists(fieldname, value)',
 		// 'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 		// 'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
+		// 'allrelatedarethesame' => 'allrelatedarethesame(relatedmodule, fieldname, value)',
+		'average' => 'average(number,...)'
 	);
 }
 
@@ -191,6 +207,17 @@ function cbexpsql_time_diffyears($arr, $mmodule) {
 	return __cbexpsql_functionparams('TIMESTAMPDIFF', $arr, $mmodule);
 }
 
+function cbexpsql_networkdays($arr, $mmodule) {
+	$s = $arr[0]->value;
+	$e = $arr[1]->value;
+	// https://stackoverflow.com/questions/1828948/mysql-function-to-find-the-number-of-working-days-between-two-dates
+	// 0123444401233334012222340111123400001234000123440 > I increment one day to match our function
+	return "(SELECT CASE
+		WHEN '$e' < '$s' THEN -5 * (DATEDIFF('$e', '$s') DIV 7) + SUBSTRING('1234555512344445123333451222234511112345001234550', 7 * WEEKDAY('$e') + WEEKDAY('$s') + 1, 1)
+		ELSE 5 * (DATEDIFF('$e', '$s') DIV 7) + SUBSTRING('1234555512344445123333451222234511112345001234550', 7 * WEEKDAY('$s') + WEEKDAY('$e') + 1, 1)
+	END)";
+}
+
 function cbexpsql_add_days($arr, $mmodule) {
 	$arr[1] = new VTExpressionSymbol($arr[1]);
 	return __cbexpsql_functionparams('ADDDATE', $arr, $mmodule);
@@ -202,22 +229,26 @@ function cbexpsql_sub_days($arr, $mmodule) {
 }
 
 function cbexpsql_add_months($arr, $mmodule) {
-	$arr[1] = new VTExpressionSymbol('INTERVAL '.$arr[1].' month', 'constant');
+	$val = is_object($arr[1]) ? $arr[1]->value : $arr[1];
+	$arr[1] = new VTExpressionSymbol('INTERVAL '.$val.' month', 'constant');
 	return __cbexpsql_functionparams('DATE_ADD', $arr, $mmodule);
 }
 
 function cbexpsql_sub_months($arr, $mmodule) {
-	$arr[1] = new VTExpressionSymbol('INTERVAL '.$arr[1].' month', 'constant');
+	$val = is_object($arr[1]) ? $arr[1]->value : $arr[1];
+	$arr[1] = new VTExpressionSymbol('INTERVAL '.$val.' month', 'constant');
 	return __cbexpsql_functionparams('DATE_SUB', $arr, $mmodule);
 }
 
 function cbexpsql_add_time($arr, $mmodule) {
-	$arr[1] = new VTExpressionSymbol('INTERVAL '.$arr[1].' MINUTE', 'constant');
+	$val = is_object($arr[1]) ? $arr[1]->value : $arr[1];
+	$arr[1] = new VTExpressionSymbol('INTERVAL '.$val.' MINUTE', 'constant');
 	return __cbexpsql_functionparams('DATE_ADD', $arr, $mmodule);
 }
 
 function cbexpsql_sub_time($arr, $mmodule) {
-	$arr[1] = new VTExpressionSymbol('INTERVAL '.$arr[1].' MINUTE', 'constant');
+	$val = is_object($arr[1]) ? $arr[1]->value : $arr[1];
+	$arr[1] = new VTExpressionSymbol('INTERVAL '.$val.' MINUTE', 'constant');
 	return __cbexpsql_functionparams('DATE_SUB', $arr, $mmodule);
 }
 
@@ -304,6 +335,27 @@ function cbexpsql_stringreplace($arr, $mmodule) {
 	return __cbexpsql_functionparams('REPLACE', $arr, $mmodule);
 }
 
+function cbexpsql_regexreplace($arr, $mmodule) {
+	return __cbexpsql_functionparams('REGEXP_REPLACE', array($arr[2], $arr[0], $arr[1]), $mmodule);
+}
+
+function cbexpsql_randomstring($arr, $mmodule) {
+	if (empty($arr) || empty($arr[0])) {
+		$arr[0] = 10;
+	}
+	return 'SUBSTRING(HEX(CONCAT(NOW(), RAND(), UUID())), 1, '.$arr[0].')';
+}
+
+function cbexpsql_randomnumber($arr, $mmodule) {
+	if (is_object($arr[0])) {
+		$b = $arr[0]->value;
+	}
+	if (is_object($arr[1])) {
+		$a = $arr[1]->value;
+	}
+	return 'FLOOR(RAND()*('.$b.'-'.$a.'+1))+'.$a;
+}
+
 function cbexpsql_uppercase($arr, $mmodule) {
 	return __cbexpsql_functionparams('UPPER', $arr, $mmodule);
 }
@@ -323,7 +375,22 @@ function cbexpsql_setype($arr, $mmodule) {
 		if (count($crmidmatches)>0) {
 			list($void, $crmid) = explode('x', $crmid);
 		}
-		$ret = '(select setype from vtiger_crmentity where vtiger_crmentity.crmid='.$crmid.')';
+		$ret = '(select setype from vtiger_crmobject where vtiger_crmobject.crmid='.$crmid.')';
+	}
+	return $ret;
+}
+
+function cbexpsql_getidof($arr, $mmodule) {
+	global $current_user;
+	$ret = '';
+	if (!empty($arr[0])) {
+		$mod = trim(__cbexpsql_functionparamsvalue($arr[0], $mmodule), "'");
+		$fld = trim(__cbexpsql_functionparamsvalue($arr[1], $mmodule), "'");
+		$val = trim(__cbexpsql_functionparamsvalue($arr[2], $mmodule), "'");
+		$qg = new QueryGenerator($mod, $current_user);
+		$qg->setFields(array('id'));
+		$qg->addCondition($fld, $val, 'e');
+		$ret = 'coalesce(('.$qg->getQuery(false, 1).'), 0)';
 	}
 	return $ret;
 }
@@ -448,7 +515,7 @@ function cbexpsql_groupconcat($arr, $mmodule) {
 }
 
 function cbexpsql_number_format($arr, $mmodule) {
-	if (count($arr)>0) {
+	if (!empty($arr)) {
 		$number = $arr[0];
 		$decimals = isset($arr[1]) ? $arr[1] : 0;
 		$dec_points = isset($arr[2]) ? $arr[2] : '.';
@@ -498,6 +565,30 @@ function cbexpsql_getCurrentUserName($arr, $mmodule) {
 function cbexpsql_getCurrentUserField($arr, $mmodule) {
 	return 'TRUE';
 }
+
+function cbexpsql_getCRMIDFromWSID($arr, $mmodule) {
+	return 'crmid';
+}
+
+function cbexpsql_average($arr, $mmodule) {
+	$expression = __cbexpsql_functionparams('', $arr, $mmodule);
+	$values = explode(',', trim($expression->value, '()'));
+	$select = '(SELECT avg(nums) FROM (';
+	foreach ($values as $exp) {
+		$select .= '(select '.$exp.' as nums) union ';
+	}
+	return substr($select, 0, strlen($select)-7).') as setofnums)';
+}
+
+function cbexpsql_executesql($arr, $mmodule) {
+	global $adb;
+	$params = array();
+	foreach (array_slice($arr, 1) as $value) {
+		$params[] = trim(__cbexpsql_functionparamsvalue($value, $mmodule), "'");
+	}
+	return '('.$adb->convert2SQL(trim(__cbexpsql_functionparamsvalue($arr[0], $mmodule), "'"), $params).')';
+}
+
 function cbexpsql_getLatitude($arr, $mmodule) {
 	return 'TRUE';
 }
@@ -552,6 +643,9 @@ function cbexpsql_and($arr, $mmodule) {
 function cbexpsql_not($arr, $mmodule) {
 	return 'FALSE';
 }
+function cbexpsql_faker($arr, $mmodule) {
+	return 'TRUE';
+}
 
 class cbexpsql_environmentstub {
 	private $crmid;
@@ -577,6 +671,10 @@ class cbexpsql_environmentstub {
 		$this->data = $data;
 	}
 
+	public function getId() {
+		return $this->crmid;
+	}
+
 	public function get($fieldName) {
 		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
 		if ($this->returnReferenceValue && count($matches)>0) {
@@ -590,6 +688,14 @@ class cbexpsql_environmentstub {
 
 	public function set($fieldName, $value) {
 		$this->data[$fieldName] = $value;
+	}
+
+	public function getContext() {
+		return $this->WorkflowContext;
+	}
+
+	public function setContext($WorkflowContext) {
+		$this->WorkflowContext = $WorkflowContext;
 	}
 }
 ?>

@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class Assets extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_assets';
 	public $table_index= 'assetsid';
 	public $column_fields = array();
@@ -134,35 +132,9 @@ class Assets extends CRMEntity {
 	}
 
 	/**
-	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	// Function to unlink all the dependent entities of the given Entity by Id
-	public function unlinkDependencies($module, $id) {
-		parent::unlinkDependencies($module, $id);
-	}
-
-	/**
 	* Invoked when special actions are performed on the module.
-	* @param String Module name
-	* @param String Event Type
+	* @param string Module name
+	* @param string Event Type
 	*/
 	public function vtlib_handler($moduleName, $eventType) {
 		require_once 'include/utils/utils.php';
@@ -188,13 +160,13 @@ class Assets extends CRMEntity {
 			$assetLabel = 'Assets';
 
 			$accountInstance = Vtiger_Module::getInstance('Accounts');
-			$accountInstance->setRelatedlist($assetInstance, $assetLabel, array(ADD), 'get_dependents_list');
+			$accountInstance->setRelatedlist($assetInstance, $assetLabel, array('ADD'), 'get_dependents_list');
 
 			$productInstance = Vtiger_Module::getInstance('Products');
-			$productInstance->setRelatedlist($assetInstance, $assetLabel, array(ADD), 'get_dependents_list');
+			$productInstance->setRelatedlist($assetInstance, $assetLabel, array('ADD'), 'get_dependents_list');
 
 			$InvoiceInstance = Vtiger_Module::getInstance('Invoice');
-			$InvoiceInstance->setRelatedlist($assetInstance, $assetLabel, array(ADD), 'get_dependents_list');
+			$InvoiceInstance->setRelatedlist($assetInstance, $assetLabel, array('ADD'), 'get_dependents_list');
 		} elseif ($eventType == 'module.disabled') {
 		// Handle actions when this module is disabled.
 		} elseif ($eventType == 'module.enabled') {
@@ -218,11 +190,11 @@ class Assets extends CRMEntity {
 				$maxSequenceQuery = $adb->query("SELECT max(sequence) as maxsequence FROM vtiger_customerportal_tabs");
 				$maxSequence = $adb->query_result($maxSequenceQuery, 0, 'maxsequence');
 				$nextSequence = $maxSequence+1;
-				$adb->query("INSERT INTO vtiger_customerportal_tabs(tabid,visible,sequence) VALUES ($assetsTabId,1,$nextSequence)");
+				$adb->pquery('INSERT INTO vtiger_customerportal_tabs(tabid,visible,sequence) VALUES (?,1,?)', array($assetsTabId, $nextSequence));
 			}
 			$checkAlreadyExists = $adb->pquery('SELECT 1 FROM vtiger_customerportal_prefs WHERE tabid=?', array($assetsTabId));
 			if ($checkAlreadyExists && $adb->num_rows($checkAlreadyExists) < 1) {
-				$adb->query("INSERT INTO vtiger_customerportal_prefs(tabid,prefkey,prefvalue) VALUES ($assetsTabId,'showrelatedinfo',1)");
+				$adb->pquery("INSERT INTO vtiger_customerportal_prefs(tabid,prefkey,prefvalue) VALUES (?,'showrelatedinfo',1)", array($assetsTabId));
 			}
 		}
 	}

@@ -29,15 +29,14 @@ function getTopQuotes($maxval, $calCnt) {
 	$order_by = '';
 	$oCustomView = new CustomView('Quotes');
 	$oCustomView->getCustomViewCombo();
-	if (isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='') {
-		if ($oCustomView->setdefaultviewid != "") {
+	if (!isset($_REQUEST['viewname']) || $_REQUEST['viewname']=='') {
+		if ($oCustomView->setdefaultviewid != '') {
 			$viewid = $oCustomView->setdefaultviewid;
 		} else {
 			$viewid = '0';
 		}
 	}
 
-	//Retreive the list from Database
 	//<<<<<<<<<customview>>>>>>>>>
 	$currentModule = 'Quotes';
 	$viewId = getCvIdOfAll($currentModule);
@@ -76,17 +75,14 @@ function getTopQuotes($maxval, $calCnt) {
 
 	$list_result = $adb->query($query);
 
-	//Retreiving the no of rows
 	$noofrows = $adb->num_rows($list_result);
 
-	//Retreiving the start value from request
 	if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 		$start = vtlib_purify($_REQUEST['start']);
 	} else {
 		$start = 1;
 	}
 
-	//Retreive the Navigation array
 	$navigation_array = getNavigationValues($start, $noofrows, $list_max_entries_per_page);
 
 	if ($navigation_array['start'] == 1) {
@@ -113,14 +109,12 @@ function getTopQuotes($maxval, $calCnt) {
 	$focus = new Quotes();
 
 	$title=array('TopOpenQuotes.gif',$current_module_strings['LBL_MY_TOP_QUOTE'],'home_mytopquote');
-	//Retreive the List View Table Header
 	$controller = new ListViewController($adb, $current_user, $queryGenerator);
 	$controller->setHeaderSorting(false);
 	$header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, true);
 	$entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, true);
 
-	$values=array('ModuleName'=>'Quotes','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-	return $values;
+	return array('ModuleName'=>'Quotes', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
 }
 
 function getTopQuotesSearch($output) {

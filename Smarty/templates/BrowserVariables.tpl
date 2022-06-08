@@ -21,6 +21,8 @@ var userDecimalSeparator = "{$USER_DECIMAL_FORMAT}";
 var userNumberOfDecimals = "{$USER_NUMBER_DECIMALS}";
 var gVTuserLanguage = "{$USER_LANGUAGE}";
 var gServiceWorkermd5 = '{$SW_MD5}';
+var gcbpageisdirty = false;
+var gcbpagewhyisdirty = '';
 var goldcorebos_browsertabID = '{$corebos_browsertabID}';
 if (typeof(Storage) !== "undefined") {ldelim}
 	if (sessionStorage.corebos_browsertabID) {

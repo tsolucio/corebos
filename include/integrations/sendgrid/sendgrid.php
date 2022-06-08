@@ -16,7 +16,7 @@
  *  Version   : 1.0
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once 'include/integrations/sendgrid/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 include_once 'vtlib/Vtiger/Module.php';
 require_once 'include/events/include.inc';
 
@@ -30,6 +30,7 @@ class corebos_sendgrid {
 	private $srv_marketing = 'wxyz';
 	private $user_marketing = '123';
 	private $pass_marketing = 'abcde';
+	private $apiurl_transactional;
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'sendgrid_isactive';
@@ -41,6 +42,7 @@ class corebos_sendgrid {
 	const KEY_SRV_MARKETING = 'srvmarketing';
 	const KEY_USER_MARKETING = 'usermarketing';
 	const KEY_PASS_MARKETING = 'passwordmarketing';
+	const KEY_APIURL_TRANSACTIONAL = 'apiurl_transactional';
 
 	// Errors
 	public static $ERROR_NONE = 0;
@@ -63,6 +65,7 @@ class corebos_sendgrid {
 		$this->srv_marketing = coreBOS_Settings::getSetting(self::KEY_SRV_MARKETING, '');
 		$this->user_marketing = coreBOS_Settings::getSetting(self::KEY_USER_MARKETING, '');
 		$this->pass_marketing = coreBOS_Settings::getSetting(self::KEY_PASS_MARKETING, '');
+		$this->apiurl_transactional = coreBOS_Settings::getSetting(self::KEY_APIURL_TRANSACTIONAL, '');
 	}
 
 	public function saveSettings(
@@ -74,7 +77,8 @@ class corebos_sendgrid {
 		$usesg_marketing,
 		$srv_marketing,
 		$user_marketing,
-		$pass_marketing
+		$pass_marketing,
+		$apiurl_transactional
 	) {
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::KEY_USESG_TRANSACTIONAL, $usesg_transactional);
@@ -85,6 +89,7 @@ class corebos_sendgrid {
 		coreBOS_Settings::setSetting(self::KEY_SRV_MARKETING, $srv_marketing);
 		coreBOS_Settings::setSetting(self::KEY_USER_MARKETING, $user_marketing);
 		coreBOS_Settings::setSetting(self::KEY_PASS_MARKETING, $pass_marketing);
+		coreBOS_Settings::setSetting(self::KEY_APIURL_TRANSACTIONAL, $apiurl_transactional);
 		global $adb;
 		$em = new VTEventsManager($adb);
 		if (self::useEmailHook()) {
@@ -105,6 +110,7 @@ class corebos_sendgrid {
 			'srv_marketing' => coreBOS_Settings::getSetting(self::KEY_SRV_MARKETING, ''),
 			'user_marketing' => coreBOS_Settings::getSetting(self::KEY_USER_MARKETING, ''),
 			'pass_marketing' => coreBOS_Settings::getSetting(self::KEY_PASS_MARKETING, ''),
+			'apiurl_transactional' => coreBOS_Settings::getSetting(self::KEY_APIURL_TRANSACTIONAL, 'https://api.sendgrid.com/v3'),
 		);
 	}
 
@@ -133,8 +139,8 @@ class corebos_sendgrid {
 		$brScan = ''
 	) {
 		global $adb, $log;
-
-		if (GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', 0)) {
+		$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', '');
+		if (!empty($inBucketServeUrl)) {
 			require_once 'modules/Emails/mail.php';
 			require_once 'modules/Emails/Emails.php';
 			return send_mail('Email', $to_email, $from_name, $from_email, $subject, $contents, $cc, $bcc, $attachment, $emailid, $logo, $replyto, $qrScan, $brScan);
@@ -258,6 +264,25 @@ class corebos_sendgrid {
 	 */
 	public static function convertAttachmentArray($attachments) {
 		$atts = array();
+		if (isset($attachments['direct']) && $attachments['direct']) {
+			foreach ($attachments as $att) {
+				if (empty($att)) {
+					continue;
+				}
+				if (is_array($att)) {
+					foreach ($att as $file) {
+						$atts[] = array(
+							base64_encode(file_get_contents($file['name'])),
+							mime_content_type($file['name']),
+							isset($file['filename']) ? $file['filename'] : $file['name'],
+							'attachment',
+							''
+						);
+					}
+				}
+			}
+			return $atts;
+		}
 		foreach ($attachments as $att) {
 			if (empty($att)) {
 				continue;
@@ -322,6 +347,148 @@ class corebos_sendgrid {
 		} else {
 			return $parameter;
 		}
+	}
+
+	public function getEmailTemplates() {
+		require_once 'vtlib/Vtiger/Net/Client.php';
+		global $log;
+		if (self::useEmailHook()) {
+			$apiUrl = coreBOS_Settings::getSetting(self::KEY_APIURL_TRANSACTIONAL, '');
+			$apiKey = coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, '');
+			if (!empty($apiKey) && !empty($apiUrl)) {
+				$apiUrl .= '/templates?generations=dynamic';
+				$client = new Vtiger_Net_Client($apiUrl);
+				$client->setHeaders(array(
+					'Authorization' => 'Bearer '.$apiKey,
+					'Content-Type' => 'application/json'
+				));
+				try {
+					$response = $client->doGet();
+					if (strpos($response, "<h1>406 Not Acceptable</h1>") === false) {
+						coreBOS_Settings::setSetting('SG_DYNAMICTPLS', $response);
+					}
+				} catch (Exception $e) {
+					$response = coreBOS_Settings::getSetting('SG_DYNAMICTPLS', '');
+					$log->fatal('Exeption Encountered: '. $e->getMessage());
+				}
+				if (!empty($response)) {
+					return $response;
+				}
+				return '';
+			}
+		}
+	}
+
+	public function sendemailtemplate(
+		$templateId,
+		$recordId,
+		$moduleName,
+		$toEmail,
+		$subject,
+		$attachment,
+		$fromName,
+		$fromEmail = '',
+		$cc = '',
+		$bcc = '',
+		$replyto = ''
+	) {
+		require_once 'include/Webservices/Retrieve.php';
+		require_once 'data/CRMEntity.php';
+		global $current_user, $logbg;
+		if (empty($current_user)) {
+			$current_user = Users::getActiveAdminUser();
+		}
+		if (empty($fromEmail)) {
+			$fromEmail = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
+		}
+		$apiKey = coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, '');
+		if (self::useEmailHook() && !empty($apiKey)) {
+			try {
+				$dataArr = array();
+				$email = new \SendGrid\Mail\Mail();
+				$data = vtws_retrieve($recordId, $current_user);
+				if ($data) {
+					$dataArr[$moduleName] = $data;
+					$relatedMods = $this->checkForRelatedInfo($data);
+					for ($y=0; $y < count($relatedMods); $y++) {
+						$relcrmId = CRMEntity::getCRMIDfromUUID($relatedMods[$y]['cbuuid']);
+						$relmodName = $relatedMods[$y]['modulename'];
+						$relwsId = vtws_getEntityId($relmodName).'x'.$relcrmId;
+						$reldata = vtws_retrieve($relwsId, $current_user);
+						$dataArr[$relmodName] = $reldata;
+					}
+				}
+				if (!empty($attachment) && is_array($attachment)) {
+					$email->addAttachments(self::convertAttachmentArray($attachment));
+				}
+				if (!empty($cc) && !is_array($cc)) {
+					$cc = self::setSendGridCCAddress($cc);
+				}
+				if (!empty($bcc) && !is_array($bcc)) {
+					$cc = self::setSendGridCCAddress($bcc);
+				}
+				$alreadyinList = array();
+				if (is_array($cc)) {
+					foreach ($cc as $ccemail) {
+						if (!in_array($ccemail, $alreadyinList)) {
+							$email->addCc($ccemail);
+							$alreadyinList[] = $ccemail;
+						}
+					}
+				}
+				if (is_array($bcc)) {
+					foreach ($bcc as $bccemail) {
+						if (!in_array($bccemail, $alreadyinList)) {
+							$email->addBcc($bccemail);
+							$alreadyinList[] = $bccemail;
+						}
+					}
+				}
+				if (!empty($replyto)) {
+					$email->setReplyTo($replyto);
+				}
+				$email->setFrom($fromEmail, $fromName);
+				$email->setSubject($subject);
+				if (is_array($toEmail)) {
+					foreach ($toEmail as $email_to) {
+						$email->addTo(
+							$email_to,
+							$email_to,
+							$dataArr
+						);
+					}
+				} else {
+					$email->addTo(
+						$toEmail,
+						$toEmail,
+						$dataArr
+					);
+				}
+				$email->setTemplateId($templateId);
+				$sendgrid = new \SendGrid($apiKey);
+				$response = $sendgrid->send($email);
+				if ($response->statusCode() != 202) {
+					$logbg->debug("sendemailtemplate\n:". $response->statusCode());
+					return $response->statusCode();
+				}
+				return 1;
+			} catch (Exception $e) {
+				$logbg->debug('sendemailtemplate:: Exeption Encountered: '. $e->getMessage());
+				return 0;
+			}
+		}
+	}
+	public function checkForRelatedInfo($dataArr) {
+		$relmods = array();
+		foreach ($dataArr as $el) {
+			if (is_array($el) && !empty($el['module']) && !empty($el['cbuuid']) && !in_array($el['module'], $relmods)) {
+				$relmods[] = array(
+					'modulename' => $el['module'],
+					'cbuuid' => $el['cbuuid']
+				);
+			}
+		}
+		return $relmods;
 	}
 }
 ?>

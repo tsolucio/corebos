@@ -11,7 +11,6 @@ require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/UserInfoUtil.php';
 require_once 'data/CRMEntity.php';
-require_once 'modules/Calendar/Activity.php';
 require_once 'modules/Contacts/Contacts.php';
 require_once 'data/Tracker.php';
 require_once 'include/utils/CommonUtils.php';
@@ -23,8 +22,6 @@ include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 use \RobThree\Auth\TwoFactorAuth;
 
 class Users extends CRMEntity {
-	public $db;
-
 	// Stored fields
 	public $id;
 	public $authenticated = false;
@@ -117,6 +114,9 @@ class Users extends CRMEntity {
 
 	public $popup_fields = array('last_name');
 
+	// For Alphabetical search
+	public $def_basicsearch_col = 'user_name';
+
 	// This is the list of fields that are in the lists.
 	public $default_order_by = 'user_name';
 	public $default_sort_order = 'ASC';
@@ -124,20 +124,16 @@ class Users extends CRMEntity {
 	public $record_id;
 
 	public $DEFAULT_PASSWORD_CRYPT_TYPE;
-	//'BLOWFISH', /* before PHP5.3*/ MD5;
+	// BLOWFISH before PHP5.3 MD5
 
 	/**
 	 * @var UserPrivileges
 	 */
 	private $privileges;
 
-	/** constructor function for the main user class
-	 instantiates the Logger class and PearDatabase Class
-	 */
 	public function __construct() {
 		global $log;
 		$log->debug('> Users');
-		$this->db = PearDatabase::getInstance();
 		$this->DEFAULT_PASSWORD_CRYPT_TYPE = (version_compare(PHP_VERSION, '5.3.0') >= 0) ? 'PHP5.3MD5' : 'MD5';
 		$this->column_fields = getColumnFields('Users');
 		$this->column_fields['currency_name'] = '';
@@ -149,13 +145,13 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to get sort order
-	 * return string  $sorder    - sortorder string either 'ASC' or 'DESC'
+	 * @return string sort order string either 'ASC' or 'DESC'
 	 */
 	public function getSortOrder() {
-		global $log;
+		global $log, $adb;
 		$log->debug('> getSortOrder');
 		if (isset($_REQUEST['sorder'])) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
+			$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 		} else {
 			$sorder = (!empty($_SESSION['USERS_SORT_ORDER']) ? ($_SESSION['USERS_SORT_ORDER']) : ($this->default_sort_order));
 		}
@@ -165,10 +161,10 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to get order by
-	 * return string  $order_by    - fieldname(eg: 'subject')
+	 * @return string order by fieldname (eg: 'subject')
 	 */
 	public function getOrderBy() {
-		global $log;
+		global $log, $adb;
 		$log->debug('> getOrderBy');
 
 		$use_default_order_by = '';
@@ -177,7 +173,7 @@ class Users extends CRMEntity {
 		}
 
 		if (isset($_REQUEST['order_by'])) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+			$order_by = $adb->sql_escape_string($_REQUEST['order_by']);
 		} else {
 			$order_by = (!empty($_SESSION['USERS_ORDER_BY']) ? ($_SESSION['USERS_ORDER_BY']) : ($use_default_order_by));
 		}
@@ -186,8 +182,8 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to set the user preferences in the session
-	 * @param $name -- name:: Type varchar
-	 * @param $value -- value:: Type varchar
+	 * @param string name
+	 * @param string value
 	 */
 	public function setPreference($name, $value) {
 		if (!isset($this->user_preferences)) {
@@ -199,7 +195,7 @@ class Users extends CRMEntity {
 		}
 		if (!array_key_exists($name, $this->user_preferences) || $this->user_preferences[$name] != $value) {
 			global $log;
-			$log->debug('Saving To Preferences:' . $name . '=' . print_r($value, true));
+			$log->debug('Saving To Preferences', [$name, $value]);
 			$this->user_preferences[$name] = $value;
 			$this->savePreferecesToDB();
 		}
@@ -210,11 +206,9 @@ class Users extends CRMEntity {
 	 *
 	 */
 	public function savePreferecesToDB() {
-		global $log;
+		global $adb;
 		$data = base64_encode(serialize($this->user_preferences));
-		$query = "UPDATE $this->table_name SET user_preferences=? where id=?";
-		$result = $this->db->pquery($query, array($data, $this->id));
-		$log->debug('SAVING: PREFERENCES SIZE ' . strlen($data) . 'ROWS AFFECTED WHILE UPDATING USER PREFERENCES:' . $this->db->getAffectedRowCount($result));
+		$adb->pquery("UPDATE $this->table_name SET user_preferences=? where id=?", array($data, $this->id));
 		coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
 	}
 
@@ -233,10 +227,10 @@ class Users extends CRMEntity {
 	}
 
 	/**
-	 * @return string encrypted password for storage in DB and comparison against DB password.
-	 * @param string $user_name - Must be non null and at least 2 characters
-	 * @param string $user_password - Must be non null and at least 1 character.
-	 * @desc Take an unencrypted username and password and return the encrypted password
+	 * Take an unencrypted username and password and return the encrypted password
+	 * @param string user password - Must be non null and at least 1 character
+	 * @param string encryption type
+	 * @return string encrypted password for storage in DB and comparison against DB password
 	 */
 	public function encrypt_password($user_password, $crypt_type = '') {
 		// encrypt the password.
@@ -247,15 +241,13 @@ class Users extends CRMEntity {
 			$crypt_type = $this->get_user_crypt_type();
 		}
 
-		// For more details on salt format look at: http://in.php.net/crypt
 		if ($crypt_type == 'MD5') {
 			$salt = '$1$' . $salt . '$';
 		} elseif ($crypt_type == 'BLOWFISH') {
 			$salt = '$2$' . $salt . '$';
 		} elseif ($crypt_type == 'PHP5.3MD5') {
-			//only change salt for php 5.3 or higher version for backward
-			//compactibility.
-			//crypt API is lot stricter in taking the value for salt.
+			//only change salt for php 5.3 or higher version for backward compatibility
+			//crypt API is lot stricter in taking the value for salt
 			$salt = '$1$' . str_pad($salt, 9, '0');
 		}
 		return crypt($user_password, $salt);
@@ -279,14 +271,14 @@ class Users extends CRMEntity {
 	 * Checks the User_AuthenticationType global variavle value for login type and forks off to the proper module
 	 *
 	 * @param string $user_password - The password of the user to authenticate
-	 * @return true if the user is authenticated, false otherwise
+	 * @return boolean true if the user is authenticated, false otherwise
 	 */
 	public function doLogin($user_password) {
-		global $log;
+		global $log, $adb;
 		$usr_name = $this->column_fields['user_name'];
-		$result = $this->db->pquery('select id from vtiger_users where user_name=?', array($usr_name));
-		if ($result && $this->db->num_rows($result)==1) {
-			$row = $this->db->fetchByAssoc($result);
+		$result = $adb->pquery('select id from vtiger_users where user_name=?', array($usr_name));
+		if ($result && $adb->num_rows($result)==1) {
+			$row = $adb->fetchByAssoc($result);
 			$userid = $row['id'];
 		} else {
 			return false;
@@ -305,48 +297,34 @@ class Users extends CRMEntity {
 			case 'LDAP':
 				$log->debug('Using LDAP authentication');
 				require_once 'modules/Users/authTypes/LDAP.php';
-				$result = ldapAuthenticate($usr_name, $user_password);
-				if ($result == null) {
-					return false;
-				} else {
-					return true;
-				}
+				return (ldapAuthenticate($usr_name, $user_password) != null);
 				break;
 
 			case 'AD':
 				$log->debug('Using Active Directory authentication');
 				require_once 'modules/Users/authTypes/adLDAP.php';
 				$adldap = new adLDAP();
-				if ($adldap->authenticate($usr_name, $user_password)) {
-					return true;
-				} else {
-					return false;
-				}
+				return $adldap->authenticate($usr_name, $user_password);
 				break;
 
 			default:
 				$log->debug('Using integrated/SQL authentication');
 				$query = "SELECT crypt_type FROM $this->table_name WHERE BINARY user_name=?";
-				$result = $this->db->requirePsSingleResult($query, array($usr_name), false);
+				$result = $adb->requirePsSingleResult($query, array($usr_name), false);
 				if (empty($result)) {
 					return false;
 				}
-				$crypt_type = $this->db->query_result($result, 0, 'crypt_type');
+				$crypt_type = $adb->query_result($result, 0, 'crypt_type');
 				$encrypted_password = $this->encrypt_password($user_password, $crypt_type);
 				$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
 				$query = "SELECT * from $this->table_name where user_name=? AND user_password=?";
 				$params = array($usr_name, $encrypted_password);
-				$cnuser=$this->db->getColumnNames($this->table_name);
+				$cnuser=$adb->getColumnNames($this->table_name);
 				if (in_array('failed_login_attempts', $cnuser)) {
 					$query.= ' AND COALESCE(failed_login_attempts,0)<?';
 					$params[] = $maxFailedLoginAttempts;
 				}
-				$result = $this->db->requirePsSingleResult($query, $params, false);
-				if (empty($result)) {
-					return false;
-				} else {
-					return true;
-				}
+				return $adb->requirePsSingleResult($query, $params, false);
 				break;
 		}
 		return false;
@@ -388,10 +366,10 @@ class Users extends CRMEntity {
 
 	/**
 	 * Load a user based on the user_name in $this
-	 * @return -- this if load was successul and null if load failed.
+	 * @return mixed Users if load was successul and null if load failed
 	 */
 	public function load_user($user_password) {
-		global $log;
+		global $log, $adb;
 		$usr_name = $this->column_fields['user_name'];
 		if (!empty($_POST['twofauserauth'])) {
 			$this->authenticated = false;
@@ -399,13 +377,14 @@ class Users extends CRMEntity {
 			// csrf check
 			// Get the fields for the user
 			$query = "SELECT * from $this->table_name where user_name='$usr_name'";
-			$result = $this->db->requireSingleResult($query, false);
-			$row = $this->db->fetchByAssoc($result);
+			$result = $adb->requireSingleResult($query, false);
+			$row = $adb->fetchByAssoc($result);
 			if ($row['id']!=$_POST['twofauserauth']) {
 				return null;
 			}
 			// validate 2fa
-			$tfa = new TwoFactorAuth('coreBOSWebApp');
+			$coreBOSWebApp = GlobalVariable::getVariable('Application_UI_Name', 'coreBOS').'-'.getUserName($row['id']);
+			$tfa = new TwoFactorAuth($coreBOSWebApp);
 			$twofasecret = coreBOS_Settings::getSetting('coreBOS_2FA_Secret_'.$row['id'], false);
 			if ($twofasecret === false || $tfa->verifyCode($twofasecret, $_POST['user_2facode']) === false) {
 				return null;
@@ -441,9 +420,9 @@ class Users extends CRMEntity {
 
 		// Get the fields for the user
 		$query = "SELECT * from $this->table_name where user_name='$usr_name'";
-		$result = $this->db->requireSingleResult($query, false);
+		$result = $adb->requireSingleResult($query, false);
 
-		$row = $this->db->fetchByAssoc($result);
+		$row = $adb->fetchByAssoc($result);
 		$this->column_fields = $row;
 		$this->id = $row['id'];
 
@@ -509,11 +488,11 @@ class Users extends CRMEntity {
 	 * Get crypt type to use for password for the user.
 	 */
 	public function get_user_crypt_type() {
+		global $adb;
 		$crypt_res = null;
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 
 		// For backward compatability, we need to make sure to handle this case.
-		global $adb;
 		$table_cols = $adb->getColumnNames('vtiger_users');
 		if (!in_array('crypt_type', $table_cols)) {
 			return $crypt_type;
@@ -522,48 +501,55 @@ class Users extends CRMEntity {
 		if (isset($this->id)) {
 			// Get the type of crypt used on password before actual comparision
 			$qcrypt_sql = "SELECT crypt_type from $this->table_name where id=?";
-			$crypt_res = $this->db->pquery($qcrypt_sql, array($this->id), true);
+			$crypt_res = $adb->pquery($qcrypt_sql, array($this->id), true);
 		} elseif (isset($this->column_fields['user_name'])) {
 			$qcrypt_sql = "SELECT crypt_type from $this->table_name where user_name=?";
-			$crypt_res = $this->db->pquery($qcrypt_sql, array($this->column_fields['user_name']));
+			$crypt_res = $adb->pquery($qcrypt_sql, array($this->column_fields['user_name']));
 		} else {
 			$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		}
 
-		if ($crypt_res && $this->db->num_rows($crypt_res)) {
-			$crypt_row = $this->db->fetchByAssoc($crypt_res);
+		if ($crypt_res && $adb->num_rows($crypt_res)) {
+			$crypt_row = $adb->fetchByAssoc($crypt_res);
 			$crypt_type = $crypt_row['crypt_type'];
 		}
 		return $crypt_type;
 	}
 
 	/**
-	 * @param string $user name - Must be non null and at least 1 character.
-	 * @param string $user_password - Must be non null and at least 1 character.
-	 * @param string $new_password - Must be non null and at least 1 character.
-	 * @return boolean - If passwords pass verification and query succeeds, return true, else return false.
-	 * @desc Verify that the current password is correct and write the new password to the DB.
+	 * Verify that the current password is correct and write the new password to the database
+	 * @param string current password
+	 * @param string new password
+	 * @return boolean If passwords pass verification and query succeeds, return true, else return false
 	 */
-	public function change_password($user_password, $new_password, $dieOnError = true) {
-		global $mod_strings, $current_user, $log;
+	public function change_password($user_password, $new_password) {
+		global $current_user, $log, $adb;
 		$usr_name = $this->column_fields['user_name'];
 		$log->debug("Starting password change for $usr_name");
 
 		if (!isset($new_password) || $new_password == '') {
-			$this->error_string = $mod_strings['ERR_PASSWORD_CHANGE_FAILED_1'] . $usr_name . $mod_strings['ERR_PASSWORD_CHANGE_FAILED_2'];
-			return false;
-		}
-
-		if (!$this->verifyPassword($user_password) && !is_admin($current_user)) {
-			$log->warn("Incorrect old password for $usr_name");
-			$this->error_string = $mod_strings['ERR_PASSWORD_INCORRECT_OLD'];
+			$this->error_string = getTranslatedString('ERR_PASSWORD_CHANGE_FAILED_1', 'Users').$usr_name.getTranslatedString('ERR_PASSWORD_CHANGE_FAILED_2', 'Users');
 			return false;
 		}
 
 		//set new password
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		$encrypted_new_password = $this->encrypt_password($new_password, $crypt_type);
-
+		$cnpass=$adb->getColumnNames('password_history');
+		if (!empty($cnpass)) {
+			$passhistory = $adb->pquery(
+				'select 1 from password_history where crmid=? and crmtype=? and pass=?',
+				array($this->id, 'U', $encrypted_new_password)
+			);
+			if (!$passhistory || $adb->num_rows($passhistory) > 0) {
+				$this->error_string = getTranslatedString('ERR_PASSWORD_REPEATED', 'Users');
+				return false;
+			}
+			$adb->pquery(
+				'insert into password_history values (?,?,?)',
+				array($this->id, 'U', $encrypted_new_password)
+			);
+		}
 		if (GlobalVariable::getVariable('Application_SendUserPasswordByEmail', 0, 'Users')) {
 			require_once 'modules/Emails/Emails.php';
 			$context = array(
@@ -573,7 +559,7 @@ class Users extends CRMEntity {
 			Emails::sendEmailTemplate('Password Change Template', $context, 'Users', $this->column_fields['email1'], $this->id);
 		}
 		$sql = "UPDATE $this->table_name SET failed_login_attempts=0 where id=?";
-		$this->db->pquery($sql, array($this->id));
+		$adb->pquery($sql, array($this->id));
 
 		// Set change password at next login to 0 if resetting your own password
 		if (!empty($current_user) && $current_user->id == $this->id) {
@@ -581,17 +567,17 @@ class Users extends CRMEntity {
 		} else {
 			$change_password_next_login = 1;
 		}
-		$cnuser=$this->db->getColumnNames($this->table_name);
+		$cnuser=$adb->getColumnNames($this->table_name);
 		if (!in_array('change_password', $cnuser)) {
-			$this->db->query('ALTER TABLE `vtiger_users` ADD `change_password` boolean NOT NULL DEFAULT 0');
+			$adb->query('ALTER TABLE `vtiger_users` ADD `change_password` boolean NOT NULL DEFAULT 0');
 		}
 		if (!in_array('last_password_reset_date', $cnuser)) {
-			$this->db->query('ALTER TABLE `vtiger_users` ADD `last_password_reset_date` date DEFAULT NULL');
+			$adb->query('ALTER TABLE `vtiger_users` ADD `last_password_reset_date` date DEFAULT NULL');
 		}
 		$query = "UPDATE $this->table_name
 			SET user_password=?, confirm_password=?, crypt_type=?, change_password=?, last_password_reset_date=now(), failed_login_attempts=0
 			where id=?";
-		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $crypt_type, $change_password_next_login, $this->id));
+		$adb->pquery($query, array($encrypted_new_password, $encrypted_new_password, $crypt_type, $change_password_next_login, $this->id));
 		$this->createAccessKey();
 		require_once 'modules/Users/UserPrivilegesWriter.php';
 		UserPrivilegesWriter::setUserPrivileges($this->id);
@@ -599,15 +585,16 @@ class Users extends CRMEntity {
 	}
 
 	public function mustChangePassword() {
+		global $adb;
 		if (empty($this->id)) {
 			return false;
 		}
-		$cnuser=$this->db->getColumnNames('vtiger_users');
+		$cnuser=$adb->getColumnNames('vtiger_users');
 		if (!in_array('change_password', $cnuser)) {
-			$this->db->query('ALTER TABLE `vtiger_users` ADD `change_password` boolean NOT NULL DEFAULT 0');
+			$adb->query('ALTER TABLE `vtiger_users` ADD `change_password` boolean NOT NULL DEFAULT 0');
 		}
-		$cprs = $this->db->pquery('select change_password from vtiger_users where id=?', array($this->id));
-		return $this->db->query_result($cprs, 0, 0);
+		$cprs = $adb->pquery('select change_password from vtiger_users where id=?', array($this->id));
+		return $adb->query_result($cprs, 0, 0);
 	}
 
 	public function de_cryption($data) {
@@ -630,11 +617,11 @@ class Users extends CRMEntity {
 	}
 
 	public function verifyPassword($password) {
-		$query = "SELECT user_name,user_password,crypt_type FROM {$this->table_name} WHERE id=?";
-		$result = $this->db->pquery($query, array($this->id));
-		$row = $this->db->fetchByAssoc($result);
+		global $adb;
+		$result = $adb->pquery("SELECT user_name,user_password,crypt_type FROM {$this->table_name} WHERE id=?", array($this->id));
+		$row = $adb->fetchByAssoc($result);
 		$encryptedPassword = $this->encrypt_password($password, $row['crypt_type']);
-		return !($encryptedPassword != $row['user_password']);
+		return $encryptedPassword == $row['user_password'];
 	}
 
 	public function is_authenticated() {
@@ -651,8 +638,8 @@ class Users extends CRMEntity {
 	}
 
 	/** gives the user id for the specified user name
-	 * @param $user_name -- user name:: Type varchar
-	 * @returns user id
+	 * @param string user name
+	 * @return integer user id
 	 */
 	public function retrieve_user_id($user_name) {
 		global $adb;
@@ -668,7 +655,7 @@ class Users extends CRMEntity {
 
 	/** check if given number is a valid and active user ID
 	 * @param integer $userid
-	 * @returns boolean
+	 * @return boolean
 	 */
 	public static function is_ActiveUserID($userid) {
 		global $adb;
@@ -681,19 +668,19 @@ class Users extends CRMEntity {
 	}
 
 	/**
-	 * @return -- returns a list of all users in the system.
+	 * @return boolean user name exists already or not
 	 */
 	public function verify_data() {
-		global $mod_strings, $log;
+		global $mod_strings, $log, $adb;
 		$usr_name = $this->column_fields['user_name'];
 
 		$query = 'SELECT user_name from vtiger_users where user_name=? AND id<>? AND deleted=0';
-		$result = $this->db->pquery($query, array($usr_name, $this->id), true, 'Error selecting possible duplicate users: ');
-		$dup_users = $this->db->fetchByAssoc($result);
+		$result = $adb->pquery($query, array($usr_name, $this->id), true, 'Error selecting possible duplicate users: ');
+		$dup_users = $adb->fetchByAssoc($result);
 
 		$query = "SELECT user_name from vtiger_users where is_admin = 'on' AND deleted=0";
-		$result = $this->db->pquery($query, array(), true, 'Error selecting possible duplicate vtiger_users: ');
-		$last_admin = $this->db->fetchByAssoc($result);
+		$result = $adb->pquery($query, array(), true, 'Error selecting possible duplicate users: ');
+		$last_admin = $adb->fetchByAssoc($result);
 
 		$log->debug('last admin length: ' . count($last_admin));
 		$log->debug($last_admin['user_name'] . ' == ' . $usr_name);
@@ -715,9 +702,8 @@ class Users extends CRMEntity {
 
 	/** Function to return the column name array */
 	public function getColumnNames_User() {
-		$mergeflds = array('FIRSTNAME', 'LASTNAME', 'USERNAME', 'SECONDARYEMAIL', 'TITLE', 'OFFICEPHONE', 'DEPARTMENT', 'MOBILE', 'OTHERPHONE', 'FAX', 'EMAIL',
+		return array('FIRSTNAME', 'LASTNAME', 'USERNAME', 'SECONDARYEMAIL', 'TITLE', 'OFFICEPHONE', 'DEPARTMENT', 'MOBILE', 'OTHERPHONE', 'FAX', 'EMAIL',
 			'HOMEPHONE', 'OTHEREMAIL', 'PRIMARYADDRESS', 'CITY', 'STATE', 'POSTALCODE', 'COUNTRY');
-		return $mergeflds;
 	}
 
 	public function fill_in_additional_list_fields() {
@@ -725,11 +711,11 @@ class Users extends CRMEntity {
 	}
 
 	public function fill_in_additional_detail_fields() {
-		global $log;
+		global $log, $adb;
 		$query = 'SELECT u1.first_name, u1.last_name from vtiger_users u1, vtiger_users u2 where u1.id=u2.reports_to_id AND u2.id=? and u1.deleted=0';
-		$result = $this->db->pquery($query, array($this->id), true, 'Error filling in additional detail vtiger_fields');
+		$result = $adb->pquery($query, array($this->id), true, 'Error filling in additional detail vtiger_fields');
 
-		$row = $this->db->fetchByAssoc($result);
+		$row = $adb->fetchByAssoc($result);
 		$log->debug('< fill_in_additional_detail_fields '.$row);
 
 		if ($row != null) {
@@ -740,8 +726,8 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to get the current user information from the user_privileges file
-	 * @param $userid -- user id:: Type integer
-	 * @returns user info in $this->column_fields array:: Type array
+	 * @param integer user id
+	 * @return object user object with info in $this->column_fields
 	 */
 	public function retrieveCurrentUserInfoFromFile($userid) {
 		global $adb, $site_URL;
@@ -780,9 +766,10 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to save the user information into the database
-	 * @param $module -- module name:: Type varchar
+	 * @param string module name
 	 */
 	public function saveentity($module, $fileid = '') {
+		global $adb;
 		$insertion_mode = $this->mode;
 		if (empty($this->column_fields['time_zone'])) {
 			$dbDefaultTimeZone = DateTimeField::getDBTimeZone();
@@ -796,8 +783,8 @@ class Users extends CRMEntity {
 			$this->column_fields['date_format'] = 'yyyy-mm-dd';
 		}
 
-		$this->db->println("TRANS saveentity starts $module");
-		$this->db->startTransaction();
+		$adb->println("TRANS saveentity starts $module");
+		$adb->startTransaction();
 		foreach ($this->tab_name as $table_name) {
 			if ($table_name == 'vtiger_attachments') {
 				$this->insertIntoAttachment($this->id, $module, $fileid);
@@ -812,31 +799,31 @@ class Users extends CRMEntity {
 		if ($insertion_mode != 'edit') {
 			$this->createAccessKey();
 		}
-		$this->db->completeTransaction();
-		$this->db->println('TRANS saveentity ends');
+		$adb->completeTransaction();
+		$adb->println('TRANS saveentity ends');
 	}
 
 	public function createAccessKey() {
-		global $log;
+		global $log, $adb;
 		$log->debug('>< createAccessKey');
-		$this->db->pquery('update vtiger_users set accesskey=? where id=?', array(vtws_generateRandomAccessKey(16), $this->id));
+		$adb->pquery('update vtiger_users set accesskey=? where id=?', array(vtws_generateRandomAccessKey(16), $this->id));
 	}
 
 	/** Function to insert values in the specifed table for the specified module
-	 * @param $table_name -- table name:: Type varchar
-	 * @param $module -- module:: Type varchar
+	 * @param string table name
+	 * @param string module
 	 */
 	public function insertIntoEntityTable($table_name, $module, $fileid = '') {
-		global $log, $app_strings;
+		global $log, $app_strings, $adb;
 		$log->debug('> insertIntoEntityTable '.$table_name.','.$module);
 		global $adb, $current_user;
 		$insertion_mode = $this->mode;
 		//Checkin whether an entry is already is present in the vtiger_table to update
 		if ($insertion_mode == 'edit') {
 			$check_query = 'select * from ' . $table_name . ' where ' . $this->tab_name_index[$table_name] . '=?';
-			$check_result = $this->db->pquery($check_query, array($this->id));
+			$check_result = $adb->pquery($check_query, array($this->id));
 
-			$num_rows = $this->db->num_rows($check_result);
+			$num_rows = $adb->num_rows($check_result);
 
 			if ($num_rows <= 0) {
 				$insertion_mode = '';
@@ -855,7 +842,7 @@ class Users extends CRMEntity {
 		} else {
 			$column = $this->tab_name_index[$table_name];
 			if ($column == 'id' && $table_name == 'vtiger_users') {
-				$currentuser_id = $this->db->getUniqueID('vtiger_users');
+				$currentuser_id = $adb->getUniqueID('vtiger_users');
 				$this->id = $currentuser_id;
 			}
 			$qparams = array($this->id);
@@ -866,12 +853,12 @@ class Users extends CRMEntity {
 			$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		}
 
-		$result = $this->db->pquery($sql, $params);
-		$noofrows = $this->db->num_rows($result);
+		$result = $adb->pquery($sql, $params);
+		$noofrows = $adb->num_rows($result);
 		for ($i = 0; $i < $noofrows; $i++) {
-			$fieldname = $this->db->query_result($result, $i, 'fieldname');
-			$columname = $this->db->query_result($result, $i, 'columnname');
-			$uitype = $this->db->query_result($result, $i, 'uitype');
+			$fieldname = $adb->query_result($result, $i, 'fieldname');
+			$columname = $adb->query_result($result, $i, 'columnname');
+			$uitype = $adb->query_result($result, $i, 'uitype');
 			$typeofdata = $adb->query_result($result, $i, 'typeofdata');
 
 			$typeofdata_array = explode('~', $typeofdata);
@@ -902,7 +889,7 @@ class Users extends CRMEntity {
 					}
 				} elseif ($uitype == 33) {
 					if (is_array($this->column_fields[$fieldname])) {
-						$field_list = implode(' |##| ', $this->column_fields[$fieldname]);
+						$field_list = implode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $this->column_fields[$fieldname]);
 					} else {
 						$field_list = $this->column_fields[$fieldname];
 					}
@@ -946,13 +933,11 @@ class Users extends CRMEntity {
 			}
 			if ($fldvalue == '') {
 				$fldvalue = $this->get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype);
-				//$fldvalue =null;
 			}
-			if ($columname == 'is_admin' && !is_admin($current_user)) {// only admin users can change admin field
-				if ($insertion_mode == 'edit') {// we force the same value that is currently set in database
-					$rs = $adb->pquery('select is_admin from vtiger_users where id=?', array($this->id));
-					$fldvalue = $adb->query_result($rs, 0, 0);
-				}
+			if ($columname == 'is_admin' && !is_admin($current_user) && $insertion_mode == 'edit') {
+				// only admin users can change admin field > we force the same value that is currently set in database
+				$rs = $adb->pquery('select is_admin from vtiger_users where id=?', array($this->id));
+				$fldvalue = $adb->query_result($rs, 0, 0);
 			}
 			if ($insertion_mode == 'edit') {
 				if ($i == 0) {
@@ -968,11 +953,11 @@ class Users extends CRMEntity {
 		}
 
 		if ($insertion_mode == 'edit') {
-			//Check done by Don. If update is empty the the query fails
+			// If update is empty the the query fails
 			if (trim($update) != '') {
 				$sql1 = "update $table_name set $update where " . $this->tab_name_index[$table_name] . '=?';
 				$update_params[] = $this->id;
-				$this->db->pquery($sql1, $update_params);
+				$adb->pquery($sql1, $update_params);
 			}
 		} else {
 			// Set the crypt_type being used, to override the DB default constraint as it is not in vtiger_field
@@ -985,13 +970,13 @@ class Users extends CRMEntity {
 			} else {
 				$sql1 = "insert into $table_name ($column) values(" . generateQuestionMarks($qparams) . ')';
 			}
-			$this->db->pquery($sql1, $qparams);
+			$adb->pquery($sql1, $qparams);
 		}
 	}
 
 	/** Function to insert values into the attachment table
-	 * @param $id -- entity id:: Type integer
-	 * @param $module -- module:: Type varchar
+	 * @param integer entity id
+	 * @param string module
 	 */
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log;
@@ -1007,9 +992,9 @@ class Users extends CRMEntity {
 		$log->debug('< insertIntoAttachment');
 	}
 
-	/** Function to retreive the user info of the specifed user id The user info will be available in $this->column_fields array
-	 * @param $record -- record id:: Type integer
-	 * @param $module -- module:: Type varchar
+	/** Function to retrieve the user information of the given user ID which will be loaded into the $this->column_fields array
+	 * @param integer record ID
+	 * @param string module
 	 */
 	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false, $throwexception = false) {
 		global $adb, $log;
@@ -1057,8 +1042,7 @@ class Users extends CRMEntity {
 		$this->column_fields['currency_symbol'] = $this->currency_symbol = $ui_curr;
 		$this->column_fields['conv_rate'] = $this->conv_rate = $adb->query_result($currency_result, 0, 'conversion_rate');
 
-		// TODO - This needs to be cleaned up once default values for fields are picked up in a cleaner way.
-		// This is just a quick fix to ensure things doesn't start breaking when the user currency configuration is missing
+		// This is just a quick fix to ensure things don't start breaking when the user currency configuration is missing
 		if ($this->column_fields['currency_grouping_pattern'] == '' && $this->column_fields['currency_symbol_placement'] == '') {
 			$this->column_fields['currency_grouping_pattern'] = $this->currency_grouping_pattern = '123,456,789';
 			$this->column_fields['currency_decimal_separator'] = $this->currency_decimal_separator = '.';
@@ -1072,12 +1056,12 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to upload the file to the server and add the file details in the attachments table
-	 * @param $id -- user id:: Type varchar
-	 * @param $module -- module name:: Type varchar
-	 * @param $file_details -- file details array:: Type array
+	 * @param integer user id
+	 * @param string module name
+	 * @param array file details
 	 */
 	public function uploadAndSaveFile($id, $module, $file_details, $attachmentname = '', $direct_import = false, $forfield = '') {
-		global $log, $current_user, $upload_badext;
+		global $log, $current_user, $upload_badext, $adb;
 
 		$date_var = date('Y-m-d H:i:s');
 
@@ -1093,15 +1077,15 @@ class Users extends CRMEntity {
 		$filename = ltrim(basename(' ' . $binFile));
 		//allowed filename like UTF-8 characters
 		$filetype = $file_details['type'];
-		$filesize = $file_details['size'];
+		// file size is in $file_details['size']
 		$filetmp_name = $file_details['tmp_name'];
 
-		if (validateImageFile($file_details) == 'true' && validateImageContents($filetmp_name) == false) {
+		if (validateImageFile($file_details) == 'true' && !validateImageContents($filetmp_name)) {
 			$log->debug('Skip the save attachment process.');
 			return;
 		}
 
-		$current_id = $this->db->getUniqueID('vtiger_crmentity');
+		$current_id = $adb->getUniqueID('vtiger_crmentity');
 
 		//get the file path inwhich folder we want to upload the file
 		$upload_file_path = decideFilePath();
@@ -1110,29 +1094,28 @@ class Users extends CRMEntity {
 
 		if ($upload_status) {
 			$sql1 = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?,?,?,?,?,?,?)';
-			$params1 = array($current_id, $current_user->id, $ownerid, $module . ' Attachment', $this->column_fields['description'],
-				$this->db->formatString('vtiger_crmentity', 'createdtime', $date_var), $this->db->formatDate($date_var, true));
-			$this->db->pquery($sql1, $params1);
+			$params1 = array($current_id, $current_user->id, $ownerid, $module.Field_Metadata::ATTACHMENT_ENTITY, $this->column_fields['description'],
+				$adb->formatString('vtiger_crmentity', 'createdtime', $date_var), $adb->formatDate($date_var, true));
+			$adb->pquery($sql1, $params1);
 
 			$sql2 = 'insert into vtiger_attachments(attachmentsid, name, description, type, path) values(?,?,?,?,?)';
 			$params2 = array($current_id, $filename, $this->column_fields['description'], $filetype, $upload_file_path);
-			$this->db->pquery($sql2, $params2);
+			$adb->pquery($sql2, $params2);
 
 			if ($id != '') {
 				$delquery = 'delete from vtiger_salesmanattachmentsrel where smid = ?';
-				$this->db->pquery($delquery, array($id));
+				$adb->pquery($delquery, array($id));
 			}
 
-			$this->db->pquery('insert into vtiger_salesmanattachmentsrel values(?,?)', array($id, $current_id));
+			$adb->pquery('insert into vtiger_salesmanattachmentsrel values(?,?)', array($id, $current_id));
 
 			//we should update the imagename in the users table
-			$this->db->pquery('update vtiger_users set imagename=? where id=?', array($filename, $id));
+			$adb->pquery('update vtiger_users set imagename=? where id=?', array($filename, $id));
 		}
-		return;
 	}
 
 	/** Function to save the user information into the database
-	 * @param $module -- module name:: Type varchar
+	 * @param string module name
 	 */
 	public function save($module_name, $fileid = '') {
 		global $adb, $current_user, $cbodUserLog;
@@ -1155,7 +1138,6 @@ class Users extends CRMEntity {
 		$query_prev_interval = $adb->pquery('SELECT reminder_interval from vtiger_users where id=?', array($this->id));
 		$prev_reminder_interval = $adb->query_result($query_prev_interval, 0, 'reminder_interval');
 
-		//$focus->imagename = $image_upload_array['imagename'];
 		$this->saveHomeStuffOrder($this->id);
 		SaveTagCloudView($this->id);
 
@@ -1173,6 +1155,17 @@ class Users extends CRMEntity {
 		if ($this->column_fields['status']=='Inactive') {
 			coreBOS_Settings::delSetting('cbodUserConnection'.$this->id);
 		}
+		$mapname = 'Users_EntityNameMap';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$mapname, cbMap::getMapIdByName($mapname));
+		if ($cbMapid) {
+			$cbMap = new cbMap();
+			$cbMap->id = $cbMapid;
+			$cbMap->retrieve_entity_info($cbMapid, 'cbMap');
+			$ename = $cbMap->ConditionExpression(array_merge($this->column_fields, array('record_id'=>0,'module'=>'Users')));
+		} else {
+			$ename = $this->column_fields['first_name'].' '.$this->column_fields['last_name'];
+		}
+		$adb->pquery('update vtiger_users set ename=? where id=?', array($ename, $this->id));
 		// ODController
 		if ($cbodUserLog) {
 			if ($this->mode == 'create') { // creating user, we send to ODController
@@ -1203,8 +1196,8 @@ class Users extends CRMEntity {
 
 	/**
 	 * gives the order in which the modules have to be displayed in the home page for the specified user id
-	 * @param $id -- user id:: Type integer
-	 * @returns the customized home page order in $return_array
+	 * @param integer user id
+	 * @return array the customized home page order
 	 */
 	public function getHomeStuffOrder($id) {
 		global $adb;
@@ -1286,73 +1279,60 @@ class Users extends CRMEntity {
 		$s1 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('ALVT', $inVal);
 		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s1, 1, 'Default', $uid, $visibility, 'Top Accounts'));
+		$adb->pquery($sql, array($s1, 1, 'Default', $uid, $visibility, 'Top Accounts'));
 
 		$s2 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('HDB', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s2, 2, 'Default', $uid, $visibility, 'Home Page Dashboard'));
+		$adb->pquery($sql, array($s2, 2, 'Default', $uid, $visibility, 'Home Page Dashboard'));
 
 		$s3 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('PLVT', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s3, 3, 'Default', $uid, $visibility, 'Top Potentials'));
+		$adb->pquery($sql, array($s3, 3, 'Default', $uid, $visibility, 'Top Potentials'));
 
 		$s4 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('QLTQ', $inVal);
 		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s4, 4, 'Default', $uid, $visibility, 'Top Quotes'));
+		$adb->pquery($sql, array($s4, 4, 'Default', $uid, $visibility, 'Top Quotes'));
 
 		$s5 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('CVLVT', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s5, 5, 'Default', $uid, $visibility, 'Key Metrics'));
+		$adb->pquery($sql, array($s5, 5, 'Default', $uid, $visibility, 'Key Metrics'));
 
 		$s6 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('HLT', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s6, 6, 'Default', $uid, $visibility, 'Top Trouble Tickets'));
+		$adb->pquery($sql, array($s6, 6, 'Default', $uid, $visibility, 'Top Trouble Tickets'));
 
 		$s7 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('UA', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s7, 7, 'Default', $uid, $visibility, 'Upcoming Activities'));
+		$adb->pquery($sql, array($s7, 7, 'Default', $uid, $visibility, 'Upcoming Activities'));
 
 		$s8 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('GRT', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s8, 8, 'Default', $uid, $visibility, 'My Group Allocation'));
+		$adb->pquery($sql, array($s8, 8, 'Default', $uid, $visibility, 'My Group Allocation'));
 
 		$s9 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('OLTSO', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s9, 9, 'Default', $uid, $visibility, 'Top Sales Orders'));
+		$adb->pquery($sql, array($s9, 9, 'Default', $uid, $visibility, 'Top Sales Orders'));
 
 		$s10 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('ILTI', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s10, 10, 'Default', $uid, $visibility, 'Top Invoices'));
+		$adb->pquery($sql, array($s10, 10, 'Default', $uid, $visibility, 'Top Invoices'));
 
 		$s11 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('MNL', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s11, 11, 'Default', $uid, $visibility, 'My New Leads'));
+		$adb->pquery($sql, array($s11, 11, 'Default', $uid, $visibility, 'My New Leads'));
 
 		$s12 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('OLTPO', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s12, 12, 'Default', $uid, $visibility, 'Top Purchase Orders'));
+		$adb->pquery($sql, array($s12, 12, 'Default', $uid, $visibility, 'Top Purchase Orders'));
 
 		$s13 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('PA', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s13, 13, 'Default', $uid, $visibility, 'Pending Activities'));
-		;
+		$adb->pquery($sql, array($s13, 13, 'Default', $uid, $visibility, 'Pending Activities'));
 
 		$s14 = $adb->getUniqueID('vtiger_homestuff');
 		$visibility = $this->getDefaultHomeModuleVisibility('LTFAQ', $inVal);
-		$sql = 'insert into vtiger_homestuff values(?,?,?,?,?,?)';
-		$res = $adb->pquery($sql, array($s14, 14, 'Default', $uid, $visibility, 'My Recent FAQs'));
+		$adb->pquery($sql, array($s14, 14, 'Default', $uid, $visibility, 'My Recent FAQs'));
 
 		// Non-Default Home Page widget (no entry is requried in vtiger_homedefault below)
 		$tc = $adb->getUniqueID('vtiger_homestuff');
@@ -1378,7 +1358,7 @@ class Users extends CRMEntity {
 		$sql = 'insert into vtiger_homedefault values(' . $s6 . ",'HLT',5,'HelpDesk')";
 		$adb->pquery($sql, array());
 
-		$sql = 'insert into vtiger_homedefault values(' . $s7 . ",'UA',5,'Calendar')";
+		$sql = 'insert into vtiger_homedefault values(' . $s7 . ",'UA',5,'cbCalendar')";
 		$adb->pquery($sql, array());
 
 		$sql = 'insert into vtiger_homedefault values(' . $s8 . ",'GRT',5,'NULL')";
@@ -1396,7 +1376,7 @@ class Users extends CRMEntity {
 		$sql = 'insert into vtiger_homedefault values(' . $s12 . ",'OLTPO',5,'PurchaseOrder')";
 		$adb->pquery($sql, array());
 
-		$sql = 'insert into vtiger_homedefault values(' . $s13 . ",'PA',5,'Calendar')";
+		$sql = 'insert into vtiger_homedefault values(' . $s13 . ",'PA',5,'cbCalendar')";
 		$adb->pquery($sql, array());
 
 		$sql = 'insert into vtiger_homedefault values(' . $s14 . ",'LTFAQ',5,'Faq')";
@@ -1404,7 +1384,7 @@ class Users extends CRMEntity {
 	}
 
 	/** function to save the order in which the modules have to be displayed in the home page for the specified user id
-	 * @param $id -- user id:: Type integer
+	 * @param integer user id
 	 */
 	public function saveHomeStuffOrder($id) {
 		global $log, $adb;
@@ -1430,7 +1410,7 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to reset the Reminder Interval setup and update the time for next reminder interval
-	 * @param $prev_reminder_interval -- Last Reminder Interval on which the reminder popup's were triggered.
+	 * @param integer Last Reminder Interval on which the reminder popup's were triggered
 	 */
 	public function resetReminderInterval($prev_reminder_interval) {
 		global $adb;
@@ -1447,26 +1427,27 @@ class Users extends CRMEntity {
 	}
 
 	public function filterInactiveFields($module) {
-		// TODO Nothing do right now
+		// Nothing do right now
 	}
 
 	public function deleteImage() {
+		global $adb;
 		$sql1 = 'SELECT attachmentsid FROM vtiger_salesmanattachmentsrel WHERE smid = ?';
-		$res1 = $this->db->pquery($sql1, array($this->id));
-		if ($this->db->num_rows($res1) > 0) {
-			$attachmentId = $this->db->query_result($res1, 0, 'attachmentsid');
+		$res1 = $adb->pquery($sql1, array($this->id));
+		if ($adb->num_rows($res1) > 0) {
+			$attachmentId = $adb->query_result($res1, 0, 'attachmentsid');
 
 			$sql2 = "DELETE FROM vtiger_crmentity WHERE crmid=? AND setype='Users Attachments'";
-			$this->db->pquery($sql2, array($attachmentId));
+			$adb->pquery($sql2, array($attachmentId));
 
 			$sql3 = 'DELETE FROM vtiger_salesmanattachmentsrel WHERE smid=? AND attachmentsid=?';
-			$this->db->pquery($sql3, array($this->id, $attachmentId));
+			$adb->pquery($sql3, array($this->id, $attachmentId));
 
 			$sql2 = "UPDATE vtiger_users SET imagename='' WHERE id=?";
-			$this->db->pquery($sql2, array($this->id));
+			$adb->pquery($sql2, array($this->id));
 
 			$sql4 = 'DELETE FROM vtiger_attachments WHERE attachmentsid=?';
-			$this->db->pquery($sql4, array($attachmentId));
+			$adb->pquery($sql4, array($attachmentId));
 		}
 	}
 
@@ -1525,15 +1506,21 @@ class Users extends CRMEntity {
 			$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
 		}
 
-		//delete from user vtiger_table;
+		//delete from user table;
 		$adb->pquery('delete from vtiger_users where id=?', array($userId));
 		//Delete user extension in asterisk.
 		$adb->pquery('delete from vtiger_asteriskextensions where userid=?', array($userId));
+		// close user session
+		coreBOS_Settings::delSetting('cbodUserConnection'.$userId);
+		coreBOS_Settings::delSetting('cbodLastLoginTime'.$userId);
+		// delete user files if they exist
+		@unlink('user_privileges/sharing_privileges_'.$userId.'.php');
+		@unlink('user_privileges/user_privileges_'.$userId.'.php');
 	}
 
 	/**
 	 * This function should be overridden in each module. It marks an item as deleted.
-	 * @param <type> $id
+	 * @param integer $id
 	 */
 	public function mark_deleted($id) {
 		global $current_user, $adb;
@@ -1544,7 +1531,7 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to get the user id of the active admin user.
-	 * @return Integer - Active Admin User ID
+	 * @return integer active Admin User ID
 	 */
 	public static function getActiveAdminId() {
 		global $adb;
@@ -1560,7 +1547,7 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to get the active admin user object
-	 * @return Users - Active Admin User Instance
+	 * @return Users Active Admin User Instance
 	 */
 	public static function getActiveAdminUser() {
 		$adminId = self::getActiveAdminId();
@@ -1608,7 +1595,7 @@ class Users extends CRMEntity {
 
 	/**
 	 * Function to get the Headers of Users Information like User ID, Name, Role, Email.
-	 * Returns Header Values like User ID, Email etc in an array format.
+	 * @return array Header Values like User ID, Email etc
 	**/
 	public function getUserListHeader() {
 		global $log;
@@ -1724,10 +1711,10 @@ class Users extends CRMEntity {
 			if ($lgn['user_name'] == 'admin') {
 				$entry['isblockeduser'] = true;
 			}
-			$entry['duplicateuser'] = 'index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='.$lgn['id'].'&isDuplicate=true';
-			$entry['viewuser'] = 'index.php?module=Users&action=DetailView&parenttab=Settings&record='.$lgn['id'];
-			$entry['viewusername'] = 'index.php?module=Users&action=DetailView&parenttab=Settings&record='.$lgn['id'];
-			$entry['edituser'] = 'index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='.$lgn['id'];
+			$entry['duplicateuser'] = 'index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&record='.$lgn['id'].'&isDuplicate=true';
+			$entry['viewuser'] = 'index.php?module=Users&action=DetailView&record='.$lgn['id'];
+			$entry['viewusername'] = 'index.php?module=Users&action=DetailView&record='.$lgn['id'];
+			$entry['edituser'] = 'index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&record='.$lgn['id'];
 			$entry['Admin'] = $lgn['is_admin'];
 			if ($lgn['is_admin'] == 'on') {
 				$entry['Admin'] = getTranslatedString('LBL_ON', 'Users');
@@ -1750,7 +1737,7 @@ class Users extends CRMEntity {
 			$entry['roleid'] = fetchUserRole($lgn['id']);
 			$rolename = $adb->getone("select rolename from vtiger_role where roleid='".$entry['roleid']."'");
 			$entry['rolename'] = $rolename;
-			$entry['viewrole'] = 'index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$entry['roleid'];
+			$entry['viewrole'] = 'index.php?action=RoleDetailView&module=Settings&roleid='.$entry['roleid'];
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getUsersJSON');

@@ -66,6 +66,12 @@
 						<input type="password" id="pass_transactional" name="pass_transactional" class="slds-input" value="{$pass_transactional}" />
 					</div>
 				</div>
+				<div class="slds-form-element slds-m-top_small">
+					<label class="slds-form-element__label" for="apiurl_transactional">{'LBL_API_URL'|@getTranslatedString:$MODULE}</label>
+					<div class="slds-form-element__control">
+						<input type="text" id="apiurl_transactional" name="apiurl_transactional" class="slds-input" value="{$apiurl_transactional}" />
+					</div>
+				</div>
 			</div>
 			<div class="slds-col slds-size_1-of-2">
 				<h1 class="slds-page-header__title">{'MktEmail_title'|@getTranslatedString:'vtsendgrid'}</h1>

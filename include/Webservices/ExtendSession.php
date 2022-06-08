@@ -19,15 +19,12 @@ function vtws_extendSession($SessionManagerClass = 'SessionManager') {
 		}
 		$sessionManager->set('authenticatedUserId', $userId);
 		$crmObject = VtigerWebserviceObject::fromName($adb, 'Users');
-		$userId = vtws_getId($crmObject->getEntityId(), $userId);
-		$vtigerVersion = vtws_getVtigerVersion();
-		$resp = array(
+		return array(
 			'sessionName' => $sessionManager->getSessionId(),
-			'userId' => $userId,
+			'userId' => vtws_getId($crmObject->getEntityId(), $userId),
 			'version' => $API_VERSION,
-			'vtigerVersion' => $vtigerVersion,
+			'vtigerVersion' => vtws_getVtigerVersion(),
 		);
-		return $resp;
 	} else {
 		throw new WebServiceException(WebServiceErrorCode::$AUTHFAILURE, 'Authentication Failed');
 	}

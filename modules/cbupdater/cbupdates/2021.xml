@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>Standardize Quotes related list on Modules</description>
+	<filename>build/changeSets/2021/standardizeQuotesRLonModules.php</filename>
+	<classname>standardizeQuotesRLonModules</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Change typeofdata on InventoryDetails to permit negative numbers</description>
+	<filename>build/changeSets/2021/upd_InvDet_fields.php</filename>
+	<classname>upd_InvDet_fields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mocodertz</author>
+	<description>Install Send OneSignal Notification workflow task</description>
+	<filename>build/changeSets/2021/installSendOneSignalNotificationWorkFlowTask.php</filename>
+	<classname>installSendOneSignalNotificationWorkFlowTask</classname>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add workflow Upsert task</description>
+	<filename>build/changeSets/2021/addExeWFUpsertTask.php</filename>
+	<classname>addExeWFUpsertTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add multi-language field to picklsts</description>
+	<filename>build/changeSets/2021/addmultii18nfieldtopicklists.php</filename>
+	<classname>addmultii18nfieldtopicklists</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Convert InventoryDetails quantity field to UI type 7</description>
+	<filename>build/changeSets/2021/InventoryDetailsQtyUI7.php</filename>
+	<classname>InventoryDetailsQtyUI7</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete old Calendar Tab from Orginization Sharing</description>
+	<filename>build/changeSets/2021/deleteCalendarTabFromOrgShare.php</filename>
+	<classname>deleteCalendarTabFromOrgShare</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add previous password parameter to Change Portal User Password</description>
+	<filename>build/changeSets/2021/addParameterToChangePortalUserPassword.php</filename>
+	<classname>addParameterToChangePortalUserPassword</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Add entity name field to users</description>
+	<filename>build/changeSets/2021/addentityfield2moduleusers.php</filename>
+	<classname>addentityfield2moduleusers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>updating entity name to all existing users</description>
+	<filename>build/changeSets/2021/updatingEntityNameToAllUsers.php</filename>
+	<classname>updatingEntityNameToAllUsers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Import Sendgrid email templates to MsgTemplate</description>
+	<filename>build/changeSets/2021/importdefaultemailtemplates.php</filename>
+	<classname>importdefaultemailtemplates</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Payment Duration Picklist ID field is incorrectly named</description>
+	<filename>build/changeSets/2021/fixPaymentDurationPicklistID.php</filename>
+	<classname>fixPaymentDurationPicklistID</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>glorymoshi</author>
+	<description>Alter column module name in vtiger tracker</description>
+	<filename>build/changeSets/2021/updatecolumnmodulenameinVtigerTracker.php</filename>
+	<classname>updatecolumnmodulenameinVtigerTracker</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change entity name field for Users module</description>
+	<filename>build/changeSets/2021/changeEntityNameForUsersModule.php</filename>
+	<classname>changeEntityNameForUsersModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Register RecurringInvoice Handler on Workflow Event</description>
+	<filename>build/changeSets/2021/register_RecurringInvoice_on_WorkflowEvent.php</filename>
+	<classname>register_RecurringInvoice_on_WorkflowEvent</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Correct Activity Type field label</description>
+	<filename>build/changeSets/2021/correctActivityTypeFieldLabel.php</filename>
+	<classname>correctActivityTypeFieldLabel</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Correct Payment module repeated entity name field</description>
+	<filename>build/changeSets/2021/fixCyPRepeatedEntityName.php</filename>
+	<classname>fixCyPRepeatedEntityName</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set Document related list on Comments</description>
+	<filename>build/changeSets/2021/setDocRelComments.php</filename>
+	<classname>setDocRelComments</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Geofrey Bundala</author>
+	<description>add fields on vtiger_notificationdrivers table</description>
+	<filename>build/changeSets/2021/addColumnsToNotification.php</filename>
+	<classname>addColumnsToNotification</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Import Merge Condition Column</description>
+	<filename>build/changeSets/2021/AddImportMergeConditionColumn.php</filename>
+	<classname>AddImportMergeConditionColumn</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Import Skip Create Column</description>
+	<filename>build/changeSets/2021/AddImportSkipCreateColumn.php</filename>
+	<classname>AddImportSkipCreateColumn</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add missing primary indexes</description>
+	<filename>build/changeSets/2021/AddMissingPrimaryIndexes.php</filename>
+	<classname>AddMissingPrimaryIndexes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Global Search Question type</description>
+	<filename>build/changeSets/2021/addGSPLValueOnQuestion.php</filename>
+	<classname>addGSPLValueOnQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Workflow Mass Action changes: columns and queue</description>
+	<filename>build/changeSets/2021/WorkflowMassActionChanges.php</filename>
+	<classname>WorkflowMassActionChanges</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>xhildashazivari</author>
+	<description>Update linkurl in BusinessActions of module GlobalVariable</description>
+	<filename>build/changeSets/2021/modifyGlobalVariableBA.php</filename>
+	<classname>modifyGlobalVariableBA</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Password History check table and Failed Login Attempts for contacts</description>
+	<filename>build/changeSets/2021/PasswordHistoryFailedLoginAttempts.php</filename>
+	<classname>PasswordHistoryFailedLoginAttempts</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Email Field to DisplayType 4 and Review FailedLoginAttempts</description>
+	<filename>build/changeSets/2021/EmailField2DisplayType4andReviewFailedLoginAttempts.php</filename>
+	<classname>EmailField2DisplayType4andReviewFailedLoginAttempts</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Update cbCredentials Entity Fields</description>
+	<filename>build/changeSets/2021/updatecbCredentialsEntity.php</filename>
+	<classname>updatecbCredentialsEntityFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Change Contact/Lead Firstname and Salutation uitypes</description>
+	<filename>build/changeSets/2021/changefieldFirstNameAndSalutationOnContactAndLeadToUitype1and15.php</filename>
+	<classname>changefieldFirstNameAndSalutationOnContactAndLeadToUitype1and15</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>finish migrate UIType 58 and 68 to 10 after all this time</description>
+	<filename>build/changeSets/2021/finishMigrateUIType58and68to10.php</filename>
+	<classname>finishMigrateUIType58and68to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Uupdate Accounts And Contacts Business Actions Hierarchy</description>
+	<filename>build/changeSets/2021/updateAccountsAndContactsHierarchy.php</filename>
+	<classname>updateAccountsAndContactsHierarchy</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>MessageQueue channel subscription for Workflow Task Queue</description>
+	<filename>build/changeSets/2021/WorkflowTaskMessageQueueChannelSubscription.php</filename>
+	<classname>WorkflowTaskMessageQueueChannelSubscription</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

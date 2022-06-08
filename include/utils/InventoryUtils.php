@@ -11,11 +11,11 @@ require_once 'modules/Emails/mail.php';
 
 /**
  * This function returns the Product detail block values in array format.
- * Input Parameter are
- *  $module - module name,
- *  $focus - module object,
- *  $num_of_products - no.of products associated with it
- *  $associated_prod = associated product details
+ * @param string $module - module name,
+ * @param object $focus - module object,
+ * @param integer $num_of_products - no.of products associated with it
+ * @param array $associated_prod = associated product details
+ * @return array Product detail block values
  */
 function getProductDetailsBlockInfo($mode, $module, $focus = '', $num_of_products = '', $associated_prod = '') {
 	global $log;
@@ -189,7 +189,7 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 	$log->debug("> getAllTaxes $available,$sh,$mode,$id");
 	$taxtypes = array();
 	list($void1,$void2,$void3,$void4,$taxtypes) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getAllTaxes', array($available,$sh,$mode,$id, array()));
-	if (count($taxtypes)==0) {
+	if (empty($taxtypes)) {
 		if ($sh != '' && $sh == 'sh') {
 			$tablename = 'vtiger_shippingtaxinfo';
 			$value_table='vtiger_inventoryshippingrel';
@@ -219,7 +219,7 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 			}
 			//We are selecting taxes using that taxids. So It will get the tax even if the tax is disabled.
 			$where_ids='';
-			if (count($result_ids) > 0) {
+			if (!empty($result_ids)) {
 				$insert_str = str_repeat('?,', count($result_ids)-1);
 				$insert_str .= '?';
 				$where_ids="taxid in ($insert_str) or";
@@ -272,7 +272,7 @@ function getTaxDetailsForProduct($productid, $available = 'all', $acvid = 0) {
 			'corebos.filter.TaxCalculation.getTaxDetailsForProduct',
 			array($productid, $available, $acvid, array())
 		);
-		if (count($tax_details)==0) {
+		if (empty($tax_details)) {
 		//where condition added to avoid to retrieve the non available taxes
 			$where = '';
 			if ($available != 'all' && $available == 'available') {
@@ -361,7 +361,7 @@ function updateInventoryProductRel($entity) {
 	}
 
 	$moduleName = $entity->getModuleName();
-	if ($moduleName === 'Invoice') {
+	if ($moduleName === 'Invoice' || $moduleName === 'Issuecards' || $moduleName === 'Receiptcards') {
 		$statusFieldName = 'invoicestatus';
 		$statusFieldValue = 'Cancel';
 	} elseif ($moduleName === 'SalesOrder') {
@@ -370,9 +370,6 @@ function updateInventoryProductRel($entity) {
 	} elseif ($moduleName === 'PurchaseOrder') {
 		$statusFieldName = 'postatus';
 		$statusFieldValue = 'Received Shipment';
-	} elseif ($moduleName === 'Issuecards') {
-		$statusFieldName = 'invoicestatus';
-		$statusFieldValue = 'Cancel';
 	}
 	$statusChanged = false;
 	$vtEntityDelta = new VTEntityDelta();
@@ -390,7 +387,7 @@ function updateInventoryProductRel($entity) {
 			$updateInventoryProductRel_deduct_stock = false;
 			deductProductsFromStock($entity_id);
 		}
-	} elseif ($recordDetails[$statusFieldName] == $statusFieldValue) {
+	} elseif (empty($recordDetails[$statusFieldName]) || $recordDetails[$statusFieldName] == $statusFieldValue) {
 		$updateInventoryProductRel_deduct_stock = false;
 	}
 
@@ -634,7 +631,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 
 /**	function used to get the tax type for the Inventory module entity
  *	@param string $module - module name
- *	@param int $id - id of the Inventory module
+ *	@param integer $id - id of the Inventory module
  *	@return string $taxtype - taxtype for the given entity which will be individual or group
  */
 function getInventoryTaxType($module, $id) {
@@ -650,7 +647,7 @@ function getInventoryTaxType($module, $id) {
 
 /**	function used to get the price type for the entity (PO, SO, Quotes or Invoice)
  *	@param string $module - module name
- *	@param int $id - id of the PO or SO or Quotes or Invoice
+ *	@param integer $id - id of the PO or SO or Quotes or Invoice
  *	@return string $pricetype - pricetype for the given entity which will be unitprice or secondprice
  */
 function getInventoryCurrencyInfo($module, $id) {
@@ -660,8 +657,8 @@ function getInventoryCurrencyInfo($module, $id) {
 }
 
 /**	function used to get the taxvalue which is associated with a product for PO/SO/Quotes or Invoice
- *	@param int $id - id of PO/SO/Quotes or Invoice
- *	@param int $productid - product id
+ *	@param integer $id - id of PO/SO/Quotes or Invoice
+ *	@param integer $productid - product id
  *	@param string $taxname - taxname to which we want the value
  *	@return float $taxvalue - tax value
  */
@@ -682,7 +679,7 @@ function getInventoryProductTaxValue($id, $productid, $taxname) {
 }
 
 /**	function used to get the shipping & handling tax percentage for the given inventory id and taxname
- *	@param int $id - entity id which will be PO/SO/Quotes or Invoice id
+ *	@param integer $id - entity id which will be PO/SO/Quotes or Invoice id
  *	@param string $taxname - shipping and handling taxname
  *	@return float $taxpercentage - shipping and handling taxpercentage which is associated with the given entity
  */
@@ -733,8 +730,8 @@ function getAllCurrencies($available = 'available') {
 }
 
 /**	Function used to get all the price details for different currencies which are associated to the given product
- *	@param int $productid - product id to which we want to get all the associated prices
- *  @param decimal $unit_price - Unit price of the product
+ *	@param integer $productid - product id to which we want to get all the associated prices
+ *  @param float $unit_price - Unit price of the product
  *  @param string $available - available or available_associated where as default is available,
  *  	if available then the prices in the currencies which are available now will be returned,
  *  	otherwise if the value is available_associated then prices of all the associated currencies will be returned
@@ -749,14 +746,14 @@ function getPriceDetailsForProduct($productid, $unit_price, $available = 'availa
 		$product_base_conv_rate = getBaseConversionRateForProduct($productid, 'edit', $itemtype);
 		// Detail View
 		if ($available == 'available_associated') {
-			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.converted_price, vtiger_productcurrencyrel.actual_price
+			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.actual_price
 					from vtiger_currency_info
 					inner join vtiger_productcurrencyrel on vtiger_currency_info.id = vtiger_productcurrencyrel.currencyid
 					where vtiger_currency_info.currency_status = 'Active' and vtiger_currency_info.deleted=0
 					and vtiger_productcurrencyrel.productid = ? and vtiger_currency_info.id != ?";
 			$params = array($productid, $product_currency_id);
 		} else { // Edit View
-			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.converted_price, vtiger_productcurrencyrel.actual_price
+			$query = "select vtiger_currency_info.*, vtiger_productcurrencyrel.actual_price
 					from vtiger_currency_info
 					left join vtiger_productcurrencyrel
 					on vtiger_currency_info.id = vtiger_productcurrencyrel.currencyid and vtiger_productcurrencyrel.productid = ?
@@ -845,8 +842,8 @@ function getPriceDetailsForProduct($productid, $unit_price, $available = 'availa
 }
 
 /**	Function used to get the base currency used for the given Product
- *	@param int $productid - product id for which we want to get the id of the base currency
- *  @return int $currencyid - id of the base currency for the given product
+ *	@param integer $productid - product id for which we want to get the id of the base currency
+ *  @return integer $currencyid - id of the base currency for the given product
  */
 function getProductBaseCurrency($productid, $module = 'Products') {
 	global $adb;
@@ -860,9 +857,9 @@ function getProductBaseCurrency($productid, $module = 'Products') {
 }
 
 /**	Function used to get the conversion rate for the product base currency with respect to the CRM base currency
- *	@param int $productid - product id for which we want to get the conversion rate of the base currency
+ *	@param integer $productid - product id for which we want to get the conversion rate of the base currency
  *  @param string $mode - Mode in which the function is called
- *  @return number $conversion_rate - conversion rate of the base currency for the given product based on the CRM base currency
+ *  @return float $conversion_rate - conversion rate of the base currency for the given product based on the CRM base currency
  */
 function getBaseConversionRateForProduct($productid, $mode = 'edit', $module = 'Products') {
 	global $adb, $current_user;
@@ -892,7 +889,7 @@ function getBaseConversionRateForProduct($productid, $mode = 'edit', $module = '
 }
 
 /**	Function used to get the prices for the given list of products based in the specified currency
- *	@param int $currencyid - currency id based on which the prices have to be provided
+ *	@param integer $currencyid - currency id based on which the prices have to be provided
  *	@param array $product_ids - List of product id's for which we want to get the price based on given currency
  *  @return array $prices_list - List of prices for the given list of products based on the given currency in the form of 'product id' mapped to 'price value'
  */
@@ -941,8 +938,8 @@ function getPricesForProducts($currencyid, $product_ids, $module = 'Products', $
 }
 
 /**	Function used to get the currency used for the given Price book
- *	@param int $pricebook_id - pricebook id for which we want to get the id of the currency used
- *  @return int $currencyid - id of the currency used for the given pricebook
+ *	@param integer $pricebook_id - pricebook id for which we want to get the id of the currency used
+ *  @return integer $currencyid - id of the currency used for the given pricebook
  */
 function getPriceBookCurrency($pricebook_id) {
 	global $adb;
@@ -1009,30 +1006,14 @@ function createRecords($obj) {
 
 	$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $obj->user);
 	$moduleMeta = $moduleHandler->getMeta();
-	$moduleObjectId = $moduleMeta->getEntityId();
 	$moduleFields = $moduleMeta->getModuleFields();
 	include_once 'include/fields/InventoryLineField.php';
 	$ilfields = new InventoryLineField();
 	$moduleFields = array_merge($moduleFields, $ilfields->getInventoryLineFieldsByObject());
 	$focus = CRMEntity::getInstance($moduleName);
-	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Products'));
-	if ($wsrs && $adb->num_rows($wsrs)==1) {
-		$pdowsid = $adb->query_result($wsrs, 0, 0).'x';
-	} else {
-		$pdowsid = '0x';
-	}
-	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Services'));
-	if ($wsrs && $adb->num_rows($wsrs)==1) {
-		$srvwsid = $adb->query_result($wsrs, 0, 0).'x';
-	} else {
-		$srvwsid = '0x';
-	}
-	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Users'));
-	if ($wsrs && $adb->num_rows($wsrs)==1) {
-		$usrwsid = $adb->query_result($wsrs, 0, 0).'x';
-	} else {
-		$usrwsid = '0x';
-	}
+	$pdowsid = vtws_getEntityId('Products').'x';
+	$srvwsid = vtws_getEntityId('Services').'x';
+	$usrwsid = vtws_getEntityId('Users').'x';
 
 	$tableName = Import_Utils::getDbTableName($obj->user);
 	$sql = 'SELECT subject FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE .' GROUP BY subject';
@@ -1047,20 +1028,17 @@ function createRecords($obj) {
 	$numberOfRecords = $adb->num_rows($result);
 
 	if ($numberOfRecords <= 0) {
-		return;
+		return false;
 	}
 
 	$fieldMapping = $obj->fieldMapping;
-	$fieldColumnMapping = $moduleMeta->getFieldColumnMapping();
 
 	for ($i = 0; $i < $numberOfRecords; ++$i) {
 		$row = $adb->raw_query_result_rowdata($result, $i);
 		$entityInfo = null;
 		$fieldData = array();
 		$lineItems = array();
-		$subject = $row['subject'];
-		$sql = 'SELECT * FROM ' . $tableName . ' WHERE status = '.Import_Data_Controller::$IMPORT_RECORD_NONE .' AND subject = "'.str_replace("\"", "\\\"", $subject).'"';
-		$subjectResult = $adb->query($sql);
+		$subjectResult = $adb->pquery('SELECT * FROM '.$tableName.' WHERE status='.Import_Data_Controller::$IMPORT_RECORD_NONE.' AND subject=?', array($row['subject']));
 		$count = $adb->num_rows($subjectResult);
 		$subjectRowIDs = array();
 		for ($j = 0; $j < $count; ++$j) {
@@ -1072,7 +1050,7 @@ function createRecords($obj) {
 			$lineItemData = array();
 			$lineItemData['discount'] = 0;
 			foreach ($fieldMapping as $fieldName => $index) {
-				if ($moduleFields[$fieldName]->getTableName() == 'vtiger_inventoryproductrel') {
+				if (!empty($moduleFields[$fieldName]) && $moduleFields[$fieldName]->getTableName() == 'vtiger_inventoryproductrel') {
 					if ($fieldName=='productid') {
 						$fieldValue = $subjectRow[$fieldName];
 						if (strpos($fieldValue, '::::') > 0) {
@@ -1159,10 +1137,8 @@ function createRecords($obj) {
 			$fieldData['assigned_user_id'] = $obj->user->id;
 		}
 
-		if (!empty($lineItems)) {
-			if (method_exists($focus, 'importRecord')) {
-				$entityInfo = $focus->importRecord($obj, $fieldData, $lineItems);
-			}
+		if (method_exists($focus, 'importRecord')) {
+			$entityInfo = $focus->importRecord($obj, $fieldData, $lineItems);
 		}
 
 		if ($entityInfo == null) {
@@ -1188,10 +1164,10 @@ function importRecord($obj, $inventoryFieldData, $lineItems) {
 		unset($inventoryFieldData['currency_id']);
 	}
 	$fieldData = $obj->transformForImport($inventoryFieldData, $inventoryMeta);
-	$fieldData['pdoInformation'] = $lineItems;
-	if (empty($fieldData) || empty($fieldData['pdoInformation'])) {
+	if (empty($fieldData)) {
 		return null;
 	}
+	$fieldData['pdoInformation'] = $lineItems;
 	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Currency'));
 	if ($wsrs && $adb->num_rows($wsrs)==1) {
 		$wsid = $adb->query_result($wsrs, 0, 0);
@@ -1216,8 +1192,7 @@ function getImportStatusCount($obj) {
 	$tableName = Import_Utils::getDbTableName($obj->user);
 	$result = $adb->query('SELECT status FROM '.$tableName. ' GROUP BY subject,status');
 
-	$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0,
-		'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
+	$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0, 'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
 
 	if ($result) {
 		$noOfRows = $adb->num_rows($result);
@@ -1311,10 +1286,19 @@ function getCurrencyId($fieldValue) {
 	return $currencyId;
 }
 
+function isFrontendEditViewAction($request, $module) {
+	global $log;
+	$return = ((empty($request['action']) || ($request['action'] != $module.'Ajax' && $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates'))
+		&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow')));
+	$log->debug('>< isFrontendEditViewAction '.($return ? 'true':'false'));
+	return $return;
+}
+
 function inventoryCanSaveProductLines($request, $module) {
 	global $log;
 	$return = ($request['action'] != $module.'Ajax' && $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates'
-			&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow')));
+		&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow'))
+		&& (isset($request['totalProductCount']) && (int)$request['totalProductCount'] > 0));
 	$log->debug('>< inventoryCanSaveProductLines '.($return ? 'true':'false'));
 	return $return;
 }

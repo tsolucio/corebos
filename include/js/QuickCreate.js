@@ -28,7 +28,7 @@ function qcemptyCheck(fldName, fldLabel, fldType) {
 }
 
 function qcdateValidate(fldName, fldLabel, type) {
-	if (patternValidateObject(window.document.QcEditView[fldName], fldLabel, 'DATE')==false) {
+	if (!patternValidateObject(window.document.QcEditView[fldName], fldLabel, 'DATE')) {
 		return false;
 	}
 	return dateValidateObject(window.document.QcEditView[fldName], fldLabel, type);
@@ -44,10 +44,9 @@ function qcintValidate(fldName, fldLabel) {
 		alert(alert_arr.INVALID+fldLabel);
 		window.document.QcEditView[fldName].focus();
 		return false;
-	} else if ((fldName != 'employees' || fldName != 'noofemployees') && (val < -2147483648 || val > 2147483647)) {
-		alert(fldLabel +alert_arr.OUT_OF_RANGE);
-		return false;
-	} else if ((fldName == 'employees' || fldName == 'noofemployees') && (val < 0 || val > 2147483647)) {
+	} else if ((fldName != 'employees' && fldName != 'noofemployees' && (val < -2147483648 || val > 2147483647))
+		|| ((fldName == 'employees' || fldName == 'noofemployees') && (val < 0 || val > 2147483647))
+	) {
 		alert(fldLabel +alert_arr.OUT_OF_RANGE);
 		return false;
 	} else {
@@ -75,12 +74,7 @@ function QCreate(qcoptions) {
 			document.getElementById('qcform').style.display='inline';
 			document.getElementById('qcform').innerHTML = response;
 			jQuery('#qcform').draggable();
-			// Evaluate all the script tags in the response text.
-			var scriptTags = document.getElementById('qcform').getElementsByTagName('script');
-			for (var i = 0; i< scriptTags.length; i++) {
-				var scriptTag = scriptTags[i];
-				eval(scriptTag.innerHTML);
-			}
+			vtlib_executeJavascriptInElement(document.getElementById('qcform'));
 			posLay(qcoptions, 'qcform');
 		});
 	} else {

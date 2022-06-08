@@ -21,7 +21,7 @@ class Google_Module_Model {
 	 * @param <integer> $user - User Id
 	 */
 	public static function deleteSync($module, $user) {
-		if ($module == 'Contacts' || $module == 'Calendar') {
+		if ($module == 'Contacts' || $module == 'cbCalendar') {
 			$name = 'Vtiger_Google'.$module;
 		} else {
 			return;
@@ -45,7 +45,6 @@ class Google_Module_Model {
 			$db->pquery('DELETE FROM vtiger_google_sync_settings WHERE user = ?', array($user));
 			$db->pquery('DELETE FROM vtiger_google_sync_fieldmapping WHERE user = ?', array($user));
 		}
-		return;
 	}
 
 	/*

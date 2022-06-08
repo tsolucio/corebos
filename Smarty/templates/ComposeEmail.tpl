@@ -28,7 +28,7 @@
 {literal}
 <form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="if(email_validate(this.form,'')) { VtigerJS_DialogBox.block();} else { return false; }">
 {/literal}
-<input type="hidden" name="merge_template_with" value="{$MERGE_TEMPLATE_WITH}">
+<input type="hidden" name="merge_template_with" id="merge_template_with" value="{$MERGE_TEMPLATE_WITH}">
 <input type="hidden" name="send_mail" >
 <input type="hidden" name="contact_id" value="{if isset($CONTACT_ID)}{$CONTACT_ID}{/if}">
 <input type="hidden" name="user_id" value="{if isset($USER_ID)}{$USER_ID}{/if}">
@@ -72,7 +72,8 @@
 	<td class="cellText" style="padding: 5px;">
 		<input name="listofids" id="listofids" type="hidden" value="{if isset($LISTID)}{$LISTID}{/if}">
 		<input name="{$elements.2.0}" id="{$elements.2.0}" type="hidden" value="{if isset($IDLISTS)}{$IDLISTS}{/if}">
-		<input type="hidden" name="saved_toid" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}">
+		<input name="relateemailwith" id="relateemailwith" type="hidden" value="{if isset($relateemailwith)}{$relateemailwith}{/if}">
+		<input type="hidden" id="saved_toid" name="saved_toid" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}">
 		<input id="parent_name" name="parent_name" readonly class="txtBox" type="text" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}" style="width: 525px;">&nbsp;
 		<span class="mailClientCSSButton">
 			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}"
@@ -80,7 +81,7 @@
 				align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
 		<span class="mailClientCSSButton" >
-			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('parent_id').value=''; document.getElementById('hidden_toid').value='';document.getElementById('parent_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('parent_id').value=''; document.getElementById('saved_toid').value=''; document.getElementById('hidden_toid').value='';document.getElementById('parent_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 		</span>
 	</td>
 	<td class="cellText" style="padding: 5px;" align="left" nowrap>
@@ -98,6 +99,18 @@
 	</td>
 	</tr>
 	<tr>
+	{if 'replyto'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
+	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.replyto}</td>
+	<td class="cellText" style="padding: 5px;">
+		<input name="replyto" id ="replyto" class="txtBox" type="text" value="{if isset($REPLYTO)}{$REPLYTO}{/if}" style="width:525px">&nbsp;
+	</td>
+	{else}
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	{/if}
+	<td valign="top" class="cellLabel" rowspan="4"><div id="attach_cont" class="addEventInnerBox" style="overflow:auto;height:100px;width:100%;position:relative;left:0px;top:0px;"></div>
+	</tr>
+	<tr>
 	{if 'ccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
 	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_CC}</td>
 	<td class="cellText" style="padding: 5px;">
@@ -111,11 +124,7 @@
 			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="document.getElementById('cc_name').value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 		</span>
 	</td>
-	{else}
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
 	{/if}
-	<td valign="top" class="cellLabel" rowspan="4"><div id="attach_cont" class="addEventInnerBox" style="overflow:auto;height:100px;width:100%;position:relative;left:0px;top:0px;"></div>
 	</tr>
 	{if 'bccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
 	<tr>
@@ -154,9 +163,9 @@
 			<span id="limitmsg" style= "color:red; display:'';">{'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}</span>
 		</div>
 		<script>
-			var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), {$EMail_Maximum_Number_Attachments} );
-			multi_selector.count = 0
-			multi_selector.addElement( document.getElementById( 'my_file_element' ) );
+			var multi_selector = new MultiSelector(document.getElementById('files_list'), {$EMail_Maximum_Number_Attachments});
+			multi_selector.count = 0;
+			multi_selector.addElement(document.getElementById('my_file_element'));
 		</script>
 		<div id="attach_temp_cont" style="display:none;">
 		<table class="small" width="100% ">

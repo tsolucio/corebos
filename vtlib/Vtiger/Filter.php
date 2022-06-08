@@ -82,7 +82,7 @@ class Vtiger_Filter {
 			} else {
 				$this->status = '3'; // Public
 			}
-			$adb->pquery("UPDATE vtiger_customview SET status=? WHERE cvid=?", array($this->status, $this->id));
+			$adb->pquery('UPDATE vtiger_customview SET status=? WHERE cvid=?', array($this->status, $this->id));
 			self::log("Setting Filter $this->name to status [$this->status] ... DONE");
 		}
 	}
@@ -102,9 +102,9 @@ class Vtiger_Filter {
 	 */
 	public function __delete() {
 		global $adb;
-		$adb->pquery("DELETE FROM vtiger_cvadvfilter WHERE cvid=?", array($this->id));
-		$adb->pquery("DELETE FROM vtiger_cvcolumnlist WHERE cvid=?", array($this->id));
-		$adb->pquery("DELETE FROM vtiger_customview WHERE cvid=?", array($this->id));
+		$adb->pquery('DELETE FROM vtiger_cvadvfilter WHERE cvid=?', array($this->id));
+		$adb->pquery('DELETE FROM vtiger_cvcolumnlist WHERE cvid=?', array($this->id));
+		$adb->pquery('DELETE FROM vtiger_customview WHERE cvid=?', array($this->id));
 	}
 
 	/**
@@ -136,8 +136,7 @@ class Vtiger_Filter {
 	public function __getColumnValue($fieldInstance) {
 		$tod = explode('~', $fieldInstance->typeofdata);
 		$displayinfo = $fieldInstance->getModuleName().'_'.str_replace(' ', '_', $fieldInstance->label).':'.$tod[0];
-		$cvcolvalue = "$fieldInstance->table:$fieldInstance->column:$fieldInstance->name:$displayinfo";
-		return $cvcolvalue;
+		return "$fieldInstance->table:$fieldInstance->column:$fieldInstance->name:$displayinfo";
 	}
 
 	/**
@@ -154,7 +153,7 @@ class Vtiger_Filter {
 			'UPDATE vtiger_cvcolumnlist SET columnindex=columnindex+1 WHERE cvid=? AND columnindex>=? ORDER BY columnindex DESC',
 			array($this->id, $index)
 		);
-		$adb->pquery("INSERT INTO vtiger_cvcolumnlist(cvid,columnindex,columnname) VALUES(?,?,?)", array($this->id, $index, $cvcolvalue));
+		$adb->pquery('INSERT INTO vtiger_cvcolumnlist(cvid,columnindex,columnname) VALUES(?,?,?)', array($this->id, $index, $cvcolvalue));
 
 		self::log("Adding $fieldInstance->name to $this->name filter ... DONE");
 		return $this;
@@ -163,10 +162,9 @@ class Vtiger_Filter {
 	/**
 	 * Add rule to this filter instance
 	 * @param Vtiger_Field Instance of the field
-	 * @param String One of [EQUALS, NOT_EQUALS, STARTS_WITH, ENDS_WITH, CONTAINS, DOES_NOT_CONTAINS, LESS_THAN,
-	 *                       GREATER_THAN, LESS_OR_EQUAL, GREATER_OR_EQUAL]
-	 * @param String Value to use for comparision
-	 * @param Integer Index count to use
+	 * @param string One of [EQUALS, NOT_EQUALS, STARTS_WITH, ENDS_WITH, CONTAINS, DOES_NOT_CONTAINS, LESS_THAN, GREATER_THAN, LESS_OR_EQUAL, GREATER_OR_EQUAL]
+	 * @param string Value to use for comparision
+	 * @param integer Index count to use
 	 */
 	public function addRule($fieldInstance, $comparator, $comparevalue, $index = 0, $group = 1, $condition = 'and') {
 		global $adb;
@@ -179,31 +177,31 @@ class Vtiger_Filter {
 		$cvcolvalue = $this->__getColumnValue($fieldInstance);
 
 		$adb->pquery(
-			"UPDATE vtiger_cvadvfilter set columnindex=columnindex+1 WHERE cvid=? AND columnindex>=? ORDER BY columnindex DESC",
+			'UPDATE vtiger_cvadvfilter set columnindex=columnindex+1 WHERE cvid=? AND columnindex>=? ORDER BY columnindex DESC',
 			array($this->id, $index)
 		);
 		$adb->pquery(
-			"INSERT INTO vtiger_cvadvfilter(cvid, columnindex, columnname, comparator, value, groupid, column_condition) VALUES(?,?,?,?,?,?,?)",
+			'INSERT INTO vtiger_cvadvfilter(cvid, columnindex, columnname, comparator, value, groupid, column_condition) VALUES(?,?,?,?,?,?,?)',
 			array($this->id, $index, $cvcolvalue, $comparator, $comparevalue, $group, $condition)
 		);
 		$this->addGroup($group, $condition, '');
-		Vtiger_Utils::Log("Adding Condition " . self::translateComparator($comparator, true) ." on $fieldInstance->name of $this->name filter ... DONE");
+		Vtiger_Utils::Log('Adding Condition ' . self::translateComparator($comparator, true) ." on $fieldInstance->name of $this->name filter ... DONE");
 		return $this;
 	}
 
 	/**
 	 * Add group to this filter instance
-	 * @param Number group
-	 * @param Condition [AND,OR] if after an other group is added
-	 * @param String Value condition expresion between the fields that group contain
+	 * @param integer group
+	 * @param string [AND,OR] glue for the next group that may be added
+	 * @param string condition expression between the fields that are in the group
 	 */
 	public function addGroup($groupid = '1', $group_condition = '', $condition_expression = '') {
 		global $adb;
 		$adb->pquery(
-			"INSERT INTO vtiger_cvadvfilter_grouping(groupid, cvid, group_condition, condition_expression) VALUES(?,?,?,?)",
+			'INSERT INTO vtiger_cvadvfilter_grouping(groupid, cvid, group_condition, condition_expression) VALUES(?,?,?,?)',
 			array($groupid, $this->id,$group_condition,$condition_expression)
 		);
-		Vtiger_Utils::Log("Adding Group " . $groupid ." to cvid = ".$this->id." with group condition = ".$group_condition." and condition expresion = ".$condition_expression.".". $this->name." filter ... DONE");
+		Vtiger_Utils::Log('Adding Group ' . $groupid .' to cvid = '.$this->id.' with group condition = '.$group_condition.' and condition expresion = '.$condition_expression.'.'. $this->name.' filter ... DONE');
 		return $this;
 	}
 	/**
@@ -281,8 +279,8 @@ class Vtiger_Filter {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 * @access private
 	 */
 	public static function log($message, $delim = true) {
@@ -301,10 +299,10 @@ class Vtiger_Filter {
 		$query = false;
 		$queryParams = false;
 		if (Vtiger_Utils::isNumber($value)) {
-			$query = "SELECT * FROM vtiger_customview WHERE cvid=?";
+			$query = 'SELECT * FROM vtiger_customview WHERE cvid=?';
 			$queryParams = array($value);
 		} else {
-			$query = "SELECT * FROM vtiger_customview WHERE viewname=? AND entitytype=?";
+			$query = 'SELECT * FROM vtiger_customview WHERE viewname=? AND entitytype=?';
 			$queryParams = array($value, $moduleInstance->name);
 		}
 		$result = $adb->pquery($query, $queryParams);
@@ -323,7 +321,7 @@ class Vtiger_Filter {
 		global $adb;
 		$instances = false;
 
-		$query = "SELECT * FROM vtiger_customview WHERE entitytype=?";
+		$query = 'SELECT * FROM vtiger_customview WHERE entitytype=?';
 		$queryParams = array($moduleInstance->name);
 		$result = $adb->pquery($query, $queryParams);
 		for ($index = 0; $index < $adb->num_rows($result); ++$index) {
@@ -340,16 +338,16 @@ class Vtiger_Filter {
 	 */
 	public static function deleteForModule($moduleInstance) {
 		global $adb;
-		$cvidres = $adb->pquery("SELECT cvid FROM vtiger_customview WHERE entitytype=?", array($moduleInstance->name));
+		$cvidres = $adb->pquery('SELECT cvid FROM vtiger_customview WHERE entitytype=?', array($moduleInstance->name));
 		if ($adb->num_rows($cvidres)) {
 			$cvids = array();
 			for ($index = 0; $index < $adb->num_rows($cvidres); ++$index) {
 				$cvids[] = $adb->query_result($cvidres, $index, 'cvid');
 			}
 			if (!empty($cvids)) {
-				$adb->pquery("DELETE FROM vtiger_cvadvfilter WHERE cvid  IN (" . implode(',', $cvids) . ")", array());
-				$adb->pquery("DELETE FROM vtiger_cvcolumnlist WHERE cvid IN (" . implode(',', $cvids) . ")", array());
-				$adb->pquery("DELETE FROM vtiger_customview WHERE cvid   IN (" . implode(',', $cvids) . ")", array());
+				$adb->pquery('DELETE FROM vtiger_cvadvfilter WHERE cvid  IN (' . implode(',', $cvids) . ')', array());
+				$adb->pquery('DELETE FROM vtiger_cvcolumnlist WHERE cvid IN (' . implode(',', $cvids) . ')', array());
+				$adb->pquery('DELETE FROM vtiger_customview WHERE cvid   IN (' . implode(',', $cvids) . ')', array());
 			}
 		}
 	}

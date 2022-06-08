@@ -17,6 +17,7 @@ require_once 'VTWorkflowApplication.inc';
 require_once 'VTWorkflowTemplateManager.inc';
 require_once 'VTWorkflowUtils.php';
 require_once 'include/Webservices/getRelatedModules.php';
+require_once 'modules/com_vtiger_workflow/expression_engine/VTExpressionsManager.inc';
 
 function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_strings) {
 	global $theme, $current_user;
@@ -44,6 +45,11 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	} else {
 		if (isset($request['workflow_id'])) {
 			$workflow = $wfs->retrieve($request['workflow_id']);
+			if (!$workflow->checkNonAdminAccess()) {
+				$errorUrl = $module->errorPageUrl(getTranslatedString('LBL_PERMISSION'));
+				$util->redirectTo($errorUrl, getTranslatedString('LBL_PERMISSION'));
+				return;
+			}
 			if ($workflow->executionCondition!=VTWorkflowManager::$ON_SCHEDULE) {
 				$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
 			} else {
@@ -143,6 +149,9 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$smarty->assign('relatedmodules', $relatedmodules);
 	$smarty->assign('onrelatedmodule', $workflow->executionConditionAsLabel() == 'ON_RELATE' ? $relatedmodule : 'Any');
 	$smarty->assign('onunrelatedmodule', $workflow->executionConditionAsLabel() == 'ON_UNRELATE' ? $relatedmodule : 'Any');
+	$emgr = new VTExpressionsManager($adb);
+	$smarty->assign('FNDEFS', json_encode($emgr->expressionFunctionDetails()));
+	$smarty->assign('FNCATS', $emgr->expressionFunctionCategories());
 
 	$smarty->assign('ISADMIN', is_admin($current_user));
 	$smarty->assign('THEME', $theme);
@@ -154,6 +163,27 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$smarty->assign('workflow', $workflow);
 	$smarty->assign('saveType', !empty($workflow->id) ? 'edit' : 'new');
 	$smarty->assign('module', $module);
+
+	if (coreBOS_Session::has('malaunch_records')) {
+		$malaunch_records = coreBOS_Session::get('malaunch_records');
+		$smarty->assign('malaunch_records', $malaunch_records);
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-success');
+		if ($workflow->options=='onerecord') {
+			$msg = $mod['Records execution success'];
+		} else {
+			$msg = $mod['Records put in queue'];
+		}
+		$msg .= '<br />';
+		$msg .= $mod['Records'];
+		$msg .= '<br />';
+		$msg .= '<ul>';
+		foreach ($malaunch_records as $record) {
+			$msg .= '<li>'.$record.'</li>';
+		}
+		$msg .= '</ul>';
+		$smarty->assign('ERROR_MESSAGE', $msg);
+		coreBOS_Session::delete('malaunch_records');
+	}
 
 	$smarty->display("{$module->name}/EditWorkflow.tpl");
 }

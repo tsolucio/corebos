@@ -1,6 +1,8 @@
 const ldsModalClosing = new Event('closemodal');
 const ldsModal = {
-	show : (headText, content, size = 'medium', saveAction = '') => {
+	show : (headText, content, size = 'medium', saveAction = '', cancelButtonText = '') => {
+		cancelButtonText = cancelButtonText === '' ? alert_arr.JSLBL_CANCEL : cancelButtonText;
+		let sact = (saveAction!==false && saveAction!='') ? `<button class="slds-button slds-button_brand" onclick="${saveAction}">${alert_arr.JSLBL_SAVE}</button>` : '';
 		let modal = `<section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_${size}" aria-modal="true">
 			<div class="slds-modal__container">
 				<header class="slds-modal__header">
@@ -22,14 +24,8 @@ const ldsModal = {
 					${content}
 				</div>
 				<footer class="slds-modal__footer" style="width: 100%;">
-					<button class="slds-button slds-button_neutral" onClick="javascript:ldsModal.close()">${alert_arr.JSLBL_CANCEL}</button>
-	${(() => {
-		if (saveAction!==false && saveAction!='') {
-			return `<button class="slds-button slds-button_brand" onclick="${saveAction}">${alert_arr.JSLBL_SAVE}</button>`;
-		} else {
-			return ``;
-		}
-	})()}
+					<button class="slds-button slds-button_neutral" onClick="javascript:ldsModal.close()">${cancelButtonText}</button>
+					${sact}
 				</footer>
 			</div>
 		</section >
@@ -45,6 +41,7 @@ const ldsModal = {
 			modalContainer.innerHTML = html;
 			document.body.appendChild(modalContainer);
 			ldsModal.active = true;
+			vtlib_executeJavascriptInElement(document.getElementById('global-modal-container'));
 		}
 	},
 	close : () => {

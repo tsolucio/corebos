@@ -24,32 +24,68 @@ include_once 'modules/cbQuestion/cbQuestion.php';
  */
 function cbwsGetAnswer($qid, $params, $user) {
 	global $adb, $log;
-	$qid = vtws_getWSID($qid);
-	$webserviceObject = VtigerWebserviceObject::fromId($adb, $qid);
-	$handlerPath = $webserviceObject->getHandlerPath();
-	$handlerClass = $webserviceObject->getHandlerClass();
+	$result_array = array();
+	$qid = explode(',', $qid);
+	if (is_string($params) && substr($params, 0, 1)=='{') {
+		$params = json_decode($params, true);
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			$params = [];
+		}
+	}
+	foreach ((array)$qid as $id) {
+		$qwsid = vtws_getWSID($id);
+		if ($qwsid===false || $qwsid=='0x0') {
+			// we try to search it as a string
+			$qrs = $adb->pquery(
+				'select cbquestionid from vtiger_cbquestion inner join vtiger_crmentity on crmid=cbquestionid where deleted=0 and qname=?',
+				array($id)
+			);
+			if ($qrs && $adb->num_rows($qrs)>0) {
+				$qwsid = vtws_getEntityId('cbQuestion').'x'.$qrs->fields['cbquestionid'];
+			}
+		}
+		$id = $qwsid;
+		$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
+		$handlerPath = $webserviceObject->getHandlerPath();
+		$handlerClass = $webserviceObject->getHandlerClass();
 
-	require_once $handlerPath;
+		require_once $handlerPath;
 
-	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
-	$meta = $handler->getMeta();
-	$entityName = $meta->getObjectEntityName($qid);
-	$types = vtws_listtypes(null, $user);
-	if ($entityName!='cbQuestion' || !in_array($entityName, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+		$meta = $handler->getMeta();
+		$entityName = $meta->getObjectEntityName($id);
+		$types = vtws_listtypes(null, $user);
+		if ($entityName!='cbQuestion' || !in_array($entityName, $types['types'])) {
+			$result_array[] = new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+			continue;
+		}
+		if ($meta->hasReadAccess()!==true) {
+			$result_array[] = new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
+			continue;
+		}
+		if ($entityName !== $webserviceObject->getEntityName()) {
+			$result_array[] = new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
+			continue;
+		}
+		if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $id)) {
+			$result_array[] = new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+			continue;
+		}
+		$qidComponents = vtws_getIdComponents($id);
+		if (!$meta->exists($qidComponents[1])) {
+			$result_array[] = new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
+			continue;
+		}
+		$result_array[] = cbQuestion::getAnswer($qidComponents[1], (empty($params[$id]) ? $params : $params[$id]));
 	}
-	if ($meta->hasReadAccess()!==true) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
+	if (count($result_array) == 1) {
+		$return = reset($result_array);
+		if (is_a($return, 'WebServiceException')) {
+			throw $return;
+		} else {
+			return $return;
+		}
+	} else {
+		return $result_array;
 	}
-	if ($entityName !== $webserviceObject->getEntityName()) {
-		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
-	}
-	if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $qid)) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
-	}
-	$qidComponents = vtws_getIdComponents($qid);
-	if (!$meta->exists($qidComponents[1])) {
-		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
-	}
-	return cbQuestion::getAnswer($qidComponents[1], $params);
 }

@@ -82,6 +82,7 @@ $mod_strings = array(
 	'Add MView Workflow' => 'Add Materialized View Workflow',
 	'Del MView Workflow' => 'Delete Materialized View Workflow',
 	'MVIEWWFMissingFields' => 'Unique ID and Module must exist for this functionality',
+	'MVIEWWFWFAlredyExists' => 'Materialized View Workflow already exists. Delete it first.',
 	'DELMVIEWOK' => 'Materialized View deleted correctly',
 	'DELMVIEWNOK' => 'Error deleting the materialized view',
 	'MVIEWACTIVATED' => 'Materialized View Cron Activated',
@@ -99,5 +100,8 @@ $mod_strings = array(
 	'Context Module' => 'Context Module',
 	'Query Context' => 'Query Context',
 	'SelectModule' => 'Select a module',
+	'Add variable' => 'Add variable',
+	'Export Results' => 'Export Results',
+	'Value' => 'Value',
 );
 ?>

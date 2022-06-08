@@ -25,7 +25,7 @@ if (isset($_REQUEST['roleid']) && $_REQUEST['roleid'] != '') {
 	$thisRoleDet=$roleInfo[$roleid];
 	$rolename = $thisRoleDet[0];
 	$parent = $thisRoleDet[3];
-	//retreiving the vtiger_profileid
+	//retrieving the profileid
 	$roleRelatedProfiles=getRoleRelatedProfiles($roleid);
 } elseif (isset($_REQUEST['parent']) && $_REQUEST['parent'] != '') {
 	$roleid = $rolename = '';

@@ -16,7 +16,7 @@ global $currentModule, $mod_strings, $app_strings, $current_user, $adb;
 $excludedRecords=vtlib_purify($_REQUEST['excludedRecords']);
 $idstring = vtlib_purify($_REQUEST['idstring']);
 $idstring = trim($idstring, ';');
-$idlist = getSelectedRecords($_REQUEST, $_REQUEST['sourcemodule'], $idstring, $excludedRecords);//explode(';', $idstring);
+$idlist = getSelectedRecords($_REQUEST, $_REQUEST['sourcemodule'], $idstring, $excludedRecords);
 
 $sourcemodule = vtlib_purify($_REQUEST['sourcemodule']);
 $message = vtlib_purify($_REQUEST['message']);

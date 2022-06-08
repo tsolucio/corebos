@@ -65,11 +65,8 @@ class addRelationInformationToRelatedList extends cbupdaterWorker {
 				}
 			}
 			// Migrating existing relations to N:N or 1:N based on relation fieldid
-			$query = "UPDATE vtiger_relatedlists SET relationtype='N:N' WHERE relationfieldid IS NULL";
-			$result = $this->ExecuteQuery($query, array());
-
-			$query = "UPDATE vtiger_relatedlists SET relationtype='1:N' WHERE relationfieldid IS NOT NULL";
-			$result = $this->ExecuteQuery($query, array());
+			$this->ExecuteQuery("UPDATE vtiger_relatedlists SET relationtype='N:N' WHERE relationfieldid IS NULL", array());
+			$this->ExecuteQuery("UPDATE vtiger_relatedlists SET relationtype='1:N' WHERE relationfieldid IS NOT NULL", array());
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);

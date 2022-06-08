@@ -23,7 +23,7 @@
 	<input type="hidden" name="module" id="module" value="{$_MODULE->name()}">
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">
-	{if $_MODULE->name() neq 'Quotes' && $_MODULE->name() neq 'SalesOrder' && $_MODULE->name() neq 'Invoice' && $_MODULE->name() neq 'PurchaseOrder' && $_MODULE->name() neq 'Documents' && $_MODULE->name() neq 'Products'}
+	{if $_MODULE->name() neq 'Quotes' && $_MODULE->name() neq 'SalesOrder' && $_MODULE->name() neq 'Invoice' && $_MODULE->name() neq 'PurchaseOrder' && $_MODULE->name() neq 'Documents'}
 		<a href="?_operation=edit&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_EDIT}</a>
 		<a href="?_operation=getrelatedlists&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_RELATED_LISTS}</a>
 		<a href="?_operation=duplicate&module={$_MODULE->name()}&record={$_RECORD->id()}&duplicatedfrom={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-recycle ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_DUPLICATE}</a>
@@ -63,11 +63,11 @@
 				<h3>{$_BLOCKLABEL|@getTranslatedString:$_MODULE->name()}</h3>
 				{foreach item=_FIELD from=$_FIELDS}
 					<input type="hidden" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}">
-					<div class="ui-grid-a">
+					<div class="ui-grid-b">
 						{if ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m') && $_FIELD->valueLabel() neq ''}
 							<img src="{$_FIELD->valueLabel()}" style="max-width:100%">
 						{else}
-						<div class="ui-block-a">
+						<div class="ui-bar ui-bar-b ui-corner-all">
 							{if $_MODULE->name() eq 'cbCalendar'}
 								{if $_FIELD->name() eq 'date_start'}
 									{'Start Date'|@getTranslatedString:$_MODULE->name()}:
@@ -80,10 +80,10 @@
 								{$_FIELD->label()}:
 							{/if}
 						</div>
-						<div class="ui-block-b">
+						<div class="ui-bar ui-bar-c ui-corner-all" style="height:50px;">
 							{if $_FIELD->isReferenceType() && $_FIELD->uitype() neq '53' && $_FIELD->uitype() neq '52'}
 								{if $_FIELD->valueLabel() neq ''}
-									<a class="ui-btn ui-corner-all ui-icon-carat-r ui-btn-icon-right" href="index.php?_operation=fetchRecord&record={$_FIELD->value()}" rel="external" data-theme="c">
+									<a class="ui-btn ui-btn-b ui-corner-all ui-icon-carat-r ui-btn-icon-right" href="index.php?_operation=fetchRecord&record={$_FIELD->value()}" rel="external" data-theme="a">
 										<span class="ui-btn-inner">
 											<span class="ui-btn-text">{$_FIELD->valueLabel()}</span>
 										</span>

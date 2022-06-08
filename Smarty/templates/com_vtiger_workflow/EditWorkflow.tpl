@@ -7,6 +7,9 @@
 {include file='com_vtiger_workflow/ErrorMessageBox.tpl'}
 <!--Done popups-->
 
+{if isset($malaunch_records)}
+	{include file='applicationmessage.tpl'}
+{/if}
 {include file='com_vtiger_workflow/ModuleTitle.tpl' show='wfedit'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div id="view" class="workflows-edit slds-modal__container slds-p-around_none slds-card">

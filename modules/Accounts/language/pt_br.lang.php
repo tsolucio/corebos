@@ -208,5 +208,7 @@ $mod_strings = array(
 'Space Consumed' => 'Espaço Utilizado',
 'Frequency' => 'Frequência da faturamento',
 'Add event' => 'Adciona evento',
+'ship_countrycode' => 'Shipping Country Code',
+'bill_countrycode' => 'Billing Country Code',
 );
 ?>

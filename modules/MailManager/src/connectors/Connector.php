@@ -95,8 +95,8 @@ class MailManager_Connector {
 		$this->mBoxUrl = $boxUrl;
 		$this->mBoxBaseUrl = $baseUrl; // Used for folder List
 		$this->mBox = @imap_open($url, $username, $password);
-		imap_errors();
 		$this->isError();
+		imap_errors();
 	}
 
 	/**
@@ -153,12 +153,12 @@ class MailManager_Connector {
 	 * Reads mail box folders
 	 * @param string $ref Optional -
 	 */
-	public function folders($ref = "{folder}") {
+	public function folders($ref = '{folder}') {
 		if ($this->mFolders) {
 			return $this->mFolders;
 		}
 
-		$result = imap_getmailboxes($this->mBox, $ref, "*");
+		$result = imap_getmailboxes($this->mBox, $ref, '*');
 		if ($this->isError()) {
 			return false;
 		}
@@ -166,7 +166,7 @@ class MailManager_Connector {
 		$folders = array();
 		foreach ($result as $row) {
 			$folderName = str_replace($ref, '', $row->name);
-			$folder = $this->convertCharacterEncoding($folderName, 'ISO_8859-1', 'UTF7-IMAP'); //Decode folder name
+			$folder = $this->convertCharacterEncoding($folderName, 'ISO-8859-1', 'UTF7-IMAP'); //Decode folder name
 			$folders[] = $this->folderInstance($folder);
 		}
 		$this->mFolders = $folders;
@@ -190,7 +190,7 @@ class MailManager_Connector {
 	 * @param $options imap_status flags like SA_UNSEEN, SA_MESSAGES etc
 	 */
 	public function updateFolder($folder, $options) {
-		$mailbox = $this->convertCharacterEncoding($folder->name($this->mBoxUrl), 'UTF7-IMAP', 'ISO_8859-1'); //Encode folder name
+		$mailbox = $this->convertCharacterEncoding($folder->name($this->mBoxUrl), 'UTF7-IMAP', 'ISO-8859-1'); //Encode folder name
 		$result = @imap_status($this->mBox, $mailbox, $options);
 		if ($result) {
 			if (isset($result->unseen)) {
@@ -204,7 +204,7 @@ class MailManager_Connector {
 
 	/**
 	 * Returns MailManager_Model_Folder Instance
-	 * @param String $name - folder name
+	 * @param string $name - folder name
 	 */
 	public function folderInstance($name) {
 		return new MailManager_Model_Folder($name);
@@ -212,7 +212,7 @@ class MailManager_Connector {
 
 	/**
 	 * Sets a list of mails with paging
-	 * @param String $folder - MailManager_Model_Folder Instance
+	 * @param string $folder - MailManager_Model_Folder Instance
 	 * @param Integer $start  - Page number
 	 * @param Integer $maxLimit - Number of mails
 	 */
@@ -244,7 +244,6 @@ class MailManager_Connector {
 	 * Return the cache interval
 	 */
 	public function clearDBCacheInterval() {
-		// TODO Provide configuration option.
 		if (self::$DB_CACHE_CLEAR_INTERVAL) {
 			return strtotime(self::$DB_CACHE_CLEAR_INTERVAL);
 		}
@@ -276,7 +275,7 @@ class MailManager_Connector {
 
 	/**
 	 * Function which deletes the mails
-	 * @param String $msgno - List of message number seperated by commas.
+	 * @param string $msgno - List of message number seperated by commas.
 	 */
 	public function deleteMail($msgno) {
 		$msgno = trim($msgno, ',');
@@ -289,8 +288,8 @@ class MailManager_Connector {
 
 	/**
 	 * Function which moves mail to another folder
-	 * @param String $msgno - List of message number separated by commas
-	 * @param String $folderName - folder name
+	 * @param string $msgno - List of message number separated by commas
+	 * @param string $folderName - folder name
 	 */
 	public function moveMail($msgno, $folderName) {
 		$msgno = trim($msgno, ',');
@@ -304,7 +303,7 @@ class MailManager_Connector {
 
 	/**
 	 * Creates an instance of Message
-	 * @param String $msgno - Message number
+	 * @param string $msgno - Message number
 	 * @return MailManager_Model_Message
 	 */
 	public function openMail($msgno) {
@@ -323,7 +322,7 @@ class MailManager_Connector {
 
 	/**
 	 * Marks the mail as Read
-	 * @param String $msgno - Message Number
+	 * @param string $msgno - Message Number
 	 */
 	public function markMailRead($msgno) {
 		imap_setflag_full($this->mBox, $msgno, '\\Seen');
@@ -332,7 +331,7 @@ class MailManager_Connector {
 
 	/**
 	 * Searches the Mail Box with the query
-	 * @param String $query - imap search format
+	 * @param string $query - imap search format
 	 * @param MailManager_Model_Folder $folder - folder instance
 	 * @param Integer $start - Page number
 	 * @param Integer $maxLimit - Number of mails
@@ -380,7 +379,7 @@ class MailManager_Connector {
 			$list = @imap_list($this->mBox, $this->mBoxBaseUrl, '*');
 			if (is_array($list)) {
 				foreach ($list as $val) {
-					$folder = $this->convertCharacterEncoding($val, 'ISO_8859-1', 'UTF7-IMAP'); //Decode folder name
+					$folder = $this->convertCharacterEncoding($val, 'ISO-8859-1', 'UTF7-IMAP'); //Decode folder name
 					$folderList[] =  preg_replace("/{(.*?)}/", "", $folder);
 				}
 			}

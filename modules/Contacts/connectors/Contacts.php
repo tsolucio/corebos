@@ -316,7 +316,7 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 	 */
 	public function getContacts($SyncState) {
 		global $current_user;
-		$user = $current_user;//Users_Record_Model::getCurrentUserModel();
+		$user = $current_user;
 		$query = array(
 			'max-results' => $this->maxResults,
 			'start-index' => 1,
@@ -651,7 +651,7 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 		$category->addAttribute('term', 'http://schemas.google.com/g/2008#contact');
 		global $current_uer;
 		if (!$user) {
-			$user = $current_uer;//Users_Record_Model::getCurrentUserModel ();
+			$user = $current_uer;
 		}
 
 		if (!isset($this->selectedGroup)) {
@@ -736,7 +736,7 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 	public function push($records, $user = false) {
 		global $current_user;
 		if (!$user) {
-			$user = $current_user;//Users_Record_Model::getCurrentUserModel();
+			$user = $current_user;
 		}
 
 		if (!isset($this->selectedGroup)) {
@@ -842,7 +842,7 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 		$decoded_resp = json_decode($response, true);
 		$feed = $decoded_resp['feed'];
 		$entries = $feed['entry'];
-		$groups = array(
+		$group_arr = array(
 			'title' => $feed['title']['$t']
 		);
 		foreach ($entries as $entry) {
@@ -853,8 +853,8 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 			if ($onlyIds) {
 				$group = $group['id'];
 			}
-			$groups['entry'][] = $group;
+			$group_arr['entry'][] = $group;
 		}
-		return $groups;
+		return $group_arr;
 	}
 }

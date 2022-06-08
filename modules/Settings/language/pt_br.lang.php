@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contribuitor: Ranieri Slemer | 20-08-2020 | Translate Brazilian Portuguese | www.ecrmweb.com.br
+ * Contribuitor: Ranieri Slemer | 28-10-2021 | Translate Brazilian Portuguese | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -320,7 +320,7 @@ $mod_strings = array(
 'PurchaseOrder'=>'Pedido compra',
 'SalesOrder'=>'Pedido venda',
 'Invoice'=>'Fatura',
-'LBL_FRONT_LOGO' => 'Logotipo da frente',
+'LBL_FRONT_LOGO' => 'Logotipo entrada',
 'LBL_FAVICON_LOGO' => 'Logo favicon',
 
 //For Custom Fields
@@ -589,6 +589,10 @@ $mod_strings = array(
 'Invalid_file'=>'Arquivo inválido OU',
 'File_has_no_data'=>'O arquivo não contém dados',
 'Sorry'=>'Desculpe',
+'LBL_OPTIONAL'=>'(opcional)',
+'LBL_ATTACH'=>'Anexo',
+'GoToParent' => 'Go to parent',
+'Directory' => 'Directory',
 'uploaded_file_exceeds_maximum_limit'=>'o arquivo transferido excedeu o limite máximo em :file_size',
 'try_file_smaller'=>'Por favor tente um arquivo menor que 800000 bytes',
 'Problems_in_upload'=>'Problemas na transferência do arquivo',
@@ -763,11 +767,11 @@ $mod_strings = array(
 'LBL_MESSAGES_FROM_LASTSCAN'=>'Mensagens do último rastreamento',
 'LBL_MARK_MESSAGE_AS'=>'Marcar mensagem como',
 'LBL_ASSIGN' => 'Atribuir a',
-'LBL_MUSTBERELATED' => 'Must be related with record',
-'LBL_ADDEMAILAS' => 'Add Email as',
-'LBL_ADDCOMMENTEMAIL' => 'As comment and email',
-'LBL_ADDLINKEMAIL' => 'As link in comment and email',
-'LBL_ADDONLYEMAIL' => 'Only email',
+'LBL_MUSTBERELATED' => 'Deve estar relacionado com um registro',
+'LBL_ADDEMAILAS' => 'Adicionar e-mail com',
+'LBL_ADDCOMMENTEMAIL' => 'Como comentário e email',
+'LBL_ADDLINKEMAIL' => 'Como link em comentário e e-mail',
+'LBL_ADDONLYEMAIL' => 'Apenas email',
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Workflows',
 'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Criar e editar workflows',
@@ -877,6 +881,7 @@ $mod_strings = array(
 'LBL_ACTIVE' => 'Ativo',
 'LBL_QUICK_CREATE' => 'Criar rápido',
 'LBL_MASS_EDIT' => 'Editar em massa',
+'LBL_LONG_FIELD' => 'Campo Longo',
 'LBL_BLOCK_NAME' => 'Nome bloco',
 'AFTER' => 'Depois',
 'ADD_BLOCK' => 'Adicionar bloco',
@@ -988,5 +993,38 @@ $mod_strings = array(
 'SM_BeBackSoon' => 'Estaremos de volta em breve!',
 'SM_SorryInconvenience' => 'Estamos fazendo uma manutenção no momento. Estaremos de volta on-line o mais breve possível!',
 'LBL_CC' => 'CC',
+'Not Labeled' => 'Sem descrição',
+'LBL_MB_MODULENAME' => 'Nome módulo',
+'LBL_MB_MODULELABEL' => 'Nome módulo',
+'LBL_MB_MODULEFIELDS' => 'Campos módulo',
+'LBL_MB_PARENTMENU' => 'Menu pai',
+'LBL_MB_MODULEICON' => 'Icone módulo',
+'LBL_MB_NEXT' => 'PRÓXIMO',
+'LBL_MB_MODULEBLOCKS' => 'Blocos módulo',
+'LBL_MB_DATECREATED' => 'Data & hora criação',
+'LBL_MB_COMPLETED' => 'Completado',
+'LBL_MB_EXPORT' => 'Exportiar',
+'LBL_MB_STARTEDITING' => 'Iniciar edição',
+'LBL_MB_CLOSE' => 'Fechado',
+'LBL_MB_LISTMODULES' => 'Lista de modulos',
+'LBL_MB_GENERAL' => 'Informação geral',
+'LBL_MB_LISTICONS' => 'Lista dos icones',
+'LBL_MB_BLOCKLABEL' => 'Nome bloco',
+'LBL_MB_NEWBLOCK' => 'Novo bloco',
+'LBL_MB_ADDFIELD' => 'ADICIONAR CAMPO',
+'LBL_MB_ALLMODULES' => 'Todos módulos',
+'LBL_MB_PROGRESS' => 'Progresso',
+'LBL_MB_STATUS' => 'Status',
+'LBL_MODULE_BUILDER' => 'Criador de módulos',
+'LBL_MODULE_BUILDER_DESCRIPTION' => 'Criar novo módulo',
+'LBL_MB_RELATEDLISTS' => 'Listas relacionadas',
+'LBL_MB_NEWRL' => 'Adic lista relacionada',
+'LBL_MB_FINISH' => 'Finalizar',
+'LBL_MB_BACK' => 'VOLTAR',
+'LBL_CUSTOM_INFORMATION' => 'INFORMAÇÃO CUSTOMIZADA',
+'LBL_ACTIONS' => 'AÇÕES',
+'LBL_MERGE' => 'Mesclar',
+'LBL_IMPORT' => 'Importar',
+'LBL_EXPORT' => 'Exportar',
 );
 ?>

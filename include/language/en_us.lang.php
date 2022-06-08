@@ -182,6 +182,7 @@ $app_strings = array(
 'NTC_TIME_FORMAT' => '(24:00)',
 'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to delete this record?',
+'SMTP_DELETE_CONFIRMATION' => 'Are you sure you want to delete this SMTP settings?',
 'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Deleting this account will remove its related Opportunities & Quotes. Are you sure you want to delete this account?',
 'NTC_VENDOR_DELETE_CONFIRMATION' => 'Deleting this vendor will remove its related Purchase Orders. Are you sure you want to delete this vendor?',
 'ERR_DELETE_RECORD' => 'A record number must be specified to delete the contact.',
@@ -693,7 +694,6 @@ $app_strings = array(
 'CreatingRevision' => 'Saving all your work for future reference. Please be patient...',
 
 //Added for values of picklist in Advanced Search filter
-//Modified for 5.0.3 GA release
 'contains'=>'contains',
 'does_not_contains'=>'does not contain',
 'is'=>'is',
@@ -862,8 +862,6 @@ $app_strings = array(
 'TO' => ' to ',
 'DELETE_RSSFEED_CONFIRMATION' => 'Are you sure to delete the rss feed?',
 'NOT_PERMITTED_TO_EXPORT' => 'you are not permitted to export!',
-
-//Added for 5.0.3
 'MSG_DEAR'=>'Dear',
 'MSG_REGARDING'=>'Regarding',
 'MSG_UPDATION'=>'updation -',
@@ -879,7 +877,7 @@ $app_strings = array(
 'MSG_VTIGERTEAM'=>' coreBOS Team',
 'MSG_IS_NOT_UPLOADED'=>'is not uploaded. Allowed file types - jpeg, png, jpg, pjpeg, x-png or gif',
 'MSG_IMAGE_ERROR'=>'Image not found',
-
+'LBL_IMAGESECURITY_ERROR' => 'Invalid image: contains potential malicious contents',
 'Information'=>'Information',
 'Address'=>'Address',
 'Custom Information'=>'Custom Information',
@@ -972,6 +970,8 @@ $app_strings = array(
 'Mailing Po Box' => 'Mailing Po Box',
 'Other Po Box' => 'Other Po Box',
 'Image' => 'Image',
+'Unknown' => 'Unknown',
+'Compressed' => 'Compressed',
 
 //Export Records STARTS--->
 'LBL_EXPORT_TYPE_1'=>'Export Type1:',
@@ -983,6 +983,9 @@ $app_strings = array(
 'LBL_SEARCH_CRITERIA_COLUMNS'=>'Export Filter Columns',
 'LBL_VISIBLE_COLUMNS'=>'Export only visible columns',
 'LBL_ALL_DATA'=>'Export all data',
+'LBL_EXPORT_FORMAT' => 'Export Format',
+'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 'LBL_DATA_IN_CURRENT_PAGE'=>'Export data in current page',
 'LBL_ONLY_SELECTED_RECORDS'=>'Export selected records',
 'LBL_YES'=>'Yes',
@@ -1000,7 +1003,6 @@ $app_strings = array(
 'LBL_NOT_ACCESSIBLE'=>'Not Accessible',
 
 //Added for Existing Picklist Strings for both Lead module (convert div) and for potential module.
-
 'Prospecting'=>'Prospecting',
 'Qualification'=>'Qualification',
 'Needs Analysis'=>'Needs Analysis',
@@ -1032,9 +1034,7 @@ $app_strings = array(
 'LBL_SELECT_PARENTROLE' => 'Select the parent role',
 //Added for migration check
 'LBL_MIGRATION_CHECK'=>'Versions in database and file are same. You cannot do the migration. Please check the db and then do necessary steps.',
-//Added for ticket #4595
 'LBL_RECORD_NOT_FOUND'=>'Record you are trying to access is not found',
-//Added for i18n issue (report 06/12/2007)
 'Reorder Level' => 'Reorder Level',
 'Handler' => 'Handler',
 'Qty In Demand' => 'Qty In Demand',
@@ -1062,7 +1062,7 @@ $app_strings = array(
 'Task_sign'=>'Thank You<br>HelpDesk Team<br>',
 //Added for PDF notification
 'LBL_PDF'=>'PDF Cannot be generated as the width exceeds the maximum limit, Kindly ',
-//Added for pdf internalization in 5.0.4
+//Added for pdf internalization
 'Thank You'=>'Thank You',
 'For Your Business'=>'For Your Business',
 'Subtotal'=>'Subtotal',
@@ -1098,9 +1098,7 @@ $app_strings = array(
 'Discount'=>'Discount',
 'LBL_ADD_BUTTON' => 'Add',
 
-// Added after 5.0.4 GA
-
-//Added to Fix i18N issue in Email Template
+//Added to fix i18n issue in Email Template
 'LBL_GENERAL_FIELDS'=>'General Fields',
 //For Users fields
 'HomePhone'=>'HomePhone',
@@ -1200,6 +1198,8 @@ $app_strings = array(
 'LBL_CALLER_INFORMATION'=>'Caller Information',
 'LBL_CALLER_NUMBER'=>'Number :',
 'LBL_CALLER_NAME'=>'Name :',
+'LBL_VIEW_CONTACT' => 'View Contact',
+'LBL_CLICK_NOTIFICATION_TO'=> 'Click Notification to ',
 
 //asterisk integration ends
 
@@ -1232,6 +1232,8 @@ $app_strings = array(
 'PRIVATE_FILTER'=>'Private',
 'SHARE_FILTER'=>'Share',
 'PUBLIC_FILTER'=>'Public',
+'Shared' => 'Shared',
+'Scheduled' => 'Scheduled',
 
 // Account Hierarchy
 'LBL_ACCOUNT_HIERARCHY' => 'Organization Hierarchy',
@@ -1369,6 +1371,33 @@ $app_strings = array(
 'csrf_reload' => 'Reload the page',
 'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 'VALIDATION_FAILED' => 'Validation failed',
+'Select Module To Upsert' => 'Select Module To Upsert',
+'LBL_FIX_NOW' => 'Fix Now',
+'LBL_HIERARCHY' => 'Hierarchy',
+'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Search Documents',
+
+//login translation
+'LBL_Please_login_to_your_account' => 'Please login to your account',
+'LBL_Bussiness'	=> 'Make your business run smoothly',
+'LBL_Management' => 'Intelligent customer management',
+'LBL_Statistics' => 'Easy to track your statistics',
+
+//List view popup content
+'LBL_SEND_TO' => 'SEND TO',
+'LNK_ALPHABETICAL_SEARCH' => 'Alpabetical Search',
+'ERR_SITE_URL_MISMATCH' => 'Site URL mismatch',
+'Mautic ID' => 'Mautic ID',
+'Deleted in Mautic' => 'Deleted in Mautic',
+'Contact Points' => 'Contact Points',
+'From External Source' => 'From External Source',
+'LBL_ADD_ROW' => 'Add Row',
+'LBL_EDIT_COLUMNS' => 'Edit Columns',
+'LBL_SELECT_COLUMNS' => 'Select columns to show in Mass Create Grid',
+'LBL_MATCH_COLUMNS' => 'Select columns to match in Mass Create Grid',
+'LBL_SAVE_MAP' => 'Save Map',
+'Paste the link here' => 'Paste the link here',
+'LBL_UITYPE10_NOTALLOWED' => 'The related module has a mandatory related field.',
+'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 );
 
 // Translation for currency names

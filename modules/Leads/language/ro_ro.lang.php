@@ -14,6 +14,14 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
+if (isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') {
+	$toggle_historicos = 'See Non Converted Leads';
+	$toggle_name = 'Converted Leads';
+} else {
+	$toggle_historicos = 'See Converted Leads';
+	$toggle_name = 'Leads';
+}
+
 $mod_strings = array(
 	'LBL_TGL_HISTORICOS' => 'Vizualizeaza Protentiali Convertiti',
 	'LBL_MODULE_NAME' => 'Potentiali',

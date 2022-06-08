@@ -37,6 +37,7 @@ class coreBOS_MQTMDispatcher extends \Core_Daemon {
 	 */
 	protected function setup() {
 		$this->cb_db = PearDatabase::getInstance();
+		$this->cb_db->query('set global max_allowed_packet=268435456;');
 		$this->cb_mq = coreBOS_MQTM::getInstance();
 		$this->loop_interval = GlobalVariable::getVariable('MQTM_Loop_Interval', 5, '', Users::getActiveAdminId());
 	}
@@ -48,8 +49,9 @@ class coreBOS_MQTMDispatcher extends \Core_Daemon {
 	 * @return void
 	 */
 	protected function execute() {
+		global $adb;
+		$this->cb_db->query('select 1'); // use DB connection to keep it alive
 		if (empty($this->cb_db) || $this->cb_db->database->_connectionID->errno>0) {
-			global $adb;
 			$adb->connect();
 			$this->setup();
 		}

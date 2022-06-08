@@ -10,6 +10,8 @@
 require_once 'modules/com_vtiger_workflow/WorkflowScheduler.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/Users/Users.php';
+include_once 'include/Webservices/cbRule.php';
+include_once 'include/Webservices/cbQuestion.php';
 
 class WorkFlowScheduler {
 	private $db;
@@ -21,7 +23,8 @@ class WorkFlowScheduler {
 		'less than or equal to' => 'm',
 		'greater than or equal to' => 'h',
 		'is' => 'e',
-		'contains' => 'c',
+		'contains' => 'c', // comma separation as ORs
+		'containsnc' => 'cnc', // contains with no comma separation
 		'does not contain' => 'k',
 		'starts with' => 's',
 		'ends with' => 'ew',
@@ -45,6 +48,7 @@ class WorkFlowScheduler {
 		'exists' => 'exists',
 		'does not start with' => 'dnsw',
 		'does not end with' => 'dnew',
+		'monthday' => 'monthday',
 	);
 
 	public function __construct($adb) {
@@ -74,7 +78,7 @@ class WorkFlowScheduler {
 			foreach ($selectExpressions as $selectExpression) {
 				if ($selectExpression->valuetype == 'fieldname') {
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $selectExpression->fieldname, $valuematches);
-					if (count($valuematches) != 0) {
+					if (!empty($valuematches)) {
 						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
 					} else {
 						$queryGenerator->addWhereField($selectExpression->fieldname);
@@ -82,10 +86,11 @@ class WorkFlowScheduler {
 					$selectFields[] = $queryGeneratorSelect->getSQLColumn($selectExpression->value);
 				} elseif ($selectExpression->valuetype == 'expression') {
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $selectExpression->value, $valuematches);
-					if (count($valuematches) != 0) {
+					if (!empty($valuematches)) {
 						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
 					}
-					$selectFields[] = $substExpsSelect["::#$selectExpsCounter"]." AS $selectExpression->fieldname";
+					$substExpression = sprintf('%03d', $selectExpsCounter);
+					$selectFields[] = $substExpsSelect["::#$substExpression"]." AS $selectExpression->fieldname";
 					$selectExpsCounter++;
 				} else {
 					$selectFields[] = $selectExpression->value;
@@ -137,16 +142,25 @@ class WorkFlowScheduler {
 	}
 
 	public function getEligibleWorkflowRecords($workflow) {
-		$adb = $this->db;
-		$query = $this->getWorkflowQuery($workflow);
-		// echo $query."\n"; // for debugging > get query on screen
-		$result = $adb->query($query);
-		$noOfRecords = $adb->num_rows($result);
+		global $current_user;
 		$recordsList = array();
-		for ($i = 0; $i < $noOfRecords; ++$i) {
-			$recordsList[] = $adb->query_result($result, $i, 0);
+		if ($workflow->options == 'conditions') {
+			$adb = $this->db;
+			$query = $this->getWorkflowQuery($workflow);
+			// echo $query."\n"; // for debugging > get query on screen
+			$result = $adb->query($query);
+			$noOfRecords = $adb->num_rows($result);
+			for ($i = 0; $i < $noOfRecords; ++$i) {
+				$recordsList[] = $adb->query_result($result, $i, 0);
+			}
+			$result = null;
+		} elseif ($workflow->options == 'cbquestion') {
+			$recordsList = cbwsGetAnswer(vtws_getEntityId('cbQuestion').'x'.$workflow->cbquestion, '', $current_user);
+		} elseif ($workflow->options == 'recordset') {
+			$recordsList = cbws_cbRule(vtws_getEntityId('cbMap').'x'.$workflow->recordset, array(), $current_user);
+		} elseif ($workflow->options == 'onerecord') {
+			$recordsList[] = $workflow->onerecord;
 		}
-		$result = null;
 		return $recordsList;
 	}
 
@@ -157,7 +171,6 @@ class WorkFlowScheduler {
 		$user = $util->adminUser();
 
 		$vtWorflowManager = new VTWorkflowManager($adb);
-		$taskQueue = new VTTaskQueue($adb);
 		$entityCache = new VTEntityCache($user);
 
 		// set the time zone to the admin's time zone, this is needed so that the scheduled workflow will be triggered
@@ -179,26 +192,22 @@ class WorkFlowScheduler {
 				$records = $this->getEligibleWorkflowRecords($workflow);
 				$noOfRecords = count($records);
 				for ($j = 0; $j < $noOfRecords; ++$j) {
+					$tasks = $tm->getTasksForWorkflow($workflow->id);
 					$recordId = $records[$j];
 					$moduleName = $workflow->moduleName;
 					$wsEntityId = vtws_getWebserviceEntityId($moduleName, $recordId);
 					$entityData = $entityCache->forId($wsEntityId);
+					$entityData->WorkflowContext = array();
 					$data = $entityData->getData();
 					foreach ($tasks as $task) {
 						if ($task->active) {
 							$trigger = (empty($task->trigger) ? null : $task->trigger);
-							$wfminutes=$workflow->schminuteinterval;
-							if ($wfminutes!=null) {
-								$time = time();
-								$delay=$time;
+							if ($trigger != null) {
+								$delay = strtotime($data[$trigger['field']]) + $trigger['days'] * 86400;
 							} else {
-								if ($trigger != null) {
-									$delay = strtotime($data[$trigger['field']]) + $trigger['days'] * 86400;
-								} else {
-									$delay = 0;
-								}
+								$delay = 0;
 							}
-							if ($task->executeImmediately == true && $wfminutes==null) {
+							if ($delay==0) {
 								if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
 									try {
 										$task->startTask($entityData);
@@ -214,7 +223,14 @@ class WorkFlowScheduler {
 									}
 								}
 							} else {
-								$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
+								$entityData->WorkflowContext['__WorkflowID'] = $workflow->id;
+								$msg = array(
+									'taskId' => $task->id,
+									'entityId' => $entityData->getId(),
+									'context' => $entityData->WorkflowContext,
+								);
+								$delay = max($delay-time(), 0);
+								Workflow::pushWFTaskToQueue($workflow->id, $workflow->executionCondition, $entityData->getId(), $msg, $delay);
 							}
 						}
 					}
@@ -222,7 +238,7 @@ class WorkFlowScheduler {
 			}
 			$vtWorflowManager->updateNexTriggerTime($workflow);
 		}
-		if (count($errortasks)>0) {
+		if (!empty($errortasks)) {
 			global $logbg;
 			$logbg->fatal('> *** Workflow Scheduled Tasks Errors:');
 			$logbg->fatal($errortasks);
@@ -296,7 +312,7 @@ class WorkFlowScheduler {
 						foreach ($params as $param) {
 							if (is_object($param) && isset($param->value)) {
 								preg_match('/(\w+) : \((\w+)\) (\w+)/', $param->value, $parammatches);
-								if (count($parammatches) != 0) {
+								if (!empty($parammatches)) {
 									$queryGenerator->setReferenceFieldsManually($parammatches[1], $parammatches[2], $parammatches[3]);
 								}
 							}
@@ -304,12 +320,17 @@ class WorkFlowScheduler {
 					}
 					$wfscenv = new cbexpsql_environmentstub($queryGenerator->getModule(), '0x0');
 					$wfscenv->returnReferenceValue = false;
-					$substExpressions['::#'.$substExpressionsIndex] = $exprEvaluater->evaluate($wfscenv, true);
-					if (is_object($substExpressions['::#'.$substExpressionsIndex])) {
-						$substExpressions['::#'.$substExpressionsIndex] = $substExpressions['::#'.$substExpressionsIndex]->value;
+					$substExpression = sprintf('%03d', $substExpressionsIndex);
+					$substExpressions['::#'.$substExpression] = $exprEvaluater->evaluate($wfscenv, true);
+					if (is_object($substExpressions['::#'.$substExpression])) {
+						$substExpressions['::#'.$substExpression] = $substExpressions['::#'.$substExpression]->value;
 					}
-					$value = '::#'.$substExpressionsIndex;
+					$value = '::#'.$substExpression;
 					$substExpressionsIndex++;
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
+					if (count($matches) != 0) {
+						list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+					}
 				} else {
 					$value = html_entity_decode($value);
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
@@ -324,7 +345,7 @@ class WorkFlowScheduler {
 						}
 					}
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $value, $valuematches);
-					if (count($valuematches) != 0) {
+					if (!empty($valuematches)) {
 						list($value, $isfield) = self::getColumnFromField($value, true);
 						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
 					} elseif ($valueType=='fieldname' && strpos($value, '.')===false) {

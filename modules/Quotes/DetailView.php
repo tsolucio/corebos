@@ -19,8 +19,8 @@ $pdochk = $adb->pquery(
 	'select 1
 		from '.$focus->table_name.'
 		inner join vtiger_inventoryproductrel on '.$focus->table_index.'=id
-		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
-		where vtiger_crmentity.deleted = 1 and '.$focus->table_index.'=?',
+		inner join vtiger_crmobject on vtiger_crmobject.crmid=vtiger_inventoryproductrel.productid
+		where vtiger_crmobject.deleted = 1 and '.$focus->table_index.'=?',
 	array($record)
 );
 if ($adb->num_rows($pdochk)>0) {
@@ -37,6 +37,7 @@ if (isPermitted('Invoice', 'CreateView', $record) == 'yes') {
 $smarty->assign('CONVERTMODE', 'quotetoinvoice');
 //Get the associated Products and then display above Terms and Conditions
 $smarty->assign('ASSOCIATED_PRODUCTS', getDetailAssociatedProducts($currentModule, $focus));
+$smarty->assign('ShowInventoryLines', strpos(GlobalVariable::getVariable('Inventory_DoNotUseLines', '', $currentModule, $current_user->id), $currentModule)===false);
 $smarty->assign('CREATEPDF', 'permitted');
 $quote_no = getModuleSequenceNumber($currentModule, $record);
 $smarty->assign('QUO_NO', $quote_no);

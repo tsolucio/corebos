@@ -1,0 +1,22 @@
+.kanban-board-header, .kanban-item {
+	border-radius: 0.35rem;
+}
+.kanban-item {
+	max-width: 350px;
+	min-width: 250px;
+}
+.kanban-board {
+	border: 1px solid #dddbda;
+	border-radius: 0.25rem;
+	background-clip: padding-box;
+}
+.kanbanboard {
+	max-width: 25rem;
+	min-width: 12rem;
+}
+.kanban-container {
+	overflow-x: scroll;
+	white-space: nowrap;
+	display: flex;
+	padding-bottom: 0.75rem;
+}

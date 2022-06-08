@@ -23,6 +23,10 @@ global $application_unique_key;
 if (vtlib_purify($_REQUEST['app_key']) != $application_unique_key) {
 	exit;
 }
+global $current_language, $default_language;
+if (empty($current_language)) {
+	$current_language = $default_language;
+}
 
 $Vtiger_Utils_Log = false;
 global $adb, $current_user;

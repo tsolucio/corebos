@@ -344,7 +344,7 @@ class corebos_hubspot {
 	}
 
 	public function getPropertiesFromHubSpot($change) {
-		global $adb, $current_user;
+		global $current_user;
 		$send2hs = array();
 		$cbfrommodule = $change['module'];
 		$bmapname = 'HubSpot2' . $cbfrommodule;
@@ -378,13 +378,15 @@ class corebos_hubspot {
 	}
 
 	private function syncMasterSlaveCB2HS($cbfrom, $send2hs, $msinfo) {
+		return $send2hs;
 	}
 
 	private function syncMasterSlaveHS2CB($cbfrom, $send2hs, $msinfo) {
+		return $send2hs;
 	}
 
 	public function getPropertyFieldNames($cbfrommodule) {
-		global $adb, $current_user;
+		global $adb;
 		$fields = array('firstname','lastname','phone','email','lastmodifieddate'); // default fields
 		$bmapname = 'HubSpot2' . $cbfrommodule;
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -393,9 +395,9 @@ class corebos_hubspot {
 			$xmlcontent=html_entity_decode($cbMap->column_fields['content']);
 			$xml=simplexml_load_string($xmlcontent);
 			$allmergeFields = array();
-			foreach ($xml->fields->field as $k => $v) {
-				foreach ($v->Orgfields->Orgfield as $key => $value) {
-					$allmergeFields[] = (String)$value->OrgfieldName;
+			foreach ($xml->fields->field as $v) {
+				foreach ($v->Orgfields->Orgfield as $value) {
+					$allmergeFields[] = (string)$value->OrgfieldName;
 				}
 			}
 			$fields = array_unique(array_merge($fields, $allmergeFields));
@@ -425,9 +427,10 @@ class corebos_hubspot {
 			case 'Potentials':
 				$table = 'vtiger_potential';
 				$idcol = 'potentialid';
+				$crmEntityTable = CRMEntity::getcrmEntityTableAlias($setype);
 				$reltors = $adb->pquery('select related_to,setype
 					from vtiger_potential
-					inner join vtiger_crmentity on crmid = related_to
+					inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = related_to
 					where potentialid=?', array($crmid));
 				if ($reltors && $adb->num_rows($reltors)>0) {
 					$relto = $adb->query_result($reltors, 0, 'related_to');
@@ -713,7 +716,7 @@ class corebos_hubspot {
 			$cto['module'] = $module;
 			$cto['record_id'] = 0;
 			$wsinfo = $this->getPropertiesFromHubSpot($cto);
-			if (count($wsinfo)>0) {
+			if (!empty($wsinfo)) {
 				$wsinfo = DataTransform::sanitizeReferences($wsinfo, $meta);
 				$wsinfo['hubspotcreated'] = 1;
 				$wsinfo['hubspotsyncwith'] = 1;
@@ -747,7 +750,7 @@ class corebos_hubspot {
 				$cto['module'] = $module;
 				$cto['record_id'] = $crmid;
 				$wsinfo = $this->getPropertiesFromHubSpot($cto);
-				if (count($wsinfo)>0) {
+				if (!empty($wsinfo)) {
 					$wsinfo = DataTransform::sanitizeReferences($wsinfo, $meta);
 					$wsinfo['id'] = $wsid.$crmid;
 					try {
@@ -774,7 +777,7 @@ class corebos_hubspot {
 			$cmp['module'] = 'Accounts';
 			$cmp['record_id'] = 0;
 			$wsinfo = $this->getPropertiesFromHubSpot($cmp);
-			if (count($wsinfo)>0) {
+			if (!empty($wsinfo)) {
 				$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->accountMeta);
 				$wsinfo['hubspotcreated'] = 1;
 				$wsinfo['hubspotsyncwith'] = 1;
@@ -818,7 +821,7 @@ class corebos_hubspot {
 				$cmp['module'] = 'Accounts';
 				$cmp['record_id'] = $crmid;
 				$wsinfo = $this->getPropertiesFromHubSpot($cmp);
-				if (count($wsinfo)>0) {
+				if (!empty($wsinfo)) {
 					$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->accountMeta);
 					$wsinfo['id'] = $this->AccountWSID.$crmid;
 					$wsinfo['assigned_user_id'] = $this->UserWSID.$wsinfo['assigned_user_id'];
@@ -884,7 +887,7 @@ class corebos_hubspot {
 					$this->logMessage('createDeal', 'No related account or contact found', $dal, 0);
 				}
 			}
-			if (count($wsinfo)>0) {
+			if (!empty($wsinfo)) {
 				$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->potentialMeta);
 				$wsinfo['hubspotcreated'] = 1;
 				$wsinfo['hubspotsyncwith'] = 1;
@@ -932,7 +935,7 @@ class corebos_hubspot {
 				$dal['module'] = 'Potentials';
 				$dal['record_id'] = $crmid;
 				$wsinfo = $this->getPropertiesFromHubSpot($dal);
-				if (count($wsinfo)>0) {
+				if (!empty($wsinfo)) {
 					$wsinfo = DataTransform::sanitizeReferences($wsinfo, $this->potentialMeta);
 					$wsinfo['id'] = $this->PotentialWSID.$crmid;
 					try {
@@ -1311,5 +1314,4 @@ class corebos_hubspot {
 		}
 	}
 }
-
 ?>

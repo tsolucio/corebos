@@ -19,7 +19,6 @@ class crmtogo_WS_RelatedRecords extends crmtogo_WS_QueryWithGrouping {
 		$response = new crmtogo_API_Response();
 
 		$record = $request->get('record');
-		//$currentPage = $request->get('page', 0);
 
 		// Input validation
 		if (empty($record)) {
@@ -42,7 +41,6 @@ class crmtogo_WS_RelatedRecords extends crmtogo_WS_QueryWithGrouping {
 			if (in_array($amodule->name(), $relatedmodule)) {
 				if ($amodule->name() != $module) {
 					$functionHandler = crmtogo_WS_Utils::getRelatedFunctionHandler($module, $amodule->name());
-					//$fieldmodel = new crmtogo_UI_FieldModel();
 					if ($functionHandler) {
 						$sourceFocus = CRMEntity::getInstance($module);
 						$relationResult = call_user_func_array(array($sourceFocus, $functionHandler), array($recordid, getTabid($module), getTabid($amodule->name())));

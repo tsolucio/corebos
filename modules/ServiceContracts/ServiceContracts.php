@@ -11,8 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class ServiceContracts extends CRMEntity {
-	public $db;
-
 	public $table_name = 'vtiger_servicecontracts';
 	public $table_index= 'servicecontractsid';
 	public $column_fields = array();
@@ -117,18 +115,16 @@ class ServiceContracts extends CRMEntity {
 		$return_action = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : false;
 		$for_module = isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : false;
 		$for_crmid  =isset($_REQUEST['return_id']) ? vtlib_purify($_REQUEST['return_id']) : false;
-		if ($return_action && $for_module && $for_crmid) {
-			if ($for_module == 'HelpDesk') {
-				$on_focus = CRMEntity::getInstance($for_module);
-				$on_focus->save_related_module($for_module, $for_crmid, $module, $this->id);
-			}
+		if ($return_action && $for_module && $for_crmid && $for_module == 'HelpDesk') {
+			$on_focus = CRMEntity::getInstance($for_module);
+			$on_focus->save_related_module($for_module, $for_crmid, $module, $this->id);
 		}
 	}
 
 	/**
 	 * Invoked when special actions are performed on the module.
-	 * @param String Module name
-	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 * @param string Module name
+	 * @param string Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	public function vtlib_handler($moduleName, $eventType) {
 		require_once 'include/utils/utils.php';
@@ -147,9 +143,6 @@ class ServiceContracts extends CRMEntity {
 
 			$helpDeskInstance = Vtiger_Module::getInstance('HelpDesk');
 			$helpDeskInstance->setRelatedList($moduleInstance, 'Service Contracts', array('ADD','SELECT'));
-
-			// Initialize module sequence for the module
-			$adb->pquery('INSERT into vtiger_modentity_num values(?,?,?,?,?,?)', array($adb->getUniqueId('vtiger_modentity_num'), $moduleName, 'SERCON', 1, 1, 1));
 
 			// Make the picklist value 'Complete' for status as non-editable
 			$adb->query("UPDATE vtiger_contract_status SET presence=0 WHERE contract_status='Complete'");
@@ -173,11 +166,8 @@ class ServiceContracts extends CRMEntity {
 
 	/**
 	 * Handle saving related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
 	 */
 	public function save_related_module($module, $crmid, $with_module, $with_crmids) {
-
 		$with_crmids = (array)$with_crmids;
 		foreach ($with_crmids as $with_crmid) {
 			parent::save_related_module($module, $crmid, $with_module, $with_crmid);
@@ -190,39 +180,38 @@ class ServiceContracts extends CRMEntity {
 
 	// Function to Update the parent_id of HelpDesk with sc_related_to of ServiceContracts if the parent_id is not set.
 	public function updateHelpDeskRelatedTo($focusId, $entityIds) {
-		global $log;
+		global $log, $adb;
 		$log->debug('> updateHelpDeskRelatedTo');
-
 		$entityIds = (array)$entityIds;
-		$selectTicketsQuery="SELECT ticketid FROM vtiger_troubletickets WHERE (parent_id IS NULL OR parent_id=0) AND ticketid IN (".generateQuestionMarks($entityIds).')';
-		$selectTicketsResult = $this->db->pquery($selectTicketsQuery, array($entityIds));
-		$noOfTickets = $this->db->num_rows($selectTicketsResult);
+		$selectTicketsQuery='SELECT ticketid FROM vtiger_troubletickets WHERE (parent_id IS NULL OR parent_id=0) AND ticketid IN ('.generateQuestionMarks($entityIds).')';
+		$selectTicketsResult = $adb->pquery($selectTicketsQuery, array($entityIds));
+		$noOfTickets = $adb->num_rows($selectTicketsResult);
 		for ($i=0; $i < $noOfTickets; ++$i) {
-			$ticketId = $this->db->query_result($selectTicketsResult, $i, 'ticketid');
-			$updateQuery = "UPDATE vtiger_troubletickets, vtiger_servicecontracts SET parent_id=vtiger_servicecontracts.sc_related_to" .
-				" WHERE vtiger_servicecontracts.sc_related_to IS NOT NULL AND vtiger_servicecontracts.sc_related_to != 0" .
-				" AND vtiger_servicecontracts.servicecontractsid = ? AND vtiger_troubletickets.ticketid = ?";
-			$this->db->pquery($updateQuery, array($focusId, $ticketId));
+			$ticketId = $adb->query_result($selectTicketsResult, $i, 'ticketid');
+			$updateQuery = 'UPDATE vtiger_troubletickets, vtiger_servicecontracts SET parent_id=vtiger_servicecontracts.sc_related_to'
+				.' WHERE vtiger_servicecontracts.sc_related_to IS NOT NULL AND vtiger_servicecontracts.sc_related_to!=0'
+				.' AND vtiger_servicecontracts.servicecontractsid=? AND vtiger_troubletickets.ticketid=?';
+			$adb->pquery($updateQuery, array($focusId, $ticketId));
 		}
 		$log->debug('< updateHelpDeskRelatedTo');
 	}
 
 	// Function to Compute and Update the Used Units and Progress of the Service Contract based on all the related Trouble tickets.
 	public function updateServiceContractState($focusId) {
+		global $adb;
 		$this->id = $focusId;
 		$this->retrieve_entity_info($focusId, 'ServiceContracts');
-
-		$contractTicketsResult = $this->db->pquery(
+		$contractTicketsResult = $adb->pquery(
 			"SELECT relcrmid FROM vtiger_crmentityrel WHERE module = 'ServiceContracts' AND relmodule = 'HelpDesk' AND crmid = ?
 			UNION
 			SELECT crmid FROM vtiger_crmentityrel WHERE relmodule = 'ServiceContracts' AND module = 'HelpDesk' AND relcrmid = ?",
 			array($focusId,$focusId)
 		);
-		$noOfTickets = $this->db->num_rows($contractTicketsResult);
+		$noOfTickets = $adb->num_rows($contractTicketsResult);
 		$ticketFocus = CRMEntity::getInstance('HelpDesk');
 		$totalUsedUnits = 0;
 		for ($i=0; $i < $noOfTickets; ++$i) {
-			$ticketId = $this->db->query_result($contractTicketsResult, $i, 'relcrmid');
+			$ticketId = $adb->query_result($contractTicketsResult, $i, 'relcrmid');
 			$ticketFocus->id = $ticketId;
 			if (isRecordExists($ticketId)) {
 				$ticketFocus->retrieve_entity_info($ticketId, 'HelpDesk');
@@ -232,7 +221,6 @@ class ServiceContracts extends CRMEntity {
 			}
 		}
 		$this->updateUsedUnits($totalUsedUnits);
-
 		$this->calculateProgress();
 	}
 
@@ -240,7 +228,6 @@ class ServiceContracts extends CRMEntity {
 	public function computeUsedUnits($ticketData, $operator = '+') {
 		$trackingUnit = strtolower($this->column_fields['tracking_unit']);
 		$workingHoursPerDay = 24;
-
 		$usedUnits = 0;
 		if ($trackingUnit == 'incidents') {
 			$usedUnits = 1;
@@ -262,13 +249,22 @@ class ServiceContracts extends CRMEntity {
 
 	// Function to Upate the Used Units of the Service Contract.
 	public function updateUsedUnits($usedUnits) {
+		global $adb;
 		$this->column_fields['used_units'] = $usedUnits;
-		$updateQuery = "UPDATE vtiger_servicecontracts SET used_units = $usedUnits WHERE servicecontractsid = ?";
-		$this->db->pquery($updateQuery, array($this->id));
+		$updateQuery = "UPDATE vtiger_servicecontracts SET used_units=$usedUnits WHERE servicecontractsid=?";
+		$adb->pquery($updateQuery, array($this->id));
 	}
 
 	// Function to Calculate the End Date, Planned Duration, Actual Duration and Progress of a Service Contract
 	public function calculateProgress() {
+		global $adb;
+		$result = $adb->pquery(
+			'SELECT is_active FROM vtiger_eventhandlers WHERE event_name=? AND handler_path=? AND handler_class=? limit 1',
+			array('vtiger.entity.aftersave', 'modules/ServiceContracts/ServiceContractsHandler.php', 'ServiceContractsHandler')
+		);
+		if ($adb->num_rows($result)===0) {
+			return; // event handler is not installed so calculations are wrong anyway
+		}
 		$updateCols = array();
 		$updateParams = array();
 
@@ -286,16 +282,16 @@ class ServiceContracts extends CRMEntity {
 		if ($contractStatus == 'Complete' || (!empty($usedUnits) && !empty($totalUnits) && $usedUnits >= $totalUnits)) {
 			if (empty($endDate)) {
 				$endDate = date('Y-m-d');
-				$this->db->pquery('UPDATE vtiger_servicecontracts SET end_date=? WHERE servicecontractsid = ?', array(date('Y-m-d'), $this->id));
+				$adb->pquery('UPDATE vtiger_servicecontracts SET end_date=? WHERE servicecontractsid = ?', array(date('Y-m-d'), $this->id));
 			}
 		} else {
 			$endDate = null;
-			$this->db->pquery('UPDATE vtiger_servicecontracts SET end_date=? WHERE servicecontractsid = ?', array(null, $this->id));
+			$adb->pquery('UPDATE vtiger_servicecontracts SET end_date=? WHERE servicecontractsid = ?', array(null, $this->id));
 		}
 
 		// Calculate the Planned Duration based on Due date and Start date. (in days)
 		if (!empty($dueDate) && !empty($startDate)) {
-			$plannedDurationUpdate = " planned_duration = (TO_DAYS(due_date)-TO_DAYS(start_date)+1)";
+			$plannedDurationUpdate = ' planned_duration = (TO_DAYS(due_date)-TO_DAYS(start_date)+1)';
 		} else {
 			$plannedDurationUpdate = " planned_duration = ''";
 		}
@@ -303,7 +299,7 @@ class ServiceContracts extends CRMEntity {
 
 		// Calculate the Actual Duration based on End date and Start date. (in days)
 		if (!empty($endDate) && !empty($startDate)) {
-			$actualDurationUpdate = "actual_duration = (TO_DAYS(end_date)-TO_DAYS(start_date)+1)";
+			$actualDurationUpdate = 'actual_duration = (TO_DAYS(end_date)-TO_DAYS(start_date)+1)';
 		} else {
 			$actualDurationUpdate = "actual_duration = ''";
 		}
@@ -320,17 +316,15 @@ class ServiceContracts extends CRMEntity {
 		$updateCols[] = $progressUpdate;
 		$updateParams[] = $progressUpdateParams;
 
-		if (count($updateCols) > 0) {
+		if (!empty($updateCols)) {
 			$updateQuery = 'UPDATE vtiger_servicecontracts SET '. implode(',', $updateCols) .' WHERE servicecontractsid = ?';
 			$updateParams[] = $this->id;
-			$this->db->pquery($updateQuery, $updateParams);
+			$adb->pquery($updateQuery, $updateParams);
 		}
 	}
 
 	/**
 	 * Handle deleting related module information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
 	 */
 	public function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		parent::delete_related_module($module, $crmid, $with_module, $with_crmid);
@@ -338,19 +332,5 @@ class ServiceContracts extends CRMEntity {
 			$this->updateServiceContractState($crmid);
 		}
 	}
-
-	/**
-	 * Handle getting related list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-	/**
-	 * Handle getting dependents list information.
-	 * NOTE: This function has been added to CRMEntity (base class).
-	 * You can override the behavior by re-defining it here.
-	 */
-	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 }
 ?>

@@ -10,7 +10,6 @@
 <form action="index.php" method="post" name="form" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="fld_module" value="{$MODULE}">
 	<input type="hidden" name="module" value="Settings">
-	<input type="hidden" name="parenttab" value="Settings">
 	<input type="hidden" name="mode">
 	<table  class="listTableTopButtons" border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tr>
@@ -46,7 +45,7 @@
 				<td class="listTableRow small" valign="top" nowrap>
 					{if $entries.editable eq 1}
 					<form name="form{$entries.cfmid}" method="post">
-						<img border="0"  style="cursor: pointer;" src="{'delete.gif'|@vtiger_imageurl:$THEME}"  alt="{'LBL_DELETE_BUTTON_LABEL'|@getTranslatedString:$MODULE}" title="{'LBL_DELETE_BUTTON_LABEL'|@getTranslatedString:$MODULE}" onclick="javascript: deleteForm('form{$entries.cfmid}','index.php?action=DeleteConvertLeadMapping&module=Settings&parenttab=Settings&cfmid={$entries.cfmid}' );">
+						<img border="0"  style="cursor: pointer;" src="{'delete.gif'|@vtiger_imageurl:$THEME}"  alt="{'LBL_DELETE_BUTTON_LABEL'|@getTranslatedString:$MODULE}" title="{'LBL_DELETE_BUTTON_LABEL'|@getTranslatedString:$MODULE}" onclick="javascript: deleteForm('form{$entries.cfmid}','index.php?action=DeleteConvertLeadMapping&module=Settings&cfmid={$entries.cfmid}' );">
 					</form>
 					{/if}
 				</td>

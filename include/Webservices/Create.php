@@ -12,7 +12,6 @@ require_once 'include/Webservices/SetRelation.php';
 function vtws_create($elementType, $element, $user) {
 	static $vtws_create_cache = array();
 
-	global $root_directory;
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($elementType, $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
@@ -23,25 +22,7 @@ function vtws_create($elementType, $element, $user) {
 		$relations=$element['relations'];
 		unset($element['relations']);
 	}
-	$wsAttachments = array();
-	if (!empty($element['attachments'])) {
-		foreach ($element['attachments'] as $fieldname => $attachment) {
-			if (empty($attachment['name']) || empty($attachment['content'])) {
-				continue;
-			}
-			$filepath = $root_directory.'cache/'.$attachment['name'];
-			file_put_contents($filepath, base64_decode($attachment['content']));
-			$_FILES[$fieldname] = array(
-				'name' => $attachment['name'],
-				'type' => $attachment['type'],
-				'tmp_name' => $filepath,
-				'error' => 0,
-				'size' => $attachment['size']
-			);
-			$wsAttachments[] = $filepath;
-		}
-		unset($element['attachments']);
-	}
+	require 'include/Webservices/processAttachments.php';
 
 	// Cache the instance for re-use
 	if (!isset($vtws_create_cache[$elementType]['webserviceobject'])) {
@@ -58,11 +39,12 @@ function vtws_create($elementType, $element, $user) {
 
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
-	if ($meta->hasWriteAccess() !== true) {
+	if (!$meta->hasCreateAccess()) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied');
 	}
 
 	$referenceFields = $meta->getReferenceFieldDetails();
+	$referenceFields['assigned_user_id'] = array('Users', 'Groups');
 	foreach ($referenceFields as $fieldName => $details) {
 		if (!empty($element[$fieldName])) {
 			$element[$fieldName] = vtws_getWSID($element[$fieldName]);
@@ -72,10 +54,8 @@ function vtws_create($elementType, $element, $user) {
 			if (!in_array($referenceObject->getEntityName(), $details)) {
 				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for $fieldName");
 			}
-			if ($referenceObject->getEntityName() == 'Users') {
-				if (!$meta->hasAssignPrivilege($element[$fieldName])) {
-					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
-				}
+			if ($referenceObject->getEntityName() == 'Users' && !$meta->hasAssignPrivilege($element[$fieldName])) {
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
 			}
 			if (!in_array($referenceObject->getEntityName(), $types['types']) && $referenceObject->getEntityName() != 'Users') {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to access reference type is denied' . $referenceObject->getEntityName());
@@ -86,11 +66,9 @@ function vtws_create($elementType, $element, $user) {
 	}
 
 	foreach ($meta->getModuleFields() as $fieldName => $webserviceField) {
-		if ($webserviceField->getUIType() == 15 || $webserviceField->getUIType() == 16) {
-			$dval = $webserviceField->getDefault();
-			if (!isset($element[$fieldName]) && !empty($dval)) {
-				$element[$fieldName] = $dval;
-			}
+		$dval = $webserviceField->getDefault();
+		if (!isset($element[$fieldName]) && !empty($dval)) {
+			$element[$fieldName] = $dval;
 		}
 	}
 
@@ -104,10 +82,13 @@ function vtws_create($elementType, $element, $user) {
 			}
 		}
 		// Product line support
-		if (in_array($elementType, getInventoryModules()) && (is_array($element['pdoInformation']))) {
-			include 'include/Webservices/ProductLines.php';
-		} else {
-			$_REQUEST['action'] = $elementType.'Ajax';
+		$hrequest = $_REQUEST;
+		if (in_array($elementType, getInventoryModules())) {
+			if (!empty($element['pdoInformation']) && is_array($element['pdoInformation'])) {
+				include 'include/Webservices/ProductLines.php';
+			} else {
+				$_REQUEST['action'] = $elementType.'Ajax';
+			}
 		}
 		if ($elementType == 'HelpDesk') {
 			//Added to construct the update log for Ticket history
@@ -126,9 +107,13 @@ function vtws_create($elementType, $element, $user) {
 		if (!empty($relations)) {
 			list($wsid,$newrecid) = vtws_getIdComponents($entity['id']);
 			$modname = $meta->getEntityName();
-			vtws_internal_setrelation($newrecid, $modname, $relations);
+			if (is_string($relations)) { // they sent a comma-separated list
+				$relations = explode(',', $relations);
+			}
+			vtws_internal_setrelation($newrecid, $modname, $relations, $types);
 		}
 		VTWS_PreserveGlobal::flush();
+		$_REQUEST = $hrequest;
 		if (!empty($wsAttachments)) {
 			foreach ($wsAttachments as $file) {
 				@unlink($file);

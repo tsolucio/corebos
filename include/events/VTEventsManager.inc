@@ -9,9 +9,10 @@
  *************************************************************************************/
 
 /**
- * Create and trigger events in vtiger
+ * Create and trigger events
  */
 class VTEventsManager {
+
 	public function __construct($adb) {
 		$this->adb = $adb;
 	}
@@ -19,10 +20,11 @@ class VTEventsManager {
 	/**
 	 * Register an event handler
 	 *
-	 * @param $forEvent The name of the event to handle
-	 * @param $path The path to the php file containing the handler
-	 * @param $className The name of the VTEventHandler class.
-	 * @param $condition A condition which must evaluate true for the event to be accepted.
+	 * @param string The name of the event to handle
+	 * @param string The path to the php file containing the handler
+	 * @param string The name of the Event Handler class
+	 * @param string A condition which must evaluate true for the event to be accepted
+	 * @param string list of other events that must be executed before this one
 	 */
 	public function registerHandler($forEvent, $path, $className, $condition = '', $depedentOn = '[]') {
 		$adb = $this->adb;
@@ -43,8 +45,8 @@ class VTEventsManager {
 	/**
 	 * Initialize Event Trigger Cache for the required event types.
 	 *
-	 * @param Object $for Optional String or Array of event_names for initializing.
-	 * @param Boolean $force Optional Force the initialization of cache?
+	 * @param Object Optional String or Array of event_names for initializing
+	 * @param boolean Optional Force the initialization of cache
 	 */
 	public function initTriggerCache($for = false, $force = false) {
 		VTEventTrigger::initCache($for, $force);
@@ -61,7 +63,7 @@ class VTEventsManager {
 
 	/**
 	 * Set an event handler as inactive
-	 * @param The handler class to set as inactive
+	 * @param string handler class to set as inactive
 	 *
 	 */
 	public function setHandlerInActive($handlerClass) {
@@ -73,7 +75,7 @@ class VTEventsManager {
 	/**
 	 * Set an event handler as active
 	 *
-	 * @param The handler class to set as active
+	 * @param string handler class to set as active
 	 */
 	public function setHandlerActive($handlerClass) {
 		$adb = $this->adb;
@@ -84,7 +86,7 @@ class VTEventsManager {
 	/**
 	 * Unregister a registered handler
 	 *
-	 * @param $className The name of teh VTEventHandler class to unregister
+	 * @param string The name of teh Event Handler class to unregister
 	 */
 	public function unregisterHandler($className) {
 		$adb = $this->adb;
@@ -96,8 +98,8 @@ class VTEventsManager {
 	/**
 	 * Get an event triger instance
 	 *
-	 * @param $triggerName The name of the event.
-	 * @return The trigger object for the event.
+	 * @param string name of the event
+	 * @return VTEventTrigger trigger object for the event
 	 */
 	public function getTrigger($triggerName) {
 		$adb=$this->adb;
@@ -107,8 +109,8 @@ class VTEventsManager {
 	/**
 	 * Trigger an event
 	 *
-	 * @param $triggerName The name of the event.
-	 * @return The trigger object for the event.
+	 * @param string name of the event
+	 * @return VTEventTrigger trigger object for the event
 	 */
 	public function triggerEvent($triggerName, $data) {
 		$this->getTrigger($triggerName)->trigger($data);
@@ -117,8 +119,8 @@ class VTEventsManager {
 	/**
 	 * Set the module the handler belongs to
 	 *
-	 * @param moduleName - The name of the module
-	 * @param handlerClass - The name of the handler class
+	 * @param string name of the module
+	 * @param string name of the handler class
 	 */
 	public function setModuleForHandler($moduleName, $handlerClass) {
 		$adb = $this->adb;
@@ -135,7 +137,7 @@ class VTEventsManager {
 	/**
 	 * List handler classes for a module
 	 *
-	 * @param moduleName - The name of the module
+	 * @param string name of the module
 	 */
 	public function listHandlersForModule($moduleName) {
 		$adb = $this->adb;
@@ -151,7 +153,7 @@ class VTEventsManager {
 	/**
 	 * List active events.
 	 *
-	 * @return A list of registered events.
+	 * @return array list of registered events
 	 */
 	public function listActiveEventHandlers() {
 		$adb = $this->adb;

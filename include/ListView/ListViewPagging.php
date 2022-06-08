@@ -66,6 +66,9 @@ if (!is_string($_SESSION[$currentModule.'_listquery']) || !empty($_REQUEST['glob
 	}
 } else {
 	$list_query = $_SESSION[$currentModule.'_listquery'];
+	if (stripos($list_query, ' vt_tmp_u')) {
+		getListQuery($currentModule); // side effect to create the temporary table
+	}
 }
 
 $count_result = $adb->query(mkCountQuery($list_query));

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 08/03/2020 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 26/05/2022 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -37,9 +37,9 @@ $app_strings = array (
 'LBL_APPLY_BUTTON_LABEL' => 'Aplicar',
 'LBL_SEND_MAIL_BUTTON' => 'Enviar e-mail',
 'LBL_SAVE_BUTTON_TITLE' => 'Salvar [Alt+S]',
-'LBL_SAVEREPEAT_BUTTON_TITLE' => 'Save+Repeat [Alt+H]',
-'LBL_SKIP_BUTTON_TITLE' => 'Skip [Alt+K]',
-'LBL_GOBACK_BUTTON_TITLE' => 'Go back [Alt+B]',
+'LBL_SAVEREPEAT_BUTTON_TITLE' => 'Salvar+Repetir [Alt+H]',
+'LBL_SKIP_BUTTON_TITLE' => 'Pular [Alt+K]',
+'LBL_GOBACK_BUTTON_TITLE' => 'Retornat [Alt+B]',
 'LBL_EDIT_BUTTON_TITLE' => 'Editar [Alt+E]',
 'LBL_RECALCULATE_BUTTON_TITLE' => 'Recalcular [Alt+R]',
 'LBL_CONVERTSO_BUTTON_TITLE' => 'Criar pedido venda',
@@ -184,6 +184,7 @@ $app_strings = array (
 'NTC_TIME_FORMAT' => '(24:00)',
 'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 'NTC_DELETE_CONFIRMATION' => 'Você tem certeza que deseja apagar este registro?',
+'SMTP_DELETE_CONFIRMATION' => 'Tem certeza de que deseja excluir essas configurações de SMTP?',
 'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Apagando esta Conta removerá as oportunidades e cotações relacionadas. Tem certeza que deseja apagar esta conta?',
 'NTC_VENDOR_DELETE_CONFIRMATION' => 'Apagando este fornecedor serão removidas os pedidos de compras relacionados. Tem certeza que deseja apagar este fornecedor?',
 'ERR_DELETE_RECORD' => 'Um registro dever ser especificado para apagar o contato.',
@@ -403,7 +404,7 @@ $app_strings = array (
 'Products' => 'Produto',
 'Emails' => 'E-mail',
 'HelpDesk' => 'Tickets',
-'Activities' => 'Atividades',
+'Activities' => 'Tarefas',
 'Events' => 'Eventos',
 'Tasks' => 'Tarefas',
 'Todo' => 'Compromisso',
@@ -874,7 +875,7 @@ $app_strings = array (
 'MSG_VTIGERTEAM'=>'Equipe CRM',
 'MSG_IS_NOT_UPLOADED'=>'não foi atualizado. São permitidos arquivos do tipo - jpeg, png, jpg, pjpeg, x-png or gif',
 'MSG_IMAGE_ERROR'=>'Imagem não encontrada',
-
+'LBL_IMAGESECURITY_ERROR' => 'Imagem inválida: contém conteúdo potencialmente malicioso',
 'Information'=>'Informação',
 'Address'=>'Endereço',
 'Custom Information'=>'Informação customizada',
@@ -891,7 +892,7 @@ $app_strings = array (
 'invoice no'=>'No. fatura',
 'LBL_SELECT_LEAD_BUTTON_LABEL'=>'Selecionar lead',
 'LNK_READ_LICENSE'=>'Ler a licença',
-'ACTIVITIES' => 'Atividades',
+'ACTIVITIES' => 'Tarefas',
 'MAP_NAME_EXISTS'=>'Este nome de mapa já existe. \n Você quer sobrescrever?',
 'FOLDER_NAME_ALLOW_20CHARS'=>'Nome da pasta permite somente 20 caracteres',
 'SPECIAL_CHARS_NOT_ALLOWED'=>'Caracteres especiais não são permitidos. Tente novamente...',
@@ -914,7 +915,7 @@ $app_strings = array (
 'Last Modified By' => 'Modificado por último por',
 'Created By' => 'Criado por',
 'createdby' => 'Criado por',
-'Lead Status'=>'Estágio lead',
+'Lead Status'=>'Status lead',
 'Lead Source'=>'Fonte lead',
 'Quote No'=>'No cotação',
 'Yahoo Id'=>'ID Yahoo',
@@ -922,7 +923,7 @@ $app_strings = array (
 'Lost Lead' => 'Lead perdido',
 //Added for incoming mail server settings form js validation
 'ERR_INVALID_PAGE_COUNT' => "Contagem página inválida",
-//'Product Code' => 'Part Number',
+//'Product Code' => 'Cod. Peça',
 'Quotes' => 'Cotações',
 'PurchaseOrder' => 'Pedido compra',
 'SalesOrder' => 'Pedido venda',
@@ -961,6 +962,8 @@ $app_strings = array (
 'Mailing Po Box' => 'Cx. Postal correspondência',
 'Other Po Box' => 'Cx. Postal alternativo',
 'Image' => 'Imagem',
+'Unknown' => 'Desconhecido',
+'Compressed' => 'Compactado',
 
 //Export Records STARTS--->
 'LBL_EXPORT_TYPE_1'=>'Exportar Tipo1:',
@@ -969,9 +972,12 @@ $app_strings = array (
 'LBL_EXPORT_RECORDS'=>'Tipos Registros para Exportar',
 'LBL_WITH_SEARCH'=>'Exportar com os registros da pesquisa',
 'LBL_WITHOUT_SEARCH'=>'Exportar sem os registros da pesquisa',
-'LBL_SEARCH_CRITERIA_COLUMNS'=>'Export Filter Columns',
-'LBL_VISIBLE_COLUMNS'=>'Export only visible columns',
+'LBL_SEARCH_CRITERIA_COLUMNS'=>'Exportar colunas do filtro',
+'LBL_VISIBLE_COLUMNS'=>'Exportar apenas colunas visíveis',
 'LBL_ALL_DATA'=>'Exportar todos os dados',
+'LBL_EXPORT_FORMAT' => 'Formato de exportação',
+'LBL_EXPORT_FILE_IN_CSV_FORMAT' => 'CSV',
+'LBL_EXPORT_FILE_IN_EXCEL_FORMAT' => 'XLS',
 'LBL_DATA_IN_CURRENT_PAGE'=>'Exportar dados na página atual',
 'LBL_ONLY_SELECTED_RECORDS'=>'Exportar registros selecionados',
 'LBL_YES'=>'Sim',
@@ -1176,6 +1182,8 @@ $app_strings = array (
 'LBL_CALLER_INFORMATION'=>'Informação de quem liga',
 'LBL_CALLER_NUMBER'=>'Número :',
 'LBL_CALLER_NAME'=>'Nome :',
+'LBL_VIEW_CONTACT' => 'Ver contato',
+'LBL_CLICK_NOTIFICATION_TO'=> 'Clique em notificação para ',
 
 // Module Sequence Numbering
 'LBL_DUPLICATE' => 'Duplicar',
@@ -1206,6 +1214,8 @@ $app_strings = array (
 'PRIVATE_FILTER'=>'Particular',
 'SHARE_FILTER'=>'Compartilhar',
 'PUBLIC_FILTER'=>'Público',
+'Shared' => 'Compartilhado',
+'Scheduled' => 'Agendado',
 
 // Account Hierarchy
 'LBL_ACCOUNT_HIERARCHY' => 'Hierarquia conta',
@@ -1243,7 +1253,7 @@ $app_strings = array (
 'CANNOT_CONVERT' => 'Não pode ser convertido',
 
 // For note link on the detailview
-'LBL_ADD_NOTE'=>'Adicionar documento',
+'LBL_ADD_NOTE'=>'Anexar documento',
 
 // For Layout Editor
 'LBL_UNHIDE_FIELDS'=>'Reexibir campos',
@@ -1309,8 +1319,8 @@ $app_strings = array (
 'LBL_DESELECT_ALL' => 'Desmarcar todos',
 'LBL_RECORDS_IN' => 'registros em',
 'LBL_FOLDER' => 'pasta',
-'Add Event' => 'Adicionar evento',
-'Create Invoice' => 'Create Invoice',
+'Add Event' => 'Adicionar tarefa',
+'Create Invoice' => 'Cria fatura',
 'Send Email With PDF' => 'Enviar e-mail com PDF',
 'Export To PDF' => 'Exportar para PDF',
 'Generate Sales Order' => 'Gerar pedido vendas',
@@ -1357,7 +1367,42 @@ $app_strings = array (
 'No Module' => 'Sem módulos relacionados',
 'Entity Name' => 'Nome entidade',
 'LBL_NOPRODUCTS' => 'Não é possível converter pedido de vendas em Fatura porque não há produtos restantes na fatura.',
-'VALIDATION_FAILED' => 'Validation failed',
+'VALIDATION_FAILED' => 'Falha na validação',
+'Select Module To Upsert' => 'Selecione módulo p/upsert',
+'LBL_FIX_NOW' => 'Fixa Agora',
+'LBL_HIERARCHY' => 'Hierarquia',
+'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Procurar documentos',
+
+//login translation
+'LBL_Please_login_to_your_account' => 'Faça login em sua conta',
+'LBL_Bussiness'	=> 'Faça seu negócio funcionar sem problemas',
+'LBL_Management' => 'Gestão inteligente do cliente',
+'LBL_Statistics' => 'Fácil de acompanhar suas estatísticas',
+
+//List view popup content
+'LBL_SEND_TO' => 'ENVIAR PARA',
+'LNK_ALPHABETICAL_SEARCH' => 'Pesquisa alfabética',
+'ERR_SITE_URL_MISMATCH' => 'Incompatibilidade de URL do site',
+'Mautic ID' => 'Mautic ID',
+'Deleted in Mautic' => 'Excluído no Mautic',
+'Contact Points' => 'Pontos do contato',
+'From External Source' => 'De Fonte Externa',
+'LBL_ADD_ROW' => 'Adicionar linha',
+'LBL_EDIT_COLUMNS' => 'Editar colunas',
+'LBL_SELECT_COLUMNS' => 'Selecione as colunas para mostrar no grade de criação em massa',
+'LBL_MATCH_COLUMNS' => 'Selecione as colunas correspondentes na grade de criação em massa',
+'LBL_SAVE_MAP' => 'Salvar mapa',
+'Paste the link here' => 'Copie o link aqui',
+'Deleted in Mautic' => 'Apagado no Mautic',
+'Contact Points' => 'Pontos do contato',
+'From External Source' => 'A partir fonte externa',
+'LBL_ADD_ROW' => 'Adcione linha',
+'LBL_EDIT_COLUMNS' => 'Edite colunas',
+'LBL_SELECT_COLUMNS' => 'Seleciona colunas paraexibir na grade de edição em massa',
+'LBL_MATCH_COLUMNS' => 'Selecione colunas para corresponder na grade de criação em massa',
+'LBL_SAVE_MAP' => 'Salvar mapa',
+'LBL_UITYPE10_NOTALLOWED' => 'O módulo relacionado tem um campo relacionado obrigatório.',
+'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 );
 
 // Translation for currency names

@@ -18,8 +18,6 @@ $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
 $field_module=getFieldModuleAccessArray();
-// unset($field_module['Calendar']);
-// unset($field_module['Events']);
 uksort($field_module, function ($a, $b) {
 	return (strtolower(getTranslatedString($a, $a)) < strtolower(getTranslatedString($b, $b))) ? -1 : 1;
 });

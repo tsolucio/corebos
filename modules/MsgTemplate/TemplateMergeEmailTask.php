@@ -17,6 +17,7 @@
 *  Author       : OpenCubed
 *************************************************************************************************/
 require_once 'include/utils/CommonUtils.php';
+require_once 'data/CRMEntity.php';
 global $default_charset;
 
 if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
@@ -28,12 +29,12 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 	$tpl = getTemplateDetails($_REQUEST['action_id'], $crmid);
 
 	// Get Related Documents
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 	$query='select vtiger_notes.notesid,vtiger_notes.filename
 		from vtiger_notes
 		inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
-		inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
-		inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid
-		where crm2.crmid=?';
+		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
+		where vtiger_senotesrel.crmid=?';
 	$result = $adb->pquery($query, array($_REQUEST['action_id']));
 }
 ?>
@@ -46,7 +47,10 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 <script type="text/javascript">
 if (window.opener.document.getElementById('save_subject') != null && window.opener.CKEDITOR.instances.save_content != 'undefined') {
 	window.opener.document.getElementById('save_subject').value = window.document.frmrepstr.subject.value;
-	window.opener.CKEDITOR.instances.save_content.insertHtml(window.document.frmrepstr.repstr.value);
+	try {
+		window.opener.CKEDITOR.instances.save_content.insertHtml(window.document.frmrepstr.repstr.value);
+	} catch(err) {
+	}
 <?php while ($row = $adb->getNextRow($result, false)) { ?>
 	window.opener.addDocs(<?php echo $row['notesid']; ?>, '','Documents','ajax', '');
 <?php } ?>

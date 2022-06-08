@@ -1,6 +1,6 @@
 <?php
 /*
- @version   v5.20.17  31-Mar-2020
+ @version   v5.20.19  13-Dec-2020
  @copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
  @copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
   Released under both BSD license and Lesser GPL library license.
@@ -492,7 +492,7 @@ class ADODB_postgres64 extends ADOConnection{
 
 	// for schema support, pass in the $table param "$schema.$tabname".
 	// converts field names to lowercase, $upper is ignored
-	// see http://phplens.com/lens/lensforum/msgs.php?id=14018 for more info
+	// see PHPLens Issue No: 14018 for more info
 	function MetaColumns($table,$normalize=true)
 	{
 		global $ADODB_FETCH_MODE;

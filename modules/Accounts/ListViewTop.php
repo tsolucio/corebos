@@ -19,12 +19,13 @@ function getTopAccounts($maxval, $calCnt) {
 	require_once 'modules/Potentials/Potentials.php';
 	require_once 'include/logging.php';
 	require_once 'include/ListView/ListView.php';
+	require_once 'data/CRMEntity.php';
 	global $app_strings, $adb, $current_language, $current_user;
 	$current_module_strings = return_module_language($current_language, "Accounts");
-
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 	$list_query = 'select vtiger_account.accountid, vtiger_account.accountname, '.
 		'sum(vtiger_potential.amount) as amount from vtiger_potential '.
-		'inner join vtiger_crmentity on (vtiger_potential.potentialid=vtiger_crmentity.crmid) '.
+		'inner join '.$crmEntityTable.' on (vtiger_potential.potentialid=vtiger_crmentity.crmid) '.
 		'inner join vtiger_account on (vtiger_potential.related_to=vtiger_account.accountid) ';
 	$list_query .= ' WHERE vtiger_crmentity.deleted = 0  AND vtiger_potential.potentialid>0';
 	$list_query .= " AND vtiger_crmentity.smownerid='".$current_user->id."' ".
@@ -61,7 +62,6 @@ function getTopAccounts($maxval, $calCnt) {
 	$header[]=$current_module_strings['LBL_LIST_ACCOUNT_NAME'];
 	$currencyid=fetchCurrency($current_user->id);
 	$rate_symbol = getCurrencySymbolandCRate($currencyid);
-	//$rate = $rate_symbol['rate'];
 	$curr_symbol = $rate_symbol['symbol'];
 	$header[]=$current_module_strings['LBL_LIST_AMOUNT'].'('.$curr_symbol.')';
 	$header[] = $current_module_strings['LBL_POTENTIAL_TITLE'];
@@ -69,12 +69,6 @@ function getTopAccounts($maxval, $calCnt) {
 	$entries=array();
 	foreach ($open_accounts_list as $account) {
 		$value=array();
-// 		$account_fields = array(
-// 			'ACCOUNT_ID' => $account['accountid'],
-// 			'ACCOUNT_NAME' => $account['accountname'],
-// 			'AMOUNT' => $account['amount'],
-// 		);
-
 		$Top_Accounts = (strlen($account['accountname']) > 20) ? (substr($account['accountname'], 0, 20).'...') : $account['accountname'];
 		$value[]='<a href="index.php?action=DetailView&module=Accounts&record='.$account['accountid'].'">'.$Top_Accounts.'</a>';
 		$value[] = CurrencyField::convertToUserFormat($account['amount']);

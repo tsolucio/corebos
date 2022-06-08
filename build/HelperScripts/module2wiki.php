@@ -30,6 +30,7 @@ $uitypes = array(
 	'72'=>'currency',
 	'9'=>'percentage',
 	'10'=>'relation',
+	'11'=>'phone',
 	'12'=>'email',
 	'13'=>'email',
 	'14'=>'time',

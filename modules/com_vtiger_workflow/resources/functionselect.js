@@ -15,12 +15,14 @@ function openFunctionSelection(fillin) {
 		document.getElementById(wfexpselectionDIV).innerHTML = response;
 		show(wfexpselectionDIV);
 	});
+	return false;
 }
 
 function setSelectedFunction(fillinID) {
 	var fi = document.getElementById(fillinID);
 	fi.value += document.getElementById('selectedfunction').value;
 	hide(wfexpselectionDIV);
+	return false;
 }
 
 function dblClickFunctionSelect(selected) {
@@ -69,7 +71,7 @@ function setFunctionInformation(selected) {
 			<div class="slds-truncate slds-cell-wrap">${element.desc}</div>
 			</td></tr>`;
 		});
-		document.getElementById('funcparams').innerHTML = ptbl+`</tbody></table>`;
+		document.getElementById('funcparams').innerHTML = ptbl+'</tbody></table>';
 		document.getElementById('funcex').innerHTML = wfexpfndefs[selected.dataset.value].examples.join('<br/>');
 	}
 }
@@ -86,7 +88,7 @@ function setFilteredFunctions(fns) {
 	var fnlist = document.getElementById('wffnlist');
 	var lis = '';
 	Object.keys(fns)
-		.map(fn => {
+		.forEach(fn => {
 			lis += `<li aria-selected="false" class="slds-p-around_xx-small" draggable="false" role="option" tabindex="-1" onClick="setFunctionInformation(this);" onDblClick="dblClickFunctionSelect(this);" data-value="${fn}">${fn}</li>`;
 		});
 	fnlist.innerHTML = lis;
@@ -98,9 +100,13 @@ function wffnFilterSearch(srch) {
 	if (srch=='') {
 		fns = wfexpfndefs;
 	} else {
+		srch = srch.toUpperCase();
 		fns = Object.keys(wfexpfndefs)
-			.filter(fn => wfexpfndefs[fn].name.indexOf(srch) > -1)
-			.reduce((res, key) => (res[key] = wfexpfndefs[key], res), {});
+			.filter(fn => wfexpfndefs[fn].nameuc.indexOf(srch) > -1)
+			.reduce((res, key) => {
+				res[key] = wfexpfndefs[key];
+				return res;
+			}, {});
 	}
 	setFilteredFunctions(fns);
 }
@@ -111,9 +117,13 @@ function wffnFilterCategories(cat) {
 	if (cat=='' || cat=='All') {
 		fns = wfexpfndefs;
 	} else {
-		var fns = Object.keys(wfexpfndefs)
+		fns = Object.keys(wfexpfndefs)
 			.filter(fn => wfexpfndefs[fn].categories.indexOf(cat) > -1)
-			.reduce((res, key) => (res[key] = wfexpfndefs[key], res), {});
+			.sort()
+			.reduce((res, key) => {
+				res[key] = wfexpfndefs[key];
+				return res;
+			}, {});
 	}
 	setFilteredFunctions(fns);
 }

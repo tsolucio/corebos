@@ -10,11 +10,13 @@
 require_once 'Smarty_setup.php';
 require_once 'vtlib/Vtiger/Module.php';
 require_once 'modules/BusinessActions/BusinessActions.php';
+require_once 'data/CRMEntity.php';
 global $app_strings, $mod_strings, $current_language,$currentModule, $theme,$current_user,$log;
 
 function gendoc_changeModuleVisibility($tabid, $status) {
 	global $adb;
 	$moduleInstance = Vtiger_Module::getInstance($tabid);
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 	if ($status == 'module_disable') {
 		$moduleInstance->deleteLink('DETAILVIEWWIDGET', 'Generate Document');
 		$moduleInstance->deleteLink('LISTVIEWBASIC', 'Generate Document');
@@ -23,7 +25,7 @@ function gendoc_changeModuleVisibility($tabid, $status) {
 		$rs = $adb->pquery(
 			'select cbmapid
 				from vtiger_cbmap
-				inner join vtiger_crmentity on crmid=cbmapid
+				inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
 				where deleted=0 and mapname=?',
 			array('GenDocMerge_ConditionExpression')
 		);
@@ -59,6 +61,7 @@ function gendoc_changeModuleVisibility($tabid, $status) {
 }
 function gendoc_getModuleinfo() {
 	global $adb;
+	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 	$allEntities = array();
 	$allModules = array();
 	$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Rss','Recyclebin','Events')";
@@ -73,7 +76,7 @@ function gendoc_getModuleinfo() {
 		$checkres = $adb->pquery(
 			'SELECT 1
 				FROM vtiger_businessactions
-				INNER JOIN vtiger_crmentity ON crmid = businessactionsid
+				INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = businessactionsid
 				WHERE vtiger_crmentity.deleted = 0
 					AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)
 					AND elementtype_action=? AND linklabel=?',
@@ -91,13 +94,10 @@ $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty;
-$category = getParentTab();
-
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
-$smarty->assign('CATEGORY', $category);
 if (!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
 } else {
@@ -109,7 +109,7 @@ if (!is_admin($current_user)) {
 	$infomodules = gendoc_getModuleinfo();
 	$smarty->assign('INFOMODULES', $infomodules);
 	$smarty->assign('MODULE', $module);
-	if (empty($_REQUEST['ajax']) || $_REQUEST['ajax'] != true) {
+	if (empty($_REQUEST['ajax']) || !$_REQUEST['ajax']) {
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'BasicSettings.tpl'));
 	} else {
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'BasicSettingsContents.tpl'));

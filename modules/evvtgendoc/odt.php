@@ -111,7 +111,6 @@ if ($mergetemplate=='1') {
 				$out.= '<table class="lvtCol" width="100%"><tr><td>';
 				$einfo = getEntityName($module, $record);
 				$out.=$mod_strings['LBL_INFORMATION'].$modulei18n.' '.$einfo[$record].' '.$mod_strings['LBL_TEMPLATE']." $mergeTemplateName<br/>";
-				//$out.="<br/>".$odtout->output().'<br/><br/>';
 				$out.= '<a href="'.($format=='pdf' ? $pdfname : $filename).'">'.$app_strings['DownloadMergeFile'].'</a></td></tr></table><br/>';
 			}
 		}

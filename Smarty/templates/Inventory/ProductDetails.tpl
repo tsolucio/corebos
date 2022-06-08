@@ -73,8 +73,11 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{rdelim}
 	document.getElementById(obj).style.display = "block";
 {rdelim}
-
+{if empty($moreinfofields)}
+	var moreInfoFields = Array();
+{else}
 	var moreInfoFields = Array({$moreinfofields});
+{/if}
 </script>
 
 <tr><td colspan="4" align="left">
@@ -139,6 +142,18 @@ function displayCoords(currObj,obj,mode,curr_row)
 					<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 						<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
 							<input id="productName1" name="productName1" class="slds-input slds-combobox__input cbds-inventoryline__input_name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{if isset($PRODUCT_NAME)}{$PRODUCT_NAME}{/if}" type="text" style="box-shadow: none;">
+							<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+								<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+								</svg>
+							</span>
+							<div class="slds-input__icon-group slds-input__icon-group_right">
+								<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small slds-input__spinner slds-hide">
+									<span class="slds-assistive-text">{'LBL_LOADING'|@getTranslatedString}</span>
+									<div class="slds-spinner__dot-a"></div>
+									<div class="slds-spinner__dot-b"></div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -160,7 +175,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			</tr>
 			<tr>
 			<td class="small" id="setComment">
-				<textarea id="comment1" name="comment1" class=small style="width:70%;height:40px"></textarea>
+				<textarea id="comment1" name="comment1" class=small style="{$Inventory_Comment_Style}"></textarea>
 				<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" onClick="getObj('comment1').value=''" style="cursor:pointer;" />
 			</td>
 		</tr>
@@ -295,11 +310,11 @@ function displayCoords(currObj,obj,mode,curr_row)
    <tr>
 	<td colspan="3">
 		{if 'Products'|vtlib_isModuleActive}
-		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_PRODUCT}" onclick="fnAddProductRow('{$MODULE}','{$IMAGE_PATH}');" />
+		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_PRODUCT}" onclick="fnAddProductRow('{$MODULE}');" />
 		{/if}
 		{if 'Services'|vtlib_isModuleActive}
 		&nbsp;&nbsp;
-		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_SERVICE}" onclick="fnAddServiceRow('{$MODULE}','{$IMAGE_PATH}');" />
+		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_SERVICE}" onclick="fnAddServiceRow('{$MODULE}');" />
 		{/if}
 	</td>
    </tr>

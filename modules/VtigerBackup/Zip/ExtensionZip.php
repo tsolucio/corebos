@@ -54,7 +54,7 @@ class Vtiger_ExtensionZip extends Vtiger_BackupZip {
 			$parentDirectory.'database.sql',
 			file_get_contents($filePath)
 		);
-		if ($sucess == false) {
+		if (!$sucess) {
 			throw new VtigerBackupException(
 				VtigerBackupErrorCode::$ZIP_CREATE_FAILED,
 				getTranslatedString('LBL_ZIP_FILE_ADD_FAILURE', 'VtigerBackup')

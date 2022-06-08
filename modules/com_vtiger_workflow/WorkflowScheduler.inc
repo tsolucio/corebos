@@ -13,7 +13,6 @@ require_once 'include/utils/utils.php';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
 require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
-require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'include/Webservices/WebserviceField.php';
 require_once 'include/Webservices/EntityMeta.php';

@@ -9,7 +9,7 @@ export function jslog(connection, level, message) {
 		try {
 			message = JSON.parse(message);
 		} catch (e) {
-			//message = message;
+			// message
 		}
 		switch (level) {
 		case 'table':

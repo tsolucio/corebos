@@ -9,6 +9,8 @@
  ************************************************************************************/
 $mod_strings = array (
 'Webforms' => 'Moduli web (webforms)',
+'SINGLE_Webforms' => 'Webform',
+'Webforms ID' => 'ID Webform',
 'LBL_SUCCESS' => 'Aggiungi voce a vtiger CRM.',
 'LBL_FAILURE' => 'Impossibile aggiungere la voce in vtiger CRM.',
 'LBL_ERROR_CODE' => 'Codice Errore',
@@ -17,7 +19,7 @@ $mod_strings = array (
 'LBL_DESCRIPTION'=>'Descrizione',
 'LBL_MODULE'=>'Modulo',
 'LBL_RETURNURL'=>'URL di Ritorno',
-'LBL_ACTION'=>'Action',
+'LBL_ACTION'=>'Azione',
 'LBL_ASSIGNED_TO'=>'Assegnato a',
 'LBL_SOURCE'=>'Mostra Form',
 'LBL_MODULE_INFORMATION'=>'Informazioni Webform',
@@ -26,7 +28,7 @@ $mod_strings = array (
 'LBL_ENABLED'=>'Abilitato',
 'LBL_FIELDLABEL'=>'Nome Campo',
 'LBL_DEFAULT_VALUE'=>'Valore di Default',
-'LBL_NEUTRALIZEDFIELD'=>'Webforms Reference Field',
+'LBL_NEUTRALIZEDFIELD'=>'Campo Riferimento Webforms',
 'LBL_PUBLICID'=>'Id Pubblico',
 'LBL_NO_WEBFORM'=>'Nessun Webform trovato!',
 'LBL_CREATE_WEBFORM'=>'Crea un Webform',
@@ -42,6 +44,6 @@ $mod_strings = array (
 'LBL_DUPLICATE_NAME' => 'Webform con lo stesso nome gi&agrave; esistente',
 'ERR_CREATE_WEBFORM' => 'Creazione Webform fallita',
 'LBL_SELECT_USER' => 'Seleziona Utente',
-'LBL_CREATENEW' => 'You can Create a Webform Now. Click the link below',
+'LBL_CREATENEW' => 'Puoi Creare un WebForm Ora. Clic sul collegamento sottostante',
 );
 ?>

@@ -15,15 +15,17 @@
  *************************************************************************************************/
 require_once 'vtlib/Vtiger/Module.php';
 include_once 'modules/cbQuestion/cbQuestion.php';
+require_once 'data/CRMEntity.php';
 
 global $adb, $current_user;
+$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbQuestion');
 $current_user = Users::getActiveAdminUser();
 
 $qs = $adb->pquery(
 	'select cbquestionid, qname
 		from vtiger_cbquestion
-		inner join vtiger_crmentity on crmid=cbquestionid
-		where deleted=0 and mviewcron=?',
+		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbquestionid
+		where vtiger_crmentity.deleted=0 and mviewcron=?',
 	array('1')
 );
 while ($cbq = $adb->fetch_array($qs)) {

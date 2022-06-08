@@ -205,7 +205,7 @@ class DFA {
 	}
 	
 	function __call($fn, $params){
-		return call_user_func_array(array($this->recognizer, $fn), $params);
+		return call_user_func_array(array($this->recognizer, $fn), array_values($params));
 	}
 }
 

@@ -26,7 +26,19 @@
  */
 function cbwsProcessMap($mapid, $parameters, $user) {
 	global $adb, $log;
-	$mapid = vtws_getWSID($mapid);
+	$bmapid = vtws_getWSID($mapid);
+	if ($bmapid===false || $bmapid=='0x0') {
+		// we try to search it as a string
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
+		$maprs = $adb->pquery(
+			'select cbmapid from vtiger_cbmap inner join '.$crmEntityTable.' on crmid=cbmapid where deleted=0 and mapname=?',
+			array($mapid)
+		);
+		if ($maprs && $adb->num_rows($maprs)>0) {
+			$bmapid = vtws_getEntityId('cbMap').'x'.$maprs->fields['cbmapid'];
+		}
+	}
+	$mapid = $bmapid;
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $mapid);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
@@ -97,6 +109,14 @@ class cbwsProcessMapWorker {
 		switch ($this->maptype) {
 			case 'Mapping':
 				return $this->processMapping();
+			case 'Detail View Layout Mapping':
+				return $this->mapobj->DetailViewLayoutMapping();
+			case 'ListColumns':
+				return $this->mapobj->ListColumns()->getCompleteMapping();
+			case 'ApplicationMenu':
+				return $this->mapobj->ApplicationMenu($this->parameters);
+			case 'FieldDependency':
+				return $this->mapobj->FieldDependency();
 			default:
 				throw new WebServiceException(WebServiceErrorCode::$OPERATIONNOTSUPPORTED, 'business map type not supported');
 				break;

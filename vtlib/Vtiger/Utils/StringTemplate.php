@@ -70,9 +70,9 @@ class Vtiger_StringTemplate {
 
 	/**
 	 * Merge the given file with variable values assigned.
-	 * @param $instring input string template
-	 * @param $avoidLookup should be true if only verbatim file copy needs to be done
-	 * @returns merged contents
+	 * @param string input string template
+	 * @param boolean should be true if only verbatim file copy needs to be done
+	 * @return string merged contents
 	 */
 	public function merge($instring, $avoidLookup = false) {
 		if (empty($instring)) {

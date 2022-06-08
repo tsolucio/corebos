@@ -55,6 +55,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	$smarty->assign('OTHER_CURRENCIES', $other_currencies_list);
 	$smarty->assign('ID', $tempid);
 } else {
+	$smarty->assign('OTHER_CURRENCIES', array());
 	$smarty->assign('ID', '');
 	$smarty->assign('INACTSELECT', '');
 	$smarty->assign('ACTSELECT', '');
@@ -101,7 +102,6 @@ $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
 $smarty->assign('THEME', $theme);
 $smarty->assign('CURRENCIES', $currencies_not_listed);
-$smarty->assign('PARENTTAB', getParentTab());
 $smarty->assign('MASTER_CURRENCY', $currency_name);
 $smarty->assign('IMAGE_PATH', $image_path);
 

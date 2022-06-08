@@ -17,8 +17,8 @@
 		{if $MAILBOX && $MAILBOX->exists()}
 		<tr>
 			<td>
-                <input type=hidden name="mm_selected_folder" id="mm_selected_folder">
-                <input type="hidden" name="_folder" id="mailbox_folder">
+				<input type=hidden name="mm_selected_folder" id="mm_selected_folder">
+				<input type="hidden" name="_folder" id="mailbox_folder">
 			</td>
 		</tr>
 		<tr>
@@ -37,7 +37,7 @@
 		</tr>
 		<tr>
 			<td width="5px" nowrap="nowrap" class="cblds-p_medium"><img src="{'mymail.gif'|@vtiger_imageurl:$THEME}" border='0'/></td>
-            <td class="cblds-p_medium"><a href="#Drafts" id="_mailfolder_mm_drafts" onclick="MailManager.folder_drafts();">{'LBL_Drafts'|@getTranslatedString}</a></td>
+			<td class="cblds-p_medium"><a href="#Drafts" id="_mailfolder_mm_drafts" onclick="MailManager.folder_drafts();">{'LBL_Drafts'|@getTranslatedString}</a></td>
 		</tr>
 	</table>
 		{include file="SentMailFolders.tpl"}

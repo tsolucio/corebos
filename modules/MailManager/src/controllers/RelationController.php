@@ -168,7 +168,10 @@ class MailManager_RelationController extends MailManager_Controller {
 					break;
 
 				case 'ModComments':
-					$focus->column_fields['assigned_user_id'] = $current_user->id;
+				default:
+					if (empty($focus->column_fields['assigned_user_id'])) {
+						$focus->column_fields['assigned_user_id'] = $current_user->id;
+					}
 					$focus->column_fields['creator'] = $current_user->id;
 					$focus->column_fields['related_to'] = $parent;
 					break;
@@ -177,15 +180,14 @@ class MailManager_RelationController extends MailManager_Controller {
 			try {
 				$focus->save($linkModule);
 
-				// This condition is added so that emails are not created for Todo without Parent,
-				// as there is no way to relate them
+				// This condition is added so that emails are not created for calendar without a Parent as there is no way to relate them
 				if (empty($parent) && $linkModule != 'cbCalendar') {
 					$linkedto = MailManager_RelationControllerAction::associate($mail, $focus->id);
 				}
 
 				// add attachments to the tickets as Documents
 				if (in_array($linkModule, array('HelpDesk','Potentials','Project','ProjectTask')) && !empty($attachments)) {
-					$relationController = new MailManager_RelationControllerAction();
+					$relationController = new MailManager_RelationControllerAction('');
 					$relationController->__SaveAttachements($mail, $linkModule, $focus);
 				}
 
@@ -330,9 +332,9 @@ class MailManager_RelationController extends MailManager_Controller {
 
 	/**
 	* Funtion used to build Web services query
-	* @param String $module - Name of the module
-	* @param String $text - Search String
-	* @param String $type - Tyoe of fields Phone, Email etc
+	* @param string $module - Name of the module
+	* @param string $text - Search String
+	* @param string $type - Tyoe of fields Phone, Email etc
 	* @return String
 	*/
 	public function buildSearchQuery($module, $text, $type) {
@@ -358,7 +360,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	/**
 	* Returns the List of Matching records with the Email Address
 	* @global Users Instance $current_user
-	* @param String $module
+	* @param string $module
 	* @param Email Address $email
 	* @return Array
 	*/

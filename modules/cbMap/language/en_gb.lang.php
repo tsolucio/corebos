@@ -42,6 +42,7 @@ $mod_strings = array(
 	'Validations' => 'Validations',
 	'Detail View Layout Mapping' => 'Detail View Layout Mapping',
 	'VALIDATE_MAP'=> 'Validate Map',
+	'Validate Map'=> 'Validate Map',
 	'MAP_NOT_VALID'=> 'Map is not valid!',
 	'MAP_VALID'=> 'Map is valid',
 	'MAP_NOT_IMPLEMENTED_YET'=> 'Validation for this map has not been implemented yet',
@@ -73,5 +74,11 @@ $mod_strings = array(
 	'Expression' => 'Expression',
 	'Examples' => 'Examples',
 	'Example' => 'Example',
+	'Select type' => 'Select type',
+	'Add Row' => 'Add Row',
+	'Add field' => 'Add field',
+	'Reset content' => 'Reset content',
+	'Clear content' => 'Clear content',
+	'Content Holder' => 'Content Holder',
 );
 ?>

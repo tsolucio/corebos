@@ -29,7 +29,8 @@ class VTWorkflowEventHandler extends VTEventHandler {
 
 	/**
 	 * Push tasks to the task queue if the conditions are true
-	 * @param $entityData A VTEntityData object representing the entity.
+	 * @param string event name being triggered
+	 * @param VTEntityData object representing the entity
 	 */
 	public function handleEvent($eventName, $entityData) {
 		$util = new VTWorkflowUtils();
@@ -37,12 +38,11 @@ class VTWorkflowEventHandler extends VTEventHandler {
 		global $adb;
 		$isNew = $entityData->isNew();
 		$entityCache = new VTEntityCache($user);
-		$wsModuleName = $util->toWSModuleName($entityData);
-		$wsId = vtws_getWebserviceEntityId($wsModuleName, $entityData->getId());
+		$crmid = $entityData->getId();
+		$wsId = vtws_getWebserviceEntityId($entityData->getModuleName(), $crmid);
 		$entityData = $entityCache->forId($wsId);
-
 		$wfs = new VTWorkflowManager($adb);
-		$workflows = $wfs->getWorkflowsForModule($entityData->getModuleName());
+		$workflows = $wfs->getWorkflowsForModule($entityData->getModuleName(), true);
 
 		foreach ($workflows as $workflow) {
 			if (!is_a($workflow, 'Workflow')) {
@@ -61,13 +61,7 @@ class VTWorkflowEventHandler extends VTEventHandler {
 					}
 					break;
 				case VTWorkflowManager::$ONCE:
-					$entity_id = vtws_getIdComponents($entityData->getId());
-					$entity_id = $entity_id[1];
-					if ($workflow->isCompletedForRecord($entity_id)) {
-						$doEvaluate = false;
-					} else {
-						$doEvaluate = true;
-					}
+					$doEvaluate = !($workflow->isCompletedForRecord($crmid));
 					break;
 				case VTWorkflowManager::$ON_EVERY_SAVE:
 					$doEvaluate = true;
@@ -84,16 +78,14 @@ class VTWorkflowEventHandler extends VTEventHandler {
 					$doEvaluate = false;
 					break;
 				default:
-					throw new Exception('Should never come here! Execution Condition:' . $workflow->executionCondition);
+					throw new LogicException('Should never come here! Execution Condition:' . $workflow->executionCondition);
 			}
-			if ($doEvaluate && $workflow->evaluate($entityCache, $entityData->getId())) {
+			if ($doEvaluate && $workflow->activeWorkflow() && $workflow->evaluate($entityCache, $entityData->getId())) {
+				$entity_id = vtws_getIdComponents($entityData->getId());
+				$entity_id = $entity_id[1];
+				$workflow->performTasks($entityData);
 				if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
-					$entity_id = vtws_getIdComponents($entityData->getId());
-					$entity_id = $entity_id[1];
 					$workflow->markAsCompletedForRecord($entity_id);
-				}
-				if ($workflow->activeWorkflow()) {
-					$workflow->performTasks($entityData);
 				}
 			}
 		}

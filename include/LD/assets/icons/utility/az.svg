@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="52"
+   height="52"
+   viewBox="0 0 52 52"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="az.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview6"
+     showgrid="false"
+     inkscape:zoom="12.836708"
+     inkscape:cx="31.572482"
+     inkscape:cy="23.632517"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <path
+     d="M 29.9,31 18.7,3.4 C 18.5,2.9 18.1,2.5 17.5,2.5 H 14 c -0.5,0 -1.1,0.4 -1.3,0.9 L 2.6,31 c -0.3,0.5 0.2,1.2 0.7,1.2 h 3.9 c 0.5,0 1.1,-0.4 1.3,-1 L 11,24 h 10 l 2.9,7.2 c 0.2,0.5 0.7,1 1.3,1 h 3.9 c 0.6,0 1.002491,-0.701004 0.8,-1.2 z M 13.1,18.5 16,11 l 3.2,7.5 z"
+     id="path2"
+     style="fill:#280b0b"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="scssccssccccssscccc" />
+  <path
+     d="m 50.543018,21.683889 c 0,-0.8 -0.7,-1.5 -1.5,-1.5 h -21 c -0.8,0 -1.5,0.7 -1.5,1.5 v 3 c 0,0.8 0.7,1.5 1.5,1.5 h 14.3 l -15.5,18.9 v 0.1 c -0.2,0.2 -0.3,0.5 -0.3,0.8 v 3 c 0,0.8 0.7,1.5 1.5,1.5 h 21 c 0.8,0 1.5,-0.7 1.5,-1.5 v -3 c 0,-0.8 -0.7,-1.5 -1.5,-1.5 h -14 l 15.2,-18.6 c 0.2,-0.3 0.3,-0.7 0.3,-1 z"
+     id="path2-3"
+     style="fill:#280b0b"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="sssssscccsssssssccss" />
+</svg>

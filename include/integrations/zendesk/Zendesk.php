@@ -19,7 +19,7 @@
 include_once 'vtlib/Vtiger/Module.php';
 require_once 'include/Webservices/Revise.php';
 require_once 'include/Webservices/Create.php';
-require_once 'include/integrations/zendesk/vendor/autoload.php';
+require 'vendor/autoload.php';
 
 use Zendesk\API\HttpClient as ZendeskAPI;
 

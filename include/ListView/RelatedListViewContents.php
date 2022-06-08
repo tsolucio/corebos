@@ -40,25 +40,23 @@ if ($ajaxaction == 'LOADRELATEDLIST') {
 		$smarty = new vtigerCRM_Smarty;
 		$smarty->assign('RESET_COOKIE', $resetCookie);
 		// vtlib customization: Related module could be disabled, check it
-		if (is_array($relatedListData)) {
-			if (($relatedModule == 'Contacts' || $relatedModule == 'Leads' || $relatedModule == 'Accounts') && $currentModule == 'Campaigns' && !$resetCookie) {
-				// this logic is used for listview checkbox selection propagation.
-				$checkedRecordIdString = (empty($_REQUEST[$relatedModule.'_all']) ?
-					(empty($_COOKIE[$relatedModule.'_all']) ? '' : $_COOKIE[$relatedModule.'_all']) : $_REQUEST[$relatedModule.'_all']);
-				$checkedRecordIdString = rtrim($checkedRecordIdString, ';');
-				$checkedRecordIdList = explode(';', $checkedRecordIdString);
-				$relatedListData['checked']=array();
-				if (isset($relatedListData['entries'])) {
-					foreach ($relatedListData['entries'] as $key => $val) {
-						if (in_array($key, $checkedRecordIdList)) {
-							$relatedListData['checked'][$key] = 'checked';
-						} else {
-							$relatedListData['checked'][$key] = '';
-						}
+		if ($currentModule=='Campaigns' && !$resetCookie && is_array($relatedListData) && ($relatedModule=='Contacts' || $relatedModule=='Leads' || $relatedModule=='Accounts')) {
+			// this logic is used for listview checkbox selection propagation.
+			$checkedRecordIdString = (empty($_REQUEST[$relatedModule.'_all']) ?
+				(empty($_COOKIE[$relatedModule.'_all']) ? '' : $_COOKIE[$relatedModule.'_all']) : $_REQUEST[$relatedModule.'_all']);
+			$checkedRecordIdString = rtrim($checkedRecordIdString, ';');
+			$checkedRecordIdList = explode(';', $checkedRecordIdString);
+			$relatedListData['checked']=array();
+			if (isset($relatedListData['entries'])) {
+				foreach ($relatedListData['entries'] as $key => $val) {
+					if (in_array($key, $checkedRecordIdList)) {
+						$relatedListData['checked'][$key] = 'checked';
+					} else {
+						$relatedListData['checked'][$key] = '';
 					}
 				}
-				$smarty->assign('SELECTED_RECORD_LIST', $checkedRecordIdString);
 			}
+			$smarty->assign('SELECTED_RECORD_LIST', $checkedRecordIdString);
 		}
 		require_once 'include/ListView/RelatedListViewSession.php';
 		RelatedListViewSession::addRelatedModuleToSession($relationId, $header);

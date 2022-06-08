@@ -53,10 +53,26 @@
 			{if empty($task->trigger)}
 				0
 			{else}
-				{if $task->trigger['days'] eq abs($task->trigger['days'])}
-					{abs($task->trigger['days'])} {$MOD.LBL_DAYS} {'LBL_AFTER'|@getTranslatedString:$MODULE_NAME} {$task->trigger['field']}
-				{else}
-					{abs($task->trigger['days'])} {$MOD.LBL_DAYS} {'LBL_BEFORE'|@getTranslatedString:$MODULE_NAME}   {$task->trigger['field']}
+				{if isset($task->trigger['days'])}
+					{if $task->trigger['days'] eq abs($task->trigger['days'])}
+						{abs($task->trigger['days'])} {$MOD.LBL_DAYS} {'LBL_AFTER'|@getTranslatedString:$MODULE_NAME} {$task->trigger['field']}
+					{else}
+						{abs($task->trigger['days'])} {$MOD.LBL_DAYS} {'LBL_BEFORE'|@getTranslatedString:$MODULE_NAME} {$task->trigger['field']}
+					{/if}
+				{/if}
+				{if isset($task->trigger['hours'])}
+					{if $task->trigger['hours'] eq abs($task->trigger['hours'])}
+						{abs($task->trigger['hours'])} {$MOD.LBL_HOURS} {'LBL_AFTER'|@getTranslatedString:$MODULE_NAME} {$task->trigger['field']}
+					{else}
+						{abs($task->trigger['hours'])} {$MOD.LBL_HOURS} {'LBL_BEFORE'|@getTranslatedString:$MODULE_NAME} {$task->trigger['field']}
+					{/if}
+				{/if}
+				{if isset($task->trigger['mins'])}
+					{if $task->trigger['mins'] eq abs($task->trigger['mins'])}
+						{abs($task->trigger['mins'])} {'LBL_MINUTES'|@getTranslatedString:'CronTasks'} {'LBL_AFTER'|@getTranslatedString:$MODULE_NAME} {$task->trigger['field']}
+					{else}
+						{abs($task->trigger['mins'])} {'LBL_MINUTES'|@getTranslatedString:'CronTasks'} {'LBL_BEFORE'|@getTranslatedString:$MODULE_NAME} {$task->trigger['field']}
+					{/if}
 				{/if}
 			{/if}
 		</td>

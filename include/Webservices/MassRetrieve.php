@@ -54,10 +54,10 @@ function vtws_massretrieve($ids, $user) {
 	}
 	$actors = vtws_getActorModules();
 	$rdo = array();
-	if (in_array($mname, $actors) && count($wsIds)>0) {
+	if (in_array($mname, $actors) && !empty($wsIds)) {
 		$rdo = $handler->massRetrieve($wsIds);
 	}
-	if (!in_array($mname, $actors) && count($wsIds)>0) {
+	if (!in_array($mname, $actors) && !empty($wsIds)) {
 		$r = $meta->getReferenceFieldDetails();
 		$imgs = $meta->getImageFields();
 		$crmentity = CRMEntity::getInstance($mname);
@@ -77,7 +77,7 @@ function vtws_massretrieve($ids, $user) {
 					$listofrelfields[] = $entity[$relfield];
 				}
 			}
-			if (count($listofrelfields)>0) {
+			if (!empty($listofrelfields)) {
 				if ($entityName=='Emails' && $entity['parent_id']!='') {
 					unset($listofrelfields['parent_id'], $r['parent_id']);
 				}
@@ -151,11 +151,12 @@ function vtws_massretrieve($ids, $user) {
 							if ($mdfield['fieldinfo']['name']=='id') {
 								continue;
 							}
+							$crmEntityTable = CRMEntity::getcrmEntityTableAlias('InventoryDetails');
 							$mdrs = $adb->pquery(
 								'select '.$mdfield['fieldinfo']['name'].',vtiger_inventorydetails.inventorydetailsid from vtiger_inventorydetails
-									inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+									inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid
 									inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
-									where deleted=0 and related_to=? and lineitem_id=?',
+									where vtiger_crmentity.deleted=0 and related_to=? and lineitem_id=?',
 								array($recordid, $row['lineitem_id'])
 							);
 							if ($mdrs) {

@@ -17,8 +17,8 @@ class Vtiger_Webservice {
 
 	/**
 	 * Helper function to log messages
-	 * @param String Message to log
-	 * @param Boolean true appends linebreak, false to avoid it
+	 * @param string Message to log
+	 * @param boolean true appends linebreak, false to avoid it
 	 */
 	public static function log($message, $delim = true) {
 		Vtiger_Utils::Log($message, $delim);
@@ -29,12 +29,9 @@ class Vtiger_Webservice {
 	 * @param Vtiger_Module Instance of the module.
 	 */
 	public static function initialize($moduleInstance) {
-		if ($moduleInstance->isentitytype) {
-			// TODO: Enable support when webservice API support is added.
-			if (function_exists('vtws_addDefaultModuleTypeEntity')) {
-				vtws_addDefaultModuleTypeEntity($moduleInstance->name);
-				self::log('Initializing webservices support ...DONE');
-			}
+		if ($moduleInstance->isentitytype && function_exists('vtws_addDefaultModuleTypeEntity')) {
+			vtws_addDefaultModuleTypeEntity($moduleInstance->name);
+			self::log('Initializing webservices support ...DONE');
 		}
 	}
 
@@ -43,12 +40,9 @@ class Vtiger_Webservice {
 	 * @param Vtiger_Module Instance of the module.
 	 */
 	public static function uninitialize($moduleInstance) {
-		if ($moduleInstance->isentitytype) {
-			// TODO: Enable support when webservice API support is added.
-			if (function_exists('vtws_deleteWebserviceEntity')) {
-				vtws_deleteWebserviceEntity($moduleInstance->name);
-				self::log('De-Initializing webservices support ...DONE');
-			}
+		if ($moduleInstance->isentitytype && function_exists('vtws_deleteWebserviceEntity')) {
+			vtws_deleteWebserviceEntity($moduleInstance->name);
+			self::log('De-Initializing webservices support ...DONE');
 		}
 	}
 }

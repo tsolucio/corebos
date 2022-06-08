@@ -65,5 +65,4 @@ class WSAPP_SyncStateModel extends WSAPP_BaseModel {
 		return $model->setData($rowData);
 	}
 }
-
 ?>

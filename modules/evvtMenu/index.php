@@ -20,7 +20,6 @@ global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $c
 
 require_once 'Smarty_setup.php';
 require_once 'modules/evvtMenu/evvtMenuUtils.php';
-$category = getParentTab();
 $smarty = new vtigerCRM_Smarty();
 
 $menu_structure = getMenuBranch(0);
@@ -38,7 +37,6 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 
 $smarty->display(vtlib_getModuleTemplate($currentModule, 'index.tpl'));

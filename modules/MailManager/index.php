@@ -14,12 +14,12 @@ include_once __DIR__ . '/MailManager.php';
 class MailManager_IndexController extends MailManager_Controller {
 
 	public static $controllers = array(
-		'mainui' => array( 'file' => 'src/controllers/MainUIController.php', 'class' => 'MailManager_MainUIController' ),
-		'folder' => array( 'file' => 'src/controllers/FolderController.php', 'class' => 'MailManager_FolderController' ),
-		'mail'   => array( 'file' => 'src/controllers/MailController.php',   'class' => 'MailManager_MailController'   ),
-		'relation'=>array( 'file' => 'src/controllers/RelationController.php','class'=> 'MailManager_RelationController'),
-		'settings'=>array( 'file' => 'src/controllers/SettingsController.php','class'=> 'MailManager_SettingsController'),
-		'search'  =>array( 'file' => 'src/controllers/SearchController.php','class'=> 'MailManager_SearchController'),
+		'mainui' => array('file' => 'src/controllers/MainUIController.php', 'class' => 'MailManager_MainUIController'),
+		'folder' => array('file' => 'src/controllers/FolderController.php', 'class' => 'MailManager_FolderController'),
+		'mail'   => array('file' => 'src/controllers/MailController.php', 'class' => 'MailManager_MailController'),
+		'relation'=>array('file' => 'src/controllers/RelationController.php', 'class'=> 'MailManager_RelationController'),
+		'settings'=>array('file' => 'src/controllers/SettingsController.php', 'class'=> 'MailManager_SettingsController'),
+		'search'  =>array('file' => 'src/controllers/SearchController.php', 'class'=> 'MailManager_SearchController'),
 	);
 
 	public function process(MailManager_Request $request) {
@@ -46,6 +46,8 @@ class MailManager_IndexController extends MailManager_Controller {
 	}
 
 	public function processRoot(MailManager_Request $request) {
+		global $current_user;
+		include_once 'vtlib/Vtiger/Mailer.php';
 		$viewer = $this->getViewer();
 		$tool_buttons = array(
 			'EditView' => 'no',
@@ -61,6 +63,10 @@ class MailManager_IndexController extends MailManager_Controller {
 		$viewer->assign('CHECK', $tool_buttons);
 		$viewer->assign('ERROR', '');
 		$viewer->assign('SHOW_SENTTO_LINKS', GlobalVariable::getVariable('MailManager_Show_SentTo_Links', 0));
+		$mailer = new Vtiger_Mailer();
+		$mailer->addSignature($current_user->id);
+		$viewer->assign('emailSignature', decode_html($mailer->Signature));
+		$viewer->assign('emailSignatureBeforeQuote', GlobalVariable::getVariable('EMail_Signature_BeforeQuote', 0));
 		$viewer->display($this->getModuleTpl('index.tpl'));
 		return true;
 	}
