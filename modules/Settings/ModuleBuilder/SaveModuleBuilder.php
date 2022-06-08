@@ -29,7 +29,8 @@ function SaveModuleBuilder($step) {
 			} else {
 				$mb = new ModuleBuilder();
 			}
-			$mb->column_data['modulename'] = vtlib_purify($_REQUEST['modulename']);
+			$modulename = vtlib_purify($_REQUEST['modulename']);
+			$mb->column_data['modulename'] = str_replace(' ', '', $modulename);
 			$mb->column_data['modulelabel'] = vtlib_purify($_REQUEST['modulelabel']);
 			$mb->column_data['parentmenu'] = vtlib_purify($_REQUEST['parentmenu']);
 			$mb->column_data['moduleicon'] = vtlib_purify($_REQUEST['moduleicon']);
@@ -43,7 +44,9 @@ function SaveModuleBuilder($step) {
 		case '2':
 			$mb = new ModuleBuilder($moduleid);
 			$mb->mode = 'edit';
-			$mb->column_data['blocks'] = vtlib_purify($_REQUEST['blocks']);
+			if (isset($_REQUEST['blocks'])) {
+				$mb->column_data['blocks'] = vtlib_purify($_REQUEST['blocks']);
+			}
 			$ret = $mb->save($step);
 			$adb->pquery('UPDATE vtiger_modulebuilder_name SET completed="40" WHERE userid=? AND modulebuilderid=?', array($current_user->id,$moduleid));
 			return $ret;

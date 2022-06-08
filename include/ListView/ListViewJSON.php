@@ -20,7 +20,7 @@ class GridListView {
 	public $entries = 20;
 	public $orderBy = 'DESC';
 	public $sortColumn = '';
-	public $currentPage = '';
+	public $currentPage = 1;
 	public $searchUrl = '';
 	public $searchtype = 'Basic';
 
@@ -129,7 +129,9 @@ class GridListView {
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias($this->module, true);
 			$list_query = preg_replace("/$crmEntityTable.deleted\s*=\s*0/i", $crmEntityTable.'.deleted = 1', $list_query);
 		}
-		if (!isset($_REQUEST['fromInstance'])) {
+		$fromInstance = isset($_REQUEST['fromInstance']) ? $_REQUEST['fromInstance'] : false;
+		$fromInstance = filter_var($fromInstance, FILTER_VALIDATE_BOOLEAN);
+		if (!$fromInstance) {
 			$this->currentPage = $lastPage;
 		}
 		if (isset($this->entries) && !empty($this->entries)) {
@@ -164,7 +166,7 @@ class GridListView {
 		} else {
 			$data = $this->processResults($result, $field_types);
 		}
-		if ($result && $sql_error != true) {
+		if ($result && !$sql_error) {
 			if ($noofrows>0) {
 				$res = array(
 					'data' => array(
@@ -361,11 +363,8 @@ class GridListView {
 
 	public function processResults($result, $field_types, $parentid = 0) {
 		global $adb, $current_user;
-		$Colorizer = false;
 		$ids = array();
-		if (vtlib_isModuleActive('Colorizer')) {
-			$Colorizer = true;
-		}
+		$Colorizer = vtlib_isModuleActive('Colorizer');
 		if (isset($_REQUEST['searchFullDocuments']) && !empty($_REQUEST['searchFullDocuments'])) {
 			$ids = $this->SearchFullDocuments($_REQUEST['searchFullDocuments']);
 		}
@@ -435,7 +434,6 @@ class GridListView {
 						$rows[$fieldName] = '--';
 					}
 				} elseif ($fieldType == '71' || $fieldType == '72' || $fieldType == '7' || $fieldType == '9') {
-					$currencyField = new CurrencyField($fieldValue);
 					if ($fieldType == '72' || $fieldType == '71') {
 						if ($fieldName == 'unit_price') {
 							$currencyId = getProductBaseCurrency($recordID, $this->module);
@@ -448,7 +446,11 @@ class GridListView {
 						$currencyValue = CurrencyField::convertToUserFormat($fieldValue, null, true);
 						$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
 					} else {
-						$value = CurrencyField::convertToUserFormat($fieldValue);
+						if ($val['typeofdata'][0]=='I') {
+							$value = $fieldValue;
+						} else {
+							$value = CurrencyField::convertToUserFormat($fieldValue);
+						}
 					}
 					$rows[$fieldName] = $value;
 				} elseif ($fieldType == '27') {
@@ -482,6 +484,16 @@ class GridListView {
 						}
 					}
 					$rows[$fieldName] = implode(',', $field1025Value);
+				} elseif (Field_Metadata::isPicklistUIType($fieldType)) {
+					if (strpos($fieldValue, Field_Metadata::MULTIPICKLIST_SEPARATOR)) {
+						$plvals = explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue);
+						foreach ($plvals as $idx => $plval) {
+							$plvals[$idx] = getTranslatedString($plval, $this->module);
+						}
+						$rows[$fieldName] = implode(',', $plvals);
+					} else {
+						$rows[$fieldName] = getTranslatedString($fieldValue, $this->module);
+					}
 				} else {
 					if ($fieldName) {
 						$rows[$fieldName] = textlength_check($fieldValue);
@@ -618,21 +630,21 @@ class GridListView {
 		global $adb;
 		$field_types = array();
 		foreach ($listviewcolumns as $fName) {
-			$fieldnameSql = $adb->pquery('SELECT fieldname, uitype FROM vtiger_field WHERE columnname=? AND tabid=?', array($fName, $this->tabid));
+			$fieldnameSql = $adb->pquery('SELECT fieldname, uitype, typeofdata FROM vtiger_field WHERE columnname=? AND tabid=?', array($fName, $this->tabid));
 			if (!$fieldnameSql || $adb->num_rows($fieldnameSql)==0) {
 				$field_types[] = array(
 					'columnname' => $fName,
 					'fieldname' => $fName,
 					'fieldtype' => '',
+					'typeofdata' => '',
 				);
 				continue;
 			}
-			$fieldName = $adb->query_result($fieldnameSql, 0, 0);
-			$fieldType = $adb->query_result($fieldnameSql, 0, 1);
 			$field_types[] = array(
 				'columnname' => $fName,
-				'fieldname' => $fieldName,
-				'fieldtype' => $fieldType,
+				'fieldname' => $adb->query_result($fieldnameSql, 0, 0),
+				'fieldtype' => $adb->query_result($fieldnameSql, 0, 1),
+				'typeofdata' => $adb->query_result($fieldnameSql, 0, 2),
 			);
 		}
 		return $field_types;

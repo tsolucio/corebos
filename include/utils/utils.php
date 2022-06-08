@@ -549,7 +549,6 @@ function return_session_value_or_default($varname, $default) {
 		$log->debug('< return_session_value_or_default');
 		return $_SESSION[$varname];
 	}
-
 	$log->debug('< return_session_value_or_default');
 	return $default;
 }
@@ -567,7 +566,6 @@ function append_where_clause(&$where_clauses, $variable_name, $SQL_name = null) 
 	if ($SQL_name == null) {
 		$SQL_name = $variable_name;
 	}
-
 	if (isset($_REQUEST[$variable_name]) && $_REQUEST[$variable_name] != '') {
 		$where_clauses[] = "$SQL_name like '$_REQUEST[$variable_name]%'";
 	}
@@ -747,7 +745,6 @@ function getTabname($tabid) {
 function getTabModuleName($tabid) {
 	global $log, $adb;
 	$log->debug('> getTabModuleName '.$tabid);
-
 	// Lookup information in cache first
 	$tabname = VTCacheUtils::lookupModulename($tabid);
 	if ($tabname === false) {
@@ -927,7 +924,6 @@ function getRecordOwnerId($record) {
 function insertProfile2field($profileid) {
 	global $log, $adb;
 	$log->debug('> insertProfile2field '.$profileid);
-
 	$adb->database->SetFetchMode(ADODB_FETCH_ASSOC);
 	$fld_result = $adb->pquery(
 		'select tabid, fieldid from vtiger_field where generatedtype=1 and displaytype in (1,2,3) and vtiger_field.presence in (0,2) and tabid != 29',
@@ -1088,9 +1084,7 @@ function getProfile2AllFieldList($mod_array, $profileid) {
 function getDefOrgFieldList($fld_module) {
 	global $log, $adb;
 	$log->debug('> getDefOrgFieldList '.$fld_module);
-
 	$tabid = getTabid($fld_module);
-
 	$query = 'select vtiger_def_org_field.visible,vtiger_field.*
 		from vtiger_def_org_field
 		inner join vtiger_field on vtiger_field.fieldid=vtiger_def_org_field.fieldid
@@ -1112,7 +1106,6 @@ function getQuickCreate($tabid, $actionid) {
 	$module=getTabModuleName($tabid);
 	$actionname=getActionname($actionid);
 	$QuickCreateForm= 'true';
-
 	$perr=isPermitted($module, $actionname);
 	if ($perr == 'no') {
 		$QuickCreateForm= 'false';
@@ -1128,7 +1121,6 @@ function getQuickCreate($tabid, $actionid) {
 function getUnitPrice($productid, $module = 'Products') {
 	global $log, $adb;
 	$log->debug('> getUnitPrice '.$productid.','.$module);
-
 	if ($module == 'Services') {
 		$query = 'select unit_price from vtiger_service where serviceid=?';
 	} else {
@@ -1236,10 +1228,8 @@ function updateSubTotal($module, $tablename, $colname, $colname1, $entid_fld, $e
 	$result1 = $adb->pquery($query, array($entid));
 	$subtot = $adb->query_result($result1, 0, $colname);
 	$subtot_upd = $subtot - $prod_total;
-
 	$gdtot = $adb->query_result($result1, 0, $colname1);
 	$gdtot_upd = $gdtot - $prod_total;
-
 	//updating the subtotal
 	$sub_query = "update $tablename set $colname=?, $colname1=? where $entid_fld=?";
 	$adb->pquery($sub_query, array($subtot_upd, $gdtot_upd, $entid));
@@ -2060,7 +2050,6 @@ function getCurrentModule($perform_set = false) {
 		if (!preg_match("/[\/.]/", $module)) {
 			$is_module = @in_array($module, $res_arr);
 		}
-
 		if ($is_module) {
 			if ($perform_set) {
 				$currentModule = $module;

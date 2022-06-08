@@ -448,4 +448,5 @@ var alert_arr = {
 	'LBL_MATCH_ERROR': 'You can only match the fields you select to show',
 	'LBL_REQUIRED_FIELDS': 'Please fill all required fields',
 	'LBL_ERROR_CREATING': 'Error while creating. Please try again.',
+	'LBL_ERROR_DROPZONE': 'Error uploading link. Check the link and try again.',
 };

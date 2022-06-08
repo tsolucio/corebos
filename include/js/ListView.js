@@ -310,10 +310,15 @@ function massedit_initOnChangeHandlers() {
 		var massedit_input = inputs[index];
 		// TODO Onchange on readonly and hidden fields are to be handled later.
 		massedit_input.onchange = function () {
+			const holdName = this.name;
+			if (this.name.includes('_display_1025')) {
+				this.name = this.name.replace('_display_1025', '');
+			}
 			var checkbox = document.getElementById(this.name + '_mass_edit_check');
 			if (checkbox) {
 				checkbox.checked = true;
 			}
+			this.name = holdName;
 		};
 	}
 	// Setup change handlers for select boxes
@@ -322,6 +327,12 @@ function massedit_initOnChangeHandlers() {
 		var massedit_select = selects[index];
 		massedit_select.onchange = function () {
 			var checkbox = document.getElementById(this.name + '_mass_edit_check');
+			if (this.dataset.uitype !== undefined && this.dataset.uitype == '1025') {
+				id = this.id.replace('_type', '');
+				document.getElementById(`${id}`).value = '';
+				document.getElementById(`${id}_display`).value = '';
+				document.getElementById(`show-1025-pill-${id}`).innerHTML = '';
+			}
 			if (checkbox) {
 				checkbox.checked = true;
 			}

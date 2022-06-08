@@ -784,6 +784,54 @@ $WFExpressionFunctionDefinitons = array(
 		'randomstring(12)  // 02E373931343',
 	),
 ),
+'randomnumber' => array(
+	'name' => 'randomnumber(min,max)',
+	'desc' => 'This function returns a random number.',
+	'params' => array(
+		array(
+			'name' => 'min',
+			'type' => 'Integer',
+			'optional' => true,
+			'desc' => 'minimum random number to return',
+		),
+		array(
+			'name' => 'max',
+			'type' => 'Integer',
+			'optional' => true,
+			'desc' => 'maximum random number to return. If minimum is given, maximum is mandatory.',
+		),
+	),
+	'categories' => array('Math'),
+	'examples' => array(
+		'randomnumber(12)  // some random number because maximum is missing',
+		'randomnumber()  // some random number',
+		'randomnumber(1,8)  // some random number between 1 and 8 inclusive',
+	),
+),
+'faker' => array(
+	'name' => 'faker(operation,parameters)',
+	'desc' => 'This function will generate fake data.',
+	'params' => array(
+		array(
+			'name' => 'operation',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'function that you want to use',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'parameters that a specific faker function has',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		'faker(\'sentence\',3)  // Quae eaque adipisci.',
+		'faker(\'randomDigit\')  // 2',
+		'<a href="https://github.com/fzaninotto/Faker">Here, you can find the faker functions.</a>'
+	),
+),
 'power' => array(
 	'name' => 'power(base, exponential)',
 	'desc' => 'This function is used to calculate the power of any number such as calculating squares and cube on integer fields.',

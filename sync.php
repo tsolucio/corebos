@@ -23,7 +23,7 @@ global $root_directory, $adb, $site_URL;
 coreBOS_Session::init();
 set_include_path($root_directory. 'modules/Calendar4You/');
 require_once 'vendor/autoload.php';
-$service="GoogleCalendar";
+$service='GoogleCalendar';
 
 $q=$adb->pquery('select * from its4you_googlesync4you_access where userid=? and service=?', array($_SESSION['authenticated_user_id'],$service));
 $client_id=$adb->query_result($q, 0, 'google_clientid');
@@ -41,7 +41,7 @@ $client->setApplicationName('corebos');
 $client->setScopes(array('https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.readonly'));
 
 if (isset($_GET['code'])) {
-	$q=$client->authenticate($_GET['code']);
+	$q=$client->fetchAccessTokenWithAuthCode($_GET['code']);
 	coreBOS_Session::set('token', $client->getAccessToken());
 	if (is_array(coreBOS_Session::get('token'))) {
 		$token=coreBOS_Session::get('token');

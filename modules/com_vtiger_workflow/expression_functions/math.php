@@ -132,4 +132,12 @@ function cb_average($arr) {
 	}
 	return array_sum($arr)/count($arr);
 }
+
+function __cb_randomnumber($arr) {
+	if (empty($arr) || !isset($arr[1])) {
+		return rand();
+	} else {
+		return rand((int)$arr[0], (int)$arr[1]);
+	}
+}
 ?>

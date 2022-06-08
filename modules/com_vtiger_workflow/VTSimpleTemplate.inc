@@ -44,7 +44,9 @@ class VTSimpleTemplate {
 		if (count($matches)==0) {
 			$fieldname = $match[1];
 			$data = $this->parent->getData();
-			if ($this->useValue($data, $fieldname)) {
+			if ($fieldname=='recordid') {
+				list($void, $result) = explode('x', $data['id']);
+			} elseif ($this->useValue($data, $fieldname)) {
 				$moduleName = $this->parent->getModuleName();
 				$module_focus = Vtiger_Module::getInstance($moduleName);
 				$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);

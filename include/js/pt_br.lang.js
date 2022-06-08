@@ -471,4 +471,5 @@ var alert_arr = {
 	'ERROR_CREATING_TRY_AGAIN': 'Erro ao criar. Os campos não podem estar vazios ou ter um valor errado.',
 	'LBL_REQUIRED_FIELDS': 'Please fill all required fields',
 	'LBL_ERROR_CREATING': 'Error while creating. Please try again.',
+	'LBL_ERROR_DROPZONE': 'Error uploading link. Check the link and try again.',
 };

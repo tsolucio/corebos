@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="include/jkanban/jkanban.js"></script>
 	<script type="text/javascript" src="modules/Vtiger/KanbanAPI/Kanban.js"></script>
 	<script type="text/javascript" src="include/js/dtlviewajax.js"></script>
+	<script type="text/javascript" src="include/Webservices/WSClient.js"></script>
 	<!-- List View's Buttons and Filters starts -->
 	{assign var=SHOWPAGENAVIGATION value=false}
 	{include file='ListViewFilter.tpl'}
@@ -29,6 +30,23 @@
 			{/if}
 		{/foreach}
 	</style>
+	{if isset($BALinks)}
+		<div class="slds-page-header slds-m-top_small">
+			<div class="slds-page-header__row">
+				<div class="slds-page-header__col-title">
+					<div class="slds-media">
+						<div class="slds-media__body">
+						{foreach from=$BALinks item=$i}
+							<a class="slds-button slds-button_neutral" href="{$i->linkurl}">
+								{$i->linklabel}
+							</a>
+						{/foreach}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{/if}
 	<span>
 	<div id="{{$kanbanID}}" style="max-width: 96vw; min-height:105vh;padding: 20px 0;"></div>
 	<span id="{$kanbanID}Scroll"></span>
@@ -63,5 +81,9 @@
 	});
 	kanbanRefresh('{$kanbanID}');
 	kanbanSetupInfiniteScroll('{$kanbanID}');
+	let lanefield = '{$lanefield}';
+	let userwsid = {$USERSWSID};
+	let currentStatus = '';
+	let cbConn = new Vtiger_WSClient('');
 	</script>
 {/if}

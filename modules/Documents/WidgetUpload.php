@@ -37,6 +37,8 @@ class massdocumentupload_DetailViewBlock extends DeveloperBlock {
 		$this->context = $context;
 		$smarty->assign('ID', $this->getFromContext('record', true));
 		$smarty->assign('MODULE', $currentModule);
+		$smarty->assign('SHOWDOCS', empty($_REQUEST['nodocs']));
+		$smarty->assign('SHOWLINKS', empty($_REQUEST['nolinks']));
 		return $smarty->fetch('Smarty/templates/modules/Documents/dropzone.tpl');
 	}
 }
