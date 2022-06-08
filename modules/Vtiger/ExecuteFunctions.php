@@ -569,6 +569,24 @@ switch ($functiontocall) {
 			'fields' => $fieldInfo,
 		);
 		break;
+	case 'clickHouse':
+		include_once 'include/integrations/clickhouse/clickhouse.php';
+		$mu = new corebos_clickhouse();
+		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'addUpdateTable') {
+			$table_name = $_REQUEST['table_name'];
+			$access = $_REQUEST['access'];
+			$create = $_REQUEST['create'];
+			$read = $_REQUEST['read'];
+			$write = $_REQUEST['write'];
+			$old_table_name = $_REQUEST['old_table_name'];
+			return $mu->addUpdateTable($table_name, $access, $create, $read, $write, $old_table_name = '');
+		} else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
+			return $mu->getTables();
+		} else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
+			$table_name = $_REQUEST['table_name'];
+			return $mu->deleteTable($table_name);
+		}
+		break;
 	default:
 		$ret = '';
 		break;
