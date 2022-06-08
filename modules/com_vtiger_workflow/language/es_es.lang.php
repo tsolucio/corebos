@@ -271,5 +271,11 @@ $mod_strings = array(
 'CBSendOneSignalNotificationWorkFlowTask' => 'Enviar Notificación OneSignal',
 'Send OneSignal Notification' => 'Enviar Notificación OneSignal',
 'CBUpsertTask' => 'Upsert',
+'Generate Report Task' => 'Generar Informe',
+'Generate Report Workflow Task' => 'Generar Informe',
+'Send File' => 'Enviar Fichero',
+'Assigns the next counter value to any field based on the rules of the record' => 'Asigna el siguiente valor de contador a cualquier campo según las reglas del registro',
+'Number/String' => 'Número/Cadena',
+'CRMID or AutoNumber field value of the record with details to get next increment value' => 'ID o valor del campo Autonumérico del registro con detalles para obtener el siguiente valor de incremento',
 );
 ?>

@@ -3597,7 +3597,6 @@ class CRMEntity {
 				}
 			}
 		}
-
 		return $query;
 	}
 

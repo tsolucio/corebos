@@ -492,13 +492,10 @@ if (!$viewAttachment && (!$viewAttachment && $action!='home_rss') && $action!=$A
 		$next_reminder_interval = (isset($_SESSION['next_reminder_interval']) ? $_SESSION['next_reminder_interval'] : 0);
 		$reminder_interval_reset = ($last_reminder_check_time + $next_reminder_interval - $cur_time) * 1000;
 		if (isset($_SESSION['last_reminder_check_time']) && $reminder_interval_reset > 0) {
-			echo "window.setTimeout(function(){
-					ActivityReminderCallback(false);
-				},$reminder_interval_reset);";
+			echo "window.setTimeout(function(){ActivityReminderCallback(false);},$reminder_interval_reset);</script>";
 		} else {
-			echo 'ActivityReminderCallback(false);';
+			echo 'ActivityReminderCallback(false);</script>';
 		}
-		echo '</script>';
 	}
 	if (!$skipFooters && $action!='ChangePassword' && $action!='body' && $action!=$Ajx_module.'Ajax' && $action!='Popup' && $action!='ImportStep3' && $action!='ActivityAjax' && $action!='getListOfRecords') {
 		cbEventHandler::do_action('corebos.footer.prefooter');

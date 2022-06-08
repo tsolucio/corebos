@@ -6,17 +6,22 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * 31-05-2022 - Translated to brazilian portuguese - Ranieri Slemer - Brazil/Sao Paulo/ www.ecrmweb.com.br
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Módulo',
-	'SINGLE_ModuleName' => 'Nome Módulo',
-	'ModuleName ID' => 'ID Nome Módulo',
+	'pricebookproductrel' => 'Listas de preços',
+	'SINGLE_pricebookproductrel' => 'Lista de Preços',
+	'pricebookproductrel ID' => 'ID Lista de Preço',
 
-	'LBL_CUSTOM_INFORMATION' => 'Imformação Customizada',
-	'LBL_MODULEBLOCK_INFORMATION' => 'Informação Bloco Módulo',
+	'LBL_CUSTOM_INFORMATION' => 'Informação customizada',
+	'LBL_PBPDO_INFORMATION' => 'Informação lista de preço',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
 
-	'ModuleFieldLabel' => 'Texto Etiqueta Campo Módulo',
+	'pricebookid' => 'Catalogo de preços',
+	'pricebookproductrel_no' => 'Nº Lista de Preço',
+	'productid' => 'Produto',
+	'listprice' => 'Preço',
+	'usedcurrency' => 'Moeda',
 );
 ?>

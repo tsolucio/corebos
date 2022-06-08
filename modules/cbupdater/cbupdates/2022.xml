@@ -119,4 +119,39 @@
 	<classname>AddWSQueableColumn</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install AutoNumber Increment module</description>
+	<filename>build/changeSets/2022/installAutonumberInc.php</filename>
+	<classname>installAutonumberInc</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate old AutoNumber Increment prefixes</description>
+	<filename>build/changeSets/2022/migrateAutonumberInc.php</filename>
+	<classname>migrateAutonumberInc</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Business Actions type for Kanban</description>
+	<filename>build/changeSets/2022/addBAtypeForKanban.php</filename>
+	<classname>addBAtypeForKanban</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Add ClickHouse webservice</description>
+	<filename>build/changeSets/2022/addWSClickHouse.php</filename>
+	<classname>addWSClickHouse</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Add ClickHouse Table</description>
+	<filename>build/changeSets/2022/addClickHouseTable.php</filename>
+	<classname>addClickHouseTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

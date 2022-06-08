@@ -245,5 +245,11 @@ $mod_strings = array(
 	'CBSendOneSignalNotificationWorkFlowTask' => 'Send OneSignal Notification',
 	'Send OneSignal Notification' => 'Send OneSignal Notification',
 	'CBUpsertTask' => 'Upsert',
+	'Generate Report Task' => 'Generate Report Task',
+	'Generate Report Workflow Task' => 'Generate Report Workflow Task',
+	'Send File' => 'Send File',
+	'Assigns the next counter value to any field based on the rules of the record' => 'Assigns the next counter value to any field based on the rules of the record',
+	'Number/String' => 'Number/String',
+	'CRMID or AutoNumber field value of the record with details to get next increment value' => 'CRMID or AutoNumber field value of the record with details to get next increment value',
 );
 ?>

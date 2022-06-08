@@ -137,6 +137,10 @@ function send_mail(
 	if ($module != 'Calendar') {
 		$contents = addSignature($contents, $from_name);
 	}
+	$companyEmailFooter = GlobalVariable::getVariable('EMail_Company_Signature', '', $module);
+	if (!empty($companyEmailFooter)) {
+		$contents.= html_entity_decode('<br>'.$companyEmailFooter);
+	}
 
 	// always merge against user module
 	$rs = $adb->pquery('select id from vtiger_users where email1=? or email2=?', array($from_email, $from_email));
@@ -220,10 +224,8 @@ function addSignature($contents, $fromname) {
 	if ($sign != '') {
 		$sign = html_entity_decode($sign, ENT_QUOTES, $default_charset);
 		$contents .= '<br>'.$sign;
-		$adb->println('< addSignature '.$sign);
-	} else {
-		$adb->println('< addSignature is empty for user '.$fromname);
 	}
+	$adb->println('< addSignature '.$sign);
 	return $contents;
 }
 
@@ -663,12 +665,12 @@ function getMailErrorString($mail_status_str) {
 
 	$mail_status_str = trim($mail_status_str, '&&&');
 	$mail_status_array = explode('&&&', $mail_status_str);
-	$adb->println("All Mail status ==>\n".$mail_status_str."\n");
+	$adb->println('All Mail status ==> '.$mail_status_str);
 	$mail_error_str = '';
 	foreach ($mail_status_array as $val) {
 		$list = explode('=', $val);
 		$adb->println('Mail id & status ==> '.$list[0].' = '.$list[1]);
-		if ($list[1] == 0) {
+		if ($list[1] == 0 || strpos($list[1], 'error') || strpos($list[1], 'failed')) {
 			$mail_error_str .= $list[0].'='.$list[1].'&&&';
 		}
 	}
@@ -685,42 +687,43 @@ function getMailErrorString($mail_status_str) {
  */
 function parseEmailErrorString($mail_error_str) {
 	global $adb;
-	$adb->println('> parseEmailErrorString '.$mail_error_str);
-
+	$adb->println('> parseEmailErrorString');
+	$errorStyleOpen = '<br><strong><span style="color:red;">';
+	$errorStyleClose = '</span></strong>';
 	$mail_error = base64_decode($mail_error_str);
 	$adb->println('Original error string => '.$mail_error);
 	$mail_status = explode('&&&', trim($mail_error, '&&&'));
 	$errorstr = '';
 	foreach ($mail_status as $val) {
 		$status_str = explode('=', $val);
-		$adb->println('Mail id => "'.$status_str[0].'"....status => "'.(isset($status_str[1]) ? $status_str[1] : '').'"');
+		$adb->println('Mail id => '.$status_str[0].' status => '.(isset($status_str[1]) ? $status_str[1] : ''));
 		if (isset($status_str[1]) && $status_str[1] != 1) {
 			$adb->println('Error in mail sending');
 			if ($status_str[1] == 'connect_host') {
-				$adb->println('if part - Mail sever is not configured');
-				$errorstr .= '<br><strong><span style="color:red;">'.getTranslatedString('MESSAGE_CHECK_MAIL_SERVER_NAME', 'Emails').'</span></strong>';
+				$adb->println('Mail sever is not configured');
+				$errorstr .= $errorStyleOpen.getTranslatedString('MESSAGE_CHECK_MAIL_SERVER_NAME', 'Emails').$errorStyleClose;
 				break;
 			} elseif ($status_str[1] == '0') {
-				$adb->println("first elseif part - status will be 0 which is the case of assigned to vtiger_users's email is empty.");
-				$errorstr .= '<br><strong><span style="color:red;"> '.getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND', 'Emails').' '
-					.getTranslatedString('MESSAGE_PLEASE_CHECK_FROM_THE_MAILID', 'Emails').'</span></strong>';
+				$adb->println("assigned_to users's email is empty");
+				$errorstr .= $errorStyleOpen.getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND', 'Emails').' '
+					.getTranslatedString('MESSAGE_PLEASE_CHECK_FROM_THE_MAILID', 'Emails').$errorStyleClose;
 				//Added to display the message about the CC && BCC mail sending status
 				if ($status_str[0] == 'cc_success') {
-					$cc_msg = 'But the mail has been sent to CC & BCC addresses.';
-					$errorstr .= '<br><strong><span style="color:purple;">'.$cc_msg.'</span></strong>';
+					$cc_msg = 'But the mail has been sent to CC & BCC addresses';
+					$errorstr .= '<br><strong><span style="color:purple;">'.$cc_msg.$errorStyleClose;
 				}
 			} elseif (strstr($status_str[1], 'from_failed')) {
-				$adb->println('second elseif part - from email id is failed.');
+				$adb->println('from email id failed');
 				$from = explode('from_failed', $status_str[1]);
-				$errorstr .= '<br><strong><span style="color:red;">'.getTranslatedString('MESSAGE_PLEASE_CHECK_THE_FROM_MAILID', 'Emails')." '".$from[1]."'</span></strong>";
+				$errorstr .= $errorStyleOpen.getTranslatedString('MESSAGE_PLEASE_CHECK_THE_FROM_MAILID', 'Emails')." '".$from[1]."'</span></strong>";
 			} else {
-				$adb->println('else part - mail send process failed due to the following reason.');
-				$errorstr .= '<br><strong><span style="color:red;">'.getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND_TO_THIS_EMAILID', 'Emails')." '".$status_str[0]."'. "
-					.getTranslatedString('PLEASE_CHECK_THIS_EMAILID', 'Emails').'</span></strong>';
+				$adb->println('mail send process failed');
+				$errorstr .= $errorStyleOpen.getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND_TO_THIS_EMAILID', 'Emails')." '".$status_str[0]."'. "
+					.getTranslatedString('PLEASE_CHECK_THIS_EMAILID', 'Emails').$errorStyleClose;
 			}
 		}
 	}
-	$adb->println('< parseEmailErrorString '.$errorstr);
+	$adb->println('< parseEmailErrorString');
 	return $errorstr;
 }
 

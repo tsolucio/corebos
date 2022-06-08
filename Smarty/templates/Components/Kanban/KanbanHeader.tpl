@@ -14,4 +14,15 @@
 			<span>{$TITLE}</span>
 		</h2>
 	</div>
+	{if isset($HeaderAction[{$TITLE}])}
+	<span style="float: right;">
+		{$HeaderAction[{$TITLE}]}
+	</span>
+	{else}
+	<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="kbCreateQuestion('{$BOARD.name}')" title="Create default action for {$BOARD.name} status">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+		</svg>
+	</button>
+	{/if}
 </div>

@@ -34,6 +34,8 @@ function cbexpsql_supportedFunctions() {
 		'regexreplace' => 'regexreplace(pattern,replace,subject)',
 		'substring' => 'substring(stringfield,start,length)',
 		'randomstring' => 'randomstring(length)',
+		'randomnumber' => 'randomnumber(min,max)',
+		'faker' => 'faker(operation,parameters)',
 		'uppercase'=>'uppercase(stringfield)',
 		'lowercase'=>'lowercase(stringfield)',
 		//'uppercasefirst'=>'uppercasefirst(stringfield)',
@@ -344,6 +346,16 @@ function cbexpsql_randomstring($arr, $mmodule) {
 	return 'SUBSTRING(HEX(CONCAT(NOW(), RAND(), UUID())), 1, '.$arr[0].')';
 }
 
+function cbexpsql_randomnumber($arr, $mmodule) {
+	if (is_object($arr[0])) {
+		$b = $arr[0]->value;
+	}
+	if (is_object($arr[1])) {
+		$a = $arr[1]->value;
+	}
+	return 'FLOOR(RAND()*('.$b.'-'.$a.'+1))+'.$a;
+}
+
 function cbexpsql_uppercase($arr, $mmodule) {
 	return __cbexpsql_functionparams('UPPER', $arr, $mmodule);
 }
@@ -630,6 +642,9 @@ function cbexpsql_and($arr, $mmodule) {
 }
 function cbexpsql_not($arr, $mmodule) {
 	return 'FALSE';
+}
+function cbexpsql_faker($arr, $mmodule) {
+	return 'TRUE';
 }
 
 class cbexpsql_environmentstub {

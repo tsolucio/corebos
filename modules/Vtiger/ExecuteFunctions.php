@@ -75,6 +75,14 @@ switch ($functiontocall) {
 		$limit =  isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
 		$ret = getProductServiceAutocomplete($_REQUEST['term'], array(), $limit);
 		break;
+	case 'getEntityName':
+		$ret = '';
+		$crmid = vtlib_purify($_REQUEST['getNameFrom']);
+		if (!empty($crmid)) {
+			$ename = getEntityName(getSalesEntityType($crmid), $crmid);
+			$ret = $ename[$crmid];
+		}
+		break;
 	case 'getFieldValuesFromRecord':
 		$ret = array();
 		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
@@ -85,6 +93,72 @@ switch ($functiontocall) {
 			$queryGenerator = new QueryGenerator($module, $current_user);
 			$queryGenerator->setFields($fields);
 			$queryGenerator->addCondition('id', $crmid, 'e');
+			$query = $queryGenerator->getQuery();
+			$queryres=$adb->pquery($query, array());
+			if ($adb->num_rows($queryres)>0) {
+				$col=0;
+				foreach ($fields as $field) {
+					$ret[$field]=$adb->query_result($queryres, 0, $col++);
+				}
+			}
+		}
+		break;
+	case 'getFieldValuesFromSearch':
+		$ret = array();
+		global $current_user, $adb;
+		$module = vtlib_purify($_REQUEST['getFieldValuesFrom']);
+		if (!empty($module) && vtlib_isModuleActive($module)) {
+			$fields = vtlib_purify($_REQUEST['getTheseFields']);
+			$fields = explode(',', $fields);
+			$queryGenerator = new QueryGenerator($module, $current_user);
+			$queryGenerator->setFields($fields);
+			if (substr($_REQUEST['getFieldSearchField'], 0, 1)=='[') {
+				$JSONconditions = json_decode($_REQUEST['getFieldSearchField']);
+				foreach ($JSONconditions as $fconds) {
+					if (empty($fconds[3])) {
+						$glue = QueryGenerator::$AND;
+					} else {
+						$glue = (strtolower(trim($fconds[3]))=='or' ? QueryGenerator::$OR : QueryGenerator::$AND);
+					}
+					if (strpos($fconds[0], ')')) {
+						preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', vtlib_purify($fconds[0]), $matches);
+						list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+						$queryGenerator->addReferenceModuleFieldCondition(
+							$referenceModule,
+							$referenceField,
+							$fieldname,
+							vtlib_purify($fconds[1]),
+							(empty($fconds[2]) ? 'e' : vtlib_purify($fconds[2])),
+							$glue
+						);
+					} else {
+						$queryGenerator->addCondition(
+							vtlib_purify($fconds[0]),
+							vtlib_purify($fconds[1]),
+							(empty($fconds[2]) ? 'e' : vtlib_purify($fconds[2])),
+							$glue
+						);
+					}
+				}
+			} else {
+				if (strpos($_REQUEST['getFieldSearchField'], ')')) {
+					preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', vtlib_purify($_REQUEST['getFieldSearchField']), $matches);
+					list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+					$queryGenerator->addReferenceModuleFieldCondition(
+						$referenceModule,
+						$referenceField,
+						$fieldname,
+						vtlib_purify($_REQUEST['getFieldSearchValue']),
+						(empty($_REQUEST['getFieldSearchop']) ? 'e' : vtlib_purify($_REQUEST['getFieldSearchop']))
+					);
+				} else {
+					$queryGenerator->addCondition(
+						vtlib_purify($_REQUEST['getFieldSearchField']),
+						vtlib_purify($_REQUEST['getFieldSearchValue']),
+						(empty($_REQUEST['getFieldSearchop']) ? 'e' : vtlib_purify($_REQUEST['getFieldSearchop']))
+					);
+				}
+			}
 			$query = $queryGenerator->getQuery();
 			$queryres=$adb->pquery($query, array());
 			if ($adb->num_rows($queryres)>0) {
@@ -568,6 +642,24 @@ switch ($functiontocall) {
 		$ret = array(
 			'fields' => $fieldInfo,
 		);
+		break;
+	case 'clickHouse':
+		include_once 'include/integrations/clickhouse/clickhouse.php';
+		$mu = new corebos_clickhouse();
+		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'addUpdateTable') {
+			$table_name = $_REQUEST['table_name'];
+			$access = $_REQUEST['access'];
+			$create = $_REQUEST['create'];
+			$read = $_REQUEST['read'];
+			$write = $_REQUEST['write'];
+			$old_table_name = $_REQUEST['old_table_name'];
+			return $mu->addUpdateTable($table_name, $access, $create, $read, $write, $old_table_name = '');
+		} else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
+			return $mu->getTables();
+		} else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
+			$table_name = $_REQUEST['table_name'];
+			return $mu->deleteTable($table_name);
+		}
 		break;
 	default:
 		$ret = '';

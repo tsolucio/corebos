@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 13/05/2022 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 26/05/2022 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -1384,15 +1384,15 @@ $app_strings = array (
 'LNK_ALPHABETICAL_SEARCH' => 'Pesquisa alfabética',
 'ERR_SITE_URL_MISMATCH' => 'Incompatibilidade de URL do site',
 'Mautic ID' => 'Mautic ID',
-'Deleted in Mautic' => 'Deleted in Mautic',
-'Contact Points' => 'Contact Points',
-'From External Source' => 'From External Source',
-'LBL_ADD_ROW' => 'Add Row',
-'LBL_EDIT_COLUMNS' => 'Edit Columns',
-'LBL_SELECT_COLUMNS' => 'Select columns to show in Mass Create Grid',
-'LBL_MATCH_COLUMNS' => 'Select columns to match in Mass Create Grid',
-'LBL_SAVE_MAP' => 'Save Map',
-'Paste the link here' => 'Paste the link here',
+'Deleted in Mautic' => 'Excluído no Mautic',
+'Contact Points' => 'Pontos do contato',
+'From External Source' => 'De Fonte Externa',
+'LBL_ADD_ROW' => 'Adicionar linha',
+'LBL_EDIT_COLUMNS' => 'Editar colunas',
+'LBL_SELECT_COLUMNS' => 'Selecione as colunas para mostrar no grade de criação em massa',
+'LBL_MATCH_COLUMNS' => 'Selecione as colunas correspondentes na grade de criação em massa',
+'LBL_SAVE_MAP' => 'Salvar mapa',
+'Paste the link here' => 'Copie o link aqui',
 'Deleted in Mautic' => 'Apagado no Mautic',
 'Contact Points' => 'Pontos do contato',
 'From External Source' => 'A partir fonte externa',
@@ -1402,6 +1402,7 @@ $app_strings = array (
 'LBL_MATCH_COLUMNS' => 'Selecione colunas para corresponder na grade de criação em massa',
 'LBL_SAVE_MAP' => 'Salvar mapa',
 'LBL_UITYPE10_NOTALLOWED' => 'O módulo relacionado tem um campo relacionado obrigatório.',
+'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 );
 
 // Translation for currency names

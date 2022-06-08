@@ -1,7 +1,7 @@
 /*!
  * TOAST UI Grid
- * @version 4.18.0 | Thu Jul 01 2021
- * @author NHN. FE Development Lab
+ * @version 4.21.2 | Fri May 27 2022
+ * @author NHN Cloud. FE Development Lab
  * @license MIT
  */
 /*!
@@ -1071,6 +1071,11 @@
   width: 220px;
 }
 
+.tui-grid-header-draggable {
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+}
+
 .tui-grid-row-header-draggable {
   text-align: center;
   cursor: move; /* fallback if grab cursor is unsupported */
@@ -1096,10 +1101,36 @@
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
   border-radius: 3px;
   overflow: hidden;
+  white-space: nowrap;
+  cursor: grabbing;
+}
+
+.tui-grid-floating-column {
+  z-index: 15;
+  background: #fff;
+  border: 1px solid #ddd;
+  color: #5a6268;
+  position: absolute;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  top: 0;
+  font-weight: bold;
+  cursor: grabbing;
 }
 
 .tui-grid-floating-cell {
   display: inline-block;
+  overflow: hidden;
+  line-height: normal;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.tui-grid-floating-cell .tui-grid-cell-content {
+  padding: 0 5px;
+  word-break: break-all;
+  text-align: start;
 }
 
 .tui-grid-floating-tree-cell {
@@ -1108,7 +1139,6 @@
 
 .tui-grid-floating-tree-cell-content {
   margin-left: 10px;
-  vertical-align: middle
 }
 
 .tui-grid-floating-tree-cell .tui-grid-tree-icon {
@@ -1127,6 +1157,7 @@
 
 .tui-grid-cell.dragging {
   opacity: 0.5;
+  cursor: grabbing;
 }
 
 .tui-grid-cell.parent-cell {
@@ -1176,3 +1207,4 @@
 .tui-grid-context-menu span {
   display: inline-block;
 }
+

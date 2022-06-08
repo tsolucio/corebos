@@ -236,6 +236,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'EMail_Less_Strict_ContentClean',
 				'EMail_Send_Individual',
 				'EMail_Signature_BeforeQuote',
+				'EMail_Company_Signature',
 				'MailManager_Show_SentTo_Links',
 				'ToolTip_MaxFieldValueLength',
 				'ToolTip_NumberOfComments',

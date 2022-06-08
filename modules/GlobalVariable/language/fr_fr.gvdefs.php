@@ -256,6 +256,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Completely disables or enables notifications.',
 ),
+'Webservice_LogCallsToQueue' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Disables or enables web service call logging. Logs are put in the queue to be processed',
+),
 'Webservice_Enabled' => array(
 	'valuetype' => 'Booléen',
 	'category' => 'Webservice',
@@ -1167,6 +1173,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Adds the user signature before the quoted email instead of at the end of the whole email.',
+),
+'EMail_Company_Signature' => array(
+	'valuetype' => 'Text',
+	'category' => 'Application',
+	'values' => 'HTML Email Footer',
+	'definition' => 'Adds the given HTML to the bottom of all emails sent by the application.',
 ),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'valuetype' => 'Liste CSV',

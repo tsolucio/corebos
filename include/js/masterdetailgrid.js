@@ -68,18 +68,24 @@ var masterdetailwork = {
 		let recordid = ev.instance.getValue(rowkey, 'record_id') || '';
 		let fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=inline_edit&recordid='+recordid+'&rec_module='+modulename+'&fldName='+fieldName+'&fieldValue='+encodeURIComponent(fieldValue);
 		if (recordid != '') {
-			jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?' + fileurl
-			}).done(function (response) {
-				let res = JSON.parse(response);
-				if (res.success) {
-					ev.instance.readData(1);
-					if (ReloadScreenAfterEdit == 1) {
-						masterdetailwork.MDReload();
-					}
+			GridValidation(recordid, modulename, fieldName, fieldValue).then(function (msg) {
+				if (msg == '%%%OK%%%') {
+					jQuery.ajax({
+						method: 'POST',
+						url: 'index.php?' + fileurl
+					}).done(function (response) {
+						let res = JSON.parse(response);
+						if (res.success) {
+							ev.instance.readData(1);
+							if (ReloadScreenAfterEdit == 1) {
+								masterdetailwork.MDReload();
+							}
+						} else {
+							ldsPrompt.show(alert_arr.ERROR, alert_arr.Failed, 'error');
+						}
+					});
 				} else {
-					alert(alert_arr.Failed);
+					ldsPrompt.show(alert_arr.ERROR, msg, 'error');
 				}
 			});
 		}

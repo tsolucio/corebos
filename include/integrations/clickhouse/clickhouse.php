@@ -154,5 +154,69 @@ class corebos_clickhouse {
 		$chInstance = self::connectToClickhouse();
 		$chInstance->insert($table.$db, [ $values ], $columns);
 	}
+
+	public function addUpdateTable($table_name, $access, $create, $read, $write, $old_table_name = '') {
+		global $adb;
+		
+		if ($old_table_name === '') {
+			$query = "INSERT INTO `vtiger_ws_clickhousetables` (`table_name`, `access`, `create`, `read`, `write`) VALUES (?,?,?,?,?)";
+			$res = $adb->pquery($query, array($table_name, $access, $create, $read, $write));
+
+			if ($res) {
+				$wsid = $adb->getUniqueID('vtiger_ws_entity');
+				$query = "INSERT INTO `vtiger_ws_entity` (`id`, `name`, `handler_path`, `handler_class`, `ismodule`)
+				VALUES (?, ?, 'include/Webservices/VtigerClickHouseOperation.php', 'VtigerClickHouseOperation', '0')";
+				$adb->pquery($query, array($wsid, $table_name));
+
+				$query = "INSERT INTO `vtiger_ws_entity_tables` (`webservice_entity_id`, `table_name`) VALUES (?, 'vtiger_audit_trial');";
+				$adb->pquery($query, array($wsid, $table_name));
+
+				return true;
+			}
+		} else {
+			$query = "UPDATE `vtiger_ws_clickhousetables` SET `table_name` = ? `access` = ? `create` = ? `read` = ? `write` = ? WHERE `table_name` = ?";
+			$res = $adb->pquery($query, array($table_name, $access, $create, $read, $write, $old_table_name));
+			if ($res) {
+				if ($table_name !== $old_table_name) {
+					$query = "UPDATE `vtiger_ws_entity` SET `name` = ? WHERE `name` = ?";
+					$adb->pquery($query, array($table_name, $old_table_name));
+					$query = "UPDATE `vtiger_ws_entity_tables` SET `table_name` = ? WHERE `table_name` = ?";
+					$adb->pquery($query, array($table_name, $old_table_name));
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public function getTables() {
+		global $adb;
+		$tables = array();
+		$res = $adb->query('select * from vtiger_ws_clickhousetables');
+		while ($row = $adb->fetch_array($res)) {
+			$table = array(
+				'id' => $row['id'],
+				'name' => $row['table_name'],
+				'access' => $row['access'],
+				'create' => $row['create'],
+				'read' => $row['read'],
+				'write' => $row['write'],
+				'delete' => $row['delete'],
+			);
+			$tables[] = $table;
+		}
+		return json_encode($tables);
+	}
+
+	public function deleteTable($table_name) {
+		global $adb;
+		$res = $adb->pquery('delete from vtiger_ws_clickhousetables where table_name = ?', array($table_name));
+		if ($res) {
+			$adb->pquery('delete from vtiger_ws_entity where name = ?', array($table_name));
+			$adb->pquery('delete from vtiger_ws_entity_tables where table_name = ?', array($table_name));
+			return true;
+		}
+		return false;
+	}
 }
 ?>

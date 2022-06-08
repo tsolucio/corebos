@@ -30,7 +30,7 @@ class setManyToManyRelationwf extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user;
+		global $adb, $current_user, $logbg;
 		if (empty($entity->WorkflowContext['SetManyToManyRelation_Records'])) {
 			$idlistArr = explode(',', $this->idlist);
 		} else {
@@ -47,6 +47,7 @@ class setManyToManyRelationwf extends VTTask {
 			$recid = vtws_getCRMID($entity->WorkflowContext['SetManyToManyRelation_Record']);
 			$recmod = getSalesEntityType($recid);
 		}
+		$logbg->debug($this->relAction.' '.$recid.' with '.print_r($idlistArr, true));
 		if ($this->relAction == 'addrel') {
 			$idlistNewArr = array();
 			foreach ($idlistArr as $recId) {

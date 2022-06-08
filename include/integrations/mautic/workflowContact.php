@@ -36,8 +36,8 @@ function mauticContactCreate($entity) {
 			$send2mautic['firstname'] = $entity->data['firstname'];
 			$send2mautic['lastname'] = $entity->data['lastname'];
 			$send2mautic['email'] = $entity->data['email'];
-			$send2mautic['corebos_id'] = $entity->data['id'];
 		}
+		$send2mautic['corebos_id'] = $entity->data['id'];
 		$send2mautic['ipAddress'] = $_SERVER['REMOTE_ADDR'];
 		$send2mautic['overwriteWithBlank'] = true;
 
