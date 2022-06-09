@@ -627,7 +627,8 @@ switch ($functiontocall) {
 		foreach ($fields as $field) {
 			$fieldsIn .= "'$field',";
 		}
-		$rs = $adb->pquery('SELECT tablename, fieldname, columnname, fieldlabel, typeofdata FROM vtiger_field WHERE tabid=? AND fieldname IN ('.rtrim($fieldsIn, ',').')', array($tabid));
+		$rs = $adb->pquery('SELECT tablename, fieldname, columnname, fieldlabel, typeofdata 
+			FROM vtiger_field WHERE tabid=? AND fieldname IN ('.rtrim($fieldsIn, ',').')', array($tabid));
 		$fieldInfo = array();
 		while ($row = $rs->FetchRow()) {
 			$typeofdata = explode('~', $row['typeofdata']);
@@ -645,20 +646,42 @@ switch ($functiontocall) {
 		break;
 	case 'clickHouse':
 		include_once 'include/integrations/clickhouse/clickhouse.php';
-		$mu = new corebos_clickhouse();
+		$clickHouse = new corebos_clickhouse();
 		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'addUpdateTable') {
+			$ws_name = $_REQUEST['ws_name'];
 			$table_name = $_REQUEST['table_name'];
 			$access = $_REQUEST['access'];
 			$create = $_REQUEST['create'];
 			$read = $_REQUEST['read'];
 			$write = $_REQUEST['write'];
+			$old_ws_name = $_REQUEST['old_ws_name'];
 			$old_table_name = $_REQUEST['old_table_name'];
-			return $mu->addUpdateTable($table_name, $access, $create, $read, $write, $old_table_name = '');
-		} else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
-			return $mu->getTables();
-		} else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
+			$res = $clickHouse->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name = '', $old_table_name = '');
+			if ($res) {
+				$success = true;
+			} else {
+				$success = false;
+			}
+			$ret = array(
+				'success' => $success,
+			);
+		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
+			$tables = $clickHouse->getTables();
+			$ret = array(
+				'success' => true,
+				'tables' => $tables
+			);
+		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
 			$table_name = $_REQUEST['table_name'];
-			return $mu->deleteTable($table_name);
+			$res = $clickHouse->deleteTable($table_name);
+			if ($res) {
+				$success = true;
+			} else {
+				$success = false;
+			}
+			$ret = array(
+				'success' => $success,
+			);
 		}
 		break;
 	default:

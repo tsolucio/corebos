@@ -26,14 +26,16 @@ class addClickHouseTable extends cbupdaterWorker {
 			global $adb;
 			$this->ExecuteQuery("CREATE TABLE IF NOT EXISTS `vtiger_ws_clickhousetables` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
+				`ws_name` varchar(255) NOT NULL,
 				`table_name` varchar(255) NOT NULL,
 				`access` boolean,
 				`create` boolean,
-				`read_perm` boolean,
-				`write_perm` boolean,
-				`delete_perm` boolean,
+				`read` boolean,
+				`write` boolean,
+				`delete` boolean,
 				PRIMARY KEY (id)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8", array());
+			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
