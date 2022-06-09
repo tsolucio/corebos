@@ -10,10 +10,10 @@ function kanbanGetBoardItems(kanbanID, lane, kbinfo, mode) {
 	let boardid = kbinfo.lanes[lane].id;
 	if (mode == 'filter' || mode == 'search') {
 		//remove all active elements
-		 setTimeout(function() {
-		 	const getBoardElements = document.querySelectorAll('.kanban-drag');
-		 	for (let i = 0; i < getBoardElements.length; i++) {
-		 		getBoardElements[i].innerHTML = '';
+		setTimeout(function () {
+			const getBoardElements = document.querySelectorAll('.kanban-drag');
+			for (let i = 0; i < getBoardElements.length; i++) {
+				getBoardElements[i].innerHTML = '';
 			}
 		}, 100);
 	}
