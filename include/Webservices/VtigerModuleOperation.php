@@ -488,6 +488,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			'nullable' => $webserviceField->isNullable(),
 			'editable' => $editable,
 			'uitype' => $webserviceField->getUIType(),
+			'helpinfo' => $webserviceField->getHelpInfo(),
 			'typeofdata' => $webserviceField->getTypeOfData(),
 			'sequence' => $webserviceField->getFieldSequence(),
 			'quickcreate' => $webserviceField->getQuickCreate(),
@@ -500,6 +501,20 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				'blockname' => getTranslatedString($blkname, $this->meta->getTabName())
 			)
 		);
+		$bmapname = $this->meta->getTabName().'_FieldInfo';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapFI = $cbMap->FieldInfo();
+			$cbMapFI = $cbMapFI['fields'];
+			if (isset($cbMapFI)) {
+				foreach ($cbMapFI as $mapFields) {
+					if (in_array($webserviceField->getFieldName(), $mapFields)) {
+						$describeArray = array_merge(array_slice($describeArray, 0, 8), array('moreinfo' => $mapFields), array_slice($describeArray, 8));
+					}
+				}
+			}
+		}
 		if ($webserviceField->hasDefault()) {
 			$describeArray['default'] = $webserviceField->getDefault();
 		}
