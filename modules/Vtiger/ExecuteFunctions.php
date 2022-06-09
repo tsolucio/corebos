@@ -647,13 +647,15 @@ switch ($functiontocall) {
 		include_once 'include/integrations/clickhouse/clickhouse.php';
 		$mu = new corebos_clickhouse();
 		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'addUpdateTable') {
+			$ws_name = $_REQUEST['ws_name'];
 			$table_name = $_REQUEST['table_name'];
 			$access = $_REQUEST['access'];
 			$create = $_REQUEST['create'];
 			$read = $_REQUEST['read'];
 			$write = $_REQUEST['write'];
+			$old_ws_name = $_REQUEST['old_ws_name'];
 			$old_table_name = $_REQUEST['old_table_name'];
-			return $mu->addUpdateTable($table_name, $access, $create, $read, $write, $old_table_name = '');
+			return $mu->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name = '', $old_table_name = '');
 		} else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
 			return $mu->getTables();
 		} else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
