@@ -84,19 +84,6 @@ class Kanban extends processcbMap {
 
 	private function getLanes($xml) {
 		global $adb, $current_user;
-		$qg = new QueryGenerator($this->mapping['module'], $current_user);
-		$qg->setFields([$this->mapping['lanefield']]);
-		$sql = $qg->getQuery(true);
-		$sql .= ' ORDER BY '.$qg->getOrderByColumn($this->mapping['lanefield']). ' asc';
-		$rs = $adb->query($sql);
-		$dblanes = array();
-		if ($rs && $adb->num_rows($rs)>0) {
-			foreach ($adb->rowGenerator($rs) as $lanevalue) {
-				if (!empty($lanevalue[$this->mapping['lanefield']])) {
-					$dblanes[$lanevalue[$this->mapping['lanefield']]] = $lanevalue[$this->mapping['lanefield']];
-				}
-			}
-		}
 		$xmllanes = array();
 		if (!empty($xml->lanes)) {
 			foreach ($xml->lanes->lane as $v) {
@@ -132,19 +119,7 @@ class Kanban extends processcbMap {
 				continue;
 			}
 			$lanes[$value['name']] = $value;
-			unset($dblanes[$value['name']]);
 			$lanenames[] = $value['name'];
-		}
-		foreach ($dblanes as $fvalue) {
-			if (isset($notsortedbutinfo[$fvalue])) {
-				$lanes[$fvalue] = $notsortedbutinfo[$fvalue];
-			} else {
-				$lanes[$fvalue] = array(
-					'name' => $fvalue,
-					'id' => uniqid(strtolower(str_replace(' ', '', $fvalue))),
-				);
-				$lanenames[] = $fvalue;
-			}
 		}
 		return [$lanes, $lanenames];
 	}
