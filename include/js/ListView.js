@@ -642,7 +642,6 @@ function showDefaultCustomView(selectView, module) {
 	}
 }
 
-
 function getListViewEntries_js(module, url) {
 	if (module!='Documents' || Document_Folder_View == 0) {
 		var excludedRecords = document.getElementById('excludedRecords').value;
