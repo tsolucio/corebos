@@ -36,7 +36,7 @@ function kbGetBoardItems($module, $limit_start_rec, $boardinfo) {
 					$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, (string)$fname);
 					$fields[] = array(
 						'label' => getTranslatedString($finfo['fieldlabel'], $module),
-						'value' => $row[$fname],
+						'value' => isset($row[$fname]) ? $row[$fname] : '',
 					);
 				}
 				$item['showfields'] = $fields;
@@ -45,7 +45,7 @@ function kbGetBoardItems($module, $limit_start_rec, $boardinfo) {
 					$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, (string)$fname);
 					$fields[] = array(
 						'label' => getTranslatedString($finfo['fieldlabel'], $module),
-						'value' => $row[$fname],
+						'value' => isset($row[$fname]) ? $row[$fname] : '',
 					);
 				}
 				$item['morefields'] = $fields;
