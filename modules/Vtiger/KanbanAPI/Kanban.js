@@ -1,13 +1,22 @@
-function kanbanRefresh(kanbanID) {
+function kanbanRefresh(kanbanID, mode = '') {
 	let kbinfo = window[kanbanID+'Info'];
 	for (const lane in kbinfo.lanes) {
-		kanbanGetBoardItems(kanbanID, lane, kbinfo);
+		kanbanGetBoardItems(kanbanID, lane, kbinfo, mode);
 	}
 }
 
-function kanbanGetBoardItems(kanbanID, lane, kbinfo) {
+function kanbanGetBoardItems(kanbanID, lane, kbinfo, mode) {
 	kbinfo.lanename = lane;
 	let boardid = kbinfo.lanes[lane].id;
+	if (mode == 'filter' || mode == 'search') {
+		//remove all active elements
+		 setTimeout(function() {
+		 	const getBoardElements = document.querySelectorAll('.kanban-drag');
+		 	for (let i = 0; i < getBoardElements.length; i++) {
+		 		getBoardElements[i].innerHTML = '';
+			}
+		}, 100);
+	}
 	let kbinfostr = '&boardinfo=' + encodeURIComponent(JSON.stringify(kbinfo));
 	fetch(
 		'index.php?module=Utilities&action=UtilitiesAjax&file=KanbanAPI&method=getBoardItemsFormatted',
@@ -17,7 +26,7 @@ function kanbanGetBoardItems(kanbanID, lane, kbinfo) {
 				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
 			},
 			credentials: 'same-origin',
-			body: '&'+csrfMagicName+'='+csrfMagicToken+kbinfostr+'&kbmodule='+kbinfo.module
+			body: '&'+csrfMagicName+'='+csrfMagicToken+kbinfostr+'&kbmodule='+kbinfo.module+'&mode='+mode
 		}
 	).then(response => response.json()).then(response => {
 		if (response && response.length) {

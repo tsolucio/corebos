@@ -30,6 +30,11 @@ function kbGetItemQuery($module, $limit_start_rec, $boardinfo) {
 		return '';
 	}
 	$queryGenerator->setFields($boardinfo['allfields']);
+	if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'search') {
+		$columns = $queryGenerator->getSelectClauseColumnSQL();
+		$sql = coreBOS_Session::get($module.'_listquery');
+		return kbConstructQuery($sql, $columns);
+	}
 	if (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true') {
 		$queryGenerator->addUserSearchConditions($_REQUEST);
 	}
@@ -50,5 +55,12 @@ function kbGetItemQuery($module, $limit_start_rec, $boardinfo) {
 		coreBOS_Session::delete('export_where');
 	}
 	return $list_query. " ORDER BY $order_by LIMIT ".($limit_start_rec*$boardinfo['pagesize']).', '.$boardinfo['pagesize'];
+}
+
+function kbConstructQuery($q, $c) {
+	$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
+	preg_match($moduleRegex, $q, $m);
+	$queryColumns = trim(substr($q, 6, stripos($q, ' from ')-5));
+	return str_replace($queryColumns, $c, $q);
 }
 ?>
