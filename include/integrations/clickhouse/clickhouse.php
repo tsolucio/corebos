@@ -217,6 +217,26 @@ class corebos_clickhouse {
 		return json_encode($tables);
 	}
 
+	public function getTable($table_name) {
+		global $adb;
+		$table = array();
+		$res = $adb->pquery('select * from vtiger_ws_clickhousetables where table_name = ? limit 1', array($table_name));
+		if ($res) {
+			$row = $adb->fetch_array($res);
+			$table = array(
+				'id' => $row['id'],
+				'ws_name' => $row['ws_name'],
+				'table_name' => $row['table_name'],
+				'access' => $row['access'],
+				'create' => $row['create'],
+				'read' => $row['read'],
+				'write' => $row['write'],
+				'delete' => $row['delete'],
+			);
+		}
+		return $table;
+	}
+
 	public function deleteTable($table_name) {
 		global $adb;
 		$res = $adb->pquery('delete from vtiger_ws_clickhousetables where table_name = ?', array($table_name));

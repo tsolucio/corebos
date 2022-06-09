@@ -9,6 +9,7 @@
  *************************************************************************************/
 require_once 'include/Webservices/VtigerCRMObjectMeta.php';
 require_once 'include/database/ClickHouseDatabase.php';
+include_once 'include/integrations/clickhouse/clickhouse.php';
 
 class VtigerCRMClickHouseMeta extends EntityMeta {
 	protected $pearDB;
@@ -20,6 +21,7 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 	private $hasDeleteAccess;
 	private $PermissionModule = '';
 	protected $objectName;
+	protected $clickHouse;
 
 	public function __construct($tableName, $webserviceObject, $adb, $user) {
 		global $cdb;
@@ -31,6 +33,7 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 		$this->baseTable = $tableName;
 		$this->idColumn = null;
 		$this->pearDB = $cdb;
+		$this->clickHouse = new corebos_clickhouse();
 
 		$fieldList = $this->getTableFieldList($tableName);
 		$this->moduleFields = array();
@@ -89,11 +92,20 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 	}
 
 	private function computeAccess($webserviceObject, $user) {
-		$this->hasAccess = true;
-		$this->hasCreateAccess = true;
-		$this->hasReadAccess = true;
-		$this->hasWriteAccess = true;
-		$this->hasDeleteAccess = false;
+		$table = $this->clickHouse->getTable($this->baseTable);
+		if ($table) {
+			$this->hasAccess = $table['access'];
+			$this->hasCreateAccess = $table['create'];
+			$this->hasReadAccess = $table['read'];
+			$this->hasWriteAccess = $table['write'];
+			$this->hasDeleteAccess = $table['delete'];
+		} else {
+			$this->hasAccess = false;
+			$this->hasCreateAccess = false;
+			$this->hasReadAccess = false;
+			$this->hasWriteAccess = false;
+			$this->hasDeleteAccess = false;
+		}
 	}
 
 	protected function getTableFieldList($tableName) {

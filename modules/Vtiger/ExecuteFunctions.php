@@ -646,7 +646,7 @@ switch ($functiontocall) {
 		break;
 	case 'clickHouse':
 		include_once 'include/integrations/clickhouse/clickhouse.php';
-		$mu = new corebos_clickhouse();
+		$clickHouse = new corebos_clickhouse();
 		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'addUpdateTable') {
 			$ws_name = $_REQUEST['ws_name'];
 			$table_name = $_REQUEST['table_name'];
@@ -656,12 +656,32 @@ switch ($functiontocall) {
 			$write = $_REQUEST['write'];
 			$old_ws_name = $_REQUEST['old_ws_name'];
 			$old_table_name = $_REQUEST['old_table_name'];
-			return $mu->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name = '', $old_table_name = '');
+			$res = $clickHouse->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name = '', $old_table_name = '');
+			if ($res) {
+				$success = true;
+			} else {
+				$success = false;
+			}
+			$ret = array(
+				'success' => $success,
+			);
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
-			return $mu->getTables();
+			$tables = $clickHouse->getTables();
+			$ret = array(
+				'success' => true,
+				'tables' => $tables
+			);
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
 			$table_name = $_REQUEST['table_name'];
-			return $mu->deleteTable($table_name);
+			$res = $clickHouse->deleteTable($table_name);
+			if ($res) {
+				$success = true;
+			} else {
+				$success = false;
+			}
+			$ret = array(
+				'success' => $success,
+			);
 		}
 		break;
 	default:
