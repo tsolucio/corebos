@@ -52,6 +52,11 @@ class VtigerBackup {
 			$this->location->limitBackup();
 
 			$this->zip->addFile($fileDest->getFilePath(), false);
+			if (GlobalVariable::getVariable('Backup_Storage_Exclude', 1)) {
+				if (($key = array_search('storage', $folderList)) !== false) {
+					unset($folderList[$key]);
+				}
+			}
 			foreach ($this->folderList as $folder) {
 				$path = $this->getFolderPath($folder);
 				$folder = $this->addTrailingSlash($folder);
