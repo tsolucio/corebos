@@ -68,15 +68,22 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 				$filters = array();
 				$include_segment = explode(',', $this->notification_include_segment);
 				$excluded_segment = explode(',', $this->notification_excluded_segment);
-				corebos_onesignal::sendDesktopNotification(
-					$contents,
-					$headings,
-					$subtitle,
-					$filters,
-					$external_user_id,
-					$web_url,
-					$web_buttons
-				);
+				$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', '');
+				if (!empty($inBucketServeUrl)) {
+					require_once 'modules/Emails/mail.php';
+					require_once 'modules/Emails/Emails.php';
+					return send_mail('Email', 'desktop@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $headings.' '.$subtitle, $contents);
+				} else {
+					corebos_onesignal::sendDesktopNotification(
+						$contents,
+						$headings,
+						$subtitle,
+						$filters,
+						$external_user_id,
+						$web_url,
+						$web_buttons
+					);
+				}
 			} catch (Exception $e) {
 				global $log;
 				$log->debug('Error on Send OneSignal Notification Task');

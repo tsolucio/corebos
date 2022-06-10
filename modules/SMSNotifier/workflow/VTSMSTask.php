@@ -41,7 +41,14 @@ class VTSMSTask extends VTTask {
 				}
 			}
 			if (!empty($tonumbers)) {
-				SMSNotifier::sendsms($content, $tonumbers, $current_user->id, $relatedCRMid, $relatedModule);
+				$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', '');
+				if (!empty($inBucketServeUrl)) {
+					require_once 'modules/Emails/mail.php';
+					require_once 'modules/Emails/Emails.php';
+					return send_mail('Email', 'sms@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $tonumbers, $content);
+				} else {
+					SMSNotifier::sendsms($content, $tonumbers, $current_user->id, $relatedCRMid, $relatedModule);
+				}
 			}
 			$util->revertUser();
 		}
