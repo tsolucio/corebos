@@ -117,10 +117,6 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 			if ($dbField->primary_key) {
 				if ($this->idColumn === null) {
 					$this->idColumn = $dbField->name;
-				} else {
-					if ($tableName!='vtiger_modtracker_detail') { // valid table with compound primary key
-						throw new WebServiceException(WebServiceErrorCode::$UNKNOWNENTITY, 'Entity table with multi column primary key is not supported');
-					}
 				}
 			}
 			$field = $this->getFieldArrayFromDBField($dbField, $tableName);
@@ -333,9 +329,6 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 	}
 
 	public function getEntityDeletedQuery() {
-		if ($this->getEntityName() == 'Currency') {
-			return 'vtiger_currency_info.deleted=0';
-		}
 		return '';
 	}
 

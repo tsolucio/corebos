@@ -70,31 +70,9 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	}
 
 	protected function getNextId($elementType, $element) {
-		global $adb;
-		if (strcasecmp($elementType, 'Groups') === 0) {
-			$tableName='vtiger_users';
-		} else {
-			$tableName = $this->entityTableName;
-		}
-		$meta = $this->getMeta();
-		if (strcasecmp($elementType, 'Groups') !== 0 && strcasecmp($elementType, 'Users') !== 0) {
-			$sql = 'update '.$tableName.'_seq set id=(select max('.$meta->getIdColumn().") from $tableName)";
-			$adb->pquery($sql, array());
-		}
-		return $adb->getUniqueId($tableName);
-	}
-
-	public function __create($elementType, $element) {
-		require_once 'include/utils/utils.php';
-
-		$this->id=$this->getNextId($elementType, $element);
-
-		$element[$this->meta->getObectIndexColumn()] = $this->id;
-
-		//Insert into group vtiger_table
-		$query = "insert into {$this->entityTableName}(".implode(',', array_keys($element)).') values('.generateQuestionMarks(array_keys($element)).')';
-		$result = null;
-		return vtws_runQueryAsTransaction($query, array_values($element), $result);
+		global $cdb;
+		$tableName = $this->entityTableName;
+		return $cdb->getUniqueId($tableName);
 	}
 
 	public function create($elementType, $element) {
@@ -336,17 +314,8 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	}
 
 	public function query($q) {
-		$this->pearDB->startTransaction();
 		$mysql_query = str_replace($this->webserviceObject->getEntityName(), $this->entityTableName, $q);
 		$result = $this->pearDB->pquery($mysql_query, array());
-		$error = $this->pearDB->hasFailedTransaction();
-		$this->pearDB->completeTransaction();
-		if ($error) {
-			throw new WebServiceException(
-				WebServiceErrorCode::$DATABASEQUERYERROR,
-				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR)
-			);
-		}
 
 		$noofrows = $this->pearDB->num_rows($result);
 		$output = array();
