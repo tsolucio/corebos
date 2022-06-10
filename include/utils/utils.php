@@ -790,7 +790,7 @@ function getColumnFields($module) {
 					$resultrow['presence'],
 					$resultrow['defaultvalue'],
 					$resultrow['generatedtype'],
-					$resultrow['displaytype'],
+					$resultrow['displaytype']
 				);
 			}
 		}
