@@ -452,12 +452,24 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			return $purified_mfcache[$mfkey];
 		}
 		$fields = array();
+		$bmapname = $this->meta->getTabName().'_FieldInfo';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapFI = $cbMap->FieldInfo();
+			$cbMapFI = $cbMapFI['fields'];
+		}
 		$moduleFields = $this->meta->getModuleFields();
+		$index_count = 0;
 		foreach ($moduleFields as $webserviceField) {
 			if (((int)$webserviceField->getPresence()) == 1) {
 				continue;
 			}
 			$fields[] = $this->getDescribeFieldArray($webserviceField);
+			if (isset($cbMapFI[$webserviceField->getFieldName()])) {
+				$fields[$index_count]['moreinfo'] = $cbMapFI[$webserviceField->getFieldName()];
+			}
+			$index_count = $index_count + 1; 
 		}
 		$fields[] = $this->getIdField($this->meta->getObectIndexColumn());
 		$purified_mfcache[$mfkey] = $fields;
@@ -501,20 +513,6 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				'blockname' => getTranslatedString($blkname, $this->meta->getTabName())
 			)
 		);
-		$bmapname = $this->meta->getTabName().'_FieldInfo';
-		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-		if ($cbMapid) {
-			$cbMap = cbMap::getMapByID($cbMapid);
-			$cbMapFI = $cbMap->FieldInfo();
-			$cbMapFI = $cbMapFI['fields'];
-			if (isset($cbMapFI)) {
-				foreach ($cbMapFI as $mapFields) {
-					if (in_array($webserviceField->getFieldName(), $mapFields)) {
-						$describeArray = array_merge(array_slice($describeArray, 0, 8), array('moreinfo' => $mapFields), array_slice($describeArray, 8));
-					}
-				}
-			}
-		}
 		if ($webserviceField->hasDefault()) {
 			$describeArray['default'] = $webserviceField->getDefault();
 		}
