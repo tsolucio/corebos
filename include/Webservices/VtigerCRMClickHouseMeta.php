@@ -238,10 +238,24 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 				return 'time';
 			case 'int':
 			case 'integer':
+			case 'Int8':
+			case 'Int16':
+			case 'Int32':
+			case 'Int64':
+			case 'Int128':
+			case 'Int256':
+			case 'UInt8':
+			case 'UInt16':
+			case 'UInt32':
+			case 'UInt64':
+			case 'UInt128':
+			case 'UInt256';
 				return 'integer';
 			case 'real':
 			case 'decimal':
 			case 'numeric':
+			case 'Float32':
+			case 'Float64':
 				return 'double';
 			case 'text':
 				return 'text';
