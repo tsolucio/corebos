@@ -1036,7 +1036,7 @@ function callSearch(searchtype, mode = '') {
 			if (Application_Landing_View == 'Kanban') {
 				document.getElementById('status').style.display = 'none';
 				kanbanRefresh(currentKanbanID, 'search');
-			} else{
+			} else {
 				processQuickSearchResponse(response);
 			}
 		});
