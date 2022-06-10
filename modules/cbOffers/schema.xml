@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cboffers</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_cboffers` (
+`cboffersid` INT(11) NOT NULL,
+`cboffersno` VARCHAR(255) DEFAULT NULL,
+`subject` VARCHAR(100) DEFAULT NULL,
+`related_client` INT(40) DEFAULT NULL,
+`offer_status` VARCHAR(100) DEFAULT NULL,
+PRIMARY KEY (`cboffersid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbofferscf</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_cbofferscf` (
+`cboffersid` INT(11) NOT NULL,
+PRIMARY KEY (`cboffersid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

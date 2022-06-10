@@ -6,4 +6,11 @@
 	<classname>installcbifurl</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>install cbOffers modules</description>
+	<filename>build/changeSets/sigla/installcboffers.php</filename>
+	<classname>installcboffers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
