@@ -814,7 +814,7 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Directory path',
 	'definition' => 'The directory where document files are to be saved. The webserver user must be able to access and write inside this folder.',
 ),
-'Backup_Storage_Exclude' => array(
+'Backup_Storage_Include' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
