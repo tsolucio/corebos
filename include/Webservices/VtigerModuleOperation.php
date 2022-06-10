@@ -469,7 +469,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			if (isset($cbMapFI[$webserviceField->getFieldName()])) {
 				$fields[$index_count]['moreinfo'] = $cbMapFI[$webserviceField->getFieldName()];
 			}
-			$index_count = $index_count + 1; 
+			$index_count = $index_count + 1;
 		}
 		$fields[] = $this->getIdField($this->meta->getObectIndexColumn());
 		$purified_mfcache[$mfkey] = $fields;

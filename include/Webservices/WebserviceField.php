@@ -526,7 +526,7 @@ class WebserviceField {
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) {
 					$trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				}
-				$translated_tooltip = getTranslatedString($picklistValue.'_tooltip', $moduleName);				
+				$translated_tooltip = getTranslatedString($picklistValue.'_tooltip', $moduleName);		
 				$elem['label'] = $trans_str;
 				$elem['value'] = $picklistValue;
 				if ($translated_tooltip == $picklistValue.'_tooltip') {
