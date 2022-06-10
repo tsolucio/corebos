@@ -274,54 +274,65 @@ class GridListView {
 		$listview_header_arr = array();
 		$findRelatedModule = '';
 		foreach ($listview_header_search as $fName => $fValue) {
-			$fieldType = getUItypeByFieldName($this->module, $fName);
-			if ($fieldType == '10') {
-				$findRelatedModule = $this->findRelatedModule($fName);
-			}
+			$fieldInfo = VTCacheUtils::lookupFieldInfo($this->tabid, $fName);
 			$tooltip = ToolTipExists($fName, $this->tabid);
-			if ($fieldType == '15' || $fieldType == '16') {
-				$picklistValues = vtlib_getPicklistValues($fName);
-				$picklistEditor = array_map(function ($val) {
-					return array(
-						'label' => getTranslatedString($val, $this->module),
-						'value' => $val
+			if (!$fieldInfo) {
+				continue;
+			}
+			if ($fieldInfo['displaytype'] == 2) {
+				$edit = false;
+			}
+			switch ($fieldInfo['uitype']) {
+				case Field_Metadata::UITYPE_RECORD_RELATION:
+					$findRelatedModule = $this->findRelatedModule($fName);
+					$lv_arr = array(
+						'fieldname' => $fName,
+						'fieldvalue' => html_entity_decode($fValue),
+						'uitype' => $fieldInfo['uitype'],
+						'tooltip' => $tooltip,
+						'edit' => $edit,
+						'relatedModule' => $findRelatedModule
 					);
-				}, $picklistValues);
-				$lv_arr = array(
-					'fieldname' => $fName,
-					'fieldvalue' => html_entity_decode($fValue),
-					'uitype' => $fieldType,
-					'picklist' => $picklistEditor,
-					'tooltip' => $tooltip,
-					'edit' => $edit,
-				);
-			} elseif ($fieldType == '52' || $fieldType == '53') {
-				$users = get_user_array();
-				$lv_arr = array(
-					'fieldname' => $fName,
-					'fieldvalue' => html_entity_decode($fValue),
-					'uitype' => $fieldType,
-					'picklist' => $users,
-					'tooltip' => $tooltip,
-					'edit' => $edit,
-				);
-			} elseif ($fieldType == '10') {
-				$lv_arr = array(
-					'fieldname' => $fName,
-					'fieldvalue' => html_entity_decode($fValue),
-					'uitype' => $fieldType,
-					'tooltip' => $tooltip,
-					'edit' => $edit,
-					'relatedModule' => $findRelatedModule
-				);
-			} else {
-				$lv_arr = array(
-					'fieldname' => $fName,
-					'fieldvalue' => html_entity_decode($fValue),
-					'uitype' => $fieldType,
-					'tooltip' => $tooltip,
-					'edit' => $edit,
-				);
+					break;
+				case Field_Metadata::UITYPE_ROLE_BASED_PICKLIST:
+				case Field_Metadata::UITYPE_PICKLIST:
+					$picklistValues = vtlib_getPicklistValues($fName);
+					$picklistEditor = array_map(function ($val) {
+						return array(
+							'label' => getTranslatedString($val, $this->module),
+							'value' => $val
+						);
+					}, $picklistValues);
+					$lv_arr = array(
+						'fieldname' => $fName,
+						'fieldvalue' => html_entity_decode($fValue),
+						'uitype' =>$fieldInfo['uitype'],
+						'picklist' => $picklistEditor,
+						'tooltip' => $tooltip,
+						'edit' => $edit,
+					);
+					break;
+				case Field_Metadata::UITYPE_USER_REFERENCE:
+				case Field_Metadata::UITYPE_ASSIGNED_TO_PICKLIST:
+					$users = get_user_array();
+					$lv_arr = array(
+						'fieldname' => $fName,
+						'fieldvalue' => html_entity_decode($fValue),
+						'uitype' => $fieldInfo['uitype'],
+						'picklist' => $users,
+						'tooltip' => $tooltip,
+						'edit' => $edit,
+					);
+					break;
+				default:
+					$lv_arr = array(
+						'fieldname' => $fName,
+						'fieldvalue' => html_entity_decode($fValue),
+						'uitype' => $fieldInfo['uitype'],
+						'tooltip' => $tooltip,
+						'edit' => $edit,
+					);
+					break;
 			}
 			array_push($listview_header_arr, $lv_arr);
 		}
