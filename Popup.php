@@ -203,7 +203,6 @@ if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 			$where_relquery.=' and vtiger_products.discontinued <> 0';
 		} else {
 			$crmalias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
-			$result = $adb->pquery("SELECT presence FROM `vtiger_tab` WHERE `name` = ? AND `presence` = ?", array('ProductComponent', 1));
 			if (!vtlib_isModuleActive('ProductComponent')) {
 				$where_relquery.=" and vtiger_products.discontinued<>0";
 			} else {
