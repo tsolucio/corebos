@@ -37,22 +37,6 @@
 		{$i = $i+1}
 	{/foreach}
 	</ul>
-	{if $SHOWQUICKCREATE}
-	<div class="slds-context-bar__tertiary" style="float:left; margin-top:auto; margin-bottom:auto;">
-		<div class="slds-form-element">
-			<div class="slds-form-element__control">
-				<div class="slds-select_container">
-				<select id="qccombo" class="slds-select" onchange="QCreate(this);">
-					<option value="none">{$APP.LBL_QUICK_CREATE}...</option>
-					{foreach item=detail from=$QCMODULE}
-						<option value="{$detail.1}">{$APP.NEW}&nbsp;{$detail.0}</option>
-					{/foreach}
-				</select>
-				</div>
-			</div>
-		</div>
-	</div>
-	{/if}
 </nav>
 {/function}
 
@@ -177,24 +161,6 @@
 		{/if}
 		{$i = $i+1}
 	{/foreach}
-	{if $SHOWQUICKCREATE}
-	<li class="slds-dropdown__item slds-context-bar__item" role="presentation">
-	<div class="slds-context-bar__tertiary" style="float:left; margin-top:auto; margin-bottom:auto;">
-		<div class="slds-form-element">
-			<div class="slds-form-element__control">
-				<div class="slds-select_container">
-				<select id="qccombo" class="slds-select" onchange="QCreate(this);">
-					<option value="none">{$APP.LBL_QUICK_CREATE}...</option>
-					{foreach item=detail from=$QCMODULE}
-						<option value="{$detail.1}">{$APP.NEW}&nbsp;{$detail.0}</option>
-					{/foreach}
-				</select>
-				</div>
-			</div>
-		</div>
-	</div>
-	</li>
-	{/if}
 	</ul>
 </nav>
 {/function}

@@ -90,6 +90,30 @@ hr {
   background: aliceblue;
 }
 
+.cbslds-quickcreate {
+  font-size: 0.65rem;
+}
+.cbslds-quickcreate ul, .cbslds-quickcreate li {
+  padding-bottom: 1px;
+  padding-top: 0px;
+}
+.qchovermenu {
+  visibility: hidden;
+  display: none;
+  opacity: 0.0;
+  -webkit-transition: all 500ms ease-in-out;
+  -moz-transition: all 500ms ease-in-out;
+  -ms-transition: all 500ms ease-in-out;
+  -o-transition: all 500ms ease-in-out;
+  transition: all 500ms ease-in-out;
+}
+
+#qchoverbutton:hover + .qchovermenu, .qchovermenu:hover {
+  display: block;
+  visibility: visible;
+  opacity: 1.0;
+}
+
 .slds-dropdown {
   font-size: var(--cbslds-dropdown-fontsize, 0.75rem);
 }

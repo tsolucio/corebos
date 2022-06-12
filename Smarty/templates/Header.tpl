@@ -212,6 +212,25 @@
 									</svg>
 									<span class="slds-assistive-text">{$APP.LNK_HELP}</span>
 							</button>
+							{if $SHOWQUICKCREATE}
+							<button id="qchoverbutton" class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_QUICK_CREATE}">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+								</svg>
+								<span class="slds-assistive-text">{'LBL_QUICK_CREATE'|@getTranslatedString:$MODULE_NAME}</span>
+							</button>
+							<div class="slds-dropdown slds-dropdown_right qchovermenu">
+								<ul class="slds-dropdown__list cbslds-quickcreate" role="menu" aria-label="{$APP.LBL_QUICK_CREATE}">
+									{foreach item=detail from=$QCMODULE}
+										<li class="slds-dropdown__item cbslds-quickcreate" role="presentation">
+										<a href="javascript:void();" role="menuitem" onclick="QCreate('{$detail.1}');">
+											<span class="slds-truncate" title="{$detail.0}">{$APP.NEW}&nbsp;{$detail.0}</span>
+										</a>
+									</li>
+									{/foreach}
+								</ul>
+							</div>
+							{/if}
 							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon-border" aria-pressed="false" title="{$APP.LBL_LAST_VIEWED}" onclick="panelViewToggle('cbds-last-visited');">
 								<svg class="slds-button__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
