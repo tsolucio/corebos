@@ -58,7 +58,7 @@ $archive_name1=str_replace('/', '', $archive_name1);
 $archive_name =$archive_name1.'-'.date('YmdHi').'.zip';
 $archive = new Vtiger_Zip('backup/'.$archive_name);
 $archive->copyDirectoryFromDisk('user_privileges/');
-if (GlobalVariable::getVariable('Backup_Storage_Include', 0)) {
+if (GlobalVariable::getVariable('Backup_Storage_Include', 0) == 0) {
 	$archive->copyDirectoryFromDisk('storage/');
 }
 $archive->copyDirectoryFromDisk('test/');
