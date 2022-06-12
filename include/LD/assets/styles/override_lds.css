@@ -1,4 +1,4 @@
-@CHARSET "UTF-8";
+@charset "UTF-8";
 
 hr {
 	margin: 0px;
@@ -36,6 +36,58 @@ hr {
 .cbslds-button_icon-more {
 	width: 1.875rem;
 	height: 1.875rem;
+}
+
+.cbslds-button_icon-small {
+	width: 0.65rem;
+	height: 0.65rem;
+}
+
+.accordion_menu {
+  position: sticky;
+  top: 2px;
+}
+
+.accordion {
+  width: 100%;
+  max-width: 12rem;
+  margin: 4px;
+  background: #FFF;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.accordion .link {
+  cursor: pointer;
+  display: block;
+  -webkit-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  padding: 2px;
+}
+
+/*** Vertcal Submenu */
+.submenu-link, .submenu-link:hover {
+	text-decoration: none;
+	color: unset;
+}
+
+.submenu {
+  display: none;
+}
+
+.submenu a {
+  display: block;
+  text-decoration: none;
+  -webkit-transition: all 0.25s ease;
+  -o-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+  padding: 1px;
+}
+
+.submenuopen {
+  background: aliceblue;
 }
 
 .slds-dropdown {

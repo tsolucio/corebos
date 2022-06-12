@@ -105,6 +105,7 @@ if ($cbMapid) {
 $smarty->assign('GS_AUTOCOMP', $cbMapGS);
 $Application_Global_Search_Active = GlobalVariable::getVariable('Application_Global_Search_Active', 1);
 $smarty->assign('Application_Global_Search_Active', $Application_Global_Search_Active);
+$smarty->assign('Application_Menu_Direction', GlobalVariable::getVariable('Application_Menu_Direction', 'Horizontal'));
 
 $smarty->assign('HELP_URL', GlobalVariable::getVariable('Application_Help_URL', 'https://corebos.org/documentation'));
 $smarty->assign('SET_CSS_PROPERTIES', GlobalVariable::getVariable('Application_CSS_Properties', 'include/LD/assets/styles/properties.php'));

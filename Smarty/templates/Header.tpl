@@ -342,6 +342,7 @@
 	{$COREBOS_HEADER_PREMENU}
 	</div>
 	{/if}
+	{if $Application_Menu_Direction!='Vertical'}
 	<div class="noprint">
 		<div class="slds-context-bar">
 			<div class="slds-context-bar__primary slds-context-bar__item_divider-right">
@@ -369,10 +370,45 @@
 		{call cbmenu menu=$MENU}
 		</div>
 	</div>
+	{/if}
 </header>
 <!-- END LDS Global header -->
 <a name="top"></a>
-
+{if $Application_Menu_Direction=='Vertical'}
+<style>
+#page-header {
+  top: 3.625rem;
+}
+</style>
+<table>
+<tr>
+<td class="slds-align-top slds-card">
+<div class="noprint accordion_menu" id="accordion_menu">
+	<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover slds-p-around_xx-small" style="max-width: 12rem;">
+		<div>
+			<a id="waffleaction" href="index.php" class="slds-icon-waffle_container slds-context-bar__button">
+				<div class="slds-icon-waffle">
+					<div class="slds-r1"></div>
+					<div class="slds-r2"></div>
+					<div class="slds-r3"></div>
+					<div class="slds-r4"></div>
+					<div class="slds-r5"></div>
+					<div class="slds-r6"></div>
+					<div class="slds-r7"></div>
+					<div class="slds-r8"></div>
+					<div class="slds-r9"></div>
+				</div>
+			</a>
+		</div>
+		<span id="wafflelabel" class="slds-context-bar__label-action slds-context-bar__app-name slds-m-left_xx-small" onclick="hideVerticalMenu()">
+			<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}d dfgxcv xdfv xcv cv cv </span>
+		</span>
+	</div>
+	{call cbmenuvertical menu=$MENU}
+</div>
+</td>
+<td class="slds-align-top"><!-- closed in footer -->
+{/if}
 <div id='miniCal' style='position:absolute; display:none; left:100px; top:100px; z-index:100000'></div>
 
 {if $MODULE_NAME eq 'Calendar4You'}

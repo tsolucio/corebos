@@ -117,6 +117,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Merge_Record_Limit',
 				'Application_Textarea_Style',
 				'Application_CSS_Properties',
+				'Application_Menu_Direction',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
