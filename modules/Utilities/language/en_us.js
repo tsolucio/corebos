@@ -7,7 +7,8 @@
  ********************************************************************************/
 
 var mod_alert_arr = {
-	'LBL_TABLE_NAME': 'Name',
+	'LBL_TABLE_NAME': 'Table',
+	'LBL_WS_NAME': 'Name',
 	'LBL_ACCESS': 'Access',
 	'LBL_CREATE': 'Create',
 	'LBL_READ': 'Read',

@@ -268,6 +268,7 @@ if (typeof(Utilities) == 'undefined') {
 
 var Grid = tui.Grid;
 var gridInstance = {};
+const defaultURL = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions';
 
 document.addEventListener('DOMContentLoaded', function (event) {
 	loadJS(
@@ -277,7 +278,19 @@ document.addEventListener('DOMContentLoaded', function (event) {
 			el: document.getElementById('chgrid'),
 			columns: [
 				{
-					name: 'name',
+					name: 'ws_name',
+					header: mod_alert_arr.LBL_WS_NAME,
+					sortingType: 'desc',
+					sortable: true,
+					editor: 'text',
+					onAfterChange(ev) {
+						const idx = gridInstance.getIndexOfRow(ev.rowKey);
+						updateFieldData(ev, idx);
+						console.table(ev)
+					},
+				},
+				{
+					name: 'table_name',
 					header: mod_alert_arr.LBL_TABLE_NAME,
 					sortingType: 'desc',
 					sortable: true,
@@ -339,36 +352,14 @@ document.addEventListener('DOMContentLoaded', function (event) {
 					}
 				},
 			],
-			data:
-				[
-					{
-						id: '1',
-						name: 'vtiger_audit_trail',
-						access: '1',
-						create: '1',
-						read: '1',
-						write: '1',
-						delete: '1',
-					},
-					{
-						id: '2',
-						name: 'marvel',
-						access: '1',
-						create: '1',
-						read: '1',
-						write: '0',
-						delete: '0',
-					},
-					{
-						id: '3',
-						name: 'marvel3',
-						access: '1',
-						create: '0',
-						read: '1',
-						write: '0',
-						delete: '0',
-					},
-				],
+			data:{
+				api: {
+					readData: {
+						url: `${defaultURL}&functiontocall=clickHouse&method=getTables`,
+						method: 'GET'
+					}
+				}
+			},
 			useClientSort: false,
 			rowHeight: 'auto',
 			bodyHeight: 500,
@@ -392,8 +383,8 @@ function addRow() {
 
 	gridInstance.appendRow(
 		{
-			id: '',
-			name: '',
+			ws_name: '',
+			table_name: '',
 			access: '1',
 			create: '1',
 			read: '1',
@@ -403,28 +394,82 @@ function addRow() {
 }
 
 function changeCheckbox(rowId, fieldName){
+	let newValue = 1;
 	if(document.getElementById('checkbox-'+fieldName+'-'+rowId).checked){
-		console.log("is true")
+		newValue = 1;
 	}else{
-		console.log("is false now")
+		newValue = 0;
 	}
+
+	const table_name = gridInstance.getValue(rowId, 'table_name');
+	const old_table_name = table_name;
+	const ws_name = fieldName === 'ws_name' ? newValue : gridInstance.getValue(rowId, 'ws_name');
+	const access = fieldName === 'access' ? newValue : gridInstance.getValue(rowId, 'access');
+	const create = fieldName === 'create' ? newValue : gridInstance.getValue(rowId, 'create');
+	const read = fieldName === 'read' ? newValue : gridInstance.getValue(rowId, 'read');
+	const write = fieldName === 'write' ? newValue : gridInstance.getValue(rowId, 'write');
+
+	data = {
+		table_name,
+		old_table_name,
+		ws_name,
+		access,
+		create,
+		read,
+		write,
+	}
+	updateAjax(data);
 }
 
 function deleteRow(rowId) {
-	const table_name = gridInstance.getValue(rowId, 'name');
+	const table_name = gridInstance.getValue(rowId, 'table_name');
 	gridInstance.removeRow(rowId);
 	//send ajax call to delete table
+	jQuery.ajax({
+		method: 'POST',
+		url: `${defaultURL}&functiontocall=clickHouse&method=deleteTable`,
+		data: {table_name}
+	}).then(function (response) {
+		console.log(response)
+	});
 }
 
 
 function updateFieldData(ev, idx) {
-	const table_name = gridInstance.getValue(idx, 'name');
+	const columnChanged = ev.columnName;
+	const oldValue = ev.prevValue;
+	const newValue = ev.value;
+	
+	const table_name = columnChanged === 'table_name' ?  newValue : gridInstance.getValue(idx, 'table_name');
+	const old_table_name = columnChanged !== 'table_name' ?  table_name : oldValue;
+	const ws_name = columnChanged === 'ws_name' ? newValue : gridInstance.getValue(idx, 'ws_name');
+	const old_ws_name = columnChanged === 'ws_name' ?  oldValue : ws_name;
+	const access = columnChanged === 'access' ? newValue : gridInstance.getValue(idx, 'access');
+	const create = columnChanged === 'create' ? newValue : gridInstance.getValue(idx, 'create');
+	const read = columnChanged === 'read' ? newValue : gridInstance.getValue(idx, 'read');
+	const write = columnChanged === 'write' ? newValue : gridInstance.getValue(idx, 'write');
 	data = {
-		columnName: ev.columnName,
-		column_value: ev.value,
-		table_name
+		table_name,
+		ws_name,
+		access,
+		create,
+		read,
+		write,
+		old_table_name,
+		old_ws_name,
+
 	}
-	//send update to ajax
+	updateAjax(data);
+}
+
+function updateAjax(data){
+		jQuery.ajax({
+			method: 'POST',
+			url: `${defaultURL}&functiontocall=clickHouse&method=addUpdateTable`,
+			data: data
+		}).then(function (response) {
+			console.log(response)
+		});
 }
 
 

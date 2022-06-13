@@ -656,7 +656,7 @@ switch ($functiontocall) {
 			$write = $_REQUEST['write'];
 			$old_ws_name = $_REQUEST['old_ws_name'];
 			$old_table_name = $_REQUEST['old_table_name'];
-			$res = $clickHouse->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name = '', $old_table_name = '');
+			$res = $clickHouse->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name, $old_table_name);
 			if ($res) {
 				$success = true;
 			} else {
@@ -668,8 +668,10 @@ switch ($functiontocall) {
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
 			$tables = $clickHouse->getTables();
 			$ret = array(
-				'success' => true,
-				'tables' => $tables
+				'data' => array(
+					'contents' => $tables
+				),
+				'result' => true,
 			);
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
 			$table_name = $_REQUEST['table_name'];

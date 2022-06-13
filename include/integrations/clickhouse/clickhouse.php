@@ -168,7 +168,7 @@ class corebos_clickhouse {
 				VALUES (?, ?, 'include/Webservices/VtigerClickHouseOperation.php', 'VtigerClickHouseOperation', '0')";
 				$adb->pquery($query, array($wsid, $ws_name));
 
-				$query = "INSERT INTO `vtiger_ws_entity_tables` (`webservice_entity_id`, `table_name`) VALUES (?, 'vtiger_audit_trial');";
+				$query = "INSERT INTO `vtiger_ws_entity_tables` (`webservice_entity_id`, `table_name`) VALUES (?, ?);";
 				$adb->pquery($query, array($wsid, $table_name));
 
 				return true;
@@ -192,6 +192,8 @@ class corebos_clickhouse {
 					$adb->pquery($query, array($table_name, $old_table_name));
 				}
 				return true;
+			}else{
+				return $res;
 			}
 		}
 		return false;
@@ -214,11 +216,12 @@ class corebos_clickhouse {
 			);
 			$tables[] = $table;
 		}
-		return json_encode($tables);
+		return $tables;
 	}
 
 	public function getTable($table_name) {
-		global $adb;
+		global $adb,$log;
+		$log->fatal("getting tables");
 		$table = array();
 		$res = $adb->pquery('select * from vtiger_ws_clickhousetables where table_name = ? limit 1', array($table_name));
 		if ($res) {
@@ -234,6 +237,7 @@ class corebos_clickhouse {
 				'delete' => $row['delete'],
 			);
 		}
+		$log->fatal($table);
 		return $table;
 	}
 
