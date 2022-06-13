@@ -147,4 +147,11 @@
 	<classname>addIndex2enameTableUsers</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete PricebookToPriceList Constraints</description>
+	<filename>build/changeSets/2022/delPricebookToPriceListConstraints.php</filename>
+	<classname>delPricebookToPriceListConstraints</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
