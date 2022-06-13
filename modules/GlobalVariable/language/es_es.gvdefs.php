@@ -818,7 +818,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'Si se establece en 1 almacenamiento de copia de seguridad incluido y si se establece en 0 almacenamiento de copia de seguridad no incluido, el valor predeterminado es 1',
+	'definition' => 'Si se establece en 1 el directorio storage se incluirá en las copias de seguridad, si no, no se incluirá. Valor predeterminado es 1.',
 ),
 'Application_Storage_SaveStrategy' => array(
 	'valuetype' => 'Texto',
