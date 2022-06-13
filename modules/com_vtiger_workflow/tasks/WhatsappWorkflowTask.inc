@@ -96,36 +96,39 @@ class WhatsappWorkflowTask extends VTTask {
 						}
 						$phone = $prefix.preg_replace('/[^0-9]/', '', $phone);
 						if ($count==0) {
-							$message=$client->messages->create(
-								'whatsapp:'.$phone,
+							$message = $this->sendWhatsappMessage(
+								$phone,
 								array(
 								'from' => 'whatsapp:'.$sender,
 								'body' => $body
-								)
+								),
+								$client
 							);
 							$messageid[0]['messageid'] = $message->sid;
 							$messageid[0]['body'] = $body;
 							$messageid[0]['attachment'] = '';
 						} else {
 							if ($body!='') {
-								$message=$client->messages->create(
-									'whatsapp:'.$phone,
+								$message = $this->sendWhatsappMessage(
+									$phone,
 									array(
 									'from' => 'whatsapp:'.$sender,
 									'body' => $body
-									)
+									),
+									$client
 								);
 							}
 							$messageid[0]['messageid'] = $message->sid;
 							$messageid[0]['body'] = $body;
 							$messageid[0]['attachment'] = '';
 							for ($j=0; $j<$count; $j++) {
-								$message = $client->messages->create(
-									'whatsapp:'.$phone,
+								$message = $this->sendWhatsappMessage(
+									$phone,
 									array(
 										'from' => 'whatsapp:'.$sender,
 										'mediaurl' => "$site_URL/".$url[$j],
-									)
+									),
+									$client
 								);
 								$messageid[$j+1]['messageid'] = $message->sid;
 								$messageid[$j+1]['body'] = '';
@@ -148,6 +151,18 @@ class WhatsappWorkflowTask extends VTTask {
 			} catch (Exception $e) {
 				$logbg->debug('Error on Whatsapp Task: '. $e->getMessage());
 			}
+		}
+	}
+
+	private function sendWhatsappMessage($phone, $what, $client) {
+		$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', '');
+		if (!empty($inBucketServeUrl)) {
+			require_once 'modules/Emails/mail.php';
+			require_once 'modules/Emails/Emails.php';
+			send_mail('Email', 'whatsapp@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $phone, print_r($what, true));
+			return json_decode('{"sid":"inbucketwhatsapp"}');
+		} else {
+			return $client->messages->create('whatsapp:'.$phone, $what);
 		}
 	}
 }

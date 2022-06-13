@@ -69,7 +69,12 @@ class wfSendFile extends VTTask {
 				}
 			}
 		}
-
+		$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', '');
+		if (!empty($inBucketServeUrl)) {
+			require_once 'modules/Emails/mail.php';
+			require_once 'modules/Emails/Emails.php';
+			return send_mail('Email', 'sendfile@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $adapter, print_r($workflow_context, true));
+		}
 		if ($adapter == 'FTP') {
 			require_once 'modules/com_vtiger_workflow/actions/FTP.php';
 			$ftp = new FTPAdapter($data, $workflow_context);

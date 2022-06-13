@@ -52,6 +52,7 @@
 	<span id="{$kanbanID}Scroll"></span>
 	</span>
 	<script>
+	var currentKanbanID = '{$kanbanID}';
 	var {$kanbanID}Info = {$kanbanBoardInfo};
 	var {$kanbanID} = new jKanban({
 		element: '#{$kanbanID}',

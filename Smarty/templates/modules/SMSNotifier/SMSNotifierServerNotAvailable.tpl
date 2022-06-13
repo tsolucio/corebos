@@ -8,9 +8,9 @@
 * All Rights Reserved.
 *******************************************************************************/
 -->*}
-<div style="width: 400px;">
+<div style="width: 400px;" class=" sdls-card">
 	<form method="POST" action="javascript:void(0);">
-		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerHeadingULine">
+		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerHeadingULine  slds-table slds-table_bordered">
 			<tr>
 				<td class="genHeaderSmall" width="90%" align="left">{'ServerNotConfigured'|getTranslatedString:$MODULE}</td>
 				<td width="10%" align="right">
@@ -32,10 +32,10 @@
 			</tr>
 		</table>
 
-		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerPopupTransport">
+		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerPopupTransport slds-table slds-table_bordered">
 			<tr>
 				<td class="small" align="center">
-				<input type="button" class="small crmbutton cancel" onclick="SMSNotifierCommon.hideSelectWizard();" value="{$APP.LBL_CANCEL_BUTTON_LABEL}"/>
+				<input type="button" class="slds-button slds-button_destructive small crmbutton cancel" onclick="SMSNotifierCommon.hideSelectWizard();" value="{$APP.LBL_CANCEL_BUTTON_LABEL}"/>
 				</td>
 			</tr>
 		</table>

@@ -48,6 +48,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Global_Search_Autocomplete_Limit',
 				'Application_ProductService_Search_Autocomplete_Limit',
 				'Application_Storage_Directory',
+				'Backup_Storage_Include',
 				'Application_Storage_SaveStrategy',
 				'Application_OpenRecordInNewXOnRelatedList',
 				'Application_OpenRecordInNewXOnListView',

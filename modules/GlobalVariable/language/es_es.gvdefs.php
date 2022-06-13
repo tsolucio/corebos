@@ -814,6 +814,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Directory path',
 	'definition' => 'El directorio donde se deben guardar los archivos de documentos. El usuario del servidor web debe poder acceder y escribir dentro de esta carpeta.',
 ),
+'Backup_Storage_Include' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Si se establece en 1 el directorio storage se incluirá en las copias de seguridad, si no, no se incluirá. Valor predeterminado es 1.',
+),
 'Application_Storage_SaveStrategy' => array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
