@@ -818,7 +818,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'If set to 0 backup storage being included and if set to 1 backup storage being not included',
+	'definition' => 'If set to 1 backup storage being included and if set to 0 backup storage being not included, by default is 1',
 ),
 'Application_Storage_SaveStrategy' => array(
 	'valuetype' => 'string',
