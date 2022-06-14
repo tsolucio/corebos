@@ -46,6 +46,10 @@ hr {
 .accordion_menu {
   position: sticky;
   top: 2px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow-y: auto;
+  height: 90vh;
 }
 
 .accordion {
@@ -60,14 +64,20 @@ hr {
 
 .accordion .link {
   cursor: pointer;
-  display: block;
+  /* display: block; */
   -webkit-transition: all 0.4s ease;
   -o-transition: all 0.4s ease;
   transition: all 0.4s ease;
-  padding: 2px;
+  /* padding: 2px; */
 }
 
 /*** Vertcal Submenu */
+
+/* adding some style to side menu */
+.slds-accordion{
+  width: 100% !important;
+}
+
 .submenu-link, .submenu-link:hover {
 	text-decoration: none;
 	color: unset;
@@ -83,7 +93,11 @@ hr {
   -webkit-transition: all 0.25s ease;
   -o-transition: all 0.25s ease;
   transition: all 0.25s ease;
-  padding: 1px;
+  /* padding: 1px; */
+}
+
+.slds-icon-waffle{
+  margin: 4px;
 }
 
 .submenuopen {
