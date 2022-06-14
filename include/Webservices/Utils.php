@@ -1079,6 +1079,10 @@ function setResponseHeaders() {
 			header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
 			header('Access-Control-Allow-Credentials: true');
 			header('Access-Control-Max-Age: 86400');    // cache for 1 day
+			header('X-Frame-Options: DENY');
+			header('X-XSS-Protection: 1; mode=block');
+			header('X-Content-Type-Options: nosniff');
+			header("Content-Security-Policy: default-src 'none'; frame-ancestors 'none'");
 		}
 	}
 	if (!(isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || strtolower($_REQUEST['format'])=='streamraw'))) {
