@@ -309,7 +309,8 @@ class VTEmailTask extends VTTask {
 			$attachments = $entity->WorkflowContext['SendTheseAttachments'];
 			if (is_array($attachments)) {
 				foreach ($attachments as $attachment) {
-					if (substr($attachment, 0, strlen('data:image/png;base64,'))=='data:image/png;base64,') {
+					if (substr($attachment, 0, strlen('data:base64,'))=='data:base64,') {
+						$content = str_replace('data:base64,','',$attachment);
 						$this->attachmentsinfo[] = $attachment;
 					} else {
 						$docid = $entity->get($attachment);
