@@ -22,6 +22,10 @@
   border-radius: 0;
 }
 
+#page-header.page-header_stickup_vertical {
+  top: 0;
+}
+
 #page-header.page-header_stickup {
   top: 2.5rem;
 }

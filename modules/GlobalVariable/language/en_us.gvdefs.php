@@ -106,6 +106,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'InBucket SMTP Listener',
 	'definition' => 'If set its value will be used as the Out Going Mail Server Host',
 ),
+'Application_Menu_Direction' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Horizontal | Vertical',
+	'definition' => 'Application menu direction.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Module Functionality',
