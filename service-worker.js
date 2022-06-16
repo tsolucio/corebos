@@ -9959,7 +9959,7 @@ precacheAndRoute([{
   "revision": "60718c9174ed712f0c6a240e34adec1d"
 }, {
   "url": "include/LD/assets/styles/override_lds.css",
-  "revision": "1c73aef82642440ff8fb12e7c6804a6b"
+  "revision": "b484346016d17f8ca89d21cdc956a179"
 }, {
   "url": "include/LD/assets/styles/salesforce-lightning-design-system_touch.css",
   "revision": "a65bfc28217f7bfb5dc501bfcb2fcf90"
@@ -11477,7 +11477,7 @@ precacheAndRoute([{
   "revision": "81785868abff61b02dbf15761dde7fb2"
 }, {
   "url": "include/js/general.js",
-  "revision": "15dcc9a69221b889f3be665762f43721"
+  "revision": "00c1465a79df7582bfd990c6f307d45f"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "466f7e7da385bc410e9195246ca03eb0"
@@ -11492,10 +11492,10 @@ precacheAndRoute([{
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "961af040b1d4960dddde2817912ad133"
+  "revision": "f382979955961c3357b3562845475def"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "0954ce5783ec9a75ae83d8eb667429bf"
+  "revision": "ab3cfc0bdc320402d1a09d75392146ac"
 }, {
   "url": "include/js/ListViewRenderes.js",
   "revision": "3111bb0321f2065d3b9694836e16d1ee"
@@ -11540,7 +11540,7 @@ precacheAndRoute([{
   "revision": "2d7293347f93362f86ca0028bb7f8733"
 }, {
   "url": "include/js/QuickCreate.js",
-  "revision": "9663dd1cea6cb7fb0cfe983e54baa186"
+  "revision": "89ad8ae2e8972f6085b6728624061ac2"
 }, {
   "url": "include/js/RelatedLists.js",
   "revision": "afd1f3cd61451676111b6d7b6adb1e16"
@@ -11744,7 +11744,7 @@ precacheAndRoute([{
   "revision": "a0ee36da94058a469df96cba89b1910b"
 }, {
   "url": "include/style.css",
-  "revision": "d366c521d8140f4799b529e65f6d53df"
+  "revision": "90a9a2733cad484a67a65b04d46dda72"
 }, {
   "url": "include/print.css",
   "revision": "6b1e0c714dd4c389fb51b840e4cf01d2"

@@ -106,6 +106,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'InBucket SMTP Listener',
 	'definition' => 'If set its value will be used as the Out Going Mail Server Host',
 ),
+'Application_Menu_Direction' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Horizontal | Vertical',
+	'definition' => 'Application menu direction.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Module Functionality',
@@ -813,6 +819,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'Directory path',
 	'definition' => 'The directory where document files are to be saved. The webserver user must be able to access and write inside this folder.',
+),
+'Backup_Storage_Include' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1 storage directory will be included in the backups, if set to 0 storage will not be included. Default is 1.',
 ),
 'Application_Storage_SaveStrategy' => array(
 	'valuetype' => 'string',

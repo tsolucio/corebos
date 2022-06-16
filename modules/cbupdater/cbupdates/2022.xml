@@ -141,6 +141,20 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Add Index to field ename on users table</description>
+	<filename>build/changeSets/2022/addIndex2enameTableUsers.php</filename>
+	<classname>addIndex2enameTableUsers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete PricebookToPriceList Constraints</description>
+	<filename>build/changeSets/2022/delPricebookToPriceListConstraints.php</filename>
+	<classname>delPricebookToPriceListConstraints</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>timothyanthony</author>
 	<description>Add ClickHouse Table</description>
 	<filename>build/changeSets/2022/addClickHouseTable.php</filename>

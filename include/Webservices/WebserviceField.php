@@ -63,6 +63,7 @@ class WebserviceField {
 		$this->fieldLabel = (isset($row['fieldlabel']))? $row['fieldlabel'] : '';
 		$this->fieldSequence = (isset($row['sequence']))? $row['sequence'] : 0;
 		$this->displayType = (isset($row['displaytype']))? $row['displaytype'] : -1;
+		$this->helpinfo = (isset($row['helpinfo']))? $row['helpinfo'] : '';
 		$this->massEditable = isset($row['masseditable']) ? ($row['masseditable'] === '1')? true: false: false;
 		$typeOfData = (isset($row['typeofdata']))? $row['typeofdata'] : '';
 		$this->presence = (isset($row['presence']))? $row['presence'] : -1;
@@ -190,6 +191,10 @@ class WebserviceField {
 
 	public function getDisplayType() {
 		return $this->displayType;
+	}
+
+	public function getHelpInfo() {
+		return $this->helpinfo;
 	}
 
 	public function getFieldId() {
@@ -499,8 +504,14 @@ class WebserviceField {
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) {
 					$trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				}
+				$translated_tooltip = getTranslatedString($picklistValue.'_tooltip', $moduleName);
 				$elem['label'] = $trans_str;
 				$elem['value'] = $picklistValue;
+				if ($translated_tooltip == $picklistValue.'_tooltip') {
+					$elem['tooltip'] = '';
+				} else {
+					$elem['tooltip'] = $translated_tooltip;
+				}
 				$options[] = $elem;
 			}
 		} else {
@@ -515,8 +526,14 @@ class WebserviceField {
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) {
 					$trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				}
+				$translated_tooltip = getTranslatedString($picklistValue.'_tooltip', $moduleName);
 				$elem['label'] = $trans_str;
 				$elem['value'] = $picklistValue;
+				if ($translated_tooltip == $picklistValue.'_tooltip') {
+					$elem['tooltip'] = '';
+				} else {
+					$elem['tooltip'] = $translated_tooltip;
+				}
 				$options[] = $elem;
 			}
 		}
@@ -541,8 +558,14 @@ class WebserviceField {
 		$list_options = getPicklistValuesSpecialUitypes($uitype, $fName, '');
 		foreach ($list_options as $value) {
 			$elem = array();
+			$translated_tooltip = getTranslatedString($value[1].'_tooltip', $moduleName);
 			$elem['label'] = $value[0];
 			$elem['value'] = $value[1];
+			if ($translated_tooltip == $value[1].'_tooltip') {
+				$elem['tooltip'] = '';
+			} else {
+				$elem['tooltip'] = $translated_tooltip;
+			}
 			$options[] = $elem;
 		}
 		$purified_plcache[$moduleName.$fName] = $options;

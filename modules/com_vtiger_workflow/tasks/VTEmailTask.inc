@@ -103,13 +103,21 @@ class VTEmailTask extends VTTask {
 		$entityCache = new VTEntityCache($admin);
 
 		$from_name = $from_email = $replyto = '';
-		if (!empty($this->fromname)) {
-			$fnt = new VTEmailRecipientsTemplate($this->fromname);
-			$from_name = $fnt->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+		if (isset($entity->WorkflowContext['SendFromName'])) {
+			$from_name = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendFromName']);
+		} else {
+			if (!empty($this->fromname)) {
+				$fnt = new VTEmailRecipientsTemplate($this->fromname);
+				$from_name = $fnt->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+			}
 		}
-		if (!empty($this->fromemail)) {
-			$fet = new VTEmailRecipientsTemplate($this->fromemail);
-			$from_email = $fet->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+		if (isset($entity->WorkflowContext['SendFromEmail'])) {
+			$from_email = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendFromEmail']);
+		} else {
+			if (!empty($this->fromemail)) {
+				$fet = new VTEmailRecipientsTemplate($this->fromemail);
+				$from_email = $fet->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+			}
 		}
 		if (!empty($this->replyto)) {
 			$rt = new VTEmailRecipientsTemplate($this->replyto);
@@ -121,17 +129,25 @@ class VTEmailTask extends VTTask {
 			$et = new VTEmailRecipientsTemplate($this->recepient);
 		}
 		$to_email = $et->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
-		if (empty($this->emailcc)) {
-			$cc = '';
+		if (isset($entity->WorkflowContext['SendEmailCC'])) {
+			$cc = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendEmailCC']);
 		} else {
-			$ecct = new VTEmailRecipientsTemplate($this->emailcc);
-			$cc = $ecct->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+			if (empty($this->emailcc)) {
+				$cc = '';
+			} else {
+				$ecct = new VTEmailRecipientsTemplate($this->emailcc);
+				$cc = $ecct->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+			}
 		}
-		if (empty($this->emailbcc)) {
-			$bcc = '';
+		if (isset($entity->WorkflowContext['SendEmailBCC'])) {
+			$bcc = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendEmailBCC']);
 		} else {
-			$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
-			$bcc = $ebcct->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+			if (empty($this->emailbcc)) {
+				$bcc = '';
+			} else {
+				$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
+				$bcc = $ebcct->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+			}
 		}
 		$mailto = GlobalVariable::getVariable('Workflow_Send_Email_ToCCBCC', '');//For tests
 		if ($mailto != '') {

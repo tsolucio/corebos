@@ -452,12 +452,24 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			return $purified_mfcache[$mfkey];
 		}
 		$fields = array();
+		$bmapname = $this->meta->getTabName().'_FieldInfo';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapFI = $cbMap->FieldInfo();
+			$cbMapFI = $cbMapFI['fields'];
+		}
 		$moduleFields = $this->meta->getModuleFields();
+		$index_count = 0;
 		foreach ($moduleFields as $webserviceField) {
 			if (((int)$webserviceField->getPresence()) == 1) {
 				continue;
 			}
 			$fields[] = $this->getDescribeFieldArray($webserviceField);
+			if (isset($cbMapFI[$webserviceField->getFieldName()])) {
+				$fields[$index_count]['moreinfo'] = $cbMapFI[$webserviceField->getFieldName()];
+			}
+			$index_count = $index_count + 1;
 		}
 		$fields[] = $this->getIdField($this->meta->getObectIndexColumn());
 		$purified_mfcache[$mfkey] = $fields;
@@ -488,6 +500,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			'nullable' => $webserviceField->isNullable(),
 			'editable' => $editable,
 			'uitype' => $webserviceField->getUIType(),
+			'helpinfo' => $webserviceField->getHelpInfo(),
 			'typeofdata' => $webserviceField->getTypeOfData(),
 			'sequence' => $webserviceField->getFieldSequence(),
 			'quickcreate' => $webserviceField->getQuickCreate(),

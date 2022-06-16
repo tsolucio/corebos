@@ -203,10 +203,14 @@ if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 			$where_relquery.=' and vtiger_products.discontinued <> 0';
 		} else {
 			$crmalias = CRMEntity::getcrmEntityTableAlias('ProductComponent');
-			$where_relquery.=" and vtiger_products.discontinued<>0 AND vtiger_products.productid NOT IN (SELECT distinct topdo
+			if (!vtlib_isModuleActive('ProductComponent')) {
+				$where_relquery.=" and vtiger_products.discontinued<>0";
+			} else {
+				$where_relquery.=" and vtiger_products.discontinued<>0 AND vtiger_products.productid NOT IN (SELECT distinct topdo
 				FROM vtiger_productcomponent
 				INNER JOIN $crmalias ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
 				WHERE vtiger_crmentity.deleted = 0)";
+			}
 		}
 	} elseif ($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po')) {
 		$crmalias = CRMEntity::getcrmEntityTableAlias('ProductComponent');

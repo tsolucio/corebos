@@ -623,8 +623,12 @@ function showDefaultCustomView(selectView, module) {
 			method: 'POST',
 			url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=ListView&ajax=true&start=1&viewname=' + viewName
 		}).done(function (response) {
-			var result = response.split('&#&#&#');
 			document.getElementById('status').style.display = 'none';
+			if (Application_Landing_View == 'Kanban') {
+				kanbanRefresh(currentKanbanID, 'filter');
+				return;
+			}
+			var result = response.split('&#&#&#');
 			document.getElementById('ListViewContents').innerHTML = result[2];
 			vtlib_executeJavascriptInElement(document.getElementById('ListViewContents'));
 			document.getElementById('basicsearchcolumns_real').innerHTML = document.getElementById('basicsearchcolumns').innerHTML;
@@ -1024,12 +1028,17 @@ function callSearch(searchtype, mode = '') {
 		urlstring += '&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&searchtype=advance&';
 	}
 	document.getElementById('status').style.display = 'inline';
-	if (Application_Landing_View=='table') {
+	if (Application_Landing_View=='table' || Application_Landing_View=='Kanban') {
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?' + urlstring + 'query=true&file=index&module=' + gVTModule + '&action=' + gVTModule + 'Ajax&ajax=true&search=true'
 		}).done(function (response) {
-			processQuickSearchResponse(response);
+			if (Application_Landing_View == 'Kanban') {
+				document.getElementById('status').style.display = 'none';
+				kanbanRefresh(currentKanbanID, 'search');
+			} else {
+				processQuickSearchResponse(response);
+			}
 		});
 	} else {
 		if (gVTModule == 'Documents') {

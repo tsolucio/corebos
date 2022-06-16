@@ -48,6 +48,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Global_Search_Autocomplete_Limit',
 				'Application_ProductService_Search_Autocomplete_Limit',
 				'Application_Storage_Directory',
+				'Backup_Storage_Include',
 				'Application_Storage_SaveStrategy',
 				'Application_OpenRecordInNewXOnRelatedList',
 				'Application_OpenRecordInNewXOnListView',
@@ -117,6 +118,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Merge_Record_Limit',
 				'Application_Textarea_Style',
 				'Application_CSS_Properties',
+				'Application_Menu_Direction',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
