@@ -88,7 +88,7 @@ hr {
 }
 
 .submenu a {
-  display: block;
+  /* display: block; */
   text-decoration: none;
   -webkit-transition: all 0.25s ease;
   -o-transition: all 0.25s ease;
@@ -102,6 +102,11 @@ hr {
 
 .submenuopen {
   background: aliceblue;
+  /* display: flex!important;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center; */
+  /* padding-left: 24px; */
 }
 
 .cbslds-quickcreate {
