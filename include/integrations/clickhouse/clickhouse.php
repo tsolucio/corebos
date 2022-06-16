@@ -158,7 +158,7 @@ class corebos_clickhouse {
 	public function addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name = '', $old_table_name = '') {
 		global $adb;
 
-		if ($old_table_name === '') {
+		if ($old_table_name === '' && $old_ws_name === '') {
 			$query = "INSERT INTO `vtiger_ws_clickhousetables` (`ws_name`, `table_name`, `access`, `create`, `read`, `write`) VALUES (?,?,?,?,?,?)";
 			$res = $adb->pquery($query, array($ws_name, $table_name, $access, $create, $read, $write));
 
@@ -175,12 +175,11 @@ class corebos_clickhouse {
 			}
 		} else {
 			if ($old_ws_name === '') {
-				$old_ws_name = $ws_name;
+				$query = "UPDATE vtiger_ws_clickhousetables SET ws_name=?,table_name=?,access=?,`create`=?,`read`=?,`write`=? WHERE `table_name`=?";
+			} else {
+				$old_table_name = $old_ws_name;
+				$query = "UPDATE `vtiger_ws_clickhousetables` SET `ws_name`=?,`table_name`=?,`access`=?,`create`=?,`read`=?,`write`=? WHERE `ws_name`=?";
 			}
-			if ($old_table_name === '') {
-				$old_table_name = $table_name;
-			}
-			$query = "UPDATE `vtiger_ws_clickhousetables` SET `ws_name` = ? `table_name` = ? `access` = ? `create` = ? `read` = ? `write` = ? WHERE `table_name` = ?";
 			$res = $adb->pquery($query, array($ws_name, $table_name, $access, $create, $read, $write, $old_table_name));
 			if ($res) {
 				if ($ws_name !== $old_ws_name) {
@@ -192,7 +191,7 @@ class corebos_clickhouse {
 					$adb->pquery($query, array($table_name, $old_table_name));
 				}
 				return true;
-			}else{
+			} else {
 				return $res;
 			}
 		}
