@@ -408,11 +408,13 @@ function changeCheckbox(rowId, fieldName){
 	const create = fieldName === 'create' ? newValue : gridInstance.getValue(rowId, 'create');
 	const read = fieldName === 'read' ? newValue : gridInstance.getValue(rowId, 'read');
 	const write = fieldName === 'write' ? newValue : gridInstance.getValue(rowId, 'write');
+	const old_ws_name = ws_name;
 
 	data = {
 		table_name,
 		old_table_name,
 		ws_name,
+		old_ws_name,
 		access,
 		create,
 		read,
