@@ -814,6 +814,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Chemin du répertoire',
 	'definition' => 'Défini un répertoire de stockage autre que celui par défaut pour les documents importés dans l\'application. L\'utilisateur web (http, www, _www ...) doit avoir des droits de lecture et d\'écrite pour ce répertoire.',
 ),
+'Backup_Storage_Include' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1 storage directory will be included in the backups, if set to 0 storage will not be included. Default is 1.',
+),
 'Application_Storage_SaveStrategy' => array(
 	'valuetype' => 'Chaîne',
 	'category' => 'Application',

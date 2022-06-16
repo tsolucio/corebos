@@ -790,7 +790,7 @@ function getColumnFields($module) {
 					$resultrow['presence'],
 					$resultrow['defaultvalue'],
 					$resultrow['generatedtype'],
-					$resultrow['displaytype'],
+					$resultrow['displaytype']
 				);
 			}
 		}
@@ -994,7 +994,7 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 		$tabid = getTabid($fld_module);
 
 		$query = 'SELECT vtiger_profile2field.visible, vtiger_profile2field.readonly, vtiger_field.fieldlabel, vtiger_field.uitype,
-			vtiger_field.fieldid, vtiger_field.displaytype, vtiger_field.typeofdata
+			vtiger_field.fieldid, vtiger_field.displaytype, vtiger_field.typeofdata, vtiger_field.fieldname
 			FROM vtiger_profile2field INNER JOIN vtiger_field ON vtiger_field.fieldid=vtiger_profile2field.fieldid
 			WHERE vtiger_profile2field.profileid=? and vtiger_profile2field.tabid=? and vtiger_field.presence in (0,2)';
 
@@ -1010,6 +1010,7 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 				$row['fieldid'],
 				$row['displaytype'],
 				$row['typeofdata'],
+				$row['fieldname'],
 			);
 		}
 

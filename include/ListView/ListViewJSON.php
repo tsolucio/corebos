@@ -255,10 +255,6 @@ class GridListView {
 		}
 		//add action in header
 		$actionPermission = getTabsActionPermission($profileid)[$this->tabid];
-		$edit = true;
-		if ($actionPermission[1] || $isRecycleModule == 'true') {
-			$edit = false;
-		}
 		$controller = new ListViewController($adb, $current_user, $queryGenerator);
 		$listview_header_search = $controller->getBasicSearchFieldInfoList();
 		if (isset($_REQUEST['isRecycleModule'])) {
@@ -273,13 +269,19 @@ class GridListView {
 		$listview_header_search['cblvactioncolumn'] = $app_strings['LBL_ACTION'];
 		$listview_header_arr = array();
 		$findRelatedModule = '';
+		$fieldPermission = getProfile2FieldPermissionList($this->module, $profileid);
 		foreach ($listview_header_search as $fName => $fValue) {
 			$fieldInfo = VTCacheUtils::lookupFieldInfo($this->tabid, $fName);
 			$tooltip = ToolTipExists($fName, $this->tabid);
 			if (!$fieldInfo) {
 				continue;
 			}
-			if ($fieldInfo['displaytype'] == 2) {
+			$edit = true;
+			$readOnly = $this->isReadOnly($fName, $fieldPermission);
+			if ($readOnly) {
+				$edit = false;
+			}
+			if ($actionPermission[1] || $isRecycleModule == 'true') {
 				$edit = false;
 			}
 			switch ($fieldInfo['uitype']) {
@@ -346,6 +348,17 @@ class GridListView {
 			'result' => true,
 			'folders' => $folders //for Documents module
 		);
+	}
+
+	public function isReadOnly($fName, $fieldPermission) {
+		$readOnly = 0;
+		foreach ($fieldPermission as $key) {
+			if ($fName == $key[7]) {
+				$readOnly = $key[3];
+				break;
+			}
+		}
+		return $readOnly == '1' ? true : false;
 	}
 
 	public function findRelatedModule($fName) {
