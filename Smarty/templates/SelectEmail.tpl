@@ -9,7 +9,7 @@
  ********************************************************************************/
 -->*}
 <!-- BEGIN: main -->
-<div id="roleLay" style="z-index:12;display:inline-table;width:400px;" class="layerPopup slds-card small">
+<div id="roleLay" style="z-index:12;display:inline-table;width:400px; margin-top: 40px;" class="layerPopup slds-card small">
 	<input name="excludedRecords" type="hidden" id="excludedRecords" value="{$EXE_REC}">
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
 	<input name='viewid' id="viewid" type='hidden' value='{$VIEWID}'>
@@ -27,7 +27,7 @@
 			</td>
 		</tr>
 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
+	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center style="padding: 7px;">
 		<tr><td class="small">
 			<table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 				<tr>
@@ -82,7 +82,7 @@
 			</table>
 		</td></tr>
 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport slds-table slds-table_bordered">
+	<table style="text-align: center; margin: auto; display: flex; justify-content: center; display: grid;" border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport slds-table slds-table_bordered">
 		<tr><td align=center class="small">
 			<input type="button" name="{$APP.LBL_SELECT_BUTTON_LABEL}" value=" {$APP.LBL_SELECT_BUTTON_LABEL} " class="slds-button slds-button_brand small crmbutton create" onClick="validate_sendmail('{$IDLIST}','{$FROM_MODULE}');"/>&nbsp;&nbsp;
 			<input type="button" name="{$APP.LBL_CANCEL_BUTTON_LABEL}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="slds-button slds-button_destructive small crmbutton cancel" onclick="fninvsh('roleLay');" />
