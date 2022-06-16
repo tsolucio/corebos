@@ -167,7 +167,7 @@
 
 {* Creates all the other levels menu *}
 {function cbsubmenuvertical j=0}
-	<ul class="submenu slds-dropdown__list" role="menu" id="menu{$i}">
+	<ul class="submenu slds-dropdown__list slds-is-nested " role="menu" id="menu{$i}">
 	{foreach $submenu as $menuitem}
 		{if $menuitem.mtype == 'module' && empty($menuitem.submenu)}
 		<li class="slds-dropdown__item" role="presentation">
