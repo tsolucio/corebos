@@ -16,6 +16,7 @@ if (typeof(SMSNotifierCommon) == 'undefined') {
 				container = document.createElement('div');
 				container.className = 'layerPopup';
 				container.id = '__smsnotifier_wizard_container__';
+				container.style.marginTop = '40px';
 				document.body.appendChild(container);
 			}
 			return container;
