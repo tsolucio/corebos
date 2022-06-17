@@ -51,6 +51,7 @@
         "mautic/api-library": "3.0",
         "vaites/php-apache-tika": "1.2.4",
         "smi2/phpclickhouse": "1.4.4",
-        "fzaninotto/faker": "1.9.2"
+        "fzaninotto/faker": "1.9.2",
+        "ghostff/session": "2.0.0.0"
     }
 }

@@ -68,6 +68,7 @@ return array(
     'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'Google\\Auth\\' => array($vendorDir . '/google/auth/src'),
+    'Ghostff\\Session\\' => array($vendorDir . '/ghostff/session/src'),
     'Geocoder\\Provider\\Pelias\\' => array($vendorDir . '/geocoder-php/pelias-provider'),
     'Geocoder\\Provider\\OpenRouteService\\' => array($vendorDir . '/geocoder-php/openrouteservice-provider'),
     'Geocoder\\Provider\\Nominatim\\' => array($vendorDir . '/geocoder-php/nominatim-provider'),

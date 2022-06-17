@@ -132,6 +132,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
             'Google\\Auth\\' => 12,
+            'Ghostff\\Session\\' => 16,
             'Geocoder\\Provider\\Pelias\\' => 25,
             'Geocoder\\Provider\\OpenRouteService\\' => 35,
             'Geocoder\\Provider\\Nominatim\\' => 28,
@@ -421,6 +422,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'Google\\Auth\\' => 
         array (
             0 => __DIR__ . '/..' . '/google/auth/src',
+        ),
+        'Ghostff\\Session\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ghostff/session/src',
         ),
         'Geocoder\\Provider\\Pelias\\' => 
         array (

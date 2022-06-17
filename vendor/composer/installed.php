@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '2c1e30768dafdb9cf9416d47925a885f0344db35',
+        'reference' => '591180e011ec6ddb3f5cb8bba1d738b9e2ae511d',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '2c1e30768dafdb9cf9416d47925a885f0344db35',
+            'reference' => '591180e011ec6ddb3f5cb8bba1d738b9e2ae511d',
             'dev_requirement' => false,
         ),
         'automattic/woocommerce' => array(
@@ -156,6 +156,15 @@
             'provided' => array(
                 0 => '1.0',
             ),
+        ),
+        'ghostff/session' => array(
+            'pretty_version' => 'v2.0.0',
+            'version' => '2.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../ghostff/session',
+            'aliases' => array(),
+            'reference' => '7a97bf50afcd27170167bc0da23ba1b6b87617ff',
+            'dev_requirement' => false,
         ),
         'google/apiclient' => array(
             'pretty_version' => 'v2.4.0',
