@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '2c1e30768dafdb9cf9416d47925a885f0344db35',
+        'reference' => '591180e011ec6ddb3f5cb8bba1d738b9e2ae511d',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '2c1e30768dafdb9cf9416d47925a885f0344db35',
+            'reference' => '591180e011ec6ddb3f5cb8bba1d738b9e2ae511d',
             'dev_requirement' => false,
         ),
         'automattic/woocommerce' => array(
@@ -816,6 +816,15 @@
             'install_path' => __DIR__ . '/../starkbank/ecdsa',
             'aliases' => array(),
             'reference' => '484bedac47bac4012dc73df91da221f0a66845cb',
+            'dev_requirement' => false,
+        ),
+        'stefangabos/zebra_session' => array(
+            'pretty_version' => '3.1.0',
+            'version' => '3.1.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../stefangabos/zebra_session',
+            'aliases' => array(),
+            'reference' => '79bb0f21127207dacfd524797e434227e0bf891e',
             'dev_requirement' => false,
         ),
         'stripe/stripe-php' => array(

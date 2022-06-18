@@ -4967,6 +4967,63 @@
             "install-path": "../starkbank/ecdsa"
         },
         {
+            "name": "stefangabos/zebra_session",
+            "version": "3.1.0",
+            "version_normalized": "3.1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stefangabos/Zebra_Session.git",
+                "reference": "79bb0f21127207dacfd524797e434227e0bf891e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stefangabos/Zebra_Session/zipball/79bb0f21127207dacfd524797e434227e0bf891e",
+                "reference": "79bb0f21127207dacfd524797e434227e0bf891e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.2"
+            },
+            "time": "2020-05-31T18:33:03+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "Zebra_Session.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Gabos",
+                    "email": "contact@stefangabos.ro",
+                    "homepage": "https://github.com/stefangabos",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A PHP library acting as a wrapper for PHP's default session handling functions which stores data in a MySQL database, providing both better performance and better security and protection against session fixation and session hijacking.",
+            "homepage": "https://github.com/stefangabos/Zebra_Session",
+            "keywords": [
+                "database",
+                "fixation",
+                "flash",
+                "flashdata",
+                "hijack",
+                "locking",
+                "mysql",
+                "mysqli",
+                "session"
+            ],
+            "support": {
+                "issues": "https://github.com/stefangabos/Zebra_Session/issues",
+                "source": "https://github.com/stefangabos/Zebra_Session/tree/master"
+            },
+            "install-path": "../stefangabos/zebra_session"
+        },
+        {
             "name": "stripe/stripe-php",
             "version": "v7.97.0",
             "version_normalized": "7.97.0.0",

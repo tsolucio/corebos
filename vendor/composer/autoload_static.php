@@ -554,6 +554,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'TwilioEmail' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/TwilioEmail.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
+        'Zebra_Session' => __DIR__ . '/..' . '/stefangabos/zebra_session/Zebra_Session.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
