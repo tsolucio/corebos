@@ -114,21 +114,21 @@ try {
 	$sessionName = null;
 	if (strcasecmp($operation, 'extendsession')===0) {
 		if (isset($input['operation'])) {
-			coreBOS_Session::init(true, true);
+			coreBOS_Session::init(false, false);
 			$sessionId = coreBOS_Session::id();
 		} else {
 			writeErrorOutput($operationManager, new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Authentication required'));
 			return;
 		}
 	}
-	$sid = coreBOS_Session::init(false, false, $sessionId);
+	$sid = coreBOS_Session::init(false, false, $sessionId, 'cbws');
 	if (!$sessionId && !$operationManager->isPreLoginOperation()) {
 		writeErrorOutput($operationManager, new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Authentication required'));
 		return;
 	}
 
 	$userid = coreBOS_Session::get('authenticated_user_id');
-	if (!$sid || !$userid) {
+	if (!$sid || (!$userid && !$operationManager->isPreLoginOperation())) {
 		writeErrorOutput($operationManager, 'Incorrect session');
 		return;
 	}
