@@ -14,7 +14,7 @@ class crmtogo_UI_DetailView extends crmtogo_WS_FetchRecordDetails {
 
 	public function cachedModuleLookupWithRecordId($recordId) {
 		$recordIdComponents = explode('x', $recordId);
-		$modules = $this->sessionGet('_MODULES');
+		$modules = $this->sessionGet('_MODULES', []);
 		foreach ($modules as $module) {
 			if ($module->id() == $recordIdComponents[0]) {
 				return $module;
@@ -98,8 +98,7 @@ class crmtogo_UI_DetailView extends crmtogo_WS_FetchRecordDetails {
 				}
 			}
 			//Get PanelMenu data
-			$modules = $this->sessionGet('_MODULES');
-			$viewer->assign('_MODULES', $modules);
+			$viewer->assign('_MODULES', $this->sessionGet('_MODULES', []));
 			$response = $viewer->process('DetailView.tpl');
 		}
 		return $response;

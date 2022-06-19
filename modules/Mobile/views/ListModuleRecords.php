@@ -15,7 +15,7 @@ include_once __DIR__ . '/../views/models/SearchFilter.php';
 class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 
 	public function cachedModule($moduleName) {
-		$modules = $this->sessionGet('_MODULES'); // Should be available post login
+		$modules = $this->sessionGet('_MODULES', []); // Should be available post login
 		foreach ($modules as $module) {
 			if ($module->name() == $moduleName) {
 				return $module;
@@ -161,9 +161,7 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 			$viewer->assign('CALSTARTDAY', $startday_code);
 			$viewer->assign('CALENDARSELECT', $config['compactcalendar']);
 			//Get PanelMenu data
-			$modules = $this->sessionGet('_MODULES');
-			$viewer->assign('_MODULES', $modules);
-
+			$viewer->assign('_MODULES', $this->sessionGet('_MODULES', []));
 			$response = $viewer->process('ListView.tpl');
 		}
 		return $response;

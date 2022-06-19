@@ -35,7 +35,7 @@ class crmtogo_WS_RelatedRecords extends crmtogo_WS_QueryWithGrouping {
 		//related module currently supported
 		$gvRelatedModules = GlobalVariable::getVariable('Mobile_Related_Modules', 'Contacts,Potentials,HelpDesk,Documents,Timecontrol', 'Mobile');
 		$relatedmodule = explode(',', $gvRelatedModules);
-		$activemodule = $this->sessionGet('_MODULES');
+		$activemodule = $this->sessionGet('_MODULES', []);
 		$relatedRecords = array();
 		foreach ($activemodule as $amodule) {
 			if (in_array($amodule->name(), $relatedmodule)) {
