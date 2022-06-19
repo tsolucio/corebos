@@ -305,7 +305,7 @@ class Zebra_Session {
             );
 
             // if a session is already started, destroy it first
-            if (session_id() !== '') session_destroy();
+            //if (session_id() !== '') session_destroy();
 
             // start session if required
             if ($start_session) session_start();
@@ -731,7 +731,26 @@ class Zebra_Session {
      *
      *  @access private
      */
-    private function query($query) {
+    public function query($query) {
+		global $adb, $default_charset;
+		$rs = $adb->pquery($query, array_slice(func_get_args(), 1));
+		if ($rs) {
+			// prepare a standardized return value
+			$numfields = $adb->num_fields($rs);
+			if ($numfields) {
+				$data = $adb->fetchByAssoc($rs);
+				if (isset($data['session_data'])) {
+					$data['session_data'] = html_entity_decode($data['session_data'], ENT_QUOTES, 'UTF-8');
+				}
+			}
+			$result = array(
+				'num_rows' => $adb->num_rows($rs),
+				'data'     => $numfields == 0 ? array() : $data,
+			);
+			$rs = null;
+			return $result;
+		}
+		throw new ErrorException($adb->getErrorMsg(). ' : '.print_r(func_get_args(), true));
 
         // if the provided connection link is a PDO instance
         if ($this->link instanceof PDO) {
