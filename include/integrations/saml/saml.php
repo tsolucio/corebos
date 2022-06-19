@@ -154,7 +154,7 @@ class corebos_saml {
 					$focus = new Users();
 					$focus->retrieve_entity_info($userid, 'Users');
 					$focus->authenticated = true;
-					coreBOS_Session::destroy();
+					coreBOS_Session::kill();
 					//Inserting entries for audit trail during login
 					if (coreBOS_Settings::getSetting('audit_trail', false)) {
 						$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
@@ -391,7 +391,7 @@ class corebos_saml {
 					$userDetails = new Users();
 					$userDetails->retrieve_entity_info($userid, 'Users');
 					$userDetails->authenticated = true;
-					coreBOS_Session::destroy();
+					coreBOS_Session::kill();
 					coreBOS_Session::init(false, false);
 					coreBOS_Session::set('authenticatedUserId', $userid);
 					cbEventHandler::do_action('corebos.login', array($userDetails, $sessionManager, 'webservice'));
