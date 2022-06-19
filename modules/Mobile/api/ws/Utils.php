@@ -643,6 +643,7 @@ class crmtogo_WS_Utils {
 		$config['company_name'] = $companyDetails['companyname'];
 		$config['company_website'] = $companyDetails['website'];
 		$config['company_logo'] = $companyDetails['companylogo'];
+		$config['company_favicon'] = $companyDetails['favicon'];
 		return $config;
 	}
 

@@ -18,5 +18,6 @@
 	<script type="text/javascript" src="resources/settings.js"></script>
 	<title>{if isset($TITLE)}{$TITLE}{else}CRM{/if}</title>
 	<link rel="stylesheet" href="resources/css/jquery.mobile.icons.min.css">
+	{include file='BrowserVariables.tpl'}
 </head>
 {/strip}
