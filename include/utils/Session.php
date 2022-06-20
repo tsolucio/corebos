@@ -229,13 +229,13 @@ class coreBOS_Session {
 			}
 		}
 		if (empty($URL)) {
-			$URL = $site_URL;
-		}
-		if (empty($URL)) {
 			$URL = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 		}
+		if (empty($URL)) {
+			$URL = $site_URL;
+		}
 		$purl = parse_url($URL);
-		$sn = preg_replace('/[^A-Za-z0-9]/', '', (isset($purl['host'])?$purl['host']:'').(isset($purl['path'])?$purl['path']:'').(isset($purl['port'])?$purl['port']:''));
+		$sn = preg_replace('/[^A-Za-z0-9]/', '', (isset($purl['host'])?$purl['host']:'').(isset($purl['path'])?dirname($purl['path']):'').(isset($purl['port'])?$purl['port']:''));
 		$sn = 'cb'.md5($sn.$section);
 		self::$session_name = $sn;
 		return $sn;
