@@ -98,9 +98,9 @@ if ($saml->isActiveWS() && !empty($saml->samlclient) && ($mode!='' || ($operatio
 }
 
 try {
-	$operationManager = new OperationManager($adb, $operation, $format, $sessionManager);
+	$operationManager = new OperationManager($adb, $operation, $format);
 } catch (WebServiceException $e) {
-	$operationManager = new OperationManager($adb, 'getchallenge', 'json', null);
+	$operationManager = new OperationManager($adb, 'getchallenge', 'json');
 	writeErrorOutput($operationManager, $e);
 	die();
 }
@@ -111,7 +111,6 @@ try {
 	}
 
 	$input = $operationManager->getOperationInput();
-	$sessionName = null;
 	if (strcasecmp($operation, 'extendsession')===0) {
 		if (isset($input['operation'])) {
 			coreBOS_Session::init(false, false);
@@ -160,7 +159,6 @@ try {
 					'format' => $format,
 					'request' => $input,
 					'sessionId' => $sessionId,
-					'sessionName' => $sessionName,
 				]);
 				$cbmq->sendMessage('wsOperationChannel', 'wsoperationqueue', 'wsoperationqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, $userid, $msg);
 				writeOutput($operationManager, ['operationTrackingID' => $opID]);

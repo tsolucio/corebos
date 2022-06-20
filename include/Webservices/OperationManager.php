@@ -25,7 +25,6 @@ class OperationManager {
 	);
 	private $formatObjects;
 	private $inParamProcess;
-	private $sessionManager;
 	private $pearDB;
 	private $operationName;
 	private $type;
@@ -35,9 +34,8 @@ class OperationManager {
 	private $operationId;
 	private $operationParams;
 
-	public function __construct($adb, $operationName, $format, $sessionManager) {
+	public function __construct($adb, $operationName, $format) {
 		$this->format = strtolower($format);
-		$this->sessionManager = $sessionManager;
 		$this->formatObjects = array();
 		foreach ($this->formatsData as $frmt => $frmtData) {
 			require_once $frmtData['includePath'];
@@ -144,7 +142,7 @@ class OperationManager {
 					return $userDetails;
 				} else {
 					coreBOS_Session::set('authenticated_user_id', $userDetails->id);
-					cbEventHandler::do_action('corebos.login', array($userDetails, $this->sessionManager, 'webservice'));
+					cbEventHandler::do_action('corebos.login', array($userDetails, null, 'webservice'));
 					global $adb;
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
 					$userId = vtws_getId($webserviceObject->getEntityId(), $userDetails->id);
