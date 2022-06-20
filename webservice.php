@@ -113,22 +113,25 @@ try {
 
 	$input = $operationManager->getOperationInput();
 	if (strcasecmp($operation, 'extendsession')===0) {
-		if (isset($input['operation'])) {
-			coreBOS_Session::init(false, false);
-			$sessionId = coreBOS_Session::id();
+		$sname = coreBOS_Session::getSessionName();
+		if (isset($input['operation']) && isset($_COOKIE[$sname])) {
+			session_name($sname);
+			session_id($_COOKIE[$sname]);
+			$sessionId = coreBOS_Session::init(false, false, $_COOKIE[$sname]);
 		} else {
 			writeErrorOutput($operationManager, new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Authentication required'));
 			return;
 		}
+	} else {
+		$sessionId = coreBOS_Session::init(false, false, $sessionId, 'cbws');
 	}
-	$sid = coreBOS_Session::init(false, false, $sessionId, 'cbws');
 	if (!$sessionId && !$operationManager->isPreLoginOperation()) {
 		writeErrorOutput($operationManager, new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Authentication required'));
 		return;
 	}
 
 	$userid = coreBOS_Session::get('authenticated_user_id');
-	if (!$sid || (!$userid && !$operationManager->isPreLoginOperation())) {
+	if (!$sessionId || (!$userid && !$operationManager->isPreLoginOperation())) {
 		writeErrorOutput($operationManager, 'Incorrect session');
 		return;
 	}
