@@ -56,7 +56,7 @@ class coreBOS_Session {
 	}
 
 	public static function isSessionStarted() {
-		return (PHP_SESSION_ACTIVE == self::$session->session_status());
+		return (!is_null(self::$session) && PHP_SESSION_ACTIVE == self::$session->session_status());
 	}
 
 	public static function regenerate() {
