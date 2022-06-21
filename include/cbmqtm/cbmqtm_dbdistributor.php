@@ -32,30 +32,31 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		static::$db = new PearDatabase();
 	}
 
-	public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information) {
+	public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange) {
 		if ($share != '1:M' && $share != 'P:S') {
 			$share = '1:M';
 		}
 		if ($share == '1:M' || !$this->subscriptionExist($channel, $producer, $consumer)) {
-			$this->insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information);
+			$this->insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange);
 		} else {
 			self::setDB();
 			$subrs = static::$db->pquery('select * from cb_mqsubscriptions where channel=?', array($channel));
 			while ($subscriber = static::$db->fetch_array($subrs)) {
-				$this->insertMsg($channel, $producer, $subscriber['consumer'], $type, $share, $sequence, $expires, $deliverafter, $userid, $information);
+				$this->insertMsg($channel, $producer, $subscriber['consumer'], $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange);
 			}
 		}
 	}
 
-	private function insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information) {
+	private function insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange) {
 		$rightnow = time();
 		if (empty($deliverafter)) {
 			$deliverafter = 0;
 		}
 		self::setDB();
 		static::$db->pquery('insert into cb_messagequeue
-			(channel, producer, consumer, type, share, sequence, senton, deliverafter, expires, version, invalid, invalidreason, userid, information)
-			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
+			(channel, producer, consumer, type, share, sequence, senton, deliverafter, expires, version, invalid, invalidreason, userid, information, SMS_sendtime_startate, SMS_sendtime_end, 
+			canSendOnSaturday, canSendOnSunday)
+			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
 				'channel' => $channel,
 				'producer' => $producer,
 				'consumer' => $consumer,
@@ -69,7 +70,11 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 				'invalid' => 0,
 				'invalidreason' => '',
 				'userid' => $userid,
-				'information' => $information
+				'information' => $information,
+				'SMS_sendtime_start' => $deliverRange[0],
+				'SMS_sendtime_end' => $deliverRange[1],
+				'canSendOnSaturday' => $deliverRange[2],
+				'canSendOnSunday' => $deliverRange[3],
 		));
 	}
 
@@ -90,23 +95,39 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		if ($msgrs && static::$db->num_rows($msgrs)==1) {
 			global $default_charset;
 			$msg = static::$db->fetch_array($msgrs);
+			$SMS_sendtime_start = strtotime($msg['SMS_sendtime_start']);
+			$SMS_sendtime_end = strtotime($msg['SMS_sendtime_end']);
+			$canSendOnSaturday = isset($msg['canSendOnSaturday']) ? $msg['canSendOnSaturday'] : 1;
+			$canSendOnSunday = isset($msg['canSendOnSunday']) ? $msg['canSendOnSunday'] : 1;
+			$canSend = true;
 			static::$db->pquery('delete from cb_messagequeue where idx=?', array($msg['idx']));
-			return array(
-				'channel' => $msg['channel'],
-				'producer' => $msg['producer'],
-				'consumer' => $msg['consumer'],
-				'type' => $msg['type'],
-				'share' => $msg['share'],
-				'sequence' => $msg['sequence'],
-				'senton' => $msg['senton'],
-				'deliverafter' => $msg['deliverafter'],
-				'expires' => $msg['expires'],
-				'version' => $this->version,
-				'invalid' => $msg['invalid'],
-				'invalidreason' => $msg['invalidreason'],
-				'userid' => $msg['userid'],
-				'information' => html_entity_decode($msg['information'], ENT_QUOTES, $default_charset),
-			);
+			$today = date('d-m-Y');
+			$check_day = date("l",strtotime($today));
+			if (($check_day == 'Saturday' && $canSendOnSaturday == 0) || ($check_day == 'Sunday' && $canSendOnSunday == 0)) {
+				$canSend = false;
+			}
+			if ($canSend == true) {
+				for($i = 0; $i <= $SMS_sendtime_end - $SMS_sendtime_start; $i += 3600) {
+					if (date('H:i:i', $SMS_sendtime_start + $i)) {
+						return array(
+							'channel' => $msg['channel'],
+							'producer' => $msg['producer'],
+							'consumer' => $msg['consumer'],
+							'type' => $msg['type'],
+							'share' => $msg['share'],
+							'sequence' => $msg['sequence'],
+							'senton' => $msg['senton'],
+							'deliverafter' => $msg['deliverafter'],
+							'expires' => $msg['expires'],
+							'version' => $this->version,
+							'invalid' => $msg['invalid'],
+							'invalidreason' => $msg['invalidreason'],
+							'userid' => $msg['userid'],
+							'information' => html_entity_decode($msg['information'], ENT_QUOTES, $default_charset),
+						);
+					}
+				}
+			}
 		} else {
 			return false;
 		}
