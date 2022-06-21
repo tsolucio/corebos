@@ -61,32 +61,42 @@ function getBrowserVariables(&$smarty) {
 	$vars = array();
 	$vars['gVTModule'] = $currentModule;
 	$vars['gVTTheme']  = $theme;
-	$vars['gVTUserID'] = $current_user->id;
 	$vars['default_charset'] = $default_charset;
-	$vars['userDateFormat'] = $current_user->date_format;
-	$vars['userHourFormat'] = ($current_user->hour_format=='24' ? '24' : 'am/pm');
-	$sql = 'SELECT dayoftheweek FROM its4you_calendar4you_settings WHERE userid=?';
-	$result = $adb->pquery($sql, array($current_user->id));
-	if ($result && $adb->num_rows($result)>0) {
-		$fDOW = $adb->query_result($result, 0, 0);
-		$vars['userFirstDOW'] = ($fDOW=='Monday' ? 1 : 0);
-	} else {
+	if (empty($current_user)) {
+		$vars['gVTUserID'] = 0;
+		$vars['userDateFormat'] = 'Y-m-d';
+		$vars['userHourFormat'] = '24';
 		$vars['userFirstDOW'] = 0;
-	}
-	if (isset($current_user->currency_grouping_separator) && $current_user->currency_grouping_separator == '') {
 		$vars['userCurrencySeparator'] = ' ';
-	} else {
-		$vars['userCurrencySeparator'] = html_entity_decode($current_user->currency_grouping_separator, ENT_QUOTES, $default_charset);
-	}
-	if (isset($current_user->currency_decimal_separator) && $current_user->currency_decimal_separator == '') {
 		$vars['userDecimalSeparator'] = ' ';
-	} else {
-		$vars['userDecimalSeparator'] = html_entity_decode($current_user->currency_decimal_separator, ENT_QUOTES, $default_charset);
-	}
-	if (isset($current_user->no_of_currency_decimals) && $current_user->no_of_currency_decimals == '') {
 		$vars['userNumberOfDecimals'] = '2';
 	} else {
-		$vars['userNumberOfDecimals'] = html_entity_decode($current_user->no_of_currency_decimals, ENT_QUOTES, $default_charset);
+		$vars['gVTUserID'] = $current_user->id;
+		$vars['userDateFormat'] = $current_user->date_format;
+		$vars['userHourFormat'] = ($current_user->hour_format=='24' ? '24' : 'am/pm');
+		$sql = 'SELECT dayoftheweek FROM its4you_calendar4you_settings WHERE userid=?';
+		$result = $adb->pquery($sql, array($current_user->id));
+		if ($result && $adb->num_rows($result)>0) {
+			$fDOW = $adb->query_result($result, 0, 0);
+			$vars['userFirstDOW'] = ($fDOW=='Monday' ? 1 : 0);
+		} else {
+			$vars['userFirstDOW'] = 0;
+		}
+		if (isset($current_user->currency_grouping_separator) && $current_user->currency_grouping_separator == '') {
+			$vars['userCurrencySeparator'] = ' ';
+		} else {
+			$vars['userCurrencySeparator'] = html_entity_decode($current_user->currency_grouping_separator, ENT_QUOTES, $default_charset);
+		}
+		if (isset($current_user->currency_decimal_separator) && $current_user->currency_decimal_separator == '') {
+			$vars['userDecimalSeparator'] = ' ';
+		} else {
+			$vars['userDecimalSeparator'] = html_entity_decode($current_user->currency_decimal_separator, ENT_QUOTES, $default_charset);
+		}
+		if (isset($current_user->no_of_currency_decimals) && $current_user->no_of_currency_decimals == '') {
+			$vars['userNumberOfDecimals'] = '2';
+		} else {
+			$vars['userNumberOfDecimals'] = html_entity_decode($current_user->no_of_currency_decimals, ENT_QUOTES, $default_charset);
+		}
 	}
 	$swmd5file = file_get_contents('include/sw-precache/service-worker.md5');
 	$swmd5 = substr($swmd5file, 0, strpos($swmd5file, ' '));

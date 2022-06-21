@@ -291,7 +291,7 @@ if ($use_current_login) {
 	$result = $current_user->retrieveCurrentUserInfoFromFile($_SESSION['authenticated_user_id']);
 
 	if ($result == null) {
-		coreBOS_Session::destroy();
+		coreBOS_Session::kill();
 		header('Location: index.php?action=Login&module=Users');
 	}
 	coreBOS_Session::setUserGlobalSessionVariables();
@@ -395,7 +395,7 @@ $siteURLParts = parse_url($site_URL);
 $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
 	$sitepath = empty($siteURLParts['path']) ? '' : ' path='.$siteURLParts['path'].';';
-	header('Set-Cookie: ck_login_id_vtiger='.$_SESSION['authenticated_user_id'].'; SameSite=Lax; expires=0;'.$sitepath.' domain='.$cookieDomain, false);
+	header('Set-Cookie: ck_login_id_vtiger='.$_SESSION['authenticated_user_id'].'; SameSite=Strict; expires=0;'.$sitepath.' domain='.$cookieDomain, false);
 }
 
 if ($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile') {

@@ -154,7 +154,7 @@ class corebos_saml {
 					$focus = new Users();
 					$focus->retrieve_entity_info($userid, 'Users');
 					$focus->authenticated = true;
-					coreBOS_Session::destroy();
+					coreBOS_Session::kill();
 					//Inserting entries for audit trail during login
 					if (coreBOS_Settings::getSetting('audit_trail', false)) {
 						$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
@@ -366,9 +366,9 @@ class corebos_saml {
 				}
 			}
 			if ($portal!='LoginPortal') {
-				$userid = $this->findUser($sessionManager->get('samlUserdata'));
+				$userid = $this->findUser(coreBOS_Session::get('samlUserdata'));
 			} else {
-				$userid = $this->findUserPortal($sessionManager->get('samlUserdata'));
+				$userid = $this->findUserPortal(coreBOS_Session::get('samlUserdata'));
 			}
 			if ($userid) {
 				$ctoid = $tpllang = '';
@@ -391,16 +391,16 @@ class corebos_saml {
 					$userDetails = new Users();
 					$userDetails->retrieve_entity_info($userid, 'Users');
 					$userDetails->authenticated = true;
-					$sessionManager->destroy();
-					$sessionManager->startSession();
-					$sessionManager->set('authenticatedUserId', $userid);
+					coreBOS_Session::kill();
+					coreBOS_Session::init(false, false);
+					coreBOS_Session::set('authenticatedUserId', $userid);
 					cbEventHandler::do_action('corebos.login', array($userDetails, $sessionManager, 'webservice'));
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
 					$userId = vtws_getId($webserviceObject->getEntityId(), $userid);
 					$resp = json_encode(array(
 						'success' => true,
 						'result' => array(
-							'sessionName' => $sessionManager->getSessionId(),
+							'sessionName' => coreBOS_Session::id(),
 							'userId' => $userId,
 							'contactid' => vtws_getEntityId(getSalesEntityType($ctoid)).'x'.$ctoid,
 							'language' => $tpllang,
