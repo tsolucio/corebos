@@ -67,7 +67,7 @@ class coreBOS_Session {
 	/**
 	 * Initialize session
 	 */
-	public static function init($setKCFinder = false, $saveTabValues = false, $sname = '', $section = '') {
+	public static function init($setKCFinder = false, $saveTabValues = false, $sid = '', $section = '') {
 		if (self::$session==null) {
 			global $adb;
 			self::checkDBInitialized();
@@ -75,14 +75,11 @@ class coreBOS_Session {
 			// any session ID supplied by users
 			ini_set('session.use_strict_mode', 1);
 			ini_set('session.cookie_samesite', 'Strict');
-			$URL = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
-			$purl = parse_url($URL);
-			$sn = (isset($purl['path'])?$purl['path']:'');
-			session_set_cookie_params(28800, dirname($sn)); // 8h
+			session_name(self::getSessionName('', false, $section));
+			if (!empty($sid)) {
+				session_id($sid);
+			}
 			$link = $adb->database->_connectionID;
-			$sname = (empty($sname) ? self::getSessionName('', false, $section) : $sname);
-			session_name($sname);
-			session_id($sname);
 			self::$session = new Zebra_Session($link, self::csrfGetSecret());
 		}
 		if ($setKCFinder) {
