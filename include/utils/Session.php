@@ -56,8 +56,7 @@ class coreBOS_Session {
 	}
 
 	public static function isSessionStarted() {
-		$sid = session_id();
-		return function_exists('session_status') ? (PHP_SESSION_ACTIVE == session_status()) : (!empty($sid));
+		return (PHP_SESSION_ACTIVE == self::$session->session_status());
 	}
 
 	public static function regenerate() {

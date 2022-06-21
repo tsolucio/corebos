@@ -42,7 +42,6 @@ if ($focus->is_authenticated() && !$focus->is_twofaauthenticated()) {
 	die();
 }
 if ($focus->is_authenticated() && $focus->is_twofaauthenticated()) {
-	coreBOS_Session::kill();
 	//Inserting entries for audit trail during login
 	if (coreBOS_Settings::getSetting('audit_trail', false)) {
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
