@@ -210,7 +210,7 @@ function vtws_getQueableCommands() {
 	$wsops = $adb->query('SELECT name FROM vtiger_ws_operation where queable=1');
 	$queable = [];
 	foreach ($adb->rowGenerator($wsops) as $wsop) {
-		$queable[] = $wsop['name'];
+		$queable[] = strtolower($wsop['name']);
 	}
 	return $queable;
 }
