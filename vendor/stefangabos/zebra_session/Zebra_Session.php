@@ -726,6 +726,26 @@ class Zebra_Session {
 
     }
 
+	/**
+	 * Returns if a session exists or not. Optionally if the given session exists
+	 * Expired sessions do not exist
+	 * @return integer
+	 * 		PHP_SESSION_NONE if session does not exist
+	 * 		PHP_SESSION_ACTIVE if session exists
+	 */
+	public function session_status($session_id = '') {
+		$this->gc(); // call the garbage collector
+		if (empty($session_id)) {
+			$session_id = session_id();
+		}
+		$result = $this->query(
+			'SELECT 1 FROM ' . $this->table_name . ' WHERE session_id=? AND session_expire>? LIMIT 1',
+			$session_id,
+			time()
+		);
+		return ($result['num_rows'] ? PHP_SESSION_ACTIVE : PHP_SESSION_NONE);
+	}
+
     /**
      *  Mini-wrapper for running MySQL queries with parameter binding with or without PDO
      *
