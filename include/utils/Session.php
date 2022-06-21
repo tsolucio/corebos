@@ -434,7 +434,7 @@ class coreBOS_Session {
 	private static function checkDBInitialized() {
 		global $adb;
 		if (!self::$dbinitialized) {
-			$adb->query("CREATE TABLE `session_data` (
+			$adb->query("CREATE TABLE IF NOT EXISTS `session_data` (
 				`session_id` varchar(34) NOT NULL default '',
 				`hash` varchar(32) NOT NULL default '',
 				`session_data` mediumblob NOT NULL,
