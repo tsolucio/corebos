@@ -8,7 +8,7 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-function vtws_logout($sessionId, $user, $SessionManagerClass = 'SessionManager') {
+function vtws_logout($sessionId, $user, $SessionManagerClass = 'coreBOS_Session') {
 	if (gettype($SessionManagerClass)=='string') {
 		$sessionManager = new $SessionManagerClass();
 	} else {
@@ -22,7 +22,7 @@ function vtws_logout($sessionId, $user, $SessionManagerClass = 'SessionManager')
 	}
 	cbEventHandler::do_action('corebos.logout', array($user, $sessionManager, 'webservice'));
 
-	$sessionManager->destroy();
+	$sessionManager::destroy();
 //	$sessionManager->setExpire(1);
 	// Recording Logout Info
 	require_once 'modules/Users/LoginHistory.php';

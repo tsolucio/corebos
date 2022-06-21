@@ -20,7 +20,6 @@ require_once 'include/utils/Session.php';
 require_once 'include/Webservices/Utils.php';
 require_once 'include/Webservices/State.php';
 require_once 'include/Webservices/OperationManager.php';
-require_once 'include/Webservices/SessionManager.php';
 require_once 'include/logging.php';
 checkFileAccessForInclusion("include/language/$default_language.lang.php");
 require_once "include/language/$default_language.lang.php";
@@ -74,19 +73,19 @@ if (empty($_REQUEST)) {
 $operation = vtws_getParameter($_REQUEST, 'operation');
 $operation = strtolower($operation);
 $format = vtws_getParameter($_REQUEST, 'format', 'json');
-$sessionId = empty($_SERVER['HTTP_COREBOS_AUTHORIZATION']) ? vtws_getParameter($_REQUEST, 'sessionName') : $_SERVER['HTTP_COREBOS_AUTHORIZATION'];
+$headers = array_change_key_case(getallheaders(), CASE_LOWER); // https://github.com/ralouphie/getallheaders
+$sessionId = empty($headers['corebos_authorization']) ? vtws_getParameter($_REQUEST, 'sessionName') : $headers['corebos_authorization'];
 $mode = vtws_getParameter($_REQUEST, 'mode', '');
 
-$sessionManager = new SessionManager();
-
+$sessionManager = new coreBOS_Session();
 $saml = new corebos_saml();
 if ($saml->isActiveWS() && !empty($saml->samlclient) && ($mode!='' || ($operation=='logout' && !empty($sessionId)))) {
-	$sessionManager->startSession();
-	if (!empty($sessionManager->get('samlUserdata'))) {
+	coreBOS_Session::init(false, false, $sessionId);
+	if (!empty(coreBOS_Session::get('samlUserdata'))) {
 		$saml->authenticateWS($sessionManager, $API_VERSION, $mode);
 	} else {
 		if ($operation=='logout' || $mode=='slo') {
-			$saml->logoutWS($sessionId, $sessionManager->get('authenticatedUserId'));
+			$saml->logoutWS($sessionId, coreBOS_Session::get('authenticatedUserId'));
 		} elseif ($mode=='acs') {
 			$saml->acs($sessionManager, $API_VERSION, $mode);
 		} elseif ($mode=='metadata') {
@@ -100,9 +99,9 @@ if ($saml->isActiveWS() && !empty($saml->samlclient) && ($mode!='' || ($operatio
 }
 
 try {
-	$operationManager = new OperationManager($adb, $operation, $format, $sessionManager);
+	$operationManager = new OperationManager($adb, $operation, $format);
 } catch (WebServiceException $e) {
-	$operationManager = new OperationManager($adb, 'getchallenge', 'json', null);
+	$operationManager = new OperationManager($adb, 'getchallenge', 'json');
 	writeErrorOutput($operationManager, $e);
 	die();
 }
@@ -113,41 +112,33 @@ try {
 	}
 
 	$input = $operationManager->getOperationInput();
-	$adoptSession = false;
-	$sessionName = null;
 	if (strcasecmp($operation, 'extendsession')===0) {
-		if (isset($input['operation'])) {
-			// Workaround fix for PHP 5.3.x: $_REQUEST doesn't have PHPSESSID
-			$sessionName = coreBOS_Session::getSessionName();
-			if (isset($_REQUEST[$sessionName])) {
-				$sessionId = vtws_getParameter($_REQUEST, $sessionName);
-			} elseif (isset($_COOKIE[$sessionName])) {
-				$sessionId = vtws_getParameter($_COOKIE, $sessionName);
-			} elseif (isset($_REQUEST['PHPSESSID'])) {
-				$sessionId = vtws_getParameter($_REQUEST, 'PHPSESSID');
-			} else {
-				// NOTE: Need to evaluate for possible security issues
-				$sessionId = vtws_getParameter($_COOKIE, 'PHPSESSID');
-			}
-			$adoptSession = true;
+		$sname = coreBOS_Session::getSessionName();
+		if (isset($input['operation']) && isset($_COOKIE[$sname])) {
+			session_name($sname);
+			session_id($_COOKIE[$sname]);
+			$sessionId = coreBOS_Session::init(false, false, $_COOKIE[$sname]);
 		} else {
 			writeErrorOutput($operationManager, new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Authentication required'));
 			return;
 		}
+	} else {
+		$sessionId = coreBOS_Session::init(false, false, $sessionId, 'cbws');
 	}
-	$sid = $sessionManager->startSession($sessionId, $adoptSession, $sessionName);
-
 	if (!$sessionId && !$operationManager->isPreLoginOperation()) {
 		writeErrorOutput($operationManager, new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Authentication required'));
 		return;
 	}
 
-	if (!$sid) {
-		writeErrorOutput($operationManager, $sessionManager->getError());
+	$userid = coreBOS_Session::get('authenticated_user_id');
+	if (!$sessionId || (!$userid && !$operationManager->isPreLoginOperation())) {
+		writeErrorOutput($operationManager, 'Incorrect session');
 		return;
 	}
 
-	$userid = $sessionManager->get('authenticatedUserId');
+	$now = time();
+	coreBOS_Session::setExpire($now + GlobalVariable::getVariable('WebService_Session_Life_Span', 86400));
+	coreBOS_Session::setIdle($now + GlobalVariable::getVariable('WebService_Session_Idle_Time', 1800), true);
 	if (!empty($userid)) {
 		$seed_user = new Users();
 		$current_user = $seed_user->retrieveCurrentUserInfoFromFile($userid);
@@ -172,8 +163,6 @@ try {
 					'format' => $format,
 					'request' => $input,
 					'sessionId' => $sessionId,
-					'adoptSession' => $adoptSession,
-					'sessionName' => $sessionName,
 				]);
 				$cbmq->sendMessage('wsOperationChannel', 'wsoperationqueue', 'wsoperationqueue', 'Data', '1:M', 0, Field_Metadata::FAR_FAR_AWAY_FROM_NOW, $delay, $userid, $msg);
 				writeOutput($operationManager, ['operationTrackingID' => $opID]);

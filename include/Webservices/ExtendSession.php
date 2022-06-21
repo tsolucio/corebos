@@ -8,7 +8,7 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-function vtws_extendSession($SessionManagerClass = 'SessionManager') {
+function vtws_extendSession($SessionManagerClass = 'coreBOS_Session') {
 	global $adb,$API_VERSION,$application_unique_key;
 	if (isset($_SESSION['authenticated_user_id']) && $_SESSION['app_unique_key'] == $application_unique_key) {
 		$userId = $_SESSION['authenticated_user_id'];
@@ -17,10 +17,10 @@ function vtws_extendSession($SessionManagerClass = 'SessionManager') {
 		} else {
 			$sessionManager = $SessionManagerClass;
 		}
-		$sessionManager->set('authenticatedUserId', $userId);
+		$sessionManager::set('authenticatedUserId', $userId);
 		$crmObject = VtigerWebserviceObject::fromName($adb, 'Users');
 		return array(
-			'sessionName' => $sessionManager->getSessionId(),
+			'sessionName' => $sessionManager::id(),
 			'userId' => vtws_getId($crmObject->getEntityId(), $userId),
 			'version' => $API_VERSION,
 			'vtigerVersion' => vtws_getVtigerVersion(),

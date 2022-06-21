@@ -19,6 +19,7 @@ class crmtogo_UI_Login extends crmtogo_WS_Login {
 		$viewer->assign('COLOR_HEADER_FOOTER', $default_config['theme']);
 		$viewer->assign('COMPANY_LOGO', $default_config['company_logo']);
 		$viewer->assign('COMPANY_NAME', $default_config['company_name']);
+		$viewer->assign('COMPANY_FAVICON', $default_config['company_favicon']);
 		return $viewer->process('Login.tpl');
 	}
 }

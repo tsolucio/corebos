@@ -267,9 +267,16 @@ abstract class BaseTest extends TestCase
      */
     public function testImageOCR(string $file): void
     {
-        $text = self::$client->getText($file);
+        if(version_compare(self::$version, '1.18') >= 0)
+        {
+            $text = self::$client->getText($file);
 
-        $this->assertMatchesRegularExpression('/voluptate/i', $text);
+            $this->assertMatchesRegularExpression('/voluptate/i', $text);
+        }
+        else
+        {
+            $this->markTestSkipped('Apache Tika 1.17 and lower can\'t find Tesseract binaries');
+        }
     }
 
     /**

@@ -33,4 +33,5 @@ return array(
     'TwilioEmail' => $vendorDir . '/sendgrid/sendgrid/lib/TwilioEmail.php',
     'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
     'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
+    'Zebra_Session' => $vendorDir . '/stefangabos/zebra_session/Zebra_Session.php',
 );

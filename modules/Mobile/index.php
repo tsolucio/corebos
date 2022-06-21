@@ -82,7 +82,7 @@ class crmtogo_Index_Controller {
 
 			$operationSession = false;
 			if ($operationController->requireLogin()) {
-				$operationSession = coreBOS_Session::init();
+				$operationSession = coreBOS_Session::init(false, false, '', 'cbmb');
 				if ($operationController->hasActiveUser() === false) {
 					$operationSession = false;
 				}
