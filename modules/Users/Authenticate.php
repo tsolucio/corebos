@@ -91,16 +91,13 @@ if ($focus->is_authenticated() && $focus->is_twofaauthenticated()) {
 	coreBOS_Session::set('authenticated_user_language', $authenticated_user_language);
 	cbEventHandler::do_action('corebos.login', array($focus));
 
-	$log->debug("authenticated_user_theme is $authenticated_user_theme");
-	$log->debug("authenticated_user_language is $authenticated_user_language");
-	$log->debug('authenticated_user_id is '. $focus->id);
-	$log->debug("app_unique_key is $application_unique_key");
+	$log->debug("authenticated_user_language and ID: $authenticated_user_language $focus->id");
 
 	// Reset number of failed login attempts
 	$query = 'UPDATE vtiger_users SET failed_login_attempts=0 where user_name=?';
 	$adb->pquery($query, array($focus->column_fields['user_name']));
 
-// Clear all uploaded import files for this user if it exists
+	// Clear all uploaded import files for this user if it exists
 	global $import_dir;
 
 	$tmp_file_name = $import_dir. 'IMPORT_'.$focus->id;
