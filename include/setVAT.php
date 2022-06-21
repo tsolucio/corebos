@@ -193,7 +193,7 @@ function setVAT($entity) {
 			$field1->label= $taxinfo[$idx]['label'];
 			$field1->column = $taxinfo[$idx]['field'];
 			$field1->columntype = 'DECIMAL(25,6)';
-			$field1->uitype = 7;
+			$field1->uitype = 72;
 			$field1->typeofdata = 'NN~O';
 			$field1->displaytype = 2;
 			$field1->presence = 0;
