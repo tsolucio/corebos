@@ -60,7 +60,21 @@ class coreBOS_Session {
 	}
 
 	public static function regenerate() {
-		self::$session->regenerate_id();
+		global $adb;
+		$sid = session_create_id();
+		$adb->pquery('update session_data set session_id=? where session_id=?', [$sid, session_id()]);
+		session_id($sid);
+		$params = session_get_cookie_params();
+		setcookie(
+			self::getSessionName(),
+			$sid,
+			time() + 30000,
+			$params['path'],
+			$params['domain'],
+			$params['secure'],
+			$params['httponly']
+		);
+		$_COOKIE[self::getSessionName()] = $sid;
 	}
 
 	/**
@@ -438,10 +452,56 @@ class coreBOS_Session {
 				`hash` varchar(32) NOT NULL default '',
 				`session_data` mediumblob NOT NULL,
 				`session_expire` int(11) NOT NULL default '0',
+				`section` varchar(10) NOT NULL default '',
+				`userid` int(11) NOT NULL default '0',
+				INDEX `cbuser` (`userid`),
+				INDEX `cbsection` (`section`),
 				PRIMARY KEY (`session_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+			$cnses = $adb->getColumnNames('session_data');
+			if (!in_array('userid', $cnses)) {
+				$adb->query('ALTER TABLE `session_data` ADD `userid` int(11) NOT NULL default "0";');
+				$adb->query('ALTER TABLE `session_data` ADD INDEX `cbuser` (`userid`)');
+			}
+			if (!in_array('section', $cnses)) {
+				$adb->query('ALTER TABLE `session_data` ADD `section` varchar(11) NOT NULL default "";');
+				$adb->query('ALTER TABLE `session_data` ADD INDEX `cbsection` (`section`)');
+			}
 		}
 		self::$dbinitialized = true;
+	}
+
+	public static function saveUserID($userid, $sessionid, $section = '') {
+		global $adb;
+		$adb->pquery(
+			'UPDATE session_data SET userid=?,section=? WHERE session_id=?',
+			[$userid, $section, $sessionid]
+		);
+	}
+
+	public static function deleteUserID($userid, $sessionid, $section = '') {
+		global $adb;
+		$adb->pquery(
+			'DELETE FROM session_data WHERE (userid=? OR userid=0) AND section=? AND session_id!=?',
+			[$userid, $section, $sessionid]
+		);
+	}
+
+	public static function sessionExists($sessionid, $section = '', $userid = '') {
+		global $adb;
+		$params = explode(',', $section);
+		if (count($params)==1) {
+			$query = 'SELECT 1 FROM session_data WHERE section=? AND session_id=?';
+		} else {
+			$query = 'SELECT 1 FROM session_data WHERE section in ('.generateQuestionMarks($params).') AND session_id=?';
+		}
+		$params[] = $sessionid;
+		if ($userid!='') {
+			$query .= ' AND userid=?';
+			$params[] = $userid;
+		}
+		$rs = $adb->pquery($query, $params);
+		return ($rs && $adb->num_rows($rs));
 	}
 
 	/**
