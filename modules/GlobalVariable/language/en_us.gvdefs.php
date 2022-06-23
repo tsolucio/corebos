@@ -874,6 +874,42 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => '1 (default) allows the same user to login multiple times from different browser sessions.',
 ),
+'Application_Session_LockUserAgent' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 (default) restricts access to the same browser the login was made from',
+),
+'Mobile_Session_LockUserAgent' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 (default) restricts access to the same browser the login was made from',
+),
+'Webservice_Session_LockUserAgent' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 (default) restricts access to the same browser the login was made from',
+),
+'Application_Session_LockIP' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 restricts access to the same IP the login was made from. 0 is the default',
+),
+'Mobile_Session_LockIP' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 restricts access to the same IP the login was made from. 0 is the default',
+),
+'Webservice_Session_LockIP' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 restricts access to the same IP the login was made from. 0 is the default',
+),
 'Application_ExpirePasswordAfterDays' => array(
 	'valuetype' => 'Integer',
 	'category' => 'Application',

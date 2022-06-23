@@ -93,7 +93,27 @@ class coreBOS_Session {
 				session_id($sid);
 			}
 			$link = $adb->database->_connectionID;
-			self::$session = new Zebra_Session($link, self::csrfGetSecret());
+			switch ($section) {
+				case 'cbws':
+					$lock_user_agentGV = 'Webservice_Session_LockUserAgent';
+					$lock_to_ipGV = 'Webservice_Session_LockIP';
+					break;
+				case 'cbmb':
+					$lock_user_agentGV = 'Mobile_Session_LockUserAgent';
+					$lock_to_ipGV = 'Mobile_Session_LockIP';
+					break;
+				default:
+					$lock_user_agentGV = 'Application_Session_LockUserAgent';
+					$lock_to_ipGV = 'Application_Session_LockIP';
+					break;
+			}
+			self::$session = new Zebra_Session(
+				$link,
+				self::csrfGetSecret(),
+				'',
+				GlobalVariable::getVariable($lock_user_agentGV, 1),
+				GlobalVariable::getVariable($lock_to_ipGV, 0)
+			);
 		}
 		if ($setKCFinder) {
 			self::setKCFinderVariables();

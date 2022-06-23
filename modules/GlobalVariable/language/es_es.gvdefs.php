@@ -874,6 +874,42 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => '1 (predeterminado) permite que el mismo usuario inicie sesión varias veces desde diferentes sesiones de navegador.',
 ),
+'Application_Session_LockUserAgent' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) restringe el acceso al mismo navegador desde el que se inició sesión',
+),
+'Mobile_Session_LockUserAgent' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) restringe el acceso al mismo navegador desde el que se inició sesión',
+),
+'Webservice_Session_LockUserAgent' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) restringe el acceso al mismo navegador desde el que se inició sesión',
+),
+'Application_Session_LockIP' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 restringe el acceso a la misma IP desde la que se realizó el inicio de sesión. 0 es el valor predeterminado',
+),
+'Mobile_Session_LockIP' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 restringe el acceso a la misma IP desde la que se realizó el inicio de sesión. 0 es el valor predeterminado',
+),
+'Webservice_Session_LockIP' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 restringe el acceso a la misma IP desde la que se realizó el inicio de sesión. 0 es el valor predeterminado',
+),
 'Application_ExpirePasswordAfterDays' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Aplicación',
