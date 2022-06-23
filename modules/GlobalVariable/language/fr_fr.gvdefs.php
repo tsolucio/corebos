@@ -856,6 +856,24 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre d\'échec d\'authentification après lesquelles l\'utilisateur sera bloqué. L\'adminstrateur peut fixer cette valeur dans les préférences de l\'utilisateur et la valeur sera remise à 0 lors de la réinitialisation du mot de passe.',
 ),
+'Application_MultipleUserLogins' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 (default) allows the same user to login multiple times from different browser sessions.',
+),
+'Mobile_MultipleUserLogins' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 (default) allows the same user to login multiple times from different browser sessions.',
+),
+'Webservice_MultipleUserLogins' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 (default) allows the same user to login multiple times from different browser sessions.',
+),
 'Application_ExpirePasswordAfterDays' => array(
 	'valuetype' => 'Entier',
 	'category' => 'Application',

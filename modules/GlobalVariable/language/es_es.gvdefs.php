@@ -856,6 +856,24 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'El número de intentos de inicio de sesión fallidos después de los cuales el usuario quedará bloqueado fuera de la aplicación. El usuario administrador puede cambiar este valor en la página de preferencias del usuario y se restablecerá a 0 cuando se cambie la contraseña.',
 ),
+'Application_MultipleUserLogins' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) permite que el mismo usuario inicie sesión varias veces desde diferentes sesiones de navegador.',
+),
+'Mobile_MultipleUserLogins' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) permite que el mismo usuario inicie sesión varias veces desde diferentes sesiones de navegador.',
+),
+'Webservice_MultipleUserLogins' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) permite que el mismo usuario inicie sesión varias veces desde diferentes sesiones de navegador.',
+),
 'Application_ExpirePasswordAfterDays' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Aplicación',

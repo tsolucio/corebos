@@ -53,6 +53,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_OpenRecordInNewXOnRelatedList',
 				'Application_OpenRecordInNewXOnListView',
 				'Application_MaxFailedLoginAttempts',
+				'Application_MultipleUserLogins',
 				'Application_ExpirePasswordAfterDays',
 				'Application_MinimumPasswordLength',
 				'Application_AdminLoginIPs',
@@ -157,6 +158,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Mobile_Module_by_default',
 				'Mobile_Related_Modules',
 				'Mobile_UI_Enabled',
+				'Mobile_MultipleUserLogins',
 
 				'Webservice_showUserAdvancedBlock',
 				'Webservice_PermitQueryOnInactiveUsers',
@@ -171,6 +173,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Webservice_GenDocConversion_Active',
 				'Webservice_Return_FormattedValues',
 				'Webservice_LogCallsToQueue',
+				'Webservice_MultipleUserLogins',
 				'SOAP_CustomerPortal_Enabled',
 				'SOAP_Outlook_Enabled',
 				'WEBDAV_Enabled',

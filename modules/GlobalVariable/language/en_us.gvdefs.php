@@ -856,6 +856,24 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The number of login attempts after which the user will be locked out of the application. The admin user can change this value in the users preferences page and it will be reset to 0 when the password is changed.',
 ),
+'Application_MultipleUserLogins' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 (default) allows the same user to login multiple times from different browser sessions.',
+),
+'Mobile_MultipleUserLogins' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 (default) allows the same user to login multiple times from different browser sessions.',
+),
+'Webservice_MultipleUserLogins' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 (default) allows the same user to login multiple times from different browser sessions.',
+),
 'Application_ExpirePasswordAfterDays' => array(
 	'valuetype' => 'Integer',
 	'category' => 'Application',

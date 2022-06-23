@@ -143,7 +143,9 @@ class OperationManager {
 				} else {
 					coreBOS_Session::set('authenticated_user_id', $userDetails->id);
 					coreBOS_Session::saveUserID($userDetails->id, coreBOS_Session::id(), 'cbws');
-					coreBOS_Session::deleteUserID($userDetails->id, coreBOS_Session::id(), 'cbws');
+					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1)!=1) {
+						coreBOS_Session::deleteUserID($userDetails->id, coreBOS_Session::id(), 'cbws');
+					}
 					cbEventHandler::do_action('corebos.login', array($userDetails, null, 'webservice'));
 					global $adb;
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
