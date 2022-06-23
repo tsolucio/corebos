@@ -53,6 +53,8 @@ class crmtogo_WS_Login extends crmtogo_WS_Controller {
 			coreBOS_Session::set('language', $current_user->column_fields['language']);
 			coreBOS_Session::set('user_tz', $current_user->column_fields['time_zone']);
 			coreBOS_Session::save();
+			coreBOS_Session::saveUserID($current_user->id, session_id(), 'cbmb');
+			coreBOS_Session::deleteUserID($current_user->id, session_id(), 'cbmb');
 			$result = array();
 			$result['login'] = array(
 				'userid' => $current_user->id,

@@ -24,6 +24,8 @@ class crmtogo_WS_Controller {
 
 	protected function setActiveUser($user) {
 		coreBOS_Session::set('_authenticated_user_id', $user->id);
+		coreBOS_Session::saveUserID($user->id, session_id(), 'cbmb');
+		coreBOS_Session::deleteUserID($user->id, session_id(), 'cbmb');
 		$this->initActiveUser($user);
 	}
 

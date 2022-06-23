@@ -123,23 +123,32 @@ try {
 			return;
 		}
 	} else {
-		$sessionId = coreBOS_Session::init(false, false, $sessionId, 'cbws');
+		$sessionExists = coreBOS_Session::sessionExists($sessionId, 'cbws,');
+		if ($sessionExists) {
+			$sessionId = coreBOS_Session::init(false, false, $sessionId, 'cbws');
+		} else {
+			$sessionId = false;
+		}
 	}
 	if (!$sessionId && !$operationManager->isPreLoginOperation()) {
 		writeErrorOutput($operationManager, new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Authentication required'));
 		return;
 	}
 
-	$userid = coreBOS_Session::get('authenticated_user_id');
-	if (!$sessionId || (!$userid && !$operationManager->isPreLoginOperation())) {
+	if (!$sessionId && !$operationManager->isPreLoginOperation()) {
 		writeErrorOutput($operationManager, 'Incorrect session');
+		return;
+	}
+	$userid = coreBOS_Session::get('authenticated_user_id');
+	if (!$userid && !$operationManager->isPreLoginOperation()) {
+		writeErrorOutput($operationManager, new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Authentication required'));
 		return;
 	}
 
 	$now = time();
-	coreBOS_Session::setExpire($now + GlobalVariable::getVariable('WebService_Session_Life_Span', 86400));
-	coreBOS_Session::setIdle($now + GlobalVariable::getVariable('WebService_Session_Idle_Time', 1800), true);
 	if (!empty($userid)) {
+		coreBOS_Session::setExpire($now + GlobalVariable::getVariable('WebService_Session_Life_Span', 86400));
+		coreBOS_Session::setIdle($now + GlobalVariable::getVariable('WebService_Session_Idle_Time', 1800), true);
 		$seed_user = new Users();
 		$current_user = $seed_user->retrieveCurrentUserInfoFromFile($userid);
 		if (!empty($current_user->language)) {
