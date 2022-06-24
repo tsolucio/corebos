@@ -7,11 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once 'include/utils/Session.php';
-coreBOS_Session::init();
 require_once 'include/CustomFieldUtil.php';
 require_once 'Smarty_setup.php';
-require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/ListViewUtils.php';
 require_once 'modules/CustomView/CustomView.php';
 
@@ -70,21 +67,18 @@ if (!empty($_SESSION[$sModule.'_DetailView_Navigation'.$viewId])) {
 } else {
 	$recordList = array();
 }
-$output = '<section aria-describedby="dialog-body-id-114" aria-labelledby="dialog-heading-id-3" class="slds-popover slds-popover_walkthrough slds-nubbin_left" role="dialog">
-				<a class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close slds-button_icon-inverse" href="javascript:fninvsh(\'lstRecordLayout\');" title="Close dialog">
-					<svg class="slds-button__icon" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-					</svg>
-					<span class="slds-assistive-text">Close dialog</span>
-				</a>
-				<header class="slds-popover__header slds-p-vertical_medium">
-				<h2 id="dialog-heading-id-3" class="slds-text-heading_medium">'.$app_strings['LBL_JUMP_To'].'</h2>
-				</header>
-				<div class="slds-popover__body" id="dialog-body-id-114">
-					
-						<p>'.getTranslatedString($sModule, $sModule).':</p>
-						';
-
+$output = '<section aria-describedby="dbody-id-114" aria-labelledby="dheading-id-3" class="slds-popover slds-popover_walkthrough slds-nubbin_top-right" role="dialog">
+	<a class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close slds-button_icon-inverse" '
+	.'href="javascript:fninvsh(\'lstRecordLayout\');" title="Close dialog">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+		</svg>
+		<span class="slds-assistive-text">Close dialog</span>
+	</a>
+	<header class="slds-popover__header slds-p-vertical_medium">
+	<h2 id="dheading-id-3" class="slds-text-heading_medium">'.$app_strings['LBL_JUMP_To'].'</h2>
+	</header>
+	<div class="slds-popover__body" id="dbody-id-114"><p>'.getTranslatedString($sModule, $sModule).':</p>';
 
 if (!empty($recordList)) {
 	$displayRecordCount = 10;
@@ -122,6 +116,5 @@ if (!empty($recordList)) {
 }
 $output .= '</div>';
 $output .= '</section>';
-
 echo $output;
 ?>
