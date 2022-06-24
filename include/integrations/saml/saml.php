@@ -90,9 +90,15 @@ class corebos_saml {
 			if (in_array('lmldaplogin', $cnacc)) {
 				$userid = getSingleFieldValue('vtiger_users', 'id', 'lmldaplogin', $clientid);
 			}
+			if ($userid==0) {
+				$userid = getSingleFieldValue('vtiger_users', 'id', 'user_name', $clientid);
+			}
 		}
 		if ($email!='' && $userid==0) {
 			$userid = getSingleFieldValue('vtiger_users', 'id', 'email1', $email);
+			if ($userid==0) {
+				$userid = getSingleFieldValue('vtiger_users', 'id', 'email2', $clientid);
+			}
 		}
 		return $userid;
 	}
@@ -394,6 +400,11 @@ class corebos_saml {
 					coreBOS_Session::kill();
 					coreBOS_Session::init(false, false);
 					coreBOS_Session::set('authenticatedUserId', $userid);
+					coreBOS_Session::set('authenticated_user_id', $userid);
+					coreBOS_Session::saveUserID($userid, session_id());
+					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1)!=1) {
+							coreBOS_Session::deleteUserID($userid, session_id());
+					}
 					cbEventHandler::do_action('corebos.login', array($userDetails, $sessionManager, 'webservice'));
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
 					$userId = vtws_getId($webserviceObject->getEntityId(), $userid);

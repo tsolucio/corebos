@@ -80,7 +80,7 @@ $mode = vtws_getParameter($_REQUEST, 'mode', '');
 $sessionManager = new coreBOS_Session();
 $saml = new corebos_saml();
 if ($saml->isActiveWS() && !empty($saml->samlclient) && ($mode!='' || ($operation=='logout' && !empty($sessionId)))) {
-	coreBOS_Session::init(false, false, $sessionId);
+	coreBOS_Session::init(false, false, $sessionId, 'cbws');
 	if (!empty(coreBOS_Session::get('samlUserdata'))) {
 		$saml->authenticateWS($sessionManager, $API_VERSION, $mode);
 	} else {
