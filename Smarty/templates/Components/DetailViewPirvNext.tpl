@@ -14,14 +14,14 @@
 	<button class="slds-button slds-button_icon slds-button_icon-border-filled slds-is-selected"
 		title="{$APP.LNK_LIST_PREVIOUS}"
 		value="{$APP.LNK_LIST_PREVIOUS}"
-		accessKey="{$APP.LNK_LIST_PREVIOUS}"
+		accessKey="P"
 		onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$privrecord}'"
 		name="privrecord"
 	>
 	<svg class="slds-button__icon" aria-hidden="true">
 		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#left"></use>
 	</svg>
-		<span class="slds-assistive-text">Previous</span>
+		<span class="slds-assistive-text">{$APP.LNK_LIST_PREVIOUS}</span>
 	</button>
 {else}
 	<button class="slds-button slds-button_icon slds-button_icon-border-filled slds-is-selected"
@@ -32,22 +32,21 @@
 	<svg class="slds-button__icon" aria-hidden="true">
 		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#left"></use>
 	</svg>
-		<span class="slds-assistive-text">Previous</span>
+		<span class="slds-assistive-text">{$APP.LNK_LIST_PREVIOUS}</span>
 	</button>
 {/if}
 {if $privrecord neq '' || $nextrecord neq ''}
 	<button class="slds-button slds-button_icon slds-button_icon-more"
 	aria-haspopup="true"
 	aria-expanded="false"
-	title="More Actions"
-	title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID});"
+	title="{$APP.LBL_JUMP_BTN}" accessKey="J" onclick="var obj=this;var lhref=getListOfRecords(obj, '{$MODULE}',{$ID});"
 	name="jumpBtnIdBottom"
 	id="jumpBtnIdBottom"
 	>
 		<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#layout_tile"></use>
 		</svg>
-		<span class="slds-assistive-text">Jump To</span>
+		<span class="slds-assistive-text">{$APP.LBL_JUMP_To}</span>
 	</button>
 {/if}
 {if $nextrecord neq ''}
@@ -55,14 +54,14 @@
 		aria-pressed="false"
 		title="{$APP.LNK_LIST_NEXT}"
 		value="{$APP.LNK_LIST_NEXT}"
-		accessKey="{$APP.LNK_LIST_NEXT}"
+		accessKey="N"
 		onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$nextrecord}'"
 		name="nextrecord"
 		>
 			<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#right"></use>
 			</svg>
-			<span class="slds-assistive-text">Next</span>
+			<span class="slds-assistive-text">{$APP.LNK_LIST_NEXT}</span>
 	</button>
 {else}
 	<button class="slds-button slds-button_icon slds-button_icon-border-filled"
@@ -74,14 +73,13 @@
 			<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#right"></use>
 			</svg>
-			<span class="slds-assistive-text">Next</span>
+			<span class="slds-assistive-text">{$APP.LNK_LIST_NEXT}</span>
 	</button>
 {/if}
 
 	<div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-button_last">
 		<button class="slds-button slds-button_icon slds-button_icon-brand"
 		aria-haspopup="true"
-		title="Toggle Actions"
 		title="{$APP.TOGGLE_ACTIONS}"
 		onclick="{literal}
 		if (document.getElementById('actioncolumn').style.display=='none') {
@@ -101,7 +99,7 @@
 		<svg class="slds-button__icon" id="action-off" style="display: none;">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#expand_alt"></use>
 		</svg>
-		<span class="slds-assistive-text">Toggle Actions</span>
+		<span class="slds-assistive-text">{$APP.TOGGLE_ACTIONS}</span>
 		</button>
 	</div>
 </div>

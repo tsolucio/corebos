@@ -69,11 +69,11 @@ if (!empty($_SESSION[$sModule.'_DetailView_Navigation'.$viewId])) {
 }
 $output = '<section aria-describedby="dbody-id-114" aria-labelledby="dheading-id-3" class="slds-popover slds-popover_walkthrough slds-nubbin_top-right" role="dialog">
 	<a class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close slds-button_icon-inverse" '
-	.'href="javascript:fninvsh(\'lstRecordLayout\');" title="Close dialog">
+	.'href="javascript:fninvsh(\'lstRecordLayout\');" title="'.$app_strings['LBL_CLOSE'].'">
 		<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 		</svg>
-		<span class="slds-assistive-text">Close dialog</span>
+		<span class="slds-assistive-text">'.$app_strings['LBL_CLOSE'].'</span>
 	</a>
 	<header class="slds-popover__header slds-p-vertical_medium">
 	<h2 id="dheading-id-3" class="slds-text-heading_medium">'.$app_strings['LBL_JUMP_To'].'</h2>
