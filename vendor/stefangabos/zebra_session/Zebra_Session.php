@@ -252,11 +252,10 @@ class Zebra_Session {
             ini_set('session.use_strict_mode', 1);
 
             // if on HTTPS
-            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
-
+            if ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on')) {
                 // allows access to the session ID cookie only when the protocol is HTTPS
                 ini_set('session.cookie_secure', 1);
-
+            }
             // if $session_lifetime is specified and is an integer number
             if ($session_lifetime != '' && is_integer($session_lifetime))
 
