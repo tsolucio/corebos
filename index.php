@@ -154,7 +154,9 @@ if ($use_current_login && coreBOS_Settings::SettingExists('cbodUserConnection'.$
 } elseif (isset($action) && isset($module) && $action=='Authenticate' && $module=='Users') {
 	$log->debug('authenticating user');
 } else {
-	if (!isset($_REQUEST['action']) || ($_REQUEST['action'] != 'Logout' && $_REQUEST['action'] != 'Login')) {
+	if (!empty(session_id())
+		&& (!isset($_REQUEST['action']) || (substr($_REQUEST['action'], -4)!='Ajax' && $_REQUEST['action'] != 'Logout' && $_REQUEST['action'] != 'Login'))
+	) {
 		coreBOS_Session::set('lastpage', $_SERVER['QUERY_STRING']);
 	}
 	$log->debug('no session > login page');
