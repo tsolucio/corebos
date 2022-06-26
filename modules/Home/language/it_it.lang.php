@@ -73,7 +73,7 @@ $mod_strings = array (
 	'LBL_HOME_PIE' => 'Torta',
 	'Layout Saved' => 'Layout Salvato',
 	'LBL_HOME_ITEMS' => 'oggetto/i',
-	'LBL_MORE' => 'Di Pi&ugrave;',
+	'LBL_MORE' => 'Di Più',
 	'LBL_SCROLL' => 'Scorri',
 
 	'LBL_NOTEBOOK' => 'Appunti',
@@ -88,7 +88,7 @@ $mod_strings = array (
 	'LBL_FOUR_COLUMN' => 'Quattro Colonne',
 
 	'Top Accounts' => 'Top Aziende',
-	'Top Potentials' => 'Top Opportunit&agrave;',
+	'Top Potentials' => 'Top Opportunità',
 	'Top Quotes' => 'Top Preventivi',
 	'Top Trouble Tickets' => 'Biglietto Top',
 	'Top Invoices' => 'Top Fatture',
@@ -98,8 +98,8 @@ $mod_strings = array (
 	'Key Metrics' => 'Indici Chiave',
 	'My Group Allocation' => 'Assegnazione Mio Gruppo',
 	'My Recent FAQs' => 'Mie FAQ Recenti',
-	'Upcoming Activities' => 'Attivit&agrave; Imminenti',
-	'Pending Activities' => 'Attivit&agrave; in Sospeso',
+	'Upcoming Activities' => 'Attività Imminenti',
+	'Pending Activities' => 'Attività in Sospeso',
 	'Home Page Dashboard' => 'Home Page Cruscotto',
 	'Tag Cloud' => 'Tag Cloud',
 

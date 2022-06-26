@@ -16,7 +16,7 @@ $mod_strings = array (
 'LBL_VIEW_ALL_RECORD'=>'Visualizzare tutti i Record ?',
 'YES'=>'Si',
 'NO'=>'No',
-'LBL_USER_DESCRIPTION'=>'L\'Utente sopra selezionato gestir&agrave; i campi che appariranno nel Portale Clienti.
+'LBL_USER_DESCRIPTION'=>'L\'Utente sopra selezionato gestirà i campi che appariranno nel Portale Clienti.
 				Si possono abilitare/disabilitare i campi da visualizzare nel Portale Clienti.',
 'SELECT_USERS'=>'Seleziona l\'Utente',
 'LBL_DISABLE'=>'Disabilita',

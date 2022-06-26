@@ -23,7 +23,7 @@ $mod_strings = array (
 	'LBL_MEMBER_ORG_FORM_TITLE' => 'Organizzazioni Membro',
 
 	'LBL_LIST_ACCOUNT_NAME' => 'Nome Faq',
-	'LBL_LIST_CITY' => 'Citt&agrave;',
+	'LBL_LIST_CITY' => 'Città',
 	'LBL_LIST_WEBSITE' => 'Sito Web',
 	'LBL_LIST_STATE' => 'Provincia',
 	'LBL_LIST_PHONE' => 'Telefono',
@@ -54,7 +54,7 @@ $mod_strings = array (
 	'LBL_BILLING_ADDRESS' => 'Indirizzo Fatturazione:',
 	'LBL_SHIPPING_ADDRESS' => 'Indirizzo Spedizione:',
 	'LBL_ANY_ADDRESS' => 'Qualsiasi Indirizzo:',
-	'LBL_CITY' => 'Citt&agrave;:',
+	'LBL_CITY' => 'Città:',
 	'LBL_STATE' => 'Provincia:',
 	'LBL_POSTAL_CODE' => 'Codice Postale:',
 	'LBL_COUNTRY' => 'Stato:',
@@ -64,7 +64,7 @@ $mod_strings = array (
 	'NTC_COPY_SHIPPING_ADDRESS' => 'Copia indirizzo spedizione nell`indirizzo fatturazione',
 	'NTC_REMOVE_MEMBER_ORG_CONFIRMATION' => 'Sei sicuro di voler rimuovere questo record come membro dell`organizzazione?',
 	'LBL_DUPLICATE' => 'Faq potenzialmente duplicata',
-	'MSG_DUPLICATE' => 'Creare questa azienda pu&ograve; potenzialmente creare un azienda duplicata. Puoi selezionare un azienda dalla lista sottostante o puoi cliccare Crea Nuova Faq per continuare a creare una nuova azienda con i dati precedentemente inseriti',
+	'MSG_DUPLICATE' => 'Creare questa azienda può potenzialmente creare un azienda duplicata. Puoi selezionare un azienda dalla lista sottostante o puoi cliccare Crea Nuova Faq per continuare a creare una nuova azienda con i dati precedentemente inseriti',
 
 	'LBL_INVITEE' => 'Contatti',
 	'ERR_DELETE_RECORD' => 'Un numero di record deve essere specificato per cancellare l`azienda',
@@ -72,8 +72,8 @@ $mod_strings = array (
 	'LBL_SELECT_ACCOUNT' => 'Seleziona FAQ',
 	'LBL_GENERAL_INFORMATION' => 'Informazioni Generali',
 
-	'LBL_NEW_POTENTIAL' => 'Nuova Opportunità&agrave;',
-	'LBL_POTENTIAL_TITLE' => 'Opportunità&agrave;',
+	'LBL_NEW_POTENTIAL' => 'Nuova Opportunitàà',
+	'LBL_POTENTIAL_TITLE' => 'Opportunitàà',
 
 	'LBL_NEW_TASK' => 'Nuovo Compito',
 	'LBL_TASK_TITLE' => 'Compiti',
