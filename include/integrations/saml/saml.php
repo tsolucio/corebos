@@ -207,12 +207,13 @@ class corebos_saml {
 
 					coreBOS_Session::set('vtiger_authenticated_user_theme', $authenticated_user_theme);
 					coreBOS_Session::set('authenticated_user_language', $authenticated_user_language);
+					coreBOS_Session::saveUserID($focus->id, session_id());
+					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1)!=1) {
+						coreBOS_Session::deleteUserID($userid, session_id());
+					}
 					cbEventHandler::do_action('corebos.login', array($focus));
 
-					$log->debug("authenticated_user_theme is $authenticated_user_theme");
-					$log->debug("authenticated_user_language is $authenticated_user_language");
-					$log->debug('authenticated_user_id is '. $focus->id);
-					$log->debug("app_unique_key is $application_unique_key");
+					$log->debug('authenticated user and language: '.$focus->id.' '.$authenticated_user_language);
 
 					// Reset number of failed login attempts
 					$adb->pquery('UPDATE vtiger_users SET failed_login_attempts=0 where user_name=?', array($focus->column_fields['user_name']));
@@ -397,13 +398,11 @@ class corebos_saml {
 					$userDetails = new Users();
 					$userDetails->retrieve_entity_info($userid, 'Users');
 					$userDetails->authenticated = true;
-					coreBOS_Session::kill();
-					coreBOS_Session::init(false, false);
 					coreBOS_Session::set('authenticatedUserId', $userid);
 					coreBOS_Session::set('authenticated_user_id', $userid);
 					coreBOS_Session::saveUserID($userid, session_id());
 					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1)!=1) {
-							coreBOS_Session::deleteUserID($userid, session_id());
+						coreBOS_Session::deleteUserID($userid, session_id(), 'cbws');
 					}
 					cbEventHandler::do_action('corebos.login', array($userDetails, $sessionManager, 'webservice'));
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
