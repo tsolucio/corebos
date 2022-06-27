@@ -407,16 +407,19 @@ class corebos_saml {
 					cbEventHandler::do_action('corebos.login', array($userDetails, $sessionManager, 'webservice'));
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
 					$userId = vtws_getId($webserviceObject->getEntityId(), $userid);
+					$opID = uniqid('', true);
 					$resp = json_encode(array(
 						'success' => true,
-						'result' => array(
-							'sessionName' => coreBOS_Session::id(),
-							'userId' => $userId,
-							'contactid' => vtws_getEntityId(getSalesEntityType($ctoid)).'x'.$ctoid,
-							'language' => $tpllang,
-						)
+						'result' => $opID,
 					));
-					header('Location: '.$redirectTo.(strpos($redirectTo, '?')!==false ? '&' : '?').'response='.$resp);
+					coreBOS_Settings::setSetting('OTPCODE:'.$opID, json_encode(array(
+						'isWSOTP' => true,
+						'now' => time(),
+						'sessionName' => coreBOS_Session::id(),
+						'userId' => $userId,
+						'contactid' => vtws_getEntityId(getSalesEntityType($ctoid)).'x'.$ctoid,
+						'language' => $tpllang,
+					)));
 				} else {
 					$resp = json_encode(array(
 						'success' => false,
