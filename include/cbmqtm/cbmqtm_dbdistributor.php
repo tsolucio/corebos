@@ -32,7 +32,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		static::$db = new PearDatabase();
 	}
 
-	public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange=array()) {
+	public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange=array('start'=>'', 'end'=>'', 'cansat'=>'', 'cansund'=>'')) {
 		if ($share != '1:M' && $share != 'P:S') {
 			$share = '1:M';
 		}
@@ -53,7 +53,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 			$deliverafter = 0;
 		}
 		if (empty($deliverRange)) {
-			$deliverRange = array('08:00:00', '12:00:00', 1, 1);
+			$deliverRange = array('start'=>'08:00:00', 'end'=>'12:00:00', 'cansat'=>1, 'cansund'=>1);
 		}
 		self::setDB();
 		static::$db->pquery('insert into cb_messagequeue
@@ -74,10 +74,10 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 				'invalidreason' => '',
 				'userid' => $userid,
 				'information' => $information,
-				'SMS_sendtime_start' => $deliverRange[0],
-				'SMS_sendtime_end' => $deliverRange[1],
-				'canSendOnSaturday' => $deliverRange[2],
-				'canSendOnSunday' => $deliverRange[3],
+				'SMS_sendtime_start' => $deliverRange['start'],
+				'SMS_sendtime_end' => $deliverRange['end'],
+				'canSendOnSaturday' => $deliverRange['cansat'],
+				'canSendOnSunday' => $deliverRange['cansund'],
 		));
 	}
 
