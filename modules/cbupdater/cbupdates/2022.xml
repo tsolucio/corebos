@@ -161,4 +161,11 @@
 	<classname>changeUITypeFinancialFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Add new columns to table messagequeue for holding time range of sms</description>
+	<filename>build/changeSets/2022/addNewFields2SMSqueueTable.php</filename>
+	<classname>addNewFields2SMSqueueTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
