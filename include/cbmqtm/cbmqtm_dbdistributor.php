@@ -32,7 +32,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		static::$db = new PearDatabase();
 	}
 
-	public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange=array('start'=>'', 'end'=>'', 'cansat'=>'', 'cansund'=>'')) {
+	public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange=array('deliverStartTime'=>'', 'deliverEndTime'=>'', 'canSendOnSaturday'=>'', 'canSendOnSunday'=>'')) {
 		if ($share != '1:M' && $share != 'P:S') {
 			$share = '1:M';
 		}
@@ -53,11 +53,11 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 			$deliverafter = 0;
 		}
 		if (empty($deliverRange)) {
-			$deliverRange = array('start'=>'08:00:00', 'end'=>'12:00:00', 'cansat'=>1, 'cansund'=>1);
+			$deliverRange = array('deliverStartTime'=>'08:00:00', 'deliverEndTime'=>'12:00:00', 'canSendOnSaturday'=>1, 'canSendOnSunday'=>1);
 		}
 		self::setDB();
 		static::$db->pquery('insert into cb_messagequeue
-			(channel, producer, consumer, type, share, sequence, senton, deliverafter, expires, version, invalid, invalidreason, userid, information, SMS_sendtime_start, SMS_sendtime_end, 
+			(channel, producer, consumer, type, share, sequence, senton, deliverafter, expires, version, invalid, invalidreason, userid, information, deliverStartTime, deliverEndTime, 
 			canSendOnSaturday, canSendOnSunday)
 			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
 				'channel' => $channel,
@@ -74,16 +74,16 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 				'invalidreason' => '',
 				'userid' => $userid,
 				'information' => $information,
-				'SMS_sendtime_start' => $deliverRange['start'],
-				'SMS_sendtime_end' => $deliverRange['end'],
-				'canSendOnSaturday' => $deliverRange['cansat'],
-				'canSendOnSunday' => $deliverRange['cansund'],
+				'deliverStartTime' => $deliverRange['deliverStartTime'],
+				'deliverEndTime' => $deliverRange['deliverEndTime'],
+				'canSendOnSaturday' => $deliverRange['canSendOnSaturday'],
+				'canSendOnSunday' => $deliverRange['canSendOnSunday'],
 		));
 	}
 
 	public function getMessage($channel, $consumer, $producer = '*', $userid = '*') {
 		self::setDB();
-		$sql = 'select * from cb_messagequeue where deliverafter<=? and channel=? and consumer=? and SMS_sendtime_start<? and SMS_sendtime_end>?';
+		$sql = 'select * from cb_messagequeue where deliverafter<=? and channel=? and consumer=? and deliverStartTime<? and deliverEndTime>?';
 		$params = array(date('Y-m-d H:i:s', time()), $channel, $consumer, date('H:i:s', time()), date('H:i:s', time()));
 		if ($producer != '*') {
 			$sql .= ' and producer=?';
