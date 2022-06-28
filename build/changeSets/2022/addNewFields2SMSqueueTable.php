@@ -24,8 +24,8 @@ class addNewFields2SMSqueueTable extends cbupdaterWorker {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
 			global $adb;
-			$this->ExecuteQuery("ALTER TABLE `cb_messagequeue` ADD `SMS_sendtime_start` VARCHAR(100) NULL DEFAULT NULL;");
-			$this->ExecuteQuery("ALTER TABLE `cb_messagequeue` ADD `SMS_sendtime_end` VARCHAR(100) NULL DEFAULT NULL;");
+			$this->ExecuteQuery("ALTER TABLE `cb_messagequeue` ADD `deliverStartTime` VARCHAR(100) NULL DEFAULT NULL;");
+			$this->ExecuteQuery("ALTER TABLE `cb_messagequeue` ADD `deliverEndTime` VARCHAR(100) NULL DEFAULT NULL;");
 			$this->ExecuteQuery("ALTER TABLE `cb_messagequeue` ADD `canSendOnSaturday` VARCHAR(5) NOT NULL DEFAULT '1';");
 			$this->ExecuteQuery("ALTER TABLE `cb_messagequeue` ADD `canSendOnSunday` VARCHAR(5) NOT NULL DEFAULT '1';");
 			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
