@@ -50,7 +50,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 			$file['setype'] = 'Documents Attachment';
 			$attachid = SaveAttachmentDB($file);
 			if (!$attachid) {
-				throw new WebServiceException(WebServiceErrorCode::$INVALIDFILECONTENTS, $this->dbQueryError);
+				throw new WebServiceException(WebServiceErrorCode::$INVALIDFILECONTENTS, getTranslatedString('LBL_IMAGESECURITY_ERROR'));
 			}
 			$element['filetype']=$file['type'];
 			$element['filename']= $file['name'];
@@ -72,7 +72,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 
 		$error = $crmObject->create($element);
 		if (!$error) {
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, $this->dbQueryError);
+			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, getTranslatedString('LBL_IMAGESECURITY_ERROR'));
 		}
 
 		$id = $crmObject->getObjectId();
