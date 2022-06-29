@@ -21,7 +21,7 @@ include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
 function SaveAttachmentDB($element) {
 	global $adb, $upload_badext,$root_directory;
 
-	$filepath = $root_directory.'cache/'.$element['name'];
+	$filepath = $root_directory.'cache/'.basename($element['name']);
 	file_put_contents($filepath, base64_decode($element['content']));
 	if (validateImageFile($element) == 'true' && !validateImageContents($filepath)) {
 		return false;
