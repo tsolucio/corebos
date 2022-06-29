@@ -19,7 +19,7 @@ include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
  * Save the attachment to the database
  */
 function SaveAttachmentDB($element) {
-	global $adb, $upload_badext,$root_directory;
+	global $adb, $upload_badext, $root_directory;
 
 	$filepath = $root_directory.'cache/'.basename($element['name']);
 	file_put_contents($filepath, base64_decode($element['content']));
