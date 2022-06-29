@@ -20,7 +20,7 @@
  */
 function cbws_getOTPAccess($OTPCode) {
 	global $adb, $default_charset;
-	$expireAfter = GlobalVariable::getVariable('Webservice_ExpireOTPAfter', 60);
+	$expireAfter = GlobalVariable::getVariable('Webservice_ExpireOTPAfter', 30);
 	// eliminate expired OTPs
 	$cbstrs = $adb->pquery('select * from cb_settings where setting_key like ?', array('OTPCODE:%'));
 	while ($set = $adb->fetch_array($cbstrs)) {

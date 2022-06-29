@@ -910,6 +910,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => '1 restricts access to the same IP the login was made from. 0 is the default',
 ),
+'Webservice_ExpireOTPAfter' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => 'seconds',
+	'definition' => 'number of seconds that the session OTP will be considered valid. default is 30.',
+),
 'Application_ExpirePasswordAfterDays' => array(
 	'valuetype' => 'Entier',
 	'category' => 'Application',

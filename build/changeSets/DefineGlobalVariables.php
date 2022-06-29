@@ -180,6 +180,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Webservice_MultipleUserLogins',
 				'Webservice_Session_LockUserAgent',
 				'Webservice_Session_LockIP',
+				'Webservice_ExpireOTPAfter',
 				'SOAP_CustomerPortal_Enabled',
 				'SOAP_Outlook_Enabled',
 				'WEBDAV_Enabled',

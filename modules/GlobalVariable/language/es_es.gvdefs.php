@@ -910,6 +910,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => '1 restringe el acceso a la misma IP desde la que se realizó el inicio de sesión. 0 es el valor predeterminado',
 ),
+'Webservice_ExpireOTPAfter' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Webservice',
+	'values' => 'segundos',
+	'definition' => 'número de segundos que la clave de sesión se considera válida. por defecto es 30.',
+),
 'Application_ExpirePasswordAfterDays' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Aplicación',
