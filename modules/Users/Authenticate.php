@@ -91,7 +91,7 @@ if ($focus->is_authenticated() && $focus->is_twofaauthenticated()) {
 	coreBOS_Session::set('authenticated_user_language', $authenticated_user_language);
 	coreBOS_Session::save();
 	coreBOS_Session::saveUserID($focus->id, session_id());
-	if (GlobalVariable::getVariable('Application_MultipleUserLogins', 1)!=1) {
+	if (GlobalVariable::getVariable('Application_MultipleUserLogins', 1, 'Users', $focus->id)!=1) {
 		coreBOS_Session::deleteUserID($focus->id, session_id());
 	}
 	cbEventHandler::do_action('corebos.login', array($focus));

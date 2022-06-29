@@ -111,8 +111,8 @@ class coreBOS_Session {
 				$link,
 				self::csrfGetSecret(),
 				'',
-				GlobalVariable::getVariable($lock_user_agentGV, 1),
-				GlobalVariable::getVariable($lock_to_ipGV, 0)
+				GlobalVariable::getVariable($lock_user_agentGV, 1, 'Users', Users::getActiveAdminId()),
+				GlobalVariable::getVariable($lock_to_ipGV, 0, 'Users', Users::getActiveAdminId())
 			);
 		}
 		if ($setKCFinder) {
