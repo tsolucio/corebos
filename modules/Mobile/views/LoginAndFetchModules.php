@@ -14,7 +14,7 @@ include_once __DIR__ . '/../api/ws/Utils.php';
 class crmtogo_UI_LoginAndFetchModules extends crmtogo_WS_LoginAndFetchModules {
 
 	protected function cacheModules($modules) {
-		$this->sessionSet('_MODULES', $modules);
+		coreBOS_Session::set('_MODULES', $modules);
 	}
 
 	public function process(crmtogo_API_Request $request) {

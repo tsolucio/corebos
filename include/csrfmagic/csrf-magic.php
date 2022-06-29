@@ -285,9 +285,9 @@ function csrf_get_tokens() {
 	csrf_start();
 
 	// These are "strong" algorithms that don't require per se a secret
-	if (coreBOS_Session::isSessionStarted()) {
-		return 'sid:' . csrf_hash(coreBOS_Session::getSessionName()) . $ip;
-	}
+	//if (coreBOS_Session::isSessionStarted()) {
+	return 'sid:' . csrf_hash(coreBOS_Session::getSessionName()) . $ip;
+	//}
 	if ($GLOBALS['csrf']['cookie']) {
 		$val = csrf_generate_secret();
 		if (!headers_sent()) {

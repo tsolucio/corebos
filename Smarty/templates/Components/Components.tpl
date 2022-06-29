@@ -37,22 +37,6 @@
 		{$i = $i+1}
 	{/foreach}
 	</ul>
-	{if $SHOWQUICKCREATE}
-	<div class="slds-context-bar__tertiary" style="float:left; margin-top:auto; margin-bottom:auto;">
-		<div class="slds-form-element">
-			<div class="slds-form-element__control">
-				<div class="slds-select_container">
-				<select id="qccombo" class="slds-select" onchange="QCreate(this);">
-					<option value="none">{$APP.LBL_QUICK_CREATE}...</option>
-					{foreach item=detail from=$QCMODULE}
-						<option value="{$detail.1}">{$APP.NEW}&nbsp;{$detail.0}</option>
-					{/foreach}
-				</select>
-				</div>
-			</div>
-		</div>
-	</div>
-	{/if}
 </nav>
 {/function}
 
@@ -143,4 +127,82 @@
 			</a>
 		</li>
 	{/if}
+{/function}
+
+{* Creates the main menu vertical *}
+{function cbmenuvertical i=0}
+<nav class="slds-context-bar__secondary" role="navigation">
+	<ul id="cbmenu" class="accordion slds-accordion">
+	{foreach $menu as $menuitem}
+		{if $menuitem.mtype == 'menu'}
+		<li class="slds-dropdown__item" role="presentation">
+			<a href="javascript:void(0);" role="menuitem" class="link" title="{$menuitem.mlabel}">
+				<span class="slds-truncate">{$menuitem.mlabel}</span>
+			{if !empty($menuitem.submenu)}
+				<svg aria-hidden="true" class="slds-button__icon cbslds-button_icon-small">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
+				</svg>
+				{call cbsubmenuvertical submenu=$menuitem.submenu i=$i}
+			{/if}
+			</a>
+		</li>
+		{elseif $menuitem.mtype == 'module'}
+		<li class="slds-dropdown__item slds-context-bar__item" role="presentation">
+			<a href="index.php?action=index&amp;module={$menuitem.mvalue}" role="menuitem" class="link" title="{$menuitem.mlabel}">
+				<span class="slds-truncate">{$menuitem.mlabel}</span>
+			</a>
+		</li>
+		{elseif $menuitem.mtype == 'url'}
+		<li class="slds-dropdown__item slds-context-bar__item" role="presentation">
+			<a href="{$menuitem.mvalue}" role="menuitem" class="link" title="{$menuitem.mlabel} tabindex="-1">
+				<span class="slds-truncate">{$menuitem.mlabel}</span>
+			</a>
+		</li>
+		{/if}
+		{$i = $i+1}
+	{/foreach}
+	</ul>
+</nav>
+{/function}
+
+{* Creates all the other levels menu *}
+{function cbsubmenuvertical j=0}
+	<ul class="submenu slds-dropdown__list slds-is-nested " role="menu" id="menu{$i}">
+	{foreach $submenu as $menuitem}
+		{if $menuitem.mtype == 'module' && empty($menuitem.submenu)}
+		<li class="slds-dropdown__item" role="presentation">
+			<a href="index.php?action=index&amp;module={$menuitem.mvalue}" role="menuitem" tabindex="-1">
+				<span class="slds-truncate">{$menuitem.mlabel}</span>
+			</a>
+		</li>
+		{elseif ($menuitem.mtype == 'menu' || $menuitem.mtype == 'module') && !empty($menuitem.submenu)}
+		<li class="slds-dropdown__item" role="presentation">
+			<a href="javascript:void(0);" role="menuitem" class="link" title="{$menuitem.mlabel}">
+			<span class="slds-truncate">{$menuitem.mlabel}</span>
+				<svg aria-hidden="true" class="slds-button__icon cbslds-button_icon-small">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
+				</svg>
+				{call cbsubmenuvertical submenu=$menuitem.submenu i=$i}
+			</a>
+			{$j = $j + 1}
+		</li>
+		{elseif $menuitem.mtype == 'headtop'}
+		<li class="slds-dropdown__header slds-has-divider_top-space" role="separator">
+			<span class="slds-text-title_caps">{$menuitem.mlabel}</span>
+		</li>
+		{elseif $menuitem.mtype == 'headbottom'}
+		<li class="slds-dropdown__header slds-has-divider_bottom-space" role="separator">
+			<span class="slds-text-title_caps">{$menuitem.mlabel}</span>
+		</li>
+		{elseif $menuitem.mtype == 'sep'}
+		<li class="slds-dropdown__header slds-has-divider_top-space" role="separator"></li>
+		{elseif $menuitem.mtype == 'url'}
+		<li class="slds-dropdown__item" role="presentation">
+			<a href="{$menuitem.mvalue}" role="menuitem" tabindex="-1">
+				<span class="slds-truncate">{$menuitem.mlabel}</span>
+			</a>
+		</li>
+		{/if}
+	{/foreach}
+	</ul>
 {/function}

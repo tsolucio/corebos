@@ -52,7 +52,7 @@ function MassCreate($elements, $user) {
 
 	foreach ($mcRecords as &$record) {
 		foreach ($record['element'] as $key => $value) {
-			if (strpos($value, '@{') !== false) {
+			if (is_string($value) && strpos($value, '@{') !== false) {
 				$reference = trim($value, '@{}');
 				if (!empty($reference)) {
 					$id = mcGetRecordId($mcRecords, $reference);
@@ -127,7 +127,7 @@ function mcGetReferenceRecord(&$arr, $reference, $lastReferenceId, $countElement
 function mcProcessReference($element, &$elements, $countElements) {
 	global $mcProcessedReferences, $mcRecords, $mcModules;
 	foreach ($element['element'] as $value) {
-		if (strpos($value, '@{') !== false) {
+		if (is_string($value) && strpos($value, '@{') !== false) {
 			$reference = trim($value, '{@}');
 			if (!empty($reference) && !in_array($reference, $mcProcessedReferences)) {
 				$lastReferenceId = $element['referenceId'];
@@ -163,7 +163,7 @@ function mcInArray($needle, $arrays) {
 
 function mcIsCyclicReference($array, $lastReferenceId) {
 	foreach ($array['element'] as $value) {
-		if (strpos($value, '@{') !== false) {
+		if (is_string($value) && strpos($value, '@{') !== false) {
 			$reference = trim($value, '{@}');
 			if (!empty($reference) && $reference == $lastReferenceId) {
 				return true;

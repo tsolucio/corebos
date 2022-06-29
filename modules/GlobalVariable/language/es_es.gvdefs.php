@@ -106,6 +106,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'InBucket SMTP Listener',
 	'definition' => 'Si se establece, el valor se utilizará como servidor de correo saliente',
 ),
+'Application_Menu_Direction' => array(
+	'valuetype' => 'Cadena',
+	'category' => 'Application',
+	'values' => 'Horizontal | Vertical',
+	'definition' => 'Dirección del menú de la aplicación.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Funcionalidad Módulo',
@@ -849,6 +855,60 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '',
 	'definition' => 'El número de intentos de inicio de sesión fallidos después de los cuales el usuario quedará bloqueado fuera de la aplicación. El usuario administrador puede cambiar este valor en la página de preferencias del usuario y se restablecerá a 0 cuando se cambie la contraseña.',
+),
+'Application_MultipleUserLogins' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) permite que el mismo usuario inicie sesión varias veces desde diferentes sesiones de navegador.',
+),
+'Mobile_MultipleUserLogins' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) permite que el mismo usuario inicie sesión varias veces desde diferentes sesiones de navegador.',
+),
+'Webservice_MultipleUserLogins' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) permite que el mismo usuario inicie sesión varias veces desde diferentes sesiones de navegador.',
+),
+'Application_Session_LockUserAgent' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) restringe el acceso al mismo navegador desde el que se inició sesión',
+),
+'Mobile_Session_LockUserAgent' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) restringe el acceso al mismo navegador desde el que se inició sesión',
+),
+'Webservice_Session_LockUserAgent' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 (predeterminado) restringe el acceso al mismo navegador desde el que se inició sesión',
+),
+'Application_Session_LockIP' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 restringe el acceso a la misma IP desde la que se realizó el inicio de sesión. 0 es el valor predeterminado',
+),
+'Mobile_Session_LockIP' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 restringe el acceso a la misma IP desde la que se realizó el inicio de sesión. 0 es el valor predeterminado',
+),
+'Webservice_Session_LockIP' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 restringe el acceso a la misma IP desde la que se realizó el inicio de sesión. 0 es el valor predeterminado',
 ),
 'Application_ExpirePasswordAfterDays' => array(
 	'valuetype' => 'Entero',

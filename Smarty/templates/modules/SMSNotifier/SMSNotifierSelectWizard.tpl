@@ -18,7 +18,7 @@
 				</td>
 		</table>
 
-		<table width="95%" cellpadding="5" cellspacing="0" border="0" align="center">
+		<table width="95%" cellpadding="5" cellspacing="0" border="0" align="center" style="padding: 7px;">
 			<tr>
 				<td>
 				<table width="100%" cellpadding="5" cellspacing="0" border="0" align="center" bgcolor="white">
@@ -56,7 +56,7 @@
 			</tr>
 		</table>
 
-		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerPopupTransport slds-table slds-table_bordered">
+		<table style="text-align: center; margin: auto; display: flex; justify-content: center; display: grid;" width="100%" cellpadding="5" cellspacing="0" border="0" class="layerPopupTransport slds-table slds-table_bordered">
 			<tr>
 				<td class="small" align="center">
 				<input type="hidden" name="idstring" value="{$IDSTRING}" />

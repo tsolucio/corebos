@@ -106,6 +106,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'InBucket SMTP Listener',
 	'definition' => 'If set its value will be used as the Out Going Mail Server Host',
 ),
+'Application_Menu_Direction' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Horizontal | Vertical',
+	'definition' => 'Application menu direction.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Booléen',
 	'category' => 'Fonctionnalité Module',
@@ -849,6 +855,60 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Nombre d\'échec d\'authentification après lesquelles l\'utilisateur sera bloqué. L\'adminstrateur peut fixer cette valeur dans les préférences de l\'utilisateur et la valeur sera remise à 0 lors de la réinitialisation du mot de passe.',
+),
+'Application_MultipleUserLogins' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 (default) allows the same user to login multiple times from different browser sessions.',
+),
+'Mobile_MultipleUserLogins' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 (default) allows the same user to login multiple times from different browser sessions.',
+),
+'Webservice_MultipleUserLogins' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 (default) allows the same user to login multiple times from different browser sessions.',
+),
+'Application_Session_LockUserAgent' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 (default) restricts access to the same browser the login was made from',
+),
+'Mobile_Session_LockUserAgent' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 (default) restricts access to the same browser the login was made from',
+),
+'Webservice_Session_LockUserAgent' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 (default) restricts access to the same browser the login was made from',
+),
+'Application_Session_LockIP' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => '1 restricts access to the same IP the login was made from. 0 is the default',
+),
+'Mobile_Session_LockIP' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Mobile',
+	'values' => '0 | 1',
+	'definition' => '1 restricts access to the same IP the login was made from. 0 is the default',
+),
+'Webservice_Session_LockIP' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => '1 restricts access to the same IP the login was made from. 0 is the default',
 ),
 'Application_ExpirePasswordAfterDays' => array(
 	'valuetype' => 'Entier',

@@ -62,8 +62,7 @@ function qcdateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 	return dateTimeValidateObject(window.document.QcEditView[dateFldName], window.document.QcEditView[timeFldName], fldLabel, type);
 }
 
-function QCreate(qcoptions) {
-	var module = qcoptions.options[qcoptions.options.selectedIndex].value;
+function QCreate(module) {
 	if (module != 'none') {
 		document.getElementById('status').style.display='inline';
 		jQuery.ajax({
@@ -75,9 +74,10 @@ function QCreate(qcoptions) {
 			document.getElementById('qcform').innerHTML = response;
 			jQuery('#qcform').draggable();
 			vtlib_executeJavascriptInElement(document.getElementById('qcform'));
-			posLay(qcoptions, 'qcform');
+			positionDivToCenter('qcform');
 		});
 	} else {
 		hide('qcform');
 	}
+	return false;
 }

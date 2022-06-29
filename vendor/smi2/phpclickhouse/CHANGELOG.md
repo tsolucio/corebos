@@ -4,6 +4,20 @@ PHP ClickHouse wrapper - Changelog
 
 ======================
 
+
+### 2022-04-23  [Release 1.4.4]
+* Fix ping() for windows users 
+* ping(true) throw TransportException if can`t connect/ping
+
+### 2022-04-20  [Release 1.4.3]
+* Fix: prevent enable_http_compression parameter from being overridden #164
+* For correct work with utf-8 . I am working on server with PHP 5.6.40 Update CurlerRequest.php #158
+* Add curl setStdErrOut, for custom StdOutErr. 
+* Fix some test for check exceptions
+
+### 2022-02-11  [Release 1.4.2]
+*  Fixed issue with non-empty raw data processing during init() on every fetchRow() and fetchOne() call - PR #161
+
 ### 2021-01-19 [Release 1.4.1]
 * Add support php 7.3 & php 8
 

@@ -1,8 +1,8 @@
-# Reporting Security Issues
+# Reporting Security/Vulnerability Issues
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-Instead, please report them to the project manager either directly on [Gitter](https://gitter.im/joebordes) or as an email to [project manager](mailto:joe@corebos.org).
+Instead, please report them to the project manager either directly on [Gitter](https://gitter.im/joebordes) or as an email to [project manager](mailto:joe@corebos.org), or, even better, please disclose it via [our huntr page](https://huntr.dev/repos/tsolucio/corebos/). Bounty eligibility, CVE assignment, response times and past reports are all there.
 
 Please include the requested information listed below (as much as you can provide) to help us better understand the nature and scope of the possible issue:
 
@@ -19,3 +19,5 @@ This information will help us triage your report more quickly.
 ## Preferred Languages
 
 We prefer all communications to be in English.
+
+**Thank you for improving the security of coreBOS.**
