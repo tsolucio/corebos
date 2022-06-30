@@ -123,6 +123,39 @@ function gridGetEditor($module, $fieldname, $uitype) {
 	}
 }
 
+function getGridFilter($uitype) {
+	if (GlobalVariable::getVariable('Application_MasterDetail_SearchColumns', 0) == 0) {
+		return 'false';
+	}
+	switch ($uitype) {
+		case Field_Metadata::UITYPE_NUMERIC:
+		case Field_Metadata::UITYPE_PERCENTAGE:
+		case Field_Metadata::UITYPE_CURRENCY_AMOUNT:
+		case Field_Metadata::UITYPE_LINEITEMS_CURRENCY_AMOUNT:
+			return json_encode(array(
+				'type' => 'number',
+				'showApplyBtn' => true,
+				'showClearBtn' => true,
+			));
+			break;
+		case Field_Metadata::UITYPE_DATE:
+		case Field_Metadata::UITYPE_DATE_TIME:
+		case Field_Metadata::UITYPE_INTERNAL_TIME:
+			return json_encode(array(
+				'type' => 'date',
+				'showApplyBtn' => true,
+				'showClearBtn' => true,
+			));
+			break;
+		default:
+			return json_encode(array(
+				'type' => 'text',
+				'showApplyBtn' => true,
+				'showClearBtn' => true,
+			));
+	}
+}
+
 function getEmptyDataGridResponse() {
 	return json_encode(
 		array(
