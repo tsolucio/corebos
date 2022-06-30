@@ -1666,6 +1666,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'When creating a document, it will be related to the "Default" folder. This variable defines the name of the folder you want the documents to be related to.',
 ),
+'Application_MasterDetail_SearchColumns' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show search columns in the master detail view table.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {

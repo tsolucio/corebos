@@ -1666,6 +1666,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Al crear un documento, se relacionará con la carpeta "Predeterminada". Esta variable define el nombre de la carpeta con la que quieres que se relacionen los documentos.',
 ),
+'Application_MasterDetail_SearchColumns' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show search columns in the master detail view table.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {
