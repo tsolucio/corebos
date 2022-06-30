@@ -13,6 +13,9 @@ global $app_strings, $mod_strings, $theme,$default_charset;
 $theme_path='themes/'.$theme.'/';
 $delete_group_id = vtlib_purify($_REQUEST['groupid']);
 $delete_group_name = fetchGroupName($delete_group_id);
+if (strlen($delete_group_name)>40) {
+	$delete_group_name = substr($delete_group_name, 0, 40).'...';
+}
 
 $output = '<div id="DeleteLay" class="layerPopup" style="width:400px;">
 <form name="deleteGroupForm" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
@@ -22,8 +25,9 @@ $output = '<div id="DeleteLay" class="layerPopup" style="width:400px;">
 <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 <tr>
 	<td class=layerPopupHeading " align="left">'.$mod_strings['LBL_DELETE_GROUP'].'</td>
-	<td align="right" class="small">
-		<img src="'. vtiger_imageurl('close.gif', $theme) .'" border=0 alt="'.$app_strings["LBL_CLOSE"].'" title="'.$app_strings["LBL_CLOSE"].'" style="cursor:pointer" onClick="document.getElementById(\'DeleteLay\').style.display=\'none\'";>
+	<td class="cblds-float_right small">
+		<img src="'. vtiger_imageurl('close.gif', $theme) .'" border=0 alt="'.$app_strings['LBL_CLOSE'].'" title="'.$app_strings['LBL_CLOSE']
+			.'" style="cursor:pointer" onClick="document.getElementById(\'DeleteLay\').style.display=\'none\'";>
 	</td>
 </tr>
 </table>
@@ -47,31 +51,29 @@ $output = '<div id="DeleteLay" class="layerPopup" style="width:400px;">
 
 		$output.= '<input name="assigntype" checked value="U" onclick="toggleAssignType(this.value)" type="radio">&nbsp;User';
 if ($num_groups > 1) {
-	$output .= '<input name="assigntype"  value="T" onclick="toggleAssignType(this.value)" type="radio">&nbsp;Group';
+	$output .= '&nbsp;<input name="assigntype" value="T" onclick="toggleAssignType(this.value)" type="radio">&nbsp;Group';
 }
 
 $output .= '<span id="assign_user" style="display: block;">';
-$output .= '<select class="small" name="transfer_user_id">';
+$output .= '<select class="slds-select" name="transfer_user_id">';
 
 for ($i=0; $i<$num_users; $i++) {
-	$user_id=$adb->query_result($result1, $i, "id");
-	$output.='<option value="'.$user_id.'">'.  getFullNameFromQResult($result1, $i, 'Users').'</option>';
+	$user_id=$adb->query_result($result1, $i, 'id');
+	$output.='<option value="'.$user_id.'">'. getFullNameFromQResult($result1, $i, 'Users').'</option>';
 }
 
 $output .='</select></span>';
 
 if ($num_groups > 1) {
 	$output .= '<span id="assign_team" style="display: none;">';
-
-	$output.='<select class="select" name="transfer_group_id">';
-
+	$output.='<select class="slds-select" name="transfer_group_id">';
 	$temprow = $adb->fetch_array($result);
 	do {
-		$group_name= htmlentities($temprow['groupname'], ENT_QUOTES, $default_charset);
+		$group_name= html_entity_decode($temprow['groupname'], ENT_QUOTES, $default_charset);
 		$group_id=$temprow['groupid'];
-		if ($delete_group_id 	!= $group_id) {
-			if (strlen($group_name)>20) {
-				$group_name=substr($group_name, 0, 20).'...';
+		if ($delete_group_id != $group_id) {
+			if (strlen($group_name)>40) {
+				$group_name=substr($group_name, 0, 40).'...';
 			}
 			$output.='<option value="'.$group_id.'">'.$group_name.'</option>';
 		}
@@ -87,11 +89,23 @@ if ($num_groups > 1) {
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 <tr>
-	<td class="small" align="center"><input type="submit" name="Delete" value="'.$app_strings["LBL_SAVE_BUTTON_LABEL"].'" class="crmbutton small save">
-	</td>
+	<td class="small" align="center">
+		<button
+			class="slds-button slds-button_neutral"
+			title="'.$app_strings['LBL_SAVE_BUTTON_LABEL'].'"
+			type="submit"
+			name="Delete">'.$app_strings['LBL_SAVE_BUTTON_LABEL'].'
+		</button>
+		<button
+			class="slds-button slds-button_destructive"
+			title="'.$app_strings['LBL_CLOSE'].'"
+			onClick="document.getElementById(\'DeleteLay\').style.display=\'none\'";
+			type="button"
+			name="groupcancel">'.$app_strings['LBL_CLOSE'].'
+		</button>
+</td>
 </tr>
 </table>
 </form></div>';
-
 echo $output;
 ?>
