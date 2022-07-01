@@ -26,7 +26,8 @@ function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 				whiteSpace: 'normal',
 				renderer: {
 					type: mdLinkRender
-				}
+				},
+				filter: {$mdfield.fieldinfo.uitype|getGridFilter:$mdfield.fieldinfo.uitype}
 			},
 			{/foreach}
 			{if !empty($MasterDetailLayoutMap.listview.cbgridactioncol)}

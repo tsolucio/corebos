@@ -910,6 +910,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => '1 restringe el acceso a la misma IP desde la que se realizó el inicio de sesión. 0 es el valor predeterminado',
 ),
+'Webservice_ExpireOTPAfter' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Webservice',
+	'values' => 'segundos',
+	'definition' => 'número de segundos que la clave de sesión se considera válida. por defecto es 30.',
+),
 'Application_ExpirePasswordAfterDays' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Aplicación',
@@ -1659,6 +1665,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '',
 	'definition' => 'Al crear un documento, se relacionará con la carpeta "Predeterminada". Esta variable define el nombre de la carpeta con la que quieres que se relacionen los documentos.',
+),
+'Application_MasterDetail_SearchColumns' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Mostrar columnas de búsqueda en la tabla de vista maestro-detalle.',
 ),
 );
 

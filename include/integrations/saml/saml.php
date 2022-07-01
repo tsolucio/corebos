@@ -208,7 +208,7 @@ class corebos_saml {
 					coreBOS_Session::set('vtiger_authenticated_user_theme', $authenticated_user_theme);
 					coreBOS_Session::set('authenticated_user_language', $authenticated_user_language);
 					coreBOS_Session::saveUserID($focus->id, session_id());
-					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1)!=1) {
+					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1, 'Users', $focus->id)!=1) {
 						coreBOS_Session::deleteUserID($userid, session_id());
 					}
 					cbEventHandler::do_action('corebos.login', array($focus));
@@ -400,8 +400,8 @@ class corebos_saml {
 					$userDetails->authenticated = true;
 					coreBOS_Session::set('authenticatedUserId', $userid);
 					coreBOS_Session::set('authenticated_user_id', $userid);
-					coreBOS_Session::saveUserID($userid, session_id());
-					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1)!=1) {
+					coreBOS_Session::saveUserID($userid, session_id(), 'cbws');
+					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1, 'Users', $userid)!=1) {
 						coreBOS_Session::deleteUserID($userid, session_id(), 'cbws');
 					}
 					cbEventHandler::do_action('corebos.login', array($userDetails, $sessionManager, 'webservice'));

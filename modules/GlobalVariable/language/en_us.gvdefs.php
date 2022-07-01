@@ -910,6 +910,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => '1 restricts access to the same IP the login was made from. 0 is the default',
 ),
+'Webservice_ExpireOTPAfter' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => 'seconds',
+	'definition' => 'number of seconds that the session OTP will be considered valid. default is 30.',
+),
 'Application_ExpirePasswordAfterDays' => array(
 	'valuetype' => 'Integer',
 	'category' => 'Application',
@@ -1659,6 +1665,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'When creating a document, it will be related to the "Default" folder. This variable defines the name of the folder you want the documents to be related to.',
+),
+'Application_MasterDetail_SearchColumns' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show search columns in the master detail view table.',
 ),
 );
 
