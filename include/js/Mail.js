@@ -129,7 +129,7 @@ function validate_sendmail(idlist, module) {
 		var field_lists = email_type.join(':');
 		var url= `index.php?module=Emails&action=EmailsAjax&pmodule=${module}&file=EditView&sendmail=true&modalmode=true&idlist=${idlist}&field_lists=${field_lists}${url1}`;
 		ldsMail.show(alert_arr.LBL_SEND_MAIL, '');
-		$('#global-mail-content').load(url, function() {
+		$('#global-mail-content').load(url, function () {
 			mailfooter();
 		});
 		fninvsh('roleLay');
@@ -217,38 +217,38 @@ function sendToselectedAdd() {
 
 function SelectMail(type) {
 	switch (type) {
-		case 'to':
-			window.open(`index.php?module=${document.EditView.parent_type.value}&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails`, `test`, cbPopupWindowSettings);
-			break;
-		case 'cc':
-			window.open(`index.php?module=${document.EditView.parent_type.value}&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=cc_name`, `test`, cbPopupWindowSettings);
-			break;
-		case 'bcc':
-			window.open(`index.php?module=${document.EditView.parent_type.value}&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=bcc_name`, `test`, cbPopupWindowSettings);
-			break;
-		case 'template':
-			vtlib_open_popup_window('', 'msgtpopup', 'MsgTemplate', `${document.EditView.parent_type.value}&relmod_id=0&parent_module=${document.EditView.parent_type.value}`);
-			break;
-		default:
+	case 'to':
+		window.open(`index.php?module=${document.EditView.parent_type.value}&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails`, `test`, cbPopupWindowSettings);
+		break;
+	case 'cc':
+		window.open(`index.php?module=${document.EditView.parent_type.value}&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=cc_name`, `test`, cbPopupWindowSettings);
+		break;
+	case 'bcc':
+		window.open(`index.php?module=${document.EditView.parent_type.value}&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=bcc_name`, `test`, cbPopupWindowSettings);
+		break;
+	case 'template':
+		vtlib_open_popup_window('', 'msgtpopup', 'MsgTemplate', `${document.EditView.parent_type.value}&relmod_id=0&parent_module=${document.EditView.parent_type.value}`);
+		break;
+	default:
 		//do nothing
 	}
 }
 
 function ClearMail(type) {
 	switch (type) {
-		case 'to':
-			document.getElementById('parent_id').value= '';
-			document.getElementById('saved_toid').value='';
-			document.getElementById('hidden_toid').value= '';
-			document.getElementById('parent_name').value= '';
-			break;
-		case 'cc':
-			document.getElementById('cc_name').value='';
-			break;
-		case 'bcc':
-			document.getElementById('bcc_name').value='';
-			break;
-		default:
+	case 'to':
+		document.getElementById('parent_id').value= '';
+		document.getElementById('saved_toid').value='';
+		document.getElementById('hidden_toid').value= '';
+		document.getElementById('parent_name').value= '';
+		break;
+	case 'cc':
+		document.getElementById('cc_name').value='';
+		break;
+	case 'bcc':
+		document.getElementById('bcc_name').value='';
+		break;
+	default:
 		//do nothing
 	}
 }
