@@ -20,17 +20,17 @@ const ldsMail = {
 						</div>
 					</div>
 					<div class="slds-col_bump-left slds-shrink-none">
-						<button class="slds-button slds-button_icon slds-button_icon" id="minimize-mail-btn" title="Minimize window" onClick="javascript:ldsMail.minimize()">
+						<button class="slds-button slds-button_icon slds-button_icon" id="minimize-mail-btn" title="${alert_arr.LBL_MIN_PANEL}" onClick="javascript:ldsMail.minimize()">
 							<svg class="slds-button__icon" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#minimize_window"></use>
 							</svg>
-							<span class="slds-assistive-text">Minimize Composer Panel</span>
+							<span class="slds-assistive-text">${alert_arr.LBL_MIN_PANEL}</span>
 						</button>
-						<button class="slds-button slds-button_icon slds-button_icon" id="expand-mail-btn" style="display:none;" title="Expand Composer" onClick="javascript:ldsMail.expand()">
+						<button class="slds-button slds-button_icon slds-button_icon" id="expand-mail-btn" style="display:none;" title="${alert_arr.LBL_EXPAND_PANEL}" onClick="javascript:ldsMail.expand()">
 							<svg class="slds-button__icon" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#expand_alt"></use>
 							</svg>
-							<span class="slds-assistive-text">Expand Composer Panel</span>
+							<span class="slds-assistive-text">${alert_arr.LBL_EXPAND_PANEL}</span>
 						</button>
 						<button class="slds-button slds-button_icon slds-button_icon" title="${alert_arr.LBL_CLOSE_TITLE}" onClick="javascript:ldsMail.close()">
 							<svg class="slds-button__icon" aria-hidden="true">

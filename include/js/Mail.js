@@ -128,7 +128,7 @@ function validate_sendmail(idlist, module) {
 	if (email_type != '') {
 		var field_lists = email_type.join(':');
 		var url= `index.php?module=Emails&action=EmailsAjax&pmodule=${module}&file=EditView&sendmail=true&modalmode=true&idlist=${idlist}&field_lists=${field_lists}${url1}`;
-		ldsMail.show('Send Mail', '');
+		ldsMail.show(alert_arr.LBL_SEND_MAIL, '');
 		$('#global-mail-content').load(url, function() {
 			mailfooter();
 		});
@@ -260,6 +260,6 @@ function MailPreview() {
 		method: 'get',
 		url: `index.php?module=MsgTemplate&action=MsgTemplateAjax&file=PreviewTemplate&templateid=${templateid}&listofids=${listofids}`
 	}).done(function (response) {
-		ldsModal.show('Preview email', response);
+		ldsModal.show(alert_arr.LBL_PREVIEW_MAIL, response);
 	});
 }

@@ -469,4 +469,8 @@ var alert_arr = {
 	'LBL_REQUIRED_FIELDS': 'Por favor rellena todos los campos obligatorios',
 	'LBL_ERROR_CREATING': 'Error creando. Inténtalo de nuevo.',
 	'LBL_ERROR_DROPZONE': 'Error leyendo el enlace. Verifícalo e intenta de nuevo.',
+	'LBL_PREVIEW_MAIL': 'Preview Email',
+	'LBL_SEND_MAIL': 'Send Mail',
+	'LBL_EXPAND_PANEL': 'Expand Panel',
+	'LBL_MIN_PANEL': 'Minimize Panel',
 };

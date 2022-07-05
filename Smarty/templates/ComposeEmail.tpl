@@ -431,7 +431,7 @@
 							<svg class="slds-button__icon slds-p-right_xxx-small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
 							</svg>
-							Preview
+							{$APP.LBL_PREVIEW}
 						</button>
 						{if $LOADLDS == 'yes'}
 						<button
