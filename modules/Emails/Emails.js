@@ -36,6 +36,9 @@ function addOption(id, filename) {
 }
 
 function email_validate(oform, mode) {
+	if (oform === null) {
+		oform = document.getElementById('SendMailForm');
+	}
 	if (trim(mode) == '') {
 		return false;
 	}
