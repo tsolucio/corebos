@@ -1672,6 +1672,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar columnas de búsqueda en la tabla de vista maestro-detalle.',
 ),
+'Email_Template_AutomaticMerge' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1, the email template is merged automatically. If set to 0, the email template is not merged and you can preview the email. The default value is 1.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

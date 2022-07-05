@@ -310,6 +310,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Apache_Tika_URL',
 				'Application_MassAction_Multipage',
 				'Document_DefaultFolder',
+				'Email_Template_AutomaticMerge',
 			);
 			$delete_these = array(
 				'preload_prototype',
