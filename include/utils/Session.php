@@ -259,7 +259,9 @@ class coreBOS_Session {
 			}
 		}
 		if (empty($URL)) {
-			$URL = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
+			$URL = (empty($_SERVER['REQUEST_SCHEME']) ? 'http' : $_SERVER['REQUEST_SCHEME']).'://'
+				.(empty($_SERVER['HTTP_HOST']) ? 'localhost' : $_SERVER['HTTP_HOST'])
+				.(empty($_SERVER['SCRIPT_NAME']) ? 'index.php' : $_SERVER['SCRIPT_NAME']);
 		}
 		if (empty($URL)) {
 			$URL = $site_URL;
