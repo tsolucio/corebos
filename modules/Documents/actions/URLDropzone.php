@@ -45,6 +45,15 @@ class URLDropzone_Action extends CoreBOS_ActionController {
 				header('HTTP/1.1 415 Invalid URL specified');
 				die();
 			}
+		} else {
+			$page = $this->Webpage($noteurl);
+			if ($page['errno'] == 0) {
+				$dom = new DOMDocument();
+				@$dom->loadHTML($page['content']);
+				if ($dom->getElementsByTagName('title')[0]) {
+					$notetitle = $dom->getElementsByTagName('title')[0]->nodeValue;
+				}
+			}
 		}
 		$element = array(
 			'notes_title' => $notetitle,
@@ -60,6 +69,26 @@ class URLDropzone_Action extends CoreBOS_ActionController {
 		}
 		$response = vtws_create('Documents', $element, $current_user);
 		echo json_encode($response);
+	}
+
+	public function Webpage($url) {
+		$ch = curl_init($url);
+		curl_setopt_array($ch, array(
+			CURLOPT_CUSTOMREQUEST => 'GET',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_AUTOREFERER => true,
+			CURLOPT_CONNECTTIMEOUT => 120,
+			CURLOPT_TIMEOUT => 120,
+			CURLINFO_CONTENT_TYPE => true
+		));
+		$content = curl_exec($ch);
+		$err = curl_errno($ch);
+		curl_close($ch);
+		return array(
+			'errno' => $err,
+			'content' => $content,
+		);
 	}
 }
 ?>
