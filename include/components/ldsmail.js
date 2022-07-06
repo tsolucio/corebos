@@ -4,8 +4,8 @@ const ldsMail = {
 		ldsMail.height = height;
 		ldsMail.width = width;
 		let mail = `
-		<div class="slds-docked_container">
-			<section class="slds-docked-composer slds-grid slds-grid_vertical slds-fade-in-open slds-is-open slds-has-focus" id="global-mail-box" role="dialog" style="height: ${height}rem; width: ${width}rem;z-index:9999;">
+		<div class="slds-docked_container" style="z-index:9999;">
+			<section class="slds-docked-composer slds-grid slds-grid_vertical slds-fade-in-open slds-is-open slds-has-focus" id="global-mail-box" role="dialog" style="height: ${height}rem; width: ${width}rem;">
 				<header class="slds-docked-composer__header slds-grid slds-shrink-none">
 					<div class="slds-media slds-media_center slds-no-space">
 						<div class="slds-media__figure slds-m-right_x-small">
