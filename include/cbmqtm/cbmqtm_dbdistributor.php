@@ -88,7 +88,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 	public function getMessage($channel, $consumer, $producer = '*', $userid = '*') {
 		self::setDB();
 		$sql = 'select * from cb_messagequeue where deliverafter<=? and channel=? and consumer=? 
-				and ((deliverStartTime<? and deliverEndTime>?) or (deliverStartTime is null and deliverEndTime is null))';
+				and ((deliverStartTime<? or deliverStartTime is null) and (deliverEndTime>? or deliverEndTime is null))';
 		$params = array(date('Y-m-d H:i:s', time()), $channel, $consumer, date('H:i:s', time()), date('H:i:s', time()));
 		if ($producer != '*') {
 			$sql .= ' and producer=?';
