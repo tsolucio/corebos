@@ -174,5 +174,9 @@ $mod_strings = array(
 	'clickhouse_database' => 'Database',
 	'clickhouse_query' => 'ClickHouse Query (limited to 100 rows)',
 	'mautic_webhook_secret' => 'Webhook Secret',
+	'Facebook Activation' => 'Facebook Activation',
+	'Facebook Activation_Desc' => 'Facebook Configuration',
+	'facebook_verification_code' => 'Verification Code',
+	'facebook_destination_module' => 'Destination Module'
 );
 ?>
