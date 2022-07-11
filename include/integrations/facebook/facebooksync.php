@@ -36,6 +36,46 @@ function facebooksync($input) {
     if ($verify_token == $facebook->getHubVerificationToken()) {
         echo $challenge;
     }
+    
+    $input = file_get_contents('php://input');
+    $data = json_decode($input, true);
 
+    $field = $data['entry'][0]['changes'][0]['field'];
+    if ($field == 'leadgen') {
+        $leadgen_id = $data['entry'][0]['changes'][0]['value']['leadgen_id'];
+        if ($leadgen_id) {
+            $access_token = $facebook->getAccessToken();
+            $curl_handle = curl_init();
+            $url = "https://graph.facebook.com/v14.0/" . $leadgen_id . "?access_token=" . $access_token;
+            curl_setopt($curl_handle, CURLOPT_URL, $url);
+            curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, true);
+            $curl_data = curl_exec($curl_handle);
+            curl_close($curl_handle);
 
+            if ($curl_data) {
+                $response_data = json_decode($curl_data);
+                if ($response_data) {
+                    $facebookdata = array();
+                    foreach ($response_data as $field => $value) {
+                        $facebookdata[$key] = $value;
+                    }
+
+                    // Send to corebos
+                    $destinationModule = $facebook->getDestinationModule();
+                    $current_user = Users::getActiveAdminUser();
+                    $usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+
+                    $send2cb = array();
+                    $bmapname = 'Facebook2' . $destinationModule;
+                    $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+                    if ($cbMapid) {
+                        $cbMap = cbMap::getMapByID($cbMapid);
+                        $send2cb = $cbMap->Mapping($facebookdata, $send2cb);
+                        $send2cb['assigned_user_id'] = $usrwsid;
+                        vtws_create($destinationModule, $send2cb, $current_user);
+                    }
+                }
+            }
+        }
+    }
 }
