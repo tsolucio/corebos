@@ -48,29 +48,29 @@ class corebos_facebook {
 	}
 
 	public function saveSettings($isactive, $fbHubVerificationToken, $fbAccessToken, $fbDestinationModule) {
-        global $adb;
+		global $adb;
 
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::KEY_FB_HUB_VERIFICATION_TOKEN, $fbHubVerificationToken);
 		coreBOS_Settings::setSetting(self::KEY_FB_ACCESS_TOKEN, $fbAccessToken);
 		coreBOS_Settings::setSetting(self::KEY_FB_DESTINATION_MODULE, $fbDestinationModule);
 
-        if ($isactive == '1') {
-            $checkrs = $adb->pquery(
-                'select 1 from vtiger_notificationdrivers where path=? and functionname=?',
-                array('include/integrations/facebook/facebooksync.php', 'facebooksync')
-            );
-            if ($checkrs && $adb->num_rows($checkrs)==0) {
-                $adb->query(
-                    "INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('facebook','include/integrations/facebook/facebooksync.php','facebooksync')"
-                );
-            }
-        } else {
-            $adb->pquery(
-                'DELETE FROM vtiger_notificationdrivers WHERE path=? and functionname=?',
-                array('include/integrations/facebook/facebooksync.php', 'facebooksync')
-            );
-        }
+		if ($isactive == '1') {
+			$checkrs = $adb->pquery(
+				'select 1 from vtiger_notificationdrivers where path=? and functionname=?',
+				array('include/integrations/facebook/facebooksync.php', 'facebooksync')
+			);
+			if ($checkrs && $adb->num_rows($checkrs)==0) {
+				$adb->query(
+					"INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('facebook','include/integrations/facebook/facebooksync.php','facebooksync')"
+				);
+			}
+		} else {
+			$adb->pquery(
+				'DELETE FROM vtiger_notificationdrivers WHERE path=? and functionname=?',
+				array('include/integrations/facebook/facebooksync.php', 'facebooksync')
+			);
+		}
 	}
 
 	public function getSettings() {
@@ -91,7 +91,7 @@ class corebos_facebook {
 		return coreBOS_Settings::getSetting(self::KEY_FB_HUB_VERIFICATION_TOKEN, '');
 	}
 
-    public function getAccessToken() {
+	public function getAccessToken() {
 		return coreBOS_Settings::getSetting(self::KEY_FB_ACCESS_TOKEN, '');
 	}
 
