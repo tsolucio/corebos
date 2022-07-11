@@ -176,7 +176,8 @@ $mod_strings = array(
 	'mautic_webhook_secret' => 'Webhook Secret',
 	'Facebook Activation' => 'Facebook Activation',
 	'Facebook Activation_Desc' => 'Facebook Configuration',
-	'facebook_verification_code' => 'Verification Code',
+	'facebook_hub_verification_token' => 'Hub Verification Code',
+	'facebook_access_token' => 'Access Token',
 	'facebook_destination_module' => 'Destination Module'
 );
 ?>

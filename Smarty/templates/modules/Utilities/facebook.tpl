@@ -29,13 +29,19 @@
                         </label>
                     </div>
                     <div class="slds-form-element slds-m-top--small">
-                        <label class="slds-form-element__label" for="appid">{'facebook_verification_code'|@getTranslatedString:$MODULE}</label>
+                        <label class="slds-form-element__label" for="fb_hub_verification_token">{'facebook_hub_verification_token'|@getTranslatedString:$MODULE}</label>
                         <div class="slds-form-element__control">
-                            <input type="text" id="fb_verification_code" name="fb_verification_code" class="slds-input" value="{$fbVerificationCode}" />
+                            <input type="text" id="fb_hub_verification_token" name="fb_hub_verification_token" class="slds-input" value="{$fbHubVerificationToken}" />
                         </div>
                     </div>
                     <div class="slds-form-element slds-m-top--small">
-                        <label class="slds-form-element__label" for="apikey">{'facebook_destination_module'|@getTranslatedString:$MODULE}</label>
+                        <label class="slds-form-element__label" for="fb_access_token">{'facebook_access_token'|@getTranslatedString:$MODULE}</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="fb_access_token" name="fb_access_token" class="slds-input" value="{$fbAccessToken}" />
+                        </div>
+                    </div>
+                    <div class="slds-form-element slds-m-top--small">
+                        <label class="slds-form-element__label" for="fb_destination_module">{'facebook_destination_module'|@getTranslatedString:$MODULE}</label>
                         <div class="slds-form-element__control">
                             <input type="text" id="fb_destination_module" name="fb_destination_module" class="slds-input" value="{$fbDestinationModule}" />
                         </div>

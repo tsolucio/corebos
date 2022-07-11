@@ -23,17 +23,19 @@ $facebook = new corebos_facebook();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin && !empty($_REQUEST['fb_verification_code']) && !empty($_REQUEST['fb_destination_module'])) {
+if ($isadmin && !empty($_REQUEST['fb_hub_verification_token']) && !empty($_REQUEST['fb_access_token']) && !empty($_REQUEST['fb_destination_module'])) {
 	$isActive = ((empty($_REQUEST['facebook_active']) || $_REQUEST['facebook_active']!='on') ? '0' : '1');
-	$fb_verification_code = (empty($_REQUEST['fb_verification_code']) ? '' : vtlib_purify($_REQUEST['fb_verification_code']));
+	$fb_hub_verification_token = (empty($_REQUEST['fb_hub_verification_token']) ? '' : vtlib_purify($_REQUEST['fb_hub_verification_token']));
+	$fb_access_token = (empty($_REQUEST['fb_access_token']) ? '' : vtlib_purify($_REQUEST['fb_access_token']));
 	$fb_destination_module = (empty($_REQUEST['fb_destination_module']) ? '' : vtlib_purify($_REQUEST['fb_destination_module']));
-	$facebook->saveSettings($isActive, $fb_verification_code, $fb_destination_module);
+	$facebook->saveSettings($isActive, $fb_hub_verification_token, $fb_access_token, $fb_destination_module);
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Facebook Activation', $currentModule));
 $facebookSettings = $facebook->getSettings();
 $smarty->assign('isActive', $facebook->isActive());
-$smarty->assign('fbVerificationCode', $facebookSettings['fb_verification_code']);
+$smarty->assign('fbHubVerificationToken', $facebookSettings['fb_hub_verification_token']);
+$smarty->assign('fbAccessToken', $facebookSettings['fb_access_token']);
 $smarty->assign('fbDestinationModule', $facebookSettings['fb_destination_module']);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);

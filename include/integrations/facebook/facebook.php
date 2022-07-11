@@ -19,12 +19,14 @@
 
 class corebos_facebook {
 	// Configuration Properties
-	private $fbVerificationToken = '123';
+	private $fbHubVerificationToken = '123';
+	private $fbAccessToken = '123';
 	private $fbDestinationModule = '';
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'facebook_isactive';
-	const KEY_FB_VERIFICATION_CODE= 'fb_verification_code';
+	const KEY_FB_HUB_VERIFICATION_TOKEN= 'fb_hub_verification_token';
+	const KEY_FB_ACCESS_TOKEN= 'fb_access_token';
 	const KEY_FB_DESTINATION_MODULE = 'fb_destination_module';
 
 	// Debug
@@ -40,20 +42,42 @@ class corebos_facebook {
 	}
 
 	public function initGlobalScope() {
-		$this->fbVerificationToken = coreBOS_Settings::getSetting(self::KEY_FB_VERIFICATION_CODE, '');
+		$this->fbHubVerificationToken = coreBOS_Settings::getSetting(self::KEY_FB_HUB_VERIFICATION_TOKEN, '');
+		$this->fbAccessToken = coreBOS_Settings::getSetting(self::KEY_FB_ACCESS_TOKEN, '');
 		$this->fbDestinationModule = coreBOS_Settings::getSetting(self::KEY_FB_DESTINATION_MODULE, '');
 	}
 
-	public function saveSettings($isactive, $fbVerificationCode, $fbDestinationModule) {
+	public function saveSettings($isactive, $fbHubVerificationToken, $fbAccessToken, $fbDestinationModule) {
+        global $adb;
+
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
-		coreBOS_Settings::setSetting(self::KEY_FB_VERIFICATION_CODE, $fbVerificationCode);
+		coreBOS_Settings::setSetting(self::KEY_FB_HUB_VERIFICATION_TOKEN, $fbHubVerificationToken);
+		coreBOS_Settings::setSetting(self::KEY_FB_ACCESS_TOKEN, $fbAccessToken);
 		coreBOS_Settings::setSetting(self::KEY_FB_DESTINATION_MODULE, $fbDestinationModule);
+
+        if ($isactive == '1') {
+            $checkrs = $adb->pquery(
+                'select 1 from vtiger_notificationdrivers where path=? and functionname=?',
+                array('include/integrations/facebook/facebooksync.php', 'facebooksync')
+            );
+            if ($checkrs && $adb->num_rows($checkrs)==0) {
+                $adb->query(
+                    "INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('facebook','include/integrations/facebook/facebooksync.php','facebooksync')"
+                );
+            }
+        } else {
+            $adb->pquery(
+                'DELETE FROM vtiger_notificationdrivers WHERE path=? and functionname=?',
+                array('include/integrations/facebook/facebooksync.php', 'facebooksync')
+            );
+        }
 	}
 
 	public function getSettings() {
 		return array(
 			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
-			'fb_verification_code' => coreBOS_Settings::getSetting(self::KEY_FB_VERIFICATION_CODE, ''),
+			'fb_hub_verification_token' => coreBOS_Settings::getSetting(self::KEY_FB_HUB_VERIFICATION_TOKEN, ''),
+			'fb_access_token' => coreBOS_Settings::getSetting(self::KEY_FB_ACCESS_TOKEN, ''),
 			'fb_destination_module' => coreBOS_Settings::getSetting(self::KEY_FB_DESTINATION_MODULE, ''),
 		);
 	}
@@ -63,8 +87,12 @@ class corebos_facebook {
 		return ($isactive=='1');
 	}
 
-	public function getVerificationCode() {
-		return coreBOS_Settings::getSetting(self::KEY_FB_VERIFICATION_CODE, '');
+	public function getHubVerificationToken() {
+		return coreBOS_Settings::getSetting(self::KEY_FB_HUB_VERIFICATION_TOKEN, '');
+	}
+
+    public function getAccessToken() {
+		return coreBOS_Settings::getSetting(self::KEY_FB_ACCESS_TOKEN, '');
 	}
 
 	public function getDestinationModule() {
