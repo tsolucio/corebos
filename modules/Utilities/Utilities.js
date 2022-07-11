@@ -281,24 +281,20 @@ document.addEventListener('DOMContentLoaded', function (event) {
 					name: 'ws_name',
 					header: mod_alert_arr.LBL_WS_NAME,
 					sortingType: 'desc',
-					sortable: true,
 					editor: 'text',
 					onAfterChange(ev) {
 						const idx = gridInstance.getIndexOfRow(ev.rowKey);
 						updateFieldData(ev, idx);
-						console.table(ev)
 					},
 				},
 				{
 					name: 'table_name',
 					header: mod_alert_arr.LBL_TABLE_NAME,
 					sortingType: 'desc',
-					sortable: true,
 					editor: 'text',
 					onAfterChange(ev) {
 						const idx = gridInstance.getIndexOfRow(ev.rowKey);
 						updateFieldData(ev, idx);
-						console.table(ev)
 					},
 				},
 				{
@@ -306,7 +302,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
 					header: mod_alert_arr.LBL_ACCESS,
 					whiteSpace: 'normal',
 					sortingType: 'desc',
-					sortable: true,
 					renderer: {
 						type: CheckboxWithActionRender,
 					}
@@ -315,8 +310,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 					name: 'create',
 					header: mod_alert_arr.LBL_CREATE,
 					whiteSpace: 'normal',
-					sortingType: 'desc',
-					sortable: true,
+					sortingType: 'desc',	
 					renderer: {
 						type: CheckboxWithActionRender,
 					}
@@ -326,7 +320,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
 					header: mod_alert_arr.LBL_READ,
 					whiteSpace: 'normal',
 					sortingType: 'desc',
-					sortable: true,
 					renderer: {
 						type: CheckboxWithActionRender,
 					}
@@ -336,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 					header: mod_alert_arr.LBL_WRITE,
 					whiteSpace: 'normal',
 					sortingType: 'desc',
-					sortable: true,
+					
 					renderer: {
 						type: CheckboxWithActionRender,
 					}

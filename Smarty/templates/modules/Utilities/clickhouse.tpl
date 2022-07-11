@@ -1,12 +1,12 @@
+<script src="./include/js/ListViewRenderes.js"></script>
 {include file='Buttons_List.tpl'}
 
-<script src="./include/js/ListViewRenderes.js"></script>
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher"
 	aria-labelledby="header43" aria-modal="true" style="margin-top: 10px">
 	<div class="slds-modal__container slds-p-around_none slds-modal__header" style="margin-top: 10px">
 		<div class="slds-tabs_default">
 			<ul class="slds-tabs_default__nav" role="tablist">
-				<li class="slds-tabs_default__item" title="Settings" id="tab-settings" role="Settings">
+				<li class="slds-tabs_default__item slds-is-active" title="Settings" id="tab-settings" role="Settings">
 					<a class="slds-tabs_default__link" onclick="showTab('settings')" role="tab" tabindex="0" aria-selected="true"
 						aria-controls="tab-default-1" id="tab-default-1__item">
 						<span class="slds-tabs__left-icon">
@@ -17,7 +17,7 @@
 							</span>
 						</span>Settings</a>
 				</li>
-				<li class="slds-tabs_default__item slds-is-active" title="Tables" id="tab-tables" role="table">
+				<li class="slds-tabs_default__item"  title="Tables" id="tab-tables" role="table">
 					<a class="slds-tabs_default__link" onclick="showTab('tables')" role="tab" tabindex="-1" aria-selected="false"
 						aria-controls="tab-default-2" id="tab-default-2__item">
 						<span class="slds-tabs__left-icon">
@@ -28,7 +28,7 @@
 							</span> </span>Tables</a>
 				</li>
 			</ul>
-			<div id="tab-data-settings" class="slds-tabs_default__content  slds-hide" role="tabpanel"
+			<div id="tab-data-settings" class="slds-tabs_default__content  slds-show" role="tabpanel"
 				aria-labelledby="tab-default-1__item">
 				<div class="slds-modal__container slds-p-around_none">
 					<header class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
@@ -134,7 +134,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="tab-data-tables" class="slds-tabs_default__content slds-show" role="tabpanel"
+			<div id="tab-data-tables" class="slds-tabs_default__content slds-hide" role="tabpanel"
 				aria-labelledby="tab-default-2__item">
 				<div class="slds-modal__container slds-p-around_none">
 					<header class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
@@ -148,7 +148,3 @@
 		</div>
 	</div>
 </section>
-
-<script>
-
-</script>
