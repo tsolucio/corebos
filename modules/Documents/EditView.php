@@ -13,13 +13,18 @@ require_once 'Smarty_setup.php';
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
 
+$allselectedboxes = isset($_REQUEST['allselectedboxes']) ? vtlib_purify($_REQUEST['allselectedboxes']) : '';
+$allselectedboxes = htmlspecialchars($allselectedboxes, ENT_QUOTES, $default_charset);
+$excludedRecords = isset($_REQUEST['excludedRecords']) ? vtlib_purify($_REQUEST['excludedRecords']) : '';
+$excludedRecords = htmlspecialchars($excludedRecords, ENT_QUOTES, $default_charset);
+
 $massedit1x1 = isset($_REQUEST['massedit1x1']) ? vtlib_purify($_REQUEST['massedit1x1']) : '0';
 if ($massedit1x1=='s') { // mass edit 1x1 start
 	$idstring = getSelectedRecords(
 		$_REQUEST,
 		$currentModule,
-		(isset($_REQUEST['allselectedboxes']) ? trim($_REQUEST['allselectedboxes'], ';') : ''),
-		(isset($_REQUEST['excludedRecords']) ? trim($_REQUEST['excludedRecords'], ';') : '')
+		(isset($_REQUEST['allselectedboxes']) ? trim($allselectedboxes, ';') : ''),
+		(isset($_REQUEST['excludedRecords']) ? trim($excludedRecords, ';') : '')
 	);
 	coreBOS_Session::set('ME1x1Info', array(
 		'complete' => $idstring,
@@ -43,7 +48,9 @@ if (coreBOS_Session::has('ME1x1Info')) {
 if (!empty($_REQUEST['saverepeat'])) {
 	$_REQUEST = array_merge($_REQUEST, coreBOS_Session::get('saverepeatRequest', array()));
 	if (isset($_REQUEST['CANCELGO'])) {
-		$smarty->assign('CANCELGO', vtlib_purify($_REQUEST['CANCELGO']));
+		$cancelgo = isset($_REQUEST['CANCELGO']) ? vtlib_purify($_REQUEST['CANCELGO']) : null;
+		$cancelgo = htmlspecialchars($cancelgo, ENT_QUOTES, $default_charset);
+		$smarty->assign('CANCELGO', $cancelgo);
 	}
 } else {
 	coreBOS_Session::set('saverepeatRequest', $_REQUEST);
@@ -51,7 +58,11 @@ if (!empty($_REQUEST['saverepeat'])) {
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 $record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
-$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
+$record = htmlspecialchars($record, ENT_QUOTES, $default_charset);
+$isDuplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
+$isDuplicate = htmlspecialchars($isDuplicate, ENT_QUOTES, $default_charset);
+$parent_id = isset($_REQUEST['parent_id']) ? vtlib_purify($_REQUEST['parent_id']) : null;
+$parent_id = htmlspecialchars($parent_id, ENT_QUOTES, $default_charset);
 
 $searchurl = getBasic_Advance_SearchURL();
 $smarty->assign('SEARCH', $searchurl);
@@ -64,7 +75,7 @@ if ($record) {
 }
 
 if ($focus->mode != 'edit' && isset($_REQUEST['parent_id']) && isset($_REQUEST['return_module'])) {
-	$owner = getRecordOwnerId($_REQUEST['parent_id']);
+	$owner = getRecordOwnerId($parent_id);
 	if (isset($owner['Users']) && $owner['Users'] != '') {
 		$permitted_users = get_user_array('true', 'Active', $current_user->id);
 		if (!in_array($owner['Users'], $permitted_users)) {
@@ -90,6 +101,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 	if (!empty($_REQUEST['encode_val'])) {
 		global $current_user;
 		$encode_val = vtlib_purify($_REQUEST['encode_val']);
+		$encode_val = htmlspecialchars($encode_val, ENT_QUOTES, $default_charset);
 		$decode_val = base64_decode($encode_val);
 		$explode_decode_val = explode('&', trim($decode_val, '&'));
 		$tabid = getTabid($currentModule);
@@ -124,7 +136,9 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 		}
 	}
 	$errormessageclass = isset($_REQUEST['error_msgclass']) ? vtlib_purify($_REQUEST['error_msgclass']) : '';
+	$errormessageclass = htmlspecialchars($errormessageclass, ENT_QUOTES, $default_charset);
 	$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
+	$errormessage = htmlspecialchars($errormessage, ENT_QUOTES, $default_charset);
 	$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
 	$smarty->assign('ERROR_MESSAGE', $errormessage);
 } elseif ($focus->mode != 'edit') {
@@ -132,7 +146,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 }
 
 if (isset($_REQUEST['parent_id']) && $focus->mode != 'edit') {
-	$smarty->assign('PARENTID', vtlib_purify($_REQUEST['parent_id']));
+	$smarty->assign('PARENTID', $parent_id);
 }
 
 $result=$adb->pquery('select filename from vtiger_notes where notesid = ?', array($focus->id));
@@ -146,14 +160,18 @@ if (is_null($filename) || $filename == '') {
 
 //needed when creating a new case with default values passed in
 if (isset($_REQUEST['contact_name']) && is_null($focus->contact_name)) {
-	$focus->contact_name = vtlib_purify($_REQUEST['contact_name']);
+	$contact_name = isset($_REQUEST['contact_name']) ? vtlib_purify($_REQUEST['contact_name']) : null;
+	$contact_name = htmlspecialchars($contact_name, ENT_QUOTES, $default_charset);
+	$focus->contact_name = $contact_name;
 }
 $getContactFolderID = "select folderid
 	from vtiger_attachmentsfolder
 	inner join vtiger_contactdetails on concat(trim(lastname), ' ', trim(firstname))=trim(foldername) where contactid=?";
 $getAccountFolderID = 'select folderid from vtiger_attachmentsfolder inner join vtiger_account on trim(accountname)=trim(foldername) where accountid=?';
 if (isset($_REQUEST['contact_id'])) {
-	$focus->contact_id = vtlib_purify($_REQUEST['contact_id']);
+	$contact_id = isset($_REQUEST['contact_id']) ? vtlib_purify($_REQUEST['contact_id']) : null;
+	$contact_id = htmlspecialchars($contact_id, ENT_QUOTES, $default_charset);
+	$focus->contact_id = vtlib_purify($contact_id);
 	if (GlobalVariable::getVariable('Document_CreateSelectContactFolder', 0) && !GlobalVariable::getVariable('Document_CreateSelectAccountFolderForContact', 0)) {
 		$res = $adb->pquery($getContactFolderID, array($focus->contact_id));
 		if ($res && $adb->num_rows($res)>0) {
@@ -179,10 +197,12 @@ if (isset($_REQUEST['contact_id'])) {
 	}
 }
 if (isset($_REQUEST['parent_name']) && is_null($focus->parent_name)) {
-	$focus->parent_name = vtlib_purify($_REQUEST['parent_name']);
+	$parent_name = isset($_REQUEST['parent_name']) ? vtlib_purify($_REQUEST['parent_name']) : null;
+	$parent_name = htmlspecialchars($parent_name, ENT_QUOTES, $default_charset);
+	$focus->parent_name = $parent_name;
 }
 if (isset($_REQUEST['parent_id'])) {
-	$focus->parent_id = vtlib_purify($_REQUEST['parent_id']);
+	$focus->parent_id = $parent_id;
 	$setype = getSalesEntityType($focus->parent_id);
 	if ($setype == 'Accounts' && GlobalVariable::getVariable('Document_CreateSelectAccountFolder', 0)) {
 		$res = $adb->pquery($getAccountFolderID, array($focus->parent_id));
@@ -219,7 +239,9 @@ if (isset($_REQUEST['parent_id'])) {
 	}
 }
 if (isset($_REQUEST['parent_type'])) {
-	$focus->parent_type = vtlib_purify($_REQUEST['parent_type']);
+	$parent_type = isset($_REQUEST['parent_type']) ? vtlib_purify($_REQUEST['parent_type']) : null;
+	$parent_type = htmlspecialchars($parent_type, ENT_QUOTES, $default_charset);
+	$focus->parent_type = $parent_type;
 } else {
 	if (GlobalVariable::getVariable('Application_B2B', '1')) {
 		$focus->parent_type = 'Accounts';
@@ -227,6 +249,28 @@ if (isset($_REQUEST['parent_type'])) {
 		$focus->parent_type = 'Contacts';
 	}
 }
+//sanitize params
+$createmode = isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : null;
+$createmode = htmlspecialchars($createmode, ENT_QUOTES, $default_charset);
+$return_module = isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : null;
+$return_module = htmlspecialchars($return_module, ENT_QUOTES, $default_charset);
+$return_action = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : null;
+$return_action = htmlspecialchars($return_action, ENT_QUOTES, $default_charset);
+$return_id = isset($_REQUEST['return_id']) ? vtlib_purify($_REQUEST['return_id']) : null;
+$return_id = htmlspecialchars($return_id, ENT_QUOTES, $default_charset);
+$return_viewname = isset($_REQUEST['return_viewname']) ? vtlib_purify($_REQUEST['return_viewname']) : null;
+$return_viewname = htmlspecialchars($return_viewname, ENT_QUOTES, $default_charset);
+$email_id = isset($_REQUEST['email_id']) ? vtlib_purify($_REQUEST['email_id']) : null;
+$email_id = htmlspecialchars($email_id, ENT_QUOTES, $default_charset);
+$ticket_id = isset($_REQUEST['ticket_id']) ? vtlib_purify($_REQUEST['ticket_id']) : null;
+$ticket_id = htmlspecialchars($ticket_id, ENT_QUOTES, $default_charset);
+$fileid = isset($_REQUEST['fileid']) ? vtlib_purify($_REQUEST['fileid']) : null;
+$fileid = htmlspecialchars($fileid, ENT_QUOTES, $default_charset);
+$action = isset($_REQUEST['action']) ? vtlib_purify($_REQUEST['action']) : null;
+$action = htmlspecialchars($action, ENT_QUOTES, $default_charset);
+$Module_Popup_Edit = isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0;
+$Module_Popup_Edit = htmlspecialchars($Module_Popup_Edit, ENT_QUOTES, $default_charset);
+
 $smarty->assign('MASS_EDIT', '0');
 $disp_view = getView($focus->mode);
 $blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
@@ -249,7 +293,7 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
-$smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : '');
+$smarty->assign('CREATEMODE', $createmode);
 
 $smarty->assign('CHECK', Button_Check($currentModule));
 $smarty->assign('DUPLICATE', $isduplicate);
@@ -262,16 +306,16 @@ if ($focus->mode == 'edit' || $isduplicate == 'true') {
 }
 
 if (isset($_REQUEST['return_module'])) {
-	$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
+	$smarty->assign('RETURN_MODULE', $return_module);
 }
 if (isset($_REQUEST['return_action'])) {
-	$smarty->assign('RETURN_ACTION', vtlib_purify($_REQUEST['return_action']));
+	$smarty->assign('RETURN_ACTION', $return_action);
 }
 if (isset($_REQUEST['return_id'])) {
-	$smarty->assign('RETURN_ID', vtlib_purify($_REQUEST['return_id']));
+	$smarty->assign('RETURN_ID', $return_id);
 }
 if (isset($_REQUEST['return_viewname'])) {
-	$smarty->assign('RETURN_VIEWNAME', vtlib_purify($_REQUEST['return_viewname']));
+	$smarty->assign('RETURN_VIEWNAME', $return_viewname);
 }
 $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
 $smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); //Convert to MB
@@ -279,13 +323,13 @@ $smarty->assign('UPLOAD_MAXSIZE', $upload_maxsize);
 $smarty->assign('MAX_FILE_SIZE', $upload_maxsize);
 
 if (isset($_REQUEST['email_id'])) {
-	$smarty->assign('EMAILID', vtlib_purify($_REQUEST['email_id']));
+	$smarty->assign('EMAILID', $email_id);
 }
 if (isset($_REQUEST['ticket_id'])) {
-	$smarty->assign('TICKETID', vtlib_purify($_REQUEST['ticket_id']));
+	$smarty->assign('TICKETID', $ticket_id);
 }
 if (isset($_REQUEST['fileid'])) {
-	$smarty->assign('FILEID', vtlib_purify($_REQUEST['fileid']));
+	$smarty->assign('FILEID', $fileid);
 }
 if (isset($_REQUEST['upload_error']) && $_REQUEST['upload_error']) {
 	echo '<br><b><font color="red"> '.$mod_strings['FILE_HAS_NO_DATA'].'.</font></b><br>';
@@ -343,14 +387,14 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
-$customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
+$customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>$action);
 $smarty->assign(
 	'CUSTOM_LINKS',
 	Vtiger_Link::getAllByType($tabid, array('EDITVIEWBUTTON','EDITVIEWBUTTONMENU','EDITVIEWWIDGET'), $customlink_params, null, $focus->id)
 );
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
-$smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
+$smarty->assign('Module_Popup_Edit', $Module_Popup_Edit);
 $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
