@@ -13,6 +13,7 @@ require_once 'Smarty_setup.php';
 require_once 'include/utils/utils.php';
 
 $excludedRecords = vtlib_purify($_REQUEST['excludedRecords']);
+$excludedRecords = htmlspecialchars($excludedRecords, ENT_QUOTES, $default_charset);
 
 $focus = CRMEntity::getInstance($currentModule);
 $focus->mode = '';
@@ -26,7 +27,6 @@ $smarty->assign('MODULE', $currentModule);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-$idstring = isset($_REQUEST['idstring']) ? vtlib_purify($_REQUEST['idstring']) : '';
 $idstring = htmlspecialchars($idstring, ENT_QUOTES, $default_charset);
 $storearray = getSelectedRecords($_REQUEST, $currentModule, $idstring, $excludedRecords);
 $idstringval=implode(';', $storearray);
