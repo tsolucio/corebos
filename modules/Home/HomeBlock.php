@@ -22,12 +22,18 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 $stuffid = '';
+
+//sanitize params
+$homestuffid = isset($_REQUEST['homestuffid']) ? vtlib_purify($_REQUEST['homestuffid']) : '';
+$homestuffid = htmlspecialchars($homestuffid, ENT_QUOTES, $default_charset);
+$blockstufftype = isset($_REQUEST['blockstufftype']) ? vtlib_purify($_REQUEST['blockstufftype']) : '';
+$blockstufftype = htmlspecialchars($blockstufftype, ENT_QUOTES, $default_charset);
 if (!empty($_REQUEST['homestuffid'])) {
-	$stuffid = (int)preg_replace('/\D/', '', vtlib_purify($_REQUEST['homestuffid']));
+	$stuffid = (int)preg_replace('/\D/', '', $homestuffid);
 }
 $stufftype = '';
 if (!empty($_REQUEST['blockstufftype'])) {
-	$stufftype = vtlib_purify($_REQUEST['blockstufftype']);
+	$stufftype = $blockstufftype;
 }
 $dashdet = '';
 $homestuff_values = array(
