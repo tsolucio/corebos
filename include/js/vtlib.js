@@ -83,7 +83,8 @@ function vtlib_open_popup_window(fromlink, fldname, MODULE, ID) {
 	if (fromlink == 'qcreate') {
 		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10qc', cbPopupWindowSettings);
 	} else if (fromlink != '') {
-		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form='+fromlink+'&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10', cbPopupWindowSettings);
+		const fromlinkSanitized = fromlink.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form='+fromlinkSanitized+'&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10', cbPopupWindowSettings);
 	} else {
 		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10', cbPopupWindowSettings);
 	}
