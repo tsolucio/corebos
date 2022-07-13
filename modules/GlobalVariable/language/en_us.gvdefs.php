@@ -214,12 +214,6 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show or Hide World Clock widget in toolbar',
 ),
-'Application_Display_Calculator' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
-	'values' => '0 | 1',
-	'definition' => 'Show or Hide Calculator widget in toolbar',
-),
 'Application_Display_Mini_Calendar' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
@@ -297,12 +291,6 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Webservice',
 	'values' => '0 | 1',
 	'definition' => 'Completely disables or enables SOAP Customer Portal access.',
-),
-'SOAP_Outlook_Enabled' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Webservice',
-	'values' => '0 | 1',
-	'definition' => 'Completely disables or enables SOAP Outlook access.',
 ),
 'Application_Default_Action' => array(
 	'valuetype' => 'String',
@@ -590,7 +578,13 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => '',
-	'definition' => 'Name of the application that will be shown on screen.',
+	'definition' => 'Name of the application that will be shown as the title of the Application_UI_NameHTML variable.',
+),
+'Application_UI_NameHTML' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Name of the application that will be shown on screen. By default the value of the Application_UI_Name variable.',
 ),
 'Application_UI_Version' => array(
 	'valuetype' => 'String',
@@ -1671,6 +1665,66 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Show search columns in the master detail view table.',
+),
+'Application_CSS_Properties' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'path to CSS variable file',
+	'definition' => 'coreBOS CSS contains variables that can be set in the file indicated by this variable. By default the file is include/LD/assets/styles/properties.php',
+),
+'Application_Unique_Identifier' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Unique identifier for this coreBOS install. Useful when aggregating logs. By default uses the application_unique_key string defined in config.inc.php',
+),
+'RecordVersioningModules' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activates record versioning in the application. This variable is set in Utilities automatically.',
+),
+'SMSNotifier_SendCopyToUser' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Indicates if we should send a copy of any SMS to the user sending it. Default value is 1.',
+),
+'User_MandatoryAuthenticationSQL' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'comma-separated list of usernames',
+	'definition' => 'Comma-separated list of usernames that must authenticate using SQL. Default is admin user.',
+),
+'Webservice_GenDocConversion_Active' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'GenDoc web service endpoint (gendoc_convert) is active or not.',
+),
+'Webservice_Return_FormattedValues' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Always return all values in the format of the user connected. If not, some values are returned in the format of the database.',
+),
+'Webservice_Sync_RecordLimit' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Number of records returned by the Sync web service. Default is 100',
+),
+'Webservice_Sync_RecordLimitStreaming' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Number of records returned by the Sync web service when accessing in Streaming mode. Default is 100',
+),
+'Workflow_GeoDistance_Nominatim_Server' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'URL',
+	'definition' => 'URL of Nominatim service. Default is https://nominatim.openstreetmap.org',
 ),
 );
 
