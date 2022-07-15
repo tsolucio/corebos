@@ -399,44 +399,43 @@
 							type="radio">&nbsp;{$APP.LBL_GROUP_NAME}
 					{/if}
 					<span id="assign_user" style="display: block;">
-					{else}
-						<input name="assigntype" id="assigntype" value="U"
-							onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');"
-							type="radio">&nbsp;{$APP.LBL_USER}
-						<input name="assigntype" checked="checked" id="assigntype" value="T"
-							onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');"
-							type="radio">&nbsp;{$APP.LBL_GROUP_NAME}
-						<span id="assign_user" style="display: none;">
-						{/if}
-						<select id="txtbox_U{$keyfldname}" onchange="setSelectValue('{$keyfldname}')" name="{$keyfldname}" class="small" data-uitype="{$keyid}">
-							{foreach item=arr key=id from=$keyoptions.1}
-								{foreach key=sel_value item=value from=$arr}
-									<option value="{$id}" {$value}>{$sel_value}</option>
-								{/foreach}
+				{else}
+					<input name="assigntype" id="assigntype" value="U"
+						onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');"
+						type="radio">&nbsp;{$APP.LBL_USER}
+					<input name="assigntype" checked="checked" id="assigntype" value="T"
+						onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');"
+						type="radio">&nbsp;{$APP.LBL_GROUP_NAME}
+					<span id="assign_user" style="display: none;">
+				{/if}
+					<select id="txtbox_U{$keyfldname}" onchange="setSelectValue('{$keyfldname}')" name="{$keyfldname}" class="small" data-uitype="{$keyid}">
+						{foreach item=arr key=id from=$keyoptions.1}
+							{foreach key=sel_value item=value from=$arr}
+								<option value="{$id}" {$value}>{$sel_value}</option>
 							{/foreach}
-						</select>
-					</span>
-					{if $keyoptions.0 eq 'Group'}
-						<span id="assign_team" style="display: block;">
-						{else}
-							<span id="assign_team" style="display: none;">
-							{/if}
-							<select id="txtbox_G{$keyfldname}" onchange="setSelectValue('{$keyfldname}')"
-								name="assigned_group_id" class="groupname small" data-uitype="{$keyid}">
-								{foreach item=arr key=id from=$keyoptions.2}
-									{foreach key=sel_value item=value from=$arr}
-										<option value="{$id}" {$value}>{$sel_value}</option>
-									{/foreach}
-								{/foreach}
-							</select>
-						</span>
-
-						<br>
-						<a class="detailview_ajaxbutton ajax_save_detailview"
-							onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-						<a href="javascript:;"
-							onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();"
-							class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+						{/foreach}
+					</select>
+				</span>
+				{if $keyoptions.0 eq 'Group'}
+					<span id="assign_team" style="display: block;">
+				{else}
+					<span id="assign_team" style="display: none;">
+				{/if}
+					<select id="txtbox_G{$keyfldname}" onchange="setSelectValue('{$keyfldname}')"
+						name="assigned_group_id" class="groupname small" data-uitype="{$keyid}">
+						{foreach item=arr key=id from=$keyoptions.2}
+							{foreach key=sel_value item=value from=$arr}
+								<option value="{$id}" {$value}>{$sel_value}</option>
+							{/foreach}
+						{/foreach}
+					</select>
+				</span>
+				<br>
+				<a class="detailview_ajaxbutton ajax_save_detailview"
+					onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+				<a href="javascript:;"
+					onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();"
+					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
 	</td>
