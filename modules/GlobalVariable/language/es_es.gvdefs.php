@@ -1727,10 +1727,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'URL del servicio Nominatim. Por defecto es https://nominatim.openstreetmap.org',
 ),
 'Application_AssignUser_Search' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'Activate this GV for installs with a large number of users to permit searching and selecting easier. Default is 0.',
+	'definition' => 'Activa este Variable en instalaciones con una gran cantidad de usuarios para facilitar su búsqueda y selección. El valor predeterminado es 0.',
 ),
 );
 
