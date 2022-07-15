@@ -468,7 +468,7 @@
 				{/if}
 
 				<span id="assign_user" style="{$style_user}">
-					<select name="{$fldname}" id="{$fldname}" class="small">
+					<select name="{$fldname}" id="{$fldname}" class="small" data-uitype="{$uitype}">
 						{foreach key=key_one item=arr from=$fldvalue}
 							{foreach key=sel_value item=value from=$arr}
 								<option value="{$key_one}" {$value}>{$sel_value}</option>
@@ -479,7 +479,7 @@
 
 				{if $secondvalue neq ''}
 					<span id="assign_team" style="{$style_group}">
-						<select name="assigned_group_id" id="assigned_group_id" class="small">
+						<select name="assigned_group_id" id="assigned_group_id" class="small" data-uitype="{$uitype}">
 							{foreach key=key_one item=arr from=$secondvalue}
 								{foreach key=sel_value item=value from=$arr}
 									<option value="{$key_one}" {$value}>{$sel_value}</option>

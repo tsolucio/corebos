@@ -408,8 +408,7 @@
 							type="radio">&nbsp;{$APP.LBL_GROUP_NAME}
 						<span id="assign_user" style="display: none;">
 						{/if}
-						<select id="txtbox_U{$keyfldname}" onchange="setSelectValue('{$keyfldname}')" name="{$keyfldname}"
-							class="small">
+						<select id="txtbox_U{$keyfldname}" onchange="setSelectValue('{$keyfldname}')" name="{$keyfldname}" class="small" data-uitype="{$keyid}">
 							{foreach item=arr key=id from=$keyoptions.1}
 								{foreach key=sel_value item=value from=$arr}
 									<option value="{$id}" {$value}>{$sel_value}</option>
@@ -423,7 +422,7 @@
 							<span id="assign_team" style="display: none;">
 							{/if}
 							<select id="txtbox_G{$keyfldname}" onchange="setSelectValue('{$keyfldname}')"
-								name="assigned_group_id" class="groupname small">
+								name="assigned_group_id" class="groupname small" data-uitype="{$keyid}">
 								{foreach item=arr key=id from=$keyoptions.2}
 									{foreach key=sel_value item=value from=$arr}
 										<option value="{$id}" {$value}>{$sel_value}</option>
