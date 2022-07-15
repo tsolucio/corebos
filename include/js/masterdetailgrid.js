@@ -183,15 +183,15 @@ var masterdetailwork = {
 		if (masterdetailwork.ToggleStatus[id] === undefined) {
 			masterdetailwork.ToggleStatus[id] = 'none';
 		} else {
-			switch(masterdetailwork.ToggleStatus[id]) {
-				case 'none':
-					masterdetailwork.ToggleStatus[id] = 'block';
-					break;
-				case 'block':
-					masterdetailwork.ToggleStatus[id] = 'none';
-					break;
-				default:
-					//do nothing
+			switch (masterdetailwork.ToggleStatus[id]) {
+			case 'none':
+				masterdetailwork.ToggleStatus[id] = 'block';
+				break;
+			case 'block':
+				masterdetailwork.ToggleStatus[id] = 'none';
+				break;
+			default:
+				//do nothing
 			}
 		}
 		document.getElementById(id).style.display = masterdetailwork.ToggleStatus[id];
