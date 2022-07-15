@@ -25,33 +25,19 @@
 <div class="slds-page-header__col-actions">
 <div class="slds-page-header__controls">
 <div class="slds-page-header__control">
-<ul class="slds-button-group-list">
+<div class="slds-button-group" role="group">
 {if !empty($MasterDetailLayoutMap.toolbar.expandall)}
-<li>
-<div>
-<button class="slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_EXPAND_COLLAPSE}">
-<svg class="slds-button__icon" aria-hidden="true">
-<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#expand_all"></use>
-</svg>
-<span class="slds-assistive-text">{$APP.LBL_EXPAND_COLLAPSE}</span>
+<button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_EXPAND_COLLAPSE}" onclick="masterdetailwork.MDToggle(this)" data-id="{$MasterDetailLayoutMap.mapname}">
+	{$APP.LBL_EXPAND_COLLAPSE}
 </button>
-</div>
-</li>
 {/if}
 {if !empty($MasterDetailLayoutMap.toolbar.create)}
-<li>
-<div>
-<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_CREATE_BUTTON_LABEL}"
+<button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_CREATE_BUTTON_LABEL}"
 	onclick="masterdetailwork.MDUpsert('mdgrid{$MasterDetailLayoutMap.mapname}', '{$MasterDetailLayoutMap.targetmodule}', '', {$MasterDetaiCurrentRecord})">
-<svg class="slds-button__icon" aria-hidden="true">
-<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
-</svg>
-<span class="slds-assistive-text">{$APP.LBL_CREATE_BUTTON_LABEL}</span>
+	{$APP.LBL_CREATE_BUTTON_LABEL}
 </button>
-</div>
-</li>
 {/if}
-</ul>
+</div>
 </div>
 </div>
 </div>
