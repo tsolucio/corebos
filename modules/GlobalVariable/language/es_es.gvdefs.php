@@ -1726,6 +1726,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'URL',
 	'definition' => 'URL del servicio Nominatim. Por defecto es https://nominatim.openstreetmap.org',
 ),
+'Application_AssignUser_Search' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activate this GV for installs with a large number of users to permit searching and selecting easier. Default is 0.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

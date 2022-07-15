@@ -122,6 +122,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Textarea_Style',
 				'Application_CSS_Properties',
 				'Application_Menu_Direction',
+				'Application_AssignUser_Search',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
