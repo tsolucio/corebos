@@ -3848,7 +3848,10 @@ class CRMEntity {
 					$fieldid = getFieldid($tabid, $field);
 					$fieldinfo = array(
 						'fieldtype' => 'corebos',
-						'fieldinfo' => '',
+						'fieldinfo' => [
+							'name' => $field,
+							'uitype' => $UIType,
+						],
 						'name' => $field,
 						'uitype' => $UIType,
 						'fieldid' => $fieldid

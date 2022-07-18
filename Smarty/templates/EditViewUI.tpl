@@ -461,14 +461,25 @@
 					{assign var=style_group value='display:block'}
 				{/if}
 
-				<input type="radio" tabindex="{$vt_tab}" name="assigntype" {$select_user} value="U" onclick="toggleAssignType(this.value)" >&nbsp;{$APP.LBL_USER}
-
-				{if $secondvalue neq ''}
-					<input type="radio" name="assigntype" {$select_group} value="T" onclick="toggleAssignType(this.value)">&nbsp;{$APP.LBL_GROUP}
-				{/if}
+				<span class="slds-radio">
+					<input name="assigntype" id="assigntypeu" value="U" type="radio" {$select_user} tabindex="{$vt_tab}" {$select_user}
+						onclick="toggleAssignType(this.value),setSelectValue('assigntype');">
+					<label class="slds-radio__label" for="assigntypeu">
+						<span class="slds-radio_faux"></span>
+						<span class="slds-form-element__label">{$APP.LBL_USER}</span>
+					</label>
+					{if $secondvalue neq ''}
+					<input name="assigntype" {$select_group} id="assigntypeg" value="T" type="radio"
+						onclick="toggleAssignType(this.value),setSelectValue('assigntype');">
+					<label class="slds-radio__label" for="assigntypeg">
+						<span class="slds-radio_faux"></span>
+						<span class="slds-form-element__label">{$APP.LBL_GROUP_NAME}</span>
+					</label>
+					{/if}
+				</span>
 
 				<span id="assign_user" style="{$style_user}">
-					<select name="{$fldname}" id="{$fldname}" class="small">
+					<select name="{$fldname}" id="{$fldname}" class="slds-select slds-m-around_xxx-small" data-uitype="{$uitype}">
 						{foreach key=key_one item=arr from=$fldvalue}
 							{foreach key=sel_value item=value from=$arr}
 								<option value="{$key_one}" {$value}>{$sel_value}</option>
@@ -479,7 +490,7 @@
 
 				{if $secondvalue neq ''}
 					<span id="assign_team" style="{$style_group}">
-						<select name="assigned_group_id" id="assigned_group_id" class="small">
+						<select name="assigned_group_id" id="assigned_group_id" class="slds-select slds-m-around_xxx-small" data-uitype="{$uitype}">
 							{foreach key=key_one item=arr from=$secondvalue}
 								{foreach key=sel_value item=value from=$arr}
 									<option value="{$key_one}" {$value}>{$sel_value}</option>

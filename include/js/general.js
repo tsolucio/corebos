@@ -91,6 +91,13 @@ GlobalVariable_getVariable('Application_Menu_Direction', 'Horizontal', (typeof g
 }, function (error) {
 	Application_Menu_Direction = 'Horizontal'; // set default value on error
 });
+var Application_AssignUser_Search = 0;
+GlobalVariable_getVariable('Application_AssignUser_Search', 0, (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	Application_AssignUser_Search = obj.Application_AssignUser_Search;
+}, function (error) {
+	Application_AssignUser_Search = 0; // set default value on error
+});
 
 function setApplicationPopupWindowSize(w, h, r, s, t, l) {
 	w = w || cbPopupScreenWidthPercentage || 80;
@@ -6785,11 +6792,25 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function initSelect2() {
-	const bas_searchfield = document.getElementById('bas_searchfield');
-	if (bas_searchfield !== undefined && bas_searchfield !== null) {
-		$('#bas_searchfield').select2({
-			width: '100%',
-		});
+	if (Application_AssignUser_Search == 1) {
+		const dataType = document.querySelectorAll(`[data-uitype="53"]`);
+		for (let i = 0; i < dataType.length; i++) {
+			const el = document.getElementById(dataType[i].id);
+			if (el !== undefined && el !== null) {
+				$(`#${dataType[i].id}`).select2({
+					width: '100%',
+				});
+			}
+		}
+	}
+	//init basic search
+	const basicSearch = document.getElementById('bas_searchfield');
+	if (basicSearch !== undefined && basicSearch !== null) {
+		if (basicSearch !== undefined && basicSearch !== null) {
+			$(`#bas_searchfield`).select2({
+				width: '100%',
+			});
+		}
 	}
 }
 

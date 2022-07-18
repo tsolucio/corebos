@@ -101,7 +101,7 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Si se establece en 1, se mostrará una pila de llamadas antes del mensaje de error "Sorry! Attempt to access restricted file."',
 ),
 'Debug_Email_Send_To_Inbucket'=> array(
-	'valuetype' => 'Booleano',
+	'valuetype' => 'Texto',
 	'category' => 'Depuración',
 	'values' => 'InBucket SMTP Listener',
 	'definition' => 'Si se establece, el valor se utilizará como servidor de correo saliente',
@@ -214,12 +214,6 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar o Esconder el Reloj Mundial en la barra de herramientas',
 ),
-'Application_Display_Calculator' => array(
-	'valuetype' => 'Booleano',
-	'category' => 'Aplicación',
-	'values' => '0 | 1',
-	'definition' => 'Mostrar o Esconder la Calculadora en la barra de herramientas',
-),
 'Application_Display_Mini_Calendar' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
@@ -297,12 +291,6 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Webservice',
 	'values' => '0 | 1',
 	'definition' => 'Habilita o Deshabilita el acceso al servicio de SOAP del portal del cliente.',
-),
-'SOAP_Outlook_Enabled' => array(
-	'valuetype' => 'Booleano',
-	'category' => 'Webservice',
-	'values' => '0 | 1',
-	'definition' => 'Habilita o Deshabilita el acceso al servicio de SOAP de Outlook.',
 ),
 'Application_Default_Action' => array(
 	'valuetype' => 'Texto',
@@ -590,7 +578,13 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
 	'values' => '',
-	'definition' => 'Nombre de la aplicación que se presentará en pantalla.',
+	'definition' => 'Nombre de la aplicación que se presentará como título de la variable Application_UI_NameHTML.',
+),
+'Application_UI_NameHTML' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Nombre de la aplicación que se presentará en pantalla. Por defecto tendrá el valor de la variable Application_UI_NameHTML.',
 ),
 'Application_UI_Version' => array(
 	'valuetype' => 'Texto',
@@ -1671,6 +1665,72 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Mostrar columnas de búsqueda en la tabla de vista maestro-detalle.',
+),
+'Application_CSS_Properties' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'ruta al archivo de variables CSS',
+	'definition' => 'coreBOS CSS contiene variables que se pueden establecer en el archivo indicado por esta variable. Por defecto, el archivo es include/LD/assets/styles/properties.php',
+),
+'Application_Unique_Identifier' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Identificador único para esta instalación de coreBOS. Útil al agregar logs. Por defecto usa la cadena application_unique_key definida en config.inc.php',
+),
+'RecordVersioningModules' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Activa el control de versiones de registros en la aplicación. Esta variable se establece en Utilidades automáticamente.',
+),
+'SMSNotifier_SendCopyToUser' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Indica si debemos enviar una copia del SMS al usuario que lo envía. El valor predeterminado es 1.',
+),
+'User_MandatoryAuthenticationSQL' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'nombres de usuario separados por coma',
+	'definition' => 'Lista separada por comas de nombres de nombres de usuario que deben autenticarse mediante SQL. El valor predeterminado es el usuario admin.',
+),
+'Webservice_GenDocConversion_Active' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'El servicio web GenDoc (gendoc_convert) está activo o no.',
+),
+'Webservice_Return_FormattedValues' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Devuelve siempre todos los valores en el formato del usuario conectado. De lo contrario, se devuelven algunos valores en el formato de la base de datos.',
+),
+'Webservice_Sync_RecordLimit' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número de registros devueltos por el servicio web Sync. El valor predeterminado es 100',
+),
+'Webservice_Sync_RecordLimitStreaming' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número de registros devueltos por el servicio web Sync en modo Streaming. El valor predeterminado es 100',
+),
+'Workflow_GeoDistance_Nominatim_Server' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'URL',
+	'definition' => 'URL del servicio Nominatim. Por defecto es https://nominatim.openstreetmap.org',
+),
+'Application_AssignUser_Search' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Activa este Variable en instalaciones con una gran cantidad de usuarios para facilitar su búsqueda y selección. El valor predeterminado es 0.',
 ),
 'Email_Template_AutomaticMerge' => array(
 	'valuetype' => 'Boolean',
