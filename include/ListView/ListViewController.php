@@ -103,16 +103,13 @@ class ListViewController {
 		}
 	}
 
-	/**This function generates the List view entries in a list view
-	 * Param $focus - module object
-	 * Param $result - resultset of a listview query
-	 * Param $navigation_array - navigation values in an array
-	 * Param $relatedlist - check for related list flag
-	 * Param $returnset - list query parameters in url string
-	 * Param $edit_action - Edit action value
-	 * Param $del_action - delete action value
-	 * Param $oCv - vtiger_customview object
-	 * Returns an array type
+	/** This function generates the List view entries in a list view
+	 * @param object module
+	 * @param string module name
+	 * @param resultset of a list view query
+	 * @param array navigation values
+	 * @param boolean skip adding actions or not
+	 * @return array
 	 */
 	public function getListViewEntries($focus, $module, $result, $navigationInfo, $skipActions = false) {
 		global $theme, $default_charset, $current_user, $currentModule, $adb;
