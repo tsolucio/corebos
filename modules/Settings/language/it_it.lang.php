@@ -927,5 +927,7 @@ $mod_strings = array (
 	'LBL_MERGE' => 'Unisci',
 	'LBL_IMPORT' => 'Importare',
 	'LBL_EXPORT' => 'Esportare',
+	'LBL_RELATED_MODULE' => 'Related Module',
+	'LBL_RL_LABEL' => 'Label',
 	);
 ?>
