@@ -606,6 +606,7 @@ $app_strings = array (
 	'LBL_RECORDS' => 'Registros',
 	'LBL_SCROLL' => '[Arriba]',
 	'LBL_EXPAND_COLLAPSE' => 'Expandir/Contraer',
+	'LBL_COLLAPSE' => 'Contraer',
 	'LBL_RCPY_ADDRESS' => 'Copiar Envío a Factura',
 	'LBL_LCPY_ADDRESS' => 'Copiar Factura a Envío',
 	'LBL_RECORD_ID' => 'ID de Registro',
