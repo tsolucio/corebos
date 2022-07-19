@@ -201,7 +201,8 @@ function csrf_ob_handler($buffer, $flags) {
  * @return boolean true if check passes or is not necessary, false if failure.
  */
 function csrf_check($fatal = true) {
-	if (empty($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+	$check_query_string = strpos($_SERVER['QUERY_STRING'], '_operationarg');
+	if (empty($check_query_string) && (empty($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST')) {
 		return true;
 	}
 	$valid_ips = explode(',', GlobalVariable::getVariable('Application_CSRF_Valid_IP', '', '', Users::getActiveAdminId()));
