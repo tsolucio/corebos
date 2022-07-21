@@ -271,6 +271,17 @@ class GridListView {
 		$findRelatedModule = '';
 		$fieldPermission = getProfile2FieldPermissionList($this->module, $profileid);
 		foreach ($listview_header_search as $fName => $fValue) {
+			if ($fName == 'cblvactioncolumn') {
+				$lv_arr = array(
+					'fieldname' => $fName,
+					'fieldvalue' => html_entity_decode($fValue),
+					'uitype' => '',
+					'tooltip' => false,
+					'edit' => false
+				);
+				array_push($listview_header_arr, $lv_arr);
+				continue;
+			}
 			$fieldInfo = VTCacheUtils::lookupFieldInfo($this->tabid, $fName);
 			$tooltip = ToolTipExists($fName, $this->tabid);
 			if (!$fieldInfo) {
