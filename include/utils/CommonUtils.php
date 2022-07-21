@@ -1269,10 +1269,9 @@ function getBlockOpenClosedStatus($module, $disp_view) {
 	$result = $adb->pquery($query, array(getTabid($module)));
 	$aBlockStatus = array();
 	while ($b = $adb->fetch_array($result)) {
-		if (!is_null($b['isrelatedlist']) && $b['isrelatedlist'] != 0) {
-			$sLabelVal = $b['blocklabel'];
-		} else {
-			$sLabelVal = getTranslatedString($b['blocklabel'], $module);
+		$sLabelVal = decode_html_force($b['blocklabel']);
+		if (is_null($b['isrelatedlist']) || $b['isrelatedlist'] == 0) {
+			$sLabelVal = getTranslatedString($sLabelVal, $module);
 		}
 		$aBlockStatus[$sLabelVal] = $b['display_status'];
 	}
@@ -1325,10 +1324,9 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		$blockid_list[] = $blockid;
 		$block_label[$blockid] = $adb->query_result($result, $i, 'blocklabel');
 		$isrelatedlist = $adb->query_result($result, $i, 'isrelatedlist');
-		if (!is_null($isrelatedlist) && $isrelatedlist != 0) {
-			$sLabelVal = $block_label[$blockid];
-		} else {
-			$sLabelVal = getTranslatedString($block_label[$blockid], $module);
+		$sLabelVal = decode_html_force($block_label[$blockid]);
+		if (is_null($isrelatedlist) || $isrelatedlist == 0) {
+			$sLabelVal = getTranslatedString($sLabelVal, $module);
 		}
 		$aBlockStatus[$sLabelVal] = $adb->query_result($result, $i, 'display_status');
 	}
