@@ -1404,8 +1404,16 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 			continue;
 		}
 		$filter =$value['searchcondition'];
-		$sfields = $value['searchfields'];
-		$rfields = $value['showfields'];
+		if (is_string($value['searchfields'])) {
+			$sfields = explode(',', $value['searchfields']);
+		} else {
+			$sfields = $value['searchfields'];
+		}
+		if (is_string($value['showfields'])) {
+			$rfields = explode(',', $value['showfields']);
+		} else {
+			$rfields = $value['showfields'];
+		}
 		$queryGenerator = new QueryGenerator($searchinmodule, $current_user);
 		if (empty($term)) {
 			$term='%';
