@@ -1464,7 +1464,7 @@ function getCustomBlocks($module, $disp_view) {
 	for ($i = 0; $i < $noofrows; $i++) {
 		$hasrelatedlist = $adb->query_result($result, $i, 'isrelatedlist');
 		$blockid = $adb->query_result($result, $i, 'blockid');
-		$block_label[$blockid] = $adb->query_result($result, $i, 'blocklabel');
+		$block_label[$blockid] = decode_html_force($adb->query_result($result, $i, 'blocklabel'));
 		$sLabelVal = getTranslatedString($block_label[$blockid], $module);
 		$block_list[] = $sLabelVal;
 		$inlineEditBlock = "modules/$module/{$block_label[$blockid]}_edit.tpl";
