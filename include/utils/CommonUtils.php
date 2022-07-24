@@ -1322,9 +1322,9 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	for ($i = 0; $i < $noofrows; $i++) {
 		$blockid = $adb->query_result($result, $i, 'blockid');
 		$blockid_list[] = $blockid;
-		$block_label[$blockid] = $adb->query_result($result, $i, 'blocklabel');
+		$block_label[$blockid] = decode_html_force($adb->query_result($result, $i, 'blocklabel'));
 		$isrelatedlist = $adb->query_result($result, $i, 'isrelatedlist');
-		$sLabelVal = decode_html_force($block_label[$blockid]);
+		$sLabelVal = $block_label[$blockid];
 		if (is_null($isrelatedlist) || $isrelatedlist == 0) {
 			$sLabelVal = getTranslatedString($sLabelVal, $module);
 		}
