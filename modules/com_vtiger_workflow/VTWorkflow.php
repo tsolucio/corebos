@@ -158,6 +158,7 @@ class Workflow {
 		$this->executionCondition = $row['execution_condition'];
 		$this->schtypeid = isset($row['schtypeid']) ? $row['schtypeid'] : '';
 		$this->schtime = isset($row['schtime']) ? $row['schtime'] : '';
+		$this->multipleschtime = isset($row['multipleschtime']) ? $row['multipleschtime'] : '';
 		$this->schdayofmonth = isset($row['schdayofmonth']) ? $row['schdayofmonth'] : '';
 		$this->schdayofweek = isset($row['schdayofweek']) ? $row['schdayofweek'] : '';
 		$this->schannualdates = isset($row['schannualdates']) ? $row['schannualdates'] : '';
@@ -418,7 +419,40 @@ class Workflow {
 	}
 
 	public function getWFScheduleTime() {
+		/**
+		 * Algorithm
+		 * 1. sort multipleschtime in asc order
+		 * 2. find schtime on multipleschtime sorted array
+		 * 3. If found , next value it will be next time trigger
+		 * 4. next value of it will be next time trigger
+		 * 5. update schtime value with new value
+		 */
+		if (isset($this->multipleschtime)) {
+			$multipleschtime = explode(",", $this->multipleschtime);
+			usort($multipleschtime, 'sortByTime');
+
+			$currentTrigger = array_search($this->schtime, $multipleschtime);
+			if (!$currentTrigger || !isset($multipleschtime[$currentTrigger + 1])) {
+				return $this->schtime;
+			}
+
+				$nextTiggerTime = $currentTrigger + 1;
+				//update schtime
+				$this->updateSchtime($nextTiggerTime);
+				return $nextTiggerTime;
+		}
 		return $this->schtime;
+	}
+
+	public function updateSchtime($schtime) {
+		global $adb;
+		$adb->pquery('update com_vtiger_workflows set schtime=? where workflow_id=?', [$schtime, $this->id]);
+	}
+
+	public function sortByTime($time1, $time2) {
+		$t1 = strtotime($time1);
+		$t2 = strtotime($time2);
+		return $t1 - $t2;
 	}
 
 	public function getWFScheduleDay() {
