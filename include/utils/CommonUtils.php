@@ -1297,6 +1297,9 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		if (isset($_REQUEST['MDCurrentRecord'])) {
 			coreBOS_Session::set('MDCurrentRecord', $_REQUEST['MDCurrentRecord']);
 		}
+		if (isset($_REQUEST['RLFieldName'])) {
+			coreBOS_Session::set('RLFieldName', $_REQUEST['RLFieldName']);
+		}
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$mtype = $cbMap->column_fields['maptype'];
@@ -2972,6 +2975,25 @@ function getUItypeByFieldName($module, $fieldname) {
 	}
 	$log->debug('< getUItypeByFieldName');
 	return $uitype;
+}
+
+/**
+ * Function to check if the field is mandatory
+ * @param string module name
+ * @param string field name
+ * @return string type of data
+ */
+function isMandatoryField($module, $fieldname) {
+	global $log, $adb;
+	$log->debug('> isMandatoryField ' . $module);
+	$result = $adb->pquery('select typeofdata from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	if ($result && $adb->num_rows($result)>0) {
+		list($tod, $mandatory) = explode('~', $result->fields['typeofdata']);
+	} else {
+		$tod = '';
+	}
+	$log->debug('< isMandatoryField');
+	return $mandatory;
 }
 
 /**
