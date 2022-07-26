@@ -205,7 +205,8 @@
 							<div id='scheduledTime' class='wfsclear' style='padding:5px 0px;display:{if $workflow->schtypeid < 2 || $workflow->schtypeid eq 8}none{else}block{/if};'>
 								<div class="wfslabel">{'LBL_AT_TIME'|@getTranslatedString:$MODULE_NAME}</div>
 								<div style='margin-left:6px;float:left;' id='schtimerow'>
-									<input type="hidden" name="schtime" value="{$schdtime_12h}" id="schtime" style="width:60px" class="time_field">
+									{* <input type="hidden" name="schtime" value="{$schdtime_12h}" id="schtime" style="width:60px" class="time_field"> *}
+									{include file='com_vtiger_workflow/datepicker.tpl'}
 								</div>
 							</div>
 							{* show minutes interval*}
