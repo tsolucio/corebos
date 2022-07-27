@@ -445,7 +445,8 @@ const ListView = {
 						RequestParams.searchtype = ListView.SearchParams.searchtype;
 					}
 					lvdataGridInstance[ListView.Instance].setRequestParams(RequestParams);
-				}
+				},
+				contextMenu: null
 			});
 			ListView.loader('hide');
 			ListView.noData();
@@ -1326,7 +1327,8 @@ const DocumentsView = {
 							RequestParams.searchtype = ListView.SearchParams.searchtype;
 						}
 						lvdataGridInstance[ListView.Instance].setRequestParams(RequestParams);
-					}
+					},
+					contextMenu: null
 				});
 				ListView.loader('hide');
 				ListView.registerEvent(url, fldId);
