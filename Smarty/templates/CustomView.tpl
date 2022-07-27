@@ -25,56 +25,58 @@
 <input type="hidden" id="user_dateformat" name="user_dateformat" value="{$DATEFORMAT}">
 <input type="hidden" name="permit_all" value="{$PERMITALL}" />
 <script type="text/javascript">
-function mandatoryCheck()
-{ldelim}
-        var mandatorycheck = false;
-        var i,j;
-        var manCheck = new Array({$MANDATORYCHECK});
-        var showvalues = "{$SHOWVALUES}";
-        if(manCheck)
-        {ldelim}
-                var isError = false;
-                var errorMessage = "";
-                if (trim(document.CustomView.viewName.value) == "") {ldelim}
-                        isError = true;
-                        errorMessage += "\n{$MOD.LBL_VIEW_NAME}";
-                {rdelim}
-                // Here we decide whether to submit the form.
-                if (isError == true) {ldelim}
-                        alert("{$MOD.Missing_required_fields}:" + errorMessage);
-                        return false;
-                {rdelim}
-		for(i=1;i<=9;i++)
-                {ldelim}
-                        var columnvalue = document.getElementById("column"+i).value;
-                        if(columnvalue != null)
-                        {ldelim}
-                                for(j=0;j<manCheck.length;j++)
-                                {ldelim}
-                                        if(columnvalue == manCheck[j])
-                                        {ldelim}
-                                                mandatorycheck = true;
-                                        {rdelim}
-                                {rdelim}
-                                if(mandatorycheck == true)
-                                {ldelim}
-					if((document.getElementById("jscal_field_date_start").value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) || (document.getElementById("jscal_field_date_end").value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0))
+var Application_FilterValidateMandatoryFields = 1;
+GlobalVariable_getVariable('Application_FilterValidateMandatoryFields', 1, (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	Application_FilterValidateMandatoryFields = obj.Application_FilterValidateMandatoryFields;
+}, function (error) {
+	Application_FilterValidateMandatoryFields = 0;
+});
+function mandatoryCheck() {
+	if (Application_FilterValidateMandatoryFields == 0) {
+		return true;
+	}
+	var mandatorycheck = false;
+	var i,j;
+	var manCheck = new Array({$MANDATORYCHECK});
+	var showvalues = "{$SHOWVALUES}";
+	if(manCheck) {
+		var isError = false;
+		var errorMessage = "";
+		if (trim(document.CustomView.viewName.value) == "") {
+			isError = true;
+			errorMessage += "\n{$MOD.LBL_VIEW_NAME}";
+		}
+		// Here we decide whether to submit the form.
+		if (isError == true) {
+			alert("{$MOD.Missing_required_fields}:" + errorMessage);
+			return false;
+		}
+		for(i=1;i<=9;i++) {
+			var columnvalue = document.getElementById("column"+i).value;
+			if(columnvalue != null) {
+				for(j=0;j<manCheck.length;j++) {
+					if(columnvalue == manCheck[j]) {
+						mandatorycheck = true;
+					}
+				}
+				if(mandatorycheck == true) {
+					if((document.getElementById("jscal_field_date_start").value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) || (document.getElementById("jscal_field_date_end").value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0)) {
 						return stdfilterdateValidate();
-					else
+					} else {
 						return true;
-                                {rdelim}else
-                                {ldelim}
-                                        mandatorycheck = false;
-                                {rdelim}
-                        {rdelim}
-                {rdelim}
-        {rdelim}
-        if(mandatorycheck == false)
-        {ldelim}
-                alert("{$APP.MUSTHAVE_ONE_REQUIREDFIELD}"+showvalues);
-        {rdelim}
-        return false;
-{rdelim}
+					}
+				} else {
+					mandatorycheck = false;
+				}
+			}
+		}
+	}
+	if(mandatorycheck == false) {
+		alert("{$APP.MUSTHAVE_ONE_REQUIREDFIELD}"+showvalues);
+	}
+	return false;
+}
 </script>
 
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
