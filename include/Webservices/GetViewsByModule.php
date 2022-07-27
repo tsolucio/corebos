@@ -148,6 +148,7 @@ function cbws_getViewsInformation($viewids, $module) {
 		}
 		$filter['fields'] = $fields;
 		$filter['default'] = ($dft==$cvrow['cvid']);
+		$filter['userid'] = $cvrow['userid'];
 		$filters[$cvrow['cvid']] = $filter;
 	}
 	return $filters;

@@ -193,58 +193,43 @@ class CustomView extends CRMEntity {
 	 * @return string custom view combo
 	 */
 	public function getCustomViewCombo($viewid = '', $markselected = true) {
+		require_once 'include/Webservices/GetViewsByModule.php';
 		global $adb, $current_user, $app_strings;
-		$tabid = getTabid($this->customviewmodule);
+		$getViewsByModule = getViewsByModule($this->customviewmodule, $current_user);
 		$userprivs = $current_user->getPrivileges();
-
 		$shtml_user = '';
 		$shtml_pending = '';
 		$shtml_public = '';
 		$shtml_others = '';
-
 		$selected = 'selected';
 		if (!$markselected) {
 			$selected = '';
 		}
-
-		$ssql = 'select vtiger_customview.*, vtiger_users.ename
-			from vtiger_customview
-			inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype
-			left join vtiger_users on vtiger_customview.userid = vtiger_users.id
-			where vtiger_tab.tabid=?';
-		$sparams = array($tabid);
-
-		if (!$userprivs->isAdmin()) {
-			$ssql .= ' and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or ';
-			$ssql .= " vtiger_customview.userid in(select vtiger_user2role.userid
-				from vtiger_user2role
-				inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
-				where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%'))";
-			$sparams[] = $current_user->id;
-		}
-		$ssql .= ' ORDER BY viewname';
+		$Application_All_Filter_Show = GlobalVariable::getVariable('Application_All_Filter_Show', 1);
 		$cuserroles = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
-		$result = $adb->pquery($ssql, $sparams);
-		while ($cvrow = $adb->fetch_array($result)) {
-			if ($cvrow['viewname'] == 'All') {
-				$cvrow['viewname'] = $app_strings['COMBO_ALL'];
+		foreach ($getViewsByModule['filters'] as $cvid => $cvrow) {
+			$cvrow['cvid'] = $cvid;
+			$cvrow['ename'] = $current_user->ename;
+			if ($cvrow['name'] == 'All' && $Application_All_Filter_Show == 0) {
+				continue;
+			}
+			if ($cvrow['name'] == 'All') {
+				$cvrow['name'] = $app_strings['COMBO_ALL'];
 			} else { /** Should the filter shown?  */
 				$return = cbEventHandler::do_filter('corebos.filter.listview.filter.show', $cvrow);
 				if (!$return) {
 					continue;
 				}
 			}
-
 			$option = '';
-			$viewname = $cvrow['viewname'];
+			$viewname = $cvrow['name'];
 			if ($cvrow['status'] == CV_STATUS_DEFAULT || $cvrow['userid'] == $current_user->id) {
 				$disp_viewname = $viewname;
 			} else {
 				$userName = getFullNameFromArray('Users', $cvrow);
 				$disp_viewname = $viewname . ' [' . $userName . '] ';
 			}
-
-			if ($cvrow['setdefault'] == 1 && $viewid == '') {
+			if ($cvrow['default'] && $viewid == '') {
 				$option = "<option $selected value=\"" . $cvrow['cvid'] . "\">" . $disp_viewname . "</option>";
 				$this->setdefaultviewid = $cvrow['cvid'];
 			} elseif ($cvrow['cvid'] == $viewid) {
@@ -253,7 +238,6 @@ class CustomView extends CRMEntity {
 			} else {
 				$option = "<option value=\"" . $cvrow['cvid'] . "\">" . $disp_viewname . "</option>";
 			}
-
 			// Add the option to combo box at appropriate section
 			if ($option != '') {
 				if ($cvrow['status'] == CV_STATUS_DEFAULT || $cvrow['userid'] == $current_user->id) {
