@@ -4,6 +4,9 @@
 
 	<!-- tabs -->
 	<arg name="tab-width" value="4"/>
+	<rule ref="PSR1">
+		<exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps" />
+	</rule>
 	<rule ref="PSR2">
 		<exclude name="PSR1.Files.SideEffects" />
 		<exclude name="PSR1.Classes.ClassDeclaration" />
