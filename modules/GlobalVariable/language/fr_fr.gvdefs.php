@@ -1732,6 +1732,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Activate this GV for installs with a large number of users to permit searching and selecting easier. Default is 0.',
 ),
+'Application_All_Filter_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Hide the default "All" filter. By default it is shown.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {
