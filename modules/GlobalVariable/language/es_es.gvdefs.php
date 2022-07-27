@@ -1733,16 +1733,16 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Activa este Variable en instalaciones con una gran cantidad de usuarios para facilitar su búsqueda y selección. El valor predeterminado es 0.',
 ),
 'Application_All_Filter_Show' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'Hide the default "All" filter. By default it is shown.',
+	'definition' => 'Oculta el filtro predeterminado "Todos". Por defecto, se muestra.',
 ),
 'Application_FilterValidateMandatoryFields' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'By default when creating a filter you have to include at least 1 mandatory field. For the cases when the users don\'t want to include mandatory fields on the filter set this variable to 0. Default is 1.',
+	'definition' => 'Al crear un filtro, debes incluir al menos 1 campo obligatorio. Para los casos en que los usuarios no quieren incluir campos obligatorios en el filtro, pon esta variable a 0. El valor predeterminado es 1.',
 ),
 );
 
