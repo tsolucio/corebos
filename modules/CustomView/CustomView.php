@@ -205,7 +205,7 @@ class CustomView extends CRMEntity {
 		if (!$markselected) {
 			$selected = '';
 		}
-		$Application_All_Filter_Show = GlobalVariable::getVariable('Application_All_Filter_Show', 1);
+		$Application_All_Filter_Show = GlobalVariable::getVariable('Application_All_Filter_Show', 1, $this->customviewmodule);
 		$cuserroles = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
 		foreach ($getViewsByModule['filters'] as $cvid => $cvrow) {
 			$cvrow['cvid'] = $cvid;
