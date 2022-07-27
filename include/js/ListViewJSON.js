@@ -1036,20 +1036,19 @@ const ListView = {
 			ListView.Request(url, 'get').then(function (response) {
 				const no_data_template = document.getElementsByClassName('tui-grid-layer-state-content')[index];
 				const grid_template = document.getElementsByClassName('tui-grid-content-area')[index];
-				const mod_label = document.getElementsByClassName('hdrLink')[0].innerText;
 				grid_template.style.height = '240px';
 				let create_template = '';
 				let import_template = '';
 				if (response.CreateView == 'yes' && ListView.Module != '' && gVTModule != 'RecycleBin') {
 					create_template = `
 					<a href="index.php?module=${ListView.Module}&action=EditView&return_action=DetailView">
-						<button class="slds-button slds-button_neutral">${alert_arr.LBL_CREATE} ${mod_label}</button>
+						<button class="slds-button slds-button_neutral">${alert_arr.LBL_CREATE} ${gVTModuleLabel}</button>
 					</a>`;
 				}
 				if (response.Import == 'yes' && ListView.Module != '' && gVTModule != 'RecycleBin') {
 					import_template = `
 					<a class="slds-card__footer-action" href="index.php?module=${ListView.Module}&action=Import&step=1&return_module=${ListView.Module}&return_action=ListView">
-						${alert_arr.LBL_IMPORT} ${mod_label}
+						${alert_arr.LBL_IMPORT} ${gVTModuleLabel}
 					</a>`;
 				}
 				no_data_template.innerHTML = `
