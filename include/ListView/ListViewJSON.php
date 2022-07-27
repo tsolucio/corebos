@@ -256,7 +256,7 @@ class GridListView {
 		//add action in header
 		$actionPermission = getTabsActionPermission($profileid)[$this->tabid];
 		$controller = new ListViewController($adb, $current_user, $queryGenerator);
-		$listview_header_search = $controller->getBasicSearchFieldInfoList();
+		$listview_header_search = $controller->getListViewHeaderArray();
 		if (isset($_REQUEST['isRecycleModule'])) {
 			$rbfields = $queryGenerator->getFields();
 			if (!in_array('modifiedtime', $rbfields)) {
@@ -278,6 +278,24 @@ class GridListView {
 					'uitype' => '',
 					'tooltip' => false,
 					'edit' => false
+				);
+				array_push($listview_header_arr, $lv_arr);
+				continue;
+			}
+			if (strpos($fName, '.')) {
+				list($modName, $fldName) = explode('.', $fName);
+				if ($modName == 'Users') {
+					$fldName = strtolower($fldName);
+				} else {
+					$fldName = strtolower($modName.$fldName);
+				}
+				$lv_arr = array(
+					'fieldname' => $fldName,
+					'fieldvalue' => html_entity_decode($fValue.' ('.getTranslatedString($modName).')'),
+					'uitype' => '',
+					'tooltip' => false,
+					'edit' => false,
+					'sortable' => false,
 				);
 				array_push($listview_header_arr, $lv_arr);
 				continue;

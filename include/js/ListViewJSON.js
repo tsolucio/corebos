@@ -174,6 +174,10 @@ const ListView = {
 			const uitype = headerObj[index].uitype;
 			const tooltip = headerObj[index].tooltip;
 			let edit = headerObj[index].edit;
+			let sortableConfig = headerObj[index].sortable;
+			if (sortableConfig !== undefined) {
+				sortable = sortableConfig;
+			}
 			let editor;
 			let formatter;
 			let values = {};

@@ -770,6 +770,29 @@ class ListViewController {
 		return cbEventHandler::do_filter('corebos.filter.listview.header', $header);
 	}
 
+	public function getListViewHeaderArray() {
+		global $theme, $current_user;
+		$fields = $this->queryGenerator->getFields();
+		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
+		$moduleFields = $meta->getModuleFields();
+		$accessibleFieldList = array_keys($moduleFields);
+		if ($this->queryGenerator->getReferenceFieldInfoList()) {
+			$accessibleFieldList = array_merge($this->queryGenerator->getReferenceFieldNameList(), $accessibleFieldList);
+		}
+		$listViewFields = array_intersect($fields, $accessibleFieldList);
+		$headerFields = array();
+		foreach ($listViewFields as $fieldName) {
+			if (strpos($fieldName, '.')) {
+				list($mName, $fName) = explode('.', $fieldName);
+				$headerFields[$fieldName] = getTranslatedString($fName, $mName);
+			} else {
+				$field = $moduleFields[$fieldName];
+				$headerFields[$fieldName] = getTranslatedString($field->getFieldLabelKey(), $this->queryGenerator->getModule());
+			}
+		}
+		return cbEventHandler::do_filter('corebos.filter.listview.header', $headerFields);
+	}
+
 	public function getBasicSearchFieldInfoList() {
 		$fields = $this->queryGenerator->getFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
