@@ -30,7 +30,7 @@ GlobalVariable_getVariable('Application_FilterValidateMandatoryFields', 1, (type
 	var obj = JSON.parse(response);
 	Application_FilterValidateMandatoryFields = obj.Application_FilterValidateMandatoryFields;
 }, function (error) {
-	Application_FilterValidateMandatoryFields = 0;
+	Application_FilterValidateMandatoryFields = 1;
 });
 function mandatoryCheck() {
 	if (Application_FilterValidateMandatoryFields == 0) {
