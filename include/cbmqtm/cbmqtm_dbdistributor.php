@@ -53,7 +53,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 			$deliverafter = 0;
 		}
 		if (empty($deliverRange)) {
-			$deliverRange = array('deliverStartTime'=>'08:00:00', 'deliverEndTime'=>'12:00:00', 'canSendOnSaturday'=>1, 'canSendOnSunday'=>1);
+			$deliverRange = array('deliverStartTime'=>'00:00:59', 'deliverEndTime'=>'23:59:59', 'canSendOnSaturday'=>1, 'canSendOnSunday'=>1);
 		}
 		$deliverStartTime = (isset($deliverRange['deliverStartTime'])) ? $deliverRange['deliverStartTime'] : null;
 		$deliverEndTime = (isset($deliverRange['deliverEndTime'])) ? $deliverRange['deliverEndTime'] : null;
