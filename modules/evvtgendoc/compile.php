@@ -1078,7 +1078,6 @@ function eval_imagen($entity, $id, $module) {
 		} else {
 			return 'modules/evvtgendoc/no_image_entity.jpg';
 		}
-		var_dump($focus->column_fields, $entid, $att_name);
 	}
 	if ($att_name=='') {
 		$mname = getSalesEntityType($entid);
