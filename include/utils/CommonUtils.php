@@ -2378,7 +2378,7 @@ function validateImageFile($file_details) {
 	} else {
 		$saveimage = 'false';
 		$imgtypeerror = coreBOS_Session::get('image_type_error');
-		coreBOS_Session::set('image_type_error', $imgtypeerror.'<br> &nbsp;&nbsp;<b>' . $file_details['name'] . '</b>' . $app_strings['MSG_IS_NOT_UPLOADED']);
+		coreBOS_Session::set('image_type_error', $imgtypeerror.'<br>   <b>' . $file_details['name'] . '</b>' . $app_strings['MSG_IS_NOT_UPLOADED']);
 		$log->debug("Invalid Image type $filetype");
 	}
 
