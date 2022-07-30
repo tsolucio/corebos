@@ -59,7 +59,7 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('MODE', $focus->mode);
 	$smarty->assign('CHECK', $tool_buttons);
 
-	$smarty->assign('NAME', $focus->column_fields[$focus->def_detailview_recname]);
+	$smarty->assign('NAME', empty($focus->column_fields[$focus->def_detailview_recname]) ? '' : $focus->column_fields[$focus->def_detailview_recname]);
 	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
 
 	// Module Sequence Numbering
