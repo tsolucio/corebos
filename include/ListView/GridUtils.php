@@ -631,7 +631,7 @@ function getRelatedListGridResponse($map) {
 				$scrow['related_fieldname'] = $Targetfieldname;
 				$scrow['record_permissions'] = array(
 					'child_edit' => isPermitted($originmodule, 'EditView', $scentityidfield)
-			);
+				);
 				$_children[] = array_filter($scrow, 'is_string', ARRAY_FILTER_USE_KEY);
 			}
 			if (!empty($_children)) {
@@ -725,11 +725,12 @@ function gridRelatedListActionColumn($renderer, $map) {
 }
 
 function gridUnrelate($adb, $request) {
-	$result = $adb->pquery('select tablename from vtiger_field where tabid=? and fieldname=?', array(getTabid($request['detail_module']), $request['fieldname']));
+	$result = $adb->pquery('select tablename, columnname from vtiger_field where tabid=? and fieldname=?', array(getTabid($request['detail_module']), $request['fieldname']));
 	if ($adb->num_rows($result) == 1 && isPermitted($request['detail_module'], 'EditView', $request['detail_id']) == 'yes') {
 		$entity = getEntityFieldNames($request['detail_module']);
+		$columnname = $adb->query_result($result, 0, 'columnname');
 		$tablename = $adb->query_result($result, 0, 'tablename');
-		$adb->pquery("update {$tablename} set {$request['fieldname']}=0 where {$entity['entityidfield']}=?", array($request['detail_id']));
+		$adb->pquery("update {$tablename} set {$columnname}=0 where {$entity['entityidfield']}=?", array($request['detail_id']));
 		if (!$adb->database->_errorMsg) {
 			return true;
 		}
