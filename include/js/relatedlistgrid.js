@@ -157,7 +157,7 @@ class RLActionRender {
 		let actions = '<div class="slds-button-group" role="group">';
 		if (parent_module != '') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${related_child}', '', ${recordid}, true);" title="${alert_arr['JSLBL_Delete']}">
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${related_child}', '', ${recordid}, true);" title="${alert_arr['JSLBL_Create']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 				</svg>

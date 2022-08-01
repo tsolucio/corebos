@@ -697,7 +697,7 @@ function getFieldNameByFieldId($FieldId) {
 	if ($adb->num_rows($rs) > 0) {
 		return $adb->query_result($rs, 0, 'fieldname');
 	}
-	return '';	
+	return '';
 }
 
 function gridRelatedListActionColumn($renderer, $map) {
