@@ -1629,7 +1629,34 @@ class CRMEntity {
 	 * $srcrecord could be empty
 	 */
 	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
-		return false;
+		global $adb;
+		$moduleName = vtlib_purify($_REQUEST['module']);
+		$bmapname = $moduleName.'_ListColumns';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapLC = $cbMap->ListColumns();
+			$condition = $cbMapLC->getConditionPopup();
+			$forfield = $cbMapLC->getForFieldPopup();
+			$fields = $cbMapLC->getSearchFieldsName();
+			if (empty($forfield) || empty($condition) || $fieldname != $forfield) {
+				return $query;
+			}
+			if (!empty($condition)) {
+				$wherepos = stripos($query, 'where');
+				$query_body = substr($query, 0, $wherepos-1);
+				$workflowScheduler = new WorkFlowScheduler($adb);
+				$workflow = new Workflow();
+				$wfvals['module_name'] = $moduleName;
+				$wfvals['test'] = $condition;
+				$workflow->setup($wfvals);
+				$query = $workflowScheduler->getWorkflowQuery($workflow, array_values($fields));
+				$wherepos = stripos($query, 'where');
+				$query_cond = substr($query, $wherepos+5);
+				$query = $query_body.' where '.$query_cond;
+			}
+		}
+		return $query;
 	}
 
 	/**
