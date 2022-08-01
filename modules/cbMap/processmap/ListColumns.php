@@ -50,6 +50,8 @@
 	 </field>
 	 ...
 	</columns>
+	<condition></condition>
+	<forfield></forfield>
   </popup>
   <deduplication>
 	<linkfield></linkfield>
@@ -133,6 +135,14 @@ class ListColumns extends processcbMap {
 		return $this->mapping['cbmapDEDUPLICATION'];
 	}
 
+	public function getConditionPopup() {
+		return $this->mapping['cbmapPOPUP']['Condition'];
+	}
+
+	public function getForFieldPopup() {
+		return $this->mapping['cbmapPOPUP']['ForField'];
+	}
+
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
 		if (empty($xml)) {
@@ -184,6 +194,8 @@ class ListColumns extends processcbMap {
 				$this->mapping['cbmapPOPUP']['SearchFields'][$label] = array($table => $columnname);
 				$this->mapping['cbmapPOPUP']['SearchFieldsName'][$label] = (string)$v->name;
 			}
+			$this->mapping['cbmapPOPUP']['Condition'] = (string)$xml->popup->condition;
+			$this->mapping['cbmapPOPUP']['ForField'] = (string)$xml->popup->forfield;
 		}
 		if (isset($xml->relatedlists)) {
 			foreach ($xml->relatedlists->relatedlist as $v) {
