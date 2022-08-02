@@ -128,7 +128,7 @@ class LinkRender {
 				edit_query_string = ListView.encodeQueryData(edit_query);
 				el.href = `index.php?${edit_query_string}`;
 			} else {
-				let fieldType = props.grid.getValue(rowKey, 'uitype_'+columnName);
+				let fieldType = props.grid.getValue(rowKey, 'uitype_' + columnName);
 				let fieldValue = props.grid.getValue(rowKey, columnName);
 				if (fieldType == '17') {
 					el = document.createElement('a');
@@ -314,7 +314,7 @@ class DeleteButtonRender {
 		let rowKey = props.rowKey;
 		let el = document.createElement('span');
 		let actions = `				
-				<button class="slds-button slds-button_destructive delete" title=""  onclick="deleteRow(${rowKey})" name="Delete">
+				<button class="slds-button slds-button_destructive delete" title=""  onclick="deleteChRow(${rowKey})" name="Delete">
 				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use> </svg>
 				DELETE
 				</button>
@@ -344,7 +344,7 @@ class CheckboxWithActionRender {
 	  <div class="slds-form-element">
 		<div class="slds-form-element__control">
 			<span class="slds-checkbox slds-checkbox_standalone">
-			<input type="checkbox" id="checkbox-${currentFieldName}-${rowKey}" name="label" value="" ${ischecked}   onclick='changeCheckbox(${rowKey}, "${currentFieldName}")'/>
+			<input type="checkbox" id="checkbox-${currentFieldName}-${rowKey}" name="label" value="" ${ischecked}   onclick='changeChCheckbox(${rowKey}, "${currentFieldName}")'/>
 			<span class="slds-checkbox_faux"></span>
 			</span>
 		</div>
@@ -364,7 +364,7 @@ class CheckboxWithActionRender {
 }
 
 function CloseUIType10Editor(id, fieldname) {
-	let lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
+	let lastPage = sessionStorage.getItem(gVTModule + '_lastPage');
 	document.getElementById(`popover-${id}-${fieldname}`).remove();
 	ListView.Action = 'inlineedit';
 	ListView.Reload(lastPage);

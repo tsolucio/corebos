@@ -7,7 +7,7 @@
 		<div class="slds-tabs_default">
 			<ul class="slds-tabs_default__nav" role="tablist">
 				<li class="slds-tabs_default__item slds-is-active" title="Settings" id="tab-settings" role="Settings">
-					<a class="slds-tabs_default__link" onclick="showTab('settings')" role="tab" tabindex="0" aria-selected="true"
+					<a class="slds-tabs_default__link" onclick="showChTab('settings')" role="tab" tabindex="0" aria-selected="true"
 						aria-controls="tab-default-1" id="tab-default-1__item">
 						<span class="slds-tabs__left-icon">
 							<span class="slds-icon_container slds-icon-standard-opportunity" title="Settings">
@@ -18,14 +18,16 @@
 						</span>Settings</a>
 				</li>
 				<li class="slds-tabs_default__item"  title="Tables" id="tab-tables" role="table">
-					<a class="slds-tabs_default__link" onclick="showTab('tables')" role="tab" tabindex="-1" aria-selected="false"
-						aria-controls="tab-default-2" id="tab-default-2__item">
+					<a class="slds-tabs_default__link" onclick="showChTab('tables')" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-2__item">
 						<span class="slds-tabs__left-icon">
 							<span class="slds-icon_container slds-icon-standard-case" title="table">
 								<svg class="slds-icon slds-icon_small" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#case"></use>
 								</svg>
-							</span> </span>Tables</a>
+							</span> 
+							</span>
+							Tables
+							</a>
 				</li>
 			</ul>
 			<div id="tab-data-settings" class="slds-tabs_default__content  slds-show" role="tabpanel"
@@ -139,7 +141,7 @@
 				<div class="slds-modal__container slds-p-around_none">
 					<header class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
 						<h2 id="header43" class="slds-text-body_regular">
-							<a class="slds-button slds-button_neutral" onclick="addRow()">Add Table</a>
+							<a class="slds-button slds-button_neutral" onclick="addChRow()">Add Table</a>
 						</h2>
 					</header>
 					<div id="chgrid" class="" ></div>
@@ -148,3 +150,8 @@
 		</div>
 	</div>
 </section>
+<script>
+$.getScript("modules/Utilities/Utilities.js", function(){
+ });
+
+</script>

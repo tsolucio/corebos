@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-if (typeof(Utilities) == 'undefined') {
+if (typeof (Utilities) == 'undefined') {
 
 	/*
 	 * Namespaced javascript class for Utilities
@@ -65,28 +65,28 @@ if (typeof(Utilities) == 'undefined') {
 			// for Incoming Mail Server
 			if (form.ic_mail_server_type.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-server-type').addClass('slds-has-error');
-				jQuery('#form-error-ic-server-type').append('<span>'+Utilities.i18n('JSLBL_Choose_Server_Type')+'</span>');
+				jQuery('#form-error-ic-server-type').append('<span>' + Utilities.i18n('JSLBL_Choose_Server_Type') + '</span>');
 				jQuery('#form-error-ic-server-type').show();
 				return false;
 			}
 
 			if (form.ic_mail_server_name.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-servername').addClass('slds-has-error');
-				jQuery('#form-error-ic-server-name').append('<span>'+Utilities.i18n('JSLBL_SERVERNAME_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-ic-server-name').append('<span>' + Utilities.i18n('JSLBL_SERVERNAME_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-ic-server-name').show();
 				return false;
 			}
 
 			if (form.ic_mail_server_username.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-username').addClass('slds-has-error');
-				jQuery('#form-error-ic-server-username').append('<span>'+Utilities.i18n('JSLBL_USERNAME_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-ic-server-username').append('<span>' + Utilities.i18n('JSLBL_USERNAME_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-ic-server-username').show();
 				return false;
 			}
 
 			if (form.ic_mail_server_password.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-password').addClass('slds-has-error');
-				jQuery('#form-error-ic-server-password').append('<span>'+Utilities.i18n('JSLBL_PASSWORD_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-ic-server-password').append('<span>' + Utilities.i18n('JSLBL_PASSWORD_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-ic-server-password').show();
 				return false;
 			}
@@ -94,21 +94,21 @@ if (typeof(Utilities) == 'undefined') {
 			// for Outgoing Mail Server
 			if (form.og_mail_server_name.value == '' && form.og_mail_server_active.checked) {
 				jQuery('#og-div-server-name').addClass('slds-has-error');
-				jQuery('#form-error-og-server-name').append('<span>'+Utilities.i18n('JSLBL_SERVERNAME_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-og-server-name').append('<span>' + Utilities.i18n('JSLBL_SERVERNAME_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-og-server-name').show();
 				return false;
 			}
 
 			if (form.og_mail_server_username.value == '' && form.og_mail_server_active.checked) {
 				jQuery('#og-div-server-username').addClass('slds-has-error');
-				jQuery('#form-error-og-server-username').append('<span>'+Utilities.i18n('JSLBL_USERNAME_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-og-server-username').append('<span>' + Utilities.i18n('JSLBL_USERNAME_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-og-server-username').show();
 				return false;
 			}
 
 			if (form.og_mail_server_password.value == '' && form.og_mail_server_active.checked) {
 				jQuery('#ic-div-server-password').addClass('slds-has-error');
-				jQuery('#form-error-og-server-password').append('<span>'+Utilities.i18n('JSLBL_PASSWORD_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-og-server-password').append('<span>' + Utilities.i18n('JSLBL_PASSWORD_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-og-server-password').show();
 				return false;
 			}
@@ -116,9 +116,9 @@ if (typeof(Utilities) == 'undefined') {
 			Utilities.progress_show(Utilities.i18n('JSLBL_Saving_And_Verifying'), '...');
 			jQuery.ajax({
 				method: 'POST',
-				url: 'index.php?'+Utilities._baseurl() + '&' + jQuery(form).serialize()
+				url: 'index.php?' + Utilities._baseurl() + '&' + jQuery(form).serialize()
 			}).done(function (transport) {
-				var response_obj =  JSON.parse(transport);
+				var response_obj = JSON.parse(transport);
 				if (response_obj.ic_validation_error_status) {
 					jQuery('#ic-validation-success').css('display', 'none');
 					jQuery('#ic-validation-error').css('display', 'block');
@@ -150,11 +150,11 @@ if (typeof(Utilities) == 'undefined') {
 		* Progress indicator handlers.
 		*/
 		progress_show: function (msg, suffix) {
-			if (typeof(suffix) == 'undefined') {
+			if (typeof (suffix) == 'undefined') {
 				suffix = '';
 			}
 			VtigerJS_DialogBox.block();
-			if (typeof(msg) != 'undefined') {
+			if (typeof (msg) != 'undefined') {
 				jQuery('#_progressmsg_').html(msg + suffix.toString());
 			}
 			jQuery('#_progress_').show();
@@ -188,10 +188,10 @@ if (typeof(Utilities) == 'undefined') {
 
 		/* Translation support */
 		i18n: function (key) {
-			if (typeof(Utilitiesi18nInfo) != 'undefined') {
+			if (typeof (Utilitiesi18nInfo) != 'undefined') {
 				return Utilitiesi18nInfo[key];
 			}
-			if (typeof(alert_arr) != 'undefined' && alert_arr[key]) {
+			if (typeof (alert_arr) != 'undefined' && alert_arr[key]) {
 				return alert_arr[key];
 			}
 			return key;
@@ -266,113 +266,122 @@ if (typeof(Utilities) == 'undefined') {
 	};
 }
 
+
+
 var Grid = tui.Grid;
 var gridInstance = {};
 const defaultURL = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions';
 
-document.addEventListener('DOMContentLoaded', function (event) {
-	loadJS(
-		'index.php?module=Utilities&action=UtilitiesAjax&file=getjslanguage'
-	).then(() => {
-		gridInstance = new Grid({
-			el: document.getElementById('chgrid'),
-			columns: [
-				{
-					name: 'ws_name',
-					header: mod_alert_arr.LBL_WS_NAME,
-					sortingType: 'desc',
-					editor: 'text',
-					onAfterChange(ev) {
-						const idx = gridInstance.getIndexOfRow(ev.rowKey);
-						updateFieldData(ev, idx);
-					},
+// document.addEventListener('DOMContentLoaded', function (event) {
+// 	loadJS(
+// 		'index.php?module=Utilities&action=UtilitiesAjax&file=getjslanguage'
+// 	).then(() => {
+// 		loadTUIGridData();
+
+// 	});
+// });
+
+function loadTUIGridData() {
+	gridInstance = new Grid({
+		el: document.getElementById('chgrid'),
+		columns: [
+			{
+				name: 'ws_name',
+				header: mod_alert_arr.LBL_WS_NAME,
+				sortingType: 'desc',
+				editor: 'text',
+				onAfterChange(ev) {
+					const idx = gridInstance.getIndexOfRow(ev.rowKey);
+					updateFieldData(ev, idx);
 				},
-				{
-					name: 'table_name',
-					header: mod_alert_arr.LBL_TABLE_NAME,
-					sortingType: 'desc',
-					editor: 'text',
-					onAfterChange(ev) {
-						const idx = gridInstance.getIndexOfRow(ev.rowKey);
-						updateFieldData(ev, idx);
-					},
+			},
+			{
+				name: 'table_name',
+				header: mod_alert_arr.LBL_TABLE_NAME,
+				sortingType: 'desc',
+				editor: 'text',
+				onAfterChange(ev) {
+					const idx = gridInstance.getIndexOfRow(ev.rowKey);
+					updateFieldData(ev, idx);
 				},
-				{
-					name: 'access',
-					header: mod_alert_arr.LBL_ACCESS,
-					whiteSpace: 'normal',
-					sortingType: 'desc',
-					renderer: {
-						type: CheckboxWithActionRender,
-					}
-				},
-				{
-					name: 'create',
-					header: mod_alert_arr.LBL_CREATE,
-					whiteSpace: 'normal',
-					sortingType: 'desc',	
-					renderer: {
-						type: CheckboxWithActionRender,
-					}
-				},
-				{
-					name: 'read',
-					header: mod_alert_arr.LBL_READ,
-					whiteSpace: 'normal',
-					sortingType: 'desc',
-					renderer: {
-						type: CheckboxWithActionRender,
-					}
-				},
-				{
-					name: 'write',
-					header: mod_alert_arr.LBL_WRITE,
-					whiteSpace: 'normal',
-					sortingType: 'desc',
-					
-					renderer: {
-						type: CheckboxWithActionRender,
-					}
-				},
-				{
-					name: 'action',
-					header: mod_alert_arr.LBL_ACTION,
-					whiteSpace: 'normal',
-					sortingType: 'desc',
-					sortable: false,
-					renderer: {
-						type: DeleteButtonRender,
-					}
-				},
-			],
-			data:{
-				api: {
-					readData: {
-						url: `${defaultURL}&functiontocall=clickHouse&method=getTables`,
-						method: 'GET'
-					}
+			},
+			{
+				name: 'access',
+				header: mod_alert_arr.LBL_ACCESS,
+				whiteSpace: 'normal',
+				sortingType: 'desc',
+				renderer: {
+					type: CheckboxWithActionRender,
 				}
 			},
-			useClientSort: false,
-			rowHeight: 'auto',
-			bodyHeight: 500,
-			scrollX: false,
-			scrollY: false,
-			header: {
-				align: 'left',
-				valign: 'top',
+			{
+				name: 'create',
+				header: mod_alert_arr.LBL_CREATE,
+				whiteSpace: 'normal',
+				sortingType: 'desc',
+				renderer: {
+					type: CheckboxWithActionRender,
+				}
 			},
-		});
-		tui.Grid.applyTheme('striped');
+			{
+				name: 'read',
+				header: mod_alert_arr.LBL_READ,
+				whiteSpace: 'normal',
+				sortingType: 'desc',
+				renderer: {
+					type: CheckboxWithActionRender,
+				}
+			},
+			{
+				name: 'write',
+				header: mod_alert_arr.LBL_WRITE,
+				whiteSpace: 'normal',
+				sortingType: 'desc',
+
+				renderer: {
+					type: CheckboxWithActionRender,
+				}
+			},
+			{
+				name: 'action',
+				header: mod_alert_arr.LBL_ACTION,
+				whiteSpace: 'normal',
+				sortingType: 'desc',
+				sortable: false,
+				renderer: {
+					type: DeleteButtonRender,
+				}
+			},
+		],
+		data: {
+			api: {
+				readData: {
+					url: `${defaultURL}&functiontocall=clickHouse&method=getTables`,
+					method: 'GET'
+				}
+			}
+		},
+		useClientSort: false,
+		rowHeight: 'auto',
+		bodyHeight: 500,
+		scrollX: false,
+		scrollY: false,
+		header: {
+			align: 'left',
+			valign: 'top',
+		},
 	});
-});
+	tui.Grid.applyTheme('striped');
+}
 
 
 
-function addRow() {
+function addChRow() {
 	const total_row = gridInstance.getRowCount();
 	const lastrowvalue = gridInstance.getValue(total_row - 1, 'name');
-	if (lastrowvalue === '') return false;
+	if (lastrowvalue === '') {
+		return false;
+	}
 
 	gridInstance.appendRow(
 		{
@@ -383,14 +392,14 @@ function addRow() {
 			read: '1',
 			write: '1',
 			delete: '1',
-		})
+		});
 }
 
-function changeCheckbox(rowId, fieldName){
+function changeChCheckbox(rowId, fieldName) {
 	let newValue = 1;
-	if(document.getElementById('checkbox-'+fieldName+'-'+rowId).checked){
+	if (document.getElementById('checkbox-' + fieldName + '-' + rowId).checked) {
 		newValue = 1;
-	}else{
+	} else {
 		newValue = 0;
 	}
 
@@ -412,7 +421,7 @@ function changeCheckbox(rowId, fieldName){
 		create,
 		read,
 		write,
-	}
+	};
 	updateAjax(data);
 }
 
@@ -423,9 +432,9 @@ function deleteRow(rowId) {
 	jQuery.ajax({
 		method: 'POST',
 		url: `${defaultURL}&functiontocall=clickHouse&method=deleteTable`,
-		data: {table_name}
+		data: { table_name }
 	}).then(function (response) {
-		console.log(response)
+		console.log(response);
 	});
 }
 
@@ -434,11 +443,11 @@ function updateFieldData(ev, idx) {
 	const columnChanged = ev.columnName;
 	const oldValue = ev.prevValue;
 	const newValue = ev.value;
-	
-	const table_name = columnChanged === 'table_name' ?  newValue : gridInstance.getValue(idx, 'table_name');
-	const old_table_name = columnChanged !== 'table_name' ?  table_name : oldValue;
+
+	const table_name = columnChanged === 'table_name' ? newValue : gridInstance.getValue(idx, 'table_name');
+	const old_table_name = columnChanged !== 'table_name' ? table_name : oldValue;
 	const ws_name = columnChanged === 'ws_name' ? newValue : gridInstance.getValue(idx, 'ws_name');
-	const old_ws_name = columnChanged === 'ws_name' ?  oldValue : ws_name;
+	const old_ws_name = columnChanged === 'ws_name' ? oldValue : ws_name;
 	const access = columnChanged === 'access' ? newValue : gridInstance.getValue(idx, 'access');
 	const create = columnChanged === 'create' ? newValue : gridInstance.getValue(idx, 'create');
 	const read = columnChanged === 'read' ? newValue : gridInstance.getValue(idx, 'read');
@@ -453,22 +462,22 @@ function updateFieldData(ev, idx) {
 		old_table_name,
 		old_ws_name,
 
-	}
+	};
 	updateAjax(data);
 }
 
-function updateAjax(data){
-		jQuery.ajax({
-			method: 'POST',
-			url: `${defaultURL}&functiontocall=clickHouse&method=addUpdateTable`,
-			data: data
-		}).then(function (response) {
-			console.log(response)
-		});
+function updateAjax(data) {
+	jQuery.ajax({
+		method: 'POST',
+		url: `${defaultURL}&functiontocall=clickHouse&method=addUpdateTable`,
+		data: data
+	}).then(function (response) {
+		console.log(response);
+	});
 }
 
 
-function showTab(tab) {
+function showChTab(tab) {
 	var hide = '';
 	var show = '';
 	if (tab === 'settings') {
@@ -477,6 +486,12 @@ function showTab(tab) {
 	} else {
 		hide = 'settings';
 		show = 'tables';
+		loadJS(
+			'index.php?module=Utilities&action=UtilitiesAjax&file=getjslanguage'
+		).then(() => {
+			loadTUIGridData();
+
+		});
 	}
 	document.getElementById('tab-' + hide).classList.remove('slds-is-active');
 	document.getElementById('tab-' + show).classList.add('slds-is-active');
