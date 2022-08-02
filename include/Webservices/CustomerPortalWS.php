@@ -120,20 +120,36 @@ function vtws_getAssignedUserList($module, $user) {
 	global $log, $default_charset;
 	$log->debug('> getAssignedUserList '.$module);
 	$types = vtws_listtypes(null, $user);
-	if (!in_array($module, $types['types'])) {
-		return '[]';
-	}
-	$userprivs = $user->getPrivileges();
-	$tabid=getTabid($module);
-	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
-		$users = get_user_array(false, 'Active', $user->id, 'private');
-	} else {
-		$users = get_user_array(false, 'Active', $user->id);
-	}
-	$usrwsid = vtyiicpng_getWSEntityId('Users');
+	$modules = explode(',', $module);
+	$isMoreThanOne = count($modules)>1;
 	$usrinfo = array();
-	foreach ($users as $id => $usr) {
-		$usrinfo[] = array('userid' => $usrwsid.$id,'username'=> trim(html_entity_decode($usr, ENT_QUOTES, $default_charset)));
+	$usrwsid = vtyiicpng_getWSEntityId('Users');
+	foreach ($modules as $module) {
+		if (!in_array($module, $types['types'])) {
+			if ($isMoreThanOne) {
+				continue;
+			} else {
+				return '[]';
+			}
+		}
+		$userprivs = $user->getPrivileges();
+		$tabid=getTabid($module);
+		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
+			$users = get_user_array(false, 'Active', $user->id, 'private');
+		} else {
+			$users = get_user_array(false, 'Active', $user->id);
+		}
+		if ($isMoreThanOne) {
+			$usrinfo[$module] = array();
+		}
+		foreach ($users as $id => $usr) {
+			$userArray = array('userid' => $usrwsid.$id,'username'=> trim(html_entity_decode($usr, ENT_QUOTES, $default_charset)));
+			if ($isMoreThanOne) {
+				$usrinfo[$module][] = $userArray;
+			} else {
+				$usrinfo[] = $userArray;
+			}
+		}
 	}
 	return json_encode($usrinfo);
 }
