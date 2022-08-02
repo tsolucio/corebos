@@ -205,7 +205,7 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 				}
 				$schedulerTimeOptions[] = $t.':'.$m .' am';
 			} else {
-				$schedulerTimeOptions[] = $counter.':'.$m .' pm';
+				$schedulerTimeOptions[] = $t.':'.$m .' pm';
 				$counter++;
 			}
 		}
