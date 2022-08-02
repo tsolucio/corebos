@@ -53,9 +53,9 @@
 	<conditions>
 	 <condition>
 	  <forfield></forfield>
-      <value></value>
-     </condition>
-     ...
+	  <value></value>
+	 </condition>
+	...
 	</conditions>
   </popup>
   <deduplication>
