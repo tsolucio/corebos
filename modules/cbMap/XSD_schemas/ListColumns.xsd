@@ -60,6 +60,20 @@
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
+              <xs:element name="conditions">
+                <xs:complexType mixed="true">
+                  <xs:sequence>
+                    <xs:element name="condition">
+                      <xs:complexType mixed="true">
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="forfield"/>
+                          <xs:element type="xs:string" name="value"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>

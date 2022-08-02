@@ -191,19 +191,18 @@ class Documents extends CRMEntity {
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$cbMapLC = $cbMap->ListColumns();
-			$condition = $cbMapLC->getConditionPopup();
-			$forfield = $cbMapLC->getForFieldPopup();
-			$fields = $cbMapLC->getSearchFieldsName();
-			if (empty($forfield) || empty($condition) || $fieldname != $forfield) {
-				return $query;
+			$conditions = $cbMapLC->getConditionsPopup();
+			if (!empty($conditions[$fieldname]) && json_decode($conditions[$fieldname]) == null) {
+				return $conditions[$fieldname];
 			}
-			if (!empty($condition)) {
+			if (!empty($conditions[$fieldname])) {
+				$fields = $cbMapLC->getSearchFieldsName();
 				$wherepos = stripos($query, 'where');
 				$query_body = substr($query, 0, $wherepos-1);
 				$workflowScheduler = new WorkFlowScheduler($adb);
 				$workflow = new Workflow();
 				$wfvals['module_name'] = $moduleName;
-				$wfvals['test'] = $condition;
+				$wfvals['test'] = $conditions[$fieldname];
 				$workflow->setup($wfvals);
 				$query = $workflowScheduler->getWorkflowQuery($workflow, array_values($fields));
 				$wherepos = stripos($query, 'where');

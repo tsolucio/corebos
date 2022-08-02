@@ -44,8 +44,6 @@
           <xs:complexType>
             <xs:sequence>
               <xs:element type="xs:string" name="linkfield"/>
-              <xs:element type="xs:condition" name="condition" minOccurs="0" maxOccurs="1"/>
-              <xs:element type="xs:forfield" name="forfield" minOccurs="0" maxOccurs="1"/>
               <xs:element name="columns">
                 <xs:complexType>
                   <xs:sequence>
