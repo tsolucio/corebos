@@ -1214,11 +1214,31 @@ class CustomView extends CRMEntity {
 		return array('status' => $this->_status, 'userid' => $this->_userid);
 	}
 
+	public function CustomPermissions($record_id) {
+		global $adb;
+		$rs = $adb->pquery('select * from vtiger_cbcvmanagement inner join vtiger_crmentity on crmid=cbcvmanagementid where deleted=0 and cvid=?', array(
+			$record_id
+		));
+		if ($adb->num_rows($rs) == 1) {
+			return array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
+		}
+		return false;
+	}
+
 	//Function to check if the current user is able to see the customView
 	public function isPermittedCustomView($record_id, $action, $module) {
 		global $log, $current_user;
 		$log->debug("> isPermittedCustomView $record_id,$action,$module");
-
+		//check for custom permissions
+		$cp = $this->CustomPermissions($record_id);
+		if ($cp && !is_admin($current_user)) {
+			$pmvalue = array('no', 'yes');
+			if ($action == 'EditView') {
+				return $pmvalue[$cp['cvupdate']];
+			} elseif ($action == 'Delete') {
+				return $pmvalue[$cp['cvdelete']];
+			}
+		}
 		$permission = 'yes';
 		$permit_all = isset($_REQUEST['permitall']) ? vtlib_purify($_REQUEST['permitall']) : 'false';
 
