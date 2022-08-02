@@ -784,7 +784,10 @@ class ListViewController {
 		foreach ($listViewFields as $fieldName) {
 			if (strpos($fieldName, '.')) {
 				list($mName, $fName) = explode('.', $fieldName);
-				$headerFields[$fieldName] = getTranslatedString($fName, $mName);
+				$relmeta = $this->queryGenerator->getMeta($mName);
+				$relmoduleFields = $relmeta->getModuleFields();
+				$field = $relmoduleFields[$fName];
+				$headerFields[$fieldName] = getTranslatedString($field->getFieldLabelKey(), $mName);
 			} else {
 				$field = $moduleFields[$fieldName];
 				$headerFields[$fieldName] = getTranslatedString($field->getFieldLabelKey(), $this->queryGenerator->getModule());
