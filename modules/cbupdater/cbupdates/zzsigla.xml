@@ -13,4 +13,11 @@
 	<classname>installcboffers</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>install multiple modules</description>
+	<filename>build/changeSets/sigla/installmodules.php</filename>
+	<classname>installmodules</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
