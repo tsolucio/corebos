@@ -161,8 +161,17 @@ if ($sql_error) {
 		$limit_start_rec = ($start-1) * $list_max_entries_per_page;
 		$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
-			$count_result = $adb->query(mkCountQuery($list_query));
-			$noofrows = $adb->query_result($count_result, 0, 0);
+			$cache = new corebos_cache();
+			$cacheId = $currentModule.'#NumofRows#'.$viewid.'#'.$current_user->id;
+			if ($cache->isUsable() && $cache->getCacheClient()->has($cacheId)) {
+				$noofrows = $cache->getCacheClient()->get($cacheId);
+			} else {
+				$count_result = $adb->query(mkCountQuery($list_query));
+				$noofrows = $adb->query_result($count_result, 0, 0);
+				if ($cache->isUsable()) {
+					$cache->getCacheClient()->set($cacheId, $noofrows);
+				}
+			}
 		} else {
 			$noofrows = null;
 		}
