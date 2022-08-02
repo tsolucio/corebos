@@ -438,7 +438,7 @@ class Workflow {
 
 				$nextTiggerTime = $currentTrigger + 1;
 				//update schtime
-				$this->updateSchtime($nextTiggerTime);
+				$this->updateSchtime($multipleschtime[$nextTiggerTime]);
 				return $nextTiggerTime;
 		}
 		return $this->schtime;
