@@ -1,0 +1,36 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cbrfpdetails</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbrfpdetails` (
+  `cbrfpdetailsid` int(11) NOT NULL,
+  `cbrfpdetailsno` varchar(255) DEFAULT NULL,
+  `related_product` int(11) DEFAULT NULL,
+  `quantity` decimal(20,0) DEFAULT NULL,
+  `unit_price` decimal(16,2) DEFAULT NULL,
+  `cbrfp_relation` int(11) DEFAULT NULL,
+  `offerdetail_code` varchar(56) DEFAULT NULL,
+  `offerdetail_rate` int(11) DEFAULT NULL,
+  `offerdetail_notes` varchar(250) DEFAULT NULL,
+  `offerdetail_condition` varchar(16) DEFAULT NULL,
+  `related_pricebook` varchar(50) DEFAULT NULL,
+  `offerdetail_image` varchar(250) DEFAULT NULL,
+  `vat_tax` decimal(10,2) DEFAULT NULL,
+  `net_price` decimal(10,2) DEFAULT NULL,
+  `total_price` decimal(10,2) DEFAULT NULL,
+  `vat_value` decimal(10,2) DEFAULT NULL,
+  `usageunit` varchar(100) DEFAULT NULL,
+  `sequence_no` int(11) DEFAULT NULL,
+  PRIMARY KEY (`cbrfpdetailsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbrfpdetailscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbrfpdetailscf` (
+  `cbrfpdetailsid` int(11) NOT NULL,
+  PRIMARY KEY (`cbrfpdetailsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

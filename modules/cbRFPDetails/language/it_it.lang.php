@@ -1,0 +1,43 @@
+<?php
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ************************************************************************************/
+
+$mod_strings = array(
+	'cbRFPDetails ID' => 'ID Dettagli RFP',
+	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
+	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
+	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
+	'LBL_CBOFFERDETAIL_INFORMATION' => 'Informazione Dettagli',
+	'Offer Detail no' => 'Dettagli RFP no',
+	'Product' => 'Prodotto',
+	'Quantity' => 'Q.tà',
+	'Unit Price' => 'Prezz. unit',
+	'Assigned To' => 'Assegnato a ',
+	'LBL_DESCRIPTION_INFORMATION' => 'Descrizione',
+	'Created By' => 'Creato da',
+	'Created Time' => 'Orario creazione',
+	'Modified Time' => 'Orario modifica',
+	'Description' => 'Descrizione',
+	'cbOffers' => 'RFP',
+	'Codice articolo' => 'Codice articolo',
+	'Aliquota' => 'Aliquota',
+	'Note riga' => 'Nota. Desc',
+	'offerdetail_condition' => 'Cond.',
+	'Related PriceBook' => 'Listino',
+	'cbRFPDetails' => 'Dettagli RFP',
+	'SINGLE_cbRFPDetails' => 'Dettagli RFP',
+	'Image' => 'Immagine',
+	'IVA' => 'IVA(%)',
+	'Net Price' => 'Prezzo Netto',
+	'Tax Amount' => 'Totale',
+	'VAT Value' => 'VAT Valore',
+	'Unit Measure' => 'Unità',
+	'Sequence Number' => 'Sequence Number',
+);
+?>

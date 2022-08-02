@@ -1,0 +1,35 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_receiptcards</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_receiptcards` (
+  `receiptcardid` int(19) NOT NULL,
+  `receiptcards_no` varchar(100) DEFAULT NULL,
+  `vendorid` int(11) DEFAULT NULL,
+  `adoption_date` date DEFAULT NULL,
+  `delivery_no` varchar(255) DEFAULT '',
+  `type` varchar(100) DEFAULT NULL,
+  `adjustment` decimal(25,3) DEFAULT NULL,
+  `salescommission` decimal(29,3) DEFAULT NULL,
+  `exciseduty` decimal(29,3) DEFAULT NULL,
+  `subtotal` decimal(29,3) DEFAULT NULL,
+  `total` decimal(29,3) DEFAULT NULL,
+  `taxtype` varchar(25) DEFAULT '',
+  `discount_percent` decimal(29,3) DEFAULT NULL,
+  `discount_amount` decimal(29,3) DEFAULT NULL,
+  `s_h_amount` decimal(29,3) DEFAULT NULL,
+  `currency_id` varchar(19) DEFAULT '',
+  `conversion_rate` decimal(14,3) DEFAULT NULL,
+  PRIMARY KEY (`receiptcardid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_receiptcardscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_receiptcardscf` (
+  `receiptcardid` int(19) NOT NULL,
+  PRIMARY KEY (`receiptcardid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

@@ -1,0 +1,67 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cbrequestforproposal</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbrequestforproposal` (
+  `cbrequestforproposalid` int(11) NOT NULL,
+  `cbrequestforproposalno` varchar(255) DEFAULT NULL,
+  `subject` varchar(100) DEFAULT NULL,
+  `related_client` int(11) DEFAULT NULL,
+  `related_vendor` int(11) DEFAULT NULL,
+  `offer_status` varchar(100) DEFAULT NULL,
+  `version_number` varchar(56) DEFAULT NULL,
+  `document_id` varchar(56) DEFAULT NULL,
+  `doc_date` varchar(56) DEFAULT NULL,
+  `doc_number` varchar(56) DEFAULT NULL,
+  `sigla_prot_type` varchar(56) DEFAULT NULL,
+  `sigla_prot_number` varchar(56) DEFAULT NULL,
+  `sigla_prot_date` varchar(56) DEFAULT NULL,
+  `sigla_internal_number` varchar(56) DEFAULT NULL,
+  `header_note` varchar(56) DEFAULT NULL,
+  `total_amount` decimal(10,2) DEFAULT NULL,
+  `shipping_id` varchar(56) DEFAULT NULL,
+  `shipping_sigla_code` varchar(56) DEFAULT NULL,
+  `shipping_business_name` varchar(56) DEFAULT NULL,
+  `shipping_address1` varchar(56) DEFAULT NULL,
+  `shipping_address2` varchar(56) DEFAULT NULL,
+  `shipping_cap` varchar(56) DEFAULT NULL,
+  `shipping_location` varchar(56) DEFAULT NULL,
+  `shipping_address` varchar(56) DEFAULT NULL,
+  `shipping_province` varchar(56) DEFAULT NULL,
+  `shipping_nation` varchar(56) DEFAULT NULL,
+  `shipping_phone` varchar(56) DEFAULT NULL,
+  `invoice_id` varchar(56) DEFAULT NULL,
+  `sigla_address_code` varchar(56) DEFAULT NULL,
+  `business_name_address` varchar(56) DEFAULT NULL,
+  `address_1` varchar(56) DEFAULT NULL,
+  `address_2` varchar(56) DEFAULT NULL,
+  `postal_code` varchar(56) DEFAULT NULL,
+  `invoice_location` varchar(56) DEFAULT NULL,
+  `municipality_address` varchar(56) DEFAULT NULL,
+  `province_address` varchar(56) DEFAULT NULL,
+  `nation_address` varchar(56) DEFAULT NULL,
+  `addr_phone` varchar(56) DEFAULT NULL,
+  `date_offer` date DEFAULT NULL,
+  `subtotal_amount` decimal(10,2) DEFAULT NULL,
+  `tax_amount` decimal(10,2) DEFAULT NULL,
+  `success_chance` varchar(30) DEFAULT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `vat_value` decimal(10,2) DEFAULT NULL,
+  `terms_conditions` text,
+  `agent_name` varchar(100) DEFAULT NULL,
+  `offer_number` varchar(56) DEFAULT NULL,
+  `rel_docfolder` int(11) DEFAULT NULL,
+  `expected_close_date` date DEFAULT NULL,
+  PRIMARY KEY (`cbrequestforproposalid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbrequestforproposalcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbrequestforproposalcf` (
+  `cbrequestforproposalid` int(11) NOT NULL,
+  PRIMARY KEY (`cbrequestforproposalid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

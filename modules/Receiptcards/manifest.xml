@@ -1,0 +1,558 @@
+<?xml version='1.0'?>
+<module>
+<name>Receiptcards</name>
+<label>Receiptcards</label>
+<parent>Inventory</parent>
+<version>1.2</version>
+<dependencies>
+<vtiger_version>5.4.0</vtiger_version>
+</dependencies>
+<license>
+<inline><![CDATA[
+/*************************************************************************************************
+ * Copyright 2015 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************
+ *  Module       : coreBOS Receive Products
+ *  Version      : 1.2
+ *************************************************************************************************/
+]]></inline>
+</license>
+<tables>
+<table>
+<name>vtiger_receiptcards</name>
+<sql><![CDATA[CREATE TABLE `vtiger_receiptcards` (
+  `receiptcardid` int(19) NOT NULL,
+  `receiptcards_no` varchar(100) DEFAULT NULL,
+  `vendorid` int(11) DEFAULT NULL,
+  `adoption_date` date DEFAULT NULL,
+  `delivery_no` varchar(255) DEFAULT '',
+  `type` varchar(100) DEFAULT NULL,
+  `adjustment` decimal(25,3) DEFAULT NULL,
+  `salescommission` decimal(29,3) DEFAULT NULL,
+  `exciseduty` decimal(29,3) DEFAULT NULL,
+  `subtotal` decimal(29,3) DEFAULT NULL,
+  `total` decimal(29,3) DEFAULT NULL,
+  `taxtype` varchar(25) DEFAULT '',
+  `discount_percent` decimal(29,3) DEFAULT NULL,
+  `discount_amount` decimal(29,3) DEFAULT NULL,
+  `s_h_amount` decimal(29,3) DEFAULT NULL,
+  `currency_id` varchar(19) DEFAULT '',
+  `conversion_rate` decimal(14,3) DEFAULT NULL,
+  PRIMARY KEY (`receiptcardid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_receiptcardscf</name>
+<sql><![CDATA[CREATE TABLE `vtiger_receiptcardscf` (
+  `receiptcardid` int(19) NOT NULL,
+  PRIMARY KEY (`receiptcardid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<blocks>
+<block>
+<label>LBL_RECEIPTCARDS_INFO</label>
+<fields>
+<field>
+<fieldname>receiptcards_no</fieldname>
+<uitype>4</uitype>
+<columnname>receiptcards_no</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Receiptcards No</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+<entityidentifier>
+<entityidfield>receiptcardid</entityidfield>
+<entityidcolumn>receiptcardid</entityidcolumn>
+</entityidentifier>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assigned To</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>20</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>created_user_id</fieldname>
+<uitype>52</uitype>
+<columnname>smcreatorid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created By</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>23</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>createdtime</fieldname>
+<uitype>70</uitype>
+<columnname>createdtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>21</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>modifiedtime</fieldname>
+<uitype>70</uitype>
+<columnname>modifiedtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Modified Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>22</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>vendor_id</fieldname>
+<uitype>10</uitype>
+<columnname>vendorid</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Vendor Name</fieldlabel>
+<readonly>0</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>3</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>Vendors</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>adoption_date</fieldname>
+<uitype>5</uitype>
+<columnname>adoption_date</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Adoption Date</fieldlabel>
+<readonly>0</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>4</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>D~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>delivery_no</fieldname>
+<uitype>1</uitype>
+<columnname>delivery_no</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Delivery No</fieldlabel>
+<readonly>0</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>2</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O~LE~255</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>modifiedby</fieldname>
+<uitype>52</uitype>
+<columnname>modifiedby</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Last Modified By</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>23</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>txtAdjustment</fieldname>
+<uitype>72</uitype>
+<columnname>adjustment</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Adjustment</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>10</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>NN~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>hdnSubTotal</fieldname>
+<uitype>72</uitype>
+<columnname>subtotal</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Sub Total</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>13</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>N~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>hdnGrandTotal</fieldname>
+<uitype>72</uitype>
+<columnname>total</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Total</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>14</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>N~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>hdnTaxType</fieldname>
+<uitype>16</uitype>
+<columnname>taxtype</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Tax Type</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>15</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<picklistvalues>
+</picklistvalues>
+</field>
+<field>
+<fieldname>hdnDiscountPercent</fieldname>
+<uitype>1</uitype>
+<columnname>discount_percent</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Discount Percent</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>16</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>N~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>hdnDiscountAmount</fieldname>
+<uitype>72</uitype>
+<columnname>discount_amount</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Discount Amount</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>17</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>N~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>hdnS_H_Amount</fieldname>
+<uitype>72</uitype>
+<columnname>s_h_amount</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>S&amp;H Amount</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>18</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>N~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>currency_id</fieldname>
+<uitype>117</uitype>
+<columnname>currency_id</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Currency</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>20</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>I~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>conversion_rate</fieldname>
+<uitype>1</uitype>
+<columnname>conversion_rate</columnname>
+<tablename>vtiger_receiptcards</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Conversion Rate</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue>1</defaultvalue>
+<sequence>19</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>N~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_DESCRIPTION_INFO</label>
+<fields>
+<field>
+<fieldname>description</fieldname>
+<uitype>19</uitype>
+<columnname>description</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Description</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_CUSTOM_INFORMATION</label>
+</block>
+<block>
+<label>LBL_RELATED_PRODUCTS</label>
+<fields>
+</fields>
+</block>
+</blocks>
+<customviews>
+<customview>
+<viewname>All</viewname>
+<setdefault>true</setdefault>
+<setmetrics>false</setmetrics>
+<fields>
+<field>
+<fieldname>receiptcards_no</fieldname>
+<columnindex>0</columnindex>
+</field>
+<field>
+<fieldname>delivery_no</fieldname>
+<columnindex>1</columnindex>
+</field>
+<field>
+<fieldname>vendor_id</fieldname>
+<columnindex>2</columnindex>
+</field>
+<field>
+<fieldname>adoption_date</fieldname>
+<columnindex>3</columnindex>
+</field>
+<field>
+<fieldname>description</fieldname>
+<columnindex>4</columnindex>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<columnindex>5</columnindex>
+</field>
+</fields>
+</customview>
+</customviews>
+<sharingaccess>
+<default>public_readwritedelete</default>
+</sharingaccess>
+<relatedlists>
+<relatedlist>
+<function>get_activities</function>
+<label>Activities</label>
+<sequence>1</sequence>
+<presence>0</presence>
+<actions>
+<action>ADD</action>
+<action>SELECT</action>
+</actions>
+<relatedmodule>cbCalendar</relatedmodule>
+</relatedlist>
+<relatedlist>
+<function>get_attachments</function>
+<label>Documents</label>
+<sequence>2</sequence>
+<presence>0</presence>
+<actions>
+<action>ADD</action>
+<action>SELECT</action>
+</actions>
+<relatedmodule>Documents</relatedmodule>
+</relatedlist>
+</relatedlists>
+<events>
+</events>
+<customlinks>
+<customlink>
+<linktype>LISTVIEWBASIC</linktype>
+<linklabel>LBL_RECALCULATE_STOCK</linklabel>
+<linkurl><![CDATA[javascript:recalculateStock()]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>4</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
+<customlink>
+<linktype>DETAILVIEWBASIC</linktype>
+<linklabel>View History</linklabel>
+<linkurl><![CDATA[javascript:ModTrackerCommon.showhistory('$RECORD$')]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+<handler_path><![CDATA[modules/ModTracker/ModTracker.php]]></handler_path>
+<handler_class><![CDATA[ModTracker]]></handler_class>
+<handler><![CDATA[isViewPermitted]]></handler>
+</customlink>
+</customlinks>
+<crons>
+</crons>
+</module>
