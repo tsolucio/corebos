@@ -191,6 +191,7 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$schedulerTimeOptions = array();
 	$counter = 1;
 	for ($t=0; $t < 24; $t++) {
+		 $time = $t < 13 ? $t : $counter++;
 		for ($m = 0; $m < 60; $m+=15) {
 			$m = $m === 0 ? '00' : $m;
 			if ($t === 0) {
@@ -200,13 +201,12 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 
 			if ($t < 13) {
 				if ($t === 12) {
-					$schedulerTimeOptions[] = $t.':'.$m .' pm';
+					$schedulerTimeOptions[] = $time.':'.$m .' pm';
 					continue;
 				}
-				$schedulerTimeOptions[] = $t.':'.$m .' am';
+				$schedulerTimeOptions[] = $time.':'.$m .' am';
 			} else {
-				$schedulerTimeOptions[] = $t.':'.$m .' pm';
-				$counter++;
+				$schedulerTimeOptions[] = $time.':'.$m .' pm';
 			}
 		}
 	}

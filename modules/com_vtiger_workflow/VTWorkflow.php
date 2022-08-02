@@ -418,6 +418,8 @@ class Workflow {
 		return $this->schminuteinterval;
 	}
 
+
+
 	public function getWFScheduleTime() {
 		/**
 		 * Algorithm
@@ -429,16 +431,23 @@ class Workflow {
 		 */
 		if (isset($this->multipleschtime)) {
 			$multipleschtime = explode(",", $this->multipleschtime);
-			usort($multipleschtime, 'sortByTime');
+			usort($multipleschtime, function ($time1, $time2) {
+				$t1 = strtotime($time1);
+				$t2 = strtotime($time2);
+				return $t1 - $t2;
+			});
 
-			$currentTrigger = array_search($this->schtime, $multipleschtime);
-			if (!$currentTrigger || !isset($multipleschtime[$currentTrigger + 1])) {
-				return $this->schtime;
+			$currentTrigger = in_array(date("g:i a", strtotime($this->schtime)), $multipleschtime);
+			if (!$currentTrigger) {
+				$this->updateSchtime($multipleschtime[0]);
+				$nextTiggerTime = $multipleschtime[0];
+			} elseif (!isset($multipleschtime[$currentTrigger + 1])) {
+				$nextTiggerTime = $multipleschtime[count($multipleschtime)-1];
+				$this->updateSchtime($nextTiggerTime);
+			} else {
+				$nextTiggerTime = $multipleschtime[$currentTrigger + 1];
+				$this->updateSchtime($nextTiggerTime);
 			}
-
-				$nextTiggerTime = $currentTrigger + 1;
-				//update schtime
-				$this->updateSchtime($multipleschtime[$nextTiggerTime]);
 				return $nextTiggerTime;
 		}
 		return $this->schtime;
@@ -449,11 +458,6 @@ class Workflow {
 		$adb->pquery('update com_vtiger_workflows set schtime=? where workflow_id=?', [$schtime, $this->id]);
 	}
 
-	public function sortByTime($time1, $time2) {
-		$t1 = strtotime($time1);
-		$t2 = strtotime($time2);
-		return $t1 - $t2;
-	}
 
 	public function getWFScheduleDay() {
 		return $this->schdayofmonth;
