@@ -425,6 +425,8 @@ class GridListView {
 		$reference_field = getEntityFieldNames($this->module);
 		$columnnameVal = $this->getFieldNameByColumn($reference_field['fieldname']);
 		$rowCount = $adb->num_rows($result);
+		$yesValue = getTranslatedString('yes', $this->module);
+		$noValue = getTranslatedString('no', $this->module);
 		for ($i=0; $i < $rowCount; $i++) {
 			$rows = array();
 			$colorizer_row = array();
@@ -440,6 +442,9 @@ class GridListView {
 				$colorizer_row[$fieldName] = $fieldValue;
 				if ($fieldValue == '' || $fieldValue == null) {
 					$rows[$fieldName] = '';
+					if ($fieldType == Field_Metadata::UITYPE_CHECKBOX) {
+						$rows[$fieldName] = $noValue;
+					}
 					continue;
 				}
 				//check field uitypes
@@ -480,9 +485,9 @@ class GridListView {
 					$rows[$fieldName] = $value;
 				} elseif ($fieldType == '56') {
 					if ($fieldValue == 1) {
-						$rows[$fieldName] = getTranslatedString('yes', $this->module);
+						$rows[$fieldName] = $yesValue;
 					} elseif ($fieldValue == 0) {
-						$rows[$fieldName] = getTranslatedString('no', $this->module);
+						$rows[$fieldName] = $noValue;
 					} else {
 						$rows[$fieldName] = '--';
 					}
