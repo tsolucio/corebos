@@ -161,4 +161,11 @@
 	<classname>changeUITypeFinancialFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Drop Foreign Keys</description>
+	<filename>build/changeSets/2022/dropForeignKeys.php</filename>
+	<classname>dropForeignKeys</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
