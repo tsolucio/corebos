@@ -91,28 +91,28 @@ class cbOffers extends CRMEntity {
 	);
 
 	// For Popup window record selection
-	public $popup_fields = array('cboffersno');
+	public $popup_fields = array('subject');
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
 	public $sortby_fields = array();
 
 	// For Alphabetical search
-	public $def_basicsearch_col = 'cboffersno';
+	public $def_basicsearch_col = 'subject';
 
 	// Column value to use on detail view record text display
-	public $def_detailview_recname = 'cboffersno';
+	public $def_detailview_recname = 'subject';
 
 	// Required Information for enabling Import feature
-	public $required_fields = array('cboffersno'=>1);
+	public $required_fields = array('subject'=>1);
 
 	// Callback function list during Importing
 	public $special_functions = array('set_import_assigned_user');
 
-	public $default_order_by = 'cboffersno';
+	public $default_order_by = 'subject';
 	public $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	public $mandatory_fields = array('createdtime', 'modifiedtime', 'cboffersno');
+	public $mandatory_fields = array('createdtime', 'modifiedtime', 'subject');
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
