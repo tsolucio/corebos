@@ -210,10 +210,10 @@ class CustomView extends CRMEntity {
 		foreach ($getViewsByModule['filters'] as $cvid => $cvrow) {
 			$cvrow['cvid'] = $cvid;
 			$cvrow['ename'] = $current_user->ename;
-			if ($cvrow['name'] == 'All' && $Application_All_Filter_Show == 0) {
+			if ($cvrow['raw_name'] == 'All' && $Application_All_Filter_Show == 0) {
 				continue;
 			}
-			if ($cvrow['name'] == 'All') {
+			if ($cvrow['raw_name'] == 'All') {
 				$cvrow['name'] = $app_strings['COMBO_ALL'];
 			} else { /** Should the filter shown?  */
 				$return = cbEventHandler::do_filter('corebos.filter.listview.filter.show', $cvrow);

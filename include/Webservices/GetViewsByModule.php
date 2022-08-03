@@ -112,9 +112,11 @@ function cbws_getViewsInformation($viewids, $module) {
 		$cvrow = $adb->fetch_array($result);
 		if ($cvrow['viewname'] == 'All') {
 			$cvrow['viewname'] = $app_strings['COMBO_ALL'];
+			$cvrow['raw_viewname'] = 'All';
 		}
 		$filter = array(
 			'name' => $cvrow['viewname'],
+			'raw_name' => $cvrow['raw_viewname'],
 			'status' => $cvrow['status'],
 		);
 		$advft_criteria = $customView->getAdvFilterByCvid($cvrow['cvid']);
