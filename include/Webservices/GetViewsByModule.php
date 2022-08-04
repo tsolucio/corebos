@@ -97,7 +97,7 @@ function getViewsByModule($module, $user) {
 }
 
 /** get information about the list of given views
- * @param $viewids :: array Integer
+ * @param array of view IDs
  * @return array view information
  */
 function cbws_getViewsInformation($viewids, $module) {
@@ -110,9 +110,11 @@ function cbws_getViewsInformation($viewids, $module) {
 	foreach ($viewids as $viewid) {
 		$result = $adb->pquery($ssql, array($viewid));
 		$cvrow = $adb->fetch_array($result);
+		$cvrow['raw_viewname'] = $cvrow['viewname'];
 		if ($cvrow['viewname'] == 'All') {
 			$cvrow['viewname'] = $app_strings['COMBO_ALL'];
-			$cvrow['raw_viewname'] = 'All';
+		} else {
+			$cvrow['viewname'] = getTranslatedString($cvrow['viewname'], $module);
 		}
 		$filter = array(
 			'name' => $cvrow['viewname'],
