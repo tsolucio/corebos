@@ -1233,6 +1233,10 @@ class CustomView extends CRMEntity {
 		$cp = $this->CustomPermissions($record_id);
 		if ($cp && !is_admin($current_user)) {
 			$pmvalue = array('no', 'yes');
+			$cvrole = explode(' |##| ', $cp['cvrole']);
+			if (!in_array($current_user->roleid, $cvrole)) {
+				return 'no';
+			}
 			if ($action == 'EditView') {
 				return $pmvalue[$cp['cvupdate']];
 			} elseif ($action == 'Delete') {
