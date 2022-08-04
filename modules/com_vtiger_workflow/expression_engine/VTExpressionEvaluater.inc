@@ -334,7 +334,7 @@ class VTFieldExpressionEvaluater {
 				} else {
 					if (empty($this->env->WorkflowContext)) {
 						$this->env->WorkflowContext = array(
-							'current_row' => $this->env->data
+							'current_row' => $this->env->getData()
 						);
 					}
 					$params = array_map(array($this, 'exec'), $expr->getParams());
