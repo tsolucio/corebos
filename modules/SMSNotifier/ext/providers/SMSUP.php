@@ -53,7 +53,7 @@ class SMSUP implements ISMSProvider {
 		if ($type) {
 			switch (strtoupper($type)) {
 				case self::SERVICE_SEND:
-					default:
+				default:
 					return  self::SERVICE_URI . '/sms/send';
 			}
 		}
@@ -76,23 +76,23 @@ class SMSUP implements ISMSProvider {
 		$params['text'] = $message;
 		$params['to'] = implode(',', $tonumbers);
 
-        $sending = [
-            'api_key' => $params['api_key'],
-            'messages' => [
-                [
-                    'from' => $params['from'],
-                    'to' => $params['to'],
-                    'text' => $params['text']
-                ]
-                ],
-            ];
+		$sending = [
+			'api_key' => $params['api_key'],
+			'messages' => [
+				[
+					'from' => $params['from'],
+					'to' => $params['to'],
+					'text' => $params['text']
+				]
+				],
+			];
 		$serviceURL = $this->getServiceURL(self::SERVICE_SEND);
 		$httpClient = new Vtiger_Net_Client($serviceURL);
 		$httpClient->setHeaders(array(
 			'Content-Type' => 'application/json',
 			'Accept' => 'application/json',
 			'X-Version' => 1,
-        ));
+		));
 		$httpClient->setBody(json_encode($sending));
 		$response = $httpClient->doPost(false);
 		$rsp = json_decode($response, true);
