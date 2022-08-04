@@ -106,10 +106,15 @@ class UserPrivileges {
 	 * @return void
 	 */
 	private function loadUserPrivilegesDB($userid, $withot_sharing = false) {
-		global $adb;
+		global $adb, $default_charset;
 
 		$query = $adb->pquery('SELECT user_data FROM user_privileges WHERE userid=?', array($userid));
-		$result = $adb->query_result($query, 0, 0);
+		if (!$query || $adb->num_rows($query)==0) {
+			UserPrivilegesWriter::setUserPrivileges($userid);
+			UserPrivilegesWriter::setSharingPrivileges($userid);
+			$query = $adb->pquery('SELECT user_data FROM user_privileges WHERE userid=?', array($userid));
+		}
+		$result = html_entity_decode($adb->query_result($query, 0, 0), ENT_QUOTES, $default_charset);
 
 		$user_data = json_decode($result, true);
 
@@ -140,7 +145,7 @@ class UserPrivileges {
 	 * @return void
 	 */
 	private function loadSharingPrivilegesDB($userid) {
-		global $adb;
+		global $adb, $default_charset;
 
 		$query = $adb->pquery('SELECT sharing_data FROM sharing_privileges WHERE userid=?', array($userid));
 
@@ -148,7 +153,7 @@ class UserPrivileges {
 			return;
 		}
 
-		$sharing_data = json_decode($adb->query_result($query, 0, 0), true);
+		$sharing_data = json_decode(html_entity_decode($adb->query_result($query, 0, 0), ENT_QUOTES, $default_charset), true);
 
 		foreach ($sharing_data as $key => $data) {
 			$this->$key = $data;

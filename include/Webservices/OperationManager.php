@@ -25,7 +25,6 @@ class OperationManager {
 	);
 	private $formatObjects;
 	private $inParamProcess;
-	private $sessionManager;
 	private $pearDB;
 	private $operationName;
 	private $type;
@@ -35,9 +34,8 @@ class OperationManager {
 	private $operationId;
 	private $operationParams;
 
-	public function __construct($adb, $operationName, $format, $sessionManager) {
+	public function __construct($adb, $operationName, $format) {
 		$this->format = strtolower($format);
-		$this->sessionManager = $sessionManager;
 		$this->formatObjects = array();
 		foreach ($this->formatsData as $frmt => $frmtData) {
 			require_once $frmtData['includePath'];
@@ -143,13 +141,17 @@ class OperationManager {
 				if (is_array($userDetails)) {
 					return $userDetails;
 				} else {
-					$this->sessionManager->set('authenticatedUserId', $userDetails->id);
-					cbEventHandler::do_action('corebos.login', array($userDetails, $this->sessionManager, 'webservice'));
+					coreBOS_Session::set('authenticated_user_id', $userDetails->id);
+					coreBOS_Session::saveUserID($userDetails->id, coreBOS_Session::id(), 'cbws');
+					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1, 'Users', $userDetails->id)!=1) {
+						coreBOS_Session::deleteUserID($userDetails->id, coreBOS_Session::id(), 'cbws');
+					}
+					cbEventHandler::do_action('corebos.login', array($userDetails, null, 'webservice'));
 					global $adb;
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
 					$userId = vtws_getId($webserviceObject->getEntityId(), $userDetails->id);
 					$vtigerVersion = vtws_getVtigerVersion();
-					return array('sessionName'=>$this->sessionManager->getSessionId(), 'userId'=>$userId, 'version'=>$API_VERSION, 'vtigerVersion'=>$vtigerVersion);
+					return array('sessionName'=>coreBOS_Session::id(), 'userId'=>$userId, 'version'=>$API_VERSION, 'vtigerVersion'=>$vtigerVersion);
 				}
 			}
 		} catch (WebServiceException $e) {

@@ -37,9 +37,11 @@ composer require smi2/phpclickhouse
 
 In php
 ```php
+
 // vendor autoload 
 $db = new ClickHouseDB\Client(['config_array']);
-$db->ping();
+
+if (!$db->ping()) echo 'Error connect';
 ```
 
 Last stable version for 
@@ -64,7 +66,7 @@ $db->database('default');
 $db->setTimeout(1.5);      // 1500 ms
 $db->setTimeout(10);       // 10 seconds
 $db->setConnectTimeOut(5); // 5 seconds
-
+$db->ping(true); // if can`t connect throw exception  
 ```
 
 Show tables:
@@ -823,6 +825,26 @@ $db->isExists($database,$table);
 $db->verbose();
 ```
 
+
+Verbose to file|steam:
+
+```php
+    // init client
+    $cli = new Client($config);
+    $cli->verbose();
+    // temp stream
+    $stream = fopen('php://memory', 'r+');
+    // set stream to curl
+    $cli->transport()->setStdErrOut($stream);
+    // exec curl
+    $st=$cli->select('SElect 1 as ppp');
+    $st->rows();
+    // rewind 
+    fseek($stream,0,SEEK_SET);
+    
+    // output
+    echo stream_get_contents($stream);
+```
 
 
 ### Dev & PHPUnit Test

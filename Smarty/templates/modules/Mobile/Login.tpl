@@ -2,8 +2,7 @@
 <header>
 <title>{'LBL_LOGIN'|@getTranslatedString:'Users'}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link REL="SHORTCUT ICON" HREF="resources/images/favicon.ico">
-<script type="text/javascript" src="../../include/sw-precache/service-worker-registration.js"></script>
+<link REL="SHORTCUT ICON" HREF="../../{$COMPANY_FAVICON}">
 <script type="text/javascript" src="resources/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="resources/jquery.mobile-1.4.5.min.js"></script>
 <link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.5.min.css" >

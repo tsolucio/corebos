@@ -159,7 +159,8 @@ class CLIClient extends Client
 
             if($zip->open($this->path))
             {
-                if(preg_match_all('/(.+):\s+(.+)\r?\n/U', $zip->getFromName('META-INF/MANIFEST.MF'), $match))
+                $content = $zip->getFromName('META-INF/MANIFEST.MF') ?: 'ERROR';
+                if(preg_match_all('/(.+):\s+(.+)\r?\n/U', $content, $match))
                 {
                     foreach($match[1] as $index => $key)
                     {

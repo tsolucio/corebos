@@ -729,7 +729,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 									$value = "<a href='index.php?module=Contacts&action=DetailView&record=" . $contact_id . "'>" . textlength_check($contact_name).'</a>';
 								}
 							}
-						} elseif ($name == 'Product') {
+						} elseif ($name == 'Product' && $fieldname=='productname') {
 							$product_id = textlength_check($adb->query_result($list_result, $i, 'productname'));
 							$value = $product_id;
 						} elseif ($name == 'Account Name') {

@@ -53,7 +53,6 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 	$smarty->assign('MODULE_NAME', $module->label);
 	$smarty->assign('PAGE_NAME', $mod['LBL_WORKFLOW_LIST']);
 	$smarty->assign('PAGE_TITLE', $mod['LBL_AVAILABLE_WORKLIST_LIST']);
-	$smarty->assign('PAGINATION_LIMIT', GlobalVariable::getVariable('Application_Pagination_Limit', '12', $module->name, $current_user->id));
 	$smarty->assign('module', $module);
 	$smarty->assign('MODULE', $module->name);
 	$smarty->assign('LIST_HEADER', array_keys($focus->list_fields_name));

@@ -391,53 +391,68 @@
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<input type="hidden" id="hdtxt_{$keyfldname}" value="{$keyval}">
 				{if $keyoptions.0 eq 'User'}
-					<input name="assigntype" id="assigntype" checked="checked" value="U"
-						onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');" type="radio">&nbsp;{$APP.LBL_USER}
-					{if $keyoptions.2 neq ''}
-						<input name="assigntype" id="assigntype" value="T"
-							onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');"
-							type="radio">&nbsp;{$APP.LBL_GROUP_NAME}
-					{/if}
-					<span id="assign_user" style="display: block;">
-					{else}
-						<input name="assigntype" id="assigntype" value="U"
-							onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');"
-							type="radio">&nbsp;{$APP.LBL_USER}
-						<input name="assigntype" checked="checked" id="assigntype" value="T"
-							onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');"
-							type="radio">&nbsp;{$APP.LBL_GROUP_NAME}
-						<span id="assign_user" style="display: none;">
+					<span class="slds-radio">
+						<input name="assigntype" id="assigntypeu" checked="checked" value="U" type="radio"
+							onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');">
+						<label class="slds-radio__label" for="assigntypeu">
+							<span class="slds-radio_faux"></span>
+							<span class="slds-form-element__label">{$APP.LBL_USER}</span>
+						</label>
+						{if $keyoptions.2 neq ''}
+						<input name="assigntype" id="assigntypeg" value="T" type="radio"
+							onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');">
+						<label class="slds-radio__label" for="assigntypeg">
+							<span class="slds-radio_faux"></span>
+							<span class="slds-form-element__label">{$APP.LBL_GROUP_NAME}</span>
+						</label>
 						{/if}
-						<select id="txtbox_U{$keyfldname}" onchange="setSelectValue('{$keyfldname}')" name="{$keyfldname}"
-							class="small">
-							{foreach item=arr key=id from=$keyoptions.1}
-								{foreach key=sel_value item=value from=$arr}
-									<option value="{$id}" {$value}>{$sel_value}</option>
-								{/foreach}
-							{/foreach}
-						</select>
 					</span>
-					{if $keyoptions.0 eq 'Group'}
-						<span id="assign_team" style="display: block;">
-						{else}
-							<span id="assign_team" style="display: none;">
-							{/if}
-							<select id="txtbox_G{$keyfldname}" onchange="setSelectValue('{$keyfldname}')"
-								name="assigned_group_id" class="groupname small">
-								{foreach item=arr key=id from=$keyoptions.2}
-									{foreach key=sel_value item=value from=$arr}
-										<option value="{$id}" {$value}>{$sel_value}</option>
-									{/foreach}
-								{/foreach}
-							</select>
-						</span>
-
-						<br>
-						<a class="detailview_ajaxbutton ajax_save_detailview"
-							onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-						<a href="javascript:;"
-							onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();"
-							class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+					<span id="assign_user" style="display: block;">
+				{else}
+					<span class="slds-radio">
+						<input name="assigntype" id="assigntypeu" value="U" type="radio"
+							onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');">
+						<label class="slds-radio__label" for="assigntypeu">
+							<span class="slds-radio_faux"></span>
+							<span class="slds-form-element__label">{$APP.LBL_USER}</span>
+						</label>
+						<input name="assigntype" checked="checked" id="assigntypeg" value="T" type="radio"
+							onclick="toggleAssignType(this.value),setSelectValue('{$keyfldname}');">
+						<label class="slds-radio__label" for="assigntypeg">
+							<span class="slds-radio_faux"></span>
+							<span class="slds-form-element__label">{$APP.LBL_GROUP_NAME}</span>
+						</label>
+					</span>
+					<span id="assign_user" style="display: none;">
+				{/if}
+					<select id="txtbox_U{$keyfldname}" onchange="setSelectValue('{$keyfldname}')" name="{$keyfldname}" class="slds-m-around_xxx-small slds-select" data-uitype="{$keyid}">
+						{foreach item=arr key=id from=$keyoptions.1}
+							{foreach key=sel_value item=value from=$arr}
+								<option value="{$id}" {$value}>{$sel_value}</option>
+							{/foreach}
+						{/foreach}
+					</select>
+				</span>
+				{if $keyoptions.0 eq 'Group'}
+					<span id="assign_team" style="display: block;">
+				{else}
+					<span id="assign_team" style="display: none;">
+				{/if}
+					<select id="txtbox_G{$keyfldname}" onchange="setSelectValue('{$keyfldname}')"
+						name="assigned_group_id" class="groupname slds-select slds-m-around_xxx-small" data-uitype="{$keyid}">
+						{foreach item=arr key=id from=$keyoptions.2}
+							{foreach key=sel_value item=value from=$arr}
+								<option value="{$id}" {$value}>{$sel_value}</option>
+							{/foreach}
+						{/foreach}
+					</select>
+				</span>
+				<br>
+				<a class="detailview_ajaxbutton ajax_save_detailview"
+					onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+				<a href="javascript:;"
+					onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();"
+					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
 	</td>

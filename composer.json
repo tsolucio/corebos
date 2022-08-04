@@ -49,8 +49,9 @@
         "geocoder-php/openrouteservice-provider": "1.2",
         "php-http/curl-client": "2.2",
         "mautic/api-library": "3.0",
-        "vaites/php-apache-tika": "1.2.1",
-        "smi2/phpclickhouse": "1.4.1",
-        "fzaninotto/faker": "1.9"
+        "vaites/php-apache-tika": "1.2.4",
+        "smi2/phpclickhouse": "1.4.4",
+        "fzaninotto/faker": "1.9.2",
+        "stefangabos/zebra_session": "3.1.0"
     }
 }

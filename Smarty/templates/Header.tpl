@@ -26,8 +26,6 @@
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
 	<link rel="stylesheet" href="include/style.css" type="text/css" />
-
-	
 	<style type="text/css">
 		html {
 			background: url({$coreBOS_app_coverimage}) no-repeat center center fixed;
@@ -214,25 +212,6 @@
 									</svg>
 									<span class="slds-assistive-text">{$APP.LNK_HELP}</span>
 							</button>
-							{if $SHOWQUICKCREATE}
-							<button id="qchoverbutton" class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_QUICK_CREATE}">
-								<svg class="slds-button__icon" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
-								</svg>
-								<span class="slds-assistive-text">{'LBL_QUICK_CREATE'|@getTranslatedString:$MODULE_NAME}</span>
-							</button>
-							<div class="slds-dropdown slds-dropdown_right qchovermenu">
-								<ul class="slds-dropdown__list cbslds-quickcreate" role="menu" aria-label="{$APP.LBL_QUICK_CREATE}">
-									{foreach item=detail from=$QCMODULE}
-										<li class="slds-dropdown__item cbslds-quickcreate" role="presentation">
-										<a href="javascript:void();" role="menuitem" onclick="QCreate('{$detail.1}');">
-											<span class="slds-truncate" title="{$detail.0}">{$APP.NEW}&nbsp;{$detail.0}</span>
-										</a>
-									</li>
-									{/foreach}
-								</ul>
-							</div>
-							{/if}
 							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon-border" aria-pressed="false" title="{$APP.LBL_LAST_VIEWED}" onclick="panelViewToggle('cbds-last-visited');">
 								<svg class="slds-button__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
@@ -363,7 +342,6 @@
 	{$COREBOS_HEADER_PREMENU}
 	</div>
 	{/if}
-	{if $Application_Menu_Direction!='Vertical'}
 	<div class="noprint">
 		<div class="slds-context-bar">
 			<div class="slds-context-bar__primary slds-context-bar__item_divider-right">
@@ -391,7 +369,6 @@
 		{call cbmenu menu=$MENU}
 		</div>
 	</div>
-	{/if}
 </header>
 <!-- END LDS Global header -->
 <a name="top"></a>
@@ -422,7 +399,7 @@
 			</a>
 		</div>
 		<span id="wafflelabel" class="slds-context-bar__label-action slds-context-bar__app-name slds-m-left_xx-small" onclick="hideVerticalMenu()">
-			<span class="slds-truncate" style="cursor: pointer;" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}d dfgxcv xdfv xcv cv cv </span>
+			<span class="slds-truncate" style="cursor: pointer;" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}</span>
 		</span>
 	</div>
 	{call cbmenuvertical menu=$MENU}

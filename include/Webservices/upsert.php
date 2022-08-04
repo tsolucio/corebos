@@ -51,6 +51,9 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 		//check if all the values that will we be used for comparison exist
 		foreach ($searchFields as $searchField) {
 			$searchField = trim($searchField);
+			if (empty($searchField)) {
+				continue;
+			}
 			if (!isset($element[$searchField])) {
 				throw new WebServiceException(WebServiceErrorCode::$SEARCH_VALUE_NOT_PROVIDED, "No value is provided for the search field: $searchField");
 			}

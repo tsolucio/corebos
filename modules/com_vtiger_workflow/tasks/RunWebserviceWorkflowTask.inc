@@ -128,7 +128,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 			} else {
 				curl_setopt($channel, CURLOPT_CUSTOMREQUEST, $method);
 			}
-			if ($inputtype != 'URL') {
+			if (!empty($listreq) && $inputtype != 'URL') {
 				if ($inputtype=='XML' || in_array('Content-type:application/x-www-form-urlencoded', $headers)
 					|| in_array('Content-type:multipart/form-data', $headers) || in_array('Content-type:text/plain', $headers)
 				) {

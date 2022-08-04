@@ -33,10 +33,10 @@ function modcomms_getModuleinfo() {
 	foreach ($allEntities as $tabid => $mname) {
 		$module_name = getTabModuleName($tabid);
 		$checkres = $adb->pquery(
-			'SELECT businessactionsid 
-			FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
+			'SELECT businessactionsid
+			FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid=vtiger_crmentity.crmid
 			WHERE vtiger_crmentity.deleted=0
-				AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)
+				AND (module_list=? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)
 				AND elementtype_action=?
 				AND linklabel=?',
 			array($module_name, $module_name.' %', '% '.$module_name.' %', '% '.$module_name, 'DETAILVIEWWIDGET', 'DetailViewBlockCommentWidget')

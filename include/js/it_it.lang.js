@@ -46,7 +46,7 @@ var alert_arr = {
 	'DOESNOT_HAVE_MAILIDS':' non ha alcun identificativo di email',
 	'DOESNOT_HAVE_AN_MAILID':'" '+'non ha alcun identificativo di email',
 	'MISSING_REQUIRED_FIELDS':'Mancano dei campi obbligatori:',
-	'READONLY':'\u00E8 in sola lettura',
+	'READONLY':'È in sola lettura',
 	'SELECT_ATLEAST_ONE_USER':'Prego, selezionare almeno un utente',
 	'DISABLE_SHARING_CONFIRMATION':'Sicuro di voler disabilitare le condivisioni selezionate',
 	'USERS':' utente(i) ?',
@@ -138,7 +138,7 @@ var alert_arr = {
 	'REGEXP':'regexp',
 	'Widget_Deleted_Sucessfully':'Widget deleted sucessfully',
 
-	'OPPORTUNITYNAME_CANNOT_BE_EMPTY':'Il campo nome per le opportunit&egrave; non deve essere vuoto',
+	'OPPORTUNITYNAME_CANNOT_BE_EMPTY':'Il campo nome per le opportunitè non deve essere vuoto',
 	'NAME_DESC':' per Nome Cartella & Descrizione',
 	'ENDS_WITH':'finisce con',
 	'SHARED_EVENT_DEL_MSG':'Questo utente non ha autorizzazioni per cancellare o modificare eventi condivisi.',
@@ -197,7 +197,7 @@ var alert_arr = {
 	'EMAIL_CHECK_MSG':'Disabilita accesso al Portale per salvare l\'email come campo vuoto',
 	'IS_PARENT':'Questo Prodotto ha sotto prodotti, Non ti \u00E8 consentito scegliere una relazione per questo prodotto',
 
-	'PICKLIST_CANNOT_BE_EMPTY':'La lista non pu&ograve; essere vuota',
+	'PICKLIST_CANNOT_BE_EMPTY':'La lista non può essere vuota',
 	'DUPLICATE_VALUES_FOUND':'Trovati Valori Duplicati',
 	'LBL_NO_ROLES_SELECTED' :'Non \u00E8 stato selezionato alcun ruolo, continuare ugualmente?',
 	'LBL_DUPLICATE_FOUND':'Trovate voci Duplicate per questo valore',
@@ -225,7 +225,7 @@ var alert_arr = {
 	'FIELD_IS_MASSEDITABLE':'Disponibile per il Mass Edit',
 
 	'IS_MANDATORY_FIELD':'\u00E8 un Campo Obbligatorio',
-	'CLOSEDATE_CANNOT_BE_EMPTY':'La data dichiusura non pu&ograve; essere vuota',
+	'CLOSEDATE_CANNOT_BE_EMPTY':'La data dichiusura non può essere vuota',
 	'AMOUNT_CANNOT_BE_EMPTY':'Quantit\u00E0 non pu\u00F2 essere Vuota',
 	'ARE_YOU_SURE':'Sei sicuro di voler cancellare?',
 	'LABEL_ALREADY_EXISTS' :'Etichetta gi\u00E0 presente. Prego inserire una nome diverso',
@@ -318,8 +318,8 @@ var alert_arr = {
 	'ERR_MAP_NAME_CANNOT_BE_EMPTY' :'Il nome della mappatura non puo essere vuoto',
 	'ERR_FIELDS_MAPPED_MORE_THAN_ONCE' :'Il seguente campo viene mappato piu volte. Verificare la mappatura.',
 	'LBL_MERGE_SHOULDHAVE_INFO' : 'Inserire almeno un Campo su cui effettuare il controllo',
-	'MAP_NAME_EXISTS' : 'Questa mappa esiste gi&agrave;. Vuoi sovrascrivere?',
-	'MAP_DELETED_INFO' : 'Questa mappa &egrave; stata cancellata. Non puoi utilizzarla nuovamente',
+	'MAP_NAME_EXISTS' : 'Questa mappa esiste già. Vuoi sovrascrivere?',
+	'MAP_DELETED_INFO' : 'Questa mappa è stata cancellata. Non puoi utilizzarla nuovamente',
 
 	//error messages for lead conversion
 	'ERR_SELECT_EITHER':'Selezionare se si intende convertire in Lead in Azienda o in Contatto',

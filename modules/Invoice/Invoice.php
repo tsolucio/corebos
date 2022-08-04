@@ -141,7 +141,7 @@ class Invoice extends CRMEntity {
 				if (vtlib_isModuleActive('InventoryDetails')) {
 					InventoryDetails::createInventoryDetails($this, 'Invoice');
 				}
-			} elseif ($_REQUEST['action'] == 'InvoiceAjax' || $_REQUEST['action'] == 'MassEditSave') {
+			} elseif (!empty($_REQUEST['action']) && ($_REQUEST['action'] == 'InvoiceAjax' || $_REQUEST['action'] == 'MassEditSave')) {
 				$updateInventoryProductRel_deduct_stock = false;
 			}
 		}

@@ -103,6 +103,7 @@ function getBrowserVariables(&$smarty) {
 	$corebos_browsertabID = (empty($_COOKIE['corebos_browsertabID']) ? '' : $_COOKIE['corebos_browsertabID']);
 	if ($smarty) {
 		$smarty->assign('GVTMODULE', $vars['gVTModule']);
+		$smarty->assign('GVTMODULELABEL', getTranslatedString($vars['gVTModule'], $vars['gVTModule']));
 		$smarty->assign('THEME', $vars['gVTTheme']);
 		$smarty->assign('GVTMODULELABEL', getTranslatedString($vars['gVTModule'], $vars['gVTModule']));
 		$smarty->assign('DEFAULT_CHARSET', $vars['default_charset']);

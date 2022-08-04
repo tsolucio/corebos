@@ -456,7 +456,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 		} elseif (areModulesRelated($token_pair[0], $module)) {
 			$reemplazo = retrieve_from_db($marcador, $focus->column_fields[$related_module[$module][$token_pair[0]]], $token_pair[0], $applyformat);
 		} elseif ($token_pair[0] == 'Organization' || $token_pair[0] == 'cbCompany') {
-			$res = $adb->query('SELECT * FROM vtiger_cbcompany WHERE defaultcompany=1');
+			$res = $adb->query('SELECT * FROM vtiger_cbcompany INNER JOIN vtiger_crmentity on crmid=cbcompanyid WHERE deleted=0 AND defaultcompany=1');
 			$org_fields = $adb->getFieldsArray($res);
 			if (in_array($token_pair[1], $org_fields)) {
 				$reemplazo = $adb->query_result($res, 0, $token_pair[1]);
@@ -916,7 +916,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 			$tmp_iter = array();
 			switch ($token_pair[0]) {
 				case 'Organization':
-					$res = $adb->query('SELECT cbcompanyid FROM vtiger_cbcompany WHERE defaultcompany=1');
+					$res = $adb->query('SELECT cbcompanyid FROM vtiger_cbcompany INNER JOIN vtiger_crmentity on crmid=cbcompanyid WHERE deleted=0 AND defaultcompany=1');
 					$id = $adb->query_result($res, 0, 'cbcompanyid');
 					$token_pair[0] = 'cbCompany';
 					$tmp_iter = array($id);
@@ -1065,6 +1065,10 @@ function eval_imagen($entity, $id, $module) {
 		if (empty($att_name)) {
 			return 'modules/evvtgendoc/no_image_entity.jpg';
 		}
+	} elseif ($mod=='Organization') {
+		$res = $adb->query('SELECT cbcompanyid FROM vtiger_cbcompany INNER JOIN vtiger_crmentity on crmid=cbcompanyid WHERE deleted=0 AND defaultcompany=1');
+		$entid = $res->fields['cbcompanyid'];
+		$att_name = retrieve_from_db($entity, $id, $module);
 	} else {
 		$focus = CRMEntity::getInstance($module);
 		$focus->retrieve_entity_info($id, $module);

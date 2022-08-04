@@ -147,7 +147,7 @@ class SalesOrder extends CRMEntity {
 			if (vtlib_isModuleActive('InventoryDetails')) {
 				InventoryDetails::createInventoryDetails($this, 'SalesOrder');
 			}
-		} elseif ($_REQUEST['action'] == 'SalesOrderAjax' || $_REQUEST['action'] == 'MassEditSave') {
+		} elseif (!empty($_REQUEST['action']) && ($_REQUEST['action'] == 'SalesOrderAjax' || $_REQUEST['action'] == 'MassEditSave')) {
 			$updateInventoryProductRel_deduct_stock = false;
 		}
 	}

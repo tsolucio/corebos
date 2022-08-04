@@ -1,6 +1,6 @@
 <?php
 $moduleTitle="coreBOS Customizations: upgrade old coreBOS installs";
-echo '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+echo '<!DOCTYPE html>';
 echo "<html><head><title>vtlib $moduleTitle</title>";
 echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
 echo '<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />';

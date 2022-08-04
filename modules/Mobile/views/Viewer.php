@@ -23,6 +23,7 @@ class crmtogo_UI_Viewer {
 		}
 		$smarty->assign('IS_SAFARI', Mobile::isSafari());
 		$smarty->assign('SKIN', Mobile::config('Default.Skin'));
+		getBrowserVariables($smarty);
 		return $smarty;
 	}
 

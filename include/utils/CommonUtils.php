@@ -1269,10 +1269,9 @@ function getBlockOpenClosedStatus($module, $disp_view) {
 	$result = $adb->pquery($query, array(getTabid($module)));
 	$aBlockStatus = array();
 	while ($b = $adb->fetch_array($result)) {
-		if (!is_null($b['isrelatedlist']) && $b['isrelatedlist'] != 0) {
-			$sLabelVal = $b['blocklabel'];
-		} else {
-			$sLabelVal = getTranslatedString($b['blocklabel'], $module);
+		$sLabelVal = decode_html_force($b['blocklabel']);
+		if (is_null($b['isrelatedlist']) || $b['isrelatedlist'] == 0) {
+			$sLabelVal = getTranslatedString($sLabelVal, $module);
 		}
 		$aBlockStatus[$sLabelVal] = $b['display_status'];
 	}
@@ -1323,12 +1322,11 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	for ($i = 0; $i < $noofrows; $i++) {
 		$blockid = $adb->query_result($result, $i, 'blockid');
 		$blockid_list[] = $blockid;
-		$block_label[$blockid] = $adb->query_result($result, $i, 'blocklabel');
+		$block_label[$blockid] = decode_html_force($adb->query_result($result, $i, 'blocklabel'));
 		$isrelatedlist = $adb->query_result($result, $i, 'isrelatedlist');
-		if (!is_null($isrelatedlist) && $isrelatedlist != 0) {
-			$sLabelVal = $block_label[$blockid];
-		} else {
-			$sLabelVal = getTranslatedString($block_label[$blockid], $module);
+		$sLabelVal = $block_label[$blockid];
+		if (is_null($isrelatedlist) || $isrelatedlist == 0) {
+			$sLabelVal = getTranslatedString($sLabelVal, $module);
 		}
 		$aBlockStatus[$sLabelVal] = $adb->query_result($result, $i, 'display_status');
 	}
@@ -1466,7 +1464,7 @@ function getCustomBlocks($module, $disp_view) {
 	for ($i = 0; $i < $noofrows; $i++) {
 		$hasrelatedlist = $adb->query_result($result, $i, 'isrelatedlist');
 		$blockid = $adb->query_result($result, $i, 'blockid');
-		$block_label[$blockid] = $adb->query_result($result, $i, 'blocklabel');
+		$block_label[$blockid] = decode_html_force($adb->query_result($result, $i, 'blocklabel'));
 		$sLabelVal = getTranslatedString($block_label[$blockid], $module);
 		$block_list[] = $sLabelVal;
 		$inlineEditBlock = "modules/$module/{$block_label[$blockid]}_edit.tpl";
@@ -2380,7 +2378,7 @@ function validateImageFile($file_details) {
 	} else {
 		$saveimage = 'false';
 		$imgtypeerror = coreBOS_Session::get('image_type_error');
-		coreBOS_Session::set('image_type_error', $imgtypeerror.'<br> &nbsp;&nbsp;<b>' . $file_details['name'] . '</b>' . $app_strings['MSG_IS_NOT_UPLOADED']);
+		coreBOS_Session::set('image_type_error', $imgtypeerror.'<br>   <b>' . $file_details['name'] . '</b>' . $app_strings['MSG_IS_NOT_UPLOADED']);
 		$log->debug("Invalid Image type $filetype");
 	}
 
@@ -2433,7 +2431,7 @@ function validateImageContents($filename) {
 				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
 				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
 				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
-				|| stripos($contents, '<?php ') !== false;
+				|| stripos($contents, '<</js') !== false || stripos($contents, '<?php ') !== false;
 			break;
 		case 'clean':
 			// Must be Revisited

@@ -7,6 +7,9 @@
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
 ************************************************************************************/
+if (GlobalVariable::getVariable('Application_Menu_Direction', 'Horizontal')=='Vertical') {
+	echo '</td></tr></table> <!-- close left menu -->';
+}
 ?>
 <footer class="slds-grid slds-card__footer slds-badge" style="width:100%;">
 <div class="slds-col slds-size_1-of-2 slds-p-left_x-large" style='text-align:left;'>

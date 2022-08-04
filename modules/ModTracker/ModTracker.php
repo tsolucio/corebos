@@ -105,7 +105,7 @@ class ModTracker {
 
 	/**
 	 *Invoked to disable tracking for the module.
-	 * @param Integer $tabid
+	 * @param integer $tabid
 	 */
 	public static function disableTrackingForModule($tabid) {
 		global $adb;
@@ -123,7 +123,7 @@ class ModTracker {
 
 	/**
 	 *Invoked to enable tracking for the module.
-	 * @param Integer $tabid
+	 * @param integer $tabid
 	 */
 	public static function enableTrackingForModule($tabid) {
 		global $adb;
@@ -172,7 +172,7 @@ class ModTracker {
 
 	/**
 	 *Invoked to check if the module is present in the table or not.
-	 * @param Integer $tabid
+	 * @param integer $tabid
 	 */
 	public static function isModulePresent($tabid) {
 		global $adb;
@@ -194,7 +194,7 @@ class ModTracker {
 
 	/**
 	 *Invoked to check if ModTracker links are enabled for the module.
-	 * @param Integer $tabid
+	 * @param integer $tabid
 	 */
 	public static function isModtrackerLinkPresent($tabid) {
 		global $adb;
@@ -202,19 +202,18 @@ class ModTracker {
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		$rs=$adb->pquery(
 			"SELECT businessactionsid
-			FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
-			WHERE deleted = 0 AND elementtype_action='DETAILVIEWBASIC' AND linklabel = 'View History'
-				AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)",
+			FROM vtiger_businessactions INNER JOIN $crmEntityTable ON vtiger_businessactions.businessactionsid=vtiger_crmentity.crmid
+			WHERE deleted=0 AND elementtype_action='DETAILVIEWBASIC' AND linklabel='View History'
+				AND (module_list=? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)",
 			array($module_name, $module_name.' %', '% '.$module_name.' %', '% '.$module_name,)
 		);
-
 		return ($adb->num_rows($rs)>=1);
 	}
 
 	/**
 	 *Invoked to update cache.
-	 * @param Integer $tabid
-	 * @param Boolean $visible
+	 * @param integer $tabid
+	 * @param boolean $visible
 	 */
 	public static function updateCache($tabid, $visible) {
 		self::$__cache_modtracker[$tabid] = array(
@@ -225,7 +224,7 @@ class ModTracker {
 
 	/**
 	 *Invoked to check the ModTracker cache.
-	 * @param Integer $tabid
+	 * @param integer $tabid
 	 */
 	public static function checkModuleInModTrackerCache($tabid) {
 		return isset(self::$__cache_modtracker[$tabid]);
@@ -233,7 +232,7 @@ class ModTracker {
 
 	/**
 	 *Invoked to fetch the visibility for the module from the cache.
-	 * @param Integer $tabid
+	 * @param integer $tabid
 	 */
 	public static function getVisibilityForModule($tabid) {
 		if (isset(self::$__cache_modtracker[$tabid])) {

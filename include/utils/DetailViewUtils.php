@@ -1418,7 +1418,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
  */
 function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label) {
 	global $log, $adb;
-	$log->debug('> getDetailBlockInformation', [$module, $result, $col_fields, $tabid, $block_label]);
+	$log->debug('> getDetailBlockInformation', [$module, $result->sql, $col_fields, $tabid, $block_label]);
 	$label_data = array();
 
 	$bmapname = $module.'_FieldInfo';

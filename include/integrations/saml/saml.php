@@ -90,9 +90,15 @@ class corebos_saml {
 			if (in_array('lmldaplogin', $cnacc)) {
 				$userid = getSingleFieldValue('vtiger_users', 'id', 'lmldaplogin', $clientid);
 			}
+			if ($userid==0) {
+				$userid = getSingleFieldValue('vtiger_users', 'id', 'user_name', $clientid);
+			}
 		}
 		if ($email!='' && $userid==0) {
 			$userid = getSingleFieldValue('vtiger_users', 'id', 'email1', $email);
+			if ($userid==0) {
+				$userid = getSingleFieldValue('vtiger_users', 'id', 'email2', $clientid);
+			}
 		}
 		return $userid;
 	}
@@ -154,7 +160,7 @@ class corebos_saml {
 					$focus = new Users();
 					$focus->retrieve_entity_info($userid, 'Users');
 					$focus->authenticated = true;
-					coreBOS_Session::destroy();
+					coreBOS_Session::kill();
 					//Inserting entries for audit trail during login
 					if (coreBOS_Settings::getSetting('audit_trail', false)) {
 						$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
@@ -201,12 +207,13 @@ class corebos_saml {
 
 					coreBOS_Session::set('vtiger_authenticated_user_theme', $authenticated_user_theme);
 					coreBOS_Session::set('authenticated_user_language', $authenticated_user_language);
+					coreBOS_Session::saveUserID($focus->id, session_id());
+					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1, 'Users', $focus->id)!=1) {
+						coreBOS_Session::deleteUserID($userid, session_id());
+					}
 					cbEventHandler::do_action('corebos.login', array($focus));
 
-					$log->debug("authenticated_user_theme is $authenticated_user_theme");
-					$log->debug("authenticated_user_language is $authenticated_user_language");
-					$log->debug('authenticated_user_id is '. $focus->id);
-					$log->debug("app_unique_key is $application_unique_key");
+					$log->debug('authenticated user and language: '.$focus->id.' '.$authenticated_user_language);
 
 					// Reset number of failed login attempts
 					$adb->pquery('UPDATE vtiger_users SET failed_login_attempts=0 where user_name=?', array($focus->column_fields['user_name']));
@@ -366,9 +373,9 @@ class corebos_saml {
 				}
 			}
 			if ($portal!='LoginPortal') {
-				$userid = $this->findUser($sessionManager->get('samlUserdata'));
+				$userid = $this->findUser(coreBOS_Session::get('samlUserdata'));
 			} else {
-				$userid = $this->findUserPortal($sessionManager->get('samlUserdata'));
+				$userid = $this->findUserPortal(coreBOS_Session::get('samlUserdata'));
 			}
 			if ($userid) {
 				$ctoid = $tpllang = '';
@@ -391,22 +398,28 @@ class corebos_saml {
 					$userDetails = new Users();
 					$userDetails->retrieve_entity_info($userid, 'Users');
 					$userDetails->authenticated = true;
-					$sessionManager->destroy();
-					$sessionManager->startSession();
-					$sessionManager->set('authenticatedUserId', $userid);
+					coreBOS_Session::set('authenticatedUserId', $userid);
+					coreBOS_Session::set('authenticated_user_id', $userid);
+					coreBOS_Session::saveUserID($userid, session_id(), 'cbws');
+					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1, 'Users', $userid)!=1) {
+						coreBOS_Session::deleteUserID($userid, session_id(), 'cbws');
+					}
 					cbEventHandler::do_action('corebos.login', array($userDetails, $sessionManager, 'webservice'));
 					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
 					$userId = vtws_getId($webserviceObject->getEntityId(), $userid);
+					$opID = uniqid('', true);
 					$resp = json_encode(array(
 						'success' => true,
-						'result' => array(
-							'sessionName' => $sessionManager->getSessionId(),
-							'userId' => $userId,
-							'contactid' => vtws_getEntityId(getSalesEntityType($ctoid)).'x'.$ctoid,
-							'language' => $tpllang,
-						)
+						'result' => $opID,
 					));
-					header('Location: '.$redirectTo.(strpos($redirectTo, '?')!==false ? '&' : '?').'response='.$resp);
+					coreBOS_Settings::setSetting('OTPCODE:'.$opID, json_encode(array(
+						'isWSOTP' => true,
+						'now' => time(),
+						'sessionName' => coreBOS_Session::id(),
+						'userId' => $userId,
+						'contactid' => vtws_getEntityId(getSalesEntityType($ctoid)).'x'.$ctoid,
+						'language' => $tpllang,
+					)));
 				} else {
 					$resp = json_encode(array(
 						'success' => false,

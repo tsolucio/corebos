@@ -26,7 +26,7 @@ if (empty($current_user)) {
 	$fail = true;
 }
 if ($fail) {
-	coreBOS_Session::destroy();
+	coreBOS_Session::kill();
 	header('Location: index.php?action=Login&module=Users');
 }
 require_once 'vtlib/Vtiger/Package.php';

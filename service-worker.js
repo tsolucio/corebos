@@ -9959,7 +9959,7 @@ precacheAndRoute([{
   "revision": "60718c9174ed712f0c6a240e34adec1d"
 }, {
   "url": "include/LD/assets/styles/override_lds.css",
-  "revision": "1c73aef82642440ff8fb12e7c6804a6b"
+  "revision": "b484346016d17f8ca89d21cdc956a179"
 }, {
   "url": "include/LD/assets/styles/salesforce-lightning-design-system_touch.css",
   "revision": "a65bfc28217f7bfb5dc501bfcb2fcf90"
@@ -11453,7 +11453,7 @@ precacheAndRoute([{
   "revision": "f09b1b73041383bfe8a85ccce9641617"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "42e62b85a43a3e624ee8351c039846bb"
+  "revision": "d2a87ddd5566ae6807f4af42e76bf42a"
 }, {
   "url": "include/js/en_gb.lang.js",
   "revision": "0bffe6d3d89b5be48b363163fa074cc3"
@@ -11477,7 +11477,7 @@ precacheAndRoute([{
   "revision": "81785868abff61b02dbf15761dde7fb2"
 }, {
   "url": "include/js/general.js",
-  "revision": "15dcc9a69221b889f3be665762f43721"
+  "revision": "dcba96dd90cf8f60c7fffc16f2a31985"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "466f7e7da385bc410e9195246ca03eb0"
@@ -11486,7 +11486,7 @@ precacheAndRoute([{
   "revision": "995e82a81fff28de27f58d755cf5a793"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "22c507d5aa95bf1553f74c9b9658c1e4"
+  "revision": "5f6ab6c45495e78cf774c1dfcac11255"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
@@ -11495,7 +11495,7 @@ precacheAndRoute([{
   "revision": "f382979955961c3357b3562845475def"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "ab3cfc0bdc320402d1a09d75392146ac"
+  "revision": "89688dce48e39c095841750687bccb1e"
 }, {
   "url": "include/js/ListViewRenderes.js",
   "revision": "3111bb0321f2065d3b9694836e16d1ee"
@@ -11510,7 +11510,7 @@ precacheAndRoute([{
   "revision": "5a09d9ad89882ba8ad3e993e11a08055"
 }, {
   "url": "include/js/masterdetailgrid.js",
-  "revision": "cf7361126d0077f9d3bef84bf066d4f9"
+  "revision": "1933eb58620d87ff67d276d8b522a2a7"
 }, {
   "url": "include/js/meld.js",
   "revision": "7c3894eb22d16cb4743a7ea226557ed1"
@@ -11540,7 +11540,10 @@ precacheAndRoute([{
   "revision": "2d7293347f93362f86ca0028bb7f8733"
 }, {
   "url": "include/js/QuickCreate.js",
-  "revision": "9663dd1cea6cb7fb0cfe983e54baa186"
+  "revision": "89ad8ae2e8972f6085b6728624061ac2"
+}, {
+  "url": "include/js/relatedlists.js",
+  "revision": "d472bc5972c1c1c2d37fdbe25831fa27"
 }, {
   "url": "include/js/RelatedLists.js",
   "revision": "afd1f3cd61451676111b6d7b6adb1e16"
@@ -11744,7 +11747,7 @@ precacheAndRoute([{
   "revision": "a0ee36da94058a469df96cba89b1910b"
 }, {
   "url": "include/style.css",
-  "revision": "d366c521d8140f4799b529e65f6d53df"
+  "revision": "90a9a2733cad484a67a65b04d46dda72"
 }, {
   "url": "include/print.css",
   "revision": "6b1e0c714dd4c389fb51b840e4cf01d2"
@@ -12305,7 +12308,7 @@ precacheAndRoute([{
   "revision": "9e48754306aea76b1653bc67e96b1f03"
 }, {
   "url": "modules/SMSNotifier/SMSNotifierCommon.js",
-  "revision": "2bc5785bbc8662d43972828563d8e11a"
+  "revision": "aa64829185535b0836beadc1a5c9374b"
 }, {
   "url": "modules/Contacts/Contacts.js",
   "revision": "26560f6da689eaa78e22f13f70aca335"

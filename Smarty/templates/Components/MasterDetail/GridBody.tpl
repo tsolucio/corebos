@@ -26,7 +26,8 @@ function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 				whiteSpace: 'normal',
 				renderer: {
 					type: mdLinkRender
-				}
+				},
+				filter: {$mdfield.fieldinfo.uitype|getGridFilter:$mdfield.fieldinfo.uitype}
 			},
 			{/foreach}
 			{if !empty($MasterDetailLayoutMap.listview.cbgridactioncol)}
@@ -52,7 +53,8 @@ function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 		},
 		header: {
 			align: 'left',
-		}
+		},
+		contextMenu: null
 	});
 
 	tui.Grid.applyTheme('striped');

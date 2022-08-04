@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ClickHouseDB;
 
 use ClickHouseDB\Exception\QueryException;
+use ClickHouseDB\Exception\TransportException;
 use ClickHouseDB\Query\Degeneration;
 use ClickHouseDB\Query\Degeneration\Bindings;
 use ClickHouseDB\Query\Degeneration\Conditions;
@@ -127,8 +128,6 @@ class Client
         if (isset($connectParams['sslCA'])) {
             $this->transport->setSslCa($connectParams['sslCA']);
         }
-
-        $this->enableHttpCompression();
     }
 
     /**
@@ -274,9 +273,9 @@ class Client
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function verbose()
+    public function verbose(bool $flag = true):bool
     {
         return $this->transport()->verbose(true);
     }
@@ -527,12 +526,12 @@ class Client
     }
 
     /**
-     *       * Prepares the values to insert from the associative array.
-     *       * There may be one or more lines inserted, but then the keys inside the array list must match (including in the sequence)
-     *       *
-     *       * @param mixed[] $values - array column_name => value (if we insert one row) or array list column_name => value if we insert many lines
-     *       * @return mixed[][] - list of arrays - 0 => fields, 1 => list of value arrays for insertion
-     *       */
+     * Prepares the values to insert from the associative array.
+     * There may be one or more lines inserted, but then the keys inside the array list must match (including in the sequence)
+     *
+     * @param mixed[] $values - array column_name => value (if we insert one row) or array list column_name => value if we insert many lines
+     * @return mixed[][] - list of arrays - 0 => fields, 1 => list of value arrays for insertion
+     **/
     public function prepareInsertAssocBulk(array $values)
     {
         if (isset($values[0]) && is_array($values[0])) { //случай, когда много строк вставляется
@@ -737,11 +736,15 @@ class Client
     /**
      * Ping server
      *
+     * @param bool $throwException
      * @return bool
+     * @throws TransportException
      */
-    public function ping()
+    public function ping(bool $throwException=false): bool
     {
-        return $this->transport()->ping();
+        $result=$this->transport()->ping();
+        if ($throwException && !$result) throw new TransportException('Can`t ping server');
+        return $result;
     }
 
     /**

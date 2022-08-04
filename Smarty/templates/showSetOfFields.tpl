@@ -24,7 +24,7 @@
 						<section class="slds-accordion__section slds-is-open" id ="fieldlistdiv">
 							<div class="slds-accordion__summary">
 								<h2 class="slds-accordion__summary-heading">
-									<button class="slds-button slds-button_reset slds-accordion__summary-action" id="fldbtnswitch" onClick="handleToggle('fieldlistdiv', 'fldbtnswitch');" aria-controls="fieldlistDiv" aria-expanded="true" title="">
+									<button type="button" class="slds-button slds-button_reset slds-accordion__summary-action" id="fldbtnswitch" onclick="handleToggle('fieldlistdiv', 'fldbtnswitch');" aria-controls="fieldlistDiv" aria-expanded="true" title="">
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
@@ -71,7 +71,7 @@
 						<section class="slds-accordion__section slds-is-open" id ="appfieldlistdiv">
 							<div class="slds-accordion__summary">
 								<h2 class="slds-accordion__summary-heading">
-									<button class="slds-button slds-button_reset slds-accordion__summary-action" id="appfbtnswitch" onClick="handleToggle('appfieldlistdiv', 'appfbtnswitch');" aria-controls="appfieldlistDiv" aria-expanded="true" title="">
+									<button type="button" class="slds-button slds-button_reset slds-accordion__summary-action" id="appfbtnswitch" onclick="handleToggle('appfieldlistdiv', 'appfbtnswitch');" aria-controls="appfieldlistDiv" aria-expanded="true" title="">
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
@@ -125,7 +125,7 @@
 						<section class="slds-accordion__section slds-is-open" id ="widgetdiv">
 							<div class="slds-accordion__summary">
 								<h2 class="slds-accordion__summary-heading">
-									<button class="slds-button slds-button_reset slds-accordion__summary-action" id="widbtnswitch" onClick="handleToggle('widgetdiv', 'widbtnswitch');" aria-controls="widgetDiv" aria-expanded="true" title="">
+									<button type="button" class="slds-button slds-button_reset slds-accordion__summary-action" id="widbtnswitch" onclick="handleToggle('widgetdiv', 'widbtnswitch');" aria-controls="widgetDiv" aria-expanded="true" title="">
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>
@@ -150,7 +150,7 @@
 						<section class="slds-accordion__section slds-is-open" id="codewithhdiv">
 							<div class="slds-accordion__summary">
 								<h2 class="slds-accordion__summary-heading">
-									<button class="slds-button slds-button_reset slds-accordion__summary-action" id="codewithhbtnswitch" onClick="handleToggle('codewithhdiv', 'codewithhbtnswitch');" aria-controls="codewithhDiv" aria-expanded="true" title="">
+									<button type="button" class="slds-button slds-button_reset slds-accordion__summary-action" id="codewithhbtnswitch" onclick="handleToggle('codewithhdiv', 'codewithhbtnswitch');" aria-controls="codewithhDiv" aria-expanded="true" title="">
 										<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 										</svg>

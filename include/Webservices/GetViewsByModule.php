@@ -16,63 +16,88 @@ require_once 'modules/cbCVManagement/cbCVManagement.php';
 
 function getViewsByModule($module, $user) {
 	global $adb, $log;
-	// pickup meta data of module
-	$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
-	$handlerPath = $webserviceObject->getHandlerPath();
-	$handlerClass = $webserviceObject->getHandlerClass();
-	require_once $handlerPath;
-	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
-	$meta = $handler->getMeta();
-	$mainModule = $meta->getTabName();  // normalize module name
-	// check modules
-	if (!$meta->isModuleEntity()) {
-		throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
-	}
-	if ($module=='Users') {
-		return array(
-			'filters'=>array(array(
-				'name' => 'All',
-				'status' => '1',
-				'advcriteria' => '[]',
-				'advcriteriaWQL' => '',
-				'advcriteriaEVQL' => '',
-				'stdcriteria' => '[]',
-				'stdcriteriaWQL' => '',
-				'stdcriteriaEVQL' => '',
-				'fields' => array('first_name', 'last_name', 'email1'),
-				'default' => true,
-			)),
-			'linkfields'=>array('first_name', 'last_name'),
+	$modules = explode(',', $module);
+	$isMoreThanOne = count($modules)>1;
+	$result = array();
+	$types = vtws_listtypes(null, $user);
+	foreach ($modules as $module) {
+		// pickup meta data of module
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
+		$handlerPath = $webserviceObject->getHandlerPath();
+		$handlerClass = $webserviceObject->getHandlerClass();
+		require_once $handlerPath;
+		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+		$meta = $handler->getMeta();
+		$mainModule = $meta->getTabName();  // normalize module name
+		// check modules
+		if (!$meta->isModuleEntity()) {
+			if ($isMoreThanOne) {
+				continue;
+			}
+			throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
+		}
+		if ($module=='Users') {
+			$usrInfo = array(
+				'filters'=>array(array(
+					'name' => 'All',
+					'status' => '1',
+					'advcriteria' => '[]',
+					'advcriteriaWQL' => '',
+					'advcriteriaEVQL' => '',
+					'stdcriteria' => '[]',
+					'stdcriteriaWQL' => '',
+					'stdcriteriaEVQL' => '',
+					'fields' => array('first_name', 'last_name', 'email1'),
+					'default' => true,
+				)),
+				'linkfields'=>array('first_name', 'last_name'),
+				'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
+			);
+			if ($isMoreThanOne) {
+				$result['Users'] = $usrInfo;
+				continue;
+			}
+			return $usrInfo;
+		}
+
+		// check permission on module
+		$entityName = $meta->getEntityName();
+		if (!in_array($entityName, $types['types'])) {
+			if ($isMoreThanOne) {
+				continue;
+			}
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
+		}
+
+		if (!$meta->hasReadAccess()) {
+			if ($isMoreThanOne) {
+				continue;
+			}
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read module is denied');
+		}
+		$focus = CRMEntity::getInstance($module);
+		$linkfields=array($focus->list_link_field);
+		if ($module=='Contacts' || $module=='Leads') {
+			$linkfields=array('firstname', 'lastname');
+		}
+		$rdo = cbCVManagement::getAllViews($module, $user->id);
+		$viewinfo = cbws_getViewsInformation($rdo, $module);
+		$cvinfo = array(
+			'filters' => $viewinfo,
+			'linkfields' => $linkfields,
 			'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
 		);
+		if ($isMoreThanOne) {
+			$result[$module] = $cvinfo;
+		} else {
+			$result = $cvinfo;
+		}
 	}
-
-	// check permission on module
-	$entityName = $meta->getEntityName();
-	$types = vtws_listtypes(null, $user);
-	if (!in_array($entityName, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($mainModule) is denied");
-	}
-
-	if (!$meta->hasReadAccess()) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read module is denied');
-	}
-	$focus = CRMEntity::getInstance($module);
-	$linkfields=array($focus->list_link_field);
-	if ($module=='Contacts' || $module=='Leads') {
-		$linkfields=array('firstname', 'lastname');
-	}
-	$rdo = cbCVManagement::getAllViews($module, $user->id);
-	$viewinfo = cbws_getViewsInformation($rdo, $module);
-	return array(
-		'filters' => $viewinfo,
-		'linkfields' => $linkfields,
-		'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
-	);
+	return $result;
 }
 
 /** get information about the list of given views
- * @param $viewids :: array Integer
+ * @param array of view IDs
  * @return array view information
  */
 function cbws_getViewsInformation($viewids, $module) {
@@ -85,11 +110,15 @@ function cbws_getViewsInformation($viewids, $module) {
 	foreach ($viewids as $viewid) {
 		$result = $adb->pquery($ssql, array($viewid));
 		$cvrow = $adb->fetch_array($result);
+		$cvrow['raw_viewname'] = $cvrow['viewname'];
 		if ($cvrow['viewname'] == 'All') {
 			$cvrow['viewname'] = $app_strings['COMBO_ALL'];
+		} else {
+			$cvrow['viewname'] = getTranslatedString($cvrow['viewname'], $module);
 		}
 		$filter = array(
 			'name' => $cvrow['viewname'],
+			'raw_name' => $cvrow['raw_viewname'],
 			'status' => $cvrow['status'],
 		);
 		$advft_criteria = $customView->getAdvFilterByCvid($cvrow['cvid']);
@@ -148,6 +177,7 @@ function cbws_getViewsInformation($viewids, $module) {
 		}
 		$filter['fields'] = $fields;
 		$filter['default'] = ($dft==$cvrow['cvid']);
+		$filter['userid'] = $cvrow['userid'];
 		$filters[$cvrow['cvid']] = $filter;
 	}
 	return $filters;

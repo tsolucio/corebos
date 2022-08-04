@@ -103,13 +103,23 @@ class VTEmailTask extends VTTask {
 		$entityCache = new VTEntityCache($admin);
 
 		$from_name = $from_email = $replyto = '';
-		if (!empty($this->fromname)) {
-			$fnt = new VTEmailRecipientsTemplate($this->fromname);
+		if (isset($entity->WorkflowContext['SendFromName'])) {
+			$fnt = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendFromName']);
 			$from_name = $fnt->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+		} else {
+			if (!empty($this->fromname)) {
+				$fnt = new VTEmailRecipientsTemplate($this->fromname);
+				$from_name = $fnt->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+			}
 		}
-		if (!empty($this->fromemail)) {
-			$fet = new VTEmailRecipientsTemplate($this->fromemail);
+		if (isset($entity->WorkflowContext['SendFromEmail'])) {
+			$fet = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendFromEmail']);
 			$from_email = $fet->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+		} else {
+			if (!empty($this->fromemail)) {
+				$fet = new VTEmailRecipientsTemplate($this->fromemail);
+				$from_email = $fet->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+			}
 		}
 		if (!empty($this->replyto)) {
 			$rt = new VTEmailRecipientsTemplate($this->replyto);
@@ -121,17 +131,27 @@ class VTEmailTask extends VTTask {
 			$et = new VTEmailRecipientsTemplate($this->recepient);
 		}
 		$to_email = $et->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
-		if (empty($this->emailcc)) {
-			$cc = '';
-		} else {
-			$ecct = new VTEmailRecipientsTemplate($this->emailcc);
+		if (isset($entity->WorkflowContext['SendEmailCC'])) {
+			$ecct = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendEmailCC']);
 			$cc = $ecct->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
-		}
-		if (empty($this->emailbcc)) {
-			$bcc = '';
 		} else {
-			$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
+			if (empty($this->emailcc)) {
+				$cc = '';
+			} else {
+				$ecct = new VTEmailRecipientsTemplate($this->emailcc);
+				$cc = $ecct->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+			}
+		}
+		if (isset($entity->WorkflowContext['SendEmailBCC'])) {
+			$ebcct = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendEmailBCC']);
 			$bcc = $ebcct->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+		} else {
+			if (empty($this->emailbcc)) {
+				$bcc = '';
+			} else {
+				$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
+				$bcc = $ebcct->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+			}
 		}
 		$mailto = GlobalVariable::getVariable('Workflow_Send_Email_ToCCBCC', '');//For tests
 		if ($mailto != '') {
@@ -273,17 +293,11 @@ class VTEmailTask extends VTTask {
 					array($module,'Documents',getTabid($module),$this->attfieldnames)
 				);
 				if ($rsfld && $adb->num_rows($rsfld, 0, 'uitype') == 1) {
-					$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid
-						FROM vtiger_attachments
-						INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
-						INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
-						WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
 					$docid = $entity->get($this->attfieldnames);
 					if (!empty($docid)) {
 						list($void,$docid) = explode('x', $docid);
-						$docrs = $adb->pquery($query, array($docid));
-						if ($docrs && $adb->num_rows($docrs)==1) {
-							$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
+						$attname = $this->getAttachmentName($docid);
+						if ($attname) {
 							$this->attachmentsinfo[] = $attname;
 						}
 					}
@@ -302,6 +316,21 @@ class VTEmailTask extends VTTask {
 				$icalfilename = $cbCalendar->getiCalendar($cbCalendar);
 				if (!empty($icalfilename)) {
 					$this->attachmentsinfo[] = $icalfilename;
+				}
+			}
+		}
+		if (!empty($entity->WorkflowContext['SendTheseAttachments'])) {
+			$attachments = $entity->WorkflowContext['SendTheseAttachments'];
+			if (!is_array($attachments)) {
+				$attachments = json_decode($attachments, true);
+			}
+			if (is_array($attachments)) {
+				foreach ($attachments as $docid) {
+					list($void,$docid) = explode('x', $docid);
+					$attname = $this->getAttachmentName($docid);
+					if ($attname) {
+						$this->attachmentsinfo[] = $attname;
+					}
 				}
 			}
 		}
@@ -451,6 +480,23 @@ class VTEmailTask extends VTTask {
 			$message_id = '';
 		}
 		return $message_id;
+	}
+
+	private function getAttachmentName($docid) {
+		global $adb;
+
+		$attname = null;
+		$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid
+				FROM vtiger_attachments
+				INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+				INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
+				WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
+		$docrs = $adb->pquery($query, array($docid));
+		if ($docrs && $adb->num_rows($docrs)==1) {
+			$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
+			$this->attachmentsinfo[] = $attname;
+		}
+		return $attname;
 	}
 }
 ?>

@@ -172,7 +172,7 @@
 		{if $menuitem.mtype == 'module' && empty($menuitem.submenu)}
 		<li class="slds-dropdown__item slds-child-menu" role="presentation" data-type="child" data-name="{$menuitem.mvalue}" data-level="{$i}">
 			<a href="index.php?action=index&amp;module={$menuitem.mvalue}" role="menuitem" tabindex="-1">
-				<span class="slds-truncate" >{$menuitem.mlabel}</span>
+				<span class="slds-truncate">{$menuitem.mlabel}</span>
 			</a>
 		</li>
 		{elseif ($menuitem.mtype == 'menu' || $menuitem.mtype == 'module') && !empty($menuitem.submenu)}

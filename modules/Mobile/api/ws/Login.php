@@ -39,22 +39,24 @@ class crmtogo_WS_Login extends crmtogo_WS_Controller {
 			$response->setError(1210, $default_lang_strings['LBL_INVALID_PASSWORD']);
 		} else {
 			// Start session now
-			coreBOS_Session::init();
-
+			coreBOS_Session::init(false, false, '', 'cbmb');
 			$current_user->id = $current_user->retrieve_user_id($username);
 			$current_user= $current_user->retrieveCurrentUserInfoFromFile($current_user->id);
 			$this->setActiveUser($current_user);
 
-			//one day
-			coreBOS_Session::set('__HTTP_Session_Expire_TS', time() + (60 * 60 * 24));
-			// 1 hour
-			coreBOS_Session::set('__HTTP_Session_Idle_TS', 1*60*60);
+			coreBOS_Session::set('__CBOSSession_Expire_TS', time() + (60 * 60 * 24)); //one day
+			coreBOS_Session::set('__CBOSSession_Idle_TS', 1*60*60); // 1 hour
 			coreBOS_Session::set('loginattempts', 0);
 			coreBOS_Session::set('_authenticated_user_id', $current_user->id);
 			coreBOS_Session::set('username', $username);
 			coreBOS_Session::set('password', $password);
 			coreBOS_Session::set('language', $current_user->column_fields['language']);
 			coreBOS_Session::set('user_tz', $current_user->column_fields['time_zone']);
+			coreBOS_Session::save();
+			coreBOS_Session::saveUserID($current_user->id, session_id(), 'cbmb');
+			if (GlobalVariable::getVariable('Mobile_MultipleUserLogins', 1, 'Users', $current_user->id)!=1) {
+				coreBOS_Session::deleteUserID($current_user->id, session_id(), 'cbmb');
+			}
 			$result = array();
 			$result['login'] = array(
 				'userid' => $current_user->id,
@@ -62,7 +64,7 @@ class crmtogo_WS_Login extends crmtogo_WS_Controller {
 				'password' => $password,
 				'crm_tz' => DateTimeField::getDBTimeZone(),
 				'user_tz' => $current_user->time_zone,
-				'session'=> '',
+				'session'=> session_id(),
 				'language' => $current_user->column_fields['language'],
 				'vtiger_version' => crmtogo_WS_Utils::getVtigerVersion(),
 				'crmtogo_module_version' => crmtogo_WS_Utils::getVersion()

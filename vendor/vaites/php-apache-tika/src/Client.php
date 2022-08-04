@@ -43,6 +43,13 @@ abstract class Client
     protected $platform = null;
 
     /**
+     * Apache Tika version
+     * 
+     * @var string
+     */
+    protected $version = null;
+
+    /**
      * Cached responses to avoid multiple request for the same file.
      *
      * @var array
@@ -249,7 +256,7 @@ abstract class Client
      */
     public function getMetadata(string $file): MetadataInterface
     {
-        $response = $this->parseJsonResponse($this->request('meta', $file));
+        $response = $this->parseJsonResponse($this->request('meta', $file) ?: 'ERROR');
 
         if($response instanceof stdClass === false)
         {
@@ -279,7 +286,7 @@ abstract class Client
             throw new Exception("Unknown recursive type (must be text, html, ignore or null)");
         }
 
-        $response = $this->parseJsonResponse($this->request("rmeta/$format", $file));
+        $response = $this->parseJsonResponse($this->request("rmeta/$format", $file) ?: 'ERROR');
 
         if(is_array($response) === false)
         {
@@ -307,7 +314,7 @@ abstract class Client
      *
      * @throws \Exception
      */
-    public function getLanguage(string $file): string
+    public function getLanguage(string $file): ?string
     {
         return $this->request('lang', $file);
     }
@@ -317,7 +324,7 @@ abstract class Client
      *
      * @throws \Exception
      */
-    public function getMIME(string $file): string
+    public function getMIME(string $file): ?string
     {
         return $this->request('mime', $file);
     }
@@ -327,7 +334,7 @@ abstract class Client
      *
      * @throws \Exception
      */
-    public function getHTML(string $file, callable $callback = null, bool $append = true): string
+    public function getHTML(string $file, callable $callback = null, bool $append = true): ?string
     {
         if(!is_null($callback))
         {
@@ -342,7 +349,7 @@ abstract class Client
      *
      * @throws \Exception
      */
-    public function getXHTML(string $file, callable $callback = null, bool $append = true): string
+    public function getXHTML(string $file, callable $callback = null, bool $append = true): ?string
     {
         if(!is_null($callback))
         {
@@ -357,7 +364,7 @@ abstract class Client
      *
      * @throws \Exception
      */
-    public function getText(string $file, callable $callback = null, bool $append = true): string
+    public function getText(string $file, callable $callback = null, bool $append = true): ?string
     {
         if(!is_null($callback))
         {
@@ -372,7 +379,7 @@ abstract class Client
      *
      * @throws \Exception
      */
-    public function getMainText(string $file, callable $callback = null, bool $append = true): string
+    public function getMainText(string $file, callable $callback = null, bool $append = true): ?string
     {
         if(!is_null($callback))
         {
@@ -387,9 +394,25 @@ abstract class Client
      *
      * @throws \Exception
      */
-    public function getVersion(): string
+    public function getVersion(): ?string
     {
-        return $this->request('version');
+        if(is_null($this->version))
+        {
+            $this->setVersion($this->request('version'));
+        }
+
+        return $this->version;
+    }
+
+    /**
+     * Set the Tika version
+     */
+    public function setVersion(string $version): self
+    {
+        $this->checked = true;
+        $this->version = $version;
+
+        return $this;
     }
 
     /**
@@ -508,11 +531,13 @@ abstract class Client
         if(in_array($type, ['detectors', 'mime-types', 'parsers', 'version']))
         {
             //
-        } // invalid local file
+        } 
+        // invalid local file
         elseif($file !== null && !preg_match('/^http/', $file) && !file_exists($file))
         {
             throw new Exception("File $file can't be opened");
-        } // invalid remote file
+        } 
+        // invalid remote file
         elseif($file !== null && preg_match('/^http/', $file))
         {
             $headers = get_headers($file);
@@ -521,7 +546,8 @@ abstract class Client
             {
                 throw new Exception("File $file can't be opened", 2);
             }
-        } // download remote file if required only for integrated downloader
+        } 
+        // download remote file if required only for integrated downloader
         elseif($file !== null && preg_match('/^http/', $file) && $this->downloadRemote)
         {
             $file = $this->downloadFile($file);
@@ -569,8 +595,6 @@ abstract class Client
         // exceptions if metadata is not valid
         if(json_last_error())
         {
-            dd($response);
-
             $message = function_exists('json_last_error_msg') ? json_last_error_msg() : 'Error parsing JSON response';
 
             throw new Exception($message, json_last_error());
@@ -580,7 +604,7 @@ abstract class Client
     }
 
     /**
-     * Download file to a temporary folder
+     * Download file to a temporary folder and return its path
      *
      * @link https://wiki.apache.org/tika/TikaJAXRS#Specifying_a_URL_Instead_of_Putting_Bytes
      * @throws \Exception

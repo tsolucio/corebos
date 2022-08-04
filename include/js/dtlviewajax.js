@@ -349,6 +349,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			}
 			VtigerJS_DialogBox.hidebusy();
 		}
+		initSelect2();
 		VtigerJS_DialogBox.unblock();
 	});
 	itsonview=false;
