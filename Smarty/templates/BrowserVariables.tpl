@@ -11,6 +11,7 @@
 <script>
 var gVTModule = "{$GVTMODULE}";
 var gVTTheme  = "{$THEME}";
+var gVTModuleLabel = "{$GVTMODULELABEL}";
 var gVTUserID = "{$CURRENT_USER_ID}";
 var default_charset = "{$DEFAULT_CHARSET}";
 var userDateFormat = "{$USER_DATE_FORMAT}";
