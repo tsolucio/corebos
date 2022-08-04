@@ -1732,6 +1732,18 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Activa este Variable en instalaciones con una gran cantidad de usuarios para facilitar su búsqueda y selección. El valor predeterminado es 0.',
 ),
+'Application_All_Filter_Show' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Oculta el filtro predeterminado "Todos". Por defecto, se muestra.',
+),
+'Application_FilterValidateMandatoryFields' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Al crear un filtro, debes incluir al menos 1 campo obligatorio. Para los casos en que los usuarios no quieren incluir campos obligatorios en el filtro, pon esta variable a 0. El valor predeterminado es 1.',
+),
 'Email_Template_AutomaticMerge' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',

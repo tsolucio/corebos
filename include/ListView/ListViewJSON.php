@@ -256,7 +256,7 @@ class GridListView {
 		//add action in header
 		$actionPermission = getTabsActionPermission($profileid)[$this->tabid];
 		$controller = new ListViewController($adb, $current_user, $queryGenerator);
-		$listview_header_search = $controller->getBasicSearchFieldInfoList();
+		$listview_header_search = $controller->getListViewHeaderArray();
 		if (isset($_REQUEST['isRecycleModule'])) {
 			$rbfields = $queryGenerator->getFields();
 			if (!in_array('modifiedtime', $rbfields)) {
@@ -271,6 +271,35 @@ class GridListView {
 		$findRelatedModule = '';
 		$fieldPermission = getProfile2FieldPermissionList($this->module, $profileid);
 		foreach ($listview_header_search as $fName => $fValue) {
+			if ($fName == 'cblvactioncolumn') {
+				$lv_arr = array(
+					'fieldname' => $fName,
+					'fieldvalue' => html_entity_decode($fValue),
+					'uitype' => '',
+					'tooltip' => false,
+					'edit' => false
+				);
+				array_push($listview_header_arr, $lv_arr);
+				continue;
+			}
+			if (strpos($fName, '.')) {
+				list($modName, $fldName) = explode('.', $fName);
+				if ($modName == 'Users') {
+					$fldName = strtolower($fldName);
+				} else {
+					$fldName = strtolower($modName.$fldName);
+				}
+				$lv_arr = array(
+					'fieldname' => $fldName,
+					'fieldvalue' => html_entity_decode($fValue.' ('.getTranslatedString($modName).')'),
+					'uitype' => '',
+					'tooltip' => false,
+					'edit' => false,
+					'sortable' => false,
+				);
+				array_push($listview_header_arr, $lv_arr);
+				continue;
+			}
 			$fieldInfo = VTCacheUtils::lookupFieldInfo($this->tabid, $fName);
 			$tooltip = ToolTipExists($fName, $this->tabid);
 			if (!$fieldInfo) {
@@ -396,6 +425,8 @@ class GridListView {
 		$reference_field = getEntityFieldNames($this->module);
 		$columnnameVal = $this->getFieldNameByColumn($reference_field['fieldname']);
 		$rowCount = $adb->num_rows($result);
+		$yesValue = getTranslatedString('yes', $this->module);
+		$noValue = getTranslatedString('no', $this->module);
 		for ($i=0; $i < $rowCount; $i++) {
 			$rows = array();
 			$colorizer_row = array();
@@ -411,6 +442,9 @@ class GridListView {
 				$colorizer_row[$fieldName] = $fieldValue;
 				if ($fieldValue == '' || $fieldValue == null) {
 					$rows[$fieldName] = '';
+					if ($fieldType == Field_Metadata::UITYPE_CHECKBOX) {
+						$rows[$fieldName] = $noValue;
+					}
 					continue;
 				}
 				//check field uitypes
@@ -451,9 +485,9 @@ class GridListView {
 					$rows[$fieldName] = $value;
 				} elseif ($fieldType == '56') {
 					if ($fieldValue == 1) {
-						$rows[$fieldName] = getTranslatedString('yes', $this->module);
+						$rows[$fieldName] = $yesValue;
 					} elseif ($fieldValue == 0) {
-						$rows[$fieldName] = getTranslatedString('no', $this->module);
+						$rows[$fieldName] = $noValue;
 					} else {
 						$rows[$fieldName] = '--';
 					}

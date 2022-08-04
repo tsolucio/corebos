@@ -55,7 +55,7 @@
 					</svg>
 					{$APP.LBL_SEARCH_NOW_BUTTON}
 				</a>
-				{if isset($Apache_Tika_URL) && $MODULE == 'Documents'}
+				{if isset($Apache_Tika_URL) && $Apache_Tika_URL neq '' && $MODULE == 'Documents'}
 				{assign var="searchfunction" value="callSearch('Basic', 'SearchDocuments');document.basicSearch.searchtype.searchlaunched='basic';"}
 				{if $moduleView=='tuigrid'}
 					{assign var="searchfunction" value="DocumentsView.SearchDocuments()"}

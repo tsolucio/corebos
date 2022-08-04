@@ -185,7 +185,7 @@ class mdActionRender {
 		let actions = '<div class="slds-button-group" role="group">';
 		if (props.columnInfo.renderer.options.moveup) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.moveup('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveUp']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.moveup('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveUp']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#up"></use>
 				</svg>
@@ -193,7 +193,7 @@ class mdActionRender {
 		}
 		if (props.columnInfo.renderer.options.movedown) {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.movedown('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveDown']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.movedown('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveDown']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
 				</svg>
@@ -201,7 +201,7 @@ class mdActionRender {
 		}
 		if (props.columnInfo.renderer.options.edit && permissions.edit == 'yes') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.MDUpsert('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.MDUpsert('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 				</svg>
@@ -209,7 +209,7 @@ class mdActionRender {
 		}
 		if (props.columnInfo.renderer.options.delete && permissions.delete == 'yes') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Delete']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Delete']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 				</svg>

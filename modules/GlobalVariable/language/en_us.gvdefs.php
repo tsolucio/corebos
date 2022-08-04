@@ -1732,6 +1732,18 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Activate this GV for installs with a large number of users to permit searching and selecting easier. Default is 0.',
 ),
+'Application_All_Filter_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Hide the default "All" filter. By default it is shown.',
+),
+'Application_FilterValidateMandatoryFields' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'By default when creating a filter you have to include at least 1 mandatory field. For the cases when the users don\'t want to include mandatory fields on the filter set this variable to 0. Default is 1.',
+),
 'Email_Template_AutomaticMerge' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',

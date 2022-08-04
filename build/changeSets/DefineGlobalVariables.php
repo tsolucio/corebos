@@ -123,6 +123,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_CSS_Properties',
 				'Application_Menu_Direction',
 				'Application_AssignUser_Search',
+				'Application_All_Filter_Show',
+				'Application_FilterValidateMandatoryFields',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',

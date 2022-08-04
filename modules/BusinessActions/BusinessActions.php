@@ -334,7 +334,7 @@ class BusinessActions extends CRMEntity {
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 		$linkcheck = $adb->pquery(
 			'SELECT businessactionsid
-				FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.' 
+				FROM vtiger_businessactions INNER JOIN '.$crmEntityTable.'
 				WHERE vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid
 				AND vtiger_crmentity.deleted = 0
 				AND module_list = ?
