@@ -198,9 +198,11 @@ class ListColumns extends processcbMap {
 			$conditions = isset($xml->popup->conditions) ? $xml->popup->conditions : false;
 			if ($conditions) {
 				foreach ($conditions as $key) {
-					$forfield = (string)$key->condition->forfield;
-					$value = (string)$key->condition->value;
-					$this->mapping['cbmapPOPUP']['Conditions'][$forfield] = $value;
+					foreach ($key as $cond) {
+						$forfield = (string)$cond->forfield;
+						$value = (string)$cond->value;
+						$this->mapping['cbmapPOPUP']['Conditions'][$forfield] = $value;
+					}
 				}
 			}
 		}
