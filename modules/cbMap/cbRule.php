@@ -22,7 +22,7 @@ class coreBOS_Rule {
 
 	private static $supportedBusinessMaps = array('Condition Query', 'Condition Expression', 'DecisionTable');
 
-	public static function evaluate($conditionid, $context) {
+	public static function evaluate($conditionid, $context, $holdContext = array()) {
 		global $log,$adb,$current_user;
 		$params = array(
 			'conditionid' => $conditionid,
@@ -125,7 +125,7 @@ class coreBOS_Rule {
 				break;
 			case 'Condition Expression':
 			default:
-				$ruleinfo = $cbmap->ConditionExpression($context);
+				$ruleinfo = $cbmap->ConditionExpression($context, $holdContext);
 				break;
 		}
 		cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, false, $mapvalues, $ruleinfo, date('Y-m-d H:i:s')));
