@@ -74,6 +74,9 @@ class ConditionExpression extends processcbMap {
 		}
 		if (!empty($entityId)) {
 			$entity = new VTWorkflowEntity($current_user, $entityId, true);
+			if (isset($arguments[1])) {
+				$entity->WorkflowContext = $arguments[1];
+			}
 			if (is_null($entity->data) && !is_array($arguments[0])) { // invalid context
 				$current_user = $holduser;
 				return false;
