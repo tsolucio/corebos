@@ -175,7 +175,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'WebService_Session_Idle_Time',
 				'Webservice_Describe_ReturnUserList',
 				'Webservice_Describe_ReturnGroupList',
-				'Webservice_Describe_AdminProfile',
 				'Webservice_Sync_RecordLimit',
 				'Webservice_Sync_RecordLimitStreaming',
 				'Webservice_GenDocConversion_Active',
