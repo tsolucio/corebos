@@ -390,12 +390,24 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$condition = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 		$userprivs = $this->user->getPrivileges();
 		if ($userprivs->hasGlobalReadPermission() || $this->objectName == 'Users') {
-			$sql = "SELECT vtiger_field.*, '0' as readonly, vtiger_blocks.sequence as blkseq
-				FROM vtiger_field
-				LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
-				WHERE ".$condition.' and block in ('.generateQuestionMarks($block).') and displaytype in (1,2,3,4)
-				ORDER BY vtiger_blocks.sequence ASC, vtiger_field.sequence ASC';
-			$params = array_merge([$tabid], $block);
+			$profileForSummary = intval(GlobalVariable::getVariable('Webservice_Describe_AdminProfile', 0, $this->getTabName()));
+			if (empty($profileForSummary)) {
+				$sql = "SELECT vtiger_field.*, '0' as readonly, vtiger_blocks.sequence as blkseq
+					FROM vtiger_field
+					LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
+					WHERE ".$condition.' and block in ('.generateQuestionMarks($block).') and displaytype in (1,2,3,4)
+					ORDER BY vtiger_blocks.sequence ASC, vtiger_field.sequence ASC';
+				$params = array_merge([$tabid], $block);
+			} else {
+				$sql = 'SELECT distinct vtiger_field.*, vtiger_profile2field.readonly, vtiger_blocks.sequence as blkseq, vtiger_profile2field.summary
+					FROM vtiger_field
+					LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
+					INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
+					WHERE '.$condition.' and block in ('.generateQuestionMarks($block).') and displaytype in (1,2,3,4)
+						AND vtiger_profile2field.visible=0 AND vtiger_profile2field.profileid=?
+					ORDER BY vtiger_blocks.sequence ASC, vtiger_field.sequence ASC';
+				$params = array_merge([$tabid], $block, [$profileForSummary]);
+			}
 		} else {
 			$profileList = getCurrentUserProfileList();
 			if (count($profileList) > 0) {

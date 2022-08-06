@@ -286,6 +286,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Return list of available groups in the assigned_user_id field. If you do not use groups in your external application you can get some marginal benefit.',
 ),
+'Webservice_Describe_AdminProfile' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => 'profileid',
+	'definition' => 'Administrator users do not have a profile, so some Describe information cannot be returned (summary, for example). Set this global variable to the ID of a profile you want to use to retrieve those values for administrator users.',
+),
 'SOAP_CustomerPortal_Enabled' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Webservice',
