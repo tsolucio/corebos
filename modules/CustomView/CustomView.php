@@ -209,7 +209,7 @@ class CustomView extends CRMEntity {
 		$cuserroles = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
 		foreach ($getViewsByModule['filters'] as $cvid => $cvrow) {
 			$cvrow['cvid'] = $cvid;
-			$cvrow['ename'] = $current_user->ename;
+			$cvrow['ename'] = getUserFullName($cvrow['userid']);
 			if ($cvrow['raw_name'] == 'All' && $Application_All_Filter_Show == 0) {
 				continue;
 			}
