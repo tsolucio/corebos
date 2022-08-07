@@ -21,16 +21,23 @@ function getViewsByModule($module, $user) {
 	$result = array();
 	$types = vtws_listtypes(null, $user);
 	foreach ($modules as $module) {
-		// pickup meta data of module
-		$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
-		$handlerPath = $webserviceObject->getHandlerPath();
-		$handlerClass = $webserviceObject->getHandlerClass();
-		require_once $handlerPath;
-		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
-		$meta = $handler->getMeta();
-		$mainModule = $meta->getTabName();  // normalize module name
-		// check modules
-		if (!$meta->isModuleEntity()) {
+		try {
+			// pickup meta data of module
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
+			require_once $handlerPath;
+			$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+			$meta = $handler->getMeta();
+			$mainModule = $meta->getTabName();  // normalize module name
+			// check modules
+			if (!$meta->isModuleEntity()) {
+				if ($isMoreThanOne) {
+					continue;
+				}
+				throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
+			}
+		} catch (\Throwable $th) {
 			if ($isMoreThanOne) {
 				continue;
 			}
