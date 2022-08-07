@@ -96,6 +96,7 @@ if (isset($query_string) && $query_string != '') {
 	$smarty->assign('SEARCH_MODULE', $search_module);
 	$smarty->assign('SEARCH_STRING', htmlentities($search_val, ENT_QUOTES, $default_charset));
 	$smarty->assign('MODULES_LIST', $object_array);
+	$Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '', 'Documents');
 	foreach ($object_array as $module => $object_name) {
 		if ($curModule == 'Utilities' || ($curModule == $module && !empty($_REQUEST['ajax']))) {
 			$focus = CRMEntity::getInstance($module);
@@ -116,16 +117,15 @@ if (isset($query_string) && $query_string != '') {
 					$search_msg .= '<b>'.to_html($search_val).'</b>';
 				} else { //This is for Global search
 					$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
+					if (!empty($Apache_Tika_URL) && $module=='Documents') {
+						$where .= ' OR vtiger_documentsearchinfo.text LIKE "%'.$search_val.'%"';
+					}
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
 					$search_msg .= '<b>'.htmlentities($search_val, ENT_QUOTES, $default_charset).'</b>';
 				}
 
 				if ($where != '') {
 					$listquery .= ' and ('.$where.')';
-				}
-				$Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '');
-				if (!empty($Apache_Tika_URL)) {
-					$listquery .= ' OR vtiger_documentsearchinfo.text LIKE "%'.$search_val.'%"';
 				}
 				if (!(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')) {
 					$count_result = $adb->query($listquery);

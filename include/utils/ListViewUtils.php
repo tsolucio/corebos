@@ -2182,7 +2182,7 @@ function getListQuery($module, $where = '') {
 				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_attachmentsfolder ON vtiger_notes.folderid = vtiger_attachmentsfolder.folderid";
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '');
+			$Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '', 'Documents');
 			if (!empty($Apache_Tika_URL)) {
 				$query .= ' LEFT JOIN vtiger_documentsearchinfo ON vtiger_documentsearchinfo.documentid=vtiger_notes.notesid ';
 			}
