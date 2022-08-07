@@ -909,8 +909,6 @@ class GridListView {
 	public function findDocumentFolders() {
 		require_once 'modules/DocumentFolders/DocumentFolders.php';
 		global $current_user, $adb;
-		$focus = new DocumentFolders();
-		$referenceField = 'parentfolder';
 		$queryGenerator = new QueryGenerator('DocumentFolders', $current_user);
 		$queryGenerator->setFields(array('id','foldername'));
 		if (!isset($_REQUEST['folders'])) {
@@ -920,7 +918,6 @@ class GridListView {
 		$result = $adb->pquery($list_query.' order by vtiger_documentfolders.sequence', array());
 		$foldercount = $adb->num_rows($result);
 		$folders = array();
-		$records_list = array();
 		if ($foldercount > 0) {
 			for ($i=0; $i<$foldercount; $i++) {
 				$id = $adb->query_result($result, $i, 'documentfoldersid');
@@ -937,9 +934,7 @@ class GridListView {
 	public function SearchFullDocuments($text) {
 		global $adb;
 		$this->DocumentSearch = true;
-		$result = $adb->pquery('select * from vtiger_documentsearchinfo where text LIKE ?', array(
-			'%'.$text.'%'
-		));
+		$result = $adb->pquery('select * from vtiger_documentsearchinfo where text LIKE ?', array('%'.$text.'%'));
 		if ($adb->num_rows($result) > 0) {
 			$ids = array();
 			while ($row = $result->FetchRow()) {
