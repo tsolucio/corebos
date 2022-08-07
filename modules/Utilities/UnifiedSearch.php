@@ -118,7 +118,7 @@ if (isset($query_string) && $query_string != '') {
 				} else { //This is for Global search
 					$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
 					if (!empty($Apache_Tika_URL) && $module=='Documents') {
-						$where .= ' OR vtiger_documentsearchinfo.text LIKE "%'.$search_val.'%"';
+						$where .= ' OR vtiger_documentsearchinfo.text LIKE "%'.formatForSqlLike($search_val).'%"';
 					}
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
 					$search_msg .= '<b>'.htmlentities($search_val, ENT_QUOTES, $default_charset).'</b>';
