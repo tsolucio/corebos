@@ -392,7 +392,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		if ($userprivs->hasGlobalReadPermission() || $this->objectName == 'Users') {
 			$pf = $adb->pquery('select profileid from vtiger_role2profile where roleid=? limit 1', [$this->user->column_fields['roleid']]);
 			$profileForSummary = ($pf ? $pf->fields['profileid'] : 0);
-			if (empty($profileForSummary)) {
+			if (empty($profileForSummary) || $this->objectName == 'Users') {
 				$sql = "SELECT vtiger_field.*, '0' as readonly, vtiger_blocks.sequence as blkseq
 					FROM vtiger_field
 					LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid

@@ -60,7 +60,7 @@ function vtws_retrieve($id, $user) {
 			$listofrelfields[] = $entity[$relfield];
 		}
 	}
-	if ($entityName=='Users') {
+	if ($entityName=='Users' && !empty($entity['roleid'])) {
 		$entity['rolename'] = getRoleName($entity['roleid']);
 	}
 	if (!empty($listofrelfields)) {
