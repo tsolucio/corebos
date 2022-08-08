@@ -17,6 +17,7 @@
  *************************************************************************************************/
 require_once 'include/utils/utils.php';
 include_once 'vtlib/Vtiger/Link.php';
+require_once 'include/ListView/ListViewJSON.php';
 global $adb, $log, $current_user;
 
 $functiontocall = vtlib_purify($_REQUEST['functiontocall']);
@@ -666,13 +667,20 @@ switch ($functiontocall) {
 				'success' => $success,
 			);
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
-			$tables = $clickHouse->getTables();
-			$ret = array(
-				'data' => array(
-					'contents' => $tables
-				),
-				'result' => true,
+			$grid = new GridListView('Utilities');
+			$q = 'select * from vtiger_ws_clickhousetables';
+			$field_lists = array(
+				'id' =>  array('vtiger_ws_clickhousetables'=>'id'),
+				'ws_name' => array('vtiger_ws_clickhousetables'=>'ws_name'),
+				'table_name' =>  array('vtiger_ws_clickhousetables'=>'table_name') ,
+				'access' =>  array('vtiger_ws_clickhousetables'=>'access'),
+				'create' =>  array('vtiger_ws_clickhousetables'=>'create'),
+				'read' =>  array('vtiger_ws_clickhousetables'=>'read'),
+				'write' =>  array('vtiger_ws_clickhousetables'=>'write'),
+				'delete' =>  array('vtiger_ws_clickhousetables'=>'delete'), 
 			);
+			 $ret =  $grid->gridTableBasedEntries($q, $field_lists, 'vtiger_ws_clickhousetables');
+
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
 			$table_name = $_REQUEST['table_name'];
 			$res = $clickHouse->deleteTable($table_name);
