@@ -628,8 +628,7 @@ switch ($functiontocall) {
 		foreach ($fields as $field) {
 			$fieldsIn .= "'$field',";
 		}
-		$rs = $adb->pquery('SELECT tablename, fieldname, columnname, fieldlabel, typeofdata 
-			FROM vtiger_field WHERE tabid=? AND fieldname IN ('.rtrim($fieldsIn, ',').')', array($tabid));
+		$rs = $adb->pquery('SELECT tablename, fieldname, columnname, fieldlabel, typeofdata FROM vtiger_field WHERE tabid=? AND fieldname IN ('.rtrim($fieldsIn, ',').')', array($tabid));
 		$fieldInfo = array();
 		while ($row = $rs->FetchRow()) {
 			$typeofdata = explode('~', $row['typeofdata']);
