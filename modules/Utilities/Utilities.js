@@ -272,14 +272,6 @@ var Grid = tui.Grid;
 var gridInstance = {};
 const defaultURL = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions';
 
-// document.addEventListener('DOMContentLoaded', function (event) {
-// 	loadJS(
-// 		'index.php?module=Utilities&action=UtilitiesAjax&file=getjslanguage'
-// 	).then(() => {
-// 		loadTUIGridData();
-
-// 	});
-// });
 
 function loadTUIGridData() {
 	gridInstance = new Grid({
@@ -489,8 +481,7 @@ function showChTab(tab) {
 		loadJS(
 			'index.php?module=Utilities&action=UtilitiesAjax&file=getjslanguage'
 		).then(() => {
-			loadTUIGridData();
-
+				loadTUIGridData();
 		});
 	}
 	document.getElementById('tab-' + hide).classList.remove('slds-is-active');
@@ -508,4 +499,58 @@ function showChTab(tab) {
 	document.getElementById('tab-data-' + show).classList.add('slds-show');
 	document.getElementById('tab-data-' + hide).classList.remove('slds-show');
 	document.getElementById('tab-data-' + hide).classList.add('slds-hide');
+}
+
+class CheckboxWithActionRender {
+	constructor(props) {
+		let rowKey = props.rowKey;
+		let el = document.createElement('span');
+		let currentFieldName = props.columnInfo.name;
+
+		const ischecked = props.value === '1' ? 'checked = ""' : '';
+		let actions = `
+	  <div class="slds-form-element">
+		<div class="slds-form-element__control">
+			<span class="slds-checkbox slds-checkbox_standalone">
+			<input type="checkbox" id="checkbox-${currentFieldName}-${rowKey}" name="label" value="" ${ischecked}   onclick='changeChCheckbox(${rowKey}, "${currentFieldName}")'/>
+			<span class="slds-checkbox_faux"></span>
+			</span>
+		</div>
+		</div>`;
+		el.innerHTML = actions;
+		this.el = el;
+		this.render(props);
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	render(props) {
+		this.el.value = String(props.value);
+	}
+}
+
+class DeleteButtonRender {
+	constructor(props) {
+		let rowKey = props.rowKey;
+		let el = document.createElement('span');
+		let actions = `				
+				<button class="slds-button slds-button_destructive delete" title=""  onclick="deleteChRow(${rowKey})" name="Delete">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use> </svg>
+				`+ mod_alert_arr.LBL_DELETE+`
+				</button>
+				`;
+		el.innerHTML = actions;
+		this.el = el;
+		this.render(props);
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	render(props) {
+		this.el.value = String(props.value);
+	}
 }
