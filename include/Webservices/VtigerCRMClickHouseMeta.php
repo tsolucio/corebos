@@ -94,11 +94,11 @@ class VtigerCRMClickHouseMeta extends EntityMeta {
 	private function computeAccess($webserviceObject, $user) {
 		$table = $this->clickHouse->getTable($this->baseTable);
 		if ($table) {
-			$this->hasAccess = $table['access'];
-			$this->hasCreateAccess = $table['create'];
-			$this->hasReadAccess = $table['read'];
-			$this->hasWriteAccess = $table['write'];
-			$this->hasDeleteAccess = $table['delete'];
+			$this->hasAccess = settype($table['access'], "boolean");
+			$this->hasCreateAccess = settype($table['create'], "boolean");
+			$this->hasReadAccess = settype($table['read'], "boolean");
+			$this->hasWriteAccess = settype($table['write'], "boolean");
+			$this->hasDeleteAccess = settype($table['delete'], "boolean");
 		} else {
 			$this->hasAccess = false;
 			$this->hasCreateAccess = false;

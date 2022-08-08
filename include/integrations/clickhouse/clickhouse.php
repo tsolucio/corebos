@@ -219,8 +219,7 @@ class corebos_clickhouse {
 	}
 
 	public function getTable($table_name) {
-		global $adb,$log;
-		$log->fatal("getting tables");
+		global $adb;
 		$table = array();
 		$res = $adb->pquery('select * from vtiger_ws_clickhousetables where table_name = ? limit 1', array($table_name));
 		if ($res) {
@@ -236,7 +235,6 @@ class corebos_clickhouse {
 				'delete' => $row['delete'],
 			);
 		}
-		$log->fatal($table);
 		return $table;
 	}
 
