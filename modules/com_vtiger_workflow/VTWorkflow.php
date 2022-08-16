@@ -437,15 +437,15 @@ class Workflow {
 				return $t1 - $t2;
 			});
 
-			$currentTrigger = in_array(date("g:i a", strtotime($this->schtime)), $multipleschtime);
-			if (!$currentTrigger) {
+			$currentTrigger = array_search(date("g:i a", strtotime($this->schtime)), $multipleschtime);
+			if (!$currentTrigger && $currentTrigger !== 0) {
+				$nextTiggerTime = date("H:i", strtotime($multipleschtime[0]));
 				$this->updateSchtime($multipleschtime[0]);
-				$nextTiggerTime = $multipleschtime[0];
 			} elseif (!isset($multipleschtime[$currentTrigger + 1])) {
-				$nextTiggerTime = $multipleschtime[count($multipleschtime)-1];
+				$nextTiggerTime =  date("H:i", strtotime($multipleschtime[count($multipleschtime)-1]));
 				$this->updateSchtime($nextTiggerTime);
 			} else {
-				$nextTiggerTime = $multipleschtime[$currentTrigger + 1];
+				$nextTiggerTime = date("H:i", strtotime($multipleschtime[$currentTrigger + 1]));
 				$this->updateSchtime($nextTiggerTime);
 			}
 				return $nextTiggerTime;
@@ -455,7 +455,7 @@ class Workflow {
 
 	public function updateSchtime($schtime) {
 		global $adb;
-		$adb->pquery('update com_vtiger_workflows set schtime=? where workflow_id=?', [$schtime, $this->id]);
+		$adb->pquery('update com_vtiger_workflows set schtime=? where workflow_id=?', [date("H:i", strtotime($schtime)), $this->id]);
 	}
 
 
