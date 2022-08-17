@@ -1630,8 +1630,7 @@ class CRMEntity {
 	 */
 	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
 		global $adb;
-		$moduleName = vtlib_purify($_REQUEST['module']);
-		$bmapname = $moduleName.'_ListColumns';
+		$bmapname = $module.'_ListColumns';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
@@ -1646,7 +1645,7 @@ class CRMEntity {
 				$query_body = substr($query, 0, $wherepos-1);
 				$workflowScheduler = new WorkFlowScheduler($adb);
 				$workflow = new Workflow();
-				$wfvals['module_name'] = $moduleName;
+				$wfvals['module_name'] = $module;
 				$wfvals['test'] = $conditions[$fieldname];
 				$workflow->setup($wfvals);
 				$query = $workflowScheduler->getWorkflowQuery($workflow, array_values($fields));
