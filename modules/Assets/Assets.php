@@ -117,6 +117,7 @@ class Assets extends CRMEntity {
 	 * Useful to handle specific case handling for Popup
 	 */
 	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
+		global $adb;
 		// $srcrecord could be empty
 		//$query_relation=' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid) ';
 		$query_relation = '';
@@ -127,6 +128,31 @@ class Assets extends CRMEntity {
 			$query1 = $query_body . $query_relation;
 			$query1 .= " WHERE (vtiger_assets.invoiceid = '' OR vtiger_assets.invoiceid = '0') AND vtiger_assets.product = ".$_REQUEST['productid']." and " . $query_cond;
 			return $query1;
+		}
+		$moduleName = vtlib_purify($_REQUEST['module']);
+		$bmapname = $moduleName.'_ListColumns';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapLC = $cbMap->ListColumns();
+			$conditions = $cbMapLC->getConditionsPopup();
+			if (!empty($conditions[$fieldname]) && json_decode($conditions[$fieldname]) == null) {
+				return $conditions[$fieldname];
+			}
+			if (!empty($conditions[$fieldname])) {
+				$fields = $cbMapLC->getSearchFieldsName();
+				$wherepos = stripos($query, 'where');
+				$query_body = substr($query, 0, $wherepos-1);
+				$workflowScheduler = new WorkFlowScheduler($adb);
+				$workflow = new Workflow();
+				$wfvals['module_name'] = $moduleName;
+				$wfvals['test'] = $conditions[$fieldname];
+				$workflow->setup($wfvals);
+				$query = $workflowScheduler->getWorkflowQuery($workflow, array_values($fields));
+				$wherepos = stripos($query, 'where');
+				$query_cond = substr($query, $wherepos+5);
+				$query = $query_body.' where '.$query_cond;
+			}
 		}
 		return $query;
 	}

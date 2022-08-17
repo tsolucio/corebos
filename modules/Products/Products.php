@@ -1300,6 +1300,31 @@ class Products extends CRMEntity {
 				return $query_body .$query_relation.' WHERE vtiger_stock.whid='.$whID.' and '.$query_cond;
 			}
 		}
+		$moduleName = vtlib_purify($_REQUEST['module']);
+		$bmapname = $moduleName.'_ListColumns';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapLC = $cbMap->ListColumns();
+			$conditions = $cbMapLC->getConditionsPopup();
+			if (!empty($conditions[$fieldname]) && json_decode($conditions[$fieldname]) == null) {
+				return $conditions[$fieldname];
+			}
+			if (!empty($conditions[$fieldname])) {
+				$fields = $cbMapLC->getSearchFieldsName();
+				$wherepos = stripos($query, 'where');
+				$query_body = substr($query, 0, $wherepos-1);
+				$workflowScheduler = new WorkFlowScheduler($adb);
+				$workflow = new Workflow();
+				$wfvals['module_name'] = $moduleName;
+				$wfvals['test'] = $conditions[$fieldname];
+				$workflow->setup($wfvals);
+				$query = $workflowScheduler->getWorkflowQuery($workflow, array_values($fields));
+				$wherepos = stripos($query, 'where');
+				$query_cond = substr($query, $wherepos+5);
+				$query = $query_body.' where '.$query_cond;
+			}
+		}
 		return $query;
 	}
 }
