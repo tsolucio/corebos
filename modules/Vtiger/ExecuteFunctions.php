@@ -682,7 +682,8 @@ switch ($functiontocall) {
 
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
 			$table_name = $_REQUEST['table_name'];
-			$res = $clickHouse->deleteTable($table_name);
+			$ws_name = $_REQUEST['ws_name'];
+			$res = $clickHouse->deleteTable($table_name, $ws_name);
 			if ($res) {
 				$success = true;
 			} else {

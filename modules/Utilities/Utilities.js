@@ -417,14 +417,15 @@ function changeChCheckbox(rowId, fieldName) {
 	updateAjax(data);
 }
 
-function deleteRow(rowId) {
+function deleteChRow(rowId) {
 	const table_name = gridInstance.getValue(rowId, 'table_name');
+	const ws_name = gridInstance.getValue(rowId, 'ws_name');
 	gridInstance.removeRow(rowId);
 	//send ajax call to delete table
 	jQuery.ajax({
 		method: 'POST',
 		url: `${defaultURL}&functiontocall=clickHouse&method=deleteTable`,
-		data: { table_name }
+		data: { table_name, ws_name }
 	}).then(function (response) {
 		console.log(response);
 	});
@@ -455,7 +456,9 @@ function updateFieldData(ev, idx) {
 		old_ws_name,
 
 	};
-	updateAjax(data);
+	if (table_name !== '' && ws_name !== '' ) {
+		updateAjax(data);
+	}
 }
 
 function updateAjax(data) {
@@ -509,7 +512,7 @@ class CheckboxWithActionRender {
 
 		const ischecked = props.value === '1' ? 'checked = ""' : '';
 		let actions = `
-	  <div class="slds-form-element">
+	  <div class="slds-form-element" style="margin-left: 70px">
 		<div class="slds-form-element__control">
 			<span class="slds-checkbox slds-checkbox_standalone">
 			<input type="checkbox" id="checkbox-${currentFieldName}-${rowKey}" name="label" value="" ${ischecked}   onclick='changeChCheckbox(${rowKey}, "${currentFieldName}")'/>
