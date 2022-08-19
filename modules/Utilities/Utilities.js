@@ -427,7 +427,9 @@ function deleteChRow(rowId) {
 		url: `${defaultURL}&functiontocall=clickHouse&method=deleteTable`,
 		data: { table_name, ws_name }
 	}).then(function (response) {
-		console.log(response);
+		if (response.success) {
+			gridInstance.reloadData();
+		}
 	});
 }
 
@@ -467,7 +469,9 @@ function updateAjax(data) {
 		url: `${defaultURL}&functiontocall=clickHouse&method=addUpdateTable`,
 		data: data
 	}).then(function (response) {
-		console.log(response);
+		if (response.success) {
+			gridInstance.reloadData();
+		}
 	});
 }
 
