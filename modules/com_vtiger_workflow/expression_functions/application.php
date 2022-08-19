@@ -419,6 +419,19 @@ function __cb_setfromcontext($arr) {
 	return $arr[1];
 }
 
+function __cb_applymaptoarrayelements($params) {
+	$cbMap = cbMap::getMapByID($params[1]);
+	if (empty($cbMap)) {
+		return $params[0];
+	}
+	$array = $params[0];
+	$finalarray = array();
+	foreach ($array as $value) {
+		$finalarray[]= $cbMap->Mapping($value, $value);
+	}
+	return $finalarray;
+}
+
 function __cb_getsetting($arr) {
 	if (empty($arr[0])) {
 		return '';

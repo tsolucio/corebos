@@ -212,6 +212,7 @@ class VTExpressionsManager {
 			'getFieldsOF' => 'getFieldsOF(id, module, fields)',
 			'getFromContext' => 'getFromContext(variablename)',
 			'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
+			'applyMaptoArrayElements' => 'applyMaptoArrayElements(array, mapid)',
 			'setToContext' => 'setToContext(variablename, value)',
 			'jsonEncode' => 'jsonEncode(field)',
 			'jsonDecode' => 'jsonDecode(field)',

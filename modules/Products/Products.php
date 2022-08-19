@@ -1300,7 +1300,7 @@ class Products extends CRMEntity {
 				return $query_body .$query_relation.' WHERE vtiger_stock.whid='.$whID.' and '.$query_cond;
 			}
 		}
-		return $query;
+		return parent::getQueryByModuleField($module, $fieldname, $srcrecord, $query);
 	}
 }
 ?>
