@@ -111,14 +111,10 @@
 									{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}
 								</button>
 							</div>
-							<div class="slds-grid slds-gutters">
-								<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-1">
-									<label class="slds-form-element__label"
-										for="chquery">{'clickhouse_query'|@getTranslatedString:$MODULE}</label>
-									<div class="slds-form-element__control">
-										<textarea id="chquery" name="chquery" class="slds-input">
-											{$CHQUERY}</textarea>
-									</div>
+							<div class="slds-form-element">
+								<label class="slds-form-element__label" for="chquery">{'clickhouse_query'|@getTranslatedString:$MODULE}</label>
+								<div class="slds-form-element__control">
+									<textarea id="chquery" name="chquery"  class="slds-textarea">{$CHQUERY}</textarea>
 								</div>
 							</div>
 							<div class="slds-m-top_large">
