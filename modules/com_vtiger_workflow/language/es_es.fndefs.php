@@ -1923,6 +1923,28 @@ $WFExpressionFunctionDefinitons = array(
 		"setToContext('accountname','mortein')",
 	),
 ),
+'applyMaptoArrayElements' => array(
+	'name' => 'applyMaptoArrayElements(array, mapid)',
+	'desc' => 'This function applies the business field mapping into the array parameter.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'The array that will serve as context.',
+		),
+		array(
+			'name' => 'mapid',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the field mapping business map crmid that will be applied on the array',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"applyMaptoArrayElements(getFromContext('response.data'),43980)",
+	),
+),
 'jsonEncode' => array(
 	'name' => 'jsonEncode(field)',
 	'desc' => 'Esta función JSON codifica la variable dada.',
