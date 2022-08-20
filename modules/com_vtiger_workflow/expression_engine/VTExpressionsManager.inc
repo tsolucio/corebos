@@ -180,6 +180,8 @@ class VTExpressionsManager {
 			'floor' => 'floor(numericfield)',
 			'modulo' => 'modulo(numericfield,numericfield)',
 			'hash' => 'hash(field, method)',
+			'base64encode' => 'base64encode(string)',
+			'base64decode' => 'base64decode(string)',
 			'globalvariable' => 'globalvariable(gvname)',
 			'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
 			'aggregation_fields_operation'=>'aggregation_fields_operation(operation,RelatedModule,relatedFieldsToAggregateWithOperation,conditions)',
