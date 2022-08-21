@@ -1230,7 +1230,7 @@ class Products extends CRMEntity {
 		$with_crmids = (array)$with_crmids;
 		foreach ($with_crmids as $with_crmid) {
 			if ($with_module == 'Leads' || $with_module == 'Accounts' || $with_module == 'Contacts' || $with_module == 'Potentials') {
-				$query = $adb->pquery('SELECT * from vtiger_seproductsrel WHERE crmid=? and productid=?', array($crmid, $with_crmid));
+				$query = $adb->pquery('SELECT 1 from vtiger_seproductsrel WHERE crmid=? and productid=?', array($crmid, $with_crmid));
 				if ($adb->num_rows($query)==0) {
 					$adb->pquery('insert into vtiger_seproductsrel values (?,?,?)', array($with_crmid, $crmid, $with_module));
 				}
