@@ -42,7 +42,7 @@ class VTWorkflowApplication {
 	}
 
 	public function deleteWorkflowUrl($id, $withReturn = true) {
-		$idPart="&workflow_id=$id";
+		$idPart = Vtiger_Request::addCRSF2URL("&workflow_id=$id");
 		return "index.php?module={$this->name}&action=deleteworkflow$idPart".($withReturn ? '&return_url='.urlencode($this->returnUrl()) : '');
 	}
 
