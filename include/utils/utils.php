@@ -3584,7 +3584,7 @@ function getSelectedRecords($input, $module, $idstring, $excludedRecords) {
 	global $adb;
 
 	if ($idstring == 'relatedListSelectAll') {
-		$recordid = vtlib_purify($input['recordid']);
+		$recordid = filter_var($input['recordid'], FILTER_SANITIZE_NUMBER_INT);
 		if ($module == 'Accounts') {
 			$result = getCampaignAccountIds($recordid);
 		}
@@ -3620,6 +3620,12 @@ function getSelectedRecords($input, $module, $idstring, $excludedRecords) {
 		} else {
 			$storearray = explode(';', $idstring);
 		}
+		array_walk(
+			$storearray,
+			function (&$val, $key) {
+				$val = filter_var($val, FILTER_SANITIZE_NUMBER_INT);
+			}
+		);
 	} elseif ($idstring == 'all') {
 		$result = getSelectAllQuery($input, $module);
 		$storearray = array();
@@ -3633,6 +3639,12 @@ function getSelectedRecords($input, $module, $idstring, $excludedRecords) {
 		$storearray = array_diff($storearray, $excludedRecords);
 	} else {
 		$storearray = explode(';', $idstring);
+		array_walk(
+			$storearray,
+			function (&$val, $key) {
+				$val = filter_var($val, FILTER_SANITIZE_NUMBER_INT);
+			}
+		);
 	}
 
 	return $storearray;
