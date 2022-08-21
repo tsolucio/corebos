@@ -705,13 +705,12 @@ FieldDependencies.prototype.callFunc = function (sourcename, allParam) {
 		if (fldValues.length) {
 			var fldValue = fldValues.item(0).value;
 			var fld = jQuery('[name="'+sourcename+'"]', this.baseform);
-			//check if the function is already declared
-			//make sure it is not going to be called the first time the page is loaded
-			if (window[funcName]!==undefined && typeof(fld.data('initialVal')) !== 'undefined') {
-				window[funcName](sourcename, action_field, fldValue, fld.data('initialVal'), parameters);
-			}
 			if (typeof(fld.data('initialVal')) == 'undefined') {
 				fld.data('initialVal', fldValue);
+			}
+			//check if the function is already declared
+			if (window[funcName]!==undefined) {
+				window[funcName](sourcename, action_field, fldValue, fld.data('initialVal'), parameters);
 			}
 		}
 	}
