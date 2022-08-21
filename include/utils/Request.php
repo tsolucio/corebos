@@ -220,6 +220,10 @@ class Vtiger_Request {
 		}
 	}
 
+	public static function addCRSF2URL($url = '', $separator = '&') {
+		return $url.$separator.$GLOBALS['csrf']['input-name'].'='.csrf_get_tokens('');
+	}
+
 	public static function get_ip() {
 		$headers = $_SERVER;
 		// check for shared internet/ISP IP
