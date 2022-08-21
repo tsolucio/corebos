@@ -147,26 +147,26 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 								<input name="recordid" id="recordid" type="hidden" value="{$RECORDID}">
 								<input name="record_id" id="record_id" type="hidden" value="{$RECORD_ID}">
 								<input name="return_module" id="return_module" type="hidden" value="{$RETURN_MODULE}">
-								<input name="from_link" id="from_link" type="hidden" value="{if isset($smarty.request.fromlink)}{$smarty.request.fromlink|@vtlib_purify}{/if}">
+								<input name="from_link" id="from_link" type="hidden" value="{if isset($smarty.request.fromlink)}{$smarty.request.fromlink|@urlencode}{/if}">
 								<input type="hidden" id="relmod" name="{$mod_var_name}" value="{$mod_var_value}">
 								<input type="hidden" id="relrecord_id" name="{$recid_var_name}" value="{$recid_var_value}">
-								<input name="form" id="popupform" type="hidden" value="{$smarty.request.form|@vtlib_purify}">
-								<input name="forfield" id="forfield" type="hidden" value="{if isset($smarty.request.forfield)}{$smarty.request.forfield|@vtlib_purify}{/if}">
-								<input name="srcmodule" id="srcmodule" type="hidden" value="{if isset($smarty.request.srcmodule)}{$smarty.request.srcmodule|@vtlib_purify}{/if}">
-								<input name="forrecord" id="forrecord" type="hidden" value="{if isset($smarty.request.forrecord)}{$smarty.request.forrecord|@vtlib_purify}{/if}">
+								<input name="form" id="popupform" type="hidden" value="{$smarty.request.form|@urlencode}">
+								<input name="forfield" id="forfield" type="hidden" value="{if isset($smarty.request.forfield)}{$smarty.request.forfield|@urlencode}{/if}">
+								<input name="srcmodule" id="srcmodule" type="hidden" value="{if isset($smarty.request.srcmodule)}{$smarty.request.srcmodule|@urlencode}{/if}">
+								<input name="forrecord" id="forrecord" type="hidden" value="{if isset($smarty.request.forrecord)}{$smarty.request.forrecord|@urlencode}{/if}">
 								{if isset($CBCUSTOMPOPUPINFO_ARRAY)}
 									{foreach from=$CBCUSTOMPOPUPINFO_ARRAY item=param}
-										<input name="{$param}" id="{$param}" type="hidden" value="{if isset($smarty.request.$param)}{$smarty.request.$param|@vtlib_purify}{/if}">
+										<input name="{$param}" id="{$param}" type="hidden" value="{if isset($smarty.request.$param)}{$smarty.request.$param|@urlencode}{/if}">
 									{/foreach}
 									{if isset($CBCUSTOMPOPUPINFO)}
 										<input name="cbcustompopupinfo" id="cbcustompopupinfo" type="hidden" value="{$CBCUSTOMPOPUPINFO}">
 									{/if}
 								{/if}
 								{if !empty($smarty.request.currencyid)}
-									<input type="hidden" name="currencyid" id="currencyid" value="{$smarty.request.currencyid|@vtlib_purify}">
+									<input type="hidden" name="currencyid" id="currencyid" value="{$smarty.request.currencyid|@urlencode}">
 								{/if}
 								{if !empty($smarty.request.srcwhid)}
-									<input type="hidden" name="srcwhid" id="srcwhid" value="{$smarty.request.srcwhid|@vtlib_purify}">
+									<input type="hidden" name="srcwhid" id="srcwhid" value="{$smarty.request.srcwhid|@urlencode}">
 								{/if}
 							</td>
 							<td width="18%" class="dvtCellLabel">
