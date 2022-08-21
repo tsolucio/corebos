@@ -202,11 +202,9 @@ function csrf_ob_handler($buffer, $flags) {
  */
 function csrf_check($fatal = true) {
 	global $site_URL;
-	if (empty($_SERVER['HTTP_REFERER']) && ((empty($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST'))) {
-		return true;
-	}
-	
-	if (!empty($_SERVER['HTTP_REFERER']) && (strpos($_SERVER['HTTP_REFERER'], $site_URL) !== false) && (empty($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST')) {
+	if ((empty($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], $site_URL) !== false)
+		&& (empty($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST')
+	) {
 		return true;
 	}
 
