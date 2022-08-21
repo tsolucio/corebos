@@ -181,10 +181,11 @@ class cbMap extends CRMEntity {
 
 	public static function getMapByID($cbmapid) {
 		global $adb;
-		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap', true);
-		$query = 'SELECT crmid,setype FROM '.$crmEntityTable.' where crmid=? AND deleted=0';
-		$result = $adb->pquery($query, array($cbmapid));
-		if ($result && $adb->num_rows($result)>0 && $adb->query_result($result, 0, 'setype') == 'cbMap') {
+		$result = $adb->pquery(
+			'SELECT setype FROM '.CRMEntity::getcrmEntityTableAlias('cbMap', true).' where crmid=? AND deleted=0',
+			array($cbmapid)
+		);
+		if ($result && $adb->num_rows($result)>0 && $result->fields['setype'] == 'cbMap') {
 			$cbmap = new cbMap();
 			$cbmap->retrieve_entity_info($cbmapid, 'cbMap');
 			return $cbmap;
