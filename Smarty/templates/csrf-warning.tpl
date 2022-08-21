@@ -15,7 +15,7 @@
 					<div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
 						<p>{$csrfWarning}</p>
 					</div>
-					<footer class="slds-modal__footer slds-theme_default">
+					<footer class="slds-modal__footer slds-theme_default" style="width: 100%;">
 						<button class="slds-button slds-button_neutral" onclick="window.history.back()">{$csrfReload}</button>
 					</footer>
 				</div>
