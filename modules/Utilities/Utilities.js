@@ -488,7 +488,7 @@ function showChTab(tab) {
 		loadJS(
 			'index.php?module=Utilities&action=UtilitiesAjax&file=getjslanguage'
 		).then(() => {
-				loadTUIGridData();
+			loadTUIGridData();
 		});
 	}
 	document.getElementById('tab-' + hide).classList.remove('slds-is-active');
