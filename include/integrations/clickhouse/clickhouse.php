@@ -159,7 +159,6 @@ class corebos_clickhouse {
 		global $adb;
 
 		if ($old_table_name === '' || $old_ws_name === '') {
-
 			$query = "INSERT INTO `vtiger_ws_clickhousetables` (`ws_name`, `table_name`, `access`, `create`, `read`, `write`) VALUES (?,?,?,?,?,?)";
 			$res = $adb->pquery($query, array($ws_name, $table_name, $access, $create, $read, $write));
 
