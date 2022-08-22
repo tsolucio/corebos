@@ -676,10 +676,9 @@ switch ($functiontocall) {
 				'create' =>  array('vtiger_ws_clickhousetables'=>'create'),
 				'read' =>  array('vtiger_ws_clickhousetables'=>'read'),
 				'write' =>  array('vtiger_ws_clickhousetables'=>'write'),
-				'delete' =>  array('vtiger_ws_clickhousetables'=>'delete'), 
+				'delete' =>  array('vtiger_ws_clickhousetables'=>'delete'),
 			);
 			 $ret =  $grid->gridTableBasedEntries($q, $field_lists, 'vtiger_ws_clickhousetables');
-
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
 			$table_name = $_REQUEST['table_name'];
 			$ws_name = $_REQUEST['ws_name'];
