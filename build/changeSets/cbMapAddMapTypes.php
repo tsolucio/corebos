@@ -45,6 +45,7 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 				'InformationMap',
 				'Kanban',
 				'Pivot',
+				'Wizard',
 				'ApplicationMenu',
 				'MassUpsertGridView',
 			);
