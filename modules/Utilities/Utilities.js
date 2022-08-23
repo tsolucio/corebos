@@ -278,7 +278,7 @@ function loadTUIGridData() {
 		el: document.getElementById('chgrid'),
 		columns: [
 			{
-				name: 'ws_name',
+				name: 'table_name',
 				header: mod_alert_arr.LBL_WS_NAME,
 				sortingType: 'desc',
 				editor: 'text',
@@ -288,7 +288,7 @@ function loadTUIGridData() {
 				},
 			},
 			{
-				name: 'table_name',
+				name: 'ws_name',
 				header: mod_alert_arr.LBL_TABLE_NAME,
 				sortingType: 'desc',
 				editor: 'text',
@@ -439,8 +439,29 @@ function updateFieldData(ev, idx) {
 	const oldValue = ev.prevValue;
 	const newValue = ev.value;
 
+	if (columnChanged === 'ws_name') {
+		const search = gridInstance.findRows({
+			ws_name: newValue
+		});
+
+		if (search.length > 1) {
+			gridInstance.setRow(idx,
+				{
+					ws_name: '',
+					table_name: gridInstance.getValue(idx, 'table_name'),
+					access: gridInstance.getValue(idx, 'access'),
+					create: gridInstance.getValue(idx, 'create'),
+					read: gridInstance.getValue(idx, 'read'),
+					write: gridInstance.getValue(idx, 'write'),
+					delete: gridInstance.getValue(idx, 'delete'),
+				}
+			);
+			return false;
+		}
+	}
+
 	const table_name = columnChanged === 'table_name' ? newValue : gridInstance.getValue(idx, 'table_name');
-	const old_table_name = columnChanged !== 'table_name' ? table_name : oldValue;
+	const old_table_name = columnChanged === 'table_name' ?  oldValue : table_name;
 	const ws_name = columnChanged === 'ws_name' ? newValue : gridInstance.getValue(idx, 'ws_name');
 	const old_ws_name = columnChanged === 'ws_name' ? oldValue : ws_name;
 	const access = columnChanged === 'access' ? newValue : gridInstance.getValue(idx, 'access');
