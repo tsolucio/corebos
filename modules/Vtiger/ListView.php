@@ -191,8 +191,10 @@ if ($sql_error) {
 		$smarty->assign('LISTHEADER', '');
 		$smarty->assign('LISTENTITY', array());
 	} else {
-		$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
-		$smarty->assign('recordListRange', $recordListRangeMsg);
+		if ($layout != 'tuigrid') {
+			$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
+			$smarty->assign('recordListRange', $recordListRangeMsg);
+		}
 
 		$smarty->assign('CUSTOMVIEW_OPTION', $customview_html);
 		if ($layout != 'tuigrid') {
@@ -209,6 +211,7 @@ if ($sql_error) {
 		if ($currentModule == 'Documents') {
 			include 'modules/Documents/ListViewCalculations.php';
 		}
+		$listview_entries = array();
 		if ($layout != 'tuigrid') {
 			$listview_header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, $skipAction);
 			$listview_entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, $skipAction);
