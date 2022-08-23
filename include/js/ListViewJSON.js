@@ -231,21 +231,12 @@ const ListView = {
 							showClearBtn: true
 						};
 					}
-					if (uitype == '15' || uitype == '52' || uitype == '53' || uitype == '56') {
-						if (edit) {
-							formatter = 'listItemText';
-						} else {
-							formatter = false;
-						}
-					} else {
-						formatter = false;
-					}
 					header = {
 						name: fieldname,
 						header: fieldvalue,
 						sortingType: 'desc',
 						sortable: sortable,
-						formatter: formatter,
+						formatter: false,
 						editor: editor,
 						filter: filter,
 						whiteSpace: 'normal',
