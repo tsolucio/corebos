@@ -14,8 +14,8 @@ $image_path=$theme_path.'images/';
 require_once 'include/home.php';
 require_once 'Smarty_setup.php';
 
-$stuffid = vtlib_purify($_REQUEST['stuffid']);
-$stufftype = vtlib_purify($_REQUEST['stufftype']);
+$stuffid = filter_var($_REQUEST['stuffid'], FILTER_SANITIZE_NUMBER_INT);
+$stufftype = urlencode(vtlib_purify($_REQUEST['stufftype']));
 
 $homeObj=new Homestuff();
 $smarty=new vtigerCRM_Smarty;
