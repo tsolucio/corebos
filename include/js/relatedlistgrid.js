@@ -38,9 +38,9 @@ var relatedlistgrid = {
 			record = '&record='+record;
 		}
 		if (target) {
-			related_fieldname = target_related_fieldname;
+			related_fieldname = target_related_fieldname[module];
 		} else {
-			related_fieldname = origin_related_fieldname;
+			related_fieldname = origin_related_fieldname[module];
 		}
 		if (CurrentRecord!='') {
 			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&RLFieldName='+related_fieldname;

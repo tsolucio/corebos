@@ -39,8 +39,14 @@
 </article>
 <script>
 var mapname = '{$mapname}';
-var origin_related_fieldname = '{$origin_related_fieldname}';
-var target_related_fieldname = '{$target_related_fieldname}';
+if (origin_related_fieldname === undefined) {
+	var origin_related_fieldname = Array();
+}
+if (target_related_fieldname === undefined) {
+	var target_related_fieldname = Array();
+}
+origin_related_fieldname['{$originmodule}'] = '{$origin_related_fieldname}';
+target_related_fieldname['{$targetmodule}'] = '{$target_related_fieldname}';
 function loadRLGrid{$originmodule}{$targetmodule}() {
 	RLInstance['rlgrid{$originmodule}-{$targetmodule}'] = new tui.Grid({
 		el: document.getElementById('{$originmodule}-{$targetmodule}'),
