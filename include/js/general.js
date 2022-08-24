@@ -5152,6 +5152,7 @@ function getITSMiniCal(url) {
 		url:'index.php?'+ url
 	}).done(function (response) {
 		document.getElementById('miniCal').innerHTML = response;
+		jQuery('#cbminical').draggable({handle: '#cbminicalhandle'});
 	});
 }
 

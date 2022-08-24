@@ -61,7 +61,7 @@ function get_its_mini_calendar(&$cal) {
 	}
 	$mt = substr('0' . $cal['calendar']->date_time->month, -2);
 	$dy = substr('0' . $cal['calendar']->date_time->day, -2);
-	$minical = '<div class="slds-grid slds-badge_lightest">
+	$minical = '<div id="cbminical"><div id="cbminicalhandle" class="slds-grid slds-badge_lightest slds-card">
 		<div class="slds-col slds-size_1-of-6">&nbsp;</div>
 		<div class="slds-col slds-size_1-of-6 slds-align_absolute-center">'.get_previous_its_cal($cal).'</div>';
 	$minical .= "<div class='slds-col slds-size_2-of-6 slds-align_absolute-center'>
@@ -135,7 +135,7 @@ function get_its_mini_calendar(&$cal) {
 		}
 		$minical .= '</tr>';
 	}
-	$minical .= '</tbody></table>';
+	$minical .= '</tbody></table></div>';
 	echo $minical;
 }
 
