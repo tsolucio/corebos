@@ -7,6 +7,10 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+if (window.coreBOSEvents == undefined) {
+	window.coreBOSEvents = {};
+}
+
 function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 	if (typeof coreBOS_runningUnitTests != 'undefined') {
 		return Promise.resolve(gvdefault);
