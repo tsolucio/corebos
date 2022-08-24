@@ -161,4 +161,11 @@
 	<classname>changeUITypeFinancialFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Business Action types for ListView Action</description>
+	<filename>build/changeSets/2022/addBAtypesForListViewAction.php</filename>
+	<classname>addBAtypesForListViewAction</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
