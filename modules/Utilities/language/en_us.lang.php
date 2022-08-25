@@ -178,6 +178,8 @@ $mod_strings = array(
 	'Facebook Activation_Desc' => 'Facebook Configuration',
 	'facebook_hub_verification_token' => 'Hub Verification Code',
 	'facebook_access_token' => 'Access Token',
-	'facebook_destination_module' => 'Destination Module'
+	'facebook_destination_module' => 'Destination Module',
+	'Unable2Connect' => 'Unable to connect',
+	'Able2Connect' => 'Able to connect',
 );
 ?>

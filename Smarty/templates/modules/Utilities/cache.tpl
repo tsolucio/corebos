@@ -56,6 +56,14 @@
                             </div>
                         </div>
                     </div>
+                    {if $isUsable}
+                        {assign var="ERROR_MESSAGE" value="Able2Connect"|@getTranslatedString:$MODULE}
+                        {assign var="ERROR_MESSAGE_CLASS" value="cb-alert-success"}
+                    {else}
+                        {assign var="ERROR_MESSAGE" value="Unable2Connect"|@getTranslatedString:$MODULE}
+                        {assign var="ERROR_MESSAGE_CLASS" value="cb-alert-danger"}
+                    {/if}
+                    {include 'applicationmessage.tpl'}
                     <div class="slds-m-top--large">
                         <button type="button" class="slds-button slds-button--brand" onclick="Utilities.cache_form_submit_validation(this);">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
                     </div>

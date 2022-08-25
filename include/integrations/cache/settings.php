@@ -29,12 +29,12 @@ if ($isadmin && isset($_REQUEST['adapter_type'])) {
 	$ip = (empty($_REQUEST['ip']) ? '' : vtlib_purify($_REQUEST['ip']));
 	$port = (empty($_REQUEST['port']) ? '' : vtlib_purify($_REQUEST['port']));
 	if ($adapterType == corebos_cache::ADAPTER_MEMORY) {
-		$ip = "";
-		$port = "";
+		$ip = '';
+		$port = '';
 	} elseif (empty($ip) || empty($port)) {
 		$adapterType = corebos_cache::ADAPTER_MEMORY;
-		$ip = "";
-		$port = "";
+		$ip = '';
+		$port = '';
 	}
 	$cache->saveSettings($isActive, $adapterType, $ip, $port);
 }
@@ -42,6 +42,7 @@ if ($isadmin && isset($_REQUEST['adapter_type'])) {
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Cache Activation', $currentModule));
 $cacheSettings = $cache->getSettings();
 $smarty->assign('isActive', $cache->isActive());
+$smarty->assign('isUsable', $cache->isUsable());
 $smarty->assign('adapter', $cacheSettings['adapter']);
 $smarty->assign('ip', $cacheSettings['ip']);
 $smarty->assign('port', $cacheSettings['port']);
