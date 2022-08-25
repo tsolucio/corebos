@@ -20,6 +20,7 @@ class MailManager_SettingsController extends MailManager_MainUIController {
 	* @return MailManager_Response
 	*/
 	public function process(MailManager_Request $request) {
+		Vtiger_Request::validateRequest();
 		$response = new MailManager_Response();
 		if ('edit' == $request->getOperationArg()) {
 			$model = $this->getMailBoxModel();
