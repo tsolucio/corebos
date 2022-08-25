@@ -78,7 +78,7 @@ class dropForeignKeys extends cbupdaterWorker {
 				$this->ExecuteQuery("ALTER TABLE {$tname} DROP FOREIGN KEY {$fkname}");
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
