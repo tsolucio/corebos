@@ -408,7 +408,7 @@ var alert_arr = {
 	'INTEGERVALS':'Solo están permitidos valores enteros',
 	'JSLBL_Delete': 'Eliminar',
 	'JSLBL_Edit': 'Editar',
-	'JSLBL_Create': 'Create',
+	'JSLBL_Create': 'Crear',
 	'JSLBL_Loading': 'Cargando',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'No se ha podido eliminar el adjunto',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Límite de carga excedida!!',
