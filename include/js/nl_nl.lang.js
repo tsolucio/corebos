@@ -412,6 +412,7 @@ var alert_arr = {
 	'INTEGERVALS':'Alleen hele getallen zijn toegestaan',
 	'JSLBL_Delete': 'Verwijder',
 	'JSLBL_Edit': 'Edit',
+	'JSLBL_Create': 'Create',
 	'JSLBL_Loading': 'Laden',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Bijlage kon niet verwijderd worden',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Uploadlimiet bereikt!!',

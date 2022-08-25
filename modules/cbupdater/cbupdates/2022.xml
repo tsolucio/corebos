@@ -162,6 +162,13 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>denaldhushi</author>
+	<description>Drop Foreign Keys</description>
+	<filename>build/changeSets/2022/dropForeignKeys.php</filename>
+	<classname>dropForeignKeys</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>joebordes</author>
 	<description>add Business Action types for ListView Action</description>
 	<filename>build/changeSets/2022/addBAtypesForListViewAction.php</filename>

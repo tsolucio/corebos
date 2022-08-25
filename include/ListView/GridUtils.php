@@ -237,7 +237,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 	global $current_user, $adb;
 	static $ownerNameList = array();
 	$fieldAttrs = array();
-	$fieldtype = $fieldinfo['fieldtype'];
+	$fieldtype = isset($fieldinfo['fieldtype']) ? $fieldinfo['fieldtype'] : '';
 	$fieldInfo = $fieldinfo['fieldinfo'];
 	$fieldName = $fieldInfo['name'];
 	switch ($fieldInfo['uitype']) {
@@ -584,4 +584,157 @@ function gridMoveRowUpDown($adb, $request) {
 		}
 	}
 	return $result;
+}
+
+function getRelatedListGridResponse($map) {
+	global $current_user, $adb;
+	$pid = vtlib_purify($_REQUEST['pid']);
+	$currentModule = vtlib_purify($_REQUEST['currentmodule']);
+	$originmodule = vtlib_purify($map['originmodule']['name']);
+	$targetmodule = vtlib_purify($map['targetmodule']['name']);
+	$OriginFieldID = getRelatedFieldId($currentModule, $originmodule);
+	$TargetFieldID = getRelatedFieldId($originmodule, $targetmodule);
+	$Originfieldname = getFieldNameByFieldId($OriginFieldID);
+	$Targetfieldname = getFieldNameByFieldId($TargetFieldID);
+	if (!empty($Originfieldname)) {
+		$entity = getEntityFieldNames($originmodule);
+		$targetentity = getEntityFieldNames($targetmodule);
+		$sql = generateRelationQuery($originmodule, $currentModule, $Originfieldname, $pid, array());
+		$rs = $adb->query($sql);
+		$ret = array();
+		while ($row = $adb->fetch_array($rs)) {
+			if (isset($row[$entity['fieldname']])) {
+				$row['parentaction'] = $row[$entity['fieldname']];
+				$row['parentaction_attributes'] = [];
+			}
+			$entityidfield = $row[$entity['entityidfield']];
+			$row['typeof_row'] = 'parent';
+			$row['parent_id'] = $entityidfield;
+			$row['parent_module'] = $originmodule;
+			$row['parent_of_child'] = $pid;
+			$row['related_fieldname'] = $Originfieldname;
+			$row['related_child'] = $targetmodule;
+			$sql = generateRelationQuery($targetmodule, $originmodule, $Targetfieldname, $entityidfield, $map);
+			$result = $adb->query($sql);
+			$_children = array();
+			while ($scrow = $adb->fetch_array($result)) {
+				foreach ($map['targetmodule']['listview'] as $finfo) {
+					$gridValue = getDataGridValue($targetmodule, $scrow[$targetentity['entityidfield']], $finfo, $scrow[$finfo['fieldinfo']['name']]);
+					$scrow[$finfo['fieldinfo']['name']] = $gridValue[0];
+					$scrow[$finfo['fieldinfo']['name'].'_attributes'] = $gridValue[1];
+				}
+				$scentityidfield = $scrow[$targetentity['entityidfield']];
+				$scrow['typeof_row'] = 'children';
+				$scrow['child_id'] = $scentityidfield;
+				$scrow['child_module'] = $targetmodule;
+				$scrow['parent_of_child'] = $entityidfield;
+				$scrow['related_fieldname'] = $Targetfieldname;
+				$scrow['record_permissions'] = array(
+					'child_edit' => isPermitted($originmodule, 'EditView', $scentityidfield)
+				);
+				$_children[] = array_filter($scrow, 'is_string', ARRAY_FILTER_USE_KEY);
+			}
+			if (!empty($_children)) {
+				$row['_attributes'] = array(
+					'expanded' => true
+				);
+				$row['_children'] = $_children;
+			}
+			$row['record_permissions'] = array(
+				'parent_edit' => isPermitted($targetmodule, 'EditView', $entityidfield)
+			);
+			$ret[] = array_filter($row, 'is_string', ARRAY_FILTER_USE_KEY);
+		}
+		return json_encode(
+			array(
+				'data' => array(
+					'contents' => $ret,
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
+				),
+				'result' => true,
+			)
+		);
+	}
+}
+
+function generateRelationQuery($module, $relatedmodule, $fieldname, $value, $map) {
+	global $current_user, $adb;
+	$qg = new QueryGenerator($module, $current_user);
+	if (!empty($map['targetmodule']['listview'])) {
+		$fieldnames = $map['targetmodule']['listview'];
+		$fnames = array();
+		foreach ($fieldnames as $key) {
+			$fnames[] = $key['fieldinfo']['name'];
+		}
+		$qg->setFields(array_merge(['id'], $fnames));
+	} else {
+		$qg->setFields(array('*'));
+	}
+	$qg->addReferenceModuleFieldCondition($relatedmodule, $fieldname, 'id', $value, 'e');
+	return $qg->getQuery();
+}
+
+
+function getRelatedFieldId($relatedmodule, $module) {
+	global $adb;
+	$rs = $adb->pquery('select fieldid from vtiger_fieldmodulerel where module=? and relmodule=?', array(
+		$module, $relatedmodule
+	));
+	if ($adb->num_rows($rs) > 0) {
+		return $adb->query_result($rs, 0, 'fieldid');
+	}
+	return 0;
+}
+
+function getFieldNameByFieldId($FieldId) {
+	global $adb;
+	$rs = $adb->pquery('select fieldname from vtiger_field where fieldid=?', array(
+		$FieldId
+	));
+	if ($adb->num_rows($rs) > 0) {
+		return $adb->query_result($rs, 0, 'fieldname');
+	}
+	return '';
+}
+
+function gridRelatedListActionColumn($renderer, $map) {
+	global $currentModule;
+	$originmodule = vtlib_purify($map['originmodule']['name']);
+	$targetmodule = vtlib_purify($map['targetmodule']['name']);
+	$OriginFieldID = getRelatedFieldId($currentModule, $originmodule);
+	$TargetFieldID = getRelatedFieldId($originmodule, $targetmodule);
+	$Originfieldname = getFieldNameByFieldId($OriginFieldID);
+	$Targetfieldname = getFieldNameByFieldId($TargetFieldID);
+	return [
+		'name' => 'cblvactioncolumn',
+		'header' => getTranslatedString('LBL_ACTION'),
+		'sortable' => false,
+		'whiteSpace' => 'normal',
+		'width' => 140,
+		'renderer' => [
+			'type' => $renderer,
+			'options' => [
+				'parent_delete' => isMandatoryField($originmodule, $Originfieldname),
+				'child_delete' => isMandatoryField($targetmodule, $Targetfieldname),
+			]
+		],
+	];
+}
+
+function gridUnrelate($adb, $request) {
+	$result = $adb->pquery('select tablename, columnname from vtiger_field where tabid=? and fieldname=?', array(getTabid($request['detail_module']), $request['fieldname']));
+	if ($adb->num_rows($result) == 1 && isPermitted($request['detail_module'], 'EditView', $request['detail_id']) == 'yes') {
+		$entity = getEntityFieldNames($request['detail_module']);
+		$columnname = $adb->query_result($result, 0, 'columnname');
+		$tablename = $adb->query_result($result, 0, 'tablename');
+		$adb->pquery("update {$tablename} set {$columnname}=0 where {$entity['entityidfield']}=?", array($request['detail_id']));
+		if (!$adb->database->_errorMsg) {
+			return true;
+		}
+		return false;
+	}
+	return false;
 }

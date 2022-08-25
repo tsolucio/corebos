@@ -395,6 +395,7 @@ var alert_arr = {
 	'INTEGERVALS':'Sono permessi soltanto valori Integer',
 	'JSLBL_Delete': 'Cancella',
 	'JSLBL_Edit': 'Edit',
+	'JSLBL_Create': 'Create',
 	'JSLBL_Loading': 'Loading',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Attachment could not be deleted',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!',
