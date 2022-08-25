@@ -124,7 +124,7 @@
 							</div>
 							<div class="slds-m-top_large" id="chqueryresults">
 								{foreach from=$CHQUERYRDO item=item}
-								<div>{$item}</div>
+								<div style="text-align: left">{$item}</div>
 								{/foreach}
 							</div>
 						</form>
