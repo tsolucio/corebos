@@ -181,11 +181,13 @@ class cbQuestion extends CRMEntity {
 				$queryparams = 'set ';
 				$paramcount = 1;
 				$qpprefix = '@qp'.time();
-				foreach ((array)$params as $param => $value) {
-					$qp = $qpprefix.$paramcount;
-					$paramcount++;
-					$queryparams.= $adb->convert2Sql(" $qp = ?,", [$value]);
-					$conds = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $conds);
+				if (!empty($params)) {
+					foreach ($params as $param => $value) {
+						$qp = $qpprefix.$paramcount;
+						$paramcount++;
+						$queryparams.= $adb->convert2Sql(" $qp = ?,", [$value]);
+						$conds = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $conds);
+					}
 				}
 				$queryparams = trim($queryparams, ',');
 				if (!empty($params)) {
