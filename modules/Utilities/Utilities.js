@@ -282,6 +282,7 @@ function loadTUIGridData() {
 				header: mod_alert_arr.LBL_WS_NAME,
 				sortingType: 'desc',
 				editor: 'text',
+				sortable: true,
 				onAfterChange(ev) {
 					const idx = gridInstance.getIndexOfRow(ev.rowKey);
 					updateFieldData(ev, idx);
@@ -292,6 +293,7 @@ function loadTUIGridData() {
 				header: mod_alert_arr.LBL_TABLE_NAME,
 				sortingType: 'desc',
 				editor: 'text',
+				sortable: true,
 				onAfterChange(ev) {
 					const idx = gridInstance.getIndexOfRow(ev.rowKey);
 					updateFieldData(ev, idx);
@@ -370,8 +372,9 @@ function loadTUIGridData() {
 
 function addChRow() {
 	const total_row = gridInstance.getRowCount();
-	const lastrowvalue = gridInstance.getValue(total_row - 1, 'name');
-	if (lastrowvalue === '') {
+	const lastrowwsname = gridInstance.getValue(total_row - 1, 'ws_name');
+	const lastrowtablename = gridInstance.getValue(total_row - 1, 'table_name');
+	if (lastrowwsname === '' || lastrowtablename === '') {
 		return false;
 	}
 
