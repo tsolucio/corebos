@@ -123,6 +123,10 @@ foreach ($rellistinfo as $relmod) {
 }
 $notRelatedModules = array_diff_key($entityrelmods, $relmods);
 $smarty->assign('NotRelatedModules', $notRelatedModules);
+$smarty->assign('Functions', array(
+	'get_dependents_list' => '1:M',
+	'get_related_list' => 'M:M',
+));
 
 $blockrelmods = array();
 $fld_tabid = getTabid($fld_module);
@@ -1199,6 +1203,8 @@ function deleteRelatedList() {
 }
 
 function createRelatedList() {
+	$rllabel = vtlib_purify($_REQUEST['rllabel']);
+	$funcname = vtlib_purify($_REQUEST['relation']);
 	$module = vtlib_purify($_REQUEST['fld_module']);
 	$tabmod = Vtiger_Module::getInstance($module);
 	$rmodule = vtlib_purify($_REQUEST['relwithmod']);
@@ -1213,8 +1219,13 @@ function createRelatedList() {
 			$actions = array('ADD');
 			break;
 		default:
-			$funcname = 'get_related_list';
+			if ($funcname == 'get_dependents_list') {
+				$actions = array('ADD');
+			}
 			break;
+	}
+	if (!empty($rllabel)) {
+		$rmodule = $rllabel;
 	}
 	$tabmod->setRelatedList($relmod, $rmodule, $actions, $funcname);
 }

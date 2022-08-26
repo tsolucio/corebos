@@ -16,7 +16,7 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 
 	public function cachedModuleLookupWithRecordId($recordId) {
 		$recordIdComponents = explode('x', $recordId);
-		$modules = $this->sessionGet('_MODULES'); // Should be available post login
+		$modules = $this->sessionGet('_MODULES', []); // Should be available post login
 		foreach ($modules as $module) {
 			if ($module->id() == $recordIdComponents[0]) {
 				return $module;
@@ -26,7 +26,7 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 	}
 
 	public function cachedModuleLookup($currentmodule) {
-		$modules = $this->sessionGet('_MODULES'); // Should be available post login
+		$modules = $this->sessionGet('_MODULES', []); // Should be available post login
 		foreach ($modules as $module) {
 			if ($module->name() == $currentmodule) {
 				return $module;
@@ -118,8 +118,7 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			$viewer->assign('MAX_FILE_SIZE', $upload_maxsize);
 
 			//Get PanelMenu data
-			$modules = $this->sessionGet('_MODULES');
-			$viewer->assign('_MODULES', $modules);
+			$viewer->assign('_MODULES', $this->sessionGet('_MODULES', []));
 			if (isset($_REQUEST['quickcreate']) && $_REQUEST['quickcreate'] == 1) {
 				$response = $viewer->process('QuickCreateView.tpl');
 			} else {

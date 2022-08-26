@@ -398,6 +398,7 @@ var alert_arr = {
 	'INTEGERVALS':'Seul des nombres entiers sont autorisés',
 	'JSLBL_Delete': 'Supprimer',
 	'JSLBL_Edit': 'Edit',
+	'JSLBL_Create': 'Create',
 	'JSLBL_Loading': 'Chargement',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Le fichier joint ne peut être supprimé',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Taille limite de fichier dépassée!!',

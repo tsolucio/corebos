@@ -23,7 +23,11 @@ class crmtogo_WS_Controller {
 	}
 
 	protected function setActiveUser($user) {
-		$this->sessionSet('_authenticated_user_id', $user->id);
+		coreBOS_Session::set('_authenticated_user_id', $user->id);
+		coreBOS_Session::saveUserID($user->id, session_id(), 'cbmb');
+		if (GlobalVariable::getVariable('Mobile_MultipleUserLogins', 1, 'Users', $user->id)!=1) {
+			coreBOS_Session::deleteUserID($user->id, session_id(), 'cbmb');
+		}
 		$this->initActiveUser($user);
 	}
 

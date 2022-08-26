@@ -13,6 +13,14 @@ require_once 'include/database/PearDatabase.php';
 global $app_strings,$mod_strings,$current_user,$theme,$adb;
 $image_path = 'themes/'.$theme.'/images/';
 $idlist = vtlib_purify($_REQUEST['idlist']);
+$idlist = explode(':', $idlist);
+array_walk(
+	$idlist,
+	function (&$val, $key) {
+		$val = filter_var($val, FILTER_SANITIZE_NUMBER_INT);
+	}
+);
+$idlist = implode(':', $idlist);
 $pmodule=vtlib_purify($_REQUEST['return_module']);
 $excludedRecords = isset($_REQUEST['excludedRecords']) ? vtlib_purify($_REQUEST['excludedRecords']) : '';
 

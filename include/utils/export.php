@@ -43,7 +43,7 @@ $current_user = new Users();
 if (isset($_SESSION['authenticated_user_id'])) {
 	$result = $current_user->retrieveCurrentUserInfoFromFile($_SESSION['authenticated_user_id']);
 	if ($result == null) {
-		coreBOS_Session::destroy();
+		coreBOS_Session::kill();
 		header('Location: index.php?action=Login&module=Users');
 		exit;
 	}

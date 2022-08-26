@@ -7,7 +7,7 @@
         <xs:element type="xs:string" name="aggregate"/>
         <xs:element type="xs:string" name="aggregatorName"/>
         <xs:element type="xs:string" name="rendererName"/>
-        <xs:element name="aggrgations">
+        <xs:element name="aggregations">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="aggregation" maxOccurs="unbounded" minOccurs="0">

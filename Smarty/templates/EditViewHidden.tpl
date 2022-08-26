@@ -47,13 +47,13 @@
 {elseif $MODULE eq 'Documents'}
 	<input type="hidden" name="max_file_size" value="{$MAX_FILE_SIZE}">
 	<input type="hidden" name="form">
-	<input type="hidden" name="email_id" value="{if isset($EMAILID)}{$EMAILID}{/if}">
-	<input type="hidden" name="ticket_id" value="{if isset($TICKETID)}{$TICKETID}{/if}">
-	<input type="hidden" name="fileid" value="{if isset($FILEID)}{$FILEID}{/if}">
-	<input type="hidden" name="parentid" value="{if isset($PARENTID)}{$PARENTID}{/if}">
+	<input type="hidden" name="email_id" value="{if isset($EMAILID)}{$EMAILID|@urlencode}{/if}">
+	<input type="hidden" name="ticket_id" value="{if isset($TICKETID)}{$TICKETID|@urlencode}{/if}">
+	<input type="hidden" name="fileid" value="{if isset($FILEID)}{$FILEID|@urlencode}{/if}">
+	<input type="hidden" name="parentid" value="{if isset($PARENTID)}{$PARENTID|@urlencode}{/if}">
 
 {elseif $MODULE eq 'Products'}
-	<input type="hidden" name="activity_mode" value="{if isset($ACTIVITY_MODE)}{$ACTIVITY_MODE}{/if}">
+	<input type="hidden" name="activity_mode" value="{if isset($ACTIVITY_MODE)}{$ACTIVITY_MODE|@urlencode}{/if}">
 {/if}
 
 <input type="hidden" name="pagenumber" value="{if isset($smarty.request.start)}{$smarty.request.start|@vtlib_purify}{/if}">
@@ -62,11 +62,11 @@
 <input type="hidden" name="mode" value="{$MODE}">
 <input type="hidden" name="action">
 <input type="hidden" name="saverepeat" value="0">
-<input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
-<input type="hidden" name="return_id" value="{if isset($RETURN_ID)}{$RETURN_ID}{/if}">
-<input type="hidden" name="return_action" value="{if isset($RETURN_ACTION)}{$RETURN_ACTION}{/if}">
-<input type="hidden" name="return_viewname" value="{if isset($RETURN_VIEWNAME)}{$RETURN_VIEWNAME}{/if}">
-<input type="hidden" name="createmode" value="{$CREATEMODE}" />
+<input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE|@urlencode}{/if}">
+<input type="hidden" name="return_id" value="{if isset($RETURN_ID)}{$RETURN_ID|@urlencode}{/if}">
+<input type="hidden" name="return_action" value="{if isset($RETURN_ACTION)}{$RETURN_ACTION|@urlencode}{/if}">
+<input type="hidden" name="return_viewname" value="{if isset($RETURN_VIEWNAME)}{$RETURN_VIEWNAME|@urlencode}{/if}">
+<input type="hidden" name="createmode" value="{$CREATEMODE|@urlencode}" />
 <input type="hidden" name="cbcustominfo1" id="cbcustominfo1" value="{if isset($smarty.request.cbcustominfo1)}{$smarty.request.cbcustominfo1|@urlencode}{/if}" />
 <input type="hidden" name="cbcustominfo2" id="cbcustominfo2" value="{if isset($smarty.request.cbcustominfo2)}{$smarty.request.cbcustominfo2|@urlencode}{/if}" />
 {if isset($DUPLICATE) && $DUPLICATE eq 'true'}
@@ -76,7 +76,7 @@
 <input type="hidden" name="Module_Popup_Save" value="{if isset($smarty.request.Module_Popup_Save)}{$smarty.request.Module_Popup_Save|@urlencode}{/if}" />
 <input type="hidden" name="Module_Popup_Save_Param" value="{if isset($smarty.request.Module_Popup_Save_Param)}{$smarty.request.Module_Popup_Save_Param|@urlencode}{/if}" />
 <input type="hidden" name="FILTERFIELDSMAP" value="{if isset($smarty.request.FILTERFIELDSMAP)}{$smarty.request.FILTERFIELDSMAP|@urlencode}{/if}" />
-<input name='search_url' id="search_url" type='hidden' value='{if isset($SEARCH)}{$SEARCH}{/if}'>
+<input name='search_url' id="search_url" type='hidden' value='{if isset($SEARCH)}{$SEARCH|@urlencode}{/if}'>
 {if isset($CUSTOM_LINKS) && !empty($CUSTOM_LINKS.EDITVIEWHTML)}
 {foreach from=$CUSTOM_LINKS.EDITVIEWHTML item=evhtml}
 	{eval var=$evhtml->linkurl}

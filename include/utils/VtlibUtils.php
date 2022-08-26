@@ -506,7 +506,7 @@ function vtlib_purify($input, $ignore = false) {
  * @return
  */
 function vtlib_process_widget($widgetLinkInfo, $context = false) {
-	if (preg_match("/^block:\/\/(.*)/", $widgetLinkInfo->linkurl, $matches)) {
+	if (preg_match("/^block:\/\/(.*)/", trim($widgetLinkInfo->linkurl), $matches)) {
 		$widgetInfo = explode(':', $matches[1]);
 		$widgetControllerClass = $widgetInfo[0];
 		$widgetControllerClassFile = $widgetInfo[1];

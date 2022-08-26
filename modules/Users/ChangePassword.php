@@ -21,7 +21,7 @@ $badpassword.= $mod_strings['Min. 1 lowercase'].'<br>~ ';
 $badpassword.= $mod_strings['Min. 1 number'].'<br>~ ';
 $badpassword.= $mod_strings['Min. 1 special character'].'<br>';
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <HTML><HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset='<?php echo $default_charset; ?>'">
 <title><?php echo $app_strings['LBL_BROWSER_TITLE']; ?></title>

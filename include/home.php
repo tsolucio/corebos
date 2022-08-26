@@ -449,13 +449,22 @@ class Homestuff {
 				if (count($header) != 0) {
 					return $return_value;
 				} else {
-					return array('Entries' => getTranslatedString('FieldsNotFoundInFilter', 'Home'));
+					return array(
+						'ModuleName' => $modname,
+						'Entries' => ["<span style='color:red;'>".getTranslatedString('FieldsNotFoundInFilter', 'Home').'</span>']
+					);
 				}
 			} else {
-				return array('Entries' => "<font color='red'>" . getTranslatedString('FilterNotFound', 'Home') . '</font>');
+				return array(
+					'ModuleName' => $modname,
+					'Entries' => ["<span style='color:red;'>".getTranslatedString('FilterNotFound', 'Home').'</span>']
+				);
 			}
 		} else {
-			return array('Entries' => "<font color='red'>" . getTranslatedString('Permission Denied', 'Home') . '</font>');
+			return array(
+				'ModuleName' => $modname,
+				'Entries' => ["<span style='color:red'>".getTranslatedString('Permission Denied', 'Home').'</span>']
+			);
 		}
 	}
 

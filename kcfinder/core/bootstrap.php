@@ -175,9 +175,7 @@ new SessionSaveHandler();
 
 */
 
-
 // PUT YOUR ADDITIONAL CODE HERE
-
-include_once '../include/utils/Session.php';
-coreBOS_Session::init();
-
+set_include_path(get_include_path() . PATH_SEPARATOR . '..');
+require_once 'include/utils/utils.php';
+coreBOS_Session::init(true, true);

@@ -184,6 +184,7 @@ class Documents extends CRMEntity {
 			}
 			return $query;
 		}
+		return parent::getQueryByModuleField($module, $fieldname, $srcrecord, $query);
 	}
 
 	/** Validate values trying to be saved.

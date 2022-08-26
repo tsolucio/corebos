@@ -1362,6 +1362,10 @@ class CRMEntity {
 				$mdmap = $cbMap->$mtype();
 				$targetmodule = $mdmap['targetmodule'];
 				$targetfield = $mdmap['linkfields']['targetfield'];
+				if ($mtype == 'RelatedListBlock') {
+					$targetmodule = $module_name;
+					$targetfield = coreBOS_Session::get('RLFieldName');
+				}
 				if ($targetmodule == $module_name) {
 					if ($targetfield != '') {
 						$MDCurrentRecord = coreBOS_Session::get('MDCurrentRecord');
@@ -1629,7 +1633,32 @@ class CRMEntity {
 	 * $srcrecord could be empty
 	 */
 	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
-		return false;
+		global $adb;
+		$bmapname = $module.'_ListColumns';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapLC = $cbMap->ListColumns();
+			$conditions = $cbMapLC->getConditionsPopup();
+			if (!empty($conditions[$fieldname]) && json_decode($conditions[$fieldname]) == null) {
+				return $conditions[$fieldname];
+			}
+			if (!empty($conditions[$fieldname])) {
+				$fields = $cbMapLC->getSearchFieldsName();
+				$wherepos = stripos($query, 'where');
+				$query_body = substr($query, 0, $wherepos-1);
+				$workflowScheduler = new WorkFlowScheduler($adb);
+				$workflow = new Workflow();
+				$wfvals['module_name'] = $module;
+				$wfvals['test'] = $conditions[$fieldname];
+				$workflow->setup($wfvals);
+				$query = $workflowScheduler->getWorkflowQuery($workflow, array_values($fields));
+				$wherepos = stripos($query, 'where');
+				$query_cond = substr($query, $wherepos+5);
+				$query = $query_body.' where '.$query_cond;
+			}
+		}
+		return $query;
 	}
 
 	/**
@@ -3848,7 +3877,10 @@ class CRMEntity {
 					$fieldid = getFieldid($tabid, $field);
 					$fieldinfo = array(
 						'fieldtype' => 'corebos',
-						'fieldinfo' => '',
+						'fieldinfo' => [
+							'name' => $field,
+							'uitype' => $UIType,
+						],
 						'name' => $field,
 						'uitype' => $UIType,
 						'fieldid' => $fieldid

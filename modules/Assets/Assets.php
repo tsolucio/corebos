@@ -128,7 +128,7 @@ class Assets extends CRMEntity {
 			$query1 .= " WHERE (vtiger_assets.invoiceid = '' OR vtiger_assets.invoiceid = '0') AND vtiger_assets.product = ".$_REQUEST['productid']." and " . $query_cond;
 			return $query1;
 		}
-		return $query;
+		return parent::getQueryByModuleField($module, $fieldname, $srcrecord, $query);
 	}
 
 	/**

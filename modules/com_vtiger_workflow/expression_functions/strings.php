@@ -120,6 +120,20 @@ function __cb_translate($arr) {
 	return cbtranslation::get($arr[0]);
 }
 
+function __cb_base64encode($arr) {
+	if (empty($arr) || count($arr)>1) {
+		return -1;
+	}
+	return base64_encode($arr[0]);
+}
+
+function __cb_base64decode($arr) {
+	if (empty($arr) || count($arr)>1) {
+		return -1;
+	}
+	return base64_decode($arr[0]);
+}
+
 function __cb_hash($arr) {
 	if (empty($arr) || count($arr)>2) {
 		return -1;

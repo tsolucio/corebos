@@ -198,6 +198,9 @@ switch ($focus->column_fields['maptype']) {
 	case 'FieldDependency':
 		$mapinfo = $focus->FieldDependency();
 		break;
+	case 'Wizard':
+		$mapinfo = $focus->Wizard();
+		break;
 	case 'Validations':
 		$mapinfo = $focus->Validations(
 			array(

@@ -46,5 +46,6 @@ class WebServiceErrorCode {
 	public static $WORKFLOW_TASK_FAILED = 'WORKFLOW_TASK_FAILED';
 	public static $VALIDATION_FAILED = 'VALIDATION_FAILED';
 	public static $INVALID_URL = 'INVALID_URL';
+	public static $INVALIDFILECONTENTS = 'INVALID_FILE_CONTENTS';
 }
 ?>

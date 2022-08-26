@@ -8,6 +8,12 @@
 * All Rights Reserved.
 ************************************************************************************/
 header('X-Frame-Options: DENY');
+header('X-XSS-Protection: 1; mode=block');
+header('X-Content-Type-Options: nosniff');
+header('Referrer-Policy: no-referrer, strict-origin-when-cross-origin');
+header('Strict-Transport-Security: max-age=31536000; includeSubDomains; preload');
+header("X-Content-Security-Policy: default-src 'self'; frame-ancestors 'self'; sandbox allow-forms allow-scripts allow-same-origin;");
+
 require_once 'Smarty_setup.php';
 require_once 'include/utils/utils.php';
 require_once 'include/calculator/Calc.php';

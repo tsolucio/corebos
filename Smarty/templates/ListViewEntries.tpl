@@ -13,6 +13,10 @@
 {else}
 {include file='applicationmessage.tpl'}
 {/if}
+{if !empty($CUSTOM_LINKS.LISTVIEWACTION)}
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_9-of-12">
+{/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();">
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
@@ -160,3 +164,10 @@
 	{html_options options=$SEARCHLISTHEADER}
 	</select>
 </div>
+{if !empty($CUSTOM_LINKS.LISTVIEWACTION)}
+	</div>
+	<div class="slds-col slds-size_3-of-12">
+	{include file='ListViewActions.tpl'}
+	</div>
+	</div>
+{/if}

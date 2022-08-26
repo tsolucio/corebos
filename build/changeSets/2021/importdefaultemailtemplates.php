@@ -587,7 +587,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 					</tbody>
 				</table>
 				</center>','templateonlytext' => ''),
-							array('reference' => '1-Heading_9-Grid','actions_type' => 'Email','actions_status' => 'Active','actions_language' => '','subject' => '1-Heading_9-Grid','template' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+							array('reference' => '1-Heading_9-Grid','actions_type' => 'Email','actions_status' => 'Active','actions_language' => '','subject' => '1-Heading_9-Grid','template' => '<!DOCTYPE html>
 				<html>
 				<head>
 					<meta content="text/html;charset=UTF-8" http-equiv="Content-Type" />
@@ -707,7 +707,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 				</center>
 				</body>
 				</html>','templateonlytext' => ''),
-							array('reference' => '1-Heading_4-Grid','actions_type' => 'Email','actions_status' => 'Active','actions_language' => '','subject' => '1-Heading_4-Grid','template' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+							array('reference' => '1-Heading_4-Grid','actions_type' => 'Email','actions_status' => 'Active','actions_language' => '','subject' => '1-Heading_4-Grid','template' => '<!DOCTYPE html>
 				<html>
 				<head>
 					<meta content="text/html;charset=UTF-8" http-equiv="Content-Type" />
@@ -885,7 +885,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 					</tbody>
 				</table>
 				</center>','templateonlytext' => ''),
-							array('reference' => '1-Logo_1-Heading_3-Columns','actions_type' => 'Email','actions_status' => 'Active','actions_language' => '','subject' => '1-Logo_1-Heading_3-Columns','template' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+							array('reference' => '1-Logo_1-Heading_3-Columns','actions_type' => 'Email','actions_status' => 'Active','actions_language' => '','subject' => '1-Logo_1-Heading_3-Columns','template' => '<!DOCTYPE html>
 				<html>
 				<head>
 					<meta content="text/html;charset=UTF-8" http-equiv="Content-Type" />
@@ -1099,7 +1099,7 @@ class importdefaultemailtemplates extends cbupdaterWorker {
 					</tbody>
 				</table>
 				</center>','templateonlytext' => ''),
-							array('reference' => '1-Heading_2-Column_1-Logo','actions_type' => 'Email','actions_status' => 'Active','actions_language' => '','subject' => '1-Heading_2-Column_1-Logo','template' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+							array('reference' => '1-Heading_2-Column_1-Logo','actions_type' => 'Email','actions_status' => 'Active','actions_language' => '','subject' => '1-Heading_2-Column_1-Logo','template' => '<!DOCTYPE html>
 				<html>
 				<head>
 					<meta content="text/html;charset=UTF-8" http-equiv="Content-Type" />

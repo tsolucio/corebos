@@ -92,7 +92,7 @@ class CBUpsertTask extends VTTask {
 					if (empty($mapValues['record_id'])) {
 						$mapValues['record_id'] = $recordId;
 					}
-					$crmid = coreBOS_Rule::evaluate($bmapid, $mapValues);
+					$crmid = coreBOS_Rule::evaluate($bmapid, $mapValues, $entity->WorkflowContext);
 				}
 				if (!empty($entity->WorkflowContext['linkmodeid'])) {
 					$fieldValue['linkmodeid'] = $entity->WorkflowContext['linkmodeid'];

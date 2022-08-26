@@ -414,7 +414,11 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$mysql_query = mkXQuery(stripTailCommandsFromQuery($mysql_query, false), 'count(*) AS cnt');
 		$result = $this->pearDB->pquery($mysql_query, array());
 		if ($result) {
-			$this->queryTotalRows = $result->fields['cnt'];
+			if ($result->fields) {
+				$this->queryTotalRows = $result->fields['cnt'];
+			} else {
+				$this->queryTotalRows = 0;
+			}
 		} else {
 			$this->queryTotalRows = 0;
 		}

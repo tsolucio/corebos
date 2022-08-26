@@ -23,7 +23,7 @@ class crmtogo_UI_Logout extends crmtogo_WS_Login {
 	public function process(crmtogo_API_Request $request) {
 		$default_config = $this->getConfigDefaults();
 		$default_lang_strings = return_module_language($default_config['language'], 'Mobile');
-		coreBOS_Session::destroy();
+		coreBOS_Session::kill();
 		$viewer = new crmtogo_UI_Viewer();
 		$viewer->assign('MOD', $default_lang_strings);
 		$viewer->assign('LANGUAGE', $default_lang_strings);
@@ -31,6 +31,7 @@ class crmtogo_UI_Logout extends crmtogo_WS_Login {
 		$viewer->assign('LOGOUT', true);
 		$viewer->assign('COMPANY_LOGO', $default_config['company_logo']);
 		$viewer->assign('COMPANY_NAME', $default_config['company_name']);
+		$viewer->assign('COMPANY_FAVICON', $default_config['company_favicon']);
 		return $viewer->process('Login.tpl');
 	}
 }

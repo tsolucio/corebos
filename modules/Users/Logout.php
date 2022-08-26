@@ -27,7 +27,7 @@ coreBOS_Settings::delSetting('cbodUserConnection'.$current_user->id);
 $local_log = LoggerManager::getLogger('Logout');
 
 // clear out the autthenticating flag
-coreBOS_Session::destroy();
+coreBOS_Session::kill();
 $saml = new corebos_saml();
 if ($saml->isActive() && !empty($saml->samlclient)) {
 	$saml->logout();

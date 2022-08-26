@@ -174,6 +174,10 @@ const ListView = {
 			const uitype = headerObj[index].uitype;
 			const tooltip = headerObj[index].tooltip;
 			let edit = headerObj[index].edit;
+			let sortableConfig = headerObj[index].sortable;
+			if (sortableConfig !== undefined) {
+				sortable = sortableConfig;
+			}
 			let editor;
 			let formatter;
 			let values = {};
@@ -227,21 +231,12 @@ const ListView = {
 							showClearBtn: true
 						};
 					}
-					if (uitype == '15' || uitype == '52' || uitype == '53' || uitype == '56') {
-						if (edit) {
-							formatter = 'listItemText';
-						} else {
-							formatter = false;
-						}
-					} else {
-						formatter = false;
-					}
 					header = {
 						name: fieldname,
 						header: fieldvalue,
 						sortingType: 'desc',
 						sortable: sortable,
-						formatter: formatter,
+						formatter: false,
 						editor: editor,
 						filter: filter,
 						whiteSpace: 'normal',
@@ -441,7 +436,8 @@ const ListView = {
 						RequestParams.searchtype = ListView.SearchParams.searchtype;
 					}
 					lvdataGridInstance[ListView.Instance].setRequestParams(RequestParams);
-				}
+				},
+				contextMenu: null
 			});
 			ListView.loader('hide');
 			ListView.noData();
@@ -1036,20 +1032,19 @@ const ListView = {
 			ListView.Request(url, 'get').then(function (response) {
 				const no_data_template = document.getElementsByClassName('tui-grid-layer-state-content')[index];
 				const grid_template = document.getElementsByClassName('tui-grid-content-area')[index];
-				const mod_label = document.getElementsByClassName('hdrLink')[0].innerText;
 				grid_template.style.height = '240px';
 				let create_template = '';
 				let import_template = '';
 				if (response.CreateView == 'yes' && ListView.Module != '' && gVTModule != 'RecycleBin') {
 					create_template = `
 					<a href="index.php?module=${ListView.Module}&action=EditView&return_action=DetailView">
-						<button class="slds-button slds-button_neutral">${alert_arr.LBL_CREATE} ${mod_label}</button>
+						<button class="slds-button slds-button_neutral">${alert_arr.LBL_CREATE} ${gVTModuleLabel}</button>
 					</a>`;
 				}
 				if (response.Import == 'yes' && ListView.Module != '' && gVTModule != 'RecycleBin') {
 					import_template = `
 					<a class="slds-card__footer-action" href="index.php?module=${ListView.Module}&action=Import&step=1&return_module=${ListView.Module}&return_action=ListView">
-						${alert_arr.LBL_IMPORT} ${mod_label}
+						${alert_arr.LBL_IMPORT} ${gVTModuleLabel}
 					</a>`;
 				}
 				no_data_template.innerHTML = `
@@ -1323,7 +1318,8 @@ const DocumentsView = {
 							RequestParams.searchtype = ListView.SearchParams.searchtype;
 						}
 						lvdataGridInstance[ListView.Instance].setRequestParams(RequestParams);
-					}
+					},
+					contextMenu: null
 				});
 				ListView.loader('hide');
 				ListView.registerEvent(url, fldId);

@@ -10,7 +10,7 @@
 
 /** Date difference between (input times) or (current time and input time)
  *
- * @param Array $a $a[0] - Input time1, $a[1] - Input time2
+ * @param array $a $a[0] - Input time1, $a[1] - Input time2
  * (if $a[1] is not available $a[0] = Current Time, $a[1] = Input time1)
  * @return int difference timestamp
  */
@@ -163,7 +163,7 @@ function __cb_isHolidayDate($arr) {
 /**
  * Calculate the time difference (input times) or (current time and input time) and
  * convert it into number of days.
- * @param Array $a $a[0] - Input time1, $a[1] - Input time2
+ * @param array $a $a[0] - Input time1, $a[1] - Input time2
  * (if $a[1] is not available $a[0] = Current Time, $a[1] = Input time1)
  * @return int number of days
  */
@@ -360,9 +360,9 @@ function __vt_sub_time($arr) {
 }
 
 /** get next date that falls on the closest given days
- * @param ISO start date "2017-06-16
- * @param comma separated string of month days "15,30"
- * @param comma separated string of ISO holiday dates
+ * @param string ISO start date "2017-06-16
+ * @param string comma separated string of month days "15,30"
+ * @param string comma separated string of ISO holiday dates
  * @param boolean 0 exclude saturday and sunday, 1 include them, default not included
  */
 function __cb_next_date($arr) {
@@ -392,9 +392,9 @@ function __cb_next_date($arr) {
 }
 
 /** get next laborable date that falls after the closest given days
- * @param ISO start date "2017-06-16
- * @param comma separated string of month days "15,30"
- * @param comma separated string of ISO holiday dates
+ * @param string ISO start date "2017-06-16
+ * @param string comma separated string of month days "15,30"
+ * @param string comma separated string of ISO holiday dates
  * @param boolean 0 saturday is not laborable, 1 it is, default it isn't
  */
 function __cb_next_dateLaborable($arr) {

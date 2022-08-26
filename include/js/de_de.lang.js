@@ -410,6 +410,7 @@ var alert_arr = {
 	'INTEGERVALS':'Nur ganze Zahlen sind erlaubt',
 	'JSLBL_Delete': 'Löschen',
 	'JSLBL_Edit': 'Edit',
+	'JSLBL_Create': 'Create',
 	'JSLBL_Loading': 'Laden',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Der Anhang konnte nicht gelöscht werden',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Upload-Limit erreicht!',

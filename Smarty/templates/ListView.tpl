@@ -58,6 +58,12 @@ var Application_Landing_View='{$moduleView}';
 			{include file="ListViewTUIGrid.tpl"}
 		{elseif $moduleView=='MassCreateGrid'}
 			{include file="MassCreateGridView.tpl"}
+		{elseif $moduleView=='Summary'}
+			{include file="SummaryView.tpl"}
+		{elseif $moduleView=='Operation'}
+			{include file="OperationView.tpl"}
+		{elseif $moduleView=='Wizard'}
+			{include file="WizardView.tpl"}
 		{/if}
 	{else}
 		{include file="DocumentsListViewEntries.tpl"}

@@ -15,7 +15,7 @@
 
 /**
  * return the result of a queued web service operation
- * @param string conditionid: ID of the map
+ * @param string operation Tracking ID
  * @return mixed result of the queued operation
  */
 function cbws_getQueuedOperationResult($operationTrackingID, $user) {

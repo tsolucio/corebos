@@ -299,7 +299,7 @@ class cbCVManagement extends CRMEntity {
 		}
 		self::$validationinfo = array();
 		self::$validationinfo[] = "search for default CV on $module for user '$cvuserid'";
-		$key = 'cvdcache'.$module.$cvuserid;
+		$key = 'cvallcache'.$module.$cvuserid;
 		list($value,$found) = VTCacheUtils::lookupCachedInformation($key);
 		if ($found) {
 			self::$validationinfo[] = 'default CV found in cache';
@@ -403,6 +403,7 @@ class cbCVManagement extends CRMEntity {
 				$allViews[] = $value['cvid'];
 			}
 		}
+		VTCacheUtils::updateCachedInformation($key, $value);
 		return array_unique($allViews);
 	}
 

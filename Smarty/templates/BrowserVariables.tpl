@@ -10,6 +10,7 @@
 -->*}
 <script>
 var gVTModule = "{$GVTMODULE}";
+var gVTModuleLabel = "{$GVTMODULELABEL}";
 var gVTTheme  = "{$THEME}";
 var gVTUserID = "{$CURRENT_USER_ID}";
 var default_charset = "{$DEFAULT_CHARSET}";

@@ -12,7 +12,7 @@ global $mod_strings,$app_strings,$theme,$currentModule,$current_user;
 require_once 'Smarty_setup.php';
 require_once 'include/utils/utils.php';
 
-$excludedRecords = vtlib_purify($_REQUEST['excludedRecords']);
+$excludedRecords = empty($_REQUEST['excludedRecords']) ? '' : vtlib_purify($_REQUEST['excludedRecords']);
 
 $focus = CRMEntity::getInstance($currentModule);
 $focus->mode = '';
@@ -46,6 +46,7 @@ $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000
 $smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); //Convert to MB
 $smarty->assign('UPLOAD_MAXSIZE', $upload_maxsize);
 $smarty->assign('MAX_FILE_SIZE', $upload_maxsize);
+$smarty->assign('MOD_SEQ_ID', '');
 
 // Field Validation Information
 $tabid = getTabid($currentModule);

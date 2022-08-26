@@ -1121,6 +1121,40 @@ $WFExpressionFunctionDefinitons = array(
 		"modulo(5, 3)",
 	),
 ),
+'base64encode' => array(
+	'name' => 'base64encode(field_or_string)',
+	'desc' => 'This function generates the base64 encoding of the value.',
+	'params' => array(
+		array(
+			'name' => 'field_or_string',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'Message to be encoded',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"base64encode('admin')",
+		'base64encode(accountname)',
+	),
+),
+'base64decode' => array(
+	'name' => 'base64decode(field_or_string)',
+	'desc' => 'This function decodes a base64 encoded value.',
+	'params' => array(
+		array(
+			'name' => 'field_or_string',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'Message to decoded',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"base64decode('Y29yZUJPUyBpcyBhd2Vzb21lIQ==')",
+		'base64decode(encoded_field)',
+	),
+),
 'hash' => array(
 	'name' => 'hash(field, method)',
 	'desc' => 'This function generates a hash value (message digest).',
@@ -1924,6 +1958,28 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"setToContext('accountname','mortein')",
+	),
+),
+'applyMaptoArrayElements' => array(
+	'name' => 'applyMaptoArrayElements(array, mapid)',
+	'desc' => 'This function applies the business field mapping into the array parameter.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'The array that will serve as context.',
+		),
+		array(
+			'name' => 'mapid',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the field mapping business map crmid that will be applied on the array',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"applyMaptoArrayElements(getFromContext('response.data'),43980)",
 	),
 ),
 'jsonEncode' => array(
