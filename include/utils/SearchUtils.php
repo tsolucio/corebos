@@ -1617,7 +1617,7 @@ function getCriteriaJS($formName) {
 			} else if( type == "thisfq" ) {
 				document.'.$formName.'.startdate.value = "'.$cFqStartDateTime->getDisplayDate().'";
 				document.'.$formName.'.enddate.value = "'.$cFqEndDateTime->getDisplayDate().'";
-			} else {
+			} else if (type != "custom") {
 				document.'.$formName.'.startdate.value = "";
 				document.'.$formName.'.enddate.value = "";
 			}
