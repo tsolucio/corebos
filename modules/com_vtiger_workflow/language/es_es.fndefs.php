@@ -1963,7 +1963,7 @@ $WFExpressionFunctionDefinitons = array(
 	'params' => array(
 		array(
 			'name' => 'array',
-			'type' => 'String',
+			'type' => 'array',
 			'optional' => false,
 			'desc' => 'The array that will serve as context.',
 		),
@@ -1977,6 +1977,40 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"applyMaptoArrayElements(getFromContext('response.data'),43980)",
+	),
+),
+'applyMaptoInventoryArrayElements' => array(
+	'name' => 'applyMaptoInventoryArrayElements(array, InventoryDetailsElement, Inventorymapid, InventoryDetailsmapid)',
+	'desc' => 'This function applies the business field mapping into each Inventory master information and into each Inventory Details lines of those master records.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'array',
+			'optional' => false,
+			'desc' => 'The array that will serve as context.',
+		),
+		array(
+			'name' => 'InventoryDetailsElement',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'defines the element that contains the inventory line details for each order',
+		),
+		array(
+			'name' => 'Inventorymapid',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the field mapping business map crmid that will be applied on the master order information',
+		),
+		array(
+			'name' => 'InventoryDetailsmapid',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the field mapping business map crmid that will be applied on each inventory line details of the order',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"applyMaptoInventoryArrayElements(getFromContext('response.data'), 'pdoInformation', 43980, 43981)",
 	),
 ),
 'jsonEncode' => array(

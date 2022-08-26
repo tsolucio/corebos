@@ -432,6 +432,47 @@ function __cb_applymaptoarrayelements($params) {
 	return $finalarray;
 }
 
+function __cb_applymaptoinventoryarrayelements($params) {
+	if (count($params)!=4 || !is_array($params[0]) || !is_numeric($params[2]) || !is_numeric($params[3])) {
+		return false;
+	}
+	$cbMapMaster = cbMap::getMapByID($params[2]);
+	if (empty($cbMapMaster)) {
+		return $params[0];
+	}
+	$cbMapLines = cbMap::getMapByID($params[3]);
+	if (empty($cbMapLines)) {
+		return $params[0];
+	}
+	$finalarray = array();
+	foreach ($params[0] as $order) {
+		$neworder = array();
+		$neworder = $cbMapMaster->Mapping($order, $order);
+		if (!empty($order[$params[1]])) {
+			$invlines = array();
+			foreach ($order[$params[1]] as $invline) {
+				$invlines[] = $cbMapLines->Mapping($invline, $invline);
+			}
+			$neworder[$params[1]] = $invlines;
+		}
+		$finalarray[] = $neworder;
+	}
+
+	$finalarray = array();
+	foreach ($params[0] as $order) {
+		$neworder = array();
+		$neworder = __cb_applymaptoarrayelements([$order, $params[2]]);
+		if (!empty($order[$params[1]])) {
+			$neworder[$params[1]] = __cb_applymaptoarrayelements([$order[$params[1]], $params[3]]);
+		}
+		$finalarray[] = $neworder;
+	}
+
+
+
+	return $finalarray;
+}
+
 function __cb_getsetting($arr) {
 	if (empty($arr[0])) {
 		return '';
