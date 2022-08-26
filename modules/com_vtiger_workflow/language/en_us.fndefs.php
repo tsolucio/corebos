@@ -1972,7 +1972,7 @@ $WFExpressionFunctionDefinitons = array(
 		),
 		array(
 			'name' => 'mapid',
-			'type' => 'String',
+			'type' => 'Integer',
 			'optional' => false,
 			'desc' => 'the field mapping business map crmid that will be applied on the array',
 		),
@@ -2000,13 +2000,13 @@ $WFExpressionFunctionDefinitons = array(
 		),
 		array(
 			'name' => 'Inventorymapid',
-			'type' => 'String',
+			'type' => 'Integer',
 			'optional' => false,
 			'desc' => 'the field mapping business map crmid that will be applied on the master order information',
 		),
 		array(
 			'name' => 'InventoryDetailsmapid',
-			'type' => 'String',
+			'type' => 'Integer',
 			'optional' => false,
 			'desc' => 'the field mapping business map crmid that will be applied on each inventory line details of the order',
 		),

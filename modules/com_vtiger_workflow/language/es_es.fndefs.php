@@ -1959,19 +1959,19 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'applyMaptoArrayElements' => array(
 	'name' => 'applyMaptoArrayElements(array, mapid)',
-	'desc' => 'This function applies the business field mapping into the array parameter.',
+	'desc' => 'Aplica el mapa de negocio dado a cada elemento del parámetro array.',
 	'params' => array(
 		array(
 			'name' => 'array',
 			'type' => 'array',
 			'optional' => false,
-			'desc' => 'The array that will serve as context.',
+			'desc' => 'El array que sirve de contexto.',
 		),
 		array(
 			'name' => 'mapid',
-			'type' => 'String',
+			'type' => 'Entero',
 			'optional' => false,
-			'desc' => 'the field mapping business map crmid that will be applied on the array',
+			'desc' => 'CRMID del mapa de negocio que se aplicará sobre el array',
 		),
 	),
 	'categories' => array('Application'),
@@ -1981,13 +1981,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'applyMaptoInventoryArrayElements' => array(
 	'name' => 'applyMaptoInventoryArrayElements(array, InventoryDetailsElement, Inventorymapid, InventoryDetailsmapid)',
-	'desc' => 'This function applies the business field mapping into each Inventory master information and into each Inventory Details lines of those master records.',
+	'desc' => 'Aplica el mapa de negocio Inventorymapid a cada elemento del parámetro array, y el mapa InventoryDetailsmapid a cada elemento del sub-array indicado por el parámetro InventoryDetailsElement.',
 	'params' => array(
 		array(
 			'name' => 'array',
 			'type' => 'array',
 			'optional' => false,
-			'desc' => 'The array that will serve as context.',
+			'desc' => 'El array que sirve de contexto.',
 		),
 		array(
 			'name' => 'InventoryDetailsElement',
@@ -1997,15 +1997,15 @@ $WFExpressionFunctionDefinitons = array(
 		),
 		array(
 			'name' => 'Inventorymapid',
-			'type' => 'String',
+			'type' => 'Entero',
 			'optional' => false,
-			'desc' => 'the field mapping business map crmid that will be applied on the master order information',
+			'desc' => 'CRMID del mapa de negocio que se aplicará sobre la información del registro maestro',
 		),
 		array(
 			'name' => 'InventoryDetailsmapid',
-			'type' => 'String',
+			'type' => 'Entero',
 			'optional' => false,
-			'desc' => 'the field mapping business map crmid that will be applied on each inventory line details of the order',
+			'desc' => 'CRMID del mapa de negocio que se aplicará sobre la información de cada línea de inventario del registro maestro',
 		),
 	),
 	'categories' => array('Application'),
