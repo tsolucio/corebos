@@ -33,9 +33,9 @@ if (empty($_REQUEST['file']) && is_array($vtconfig) && $vtconfig['quickbuild'] =
 } elseif (!empty($_REQUEST['file'])) {
 	$the_file = $_REQUEST['file'];
 } else {
-	$the_file = "welcome.php";
+	$the_file = 'welcome.php';
 }
 
-Common_Install_Wizard_Utils::checkFileAccessForInclusion("install/".$the_file);
-include "install/".$the_file;
+Common_Install_Wizard_Utils::checkFileAccessForInclusion('install/'.$the_file);
+include 'install/'.$the_file;
 ?>

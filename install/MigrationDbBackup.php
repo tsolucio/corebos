@@ -9,17 +9,17 @@
  *
  *********************************************************************************/
 session_start();
-if($_SESSION['authentication_key'] != $_REQUEST['auth_key']) {
+if ($_SESSION['authentication_key'] != $_REQUEST['auth_key']) {
 	die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
 }
-if(!empty($_REQUEST['rootUserName'])) $_SESSION['migration_info']['root_username'] = $_REQUEST['rootUserName'];
-
-if(!empty($_REQUEST['rootPassword'])) {
+if (!empty($_REQUEST['rootUserName'])) {
+	$_SESSION['migration_info']['root_username'] = $_REQUEST['rootUserName'];
+}
+if (!empty($_REQUEST['rootPassword'])) {
 	$_SESSION['migration_info']['root_password'] = $_REQUEST['rootPassword'];
 } else {
 	$_SESSION['migration_info']['root_password'] = '';
 }
-
 
 require_once 'include/db_backup/DatabaseBackup.php';
 require_once 'include/db_backup/Targets/Response.php';
@@ -30,9 +30,9 @@ $mode = $_REQUEST['mode'];
 $source_directory = $_SESSION['migration_info']['source_directory'];
 require_once $source_directory.'config.inc.php';
 $createDB = $_REQUEST['createDB'];
-if(empty($createDB)){
+if (empty($createDB)) {
 	$createDB = false;
-}else{
+} else {
 	$createDB = true;
 }
 
@@ -40,21 +40,20 @@ $hostName = $dbconfig['db_server'].$dbconfig['db_port'];
 $username = $dbconfig['db_username'];
 $password = $dbconfig['db_password'];
 $dbName = $dbconfig['db_name'];
-$sourceConfig = new DatabaseConfig($hostName,$username,$password,$dbName);
+$sourceConfig = new DatabaseConfig($hostName, $username, $password, $dbName);
 $source = new MysqlSource($sourceConfig);
-if(strtolower($mode) == 'dump'){
+if (strtolower($mode) == 'dump') {
 	header('Content-type: text/plain; charset=UTF-8');
 	$responseDest = new Response($sourceConfig, true);
 	$dbBackup = new DatabaseBackup($source, $responseDest);
 	$dbBackup->backup();
-}else{
+} else {
 	$targetName = $_REQUEST['newDatabaseName'];
-	try{
-		if(!empty($targetName) && $dbName != $targetName){
+	try {
+		if (!empty($targetName) && $dbName != $targetName) {
 			$rootUserName = $_SESSION['migration_info']['root_username'];
 			$rootPassword = $_SESSION['migration_info']['root_password'];
-			$destConfig = new DatabaseConfig($hostName,$username,$password,$targetName, 'mysql', 
-					$rootUserName,$rootPassword);
+			$destConfig = new DatabaseConfig($hostName, $username, $password, $targetName, 'mysql', $rootUserName, $rootPassword);
 			$databaseDest = new Database($destConfig, $createDB, true);
 			$dbBackup = new DatabaseBackup($source, $databaseDest);
 			$dbBackup->backup();
@@ -64,11 +63,10 @@ if(strtolower($mode) == 'dump'){
 			return;
 		}
 		echo 'false';
-	}catch (DatabaseBackupException $e){
+	} catch (DatabaseBackupException $e) {
 		echo 'false';
-	}catch(Exception $e){
+	} catch (Exception $e) {
 		echo 'false';
 	}
 }
-
 ?>
