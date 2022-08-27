@@ -88,6 +88,13 @@ class Installation_Utils {
 						// Check if the database that we are going to use supports UTF-8
 						$db_utf8_support = check_db_utf8_support($conn);
 					}
+				} else {
+					$dbCheckResult['flag'] = false;
+					$error_msg = $db_name.' -> '.$installationStrings['ERR_DB_NOT_FOUND'];
+					$error_msg_info = $installationStrings['MSG_DB_ROOT_USER_NOT_AUTHORIZED'];
+					$dbCheckResult['error_msg'] = $error_msg;
+					$dbCheckResult['error_msg_info'] = $error_msg_info;
+					return $dbCheckResult;
 				}
 				$conn->Close();
 			}
