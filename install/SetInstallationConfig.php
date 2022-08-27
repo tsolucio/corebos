@@ -14,7 +14,7 @@ $hostname = $_SERVER['SERVER_NAME'];
 $web_root = ($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"]:$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];
 $web_root .= $_SERVER["REQUEST_URI"];
 $web_root = str_replace("/install.php", "", $web_root);
-$web_root = "http://".$web_root;
+$web_root = $_SERVER['REQUEST_SCHEME'].'://'.$web_root;
 
 $current_dir = pathinfo(dirname(__FILE__));
 $current_dir = $current_dir['dirname']."/";
