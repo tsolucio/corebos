@@ -14,7 +14,7 @@ session_start();
 if (isset($_REQUEST['db_hostname'])) $_SESSION['config_file_info']['db_hostname'] = $db_hostname = $_REQUEST['db_hostname'];
 if (isset($_REQUEST['db_username'])) $_SESSION['config_file_info']['db_username'] = $db_username = $_REQUEST['db_username'];
 if (isset($_REQUEST['db_password'])) $_SESSION['config_file_info']['db_password'] = $db_password = $_REQUEST['db_password'];
-if (isset($_REQUEST['db_name'])) $_SESSION['config_file_info']['db_name'] = $db_name = $_REQUEST['db_name'];
+if (isset($_REQUEST['db_name'])) $_SESSION['config_file_info']['db_name'] = $db_name = trim($_REQUEST['db_name']);
 if (isset($_REQUEST['db_type'])) $_SESSION['config_file_info']['db_type'] = $db_type = $_REQUEST['db_type'];
 
 if (isset($_REQUEST['site_URL'])) $_SESSION['config_file_info']['site_URL']= $site_URL = $_REQUEST['site_URL'];
@@ -64,8 +64,8 @@ if (!$configFileUtils->createConfigFile()) {
 
 if($next == true) {
 	$_SESSION['authentication_key'] = md5(microtime());
+	require_once('include/utils/utils.php');  // Required - Especially to create adb instance in global scope.
 }
-require_once('include/utils/utils.php');  // Required - Especially to create adb instance in global scope.
 
 $mode = (isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '');
 if($mode == 'migration') {
