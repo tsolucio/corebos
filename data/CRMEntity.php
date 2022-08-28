@@ -1645,16 +1645,16 @@ class CRMEntity {
 			}
 			if (!empty($conditions[$fieldname])) {
 				$fields = $cbMapLC->getSearchFieldsName();
-				$wherepos = stripos($query, 'where');
-				$query_body = substr($query, 0, $wherepos-1);
+				$wherepos = stripos($query, ' where ');
+				$query_body = substr($query, 0, $wherepos);
 				$workflowScheduler = new WorkFlowScheduler($adb);
 				$workflow = new Workflow();
 				$wfvals['module_name'] = $module;
 				$wfvals['test'] = $conditions[$fieldname];
 				$workflow->setup($wfvals);
 				$query = $workflowScheduler->getWorkflowQuery($workflow, array_values($fields));
-				$wherepos = stripos($query, 'where');
-				$query_cond = substr($query, $wherepos+5);
+				$wherepos = stripos($query, ' where ');
+				$query_cond = substr($query, $wherepos+7);
 				$query = $query_body.' where '.$query_cond;
 			}
 		}

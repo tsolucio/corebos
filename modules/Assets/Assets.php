@@ -117,12 +117,10 @@ class Assets extends CRMEntity {
 	 * Useful to handle specific case handling for Popup
 	 */
 	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
-		// $srcrecord could be empty
-		//$query_relation=' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid) ';
-		$query_relation = '';
-		$wherepos = stripos($query, 'where'); // there is always a where
-		$query_body = substr($query, 0, $wherepos-1);
-		$query_cond = substr($query, $wherepos+5);
+		global $adb;
+		$wherepos = stripos($query, ' where '); // there is always a where
+		$query_body = substr($query, 0, $wherepos);
+		$query_cond = substr($query, $wherepos+7);
 		if ($module == 'Invoice' && (isset($_REQUEST['invoiceid']) && $_REQUEST['invoiceid'] != '') && (isset($_REQUEST['productid']) && $_REQUEST['productid'] != '')) {
 			$query1 = $query_body . $query_relation;
 			$query1 .= " WHERE (vtiger_assets.invoiceid = '' OR vtiger_assets.invoiceid = '0') AND vtiger_assets.product = ".$_REQUEST['productid']." and " . $query_cond;
