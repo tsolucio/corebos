@@ -122,9 +122,8 @@ class Assets extends CRMEntity {
 		$query_body = substr($query, 0, $wherepos);
 		$query_cond = substr($query, $wherepos+7);
 		if ($module == 'Invoice' && (isset($_REQUEST['invoiceid']) && $_REQUEST['invoiceid'] != '') && (isset($_REQUEST['productid']) && $_REQUEST['productid'] != '')) {
-			$query1 = $query_body . $query_relation;
-			$query1 .= " WHERE (vtiger_assets.invoiceid = '' OR vtiger_assets.invoiceid = '0') AND vtiger_assets.product = ".$_REQUEST['productid']." and " . $query_cond;
-			return $query1;
+			$sql = $query_body." WHERE (vtiger_assets.invoiceid='' OR vtiger_assets.invoiceid='0') AND vtiger_assets.product=? and ".$query_cond;
+			return $adb->convert2Sql($sql, array($_REQUEST['productid']));
 		}
 		return parent::getQueryByModuleField($module, $fieldname, $srcrecord, $query);
 	}
