@@ -9,16 +9,16 @@
  ************************************************************************************/
 session_start();
 
-require_once('install/VerifyDBHealth.php');
+require_once 'install/VerifyDBHealth.php';
 
 $migrationInfo = $_SESSION['migration_info'];
 $source_directory = $migrationInfo['source_directory'];
-require_once($source_directory.'config.inc.php');
-$dbHostName = $dbconfig['db_hostname']; 
+require_once $source_directory.'config.inc.php';
+$dbHostName = $dbconfig['db_hostname'];
 $dbName = $dbconfig['db_name'];
 
 $newDbForCopy = $newDbName = $migrationInfo['new_dbname'];
-if($dbName == $newDbForCopy) {
+if ($dbName == $newDbForCopy) {
 	$newDbForCopy = '';
 }
 $_SESSION['pre_migration'] = true;
@@ -27,50 +27,50 @@ $_SESSION['pre_migration'] = true;
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_PRE_MIGRATION_TOOLS']?></title>
+	<title><?php echo $installationStrings['APP_NAME'].' - '.$installationStrings['LBL_CONFIG_WIZARD'].' - '. $installationStrings['LBL_PRE_MIGRATION_TOOLS']?></title>
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="include/js/vtlib.js"></script>
 	<script type="text/javascript" src="include/js/general.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript">
-		function fixDBHealth(){
+		function fixDBHealth() {
 			VtigerJS_DialogBox.progress();
 			var value = jQuery('#auth_key').val();
 			var url = 'install.php?file=VerifyDBHealth.php&ajax=true&updateTableEngine=true&updateEngineForAllTables=true&auth_key='+value;
-			jQuery.post(url,function(data,status){
+			jQuery.post(url,function(data,status) {
 				fnvshNrm('responsePopupContainer');
 				jQuery('#responsePopupContainer').show();
 				var element = jQuery('#responsePopup');
-				if(status == 'success'){
-					if(trim(data) == 'TABLE_TYPE_FIXED'){
+				if (status == 'success') {
+					if (trim(data) == 'TABLE_TYPE_FIXED') {
 						element.html('<?php echo $installationStrings['MSG_SUCCESSFULLY_FIXED_TABLE_TYPES']; ?>');
 						jQuery('#databaseFixMessageDiv').hide();
 					} else {
 						element.html('<?php echo $installationStrings['ERR_FAILED_TO_FIX_TABLE_TYPES']; ?>');
 					}
-				}else{
+				} else {
 					element.html('<?php echo $installationStrings['ERR_FAILED_TO_FIX_TABLE_TYPES']; ?>');
 				}
 				jQuery('#dbMirrorCopy').hide();
 				VtigerJS_DialogBox.hideprogress();
 				placeAtCenter(document.getElementById('responsePopupContainer'));
-			});			
+			});
 		}
-		
-		function viewDBReport(){
+
+		function viewDBReport() {
 			var value = jQuery('#auth_key').val();
 			var url = 'install.php?file=VerifyDBHealth.php&ajax=true&viewDBReport=true&auth_key='+value;
 			window.open(url,'DBHealthCheck', 'width=700px, height=500px, resizable=1,menubar=0, location=0, toolbar=0,scrollbars=1');			
 		}
-		
-		function getDbDump(){
+
+		function getDbDump() {
 			var value = jQuery('#auth_key').val();
 			var url = 'install.php?file=MigrationDbBackup.php&mode=dump&auth_key='+value;
 			window.open(url,'DatabaseDump', 'width=800px, height=600px, resizable=1,menubar=0, location=0, toolbar=0,scrollbars=1');
 		}
-		
-		function doDBCopy(){
+
+		function doDBCopy() {
 			var dbName = jQuery('#newDatabaseName').val();
 			if (trim(dbName) == '') {
 				alert("<?php echo $installationStrings['ERR_SPECIFY_NEW_DATABASE_NAME']; ?>");
@@ -88,7 +88,7 @@ $_SESSION['pre_migration'] = true;
 			var value = jQuery('#auth_key').val();
 			var url = 'install.php?file=MigrationDbBackup.php&mode=copy&auth_key='+value;
 			url += ('&newDatabaseName='+dbName+'&rootUserName='+rootUserName+'&rootPassword='+rootPassword+'&createDB=true');
-			jQuery.post(url,function(data,status){
+			jQuery.post(url,function(data,status) {
 				fnvshNrm('responsePopupContainer');
 				jQuery('#responsePopupContainer').show();
 				var element = jQuery('#responsePopup');
@@ -106,24 +106,27 @@ $_SESSION['pre_migration'] = true;
 				placeAtCenter(document.getElementById('responsePopupContainer'));
 			});
 		}
-		
-		function showCopyPopup(){
+
+		function showCopyPopup() {
 			fnvshNrm('dbMirrorCopy');
 			jQuery('#dbMirrorCopy').show();
 			placeAtCenter(document.getElementById('dbMirrorCopy'));
 		}
-		
 	</script>
 </head>
 
-<body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
+<body class="small cwPageBg" topmargin="0" leftmargin="0">
 
 	<br>
 	<!-- Table for cfgwiz starts -->
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
-			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
-			<td class="cwHeadBg1" align=right><img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>"></td>
+			<td class="cwHeadBg" align=left>
+				<img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>">
+			</td>
+			<td class="cwHeadBg1" align=right>
+				<img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>">
+			</td>
 			<td class="cwHeadBg1" width=2%></td>
 		</tr>
 	</table>
@@ -137,7 +140,6 @@ $_SESSION['pre_migration'] = true;
 			<td class="small" bgcolor="#4572BE" align=center>
 				<!-- Master display -->
 				<table border=0 cellspacing=0 cellpadding=0 width=97%>
-					
 					<tr>
 						<td width=80% valign=top class="cwContentDisplay" align=center>
 						<!-- Right side tabs -->
@@ -146,21 +148,22 @@ $_SESSION['pre_migration'] = true;
 									<td align="left" colspan="2" class="small paddingTop">
 										<span class="bigHeading"><?php echo $installationStrings['LBL_PRE_MIGRATION_TOOLS']; ?></span>
 										<br/>
-				  						<hr size="1" noshade=""/>
-				  					</td>
-				  				</tr>
-								<?php if($_SESSION[$newDbName.'_'.$dbHostName.'_HealthApproved'] != true) { ?>
+										<hr size="1" noshade=""/>
+									</td>
+								</tr>
+								<?php if ($_SESSION[$newDbName.'_'.$dbHostName.'_HealthApproved'] != true) { ?>
 								<tr>
 									<td colspan=2>
 										<div id="databaseFixMessageDiv" class="helpmessagebox paddingPoint5em smallFont" align="left">
 											<span class="redColor fontBold"><?php echo $installationStrings['LBL_IMPORTANT']; ?>:</span>
-											<hr />											
-											<?php echo $installationStrings['ERR_TABLES_NOT_INNODB'] .'. '. $installationStrings['MSG_CHANGE_ENGINE_BEFORE_MIGRATION']; ?>.<br/>
+											<hr />
+											<?php echo $installationStrings['ERR_TABLES_NOT_INNODB'].'. '.$installationStrings['MSG_CHANGE_ENGINE_BEFORE_MIGRATION']; ?>.
+											<br/>
 											<br />
 											<a href="javascript:void(0)" onclick="fixDBHealth();"><?php echo $installationStrings['LBL_FIX_NOW']; ?></a>&nbsp; | &nbsp;<a href="javascript:void(0)" onclick="viewDBReport();"><?php echo $installationStrings['LBL_VIEW_REPORT']; ?></a>
 										</div>
 									</td>
-								</tr>								
+								</tr>
 								<?php } ?>
 								<tr>
 									<td colspan=2>
@@ -198,7 +201,7 @@ $_SESSION['pre_migration'] = true;
 																	<tr>
 																		<td valign="top" class="mediumLineHeight">
 																			<b><?php echo $installationStrings['QUESTION_MIGRATING_TO_NEW_DB']; ?>?</b><br>
-																			<?php echo $installationStrings['LBL_CLICK_FOR_NEW_DATABASE']; ?>.																			
+																			<?php echo $installationStrings['LBL_CLICK_FOR_NEW_DATABASE']; ?>.
 																			<br><br>
 																			<div class="helpmessagebox"><b><?php echo $installationStrings['LBL_RECOMMENDED']; ?></b>:<br>
 																				<?php echo $installationStrings['MSG_USE_OTHER_TOOLS_FOR_DB_COPY']; ?>.
@@ -226,7 +229,7 @@ $_SESSION['pre_migration'] = true;
 										<form action="install.php" name="migrateform" id="migrateform" method="post">
 											<input type="hidden" name="auth_key" id="auth_key" value="<?php echo $_SESSION['authentication_key']; ?>" />
 											<input type="hidden" name="file" value="ConfirmMigrationConfig.php" />
-											<input type="hidden" name="forceDbCheck" value="true" />											
+											<input type="hidden" name="forceDbCheck" value="true" />
 											<input type="button" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>" onClick="migrateform.submit();">
 										</form>
 									</td>
@@ -256,16 +259,20 @@ $_SESSION['pre_migration'] = true;
 		</tr>
 	</table>
 <div id="dbMirrorCopy" class="posLayPopup" style="display: none;">
-	<div class="floatRightTiny" onmouseover="this.className= 'floatRightTinyOn';" onmouseout="this.className= 'floatRightTiny';"><a href="javascript: void(0);" onClick="fninvsh('dbMirrorCopy');"><img src="themes/images/close.gif" border=0></a></div>
+	<div class="floatRightTiny" onmouseover="this.className= 'floatRightTinyOn';" onmouseout="this.className= 'floatRightTiny';">
+		<a href="javascript: void(0);" onClick="fninvsh('dbMirrorCopy');"><img src="themes/images/close.gif" border=0></a>
+	</div>
 	<div class="paddingPoint5em"><b><?php echo $installationStrings['LBL_COPY_OLD_DB_TO_NEW_DB'] ?></b></div>
 	<table cellpadding="5" cellspacing="2" width="100%" border="0">
 		<tbody>
 			<tr class="dvtCellLabel">
-				<td width="25%" nowrap valign='top'><?php echo $installationStrings['LBL_NEW']. ' ' .$installationStrings['LBL_DATABASE_NAME']; ?> <sup><font class="redColor">*</font></sup></td>
+				<td width="25%" nowrap valign='top'>
+					<?php echo $installationStrings['LBL_NEW']. ' ' .$installationStrings['LBL_DATABASE_NAME']; ?> <sup><font class="redColor">*</font></sup>
+				</td>
 				<td>
 					<input type='text' class="detailedViewTextBox" name='newDatabaseName' id='newDatabaseName' value='<?php echo $newDbForCopy ?>'>
-					<br><?php echo $installationStrings['LBL_IF_DATABASE_EXISTS_WILL_RECREATE'] ?>.			
-				</td>								
+					<br><?php echo $installationStrings['LBL_IF_DATABASE_EXISTS_WILL_RECREATE'] ?>.
+				</td>
 			</tr>
 			<tr class="dvtCellLabel">
 				<td width="25%" nowrap valign='top'>Root <?php echo $installationStrings['LBL_USER_NAME'] ?> <sup><font class="redColor">*</font></sup></td>
@@ -283,10 +290,14 @@ $_SESSION['pre_migration'] = true;
 		</tbody>
 	</table>
 	<br>
-	<div class="helpmessagebox"><span class='redColor fontBold'><?php echo $installationStrings['LBL_NOTE']; ?>:</span> <?php echo $installationStrings['MSG_PROCESS_TAKES_LONGER_TIME_BASED_ON_DB_SIZE']; ?>.</div>
+	<div class="helpmessagebox">
+		<span class='redColor fontBold'><?php echo $installationStrings['LBL_NOTE']; ?>:</span> <?php echo $installationStrings['MSG_PROCESS_TAKES_LONGER_TIME_BASED_ON_DB_SIZE']; ?>.
+	</div>
 </div>
 <div id='responsePopupContainer' class="posLayPopup" style="display: none;" align="center">
-	<div class="floatRightTiny" onmouseover="this.className= 'floatRightTinyOn';" onmouseout="this.className= 'floatRightTiny';"><a href="javascript: void(0);" onClick="fninvsh('responsePopupContainer');"><img src="themes/images/close.gif" border=0></a></div>
+	<div class="floatRightTiny" onmouseover="this.className= 'floatRightTinyOn';" onmouseout="this.className= 'floatRightTiny';">
+		<a href="javascript: void(0);" onClick="fninvsh('responsePopupContainer');"><img src="themes/images/close.gif" border=0></a>
+	</div>
 	<div id='responsePopup' style="margin-top: 1.1em;" class="fontBold">&nbsp;</div>
 </div>
 </body>

@@ -8,13 +8,13 @@
  * All Rights Reserved.
  ********************************************************************************/
 session_start();
-		
+
 if (isset($_REQUEST['source_directory'])) {
 	$source_directory = $_REQUEST['source_directory'];
-	if(!empty($source_directory)){
+	if (!empty($source_directory)) {
 		$tmp = strlen($source_directory);
-		if($source_directory[$tmp-1]!= "/" && $source_directory[$tmp-1]!= "\\"){
-			$source_directory .= "/";
+		if ($source_directory[$tmp-1]!= '/' && $source_directory[$tmp-1]!= "\\") {
+			$source_directory .= '/';
 		}
 		$_SESSION['migration_info']['source_directory'] = $source_directory;
 	}
@@ -27,7 +27,7 @@ if (isset($_REQUEST['root_directory'])) {
 } else {
 	$root_directory = $_SESSION['migration_info']['root_directory'];
 }
-if (isset($_REQUEST['user_name'])) { 
+if (isset($_REQUEST['user_name'])) {
 	$_SESSION['migration_info']['user_name'] = $user_name = $_REQUEST['user_name'];
 } else {
 	$user_name = $_SESSION['migration_info']['user_name'];
@@ -37,12 +37,12 @@ if (isset($_REQUEST['user_pwd'])) {
 } else {
 	$user_pwd = $_SESSION['migration_info']['user_pwd'];
 }
-if (isset($_REQUEST['old_version'])) { 
+if (isset($_REQUEST['old_version'])) {
 	$_SESSION['migration_info']['old_version'] = $old_version = $_REQUEST['old_version'];
 } else {
 	$old_version = $_SESSION['migration_info']['old_version'];
 }
-if (isset($_REQUEST['new_dbname'])) { 
+if (isset($_REQUEST['new_dbname'])) {
 	$_SESSION['migration_info']['new_dbname'] = $new_dbname = $_REQUEST['new_dbname'];
 } else {
 	$new_dbname = $_SESSION['migration_info']['new_dbname'];
@@ -64,24 +64,23 @@ $configFileUtils = new ConfigFile_Utils($_SESSION['config_file_info']);
 if (!$configFileUtils->createConfigFile()) {
 	die("<strong class='big'><font color='red'>{$installationStrings['ERR_CANNOT_WRITE_CONFIG_FILE']}</font></strong>");
 }
-if($next == true) {
+if ($next) {
 	$_SESSION['authentication_key'] = md5(microtime());
 	$_SESSION['config_file_info'] = $configFileInfo;
 
-	require_once('install/VerifyDBHealth.php');
+	require_once 'install/VerifyDBHealth.php';
 
-	if($_SESSION[$newDbName.'_'.$dbHostName.'_HealthApproved'] != true || $_SESSION['pre_migration'] != true) {
-		header("Location:install.php?file=PreMigrationActions.php");
+	if ($_SESSION[$newDbName.'_'.$dbHostName.'_HealthApproved'] != true || $_SESSION['pre_migration'] != true) {
+		header('Location:install.php?file=PreMigrationActions.php');
 	} else {
 		$innodbEngineCheck = true;
 	}
-	
-	if($oldDbName == $newDbName && empty($_REQUEST['forceDbCheck'])) {
-		header("Location:install.php?file=PreMigrationActions.php");
+	if ($oldDbName == $newDbName && empty($_REQUEST['forceDbCheck'])) {
+		header('Location:install.php?file=PreMigrationActions.php');
 	}
 }
 
-include("modules/Migration/versions.php");
+include 'modules/Migration/versions.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -101,15 +100,20 @@ include("modules/Migration/versions.php");
 
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 	<tr>
-		<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
-		<td class="cwHeadBg1" align=right><img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>"></td>
+		<td class="cwHeadBg" align=left>
+			<img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>">
+		</td>
+		<td class="cwHeadBg1" align=right>
+			<img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>">
+		</td>
 		<td class="cwHeadBg1" width=2%></td>
 	</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 	<tr>
-		<td background="include/install/images/topInnerShadow.gif" colspan=2 align=left><img height="10" src="include/install/images/topInnerShadow.gif" ></td>
-
+		<td background="include/install/images/topInnerShadow.gif" colspan=2 align=left>
+			<img height="10" src="include/install/images/topInnerShadow.gif" >
+		</td>
 	</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=10 width=80% align=center>
@@ -124,37 +128,43 @@ include("modules/Migration/versions.php");
 									<td align="left" colspan="2" class="small paddingTop">
 										<span class="bigHeading"><?php echo $installationStrings['LBL_CONFIRM_CONFIG_SETTINGS']; ?></span>
 										<br/>
-				  						<hr size="1" noshade=""/>
-				  					</td>
-				  				</tr>
-								<?php if($error_msg) : ?>
+										<hr size="1" noshade=""/>
+									</td>
+								</tr>
+								<?php if ($error_msg) { ?>
 								<tr>
 									<td align=left class="small" colspan=2 width=50% style="padding-left:10px">
 										<div style="background-color:#ff0000;color:#ffffff;padding:5px">
 											<b><?php echo $error_msg ?></b>
 										</div>
-										<?php if($error_msg_info) : ?>
+										<?php if ($error_msg_info) { ?>
 											<p><?php echo $error_msg_info ?><p>
-										<?php endif; ?>
+										<?php } ?>
 									</td>
 								</tr>
-								<?php endif; ?>
-				  				<tr>
+								<?php } ?>
+								<tr>
 									<td width="80%" align="left" style="padding-left: 10%;" class="small">
 										<table width="100%" cellspacing="1" cellpadding="0" border="0" align="center" class="level3">
 											<tr>
-												<td colspan="2"><strong><?php echo $installationStrings['LBL_DATABASE_CONFIGURATION']; ?></strong><hr size="1" noshade=""/></td>
+												<td colspan="2">
+													<strong><?php echo $installationStrings['LBL_DATABASE_CONFIGURATION']; ?></strong><hr size="1" noshade=""/>
+												</td>
 											</tr>
 											<tr>
 												<td width="40%" nowrap=""><?php echo $installationStrings['LBL_DATABASE_TYPE']; ?></td>
 												<td nowrap="" align="left"> <font class="dataInput"><i><?php echo $dbType; ?></i></font></td>
 											</tr>
 											<tr>
-												<td width="40%" nowrap=""><?php echo $installationStrings['LBL_OLD']. ' ' .$installationStrings['LBL_DATABASE_NAME']; ?></td>
+												<td width="40%" nowrap="">
+													<?php echo $installationStrings['LBL_OLD']. ' ' .$installationStrings['LBL_DATABASE_NAME']; ?>
+												</td>
 													<td nowrap="" align="left"> <font class="dataInput"><i><?php echo $oldDbName; ?></i></font></td>
 												</tr>
 											<tr>
-												<td width="40%" nowrap=""><?php echo $installationStrings['LBL_NEW']. ' ' .$installationStrings['LBL_DATABASE_NAME']; ?></td>
+												<td width="40%" nowrap="">
+													<?php echo $installationStrings['LBL_NEW']. ' ' .$installationStrings['LBL_DATABASE_NAME']; ?>
+												</td>
 												<td nowrap="" align="left"> <font class="dataInput"><?php echo $newDbName; ?></font></td>
 											</tr>
 											<tr>
@@ -173,7 +183,9 @@ include("modules/Migration/versions.php");
 									<td width="80%" align="left" style="padding-left: 10%;" class="small">
 										<table width="100%" cellspacing="1" cellpadding="0" border="0" align="center" class="level3">
 											<tr>
-												<td colspan="2"><strong><?php echo $installationStrings['LBL_SOURCE_CONFIGURATION']; ?></strong><hr size="1" noshade=""/></td>
+												<td colspan="2">
+													<strong><?php echo $installationStrings['LBL_SOURCE_CONFIGURATION']; ?></strong><hr size="1" noshade=""/>
+												</td>
 											</tr>
 											<tr>
 												<td width="40%"><?php echo $installationStrings['LBL_PREVIOUS_INSTALLATION_VERSION']; ?></td>
@@ -201,7 +213,7 @@ include("modules/Migration/versions.php");
 											<input type="submit" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_CHANGE']; ?>" title="<?php echo $installationStrings['LBL_CHANGE']; ?>" />
 										</form>
 									</td>
-									<?php if($next) : ?>
+									<?php if ($next) { ?>
 									<td align="right">
 										<form action="install.php" method="post" name="form" id="form">
 											<input type="hidden" name="mode" value="migration">
@@ -210,9 +222,9 @@ include("modules/Migration/versions.php");
 											<input type="submit" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>" />
 										</form>
 									</td>
-									<?php endif ?>
+									<?php } ?>
 								</tr>
-				  			</table>
+							</table>
 						</td>
 					</tr>
 				</table>
@@ -231,8 +243,8 @@ include("modules/Migration/versions.php");
 	</table>	
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
-        	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
-      	</tr>
-    </table>	    
+			<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
+		</tr>
+</table>
 </body>
 </html>

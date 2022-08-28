@@ -9,7 +9,7 @@
  ************************************************************************************/
 session_start();
 $current_dir = pathinfo(dirname(__FILE__));
-$current_dir = $current_dir['dirname']."/";
+$current_dir = $current_dir['dirname'].'/';
 
 $cur_dir_path = false;
 if (is_file('config.inc.php')) {
@@ -21,23 +21,23 @@ if (is_file('config.inc.php')) {
 }
 
 !isset($_SESSION['migration_info']['root_directory']) ? $root_directory = $current_dir : $root_directory = $_SESSION['migration_info']['root_directory'];
-!isset($_SESSION['migration_info']['source_directory']) ? $source_directory = "" : $source_directory = $_SESSION['migration_info']['source_directory'];
-!isset($_SESSION['migration_info']['user_name']) ? $user_name = "admin" : $user_name = $_SESSION['migration_info']['user_name'];
-!isset($_SESSION['migration_info']['user_pwd']) ? $user_pwd = "" : $user_pwd = $_SESSION['migration_info']['user_pwd'];
-!isset($_SESSION['migration_info']['new_dbname']) ? $new_dbname = "" : $new_dbname = $_SESSION['migration_info']['new_dbname'];
+!isset($_SESSION['migration_info']['source_directory']) ? $source_directory = '' : $source_directory = $_SESSION['migration_info']['source_directory'];
+!isset($_SESSION['migration_info']['user_name']) ? $user_name = 'admin' : $user_name = $_SESSION['migration_info']['user_name'];
+!isset($_SESSION['migration_info']['user_pwd']) ? $user_pwd = '' : $user_pwd = $_SESSION['migration_info']['user_pwd'];
+!isset($_SESSION['migration_info']['new_dbname']) ? $new_dbname = '' : $new_dbname = $_SESSION['migration_info']['new_dbname'];
 
-if(isset($_SESSION['migration_info']['old_version'])) {
+if (isset($_SESSION['migration_info']['old_version'])) {
 	$old_version = $_SESSION['migration_info']['old_version'];
-} elseif(isset($_SESSION['VTIGER_DB_VERSION'])) {
-	$old_version = $_SESSION['VTIGER_DB_VERSION'];	
+} elseif (isset($_SESSION['VTIGER_DB_VERSION'])) {
+	$old_version = $_SESSION['VTIGER_DB_VERSION'];
 } else {
-	$old_version = "";
+	$old_version = '';
 }
 
-include("modules/Migration/versions.php");
+include 'modules/Migration/versions.php';
 $version_sorted = $versions;
-uasort($version_sorted,'version_compare');
-$version_sorted = array_reverse($version_sorted,true);
+uasort($version_sorted, 'version_compare');
+$version_sorted = array_reverse($version_sorted, true);
 $_SESSION['pre_migration'] = false;
 ?>
 
@@ -55,13 +55,12 @@ $_SESSION['pre_migration'] = false;
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 </head>
 
-<body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
+<body class="small cwPageBg" topmargin="0" leftmargin="0">
 
 <script type="text/javascript">
-
 function verify_data(form) {
 	var isError = false;
-	var errorMessage = "";
+	var errorMessage = '';
 	// Here we decide whether to submit the form.
 	if (trim(form.source_directory.value) =='') {
 		isError = true;
@@ -78,7 +77,7 @@ function verify_data(form) {
 		errorMessage += "\n <?php echo $installationStrings['LBL_DATABASE_NAME']; ?>";
 		form.new_dbname.focus();
 	}
-	if(form.old_version.value == ""){
+	if(form.old_version.value == ''){
 		alert("<?php echo $installationStrings['LBL_SELECT_PREVIOUS_INSTALLATION_VERSION']; ?>");
 		form.old_version.focus();
 		return false;
@@ -96,8 +95,12 @@ function verify_data(form) {
 	<!-- Table for cfgwiz starts -->
 <table border=0 cellspacing=0 cellpadding=0 width=85% align=center>
 	<tr>
-		<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
-		<td class="cwHeadBg1" align=right><img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>"></td>
+		<td class="cwHeadBg" align=left>
+			<img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>">
+		</td>
+		<td class="cwHeadBg1" align=right>
+			<img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>">
+		</td>
 		<td class="cwHeadBg1" width=2%></td>
 	</tr>
 </table>
@@ -113,48 +116,55 @@ function verify_data(form) {
 			<table border=0 cellspacing=0 cellpadding=10 width=97%>
 				<tr>
 					<td width=80% valign=top class="cwContentDisplay" align=left>
-			    		<table border=0 cellspacing=0 cellpadding=5 width=100%>
-			    			<tr>
-			    				<td colspan="2" align=left class="paddingTop">
-			    					<span class="bigHeading"><?php echo $installationStrings['LBL_SYSTEM_CONFIGURATION']; ?></span>
-				  					<br>
-				  					<hr noshade size=1>
-				  				</td>
-				  			</tr>
-			    			<tr valign="top">
+						<table border=0 cellspacing=0 cellpadding=5 width=100%>
+							<tr>
+								<td colspan="2" align=left class="paddingTop">
+									<span class="bigHeading"><?php echo $installationStrings['LBL_SYSTEM_CONFIGURATION']; ?></span>
+									<br>
+									<hr noshade size=1>
+								</td>
+							</tr>
+							<tr valign="top">
 								<td align=left class="small" style="padding-left:5px" width="60%">
-							    	<form action="install.php" method="post" name="installform" id="form">
+									<form action="install.php" method="post" name="installform" id="form">
 										<!-- input type="hidden" name="file" value="PreMigrationActions.php" /-->
 										<input type="hidden" name="file" value="ConfirmMigrationConfig.php" />
 										<table width="100%" cellpadding="4" align=center border="0" cellspacing="0" class="level3"><tbody>
 											<tr>
-												<td colspan=2><strong><?php echo $installationStrings['LBL_PREVIOUS_INSTALLATION_INFORMATION']; ?></strong><hr size="1" noshade=""/></td>
-											</tr>
-											<tr>
-												<td  nowrap width = 35%><?php echo $installationStrings['LBL_PREVIOUS_INSTALLATION_PATH']; ?> <sup><font color=red>*</font></sup></td>
-												<td align="left">
-													<?php
-													if($cur_dir_path == true){
-														echo $root_directory;
-													?>					
-													<input  class="small" type="hidden" name="source_directory" id="source_directory" value="<?php if (isset($root_directory)) echo "$root_directory"; ?>" size="50" /> 
-													<?php } else { ?>					
-													<input  class="small" type="text" name="source_directory" id="source_directory" value="<?php if (isset($source_directory)) echo "$source_directory"; ?>" size="50" /> 
-													<?php } ?>	
-													<input class="dataInput" type="hidden" name="root_directory" id="root_directory" value="<?php if (isset($root_directory)) echo "$root_directory"; ?>" size="40" />			
+												<td colspan=2>
+													<strong><?php echo $installationStrings['LBL_PREVIOUS_INSTALLATION_INFORMATION']; ?></strong><hr size="1" noshade=""/>
 												</td>
 											</tr>
 											<tr>
-												<td width = 35%><?php echo $installationStrings['LBL_PREVIOUS_INSTALLATION_VERSION']; ?> <sup><font color=red>*</font></sup></td>
+												<td nowrap width=35%>
+													<?php echo $installationStrings['LBL_PREVIOUS_INSTALLATION_PATH']; ?> <sup><font color=red>*</font></sup>
+												</td>
+												<td align="left">
+													<?php
+													if ($cur_dir_path) {
+														echo $root_directory;
+														?>
+													<input  class="small" type="hidden" name="source_directory" id="source_directory" value="<?php echo isset($root_directory) ? $root_directory : '';?>" size="50" />
+													<?php } else { ?>
+													<input  class="small" type="text" name="source_directory" id="source_directory" value="<?php echo isset($source_directory) ? $source_directory : '';?>" size="50" />
+													<?php } ?>
+													<input class="dataInput" type="hidden" name="root_directory" id="root_directory" value="<?php echo isset($root_directory) ? $root_directory : ''; ?>" size="40" />
+												</td>
+											</tr>
+											<tr>
+												<td width = 35%>
+													<?php echo $installationStrings['LBL_PREVIOUS_INSTALLATION_VERSION']; ?> <sup><font color=red>*</font></sup>
+												</td>
 												<td align="left">
 													<select class="small" name='old_version' id='old_version'>
-														<option value='' <?php if($old_version == "") echo "selected"; ?> >--SELECT--</option>
-														<?php	
-														foreach($version_sorted as $index=>$value){
-															if($index == $old_version)
+														<option value='' <?php echo ($old_version == '') ? 'selected' : '';?> >--SELECT--</option>
+														<?php
+														foreach ($version_sorted as $index => $value) {
+															if ($index == $old_version) {
 																echo "<option value='$index' selected>$value</option>";
-															else
-																echo "<option value='$index'>$value</option>"; 
+															} else {
+																echo "<option value='$index'>$value</option>";
+															}
 														}
 														?>
 													</select>
@@ -162,15 +172,21 @@ function verify_data(form) {
 											</tr>
 											<tr>
 												<td width = 35% >Admin <?php echo $installationStrings['LBL_USERNAME']; ?> <sup><font color=red>*</font></sup></td>
-												<td align="left"><input class="small" type="text" name="user_name" id="user_name" value="<?php if (isset($user_name)) echo $user_name; else echo 'admin';?>" size="50" /> </td>
+												<td align="left">
+													<input class="small" type="text" name="user_name" id="user_name" value="<?php echo isset($user_name) ? $user_name : 'admin';?>" size="50" />
+												</td>
 											</tr>
 											<tr>
 												<td width = 35%>Admin <?php echo $installationStrings['LBL_PASSWORD']; ?> <sup><font color=red></font></sup></td>
-												<td align="left"><input class="small" type="password" name="user_pwd" id="user_pwd" value="<?php if (isset($user_pwd)) echo $user_pwd; else echo '';?>" size="50" /> </td>
+												<td align="left">
+													<input class="small" type="password" name="user_pwd" id="user_pwd" value="<?php echo isset($user_pwd) ? $user_pwd : '';?>" size="50" />
+												</td>
 											</tr>
 											<tr>
 												<td width = 35%><?php echo $installationStrings['LBL_MIGRATION_DATABASE_NAME']; ?> <sup><font color=red>*</font></sup></td>
-												<td align="left"><input class="small" type="text" name="new_dbname" id="new_dbname" value="<?php if (isset($new_dbname)) echo $new_dbname; else echo '';?>" size="50" /> </td>
+												<td align="left">
+													<input class="small" type="text" name="new_dbname" id="new_dbname" value="<?php echo isset($new_dbname) ? $new_dbname : '';?>" size="50" />
+												</td>
 											</tr>
 										</table>
 									</form>
@@ -192,13 +208,12 @@ function verify_data(form) {
 															</ol>
 														</li>
 													</ul>
-  												</div>
+												</div>
 											</td>
 										</tr>
 									</table>
 								</td>
 							</tr>
-							
 							<tr>
 								<td align="left">
 									<input type="button" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_BACK']; ?>" title="<?php echo $installationStrings['LBL_BACK']; ?>" onClick="window.history.back();">
@@ -228,7 +243,7 @@ function verify_data(form) {
 </table>
 <table border=0 cellspacing=0 cellpadding=0 width=85% align=center>
 	<tr>
-    	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
+		<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
 	</tr>
 </table>
 

@@ -8,47 +8,35 @@
  * All Rights Reserved.
  *********************************************************************************/
 
-@include_once('install/config.db.php');
+@include_once 'install/config.db.php';
 global $dbconfig, $vtiger_current_version, $vtconfig, $coreBOS_app_version;
 
 $hostname = $_SERVER['SERVER_NAME'];
-$web_root = ($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"]:$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];
-$web_root .= $_SERVER["REQUEST_URI"];
-$web_root = str_replace("/install.php", "", $web_root);
-$web_root = "http://".$web_root;
+$web_root = ($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST']:$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];
+$web_root .= $_SERVER['REQUEST_URI'];
+$web_root = str_replace('/install.php', '', $web_root);
+$web_root = $_SERVER['REQUEST_SCHEME'].'://'.$web_root;
 
 $current_dir = pathinfo(dirname(__FILE__));
-$current_dir = $current_dir['dirname']."/";
-$cache_dir = "cache/";
+$current_dir = $current_dir['dirname'].'/';
+$cache_dir = 'cache/';
 
 session_start();
 
-!isset($_REQUEST['hostName']) ? $host_name= $dbconfig['db_server'].':'.$dbconfig['db_port'] :
-	$host_name = $_REQUEST['hostName'];
-!isset($_REQUEST['demoData']) ? $demoData= $vtconfig['demoData'] : $demoData =
-	$_REQUEST['demoData'];
-!isset($_REQUEST['currencyName']) ? $currencyName = preg_replace('/\s+$/', '',
-		$vtconfig['currencyName']) : $currencyName = $_REQUEST['currencyName'];
-!isset($_REQUEST['adminEmail']) ? $adminEmail = $vtconfig['adminEmail'] : $adminEmail =
-	$_REQUEST['adminEmail'];
-!isset($_REQUEST['adminPwd']) ? $adminPwd = $vtconfig['adminPwd'] : $adminPwd =
-	$_REQUEST['adminPwd'];
-!isset($_REQUEST['standarduserEmail']) ? $standarduserEmail = $vtconfig['standarduserEmail'] :
-	$standarduserEmail = $_REQUEST['standarduserEmail'];
-!isset($_REQUEST['standarduserPwd']) ? $standarduserPwd = $vtconfig['standarduserPwd'] :
-	$standarduserPwd = $_REQUEST['standarduserPwd'];
-!isset($_REQUEST['dbUsername']) ? $dbUsername = $dbconfig['db_username'] : $dbUsername =
-	$_REQUEST['dbUsername'];
-!isset($_REQUEST['dbPassword']) ? $dbPassword = $dbconfig['db_password'] : $dbPassword =
-	$_REQUEST['dbPassword'];
-!isset($_REQUEST['dbType']) ? $dbType = $dbconfig['db_type'] : $dbType = $_REQUEST['dbType'];
-!isset($_REQUEST['dbName']) ? $dbName = $dbconfig['db_name'] : $dbName = $_REQUEST['dbName'];
+$host_name = !isset($_REQUEST['hostName']) ? $dbconfig['db_server'].':'.$dbconfig['db_port'] : $_REQUEST['hostName'];
+$demoData = !isset($_REQUEST['demoData']) ? $vtconfig['demoData'] : $_REQUEST['demoData'];
+$currencyName = !isset($_REQUEST['currencyName']) ? preg_replace('/\s+$/', '', $vtconfig['currencyName']) : $_REQUEST['currencyName'];
+$adminEmail = !isset($_REQUEST['adminEmail']) ? $vtconfig['adminEmail'] : $_REQUEST['adminEmail'];
+$adminPwd = !isset($_REQUEST['adminPwd']) ? $vtconfig['adminPwd'] : $_REQUEST['adminPwd'];
+$standarduserEmail = !isset($_REQUEST['standarduserEmail']) ? $vtconfig['standarduserEmail'] : $_REQUEST['standarduserEmail'];
+$standarduserPwd = !isset($_REQUEST['standarduserPwd']) ? $vtconfig['standarduserPwd'] : $_REQUEST['standarduserPwd'];
+$dbUsername = !isset($_REQUEST['dbUsername']) ? $dbconfig['db_username'] : $_REQUEST['dbUsername'];
+$dbPassword = !isset($_REQUEST['dbPassword']) ? $dbconfig['db_password'] : $_REQUEST['dbPassword'];
+$dbType = !isset($_REQUEST['dbType']) ? $dbconfig['db_type'] : $_REQUEST['dbType'];
+$dbName = !isset($_REQUEST['dbName']) ? $dbconfig['db_name'] : $_REQUEST['dbName'];
 
 session_start();
-$create_db = false;
-if(isset($_REQUEST['check_createdb']) && $_REQUEST['check_createdb'] == 'on') {
-	$create_db = true;
-}
+$create_db = (isset($_REQUEST['check_createdb']) && $_REQUEST['check_createdb'] == 'on');
 
 $_SESSION['config_file_info']['db_hostname'] = $host_name;
 $_SESSION['config_file_info']['db_username'] = $dbUsername;
@@ -84,16 +72,15 @@ if (isset($_REQUEST['create_utf8_db'])) {
 }
 $_SESSION['config_file_info']['vt_charset']= 'UTF-8';
 
-if (isset($_REQUEST['db_populate']))
+if (isset($_REQUEST['db_populate'])) {
 	$_SESSION['installation_info']['db_populate'] = 'true';
-else
+} else {
 	$_SESSION['installation_info']['db_populate'] = ($demoData == '1')? 'true': 'false';
-
-require_once('modules/Utilities/Currencies.php');
-if(isset($currencyName)){
+}
+require_once 'modules/Utilities/Currencies.php';
+if (isset($currencyName)) {
 	$_SESSION['installation_info']['currency_code'] = $currencies[$currencyName][0];
 	$_SESSION['installation_info']['currency_symbol'] = $currencies[$currencyName][1];
 }
-
-require "install/CreateTables.php";
+require 'install/CreateTables.php';
 ?>

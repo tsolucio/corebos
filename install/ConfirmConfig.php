@@ -170,11 +170,11 @@ if ($mode == 'migration') {
 											</tr>
 											<tr>
 												<td noWrap width="40%"><?php echo $installationStrings['LBL_DATABASE_TYPE']; ?></td>
-												<td align="left" nowrap> <font class="dataInput"><i><?php if (isset($db_type)) echo "$db_type"; ?></i></font></td>
+												<td align="left" nowrap> <font class="dataInput"><em><?php echo isset($db_type) ? $db_type : ''; ?></em></font></td>
 											</tr>
 											<tr>
 												<td noWrap width="40%"><?php echo $installationStrings['LBL_DATABASE_NAME']; ?></td>
-												<td align="left" nowrap> <font class="dataInput"><i><?php if (isset($db_name)) echo "$db_name"; ?></i></font></td>
+												<td align="left" nowrap> <font class="dataInput"><em><?php echo isset($db_name) ? $db_name : ''; ?></em></font></td>
 											</tr>
 											<tr>
 												<td noWrap width="40%">

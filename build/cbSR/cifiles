@@ -190,4 +190,5 @@ include/cbmqtm/cbmqtm_memusage.php
 include/cbmqtm/directrun.php
 include/cbmqtm/run.php
 include/MemoryLimitManager/
+install
 build/changeSets

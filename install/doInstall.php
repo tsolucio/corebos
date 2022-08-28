@@ -16,7 +16,7 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-if (isset ($_REQUEST['filename'])) {
+if (isset($_REQUEST['filename'])) {
 	$file_name = htmlspecialchars($_REQUEST['filename']);
 }
 $total_num_of_steps = 4;
@@ -34,14 +34,16 @@ $total_num_of_steps = 4;
 </head>
 
 <body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
-
 	<br>
 	<!-- Table for cfgwiz starts -->
-
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
-			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
-			<td class="cwHeadBg1" align=right><img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>"></td>
+			<td class="cwHeadBg" align=left>
+				<img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>">
+			</td>
+			<td class="cwHeadBg1" align=right>
+				<img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>">
+			</td>
 			<td class="cwHeadBg1" width=2%></td>
 		</tr>
 	</table>
@@ -58,32 +60,40 @@ $total_num_of_steps = 4;
 					<tr>
 						<td width=80% valign=top class="cwContentDisplay" align=center>
 							<!-- Right side tabs -->
-				    		<table cellspacing=0 cellpadding=2 width=95% align=center>
-				    			<tr>
-				    				<td align=left class="paddingTop">
-				    					<span class="bigHeading"><?php echo $installationStrings['LBL_INSTALLING']; ?></span>
-				    					<img alt="installing" src="include/images/installing.gif" style="margin-left: 50px;width: 20px;">
-				    					<br>
-				    				</td>
+							<table cellspacing=0 cellpadding=2 width=95% align=center>
+								<tr>
+									<td align=left class="paddingTop">
+										<span class="bigHeading"><?php echo $installationStrings['LBL_INSTALLING']; ?></span>
+										<img alt="installing" src="include/images/installing.gif" style="margin-left: 50px;width: 20px;">
+										<br>
+									</td>
 									<td align=right valign="middle" class="paddingTop">
-									</td>  
+									</td>
 								</tr>
 								<tr><td colspan=2><hr noshade size=1></td></tr>
-				    			<tr>
-				    				<td colspan=2 align="left">
-				    					<table cellpadding="0" cellspacing="1" align=right width="100%" class="level3">
-				    						<tr>
-								    			<td width=100%  valign=top >
+								<tr>
+									<td colspan=2 align="left">
+										<table cellpadding="0" cellspacing="1" align=right width="100%" class="level3">
+											<tr>
+												<td width=100%  valign=top >
 													<table align=right width="100%" border="0">
 														<tr>
 															<td  valign=top align=left width=100%>
 																<table cellpadding="2" cellspacing="1" align=right width="100%" border="0" class="level1">
 																	<tr class='level1'>
-																		<td valign=top ><span class="bigHeading" style="color: black;"><?php echo $installationStrings['DoingStep']; ?></span></td>
-																		<td  valign=top><span class="bigHeading" style="color: black;" id="stepnumber">1/<?php echo $total_num_of_steps; ?></span></td>
+																		<td valign=top>
+																			<span class="bigHeading" style="color: black;"><?php echo $installationStrings['DoingStep']; ?></span>
+																		</td>
+																		<td valign=top>
+																			<span class="bigHeading" style="color: black;" id="stepnumber">1/<?php echo $total_num_of_steps; ?></span>
+																		</td>
 																	</tr>
 																	<tr class='level1'>
-																		<td valign=top colspan=2><p id="stepdescription" class="level2" style="width: 100%"><?php echo $installationStrings['LBL_GETTING_STARTED']; ?></p></td>
+																		<td valign=top colspan=2>
+																			<p id="stepdescription" class="level2" style="width: 100%">
+																				<?php echo $installationStrings['LBL_GETTING_STARTED']; ?>
+																			</p>
+																		</td>
 																	</tr>
 																</table>
 															</td>
@@ -95,7 +105,7 @@ $total_num_of_steps = 4;
 														</div>
 														</td></tr>
 													</table>
-								    			</td>
+											</td>
 											</tr>
 										</table>
 									</td>
@@ -129,9 +139,9 @@ $total_num_of_steps = 4;
 		</tr>
 	</table>	
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
-      	<tr>
-        	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
-      	</tr>
+	<tr>
+		<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
+	</tr>
 	</table>
 <script type="text/javascript">
 var timerID = setInterval(function() {

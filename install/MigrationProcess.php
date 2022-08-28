@@ -14,11 +14,11 @@ set_time_limit($php_max_execution_time);
 session_start();
 
 $auth_key = $_REQUEST['auth_key'];
-if($_SESSION['authentication_key'] != $auth_key) {
+if ($_SESSION['authentication_key'] != $auth_key) {
 	die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
 }
 
-if(isset($_REQUEST['selected_modules'])) {
+if (isset($_REQUEST['selected_modules'])) {
 	$_SESSION['migration_info']['selected_optional_modules'] = $_REQUEST['selected_modules'];
 }
 
@@ -38,15 +38,19 @@ Migration_Utils::copyRequiredFiles($_SESSION['migration_info']['source_directory
 </head>
 
 <?php
-if($_REQUEST['migration_start'] != 'true') {
-?>
+if ($_REQUEST['migration_start'] != 'true') {
+	?>
 	<body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
 		<br>
 		<!-- Table for cfgwiz starts -->
 		<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
-			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
-			<td class="cwHeadBg1" align=right><img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>"></td>
+			<td class="cwHeadBg" align=left>
+				<img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>">
+			</td>
+			<td class="cwHeadBg1" align=right>
+				<img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME'];?>" title="<?php echo $installationStrings['APP_NAME'];?>">
+			</td>
 			<td class="cwHeadBg1" width=2%></td>
 		</tr>
 		</table>
@@ -132,18 +136,18 @@ if($_REQUEST['migration_start'] != 'true') {
 		<!-- Prefetch image to display later for Screen blocker -->
 		<img style="display: none;" src="include/install/images/loading.gif">
 		<img src="themes/softed/images/layerPopupBg.gif" style="display: none;"/>
-<?php
+	<?php
 } else {
 	// Start the migration now
 	echo '<body onload="window.parent.VtigerJS_DialogBox.hideprogress();">';
 
-	require_once('include/utils/utils.php');
-	require_once('include/logging.php');
+	require_once 'include/utils/utils.php';
+	require_once 'include/logging.php';
 	$migrationlog = LoggerManager::getLogger('MIGRATION');
 
-	if($_SESSION['authentication_key']==$_REQUEST['auth_key']) {
+	if ($_SESSION['authentication_key']==$_REQUEST['auth_key']) {
 		$completed = Migration_Utils::migrate($_SESSION['migration_info']);
-		if ($completed == true) {
+		if ($completed) {
 			echo "<script type='text/javascript'>window.parent.Migration_Complete();</script>";
 		}
 	}

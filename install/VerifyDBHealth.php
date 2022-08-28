@@ -12,30 +12,26 @@ session_start();
 if (empty($_SESSION['authentication_key'])) {
 	die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
 }
-if ($_REQUEST['ajax'] == true) {
-	if ($_SESSION['authentication_key'] != $_REQUEST['auth_key']) {
-		die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
-	}
+if ($_REQUEST['ajax'] && $_SESSION['authentication_key'] != $_REQUEST['auth_key']) {
+	die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
 }
 
 $configFileInfo = $_SESSION['config_file_info'];
 
-require_once('include/adodb/adodb.inc.php');
+require_once 'include/adodb/adodb.inc.php';
 
 $db = NewADOConnection($configFileInfo['db_type']);
 $db->NConnect($configFileInfo['db_hostname'], $configFileInfo['db_username'], $configFileInfo['db_password'], $configFileInfo['db_name']);
 
-require_once('include/utils/DBHealthCheck.php');
+require_once 'include/utils/DBHealthCheck.php';
 $dbHealthCheck = new DBHealthCheck($db);
 $dbHostName = $dbHealthCheck->dbHostName;
 $dbName = $dbHealthCheck->dbName;
 if (!empty($_REQUEST['forceDbCheck']) || $_SESSION[$dbName.'_'.$dbHostName.'_HealthApproved'] != true) {
-
-	if ($_REQUEST['updateTableEngine'] == true) {
+	if ($_REQUEST['updateTableEngine']) {
 		if (!empty($_REQUEST['updateEngineForTable'])) {
 			$dbHealthCheck->updateTableEngineType(htmlentities($_REQUEST['updateEngineForTable']));
-		}
-		elseif ($_REQUEST['updateEngineForAllTables'] == true) {
+		} elseif ($_REQUEST['updateEngineForAllTables']) {
 			$dbHealthCheck->updateAllTablesEngineType();
 		}
 	}
@@ -44,20 +40,20 @@ if (!empty($_REQUEST['forceDbCheck']) || $_SESSION[$dbName.'_'.$dbHostName.'_Hea
 	$noOfTables = count($unHealthyTablesList);
 	if ($noOfTables <= 0) {
 		$_SESSION[$dbName.'_'.$dbHostName.'_HealthApproved'] = true;
-		if($_REQUEST['ajax'] == true) {
-			echo "TABLE_TYPE_FIXED";
+		if ($_REQUEST['ajax']) {
+			echo 'TABLE_TYPE_FIXED';
 		}
 	} else {
 		$_SESSION[$dbName.'_'.$dbHostName.'_HealthApproved'] = false;
 	}
 }
 
-if ($_REQUEST['viewDBReport'] == true) {
-	if($_SESSION['authentication_key'] != $_REQUEST['auth_key']) {
+if ($_REQUEST['viewDBReport']) {
+	if ($_SESSION['authentication_key'] != $_REQUEST['auth_key']) {
 		die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
 	}
 	$auth_key = $_REQUEST['auth_key'];
-?>
+	?>
 
 <!DOCTYPE html>
 <html>
@@ -79,14 +75,16 @@ if ($_REQUEST['viewDBReport'] == true) {
 		<table width="99%" cellspacing="0" cellpadding="0" border="0" align="center">
 			<tr>
 				<td align="left" class="cwHeadBg heading2">&nbsp;<?php echo $installationStrings['LBL_DATABASE_CHECK']; ?></td>
-				<td align="right" class="cwHeadBg1"><img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>"></td>
-				<td width="2%" class="cwHeadBg1"/>
+				<td align="right" class="cwHeadBg1">
+					<img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>">
+				</td>
+				<td width="2%" class="cwHeadBg1"></td>
 			</tr>
 		</table>
 		<table cellpadding="10" cellspacing="0" border="0" width="99%" height="45%" align="center">
 			<tr>
 				<td bgcolor="#4572be" align="center" class="small">
-					<?php if($_SESSION[$dbName.'_'.$dbHostName.'_HealthApproved'] == true) { ?>
+					<?php if ($_SESSION[$dbName.'_'.$dbHostName.'_HealthApproved']) { ?>
 					<table class="cwContentDisplay" cellpadding="10" cellspacing="10" border="0" width="97%" style="height: 100%" align="center">
 						<tr>
 							<td class="contentDisplay">
@@ -146,11 +144,11 @@ if ($_REQUEST['viewDBReport'] == true) {
 										<td class="fontBold small"><?php echo $installationStrings['LBL_CHARACTER_SET']; ?></td>
 										<td class="fontBold small"><?php echo $installationStrings['LBL_TYPE']; ?></td>
 									</tr>
-									<?php for($i=0; $i<$noOfTables; ++$i) {
-											$tableName = $unHealthyTablesList[$i]['name'];
-											$engineType = $unHealthyTablesList[$i]['engine'];
-											$characterSet = $unHealthyTablesList[$i]['characterset'];
-									?>
+									<?php for ($i=0; $i<$noOfTables; ++$i) {
+										$tableName = $unHealthyTablesList[$i]['name'];
+										$engineType = $unHealthyTablesList[$i]['engine'];
+										$characterSet = $unHealthyTablesList[$i]['characterset'];
+										?>
 									<tr>
 										<td><?php echo $tableName; ?></td>
 										<td><?php echo $characterSet; ?></td>
@@ -158,7 +156,7 @@ if ($_REQUEST['viewDBReport'] == true) {
 									</tr>
 									<?php } ?>
 								</table>
-								<?php } ?>
+					<?php } ?>
 							</td>
 						</tr>
 					</table>
