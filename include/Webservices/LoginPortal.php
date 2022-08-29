@@ -18,7 +18,7 @@ include_once 'include/Webservices/Login.php';
 function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionManagerClass = 'coreBOS_Session') {
 	global $adb;
 	$user = new Users();
-	$uname = GlobalVariable::getVariable('CustomerPortal_Default_User', 'testdmy');
+	$uname = GlobalVariable::getVariable('CustomerPortal_Default_User', 'portal');
 	$userId = $user->retrieve_user_id($uname);
 
 	$current_date = date('Y-m-d');
