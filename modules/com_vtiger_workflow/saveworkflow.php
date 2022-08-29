@@ -90,23 +90,8 @@ function vtWorkflowSave($adb, $request) {
 	}
 	if ($executionCondition == 'RECORD_ACCESS_CONTROL') {
 		$cache = new corebos_cache();
-		$cacheKeys = array();
 		if ($cache->isUsable()) {
-			$entity = getEntityField($moduleName);
-			$qg = new QueryGenerator($moduleName, $current_user);
-			$qg->setFields(array('id', 'assigned_user_id'));
-			$rs = $adb->query($qg->getQuery());
-			if ($adb->num_rows($rs)) {
-				while ($row = $adb->fetch_array($rs)) {
-					$cacheId = $moduleName.'#ListViewActions#'.$row[$entity['entityid']].'#'.$row['smownerid'];
-					if ($cache->getCacheClient()->has($cacheId)) {
-						$cacheKeys[] = $cacheId;
-					}
-				}
-				if (!empty($cacheKeys)) {
-					$cache->getCacheClient()->deleteMultiple($cacheKeys);
-				}
-			}
+			$cache->getCacheClient()->clear();
 		}
 	}
 

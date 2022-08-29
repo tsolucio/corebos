@@ -171,6 +171,16 @@ class CRMEntity {
 			$adb->pquery($update_query, $update_params);
 		}
 
+		if ($_REQUEST['assigned_user_id'] != $this->column_fields['assigned_user_id']) {
+			$cache = new corebos_cache();
+			if ($cache->isUsable()) {
+				$oldcacheId = $module_name.'#ListViewActions#'.$this->id.'#'.$this->column_fields['assigned_user_id'];
+				$newcacheId = $module_name.'#ListViewActions#'.$this->id.'#'.$_REQUEST['assigned_user_id'];
+				$cache->getCacheClient()->delete($oldcacheId);
+				$cache->getCacheClient()->delete($newcacheId);
+			}
+		}
+
 		//Calling the Module specific save code
 		$this->save_module($module);
 
@@ -1406,15 +1416,6 @@ class CRMEntity {
 			$_REQUEST['assigned_user_id'] = $current_user->id;
 			$this->column_fields['assigned_user_id'] = $current_user->id;
 			$_REQUEST['assigntype'] = 'U';
-		}
-		$cache = new corebos_cache();
-		if ($cache->isUsable()) {
-			if ($_REQUEST['assigned_user_id'] != $this->column_fields['assigned_user_id']) {
-				$oldcacheId = $module.'#ListViewActions#'.$this->id.'#'.$this->column_fields['assigned_user_id'];
-				$newcacheId = $module.'#ListViewActions#'.$this->id.'#'.$_REQUEST['assigned_user_id'];
-				$cache->getCacheClient()->delete($oldcacheId);
-				$cache->getCacheClient()->delete($newcacheId);
-			}
 		}
 		// get is duplicate from id if present and not set
 		if (empty($this->column_fields['isduplicatedfromrecordid']) && !empty($_REQUEST['__cbisduplicatedfromrecordid'])) {
