@@ -15,7 +15,7 @@
 include_once 'include/Webservices/AuthToken.php';
 include_once 'include/Webservices/Login.php';
 
-function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionManagerClass = 'SessionManager') {
+function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionManagerClass = 'coreBOS_Session') {
 	global $adb;
 	$user = new Users();
 	$uname = GlobalVariable::getVariable('CustomerPortal_Default_User', 'portal');
@@ -85,8 +85,8 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 			vtws_loginportalincfailed($ctors->fields['id'], $entityType);
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD, 'Invalid username or password');
 		}
-		if (!empty($ctors->fields ['portalloginuser'])) {
-			$userId = $ctors->fields ['portalloginuser'];
+		if (!empty($ctors->fields['portalloginuser'])) {
+			$userId = $ctors->fields['portalloginuser'];
 		}
 		if (empty($userId)) {
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD, "User $uname does not exist");
@@ -99,19 +99,19 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 			} else {
 				$sessionManager = $SessionManagerClass;
 			}
-			$sid = @$sessionManager->startSession(null, false);
+			$sid = @$sessionManager::init(false, false, '', 'cbprt');
 			if (!$sid) {
 				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Could not create session');
 			}
 			if (vtws_loginportalgetfailed($ctors->fields['id'], $entityType)>GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5)) {
 				throw new WebServiceException(WebServiceErrorCode::$AUTHFAILURE, 'Maximum number of failed attempts reached.');
 			}
-			$sessionManager->set('authenticatedUserId', $userId);
-			$sessionManager->set('authenticatedUserIsPortalUser', 1);
-			$sessionManager->set('authenticatedUserPortalContact', $ctocmrid);
+			$sessionManager::set('authenticatedUserId', $userId);
+			$sessionManager::set('authenticatedUserIsPortalUser', 1);
+			$sessionManager::set('authenticatedUserPortalContact', $ctocmrid);
 			vtws_loginportalsetfailed($ctors->fields['id'], $entityType);
 			$accessinfo = array();
-			$accessinfo['sessionName'] = $sessionManager->getSessionId();
+			$accessinfo['sessionName'] = $sessionManager::id();
 			$accessinfo['user'] = array(
 				'id' => vtws_getEntityId('Users').'x'.$userId,
 				'user_name' => $user->column_fields['user_name'],
