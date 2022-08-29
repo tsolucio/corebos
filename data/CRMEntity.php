@@ -1407,6 +1407,15 @@ class CRMEntity {
 			$this->column_fields['assigned_user_id'] = $current_user->id;
 			$_REQUEST['assigntype'] = 'U';
 		}
+		$cache = new corebos_cache();
+		if ($cache->isUsable()) {
+			if ($_REQUEST['assigned_user_id'] != $this->column_fields['assigned_user_id']) {
+				$oldcacheId = $module.'#ListViewActions#'.$this->id.'#'.$this->column_fields['assigned_user_id'];
+				$newcacheId = $module.'#ListViewActions#'.$this->id.'#'.$_REQUEST['assigned_user_id'];
+				$cache->getCacheClient()->delete($oldcacheId);
+				$cache->getCacheClient()->delete($newcacheId);
+			}
+		}
 		// get is duplicate from id if present and not set
 		if (empty($this->column_fields['isduplicatedfromrecordid']) && !empty($_REQUEST['__cbisduplicatedfromrecordid'])) {
 			$this->column_fields['isduplicatedfromrecordid'] = vtlib_purify($_REQUEST['__cbisduplicatedfromrecordid']);

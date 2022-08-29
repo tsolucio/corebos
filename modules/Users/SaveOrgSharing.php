@@ -8,17 +8,34 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once 'include/database/PearDatabase.php';
-global $adb;
+global $adb, $current_user;
 
 $sql2 = 'select * from vtiger_def_org_share where editstatus=0';
 $result2 = $adb->pquery($sql2, array());
 $num_rows = $adb->num_rows($result2);
-
+$cache = new corebos_cache();
+$cacheKeys = array();
 for ($i=0; $i<$num_rows; $i++) {
 	$ruleid=$adb->query_result($result2, $i, 'ruleid');
 	$tabid=$adb->query_result($result2, $i, 'tabid');
+	$activepermission=$adb->query_result($result2, $i, 'permission');
 	$reqval = $tabid.'_per';
 	$permission=(isset($_REQUEST[$reqval]) ? $_REQUEST[$reqval] : 2);
+	if ($cache->isUsable() && $activepermission != $permission) {
+		$modulename = getTabModuleName($tabid);
+		$entity = getEntityField($modulename);
+		$qg = new QueryGenerator($modulename, $current_user);
+		$qg->setFields(array('id', 'assigned_user_id'));
+		$rs = $adb->query($qg->getQuery());
+		if ($adb->num_rows($rs)) {
+			while ($row = $adb->fetch_array($rs)) {
+				$cacheId = $modulename.'#ListViewActions#'.$row[$entity['entityid']].'#'.$row['smownerid'];
+				if ($cache->getCacheClient()->has($cacheId)) {
+					$cacheKeys[] = $cacheId;
+				}
+			}
+		}	
+	}
 	$sql7='update vtiger_def_org_share set permission=? where tabid=? and ruleid=?';
 	$adb->pquery($sql7, array($permission, $tabid, $ruleid));
 
@@ -31,6 +48,9 @@ for ($i=0; $i<$num_rows; $i++) {
 		$sql8='update vtiger_def_org_share set permission=? where tabid=16';
 		$adb->pquery($sql8, array($permission));
 	}
+}
+if ($cache->isUsable() && !empty($cacheKeys)) {
+	$cache->getCacheClient()->deleteMultiple($cacheKeys);
 }
 $loc = 'Location: index.php?action=OrgSharingDetailView&module=Settings';
 header($loc);

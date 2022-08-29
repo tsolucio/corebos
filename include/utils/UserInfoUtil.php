@@ -542,6 +542,9 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 		list($void,$record_id) = explode('x', $record_id);
 	}
 	$cacheId = $module.'#'.$actionname.'#'.$record_id.'#'.$current_user->id;
+	if (empty($record_id)) {
+		$cacheId = $module.'#'.$actionname.'#'.$current_user->id;
+	}
 	if ($cache->isUsable() && $cache->getCacheClient()->has($cacheId)) {
 		return $cache->getCacheClient()->get($cacheId);
 	}

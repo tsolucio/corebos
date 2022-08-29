@@ -163,15 +163,8 @@ if ($sql_error) {
 		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 			$cache = new corebos_cache();
 			$cacheId = $currentModule.'#NumofRows#'.$viewid.'#'.$current_user->id;
-			if ($cache->isUsable() && $cache->getCacheClient()->has($cacheId)) {
-				$noofrows = $cache->getCacheClient()->get($cacheId);
-			} else {
-				$count_result = $adb->query(mkCountQuery($list_query));
-				$noofrows = $adb->query_result($count_result, 0, 0);
-				if ($cache->isUsable()) {
-					$cache->getCacheClient()->set($cacheId, $noofrows);
-				}
-			}
+			$count_result = $adb->query(mkCountQuery($list_query));
+			$noofrows = $adb->query_result($count_result, 0, 0);
 		} else {
 			$noofrows = null;
 		}

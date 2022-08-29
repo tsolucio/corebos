@@ -114,6 +114,7 @@ class ListViewController {
 	public function getListViewEntries($focus, $module, $result, $navigationInfo, $skipActions = false) {
 		global $theme, $default_charset, $current_user, $currentModule, $adb;
 		$is_admin = is_admin($current_user);
+		$cache = new corebos_cache();
 		$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length', 40, $currentModule);
 		$fields = $this->queryGenerator->getFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
@@ -595,9 +596,9 @@ class ListViewController {
 
 			//Added for Actions ie., edit and delete links in listview
 			$actionLinkInfo = '';
-			$cacheId = $module.'#EditViewActions#'.$recordId.'#'.$current_user->id;
+			$cacheId = $module.'#ListViewActions#'.$recordId.'#'.$current_user->id;
 			if ($cache->isUsable() && $cache->getCacheClient()->has($cacheId)) {
-				$actionLinkInfo .= $cache->getCacheClient()->get($cacheId);
+				$actionLinkInfo = $cache->getCacheClient()->get($cacheId);
 			} else {
 				if (isPermitted($module, 'EditView', $recordId) == 'yes') {
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $recordId);
@@ -609,16 +610,7 @@ class ListViewController {
 							$actionLinkInfo .= "<a href=\"$edit_link\">".getTranslatedString('LNK_EDIT', $module).'</a> ';
 						}
 					}
-					if ($cache->isUsable()) {
-						$cache->getCacheClient()->set($cacheId, $actionLinkInfo);
-					}
 				}
-			}
-
-			$cacheId = $module.'#DeleteActions#'.$recordId.'#'.$current_user->id;
-			if ($cache->isUsable() && $cache->getCacheClient()->has($cacheId)) {
-				$actionLinkInfo .= $cache->getCacheClient()->get($cacheId);
-			} else {			
 				if (isPermitted($module, 'Delete', $recordId) == 'yes') {
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $recordId);
 					if (!$racbr || $racbr->hasListViewPermissionTo('delete')) {
