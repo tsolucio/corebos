@@ -108,6 +108,7 @@ class VTFieldExpressionEvaluater {
 			'getFromContextSearching' => '__cb_getfromcontextsearching',
 			'setToContext' => '__cb_setfromcontext',
 			'applyMaptoArrayElements' => '__cb_applymaptoarrayelements',
+			'applyMaptoInventoryArrayElements' => '__cb_applymaptoinventoryarrayelements',
 			'jsonEncode' => '__cb_jsonencode',
 			'jsonDecode' => '__cb_jsondecode',
 			'implode' => '__cb_implode',

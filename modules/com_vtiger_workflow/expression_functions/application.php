@@ -453,23 +453,10 @@ function __cb_applymaptoinventoryarrayelements($params) {
 			foreach ($order[$params[1]] as $invline) {
 				$invlines[] = $cbMapLines->Mapping($invline, $invline);
 			}
-			$neworder[$params[1]] = $invlines;
+			$neworder[$params[1]] = $invlines;		
 		}
 		$finalarray[] = $neworder;
 	}
-
-	$finalarray = array();
-	foreach ($params[0] as $order) {
-		$neworder = array();
-		$neworder = __cb_applymaptoarrayelements([$order, $params[2]]);
-		if (!empty($order[$params[1]])) {
-			$neworder[$params[1]] = __cb_applymaptoarrayelements([$order[$params[1]], $params[3]]);
-		}
-		$finalarray[] = $neworder;
-	}
-
-
-
 	return $finalarray;
 }
 
