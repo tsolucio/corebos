@@ -31,7 +31,7 @@ var relatedlistgrid = {
 		}, 1300);
 	},
 
-	upsert: (Grid, module, recordid, CurrentRecord = '', target = false) => {
+	upsert: (Grid, module, recordid, CurrentRecord = '', target = false, mode = '') => {
 		let record = recordid || '';
 		let related_fieldname = '';
 		if (record!='') {
@@ -41,6 +41,9 @@ var relatedlistgrid = {
 			related_fieldname = target_related_fieldname[module];
 		} else {
 			related_fieldname = origin_related_fieldname[module];
+		}
+		if (mode == 'recursive') {
+			related_fieldname = target_related_fieldname[`${module}-${module}`];
 		}
 		if (CurrentRecord!='') {
 			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&RLFieldName='+related_fieldname;
@@ -162,6 +165,16 @@ class RLActionRender {
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 				</svg>
 			</button>`;			
+		} else {
+			actions += `
+			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${related_child}', '', ${recordid}, true, 'recursive');" title="${alert_arr['JSLBL_Create']}">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+				</svg>
+			</button>`;
+			if (target_related_fieldname[`${related_child}-${related_child}`] == '') {
+				actions = '<div class="slds-button-group" role="group">';
+			}
 		}
 		if (permissions.parent_edit == 'yes') {
 			actions += `

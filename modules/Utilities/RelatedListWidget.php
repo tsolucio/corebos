@@ -56,10 +56,13 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('ID', $id);
 		$OriginFieldID = getRelatedFieldId($currentModule, $map['originmodule']['name']);
 		$TargetFieldID = getRelatedFieldId($map['originmodule']['name'], $map['targetmodule']['name']);
+		$SublevelsField = getRelatedFieldId($map['targetmodule']['name'], $map['targetmodule']['name']);
 		$origin_related_fieldname = getFieldNameByFieldId($OriginFieldID);
 		$target_related_fieldname = getFieldNameByFieldId($TargetFieldID);
+		$sub_related_fieldname = getFieldNameByFieldId($SublevelsField);
 		$smarty->assign('origin_related_fieldname', $origin_related_fieldname);
 		$smarty->assign('target_related_fieldname', $target_related_fieldname);
+		$smarty->assign('sub_related_fieldname', $sub_related_fieldname);
 		return $smarty->fetch('Components/MasterDetail/RelatedListWidget.tpl');
 	}
 }
