@@ -629,9 +629,17 @@ function getRelatedListGridResponse($map) {
 				$scrow['child_module'] = $targetmodule;
 				$scrow['parent_of_child'] = $entityidfield;
 				$scrow['related_fieldname'] = $Targetfieldname;
+				$scrow['related_child'] = $targetmodule;
 				$scrow['record_permissions'] = array(
 					'child_edit' => isPermitted($originmodule, 'EditView', $scentityidfield)
 				);
+				$findAllChildrens = findChilds($targetmodule, $scentityidfield, $map);
+				if (!empty($findAllChildrens)) {
+					$scrow['_attributes'] = array(
+						'expanded' => true
+					);
+					$scrow['_children'] = $findAllChildrens;
+				}
 				$_children[] = array_filter($scrow, 'is_string', ARRAY_FILTER_USE_KEY);
 			}
 			if (!empty($_children)) {
@@ -658,6 +666,54 @@ function getRelatedListGridResponse($map) {
 			)
 		);
 	}
+}
+
+function findChilds($module, $parentid, $map) {
+	global $adb;
+	$focus = new $module;
+	$relfieldname = $focus->getSelfRelationField($module);
+	$data = array();
+	if (!empty($relfieldname)) {
+		$entity = getEntityField($module);
+		$targetentity = getEntityFieldNames($module);
+		$entityid = $entity['entityid'];
+		$tablename = $entity['tablename'];
+		$crmentityTable = $focus->getcrmEntityTableAlias($module);
+		$reltablename = getTableNameForField($module, $relfieldname);
+		$query = $adb->convert2Sql("select * from {$tablename}
+			inner join {$crmentityTable} on {$tablename}.{$entityid} = vtiger_crmentity.crmid
+			inner join {$tablename}cf on {$tablename}cf.{$entityid} = {$tablename}.{$entityid}
+			where vtiger_crmentity.deleted=0 and {$reltablename}.{$relfieldname}=? and {$tablename}.{$entityid} > 0", array($parentid));
+		$result = $adb->query($query);
+		if ($adb->num_rows($result) > 0) {
+			while ($row = $adb->fetch_array($result)) {
+				$findChilds = findChilds($module, $row[$entityid], $map);
+				foreach ($map['targetmodule']['listview'] as $finfo) {
+					$gridValue = getDataGridValue($module, $row[$targetentity['entityidfield']], $finfo, $row[$finfo['fieldinfo']['name']]);
+					$row[$finfo['fieldinfo']['name']] = $gridValue[0];
+					$row[$finfo['fieldinfo']['name'].'_attributes'] = $gridValue[1];
+				}
+				$entityidfield = $row[$targetentity['entityidfield']];
+				$row['typeof_row'] = 'children';
+				$row['child_id'] = $entityidfield;
+				$row['child_module'] = $module;
+				$row['parent_of_child'] = $entityidfield;
+				$row['related_fieldname'] = $relfieldname;
+				$row['related_child'] = $module;
+				$row['record_permissions'] = array(
+					'child_edit' => isPermitted($module, 'EditView', $entityidfield)
+				);
+				if (!empty($findChilds)) {
+					$row['_attributes'] = array(
+						'expanded' => false
+					);
+					$row['_children'] = $findChilds;
+				}
+				$data[] = $row;
+			}
+		}
+	}
+	return $data;
 }
 
 function generateRelationQuery($module, $relatedmodule, $fieldname, $value, $map) {

@@ -47,6 +47,7 @@ if (target_related_fieldname === undefined) {
 }
 origin_related_fieldname['{$originmodule}'] = '{$origin_related_fieldname}';
 target_related_fieldname['{$targetmodule}'] = '{$target_related_fieldname}';
+target_related_fieldname['{$targetmodule}-{$targetmodule}'] = '{$sub_related_fieldname}';
 function loadRLGrid{$originmodule}{$targetmodule}() {
 	RLInstance['rlgrid{$originmodule}-{$targetmodule}'] = new tui.Grid({
 		el: document.getElementById('{$originmodule}-{$targetmodule}'),
@@ -102,7 +103,8 @@ function loadRLGrid{$originmodule}{$targetmodule}() {
 		},
 		header: {
 			align: 'left',
-		}
+		},
+		contextMenu: null
 	});
 
 	tui.Grid.applyTheme('striped');
