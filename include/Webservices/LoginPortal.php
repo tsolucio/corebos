@@ -107,8 +107,10 @@ function vtws_loginportal($username, $password, $entity = 'Contacts', $SessionMa
 				throw new WebServiceException(WebServiceErrorCode::$AUTHFAILURE, 'Maximum number of failed attempts reached.');
 			}
 			$sessionManager::set('authenticatedUserId', $userId);
+			$sessionManager::set('authenticated_user_id', $userId);
 			$sessionManager::set('authenticatedUserIsPortalUser', 1);
 			$sessionManager::set('authenticatedUserPortalContact', $ctocmrid);
+			coreBOS_Session::saveUserID($userId, $sessionManager::id(), 'cbws');
 			vtws_loginportalsetfailed($ctors->fields['id'], $entityType);
 			$accessinfo = array();
 			$accessinfo['sessionName'] = $sessionManager::id();
