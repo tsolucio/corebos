@@ -453,7 +453,7 @@ function __cb_applymaptoinventoryarrayelements($params) {
 			foreach ($order[$params[1]] as $invline) {
 				$invlines[] = $cbMapLines->Mapping($invline, $invline);
 			}
-			$neworder[$params[1]] = $invlines;		
+			$neworder[$params[1]] = $invlines;
 		}
 		$finalarray[] = $neworder;
 	}
