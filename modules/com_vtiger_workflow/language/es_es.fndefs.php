@@ -2007,10 +2007,16 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'CRMID del mapa de negocio que se aplicará sobre la información de cada línea de inventario del registro maestro',
 		),
+		array(
+			'name' => 'send2cb',
+			'type' => 'Boolean',
+			'optional' => false,
+			'desc' => 'set it to 1 if the information is passed into coreBOS, and 0 for the other cases.',
+		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"applyMaptoInventoryArrayElements(getFromContext('response.data'), 'pdoInformation', 43980, 43981)",
+		"applyMaptoInventoryArrayElements(getFromContext('response.data'), 'pdoInformation', 43980, 43981, 1)",
 	),
 ),
 'jsonEncode' => array(
