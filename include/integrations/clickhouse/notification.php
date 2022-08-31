@@ -22,12 +22,14 @@ include_once 'include/integrations/clickhouse/clickhouse.php';
 function chnotification($input) {
 	$ch = new corebos_clickhouse();
 	if ($ch->isActive()) {
-        $data = json_decode($input, true);
-		$msg = array(
-			'table' => $data['table'],
-			'data' => $data['data'],
-		);
-		$cbmq = coreBOS_MQTM::getInstance();
-		$cbmq->sendMessage('SendTocoreBOSClickHouse', 'sendtocorebosclickhouse', 'sendtocorebosclickhouse', 'Data', '1:M', 1, 43200, 0, 0, json_encode($msg));
+		$data = json_decode($input, true);
+		if (!empty($data['table']) && !empty($data['data'])) {
+			$msg = array(
+				'table' => $data['table'],
+				'data' => $data['data'],
+			);
+			$cbmq = coreBOS_MQTM::getInstance();
+			$cbmq->sendMessage('SendTocoreBOSClickHouse', 'sendtocorebosclickhouse', 'sendtocorebosclickhouse', 'Data', '1:M', 1, 43200, 0, 0, json_encode($msg));
+		}
 	}
 }

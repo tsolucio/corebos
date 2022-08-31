@@ -66,6 +66,7 @@ class corebos_clickhouse {
 
 	public function saveSettings($isactive, $host, $port, $database, $username, $password, $webhook_secret) {
 		global $adb;
+		$old_webhook_secret = coreBOS_Settings::getSetting(self::CLICKHOUSE_WEBHOOKSECRET, '');
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::HOST, $host);
 		coreBOS_Settings::setSetting(self::PORT, $port);
@@ -88,6 +89,13 @@ class corebos_clickhouse {
 				$adb->query(
 					"INSERT INTO vtiger_notificationdrivers (type,path,functionname, signedvalue, signedkey, signedvalidation) VALUES ('clickhouse','include/integrations/clickhouse/notification.php','chnotification', '$webhook_secret', 'secret', 'validateClickHouseSecret')"
 				);
+			} else {
+				if ($old_webhook_secret !== $webhook_secret) {
+					$adb->query(
+						"UPDATE vtiger_notificationdrivers SET signedvalue = ? WHERE path=? and functionname=?",
+						array($webhook_secret, 'include/integrations/clickhouse/notification.php', 'chnotification')
+					);
+				}
 			}
 		} else {
 			$cs->undoChange();
