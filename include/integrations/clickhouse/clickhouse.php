@@ -29,6 +29,7 @@ class corebos_clickhouse {
 	private $clickhouse_username = '';
 	private $clickhouse_database;
 	private $mailup;
+	private $clickhouse_webhook_secret = '';
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'clickhouse_isactive';
@@ -37,6 +38,7 @@ class corebos_clickhouse {
 	const USERNAME = 'clickhouse_username';
 	const PASSWORD = 'clickhouse_password';
 	const PORT = 'clickhouse_port';
+	const CLICKHOUSE_WEBHOOKSECRET = 'clickhouse_webhook_secret';
 
 	// Debug
 	const DEBUG = true;
@@ -58,10 +60,11 @@ class corebos_clickhouse {
 		$this->clickhouse_database = coreBOS_Settings::getSetting(self::DATABASE, '');
 		$this->clickhouse_username = coreBOS_Settings::getSetting(self::USERNAME, 'default');
 		$this->clickhouse_password = coreBOS_Settings::getSetting(self::PASSWORD, '');
+		$this->clickhouse_webhook_secret = coreBOS_Settings::getSetting(self::CLICKHOUSE_WEBHOOKSECRET, '');
 		$this->messagequeue = coreBOS_MQTM::getInstance();
 	}
 
-	public function saveSettings($isactive, $host, $port, $database, $username, $password) {
+	public function saveSettings($isactive, $host, $port, $database, $username, $password, $webhook_secret) {
 		global $adb;
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::HOST, $host);
@@ -69,6 +72,7 @@ class corebos_clickhouse {
 		coreBOS_Settings::setSetting(self::DATABASE, $database);
 		coreBOS_Settings::setSetting(self::USERNAME, $username);
 		coreBOS_Settings::setSetting(self::PASSWORD, $password);
+		coreBOS_Settings::setSetting(self::CLICKHOUSE_WEBHOOKSECRET, $webhook_secret);
 
 		$em = new VTEventsManager($adb);
 		$cs = new clickhousechangeset(0, false);
@@ -76,9 +80,22 @@ class corebos_clickhouse {
 			$cs->applyChange();
 			$em->registerHandler('corebos.filter.massageQueueLogger', 'include/integrations/clickhouse/clickhouse.php', 'corebos_clickhouse');
 			self::createClickhouseDB();
+			$checkrs = $adb->pquery(
+				'select 1 from vtiger_notificationdrivers where path=? and functionname=?',
+				array('include/integrations/clickhouse/notification.php', 'chnotification')
+			);
+			if ($checkrs && $adb->num_rows($checkrs)==0) {
+				$adb->query(
+					"INSERT INTO vtiger_notificationdrivers (type,path,functionname, signedvalue, signedkey, signedvalidation) VALUES ('clickhouse','include/integrations/clickhouse/notification.php','chnotification', '$webhook_secret', 'secret', 'validateClickHouseSecret')"
+				);
+			}
 		} else {
 			$cs->undoChange();
 			$em->unregisterHandler('corebos_clickhouse');
+			$adb->pquery(
+				'DELETE FROM vtiger_notificationdrivers WHERE path=? and functionname=?',
+				array('include/integrations/clickhouse/notification.php', 'chnotification')
+			);
 		}
 	}
 
@@ -89,7 +106,8 @@ class corebos_clickhouse {
 			'clickhouse_port' => coreBOS_Settings::getSetting(self::PORT, ''),
 			'clickhouse_database' => coreBOS_Settings::getSetting(self::DATABASE, 'default'),
 			'clickhouse_username' => coreBOS_Settings::getSetting(self::USERNAME, 'default'),
-			'clickhouse_password' => coreBOS_Settings::getSetting(self::PASSWORD, '')
+			'clickhouse_password' => coreBOS_Settings::getSetting(self::PASSWORD, ''),
+			'clickhouse_webhook_secret' => coreBOS_Settings::getSetting(self::CLICKHOUSE_WEBHOOKSECRET, '')
 		);
 	}
 
