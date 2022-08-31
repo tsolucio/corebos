@@ -1983,7 +1983,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'applyMaptoInventoryArrayElements' => array(
-	'name' => 'applyMaptoInventoryArrayElements(array, InventoryDetailsElement, Inventorymapid, InventoryDetailsmapid)',
+	'name' => 'applyMaptoInventoryArrayElements(array, InventoryDetailsElement, Inventorymapid, InventoryDetailsmapid, send2cb)',
 	'desc' => 'This function applies the business field mapping into each Inventory master information and into each Inventory Details lines of those master records.',
 	'params' => array(
 		array(
@@ -2010,10 +2010,16 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'the field mapping business map crmid that will be applied on each inventory line details of the order',
 		),
+		array(
+			'name' => 'send2cb',
+			'type' => 'Boolean',
+			'optional' => false,
+			'desc' => 'set it to 1 if the information is passed into coreBOS, and 0 for the other cases.',
+		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"applyMaptoInventoryArrayElements(getFromContext('response.data'), 'pdoInformation', 43980, 43981)",
+		"applyMaptoInventoryArrayElements(getFromContext('response.data'), 'pdoInformation', 43980, 43981, 1)",
 	),
 ),
 'jsonEncode' => array(

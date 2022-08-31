@@ -433,7 +433,7 @@ function __cb_applymaptoarrayelements($params) {
 }
 
 function __cb_applymaptoinventoryarrayelements($params) {
-	if (count($params)!=4 || !is_array($params[0]) || !is_numeric($params[2]) || !is_numeric($params[3])) {
+	if ((count($params)!=4 && (count($params)!=5)) || !is_array($params[0]) || !is_numeric($params[2]) || !is_numeric($params[3])) {
 		return false;
 	}
 	$cbMapMaster = cbMap::getMapByID($params[2]);
@@ -454,6 +454,25 @@ function __cb_applymaptoinventoryarrayelements($params) {
 				$invlines[] = $cbMapLines->Mapping($invline, $invline);
 			}
 			$neworder[$params[1]] = $invlines;
+		}
+		if (!empty($params[4])) {
+			$masterfields = $cbMapMaster->mapObject->getDestinationFields();
+			$masterfields[] = $params[1];
+			$masterelement = array();
+			foreach ($masterfields as $field) {
+				$masterelement[$field] = $neworder[$field];
+			}
+				$neworder = $masterelement;
+				$destinationfields = $cbMapLines->mapObject->getDestinationFields();
+				$neworder['pdoInformation'] = array();
+			foreach ($neworder[$params[1]] as $item_line) {
+				$line = array();
+				foreach ($destinationfields as $field) {
+					$line[$field] = $item_line[$field];
+				}
+					$neworder['pdoInformation'][] = $line;
+			}
+				unset($neworder[$params[1]]);
 		}
 		$finalarray[] = $neworder;
 	}
