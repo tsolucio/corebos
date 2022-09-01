@@ -168,11 +168,11 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 						if ($relatedlist != '' && $relatedlist != 'global') {
 							$relationURL = '';
 							if (!empty($_REQUEST['relation_id'])) {
-								$relationURL = '&relation_id=' . vtlib_purify($_REQUEST['relation_id']);
+								$relationURL = '&relation_id=' . filter_var($_REQUEST['relation_id'], FILTER_SANITIZE_NUMBER_INT);
 							}
 							$actionsURL = '';
 							if (!empty($_REQUEST['actions'])) {
-								$actionsURL = '&actions=' . vtlib_purify($_REQUEST['actions']);
+								$actionsURL = '&actions=' . urlencode(vtlib_purify($_REQUEST['actions']));
 							}
 							if (empty($_REQUEST['header'])) {
 								$moduleLabel = $module;
