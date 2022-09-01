@@ -1980,7 +1980,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'applyMaptoInventoryArrayElements' => array(
-	'name' => 'applyMaptoInventoryArrayElements(array, InventoryDetailsElement, Inventorymapid, InventoryDetailsmapid)',
+	'name' => 'applyMaptoInventoryArrayElements(array, InventoryDetailsElement, Inventorymapid, InventoryDetailsmapid, send2cb)',
 	'desc' => 'Aplica el mapa de negocio Inventorymapid a cada elemento del parámetro array, y el mapa InventoryDetailsmapid a cada elemento del sub-array indicado por el parámetro InventoryDetailsElement.',
 	'params' => array(
 		array(
@@ -2009,9 +2009,9 @@ $WFExpressionFunctionDefinitons = array(
 		),
 		array(
 			'name' => 'send2cb',
-			'type' => 'Boolean',
-			'optional' => false,
-			'desc' => 'set it to 1 if the information is passed into coreBOS, and 0 for the other cases.',
+			'type' => 'Booleano',
+			'optional' => true,
+			'desc' => 'utiliza 1 si la información está destinada a enviar a coreBOS, y 0 para otros casos.',
 		),
 	),
 	'categories' => array('Application'),

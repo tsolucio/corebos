@@ -2013,7 +2013,7 @@ $WFExpressionFunctionDefinitons = array(
 		array(
 			'name' => 'send2cb',
 			'type' => 'Boolean',
-			'optional' => false,
+			'optional' => true,
 			'desc' => 'set it to 1 if the information is passed into coreBOS, and 0 for the other cases.',
 		),
 	),
