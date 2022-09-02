@@ -219,6 +219,23 @@ class DetailViewLayoutMapping extends processcbMap {
 				if (!empty($block['loadfrom']) && file_exists($block['loadfrom']) && isInsideApplication($block['loadfrom'])) {
 					$block['handler_class'] = (isset($value->handler_class) ? (string)$value->handler_class : '');
 					$block['handler'] = (isset($value->handler) ? (string)$value->handler : '');
+					$block['parameters'] = array();
+					if (isset($value->parameters)) {
+						$entity = new VTWorkflowEntity($current_user, 0, true);
+						foreach ($value->parameters->parameter as $key) {
+							if (strtolower($key->valuetype) == 'expression') {
+								$testexpression = (string)$key->value;
+								$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
+								$expression = $parser->expression();
+								$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+								$key->value = $exprEvaluater->evaluate($entity);
+							}
+							$block['parameters'][] = array(
+								'name' => (string)$key->name,
+								'value' => (string)$key->value
+							);
+						}
+					}
 				} else {
 					$block['loadfrom'] = '';
 				}

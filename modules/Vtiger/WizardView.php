@@ -13,6 +13,7 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
+require_once 'modules/Utilities/showSetOfFieldsWidget.php';
 
 global $adb;
 if (isset($_REQUEST['bmapname'])) {
@@ -27,10 +28,24 @@ if ($cbMapid) {
 	if (empty($cbMapWz)) {
 		$smarty->assign('showDesert', true);
 	} else {
+		$setfield = new showSetOfFields_DetailViewBlock();
 		$smarty->assign('showDesert', false);
 		$smarty->assign('wizardTitle', $cbMapWz['title']);
 		$smarty->assign('wizardTotal', $cbMapWz['totalsteps']);
 		$smarty->assign('wizardSteps', $cbMapWz['steps']);
+		$views = array();
+		foreach ($cbMapWz['steps'] as $key => $value) {
+			if (!is_numeric($value['detailviewlayoutmap'])) {
+				$views[$key] = '';
+				continue;
+			}
+			$context = array(
+				'mapid' => $value['detailviewlayoutmap'],
+			);
+			$view = $setfield->process($context);
+			$views[$key] = $view;
+		}
+		$smarty->assign('wizardViews', $views);
 	}
 } else {
 	$smarty->assign('showDesert', true);

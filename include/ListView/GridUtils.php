@@ -233,7 +233,7 @@ function getDataGridResponse($mdmap) {
 	);
 }
 
-function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
+function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue, $mode = '') {
 	global $current_user, $adb;
 	static $ownerNameList = array();
 	$fieldAttrs = array();
@@ -436,6 +436,9 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 					'mdUitype' => Field_Metadata::UITYPE_TEXT
 				));
 				$return = $fieldValue;
+				if ($mode == 'Wizard') {
+					$return = '<a href="index.php?module='.$module.'&action=DetailView&record='.$recordID.'" target="_blank">'.$fieldValue.'</a>';
+				}
 			} else {
 				$return = $fieldValue;
 			}
