@@ -78,7 +78,7 @@ var Application_Landing_View='{$moduleView}';
 {if $MODULE|hasEmailField}
 <form name="SendMail" method="post"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
 {/if}
-{if (vt_hasRTE()) && $moduleView!='MassCreateGrid'}
+{if (vt_hasRTE()) && $moduleView!='MassCreateGrid' && $moduleView!='Wizard'}
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 {if vt_hasRTESpellcheck()}
 <script type="text/javascript" src="include/ckeditor/config_spellcheck.js"></script>
