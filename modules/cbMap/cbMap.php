@@ -262,6 +262,7 @@ class cbMap extends CRMEntity {
 		@require_once 'modules/cbMap/processmap/'.$name.'.php';
 		if (class_exists($name)) {
 			$processmap = new $name($this);
+			$this->mapObject = $processmap;
 			if (method_exists($processmap, 'convertMap2Array')) {
 				$ret = $processmap->convertMap2Array();
 			}
