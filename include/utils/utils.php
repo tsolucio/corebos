@@ -215,7 +215,7 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
 		// Including deleted users for now.
 		if (empty($status)) {
-			$query = 'SELECT id, user_name,ename from vtiger_users';
+			$query = 'SELECT id, user_name,ename from vtiger_users where 1';
 			$params = array();
 		} else {
 			$assignUP = GlobalVariable::getVariable('Application_Permit_Assign_Up', 0, $module, $current_user->id);
@@ -223,8 +223,8 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 				if ($userOrder != 'DO NOT SORT') {
 					$orderFields = preg_replace('/ asc\s*$| asc\s*,| desc\s*$| desc\s*,/i', ',', $userOrder);
 					$orderFields = preg_replace('/\s*/', '', $orderFields);
-					$orderFields = str_replace(array('user_name,','first_name,','last_name,'), '', $orderFields);
-					$orderFields = str_replace(array('user_name','first_name','last_name'), '', $orderFields);
+					$orderFields = str_replace(array('ename,','user_name,','first_name,','last_name,'), '', $orderFields);
+					$orderFields = str_replace(array('ename,','user_name','first_name','last_name'), '', $orderFields);
 					$orderFields = str_replace(',,', ',', $orderFields);
 					$orderFields = trim($orderFields, ',');
 					if (strlen($orderFields)>1) {
