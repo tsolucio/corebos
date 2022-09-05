@@ -92,14 +92,6 @@ GlobalVariable_getVariable('Application_Menu_Direction', 'Horizontal', (typeof g
 	Application_Menu_Direction = 'Horizontal'; // set default value on error
 });
 
-var Application_Menu_Direction = 'Vertical';
-GlobalVariable_getVariable('Application_Menu_Direction', 'Vertical', (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
-	var obj = JSON.parse(response);
-	Application_Menu_Direction = obj.Application_Menu_Direction;
-}, function (error) {
-	Application_Menu_Direction = 'Horizontal'; // set default value on error
-});
-
 var Application_AssignUser_Search = 0;
 GlobalVariable_getVariable('Application_AssignUser_Search', 0, (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
 	var obj = JSON.parse(response);
@@ -7313,7 +7305,6 @@ $(function () {
 	new cbAccordion($('#cbmenu'), true);
 });
 
-
 function findParents(el) {
 	let parents = [];
 	while(el.parentNode) {
@@ -7322,6 +7313,7 @@ function findParents(el) {
 	}
 	return parents;
 };
+
 function findUpModuleInMenu() {
 	let arr = {};
 	const modulename = document.querySelectorAll(`[data-name="${gVTModule}"]`);
@@ -7330,8 +7322,6 @@ function findUpModuleInMenu() {
 		const childs = parent.querySelectorAll(`li span`);
 		modulename[0].parentElement.style.display = 'block';
 		modulename[0].style.background = '#c5d7e3';
-		console.log(modulename);
-		
 		let parents = findParents(modulename[0]);
 		for (let i = 0; i < parents.length; i++) {
 			if (parents[i].dataset.type !== undefined && parents[i].dataset.type == 'parent') {
