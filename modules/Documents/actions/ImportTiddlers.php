@@ -31,7 +31,7 @@ class ImportTiddlers_Action extends CoreBOS_ActionController {
 			$keys = implode(',', array_keys($tid));
 			$tid['assigned_user_id'] = vtws_getEntityId('Users').'x'.$current_user->id;
 			if (!empty($tid['module']) && vtlib_isModuleActive($tid['module'])) {
-			 vtws_upsert($tid['module'], $tid, $keys, $keys, $current_user);
+				vtws_upsert($tid['module'], $tid, $keys, $keys, $current_user);
 			}
 		}
 	}
