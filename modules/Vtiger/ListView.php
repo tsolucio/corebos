@@ -259,6 +259,7 @@ $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS', ($DEFAULT_SEARCH_PANEL_STATUS ? '
 $smarty->assign('EDIT_FILTER_ALL', GlobalVariable::getVariable('Application_Filter_All_Edit', 1));
 $smarty->assign('moduleView', $layout);
 $smarty->assign('Apache_Tika_URL', GlobalVariable::getVariable('Apache_Tika_URL', ''));
+$smarty->assign('ShowCreateMessage', GlobalVariable::getVariable('Application_ListView_Show_Create_Message', '0'));
 
 if (!empty($custom_list_include) && file_exists($custom_list_include)) {
 	include $custom_list_include;

@@ -89,6 +89,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_ListView_Sum_Currency',
 				'Application_ListView_SearchColumns',
 				'Application_ListView_SearchColumns_AC_Trigger',
+				'Application_ListView_Show_Create_Message',
 				'Application_MasterDetail_SearchColumns',
 				'Application_SaveAndRepeatActive',
 				'Application_Upload_MaxSize',
