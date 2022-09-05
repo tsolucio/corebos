@@ -1,0 +1,2 @@
+<link rel="stylesheet" href="include/tiddlers/tiddlers.css">
+<div contenteditable="true" class="text-dropzone" id="url-zone" ondrop="handleTiddler(event, 'ImportTiddlers')" onpaste="handleTiddler(event, 'ImportTiddlers')" data-text="{'Drop the tiddler here'|@getTranslatedString}"></div>
