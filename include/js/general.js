@@ -7307,7 +7307,7 @@ $(function () {
 
 function findParents(el) {
 	let parents = [];
-	while(el.parentNode) {
+	while (el.parentNode) {
 		el = el.parentNode;
 		parents.push(el);
 	}
