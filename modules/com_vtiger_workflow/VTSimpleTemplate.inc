@@ -48,25 +48,35 @@ class VTSimpleTemplate {
 				list($void, $result) = explode('x', $data['id']);
 			} elseif ($this->useValue($data, $fieldname)) {
 				$moduleName = $this->parent->getModuleName();
-				$module_focus = Vtiger_Module::getInstance($moduleName);
-				$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
-				$uitype = $field_focus->uitype;
+				if (strpos($fieldname, '.')) {
+					$datavalue = __cb_getfromcontextvalueinarrayobject($data, ltrim($fieldname, '$'));
+					$uitype = 0;
+				} else {
+					$datavalue = $data[$fieldname];
+					$module_focus = Vtiger_Module::getInstance($moduleName);
+					$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
+					if ($field_focus) {
+						$uitype = $field_focus->uitype;
+					} else {
+						$uitype = 0;
+					}
+				}
 				if ($uitype == '15' || $uitype == '33') {
-					$result = getTranslatedString($data[$fieldname], $moduleName);
+					$result = getTranslatedString($datavalue, $moduleName);
 				} elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
-					$date = new DateTimeField($data[$fieldname]);
+					$date = new DateTimeField($datavalue);
 					$result = $date->getDisplayDate($current_user);
 				} elseif ($uitype == '50') {  // datetime
-					$date = new DateTimeField($data[$fieldname]);
+					$date = new DateTimeField($datavalue);
 					$result = $date->getDisplayDateTimeValue($current_user);
 				} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9') {
-					$currencyField = new CurrencyField($data[$fieldname]);
+					$currencyField = new CurrencyField($datavalue);
 					$result = $currencyField->getDisplayValue(null, true);
 				} elseif ($uitype == '2' && ($fieldname == 'time_start' || $fieldname == 'time_end')) { // time
-					$date = new DateTimeField($data[$fieldname]);
+					$date = new DateTimeField($datavalue);
 					$result = $date->getDisplayTime($current_user);
 				} else {
-					$result = $data[$fieldname];
+					$result = $datavalue;
 				}
 			} else {
 				if ($this->keepvariable) {
@@ -101,33 +111,40 @@ class VTSimpleTemplate {
 							}
 							if ($this->useValue($data, $fieldname)) {
 								if ($fieldname == 'record_id' || $fieldname == 'record_module') {
+									$datavalue = $data[$fieldname];
 									$uitype = 0;
 								} else {
-									$module_focus = Vtiger_Module::getInstance($referenceModule);
-									$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
-									$uitype = $field_focus->uitype;
+									if (strpos($fieldname, '.')) {
+										$datavalue = __cb_getfromcontextvalueinarrayobject($data, ltrim($fieldname, '$'));
+										$uitype = 0;
+									} else {
+										$datavalue = $data[$fieldname];
+										$module_focus = Vtiger_Module::getInstance($referenceModule);
+										$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
+										$uitype = $field_focus->uitype;
+									}
 								}
 								if ($uitype == '15' || $uitype == '33') {
-									$result = getTranslatedString($data[$fieldname], $referenceModule);
+									$result = getTranslatedString($datavalue, $referenceModule);
 								} elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
-									$date = new DateTimeField($data[$fieldname]);
+									$date = new DateTimeField($datavalue);
 									$result = $date->getDisplayDate($current_user);
 								} elseif ($uitype == '50') {  // datetime
-									$date = new DateTimeField($data[$fieldname]);
+									$date = new DateTimeField($datavalue);
 									$result = $date->getDisplayDateTimeValue($current_user);
 								} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9') {
 									if (!$this->formatValue) {
-										return $data[$fieldname];
+										return $datavalue;
 									}
-									$currencyField = new CurrencyField($data[$fieldname]);
+									$currencyField = new CurrencyField($datavalue);
 									$result = $currencyField->getDisplayValue(null, true);
 								} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == 'time_start' || $fieldname == 'time_end'))) { // time
-									$date = new DateTimeField($data[$fieldname]);
+									$date = new DateTimeField($datavalue);
 									$result = $date->getDisplayTime($current_user);
 								} elseif ($uitype == '10') { // related field
-									list($void,$result) = explode('x', $data[$fieldname]);
+									list($void,$result) = explode('x', $datavalue);
 								} else {
-									$result = $data[$fieldname];
+									$result = $datavalue;
 								}
 							} else {
 								if ($this->keepvariable) {
@@ -639,7 +656,8 @@ class VTSimpleTemplate {
 	}
 
 	protected function useValue($data, $fieldname) {
-		return !empty($data[$fieldname]);
+		$parts = explode('.', $fieldname);
+		return !empty($data[$parts[0]]);
 	}
 
 	public function parseTemplate() {
@@ -671,6 +689,7 @@ class VTSimpleTemplate {
 			array($this, 'matchHandler'),
 			$this->template
 		);
+		$return = preg_replace_callback('/Ç([\w.]+)/', array($this, 'matchHandler'), $return); // fields with dot notation
 		$current_user = $backCurrentUser;
 		return $return;
 	}
