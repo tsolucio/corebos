@@ -160,14 +160,14 @@ class RLActionRender {
 		let actions = '<div class="slds-button-group" role="group">';
 		if (parent_module != '') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${related_child}', '', ${recordid}, true);" title="${alert_arr['JSLBL_Create']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${related_child}', '', ${recordid}, true);" title="${alert_arr['JSLBL_Create']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 				</svg>
 			</button>`;			
 		} else {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${related_child}', '', ${recordid}, true, 'recursive');" title="${alert_arr['JSLBL_Create']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${related_child}', '', ${recordid}, true, 'recursive');" title="${alert_arr['JSLBL_Create']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 				</svg>
@@ -178,7 +178,7 @@ class RLActionRender {
 		}
 		if (permissions.parent_edit == 'yes') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 				</svg>
@@ -186,7 +186,7 @@ class RLActionRender {
 		}
 		if (permissions.child_edit == 'yes') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 				</svg>
@@ -196,7 +196,7 @@ class RLActionRender {
 		const child_delete = props.columnInfo.renderer.options.child_delete;
 		if (parent_delete == 'O' && permissions.parent_edit == 'yes') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('rlgrid${props.grid.el.id}', '${parent_module}', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('rlgrid${props.grid.el.id}', '${parent_module}', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 				</svg>
@@ -204,7 +204,7 @@ class RLActionRender {
 		}
 		if (child_delete == 'O' && permissions.child_edit == 'yes') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('rlgrid${props.grid.el.id}', '${child_module}', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('rlgrid${props.grid.el.id}', '${child_module}', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 				</svg>
