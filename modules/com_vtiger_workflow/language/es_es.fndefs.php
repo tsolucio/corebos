@@ -1957,6 +1957,34 @@ $WFExpressionFunctionDefinitons = array(
 		"setToContext('accountname','mortein')",
 	),
 ),
+'cleanArrayElements' => array(
+	'name' => 'cleanArrayElements(array, elements, invert)',
+	'desc' => 'Esta función elimina los elementos de matriz indicados.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'array',
+			'optional' => false,
+			'desc' => 'La matriz de la que eliminar los elementos',
+		),
+		array(
+			'name' => 'elements',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'lista separada por comas de claves para eliminar de la matriz',
+		),
+		array(
+			'name' => 'invert',
+			'type' => 'Booleano',
+			'optional' => true,
+			'desc' => 'verdadero (predeterminado) para usar el parámetro de valores separados por comas como valores a eliminar, falso para usarlos como valores a mantener',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"cleanArrayElements(getFromContext('response.data'), 'field1,fieldn')",
+	),
+),
 'applyMaptoArrayElements' => array(
 	'name' => 'applyMaptoArrayElements(array, mapid)',
 	'desc' => 'Aplica el mapa de negocio dado a cada elemento del parámetro array.',

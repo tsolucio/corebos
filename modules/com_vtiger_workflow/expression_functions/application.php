@@ -419,6 +419,26 @@ function __cb_setfromcontext($arr) {
 	return $arr[1];
 }
 
+/**
+ * eliminate indicated array elements
+ * @param array to clean
+ * @param string with comma-separated values to eliminate
+ * @param boolean true (default) to use comma-separated values parameter as values to eliminate, false to use them as values to keep
+ * @return array without the indicated elements
+ */
+function __cb_cleanarrayelements($params) {
+	if ((count($params)!=2 && count($params)!=3) || !is_array($params[0]) || !is_string($params[1])) {
+		return false;
+	}
+	$invert = (empty($params[2]) ? false : filter_var($params[2], FILTER_VALIDATE_BOOLEAN));
+	$d = array_flip(explode(',', $params[1]));
+	if ($invert) {
+		return array_diff_key($params[0], array_diff_key(array_flip(array_keys($params[0])), $d));
+	} else {
+		return array_diff_key($params[0], $d);
+	}
+}
+
 function __cb_applymaptoarrayelements($params) {
 	$cbMap = cbMap::getMapByID($params[1]);
 	if (empty($cbMap)) {

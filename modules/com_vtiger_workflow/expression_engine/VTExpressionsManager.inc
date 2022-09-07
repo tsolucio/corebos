@@ -214,6 +214,7 @@ class VTExpressionsManager {
 			'getFieldsOF' => 'getFieldsOF(id, module, fields)',
 			'getFromContext' => 'getFromContext(variablename)',
 			'getFromContextSearching' => 'getFromContextSearching(variablename, searchon, searchfor, returnthis)',
+			'cleanArrayElements' => 'cleanArrayElements(array, elements, invert)',
 			'applyMaptoArrayElements' => 'applyMaptoArrayElements(array, mapid)',
 			'applyMaptoInventoryArrayElements' => 'applyMaptoInventoryArrayElements(array, InventoryDetailsElement, Inventorymapid, InventoryDetailsmapid, send2cb)',
 			'setToContext' => 'setToContext(variablename, value)',

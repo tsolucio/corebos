@@ -1960,6 +1960,34 @@ $WFExpressionFunctionDefinitons = array(
 		"setToContext('accountname','mortein')",
 	),
 ),
+'cleanArrayElements' => array(
+	'name' => 'cleanArrayElements(array, elements, invert)',
+	'desc' => 'This function deletes the indicated array elements.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'array',
+			'optional' => false,
+			'desc' => 'The array to delete the elements from',
+		),
+		array(
+			'name' => 'elements',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'comma-separated list of keys to delete from the array',
+		),
+		array(
+			'name' => 'invert',
+			'type' => 'Boolean',
+			'optional' => true,
+			'desc' => 'true (default) to use comma-separated values parameter as values to eliminate, false to use them as values to keep',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"cleanArrayElements(getFromContext('response.data'), 'field1,fieldn')",
+	),
+),
 'applyMaptoArrayElements' => array(
 	'name' => 'applyMaptoArrayElements(array, mapid)',
 	'desc' => 'This function applies the business field mapping into the array parameter.',
