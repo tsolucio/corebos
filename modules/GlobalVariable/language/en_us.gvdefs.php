@@ -1720,6 +1720,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Number of records returned by the Sync web service when accessing in Streaming mode. Default is 100',
 ),
+'Webservice_WriteRunWS_Logs' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Write logs in the RunWebserviceWorkflow task. Default is 1',
+),
 'Workflow_GeoDistance_Nominatim_Server' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
