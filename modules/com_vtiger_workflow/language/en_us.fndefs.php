@@ -2010,9 +2010,9 @@ $WFExpressionFunctionDefinitons = array(
 		"applyMaptoArrayElements(getFromContext('response.data'),43980)",
 	),
 ),
-'applyMaptoInventoryArrayElements' => array(
-	'name' => 'applyMaptoInventoryArrayElements(array, InventoryDetailsElement, Inventorymapid, InventoryDetailsmapid, send2cb)',
-	'desc' => 'This function applies the business field mapping into each Inventory master information and into each Inventory Details lines of those master records.',
+'applyMaptoArrayElementsAndSubarray' => array(
+	'name' => 'applyMaptoArrayElementsAndSubarray(array, Map, SubArrayElement, SubArrayMap, cleanSubArrayElements)',
+	'desc' => 'Applies the SubArrayMap business field mapping on each SubArrayElement element of the initial array, then it applies the cleanSubArrayElements list if given, finally, each element of the initial array is applied the Map.',
 	'params' => array(
 		array(
 			'name' => 'array',
@@ -2021,33 +2021,33 @@ $WFExpressionFunctionDefinitons = array(
 			'desc' => 'The array that will serve as context.',
 		),
 		array(
-			'name' => 'InventoryDetailsElement',
+			'name' => 'Map',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'the field mapping business map crmid that will be applied on the top level fields of the array',
+		),
+		array(
+			'name' => 'SubArrayElement',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'defines the element that contains the inventory line details for each order',
+			'desc' => 'defines the element of the top level array that contains the subarray to process',
 		),
 		array(
-			'name' => 'Inventorymapid',
+			'name' => 'SubArrayMap',
 			'type' => 'Integer',
 			'optional' => false,
-			'desc' => 'the field mapping business map crmid that will be applied on the master order information',
+			'desc' => 'the field mapping business map crmid that will be applied on the subarray fields',
 		),
 		array(
-			'name' => 'InventoryDetailsmapid',
-			'type' => 'Integer',
-			'optional' => false,
-			'desc' => 'the field mapping business map crmid that will be applied on each inventory line details of the order',
-		),
-		array(
-			'name' => 'send2cb',
-			'type' => 'Boolean',
+			'name' => 'cleanSubArrayElements',
+			'type' => 'String',
 			'optional' => true,
-			'desc' => 'set it to 1 if the information is passed into coreBOS, and 0 for the other cases.',
+			'desc' => 'set it to comma-separated list of fields to eliminate from the subarray after applying the map. calls cleanArrayElements',
 		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"applyMaptoInventoryArrayElements(getFromContext('response.data'), 'pdoInformation', 43980, 43981, 1)",
+		"applyMaptoArrayElementsAndSubarray(getFromContext('response.data'), 43980, 'line_items', 43981, 'field1,fieldn')",
 	),
 ),
 'jsonEncode' => array(
