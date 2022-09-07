@@ -178,7 +178,13 @@ class Mapping extends processcbMap {
 					$value .= coreBOS_Rule::evaluate($mapid, $context).$delim;
 				} else {
 					$fieldname = array_pop($fieldinfo);
-					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
+					if (isset($ofields[$fieldname])) {
+						if (is_string($ofields[$fieldname])) {
+							$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
+						} else {
+							$value = $ofields[$fieldname];
+						}
+					}
 				}
 				if ($postProcess!='') {
 					$value = Mapping::postProcess($postProcess, $value);
