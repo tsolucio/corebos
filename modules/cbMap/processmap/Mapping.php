@@ -178,7 +178,14 @@ class Mapping extends processcbMap {
 					$value .= coreBOS_Rule::evaluate($mapid, $context).$delim;
 				} else {
 					$fieldname = array_pop($fieldinfo);
-					if (isset($ofields[$fieldname])) {
+					if (strpos($fieldname, '.')) {
+						$datavalue = __cb_getfromcontextvalueinarrayobject($ofields, ltrim($fieldname, '$'));
+						if (is_string($datavalue)) {
+							$value.= $datavalue.$delim;
+						} else {
+							$value = $datavalue;
+						}
+					} elseif (isset($ofields[$fieldname])) {
 						if (is_string($ofields[$fieldname])) {
 							$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
 						} else {
