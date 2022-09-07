@@ -49,6 +49,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('RelatedListWidgetMap', $map);
 		$smarty->assign('cbgridactioncol', $cbgridactioncol);
 		$smarty->assign('CurrentRecord', $_REQUEST['record']);
+		$smarty->assign('title', $map['title']);
 		$smarty->assign('originmodule', $map['originmodule']['name']);//Messages
 		$smarty->assign('targetmodule', $map['targetmodule']['name']);//Assets
 		$smarty->assign('currentModule', $currentModule);//Accounts

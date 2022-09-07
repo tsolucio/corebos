@@ -10,7 +10,11 @@
 							<div class="slds-page-header__name-title">
 								<h1>
 								<span class="slds-page-header__title slds-truncate">
-									{$originmodule} -> {$targetmodule}
+									{if $title eq ''}
+										{$originmodule} -> {$targetmodule}
+									{else}
+										{$title}
+									{/if}
 								</span>
 								</h1>
 							</div>

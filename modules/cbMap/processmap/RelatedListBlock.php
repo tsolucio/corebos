@@ -19,6 +19,7 @@
  *************************************************************************************************
  * The accepted format is:
 <map>
+	<title></title>
 	<linkfields>
 		<targetfield>asset_no</targetfield>
 	</linkfields>
@@ -66,6 +67,7 @@ class RelatedListBlock extends processcbMap {
 		if (empty($xml)) {
 			return array();
 		}
+		$this->mapping_arr['title'] = (string)$xml->title;
 		$this->mapping_arr['linkfields']['targetfield'] = (string)$xml->linkfields->targetfield;
 		$originmodule = $xml->modules->module[0];
 		$targetmodule = $xml->modules->module[1];
