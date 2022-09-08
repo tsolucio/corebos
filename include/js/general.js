@@ -5338,11 +5338,6 @@ function scrollThrottle(fn, wait, dist) {
 	};
 }
 
-document.addEventListener('DOMContentLoaded', function (event) {
-	/* ======= Auto complete part relations ====== */
-	AutocompleteSetup();
-});
-
 function AutocompleteSetup() {
 	var acInputs = document.querySelectorAll('.autocomplete-input');
 
@@ -6793,10 +6788,6 @@ function findUp(element, searchterm) {
 	return undefined;
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-	initSelect2();
-});
-
 function initSelect2() {
 	if (Application_AssignUser_Search == 1) {
 		const dataType = document.querySelectorAll(`[data-uitype="53"]`);
@@ -7351,8 +7342,11 @@ function findUpModuleInMenu() {
 		}
 	}
 }
-window.addEventListener('DOMContentLoaded', (event) => {
-    if (Application_Menu_Direction == 'Vertical') {
-        findUpModuleInMenu();
-    }
+
+window.addEventListener('DOMContentLoaded', () => {
+	AutocompleteSetup();
+	initSelect2();
+	if (Application_Menu_Direction == 'Vertical') {
+		findUpModuleInMenu();
+	}
 });
