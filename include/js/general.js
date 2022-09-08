@@ -7308,7 +7308,7 @@ function findParents(el) {
 		parents.push(el);
 	}
 	return parents;
-};
+}
 
 function findUpModuleInMenu() {
 	let arr = {};
