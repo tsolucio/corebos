@@ -2011,7 +2011,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'applyMaptoArrayElementsAndSubarray' => array(
-	'name' => 'applyMaptoArrayElementsAndSubarray(array, Map, SubArrayElement, SubArrayMap, cleanSubArrayElements)',
+	'name' => 'applyMaptoArrayElementsAndSubarray(array, Map, SubArrayElement, SubArrayMap, cleanSubArrayElements, invert)',
 	'desc' => 'Applies the SubArrayMap business field mapping on each SubArrayElement element of the initial array, then it applies the cleanSubArrayElements list if given, finally, each element of the initial array is applied the Map.',
 	'params' => array(
 		array(
@@ -2043,6 +2043,12 @@ $WFExpressionFunctionDefinitons = array(
 			'type' => 'String',
 			'optional' => true,
 			'desc' => 'set it to comma-separated list of fields to eliminate from the subarray after applying the map. calls cleanArrayElements',
+		),
+		array(
+			'name' => 'invert',
+			'type' => 'Boolean',
+			'optional' => true,
+			'desc' => 'true (default) to use comma-separated values parameter as values to eliminate, false to use them as values to keep',
 		),
 	),
 	'categories' => array('Application'),

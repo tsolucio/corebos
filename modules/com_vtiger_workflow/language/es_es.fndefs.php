@@ -2008,7 +2008,7 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'applyMaptoArrayElementsAndSubarray' => array(
-	'name' => 'applyMaptoArrayElementsAndSubarray(array, Map, SubArrayElement, SubArrayMap, cleanSubArrayElements)',
+	'name' => 'applyMaptoArrayElementsAndSubarray(array, Map, SubArrayElement, SubArrayMap, cleanSubArrayElements, invert)',
 	'desc' => 'Aplica el mapeo de campo SubArrayMap en cada elemento SubArrayElement de la matriz inicial, luego aplica la lista cleanSubArrayElements si se proporciona, finalmente, se aplica el mapa a cada elemento de la matriz inicial.',
 	'params' => array(
 		array(
@@ -2040,6 +2040,12 @@ $WFExpressionFunctionDefinitons = array(
 			'type' => 'Cadena',
 			'optional' => true,
 			'desc' => 'una lista de campos separados por comas para eliminar del subarray después de aplicar el mapa. llama a cleanArrayElements',
+		),
+		array(
+			'name' => 'invert',
+			'type' => 'Booleano',
+			'optional' => true,
+			'desc' => 'verdadero (predeterminado) para usar el parámetro de valores separados por comas como valores a eliminar, falso para usarlos como valores a mantener',
 		),
 	),
 	'categories' => array('Application'),

@@ -458,6 +458,7 @@ function __cb_applymaptoarrayelements($params) {
  * @param string SubArray Element key
  * @param integer SubArrayMapID
  * @param string clean SubArray Element keys
+ * @param boolean true (default) to use comma-separated values parameter as values to eliminate, false to use them as values to keep
  */
 function __cb_applymaptoarrayelementsandsubarray($params) {
 	if ((count($params)!=4 && count($params)!=5) || !is_array($params[0]) || !is_numeric($params[1]) || !is_numeric($params[3])) {
@@ -471,6 +472,7 @@ function __cb_applymaptoarrayelementsandsubarray($params) {
 	if (empty($cbMapLines)) {
 		return $params[0];
 	}
+	$invert = (empty($params[5]) ? false : filter_var($params[5], FILTER_VALIDATE_BOOLEAN));
 	$finalarray = array();
 	foreach ($params[0] as &$order) {
 		$neworder = array();
@@ -480,7 +482,7 @@ function __cb_applymaptoarrayelementsandsubarray($params) {
 				if (empty($params[4])) {
 					$invlines[] = $cbMapLines->Mapping($invline, $invline);
 				} else {
-					$invlines[] = __cb_cleanarrayelements([$cbMapLines->Mapping($invline, $invline), $params[4]]);
+					$invlines[] = __cb_cleanarrayelements([$cbMapLines->Mapping($invline, $invline), $params[4], $invert]);
 				}
 			}
 			$neworder[$params[2]] = $invlines;
