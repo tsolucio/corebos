@@ -2027,7 +2027,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'SubArrayElement',
 			'type' => 'Cadena',
 			'optional' => false,
-			'desc' => 'define el elemento del array de nivel superior que contiene el sub array a procesar',
+			'desc' => 'define el elemento del array de nivel superior que contiene el sub array a procesar. Este elemento será eliminado del resultado por lo que deberás copiarlo en el mapeo',
 		),
 		array(
 			'name' => 'SubArrayMap',

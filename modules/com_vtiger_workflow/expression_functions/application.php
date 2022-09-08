@@ -455,13 +455,14 @@ function __cb_applymaptoarrayelements($params) {
 /**
  * @param array to work with
  * @param integer MapID
- * @param string SubArray Element key
+ * @param string SubArray Element key. This element will be eliminated from the result so you must copy it in the mapping
  * @param integer SubArrayMapID
  * @param string clean SubArray Element keys
  * @param boolean true (default) to use comma-separated values parameter as values to eliminate, false to use them as values to keep
  */
 function __cb_applymaptoarrayelementsandsubarray($params) {
-	if ((count($params)!=4 && count($params)!=5) || !is_array($params[0]) || !is_numeric($params[1]) || !is_numeric($params[3])) {
+	$cnt = count($params);
+	if (($cnt!=4 && $cnt!=5 && $cnt!=6) || !is_array($params[0]) || !is_numeric($params[1]) || !is_numeric($params[3])) {
 		return false;
 	}
 	$cbMapMaster = cbMap::getMapByID($params[1]);
@@ -488,7 +489,9 @@ function __cb_applymaptoarrayelementsandsubarray($params) {
 			$neworder[$params[2]] = $invlines;
 			$order[$params[2]] = $invlines;
 		}
-		$finalarray[] = $cbMapMaster->Mapping($order, $neworder);
+		$mappedorder = $cbMapMaster->Mapping($order, $neworder);
+		unset($mappedorder[$params[2]]); // we always eliminate the subarray
+		$finalarray[] = $mappedorder;
 	}
 	return $finalarray;
 }

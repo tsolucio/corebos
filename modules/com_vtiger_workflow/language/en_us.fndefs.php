@@ -2030,7 +2030,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'SubArrayElement',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'defines the element of the top level array that contains the subarray to process',
+			'desc' => 'defines the element of the top level array that contains the subarray to process. This element will be eliminated from the result so you must copy it in the mapping',
 		),
 		array(
 			'name' => 'SubArrayMap',
