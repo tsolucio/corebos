@@ -3849,4 +3849,14 @@ function validateMauticSecret($signedvalue, $signedkey, $input) {
 	$computedSignature = base64_encode(hash_hmac('sha256', $input, $signedvalue, true));
 	return ($receivedSignature === $computedSignature);
 }
+
+/**
+ * Function to validate clickhouse secret
+ */
+function validateClickHouseSecret($signedvalue, $signedkey, $input) {
+	$headers = getallheaders();
+	$receivedSignature = $headers['CH-Webhook-Signature'];
+	$computedSignature = base64_encode(hash_hmac('sha256', $input, $signedvalue, true));
+	return ($receivedSignature === $computedSignature);
+}
 ?>

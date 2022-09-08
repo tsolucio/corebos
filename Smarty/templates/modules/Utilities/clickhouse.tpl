@@ -49,16 +49,22 @@
 			</div>
 		</div>
 		<div class="slds-grid slds-gutters">
-			<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-2">
+			<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-3">
 				<label class="slds-form-element__label" for="username">{'clickhouse_username'|@getTranslatedString:$MODULE}</label>
 				<div class="slds-form-element__control">
 					<input type="text" id="clickhouse_username" name="clickhouse_username" class="slds-input" value="{$clickhouse_username}" />
 				</div>
 			</div>
-			<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-2">
+			<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-3">
 				<label class="slds-form-element__label" for="clickhouse_password">{'clickhouse_password'|@getTranslatedString:$MODULE}</label>
 				<div class="slds-form-element__control">
 					<input type="text" id="clickhouse_password" name="clickhouse_password" class="slds-input" value="{$clickhouse_password}" />
+				</div>
+			</div>
+			<div class="slds-form-element slds-m-top_small slds-col slds-size_1-of-3">
+				<label class="slds-form-element__label" for="clickhouse_webhook_secret">{'clickhouse_webhook_secret'|@getTranslatedString:$MODULE}</label>
+				<div class="slds-form-element__control">
+					<input type="text" id="clickhouse_webhook_secret" name="clickhouse_webhook_secret" class="slds-input" value="{$clickhouse_webhook_secret}" />
 				</div>
 			</div>
 		</div>
