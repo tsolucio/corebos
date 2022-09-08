@@ -105,7 +105,6 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('GVTMODULE', $vars['gVTModule']);
 		$smarty->assign('GVTMODULELABEL', getTranslatedString($vars['gVTModule'], $vars['gVTModule']));
 		$smarty->assign('THEME', $vars['gVTTheme']);
-		$smarty->assign('GVTMODULELABEL', getTranslatedString($vars['gVTModule'], $vars['gVTModule']));
 		$smarty->assign('DEFAULT_CHARSET', $vars['default_charset']);
 		$smarty->assign('CURRENT_USER_ID', $vars['gVTUserID']);
 		$smarty->assign('USER_DATE_FORMAT', $vars['userDateFormat']);
