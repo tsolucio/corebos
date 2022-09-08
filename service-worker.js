@@ -11477,7 +11477,7 @@ precacheAndRoute([{
   "revision": "0772dd2911265b8794b74764e9b81185"
 }, {
   "url": "include/js/general.js",
-  "revision": "d7c50cd11e00d71625dd490924e82b54"
+  "revision": "1c811d652498bee68c2cde0f0d316418"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "c651e566ffcdb3fb09146d6fe54e9c1c"
@@ -11546,7 +11546,7 @@ precacheAndRoute([{
   "revision": "ce266694b023167d03634b05f15b50e7"
 }, {
   "url": "include/js/relatedlists.js",
-  "revision": "d472bc5972c1c1c2d37fdbe25831fa27"
+  "revision": "11bf2a6771f84a03764f40e052d76358"
 }, {
   "url": "include/js/RelatedLists.js",
   "revision": "afd1f3cd61451676111b6d7b6adb1e16"
