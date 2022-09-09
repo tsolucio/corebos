@@ -35,6 +35,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$mapid = $this->bmapid;
 		$cbMap = cbMap::getMapByID($mapid);
 
+		$WriteLogs = GlobalVariable::getVariable('Webservice_WriteRunWS_Logs', 1);
+
 		$WSCall_ReturnResultWithNoSave = isset($entity->WorkflowContext['WSCall_ReturnResultWithNoSave']);
 		unset($entity->WorkflowContext['WSCall_ReturnResultWithNoSave']);
 		if (empty($therecid)) {
@@ -81,14 +83,16 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 			$listreq = $arrconv;
 
-			//write logs for request
-			$logname = 'logs/'.$methodname;
-			$dateofcall = date('l jS \of F Y h:i:s A');
-			$LogContent = "\n*****************\nDate of call $dateofcall";
-			error_log($LogContent, 3, $logname.'.log');
-			error_log("\nRecordid: ".$therecid, 3, $logname.'.log');
-			error_log("\nMethod Called: $method $url", 3, $logname.'.log');
-			error_log("\nParameters: ".json_encode($listreq), 3, $logname.'.log');
+			if ($WriteLogs) {
+				//write logs for request
+				$logname = 'logs/'.$methodname;
+				$dateofcall = date('l jS \of F Y h:i:s A');
+				$LogContent = "\n*****************\nDate of call $dateofcall";
+				error_log($LogContent, 3, $logname.'.log');
+				error_log("\nRecordid: ".$therecid, 3, $logname.'.log');
+				error_log("\nMethod Called: $method $url", 3, $logname.'.log');
+				error_log("\nParameters: ".json_encode($listreq), 3, $logname.'.log');
+			}
 
 			//authorization code replacement
 			$nr = 0;
@@ -146,11 +150,13 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 			curl_close($channel);
 
-			//write logs for response
-			$dateofresponse = date('l jS \of F Y h:i:s A');
-			error_log("\n\nResponse header: ".json_encode($headers), 3, $logname.'.log');
-			error_log("\n\nResponse: ".$respp, 3, $logname.'.log');
-			error_log("\n\n".$dateofresponse."\n", 3, $logname.'.log');
+			if ($WriteLogs) {
+				//write logs for response
+				$dateofresponse = date('l jS \of F Y h:i:s A');
+				error_log("\n\nResponse header: ".json_encode($headers), 3, $logname.'.log');
+				error_log("\n\nResponse: ".$respp, 3, $logname.'.log');
+				error_log("\n\n".$dateofresponse."\n", 3, $logname.'.log');
+			}
 
 			//write response to record fields
 			if (count($target_fields['Response']) > 0) {
@@ -243,14 +249,16 @@ class RunWebserviceWorkflowTask extends VTTask {
 				$url = str_replace("$key", "$value", $url);
 			}
 
-			//write logs for request
-			$logname = 'logs/'.$methodname;
-			$dateofcall = date('l jS \of F Y h:i:s A');
-			$LogContent = "\n*****************\nDate of call $dateofcall";
-			error_log($LogContent, 3, $logname.'.log');
-			error_log("\nRecordid: ".$therecid, 3, $logname.'.log');
-			error_log("\nMethod Called: $method $url", 3, $logname.'.log');
-			error_log("\nURL: ".$url, 3, $logname.'.log');
+			if ($WriteLogs) {
+				//write logs for request
+				$logname = 'logs/'.$methodname;
+				$dateofcall = date('l jS \of F Y h:i:s A');
+				$LogContent = "\n*****************\nDate of call $dateofcall";
+				error_log($LogContent, 3, $logname.'.log');
+				error_log("\nRecordid: ".$therecid, 3, $logname.'.log');
+				error_log("\nMethod Called: $method $url", 3, $logname.'.log');
+				error_log("\nURL: ".$url, 3, $logname.'.log');
+			}
 
 			try {
 				$arrContextOptions=stream_context_create(array(
@@ -356,16 +364,22 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$_REQUEST['ajxaction'] = $hold_ajxaction;
 					}
 				}
-				//write logs for response
-				$dateofresponse = date('l jS \of F Y h:i:s A');
-				error_log("\n\nResponse header: ".json_encode($options), 3, $logname.'.log');
-				error_log("\n\nResponse: ".json_encode($response), 3, $logname.'.log');
+				if ($WriteLogs) {
+					//write logs for response
+					$dateofresponse = date('l jS \of F Y h:i:s A');
+					error_log("\n\nResponse header: ".json_encode($options), 3, $logname.'.log');
+					error_log("\n\nResponse: ".json_encode($response), 3, $logname.'.log');
+				}
 			} catch (Exception $e) {
 				echo $e->getMessage();
-				$dateofresponse = date('l jS \of F Y h:i:s A');
-				error_log("\n\nError: ".json_encode($e->getMessage()), 3, $logname.'.log');
+				if ($WriteLogs) {
+					$dateofresponse = date('l jS \of F Y h:i:s A');
+					error_log("\n\nError: ".json_encode($e->getMessage()), 3, $logname.'.log');
+				}
 			}
-			error_log("\n\n".$dateofresponse."\n", 3, $logname.'.log');
+			if ($WriteLogs) {
+				error_log("\n\n".$dateofresponse."\n", 3, $logname.'.log');
+			}
 		}
 
 		$util->revertUser();

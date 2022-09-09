@@ -188,8 +188,7 @@ if ($mode == 'add') {
 }
 
 if ($mode == 'add' || $mode == 'edit' || $mode == 'delete' || $mode == 'cleanpicklist') {
-	$cache = new corebos_cache();
-	if ($cache->isUsable()) {
+	if ($cbAppCache->isUsable()) {
 		$allRoles = $adb->query('select roleid from vtiger_role');
 		$rolesCount = $adb->num_rows($allRoles);
 		if ($rolesCount > 0) {
@@ -198,7 +197,7 @@ if ($mode == 'add' || $mode == 'edit' || $mode == 'delete' || $mode == 'cleanpic
 				$roleId = $adb->query_result($allRoles, $i, 'roleid');
 				$cacheKeys[] = $tableName."#".$roleId;
 			}
-			$cache->getCacheClient()->deleteMultiple($cacheKeys);
+			$cbAppCache->getCacheClient()->deleteMultiple($cacheKeys);
 		}
 	}
 }

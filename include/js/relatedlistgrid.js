@@ -17,6 +17,7 @@ var relatedlistgrid = {
 					alert(alert_arr.Failed);
 				}
 				VtigerJS_DialogBox.hidebusy();
+				relatedlistgrid.loadedTooltips = [];
 			});
 			return true;
 		}		
@@ -28,10 +29,11 @@ var relatedlistgrid = {
 		setTimeout(function () {
 			RLInstance[Grid].readData(1);
 			VtigerJS_DialogBox.hidebusy();
+			relatedlistgrid.loadedTooltips = [];
 		}, 1300);
 	},
 
-	upsert: (Grid, module, recordid, CurrentRecord = '', target = false) => {
+	upsert: (Grid, module, recordid, CurrentRecord = '', target = false, mode = '') => {
 		let record = recordid || '';
 		let related_fieldname = '';
 		if (record!='') {
@@ -42,10 +44,14 @@ var relatedlistgrid = {
 		} else {
 			related_fieldname = origin_related_fieldname[module];
 		}
+		if (mode == 'recursive') {
+			related_fieldname = target_related_fieldname[`${module}-${module}`];
+		}
 		if (CurrentRecord!='') {
-			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&RLFieldName='+related_fieldname;
+			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&RLFieldName='+related_fieldname+'&'+related_fieldname+'='+CurrentRecord;
 		} else if (document.getElementById('record')) {
-			CurrentRecord = '&MDCurrentRecord='+document.getElementById('record').value;
+			let recid = document.getElementById('record').value;
+			CurrentRecord = '&MDCurrentRecord='+recid+'&'+related_fieldname+'='+recid;
 		}
 		let rlgridinfo = JSON.stringify({
 			'name': Grid,
@@ -86,10 +92,65 @@ var relatedlistgrid = {
 						ldsPrompt.show(alert_arr.ERROR, msg, 'error');
 						VtigerJS_DialogBox.hidebusy();
 					}
+					relatedlistgrid.loadedTooltips = [];
 				});
 			}
 		}		
-	}
+	},
+
+	Tooltip: (id, Grid, rowKey, module) => {
+		if (!relatedlistgrid.isTooltipLoaded(id) && RLInstance[Grid] !== undefined) {
+			const data = RLInstance[Grid].getData();
+			relatedlistgrid.loadedTooltips.push(id);
+			let fields = JSON.parse(tooltip[module]);
+			let fieldLabel = JSON.parse(FieldLables[module]);
+			let body = '';
+			for (let i in fields) {
+				body += `
+					<dl class="slds-list_horizontal slds-p-bottom_x-small">
+						<dt class="slds-item_label slds-text-color_weak slds-truncate" style="width: 50%">
+							<strong>${fieldLabel[fields[i]]}:</strong>
+						</dt>
+						<dd class="slds-item_detail slds-truncate" style="width: 50%">${data[rowKey][fields[i]]}</dd>
+					</dl>`;
+			}
+			const el = `
+			<div class="cbds-tooltip__wrapper--inner">
+				<section class="slds-popover slds-nubbin_bottom" role="dialog">
+					<header class="slds-popover__header" style="background: #1589ee;color: white">
+						<div class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__figure">
+							<span class="slds-icon_container slds-icon-utility-error">
+								<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
+								</svg>
+							</span>
+						</div>
+						<div class="slds-media__body">
+							<h2 class="slds-truncate slds-text-heading_medium" title="${alert_arr.QuickView}">${alert_arr.QuickView}</h2>
+						</div>
+						</div>
+					</header>
+					<div class="slds-popover__body">
+						${body}
+					</div>
+				</section>
+			</div>`;
+			const createEl = document.createElement('div');
+			createEl.id = `tooltip-${id}`;
+			createEl.classList.add('cbds-tooltip__wrapper');
+			createEl.innerHTML = el;
+			if (document.getElementById(`cbds-tooltip__trigger-${id}`) !== null) {
+				document.getElementById(`cbds-tooltip__trigger-${id}`).appendChild(createEl);
+			}
+		}
+	},
+
+	isTooltipLoaded: (id) => {
+		return relatedlistgrid.loadedTooltips.indexOf(id) == -1 ? false : true;
+	},
+
+	loadedTooltips: [],
 };
 
 class RLinkRender {
@@ -113,6 +174,16 @@ class RLinkRender {
 				el = document.createElement('a');
 				el.href = `index.php?module=${parent_module}&action=DetailView&record=${parent_id}`;
 				el.target = `_blank`;
+				if (tooltip[parent_module] != 'null') {
+					props.value = `<span>${props.value}</span>
+					<span class="slds-icon_container slds-icon__svg--default slds-float_right slds-m-right_small cbds-tooltip__trigger slds-p-left_xx-small"
+						id="cbds-tooltip__trigger-${parent_id}"
+						onmouseover="relatedlistgrid.Tooltip(${parent_id}, 'rlgrid${props.grid.el.id}', ${rowKey}, '${parent_module}')">
+						<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+						</svg>
+					</span>`;
+				}
 				el.innerHTML = String(props.value);
 			} else {
 				el = document.createElement('span');
@@ -134,7 +205,15 @@ class RLinkRender {
 	}
 
 	render(props) {
-		this.el.value = String(props.value);
+		if (props.module === undefined) {
+			this.el.value = String(props.value);
+		} else {
+			if (props.formattedValue != '') {
+				this.el.innerHTML = String(props.formattedValue);
+			} else {
+				this.el.textContent = String(props.value);
+			}
+		}
 	}
 }
 
@@ -157,15 +236,25 @@ class RLActionRender {
 		let actions = '<div class="slds-button-group" role="group">';
 		if (parent_module != '') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${related_child}', '', ${recordid}, true);" title="${alert_arr['JSLBL_Create']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${related_child}', '', ${recordid}, true);" title="${alert_arr['JSLBL_Create']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 				</svg>
 			</button>`;			
+		} else {
+			actions += `
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${related_child}', '', ${recordid}, true, 'recursive');" title="${alert_arr['JSLBL_Create']}">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+				</svg>
+			</button>`;
+			if (target_related_fieldname[`${related_child}-${related_child}`] == '') {
+				actions = '<div class="slds-button-group" role="group">';
+			}
 		}
 		if (permissions.parent_edit == 'yes') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 				</svg>
@@ -173,7 +262,7 @@ class RLActionRender {
 		}
 		if (permissions.child_edit == 'yes') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 				</svg>
@@ -183,7 +272,7 @@ class RLActionRender {
 		const child_delete = props.columnInfo.renderer.options.child_delete;
 		if (parent_delete == 'O' && permissions.parent_edit == 'yes') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('rlgrid${props.grid.el.id}', '${parent_module}', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('rlgrid${props.grid.el.id}', '${parent_module}', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 				</svg>
@@ -191,7 +280,7 @@ class RLActionRender {
 		}
 		if (child_delete == 'O' && permissions.child_edit == 'yes') {
 			actions += `
-			<button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('rlgrid${props.grid.el.id}', '${child_module}', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('rlgrid${props.grid.el.id}', '${child_module}', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 				</svg>

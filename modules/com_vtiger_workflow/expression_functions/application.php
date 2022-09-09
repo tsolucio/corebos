@@ -419,6 +419,26 @@ function __cb_setfromcontext($arr) {
 	return $arr[1];
 }
 
+/**
+ * eliminate indicated array elements
+ * @param array to clean
+ * @param string with comma-separated values to eliminate
+ * @param boolean true (default) to use comma-separated values parameter as values to eliminate, false to use them as values to keep
+ * @return array without the indicated elements
+ */
+function __cb_cleanarrayelements($params) {
+	if ((count($params)!=2 && count($params)!=3) || !is_array($params[0]) || !is_string($params[1])) {
+		return false;
+	}
+	$invert = (empty($params[2]) ? false : filter_var($params[2], FILTER_VALIDATE_BOOLEAN));
+	$d = array_flip(explode(',', $params[1]));
+	if ($invert) {
+		return array_diff_key($params[0], array_diff_key(array_flip(array_keys($params[0])), $d));
+	} else {
+		return array_diff_key($params[0], $d);
+	}
+}
+
 function __cb_applymaptoarrayelements($params) {
 	$cbMap = cbMap::getMapByID($params[1]);
 	if (empty($cbMap)) {
@@ -432,11 +452,20 @@ function __cb_applymaptoarrayelements($params) {
 	return $finalarray;
 }
 
-function __cb_applymaptoinventoryarrayelements($params) {
-	if (count($params)!=4 || !is_array($params[0]) || !is_numeric($params[2]) || !is_numeric($params[3])) {
+/**
+ * @param array to work with
+ * @param integer MapID
+ * @param string SubArray Element key. This element will be eliminated from the result so you must copy it in the mapping
+ * @param integer SubArrayMapID
+ * @param string clean SubArray Element keys
+ * @param boolean true (default) to use comma-separated values parameter as values to eliminate, false to use them as values to keep
+ */
+function __cb_applymaptoarrayelementsandsubarray($params) {
+	$cnt = count($params);
+	if (($cnt!=4 && $cnt!=5 && $cnt!=6) || !is_array($params[0]) || !is_numeric($params[1]) || !is_numeric($params[3])) {
 		return false;
 	}
-	$cbMapMaster = cbMap::getMapByID($params[2]);
+	$cbMapMaster = cbMap::getMapByID($params[1]);
 	if (empty($cbMapMaster)) {
 		return $params[0];
 	}
@@ -444,32 +473,26 @@ function __cb_applymaptoinventoryarrayelements($params) {
 	if (empty($cbMapLines)) {
 		return $params[0];
 	}
+	$invert = (empty($params[5]) ? false : filter_var($params[5], FILTER_VALIDATE_BOOLEAN));
 	$finalarray = array();
-	foreach ($params[0] as $order) {
+	foreach ($params[0] as &$order) {
 		$neworder = array();
-		$neworder = $cbMapMaster->Mapping($order, $order);
-		if (!empty($order[$params[1]])) {
+		if (!empty($order[$params[2]])) {
 			$invlines = array();
-			foreach ($order[$params[1]] as $invline) {
-				$invlines[] = $cbMapLines->Mapping($invline, $invline);
+			foreach ($order[$params[2]] as $invline) {
+				if (empty($params[4])) {
+					$invlines[] = $cbMapLines->Mapping($invline, $invline);
+				} else {
+					$invlines[] = __cb_cleanarrayelements([$cbMapLines->Mapping($invline, $invline), $params[4], $invert]);
+				}
 			}
-			$neworder[$params[1]] = $invlines;
+			$neworder[$params[2]] = $invlines;
+			$order[$params[2]] = $invlines;
 		}
-		$finalarray[] = $neworder;
+		$mappedorder = $cbMapMaster->Mapping($order, $neworder);
+		unset($mappedorder[$params[2]]); // we always eliminate the subarray
+		$finalarray[] = $mappedorder;
 	}
-
-	$finalarray = array();
-	foreach ($params[0] as $order) {
-		$neworder = array();
-		$neworder = __cb_applymaptoarrayelements([$order, $params[2]]);
-		if (!empty($order[$params[1]])) {
-			$neworder[$params[1]] = __cb_applymaptoarrayelements([$order[$params[1]], $params[3]]);
-		}
-		$finalarray[] = $neworder;
-	}
-
-
-
 	return $finalarray;
 }
 

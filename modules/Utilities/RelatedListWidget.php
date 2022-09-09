@@ -49,6 +49,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('RelatedListWidgetMap', $map);
 		$smarty->assign('cbgridactioncol', $cbgridactioncol);
 		$smarty->assign('CurrentRecord', $_REQUEST['record']);
+		$smarty->assign('title', $map['title']);
 		$smarty->assign('originmodule', $map['originmodule']['name']);//Messages
 		$smarty->assign('targetmodule', $map['targetmodule']['name']);//Assets
 		$smarty->assign('currentModule', $currentModule);//Accounts
@@ -56,10 +57,20 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('ID', $id);
 		$OriginFieldID = getRelatedFieldId($currentModule, $map['originmodule']['name']);
 		$TargetFieldID = getRelatedFieldId($map['originmodule']['name'], $map['targetmodule']['name']);
+		$SublevelsField = getRelatedFieldId($map['targetmodule']['name'], $map['targetmodule']['name']);
 		$origin_related_fieldname = getFieldNameByFieldId($OriginFieldID);
 		$target_related_fieldname = getFieldNameByFieldId($TargetFieldID);
+		$sub_related_fieldname = getFieldNameByFieldId($SublevelsField);
 		$smarty->assign('origin_related_fieldname', $origin_related_fieldname);
 		$smarty->assign('target_related_fieldname', $target_related_fieldname);
+		$smarty->assign('sub_related_fieldname', $sub_related_fieldname);
+		$smarty->assign('tooltip', json_encode($map['tooltip']));
+		$cachedFields = VTCacheUtils::lookupFieldInfo_Module($map['originmodule']['name']);
+		$fieldsLabel = array();
+		foreach ($cachedFields as $key) {
+			$fieldsLabel[$key['fieldname']] = $key['fieldlabel'];
+		}
+		$smarty->assign('FieldLables', json_encode($fieldsLabel));
 		return $smarty->fetch('Components/MasterDetail/RelatedListWidget.tpl');
 	}
 }

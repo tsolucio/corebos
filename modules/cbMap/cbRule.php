@@ -23,14 +23,13 @@ class coreBOS_Rule {
 	private static $supportedBusinessMaps = array('Condition Query', 'Condition Expression', 'DecisionTable');
 
 	public static function evaluate($conditionid, $context, $workflowContext = array()) {
-		global $log,$adb,$current_user;
+		global $log,$adb,$current_user,$cbAppCache;
 		$params = array(
 			'conditionid' => $conditionid,
 			'context' => $context,
 		);
 
-		$cache = new corebos_cache();
-		if ($cache->isUsable()) {
+		if ($cbAppCache->isUsable()) {
 			$cacheKey = md5(implode('', $adb->flatten_array($params)));
 			$query = '(select vtiger_crmentity.modifiedtime
 				from vtiger_crmentity
@@ -40,8 +39,8 @@ class coreBOS_Rule {
 				(select vtiger_crmentity.modifiedtime
 				from vtiger_crmentity
 				where vtiger_crmentity.deleted=0 and vtiger_crmentity.crmid=?) order by modifiedtime desc limit 1';
-			if ($cache->getCacheClient()->hasWithQueryCheck($cacheKey, $query, [$conditionid, $conditionid])) {
-				$cacheValue = $cache->getCacheClient()->get($cacheKey);
+			if ($cbAppCache->getCacheClient()->hasWithQueryCheck($cacheKey, $query, [$conditionid, $conditionid])) {
+				$cacheValue = $cbAppCache->getCacheClient()->get($cacheKey);
 				cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, false, 'Cache', $cacheValue, date('Y-m-d H:i:s')));
 				return $cacheValue;
 			}
@@ -129,8 +128,8 @@ class coreBOS_Rule {
 				break;
 		}
 		cbEventHandler::do_action('corebos.audit.rule', array($current_user->id, $params, false, $mapvalues, $ruleinfo, date('Y-m-d H:i:s')));
-		if ($cache->isUsable()) {
-			$cache->getCacheClient()->setMultiple([$cacheKey => $ruleinfo, $cacheKey.$cache->getCacheClient()->getModifiedTimePostfix() => date('YmdHis')]);
+		if ($cbAppCache->isUsable()) {
+			$cbAppCache->getCacheClient()->setMultiple([$cacheKey => $ruleinfo, $cacheKey.$cbAppCache->getCacheClient()->getModifiedTimePostfix() => date('YmdHis')]);
 		}
 		return $ruleinfo;
 	}

@@ -427,6 +427,8 @@ class GridListView {
 		$rowCount = $adb->num_rows($result);
 		$yesValue = getTranslatedString('yes', $this->module);
 		$noValue = getTranslatedString('no', $this->module);
+		$group_array = get_group_array();
+		$usersList = $this->UsersList();
 		for ($i=0; $i < $rowCount; $i++) {
 			$rows = array();
 			$colorizer_row = array();
@@ -520,7 +522,7 @@ class GridListView {
 						$rows[$fieldName] = '--';
 					}
 				} elseif ($fieldName == 'modifiedby') {
-						$rows[$fieldName] = getUserFullName($fieldValue);
+						$rows[$fieldName] = isset($usersList[$fieldValue]) ? $usersList[$fieldValue] : getUserFullName($fieldValue);
 				} elseif ($fieldType == '1024') {
 					if (!empty($fieldValue)) {
 						$fieldValue = implode(', ', array_map('getRoleName', explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue)));
@@ -564,8 +566,7 @@ class GridListView {
 					$fileid = $adb->query_result($res, 0, 'attachmentsid');
 					$rows['fileid'] = $fileid;
 				}
-				$group_array = get_group_array();
-				$assigned_user_id = isset($smownerid) ? getUserFullName($smownerid) : false;
+				$assigned_user_id = isset($smownerid) && isset($usersList[$smownerid]) ? $usersList[$smownerid] : false;
 				if (!$assigned_user_id) {
 					$assigned_user_id = $group_array[$smownerid];
 				}
@@ -593,6 +594,16 @@ class GridListView {
 			array_push($data, $rows);
 		}
 		return $data;
+	}
+
+	public function UsersList() {
+		global $adb;
+		$rs = $adb->pquery('SELECT id, ename FROM vtiger_users', array());
+		$users = array();
+		while ($row = $adb->fetch_array($rs)) {
+			$users[$row['id']] = $row['ename'];
+		}
+		return $users;
 	}
 
 	public function getFieldNameByColumn($columnname, $return = '') {

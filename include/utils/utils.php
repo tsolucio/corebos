@@ -198,7 +198,7 @@ function get_assigned_user_name($assigned_user_id) {
  * @return array user array
  */
 function get_user_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '') {
-	global $log, $current_user;
+	global $log, $current_user, $cbAppCache;
 	$log->debug('> get_user_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
 	if (isset($current_user) && $current_user->id != '') {
 		$userprivs = $current_user->getPrivileges();
@@ -206,25 +206,28 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 	} else {
 		$current_user_parent_role_seq = '';
 	}
-	static $user_array = null;
 	$module = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
+	$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
+	$assignUP = GlobalVariable::getVariable('Application_Permit_Assign_Up', 0, $module, $current_user->id);
+	$assignBrothers = GlobalVariable::getVariable('Application_Permit_Assign_SameRole', 0, $module, $current_user->id);
+	$user_array_key = 'utilsGUA#'.(empty($add_blank) ? 'F' : 'T').$status.$assigned_user.$private.$userOrder.$assignUP.$assignBrothers.$current_user->id.$current_user_parent_role_seq;
 
-	if ($user_array == null) {
+	if ($cbAppCache->isUsable() && $cbAppCache->getCacheClient()->has($user_array_key)) {
+		$user_array = $cbAppCache->getCacheClient()->get($user_array_key);
+	} else {
 		$db = PearDatabase::getInstance();
 		$temp_result = array();
-		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
 		// Including deleted users for now.
 		if (empty($status)) {
-			$query = 'SELECT id, user_name,ename from vtiger_users';
+			$query = 'SELECT id, user_name,ename from vtiger_users where 1';
 			$params = array();
 		} else {
-			$assignUP = GlobalVariable::getVariable('Application_Permit_Assign_Up', 0, $module, $current_user->id);
 			if ($private == 'private' && empty($assignUP)) {
 				if ($userOrder != 'DO NOT SORT') {
 					$orderFields = preg_replace('/ asc\s*$| asc\s*,| desc\s*$| desc\s*,/i', ',', $userOrder);
 					$orderFields = preg_replace('/\s*/', '', $orderFields);
-					$orderFields = str_replace(array('user_name,','first_name,','last_name,'), '', $orderFields);
-					$orderFields = str_replace(array('user_name','first_name','last_name'), '', $orderFields);
+					$orderFields = str_replace(array('ename,','user_name,','first_name,','last_name,'), '', $orderFields);
+					$orderFields = str_replace(array('ename,','user_name','first_name','last_name'), '', $orderFields);
 					$orderFields = str_replace(',,', ',', $orderFields);
 					$orderFields = trim($orderFields, ',');
 					if (strlen($orderFields)>1) {
@@ -233,7 +236,6 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 				} else {
 					$orderFields = '';
 				}
-				$assignBrothers = GlobalVariable::getVariable('Application_Permit_Assign_SameRole', 0, $module, $current_user->id);
 				$query = "select $orderFields id as id,user_name as user_name,first_name,last_name,ename
 					from vtiger_users
 					where id=? and status='Active'
@@ -285,6 +287,9 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 		}
 
 		$user_array = $temp_result;
+		if ($cbAppCache->isUsable()) {
+			$cbAppCache->getCacheClient()->set($user_array_key, $temp_result);
+		}
 	}
 
 	$log->debug('< get_user_array');
@@ -3841,6 +3846,16 @@ function setDefaultCompanyParams($companyDetails) {
 function validateMauticSecret($signedvalue, $signedkey, $input) {
 	$headers = getallheaders();
 	$receivedSignature = $headers['Webhook-Signature'];
+	$computedSignature = base64_encode(hash_hmac('sha256', $input, $signedvalue, true));
+	return ($receivedSignature === $computedSignature);
+}
+
+/**
+ * Function to validate clickhouse secret
+ */
+function validateClickHouseSecret($signedvalue, $signedkey, $input) {
+	$headers = getallheaders();
+	$receivedSignature = $headers['CH-Webhook-Signature'];
 	$computedSignature = base64_encode(hash_hmac('sha256', $input, $signedvalue, true));
 	return ($receivedSignature === $computedSignature);
 }

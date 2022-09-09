@@ -139,8 +139,8 @@ class Mapping extends processcbMap {
 						$testexpression = trim($testexpression);
 						if ($testexpression=='record_id') {
 							$testexpression = $ofields['record_id'];
-						} elseif (substr($testexpression, 0, 1) != '$') {
-							$testexpression = '$' . $testexpression;
+						} elseif (strtoupper($idx[0])=='FIELD') {
+							$testexpression = (strpos($testexpression, '.') ? 'Ç' : '$') . ltrim($testexpression, '$');
 						}
 					}
 					$ct = new VTSimpleTemplate($testexpression);
@@ -153,8 +153,8 @@ class Mapping extends processcbMap {
 					$testexpression = array_pop($fieldinfo);
 					if (strtoupper($idx[0])=='FIELD') {
 						$testexpression = trim($testexpression);
-						if (substr($testexpression, 0, 1) != '$') {
-							$testexpression = '$' . $testexpression;
+						if (strtoupper($idx[0])=='FIELD') {
+							$testexpression = (strpos($testexpression, '.') ? 'Ç' : '$') . ltrim($testexpression, '$');
 						}
 					}
 					$ct = new VTSimpleTemplateOnData($testexpression);
@@ -178,7 +178,20 @@ class Mapping extends processcbMap {
 					$value .= coreBOS_Rule::evaluate($mapid, $context).$delim;
 				} else {
 					$fieldname = array_pop($fieldinfo);
-					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
+					if (strpos($fieldname, '.')) {
+						$datavalue = __cb_getfromcontextvalueinarrayobject($ofields, ltrim($fieldname, '$'));
+						if (is_string($datavalue)) {
+							$value.= $datavalue.$delim;
+						} else {
+							$value = $datavalue;
+						}
+					} elseif (isset($ofields[$fieldname])) {
+						if (is_string($ofields[$fieldname])) {
+							$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
+						} else {
+							$value = $ofields[$fieldname];
+						}
+					}
 				}
 				if ($postProcess!='') {
 					$value = Mapping::postProcess($postProcess, $value);
@@ -187,7 +200,20 @@ class Mapping extends processcbMap {
 			if (is_string($value)) {
 				$value = rtrim($value, $delim);
 			}
-			$tfields[$targetfield] = $value;
+			if (strpos($targetfield, '.')) {
+				$wheretoput = &$tfields;
+				while (strpos($targetfield, '.')) {
+					$targetstep = substr($targetfield, 0, strpos($targetfield, '.'));
+					$targetfield = substr($targetfield, strpos($targetfield, '.')+1);
+					if (!isset($wheretoput[$targetstep]) && strpos($targetfield, '.')===false) {
+						$wheretoput[$targetstep] = [];
+					}
+					$wheretoput = &$wheretoput[$targetstep];
+				}
+				$wheretoput[$targetfield] = $value;
+			} else {
+				$tfields[$targetfield] = $value;
+			}
 		}
 		return $tfields;
 	}
@@ -260,6 +286,11 @@ class Mapping extends processcbMap {
 				break;
 		}
 		return $value;
+	}
+
+	public function getDestinationFields() {
+		$mapping=$this->convertMap2Array();
+		return array_keys($mapping['fields']);
 	}
 }
 ?>

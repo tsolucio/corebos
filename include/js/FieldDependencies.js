@@ -130,10 +130,9 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
 FieldDependencies.prototype.controlActions = function (sourcename) {
 	var sourcevalue ='';
 	var field, comparator, value, columncondition, fieldName, groupid, conditionCurr, newGroup;
-	var i=0;
 	var conditions=new Array();
 	if (this.DS[sourcename]!==undefined) {
-		for (i=0; i<this.DS[sourcename].length; i++) {
+		for (var i=0; i<this.DS[sourcename].length; i++) {
 			var responsibleConfig=this.DS[sourcename][i];
 			conditions=responsibleConfig['conditions']!=='' ?  JSON.parse(responsibleConfig['conditions']) : conditions;
 			var conditionResp='';
@@ -179,7 +178,6 @@ FieldDependencies.prototype.controlActions = function (sourcename) {
 					condArray.push(conditionResp);
 					condOperatorArray.push('');
 				}
-
 			}
 			conditionResp='';
 			for (j=0; j<condArray.length; j++) {

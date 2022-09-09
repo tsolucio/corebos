@@ -135,7 +135,7 @@
 	<ul id="cbmenu" class="accordion slds-accordion">
 	{foreach $menu as $menuitem}
 		{if $menuitem.mtype == 'menu'}
-		<li class="slds-dropdown__item" role="presentation">
+		<li class="slds-dropdown__item slds-parent-menu" role="presentation" id="parent{$i}" data-level={$i} data-type="parent">
 			<a href="javascript:void(0);" role="menuitem" class="link" title="{$menuitem.mlabel}">
 				<span class="slds-truncate">{$menuitem.mlabel}</span>
 			{if !empty($menuitem.submenu)}
@@ -167,16 +167,16 @@
 
 {* Creates all the other levels menu *}
 {function cbsubmenuvertical j=0}
-	<ul class="submenu slds-dropdown__list slds-is-nested " role="menu" id="menu{$i}">
+	<ul class="submenu slds-dropdown__list slds-is-nested " style="background: aliceblue;" role="menu" id="menu{$i}">
 	{foreach $submenu as $menuitem}
 		{if $menuitem.mtype == 'module' && empty($menuitem.submenu)}
-		<li class="slds-dropdown__item" role="presentation">
+		<li class="slds-dropdown__item slds-child-menu" role="presentation" data-type="child" data-name="{$menuitem.mvalue}" data-level="{$i}">
 			<a href="index.php?action=index&amp;module={$menuitem.mvalue}" role="menuitem" tabindex="-1">
 				<span class="slds-truncate">{$menuitem.mlabel}</span>
 			</a>
 		</li>
 		{elseif ($menuitem.mtype == 'menu' || $menuitem.mtype == 'module') && !empty($menuitem.submenu)}
-		<li class="slds-dropdown__item" role="presentation">
+		<li class="slds-dropdown__item" role="presentation" data-level={$j} data-type="parent">
 			<a href="javascript:void(0);" role="menuitem" class="link" title="{$menuitem.mlabel}">
 			<span class="slds-truncate">{$menuitem.mlabel}</span>
 				<svg aria-hidden="true" class="slds-button__icon cbslds-button_icon-small">
