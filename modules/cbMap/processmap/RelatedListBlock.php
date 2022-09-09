@@ -26,6 +26,11 @@
 	<modules>
 		<module>
 			<originmodule>Messages</originmodule>
+			<tooltip>
+				<fields>messagename</fields>
+				<fields>messagesrelatedto</fields>
+				...
+			</tooltip>
 		</module>
 		<module>
 			<targetmodule>Assets</targetmodule>
@@ -40,6 +45,7 @@
 						<sortable>true</sortable>
 						<layout></layout>
 					</field>
+					...
 				</fields>
 			</listview>
 		</module>
@@ -76,6 +82,9 @@ class RelatedListBlock extends processcbMap {
 		$this->detailModule = $this->mapping_arr['targetmodule']['name'];
 		foreach ($targetmodule->listview->fields as $fields) {
 			$this->FormatFields($fields, 'targetmodule', 'listview');
+		}
+		if (isset($originmodule->tooltip)) {
+			$this->mapping_arr['tooltip'] = (array)$originmodule->tooltip->fields;
 		}
 		return $this->mapping_arr;
 	}
