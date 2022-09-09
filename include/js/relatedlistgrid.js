@@ -17,6 +17,7 @@ var relatedlistgrid = {
 					alert(alert_arr.Failed);
 				}
 				VtigerJS_DialogBox.hidebusy();
+				relatedlistgrid.loadedTooltips = [];
 			});
 			return true;
 		}		
@@ -28,6 +29,7 @@ var relatedlistgrid = {
 		setTimeout(function () {
 			RLInstance[Grid].readData(1);
 			VtigerJS_DialogBox.hidebusy();
+			relatedlistgrid.loadedTooltips = [];
 		}, 1300);
 	},
 
@@ -89,10 +91,65 @@ var relatedlistgrid = {
 						ldsPrompt.show(alert_arr.ERROR, msg, 'error');
 						VtigerJS_DialogBox.hidebusy();
 					}
+					relatedlistgrid.loadedTooltips = [];
 				});
 			}
 		}		
-	}
+	},
+
+	Tooltip: (id, Grid, rowKey, module) => {
+		if (!relatedlistgrid.isTooltipLoaded(id) && RLInstance[Grid] !== undefined) {
+			const data = RLInstance[Grid].getData();
+			relatedlistgrid.loadedTooltips.push(id);
+			let fields = JSON.parse(tooltip[module]);
+			let fieldLabel = JSON.parse(FieldLables[module]);
+			let body = '';
+			for (let i in fields) {
+				body += `
+					<dl class="slds-list_horizontal slds-p-bottom_x-small">
+						<dt class="slds-item_label slds-text-color_weak slds-truncate" style="width: 50%">
+							<strong>${fieldLabel[fields[i]]}:</strong>
+						</dt>
+						<dd class="slds-item_detail slds-truncate" style="width: 50%">${data[rowKey][fields[i]]}</dd>
+					</dl>`;
+			}
+			const el = `
+			<div class="cbds-tooltip__wrapper--inner">
+				<section class="slds-popover slds-nubbin_bottom" role="dialog">
+					<header class="slds-popover__header" style="background: #1589ee;color: white">
+						<div class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__figure">
+							<span class="slds-icon_container slds-icon-utility-error">
+								<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#preview"></use>
+								</svg>
+							</span>
+						</div>
+						<div class="slds-media__body">
+							<h2 class="slds-truncate slds-text-heading_medium" title="${alert_arr.QuickView}">${alert_arr.QuickView}</h2>
+						</div>
+						</div>
+					</header>
+					<div class="slds-popover__body">
+						${body}
+					</div>
+				</section>
+			</div>`;
+			const createEl = document.createElement('div');
+			createEl.id = `tooltip-${id}`;
+			createEl.classList.add('cbds-tooltip__wrapper');
+			createEl.innerHTML = el;
+			if (document.getElementById(`cbds-tooltip__trigger-${id}`) !== null) {
+				document.getElementById(`cbds-tooltip__trigger-${id}`).appendChild(createEl);
+			}
+		}
+	},
+
+	isTooltipLoaded: (id) => {
+		return relatedlistgrid.loadedTooltips.indexOf(id) == -1 ? false : true;
+	},
+
+	loadedTooltips: [],
 };
 
 class RLinkRender {
@@ -116,7 +173,18 @@ class RLinkRender {
 				el = document.createElement('a');
 				el.href = `index.php?module=${parent_module}&action=DetailView&record=${parent_id}`;
 				el.target = `_blank`;
+				if (tooltip[parent_module] != 'null') {
+					props.value = `<span>${props.value}</span>
+					<span class="slds-icon_container slds-icon__svg--default slds-float_right slds-m-right_small cbds-tooltip__trigger slds-p-left_xx-small"
+						id="cbds-tooltip__trigger-${parent_id}"
+						onmouseover="relatedlistgrid.Tooltip(${parent_id}, 'rlgrid${props.grid.el.id}', ${rowKey}, '${parent_module}')">
+						<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+						</svg>
+					</span>`;
+				}
 				el.innerHTML = String(props.value);
+
 			} else {
 				el = document.createElement('span');
 				el.innerHTML = String(props.value);
@@ -137,7 +205,15 @@ class RLinkRender {
 	}
 
 	render(props) {
-		this.el.value = String(props.value);
+		if (props.module === undefined) {
+			this.el.value = String(props.value);
+		} else {
+			if (props.formattedValue != '') {
+				this.el.innerHTML = String(props.formattedValue);
+			} else {
+				this.el.textContent = String(props.value);
+			}
+		}
 	}
 }
 

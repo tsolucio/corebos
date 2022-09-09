@@ -64,6 +64,13 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('origin_related_fieldname', $origin_related_fieldname);
 		$smarty->assign('target_related_fieldname', $target_related_fieldname);
 		$smarty->assign('sub_related_fieldname', $sub_related_fieldname);
+		$smarty->assign('tooltip', json_encode($map['tooltip']));
+		$cachedFields = VTCacheUtils::lookupFieldInfo_Module($map['originmodule']['name']);
+		$fieldsLabel = array();
+		foreach ($cachedFields as $key) {
+			$fieldsLabel[$key['fieldname']] = $key['fieldlabel'];
+		}
+		$smarty->assign('FieldLables', json_encode($fieldsLabel));
 		return $smarty->fetch('Components/MasterDetail/RelatedListWidget.tpl');
 	}
 }
