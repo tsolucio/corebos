@@ -109,6 +109,7 @@ function getViewsByModule($module, $user) {
  */
 function cbws_getViewsInformation($viewids, $module) {
 	global $adb, $app_strings, $currentModule;
+	$cModule = $currentModule;
 	$currentModule = $module;
 	$dft = cbCVManagement::getDefaultView($module);
 	$customView = new CustomView($module);
@@ -187,6 +188,7 @@ function cbws_getViewsInformation($viewids, $module) {
 		$filter['userid'] = $cvrow['userid'];
 		$filters[$cvrow['cvid']] = $filter;
 	}
+	$currentModule = $cModule;
 	return $filters;
 }
 ?>
