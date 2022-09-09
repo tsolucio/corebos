@@ -184,7 +184,6 @@ class RLinkRender {
 					</span>`;
 				}
 				el.innerHTML = String(props.value);
-
 			} else {
 				el = document.createElement('span');
 				el.innerHTML = String(props.value);
