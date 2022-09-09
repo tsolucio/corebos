@@ -75,10 +75,9 @@ class VTWorkflowEntity {
 	 * @return string module name.
 	 */
 	public function getModuleName() {
-		if ($this->moduleName==null) {
+		if ($this->moduleName==null && !empty($this->data['id'])) {
 			global $adb;
-			$wsId = $this->data['id'];
-			$parts = explode('x', $wsId);
+			$parts = explode('x', $this->data['id']);
 			$result = $adb->pquery('select name from vtiger_ws_entity where id=?', array($parts[0]));
 			$rowData = $adb->raw_query_result_rowdata($result, 0);
 			$this->moduleName = $rowData['name'];
