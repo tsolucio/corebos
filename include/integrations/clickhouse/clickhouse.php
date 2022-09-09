@@ -54,7 +54,7 @@ class corebos_clickhouse {
 
 	public function initGlobalScope() {
 		$this->clickhouse_host = coreBOS_Settings::getSetting(self::HOST, '');
-		$this->clickhouse_port = coreBOS_Settings::getSetting(self::PORT, '');
+		$this->clickhouse_port = (int)coreBOS_Settings::getSetting(self::PORT, 0);
 		$this->clickhouse_database = coreBOS_Settings::getSetting(self::DATABASE, '');
 		$this->clickhouse_username = coreBOS_Settings::getSetting(self::USERNAME, 'default');
 		$this->clickhouse_password = coreBOS_Settings::getSetting(self::PASSWORD, '');
@@ -86,7 +86,7 @@ class corebos_clickhouse {
 		return array(
 			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
 			'clickhouse_host' => coreBOS_Settings::getSetting(self::HOST, ''),
-			'clickhouse_port' => coreBOS_Settings::getSetting(self::PORT, ''),
+			'clickhouse_port' => (int)coreBOS_Settings::getSetting(self::PORT, 0),
 			'clickhouse_database' => coreBOS_Settings::getSetting(self::DATABASE, 'default'),
 			'clickhouse_username' => coreBOS_Settings::getSetting(self::USERNAME, 'default'),
 			'clickhouse_password' => coreBOS_Settings::getSetting(self::PASSWORD, '')
@@ -100,15 +100,15 @@ class corebos_clickhouse {
 	public static function useClickHouseHook() {
 		$clickhouse = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
 		$host = coreBOS_Settings::getSetting(self::HOST, '');
-		$port = coreBOS_Settings::getSetting(self::PORT, '');
+		$port = (int)coreBOS_Settings::getSetting(self::PORT, 0);
 		$database = coreBOS_Settings::getSetting(self::DATABASE, 'default');
-		return ($clickhouse != '0' && $host != '' && $port != '' && $database != '' );
+		return ($clickhouse != '0' && $host != '' && !empty($port) && $database != '' );
 	}
 
 	public static function connectToClickhouse() {
 		$config = [
 			'host' => coreBOS_Settings::getSetting(self::HOST, ''),
-			'port' => coreBOS_Settings::getSetting(self::PORT, ''),
+			'port' => (int)coreBOS_Settings::getSetting(self::PORT, 0),
 			'username' => coreBOS_Settings::getSetting(self::USERNAME, ''),
 			'password' => coreBOS_Settings::getSetting(self::PASSWORD, ''),
 			'readonly' => false,
