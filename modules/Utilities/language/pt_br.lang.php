@@ -171,5 +171,13 @@ $mod_strings = array(
 	'clickhouse_active' => 'Active',
 	'clickhouse_database' => 'Database',
 	'clickhouse_query' => 'ClickHouse Query (limited to 100 rows)',
+	'mautic_webhook_secret' => 'Webhook Secret',
+	'Facebook Activation' => 'Facebook Activation',
+	'Facebook Activation_Desc' => 'Facebook Configuration',
+	'facebook_hub_verification_token' => 'Hub Verification Code',
+	'facebook_access_token' => 'Access Token',
+	'facebook_destination_module' => 'Destination Module',
+	'Unable2Connect' => 'Unable to connect',
+	'Able2Connect' => 'Able to connect',
 );
 ?>

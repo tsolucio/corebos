@@ -176,17 +176,18 @@ class cbQuestion extends CRMEntity {
 		if ($q->column_fields['sqlquery']=='1') {
 			$mod = CRMEntity::getInstance($q->column_fields['qmodule']);
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.$mod->table_name.' ';
-			$query .= getNonAdminAccessControlQuery($q->column_fields['qmodule'], $current_user);
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
 				$queryparams = 'set ';
 				$paramcount = 1;
 				$qpprefix = '@qp'.time();
-				foreach ($params as $param => $value) {
-					$qp = $qpprefix.$paramcount;
-					$paramcount++;
-					$queryparams.= $adb->convert2Sql(" $qp = ?,", [$value]);
-					$conds = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $conds);
+				if (!empty($params)) {
+					foreach ($params as $param => $value) {
+						$qp = $qpprefix.$paramcount;
+						$paramcount++;
+						$queryparams.= $adb->convert2Sql(" $qp = ?,", [$value]);
+						$conds = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $conds);
+					}
 				}
 				$queryparams = trim($queryparams, ',');
 				if (!empty($params)) {
@@ -211,6 +212,7 @@ class cbQuestion extends CRMEntity {
 					$query .= $conds;
 				}
 			}
+			$query = appendFromClauseToQuery($query, getNonAdminAccessControlQuery($q->column_fields['qmodule'], $current_user));
 			if (!empty($q->column_fields['groupby'])) {
 				$query .= ' GROUP BY '.$q->column_fields['groupby'];
 			}

@@ -261,5 +261,10 @@ class Mapping extends processcbMap {
 		}
 		return $value;
 	}
+
+	public function getDestinationFields() {
+		$mapping=$this->convertMap2Array();
+		return array_keys($mapping['fields']);
+	}
 }
 ?>

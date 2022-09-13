@@ -78,6 +78,8 @@ function cbexpsql_supportedFunctions() {
 		'ifelse' => 'if else then end',
 		'coalesce' => 'coalesce(a,...,n)',
 		'hash' => 'hash(field, method)',
+		'base64encode' => 'base64encode(string)',
+		'base64decode' => 'base64decode(string)',
 		'getEntityType' => 'getEntityType(field)',
 		'number_format' => 'number_format(number, format)',
 		// 'add_workdays' => 'add_workdays(date, numofdays, addsaturday, holidays)',
@@ -299,6 +301,20 @@ function cbexpsql_isstring($arr, $mmodule) {
 
 function cbexpsql_isnumber($arr, $mmodule) {
 	return __cbexpsql_functionparams("concat('',".__cbexpsql_functionparamsvalue($arr[0], $mmodule).'*1)=', $arr, $mmodule);
+}
+
+function cbexpsql_base64encode($arr, $mmodule) {
+	if (is_object($arr[0])) {
+		$arr[0] = $arr[0]->value;
+	}
+	return __cbexpsql_functionparams('TO_BASE64', $arr, $mmodule);
+}
+
+function cbexpsql_base64decode($arr, $mmodule) {
+	if (is_object($arr[0])) {
+		$arr[0] = $arr[0]->value;
+	}
+	return __cbexpsql_functionparams('FROM_BASE64', $arr, $mmodule);
 }
 
 function cbexpsql_hash($arr, $mmodule) {

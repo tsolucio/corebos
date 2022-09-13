@@ -53,7 +53,8 @@ function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 		},
 		header: {
 			align: 'left',
-		}
+		},
+		contextMenu: null
 	});
 
 	tui.Grid.applyTheme('striped');

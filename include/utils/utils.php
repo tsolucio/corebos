@@ -103,6 +103,7 @@ function getBrowserVariables(&$smarty) {
 	$corebos_browsertabID = (empty($_COOKIE['corebos_browsertabID']) ? '' : $_COOKIE['corebos_browsertabID']);
 	if ($smarty) {
 		$smarty->assign('GVTMODULE', $vars['gVTModule']);
+		$smarty->assign('GVTMODULELABEL', getTranslatedString($vars['gVTModule'], $vars['gVTModule']));
 		$smarty->assign('THEME', $vars['gVTTheme']);
 		$smarty->assign('DEFAULT_CHARSET', $vars['default_charset']);
 		$smarty->assign('CURRENT_USER_ID', $vars['gVTUserID']);
@@ -3583,7 +3584,7 @@ function getSelectedRecords($input, $module, $idstring, $excludedRecords) {
 	global $adb;
 
 	if ($idstring == 'relatedListSelectAll') {
-		$recordid = vtlib_purify($input['recordid']);
+		$recordid = filter_var($input['recordid'], FILTER_SANITIZE_NUMBER_INT);
 		if ($module == 'Accounts') {
 			$result = getCampaignAccountIds($recordid);
 		}
@@ -3619,6 +3620,12 @@ function getSelectedRecords($input, $module, $idstring, $excludedRecords) {
 		} else {
 			$storearray = explode(';', $idstring);
 		}
+		array_walk(
+			$storearray,
+			function (&$val, $key) {
+				$val = filter_var($val, FILTER_SANITIZE_NUMBER_INT);
+			}
+		);
 	} elseif ($idstring == 'all') {
 		$result = getSelectAllQuery($input, $module);
 		$storearray = array();
@@ -3632,6 +3639,12 @@ function getSelectedRecords($input, $module, $idstring, $excludedRecords) {
 		$storearray = array_diff($storearray, $excludedRecords);
 	} else {
 		$storearray = explode(';', $idstring);
+		array_walk(
+			$storearray,
+			function (&$val, $key) {
+				$val = filter_var($val, FILTER_SANITIZE_NUMBER_INT);
+			}
+		);
 	}
 
 	return $storearray;

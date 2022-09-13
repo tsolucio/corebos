@@ -137,30 +137,8 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																										type="button"
 																										name="mapbutton"
 																										>
-																										<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-																											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-																										</svg>
 																										{$APP.LBL_LOCATE_MAP}
 																									</button>
-																									<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions">
-																										<ul class="slds-dropdown__list" role="menu">
-																											<li class="slds-dropdown__item" role="presentation">
-																											<a href="#" role="menuitem" tabindex="0">
-																												<span class="slds-truncate" title="Overflow Item One">Overflow Item One</span>
-																											</a>
-																											</li>
-																											<li class="slds-dropdown__item" role="presentation">
-																											<a href="#" role="menuitem" tabindex="-1">
-																												<span class="slds-truncate" title="Overflow Item Two">Overflow Item Two</span>
-																											</a>
-																											</li>
-																											<li class="slds-dropdown__item" role="presentation">
-																											<a href="#" role="menuitem" tabindex="-1">
-																												<span class="slds-truncate" title="Overflow Item Three">Overflow Item Three</span>
-																											</a>
-																											</li>
-																										</ul>
-																									</div>
 																								</div>
 																								{else}
 																								<div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open slds-button_last">

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-global $mod_strings, $app_strings, $theme, $current_user;
+global $mod_strings, $app_strings, $theme, $current_user, $default_charset;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
@@ -27,7 +27,7 @@ if (!empty($_REQUEST['homestuffid'])) {
 }
 $stufftype = '';
 if (!empty($_REQUEST['blockstufftype'])) {
-	$stufftype = vtlib_purify($_REQUEST['blockstufftype']);
+	$stufftype = htmlspecialchars(vtlib_purify($_REQUEST['blockstufftype']), ENT_QUOTES, $default_charset);
 }
 $dashdet = '';
 $homestuff_values = array(

@@ -110,6 +110,7 @@ class cbMap extends CRMEntity {
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'mapname');
 	public $mapExecutionInfo = array();
+	public $mapObject = null;
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
@@ -174,6 +175,7 @@ class cbMap extends CRMEntity {
 	public function __call($name, $arguments) {
 		require_once 'modules/cbMap/processmap/'.$name.'.php';
 		$processmap = new $name($this);
+		$this->mapObject = $processmap;
 		$return = $processmap->processMap($arguments);
 		$this->mapExecutionInfo = $processmap->mapExecutionInfo;
 		return $return;
@@ -181,10 +183,11 @@ class cbMap extends CRMEntity {
 
 	public static function getMapByID($cbmapid) {
 		global $adb;
-		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap', true);
-		$query = 'SELECT crmid,setype FROM '.$crmEntityTable.' where crmid=? AND deleted=0';
-		$result = $adb->pquery($query, array($cbmapid));
-		if ($result && $adb->num_rows($result)>0 && $adb->query_result($result, 0, 'setype') == 'cbMap') {
+		$result = $adb->pquery(
+			'SELECT setype FROM '.CRMEntity::getcrmEntityTableAlias('cbMap', true).' where crmid=? AND deleted=0',
+			array($cbmapid)
+		);
+		if ($result && $adb->num_rows($result)>0 && $result->fields['setype'] == 'cbMap') {
 			$cbmap = new cbMap();
 			$cbmap->retrieve_entity_info($cbmapid, 'cbMap');
 			return $cbmap;

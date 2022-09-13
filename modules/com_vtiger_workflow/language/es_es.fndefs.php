@@ -1118,6 +1118,40 @@ $WFExpressionFunctionDefinitons = array(
 		"modulo(5, 3)",
 	),
 ),
+'base64encode' => array(
+	'name' => 'base64encode(field_or_string)',
+	'desc' => 'Esta función genera la codificación base64 del valor.',
+	'params' => array(
+		array(
+			'name' => 'field_or_string',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'Mensaje a codificar',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"base64encode('coreBOS is awesome!')",
+		'base64encode(accountname)',
+	),
+),
+'base64decode' => array(
+	'name' => 'base64decode(field_or_string)',
+	'desc' => 'Esta función decodifica un valor codificado en base64.',
+	'params' => array(
+		array(
+			'name' => 'field_or_string',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'Mensaje a decodificar',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"base64decode('Y29yZUJPUyBpcyBhd2Vzb21lIQ==')",
+		'base64decode(encoded_field)',
+	),
+),
 'hash' => array(
 	'name' => 'hash(field, method)',
 	'desc' => 'Esta función genera un valor hash (resumen del mensaje).',
@@ -1921,6 +1955,68 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"setToContext('accountname','mortein')",
+	),
+),
+'applyMaptoArrayElements' => array(
+	'name' => 'applyMaptoArrayElements(array, mapid)',
+	'desc' => 'Aplica el mapa de negocio dado a cada elemento del parámetro array.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'array',
+			'optional' => false,
+			'desc' => 'El array que sirve de contexto.',
+		),
+		array(
+			'name' => 'mapid',
+			'type' => 'Entero',
+			'optional' => false,
+			'desc' => 'CRMID del mapa de negocio que se aplicará sobre el array',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"applyMaptoArrayElements(getFromContext('response.data'),43980)",
+	),
+),
+'applyMaptoInventoryArrayElements' => array(
+	'name' => 'applyMaptoInventoryArrayElements(array, InventoryDetailsElement, Inventorymapid, InventoryDetailsmapid, send2cb)',
+	'desc' => 'Aplica el mapa de negocio Inventorymapid a cada elemento del parámetro array, y el mapa InventoryDetailsmapid a cada elemento del sub-array indicado por el parámetro InventoryDetailsElement.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'array',
+			'optional' => false,
+			'desc' => 'El array que sirve de contexto.',
+		),
+		array(
+			'name' => 'InventoryDetailsElement',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'defines the element that contains the inventory line details for each order',
+		),
+		array(
+			'name' => 'Inventorymapid',
+			'type' => 'Entero',
+			'optional' => false,
+			'desc' => 'CRMID del mapa de negocio que se aplicará sobre la información del registro maestro',
+		),
+		array(
+			'name' => 'InventoryDetailsmapid',
+			'type' => 'Entero',
+			'optional' => false,
+			'desc' => 'CRMID del mapa de negocio que se aplicará sobre la información de cada línea de inventario del registro maestro',
+		),
+		array(
+			'name' => 'send2cb',
+			'type' => 'Booleano',
+			'optional' => true,
+			'desc' => 'utiliza 1 si la información está destinada a enviar a coreBOS, y 0 para otros casos.',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"applyMaptoInventoryArrayElements(getFromContext('response.data'), 'pdoInformation', 43980, 43981, 1)",
 	),
 ),
 'jsonEncode' => array(

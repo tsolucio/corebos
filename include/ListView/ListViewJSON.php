@@ -256,7 +256,7 @@ class GridListView {
 		//add action in header
 		$actionPermission = getTabsActionPermission($profileid)[$this->tabid];
 		$controller = new ListViewController($adb, $current_user, $queryGenerator);
-		$listview_header_search = $controller->getBasicSearchFieldInfoList();
+		$listview_header_search = $controller->getListViewHeaderArray();
 		if (isset($_REQUEST['isRecycleModule'])) {
 			$rbfields = $queryGenerator->getFields();
 			if (!in_array('modifiedtime', $rbfields)) {
@@ -271,6 +271,35 @@ class GridListView {
 		$findRelatedModule = '';
 		$fieldPermission = getProfile2FieldPermissionList($this->module, $profileid);
 		foreach ($listview_header_search as $fName => $fValue) {
+			if ($fName == 'cblvactioncolumn') {
+				$lv_arr = array(
+					'fieldname' => $fName,
+					'fieldvalue' => html_entity_decode($fValue),
+					'uitype' => '',
+					'tooltip' => false,
+					'edit' => false
+				);
+				array_push($listview_header_arr, $lv_arr);
+				continue;
+			}
+			if (strpos($fName, '.')) {
+				list($modName, $fldName) = explode('.', $fName);
+				if ($modName == 'Users') {
+					$fldName = strtolower($fldName);
+				} else {
+					$fldName = strtolower($modName.$fldName);
+				}
+				$lv_arr = array(
+					'fieldname' => $fldName,
+					'fieldvalue' => html_entity_decode($fValue.' ('.getTranslatedString($modName).')'),
+					'uitype' => '',
+					'tooltip' => false,
+					'edit' => false,
+					'sortable' => false,
+				);
+				array_push($listview_header_arr, $lv_arr);
+				continue;
+			}
 			$fieldInfo = VTCacheUtils::lookupFieldInfo($this->tabid, $fName);
 			$tooltip = ToolTipExists($fName, $this->tabid);
 			if (!$fieldInfo) {
@@ -396,6 +425,10 @@ class GridListView {
 		$reference_field = getEntityFieldNames($this->module);
 		$columnnameVal = $this->getFieldNameByColumn($reference_field['fieldname']);
 		$rowCount = $adb->num_rows($result);
+		$yesValue = getTranslatedString('yes', $this->module);
+		$noValue = getTranslatedString('no', $this->module);
+		$group_array = get_group_array();
+		$usersList = $this->UsersList();
 		for ($i=0; $i < $rowCount; $i++) {
 			$rows = array();
 			$colorizer_row = array();
@@ -411,6 +444,9 @@ class GridListView {
 				$colorizer_row[$fieldName] = $fieldValue;
 				if ($fieldValue == '' || $fieldValue == null) {
 					$rows[$fieldName] = '';
+					if ($fieldType == Field_Metadata::UITYPE_CHECKBOX) {
+						$rows[$fieldName] = $noValue;
+					}
 					continue;
 				}
 				//check field uitypes
@@ -451,9 +487,9 @@ class GridListView {
 					$rows[$fieldName] = $value;
 				} elseif ($fieldType == '56') {
 					if ($fieldValue == 1) {
-						$rows[$fieldName] = getTranslatedString('yes', $this->module);
+						$rows[$fieldName] = $yesValue;
 					} elseif ($fieldValue == 0) {
-						$rows[$fieldName] = getTranslatedString('no', $this->module);
+						$rows[$fieldName] = $noValue;
 					} else {
 						$rows[$fieldName] = '--';
 					}
@@ -486,7 +522,7 @@ class GridListView {
 						$rows[$fieldName] = '--';
 					}
 				} elseif ($fieldName == 'modifiedby') {
-						$rows[$fieldName] = getUserFullName($fieldValue);
+						$rows[$fieldName] = isset($usersList[$fieldValue]) ? $usersList[$fieldValue] : getUserFullName($fieldValue);
 				} elseif ($fieldType == '1024') {
 					if (!empty($fieldValue)) {
 						$fieldValue = implode(', ', array_map('getRoleName', explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue)));
@@ -530,8 +566,7 @@ class GridListView {
 					$fileid = $adb->query_result($res, 0, 'attachmentsid');
 					$rows['fileid'] = $fileid;
 				}
-				$group_array = get_group_array();
-				$assigned_user_id = isset($smownerid) ? getUserFullName($smownerid) : false;
+				$assigned_user_id = isset($smownerid) && isset($usersList[$smownerid]) ? $usersList[$smownerid] : false;
 				if (!$assigned_user_id) {
 					$assigned_user_id = $group_array[$smownerid];
 				}
@@ -559,6 +594,16 @@ class GridListView {
 			array_push($data, $rows);
 		}
 		return $data;
+	}
+
+	public function UsersList() {
+		global $adb;
+		$rs = $adb->pquery('SELECT id, ename FROM vtiger_users', array());
+		$users = array();
+		while ($row = $adb->fetch_array($rs)) {
+			$users[$row['id']] = $row['ename'];
+		}
+		return $users;
 	}
 
 	public function getFieldNameByColumn($columnname, $return = '') {
@@ -875,8 +920,6 @@ class GridListView {
 	public function findDocumentFolders() {
 		require_once 'modules/DocumentFolders/DocumentFolders.php';
 		global $current_user, $adb;
-		$focus = new DocumentFolders();
-		$referenceField = 'parentfolder';
 		$queryGenerator = new QueryGenerator('DocumentFolders', $current_user);
 		$queryGenerator->setFields(array('id','foldername'));
 		if (!isset($_REQUEST['folders'])) {
@@ -886,7 +929,6 @@ class GridListView {
 		$result = $adb->pquery($list_query.' order by vtiger_documentfolders.sequence', array());
 		$foldercount = $adb->num_rows($result);
 		$folders = array();
-		$records_list = array();
 		if ($foldercount > 0) {
 			for ($i=0; $i<$foldercount; $i++) {
 				$id = $adb->query_result($result, $i, 'documentfoldersid');
@@ -903,9 +945,7 @@ class GridListView {
 	public function SearchFullDocuments($text) {
 		global $adb;
 		$this->DocumentSearch = true;
-		$result = $adb->pquery('select * from vtiger_documentsearchinfo where text LIKE ?', array(
-			'%'.$text.'%'
-		));
+		$result = $adb->pquery('select * from vtiger_documentsearchinfo where text LIKE ?', array('%'.$text.'%'));
 		if ($adb->num_rows($result) > 0) {
 			$ids = array();
 			while ($row = $result->FetchRow()) {

@@ -134,6 +134,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigmautic':
 		include_once 'include/integrations/mautic/settings.php';
 		break;
+	case 'getconfigfacebook':
+	case 'setconfigfacebook':
+		include_once 'include/integrations/facebook/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
@@ -245,6 +249,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('ClickHouse', 'Utilities'),
 				'desc' => getTranslatedString('ClickHouse_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigsclickhouse',
+			),
+			array(
+				'abbr' => 'FB',
+				'title' => getTranslatedString('Facebook Activation', 'Utilities'),
+				'desc' => getTranslatedString('Facebook Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigfacebook',
 			),
 		);
 		if (file_exists('build/wsChanges/LoginSession.php')) {

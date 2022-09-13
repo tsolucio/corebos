@@ -71,6 +71,8 @@ class VTFieldExpressionEvaluater {
 			'floor' => '__vt_floor',
 			'modulo' => '__cb_modulo',
 			'hash' => '__cb_hash',
+			'base64encode' => '__cb_base64encode',
+			'base64decode' => '__cb_base64decode',
 			'globalvariable' => '__cb_globalvariable',
 			'aggregation' => '__cb_aggregation',
 			'aggregation_fields_operation' => '__cb_aggregation_operation',
@@ -105,6 +107,8 @@ class VTFieldExpressionEvaluater {
 			'getFromContext' => '__cb_getfromcontext',
 			'getFromContextSearching' => '__cb_getfromcontextsearching',
 			'setToContext' => '__cb_setfromcontext',
+			'applyMaptoArrayElements' => '__cb_applymaptoarrayelements',
+			'applyMaptoInventoryArrayElements' => '__cb_applymaptoinventoryarrayelements',
 			'jsonEncode' => '__cb_jsonencode',
 			'jsonDecode' => '__cb_jsondecode',
 			'implode' => '__cb_implode',
@@ -187,6 +191,8 @@ class VTFieldExpressionEvaluater {
 			'floor' => 'cbexpsql_floor',
 			'modulo' => 'cbexpsql_modulo',
 			'hash' => 'cbexpsql_hash',
+			'base64encode' => 'cbexpsql_base64encode',
+			'base64decode' => 'cbexpsql_base64decode',
 			'globalvariable' => 'cbexpsql_globalvariable',
 			'aggregation' => 'cbexpsql_aggregation',
 			'aggregation_fields_operation' => 'cbexpsql_aggregation_operation',
@@ -254,6 +260,7 @@ class VTFieldExpressionEvaluater {
 			'__cb_getfromcontext',
 			'__cb_getfromcontextsearching',
 			'__cb_setfromcontext',
+			'__cb_applymaptoarrayelements',
 			'__cb_exists',
 			'__cb_existsrelated',
 			'__cb_allrelatedare',
@@ -332,9 +339,9 @@ class VTFieldExpressionEvaluater {
 						$params[] = ''; // no conditions
 					}
 				} else {
-					if (empty($this->env->WorkflowContext)) {
+					if ($this->env && empty($this->env->WorkflowContext)) {
 						$this->env->WorkflowContext = array(
-							'current_row' => $this->env->data
+							'current_row' => $this->env->getData()
 						);
 					}
 					$params = array_map(array($this, 'exec'), $expr->getParams());

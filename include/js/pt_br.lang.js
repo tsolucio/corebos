@@ -411,6 +411,7 @@ var alert_arr = {
 	'INTEGERVALS':'Somente valores inteiros são permitidos',
 	'JSLBL_Delete': 'Apagar',
 	'JSLBL_Edit': 'Edit',
+	'JSLBL_Create': 'Create',
 	'JSLBL_Loading': 'Carregando',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'O anexo não pode ser excluído',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Limite de carregamento do arquivo excedido!!',

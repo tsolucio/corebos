@@ -164,6 +164,7 @@ class Validations extends processcbMap {
 				$fieldlabel = $valfield;
 			}
 			$i18n = getTranslatedString($fieldlabel, $mapping['origin']);
+			$i18n = str_replace('%', '%%', $i18n);
 			foreach ($vals as $val) {
 				if (isset($screen_values['action']) && $screen_values['action']=='MassEditSave' && empty($screen_values[$valfield.'_mass_edit_check'])) {
 					continue; // we are not saving this field in mass edit save so we don't have to check it

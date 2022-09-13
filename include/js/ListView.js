@@ -614,6 +614,7 @@ function massDelete(module) {
 }
 
 function showDefaultCustomView(selectView, module) {
+	window.coreBOSEvents.FilterLoaded = new CustomEvent('coreBOSEvent_FilterLoaded', {'filter': selectView, 'module': module});
 	document.getElementById('status').style.display = 'inline';
 	var viewName = encodeURIComponent(selectView.options[selectView.options.selectedIndex].value);
 	if (Application_Landing_View=='tuigrid') {
@@ -628,6 +629,7 @@ function showDefaultCustomView(selectView, module) {
 				kanbanRefresh(currentKanbanID, 'filter');
 				return;
 			}
+			window.dispatchEvent(window.coreBOSEvents.FilterLoaded);
 			var result = response.split('&#&#&#');
 			document.getElementById('ListViewContents').innerHTML = result[2];
 			vtlib_executeJavascriptInElement(document.getElementById('ListViewContents'));
@@ -1017,16 +1019,24 @@ function callSearch(searchtype, mode = '') {
 	var search_fld_val = document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
 	var search_txt_val = encodeURIComponent(document.basicSearch.search_text.value);
 	var urlstring = '';
+	let eventdata = {
+		'searchtype': searchtype,
+	};
 	if (searchtype == 'Basic') {
 		urlstring = 'search_field=' + search_fld_val + '&searchtype=BasicSearch&search_text=' + search_txt_val + '&';
+		eventdata.search_field = search_fld_val;
+		eventdata.search_text = search_txt_val;
 		if (mode == 'SearchDocuments') {
 			urlstring += 'mode=SearchDocuments&';
 		}
 	} else if (searchtype == 'Advanced') {
 		var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
 		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
+		eventdata.advft_criteria = advft_criteria;
+		eventdata.advft_criteria_groups = advft_criteria_groups;
 		urlstring += '&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&searchtype=advance&';
 	}
+	window.coreBOSEvents.FilterSearch = new CustomEvent('coreBOSEvent_FilterSearch', eventdata);
 	document.getElementById('status').style.display = 'inline';
 	if (Application_Landing_View=='table' || Application_Landing_View=='Kanban') {
 		jQuery.ajax({
@@ -1038,6 +1048,7 @@ function callSearch(searchtype, mode = '') {
 				kanbanRefresh(currentKanbanID, 'search');
 			} else {
 				processQuickSearchResponse(response);
+				window.dispatchEvent(window.coreBOSEvents.FilterSearch);
 			}
 		});
 	} else {
@@ -1046,6 +1057,7 @@ function callSearch(searchtype, mode = '') {
 			return false;
 		}
 		ListView.Show('search', urlstring, searchtype);
+		window.dispatchEvent(window.coreBOSEvents.FilterSearch);
 	}
 	return false;
 }
@@ -1068,15 +1080,22 @@ function alphabetic(module, url, dataid) {
 	}
 	getObj(dataid).className = 'searchAlphselected';
 	document.getElementById('status').style.display = 'inline';
+	let eventdata = {
+		'searchtype': 'Alphabetic',
+		'letter': dataid
+	};
+	window.coreBOSEvents.FilterSearch = new CustomEvent('coreBOSEvent_FilterSearch', eventdata);
 	if (Application_Landing_View=='table') {
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=index&ajax=true&search=true&' + url
 		}).done(function (response) {
 			processQuickSearchResponse(response);
+			window.dispatchEvent(window.coreBOSEvents.FilterSearch);
 		});
 	} else {
 		ListView.Show('alphabetic', url);
+		window.dispatchEvent(window.coreBOSEvents.FilterSearch);
 	}
 }
 

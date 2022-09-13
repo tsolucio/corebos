@@ -130,10 +130,9 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
 FieldDependencies.prototype.controlActions = function (sourcename) {
 	var sourcevalue ='';
 	var field, comparator, value, columncondition, fieldName, groupid, conditionCurr, newGroup;
-	var i=0;
 	var conditions=new Array();
 	if (this.DS[sourcename]!==undefined) {
-		for (i=0; i<this.DS[sourcename].length; i++) {
+		for (var i=0; i<this.DS[sourcename].length; i++) {
 			var responsibleConfig=this.DS[sourcename][i];
 			conditions=responsibleConfig['conditions']!=='' ?  JSON.parse(responsibleConfig['conditions']) : conditions;
 			var conditionResp='';
@@ -179,7 +178,6 @@ FieldDependencies.prototype.controlActions = function (sourcename) {
 					condArray.push(conditionResp);
 					condOperatorArray.push('');
 				}
-
 			}
 			conditionResp='';
 			for (j=0; j<condArray.length; j++) {
@@ -701,15 +699,17 @@ FieldDependencies.prototype.callFunc = function (sourcename, allParam) {
 		var funcName=allParam[i]['value'];
 		var action_field=allParam[i]['field'];
 		var parameters=allParam[i]['params'];
-		var fldValue=document.getElementsByName(sourcename).item(0).value;
-		var fld = jQuery('[name="'+sourcename+'"]', this.baseform);
-		//check if the function is already declared
-		//make sure it is not going to be called the first time the page is loaded
-		if (window[funcName]!==undefined && typeof(fld.data('initialVal')) !== 'undefined') {
-			window[funcName](sourcename, action_field, fldValue, fld.data('initialVal'), parameters);
-		}
-		if (typeof(fld.data('initialVal')) == 'undefined') {
-			fld.data('initialVal', fldValue);
+		var fldValues=document.getElementsByName(sourcename);
+		if (fldValues.length) {
+			var fldValue = fldValues.item(0).value;
+			var fld = jQuery('[name="'+sourcename+'"]', this.baseform);
+			if (typeof(fld.data('initialVal')) == 'undefined') {
+				fld.data('initialVal', fldValue);
+			}
+			//check if the function is already declared
+			if (window[funcName]!==undefined) {
+				window[funcName](sourcename, action_field, fldValue, fld.data('initialVal'), parameters);
+			}
 		}
 	}
 };

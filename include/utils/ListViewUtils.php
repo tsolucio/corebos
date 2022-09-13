@@ -168,11 +168,11 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 						if ($relatedlist != '' && $relatedlist != 'global') {
 							$relationURL = '';
 							if (!empty($_REQUEST['relation_id'])) {
-								$relationURL = '&relation_id=' . vtlib_purify($_REQUEST['relation_id']);
+								$relationURL = '&relation_id=' . filter_var($_REQUEST['relation_id'], FILTER_SANITIZE_NUMBER_INT);
 							}
 							$actionsURL = '';
 							if (!empty($_REQUEST['actions'])) {
-								$actionsURL = '&actions=' . vtlib_purify($_REQUEST['actions']);
+								$actionsURL = '&actions=' . urlencode(vtlib_purify($_REQUEST['actions']));
 							}
 							if (empty($_REQUEST['header'])) {
 								$moduleLabel = $module;
@@ -729,7 +729,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 									$value = "<a href='index.php?module=Contacts&action=DetailView&record=" . $contact_id . "'>" . textlength_check($contact_name).'</a>';
 								}
 							}
-						} elseif ($name == 'Product') {
+						} elseif ($name == 'Product' && $fieldname=='productname') {
 							$product_id = textlength_check($adb->query_result($list_result, $i, 'productname'));
 							$value = $product_id;
 						} elseif ($name == 'Account Name') {
@@ -2182,7 +2182,7 @@ function getListQuery($module, $where = '') {
 				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_attachmentsfolder ON vtiger_notes.folderid = vtiger_attachmentsfolder.folderid";
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '');
+			$Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '', 'Documents');
 			if (!empty($Apache_Tika_URL)) {
 				$query .= ' LEFT JOIN vtiger_documentsearchinfo ON vtiger_documentsearchinfo.documentid=vtiger_notes.notesid ';
 			}

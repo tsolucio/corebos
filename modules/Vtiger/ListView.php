@@ -9,6 +9,7 @@
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
+$layout = GlobalVariable::getVariable('Application_ListView_Layout', 'table');
 require_once 'Smarty_setup.php';
 require_once 'include/ListView/ListView.php';
 require_once 'modules/CustomView/CustomView.php';
@@ -156,17 +157,19 @@ if ($sql_error) {
 		echo '<br>'.$list_query.'<br>';
 	}
 	try {
-		$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
-		$start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, $viewid, $queryMode);
-		$limit_start_rec = ($start-1) * $list_max_entries_per_page;
-		$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
-		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
-			$count_result = $adb->query(mkCountQuery($list_query));
-			$noofrows = $adb->query_result($count_result, 0, 0);
-		} else {
-			$noofrows = null;
+		if ($layout != 'tuigrid') {
+			$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
+			$start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, $viewid, $queryMode);
+			$limit_start_rec = ($start-1) * $list_max_entries_per_page;
+			$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+			if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
+				$count_result = $adb->query(mkCountQuery($list_query));
+				$noofrows = $adb->query_result($count_result, 0, 0);
+			} else {
+				$noofrows = null;
+			}
+			$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
 		}
-		$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
 	} catch (Exception $e) {
 		$sql_error = true;
 	}
@@ -188,15 +191,17 @@ if ($sql_error) {
 		$smarty->assign('LISTHEADER', '');
 		$smarty->assign('LISTENTITY', array());
 	} else {
-		$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
-		$smarty->assign('recordListRange', $recordListRangeMsg);
+		if ($layout != 'tuigrid') {
+			$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
+			$smarty->assign('recordListRange', $recordListRangeMsg);
+		}
 
 		$smarty->assign('CUSTOMVIEW_OPTION', $customview_html);
-
-		// Navigation
-		$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $currentModule, 'index', $viewid);
-		$smarty->assign('NAVIGATION', $navigationOutput);
-
+		if ($layout != 'tuigrid') {
+			// Navigation
+			$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $currentModule, 'index', $viewid);
+			$smarty->assign('NAVIGATION', $navigationOutput);
+		}
 		$controller = new ListViewController($adb, $current_user, $queryGenerator);
 
 		if (!isset($skipAction)) {
@@ -206,16 +211,17 @@ if ($sql_error) {
 		if ($currentModule == 'Documents') {
 			include 'modules/Documents/ListViewCalculations.php';
 		}
+		$listview_entries = array();
+		if ($layout != 'tuigrid') {
+			$listview_header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, $skipAction);
+			$listview_entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, $skipAction);
 
-		$listview_header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, $skipAction);
-		$listview_entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, $skipAction);
 
+			$smarty->assign('LISTHEADER', $listview_header);
+			$smarty->assign('LISTENTITY', $listview_entries);
+		}
 		$listview_header_search = $controller->getBasicSearchFieldInfoList();
-
-		$smarty->assign('LISTHEADER', $listview_header);
-		$smarty->assign('LISTENTITY', $listview_entries);
 		$smarty->assign('SEARCHLISTHEADER', $listview_header_search);
-
 	// Module Search
 		$alphabetical = AlphabeticalSearch($currentModule, 'index', $focus->def_basicsearch_col, 'true', 'basic', '', '', '', '', $viewid);
 		$fieldnames = $controller->getAdvancedSearchOptionString();
@@ -236,7 +242,7 @@ if ($sql_error) {
 	// Gather the custom link information to display
 		include_once 'vtlib/Vtiger/Link.php';
 		$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
-		$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
+		$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW','LISTVIEWACTION'), $customlink_params));
 	}
 } // try query
 $smarty->assign('IS_ADMIN', is_admin($current_user));
@@ -251,7 +257,7 @@ if (isset($listview_header_search) && is_array($listview_header_search)) {
 $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_ListView_SearchPanel_Open', 1);
 $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS', ($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));
 $smarty->assign('EDIT_FILTER_ALL', GlobalVariable::getVariable('Application_Filter_All_Edit', 1));
-$smarty->assign('moduleView', GlobalVariable::getVariable('Application_ListView_Layout', 'table'));
+$smarty->assign('moduleView', $layout);
 $smarty->assign('Apache_Tika_URL', GlobalVariable::getVariable('Apache_Tika_URL', ''));
 
 if (!empty($custom_list_include) && file_exists($custom_list_include)) {

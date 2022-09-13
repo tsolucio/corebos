@@ -14,16 +14,12 @@ function vtws_logout($sessionId, $user, $SessionManagerClass = 'coreBOS_Session'
 	} else {
 		$sessionManager = $SessionManagerClass;
 	}
-	if (!coreBOS_Session::isSessionStarted()) {
-		$sessionManager->startSession($sessionId);
-	}
-	if (!isset($sessionId) || $sessionId=='' || !$sessionManager->isValid()) {
-		return $sessionManager->getError();
+	if (!isset($sessionId) || $sessionId=='' || empty($sessionManager::id())) {
+		return ['message' => 'session error'];
 	}
 	cbEventHandler::do_action('corebos.logout', array($user, $sessionManager, 'webservice'));
 
-	$sessionManager::destroy();
-//	$sessionManager->setExpire(1);
+	$sessionManager::kill();
 	// Recording Logout Info
 	require_once 'modules/Users/LoginHistory.php';
 	$loghistory=new LoginHistory();
