@@ -19,12 +19,18 @@
  *************************************************************************************************
  * The accepted format is:
 <map>
+	<title></title>
 	<linkfields>
 		<targetfield>asset_no</targetfield>
 	</linkfields>
 	<modules>
 		<module>
 			<originmodule>Messages</originmodule>
+			<tooltip>
+				<fields>messagename</fields>
+				<fields>messagesrelatedto</fields>
+				...
+			</tooltip>
 		</module>
 		<module>
 			<targetmodule>Assets</targetmodule>
@@ -39,6 +45,7 @@
 						<sortable>true</sortable>
 						<layout></layout>
 					</field>
+					...
 				</fields>
 			</listview>
 		</module>
@@ -66,6 +73,7 @@ class RelatedListBlock extends processcbMap {
 		if (empty($xml)) {
 			return array();
 		}
+		$this->mapping_arr['title'] = (string)$xml->title;
 		$this->mapping_arr['linkfields']['targetfield'] = (string)$xml->linkfields->targetfield;
 		$originmodule = $xml->modules->module[0];
 		$targetmodule = $xml->modules->module[1];
@@ -74,6 +82,9 @@ class RelatedListBlock extends processcbMap {
 		$this->detailModule = $this->mapping_arr['targetmodule']['name'];
 		foreach ($targetmodule->listview->fields as $fields) {
 			$this->FormatFields($fields, 'targetmodule', 'listview');
+		}
+		if (isset($originmodule->tooltip)) {
+			$this->mapping_arr['tooltip'] = (array)$originmodule->tooltip->fields;
 		}
 		return $this->mapping_arr;
 	}

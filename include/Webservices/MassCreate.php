@@ -87,11 +87,17 @@ function MassCreate($elements, $user) {
 			];
 		}
 	}
-
-	return [
+	$return = [
 		'success_creates' => $successCreates,
 		'failed_creates' => $failedCreates
 	];
+	if (!empty($failedCreates)) {
+		$return = [
+			'wssuccess' => false,
+			'wsresult' => $return,
+		];
+	}
+	return $return;
 }
 
 function mcGetRecordId($arr, $reference) {

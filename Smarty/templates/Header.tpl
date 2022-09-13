@@ -420,7 +420,7 @@
 			</a>
 		</div>
 		<span id="wafflelabel" class="slds-context-bar__label-action slds-context-bar__app-name slds-m-left_xx-small" onclick="hideVerticalMenu()">
-			<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}d dfgxcv xdfv xcv cv cv </span>
+			<span class="slds-truncate" style="cursor: pointer;" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}</span>
 		</span>
 	</div>
 	{call cbmenuvertical menu=$MENU}

@@ -44,16 +44,15 @@ if (!empty($otherRoles)) {
 echo 'SUCCESS';
 
 function assignValues($picklistid, $roleid, $values, $tableName) {
-	global $adb;
+	global $adb,$cbAppCache;
 	$count = count($values);
 	//delete older values
 	$adb->pquery('DELETE FROM vtiger_role2picklist WHERE roleid=? AND picklistid=?', array($roleid,$picklistid));
 
 	//clear cache picklist#roleid key
-	$cache = new corebos_cache();
-	if ($cache->isUsable()) {
+	if ($cbAppCache->isUsable()) {
 		$cacheKey = $tableName . '#' . $roleid;
-		$cache->getCacheClient()->delete($cacheKey);
+		$cbAppCache->getCacheClient()->delete($cacheKey);
 	}
 
 	//insert the new values

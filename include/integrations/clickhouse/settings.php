@@ -31,7 +31,8 @@ if ($isadmin && isset($_REQUEST['clickhouse_active']) && isset($_REQUEST['btnchs
 	$clickhouse_password = (empty($_REQUEST['clickhouse_password']) ? '' : vtlib_purify($_REQUEST['clickhouse_password']));
 	$clickhouse_host = (empty($_REQUEST['clickhouse_host']) ? '' : vtlib_purify($_REQUEST['clickhouse_host']));
 	$clickhouse_port = (empty($_REQUEST['clickhouse_port']) ? '' : vtlib_purify($_REQUEST['clickhouse_port']));
-	$mu->saveSettings($isActive, $clickhouse_host, $clickhouse_port, $clickhouse_database, $clickhouse_username, $clickhouse_password);
+	$clickhouse_webhook_secret = (empty($_REQUEST['clickhouse_webhook_secret']) ? '' : vtlib_purify($_REQUEST['clickhouse_webhook_secret']));
+	$mu->saveSettings($isActive, $clickhouse_host, $clickhouse_port, $clickhouse_database, $clickhouse_username, $clickhouse_password, $clickhouse_webhook_secret);
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('ClickHouse Activation', $currentModule));
@@ -42,6 +43,7 @@ $smarty->assign('clickhouse_port', $musettings['clickhouse_port']);
 $smarty->assign('clickhouse_database', $musettings['clickhouse_database']);
 $smarty->assign('clickhouse_username', $musettings['clickhouse_username']);
 $smarty->assign('clickhouse_password', $musettings['clickhouse_password']);
+$smarty->assign('clickhouse_webhook_secret', $musettings['clickhouse_webhook_secret']);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);

@@ -1957,6 +1957,34 @@ $WFExpressionFunctionDefinitons = array(
 		"setToContext('accountname','mortein')",
 	),
 ),
+'cleanArrayElements' => array(
+	'name' => 'cleanArrayElements(array, elements, invert)',
+	'desc' => 'Esta función elimina los elementos de matriz indicados.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'array',
+			'optional' => false,
+			'desc' => 'La matriz de la que eliminar los elementos',
+		),
+		array(
+			'name' => 'elements',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'lista separada por comas de claves para eliminar de la matriz',
+		),
+		array(
+			'name' => 'invert',
+			'type' => 'Booleano',
+			'optional' => true,
+			'desc' => 'verdadero (predeterminado) para usar el parámetro de valores separados por comas como valores a eliminar, falso para usarlos como valores a mantener',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"cleanArrayElements(getFromContext('response.data'), 'field1,fieldn')",
+	),
+),
 'applyMaptoArrayElements' => array(
 	'name' => 'applyMaptoArrayElements(array, mapid)',
 	'desc' => 'Aplica el mapa de negocio dado a cada elemento del parámetro array.',
@@ -1979,9 +2007,9 @@ $WFExpressionFunctionDefinitons = array(
 		"applyMaptoArrayElements(getFromContext('response.data'),43980)",
 	),
 ),
-'applyMaptoInventoryArrayElements' => array(
-	'name' => 'applyMaptoInventoryArrayElements(array, InventoryDetailsElement, Inventorymapid, InventoryDetailsmapid, send2cb)',
-	'desc' => 'Aplica el mapa de negocio Inventorymapid a cada elemento del parámetro array, y el mapa InventoryDetailsmapid a cada elemento del sub-array indicado por el parámetro InventoryDetailsElement.',
+'applyMaptoArrayElementsAndSubarray' => array(
+	'name' => 'applyMaptoArrayElementsAndSubarray(array, Map, SubArrayElement, SubArrayMap, cleanSubArrayElements, invert)',
+	'desc' => 'Aplica el mapeo de campo SubArrayMap en cada elemento SubArrayElement de la matriz inicial, luego aplica la lista cleanSubArrayElements si se proporciona, finalmente, se aplica el mapa a cada elemento de la matriz inicial.',
 	'params' => array(
 		array(
 			'name' => 'array',
@@ -1990,33 +2018,39 @@ $WFExpressionFunctionDefinitons = array(
 			'desc' => 'El array que sirve de contexto.',
 		),
 		array(
-			'name' => 'InventoryDetailsElement',
-			'type' => 'String',
-			'optional' => false,
-			'desc' => 'defines the element that contains the inventory line details for each order',
-		),
-		array(
-			'name' => 'Inventorymapid',
+			'name' => 'Map',
 			'type' => 'Entero',
 			'optional' => false,
-			'desc' => 'CRMID del mapa de negocio que se aplicará sobre la información del registro maestro',
+			'desc' => 'el CRMID del mapeo de campo que se aplicará en los campos de nivel superior de la matriz',
 		),
 		array(
-			'name' => 'InventoryDetailsmapid',
+			'name' => 'SubArrayElement',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'define el elemento del array de nivel superior que contiene el sub array a procesar. Este elemento será eliminado del resultado por lo que deberás copiarlo en el mapeo',
+		),
+		array(
+			'name' => 'SubArrayMap',
 			'type' => 'Entero',
 			'optional' => false,
-			'desc' => 'CRMID del mapa de negocio que se aplicará sobre la información de cada línea de inventario del registro maestro',
+			'desc' => 'CRMID del mapeo de campo que se aplicará en los campos del subarray',
 		),
 		array(
-			'name' => 'send2cb',
+			'name' => 'cleanSubArrayElements',
+			'type' => 'Cadena',
+			'optional' => true,
+			'desc' => 'una lista de campos separados por comas para eliminar del subarray después de aplicar el mapa. llama a cleanArrayElements',
+		),
+		array(
+			'name' => 'invert',
 			'type' => 'Booleano',
 			'optional' => true,
-			'desc' => 'utiliza 1 si la información está destinada a enviar a coreBOS, y 0 para otros casos.',
+			'desc' => 'verdadero (predeterminado) para usar el parámetro de valores separados por comas como valores a eliminar, falso para usarlos como valores a mantener',
 		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"applyMaptoInventoryArrayElements(getFromContext('response.data'), 'pdoInformation', 43980, 43981, 1)",
+		"applyMaptoArrayElementsAndSubarray(getFromContext('response.data'), 43980, 'line_items', 43981, 'field1,fieldn')",
 	),
 ),
 'jsonEncode' => array(

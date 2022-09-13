@@ -10,7 +10,7 @@
 <script type="text/javascript">
 <!-- Initialize components -->
 let currentLang = gVTuserLanguage.substring(0, 2);
-if (!['en', 'es', 'ko', 'pt'].includes(currentLang)) {
+if (!['en', 'es', 'ko', 'pt', 'it', 'nl'].includes(currentLang)) {
 	currentLang = 'en';
 }
 tui.Grid.setLanguage(currentLang);
