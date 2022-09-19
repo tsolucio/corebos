@@ -12,22 +12,26 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-
 class WizardComponent {
 
 	constructor(steps) {
-		this.ActiveStep = 0;
 		this.steps = steps;
+		this.ActiveStep = 0;
+		this.CheckedRows = [];
+		this.GroupByField = '';
+		this.GridData = [];
+		this.GroupData = [];
 		this.WizardInstance = [];
 		this.WizardRelModules = [];
 		this.WizardEntityNames = [];
-		this.CheckedRows = [];
 		this.WizardCurrentModule = [];
-		this.GridData = [];
 		this.WizardColumns = [];
-		this.GroupData = [];
-		this.WizardMode = '';
-		this.GroupByField = '';
+		this.WizardActions = [];
+		this.WizardMode = [];
+		this.WizardFilterBy = [];
+		this.WizardValidate = [];
+		this.WizardGoBack = [];
+		this.IsDuplicatedFromProduct = 0;
 	}
 
 	Init() {
@@ -61,67 +65,90 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	Next(ev) {
-		if (this.WizardMode == 'Create_PurchaseOrder') {
+		if (this.WizardMode[this.ActiveStep] == 'Create_PurchaseOrder') {
 			return this.PurchaseOrder(ev);
+		}
+		if (this.WizardMode[this.ActiveStep] == 'Select_Product') {
+			if (this.IsDuplicatedFromProduct == 0) {
+				ldsPrompt.show('Error', 'Please duplicate the product.', 'error');
+				return false;
+			}
+			if (!this.CheckSelection(ev, 'Select_Product')) {
+				return false;
+			}
+			return this.FilterRows(ev);
+		}
+		if (this.WizardMode[this.ActiveStep] == 'Create_ProductComponent') {
+			if (this.WizardValidate[this.ActiveStep]) {
+				if (!this.CheckSelection(ev)) {
+					return false;
+				}
+			}
+			return this.Create_ProductComponent(ev);
+		}
+		//Specific use case*
+		const type = ev.target.dataset.type;
+		if (this.WizardCurrentModule[this.ActiveStep] == 'ProductComponent' && type == 'back') {
+			this.CheckedRows[this.ActiveStep-1] = [];
+			this.WizardInstance[`wzgrid${this.ActiveStep-1}`].uncheckAll();
 		}
 		return true;
 	}
 
 	/**
-	 * Filter all Qutes and InventoryDetals for MassCreate. *Specific use case
+	 * Check for checked rows in grid
+	 * @param {Object} event
+	 * @param {String} action
 	 */
-	PurchaseOrder(ev) {
+	CheckSelection(ev, action = '') {
 		const type = ev.target.dataset.type;
-		if (this.ActiveStep != 2) {
-			if (type == 'back' || this.WizardInstance[`wzgrid${this.ActiveStep}`] === undefined) {
-				return true;
-			}
+		if (type == 'next') {
 			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
 			if (checkedRows.length == 0) {
 				ldsPrompt.show('Error', 'Please select at least one row', 'error');
 				return false;
 			}
+			if (action == 'Select_Product' && checkedRows.length != 1) {
+				ldsPrompt.show('Error', 'Please select one row', 'error');
+				return false;
+			}
 		}
-		if (this.ActiveStep == 0) {//second step
-			const findColName = this.ColumnToFilter();
-			if (findColName == '') {
-				ldsPrompt.show('Error', 'Unable to filter data. Try again!', 'error');
-				return false;
-			}
-			const ids = this.IdVal();
-			if (ids.length == 0) {
-				ldsPrompt.show('Error', 'Unable to filter data. Try again!', 'error');
-				return false;
-			}
+		return true;
+	}
+
+	/**
+	 * Filter records for every step with direct query from map
+	 * @param {Object} event
+	 */
+	FilterRows(ev) {
+		const type = ev.target.dataset.type;
+		if (type == 'back') {
+			return true;
+		}
+		if (this.WizardFilterBy[this.ActiveStep+1] != '') {
 			const module = this.WizardCurrentModule[this.ActiveStep+1];
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setRequestParams({
-				forids: JSON.stringify(ids),
 				formodule: module,
-				forfield: findColName
+				query: this.WizardFilterBy[this.ActiveStep+1]
 			});
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
 		}
-		if (this.ActiveStep == 1) {//last step(3)
-			const data = this.CheckedRows[this.ActiveStep];
-			let rows = [];
-			for (let i in data) {
-				for (let j in data[i]) {
-					rows.push(data[i][j]);
-				}
-			}
-			const groupBy = rows.reduce((group, row) => {
-				const field = row[this.GroupByField];
-				group[field] = group[field] ?? [];
-				group[field].push(row);
-				return group;
-			}, {});
-			this.GroupData = groupBy;
-			this.TreeGrid();
-		}
-		if (this.ActiveStep == 2 && type == 'next') {
-			this.MassCreate();
-		}
 		return true;
+	}
+
+	/**
+	 * Filter rows for specific IDS.
+	 */
+	FilterDataForStep() {
+		const module = wizard.WizardCurrentModule[wizard.ActiveStep];
+		wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams({
+			formodule: module,
+			filterrows: true,
+			step: wizard.ActiveStep
+		});
+		setTimeout(function() {
+			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
+		}, 100);
 	}
 
 	MassCreate() {
@@ -147,24 +174,14 @@ class WizardComponent {
 			return false;
 		}
 		this.loader('show');
-		const url = `index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=MassCreate&formodule=${MCModule}`;
-		fetch(
-			url,
-			{
-				method: 'post',
-				headers: {
-					'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-				},
-				credentials: 'same-origin',
-				body: '&'+csrfMagicName+'='+csrfMagicToken+'&data='+JSON.stringify(filterData)
-			}
-		).then(response => response.json()).then(response => {console.log(response)
+		const url = `index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=MassCreate&formodule=${MCModule}&subaction=CreatePO`;
+		this.Request(url, 'post', filterData).then(function(response) {
 			if (response) {
 				ldsPrompt.show('Success', 'PurchaseOrder created successfully!', 'success');
 			} else {
 				ldsPrompt.show('Error', 'Something went wrong. Try again!', 'error');
 			}
-			this.loader('hide');
+			wizard.loader('hide');
 		});
 	}
 
@@ -286,6 +303,9 @@ class WizardComponent {
 		} else {
 			this.el(`btn-back`).setAttribute('disabled', '');
 		}
+		if (this.WizardGoBack[this.ActiveStep-1] == 0) {
+			this.el(`btn-back`).setAttribute('disabled', '');
+		}
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
 			this.el(`btn-next`).innerHTML = 'Finish';
 			return false;
@@ -307,6 +327,55 @@ class WizardComponent {
 			this.CheckedRows[this.ActiveStep] = [];
 		}
 		this.CheckedRows[this.ActiveStep][page] = rows;
+	}
+
+	Upsert(id, action = '') {
+		let url = `&step=${this.ActiveStep}&WizardView=true`;
+		if (action == 'edit') {
+			url += `&Module_Popup_Edit=1&wizardaction=${action}`;
+		} else if (action == 'duplicate') {
+			url += `&Module_Popup_Edit=1&isDuplicate=true&wizardaction=${action}`;
+		}
+		const module = this.WizardCurrentModule[this.ActiveStep];
+		window.open('index.php?module='+module+'&action=EditView&record='+id+url, null, cbPopupWindowSettings + ',dependent=yes');
+	}
+
+	Delete(id) {
+		if (confirm(alert_arr.ARE_YOU_SURE)) {
+			const module = this.WizardCurrentModule[this.ActiveStep];
+			var url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=Delete&subaction=Records';
+			this.Request(url, 'post', {
+				recordid: id,
+				modulename: module
+			}).then(function(response) {
+				if (response) {
+					ldsPrompt.show('Success', 'Deleted successfully!', 'success');
+					let page = wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].getPagination();
+					wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].readData(page._currentPage, {
+						page: page._currentPage
+					}, true);
+				} else {
+					ldsPrompt.show('Error', alert_arr.Failed, 'error');
+				}
+			});
+		}
+	}
+
+	save(step, action = 'edit') {
+		if (step == 0 && action == 'duplicate') {
+			this.IsDuplicatedFromProduct = 1;
+		}
+		let page = this.WizardInstance[`wzgrid${step}`].getPagination();
+		const totalCount = this.WizardInstance[`wzgrid${step}`].getPaginationTotalCount();
+		const totalPage = Math.ceil(totalCount/20);
+		if (action == 'duplicate') {
+			page._currentPage = totalPage;
+		}
+		setTimeout(function() {
+			wizard.WizardInstance[`wzgrid${step}`].readData(page._currentPage, {
+				page: page._currentPage
+			}, true);
+		}, 100);
 	}
 
 	/**
@@ -353,5 +422,192 @@ class WizardComponent {
 		} else if (type == 'hide' && loader) {
 			loader.style.display = 'none';
 		}
+	}
+
+	async Request(url, method, body = {}) {
+		const options = {
+			method: method,
+			credentials: 'same-origin',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			}
+		};
+		if (method == 'post') {
+			options.body = '&'+csrfMagicName+'='+csrfMagicToken+'&data='+JSON.stringify(body);
+		}
+		const response = await fetch(url, options);
+		return response.json();
+	}
+
+	DeleteSession() {
+		const url = `index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=Delete&subaction=DeleteSession`;
+		this.Request(url, 'post');
+		localStorage.removeItem('IsDuplicatedFromProduct');	
+	}
+
+	/**
+	 * Create ProductComponent records. *Specific use case
+	 * @param {Object} event
+	 */
+	Create_ProductComponent(ev) {
+		const type = ev.target.dataset.type;
+		if (type == 'back') {
+			return true;
+		}
+		let rows = [];
+		//get FROMID
+		for (let i in this.CheckedRows[0]) {
+			let ids = [];
+			for (let j in this.CheckedRows[0][i]) {
+				ids.push(this.CheckedRows[0][i][j].id);
+			}
+			rows.push(ids);
+		}
+		//get TOIDS
+		if (this.CheckedRows[this.ActiveStep] == undefined) {
+			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].clear();
+			return true;
+		}
+		for (let i in this.CheckedRows[this.ActiveStep]) {
+			let ids = [];
+			for (let j in this.CheckedRows[this.ActiveStep][i]) {
+				ids.push(this.CheckedRows[this.ActiveStep][i][j].id);
+			}
+			rows.push(ids);
+		}
+		this.loader('show');
+		const url = `index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=MassCreate&subaction=Create_ProductComponent&formodule=ProductComponent&step=${this.ActiveStep}`;
+		this.Request(url, 'post', rows).then(function(response) {
+			if (response) {
+				ldsPrompt.show('Success', 'ProductComponent created successfully!', 'success');
+				wizard.FilterDataForStep();
+			} else {
+				ldsPrompt.show('Error', 'Something went wrong. Try again!', 'error');
+			}
+			wizard.loader('hide');
+		});
+		return true;
+	}
+
+	/**
+	 * Filter all Qutes and InventoryDetals for MassCreate. *Specific use case
+	 * @param {Object} event
+	 */
+	PurchaseOrder(ev) {
+		const type = ev.target.dataset.type;
+		if (this.ActiveStep != 2) {
+			if (type == 'back' || this.WizardInstance[`wzgrid${this.ActiveStep}`] === undefined) {
+				return true;
+			}
+			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
+			if (checkedRows.length == 0) {
+				ldsPrompt.show('Error', 'Please select at least one row', 'error');
+				return false;
+			}
+		}
+		if (this.ActiveStep == 0) {//second step
+			const findColName = this.ColumnToFilter();
+			if (findColName == '') {
+				ldsPrompt.show('Error', 'Unable to filter data. Try again!', 'error');
+				return false;
+			}
+			const ids = this.IdVal();
+			if (ids.length == 0) {
+				ldsPrompt.show('Error', 'Unable to filter data. Try again!', 'error');
+				return false;
+			}
+			const module = this.WizardCurrentModule[this.ActiveStep+1];
+			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setRequestParams({
+				forids: JSON.stringify(ids),
+				formodule: module,
+				forfield: findColName
+			});
+			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
+		}
+		if (this.ActiveStep == 1) {//last step(3)
+			const data = this.CheckedRows[this.ActiveStep];
+			let rows = [];
+			for (let i in data) {
+				for (let j in data[i]) {
+					rows.push(data[i][j]);
+				}
+			}
+			const groupBy = rows.reduce((group, row) => {
+				const field = row[this.GroupByField];
+				group[field] = group[field] ?? [];
+				group[field].push(row);
+				return group;
+			}, {});
+			this.GroupData = groupBy;
+			this.TreeGrid();
+		}
+		if (this.ActiveStep == 2 && type == 'next') {
+			this.MassCreate();
+		}
+		return true;
+	}
+}
+
+class WizardActions {
+
+	constructor(props) {
+		let rowKey = props.rowKey;
+		let recordid = props.grid.getValue(rowKey, 'id');
+		let { actions } = props.columnInfo.renderer.options;
+		let el = document.createElement('span');
+		actions = actions.split(',');
+		if (actions.length > 0) {
+			el. innerHTML += `<div class="slds-button-group" role="group">`;
+			if (actions.includes('edit')) {
+				el.innerHTML += `
+				<button
+					class="slds-button slds-button_icon slds-button_icon-border-filled"
+					aria-pressed="false"
+					onclick="wizard.Upsert(${recordid}, 'edit')"
+				>
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+					</svg>
+					<span class="slds-assistive-text">Edit</span>
+				</button>`;
+			}
+			if (actions.includes('duplicate')) {
+				el.innerHTML += `
+				<button
+					class="slds-button slds-button_icon slds-button_icon-border-filled"
+					aria-pressed="false"
+					onclick="wizard.Upsert(${recordid}, 'duplicate')"
+				>
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#file"></use>
+					</svg>
+					<span class="slds-assistive-text">Duplicate</span>
+				</button>`;
+			}
+			if (actions.includes('delete')) {
+				el.innerHTML += `
+				<button
+					class="slds-button slds-button_icon slds-button_icon-border-filled"
+					aria-pressed="false"
+					onclick="wizard.Delete(${recordid})"
+				>
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					<span class="slds-assistive-text">Delete</span>
+				</button>`;
+			}
+			el. innerHTML += `</div>`;
+		}
+		this.el = el;
+		this.render(props);
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	render(props) {
+		this.el.value = String(props.value);
 	}
 }
