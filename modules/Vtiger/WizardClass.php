@@ -27,8 +27,11 @@ class WizardView {
 	private $validate = true;
 
 	public $conditions = '';
-	
-	function __construct($params) {
+
+	public function __construct($params) {
+		foreach ($params as $key) {
+			$this->params[$key['name']] = $key['value'];
+		}
 		if (isset($this->params['module'])) {
 			$this->module = $this->params['module'];
 		}
@@ -118,8 +121,8 @@ class WizardView {
 class WizardListView {
 
 	private $module;
-	
-	function __construct($module = '') {
+
+	public function __construct($module = '') {
 		$this->module = $module;
 	}
 
@@ -240,7 +243,7 @@ class WizardListView {
 		if (!empty($subaction)) {
 			$target = $this->$subaction();
 		}
-		if (!empty($target)) {		
+		if (!empty($target)) {
 			$response = MassCreate($target, $current_user);
 			if (isset($response['wssuccess']) && !$response['wssuccess']) {
 				return false;
@@ -283,7 +286,7 @@ class WizardListView {
 		$data = json_decode($_REQUEST['data'], true);
 		$fromProduct = $data[0][0];
 		$target = array();
-		if (isset($data[1])) {		
+		if (isset($data[1])) {
 			foreach ($data[1] as $id) {
 				$target[] = array(
 					'elementType' => $this->module,
