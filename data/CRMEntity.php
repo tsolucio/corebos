@@ -1432,6 +1432,11 @@ class CRMEntity {
 		//GS Save entity being called with the modulename as parameter
 		$this->saveentity($module_name);
 
+		if (isset($_REQUEST['WizardAction']) && $_REQUEST['WizardAction'] == 'duplicate') {
+			$step = vtlib_purify($_REQUEST['WizardStep']) - 1;
+			coreBOS_Session::set('DuplicatedRecords^'.$step.'^'.$this->id, $this->id);
+		}
+
 		//Event triggering code
 		$em->triggerEvent('vtiger.entity.aftersave.first', $entityData);
 		$em->triggerEvent('vtiger.entity.aftersave', $entityData);
