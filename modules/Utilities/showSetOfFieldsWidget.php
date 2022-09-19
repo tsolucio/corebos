@@ -125,11 +125,15 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 							$handlerclass = $blockinfo['handler_class'];
 							$handler = $blockinfo['handler'];
 							$parameters = $blockinfo['parameters'];
+							$conditions = $blockinfo['conditions'];
 							include_once $blockinfo['loadfrom'];
 							if (!empty($parameters)) {
 								$classhandler = new $handlerclass($parameters);
 							} else {
 								$classhandler = new $handlerclass();
+							}
+							if (!empty($conditions)) {
+								$classhandler->conditions = $conditions;
 							}
 							$layoutdataArr['data'] = $classhandler->$handler();
 						}

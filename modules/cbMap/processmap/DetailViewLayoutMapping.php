@@ -236,6 +236,20 @@ class DetailViewLayoutMapping extends processcbMap {
 							);
 						}
 					}
+					$block['conditions'] = array();
+					if (isset($value->conditions) && !empty($value->conditions->module)) {
+						$block['conditions']['module'] = (string)$value->conditions->module;
+						$workflowScheduler = new WorkFlowScheduler($adb);
+						$workflow = new Workflow();
+						$wfvals['summary'] = '';
+						$wfvals['workflow_id'] = '';
+						$wfvals['defaultworkflow'] = '';
+						$wfvals['execution_condition'] = '';
+						$wfvals['module_name'] = $block['conditions']['module'];
+						$wfvals['test'] = (string)$value->conditions->condition;
+						$workflow->setup($wfvals);
+						$block['conditions']['condition'] = $workflowScheduler->getWorkflowQuery($workflow, array('*'));
+					}
 				} else {
 					$block['loadfrom'] = '';
 				}
