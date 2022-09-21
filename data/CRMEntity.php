@@ -72,7 +72,8 @@ class CRMEntity {
 		return isset($VTIGER_BULK_SAVE_MODE) && $VTIGER_BULK_SAVE_MODE;
 	}
 
-	public static function getInstance($modName) {
+	public static function getInstance($modName) : object {
+		$modName = is_object($modName) ? $modName->name : $modName;
 		// File access security check
 		if (!class_exists($modName)) {
 			checkFileAccessForInclusion("modules/$modName/$modName.php");
