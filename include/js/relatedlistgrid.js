@@ -56,9 +56,9 @@ var relatedlistgrid = {
 		let rlgridinfo = JSON.stringify({
 			'name': Grid,
 			'module': module,
-			'mapname': mapname,
+			'mapname': mapname[Grid],
 		});
-		window.open('index.php?module='+module+'&action=EditView&Module_Popup_Edit=1&FILTERFIELDSMAP='+mapname+'&RelatedListGridInfo='+rlgridinfo+record+CurrentRecord, null, cbPopupWindowSettings + ',dependent=yes');
+		window.open('index.php?module='+module+'&action=EditView&Module_Popup_Edit=1&FILTERFIELDSMAP='+mapname[Grid]+'&RelatedListGridInfo='+rlgridinfo+record+CurrentRecord, null, cbPopupWindowSettings + ',dependent=yes');
 	},
 
 	inlineedit: (ev) => {
