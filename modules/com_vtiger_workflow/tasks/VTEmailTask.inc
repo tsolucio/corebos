@@ -126,8 +126,8 @@ class VTEmailTask extends VTTask {
 			$replyto = $rt->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 		} else {
 			if (!empty($this->replyto)) {
-					$rt = new VTEmailRecipientsTemplate($this->replyto);
-					$replyto = $fet->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+				$rt = new VTEmailRecipientsTemplate($this->replyto);
+				$replyto = $rt->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 			}
 		}
 		if (isset($entity->WorkflowContext['SendEmailTo'])) {
