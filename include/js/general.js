@@ -95,6 +95,7 @@ GlobalVariable_getVariable('Application_Menu_Direction', 'Horizontal', (typeof g
 }, function (error) {
 	Application_Menu_Direction = 'Horizontal'; // set default value on error
 });
+
 var Application_AssignUser_Search = 0;
 GlobalVariable_getVariable('Application_AssignUser_Search', 0, (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
 	var obj = JSON.parse(response);
@@ -5337,11 +5338,6 @@ function scrollThrottle(fn, wait, dist) {
 	};
 }
 
-document.addEventListener('DOMContentLoaded', function (event) {
-	/* ======= Auto complete part relations ====== */
-	AutocompleteSetup();
-});
-
 function AutocompleteSetup() {
 	var acInputs = document.querySelectorAll('.autocomplete-input');
 
@@ -6792,10 +6788,6 @@ function findUp(element, searchterm) {
 	return undefined;
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-	initSelect2();
-});
-
 function initSelect2() {
 	if (Application_AssignUser_Search == 1) {
 		const dataType = document.querySelectorAll(`[data-uitype="53"]`);
@@ -7307,4 +7299,54 @@ $(function () {
 	};
 
 	new cbAccordion($('#cbmenu'), true);
+});
+
+function findParents(el) {
+	let parents = [];
+	while (el.parentNode) {
+		el = el.parentNode;
+		parents.push(el);
+	}
+	return parents;
+}
+
+function findUpModuleInMenu() {
+	let arr = {};
+	const modulename = document.querySelectorAll(`[data-name="${gVTModule}"]`);
+	if (modulename.length > 0) {
+		const parent = document.getElementById(`menu${modulename[0].dataset.level}`);
+		const childs = parent.querySelectorAll(`li span`);
+		modulename[0].parentElement.style.display = 'block';
+		modulename[0].style.background = '#c5d7e3';
+		let parents = findParents(modulename[0]);
+		for (let i = 0; i < parents.length; i++) {
+			if (parents[i].dataset.type !== undefined && parents[i].dataset.type == 'parent') {
+				const submenu = parents[i].getElementsByClassName('submenu');
+				const childs1 = submenu[0].querySelectorAll(`li span`);
+				for (let j = 0; j < submenu.length; j++) {
+					submenu[j].style.display = 'block';
+					for (let k = 0; k < childs1.length; k++) {
+						if (childs1[k].innerText == modulename[0].innerText) {
+							childs1[k].style.color = '#0061e5';
+							childs1[k].style.fontWeight = 'bold';
+							break;
+						} else {
+							childs1[k].style.color = 'black';
+						}
+					}
+					if (submenu[j].innerHTML.indexOf(gVTModule)) {
+						break;
+					}
+				}
+			}
+		}
+	}
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+	AutocompleteSetup();
+	initSelect2();
+	if (Application_Menu_Direction == 'Vertical') {
+		findUpModuleInMenu();
+	}
 });

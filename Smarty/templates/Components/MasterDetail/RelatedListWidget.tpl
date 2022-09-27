@@ -10,7 +10,11 @@
 							<div class="slds-page-header__name-title">
 								<h1>
 								<span class="slds-page-header__title slds-truncate">
-									{$originmodule} -> {$targetmodule}
+									{if $title eq ''}
+										{$originmodule} -> {$targetmodule}
+									{else}
+										{$title}
+									{/if}
 								</span>
 								</h1>
 							</div>
@@ -38,7 +42,15 @@
 	</div>
 </article>
 <script>
-var mapname = '{$mapname}';
+if (mapname === undefined) {
+	var mapname = Array();
+}
+if (tooltip === undefined) {
+	var tooltip = Array();
+}
+if (FieldLables === undefined) {
+	var FieldLables = Array();
+}
 if (origin_related_fieldname === undefined) {
 	var origin_related_fieldname = Array();
 }
@@ -48,6 +60,9 @@ if (target_related_fieldname === undefined) {
 origin_related_fieldname['{$originmodule}'] = '{$origin_related_fieldname}';
 target_related_fieldname['{$targetmodule}'] = '{$target_related_fieldname}';
 target_related_fieldname['{$targetmodule}-{$targetmodule}'] = '{$sub_related_fieldname}';
+tooltip['{$originmodule}'] = '{$tooltip}';
+mapname['rlgrid{$originmodule}-{$targetmodule}'] = '{$mapname}';
+FieldLables['{$originmodule}'] = '{$FieldLables}';
 function loadRLGrid{$originmodule}{$targetmodule}() {
 	RLInstance['rlgrid{$originmodule}-{$targetmodule}'] = new tui.Grid({
 		el: document.getElementById('{$originmodule}-{$targetmodule}'),

@@ -49,6 +49,11 @@ GlobalVariable_getVariable('Application_MassAction_Multipage', 0).then(function 
 	let obj = JSON.parse(response);
 	Application_MassAction_Multipage = obj.Application_MassAction_Multipage;
 });
+Application_ListView_Show_Create_Message = 1;
+GlobalVariable_getVariable('Application_ListView_Show_Create_Message', 1).then(function (response) {
+	let obj = JSON.parse(response);
+	Application_ListView_Show_Create_Message = parseInt(obj.Application_ListView_Show_Create_Message);
+});
 document.addEventListener('DOMContentLoaded', function () {
 	ListView.loader('show');
 	ListView.Show();
@@ -1047,31 +1052,32 @@ const ListView = {
 						${alert_arr.LBL_IMPORT} ${gVTModuleLabel}
 					</a>`;
 				}
-				no_data_template.innerHTML = `
-				<article class="slds-card" style="width: 40%;margin-left: auto;margin-right: auto;">
-					<div class="slds-card__header slds-grid">
-						<header class="slds-media slds-media_center slds-has-flexi-truncate">
-							<div class="slds-media__figure">
-								<span class="slds-icon_container slds-icon-standard-record-create">
-									<svg class="slds-icon slds-icon_small" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#record_create"></use>
-									</svg>
-								</span>
-							</div>
-							<div class="slds-media__body">
-								<h2 class="slds-card__header-title">
-									<span>${alert_arr.LBL_NO_DATA}</span>
-								</h2>
-							</div>
-							<div class="slds-no-flex">
-								${create_template}
-							</div>
-						</header>
-					</div>
-					<footer class="slds-card__footer">
-						${import_template}
-					</footer>
-				</article>`;
+				no_data_template.innerHTML = Application_ListView_Show_Create_Message ?
+					`<article class="slds-card" style="width: 40%;margin-left: auto;margin-right: auto;">
+						<div class="slds-card__header slds-grid">
+							<header class="slds-media slds-media_center slds-has-flexi-truncate">
+								<div class="slds-media__figure">
+									<span class="slds-icon_container slds-icon-standard-record-create">
+										<svg class="slds-icon slds-icon_small" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#record_create"></use>
+										</svg>
+									</span>
+								</div>
+								<div class="slds-media__body">
+									<h2 class="slds-card__header-title">
+										<span>${alert_arr.LBL_NO_DATA}</span>
+									</h2>
+								</div>
+								<div class="slds-no-flex">
+									${create_template}
+								</div>
+							</header>
+						</div>
+						<footer class="slds-card__footer">
+							${import_template}
+						</footer>
+					</article>` :
+					'';
 			});
 		}
 	},

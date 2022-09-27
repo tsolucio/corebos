@@ -108,4 +108,8 @@ class corebos_cache {
 		return $this->isActive() && $this->isConnected();
 	}
 }
+
+if (empty($cbAppCache)) {
+	$cbAppCache = new corebos_cache();
+}
 ?>

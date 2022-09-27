@@ -73,7 +73,9 @@
 			{foreachelse}
 			<tr>
 			<td style="background-color:#efefef;height:340px" align="center" colspan="{$smarty.foreach.listviewforeach.iteration+1}">
+			{if $ShowCreateMessage || $SQLERROR}
 			<div id="no_entries_found" style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative;">
+			{/if}
 				{assign var=vowel_conf value='LBL_A'}
 				{if $MODULE eq 'Accounts' || $MODULE eq 'Invoice'}
 					{assign var=vowel_conf value='LBL_AN'}
@@ -92,7 +94,7 @@
 						<td class="small" align="left" nowrap="nowrap">{'ERROR_GETTING_FILTER'|@getTranslatedString:$MODULE}</td>
 					</tr>
 					</table>
-				{else}
+				{elseif $ShowCreateMessage}
 					{if $CHECK.EditView eq 'yes' && $MODULE neq 'Emails'}
 						<table border="0" cellpadding="5" cellspacing="0" width="98%">
 						<tr>
@@ -128,7 +130,9 @@
 						</table>
 					{/if}
 				{/if} {* SQL ERROR ELSE END *}
+			{if $ShowCreateMessage || $SQLERROR}
 			</div>
+			{/if}
 			</td>
 			</tr>
 			{/foreach}

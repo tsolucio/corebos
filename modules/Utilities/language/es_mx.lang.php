@@ -184,5 +184,6 @@ $mod_strings = array(
 	'facebook_destination_module' => 'Módulo Destino',
 	'Unable2Connect' => 'No se ha podido conectar',
 	'Able2Connect' => 'Se ha podido conectar',
+	'clickhouse_webhook_secret' => 'Clave Acceso Webhook',
 );
 ?>

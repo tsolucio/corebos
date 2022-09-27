@@ -71,7 +71,9 @@ if (window.cbRelatedListsLoaded == undefined) {
 			if (document.getElementById('return_module').value == 'Campaigns') {
 				var obj = document.getElementsByName(imagesuffix+'_selected_id');
 				var relatedModule = imagesuffix.replace('Campaigns_', '');
-				document.getElementById(relatedModule+'_count').innerHTML = numofRows;
+				if (document.getElementById(relatedModule+'_count')) {
+					document.getElementById(relatedModule+'_count').innerHTML = numofRows;
+				}
 				if (selectallActivation == 'true') {
 					document.getElementById(imagesuffix+'_selectallActivate').value='true';
 					jQuery('#'+imagesuffix+'_linkForSelectAll').show();

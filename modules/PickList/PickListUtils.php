@@ -251,15 +251,15 @@ function cleanPicklist($module, $fieldName) {
  * @return array $val - the assigned picklist values in array format
  */
 function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
+	global $cbAppCache;
 	static $cacheObsolete = array();
 	static $questionMarkLists = [];
 	static $paramLists = [];
 
-	$cache = new corebos_cache();
 	$cacheId = $tableName . '#' . $roleid;
-	if ($cache->isUsable()) {
-		if ($cache->getCacheClient()->has($cacheId)) {
-			return $cache->getCacheClient()->get($cacheId);
+	if ($cbAppCache->isUsable()) {
+		if ($cbAppCache->getCacheClient()->has($cacheId)) {
+			return $cbAppCache->getCacheClient()->get($cacheId);
 		}
 	} elseif (isset($cacheObsolete[$cacheId])) {
 		return $cacheObsolete[$cacheId];
@@ -306,8 +306,8 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 		}
 	}
 
-	if ($cache->isUsable()) {
-		$cache->getCacheClient()->set($cacheId, $arr);
+	if ($cbAppCache->isUsable()) {
+		$cbAppCache->getCacheClient()->set($cacheId, $arr);
 	} else {
 		$cacheObsolete[$cacheId] = $arr;
 	}

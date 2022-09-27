@@ -1312,6 +1312,12 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			if (!empty($mdmap[$fieldview]) && !empty($mdmap['targetmodule']) && $module==$mdmap['targetmodule']) {
 				$fieldsin = $adb->convert2Sql('and vtiger_field.fieldid IN (' . generateQuestionMarks($mdmap[$fieldview]) . ')', $mdmap[$fieldview]);
 			}
+			if (isset($_REQUEST['RelatedListGridInfo']) && !empty($mdmap['targetmodule']['editview'])) {
+				$rlinfo = json_decode($_REQUEST['RelatedListGridInfo']);
+				if ($rlinfo->module == $mdmap['targetmodule']['name']) {
+					$fieldsin = $adb->convert2Sql('and vtiger_field.fieldid IN (' . generateQuestionMarks($mdmap['targetmodule']['editview']) . ')', $mdmap['targetmodule']['editview']);
+				}
+			}
 		}
 	}
 	$tabid = getTabid($module);
