@@ -384,7 +384,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue, $mode = '
 				array_push($fieldAttrs, array(
 					'mdField' => $fieldName,
 					'mdValue' => textlength_check($fieldValue),
-					'mdLink' => "javascript:InternalMailer($recordID, '".$fieldinfo['fieldid']."','$fieldName','$module','record_id');",
+					'mdLink' => "javascript:InternalMailer($recordID, '".$fieldInfo['fieldid']."','$fieldName','$module','record_id');",
 					'mdUitype' => Field_Metadata::UITYPE_EMAIL
 				));
 			} else {

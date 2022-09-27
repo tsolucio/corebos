@@ -26,11 +26,6 @@
 	<modules>
 		<module>
 			<originmodule>Messages</originmodule>
-			<tooltip>
-				<fields>messagename</fields>
-				<fields>messagesrelatedto</fields>
-				...
-			</tooltip>
 		</module>
 		<module>
 			<targetmodule>Assets</targetmodule>
@@ -48,6 +43,20 @@
 					...
 				</fields>
 			</listview>
+			<editview>
+				<fields>
+					<field>
+						<fieldtype>corebos</fieldtype>
+						<fieldname>asset_no</fieldname>
+						<editable>1</editable>
+						<mandatory>0</mandatory>
+						<hidden>0</hidden>
+						<sortable>true</sortable>
+						<layout></layout>
+					</field>
+					...
+				</fields>
+			</editview>
 		</module>
 	</modules>
 </map>
@@ -83,6 +92,11 @@ class RelatedListBlock extends processcbMap {
 		foreach ($targetmodule->listview->fields as $fields) {
 			$this->FormatFields($fields, 'targetmodule', 'listview');
 		}
+		if (isset($targetmodule->editview)) {
+			foreach ($targetmodule->editview->fields as $fields) {
+				$this->FormatFields($fields, 'targetmodule', 'editview');
+			}
+		}
 		if (isset($originmodule->tooltip)) {
 			$this->mapping_arr['tooltip'] = (array)$originmodule->tooltip->fields;
 		}
@@ -109,17 +123,21 @@ class RelatedListBlock extends processcbMap {
 						break;
 				}
 			}
-			$this->mapping_arr[$type][$mode][] = array(
-				'fieldtype' => $fieldtype,
-				'fieldinfo' => $fieldinfo,
-				'editable' => isset($v->editable) ? (string)$v->editable : '',
-				'mandatory' => isset($v->mandatory) ? (string)$v->mandatory : '',
-				'hidden' => isset($v->hidden) ? (string)$v->hidden : '0',
-				'layout' => isset($v->layout) ? (string)$v->layout : '',
-				'editor' => !empty($v->editable) ? json_encode(gridGetEditor($this->detailModule, $fieldinfo['name'], $fieldinfo['uitype'])) : '',
-				'sortable' => !empty($v->sortable),
-				'sortingType' => isset($v->sortingType) ? (string)$v->sortingType : '',
-			);
+			if ($mode == 'editview') {
+				$this->mapping_arr[$type][$mode][] = $fieldinfo['fieldid'];
+			} else {
+				$this->mapping_arr[$type][$mode][] = array(
+					'fieldtype' => $fieldtype,
+					'fieldinfo' => $fieldinfo,
+					'editable' => isset($v->editable) ? (string)$v->editable : '',
+					'mandatory' => isset($v->mandatory) ? (string)$v->mandatory : '',
+					'hidden' => isset($v->hidden) ? (string)$v->hidden : '0',
+					'layout' => isset($v->layout) ? (string)$v->layout : '',
+					'editor' => !empty($v->editable) ? json_encode(gridGetEditor($this->detailModule, $fieldinfo['name'], $fieldinfo['uitype'])) : '',
+					'sortable' => !empty($v->sortable),
+					'sortingType' => isset($v->sortingType) ? (string)$v->sortingType : '',
+				);
+			}
 		}
 	}
 

@@ -20,9 +20,15 @@ class WizardView {
 	private $step;
 	private $module;
 	private $groupby;
+	private $actions = '';
+	private $mode = 'ListView';
 	private $mapid = 0;
-	
-	function __construct($params) {
+	private $goback = 1;
+	private $validate = true;
+
+	public $conditions = '';
+
+	public function __construct($params) {
 		foreach ($params as $key) {
 			$this->params[$key['name']] = $key['value'];
 		}
@@ -32,11 +38,27 @@ class WizardView {
 		if (isset($this->params['step'])) {
 			$this->step = $this->params['step'];
 		}
+		//mapid for columns to show in grid
 		if (isset($this->params['mapid'])) {
 			$this->mapid = $this->params['mapid'];
 		}
+		//group by selected rows by "this" field
 		if (isset($this->params['groupby'])) {
 			$this->groupby = $this->params['groupby'];
+		}
+		//Show different views in wizard: ListView, MassCreate
+		if (isset($this->params['mode'])) {
+			$this->mode = $this->params['mode'];
+		}
+		//Action type that we apply in "Next" or "Finish"
+		if (isset($this->params['actions'])) {
+			$this->actions = $this->params['actions'];
+		}
+		if (isset($this->params['validate'])) {
+			$this->validate = $this->params['validate'];
+		}
+		if (isset($this->params['back'])) {
+			$this->goback = $this->params['back'];
 		}
 	}
 
@@ -44,6 +66,7 @@ class WizardView {
 		require_once 'modules/'.$this->module.'/'.$this->module.'.php';
 		global $smarty;
 		$smarty->assign('formodule', $this->module);
+		$smarty->assign('GroupBy', $this->groupby);
 		if ($this->mapid != 0) {
 			$cbMap = cbMap::getMapByID($this->mapid);
 			$fieldlist = $cbMap->MassUpsertGridView();
@@ -58,14 +81,22 @@ class WizardView {
 					'name' => $fieldname,
 				);
 			}
-			$smarty->assign('Columns', json_encode($columns));
+			$smarty->assign('Columns', $columns);
 			$smarty->assign('relatedmodules', $this->RelatedFields());
 			$smarty->assign('step', $this->step);
 			$smarty->assign('entitynames', getEntityFieldNames($this->module));
-			$smarty->assign('WizardMode', 'Create_PurchaseOrder');
+			$smarty->assign('WizardMode', $this->mode);
+			//ListView, Create_{ModuleName}, MassCreate_{ModuleName}
+			$smarty->assign('WizardActions', $this->actions);
+			$smarty->assign('WizardValidate', $this->validate);
+			$smarty->assign('WizardGoBack', $this->goback);
+			$query = '';
+			if (isset($this->conditions['condition'])) {
+				$query = $this->conditions['condition'];
+			}
+			$smarty->assign('WizardFilterBy', $query);
 			return $smarty->fetch('Smarty/templates/Components/WizardListView.tpl');
 		}
-		$smarty->assign('GroupBy', $this->groupby);
 	}
 
 	public function RelatedFields() {
@@ -90,31 +121,63 @@ class WizardView {
 class WizardListView {
 
 	private $module;
-	
-	function __construct($module) {
+
+	public function __construct($module = '') {
 		$this->module = $module;
 	}
 
 	public function Grid() {
+		require_once 'modules/'.$this->module.'/'.$this->module.'.php';
 		global $current_user, $adb;
-		$page = $_REQUEST['page'];
-		$perPage = $_REQUEST['perPage'];
-		$forids = isset($_REQUEST['forids']) ? json_decode($_REQUEST['forids'], true) : array();
-		$forfield = isset($_REQUEST['forfield']) ? $_REQUEST['forfield'] : array();
-		$qg = new QueryGenerator($this->module, $current_user);
-		$qg->setFields(array('*'));
-		if (!empty($forids)) {
-			foreach ($forids as $id) {
-				$qg->addReferenceModuleFieldCondition($forfield['relmodule'], $forfield['fieldname'], 'id', $id, 'e', 'or');
+		$page = vtlib_purify($_REQUEST['page']);
+		$perPage = vtlib_purify($_REQUEST['perPage']);
+		$step = isset($_REQUEST['step']) ? intval($_REQUEST['step']) : '';
+		if (isset($_REQUEST['query']) && !empty($_REQUEST['query'])) {
+			$sql = vtlib_purify($_REQUEST['query']);
+		} else {
+			$forids = isset($_REQUEST['forids']) ? json_decode($_REQUEST['forids'], true) : array();
+			$forfield = isset($_REQUEST['forfield']) ? $_REQUEST['forfield'] : array();
+			$filterrows = isset($_REQUEST['filterrows']) ? $_REQUEST['filterrows'] : false;
+			$qg = new QueryGenerator($this->module, $current_user);
+			$qg->setFields(array('*'));
+			if ($filterrows) {
+				if (!empty($newRecords)) {
+					foreach ($forids as $id) {
+						$qg->addCondition('id', $id, 'e', 'or');
+					}
+				}
+				$newRecords = coreBOS_Session::get('DuplicatedRecords');
+				if (!empty($newRecords)) {
+					$step = vtlib_purify($_REQUEST['step']);
+					foreach ($newRecords[$step-1] as $id) {
+						$qg->addCondition('id', $id, 'e', 'or');
+					}
+				}
+			} elseif ($step == '0' && $this->module == 'Products') {
+				$newRecords = coreBOS_Session::get('DuplicatedRecords');
+				if (!empty($newRecords)) {
+					foreach ($newRecords[$step-1] as $id) {
+						$qg->addCondition('id', $id, 'e', 'or');
+					}
+					$page = 1;
+				}
+			} else {
+				if (!empty($forids)) {
+					foreach ($forids as $id) {
+						$qg->addReferenceModuleFieldCondition($forfield['relmodule'], $forfield['fieldname'], 'id', $id, 'e', 'or');
+					}
+				}
 			}
+			$sql = $qg->getQuery();
 		}
-		$sql = $qg->getQuery();
 		$limit = ($page-1) * $perPage;
 		//count all records
 		$countsql = mkCountQuery($sql);
+		$countsql = htmlspecialchars_decode($countsql);
 		$rs = $adb->query($countsql);
 		$count = $rs->fields['count'];
 		$sql .= ' LIMIT '.$limit.','.$perPage;
+		$sql = htmlspecialchars_decode($sql);
 		$rs = $adb->query($sql);
 		$data = array();
 		$columns = array();
@@ -173,13 +236,74 @@ class WizardListView {
 	}
 
 	public function MassCreate() {
-		if ($this->module == 'PurchaseOrder') {
-			return $this->CreatePO();	
+		require_once 'include/Webservices/MassCreate.php';
+		global $current_user;
+		$subaction = isset($_REQUEST['subaction']) ? vtlib_purify($_REQUEST['subaction']) : '';
+		$target = array();
+		if (!empty($subaction)) {
+			$target = $this->$subaction();
 		}
+		if (!empty($target)) {
+			$response = MassCreate($target, $current_user);
+			if (isset($response['wssuccess']) && !$response['wssuccess']) {
+				return false;
+			}
+			$res = array();
+			foreach ($response['success_creates'] as $key) {
+				$id = explode('x', $key['id'])[1];
+				if (isset($_REQUEST['step'])) {
+					$step = vtlib_purify($_REQUEST['step']);
+					coreBOS_Session::set('DuplicatedRecords^'.$step.'^'.$id, $id);
+				}
+				$res[] = $id;
+			}
+			return $res;
+		}
+		return false;
+	}
+
+	public function Delete() {
+		$subaction = isset($_REQUEST['subaction']) ? vtlib_purify($_REQUEST['subaction']) : '';
+		if (!empty($subaction)) {
+			$this->$subaction();
+		}
+		return true;
+	}
+
+	public function Session() {
+		$subaction = isset($_REQUEST['subaction']) ? vtlib_purify($_REQUEST['subaction']) : '';
+		$response = false;
+		if (!empty($subaction)) {
+			$response = $this->$subaction();
+		}
+		return $response;
+	}
+
+	public function Create_ProductComponent() {
+		global $current_user;
+		$UsersTabid = vtws_getEntityId('Users');
+		$ProductsTabid = vtws_getEntityId('Products');
+		$data = json_decode($_REQUEST['data'], true);
+		$fromProduct = $data[0][0];
+		$target = array();
+		if (isset($data[1])) {
+			foreach ($data[1] as $id) {
+				$target[] = array(
+					'elementType' => $this->module,
+					'referenceId' => '',
+					'searchon' => '',
+					'element' => array(
+						'frompdo' => $ProductsTabid.'x'.$fromProduct,
+						'topdo' => $ProductsTabid.'x'.$id,
+						'assigned_user_id' => $UsersTabid.'x'.$current_user->id
+					)
+				);
+			}
+		}
+		return $target;
 	}
 
 	public function CreatePO() {
-		require_once 'include/Webservices/MassCreate.php';
 		global $current_user;
 		$UsersTabid = vtws_getEntityId('Users');
 		$VendorTabid = vtws_getEntityId('Vendors');
@@ -213,10 +337,28 @@ class WizardListView {
 				);
 			}
 		}
-		$response = MassCreate($target, $current_user);
-		if (!empty($response['failed_creates'])) {
-			return false;
+		return $target;
+	}
+
+	public function DeleteSession() {
+		coreBOS_Session::delete('DuplicatedRecords');
+	}
+
+	public function GetSession() {
+		return coreBOS_Session::get('DuplicatedRecords');
+	}
+
+	public function Records() {
+		$data = json_decode($_REQUEST['data'], true);
+		$id = $data['recordid'];
+		$module = $data['modulename'];
+		$focus = CRMEntity::getInstance($module);
+		$focus->retrieve_entity_info($id, $module);
+		list($delerror, $errormessage) = $focus->preDeleteCheck();
+		if (!$delerror) {
+			$focus->trash($module, $id);
+			return true;
 		}
-		return true;
+		return false;
 	}
 }

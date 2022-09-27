@@ -439,7 +439,11 @@ if ($cvmodule != '') {
 		$setpublic = 0;
 	}
 	$roleid = $current_user->roleid;
-	$subrole = implode('|##|', getRoleSubordinates($roleid));
+	$subroles = getRoleSubordinates($roleid);
+	if (!in_array($roleid, $subroles)) {
+		$subroles[] = $roleid;
+	}
+	$subrole = implode('|##|', $subroles);
 	$default_values =  array(
 		'cvid' => $cvid,
 		'cvcreate' => '0',

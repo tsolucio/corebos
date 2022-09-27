@@ -17,10 +17,17 @@ include_once 'include/ListView/GridUtils.php';
 include_once 'modules/Vtiger/WizardClass.php';
 
 $wizardaction = empty($_REQUEST['wizardaction']) ? 'listview' : $_REQUEST['wizardaction'];
-$wizard = new WizardListView($_REQUEST['formodule']);
+$formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
+$wizard = new WizardListView($formodule);
 switch ($wizardaction) {
 	case 'MassCreate':
 		echo json_encode($wizard->MassCreate());
+		break;
+	case 'Delete':
+		echo json_encode($wizard->Delete());
+		break;
+	case 'Session':
+		echo json_encode($wizard->Session());
 		break;
 	case 'listview':
 	default:

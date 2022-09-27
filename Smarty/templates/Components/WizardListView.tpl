@@ -3,17 +3,41 @@
 wizard.WizardRelModules[{$step}] = '{$relatedmodules|json_encode}';
 wizard.WizardEntityNames[{$step}] = '{$entitynames|json_encode}';
 wizard.WizardCurrentModule[{$step}] = '{$formodule}';
-wizard.WizardColumns[{$step}] = '{$Columns}';
-wizard.WizardMode = '{$WizardMode}';
+wizard.WizardColumns[{$step}] = '{$Columns|json_encode}';
+wizard.WizardActions[{$step}] = '{$WizardActions|json_encode}';
+wizard.WizardMode[{$step}] = '{$WizardMode}';
+wizard.WizardFilterBy[{$step}] = {$WizardFilterBy|json_encode};
+wizard.WizardValidate[{$step}] = {$WizardValidate};
+wizard.WizardGoBack[{$step}] = {$WizardGoBack};
 function WizardGrid{$formodule}{$step}() {
 	wizard.WizardInstance['wzgrid{$step}'] = new tui.Grid({
 		el: document.getElementById('grid-{$step}'),
 		rowHeaders: ['checkbox'],
-		columns: {$Columns},
+		columns: [
+			{foreach from=$Columns item=i}
+			{
+				header: '{$i.header}',
+				name: '{$i.name}',
+			},
+			{/foreach}
+			{if !empty($WizardActions)}
+			{
+				header: 'Actions',
+				name: 'wizardactions',
+				width: 150,
+				renderer: {
+					type: WizardActions,
+					options: {
+						actions: {$WizardActions|json_encode}
+					}
+				}
+			}
+			{/if}
+		],
 		data: {
 			api: {
 				readData: {
-					url: 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=listview&formodule={$formodule}',
+					url: 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=listview&formodule={$formodule}&step={$step}',
 					method: 'GET'
 				}
 			}
