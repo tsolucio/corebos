@@ -73,11 +73,21 @@
 </div>
 <div class="slds-grid slds-grid_vertical-align-center">
 	<div class="slds-col slds-p-around_x-small">
-		<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
-			<h2> {'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS'|@getTranslatedString:$MODULE_NAME} </h2>
+		<div class="slds-notify slds-theme_alert-texture slds-theme_info slds-p-around_x-small" role="info">
+			<h2>
+				<svg class="slds-icon slds-icon slds-icon_xx-small slds-m-right_x-small" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+				</svg>
+				{'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS'|@getTranslatedString:$MODULE_NAME}
+			</h2>
 		</div>
-		<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
-			<h2> {'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS'|@getTranslatedString:$MODULE_NAME} </h2>
+		<div class="slds-notify slds-theme_alert-texture slds-theme_info slds-p-around_x-small" role="info">
+			<h2>
+				<svg class="slds-icon slds-icon slds-icon_xx-small slds-m-right_x-small" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+				</svg>
+				{'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS'|@getTranslatedString:$MODULE_NAME}
+			</h2>
 		</div>
 	</div>
 </div>

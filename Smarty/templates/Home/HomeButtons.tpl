@@ -362,7 +362,7 @@
 
 
 <div id="changeLayoutDiv" class="layerPopup" style="z-index:2000; display:none;">
-	<table>
+	<table class="slds-table slds-table_bordered">
 	<tr class="layerHeadingULine">
 		<td class="big">
 			{$MOD.LBL_HOME_LAYOUT}
@@ -376,7 +376,7 @@
 			{$MOD.LBL_NUMBER_OF_COLUMNS}
 		</td>
 		<td class="dvtCellLabel">
-			<select id="layoutSelect" class="small">
+			<select id="layoutSelect" class="slds-select small">
 				<option value="2">
 					{$MOD.LBL_TWO_COLUMN}
 				</option>
@@ -391,10 +391,10 @@
 	</tr>
 	<tr>
 		<td align="right">
-			<input type="button" name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " id="savebtn" class="crmbutton small save" onclick="saveLayout();">
+			<input type="button" name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " id="savebtn" class="slds-button slds-button_brand crmbutton small save" onclick="saveLayout();">
 		</td>
 		<td align="left">
-			<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmbutton small cancel" onclick="hideOptions('changeLayoutDiv');">
+			<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="slds-button slds-button_destructive crmbutton small cancel" onclick="hideOptions('changeLayoutDiv');">
 		</td>
 	</tr>
 

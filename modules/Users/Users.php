@@ -316,7 +316,7 @@ class Users extends CRMEntity {
 				}
 				$crypt_type = $adb->query_result($result, 0, 'crypt_type');
 				$encrypted_password = $this->encrypt_password($user_password, $crypt_type);
-				$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
+				$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5, 'Users', $userid);
 				$query = "SELECT * from $this->table_name where user_name=? AND user_password=?";
 				$params = array($usr_name, $encrypted_password);
 				$cnuser=$adb->getColumnNames($this->table_name);
