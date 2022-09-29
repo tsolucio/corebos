@@ -118,7 +118,7 @@ class WizardView {
 	}
 }
 
-class WizardListView {
+class WizardActions {
 
 	private $module;
 
@@ -131,6 +131,7 @@ class WizardListView {
 		global $current_user, $adb;
 		$page = vtlib_purify($_REQUEST['page']);
 		$perPage = vtlib_purify($_REQUEST['perPage']);
+		$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 		$step = isset($_REQUEST['step']) ? intval($_REQUEST['step']) : '';
 		if (isset($_REQUEST['query']) && !empty($_REQUEST['query'])) {
 			$sql = vtlib_purify($_REQUEST['query']);
@@ -140,21 +141,20 @@ class WizardListView {
 			$filterrows = isset($_REQUEST['filterrows']) ? $_REQUEST['filterrows'] : false;
 			$qg = new QueryGenerator($this->module, $current_user);
 			$qg->setFields(array('*'));
+			$newRecords = coreBOS_Session::get('DuplicatedRecords');
 			if ($filterrows) {
-				if (!empty($newRecords)) {
+				if (!empty($forids)) {
 					foreach ($forids as $id) {
 						$qg->addCondition('id', $id, 'e', 'or');
 					}
 				}
-				$newRecords = coreBOS_Session::get('DuplicatedRecords');
 				if (!empty($newRecords)) {
 					$step = vtlib_purify($_REQUEST['step']);
 					foreach ($newRecords[$step-1] as $id) {
 						$qg->addCondition('id', $id, 'e', 'or');
 					}
 				}
-			} elseif ($step == '0' && $this->module == 'Products') {
-				$newRecords = coreBOS_Session::get('DuplicatedRecords');
+			} elseif ($step == '0' && $this->module == 'Products' && $mode == 'SELECTPRODUCT') {
 				if (!empty($newRecords)) {
 					foreach ($newRecords[$step-1] as $id) {
 						$qg->addCondition('id', $id, 'e', 'or');
@@ -235,6 +235,15 @@ class WizardListView {
 		);
 	}
 
+	public function HandleRequest() {
+		$subaction = isset($_REQUEST['subaction']) ? vtlib_purify($_REQUEST['subaction']) : '';
+		$response = false;
+		if (!empty($subaction)) {
+			$response = $this->$subaction();
+		}
+		return $response;
+	}
+
 	public function MassCreate() {
 		require_once 'include/Webservices/MassCreate.php';
 		global $current_user;
@@ -262,21 +271,26 @@ class WizardListView {
 		return false;
 	}
 
-	public function Delete() {
-		$subaction = isset($_REQUEST['subaction']) ? vtlib_purify($_REQUEST['subaction']) : '';
-		if (!empty($subaction)) {
-			$this->$subaction();
-		}
-		return true;
+	public function DeleteSession() {
+		return coreBOS_Session::delete('DuplicatedRecords');
 	}
 
-	public function Session() {
-		$subaction = isset($_REQUEST['subaction']) ? vtlib_purify($_REQUEST['subaction']) : '';
-		$response = false;
-		if (!empty($subaction)) {
-			$response = $this->$subaction();
+	public function GetSession() {
+		return coreBOS_Session::get('DuplicatedRecords');
+	}
+
+	public function DeleteRecords() {
+		$data = json_decode($_REQUEST['data'], true);
+		$id = $data['recordid'];
+		$module = $data['modulename'];
+		$focus = CRMEntity::getInstance($module);
+		$focus->retrieve_entity_info($id, $module);
+		list($delerror, $errormessage) = $focus->preDeleteCheck();
+		if (!$delerror) {
+			$focus->trash($module, $id);
+			return true;
 		}
-		return $response;
+		return false;
 	}
 
 	public function Create_ProductComponent() {
@@ -338,27 +352,5 @@ class WizardListView {
 			}
 		}
 		return $target;
-	}
-
-	public function DeleteSession() {
-		coreBOS_Session::delete('DuplicatedRecords');
-	}
-
-	public function GetSession() {
-		return coreBOS_Session::get('DuplicatedRecords');
-	}
-
-	public function Records() {
-		$data = json_decode($_REQUEST['data'], true);
-		$id = $data['recordid'];
-		$module = $data['modulename'];
-		$focus = CRMEntity::getInstance($module);
-		$focus->retrieve_entity_info($id, $module);
-		list($delerror, $errormessage) = $focus->preDeleteCheck();
-		if (!$delerror) {
-			$focus->trash($module, $id);
-			return true;
-		}
-		return false;
 	}
 }

@@ -18,16 +18,14 @@ include_once 'modules/Vtiger/WizardClass.php';
 
 $wizardaction = empty($_REQUEST['wizardaction']) ? 'listview' : $_REQUEST['wizardaction'];
 $formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
-$wizard = new WizardListView($formodule);
+$wizard = new WizardActions($formodule);
 switch ($wizardaction) {
 	case 'MassCreate':
 		echo json_encode($wizard->MassCreate());
 		break;
 	case 'Delete':
-		echo json_encode($wizard->Delete());
-		break;
 	case 'Session':
-		echo json_encode($wizard->Session());
+		echo json_encode($wizard->HandleRequest());
 		break;
 	case 'listview':
 	default:

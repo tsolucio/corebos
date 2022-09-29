@@ -32,6 +32,7 @@ class WizardComponent {
 		this.WizardValidate = [];
 		this.WizardGoBack = [];
 		this.IsDuplicatedFromProduct = 0;
+		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI';
 	}
 
 	Init() {
@@ -65,20 +66,20 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	Next(ev) {
-		if (this.WizardMode[this.ActiveStep] == 'Create_PurchaseOrder') {
+		if (this.WizardMode[this.ActiveStep] == 'CREATEPURCHASEORDER' || this.WizardMode[this.ActiveStep-1] == 'CREATEPURCHASEORDER') {
 			return this.PurchaseOrder(ev);
 		}
-		if (this.WizardMode[this.ActiveStep] == 'Select_Product') {
+		if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
 			if (this.IsDuplicatedFromProduct == 0) {
 				ldsPrompt.show('Error', 'Please duplicate the product.', 'error');
 				return false;
 			}
-			if (!this.CheckSelection(ev, 'Select_Product')) {
+			if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
 				return false;
 			}
 			return this.FilterRows(ev);
 		}
-		if (this.WizardMode[this.ActiveStep] == 'Create_ProductComponent') {
+		if (this.WizardMode[this.ActiveStep] == 'CREATEPRODUCTCOMPONENT') {
 			if (this.WizardValidate[this.ActiveStep]) {
 				if (!this.CheckSelection(ev)) {
 					return false;
@@ -88,7 +89,7 @@ class WizardComponent {
 		}
 		//Specific use case*
 		const type = ev.target.dataset.type;
-		if (this.WizardCurrentModule[this.ActiveStep] == 'ProductComponent' && type == 'back') {
+		if (this.WizardMode[this.ActiveStep] == 'ListView' && this.WizardCurrentModule[this.ActiveStep] == 'ProductComponent' && type == 'back') {
 			this.CheckedRows[this.ActiveStep-1] = [];
 			this.WizardInstance[`wzgrid${this.ActiveStep-1}`].uncheckAll();
 		}
@@ -141,6 +142,7 @@ class WizardComponent {
 	 */
 	FilterDataForStep() {
 		const module = wizard.WizardCurrentModule[wizard.ActiveStep];
+		wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].clear();
 		wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams({
 			formodule: module,
 			filterrows: true,
@@ -149,101 +151,6 @@ class WizardComponent {
 		setTimeout(function() {
 			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
 		}, 100);
-	}
-
-	MassCreate() {
-		let data = [];
-		for (let i in this.GroupData) {
-			if (i != '') {
-				let rows = {};
-				for (let j in this.GroupData[i]) {
-					rows[j] = this.GroupData[i][j].id;
-				}
-				if (isNaN(i)) {
-					const doc = this.ConvertStringToHTML(i).getElementsByTagName('a')[0];
-					const url = doc.getAttribute('href');
-					const urlParser = new URL(`https://example.com/${url}`);
-					i = urlParser.searchParams.get('record');
-				}
-				data[i] = rows;
-			}
-		}
-		const filterData = Object.fromEntries(Object.entries(data).filter(value => value[1]));
-		if (Object.keys(filterData).length === 0) {
-			ldsPrompt.show('Error', 'Something went wrong. Try again!', 'error');
-			return false;
-		}
-		this.loader('show');
-		const url = `index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=MassCreate&formodule=${MCModule}&subaction=CreatePO`;
-		this.Request(url, 'post', filterData).then(function(response) {
-			if (response) {
-				ldsPrompt.show('Success', 'PurchaseOrder created successfully!', 'success');
-			} else {
-				ldsPrompt.show('Error', 'Something went wrong. Try again!', 'error');
-			}
-			wizard.loader('hide');
-		});
-	}
-
-	TreeGrid() {
-		const wizardcolumns = JSON.parse(this.WizardColumns[this.ActiveStep]);
-		let columns = [];
-		let filtercolumns = [];
-		columns.push({
-			header: 'Vendor',
-			name: 'parentaction'
-		});
-		for (let i in wizardcolumns) {
-			columns.push(wizardcolumns[i])
-			filtercolumns.push(wizardcolumns[i].name)
-		}
-		let griddata = [];
-		for (let id in this.GroupData) {
-			if (id != 0) {
-				let rows = [];
-				for (let i in this.GroupData[id]) {
-					let row = {};
-					Object.keys(this.GroupData[id][i]).forEach(key => {
-						if (filtercolumns.includes(key)) {
-							row[key] = this.GroupData[id][i][key];
-						}
-					});
-					rows.push(row);
-				}
-				griddata.push({
-					parentaction: id,
-					_children: rows,
-					_attributes: {
-						expanded: true
-					}
-				});
-			}
-		}
-		if (this.WizardInstance[`wzgrid${this.ActiveStep+1}`] !== undefined) {
-			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].destroy();
-		}
-		this.WizardInstance[`wzgrid${this.ActiveStep+1}`] = new tui.Grid({
-			el: document.getElementById(`seq-${this.ActiveStep+1}`),
-			columns: columns,
-			data: griddata,
-			treeColumnOptions: {
-				name: 'parentaction',
-				useIcon: false,
-				useCascadingCheckbox: false
-			},
-			useClientSort: false,
-			rowHeight: 'auto',
-			bodyHeight: 'auto',
-			scrollX: false,
-			scrollY: false,
-			columnOptions: {
-				resizable: true
-			},
-			header: {
-				align: 'left',
-			},
-			contextMenu: null
-		});
 	}
 
 	/**
@@ -343,7 +250,7 @@ class WizardComponent {
 	Delete(id) {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
 			const module = this.WizardCurrentModule[this.ActiveStep];
-			var url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=Delete&subaction=Records';
+			var url = `${this.url}&wizardaction=Delete&subaction=DeleteRecords`;
 			this.Request(url, 'post', {
 				recordid: id,
 				modulename: module
@@ -372,10 +279,20 @@ class WizardComponent {
 			page._currentPage = totalPage;
 		}
 		setTimeout(function() {
-			wizard.WizardInstance[`wzgrid${step}`].readData(page._currentPage, {
-				page: page._currentPage
-			}, true);
-		}, 100);
+			if (wizard.ActiveStep == 0 && wizard.WizardMode[wizard.ActiveStep] == 'SELECTPRODUCT') {
+				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].clear();
+				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams({
+					page: 1,
+					step: wizard.ActiveStep,
+					mode: wizard.WizardMode[wizard.ActiveStep]
+				});
+				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
+			} else {
+				wizard.WizardInstance[`wzgrid${step}`].readData(page._currentPage, {
+					page: page._currentPage
+				}, true);
+			}
+		}, 500);
 	}
 
 	/**
@@ -439,10 +356,9 @@ class WizardComponent {
 		return response.json();
 	}
 
-	DeleteSession() {
-		const url = `index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=Delete&subaction=DeleteSession`;
+	async DeleteSession() {
+		const url = `${this.url}&wizardaction=Delete&subaction=DeleteSession`;
 		this.Request(url, 'post');
-		localStorage.removeItem('IsDuplicatedFromProduct');	
 	}
 
 	/**
@@ -476,7 +392,7 @@ class WizardComponent {
 			rows.push(ids);
 		}
 		this.loader('show');
-		const url = `index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=MassCreate&subaction=Create_ProductComponent&formodule=ProductComponent&step=${this.ActiveStep}`;
+		const url = `${this.url}&wizardaction=MassCreate&subaction=Create_ProductComponent&formodule=ProductComponent&step=${this.ActiveStep}`;
 		this.Request(url, 'post', rows).then(function(response) {
 			if (response) {
 				ldsPrompt.show('Success', 'ProductComponent created successfully!', 'success');
@@ -546,6 +462,104 @@ class WizardComponent {
 		}
 		return true;
 	}
+
+	MassCreate() {
+		let data = [];
+		for (let i in this.GroupData) {
+			if (i != '') {
+				let rows = {};
+				for (let j in this.GroupData[i]) {
+					rows[j] = this.GroupData[i][j].id;
+				}
+				if (isNaN(i)) {
+					const doc = this.ConvertStringToHTML(i).getElementsByTagName('a')[0];
+					const url = doc.getAttribute('href');
+					const urlParser = new URL(`https://example.com/${url}`);
+					i = urlParser.searchParams.get('record');
+				}
+				data[i] = rows;
+			}
+		}
+		const filterData = Object.fromEntries(Object.entries(data).filter(value => value[1]));
+		if (Object.keys(filterData).length === 0) {
+			ldsPrompt.show('Error', 'Something went wrong. Try again!', 'error');
+			return false;
+		}
+		this.loader('show');
+		const url = `${this.url}&wizardaction=MassCreate&formodule=${MCModule}&subaction=CreatePO`;
+		this.Request(url, 'post', filterData).then(function(response) {
+			if (response) {
+				ldsPrompt.show('Success', 'PurchaseOrder created successfully!', 'success');
+				setTimeout(function() {
+					location.reload(true);
+				}, 1000);
+			} else {
+				ldsPrompt.show('Error', 'Something went wrong. Try again!', 'error');
+			}
+			wizard.loader('hide');
+		});
+	}
+
+	TreeGrid() {
+		const wizardcolumns = JSON.parse(this.WizardColumns[this.ActiveStep]);
+		let columns = [];
+		let filtercolumns = [];
+		columns.push({
+			header: 'Parent',
+			name: 'parentaction'
+		});
+		for (let i in wizardcolumns) {
+			columns.push(wizardcolumns[i])
+			filtercolumns.push(wizardcolumns[i].name)
+		}
+		let griddata = [];
+		for (let id in this.GroupData) {
+			if (id != 0) {
+				let rows = [];
+				for (let i in this.GroupData[id]) {
+					let row = {};
+					Object.keys(this.GroupData[id][i]).forEach(key => {
+						if (filtercolumns.includes(key)) {
+							row[key] = this.GroupData[id][i][key];
+						}
+					});
+					rows.push(row);
+				}
+				griddata.push({
+					parentaction: id,
+					_children: rows,
+					_attributes: {
+						expanded: true
+					}
+				});
+			}
+		}
+		if (this.WizardInstance[`wzgrid${this.ActiveStep+1}`] !== undefined) {
+			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].destroy();
+		}
+		this.WizardInstance[`wzgrid${this.ActiveStep+1}`] = new tui.Grid({
+			el: document.getElementById(`seq-${this.ActiveStep+1}`),
+			columns: columns,
+			data: griddata,
+			treeColumnOptions: {
+				name: 'parentaction',
+				useIcon: false,
+				useCascadingCheckbox: false
+			},
+			useClientSort: false,
+			rowHeight: 'auto',
+			bodyHeight: 'auto',
+			scrollX: false,
+			scrollY: false,
+			columnOptions: {
+				resizable: true
+			},
+			header: {
+				align: 'left',
+			},
+			contextMenu: null
+		});
+	}
 }
 
 class WizardActions {
@@ -561,6 +575,7 @@ class WizardActions {
 			if (actions.includes('edit')) {
 				el.innerHTML += `
 				<button
+					type="button"
 					class="slds-button slds-button_icon slds-button_icon-border-filled"
 					aria-pressed="false"
 					onclick="wizard.Upsert(${recordid}, 'edit')"
@@ -574,6 +589,7 @@ class WizardActions {
 			if (actions.includes('duplicate')) {
 				el.innerHTML += `
 				<button
+					type="button"
 					class="slds-button slds-button_icon slds-button_icon-border-filled"
 					aria-pressed="false"
 					onclick="wizard.Upsert(${recordid}, 'duplicate')"
@@ -587,6 +603,7 @@ class WizardActions {
 			if (actions.includes('delete')) {
 				el.innerHTML += `
 				<button
+					type="button"
 					class="slds-button slds-button_icon slds-button_icon-border-filled"
 					aria-pressed="false"
 					onclick="wizard.Delete(${recordid})"
