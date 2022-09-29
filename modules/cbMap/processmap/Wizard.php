@@ -22,6 +22,7 @@
 <steps>
 	<step>
 		<title></title>
+		<description></description>
 		<sequence></sequence>
 		<detailviewlayoutmap>mapid</detailviewlayoutmap>
 		<validations>
@@ -36,6 +37,7 @@
 			</validation>
 		</validations>
 	</step>
+	...
 </steps>
 </map>
 *************************************************************************************************/
@@ -56,6 +58,7 @@ class Wizard extends processcbMap {
 		foreach ($xml->steps->step as $s) {
 			$step = array();
 			$step['title'] = (string)$s->title;
+			$step['description'] = (string)$s->description;
 			$step['sequence'] = (int)$s->sequence;
 			$step['detailviewlayoutmap'] = (string)$s->detailviewlayoutmap;
 			$validations = array();
