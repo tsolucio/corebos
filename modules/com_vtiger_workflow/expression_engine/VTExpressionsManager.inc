@@ -246,6 +246,7 @@ class VTExpressionsManager {
 			'average' => 'average(number,...)',
 			'getCurrentConfiguredTaxValues' => 'getCurrentConfiguredTaxValues(taxname)',
 			'getCurrencyConversionValue' => 'getCurrencyConversionValue(currency_code)',
+			'EUVATValidation' => 'EUVATValidation(vat)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

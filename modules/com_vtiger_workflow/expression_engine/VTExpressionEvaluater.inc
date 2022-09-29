@@ -141,6 +141,7 @@ class VTFieldExpressionEvaluater {
 			'average' => 'cb_average',
 			'getCurrentConfiguredTaxValues' => '__cb_getCurrentConfiguredTaxValues',
 			'getCurrencyConversionValue' => '__cb_getCurrencyConversionValue',
+			'EUVATValidation' => '__cb_euvatvalidation',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',
