@@ -19,6 +19,7 @@
  * The accepted format is:
 <map>
 <title>Process Title</title>
+<operation></operation>
 <steps>
 	<step>
 		<title></title>
@@ -88,6 +89,7 @@ class Wizard extends processcbMap {
 		}
 		$this->mapping['totalsteps'] = count($steps);
 		$this->mapping['title'] = (isset($xml->title) ? (string)$xml->title : '');
+		$this->mapping['operation'] = (isset($xml->operation) ? (string)$xml->operation : '');
 		usort($steps, function ($a, $b) {
 			return $a['sequence'] > $b['sequence'] ? 1 : -1;
 		});

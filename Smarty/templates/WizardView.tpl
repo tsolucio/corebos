@@ -16,6 +16,7 @@
 		var MCModule = '{$formodule}';
 		var wizard = new WizardComponent({$wizardTotal});
 		wizard.GroupByField = '{$GroupBy}';
+		wizard.Operation = '{$wizardOperation}';
 		wizard.DeleteSession().then(function() {	
 			window.addEventListener('DOMContentLoaded', (event) => {
 				wizard.Init();
