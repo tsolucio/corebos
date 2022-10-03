@@ -11,7 +11,7 @@
 {assign var="MODULEICON" value='groups'}
 {assign var="MODULESECTION" value=$MOD.LBL_GROUPS}
 {assign var="MODULESECTIONDESC" value=$MOD.LBL_GROUP_DESC}
-{include file='SetMenu.tpl'}
+{include file='SetMenu3.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 	<div class="slds-modal__container slds-p-around_none slds-card">
 		<!-- DISPLAY -->

@@ -11,7 +11,7 @@
 {assign var="MODULEICON" value='user_role'}
 {assign var="MODULESECTION" value=$MOD.LBL_PROFILES}
 {assign var="MODULESECTIONDESC" value=$MOD.LBL_PROFILE_DESCRIPTION}
-{include file='SetMenu.tpl'}
+{include file='SetMenu2.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 	<div class="slds-modal__container slds-p-around_none slds-card">
 		<!-- DISPLAY -->

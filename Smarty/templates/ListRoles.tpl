@@ -79,7 +79,7 @@ ul {ldelim}color:black;{rdelim}
 	{rdelim}
 </script>
 
-{include file="SetMenu.tpl"}
+{include file="SetMenu1.tpl"}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
