@@ -10,15 +10,18 @@
  ********************************************************************************/
 
 $mod_strings = array (
-'Tooltip' => 'Ayuda rápida',
-'SINGLE_Tooltip' => 'Ayuda rápida',
-'LBL_TOOLTIP_MANAGEMENT'=>'Administración de Ayudas',
-'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Administra los mensajes de ayuda aqui',
-'LBL_TOOLTIP_HELP_TEXT'=>'Selecciona los campos a mostrar como ayuda',
-'LBL_FIELDS_IN'=>'Campos en',
-'LBL_FIELD'=>'Campo',
-'LBL_NOT_ASSETS'=>'No hay Recursos asignados',
-'TooltipInfo' => 'Esta extensión añade información adicional en forma de popup al pasar el ratón por encima de los campos de un módulo. Se accede en la confguración de cada módulo no directamente, así que puedes eliminarlo del menu.',
-'No Fields Selected' => 'No hay ningún campo seleccionado',
+	'Tooltip' => 'Ayuda rápida',
+	'SINGLE_Tooltip' => 'Ayuda rápida',
+	'LBL_TOOLTIP_MANAGEMENT'=>'Administración de Ayudas',
+	'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Administra los mensajes de ayuda aqui',
+	'LBL_TOOLTIP_HELP_TEXT'=>'Selecciona los campos a mostrar como ayuda',
+	'LBL_FIELDS_IN'=>'Campos en',
+	'LBL_FIELD'=>'Campo',
+	'LBL_NOT_ASSETS'=>'No hay Recursos asignados',
+	'TooltipInfo' => 'Esta extensión añade información adicional en forma de popup al pasar el ratón por encima de los campos de un módulo. Se accede en la confguración de cada módulo no directamente, así que puedes eliminarlo del menu.',
+	'No Fields Selected' => 'No hay ningún campo seleccionado',
+	'LBL_QUANTITY' => 'Quantity',
+	'LBL_PRODUCT' => 'Product',
+	'LBL_PRICE' => 'Price',
 );
 ?>

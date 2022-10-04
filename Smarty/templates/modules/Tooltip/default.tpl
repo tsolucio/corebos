@@ -11,9 +11,9 @@ e.g. <b>fieldlabel:</b>  fieldvalue-->*}
 {if !empty($Products)}
 <table>
 	<tr>
-		<td><strong>Quantity</strong></td>
-		<td><strong>Product</strong></td>
-		<td><strong>Price</strong></td>
+		<td><strong>{$CMOD.LBL_QUANTITY}</strong></td>
+		<td><strong>{$CMOD.LBL_PRODUCT}</strong></td>
+		<td><strong>{$CMOD.LBL_PRICE}</strong></td>
 	</tr>
 	{foreach key=row_no item=data from=$Products}
 		{assign var="prod" value="prod"|cat:$row_no}

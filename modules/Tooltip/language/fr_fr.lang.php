@@ -17,5 +17,8 @@ $mod_strings = array (
 	'LBL_NOT_ASSETS'=>'Pas de ressources allouées.',
 	'TooltipInfo' => 'Cette extention affiche des bulles avec des informations supplémentaires lorsque le curseur de la souris est positionnée sur les différents champs d\'un module. Elle est accessible à partir de la configuration de chaque module et peut donc être retirée du menu.',
 	'No Fields Selected' => 'Aucun champ sélectioné',
+	'LBL_QUANTITY' => 'Quantity',
+	'LBL_PRODUCT' => 'Product',
+	'LBL_PRICE' => 'Price',
 );
 ?>
