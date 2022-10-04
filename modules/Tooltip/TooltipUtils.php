@@ -193,7 +193,7 @@ function getToolTip($text, $format = 'default', $entity = array()) {
 			inner join vtiger_products on vtiger_products.productid=vtiger_inventoryproductrel.productid
 			where vtiger_salesordercf.salesorderid=?', array($entity['id']));
 		$num_rows = $adb->num_rows($rs);
-		for($i=0; $i<$num_rows; $i++) {
+		for ($i=0; $i<$num_rows; $i++) {
 			$details[$i]['qta'.$i] = $adb->query_result($rs, $i, 'quantity');
 			$details[$i]['price'.$i] = $$adb->query_result($rs, $i, 'listprice');
 			$details[$i]['prod'.$i] = $adb->query_result($rs, $i, 'productname');
