@@ -470,4 +470,11 @@ var alert_arr = {
 	'LBL_REQUIRED_FIELDS': 'Por favor rellena todos los campos obligatorios',
 	'LBL_ERROR_CREATING': 'Error creando. Inténtalo de nuevo.',
 	'LBL_ERROR_DROPZONE': 'Error leyendo el enlace. Verifícalo e intenta de nuevo.',
+	'LBL_DUPLICATE_PRODUCT': 'Please duplicate the product',
+	'LBL_SELECT_MORE_ROWS': 'Please select at least one row',
+	'LBL_SELECT_ROW': 'Please select one row',
+	'LBL_DELETE_SUCCESS': 'Deleted successfully',
+	'LBL_WRONG': 'Something went wrong. Try again!',
+	'LBL_UNABLE_TO_FILTER': 'Unable to filter data. Try again!',
+	'LNK_DUPLICATE': 'Duplicate',
 };

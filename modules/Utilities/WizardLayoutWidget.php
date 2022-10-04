@@ -13,22 +13,27 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-include_once 'include/ListView/GridUtils.php';
-include_once 'modules/Vtiger/WizardClass.php';
+require_once 'modules/Vtiger/DeveloperWidget.php';
+global $currentModule;
 
-$wizardaction = empty($_REQUEST['wizardaction']) ? 'listview' : $_REQUEST['wizardaction'];
-$formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
-$wizard = new WizardActions($formodule);
-switch ($wizardaction) {
-	case 'MassCreate':
-		echo json_encode($wizard->MassCreate());
-		break;
-	case 'Delete':
-	case 'Session':
-		echo json_encode($wizard->HandleRequest());
-		break;
-	case 'listview':
-	default:
-		echo $wizard->Grid();
-		break;
+class WizardLayoutWidget {
+	// Get class name of the object that will implement the widget functionality
+	public static function getWidget($name) {
+		return (new Wizard_DetailViewBlock());
+	}
+}
+
+class Wizard_DetailViewBlock extends DeveloperBlock {
+	// Implement widget functionality
+	protected $widgetName = 'WizardLayout';
+
+	// This one is called to get the contents to show on screen
+	public function process($context = false) {
+		global $smarty;
+		if (isset($context['bmapname'])) {
+			$_REQUEST['bmapname'] = $context['bmapname'];
+		}
+		require_once 'modules/Vtiger/WizardView.php';
+		return $smarty->fetch('Smarty/templates/WizardView.tpl');
+	}
 }

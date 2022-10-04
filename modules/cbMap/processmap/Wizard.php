@@ -19,9 +19,11 @@
  * The accepted format is:
 <map>
 <title>Process Title</title>
+<operation></operation>
 <steps>
 	<step>
 		<title></title>
+		<description></description>
 		<sequence></sequence>
 		<detailviewlayoutmap>mapid</detailviewlayoutmap>
 		<validations>
@@ -36,6 +38,7 @@
 			</validation>
 		</validations>
 	</step>
+	...
 </steps>
 </map>
 *************************************************************************************************/
@@ -56,6 +59,7 @@ class Wizard extends processcbMap {
 		foreach ($xml->steps->step as $s) {
 			$step = array();
 			$step['title'] = (string)$s->title;
+			$step['description'] = (string)$s->description;
 			$step['sequence'] = (int)$s->sequence;
 			$step['detailviewlayoutmap'] = (string)$s->detailviewlayoutmap;
 			$validations = array();
@@ -85,6 +89,7 @@ class Wizard extends processcbMap {
 		}
 		$this->mapping['totalsteps'] = count($steps);
 		$this->mapping['title'] = (isset($xml->title) ? (string)$xml->title : '');
+		$this->mapping['operation'] = (isset($xml->operation) ? (string)$xml->operation : '');
 		usort($steps, function ($a, $b) {
 			return $a['sequence'] > $b['sequence'] ? 1 : -1;
 		});

@@ -37,7 +37,7 @@ function WizardGrid{$formodule}{$step}() {
 		data: {
 			api: {
 				readData: {
-					url: 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=listview&formodule={$formodule}&step={$step}',
+					url: 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=listview&formodule={$formodule}&step={$step}&mode='+wizard.WizardMode[{$step}],
 					method: 'GET'
 				}
 			}
@@ -75,5 +75,8 @@ function WizardGrid{$formodule}{$step}() {
 		wizard.CheckRows(ev);
 	});
 }
-WizardGrid{$formodule}{$step}();	
+WizardGrid{$formodule}{$step}();
+window.addEventListener('DOMContentLoaded', () => {
+	wizard.loader('hide');
+});	
 </script>

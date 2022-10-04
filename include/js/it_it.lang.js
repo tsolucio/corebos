@@ -457,4 +457,11 @@ var alert_arr = {
 	'LBL_REQUIRED_FIELDS': 'Please fill all required fields',
 	'LBL_ERROR_CREATING': 'Error while creating. Please try again.',
 	'LBL_ERROR_DROPZONE': 'Error uploading link. Check the link and try again.',
+	'LBL_DUPLICATE_PRODUCT': 'Please duplicate the product',
+	'LBL_SELECT_MORE_ROWS': 'Please select at least one row',
+	'LBL_SELECT_ROW': 'Please select one row',
+	'LBL_DELETE_SUCCESS': 'Deleted successfully',
+	'LBL_WRONG': 'Something went wrong. Try again!',
+	'LBL_UNABLE_TO_FILTER': 'Unable to filter data. Try again!',
+	'LNK_DUPLICATE': 'Duplicate',
 };

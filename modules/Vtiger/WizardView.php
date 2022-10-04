@@ -31,6 +31,7 @@ if ($cbMapid) {
 		$setfield = new showSetOfFields_DetailViewBlock();
 		$smarty->assign('showDesert', false);
 		$smarty->assign('wizardTitle', $cbMapWz['title']);
+		$smarty->assign('wizardOperation', $cbMapWz['operation']);
 		$smarty->assign('wizardTotal', $cbMapWz['totalsteps']);
 		$smarty->assign('wizardSteps', $cbMapWz['steps']);
 		$views = array();
