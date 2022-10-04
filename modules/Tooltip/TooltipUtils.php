@@ -177,13 +177,29 @@ function getToolTipText($view, $fieldname, $module, $value) {
  * @param $text - the tooltip text which is to be formatted
  * @param $format - the format in which tooltip has to be formatted; default value will be each entry in single line
  */
-function getToolTip($text, $format = 'default') {
+function getToolTip($text, $format = 'default', $entity = array()) {
+	global $adb;
 	require_once 'Smarty_setup.php';
 	$smarty = new vtigerCRM_Smarty;
 	$tip = '';
 	if (trim(implode('', $text)) == '') {
 		return $tip;
 	}
+	$details = array();
+	if (!empty($entity) && $entity['module'] == 'SalesOrder') {
+		$rs = $adb->pquery('select quantity, listprice, productname from vtiger_salesorder
+			inner join vtiger_salesordercf on vtiger_salesorder.salesorderid=vtiger_salesordercf.salesorderid
+			inner join vtiger_inventoryproductrel on id=vtiger_salesordercf.salesorderid
+			inner join vtiger_products on vtiger_products.productid=vtiger_inventoryproductrel.productid
+			where vtiger_salesordercf.salesorderid=?', array($entity['id']));
+		$num_rows = $adb->num_rows($rs);
+		for($i=0; $i<$num_rows; $i++) {
+			$details[$i]['qta'.$i] = $adb->query_result($rs, $i, 'quantity');
+			$details[$i]['price'.$i] = $$adb->query_result($rs, $i, 'listprice');
+			$details[$i]['prod'.$i] = $adb->query_result($rs, $i, 'productname');
+		}
+	}
+	$smarty->assign('Products', $details);
 	$smarty->assign('TEXT', $text);
 	return $smarty->fetch("modules/Tooltip/$format.tpl");
 }
