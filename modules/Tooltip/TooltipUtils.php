@@ -177,13 +177,29 @@ function getToolTipText($view, $fieldname, $module, $value) {
  * @param $text - the tooltip text which is to be formatted
  * @param $format - the format in which tooltip has to be formatted; default value will be each entry in single line
  */
-function getToolTip($text, $format = 'default') {
+function getToolTip($text, $format = 'default', $entity = array()) {
+	global $adb;
 	require_once 'Smarty_setup.php';
 	$smarty = new vtigerCRM_Smarty;
 	$tip = '';
 	if (trim(implode('', $text)) == '') {
 		return $tip;
 	}
+	$details = array();
+	if (!empty($entity) && in_array($entity['module'], getInventoryModules())) {
+		$focus = CRMEntity::getInstance($entity['module']);
+		$focus->retrieve_entity_info($entity['id'], $entity['module']);
+		$focus->id = $entity['id'];
+		$products = getAssociatedProducts($entity['module'], $focus);
+		if (!empty($products)) {
+			foreach ($products as $idx => $row) {
+				$details[$idx]['qta'.$idx] = $row['qty'.$idx];
+				$details[$idx]['price'.$idx] = $row['listPrice'.$idx];
+				$details[$idx]['prod'.$idx] = $row['productName'.$idx];
+			}
+		}
+	}
+	$smarty->assign('Products', $details);
 	$smarty->assign('TEXT', $text);
 	return $smarty->fetch("modules/Tooltip/$format.tpl");
 }
