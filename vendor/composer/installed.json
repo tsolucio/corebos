@@ -1181,6 +1181,61 @@
             "install-path": "../guzzlehttp/psr7"
         },
         {
+            "name": "hi-folks/statistics",
+            "version": "v0.2.1",
+            "version_normalized": "0.2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Hi-Folks/statistics.git",
+                "reference": "bbb6c8a5e4fb6cc47008649cb2dade23db928192"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Hi-Folks/statistics/zipball/bbb6c8a5e4fb6cc47008649cb2dade23db928192",
+                "reference": "bbb6c8a5e4fb6cc47008649cb2dade23db928192",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "pestphp/pest": "^1.20",
+                "phpstan/phpstan": "^1.3",
+                "spatie/ray": "^1.28"
+            },
+            "time": "2022-02-22T21:12:17+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "HiFolks\\Statistics\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Roberto B.",
+                    "email": "roberto.butti@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP package that provides functions for calculating mathematical statistics of numeric data.",
+            "homepage": "https://github.com/hi-folks/statistics",
+            "keywords": [
+                "hi-folks",
+                "statistics"
+            ],
+            "support": {
+                "issues": "https://github.com/Hi-Folks/statistics/issues",
+                "source": "https://github.com/Hi-Folks/statistics/tree/v0.2.1"
+            },
+            "install-path": "../hi-folks/statistics"
+        },
+        {
             "name": "knplabs/gaufrette",
             "version": "v0.9.0",
             "version_normalized": "0.9.0.0",

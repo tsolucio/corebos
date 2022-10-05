@@ -61,6 +61,7 @@
         "vaites/php-apache-tika": "1.2.4",
         "smi2/phpclickhouse": "1.4.4",
         "fzaninotto/faker": "1.9.2",
-        "stefangabos/zebra_session": "3.1.0"
+        "stefangabos/zebra_session": "3.1.0",
+        "hi-folks/statistics": "0.2.1"
     }
 }

@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'ee5c76c9b104b5276f6a012f863aa8c37c34ba65',
+        'reference' => 'a131d0d9af757c61096b40fbfe0fb92d4d7a5cb1',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'ee5c76c9b104b5276f6a012f863aa8c37c34ba65',
+            'reference' => 'a131d0d9af757c61096b40fbfe0fb92d4d7a5cb1',
             'dev_requirement' => false,
         ),
         'automattic/woocommerce' => array(
@@ -218,6 +218,15 @@
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
             'reference' => '239400de7a173fe9901b9ac7c06497751f00727a',
+            'dev_requirement' => false,
+        ),
+        'hi-folks/statistics' => array(
+            'pretty_version' => 'v0.2.1',
+            'version' => '0.2.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../hi-folks/statistics',
+            'aliases' => array(),
+            'reference' => 'bbb6c8a5e4fb6cc47008649cb2dade23db928192',
             'dev_requirement' => false,
         ),
         'knplabs/gaufrette' => array(
