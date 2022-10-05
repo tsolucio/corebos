@@ -20,8 +20,8 @@ $mod_strings = array (
 	'LBL_NOT_ASSETS'=>'No hay Recursos asignados',
 	'TooltipInfo' => 'Esta extensión añade información adicional en forma de popup al pasar el ratón por encima de los campos de un módulo. Se accede en la confguración de cada módulo no directamente, así que puedes eliminarlo del menu.',
 	'No Fields Selected' => 'No hay ningún campo seleccionado',
-	'LBL_QUANTITY' => 'Quantity',
-	'LBL_PRODUCT' => 'Product',
-	'LBL_PRICE' => 'Price',
+	'LBL_QUANTITY' => 'Cantidad',
+	'LBL_PRODUCT' => 'Producto',
+	'LBL_PRICE' => 'Precio',
 );
 ?>
