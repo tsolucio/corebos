@@ -20,9 +20,9 @@ e.g. <b>fieldlabel:</b>  fieldvalue-->*}
 		{assign var="qta" value="qta"|cat:$row_no}
 		{assign var="price" value="price"|cat:$row_no}
 		<tr>
-			<td>{$data.$price}</td>
-			<td>{$data.$prod}</td>
 			<td>{$data.$qta}</td>
+			<td>{$data.$prod}</td>
+			<td>{$data.$price}</td>
 		</tr>
 	{/foreach}
 </table>

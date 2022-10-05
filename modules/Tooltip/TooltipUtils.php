@@ -186,17 +186,17 @@ function getToolTip($text, $format = 'default', $entity = array()) {
 		return $tip;
 	}
 	$details = array();
-	if (!empty($entity) && $entity['module'] == 'SalesOrder') {
-		$rs = $adb->pquery('select quantity, listprice, productname from vtiger_salesorder
-			inner join vtiger_salesordercf on vtiger_salesorder.salesorderid=vtiger_salesordercf.salesorderid
-			inner join vtiger_inventoryproductrel on id=vtiger_salesordercf.salesorderid
-			inner join vtiger_products on vtiger_products.productid=vtiger_inventoryproductrel.productid
-			where vtiger_salesordercf.salesorderid=?', array($entity['id']));
-		$num_rows = $adb->num_rows($rs);
-		for ($i=0; $i<$num_rows; $i++) {
-			$details[$i]['qta'.$i] = $adb->query_result($rs, $i, 'quantity');
-			$details[$i]['price'.$i] = $$adb->query_result($rs, $i, 'listprice');
-			$details[$i]['prod'.$i] = $adb->query_result($rs, $i, 'productname');
+	if (!empty($entity) && in_array($entity['module'], getInventoryModules())) {
+		$focus = CRMEntity::getInstance($entity['module']);
+		$focus->retrieve_entity_info($entity['id'], $entity['module']);
+		$focus->id = $entity['id'];
+		$products = getAssociatedProducts($entity['module'], $focus);
+		if (!empty($products)) {
+			foreach ($products as $idx => $row) {
+				$details[$idx]['qta'.$idx] = $row['qty'.$idx];
+				$details[$idx]['price'.$idx] = $row['listPrice'.$idx];
+				$details[$idx]['prod'.$idx] = $row['productName'.$idx];
+			}
 		}
 	}
 	$smarty->assign('Products', $details);
