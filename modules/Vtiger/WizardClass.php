@@ -143,6 +143,7 @@ class WizardActions {
 			$qg->setFields(array('*'));
 			$newRecords = coreBOS_Session::get('DuplicatedRecords');
 			if ($filterrows) {
+				//filter records for the next step based on some givend ids
 				if (!empty($forids)) {
 					foreach ($forids as $id) {
 						$qg->addCondition('id', $id, 'e', 'or');
@@ -155,6 +156,7 @@ class WizardActions {
 					}
 				}
 			} elseif ($step == '0' && $this->module == 'Products' && $mode == 'SELECTPRODUCT') {
+				//specific use case
 				if (!empty($newRecords)) {
 					foreach ($newRecords[$step-1] as $id) {
 						$qg->addCondition('id', $id, 'e', 'or');
@@ -163,8 +165,25 @@ class WizardActions {
 				}
 			} else {
 				if (!empty($forids)) {
-					foreach ($forids as $id) {
-						$qg->addReferenceModuleFieldCondition($forfield['relmodule'], $forfield['fieldname'], 'id', $id, 'e', 'or');
+					if (strpos($forfield, '.') !== false) {
+						//get record relations between 3 modules
+						list($relmodule, $module, $fieldname) = explode('.', $forfield);
+						$forids = $forids[0];
+						$focus = CRMEntity::getInstance($this->module);
+						$focus->retrieve_entity_info($forids, $this->module);
+						$focus->id = $forids;
+						if (isset($focus->column_fields[$fieldname]) && !empty($focus->column_fields[$fieldname])) {
+							$relfield = getFieldNameByFieldId(getRelatedFieldId($module, $relmodule));
+							$qg = new QueryGenerator($relmodule, $current_user);
+							$qg->setFields(array('*'));
+							$qg->addReferenceModuleFieldCondition($module, $relfield, 'id', $focus->column_fields[$fieldname], 'e', 'or');
+							$this->module = $relmodule;
+						}
+					} else {
+						//filter records for the next step based on some givend ids
+						foreach ($forids as $id) {
+							$qg->addReferenceModuleFieldCondition($forfield['relmodule'], $forfield['fieldname'], 'id', $id, 'e', 'or');
+						}
 					}
 				}
 			}

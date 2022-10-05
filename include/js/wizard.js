@@ -94,6 +94,7 @@ class WizardComponent {
 					this.WizardInstance[`wzgrid${this.ActiveStep-1}`].uncheckAll();
 				}
 				break;
+			case 'CREATEASSETS':
 			case 'CREATEPURCHASEORDER':
 				return this.PurchaseOrder(ev);
 				break;
@@ -169,6 +170,18 @@ class WizardComponent {
 		for (let i in relmods) {
 			if (module == relmods[i].module && relmodule == relmods[i].relmodule) {
 				return relmods[i];
+			}
+		}
+		//search for not direct related modules
+		let crelmods = JSON.parse(this.WizardRelModules[this.ActiveStep]);
+		for (let i in relmods) {
+			if (relmods[i].module == module) {
+				for (let j in crelmods) {
+					if (crelmods[j].relmodule == relmods[i].relmodule) {
+						return `${module}.${crelmods[j].relmodule}.${crelmods[j].fieldname}`;
+					}
+				}
+				break;
 			}
 		}
 		return '';
@@ -438,7 +451,10 @@ class WizardComponent {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_UNABLE_TO_FILTER, 'error');
 				return false;
 			}
-			const module = this.WizardCurrentModule[this.ActiveStep+1];
+			let module = this.WizardCurrentModule[this.ActiveStep+1];
+			if (typeof findColName == 'string' && findColName.indexOf('.') > -1) {
+				module = this.WizardCurrentModule[this.ActiveStep];
+			}
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setRequestParams({
 				forids: JSON.stringify(ids),
 				formodule: module,
