@@ -119,7 +119,11 @@
 			</div>
 		</div>
 	</div>
+	{if isset($isWigdet)}
+	<div class="slds-grid slds-path__action">
+	{else}
 	<div class="slds-grid slds-path__action" style="position: fixed;bottom: 0;background: #f3f3f3;padding: 15px;width: 100%;margin-left: -25px;z-index: 900;border-top: 1px solid #1b96ff">
+	{/if}
 		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete" disabled id="btn-back" data-type="back">
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
