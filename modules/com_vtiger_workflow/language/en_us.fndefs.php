@@ -2592,6 +2592,22 @@ $WFExpressionFunctionDefinitons = array(
 		"getCurrencyConversionValue('currency_code')"
 	),
 ),
+'EUVATValidation' => array(
+	'name' => 'EUVATValidation(vat)',
+	'desc' => 'This function validates VAT for EU countries.',
+	'params' => array(
+		array(
+			'name' => 'vat',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the VAT to validate',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"EUVATValidation('IT16816050114')"
+	),
+),
 );
 
 foreach (glob('modules/com_vtiger_workflow/language/en_us.fndefs.*.php', GLOB_BRACE) as $tcode) {

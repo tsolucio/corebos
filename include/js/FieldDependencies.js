@@ -548,33 +548,34 @@ FieldDependencies.prototype.fieldReadonlyDetailView = function (readonlyFields) 
 		field=readonlyFields[i]['field'];
 		document.getElementById('dtlview_'+field).innerHTML=document.getElementsByName(field).item(0).value;
 		document.getElementById('dtlview_'+field).style.display='inline';
-		document.getElementsByName(field).item(0).style.display='none';
+		document.getElementsByName(field).item(0).setAttribute('readonly', true);
+		document.getElementsByName(field).item(0).style.display='inline';
 	}
 };
 
-FieldDependencies.prototype.fieldEditable = function (readonlyFields) {
+FieldDependencies.prototype.fieldEditable = function (editFields) {
 	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
-		this.fieldEditableEditView(readonlyFields);
+		this.fieldEditableEditView(editFields);
 	} else {
-		this.fieldEditableDetailView(readonlyFields);
+		this.fieldEditableDetailView(editFields);
 	}
 };
 
-FieldDependencies.prototype.fieldEditableEditView = function (readonlyFields) {
+FieldDependencies.prototype.fieldEditableEditView = function (editFields) {
 	var field='';
-	for (var i=0; i<readonlyFields.length; i++) {
-		field=readonlyFields[i]['field'];
+	for (var i=0; i<editFields.length; i++) {
+		field=editFields[i]['field'];
 		document.getElementsByName(field).item(0).style.display='inline';
 		document.getElementById(field+'_hidden').style.display='none';
 	}
 };
 
-FieldDependencies.prototype.fieldEditableDetailView = function (readonlyFields) {
+FieldDependencies.prototype.fieldEditableDetailView = function (editFields) {
 	var field='';
-	for (var i=0; i<readonlyFields.length; i++) {
-		field=readonlyFields[i]['field'];
+	for (var i=0; i<editFields.length; i++) {
+		field=editFields[i]['field'];
 		document.getElementsByName(field).item(0).style.display='inline';
-		document.getElementById('dtlview_'+field).style.display='none';
+		document.getElementById('dtlview_'+field).style.display='inline';
 	}
 };
 

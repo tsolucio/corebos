@@ -521,6 +521,13 @@ class GridListView {
 					} else {
 						$rows[$fieldName] = '--';
 					}
+				} elseif ($fieldType == '1616') {
+					$cvrs = $adb->pquery('select viewname,entitytype from vtiger_customview where cvid=?', array($fieldValue));
+					$rows[$fieldName] = '';
+					if ($cvrs && $adb->num_rows($cvrs)>0) {
+						$cv = $adb->fetch_array($cvrs);
+						$rows[$fieldName] = $cv['viewname'].' ('.getTranslatedString($cv['entitytype'], $cv['entitytype']).')';
+					}
 				} elseif ($fieldName == 'modifiedby') {
 						$rows[$fieldName] = isset($usersList[$fieldValue]) ? $usersList[$fieldValue] : getUserFullName($fieldValue);
 				} elseif ($fieldType == '1024') {
