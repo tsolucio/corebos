@@ -76,6 +76,9 @@ function MassCreate($elements, $user) {
 			if (!empty($record['validate'])) {
 				$record['element']['cbDORECORDVALIDATION'] = true;
 			}
+			if (!empty($record['skip'])) {
+				$record['element']['skipUPDATE'] = true;
+			}
 			$rec = vtws_upsert($record['elementType'], $record['element'], $searchOn, $updatedfields, $user);
 			$record['id'] = $rec['id'];
 			$successCreates[] = $rec;
