@@ -27,8 +27,8 @@
 <div class="slds-page-header__control">
 <div class="slds-button-group" role="group">
 {if !empty($MasterDetailLayoutMap.toolbar.expandall)}
-<button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_EXPAND_COLLAPSE}" onclick="masterdetailwork.MDToggle(this)" data-id="{$MasterDetailLayoutMap.mapname}">
-	{$APP.LBL_EXPAND_COLLAPSE}
+<button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_EXPAND_COLLAPSE}" onclick="masterdetailwork.MDToggle(this)" data-id="{$MasterDetailLayoutMap.mapname}" id="btn-{$MasterDetailLayoutMap.mapname}">
+	{$APP.LBL_COLLAPSE}
 </button>
 {/if}
 {if !empty($MasterDetailLayoutMap.toolbar.create)}
