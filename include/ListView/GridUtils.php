@@ -419,6 +419,34 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 				));
 			}
 			break;
+		case Field_Metadata::UITYPE_FILENAME:
+			$docrs = $adb->pquery('select filename,filelocationtype,filestatus,notesid from vtiger_notes where notesid=?', array($recordID));
+			if ($adb->num_rows($docrs) == 1) {
+				$downloadtype = $adb->query_result($docrs, 0, 'filelocationtype');
+				$fileName = $adb->query_result($docrs, 0, 'filename');
+				$status = $adb->query_result($docrs, 0, 'filestatus');
+				$notesid = $adb->query_result($docrs, 0, 'notesid');
+				$fileattach = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
+				$res = $adb->pquery($fileattach, array($notesid));
+				$fileid = $adb->query_result($res, 0, 'attachmentsid');
+				$value = '';
+				if ($fileName != '' && $status == 1) {
+					if ($downloadtype == 'I') {
+						$value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile".
+							"&entityid=$notesid&fileid=$fileid' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module).
+							"' onclick='javascript:dldCntIncrease($fileid);'>".textlength_check($fieldValue).'</a>';
+					} elseif ($downloadtype == 'E') {
+						$value = "<a target='_blank' href='$fieldValue' onclick='javascript:".
+							"dldCntIncrease($docid);' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module)."'>".textlength_check($fieldValue).'</a>';
+					} else {
+						$value = '--';
+					}
+				}
+				$return = $value;
+			} else {
+				$return = '--';
+			}
+			break;
 		case Field_Metadata::UITYPE_RECORD_NO:
 		case Field_Metadata::UITYPE_LASTNAME:
 		case Field_Metadata::UITYPE_NAME:
