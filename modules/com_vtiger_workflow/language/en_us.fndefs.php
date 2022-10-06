@@ -2422,6 +2422,22 @@ $WFExpressionFunctionDefinitons = array(
 		"regex('[a-z]+', msg )",
 	),
 ),
+'array' => array(
+	'name' => 'array(values...)',
+	'desc' => 'This function returns an array with the given values.',
+	'params' => array(
+		array(
+			'name' => 'values',
+			'type' => 'CSV',
+			'optional' => false,
+			'desc' => 'comma-separated list of array values',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"array('value1', 1, 'other')",
+	),
+),
 'exists' => array(
 	'name' => 'exists(fieldname, value)',
 	'desc' => 'This function checks if a record with the given value in the given field exists or not.',

@@ -2419,6 +2419,22 @@ $WFExpressionFunctionDefinitons = array(
 		"regex('[a-z]+', msg )",
 	),
 ),
+'array' => array(
+	'name' => 'array(valores...)',
+	'desc' => 'Esta función devuelve un array con los valores dados.',
+	'params' => array(
+		array(
+			'name' => 'valores',
+			'type' => 'CSV',
+			'optional' => false,
+			'desc' => 'lista separada por commas de valores',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"array('value1', 1, 'other')",
+	),
+),
 'exists' => array(
 	'name' => 'exists(fieldname, value)',
 	'desc' => 'Esta función verifica si existe o no un registro con el valor dado en el campo dado.',
