@@ -245,7 +245,7 @@ class mdLinkRender {
 			}
 			el.innerHTML = String(fieldValue[0].mdValue);
 		} else {
-			el = document.createElement('span');
+			el = document.createElement('p');
 			el.innerHTML = String(props.value);
 		}
 		this.el = el;
