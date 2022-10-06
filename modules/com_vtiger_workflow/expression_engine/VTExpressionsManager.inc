@@ -244,6 +244,8 @@ class VTExpressionsManager {
 			'allrelatedarethesame' => 'allrelatedarethesame(relatedmodule, fieldname, value)',
 			'min' => 'min(fieldname)',
 			'max' => 'max(fieldname)',
+			'statistics' => 'statistics(function, data, parameters...)',
+			'frequency' => 'frequency(function, data, parameters...)',
 			'average' => 'average(number,...)',
 			'getCurrentConfiguredTaxValues' => 'getCurrentConfiguredTaxValues(taxname)',
 			'getCurrencyConversionValue' => 'getCurrencyConversionValue(currency_code)',

@@ -2576,6 +2576,66 @@ $WFExpressionFunctionDefinitons = array(
 		'max(employees, breakpoint)',
 	),
 ),
+'statistics' => array(
+	'name' => 'statistics(function, data, parameters...)',
+	'desc' => 'This function performs a predefined statistical calculation on the given dataset. The current set of supported calculations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>.',
+	'params' => array(
+		array(
+			'name' => 'function',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'calculation name to perform. supported calculations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>',
+		),
+		array(
+			'name' => 'data',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'values to perform the calculation',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'Multiple',
+			'optional' => true,
+			'desc' => 'any other parameters the function may need',
+		),
+	),
+	'categories' => array('Statistics'),
+	'examples' => array(
+		"statistics('median',array(1,3,5,7,9))",
+		"statistics('median',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+		"statistics('firstQuartile',array(98, 90, 70,18,92,92,55,83,45,95,88))",
+		"statistics('harmonicMean',array(40, 60), null, 1)",
+	),
+),
+'frequency' => array(
+	'name' => 'frequency(function, data, parameters...)',
+	'desc' => 'This function performs a predefined frequency calculation on the given dataset. The current set of supported calcuations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>.',
+	'params' => array(
+		array(
+			'name' => 'function',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'calculation name to perform. supported calcuations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>',
+		),
+		array(
+			'name' => 'data',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'values to perform calculation',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'Multiple',
+			'optional' => true,
+			'desc' => 'any other parameters the function may need',
+		),
+	),
+	'categories' => array('Statistics'),
+	'examples' => array(
+		"frequency('frequencies',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+		"frequency('relativeFrequencies',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+	),
+),
 'getCurrentConfiguredTaxValues' => array(
 	'name' => 'getCurrentConfiguredTaxValues(taxname)',
 	'desc' => 'This function returns the Current Configured Tax Values.',

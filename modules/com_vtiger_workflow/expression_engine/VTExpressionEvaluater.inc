@@ -138,6 +138,8 @@ class VTFieldExpressionEvaluater {
 			'number_format' => '__cb_number_format',
 			'min' => '__cb_min',
 			'max' => '__cb_max',
+			'statistics' => '__cb_statistics',
+			'frequency' => '__cb_frequency',
 			'sub_workdays' => '__cb_sub_workdays',
 			'average' => 'cb_average',
 			'getCurrentConfiguredTaxValues' => '__cb_getCurrentConfiguredTaxValues',
