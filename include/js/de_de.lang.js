@@ -472,4 +472,6 @@ var alert_arr = {
 	'LBL_REQUIRED_FIELDS': 'Please fill all required fields',
 	'LBL_ERROR_CREATING': 'Error while creating. Please try again.',
 	'LBL_ERROR_DROPZONE': 'Error uploading link. Check the link and try again.',
+	'LBL_COLLAPSE': 'Weniger',
+	'LBL_EXPAND': 'Mehr',
 };

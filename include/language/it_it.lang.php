@@ -592,6 +592,7 @@ $app_strings = array (
   'LBL_RECORDS' => 'Record',
   'LBL_SCROLL' => '[Vai all`inizio]',
   'LBL_EXPAND_COLLAPSE' => 'Espandi/Restringi',
+  'LBL_COLLAPSE' => 'Restringi',
   'LBL_RCPY_ADDRESS' => 'Copia l`indirizzo di Spedizione',
   'LBL_LCPY_ADDRESS' => 'Copia l`indirizzo di Fatturazione',
   'LBL_RECORD_ID' => 'Id Record',

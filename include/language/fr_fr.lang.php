@@ -592,6 +592,7 @@ $app_strings = array(
 	'LBL_RECORDS' => 'Enregistrements',
 	'LBL_SCROLL' => '[Haut]',
 	'LBL_EXPAND_COLLAPSE' => 'Etendre/Replier',
+	'LBL_COLLAPSE' => 'Replier',
 	'LBL_RCPY_ADDRESS' => 'Copier Adresse livraison',
 	'LBL_LCPY_ADDRESS' => 'Copier Adresse facturation',
 	'LBL_RECORD_ID' => 'Ref',

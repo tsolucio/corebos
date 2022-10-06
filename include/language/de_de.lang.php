@@ -589,6 +589,7 @@ $app_strings = array(
 'LBL_RECORDS'=>'Datensätze',
 'LBL_SCROLL'=>'[Nach oben]',
 'LBL_EXPAND_COLLAPSE'=>'Mehr/Weniger',
+'LBL_COLLAPSE' => 'Weniger',
 'LBL_RCPY_ADDRESS'=>'Kopiere Lieferadresse',
 'LBL_LCPY_ADDRESS'=>'Kopiere Rechnungsadresse',
 'LBL_RECORD_ID'=>'Datensatz ID',

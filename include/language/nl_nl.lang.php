@@ -618,6 +618,7 @@ $app_strings = array(
 	'LBL_RECORDS' => 'Records',
 	'LBL_SCROLL' => '[Scroll naar de top]',
 	'LBL_EXPAND_COLLAPSE' => 'in/uit klappen',
+	'LBL_COLLAPSE' => 'uit klappen',
 	'LBL_RCPY_ADDRESS' => 'Kopieer Bezoekadres',
 	'LBL_LCPY_ADDRESS' => 'Kopieer Postadres',
 	'LBL_RECORD_ID' => 'Record ID',
