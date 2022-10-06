@@ -602,6 +602,7 @@ $app_strings = array(
 	'LBL_RECORDS' => 'Records',
 	'LBL_SCROLL' => '',
 	'LBL_EXPAND_COLLAPSE' => 'Expand/Collapse',
+	'LBL_COLLAPSE' => 'Collapse',
 	'LBL_RCPY_ADDRESS' => 'Copy Delivery address',
 	'LBL_LCPY_ADDRESS' => 'Copy Invoice address',
 	'LBL_RECORD_ID' => 'Record ID',

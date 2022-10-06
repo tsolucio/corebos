@@ -93,6 +93,7 @@ var masterdetailwork = {
 
 	save: (mdgridInstance, module) => {
 		const method_prefix = mdgridInstance.substring(6);
+		masterdetailwork.MDToggle('', method_prefix);
 		setTimeout(function () {
 			if (ReloadScreenAfterEdit == 1) {
 				masterdetailwork.MDReload();
@@ -171,6 +172,38 @@ var masterdetailwork = {
 			VtigerJS_DialogBox.unblock();
 		});
 	},
+
+	MDToggle: (ev, mid = '') => {
+		let label = alert_arr.LBL_COLLAPSE;
+		if (ev == '') {
+			masterdetailwork.ToggleStatus[mid] = 'block';
+			document.getElementById(mid).style.display = masterdetailwork.ToggleStatus[mid];
+			document.getElementById(`btn-${mid}`).innerHTML = label;
+			return;
+		}
+		const id = ev.dataset.id;
+		if (masterdetailwork.ToggleStatus[id] === undefined) {
+			masterdetailwork.ToggleStatus[id] = 'none';
+			label = alert_arr.LBL_EXPAND;
+		} else {
+			switch (masterdetailwork.ToggleStatus[id]) {
+			case 'none':
+				masterdetailwork.ToggleStatus[id] = 'block';
+				label = alert_arr.LBL_COLLAPSE;
+				break;
+			case 'block':
+				masterdetailwork.ToggleStatus[id] = 'none';
+				label = alert_arr.LBL_EXPAND;
+				break;
+			default:
+				//do nothing
+			}
+		}
+		document.getElementById(id).style.display = masterdetailwork.ToggleStatus[id];
+		document.getElementById(`btn-${id}`).innerHTML = label;
+	},
+
+	ToggleStatus: []
 };
 
 class mdActionRender {
