@@ -629,4 +629,13 @@ function __cb_euvatvalidation($arr) {
 	}
 	return false;
 }
+
+function __cb_array($arr) {
+	return $arr;
+}
+
+function __cb_flattenarray($arr) {
+	global $adb;
+	return $adb->flatten_array($arr);
+}
 ?>
