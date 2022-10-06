@@ -2438,6 +2438,22 @@ $WFExpressionFunctionDefinitons = array(
 		"array('value1', 1, 'other')",
 	),
 ),
+'flattenarray' => array(
+	'name' => 'flattenarray(array)',
+	'desc' => 'Return a one dimensional array result of squashing a multidimensional array.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'array to flatten',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"flattenarray(executeSQL('select bill_country from vtiger_accountbillads'))",
+	),
+),
 'exists' => array(
 	'name' => 'exists(fieldname, value)',
 	'desc' => 'This function checks if a record with the given value in the given field exists or not.',
@@ -2634,6 +2650,7 @@ $WFExpressionFunctionDefinitons = array(
 	'examples' => array(
 		"frequency('frequencies',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
 		"frequency('relativeFrequencies',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+		"frequency('frequencies',flattenarray(executeSQL('select bill_country from vtiger_accountbillads')))",
 	),
 ),
 'getCurrentConfiguredTaxValues' => array(

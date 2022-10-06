@@ -2435,6 +2435,22 @@ $WFExpressionFunctionDefinitons = array(
 		"array('value1', 1, 'other')",
 	),
 ),
+'flattenarray' => array(
+	'name' => 'flattenarray(array)',
+	'desc' => 'Devuelve una matriz unidimensional al aplastar una matriz multidimensional.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'matriz a aplastar',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"flattenarray(executeSQL('select bill_country from vtiger_accountbillads'))",
+	),
+),
 'exists' => array(
 	'name' => 'exists(fieldname, value)',
 	'desc' => 'Esta función verifica si existe o no un registro con el valor dado en el campo dado.',

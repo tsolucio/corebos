@@ -238,6 +238,7 @@ class VTExpressionsManager {
 			'NOT' => 'NOT(condition1)',
 			'regex' => 'regex(pattern, subject)',
 			'array' => 'array(values)',
+			'flattenarray' => 'flattenarray(array)',
 			'exists' => 'exists(fieldname, value)',
 			'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
