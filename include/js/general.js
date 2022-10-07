@@ -7343,7 +7343,43 @@ function findUpModuleInMenu() {
 	}
 }
 
+function cbdzdropHandler(event) {
+	console.log('File(s) dropped');
+	// Prevent default behavior (Prevent file from being opened)
+	event.preventDefault();
+	cbdzdragFinish();
+}
+
+function cbdzdragOverHandler(event) {
+	console.log('drag over');
+	// Prevent default behavior (Prevent file from being opened)
+	event.preventDefault();
+	//cbdzdragStart();
+}
+
+function cbdzdragStart() {
+	document.body.classList.add('cblds-drag_info');
+	document.getElementById('corebosdropzonemsg').style.display = 'block';
+}
+
+function cbdzdragFinish() {
+	document.body.classList.remove('cblds-drag_info');
+	document.getElementById('corebosdropzonemsg').style.display = 'none';
+}
+
+var cbdzClearDrag = null;
 window.addEventListener('DOMContentLoaded', () => {
+	document.body.addEventListener('dragenter', (event) => {
+		console.log('dragenter');
+		cbdzdragStart();
+	});
+	document.body.addEventListener('dragleave', (event) => {
+		console.log('dragleave');
+		if (cbdzClearDrag!=null) {
+			window.clearTimeout(cbdzClearDrag);
+		}
+		cbdzClearDrag = window.setTimeout(cbdzdragFinish, 120);
+	});
 	AutocompleteSetup();
 	initSelect2();
 	if (Application_Menu_Direction == 'Vertical') {

@@ -76,7 +76,7 @@
 		</script>
 	{/if}
 </head>
-<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%">
+<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%" ondrop="cbdzdropHandler(event);" ondragover="cbdzdragOverHandler(event);">
 	<!-- header -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
@@ -393,6 +393,15 @@
 </header>
 <!-- END LDS Global header -->
 <a name="top"></a>
+<div id="corebosdropzonemsg" class="slds-m-top_x-small slds-m-bottom_x-small" style="display:none;position:absolute;top:0;left:25%;width:50%;margin:auto;z-index:1000;">
+	<div class="slds-notify slds-notify_alert slds-theme_info slds-theme_alert-texture slds-p-around_xx-small" role="alert">
+	<h2>
+		<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true">
+		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+		</svg>drop now
+	</h2>
+	</div>
+</div>
 {if $Application_Menu_Direction=='Vertical'}
 <style>
 #page-header {
