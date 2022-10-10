@@ -68,7 +68,7 @@ class WizardComponent {
 	 */
 	Next(ev) {
 		switch (this.Operation) {
-			case 'CREATEPRODUCTCOMPONENTS':
+			case 'CREATEPRODUCTCOMPONENTS'://*specific use case
 				if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
 					if (this.IsDuplicatedFromProduct == 0) {
 						ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_DUPLICATE_PRODUCT, 'error');
@@ -87,16 +87,15 @@ class WizardComponent {
 					}
 					return this.Create_ProductComponent(ev);
 				}
-				//Specific use case*
 				const type = ev.target.dataset.type;
 				if (this.WizardMode[this.ActiveStep] == 'ListView' && this.WizardCurrentModule[this.ActiveStep] == 'ProductComponent' && type == 'back') {
 					this.CheckedRows[this.ActiveStep-1] = [];
 					this.WizardInstance[`wzgrid${this.ActiveStep-1}`].uncheckAll();
 				}
 				break;
-			case 'CREATEASSETS':
-			case 'CREATEPURCHASEORDER':
-				return this.PurchaseOrder(ev);
+			case 'MASSCREATE':
+			case 'MASSCREATETREEVIEW':
+				return this.MassCreateGrid(ev, this.Operation);
 				break;
 			default:
 		}
@@ -163,7 +162,7 @@ class WizardComponent {
 	/**
 	 * Get related fieldname between two modules
 	 */
-	ColumnToFilter() {
+	RelatedFieldName() {
 		const relmodule = this.WizardCurrentModule[this.ActiveStep];
 		const module = this.WizardCurrentModule[this.ActiveStep+1];
 		let relmods = JSON.parse(this.WizardRelModules[this.ActiveStep+1]);
@@ -190,13 +189,18 @@ class WizardComponent {
 	/**
 	 * Get only selected id values in grid
 	 */
-	IdVal() {
+	IdVal(step = -1) {
+		let holdStep = this.ActiveStep;
+		if (step > -1) {
+			this.ActiveStep = step;
+		}
 		const ids = [];
 		for (let i in this.CheckedRows[this.ActiveStep]) {
 			for (var j = 0; j < this.CheckedRows[this.ActiveStep][i].length; j++) {
 				ids.push(this.CheckedRows[this.ActiveStep][i][j]['id']);
 			}
 		}
+		this.ActiveStep = holdStep;
 		return ids;
 	}
 
@@ -380,6 +384,20 @@ class WizardComponent {
 		this.Request(url, 'post');
 	}
 
+
+	/**
+	 * Delete checked rows in a step
+	 * @param {step} string
+	 */
+	DeleteRowFromGrid(step) {
+		const rowKeys = this.WizardInstance[`wzgrid${step}`].getCheckedRowKeys();
+		if (rowKeys.length == 0) {
+			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
+			return false;
+		}
+		this.WizardInstance[`wzgrid${step}`].removeRows(rowKeys);
+	}
+
 	/**
 	 * Create ProductComponent records. *Specific use case
 	 * @param {Object} event
@@ -428,8 +446,9 @@ class WizardComponent {
 	 * Filter all Qutes and InventoryDetals for MassCreate. *Specific use case
 	 * @param {Object} event
 	 */
-	PurchaseOrder(ev) {
+	MassCreateGrid(ev, operation) {
 		const type = ev.target.dataset.type;
+		let module = this.WizardCurrentModule[this.ActiveStep+1];
 		if (this.ActiveStep != 2) {
 			if (type == 'back' || this.WizardInstance[`wzgrid${this.ActiveStep}`] === undefined) {
 				return true;
@@ -439,9 +458,13 @@ class WizardComponent {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 				return false;
 			}
+			if (operation == 'MASSCREATE' && checkedRows.length != 1 && this.ActiveStep == 0) {
+				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
+				return false;
+			}
 		}
 		if (this.ActiveStep == 0) {//second step
-			const findColName = this.ColumnToFilter();
+			const findColName = this.RelatedFieldName();
 			if (findColName == '') {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_UNABLE_TO_FILTER, 'error');
 				return false;
@@ -451,7 +474,6 @@ class WizardComponent {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_UNABLE_TO_FILTER, 'error');
 				return false;
 			}
-			let module = this.WizardCurrentModule[this.ActiveStep+1];
 			if (typeof findColName == 'string' && findColName.indexOf('.') > -1) {
 				module = this.WizardCurrentModule[this.ActiveStep];
 			}
@@ -461,6 +483,10 @@ class WizardComponent {
 				forfield: findColName
 			});
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
+		}
+		if (operation == 'MASSCREATE' && this.ActiveStep == 1) {
+			this.Mapping(0, 1);
+			return true;
 		}
 		if (this.ActiveStep == 1) {//last step(3)
 			const data = this.CheckedRows[this.ActiveStep];
@@ -480,35 +506,80 @@ class WizardComponent {
 			this.TreeGrid();
 		}
 		if (this.ActiveStep == 2 && type == 'next') {
-			this.MassCreate();
+			this.MassCreate(operation);
 		}
 		return true;
 	}
 
-	MassCreate() {
+	/**
+	 * Map fields between 2 modules and show them in grid in draft status
+	 * @param {s1} step one
+	 * @param {s2} step two
+	 */
+	Mapping(s1, s2) {
+		const ids = [{
+			id: this.IdVal(s1),
+			module: this.WizardCurrentModule[s1]
+		},
+		{
+			id: this.IdVal(s2),
+			module: this.WizardCurrentModule[s2]
+		}];
+		const url = `${this.url}&wizardaction=Mapping&formodule=${MCModule}`;
+		this.Request(url, 'post', ids).then(function(response) {
+			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].clear();
+			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPaginationTotalCount(response.data.contents.length);
+			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].resetData(response.data.contents);
+		});
+	}
+
+	MassCreate(operation = '') {
 		let data = [];
-		for (let i in this.GroupData) {
-			if (i != '') {
-				let rows = {};
-				for (let j in this.GroupData[i]) {
-					rows[j] = this.GroupData[i][j].id;
+		let filterData = [];
+		if (operation == '') {
+			//this is used for treeview
+			for (let i in this.GroupData) {
+				if (i != '') {
+					let rows = {};
+					for (let j in this.GroupData[i]) {
+						rows[j] = this.GroupData[i][j].id;
+					}
+					if (isNaN(i)) {
+						const doc = this.ConvertStringToHTML(i).getElementsByTagName('a')[0];
+						const url = doc.getAttribute('href');
+						const urlParser = new URL(`https://example.com/${url}`);
+						i = urlParser.searchParams.get('record');
+					}
+					data[i] = rows;
 				}
-				if (isNaN(i)) {
-					const doc = this.ConvertStringToHTML(i).getElementsByTagName('a')[0];
-					const url = doc.getAttribute('href');
-					const urlParser = new URL(`https://example.com/${url}`);
-					i = urlParser.searchParams.get('record');
-				}
-				data[i] = rows;
 			}
+			filterData = Object.fromEntries(Object.entries(data).filter(value => value[1]));
+		} else if (operation == 'MASSCREATE') {
+			//MASCREATE operation is for created records based on 2 modules without grouping fields
+			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
+			const wizardcolumns = JSON.parse(this.WizardColumns[this.ActiveStep]);
+			let data = [];
+			for (let j in checkedRows) {
+				let row = {};
+				for (let i in wizardcolumns) {
+					row[wizardcolumns[i].name] = checkedRows[j][wizardcolumns[i].name];
+				}
+				data.push(row);
+			}
+			filterData = [{
+				id: this.IdVal(0),
+				relmodule: this.WizardCurrentModule[0]
+			},{
+				data: data,
+				createmodule: this.WizardCurrentModule[2]
+			}];
 		}
-		const filterData = Object.fromEntries(Object.entries(data).filter(value => value[1]));
 		if (Object.keys(filterData).length === 0) {
 			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 			return false;
 		}
 		this.loader('show');
-		const url = `${this.url}&wizardaction=MassCreate&formodule=${MCModule}&subaction=CreatePO`;
+		const url = `${this.url}&wizardaction=MassCreate&formodule=${MCModule}&subaction=${this.WizardMode[0]}`;
 		this.Request(url, 'post', filterData).then(function(response) {
 			if (response) {
 				ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');

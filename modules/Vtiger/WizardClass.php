@@ -165,7 +165,7 @@ class WizardActions {
 				}
 			} else {
 				if (!empty($forids)) {
-					if (strpos($forfield, '.') !== false) {
+					if (!is_array($forfield) && strpos($forfield, '.') !== false) {
 						//get record relations between 3 modules
 						list($relmodule, $module, $fieldname) = explode('.', $forfield);
 						$forids = $forids[0];
@@ -263,6 +263,42 @@ class WizardActions {
 		return $response;
 	}
 
+	public function Mapping() {
+		global $currentModule;
+		$data = json_decode($_REQUEST['data'], true);
+		$mapping = array();
+		$cbmap = cbMap::getMapByName('Wizard_'.$data[0]['module'].'_Mapping');
+		if (!$cbmap) {
+			return array(
+				'data' => array(
+					'contents' => array(),
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
+				),
+				'result' => true,
+			);
+		}
+		$origin = CRMEntity::getInstance($data[0]['module']);
+		$origin->retrieve_entity_info($data[0]['id'][0], $data[0]['module']);
+		$target = CRMEntity::getInstance($data[1]['module']);
+		foreach ($data[1]['id'] as $id) {
+			$target->retrieve_entity_info($id, $data[1]['module']);
+			$mapping[] = $cbmap->Mapping($target->column_fields, $origin->column_fields);
+		}
+		return array(
+			'data' => array(
+				'contents' => $mapping,
+				'pagination' => array(
+					'page' => 1,
+					'totalCount' => count($data[1]['id']),
+				),
+			),
+			'result' => true,
+		);
+	}
+
 	public function MassCreate() {
 		require_once 'include/Webservices/MassCreate.php';
 		global $current_user;
@@ -312,6 +348,32 @@ class WizardActions {
 		return false;
 	}
 
+	public function CreateRecords() {
+		global $current_user;
+		$UsersTabid = vtws_getEntityId('Users');
+		$data = json_decode($_REQUEST['data'], true);
+		if (count($data) == 2) {
+			$relmodule = $data[0]['relmodule'];
+			$createmodule = $data[1]['createmodule'];
+			$relfield = getFieldNameByFieldId(getRelatedFieldId($relmodule, $createmodule));
+			if (!empty($relfield)) {
+				$target = array();
+				foreach ($data[1]['data'] as $row) {
+					$row[$relfield] = vtws_getEntityId($relmodule).'x'.$data[0]['id'][0];
+					$row['assigned_user_id'] = $UsersTabid.'x'.$current_user->id;
+					$target[] = array(
+						'elementType' => $createmodule,
+						'referenceId' => '',
+						'searchon' => '',
+						'element' => $row
+					);
+				}
+				return $target;
+			}
+		}
+		return false;
+	}
+
 	public function Create_ProductComponent() {
 		global $current_user;
 		$UsersTabid = vtws_getEntityId('Users');
@@ -336,7 +398,7 @@ class WizardActions {
 		return $target;
 	}
 
-	public function CreatePO() {
+	public function Create_PurchaseOrder() {
 		global $current_user;
 		$UsersTabid = vtws_getEntityId('Users');
 		$VendorTabid = vtws_getEntityId('Vendors');
