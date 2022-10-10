@@ -97,7 +97,9 @@
 								<div class="slds-media">
 									<div class="slds-media__body slds-m-top_x-small">
 										<div class="slds-media">
-											<div class="slds-setup-assistant__step-summary-content slds-media__body">
+											<div class="slds-setup-assistant__step-summary-content slds-media__body">												{if in_array('delete', $step.actions)}
+												<button class="slds-button slds-button_neutral" onclick="wizard.DeleteRowFromGrid({$smarty.foreach.stepwizard.index})">Remove</button>
+												{/if}
 												{if $step.description neq ''}
 												<div class="slds-text-heading_small">
 													<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">

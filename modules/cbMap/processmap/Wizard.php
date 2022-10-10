@@ -37,6 +37,9 @@
 				</negativeactions>
 			</validation>
 		</validations>
+		<actions>
+			<action>delete</action>
+		</actions>
 	</step>
 	...
 </steps>
@@ -85,6 +88,13 @@ class Wizard extends processcbMap {
 				}
 			}
 			$step['validations'] = $validations;
+			$actions = array();
+			if (isset($s->actions)) {
+				foreach ($s->actions->action as $ac) {
+					$actions[] = (string)$ac;
+				}
+			}
+			$step['actions'] = $actions;
 			$steps[] = $step;
 		}
 		$this->mapping['totalsteps'] = count($steps);
