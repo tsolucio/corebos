@@ -596,6 +596,7 @@ $app_strings = array(
 'LBL_RECORDS' => 'Records',
 'LBL_SCROLL' => '[Scroll to Top]',
 'LBL_EXPAND_COLLAPSE' => 'Expand/Collapse',
+'LBL_COLLAPSE' => 'Collapse',
 'LBL_RCPY_ADDRESS' => 'Copy Shipping address',
 'LBL_LCPY_ADDRESS' => 'Copy Billing address',
 'LBL_RECORD_ID' => 'Record ID',

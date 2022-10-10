@@ -24,5 +24,8 @@ $mod_strings = array(
 	'LBL_NOT_ASSETS' => 'Nici un Asset asignat',
 	'TooltipInfo' => 'This extension adds information hover tips on different fields on each module and is accessed in the settings of each module not directly, so you can eliminate it from the menu.',
 	'No Fields Selected' => 'Nici un Camp Selectat',
+	'LBL_QUANTITY' => 'Quantity',
+	'LBL_PRODUCT' => 'Product',
+	'LBL_PRICE' => 'Price',
 );
 ?>

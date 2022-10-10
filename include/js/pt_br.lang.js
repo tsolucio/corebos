@@ -480,4 +480,6 @@ var alert_arr = {
 	'LBL_WRONG': 'Something went wrong. Try again!',
 	'LBL_UNABLE_TO_FILTER': 'Unable to filter data. Try again!',
 	'LNK_DUPLICATE': 'Duplicate',
+	'LBL_COLLAPSE': 'Recolher',
+	'LBL_EXPAND': 'Expandir',
 };

@@ -11,13 +11,16 @@
  ********************************************************************************/
 
 $mod_strings = array (
-'Tooltip' => 'Dica contexto',
-'LBL_TOOLTIP_MANAGEMENT'=>'Administrar dica contexto',
-'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Administrar informações dica contexto aqui',
-'LBL_FIELDS_IN'=>'Campos em',
-'LBL_TOOLTIP_HELP_TEXT'=>'Selecione os campos que você gostaria que aparecessem na dica contexto',
-'LBL_FIELD'=>'Campo',
-'TooltipInfo' => 'Esta extensão adiciona dicas de informação sobre campos diferentes em cada módulo e é acessada nas configurações de cada módulo não diretamente, então você pode eliminá-lo do menu.',
-'No Fields Selected' => 'Nenhum campo selecionado',
+	'Tooltip' => 'Dica contexto',
+	'LBL_TOOLTIP_MANAGEMENT'=>'Administrar dica contexto',
+	'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Administrar informações dica contexto aqui',
+	'LBL_FIELDS_IN'=>'Campos em',
+	'LBL_TOOLTIP_HELP_TEXT'=>'Selecione os campos que você gostaria que aparecessem na dica contexto',
+	'LBL_FIELD'=>'Campo',
+	'TooltipInfo' => 'Esta extensão adiciona dicas de informação sobre campos diferentes em cada módulo e é acessada nas configurações de cada módulo não diretamente, então você pode eliminá-lo do menu.',
+	'No Fields Selected' => 'Nenhum campo selecionado',
+	'LBL_QUANTITY' => 'Quantity',
+	'LBL_PRODUCT' => 'Product',
+	'LBL_PRICE' => 'Price',
 );
 ?>
