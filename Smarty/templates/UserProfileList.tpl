@@ -30,6 +30,30 @@
 								<div style="float: right">
 									<b>{$CMOD.LBL_TOTAL} {$COUNT} {$MOD.LBL_PROFILES}</b>
 									&nbsp;&nbsp;&nbsp;
+									<a
+										class="slds-button slds-button_icon slds-button_icon-border-filled"
+										aria-haspopup="true"
+										href="index.php?module=Settings&action=SettingsAjax&file=ImportXML&category=PROFILE"
+										title="{$MOD.LBL_IMPORT}">
+											<svg class="slds-button__icon" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>
+											</svg>
+											<span class="slds-assistive-text">
+												{$APP.LBL_IMPORT}
+											</span>
+									</a>
+									<a
+										class="slds-button slds-button_icon slds-button_icon-border-filled"
+										aria-haspopup="true"
+										href="index.php?module=Settings&action=SettingsAjax&file=ExportXML&category=PROFILE"
+										title="{$MOD.LBL_EXPORT}">
+											<svg class="slds-button__icon" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
+											</svg>
+											<span class="slds-assistive-text">
+												{$APP.LBL_EXPORT}
+											</span>
+									</a>
 									<button type="submit" class="slds-button slds-button_brand">
 										<svg class="slds-button__icon slds-button__icon_right" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
