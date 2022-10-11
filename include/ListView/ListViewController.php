@@ -312,6 +312,14 @@ class ListViewController {
 					} else {
 						$value = ' --';
 					}
+				} elseif ($field->getUIType() == Field_Metadata::UITYPE_NUMERIC) {
+					if ($value != '') {
+						if (!isset($totals[$fieldName])) {
+							$totals[$fieldName]=0;
+						}
+						$totals[$fieldName] = $totals[$fieldName] + $value;
+						$value = '<span style="float:right;padding-right:10px;">'.$value.'</span>';
+					}
 				} elseif ($field->getFieldDataType() == 'date' || $field->getFieldDataType() == 'datetime') {
 					if (!empty($value) && $value != '0000-00-00' && $value != '0000-00-00 00:00') {
 						$date = new DateTimeField($value);
