@@ -355,6 +355,13 @@ class ListViewController {
 				} elseif ($field->getFieldDataType() == 'double') {
 					if ($value != '') {
 						$value = CurrencyField::convertToUserFormat($value, $current_user, true);
+						if ($field->getUIType() == 7) {
+							if (!isset($totals[$fieldName])) {
+								$totals[$fieldName]=0;
+							}
+							$totals[$fieldName] = $totals[$fieldName] + $value;
+							$value = '<span style="float:right;padding-right:10px;">'.$value.'</span>';
+						}
 					}
 				} elseif ($field->getFieldDataType() == 'url') {
 					$matchPattern = "^[\w]+:\/\/^";
