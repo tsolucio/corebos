@@ -117,7 +117,7 @@ $smarty->assign('MODULES', array_merge(getPicklistValuesSpecialUitypes('1613', '
 $smarty->assign('targetmodule', $focus->column_fields['qmodule']);
 $smarty->assign('bqname', $focus->column_fields['qname']);
 $smarty->assign('bqcollection', $focus->column_fields['qcollection']);
-$smarty->assign('sqlquery', $focus->column_fields['sqlquery']);
+$smarty->assign('querytype', $focus->column_fields['querytype']);
 $smarty->assign('qpagesize', $focus->column_fields['qpagesize']);
 $smarty->assign('qtype', empty($focus->column_fields['qtype']) ? 'Table' : $focus->column_fields['qtype']);
 
