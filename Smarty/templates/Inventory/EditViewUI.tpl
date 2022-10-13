@@ -494,14 +494,14 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/foreach}
 			</select>
 			</span>
-			{elseif $uitype eq 103}
+		{elseif $uitype eq 103}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>
 			<span width="30%" colspan="3" class="mdCellInfo">
 				<input type="text" name="{$fldname}" value="{$fldvalue}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'">
 			</span>
-			{elseif $uitype eq 101}<!-- for reportsto field USERS POPUP -->
+		{elseif $uitype eq 101}<!-- for reportsto field USERS POPUP -->
 				<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 					<font color="red">{$mandatory_field}</font>{$usefldlabel}
 				</span>
@@ -511,16 +511,16 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					&nbsp;<input title="{$APP.LBL_CHANGE_TITLE}" accessKey="C" type="button" class="small" value='{$APP.LBL_CHANGE}' name="btn1" onclick='return window.open("index.php?module=Users&action=Popup&html=Popup_picker&form=vtlibPopupView&form_submit=false&fromlink={$fromlink}&recordid={$ID}&forfield={$fldname}", "test", cbPopupWindowSettings);'>
 					&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 				</span>
-			{elseif $uitype eq 117}<!-- for currency in users details-->
+		{elseif $uitype eq 117}<!-- for currency in users details-->
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
-			   {if $secondvalue eq 1 || $uitype eq 117}
+				{if $secondvalue eq 1 || $uitype eq 117}
 				<select name="{$fldname}" tabindex="{$vt_tab}" class="small">
-			   {else}
+				{else}
 				<select disabled name="{$fldname}" tabindex="{$vt_tab}" class="small">
-			   {/if}
+				{/if}
 				{assign var="curr_stat" value=""}
 				{foreach item=arr key=uivalueid from=$fldvalue}
 					{foreach key=sel_value item=value from=$arr}
@@ -532,14 +532,14 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<!--code ends -->
 					{/foreach}
 				{/foreach}
-			   </select>
+				</select>
 			<!-- code added to pass Currency field value, if Disabled for nonadmin -->
 			{if $curr_stat neq '' && $uitype neq 117}
 				<input name="{$fldname}" type="hidden" value="{$curr_stat}">
 			{/if}
 			<!--code ends -->
 			</span>
-			{elseif $uitype eq 106}
+		{elseif $uitype eq 106}
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>
