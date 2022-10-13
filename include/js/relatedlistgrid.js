@@ -151,6 +151,34 @@ var relatedlistgrid = {
 	},
 
 	loadedTooltips: [],
+
+	Wziard: (grid, id) => {
+		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+wizardid;
+		relatedlistgrid.Request(url, 'post', {
+			grid: grid,
+			recordid: id,
+			isModal: true
+		}).then(function(response) {
+			ldsModal.show('Wizard', response, 'large');
+			const event = new Event('onWizardModal');
+			window.dispatchEvent(event);
+		});
+	},
+
+ 	Request: async (url, method, body = {}) => {
+		const options = {
+			method: method,
+			credentials: 'same-origin',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			}
+		};
+		if (method == 'post') {
+			options.body = '&'+csrfMagicName+'='+csrfMagicToken+'&data='+JSON.stringify(body);
+		}
+		const response = await fetch(url, options);
+		return response.text();
+	}
 };
 
 class RLinkRender {
@@ -234,6 +262,14 @@ class RLActionRender {
 		let module = parent_module == '' ? child_module : parent_module;
 		el = document.createElement('span');
 		let actions = '<div class="slds-button-group" role="group">';
+		if (wizardid != '' && parent_module != '') {
+			actions += `
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="relatedlistgrid.Wziard('rlgrid${props.grid.el.id}', ${recordid});">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+				</svg>
+			</button>`;
+		}
 		if (parent_module != '') {
 			actions += `
 			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('rlgrid${props.grid.el.id}', '${related_child}', '', ${recordid}, true);" title="${alert_arr['JSLBL_Create']}">

@@ -78,5 +78,8 @@ function WizardGrid{$formodule}{$step}() {
 WizardGrid{$formodule}{$step}();
 window.addEventListener('DOMContentLoaded', () => {
 	wizard.loader('hide');
-});	
+});
+window.addEventListener('onWizardModal', () => {
+	wizard.loader('hide');
+});
 </script>
