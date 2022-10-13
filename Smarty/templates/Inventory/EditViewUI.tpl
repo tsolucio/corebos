@@ -494,25 +494,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/foreach}
 			</select>
 			</span>
-		{elseif $uitype eq 105}
-			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
-			</span>
-			<span width="30%" class="mdCellInfo">
-				{if $MODE eq 'edit' && $IMAGENAME neq ''}
-					<input name="{$fldname}" type="file" value="{$maindata[3].0.name}" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><div id="replaceimage">[{$IMAGENAME}]&nbsp;<a href="javascript:;" onClick="delUserImage({$ID})">Del</a></div>
-					<br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
-					<input name="{$fldname}_hidden"  type="hidden" value="{$maindata[3].0.name}" />
-				{else}
-					<input name="{$fldname}" type="file" value="" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
-					<input name="{$fldname}_hidden"  type="hidden" value="" />
-				{/if}
-					<div id="displaySize"></div>
-					<input type="hidden" name="id" value=""/>
-					{if isset($maindata[3].0.name) }
-					{$maindata[3].0.name}
-					{/if}
-			</span>
 			{elseif $uitype eq 103}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}

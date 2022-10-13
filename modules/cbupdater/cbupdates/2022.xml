@@ -182,4 +182,11 @@
 	<classname>cronClickHouse</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete uitype 105 to support image fields on Users module.</description>
+	<filename>build/changeSets/2022/delUitype105UserImageField.php</filename>
+	<classname>delUitype105UserImageField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
