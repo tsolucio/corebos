@@ -14,8 +14,10 @@
 *************************************************************************************************/
 class WizardComponent {
 
-	constructor(steps) {
+	constructor(steps, MCModule) {
+		this.Instance = {};
 		this.steps = steps;
+		this.MCModule = MCModule;
 		this.ActiveStep = 0;
 		this.CheckedRows = [];
 		this.GroupByField = '';
@@ -36,29 +38,40 @@ class WizardComponent {
 		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI';
 	}
 
-	Init() {
-		this.Events();
+	Init(instance = '') {
+		this.Events(instance);
+		if (this.isModal) {
+			this.el('global-modal-container__title').innerHTML = this.el('wizard-title').innerHTML;
+			this.el('wizard-title').innerHTML = '';
+			const prc = this.Next('');
+			if (prc) {
+				this.MoveToStep('');
+			}
+		}
 	}
 
-	Events() {
-		this.ClickEv();
+	Events(instance = '') {
+		this.ClickEv(instance);
 	}
 
 	/**
 	 * Register all click events in Wizard
 	 */
-	ClickEv() {
-		const ids = [
-			'btn-next',
-			'btn-back'
-		];
-		for (let i in ids) {
-			this.el(ids[i]).addEventListener('click', function(event) {
-				const prc = wizard.Next(event);
-				if (prc) {
-					wizard.MoveToStep(event);
-				}
-			});
+	ClickEv(instance = '') {
+		if (instance) {
+			this.Instance = instance;
+			const ids = [
+				'btn-next',
+				'btn-back'
+			];		
+			for (let i in ids) {
+				this.el(ids[i]).addEventListener('click', function(event) {
+					const prc = instance.Next(event);
+					if (prc) {
+						instance.MoveToStep(event);
+					}
+				}, true);
+			}
 		}
 	}
 
@@ -108,7 +121,10 @@ class WizardComponent {
 	 * @param {String} action
 	 */
 	CheckSelection(ev, action = '') {
-		const type = ev.target.dataset.type;
+		let type = 'next';
+		if (ev != '') {
+			type = ev.target.dataset.type;
+		}
 		if (type == 'next') {
 			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
 			if (checkedRows.length == 0) {
@@ -209,7 +225,10 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	MoveToStep(ev) {
-		const type = ev.target.dataset.type;
+		let type = 'next';
+		if (ev != '') {
+			type = ev.target.dataset.type;
+		}
 		switch (type) {
 			case 'next':
 				if (this.ActiveStep + 1 != this.steps) {
@@ -234,6 +253,9 @@ class WizardComponent {
 			this.el(`btn-back`).setAttribute('disabled', '');
 		}
 		if (this.WizardGoBack[this.ActiveStep-1] == 0) {
+			this.el(`btn-back`).setAttribute('disabled', '');
+		}
+		if (this.ActiveStep == 1 && this.isModal) {
 			this.el(`btn-back`).setAttribute('disabled', '');
 		}
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
@@ -335,8 +357,11 @@ class WizardComponent {
 	/**
 	 * Hide last step in Wizard
 	 */
-	Hide() {
-		for (var i = 1; i < this.steps; i++) {		
+	Hide(skipStep = '') {
+		for (var i = 1; i < this.steps; i++) {
+			if (skipStep != '' && i == skipStep) {
+				continue;
+			}
 			this.el(`seq-${i}`).style.display = 'none';
 		}
 	}
@@ -447,18 +472,21 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	MassCreateGrid(ev, operation) {
-		const type = ev.target.dataset.type;
+		let type = 'next';
+		if (ev != '') {
+			type = ev.target.dataset.type;
+		}
 		let module = this.WizardCurrentModule[this.ActiveStep+1];
 		if (this.ActiveStep != 2) {
 			if (type == 'back' || this.WizardInstance[`wzgrid${this.ActiveStep}`] === undefined) {
 				return true;
 			}
 			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
-			if (checkedRows.length == 0) {
+			if (checkedRows.length == 0 && !this.isModal) {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 				return false;
 			}
-			if (operation == 'MASSCREATE' && checkedRows.length != 1 && this.ActiveStep == 0) {
+			if (operation == 'MASSCREATE' && checkedRows.length != 1 && this.ActiveStep == 0 && !this.isModal) {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
 				return false;
 			}
@@ -469,7 +497,10 @@ class WizardComponent {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_UNABLE_TO_FILTER, 'error');
 				return false;
 			}
-			const ids = this.IdVal();
+			let ids = this.IdVal();
+			if (this.isModal) {
+				ids = [this.RecordID];
+			}
 			if (ids.length == 0) {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_UNABLE_TO_FILTER, 'error');
 				return false;
@@ -477,6 +508,7 @@ class WizardComponent {
 			if (typeof findColName == 'string' && findColName.indexOf('.') > -1) {
 				module = this.WizardCurrentModule[this.ActiveStep];
 			}
+			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].clear();
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setRequestParams({
 				forids: JSON.stringify(ids),
 				formodule: module,
@@ -485,6 +517,10 @@ class WizardComponent {
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
 		}
 		if (operation == 'MASSCREATE' && this.ActiveStep == 1) {
+			if (this.IdVal(this.ActiveStep).length == 0) {
+				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
+				return false;
+			}
 			this.Mapping(0, 1);
 			return true;
 		}
@@ -517,19 +553,28 @@ class WizardComponent {
 	 * @param {s2} step two
 	 */
 	Mapping(s1, s2) {
+		let parent = this.IdVal(s1);
+		if (this.isModal) {
+			parent = [this.RecordID];
+		}
 		const ids = [{
-			id: this.IdVal(s1),
+			id: parent,
 			module: this.WizardCurrentModule[s1]
-		},
-		{
+		},{
 			id: this.IdVal(s2),
 			module: this.WizardCurrentModule[s2]
 		}];
-		const url = `${this.url}&wizardaction=Mapping&formodule=${MCModule}`;
+		const url = `${this.url}&wizardaction=Mapping&formodule=${this.MCModule}`;
+		let wz = {};
+		if (this.Instance !== {}) {
+			wz = this.Instance;
+		} else {
+			wz = wizard;
+		}
 		this.Request(url, 'post', ids).then(function(response) {
-			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].clear();
-			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPaginationTotalCount(response.data.contents.length);
-			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].resetData(response.data.contents);
+			wz.WizardInstance[`wzgrid${wz.ActiveStep}`].clear();
+			wz.WizardInstance[`wzgrid${wz.ActiveStep}`].setPaginationTotalCount(response.data.contents.length);
+			wz.WizardInstance[`wzgrid${wz.ActiveStep}`].resetData(response.data.contents);
 		});
 	}
 
@@ -566,8 +611,12 @@ class WizardComponent {
 				}
 				data.push(row);
 			}
+			let parent = this.IdVal(0);
+			if (this.isModal) {
+				parent = [this.RecordID];
+			}
 			filterData = [{
-				id: this.IdVal(0),
+				id: parent,
 				relmodule: this.WizardCurrentModule[0]
 			},{
 				data: data,
@@ -579,17 +628,32 @@ class WizardComponent {
 			return false;
 		}
 		this.loader('show');
-		const url = `${this.url}&wizardaction=MassCreate&formodule=${MCModule}&subaction=${this.WizardMode[0]}`;
+		const url = `${this.url}&wizardaction=MassCreate&formodule=${this.MCModule}&subaction=${this.WizardMode[0]}`;
+		let wz = {};
+		if (this.Instance !== {}) {
+			wz = this.Instance;
+		} else {
+			wz = wizard;
+		}
 		this.Request(url, 'post', filterData).then(function(response) {
 			if (response) {
 				ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
-				setTimeout(function() {
-					location.reload(true);
-				}, 1000);
+				if (wz.isModal) {
+					RLInstance[wz.gridInstance].readData(1);
+					ldsModal.close();
+					wz.ActiveStep = 0;
+					wz.CheckedRows = [];
+					wz.GridData = [];
+					wz.GroupData = [];
+				} else {
+					setTimeout(function() {
+						location.reload(true);
+					}, 1000);
+				}
 			} else {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 			}
-			wizard.loader('hide');
+			wz.loader('hide');
 		});
 	}
 

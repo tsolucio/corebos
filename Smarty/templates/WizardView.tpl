@@ -13,16 +13,26 @@
 {else}
 	<script src="include/js/wizard.js"></script>
 	<script type="text/javascript">
-		var MCModule = '{$formodule}';
-		var wizard = new WizardComponent({$wizardTotal});
+		var wizard = new WizardComponent({$wizardTotal}, '{$formodule}');
 		wizard.GroupByField = '{$GroupBy}';
 		wizard.Operation = '{$wizardOperation}';
-		wizard.DeleteSession().then(function() {	
-			window.addEventListener('DOMContentLoaded', (event) => {
-				wizard.Init();
+		wizard.isModal = {$isModal};
+		wizard.gridInstance = '{$gridInstance}';
+		wizard.RecordID = '{$RecordID}';
+		wizard.DeleteSession().then(function() {
+			window.addEventListener('DOMContentLoaded', () => {
+				wizard.Init(wizard);
 				setTimeout(function() {
 					wizard.Hide();
 				}, 200);
+			});
+		});
+		window.addEventListener('onWizardModal', () => {
+			wizard.DeleteSession().then(function() {
+				wizard.Init(wizard);
+				setTimeout(function() {
+					wizard.Hide(1);
+				}, 400);
 			});
 		});
 	</script>
@@ -132,12 +142,14 @@
 			</svg>
 			Back
 		</button>
+		{if !$isModal}
 		<button type="button" class="slds-button slds-button_outline-brand slds-path__mark-complete" id="btn-reset" data-type="reset" onclick="location.reload(true)">
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#skip_back"></use>
 			</svg>
 			Reset Wizard
 		</button>
+		{/if}
 		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete" id="btn-next" data-type="next">
 			Next
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
