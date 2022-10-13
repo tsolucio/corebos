@@ -42,8 +42,12 @@
 	</div>
 </article>
 <script>
-var mapname = '{$mapname}';
-var wizardid = '{$wizard}';
+if (wizardid === undefined) {
+	var wizardid = Array();
+}
+if (mapname === undefined) {
+	var mapname = Array();
+}
 if (tooltip === undefined) {
 	var tooltip = Array();
 }
@@ -60,6 +64,8 @@ origin_related_fieldname['{$originmodule}'] = '{$origin_related_fieldname}';
 target_related_fieldname['{$targetmodule}'] = '{$target_related_fieldname}';
 target_related_fieldname['{$targetmodule}-{$targetmodule}'] = '{$sub_related_fieldname}';
 tooltip['{$originmodule}'] = '{$tooltip}';
+mapname['rlgrid{$originmodule}-{$targetmodule}'] = '{$mapname}';
+wizardid['rlgrid{$originmodule}-{$targetmodule}'] = '{$wizard}';
 FieldLables['{$originmodule}'] = '{$FieldLables}';
 function loadRLGrid{$originmodule}{$targetmodule}() {
 	RLInstance['rlgrid{$originmodule}-{$targetmodule}'] = new tui.Grid({

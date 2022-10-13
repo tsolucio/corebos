@@ -153,7 +153,7 @@ var relatedlistgrid = {
 	loadedTooltips: [],
 
 	Wziard: (grid, id) => {
-		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+wizardid;
+		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+wizardid[grid];
 		relatedlistgrid.Request(url, 'post', {
 			grid: grid,
 			recordid: id,
@@ -262,7 +262,7 @@ class RLActionRender {
 		let module = parent_module == '' ? child_module : parent_module;
 		el = document.createElement('span');
 		let actions = '<div class="slds-button-group" role="group">';
-		if (wizardid != '' && parent_module != '') {
+		if (wizardid[`rlgrid${props.grid.el.id}`] !== undefined && parent_module != '') {
 			actions += `
 			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="relatedlistgrid.Wziard('rlgrid${props.grid.el.id}', ${recordid});">
 				<svg class="slds-button__icon" aria-hidden="true">
