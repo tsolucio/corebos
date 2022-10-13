@@ -26,6 +26,11 @@
 	<modules>
 		<module>
 			<originmodule>Messages</originmodule>
+			<wizard>mapid</wizard>
+			<tooltip>
+				<fields></fields>
+				...
+			</tooltip>
 		</module>
 		<module>
 			<targetmodule>Assets</targetmodule>
@@ -87,6 +92,7 @@ class RelatedListBlock extends processcbMap {
 		$originmodule = $xml->modules->module[0];
 		$targetmodule = $xml->modules->module[1];
 		$this->mapping_arr['originmodule']['name'] = (string)$originmodule->originmodule;
+		$this->mapping_arr['originmodule']['wizard'] = (string)$originmodule->wizard;
 		$this->mapping_arr['targetmodule']['name'] = (string)$targetmodule->targetmodule;
 		$this->detailModule = $this->mapping_arr['targetmodule']['name'];
 		foreach ($targetmodule->listview->fields as $fields) {

@@ -14,6 +14,16 @@ switch ($_REQUEST['rlaction']) {
 		$rs = gridUnrelate($adb, $_REQUEST);
 		echo json_encode($rs);
 		break;
+	case 'Wizard':
+		$cbMap = cbMap::getMapByID($_REQUEST['mapid']);
+		if (!empty($cbMap)) {
+			$fields = $cbMap->column_fields;
+			$_REQUEST['bmapname'] = $fields['mapname'];
+		}
+		require_once 'modules/Vtiger/WizardView.php';
+		$smarty->assign('isWigdet', true);
+		echo $smarty->fetch('Smarty/templates/WizardView.tpl');
+		break;
 	case 'list':
 	default:
 		if (empty($_REQUEST['mapname'])) {
