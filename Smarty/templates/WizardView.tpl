@@ -79,7 +79,7 @@
 	{if $wizardTitle!=''}
 	<div class="slds-page-header__name slds-m-bottom_medium">
 		<div class="slds-page-header__name-title">
-			<span class="slds-page-header__title slds-truncate" title="{$wizardTitle}">{$wizardTitle}</span>
+			<span class="slds-page-header__title slds-truncate" title="{$wizardTitle}" id="wizard-title">{$wizardTitle}</span>
 		</div>
 	</div>
 	{/if}
