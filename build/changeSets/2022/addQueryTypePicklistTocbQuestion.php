@@ -44,17 +44,12 @@ class addQueryTypePicklistTocbQuestion extends cbupdaterWorker {
 			}
 
 			// Updating records
-			$sql = "SELECT cbquestionid, sqlquery 
-                FROM vtiger_cbquestion 
-                INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_cbquestion.cbquestionid 
-                WHERE deleted = 0";
+			$sql = "SELECT cbquestionid, sqlquery FROM vtiger_cbquestion";
 			$result = $adb->pquery($sql, array());
+			$update_sql = "UPDATE vtiger_cbquestion SET querytype = ? WHERE cbquestionid = ?";
 			while ($res=$adb->fetch_array($result)) {
 				if ($res['sqlquery'] == '1') {
-					$sql = "UPDATE vtiger_cbquestion
-                        SET querytype = ?
-                        WHERE cbquestionid = ?";
-					$adb->pquery($sql, array('SQL', $res['cbquestionid']));
+					$adb->pquery($update_sql, array('SQL', $res['cbquestionid']));
 				}
 			}
 
