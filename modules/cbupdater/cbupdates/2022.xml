@@ -189,4 +189,10 @@
 	<classname>delUitype105UserImageField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Add Handler to control Deleting InventoryDetail when check invoice lines</description>
+	<filename>build/changeSets/2022/add_InventoryDetails_Delete_Handler_cb.php</filename>
+	<classname>add_InventoryDetails_Delete_Handler_cb</classname>
+</changeSet>
 </updatesChangeLog>
