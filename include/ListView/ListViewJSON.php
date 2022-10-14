@@ -145,25 +145,27 @@ class GridListView {
 			$focus->GetDefPermission($current_user);
 		}
 		try {
-			$result = $adb->pquery($list_query, array());
-			$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($list_query, false), 'count(*) AS count'));
-			$noofrows = $adb->query_result($count_result, 0, 0);
-			$rowCount = $adb->num_rows($result);
-			$listviewcolumns = $adb->getFieldsArray($result);
+			if (!isset($_REQUEST['folderid']) && $this->module != 'Documents') {
+				$result = $adb->pquery($list_query, array());
+				$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($list_query, false), 'count(*) AS count'));
+				$noofrows = $adb->query_result($count_result, 0, 0);
+				$listviewcolumns = $adb->getFieldsArray($result);
+			}
 		} catch (Exception $e) {
 			$sql_error = true;
 		}
 		$folderid = '';
 		$data = array();
-		$field_types = $this->ListViewColumns($listviewcolumns);
 		if (isset($_REQUEST['folderid']) && $this->module == 'Documents') {
 			$folderid = vtlib_purify($_REQUEST['folderid']);
-			//totalCount to be fixed
 			if ($folderid != '__empty__') {
 				$whereClause = $queryGenerator->getWhereClause();
-				$data = $this->TreeStructure($field_types, $folderid, 'DocumentFolders', 'parentfolder', $whereClause);
+				$getDocuments = $this->getDocuments($folderid, $whereClause);
+				$data = $getDocuments[0];
+				$noofrows = $getDocuments[1];
 			}
 		} else {
+			$field_types = $this->ListViewColumns($listviewcolumns);
 			$data = $this->processResults($result, $field_types);
 		}
 		if ($result && !$sql_error) {
@@ -680,26 +682,38 @@ class GridListView {
 		return array_merge($top_parents, $parents);
 	}
 
-	public function getDocuments($id, $field_types, $whereClause = '') {
+	public function getDocuments($id, $whereClause = '') {
 		global $adb;
 		if (!empty($whereClause)) {
 			$whereClause = ' and '.str_replace('WHERE', '', $whereClause);
 		}
-		$query = 'select distinct vtiger_notes.*, vtiger_crmentity.*, vtiger_notescf.* from vtiger_notes
-			inner join vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_notes.notesid
-			inner join vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid)
-			inner join vtiger_notescf ON vtiger_notescf.notesid = vtiger_notes.notesid
-			left join vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-			left join vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			where vtiger_crmentity.deleted=0 and (vtiger_crmentityrel.crmid=? OR vtiger_crmentityrel.relcrmid=?) '.$whereClause;
-		$rs = $adb->pquery($query, array($id, $id));
-		$numOfRows = $adb->num_rows($rs);
+		$query = 'select * from vtiger_crmentityrel WHERE crmid=? or relcrmid=?';
+		$count_result = $adb->pquery(mkXQuery(stripTailCommandsFromQuery($query, false), 'count(id) AS count'), array($id, $id));
+		$noofrows = $adb->query_result($count_result, 0, 0);
+		$limit = ($this->currentPage-1) * $this->entries;
+		$query .= ' LIMIT '.$limit.','.$this->entries;
+		$folders = $adb->pquery($query, array(
+			$id, $id
+		));
 		$data = array();
-		if ($numOfRows > 0) {
-			$listviewcolumns = $adb->getFieldsArray($rs);
-			$data[] = $this->processResults($rs, $field_types, $id);
+		$field_types = array();
+		while ($row = $adb->fetch_array($folders)) {
+			if ($row['crmid'] != $id) {
+				$noteid = $row['crmid'];
+			} elseif ($row['relcrmid'] != $id) {
+				$noteid = $row['relcrmid'];
+			}
+			$notes = $adb->pquery('select * from vtiger_notes inner join vtiger_crmentity on crmid=notesid where deleted=0 and notesid=? '.$whereClause, array($noteid));
+			if (empty($field_types)) {
+				$listviewcolumns = $adb->getFieldsArray($notes);
+				$field_types = $this->ListViewColumns($listviewcolumns);
+			}
+			if ($adb->num_rows($notes) == 1) {
+				$document = $adb->fetch_array($notes);
+				$data[] = $this->processResults($notes, $field_types)[0];
+			}
 		}
-		return $data;
+		return array($data, $noofrows);
 	}
 
 	public function ListViewColumns($listviewcolumns) {
@@ -924,23 +938,31 @@ class GridListView {
 		return $columns;
 	}
 
-	public function findDocumentFolders() {
+	public function findDocumentFolders($folderid = 0) {
 		require_once 'modules/DocumentFolders/DocumentFolders.php';
 		global $current_user, $adb;
+		$focus = new DocumentFolders();
+		$referenceField = 'parentfolder';
 		$queryGenerator = new QueryGenerator('DocumentFolders', $current_user);
-		$queryGenerator->setFields(array('id','foldername'));
-		if (!isset($_REQUEST['folders'])) {
+		$queryGenerator->setFields(array('id','foldername', 'description', 'parentfolder'));
+		if (!isset($_REQUEST['folders']) && $folderid == 0) {
 			$queryGenerator->addCondition('parentfolder', '', 'e');
 		}
 		$list_query = $queryGenerator->getQuery();
 		$result = $adb->pquery($list_query.' order by vtiger_documentfolders.sequence', array());
 		$foldercount = $adb->num_rows($result);
 		$folders = array();
+		$records_list = array();
 		if ($foldercount > 0) {
 			for ($i=0; $i<$foldercount; $i++) {
 				$id = $adb->query_result($result, $i, 'documentfoldersid');
 				$foldername = $adb->query_result($result, $i, 'foldername');
-				$folders[] = array($id, $foldername);
+				$description = $adb->query_result($result, $i, 'description');
+				$parentfolder = $adb->query_result($result, $i, 'parentfolder');
+				if ($folderid > 0 && $folderid != $parentfolder) {
+					continue;
+				}
+				$folders[] = array($id, $foldername, $description);
 			}
 		}
 		if (empty($folders)) {
@@ -989,6 +1011,10 @@ class GridListView {
 			),
 			'result' => true,
 		);
+	}
+
+	public function GetFolders() {
+		return $this->findDocumentFolders($_REQUEST['folderid']);
 	}
 }
 ?>

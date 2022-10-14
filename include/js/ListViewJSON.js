@@ -68,6 +68,7 @@ const ListView = {
 	CheckedRows: [],
 	RelationRows: [],
 	RelatedModule: '',
+	FolderId: 0,
 
 	Request: async (url, method, body = {}) => {
 		let headers = {
@@ -106,6 +107,7 @@ const ListView = {
 			document.basicSearch.search_text.value = '';
 			if (ListView.Module == 'Documents' && DocumentFolderView == 1) {
 				DocumentsView.Show(url, urlstring);
+				ListView.loader('hide');
 			} else {
 				ListView.Filter(url, urlstring);
 			}
@@ -133,7 +135,7 @@ const ListView = {
 		} else {
 			if (ListView.Module != '' && ListView.Module != undefined && ListView.Module != 'RecycleBin') {
 				if (ListView.Module == 'Documents' && DocumentFolderView == 1) {
-					DocumentsView.Show(url);
+					ListView.loader('hide');
 				} else {
 					ListView.Default(url);
 				}
@@ -717,11 +719,11 @@ const ListView = {
 				relationRows.push(`${parent}__${recordId}`);
 			}
 			ListView.CheckedRows[instance] = currentRows.filter(Number);
-			ListView.CheckedRows.map(function (currentValue, index, arr) {
+			ListView.CheckedRows[instance].map(function (currentValue, index, arr) {
 				if (select_options != '') {
 					select_options += ';';
 				}
-				select_options += currentValue.join(';');
+				select_options += `${currentValue};`;
 			});
 			ListView.RelationRows[instance] = relationRows;
 		} else {
@@ -804,10 +806,14 @@ const ListView = {
 		const currentPage = (limit_start_rec + 1) + ' - ' + (limit_start_rec + currentPageSize);
 		if (totalCount > 0) {
 			document.getElementById('gridRecordCountHeader').innerHTML = alert_arr['LBL_SHOWING'] + currentPage + alert_arr['LBL_RECORDS'] + totalCount;
-			document.getElementById('gridRecordCountFooter').innerHTML = alert_arr['LBL_SHOWING'] + currentPage + alert_arr['LBL_RECORDS'] + totalCount;
+			if (document.getElementById('gridRecordCountFooter') !== null) {
+				document.getElementById('gridRecordCountFooter').innerHTML = alert_arr['LBL_SHOWING'] + currentPage + alert_arr['LBL_RECORDS'] + totalCount;
+			}
 		} else {
 			document.getElementById('gridRecordCountHeader').innerHTML = '';
-			document.getElementById('gridRecordCountFooter').innerHTML = '';
+			if (document.getElementById('gridRecordCountFooter') !== null) {
+				document.getElementById('gridRecordCountFooter').innerHTML = '';
+			}
 		}
 		document.getElementById('numOfRows').value = totalCount;
 		document.getElementById('count').innerHTML = totalCount;
@@ -824,8 +830,7 @@ const ListView = {
 		}
 		if (reload) {
 			document.getElementById('filterOptions').innerHTML = '';
-			document.getElementById('filterEditActions').innerHTML = '';
-			document.getElementById('filterDeleteActions').innerHTML = '';
+			document.getElementById('filterActions').innerHTML = '';
 		}
 		let select = document.createElement('select');
 		select.id = 'viewname';
@@ -839,8 +844,14 @@ const ListView = {
 			document.getElementById('filterOptions').appendChild(select);
 		}
 
-		//create filterActions
-		let fedit = document.createElement('span');
+		let template = `
+			<div class="slds-button-group" role="group">
+			<a href="index.php?module=${ListView.Module}&action=CustomView" title="Create" class="slds-button slds-button_icon slds-button_icon-border-filled">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+				</svg>
+				<span class="slds-assistive-text">Create</span>
+			</a>`;
 		let edit_query = {
 			'module': ListView.Module,
 			'action': 'CustomView',
@@ -853,16 +864,14 @@ const ListView = {
 		let edit_query_string = ListView.encodeQueryData(edit_query);
 		edit_query = {};
 		if (filters.edit_permit == 'yes' || Application_Filter_All_Edit == 1) {
-			fedit.innerHTML = `| <a href="index.php?${edit_query_string}">${alert_arr['LNK_EDIT_ACTION']}</a> |`;
-		} else {
-			fedit.innerHTML = `| ${alert_arr['LNK_EDIT_ACTION']} |`;
+			template += `
+			<a href="index.php?${edit_query_string}" title="${alert_arr['LNK_EDIT_ACTION']}" class="slds-button slds-button_icon slds-button_icon-border-filled">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+				</svg>
+				<span class="slds-assistive-text">${alert_arr['LNK_EDIT_ACTION']}</span>
+			</a>`;
 		}
-		if (document.getElementById('filterEditActions') !== null) {
-			document.getElementById('filterEditActions').innerHTML = '';
-			document.getElementById('filterEditActions').appendChild(fedit);
-		}
-		//delete a filter
-		let fdelete = document.createElement('span');
 		edit_query = {
 			'module': 'CustomView',
 			'action': 'Delete',
@@ -871,28 +880,25 @@ const ListView = {
 		};
 		edit_query_string = ListView.encodeQueryData(edit_query);
 		if (filters.delete_permit == 'yes') {
-			fdelete.innerHTML = `
-			<a href="javascript:confirmdelete('index.php?${edit_query_string}')">
-				${alert_arr['LNK_DELETE_ACTION']}
+			template += `
+			<a href="javascript:confirmdelete('index.php?${edit_query_string}')" title="${alert_arr['LNK_DELETE_ACTION']}" class="slds-button slds-button_icon slds-button_icon-border-filled">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+				</svg>
+				<span class="slds-assistive-text">${alert_arr['LNK_DELETE_ACTION']}</span>
 			</a>`;
-		} else {
-			fdelete.innerHTML = `${alert_arr['LNK_DELETE_ACTION']}`;
 		}
-		if (document.getElementById('filterDeleteActions') !== null) {
-			document.getElementById('filterDeleteActions').innerHTML = '';
-			document.getElementById('filterDeleteActions').appendChild(fdelete);
-		}
-		let fpublic = document.createElement('span');
 		if (filters.setpublic.ChangedStatus != '') {
-			fpublic.innerHTML = `|
-			<a id="customstatus_id" onclick="ChangeCustomViewStatus(${filters.viewid}, ${filters.setpublic.Status}, ${filters.setpublic.ChangedStatus}, '${ListView.Module}')">
-				${filters.setpublic.Label}
+			template += `
+			<a id="customstatus_id" class="slds-button slds-button_icon slds-button_icon-border-filled" title="${filters.setpublic.Label}" onclick="ChangeCustomViewStatus(${filters.viewid}, ${filters.setpublic.Status}, ${filters.setpublic.ChangedStatus}, '${ListView.Module}')">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+				</svg>
+				<span class="slds-assistive-text">${filters.setpublic.Label}</span>
 			</a>`;
 		}
-		if (document.getElementById('filterPublicActions') !== null) {
-			document.getElementById('filterPublicActions').innerHTML = '';
-			document.getElementById('filterPublicActions').appendChild(fpublic);
-		}
+		template += `</div>`;
+		document.getElementById('filterActions').innerHTML = template;
 	},
 	/**
 	 * Build query
@@ -919,10 +925,12 @@ const ListView = {
 			}
 		}
 		const selectCurrentPageRec = document.getElementById('selectCurrentPageRec');
-		if (j == parseInt(PageSize)) {
-			selectCurrentPageRec.checked = true;
-		} else {
-			selectCurrentPageRec.checked = false;
+		if (selectCurrentPageRec !== null) {
+			if (j == parseInt(PageSize)) {
+				selectCurrentPageRec.checked = true;
+			} else {
+				selectCurrentPageRec.checked = false;
+			}
 		}
 	},
 	/**
@@ -1242,96 +1250,151 @@ const ListView = {
 const DocumentsView = {
 
 	Show: (url, viewname = '') => {
+		if (document.getElementById('listview-tui-grid') === null) {
+			return false;
+		}
 		ListView.Request(`${url}&columns=true&viewname=${viewname}`, 'get').then(function (response) {
 			const childNames = Object.keys(response[0]).map((key) => response[0][key].fieldname);
 			let filters = response[1];
 			let folders = response[2];
 			ListView.setFilters(filters);
-			for (let id in folders) {
-				let fldId= folders[id][0];
-				if (ListView.Action == 'filter') {
-					lvdataGridInstance[fldId].destroy();
-				}
-				if (folders[id][0] === undefined) {
-					fldId = '__empty__';
-				}
-				ListView.Instance = fldId;
-				let lastPage = sessionStorage.getItem(`Documents_${ListView.Instance}_lastPage`);
-				if (lastPage == null) {
-					lastPage = 1;
-				}
-				if (ListView.Action == 'search') {
-					lastPage = 1;
-				}
-				let headers = ListView.getColumnHeaders(response[0], ListView.Instance);
-				lvdataGridInstance[ListView.Instance] = new lvtuiGrid({
-					el: document.getElementById('listview-tui-grid'),
-					columns: headers,
-					treeColumnOptions: {
-						name: childNames[0],
-						useCascadingCheckbox: true
-					},
-					rowHeaders: [{
-						type: 'checkbox',
-						header: `
-							<label for="all-checkbox" class="checkbox">
-								<input type="checkbox" id="currentPageRec_selectall${ListView.Instance}" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id${ListView.Instance}', 'selectall${ListView.Instance}');" name="_checked" />
-							</label>`,
-						renderer: {
-							type: CheckboxRender,
-							options: {
-								idIns: ListView.Instance
-							}
+			if (lvdataGridInstance['Documents'] !== undefined) {
+				lvdataGridInstance['Documents'].destroy();
+			}
+			let fldId = folders[0];
+			ListView.Instance = 'Documents';
+			let lastPage = sessionStorage.getItem(`Documents_${ListView.Instance}_lastPage`);
+			if (lastPage == null) {
+				lastPage = 1;
+			}
+			if (ListView.Action == 'search') {
+				lastPage = 1;
+			}
+			let headers = ListView.getColumnHeaders(response[0], ListView.Instance);
+			lvdataGridInstance[ListView.Instance] = new lvtuiGrid({
+				el: document.getElementById('listview-tui-grid'),
+				columns: headers,
+				rowHeaders: [{
+					type: 'checkbox',
+					header: `
+						<label for="all-checkbox" class="checkbox">
+							<input type="checkbox" id="currentPageRec_selectall${ListView.Instance}" class="listview-checkbox" onclick="toggleSelect_ListView(this.checked,'selected_id${ListView.Instance}', 'selectall${ListView.Instance}');" name="_checked" />
+						</label>`,
+					renderer: {
+						type: CheckboxRender,
+						options: {
+							idIns: ListView.Instance
 						}
-					}],
-					data: {
-						api: {
-							readData: {
-								url: `${url}&perPage=${PageSize}&folderid=${fldId}&lastPage=${lastPage}`,
-								method: 'GET'
-							}
+					}
+				}],
+				data: {
+					api: {
+						readData: {
+							url: `${url}&folderid=${ListView.FolderId}&lastPage=${lastPage}`,
+							method: 'GET'
 						}
-					},
-					rowHeight: 'auto',
-					bodyHeight: 'auto',
-					scrollX: false,
-					scrollY: false,
-					columnOptions: {
-						resizable: true
-					},
-					header: {
-						align: 'left',
-						valign: 'top',
-						height: 70,
-						complexColumns: [{
-							header: folders[id][1],
-							name: 'basic',
-							childNames: childNames
-						}]
-					},
-					onGridUpdated: (ev) => {
-						ListView.Instance = fldId;
-						ListView.updateData(fldId);
-						const rows = document.getElementById('allselectedboxes').value;
-						if (rows != '' && ListView.Action != 'massedit') {
-							ListView.checkRows(fldId);
-						}
-						let RequestParams = {
-							'fromInstance': true
-						};
-						if (ListView.SearchParams) {
-							RequestParams.search = ListView.SearchParams.search;
-							RequestParams.searchtype = ListView.SearchParams.searchtype;
-						}
-						lvdataGridInstance[ListView.Instance].setRequestParams(RequestParams);
-					},
-					contextMenu: null
-				});
-				ListView.loader('hide');
-				ListView.registerEvent(url, fldId);
-				tui.Grid.applyTheme('striped');
+					}
+				},
+				rowHeight: 'auto',
+				bodyHeight: 'auto',
+				scrollX: false,
+				scrollY: false,
+				columnOptions: {
+					resizable: true
+				},
+				pageOptions: {
+					perPage: PageSize
+				},
+				header: {
+					align: 'left',
+					valign: 'top'
+				},
+				onGridUpdated: (ev) => {
+					ListView.updateData(ListView.Instance);
+					const rows = document.getElementById('allselectedboxes').value;
+					if (rows != '' && ListView.Action != 'massedit') {
+						ListView.checkRows(ListView.FolderId);
+					}
+					let RequestParams = {
+						'fromInstance': true
+					};
+					if (ListView.SearchParams) {
+						RequestParams.search = ListView.SearchParams.search;
+						RequestParams.searchtype = ListView.SearchParams.searchtype;
+					}
+					lvdataGridInstance[ListView.Instance].setRequestParams(RequestParams);
+				},
+				contextMenu: null
+			});
+			ListView.loader('hide');
+			ListView.registerEvent(url, ListView.Instance);
+			tui.Grid.applyTheme('striped');
+		});
+	},
+
+	Folders: (folderid, foldername, backto = 0, loadgrid = true) => {
+		ListView.FolderId = folderid;
+		ListView.loader('show');
+		let url = `${defaultURL}&functiontocall=listViewJSON&formodule=Documents&method=GetFolders`;
+		ListView.Request(`${url}&folderid=${ListView.FolderId}`, 'get').then(function (response) {
+			if (response.length == 1 && response[0] == 1) {
+				//show no data
+			} else {
+				let template = `
+					<li class="slds-vertical-tabs__nav-item slds-is-active" role="presentation" onclick="DocumentsView.Folders(${backto}, '${foldername}')" id="folder-${ListView.FolderId}">
+						<a class="slds-vertical-tabs__link" role="tab" tabindex="0" aria-selected="true" aria-controls="slds-vertical-tabs-0" id="slds-vertical-tabs-0__nav">
+							<span class="slds-vertical-tabs__left-icon">
+								<span class="slds-icon_container slds-icon-standard-opportunity">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#arrow_left"></use>
+									</svg>
+								</span>
+							</span>
+							<span class="slds-truncate" title="Back">Back</span>
+							<span class="slds-vertical-tabs__right-icon"></span>
+						</a>
+					</li>
+				`;
+				for (let i in response) {
+					template += `
+					<li class="slds-vertical-tabs__nav-item" title="${response[i][1]}" role="presentation" onclick="DocumentsView.Folders(${response[i][0]}, '${response[i][1]}', ${ListView.FolderId})" id="folder-${response[i][0]}">
+						<a class="slds-vertical-tabs__link" role="tab" tabindex="0" aria-selected="true" aria-controls="slds-vertical-tabs-0" id="slds-vertical-tabs-0__nav">
+							<span class="slds-vertical-tabs__left-icon">
+								<span class="slds-icon_container slds-icon-standard-opportunity">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#open_folder"></use>
+									</svg>
+								</span>
+							</span>
+							<span class="slds-truncate" title="${response[i][1]}">${response[i][1]}</span>
+							<span class="slds-vertical-tabs__right-icon"></span>
+						</a>
+					</li>
+					`;
+				}
+				document.getElementById('folder-list').innerHTML = template;
 			}
 		});
+		url = `${defaultURL}&functiontocall=listViewJSON&formodule=Documents&lastPage=1`;
+		if (loadgrid) {
+			DocumentsView.Show(url, '');
+		} else {
+			ListView.loader('hide');
+		}
+	},
+
+	ActiveFolder: (folderid) => {
+		let lists = document.querySelectorAll('#folder-list')[0].getElementsByTagName('li');
+		for (let i in lists) {
+			if (lists[i].id !== undefined) {
+				let fid = lists[i].id.split('-');
+				if (fid[1] == folderid) {
+					lists[i].classList.add('slds-is-active');
+				} else {
+					lists[i].classList.remove('slds-is-active');
+				}
+			}
+		}
 	},
 
 	Search: (urlstring, searchtype) => {
