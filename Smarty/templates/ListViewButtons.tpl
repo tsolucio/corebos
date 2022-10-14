@@ -1,4 +1,4 @@
-<div class="slds-button-group" role="group">
+<div class="slds-button-group" role="group" style="float: right;">
 	{foreach key=button_check item=button_label from=$BUTTONS}
 		{if $button_check eq 'del'}
 			<button type="button" class="slds-button slds-button_text-destructive" onclick="return massDelete('{$MODULE}')">

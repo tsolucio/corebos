@@ -12,7 +12,11 @@
 {if !isset($moduleShowSearch) || $moduleShowSearch}
 <div id="searchAcc" style="{$DEFAULT_SEARCH_PANEL_STATUS};position:relative;">
 <form name="basicSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='basic';return callSearch('Basic');">
+{if $moduleView=='tuigrid'}
+<table>
+{else}
 <table style="width:100%;" class="slds-card small">
+{/if}
 	<tr>
 		<td class="searchUIName small" nowrap align="left">
 		<span class="moduleName">{$APP.LBL_SEARCH}</span>

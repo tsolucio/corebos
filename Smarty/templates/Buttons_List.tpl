@@ -400,6 +400,11 @@
 				<div class="slds-page-header__meta-text slds-grid">
 					{if !empty($isDetailView) || !empty($isEditView)}
 					<div class="slds-p-right_small">{$UPDATEINFO}</div>
+					{else}
+					<div class="slds-p-right_small">
+						<span id="gridRecordCountHeader"></span>
+						<span id="filteredData"></span>
+					</div>
 					{/if}
 					{assign var=ANNOUNCEMENT value=get_announcements()}
 					{if $ANNOUNCEMENT}
@@ -621,5 +626,19 @@
 		</div>
 		{/if}
 	</div>
+	{if isset($moduleView) && $moduleView=='tuigrid'}
+	<div class="slds-page-header__row slds-page-header__row_gutters" style="padding: 1.5rem 0.5rem;padding-bottom: 1rem;background: white;margin-top: 0.50rem;margin-bottom: -0.5rem;">
+		<div class="slds-page-header__col-details">
+			{if empty($HIDE_CUSTOM_LINKS) || $HIDE_CUSTOM_LINKS neq '1'}
+			<span class="slds-text-heading--label">
+				{$APP.LBL_VIEW}
+			</span>
+			<span id="filterOptions"></span>
+			<span id="filterActions"></span>
+			{/if}
+			{include file='ListViewButtons.tpl'}
+		</div>
+	</div>
+	{/if}
 </div>
 {corebos_header}

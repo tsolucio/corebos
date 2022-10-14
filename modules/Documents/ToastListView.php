@@ -107,7 +107,7 @@ if ($sql_error) {
 	$smarty->assign('SQLERROR', $sql_error);
 	$smarty->assign('NAVIGATION', '');
 	$controller = new ListViewController($adb, $current_user, $queryGenerator);
-	$smarty->assign('Document_Folder_View', 0);
+	$smarty->assign('Document_Folder_View', GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents'));
 	$smarty->assign('SEARCH_URL', '');
 	$smarty->assign('NO_OF_FOLDERS', 0);
 	$smarty->assign('FOLDERS', 0);
@@ -131,6 +131,10 @@ if ($sql_error) {
 	include_once 'vtlib/Vtiger/Link.php';
 	$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 	$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
+	require_once 'include/ListView/ListViewJSON.php';
+	$lv = new GridListView($currentModule);
+	$folders = $lv->findDocumentFolders();
+	$smarty->assign('FOLDERS', $folders);
 }
 $smarty->assign('IS_ADMIN', is_admin($current_user));
 if (isset($listview_header_search) && is_array($listview_header_search)) {

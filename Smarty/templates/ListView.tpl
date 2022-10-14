@@ -66,7 +66,11 @@ var Application_Landing_View='{$moduleView}';
 			{include file="WizardView.tpl"}
 		{/if}
 	{else}
-		{include file="DocumentsListViewEntries.tpl"}
+		{if $Document_Folder_View eq 1}
+			{include file="DocumentsTreeView.tpl"}
+		{else}
+			{include file="DocumentsListViewEntries.tpl"}
+		{/if}
 	{/if}
 	</div>
 

@@ -475,6 +475,9 @@ switch ($functiontocall) {
 			$grid = new GridListView($_REQUEST['modulename']);
 			$grid->Update();
 			$ret = array();
+		} else if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'GetFolders') {
+			$grid = new GridListView($_REQUEST['modulename']);
+			$ret = $grid->GetFolders();
 		} else {
 			$orderBy = ' DESC';
 			$entries = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
