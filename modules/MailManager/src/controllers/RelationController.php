@@ -46,7 +46,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	* @return boolean
 	*/
 	public function process(MailManager_Request $request) {
-		global $current_user;
+		global $current_user, $currentModule;;
 		$response = new MailManager_Response(true);
 		$viewer = $this->getViewer();
 
@@ -182,7 +182,9 @@ class MailManager_RelationController extends MailManager_Controller {
 
 				// This condition is added so that emails are not created for calendar without a Parent as there is no way to relate them
 				if (empty($parent) && $linkModule != 'cbCalendar') {
+					$holdCM = $currentModule;
 					$linkedto = MailManager_RelationControllerAction::associate($mail, $focus->id);
+					$currentModule = $holdCM;
 				}
 
 				// add attachments to the tickets as Documents
@@ -199,7 +201,7 @@ class MailManager_RelationController extends MailManager_Controller {
 
 				$response->setResult(array('ui' => $viewer->fetch($this->getModuleTpl('Relationship.tpl'))));
 			} catch (Exception $e) {
-				$response->setResult(array('ui' => '', 'error' => $e));
+				$response->setResult(array('ui' => '', 'error' => $e->getMessage()));
 			}
 		} elseif ('savedraft' == $request->getOperationArg()) {
 			$connector = $this->getConnector('__vt_drafts');
