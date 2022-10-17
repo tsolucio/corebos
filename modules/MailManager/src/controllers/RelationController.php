@@ -46,7 +46,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	* @return boolean
 	*/
 	public function process(MailManager_Request $request) {
-		global $current_user, $currentModule;;
+		global $current_user, $currentModule;
 		$response = new MailManager_Response(true);
 		$viewer = $this->getViewer();
 
