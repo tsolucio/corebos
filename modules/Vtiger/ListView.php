@@ -215,8 +215,6 @@ if ($sql_error) {
 		if ($layout != 'tuigrid') {
 			$listview_header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, $skipAction);
 			$listview_entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, $skipAction);
-
-
 			$smarty->assign('LISTHEADER', $listview_header);
 			$smarty->assign('LISTENTITY', $listview_entries);
 		}
