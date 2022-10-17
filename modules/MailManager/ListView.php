@@ -131,8 +131,8 @@ if (isset($_REQUEST['ajax']) && !empty($_REQUEST['emailfilter']) && isset($_REQU
 
 	// Module Search
 	$alphabetical = AlphabeticalSearch($currentModule, 'index', $focus->def_basicsearch_col, 'true', 'basic', '', '', '', '', $viewid);
-	$fieldnames = $controller->getAdvancedSearchOptionString();
-	$fieldnames_array = $controller->getAdvancedSearchOptionArray();
+	$fieldnames = $customView->getByModule_ColumnsHTML($currentModule, $customView->getModuleColumnsList($currentModule));
+	$fieldnames_array = $customView->getModuleColumnsList($currentModule, true);
 	$smarty->assign('ALPHABETICAL', $alphabetical);
 	$smarty->assign('FIELDNAMES', $fieldnames);
 	$smarty->assign('FIELDNAMES_ARRAY', $fieldnames_array);

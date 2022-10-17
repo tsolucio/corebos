@@ -150,7 +150,7 @@ $smarty->assign('SEARCHLISTHEADER', $listview_header_search);
 
 // Module Search
 $alphabetical = AlphabeticalSearch($currentModule, 'index', $focus->def_basicsearch_col, 'true', 'basic', '', '', '', '', $viewid);
-$fieldnames = $controller->getAdvancedSearchOptionString();
+$fieldnames = $customView->getByModule_ColumnsHTML($currentModule, $customView->getModuleColumnsList($currentModule));
 $smarty->assign('ALPHABETICAL', $alphabetical);
 $smarty->assign('FIELDNAMES', $fieldnames);
 
