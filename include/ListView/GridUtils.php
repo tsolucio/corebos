@@ -199,7 +199,10 @@ function getDataGridResponse($mdmap) {
 		if (!empty($sortColumn)) {
 			$mdmap['sortfield'] = $sortColumn;
 		}
-		$sql .= ' ORDER BY '.$qg->getOrderByColumn($mdmap['sortfield']).$sort;
+		if (empty($sort) && !empty($mdmap['defaultorder'])) {
+			$sort = $mdmap['defaultorder'];
+		}
+		$sql .= ' ORDER BY '.$qg->getOrderByColumn($mdmap['sortfield']).' '.$sort;
 	}
 	$rs = $adb->query($sql);
 	$ret = array();
