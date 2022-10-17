@@ -323,6 +323,8 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 															<li class="actionlink actionlink_customlink actionlink_{$CUSTOMLINK->linklabel|lower|replace:' ':'_'}">
 																{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 																{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
+																{assign var="customlink_success" value=$CUSTOMLINK->successmsg}
+																{assign var="customlink_error" value=$CUSTOMLINK->errormsg}
 																{if $customlink_label eq ''}
 																	{assign var="customlink_label" value=$customlink_href}
 																{else}
@@ -342,14 +344,14 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																			<span class="slds-assistive-text">{$customlink_label}</span>
 																			</span>
 																		{else}
-																			<a class="webMnu" href="{$customlink_href}">
+																			<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">
 																			<img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}">
 																			</a>
 																		{/if}
 																	{else}
-																		<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
+																		<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
 																	{/if}
-																	&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}">{$customlink_label}</a>
+																	&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
 																{/if}
 															</li>
 														{/foreach}
