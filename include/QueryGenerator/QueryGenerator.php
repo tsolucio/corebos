@@ -1700,12 +1700,18 @@ class QueryGenerator {
 					$this->startGroup('');
 					foreach ($filtercolumns as $index => $filter) {
 						$name = explode(':', $filter['columnname']);
+						$relatedModule = substr($name[3], 0, strpos($name[3], '_'));
 						if (empty($name[2]) && $name[1] == 'crmid' && $name[0] == 'vtiger_crmentity') {
 							$name = $this->getSQLColumn('id');
 						} else {
 							$name = $name[2];
 						}
-						$this->addCondition($name, $filter['value'], $filter['comparator']);
+						if ($relatedModule==$this->module) {
+							$this->addCondition($name, $filter['value'], $filter['comparator']);
+						} else {
+							$referenceField = getFirstFieldForModule($this->module, $relatedModule);
+							$this->addReferenceModuleFieldCondition($relatedModule, $referenceField, $name, $filter['value'], $filter['comparator'], $filter['column_condition']);
+						}
 						$columncondition = $filter['column_condition'];
 						if (!empty($columncondition)) {
 							$this->addConditionGlue($columncondition);
