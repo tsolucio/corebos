@@ -1332,5 +1332,48 @@ class CustomView extends CRMEntity {
 		$log->debug('< isPermittedChangeStatus');
 		return $status_details;
 	}
+
+	public function getByModule_ColumnsHTML($module, $columnslist, $selected = '') {
+		return $this->generateSelectColumnsHTML($this->getByModule_ColumnsList($columnslist, $selected), $module);
+	}
+
+	public function generateSelectColumnsHTML($columnsList, $module) {
+		$shtml = '';
+		foreach ($columnsList as $blocklabel => $blockcolumns) {
+			$shtml .= "<optgroup label='".getTranslatedString($blocklabel, $module)."' class='select' style='border:none'>";
+			foreach ($blockcolumns as $columninfo) {
+				$shtml .= '<option '.$columninfo['selected']." value='".$columninfo['value']."'>".$columninfo['text'].'</option>';
+			}
+		}
+		return $shtml;
+	}
+
+	public function getByModule_ColumnsList($columnslist, $selected = '') {
+		$advfilter = array();
+		$check_dup = array();
+		$advfilter_out = array();
+		foreach ($this->module_list as $module => $blks) {
+			$modname = getTranslatedString($module, $module);
+			foreach ($blks as $key => $value) {
+				$advfilter = array();
+				$label = $key;
+				if (isset($columnslist[$module][$key])) {
+					foreach ($columnslist[$module][$key] as $field => $fieldlabel) {
+						if (!in_array($module.$fieldlabel, $check_dup)) {
+							$advfilter_option['value'] = $field;
+							$advfilter_option['text'] = getTranslatedString($fieldlabel, $module);
+							$advfilter_option['selected'] = ($selected == $field ? 'selected' : '');
+							$advfilter[] = $advfilter_option;
+							$check_dup[] = $module.$fieldlabel;
+						}
+					}
+					if (!empty($advfilter)) {
+						$advfilter_out[$modname.' - '.$label]= $advfilter;
+					}
+				}
+			}
+		}
+		return $advfilter_out;
+	}
 }
 ?>
