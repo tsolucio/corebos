@@ -196,14 +196,14 @@ function getDataGridResponse($mdmap) {
 		$sort = ' desc';
 	}
 	if (!empty($mdmap['sortfield'])) {
-        if (!empty($sortColumn)) {
-            $mdmap['sortfield'] = $sortColumn;
-        }
-        if (empty($sort) && !empty($mdmap['defaultorder'])) {
-            $sort = $mdmap['defaultorder'];
-        }
-        $sql .= ' ORDER BY '.$qg->getOrderByColumn($mdmap['sortfield']).' '.$sort;
-    }
+		if (!empty($sortColumn)) {
+			$mdmap['sortfield'] = $sortColumn;
+		}
+		if (empty($sort) && !empty($mdmap['defaultorder'])) {
+			$sort = $mdmap['defaultorder'];
+		}
+		$sql .= ' ORDER BY '.$qg->getOrderByColumn($mdmap['sortfield']).' '.$sort;
+	}
 	$rs = $adb->query($sql);
 	$ret = array();
 	while ($row = $adb->fetch_array($rs)) {
