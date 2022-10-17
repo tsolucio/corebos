@@ -195,4 +195,11 @@
 	<filename>build/changeSets/2022/add_InventoryDetails_Delete_Handler_cb.php</filename>
 	<classname>add_InventoryDetails_Delete_Handler_cb</classname>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Adding Query Type picklist to cbQuestion.</description>
+	<filename>build/changeSets/2022/addQueryTypePicklistTocbQuestion.php</filename>
+	<classname>addQueryTypePicklistTocbQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
