@@ -207,6 +207,7 @@ class ListViewController {
 		$wfs = new VTWorkflowManager($adb);
 		$totals = array();
 		$data = array();
+		$sum = array();
 
 		$tabid = getTabid($currentModule);
 		include_once 'vtlib/Vtiger/Link.php';
@@ -314,11 +315,11 @@ class ListViewController {
 					}
 				} elseif ($field->getUIType() == Field_Metadata::UITYPE_NUMERIC) {
 					if ($value != '') {
-						if (!isset($totals[$fieldName])) {
-							$totals[$fieldName]=0;
+						if (!isset($sum[$fieldName])) {
+							$sum[$fieldName]=0;
 						}
-						$totals[$fieldName] = $totals[$fieldName] + $value;
-						$value = '<span style="float:right;padding-right:10px;">'.$value.'</span>';
+						$sum[$fieldName] = $sum[$fieldName] + $value;
+						$value = '<span style="float:right;padding-right:10px;">'.CurrencyField::convertToUserFormat($value).'</span>';
 					}
 				} elseif ($field->getFieldDataType() == 'date' || $field->getFieldDataType() == 'datetime') {
 					if (!empty($value) && $value != '0000-00-00' && $value != '0000-00-00 00:00') {
@@ -564,8 +565,8 @@ class ListViewController {
 						$temp_val = html_entity_decode($value, ENT_QUOTES, $default_charset);
 						$value = vt_suppressHTMLTags(implode(',', json_decode($temp_val, true)));
 					}
-				} elseif (in_array($uitype, array(7,9,90))) {
-					$value = "<span align='right'>".textlength_check($value).'</div>';
+				} elseif (in_array($uitype, array(9,90))) {
+					$value = '<span style="float:right;padding-right:10px;">'.$value.'</span>';
 				} elseif ($field->getUIType() == 55) {
 					$value = getTranslatedString($value, $currentModule);
 				} elseif ($module == 'Emails' && ($fieldName == 'subject')) {
@@ -574,7 +575,7 @@ class ListViewController {
 					$field_val = trim(vt_suppressHTMLTags(vtlib_purify($value), true));
 					$value = textlength_check($value);
 					if (substr($value, -3) == '...') {
-						$value = '<span title="'.$field_val.'">'.$value.'<span>';
+						$value = '<span title="'.$field_val.'">'.$value.'</span>';
 					}
 				}
 				if ($field->getFieldDataType() != 'reference') {
@@ -651,13 +652,15 @@ class ListViewController {
 			list($row,$unused,$unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($row,$this->db->query_result_rowdata($result, $i),$recordId));
 			$data[$recordId] = $row;
 		}
-		if (!empty($totals) && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
+		if ((!empty($totals) || !empty($sum)) && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
 			$trow = array();
 			foreach ($listViewFields as $fieldName) {
 				if (isset($totals[$fieldName])) {
 					$currencyField = new CurrencyField($totals[$fieldName]);
 					$currencyValue = $currencyField->getDisplayValueWithSymbol();
 					$trow[] = '<span class="listview_row_total">'.$currencyValue.'</span>';
+				} elseif (isset($sum[$fieldName])) {
+					$trow[] = '<span class="listview_row_total">'.CurrencyField::convertToUserFormat($sum[$fieldName]).'</span>';
 				} else {
 					$trow[] = '';
 				}
