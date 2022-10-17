@@ -182,4 +182,11 @@
 	<classname>cronClickHouse</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Add maps for Shopify to coreBOS integration</description>
+	<filename>build/changeSets/2022/addMapsForShopify2coreBOSIntegration.php</filename>
+	<classname>addMapsForShopify2coreBOSIntegration</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
