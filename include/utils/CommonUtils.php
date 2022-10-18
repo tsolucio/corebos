@@ -2996,7 +2996,7 @@ function isMandatoryField($module, $fieldname) {
 	if ($result && $adb->num_rows($result)>0) {
 		list($tod, $mandatory) = explode('~', $result->fields['typeofdata']);
 	} else {
-		$tod = '';
+		$mandatory = '';
 	}
 	$log->debug('< isMandatoryField');
 	return $mandatory;
