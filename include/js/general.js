@@ -1450,11 +1450,21 @@ function runBAWorkflow(workflowid, crmids) {
 		return false;
 	}
 	VtigerJS_DialogBox.block();
+	const dataset = document.activeElement.dataset;
 	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids).then(function (data) {
-		if (data) {
-			ldsPrompt.show(alert_arr.Okay, alert_arr.Okay, 'success');
+		const response = JSON.parse(data);
+		if (response) {
+			if (dataset.success != '') {
+				ldsPrompt.show(dataset.title, dataset.success, 'success');
+			} else {
+				ldsPrompt.show(alert_arr.Okay, alert_arr.Okay, 'success');
+			}
 		} else { //Error
-			ldsPrompt.show(alert_arr['ERROR'], alert_arr.Error);
+			if (dataset.error != '') {
+				ldsPrompt.show(dataset.title, dataset.error);
+			} else {
+				ldsPrompt.show(alert_arr['ERROR'], alert_arr.Error);
+			}
 		}
 		VtigerJS_DialogBox.unblock();
 	});

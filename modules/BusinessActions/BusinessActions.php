@@ -142,6 +142,8 @@ class BusinessActions extends CRMEntity {
 		$link_obj->handler_class  = $valuemap['handler_class'];
 		$link_obj->handler        = $valuemap['handler'];
 		$link_obj->onlyonmymodule = $valuemap['onlyonmymodule'];
+		$link_obj->errormsg = $valuemap['error_msg'];
+		$link_obj->successmsg = $valuemap['success_msg'];
 		return $link_obj;
 	}
 
@@ -211,7 +213,7 @@ class BusinessActions extends CRMEntity {
 			}
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
-		$query = 'SELECT ba.businessactionsid, ba.elementtype_action,ba.linklabel,ba.linkurl,ba.linkicon,ba.sequence,ba.handler_path,ba.handler_class,ba.handler,ba.onlyonmymodule,ba.brmap,ba.mandatory
+		$query = 'SELECT ba.businessactionsid, ba.elementtype_action,ba.linklabel,ba.linkurl,ba.linkicon,ba.sequence,ba.handler_path,ba.handler_class,ba.handler,ba.onlyonmymodule,ba.brmap,ba.mandatory, ba.error_msg, ba.success_msg
 			FROM vtiger_businessactions as ba INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=ba.businessactionsid
 			WHERE vtiger_crmentity.deleted=0 AND ba.active=1 '.$module_sql.$type_sql;
 

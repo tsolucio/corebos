@@ -12,6 +12,7 @@ require_once 'modules/PickList/PickListUtils.php';
 require_once 'data/CRMEntity.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/utils/utils.php';
+require_once 'include/ListView/ListViewJSON.php';
 
 function gridGetEditor($module, $fieldname, $uitype) {
 	global $current_user, $adb, $noof_group_rows;
@@ -458,7 +459,11 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 		case Field_Metadata::UITYPE_TEXT:
 		default:
 			$nameFields = getEntityFieldNames($module);
-			if (in_array($fieldName, (array)$nameFields['fieldname'])) {
+			$lv = new GridListView($module);
+			$lv->tabid = getTabid($module);
+			$columnnameVal = $lv->getFieldNameByColumn($nameFields['fieldname']);
+			$referenceFields = array($nameFields['fieldname'], $columnnameVal);
+			if (in_array($fieldName, $referenceFields)) {
 				array_push($fieldAttrs, array(
 					'mdField' => $fieldName,
 					'mdValue' => $fieldValue,
