@@ -518,7 +518,7 @@ class qactions_Action extends CoreBOS_ActionController {
 			$params['cbQuestionContext'] = $ctx;
 		}
 
-		if ($params['cbQuestionRecord']['sqlquery']=='1' && !$params['cbQuestionRecord']['issqlwsq_disabled']) {
+		if ($params['cbQuestionRecord']['querytype']=='SQL' && !$params['cbQuestionRecord']['issqlwsq_disabled']) {
 			include_once 'include/Webservices/showqueryfromwsdoquery.php';
 			$sqlinfo = showqueryfromwsdoquery($params['cbQuestionRecord']['qcolumns'], $current_user);
 			$list_query = $sqlinfo['sql'];

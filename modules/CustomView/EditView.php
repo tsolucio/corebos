@@ -40,7 +40,7 @@ if ($recordid == '') {
 	$modulecollist_array = $oCustomView->getModuleColumnsList($cv_module, true);
 	$log->debug('CustomView :: ColumnsList for the module'.$cv_module);
 	if (isset($modulecollist)) {
-		$choosecolslist = getByModule_ColumnsList($cv_module, $modulecollist);
+		$choosecolslist = $oCustomView->getByModule_ColumnsList($modulecollist);
 	}
 	$smarty->assign('CHOOSECOLUMN', $choosecolslist);
 	$smarty->assign('SELECTEDCOLUMN', array('none'));
@@ -57,7 +57,7 @@ if ($recordid == '') {
 	$smarty->assign('STDFILTER_JAVASCRIPT', $stdfilterjs);
 
 	$advfilterhtml = getAdvCriteriaHTML();
-	$modulecolumnshtml = getByModule_ColumnsHTML($cv_module, $modulecollist);
+	$modulecolumnshtml = $oCustomView->getByModule_ColumnsHTML($cv_module, $modulecollist);
 	$smarty->assign('FOPTION', $advfilterhtml);
 	$smarty->assign('COLUMNS_BLOCK', $modulecolumnshtml);
 	$smarty->assign('FIELDNAMES_ARRAY', $modulecollist_array);
@@ -90,7 +90,7 @@ if ($recordid == '') {
 		}
 		$status = $customviewdtls['status'];
 		$smarty->assign('STATUS', $status);
-		$choosecolslist = getByModule_ColumnsList($cv_module, $modulecollist);
+		$choosecolslist = $oCustomView->getByModule_ColumnsList($modulecollist);
 		$smarty->assign('CHOOSECOLUMN', $choosecolslist);
 		$smarty->assign('SELECTEDCOLUMN', $selectedcolumnslist);
 		$Application_ListView_MaxColumns = GlobalVariable::getVariable('Application_ListView_MaxColumns', 12);
@@ -112,7 +112,7 @@ if ($recordid == '') {
 
 		$advfilterlist = $oCustomView->getAdvFilterByCvid($recordid);
 		$advfilterhtml = getAdvCriteriaHTML();
-		$modulecolumnshtml = getByModule_ColumnsHTML($cv_module, $modulecollist);
+		$modulecolumnshtml = $oCustomView->getByModule_ColumnsHTML($cv_module, $modulecollist);
 		$smarty->assign('FOPTION', $advfilterhtml);
 		$smarty->assign('COLUMNS_BLOCK', $modulecolumnshtml);
 		$smarty->assign('FIELDNAMES_ARRAY', $modulecollist_array);
@@ -143,50 +143,6 @@ $smarty->assign('ACT', $act);
 $smarty->assign('RETURN_ACTION', $return_action);
 
 $smarty->display('CustomView.tpl');
-
-function getByModule_ColumnsHTML($module, $columnslist, $selected = '') {
-	$columnsList = getByModule_ColumnsList($module, $columnslist, $selected);
-	return generateSelectColumnsHTML($columnsList, $module);
-}
-
-function generateSelectColumnsHTML($columnsList, $module) {
-	$shtml = '';
-	foreach ($columnsList as $blocklabel => $blockcolumns) {
-		$shtml .= "<optgroup label='".getTranslatedString($blocklabel, $module)."' class='select' style='border:none'>";
-		foreach ($blockcolumns as $columninfo) {
-			$shtml .= '<option '.$columninfo['selected']." value='".$columninfo['value']."'>".$columninfo['text'].'</option>';
-		}
-	}
-	return $shtml;
-}
-
-function getByModule_ColumnsList($mod, $columnslist, $selected = '') {
-	global $oCustomView;
-	$advfilter = array();
-	$check_dup = array();
-	foreach ($oCustomView->module_list as $module => $blks) {
-		$modname = getTranslatedString($module, $module);
-		foreach ($blks as $key => $value) {
-			$advfilter = array();
-			$label = $key;
-			if (isset($columnslist[$module][$key])) {
-				foreach ($columnslist[$module][$key] as $field => $fieldlabel) {
-					if (!in_array($module.$fieldlabel, $check_dup)) {
-						$advfilter_option['value'] = $field;
-						$advfilter_option['text'] = getTranslatedString($fieldlabel, $module);
-						$advfilter_option['selected'] = ($selected == $field ? 'selected' : '');
-						$advfilter[] = $advfilter_option;
-						$check_dup[] = $module.$fieldlabel;
-					}
-				}
-				if (!empty($advfilter)) {
-					$advfilter_out[$modname.' - '.$label]= $advfilter;
-				}
-			}
-		}
-	}
-	return $advfilter_out;
-}
 
 /** to get the standard filter criteria
 * @param $module(module name) :: Type String

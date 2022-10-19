@@ -68,7 +68,7 @@ function saveQuestion(update) {
 		return false;
 	}
 	const qtype = document.getElementById('qtype').value;
-	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
+	const querytype = document.getElementById('querytype').value;
 
 	var type_properties = new Object();
 	var qprops_value = document.getElementById('qprops').value;
@@ -79,7 +79,7 @@ function saveQuestion(update) {
 		type_properties = qprops_value;
 	}
 	type_properties.context_variables = undefined;
-	if (document.getElementById('sqlquery').checked) {
+	if (querytype == 'SQL') {
 		const context_var = document.getElementsByName('context_variable');
 		const context_val = document.getElementsByName('context_value');
 		var context_data_ = new Object();
@@ -102,7 +102,7 @@ function saveQuestion(update) {
 		//'cbquestionno': ,
 		'qtype': qtype,
 		'qstatus': 'Active',
-		'sqlquery': qsqlqry,
+		'querytype': querytype,
 		'qcollection': document.getElementById('bqcollection').value,
 		'qmodule': qmodule,
 		'qpagesize': document.getElementById('qpagesize').value=='' ? 0 : document.getElementById('qpagesize').value,
@@ -112,7 +112,7 @@ function saveQuestion(update) {
 		// 'mviewwf': ,
 		'assigned_user_id': builderconditions.cbaccess.userId,
 		'condfilterformat': 0,
-		'qcolumns': (qsqlqry=='1' ? document.getElementById('bqsqlcoulumns').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
+		'qcolumns': (querytype == 'SQL' ? document.getElementById('bqsqlcoulumns').value : (qtype=='Mermaid' ? document.getElementById('bqwsq').value : getSQLSelect())),
 		'qcondition': (qtype=='Mermaid' ? '' : (issqlwsq_disabled ? document.getElementById('bqsqlconditions').value : getSQLConditions())),
 		'orderby': getSQLOrderBy(false).substr(9),
 		'groupby': getSQLGroupBy(false).substr(9),
@@ -152,7 +152,7 @@ function saveQuestion(update) {
 
 function getQuestionResults() {
 	const qtype = document.getElementById('qtype').value;
-	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
+	const querytype = document.getElementById('querytype').value;
 	const context_var = document.getElementsByName('context_variable');
 	const context_val = document.getElementsByName('context_value');
 	const issqlwsq_disabled = (document.getElementById('checkboxsqlwsq').checked ? true : false);
@@ -176,7 +176,7 @@ function getQuestionResults() {
 		'orderby': getSQLOrderBy().substr(9),
 		'groupby': getSQLGroupBy().substr(9),
 		'typeprops': document.getElementById('qprops').value,
-		'sqlquery': qsqlqry,
+		'querytype': querytype,
 		'condfilterformat': '0',
 		'context_variable': context_data,
 		'issqlwsq_disabled': issqlwsq_disabled,

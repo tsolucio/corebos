@@ -118,8 +118,8 @@ if ($sql_error) {
 	$smarty->assign('LISTENTITY', array());
 	$smarty->assign('SEARCHLISTHEADER', $listview_header_search);
 	$alphabetical = AlphabeticalSearch($currentModule, 'index', $focus->def_basicsearch_col, 'true', 'basic', '', '', '', '', $viewid);
-	$fieldnames = $controller->getAdvancedSearchOptionString();
-	$fieldnames_array = $controller->getAdvancedSearchOptionArray();
+	$fieldnames = $customView->getByModule_ColumnsHTML($currentModule, $customView->getModuleColumnsList($currentModule));
+	$fieldnames_array = $customView->getModuleColumnsList($currentModule, true);
 	$smarty->assign('ALPHABETICAL', $alphabetical);
 	$smarty->assign('FIELDNAMES', $fieldnames);
 	$smarty->assign('FIELDNAMES_ARRAY', $fieldnames_array);

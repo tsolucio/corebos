@@ -281,7 +281,7 @@ class CustomView extends CRMEntity {
 	 */
 	public function getColumnsListbyBlock($module, $block, $markMandatory = true, $assocArray = false) {
 		global $adb, $current_user;
-		$module_columnlist = null;
+		$module_columnlist = array();
 		$block_ids = explode(',', $block);
 		$tabid = getTabid($module);
 		$userprivs = $current_user->getPrivileges();
@@ -318,9 +318,6 @@ class CustomView extends CRMEntity {
 		$result = $adb->pquery($sql, $params);
 		$noofrows = $adb->num_rows($result);
 		$moduleFieldList = $this->meta->getModuleFields();
-		if ($noofrows > 0) {
-			$module_columnlist = array();
-		}
 		for ($i = 0; $i < $noofrows; $i++) {
 			$fieldtablename = $adb->query_result($result, $i, 'tablename');
 			$fieldcolname = $adb->query_result($result, $i, 'columnname');
@@ -394,6 +391,7 @@ class CustomView extends CRMEntity {
 	 */
 	public function getModuleColumnsList($module, $assocArray = false) {
 		global $current_user;
+		$ret_module_list = array();
 		$this->getCustomViewModuleInfo($module);
 		foreach ($this->module_list[$module] as $key => $value) {
 			$columnlist = $this->getColumnsListbyBlock($module, $value, true, $assocArray);
@@ -1333,6 +1331,49 @@ class CustomView extends CRMEntity {
 		}
 		$log->debug('< isPermittedChangeStatus');
 		return $status_details;
+	}
+
+	public function getByModule_ColumnsHTML($module, $columnslist, $selected = '') {
+		return $this->generateSelectColumnsHTML($this->getByModule_ColumnsList($columnslist, $selected), $module);
+	}
+
+	public function generateSelectColumnsHTML($columnsList, $module) {
+		$shtml = '';
+		foreach ($columnsList as $blocklabel => $blockcolumns) {
+			$shtml .= "<optgroup label='".getTranslatedString($blocklabel, $module)."' class='select' style='border:none'>";
+			foreach ($blockcolumns as $columninfo) {
+				$shtml .= '<option '.$columninfo['selected']." value='".$columninfo['value']."'>".$columninfo['text'].'</option>';
+			}
+		}
+		return $shtml;
+	}
+
+	public function getByModule_ColumnsList($columnslist, $selected = '') {
+		$advfilter = array();
+		$check_dup = array();
+		$advfilter_out = array();
+		foreach ($this->module_list as $module => $blks) {
+			$modname = getTranslatedString($module, $module);
+			foreach ($blks as $key => $value) {
+				$advfilter = array();
+				$label = $key;
+				if (isset($columnslist[$module][$key])) {
+					foreach ($columnslist[$module][$key] as $field => $fieldlabel) {
+						if (!in_array($module.$fieldlabel, $check_dup)) {
+							$advfilter_option['value'] = $field;
+							$advfilter_option['text'] = getTranslatedString($fieldlabel, $module);
+							$advfilter_option['selected'] = ($selected == $field ? 'selected' : '');
+							$advfilter[] = $advfilter_option;
+							$check_dup[] = $module.$fieldlabel;
+						}
+					}
+					if (!empty($advfilter)) {
+						$advfilter_out[$modname.' - '.$label]= $advfilter;
+					}
+				}
+			}
+		}
+		return $advfilter_out;
 	}
 }
 ?>

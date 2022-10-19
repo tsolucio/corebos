@@ -27,6 +27,7 @@
   <condition>querycondition</condition>
   </linkfields>
   <sortfield>designquotesid</sortfield>
+  <defaultorder>DESC</defaultorder>
   <toolbar>
 	<title></title>
 	<expandall>1</expandall>
@@ -120,7 +121,7 @@ class MasterDetailLayout extends processcbMap {
 			'originfield' => (string)$xml->linkfields->originfield,
 			'targetfield' => (string)$xml->linkfields->targetfield,
 		);
-		$mapping_arr['sortfield'] = (string)$xml->sortfield;
+		$mapping_arr['defaultorder'] = (string)$xml->defaultorder;
 		$mapping_arr['toolbar'] = array(
 			'title' => (string)$xml->toolbar->title,
 			'icon' => (string)$xml->toolbar->icon,

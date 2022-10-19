@@ -19,9 +19,9 @@ class deleteInventoryDetailsHandler extends VTEventHandler {
 		if ($moduleName == 'InventoryDetails' && ($eventName == 'vtiger.entity.beforedelete' || $eventName == 'corebos.beforedelete.workflow') && $flag) {
 			$recordId = $data->getId();
 			$columnFields = $data->getData();
-			if(!empty($columnFields['related_to'])){
+			if (!empty($columnFields['related_to'])) {
 				$relentity = VTEntityData::fromEntityId($adb, $columnFields['related_to']);
-				if($relentity->getModuleName() == 'Invoice' && !empty($columnFields['rel_lineitem_id'])){
+				if ($relentity->getModuleName() == 'Invoice' && !empty($columnFields['rel_lineitem_id'])) {
 					$rel_invdet = $columnFields['rel_lineitem_id'];
 					$sel_rel_rec_exists = 'SELECT vtiger_inventorydetails.inventorydetailsid FROM vtiger_inventorydetails INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_inventorydetails.inventorydetailsid WHERE deleted=0 AND vtiger_inventorydetails.lineitem_id=?';
 					$rel_rec_exists = $adb->pquery($sel_rel_rec_exists, array($rel_invdet));
