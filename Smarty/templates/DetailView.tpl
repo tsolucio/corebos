@@ -118,6 +118,21 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																{include file='DetailViewHidden.tpl'}
 															<table border=0 cellspacing=0 cellpadding=0 width=100%>
 																	{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
+																	{* vtlib Customization: Embed DetailViewWidget block:// type if any *}
+																	{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
+																		{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
+																			{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)}
+																			{if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence <= 0)
+																				|| ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration - 1)
+																				|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration - 1)}
+																				<tr>
+																					<td style="padding:5px;">{process_widget widgetLinkInfo=$CUSTOM_LINK_DETAILVIEWWIDGET}</td>
+																				</tr>
+																			{/if}
+																			{/if}
+																		{/foreach}
+																	{/if}
+																	{* END *}
 																		<tr><td style="padding:5px">
 																				<!-- Detailed View Code starts here-->
 																				<table border=0 cellspacing=0 cellpadding=0 width=100% class="small detailview_header_table">
@@ -270,21 +285,6 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																					{/if}
 																			</td>
 																		</tr>
-																	{* vtlib Customization: Embed DetailViewWidget block:// type if any *}
-																	{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
-																		{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
-																			{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)}
-																			{if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence <= 1)
-																				|| ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
-																				|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
-																				<tr>
-																					<td style="padding:5px;">{process_widget widgetLinkInfo=$CUSTOM_LINK_DETAILVIEWWIDGET}</td>
-																				</tr>
-																			{/if}
-																			{/if}
-																		{/foreach}
-																	{/if}
-																	{* END *}
 																	{/foreach}
 																	{*-- End of Blocks--*}
 
