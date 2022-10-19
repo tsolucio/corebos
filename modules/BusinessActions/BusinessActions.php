@@ -122,6 +122,18 @@ class BusinessActions extends CRMEntity {
 	// Ignore module while selection
 	const IGNORE_MODULE = -1;
 
+	public function __construct() {
+		global $adb;
+		$cnmsg = $adb->getColumnNames('vtiger_businessactions');
+		if (!in_array('error_msg', $cnmsg)) {
+			$adb->query("ALTER TABLE vtiger_businessactions ADD error_msg varchar(200) DEFAULT '' NOT NULL");
+		}
+		if (!in_array('success_msg', $cnmsg)) {
+			$adb->query("ALTER TABLE vtiger_businessactions ADD success_msg varchar(200) DEFAULT '' NOT NULL");
+		}
+		parent::__construct();
+	}
+
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
