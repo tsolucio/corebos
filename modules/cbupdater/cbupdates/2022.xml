@@ -204,6 +204,13 @@
 </changeSet>
 <changeSet>
 	<author>denaldhushi</author>
+	<description>Add BusinessActions Message Fields</description>
+	<filename>build/changeSets/2022/addBAMessageFields.php</filename>
+	<classname>addBAMessageFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
 	<description>Update DETAILVIEWWIDGET Sequence</description>
 	<filename>build/changeSets/2022/updateDetailViewWidgetSequence.php</filename>
 	<classname>updateDetailViewWidgetSequence</classname>
