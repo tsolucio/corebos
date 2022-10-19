@@ -37,7 +37,7 @@ $mod_strings = array(
 'Module' => 'Lista Módulos',
 'Search'=> 'Buscar Acción de Negocio',
 'Test' => 'Prueba',
-'Error Message' => 'Error Message',
-'Success Message' => 'Success Message',
+'Error Message' => 'Mensaje Si Falla',
+'Success Message' => 'Mensaje Si Funciona',
 );
 ?>
