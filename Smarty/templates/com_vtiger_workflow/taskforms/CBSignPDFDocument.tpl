@@ -19,11 +19,6 @@
 
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">var moduleName = '{$entityName}';</script>
-<script src="modules/com_vtiger_workflow/resources/signpdfdocument.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" charset="utf-8">
-var taskSavedData = {$task->taskSavedData|json_encode};
-console.log(taskSavedData);
-</script>
 
 <div class="slds-grid slds-p-horizontal_x-large">
 	<div class="slds-col slds-p-around_x-small">
