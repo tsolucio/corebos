@@ -203,7 +203,7 @@ function kbCreateQuestion(status) {
 				'qname': `BQ_Kanban_${gVTModule}_${status.replace(/\s/g, '')}`,
 				'qtype': 'Table',
 				'qstatus': 'Active',
-				'sqlquery': 1,
+				'querytype': 'SQL',
 				'qpagesize': 0,
 				'qmodule': gVTModule,
 				'qcolumns': 'COUNT(*)',

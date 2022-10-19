@@ -182,4 +182,31 @@
 	<classname>cronClickHouse</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete uitype 105 to support image fields on Users module.</description>
+	<filename>build/changeSets/2022/delUitype105UserImageField.php</filename>
+	<classname>delUitype105UserImageField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Add Handler to control Deleting InventoryDetail when check invoice lines</description>
+	<filename>build/changeSets/2022/add_InventoryDetails_Delete_Handler_cb.php</filename>
+	<classname>add_InventoryDetails_Delete_Handler_cb</classname>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Adding Query Type picklist to cbQuestion.</description>
+	<filename>build/changeSets/2022/addQueryTypePicklistTocbQuestion.php</filename>
+	<classname>addQueryTypePicklistTocbQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add BusinessActions Message Fields</description>
+	<filename>build/changeSets/2022/addBAMessageFields.php</filename>
+	<classname>addBAMessageFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

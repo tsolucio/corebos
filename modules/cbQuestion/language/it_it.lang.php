@@ -116,5 +116,6 @@ $mod_strings = array(
 	'Export Results' => 'Esporta Risultati',
 	'Value' => 'Valore',
 	'Description' => 'Descrizione',
+	'querytype' => 'Query Type',
 );
 ?>

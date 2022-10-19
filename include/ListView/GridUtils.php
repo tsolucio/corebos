@@ -12,6 +12,7 @@ require_once 'modules/PickList/PickListUtils.php';
 require_once 'data/CRMEntity.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/utils/utils.php';
+require_once 'include/ListView/ListViewJSON.php';
 
 function gridGetEditor($module, $fieldname, $uitype) {
 	global $current_user, $adb, $noof_group_rows;
@@ -199,7 +200,10 @@ function getDataGridResponse($mdmap) {
 		if (!empty($sortColumn)) {
 			$mdmap['sortfield'] = $sortColumn;
 		}
-		$sql .= ' ORDER BY '.$qg->getOrderByColumn($mdmap['sortfield']).$sort;
+		if (empty($sort) && !empty($mdmap['defaultorder'])) {
+			$sort = $mdmap['defaultorder'];
+		}
+		$sql .= ' ORDER BY '.$qg->getOrderByColumn($mdmap['sortfield']).' '.$sort;
 	}
 	$rs = $adb->query($sql);
 	$ret = array();
@@ -455,7 +459,11 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 		case Field_Metadata::UITYPE_TEXT:
 		default:
 			$nameFields = getEntityFieldNames($module);
-			if (in_array($fieldName, (array)$nameFields['fieldname'])) {
+			$lv = new GridListView($module);
+			$lv->tabid = getTabid($module);
+			$columnnameVal = $lv->getFieldNameByColumn($nameFields['fieldname']);
+			$referenceFields = array($nameFields['fieldname'], $columnnameVal);
+			if (in_array($fieldName, $referenceFields)) {
 				array_push($fieldAttrs, array(
 					'mdField' => $fieldName,
 					'mdValue' => $fieldValue,

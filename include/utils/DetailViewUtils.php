@@ -603,25 +603,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		} else {
 			$label_fld[] = '';
 		}
-	} elseif ($uitype == 105) {//Added for user image
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$sql = 'select vtiger_attachments.attachmentsid, vtiger_attachments.path, vtiger_attachments.name
-			from vtiger_attachments
-			left join vtiger_salesmanattachmentsrel on vtiger_salesmanattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
-			where vtiger_salesmanattachmentsrel.smid=?';
-		$image_res = $adb->pquery($sql, array($col_fields['record_id']));
-		$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
-		$image_path = $adb->query_result($image_res, 0, 'path');
-		$image_name = $adb->query_result($image_res, 0, 'name');
-		$imgpath = $image_path . $image_id . '_' . $image_name;
-		if ($image_name != '' && file_exists($imgpath)) {
-			//Added the following check for the image to retain its in original size.
-			list($pro_image_width, $pro_image_height) = getimagesize(decode_html($imgpath));
-			$label_fld[] = '<a href="' . $imgpath . '" target="_blank"><img src="' . $imgpath . '" width="' . $pro_image_width . '" height="' . $pro_image_height
-				. '" alt="' . $col_fields['user_name'] . '" title="' . $col_fields['user_name'] . '" border="0"></a>';
-		} else {
-			$label_fld[] = '';
-		}
 	} elseif ($uitype == 357) {
 		$value = $col_fields[$fieldname];
 		if ($value != '') {

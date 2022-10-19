@@ -801,7 +801,7 @@ class Common_Install_Wizard_Utils {
 		'register_globals' => 'Off',
 		'output_buffering' => 'On',
 		'max_execution_time' => '600',
-		'memory_limit' => '32',
+		'memory_limit' => '1024M',
 		'error_reporting' => 'E_ERROR',
 		'allow_call_time_pass_reference' => 'Off',
 		'short_open_tag' => 'Off',
@@ -916,10 +916,10 @@ class Common_Install_Wizard_Utils {
 		if (ini_get('max_execution_time') < 600) {
 			$directiveValues['max_execution_time'] = ini_get('max_execution_time');
 		}
-		if (ini_get('memory_limit') < 32) {
+		if ((int)trim(ini_get('memory_limit'), 'M') < (int)trim(Common_Install_Wizard_Utils::$recommendedDirectives['memory_limit'], 'M')) {
 			$directiveValues['memory_limit'] = ini_get('memory_limit');
 		}
-		if (ini_get('max_input_vars') < 9000) {
+		if (ini_get('max_input_vars') < (int)Common_Install_Wizard_Utils::$recommendedDirectives['max_input_vars']) {
 			$directiveValues['max_input_vars'] = ini_get('max_input_vars');
 		}
 		eval('$errorReportingValue = '.self::$recommendedDirectives['error_reporting'].';');

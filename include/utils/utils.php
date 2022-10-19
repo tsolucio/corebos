@@ -157,6 +157,7 @@ function return_name(&$row, $first_column, $last_column) {
 
 /** Function to return language
  * @return string languages
+ * @deprecated
  */
 function get_languages() {
 	global $log, $languages;
@@ -167,6 +168,7 @@ function get_languages() {
 /** Function to return language
  * @param string key
  * @return string languages
+ * @deprecated
  */
 function get_language_display($key) {
 	global $log, $languages;

@@ -152,14 +152,14 @@ function validate()
 {include file='SetMenu.tpl'}
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
 <div class="slds-modal__container slds-p-around_none">
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
+<table class="slds-table slds-table_bordered" align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tr>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 	<br>
 
 	<div align=center>
 		<!-- DISPLAY -->
-		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
+		<table border=0 cellspacing=0 cellpadding=5 width=100% class="slds-table settingsSelUITopLine slds-table_bordered">
 		{literal}
 		<form name="newGroupForm" action="index.php" method="post" onSubmit="if(validate()) { VtigerJS_DialogBox.block();} else { return false; }">
 		{/literal}
@@ -186,10 +186,10 @@ function validate()
 		</table>
 
 		<br>
-		<table border=0 cellspacing=0 cellpadding=10 width=100% >
+		<table class="slds-table slds-table_bordered" border=0 cellspacing=0 cellpadding=10 width=100% >
 			<tr>
 				<td valign=top>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
+					<table border=0 cellspacing=0 cellpadding=5 width=100% class="slds-table tableHeading slds-table_bordered">
 						<tr>
 							{if $MODE eq 'edit'}
 							<td class="big"><strong>{$CMOD.LBL_PROPERTIES} &quot;{$GROUPNAME}&quot; </strong></td>
@@ -199,24 +199,24 @@ function validate()
 							<td>
 								<div align="right">
 								{if $MODE eq 'edit'}
-								<input type="submit" class="crmButton small save" name="add" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onClick="return validate()">
+								<input type="submit" class="slds-button slds-button--brand crmButton small save" name="add" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onClick="return validate()">
 								{else}
 								<input type="submit" class="crmButton create small" name="add" value="{$CMOD.LBL_ADD_GROUP_BUTTON}" onClick="return validate()">
 								{/if}
 								&nbsp;
-								<input type="button" class="crmButton cancel small" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="window.history.back()">
+								<input type="button" class="slds-button slds-button_destructive cancel crmButton cancel small" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="window.history.back()">
 								</div>
 							</td>
 						</tr>
 					</table>
-					<table width="100%" border="0" cellspacing="0" cellpadding="5">
+					<table class="slds-table_bordered" width="100%" border="0" cellspacing="0" cellpadding="5">
 						<tr class="small">
 							<td width="15%" class="small cellLabel"><font color="red">*</font><strong>{$CMOD.LBL_GROUP_NAME}</strong></td>
-							<td width="85%" class="cellText" ><input id="groupName" name="groupName" type="text" value="{$GROUPNAME}" class="detailedViewTextBox"></td>
+							<td width="85%" class="cellText" ><input id="groupName" name="groupName" type="text" value="{$GROUPNAME}" class="slds-input detailedViewTextBox"></td>
 						</tr>
 						<tr class="small">
 							<td class="small cellLabel"><strong>{$CMOD.LBL_DESCRIPTION}</strong></td>
-							<td class="cellText"><input name="description" type="text" value="{$DESCRIPTION}" class="detailedViewTextBox"> </td>
+							<td class="cellText"><input name="description" type="text" value="{$DESCRIPTION}" class="slds-input detailedViewTextBox"> </td>
 						</tr>
 						<tr class="small">
 							<td colspan="2" valign=top class="cellLabel"><strong>{$CMOD.LBL_MEMBER}</strong></td>
@@ -224,16 +224,15 @@ function validate()
 						<tr class="small">
 							<td colspan="2" valign=top class="cellText">
 							<br>
-								<table width="95%" border="0" align="center" cellpadding="5" cellspacing="0">
+								<table class="slds-table_bordered" width="95%" border="0" align="center" cellpadding="5" cellspacing="0">
 								<tr>
 									<td width="40%" valign=top class="cellBottomDotLinePlain small"><strong>{$CMOD.LBL_MEMBER_AVLBL}</strong></td>
 									<td width="10%">&nbsp;</td>
 									<td width="40%" class="cellBottomDotLinePlain small"><strong>{$CMOD.LBL_MEMBER_SELECTED}</strong></td>
 								</tr>
 								<tr>
-									<td valign=top class="small">
-										{$CMOD.LBL_ENTITY}:&nbsp;
-										<select id="memberType" name="memberType" class="small" onchange="showOptions()">
+									<td valign=top class="small">{$CMOD.LBL_ENTITY} <br>
+										<select id="memberType" name="memberType" class="slds-select small" onchange="showOptions()">
 										<option value="groups" selected>{$CMOD.LBL_GROUPS}</option>
 										<option value="roles">{$CMOD.LBL_ROLES}</option>
 										<option value="rs">{$CMOD.LBL_ROLES_SUBORDINATES}</option>
@@ -246,7 +245,7 @@ function validate()
 								</tr>
 								<tr class=small>
 									<td valign=top>{$CMOD.LBL_MEMBER} {$CMOD.LBL_OF} {$CMOD.LBL_ENTITY}<br>
-										<select id="availList" name="availList" multiple size="10" class="small crmFormList"></select>
+										<select id="availList" name="availList" multiple size="10" class="slds-select small crmFormList"></select>
 										<input type="hidden" name="selectedColumnsString"/>
 									</td>
 									<td width="50">
@@ -256,7 +255,7 @@ function validate()
 										</div>
 									</td>
 									<td class="small" style="background-color:#ddFFdd" valign=top>{$CMOD.LBL_MEMBER} {$CMOD.LBL_OF} &quot;{$GROUPNAME}&quot; <br>
-										<select id="selectedColumns" name="selectedColumns" multiple size="10" class="small crmFormList">
+										<select id="selectedColumns" name="selectedColumns" multiple size="10" class="slds-select small crmFormList">
 										{foreach item=element from=$MEMBER}
 										<option value="{$element.0}">{$element.1}</option>
 										{/foreach}
