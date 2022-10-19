@@ -209,4 +209,11 @@
 	<classname>addBAMessageFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Update DETAILVIEWWIDGET Sequence</description>
+	<filename>build/changeSets/2022/updateDetailViewWidgetSequence.php</filename>
+	<classname>updateDetailViewWidgetSequence</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
