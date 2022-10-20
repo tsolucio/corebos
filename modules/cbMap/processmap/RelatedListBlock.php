@@ -23,9 +23,22 @@
 	<linkfields>
 		<targetfield>asset_no</targetfield>
 	</linkfields>
+	<showon>
+		<module>cbBCase</module>
+		<relatedwith>cbOffers</relatedwith>
+		<relatedfield>fieldname</relatedfield>
+		<tooltip>
+			<fields></fields>
+			...
+		</tooltip>
+	</showon>
 	<modules>
 		<module>
 			<originmodule>Messages</originmodule>
+			<tooltip>
+				<fields></fields>
+				...
+			</tooltip>
 		</module>
 		<module>
 			<targetmodule>Assets</targetmodule>
@@ -89,6 +102,18 @@ class RelatedListBlock extends processcbMap {
 		$this->mapping_arr['originmodule']['name'] = (string)$originmodule->originmodule;
 		$this->mapping_arr['targetmodule']['name'] = (string)$targetmodule->targetmodule;
 		$this->detailModule = $this->mapping_arr['targetmodule']['name'];
+		$showonmodule = array();
+		if (isset($xml->showon)) {
+			foreach ((array)$xml->showon as $k => $v) {
+				$showonmodule[$k] = $v;
+				if ($k == 'tooltip') {
+					$showonmodule[$k] = (array)$v;
+				}
+			}
+			if (count($showonmodule) >= 3) {
+				$this->mapping_arr['showonmodule'] = $showonmodule;
+			}
+		}
 		foreach ($targetmodule->listview->fields as $fields) {
 			$this->FormatFields($fields, 'targetmodule', 'listview');
 		}
