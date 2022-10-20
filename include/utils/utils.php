@@ -1902,7 +1902,7 @@ function utf8RawUrlDecode($source) {
 				$unicodeHexVal = substr($source, $pos, 4);
 				$unicode = hexdec($unicodeHexVal);
 				$entity = '&#'. $unicode . ';';
-				$decodedStr .= utf8_encode($entity);
+				$decodedStr .= mb_convert_encoding($entity, "UTF-8", "ISO-8859-1");
 				$pos += 4;
 			} else {
 				// we have an escaped ascii character
@@ -2567,7 +2567,7 @@ function get_on_clause($field_list, $uitype_arr, $module) {
 function elimina_acentos($cadena) {
 	$tofind = utf8_decode('ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊẼËèéêẽëÌÍĨÎÏìíîĩïÙÚÛŨÜúùûũüÿçÇºªñÑ');
 	$replac = 'AAAAAAaaaaaaOOOOOOooooooEEEEEeeeeeIIIIIiiiiiUUUUUuuuuuycCoanN';
-	return utf8_encode(strtr(utf8_decode($cadena), $tofind, $replac));
+	return mb_convert_encoding(strtr(utf8_decode($cadena), $tofind, $replac), "UTF-8", "ISO-8859-1");
 }
 
 /** call back function to change the array values in to lower case */
