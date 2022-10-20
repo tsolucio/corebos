@@ -7290,10 +7290,10 @@ $(function () {
 		// Variables privadas
 		var links = this.el.find('.link');
 		// Evento
-		links.on('click', { el: this.el, multiple: this.multiple }, verticalMenuDropdownHandler);
+		links.on('click', { el: this.el, multiple: this.multiple }, this.dropdown);
 	};
-	
-	function verticalMenuDropdownHandler (e) {
+
+	cbAccordion.prototype.dropdown = function (e) {
 		var $el = e.data.el,
 			$this = $(this),
 			$next = $this.next();
