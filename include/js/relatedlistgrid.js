@@ -41,11 +41,18 @@ var relatedlistgrid = {
 		}
 		if (target) {
 			related_fieldname = target_related_fieldname[module];
+			//look for origin module when "showonmodule" is active
+			if (related_fieldname === undefined) {
+				related_fieldname = origin_related_fieldname[module];
+			}
 		} else {
 			related_fieldname = origin_related_fieldname[module];
 		}
 		if (mode == 'recursive') {
 			related_fieldname = target_related_fieldname[`${module}-${module}`];
+		}
+		if (related_fieldname === undefined && show_on_module[module] != '') {
+			related_fieldname = show_on_module[module];
 		}
 		if (CurrentRecord!='') {
 			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&RLFieldName='+related_fieldname+'&'+related_fieldname+'='+CurrentRecord;
@@ -174,7 +181,7 @@ class RLinkRender {
 				el = document.createElement('a');
 				el.href = `index.php?module=${parent_module}&action=DetailView&record=${parent_id}`;
 				el.target = `_blank`;
-				if (tooltip[parent_module] != 'null') {
+				if (tooltip[parent_module] != 'null' && tooltip[parent_module] !== undefined) {
 					props.value = `<span>${props.value}</span>
 					<span class="slds-icon_container slds-icon__svg--default slds-float_right slds-m-right_small cbds-tooltip__trigger slds-p-left_xx-small"
 						id="cbds-tooltip__trigger-${parent_id}"

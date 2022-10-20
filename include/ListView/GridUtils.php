@@ -624,14 +624,71 @@ function gridMoveRowUpDown($adb, $request) {
 
 function getRelatedListGridResponse($map) {
 	global $current_user, $adb;
+	$ret = array();
+	$showon = array();
+	$pid = vtlib_purify($_REQUEST['pid']);
+	if (isset($map['showonmodule'])) {
+		$mainmodule = $map['showonmodule']['module'];
+		$relatedwith = $map['showonmodule']['relatedwith'];
+		$relatedfield = $map['showonmodule']['relatedfield'];
+		$_REQUEST['currentmodule'] = $relatedwith;
+		$sql = generateRelationQuery($relatedwith, $mainmodule, $relatedfield, $pid, array());
+		$rs = $adb->query($sql);
+		if ($adb->num_rows($rs) > 0) {
+			$entity = getEntityFieldNames($relatedwith);
+			while ($row = $adb->fetch_array($rs)) {
+				$id = $row[$entity['entityidfield']];
+				$showon[] = array_merge($row, array('id' => $id));
+			}
+			$entityidfield = $_REQUEST['pid'];
+			foreach ($showon as $key) {
+				$_REQUEST['pid'] = $key['id'];
+				if (isset($key[$entity['fieldname']])) {
+					$key['parentaction'] = $key[$entity['fieldname']];
+					$key['parentaction_attributes'] = [];
+				}
+				$treeview = CreateTreeView($map);
+				if (!empty($treeview)) {
+					$key['_children'] = $treeview;
+				}
+				$key['typeof_row'] = 'parent';
+				$key['parent_id'] = $key['id'];
+				$key['parent_module'] = $relatedwith;
+				$key['parent_of_child'] = $entityidfield;
+				$key['related_fieldname'] = $relatedfield;
+				$key['related_child'] = $map['originmodule']['name'];
+				$key['record_permissions'] = array(
+					'parent_edit' => isPermitted($relatedwith, 'EditView', $key['id'])
+				);
+				$ret[] = array_filter($key, 'is_string', ARRAY_FILTER_USE_KEY);
+			}
+		}
+	} else {
+		$ret = CreateTreeView($map);
+	}
+	return json_encode(
+		array(
+			'data' => array(
+				'contents' => $ret,
+				'pagination' => array(
+					'page' => 1,
+					'totalCount' => 0,
+				),
+			),
+			'result' => true,
+		)
+	);
+}
+
+function CreateTreeView($map) {
+	global $current_user, $adb;
+	$ret = array();
 	$pid = vtlib_purify($_REQUEST['pid']);
 	$currentModule = vtlib_purify($_REQUEST['currentmodule']);
 	$originmodule = vtlib_purify($map['originmodule']['name']);
 	$targetmodule = vtlib_purify($map['targetmodule']['name']);
-	$OriginFieldID = getRelatedFieldId($currentModule, $originmodule);
-	$TargetFieldID = getRelatedFieldId($originmodule, $targetmodule);
-	$Originfieldname = getFieldNameByFieldId($OriginFieldID);
-	$Targetfieldname = getFieldNameByFieldId($TargetFieldID);
+	$Originfieldname = getFieldNameByFieldId(getRelatedFieldId($currentModule, $originmodule));
+	$Targetfieldname = getFieldNameByFieldId(getRelatedFieldId($originmodule, $targetmodule));
 	if (!empty($Originfieldname)) {
 		$entity = getEntityFieldNames($originmodule);
 		$targetentity = getEntityFieldNames($targetmodule);
@@ -689,19 +746,8 @@ function getRelatedListGridResponse($map) {
 			);
 			$ret[] = array_filter($row, 'is_string', ARRAY_FILTER_USE_KEY);
 		}
-		return json_encode(
-			array(
-				'data' => array(
-					'contents' => $ret,
-					'pagination' => array(
-						'page' => 1,
-						'totalCount' => 0,
-					),
-				),
-				'result' => true,
-			)
-		);
 	}
+	return $ret;
 }
 
 function findChilds($module, $parentid, $map) {

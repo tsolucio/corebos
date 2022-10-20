@@ -26,9 +26,15 @@
 					<div class="slds-page-header__controls">
 						<div class="slds-page-header__control">
 						<div class="slds-button-group" role="group">
+							{if $ShowOnModule}
+							<button type="button" class="slds-button slds-button_neutral" onclick="relatedlistgrid.upsert('rlgrid{$originmodule}-{$targetmodule}', '{$ShowOnModule}', '', {$CurrentRecord})">
+								{$APP.LBL_CREATE_BUTTON_LABEL} {$ShowOnModule}
+							</button>
+							{else}
 							<button type="button" class="slds-button slds-button_neutral" onclick="relatedlistgrid.upsert('rlgrid{$originmodule}-{$targetmodule}', '{$originmodule}', '', {$CurrentRecord})">
 								{$APP.LBL_CREATE_BUTTON_LABEL} {$originmodule}
 							</button>
+							{/if}
 						</div>
 						</div>
 					</div>
@@ -57,12 +63,18 @@ if (origin_related_fieldname === undefined) {
 if (target_related_fieldname === undefined) {
 	var target_related_fieldname = Array();
 }
+if (show_on_module === undefined) {
+	var show_on_module = Array();
+}
+show_on_module['{$ShowOnModule}'] = '{$ShowOnRelation}';
 origin_related_fieldname['{$originmodule}'] = '{$origin_related_fieldname}';
 target_related_fieldname['{$targetmodule}'] = '{$target_related_fieldname}';
 target_related_fieldname['{$targetmodule}-{$targetmodule}'] = '{$sub_related_fieldname}';
 tooltip['{$originmodule}'] = '{$tooltip}';
+tooltip['{$ShowOnModule}'] = '{$ShowOnTooltip}';
 mapname['rlgrid{$originmodule}-{$targetmodule}'] = '{$mapname}';
 FieldLables['{$originmodule}'] = '{$FieldLables}';
+FieldLables['{$ShowOnModule}'] = '{$ShowOnFieldLables}';
 function loadRLGrid{$originmodule}{$targetmodule}() {
 	RLInstance['rlgrid{$originmodule}-{$targetmodule}'] = new tui.Grid({
 		el: document.getElementById('{$originmodule}-{$targetmodule}'),
@@ -77,8 +89,7 @@ function loadRLGrid{$originmodule}{$targetmodule}() {
 				name: 'parentaction',
 				renderer: {
 					type: RLinkRender
-				},
-				width: 140
+				}
 			},
 			{foreach from=$RelatedListWidgetMap.targetmodule.listview item=rlfield name=mdhdr}
 			{
