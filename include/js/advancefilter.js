@@ -396,7 +396,9 @@
 						li[i].style.display = 'none';
 					}
 				} else {
-					li[i].style.display = 'none';
+					if (li[i].hasAttribute('data-value')) {
+						li[i].style.display = 'none';
+					}
 					if (el.value == '') {
 						li[i].style.display = '';
 					}
