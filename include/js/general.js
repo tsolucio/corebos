@@ -7292,7 +7292,6 @@ $(function () {
 		// Evento
 		links.on('click', { el: this.el, multiple: this.multiple }, verticalMenuDropdownHandler);
 	};
-	
 	function verticalMenuDropdownHandler (e) {
 		var $el = e.data.el,
 			$this = $(this),
