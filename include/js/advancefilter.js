@@ -350,10 +350,33 @@
 				(function (_i) {
 					if (me[type][_i].el.isSameNode(upNode)) {
 						obj = me[type][_i];
+						AdvancedFilter.enableFilterDeletion(me[type][_i]);
 					}
 				})(i);
 			}
 			return obj;
+		},
+
+		enableFilterDeletion: function (obj) {
+			let no = obj.no;
+			let condCount = obj.condCount;
+			if (obj.group !== undefined) {
+				no = obj.group.no;
+				condCount = obj.group.condCount;
+			}
+			const group = this.el.querySelector(`li[data-group-no="${no}"]`);
+			if (obj.group !== undefined) {
+				if (condCount - 1 == 1) {
+					let btn = group.querySelectorAll(`button[data-onclick="delete-cond"]`);
+					for (let i = 0; i < btn.length; i++) {
+						group.querySelectorAll(`button[data-onclick="delete-cond"]`)[i].setAttribute('disabled', 'disabled');
+					}
+				}
+			} else {
+				if (condCount >= 1) {
+					group.querySelectorAll(`button[data-onclick="delete-cond"]`)[0].removeAttribute('disabled');
+				}
+			}
 		},
 
 		/*
