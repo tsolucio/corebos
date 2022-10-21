@@ -316,6 +316,7 @@ $mod_strings = array(
 	'LBL_OWNER' => 'Assigned Owner',
 	'LBL_MIGRATION' => 'Migration Wizard',
 	'LBL_MIGRATION_INFO' => 'Migrate your existing CRM data to latest version',
+	'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Supported File Type .XML only',
 	'LBL_USER_DESCRIPTION' => 'Manage users who can access CRM',
 	'LBL_ROLE_DESCRIPTION' => 'Set up hierarchy of Roles and assign to the users',
 	'LBL_PROFILE_DESCRIPTION' => 'Manage user-specific modules access to different Roles',

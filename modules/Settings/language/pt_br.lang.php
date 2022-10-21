@@ -342,6 +342,7 @@ $mod_strings = array(
 'LBL_OWNER'=>'Proprietário responsável',
 'LBL_MIGRATION'=>'Migração orientada',
 'LBL_MIGRATION_INFO'=>'Migrar dados da versão anterior do CRM',
+'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Supported File Type .XML only',
 
 'LBL_USER_DESCRIPTION'=>'Administrar usuários que podem acessar o CRM',
 'LBL_ROLE_DESCRIPTION'=>'Definir hierarquia das funções e atribuições para usuários',

@@ -314,6 +314,7 @@ $mod_strings = array (
 	'LBL_OWNER' => 'Propietario',
 	'LBL_MIGRATION' => 'Migrar desde una Versión Anterior',
 	'LBL_MIGRATION_INFO' => ' - Migrar desde una versión anterior de la aplicación',
+	'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Solo se permite .XML',
 	'LBL_USER_DESCRIPTION' => 'Gestionar Usuarios que acceden al CRM',
 	'LBL_ROLE_DESCRIPTION' => 'Definir Jerarquía de Roles y Asignar a Usuarios',
 	'LBL_PROFILE_DESCRIPTION' => 'Definir Perfiles para asignar derechos de acceso a cada Rol',
