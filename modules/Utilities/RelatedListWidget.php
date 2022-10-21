@@ -52,6 +52,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$FieldLabels = array();
 		$RelatedFields = array();
 		$Tooltips = array();
+		$Wizard = array();
 		$functionName = '';
 		$MainModule = '';
 		$MainRelateField = '';
@@ -89,9 +90,12 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 			if (isset($module['tooltip'])) {
 				$Tooltips[$module['name']] = $module['tooltip']['fields'];
 			}
+			$Wizard[$module['name']] = '';
+			if (isset($module['wizard'])) {
+				$Wizard[$module['name']] = $module['wizard'];
+			}
 			$idx++;
 		}
-		$smarty->assign('wizard', $map['originmodule']['wizard']);
 		$smarty->assign('CurrentRecord', $_REQUEST['record']);
 		$smarty->assign('MainModule', $MainModule);
 		$smarty->assign('MainRelateField', $MainRelateField);
@@ -100,6 +104,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('FieldLabels', json_encode($FieldLabels));
 		$smarty->assign('RelatedFields', json_encode($RelatedFields));
 		$smarty->assign('Tooltips', json_encode($Tooltips));
+		$smarty->assign('Wizard', json_encode($Wizard));
 		$smarty->assign('mapname', $mapname);
 		$smarty->assign('functionName', $functionName);
 		$smarty->assign('ID', $id);
