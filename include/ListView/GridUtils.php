@@ -624,52 +624,31 @@ function gridMoveRowUpDown($adb, $request) {
 
 function getRelatedListGridResponse($map) {
 	global $current_user, $adb;
-	$ret = array();
-	$showon = array();
-	$pid = vtlib_purify($_REQUEST['pid']);
-	if (isset($map['showonmodule'])) {
-		$mainmodule = $map['showonmodule']['module'];
-		$relatedwith = $map['showonmodule']['relatedwith'];
-		$relatedfield = $map['showonmodule']['relatedfield'];
-		$_REQUEST['currentmodule'] = $relatedwith;
-		$sql = generateRelationQuery($relatedwith, $mainmodule, $relatedfield, $pid, array());
-		$rs = $adb->query($sql);
-		if ($adb->num_rows($rs) > 0) {
-			$entity = getEntityFieldNames($relatedwith);
-			while ($row = $adb->fetch_array($rs)) {
-				$id = $row[$entity['entityidfield']];
-				$showon[] = array_merge($row, array('id' => $id));
-			}
-			$entityidfield = $_REQUEST['pid'];
-			foreach ($showon as $key) {
-				$_REQUEST['pid'] = $key['id'];
-				if (isset($key[$entity['fieldname']])) {
-					$key['parentaction'] = $key[$entity['fieldname']];
-					$key['parentaction_attributes'] = [];
-				}
-				$treeview = CreateTreeView($map);
-				if (!empty($treeview)) {
-					$key['_children'] = $treeview;
-				}
-				$key['typeof_row'] = 'parent';
-				$key['parent_id'] = $key['id'];
-				$key['parent_module'] = $relatedwith;
-				$key['parent_of_child'] = $entityidfield;
-				$key['related_fieldname'] = $relatedfield;
-				$key['related_child'] = $map['originmodule']['name'];
-				$key['record_permissions'] = array(
-					'parent_edit' => isPermitted($relatedwith, 'EditView', $key['id'])
-				);
-				$ret[] = array_filter($key, 'is_string', ARRAY_FILTER_USE_KEY);
-			}
+	$modules = array();
+	foreach ($map['modules'] as $module) {
+		$index = array_search($module, $map['modules']);
+		if($index !== false && $index < count($map['modules'])-1) {
+			$next = $map['modules'][$index+1];
+		};
+		if (!isset($module['relatedfield'])) {
+			$module['relatedfield'] = '';
 		}
-	} else {
-		$ret = CreateTreeView($map);
+		$modules[] = array(
+			'current' => $module['name'],
+			'relatedwith' => $next['name'],
+			'relatedfield' => $module['relatedfield'],
+			'entity' => getEntityFieldNames($next['name']),
+		);
 	}
+	$data = array();
+	$focus = CRMEntity::getInstance($_REQUEST['currentmodule']);
+	$focus->retrieve_entity_info($_REQUEST['pid'], $_REQUEST['currentmodule']);
+	$focus->column_fields['id'] = $_REQUEST['pid'];
+	$data = TreeView($focus->column_fields, $modules, 0, $map);
 	return json_encode(
 		array(
 			'data' => array(
-				'contents' => $ret,
+				'contents' => $data,
 				'pagination' => array(
 					'page' => 1,
 					'totalCount' => 0,
@@ -680,74 +659,81 @@ function getRelatedListGridResponse($map) {
 	);
 }
 
-function CreateTreeView($map) {
-	global $current_user, $adb;
-	$ret = array();
-	$pid = vtlib_purify($_REQUEST['pid']);
-	$currentModule = vtlib_purify($_REQUEST['currentmodule']);
-	$originmodule = vtlib_purify($map['originmodule']['name']);
-	$targetmodule = vtlib_purify($map['targetmodule']['name']);
-	$Originfieldname = getFieldNameByFieldId(getRelatedFieldId($currentModule, $originmodule));
-	$Targetfieldname = getFieldNameByFieldId(getRelatedFieldId($originmodule, $targetmodule));
-	if (!empty($Originfieldname)) {
-		$entity = getEntityFieldNames($originmodule);
-		$targetentity = getEntityFieldNames($targetmodule);
-		$sql = generateRelationQuery($originmodule, $currentModule, $Originfieldname, $pid, array());
+function TreeView($element, $modules, $i = 0, $map) {
+	global $adb;
+	$tree = array();
+	$cn = count($modules);
+	if (isset($modules[$i])) {
+		$relatedmodule = $modules[$i]['relatedwith'];
+		$current = $modules[$i]['current'];
+		$relatedfield = $modules[$i]['relatedfield'];
+		$entity = $modules[$i]['entity'];
+		if (empty($relatedfield)) {
+			return $tree;
+		}
+		$sql = generateRelationQuery($relatedmodule, $current, $relatedfield, $element['id'], array());
 		$rs = $adb->query($sql);
-		$ret = array();
-		while ($row = $adb->fetch_array($rs)) {
-			if (isset($row[$entity['fieldname']])) {
-				$row['parentaction'] = $row[$entity['fieldname']];
-				$row['parentaction_attributes'] = [];
+		$lv = end($map['modules']);
+		if ($adb->num_rows($rs) > 0) {
+			$i++;
+			if (empty($modules[$i])) {
+				return $tree;
 			}
-			$entityidfield = $row[$entity['entityidfield']];
-			$row['typeof_row'] = 'parent';
-			$row['parent_id'] = $entityidfield;
-			$row['parent_module'] = $originmodule;
-			$row['parent_of_child'] = $pid;
-			$row['related_fieldname'] = $Originfieldname;
-			$row['related_child'] = $targetmodule;
-			$sql = generateRelationQuery($targetmodule, $originmodule, $Targetfieldname, $entityidfield, $map);
-			$result = $adb->query($sql);
-			$_children = array();
-			while ($scrow = $adb->fetch_array($result)) {
-				foreach ($map['targetmodule']['listview'] as $finfo) {
-					$gridValue = getDataGridValue($targetmodule, $scrow[$targetentity['entityidfield']], $finfo, $scrow[$finfo['fieldinfo']['name']]);
-					$scrow[$finfo['fieldinfo']['name']] = $gridValue[0];
-					$scrow[$finfo['fieldinfo']['name'].'_attributes'] = $gridValue[1];
+			while ($row = $adb->fetch_array($rs)) {
+				$id = $row[$entity['entityidfield']];
+				$row['id'] = $id;
+				$children = TreeView($row, $modules, $i, $map);
+				if (!empty($children)) {
+					$row['_children'] = $children;
 				}
-				$scentityidfield = $scrow[$targetentity['entityidfield']];
-				$scrow['typeof_row'] = 'children';
-				$scrow['child_id'] = $scentityidfield;
-				$scrow['child_module'] = $targetmodule;
-				$scrow['parent_of_child'] = $entityidfield;
-				$scrow['related_fieldname'] = $Targetfieldname;
-				$scrow['related_child'] = $targetmodule;
-				$scrow['record_permissions'] = array(
-					'child_edit' => isPermitted($originmodule, 'EditView', $scentityidfield)
-				);
-				$findAllChildrens = findChilds($targetmodule, $scentityidfield, $map);
-				if (!empty($findAllChildrens)) {
-					$scrow['_attributes'] = array(
-						'expanded' => true
+				if ($i == $cn - 1) {//last iteration
+					foreach ($lv['listview'] as $finfo) {
+						$gridValue = getDataGridValue($relatedmodule, $row['id'], $finfo, $row[$finfo['fieldinfo']['name']]);
+						if (empty($gridValue[0])) {
+							continue;
+						}
+						$row[$finfo['fieldinfo']['name']] = $gridValue[0];
+						$row[$finfo['fieldinfo']['name'].'_attributes'] = $gridValue[1];
+					}
+					$row['typeof_row'] = 'children';
+					$row['child_id'] = $id;
+					$row['child_module'] = $relatedmodule;
+					$row['parent_of_child'] = $element['id'];
+					$row['related_fieldname'] = $modules[$i]['relatedfield'];
+					$row['related_parent_fieldname'] = $relatedfield;
+					$row['related_child'] = $relatedmodule;
+					$row['record_permissions'] = array(
+						'child_edit' => isPermitted($relatedmodule, 'EditView', $row['id'])
 					);
-					$scrow['_children'] = $findAllChildrens;
+					$findAllChildrens = findChilds($relatedmodule, $id, $map);
+					if (!empty($findAllChildrens)) {
+						$row['_attributes'] = array(
+							'expanded' => true
+						);
+						$row['_children'] = $findAllChildrens;
+					}
+				} else {
+					$row['parentaction'] = $row[$entity['fieldname']];
+					$row['parentaction_attributes'] = [];
+					$row['typeof_row'] = 'parent';
+					$row['parent_id'] = $id;
+					$row['parent_module'] = $relatedmodule;
+					$row['parent_of_child'] = $element['id'];
+					$row['related_fieldname'] = $modules[$i]['relatedfield'];
+					$row['related_parent_fieldname'] = $relatedfield;
+					$row['related_child'] = $modules[$i]['relatedwith'];
+					$row['record_permissions'] = array(
+						'parent_edit' => isPermitted($relatedmodule, 'EditView', $id)
+					);
 				}
-				$_children[] = array_filter($scrow, 'is_string', ARRAY_FILTER_USE_KEY);
+				$tree[] = array_filter($row, 'is_string', ARRAY_FILTER_USE_KEY);
 			}
-			if (!empty($_children)) {
-				$row['_attributes'] = array(
-					'expanded' => true
-				);
-				$row['_children'] = $_children;
+			if (!empty($tree)) {
+				$element['_children'] = array_filter($tree, 'is_string', ARRAY_FILTER_USE_KEY);
 			}
-			$row['record_permissions'] = array(
-				'parent_edit' => isPermitted($targetmodule, 'EditView', $entityidfield)
-			);
-			$ret[] = array_filter($row, 'is_string', ARRAY_FILTER_USE_KEY);
 		}
 	}
-	return $ret;
+	return $tree;
 }
 
 function findChilds($module, $parentid, $map) {
@@ -767,10 +753,11 @@ function findChilds($module, $parentid, $map) {
 			inner join {$tablename}cf on {$tablename}cf.{$entityid} = {$tablename}.{$entityid}
 			where vtiger_crmentity.deleted=0 and {$reltablename}.{$relfieldname}=? and {$tablename}.{$entityid} > 0", array($parentid));
 		$result = $adb->query($query);
+		$lv = end($map['modules']);
 		if ($adb->num_rows($result) > 0) {
 			while ($row = $adb->fetch_array($result)) {
 				$findChilds = findChilds($module, $row[$entityid], $map);
-				foreach ($map['targetmodule']['listview'] as $finfo) {
+				foreach ($lv['listview'] as $finfo) {
 					$gridValue = getDataGridValue($module, $row[$targetentity['entityidfield']], $finfo, $row[$finfo['fieldinfo']['name']]);
 					$row[$finfo['fieldinfo']['name']] = $gridValue[0];
 					$row[$finfo['fieldinfo']['name'].'_attributes'] = $gridValue[1];
@@ -839,13 +826,12 @@ function getFieldNameByFieldId($FieldId) {
 }
 
 function gridRelatedListActionColumn($renderer, $map) {
-	global $currentModule;
-	$originmodule = vtlib_purify($map['originmodule']['name']);
-	$targetmodule = vtlib_purify($map['targetmodule']['name']);
-	$OriginFieldID = getRelatedFieldId($currentModule, $originmodule);
-	$TargetFieldID = getRelatedFieldId($originmodule, $targetmodule);
-	$Originfieldname = getFieldNameByFieldId($OriginFieldID);
-	$Targetfieldname = getFieldNameByFieldId($TargetFieldID);
+	$cn = count($map['modules']);
+	$currentModule = $map['modules'][$cn-3]['name'];
+	$originmodule = $map['modules'][$cn-2]['name'];
+	$targetmodule = $map['modules'][$cn-1]['name'];
+	$Originfieldname = $map['modules'][$cn-3]['relatedfield'];
+	$Targetfieldname = $map['modules'][$cn-2]['relatedfield'];
 	return [
 		'name' => 'cblvactioncolumn',
 		'header' => getTranslatedString('LBL_ACTION'),
