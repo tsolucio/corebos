@@ -1547,7 +1547,7 @@ if (!function_exists('elimina_puntuacion')) {
 		);
 		// elimina espacios
 		$cadena = str_replace(' ', '_', $cadena);
-		return utf8_encode(strtr(utf8_decode($cadena), $replac));
+		return mb_convert_encoding(strtr(utf8_decode($cadena), $replac), "UTF-8", "ISO-8859-1");
 	}
 }
 

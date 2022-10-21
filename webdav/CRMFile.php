@@ -38,12 +38,12 @@ class CRMFile extends Sabre\DAV\File {
 		$fileid = $adb->query_result($result, 0, 'attachmentsid');
 		$pathQuery = $adb->pquery('select path from vtiger_attachments where attachmentsid=?', array($fileid));
 		$filepath = '../'.$adb->query_result($pathQuery, 0, 'path');
-		$saved_filename = $fileid.'_'.utf8_encode(html_entity_decode(html_entity_decode($this->data['filename'])));
+		$saved_filename = $fileid.'_'.mb_convert_encoding(html_entity_decode(html_entity_decode($this->data['filename'])), "UTF-8", "ISO-8859-1");
 		$this->filepath = realpath(dirname(__FILE__).'/'.$filepath.$saved_filename);
 	}
 
 	public function getName() {
-		return utf8_encode(html_entity_decode(html_entity_decode($this->data['filename'], ENT_COMPAT, 'UTF-8')));
+		return mb_convert_encoding(html_entity_decode(html_entity_decode($this->data['filename'], ENT_COMPAT, 'UTF-8')), "UTF-8", "ISO-8859-1");
 	}
 
 	public function setName($name) {
@@ -55,8 +55,8 @@ class CRMFile extends Sabre\DAV\File {
 		$adb->pquery('UPDATE vtiger_attachments SET name=? WHERE attachmentsid=?', array($name, $fileid));
 		$pathQuery = $adb->pquery('select path from vtiger_attachments where attachmentsid=?', array($fileid));
 		$filepath = '../'.$adb->query_result($pathQuery, 0, 'path');
-		$saved_filename = $fileid.'_'.utf8_encode(html_entity_decode(html_entity_decode($this->data['filename'])));
-		$new_saved_filename = $fileid.'_'.utf8_encode(html_entity_decode(html_entity_decode($name)));
+		$saved_filename = $fileid.'_'.mb_convert_encoding(html_entity_decode(html_entity_decode($this->data['filename'])), "UTF-8", "ISO-8859-1");
+		$new_saved_filename = $fileid.'_'.mb_convert_encoding(html_entity_decode(html_entity_decode($name)), "UTF-8", "ISO-8859-1");
 		$path = realpath(dirname(__FILE__).'/'.$filepath.$saved_filename);
 		$new_path = (dirname(__FILE__).'/'.$filepath.$new_saved_filename);
 		rename($path, $new_path);

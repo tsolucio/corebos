@@ -23,7 +23,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {
-		global $currentModule;
+		global $currentModule, $current_user;
 		if (!empty($context['mapname'])) {
 			$mapname = $context['mapname'];
 		} elseif (!empty($_REQUEST['mapname'])) {
@@ -45,33 +45,67 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$this->context = $context;
 		$smarty = $this->getViewer();
 		$map = $cbMap->RelatedListBlock();
-		$cbgridactioncol = str_replace('"RLActionRender"', 'RLActionRender', json_encode(gridRelatedListActionColumn('RLActionRender', $map)));
-		$smarty->assign('RelatedListWidgetMap', $map);
-		$smarty->assign('cbgridactioncol', $cbgridactioncol);
-		$smarty->assign('CurrentRecord', $_REQUEST['record']);
-		$smarty->assign('title', $map['title']);
-		$smarty->assign('wizard', $map['originmodule']['wizard']);//Messages
-		$smarty->assign('originmodule', $map['originmodule']['name']);//Messages
-		$smarty->assign('targetmodule', $map['targetmodule']['name']);//Assets
-		$smarty->assign('currentModule', $currentModule);//Accounts
-		$smarty->assign('mapname', $mapname);
-		$smarty->assign('ID', $id);
-		$OriginFieldID = getRelatedFieldId($currentModule, $map['originmodule']['name']);
-		$TargetFieldID = getRelatedFieldId($map['originmodule']['name'], $map['targetmodule']['name']);
-		$SublevelsField = getRelatedFieldId($map['targetmodule']['name'], $map['targetmodule']['name']);
-		$origin_related_fieldname = getFieldNameByFieldId($OriginFieldID);
-		$target_related_fieldname = getFieldNameByFieldId($TargetFieldID);
-		$sub_related_fieldname = getFieldNameByFieldId($SublevelsField);
-		$smarty->assign('origin_related_fieldname', $origin_related_fieldname);
-		$smarty->assign('target_related_fieldname', $target_related_fieldname);
-		$smarty->assign('sub_related_fieldname', $sub_related_fieldname);
-		$smarty->assign('tooltip', json_encode($map['tooltip']));
-		$cachedFields = VTCacheUtils::lookupFieldInfo_Module($map['originmodule']['name']);
-		$fieldsLabel = array();
-		foreach ($cachedFields as $key) {
-			$fieldsLabel[$key['fieldname']] = $key['fieldlabel'];
+		if (!isset($map['modules'])) {
+			return 'Map Not Found';
 		}
-		$smarty->assign('FieldLables', json_encode($fieldsLabel));
+		$RLInstance = array();
+		$FieldLabels = array();
+		$RelatedFields = array();
+		$Tooltips = array();
+		$functionName = '';
+		$MainModule = '';
+		$MainRelateField = '';
+		$idx = 0;
+		foreach ($map['modules'] as $module) {
+			if ($idx == 0) {
+				$MainRelateField = $module['relatedfield'];
+			}
+			if ($idx == 1) {
+				$MainModule = $module['name'];
+			}
+			$functionName .= $module['name'];
+			$RLInstance[] = $module;
+			if (isset($module['listview'])) {
+				foreach ($module['listview'] as $fld) {
+					$Columns[] = array(
+						'name' => $fld['fieldinfo']['name'],
+						'label' => $fld['fieldinfo']['label']
+					);
+				}
+			}
+			$labels = array();
+			$moduleHandler = vtws_getModuleHandlerFromName($module['name'], $current_user);
+			$moduleMeta = $moduleHandler->getMeta();
+			$moduleFields = $moduleMeta->getModuleFields();
+			$accessibleFields = array_keys($moduleFields);
+			foreach ($moduleFields as $key) {
+				$labels[$key->getFieldName()] = $key->getFieldLabelKey();
+			}
+			$FieldLabels[$module['name']] = $labels;
+			if (!isset($module['relatedfield'])) {
+				$module['relatedfield'] = '';
+			}
+			$RelatedFields[$module['name']] = $module['relatedfield'];
+			if (isset($module['tooltip'])) {
+				$Tooltips[$module['name']] = $module['tooltip']['fields'];
+			}
+			$idx++;
+		}
+		$smarty->assign('wizard', $map['originmodule']['wizard']);
+		$smarty->assign('CurrentRecord', $_REQUEST['record']);
+		$smarty->assign('MainModule', $MainModule);
+		$smarty->assign('MainRelateField', $MainRelateField);
+		$smarty->assign('Columns', $Columns);
+		$smarty->assign('RLInstance', json_encode($RLInstance));
+		$smarty->assign('FieldLabels', json_encode($FieldLabels));
+		$smarty->assign('RelatedFields', json_encode($RelatedFields));
+		$smarty->assign('Tooltips', json_encode($Tooltips));
+		$smarty->assign('mapname', $mapname);
+		$smarty->assign('functionName', $functionName);
+		$smarty->assign('ID', $id);
+		$smarty->assign('title', $map['title']);
+		$cbgridactioncol = str_replace('"RLActionRender"', 'RLActionRender', json_encode(gridRelatedListActionColumn('RLActionRender', $map)));
+		$smarty->assign('cbgridactioncol', $cbgridactioncol);
 		return $smarty->fetch('Components/MasterDetail/RelatedListWidget.tpl');
 	}
 }

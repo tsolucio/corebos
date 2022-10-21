@@ -263,7 +263,7 @@ $smarty->assign('CURRENT_PAGE_BOXES', '');
 ListViewSession::setSessionQuery($currentModule, $focus->query, $viewid);
 
 $alphabetical = AlphabeticalSearch($currentModule, 'index', 'notes_title', 'true', 'basic', '', '', '', '', $viewid);
-$fieldnames_array = $controller->getAdvancedSearchOptionArray();
+$fieldnames_array = $oCustomView->getModuleColumnsList($currentModule, true);
 $smarty->assign('ALPHABETICAL', $alphabetical);
 $smarty->assign('FIELDNAMES_ARRAY', $fieldnames_array);
 $adminuser = is_admin($current_user);

@@ -34,7 +34,8 @@ switch ($_REQUEST['rlaction']) {
 			if ($cbMapid) {
 				$cbMap = cbMap::getMapByID($cbMapid);
 				$map = $cbMap->RelatedListBlock();
-				if (!empty($map['targetmodule']['listview']) && !empty($_REQUEST['pid'])) {
+				$mods = end($map['modules']);
+				if (!empty($mods['listview']) && !empty($_REQUEST['pid'])) {
 					echo getRelatedListGridResponse($map);
 				} else {
 					echo getEmptyDataGridResponse();

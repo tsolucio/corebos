@@ -10,9 +10,7 @@
 							<div class="slds-page-header__name-title">
 								<h1>
 								<span class="slds-page-header__title slds-truncate">
-									{if $title eq ''}
-										{$originmodule} -> {$targetmodule}
-									{else}
+									{if $title neq ''}
 										{$title}
 									{/if}
 								</span>
@@ -26,8 +24,8 @@
 					<div class="slds-page-header__controls">
 						<div class="slds-page-header__control">
 						<div class="slds-button-group" role="group">
-							<button type="button" class="slds-button slds-button_neutral" onclick="relatedlistgrid.upsert('rlgrid{$originmodule}-{$targetmodule}', '{$originmodule}', '', {$CurrentRecord})">
-								{$APP.LBL_CREATE_BUTTON_LABEL} {$originmodule}
+							<button type="button" class="slds-button slds-button_neutral" onclick="relatedlistgrid.upsert('{$functionName}', '{$MainModule}', '', {$CurrentRecord}, '{$MainRelateField}')">
+								{$APP.LBL_CREATE_BUTTON_LABEL} {$MainModule}
 							</button>
 						</div>
 						</div>
@@ -38,38 +36,18 @@
 	</header>
 	</div>
 	<div class="slds-card__body slds-card__body_inner">
-	<div id="{$originmodule}-{$targetmodule}" style="display: inline;"></div>
+	<div id="{$functionName}" style="display: inline;"></div>
 	</div>
 </article>
 <script>
-if (wizardid === undefined) {
-	var wizardid = Array();
-}
-if (mapname === undefined) {
-	var mapname = Array();
-}
-if (tooltip === undefined) {
-	var tooltip = Array();
-}
-if (FieldLables === undefined) {
-	var FieldLables = Array();
-}
-if (origin_related_fieldname === undefined) {
-	var origin_related_fieldname = Array();
-}
-if (target_related_fieldname === undefined) {
-	var target_related_fieldname = Array();
-}
-origin_related_fieldname['{$originmodule}'] = '{$origin_related_fieldname}';
-target_related_fieldname['{$targetmodule}'] = '{$target_related_fieldname}';
-target_related_fieldname['{$targetmodule}-{$targetmodule}'] = '{$sub_related_fieldname}';
-tooltip['{$originmodule}'] = '{$tooltip}';
-mapname['rlgrid{$originmodule}-{$targetmodule}'] = '{$mapname}';
-wizardid['rlgrid{$originmodule}-{$targetmodule}'] = '{$wizard}';
-FieldLables['{$originmodule}'] = '{$FieldLables}';
-function loadRLGrid{$originmodule}{$targetmodule}() {
-	RLInstance['rlgrid{$originmodule}-{$targetmodule}'] = new tui.Grid({
-		el: document.getElementById('{$originmodule}-{$targetmodule}'),
+relatedlistgrid.RLInstanceInfo['{$functionName}']  = '{$RLInstance}';
+relatedlistgrid.FieldLabels['{$functionName}']  = '{$FieldLabels}';
+relatedlistgrid.RelatedFields['{$functionName}']  = '{$RelatedFields}';
+relatedlistgrid.Tooltips['{$functionName}']  = '{$Tooltips}';
+relatedlistgrid.MapName['{$functionName}'] = '{$mapname}';
+function loadRLGrid{$functionName}() {
+	RLInstance['{$functionName}'] = new tui.Grid({
+		el: document.getElementById('{$functionName}'),
 		treeColumnOptions: {
 			name: 'parentaction',
 			useIcon: false,
@@ -82,18 +60,11 @@ function loadRLGrid{$originmodule}{$targetmodule}() {
 				renderer: {
 					type: RLinkRender
 				},
-				width: 140
 			},
-			{foreach from=$RelatedListWidgetMap.targetmodule.listview item=rlfield name=mdhdr}
+			{foreach from=$Columns item=rlfield name=mdhdr}
 			{
-				header: '{$rlfield.fieldinfo.label}',
-				name: '{$rlfield.fieldinfo.name}',
-				{if !empty($rlfield.sortingType)}
-				sortingType: '{$rlfield.sortingType}',
-				{/if}
-				{if !empty($rlfield.editor)}
-				editor: {$rlfield.editor},
-				{/if}
+				header: '{$rlfield.label}',
+				name: '{$rlfield.name}',
 				whiteSpace: 'normal',
 				renderer: {
 					type: RLinkRender
@@ -127,7 +98,7 @@ function loadRLGrid{$originmodule}{$targetmodule}() {
 	});
 
 	tui.Grid.applyTheme('striped');
-	RLInstance['rlgrid{$originmodule}-{$targetmodule}'].on('editingFinish', relatedlistgrid.inlineedit);
+	RLInstance['{$functionName}'].on('editingFinish', relatedlistgrid.inlineedit);
 }
-loadRLGrid{$originmodule}{$targetmodule}();
+loadRLGrid{$functionName}();
 </script>

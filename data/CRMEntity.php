@@ -27,6 +27,7 @@ class CRMEntity {
 	public $crmentityTable = 'vtiger_crmentity';
 	public $crmentityTableAlias;
 	public $denormalized = false;
+	public $specialModules = array('com_vtiger_workflow');
 	protected static $methods = array();
 	protected static $dbvalues = array();
 	protected static $todvalues = array();
@@ -1060,7 +1061,10 @@ class CRMEntity {
 		foreach ($this->tab_name_index as $table_name => $index) {
 			$result[$table_name] = $adb->pquery("select * from $table_name where $index=?", array($record));
 		}
-		$isRecordDeleted = $adb->query_result($result[$this->crmentityTable], 0, 'deleted');
+		$isRecordDeleted = 0;
+		if (!in_array($module, $this->specialModules)) {
+			$isRecordDeleted = $adb->query_result($result[$this->crmentityTable], 0, 'deleted');
+		}
 		if ($isRecordDeleted !== 0 && $isRecordDeleted !== '0' && !$deleted) {
 			if ($throwexception) {
 				throw new InvalidArgumentException($app_strings['LBL_RECORD_DELETE']." $module: $record", 1);
@@ -1168,7 +1172,9 @@ class CRMEntity {
 
 		$this->column_fields['record_id'] = $record;
 		$this->column_fields['record_module'] = $module;
-		$this->column_fields['cbuuid'] = $adb->query_result($result[$this->crmentityTable], 0, 'cbuuid');
+		if (!in_array($module, $this->specialModules)) {
+			$this->column_fields['cbuuid'] = $adb->query_result($result[$this->crmentityTable], 0, 'cbuuid');
+		}
 	}
 
 	/** Function to retrieve the information of the given recordidS
@@ -1362,10 +1368,6 @@ class CRMEntity {
 				$mdmap = $cbMap->$mtype();
 				$targetmodule = $mdmap['targetmodule'];
 				$targetfield = $mdmap['linkfields']['targetfield'];
-				if ($mtype == 'RelatedListBlock') {
-					$targetmodule = $module_name;
-					$targetfield = coreBOS_Session::get('RLFieldName');
-				}
 				if ($targetmodule == $module_name) {
 					if ($targetfield != '') {
 						$MDCurrentRecord = coreBOS_Session::get('MDCurrentRecord');

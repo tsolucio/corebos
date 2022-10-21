@@ -122,6 +122,18 @@ class BusinessActions extends CRMEntity {
 	// Ignore module while selection
 	const IGNORE_MODULE = -1;
 
+	public function __construct() {
+		global $adb;
+		$cnmsg = $adb->getColumnNames('vtiger_businessactions');
+		if (!in_array('error_msg', $cnmsg)) {
+			$adb->query("ALTER TABLE vtiger_businessactions ADD error_msg varchar(200) DEFAULT '' NOT NULL");
+		}
+		if (!in_array('success_msg', $cnmsg)) {
+			$adb->query("ALTER TABLE vtiger_businessactions ADD success_msg varchar(200) DEFAULT '' NOT NULL");
+		}
+		parent::__construct();
+	}
+
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
@@ -142,6 +154,8 @@ class BusinessActions extends CRMEntity {
 		$link_obj->handler_class  = $valuemap['handler_class'];
 		$link_obj->handler        = $valuemap['handler'];
 		$link_obj->onlyonmymodule = $valuemap['onlyonmymodule'];
+		$link_obj->errormsg = isset($valuemap['error_msg']) ? $valuemap['error_msg'] : '';
+		$link_obj->successmsg = isset($valuemap['success_msg']) ? $valuemap['success_msg'] : '';
 		return $link_obj;
 	}
 
@@ -211,7 +225,7 @@ class BusinessActions extends CRMEntity {
 			}
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
-		$query = 'SELECT ba.businessactionsid, ba.elementtype_action,ba.linklabel,ba.linkurl,ba.linkicon,ba.sequence,ba.handler_path,ba.handler_class,ba.handler,ba.onlyonmymodule,ba.brmap,ba.mandatory
+		$query = 'SELECT  ba.*
 			FROM vtiger_businessactions as ba INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=ba.businessactionsid
 			WHERE vtiger_crmentity.deleted=0 AND ba.active=1 '.$module_sql.$type_sql;
 

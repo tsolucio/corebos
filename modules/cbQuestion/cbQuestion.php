@@ -173,7 +173,7 @@ class cbQuestion extends CRMEntity {
 		}
 		include_once 'include/Webservices/Query.php';
 		include_once 'include/Webservices/VtigerModuleOperation.php';
-		if ($q->column_fields['sqlquery']=='1') {
+		if ($q->column_fields['querytype']=='SQL') {
 			$mod = CRMEntity::getInstance($q->column_fields['qmodule']);
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.$mod->table_name.' ';
 			if (!empty($q->column_fields['qcondition'])) {
@@ -415,7 +415,7 @@ class cbQuestion extends CRMEntity {
 			);
 		} else {
 			include_once 'include/Webservices/Query.php';
-			if ($q->column_fields['sqlquery']=='0') {
+			if ($q->column_fields['querytype']=='SQL') {
 				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
 				$handlerPath = $webserviceObject->getHandlerPath();
 				$handlerClass = $webserviceObject->getHandlerClass();

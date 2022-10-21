@@ -96,6 +96,6 @@ class DirectoryRecord extends Sabre\DAV\Collection {
 	}
 
 	public function getName() {
-		return utf8_encode(html_entity_decode($this->foldername));
+		return mb_convert_encoding(html_entity_decode($this->foldername), "UTF-8", "ISO-8859-1");
 	}
 }

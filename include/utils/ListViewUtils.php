@@ -3420,7 +3420,7 @@ function getFirstModule($module, $fieldname) {
 }
 
 /**
- * this function accepts a module name and a related modulen ame and returns the first uitype 10 field that relates them
+ * this function accepts a module name and a related module name and returns the first uitype 10 field that relates them
  * @param string module name
  * @param string related module
  * @return string the first uitype 10 field that relates the two modules or an empty string
