@@ -7,6 +7,7 @@ var relatedlistgrid = {
 	RelatedFields: [],
 	Tooltips: [],
 	MapName: [],
+	Wizard: [],
 
 	delete: (Grid, module, recordid, fieldname) => {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
@@ -152,8 +153,8 @@ var relatedlistgrid = {
 
 	loadedTooltips: [],
 
-	Wziard: (grid, id) => {
-		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+wizardid[grid];
+	Wziard: (grid, id, mapid) => {
+		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+mapid;
 		relatedlistgrid.Request(url, 'post', {
 			grid: grid,
 			recordid: id,
@@ -178,7 +179,7 @@ var relatedlistgrid = {
 		}
 		const response = await fetch(url, options);
 		return response.text();
-	}
+	},
 
 	findRelatedField: (module, grid) => {
 		const modules = JSON.parse(relatedlistgrid.RelatedFields[grid]);
@@ -272,9 +273,10 @@ class RLActionRender {
 		}
 		el = document.createElement('span');
 		let actions = '<div class="slds-button-group" role="group">';
-		if (wizardid[`rlgrid${props.grid.el.id}`] !== undefined && parent_module != '') {
+		let wizard = JSON.parse(relatedlistgrid.Wizard[`${props.grid.el.id}`]);
+		if (wizard[parent_module] !== undefined && wizard[parent_module] != '') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="relatedlistgrid.Wziard('rlgrid${props.grid.el.id}', ${recordid});">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="relatedlistgrid.Wziard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module]});">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
 				</svg>
