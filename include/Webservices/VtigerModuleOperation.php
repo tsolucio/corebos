@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+require_once 'include/Webservices/GetExtendedQuery.php';
 
 class VtigerModuleOperation extends WebserviceEntityOperation {
 	protected $tabId;
