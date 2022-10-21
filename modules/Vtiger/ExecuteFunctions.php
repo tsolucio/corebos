@@ -17,6 +17,7 @@
  *************************************************************************************************/
 require_once 'include/utils/utils.php';
 include_once 'vtlib/Vtiger/Link.php';
+require_once 'include/ListView/ListViewJSON.php';
 global $adb, $log, $current_user;
 
 $functiontocall = vtlib_purify($_REQUEST['functiontocall']);
@@ -642,6 +643,55 @@ switch ($functiontocall) {
 		$ret = array(
 			'fields' => $fieldInfo,
 		);
+		break;
+	case 'clickHouse':
+		include_once 'include/integrations/clickhouse/clickhouse.php';
+		$clickHouse = new corebos_clickhouse();
+		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'addUpdateTable') {
+			$ws_name = $_REQUEST['ws_name'];
+			$table_name = $_REQUEST['table_name'];
+			$access = $_REQUEST['access'];
+			$create = $_REQUEST['create'];
+			$read = $_REQUEST['read'];
+			$write = $_REQUEST['write'];
+			$old_ws_name = $_REQUEST['old_ws_name'];
+			$old_table_name = $_REQUEST['old_table_name'];
+			$res = $clickHouse->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name, $old_table_name);
+			if ($res) {
+				$success = true;
+			} else {
+				$success = false;
+			}
+			$ret = array(
+				'success' => $success,
+			);
+		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
+			$grid = new GridListView('Utilities');
+			$q = 'select * from vtiger_ws_clickhousetables';
+			$field_lists = array(
+				'id' =>  array('vtiger_ws_clickhousetables'=>'id'),
+				'ws_name' => array('vtiger_ws_clickhousetables'=>'ws_name'),
+				'table_name' =>  array('vtiger_ws_clickhousetables'=>'table_name') ,
+				'access' =>  array('vtiger_ws_clickhousetables'=>'access'),
+				'create' =>  array('vtiger_ws_clickhousetables'=>'create'),
+				'read' =>  array('vtiger_ws_clickhousetables'=>'read'),
+				'write' =>  array('vtiger_ws_clickhousetables'=>'write'),
+				'delete' =>  array('vtiger_ws_clickhousetables'=>'delete'),
+			);
+			 $ret =  $grid->gridTableBasedEntries($q, $field_lists, 'vtiger_ws_clickhousetables');
+		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
+			$table_name = $_REQUEST['table_name'];
+			$ws_name = $_REQUEST['ws_name'];
+			$res = $clickHouse->deleteTable($table_name, $ws_name);
+			if ($res) {
+				$success = true;
+			} else {
+				$success = false;
+			}
+			$ret = array(
+				'success' => $success,
+			);
+		}
 		break;
 	default:
 		$ret = '';
