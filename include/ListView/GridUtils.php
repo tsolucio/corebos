@@ -627,7 +627,7 @@ function getRelatedListGridResponse($map) {
 	$modules = array();
 	foreach ($map['modules'] as $module) {
 		$index = array_search($module, $map['modules']);
-		if($index !== false && $index < count($map['modules'])-1) {
+		if ($index !== false && $index < count($map['modules'])-1) {
 			$next = $map['modules'][$index+1];
 		};
 		if (!isset($module['relatedfield'])) {
@@ -644,7 +644,7 @@ function getRelatedListGridResponse($map) {
 	$focus = CRMEntity::getInstance($_REQUEST['currentmodule']);
 	$focus->retrieve_entity_info($_REQUEST['pid'], $_REQUEST['currentmodule']);
 	$focus->column_fields['id'] = $_REQUEST['pid'];
-	$data = TreeView($focus->column_fields, $modules, 0, $map);
+	$data = TreeView($focus->column_fields, $modules, $map, 0);
 	return json_encode(
 		array(
 			'data' => array(
@@ -659,7 +659,7 @@ function getRelatedListGridResponse($map) {
 	);
 }
 
-function TreeView($element, $modules, $i = 0, $map) {
+function TreeView($element, $modules, $map, $i = 0) {
 	global $adb;
 	$tree = array();
 	$cn = count($modules);
@@ -682,7 +682,7 @@ function TreeView($element, $modules, $i = 0, $map) {
 			while ($row = $adb->fetch_array($rs)) {
 				$id = $row[$entity['entityidfield']];
 				$row['id'] = $id;
-				$children = TreeView($row, $modules, $i, $map);
+				$children = TreeView($row, $modules, $map, $i);
 				if (!empty($children)) {
 					$row['_children'] = $children;
 				}
