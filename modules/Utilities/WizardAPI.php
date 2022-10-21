@@ -23,6 +23,9 @@ switch ($wizardaction) {
 	case 'MassCreate':
 		echo json_encode($wizard->MassCreate());
 		break;
+	case 'Mapping':
+		echo json_encode($wizard->Mapping());
+		break;
 	case 'Delete':
 	case 'Session':
 		echo json_encode($wizard->HandleRequest());

@@ -25,10 +25,16 @@
 	</linkfields>
 	<modules>
 		<module>
-			<originmodule>Messages</originmodule>
+			<name>Messages</name>
+			<wizard>mapid</wizard>
+			<relatedfield></relatedfield>
+			<tooltip>
+				<fields></fields>
+				...
+			</tooltip>
 		</module>
 		<module>
-			<targetmodule>Assets</targetmodule>
+			<name>Assets</name>
 			<listview>
 				<fields>
 					<field>
@@ -84,61 +90,66 @@ class RelatedListBlock extends processcbMap {
 		}
 		$this->mapping_arr['title'] = (string)$xml->title;
 		$this->mapping_arr['linkfields']['targetfield'] = (string)$xml->linkfields->targetfield;
-		$originmodule = $xml->modules->module[0];
-		$targetmodule = $xml->modules->module[1];
-		$this->mapping_arr['originmodule']['name'] = (string)$originmodule->originmodule;
-		$this->mapping_arr['targetmodule']['name'] = (string)$targetmodule->targetmodule;
-		$this->detailModule = $this->mapping_arr['targetmodule']['name'];
-		foreach ($targetmodule->listview->fields as $fields) {
-			$this->FormatFields($fields, 'targetmodule', 'listview');
-		}
-		if (isset($targetmodule->editview)) {
-			foreach ($targetmodule->editview->fields as $fields) {
-				$this->FormatFields($fields, 'targetmodule', 'editview');
+		foreach ((array)$xml->modules as $module) {
+			$idx = 0;
+			foreach ($module as $key) {
+				$this->mapping_arr['modules'][$idx] = (array)$key;
+				if (isset($key->tooltip)) {
+					$this->mapping_arr['modules'][$idx]['tooltip'] = (array)$key->tooltip;
+				}
+				if (isset($key->listview)) {
+					$this->detailModule = (string)$key->name;
+					$this->mapping_arr['modules'][$idx]['listview'] = $this->FormatFields((array)$key->listview->fields, 'listview');
+				}
+				if (isset($key->editview)) {
+					$this->detailModule = (string)$key->name;
+					$this->mapping_arr['modules'][$idx]['editview'] = $this->FormatFields((array)$key->editview->fields, 'editview');
+				}
+				$idx++;
 			}
-		}
-		if (isset($originmodule->tooltip)) {
-			$this->mapping_arr['tooltip'] = (array)$originmodule->tooltip->fields;
 		}
 		return $this->mapping_arr;
 	}
 
-	public function FormatFields($fields, $type, $mode) {
-		foreach ($fields as $v) {
-			$fieldtype = isset($v->fieldtype) ? (string)$v->fieldtype : '';
-			$fieldname = isset($v->fieldname) ? (string)$v->fieldname : '';
-			$fieldinfo = array();
-			if (!empty($fieldname)) {
-				switch (strtolower($fieldtype)) {
-					case 'corebos':
-						$fieldinfo = $this->getFieldInfo($fieldname);
-						break;
-					case 'corebos.related':
-						$fieldinfo = $this->getRelatedFieldInfo($fieldname);
-						break;
-					case 'computed':
-						$fieldinfo['name'] = $fieldname;
-						$fieldinfo['label'] = isset($v->fieldlabel) ? (string)$v->fieldlabel : '';
-						$fieldinfo['uitype'] = 'computed';
-						break;
+	public function FormatFields($fields, $mode) {
+		$fldsInfo = array();
+		foreach ($fields as $key) {
+			foreach ($key as $v) {
+				$fieldtype = isset($v->fieldtype) ? (string)$v->fieldtype : '';
+				$fieldname = isset($v->fieldname) ? (string)$v->fieldname : '';
+				$fieldinfo = array();
+				if (!empty($fieldname)) {
+					switch (strtolower($fieldtype)) {
+						case 'corebos':
+							$fieldinfo = $this->getFieldInfo($fieldname);
+							break;
+						case 'corebos.related':
+							$fieldinfo = $this->getRelatedFieldInfo($fieldname);
+							break;
+						case 'computed':
+							$fieldinfo['name'] = $fieldname;
+							$fieldinfo['label'] = isset($v->fieldlabel) ? (string)$v->fieldlabel : '';
+							$fieldinfo['uitype'] = 'computed';
+							break;
+					}
+				}
+				if ($mode == 'editview') {
+					$fldsInfo[] = $fieldinfo['fieldid'];
+				} else {
+					$fldsInfo[] = array(
+						'fieldtype' => $fieldtype,
+						'fieldinfo' => $fieldinfo,
+						'editable' => isset($v->editable) ? (string)$v->editable : '',
+						'mandatory' => isset($v->mandatory) ? (string)$v->mandatory : '',
+						'hidden' => isset($v->hidden) ? (string)$v->hidden : '0',
+						'layout' => isset($v->layout) ? (string)$v->layout : '',
+						'sortable' => !empty($v->sortable),
+						'sortingType' => isset($v->sortingType) ? (string)$v->sortingType : '',
+					);
 				}
 			}
-			if ($mode == 'editview') {
-				$this->mapping_arr[$type][$mode][] = $fieldinfo['fieldid'];
-			} else {
-				$this->mapping_arr[$type][$mode][] = array(
-					'fieldtype' => $fieldtype,
-					'fieldinfo' => $fieldinfo,
-					'editable' => isset($v->editable) ? (string)$v->editable : '',
-					'mandatory' => isset($v->mandatory) ? (string)$v->mandatory : '',
-					'hidden' => isset($v->hidden) ? (string)$v->hidden : '0',
-					'layout' => isset($v->layout) ? (string)$v->layout : '',
-					'editor' => !empty($v->editable) ? json_encode(gridGetEditor($this->detailModule, $fieldinfo['name'], $fieldinfo['uitype'])) : '',
-					'sortable' => !empty($v->sortable),
-					'sortingType' => isset($v->sortingType) ? (string)$v->sortingType : '',
-				);
-			}
 		}
+		return $fldsInfo;
 	}
 
 	public function getFieldInfo($fieldname) {

@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-if (typeof(Utilities) == 'undefined') {
+if (typeof (Utilities) == 'undefined') {
 
 	/*
 	 * Namespaced javascript class for Utilities
@@ -65,28 +65,28 @@ if (typeof(Utilities) == 'undefined') {
 			// for Incoming Mail Server
 			if (form.ic_mail_server_type.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-server-type').addClass('slds-has-error');
-				jQuery('#form-error-ic-server-type').append('<span>'+Utilities.i18n('JSLBL_Choose_Server_Type')+'</span>');
+				jQuery('#form-error-ic-server-type').append('<span>' + Utilities.i18n('JSLBL_Choose_Server_Type') + '</span>');
 				jQuery('#form-error-ic-server-type').show();
 				return false;
 			}
 
 			if (form.ic_mail_server_name.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-servername').addClass('slds-has-error');
-				jQuery('#form-error-ic-server-name').append('<span>'+Utilities.i18n('JSLBL_SERVERNAME_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-ic-server-name').append('<span>' + Utilities.i18n('JSLBL_SERVERNAME_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-ic-server-name').show();
 				return false;
 			}
 
 			if (form.ic_mail_server_username.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-username').addClass('slds-has-error');
-				jQuery('#form-error-ic-server-username').append('<span>'+Utilities.i18n('JSLBL_USERNAME_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-ic-server-username').append('<span>' + Utilities.i18n('JSLBL_USERNAME_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-ic-server-username').show();
 				return false;
 			}
 
 			if (form.ic_mail_server_password.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-password').addClass('slds-has-error');
-				jQuery('#form-error-ic-server-password').append('<span>'+Utilities.i18n('JSLBL_PASSWORD_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-ic-server-password').append('<span>' + Utilities.i18n('JSLBL_PASSWORD_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-ic-server-password').show();
 				return false;
 			}
@@ -94,21 +94,21 @@ if (typeof(Utilities) == 'undefined') {
 			// for Outgoing Mail Server
 			if (form.og_mail_server_name.value == '' && form.og_mail_server_active.checked) {
 				jQuery('#og-div-server-name').addClass('slds-has-error');
-				jQuery('#form-error-og-server-name').append('<span>'+Utilities.i18n('JSLBL_SERVERNAME_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-og-server-name').append('<span>' + Utilities.i18n('JSLBL_SERVERNAME_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-og-server-name').show();
 				return false;
 			}
 
 			if (form.og_mail_server_username.value == '' && form.og_mail_server_active.checked) {
 				jQuery('#og-div-server-username').addClass('slds-has-error');
-				jQuery('#form-error-og-server-username').append('<span>'+Utilities.i18n('JSLBL_USERNAME_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-og-server-username').append('<span>' + Utilities.i18n('JSLBL_USERNAME_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-og-server-username').show();
 				return false;
 			}
 
 			if (form.og_mail_server_password.value == '' && form.og_mail_server_active.checked) {
 				jQuery('#ic-div-server-password').addClass('slds-has-error');
-				jQuery('#form-error-og-server-password').append('<span>'+Utilities.i18n('JSLBL_PASSWORD_CANNOT_BE_EMPTY')+'</span>');
+				jQuery('#form-error-og-server-password').append('<span>' + Utilities.i18n('JSLBL_PASSWORD_CANNOT_BE_EMPTY') + '</span>');
 				jQuery('#form-error-og-server-password').show();
 				return false;
 			}
@@ -116,9 +116,9 @@ if (typeof(Utilities) == 'undefined') {
 			Utilities.progress_show(Utilities.i18n('JSLBL_Saving_And_Verifying'), '...');
 			jQuery.ajax({
 				method: 'POST',
-				url: 'index.php?'+Utilities._baseurl() + '&' + jQuery(form).serialize()
+				url: 'index.php?' + Utilities._baseurl() + '&' + jQuery(form).serialize()
 			}).done(function (transport) {
-				var response_obj =  JSON.parse(transport);
+				var response_obj = JSON.parse(transport);
 				if (response_obj.ic_validation_error_status) {
 					jQuery('#ic-validation-success').css('display', 'none');
 					jQuery('#ic-validation-error').css('display', 'block');
@@ -150,11 +150,11 @@ if (typeof(Utilities) == 'undefined') {
 		* Progress indicator handlers.
 		*/
 		progress_show: function (msg, suffix) {
-			if (typeof(suffix) == 'undefined') {
+			if (typeof (suffix) == 'undefined') {
 				suffix = '';
 			}
 			VtigerJS_DialogBox.block();
-			if (typeof(msg) != 'undefined') {
+			if (typeof (msg) != 'undefined') {
 				jQuery('#_progressmsg_').html(msg + suffix.toString());
 			}
 			jQuery('#_progress_').show();
@@ -188,10 +188,10 @@ if (typeof(Utilities) == 'undefined') {
 
 		/* Translation support */
 		i18n: function (key) {
-			if (typeof(Utilitiesi18nInfo) != 'undefined') {
+			if (typeof (Utilitiesi18nInfo) != 'undefined') {
 				return Utilitiesi18nInfo[key];
 			}
-			if (typeof(alert_arr) != 'undefined' && alert_arr[key]) {
+			if (typeof (alert_arr) != 'undefined' && alert_arr[key]) {
 				return alert_arr[key];
 			}
 			return key;
@@ -264,4 +264,324 @@ if (typeof(Utilities) == 'undefined') {
 			jQuery('#port_required_message').hide();
 		}
 	};
+}
+
+
+
+var Grid = tui.Grid;
+var gridInstance = {};
+const defaultURL = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions';
+
+
+function loadTUIGridData() {
+	gridInstance = new Grid({
+		el: document.getElementById('chgrid'),
+		columns: [
+			{
+				name: 'table_name',
+				header: mod_alert_arr.LBL_WS_NAME,
+				sortingType: 'desc',
+				editor: 'text',
+				sortable: true,
+				onAfterChange(ev) {
+					const idx = gridInstance.getIndexOfRow(ev.rowKey);
+					updateFieldData(ev, idx);
+				},
+			},
+			{
+				name: 'ws_name',
+				header: mod_alert_arr.LBL_TABLE_NAME,
+				sortingType: 'desc',
+				editor: 'text',
+				sortable: true,
+				onAfterChange(ev) {
+					const idx = gridInstance.getIndexOfRow(ev.rowKey);
+					updateFieldData(ev, idx);
+				},
+			},
+			{
+				name: 'access',
+				header: mod_alert_arr.LBL_ACCESS,
+				whiteSpace: 'normal',
+				sortingType: 'desc',
+				renderer: {
+					type: CheckboxWithActionRender,
+				}
+			},
+			{
+				name: 'create',
+				header: mod_alert_arr.LBL_CREATE,
+				whiteSpace: 'normal',
+				sortingType: 'desc',
+				renderer: {
+					type: CheckboxWithActionRender,
+				}
+			},
+			{
+				name: 'read',
+				header: mod_alert_arr.LBL_READ,
+				whiteSpace: 'normal',
+				sortingType: 'desc',
+				renderer: {
+					type: CheckboxWithActionRender,
+				}
+			},
+			{
+				name: 'write',
+				header: mod_alert_arr.LBL_WRITE,
+				whiteSpace: 'normal',
+				sortingType: 'desc',
+
+				renderer: {
+					type: CheckboxWithActionRender,
+				}
+			},
+			{
+				name: 'action',
+				header: mod_alert_arr.LBL_ACTION,
+				whiteSpace: 'normal',
+				sortingType: 'desc',
+				sortable: false,
+				renderer: {
+					type: DeleteButtonRender,
+				}
+			},
+		],
+		data: {
+			api: {
+				readData: {
+					url: `${defaultURL}&functiontocall=clickHouse&method=getTables`,
+					method: 'GET'
+				}
+			}
+		},
+		useClientSort: false,
+		rowHeight: 'auto',
+		bodyHeight: 500,
+		scrollX: false,
+		scrollY: false,
+		header: {
+			align: 'left',
+			valign: 'top',
+		},
+	});
+	tui.Grid.applyTheme('striped');
+}
+
+
+
+function addChRow() {
+	const total_row = gridInstance.getRowCount();
+	const lastrowwsname = gridInstance.getValue(total_row - 1, 'ws_name');
+	const lastrowtablename = gridInstance.getValue(total_row - 1, 'table_name');
+	if (lastrowwsname === '' || lastrowtablename === '') {
+		return false;
+	}
+
+	gridInstance.appendRow(
+		{
+			ws_name: '',
+			table_name: '',
+			access: '1',
+			create: '1',
+			read: '1',
+			write: '1',
+			delete: '1',
+		});
+}
+
+function changeChCheckbox(rowId, fieldName) {
+	let newValue = 1;
+	if (document.getElementById('checkbox-' + fieldName + '-' + rowId).checked) {
+		newValue = 1;
+	} else {
+		newValue = 0;
+	}
+
+	const table_name = gridInstance.getValue(rowId, 'table_name');
+	const old_table_name = table_name;
+	const ws_name = fieldName === 'ws_name' ? newValue : gridInstance.getValue(rowId, 'ws_name');
+	const access = fieldName === 'access' ? newValue : gridInstance.getValue(rowId, 'access');
+	const create = fieldName === 'create' ? newValue : gridInstance.getValue(rowId, 'create');
+	const read = fieldName === 'read' ? newValue : gridInstance.getValue(rowId, 'read');
+	const write = fieldName === 'write' ? newValue : gridInstance.getValue(rowId, 'write');
+	const old_ws_name = ws_name;
+
+	data = {
+		table_name,
+		old_table_name,
+		ws_name,
+		old_ws_name,
+		access,
+		create,
+		read,
+		write,
+	};
+	updateAjax(data);
+}
+
+function deleteChRow(rowId) {
+	const table_name = gridInstance.getValue(rowId, 'table_name');
+	const ws_name = gridInstance.getValue(rowId, 'ws_name');
+	gridInstance.removeRow(rowId);
+	//send ajax call to delete table
+	jQuery.ajax({
+		method: 'POST',
+		url: `${defaultURL}&functiontocall=clickHouse&method=deleteTable`,
+		data: { table_name, ws_name }
+	}).then(function (response) {
+		if (response.success) {
+			gridInstance.reloadData();
+		}
+	});
+}
+
+
+function updateFieldData(ev, idx) {
+	const columnChanged = ev.columnName;
+	const oldValue = ev.prevValue;
+	const newValue = ev.value;
+
+	if (columnChanged === 'ws_name') {
+		const search = gridInstance.findRows({
+			ws_name: newValue
+		});
+
+		if (search.length > 1) {
+			gridInstance.setRow(idx,
+				{
+					ws_name: '',
+					table_name: gridInstance.getValue(idx, 'table_name'),
+					access: gridInstance.getValue(idx, 'access'),
+					create: gridInstance.getValue(idx, 'create'),
+					read: gridInstance.getValue(idx, 'read'),
+					write: gridInstance.getValue(idx, 'write'),
+					delete: gridInstance.getValue(idx, 'delete'),
+				}
+			);
+			return false;
+		}
+	}
+
+	const table_name = columnChanged === 'table_name' ? newValue : gridInstance.getValue(idx, 'table_name');
+	const old_table_name = columnChanged === 'table_name' ?  oldValue : table_name;
+	const ws_name = columnChanged === 'ws_name' ? newValue : gridInstance.getValue(idx, 'ws_name');
+	const old_ws_name = columnChanged === 'ws_name' ? oldValue : ws_name;
+	const access = columnChanged === 'access' ? newValue : gridInstance.getValue(idx, 'access');
+	const create = columnChanged === 'create' ? newValue : gridInstance.getValue(idx, 'create');
+	const read = columnChanged === 'read' ? newValue : gridInstance.getValue(idx, 'read');
+	const write = columnChanged === 'write' ? newValue : gridInstance.getValue(idx, 'write');
+	data = {
+		table_name,
+		ws_name,
+		access,
+		create,
+		read,
+		write,
+		old_table_name,
+		old_ws_name,
+
+	};
+	if (table_name !== '' && ws_name !== '' ) {
+		updateAjax(data);
+	}
+}
+
+function updateAjax(data) {
+	jQuery.ajax({
+		method: 'POST',
+		url: `${defaultURL}&functiontocall=clickHouse&method=addUpdateTable`,
+		data: data
+	}).then(function (response) {
+		if (response.success) {
+			gridInstance.reloadData();
+		}
+	});
+}
+
+
+function showChTab(tab) {
+	var hide = '';
+	var show = '';
+	if (tab === 'settings') {
+		hide = 'tables';
+		show = 'settings';
+	} else {
+		hide = 'settings';
+		show = 'tables';
+		loadJS(
+			'index.php?module=Utilities&action=UtilitiesAjax&file=getjslanguage'
+		).then(() => {
+			loadTUIGridData();
+		});
+	}
+	document.getElementById('tab-' + hide).classList.remove('slds-is-active');
+	document.getElementById('tab-' + show).classList.add('slds-is-active');
+
+	document.getElementById('tab-data-' + show).style.visibility = 'visible';
+	document.getElementById('tab-data-' + hide).style.visibility = 'hidden';
+
+	document
+		.getElementById('tab-data-' + show)
+		.classList.remove('slds-is-active');
+	document.getElementById('tab-data-' + show).classList.add('slds-is-active');
+
+	document.getElementById('tab-data-' + show).classList.remove('slds-hide');
+	document.getElementById('tab-data-' + show).classList.add('slds-show');
+	document.getElementById('tab-data-' + hide).classList.remove('slds-show');
+	document.getElementById('tab-data-' + hide).classList.add('slds-hide');
+}
+
+class CheckboxWithActionRender {
+	constructor(props) {
+		let rowKey = props.rowKey;
+		let el = document.createElement('span');
+		let currentFieldName = props.columnInfo.name;
+
+		const ischecked = props.value === '1' ? 'checked = ""' : '';
+		let actions = `
+	  <div class="slds-form-element" style="margin-left: 70px">
+		<div class="slds-form-element__control">
+			<span class="slds-checkbox slds-checkbox_standalone">
+			<input type="checkbox" id="checkbox-${currentFieldName}-${rowKey}" name="label" value="" ${ischecked}   onclick='changeChCheckbox(${rowKey}, "${currentFieldName}")'/>
+			<span class="slds-checkbox_faux"></span>
+			</span>
+		</div>
+		</div>`;
+		el.innerHTML = actions;
+		this.el = el;
+		this.render(props);
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	render(props) {
+		this.el.value = String(props.value);
+	}
+}
+
+class DeleteButtonRender {
+	constructor(props) {
+		let rowKey = props.rowKey;
+		let el = document.createElement('span');
+		let actions = `				
+				<button class="slds-button slds-button_destructive delete" title=""  onclick="deleteChRow(${rowKey})" name="Delete">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use> </svg>
+				`+ mod_alert_arr.LBL_DELETE+`
+				</button>
+				`;
+		el.innerHTML = actions;
+		this.el = el;
+		this.render(props);
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	render(props) {
+		this.el.value = String(props.value);
+	}
 }

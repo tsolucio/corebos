@@ -314,6 +314,7 @@ $mod_strings = array (
 		'LBL_OWNER' => 'Propriétaire',
 		'LBL_MIGRATION' => 'Migration',
 		'LBL_MIGRATION_INFO' => 'Migration depuis une version antérieure',
+		'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Supported File Type .XML only',
 		'LBL_USER_DESCRIPTION' => 'Gestion des collaborateurs ayant un accès CRM',
 		'LBL_ROLE_DESCRIPTION' => 'Gestion des droits verticaux',
 		'LBL_PROFILE_DESCRIPTION' => 'Gestion des droits sur le système',

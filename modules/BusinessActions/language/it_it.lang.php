@@ -41,5 +41,7 @@ $mod_strings = array(
 'Created Time'=>'Tempo Creato',
 'Modified Time'=>'Tempo Modificato',
 'Description'=>'Descrizione',
+'Error Message' => 'Error Message',
+'Success Message' => 'Success Message',
 );
 ?>

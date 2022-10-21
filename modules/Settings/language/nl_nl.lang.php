@@ -350,6 +350,7 @@ $mod_strings = array(
 'LBL_OWNER'=>'Eigenaar',
 'LBL_MIGRATION'=>'Migreer van een vorige versie',
 'LBL_MIGRATION_INFO'=>' - Migreer van een vorige vTiger versie',
+'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Supported File Type .XML only',
 'LBL_USER_DESCRIPTION'=>'Definieer de gebruikers die CRM gebruiken',
 'LBL_ROLE_DESCRIPTION'=>'Definieer de hierarchie van de rollen en voeg gebruikers toe',
 'LBL_PROFILE_DESCRIPTION'=>'Definieer profielen om toegangsrechten te geven per rol',

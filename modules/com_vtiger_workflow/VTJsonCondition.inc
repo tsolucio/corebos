@@ -480,7 +480,7 @@ class VTJsonCondition {
 					$children = array();
 
 					$mod = Vtiger_Module::getInstance($child_setype);
-					$crmEntityTable = CRMEntity::getcrmEntityTableAlias($mod);
+					$crmEntityTable = CRMEntity::getcrmEntityTableAlias($child_setype);
 					$field = Vtiger_Field::getInstance($cond['fieldname'], $mod);
 
 					$r = $adb->query("SELECT {$field->table}.{$mod->basetableid}

@@ -2422,6 +2422,38 @@ $WFExpressionFunctionDefinitons = array(
 		"regex('[a-z]+', msg )",
 	),
 ),
+'array' => array(
+	'name' => 'array(values...)',
+	'desc' => 'This function returns an array with the given values.',
+	'params' => array(
+		array(
+			'name' => 'values',
+			'type' => 'CSV',
+			'optional' => false,
+			'desc' => 'comma-separated list of array values',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"array('value1', 1, 'other')",
+	),
+),
+'flattenarray' => array(
+	'name' => 'flattenarray(array)',
+	'desc' => 'Return a one dimensional array result of squashing a multidimensional array.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'array to flatten',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"flattenarray(executeSQL('select bill_country from vtiger_accountbillads'))",
+	),
+),
 'exists' => array(
 	'name' => 'exists(fieldname, value)',
 	'desc' => 'This function checks if a record with the given value in the given field exists or not.',
@@ -2560,6 +2592,67 @@ $WFExpressionFunctionDefinitons = array(
 		'max(employees, breakpoint)',
 	),
 ),
+'statistics' => array(
+	'name' => 'statistics(function, data, parameters...)',
+	'desc' => 'This function performs a predefined statistical calculation on the given dataset. The current set of supported calculations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>.',
+	'params' => array(
+		array(
+			'name' => 'function',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'calculation name to perform. supported calculations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>',
+		),
+		array(
+			'name' => 'data',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'values to perform the calculation',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'Multiple',
+			'optional' => true,
+			'desc' => 'any other parameters the function may need',
+		),
+	),
+	'categories' => array('Statistics'),
+	'examples' => array(
+		"statistics('median',array(1,3,5,7,9))",
+		"statistics('median',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+		"statistics('firstQuartile',array(98, 90, 70,18,92,92,55,83,45,95,88))",
+		"statistics('harmonicMean',array(40, 60), null, 1)",
+	),
+),
+'frequency' => array(
+	'name' => 'frequency(function, data, parameters...)',
+	'desc' => 'This function performs a predefined frequency calculation on the given dataset. The current set of supported calcuations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>.',
+	'params' => array(
+		array(
+			'name' => 'function',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'calculation name to perform. supported calcuations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>',
+		),
+		array(
+			'name' => 'data',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'values to perform calculation',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'Multiple',
+			'optional' => true,
+			'desc' => 'any other parameters the function may need',
+		),
+	),
+	'categories' => array('Statistics'),
+	'examples' => array(
+		"frequency('frequencies',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+		"frequency('relativeFrequencies',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+		"frequency('frequencies',flattenarray(executeSQL('select bill_country from vtiger_accountbillads')))",
+	),
+),
 'getCurrentConfiguredTaxValues' => array(
 	'name' => 'getCurrentConfiguredTaxValues(taxname)',
 	'desc' => 'This function returns the Current Configured Tax Values.',
@@ -2590,6 +2683,22 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Information'),
 	'examples' => array(
 		"getCurrencyConversionValue('currency_code')"
+	),
+),
+'EUVATValidation' => array(
+	'name' => 'EUVATValidation(vat)',
+	'desc' => 'This function validates VAT for EU countries.',
+	'params' => array(
+		array(
+			'name' => 'vat',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the VAT to validate',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"EUVATValidation('IT16816050114')"
 	),
 ),
 );

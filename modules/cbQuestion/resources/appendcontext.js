@@ -61,7 +61,7 @@ function resetRowId() {
 
 function export_results() {
 	const qtype = document.getElementById('qtype').value;
-	const qsqlqry = (document.getElementById('sqlquery').checked ? '1' : '0');
+	const querytype = document.getElementById('querytype').value;
 	const context_var = document.getElementsByName('context_variable');
 	const context_val = document.getElementsByName('context_value');
 	let context_data = Array();
@@ -89,7 +89,7 @@ function export_results() {
 		'orderby': getSQLOrderBy().substr(9),
 		'groupby': getSQLGroupBy().substr(9),
 		'typeprops': document.getElementById('qprops').value,
-		'sqlquery': qsqlqry,
+		'querytype': querytype,
 		'condfilterformat': '0',
 		'context_variable': context_data,
 		'issqlwsq_disabled': issqlwsq_disabled,

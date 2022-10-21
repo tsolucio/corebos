@@ -16,10 +16,18 @@
 require_once 'modules/Utilities/showSetOfFieldsWidget.php';
 
 global $adb;
+if (empty($smarty)) {
+	global $theme, $app_strings, $current_language;
+	$smarty = new vtigerCRM_Smarty();
+}
 if (isset($_REQUEST['bmapname'])) {
 	$bmapname = vtlib_purify($_REQUEST['bmapname']);
 } else {
 	$bmapname = $currentModule.'_Wizard';
+}
+$data = array();
+if (isset($_REQUEST['data'])) {
+	$data = json_decode($_REQUEST['data'], true);
 }
 $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
 if ($cbMapid) {
@@ -47,6 +55,9 @@ if ($cbMapid) {
 			$views[$key] = $view;
 		}
 		$smarty->assign('wizardViews', $views);
+		$smarty->assign('isModal', empty($data) ? 0 : true);
+		$smarty->assign('gridInstance', !empty($data) ? $data['grid'] : '');
+		$smarty->assign('RecordID', !empty($data) ? $data['recordid'] : 0);
 	}
 } else {
 	$smarty->assign('showDesert', true);

@@ -237,15 +237,20 @@ class VTExpressionsManager {
 			'AND' => 'AND(condition1, condition2)',
 			'NOT' => 'NOT(condition1)',
 			'regex' => 'regex(pattern, subject)',
+			'array' => 'array(values)',
+			'flattenarray' => 'flattenarray(array)',
 			'exists' => 'exists(fieldname, value)',
 			'existsrelated' => 'existsrelated(relatedmodule, fieldname, value)',
 			'allrelatedare' => 'allrelatedare(relatedmodule, fieldname, value)',
 			'allrelatedarethesame' => 'allrelatedarethesame(relatedmodule, fieldname, value)',
 			'min' => 'min(fieldname)',
 			'max' => 'max(fieldname)',
+			'statistics' => 'statistics(function, data, parameters...)',
+			'frequency' => 'frequency(function, data, parameters...)',
 			'average' => 'average(number,...)',
 			'getCurrentConfiguredTaxValues' => 'getCurrentConfiguredTaxValues(taxname)',
 			'getCurrencyConversionValue' => 'getCurrencyConversionValue(currency_code)',
+			'EUVATValidation' => 'EUVATValidation(vat)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

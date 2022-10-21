@@ -2419,6 +2419,38 @@ $WFExpressionFunctionDefinitons = array(
 		"regex('[a-z]+', msg )",
 	),
 ),
+'array' => array(
+	'name' => 'array(valores...)',
+	'desc' => 'Esta función devuelve un array con los valores dados.',
+	'params' => array(
+		array(
+			'name' => 'valores',
+			'type' => 'CSV',
+			'optional' => false,
+			'desc' => 'lista separada por commas de valores',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"array('value1', 1, 'other')",
+	),
+),
+'flattenarray' => array(
+	'name' => 'flattenarray(array)',
+	'desc' => 'Devuelve una matriz unidimensional al aplastar una matriz multidimensional.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'matriz a aplastar',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"flattenarray(executeSQL('select bill_country from vtiger_accountbillads'))",
+	),
+),
 'exists' => array(
 	'name' => 'exists(fieldname, value)',
 	'desc' => 'Esta función verifica si existe o no un registro con el valor dado en el campo dado.',
@@ -2557,6 +2589,66 @@ $WFExpressionFunctionDefinitons = array(
 		'max(employees, breakpoint)',
 	),
 ),
+'statistics' => array(
+	'name' => 'statistics(function, data, parameters...)',
+	'desc' => 'Esta función realiza un cálculo estadístico predefinido con el conjunto de datos dado. El conjunto actual de cálculos admitidos se puede <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtener aquí</a>.',
+	'params' => array(
+		array(
+			'name' => 'function',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'nombre del cálculo a realizar. los cálculos admitidos se pueden <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtener aquí</a>',
+		),
+		array(
+			'name' => 'data',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'valores para realizar el cálculo',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'Múltiple',
+			'optional' => true,
+			'desc' => 'cualquier otro parámetro que la función pueda necesitar',
+		),
+	),
+	'categories' => array('Statistics'),
+	'examples' => array(
+		"statistics('median',array(1,3,5,7,9))",
+		"statistics('median',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+		"statistics('firstQuartile',array(98, 90, 70,18,92,92,55,83,45,95,88))",
+		"statistics('harmonicMean',array(40, 60), null, 1)",
+	),
+),
+'frequency' => array(
+	'name' => 'frequency(function, data, parameters...)',
+	'desc' => 'Esta función realiza un cálculo de frecuencia predefinida con el conjunto de datos dado. El conjunto actual de cálculos admitidos se puede <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtener aquí</a>.',
+	'params' => array(
+		array(
+			'name' => 'function',
+			'type' => 'Cadena',
+			'optional' => false,
+			'desc' => 'nombre del cálculo a realizar. los cálculos admitidos se pueden <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtener aquí</a>',
+		),
+		array(
+			'name' => 'data',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'valores para realizar el cálculo',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'Múltiple',
+			'optional' => true,
+			'desc' => 'cualquier otro parámetro que la función pueda necesitar',
+		),
+	),
+	'categories' => array('Statistics'),
+	'examples' => array(
+		"frequency('frequencies',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+		"frequency('relativeFrequencies',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+	),
+),
 'getCurrentConfiguredTaxValues' => array(
 	'name' => 'getCurrentConfiguredTaxValues(impuesto)',
 	'desc' => 'Devuelve el valor numérico del impuesto dado.',
@@ -2587,6 +2679,22 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Information'),
 	'examples' => array(
 		"getCurrencyConversionValue('moneda')"
+	),
+),
+'EUVATValidation' => array(
+	'name' => 'EUVATValidation(vat)',
+	'desc' => 'This function validates VAT for EU countries.',
+	'params' => array(
+		array(
+			'name' => 'vat',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the VAT to validate',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"EUVATValidation('IT16816050114')"
 	),
 ),
 );

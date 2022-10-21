@@ -1297,9 +1297,6 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		if (isset($_REQUEST['MDCurrentRecord'])) {
 			coreBOS_Session::set('MDCurrentRecord', $_REQUEST['MDCurrentRecord']);
 		}
-		if (isset($_REQUEST['RLFieldName'])) {
-			coreBOS_Session::set('RLFieldName', $_REQUEST['RLFieldName']);
-		}
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$mtype = $cbMap->column_fields['maptype'];
@@ -1312,10 +1309,13 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			if (!empty($mdmap[$fieldview]) && !empty($mdmap['targetmodule']) && $module==$mdmap['targetmodule']) {
 				$fieldsin = $adb->convert2Sql('and vtiger_field.fieldid IN (' . generateQuestionMarks($mdmap[$fieldview]) . ')', $mdmap[$fieldview]);
 			}
-			if (isset($_REQUEST['RelatedListGridInfo']) && !empty($mdmap['targetmodule']['editview'])) {
-				$rlinfo = json_decode($_REQUEST['RelatedListGridInfo']);
-				if ($rlinfo->module == $mdmap['targetmodule']['name']) {
-					$fieldsin = $adb->convert2Sql('and vtiger_field.fieldid IN (' . generateQuestionMarks($mdmap['targetmodule']['editview']) . ')', $mdmap['targetmodule']['editview']);
+			if (isset($_REQUEST['RelatedListGridInfo']) && $mode == 'edit') {
+				$ev = end($mdmap['modules']);
+				if (isset($ev['editview'])) {
+					$rlinfo = json_decode($_REQUEST['RelatedListGridInfo']);
+					if ($rlinfo->module == $ev['name']) {
+						$fieldsin = $adb->convert2Sql('and vtiger_field.fieldid IN (' . generateQuestionMarks($ev['editview']) . ')', $ev['editview']);
+					}
 				}
 			}
 		}
@@ -2996,7 +2996,7 @@ function isMandatoryField($module, $fieldname) {
 	if ($result && $adb->num_rows($result)>0) {
 		list($tod, $mandatory) = explode('~', $result->fields['typeofdata']);
 	} else {
-		$tod = '';
+		$mandatory = '';
 	}
 	$log->debug('< isMandatoryField');
 	return $mandatory;

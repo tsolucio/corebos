@@ -593,6 +593,7 @@ $app_strings = array(
 	'LBL_RECORDS' => 'Inregistrari',
 	'LBL_SCROLL' => '[Deruleaza pana Sus]',
 	'LBL_EXPAND_COLLAPSE' => 'Expandeaza/Colapseaza',
+	'LBL_COLLAPSE' => 'Colapseaza',
 	'LBL_RCPY_ADDRESS' => 'Copiaza adresa Livrare',
 	'LBL_LCPY_ADDRESS' => 'Copiaza adresa Facturare',
 	'LBL_RECORD_ID' => 'ID Inregistrare',

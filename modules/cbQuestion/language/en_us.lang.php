@@ -111,5 +111,6 @@ $mod_strings = array(
 	'Add variable' => 'Add variable',
 	'Export Results' => 'Export Results',
 	'Value' => 'Value',
+	'querytype' => 'Query Type',
 );
 ?>

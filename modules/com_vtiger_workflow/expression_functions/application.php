@@ -609,4 +609,33 @@ function __cb_getCurrencyConversionValue($arr) {
 	}
 	return $currencyvalue;
 }
+
+function __cb_euvatvalidation($arr) {
+	if (empty($arr)) {
+		return false;
+	}
+	if (extension_loaded('soap')) {
+		ini_set('soap.wsdl_cache_enabled', '0');
+		$prefix = substr($arr[0], 0, 2);
+		$tva = substr($arr[0], 2);
+		$param = array('countryCode' => $prefix, 'vatNumber' => $tva);
+		$soap = new SoapClient('https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl');
+		try {
+			$xml = $soap->checkVat($param);
+		} catch (Exception $e) {
+			return false;
+		}
+		return (($xml->valid)=='1');
+	}
+	return false;
+}
+
+function __cb_array($arr) {
+	return $arr;
+}
+
+function __cb_flattenarray($arr) {
+	global $adb;
+	return $adb->flatten_array($arr);
+}
 ?>

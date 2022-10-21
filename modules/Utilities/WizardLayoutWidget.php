@@ -34,6 +34,7 @@ class Wizard_DetailViewBlock extends DeveloperBlock {
 			$_REQUEST['bmapname'] = $context['bmapname'];
 		}
 		require_once 'modules/Vtiger/WizardView.php';
+		$smarty->assign('isWigdet', true);
 		return $smarty->fetch('Smarty/templates/WizardView.tpl');
 	}
 }

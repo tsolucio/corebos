@@ -601,6 +601,7 @@ $app_strings = array(
 	'LBL_RECORDS' => 'Rekordok',
 	'LBL_SCROLL' => 'Görget',
 	'LBL_EXPAND_COLLAPSE' => 'Kibont/Bezár',
+	'LBL_COLLAPSE' => 'Bezár',
 	'LBL_RCPY_ADDRESS' => 'Szállítási Cím Másolása',
 	'LBL_LCPY_ADDRESS' => 'Számlázási cím Másolása',
 	'LBL_RECORD_ID' => 'Rekord ID',

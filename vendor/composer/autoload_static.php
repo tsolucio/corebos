@@ -125,6 +125,7 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
             'Http\\Client\\Curl\\' => 17,
             'Http\\Client\\' => 12,
             'Http\\Adapter\\Guzzle6\\' => 21,
+            'HiFolks\\Statistics\\' => 19,
         ),
         'G' => 
         array (
@@ -405,6 +406,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'Http\\Adapter\\Guzzle6\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-http/guzzle6-adapter/src',
+        ),
+        'HiFolks\\Statistics\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hi-folks/statistics/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

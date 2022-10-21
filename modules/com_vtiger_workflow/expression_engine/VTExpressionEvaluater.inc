@@ -129,6 +129,8 @@ class VTFieldExpressionEvaluater {
 			'AND' => '__cb_and',
 			'NOT' => '__cb_not',
 			'regex' => '__cb_regex',
+			'array' => '__cb_array',
+			'flattenarray' => '__cb_flattenarray',
 			'exists' => '__cb_exists',
 			'existsrelated' => '__cb_existsrelated',
 			'allrelatedare' => '__cb_allrelatedare',
@@ -137,10 +139,13 @@ class VTFieldExpressionEvaluater {
 			'number_format' => '__cb_number_format',
 			'min' => '__cb_min',
 			'max' => '__cb_max',
+			'statistics' => '__cb_statistics',
+			'frequency' => '__cb_frequency',
 			'sub_workdays' => '__cb_sub_workdays',
 			'average' => 'cb_average',
 			'getCurrentConfiguredTaxValues' => '__cb_getCurrentConfiguredTaxValues',
 			'getCurrencyConversionValue' => '__cb_getCurrencyConversionValue',
+			'EUVATValidation' => '__cb_euvatvalidation',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',

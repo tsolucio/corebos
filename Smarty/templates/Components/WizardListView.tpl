@@ -75,8 +75,15 @@ function WizardGrid{$formodule}{$step}() {
 		wizard.CheckRows(ev);
 	});
 }
-WizardGrid{$formodule}{$step}();
+if (wizard.isModal && {$step} > 0) {
+	WizardGrid{$formodule}{$step}();
+} else {
+	WizardGrid{$formodule}{$step}();
+}
 window.addEventListener('DOMContentLoaded', () => {
 	wizard.loader('hide');
-});	
+});
+window.addEventListener('onWizardModal', () => {
+	wizard.loader('hide');
+});
 </script>

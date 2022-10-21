@@ -130,6 +130,9 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 			$record = vtws_create($elementType, $element, $user);
 		}
 	} elseif ($action=='update') {
+		if (isset($element['skipUPDATE'])) {
+			return $element;
+		}
 		//search for updatedfields
 		foreach (array_keys($element) as $key) {
 			if (!in_array($key, $fields)) {

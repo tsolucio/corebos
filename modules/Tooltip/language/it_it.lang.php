@@ -9,13 +9,16 @@
  ********************************************************************************/
 
 $mod_strings = array (
-'Tooltip' => 'ToolTip',
-'LBL_TOOLTIP_MANAGEMENT'=>'Gestione Tooltip',
-'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Gestisci le informazioni dei tooltip da qui',
-'LBL_FIELDS_IN'=>'Campi in',
-'LBL_TOOLTIP_HELP_TEXT'=>'Selezionare i campi che si desidera visualizzare come tooltip',
-'LBL_FIELD'=>'Campo',
-'TooltipInfo' => 'Questa estensione aggiunge informazioni al passaggio del mouse su diversi campi su ciascun modulo e si accede nelle impostazioni di ciascun modulo non direttamente, quindi puoi eliminarlo dal menu.',
-'No Fields Selected' => 'Nessun Campo Selezionato',
+	'Tooltip' => 'ToolTip',
+	'LBL_TOOLTIP_MANAGEMENT'=>'Gestione Tooltip',
+	'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Gestisci le informazioni dei tooltip da qui',
+	'LBL_FIELDS_IN'=>'Campi in',
+	'LBL_TOOLTIP_HELP_TEXT'=>'Selezionare i campi che si desidera visualizzare come tooltip',
+	'LBL_FIELD'=>'Campo',
+	'TooltipInfo' => 'Questa estensione aggiunge informazioni al passaggio del mouse su diversi campi su ciascun modulo e si accede nelle impostazioni di ciascun modulo non direttamente, quindi puoi eliminarlo dal menu.',
+	'No Fields Selected' => 'Nessun Campo Selezionato',
+	'LBL_QUANTITY' => 'Quantity',
+	'LBL_PRODUCT' => 'Product',
+	'LBL_PRICE' => 'Price',
 );
 ?>

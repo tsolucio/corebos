@@ -594,6 +594,7 @@ $app_strings = array (
 'LBL_RECORDS' => 'Registros',
 'LBL_SCROLL' => '[Topo]',
 'LBL_EXPAND_COLLAPSE' => 'Expandir/Recolher',
+'LBL_COLLAPSE' => 'Recolher',
 'LBL_RCPY_ADDRESS' => 'Copiar End. entrega',
 'LBL_LCPY_ADDRESS' => 'Copiar End. faturamento',
 'LBL_RECORD_ID' => 'No. registro',
