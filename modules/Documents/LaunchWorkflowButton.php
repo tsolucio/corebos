@@ -17,16 +17,16 @@
 require_once 'modules/Vtiger/DeveloperWidget.php';
 global $currentModule;
 
-class PushAlongFlowButton {
+class LaunchWorkflowButton {
 	// Get class name of the object that will implement the widget functionality
 	public static function getWidget($name) {
-		return (new PushAlongFlowButton_DetailViewBlock());
+		return (new LaunchWorkflowButton_DetailViewBlock());
 	}
 }
 
-class PushAlongFlowButton_DetailViewBlock extends DeveloperBlock {
+class LaunchWorkflowButton_DetailViewBlock extends DeveloperBlock {
 	// Implement widget functionality
-	protected $widgetName = 'Push Along Flow Button';
+	protected $widgetName = 'Launch Workflow Button';
 
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {
@@ -50,11 +50,11 @@ class PushAlongFlowButton_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('workflow_id', $workflow_id);
 		$smarty->assign('slds_class', $slds_class);
 		$smarty->assign('link_label', getTranslatedString($link_label, 'Documents'));
-		return $smarty->fetch('modules/Documents/PushAlongFlowButton.tpl');
+		return $smarty->fetch('modules/Documents/LaunchWorkflowButton.tpl');
 	}
 }
 
 if (isset($_REQUEST['action']) && $_REQUEST['action']==$currentModule.'Ajax') {
-	$smq = new PushAlongFlowButton_DetailViewBlock();
+	$smq = new LaunchWorkflowButton_DetailViewBlock();
 	echo $smq->process($_REQUEST);
 }
