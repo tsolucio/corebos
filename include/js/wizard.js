@@ -35,12 +35,13 @@ class WizardComponent {
 		this.WizardGoBack = [];
 		this.IsDuplicatedFromProduct = 0;
 		this.Operation = '';
+		this.ProceedToNextStep = true;
 		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI';
 	}
 
 	Init(instance = '') {
 		this.Events(instance);
-		if (this.isModal) {
+		if (this.isModal && this.ProceedToNextStep) {
 			this.el('global-modal-container__title').innerHTML = this.el('wizard-title').innerHTML;
 			this.el('wizard-title').innerHTML = '';
 			const prc = this.Next('');

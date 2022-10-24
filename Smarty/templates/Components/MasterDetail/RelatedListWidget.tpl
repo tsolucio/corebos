@@ -46,6 +46,7 @@ relatedlistgrid.RelatedFields['{$functionName}']  = '{$RelatedFields}';
 relatedlistgrid.Tooltips['{$functionName}']  = '{$Tooltips}';
 relatedlistgrid.MapName['{$functionName}'] = '{$mapname}';
 relatedlistgrid.Wizard['{$functionName}'] = '{$Wizard}';
+relatedlistgrid.NextStep['{$functionName}'] = '{$NextStep}';
 function loadRLGrid{$functionName}() {
 	RLInstance['{$functionName}'] = new tui.Grid({
 		el: document.getElementById('{$functionName}'),

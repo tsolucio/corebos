@@ -27,11 +27,16 @@
 				}, 200);
 			});
 		});
-		window.addEventListener('onWizardModal', () => {
+		window.addEventListener('onWizardModal', (e) => {
+			wizard.ProceedToNextStep = e.detail.ProceedToNextStep;
 			wizard.DeleteSession().then(function() {
 				wizard.Init(wizard);
+				let hideStep = 1;
+				if (e.detail.ProceedToNextStep) {
+					hideStep = 0;
+				}
 				setTimeout(function() {
-					wizard.Hide(1);
+					wizard.Hide(hideStep);
 				}, 400);
 			});
 		});
