@@ -34,6 +34,19 @@ if ((substr($query_string, 0, 5)=='tag::') || (substr($query_string, 0, 3)=='#::
 $fieldtype = '';
 if (strpos($query_string, '::')) {
 	$resttype = substr($query_string, 0, strpos($query_string, '::'));
+	// you can add fieldtype aliases here
+	switch ($resttype) {
+		case "$":
+			$resttype = "currency";
+			break;
+		case "site":
+			$resttype = "url";
+			break;
+		case "@":
+			$resttype = "email";
+			break;
+	}
+
 	$fldtypes = array();
 	$rsft = $adb->query('SELECT distinct `fieldtype` FROM `vtiger_ws_fieldtype`');
 	while ($ft = $adb->fetch_array($rsft)) {
