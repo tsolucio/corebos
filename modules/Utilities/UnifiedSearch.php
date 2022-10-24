@@ -129,14 +129,26 @@ if (isset($query_string) && $query_string != '') {
 					$search_msg = $app_strings['LBL_TAG_SEARCH'];
 					$search_msg .= '<b>'.to_html($search_val).'</b>';
 				} else { //This is for Global search
-					$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
+					$where = "";
+					$search_values = [];
+					if(strpos($search_val, "OR")) {
+						$search_values = explode("OR", $search_val);
+						$multiple_where = [];
+						foreach ($search_values as $search_values_key => $search_values_value) {
+							# adding 
+							array_push($multiple_where, "(" . getUnifiedWhere($listquery, $module, $search_values_value, $fieldtype) . ")");
+						}
+						$where = implode("OR", $multiple_where);
+					} else {
+						$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
+					}
 					if (!empty($Apache_Tika_URL) && $module=='Documents') {
 						$where .= ' OR vtiger_documentsearchinfo.text LIKE "%'.formatForSqlLike($search_val).'%"';
 					}
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
 					$search_msg .= '<b>'.htmlentities($search_val, ENT_QUOTES, $default_charset).'</b>';
 				}
-
+				
 				if ($where != '') {
 					$listquery .= ' and ('.$where.')';
 				}
@@ -165,13 +177,13 @@ if (isset($query_string) && $query_string != '') {
 				} else {
 					$start = 1;
 				}
-
+				
 				$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
 				$limitStartRecord = ($navigation_array['start'] - 1) * $list_max_entries_per_page;
-
+				
 				$listquery = $listquery. " LIMIT $limitStartRecord, $list_max_entries_per_page";
 				$list_result = $adb->query($listquery);
-
+				
 				$moduleRecordCount[$module]['recordListRangeMessage'] = getRecordRangeMessage($list_result, $limitStartRecord, $noofrows);
 
 				$info_message='&recordcount='.(isset($_REQUEST['recordcount']) ? $_REQUEST['recordcount'] : 0)
