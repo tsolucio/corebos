@@ -156,11 +156,14 @@ var relatedlistgrid = {
 
 	Wziard: (grid, id, mapid, module) => {
 		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+mapid;
+		ldsModal.show('Wizard', '<div id="cbds-loader" style="height: 200px"></div>', 'large');
+		relatedlistgrid.loader('show');
 		relatedlistgrid.Request(url, 'post', {
 			grid: grid,
 			recordid: id,
 			isModal: true
 		}).then(function(response) {
+			ldsModal.close();
 			ldsModal.show('Wizard', response, 'large');
 			let ProceedToNextStep = JSON.parse(relatedlistgrid.NextStep[grid]);
 			const event = new CustomEvent('onWizardModal', {detail: {
@@ -188,6 +191,20 @@ var relatedlistgrid = {
 	findRelatedField: (module, grid) => {
 		const modules = JSON.parse(relatedlistgrid.RelatedFields[grid]);
 		return modules[module];
+	},
+
+	loader: (type) => {
+		const loaderid = document.getElementById('cbds-loader');
+		if (type == 'show') {
+			const loader = document.createElement('div');
+			loader.classList.add('cbds-loader');
+			loader.id = 'cbds-loader';
+			loaderid.appendChild(loader);
+		} else if (type == 'hide') {
+			if (loaderid) {
+				loaderid.remove();
+			}
+		}
 	},
 };
 
