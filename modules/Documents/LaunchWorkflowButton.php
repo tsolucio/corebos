@@ -44,6 +44,9 @@ class LaunchWorkflowButton_DetailViewBlock extends DeveloperBlock {
 		} elseif ($type == 'decline') {
 			$slds_class = 'slds-button_destructive';
 			$link_label = 'Decline';
+		} else {
+			$slds_class = $type;
+			$link_label = $this->getFromContext('button_label');
 		}
 
 		$smarty->assign('record_id', $record_id);
