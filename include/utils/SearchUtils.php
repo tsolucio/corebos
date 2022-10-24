@@ -921,7 +921,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 			$query = 'SELECT columnname, tablename, fieldname, uitype FROM vtiger_field WHERE tabid=? and vtiger_field.presence in (0,2)';
 			$qparams = array(getTabid($module));
 		} else {
-			$query = 'SELECT columnname, tablename, fieldname, uitype
+			$query = 'SELECT columnname, tablename, fieldname, vtiger_field.uitype
 				FROM vtiger_field
 				LEFT JOIN vtiger_ws_fieldtype ON vtiger_field.uitype=vtiger_ws_fieldtype.uitype
 				WHERE tabid = ? and vtiger_field.presence in (0,2) and fieldtype=?';
@@ -930,7 +930,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 	} else {
 		$profileList = getCurrentUserProfileList();
 		if ($fieldtype=='') {
-			$query = 'SELECT columnname, tablename, fieldname, uitype
+			$query = 'SELECT columnname, tablename, fieldname, vtiger_field.uitype
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
@@ -938,7 +938,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 					.') AND vtiger_def_org_field.visible = 0 and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid';
 			$qparams = array(getTabid($module), $profileList);
 		} else {
-			$query = 'SELECT columnname, tablename, fieldname, uitype
+			$query = 'SELECT columnname, tablename, fieldname, vtiger_field.uitype
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
