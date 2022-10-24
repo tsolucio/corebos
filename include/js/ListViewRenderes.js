@@ -128,7 +128,7 @@ class LinkRender {
 				edit_query_string = ListView.encodeQueryData(edit_query);
 				el.href = `index.php?${edit_query_string}`;
 			} else {
-				let fieldType = props.grid.getValue(rowKey, 'uitype_'+columnName);
+				let fieldType = props.grid.getValue(rowKey, 'uitype_' + columnName);
 				let fieldValue = props.grid.getValue(rowKey, columnName);
 				if (fieldType == '17') {
 					el = document.createElement('a');
@@ -310,7 +310,7 @@ class UIType10Editor {
 }
 
 function CloseUIType10Editor(id, fieldname) {
-	let lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
+	let lastPage = sessionStorage.getItem(gVTModule + '_lastPage');
 	document.getElementById(`popover-${id}-${fieldname}`).remove();
 	ListView.Action = 'inlineedit';
 	ListView.Reload(lastPage);

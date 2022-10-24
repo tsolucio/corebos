@@ -1368,10 +1368,6 @@ class CRMEntity {
 				$mdmap = $cbMap->$mtype();
 				$targetmodule = $mdmap['targetmodule'];
 				$targetfield = $mdmap['linkfields']['targetfield'];
-				if ($mtype == 'RelatedListBlock') {
-					$targetmodule = $module_name;
-					$targetfield = coreBOS_Session::get('RLFieldName');
-				}
 				if ($targetmodule == $module_name) {
 					if ($targetfield != '') {
 						$MDCurrentRecord = coreBOS_Session::get('MDCurrentRecord');

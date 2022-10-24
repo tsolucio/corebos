@@ -134,5 +134,7 @@ $mod_strings = array(
 'accept_charge' => 'Accetto la modifica della licenza e il relativo addebito',
 'LBL_DOCUMENTS_MASSUPLOAD' => 'Caricamento massivo dei documenti',
 'LBL_MASSUPLOAD_DESCRIPTION' => 'Attiva e disattiva il widget di caricamento massivo dei documenti su ciascun modulo.',
+'Approve' => 'Approve',
+'Decline' => 'Decline',
 );
 ?>

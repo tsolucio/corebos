@@ -279,5 +279,11 @@ $mod_strings = array(
 'Assigns the next counter value to any field based on the rules of the record' => 'Assigns the next counter value to any field based on the rules of the record',
 'Number/String' => 'Number/String',
 'CRMID or AutoNumber field value of the record with details to get next increment value' => 'CRMID or AutoNumber field value of the record with details to get next increment value',
+'CBSignPDFDocument' => 'Sign PDF Document',
+'Image Field' => 'Image Field',
+'Which field from Users should be used as a signature?' => 'Which field from Users should be used as a signature?',
+'Coordinates' => 'Coordinates',
+'Coordinate X' => 'Coordinate X',
+'Coordinate Y' => 'Coordinate Y'
 );
 ?>

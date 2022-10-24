@@ -310,6 +310,7 @@ $mod_strings = array (
 	'LBL_OWNER' => 'Proprietario',
 	'LBL_MIGRATION' => 'Assistente di Migrazione',
 	'LBL_MIGRATION_INFO' => '- Migra il database dalla tua versione alla versione più recente',
+	'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Supported File Type .XML only',
 	'LBL_USER_DESCRIPTION' => 'Gestisce gli Utenti che possono accedere al CRM',
 	'LBL_ROLE_DESCRIPTION' => 'Definisce una Gerarchia di Ruoli e la assegna agli Utenti',
 	'LBL_PROFILE_DESCRIPTION' => 'Gestisce l`accesso specifico di un Utente a Ruoli differenti',

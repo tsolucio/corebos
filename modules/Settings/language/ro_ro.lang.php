@@ -318,6 +318,7 @@ $mod_strings = array(
 	'LBL_OWNER' => 'Responsabil Asignat',
 	'LBL_MIGRATION' => 'Ajutor Migrare',
 	'LBL_MIGRATION_INFO' => 'Migrare date CRM existente la ultima versiune ',
+	'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Supported File Type .XML only',
 	'LBL_USER_DESCRIPTION' => 'Administrare utilizatori care pot accesa aplicatia',
 	'LBL_ROLE_DESCRIPTION' => 'Setare ierarhia rolurilor si asignarea lor utilizatorilor',
 	'LBL_PROFILE_DESCRIPTION' => 'Administrare acces specific-modul diferitor Roluri',

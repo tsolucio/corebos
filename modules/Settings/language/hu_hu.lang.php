@@ -317,6 +317,7 @@ $mod_strings = array(
 	'LBL_OWNER' => 'Kijelölt Tulajdonos',
 	'LBL_MIGRATION' => 'Költöztetési varázsló',
 	'LBL_MIGRATION_INFO' => 'Költöztetsd a meglévő vtiger CRM adataidat a legújabb verzióba',
+	'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Supported File Type .XML only',
 	'LBL_USER_DESCRIPTION' => 'Felhasználók beállítása, akiknek van hozzáférése a vtiger CRM-hez',
 	'LBL_ROLE_DESCRIPTION' => 'Állítsd be a munkakörök hierarchiáját és jelöld ki a felhasználókhoz',
 	'LBL_PROFILE_DESCRIPTION' => 'Állítsd be a felhasználó-specifikus modulok hozzáférését a különböző Munkakörökhöz',
