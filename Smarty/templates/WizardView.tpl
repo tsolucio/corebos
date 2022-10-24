@@ -13,7 +13,8 @@
 {else}
 	<script src="include/js/wizard.js"></script>
 	<script type="text/javascript">
-		var wizard = new WizardComponent({$wizardTotal}, '{$formodule}');
+		wizard.steps = {$wizardTotal};
+		wizard.MCModule = '{$formodule}';
 		wizard.GroupByField = '{$GroupBy}';
 		wizard.Operation = '{$wizardOperation}';
 		wizard.isModal = {$isModal};
@@ -21,7 +22,7 @@
 		wizard.RecordID = '{$RecordID}';
 		wizard.DeleteSession().then(function() {
 			window.addEventListener('DOMContentLoaded', () => {
-				wizard.Init(wizard);
+				wizard.Init();
 				setTimeout(function() {
 					wizard.Hide();
 				}, 200);
@@ -30,9 +31,9 @@
 		window.addEventListener('onWizardModal', (e) => {
 			wizard.ProceedToNextStep = e.detail.ProceedToNextStep;
 			wizard.DeleteSession().then(function() {
-				wizard.Init(wizard);
+				wizard.Init();
 				let hideStep = 1;
-				if (e.detail.ProceedToNextStep) {
+				if (!e.detail.ProceedToNextStep) {
 					hideStep = 0;
 				}
 				setTimeout(function() {

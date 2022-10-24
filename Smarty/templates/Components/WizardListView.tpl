@@ -10,6 +10,9 @@ wizard.WizardFilterBy[{$step}] = {$WizardFilterBy|json_encode};
 wizard.WizardValidate[{$step}] = {$WizardValidate};
 wizard.WizardGoBack[{$step}] = {$WizardGoBack};
 function WizardGrid{$formodule}{$step}() {
+	if (wizard.WizardInstance['wzgrid{$step}'] !== undefined)  {
+		wizard.WizardInstance['wzgrid{$step}'].destroy();
+	}
 	wizard.WizardInstance['wzgrid{$step}'] = new tui.Grid({
 		el: document.getElementById('grid-{$step}'),
 		rowHeaders: ['checkbox'],
@@ -75,7 +78,7 @@ function WizardGrid{$formodule}{$step}() {
 		wizard.CheckRows(ev);
 	});
 }
-if (wizard.isModal && {$step} > 0) {
+if (wizard.isModal && {$step} > 0 && wizard.ProceedToNextStep) {
 	WizardGrid{$formodule}{$step}();
 } else {
 	WizardGrid{$formodule}{$step}();
