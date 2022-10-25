@@ -121,6 +121,7 @@ class MasterDetailLayout extends processcbMap {
 			'originfield' => (string)$xml->linkfields->originfield,
 			'targetfield' => (string)$xml->linkfields->targetfield,
 		);
+		$mapping_arr['sortfield'] = (string)$xml->sortfield;
 		$mapping_arr['defaultorder'] = (string)$xml->defaultorder;
 		$mapping_arr['toolbar'] = array(
 			'title' => (string)$xml->toolbar->title,
