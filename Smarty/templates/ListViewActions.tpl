@@ -23,16 +23,28 @@
 		<br/>
 		<input type="hidden" id="{$CUSTOMLINK->linklabel|replace:' ':''}LINKID" value="{$CUSTOMLINK->linkid}">
 		<table style="border:0;width:100%" class="rightMailMerge" id="{$CUSTOMLINK->linklabel}">
-			<tr>
-				<td class="rightMailMergeHeader">
-					<div>
-					<b>{$customlink_label}</b>&nbsp;
-					<img id="detailview_block_{$CUSTOMLINK->linkid}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
-					</div>
-				</td>
-			</tr>
+			{if $CUSTOMLINK->widget_header}
+				<tr>
+					<td class="rightMailMergeHeader">
+						<div>
+						<b>{$customlink_label}</b>&nbsp;
+						<img id="detailview_block_{$CUSTOMLINK->linkid}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
+						</div>
+					</td>
+				</tr>
+			{/if}
+			{if $CUSTOMLINK->widget_width neq ''}
+				{assign var="widget_width" value="width:"|cat:$CUSTOMLINK->widget_width|cat:"px;"}
+			{else}
+				{assign var="widget_width" value=''}
+			{/if}
+			{if $CUSTOMLINK->widget_height neq ''}
+				{assign var="widget_height" value="height:"|cat:$CUSTOMLINK->widget_height|cat:"px;"}
+			{else}
+				{assign var="widget_height" value=''}
+			{/if}
 			<tr style="height:25px">
-				<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK->linkid}"></div></td>
+				<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK->linkid}" style="{$widget_width} {$widget_height}"></div></td>
 			</tr>
 			<script type="text/javascript">
 				vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK->linkid}", "detailview_block_{$CUSTOMLINK->linkid}_indicator");
