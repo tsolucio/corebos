@@ -34,12 +34,12 @@
 				</tr>
 			{/if}
 			{if $CUSTOMLINK->widget_width neq ''}
-				{assign var="widget_width" value="width:"|cat:$CUSTOMLINK->widget_width|cat:"px;"}
+				{assign var="widget_width" value="width:"|cat:$CUSTOMLINK->widget_width|cat:";"}
 			{else}
 				{assign var="widget_width" value=''}
 			{/if}
 			{if $CUSTOMLINK->widget_height neq ''}
-				{assign var="widget_height" value="height:"|cat:$CUSTOMLINK->widget_height|cat:"px;"}
+				{assign var="widget_height" value="height:"|cat:$CUSTOMLINK->widget_height|cat:";"}
 			{else}
 				{assign var="widget_height" value=''}
 			{/if}
