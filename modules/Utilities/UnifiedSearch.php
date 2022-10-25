@@ -57,6 +57,7 @@ if (strpos($query_string, '::')) {
 		$fieldtype = $resttype;
 	}
 }
+if(strpos($query_string, "..") !== false) $query_string = str_replace("$::", "", $query_string);
 $curModule = vtlib_purify($_REQUEST['module']);
 $search_tag = isset($_REQUEST['search_tag']) ? vtlib_purify($_REQUEST['search_tag']) : '';
 
@@ -131,12 +132,11 @@ if (isset($query_string) && $query_string != '') {
 				} else { //This is for Global search
 					$where = "";
 					$search_values = [];
-					if(strpos($search_val, "OR")) {
+					if(strpos($search_val, "OR") !== false) {
 						$search_values = explode("OR", $search_val);
 						$multiple_where = [];
 						foreach ($search_values as $search_values_key => $search_values_value) {
-							# adding 
-							array_push($multiple_where, "(" . getUnifiedWhere($listquery, $module, $search_values_value, $fieldtype) . ")");
+							array_push($multiple_where, "(" . getUnifiedWhere($listquery, $module, trim($search_values_value), $fieldtype) . ")");
 						}
 						$where = implode("OR", $multiple_where);
 					} else {

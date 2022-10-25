@@ -926,6 +926,7 @@ function exclude_keywords_where_builder($table_name, $column_name, $exclude_keyw
  */
 function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 	global $adb, $current_user;
+	$is_range = strpos($search_val, "..") !== false ? true : false;
 	$userprivs = $current_user->getPrivileges();
 
 	// checking if search should be exact or not
@@ -1016,7 +1017,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 			$columnname = 'firstname';
 			$tablename = 'vtiger_contactdetails';
 		}
-
+		
 		//Before form the where condition, check whether the table for the field has been added in the listview query
 		if (false !== strpos($listquery, $tablename)) {
 			if ($where != '') {
@@ -1030,7 +1031,11 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 						where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'.formatForSqlLike($search_val, $formatForSqlLikeFlag).'"' . exclude_keywords_where_builder('i18n', '', $exclude_keywords) . ') OR '
 						.$tablename.'.'.$columnname.' LIKE "'. formatForSqlLike($search_val, $formatForSqlLikeFlag).'")';
 				} else {
-					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."'" . exclude_keywords_where_builder($tablename, $columnname, $exclude_keywords);
+					if($is_range) {
+						$range = explode("..", $search_val);
+						$where .= $tablename.'.'.$columnname." BETWEEN ". $range[0] . " AND " . $range[1];
+					}
+					else $where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."'" . exclude_keywords_where_builder($tablename, $columnname, $exclude_keywords);
 				}
 			}
 		}
