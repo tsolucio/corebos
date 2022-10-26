@@ -230,4 +230,11 @@
 	<classname>addClickHouseTable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Add BusinessAction Widget fields</description>
+	<filename>build/changeSets/2022/addBAWidgetFields.php</filename>
+	<classname>addBAWidgetFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

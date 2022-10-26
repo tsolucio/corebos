@@ -29,6 +29,9 @@ class Vtiger_Link {
 	public $handler_class;
 	public $handler;
 	public $onlyonmymodule = false;
+	public $widget_header;
+	public $widget_width;
+	public $widget_height;
 
 	// Ignore module while selection
 	const IGNORE_MODULE = -1;
@@ -55,6 +58,9 @@ class Vtiger_Link {
 		$this->handler_class  = $valuemap['handler_class'];
 		$this->handler        = $valuemap['handler'];
 		$this->onlyonmymodule = $valuemap['onlyonmymodule'];
+		$this->widget_header = $valuemap['widget_header'];
+		$this->widget_width = $valuemap['widget_width'];
+		$this->widget_height = $valuemap['widget_height'];
 	}
 
 	/**

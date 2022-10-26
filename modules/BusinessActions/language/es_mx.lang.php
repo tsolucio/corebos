@@ -39,5 +39,8 @@ $mod_strings = array(
 'Test' => 'Prueba',
 'Error Message' => 'Mensaje Si Falla',
 'Success Message' => 'Mensaje Si Funciona',
+'Widget Header' => 'Cabecero Componente',
+'Widget Width' => 'Anchura Componente',
+'Widget Height' => 'Altura Componente',
 );
 ?>
