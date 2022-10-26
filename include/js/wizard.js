@@ -112,6 +112,42 @@ class WizardComponent {
 		return true;
 	}
 
+	Finish() {
+		switch (this.Operation) {
+			case 'CREATEPRODUCTCOMPONENTS':
+				if (this.ActiveStep+1 == this.steps) {
+					this.loader('show');
+					const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
+					this.Request(url, 'post', {'masterid': this.RecordID}).then(function(response) {
+						if (response) {
+							ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+							if (wizard.isModal) {
+								RLInstance[wizard.gridInstance].readData(1);
+								ldsModal.close();
+								wizard.ActiveStep = 0;
+								wizard.IsDuplicatedFromProduct = 0;
+								wizard.ProceedToNextStep = true;
+								wizard.CheckedRows = [];
+								wizard.GridData = [];
+								wizard.GroupData = [];
+								wizard.gridInstance = [];
+								wizard.WizardInstance = [];
+							} else {
+								setTimeout(function() {
+									location.reload(true);
+								}, 1000);
+							}
+						} else {
+							ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+						}
+						wizard.loader('hide');
+					});
+				}
+				break;
+			default:
+		}
+	}
+
 	/**
 	 * Check for checked rows in grid
 	 * @param {Object} event
@@ -160,16 +196,21 @@ class WizardComponent {
 	 * Filter rows for specific IDS.
 	 */
 	FilterDataForStep() {
-		const module = wizard.WizardCurrentModule[wizard.ActiveStep];
-		wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].clear();
-		wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams({
-			formodule: module,
-			filterrows: true,
-			step: wizard.ActiveStep
-		});
-		setTimeout(function() {
-			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
-		}, 100);
+		if (this.WizardMode[this.ActiveStep].includes('CREATE')) {
+			return false;
+		}
+		if (wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`] !== undefined) {
+			const module = wizard.WizardCurrentModule[wizard.ActiveStep];
+			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].clear();
+			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams({
+				formodule: module,
+				filterrows: true,
+				step: wizard.ActiveStep
+			});
+			setTimeout(function() {
+				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
+			}, 100);
+		}
 	}
 
 	/**
@@ -257,6 +298,9 @@ class WizardComponent {
 		}
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_FINISH;
+			setTimeout(function () {
+				wizard.el(`btn-next`).setAttribute('onclick', 'wizard.Finish()');
+			}, 200);
 			return false;
 		} else {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_NEXT;
