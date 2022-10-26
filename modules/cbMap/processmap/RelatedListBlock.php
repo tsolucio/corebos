@@ -27,6 +27,7 @@
 		<module>
 			<name>Messages</name>
 			<wizard>mapid</wizard>
+			<nextstep>0 | 1</nextstep>
 			<relatedfield></relatedfield>
 			<tooltip>
 				<fields></fields>

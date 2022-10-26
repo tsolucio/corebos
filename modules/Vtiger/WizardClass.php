@@ -326,6 +326,46 @@ class WizardActions {
 		return false;
 	}
 
+	public function CustomOfferDetail() {
+		require_once 'include/Webservices/Create.php';
+		require_once 'include/Webservices/Revise.php';
+		global $adb, $current_user;
+		$data = json_decode(vtlib_purify($_REQUEST['data']), true);
+		if ($data) {
+			$masterid = isset($data['masterid']) ? $data['masterid'] : false;
+			$records = $this->GetSession();
+			$cnod = $adb->getColumnNames('vtiger_cbofferdetail');
+			if (!$masterid || empty($records) || !in_array('related_product', $cnod) || !in_array('cboffers_relation', $cnod)) {
+				return false;
+			}
+			$productid = array_keys($records[-1]);
+			try {
+				$UsersTabid = vtws_getEntityId('Users');
+				$ProductComponentId = vtws_getEntityId('ProductComponent');
+				$od = vtws_create('cbOfferDetail', array(
+					'related_product' => $productid[0],
+					'cboffers_relation' => $masterid,
+					'assigned_user_id' => $UsersTabid.'x'.$current_user->id
+				), $current_user);
+				foreach ($records as $key => $pcs) {
+					if ($key == -1) {
+						continue;
+					}
+					foreach ($pcs as $pid) {
+						vtws_revise(array(
+							'id' => $ProductComponentId.'x'.$pid,
+							'cbofferdetailrel' => $od['id']
+						), $current_user);
+					}
+				}
+				return true;
+			} catch (Throwable $e) {
+				return false;
+			}
+		}
+		return false;
+	}
+
 	public function DeleteSession() {
 		return coreBOS_Session::delete('DuplicatedRecords');
 	}
@@ -380,19 +420,22 @@ class WizardActions {
 		$ProductsTabid = vtws_getEntityId('Products');
 		$data = json_decode($_REQUEST['data'], true);
 		$fromProduct = $data[0][0];
+		unset($data[0]);
 		$target = array();
-		if (isset($data[1])) {
-			foreach ($data[1] as $id) {
-				$target[] = array(
-					'elementType' => $this->module,
-					'referenceId' => '',
-					'searchon' => '',
-					'element' => array(
-						'frompdo' => $ProductsTabid.'x'.$fromProduct,
-						'topdo' => $ProductsTabid.'x'.$id,
-						'assigned_user_id' => $UsersTabid.'x'.$current_user->id
-					)
-				);
+		if (isset($data)) {
+			foreach ($data as $ids) {
+				foreach ($ids as $id) {
+					$target[] = array(
+						'elementType' => $this->module,
+						'referenceId' => '',
+						'searchon' => '',
+						'element' => array(
+							'frompdo' => $ProductsTabid.'x'.$fromProduct,
+							'topdo' => $ProductsTabid.'x'.$id,
+							'assigned_user_id' => $UsersTabid.'x'.$current_user->id
+						)
+					);
+				}
 			}
 		}
 		return $target;

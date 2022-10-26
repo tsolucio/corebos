@@ -14,10 +14,9 @@
 *************************************************************************************************/
 class WizardComponent {
 
-	constructor(steps, MCModule) {
-		this.Instance = {};
-		this.steps = steps;
-		this.MCModule = MCModule;
+	constructor() {
+		this.steps = 0;
+		this.MCModule = '';
 		this.ActiveStep = 0;
 		this.CheckedRows = [];
 		this.GroupByField = '';
@@ -35,12 +34,13 @@ class WizardComponent {
 		this.WizardGoBack = [];
 		this.IsDuplicatedFromProduct = 0;
 		this.Operation = '';
+		this.ProceedToNextStep = true;
 		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI';
 	}
 
-	Init(instance = '') {
-		this.Events(instance);
-		if (this.isModal) {
+	Init() {
+		this.Events();
+		if (this.isModal && this.ProceedToNextStep) {
 			this.el('global-modal-container__title').innerHTML = this.el('wizard-title').innerHTML;
 			this.el('wizard-title').innerHTML = '';
 			const prc = this.Next('');
@@ -50,28 +50,25 @@ class WizardComponent {
 		}
 	}
 
-	Events(instance = '') {
-		this.ClickEv(instance);
+	Events() {
+		this.ClickEv();
 	}
 
 	/**
 	 * Register all click events in Wizard
 	 */
-	ClickEv(instance = '') {
-		if (instance) {
-			this.Instance = instance;
-			const ids = [
-				'btn-next',
-				'btn-back'
-			];		
-			for (let i in ids) {
-				this.el(ids[i]).addEventListener('click', function(event) {
-					const prc = instance.Next(event);
-					if (prc) {
-						instance.MoveToStep(event);
-					}
-				}, true);
-			}
+	ClickEv() {
+		const ids = [
+			'btn-next',
+			'btn-back'
+		];		
+		for (let i in ids) {
+			this.el(ids[i]).addEventListener('click', function(event) {
+				const prc = wizard.Next(event);
+				if (prc) {
+					wizard.MoveToStep(event);
+				}
+			}, true);
 		}
 	}
 
@@ -113,6 +110,42 @@ class WizardComponent {
 			default:
 		}
 		return true;
+	}
+
+	Finish() {
+		switch (this.Operation) {
+			case 'CREATEPRODUCTCOMPONENTS':
+				if (this.ActiveStep+1 == this.steps) {
+					this.loader('show');
+					const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
+					this.Request(url, 'post', {'masterid': this.RecordID}).then(function(response) {
+						if (response) {
+							ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+							if (wizard.isModal) {
+								RLInstance[wizard.gridInstance].readData(1);
+								ldsModal.close();
+								wizard.ActiveStep = 0;
+								wizard.IsDuplicatedFromProduct = 0;
+								wizard.ProceedToNextStep = true;
+								wizard.CheckedRows = [];
+								wizard.GridData = [];
+								wizard.GroupData = [];
+								wizard.gridInstance = [];
+								wizard.WizardInstance = [];
+							} else {
+								setTimeout(function() {
+									location.reload(true);
+								}, 1000);
+							}
+						} else {
+							ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+						}
+						wizard.loader('hide');
+					});
+				}
+				break;
+			default:
+		}
 	}
 
 	/**
@@ -163,16 +196,21 @@ class WizardComponent {
 	 * Filter rows for specific IDS.
 	 */
 	FilterDataForStep() {
-		const module = wizard.WizardCurrentModule[wizard.ActiveStep];
-		wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].clear();
-		wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams({
-			formodule: module,
-			filterrows: true,
-			step: wizard.ActiveStep
-		});
-		setTimeout(function() {
-			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
-		}, 100);
+		if (this.WizardMode[this.ActiveStep].includes('CREATE')) {
+			return false;
+		}
+		if (wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`] !== undefined) {
+			const module = wizard.WizardCurrentModule[wizard.ActiveStep];
+			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].clear();
+			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams({
+				formodule: module,
+				filterrows: true,
+				step: wizard.ActiveStep
+			});
+			setTimeout(function() {
+				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
+			}, 100);
+		}
 	}
 
 	/**
@@ -260,6 +298,9 @@ class WizardComponent {
 		}
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_FINISH;
+			setTimeout(function () {
+				wizard.el(`btn-next`).setAttribute('onclick', 'wizard.Finish()');
+			}, 200);
 			return false;
 		} else {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_NEXT;
@@ -565,16 +606,10 @@ class WizardComponent {
 			module: this.WizardCurrentModule[s2]
 		}];
 		const url = `${this.url}&wizardaction=Mapping&formodule=${this.MCModule}`;
-		let wz = {};
-		if (this.Instance !== {}) {
-			wz = this.Instance;
-		} else {
-			wz = wizard;
-		}
 		this.Request(url, 'post', ids).then(function(response) {
-			wz.WizardInstance[`wzgrid${wz.ActiveStep}`].clear();
-			wz.WizardInstance[`wzgrid${wz.ActiveStep}`].setPaginationTotalCount(response.data.contents.length);
-			wz.WizardInstance[`wzgrid${wz.ActiveStep}`].resetData(response.data.contents);
+			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].clear();
+			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPaginationTotalCount(response.data.contents.length);
+			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].resetData(response.data.contents);
 		});
 	}
 
@@ -629,22 +664,16 @@ class WizardComponent {
 		}
 		this.loader('show');
 		const url = `${this.url}&wizardaction=MassCreate&formodule=${this.MCModule}&subaction=${this.WizardMode[0]}`;
-		let wz = {};
-		if (this.Instance !== {}) {
-			wz = this.Instance;
-		} else {
-			wz = wizard;
-		}
 		this.Request(url, 'post', filterData).then(function(response) {
 			if (response) {
 				ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
-				if (wz.isModal) {
-					RLInstance[wz.gridInstance].readData(1);
+				if (wizard.isModal) {
+					RLInstance[wizard.gridInstance].readData(1);
 					ldsModal.close();
-					wz.ActiveStep = 0;
-					wz.CheckedRows = [];
-					wz.GridData = [];
-					wz.GroupData = [];
+					wizard.ActiveStep = 0;
+					wizard.CheckedRows = [];
+					wizard.GridData = [];
+					wizard.GroupData = [];
 				} else {
 					setTimeout(function() {
 						location.reload(true);
@@ -653,7 +682,7 @@ class WizardComponent {
 			} else {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 			}
-			wz.loader('hide');
+			wizard.loader('hide');
 		});
 	}
 
@@ -785,3 +814,5 @@ class WizardActions {
 		this.el.value = String(props.value);
 	}
 }
+
+var wizard = new WizardComponent();

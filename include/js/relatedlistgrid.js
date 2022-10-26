@@ -8,6 +8,7 @@ var relatedlistgrid = {
 	Tooltips: [],
 	MapName: [],
 	Wizard: [],
+	NextStep: [],
 
 	delete: (Grid, module, recordid, fieldname) => {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
@@ -153,15 +154,21 @@ var relatedlistgrid = {
 
 	loadedTooltips: [],
 
-	Wziard: (grid, id, mapid) => {
+	Wziard: (grid, id, mapid, module) => {
 		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+mapid;
+		ldsModal.show('Wizard', '<div id="cbds-loader" style="height: 200px"></div>', 'large');
+		relatedlistgrid.loader('show');
 		relatedlistgrid.Request(url, 'post', {
 			grid: grid,
 			recordid: id,
 			isModal: true
 		}).then(function(response) {
+			ldsModal.close();
 			ldsModal.show('Wizard', response, 'large');
-			const event = new Event('onWizardModal');
+			let ProceedToNextStep = JSON.parse(relatedlistgrid.NextStep[grid]);
+			const event = new CustomEvent('onWizardModal', {detail: {
+				'ProceedToNextStep': ProceedToNextStep[module]
+			}});
 			window.dispatchEvent(event);
 		});
 	},
@@ -184,6 +191,20 @@ var relatedlistgrid = {
 	findRelatedField: (module, grid) => {
 		const modules = JSON.parse(relatedlistgrid.RelatedFields[grid]);
 		return modules[module];
+	},
+
+	loader: (type) => {
+		const loaderid = document.getElementById('cbds-loader');
+		if (type == 'show') {
+			const loader = document.createElement('div');
+			loader.classList.add('cbds-loader');
+			loader.id = 'cbds-loader';
+			loaderid.appendChild(loader);
+		} else if (type == 'hide') {
+			if (loaderid) {
+				loaderid.remove();
+			}
+		}
 	},
 };
 
@@ -276,7 +297,7 @@ class RLActionRender {
 		let wizard = JSON.parse(relatedlistgrid.Wizard[`${props.grid.el.id}`]);
 		if (wizard[parent_module] !== undefined && wizard[parent_module] != '') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="relatedlistgrid.Wziard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module]});">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="relatedlistgrid.Wziard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module]}, '${parent_module}');">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
 				</svg>
