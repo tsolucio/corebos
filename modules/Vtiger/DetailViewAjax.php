@@ -18,7 +18,7 @@ if ($ajaxaction == 'DETAILVIEW') {
 	$fieldname = vtlib_purify($_REQUEST['fldName']);
 	$fieldvalue = utf8RawUrlDecode($_REQUEST['fieldValue']);
 	// sanitizing the subject field when it is edited
-	if ($fieldname == "subject") $fieldvalue = htmlspecialchars($fieldvalue, ENT_QUOTES, 'UTF-8');
+	if ($fieldname == "subject") $fieldvalue = vtlib_purify($fieldvalue);
 	if ($crmid != '') {
 		$modObj->retrieve_entity_info($crmid, $currentModule);
 		$modObj->column_fields[$fieldname] = $fieldvalue;

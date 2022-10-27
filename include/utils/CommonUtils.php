@@ -1841,7 +1841,7 @@ function setObjectValuesFromRequest($focus) {
 			$focus->column_fields[$fieldname] = $value;
 		}
 		// sanitizing the subject field when it is created
-		if ($focus->column_fields["subject"]) $focus->column_fields["subject"] = htmlspecialchars($focus->column_fields["subject"], ENT_QUOTES, 'UTF-8');
+		if ($focus->column_fields["subject"]) $focus->column_fields["subject"] = vtlib_purify($focus->column_fields["subject"]);
 	}
 	if (!empty($_REQUEST['cbuuid'])) {
 		$focus->column_fields['cbuuid'] = vt_deleteHTMLTags(vtlib_purify($_REQUEST['cbuuid']), true);
