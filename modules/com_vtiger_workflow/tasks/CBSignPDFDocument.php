@@ -93,6 +93,7 @@ class CBSignPDFDocument extends VTTask {
 						$pdf->Output($file_storage_path, 'F');
 					}
 				}
+				$util->revertUser();
 			}
 		}
 	}
