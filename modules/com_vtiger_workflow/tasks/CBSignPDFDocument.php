@@ -66,6 +66,13 @@ class CBSignPDFDocument extends VTTask {
 				$path = $site_URL.'/'.$filepath.$adb->query_result($rs, 0, 'attachmentsid').'_'.$name;
 				$file_storage_path = $filepath.$adb->query_result($rs, 0, 'attachmentsid').'_'.$name;
 
+				$util = new VTWorkflowUtils();
+				$hold_user = $current_user;
+				$util->loggedInUser();
+				if (is_null($current_user)) {
+					$current_user = $hold_user; // make sure current_user is defined
+				}
+
 				if (isset($current_user->$image_field) && $current_user->$image_field != '' &&
 					isset($current_user->column_fields[$image_field.'imageinfo'])) {
 					$signature_path = $current_user->column_fields[$image_field.'imageinfo']['fullpath'];
