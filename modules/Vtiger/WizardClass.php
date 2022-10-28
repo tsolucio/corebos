@@ -146,6 +146,7 @@ class WizardActions {
 		$perPage = vtlib_purify($_REQUEST['perPage']);
 		$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 		$step = isset($_REQUEST['step']) ? intval($_REQUEST['step']) : '';
+		$required_action = isset($_REQUEST['required_action']) ? intval($_REQUEST['required_action']) : '';
 		if (isset($_REQUEST['query']) && !empty($_REQUEST['query'])) {
 			$sql = vtlib_purify($_REQUEST['query']);
 		} else {
@@ -168,7 +169,7 @@ class WizardActions {
 						$qg->addCondition('id', $id, 'e', 'or');
 					}
 				}
-			} elseif ($step == '0' && $this->module == 'Products' && $mode == 'SELECTPRODUCT') {
+			} elseif ($required_action == 'duplicate' && $this->module == 'Products' && $mode == 'SELECTPRODUCT') {
 				//specific use case
 				if (!empty($newRecords)) {
 					foreach ($newRecords[$step-1] as $id) {
@@ -489,5 +490,70 @@ class WizardActions {
 			}
 		}
 		return $target;
+	}
+
+	public function CreatePCMorsettiera() {
+		//special use case
+		require_once 'include/Webservices/Create.php';
+		global $adb, $current_user;
+		$step = vtlib_purify($_REQUEST['step']);
+		$DuplicatedRecords = coreBOS_Session::get('DuplicatedRecords');
+		$frompdo = array_values($DuplicatedRecords[-1]);
+		$topdo = array_values($DuplicatedRecords[$step-1]);
+		$st = $step-1;
+		if (!empty($frompdo[0]) && !empty($topdo[0])) {
+			try {
+				$UsersTabid = vtws_getEntityId('Users');
+				$pc = vtws_create('ProductComponent', array(
+					'frompdo' => $frompdo[0],
+					'topdo' => $topdo[0],
+					'assigned_user_id' => $UsersTabid.'x'.$current_user->id
+				), $current_user);
+				if (isset($pc['id'])) {
+					$id = explode('x', $pc['id']);
+					//save this for the next step "frompdo"
+					coreBOS_Session::set('DuplicatedRecords^'.$st.'^'.$id[1], $id[1]);
+					return true;
+				}
+				return false;
+			} catch (Throwable $e) {
+				return false;
+			}
+		}
+		return false;
+	}
+
+	public function CreatePCMorsetti() {
+		//special use case
+		require_once 'include/Webservices/Create.php';
+		require_once 'include/Webservices/MassCreate.php';
+		global $adb, $current_user;
+		$step = vtlib_purify($_REQUEST['step']);
+		$data = json_decode($_REQUEST['data'], true);
+		$DuplicatedRecords = coreBOS_Session::get('DuplicatedRecords');
+		$frompdo = array_values($DuplicatedRecords[$step-2]);
+		$UsersTabid = vtws_getEntityId('Users');
+		$ProductsTabid = vtws_getEntityId('Products');
+		$PCTabid = vtws_getEntityId('ProductComponent');
+		$target = array();
+		foreach ($data as $page) {
+			foreach ($page as $id) {
+				$target[] = array(
+					'elementType' => 'ProductComponent',
+					'referenceId' => '',
+					'searchon' => '',
+					'element' => array(
+						'frompdo' => $ProductsTabid.'x'.$frompdo[0],
+						'topdo' => $ProductsTabid.'x'.$id,
+						'rel_pc' => $PCTabid.'x'.$frompdo[1],
+						'assigned_user_id' => $UsersTabid.'x'.$current_user->id
+					)
+				);
+			}
+		}
+		MassCreate($target, $current_user);
+		$st = $step-2;
+		coreBOS_Session::delete('DuplicatedRecords^'.$st.'^'.$frompdo[0]);
+		return true;
 	}
 }
