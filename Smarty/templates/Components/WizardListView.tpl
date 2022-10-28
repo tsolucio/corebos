@@ -40,7 +40,7 @@ function WizardGrid{$formodule}{$step}() {
 		data: {
 			api: {
 				readData: {
-					url: 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=listview&formodule={$formodule}&step={$step}&mode='+wizard.WizardMode[{$step}],
+					url: 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=listview&formodule={$formodule}&step={$step}&mode='+wizard.WizardMode[{$step}]+'&query='+encodeURIComponent(wizard.WizardFilterBy[{$step}]),
 					method: 'GET'
 				}
 			}
