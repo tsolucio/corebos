@@ -13,8 +13,12 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
+// module=Utilities&action=UtilitiesAjax&file=importTiddlers
+// block://importTiddlers:modules/Utilities/importTiddlers.php
+
 require_once 'modules/Vtiger/DeveloperWidget.php';
 require_once 'include/Webservices/upsert.php';
+global $currentModule;
 
 class importTiddlers {
 	// Get class name of the object that will implement the widget functionality

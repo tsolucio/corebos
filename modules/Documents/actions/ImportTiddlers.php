@@ -14,6 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 require_once 'include/Webservices/upsert.php';
+
 class ImportTiddlers_Action extends CoreBOS_ActionController {
 
 	public function Save() {
@@ -26,12 +27,18 @@ class ImportTiddlers_Action extends CoreBOS_ActionController {
 		} else {
 			$tiddlers = json_decode('['.$tiddlers.']', true);
 		}
-		echo json_encode($tiddlers);
 		foreach ((array) $tiddlers as $tid) {
-			$keys = implode(',', array_keys($tid));
-			$tid['assigned_user_id'] = vtws_getEntityId('Users').'x'.$current_user->id;
 			if (!empty($tid['module']) && vtlib_isModuleActive($tid['module'])) {
+				$keys = implode(',', array_keys($tid));
+				$tid['assigned_user_id'] = vtws_getEntityId('Users').'x'.$current_user->id;
+				$minfo = getEntityFieldNames($tid['module']);
+				$tid[$minfo['fieldname']] = $tid['title'];
+				$idx = array_search('[use text]', $tid);
+				if ($idx!==false) {
+					$tid[$idx] = $tid['content'];
+				}
 				vtws_upsert($tid['module'], $tid, $keys, $keys, $current_user);
+				echo json_encode('created');
 			}
 		}
 	}
