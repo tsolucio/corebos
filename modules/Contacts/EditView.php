@@ -267,7 +267,7 @@ $cbMapFDEP = array();
 $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 if ($cbMapid) {
 	$cbMap = cbMap::getMapByID($cbMapid);
-	$cbMapFDEP = $cbMap->FieldDependency();
+	$cbMapFDEP = $cbMap->FieldDependency('edit');
 	$cbMapFDEP = $cbMapFDEP['fields'];
 }
 $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));

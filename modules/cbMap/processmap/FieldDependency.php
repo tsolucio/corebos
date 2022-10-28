@@ -26,7 +26,7 @@ class FieldDependency extends processcbMap {
 	private $mapping = array();
 
 	public function processMap($arguments) {
-		return $this->convertMap2Array();
+		return $this->convertMap2Array($arguments);
 	}
 
 	public function readResponsibleField() {
@@ -133,11 +133,33 @@ class FieldDependency extends processcbMap {
 		return $conditions;
 	}
 
-	public function convertMap2Array() {
+	private function cleanMode($dirtymode) {
+		switch (strtolower($dirtymode)) {
+			case 'create':
+			case '1':
+				$mode = 1;
+				break;
+			case 'edit':
+			case '2':
+				$mode = 2;
+				break;
+			case 'detail':
+			case '3':
+				$mode = 3;
+				break;
+			default:
+				$mode = 0; // all
+				break;
+		}
+		return $mode;
+	}
+
+	public function convertMap2Array($arguments) {
 		$xml = $this->getXMLContent();
 		if (empty($xml)) {
 			return array();
 		}
+		$mode = empty($arguments[0]) ? 0 : $this->cleanMode($arguments[0]);
 		$mapping_arr = array();
 		$mapping_arr['origin'] = (string)$xml->originmodule->originname;
 		if (empty($xml->blocktriggerfields)) {
@@ -148,26 +170,41 @@ class FieldDependency extends processcbMap {
 		$mapping_arr['blockedtriggerfields'] = [];
 		$target_fields = array();
 		foreach ($xml->dependencies->dependency as $v) {
+			if (isset($v->mode) && $this->cleanMode((string)$v->mode)!=$mode) {
+				continue; // we ignore the whole dependency
+			}
 			$hasBlockingAction = false;
 			$conditions = $this->expandConditionColumn((string)$v->condition, $mapping_arr['origin']);
 			$actions=array();
 			foreach ($v->actions->change as $action) {
+				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
+					continue;
+				}
 				$actions['change'][] = array('field'=>(string)$action->field,'value'=>(string)$action->value);
 				if ($mapping_arr['blocktriggerfields']) {
 					$hasBlockingAction = true;
 				}
 			}
 			foreach ($v->actions->hide as $action) {
+				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
+					continue;
+				}
 				foreach ($action->field as $fld => $name) {
 					$actions['hide'][] = array('field'=>(string)$name);
 				}
 			}
 			foreach ($v->actions->readonly as $action) {
+				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
+					continue;
+				}
 				foreach ($action->field as $fld => $name) {
 					$actions['readonly'][] = array('field'=>(string)$name);
 				}
 			}
 			foreach ($v->actions->deloptions as $action) {
+				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
+					continue;
+				}
 				$opt=array();
 				foreach ($v->actions->deloptions->option as $opt2) {
 					$opt[]=(string)$opt2;
@@ -178,6 +215,9 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($v->actions->setoptions as $action) {
+				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
+					continue;
+				}
 				$opt=array();
 				foreach ($v->actions->setoptions->option as $opt2) {
 					$opt[]=(string)$opt2;
@@ -188,6 +228,9 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($v->actions->collapse as $action) {
+				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
+					continue;
+				}
 				foreach ($action->block as $block) {
 					$bname = getTranslatedString((string)$block, $mapping_arr['origin']);
 					$bname = str_replace(' ', '', $bname);
@@ -195,6 +238,9 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($v->actions->open as $action) {
+				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
+					continue;
+				}
 				foreach ($action->block as $block) {
 					$bname = getTranslatedString((string)$block, $mapping_arr['origin']);
 					$bname = str_replace(' ', '', $bname);
@@ -202,6 +248,9 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($v->actions->disappear as $action) {
+				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
+					continue;
+				}
 				foreach ($action->block as $block) {
 					$bname = getTranslatedString((string)$block, $mapping_arr['origin']);
 					$bname = str_replace(' ', '', $bname);
@@ -209,6 +258,9 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($v->actions->appear as $action) {
+				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
+					continue;
+				}
 				foreach ($action->block as $block) {
 					$bname = getTranslatedString((string)$block, $mapping_arr['origin']);
 					$bname = str_replace(' ', '', $bname);
@@ -216,6 +268,9 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($v->actions->setclass as $action) {
+				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
+					continue;
+				}
 				foreach ($action->field as $name) {
 					$actions['setclass'][] = array('field'=>(string)$name);
 				}
@@ -223,6 +278,9 @@ class FieldDependency extends processcbMap {
 				$actions['setclass'][] = array('labelclass'=>(string)$action->labelclass);
 			}
 			foreach ($v->actions->function as $action) {
+				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
+					continue;
+				}
 				$params=array();
 				if (isset($action->parameters)) {
 					foreach ($action->parameters->parameter as $opt2) {
@@ -249,6 +307,9 @@ class FieldDependency extends processcbMap {
 				if ($mapping_arr['blocktriggerfields']) {
 					$hasBlockingAction = true;
 				}
+			}
+			if (empty($actions)) {
+				continue;
 			}
 			foreach ($v->field as $fld) {
 				$target_fields[(string)$fld][] = array('conditions'=>$conditions,'actions'=>$actions);

@@ -16,6 +16,7 @@
               <xs:element name="dependency" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType mixed="true">
                   <xs:sequence>
+                    <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                     <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="1"/>
                     <xs:element type="xs:string" name="condition" minOccurs="0"/>
                     <xs:element name="actions" minOccurs="1">
@@ -24,6 +25,7 @@
                           <xs:element name="setoptions" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="option" minOccurs="1"/>
                               </xs:sequence>
@@ -32,6 +34,7 @@
                            <xs:element name="deloptions" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="option" maxOccurs="unbounded" minOccurs="1"/>
                               </xs:sequence>
@@ -40,6 +43,7 @@
                           <xs:element name="change" maxOccurs="unbounded" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="value"/>
                               </xs:sequence>
@@ -48,6 +52,7 @@
                           <xs:element name="hide" maxOccurs="unbounded" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
@@ -55,6 +60,7 @@
                           <xs:element name="readonly" maxOccurs="unbounded" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
@@ -62,6 +68,7 @@
                           <xs:element name="editable" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
@@ -69,6 +76,7 @@
                           <xs:element name="collapse" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="block"  minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
@@ -76,13 +84,15 @@
                           <xs:element name="show" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
-                           <xs:element name="function" minOccurs="0">
+                          <xs:element name="function" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="name"/>
                                 <xs:element name="parameters" minOccurs="0">
@@ -98,13 +108,15 @@
                           <xs:element name="disappear" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
-                          </xs:element>   
+                          </xs:element>
                            <xs:element name="appear" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
@@ -112,6 +124,7 @@
                            <xs:element name="open" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="block" minOccurs="1" maxOccurs="unbounded"/>
                               </xs:sequence>
                             </xs:complexType>
@@ -119,6 +132,7 @@
                           <xs:element name="setclass" maxOccurs="unbounded" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element type="xs:string" name="field" minOccurs="1" maxOccurs="unbounded"/>
                                 <xs:element type="xs:string" name="fieldclass" minOccurs="1" maxOccurs="unbounded"/>
                                 <xs:element type="xs:string" name="labelclass" minOccurs="1" maxOccurs="unbounded"/>

@@ -172,7 +172,7 @@ $cbMapFDEP = array();
 $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 if ($cbMapid) {
 	$cbMap = cbMap::getMapByID($cbMapid);
-	$cbMapFDEP = $cbMap->FieldDependency();
+	$cbMapFDEP = $cbMap->FieldDependency('detail');
 	$cbMapFDEP = $cbMapFDEP['fields'];
 }
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
