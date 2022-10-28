@@ -11,7 +11,7 @@
 
 <!-- This file is used to display the fields based on the ui type in detailview -->
 		{if $keyid eq '1' || $keyid eq 2 || $keyid eq '11' || $keyid eq '7' || $keyid eq '9' || $keyid eq '71' || $keyid eq '72'} <!--TextBox-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">&nbsp;
 				{if $keyid eq 11 && $USE_ASTERISK eq 'true'}
 					<span id="dtlview_{$label}"><a href='javascript:;' onclick='startCall("{$keyval}", "{$ID}")'>{$keyval}</a></span>
 				{else}
@@ -53,27 +53,27 @@
 						</div>
 					{/if}
 				{/if}
-			</td>
+			</div>
 		{elseif $keyid eq '13'} <!--Email-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">
 				{if $smarty.session.internal_mailer eq 1}
 					<a href="javascript:InternalMailer({$ID},{$keyfldid},'{$keyfldname}','{$MODULE}','record_id');">{$keyval}</a>
 				{else}
 					<a href="mailto:{$keyval}" target="_blank" >{$keyval}</a>
 				{/if}
 				</span>
-			</td>
+			</div>
 		{elseif $keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614' || $keyid eq '1615'} <!--ComboBox-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">&nbsp;
 				{if $keyid eq '1615' && $keyval!=''}
 					{assign var=plinfo value='::'|explode:$keyval}
 					{$plinfo[0]|@getTranslatedString:$plinfo[0]} {$plinfo[1]|@getTranslatedString:$plinfo[0]}
 				{else}
 					{$keyval|@getTranslatedString:$keyval}
 				{/if}
-			</td>
+			</div>
 		{elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">&nbsp;
 				{assign var=selected_val value=''}
 				{foreach item=sel_val from=$keyoptions }
 					{if $sel_val[2] eq 'selected'}
@@ -84,41 +84,40 @@
 					{/if}
 				{/foreach}
 				{$selected_val|replace:"\n":"<br>&nbsp;&nbsp;"}
-			</td>
+			</div>
 		{elseif $keyid eq '14'}<!--Time-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</div>
 		{elseif $keyid eq '17'} <!--WebSite-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyval}" target="_blank">{$keyval}</a></td>
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyval}" target="_blank">{$keyval}</a></div>
 		{elseif $keyid eq '85'}<!--Skype-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$label}">
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$label}">
 				&nbsp;<img src="{'skype.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SKYPE}" title="{$APP.LBL_SKYPE}" align="absmiddle"></img>
 				<span id="dtlview_{$label}"><a href="skype:{$keyval}?call">{$keyval}</a></span>
-			</td>
+			</div>
 		{elseif $keyid eq '19'} <!--TextArea/Description-->
 			{if isset($MOD.LBL_ADD_COMMENT) && $label eq $MOD.LBL_ADD_COMMENT}
 				{assign var=keyval value=''}
 			{/if}
-			<td width=100% colspan="3" class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" style="word-break:break-word;">&nbsp;
+			<div class="slds-col slds-size_3-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}" style="word-break:break-word;">&nbsp;
 				<!--To give hyperlink to URL-->
 				{if isset($extendedfieldinfo['RTE']) && $extendedfieldinfo['RTE'] eq '1'}
 					{$keyval|regex_replace:"/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/":"\\1<a href=\"\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/":"\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i":"\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>"|regex_replace:"/,\"|\.\"|\)\"|\)\.\"|\.\)\"/":"\""}
 				{else}
 					{$keyval|regex_replace:"/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/":"\\1<a href=\"\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/":"\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i":"\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>"|regex_replace:"/,\"|\.\"|\)\"|\)\.\"|\.\)\"/":"\""|replace:"\n":"<br>&nbsp;"}
 				{/if}
-
-			</td>
+			</div>
 		{elseif $keyid eq '21'} <!--TextArea/Street-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<span id="dtlview_{$label}" style="word-break:break-word;">{$keyval}</span></td>
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">&nbsp;<span id="dtlview_{$label}" style="word-break:break-word;">{$keyval}</span></div>
 		{elseif $keyid eq 82} <!--Email Body-->
-			<td colspan="3" width=100% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>
+			<div class="slds-col slds-size_3-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</div>
 		{elseif $keyid eq '53'} <!--Assigned To-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">&nbsp;
 				{if $keyseclink eq ''}{$keyval}{else}<a href="{$keyseclink.0}">{$keyval}</a>{/if}&nbsp;
-			</td>
+			</div>
 		{elseif $keyid eq '56'} <!--CheckBox-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">{$keyval}&nbsp;</td>
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">{$keyval}&nbsp;</div>
 		{elseif $keyid eq 83}<!-- Handle the Tax in Inventory -->
-			<td class="dvtCellInfo" colspan=3>&nbsp;</td></tr>
+			<div class="slds-col slds-size_3-of-4 slds-form-element__control">&nbsp;</div>
 			{foreach item=tax key=count from=$TAX_DETAILS}
 			<tr style="height:25px">
 				<td align="right" class="dvtCellLabel">{$tax.taxlabel} {$APP.COVERED_PERCENTAGE}</td>
@@ -127,9 +126,9 @@
 			</tr>
 			{/foreach}
 		{elseif $keyid eq 69}<!-- for Image Reflection -->
-			<td align="left" width=25%>&nbsp;{$keyval}</td>
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control">&nbsp;{$keyval}</div>
 		{elseif $keyid eq 10 || $keyid eq 101 || $keyid eq 68}<!-- for vtlib reference field -->
-			<td class="dvtCellInfo" align="left" width=25% id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;{$keyval}</td>
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;{$keyval}</div>
 		{else}
-			<td class="dvtCellInfo" align="left" width=25% id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</div>
 		{/if}

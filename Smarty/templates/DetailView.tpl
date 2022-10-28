@@ -91,7 +91,6 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
 										<div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions_top">
 										<div class="slds-button-group" role="group">
-													
 											{if empty($Module_Popup_Edit)}
 												<div class="slds-button-group" role="group">
 													{include file='Components/DetailViewPirvNext.tpl'}
@@ -215,7 +214,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																						{else}
 																						<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
 																						{/if}
-																							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
+																						<div class="slds-grid slds-gutters slds-wrap"">
 																							{if !empty($CUSTOMBLOCKS.$header.custom)}
 																								{include file=$CUSTOMBLOCKS.$header.tpl}
 																							{elseif isset($BLOCKS.$header.relatedlist) && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
@@ -228,7 +227,6 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																								{/foreach}
 																							{else}
 																								{foreach item=detailInfo from=$detail}
-																									<tr style="height:25px" class="detailview_row">
 																										{assign var=numfieldspainted value=0}
 																										{foreach key=label item=data from=$detailInfo}
 																											{assign var=numfieldspainted value=$numfieldspainted+1}
@@ -250,7 +248,8 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																											{assign var=extendedfieldinfo value=$data.extendedfieldinfo}
 
 																											{if $label ne '' && ($keyid ne 83 || count($TAX_DETAILS)>0)}
-																												<td class="dvtCellLabel" align=right width=25% style="white-space: normal;">{strip}
+																												<div class="slds-col slds-size_1-of-4">
+																												{strip}
 																												{if $keycntimage ne ''}
 																													{$keycntimage}
 																												{elseif $keyid eq '71' || $keyid eq '72'}<!-- Currency symbol -->
@@ -262,7 +261,8 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																												{else}
 																													{$label}
 																												{/if}
-																												{/strip}</td>
+																												{/strip}
+																												</div>
 																												{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $display_type neq '4' && $display_type neq '5' && $_readonly eq '0'}
 																													{* Performance Optimization Control *}
 																													{if !empty($DETAILVIEW_AJAX_EDIT) }
@@ -276,11 +276,10 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																												{/if}
 																											{/if}
 																										{/foreach}
-																										{if $numfieldspainted eq 1 && $keyid neq 19 && $keyid neq 20}<td colspan=2></td>{/if}
-																									</tr>
+																										{if $numfieldspainted eq 1 && $keyid neq 19 && $keyid neq 20}<div class="slds-col slds-size_2-of-4">{/if}
 																								{/foreach}
 																							{/if}
-																							</table>
+																							</div>
 																						</div>
 																					{/if}
 																			</td>
@@ -525,7 +524,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 															{$APP.LBL_DUPLICATE_BUTTON_LABEL}
 														</button>
 													{/if}
-													{if $DELETE eq 'permitted'}	
+													{if $DELETE eq 'permitted'}
 														<button
 															class="slds-button slds-button_text-destructive"
 															title="{$APP.LBL_DELETE_BUTTON_TITLE}"

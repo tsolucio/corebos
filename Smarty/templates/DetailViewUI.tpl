@@ -13,10 +13,10 @@
 {if $keyid eq '1' || $keyid eq 2 || $keyid eq '11' || $keyid eq '7' || $keyid eq '9' || $keyid eq '71' || $keyid eq '72' || $keyid eq '103' || $keyid eq '14'}
 	<!--TextBox-->
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 			id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>
 
@@ -81,14 +81,14 @@
 			{/if}
 		{/if}
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq '13'}
 	<!--Email-->
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}">
 				{if $smarty.session.internal_mailer eq 1}
@@ -111,14 +111,14 @@
 			<div id="internal_mailer_{$keyfldname}" style="display: none;">{$keyfldid}####{$smarty.session.internal_mailer}
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif ($keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614')}
 	<!--ComboBox-->
 	{if picklistHasDependency($keyfldname,$MODULE) || fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>
 			<span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
@@ -135,14 +135,14 @@
 					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq '1615'}
 	{assign var=plinfo value='::'|explode:$keyval}
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'><span
 				id="dtlview_{$keyfldname}">{if $keyval neq ''}{$plinfo[0]|@getTranslatedString:$plinfo[0]}
@@ -167,16 +167,16 @@
 					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}
 	<!--Multi Select Combo box-->
 	<!--{assign var="MULTISELECT_COMBO_BOX_ITEM_SEPARATOR_STRING" value=", "}  {* Separates Multi-Select Combo Box items *}
 						{assign var="DETAILVIEW_WORDWRAP_WIDTH" value="70"} {* No. of chars for word wrapping long lines of Multi-Select Combo Box items *}-->
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">
 				{assign var=selected_val value=''}
@@ -206,17 +206,17 @@
 					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq '115'}
 	<!--ComboBox Status edit only for admin Users-->
-	<td width=25% class="dvtCellInfo" align="left">{$keyval}</td>
+	<div class="slds-col slds-size_1-of-4 slds-form-element__control">{$keyval}</div>
 {elseif $keyid eq '117'}
 	<!--ComboBox currency id edit only for admin Users-->
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
@@ -234,14 +234,14 @@
 					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq '17'}
 	<!--WebSite-->
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}" style="word-break: break-word;"><a
 					href="{$keyval}" target="_blank" onclick="event.stopPropagation();">{$keyval}</a></span>
@@ -256,14 +256,14 @@
 					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq '85'}
 	<!--Skype-->
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}"><a href="skype:{$keyval}?call"
 					onclick="event.stopPropagation();"><img src="{'skype.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SKYPE}"
@@ -279,7 +279,7 @@
 					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq '19'}
 	<!--TextArea/Description-->
 	<!-- we will empty the value of ticket and faq comment -->
@@ -290,15 +290,15 @@
 	<!--{assign var="DESCRIPTION_WORDWRAP_WIDTH" value="70"} {* No. of chars for word wrapping long lines of Description *}-->
 	{if $MODULE eq 'Documents' || ($MODULE eq 'Users' && $keyfldname eq 'signature')}
 		<!--To give hyperlink to URL-->
-		<td width="100%" colspan="3" class="dvtCellInfo" align="left">
+		<div class="slds-col slds-size_3-of-4 slds-form-element__control"
 			{$keyval|regex_replace:"/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/":"\\1<a href=\"\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/":"\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i":"\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>"|regex_replace:"/,\"|\.\"|\)\"|\)\.\"|\.\)\"/":"\""}&nbsp;
-		</td>
+		</div>
 	{else}
 		{if fieldHasDependency($keyfldname,$MODULE)}
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 					id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 		{else}
-			<td width="100%" colspan="3" class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+			<div class="slds-col slds-size_3-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 				onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 				onclick='handleEdit(event);'>&nbsp;
 				<span id="dtlview_{$keyfldname}" style="word-break:break-word;">
@@ -315,15 +315,15 @@
 						class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 				</div>
 		{/if}
-		</td>
+		</div>
 	{/if}
 {elseif $keyid eq '21'}
 	<!--TextArea/Street-->
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}" style="word-break:break-word;">{$keyval}</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
@@ -337,24 +337,24 @@
 					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq 82}
 	<!--Email Body-->
-	<td colspan="3" width=100% class="dvtCellInfo" align="left">
+	<div class="slds-col slds-size_1-of-4 slds-form-element__control">
 		<div id="dtlview_{$keyfldname}" style="width:100%;height:200px;overflow:hidden;border:1px solid gray"
 			class="detailedViewTextBox" onmouseover="this.className='detailedViewTextBoxOn'"
 			onmouseout="this.className='detailedViewTextBox'">{$keyval}</div>
-	</td>
+	</div>
 {elseif $keyid eq 80}
 	<!--SalesOrderPopup-->
-	<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
-	</td>
+	<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
+	</div>
 {elseif $keyid eq '52' || $keyid eq '77'}
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
@@ -372,14 +372,14 @@
 					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq '53'}
 	<!--Assigned To-->
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">
 				{if $keyadmin eq 1}
@@ -455,17 +455,17 @@
 					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq '99'}
 	<!-- Password Field-->
-	<td width=25% class="dvtCellInfo" align="left">{$CHANGE_PW_BUTTON}</td>
+	<div class="slds-col slds-size_1-of-4 slds-form-element__control">{$CHANGE_PW_BUTTON}</div>
 {elseif $keyid eq '56'}
 	<!--CheckBox-->
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}&nbsp;</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
@@ -496,15 +496,15 @@
 						class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq '156'}
 	<!--CheckBox for is admin-->
 	{if $smarty.request.record neq $CURRENT_USERID && $keyadmin eq 1}
 		{if fieldHasDependency($keyfldname,$MODULE)}
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 					id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 		{else}
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+			<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 				onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 				onclick='handleEdit(event);'>&nbsp;<span
 					id="dtlview_{$keyfldname}">{$keyval|getTranslatedString:$MODULE}&nbsp;</span>
@@ -524,12 +524,12 @@
 				</div>
 		{/if}
 	{else}
-	<td width=25% class="dvtCellInfo" align="left">{$keyval}
+	<div class="slds-col slds-size_1-of-4 slds-form-element__control">{$keyval}
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq 83 && count($TAX_DETAILS)>0}
 	<!-- Handle the Tax in Inventory -->
-	<td class="dvtCellInfo" colspan=3>&nbsp;</td>
+	<div class="slds-col slds-size_3-of-4 slds-form-element__control">&nbsp;<div>
 	</tr>
 	{foreach item=tax key=count from=$TAX_DETAILS}
 		<tr style="height:25px">
@@ -544,10 +544,10 @@
 		{assign var="dateFormat" value=$APP.NTC_DATE_FORMAT|@parse_calendardate}
 	{/if}
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>
 			&nbsp;&nbsp;<span id="dtlview_{$keyfldname}">
@@ -569,7 +569,7 @@
 				</script>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq 50}
 	{* Initialize the date format if not present *}
 	{if empty($dateFormat)}
@@ -580,10 +580,10 @@
 		{assign var=fieldFormat value="$date_format"}
 	{/foreach}
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span
 				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
 			onclick='handleEdit(event);'>
 			&nbsp;&nbsp;<span id="dtlview_{$keyfldname}">
@@ -611,21 +611,20 @@
 				</script>
 			</div>
 	{/if}
-	</td>
+	</div>
 {elseif $keyid eq 69 || $keyid eq '69m'}
 	<!-- for Image Reflection -->
-	<td align="left" width=25%>{$keyval}</td>
+	<div class="slds-col slds-size_1-of-4 slds-form-element__control">{$keyval}</div>
 {elseif $keyid eq 68 || $keyid eq 101}
-	<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25%
+	<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}" align="left" width=25%
 		onmouseover="vtlib_listview.trigger('cell.onmouseover', this);"
-		onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;{$keyval}</td>
+		onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;{$keyval}</div>
 {elseif $keyid eq 10}
 	<!-- for vtlib reference field -->
 	{if fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
-				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
 	{else}
-		<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25%
+		<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}" align="left" width=25%
 			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');vtlib_listview.trigger('cell.onmouseover', this);"
 			onmouseout="fnhide('crmspanid');vtlib_listview.trigger('cell.onmouseout', this)" onclick='handleEdit(event);'>
 			&nbsp;<span id="dtlview_{$keyfldname}" onclick='event.stopPropagation();'>{$keyval}</span>
@@ -673,7 +672,7 @@
 					class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 	{/if}
-	</td>
+	</div>
 {else}
-	<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25%>&nbsp;{$keyval}</td>
+	<div class="slds-col slds-size_1-of-4 slds-form-element__control" id="mouseArea_{$keyfldname}" align="left" width=25%>&nbsp;{$keyval}</div>
 {/if}
