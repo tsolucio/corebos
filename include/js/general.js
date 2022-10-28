@@ -7207,15 +7207,15 @@ function initSelect2() {
 
 function handlePaste(event, mode) {
 	if (event.type != 'paste' && event.type != 'drop') {
-		document.getElementById('url-zone').innerText = '';
-		document.getElementById('url-zone').innerHTML = '';
+		document.getElementById('url-zone'+mode).innerText = '';
+		document.getElementById('url-zone'+mode).innerHTML = '';
 		return false;
 	}
 	let prop = 'innerText';
 	if (event.type == 'drop') {
 		prop = 'innerHTML';
 	}
-	let url = document.getElementById('url-zone');
+	let url = document.getElementById('url-zone'+mode);
 	let fromrecord = '';
 	if (document.getElementById('record')) {
 		fromrecord = '&fromrecord='+document.getElementById('record').value;
@@ -7236,7 +7236,7 @@ function handlePaste(event, mode) {
 		}).catch((error) => {
 			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_ERROR_DROPZONE, 'error');
 		});
-		document.getElementById('url-zone').innerText = '';
+		document.getElementById('url-zone'+mode).innerText = '';
 	}, 100);
 }
 
