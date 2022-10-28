@@ -122,18 +122,6 @@ class BusinessActions extends CRMEntity {
 	// Ignore module while selection
 	const IGNORE_MODULE = -1;
 
-	public function __construct() {
-		global $adb;
-		$cnmsg = $adb->getColumnNames('vtiger_businessactions');
-		if (!in_array('error_msg', $cnmsg)) {
-			$adb->query("ALTER TABLE vtiger_businessactions ADD error_msg varchar(200) DEFAULT '' NOT NULL");
-		}
-		if (!in_array('success_msg', $cnmsg)) {
-			$adb->query("ALTER TABLE vtiger_businessactions ADD success_msg varchar(200) DEFAULT '' NOT NULL");
-		}
-		parent::__construct();
-	}
-
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
@@ -156,6 +144,9 @@ class BusinessActions extends CRMEntity {
 		$link_obj->onlyonmymodule = $valuemap['onlyonmymodule'];
 		$link_obj->errormsg = isset($valuemap['error_msg']) ? $valuemap['error_msg'] : '';
 		$link_obj->successmsg = isset($valuemap['success_msg']) ? $valuemap['success_msg'] : '';
+		$link_obj->widget_header = isset($valuemap['widget_header']) ? $valuemap['widget_header'] : '';
+		$link_obj->widget_width = isset($valuemap['widget_width']) ? $valuemap['widget_width'] : '';
+		$link_obj->widget_height = isset($valuemap['widget_height']) ? $valuemap['widget_height'] : '';
 		return $link_obj;
 	}
 

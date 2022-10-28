@@ -344,14 +344,14 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																			<span class="slds-assistive-text">{$customlink_label}</span>
 																			</span>
 																		{else}
-																			<a class="webMnu" href="{$customlink_href|addslashes}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">
+																			<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">
 																			<img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}">
 																			</a>
 																		{/if}
 																	{else}
-																		<a class="webMnu" href="{$customlink_href|addslashes}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
+																		<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
 																	{/if}
-																	&nbsp;<a class="slds-text-link_reset" href="{$customlink_href|addslashes}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
+																	&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
 																{/if}
 															</li>
 														{/foreach}
@@ -430,16 +430,28 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 															<br/>
 															<input type="hidden" id="{$CUSTOMLINK->linklabel|replace:' ':''}LINKID" value="{$CUSTOMLINK->linkid}">
 															<table style="border:0;width:100%" class="rightMailMerge" id="{$CUSTOMLINK->linklabel}">
-																<tr>
-																	<td class="rightMailMergeHeader">
-																		<div>
-																		<b>{$customlink_label}</b>&nbsp;
-																		<img id="detailview_block_{$CUSTOMLINK->linkid}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
-																		</div>
-																	</td>
-																</tr>
+																{if $CUSTOMLINK->widget_header}
+																	<tr>
+																		<td class="rightMailMergeHeader">
+																			<div>
+																			<b>{$customlink_label}</b>&nbsp;
+																			<img id="detailview_block_{$CUSTOMLINK->linkid}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
+																			</div>
+																		</td>
+																	</tr>
+																{/if}
+																{if $CUSTOMLINK->widget_width neq ''}
+																	{assign var="widget_width" value="width:"|cat:$CUSTOMLINK->widget_width|cat:";"}
+																{else}
+																	{assign var="widget_width" value=''}
+																{/if}
+																{if $CUSTOMLINK->widget_height neq ''}
+																	{assign var="widget_height" value="height:"|cat:$CUSTOMLINK->widget_height|cat:";"}
+																{else}
+																	{assign var="widget_height" value=''}
+																{/if}
 																<tr style="height:25px">
-																	<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK->linkid}"></div></td>
+																	<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK->linkid}" style="{$widget_width} {$widget_height}"></div></td>
 																</tr>
 																<script type="text/javascript">
 																	vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK->linkid}", "detailview_block_{$CUSTOMLINK->linkid}_indicator");

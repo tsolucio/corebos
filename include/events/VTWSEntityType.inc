@@ -137,6 +137,7 @@ class VTWSEntityType {
 							$et->type = 'Owner';
 							break;
 						case 'multipicklist':
+						case 'multireference':
 							$et->type = 'Select';
 							$et->values = array();
 							break;
