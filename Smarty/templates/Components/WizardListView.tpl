@@ -9,6 +9,7 @@ wizard.WizardMode[{$step}] = '{$WizardMode}';
 wizard.WizardFilterBy[{$step}] = {$WizardFilterBy|json_encode};
 wizard.WizardValidate[{$step}] = {$WizardValidate};
 wizard.WizardGoBack[{$step}] = {$WizardGoBack};
+wizard.WizardRequiredAction[{$step}] = '{$WizardRequiredAction}';
 function WizardGrid{$formodule}{$step}() {
 	if (wizard.WizardInstance['wzgrid{$step}'] !== undefined)  {
 		wizard.WizardInstance['wzgrid{$step}'].destroy();

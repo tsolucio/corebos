@@ -25,6 +25,7 @@ class WizardView {
 	private $mapid = 0;
 	private $goback = 1;
 	private $validate = true;
+	private $required_action = '';
 
 	public $conditions = '';
 
@@ -54,11 +55,17 @@ class WizardView {
 		if (isset($this->params['actions'])) {
 			$this->actions = $this->params['actions'];
 		}
+		//validate before we go in the next step 0 | 0
 		if (isset($this->params['validate'])) {
 			$this->validate = $this->params['validate'];
 		}
+		//do not allow to go back 0 | 1
 		if (isset($this->params['back'])) {
 			$this->goback = $this->params['back'];
+		}
+		//duplicate
+		if (isset($this->params['required_action'])) {
+			$this->required_action = $this->params['required_action'];
 		}
 	}
 
@@ -90,6 +97,7 @@ class WizardView {
 			$smarty->assign('WizardActions', $this->actions);
 			$smarty->assign('WizardValidate', $this->validate);
 			$smarty->assign('WizardGoBack', $this->goback);
+			$smarty->assign('WizardRequiredAction', $this->required_action);
 			$query = '';
 			if (isset($this->conditions['condition'])) {
 				$query = $this->conditions['condition'];
@@ -354,7 +362,7 @@ class WizardActions {
 					foreach ($pcs as $pid) {
 						vtws_revise(array(
 							'id' => $ProductComponentId.'x'.$pid,
-							'cbofferdetailrel' => $od['id']
+							'related_cbofferdetail' => $od['id']
 						), $current_user);
 					}
 				}

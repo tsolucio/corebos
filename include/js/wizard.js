@@ -32,6 +32,7 @@ class WizardComponent {
 		this.WizardFilterBy = [];
 		this.WizardValidate = [];
 		this.WizardGoBack = [];
+		this.WizardRequiredAction = [];
 		this.IsDuplicatedFromProduct = 0;
 		this.Operation = '';
 		this.ProceedToNextStep = true;
