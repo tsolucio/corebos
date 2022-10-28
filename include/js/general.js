@@ -7205,7 +7205,7 @@ function initSelect2() {
 	return cbNumber;
 });
 
-function handlePaste(event) {
+function handlePaste(event, mode) {
 	if (event.type != 'paste' && event.type != 'drop') {
 		document.getElementById('url-zone').innerText = '';
 		document.getElementById('url-zone').innerHTML = '';
@@ -7222,7 +7222,7 @@ function handlePaste(event) {
 	}
 	setTimeout(function () {
 		fetch(
-			'index.php?module=Documents&action=DocumentsAjax&actionname=URLDropzone&method=Save&url='+encodeURIComponent(url[prop])+fromrecord,
+			'index.php?module=Documents&action=DocumentsAjax&actionname='+mode+'&method=Save&url='+encodeURIComponent(url[prop])+fromrecord,
 			{
 				method: 'post',
 				headers: {
