@@ -716,6 +716,9 @@ function TreeView($element, $modules, $map, $i = 0) {
 						$row['_children'] = $findAllChildrens;
 					}
 				} else {
+					if (is_array($entity['fieldname']) && count($entity['fieldname']) > 1) {
+						$entity['fieldname'] = $entity['fieldname'][0];
+					}
 					$row['parentaction'] = $row[$entity['fieldname']];
 					$row['parentaction_attributes'] = [];
 					$row['typeof_row'] = 'parent';

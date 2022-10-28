@@ -9,6 +9,8 @@ wizard.WizardMode[{$step}] = '{$WizardMode}';
 wizard.WizardFilterBy[{$step}] = {$WizardFilterBy|json_encode};
 wizard.WizardValidate[{$step}] = {$WizardValidate};
 wizard.WizardGoBack[{$step}] = {$WizardGoBack};
+wizard.WizardRequiredAction[{$step}] = '{$WizardRequiredAction}';
+wizard.WizardCustomFunction[{$step}] = '{$WizardCustomFunction}';
 function WizardGrid{$formodule}{$step}() {
 	if (wizard.WizardInstance['wzgrid{$step}'] !== undefined)  {
 		wizard.WizardInstance['wzgrid{$step}'].destroy();
@@ -40,7 +42,7 @@ function WizardGrid{$formodule}{$step}() {
 		data: {
 			api: {
 				readData: {
-					url: 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=listview&formodule={$formodule}&step={$step}&mode='+wizard.WizardMode[{$step}],
+					url: 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI&wizardaction=listview&formodule={$formodule}&step={$step}&mode='+wizard.WizardMode[{$step}]+'&query='+encodeURIComponent(wizard.WizardFilterBy[{$step}]),
 					method: 'GET'
 				}
 			}

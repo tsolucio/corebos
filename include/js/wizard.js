@@ -32,7 +32,9 @@ class WizardComponent {
 		this.WizardFilterBy = [];
 		this.WizardValidate = [];
 		this.WizardGoBack = [];
-		this.IsDuplicatedFromProduct = 0;
+		this.WizardRequiredAction = [];
+		this.WizardCustomFunction = [];
+		this.IsDuplicatedFromProduct = [];
 		this.Operation = '';
 		this.ProceedToNextStep = true;
 		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI';
@@ -80,12 +82,15 @@ class WizardComponent {
 		switch (this.Operation) {
 			case 'CREATEPRODUCTCOMPONENTS'://*specific use case
 				if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
-					if (this.IsDuplicatedFromProduct == 0) {
+					if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined) {
 						ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_DUPLICATE_PRODUCT, 'error');
 						return false;
 					}
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
 						return false;
+					}
+					if (this.WizardCustomFunction[this.ActiveStep] != '') {
+						this.CallCustomFunction();
 					}
 					return this.FilterRows(ev);
 				}
@@ -125,7 +130,7 @@ class WizardComponent {
 								RLInstance[wizard.gridInstance].readData(1);
 								ldsModal.close();
 								wizard.ActiveStep = 0;
-								wizard.IsDuplicatedFromProduct = 0;
+								wizard.IsDuplicatedFromProduct = [];
 								wizard.ProceedToNextStep = true;
 								wizard.CheckedRows = [];
 								wizard.GridData = [];
@@ -164,7 +169,7 @@ class WizardComponent {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 				return false;
 			}
-			if (action == 'SELECTPRODUCT' && checkedRows.length != 1) {
+			if (action == 'SELECTPRODUCT' && checkedRows.length != 1 && this.WizardRequiredAction[this.ActiveStep] == 'duplicate') {
 				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
 				return false;
 			}
@@ -355,8 +360,8 @@ class WizardComponent {
 	}
 
 	save(step, action = 'edit') {
-		if (step == 0 && action == 'duplicate') {
-			this.IsDuplicatedFromProduct = 1;
+		if (action == 'duplicate' && this.WizardRequiredAction[this.ActiveStep] == 'duplicate') {
+			this.IsDuplicatedFromProduct[this.ActiveStep] = 1;
 		}
 		let page = this.WizardInstance[`wzgrid${step}`].getPagination();
 		const totalCount = this.WizardInstance[`wzgrid${step}`].getPaginationTotalCount();
@@ -365,20 +370,25 @@ class WizardComponent {
 			page._currentPage = totalPage;
 		}
 		setTimeout(function() {
-			if (wizard.ActiveStep == 0 && wizard.WizardMode[wizard.ActiveStep] == 'SELECTPRODUCT') {
+			if (wizard.WizardRequiredAction[wizard.ActiveStep] == 'duplicate' && wizard.WizardMode[wizard.ActiveStep] == 'SELECTPRODUCT') {
 				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].clear();
-				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams({
+				let reqParams = {
 					page: 1,
 					step: wizard.ActiveStep,
-					mode: wizard.WizardMode[wizard.ActiveStep]
-				});
+					mode: wizard.WizardMode[wizard.ActiveStep]					
+				}
+				if (wizard.IsDuplicatedFromProduct[wizard.ActiveStep] == 1) {
+					reqParams.query = '';
+					reqParams.required_action = 'duplicate';
+				}
+				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams(reqParams);
 				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
 			} else {
 				wizard.WizardInstance[`wzgrid${step}`].readData(page._currentPage, {
 					page: page._currentPage
 				}, true);
 			}
-		}, 500);
+		}, 1000);
 	}
 
 	/**
@@ -462,6 +472,19 @@ class WizardComponent {
 			return false;
 		}
 		this.WizardInstance[`wzgrid${step}`].removeRows(rowKeys);
+	}
+
+	CallCustomFunction() {
+		const url = `${this.url}&wizardaction=CustomCreate&subaction=${this.WizardCustomFunction[this.ActiveStep]}&step=${this.ActiveStep}`;
+		let rows = [];
+		for (let i in this.CheckedRows[this.ActiveStep]) {
+			let ids = [];
+			for (let j in this.CheckedRows[this.ActiveStep][i]) {
+				ids.push(this.CheckedRows[this.ActiveStep][i][j].id);
+			}
+			rows.push(ids);
+		}
+		this.Request(url, 'post', rows);
 	}
 
 	/**

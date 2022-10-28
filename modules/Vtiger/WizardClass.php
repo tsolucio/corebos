@@ -25,6 +25,8 @@ class WizardView {
 	private $mapid = 0;
 	private $goback = 1;
 	private $validate = true;
+	private $required_action = '';
+	private $custom_function = '';
 
 	public $conditions = '';
 
@@ -54,11 +56,20 @@ class WizardView {
 		if (isset($this->params['actions'])) {
 			$this->actions = $this->params['actions'];
 		}
+		//validate before we go in the next step 0 | 0
 		if (isset($this->params['validate'])) {
 			$this->validate = $this->params['validate'];
 		}
+		//do not allow to go back 0 | 1
 		if (isset($this->params['back'])) {
 			$this->goback = $this->params['back'];
+		}
+		//duplicate
+		if (isset($this->params['required_action'])) {
+			$this->required_action = $this->params['required_action'];
+		}
+		if (isset($this->params['custom_function'])) {
+			$this->custom_function = $this->params['custom_function'];
 		}
 	}
 
@@ -90,6 +101,8 @@ class WizardView {
 			$smarty->assign('WizardActions', $this->actions);
 			$smarty->assign('WizardValidate', $this->validate);
 			$smarty->assign('WizardGoBack', $this->goback);
+			$smarty->assign('WizardRequiredAction', $this->required_action);
+			$smarty->assign('WizardCustomFunction', $this->custom_function);
 			$query = '';
 			if (isset($this->conditions['condition'])) {
 				$query = $this->conditions['condition'];
@@ -133,6 +146,7 @@ class WizardActions {
 		$perPage = vtlib_purify($_REQUEST['perPage']);
 		$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 		$step = isset($_REQUEST['step']) ? intval($_REQUEST['step']) : '';
+		$required_action = isset($_REQUEST['required_action']) ? intval($_REQUEST['required_action']) : '';
 		if (isset($_REQUEST['query']) && !empty($_REQUEST['query'])) {
 			$sql = vtlib_purify($_REQUEST['query']);
 		} else {
@@ -155,7 +169,7 @@ class WizardActions {
 						$qg->addCondition('id', $id, 'e', 'or');
 					}
 				}
-			} elseif ($step == '0' && $this->module == 'Products' && $mode == 'SELECTPRODUCT') {
+			} elseif ($required_action == 'duplicate' && $this->module == 'Products' && $mode == 'SELECTPRODUCT') {
 				//specific use case
 				if (!empty($newRecords)) {
 					foreach ($newRecords[$step-1] as $id) {
@@ -354,7 +368,7 @@ class WizardActions {
 					foreach ($pcs as $pid) {
 						vtws_revise(array(
 							'id' => $ProductComponentId.'x'.$pid,
-							'cbofferdetailrel' => $od['id']
+							'related_cbofferdetail' => $od['id']
 						), $current_user);
 					}
 				}
@@ -476,5 +490,70 @@ class WizardActions {
 			}
 		}
 		return $target;
+	}
+
+	public function CreatePCMorsettiera() {
+		//special use case
+		require_once 'include/Webservices/Create.php';
+		global $adb, $current_user;
+		$step = vtlib_purify($_REQUEST['step']);
+		$DuplicatedRecords = coreBOS_Session::get('DuplicatedRecords');
+		$frompdo = array_values($DuplicatedRecords[-1]);
+		$topdo = array_values($DuplicatedRecords[$step-1]);
+		$st = $step-1;
+		if (!empty($frompdo[0]) && !empty($topdo[0])) {
+			try {
+				$UsersTabid = vtws_getEntityId('Users');
+				$pc = vtws_create('ProductComponent', array(
+					'frompdo' => $frompdo[0],
+					'topdo' => $topdo[0],
+					'assigned_user_id' => $UsersTabid.'x'.$current_user->id
+				), $current_user);
+				if (isset($pc['id'])) {
+					$id = explode('x', $pc['id']);
+					//save this for the next step "frompdo"
+					coreBOS_Session::set('DuplicatedRecords^'.$st.'^'.$id[1], $id[1]);
+					return true;
+				}
+				return false;
+			} catch (Throwable $e) {
+				return false;
+			}
+		}
+		return false;
+	}
+
+	public function CreatePCMorsetti() {
+		//special use case
+		require_once 'include/Webservices/Create.php';
+		require_once 'include/Webservices/MassCreate.php';
+		global $adb, $current_user;
+		$step = vtlib_purify($_REQUEST['step']);
+		$data = json_decode($_REQUEST['data'], true);
+		$DuplicatedRecords = coreBOS_Session::get('DuplicatedRecords');
+		$frompdo = array_values($DuplicatedRecords[$step-2]);
+		$UsersTabid = vtws_getEntityId('Users');
+		$ProductsTabid = vtws_getEntityId('Products');
+		$PCTabid = vtws_getEntityId('ProductComponent');
+		$target = array();
+		foreach ($data as $page) {
+			foreach ($page as $id) {
+				$target[] = array(
+					'elementType' => 'ProductComponent',
+					'referenceId' => '',
+					'searchon' => '',
+					'element' => array(
+						'frompdo' => $ProductsTabid.'x'.$frompdo[0],
+						'topdo' => $ProductsTabid.'x'.$id,
+						'rel_pc' => $PCTabid.'x'.$frompdo[1],
+						'assigned_user_id' => $UsersTabid.'x'.$current_user->id
+					)
+				);
+			}
+		}
+		MassCreate($target, $current_user);
+		$st = $step-2;
+		coreBOS_Session::delete('DuplicatedRecords^'.$st.'^'.$frompdo[0]);
+		return true;
 	}
 }
