@@ -495,6 +495,21 @@ function vtlib_purify($input, $ignore = false) {
 	}
 	if (!is_array($input)) {
 		$purified_cache[$md5OfInput] = $value;
+		// sanitizing <a> tags
+        if (strpos($value, "<a") !== false) {
+			if (strpos($value, "javascript") !== false) {
+				$dom = new DOMDocument;
+				$dom->loadHTML($value, LIBXML_HTML_NODEFDTD | LIBXML_HTML_NOIMPLIED);
+				foreach ($dom->getElementsByTagName('a') as $node) {
+					if ($node->hasAttribute('href')) {
+						if (!filter_var($node->getAttribute('href'), FILTER_VALIDATE_URL) !== FALSE) {
+							$node->setAttribute('href', "#");
+							$value = $dom->saveHTML();
+						}
+					}
+				}
+			}
+        }
 	}
 	return $value;
 }

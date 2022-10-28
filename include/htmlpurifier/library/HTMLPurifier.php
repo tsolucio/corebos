@@ -225,23 +225,6 @@ class HTMLPurifier
 
         $html = HTMLPurifier_Encoder::convertFromUTF8($html, $config, $context);
         $this->context =& $context;
-
-        // sanitizing <a> tags
-        if (strpos($html, "<a") !== false) {
-			if (strpos($html, "javascript") !== false) {
-				$dom = new DOMDocument;
-				$dom->loadHTML($html, LIBXML_HTML_NODEFDTD | LIBXML_HTML_NOIMPLIED);
-				foreach ($dom->getElementsByTagName('a') as $node) {
-					if ($node->hasAttribute('href')) {
-						if (!filter_var($node->getAttribute('href'), FILTER_VALIDATE_URL) !== FALSE) {
-							$node->setAttribute('href', "#");
-							$html = $dom->saveHTML();
-						}
-					}
-				}
-			}
-        }
-
         return $html;
     }
 
