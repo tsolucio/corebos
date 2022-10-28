@@ -33,6 +33,7 @@ class WizardComponent {
 		this.WizardValidate = [];
 		this.WizardGoBack = [];
 		this.WizardRequiredAction = [];
+		this.WizardCustomFunction = [];
 		this.IsDuplicatedFromProduct = 0;
 		this.Operation = '';
 		this.ProceedToNextStep = true;
@@ -87,6 +88,9 @@ class WizardComponent {
 					}
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
 						return false;
+					}
+					if (this.WizardCustomFunction[this.ActiveStep] != '') {
+						this.CallCustomFunction();
 					}
 					return this.FilterRows(ev);
 				}
@@ -463,6 +467,19 @@ class WizardComponent {
 			return false;
 		}
 		this.WizardInstance[`wzgrid${step}`].removeRows(rowKeys);
+	}
+
+	CallCustomFunction() {
+		const url = `${this.url}&wizardaction=CustomCreate&subaction=${this.WizardCustomFunction[this.ActiveStep]}&step=${this.ActiveStep}`;
+		let rows = [];
+		for (let i in this.CheckedRows[this.ActiveStep]) {
+			let ids = [];
+			for (let j in this.CheckedRows[this.ActiveStep][i]) {
+				ids.push(this.CheckedRows[this.ActiveStep][i][j].id);
+			}
+			rows.push(ids);
+		}
+		this.Request(url, 'post', rows);
 	}
 
 	/**

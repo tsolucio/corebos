@@ -26,6 +26,7 @@ class WizardView {
 	private $goback = 1;
 	private $validate = true;
 	private $required_action = '';
+	private $custom_function = '';
 
 	public $conditions = '';
 
@@ -67,6 +68,9 @@ class WizardView {
 		if (isset($this->params['required_action'])) {
 			$this->required_action = $this->params['required_action'];
 		}
+		if (isset($this->params['custom_function'])) {
+			$this->custom_function = $this->params['custom_function'];
+		}
 	}
 
 	public function Init() {
@@ -98,6 +102,7 @@ class WizardView {
 			$smarty->assign('WizardValidate', $this->validate);
 			$smarty->assign('WizardGoBack', $this->goback);
 			$smarty->assign('WizardRequiredAction', $this->required_action);
+			$smarty->assign('WizardCustomFunction', $this->custom_function);
 			$query = '';
 			if (isset($this->conditions['condition'])) {
 				$query = $this->conditions['condition'];
