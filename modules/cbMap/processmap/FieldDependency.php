@@ -154,6 +154,21 @@ class FieldDependency extends processcbMap {
 		return $mode;
 	}
 
+	private function getXMLBranch($loadfrom) {
+		global $adb;
+		$bmap = $adb->pquery(
+			'select content from vtiger_cbmap inner join vtiger_crmentity on crmid=cbmapid where deleted=0 and (cbmapid=? or mapname=?)',
+			[$loadfrom, $loadfrom]
+		);
+		if ($bmap && $adb->num_rows($bmap)) {
+			$xmlcontent=html_entity_decode($bmap->fields['content'], ENT_QUOTES, 'UTF-8');
+			if (self::isXML($xmlcontent)) {
+				return simplexml_load_string($xmlcontent, null, LIBXML_NOCDATA);
+			}
+		}
+		return false;
+	}
+
 	public function convertMap2Array($arguments) {
 		$xml = $this->getXMLContent();
 		if (empty($xml)) {
@@ -170,13 +185,27 @@ class FieldDependency extends processcbMap {
 		$mapping_arr['blockedtriggerfields'] = [];
 		$target_fields = array();
 		foreach ($xml->dependencies->dependency as $v) {
+			if (isset($v->loadfrom)) {
+				$v = $this->getXMLBranch((string)$v->loadfrom);
+				if ($v===false) {
+					continue;
+				}
+			}
 			if (isset($v->mode) && $this->cleanMode((string)$v->mode)!=$mode) {
 				continue; // we ignore the whole dependency
 			}
 			$hasBlockingAction = false;
 			$conditions = $this->expandConditionColumn((string)$v->condition, $mapping_arr['origin']);
+			if (isset($v->actions->loadfrom)) {
+				$mapactions = $this->getXMLBranch((string)$v->actions->loadfrom);
+				if ($mapactions===false) {
+					continue;
+				}
+			} else {
+				$mapactions = $v->actions;
+			}
 			$actions=array();
-			foreach ($v->actions->change as $action) {
+			foreach ($mapactions->change as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
 					continue;
 				}
@@ -185,7 +214,7 @@ class FieldDependency extends processcbMap {
 					$hasBlockingAction = true;
 				}
 			}
-			foreach ($v->actions->hide as $action) {
+			foreach ($mapactions->hide as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
 					continue;
 				}
@@ -193,7 +222,7 @@ class FieldDependency extends processcbMap {
 					$actions['hide'][] = array('field'=>(string)$name);
 				}
 			}
-			foreach ($v->actions->readonly as $action) {
+			foreach ($mapactions->readonly as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
 					continue;
 				}
@@ -201,12 +230,12 @@ class FieldDependency extends processcbMap {
 					$actions['readonly'][] = array('field'=>(string)$name);
 				}
 			}
-			foreach ($v->actions->deloptions as $action) {
+			foreach ($mapactions->deloptions as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
 					continue;
 				}
 				$opt=array();
-				foreach ($v->actions->deloptions->option as $opt2) {
+				foreach ($mapactions->deloptions->option as $opt2) {
 					$opt[]=(string)$opt2;
 				}
 				$actions['deloptions'][] = array('field'=>(string)$action->field,'options'=>$opt);
@@ -214,12 +243,12 @@ class FieldDependency extends processcbMap {
 					$hasBlockingAction = true;
 				}
 			}
-			foreach ($v->actions->setoptions as $action) {
+			foreach ($mapactions->setoptions as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
 					continue;
 				}
 				$opt=array();
-				foreach ($v->actions->setoptions->option as $opt2) {
+				foreach ($mapactions->setoptions->option as $opt2) {
 					$opt[]=(string)$opt2;
 				}
 				$actions['setoptions'][] = array('field'=>(string)$action->field,'options'=>$opt);
@@ -227,7 +256,7 @@ class FieldDependency extends processcbMap {
 					$hasBlockingAction = true;
 				}
 			}
-			foreach ($v->actions->collapse as $action) {
+			foreach ($mapactions->collapse as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
 					continue;
 				}
@@ -237,7 +266,7 @@ class FieldDependency extends processcbMap {
 					$actions['collapse'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->open as $action) {
+			foreach ($mapactions->open as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
 					continue;
 				}
@@ -247,7 +276,7 @@ class FieldDependency extends processcbMap {
 					$actions['open'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->disappear as $action) {
+			foreach ($mapactions->disappear as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
 					continue;
 				}
@@ -257,7 +286,7 @@ class FieldDependency extends processcbMap {
 					$actions['disappear'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->appear as $action) {
+			foreach ($mapactions->appear as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
 					continue;
 				}
@@ -267,7 +296,7 @@ class FieldDependency extends processcbMap {
 					$actions['appear'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->setclass as $action) {
+			foreach ($mapactions->setclass as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
 					continue;
 				}
@@ -277,7 +306,7 @@ class FieldDependency extends processcbMap {
 				$actions['setclass'][] = array('fieldclass'=>(string)$action->fieldclass);
 				$actions['setclass'][] = array('labelclass'=>(string)$action->labelclass);
 			}
-			foreach ($v->actions->function as $action) {
+			foreach ($mapactions->function as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=$mode) {
 					continue;
 				}
