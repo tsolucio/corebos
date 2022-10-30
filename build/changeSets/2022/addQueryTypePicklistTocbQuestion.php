@@ -37,21 +37,14 @@ class addQueryTypePicklistTocbQuestion extends cbupdaterWorker {
 				$fieldInstance->displaytype = 1;
 				$fieldInstance->typeofdata = 'V~O';
 				$fieldInstance->quickcreate = 0;
-				$field->defaultvalue='Web Service';
+				$fieldInstance->defaultvalue='Web Service';
 				$block->addField($fieldInstance);
 				$pickListValues = array('Web Service', 'SQL', 'ClickHouse');
 				$fieldInstance->setPicklistValues($pickListValues);
 			}
 
 			// Updating records
-			$sql = "SELECT cbquestionid, sqlquery FROM vtiger_cbquestion";
-			$result = $adb->pquery($sql, array());
-			$update_sql = "UPDATE vtiger_cbquestion SET querytype = ? WHERE cbquestionid = ?";
-			while ($res=$adb->fetch_array($result)) {
-				if ($res['sqlquery'] == '1') {
-					$adb->pquery($update_sql, array('SQL', $res['cbquestionid']));
-				}
-			}
+			$adb->pquery('UPDATE vtiger_cbquestion SET querytype=? WHERE sqlquery=?', array('SQL', '1'));
 
 			// Deleting field
 			$field = Vtiger_Field::getInstance('sqlquery', $module);
