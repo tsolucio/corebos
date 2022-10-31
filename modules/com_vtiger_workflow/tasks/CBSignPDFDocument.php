@@ -23,7 +23,12 @@ require_once 'include/tcpdf/tcpdf.php';
 use setasign\Fpdi\Fpdi;
 
 require_once 'include/fpdf/fpdf.php';
-require_once 'include/fpdi/src/autoload.php';
+if (is_dir('include/fpdi2') && is_dir('include/fpdi_pdf-parser2')) {
+	require_once 'include/fpdi2/src/autoload.php';
+	require_once 'include/fpdi_pdf-parser2/src/autoload.php';
+} else {
+	require_once 'include/fpdi/src/autoload.php';
+}
 
 class CBSignPDFDocument extends VTTask {
 	public $taskSavedData = array();
