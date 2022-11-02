@@ -56,7 +56,7 @@ $validationArray = split_validationdataArray($validationData);
 $smarty->assign('VALIDATION_DATA_FIELDNAME', $validationArray['fieldname']);
 $smarty->assign('VALIDATION_DATA_FIELDDATATYPE', $validationArray['datatype']);
 $smarty->assign('VALIDATION_DATA_FIELDLABEL', $validationArray['fieldlabel']);
-$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
+$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule, (empty($focus->mode) ? 'create' : 'edit'));
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));

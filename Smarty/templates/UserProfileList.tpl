@@ -33,7 +33,7 @@
 									<a
 										class="slds-button slds-button_icon slds-button_icon-border-filled"
 										aria-haspopup="true"
-										href="index.php?module=Settings&action=SettingsAjax&file=ImportXML&category=PROFILE"
+										href="index.php?module=Settings&action=handle_xml_layout_import&category=PROFILE"
 										title="{$MOD.LBL_IMPORT}">
 											<svg class="slds-button__icon" aria-hidden="true">
 												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>

@@ -344,7 +344,7 @@ $smarty->assign(
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
-$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
+$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule, (empty($focus->mode) ? 'create' : 'edit'));
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 //Get Service or Product by default when create
 $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('Inventory_ProductService_Default', 'Products', $currentModule, $current_user->id));
