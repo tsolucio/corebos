@@ -11477,7 +11477,7 @@ precacheAndRoute([{
   "revision": "70e4040be9d6e893aec7e605033a773a"
 }, {
   "url": "include/js/general.js",
-  "revision": "55ddd4cd21667456c5038a1a4d8a8f51"
+  "revision": "4e513451a25ba198b06931c557b28d04"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "b4fad7ff70fb9444a5e86f58490269b9"
@@ -11498,7 +11498,7 @@ precacheAndRoute([{
   "revision": "d1b3c0036f73a192a4652436eb364ffa"
 }, {
   "url": "include/js/ListViewRenderes.js",
-  "revision": "3111bb0321f2065d3b9694836e16d1ee"
+  "revision": "479539b67ca6305b9e6d8ee179436132"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
@@ -11543,7 +11543,7 @@ precacheAndRoute([{
   "revision": "89ad8ae2e8972f6085b6728624061ac2"
 }, {
   "url": "include/js/relatedlistgrid.js",
-  "revision": "a2bfa25f7b3210ba7da037b91a3fa746"
+  "revision": "a7b2a61873beee8a19a59b61e401f03b"
 }, {
   "url": "include/js/relatedlists.js",
   "revision": "11bf2a6771f84a03764f40e052d76358"
@@ -12338,7 +12338,7 @@ precacheAndRoute([{
   "revision": "aba9f38466e2ee904b8465a3cbe65de7"
 }, {
   "url": "modules/Utilities/Utilities.js",
-  "revision": "18844ee70d6993cd1e9bbb8bb412d097"
+  "revision": "08738fbd221f6bc1c53f0ddbe4b37a8a"
 }, {
   "url": "modules/Import/resources/ImportStep2.js",
   "revision": "f98f9eeb54cd2b95375d74c1af6a9f14"

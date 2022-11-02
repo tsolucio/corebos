@@ -116,7 +116,7 @@ class cbwsProcessMapWorker {
 			case 'ApplicationMenu':
 				return $this->mapobj->ApplicationMenu($this->parameters);
 			case 'FieldDependency':
-				return $this->mapobj->FieldDependency();
+				return $this->mapobj->FieldDependency($this->parameters);
 			default:
 				throw new WebServiceException(WebServiceErrorCode::$OPERATIONNOTSUPPORTED, 'business map type not supported');
 				break;
