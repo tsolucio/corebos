@@ -111,9 +111,9 @@ var masterdetailwork = {
 		}
 		let targetfield = MasterDetail_TargetField[MDGrid];
 		if (CurrentRecord!='') {
-			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+targetfield+'='+CurrentRecord;
+			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&'+targetfield+'='+CurrentRecord;
 		} else if (document.getElementById('record')) {
-			CurrentRecord = '&MDCurrentRecord='+document.getElementById('record').value+targetfield+'='+document.getElementById('record').value;
+			CurrentRecord = '&MDCurrentRecord='+document.getElementById('record').value+'&'+targetfield+'='+document.getElementById('record').value;
 		}
 		let mapname = document.getElementById(MDGrid.substring(6)).dataset.mapname;
 		let mdgridinfo = JSON.stringify({
