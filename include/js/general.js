@@ -1322,8 +1322,8 @@ function run_massedit() {
 				sentForm[myFields[f].name] = myFields[f].value;
 			}
 		}
-		setTimeout(function() {
-			sendToSS(files, hasImageWait).then(function() {
+		setTimeout(function () {
+			sendToSS(files, hasImageWait).then(function () {
 				ExecuteFunctions('setSetting', 'skey=masseditids'+corebos_browsertabID+'&svalue='+sentForm['massedit_recordids']).then(function (response) {
 					if (!response.trim()) {
 						document.getElementById('appnotifydiv').innerHTML = response;
