@@ -121,7 +121,7 @@ function getImages($crmid) {
 	$dirname = $root_directory.'cache/massedit/';
 	$files = glob($dirname.'*');
 	$allfiles = array();
-	foreach($files as $file) {
+	foreach ($files as $file) {
 		if (is_file($file) && strpos($file, '_filedata') !== false) {
 			$info = pathinfo($file);
 			$field = explode('_filedata', $info['filename']);

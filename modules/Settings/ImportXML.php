@@ -36,7 +36,7 @@ if ($uploaded) {
 			// order is very important, dependent roles appear later in the XML so we can count on having them created
 			foreach ($xmlreader->vtcrm_role as $role) {
 				$rlname = html_entity_decode((string)$role->vtcrm_definition->vtcrm_rolename, ENT_QUOTES, 'UTF-8');
-	
+
 				//$pfexist = $adb->getone("select count(*) as cnt from vtiger_role where rolename='".addslashes($rlname)."'");
 				$pfrs = $adb->pquery('select count(*) as cnt from vtiger_role where rolename=?', array($rlname));
 				$pfcnt = $adb->fetch_array($pfrs);
@@ -44,7 +44,7 @@ if ($uploaded) {
 					echo "$rlname already exists!<br />";
 					continue;
 				}
-	
+
 				if (strrpos((string)$role->vtcrm_definition->vtcrm_parentrole, '::')===false) {
 					$prole=(string)$role->vtcrm_definition->vtcrm_parentrole;
 				} else {
@@ -70,7 +70,7 @@ if ($uploaded) {
 			foreach ($xmlreader->vtcrm_profile as $profile) {
 				$prfname = html_entity_decode((string)$profile->vtcrm_definition->vtcrm_profilename, ENT_QUOTES, 'UTF-8');
 				$prfdesc = html_entity_decode((string)$profile->vtcrm_definition->vtcrm_profiledescription, ENT_QUOTES, 'UTF-8');
-			
+
 				//$pfexist = $adb->getone("select count(*) as cnt from vtiger_profile where profilename='".addslashes($prfname)."'");
 				$pfrs = $adb->pquery('select count(*) as cnt from vtiger_profile where profilename=?', array($prfname));
 				$pfcnt = $adb->fetch_array($pfrs);
@@ -82,12 +82,12 @@ if ($uploaded) {
 				//Inserting values into Profile Table
 				$sql1 = "insert into vtiger_profile(profileid, profilename, description) values(?,?,?)";
 				$adb->pquery($sql1, array($profile_id,$prfname, $prfdesc));
-			
+
 				$sql4="insert into vtiger_profile2globalpermissions values(?,?,?)";
 				foreach ($profile->vtcrm_profile2glbs->vtcrm_profile2glb as $pf2glb) {
 					$adb->pquery($sql4, array($profile_id,(string)$pf2glb,(string)$pf2glb->attributes()->permission));
 				}
-			
+
 				// default values
 				$sql4="insert into vtiger_profile2tab values(?,?,?)";
 				$rstab = $adb->query('select tabid from vtiger_tab');
@@ -104,7 +104,7 @@ if ($uploaded) {
 						}
 					}
 				}
-			
+
 				// default values
 				$sql4="insert into vtiger_profile2standardpermissions values(?,?,?,?)";
 				$rstab = $adb->query('select tabid from vtiger_tab');
@@ -123,7 +123,7 @@ if ($uploaded) {
 						}
 					}
 				}
-			
+
 				// import values
 				$importedtabs = array();
 				//$sql9="insert IGNORE into vtiger_profile2utility values(?,?,?,?)";
@@ -147,7 +147,7 @@ if ($uploaded) {
 						}
 					}
 				}
-			
+
 				// default values
 				insertProfile2field($profile_id);  // set default values for all fields
 				// import values
@@ -175,7 +175,7 @@ if ($uploaded) {
 			foreach ($xmlreader->vtcrm_group as $group) {
 				$grpname = html_entity_decode((string)$group->vtcrm_definition->vtcrm_groupname, ENT_QUOTES, 'UTF-8');
 				$grpdesc = html_entity_decode((string)$group->vtcrm_definition->vtcrm_groupdescription, ENT_QUOTES, 'UTF-8');
-	
+
 				//$pfexist = $adb->getone("select count(*) as cnt from vtiger_groups where groupname='".addslashes($grpname)."'");
 				$pfrs = $adb->pquery('select count(*) as cnt from vtiger_groups where groupname=?', array($grpname));
 				$pfcnt = $adb->fetch_array($pfrs);
@@ -183,9 +183,9 @@ if ($uploaded) {
 					echo "$grpname already exists!<br />";
 					continue;
 				}
-	
+
 				$grpMembers = array();
-	
+
 				$grpm = array();
 				$missgrp = array();
 				foreach ($group->vtcrm_group2groups->vtcrm_group2group as $grp) {
@@ -198,30 +198,30 @@ if ($uploaded) {
 					}
 				}
 				$grpMembers['groups'] = $grpm;
-	
+
 				$grpm = array();
 				foreach ($group->vtcrm_group2roles->vtcrm_group2role as $role) {
 					$grpm[] = $adb->getone("select roleid from vtiger_role where rolename='".addslashes((string)$role)."'");
 				}
 				$grpMembers['roles'] = $grpm;
-	
+
 				$grpm = array();
 				foreach ($group->vtcrm_group2rolesubs->vtcrm_group2rolesub as $role) {
 					$grpm[] = $adb->getone("select roleid from vtiger_role where rolename='".addslashes((string)$role)."'");
 				}
 				$grpMembers['rs'] = $grpm;
-	
+
 				$grpMembers['users'] = array();
-	
+
 				$groupId = createGroup($grpname, $grpMembers, $grpdesc);
-	
+
 				if (count($missgrp)>0) {
 					$missingGroups[$groupId] = $missgrp;
 				}
-	
+
 				echo "$grpname imported!<br />";
 			}
-	
+
 			// due to the possibility of groups depending on groups in any combinations
 			// it is possible to create a group before having created all it's depending
 			// groups, for this case we fill in the $missingGroups during creation and add them now
