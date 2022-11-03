@@ -1287,6 +1287,9 @@ function massEditFormValidate() {
 
 function run_massedit() {
 	if (massEditFormValidate()) {
+		const readers = [];
+		const files = {};
+		var hasImageWait = 0;
 		var myFields = document.forms['massedit_form'];
 		var sentForm = new Object();
 		for (var f=0; f<myFields.length; f++) {
@@ -1304,22 +1307,58 @@ function run_massedit() {
 					return x.value;
 				}).join(' |##| ');
 				sentForm[myFields[f].name.substring(0, myFields[f].name.length-2)] = myFieldValue;
+			} else if (myFields[f].type == 'file' && myFields[myFields[f].name+'_mass_edit_check'].checked) {
+				hasImageWait = 1200;
+				sentForm[myFields[f].name] = myFields[f].value;
+				readers.push(function (fref) {
+					reader = new FileReader();
+					reader.onload = (e) => {
+						files[fref.name+'_filedata'] = e.target.result;
+					};
+					reader.readAsDataURL(fref.files[0]);
+				});
+				readers[readers.length-1](myFields[f]);
 			} else if (myFields[f].type != 'radio' && myFields[f].type != 'button') {
 				sentForm[myFields[f].name] = myFields[f].value;
 			}
 		}
-
-		ExecuteFunctions('setSetting', 'skey=masseditids'+corebos_browsertabID+'&svalue='+sentForm['massedit_recordids']).then(function (response) {
-			if (!response.trim()) {
-				document.getElementById('appnotifydiv').innerHTML = response;
-				document.getElementById('appnotifydiv').style.display = 'block';
-				return false;
-			}
-			progressMassEditDetails(sentForm);
-		}, function (error) {
-			console.log('error', error);
-		});
+		setTimeout(function() {
+			sendToSS(files, hasImageWait).then(function() {
+				ExecuteFunctions('setSetting', 'skey=masseditids'+corebos_browsertabID+'&svalue='+sentForm['massedit_recordids']).then(function (response) {
+					if (!response.trim()) {
+						document.getElementById('appnotifydiv').innerHTML = response;
+						document.getElementById('appnotifydiv').style.display = 'block';
+						return false;
+					}
+					progressMassEditDetails(sentForm);
+				}, function (error) {
+					console.log('error', error);
+				});
+			});
+		}, hasImageWait);
 	}
+}
+
+async function sendToSS(files, hasImageWait) {
+	if (hasImageWait > 0) {
+		let url = 'index.php?module=Documents&action=DocumentsAjax&file=UploadFileData';
+		Request(url, 'post', files);
+	}
+}
+
+async function Request(url, method, body = {}) {
+	const options = {
+		method: method,
+		credentials: 'same-origin',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+		}
+	};
+	if (method == 'post') {
+		options.body = '&'+csrfMagicName+'='+csrfMagicToken+'&data='+JSON.stringify(body);
+	}
+	const response = await fetch(url, options);
+	return response.text();
 }
 
 function progressMassEditDetails(sentForm) {
