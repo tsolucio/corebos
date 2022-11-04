@@ -204,6 +204,9 @@ class FieldDependency extends processcbMap {
 			} else {
 				$mapactions = $v->actions;
 			}
+			if (isset($mapactions->mode) && $this->cleanMode($mapactions->mode)!=0 && $this->cleanMode($mapactions->mode)!=$mode) {
+				continue;
+			}
 			$actions=array();
 			foreach ($mapactions->change as $action) {
 				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {

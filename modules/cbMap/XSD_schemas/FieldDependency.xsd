@@ -27,6 +27,7 @@
                             <xs:element type="xs:string" name="loadfrom" minOccurs="0" maxOccurs="1"/>
                             <xs:sequence>
                               <xs:choice maxOccurs="unbounded">
+                                <xs:element type="xs:integer" name="mode" minOccurs="0" maxOccurs="1"/>
                                 <xs:element name="setoptions" minOccurs="0">
                                   <xs:complexType>
                                     <xs:sequence>

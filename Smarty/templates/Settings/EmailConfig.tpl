@@ -76,7 +76,7 @@
 					<tr class="slds-line-height_reset">
 						<td width="20%" height="40px" nowrap >
 							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
-							<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
+							<abbr class="slds-required">* </abbr>
 							{$MOD.LBL_OUTGOING_MAIL_SERVER}
 							</label>
 						</td>
@@ -86,7 +86,7 @@
 					<tr>
 						<td nowrap height="40px" >
 							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
-							<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
+							<abbr class="slds-required">* </abbr>
 							{$MOD.LBL_USERNAME}
 							</label>
 						</td>
@@ -96,7 +96,7 @@
 					<tr>
 						<td nowrap  height="40px">
 							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
-							<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
+							<abbr class="slds-required">* </abbr>
 							{$MOD.LBL_PASWRD}
 							</label>
 						</td>
@@ -110,8 +110,7 @@
 					<tr>
 						<td nowrap  height="40px">
 							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
-							<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
-							{$MOD.LBL_FROM_EMAIL_FIELD}
+							&nbsp;&nbsp;&nbsp;{$MOD.LBL_FROM_EMAIL_FIELD}
 							</label>
 						</td>
 						<td >{$FROM_EMAIL_FIELD}&nbsp;</td>
@@ -121,7 +120,7 @@
 					<tr>
 						<td nowrap  height="40px">
 							<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
-							<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
+							<abbr class="slds-required">* </abbr>
 							{$MOD.LBL_REQUIRES_AUTHENT}
 							</label>
 						</td>
@@ -137,7 +136,7 @@
 							<tr class="slds-line-height_reset">
 								<td width="20%" height="40px" nowrap ><font color="red">
 								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
-								<abbr class="slds-required" title="Indica un campo obbligatorio">* </abbr>
+								<abbr class="slds-required">* </abbr>
 								{$MOD.LBL_OUTGOING_MAIL_SERVER}
 								</label>
 								</td>
@@ -149,6 +148,7 @@
 							<tr valign="top">
 								<td nowrap >
 								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
+								<abbr class="slds-required">* </abbr>
 								{$MOD.LBL_USERNAME}
 								</label>
 								</td>
@@ -160,6 +160,7 @@
 							<tr>
 								<td nowrap >
 								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
+								<abbr class="slds-required">* </abbr>
 								{$MOD.LBL_PASWRD}
 								</label>
 								</td>
@@ -170,8 +171,8 @@
 							</tr>
 							<tr>
 								<td nowrap >
-								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
-								{$MOD.LBL_FROM_EMAIL_FIELD}
+								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="from_email_field">
+								&nbsp;&nbsp;&nbsp;&nbsp;{$MOD.LBL_FROM_EMAIL_FIELD}
 								</label>
 								</td>
 								<td >
@@ -182,10 +183,11 @@
 							<tr>
 								<td nowrap >
 								<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
+								<abbr class="slds-required">* </abbr>
 								{$MOD.LBL_REQUIRES_AUTHENT}
 								</label>
 								</td>
-								<td >
+								<td>
 								{html_options name="smtp_auth" options=$SMTP_AUTH_OPTIONS selected=$SMTP_AUTH class="slds-select"}
 								</td>
 								<td></td>

@@ -682,6 +682,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número máximo de resultados a mostrar en la pantalla de búsqueda global autocompletada.',
 ),
+'Application_Global_Search_Action' => array(
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'DetailView|EditView',
+	'definition' => 'La acción que se realiza cuando se encuentra solo un valor. Por defecto será DetailView',
+),
 'Application_ProductService_Search_Autocomplete_Limit' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Aplicación',

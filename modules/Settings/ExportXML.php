@@ -1,4 +1,3 @@
-
 <?php
 /*************************************************************************************************
 * Copyright 2013 JPL TSolucio, S.L.  --  This file is a part of Attorney BackOffice.

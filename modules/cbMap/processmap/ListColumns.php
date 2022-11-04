@@ -155,6 +155,7 @@ class ListColumns extends processcbMap {
 		$this->mapping['cbmapDEFAULT']['LINKFIELD'] = $f->list_link_field;
 		$this->mapping['cbmapDEFAULT']['ListFields'] = $f->list_fields;
 		$this->mapping['cbmapDEFAULT']['ListFieldsName'] = $f->list_fields_name;
+		$this->mapping['cbmapPOPUP']['Conditions'] = array();
 		$this->mapping['cbmapPOPUP']['LINKFIELD'] = $f->list_link_field;
 		$this->mapping['cbmapPOPUP']['SearchFields'] = $f->search_fields;
 		$this->mapping['cbmapPOPUP']['SearchFieldsName'] = $f->search_fields_name;
