@@ -218,6 +218,33 @@ class WizardComponent {
 		}
 	}
 
+	FilterGrid(ev) {
+		const operatorData = {
+			eq: 'e',
+			contain: 'c',
+			ne: 'n',
+			start: 's',
+			ls: 'l',
+			gt: 'g',
+			lte: 'm',
+			gte: 'h',
+			after: 'a',
+			afterEq: 'h',
+			before: 'b',
+			beforeEq: 'm',
+		};
+		ev.instance.clear();
+		ev.instance.setRequestParams({
+			formodule: wizard.WizardCurrentModule[wizard.ActiveStep],
+			filtergrid: true,
+			step: wizard.ActiveStep,
+			forColumn: ev.columnName,
+			value: ev.filterState[0].state[0].value,
+			operator: operatorData[ev.filterState[0].state[0].code],
+		});
+		ev.instance.setPerPage(parseInt(20));
+	}
+
 	/**
 	 * Get related fieldname between two modules
 	 */

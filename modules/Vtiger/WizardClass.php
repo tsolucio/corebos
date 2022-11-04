@@ -90,6 +90,7 @@ class WizardView {
 				$columns[] = array(
 					'header' => $label,
 					'name' => $fieldname,
+					'uitype' => getUItype($this->module, $fieldname)
 				);
 			}
 			$smarty->assign('Columns', $columns);
@@ -146,8 +147,9 @@ class WizardActions {
 		$perPage = vtlib_purify($_REQUEST['perPage']);
 		$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 		$step = isset($_REQUEST['step']) ? intval($_REQUEST['step']) : '';
+		$filtergrid = isset($_REQUEST['filtergrid']) ? $_REQUEST['filtergrid'] : false;
 		$required_action = isset($_REQUEST['required_action']) ? intval($_REQUEST['required_action']) : '';
-		if (isset($_REQUEST['query']) && !empty($_REQUEST['query'])) {
+		if (isset($_REQUEST['query']) && !empty($_REQUEST['query']) && !$filtergrid) {
 			$sql = vtlib_purify($_REQUEST['query']);
 		} else {
 			$forids = isset($_REQUEST['forids']) ? json_decode($_REQUEST['forids'], true) : array();
@@ -177,6 +179,11 @@ class WizardActions {
 					}
 					$page = 1;
 				}
+			} elseif ($filtergrid) {
+				$forColumn = vtlib_purify($_REQUEST['forColumn']);
+				$value = vtlib_purify($_REQUEST['value']);
+				$operator = vtlib_purify($_REQUEST['operator']);
+				$qg->addCondition($forColumn, $value, $operator);
 			} else {
 				if (!empty($forids)) {
 					if (!is_array($forfield) && strpos($forfield, '.') !== false) {
