@@ -154,11 +154,13 @@ class VTCreateEntityTask extends VTTask {
 				$cbMap = cbMap::getMapByID($cbMapid);
 				$newEntity->column_fields = $cbMap->Mapping($cbfrom->column_fields, $newEntity->column_fields);
 			}
-
+			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+			$_REQUEST['ajxaction'] = 'Workflow';
 			$newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields, $handlerMeta);
 			$logbg->debug($newEntity->column_fields);
 			$newEntity->save($entityType);
 			relateEntities($focus, $moduleName, $recordId, $entityType, $newEntity->id);
+			$_REQUEST['ajxaction'] = $hold_ajxaction;
 		} else {
 			$logbg->debug('CreateEntityTask: cannot create entity due to missing information');
 			$logbg->debug($entityType);

@@ -1,6 +1,10 @@
 <div id="{$MasterDetailLayoutMap.mapname}" data-mapname="{$MasterDetailLayoutMap.mapnameraw}" style="display: inline"></div>
 <script>
 var MasterDetail_Pagination = 0;
+if (MasterDetail_TargetField === undefined) {
+	var MasterDetail_TargetField = Array();
+}
+MasterDetail_TargetField['mdgrid{$MasterDetailLayoutMap.mapname}'] = '{$MasterTargetField}';
 var pageOptions = false;
 if ({$MasterDetail_Pagination} > 0) {
 	pageOptions = {

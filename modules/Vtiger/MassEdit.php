@@ -60,5 +60,8 @@ $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentMod
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
+if ($currentModule == 'Products') {
+	$smarty->assign('Product_Maximum_Number_Images', GlobalVariable::getVariable('Product_Maximum_Number_Images', 6));
+}
 $smarty->display('MassEditForm.tpl');
 ?>
