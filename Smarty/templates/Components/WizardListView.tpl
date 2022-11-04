@@ -23,7 +23,7 @@ function WizardGrid{$formodule}{$step}() {
 			{
 				header: '{$i.header}',
 				name: '{$i.name}',
-				filter: {$i.uitype|getGridFilter:$i.uitype}
+				filter: wizard.ApplyFilter[{$step}] == 1 ? {$i.uitype|getGridFilter:$i.uitype} : false
 			},
 			{/foreach}
 			{if !empty($WizardActions)}

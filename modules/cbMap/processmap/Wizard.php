@@ -26,6 +26,7 @@
 		<description></description>
 		<sequence></sequence>
 		<detailviewlayoutmap>mapid</detailviewlayoutmap>
+		<filter>0|1</filter>
 		<validations>
 			<validation>
 				<validationmap>mapid</validationmap>
@@ -65,6 +66,7 @@ class Wizard extends processcbMap {
 			$step['description'] = (string)$s->description;
 			$step['sequence'] = (int)$s->sequence;
 			$step['detailviewlayoutmap'] = (string)$s->detailviewlayoutmap;
+			$step['filter'] = (string)$s->filter;
 			$validations = array();
 			if (isset($s->validations)) {
 				foreach ($s->validations->validation as $v) {

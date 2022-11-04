@@ -35,6 +35,7 @@ class WizardComponent {
 		this.WizardRequiredAction = [];
 		this.WizardCustomFunction = [];
 		this.IsDuplicatedFromProduct = [];
+		this.ApplyFilter = [];
 		this.Operation = '';
 		this.ProceedToNextStep = true;
 		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI';
@@ -243,6 +244,15 @@ class WizardComponent {
 			operator: operatorData[ev.filterState[0].state[0].code],
 		});
 		ev.instance.setPerPage(parseInt(20));
+	}
+
+	ClearFilter(step) {
+		this.WizardInstance[`wzgrid${step}`].clear();
+		this.WizardInstance[`wzgrid${step}`].setRequestParams({
+			formodule: wizard.WizardCurrentModule[step],
+			step: step
+		});
+		this.WizardInstance[`wzgrid${step}`].setPerPage(parseInt(20));
 	}
 
 	/**
