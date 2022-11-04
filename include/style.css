@@ -95,6 +95,45 @@
 	color: #CC2E26;
 }
 
+.detailview_wrapper_table .tui-grid-table {
+  border: 1px solid #ddd;
+}
+
+.detailview_wrapper_table .tui-grid-table .tui-grid-cell {
+  border: 1px solid #ddd;
+  vertical-align: baseline !important; 
+  padding: 0 2px;
+  white-space: normal;
+}
+.detailview_wrapper_table .tui-grid-table .tui-grid-cell *{
+  font-size: 11px;
+  position: relative;
+  left: 5px;
+  white-space: normal;
+}
+
+.detailview_wrapper_table .tui-grid-table [data-column-name="description"],
+.detailview_wrapper_table .tui-grid-table .tui-grid-cell-header{
+  vertical-align: middle !important;
+}
+.detailview_wrapper_table .tui-grid-table .tui-grid-cell-header{
+  position: relative;
+  left: 5px;
+}
+
+.detailview_wrapper_table .tui-grid-table [data-column-name="cblvactioncolumn"] *{
+	box-sizing: border-box;
+}
+.detailview_wrapper_table .tui-grid-table [data-column-name="cblvactioncolumn"] .slds-button-group{
+	position: relative;
+  top: 4px;
+  left: -6px;
+}
+
+.detailview_wrapper_table .detailview_wrapper_cell .slds-card__body{
+  margin-bottom: 142px;
+}
+
 .cbds-bg-compl-red--faint {
 	background-color: #FF7656;
 }
