@@ -11,7 +11,9 @@
 	{assign var='DESERTInfo' value='LBL_NO_DATA'|@getTranslatedString:$MODULE}
 	{include file='Components/Desert.tpl'}
 {else}
+	{if !$isModal}
 	<script src="include/js/wizard.js"></script>
+	{/if}
 	<script type="text/javascript">
 		wizard.steps = {$wizardTotal};
 		wizard.MCModule = '{$formodule}';
@@ -113,8 +115,12 @@
 								<div class="slds-media">
 									<div class="slds-media__body slds-m-top_x-small">
 										<div class="slds-media">
-											<div class="slds-setup-assistant__step-summary-content slds-media__body">												{if in_array('delete', $step.actions)}
-												<button class="slds-button slds-button_neutral" onclick="wizard.DeleteRowFromGrid({$smarty.foreach.stepwizard.index})">Remove</button>
+											<div class="slds-setup-assistant__step-summary-content slds-media__body">
+												{if $step.filter}
+												<button class="slds-button slds-button_neutral" onclick="wizard.ClearFilter({$smarty.foreach.stepwizard.index})" style="float: right;">Clear Filter</button>
+												{/if}
+												{if in_array('delete', $step.actions)}
+												<button class="slds-button slds-button_neutral" onclick="wizard.DeleteRowFromGrid({$smarty.foreach.stepwizard.index})" style="float: right;">Remove</button>
 												{/if}
 												{if $step.description neq ''}
 												<div class="slds-text-heading_small">
@@ -124,7 +130,12 @@
 													{$step.description}
 												</div>
 												{/if}
+												<div class="slds-m-top_large">
+												<script type="text/javascript">
+													wizard.ApplyFilter[{$smarty.foreach.stepwizard.index}] = '{$step.filter}';
+												</script>
 												{$wizardViews[$smarty.foreach.stepwizard.index]}
+												</div>
 											</div>
 										</div>
 									</div>

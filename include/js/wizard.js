@@ -35,6 +35,7 @@ class WizardComponent {
 		this.WizardRequiredAction = [];
 		this.WizardCustomFunction = [];
 		this.IsDuplicatedFromProduct = [];
+		this.ApplyFilter = [];
 		this.Operation = '';
 		this.ProceedToNextStep = true;
 		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI';
@@ -216,6 +217,42 @@ class WizardComponent {
 				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
 			}, 100);
 		}
+	}
+
+	FilterGrid(ev) {
+		const operatorData = {
+			eq: 'e',
+			contain: 'c',
+			ne: 'n',
+			start: 's',
+			ls: 'l',
+			gt: 'g',
+			lte: 'm',
+			gte: 'h',
+			after: 'a',
+			afterEq: 'h',
+			before: 'b',
+			beforeEq: 'm',
+		};
+		ev.instance.clear();
+		ev.instance.setRequestParams({
+			formodule: wizard.WizardCurrentModule[wizard.ActiveStep],
+			filtergrid: true,
+			step: wizard.ActiveStep,
+			forColumn: ev.columnName,
+			value: ev.filterState[0].state[0].value,
+			operator: operatorData[ev.filterState[0].state[0].code],
+		});
+		ev.instance.setPerPage(parseInt(20));
+	}
+
+	ClearFilter(step) {
+		this.WizardInstance[`wzgrid${step}`].clear();
+		this.WizardInstance[`wzgrid${step}`].setRequestParams({
+			formodule: wizard.WizardCurrentModule[step],
+			step: step
+		});
+		this.WizardInstance[`wzgrid${step}`].setPerPage(parseInt(20));
 	}
 
 	/**

@@ -157,6 +157,7 @@ var relatedlistgrid = {
 	Wziard: (grid, id, mapid, module) => {
 		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+mapid;
 		ldsModal.show('Wizard', '<div id="cbds-loader" style="height: 200px"></div>', 'large');
+		loadJS('include/js/wizard.js');
 		relatedlistgrid.loader('show');
 		relatedlistgrid.Request(url, 'post', {
 			grid: grid,
