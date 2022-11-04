@@ -550,6 +550,15 @@ FieldDependencies.prototype.fieldReadonlyDetailView = function (readonlyFields) 
 		document.getElementById('dtlview_'+field).style.display='inline';
 		document.getElementsByName(field).item(0).setAttribute('readonly', true);
 		document.getElementsByName(field).item(0).style.display='inline';
+
+		let elem = document.getElementById('txtbox_'+field);
+		var siblings = [];
+		while (elem = elem.nextElementSibling) {
+			siblings.push(elem);
+		}
+		for (var i=0; i<siblings.length; i++) {
+			siblings[i].style.display = 'none';
+		}
 	}
 };
 
