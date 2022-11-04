@@ -11,7 +11,9 @@
 	{assign var='DESERTInfo' value='LBL_NO_DATA'|@getTranslatedString:$MODULE}
 	{include file='Components/Desert.tpl'}
 {else}
+	{if !$isModal}
 	<script src="include/js/wizard.js"></script>
+	{/if}
 	<script type="text/javascript">
 		wizard.steps = {$wizardTotal};
 		wizard.MCModule = '{$formodule}';
