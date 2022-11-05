@@ -11477,7 +11477,7 @@ precacheAndRoute([{
   "revision": "70e4040be9d6e893aec7e605033a773a"
 }, {
   "url": "include/js/general.js",
-  "revision": "4e513451a25ba198b06931c557b28d04"
+  "revision": "336b6905c1f33a9d0ed74b7d798673fe"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "b4fad7ff70fb9444a5e86f58490269b9"
@@ -11510,7 +11510,7 @@ precacheAndRoute([{
   "revision": "5a09d9ad89882ba8ad3e993e11a08055"
 }, {
   "url": "include/js/masterdetailgrid.js",
-  "revision": "09c986144532ad127ac875affe0d5bf8"
+  "revision": "645f9d6c003ef1cfc10db4dc984899a6"
 }, {
   "url": "include/js/meld.js",
   "revision": "7c3894eb22d16cb4743a7ea226557ed1"
@@ -11750,7 +11750,7 @@ precacheAndRoute([{
   "revision": "a0ee36da94058a469df96cba89b1910b"
 }, {
   "url": "include/style.css",
-  "revision": "90a9a2733cad484a67a65b04d46dda72"
+  "revision": "6a56e8dd2c262ac6f78f2633b268e6e4"
 }, {
   "url": "include/print.css",
   "revision": "6b1e0c714dd4c389fb51b840e4cf01d2"
