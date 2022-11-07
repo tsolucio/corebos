@@ -19,6 +19,9 @@
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
 	<link rel="stylesheet" href="include/style.css" type="text/css" />
 {/if}
+{if empty($APMSG_DIVID)}
+	{assign var="APMSG_DIVID" value=""}
+{/if}
 {assign var="slds_role" value=""}
 {if !empty($ERROR_MESSAGE)}
 {if empty($ERROR_MESSAGE_CLASS) || $ERROR_MESSAGE_CLASS eq "cb-alert-danger"}
@@ -33,7 +36,7 @@
 	{assign var="slds_role" value="error"}
 {/if}
 {/if}
-<div id="appnotifydiv" class="slds-m-top_x-small slds-m-bottom_x-small" {if empty($ERROR_MESSAGE)}style="display:none"{/if}>
+<div id="appnotifydiv{$APMSG_DIVID}" class="slds-m-top_x-small slds-m-bottom_x-small" {if empty($ERROR_MESSAGE)}style="display:none"{/if}>
 	<div class="slds-notify slds-notify_alert slds-theme_{$slds_role} slds-theme_alert-texture slds-p-around_xx-small" role="alert">
 	<h2>
 		<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true">

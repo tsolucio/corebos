@@ -63,6 +63,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 						<!-- PUBLIC CONTENTS STARTS-->
 						<div class="small" style="padding:14px" onclick="hndCancelOutsideClick();";>
 						{include file='applicationmessage.tpl'}
+						{include file='DetailViewWidgetBar.tpl'}
 						<!-- Entity and More information tabs -->
 						<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 							<tr>
@@ -420,7 +421,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 														{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 														{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
 														{* Ignore block:// type custom links which are handled earlier *}
-														{if !preg_match("/^block:\/\/.*/", $customlink_href)}
+														{if !preg_match("/^block:\/\/.*/", $customlink_href) && !preg_match("/^top:\/\/.*/", $customlink_href)}
 															{if $customlink_label eq ''}
 																{assign var="customlink_label" value=$customlink_href}
 															{else}

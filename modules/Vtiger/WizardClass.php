@@ -104,6 +104,7 @@ class WizardView {
 			$smarty->assign('WizardGoBack', $this->goback);
 			$smarty->assign('WizardRequiredAction', $this->required_action);
 			$smarty->assign('WizardCustomFunction', $this->custom_function);
+			$smarty->assign('WizardModuleEditor', $this->module);
 			$query = '';
 			if (isset($this->conditions['condition'])) {
 				$query = $this->conditions['condition'];
@@ -258,6 +259,7 @@ class WizardActions {
 				$crow[$field] = $gridvalue[0];
 				$crow['id'] = $row[$table_index];
 				$crow[$fieldinfo[$field]['name'].'_raw'] = $value;
+				$crow['__modulename'] = $this->module;
 			}
 			$data[] = $crow;
 		}

@@ -731,6 +731,9 @@ function TreeView($element, $modules, $map, $i = 0) {
 					$row['record_permissions'] = array(
 						'parent_edit' => isPermitted($relatedmodule, 'EditView', $id)
 					);
+					$row['_attributes'] = array(
+						'expanded' => true
+					);
 				}
 				$tree[] = array_filter($row, 'is_string', ARRAY_FILTER_USE_KEY);
 			}

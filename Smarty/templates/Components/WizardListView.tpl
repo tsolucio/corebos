@@ -23,7 +23,8 @@ function WizardGrid{$formodule}{$step}() {
 			{
 				header: '{$i.header}',
 				name: '{$i.name}',
-				filter: wizard.ApplyFilter[{$step}] == 1 ? {$i.uitype|getGridFilter:$i.uitype} : false
+				filter: wizard.ApplyFilter[{$step}] == 1 ? {$i.uitype|getGridFilter:$i.uitype} : false,
+				editor: {json_encode($WizardModuleEditor|gridGetEditor:$i.name:$i.uitype)}
 			},
 			{/foreach}
 			{if !empty($WizardActions)}
@@ -81,6 +82,7 @@ function WizardGrid{$formodule}{$step}() {
 		wizard.CheckRows(ev);
 	});
 	wizard.WizardInstance['wzgrid{$step}'].on('filter', wizard.FilterGrid);
+	wizard.WizardInstance['wzgrid{$step}'].on('editingFinish', wizard.InlineEdit);
 }
 if (wizard.isModal && {$step} > 0 && wizard.ProceedToNextStep) {
 	WizardGrid{$formodule}{$step}();
