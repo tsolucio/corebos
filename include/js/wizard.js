@@ -255,6 +255,36 @@ class WizardComponent {
 		this.WizardInstance[`wzgrid${step}`].setPerPage(parseInt(20));
 	}
 
+	InlineEdit(ev) {
+		let rowkey = ev.rowKey;
+		let fieldName = ev.columnName;
+		let fieldValue = ev.value;
+		let recordid = ev.instance.getValue(rowkey, 'id');
+		let modulename = ev.instance.getValue(rowkey, '__modulename');
+		if (modulename != '') {
+			let fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=inline_edit&recordid='+recordid+'&rec_module='+modulename+'&fldName='+fieldName+'&fieldValue='+encodeURIComponent(fieldValue);
+			if (recordid != '') {
+				GridValidation(recordid, modulename, fieldName, fieldValue).then(function (msg) {
+					if (msg == '%%%OK%%%') {
+						jQuery.ajax({
+							method: 'POST',
+							url: 'index.php?' + fileurl
+						}).done(function (response) {
+							let res = JSON.parse(response);
+							if (res.success) {
+								ev.instance.readData(1);
+							} else {
+								ldsPrompt.show(alert_arr.ERROR, alert_arr.Failed, 'error');
+							}
+						});
+					} else {
+						ldsPrompt.show(alert_arr.ERROR, msg, 'error');
+					}
+				});
+			}
+		}
+	}
+
 	/**
 	 * Get related fieldname between two modules
 	 */
