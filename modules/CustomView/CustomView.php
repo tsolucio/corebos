@@ -543,6 +543,36 @@ class CustomView extends CRMEntity {
 		return $fielddef;
 	}
 
+	/**
+	 * Return coreBOS field specification given a field name or label
+	 * @param string field name or label
+	 * @param string module to search for the field
+	 * @return string corebos field specification: $fieldtablename:$fieldcolname:$fieldname:$module_$fieldlabel1:$fieldtypeofdata
+	 */
+	public function getFilterFieldDefinitionByNameOrLabel($field, $module) {
+		$modulecollist_array = $this->getModuleColumnsList($module, true);
+		$result = '';
+		foreach ($modulecollist_array[$module] as $blockinfo) {
+			if (isset($blockinfo[$field])) {
+				$result = $blockinfo[$field]['value'];
+				break;
+			} else {
+				$found = false;
+				foreach ($blockinfo as $finfo) {
+					if ($finfo['label']==$field) {
+						$found = true;
+						$result = $finfo['value'];
+						break;
+					}
+				}
+				if ($found) {
+					break;
+				}
+			}
+		}
+		return $result;
+	}
+
 	/** to get the standard filter criteria
 	 * @param string selcriteria (optional)
 	 * @return array in the following format

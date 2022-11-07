@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************/
+// block://showmsgwidget:modules/Utilities/showMsgWidget.php:recordid=$RECORD$&msg=somemessage
+// top://showmsgwidget:modules/Utilities/showMsgWidget.php:recordid=$RECORD$&msg=somemessage
+// module=Utilities&action=UtilitiesAjax&file=showMsgWidget&recordid=$RECORD$&msg=somemessage
+
 require_once 'modules/Vtiger/DeveloperWidget.php';
 global $currentModule;
 
@@ -28,7 +32,6 @@ class showmsgwidget_DetailViewBlock extends DeveloperBlock {
 
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {
-		global $adb;
 		$this->context = $context;
 		$smarty = $this->getViewer();
 		$msg = $this->getFromContext('msg');
@@ -54,6 +57,7 @@ class showmsgwidget_DetailViewBlock extends DeveloperBlock {
 		}
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-'.$level);
 		$smarty->assign('ERROR_MESSAGE', getTranslatedString($msg));
+		$smarty->assign('APMSG_DIVID', uniqid());
 		return $smarty->fetch('applicationmessage.tpl');
 	}
 }

@@ -93,6 +93,9 @@ if (!empty($idlist)) {
 				if ($validation == '%%%OK%%%') {
 					$msg = $app_strings['record'].' '.$recname.' '.$app_strings['saved'];
 					$focus->save($currentModule);
+					//get files from cache
+					$deletefiles = getImages($focus->id);
+					$focus->insertIntoAttachment($focus->id, $currentModule, true);
 				} else {
 					$msg = $app_strings['record'].' '.$recname.' '.$validation;
 				}
@@ -104,7 +107,32 @@ if (!empty($idlist)) {
 		$progress = round($recordprocessed / $recordcount * 100, 0);
 		send_message($id++, $msg, $progress, $recordprocessed, $recordcount);
 	}
+	if (isset($deletefiles)) {
+		foreach ($deletefiles as $file) {
+			unlink($file);
+		}
+	}
 	send_message('CLOSE', $app_strings['processcomplete'], 100, $recordcount, $recordcount);
 	coreBOS_Settings::delSetting('masseditids'.$params['corebos_browsertabID']);
+}
+
+function getImages($crmid) {
+	global $current_user, $root_directory;
+	$dirname = $root_directory.'cache/massedit/';
+	$files = glob($dirname.'*');
+	$allfiles = array();
+	foreach ($files as $file) {
+		if (is_file($file) && strpos($file, '_filedata') !== false) {
+			$info = pathinfo($file);
+			$field = explode('_filedata', $info['filename']);
+			$_FILES[$field[0]]['name'] = $info['basename'];
+			$_FILES[$field[0]]['tmp_name'] = $file;
+			$_FILES[$field[0]]['size'] = filesize($file);
+			$_FILES[$field[0]]['type'] = mime_content_type($file);
+			$_FILES[$field[0]]['error'] = 0;
+			$allfiles[] = $file;
+		}
+	}
+	return $allfiles;
 }
 ?>

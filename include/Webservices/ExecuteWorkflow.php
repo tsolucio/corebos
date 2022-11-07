@@ -80,7 +80,7 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 		$entityData = $entityCache->forId($crmid);
 		$modPrefix = $entityData->getModuleName(); // it return module from webservice
 		if ($workflow_mod == $modPrefix) { // compare workflow module with webservice module to execute
-			if ($workflow->isCompletedForRecord($crmid) || isPermitted($workflow_mod, 'DetailView', $crmid)=='no' || isPermitted($workflow_mod, 'Save', $crmid)=='no') {
+			if ($workflow->isCompletedForRecord($crmid) || isPermitted($workflow_mod, 'DetailView', $crmid)=='no') {
 				$errortasks[$crmid] = "Permission to access $crmid is denied or workflow already applied";
 				continue;
 			}

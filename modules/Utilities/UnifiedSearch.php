@@ -213,7 +213,8 @@ if (isset($query_string) && $query_string != '') {
 		$recfound = array_keys($listview_entries_for1);
 		$recfound = $recfound[0];
 		if ($recfound != '') {
-			echo "<script type='text/javascript'>gotourl('index.php?module=$modfound&record=$recfound&action=DetailView');</script>";
+			$gsAction = GlobalVariable::getVariable('Application_Global_Search_Action', 'DetailView', $modfound);
+			echo "<script type='text/javascript'>gotourl('index.php?module=$modfound&record=$recfound&action=".$gsAction."');</script>";
 		}
 	}
 	if ($total_record_count == 0) {

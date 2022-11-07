@@ -223,13 +223,13 @@ class Vtiger_DependencyPicklist {
 		return $fields;
 	}
 
-	public static function getFieldDependencyDatasource($module) {
+	public static function getFieldDependencyDatasource($module, $mode = 0) {
 		$bmapname = $module.'_FieldDependency';
 		$cbMapFDEP = array();
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
-			$cbMapFDEP = $cbMap->FieldDependency();
+			$cbMapFDEP = $cbMap->FieldDependency($mode);
 			$cbMapFDEP = $cbMapFDEP['fields'];
 		} else {
 			$cbMapFDEP = self::getMapPicklistDependencyDatasource($module);

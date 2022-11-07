@@ -9,14 +9,22 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Module Name',
-	'SINGLE_ModuleName' => 'Module Name',
-	'ModuleName ID' => 'Module Name ID',
+	'AutoNumberPrefix' => 'Nummering en voorloop',
+	'Prefix' => 'Voorloop',
+	'SINGLE_AutoNumberPrefix' => 'Nummer en voorloop',
+	'AutoNumberPrefix ID' => 'Voorloop en nummer ID',
+	'AutoPrefixNumber No' => 'Nummer en voorloop No',
+	'Active' => 'Actief',
+	'Workflow Expression' => 'Werkstroom expressie',
+	'Module' => 'Module',
+	'Format' => 'Formaat',
+	'Current Value' => 'Huidige waarde',
+	'Default' => 'Standaard',
+	'FIX_MISSING_NUMBERING' => 'Werk missende nummering bij',
+	'LBL_MASSINCERROR' => 'Er deed zich een fout voor tijdens het bijwerken van missende nummering',
 
-	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
-	'LBL_DESCRIPTION_INFORMATION' => 'Verkoopkans omschrijving',
-
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'LBL_CUSTOM_INFORMATION' => 'Eigen informatie',
+	'LBL_AUTO_NUMBER_PREFIX_INFORMATION' => 'Nummer en voorloop informatie',
+	'LBL_DESCRIPTION_INFORMATION' => 'Beschrijving',
 );
 ?>

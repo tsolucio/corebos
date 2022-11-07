@@ -196,7 +196,8 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo = $focus->GlobalSearchAutocomplete();
 		break;
 	case 'FieldDependency':
-		$mapinfo = $focus->FieldDependency();
+		$fdepmode = isset($_REQUEST['fdepmode']) ? $_REQUEST['fdepmode'] : 0;
+		$mapinfo = $focus->FieldDependency($fdepmode);
 		break;
 	case 'Wizard':
 		$mapinfo = $focus->Wizard();

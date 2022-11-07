@@ -11477,7 +11477,7 @@ precacheAndRoute([{
   "revision": "70e4040be9d6e893aec7e605033a773a"
 }, {
   "url": "include/js/general.js",
-  "revision": "55ddd4cd21667456c5038a1a4d8a8f51"
+  "revision": "336b6905c1f33a9d0ed74b7d798673fe"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "b4fad7ff70fb9444a5e86f58490269b9"
@@ -11498,7 +11498,7 @@ precacheAndRoute([{
   "revision": "d1b3c0036f73a192a4652436eb364ffa"
 }, {
   "url": "include/js/ListViewRenderes.js",
-  "revision": "3111bb0321f2065d3b9694836e16d1ee"
+  "revision": "479539b67ca6305b9e6d8ee179436132"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
@@ -11510,7 +11510,7 @@ precacheAndRoute([{
   "revision": "5a09d9ad89882ba8ad3e993e11a08055"
 }, {
   "url": "include/js/masterdetailgrid.js",
-  "revision": "09c986144532ad127ac875affe0d5bf8"
+  "revision": "645f9d6c003ef1cfc10db4dc984899a6"
 }, {
   "url": "include/js/meld.js",
   "revision": "7c3894eb22d16cb4743a7ea226557ed1"
@@ -11543,7 +11543,7 @@ precacheAndRoute([{
   "revision": "89ad8ae2e8972f6085b6728624061ac2"
 }, {
   "url": "include/js/relatedlistgrid.js",
-  "revision": "a2bfa25f7b3210ba7da037b91a3fa746"
+  "revision": "a7b2a61873beee8a19a59b61e401f03b"
 }, {
   "url": "include/js/relatedlists.js",
   "revision": "11bf2a6771f84a03764f40e052d76358"
@@ -11750,7 +11750,7 @@ precacheAndRoute([{
   "revision": "a0ee36da94058a469df96cba89b1910b"
 }, {
   "url": "include/style.css",
-  "revision": "90a9a2733cad484a67a65b04d46dda72"
+  "revision": "6a56e8dd2c262ac6f78f2633b268e6e4"
 }, {
   "url": "include/print.css",
   "revision": "6b1e0c714dd4c389fb51b840e4cf01d2"
@@ -12338,7 +12338,7 @@ precacheAndRoute([{
   "revision": "aba9f38466e2ee904b8465a3cbe65de7"
 }, {
   "url": "modules/Utilities/Utilities.js",
-  "revision": "18844ee70d6993cd1e9bbb8bb412d097"
+  "revision": "08738fbd221f6bc1c53f0ddbe4b37a8a"
 }, {
   "url": "modules/Import/resources/ImportStep2.js",
   "revision": "f98f9eeb54cd2b95375d74c1af6a9f14"

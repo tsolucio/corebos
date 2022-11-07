@@ -96,8 +96,8 @@ $mod_strings = array(
 
 	'LBL_TICKET_CUMULATIVE_STATISTICS'=>'Ticket-Statistik:',
 	'LBL_CASE_TOPIC'=>'Vorfall',
-	'LBL_OPEN'=>'offen',
-	'LBL_CLOSED'=>'geschlossen',
+	'LBL_OPEN'=>'Offen',
+	'LBL_CLOSED'=>'Eledigt',
 	'LBL_TOTAL'=>'Total',
 	'LBL_TICKET_HISTORY'=>'Ticketverlauf:',
 	'LBL_CATEGORIES'=>'Kategorien',
@@ -129,7 +129,7 @@ $mod_strings = array(
 
 	//Added for existing picklist entries
 
-	'Big Problem'=>'grosses Problem',
+	'Big Problem'=>'komplex',
 	'Small Problem'=>'kleines Problem',
 	'Other Problem'=>'anderes Problem',
 
@@ -139,14 +139,14 @@ $mod_strings = array(
 	'Urgent'=>'dringend',
 
 	'Minor'=>'gering',
-	'Major'=>'bedeutend',
-	'Feature'=>'Eigenschaft',
+	'Major'=>'wichtig',
+	'Feature'=>'Feature',
 	'Critical'=>'kritisch',
 
-	'Open'=>'offen',
+	'Open'=>'Offen',
 	'In Progress'=>'in Bearbeitung',
-	'Wait For Response'=>'warte auf Zuarbeit',
-	'Closed'=>'geschlossen',
+	'Wait For Response'=>'wartet auf Zuarbeit',
+	'Closed'=>'Erledigt',
 
 	//added to support i18n in ticket mails
 	'Hi' => 'Hallo',
@@ -193,9 +193,9 @@ $mod_strings = array(
 	'Hours' => 'Stunden',
 	'Days' => 'Tage',
 
-	'From Portal' => 'Von Kundenportal',
-	'From mailscanner' => 'From Mail Converter',
-	'Comment Added' => 'Comment Added',
-	'HelpDesk ID' => 'Trouble Ticket ID',
+	'From Portal' => 'Ticket via Kundenportal',
+	'From mailscanner' => 'Ticket via E-Mail',
+	'Comment Added' => 'Kommentar hinzugefühgt',
+	'HelpDesk ID' => 'Ticket ID',
 );
 ?>

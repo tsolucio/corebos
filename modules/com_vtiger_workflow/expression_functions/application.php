@@ -312,6 +312,9 @@ function __cb_getISODate($arr) {
 
 function __cb_getidof($arr) {
 	global $current_user, $adb;
+	if (count($arr)!=3 || empty($arr[0]) || empty($arr[1]) || empty($arr[2])) {
+		return 0;
+	}
 	$qg = new QueryGenerator($arr[0], $current_user);
 	$qg->setFields(array('id'));
 	$qg->addCondition($arr[1], $arr[2], 'e');
