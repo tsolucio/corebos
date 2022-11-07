@@ -546,10 +546,7 @@ FieldDependencies.prototype.fieldReadonlyDetailView = function (readonlyFields) 
 	var field='';
 	for (var i=0; i<readonlyFields.length; i++) {
 		field=readonlyFields[i]['field'];
-		document.getElementById('dtlview_'+field).innerHTML=document.getElementsByName(field).item(0).value;
-		document.getElementById('dtlview_'+field).style.display='inline';
-		document.getElementsByName(field).item(0).setAttribute('readonly', true);
-		document.getElementsByName(field).item(0).style.display='inline';
+		document.getElementById('mouseArea_'+field).removeAttribute('onclick');
 	}
 };
 
