@@ -57,6 +57,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$functionName = '';
 		$MainModule = '';
 		$MainRelateField = '';
+		$LastModule = '';
 		$idx = 0;
 		foreach ($map['modules'] as $module) {
 			if ($idx == 0) {
@@ -65,13 +66,15 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 			if ($idx == 1) {
 				$MainModule = $module['name'];
 			}
+			$LastModule = $module['name'];
 			$functionName .= $module['name'];
 			$RLInstance[] = $module;
 			if (isset($module['listview'])) {
 				foreach ($module['listview'] as $fld) {
 					$Columns[] = array(
 						'name' => $fld['fieldinfo']['name'],
-						'label' => $fld['fieldinfo']['label']
+						'label' => $fld['fieldinfo']['label'],
+						'uitype' => $fld['fieldinfo']['uitype'],
 					);
 				}
 			}
@@ -102,9 +105,10 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 			$idx++;
 		}
 		$smarty->assign('CurrentRecord', $_REQUEST['record']);
-		$smarty->assign('currentModule', $currentModule);
 		$smarty->assign('MainModule', $MainModule);
+		$smarty->assign('currentModule', $currentModule);
 		$smarty->assign('MainRelateField', $MainRelateField);
+		$smarty->assign('LastModule', $LastModule);
 		$smarty->assign('Columns', $Columns);
 		$smarty->assign('RLInstance', json_encode($RLInstance));
 		$smarty->assign('FieldLabels', json_encode($FieldLabels));

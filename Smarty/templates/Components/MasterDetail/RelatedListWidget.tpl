@@ -76,6 +76,7 @@ function loadRLGrid{$functionName}() {
 				renderer: {
 					type: RLinkRender
 				},
+				editor: {json_encode($LastModule|gridGetEditor:$rlfield.name:$rlfield.uitype)}
 			},
 			{/foreach}
 			{if !empty($cbgridactioncol)}
