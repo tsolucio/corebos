@@ -102,6 +102,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 			$idx++;
 		}
 		$smarty->assign('CurrentRecord', $_REQUEST['record']);
+		$smarty->assign('currentModule', $currentModule);
 		$smarty->assign('MainModule', $MainModule);
 		$smarty->assign('MainRelateField', $MainRelateField);
 		$smarty->assign('Columns', $Columns);
@@ -110,6 +111,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('RelatedFields', json_encode($RelatedFields));
 		$smarty->assign('Tooltips', json_encode($Tooltips));
 		$smarty->assign('Wizard', json_encode($Wizard));
+		$smarty->assign('WizardArray', $Wizard);
 		$smarty->assign('NextStep', json_encode($NextStep));
 		$smarty->assign('mapname', $mapname);
 		$smarty->assign('functionName', $functionName);

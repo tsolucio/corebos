@@ -24,6 +24,11 @@
 					<div class="slds-page-header__controls">
 						<div class="slds-page-header__control">
 						<div class="slds-button-group" role="group">
+							{if !empty($WizardArray[$currentModule])}
+							<button type="button" class="slds-button slds-button_neutral" onclick="relatedlistgrid.Wizard('{$functionName}', {$CurrentRecord}, {$WizardArray[$currentModule]}, '{$currentModule}')">
+								Wizard
+							</button>
+							{/if}
 							<button type="button" class="slds-button slds-button_neutral" onclick="relatedlistgrid.upsert('{$functionName}', '{$MainModule}', '', {$CurrentRecord}, '{$MainRelateField}')">
 								{$APP.LBL_CREATE_BUTTON_LABEL} {$MainModule}
 							</button>
