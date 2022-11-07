@@ -259,6 +259,25 @@ $smarty->assign('moduleView', $layout);
 $smarty->assign('Apache_Tika_URL', GlobalVariable::getVariable('Apache_Tika_URL', ''));
 $smarty->assign('ShowCreateMessage', GlobalVariable::getVariable('Application_ListView_Show_Create_Message', '0'));
 
+// send advancedSearch business map data to the frontEnd
+$advancedSearchMapResult = "MAP_NOT_FOUND";
+$map = new cbMap();
+// $bmapname = $module.'_AdvancedSearch';
+$cbMaps = cbMap::getMapsByType("AdvancedSearch");
+// search for the map that's made for your current module
+foreach ($cbMaps as $mapid => $mapname) {
+	$map->id = $mapid;
+	$map->mode = '';
+	$map->retrieve_entity_info($mapid, "cbMap");
+	$mapResult = $map->AdvancedSearch($currentModule);
+	if ($mapResult == "WRONG_MODULE") continue;
+	else {
+		$advancedSearchMapResult = $mapResult;
+		break;
+	}
+}
+$smarty->assign('advancedSearchMapResult', $advancedSearchMapResult);
+
 if (!empty($custom_list_include) && file_exists($custom_list_include)) {
 	include $custom_list_include;
 }
