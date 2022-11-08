@@ -33,6 +33,10 @@
 				<fields></fields>
 				...
 			</tooltip>
+			<workflows>
+				<workflow>id</workflow>
+				...
+			</workflows>
 		</module>
 		<module>
 			<name>Assets</name>
@@ -97,6 +101,9 @@ class RelatedListBlock extends processcbMap {
 				$this->mapping_arr['modules'][$idx] = (array)$key;
 				if (isset($key->tooltip)) {
 					$this->mapping_arr['modules'][$idx]['tooltip'] = (array)$key->tooltip;
+				}
+				if (isset($key->workflows)) {
+					$this->mapping_arr['modules'][$idx]['workflows'] = (array)$key->workflows->workflow;
 				}
 				if (isset($key->listview)) {
 					$this->detailModule = (string)$key->name;

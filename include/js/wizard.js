@@ -402,7 +402,7 @@ class WizardComponent {
 			url += `&Module_Popup_Edit=1&isDuplicate=true&wizardaction=${action}`;
 		}
 		const module = this.WizardCurrentModule[this.ActiveStep];
-		window.open('index.php?module='+module+'&action=EditView&record='+id+url, null, cbPopupWindowSettings + ',dependent=yes');
+		window.open('index.php?module='+module+'&action=EditView&record='+id+url+'&cbfromid='+id, null, cbPopupWindowSettings + ',dependent=yes');
 	}
 
 	Delete(id) {
