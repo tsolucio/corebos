@@ -130,7 +130,7 @@
 		getPreExisting: function () {
 			let input = document.getElementById('cbds-advfilt_existing-conditions');
 			let existing = {};
-			if(input == null && advancedSearchData !== "MAP_NOT_FOUND") {
+			if (input == null && advancedSearchData !== "MAP_NOT_FOUND") {
 				existing = this.putObjectsInsideArrayByKey(advancedSearchData, ["group", "condition"]);
 				existing = this.convertAdvancedSearchObjectFormat(advancedSearchData);
 			} else {
