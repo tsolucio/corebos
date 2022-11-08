@@ -53,6 +53,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$RelatedFields = array();
 		$Tooltips = array();
 		$Wizard = array();
+		$WizardWorkflows = array();
 		$NextStep = array();
 		$functionName = '';
 		$MainModule = '';
@@ -102,11 +103,15 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 			if (isset($module['wizard'])) {
 				$NextStep[$module['name']] = boolval($module['nextstep']);
 			}
+			if (isset($module['workflows'])) {
+				$WizardWorkflows = $module['workflows'];
+			}
 			$idx++;
 		}
+		$smarty->assign('ID', $id);
 		$smarty->assign('CurrentRecord', $_REQUEST['record']);
-		$smarty->assign('MainModule', $MainModule);
 		$smarty->assign('currentModule', $currentModule);
+		$smarty->assign('MainModule', $MainModule);
 		$smarty->assign('MainRelateField', $MainRelateField);
 		$smarty->assign('LastModule', $LastModule);
 		$smarty->assign('Columns', $Columns);
@@ -116,10 +121,10 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('Tooltips', json_encode($Tooltips));
 		$smarty->assign('Wizard', json_encode($Wizard));
 		$smarty->assign('WizardArray', $Wizard);
+		$smarty->assign('WizardWorkflows', json_encode($WizardWorkflows));
 		$smarty->assign('NextStep', json_encode($NextStep));
 		$smarty->assign('mapname', $mapname);
 		$smarty->assign('functionName', $functionName);
-		$smarty->assign('ID', $id);
 		$smarty->assign('title', $map['title']);
 		$cbgridactioncol = str_replace('"RLActionRender"', 'RLActionRender', json_encode(gridRelatedListActionColumn('RLActionRender', $map)));
 		$smarty->assign('cbgridactioncol', $cbgridactioncol);

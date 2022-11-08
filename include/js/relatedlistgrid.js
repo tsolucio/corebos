@@ -8,6 +8,7 @@ var relatedlistgrid = {
 	Tooltips: [],
 	MapName: [],
 	Wizard: [],
+	WizardWorkflows: [],
 	NextStep: [],
 
 	delete: (Grid, module, recordid, fieldname) => {
@@ -155,23 +156,31 @@ var relatedlistgrid = {
 	loadedTooltips: [],
 
 	Wizard: (grid, id, mapid, module) => {
+		let workflows = JSON.parse(relatedlistgrid.WizardWorkflows[grid]);
+		let waitTime = 0;
+		for (let i in workflows) {
+			ExecuteFunctions('execwf', 'wfid='+workflows[i]+'&ids='+id);
+			waitTime = 1000;
+		}
 		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+mapid;
 		ldsModal.show('Wizard', '<div id="cbds-loader" style="height: 200px"></div>', 'large');
 		loadJS('include/js/wizard.js');
 		relatedlistgrid.loader('show');
-		relatedlistgrid.Request(url, 'post', {
-			grid: grid,
-			recordid: id,
-			isModal: true
-		}).then(function(response) {
-			ldsModal.close();
-			ldsModal.show('Wizard', response, 'large');
-			let ProceedToNextStep = JSON.parse(relatedlistgrid.NextStep[grid]);
-			const event = new CustomEvent('onWizardModal', {detail: {
-				'ProceedToNextStep': ProceedToNextStep[module]
-			}});
-			window.dispatchEvent(event);
-		});
+		setTimeout(function () {
+			relatedlistgrid.Request(url, 'post', {
+				grid: grid,
+				recordid: id,
+				isModal: true
+			}).then(function(response) {
+				ldsModal.close();
+				ldsModal.show('Wizard', response, 'large');
+				let ProceedToNextStep = JSON.parse(relatedlistgrid.NextStep[grid]);
+				const event = new CustomEvent('onWizardModal', {detail: {
+					'ProceedToNextStep': ProceedToNextStep[module]
+				}});
+				window.dispatchEvent(event);
+			});
+		}, waitTime);
 	},
 
  	Request: async (url, method, body = {}) => {
