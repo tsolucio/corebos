@@ -35,7 +35,7 @@ while ($cv = $adb->fetch_array($cvrs)) {
 		'setpublic' => $cv['status'] == CV_STATUS_PENDING ? 1 : 0,
 		'mandatory' => '0',
 		'module_list' => $cv['entitytype'],
-		'assigned_user_id' => $userWSID.$current_user->id,
+		'assigned_user_id' => $userWSID.$cv['userid'],
 		'cvrole' => $subrole
 	);
 	$searchOn = 'cvid';
