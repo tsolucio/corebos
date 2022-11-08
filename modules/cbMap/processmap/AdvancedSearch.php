@@ -18,16 +18,16 @@
  *************************************************************************************************
  * The accepted format is:
     <map>
-        <modulename>todo</modulename>
+        <modulename>cbCalendar</modulename>
         <group>
             <conditions>
                 <condition>
-                    <fieldname>subject</fieldname>
+                    <fieldname>Subject</fieldname>
                     <operator>eq</operator>
                 </condition>
                 <condition>
                     <join>and</join>
-                    <fieldname>desciption</fieldname>
+                    <fieldname>Subject</fieldname>
                     <operator>eq</operator>
                 </condition>
             </conditions>
@@ -36,8 +36,8 @@
             <groupjoin>and</groupjoin>
             <conditions>
                 <condition>
-                    <fieldname>End Date</fieldname>
-                    <operator>less than</operator>
+                    <fieldname>Subject</fieldname>
+                    <operator>eq</operator>
                 </condition>
             </conditions>
         </group>
@@ -47,23 +47,15 @@
 class AdvancedSearch extends processcbMap {
 
 	public function processMap($module) {
-		$map = $this->getMap();
 		$parsedxml = $this->getXMLContent();
-        $xmlString = htmlspecialchars_decode($map->column_fields["content"]);
-
-        // checking the module
         $module = (string)$module[0];
-        $moduleInXml = (string)$parsedxml->modulename;
-        if ($module != $moduleInXml) {
-            return "WRONG_MODULE";
-        }
 
         // convert $parsedxml into an associative array
         $parsedxml = json_decode(json_encode((array)$parsedxml), true);
 
         // convert fields into the right format
         $customView = new CustomView();
-        if(isset($parsedxml["group"]["conditions"])) {
+        if (isset($parsedxml["group"]["conditions"])) {
             if (isset($parsedxml["group"]["conditions"]["condition"]["fieldname"])) {
                 $parsedxml["group"]["conditions"]["condition"]["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($parsedxml["group"]["conditions"]["condition"]["fieldname"], $module);
             } else {
