@@ -261,15 +261,15 @@ $smarty->assign('ShowCreateMessage', GlobalVariable::getVariable('Application_Li
 
 // send advancedSearch business map data to the frontEnd
 $advancedSearchMapResult = "MAP_NOT_FOUND";
-$map = new cbMap();
+$advancedSearchMapObject = new cbMap();
 // $bmapname = $module.'_AdvancedSearch';
 $cbMaps = cbMap::getMapsByType("AdvancedSearch");
 // search for the map that's made for your current module
 foreach ($cbMaps as $mapid => $mapname) {
-	$map->id = $mapid;
-	$map->mode = '';
-	$map->retrieve_entity_info($mapid, "cbMap");
-	$mapResult = $map->AdvancedSearch($currentModule);
+	$advancedSearchMapObject->id = $mapid;
+	$advancedSearchMapObject->mode = '';
+	$advancedSearchMapObject->retrieve_entity_info($mapid, "cbMap");
+	$mapResult = $advancedSearchMapObject->AdvancedSearch($currentModule);
 	if ($mapResult == "WRONG_MODULE") continue;
 	else {
 		$advancedSearchMapResult = $mapResult;
