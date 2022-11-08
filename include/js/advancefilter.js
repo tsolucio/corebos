@@ -174,7 +174,7 @@
 
 		/*
 		* Method: 'addObjectsInsideArrayByKey'
-		* puts selected objects (by key) nested objects inside array
+		* puts selected nested objects (by key) inside array
 		* example: putObjectsInsideArrayByKey(obj, ["columnname", "group"])
 		*/
 		putObjectsInsideArrayByKey: function (obj, keys) {
