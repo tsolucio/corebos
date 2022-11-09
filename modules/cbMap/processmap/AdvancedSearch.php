@@ -49,7 +49,7 @@ class AdvancedSearch extends processcbMap {
 	public function processMap($module) {
 		$parsedxml = $this->getXMLContent();
         $module = (string)$module[0];
-
+        
         // convert $parsedxml into an associative array
         $parsedxml = json_decode(json_encode((array)$parsedxml), true);
 

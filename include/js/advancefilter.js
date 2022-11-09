@@ -181,7 +181,7 @@
 			const objectKeys = Object.keys(obj);
 			for (let index = 0; index < objectKeys.length; index++) {
 				const objectKey = objectKeys[index];
-				if(typeof obj[objectKey] === 'object' && !Array.isArray(obj[objectKey]) && obj[objectKey] !== null) {
+				if (typeof obj[objectKey] === 'object' && !Array.isArray(obj[objectKey]) && obj[objectKey] !== null) {
 					this.putObjectsInsideArrayByKey(obj[objectKey], keys);
 				} else if (Array.isArray(obj[objectKey])) {
 					for (let index = 0; index < obj[objectKey].length; index++) {
