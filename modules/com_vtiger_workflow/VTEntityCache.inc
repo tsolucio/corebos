@@ -85,7 +85,7 @@ class VTWorkflowEntity {
 		return $this->moduleName;
 	}
 
-	public function get($fieldName) {
+	public function get($fieldName, $WorkflowContext = array()) {
 		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
 		if (count($matches)>0) {
 			global $current_user;
@@ -96,7 +96,7 @@ class VTWorkflowEntity {
 			}
 			$entityCache = new VTEntityCache($current_user);
 			$entityCache->setCache($this->getId(), $this);
-			return $ct->render($entityCache, $this->getId());
+			return $ct->render($entityCache, $this->getId(), array(), $WorkflowContext);
 		}
 		if (substr($fieldName, 0, 14)=='previousvalue_') {
 			$entityDelta = new VTEntityDelta();
