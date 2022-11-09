@@ -30,18 +30,22 @@
 				}, 200);
 			});
 		});
+		var isWizardInit = false;
 		window.addEventListener('onWizardModal', (e) => {
 			wizard.ProceedToNextStep = e.detail.ProceedToNextStep;
-			wizard.DeleteSession().then(function() {
-				wizard.Init();
-				let hideStep = 1;
-				if (!e.detail.ProceedToNextStep) {
-					hideStep = 0;
-				}
-				setTimeout(function() {
-					wizard.Hide(hideStep);
-				}, 400);
-			});
+			if (!isWizardInit) {
+				wizard.DeleteSession().then(function() {
+					wizard.Init();
+					let hideStep = 1;
+					if (!e.detail.ProceedToNextStep) {
+						hideStep = 0;
+					}
+					setTimeout(function() {
+						wizard.Hide(hideStep);
+					}, 400);
+				});
+				isWizardInit = true;
+			}
 		});
 	</script>
 	<style type="text/css">
