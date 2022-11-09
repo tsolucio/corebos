@@ -1506,6 +1506,7 @@ function runBAWorkflow(workflowid, crmids) {
 			}
 		}
 		VtigerJS_DialogBox.unblock();
+		corebosjshook_runBAWorkflow(workflowid, crmids);
 	});
 	return void(0);
 }
@@ -7399,15 +7400,3 @@ window.addEventListener('DOMContentLoaded', () => {
 		findUpModuleInMenu();
 	}
 });
-
-function signPDFDocument(workflow_id, record_id) {
-	let pdf_Preview_iframe = $('#pdfPreviewiframe');
-	let source = pdf_Preview_iframe.attr('src');
-	setTimeout(function(){
-		pdf_Preview_iframe.attr('src', '');
-	}, 5000);
-	setTimeout(function(){
-		pdf_Preview_iframe.attr('src', source);
-	}, 7000);
-	runBAWorkflow(workflow_id, record_id);
-}
