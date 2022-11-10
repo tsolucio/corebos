@@ -83,5 +83,6 @@ $mod_strings = array(
 	'Reset content' => 'Reset content',
 	'Clear content' => 'Clear content',
 	'Content Holder' => 'Content Holder',
+	'AdvancedSearch' => 'Advanced Search',
 );
 ?>
