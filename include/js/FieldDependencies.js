@@ -546,10 +546,7 @@ FieldDependencies.prototype.fieldReadonlyDetailView = function (readonlyFields) 
 	var field='';
 	for (var i=0; i<readonlyFields.length; i++) {
 		field=readonlyFields[i]['field'];
-		document.getElementById('dtlview_'+field).innerHTML=document.getElementsByName(field).item(0).value;
-		document.getElementById('dtlview_'+field).style.display='inline';
-		document.getElementsByName(field).item(0).setAttribute('readonly', true);
-		document.getElementsByName(field).item(0).style.display='inline';
+		document.getElementById('mouseArea_'+field).removeAttribute('onclick');
 	}
 };
 
@@ -681,7 +678,7 @@ FieldDependencies.prototype.blockAppearEditView = function (appBlock) {
 		for (var j=0; j<elements.length; j++) {
 			elements[j].style.display='';
 		}
-		document.getElementById('tbl'+block).style.display='';
+		document.getElementById('tbl'+block+'Head').style.display='block';
 	}
 };
 
@@ -690,8 +687,8 @@ FieldDependencies.prototype.blockAppearDetailView = function (appBlock) {
 	for (var i=0; i<appBlock.length; i++) {
 		block=appBlock[i]['block'];
 		elements=document.getElementById('tbl'+block);
-		document.getElementById('tbl'+block).style.display='';
-		elements.previousSibling.previousSibling.style.display='';
+		elements.style.display='block';
+		elements.previousSibling.previousSibling.style.display='block';
 	}
 };
 

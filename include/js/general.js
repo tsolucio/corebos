@@ -1506,6 +1506,7 @@ function runBAWorkflow(workflowid, crmids) {
 			}
 		}
 		VtigerJS_DialogBox.unblock();
+		corebosjshook_runBAWorkflow(workflowid, crmids);
 	});
 	return void(0);
 }

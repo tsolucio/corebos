@@ -7,6 +7,9 @@
  * All Rights Reserved.
  *********************************************************************************/
 -->
+<script>
+	advancedSearchData = JSON.parse(`{json_encode($advancedSearchMapResult)}`);
+</script>
 <script type="text/javascript" src="include/js/advancefilter.js"></script>
 {* Get selected value to start out the dropdown with *}
 {foreach from=$MODULES_BLOCK item=COLUMNS_BLOCK}

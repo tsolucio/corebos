@@ -99,7 +99,7 @@
 		*
 		*/
 		init: function () {
-			if (this.hasPreExisting()) {
+			if (this.getPreExisting().length) {
 				this.getPreExisting().forEach((group) => {
 					Group.add(this, group);
 				});
@@ -128,10 +128,16 @@
 		* (only applicable when used in filter or report context)
 		*/
 		getPreExisting: function () {
-			const input = document.getElementById('cbds-advfilt_existing-conditions'),
-				existing = JSON.parse(input.value),
-				groups = [];
-
+			let input = document.getElementById('cbds-advfilt_existing-conditions');
+			let existing = {};
+			if (input == null && advancedSearchData !== "MAP_NOT_FOUND") {
+				existing = this.putObjectsInsideArrayByKey(advancedSearchData, ["group", "condition"]);
+				existing = this.convertAdvancedSearchObjectFormat(advancedSearchData);
+			} else {
+				existing = JSON.parse(input);
+			}
+			const groups = [];
+			
 			for (var group in existing) {
 				groups.push({
 					'groupNo': group,
@@ -140,6 +146,52 @@
 				});
 			}
 			return groups;
+		},
+
+		/*
+		* Method: 'convertAdvancedSearchObjectFormat'
+		* converts the data we get from the server into a data that the frontEnd understands
+		*/
+		convertAdvancedSearchObjectFormat: function (obj) {
+			let result = {};
+			for (let i = 0; i < obj["group"].length; i++) {
+				const el = obj["group"][i];
+				result[(i+1).toString()] = {};
+				result[(i+1).toString()]["columns"] = [];
+				result[(i+1).toString()]["condition"] = i == 0 ? "" : el["groupjoin"];
+				for (let e = 0; e < el["conditions"]["condition"].length; e++) {
+					const condition = el["conditions"]["condition"][e];
+					result[(i+1).toString()]["columns"].push({
+						columnname: condition["fieldname"],
+						comparator: condition["operator"],
+						value: "",
+						column_condition: condition["join"],
+					})
+				}
+			}
+			return result;
+		},
+
+		/*
+		* Method: 'addObjectsInsideArrayByKey'
+		* puts selected nested objects (by key) inside array
+		* example: putObjectsInsideArrayByKey(obj, ["columnname", "group"])
+		*/
+		putObjectsInsideArrayByKey: function (obj, keys) {
+			const objectKeys = Object.keys(obj);
+			for (let index = 0; index < objectKeys.length; index++) {
+				const objectKey = objectKeys[index];
+				if (typeof obj[objectKey] === 'object' && !Array.isArray(obj[objectKey]) && obj[objectKey] !== null) {
+					this.putObjectsInsideArrayByKey(obj[objectKey], keys);
+				} else if (Array.isArray(obj[objectKey])) {
+					for (let index = 0; index < obj[objectKey].length; index++) {
+						const object = obj[objectKey][index];
+						this.putObjectsInsideArrayByKey(object, keys);
+					}
+				}
+				if(keys.includes(objectKey)) obj[objectKey] = Array.isArray(obj[objectKey]) ? obj[objectKey] : [obj[objectKey]];
+			}
+			return obj;
 		},
 
 		/*
@@ -935,8 +987,8 @@
 		*/
 		setVals: function () {
 			var curVal  = this.fieldCombo.getVal(),
-				curType = Field.getType(curVal),
-				curOp   = this.op.combo.getVal();
+			curType = Field.getType(curVal),
+			curOp   = this.op.combo.getVal();
 
 			for (var i = 0; i < this.parent.vals.length; i++) {
 				if (this.parent.vals[i].cond === this) {
