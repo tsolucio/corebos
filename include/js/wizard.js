@@ -84,7 +84,7 @@ class WizardComponent {
 			case 'CREATEPRODUCTCOMPONENTS'://*specific use case
 				if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
 					if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined) {
-						ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_DUPLICATE_PRODUCT, 'error');
+						ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_DUPLICATE_PRODUCT, 'error');
 						return false;
 					}
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
@@ -126,7 +126,7 @@ class WizardComponent {
 					const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
 					this.Request(url, 'post', {'masterid': this.RecordID}).then(function(response) {
 						if (response) {
-							ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+							ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 							if (wizard.isModal) {
 								RLInstance[wizard.gridInstance].readData(1);
 								ldsModal.close();
@@ -144,7 +144,7 @@ class WizardComponent {
 								}, 1000);
 							}
 						} else {
-							ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+							ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 						}
 						wizard.loader('hide');
 					});
@@ -167,11 +167,11 @@ class WizardComponent {
 		if (type == 'next') {
 			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
 			if (checkedRows.length == 0) {
-				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 				return false;
 			}
 			if (action == 'SELECTPRODUCT' && checkedRows.length != 1 && this.WizardRequiredAction[this.ActiveStep] == 'duplicate') {
-				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
 				return false;
 			}
 		}
@@ -274,11 +274,11 @@ class WizardComponent {
 							if (res.success) {
 								ev.instance.readData(1);
 							} else {
-								ldsPrompt.show(alert_arr.ERROR, alert_arr.Failed, 'error');
+								ldsNotification.show(alert_arr.ERROR, alert_arr.Failed, 'error');
 							}
 						});
 					} else {
-						ldsPrompt.show(alert_arr.ERROR, msg, 'error');
+						ldsNotification.show(alert_arr.ERROR, msg, 'error');
 					}
 				});
 			}
@@ -414,13 +414,13 @@ class WizardComponent {
 				modulename: module
 			}).then(function(response) {
 				if (response) {
-					ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_DELETE_SUCCESS, 'success');
+					ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_DELETE_SUCCESS, 'success');
 					let page = wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].getPagination();
 					wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].readData(page._currentPage, {
 						page: page._currentPage
 					}, true);
 				} else {
-					ldsPrompt.show(alert_arr.ERROR, alert_arr.Failed, 'error');
+					ldsNotification.show(alert_arr.ERROR, alert_arr.Failed, 'error');
 				}
 			});
 		}
@@ -535,7 +535,7 @@ class WizardComponent {
 	DeleteRowFromGrid(step) {
 		const rowKeys = this.WizardInstance[`wzgrid${step}`].getCheckedRowKeys();
 		if (rowKeys.length == 0) {
-			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
+			ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 			return false;
 		}
 		this.WizardInstance[`wzgrid${step}`].removeRows(rowKeys);
@@ -588,10 +588,10 @@ class WizardComponent {
 		const url = `${this.url}&wizardaction=MassCreate&subaction=Create_ProductComponent&formodule=ProductComponent&step=${this.ActiveStep}`;
 		this.Request(url, 'post', rows).then(function(response) {
 			if (response) {
-				ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 				wizard.FilterDataForStep();
 			} else {
-				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 			}
 			wizard.loader('hide');
 		});
@@ -614,18 +614,18 @@ class WizardComponent {
 			}
 			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
 			if (checkedRows.length == 0 && !this.isModal) {
-				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 				return false;
 			}
 			if (operation == 'MASSCREATE' && checkedRows.length != 1 && this.ActiveStep == 0 && !this.isModal) {
-				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
 				return false;
 			}
 		}
 		if (this.ActiveStep == 0) {//second step
 			const findColName = this.RelatedFieldName();
 			if (findColName == '') {
-				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_UNABLE_TO_FILTER, 'error');
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_UNABLE_TO_FILTER, 'error');
 				return false;
 			}
 			let ids = this.IdVal();
@@ -633,7 +633,7 @@ class WizardComponent {
 				ids = [this.RecordID];
 			}
 			if (ids.length == 0) {
-				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_UNABLE_TO_FILTER, 'error');
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_UNABLE_TO_FILTER, 'error');
 				return false;
 			}
 			if (typeof findColName == 'string' && findColName.indexOf('.') > -1) {
@@ -649,7 +649,7 @@ class WizardComponent {
 		}
 		if (operation == 'MASSCREATE' && this.ActiveStep == 1) {
 			if (this.IdVal(this.ActiveStep).length == 0) {
-				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 				return false;
 			}
 			this.Mapping(0, 1);
@@ -749,14 +749,14 @@ class WizardComponent {
 			}];
 		}
 		if (Object.keys(filterData).length === 0) {
-			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+			ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 			return false;
 		}
 		this.loader('show');
 		const url = `${this.url}&wizardaction=MassCreate&formodule=${this.MCModule}&subaction=${this.WizardMode[0]}`;
 		this.Request(url, 'post', filterData).then(function(response) {
 			if (response) {
-				ldsPrompt.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 				if (wizard.isModal) {
 					RLInstance[wizard.gridInstance].readData(1);
 					ldsModal.close();
@@ -770,7 +770,7 @@ class WizardComponent {
 					}, 1000);
 				}
 			} else {
-				ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 			}
 			wizard.loader('hide');
 		});
