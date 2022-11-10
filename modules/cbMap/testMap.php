@@ -261,6 +261,12 @@ switch ($focus->column_fields['maptype']) {
 			'info' => $focus->mapExecutionInfo,
 		);
 		break;
+	case 'AdvancedSearch':
+		$xml = $focus->AdvancedSearch();
+		$mapinfo = array(
+			'result' => json_encode($xml),
+		);
+		break;
 	default:
 		break;
 }
