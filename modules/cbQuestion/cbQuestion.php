@@ -441,7 +441,7 @@ class cbQuestion extends CRMEntity {
 				$modOp = new VtigerModuleOperation($webserviceObject, $current_user, $adb, $log);
 				$sql_query = cbQuestion::getSQL($qid, $params);
 				$sql_question_context_variable = json_decode($q->column_fields['typeprops']);
-				if ($sql_question_context_variable) {
+				if ($sql_question_context_variable && isset($sql_question_context_variable->context_variables)) {
 					$context_var_array = (array) $sql_question_context_variable->context_variables;
 					if (!empty($context_var_array)) {
 						foreach ($context_var_array as $key => $value) {
