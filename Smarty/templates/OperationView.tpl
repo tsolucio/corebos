@@ -7,4 +7,9 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-Operation
+{if $showDesert}
+	{assign var='DESERTInfo' value='LBL_NO_DATA'|@getTranslatedString:$MODULE}
+	{include file='Components/Desert.tpl'}
+{else}
+
+{/if}
