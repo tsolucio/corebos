@@ -24,3 +24,7 @@ function corebosjshook_InventorymoveUpDown_customrow(iTable, fromRowIndex, fromI
 function corebosjshook_submitFormForAction(formName, action) {
 	return true;
 }
+
+function corebosjshook_runBAWorkflow(workflowid, crmids) {
+	return true;
+}
