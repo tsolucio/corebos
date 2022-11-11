@@ -57,7 +57,9 @@ if (strpos($query_string, '::')) {
 		$fieldtype = $resttype;
 	}
 }
-if(strpos($query_string, "..") !== false) $query_string = str_replace("$::", "", $query_string);
+if (strpos($query_string, "..") !== false) {
+	$query_string = str_replace("$::", "", $query_string);
+}
 $curModule = vtlib_purify($_REQUEST['module']);
 $search_tag = isset($_REQUEST['search_tag']) ? vtlib_purify($_REQUEST['search_tag']) : '';
 
@@ -132,7 +134,7 @@ if (isset($query_string) && $query_string != '') {
 				} else { //This is for Global search
 					$where = "";
 					$search_values = [];
-					if(strpos($search_val, "OR") !== false) {
+					if (strpos($search_val, "OR") !== false) {
 						$search_values = explode("OR", $search_val);
 						$multiple_where = [];
 						foreach ($search_values as $search_values_key => $search_values_value) {
@@ -148,7 +150,7 @@ if (isset($query_string) && $query_string != '') {
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
 					$search_msg .= '<b>'.htmlentities($search_val, ENT_QUOTES, $default_charset).'</b>';
 				}
-				
+
 				if ($where != '') {
 					$listquery .= ' and ('.$where.')';
 				}
@@ -177,13 +179,13 @@ if (isset($query_string) && $query_string != '') {
 				} else {
 					$start = 1;
 				}
-				
+
 				$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
 				$limitStartRecord = ($navigation_array['start'] - 1) * $list_max_entries_per_page;
-				
+
 				$listquery = $listquery. " LIMIT $limitStartRecord, $list_max_entries_per_page";
 				$list_result = $adb->query($listquery);
-				
+
 				$moduleRecordCount[$module]['recordListRangeMessage'] = getRecordRangeMessage($list_result, $limitStartRecord, $noofrows);
 
 				$info_message='&recordcount='.(isset($_REQUEST['recordcount']) ? $_REQUEST['recordcount'] : 0)

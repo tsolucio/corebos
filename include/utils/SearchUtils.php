@@ -931,18 +931,18 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 
 	// checking if search should be exact or not
 	$formatForSqlLikeFlag = 0;
-	if(substr_count($search_val, '"') == 2) {
+	if (substr_count($search_val, '"') == 2) {
 		$formatForSqlLikeFlag = 3;
 		$search_val = get_string_between($search_val, '"', '"');
 	}
 
 	// checking for exclude keywords
 	$exclude_keywords = [];
-	if(strpos($search_val, "-") !== false) {
+	if (strpos($search_val, "-") !== false) {
 		$filtered_val = preg_replace('/\s+/', ' ', $search_val);
 		$search_arr = explode(" ", $filtered_val);
 		foreach ($search_arr as $key => $value) {
-			if(strpos($value, "-") !== false) {
+			if (strpos($value, "-") !== false) {
 				array_push($exclude_keywords, str_replace("-", "", $value));
 				$search_val = str_replace($value, "", $search_val);
 				$search_val = preg_replace('/\s+/', ' ', $search_val);
@@ -995,7 +995,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 		$tablename = $adb->query_result($result, $i, 'tablename');
 		$fieldname = $adb->query_result($result, $i, 'fieldname');
 		$field_uitype = $adb->query_result($result, $i, 'uitype');
-		
+
 		// Search / Lookup customization
 		if ($module == 'Contacts' && $columnname == 'accountid') {
 			$columnname = 'accountname';
@@ -1011,13 +1011,14 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 				if ($binary_search) {
 					$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."')";
 				} else {
-					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."'" . exclude_keywords_where_builder($tablename, $columnname, $exclude_keywords);
+					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."'"
+					. exclude_keywords_where_builder($tablename, $columnname, $exclude_keywords);
 				}
 			}
 			$columnname = 'firstname';
 			$tablename = 'vtiger_contactdetails';
 		}
-		
+
 		//Before form the where condition, check whether the table for the field has been added in the listview query
 		if (false !== strpos($listquery, $tablename)) {
 			if ($where != '') {
@@ -1028,14 +1029,17 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 			} else {
 				if (is_uitype($field_uitype, '_picklist_') && hasMultiLanguageSupport($fieldname)) {
 					$where .= '('.$tablename.'.'.$columnname.' IN (select translation_key from vtiger_cbtranslation
-						where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'.formatForSqlLike($search_val, $formatForSqlLikeFlag).'"' . exclude_keywords_where_builder('i18n', '', $exclude_keywords) . ') OR '
+						where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'
+						.formatForSqlLike($search_val, $formatForSqlLikeFlag).'"' . exclude_keywords_where_builder('i18n', '', $exclude_keywords) . ') OR '
 						.$tablename.'.'.$columnname.' LIKE "'. formatForSqlLike($search_val, $formatForSqlLikeFlag).'")';
 				} else {
-					if($is_range) {
+					if ($is_range) {
 						$range = explode("..", $search_val);
 						$where .= $tablename.'.'.$columnname." BETWEEN ". $range[0] . " AND " . $range[1];
+					} else {
+						$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."'"
+						. exclude_keywords_where_builder($tablename, $columnname, $exclude_keywords);
 					}
-					else $where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."'" . exclude_keywords_where_builder($tablename, $columnname, $exclude_keywords);
 				}
 			}
 		}

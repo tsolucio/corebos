@@ -2020,13 +2020,14 @@ function escape_single_quotes($value) {
 /**
  * Function to get substring between two charachters.
  */
-function get_string_between($string, $start, $end){
-    $string = ' ' . $string;
-    $ini = strpos($string, $start);
-    if ($ini == 0) return '';
-    $ini += strlen($start);
-    $len = strpos($string, $end, $ini) - $ini;
-    return substr($string, $ini, $len);
+function get_string_between($string, $start, $end) {
+	$ini = strpos($string, $start);
+	if ($ini === false) {
+		return '';
+	}
+	$ini += strlen($start);
+	$len = strpos($string, $end, $ini) - $ini;
+	return substr($string, $ini, $len);
 }
 
 /**
@@ -2039,7 +2040,9 @@ function get_string_between($string, $start, $end){
  */
 function formatForSqlLike($str, $flag = 0, $is_field = false) {
 	global $adb;
-	if($flag == 3) return $adb->sql_escape_string($str);
+	if ($flag == 3) {
+		return $adb->sql_escape_string($str);
+	}
 	if (isset($str)) {
 		if (!$is_field) {
 			$str = str_replace('%', '\%', $str);
