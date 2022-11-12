@@ -405,6 +405,19 @@ $smarty->assign('VALIDATION_DATA_FIELDNAME', $validationArray['fieldname']);
 $smarty->assign('VALIDATION_DATA_FIELDDATATYPE', $validationArray['datatype']);
 $smarty->assign('VALIDATION_DATA_FIELDLABEL', $validationArray['fieldlabel']);
 
+// send advancedSearch business map data to the frontEnd
+$advancedSearchMapResult = "MAP_NOT_FOUND";
+$advancedSearchMapObject = new cbMap();
+$advancedSearchbmapname = $currentModule.'_AdvancedSearch';
+$advancedSearchMapid = GlobalVariable::getVariable('BusinessMapping_'.$advancedSearchbmapname, cbMap::getMapIdByName($advancedSearchbmapname));
+if ($advancedSearchMapid) {
+	$advancedSearchMapObject->id = $advancedSearchMapid;
+	$advancedSearchMapObject->mode = '';
+	$advancedSearchMapObject->retrieve_entity_info($advancedSearchMapid, "cbMap");
+	$advancedSearchMapResult = $advancedSearchMapObject->AdvancedSearch($currentModule);
+}
+$smarty->assign('advancedSearchMapResult', $advancedSearchMapResult);
+
 if (isset($_REQUEST['cbcustompopupinfo'])) {
 	$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
 	$smarty->assign('CBCUSTOMPOPUPINFO_ARRAY', $cbcustompopupinfo);
