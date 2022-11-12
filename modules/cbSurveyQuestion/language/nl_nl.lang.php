@@ -22,5 +22,6 @@ $mod_strings = array(
 	'cbsquestion' => 'Vraag',
 	'cbsanswer' => 'Antwoord',
 	'cbsq_providerid' => 'Uitvoerder ID',
+	'Type of Question' => 'Type of Question',
 );
 ?>
