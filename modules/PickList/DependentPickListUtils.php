@@ -224,9 +224,13 @@ class Vtiger_DependencyPicklist {
 	}
 
 	public static function getFieldDependencyDatasource($module, $mode = 0) {
-		$bmapname = $module.'_FieldDependency';
-		$cbMapFDEP = array();
-		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if (empty($_REQUEST['FILTERDEPMAP']) || !is_numeric($_REQUEST['FILTERDEPMAP']) || !isRecordExists($_REQUEST['FILTERDEPMAP'])) {
+			$bmapname = $module.'_FieldDependency';
+			$cbMapFDEP = array();
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		} else {
+			$cbMapid = $_REQUEST['FILTERDEPMAP'];
+		}
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$cbMapFDEP = $cbMap->FieldDependency($mode);
