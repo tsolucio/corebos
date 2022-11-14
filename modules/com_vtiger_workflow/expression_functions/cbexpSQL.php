@@ -670,6 +670,7 @@ class cbexpsql_environmentstub {
 	private $module;
 	private $data;
 	public $returnReferenceValue = true;
+	public $WorkflowContext = array();
 
 	public function __construct($module, $crmid) {
 		$this->crmid = $crmid;
