@@ -188,6 +188,7 @@ class VTExpressionsManager {
 			'getCurrentUserID' => 'getCurrentUserID()',
 			'getCurrentUserName' => 'getCurrentUserName({full})',
 			'getCurrentUserField' => 'getCurrentUserField(fieldname)',
+			'getGroupID' => 'getGroupID(groupname)',
 			'getCRMIDFromWSID' => 'getCRMIDFromWSID(id)',
 			'getEntityType'=>'getEntityType(field)',
 			'getimageurl'=>'getimageurl(field)',
