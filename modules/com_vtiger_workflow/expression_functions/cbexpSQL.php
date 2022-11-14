@@ -582,7 +582,7 @@ function cbexpsql_getCurrentUserField($arr, $mmodule) {
 	return 'TRUE';
 }
 function cbexpsql_getGroupID($arr, $mmodule) {
-	return 'TRUE';
+	return '(select groupid from vtiger_groups where groupname='.__cbexpsql_functionparamsvalue($arr[0], $mmodule).')';
 }
 function cbexpsql_getCRMIDFromWSID($arr, $mmodule) {
 	return 'crmid';

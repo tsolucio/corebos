@@ -1304,13 +1304,13 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getGroupID' => array(
 	'name' => 'getGroupID(groupname)',
-	'desc' => 'This function returns the group ID.',
+	'desc' => 'Esta función devuelve el ID de grupo del nombre de group dado',
 	'params' => array(
 		array(
 			'name' => 'groupname',
-			'type' => 'String',
+			'type' => 'Texto',
 			'optional' => false,
-			'desc' => 'any group name',
+			'desc' => 'cualquier nombre de grupo',
 		),
 	),
 	'categories' => array('Information'),

@@ -1307,7 +1307,7 @@ $WFExpressionFunctionDefinitons = array(
 ),
 'getGroupID' => array(
 	'name' => 'getGroupID(groupname)',
-	'desc' => 'This function returns the group ID.',
+	'desc' => 'This function returns the group ID of the given groupname.',
 	'params' => array(
 		array(
 			'name' => 'groupname',
@@ -2290,22 +2290,6 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"executeSQL('select siccode from vtiger_accounts where accountname=?', field)",
-	),
-),
-'executeQuestion' => array(
-	'name' => 'executeQuestion(query, parameters...)',
-	'desc' => 'Execute a Business Question.',
-	'params' => array(
-		array(
-			'name' => 'BusinessQuestionID',
-			'type' => 'String',
-			'optional' => false,
-			'desc' => 'the Business Question ID to execute',
-		),
-	),
-	'categories' => array('Application'),
-	'examples' => array(
-		"executeQuestion(1456)",
 	),
 ),
 'getCRUDMode' => array(
