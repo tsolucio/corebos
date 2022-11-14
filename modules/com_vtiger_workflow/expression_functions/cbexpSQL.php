@@ -581,7 +581,9 @@ function cbexpsql_getCurrentUserName($arr, $mmodule) {
 function cbexpsql_getCurrentUserField($arr, $mmodule) {
 	return 'TRUE';
 }
-
+function cbexpsql_getGroupID($arr, $mmodule) {
+	return 'TRUE';
+}
 function cbexpsql_getCRMIDFromWSID($arr, $mmodule) {
 	return 'crmid';
 }

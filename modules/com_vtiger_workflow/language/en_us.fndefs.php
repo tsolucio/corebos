@@ -1305,6 +1305,22 @@ $WFExpressionFunctionDefinitons = array(
 		"getCurrentUserField('email1')",
 	),
 ),
+'getGroupID' => array(
+	'name' => 'getGroupID(groupname)',
+	'desc' => 'This function returns the group ID.',
+	'params' => array(
+		array(
+			'name' => 'groupname',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'any group name',
+		),
+	),
+	'categories' => array('Information'),
+	'examples' => array(
+		"getGroupID('Marketing Group')",
+	),
+),
 'getCRMIDFromWSID' => array(
 	'name' => 'getCRMIDFromWSID(id)',
 	'desc' => 'This function returns the id of a record',
@@ -2274,6 +2290,22 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"executeSQL('select siccode from vtiger_accounts where accountname=?', field)",
+	),
+),
+'executeQuestion' => array(
+	'name' => 'executeQuestion(query, parameters...)',
+	'desc' => 'Execute a Business Question.',
+	'params' => array(
+		array(
+			'name' => 'BusinessQuestionID',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the Business Question ID to execute',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"executeQuestion(1456)",
 	),
 ),
 'getCRUDMode' => array(
