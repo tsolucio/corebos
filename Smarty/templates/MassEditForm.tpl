@@ -12,7 +12,8 @@
 	<tr>
 		<td class="small">
 			<!-- popup specific content fill in starts -->
-			<form name="EditView" id="massedit_form" action="index.php" onsubmit="VtigerJS_DialogBox.block();" method="POST">
+			{assign var="EDITFORMID" value='massedit_form'}
+			{include file='EditViewHidden.tpl'}
 				<input id="idstring" name="idstring" value="{$IDS}" type="hidden" />
 				<table border=0 cellspacing=0 cellpadding=0 width=100% align=center bgcolor=white>
 				<tr>
@@ -21,7 +22,6 @@
 							<span class="helpmessagebox">{$APP.LBL_SELECT_FIELDS_TO_UDPATE_WITH_NEW_VALUE}</span>
 						</div>
 						<!-- Hidden Fields -->
-						{include file='EditViewHidden.tpl'}
 						<input type="hidden" name="massedit_recordids">
 						<input type="hidden" name="massedit_module">
 					</td>

@@ -62,8 +62,16 @@ class crmtogo_UI_GetScrollRecords extends crmtogo_WS_getScrollContent {
 			}
 			$id = $ws_entity2.'x'.$adb->query_result($records, $i, $entityidfield);
 
-			$output .= '<li><a class="ui-btn ui-btn-icon-right ui-icon-carat-r" target="_self" href="?_operation=fetchRecord&record='.$id.'" target="_self">'
-				.$firstname.'&nbsp;'.$lastname.'</a></li>';
+			$fetchRecordUrl = '?_operation=fetchRecord&record=' . $id;
+			$editUrl = '?_operation=edit&record=' . $id;
+			$output .= '<li style="display: flex;">
+				<a class="ui-btn ui-icon-carat-r" style="flex: 1;" target="_self" href="'. $fetchRecordUrl .'" target="_self">
+					'.$firstname.'&nbsp;'.$lastname.'
+					<a class="ui-btn ui-icon-carat-r" style="padding: 7.5px;" target="_self" href="'. $editUrl .'" target="_self">
+						<img src="resources/css/images/edit_Icon.png" alt="edit" style="height: 25px;">
+					</a>
+				</a>
+			</li>';
 		}
 		$response = new crmtogo_API_Response();
 		$response->setResult($output);

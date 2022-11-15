@@ -1305,6 +1305,22 @@ $WFExpressionFunctionDefinitons = array(
 		"getCurrentUserField('email1')",
 	),
 ),
+'getGroupID' => array(
+	'name' => 'getGroupID(groupname)',
+	'desc' => 'This function returns the group ID of the given groupname.',
+	'params' => array(
+		array(
+			'name' => 'groupname',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'any group name',
+		),
+	),
+	'categories' => array('Information'),
+	'examples' => array(
+		"getGroupID('Marketing Group')",
+	),
+),
 'getCRMIDFromWSID' => array(
 	'name' => 'getCRMIDFromWSID(id)',
 	'desc' => 'This function returns the id of a record',

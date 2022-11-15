@@ -57,6 +57,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_MultipleUserLogins',
 				'Application_Session_LockUserAgent',
 				'Application_Session_LockIP',
+				'Application_Session_Life_Span',
 				'Application_ExpirePasswordAfterDays',
 				'Application_MinimumPasswordLength',
 				'Application_AdminLoginIPs',
@@ -127,6 +128,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_AssignUser_Search',
 				'Application_All_Filter_Show',
 				'Application_FilterValidateMandatoryFields',
+				'Application_TitleInformation',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
@@ -168,6 +170,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Mobile_MultipleUserLogins',
 				'Mobile_Session_LockUserAgent',
 				'Mobile_Session_LockIP',
+				'Mobile_Session_Life_Span',
 
 				'Webservice_showUserAdvancedBlock',
 				'Webservice_PermitQueryOnInactiveUsers',

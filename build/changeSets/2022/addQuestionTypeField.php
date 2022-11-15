@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2018 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2022 Spike, JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -14,44 +14,45 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class add_InventoryDetails_Delete_Handler_cb extends cbupdaterWorker {
+class addQuestionTypeField extends cbupdaterWorker {
 
 	public function applyChange() {
-		global $adb;
 		if ($this->hasError()) {
 			$this->sendError();
 		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$em = new VTEventsManager($adb);
-			$em->registerHandler('vtiger.entity.beforedelete', 'modules/InventoryDetails/InventoryDetailsHandler.php', 'deleteInventoryDetailsHandler');
-
+			$fieldLayout=array(
+				'cbSurveyQuestion' => array(
+					'LBL_MODULEBLOCK_INFORMATION'=> array(
+						'question_type' => array(
+							'label' => 'Type of Question',
+							'columntype'=>'VARCHAR(20)',
+							'typeofdata'=>'V~O',
+							'uitype'=>'15',
+							'displaytype'=>'1',
+							'masseditable'=>'0',
+							'vals'=>array(
+								'text',
+								'email',
+								'number',
+								'password',
+								'phone',
+								'URL',
+								'textarea',
+								'select',
+								'boolean',
+								'radio',
+							)
+						)
+					),
+				),
+			);
+			$this->massCreateFields($fieldLayout);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(false);
-		}
-		$this->finishExecution();
-	}
-
-	public function undoChange() {
-		global $adb;
-		if ($this->hasError()) {
-			$this->sendError();
-		}
-		if ($this->isSystemUpdate()) {
-			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
-		} else {
-			if ($this->isApplied()) {
-				$em = new VTEventsManager($adb);
-				$em->unregisterHandler('deleteInventoryDetailsHandler');
-
-				$this->sendMsg('Changeset '.get_class($this).' undone!');
-				$this->markUndone();
-			} else {
-				$this->sendMsg('Changeset '.get_class($this).' not applied!');
-			}
+			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
 }
-?>

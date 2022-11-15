@@ -123,6 +123,8 @@ if ($saveerror) { // there is an error so we go back to EditView.
 			$field_values_passed.=$fieldname.'='.urlencode($value);
 		}
 	}
+	$returnvalues.=(empty($_REQUEST['FILTERFIELDSMAP']) ? '' : '&FILTERFIELDSMAP='.urlencode($_REQUEST['FILTERFIELDSMAP']));
+	$returnvalues.=(empty($_REQUEST['FILTERVALMAP']) ? '' : '&FILTERVALMAP='.urlencode($_REQUEST['FILTERVALMAP']));
 	$encode_field_values=base64_encode($field_values_passed);
 	$req->set('return_module', $currentModule);
 	$error_action = (empty($error_action) ? 'EditView' : $error_action);

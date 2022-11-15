@@ -13,7 +13,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 	<meta name="robots" content="noindex">
-	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
+	<title>{$TITLE_HEADER}</title>
 	<link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
 	{if !empty($SET_CSS_PROPERTIES) && is_file($SET_CSS_PROPERTIES)}
 		<link rel="stylesheet" type="text/css" media="all" href="{$SET_CSS_PROPERTIES}">

@@ -32,7 +32,9 @@ class ImportTiddlers_Action extends CoreBOS_ActionController {
 				$keys = implode(',', array_keys($tid));
 				$tid['assigned_user_id'] = vtws_getEntityId('Users').'x'.$current_user->id;
 				$minfo = getEntityFieldNames($tid['module']);
-				$tid[$minfo['fieldname']] = $tid['title'];
+				if (empty($tid[$minfo['fieldname']])) {
+					$tid[$minfo['fieldname']] = $tid['title'];
+				}
 				$idx = array_search('[use text]', $tid);
 				if ($idx!==false) {
 					$tid[$idx] = $tid['content'];

@@ -239,6 +239,13 @@
 </changeSet>
 <changeSet>
 	<author>denaldhushi</author>
+	<description>Add Question Type Field(Hackathon 2022)</description>
+	<filename>build/changeSets/2022/addQuestionTypeField.php</filename>
+	<classname>addQuestionTypeField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
 	<description>add Business Actions types for MassOperations</description>
 	<filename>build/changeSets/2022/addBAtypeForMassOperations.php</filename>
 	<classname>addBAtypeForMassOperations</classname>

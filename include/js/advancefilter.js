@@ -129,15 +129,16 @@
 		*/
 		getPreExisting: function () {
 			let input = document.getElementById('cbds-advfilt_existing-conditions');
-			let existing = {};
-			if (input == null && advancedSearchData !== "MAP_NOT_FOUND") {
-				existing = this.putObjectsInsideArrayByKey(advancedSearchData, ["group", "condition"]);
+			let existing = input ? JSON.parse(input.value).length ? JSON.parse(input.value) : null : null;
+			const groups = [];
+			if (existing != null) {
+				existing = JSON.parse(input.value);
+			} else if (advancedSearchData !== 'MAP_NOT_FOUND') {
+				existing = this.putObjectsInsideArrayByKey(advancedSearchData, ['group', 'condition']);
 				existing = this.convertAdvancedSearchObjectFormat(advancedSearchData);
 			} else {
-				existing = JSON.parse(input);
+				return [];
 			}
-			const groups = [];
-			
 			for (var group in existing) {
 				groups.push({
 					'groupNo': group,
@@ -154,18 +155,18 @@
 		*/
 		convertAdvancedSearchObjectFormat: function (obj) {
 			let result = {};
-			for (let i = 0; i < obj["group"].length; i++) {
-				const el = obj["group"][i];
+			for (let i = 0; i < obj['group'].length; i++) {
+				const el = obj['group'][i];
 				result[(i+1).toString()] = {};
-				result[(i+1).toString()]["columns"] = [];
-				result[(i+1).toString()]["condition"] = i == 0 ? "" : el["groupjoin"];
-				for (let e = 0; e < el["conditions"]["condition"].length; e++) {
-					const condition = el["conditions"]["condition"][e];
-					result[(i+1).toString()]["columns"].push({
-						columnname: condition["fieldname"],
-						comparator: condition["operator"],
-						value: "",
-						column_condition: condition["join"],
+				result[(i+1).toString()]['columns'] = [];
+				result[(i+1).toString()]['condition'] = i == 0 ? '' : el['groupjoin'];
+				for (let e = 0; e < el['conditions']['condition'].length; e++) {
+					const condition = el['conditions']['condition'][e];
+					result[(i+1).toString()]['columns'].push({
+						columnname: condition['fieldname'],
+						comparator: condition['operator'],
+						value: '',
+						column_condition: condition['join'],
 					})
 				}
 			}
@@ -189,7 +190,9 @@
 						this.putObjectsInsideArrayByKey(object, keys);
 					}
 				}
-				if(keys.includes(objectKey)) obj[objectKey] = Array.isArray(obj[objectKey]) ? obj[objectKey] : [obj[objectKey]];
+				if (keys.includes(objectKey)) {
+					obj[objectKey] = Array.isArray(obj[objectKey]) ? obj[objectKey] : [obj[objectKey]];
+				}
 			}
 			return obj;
 		},

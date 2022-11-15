@@ -97,22 +97,26 @@ class coreBOS_Session {
 				case 'cbws':
 					$lock_user_agentGV = 'Webservice_Session_LockUserAgent';
 					$lock_to_ipGV = 'Webservice_Session_LockIP';
+					$sessionLifeSpan = 'WebService_Session_Life_Span';
 					break;
 				case 'cbmb':
 					$lock_user_agentGV = 'Mobile_Session_LockUserAgent';
 					$lock_to_ipGV = 'Mobile_Session_LockIP';
+					$sessionLifeSpan = 'Mobile_Session_Life_Span';
 					break;
 				default:
 					$lock_user_agentGV = 'Application_Session_LockUserAgent';
 					$lock_to_ipGV = 'Application_Session_LockIP';
+					$sessionLifeSpan = 'Application_Session_Life_Span';
 					break;
 			}
 			self::$session = new Zebra_Session(
 				$link,
 				self::csrfGetSecret(),
-				'',
+				GlobalVariable::getVariable($sessionLifeSpan, 7200, 'Users', Users::getActiveAdminId()),
 				GlobalVariable::getVariable($lock_user_agentGV, 1, 'Users', Users::getActiveAdminId()),
-				GlobalVariable::getVariable($lock_to_ipGV, 0, 'Users', Users::getActiveAdminId())
+				GlobalVariable::getVariable($lock_to_ipGV, 0, 'Users', Users::getActiveAdminId()),
+				0
 			);
 		}
 		if ($setKCFinder) {
