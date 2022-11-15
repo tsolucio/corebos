@@ -25,10 +25,49 @@ if ($cbMapid) {
 	if (empty($map)) {
 		$smarty->assign('showDesert', true);
 	} else {
-		
+		$cbq = new cbQuestion();
+		$filters = $map['filters'];
+		$actions = $map['actions'];
+		$filterArr = array();
+		$actionsArr = array();
+		$customlink_params = array(
+			'MODULE' => $currentModule,
+			'RECORD' => '0x0',
+			'ACTION' => vtlib_purify($_REQUEST['action'])
+		);
+		$tabid = getTabid($currentModule);
+		$linksurls = BusinessActions::getAllByType($tabid, array(
+			'MASSOPERATIONS'
+		), $customlink_params);
+		foreach ($filters as $qid) {
+			if (!is_numeric($qid)) {
+				continue;
+			}
+			$cbq->retrieve_entity_info($qid, 'cbQuestion');
+			$qstatus = $cbq->column_fields['qstatus'];
+			if ($qstatus != 'Active') {
+				continue;
+			}
+			$filterArr[] = array(
+				'btnName' => $cbq->column_fields['qname'],
+				'qmodule' => $cbq->column_fields['qmodule'],
+				'record_id' => $cbq->column_fields['record_id']
+			);
+		}
+		foreach ($linksurls['MASSOPERATIONS'] as $url) {
+			if (in_array($url->linkid, $actions)) {
+				$actionsArr[] = array(
+					'btnName' => $url->linklabel,
+					'functionName' => $url->linkurl,
+				);
+			}
+		}
 	}
+	$smarty->assign('filters', $filterArr);
+	$smarty->assign('actions', $actionsArr);
 	$smarty->assign('moduleView', 'Operation');
 	$smarty->assign('moduleShowSearch', false);
+	$smarty->assign('showDesert', false);
 } else {
 	$smarty->assign('showDesert', true);
 }
