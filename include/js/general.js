@@ -1493,13 +1493,13 @@ function runBAWorkflow(workflowid, crmids) {
 	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids).then(function (data) {
 		const response = JSON.parse(data);
 		if (response) {
-			if (dataset.success != '') {
+			if (dataset.success !== undefined && dataset.success != '') {
 				ldsPrompt.show(dataset.title, dataset.success, 'success');
 			} else {
 				ldsPrompt.show(alert_arr.Okay, alert_arr.Okay, 'success');
 			}
 		} else { //Error
-			if (dataset.error != '') {
+			if (dataset.error !== undefined && dataset.error != '') {
 				ldsPrompt.show(dataset.title, dataset.error);
 			} else {
 				ldsPrompt.show(alert_arr['ERROR'], alert_arr.Error);
