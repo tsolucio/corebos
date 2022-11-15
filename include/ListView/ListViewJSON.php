@@ -969,13 +969,21 @@ class GridListView {
 		$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($q, false), 'count(*) AS count'));
 		$noofrows = $adb->query_result($count_result, 0, 0);
 		$data  = array();
-		for ($i=0; $i < $adb->num_rows($result); $i++) {
+		$qmodule = '';
+		if (isset($_REQUEST['qmodule'])) {
+			$qmodule = getEntityField($_REQUEST['qmodule']);
+		}
+		$cn = $adb->num_rows($result);
+		for ($i=0; $i < $cn; $i++) {
 			$currentRow = array();
 			foreach ($columns as $label => $col) {
 				$currentRow[$label] = $adb->query_result($result, $i, $col[$table_name]);
 				if (!empty($column_format[$col[$table_name]])) {
 					$currentRow[$label] = $column_format[$col[$table_name]]($currentRow[$label],$currentRow);
 				}
+			}
+			if (!empty($qmodule)) {
+				$currentRow['id'] = $adb->query_result($result, $i, $qmodule['entityid']);
 			}
 			array_push($data, $currentRow);
 		}
