@@ -8,8 +8,10 @@
  *********************************************************************************/
 -->
 <script>
-	let advancedSearchData = JSON.parse(`{json_encode($advancedSearchMapResult)}`);
-	advancedSearchData = advancedSearchData ? advancedSearchData : 'MAP_NOT_FOUND';
+	let advancedSearchData = 'MAP_NOT_FOUND';
+	{if isset($advancedSearchMapResult)}
+		advancedSearchData = JSON.parse(`{json_encode($advancedSearchMapResult)}`);
+	{/if}
 </script>
 <script type="text/javascript" src="include/js/advancefilter.js"></script>
 {* Get selected value to start out the dropdown with *}
