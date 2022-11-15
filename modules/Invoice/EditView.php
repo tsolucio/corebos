@@ -365,6 +365,8 @@ if ($focus->mode == 'edit' || $isduplicate == 'true') {
 	$recordName = isset($recordName[0]) ? $recordName[0] : '';
 	$smarty->assign('NAME', $recordName);
 	$smarty->assign('UPDATEINFO', updateInfo($record));
+	include_once 'modules/cbMap/processmap/MasterDetailLayout.php';
+	$associated_prod = MasterDetailLayout::setMoreInfoFields($currentModule, $smarty);
 }
 
 if ($focus->mode == 'edit') {
@@ -373,6 +375,12 @@ if ($focus->mode == 'edit') {
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 	$smarty->assign('AVAILABLE_PRODUCTS', (empty($associated_prod) ? 'false' : 'true'));
 	$smarty->assign('MODE', $focus->mode);
+	$cbMap = cbMap::getMapByName($currentModule.'InventoryDetails', 'MasterDetailLayout');
+	$smarty->assign('moreinfofields', '');
+	if ($cbMap!=null) {
+		$cbMapFields = $cbMap->MasterDetailLayout();
+		$smarty->assign('moreinfofields', "'".implode("','", $cbMapFields['detailview']['fieldnames'])."'");
+	}
 } elseif ($isduplicate == 'true') {
 	$associated_prod = $INVOICE_associated_prod;
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');

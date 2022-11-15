@@ -330,5 +330,14 @@ class MasterDetailLayout extends processcbMap {
 		}
 		return $product_Detail;
 	}
+
+	public static function setMoreInfoFields($module, &$smarty) {
+		$cbMap = cbMap::getMapByName($module.'InventoryDetails', 'MasterDetailLayout');
+		$smarty->assign('moreinfofields', '');
+		if ($cbMap!=null) {
+			$cbMapFields = $cbMap->MasterDetailLayout();
+			$smarty->assign('moreinfofields', "'".implode("','", $cbMapFields['detailview']['fieldnames'])."'");
+		}
+	}
 }
 ?>

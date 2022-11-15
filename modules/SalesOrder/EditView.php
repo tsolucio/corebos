@@ -323,6 +323,8 @@ if ($focus->mode == 'edit' || $isduplicate == 'true') {
 	$recordName = isset($recordName[0]) ? $recordName[0] : '';
 	$smarty->assign('NAME', $recordName);
 	$smarty->assign('UPDATEINFO', updateInfo($record));
+	include_once 'modules/cbMap/processmap/MasterDetailLayout.php';
+	$associated_prod = MasterDetailLayout::setMoreInfoFields($currentModule, $smarty);
 }
 
 if (isset($_REQUEST['convertmode']) && ($_REQUEST['convertmode'] == 'quotetoso' || $_REQUEST['convertmode'] == 'update_quote_val')) {
