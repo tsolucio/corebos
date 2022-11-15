@@ -1387,7 +1387,7 @@ class CRMEntity {
 						$sql = $qg->getQuery(); // No conditions
 						$maxsql = mkMaxQuery($sql, $mdmap['sortfield']);
 						$rs = $adb->query($maxsql);
-						$max = $rs->fields['max'];
+						$max = (int)$rs->fields['max'];
 						$this->column_fields[$mdmap['sortfield']] = $max+1;
 					} else {
 						if (!empty($mdmap['editfieldnames'])) {
