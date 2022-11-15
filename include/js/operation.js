@@ -27,7 +27,7 @@ class Operation {
 			data: {
 				api: {
 					readData: {
-						url: `index.php?module=cbQuestion&action=cbQuestionAjax&file=getJSON&qid=${this.qid}&qmodule=${qmodule}&contextid=`,
+						url: `index.php?module=cbQuestion&action=cbQuestionAjax&file=getJSON&qid=${this.qid}&qmodule=${qmodule}&massoperations=true&contextid=`,
 						method: 'GET'
 					}
 				}

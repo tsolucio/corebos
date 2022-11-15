@@ -969,8 +969,13 @@ class GridListView {
 		$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($q, false), 'count(*) AS count'));
 		$noofrows = $adb->query_result($count_result, 0, 0);
 		$data  = array();
+		$fieldinfo = array();
 		$qmodule = '';
-		if (isset($_REQUEST['qmodule'])) {
+		$massoperations = false;
+		if (isset($_REQUEST['qmodule']) && isset($_REQUEST['massoperations'])) {
+			require_once 'include/ListView/GridUtils.php';
+			$massoperations = true;
+			$tabId = getTabid($_REQUEST['qmodule']);
 			$qmodule = getEntityField($_REQUEST['qmodule']);
 		}
 		$cn = $adb->num_rows($result);
@@ -978,11 +983,30 @@ class GridListView {
 			$currentRow = array();
 			foreach ($columns as $label => $col) {
 				$currentRow[$label] = $adb->query_result($result, $i, $col[$table_name]);
+				if (!empty($_REQUEST['qmodule']) && $massoperations) {
+					if (!isset($fieldinfo[$col[$table_name]])) {
+						$UIType = getUItype($_REQUEST['qmodule'], $col[$table_name]);
+						$fieldid = getFieldid($tabId, $col[$table_name]);
+						$fieldinfo[$col[$table_name]] = array(
+							'fieldtype' => 'corebos',
+							'fieldinfo' => [
+								'name' => $col[$table_name],
+								'uitype' => $UIType,
+							],
+							'name' => $col[$table_name],
+							'uitype' => $UIType,
+							'fieldid' => $fieldid
+						);
+					}
+					$id = $adb->query_result($result, $i, $qmodule['entityid']);
+					$gridVal = getDataGridValue($_REQUEST['qmodule'], $id, $fieldinfo[$col[$table_name]], $currentRow[$label]);
+					$currentRow[$label] = $gridVal[0];
+				}
 				if (!empty($column_format[$col[$table_name]])) {
 					$currentRow[$label] = $column_format[$col[$table_name]]($currentRow[$label],$currentRow);
 				}
 			}
-			if (!empty($qmodule)) {
+			if (!empty($qmodule) && $massoperations) {
 				$currentRow['id'] = $adb->query_result($result, $i, $qmodule['entityid']);
 			}
 			array_push($data, $currentRow);
