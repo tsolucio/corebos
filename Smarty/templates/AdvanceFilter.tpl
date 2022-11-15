@@ -8,7 +8,10 @@
  *********************************************************************************/
 -->
 <script>
-	let advancedSearchData = JSON.parse(`{json_encode($advancedSearchMapResult)}`);
+	let advancedSearchData
+	{if isset($advancedSearchMapResult)}
+		advancedSearchData = JSON.parse(`{json_encode($advancedSearchMapResult)}`);
+	{/if}
 	advancedSearchData = advancedSearchData ? advancedSearchData : 'MAP_NOT_FOUND';
 </script>
 <script type="text/javascript" src="include/js/advancefilter.js"></script>
