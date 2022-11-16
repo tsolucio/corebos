@@ -154,6 +154,21 @@ class FieldDependency extends processcbMap {
 		return $mode;
 	}
 
+	private function isModeAcceptable($mapmode, $realmode) {
+		if (strpos($mapmode, ',')) {
+			$modes = explode(',', $mapmode);
+			foreach ($modes as $mi => $mv) {
+				$modes[$mi] = $this->cleanMode($mv);
+			}
+			if (empty(array_intersect([0, $realmode], $modes))) {
+				return false;
+			}
+		} elseif ($this->cleanMode($mapmode)!=0 && $this->cleanMode($mapmode)!=$realmode) {
+			return false;
+		}
+		return true;
+	}
+
 	private function getXMLBranch($loadfrom) {
 		global $adb;
 		$bmap = $adb->pquery(
@@ -191,7 +206,7 @@ class FieldDependency extends processcbMap {
 					continue;
 				}
 			}
-			if (isset($v->mode) && $this->cleanMode((string)$v->mode)!=0 && $this->cleanMode((string)$v->mode)!=$mode) {
+			if (isset($v->mode) && !$this->isModeAcceptable((string)$v->mode, $mode)) {
 				continue; // we ignore the whole dependency
 			}
 			$hasBlockingAction = false;
@@ -204,12 +219,12 @@ class FieldDependency extends processcbMap {
 			} else {
 				$mapactions = $v->actions;
 			}
-			if (isset($mapactions->mode) && $this->cleanMode($mapactions->mode)!=0 && $this->cleanMode($mapactions->mode)!=$mode) {
-				continue;
+			if (isset($mapactions->mode) && !$this->isModeAcceptable((string)$mapactions->mode, $mode)) {
+				continue; // we ignore the whole action
 			}
 			$actions=array();
 			foreach ($mapactions->change as $action) {
-				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
 				$actions['change'][] = array('field'=>(string)$action->field,'value'=>(string)$action->value);
@@ -218,7 +233,7 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($mapactions->hide as $action) {
-				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
 				foreach ($action->field as $fld => $name) {
@@ -226,7 +241,7 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($mapactions->readonly as $action) {
-				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
 				foreach ($action->field as $fld => $name) {
@@ -234,7 +249,7 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($mapactions->deloptions as $action) {
-				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
 				$opt=array();
@@ -247,7 +262,7 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($mapactions->setoptions as $action) {
-				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
 				$opt=array();
@@ -260,7 +275,7 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($mapactions->collapse as $action) {
-				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
 				foreach ($action->block as $block) {
@@ -270,7 +285,7 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($mapactions->open as $action) {
-				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
 				foreach ($action->block as $block) {
@@ -280,7 +295,7 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($mapactions->disappear as $action) {
-				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
 				foreach ($action->block as $block) {
@@ -290,7 +305,7 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($mapactions->appear as $action) {
-				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
 				foreach ($action->block as $block) {
@@ -300,7 +315,7 @@ class FieldDependency extends processcbMap {
 				}
 			}
 			foreach ($mapactions->setclass as $action) {
-				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
 				foreach ($action->field as $name) {
@@ -310,7 +325,7 @@ class FieldDependency extends processcbMap {
 				$actions['setclass'][] = array('labelclass'=>(string)$action->labelclass);
 			}
 			foreach ($mapactions->function as $action) {
-				if (isset($action->mode) && $this->cleanMode($action->mode)!=0 && $this->cleanMode($action->mode)!=$mode) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
 				$params=array();
