@@ -132,7 +132,10 @@ class VTEntityDelta extends VTEventHandler {
 	}
 
 	public function getCurrentValue($moduleName, $recordId, $fieldName) {
-		return self::$entityDelta[$moduleName][$recordId][$fieldName]['currentValue'];
+		if (isset(self::$entityDelta[$moduleName]) && isset(self::$entityDelta[$moduleName][$recordId]) && isset(self::$entityDelta[$moduleName][$recordId][$fieldName])) {
+			return self::$entityDelta[$moduleName][$recordId][$fieldName]['currentValue'];
+		}
+		return '';
 	}
 
 	public function getOldEntity($moduleName, $recordId) {

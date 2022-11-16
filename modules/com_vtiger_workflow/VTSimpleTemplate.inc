@@ -121,7 +121,11 @@ class VTSimpleTemplate {
 										$datavalue = $data[$fieldname];
 										$module_focus = Vtiger_Module::getInstance($referenceModule);
 										$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
-										$uitype = $field_focus->uitype;
+										if ($field_focus) {
+											$uitype = $field_focus->uitype;
+										} else {
+											$uitype = 0;
+										}
 									}
 								}
 								if ($uitype == '15' || $uitype == '33') {
