@@ -1646,14 +1646,14 @@ class CRMEntity {
 			if (!empty($conditions[$fieldname]) && json_decode($conditions[$fieldname]) == null) {
 				return $conditions[$fieldname];
 			}
-			if (!empty($conditions[$fieldname])) {
+			if (!empty($conditions[$fieldname]) || !empty($conditions[$module.'::'.$relatedModule])) {
 				$fields = $cbMapLC->getSearchFieldsName();
 				$wherepos = stripos($query, ' where ');
 				$query_body = substr($query, 0, $wherepos);
 				$workflowScheduler = new WorkFlowScheduler($adb);
 				$workflow = new Workflow();
 				$wfvals['module_name'] = $relatedModule;
-				$wfvals['test'] = $conditions[$fieldname];
+				$wfvals['test'] = isset($conditions[$fieldname]) ? $conditions[$fieldname] : $conditions[$module.'::'.$relatedModule];
 				$wfvals['workflow_id'] = 0;
 				$wfvals['defaultworkflow'] = 0;
 				$wfvals['summary'] = '';
