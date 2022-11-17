@@ -1637,7 +1637,7 @@ class CRMEntity {
 	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
 		global $adb;
 		$relatedModule = vtlib_purify($_REQUEST['module']);
-		$bmapname = $relatedModule.'_ListColumns';
+		$bmapname = $module.'_ListColumns';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
