@@ -714,20 +714,14 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$SET_REM = '';
 	} elseif ($uitype == 115) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$pick_query='select * from vtiger_' . $adb->sql_escape_string($fieldname);
-		$pickListResult = $adb->pquery($pick_query, array());
-		$noofpickrows = $adb->num_rows($pickListResult);
-
 		$options = array();
-		for ($j = 0; $j < $noofpickrows; $j++) {
-			$pickListValue=$adb->query_result($pickListResult, $j, strtolower($fieldname));
-
+		foreach (['Active', 'Inactive'] as $pickListValue) {
 			if ($value == $pickListValue) {
 				$chk_val = 'selected';
 			} else {
 				$chk_val = '';
 			}
-			$options[] = array(getTranslatedString($pickListValue),$pickListValue,$chk_val );
+			$options[] = array(getTranslatedString($pickListValue), $pickListValue, $chk_val );
 		}
 		$fieldvalue [] = $options;
 		$fieldvalue [] = is_admin($current_user);
