@@ -466,7 +466,7 @@ class VTFieldExpressionEvaluater {
 			if (isset($this->env->WorkflowContext)) {
 				$WorkflowContext = $this->env->WorkflowContext;
 			}
-			$val = $this->env->get($sym->value, $this->env->WorkflowContext);
+			$val = $this->env->get($sym->value, $WorkflowContext);
 			if (isset($this->env->moduleName)) {
 				$module = Vtiger_Module::getInstance($this->env->moduleName);
 			} else {
