@@ -462,6 +462,10 @@ class VTFieldExpressionEvaluater {
 	public function env($sym, $raw = false, $formatValue = true) {
 		if ($this->env) {
 			$this->env->formatReferenceValues = $formatValue;
+			$WorkflowContext = array();
+			if (isset($this->env->WorkflowContext)) {
+				$WorkflowContext = $this->env->WorkflowContext;
+			}
 			$val = $this->env->get($sym->value, $this->env->WorkflowContext);
 			if (isset($this->env->moduleName)) {
 				$module = Vtiger_Module::getInstance($this->env->moduleName);
