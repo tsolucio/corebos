@@ -23,6 +23,7 @@ $uservalues = array_merge($subrole, array($roleid));
 $subrole = implode('|##|', $uservalues);
 $userWSID = vtws_getEntityId('Users').'x';
 $cvrs = $adb->query('select * from vtiger_customview');
+vtlib_toggleModuleAccess('cbCVManagement', true);
 while ($cv = $adb->fetch_array($cvrs)) {
 	$default_values =  array(
 		'cvid' => $cv['cvid'],
