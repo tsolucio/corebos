@@ -77,7 +77,7 @@
 						<svg class="slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
 						</svg>
-						<span class="slds-truncate" title="{$blocklabel}">{$blocklabel}&nbsp;&nbsp;</span>
+						<span class="slds-truncate" title="{$blocklabel}" style="font-size: small;font-weight:bold;">{$blocklabel}&nbsp;&nbsp;</span>
 					</h3>
 					<ul class="slds-dropdown__list" role="menu">
 						{foreach item=data from=$FIELDS.$BLOCKID}

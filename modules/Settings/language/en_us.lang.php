@@ -949,7 +949,7 @@ $mod_strings = array(
 'LBL_ALL_MODULES' => 'All Modules',
 'LBL_SELECTED_MODULES' => 'Selected Modules',
 
-'LBL_CRM_SETTINGS' => 'CRM Settings',
+'LBL_CRM_SETTINGS' => 'Application Settings',
 // language translation strings
 'LBL_LANGUAGES_PACKS' => 'Language Extension',
 'LBL_EDIT_LANGUAGE_FILE' => 'Translate modules strings',

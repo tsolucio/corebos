@@ -1302,7 +1302,7 @@ $app_strings = array (
 	'Send SMS' => 'Enviar SMS',
 
 	'LBL_MORE'=>'Más',
-	'LBL_CRM_SETTINGS' => 'Configuración CRM',
+	'LBL_CRM_SETTINGS' => 'Configuración Aplicación',
 	'LBL_RELATED_TO_THIS' =>'relacionado con esto',
 	'LBL_DESELECT_ALL' => 'Desmarcar todo',
 	'LBL_RECORDS_IN' => 'registros en',
