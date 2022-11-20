@@ -10,6 +10,8 @@
 if (window.coreBOSEvents == undefined) {
 	window.coreBOSEvents = {};
 }
+window.coreBOSSearching = false;
+window.coreBOSSearchingText = '';
 
 function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 	if (typeof coreBOS_runningUnitTests != 'undefined') {
@@ -5439,9 +5441,51 @@ function handleAcKeys(e) {
 			highlightAcItemDown();
 			break;
 		}
-	} else if (e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView && e.srcElement.nodeName!='TEXTAREA') {
+	} else if (!window.coreBOSSearching && e.keyCode==13 && appSubmitFormWithEnter && document.forms.EditView && e.srcElement.nodeName!='TEXTAREA') {
 		document.forms.EditView.action.value='Save';
 		formValidate();
+	} else if (gVTModule=='Settings' && document.activeElement.tagName=='BODY') {
+		window.coreBOSSearching = true;
+		if (e.keyCode>32 || e.keyCode==13) {
+			if (e.keyCode>32) {
+				window.coreBOSSearchingText = window.coreBOSSearchingText+e.key.toUpperCase();
+			}
+			fns = Object.keys(window.coreBOSMenuSettings)
+				.filter(fn => fn.startsWith(window.coreBOSSearchingText))
+				.reduce((res, key) => {
+					res[key] = window.coreBOSMenuSettings[key];
+					return res;
+				}, {});
+		}
+		if (e.keyCode==13 && e.srcElement.nodeName!='TEXTAREA') {
+			window.coreBOSSearching = false;
+			if (window.coreBOSSearchingText!='' && Object.keys(fns).length>0) {
+				window.coreBOSSearchingText = '';
+				gotourl(fns[Object.keys(fns)[0]]);
+			}
+			window.coreBOSSearchingText = '';
+		}
+	} else if (document.activeElement.tagName=='BODY') {
+		window.coreBOSSearching = true;
+		if (e.keyCode>32 || e.keyCode==13) {
+			if (e.keyCode>32) {
+				window.coreBOSSearchingText = window.coreBOSSearchingText+e.key.toUpperCase();
+			}
+			fns = Object.keys(window.coreBOSMenu)
+				.filter(fn => fn.startsWith(window.coreBOSSearchingText))
+				.reduce((res, key) => {
+					res[key] = window.coreBOSMenu[key];
+					return res;
+				}, {});
+		}
+		if (e.keyCode==13 && e.srcElement.nodeName!='TEXTAREA') {
+			window.coreBOSSearching = false;
+			if (window.coreBOSSearchingText!='' && Object.keys(fns).length>0) {
+				window.coreBOSSearchingText = '';
+				gotourl(fns[Object.keys(fns)[0]]);
+			}
+			window.coreBOSSearchingText = '';
+		}
 	}
 }
 

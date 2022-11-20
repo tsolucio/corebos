@@ -25,6 +25,7 @@ $userName = getFullNameFromArray('Users', $current_user->column_fields);
 $smarty = new vtigerCRM_Smarty;
 require_once 'modules/evvtMenu/evvtMenuUtils.php';
 $smarty->assign('MENU', getMenuArray(0));
+$smarty->assign('MENUSEARCH', getFlatMenuJSON());
 $header_array = getAdminevvtMenu();
 $smarty->assign('evvtAdminMenu', $header_array);
 $smarty->assign('HEADERS', $header_array);

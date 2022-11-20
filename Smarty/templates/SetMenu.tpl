@@ -11,6 +11,21 @@
 <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 {assign var='BLOCKS' value=getSettingsBlocks()}
 {assign var='FIELDS' value=getSettingsFields()}
+<script>
+window.coreBOSMenuSettings={
+{foreach item=DATABLOCK from=$FIELDS}
+	{foreach item=data from=$DATABLOCK}
+		{assign var=label value=$data.name|@getTranslatedString:$data.module}
+		{if $label eq $data.name}
+			{assign var=label value=$data.name|@getTranslatedString:'Settings'}
+		{/if}
+		{if !empty($label)}
+		"{$label|strtoupper}": "{$data.link|html_entity_decode}",
+		{/if}
+	{/foreach}
+{/foreach}
+};
+</script>
 {assign var="MODULELABEL" value=$MODULE|@getTranslatedString:$MODULE}
 {if !isset($MODULEICON)}
 	{assign var="MODULEICON" value='settings'}
