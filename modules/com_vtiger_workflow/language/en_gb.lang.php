@@ -201,6 +201,7 @@ $mod_strings = array(
 'GenerateDocument'=>'Generate Document',
 'Templates'=>'Templates',
 'launchrelwf' => 'Launch workflows on related updates',
+'launchwf' => 'Launch workflows on updates',
 'LBL_WFPURPOSE' => 'Purpose',
 'Run Webservice Workflow Task' => 'Run Web Service',
 'RunWebserviceWorkflowTask' => 'Run Web Service',

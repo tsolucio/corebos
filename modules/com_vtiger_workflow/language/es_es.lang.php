@@ -197,6 +197,7 @@ $mod_strings = array(
 'GenerateDocument'=>'Generar Documentos',
 'Templates'=>'Plantillas',
 'launchrelwf' => 'Ejecutar flujos en actualizaciones de módulos relacionados',
+'launchwf' => 'Ejecutar flujos en actualizaciones',
 'LBL_WFPURPOSE' => 'Propósito',
 'Run Webservice Workflow Task' => 'Llamada Web Service',
 'RunWebserviceWorkflowTask' => 'Llamada Web Service',

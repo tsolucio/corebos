@@ -201,6 +201,7 @@ $mod_strings = array(
 'GenerateDocument'=>'Criar Documento',
 'Templates'=>'Modelos',
 'launchrelwf' => 'Executar workflows em atualizações relacionadas',
+'launchwf' => 'Launch workflows on updates',
 'LBL_WFPURPOSE' => 'Propósito',
 'Run Webservice Workflow Task' => 'Rodar Web Service',
 'RunWebserviceWorkflowTask' => 'Rodar Web Service',

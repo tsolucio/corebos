@@ -44,7 +44,20 @@
 </div>
 {include file="com_vtiger_workflow/FieldExpressions.tpl"}
 <div class="slds-grid slds-gutters slds-p-horizontal_x-large slds-grid_vertical-align-center">
-	<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
+	<div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+		<div class="slds-form-element">
+			<div class="slds-form-element__control slds-m-top_medium">
+				<div class="slds-checkbox">
+					<input type="checkbox" name="launchwf" id="launchwf" {if $task->launchwf}checked{/if}/>
+					<label class="slds-checkbox__label" for="launchwf">
+						<span class="slds-checkbox_faux"></span>
+						<span class="slds-form-element__label">{$MOD.launchwf}</span>
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
 		<div class="slds-form-element">
 			<div class="slds-form-element__control slds-m-top_medium">
 				<div class="slds-checkbox">
