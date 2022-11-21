@@ -5446,8 +5446,8 @@ function handleAcKeys(e) {
 		formValidate();
 	} else if (gVTModule=='Settings' && document.activeElement.tagName=='BODY') {
 		window.coreBOSSearching = true;
-		if (e.keyCode>32 || e.keyCode==13) {
-			if (e.keyCode>32) {
+		if (e.keyCode>31 || e.keyCode==13) {
+			if (e.keyCode>31) {
 				window.coreBOSSearchingText = window.coreBOSSearchingText+e.key.toUpperCase();
 			}
 			fns = Object.keys(window.coreBOSMenuSettings)
@@ -5467,8 +5467,8 @@ function handleAcKeys(e) {
 		}
 	} else if (document.activeElement.tagName=='BODY') {
 		window.coreBOSSearching = true;
-		if (e.keyCode>32 || e.keyCode==13) {
-			if (e.keyCode>32) {
+		if (e.keyCode>31 || e.keyCode==13) {
+			if (e.keyCode>31) {
 				window.coreBOSSearchingText = window.coreBOSSearchingText+e.key.toUpperCase();
 			}
 			fns = Object.keys(window.coreBOSMenu)
