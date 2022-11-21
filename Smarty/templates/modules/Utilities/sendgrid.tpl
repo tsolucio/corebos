@@ -32,8 +32,8 @@
 		<br />
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col slds-size_1-of-2">
-				<h1 class="slds-page-header__title">{'TransEmail_title'|@getTranslatedString:'vtsendgrid'}</h1>
-				<h2 class="small">{'TransEmail_subtitle'|@getTranslatedString:'vtsendgrid'}</h2>
+				<h1 class="slds-page-header__title">{'TransEmail_title'|@getTranslatedString:'Utilities'}</h1>
+				<h2 class="small">{'TransEmail_subtitle'|@getTranslatedString:'Utilities'}</h2>
 				<hr />
 				<br />
 				<div class="slds-form-element">
@@ -74,8 +74,8 @@
 				</div>
 			</div>
 			<div class="slds-col slds-size_1-of-2">
-				<h1 class="slds-page-header__title">{'MktEmail_title'|@getTranslatedString:'vtsendgrid'}</h1>
-				<h2 class="small">{'MktEmail_subtitle'|@getTranslatedString:'vtsendgrid'}</h2>
+				<h1 class="slds-page-header__title">{'MktEmail_title'|@getTranslatedString:'Utilities'}</h1>
+				<h2 class="small">{'MktEmail_subtitle'|@getTranslatedString:'Utilities'}</h2>
 				<hr />
 				<br />
 				<div class="slds-form-element">
