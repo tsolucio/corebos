@@ -50,16 +50,12 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
 			left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
-			where crm2.crmid=? order by vtiger_attachments.attachmentsid', array($ID));
+			where crm2.crmid=? and vtiger_notes.filetype in ("image/png", "image/jpg", "image/jpeg") order by vtiger_attachments.attachmentsid', array($ID));
 		if ($adb->num_rows($rs) == 0) {
 			return 'No images found.';
 		}
-		$allowedExt = array('image/png', 'image/jpg', 'image/jpeg');
 		$dataIMG = array();
 		while ($image = $adb->fetch_array($rs)) {
-			if (!in_array($image['filetype'], $allowedExt)) {
-				continue;
-			}
 			$dataIMG[] = array(
 				'id' => $image['notesid'],
 				'title' => $image['title'],
