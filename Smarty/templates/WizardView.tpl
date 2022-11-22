@@ -32,6 +32,7 @@
 		});
 		var isWizardInit = false;
 		window.addEventListener('onWizardModal', (e) => {
+			wizard.ActiveStep = 0;
 			wizard.ProceedToNextStep = e.detail.ProceedToNextStep;
 			if (!isWizardInit) {
 				wizard.DeleteSession().then(function() {

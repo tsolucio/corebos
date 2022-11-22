@@ -174,6 +174,9 @@ var relatedlistgrid = {
 			}).then(function(response) {
 				ldsModal.close();
 				ldsModal.show('Wizard', response, 'large');
+				let wizardTitle = document.getElementById('wizard-title').innerHTML;
+				document.getElementById('global-modal-container__title').innerHTML = wizardTitle;
+				document.getElementById('wizard-title').innerHTML = '';
 				let ProceedToNextStep = JSON.parse(relatedlistgrid.NextStep[grid]);
 				const event = new CustomEvent('onWizardModal', {detail: {
 					'ProceedToNextStep': ProceedToNextStep[module]
