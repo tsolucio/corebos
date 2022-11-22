@@ -36,11 +36,10 @@ class pushAlongFlow_DetailViewBlock extends DeveloperBlock {
 		global $adb, $current_user;
 		$this->context = $context;
 		$recid = $this->getFromContext('id');
-		$pflowid = $this->getFromContext('pflowid');
-		$askifsure = $this->getFromContext('askifsure');
 		if (empty($recid) || $recid == '$RECORD$') {
 			return '';
 		}
+		$pflowid = $this->getFromContext('pflowid');
 		$rs = $adb->pquery(
 			'select pffield, pfcondition
 			from vtiger_cbprocessflow
@@ -63,6 +62,8 @@ class pushAlongFlow_DetailViewBlock extends DeveloperBlock {
 			return '';
 		}
 
+		$askifsure = $this->getFromContext('askifsure');
+		$showas = strtolower($this->getFromContext('showas'));
 		$queryGenerator = new QueryGenerator($module, $current_user);
 		$queryGenerator->setFields(array($pffield));
 		$queryGenerator->addCondition('id', $recid, 'e', $queryGenerator::$AND);
@@ -76,11 +77,23 @@ class pushAlongFlow_DetailViewBlock extends DeveloperBlock {
 		} else {
 			$screenvalues = json_decode($this->getFromContext('structure'), true);
 		}
-		$graph = cbProcessFlow::getDestinationStatesGraph($processflow, $fromstate, $recid, $askifsure, $screenvalues);
-		if ($graph=='') {
-			$graph = "graph LR\n".'A("'.getTranslatedString('LBL_NO_DATA').'")';
-		}
 		$smarty = $this->getViewer();
+		if ($showas=='buttons') {
+			$smarty->assign('SHOW_GRAPH_AS', 'BUTTONS');
+			$graph = cbProcessFlow::getDestinationStatesButtons($processflow, $fromstate, $recid, $askifsure, $screenvalues);
+			if ($graph=='') {
+				$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');
+				$smarty->assign('ERROR_MESSAGE', getTranslatedString('LBL_NO_DATA'));
+				$smarty->assign('APMSG_DIVID', uniqid());
+				$graph = $smarty->fetch('applicationmessage.tpl');
+			}
+		} else {
+			$smarty->assign('SHOW_GRAPH_AS', 'MERMAID');
+			$graph = cbProcessFlow::getDestinationStatesGraph($processflow, $fromstate, $recid, $askifsure, $screenvalues);
+			if ($graph=='') {
+				$graph = "graph LR\n".'A("'.getTranslatedString('LBL_NO_DATA').'")';
+			}
+		}
 		$smarty->assign('FLOWGRAPH', $graph);
 		$mod = Vtiger_Module::getInstance($module);
 		$fld = Vtiger_Field::getInstance($pffield, $mod);

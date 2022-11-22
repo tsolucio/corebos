@@ -15,7 +15,7 @@
  *************************************************************************************************/
 
 function validateFlowStep($fieldname, $fieldvalue, $params, $entity) {
-	global $log, $adb;
+	global $log, $adb, $current_user;
 	$log->debug('> Process Alert After Save');
 	if (empty($entity['cbcustominfo2']) && empty($params[0])) {
 		$moduleName = $entity['module'];
@@ -96,8 +96,8 @@ function validateFlowStep($fieldname, $fieldvalue, $params, $entity) {
 								);
 								if ($checkpresence && $adb->num_rows($checkpresence)==0) {
 									$adb->pquery(
-										'insert into vtiger_cbprocessalertqueue (crmid, whenarrived, alertid, wfid, nexttrigger_time) values (?,NOW(),0,?,0)',
-										array($crmid, $wf['wfid'])
+										'insert into vtiger_cbprocessalertqueue (crmid, whenarrived, alertid, wfid, nexttrigger_time,executeuser) values (?,NOW(),0,?,0,?)',
+										array($crmid, $wf['wfid'], $current_user->id)
 									);
 								}
 							}

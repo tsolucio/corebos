@@ -66,6 +66,7 @@
   `alertid` int(11) DEFAULT NULL,
   `wfid` int(11) DEFAULT NULL,
   `nexttrigger_time` datetime DEFAULT NULL,
+  `executeuser` int(11) DEFAULT 0,
   PRIMARY KEY (`cbprocessalertqueueid`),
   INDEX(`nexttrigger_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>

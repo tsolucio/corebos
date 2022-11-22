@@ -1,0 +1,9 @@
+<updatesChangeLog>
+	<changeSet>
+		<author>joebordes</author>
+		<description>add userid with which to execute the action to the alert queue</description>
+		<filename>modules/cbProcessAlert/changesets/addUserToAlertQueue.php</filename>
+		<classname>addUserToAlertQueue</classname>
+		<systemupdate>true</systemupdate>
+	</changeSet>
+</updatesChangeLog>

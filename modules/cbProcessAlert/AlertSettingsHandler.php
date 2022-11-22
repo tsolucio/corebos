@@ -13,11 +13,12 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
+include_once 'include/Webservices/Revise.php';
 
 class cbProcessAlertSettingsHandler extends VTEventHandler {
 
 	public function handleEvent($handlerType, $entityData) {
-		global $adb, $log;
+		global $adb, $log, $current_user, $currentModule;
 		$log->debug('> Process Alert After Save');
 		$moduleName = $entityData->getModuleName();
 		$rs = $adb->pquery(
@@ -30,6 +31,9 @@ class cbProcessAlertSettingsHandler extends VTEventHandler {
 		if ($rs && $adb->num_rows($rs)>0) {
 			$crmid = $entityData->getId();
 			$entityDelta = new VTEntityDelta();
+			$modwsid = vtws_getEntityId($moduleName).'x';
+			$usrwsid = vtws_getEntityId('Users').'x';
+			$grpwsid = vtws_getEntityId('Groups').'x';
 			while ($processflow = $adb->fetch_array($rs)) {
 				$pffield = $processflow['pffield'];
 				$hasChanged = $entityDelta->hasChanged($moduleName, $crmid, $pffield);
@@ -42,7 +46,7 @@ class cbProcessAlertSettingsHandler extends VTEventHandler {
 						// Step Actions
 						$was = $entityDelta->getOldValue($moduleName, $crmid, $pffield);
 						$rss = $adb->pquery(
-							'select cbprocessstepid, context, isactivevalidation
+							'select cbprocessstepid, context, isactivevalidation, usermap, assignuserafter
 							from vtiger_cbprocessstep
 							inner join vtiger_crmentity on crmid=cbprocessstepid
 							where deleted=0 and processflow=? and fromstep=? and tostep=? and active=?',
@@ -60,6 +64,26 @@ class cbProcessAlertSettingsHandler extends VTEventHandler {
 								$validation = $focus->Validations($entity, $crmid, false);
 							}
 							if ($validation===true) { // step is active
+								if (!empty($rss->fields['usermap']) && $rss->fields['assignuserafter']=='0') {
+									$newuserid = coreBOS_Rule::evaluate($rss->fields['usermap'], $crmid);
+									if (!empty($newuserid)) {
+										if (strpos($newuserid, 'x')===false) {
+											if (empty(getUserName($newuserid))) {
+												$newuserid = $grpwsid.$newuserid;
+											} else {
+												$newuserid = $usrwsid.$newuserid;
+											}
+										}
+										$save = array(
+											'request' => $_REQUEST,
+											'module' => $currentModule
+										);
+										unset($currentModule, $_REQUEST);
+										vtws_revise(array('id'=>$modwsid.$crmid,'assigned_user_id'=>$newuserid), $current_user);
+										$currentModule = $save['module'];
+										$_REQUEST = $save['request'];
+									}
+								}
 								$wfs = $adb->pquery('SELECT wfid FROM vtiger_cbprocesssteprel WHERE stepid=? and positive', array($rss->fields['cbprocessstepid']));
 								// insert into queue
 								while ($wf = $adb->fetch_array(($wfs))) {
@@ -69,8 +93,22 @@ class cbProcessAlertSettingsHandler extends VTEventHandler {
 									);
 									if ($checkpresence && $adb->num_rows($checkpresence)==0) {
 										$adb->pquery(
-											'insert into vtiger_cbprocessalertqueue (crmid, whenarrived, alertid, wfid, nexttrigger_time) values (?,NOW(),?,?,null)',
-											array($crmid, $rss->fields['cbprocessstepid'], $wf['wfid'])
+											'insert into vtiger_cbprocessalertqueue (crmid, whenarrived, alertid, wfid, nexttrigger_time, executeuser) values (?,NOW(),?,?,null,?)',
+											array($crmid, $rss->fields['cbprocessstepid'], $wf['wfid'], $current_user->id)
+										);
+									}
+								}
+								if (!empty($rss->fields['usermap']) && $rss->fields['assignuserafter']=='1') {
+									$newuserid = coreBOS_Rule::evaluate($rss->fields['usermap'], $crmid);
+									if (!empty($newuserid)) {
+										// we insert a false workflow ID into the queue to indicate that the assignment must be done
+										// after the positive workflows are triggered. We do this to avoid having to scan the alertqueue loop
+										// for the last positive workflow task of a step which is hard
+										$specialWFIDForPostUserAssign = -100;
+										// we don't check for presence, if there is more than one we do them all
+										$adb->pquery(
+											'insert into vtiger_cbprocessalertqueue (crmid, whenarrived, alertid, wfid, nexttrigger_time,executeuser) values (?,NOW(),?,?,null,?)',
+											array($crmid, $rss->fields['cbprocessstepid'], $specialWFIDForPostUserAssign, $current_user->id)
 										);
 									}
 								}
@@ -102,9 +140,10 @@ class cbProcessAlertSettingsHandler extends VTEventHandler {
 								array($crmid, $rsa->fields['cbprocessalertid'])
 							);
 							if ($checkpresence && $adb->num_rows($checkpresence)==0) {
+								// alerts are executed as the admin user > can be changed here
 								$adb->pquery(
-									'insert into vtiger_cbprocessalertqueue (crmid, whenarrived, alertid, wfid, nexttrigger_time) values (?,NOW(),?,0,?)',
-									array($crmid, $rsa->fields['cbprocessalertid'], $next)
+									'insert into vtiger_cbprocessalertqueue (crmid, whenarrived, alertid, wfid, nexttrigger_time,executeuser) values (?,NOW(),?,0,?,0)',
+									array($crmid, $rsa->fields['cbprocessalertid'])
 								);
 							}
 						}
