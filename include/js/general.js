@@ -5492,6 +5492,16 @@ function handleAcKeys(e) {
 	}
 }
 
+function clearValues(fieldname, fieldname_display) {
+	if (fieldname) {
+		fieldname.value='';
+		fieldname.dispatchEvent(new Event('change'));
+	}
+	if (fieldname_display) {
+		fieldname_display.value='';
+	}
+}
+
 function toggleFormEnter(state) {
 	if (state === false) {
 		window.addEventListener('keydown', preventWindowEnter);
