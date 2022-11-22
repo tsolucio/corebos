@@ -1,0 +1,74 @@
+<?php
+/*************************************************************************************************
+ * Copyright 2022 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
+ * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
+ * Vizsage Public License (the "License"). You may not use this file except in compliance with the
+ * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
+ * and share improvements. However, for proper details please read the full License, available at
+ * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
+ * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
+ * applicable law or agreed to in writing, any software distributed under the License is distributed
+ * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
+ *************************************************************************************************/
+// block://sliderwidget:modules/Utilities/cbSliderWidget.php:RECORDID=$RECORD$&title=Slider
+// top://sliderwidget:modules/Utilities/cbSliderWidget.php:RECORDID=$RECORD$&title=Slider
+// module=Utilities&action=UtilitiesAjax&file=cbSliderWidget&RECORDID=$RECORD$&title=Slider
+
+require_once 'modules/Vtiger/DeveloperWidget.php';
+require_once 'include/Webservices/getRecordImages.php';
+global $currentModule;
+
+class sliderwidget {
+
+	public static function getWidget($name) {
+		return (new sliderwidget_DetailViewBlock());
+	}
+}
+
+class sliderwidget_DetailViewBlock extends DeveloperBlock {
+
+	protected $widgetName = 'sliderWidget';
+
+	public function process($context = false) {
+		global $adb, $site_URL;
+		$this->context = $context;
+		$smarty = $this->getViewer();
+		$ID = $this->getFromContext('RECORDID');
+		$title = $this->getFromContext('title');
+		if (empty($ID)) {
+			return 'ID not found.';
+		}
+		$rs = $adb->pquery('select vtiger_attachments.attachmentsid, vtiger_attachments.type filetype, vtiger_attachments.path, vtiger_attachments.name, vtiger_notes.title, vtiger_notes.notesid
+			from vtiger_notes
+			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
+			left join vtiger_notescf ON vtiger_notescf.notesid=vtiger_notes.notesid
+			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
+			inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid
+			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
+			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
+			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
+			left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
+			where crm2.crmid=? and vtiger_notes.filetype in ("image/png", "image/jpg", "image/jpeg") order by vtiger_attachments.attachmentsid', array($ID));
+		if ($adb->num_rows($rs) == 0) {
+			return 'No images found.';
+		}
+		$dataIMG = array();
+		while ($image = $adb->fetch_array($rs)) {
+			$dataIMG[] = array(
+				'id' => $image['notesid'],
+				'title' => $image['title'],
+				'path' => $site_URL.'/'.$image['path'].$image['attachmentsid'].'_'.$image['name']
+			);
+		}
+		$smarty->assign('images', $dataIMG);
+		$smarty->assign('title', empty($title) ? getTranslatedString('Slider') : $title);
+		return $smarty->fetch('sliderwidget.tpl');
+	}
+}
+
+if (isset($_REQUEST['action']) && $_REQUEST['action']==$currentModule.'Ajax') {
+	$smq = new sliderwidget_DetailViewBlock();
+	echo $smq->process($_REQUEST);
+}
