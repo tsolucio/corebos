@@ -138,6 +138,7 @@ class WizardComponent {
 								wizard.GroupData = [];
 								wizard.gridInstance = [];
 								wizard.WizardInstance = [];
+								localStorage.removeItem(`currentWizardActive`);
 							} else {
 								setTimeout(function() {
 									location.reload(true);
@@ -764,6 +765,7 @@ class WizardComponent {
 					wizard.CheckedRows = [];
 					wizard.GridData = [];
 					wizard.GroupData = [];
+					localStorage.removeItem(`currentWizardActive`);
 				} else {
 					setTimeout(function() {
 						location.reload(true);
