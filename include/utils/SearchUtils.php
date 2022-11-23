@@ -905,6 +905,19 @@ function str_replace_once($needle, $replace, $haystack) {
 }
 
 /**
+ * Build the where condition for the exclude keywords
+ */
+function exclude_keywords_where_builder($table_name, $column_name, $exclude_keywords) {
+	$where = '';
+	$dot = $column_name == "" ? "" : ".";
+	$path = $table_name . $dot . $column_name;
+	foreach ($exclude_keywords as $key => $value) {
+		$where .= "AND " . $path . " NOT LIKE'" . formatForSqlLike($value) . "'";
+	}
+	return $where;
+}
+
+/**
  * Function to get the where condition for a module based on the field table entries
  * @param  string $listquery  -- ListView query for the module
  * @param  string $module     -- module name
@@ -913,7 +926,29 @@ function str_replace_once($needle, $replace, $haystack) {
  */
 function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 	global $adb, $current_user;
+	$is_range = strpos($search_val, "..") !== false ? true : false;
 	$userprivs = $current_user->getPrivileges();
+
+	// checking if search should be exact or not
+	$formatForSqlLikeFlag = 0;
+	if (substr_count($search_val, '"') == 2) {
+		$formatForSqlLikeFlag = 3;
+		$search_val = get_string_between($search_val, '"', '"');
+	}
+
+	// checking for exclude keywords
+	$exclude_keywords = [];
+	if (strpos($search_val, "-") !== false) {
+		$filtered_val = preg_replace('/\s+/', ' ', $search_val);
+		$search_arr = explode(" ", $filtered_val);
+		foreach ($search_arr as $key => $value) {
+			if (strpos($value, "-") !== false) {
+				array_push($exclude_keywords, str_replace("-", "", $value));
+				$search_val = str_replace($value, "", $search_val);
+				$search_val = preg_replace('/\s+/', ' ', $search_val);
+			}
+		}
+	}
 
 	$search_val = $adb->sql_escape_string($search_val);
 	if ($userprivs->hasGlobalReadPermission()) {
@@ -921,7 +956,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 			$query = 'SELECT columnname, tablename, fieldname, uitype FROM vtiger_field WHERE tabid=? and vtiger_field.presence in (0,2)';
 			$qparams = array(getTabid($module));
 		} else {
-			$query = 'SELECT columnname, tablename, fieldname, uitype
+			$query = 'SELECT columnname, tablename, fieldname, vtiger_field.uitype
 				FROM vtiger_field
 				LEFT JOIN vtiger_ws_fieldtype ON vtiger_field.uitype=vtiger_ws_fieldtype.uitype
 				WHERE tabid = ? and vtiger_field.presence in (0,2) and fieldtype=?';
@@ -930,7 +965,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 	} else {
 		$profileList = getCurrentUserProfileList();
 		if ($fieldtype=='') {
-			$query = 'SELECT columnname, tablename, fieldname, uitype
+			$query = 'SELECT columnname, tablename, fieldname, vtiger_field.uitype
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
@@ -938,7 +973,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 					.') AND vtiger_def_org_field.visible = 0 and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid';
 			$qparams = array(getTabid($module), $profileList);
 		} else {
-			$query = 'SELECT columnname, tablename, fieldname, uitype
+			$query = 'SELECT columnname, tablename, fieldname, vtiger_field.uitype
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
@@ -974,9 +1009,10 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 					$where .= ' OR ';
 				}
 				if ($binary_search) {
-					$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
+					$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."')";
 				} else {
-					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."'"
+					. exclude_keywords_where_builder($tablename, $columnname, $exclude_keywords);
 				}
 			}
 			$columnname = 'firstname';
@@ -989,14 +1025,21 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 				$where .= ' OR ';
 			}
 			if ($binary_search) {
-				$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
+				$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."')";
 			} else {
 				if (is_uitype($field_uitype, '_picklist_') && hasMultiLanguageSupport($fieldname)) {
 					$where .= '('.$tablename.'.'.$columnname.' IN (select translation_key from vtiger_cbtranslation
-						where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'.formatForSqlLike($search_val).'") OR '
-						.$tablename.'.'.$columnname.' LIKE "'. formatForSqlLike($search_val).'")';
+						where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'
+						.formatForSqlLike($search_val, $formatForSqlLikeFlag).'"' . exclude_keywords_where_builder('i18n', '', $exclude_keywords) . ') OR '
+						.$tablename.'.'.$columnname.' LIKE "'. formatForSqlLike($search_val, $formatForSqlLikeFlag).'")';
 				} else {
-					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+					if ($is_range) {
+						$range = explode("..", $search_val);
+						$where .= $tablename.'.'.$columnname." BETWEEN ". $range[0] . " AND " . $range[1];
+					} else {
+						$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."'"
+						. exclude_keywords_where_builder($tablename, $columnname, $exclude_keywords);
+					}
 				}
 			}
 		}

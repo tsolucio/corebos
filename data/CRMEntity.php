@@ -1387,7 +1387,7 @@ class CRMEntity {
 						$sql = $qg->getQuery(); // No conditions
 						$maxsql = mkMaxQuery($sql, $mdmap['sortfield']);
 						$rs = $adb->query($maxsql);
-						$max = $rs->fields['max'];
+						$max = (int)$rs->fields['max'];
 						$this->column_fields[$mdmap['sortfield']] = $max+1;
 					} else {
 						if (!empty($mdmap['editfieldnames'])) {
@@ -1641,6 +1641,7 @@ class CRMEntity {
 	 */
 	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
 		global $adb;
+		$relatedModule = vtlib_purify($_REQUEST['module']);
 		$bmapname = $module.'_ListColumns';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
@@ -1650,14 +1651,18 @@ class CRMEntity {
 			if (!empty($conditions[$fieldname]) && json_decode($conditions[$fieldname]) == null) {
 				return $conditions[$fieldname];
 			}
-			if (!empty($conditions[$fieldname])) {
+			if (!empty($conditions[$fieldname]) || !empty($conditions[$module.'::'.$relatedModule])) {
 				$fields = $cbMapLC->getSearchFieldsName();
 				$wherepos = stripos($query, ' where ');
 				$query_body = substr($query, 0, $wherepos);
 				$workflowScheduler = new WorkFlowScheduler($adb);
 				$workflow = new Workflow();
-				$wfvals['module_name'] = $module;
-				$wfvals['test'] = $conditions[$fieldname];
+				$wfvals['module_name'] = $relatedModule;
+				$wfvals['test'] = isset($conditions[$fieldname]) ? $conditions[$fieldname] : $conditions[$module.'::'.$relatedModule];
+				$wfvals['workflow_id'] = 0;
+				$wfvals['defaultworkflow'] = 0;
+				$wfvals['summary'] = '';
+				$wfvals['execution_condition'] = '';
 				$workflow->setup($wfvals);
 				$query = $workflowScheduler->getWorkflowQuery($workflow, array_values($fields));
 				$wherepos = stripos($query, ' where ');

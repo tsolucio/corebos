@@ -1320,7 +1320,7 @@ $app_strings = array (
 	'Create Sales Order' => 'Crear Orden de Venta',
 
 	'LBL_MORE'=>'Más',
-	'LBL_CRM_SETTINGS' => 'Configuración CRM',
+	'LBL_CRM_SETTINGS' => 'Configuración Aplicación',
 	'LBL_RELATED_TO_THIS' =>'relacionado con esto',
 	'LBL_DESELECT_ALL' => 'Desmarcar todo',
 	'LBL_RECORDS_IN' => 'registros en',
@@ -1389,6 +1389,7 @@ $app_strings = array (
 	'Paste the link here' => 'Pega el enlace aquí',
 	'LBL_UITYPE10_NOTALLOWED' => 'El módulo relacionado tiene un campo relacional obligatorio.',
 	'LBL_PAINT2DOCUMENT' => 'Dibujo a Documento',
+	'Slider' => 'Slider',
 );
 
 // Translation for currency names

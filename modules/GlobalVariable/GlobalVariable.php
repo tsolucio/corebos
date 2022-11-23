@@ -240,15 +240,16 @@ class GlobalVariable extends CRMEntity {
 		global $adb;
 		$list_of_modules=array();
 		$list_of_modules['Default'] = '';
-		$isBusinessMapping = (substr($var, 0, 16) == 'BusinessMapping_');
 		$query=$adb->pquery($sql, array($var));
 		self::$validationinfo[] = 'candidate variable records found: '.$adb->num_rows($query);
 		for ($i=0; $i<$adb->num_rows($query); $i++) {
+			$bmapid = $adb->query_result($query, $i, 'bmapid');
+			$isBusinessMapping = (!empty($bmapid) && isRecordExists($bmapid));
 			self::$validationinfo[] = 'evaluate candidate <a href="index.php?action=DetailView&record='.$adb->query_result($query, $i, 'globalvariableid').
 				'&module=GlobalVariable">'.$adb->query_result($query, $i, 'globalno').'</a>';
 			$in_module_list=$adb->query_result($query, $i, 'in_module_list');
 			if ($in_module_list=='0' || $adb->query_result($query, $i, 'module_list')=='') {
-				if ($isBusinessMapping && isRecordExists($adb->query_result($query, $i, 'bmapid'))) {
+				if ($isBusinessMapping) {
 					$value = $adb->query_result($query, $i, 'bmapid');
 				} else {
 					$value = $adb->query_result($query, $i, 'value');
@@ -262,7 +263,7 @@ class GlobalVariable extends CRMEntity {
 				if ($in_module_list=='1') {
 					$nummods = count($modules_list);
 					for ($j=0; $j < $nummods; $j++) {
-						if ($isBusinessMapping && isRecordExists($adb->query_result($query, $i, 'bmapid'))) {
+						if ($isBusinessMapping) {
 							$value = $adb->query_result($query, $i, 'bmapid');
 						} else {
 							$value = $adb->query_result($query, $i, 'value');
@@ -276,7 +277,7 @@ class GlobalVariable extends CRMEntity {
 					$all_modules=vtws_getModuleNameList();
 					$other_modules=array_diff($all_modules, $modules_list);
 					foreach ($other_modules as $omod) {
-						if ($isBusinessMapping && isRecordExists($adb->query_result($query, $i, 'bmapid'))) {
+						if ($isBusinessMapping) {
 							$value = $adb->query_result($query, $i, 'bmapid');
 						} else {
 							$value = $adb->query_result($query, $i, 'value');

@@ -22,5 +22,6 @@ $mod_strings = array(
 	'cbsquestion' => 'Question',
 	'cbsanswer' => 'Answer',
 	'cbsq_providerid' => 'Provider ID',
+	'Type of Question' => 'Type of Question',
 );
 ?>

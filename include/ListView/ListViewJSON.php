@@ -868,7 +868,7 @@ class GridListView {
 									}
 								}
 								if ($field != $fieldName) {
-									if ($field == 'assigned_user_id') {
+									if ($field == 'assigned_user_id' && is_numeric($row[$field])) {
 										$row[$field] = getUserFullName($row[$field]);
 									}
 									if (!isset($row[$field])) {
@@ -877,7 +877,7 @@ class GridListView {
 									$res = processConditions($condition, $field, $not, $parameter, $row[$field]);
 									array_push($conditionRes, $res);
 								} else {
-									if ($field == 'assigned_user_id') {
+									if ($field == 'assigned_user_id' && is_numeric($fieldValue)) {
 										$fieldValue = getUserFullName($fieldValue);
 									}
 									$res = processConditions($condition, $field, $not, $parameter, $fieldValue);

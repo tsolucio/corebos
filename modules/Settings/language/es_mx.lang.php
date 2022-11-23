@@ -894,7 +894,7 @@ $mod_strings = array (
 	'LBL_ALL_MODULES' => 'Todos los Módulos',
 	'LBL_SELECTED_MODULES' => 'Módulos Seleccionados',
 
-	'LBL_CRM_SETTINGS' => 'Configuración CRM',
+	'LBL_CRM_SETTINGS' => 'Configuración Aplicación',
 	// language translation strings
 	'LBL_LANGUAGES_PACKS' => 'Extensión de Idioma',
 	'LBL_EDIT_LANGUAGE_FILE' => 'Traducir etiquetas de módulo',

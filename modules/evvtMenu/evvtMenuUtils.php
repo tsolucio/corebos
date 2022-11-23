@@ -94,6 +94,49 @@ function getMenuJSON2() {
 	return json_encode($menustructure);
 }
 
+/**
+ * This function creates a flat JSON string of all distinct menu elements with
+ * their action and the menu label as the JSON label
+ *
+ * @return string
+ */
+function getFlatMenuJSON() {
+	global $adb, $default_charset, $current_user;
+	$is_admin = is_admin($current_user);
+	$menustructure = array();
+	$menurs = $adb->query("SELECT distinct mlabel,mvalue,mtype,mpermission FROM `vtiger_evvtmenu` WHERE (mtype='module' or mtype='url') and mvisible=1");
+	if ($menurs && $adb->num_rows($menurs)>0) {
+		while ($menu = $adb->fetchByAssoc($menurs)) {
+			if (empty($menu['mpermission']) && $menu['mtype']=='module') {
+				// apply coreBOS permissions
+				if (isPermitted($menu['mvalue'], 'index')=='no' || !vtlib_isModuleActive($menu['mvalue'])) {
+					continue;
+				}
+			} elseif (!empty($menu['mpermission'])) {
+				// apply evvtMenu permissions
+				$usrprf = getUserProfile($current_user->id);
+				$mperm = explode(',', $menu['mpermission']);
+				if (!$is_admin && count(array_intersect($usrprf, $mperm))==0) {
+					continue;
+				}
+			}
+			$mlabel = html_entity_decode($menu['mlabel'], ENT_QUOTES, $default_charset);
+			if ($menu['mtype']=='url') {
+				$mlabel = strtoupper(getTranslatedString($mlabel, 'evvtMenu'));
+				$menustructure[$mlabel] = html_entity_decode($menu['mvalue'], ENT_QUOTES, $default_charset);
+			} else {
+				$mlabel = strtoupper(getTranslatedString($mlabel, $menu['mvalue']));
+				$mmodule = html_entity_decode($menu['mvalue'], ENT_QUOTES, $default_charset);
+				$menustructure[$mlabel] = 'index.php?action=index&module='.$mmodule;
+			}
+		}
+	}
+	if ($is_admin) {
+		$menustructure[strtoupper(getTranslatedString('Settings', 'Settings'))] = 'index.php?action=index&module=Settings';
+	}
+	return json_encode($menustructure);
+}
+
 function getMenuElements() {
 	global $adb;
 	$menustructure = array();
@@ -126,7 +169,7 @@ function getMenuArray($mparent) {
 	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			if (empty($menu['mpermission']) && $menu['mtype']=='module') {
-				// apply vtiger CRM permissions
+				// apply coreBOS permissions
 				if (isPermitted($menu['mvalue'], 'index')=='no' || !vtlib_isModuleActive($menu['mvalue'])) {
 					continue;
 				}

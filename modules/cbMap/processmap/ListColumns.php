@@ -55,6 +55,11 @@
 	  <forfield></forfield>
 	  <value></value>
 	 </condition>
+	 <condition>
+	  <formodule></formodule>
+	  <relatedmodule></relatedmodule>
+	  <value></value>
+	 </condition>
 	...
 	</conditions>
   </popup>
@@ -173,28 +178,30 @@ class ListColumns extends processcbMap {
 				}
 				$this->mapping['cbmapPOPUP']['LINKFIELD'] = (string)$xml->popup->linkfield;
 			}
-			foreach ($xml->popup->columns->field as $v) {
-				$label = empty($v->label) ? '' : (string)$v->label;
-				$table = empty($v->table) ? '' : (string)$v->table;
-				$columnname = empty($v->columnname) ? '' : (string)$v->columnname;
-				if ($table=='' || $columnname=='' || $label=='') {
-					$cachedModuleFields = VTCacheUtils::lookupFieldInfo($tabid, (string)$v->name);
-					if ($cachedModuleFields) {
-						$table = str_replace('vtiger_', '', $cachedModuleFields['tablename']);
-						$columnname = $cachedModuleFields['columnname'];
-						$label = ($label=='' ? $cachedModuleFields['fieldlabel'] : $label);
-					} else { // we try searching with column name in case they gave us that instead of the field name
-						$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, (string)$v->name);
+			if (isset($xml->popup->columns->field)) {
+				foreach ($xml->popup->columns->field as $v) {
+					$label = empty($v->label) ? '' : (string)$v->label;
+					$table = empty($v->table) ? '' : (string)$v->table;
+					$columnname = empty($v->columnname) ? '' : (string)$v->columnname;
+					if ($table=='' || $columnname=='' || $label=='') {
+						$cachedModuleFields = VTCacheUtils::lookupFieldInfo($tabid, (string)$v->name);
 						if ($cachedModuleFields) {
 							$table = str_replace('vtiger_', '', $cachedModuleFields['tablename']);
-							$columnname = (string)$v->name;
-							$v->name = $cachedModuleFields['fieldname'];
+							$columnname = $cachedModuleFields['columnname'];
 							$label = ($label=='' ? $cachedModuleFields['fieldlabel'] : $label);
+						} else { // we try searching with column name in case they gave us that instead of the field name
+							$cachedModuleFields = VTCacheUtils::lookupFieldInfoByColumn($tabid, (string)$v->name);
+							if ($cachedModuleFields) {
+								$table = str_replace('vtiger_', '', $cachedModuleFields['tablename']);
+								$columnname = (string)$v->name;
+								$v->name = $cachedModuleFields['fieldname'];
+								$label = ($label=='' ? $cachedModuleFields['fieldlabel'] : $label);
+							}
 						}
 					}
+					$this->mapping['cbmapPOPUP']['SearchFields'][$label] = array($table => $columnname);
+					$this->mapping['cbmapPOPUP']['SearchFieldsName'][$label] = (string)$v->name;
 				}
-				$this->mapping['cbmapPOPUP']['SearchFields'][$label] = array($table => $columnname);
-				$this->mapping['cbmapPOPUP']['SearchFieldsName'][$label] = (string)$v->name;
 			}
 			$conditions = isset($xml->popup->conditions) ? $xml->popup->conditions : false;
 			if ($conditions) {
@@ -202,7 +209,14 @@ class ListColumns extends processcbMap {
 					foreach ($key as $cond) {
 						$forfield = (string)$cond->forfield;
 						$value = (string)$cond->value;
-						$this->mapping['cbmapPOPUP']['Conditions'][$forfield] = $value;
+						if (!empty($forfield)) {
+							$this->mapping['cbmapPOPUP']['Conditions'][$forfield] = $value;
+						}
+						$formodule = (string)$cond->formodule;
+						$relatedmodule = (string)$cond->relatedmodule;
+						if (!empty($formodule) && !empty($relatedmodule)) {
+							$this->mapping['cbmapPOPUP']['Conditions'][$formodule.'::'.$relatedmodule] = $value;
+						}
 					}
 				}
 			}

@@ -19,6 +19,10 @@ function __getCurrentUserID() {
 	return vtws_getEntityId('Users').'x'.$current_user->id;
 }
 
+function __getGroupID($arr) {
+	return getGrpId($arr[0]);
+}
+
 function __getCurrentUserName($arr) {
 	global $current_user;
 	if (isset($arr[0]) && strtolower($arr[0])=='full') {

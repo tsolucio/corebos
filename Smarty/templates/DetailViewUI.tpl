@@ -660,7 +660,7 @@
 					<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
 				</button>
 				<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button"
-					onclick="document.getElementById('txtbox_{$keyfldname}').value='0'; document.getElementById('{$keyfldname}_display').value='';">
+					onclick="clearValues(document.getElementById('txtbox_{$keyfldname}'), document.getElementById('{$keyfldname}_display'));">
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 					</svg>

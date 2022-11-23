@@ -9,19 +9,21 @@
  ********************************************************************************/
 -->*}
 {include file='applicationmessage.tpl'}
+{if empty($EDITFORMID)}
+	{assign var="EDITFORMID" value='frmEditView'}
+{/if}
 {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Quotes' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards'}
-	<!-- (id="frmEditView") content added to form tag and new hidden field added,  -->
-	<form id="frmEditView" name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="settotalnoofrows();calcTotal();">
+	<form id="{$EDITFORMID}" name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="VtigerJS_DialogBox.block();settotalnoofrows();calcTotal();">
 	<input type="hidden" name="hidImagePath" id="hidImagePath" value="{$IMAGE_PATH}"/>
 	{if isset($OP_MODE) && $OP_MODE eq 'create_view'}
 		<input type="hidden" name="convert_from" value="{$CONVERT_MODE}">
 		<input type="hidden" name="duplicate_from" value="{if isset($DUPLICATE_FROM)}{$DUPLICATE_FROM}{/if}">
 	{/if}
 	{if $MODULE neq 'Quotes'}
-		 <input type="hidden" name="convertmode">
+		<input type="hidden" name="convertmode">
 	{/if}
 {else}
-	<form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php">
+	<form id="{$EDITFORMID}" name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 	<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="{$UPLOAD_MAXSIZE}">
 {/if}
 {if $MODULE eq 'Emails'}
@@ -76,6 +78,7 @@
 <input type="hidden" name="Module_Popup_Save" value="{if isset($smarty.request.Module_Popup_Save)}{$smarty.request.Module_Popup_Save|@urlencode}{/if}" />
 <input type="hidden" name="Module_Popup_Save_Param" value="{if isset($smarty.request.Module_Popup_Save_Param)}{$smarty.request.Module_Popup_Save_Param|@urlencode}{/if}" />
 <input type="hidden" name="FILTERFIELDSMAP" value="{if isset($smarty.request.FILTERFIELDSMAP)}{$smarty.request.FILTERFIELDSMAP|@urlencode}{/if}" />
+<input type="hidden" name="FILTERVALMAP" value="{if isset($smarty.request.FILTERVALMAP)}{$smarty.request.FILTERVALMAP|@urlencode}{/if}" />
 <input name='search_url' id="search_url" type='hidden' value='{if isset($SEARCH)}{$SEARCH|@urlencode}{/if}'>
 <input type="hidden" name="WizardAction" value="{if isset($smarty.request.wizardaction)}{$smarty.request.wizardaction|@urlencode}{/if}" />
 <input type="hidden" name="WizardStep" value="{if isset($smarty.request.step)}{$smarty.request.step|@urlencode}{/if}" />

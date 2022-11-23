@@ -4030,6 +4030,9 @@ precacheAndRoute([{
   "url": "modules/Mobile/resources/crmtogo.js",
   "revision": "3c5b056eeb97499afe252002bdf13661"
 }, {
+  "url": "modules/Mobile/resources/css/images/edit_Icon.png",
+  "revision": "4a25b9f592f045d0b0a3e323db93bbb9"
+}, {
   "url": "modules/Mobile/resources/css/images/ui-bg_diagonals-thick_18_b81900_40x40.png",
   "revision": "e9c44fa4ccdc5d2d4c5e2bf65fc166aa"
 }, {
@@ -11429,7 +11432,7 @@ precacheAndRoute([{
   "revision": "321798c3a4f90cafc07df60d8a8f0f2f"
 }, {
   "url": "include/js/advancefilter.js",
-  "revision": "9334f27a8c19a5af5539b131e3760a48"
+  "revision": "e1962f611b609f62ef92358126a2379a"
 }, {
   "url": "include/js/asterisk.js",
   "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
@@ -11441,7 +11444,7 @@ precacheAndRoute([{
   "revision": "0b6bdbfee7b61226371c555ced95bde2"
 }, {
   "url": "include/js/corebosjshooks.js",
-  "revision": "1607aa9f922cfb8476b3635d3edd8286"
+  "revision": "eaa2e2eda37ce0a295b392dafe00728a"
 }, {
   "url": "include/js/customview.js",
   "revision": "5c870b070f867f9e010109f6faace4b1"
@@ -11468,7 +11471,7 @@ precacheAndRoute([{
   "revision": "045f54dabb34aa52ad190b1f308034bf"
 }, {
   "url": "include/js/FieldDependencies.js",
-  "revision": "b16bb2a2dac1dcfa7f2899a510aba500"
+  "revision": "bd224baaa71dd8655bcf26cdd042331d"
 }, {
   "url": "include/js/FieldDepFunc.js",
   "revision": "77fa4e3b1753e8336cb6da29debd444a"
@@ -11477,7 +11480,7 @@ precacheAndRoute([{
   "revision": "70e4040be9d6e893aec7e605033a773a"
 }, {
   "url": "include/js/general.js",
-  "revision": "336b6905c1f33a9d0ed74b7d798673fe"
+  "revision": "952ae79ee0a9243437f903511abb8acc"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "b4fad7ff70fb9444a5e86f58490269b9"

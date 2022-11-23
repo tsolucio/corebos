@@ -536,9 +536,15 @@ FieldDependencies.prototype.fieldReadonlyEditView = function (readonlyFields) {
 	var field='';
 	for (var i=0; i<readonlyFields.length; i++) {
 		field=readonlyFields[i]['field'];
-		document.getElementById(field+'_hidden').innerHTML=document.getElementsByName(field).item(0).value;
-		document.getElementById(field+'_hidden').style.display='inline';
-		document.getElementsByName(field).item(0).style.display='none';
+		let fh = document.getElementById(field+'_hidden');
+		if (fh) {
+			fh.innerHTML=document.getElementsByName(field).item(0).value;
+			fh.style.display='inline';
+		}
+		let fn = document.getElementById(field);
+		if (fn) {
+			fn.item(0).style.display='none';
+		}
 	}
 };
 
