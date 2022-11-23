@@ -749,7 +749,7 @@ const defaultOptions = {
     kind: OptionKind.VIEWER
   };
   defaultOptions.locale = {
-    value: navigator.language || "en-US",
+    value: typeof gVTuserLanguage=='undefined' ? 'en-US' : gVTuserLanguage.substr(0, 2)+'-'+gVTuserLanguage.substr(-2).toUpperCase(),
     kind: OptionKind.VIEWER
   };
   defaultOptions.renderer = {
@@ -2781,7 +2781,7 @@ function webViewerInitialized() {
   let file;
   const queryString = document.location.search.substring(1);
   const params = (0, _ui_utils.parseQueryString)(queryString);
-  file = params.get("file") ?? _app_options.AppOptions.get("defaultUrl");
+  file = params.get("pdffile") ?? _app_options.AppOptions.get("defaultUrl");
   validateFileURL(file);
   const fileInput = appConfig.openFileInput;
   fileInput.value = null;
