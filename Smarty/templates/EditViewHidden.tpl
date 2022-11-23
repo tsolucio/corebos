@@ -8,6 +8,11 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<script>
+	{if isset($PopupFilterMapResults)}
+		let PopupFilterMapResults = JSON.parse(`{$PopupFilterMapResults}`);
+	{/if}
+</script>
 {include file='applicationmessage.tpl'}
 {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Quotes' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards'}
 	<!-- (id="frmEditView") content added to form tag and new hidden field added,  -->
