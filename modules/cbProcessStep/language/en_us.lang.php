@@ -30,5 +30,9 @@ $mod_strings = array(
 	'showstepvalidation' => 'Show step validation',
 	'Default Path' => 'Default Path',
 	'Valid Default Start' => 'Valid Default Start',
+	'Button Label' => 'Button Label',
+	'New User/Group ID Map' => 'New User/Group ID Map',
+	'Assign User/Group After' => 'Assign User/Group After',
+	'moreinfomapid' => 'More Information',
 );
 ?>

@@ -30,5 +30,9 @@ $mod_strings = array(
 	'showstepvalidation' => 'Validación Mostrar Paso',
 	'Default Path' => 'Camino por Defecto',
 	'Valid Default Start' => 'Inicio Válido Camino Defecto',
+	'Button Label' => 'Etiqueta Botón',
+	'New User/Group ID Map' => 'Mapa Nuevo ID Usuario/Grupo',
+	'Assign User/Group After' => 'Asignar Usuario/Grupo Después',
+	'moreinfomapid' => 'Más Información',
 );
 ?>

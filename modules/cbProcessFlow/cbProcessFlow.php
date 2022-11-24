@@ -218,42 +218,75 @@ class cbProcessFlow extends CRMEntity {
 				}
 			}
 		}
+		$cn = $adb->getColumnNames('vtiger_cbprocessstep');
+		$moreinfomapid = (in_array('moreinfomapid', $cn) ? 'moreinfomapid' : '0 as moreinfomapid');
 		$rs = $adb->pquery(
-			'select tostep, pfmodule, isactivevalidation, showstepvalidation
-			from vtiger_cbprocessstep
+			'select tostep, pfmodule, isactivevalidation, showstepvalidation, buttonlabel, '.$moreinfomapid
+			.' from vtiger_cbprocessstep
 			inner join vtiger_crmentity on crmid=cbprocessstepid
 			inner join vtiger_cbprocessflow on processflow=cbprocessflowid
 			where deleted=0 and processflow=? and fromstep=? and vtiger_cbprocessstep.active',
 			array($processflow, $fromstate)
 		);
-		$states=array();
+		$states = $moreinfo = array();
 		while ($st = $adb->fetch_array($rs)) {
+			if (!empty($st['moreinfomapid'])) {
+				if (isRecordExists($st['moreinfomapid'])) {
+					if (getSalesEntityType($st['moreinfomapid'])=='cbMap') {
+						$st['moreinfomapid'] = coreBOS_Rule::evaluate($st['moreinfomapid'], $record);
+					}
+					$check = $adb->pquery(
+						'select 1 from vtiger_cbprocessinfo
+						inner join vtiger_crmobject on crmid=cbprocessinfoid
+						where crmid=? and setype=? and deleted=0 and active=1',
+						[$st['moreinfomapid'], 'cbProcessInfo']
+					);
+					if (!$check || $adb->num_rows($check)!=1) {
+						$st['moreinfomapid'] = 0;
+					}
+				} else {
+					$st['moreinfomapid'] = 0;
+				}
+			} else {
+				$st['moreinfomapid'] = 0;
+			}
+			$label = (empty($st['buttonlabel']) ? $st['tostep'] : $st['buttonlabel']);
+			if (substr($label, 0, 1)=='{') { // it is a JSON specification > make sure it has a label
+				$toinfo = json_decode($label, true);
+				if (empty($toinfo['label'])) {
+					$toinfo['label'] = getTranslatedString($st['tostep'], $st['pfmodule']);
+				}
+				$label = json_encode($toinfo);
+			}
 			if ($exists && !empty($st['showstepvalidation'])) {
 				$cbmap->id = $st['showstepvalidation'];
 				$cbmap->retrieve_entity_info($st['showstepvalidation'], 'cbMap');
 				if ($cbmap->Validations($columns, $record, false)===true) {
-					$states[$st['tostep']] = getTranslatedString($st['tostep'], $st['pfmodule']);
+					$states[$st['tostep']] = getTranslatedString($label, $st['pfmodule']);
+					$moreinfo[$st['tostep']] = $st['moreinfomapid'];
 				}
 			} else {
 				if ($exists && !empty($st['isactivevalidation'])) {
 					$cbmap->id = $st['isactivevalidation'];
 					$cbmap->retrieve_entity_info($st['isactivevalidation'], 'cbMap');
 					if ($cbmap->Validations($columns, $record, false)===true) {
-						$states[$st['tostep']] = getTranslatedString($st['tostep'], $st['pfmodule']);
+						$states[$st['tostep']] = getTranslatedString($label, $st['pfmodule']);
+						$moreinfo[$st['tostep']] = $st['moreinfomapid'];
 					}
 				} else {
-					$states[$st['tostep']] = getTranslatedString($st['tostep'], $st['pfmodule']);
+					$states[$st['tostep']] = getTranslatedString($label, $st['pfmodule']);
+					$moreinfo[$st['tostep']] = $st['moreinfomapid'];
 				}
 			}
 		}
-		return $states;
+		return [$states, $moreinfo];
 	}
 
 	public static function getDestinationStatesGraph($processflow, $fromstate, $record, $askifsure, $screenvalues) {
 		global $adb;
 		$rs = $adb->pquery('select pfmodule from vtiger_cbprocessflow where cbprocessflowid=?', array($processflow));
 		$module = $adb->query_result($rs, 0, 0);
-		$states = self::getDestinationStatesArray($processflow, $fromstate, $record, $screenvalues);
+		list($states, $moreinfo) = self::getDestinationStatesArray($processflow, $fromstate, $record, $screenvalues);
 		if (empty($states)) {
 			return '';
 		}
@@ -261,13 +294,54 @@ class cbProcessFlow extends CRMEntity {
 		$graph = "graph LR\n";
 		$from = 'A("'.getTranslatedString($fromstate, $module).'") --> ';
 		$letters = range('B', 'Z');
+		reset($moreinfo);
 		$links = '';
 		foreach ($states as $state => $to) {
 			$letter = next($letters);
-			$graph .= $from.$letter.'('.$to.")\n";
-			$links .= "click $letter \"javascript:processflowmoveto$processflow('$state', $record, $askifsure)\"\n";
+			$minfo = next($moreinfo);
+			$graph .= $from.$letter.'('.getTranslatedString($to, $module).")\n";
+			$links .= "click $letter \"javascript:processflowmoveto$processflow('$state', $record, $askifsure, $minfo)\"\n";
 		}
 		return $graph.$links;
+	}
+
+	public static function getDestinationStatesButtons($processflow, $fromstate, $record, $askifsure, $screenvalues) {
+		global $adb;
+		$rs = $adb->pquery('select pfmodule from vtiger_cbprocessflow where cbprocessflowid=?', array($processflow));
+		$module = $adb->query_result($rs, 0, 0);
+		list($states, $moreinfo) = self::getDestinationStatesArray($processflow, $fromstate, $record, $screenvalues);
+		if (empty($states)) {
+			return '';
+		}
+		$askifsure = empty($askifsure) ? 'false' : 'true';
+		$minfo = reset($moreinfo);
+		$graph = '';
+		foreach ($states as $state => $to) {
+			$to = trim($to);
+			if (substr($to, 0, 1)=='{') { // it is a JSON specification
+				// {"label":"some label", "type":"approve|decline|css_class"}
+				$toinfo = json_decode($to, true);
+				$type = (empty($toinfo['type']) ? 'slds-button_brand' :$toinfo['type']);
+				$link_label = (empty($toinfo['label']) ? 'Undefined' : $toinfo['label']);
+			} else {
+				$type = 'slds-button_brand';
+				$link_label = $to;
+			}
+			$slds_class = '';
+			if ($type == 'approve') {
+				$slds_class = 'slds-button_brand';
+				$link_label = 'Approve';
+			} elseif ($type == 'decline') {
+				$slds_class = 'slds-button_destructive';
+				$link_label = 'Decline';
+			} else {
+				$slds_class = $type;
+			}
+			$graph .= '<div class="slds-col slds-size_1-of-1 slds-p-around_xx-small"><a class="slds-button '.$slds_class.'" href="javascript:processflowmoveto'.$processflow."('$state', $record, $askifsure, $minfo)".'">'
+				.getTranslatedString($link_label, $module).'</a></div>';
+			$minfo = next($moreinfo);
+		}
+		return $graph;
 	}
 
 	/**

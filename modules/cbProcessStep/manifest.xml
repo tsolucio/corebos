@@ -45,6 +45,9 @@
   `showstepvalidation` int(11) DEFAULT NULL,
   `defaultpath` varchar(3) DEFAULT NULL,
   `validdefaultstart` varchar(3) DEFAULT NULL,
+  `buttonlabel` varchar(153) DEFAULT NULL,
+  `usermap` int(11) DEFAULT NULL,
+  `assignuserafter` varchar(3) DEFAULT NULL,
   PRIMARY KEY (`cbprocessstepid`),
   INDEX(`processflow`,`fromstep`,`tostep`,`active`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
@@ -290,18 +293,18 @@
 <masseditable>1</masseditable>
 </field>
 <field>
-<fieldname>assigned_user_id</fieldname>
-<uitype>53</uitype>
-<columnname>smownerid</columnname>
-<tablename>vtiger_crmentity</tablename>
+<fieldname>buttonlabel</fieldname>
+<uitype>1</uitype>
+<columnname>buttonlabel</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
 <generatedtype>1</generatedtype>
-<fieldlabel>Assigned To</fieldlabel>
+<fieldlabel>Button Label</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
 <sequence>11</sequence>
 <maximumlength>100</maximumlength>
-<typeofdata>V~M</typeofdata>
+<typeofdata>V~O</typeofdata>
 <quickcreate>1</quickcreate>
 <quickcreatesequence>1</quickcreatesequence>
 <displaytype>1</displaytype>
@@ -330,6 +333,69 @@
 <masseditable>1</masseditable>
 </field>
 <field>
+<fieldname>usermap</fieldname>
+<uitype>10</uitype>
+<columnname>usermap</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>New User/Group ID Map</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>13</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>cbMap</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assigned To</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>14</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>assignuserafter</fieldname>
+<uitype>56</uitype>
+<columnname>assignuserafter</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assign User/Group After</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>15</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
 <fieldname>created_user_id</fieldname>
 <uitype>52</uitype>
 <columnname>smcreatorid</columnname>
@@ -339,7 +405,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>13</sequence>
+<sequence>16</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
 <quickcreate>3</quickcreate>
@@ -359,7 +425,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>14</sequence>
+<sequence>17</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>
@@ -379,7 +445,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>15</sequence>
+<sequence>18</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>

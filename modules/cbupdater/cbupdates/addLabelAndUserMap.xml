@@ -1,0 +1,9 @@
+<updatesChangeLog>
+	<changeSet>
+		<author>joebordes</author>
+		<description>BPM Step Label and User Map fields</description>
+		<filename>modules/cbProcessStep/changesets/addLabelAndUserMap.php</filename>
+		<classname>addLabelAndUserMap</classname>
+		<systemupdate>true</systemupdate>
+	</changeSet>
+</updatesChangeLog>
