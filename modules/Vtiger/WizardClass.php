@@ -14,6 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 require_once 'include/ListView/GridUtils.php';
+require_once 'modules/Vtiger/Wizard/WizardCustomFunctions.php';
 
 class WizardView {
 
@@ -27,6 +28,7 @@ class WizardView {
 	private $validate = true;
 	private $required_action = '';
 	private $custom_function = '';
+	private $reset_wizard = true;
 
 	public $conditions = '';
 
@@ -68,8 +70,13 @@ class WizardView {
 		if (isset($this->params['required_action'])) {
 			$this->required_action = $this->params['required_action'];
 		}
+		//call a function custom from backend
 		if (isset($this->params['custom_function'])) {
 			$this->custom_function = $this->params['custom_function'];
+		}
+		//reset wizard on finish action or start as it is
+		if (isset($this->params['reset_wizard'])) {
+			$this->reset_wizard = $this->params['reset_wizard'];
 		}
 	}
 
@@ -105,6 +112,7 @@ class WizardView {
 			$smarty->assign('WizardRequiredAction', $this->required_action);
 			$smarty->assign('WizardCustomFunction', $this->custom_function);
 			$smarty->assign('WizardModuleEditor', $this->module);
+			$smarty->assign('ResetWizard', $this->reset_wizard);
 			$query = '';
 			if (isset($this->conditions['condition'])) {
 				$query = $this->conditions['condition'];
@@ -133,9 +141,9 @@ class WizardView {
 	}
 }
 
-class WizardActions {
+class WizardActions extends WizardCustomFunctions {
 
-	private $module;
+	public $module;
 
 	public function __construct($module = '') {
 		$this->module = $module;
@@ -349,46 +357,6 @@ class WizardActions {
 		return false;
 	}
 
-	public function CustomOfferDetail() {
-		require_once 'include/Webservices/Create.php';
-		require_once 'include/Webservices/Revise.php';
-		global $adb, $current_user;
-		$data = json_decode(vtlib_purify($_REQUEST['data']), true);
-		if ($data) {
-			$masterid = isset($data['masterid']) ? $data['masterid'] : false;
-			$records = $this->GetSession();
-			$cnod = $adb->getColumnNames('vtiger_cbofferdetail');
-			if (!$masterid || empty($records) || !in_array('related_product', $cnod) || !in_array('cboffers_relation', $cnod)) {
-				return false;
-			}
-			$productid = array_keys($records[-1]);
-			try {
-				$UsersTabid = vtws_getEntityId('Users');
-				$ProductComponentId = vtws_getEntityId('ProductComponent');
-				$od = vtws_create('cbOfferDetail', array(
-					'related_product' => $productid[0],
-					'cboffers_relation' => $masterid,
-					'assigned_user_id' => $UsersTabid.'x'.$current_user->id
-				), $current_user);
-				foreach ($records as $key => $pcs) {
-					if ($key == -1) {
-						continue;
-					}
-					foreach ($pcs as $pid) {
-						vtws_revise(array(
-							'id' => $ProductComponentId.'x'.$pid,
-							'related_cbofferdetail' => $od['id']
-						), $current_user);
-					}
-				}
-				return true;
-			} catch (Throwable $e) {
-				return false;
-			}
-		}
-		return false;
-	}
-
 	public function DeleteSession() {
 		return coreBOS_Session::delete('DuplicatedRecords');
 	}
@@ -437,132 +405,31 @@ class WizardActions {
 		return false;
 	}
 
-	public function Create_ProductComponent() {
+	public function Duplicate() {
 		global $current_user;
-		$UsersTabid = vtws_getEntityId('Users');
-		$ProductsTabid = vtws_getEntityId('Products');
 		$data = json_decode($_REQUEST['data'], true);
-		$fromProduct = $data[0][0];
-		unset($data[0]);
-		$target = array();
-		if (isset($data)) {
-			foreach ($data as $ids) {
-				foreach ($ids as $id) {
-					$target[] = array(
-						'elementType' => $this->module,
-						'referenceId' => '',
-						'searchon' => '',
-						'element' => array(
-							'frompdo' => $ProductsTabid.'x'.$fromProduct,
-							'topdo' => $ProductsTabid.'x'.$id,
-							'assigned_user_id' => $UsersTabid.'x'.$current_user->id
-						)
-					);
-				}
-			}
-		}
-		return $target;
-	}
-
-	public function Create_PurchaseOrder() {
-		global $current_user;
-		$UsersTabid = vtws_getEntityId('Users');
-		$VendorTabid = vtws_getEntityId('Vendors');
-		$data = json_decode($_REQUEST['data'], true);
-		$target = array();
-		$element = array();
-		foreach ($data as $id => $relids) {
-			$vendorname = getEntityName('Vendors', $id);
-			$target[] = array(
-				'elementType' => $this->module,
-				'referenceId' => 'entity_id_'.$id,
-				'searchon' => '',
-				'element' => array(
-					'vendor_id' => $VendorTabid.'x'.$id,
-					'subject' => 'Quotes by ('.$vendorname[$id].')',
-					'postatus' => 'Created',
-					'bill_street' => '-',
-					'ship_street' => '-',
-					'assigned_user_id' => $UsersTabid.'x'.$current_user->id
-				)
-			);
-			foreach ($relids as $rid) {
-				$target[] = array(
-					'elementType' => 'InventoryDetails',
-					'referenceId' => '',
-					'searchon' => 'id',
-					'element' => array(
-						'related_to' => '@{entity_id_'.$id.'}',
-						'id' => $rid,
-					)
-				);
-			}
-		}
-		return $target;
-	}
-
-	public function CreatePCMorsettiera() {
-		//special use case
-		require_once 'include/Webservices/Create.php';
-		global $adb, $current_user;
-		$step = vtlib_purify($_REQUEST['step']);
-		$DuplicatedRecords = coreBOS_Session::get('DuplicatedRecords');
-		$frompdo = array_values($DuplicatedRecords[-1]);
-		$topdo = array_values($DuplicatedRecords[$step-1]);
-		$st = $step-1;
-		if (!empty($frompdo[0]) && !empty($topdo[0])) {
+		if (!empty($data)) {
+			$recordid = $data['recordid'][0];
+			$modulename = $data['modulename'];
 			try {
-				$UsersTabid = vtws_getEntityId('Users');
-				$pc = vtws_create('ProductComponent', array(
-					'frompdo' => $frompdo[0],
-					'topdo' => $topdo[0],
-					'assigned_user_id' => $UsersTabid.'x'.$current_user->id
-				), $current_user);
-				if (isset($pc['id'])) {
-					$id = explode('x', $pc['id']);
-					//save this for the next step "frompdo"
-					coreBOS_Session::set('DuplicatedRecords^'.$st.'^'.$id[1], $id[1]);
-					return true;
+				$entityModuleHandler = vtws_getModuleHandlerFromName($modulename, $current_user);
+				$handlerMeta = $entityModuleHandler->getMeta();
+				$oldRecord = CRMEntity::getInstance($modulename);
+				$oldRecord->retrieve_entity_info($recordid, $modulename);
+				$newRecord = CRMEntity::getInstance($modulename);
+				$newRecord->mode = '';
+				foreach ($oldRecord->column_fields as $key => $value) {
+					$newRecord->column_fields[$key] = $value;
 				}
-				return false;
+				$newRecord->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newRecord->column_fields, $handlerMeta);
+				$newRecord->saveentity($modulename);
+				$step = $data['step'] - 1;
+				coreBOS_Session::set('DuplicatedRecords^'.$step.'^'.$newRecord->id, $newRecord->id);
+				$newRecord->column_fields['id'] = $newRecord->id;
+				return $newRecord->column_fields;
 			} catch (Throwable $e) {
-				return false;
+				return 0;
 			}
 		}
-		return false;
-	}
-
-	public function CreatePCMorsetti() {
-		//special use case
-		require_once 'include/Webservices/Create.php';
-		require_once 'include/Webservices/MassCreate.php';
-		global $adb, $current_user;
-		$step = vtlib_purify($_REQUEST['step']);
-		$data = json_decode($_REQUEST['data'], true);
-		$DuplicatedRecords = coreBOS_Session::get('DuplicatedRecords');
-		$frompdo = array_values($DuplicatedRecords[$step-2]);
-		$UsersTabid = vtws_getEntityId('Users');
-		$ProductsTabid = vtws_getEntityId('Products');
-		$PCTabid = vtws_getEntityId('ProductComponent');
-		$target = array();
-		foreach ($data as $page) {
-			foreach ($page as $id) {
-				$target[] = array(
-					'elementType' => 'ProductComponent',
-					'referenceId' => '',
-					'searchon' => '',
-					'element' => array(
-						'frompdo' => $ProductsTabid.'x'.$frompdo[0],
-						'topdo' => $ProductsTabid.'x'.$id,
-						'rel_pc' => $PCTabid.'x'.$frompdo[1],
-						'assigned_user_id' => $UsersTabid.'x'.$current_user->id
-					)
-				);
-			}
-		}
-		MassCreate($target, $current_user);
-		$st = $step-2;
-		coreBOS_Session::delete('DuplicatedRecords^'.$st.'^'.$frompdo[0]);
-		return true;
 	}
 }

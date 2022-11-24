@@ -38,6 +38,7 @@ class WizardComponent {
 		this.ApplyFilter = [];
 		this.Operation = '';
 		this.ProceedToNextStep = true;
+		this.ResetWizard = true;
 		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI';
 	}
 
@@ -83,15 +84,16 @@ class WizardComponent {
 		switch (this.Operation) {
 			case 'CREATEPRODUCTCOMPONENTS'://*specific use case
 				if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
-					if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined) {
-						ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_DUPLICATE_PRODUCT, 'error');
-						return false;
-					}
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
 						return false;
 					}
-					if (this.WizardCustomFunction[this.ActiveStep] != '') {
-						this.CallCustomFunction();
+					if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined) {
+						this.DuplicateProduct();
+						return false;
+					} else {
+						if (this.WizardCustomFunction[this.ActiveStep] != '') {
+							this.CallCustomFunction();
+						}
 					}
 					return this.FilterRows(ev);
 				}
@@ -118,10 +120,18 @@ class WizardComponent {
 		return true;
 	}
 
-	Finish() {
+	Finish(resetWizard = true) {
 		switch (this.Operation) {
 			case 'CREATEPRODUCTCOMPONENTS':
+				const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
+				if (checkedRows.length == 0 && !resetWizard) {
+					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
+					return false;
+				}
 				if (this.ActiveStep+1 == this.steps) {
+					if (this.WizardCustomFunction[this.ActiveStep] != '' && !resetWizard) {
+						this.CallCustomFunction();
+					}
 					this.loader('show');
 					const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
 					this.Request(url, 'post', {'masterid': this.RecordID}).then(function(response) {
@@ -129,15 +139,18 @@ class WizardComponent {
 							ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 							if (wizard.isModal) {
 								RLInstance[wizard.gridInstance].readData(1);
-								ldsModal.close();
-								wizard.ActiveStep = 0;
-								wizard.IsDuplicatedFromProduct = [];
-								wizard.ProceedToNextStep = true;
-								wizard.CheckedRows = [];
-								wizard.GridData = [];
-								wizard.GroupData = [];
-								wizard.gridInstance = [];
-								wizard.WizardInstance = [];
+								if (resetWizard) {
+									ldsModal.close();
+									wizard.ActiveStep = 0;
+									wizard.IsDuplicatedFromProduct = [];
+									wizard.ProceedToNextStep = true;
+									wizard.CheckedRows = [];
+									wizard.GridData = [];
+									wizard.GroupData = [];
+									wizard.gridInstance = [];
+									wizard.WizardInstance = [];
+									localStorage.removeItem(`currentWizardActive`);
+								}
 							} else {
 								setTimeout(function() {
 									location.reload(true);
@@ -187,7 +200,7 @@ class WizardComponent {
 		if (type == 'back') {
 			return true;
 		}
-		if (this.WizardFilterBy[this.ActiveStep+1] != '') {
+		if (this.WizardFilterBy[this.ActiveStep+1] != '' && this.WizardInstance[`wzgrid${this.ActiveStep+1}`] !== undefined) {
 			const module = this.WizardCurrentModule[this.ActiveStep+1];
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setRequestParams({
 				formodule: module,
@@ -285,6 +298,24 @@ class WizardComponent {
 		}
 	}
 
+	async DuplicateProduct() {
+		let url = `${this.url}&wizardaction=Duplicate&subaction=Duplicate`;
+		this.Request(url, 'post', {
+			step: this.ActiveStep,
+			recordid: this.IdVal(),
+			modulename: this.WizardCurrentModule[this.ActiveStep]
+		}).then(function(response) {
+			if (response) {
+				if (wizard.WizardCustomFunction[wizard.ActiveStep] != '') {
+					wizard.CallCustomFunction();
+				}
+				wizard.IsDuplicatedFromProduct[wizard.ActiveStep] = 1;
+				wizard.MoveToStep('');
+				wizard.CheckedRows[wizard.ActiveStep-1][1]= [response];
+			}
+		});
+	}
+
 	/**
 	 * Get related fieldname between two modules
 	 */
@@ -370,12 +401,26 @@ class WizardComponent {
 		}
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_FINISH;
+			if (!this.ResetWizard[this.ActiveStep]) {
+				//create a save button
+				let el = document.getElementById('save-btn');
+				if (el.innerHTML == '') {
+					let btn = document.createElement('button');
+					btn.setAttribute('onclick', 'wizard.Finish(false)');
+					btn.innerHTML = 'Save';
+					btn.style.float = 'right';
+					btn.classList.add('slds-button');
+					btn.classList.add('slds-button_neutral');
+					el.appendChild(btn);
+				}
+			}
 			setTimeout(function () {
 				wizard.el(`btn-next`).setAttribute('onclick', 'wizard.Finish()');
 			}, 200);
 			return false;
 		} else {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_NEXT;
+			this.el(`btn-next`).removeAttribute('onclick');
 		}
 	}
 
@@ -764,6 +809,7 @@ class WizardComponent {
 					wizard.CheckedRows = [];
 					wizard.GridData = [];
 					wizard.GroupData = [];
+					localStorage.removeItem(`currentWizardActive`);
 				} else {
 					setTimeout(function() {
 						location.reload(true);

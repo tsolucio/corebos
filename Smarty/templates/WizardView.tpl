@@ -127,6 +127,9 @@
 												{if in_array('delete', $step.actions)}
 												<button class="slds-button slds-button_neutral" onclick="wizard.DeleteRowFromGrid({$smarty.foreach.stepwizard.index})" style="float: right;">Remove</button>
 												{/if}
+												{if $smarty.foreach.stepwizard.last}
+												<div id="save-btn"></div>
+												{/if}
 												{if $step.description neq ''}
 												<div class="slds-text-heading_small">
 													<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">

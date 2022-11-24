@@ -156,6 +156,26 @@ var relatedlistgrid = {
 	loadedTooltips: [],
 
 	Wizard: (grid, id, mapid, module) => {
+		let getWizardActive = localStorage.getItem(`currentWizardActive`);
+		let modalContainer = document.getElementById('global-modal-container');
+		if (getWizardActive == null) {
+			localStorage.setItem(`currentWizardActive`, id);
+			if (modalContainer) {
+				ldsModal.close();
+			}
+		} else {
+			if (getWizardActive == id) {
+				if (modalContainer) {
+					modalContainer.style.display = '';
+					return false;
+				}
+			} else {
+				localStorage.setItem(`currentWizardActive`, id);
+				if (modalContainer) {
+					ldsModal.close();
+				}
+			}
+		}
 		let workflows = JSON.parse(relatedlistgrid.WizardWorkflows[grid]);
 		let waitTime = 0;
 		for (let i in workflows) {
@@ -173,7 +193,7 @@ var relatedlistgrid = {
 				isModal: true
 			}).then(function(response) {
 				ldsModal.close();
-				ldsModal.show('Wizard', response, 'large');
+				ldsModal.show('Wizard', response, 'large', '', '', false);
 				let wizardTitle = document.getElementById('wizard-title').innerHTML;
 				document.getElementById('global-modal-container__title').innerHTML = wizardTitle;
 				document.getElementById('wizard-title').innerHTML = '';
