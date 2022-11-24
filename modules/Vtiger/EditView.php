@@ -215,4 +215,16 @@ $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndR
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule, (empty($focus->mode) ? 'create' : 'edit'));
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
+
+// sending PopupFilter map results to the frontEnd
+$MapObject = new cbMap();
+$bmapname = $currentModule.'_PopupFilter';
+$Mapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($Mapid) {
+	$MapObject->id = $Mapid;
+	$MapObject->mode = '';
+	$MapObject->retrieve_entity_info($Mapid, "cbMap");
+	$MapResult = $MapObject->PopupFilter($record, $currentModule);
+	$smarty->assign('PopupFilterMapResults', $MapResult);
+}
 ?>

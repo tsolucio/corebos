@@ -8,6 +8,11 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<script>
+	{if isset($PopupFilterMapResults)}
+		let PopupFilterMapResults = JSON.parse(`{$PopupFilterMapResults}`);
+	{/if}
+</script>
 {include file='applicationmessage.tpl'}
 {if empty($EDITFORMID)}
 	{assign var="EDITFORMID" value='frmEditView'}

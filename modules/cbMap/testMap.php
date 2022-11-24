@@ -269,6 +269,12 @@ switch ($focus->column_fields['maptype']) {
 		break;
 	default:
 		break;
+	case 'PopupFilter':
+		$xml = $focus->PopupFilter();
+		$mapinfo = array(
+			'result' => json_encode($xml),
+		);
+		break;
 }
 $smarty->assign('MAPINFO', $mapinfo);
 $smarty->display('modules/cbMap/testMap.tpl');
