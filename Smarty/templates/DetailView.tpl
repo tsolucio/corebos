@@ -28,6 +28,11 @@ clipcopyobject.on('success', function(e) { clipcopyclicked = false; });
 clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 {/literal}
 </script>
+<script>
+	{if isset($PopupFilterMapResults)}
+		let PopupFilterMapResults = JSON.parse(`{$PopupFilterMapResults}`);
+	{/if}
+</script>
 
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
 

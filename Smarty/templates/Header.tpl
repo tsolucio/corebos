@@ -75,6 +75,16 @@
 			});
 		</script>
 	{/if}
+	{if isset($ApplicationFocusElementValue)}
+		<script>
+			window.onload = () => {
+				let element = document.getElementById('{$ApplicationFocusElementValue}');
+				if (element) {
+					element.focus();
+				}
+			}
+		</script>
+	{/if}
 </head>
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%">
 	<!-- header -->

@@ -62,6 +62,9 @@ function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname, 
  * Generic uitype popup open action
  */
 function vtlib_open_popup_window(fromlink, fldname, MODULE, ID) {
+	if (popup_filter_map_popup_window(fldname)) {
+		return;
+	}
 	var modfld = document.getElementById(fldname+'_type');
 	var mod = '';
 	if (modfld) {
@@ -88,6 +91,36 @@ function vtlib_open_popup_window(fromlink, fldname, MODULE, ID) {
 		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10', cbPopupWindowSettings);
 	}
 	return true;
+}
+
+/*
+* Generic uitype popup open action for popup filter map
+*/
+function popup_filter_map_popup_window(fldname) {
+	if (typeof PopupFilterMapResults == 'undefined') {
+		return false;
+	}
+	const fieldModule = document.getElementById(fldname+'_type').value;
+	const keys = Object.keys(PopupFilterMapResults);
+	for (let index = 0; index < keys.length; index++) {
+		const key = keys[index];
+		let advft_criteria = JSON.stringify(PopupFilterMapResults[key]['advft_criteria']);
+		let advft_criteria_groups = JSON.stringify(PopupFilterMapResults[key]['advft_criteria_groups']);
+		if (key.includes('#')) {
+			let [fieldName, dependency] = key.split('#');
+			if (fieldName == fldname && dependency == fieldModule) {
+				window.open('index.php?module=' + fieldModule + '&action=Popup&html=Popup_picker&form=DetailView&forfield=' + fldname + '&query=true&search=true&searchtype=advance&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups, 'vtlibui10qc', cbPopupWindowSettings);
+				return true;
+			}
+		} else {
+			if (key == fldname) {
+				let advft_criteria = JSON.stringify(PopupFilterMapResults[key]['advft_criteria']);
+				window.open('index.php?module=' + fieldModule + '&action=Popup&html=Popup_picker&form=DetailView&forfield=' + fldname + '&query=true&search=true&searchtype=advance&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups, 'vtlibui10qc', cbPopupWindowSettings);
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 /**

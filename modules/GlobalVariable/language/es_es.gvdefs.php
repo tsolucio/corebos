@@ -1756,6 +1756,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Al crear un filtro, debes incluir al menos 1 campo obligatorio. Para los casos en que los usuarios no quieren incluir campos obligatorios en el filtro, pon esta variable a 0. El valor predeterminado es 1.',
 ),
+'Application_Focus_Element' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'html element id',
+	'definition' => 'Element ID that will be focused when the page loads',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

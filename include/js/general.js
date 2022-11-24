@@ -2600,6 +2600,9 @@ function AjaxDuplicateValidate(module, fieldname, oform) {
 }
 
 function selectContactvtlib(fromlink, fldname, MODULE, ID) {
+	if (popup_filter_map_popup_window(fldname)) {
+		return;
+	}
 	if (typeof(document.EditView) == 'undefined') {
 		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
@@ -2657,6 +2660,9 @@ function selectContact(check, frmName) {
 
 //to get Select Potential Popup
 function selectPotential(fromlink, fldname, MODULE, ID) {
+	if (popup_filter_map_popup_window(fldname)) {
+		return;
+	}
 	if (typeof(document.EditView) == 'undefined') {
 		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
@@ -2681,6 +2687,9 @@ function selectPotential(fromlink, fldname, MODULE, ID) {
 
 //to select Quote Popup
 function selectQuote(fromlink, fldname, MODULE, ID) {
+	if (popup_filter_map_popup_window(fldname)) {
+		return;
+	}
 	if (typeof(document.EditView) == 'undefined') {
 		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
@@ -2705,6 +2714,9 @@ function selectQuote(fromlink, fldname, MODULE, ID) {
 
 //to get select SalesOrder Popup
 function selectSalesOrder(fromlink, fldname, MODULE, ID) {
+	if (popup_filter_map_popup_window(fldname)) {
+		return;
+	}
 	if (typeof(document.EditView) == 'undefined') {
 		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
@@ -2737,6 +2749,9 @@ function set_return_account_details(fromlink, fldname, MODULE, ID) {
 }
 
 function open_contact_account_details(fromlink, fldname, MODULE, ID) {
+	if (popup_filter_map_popup_window(fldname)) {
+		return;
+	}
 	if (fldname == 'account_id') {
 		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=';
 		baseURL += (fromlink=='qcreate') ? 'qcreate' : '';
