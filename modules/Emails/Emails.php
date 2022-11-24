@@ -556,7 +556,10 @@ function get_to_emailids($module) {
 				break;
 		}
 	}
-	$fieldids = explode(':', vtlib_purify($_REQUEST['field_lists']));
+	$fieldids = array();
+	if (isset($_REQUEST['field_lists'])) {
+		$fieldids = explode(':', vtlib_purify($_REQUEST['field_lists']));
+	}
 	if ($_REQUEST['idlist'] == 'all' || $_REQUEST['idlist'] == 'relatedListSelectAll') {
 		$idlist = getSelectedRecords($_REQUEST, vtlib_purify($_REQUEST['pmodule']), vtlib_purify($_REQUEST['idlist']), vtlib_purify($_REQUEST['excludedRecords']));
 	} else {

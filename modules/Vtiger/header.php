@@ -25,6 +25,7 @@ $userName = getFullNameFromArray('Users', $current_user->column_fields);
 $smarty = new vtigerCRM_Smarty;
 require_once 'modules/evvtMenu/evvtMenuUtils.php';
 $smarty->assign('MENU', getMenuArray(0));
+$smarty->assign('MENUSEARCH', getFlatMenuJSON());
 $header_array = getAdminevvtMenu();
 $smarty->assign('evvtAdminMenu', $header_array);
 $smarty->assign('HEADERS', $header_array);
@@ -98,6 +99,11 @@ $smarty->assign('Calendar_Notification_Sound', $NotificationSound);
 
 $companyDetails = retrieveCompanyDetails();
 $smarty->assign('COMPANY_DETAILS', $companyDetails);
+$getTitle = GlobalVariable::getVariable('Application_TitleInformation', getTranslatedString($currentModule, $currentModule).' - '.$appUIName);
+if (is_numeric($getTitle)) {
+	$getTitle = coreBOS_Rule::evaluate($getTitle, $_REQUEST['record']);
+}
+$smarty->assign('TITLE_HEADER', $getTitle);
 
 //Global Search Autocomplete Mapping
 $bmapname = 'GlobalSearchAutocomplete';

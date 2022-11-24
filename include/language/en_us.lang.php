@@ -1321,7 +1321,7 @@ $app_strings = array(
 'Net Total' => 'Net Total (bGD)',
 'Send SMS' => 'Send SMS',
 'Add Payment' => 'Add Payment',
-'LBL_CRM_SETTINGS' => 'CRM Settings',
+'LBL_CRM_SETTINGS' => 'Application Settings',
 'LBL_RELATED_TO_THIS' =>'related to this',
 'LBL_DESELECT_ALL' => 'Deselect all',
 'LBL_RECORDS_IN' => 'records in',
@@ -1399,6 +1399,7 @@ $app_strings = array(
 'Paste the link here' => 'Paste the link here',
 'LBL_UITYPE10_NOTALLOWED' => 'The related module has a mandatory related field.',
 'LBL_PAINT2DOCUMENT' => 'Paint to Document',
+'Slider' => 'Slider',
 );
 
 // Translation for currency names

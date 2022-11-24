@@ -8,6 +8,9 @@
  ************************************************************************************/
 
 function openBRMapInBA(fromlink, fldname, MODULE, ID) {
+	if (popup_filter_map_popup_window(fldname)) {
+		return;
+	}
 	var searchConditions = [
 		{
 			'groupid':'1',

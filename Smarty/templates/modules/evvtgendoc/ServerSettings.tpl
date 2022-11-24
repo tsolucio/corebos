@@ -12,7 +12,7 @@
 * See the License for the specific language governing permissions and limitations under the
 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************
-*  Module       : vtsendgrid
+*  Module       : GenDoc
 *  Version      : 1.9
 *  Author       : OpenCubed
 *************************************************************************************************/

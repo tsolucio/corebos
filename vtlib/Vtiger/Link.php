@@ -58,9 +58,9 @@ class Vtiger_Link {
 		$this->handler_class  = $valuemap['handler_class'];
 		$this->handler        = $valuemap['handler'];
 		$this->onlyonmymodule = $valuemap['onlyonmymodule'];
-		$this->widget_header = $valuemap['widget_header'];
-		$this->widget_width = $valuemap['widget_width'];
-		$this->widget_height = $valuemap['widget_height'];
+		$this->widget_header = empty($valuemap['widget_header']) ? '' : $valuemap['widget_header'];
+		$this->widget_width = empty($valuemap['widget_width']) ? '' : $valuemap['widget_width'];
+		$this->widget_height = empty($valuemap['widget_height']) ? '' : $valuemap['widget_height'];
 	}
 
 	/**

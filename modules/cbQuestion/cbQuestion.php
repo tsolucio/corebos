@@ -414,6 +414,7 @@ class cbQuestion extends CRMEntity {
 				'answer' => cbwsgetSearchResultsWithTotals($props['query'], $props['searchin'], $restrictionids, $current_user),
 			);
 		} else {
+			$groupinginfo = [];
 			include_once 'include/Webservices/Query.php';
 			if ($q->column_fields['querytype']=='SQL') {
 				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
@@ -424,9 +425,13 @@ class cbQuestion extends CRMEntity {
 				$meta = $handler->getMeta();
 				$queryRelatedModules = array();
 				$sql_query = cbQuestion::getSQL($qid, $params);
+				if (!empty($q->column_fields['groupby'])) {
+					$groupinginfo = cbQuestion::getGroupingInfo($sql_query, $q->column_fields['groupby'], $q->column_fields['qmodule']);
+				}
 				return array(
 					'module' => $q->column_fields['qmodule'],
 					'columns' =>  html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
+					'groupings' => $groupinginfo,
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
@@ -440,8 +445,11 @@ class cbQuestion extends CRMEntity {
 				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
 				$modOp = new VtigerModuleOperation($webserviceObject, $current_user, $adb, $log);
 				$sql_query = cbQuestion::getSQL($qid, $params);
+				if (!empty($q->column_fields['groupby'])) {
+					$groupinginfo = cbQuestion::getGroupingInfo($sql_query, $q->column_fields['groupby'], $q->column_fields['qmodule']);
+				}
 				$sql_question_context_variable = json_decode($q->column_fields['typeprops']);
-				if ($sql_question_context_variable) {
+				if ($sql_question_context_variable && isset($sql_question_context_variable->context_variables)) {
 					$context_var_array = (array) $sql_question_context_variable->context_variables;
 					if (!empty($context_var_array)) {
 						foreach ($context_var_array as $key => $value) {
@@ -461,6 +469,7 @@ class cbQuestion extends CRMEntity {
 				return array(
 					'module' => $q->column_fields['qmodule'],
 					'columns' => $q->column_fields['qcolumns'],
+					'groupings' => $groupinginfo,
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
@@ -468,6 +477,38 @@ class cbQuestion extends CRMEntity {
 				);
 			}
 		}
+	}
+
+	public static function getGroupingInfo($sql_query, $groupby, $qmodule) {
+		global $adb;
+		$mod = Vtiger_Module::getInstance($qmodule);
+		$fld = Vtiger_Field::getInstance($groupby, $mod);
+		if ($fld) {
+			$tablename = $fld->table;
+			$fldname = $fld->field;
+			$colname = $fld->column;
+		} else {
+			getColumnFields($qmodule);
+			$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($mod->id, $groupby);
+			$tablename = $fieldinfo['tablename'];
+			$colname = $fieldinfo['columnname'];
+			$fldname = $fieldinfo['fieldname'];
+		}
+		$gby = mkXQuery($sql_query, $tablename.'.'.$colname);
+		$rs = $adb->query($gby);
+		$cv = new CustomView($qmodule);
+		$colspec = $cv->getFilterFieldDefinitionByNameOrLabel($fldname, $qmodule);
+		$gbyelems = [];
+		while ($elem = $adb->fetch_array($rs)) {
+			$gbyelems[] = json_encode([[
+				'columnname' => $colspec,
+				'comparator' => 'e',
+				'value' => $elem[0],
+				'groupid' => 1,
+				'columncondition' => ''
+			]]);
+		}
+		return $gbyelems;
 	}
 
 	public static function getFormattedAnswer($qid, $params = array()) {
@@ -616,6 +657,20 @@ class cbQuestion extends CRMEntity {
 			$module = $ans['module'];
 			$properties = json_decode($ans['properties']);
 			$columnLabels = empty($properties->columnlabels) ? array() : $properties->columnlabels;
+			$linkedCols = array();
+			if (!empty($properties->linkedcolumns)) {
+				if ($properties->linkedcolumns=='*') {
+					$linkedCols = range(0, count($answer[0]));
+				} elseif (strpos($properties->linkedcolumns, ',')) {
+					$linkedCols = explode(',', $properties->linkedcolumns);
+				} else {
+					$linkedCols = $properties->linkedcolumns;
+				}
+			}
+			$cv = new CustomView($module);
+			$view = $cv->getViewIdByName('All', $module);
+			$advgroups = urlencode('[null,{"groupcondition":""}]');
+			$searchURL = 'index.php?module='.$module.'&action=index&query=true&search=true&searchtype=advance&advft_criteria_groups='.$advgroups.'&viewname='.$view.'&advft_criteria=';
 			$limit = GlobalVariable::getVariable('BusinessQuestion_TableAnswer_Limit', 2000);
 			$table .= '<table>';
 			$table .= '<tr>';
@@ -626,8 +681,14 @@ class cbQuestion extends CRMEntity {
 			for ($x = 0; $x < $limit; $x++) {
 				if (isset($answer[$x])) {
 					$table .= '<tr>';
+					$col = 0;
 					foreach ($answer[$x] as $columnValue) {
-						$table .= '<td>'.$columnValue.'</td>';
+						if (in_array($col, $linkedCols)) {
+							$table .= '<td><a href="'.$searchURL.urlencode($ans['groupings'][$x]).'">'.$columnValue.'</a></td>';
+						} else {
+							$table .= '<td>'.$columnValue.'</td>';
+						}
+						$col++;
 					}
 					$table .= '</tr>';
 				}

@@ -29,7 +29,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 <form role="form" style="margin:0 100px;" method="POST" onSubmit="Utilities.validate_smtp_config_settings(this); return false;">
 	<div class="slds-grid slds-gutters">
 		<div class="slds-col slds-size_1-of-2">
-			<h1 class="slds-page-header__title">{'LBL_CONFIG_INCOMING_MAIL_SERVER'|@getTranslatedString:'vtsendgrid'}</h1>
+			<h1 class="slds-page-header__title">{'LBL_CONFIG_INCOMING_MAIL_SERVER'|@getTranslatedString:'Utilities'}</h1>
 			<hr />
 			<div id="ic-validation-success" style="height:4rem; display:none;">
 				<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_success" role="alert">
@@ -213,7 +213,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 			</div>
 		</div>
 		<div class="slds-col slds-size_1-of-2">
-			<h1 class="slds-page-header__title">{'LBL_CONFIG_OUTGOING_MAIL_SERVER'|@getTranslatedString:'vtsendgrid'}</h1>
+			<h1 class="slds-page-header__title">{'LBL_CONFIG_OUTGOING_MAIL_SERVER'|@getTranslatedString:'Utilities'}</h1>
 			<hr />
 			<div id="og-validation-success" style="height:4rem; display:none;">
 				<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_success" role="alert">

@@ -137,7 +137,7 @@
 				</svg>
 				<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
 				</button>
-				<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button" onclick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value='';">
+				<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button" onclick="clearValues(this.form.{$fldname}, this.form.{$fldname}_display);">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 				</svg>

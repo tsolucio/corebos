@@ -34,6 +34,7 @@ class add_InventoryDetails_Delete_Handler_cb extends cbupdaterWorker {
 	}
 
 	public function undoChange() {
+		global $adb;
 		if ($this->hasError()) {
 			$this->sendError();
 		}

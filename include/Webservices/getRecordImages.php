@@ -40,20 +40,22 @@ function cbws_getrecordimageinfo($id, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($id);
-	$types = vtws_listtypes(null, $user);
-	if (!in_array($entityName, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
-	}
-	if ($meta->hasReadAccess()!==true) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read entity is denied');
-	}
-	if ($entityName !== $webserviceObject->getEntityName()) {
-		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
-	}
-	if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $id)) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
-	}
 	$idComponents = vtws_getIdComponents($id);
+	if (!($entityName == 'Users' && $user->id == $idComponents[1])) {
+		$types = vtws_listtypes(null, $user);
+		if (!in_array($entityName, $types['types'])) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+		}
+		if ($meta->hasReadAccess()!==true) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read entity is denied');
+		}
+		if ($entityName !== $webserviceObject->getEntityName()) {
+			throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
+		}
+		if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $id)) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+		}
+	}
 	if (!$meta->exists($idComponents[1])) {
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 	}

@@ -80,6 +80,7 @@ class VTFieldExpressionEvaluater {
 			'getCurrentUserID' => '__getCurrentUserID',
 			'getCurrentUserName' => '__getCurrentUserName',
 			'getCurrentUserField' => '__getCurrentUserField',
+			'getGroupID' => '__getGroupID',
 			'getCRMIDFromWSID' => 'cb_getCRMIDFromWSID',
 			'getEntityType' => '__cbwf_setype',
 			'getLatitude' => '__cb_getLatitude',
@@ -206,6 +207,7 @@ class VTFieldExpressionEvaluater {
 			'getCurrentUserID' => 'cbexpsql_getCurrentUserID',
 			'getCurrentUserName' => 'cbexpsql_getCurrentUserName',
 			'getCurrentUserField' => 'cbexpsql_getCurrentUserField',
+			'getGroupID' => 'cbexpsql_getGroupID',
 			'getCRMIDFromWSID' => 'cbexpsql_getCRMIDFromWSID',
 			'getEntityType' => 'cbexpsql_setype',
 			'getLatitude' => 'cbexpsql_getLatitude',
@@ -460,7 +462,11 @@ class VTFieldExpressionEvaluater {
 	public function env($sym, $raw = false, $formatValue = true) {
 		if ($this->env) {
 			$this->env->formatReferenceValues = $formatValue;
-			$val = $this->env->get($sym->value, $this->env->WorkflowContext);
+			$WorkflowContext = array();
+			if (isset($this->env->WorkflowContext)) {
+				$WorkflowContext = $this->env->WorkflowContext;
+			}
+			$val = $this->env->get($sym->value, $WorkflowContext);
 			if (isset($this->env->moduleName)) {
 				$module = Vtiger_Module::getInstance($this->env->moduleName);
 			} else {

@@ -234,6 +234,8 @@ if ($focus->mode == 'edit' || $isduplicate == 'true') {
 	$recordName = isset($recordName[0]) ? $recordName[0] : '';
 	$smarty->assign('NAME', $recordName);
 	$smarty->assign('UPDATEINFO', updateInfo($record));
+	include_once 'modules/cbMap/processmap/MasterDetailLayout.php';
+	$associated_prod = MasterDetailLayout::setMoreInfoFields($currentModule, $smarty);
 }
 if ($focus->mode == 'edit') {
 	$associated_prod = getAssociatedProducts('Quotes', $focus);
@@ -360,4 +362,16 @@ $smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_
 $smarty->assign('ShowInventoryLines', strpos(GlobalVariable::getVariable('Inventory_DoNotUseLines', '', $currentModule, $current_user->id), $currentModule)===false);
 
 $smarty->display('Inventory/InventoryEditView.tpl');
+
+// sending PopupFilter map results to the frontEnd
+$MapObject = new cbMap();
+$bmapname = $currentModule.'_PopupFilter';
+$Mapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($Mapid) {
+	$MapObject->id = $Mapid;
+	$MapObject->mode = '';
+	$MapObject->retrieve_entity_info($Mapid, "cbMap");
+	$MapResult = $MapObject->PopupFilter($record, $currentModule);
+	$smarty->assign('PopupFilterMapResults', $MapResult);
+}
 ?>

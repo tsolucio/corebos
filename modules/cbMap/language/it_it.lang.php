@@ -86,5 +86,6 @@ $mod_strings = array(
 	'Created By' => 'Creato Da',
 	'ContentJson' => 'Contenuto Json',
 	'Description' => 'Descrizione',
+	'AdvancedSearch' => 'Advanced Search',
 );
 ?>

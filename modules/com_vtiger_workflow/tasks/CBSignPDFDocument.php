@@ -78,9 +78,20 @@ class CBSignPDFDocument extends VTTask {
 					$current_user = $hold_user; // make sure current_user is defined
 				}
 
-				if (isset($current_user->$image_field) && $current_user->$image_field != '' &&
-					isset($current_user->column_fields[$image_field.'imageinfo'])) {
-					$signature_path = $current_user->column_fields[$image_field.'imageinfo']['fullpath'];
+				if (isset($current_user->$image_field) && $current_user->$image_field != '') {
+					// Getting image
+					$signature_path = '';
+					$sql = "select vtiger_attachments.*
+					from vtiger_attachments
+					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+					where vtiger_crmentity.setype='Users Attachment' and vtiger_attachments.name = ?";
+					$image_res = $adb->pquery($sql, array(str_replace(' ', '_', decode_html($current_user->$image_field))));
+					if ($adb->num_rows($image_res)>0) {
+						$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
+						$image_path = $adb->query_result($image_res, 0, 'path');
+						$image_name = decode_html($adb->query_result($image_res, 0, 'name'));
+						$signature_path = $site_URL.'/'.$image_path . $image_id . '_' . urlencode($image_name);
+					}
 					if ($signature_path != '') {
 						// Adding Image to PDF;
 						$pdf = new FPDI();

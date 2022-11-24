@@ -39,4 +39,5 @@ if (typeof(Storage) !== "undefined") {ldelim}
 		document.cookie = "corebos_browsertabID="+corebos_browsertabID;
 	{rdelim});
 {rdelim}
+window.coreBOSMenu={if empty($MENUSEARCH)} { }{else}{$MENUSEARCH}{/if};
 </script>

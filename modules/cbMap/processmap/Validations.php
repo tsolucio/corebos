@@ -576,6 +576,10 @@ class Validations extends processcbMap {
 				}
 			}
 		}
+		$FILTERVALMAP = (empty($_REQUEST['FILTERVALMAP']) ? (empty($screen_values['FILTERVALMAP']) ? 0 : $screen_values['FILTERVALMAP']) : $_REQUEST['FILTERVALMAP']);
+		if (!empty($FILTERVALMAP) && is_numeric($FILTERVALMAP) && isRecordExists($FILTERVALMAP)) {
+			$valmaps[] = $FILTERVALMAP;
+		}
 		$valmaps = array_unique($valmaps);
 		$validation = true;
 		if (!empty($valmaps)) {

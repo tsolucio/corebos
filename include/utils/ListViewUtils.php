@@ -274,8 +274,14 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
-		$focus->search_fields = $cbMap->ListColumns()->getSearchFields();
-		$focus->search_fields_name = $cbMap->ListColumns()->getSearchFieldsName();
+		$SearchFields = $cbMap->ListColumns()->getSearchFields();
+		$SearchFieldsName = $cbMap->ListColumns()->getSearchFieldsName();
+		if (!empty($SearchFields)) {
+			$focus->search_fields = $SearchFields;
+		}
+		if (!empty($SearchFieldsName)) {
+			$focus->search_fields_name = $SearchFieldsName;
+		}
 	}
 	$field_list = array_values($focus->search_fields_name);
 	$userprivs = $current_user->getPrivileges();
@@ -909,8 +915,14 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
-		$focus->search_fields = $cbMap->ListColumns()->getSearchFields();
-		$focus->search_fields_name = $cbMap->ListColumns()->getSearchFieldsName();
+		$SearchFields = $cbMap->ListColumns()->getSearchFields();
+		$SearchFieldsName = $cbMap->ListColumns()->getSearchFieldsName();
+		if (!empty($SearchFields)) {
+			$focus->search_fields = $cbMap->ListColumns()->getSearchFields();
+		}
+		if (!empty($SearchFieldsName)) {
+			$focus->search_fields_name = $cbMap->ListColumns()->getSearchFieldsName();
+		}
 		$focus->popup_fields = array($cbMap->ListColumns()->getSearchLinkField());
 		$focus->list_link_field = $cbMap->ListColumns()->getSearchLinkField();
 	}

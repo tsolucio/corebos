@@ -200,14 +200,8 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 115) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = getTranslatedString($col_fields[$fieldname]);
-
-		$pick_query = 'select * from vtiger_' . $adb->sql_escape_string($fieldname);
-		$pickListResult = $adb->pquery($pick_query, array());
-		$noofpickrows = $adb->num_rows($pickListResult);
 		$options = array();
-		for ($j = 0; $j < $noofpickrows; $j++) {
-			$pickListValue = $adb->query_result($pickListResult, $j, strtolower($fieldname));
-
+		foreach (['Active', 'Inactive'] as $pickListValue) {
 			if ($col_fields[$fieldname] == $pickListValue) {
 				$chk_val = 'selected';
 			} else {
