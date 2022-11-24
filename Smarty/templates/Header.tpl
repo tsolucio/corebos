@@ -79,7 +79,7 @@
 		<script>
 			window.onload = () => {
 				let element = document.getElementById('{$ApplicationFocusElementValue}');
-				if(element) {
+				if (element) {
 					element.focus();
 				}
 			}

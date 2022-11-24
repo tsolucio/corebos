@@ -1760,7 +1760,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => 'html element id',
-	'definition' => 'Element ID that will be focued when the page loads',
+	'definition' => 'Element ID that will be focused when the page loads',
 ),
 );
 
