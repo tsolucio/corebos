@@ -23,14 +23,13 @@ switch ($wizardaction) {
 	case 'MassCreate':
 		echo json_encode($wizard->MassCreate());
 		break;
-	case 'CustomCreate':
-		echo json_encode($wizard->HandleRequest());
-		break;
 	case 'Mapping':
 		echo json_encode($wizard->Mapping());
 		break;
 	case 'Delete':
 	case 'Session':
+	case 'Duplicate':
+	case 'CustomCreate':
 		echo json_encode($wizard->HandleRequest());
 		break;
 	case 'listview':

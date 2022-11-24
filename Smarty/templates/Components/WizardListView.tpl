@@ -11,6 +11,7 @@ wizard.WizardValidate[{$step}] = {$WizardValidate};
 wizard.WizardGoBack[{$step}] = {$WizardGoBack};
 wizard.WizardRequiredAction[{$step}] = '{$WizardRequiredAction}';
 wizard.WizardCustomFunction[{$step}] = '{$WizardCustomFunction}';
+wizard.ResetWizard[{$step}] = {$ResetWizard};
 function WizardGrid{$formodule}{$step}() {
 	if (wizard.WizardInstance['wzgrid{$step}'] !== undefined)  {
 		wizard.WizardInstance['wzgrid{$step}'].destroy();
