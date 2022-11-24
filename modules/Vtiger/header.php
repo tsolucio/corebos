@@ -133,5 +133,9 @@ if (coreBOS_Settings::getSetting('onesignal_isactive', '0') == '1') {
 	$smarty->assign('ONESIGNAL_IS_ACTIVE', false);
 }
 
+// Checking for the Application_Focus_Element global variable
+$ApplicationFocusElementValue = GlobalVariable::getVariable('Application_Focus_Element', 'no_element_id', '', '', $_REQUEST['action']);
+$smarty->assign('ApplicationFocusElementValue', $ApplicationFocusElementValue);
+
 $smarty->display('Header.tpl');
 ?>
