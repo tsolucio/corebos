@@ -24,7 +24,8 @@ $mu = new corebos_clickhouse();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin && isset($_REQUEST['clickhouse_active']) && isset($_REQUEST['btnchsave'])) {
+if ($isadmin && isset($_REQUEST['btnchsave']) && !empty($_REQUEST['clickhouse_database']) && !empty($_REQUEST['clickhouse_username']) && 
+	!empty($_REQUEST['clickhouse_password']) && !empty($_REQUEST['clickhouse_host']) && !empty($_REQUEST['clickhouse_port'])) {
 	$isActive = ((empty($_REQUEST['clickhouse_active']) || $_REQUEST['clickhouse_active']!='on') ? '0' : '1');
 	$clickhouse_database = (empty($_REQUEST['clickhouse_database']) ? '' : vtlib_purify($_REQUEST['clickhouse_database']));
 	$clickhouse_username = (empty($_REQUEST['clickhouse_username']) ? '' : vtlib_purify($_REQUEST['clickhouse_username']));
