@@ -92,7 +92,7 @@ class WizardComponent {
 						return false;
 					} else {
 						if (this.WizardCustomFunction[this.ActiveStep] != '') {
-							this.CallCustomFunction();
+							this.CallCustomFunction(ev);
 						}
 					}
 					return this.FilterRows(ev);
@@ -399,20 +399,19 @@ class WizardComponent {
 		if (this.ActiveStep == 1 && this.isModal) {
 			this.el(`btn-back`).setAttribute('disabled', '');
 		}
+		let el = document.getElementById('save-btn');
+		el.innerHTML = '';
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_FINISH;
 			if (!this.ResetWizard[this.ActiveStep]) {
 				//create a save button
-				let el = document.getElementById('save-btn');
-				if (el.innerHTML == '') {
-					let btn = document.createElement('button');
-					btn.setAttribute('onclick', 'wizard.Finish(false)');
-					btn.innerHTML = 'Save';
-					btn.style.float = 'right';
-					btn.classList.add('slds-button');
-					btn.classList.add('slds-button_neutral');
-					el.appendChild(btn);
-				}
+				let btn = document.createElement('button');
+				btn.setAttribute('onclick', 'wizard.Finish(false)');
+				btn.innerHTML = 'Save';
+				btn.style.float = 'right';
+				btn.classList.add('slds-button');
+				btn.classList.add('slds-button_neutral');
+				el.appendChild(btn);
 			}
 			setTimeout(function () {
 				wizard.el(`btn-next`).setAttribute('onclick', 'wizard.Finish()');
@@ -586,7 +585,15 @@ class WizardComponent {
 		this.WizardInstance[`wzgrid${step}`].removeRows(rowKeys);
 	}
 
-	CallCustomFunction() {
+	CallCustomFunction(ev = '') {
+		let type = 'next';
+		if (ev != '') {
+			type = ev.target.dataset.type;
+		}
+		if (type == 'back') {
+			delete this.IsDuplicatedFromProduct[this.ActiveStep-1];
+			return true;
+		}
 		const url = `${this.url}&wizardaction=CustomCreate&subaction=${this.WizardCustomFunction[this.ActiveStep]}&step=${this.ActiveStep}`;
 		let rows = [];
 		for (let i in this.CheckedRows[this.ActiveStep]) {

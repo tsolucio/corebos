@@ -33,11 +33,17 @@ class WizardCustomFunctions {
 			try {
 				$UsersTabid = vtws_getEntityId('Users');
 				$ProductComponentId = vtws_getEntityId('ProductComponent');
-				$od = vtws_create('cbOfferDetail', array(
-					'related_product' => $productid[0],
-					'cboffers_relation' => $masterid,
-					'assigned_user_id' => $UsersTabid.'x'.$current_user->id
-				), $current_user);
+				if (!isset($records['wizard']['parentoffer'])) {
+					$od = vtws_create('cbOfferDetail', array(
+						'related_product' => $productid[0],
+						'cboffers_relation' => $masterid,
+						'assigned_user_id' => $UsersTabid.'x'.$current_user->id
+					), $current_user);
+					coreBOS_Session::set('DuplicatedRecords^wizard^parentoffer', $od['id']);
+					$offerid = $od['id'];
+				} else {
+					$offerid = $records['wizard']['parentoffer'];
+				}
 				foreach ($records as $key => $pcs) {
 					if ($key == -1) {
 						continue;
@@ -49,7 +55,7 @@ class WizardCustomFunctions {
 						}
 						vtws_revise(array(
 							'id' => $ProductComponentId.'x'.$pid,
-							'related_cbofferdetail' => $od['id']
+							'related_cbofferdetail' => $offerid
 						), $current_user);
 					}
 				}
@@ -139,13 +145,13 @@ class WizardCustomFunctions {
 				$UsersTabid = vtws_getEntityId('Users');
 				$pc = vtws_create('ProductComponent', array(
 					'frompdo' => $frompdo[0],
-					'topdo' => $topdo[0],
+					'topdo' => end($topdo),
 					'assigned_user_id' => $UsersTabid.'x'.$current_user->id
 				), $current_user);
 				if (isset($pc['id'])) {
 					$id = explode('x', $pc['id']);
 					//save this for the next step "frompdo"
-					coreBOS_Session::set('DuplicatedRecords^'.$st.'^'.$id[1], $id[1]);
+					coreBOS_Session::set('DuplicatedRecords^'.$st.'^parentpc', $id[1]);
 					return true;
 				}
 				return false;
@@ -163,8 +169,8 @@ class WizardCustomFunctions {
 		global $adb, $current_user;
 		$step = vtlib_purify($_REQUEST['step']);
 		$data = json_decode($_REQUEST['data'], true);
-		$DuplicatedRecords = coreBOS_Session::get('DuplicatedRecords');
-		$frompdo = array_values($DuplicatedRecords[$step-2]);
+		$records = $this->GetSession();
+		$frompdo = array_values($records[$step-2]);
 		$UsersTabid = vtws_getEntityId('Users');
 		$ProductsTabid = vtws_getEntityId('Products');
 		$PCTabid = vtws_getEntityId('ProductComponent');
@@ -176,9 +182,9 @@ class WizardCustomFunctions {
 					'referenceId' => '',
 					'searchon' => '',
 					'element' => array(
-						'frompdo' => $ProductsTabid.'x'.$frompdo[0],
+						'frompdo' => $ProductsTabid.'x'.end($frompdo),
 						'topdo' => $ProductsTabid.'x'.$id,
-						'rel_pc' => $PCTabid.'x'.$frompdo[1],
+						'rel_pc' => $PCTabid.'x'.$records[$step-2]['parentpc'],
 						'assigned_user_id' => $UsersTabid.'x'.$current_user->id
 					)
 				);
@@ -186,7 +192,6 @@ class WizardCustomFunctions {
 		}
 		MassCreate($target, $current_user);
 		$st = $step-2;
-		coreBOS_Session::delete('DuplicatedRecords^'.$st.'^'.$frompdo[0]);
 		return true;
 	}
 }
