@@ -92,7 +92,7 @@ class WizardComponent {
 						return false;
 					} else {
 						if (this.WizardCustomFunction[this.ActiveStep] != '') {
-							this.CallCustomFunction();
+							this.CallCustomFunction(ev);
 						}
 					}
 					return this.FilterRows(ev);
@@ -586,7 +586,15 @@ class WizardComponent {
 		this.WizardInstance[`wzgrid${step}`].removeRows(rowKeys);
 	}
 
-	CallCustomFunction() {
+	CallCustomFunction(ev = '') {
+		let type = 'next';
+		if (ev != '') {
+			type = ev.target.dataset.type;
+		}
+		if (type == 'back') {
+			delete this.IsDuplicatedFromProduct[this.ActiveStep-1];
+			return true;
+		}
 		const url = `${this.url}&wizardaction=CustomCreate&subaction=${this.WizardCustomFunction[this.ActiveStep]}&step=${this.ActiveStep}`;
 		let rows = [];
 		for (let i in this.CheckedRows[this.ActiveStep]) {
