@@ -44,6 +44,9 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 		} else {
 			$encoding_type = $entity->WorkflowContext['GenerateImageCode_EncodingType'];
 		}
+		if (!empty($entity->WorkflowContext['GenerateImageCode_SaveTo'])) {
+			$this->save_encoded_value = $entity->WorkflowContext['GenerateImageCode_SaveTo'];
+		}
 		$util->adminUser();
 		$moduleName = $entity->getModuleName();
 		$entityId = $entity->getId();
