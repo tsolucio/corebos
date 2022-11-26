@@ -84,6 +84,7 @@
 <input type="hidden" name="Module_Popup_Save_Param" value="{if isset($smarty.request.Module_Popup_Save_Param)}{$smarty.request.Module_Popup_Save_Param|@urlencode}{/if}" />
 <input type="hidden" name="FILTERFIELDSMAP" value="{if isset($smarty.request.FILTERFIELDSMAP)}{$smarty.request.FILTERFIELDSMAP|@urlencode}{/if}" />
 <input type="hidden" name="FILTERVALMAP" value="{if isset($smarty.request.FILTERVALMAP)}{$smarty.request.FILTERVALMAP|@urlencode}{/if}" />
+<input type="hidden" name="PROCESSSETTINGS" id="PROCESSSETTINGS" value="{if isset($smarty.request.PROCESSSETTINGS)}{$smarty.request.PROCESSSETTINGS|@urlencode}{/if}" />
 <input name='search_url' id="search_url" type='hidden' value='{if isset($SEARCH)}{$SEARCH|@urlencode}{/if}'>
 {if isset($CUSTOM_LINKS) && !empty($CUSTOM_LINKS.EDITVIEWHTML)}
 {foreach from=$CUSTOM_LINKS.EDITVIEWHTML item=evhtml}
