@@ -240,8 +240,8 @@ class GlobalVariable extends CRMEntity {
 		global $adb;
 		$list_of_modules=array();
 		$list_of_modules['Default'] = '';
-		if (!empty($viewtype)) {	// support for $viewtype
-			$sql .= 'AND viewtype LIKE \'%' . vtlib_purify($viewtype) . '%\'';
+		if (!empty($viewtype)) { // support for $viewtype
+			$sql .= $adb->convert2Sql('AND viewtype LIKE ?', array('%'.$viewtype.'%'));
 		}
 		$query=$adb->pquery($sql, array($var));
 		self::$validationinfo[] = 'candidate variable records found: '.$adb->num_rows($query);
