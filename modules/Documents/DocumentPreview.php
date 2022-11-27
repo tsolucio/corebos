@@ -30,18 +30,27 @@ class DocumentPreview_DetailViewBlock extends DeveloperBlock {
 
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {
-		global $adb, $site_URL;
+		global $adb, $site_URL, $current_language;
 		$this->context = $context;
 		$smarty = $this->getViewer();
 		$record_id = $this->getFromContext('record_id');
 		$width = $this->getFromContext('width');
 		$height = $this->getFromContext('height');
 		$rs = $adb->pquery(
-			"select case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name,'Documents' ActivityType, vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,
-			vtiger_seattachmentsrel.attachmentsid attachmentsid, vtiger_crmentity.smownerid smownerid, vtiger_notes.notesid crmid,vtiger_notes.notecontent description,vtiger_notes.* from vtiger_notes inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid 
-			left join vtiger_notescf ON vtiger_notescf.notesid=vtiger_notes.notesid inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0 inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid left join vtiger_groups on
-			 vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid left join vtiger_users on 
-			 vtiger_crmentity.smownerid=vtiger_users.id where crm2.crmid=? order by vtiger_attachments.attachmentsid desc LIMIT 1",
+			"select case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name,
+				'Documents' ActivityType,vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,
+				crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,vtiger_seattachmentsrel.attachmentsid attachmentsid,
+				vtiger_crmentity.smownerid smownerid,vtiger_notes.notesid crmid,vtiger_notes.notecontent description,vtiger_notes.*
+			from vtiger_notes
+			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
+			left join vtiger_notescf ON vtiger_notescf.notesid=vtiger_notes.notesid
+			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
+			inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid
+			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
+			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
+			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
+			left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
+			where crm2.crmid=? order by vtiger_attachments.attachmentsid desc LIMIT 1",
 			array($record_id)
 		);
 		if ($rs && $adb->num_rows($rs)>0) {
@@ -58,6 +67,7 @@ class DocumentPreview_DetailViewBlock extends DeveloperBlock {
 			$smarty->assign('_downloadurl', $path);
 			$smarty->assign('width', $width);
 			$smarty->assign('height', $height);
+			$smarty->assign('UserLanguage', substr($current_language, 0, 2).'-'.strtoupper(substr($current_language, -2)));
 			$smarty->assign('NoFile', false);
 		} else {
 			$smarty->assign('NoFile', true);
