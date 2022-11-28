@@ -156,6 +156,10 @@ class WizardComponent {
 									wizard.gridInstance = [];
 									wizard.WizardInstance = [];
 									localStorage.removeItem(`currentWizardActive`);
+								} else {
+									//if we click "save" make sure that "finish" will not create twice records
+									let nextBtn = wizard.el(`btn-next`);
+									nextBtn.setAttribute('onclick', 'wizard.CloseModal()');
 								}
 							} else {
 								setTimeout(function() {
@@ -171,6 +175,22 @@ class WizardComponent {
 				break;
 			default:
 		}
+	}
+
+	/**
+	 * Close and reset wizard modal
+	 */
+	CloseModal() {
+		ldsModal.close();
+		this.ActiveStep = 0;
+		this.IsDuplicatedFromProduct = [];
+		this.ProceedToNextStep = true;
+		this.CheckedRows = [];
+		this.GridData = [];
+		this.GroupData = [];
+		this.gridInstance = [];
+		this.WizardInstance = [];
+		localStorage.removeItem(`currentWizardActive`);		
 	}
 
 	/**
