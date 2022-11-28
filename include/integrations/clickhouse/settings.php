@@ -24,8 +24,7 @@ $mu = new corebos_clickhouse();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin && isset($_REQUEST['btnchsave']) && !empty($_REQUEST['clickhouse_database']) && !empty($_REQUEST['clickhouse_username']) && 
-	!empty($_REQUEST['clickhouse_password']) && !empty($_REQUEST['clickhouse_host']) && !empty($_REQUEST['clickhouse_port'])) {
+if ($isadmin && isset($_REQUEST['btnchsave'])) {
 	$isActive = ((empty($_REQUEST['clickhouse_active']) || $_REQUEST['clickhouse_active']!='on') ? '0' : '1');
 	$clickhouse_database = (empty($_REQUEST['clickhouse_database']) ? '' : vtlib_purify($_REQUEST['clickhouse_database']));
 	$clickhouse_username = (empty($_REQUEST['clickhouse_username']) ? '' : vtlib_purify($_REQUEST['clickhouse_username']));
@@ -33,6 +32,10 @@ if ($isadmin && isset($_REQUEST['btnchsave']) && !empty($_REQUEST['clickhouse_da
 	$clickhouse_host = (empty($_REQUEST['clickhouse_host']) ? '' : vtlib_purify($_REQUEST['clickhouse_host']));
 	$clickhouse_port = (empty($_REQUEST['clickhouse_port']) ? '' : vtlib_purify($_REQUEST['clickhouse_port']));
 	$clickhouse_webhook_secret = (empty($_REQUEST['clickhouse_webhook_secret']) ? '' : vtlib_purify($_REQUEST['clickhouse_webhook_secret']));
+
+	if ($clickhouse_database == '' || $clickhouse_username == '' || $clickhouse_password == '' || $clickhouse_host == '' || $clickhouse_port == '') {
+		$isActive = '0';
+	}
 	$mu->saveSettings($isActive, $clickhouse_host, $clickhouse_port, $clickhouse_database, $clickhouse_username, $clickhouse_password, $clickhouse_webhook_secret);
 }
 
