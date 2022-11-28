@@ -78,6 +78,10 @@ class WizardView {
 		if (isset($this->params['reset_wizard'])) {
 			$this->reset_wizard = $this->params['reset_wizard'];
 		}
+		//show or hide save button for each step
+		if (isset($this->params['save_action'])) {
+			$this->save_action = $this->params['save_action'];
+		}
 	}
 
 	public function Init() {
@@ -112,6 +116,11 @@ class WizardView {
 			$smarty->assign('WizardRequiredAction', $this->required_action);
 			$smarty->assign('WizardCustomFunction', $this->custom_function);
 			$smarty->assign('WizardModuleEditor', $this->module);
+			$WizardSaveAction = false;
+			if (!empty($this->save_action)) {
+				$WizardSaveAction = boolval($this->save_action);
+			}
+			$smarty->assign('WizardSaveAction', $WizardSaveAction);
 			$smarty->assign('ResetWizard', $this->reset_wizard);
 			$query = '';
 			if (isset($this->conditions['condition'])) {

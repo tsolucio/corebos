@@ -36,6 +36,7 @@ class WizardComponent {
 		this.WizardCustomFunction = [];
 		this.IsDuplicatedFromProduct = [];
 		this.ApplyFilter = [];
+		this.WizardSaveAction = [];
 		this.Operation = '';
 		this.ProceedToNextStep = true;
 		this.ResetWizard = true;
@@ -429,7 +430,7 @@ class WizardComponent {
 		el.innerHTML = '';
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_FINISH;
-			if (!this.ResetWizard[this.ActiveStep]) {
+			if (!this.ResetWizard[this.ActiveStep] && this.WizardSaveAction[this.ActiveStep]) {
 				//create a save button
 				let btn = document.createElement('button');
 				btn.setAttribute('onclick', 'wizard.Finish(false)');
