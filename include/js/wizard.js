@@ -95,6 +95,10 @@ class WizardComponent {
 							this.CallCustomFunction(ev);
 						}
 					}
+					this.CheckedRows[this.ActiveStep-1] = [];
+					this.CheckedRows[this.ActiveStep] = [];
+					this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
+					this.WizardInstance[`wzgrid${this.ActiveStep-1}`].uncheckAll();
 					return this.FilterRows(ev);
 				}
 				if (this.WizardMode[this.ActiveStep] == 'CREATEPRODUCTCOMPONENT') {
@@ -139,6 +143,8 @@ class WizardComponent {
 							ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 							if (wizard.isModal) {
 								RLInstance[wizard.gridInstance].readData(1);
+								wizard.CheckedRows[wizard.ActiveStep] = [];
+								wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].uncheckAll();
 								if (resetWizard) {
 									ldsModal.close();
 									wizard.ActiveStep = 0;
