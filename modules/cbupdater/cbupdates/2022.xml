@@ -244,4 +244,11 @@
 	<classname>addQuestionTypeField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>maliknajjar</author>
+	<description>Add view type to global variable module</description>
+	<filename>build/changeSets/2022/addtypeofviewGV.php</filename>
+	<classname>addtypeofviewGV</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

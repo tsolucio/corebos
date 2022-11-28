@@ -1534,11 +1534,7 @@ function doModuleValidation(edit_type, editForm, callback) {
 	return false;
 }
 
-function doServerValidation(edit_type, formName, callback) {
-	VtigerJS_DialogBox.block();
-	var action = (edit_type=='mass_edit' ? 'MassEditSave' : 'Save');
-	let SVModule = document.forms[formName].module.value;
-	//let SVRecord = document.forms[formName].record.value;
+function getFormFields(formName) {
 	// Create object which gets the values of all input, textarea, select and button elements from the form
 	var myFields = document.forms[formName].elements;
 	var sentForm = new Object();
@@ -1562,7 +1558,14 @@ function doServerValidation(edit_type, formName, callback) {
 			sentForm[myFields[f].name] = myFields[f].value;
 		}
 	}
-	return executeServerValidation(edit_type, action, formName, callback, SVModule, sentForm);
+	return sentForm;
+}
+
+function doServerValidation(edit_type, formName, callback) {
+	VtigerJS_DialogBox.block();
+	var action = (edit_type=='mass_edit' ? 'MassEditSave' : 'Save');
+	let SVModule = document.forms[formName].module.value;
+	return executeServerValidation(edit_type, action, formName, callback, SVModule, getFormFields(formName));
 }
 
 function executeServerValidation(edit_type, action, formName, callback, forModule, sentForm) {
@@ -5461,8 +5464,8 @@ function handleAcKeys(e) {
 		formValidate();
 	} else if (gVTModule=='Settings' && document.activeElement.tagName=='BODY') {
 		window.coreBOSSearching = true;
-		if (e.keyCode>32 || e.keyCode==13) {
-			if (e.keyCode>32) {
+		if (e.keyCode>31 || e.keyCode==13) {
+			if (e.keyCode>31) {
 				window.coreBOSSearchingText = window.coreBOSSearchingText+e.key.toUpperCase();
 			}
 			fns = Object.keys(window.coreBOSMenuSettings)
@@ -5482,8 +5485,8 @@ function handleAcKeys(e) {
 		}
 	} else if (document.activeElement.tagName=='BODY') {
 		window.coreBOSSearching = true;
-		if (e.keyCode>32 || e.keyCode==13) {
-			if (e.keyCode>32) {
+		if (e.keyCode>31 || e.keyCode==13) {
+			if (e.keyCode>31) {
 				window.coreBOSSearchingText = window.coreBOSSearchingText+e.key.toUpperCase();
 			}
 			fns = Object.keys(window.coreBOSMenu)

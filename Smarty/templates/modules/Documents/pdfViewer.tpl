@@ -3,25 +3,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="google" content="notranslate">
+    <title>PDF Preview</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://mozilla.github.io/pdf.js/web/viewer.css" />
     <!-- This snippet is used in production (included from viewer.html) -->
     <link rel="resource" type="application/l10n" href="https://mozilla.github.io/pdf.js/web/locale/locale.properties">
 
-    <script>
-      let searchParams = new URLSearchParams(window.location.search)
-      var gVTUserLanguage=(searchParams.has('ulang') ? searchParams.get('ulang') : 'en-US');
-    </script>
     <script src="https://mozilla.github.io/pdf.js/build/pdf.worker.js"></script>
     <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
-    <script src="viewer.js"></script>
+    <script src="https://mozilla.github.io/pdf.js/web/viewer.js"></script>
 
     <style>
       #next::before, #previous::before {
           display: contents;
       }
     </style>
+    
   </head>
 
   <body tabindex="1">

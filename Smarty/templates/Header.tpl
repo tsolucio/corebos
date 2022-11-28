@@ -75,6 +75,16 @@
 			});
 		</script>
 	{/if}
+	{if isset($ApplicationFocusElementValue)}
+		<script>
+			window.onload = () => {
+				let element = document.getElementById('{$ApplicationFocusElementValue}');
+				if (element) {
+					element.focus();
+				}
+			}
+		</script>
+	{/if}
 </head>
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%">
 	<!-- header -->
@@ -588,7 +598,20 @@
 <ul id="todolist"></ul>
 </div>
 </div>
-<!-- End -->
+<div id="cbds-helppanel" class="slds-panel slds-size_xx-large slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
+<div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LNK_HELP'|@getTranslatedString:'Settings'}">{'LNK_HELP'|@getTranslatedString:'Settings'}
+	</h2>
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'LBL_CLOSE'|@getTranslatedString}" onclick="panelViewHide(document.getElementById('cbds-helppanel'));">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+		</svg>
+		<span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString}</span>
+	</button>
+</div>
+<div id="helppanelcontent" class="slds-panel__body containernpanel" style="height: 92%;">
+</div>
+</div>
 
 <!-- divs for asterisk integration -->
 <div class="lvtCol fixedLay1" id="notificationDiv" style="float: right; padding-right: 5px; overflow: hidden; border-style: solid; right: 0px; border-color: rgb(141, 141, 141); bottom: 0px; display: none; padding: 2px; z-index: 10; font-weight: normal;" align="left">

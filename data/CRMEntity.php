@@ -2747,7 +2747,7 @@ class CRMEntity {
 					}
 				}
 			}
-
+			$joinTabled = [];
 			$query = "SELECT vtiger_crmentity.*, $other->table_name.*";
 
 			$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.ename ELSE vtiger_groups.groupname END AS user_name";
@@ -2757,6 +2757,7 @@ class CRMEntity {
 				$query .= ', '.$other->customFieldTable[0].'.*';
 				$more_relation .= ' INNER JOIN '.$other->customFieldTable[0].' ON '.$other->customFieldTable[0].'.'.$other->customFieldTable[1] .
 					" = $other->table_name.$other->table_index";
+				$joinTabled[] = $other->customFieldTable[0];
 			}
 			if (!empty($other->related_tables)) {
 				foreach ($other->related_tables as $tname => $relmap) {
@@ -2769,7 +2770,10 @@ class CRMEntity {
 					if (empty($relmap[2])) {
 						$relmap[2] = $relmap[0];
 					}
-					$more_relation .= " LEFT JOIN $tname ON $tname.$relmap[0] = $relmap[1].$relmap[2]";
+					if (!in_array($tname, $joinTabled)) {
+						$more_relation .= " LEFT JOIN $tname ON $tname.$relmap[0] = $relmap[1].$relmap[2]";
+						$joinTabled[] = $tname;
+					}
 				}
 			}
 
@@ -2779,7 +2783,10 @@ class CRMEntity {
 			if ($relWithSelf) {
 				$query .= " INNER JOIN $this->table_name as ".$this->table_name."RelSelf ON $relationconditions";
 			} else {
-				$query .= " INNER JOIN $this->table_name ON $relationconditions";
+				if (!in_array($this->table_name, $joinTabled)) {
+					$query .= " INNER JOIN $this->table_name ON $relationconditions";
+					$joinTabled[] = $this->table_name;
+				}
 			}
 			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$other->crmentityTable.'.smownerid';
 			$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$other->crmentityTable.'.smownerid';
