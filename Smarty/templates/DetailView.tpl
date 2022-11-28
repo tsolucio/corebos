@@ -301,8 +301,8 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																	{if isset($ASSOCIATED_PRODUCTS) && $ShowInventoryLines}
 																	<tr><td>
 																		{$ASSOCIATED_PRODUCTS}
-																	</td></th}
-																	{*-- Endr>
+																	</td></tr>
+																	{*-- End--*}
 																	{/if}
 																{if $SinglePane_View eq 'true' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 																	{include file= 'RelatedListNew.tpl'}
