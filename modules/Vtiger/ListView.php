@@ -276,6 +276,8 @@ $smarty->assign('advancedSearchMapResult', $advancedSearchMapResult);
 $Application_ListView_FilterPanel_Open = GlobalVariable::getVariable('Application_ListView_FilterPanel_Open', '1', $currentModule, '', $_REQUEST['action']);
 if (!$Application_ListView_FilterPanel_Open) {
 	$smarty->assign('Application_ListView_FilterPanel_Open', "display: none;");
+} else {
+	$smarty->assign('Application_ListView_FilterPanel_Open', "");
 }
 
 if (!empty($custom_list_include) && file_exists($custom_list_include)) {
