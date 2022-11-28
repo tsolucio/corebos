@@ -170,6 +170,8 @@ class WizardCustomFunctions {
 		$step = vtlib_purify($_REQUEST['step']);
 		$data = json_decode($_REQUEST['data'], true);
 		$records = $this->GetSession();
+		$parentpc = $records[$step-2]['parentpc'];
+		unset($records[$step-2]['parentpc']);
 		$frompdo = array_values($records[$step-2]);
 		$UsersTabid = vtws_getEntityId('Users');
 		$ProductsTabid = vtws_getEntityId('Products');
@@ -184,14 +186,13 @@ class WizardCustomFunctions {
 					'element' => array(
 						'frompdo' => $ProductsTabid.'x'.end($frompdo),
 						'topdo' => $ProductsTabid.'x'.$id,
-						'rel_pc' => $PCTabid.'x'.$records[$step-2]['parentpc'],
+						'rel_pc' => $PCTabid.'x'.$parentpc,
 						'assigned_user_id' => $UsersTabid.'x'.$current_user->id
 					)
 				);
 			}
 		}
 		MassCreate($target, $current_user);
-		$st = $step-2;
 		return true;
 	}
 }

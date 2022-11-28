@@ -95,6 +95,10 @@ class WizardComponent {
 							this.CallCustomFunction(ev);
 						}
 					}
+					this.CheckedRows[this.ActiveStep-1] = [];
+					this.CheckedRows[this.ActiveStep] = [];
+					this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
+					this.WizardInstance[`wzgrid${this.ActiveStep-1}`].uncheckAll();
 					return this.FilterRows(ev);
 				}
 				if (this.WizardMode[this.ActiveStep] == 'CREATEPRODUCTCOMPONENT') {
@@ -139,6 +143,8 @@ class WizardComponent {
 							ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 							if (wizard.isModal) {
 								RLInstance[wizard.gridInstance].readData(1);
+								wizard.CheckedRows[wizard.ActiveStep] = [];
+								wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].uncheckAll();
 								if (resetWizard) {
 									ldsModal.close();
 									wizard.ActiveStep = 0;
@@ -150,6 +156,10 @@ class WizardComponent {
 									wizard.gridInstance = [];
 									wizard.WizardInstance = [];
 									localStorage.removeItem(`currentWizardActive`);
+								} else {
+									//if we click "save" make sure that "finish" will not create twice records
+									let nextBtn = wizard.el(`btn-next`);
+									nextBtn.setAttribute('onclick', 'wizard.CloseModal()');
 								}
 							} else {
 								setTimeout(function() {
@@ -165,6 +175,22 @@ class WizardComponent {
 				break;
 			default:
 		}
+	}
+
+	/**
+	 * Close and reset wizard modal
+	 */
+	CloseModal() {
+		ldsModal.close();
+		this.ActiveStep = 0;
+		this.IsDuplicatedFromProduct = [];
+		this.ProceedToNextStep = true;
+		this.CheckedRows = [];
+		this.GridData = [];
+		this.GroupData = [];
+		this.gridInstance = [];
+		this.WizardInstance = [];
+		localStorage.removeItem(`currentWizardActive`);		
 	}
 
 	/**

@@ -154,7 +154,7 @@
 		</div>
 	</div>
 	{if isset($isWigdet)}
-	<div class="slds-grid slds-path__action">
+	<div class="slds-path__action">
 	{else}
 	<div class="slds-grid slds-path__action" style="position: fixed;bottom: 0;background: #f3f3f3;padding: 15px;width: 100%;margin-left: -25px;z-index: 900;border-top: 1px solid #1b96ff">
 	{/if}
@@ -172,12 +172,12 @@
 			Reset Wizard
 		</button>
 		{/if}
-		<div id="save-btn"></div>
-		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete" id="btn-next" data-type="next">
+		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete slds-float_right" id="btn-next" data-type="next">
 			Next
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
 			</svg>
 		</button>
+		<div id="save-btn" class="slds-float_right"></div>
 	</div>
 {/if}
