@@ -1561,6 +1561,30 @@ function getFormFields(formName) {
 	return sentForm;
 }
 
+function getDetailViewFormFields() {
+	let obj = {};
+	let elements  = document.querySelectorAll('span');
+	for (let index = 0; index < elements.length; index++) {
+		const element = elements[index];
+		if (element.id.includes('dtlview_')) {
+			const elementKey = element.id.substring(8);
+			if (element.children.length > 1) {	// for uitype10
+				for (let index = 0; index < element.children.length; index++) {
+					const child = element.children[index];
+					if (child.getAttribute('type') == 'vtlib_metainfo') {
+						const recordid = child.getAttribute('vtrecordid');
+						obj[elementKey] = recordid;
+						break;
+					}
+				}
+			} else {
+				obj[elementKey] = element.innerText.trim();
+			}
+		}
+	}
+	return obj;
+}
+
 function doServerValidation(edit_type, formName, callback) {
 	VtigerJS_DialogBox.block();
 	var action = (edit_type=='mass_edit' ? 'MassEditSave' : 'Save');
