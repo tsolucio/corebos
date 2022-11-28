@@ -15,12 +15,15 @@ class VTUpdateFieldsTask extends VTTask {
 	public $queable = true;
 
 	public function getFieldNames() {
-		return array('field_value_mapping', 'launchrelwf');
+		return array('field_value_mapping', 'launchwf', 'launchrelwf');
 	}
 
 	public function after_retrieve() {
 		if (!isset($this->launchrelwf)) {
 			$this->launchrelwf = 0;
+		}
+		if (!isset($this->launchwf)) {
+			$this->launchwf = 0;
 		}
 	}
 
@@ -117,7 +120,11 @@ class VTUpdateFieldsTask extends VTTask {
 			$holdCM = $currentModule;
 			$_REQUEST['ajxaction'] = 'Workflow';
 			$logbg->debug('field values presave', $focus->column_fields);
-			$focus->saveentity($moduleName);
+			if ($this->launchwf) {
+				$focus->save($moduleName);
+			} else {
+				$focus->saveentity($moduleName);
+			}
 			if (!empty($relmodule) && !empty($relId)) {
 				foreach ($relmodule as $mod) {
 					$currentModule = $mod;

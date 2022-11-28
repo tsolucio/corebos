@@ -137,3 +137,12 @@ function edittaskscript($) {
 		});
 	});
 }
+
+function loadWorkflowHelpPanel(wfclass) {
+	let url = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getHelp&wfclass='+wfclass;
+	Request(url, 'post', {}).then(help => {
+		panelViewToggle('cbds-helppanel');
+		document.getElementById('helppanelcontent').innerHTML = help;
+	});
+	return false;
+}

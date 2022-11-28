@@ -17,31 +17,34 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************
  * The accepted format is:
-    <map>
-        <modulename>cbCalendar</modulename>
-        <group>
-            <conditions>
-                <condition>
-                    <fieldname>Subject</fieldname>
-                    <operator>eq</operator>
-                </condition>
-                <condition>
-                    <join>and</join>
-                    <fieldname>Subject</fieldname>
-                    <operator>eq</operator>
-                </condition>
-            </conditions>
-        </group>
-        <group>
-            <groupjoin>and</groupjoin>
-            <conditions>
-                <condition>
-                    <fieldname>Subject</fieldname>
-                    <operator>eq</operator>
-                </condition>
-            </conditions>
-        </group>
-    </map>
+	<map>
+		<modulename>cbCalendar</modulename>
+		<group>
+			<conditions>
+				<condition>
+					<modulename>cbCalendar</modulename>
+					<fieldname>Subject</fieldname>
+					<operator>eq</operator>
+				</condition>
+				<condition>
+					<join>and</join>
+					<modulename>cbCalendar</modulename>
+					<fieldname>Subject</fieldname>
+					<operator>eq</operator>
+				</condition>
+			</conditions>
+		</group>
+		<group>
+			<groupjoin>and</groupjoin>
+			<conditions>
+				<condition>
+					<modulename>Campaigns</modulename>
+					<fieldname>Campaign Name</fieldname>
+					<operator>eq</operator>
+				</condition>
+			</conditions>
+		</group>
+	</map>
  *************************************************************************************************/
 
 class AdvancedSearch extends processcbMap {
@@ -56,23 +59,27 @@ class AdvancedSearch extends processcbMap {
 		// convert fields into the right format
 		$customView = new CustomView();
 		if (isset($parsedxml["group"]["conditions"])) {
-		    if (isset($parsedxml["group"]["conditions"]["condition"]["fieldname"])) {
-			$parsedxml["group"]["conditions"]["condition"]["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($parsedxml["group"]["conditions"]["condition"]["fieldname"], $module);
-		    } else {
-			foreach ($parsedxml["group"]["conditions"]["condition"] as &$value) {
-			    $value["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($value["fieldname"], $module);
-			}
-		    }
-		} else {
-		    foreach ($parsedxml["group"] as &$value) {
-			if (isset($value["conditions"]["condition"]["fieldname"])) {
-			    $value["conditions"]["condition"]["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($value["conditions"]["condition"]["fieldname"], $module);
+			if (isset($parsedxml["group"]["conditions"]["condition"]["fieldname"])) {
+				$fieldName = $parsedxml["group"]["conditions"]["condition"]["fieldname"];
+				$moduleName = $parsedxml["group"]["conditions"]["condition"]["modulename"];
+				$parsedxml["group"]["conditions"]["condition"]["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($fieldName, $moduleName);
 			} else {
-			    foreach ($value["conditions"]["condition"] as &$value2) {
-				$value2["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($value2["fieldname"], $module);
-			    }
+				foreach ($parsedxml["group"]["conditions"]["condition"] as &$value) {
+					$value["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($value["fieldname"], $value["modulename"]);
+				}
 			}
-		    }
+		} else {
+			foreach ($parsedxml["group"] as &$value) {
+				if (isset($value["conditions"]["condition"]["fieldname"])) {
+					$fieldName = $value["conditions"]["condition"]["fieldname"];
+					$moduleName = $value["conditions"]["condition"]["modulename"];
+					$value["conditions"]["condition"]["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($fieldName, $moduleName);
+				} else {
+					foreach ($value["conditions"]["condition"] as &$value2) {
+						$value2["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($value2["fieldname"], $value2["modulename"]);
+					}
+				}
+			}
 		}
 
 		return $parsedxml;

@@ -129,7 +129,12 @@
 										{elseif $_FIELD->uitype() eq '9'}
 											{$_FIELD->valueLabel()}{if $_FIELD->name() eq 'probability'} %{/if}
 										{elseif $_FIELD->uitype() eq '17'}
-											<a href="#" onclick="window.open('https://{$_FIELD->valueLabel()}','_blank');" rel=external> {$_FIELD->valueLabel()} </a>
+											{if substr($_FIELD->valueLabel(), 0, 4)=='http'}
+												{assign var=prefix value=''}
+											{else}
+												{assign var=prefix value='https://'}
+											{/if}
+											<a href="#" onclick="window.open('{$prefix}{$_FIELD->valueLabel()}','_blank');" rel=external> {$_FIELD->valueLabel()} </a>
 										{elseif ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m')}
 											<!-- do nothing here for image -->
 										{elseif $_FIELD->uitype() eq '70'}

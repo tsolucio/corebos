@@ -166,6 +166,12 @@ function fieldDep_AssignUserSelect(change_field, action_field, new_value, old_va
 	document.getElementById(action_field).value = newuser;
 }
 
+function fieldDep_LoadSettings(change_field, action_field, new_value, old_value, parameters) {
+	VtigerJS_DialogBox.block();
+	document.getElementById('PROCESSSETTINGS').value = parameters[0];
+	submitFormForAction('EditView', 'ProccessSettings');
+}
+
 function fieldDep_Format(change_field, action_field, new_value, old_value, parameters) {
 }
 

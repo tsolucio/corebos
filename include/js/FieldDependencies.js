@@ -543,7 +543,11 @@ FieldDependencies.prototype.fieldReadonlyEditView = function (readonlyFields) {
 		}
 		let fn = document.getElementById(field);
 		if (fn) {
-			fn.item(0).style.display='none';
+			if (fn.item) {
+				fn.item(0).style.display='none';
+			} else {
+				fn.style.display='none';
+			}
 		}
 	}
 };
@@ -552,7 +556,10 @@ FieldDependencies.prototype.fieldReadonlyDetailView = function (readonlyFields) 
 	var field='';
 	for (var i=0; i<readonlyFields.length; i++) {
 		field=readonlyFields[i]['field'];
-		document.getElementById('mouseArea_'+field).removeAttribute('onclick');
+		let f = document.getElementById('mouseArea_'+field);
+		if (f) {
+			f.removeAttribute('onclick');
+		}
 	}
 };
 

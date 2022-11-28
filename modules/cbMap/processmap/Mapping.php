@@ -277,7 +277,19 @@ class Mapping extends processcbMap {
 				$value = $function($value, ENT_QUOTES, $default_charset);
 				break;
 			case 'json_decode':
+				$holdValue = $value;
 				$value = $function($value, true);
+				if (empty($value)) {
+					switch (json_last_error()) {
+						case JSON_ERROR_CTRL_CHAR:
+							$value = preg_replace("/\r|\n/", '\n', $holdValue);
+							$value = $function($value, true);
+							break;
+						default:
+							$value = null;
+							break;
+					}
+				}
 				break;
 			case 'json_encode':
 				$value = $function($value, JSON_NUMERIC_CHECK);

@@ -168,6 +168,9 @@ function setCalendarDateFields(date, hour, min, fmt) {
 }
 
 function open_filtered_contactsIfAccounts(fromlink, fldname, MODULE, ID) {
+	if (popup_filter_map_popup_window(fldname)) {
+		return;
+	}
 	var rel_type = '';
 	var rel_id = '';
 	var rel_id_elem = document.getElementById('rel_id');
