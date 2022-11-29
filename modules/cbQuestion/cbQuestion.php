@@ -481,6 +481,9 @@ class cbQuestion extends CRMEntity {
 
 	public static function getGroupingInfo($sql_query, $groupby, $qmodule) {
 		global $adb;
+		if (strpos($groupby, '.') !== false) {
+			list($tablename, $groupby) = explode('.', $groupby);
+		}
 		$mod = Vtiger_Module::getInstance($qmodule);
 		$fld = Vtiger_Field::getInstance($groupby, $mod);
 		if ($fld) {

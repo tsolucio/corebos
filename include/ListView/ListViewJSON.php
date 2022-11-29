@@ -967,7 +967,7 @@ class GridListView {
 		global $adb;
 		$result = $adb->pquery($q, array());
 		$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($q, false), 'count(*) AS count'));
-		$noofrows = $adb->query_result($count_result, 0, 0);
+		$noofrows = $adb->query_result($count_result, 0, 'count');
 		$data  = array();
 		for ($i=0; $i < $adb->num_rows($result); $i++) {
 			$currentRow = array();
