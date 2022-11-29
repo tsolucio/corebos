@@ -642,7 +642,14 @@ class WizardComponent {
 			}
 			rows.push(ids);
 		}
-		this.Request(url, 'post', rows);
+		this.Request(url, 'post', rows).then(function (response) {
+			if (response) {
+				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+				wizard.CheckedRows[wizard.ActiveStep] = [];
+			} else {
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+			}
+		});
 	}
 
 	/**
@@ -678,11 +685,13 @@ class WizardComponent {
 		this.loader('show');
 		const url = `${this.url}&wizardaction=MassCreate&subaction=Create_ProductComponent&formodule=ProductComponent&step=${this.ActiveStep}`;
 		this.Request(url, 'post', rows).then(function(response) {
-			if (response) {
-				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
-				wizard.FilterDataForStep();
-			} else {
-				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+			if (response != 'no_create') {
+				if (response) {
+					ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+					wizard.FilterDataForStep();
+				} else {
+					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+				}
 			}
 			wizard.loader('hide');
 		});
