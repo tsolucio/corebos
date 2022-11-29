@@ -88,8 +88,8 @@ class WizardComponent {
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
 						return false;
 					}
-					if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined) {
-						this.DuplicateProduct();
+					if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined && ev.target.dataset.type == 'next') {
+						this.DuplicateProduct(ev);
 						return false;
 					} else {
 						if (this.WizardCustomFunction[this.ActiveStep] != '') {
@@ -325,7 +325,14 @@ class WizardComponent {
 		}
 	}
 
-	async DuplicateProduct() {
+	async DuplicateProduct(ev = '') {
+		let type = 'next';
+		if (ev != '') {
+			type = ev.target.dataset.type;
+		}
+		if (type == 'back') {
+			return true;
+		}
 		let url = `${this.url}&wizardaction=Duplicate&subaction=Duplicate`;
 		this.Request(url, 'post', {
 			step: this.ActiveStep,
