@@ -133,10 +133,10 @@ class WizardComponent {
 					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 					return false;
 				}
+				if (this.WizardCustomFunction[this.ActiveStep] != '' && !resetWizard) {
+					this.CallCustomFunction();
+				}
 				if (this.ActiveStep+1 == this.steps) {
-					if (this.WizardCustomFunction[this.ActiveStep] != '' && !resetWizard) {
-						this.CallCustomFunction();
-					}
 					this.loader('show');
 					const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
 					this.Request(url, 'post', {'masterid': this.RecordID}).then(function(response) {
@@ -159,8 +159,10 @@ class WizardComponent {
 									localStorage.removeItem(`currentWizardActive`);
 								} else {
 									//if we click "save" make sure that "finish" will not create twice records
-									let nextBtn = wizard.el(`btn-next`);
-									nextBtn.setAttribute('onclick', 'wizard.CloseModal()');
+									if (wizard.steps == wizard.ActiveStep+1) {
+										let nextBtn = wizard.el(`btn-next`);
+										nextBtn.setAttribute('onclick', 'wizard.CloseModal()');
+									}
 								}
 							} else {
 								setTimeout(function() {
@@ -435,18 +437,18 @@ class WizardComponent {
 		}
 		let el = document.getElementById('save-btn');
 		el.innerHTML = '';
+		if (!this.ResetWizard[this.ActiveStep] && this.WizardSaveAction[this.ActiveStep]) {
+			//create a save button
+			let btn = document.createElement('button');
+			btn.setAttribute('onclick', 'wizard.Finish(false)');
+			btn.innerHTML = 'Save';
+			btn.style.float = 'right';
+			btn.classList.add('slds-button');
+			btn.classList.add('slds-button_neutral');
+			el.appendChild(btn);
+		}
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_FINISH;
-			if (!this.ResetWizard[this.ActiveStep] && this.WizardSaveAction[this.ActiveStep]) {
-				//create a save button
-				let btn = document.createElement('button');
-				btn.setAttribute('onclick', 'wizard.Finish(false)');
-				btn.innerHTML = 'Save';
-				btn.style.float = 'right';
-				btn.classList.add('slds-button');
-				btn.classList.add('slds-button_neutral');
-				el.appendChild(btn);
-			}
 			setTimeout(function () {
 				wizard.el(`btn-next`).setAttribute('onclick', 'wizard.Finish()');
 			}, 200);
@@ -659,7 +661,7 @@ class WizardComponent {
 			rows.push(ids);
 		}
 		//get TOIDS
-		if (this.CheckedRows[this.ActiveStep] == undefined) {
+		if (this.CheckedRows[this.ActiveStep] == undefined && this.WizardMode[this.ActiveStep+1] == 'ListView') {
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].clear();
 			return true;
 		}
