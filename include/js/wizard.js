@@ -645,7 +645,6 @@ class WizardComponent {
 		this.Request(url, 'post', rows).then(function (response) {
 			if (response) {
 				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
-				wizard.CheckedRows[wizard.ActiveStep] = [];
 			} else {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 			}
