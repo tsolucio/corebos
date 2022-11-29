@@ -37,6 +37,7 @@ class WizardComponent {
 		this.IsDuplicatedFromProduct = [];
 		this.ApplyFilter = [];
 		this.WizardSaveAction = [];
+		this.WizardSaveIsActive = [];
 		this.Operation = '';
 		this.ProceedToNextStep = true;
 		this.ResetWizard = true;
@@ -92,7 +93,8 @@ class WizardComponent {
 						this.DuplicateProduct(ev);
 						return false;
 					} else {
-						if (this.WizardCustomFunction[this.ActiveStep] != '') {
+						let WizardSaveAction = this.WizardSaveIsActive[this.ActiveStep] === undefined ? false : this.WizardSaveIsActive[this.ActiveStep];
+						if (this.WizardCustomFunction[this.ActiveStep] != '' && !WizardSaveAction) {
 							this.CallCustomFunction(ev);
 						}
 					}
@@ -134,6 +136,7 @@ class WizardComponent {
 					return false;
 				}
 				if (this.WizardCustomFunction[this.ActiveStep] != '' && !resetWizard) {
+					this.WizardSaveIsActive[this.ActiveStep] = true;
 					this.CallCustomFunction();
 				}
 				if (this.ActiveStep+1 == this.steps) {
