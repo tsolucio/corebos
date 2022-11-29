@@ -383,10 +383,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Mostrar columnas de búsqueda en la tabla de la lista de vista',
 ),
 'Application_ListView_FilterPanel_Open' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'hide or show the filter panel',
+	'definition' => 'Esconder o mostrar la sección de filtro en la vista de lista',
 ),
 'Application_DetailView_Record_Navigation' => array(
 	'valuetype' => 'Booleano',
