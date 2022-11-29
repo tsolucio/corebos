@@ -382,6 +382,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar columnas de búsqueda en la tabla de la lista de vista',
 ),
+'Application_ListView_FilterPanel_Open' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the filter panel',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Rendimiento',

@@ -92,6 +92,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_ListView_SearchColumns',
 				'Application_ListView_SearchColumns_AC_Trigger',
 				'Application_ListView_Show_Create_Message',
+				'Application_ListView_FilterPanel_Open',
 				'Application_MasterDetail_SearchColumns',
 				'Application_SaveAndRepeatActive',
 				'Application_Upload_MaxSize',
