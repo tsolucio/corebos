@@ -363,7 +363,7 @@ class WizardActions extends WizardCustomFunctions {
 			}
 			return $res;
 		}
-		return false;
+		return 'no_create';
 	}
 
 	public function DeleteSession() {

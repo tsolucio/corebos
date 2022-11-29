@@ -37,6 +37,7 @@ class WizardComponent {
 		this.IsDuplicatedFromProduct = [];
 		this.ApplyFilter = [];
 		this.WizardSaveAction = [];
+		this.WizardSaveIsActive = [];
 		this.Operation = '';
 		this.ProceedToNextStep = true;
 		this.ResetWizard = true;
@@ -92,7 +93,8 @@ class WizardComponent {
 						this.DuplicateProduct(ev);
 						return false;
 					} else {
-						if (this.WizardCustomFunction[this.ActiveStep] != '') {
+						let WizardSaveAction = this.WizardSaveIsActive[this.ActiveStep] === undefined ? false : this.WizardSaveIsActive[this.ActiveStep];
+						if (this.WizardCustomFunction[this.ActiveStep] != '' && !WizardSaveAction) {
 							this.CallCustomFunction(ev);
 						}
 					}
@@ -134,6 +136,7 @@ class WizardComponent {
 					return false;
 				}
 				if (this.WizardCustomFunction[this.ActiveStep] != '' && !resetWizard) {
+					this.WizardSaveIsActive[this.ActiveStep] = true;
 					this.CallCustomFunction();
 				}
 				if (this.ActiveStep+1 == this.steps) {
@@ -639,7 +642,13 @@ class WizardComponent {
 			}
 			rows.push(ids);
 		}
-		this.Request(url, 'post', rows);
+		this.Request(url, 'post', rows).then(function (response) {
+			if (response) {
+				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+			} else {
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+			}
+		});
 	}
 
 	/**
@@ -675,11 +684,13 @@ class WizardComponent {
 		this.loader('show');
 		const url = `${this.url}&wizardaction=MassCreate&subaction=Create_ProductComponent&formodule=ProductComponent&step=${this.ActiveStep}`;
 		this.Request(url, 'post', rows).then(function(response) {
-			if (response) {
-				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
-				wizard.FilterDataForStep();
-			} else {
-				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+			if (response != 'no_create') {
+				if (response) {
+					ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+					wizard.FilterDataForStep();
+				} else {
+					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+				}
 			}
 			wizard.loader('hide');
 		});
