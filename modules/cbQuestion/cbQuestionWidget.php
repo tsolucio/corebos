@@ -43,7 +43,7 @@ class bqAnswer_DetailViewBlock extends DeveloperBlock {
 				'$MODULE$' => $module,
 				'$USERID$' => $current_user->id,
 			);
-			if (isset($recordid) && $recordid != '0x0' && !empty($recordid)) {
+			if (!empty($recordid) && $recordid != '0x0') {
 				$ctxtmodule = getSalesEntityType($recordid);
 				$params['$MODULE$'] = $ctxtmodule;
 				$ent = CRMEntity::getInstance($ctxtmodule);
