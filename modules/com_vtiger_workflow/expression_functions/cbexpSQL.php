@@ -581,6 +581,9 @@ function cbexpsql_getCurrentUserName($arr, $mmodule) {
 function cbexpsql_getCurrentUserField($arr, $mmodule) {
 	return 'TRUE';
 }
+function cbexpsql_getrequest($arr, $mmodule) {
+	return 'TRUE';
+}
 function cbexpsql_getGroupID($arr, $mmodule) {
 	return '(select groupid from vtiger_groups where groupname='.__cbexpsql_functionparamsvalue($arr[0], $mmodule).')';
 }
