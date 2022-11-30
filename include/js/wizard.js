@@ -84,19 +84,24 @@ class WizardComponent {
 	 */
 	Next(ev) {
 		switch (this.Operation) {
-			case 'CREATEPRODUCTCOMPONENTS'://*specific use case
+			case 'CREATEPRODUCTCOMPONENTS':
 				if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
 						return false;
 					}
 					if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined && ev.target.dataset.type == 'next') {
-						this.DuplicateProduct(ev);
-						return false;
+						if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
+							this.DuplicateProduct(ev);
+							return false;
+						}
 					} else {
 						let WizardSaveAction = this.WizardSaveIsActive[this.ActiveStep] === undefined ? false : this.WizardSaveIsActive[this.ActiveStep];
 						if (this.WizardCustomFunction[this.ActiveStep] != '' && !WizardSaveAction) {
-							this.CallCustomFunction(ev);
+							if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
+								this.CallCustomFunction(ev);
+							}
 						}
+						delete this.IsDuplicatedFromProduct[this.ActiveStep-1];
 					}
 					this.CheckedRows[this.ActiveStep-1] = [];
 					this.CheckedRows[this.ActiveStep] = [];
@@ -211,11 +216,11 @@ class WizardComponent {
 		}
 		if (type == 'next') {
 			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
-			if (checkedRows.length == 0) {
+			if (checkedRows.length == 0 && this.WizardValidate[this.ActiveStep]) {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 				return false;
 			}
-			if (action == 'SELECTPRODUCT' && checkedRows.length != 1 && this.WizardRequiredAction[this.ActiveStep] == 'duplicate') {
+			if (this.WizardValidate[this.ActiveStep] && action == 'SELECTPRODUCT' && checkedRows.length != 1 && this.WizardRequiredAction[this.ActiveStep] == 'duplicate') {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
 				return false;
 			}
@@ -452,9 +457,9 @@ class WizardComponent {
 		}
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_FINISH;
-			setTimeout(function () {
-				wizard.el(`btn-next`).setAttribute('onclick', 'wizard.Finish()');
-			}, 200);
+			//setTimeout(function () {
+				//wizard.el(`btn-next`).setAttribute('onclick', 'wizard.Finish()');
+			//}, 200);
 			return false;
 		} else {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_NEXT;
@@ -688,8 +693,15 @@ class WizardComponent {
 				if (response) {
 					ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 					wizard.FilterDataForStep();
+					if (wizard.steps == wizard.ActiveStep+1) {
+						wizard.Finish();
+					}
 				} else {
 					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+				}
+			} else {
+				if (wizard.steps == wizard.ActiveStep+1) {
+					wizard.Finish();
 				}
 			}
 			wizard.loader('hide');
