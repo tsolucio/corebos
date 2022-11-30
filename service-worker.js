@@ -11480,7 +11480,7 @@ precacheAndRoute([{
   "revision": "70e4040be9d6e893aec7e605033a773a"
 }, {
   "url": "include/js/general.js",
-  "revision": "c45b69d261593c2f04ceb9a593c3d3ad"
+  "revision": "9f71b33f49707b7161fc86476548efb9"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "b4fad7ff70fb9444a5e86f58490269b9"
@@ -11564,7 +11564,13 @@ precacheAndRoute([{
   "revision": "008f3e9768bd2d226e65ea69999c9f14"
 }, {
   "url": "include/js/vtlib.js",
-  "revision": "d0a51c6c5a288b8d1570f0cc7581fe46"
+  "revision": "eea8e9de88b7525865ee9583c0940ba3"
+}, {
+  "url": "include/components/Carousel/vanilla-js-carousel.css",
+  "revision": "3c84a75d9db4550dc2954a596bbf6f58"
+}, {
+  "url": "include/components/Carousel/vanilla-js-carousel.min.js",
+  "revision": "d7116c33179a01a544aa8fa99f538821"
 }, {
   "url": "include/components/checkboxrenderer.js",
   "revision": "30a720fa2d1634076e325d7cd721acf7"
