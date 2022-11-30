@@ -128,6 +128,7 @@ function popup_filter_map_popup_window(fldname) {
  * yes it replaces it with the record's field value
 */
 function replaceDynamicVariableWithRecordValue(arr) {
+	let array = structuredClone(arr);
 	const formTypes = ['EditView', 'DetailView'];
 	for (let index = 0; index < formTypes.length; index++) {
 		const formType = formTypes[index];
@@ -138,17 +139,17 @@ function replaceDynamicVariableWithRecordValue(arr) {
 			} else {
 				formValues = getDetailViewFormFields();
 			}
-			for (let index = 0; index < arr.length; index++) {
-				const element = arr[index];
+			for (let index = 0; index < array.length; index++) {
+				const element = array[index];
 				if (element['value'].includes('$')) {
 					let value = element['value'].substr(1);
 					element['value'] = formValues[value];
 				}
 			}
-			return arr;
+			return array;
 		}
 	}
-	return arr;
+	return array;
 }
 
 /**
