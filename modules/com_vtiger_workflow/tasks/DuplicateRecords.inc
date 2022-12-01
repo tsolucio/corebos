@@ -29,6 +29,7 @@ class DuplicateRecords extends VTTask {
 	}
 
 	public function doTask(&$recordid) {
+		global $current_user;
 		list($cto, $cto_id) = explode('x', $recordid->getId());
 		if (!empty($cto_id) && !empty($this->bmapid)) {
 			$module = getSalesEntityType($cto_id);
@@ -44,6 +45,9 @@ class DuplicateRecords extends VTTask {
 				dq_updateRevisionFields($module, $cto_id, $new_record_id);
 			}
 		}
+		// sending workflow log data to the messageQueue
+		$cbmq = coreBOS_MQTM::getInstance();
+		$cbmq->sendMessage('workflowdata', 'logall', 'logalldata', 'Message', '1:M', 1, 30, 0, $current_user->id, json_encode($recordid));
 	}
 }
 ?>

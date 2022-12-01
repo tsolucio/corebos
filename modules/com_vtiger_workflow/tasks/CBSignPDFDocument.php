@@ -112,6 +112,9 @@ class CBSignPDFDocument extends VTTask {
 				$util->revertUser();
 			}
 		}
+		// sending workflow log data to the messageQueue
+		$cbmq = coreBOS_MQTM::getInstance();
+		$cbmq->sendMessage('workflowdata', 'logall', 'logalldata', 'Message', '1:M', 1, 30, 0, $current_user->id, json_encode($entity));
 	}
 
 	public function after_retrieve() {

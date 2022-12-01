@@ -29,7 +29,7 @@ class CBGMPTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $logbg;
+		global $logbg, $current_user;
 		$gmp = new corebos_gmp();
 		list($ent, $ent_id) = explode('x', $entity->getId());
 		$entype = getSalesEntityType($ent_id);
@@ -53,6 +53,9 @@ class CBGMPTask extends VTTask {
 				$logbg->debug('Send to GMP: '.$url);
 			}
 		}
+		// sending workflow log data to the messageQueue
+		$cbmq = coreBOS_MQTM::getInstance();
+		$cbmq->sendMessage('workflowdata', 'logall', 'logalldata', 'Message', '1:M', 1, 30, 0, $current_user->id, json_encode($entity));
 	}
 }
 ?>

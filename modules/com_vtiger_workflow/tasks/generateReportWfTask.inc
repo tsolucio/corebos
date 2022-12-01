@@ -112,6 +112,9 @@ class generateReportWfTask extends VTTask {
 			$entity->WorkflowContext['wfgenerated_file'] = array();
 		}
 		$entity->WorkflowContext['wfgenerated_file'][] = array('path'=>$path, 'name'=>$name, 'hascontent' => $hascontent);
+		// sending workflow log data to the messageQueue
+		$cbmq = coreBOS_MQTM::getInstance();
+		$cbmq->sendMessage('workflowdata', 'logall', 'logalldata', 'Message', '1:M', 1, 30, 0, $current_user->id, json_encode($entity));
 	}
 }
 ?>

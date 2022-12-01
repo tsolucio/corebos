@@ -27,7 +27,7 @@ class CBRelateSales extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb;
+		global $adb, $current_user;
 		$invinfo = array(
 			'Quotes' => array('id'=>'quoteid','account'=>'accountid','contact'=>'contactid'),
 			'SalesOrder' => array('id'=>'salesorderid','account'=>'accountid','contact'=>'contactid'),
@@ -67,6 +67,9 @@ class CBRelateSales extends VTTask {
 				}
 			}
 		}
+		// sending workflow log data to the messageQueue
+		$cbmq = coreBOS_MQTM::getInstance();
+		$cbmq->sendMessage('workflowdata', 'logall', 'logalldata', 'Message', '1:M', 1, 30, 0, $current_user->id, json_encode($entity));
 	}
 }
 ?>

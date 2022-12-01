@@ -152,6 +152,9 @@ class WhatsappWorkflowTask extends VTTask {
 				$logbg->debug('Error on Whatsapp Task: '. $e->getMessage());
 			}
 		}
+		// sending workflow log data to the messageQueue
+		$cbmq = coreBOS_MQTM::getInstance();
+		$cbmq->sendMessage('workflowdata', 'logall', 'logalldata', 'Message', '1:M', 1, 30, 0, $current_user->id, json_encode($entity));
 	}
 
 	private function sendWhatsappMessage($phone, $what, $client) {

@@ -17,8 +17,12 @@ class VTDummyTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
+		global $current_user;
 		$statement=$this->statement;
 		echo "This is a dummy workflow task: $statement";
+		// sending workflow log data to the messageQueue
+		$cbmq = coreBOS_MQTM::getInstance();
+		$cbmq->sendMessage('workflowdata', 'logall', 'logalldata', 'Message', '1:M', 1, 30, 0, $current_user->id, json_encode($entity));
 	}
 }
 ?>

@@ -18,9 +18,12 @@ class VTEntityMethodTask extends VTTask {
 	}
 
 	public function doTask(&$entityData) {
-		global $adb;
+		global $adb, $current_user;
 		$emm = new VTEntityMethodManager($adb);
 		$emm->executeMethod($entityData, $this->methodName);
+		// sending workflow log data to the messageQueue
+		$cbmq = coreBOS_MQTM::getInstance();
+		$cbmq->sendMessage('workflowdata', 'logall', 'logalldata', 'Message', '1:M', 1, 30, 0, $current_user->id, json_encode($entityData));
 	}
 }
 ?>
