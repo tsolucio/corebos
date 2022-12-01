@@ -35,6 +35,9 @@ const Slider = {
 			dots: Slider.Dots,
 			arrows: Slider.Arrows,
 		});
+		if (Slider.Initial == 0) {
+			Slider.ActiveSlide = 2;
+		}
 	},
 
 	MoveLeft: () => {
