@@ -186,7 +186,7 @@
 	<author>maliknajja</author>
 	<description>Adding corebosClickHouse cron.</description>
 	<filename>build/changeSets/2022/cronInternalCLickHouse.php</filename>
-	<classname>cronClickHouse</classname>
+	<classname>cronInternalCLickHouse</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
