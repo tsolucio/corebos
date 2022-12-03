@@ -576,7 +576,7 @@ function get_to_emailids($module) {
 
 	foreach ($emailFields as $key => $fieldname) {
 		$fieldid = $vtwsCRMObjectMeta->getFieldIdFromFieldName($fieldname);
-		if (!in_array($fieldid, $fieldids)) {
+		if (!empty($fieldids) && !in_array($fieldid, $fieldids)) {
 			unset($emailFields[$key]);
 		}
 	}
