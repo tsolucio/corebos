@@ -694,6 +694,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'DetailView|EditView',
 	'definition' => 'La acción que se realiza cuando se encuentra solo un valor. Por defecto será DetailView',
 ),
+'Application_Global_Search_PlaceHolder' => array(
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'cualquier cadena',
+	'definition' => 'Establece el texto de marcador de posición para el campo de búsqueda global.',
+),
 'Application_ProductService_Search_Autocomplete_Limit' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Aplicación',

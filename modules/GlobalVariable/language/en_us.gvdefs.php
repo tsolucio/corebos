@@ -694,6 +694,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'DetailView|EditView',
 	'definition' => 'The action that will be executed when only one record is found. Default is DetailView',
 ),
+'Application_Global_Search_PlaceHolder' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'any string',
+	'definition' => 'Sets the placeholder text for the global search box.',
+),
 'Application_ProductService_Search_Autocomplete_Limit' => array(
 	'valuetype' => 'Integer',
 	'category' => 'Application',

@@ -195,7 +195,7 @@
 													<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 												</svg>
 											</span>
-										<input name="query_string" id="query_string" class="slds-input slds-combobox__input{if $GLOBAL_AC} autocomplete-input{/if}" type="text" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$coreBOS_app_name}" aria-autocomplete="list" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
+										<input name="query_string" id="query_string" class="slds-input slds-combobox__input{if $GLOBAL_AC} autocomplete-input{/if}" type="text" role="textbox" placeholder="{$Global_Search_PlaceHolder}" aria-autocomplete="list" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
 										{if $GLOBAL_AC}
 										<div role="listbox" class="">
 											<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0;display:block;visibility: visible;" role="presentation"></ul>
