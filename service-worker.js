@@ -11480,7 +11480,7 @@ precacheAndRoute([{
   "revision": "70e4040be9d6e893aec7e605033a773a"
 }, {
   "url": "include/js/general.js",
-  "revision": "9f71b33f49707b7161fc86476548efb9"
+  "revision": "61ca8d7f058d91cc5d2f84cddc75a2f5"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "b4fad7ff70fb9444a5e86f58490269b9"
@@ -11498,7 +11498,7 @@ precacheAndRoute([{
   "revision": "2016625cad9cf4abb4c9631c742043f5"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "d1b3c0036f73a192a4652436eb364ffa"
+  "revision": "6407c9adfeb9b28b4a56fceb370beee7"
 }, {
   "url": "include/js/ListViewRenderes.js",
   "revision": "479539b67ca6305b9e6d8ee179436132"
@@ -11598,6 +11598,9 @@ precacheAndRoute([{
 }, {
   "url": "include/components/Select2/js/select2.min.js",
   "revision": "3e6e33cd306b1235add3d25fcda8541d"
+}, {
+  "url": "include/components/slider.js",
+  "revision": "42229672ed2de6ba7fcf3f3d4f2a5362"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.css",
   "revision": "fb40fb9c699a0e8b656b5345d2929b2c"
