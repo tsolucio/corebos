@@ -1,0 +1,9 @@
+<updatesChangeLog>
+	<changeSet>
+		<author>joebordes</author>
+		<description>BPM Info Module</description>
+		<filename>modules/ModuleBPMInfo/installBPMInfo.php</filename>
+		<classname>installBPMInfo</classname>
+		<systemupdate>true</systemupdate>
+	</changeSet>
+</updatesChangeLog>

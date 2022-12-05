@@ -1,0 +1,9 @@
+<updatesChangeLog>
+	<changeSet>
+		<author>joebordes</author>
+		<description>BPM Process Step Information</description>
+		<filename>modules/cbProcessInfo/installProcessInfo.php</filename>
+		<classname>installcbProcessInfo</classname>
+		<systemupdate>true</systemupdate>
+	</changeSet>
+</updatesChangeLog>
