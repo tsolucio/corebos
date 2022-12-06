@@ -380,7 +380,7 @@ const ListView = {
 			const advft_criteria = urlParams.get('advft_criteria');
 			const advft_criteria_groups = urlParams.get('advft_criteria_groups');
 			const searchtype = urlParams.get('searchtype');
-			if (advft_criteria != null && searchtype == null) {
+			if (advft_criteria != null && searchtype == 'advance') {
 				url += `&search=${advft_criteria}&advft_criteria_groups=${advft_criteria_groups}&searchtype=${searchtype}`;
 			}
 			let headers = ListView.getColumnHeaders(response[0]);

@@ -526,6 +526,7 @@ function vtlib_process_widget($widgetLinkInfo, $context = false) {
 					}
 					$context = array_merge($context, $widgetContext);
 				}
+				$context['BusinessActionInformation'] = json_encode($widgetLinkInfo);
 				return $widgetInstance->process($context);
 			}
 		}

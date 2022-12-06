@@ -81,12 +81,10 @@ class PopupFilter extends processcbMap {
 				foreach ($field["dependency"] as &$dependency) {
 					$keyName = $field["fieldname"] . '#' . $dependency["modulename"];
 					$res[$keyName]["advft_criteria"] = $this->changeJsonColumnNameFormat($dependency["advft_criteria"], $dependency["modulename"]);
-					$res[$keyName]["advft_criteria"] = $this->replaceDynamicVariableWithRecordValue($res[$keyName]["advft_criteria"], $currentModule, $record);
 					$res[$keyName]["advft_criteria_groups"] = json_decode($dependency["advft_criteria_groups"]);
 				}
 			} else {
 				$res[$field["fieldname"]]["advft_criteria"] = $this->changeJsonColumnNameFormat($field["advft_criteria"], $field["modulename"]);
-				$res[$field["fieldname"]]["advft_criteria"] = $this->replaceDynamicVariableWithRecordValue($res[$field["fieldname"]]["advft_criteria"], $currentModule, $record);
 				$res[$field["fieldname"]]["advft_criteria_groups"] = json_decode($field["advft_criteria_groups"]);
 			}
 		}
@@ -103,27 +101,6 @@ class PopupFilter extends processcbMap {
 		foreach ($json as &$condition) {
 			$condition["columnname"] = $customView->getFilterFieldDefinitionByNameOrLabel($condition["columnname"], $module);
 		}
-		return $json;
-	}
-
-	/**
-	 * Checks if a dynamic varibale exist and if
-	 * yes it replaces it with the record's field value
-	 */
-	public function replaceDynamicVariableWithRecordValue($json, $module, $recordid) {
-		global $current_user, $adb, $log;
-		foreach ($json as &$condition) {
-			if ($condition["value"][0] == '$') {
-				$condition["value"] = substr($condition["value"], 1);
-				$queryGenerator = new QueryGenerator($module, $current_user);
-				$queryGenerator->setFields(array($condition["value"]));
-				$queryGenerator->addCondition('id', $recordid, 'e');
-				$query = $queryGenerator->getQuery();
-				$res = $adb->pquery($query, array());
-				$condition["value"] = $res->fields[0];
-			}
-		}
-		$log->fatal($json);
 		return $json;
 	}
 }

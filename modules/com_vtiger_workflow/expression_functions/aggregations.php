@@ -166,7 +166,11 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 		} else {
 			$fname = $rfield->table.'.'.$rfield->column;
 		}
-		$query = 'select '.$operation.'('.$fname.$sep.') as aggop '.$qfrom;
+		if (strpos($sep, 'separator "newline"') !== false) {
+			$query = 'select '.$operation.'('.$fname.' separator "\r\n") as aggop '.$qfrom;
+		} else {
+			$query = 'select '.$operation.'('.$fname.$sep.') as aggop '.$qfrom;
+		}
 	}
 	$logbg->debug("Agg query: $query");
 	return $query;

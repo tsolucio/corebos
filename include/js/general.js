@@ -1561,6 +1561,57 @@ function getFormFields(formName) {
 	return sentForm;
 }
 
+function getDetailViewFormFields() {
+	let obj = {};
+	let elements  = document.querySelectorAll('span');
+	for (let index = 0; index < elements.length; index++) {
+		const element = elements[index];
+		if (element.id.includes('dtlview_')) {
+			const elementKey = element.id.substring(8);
+			if (element.children.length > 1) {	// for uitype10
+				for (let index = 0; index < element.children.length; index++) {
+					const child = element.children[index];
+					if (child.getAttribute('type') == 'vtlib_metainfo') {
+						const recordid = child.getAttribute('vtrecordid');
+						obj[elementKey] = recordid;
+						break;
+					}
+				}
+			} else {
+				obj[elementKey] = element.innerText.trim();
+			}
+		}
+	}
+	return obj;
+}
+
+function getProcessInfo(edit_type, formName, action, callback, parameters) {
+	let ps = parameters.split('|');
+	let minfo = ps.shift();
+	let module = ps.shift();
+	let forrecord = ps.shift();
+	let fparams = encodeURIComponent(ps.join('|'));
+	let params='&minfo='+minfo+'&bpmmodule='+module+'&pflowid=0&bpmrecord='+forrecord+'&params='+fparams+'&formName='+formName+'&actionName='+action;
+	window.open('index.php?action=cbProcessInfoAjax&file=bpmpopup&module=cbProcessInfo'+params, null, cbPopupWindowSettings + ',dependent=yes');
+}
+
+function finishProcessInfo(module, return_id, mode, saveinfo) {
+	let sinfo = JSON.parse(decodeURIComponent(saveinfo));
+	if (sinfo.originField!='') {
+		let fld = document.getElementById(sinfo.originField);
+		if (fld) {
+			fld.value = return_id;
+			submitFormForAction(sinfo.formName, sinfo.actionName);
+		} else {
+			let fld = document.getElementById('txtbox_'+sinfo.originField);
+			if (fld) {
+				fld.value = return_id;
+				dtlViewAjaxSave(sinfo.originField, sinfo.bpmmodule, sinfo.uitype, '', sinfo.originField, sinfo.bpmrecord);
+			}
+		}
+	}
+}
+
 function doServerValidation(edit_type, formName, callback) {
 	VtigerJS_DialogBox.block();
 	var action = (edit_type=='mass_edit' ? 'MassEditSave' : 'Save');
