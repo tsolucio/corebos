@@ -125,9 +125,9 @@ class PearDatabase {
 	public $userName=null;
 	public $userPassword=null;
 	public $query_time = 0;
-	public $log = null;
 	public $lastmysqlrow = -1;
 	public $enableSQLlog = false;
+	public $logEnabled = true;
 	public $continueInstallOnError = true;
 
 	// If you want to avoid executing PreparedStatement, set this to true
@@ -193,8 +193,9 @@ class PearDatabase {
 
 	public function println($msg) {
 		global $log;
-		$log->info('', (array)$msg);
-		return $msg;
+		if ($this->logEnabled && $log) {
+			$log->debug('', (array)$msg);
+		}
 	}
 
 	public function setDieOnError($value) {
@@ -353,16 +354,15 @@ class PearDatabase {
 	}
 
 	public function query($sql, $dieOnError = false, $msg = '') {
-		global $log;
 		// Performance Tuning: Have we cached the result earlier?
 		if ($this->isCacheEnabled()) {
 			$fromcache = $this->getCacheInstance()->getCacheResult($sql);
 			if ($fromcache) {
-				$log->debug(">< query result from cache: $sql");
+				$this->println(">< query result from cache: $sql");
 				return $fromcache;
 			}
 		}
-		$log->debug('> query '.$sql);
+		$this->println('> query '.$sql);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
@@ -416,7 +416,6 @@ class PearDatabase {
 	* @param string Error message on query execution failure
 	*/
 	public function pquery($sql, $params, $dieOnError = false, $msg = '') {
-		global $log;
 		if (!isset($params)) {
 			$params = array();
 		}
@@ -424,11 +423,11 @@ class PearDatabase {
 		if ($this->isCacheEnabled()) {
 			$fromcache = $this->getCacheInstance()->getCacheResult($sql, $params);
 			if ($fromcache) {
-				$log->debug("> pquery result from cache: $sql");
+				$this->println("> pquery result from cache: $sql");
 				return $fromcache;
 			}
 		}
-		$log->debug('> pquery '.$sql);
+		$this->println('> pquery '.$sql);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
@@ -436,7 +435,7 @@ class PearDatabase {
 		$sql_start_time = microtime(true);
 		$params = $this->flatten_array($params);
 		if (!is_null($params) && is_array($params)) {
-			$log->debug('parameters', $params);
+			$this->println('parameters', $params);
 		}
 
 		if ($this->avoidPreparedSql || empty($params)) {
@@ -517,8 +516,7 @@ class PearDatabase {
 	}
 
 	public function limitQuery($sql, $start, $count, $dieOnError = false, $msg = '') {
-		global $log;
-		$log->debug('> limitQuery '.$sql .','.$start .','.$count);
+		$this->println('> limitQuery '.$sql .','.$start .','.$count);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
@@ -810,10 +808,9 @@ class PearDatabase {
 	 * WARNING: this method returns false for SELECT statements
 	 */
 	public function getAffectedRowCount(&$result) {
-		global $log;
-		$log->debug('> getAffectedRowCount');
+		$this->println('> getAffectedRowCount');
 		$rows =$this->database->Affected_Rows();
-		$log->debug('< getAffectedRowCount '.$rows);
+		$this->println('< getAffectedRowCount '.$rows);
 		return $rows;
 	}
 
@@ -823,7 +820,7 @@ class PearDatabase {
 		if ($this->getRowCount($result) == 1) {
 			return $result;
 		}
-		$this->log->error('Rows Returned:'. $this->getRowCount($result) .' More than 1 row returned for '. $sql);
+		$this->println('Rows Returned:'. $this->getRowCount($result) .' More than 1 row returned for '. $sql);
 		return '';
 	}
 
@@ -834,7 +831,7 @@ class PearDatabase {
 		if ($this->getRowCount($result) == 1) {
 			return $result;
 		}
-		$this->log->error('Rows Returned:'. $this->getRowCount($result) .' More than 1 row returned for '. $sql);
+		$this->println('Rows Returned:'. $this->getRowCount($result) .' More than 1 row returned for '. $sql);
 		return '';
 	}
 
@@ -916,7 +913,6 @@ class PearDatabase {
 	 * Constructor
 	 */
 	public function __construct($dbtype = '', $host = '', $dbname = '', $username = '', $passwd = '') {
-		$this->log = LoggerManager::getLogger('DB');
 		$this->resetSettings($dbtype, $host, $dbname, $username, $passwd);
 
 		if (!isset($this->dbType)) {
