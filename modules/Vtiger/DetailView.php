@@ -113,8 +113,6 @@ if (isPermitted($currentModule, 'Delete', $record) == 'yes') {
 	$smarty->assign('DELETE', '');
 }
 
-$blocks = getBlocks($currentModule, 'detail_view', '', $focus->column_fields);
-$smarty->assign('BLOCKS', $blocks);
 $custom_blocks = getCustomBlocks($currentModule, 'detail_view');
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);
 $smarty->assign('FIELDS', $focus->column_fields);
@@ -128,6 +126,34 @@ $smarty->assign('BLOCKINITIALSTATUS', $_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
+$dvwidget = Vtiger_Link::getAllByType(
+	$tabid,
+	array('DETAILVIEWWIDGET'),
+	$customlink_params,
+	null,
+	$focus->id
+);
+$blocks = getBlocks($currentModule, 'detail_view', '', $focus->column_fields);
+$blocks = array_merge($blocks, $dvwidget['DETAILVIEWWIDGET']);
+$mergedBlocks = array();
+$headers = array();
+foreach ($blocks as $block) {
+	if (is_object($block)) {
+		$mergedBlocks[] = array(
+			'__type' => 'widget',
+			'__sequence' => (int)$block->sequence,
+			'__fields' => $block
+		);
+	} else {
+		if (in_array($block['__header'], $headers)) {
+			continue;
+		}
+		$headers[] = $block['__header'];
+		$mergedBlocks[] = $block;
+	}
+}
+sort_array_data($mergedBlocks, '__sequence');
+$smarty->assign('BLOCKS', $mergedBlocks);
 $smarty->assign(
 	'CUSTOM_LINKS',
 	Vtiger_Link::getAllByType(

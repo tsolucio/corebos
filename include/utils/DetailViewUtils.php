@@ -1509,6 +1509,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		}
 		$label_data[$headerid] = $detailview_data;
 	}
+	$idx = 0;
 	$returndata = array();
 	foreach ($block_label as $blockid => $label) {
 		if ($label == '') {
@@ -1547,6 +1548,16 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				}
 			}
 		}
+		if (!empty($block_sequence)) {
+			$returndata_[$curBlock]['__header'] = $i18nidx;
+			$returndata_[$curBlock]['__fields'] = $returndata[$i18nidx];
+			$returndata_[$curBlock]['__type'] = 'block';
+			$returndata_[$curBlock]['__sequence'] = empty($block_sequence[$idx]) ? 0 : (int)$block_sequence[$idx];
+			$idx++;
+		}
+	}
+	if (isset($returndata_)) {
+		$returndata = $returndata_;
 	}
 	$log->debug('< getDetailBlockInformation');
 	return $returndata;

@@ -3877,4 +3877,12 @@ function validateClickHouseSecret($signedvalue, $signedkey, $input) {
 	$computedSignature = base64_encode(hash_hmac('sha256', $input, $signedvalue, true));
 	return ($receivedSignature === $computedSignature);
 }
+
+function sort_array_data(&$arr, $col, $dir = SORT_ASC) {
+	$sort_col = array();
+	foreach ($arr as $key => $row) {
+		$sort_col[$key] = $row[$col];
+	}
+	array_multisort($sort_col, $dir, $arr);
+}
 ?>
