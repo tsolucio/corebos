@@ -25,24 +25,36 @@ class evcbrcHandler extends VTEventHandler {
 			switch ($moduleName) {
 				case 'HelpDesk':
 					$rs = $adb->pquery('select parent_id from vtiger_troubletickets WHERE ticketid=?', array($crmId));
-					$relid = $adb->query_result($rs, 0, 0);
-					$email = $this->getEmail($relid);
+					if ($rs && $adb->num_rows($rs)>0) {
+						$relid = $adb->query_result($rs, 0, 0);
+						$email = $this->getEmail($relid);
+					} else {
+						$email = '';
+					}
 					if (!empty($email)) {
 						$adb->pquery('UPDATE vtiger_troubletickets SET email=? WHERE ticketid=?', array($email,$crmId));
 					}
 					break;
 				case 'Potentials':
 					$rs = $adb->pquery('select related_to from vtiger_potential WHERE potentialid=?', array($crmId));
-					$relid = $adb->query_result($rs, 0, 0);
-					$email = $this->getEmail($relid);
+					if ($rs && $adb->num_rows($rs)>0) {
+						$relid = $adb->query_result($rs, 0, 0);
+						$email = $this->getEmail($relid);
+					} else {
+						$email = '';
+					}
 					if (!empty($email)) {
 						$adb->pquery('UPDATE vtiger_potential SET email=? WHERE potentialid=?', array($email, $crmId));
 					}
 					break;
 				case 'Project':
 					$rs = $adb->pquery('select linktoaccountscontacts from vtiger_project WHERE projectid=?', array($crmId));
-					$relid = $adb->query_result($rs, 0, 0);
-					$email = $this->getEmail($relid);
+					if ($rs && $adb->num_rows($rs)>0) {
+						$relid = $adb->query_result($rs, 0, 0);
+						$email = $this->getEmail($relid);
+					} else {
+						$email = '';
+					}
 					if (!empty($email)) {
 						$adb->pquery('UPDATE vtiger_project SET email=? WHERE projectid=?', array($email, $crmId));
 					}
@@ -51,8 +63,12 @@ class evcbrcHandler extends VTEventHandler {
 					$rs = $adb->pquery('select projectid from vtiger_projecttask WHERE projecttaskid=?', array($crmId));
 					$prjid = $adb->query_result($rs, 0, 0);
 					$rs = $adb->pquery('select linktoaccountscontacts from vtiger_project WHERE projectid=?', array($prjid));
-					$relid = $adb->query_result($rs, 0, 0);
-					$email = $this->getEmail($relid);
+					if ($rs && $adb->num_rows($rs)>0) {
+						$relid = $adb->query_result($rs, 0, 0);
+						$email = $this->getEmail($relid);
+					} else {
+						$email = '';
+					}
 					if (!empty($email)) {
 						$adb->pquery('UPDATE vtiger_projecttask SET email=? WHERE projecttaskid=?', array($email, $crmId));
 					}
