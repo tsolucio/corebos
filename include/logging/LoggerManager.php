@@ -36,7 +36,7 @@ class LoggerManager {
 			}
 		} else {
 			if (empty(self::$cacheLoggers['APPLICATION'])) {
-				if ($loggerConfig[$name]['Enabled']) {
+				if ($loggerConfig['APPLICATION']['Enabled']) {
 					$logger = new Logger('APPLICATION');
 					$formatter = new LineFormatter($LOGLINEFORMAT, 'Y-m-d H:i:s:u');
 					$logger = self::addHandlers($logger, $formatter);
