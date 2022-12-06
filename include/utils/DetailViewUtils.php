@@ -1391,7 +1391,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
  * @param integer tab id
  * @return array
  */
-function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label) {
+function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label, $block_sequence = array()) {
 	global $log, $adb;
 	$log->debug('> getDetailBlockInformation', [$module, $result->sql, $col_fields, $tabid, $block_label]);
 	$label_data = array();
