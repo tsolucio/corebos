@@ -302,7 +302,6 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																	<tr><td>
 																		{$ASSOCIATED_PRODUCTS}
 																	</td></tr>
-																	{*-- End--*}
 																	{/if}
 																{if $SinglePane_View eq 'true' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 																	{include file= 'RelatedListNew.tpl'}

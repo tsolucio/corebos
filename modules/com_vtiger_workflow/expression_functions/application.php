@@ -77,6 +77,10 @@ function __cb_globalvariable($arr) {
 	return $ret;
 }
 
+function __cb_getrequest($arr) {
+	return (isset($_REQUEST[$arr[0]]) ? $_REQUEST[$arr[0]] : '');
+}
+
 function __cb_getcrudmode($arr) {
 	$entity = $arr[0];
 	if ($entity->isNew()) {

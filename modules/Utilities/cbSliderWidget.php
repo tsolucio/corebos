@@ -35,8 +35,14 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 		global $adb, $site_URL;
 		$this->context = $context;
 		$smarty = $this->getViewer();
+		$BAInfo = json_decode($this->getFromContext('BusinessActionInformation'), true);
 		$ID = $this->getFromContext('RECORDID');
 		$title = $this->getFromContext('title');
+		$autoplay = $this->getFromContext('autoplay');
+		$infinite = $this->getFromContext('infinite');
+		$initial = $this->getFromContext('initial');
+		$dots = $this->getFromContext('dots');
+		$arrows = $this->getFromContext('arrows');
 		if (empty($ID)) {
 			return 'ID not found.';
 		}
@@ -62,7 +68,22 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 				'path' => $site_URL.'/'.$image['path'].$image['attachmentsid'].'_'.$image['name']
 			);
 		}
+		$customstyle = '';
+		if (!empty($BAInfo['widget_height'])) {
+			$customstyle .= 'height:'.$BAInfo['widget_height'].';';
+		}
+		if (!empty($BAInfo['widget_width'])) {
+			$customstyle .= 'width:'.$BAInfo['widget_width'].';';
+		}
 		$smarty->assign('images', $dataIMG);
+		$smarty->assign('totalslides', count($dataIMG));
+		$smarty->assign('imagesjson', json_encode($dataIMG));
+		$smarty->assign('dots', empty($dots) ? 'true' : (string)$dots);
+		$smarty->assign('arrows', empty($arrows) ? 'true' : (string)$arrows);
+		$smarty->assign('autoplay', empty($autoplay) ? 'false' : (string)$autoplay);
+		$smarty->assign('infinite', empty($infinite) ? 'true' : (string)$infinite);
+		$smarty->assign('initial', empty($initial) ? '0' : (string)$initial);
+		$smarty->assign('customstyle', $customstyle);
 		$smarty->assign('title', empty($title) ? getTranslatedString('Slider') : $title);
 		return $smarty->fetch('sliderwidget.tpl');
 	}

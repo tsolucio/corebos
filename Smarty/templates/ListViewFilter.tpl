@@ -1,5 +1,5 @@
 {if !isset($moduleShowFilter) || $moduleShowFilter}
-<table style="width:100%;" class="slds-card">
+<table style="width:100%; {$Application_ListView_FilterPanel_Open}" class="slds-card">
 	<tr>
 		<td width="25%" class="small" nowrap align="left">
 			{if $MODULE neq 'Documents'}{$recordListRange}{/if}

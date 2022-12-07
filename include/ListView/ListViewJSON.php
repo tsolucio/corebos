@@ -454,12 +454,9 @@ class GridListView {
 					//get value
 					$field10Value = '';
 					if ($fieldValue != 0 || $fieldValue != null || $fieldValue != '') {
-						$parent_module = getSalesEntityType($fieldValue);
-						$displayValueArray = getEntityName($parent_module, $fieldValue);
-						if (!empty($displayValueArray)) {
-							$field10Value = $displayValueArray[$fieldValue];
-						}
-						$linkRow[$fieldName] = array($parent_module, $fieldValue, $field10Value);
+						$relValue = $this->getRelatedFieldValue($fieldValue);
+						$field10Value = $relValue[2];
+						$linkRow[$fieldName] = $relValue;
 					}
 					$rows[$fieldName] = $field10Value;
 				} elseif ($fieldType == '14' || ($fieldType == '2' && ($fieldName == 'time_start' || $fieldName == 'time_end'))) {
@@ -562,6 +559,12 @@ class GridListView {
 						$rows[$fieldName] = getTranslatedString($fieldValue, $this->module);
 					}
 				} else {
+					//check for uitype 10 fields in related modules
+					if ($fieldType == '' && is_numeric($fieldValue)) {
+						$relValue = $this->getRelatedFieldValue($fieldValue);
+						$fieldValue = $relValue[2];
+						$linkRow[$fieldName] = $relValue;
+					}
 					if ($fieldName) {
 						$rows[$fieldName] = textlength_check($fieldValue);
 					}
@@ -601,6 +604,16 @@ class GridListView {
 			array_push($data, $rows);
 		}
 		return $data;
+	}
+
+	public function getRelatedFieldValue($crmid) {
+		$field10Value = '';
+		$parent_module = getSalesEntityType($crmid);
+		$displayValueArray = getEntityName($parent_module, $crmid);
+		if (!empty($displayValueArray)) {
+			$field10Value = $displayValueArray[$crmid];
+		}
+		return array($parent_module, $crmid, $field10Value);
 	}
 
 	public function UsersList() {
@@ -967,7 +980,7 @@ class GridListView {
 		global $adb;
 		$result = $adb->pquery($q, array());
 		$count_result = $adb->query(mkXQuery(stripTailCommandsFromQuery($q, false), 'count(*) AS count'));
-		$noofrows = $adb->query_result($count_result, 0, 0);
+		$noofrows = $adb->query_result($count_result, 0, 'count');
 		$data  = array();
 		for ($i=0; $i < $adb->num_rows($result); $i++) {
 			$currentRow = array();

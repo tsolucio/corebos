@@ -7,12 +7,11 @@
  ********************************************************************************/
 
 var mod_alert_arr = {
-	'LBL_TABLE_NAME': 'WebService Table',
-	'LBL_WS_NAME': 'Name',
-	'LBL_ACCESS': 'Access',
-	'LBL_CREATE': 'Create',
-	'LBL_READ': 'Read',
-	'LBL_WRITE': 'Write',
-	'LBL_ACTION': 'Action',
-	'LBL_DELETE': 'DELETE',
+	'LBL_TABLE_NAME': 'Tabla',
+	'LBL_WS_NAME': 'Nombre',
+	'LBL_ACCESS': 'Acceso',
+	'LBL_CREATE': 'Crear',
+	'LBL_READ': 'Leer',
+	'LBL_WRITE': 'Escribir',
+	'LBL_ACTION': 'Acción',
 };

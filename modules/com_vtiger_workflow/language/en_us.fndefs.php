@@ -2292,6 +2292,23 @@ $WFExpressionFunctionDefinitons = array(
 		"executeSQL('select siccode from vtiger_accounts where accountname=?', field)",
 	),
 ),
+'getRequest' => array(
+	'name' => 'getRequest(parameter)',
+	'desc' => 'This function returns the value of the GET/POST parameter in the call.',
+	'params' => array(
+		array(
+			'name' => 'parameter',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'a string index passing in from GET or POST',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRequest('my_parameter')",
+		"getRequest('action')",
+	),
+),
 'getCRUDMode' => array(
 	'name' => 'getCRUDMode()',
 	'desc' => 'This function returns create or edit depending on the action being done.',

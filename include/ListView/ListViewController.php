@@ -319,7 +319,11 @@ class ListViewController {
 							$sum[$fieldName]=0;
 						}
 						$sum[$fieldName] = $sum[$fieldName] + $value;
-						$value = '<span style="float:right;padding-right:10px;">'.CurrencyField::convertToUserFormat($value).'</span>';
+						$value = CurrencyField::convertToUserFormat($value);
+						if ($field->getFieldType()=='I') {
+							$value = substr($value, 0, strrpos($value, $current_user->currency_decimal_separator));
+						}
+						$value = '<span style="float:right;padding-right:10px;">'.$value.'</span>';
 					}
 				} elseif ($field->getFieldDataType() == 'date' || $field->getFieldDataType() == 'datetime') {
 					if (!empty($value) && $value != '0000-00-00' && $value != '0000-00-00 00:00') {

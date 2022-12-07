@@ -382,6 +382,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show search columns in the list view table',
 ),
+'Application_ListView_FilterPanel_Open' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the filter panel',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Performance',
@@ -687,6 +693,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'DetailView|EditView',
 	'definition' => 'The action that will be executed when only one record is found. Default is DetailView',
+),
+'Application_Global_Search_PlaceHolder' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'any string',
+	'definition' => 'Sets the placeholder text for the global search box.',
 ),
 'Application_ProductService_Search_Autocomplete_Limit' => array(
 	'valuetype' => 'Integer',

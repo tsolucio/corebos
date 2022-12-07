@@ -382,6 +382,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar columnas de búsqueda en la tabla de la lista de vista',
 ),
+'Application_ListView_FilterPanel_Open' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Esconder o mostrar la sección de filtro en la vista de lista',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Rendimiento',
@@ -687,6 +693,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'DetailView|EditView',
 	'definition' => 'La acción que se realiza cuando se encuentra solo un valor. Por defecto será DetailView',
+),
+'Application_Global_Search_PlaceHolder' => array(
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'cualquier cadena',
+	'definition' => 'Establece el texto de marcador de posición para el campo de búsqueda global.',
 ),
 'Application_ProductService_Search_Autocomplete_Limit' => array(
 	'valuetype' => 'Entero',

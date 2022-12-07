@@ -170,6 +170,9 @@ class Validations extends processcbMap {
 					continue; // we are not saving this field in mass edit save so we don't have to check it
 				}
 				if (isset($val['msg'])) {
+					if (isset($screen_values['record'])) {
+						$val['msg'] = str_replace('$RECORD$', $screen_values['record'], $val['msg']);
+					}
 					$val['msg'] = getTranslatedString($val['msg'], $mapping['origin']);
 				}
 				$rule = $val['rule'];
