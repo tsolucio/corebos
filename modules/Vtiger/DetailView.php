@@ -145,11 +145,22 @@ foreach ($blocks as $block) {
 			'__fields' => $block
 		);
 	} else {
-		if (in_array($block['__header'], $headers)) {
-			continue;
+		if (isset($block['__header'])) {
+			if (in_array($block['__header'], $headers)) {
+				continue;
+			}
+			$headers[] = $block['__header'];
+			$mergedBlocks[] = $block;
+		} else {
+			//suport for related lists
+			$header = array_keys($block);
+			$mergedBlocks[] = array(
+				'__sequence' => (int)$block['sequence'],
+				'__type' => 'block',
+				'__header' => $header[0],
+				'__fields' => $block,
+			);
 		}
-		$headers[] = $block['__header'];
-		$mergedBlocks[] = $block;
 	}
 }
 sort_array_data($mergedBlocks, '__sequence');
@@ -167,6 +178,9 @@ $smarty->assign(
 if ($isPresentRelatedListBlock) {
 	$related_list_block = array();
 	foreach ($blocks as $blabel => $binfo) {
+		if (is_object($binfo)) {
+			continue;
+		}
 		if (!empty($binfo['relatedlist'])) {
 			foreach ($related_array as $rlabel => $rinfo) {
 				if ($rinfo['relationId']==$binfo['relatedlist']) {

@@ -1536,14 +1536,15 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				}
 				$returndata[$i18nidx]=array_merge((array)$returndata[$i18nidx], array($label=>array()));
 			} else {
-				$brs = $adb->pquery('select isrelatedlist from vtiger_blocks where blockid=?', array($blockid));
+				$brs = $adb->pquery('select isrelatedlist, sequence from vtiger_blocks where blockid=?', array($blockid));
 				if ($brs && $adb->num_rows($brs)>0) {
 					$rellist = $adb->query_result($brs, 0, 'isrelatedlist');
+					$sequence = $adb->query_result($brs, 0, 'sequence');
 					if ($rellist>0) {
 						if (!isset($returndata[$curBlock])) {
 							$returndata[$curBlock] = array();
 						}
-						$returndata[$curBlock]=array_merge((array)$returndata[$curBlock], array($label=>array(),'relatedlist'=>$rellist));
+						$returndata[$curBlock]=array_merge((array)$returndata[$curBlock], array($label=>array(),'relatedlist'=>$rellist, 'sequence'=>$sequence));
 					}
 				}
 			}
@@ -1553,6 +1554,9 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 			$returndata_[$curBlock]['__fields'] = $returndata[$i18nidx];
 			$returndata_[$curBlock]['__type'] = 'block';
 			$returndata_[$curBlock]['__sequence'] = empty($block_sequence[$idx]) ? 0 : (int)$block_sequence[$idx];
+			if (isset($returndata[$curBlock])) {
+				$returndata_[$curBlock] = $returndata[$curBlock];
+			}
 			$idx++;
 		}
 	}

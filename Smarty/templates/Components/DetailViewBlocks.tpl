@@ -1,4 +1,4 @@
-<table border=0 cellspacing=0 cellpadding=0 width=100% class="small detailview_header_table">
+<table border=0 cellspacing=0 cellpadding=0 width=100% class="small detailview_header_table" style="padding-top: 15px">
 	<!-- This is added to display the existing comments -->
 	{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENTS) && $header eq $MOD.LBL_COMMENTS) || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
 		<tr>
@@ -12,7 +12,7 @@
 		<tr><td>&nbsp;</td></tr>
 	{/if}
 
-	{if $header neq 'Comments' && (!isset($BLOCKS.$header.relatedlist) || $BLOCKS.$header.relatedlist eq 0)}
+	{if $header neq 'Comments' && (!isset($BLOCKS[$idx]['__fields'].relatedlist) || $BLOCKS[$idx]['__fields'].relatedlist eq 0)}
 		<tr class="detailview_block_header">{strip}
 			<td colspan=4 class="dvInnerHeader">
 				<div style="float:left;font-weight:bold;">
@@ -72,7 +72,7 @@
 	</tr>
 </table>
 {if $header neq 'Comments'}
-	{if (isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1) || !empty($BLOCKS.$header.relatedlist)}
+	{if (isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1) || !empty($BLOCKS[$idx]['__fields'].relatedlist)}
 		<div style="width:auto;display:block;" id="tbl{$header|replace:' ':''}" >
 		{else}
 		<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
@@ -80,10 +80,10 @@
 			<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
 			{if !empty($CUSTOMBLOCKS.$header.custom)}
 				{include file=$CUSTOMBLOCKS.$header.tpl}
-			{elseif isset($BLOCKS.$header.relatedlist) && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-				{foreach key=bhkey item=bhitem from=$BLOCKS.$header}
+			{elseif isset($BLOCKS[$idx]['__fields'].relatedlist) && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
+				{foreach key=bhkey item=bhitem from=$BLOCKS[$idx]['__fields']}
 					{if isPermitted($bhkey, 'index')=='yes'}
-						{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
+						{assign var='RELBINDEX' value=$BLOCKS[$idx]['__fields'].relatedlist}
 						{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX}
 					{/if}
 					{break}

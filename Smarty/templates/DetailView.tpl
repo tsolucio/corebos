@@ -120,7 +120,7 @@ let PopupFilterMapResults = JSON.parse(`{$PopupFilterMapResults}`);
 			<form action="index.php" method="post" name="DetailView" id="formDetailView">
 			<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
 			{include file='DetailViewHidden.tpl'}
-			{foreach item=details from=$BLOCKS}
+			{foreach item=details key=idx from=$BLOCKS}
 				{if $details.__type == 'block'}
 					{assign var=header value=$details.__header}
 					{assign var=detail value=$details.__fields}
