@@ -30,14 +30,29 @@
 					{/if}
 					<div class="small detailview_utils_table_top">
 						<div class="detailview_utils_table_tabs">
-							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
-							{if isset($HASRELATEDPANES) && $HASRELATEDPANES eq 'true'}
-								{include file='RelatedPanes.tpl' tabposition='top'}
-							{else}
-								<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
-							{/if}
+
 						</div>
 						<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
+					</div>
+					<div class="demo-only">
+						<div class="slds-tabs_scoped">
+							<ul class="slds-tabs_scoped__nav" role="tablist">
+								<li class="slds-tabs_scoped__item" role="presentation">
+									<a class="slds-tabs_scoped__link" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1" href="index.php?action={$action}&module={$MODULE}&record={$ID}">
+										{$SINGLE_MOD} {$APP.LBL_INFORMATION}
+									</a>
+								</li>
+								{if isset($HASRELATEDPANES) && $HASRELATEDPANES eq 'true'}
+									{include file='RelatedPanes.tpl' tabposition='top'}
+								{else}
+									<li class="slds-tabs_scoped__item slds-is-active" role="presentation">
+										<a class="slds-tabs_scoped__link" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
+											{$APP.LBL_MORE} {$APP.LBL_INFORMATION}
+										</a>
+									</li>
+								{/if}
+							</ul>
+						</div>
 					</div>
 				</td>
 			</tr>

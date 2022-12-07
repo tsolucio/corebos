@@ -75,20 +75,41 @@ let PopupFilterMapResults = JSON.parse(`{$PopupFilterMapResults}`);
 <td>
 <div class="small detailview_utils_table_top">
 <div class="detailview_utils_table_tabs noprint">
-<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 {if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0 && empty($Module_Popup_Edit)}
 {if $HASRELATEDPANES eq 'true'}
 	{include file='RelatedPanes.tpl' tabposition='top' RETURN_RELATEDPANE=''}
 {else}
-<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');">
-	<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
-	<div onmouseover="fnShowDrop('More_Information_Modules_List')" onmouseout="fnHideDrop('More_Information_Modules_List')"
-		 id="More_Information_Modules_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
-		<table border="0" cellpadding="0" cellspacing="0" width="100%">
-			{foreach key=_RELATION_ID item=_RELATED_MODULE from=$IS_REL_LIST}
-				<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}#tbl_{$MODULE}_{$_RELATED_MODULE}">{$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}</a></td></tr>
-			{/foreach}
-		</table>
+<div class="demo-only">
+	<div class="slds-tabs_scoped">
+		<ul class="slds-tabs_scoped__nav" role="tablist">
+			<li class="slds-tabs_scoped__item slds-is-active" role="presentation">
+				<a class="slds-tabs_scoped__link" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1" id="tab-scoped-1__item">
+					{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}
+				</a>
+			</li>
+			<li class="slds-tabs_scoped__item slds-tabs_scoped__overflow-button" role="presentation">
+				<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
+					<a class="slds-button" aria-haspopup="true" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}
+						<svg class="slds-button__icon slds-button__icon_x-small slds-button__icon_right" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+						</svg>
+					</a>
+					<div class="slds-dropdown slds-dropdown_right">
+						<ul class="slds-dropdown__list slds-dropdown_length-with-icon-10 cbds-scrollbar" role="menu">
+							{foreach key=_RELATION_ID item=_RELATED_MODULE from=$IS_REL_LIST}
+							<li class="slds-dropdown__item" role="presentation">
+								<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}#tbl_{$MODULE}_{$_RELATED_MODULE}"  role="menuitem" tabindex="-1">
+									<span class="slds-truncate">
+										{$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}
+									</span>
+								</a>
+							</li>
+							{/foreach}
+						</ul>
+					</div>
+				</div>
+			</li>
+		</ul>
 	</div>
 </div>
 {/if}
@@ -97,7 +118,6 @@ let PopupFilterMapResults = JSON.parse(`{$PopupFilterMapResults}`);
 <div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
 <div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions_top">
 <div class="slds-button-group" role="group">
-	
 {if empty($Module_Popup_Edit)}
 <div class="slds-button-group" role="group">
 	{include file='Components/DetailViewPirvNext.tpl'}

@@ -1,4 +1,4 @@
-<table border=0 cellspacing=0 cellpadding=0 width=100% class="small detailview_header_table" style="padding-top: 15px">
+<table border=0 cellspacing=0 cellpadding=0 width=100% class="small detailview_header_table">
 	<!-- This is added to display the existing comments -->
 	{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENTS) && $header eq $MOD.LBL_COMMENTS) || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
 		<tr>
@@ -13,26 +13,22 @@
 	{/if}
 
 	{if $header neq 'Comments' && (!isset($BLOCKS[$idx]['__fields'].relatedlist) || $BLOCKS[$idx]['__fields'].relatedlist eq 0)}
-		<tr class="detailview_block_header">{strip}
-			<td colspan=4 class="dvInnerHeader">
-				<div style="float:left;font-weight:bold;">
-					<div style="float:left;">
-						<a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
-							{if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
-								<span class="exp_coll_block inactivate">
-								<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
-								</span>
-							{else}
-								<span class="exp_coll_block activate">
-								<img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
-								</span>
-							{/if}
-						</a>
-					</div>
-					<b>&nbsp;{$header}</b>
-				</div>
-			</td>{/strip}
-		</tr>
+		<div class="slds-section slds-is-open" style="margin-bottom: 0rem !important">
+			<h3 class="slds-section__title">
+				<button aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action" onclick="showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
+					{if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
+						<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+						</svg>
+					{else}
+						<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+						</svg>
+					{/if}
+					<span class="slds-truncate" title="{$header}">{$header}</span>
+				</button>
+			</h3>
+		</div>
 	{/if}
 	<tr>
 		<td class="cblds-t-align_right">

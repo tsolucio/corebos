@@ -3032,3 +3032,19 @@ a.allMnu:Hover{
 .custom-width-350 {
 	width: 350px !important;
 }
+
+.cbds-scrollbar::-webkit-scrollbar {
+  width: 1px;
+}
+
+.cbds-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+.cbds-scrollbar::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+.cbds-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
