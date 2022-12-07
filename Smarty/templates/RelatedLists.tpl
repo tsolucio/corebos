@@ -43,6 +43,7 @@
 									</a>
 								</li>
 								{if isset($HASRELATEDPANES) && $HASRELATEDPANES eq 'true'}
+									{assign var="rlmode" value="RelatedPane"}
 									{include file='RelatedPanes.tpl' tabposition='top'}
 								{else}
 									<li class="slds-tabs_scoped__item slds-is-active" role="presentation">

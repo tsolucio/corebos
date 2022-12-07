@@ -17,21 +17,39 @@
 
 {foreach key=RLTAB item=RLARR from=$RLTabs}
 {if $RETURN_RELATEDPANE eq $RLTAB}
-	<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_{$tabposition}">{$RLARR.label}</div>
+		<li class="slds-tabs_scoped__item slds-is-active" role="presentation">
+		<a class="slds-tabs_scoped__link" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1" id="tab-scoped-1__item">{$RLARR.label}</a>
 {else}
-	<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_{$tabposition}"
-	{if $tabposition eq 'top'}onmouseout="fnHideDrop('More_Information_pane{$RLTAB}_List');" onmouseover="fnDropDown(this,'More_Information_pane{$RLTAB}_List');"{/if}>
-	<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}">{$RLARR.label}</a>
-	{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}
-	<div onmouseover="fnShowDrop('More_Information_pane{$RLTAB}_List')" onmouseout="fnHideDrop('More_Information_pane{$RLTAB}_List')"
-				 id="More_Information_pane{$RLTAB}_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
-		<table border="0" cellpadding="0" cellspacing="0" width="100%">
-		{foreach key=_BLOCK_ID item=_RELATED_BLOCK from=$RLARR.blocks}
-			<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}&selected_header={$_RELATED_BLOCK.loadfrom}&relation_id={if isset($_RELATED_BLOCK.relatedid)}{$_RELATED_BLOCK.relatedid}{/if}#tbl_{$MODULE}_{$_RELATED_BLOCK.loadfrom}">{$_RELATED_BLOCK.label|@getTranslatedString:$_RELATED_BLOCK.label}</a></td></tr>
-		{/foreach}
-		</table>
+{if !isset($rlmode)}
+<div class="demo-only">
+	<div class="slds-tabs_scoped">
+		<ul class="slds-tabs_scoped__nav" role="tablist">
+{/if}
+			<li class="slds-tabs_scoped__item slds-tabs_scoped__overflow-button" title="More Tabs" role="presentation">
+				<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
+					<a class="slds-button" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}" aria-haspopup="true">{$RLARR.label}
+					</a>
+					{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}
+					<div class="slds-dropdown slds-dropdown_right">
+						<ul class="slds-dropdown__list slds-dropdown_length-with-icon-10" role="menu">
+							{foreach key=_BLOCK_ID item=_RELATED_BLOCK from=$RLARR.blocks}
+							<li class="slds-dropdown__item" role="presentation">
+								<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}&selected_header={$_RELATED_BLOCK.loadfrom}&relation_id={if isset($_RELATED_BLOCK.relatedid)}{$_RELATED_BLOCK.relatedid}{/if}#tbl_{$MODULE}_{$_RELATED_BLOCK.loadfrom}" role="menuitem" tabindex="-1">
+									<span class="slds-truncate">
+										{$_RELATED_BLOCK.label|@getTranslatedString:$_RELATED_BLOCK.label}
+									</span>
+								</a>
+							</li>
+							{/foreach}
+						</ul>
+					</div>
+					{/if}
+				</div>
+			</li>
+{if !isset($rlmode)}
+		</ul>
 	</div>
-	{/if}
-	</div>
+</div>
+{/if}
 {/if}
 {/foreach}
