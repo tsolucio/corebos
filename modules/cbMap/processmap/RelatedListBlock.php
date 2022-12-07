@@ -40,6 +40,7 @@
 		</module>
 		<module>
 			<name>Assets</name>
+			<popupaction>id</popupaction>
 			<listview>
 				<fields>
 					<field>
@@ -112,6 +113,9 @@ class RelatedListBlock extends processcbMap {
 				if (isset($key->editview)) {
 					$this->detailModule = (string)$key->name;
 					$this->mapping_arr['modules'][$idx]['editview'] = $this->FormatFields((array)$key->editview->fields, 'editview');
+				}
+				if (isset($key->popupaction)) {
+					$this->mapping_arr['modules'][$idx]['popupaction'] = (string)$key->popupaction;
 				}
 				$idx++;
 			}
