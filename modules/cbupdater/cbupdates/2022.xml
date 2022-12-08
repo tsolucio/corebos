@@ -251,4 +251,11 @@
 	<classname>addtypeofviewGV</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make user first and last name fields larger.</description>
+	<filename>build/changeSets/2022/makeusernamefieldslarger.php</filename>
+	<classname>makeusernamefieldslarger</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
