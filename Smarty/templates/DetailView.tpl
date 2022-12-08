@@ -343,24 +343,28 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																{if $customlink_href=='ACTIONSUBHEADER'}
 																	<span class="genHeaderSmall slds-truncate">{$customlink_label}</span>
 																{else}
-																	{if $CUSTOMLINK->linkicon}
-																		{if strpos($CUSTOMLINK->linkicon, '}')>0}
-																			{assign var="customlink_iconinfo" value=$CUSTOMLINK->linkicon|json_decode:true}
-																			<span class="slds-icon_container slds-icon-{$customlink_iconinfo.library}-{$customlink_iconinfo.icon}" title="{$customlink_label}">
-																			<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
-																				<use xlink:href="include/LD/assets/icons/{$customlink_iconinfo.library}-sprite/svg/symbols.svg#{$customlink_iconinfo.icon}"></use>
-																			</svg>
-																			<span class="slds-assistive-text">{$customlink_label}</span>
-																			</span>
+																	{if empty($CUSTOMLINK->showasbutton)}
+																		{if $CUSTOMLINK->linkicon}
+																			{if strpos($CUSTOMLINK->linkicon, '}')>0}
+																				{assign var="customlink_iconinfo" value=$CUSTOMLINK->linkicon|json_decode:true}
+																				<span class="slds-icon_container slds-icon-{$customlink_iconinfo.library}-{$customlink_iconinfo.icon}" title="{$customlink_label}">
+																				<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
+																					<use xlink:href="include/LD/assets/icons/{$customlink_iconinfo.library}-sprite/svg/symbols.svg#{$customlink_iconinfo.icon}"></use>
+																				</svg>
+																				<span class="slds-assistive-text">{$customlink_label}</span>
+																				</span>
+																			{else}
+																				<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">
+																				<img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}">
+																				</a>
+																			{/if}
 																		{else}
-																			<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">
-																			<img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}">
-																			</a>
+																			<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
 																		{/if}
+																		&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
 																	{else}
-																		<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
+																	<a class="slds-button {if empty($CUSTOMLINK->linkicon)}slds-button_neutral{else}{$CUSTOMLINK->linkicon}{/if}" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
 																	{/if}
-																	&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
 																{/if}
 															</li>
 														{/foreach}
