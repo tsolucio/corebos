@@ -76,8 +76,8 @@ function getKeyMetrics($maxval, $calCnt) {
 	if (isset($metriclists)) {
 		foreach ($metriclists as $metriclist) {
 			$value=array();
-			$CVname = textlength_check($metriclist['name'], 20);
-			$mlisturl = '<a href="index.php?action=ListView&module='.$metriclist['module'].'&viewname='.$metriclist['id'].'">';
+			$CVname = textlength_check($metriclist['name'], GlobalVariable::getVariable('HomePage_KeyMetrics_Max_Text_Length', 20, $metriclist['module']));
+			$mlisturl = '<a href="index.php?action=ListView&module='.$metriclist['module'].'&viewname='.$metriclist['id'].'" title="'.strtr($CVname, '"', '').'">';
 			$value[] = $mlisturl.$CVname . '</a> <font style="color:#6E6E6E;">('. $metriclist['user'] .')</font>';
 			$value[] = $mlisturl.getTranslatedString($metriclist['module'], $metriclist['module']). '</a>';
 			$value[] = $mlisturl.$metriclist['count'].'</a>';

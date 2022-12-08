@@ -460,6 +460,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The number of ajax requests on home page, reduce this value if home page widgets do not show values. The default value is 12.',
 ),
+'HomePage_KeyMetrics_Max_Text_Length' => array(
+	'valuetype' => 'Integer',
+	'category' => 'HomePage',
+	'values' => '',
+	'definition' => 'The maximum number of letters of key metrics filter name to show. The default value is 20 and 0 shows the full string.',
+),
 'Application_Single_Pane_View' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',

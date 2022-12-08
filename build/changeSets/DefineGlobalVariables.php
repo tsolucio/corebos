@@ -273,6 +273,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Document_CreateSelectAccountFolderForContact',
 				'Attachment_ShowDownloadName',
 				'HomePage_Widget_Group_Size',
+				'HomePage_KeyMetrics_Max_Text_Length',
 				'Zero_Bounce_API_KEY',
 				'GenDoc_CopyLabelToClipboard',
 				'GenDoc_Convert_URL',
