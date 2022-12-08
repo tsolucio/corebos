@@ -100,8 +100,7 @@ function getMetricList() {
 	global $adb, $current_user;
 	$userprivs = $current_user->getPrivileges();
 
-	$ssql = "select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype";
-	$ssql .= " where vtiger_customview.setmetrics = 1 ";
+	$ssql='select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name=vtiger_customview.entitytype where vtiger_customview.setmetrics=1 ';
 	$sparams = array();
 
 	if (!$userprivs->isAdmin()) {
@@ -112,7 +111,7 @@ function getMetricList() {
 				where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 		$sparams[] = $current_user->id;
 	}
-	$ssql .= " order by vtiger_customview.entitytype";
+	$ssql .= ' order by vtiger_customview.entitytype';
 	$result = $adb->pquery($ssql, $sparams);
 	while ($cvrow=$adb->fetch_array($result)) {
 		$metricslist = array();
@@ -122,7 +121,7 @@ function getMetricList() {
 			$metricslist['module'] = $cvrow['entitytype'];
 			$metricslist['user'] = getUserFullName($cvrow['userid']);
 			$metricslist['count'] = '';
-			if (isPermitted($cvrow['entitytype'], "index") == "yes") {
+			if (isPermitted($cvrow['entitytype'], 'index') == 'yes') {
 				$metriclists[] = $metricslist;
 			}
 		}

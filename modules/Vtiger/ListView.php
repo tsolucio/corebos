@@ -260,14 +260,14 @@ $smarty->assign('Apache_Tika_URL', GlobalVariable::getVariable('Apache_Tika_URL'
 $smarty->assign('ShowCreateMessage', GlobalVariable::getVariable('Application_ListView_Show_Create_Message', '0'));
 
 // send advancedSearch business map data to the frontEnd
-$advancedSearchMapResult = "MAP_NOT_FOUND";
+$advancedSearchMapResult = 'MAP_NOT_FOUND';
 $advancedSearchMapObject = new cbMap();
 $advancedSearchbmapname = $currentModule.'_AdvancedSearch';
 $advancedSearchMapid = GlobalVariable::getVariable('BusinessMapping_'.$advancedSearchbmapname, cbMap::getMapIdByName($advancedSearchbmapname));
 if ($advancedSearchMapid) {
 	$advancedSearchMapObject->id = $advancedSearchMapid;
 	$advancedSearchMapObject->mode = '';
-	$advancedSearchMapObject->retrieve_entity_info($advancedSearchMapid, "cbMap");
+	$advancedSearchMapObject->retrieve_entity_info($advancedSearchMapid, 'cbMap');
 	$advancedSearchMapResult = $advancedSearchMapObject->AdvancedSearch($currentModule);
 }
 $smarty->assign('advancedSearchMapResult', $advancedSearchMapResult);
@@ -275,9 +275,9 @@ $smarty->assign('advancedSearchMapResult', $advancedSearchMapResult);
 // GV responsible for showing or hiding filter panel
 $Application_ListView_FilterPanel_Open = GlobalVariable::getVariable('Application_ListView_FilterPanel_Open', '1', $currentModule, '', $_REQUEST['action']);
 if (!$Application_ListView_FilterPanel_Open) {
-	$smarty->assign('Application_ListView_FilterPanel_Open', "display: none;");
+	$smarty->assign('Application_ListView_FilterPanel_Open', 'display: none;');
 } else {
-	$smarty->assign('Application_ListView_FilterPanel_Open', "");
+	$smarty->assign('Application_ListView_FilterPanel_Open', '');
 }
 
 if (!empty($custom_list_include) && file_exists($custom_list_include)) {
