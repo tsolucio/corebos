@@ -29,8 +29,8 @@ class VTUpdateFieldsTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user, $logbg,$from_wf, $currentModule;
-		$from_wf = true;
 		$logbg->debug('> VTUpdateFieldsTask');
+		$from_wf = true;
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 		$isqueue=$entity->isqueue;
@@ -38,7 +38,7 @@ class VTUpdateFieldsTask extends VTTask {
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
-		$logbg->debug("Module: $moduleName, Record: $entityId");
+		$logbg->debug("(VTUpdateFieldsTask) Module: $moduleName, Record: $entityId");
 		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $current_user);
 		$handlerMeta = $moduleHandler->getMeta();
 		$moduleFields = $handlerMeta->getModuleFields();
@@ -53,8 +53,8 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->mode = 'edit';
 			$focus->retrieve_entity_info($recordId, $moduleName);
 			$focus->clearSingletonSaveFields();
-			$logbg->debug('field values pre', $focus->column_fields);
-			$logbg->debug('update info', $fieldValueMapping);
+			$logbg->debug('(VTUpdateFieldsTask) field values pre', $focus->column_fields);
+			$logbg->debug('(VTUpdateFieldsTask) update info', $fieldValueMapping);
 
 			$hold_user = $current_user;
 			$util->loggedInUser();
@@ -119,7 +119,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$holdCM = $currentModule;
 			$_REQUEST['ajxaction'] = 'Workflow';
-			$logbg->debug('field values presave', $focus->column_fields);
+			$logbg->debug('(VTUpdateFieldsTask) field values presave', $focus->column_fields);
 			if ($this->launchwf) {
 				$focus->save($moduleName);
 			} else {
@@ -148,7 +148,9 @@ class VTUpdateFieldsTask extends VTTask {
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 			$currentModule = $holdCM;
 			$util->revertUser();
-			$logbg->debug('field values postsave', $focus->column_fields);
+			$logbg->debug('(VTUpdateFieldsTask) field values postsave', $focus->column_fields);
+		} else {
+			$logbg->debug("(VTUpdateFieldsTask) not called: fieldValueMapping is empty");
 		}
 		$util->revertUser();
 		$from_wf = false;

@@ -23,8 +23,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $logbg, $from_wf, $current_user;
+		$logbg->debug('> RunWebserviceWorkflowTask');
 		$from_wf = true;
-		$logbg->debug('> RunWebservice');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 
@@ -142,7 +142,9 @@ class RunWebserviceWorkflowTask extends VTTask {
 				}
 			}
 			curl_setopt($channel, CURLOPT_RETURNTRANSFER, true);
+			$logbg->debug('(RunWebserviceWorkflowTask) executing curl');
 			$respp = curl_exec($channel);
+			$logbg->debug('(RunWebserviceWorkflowTask) curl result: ' . $respp);
 			$response2 = json_decode($respp);
 			if (!is_object($response2)) {
 				$response2 = json_decode(json_decode($respp));
@@ -240,6 +242,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 					$_REQUEST['ajxaction'] = $hold_ajxaction;
 				}
 			}
+		} else {
+			$logbg->debug('(RunWebserviceWorkflowTask) not called: wstype is not REST');
 		}
 
 		if ($wstype == 'SOAP') {
@@ -284,8 +288,9 @@ class RunWebserviceWorkflowTask extends VTTask {
 					);
 					$soapclient = new SoapClient($url, $options);
 				}
-
+				$logbg->debug('(RunWebserviceWorkflowTask) making a soap call');
 				$response = $soapclient->__soapCall($methodname, array('parameters' => $arrconv));
+				$logbg->debug('(RunWebserviceWorkflowTask) soap call response: ', $response);
 				$methodResult = $methodname.'Result';
 				if (isset($response->$methodResult)) {
 					$fields = $response->$methodResult;
@@ -380,6 +385,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 			if ($WriteLogs) {
 				error_log("\n\n".$dateofresponse."\n", 3, $logname.'.log');
 			}
+		} else {
+			$logbg->debug('(RunWebserviceWorkflowTask) not called: wstype is not SOAP');
 		}
 
 		$util->revertUser();

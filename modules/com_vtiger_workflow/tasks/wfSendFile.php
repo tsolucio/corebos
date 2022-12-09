@@ -30,7 +30,8 @@ class wfSendFile extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $site_URL, $current_language, $default_charset;
+		global $adb, $site_URL, $current_language, $default_charset, $logbg;
+		$logbg->debug('> wfSendFile');
 		$workflow_context = $entity->WorkflowContext;
 		$reportfile_context = !empty($entity->WorkflowContext['wfgenerated_file']) ? $entity->WorkflowContext['wfgenerated_file'] : array();
 		$query = 'select * from vtiger_cbcredentials inner join vtiger_crmentity on crmid=cbcredentialsid where deleted=0 and cbcredentialsid=?';
@@ -79,16 +80,19 @@ class wfSendFile extends VTTask {
 			require_once 'modules/com_vtiger_workflow/actions/FTP.php';
 			$ftp = new FTPAdapter($data, $workflow_context);
 			$ftp->setUp();
+			$logbg->debug('(wfSendFile) writing file for FTP');
 			$ftp->writeFile();
 		} elseif ($adapter == 'AzureBlobStorage') {
 			require_once 'modules/com_vtiger_workflow/actions/AzureBlobStorage.php';
 			$azure = new AzureAdapter($data, $workflow_context);
 			$azure->setUp();
+			$logbg->debug('(wfSendFile) writing file for Azure Blob Storage');
 			$azure->writeFile();
 		} elseif ($adapter == 'OpenCloud') {
 			require_once 'modules/com_vtiger_workflow/actions/OpenCloud.php';
 			$cloud = new OpenCloudAdapter($data, $workflow_context);
 			$cloud->setUp();
+			$logbg->debug('(wfSendFile) writing file for Open Cloud');
 			$cloud->writeFile();
 		} elseif ($adapter == 'GoogleCloudStorage') {
 			require_once 'modules/com_vtiger_workflow/actions/GoogleStorage.php';
@@ -133,8 +137,12 @@ class wfSendFile extends VTTask {
 			}
 			$storage = new GoogleStorageAdapter($data, $client, $workflow_context);
 			$storage->setUp();
+			$logbg->debug('(wfSendFile) writing file for Google Cloud Storage');
 			$storage->writeFile();
+		} else {
+			$logbg->debug('(wfSendFile) not called: adapter is not one of these values: FTP, AzureBlobStorage, OpenCloud, GoogleCloudStorage');
 		}
+		$logbg->debug('< wfSendFile');
 	}
 }
 ?>

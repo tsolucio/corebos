@@ -29,7 +29,8 @@ class GenerateDocument extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $root_directory, $current_language, $default_charset;
+		global $adb, $logbg, $root_directory, $current_language, $default_charset;
+		$logbg->debug('> GenerateDocument');
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
 		$crmEntityTableAlias = CRMEntity::getcrmEntityTableAlias('Documents', false);
 		$relatedDocsSQL = 'SELECT vtiger_senotesrel.notesid
@@ -95,7 +96,9 @@ class GenerateDocument extends VTTask {
 						if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
 							$smq->createShareLink($rdoc['notesid']);
 						}
+						$logbg->debug('(GenerateDocument) swap Document');
 						$smq->swapDocument($rdoc['notesid'], $docid);
+						$logbg->debug('(GenerateDocument) swap Document smq: ' . $smq);
 						$skey = $smq->getShareCode($docid);
 					}
 					$adb->pquery(
@@ -107,7 +110,9 @@ class GenerateDocument extends VTTask {
 						array($fileid, $record)
 					);
 				} else { // creating for the first time
+					$logbg->debug('(GenerateDocument) create share link');
 					$skey = $smq->createShareLink($docid);
+					$logbg->debug('(GenerateDocument) create share link skey: ' . $skey);
 				}
 				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
 				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
@@ -115,9 +120,13 @@ class GenerateDocument extends VTTask {
 				$skey = $smq->createShareLink($docid);
 				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
 				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
+			} else {
+				$logbg->debug('(GenerateDocument) not called:  updateOnChange is false or shareOnCreate and isShared are false');
 			}
+			$logbg->debug('(GenerateDocument) updating vtiger_notes');
 			$adb->pquery('update vtiger_notes set gendoctplid=? where notesid=?', array($fileid, $docid));
 		}
+		$logbg->debug('< GenerateDocument');
 	}
 
 	private function addGenDocTplColumn() {

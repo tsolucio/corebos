@@ -27,7 +27,8 @@ class CBTagTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $current_user;
+		global $current_user, $logbg;
+		$logbg->debug('> CBTagTask');
 		list($cto, $cto_id) = explode('x', $entity->getId());
 		if (!empty($cto_id) && !empty($this->listoftags)) {
 			$setype = getSalesEntityType($cto_id);
@@ -46,15 +47,23 @@ class CBTagTask extends VTTask {
 				} else {
 					$users = $current_user->id;
 				}
-				$freetag->tag_object($users, $cto_id, $this->listoftags, $setype);
+				$logbg->debug('(CBTagTask) tag object');
+				$result = $freetag->tag_object($users, $cto_id, $this->listoftags, $setype);
+				$logbg->debug('(CBTagTask) tag object result: ' . $result);
 			} else {
+				$logbg->debug('(CBTagTask) not called: addrel is empty');
 				if ($this->forallusers) {
+					$logbg->debug('(CBTagTask) delete object tags');
 					$freetag->delete_object_tags($cto_id, $this->listoftags);
 				} else {
+					$logbg->debug('(CBTagTask) delete object tag');
 					$freetag->delete_object_tag($current_user->id, $cto_id, $this->listoftags);
 				}
 			}
+		} else {
+			$logbg->debug('(CBTagTask) not called: cto_id or listoftags are empty');
 		}
+		$logbg->debug('< CBTagTask');
 	}
 }
 ?>

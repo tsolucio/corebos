@@ -23,6 +23,7 @@ class generateReportWfTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $logbg, $root_directory;
+		$logbg->debug('> generateReportWfTask');
 		$path = '';
 		$name = '';
 		$hascontent = 1;
@@ -93,6 +94,7 @@ class generateReportWfTask extends VTTask {
 					$csvpath = $path.$name;
 					$xelpath = $path.$name.'.xls';
 					require_once 'include/PhpSpreadsheet/autoload.php';
+					$logbg->debug('(generateReportWfTask) generating the Report');
 					try {
 						$workbookReader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Csv');
 						$delim = cbQuestion::getQnDelimeterProperty((int)$this->qnfield);
@@ -103,15 +105,18 @@ class generateReportWfTask extends VTTask {
 						$name .= '.xls';
 						unlink($csvpath);
 					} catch (Exception $e) {
-						$logbg->debug('generateReportWfTask > '. $e->getMessage());
+						$logbg->debug('(generateReportWfTask) not called: '. $e->getMessage());
 					}
 				}
 			}
+		} else {
+			$logbg->debug('(generateReportWfTask) not called: case_type is not question');
 		}
 		if (empty($entity->WorkflowContext['wfgenerated_file'])) {
 			$entity->WorkflowContext['wfgenerated_file'] = array();
 		}
 		$entity->WorkflowContext['wfgenerated_file'][] = array('path'=>$path, 'name'=>$name, 'hascontent' => $hascontent);
+		$logbg->debug('< generateReportWfTask');
 	}
 }
 ?>
