@@ -15,7 +15,7 @@
 	{if $header neq 'Comments' && (!isset($BLOCKS[$idx]['__fields'].relatedlist) || $BLOCKS[$idx]['__fields'].relatedlist eq 0)}
 		<div class="slds-section slds-is-open" style="margin-bottom: 0rem !important">
 			<h3 class="slds-section__title">
-				<button aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action" onclick="showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
+				<button aria-expanded="true" class="slds-button slds-section__title-action" onclick="showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
 					{if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
 						<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
@@ -25,7 +25,9 @@
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
 						</svg>
 					{/if}
-					<span class="slds-truncate" title="{$header}">{$header}</span>
+					<span class="slds-truncate" title="{$header}">
+						<strong>{$header}</strong>
+					</span>
 				</button>
 			</h3>
 		</div>

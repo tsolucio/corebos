@@ -1375,7 +1375,11 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 			} else {
 				$presence = $adb->query_result($result, $i, 'presence');
 				if ($presence == 0 && ($userprivs->isAdmin() || $userprivs->hasModuleAccess($relatedTabId))) {
-					$retval[$relatedId] = $relationLabel;
+					if ($activity_mode) {
+						$retval[$relatedTabId] = $relationLabel;
+					} else {
+						$retval[$relatedId] = $relationLabel;
+					}
 				}
 			}
 		}

@@ -39,7 +39,11 @@
 {/if}
 {assign var='MODULEICON' value=$MODULE|@getModuleIcon}
 <div id="page-header-placeholder"></div>
+{if !empty($isDetailView)}
+<div id="page-header" class="slds-page-header slds-m-vertical_medium noprint" style="border-radius: 0rem">
+{else}
 <div id="page-header" class="slds-page-header slds-m-vertical_medium noprint">
+{/if}
 	<div class="slds-page-header__row">
 		<div class="slds-page-header__col-title">
 			<div class="slds-media">

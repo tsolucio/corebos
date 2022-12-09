@@ -31,6 +31,7 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	}
 
 	$smarty = new vtigerCRM_Smarty;
+	$smarty->assign('currentModuleIcon', $focus->moduleIcon);
 
 	if ($isduplicate == 'true') {
 		$focus->id = '';

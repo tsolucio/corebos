@@ -71,8 +71,20 @@ if (GlobalVariable::getVariable('Application_DetailView_Record_Navigation', 1) &
 	$smarty->assign('privrecord', '');
 	$smarty->assign('nextrecord', '');
 }
-
-$smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
+$IS_REL_LIST = isPresentRelatedLists($currentModule, true);
+$RLdata = array();
+foreach ($IS_REL_LIST as $id => $label) {
+	$name = getTabModuleName($id);
+	if (empty($name)) {
+		continue;
+	}
+	$modInstance = CRMEntity::getInstance($name);
+	$icon = $modInstance->moduleIcon;
+	$RLdata[$id] = $icon;
+}
+$smarty->assign('IS_REL_LIST', $IS_REL_LIST);
+$smarty->assign('REL_MOD_ICONS', $RLdata);
+$smarty->assign('currentModuleIcon', $focus->moduleIcon);
 $isPresentRelatedListBlock = isPresentRelatedListBlock($currentModule);
 $smarty->assign('IS_RELBLOCK_LIST', $isPresentRelatedListBlock);
 $singlepane_view = GlobalVariable::getVariable('Application_Single_Pane_View', 0, $currentModule);

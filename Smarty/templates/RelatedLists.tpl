@@ -12,100 +12,49 @@
 <script type="text/javascript" src="include/js/RelatedLists.js"></script>
 {include file='Buttons_List.tpl' isDetailView=true}
 {include file='applicationmessage.tpl'}
-<!-- Contents -->
 <div id="editlistprice" style="position:absolute;width:300px;"></div>
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-<tr>
-	<td class="showPanelBg" valign=top width=100%>
-		<!-- PUBLIC CONTENTS STARTS-->
-		<div class="small" style="padding:14px">
-			<!-- Account details tabs -->
-			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
-			<tr>
-				<td>
-					{if isset($OP_MODE) && $OP_MODE eq 'edit_view'}
-						{assign var="action" value="EditView"}
-					{else}
-						{assign var="action" value="DetailView"}
-					{/if}
-					<div class="small detailview_utils_table_top">
-						<div class="detailview_utils_table_tabs">
-
-						</div>
-						<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
-					</div>
-					<div class="demo-only">
-						<div class="slds-tabs_scoped">
-							<ul class="slds-tabs_scoped__nav" role="tablist">
-								<li class="slds-tabs_scoped__item" role="presentation">
-									<a class="slds-tabs_scoped__link" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1" href="index.php?action={$action}&module={$MODULE}&record={$ID}">
-										{$SINGLE_MOD} {$APP.LBL_INFORMATION}
-									</a>
-								</li>
-								{if isset($HASRELATEDPANES) && $HASRELATEDPANES eq 'true'}
-									{assign var="rlmode" value="RelatedPane"}
-									{include file='RelatedPanes.tpl' tabposition='top'}
-								{else}
-									<li class="slds-tabs_scoped__item slds-is-active" role="presentation">
-										<a class="slds-tabs_scoped__link" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
-											{$APP.LBL_MORE} {$APP.LBL_INFORMATION}
-										</a>
-									</li>
-								{/if}
-							</ul>
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td style="vertical-align: top;align-content=left;">
-					<table border=0 cellspacing=0 cellpadding=3 width=100% class="dvtContentSpace" style="border-bottom:0;">
-						<tr>
-							<td style="vertical-align: top;align-content=left;">
-							<!-- content cache -->
-								<table border=0 cellspacing=0 cellpadding=0 width=100%>
-									<tr>
-										<td style="padding:10px" class="contains_rel_modules">
-										<!-- General details -->
-												{include file='RelatedListsHidden.tpl'}
-												<div id="RLContents">
-												{include file='RelatedListContents.tpl'}
-												</div>
-												</form>
-										{*-- End of Blocks--*}
-										</td>
-									</tr>
-								</table>
-							</td>
-							{if isset($HASRELATEDPANESACTIONS) && $HASRELATEDPANESACTIONS eq 'true'}
-								{include file='RelatedPaneActions.tpl'}
-							{/if}
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<div class="small detailview_utils_table_bottom">
-						<div class="detailview_utils_table_tabs">
-							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
-							{if $HASRELATEDPANES eq 'true'}
-								{include file='RelatedPanes.tpl' tabposition='bottom'}
-							{else}
-								<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
-							{/if}
-						</div>
-						<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_bottom" id="detailview_utils_table_tabactionsep_bottom"></div>
-					</div>
-				</td>
-			</tr>
-			</table>
+<div class="slds-grid slds-gutters" style="background: white; padding-top: 1%;width: 98%;margin-left: 1%;margin-bottom: 0.5%;margin-top: -0.5%">
+	<div class="slds-col">
+		<div class="slds-tabs_default slds-tabs_medium">
+			<ul class="slds-tabs_default__nav" role="tablist">
+				<li class="slds-tabs_default__item" role="presentation">
+					<a class="slds-tabs_default__link" role="tab" tabindex="0" href="index.php?action=DetailView&module={$MODULE}&record={$ID}">
+						<span class="{$currentModuleIcon['containerClass']}">
+							<svg class="slds-icon slds-icon_small" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/{$currentModuleIcon['library']}-sprite/svg/symbols.svg#{$currentModuleIcon['icon']}"></use>
+							</svg>
+						</span>
+						{$SINGLE_MOD} {$APP.LBL_INFORMATION}
+					</a>
+				</li>
+				{if isset($HASRELATEDPANES) && $HASRELATEDPANES eq 'true'}
+					{assign var="rlmode" value="RelatedPane"}
+					{include file='RelatedPanes.tpl' tabposition='top'}
+				{else}
+					<li class="slds-tabs_default__item slds-is-active" role="presentation">
+						<a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
+							{$APP.LBL_MORE} {$APP.LBL_INFORMATION}
+						</a>
+					</li>
+				{/if}
+			</ul>
 		</div>
-	<!-- PUBLIC CONTENTS STOPS-->
-	</td>
-</tr>
-</table>
-
+	</div>
+</div>
+{if isset($OP_MODE) && $OP_MODE eq 'edit_view'}
+	{assign var="action" value="EditView"}
+{else}
+	{assign var="action" value="DetailView"}
+{/if}
+<div class="slds-grid slds-gutters" style="background: white; padding-top: 1%;width: 98%;margin-left: 1%;margin-bottom: -0.5%;margin-top: 0.5%">
+	<div class="slds-col">
+		{include file='RelatedListsHidden.tpl'}
+		<div id="RLContents">
+		{include file='RelatedListContents.tpl'}
+		</div>
+		</form>
+	</div>
+</div>
 {if $MODULE|hasEmailField}
 <form name="SendMail" onsubmit="VtigerJS_DialogBox.block();" method="post"><div id="sendmail_cont" style="z-index:100001;position:absolute;width:300px;"></div></form>
 {/if}

@@ -11,7 +11,7 @@
 	<input type="hidden" id="comments_parentId" value="{$ID}" />
 	<div class="slds-section slds-is-open" style="margin-bottom: 0rem !important">
 		<h3 class="slds-section__title">
-			<button aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action" onclick="showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');">
+			<button aria-expanded="true" class="slds-button slds-section__title-action" onclick="showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');">
 				{if $BLOCKOPEN}
 					<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
@@ -21,7 +21,9 @@
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
 					</svg>
 				{/if}
-				<span class="slds-truncate" title="{$WIDGET_TITLE}">{$WIDGET_TITLE}</span>
+				<span class="slds-truncate" title="{$WIDGET_TITLE}">
+					<strong>{$WIDGET_TITLE}</strong>
+				</span>
 			</button>
 		</h3>
 		<span style="float: right;position:relative; left: -16px; top: -25px;">
