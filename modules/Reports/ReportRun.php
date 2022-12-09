@@ -268,7 +268,12 @@ class ReportRun extends CRMEntity {
 		$columnslist['vtiger_crmentity:crmid:LBL_ACTION:crmid:I'] = 'vtiger_crmentity.crmid AS "LBL_ACTION"' ;
 		// Save the information
 		$this->_columnslist[$outputformat] = $columnslist;
-
+		// we add the TOTALS tables to the planner in case they are aggregating on a field that is not included in the report
+		$rs = $adb->pquery('select columnname from vtiger_reportsummary where reportsummaryid=?', array($reportid));
+		while ($summary = $adb->fetch_array($rs)) {
+			$sumdetail = explode(':', $summary[0]);
+			$this->queryPlanner->addTable($sumdetail[1]);
+		}
 		$log->debug('ReportRun :: getQueryColumnsList'.$reportid);
 		return $columnslist;
 	}
