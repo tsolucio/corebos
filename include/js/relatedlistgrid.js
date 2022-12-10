@@ -182,7 +182,7 @@ class RLinkRender {
 				el.target = `_blank`;
 				if (tooltip[parent_module] !== undefined) {
 					props.value = `<span>${props.value}</span>
-					<span class="slds-icon_container slds-icon__svg--default slds-float_right slds-m-right_small cbds-tooltip__trigger slds-p-left_xx-small"
+					<span class="slds-icon_container slds-float_right slds-m-right_small cbds-tooltip__trigger slds-p-left_xx-small"
 						id="cbds-tooltip__trigger-${parent_id}"
 						onmouseover="relatedlistgrid.Tooltip(${parent_id}, '${props.grid.el.id}', ${rowKey}, '${parent_module}')">
 						<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
