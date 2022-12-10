@@ -1777,8 +1777,14 @@ $GlobalVariableDefinitons = array(
 'Application_Focus_Element' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => 'html element id',
+	'values' => 'HTML ID',
 	'definition' => 'Element ID that will be focused when the page loads',
+),
+'Application_TitleInformation' => array(
+	'valuetype' => 'String|Integer',
+	'category' => 'Application',
+	'values' => 'MapID or string',
+	'definition' => 'Browser tab title. Can be an expression business map ID',
 ),
 );
 

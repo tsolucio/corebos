@@ -1768,6 +1768,18 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'By default when creating a filter you have to include at least 1 mandatory field. For the cases when the users don\'t want to include mandatory fields on the filter set this variable to 0. Default is 1.',
 ),
+'Application_Focus_Element' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'HTML ID',
+	'definition' => 'Element ID that will be focused when the page loads',
+),
+'Application_TitleInformation' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'MapID or string',
+	'definition' => 'Browser tab title. Can be an expression business map ID',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {
