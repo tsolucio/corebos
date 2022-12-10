@@ -367,7 +367,7 @@
 		</div>
 	</div>
 	{if $COREBOS_HEADER_PREMENU}
-	<div style="width:100%; background-color:#fff;"  id="premenu-wrapper">
+	<div style="width:100%; background-color:#fff;" id="premenu-wrapper">
 	{$COREBOS_HEADER_PREMENU}
 	</div>
 	{/if}
@@ -406,7 +406,7 @@
 {if $Application_Menu_Direction=='Vertical'}
 <style>
 #page-header {
-  top: 3.625rem;
+ top: 3.625rem;
 }
 </style>
 <table>

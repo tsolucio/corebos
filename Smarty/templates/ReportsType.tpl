@@ -37,7 +37,7 @@
 				<img src="{'summarize.gif'|@vtiger_imageurl:$THEME}" align="absmiddle">
 			</td>
 			<td style="padding-left: 5px;" align="left" height="50" valign="bottom" width="75%">
-				<input type="radio" name="reportType" value="summary"  id="summary" onclick="hideTabs()">
+				<input type="radio" name="reportType" value="summary" id="summary" onclick="hideTabs()">
 				<b> {$MOD.LBL_SUMMARY_REPORT}</b>
 			</td>
 		</tr>

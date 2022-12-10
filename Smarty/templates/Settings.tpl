@@ -41,7 +41,7 @@
 									{/if}
 									{assign var=count value=$smarty.foreach.itr.iteration}
 									{* Item *}
-									<li  onclick="gotourl('{$data.link}')" class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3">
+									<li onclick="gotourl('{$data.link}')" class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3">
 										<div class="slds-app-launcher__tile slds-text-link_reset ">
 											<div class="slds-app-launcher__tile-figure" style="color: #0070ba;">
 											{* Icon *}

@@ -6,29 +6,28 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 
 <script type="text/javascript">
 	var moduleInfo = JSON.parse('{$PORTALMODULES}');
-	function initialModuleSettings(){ldelim}
+	function initialModuleSettings() {ldelim}
 		renderModuleSettings(moduleInfo);
 	{rdelim}
-	function visibleValue(sequence,tabid){ldelim}
+	function visibleValue(sequence,tabid) {ldelim}
 		visibleValueChange(sequence,tabid,moduleInfo);
 	{rdelim}
-	function prefValue(sequence,tabid){ldelim}
+	function prefValue(sequence,tabid) {ldelim}
 		prefValueChange(sequence,tabid,moduleInfo);
 	{rdelim}
-	function moveModules(sequence,move){ldelim}
-		if(move == "Up")
+	function moveModules(sequence,move) {ldelim}
+		if (move == 'Up')
 			moveUp(moduleInfo,sequence);
 		else
 			moveDown(moduleInfo,sequence);
 	{rdelim}
-	function renderModuleSettings(moduleInfo){ldelim}
+	function renderModuleSettings(moduleInfo) {ldelim}
 
 		var upImage = "{'arrow_up.png'|@vtiger_imageurl:$THEME}";
 		var downImage = "{'arrow_down.png'|@vtiger_imageurl:$THEME}";
@@ -69,24 +68,24 @@
 			//alert(upImageTag);
 			var valueTag = '';
 			if(moduleInfo[i].value == 1){ldelim}
-				valueTag = '{'LBL_YES'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'"  checked="checked" value="showall"> '+
-							'{'LBL_NO'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'" onclick="javascript:prefValue(\''+moduleInfo[i].sequence+'\',\''+moduleInfo[i].tabid+'\');"  value="onlymine">';
+				valueTag = '{'LBL_YES'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'" checked="checked" value="showall"> '+
+							'{'LBL_NO'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'" onclick="javascript:prefValue(\''+moduleInfo[i].sequence+'\',\''+moduleInfo[i].tabid+'\');" value="onlymine">';
 			{rdelim}
 			else{ldelim}
-				valueTag = '{'LBL_YES'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'" onclick="javascript:prefValue(\''+moduleInfo[i].sequence+'\',\''+moduleInfo[i].tabid+'\');"  value="showall"> '+
-							'{'LBL_NO'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'"  checked="checked" value="onlymine">';
+				valueTag = '{'LBL_YES'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'" onclick="javascript:prefValue(\''+moduleInfo[i].sequence+'\',\''+moduleInfo[i].tabid+'\');" value="showall"> '+
+							'{'LBL_NO'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'" checked="checked" value="onlymine">';
 			{rdelim}
 			displayData +=
 				'<tr><td class="listTableRow small" width="35%">'+moduleInfo[i].name+'</td>' +
 				'<input type="hidden" name="seq_'+moduleInfo[i].name+'" value="'+moduleInfo[i].sequence+'">' +
-				'<td  align="center" class="listTableRow">' +
+				'<td align="center" class="listTableRow">' +
 				'<a href="javascript:moveModules(\''+moduleInfo[i].sequence+'\',\'Up\');">' +
 					upImageTag + '</a>' +
 				blankImageTag +
 				'<a href="javascript:moveModules(\''+moduleInfo[i].sequence+'\',\'Down\');">' +
 					downImageTag + '</a>' +
 				'</td>' +
-				'<td class="listTableRow cellText small"  align="center">' +
+				'<td class="listTableRow cellText small" align="center">' +
 					visibleTag +
 				'</td>' +
 				'<td class="listTableRow">' +
@@ -110,15 +109,15 @@
 					<td class="detailedViewHeader" colspan="4" ><b>{'LBL_USER_INFORMATION'|@getTranslatedString:$MODULE}</b></td>
 				</tr>
 				<tr>
-					<td  class="dvtCellLabel" align="right" width="40%">{'LBL_SELECT_USERS'|@getTranslatedString:$MODULE}</td>
-					<td  class="dvtCellInfo" align="left">
+					<td class="dvtCellLabel" align="right" width="40%">{'LBL_SELECT_USERS'|@getTranslatedString:$MODULE}</td>
+					<td class="dvtCellInfo" align="left">
 						<select name="userid" class="small">
 							{foreach item=user from=$USERS}
 								{if $USERID eq $user.id}
 									<option value="{$user.id}" selected>{$user.name}</option>
 								{else}
 									<option value="{$user.id}">{$user.name}</option>
-	{/if}
+								{/if}
 							{/foreach}
 						</select>
 						<br><br>
@@ -126,8 +125,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td  class="dvtCellLabel" align="right">{'LBL_DEFAULT_USERS'|@getTranslatedString:$MODULE}</td>
-					<td  class="dvtCellInfo" align="left">
+					<td class="dvtCellLabel" align="right">{'LBL_DEFAULT_USERS'|@getTranslatedString:$MODULE}</td>
+					<td class="dvtCellInfo" align="left">
 						<select name="defaultAssignee" class="small">
 							<optgroup style="border: none" label="Users" >
 								{foreach item=user from=$USERS}
@@ -135,16 +134,16 @@
 										<option value="{$user.id}" selected>{$user.name}</option>
 									{else}
 										<option value="{$user.id}">{$user.name}</option>
-	{/if}
+									{/if}
 								{/foreach}
 							</optgroup>
 							<optgroup style="border: none" label="Groups">
 								{foreach item=group from=$GROUPS}
 									{if $DEFAULTASSIGNEE eq $group.groupid}
 										<option value="{$group.groupid}" selected>{$group.groupname}</option>
-		{else}
+									{else}
 										<option value="{$group.groupid}">{$group.groupname}</option>
-		{/if}
+									{/if}
 								{/foreach}
 							</optgroup>
 						</select>
@@ -153,13 +152,13 @@
 					</td>
 				</tr>
 			</table>
-	</td>
+		</td>
 	</tr>
 </table>
 <br><br>
-		<center><input class="crmbutton small save" type="Submit" style="width:70px" title="{$APP.LBL_SAVE_LABEL}" value="{$APP.LBL_SAVE_LABEL}" alt="{$APP.LBL_SAVE_LABEL}" onclick=VtigerJS_DialogBox.block();></center>
+	<center><input class="crmbutton small save" type="Submit" style="width:70px" title="{$APP.LBL_SAVE_LABEL}" value="{$APP.LBL_SAVE_LABEL}" alt="{$APP.LBL_SAVE_LABEL}" onclick=VtigerJS_DialogBox.block();></center>
 <script>
-	window.onload=function(){ldelim}
-		initialModuleSettings();
-	{rdelim}
+window.onload=function () {ldelim}
+	initialModuleSettings();
+{rdelim}
 </script>

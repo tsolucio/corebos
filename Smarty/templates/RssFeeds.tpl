@@ -9,11 +9,11 @@
   *
  ********************************************************************************/
 -->*}
-<table width="100%"  border="0" cellspacing="0" cellpadding="0" >
+<table width="100%" border="0" cellspacing="0" cellpadding="0" >
 	<tr><td colspan="2" class="mailSubHeader" height=25><b>{$MOD.LBL_FEEDS_LIST} {$TITLE}</b></td></tr>
 	<tr class="hdrNameBg">
 		<td valign=top height=25><input type="button" name="delete" value=" {$MOD.LBL_DELETE_BUTTON} " class="crmbutton small delete" onClick="DeleteRssFeeds('{$ID}');"/></td>
-		<td align="right"><input type="button" name="setdefault" value=" {$MOD.LBL_SET_DEFAULT_BUTTON}  " class="crmbutton small create" onClick="makedefaultRss('{$ID}');"/>
+		<td align="right"><input type="button" name="setdefault" value=" {$MOD.LBL_SET_DEFAULT_BUTTON} " class="crmbutton small create" onClick="makedefaultRss('{$ID}');"/>
 		</td>
 	</tr>
 	<tr><td colspan="2" align="left"><div id="rssScroll">{$RSSDETAILS}</div></td></tr>
