@@ -1,7 +1,7 @@
 <div>
 <tr class="actionlink">
 <td align="left" style="padding-left:10px;">
-	<img id="CheckIntegrity_img_id" src="{'yes.gif'|@vtiger_imageurl:$THEME}" alt="Validate this map" hspace="5" align="absmiddle" border="0"/>
+	<img id="CheckIntegrity_img_id" src="{'yes.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.VALIDATE_MAP}" hspace="5" align="absmiddle" border="0"/>
 	<a href="javascript:;" onClick="validateMap('{$ID}');">{$MOD.VALIDATE_MAP}</a>&nbsp;
 	<span id="vtbusy_validate_info" style="display:none;">
 	<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
