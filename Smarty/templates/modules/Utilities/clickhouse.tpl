@@ -24,7 +24,7 @@
 								<svg class="slds-icon slds-icon_small" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#case"></use>
 								</svg>
-							</span> 
+							</span>
 							</span>
 							Tables
 							</a>

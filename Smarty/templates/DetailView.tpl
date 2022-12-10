@@ -97,7 +97,6 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
 										<div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions_top">
 										<div class="slds-button-group" role="group">
-													
 											{if empty($Module_Popup_Edit)}
 												<div class="slds-button-group" role="group">
 													{include file='Components/DetailViewPirvNext.tpl'}
@@ -504,7 +503,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 															title="{$APP.LBL_EDIT_BUTTON_TITLE}"
 															value="{$APP.LBL_EDIT_BUTTON_TITLE}"
 															accessKey="{$APP.LBL_EDIT_BUTTON_KEY}"
-															onclick="DetailView.return_module.value='{$MODULE}'; 
+															onclick="DetailView.return_module.value='{$MODULE}';
 																	DetailView.return_action.value='DetailView';
 																	DetailView.return_id.value='{$ID}';
 																	DetailView.module.value='{$MODULE}';
@@ -524,11 +523,11 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 															title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}"
 															value="{$APP.LBL_DUPLICATE_BUTTON_TITLE}"
 															accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}"
-															onclick="DetailView.return_module.value='{$MODULE}'; 
-																	DetailView.return_action.value='DetailView'; 
+															onclick="DetailView.return_module.value='{$MODULE}';
+																	DetailView.return_action.value='DetailView';
 																	DetailView.isDuplicate.value='true';
-																	DetailView.module.value='{$MODULE}'; 
-																	submitFormForAction('DetailView','EditView');" 
+																	DetailView.module.value='{$MODULE}';
+																	submitFormForAction('DetailView','EditView');"
 															type="submit"
 															name="Duplicate"
 															>
@@ -538,17 +537,17 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 															{$APP.LBL_DUPLICATE_BUTTON_LABEL}
 														</button>
 													{/if}
-													{if $DELETE eq 'permitted'}	
+													{if $DELETE eq 'permitted'}
 														<button
 															class="slds-button slds-button_text-destructive"
 															title="{$APP.LBL_DELETE_BUTTON_TITLE}"
 															value="{$APP.LBL_DELETE_BUTTON_TITLE}"
 															accessKey="{$APP.LBL_DELETE_BUTTON_KEY}"
-															onclick="DetailView.return_module.value='{$MODULE}'; 
-																DetailView.return_action.value='index'; 
+															onclick="DetailView.return_module.value='{$MODULE}';
+																DetailView.return_action.value='index';
 																{if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);"
 															type="submit"
-															name="Delete" 
+															name="Delete"
 															>
 															<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 																<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>

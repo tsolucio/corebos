@@ -19,7 +19,6 @@
           display: contents;
       }
     </style>
-    
   </head>
 
   <body tabindex="1">

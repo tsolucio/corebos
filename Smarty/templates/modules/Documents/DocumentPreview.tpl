@@ -8,7 +8,6 @@
             border: 1px solid #ddd;
         }
     </style>
-   
     <div id="pdfIframeContainer">
         <iframe id="pdfPreviewiframe" src="Smarty/templates/modules/Documents/pdfViewer.html?file={$_downloadurl}&ulang={$UserLanguage}#zoom=page-width"  title="{$title}" width="100%" height="100%" />
         </iframe>

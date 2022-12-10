@@ -82,5 +82,3 @@
 		{/foreach}
 	</div>
 </section>
-
-			
