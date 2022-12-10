@@ -29,7 +29,7 @@
 			</span>
 			</label>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="stripe_key">{'stripe_Key'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="stripe_key" name="stripe_key" class="slds-input" value="{$stripeKey}" />
