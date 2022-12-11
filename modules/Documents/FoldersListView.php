@@ -297,7 +297,7 @@ if ($advancedSearchMapid) {
 $smarty->assign('advancedSearchMapResult', $advancedSearchMapResult);
 
 // GV responsible for showing or hiding filter panel
-$Application_ListView_FilterPanel_Open = GlobalVariable::getVariable('Application_ListView_FilterPanel_Open', '1', $currentModule, '', $_REQUEST['action']);
+$Application_ListView_FilterPanel_Open = GlobalVariable::getVariable('Application_ListView_FilterPanel_Open', '1', $currentModule);
 if (!$Application_ListView_FilterPanel_Open) {
 	$smarty->assign('Application_ListView_FilterPanel_Open', 'display: none;');
 } else {
