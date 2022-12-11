@@ -5738,21 +5738,21 @@ AutocompleteRelationPills.prototype.addPill = function () {
 };
 
 function AutocompleteRelation(target, i) {
-	this.inputField 	= target;
+	this.inputField		= target;
 	this.data			= JSON.parse(target.getAttribute('data-autocomp'));
-	this.targetUL 		= document.getElementsByClassName('relation-autocomplete__target')[i];
+	this.targetUL		= document.getElementsByClassName('relation-autocomplete__target')[i];
 	this.hiddenInput	= document.getElementsByClassName('relation-autocomplete__hidden')[i];
-	this.displayFields 	= this.showFields();
+	this.displayFields	= this.showFields();
 	this.entityName		= this.entityField();
-	this.moduleName 	= this.data.searchmodule;
+	this.moduleName		= this.data.searchmodule;
 	this.fillfields		= this.fillFields();
-	this.maxResults 	= this.MaxResults();
-	this.mincharstoSearch 	= this.MinCharsToSearch();
-	this.multiselect 	= this.multiselect();
+	this.maxResults		= this.MaxResults();
+	this.mincharstoSearch = this.MinCharsToSearch();
+	this.multiselect	= this.multiselect();
 	if (this.multiselect==='true') {
 		target.style.width='95%';
 	}
-	this.targetUL.show 	= function () {
+	this.targetUL.show = function () {
 		if (!this.classList.contains('active')) {
 			(function () {
 				var allAcLists = document.getElementsByClassName('relation-autocomplete__target');
@@ -5881,14 +5881,14 @@ AutocompleteRelation.prototype.set = function (items) {
 
 			li.addEventListener('click', function (e) {
 				acInstance.select({
-					label 		: this.getAttribute('data-label'),
-					value 		: this.getAttribute('data-crmid')
+					label : this.getAttribute('data-label'),
+					value : this.getAttribute('data-crmid')
 				});
 				acInstance.fillOtherFields(this);
 				if (acInstance.inputField.name==='query_string') {
 					acInstance.goToRec({
-						crmmodule 	: this.getAttribute('data-crmmodule'),
-						value 		: this.getAttribute('data-crmid')
+						crmmodule : this.getAttribute('data-crmmodule'),
+						value : this.getAttribute('data-crmid')
 					});
 				}
 			});

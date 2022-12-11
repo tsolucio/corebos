@@ -26,7 +26,7 @@ var relatedlistgrid = {
 				relatedlistgrid.loadedTooltips = [];
 			});
 			return true;
-		}		
+		}
 	},
 
 	save: (Grid, module) => {
@@ -92,7 +92,7 @@ var relatedlistgrid = {
 					relatedlistgrid.loadedTooltips = [];
 				});
 			}
-		}		
+		}
 	},
 
 	Tooltip: (id, Grid, rowKey, module) => {
@@ -200,7 +200,7 @@ class RLinkRender {
 				props.value = '';
 			}
 			el = document.createElement('span');
-			el.innerHTML = String(props.value);		
+			el.innerHTML = String(props.value);
 		}
 		this.el = el;
 		this.render(props);
@@ -250,7 +250,7 @@ class RLActionRender {
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 				</svg>
-			</button>`;			
+			</button>`;
 		} else {
 			actions += `
 			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Create']}">
