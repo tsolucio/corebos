@@ -192,6 +192,7 @@ class WizardCustomFunctions {
 				);
 			}
 		}
+		coreBOS_Session::set('DuplicatedRecords^parentpc^'.$parentpc, $parentpc);
 		MassCreate($target, $current_user);
 		return true;
 	}

@@ -53,6 +53,7 @@ relatedlistgrid.MapName['{$functionName}'] = '{$mapname}';
 relatedlistgrid.NextStep['{$functionName}'] = '{$NextStep}';
 relatedlistgrid.Wizard['{$functionName}'] = '{$Wizard}';
 relatedlistgrid.WizardWorkflows['{$functionName}'] = '{$WizardWorkflows}';
+relatedlistgrid.PopupAction['{$functionName}'] = '{$PopupAction}';
 function loadRLGrid{$functionName}() {
 	RLInstance['{$functionName}'] = new tui.Grid({
 		el: document.getElementById('{$functionName}'),

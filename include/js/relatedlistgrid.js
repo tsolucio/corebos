@@ -10,6 +10,7 @@ var relatedlistgrid = {
 	Wizard: [],
 	WizardWorkflows: [],
 	NextStep: [],
+	PopupAction: [],
 
 	delete: (Grid, module, recordid, fieldname) => {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
@@ -385,6 +386,15 @@ class RLActionRender {
 			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('${props.grid.el.id}', '${child_module}', ${recordid}, '${related_parent_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+				</svg>
+			</button>`;
+		}
+		let popupactions = JSON.parse(relatedlistgrid.PopupAction[`${props.grid.el.id}`]);
+		if (parent_module == '' && popupactions[related_child] !== undefined) {
+			actions += `
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child]}|${related_child}|${recordid}')">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 				</svg>
 			</button>`;
 		}

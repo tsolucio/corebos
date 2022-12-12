@@ -389,11 +389,12 @@ class WizardActions extends WizardCustomFunctions {
 	}
 
 	public function CreateRecords() {
-		global $current_user;
+		global $current_user, $adb;
 		$UsersTabid = vtws_getEntityId('Users');
 		$data = json_decode($_REQUEST['data'], true);
 		if (count($data) == 2) {
 			$relmodule = $data[0]['relmodule'];
+			$relatedRows = $data[0]['relatedRows'];
 			$createmodule = $data[1]['createmodule'];
 			$relfield = getFieldNameByFieldId(getRelatedFieldId($relmodule, $createmodule));
 			if (!empty($relfield)) {
@@ -401,6 +402,22 @@ class WizardActions extends WizardCustomFunctions {
 				foreach ($data[1]['data'] as $row) {
 					$row[$relfield] = vtws_getEntityId($relmodule).'x'.$data[0]['id'][0];
 					$row['assigned_user_id'] = $UsersTabid.'x'.$current_user->id;
+					if (!empty($relatedRows)) {
+						foreach ($relatedRows as $relid) {
+							$relModule = getSalesEntityType($relid);
+							$fieldrs = $adb->pquery('select fieldid from vtiger_fieldmodulerel where module=? and relmodule=?', array(
+								$createmodule, $relModule
+							));
+							if ($adb->num_rows($fieldrs) == 0) {
+								continue;
+							}
+							$fieldnamers = $adb->pquery('select fieldname from vtiger_field where fieldid=?', array(
+								$adb->query_result($fieldrs, 0, 'fieldid')
+							));
+							$fieldname = $adb->query_result($fieldnamers, 0, 'fieldname');
+							$row[$fieldname] = $relid;
+						}
+					}
 					$target[] = array(
 						'elementType' => $createmodule,
 						'referenceId' => '',

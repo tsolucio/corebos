@@ -84,19 +84,24 @@ class WizardComponent {
 	 */
 	Next(ev) {
 		switch (this.Operation) {
-			case 'CREATEPRODUCTCOMPONENTS'://*specific use case
+			case 'CREATEPRODUCTCOMPONENTS':
 				if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
 						return false;
 					}
 					if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined && ev.target.dataset.type == 'next') {
-						this.DuplicateProduct(ev);
-						return false;
+						if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
+							this.DuplicateProduct(ev);
+							return false;
+						}
 					} else {
 						let WizardSaveAction = this.WizardSaveIsActive[this.ActiveStep] === undefined ? false : this.WizardSaveIsActive[this.ActiveStep];
 						if (this.WizardCustomFunction[this.ActiveStep] != '' && !WizardSaveAction) {
-							this.CallCustomFunction(ev);
+							if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
+								this.CallCustomFunction(ev);
+							}
 						}
+						delete this.IsDuplicatedFromProduct[this.ActiveStep-1];
 					}
 					this.CheckedRows[this.ActiveStep-1] = [];
 					this.CheckedRows[this.ActiveStep] = [];
@@ -209,8 +214,12 @@ class WizardComponent {
 		if (ev != '') {
 			type = ev.target.dataset.type;
 		}
-		if (type == 'next') {
+		if (type == 'next' && this.WizardValidate[this.ActiveStep]) {
 			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
+			if (checkedRows.length != 1 && action == 'singlerow') {
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
+				return false;
+			}
 			if (checkedRows.length == 0) {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 				return false;
@@ -452,9 +461,9 @@ class WizardComponent {
 		}
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_FINISH;
-			setTimeout(function () {
-				wizard.el(`btn-next`).setAttribute('onclick', 'wizard.Finish()');
-			}, 200);
+			//setTimeout(function () {
+				//wizard.el(`btn-next`).setAttribute('onclick', 'wizard.Finish()');
+			//}, 200);
 			return false;
 		} else {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_NEXT;
@@ -688,8 +697,15 @@ class WizardComponent {
 				if (response) {
 					ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 					wizard.FilterDataForStep();
+					if (wizard.steps == wizard.ActiveStep+1) {
+						wizard.Finish();
+					}
 				} else {
 					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+				}
+			} else {
+				if (wizard.steps == wizard.ActiveStep+1) {
+					wizard.Finish();
 				}
 			}
 			wizard.loader('hide');
@@ -707,19 +723,20 @@ class WizardComponent {
 			type = ev.target.dataset.type;
 		}
 		let module = this.WizardCurrentModule[this.ActiveStep+1];
-		if (this.ActiveStep != 2) {
-			if (type == 'back' || this.WizardInstance[`wzgrid${this.ActiveStep}`] === undefined) {
-				return true;
-			}
-			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
-			if (checkedRows.length == 0 && !this.isModal) {
-				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
-				return false;
-			}
-			if (operation == 'MASSCREATE' && checkedRows.length != 1 && this.ActiveStep == 0 && !this.isModal) {
-				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
-				return false;
-			}
+		if (type == 'back' || this.WizardInstance[`wzgrid${this.ActiveStep}`] === undefined) {
+			return true;
+		}
+		if (!this.CheckSelection(ev)) {
+			return false;
+		}
+		const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
+		if (checkedRows.length == 0 && !this.isModal) {
+			ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
+			return false;
+		}
+		if (operation == 'MASSCREATE' && checkedRows.length != 1 && this.ActiveStep == 0 && !this.isModal) {
+			ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
+			return false;
 		}
 		if (this.ActiveStep == 0) {//second step
 			const findColName = this.RelatedFieldName();
@@ -746,7 +763,7 @@ class WizardComponent {
 			});
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
 		}
-		if (operation == 'MASSCREATE' && this.ActiveStep == 1) {
+		if (operation == 'MASSCREATE' && this.steps-2 == this.ActiveStep) {
 			if (this.IdVal(this.ActiveStep).length == 0) {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 				return false;
@@ -754,7 +771,7 @@ class WizardComponent {
 			this.Mapping(0, 1);
 			return true;
 		}
-		if (this.ActiveStep == 1) {//last step(3)
+		if (operation == 'MASSCREATETREEVIEW' && this.steps-1 == this.ActiveStep && type == 'next') {
 			const data = this.CheckedRows[this.ActiveStep];
 			let rows = [];
 			for (let i in data) {
@@ -771,7 +788,7 @@ class WizardComponent {
 			this.GroupData = groupBy;
 			this.TreeGrid();
 		}
-		if (this.ActiveStep == 2 && type == 'next') {
+		if (this.steps-1 == this.ActiveStep && type == 'next') {//mass create in last step
 			this.MassCreate(operation);
 		}
 		return true;
@@ -825,7 +842,7 @@ class WizardComponent {
 			filterData = Object.fromEntries(Object.entries(data).filter(value => value[1]));
 		} else if (operation == 'MASSCREATE') {
 			//MASCREATE operation is for created records based on 2 modules without grouping fields
-			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
+			let	checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
 			const wizardcolumns = JSON.parse(this.WizardColumns[this.ActiveStep]);
 			let data = [];
 			for (let j in checkedRows) {
@@ -841,10 +858,11 @@ class WizardComponent {
 			}
 			filterData = [{
 				id: parent,
-				relmodule: this.WizardCurrentModule[0]
+				relmodule: this.WizardCurrentModule[0],
+				relatedRows: this.IdVal(this.ActiveStep-1)
 			},{
 				data: data,
-				createmodule: this.WizardCurrentModule[2]
+				createmodule: this.MCModule
 			}];
 		}
 		if (Object.keys(filterData).length === 0) {
