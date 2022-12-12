@@ -32,9 +32,9 @@ class CBSelectcbMap extends VTTask {
 		$logbg->debug('> CBSelectcbMap');
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$maprs = $adb->pquery('select 1
-		from vtiger_cbmap
-		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
-		where vtiger_crmentity.deleted=0 and cbmapid=?', array($this->bmapid));
+			from vtiger_cbmap
+			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
+			where vtiger_crmentity.deleted=0 and cbmapid=?', array($this->bmapid));
 		if ($maprs && $adb->num_rows($maprs)>0) {
 			require_once 'modules/cbMap/cbMap.php';
 			require_once 'modules/cbMap/processmap/processMap.php';
@@ -50,7 +50,6 @@ class CBSelectcbMap extends VTTask {
 			$return = $focus->RecordAccessControl();
 			list($mod,$rec) = explode('x', $recordid);
 			$logbg->debug('(CBSelectcbMap) $recordid: ' . $recordid);
-			$logbg->debug('(CBSelectcbMap) setting related record ID');
 			$return->setRelatedRecordID($rec);
 			return $return;
 		} else {
