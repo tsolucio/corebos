@@ -139,7 +139,7 @@ class HelpDesk extends CRMEntity {
 		$for_crmid = isset($_REQUEST['return_id']) ? $_REQUEST['return_id'] : false;
 		if ($return_action && $for_module && $for_crmid && $for_module == 'ServiceContracts') {
 			$on_focus = CRMEntity::getInstance($for_module);
-			$on_focus->save_related_module($for_module, $for_crmid, $module, $this->id);
+			relateEntities($on_focus, $for_module, $for_crmid, $module, $this->id);
 		}
 	}
 
