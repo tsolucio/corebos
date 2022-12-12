@@ -61,16 +61,14 @@ class CBAssignRelatedTask extends VTTask {
 				$updobject = 'UPDATE vtiger_crmobject set smownerid=? where crmid=?';
 				$upddenorm = 'UPDATE '.$crmEntityTable.' set smownerid=? where crmid=?';
 				$relrecs = $adb->query($query);
+				$logbg->debug('(CBAssignRelatedTask) going to update all these CRMIDs  in this table');
 				for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 					// direct assignment to avoid relaunching workflows > I am not sure this is correct (!)
 					if ($denormed) {
-						$logbg->debug('(CBAssignRelatedTask) update ' . $crmEntityTable);
 						$adb->pquery($upddenorm, array($usr, $adb->query_result($relrecs, $relrec, 0)));
 					} else {
-						$logbg->debug('(CBAssignRelatedTask) update vtiger_crmentity');
 						$adb->pquery($updquery, array($usr, $adb->query_result($relrecs, $relrec, 0)));
 					}
-					$logbg->debug('(CBAssignRelatedTask) update vtiger_crmobject');
 					$adb->pquery($updobject, array($usr, $adb->query_result($relrecs, $relrec, 0)));
 				}
 			} else {
