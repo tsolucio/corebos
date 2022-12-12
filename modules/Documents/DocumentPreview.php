@@ -54,13 +54,13 @@ class DocumentPreview_DetailViewBlock extends DeveloperBlock {
 			);
 		} elseif ($docid) {
 			$rs = $adb->pquery(
-				"select vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,
+				'select vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,
 					vtiger_seattachmentsrel.attachmentsid attachmentsid,vtiger_notes.notecontent description,vtiger_notes.*
 				from vtiger_notes
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
 				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 				left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
-				where notesid=?",
+				where notesid=?',
 				array($docid)
 			);
 		} else {

@@ -36,14 +36,14 @@ if (strpos($query_string, '::')) {
 	$resttype = substr($query_string, 0, strpos($query_string, '::'));
 	// you can add fieldtype aliases here
 	switch ($resttype) {
-		case "$":
-			$resttype = "currency";
+		case '$':
+			$resttype = 'currency';
 			break;
-		case "site":
-			$resttype = "url";
+		case 'site':
+			$resttype = 'url';
 			break;
-		case "@":
-			$resttype = "email";
+		case '@':
+			$resttype = 'email';
 			break;
 	}
 
@@ -57,8 +57,8 @@ if (strpos($query_string, '::')) {
 		$fieldtype = $resttype;
 	}
 }
-if (strpos($query_string, "..") !== false) {
-	$query_string = str_replace("$::", "", $query_string);
+if (strpos($query_string, '..') !== false) {
+	$query_string = str_replace('$::', '', $query_string);
 }
 $curModule = vtlib_purify($_REQUEST['module']);
 $search_tag = isset($_REQUEST['search_tag']) ? vtlib_purify($_REQUEST['search_tag']) : '';
@@ -132,15 +132,15 @@ if (isset($query_string) && $query_string != '') {
 					$search_msg = $app_strings['LBL_TAG_SEARCH'];
 					$search_msg .= '<b>'.to_html($search_val).'</b>';
 				} else { //This is for Global search
-					$where = "";
+					$where = '';
 					$search_values = [];
-					if (strpos($search_val, "OR") !== false) {
-						$search_values = explode("OR", $search_val);
+					if (strpos($search_val, 'OR') !== false) {
+						$search_values = explode('OR', $search_val);
 						$multiple_where = [];
 						foreach ($search_values as $search_values_key => $search_values_value) {
-							array_push($multiple_where, "(" . getUnifiedWhere($listquery, $module, trim($search_values_value), $fieldtype) . ")");
+							array_push($multiple_where, '(' . getUnifiedWhere($listquery, $module, trim($search_values_value), $fieldtype) . ')');
 						}
-						$where = implode("OR", $multiple_where);
+						$where = implode('OR', $multiple_where);
 					} else {
 						$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
 					}
