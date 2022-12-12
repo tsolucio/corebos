@@ -14,26 +14,26 @@
  * datasource Format:
  *
  * datasource = {
- * 		"sourcefieldname1" : {
+ *		"sourcefieldname1" : {
  *
- * 			"sourcevalue1" : {
- * 				"targetfieldname" : ["targetvalue1", "targetvalue2"]
- *	 		},
- * 			"sourcevalue2" : {
- * 				"targetfieldname" : ["targetvalue3", "targetvalue4"]
- * 			},
+ *			"sourcevalue1" : {
+ *				"targetfieldname" : ["targetvalue1", "targetvalue2"]
+ *			},
+ *			"sourcevalue2" : {
+ *				"targetfieldname" : ["targetvalue3", "targetvalue4"]
+ *			},
  *
- * 			"sourcevalue3" : {
- * 				"targetfieldname" : false // This will enable all the values in the target fieldname
- * 			},
+ *			"sourcevalue3" : {
+ *				"targetfieldname" : false // This will enable all the values in the target fieldname
+ *			},
  *
- * 			// NOTE: All source values (option) needs to be mapped in the datasource
+ *			// NOTE: All source values (option) needs to be mapped in the datasource
  *
- * 		},
+ *		},
  *
- * 		"sourcefieldname2" : {
- * 			// ...
- * 		}
+ *		"sourcefieldname2" : {
+ *			// ...
+ *		}
  * }
  *
  * NOTE: Event.fire(targetfieldnode, 'dependent:change'); is triggered on the field value changes.

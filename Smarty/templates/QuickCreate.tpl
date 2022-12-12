@@ -39,8 +39,8 @@
 		<!-- save cancel buttons -->
 		<table border="0" cellspacing="0" cellpadding="5" width="100%" class=qcTransport>
 			<tr>
-				<td style="width:50%;text-align:right;"><input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  "></td>
-				<td style="width:50%;text-align:left;"><input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="hide('{if $FROM eq 'popup'}qcformpop{else}qcform{/if}');" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  "></td>
+				<td style="width:50%;text-align:right;"><input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" type="submit" name="button" value=" {$APP.LBL_SAVE_BUTTON_LABEL} "></td>
+				<td style="width:50%;text-align:left;"><input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="hide('{if $FROM eq 'popup'}qcformpop{else}qcform{/if}');" type="button" name="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} "></td>
 			</tr>
 		</table>
 

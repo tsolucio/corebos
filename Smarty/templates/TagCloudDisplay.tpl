@@ -29,7 +29,7 @@
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
 					</svg>
 					<input value="{$APP.LBL_TAG_IT}" type="text" id="txtbox_tagfields" placeholder="{'Add Tag'|@getTranslatedString:'com_vtiger_workflow'}…" value="" class="slds-input"/>
-					<button 
+					<button
 						class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
 						title="{$APP.LBL_TAG_IT}"
 						value="{$APP.LBL_TAG_IT}">

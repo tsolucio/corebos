@@ -97,7 +97,6 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
 										<div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions_top">
 										<div class="slds-button-group" role="group">
-													
 											{if empty($Module_Popup_Edit)}
 												<div class="slds-button-group" role="group">
 													{include file='Components/DetailViewPirvNext.tpl'}
@@ -343,24 +342,28 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																{if $customlink_href=='ACTIONSUBHEADER'}
 																	<span class="genHeaderSmall slds-truncate">{$customlink_label}</span>
 																{else}
-																	{if $CUSTOMLINK->linkicon}
-																		{if strpos($CUSTOMLINK->linkicon, '}')>0}
-																			{assign var="customlink_iconinfo" value=$CUSTOMLINK->linkicon|json_decode:true}
-																			<span class="slds-icon_container slds-icon-{$customlink_iconinfo.library}-{$customlink_iconinfo.icon}" title="{$customlink_label}">
-																			<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
-																				<use xlink:href="include/LD/assets/icons/{$customlink_iconinfo.library}-sprite/svg/symbols.svg#{$customlink_iconinfo.icon}"></use>
-																			</svg>
-																			<span class="slds-assistive-text">{$customlink_label}</span>
-																			</span>
+																	{if empty($CUSTOMLINK->showasbutton)}
+																		{if $CUSTOMLINK->linkicon}
+																			{if strpos($CUSTOMLINK->linkicon, '}')>0}
+																				{assign var="customlink_iconinfo" value=$CUSTOMLINK->linkicon|json_decode:true}
+																				<span class="slds-icon_container slds-icon-{$customlink_iconinfo.library}-{$customlink_iconinfo.icon}" title="{$customlink_label}">
+																				<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
+																					<use xlink:href="include/LD/assets/icons/{$customlink_iconinfo.library}-sprite/svg/symbols.svg#{$customlink_iconinfo.icon}"></use>
+																				</svg>
+																				<span class="slds-assistive-text">{$customlink_label}</span>
+																				</span>
+																			{else}
+																				<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">
+																				<img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}">
+																				</a>
+																			{/if}
 																		{else}
-																			<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">
-																			<img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}">
-																			</a>
+																			<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
 																		{/if}
+																		&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
 																	{else}
-																		<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
+																	<a class="slds-button {if empty($CUSTOMLINK->linkicon)}slds-button_neutral{else}{$CUSTOMLINK->linkicon}{/if}" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
 																	{/if}
-																	&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
 																{/if}
 															</li>
 														{/foreach}
@@ -500,7 +503,7 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 															title="{$APP.LBL_EDIT_BUTTON_TITLE}"
 															value="{$APP.LBL_EDIT_BUTTON_TITLE}"
 															accessKey="{$APP.LBL_EDIT_BUTTON_KEY}"
-															onclick="DetailView.return_module.value='{$MODULE}'; 
+															onclick="DetailView.return_module.value='{$MODULE}';
 																	DetailView.return_action.value='DetailView';
 																	DetailView.return_id.value='{$ID}';
 																	DetailView.module.value='{$MODULE}';
@@ -520,11 +523,11 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 															title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}"
 															value="{$APP.LBL_DUPLICATE_BUTTON_TITLE}"
 															accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}"
-															onclick="DetailView.return_module.value='{$MODULE}'; 
-																	DetailView.return_action.value='DetailView'; 
+															onclick="DetailView.return_module.value='{$MODULE}';
+																	DetailView.return_action.value='DetailView';
 																	DetailView.isDuplicate.value='true';
-																	DetailView.module.value='{$MODULE}'; 
-																	submitFormForAction('DetailView','EditView');" 
+																	DetailView.module.value='{$MODULE}';
+																	submitFormForAction('DetailView','EditView');"
 															type="submit"
 															name="Duplicate"
 															>
@@ -534,17 +537,17 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 															{$APP.LBL_DUPLICATE_BUTTON_LABEL}
 														</button>
 													{/if}
-													{if $DELETE eq 'permitted'}	
+													{if $DELETE eq 'permitted'}
 														<button
 															class="slds-button slds-button_text-destructive"
 															title="{$APP.LBL_DELETE_BUTTON_TITLE}"
 															value="{$APP.LBL_DELETE_BUTTON_TITLE}"
 															accessKey="{$APP.LBL_DELETE_BUTTON_KEY}"
-															onclick="DetailView.return_module.value='{$MODULE}'; 
-																DetailView.return_action.value='index'; 
+															onclick="DetailView.return_module.value='{$MODULE}';
+																DetailView.return_action.value='index';
 																{if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);"
 															type="submit"
-															name="Delete" 
+															name="Delete"
 															>
 															<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 																<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>

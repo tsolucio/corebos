@@ -79,7 +79,7 @@
                                   </label>
                                 </span>
                               </div>
-                            </fieldset>                               
+                            </fieldset>
                             </div>
                             <div class="slds-col slds-size_6-of-12">
                                 <div class="slds-form-element">
@@ -119,7 +119,7 @@
                                       </div>
                                     </div>
                                     </div>
-                                </div>                              
+                                </div>
                             </div>
                         </div>
                     </div>

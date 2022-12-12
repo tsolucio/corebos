@@ -35,7 +35,7 @@
 			</div>
 			<div class="slds-col slds-size_1-of-2 slds-p-vertical_small slds-text-align_right">
 				<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true" onClick="fninvsh('reportLay');">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use> 
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 				</svg>
 			</div>
 		</div>
@@ -121,7 +121,7 @@
 			</div>
 			<div class="slds-col slds-size_1-of-2 slds-p-vertical_small slds-text-align_right" style="cursor:pointer;">
 				<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true" onClick="closeEditReport();">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use> 
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 				</svg>
 			</div>
 		</div>

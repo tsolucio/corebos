@@ -38,6 +38,20 @@ function getKanbanTileMenu($tabid, $module, $crmid, $lanenames, $fieldName, $lan
 		$link->handler = '';
 		$link->onlyonmymodule = '0';
 		$links[] = $link;
+		$link = new Vtiger_Link();
+		$link->tabid = $tabid;
+		$link->linkid = 0;
+		$link->linktype = 'KANBANMENU';
+		$link->linklabel = getTranslatedString('Open', 'Emails');
+		$link->linkurl = "window.open('index.php?action=DetailView&module=".$module.'&record='.$crmid."', '_blank', '');";
+		$link->linkicon = '';
+		$link->sequence = $seq++;
+		$link->status = false;
+		$link->handler_path = '';
+		$link->handler_class = '';
+		$link->handler = '';
+		$link->onlyonmymodule = '0';
+		$links[] = $link;
 	}
 	if (isPermitted($module, 'EditView', $crmid)=='yes') {
 		$link = new Vtiger_Link();

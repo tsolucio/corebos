@@ -8,8 +8,8 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-{*//Hidden fields for modules DetailView//  *}
-<input type="hidden"  name="allselectedboxes" id="allselectedboxes">
+{*//Hidden fields for modules DetailView// *}
+<input type="hidden" name="allselectedboxes" id="allselectedboxes">
 <input name="from_link" id="from_link" type="hidden" value="DetailView">
 <input type="hidden" name="cbfromid" id="cbfromid" value="{$ID}">
 <input type="hidden" id="module" name="module" value="{$MODULE}">

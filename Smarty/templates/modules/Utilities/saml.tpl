@@ -18,13 +18,13 @@
 		<input type="hidden" name="action" value="integration">
 		<input type="hidden" name="_op" value="setconfigsaml">
 		<div class="slds-form-element">
-			<label class="slds-checkbox--toggle slds-grid">
-			<span class="slds-form-element__label slds-m-bottom--none">{'_active'|@getTranslatedString:$MODULE}</span>
+			<label class="slds-checkbox_toggle slds-grid">
+			<span class="slds-form-element__label slds-m-bottom_none">{'_active'|@getTranslatedString:$MODULE}</span>
 			<input type="checkbox" name="saml_active" aria-describedby="toggle-desc" {if $isActive}checked{/if} />
-			<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-				<span class="slds-checkbox--faux"></span>
-				<span class="slds-checkbox--on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
-				<span class="slds-checkbox--off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
+			<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+				<span class="slds-checkbox_faux"></span>
+				<span class="slds-checkbox_on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
+				<span class="slds-checkbox_off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
 			</span>
 			</label>
 		</div>
@@ -45,25 +45,25 @@
 				</div>
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="speid">{'SAML EID'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="speid" name="speid" class="slds-input" value="{$speid}" />
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="spacs">{'SAML ACS'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="spacs" name="spacs" class="slds-input" value="{$spacs}" />
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="spslo">{'SAML SLO'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="spslo" name="spslo" class="slds-input" value="{$spslo}" />
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="spnid">{'SAML NID'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="spnid" name="spnid" class="slds-input" value="{$spnid}" />
@@ -86,25 +86,25 @@
 				</div>
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="ipeid">{'SAML EID'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="ipeid" name="ipeid" class="slds-input" value="{$ipeid}" />
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="ipsso">{'SAML SSO'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="ipsso" name="ipsso" class="slds-input" value="{$ipsso}" />
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="ipslo">{'SAML SLO'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="ipslo" name="ipslo" class="slds-input" value="{$ipslo}" />
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="ip509">{'SAML x509'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="ip509" name="ip509" class="slds-input" value="{$ip509}" />
@@ -157,7 +157,7 @@
 			</div>
 		</div>
 		<div class="slds-m-top_large">
-			<button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+			<button type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 		</div>
 		</form>
 	{/if}

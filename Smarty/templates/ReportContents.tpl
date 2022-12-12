@@ -7,7 +7,7 @@
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
  ********************************************************************************/
--->*} 
+-->*}
 <link rel="stylesheet" href="include/gridstack/gridstack.min.css" type="text/css">
 <link rel="stylesheet" href="include/gridstack/gridstack-extra.min.css" type="text/css">
 <script src="include/gridstack/gridstack-h5.js" type="text/javascript"></script>
@@ -37,7 +37,7 @@
 			{foreach item=reportfolder from=$REPT_FLDR}
 			{assign var=poscount value=$poscount+1}
 			<div class="grid-stack-item" {if isset($REPORT_LAYOUT[$reportfolder.id])}{$REPORT_LAYOUT[$reportfolder.id]}{else}{$DEFAULT_LAYOUT}{/if} gs-id="{$reportfolder.id}" id="gridcard{$poscount}">
-				<div class="grid-stack-item-content draggable_bordered"> 
+				<div class="grid-stack-item-content draggable_bordered">
 					<div class="slds-grid">
 						<div class="slds-col slds-size_1-of-1">
 							<div class="slds-page-header">
@@ -143,31 +143,31 @@
 														{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
 															<a href="javascript:;" title="{$MOD.LBL_CUSTOMIZE_BUTTON}..." class="slds-button" onClick="editReport('{$reportdetails.reportid}');">
 																<svg class="slds-icon slds-icon_x-small slds-icon-text-light" aria-hidden="true" >
-																	<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#edit"></use> 
+																	<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#edit"></use>
 																</svg>
 															</a>
 														{/if}
 														{if $ISADMIN || ($reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true')}
 															<a href="javascript:;" title="{$MOD.LBL_DELETE}..." class="slds-button" onclick="DeleteReport('{$reportdetails.reportid}');">
 																<svg class="slds-icon slds-icon_x-small slds-icon-text-light" aria-hidden="true" >
-																	<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use> 
+																	<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use>
 																</svg>
 															</a>
 														{/if}
 														{if $reportdetails.cbreporttype neq 'external' && $reportdetails.export eq 'yes'}
 														<a href="javascript:void(0);" class="slds-button" title="{$MOD.LBL_EXPORTCSV}" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');">
 															<svg class="slds-icon slds-icon_x-small" aria-hidden="true" >
-																<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#csv"></use> 
+																<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#csv"></use>
 															</svg>
 														</a>
 														<a href="javascript:void(0);" class="slds-button" title="{$MOD.LBL_EXPORTXL_BUTTON}" onclick="gotourl('index.php?module=Reports&action=CreateXL&record={$reportdetails.reportid}');">
 															<svg class="slds-icon slds-icon_x-small" aria-hidden="true" >
-																<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#excel"></use> 
+																<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#excel"></use>
 															</svg>
 														</a>
 														<a href="javascript:void(0);" class="slds-button" title="{$MOD.LBL_EXPORTPDF_BUTTON}" onclick="gotourl('index.php?module=Reports&action=CreatePDF&record={$reportdetails.reportid}');">
 															<svg class="slds-icon slds-icon_x-small" aria-hidden="true" >
-																<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#pdf"></use> 
+																<use xlink:href="include/LD/assets/icons/doctype-sprite/svg/symbols.svg#pdf"></use>
 															</svg>
 														</a>
 														{/if}

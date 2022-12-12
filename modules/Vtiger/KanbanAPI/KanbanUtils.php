@@ -42,6 +42,7 @@ function kbGetItemQuery($module, $limit_start_rec, $boardinfo) {
 	if (empty($order_by)) {
 		$order_by = $focus->default_order_by;
 	}
+	$sorder = $focus->getSortOrder();
 	$queryGenerator->addWhereField($order_by);
 	$queryGenerator->addCondition($boardinfo['lanefield'], $boardinfo['lanename'], 'e', QueryGenerator::$AND);
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.before', $queryGenerator);
@@ -54,7 +55,7 @@ function kbGetItemQuery($module, $limit_start_rec, $boardinfo) {
 	} else {
 		coreBOS_Session::delete('export_where');
 	}
-	return $list_query. " ORDER BY $order_by LIMIT ".($limit_start_rec*$boardinfo['pagesize']).', '.$boardinfo['pagesize'];
+	return $list_query. " ORDER BY $order_by $sorder LIMIT ".($limit_start_rec*$boardinfo['pagesize']).', '.$boardinfo['pagesize'];
 }
 
 function kbConstructQuery($q, $c) {
