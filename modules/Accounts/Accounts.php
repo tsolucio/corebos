@@ -191,7 +191,7 @@ class Accounts extends CRMEntity {
 				$actions = explode(',', strtoupper($actions));
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
+				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT')
@@ -199,9 +199,9 @@ class Accounts extends CRMEntity {
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
+					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($related_module);
@@ -279,7 +279,7 @@ class Accounts extends CRMEntity {
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='". getTranslatedString('LBL_ADD_NEW')." ". $singular_modname."' accessyKey='F' class='crmbutton small create'"
+				$button .= "<input title='". getTranslatedString('LBL_ADD_NEW').' '. $singular_modname."' accessyKey='F' class='crmbutton small create'"
 					." onclick='fnvshobj(this,\"sendmail_cont\");sendmail(\"$this_module\",$id);' type='button' name='button' value='".getTranslatedString('LBL_ADD_NEW')
 					.' '. $singular_modname."'></td>";
 			}
@@ -355,9 +355,9 @@ class Accounts extends CRMEntity {
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
+					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($related_module);
@@ -409,7 +409,7 @@ class Accounts extends CRMEntity {
 				$actions = explode(',', strtoupper($actions));
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
+				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
 					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT')
@@ -417,9 +417,9 @@ class Accounts extends CRMEntity {
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
+					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias($related_module);
@@ -475,7 +475,7 @@ class Accounts extends CRMEntity {
 		if ($where != '') {
 			$query .= " WHERE ($where) AND ".$where_auto;
 		} else {
-			$query .= " WHERE ".$where_auto;
+			$query .= ' WHERE '.$where_auto;
 		}
 
 		$log->debug('< create_export_query');
@@ -511,7 +511,7 @@ class Accounts extends CRMEntity {
 		$numRows = $adb->num_rows($result);
 		$custom_fields = array();
 		for ($i=0; $i < $numRows; $i++) {
-			$custom_fields[$i] = $adb->query_result($result, $i, "fieldlabel");
+			$custom_fields[$i] = $adb->query_result($result, $i, 'fieldlabel');
 			$custom_fields[$i] = preg_replace('/\s+/', '', $custom_fields[$i]);
 			$custom_fields[$i] = strtoupper($custom_fields[$i]);
 		}
@@ -610,16 +610,16 @@ class Accounts extends CRMEntity {
 	public function generateReportsSecQuery($module, $secmodule, $queryPlanner, $type = '', $where_condition = '') {
 		$query = parent::generateReportsSecQuery($module, $secmodule, $queryPlanner, $type, $where_condition);
 		if ($queryPlanner->requireTable('vtiger_accountbillads')) {
-			$query .= " left join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid";
+			$query .= ' left join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid';
 		}
 		if ($queryPlanner->requireTable('vtiger_accountshipads')) {
-			$query .= " left join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid";
+			$query .= ' left join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid';
 		}
 		if ($queryPlanner->requireTable('vtiger_accountAccounts')) {
-			$query .= "	left join vtiger_account as vtiger_accountAccounts on vtiger_accountAccounts.accountid = vtiger_account.parentid";
+			$query .= ' left join vtiger_account as vtiger_accountAccounts on vtiger_accountAccounts.accountid = vtiger_account.parentid';
 		}
 		if ($queryPlanner->requireTable('vtiger_email_track')) {
-			$query .= " LEFT JOIN vtiger_email_track AS vtiger_email_trackAccounts ON vtiger_email_trackAccounts .crmid = vtiger_account.accountid";
+			$query .= ' LEFT JOIN vtiger_email_track AS vtiger_email_trackAccounts ON vtiger_email_trackAccounts .crmid = vtiger_account.accountid';
 		}
 		return $query;
 	}
@@ -674,7 +674,7 @@ class Accounts extends CRMEntity {
 							$data = '<b>'.$data.'</b>';
 						}
 						// - to show the hierarchy of the Accounts
-						$account_depth = str_repeat(" .. ", $account_info['depth'] * 2);
+						$account_depth = str_repeat(' .. ', $account_info['depth'] * 2);
 						$data = $account_depth . $data;
 					} elseif ($colname == 'website') {
 						$data = '<a href="http://'. $data .'" target="_blank">'.$data.'</a>';
@@ -699,9 +699,8 @@ class Accounts extends CRMEntity {
 	public function __getParentAccounts($id, &$parent_accounts, &$encountered_accounts) {
 		global $log, $adb;
 		$log->debug('> __getParentAccounts '.$id);
-		$query = "SELECT parentid FROM vtiger_account " .
-				" INNER JOIN ".$this->crmentityTableAlias." ON vtiger_crmentity.crmid = vtiger_account.accountid" .
-				" WHERE vtiger_crmentity.deleted = 0 and vtiger_account.accountid = ?";
+		$query = 'SELECT parentid FROM vtiger_account INNER JOIN '.$this->crmentityTableAlias.' ON vtiger_crmentity.crmid=vtiger_account.accountid'
+			.' WHERE vtiger_crmentity.deleted=0 and vtiger_account.accountid=?';
 		$params = array($id);
 
 		$res = $adb->pquery($query, $params);
@@ -714,18 +713,14 @@ class Accounts extends CRMEntity {
 			$this->__getParentAccounts($parentid, $parent_accounts, $encountered_accounts);
 		}
 
-		$query = "SELECT vtiger_account.*, vtiger_accountbillads.*," .
-			" CASE when (vtiger_users.user_name not like '') THEN vtiger_users.ename ELSE vtiger_groups.groupname END as user_name " .
-			" FROM vtiger_account" .
-			" INNER JOIN ".$this->crmentityTableAlias.
-			" ON vtiger_crmentity.crmid = vtiger_account.accountid" .
-			" INNER JOIN vtiger_accountbillads" .
-			" ON vtiger_account.accountid = vtiger_accountbillads.accountaddressid " .
-			" LEFT JOIN vtiger_groups" .
-			" ON vtiger_groups.groupid = vtiger_crmentity.smownerid" .
-			" LEFT JOIN vtiger_users" .
-			" ON vtiger_users.id = vtiger_crmentity.smownerid" .
-			" WHERE vtiger_crmentity.deleted = 0 and vtiger_account.accountid = ?";
+		$query = 'SELECT vtiger_account.*, vtiger_accountbillads.*,'
+			." CASE when (vtiger_users.user_name not like '') THEN vtiger_users.ename ELSE vtiger_groups.groupname END as user_name "
+			.' FROM vtiger_account'
+			.' INNER JOIN '.$this->crmentityTableAlias.' ON vtiger_crmentity.crmid = vtiger_account.accountid'
+			.' INNER JOIN vtiger_accountbillads ON vtiger_account.accountid = vtiger_accountbillads.accountaddressid '
+			.' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid'
+			.' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid'
+			.' WHERE vtiger_crmentity.deleted=0 and vtiger_account.accountid=?';
 		$params = array($id);
 		$res = $adb->pquery($query, $params);
 
@@ -759,18 +754,14 @@ class Accounts extends CRMEntity {
 		global $log, $adb;
 		$log->debug('> __getChildAccounts '.$id);
 
-		$query = "SELECT vtiger_account.*, vtiger_accountbillads.*," .
-				" CASE when (vtiger_users.user_name not like '') THEN vtiger_users.ename ELSE vtiger_groups.groupname END as user_name " .
-				" FROM vtiger_account" .
-				" INNER JOIN " .$this->crmentityTableAlias.
-				" ON vtiger_crmentity.crmid = vtiger_account.accountid" .
-				" INNER JOIN vtiger_accountbillads" .
-				" ON vtiger_account.accountid = vtiger_accountbillads.accountaddressid " .
-				" LEFT JOIN vtiger_groups" .
-				" ON vtiger_groups.groupid = vtiger_crmentity.smownerid" .
-				" LEFT JOIN vtiger_users" .
-				" ON vtiger_users.id = vtiger_crmentity.smownerid" .
-				" WHERE vtiger_crmentity.deleted = 0 and parentid = ?";
+		$query = 'SELECT vtiger_account.*, vtiger_accountbillads.*,'
+			." CASE when (vtiger_users.user_name not like '') THEN vtiger_users.ename ELSE vtiger_groups.groupname END as user_name "
+			.' FROM vtiger_account'
+			.' INNER JOIN '.$this->crmentityTableAlias.' ON vtiger_crmentity.crmid = vtiger_account.accountid'
+			.' INNER JOIN vtiger_accountbillads ON vtiger_account.accountid = vtiger_accountbillads.accountaddressid'
+			.' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid'
+			.' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid'
+			.' WHERE vtiger_crmentity.deleted=0 and parentid=?';
 		$params = array($id);
 		$res = $adb->pquery($query, $params);
 
@@ -813,13 +804,13 @@ class Accounts extends CRMEntity {
 		$pot_res = $adb->pquery($pot_q, array($id));
 		$pot_ids_list = array();
 		for ($k=0; $k < $adb->num_rows($pot_res); $k++) {
-			$pot_id = $adb->query_result($pot_res, $k, "crmid");
+			$pot_id = $adb->query_result($pot_res, $k, 'crmid');
 			$pot_ids_list[] = $pot_id;
 			$sql = 'UPDATE '.$crmEntityTable1.' SET deleted = 1 WHERE crmid = ?';
 			$adb->pquery($sql, array($pot_id));
 		}
 		//Backup deleted Account related Potentials.
-		$params = array($id, RB_RECORD_UPDATED, $crmEntityTable1, 'deleted', 'crmid', implode(",", $pot_ids_list));
+		$params = array($id, RB_RECORD_UPDATED, $crmEntityTable1, 'deleted', 'crmid', implode(',', $pot_ids_list));
 		$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES(?,?,?,?,?,?)', $params);
 
 		//Deleting Account related Quotes.
@@ -832,13 +823,13 @@ class Accounts extends CRMEntity {
 		$quo_res = $adb->pquery($quo_q, array($id));
 		$quo_ids_list = array();
 		for ($k=0; $k < $adb->num_rows($quo_res); $k++) {
-			$quo_id = $adb->query_result($quo_res, $k, "crmid");
+			$quo_id = $adb->query_result($quo_res, $k, 'crmid');
 			$quo_ids_list[] = $quo_id;
 			$sql = 'UPDATE '.$crmEntityTable3.' SET deleted = 1 WHERE crmid = ?';
 			$adb->pquery($sql, array($quo_id));
 		}
 		//Backup deleted Account related Quotes.
-		$params = array($id, RB_RECORD_UPDATED, $crmEntityTable3, 'deleted', 'crmid', implode(",", $quo_ids_list));
+		$params = array($id, RB_RECORD_UPDATED, $crmEntityTable3, 'deleted', 'crmid', implode(',', $quo_ids_list));
 		$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES(?,?,?,?,?,?)', $params);
 
 		//Backup Contact-Account Relation
@@ -847,9 +838,9 @@ class Accounts extends CRMEntity {
 		if ($adb->num_rows($con_res) > 0) {
 			$con_ids_list = array();
 			for ($k=0; $k < $adb->num_rows($con_res); $k++) {
-				$con_ids_list[] = $adb->query_result($con_res, $k, "contactid");
+				$con_ids_list[] = $adb->query_result($con_res, $k, 'contactid');
 			}
-			$params = array($id, RB_RECORD_UPDATED, 'vtiger_contactdetails', 'accountid', 'contactid', implode(",", $con_ids_list));
+			$params = array($id, RB_RECORD_UPDATED, 'vtiger_contactdetails', 'accountid', 'contactid', implode(',', $con_ids_list));
 			$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES(?,?,?,?,?,?)', $params);
 		}
 		//Deleting Contact-Account Relation.
@@ -862,9 +853,9 @@ class Accounts extends CRMEntity {
 		if ($adb->num_rows($tkt_res) > 0) {
 			$tkt_ids_list = array();
 			for ($k=0; $k < $adb->num_rows($tkt_res); $k++) {
-				$tkt_ids_list[] = $adb->query_result($tkt_res, $k, "ticketid");
+				$tkt_ids_list[] = $adb->query_result($tkt_res, $k, 'ticketid');
 			}
-			$params = array($id, RB_RECORD_UPDATED, 'vtiger_troubletickets', 'parent_id', 'ticketid', implode(",", $tkt_ids_list));
+			$params = array($id, RB_RECORD_UPDATED, 'vtiger_troubletickets', 'parent_id', 'ticketid', implode(',', $tkt_ids_list));
 			$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES(?,?,?,?,?,?)', $params);
 		}
 		//Deleting Trouble Tickets-Account Relation.
@@ -912,13 +903,13 @@ class Accounts extends CRMEntity {
 				if ($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}
-				$adb->pquery("insert into vtiger_seproductsrel values(?,?,?)", array($crmid, $with_crmid, $module));
+				$adb->pquery('insert into vtiger_seproductsrel values(?,?,?)', array($crmid, $with_crmid, $module));
 			} elseif ($with_module == 'Campaigns') {
 				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignaccountrel WHERE campaignid = ? AND accountid = ?', array($with_crmid, $crmid));
 				if ($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}
-				$adb->pquery("insert into vtiger_campaignaccountrel values(?,?,1)", array($with_crmid, $crmid));
+				$adb->pquery('insert into vtiger_campaignaccountrel values(?,?,1)', array($with_crmid, $crmid));
 			} else {
 				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			}
@@ -951,15 +942,15 @@ class Accounts extends CRMEntity {
 		$gresult = $adb->pquery('SELECT groupid FROM vtiger_users2group WHERE userid=?', array($user_id));
 		$groupidlist = '';
 		for ($j=0; $j < $adb->num_rows($gresult); $j++) {
-			$groupidlist.=",".$adb->query_result($gresult, $j, 'groupid');
+			$groupidlist.=','.$adb->query_result($gresult, $j, 'groupid');
 		}
 		//crm-now changed query to search in groups too and make only owned contacts available
-		$query = "SELECT vtiger_account.accountname, vtiger_account.account_no, vtiger_account.accountid, vtiger_account.email1
+		$query = 'SELECT vtiger_account.accountname, vtiger_account.account_no, vtiger_account.accountid, vtiger_account.email1
 					FROM vtiger_account 
-					INNER JOIN ".$this->crmentityTableAlias." on vtiger_crmentity.crmid=vtiger_account.accountid
+					INNER JOIN '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_account.accountid
 					LEFT JOIN vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid  
 					LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-					WHERE vtiger_crmentity.deleted=0";
+					WHERE vtiger_crmentity.deleted=0';
 		if (trim($emailaddress) != '') {
 			$query .= " AND ((vtiger_account.email1 like '". formatForSqlLike($emailaddress) ."') or vtiger_account.accountname REGEXP REPLACE('"
 				.$emailaddress."',' ','|') or vtiger_account.account_no REGEXP REPLACE('".$emailaddress."',' ','|'))  and vtiger_account.email1 != ''";
@@ -967,7 +958,7 @@ class Accounts extends CRMEntity {
 			$query .= " AND (vtiger_account.email1 like '". formatForSqlLike($emailaddress) ."' and vtiger_account.email1 != '')";
 		}
 		if ($groupidlist != '') {
-			$query .= " AND (vtiger_users.user_name='".$username."' OR vtiger_crmentity.smownerid IN (".substr($groupidlist, 1)."))";
+			$query .= " AND (vtiger_users.user_name='".$username."' OR vtiger_crmentity.smownerid IN (".substr($groupidlist, 1).'))';
 		} else {
 			$query .= " AND vtiger_users.user_name='".$username."'";
 		}
