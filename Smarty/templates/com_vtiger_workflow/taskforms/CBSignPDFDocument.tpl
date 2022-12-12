@@ -28,7 +28,7 @@
 
 <div class="slds-grid slds-p-horizontal_x-large">
 	<div class="slds-col slds-size_6-of-12 slds-p-around_x-small">
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="image_field">{'Which field from Users should be used as a signature?'|@getTranslatedString:$MODULE_NAME}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="image_field" name="image_field" class="slds-input" value="{if isset($task->image_field)}{$task->image_field}{/if}"/>

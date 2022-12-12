@@ -481,6 +481,9 @@ class cbQuestion extends CRMEntity {
 
 	public static function getGroupingInfo($sql_query, $groupby, $qmodule) {
 		global $adb;
+		if (strpos($groupby, '.') !== false) {
+			list($tablename, $groupby) = explode('.', $groupby);
+		}
 		$mod = Vtiger_Module::getInstance($qmodule);
 		$fld = Vtiger_Field::getInstance($groupby, $mod);
 		if ($fld) {
@@ -521,7 +524,7 @@ class cbQuestion extends CRMEntity {
 				$ret = self::getTableFromAnswer($ans);
 				break;
 			case 'Grid':
-				$ret = self::getGridFromAnswer($qid, $params);
+				$ret = self::getGridFromAnswer($qid, $params, $ans);
 				break;
 			case 'Number':
 				$ret = array_pop($ans['answer'][0]);
@@ -667,10 +670,7 @@ class cbQuestion extends CRMEntity {
 					$linkedCols = $properties->linkedcolumns;
 				}
 			}
-			$cv = new CustomView($module);
-			$view = $cv->getViewIdByName('All', $module);
-			$advgroups = urlencode('[null,{"groupcondition":""}]');
-			$searchURL = 'index.php?module='.$module.'&action=index&query=true&search=true&searchtype=advance&advft_criteria_groups='.$advgroups.'&viewname='.$view.'&advft_criteria=';
+			$searchURL = cbQuestion::getSearchUrl($module);
 			$limit = GlobalVariable::getVariable('BusinessQuestion_TableAnswer_Limit', 2000);
 			$table .= '<table>';
 			$table .= '<tr>';
@@ -698,12 +698,34 @@ class cbQuestion extends CRMEntity {
 		return $table;
 	}
 
-	public static function getGridFromAnswer($qid, $params) {
+	public static function getGridFromAnswer($qid, $params, $ans) {
 		$smarty = new vtigerCRM_Smarty();
+		$searchURL = cbQuestion::getSearchUrl($ans['module']);
 		$properties = json_encode(cbQuestion::getQuestionProperties($qid));
+		$props = json_decode($properties, true);
+		$properties = array();
+		foreach ($props as $prop) {
+			if (isset($prop['renderer']) && $prop['renderer']['type'] == 'LinkedColumns') {
+				$prop['renderer'] = [
+					'type' => str_replace('"', '', $prop['renderer']['type']),
+					'options' => [
+						'searchurl' => $searchURL
+					]
+				];
+			}
+			$properties[] = $prop;
+		}
+		$groupings = array();
+		if (isset($ans['groupings'])) {
+			foreach ($ans['groupings'] as $group) {
+				$groupings[] = json_decode($group, true);
+			}
+		}
+		$properties = str_replace('"LinkedColumns"', 'LinkedColumns', json_encode($properties));
 		$smarty->assign('Properties', $properties);
 		$smarty->assign('QuestionID', $qid);
 		$smarty->assign('RecordID', $params['$RECORD$']);
+		$smarty->assign('Answer', $groupings);
 		$smarty->assign('RowsperPage', GlobalVariable::getVariable('MasterDetail_Pagination', 40));
 		$smarty->display('modules/cbQuestion/Grid.tpl');
 	}
@@ -724,6 +746,15 @@ class cbQuestion extends CRMEntity {
 				$values[] = $answer[$x][$properties->key_value];
 				$rc[] = 'getRandomColor()';
 			}
+			$groupings = '{';
+			if (isset($ans['groupings'])) {
+				$idx = 0;
+				foreach ($ans['groupings'] as $group) {
+					$groupings .= $idx.':"'.cbQuestion::getSearchUrl($module).urlencode($group).'",';
+					$idx++;
+				}
+			}
+			$groupings .= '}';
 			$chartID = uniqid('chartAns');
 			$chart .= '<script src="include/chart.js/Chart.min.js"></script>
 				<link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
@@ -776,6 +807,16 @@ class cbQuestion extends CRMEntity {
 								}
 							}
 						});
+						chartans.addEventListener("click", function(evt) {
+							let activePoint = window.chartAns.getElementAtEvent(evt);
+							let clickzone = '.$groupings.';
+							console.log(clickzone)
+							let a = document.createElement("a");
+							a.target = "_blank";
+							a.href = clickzone[activePoint[0]._index];
+							document.body.appendChild(a);
+							a.click();
+						});
 					}
 
 					let charttype = "'.strtolower($type).'";
@@ -785,6 +826,14 @@ class cbQuestion extends CRMEntity {
 			$chart .= '</div>';
 		}
 		return $chart;
+	}
+
+	public static function getSearchUrl($module) {
+		$cv = new CustomView($module);
+		$view = $cv->getViewIdByName('All', $module);
+		$advgroups = urlencode('[null,{"groupcondition":""}]');
+		$searchURL = 'index.php?module='.$module.'&action=index&query=true&search=true&searchtype=advance&advft_criteria_groups='.$advgroups.'&viewname='.$view.'&advft_criteria=';
+		return $searchURL;
 	}
 
 	public function convertColumns2DataTable() {

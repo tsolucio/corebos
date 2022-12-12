@@ -42,7 +42,7 @@
 									</select>
 									</td>
 									<td width=20% align=center valign=top>
-									<input type=button value="{$MOD.LBL_ADD_BUTTON} >>" class="crm button small save" style="width:100%"  onClick="incUser('availableusers','selectedusers');formSelectColumnString('inviteesid','selectedusers');"><br>
+									<input type=button value="{$MOD.LBL_ADD_BUTTON} >>" class="crm button small save" style="width:100%" onClick="incUser('availableusers','selectedusers');formSelectColumnString('inviteesid','selectedusers');"><br>
 									<input type=button value="<< {$MOD.LBL_RMV_BUTTON} " class="crm button small cancel" style="width:100%" onClick="rmvUser('selectedusers');formSelectColumnString('inviteesid','selectedusers');">
 									</td>
 									<td width=40% align=center valign=top>
@@ -94,7 +94,7 @@
 						</td></tr>
 					</table>
 					<div id="reminderOptions" {$reminstyle}>
-						<table border=0 cellspacing=0 cellpadding=2  width=100%>
+						<table border=0 cellspacing=0 cellpadding=2 width=100%>
 							<tr>
 								<td nowrap align=right width=20% valign=top><b>{$MOD.LBL_RMD_ON} : </b></td>
 								<td width=80%>
@@ -130,7 +130,7 @@
 				<!-- Repeat UI -->
 				<div id="addEventRepeatUI" style="display:none;width:100%">
 				{if $LABEL.recurringtype neq ''}
-				<table border=0 cellspacing=0 cellpadding=2  width=100%>
+				<table border=0 cellspacing=0 cellpadding=2 width=100%>
 					<tr>
 						<td nowrap align=right width=20% valign=top>
 							<strong>{$MOD.LBL_REPEAT}</strong>

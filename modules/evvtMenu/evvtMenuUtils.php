@@ -133,6 +133,7 @@ function getFlatMenuJSON() {
 	}
 	if ($is_admin) {
 		$menustructure[strtoupper(getTranslatedString('Settings', 'Settings'))] = 'index.php?action=index&module=Settings';
+		$menustructure[strtoupper(getTranslatedString('Utilities', 'Utilities'))] = 'index.php?action=index&module=Utilities';
 	}
 	return json_encode($menustructure);
 }

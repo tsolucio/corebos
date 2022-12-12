@@ -104,7 +104,7 @@ function popup_filter_map_popup_window(fldname) {
 	const keys = Object.keys(PopupFilterMapResults);
 	for (let index = 0; index < keys.length; index++) {
 		const key = keys[index];
-		let advft_criteria = JSON.stringify(PopupFilterMapResults[key]['advft_criteria']);
+		let advft_criteria = JSON.stringify(replaceDynamicVariableWithRecordValue(PopupFilterMapResults[key]['advft_criteria']));
 		let advft_criteria_groups = JSON.stringify(PopupFilterMapResults[key]['advft_criteria_groups']);
 		if (key.includes('#')) {
 			let [fieldName, dependency] = key.split('#');
@@ -114,13 +114,42 @@ function popup_filter_map_popup_window(fldname) {
 			}
 		} else {
 			if (key == fldname) {
-				let advft_criteria = JSON.stringify(PopupFilterMapResults[key]['advft_criteria']);
+				let advft_criteria = JSON.stringify(replaceDynamicVariableWithRecordValue(PopupFilterMapResults[key]['advft_criteria']));
 				window.open('index.php?module=' + fieldModule + '&action=Popup&html=Popup_picker&form=DetailView&forfield=' + fldname + '&query=true&search=true&searchtype=advance&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups, 'vtlibui10qc', cbPopupWindowSettings);
 				return true;
 			}
 		}
 	}
 	return false;
+}
+
+/**
+ * Checks if a dynamic varibale exists and if
+ * yes it replaces it with the record's field value
+*/
+function replaceDynamicVariableWithRecordValue(arr) {
+	let array = structuredClone(arr);
+	const formTypes = ['EditView', 'DetailView'];
+	for (let index = 0; index < formTypes.length; index++) {
+		const formType = formTypes[index];
+		if (document.querySelector(`form[name="${formType}"]`)) {
+			let formValues = null;
+			if (formType == 'EditView') {
+				formValues = getFormFields('EditView');
+			} else {
+				formValues = getDetailViewFormFields();
+			}
+			for (let index = 0; index < array.length; index++) {
+				const element = array[index];
+				if (element['value'].includes('$')) {
+					let value = element['value'].substr(1);
+					element['value'] = formValues[value];
+				}
+			}
+			return array;
+		}
+	}
+	return array;
 }
 
 /**

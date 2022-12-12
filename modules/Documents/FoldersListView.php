@@ -283,6 +283,27 @@ $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModul
 $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_ListView_SearchPanel_Open', 1);
 $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS', ($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));
 
+// send advancedSearch business map data to the frontEnd
+$advancedSearchMapResult = 'MAP_NOT_FOUND';
+$advancedSearchMapObject = new cbMap();
+$advancedSearchbmapname = $currentModule.'_AdvancedSearch';
+$advancedSearchMapid = GlobalVariable::getVariable('BusinessMapping_'.$advancedSearchbmapname, cbMap::getMapIdByName($advancedSearchbmapname));
+if ($advancedSearchMapid) {
+	$advancedSearchMapObject->id = $advancedSearchMapid;
+	$advancedSearchMapObject->mode = '';
+	$advancedSearchMapObject->retrieve_entity_info($advancedSearchMapid, 'cbMap');
+	$advancedSearchMapResult = $advancedSearchMapObject->AdvancedSearch($currentModule);
+}
+$smarty->assign('advancedSearchMapResult', $advancedSearchMapResult);
+
+// GV responsible for showing or hiding filter panel
+$Application_ListView_FilterPanel_Open = GlobalVariable::getVariable('Application_ListView_FilterPanel_Open', '1', $currentModule);
+if (!$Application_ListView_FilterPanel_Open) {
+	$smarty->assign('Application_ListView_FilterPanel_Open', 'display: none;');
+} else {
+	$smarty->assign('Application_ListView_FilterPanel_Open', '');
+}
+
 if ((isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') || (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'ajax')) {
 	$smarty->display('DocumentsListViewEntries.tpl');
 } else {

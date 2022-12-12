@@ -382,6 +382,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show search columns in the list view table',
 ),
+'Application_ListView_FilterPanel_Open' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the filter panel',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Performance',
@@ -453,6 +459,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Performance',
 	'values' => '',
 	'definition' => 'The number of ajax requests on home page, reduce this value if home page widgets do not show values. The default value is 12.',
+),
+'HomePage_KeyMetrics_Max_Text_Length' => array(
+	'valuetype' => 'Integer',
+	'category' => 'HomePage',
+	'values' => '',
+	'definition' => 'The maximum number of letters of key metrics filter name to show. The default value is 20 and 0 shows the full string.',
 ),
 'Application_Single_Pane_View' => array(
 	'valuetype' => 'Boolean',
@@ -687,6 +699,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'DetailView|EditView',
 	'definition' => 'The action that will be executed when only one record is found. Default is DetailView',
+),
+'Application_Global_Search_PlaceHolder' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'any string',
+	'definition' => 'Sets the placeholder text for the global search box.',
 ),
 'Application_ProductService_Search_Autocomplete_Limit' => array(
 	'valuetype' => 'Integer',
@@ -1755,6 +1773,18 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'By default when creating a filter you have to include at least 1 mandatory field. For the cases when the users don\'t want to include mandatory fields on the filter set this variable to 0. Default is 1.',
+),
+'Application_Focus_Element' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'HTML ID',
+	'definition' => 'Element ID that will be focused when the page loads',
+),
+'Application_TitleInformation' => array(
+	'valuetype' => 'String|Integer',
+	'category' => 'Application',
+	'values' => 'MapID or string',
+	'definition' => 'Browser tab title. Can be an expression business map ID',
 ),
 );
 

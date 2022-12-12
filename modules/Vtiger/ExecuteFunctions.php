@@ -309,7 +309,7 @@ switch ($functiontocall) {
 		include_once 'include/utils/DelImage.php';
 		$id = vtlib_purify($_REQUEST['recordid']);
 		$id = preg_replace('/[^0-9]/', '', $id);
-		if (isset($_REQUEST['attachmodule']) && $_REQUEST["attachmodule"]=='Emails') {
+		if (isset($_REQUEST['attachmodule']) && $_REQUEST['attachmodule']=='Emails') {
 			DelAttachment($id);
 		} else {
 			DelImage($id);

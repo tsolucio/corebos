@@ -15,7 +15,6 @@ ini_set('display_errors', 'on');
 set_time_limit(0);
 ini_set('memory_limit', '1024M');
 
-$usr = new Users();
 $current_user = Users::getActiveAdminUser();
 $roleid = $current_user->roleid;
 $subrole = getRoleSubordinates($roleid);
@@ -25,6 +24,7 @@ $userWSID = vtws_getEntityId('Users').'x';
 $cvrs = $adb->query('select * from vtiger_customview');
 vtlib_toggleModuleAccess('cbCVManagement', true);
 while ($cv = $adb->fetch_array($cvrs)) {
+	$usrid = (Users::is_ActiveUserID($cv['userid']) ? $cv['userid'] : $current_user->id);
 	$default_values =  array(
 		'cvid' => $cv['cvid'],
 		'cvcreate' => '0',
@@ -36,7 +36,7 @@ while ($cv = $adb->fetch_array($cvrs)) {
 		'setpublic' => $cv['status'] == CV_STATUS_PENDING ? 1 : 0,
 		'mandatory' => '0',
 		'module_list' => $cv['entitytype'],
-		'assigned_user_id' => $userWSID.$cv['userid'],
+		'assigned_user_id' => $userWSID.$usrid,
 		'cvrole' => $subrole
 	);
 	$searchOn = 'cvid';

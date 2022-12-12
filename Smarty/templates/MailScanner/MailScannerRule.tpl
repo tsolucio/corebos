@@ -55,7 +55,7 @@
 
 				<table border=0 cellspacing=0 cellpadding=0 width=100% class="listRow">
 				<tr>
-					<td class="small" valign=top ><table width="100%"  border="0" cellspacing="0" cellpadding="5">
+					<td class="small" valign=top ><table width="100%" border="0" cellspacing="0" cellpadding="5">
 
 						{assign var="PREV_RULEID" value=""}
 						{foreach item=SCANNERRULE key=RULEINDEX from=$SCANNERRULES}

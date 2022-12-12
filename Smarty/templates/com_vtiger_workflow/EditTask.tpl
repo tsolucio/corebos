@@ -184,7 +184,7 @@
 		</div>
 		<div class="slds-page-header">
 			<div class="slds-grid slds-gutters">
-				<div class="slds-col slds-size_1-of-1">
+				<div class="slds-col slds-size_11-of-12">
 					<h1>
 						<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_TASK_OPERATIONS}">
 							<span class="slds-tabs__left-icon">
@@ -197,6 +197,21 @@
 							{$MOD.LBL_TASK_OPERATIONS}
 						</span>
 					</h1>
+				</div>
+				<div class="slds-col slds-size_1-of-12">
+					<button
+					class="slds-button slds-button_icon slds-global-actions__notifications slds-global-actions__item-action slds-global-actions__favorites-action slds-button_icon-border slds-button_last" title="{'LNK_HELP'|@getTranslatedString:'Settings'}"
+					aria-live="assertive"
+					aria-atomic="true"
+					id="workflow_help_button"
+					type="button"
+					onclick="loadWorkflowHelpPanel('{$task|get_class}');"
+				>
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#help"></use>
+					</svg>
+					<span class="slds-assistive-text"></span>
+					</button>
 				</div>
 			</div>
 		</div>

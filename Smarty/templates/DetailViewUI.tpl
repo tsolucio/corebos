@@ -170,7 +170,7 @@
 	</td>
 {elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}
 	<!--Multi Select Combo box-->
-	<!--{assign var="MULTISELECT_COMBO_BOX_ITEM_SEPARATOR_STRING" value=", "}  {* Separates Multi-Select Combo Box items *}
+	<!--{assign var="MULTISELECT_COMBO_BOX_ITEM_SEPARATOR_STRING" value=", "} {* Separates Multi-Select Combo Box items *}
 						{assign var="DETAILVIEW_WORDWRAP_WIDTH" value="70"} {* No. of chars for word wrapping long lines of Multi-Select Combo Box items *}-->
 	{if fieldHasDependency($keyfldname,$MODULE)}
 		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
@@ -286,7 +286,7 @@
 	{if isset($MOD.LBL_ADD_COMMENT) && $label eq $MOD.LBL_ADD_COMMENT}
 		{assign var=keyval value=''}
 	{/if}
-	<!--{assign var="DESCRIPTION_SEPARATOR_STRING" value=" "}  {* Separates Description *}-->
+	<!--{assign var="DESCRIPTION_SEPARATOR_STRING" value=" "} {* Separates Description *}-->
 	<!--{assign var="DESCRIPTION_WORDWRAP_WIDTH" value="70"} {* No. of chars for word wrapping long lines of Description *}-->
 	{if $MODULE eq 'Documents' || ($MODULE eq 'Users' && $keyfldname eq 'signature')}
 		<!--To give hyperlink to URL-->

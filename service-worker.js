@@ -11432,7 +11432,7 @@ precacheAndRoute([{
   "revision": "321798c3a4f90cafc07df60d8a8f0f2f"
 }, {
   "url": "include/js/advancefilter.js",
-  "revision": "e1962f611b609f62ef92358126a2379a"
+  "revision": "c6f16828be0c815c713d8c479df7b13b"
 }, {
   "url": "include/js/asterisk.js",
   "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
@@ -11456,7 +11456,7 @@ precacheAndRoute([{
   "revision": "f09b1b73041383bfe8a85ccce9641617"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "d2a87ddd5566ae6807f4af42e76bf42a"
+  "revision": "d3954b30d36a6b9aca95c3fece852884"
 }, {
   "url": "include/js/en_gb.lang.js",
   "revision": "f5c6e2bf2718d90f0b28675329f5fc11"
@@ -11471,22 +11471,22 @@ precacheAndRoute([{
   "revision": "045f54dabb34aa52ad190b1f308034bf"
 }, {
   "url": "include/js/FieldDependencies.js",
-  "revision": "bd224baaa71dd8655bcf26cdd042331d"
+  "revision": "fa83ea69bee81e924cc613a7a241e3cb"
 }, {
   "url": "include/js/FieldDepFunc.js",
-  "revision": "77fa4e3b1753e8336cb6da29debd444a"
+  "revision": "2ded50797c9a63942ff4cdf928df3439"
 }, {
   "url": "include/js/fr_fr.lang.js",
   "revision": "70e4040be9d6e893aec7e605033a773a"
 }, {
   "url": "include/js/general.js",
-  "revision": "952ae79ee0a9243437f903511abb8acc"
+  "revision": "030558fb8c230fa31608c076d2af5cf0"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "b4fad7ff70fb9444a5e86f58490269b9"
 }, {
   "url": "include/js/Inventory.js",
-  "revision": "995e82a81fff28de27f58d755cf5a793"
+  "revision": "733037aedbea5f5a6a76f9afd5ebc54d"
 }, {
   "url": "include/js/it_it.lang.js",
   "revision": "2a142528be62b77398ca63ba76e93626"
@@ -11498,10 +11498,10 @@ precacheAndRoute([{
   "revision": "2016625cad9cf4abb4c9631c742043f5"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "d1b3c0036f73a192a4652436eb364ffa"
+  "revision": "6407c9adfeb9b28b4a56fceb370beee7"
 }, {
   "url": "include/js/ListViewRenderes.js",
-  "revision": "479539b67ca6305b9e6d8ee179436132"
+  "revision": "1b4abaf1dcd13446bca4724a9419a55a"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
@@ -11546,7 +11546,7 @@ precacheAndRoute([{
   "revision": "89ad8ae2e8972f6085b6728624061ac2"
 }, {
   "url": "include/js/relatedlistgrid.js",
-  "revision": "a7b2a61873beee8a19a59b61e401f03b"
+  "revision": "c708d94a0657fa7288d46522bae4bbab"
 }, {
   "url": "include/js/relatedlists.js",
   "revision": "11bf2a6771f84a03764f40e052d76358"
@@ -11564,7 +11564,13 @@ precacheAndRoute([{
   "revision": "008f3e9768bd2d226e65ea69999c9f14"
 }, {
   "url": "include/js/vtlib.js",
-  "revision": "93fc7a80bf9ffdd6e6abeafffa52b164"
+  "revision": "eea8e9de88b7525865ee9583c0940ba3"
+}, {
+  "url": "include/components/Carousel/vanilla-js-carousel.css",
+  "revision": "3c84a75d9db4550dc2954a596bbf6f58"
+}, {
+  "url": "include/components/Carousel/vanilla-js-carousel.min.js",
+  "revision": "d7116c33179a01a544aa8fa99f538821"
 }, {
   "url": "include/components/checkboxrenderer.js",
   "revision": "30a720fa2d1634076e325d7cd721acf7"
@@ -11592,6 +11598,9 @@ precacheAndRoute([{
 }, {
   "url": "include/components/Select2/js/select2.min.js",
   "revision": "3e6e33cd306b1235add3d25fcda8541d"
+}, {
+  "url": "include/components/slider.js",
+  "revision": "42229672ed2de6ba7fcf3f3d4f2a5362"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.css",
   "revision": "fb40fb9c699a0e8b656b5345d2929b2c"
@@ -11777,7 +11786,7 @@ precacheAndRoute([{
   "revision": "fc6646a77fe08a9ae143dc4384b6844f"
 }, {
   "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
-  "revision": "fa771ef0bc64b0d810f564fe7eef632f"
+  "revision": "a171b462413db156e982aafcaec4c551"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
   "revision": "1f4424f72609c356317ea1f8c15a5a5d"
@@ -12125,7 +12134,7 @@ precacheAndRoute([{
   "revision": "540de50fa20840cf36d96db9df7a208a"
 }, {
   "url": "modules/cbCalendar/cbCalendar.js",
-  "revision": "850ff484cc49801561ed0620843b7b19"
+  "revision": "c5d583ade66cf5418d8aafc19803ed35"
 }, {
   "url": "modules/cbQuestion/cbQuestion.js",
   "revision": "df1beb66383c404ca19595bfede77a1f"

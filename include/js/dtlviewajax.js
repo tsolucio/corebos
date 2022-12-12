@@ -147,6 +147,10 @@ function handleEdit(event) {
 	if (event) {
 		event.stopPropagation();
 	}
+	let smenu = document.getElementById('searchmenu');
+	if (smenu) {
+		smenu.style.display = 'none';
+	}
 	return false;
 }
 

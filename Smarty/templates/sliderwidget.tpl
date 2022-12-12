@@ -35,29 +35,23 @@
 		</div>
 	</div>
 </div>
-<div class="js-Carousel" id="carousel" style="margin-top: 1%">
+<div class="js-Carousel" id="carousel" style="margin-top: 1%;{$customstyle}">
 	<ul>
-		{foreach from=$images item=$i}
+		{foreach from=$images item=$i key=$seq}
 		<li>
-			<img src="{$i.path}" onclick="showFullImage('{$i.path}', '{$i.title}', {$i.id})" style="cursor: pointer;">
+			<img src="{$i.path}" data-sequence="{$seq}" onclick="Slider.showFullImage('{$i.path}', '{$i.title}', {$i.id})" style="cursor: pointer;{$customstyle}">
 		</li>
 		{/foreach}
 	</ul>
 </div>
+<script src="include/components/slider.js"></script>
 <script type="text/javascript">
-	window.addEventListener('load', function() {
-		var carousel = new Carousel({
-			elem: 'carousel',
-			autoplay: false,
-			infinite: true,
-			initial: 0,
-			dots: true,
-			arrows: true,
-		});
-	});
-	function showFullImage(src, title, id) {
-		let header = '<a href="index.php?action=DetailView&module=Documents&record='+id+'" target="_blank">'+title+'</a>';
-		let content = '<img src="'+src+'" style="display:block;margin:auto;">';
-		ldsModal.show(header, content, 'large');
-	}
+	Slider.Data = '{$imagesjson}';
+	Slider.Autoplay = {$autoplay};
+	Slider.Infinite = {$infinite};
+	Slider.Initial = {$initial};
+	Slider.ActiveSlide = {$initial};
+	Slider.Dots = {$dots};
+	Slider.Arrows = {$arrows};
+	Slider.TotalSlides = {$totalslides};
 </script>

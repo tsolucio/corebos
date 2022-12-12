@@ -192,7 +192,7 @@
 						<tr id="selectworkflow">
 							<td width="20%" nowrap class="small cellLabel"><strong>{'LBL_SELECT'|getTranslatedString} {'Workflow'|getTranslatedString:'com_vtiger_workflow'}</strong></td>
 							<td width="70%" colspan=2>
-								<input id="workflowid" name="workflowid" type="hidden" value ="{if isset($SCANNERRULE->workflowid)}  {$SCANNERRULE->workflowid} {/if}">
+								<input id="workflowid" name="workflowid" type="hidden" value ="{if isset($SCANNERRULE->workflowid)}{$SCANNERRULE->workflowid}{/if}">
 								<input type='hidden' class='small' name="workflowid_type" id="workflowid_type" value="com_vtiger_workflow">
 								<input
 									id="workflowid_display"
@@ -201,7 +201,7 @@
 									type="text"
 									style="border:1px solid #bababa;"
 									onclick='return vtlib_open_popup_window("form", "workflowid", "com_vtiger_workflow", "");'
-									value ="{if isset($SCANNERRULE->workflowname)}  {$SCANNERRULE->workflowname} {/if}">&nbsp;
+									value ="{if isset($SCANNERRULE->workflowname)}{$SCANNERRULE->workflowname}{/if}">&nbsp;
 									<span class="slds-icon_container slds-icon-standard-choice" title="{'LBL_SELECT'|getTranslatedString}" onclick='return vtlib_open_popup_window("form", "workflowid", "com_vtiger_workflow", "");'>
 										<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>

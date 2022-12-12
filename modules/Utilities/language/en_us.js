@@ -12,7 +12,7 @@ var mod_alert_arr = {
 	'LBL_ACCESS': 'Access',
 	'LBL_CREATE': 'Create',
 	'LBL_READ': 'Read',
-    'LBL_WRITE': 'Write',
-    'LBL_ACTION': 'Action',
+	'LBL_WRITE': 'Write',
+	'LBL_ACTION': 'Action',
 	'LBL_DELETE': 'DELETE',
 };

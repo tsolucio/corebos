@@ -382,6 +382,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar columnas de búsqueda en la tabla de la lista de vista',
 ),
+'Application_ListView_FilterPanel_Open' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Esconder o mostrar la sección de filtro en la vista de lista',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Rendimiento',
@@ -453,6 +459,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Rendimiento',
 	'values' => '',
 	'definition' => 'Número de solicitudes de ajax en la página de inicio, reduzca este valor si los widgets de la página principal no muestran valores. El valor predeterminado es 12.',
+),
+'HomePage_KeyMetrics_Max_Text_Length' => array(
+	'valuetype' => 'Entero',
+	'category' => 'HomePage',
+	'values' => '',
+	'definition' => 'El número de letras del nombre de filtro en métricas clave para mostrar. El valor predeterminado es 20 y 0 muestra la cadena completa.',
 ),
 'Application_Single_Pane_View' => array(
 	'valuetype' => 'Booleano',
@@ -687,6 +699,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'DetailView|EditView',
 	'definition' => 'La acción que se realiza cuando se encuentra solo un valor. Por defecto será DetailView',
+),
+'Application_Global_Search_PlaceHolder' => array(
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'cualquier cadena',
+	'definition' => 'Establece el texto de marcador de posición para el campo de búsqueda global.',
 ),
 'Application_ProductService_Search_Autocomplete_Limit' => array(
 	'valuetype' => 'Entero',
@@ -1755,6 +1773,18 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Al crear un filtro, debes incluir al menos 1 campo obligatorio. Para los casos en que los usuarios no quieren incluir campos obligatorios en el filtro, pon esta variable a 0. El valor predeterminado es 1.',
+),
+'Application_Focus_Element' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'ID HTML',
+	'definition' => 'ID de elemento HTML que se enfocará cuando se cargue la página',
+),
+'Application_TitleInformation' => array(
+	'valuetype' => 'Texto|Entero',
+	'category' => 'Aplicación',
+	'values' => 'MapID o texto',
+	'definition' => 'Título de la pestaña del navegador. Puede ser un ID de mapa de expresión',
 ),
 );
 

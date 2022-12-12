@@ -236,10 +236,13 @@ class GlobalVariable extends CRMEntity {
 		}
 	}
 
-	private static function returnGVValue($sql, $var, $module) {
+	private static function returnGVValue($sql, $var, $module, $viewtype = '') {
 		global $adb;
 		$list_of_modules=array();
 		$list_of_modules['Default'] = '';
+		if (!empty($viewtype)) { // support for $viewtype
+			$sql .= $adb->convert2Sql('AND viewtype LIKE ?', array('%'.$viewtype.'%'));
+		}
 		$query=$adb->pquery($sql, array($var));
 		self::$validationinfo[] = 'candidate variable records found: '.$adb->num_rows($query);
 		for ($i=0; $i<$adb->num_rows($query); $i++) {
@@ -316,7 +319,7 @@ class GlobalVariable extends CRMEntity {
 	 *   - $var + default=true
 	 *   - return $default
 	 */
-	public static function getVariable($var, $default, $module = '', $gvuserid = '') {
+	public static function getVariable($var, $default, $module = '', $gvuserid = '', $viewtype = '') {
 		global $adb, $current_user, $currentModule, $installationStrings;
 		if (isset(self::$scriptOverride[self::$currentScript][$var])) {
 			return self::$scriptOverride[self::$currentScript][$var];
@@ -354,7 +357,7 @@ class GlobalVariable extends CRMEntity {
 		$mandatory=" and mandatory='1'";
 		$sql=$select.$where.$mandatory;
 		self::$validationinfo[] = '---';
-		$value=self::returnGVValue($sql, $var, $module);
+		$value=self::returnGVValue($sql, $var, $module, $viewtype);
 		self::$validationinfo[] = "search as mandatory in module $module: $value";
 		if ($value!='') {
 			VTCacheUtils::updateCachedInformation($key, $value);
@@ -368,7 +371,7 @@ class GlobalVariable extends CRMEntity {
 		$userrole = $adb->convert2Sql('inner join vtiger_user2role on vtiger_user2role.userid=?', array($gvuserid));
 		$sql=$select.$userrole.$where."and concat(rolegv, ' ') like concat('%', vtiger_user2role.roleid, ' %')";
 		self::$validationinfo[] = '---';
-		$value=self::returnGVValue($sql, $var, $module);
+		$value=self::returnGVValue($sql, $var, $module, $viewtype);
 		self::$validationinfo[] = "search as set per user $gvuserid ROLE in module $module: $value";
 		if ($value!='') {
 			VTCacheUtils::updateCachedInformation($key, $value);
@@ -378,7 +381,7 @@ class GlobalVariable extends CRMEntity {
 		$user = $adb->convert2Sql(' and vtiger_crmentity.smownerid=?', array($gvuserid));
 		$sql=$select.$where.$user;
 		self::$validationinfo[] = '---';
-		$value=self::returnGVValue($sql, $var, $module);
+		$value=self::returnGVValue($sql, $var, $module, $viewtype);
 		self::$validationinfo[] = "search as set per user $gvuserid in module $module: $value";
 		if ($value!='') {
 			VTCacheUtils::updateCachedInformation($key, $value);
@@ -393,7 +396,7 @@ class GlobalVariable extends CRMEntity {
 			$groups=implode(',', $UserGroups->user_groups);
 			$group=' and vtiger_crmentity.smownerid in ('.$groups.') ';
 			$sql=$select.$where.$group;
-			$value=self::returnGVValue($sql, $var, $module);
+			$value=self::returnGVValue($sql, $var, $module, $viewtype);
 			self::$validationinfo[] = "search as set per group $groups in module $module: $value";
 			if ($value!='') {
 				VTCacheUtils::updateCachedInformation($key, $value);
@@ -405,7 +408,7 @@ class GlobalVariable extends CRMEntity {
 
 		$sql=$select.$where." and default_check='1'";
 		self::$validationinfo[] = '---';
-		$value=self::returnGVValue($sql, $var, $module);
+		$value=self::returnGVValue($sql, $var, $module, $viewtype);
 		self::$validationinfo[] = "search as default variable in module $module: $value";
 		if ($value!='') {
 			VTCacheUtils::updateCachedInformation($key, $value);

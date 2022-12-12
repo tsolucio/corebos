@@ -251,4 +251,25 @@
 	<classname>addQuestionTypeField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>maliknajjar</author>
+	<description>Add view type to global variable module</description>
+	<filename>build/changeSets/2022/addtypeofviewGV.php</filename>
+	<classname>addtypeofviewGV</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make user first and last name fields larger.</description>
+	<filename>build/changeSets/2022/makeusernamefieldslarger.php</filename>
+	<classname>makeusernamefieldslarger</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Business Action type for Detail View Action Button.</description>
+	<filename>build/changeSets/2022/addBAtypesForDVActionButton.php</filename>
+	<classname>addBAtypesForDVActionButton</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

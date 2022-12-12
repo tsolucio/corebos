@@ -25,6 +25,7 @@ $mod_strings = array(
 	'User' => 'User',
 	'Blocked' => 'Blocked',
 	'Module List' => 'Module List',
+	'View Type' => 'View Type',
 	'Category' => 'Category',
 	'In Module List' => 'In Module List',
 	'Globalno' => 'Global No',

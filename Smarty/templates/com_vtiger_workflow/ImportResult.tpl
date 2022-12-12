@@ -1,4 +1,4 @@
-<div class="slds-card slds-m-around--x-small" style="height: 75vh;">
+<div class="slds-card slds-m-around_x-small" style="height: 75vh;">
 <div id="view" class="workflows-list">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
 </div>

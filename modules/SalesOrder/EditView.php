@@ -46,11 +46,11 @@ if (coreBOS_Session::has('ME1x1Info')) {
 }
 if (!empty($_REQUEST['saverepeat'])) {
 	$_REQUEST = array_merge($_REQUEST, coreBOS_Session::get('saverepeatRequest', array()));
-	if (isset($_REQUEST['CANCELGO'])) {
-		$smarty->assign('CANCELGO', vtlib_purify($_REQUEST['CANCELGO']));
-	}
 } else {
 	coreBOS_Session::set('saverepeatRequest', $_REQUEST);
+}
+if (isset($_REQUEST['CANCELGO'])) {
+	$smarty->assign('CANCELGO', vtlib_purify($_REQUEST['CANCELGO']));
 }
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 

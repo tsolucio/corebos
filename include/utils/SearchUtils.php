@@ -219,7 +219,7 @@ function getValuesforColumns($column_name, $search_string, $criteria = 'cts', $i
 	if (isset($input['type']) && $input['type'] == 'entchar') {
 		$criteria = 'is';
 	}
-
+	$where = '';
 	for ($i=0, $iMax = count($column_array); $i< $iMax; $i++) {
 		if ($column_name == $column_array[$i]) {
 			$val = $table_col_array[$i];

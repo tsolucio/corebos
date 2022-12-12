@@ -35,12 +35,19 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 		global $adb, $site_URL;
 		$this->context = $context;
 		$smarty = $this->getViewer();
+		$BAInfo = json_decode($this->getFromContext('BusinessActionInformation'), true);
 		$ID = $this->getFromContext('RECORDID');
 		$title = $this->getFromContext('title');
+		$autoplay = $this->getFromContext('autoplay');
+		$infinite = $this->getFromContext('infinite');
+		$initial = $this->getFromContext('initial');
+		$dots = $this->getFromContext('dots');
+		$arrows = $this->getFromContext('arrows');
 		if (empty($ID)) {
 			return 'ID not found.';
 		}
-		$rs = $adb->pquery('select vtiger_attachments.attachmentsid, vtiger_attachments.type filetype, vtiger_attachments.path, vtiger_attachments.name, vtiger_notes.title, vtiger_notes.notesid
+		$rs = $adb->pquery(
+			'select vtiger_attachments.attachmentsid,vtiger_attachments.type filetype,vtiger_attachments.path,vtiger_attachments.name,vtiger_notes.title,vtiger_notes.notesid
 			from vtiger_notes
 			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
 			left join vtiger_notescf ON vtiger_notescf.notesid=vtiger_notes.notesid
@@ -50,7 +57,9 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
 			left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
-			where crm2.crmid=? and vtiger_notes.filetype in ("image/png", "image/jpg", "image/jpeg") order by vtiger_attachments.attachmentsid', array($ID));
+			where crm2.crmid=? and vtiger_notes.filetype in ("image/png", "image/jpg", "image/jpeg") order by vtiger_attachments.attachmentsid',
+			array($ID)
+		);
 		if ($adb->num_rows($rs) == 0) {
 			return 'No images found.';
 		}
@@ -62,7 +71,22 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 				'path' => $site_URL.'/'.$image['path'].$image['attachmentsid'].'_'.$image['name']
 			);
 		}
+		$customstyle = '';
+		if (!empty($BAInfo['widget_height'])) {
+			$customstyle .= 'height:'.$BAInfo['widget_height'].';';
+		}
+		if (!empty($BAInfo['widget_width'])) {
+			$customstyle .= 'width:'.$BAInfo['widget_width'].';';
+		}
 		$smarty->assign('images', $dataIMG);
+		$smarty->assign('totalslides', count($dataIMG));
+		$smarty->assign('imagesjson', json_encode($dataIMG));
+		$smarty->assign('dots', empty($dots) ? 'true' : (string)$dots);
+		$smarty->assign('arrows', empty($arrows) ? 'true' : (string)$arrows);
+		$smarty->assign('autoplay', empty($autoplay) ? 'false' : (string)$autoplay);
+		$smarty->assign('infinite', empty($infinite) ? 'true' : (string)$infinite);
+		$smarty->assign('initial', empty($initial) ? '0' : (string)$initial);
+		$smarty->assign('customstyle', $customstyle);
 		$smarty->assign('title', empty($title) ? getTranslatedString('Slider') : $title);
 		return $smarty->fetch('sliderwidget.tpl');
 	}

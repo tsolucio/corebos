@@ -76,10 +76,11 @@ function getKeyMetrics($maxval, $calCnt) {
 	if (isset($metriclists)) {
 		foreach ($metriclists as $metriclist) {
 			$value=array();
-			$CVname = textlength_check($metriclist['name'], 20);
-			$mlisturl = '<a href="index.php?action=ListView&module='.$metriclist['module'].'&viewname='.$metriclist['id'].'">';
-			$value[] = $mlisturl.$CVname . '</a> <font style="color:#6E6E6E;">('. $metriclist['user'] .')</font>';
-			$value[] = $mlisturl.getTranslatedString($metriclist['module'], $metriclist['module']). '</a>';
+			$CVname = textlength_check($metriclist['name'], GlobalVariable::getVariable('HomePage_KeyMetrics_Max_Text_Length', 20, $metriclist['module']));
+			$uname = ' ('. $metriclist['user'] .')';
+			$mlisturl = '<a href="index.php?action=ListView&module='.$metriclist['module'].'&viewname='.$metriclist['id'].'" title="'.strtr($CVname, '"', '').$uname.'">';
+			$value[] = $mlisturl.$CVname.'</a>';
+			$value[] = $mlisturl.getTranslatedString($metriclist['module'], $metriclist['module']).'</a>';
 			$value[] = $mlisturl.$metriclist['count'].'</a>';
 			$entries[$metriclist['id']]=$value;
 		}
@@ -100,8 +101,7 @@ function getMetricList() {
 	global $adb, $current_user;
 	$userprivs = $current_user->getPrivileges();
 
-	$ssql = "select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype";
-	$ssql .= " where vtiger_customview.setmetrics = 1 ";
+	$ssql='select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name=vtiger_customview.entitytype where vtiger_customview.setmetrics=1 ';
 	$sparams = array();
 
 	if (!$userprivs->isAdmin()) {
@@ -112,7 +112,7 @@ function getMetricList() {
 				where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 		$sparams[] = $current_user->id;
 	}
-	$ssql .= " order by vtiger_customview.entitytype";
+	$ssql .= ' order by vtiger_customview.entitytype';
 	$result = $adb->pquery($ssql, $sparams);
 	while ($cvrow=$adb->fetch_array($result)) {
 		$metricslist = array();
@@ -122,7 +122,7 @@ function getMetricList() {
 			$metricslist['module'] = $cvrow['entitytype'];
 			$metricslist['user'] = getUserFullName($cvrow['userid']);
 			$metricslist['count'] = '';
-			if (isPermitted($cvrow['entitytype'], "index") == "yes") {
+			if (isPermitted($cvrow['entitytype'], 'index') == 'yes') {
 				$metriclists[] = $metricslist;
 			}
 		}

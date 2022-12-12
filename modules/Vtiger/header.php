@@ -91,6 +91,7 @@ $smarty->assign('coreBOS_app_name', $appUIName);
 $appUINameHTML = decode_html(vtlib_purify(GlobalVariable::getVariable('Application_UI_NameHTML', $appUIName)));
 $smarty->assign('coreBOS_app_nameHTML', $appUINameHTML);
 $smarty->assign('coreBOS_app_coverimage', GlobalVariable::getVariable('Application_UI_CoverImage', 'themes/images/content-bg-1.png'));
+$smarty->assign('Global_Search_PlaceHolder', GlobalVariable::getVariable('Application_Global_Search_PlaceHolder', $app_strings['LBL_SEARCH_TITLE'].$appUIName));
 $NotificationSound = GlobalVariable::getVariable('Calendar_Notification_Sound', 'modules/cbCalendar/media/new_event.mp3');
 if (!isInsideApplication($NotificationSound)) {
 	$NotificationSound = 'modules/cbCalendar/media/new_event.mp3';
@@ -99,7 +100,7 @@ $smarty->assign('Calendar_Notification_Sound', $NotificationSound);
 
 $companyDetails = retrieveCompanyDetails();
 $smarty->assign('COMPANY_DETAILS', $companyDetails);
-$getTitle = GlobalVariable::getVariable('Application_TitleInformation', getTranslatedString($currentModule, $currentModule).' - '.$appUIName);
+$getTitle = GlobalVariable::getVariable('Application_TitleInformation', getTranslatedString($currentModule, $currentModule).' - '.$appUIName, $currentModule, $current_user->id, $_REQUEST['action']);
 if (is_numeric($getTitle)) {
 	$getTitle = coreBOS_Rule::evaluate($getTitle, $_REQUEST['record']);
 }
@@ -132,6 +133,12 @@ if (coreBOS_Settings::getSetting('onesignal_isactive', '0') == '1') {
 	$smarty->assign('ONESIGNAL_IS_ACTIVE', true);
 } else {
 	$smarty->assign('ONESIGNAL_IS_ACTIVE', false);
+}
+
+// Checking for the Application_Focus_Element global variable
+$ApplicationFocusElementValue = GlobalVariable::getVariable('Application_Focus_Element', '', '', '', $_REQUEST['action']);
+if (!empty($ApplicationFocusElementValue)) {
+	$smarty->assign('ApplicationFocusElementValue', $ApplicationFocusElementValue);
 }
 
 $smarty->display('Header.tpl');

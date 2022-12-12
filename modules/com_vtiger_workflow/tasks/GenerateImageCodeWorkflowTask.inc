@@ -30,6 +30,36 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 		return array('save_encoded_value', 'field_to_encode', 'encoding_type');
 	}
 
+	public function getGenerateImageCode_EncodingType() {
+		return array_merge($this->tcpdf1dEncodingTypes, $this->tcpdf2dEncodingTypes);
+	}
+
+	public function getContextVariables() {
+		return array(
+			'GenerateImageCode_ValueToEncode' => array(
+				'type' => '??',
+				'values' => 'fields of the module',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_GenerateImageCode_ValueToEncode',
+			),
+			'GenerateImageCode_EncodingType' => array(
+				'type' => '15',
+				'values' => array($this, 'getGenerateImageCode_EncodingType'), // use with call_user_func
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_GenerateImageCode_EncodingType',
+			),
+			'GenerateImageCode_SaveTo' => array(
+				'type' => '??',
+				'values' => 'image fields of the module',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_GenerateImageCode_SaveTo',
+			),
+		);
+	}
+
 	public function doTask(&$entity) {
 		global $from_wf, $root_directory;
 		$from_wf = true;
@@ -43,6 +73,9 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 			$encoding_type = $this->encoding_type;
 		} else {
 			$encoding_type = $entity->WorkflowContext['GenerateImageCode_EncodingType'];
+		}
+		if (!empty($entity->WorkflowContext['GenerateImageCode_SaveTo'])) {
+			$this->save_encoded_value = $entity->WorkflowContext['GenerateImageCode_SaveTo'];
 		}
 		$util->adminUser();
 		$moduleName = $entity->getModuleName();
