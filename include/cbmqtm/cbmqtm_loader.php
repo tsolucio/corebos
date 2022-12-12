@@ -21,12 +21,19 @@ class coreBOS_MQTM {
 	protected static $instance = null;
 
 	public static function getInstance() {
-
 		if (null === static::$instance) {
-			$filename = coreBOS_Settings::getSetting('cbmqtm_classfile', null);
+			if (class_exists('coreBOS_Settings')) {
+				$filename = coreBOS_Settings::getSetting('cbmqtm_classfile', 'include/cbmqtm/cbmqtm_dbdistributor.php');
+			} else {
+				$filename = 'include/cbmqtm/cbmqtm_dbdistributor.php';
+			}
 			if (!empty($filename) && file_exists($filename)) {
 				include_once $filename;
-				$cbmqtm_classname = coreBOS_Settings::getSetting('cbmqtm_classname', '');
+				if (class_exists('coreBOS_Settings')) {
+					$cbmqtm_classname = coreBOS_Settings::getSetting('cbmqtm_classname', 'cbmqtm_dbdistributor');
+				} else {
+					$cbmqtm_classname = 'cbmqtm_dbdistributor';
+				}
 				if (class_exists($cbmqtm_classname)) {
 					static::$instance = $cbmqtm_classname::getInstance();
 				}

@@ -1478,13 +1478,12 @@ function InventorySelectAll(mod) {
 })(function productautocompleteFactory() {
 
 	/**
-	 * @class ProductAutocomplete
-	 * @param {element}
-	 * @param {element}:	Root 'InventoryBlock' Object
-	 * @param {function}: 	Callback for custom implementations. Will receive an object with
-	 *						the root autocomplete node and all the result data
-		* @param {object}		The root inventoryblock object
-		*/
+	* @class ProductAutocomplete
+	* @param element
+	* @param element Root 'InventoryBlock' Object
+	* @param function Callback for custom implementations. Will receive an object with the root autocomplete node and all the result data
+	* @param object The root inventoryblock object
+	*/
 	function ProductAutocomplete(el, parent, callback, rootObj) {
 		this.el = el;
 		this.root = rootObj;
@@ -1645,7 +1644,7 @@ function InventorySelectAll(mod) {
 		},
 
 		buildResultContainer: function () {
-			var ul 	= _createEl('ul', 'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid');
+			var ul = _createEl('ul', 'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid');
 			ul.setAttribute('role', 'presentation');
 			// Only temp until full LDS is implemented
 			ul.style.visibility = 1;
@@ -1695,7 +1694,7 @@ function InventorySelectAll(mod) {
 			li.setAttribute('role', 'presentation');
 			li.appendChild(media);
 			this.currentResults.push({
-				'obj' 		: result,
+				'obj'		: result,
 				'node'		: li,
 				'selected'	: false
 			});
@@ -1917,37 +1916,35 @@ function InventorySelectAll(mod) {
 		 * Class utilities
 		 */
 		utils : {
-			/*
-			 * Util: 'findUp'
-			 * Returns the first element up the DOM that matches the search
-			 *
-			 * @param: element: 	the node to start from
-			 * @param: searchterm: 	Can be a class (prefix with '.'), ID (prefix with '#')
-			 *						or an attribute (default when no prefix)
-			 */
+			/**
+			* Util: 'findUp'
+			*
+			* @param element the node to start from
+			* @param searchterm Can be a class (prefix with '.'), ID (prefix with '#') or an attribute (default when no prefix)
+			* @return element the first element up the DOM that matches the search
+			*/
 			findUp : function (element, searchterm) {
 				return findUp(element, searchterm);
 			},
-			/*
-			 * Util: 'getFirstClass'
-			 * Returns the first element from the root that matches
-			 * the classname
-			 *
-			 * @param: root: 		the node to start from
-			 * @param: className: 	The classname to search for
-			 */
+			/**
+			* Util: 'getFirstClass'
+			*
+			* @param root the node to start from
+			* @param className the classname to search for
+			* @return element the first element from the root that matches the classname
+			*/
 			getFirstClass: function (root, className) {
 				return root.getElementsByClassName(className)[0] != undefined ? root.getElementsByClassName(className)[0] : {};
 			},
-			/*
-			 * Util: 'on'
-			 * Adds an event listener
-			 *
-			 * @param: el: 			The node to attach the listener to
-			 * @param: type: 		The type of event
-			 * @param: func: 		The function to perform
-			 * @param: context: 	The context to bind the listener to
-			 */
+			/**
+			* Util: 'on'
+			* Adds an event listener
+			*
+			* @param element The node to attach the listener to
+			* @param type The type of event
+			* @param func The function to perform
+			* @param context The context to bind the listener to
+			*/
 			on: function (el, type, func, context) {
 				try {
 					el.addEventListener(type, func.bind(context));
@@ -1955,44 +1952,45 @@ function InventorySelectAll(mod) {
 					throw new Error(e + '. Called by ' + this.on.caller);
 				}
 			},
-			/*
-			 * Util: 'off'
-			 * Removes an event listener
-			 *
-			 * @param: el: 			The node to remove the listener from
-			 * @param: type: 		The type of event
-			 * @param: func: 		The function to remove
-			 */
+			/**
+			* Util: 'off'
+			* Removes an event listener
+			*
+			* @param element The node to remove the listener from
+			* @param type The type of event
+			* @param func The function to remove
+			*/
 			off: function (el, type, func) {
 				el.removeEventListener(type, func);
 			},
-			/*
-			 * Util: 'insertAfter'
-			 * Inserts a new node after the given
-			 *
-			 * @param: referenceNode: 	The node to insert after
-			 * @param: newNode: 		The node to insert
-			 */
+			/**
+			* Util: 'insertAfter'
+			* Inserts a new node after the given
+			*
+			* @param referenceNode The node to insert after
+			* @param newNode The node to insert
+			*/
 			insertAfter: function (referenceNode, newNode) {
 				referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 			},
-			/*
-			 * Util: 'deductPerc'
-			 * deducts a percentage from a number
-			 *
-			 * @param: base: 		The base '100%' number
-			 * @param: percentage: 	The percentage to deduct
-			 */
+			/**
+			* Util: 'deductPerc'
+			* deducts a percentage from a number
+			*
+			* @param base The base '100%' number
+			* @param percentage The percentage to deduct
+			* @return number
+			*/
 			deductPerc: function (base, percentage) {
 				return (base * (1 - (percentage / 100)));
 			},
-			/*
-			 * Util: 'getPerc'
-			 * Returns a percentage of a base no.
-			 *
-			 * @param: base: 		The base '100%' number
-			 * @param: percentage: 	The percentage to return
-			 */
+			/**
+			* Util: 'getPerc'
+			*
+			* @param base The base '100%' number
+			* @param percentage The percentage to return
+			* @return number a percentage of a base no.
+			*/
 			getPerc: function (base, percentage) {
 				return base * (percentage / 100);
 			}

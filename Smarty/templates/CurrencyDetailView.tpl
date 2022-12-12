@@ -49,7 +49,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td nowrap  height="40px">
+				<td nowrap height="40px">
 					<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 					<abbr class="slds-required" title="{$MOD.LBL_CURRENCY_CODE}">* </abbr>
 					{$MOD.LBL_CURRENCY_CODE}
@@ -58,7 +58,7 @@
 				<td >{$CURRENCY_CODE}</td>
 			</tr>
 			<tr>
-				<td nowrap  height="40px">
+				<td nowrap height="40px">
 					<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 					<abbr class="slds-required" title="{$MOD.LBL_CURRENCY_SYMBOL}">* </abbr>
 					{$MOD.LBL_CURRENCY_SYMBOL}
@@ -67,7 +67,7 @@
 				<td >{$CURRENCY_SYMBOL}</td>
 			</tr>
 			<tr>
-				<td nowrap  height="40px">
+				<td nowrap height="40px">
 					<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 					<abbr class="slds-required" title="{$MOD.LBL_CURRENCY_CRATE}">* </abbr>
 					{$MOD.LBL_CURRENCY_CRATE}<br>({$MOD.LBL_BASE_CURRENCY}{$MASTER_CURRENCY|@getTranslatedCurrencyString})
@@ -76,7 +76,7 @@
 				<td >{$CONVERSION_RATE}</td>
 			</tr>
 			<tr>
-				<td nowrap  height="40px">
+				<td nowrap height="40px">
 					<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="description">
 					<abbr class="slds-required" title="{$MOD.LBL_CURRENCY_STATUS}">* </abbr>
 					{$MOD.LBL_CURRENCY_STATUS}

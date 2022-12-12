@@ -25,7 +25,7 @@
 		<div class="small" style="padding:10px" >
 			<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
 			<tr><td>
-				<span class="dvHeaderText">[ {$ID} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>
+				<span class="dvHeaderText">[ {$ID} ] {$NAME} - {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>
 				&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>
 			</td></tr>
 			</table>

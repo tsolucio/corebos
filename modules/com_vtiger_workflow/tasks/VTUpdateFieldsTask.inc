@@ -120,7 +120,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$holdCM = $currentModule;
 			$_REQUEST['ajxaction'] = 'Workflow';
 			$logbg->debug('field values presave', $focus->column_fields);
-			if ($this->launchwf) {
+			if (isset($this->launchwf) && $this->launchwf) {
 				$focus->save($moduleName);
 			} else {
 				$focus->saveentity($moduleName);

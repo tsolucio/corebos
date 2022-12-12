@@ -31,7 +31,7 @@ class coreBOS_Settings {
 		if ($cache && isset(self::$cached_values[$skey])) {
 			return self::$cached_values[$skey];
 		} else {
-			$cbstrs = $adb->pquery('select setting_value from cb_settings where setting_key=?', array($skey));
+			$cbstrs = self::doQuery('select setting_value from cb_settings where setting_key=?', array($skey));
 			if ($cbstrs && $adb->num_rows($cbstrs)==1) {
 				$value = $adb->query_result($cbstrs, 0, 0);
 				self::$cached_values[$skey] = $value;
@@ -43,20 +43,17 @@ class coreBOS_Settings {
 	}
 
 	public static function setSetting($skey, $svalue) {
-		global $adb;
-		$adb->pquery('INSERT INTO cb_settings (setting_key,setting_value) VALUES (?,?) ON DUPLICATE KEY UPDATE setting_value=?', array($skey, $svalue, $svalue));
+		self::doQuery('INSERT INTO cb_settings (setting_key,setting_value) VALUES (?,?) ON DUPLICATE KEY UPDATE setting_value=?', array($skey, $svalue, $svalue));
 		self::$cached_values[$skey] = $svalue;
 	}
 
 	public static function delSetting($skey) {
-		global $adb;
-		$adb->pquery('DELETE FROM cb_settings WHERE setting_key=?', array($skey));
+		self::doQuery('DELETE FROM cb_settings WHERE setting_key=?', array($skey));
 		unset(self::$cached_values[$skey]);
 	}
 
 	public static function delSettingStartsWith($startswith) {
-		global $adb;
-		$adb->pquery('DELETE FROM cb_settings WHERE setting_key LIKE ?', array($startswith.'%'));
+		self::doQuery('DELETE FROM cb_settings WHERE setting_key LIKE ?', array($startswith.'%'));
 		if (version_compare(phpversion(), '5.6.0') >= 0) {
 			self::$cached_values = array_filter(self::$cached_values, function ($key) use ($startswith) {
 				return strpos($key, $startswith)!==0;
@@ -71,8 +68,16 @@ class coreBOS_Settings {
 
 	public static function settingExists($skey) {
 		global $adb;
-		$cbstrs = $adb->pquery('select 1 from cb_settings where setting_key=?', array($skey));
+		$cbstrs = self::doQuery('select 1 from cb_settings where setting_key=?', array($skey));
 		return ($cbstrs && $adb->num_rows($cbstrs)==1);
+	}
+
+	private static function doQuery($query, $params) {
+		global $adb;
+		$adb->logEnabled = false;
+		$cbstrs = $adb->pquery($query, $params);
+		$adb->logEnabled = true;
+		return $cbstrs;
 	}
 }
 

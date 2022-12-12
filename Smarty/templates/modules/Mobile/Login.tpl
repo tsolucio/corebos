@@ -27,7 +27,7 @@
 			<input name="checkbox-mini-0" id="showpw" data-mini="true" data-theme=c type="checkbox">
 			<label for="showpw">{$MOD.LBL_SHOW}</label>
 			<div data-role="button" >
-				<input  type="submit" value="{'LBL_LOGIN'|getTranslatedString:'Users'}" >
+				<input type="submit" value="{'LBL_LOGIN'|getTranslatedString:'Users'}" >
 			</div>
 		</form>
 	</div>

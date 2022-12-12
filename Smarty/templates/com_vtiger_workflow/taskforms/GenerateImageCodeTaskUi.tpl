@@ -8,7 +8,7 @@ var taskSavedData = {$task->taskSavedData|json_encode};
 {* Field to Save Encoded Value Input Element *}
 <div class="slds-grid slds-p-horizontal_x-large">
 	<div class="slds-col slds-size_6-of-12 slds-p-around_x-small">
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="save_encoded_value">{'LBL_WHERE_TO_SAVE'|@getTranslatedString:$MODULE_NAME}</label>
 			<div class="slds-form-element__control">
 				<select id="save_encoded_value" name="save_encoded_value" class="slds-input slds-page-header__meta-text">
@@ -22,7 +22,7 @@ var taskSavedData = {$task->taskSavedData|json_encode};
 {* Field with Value to Encode Input Element *}
 <div class="slds-grid slds-p-horizontal_x-large">
 	<div class="slds-col slds-size_6-of-12 slds-p-around_x-small">
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="">{'LBL_WHAT_TO_ENCODE'|@getTranslatedString:$MODULE_NAME}</label>
 			<div class="slds-form-element__control">
 				<select id="field_to_encode" name="field_to_encode" class="slds-input slds-page-header__meta-text">
@@ -36,7 +36,7 @@ var taskSavedData = {$task->taskSavedData|json_encode};
 {* Field to Select Encode Type Input Element *}
 <div class="slds-grid slds-p-horizontal_x-large">
 	<div class="slds-col slds-size_6-of-12 slds-p-around_x-small">
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="LBL_ENCODE_FORMAT">{'Encoding Type'|@getTranslatedString:$MODULE_NAME}</label>
 			<div class="slds-form-element__control">
 				<select id="encoding_type" name="encoding_type" class="slds-input slds-page-header__meta-text">

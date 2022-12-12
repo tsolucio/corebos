@@ -367,7 +367,7 @@
 		</div>
 	</div>
 	{if $COREBOS_HEADER_PREMENU}
-	<div style="width:100%; background-color:#fff;"  id="premenu-wrapper">
+	<div style="width:100%; background-color:#fff;" id="premenu-wrapper">
 	{$COREBOS_HEADER_PREMENU}
 	</div>
 	{/if}
@@ -406,7 +406,7 @@
 {if $Application_Menu_Direction=='Vertical'}
 <style>
 #page-header {
-  top: 3.625rem;
+ top: 3.625rem;
 }
 </style>
 <table>
@@ -634,3 +634,40 @@
 </div>
 <!-- divs for asterisk integration :: end-->
 {/if}
+
+<div id="searchmenu" class="slds-form-element slds-align_absolute-center" style="display: none;width:36%;position:fixed;top:25%;z-index:2;left: 50%;transform: translate(-50%, -50%);">
+	<div class="slds-form-element__control">
+		<div class="slds-combobox_container">
+			<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click">
+				<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+					<input type="text" readonly class="slds-input slds-combobox__input" id="typemenusearch" aria-autocomplete="list" aria-controls="searchmenulistbox" aria-expanded="false" aria-haspopup="listbox" autoComplete="off" role="combobox" placeholder="{'mt_menu'|getTranslatedString:'evvtMenu'}..." />
+					<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+						<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+						</svg>
+					</span>
+				</div>
+				<div id="searchmenulistbox" class="slds-dropdown slds-dropdown_length-with-icon-10 slds-dropdown_fluid" role="listbox">
+				<ul id="searchmenuul" class="slds-listbox slds-listbox_vertical" role="presentation">
+					{if empty($MENUSEARCH)}
+						{assign var=SEARCHMENU value=[]}
+					{else}
+						{assign var=SEARCHMENU value=$MENUSEARCH|json_decode:true}
+					{/if}
+					{foreach key=menulabel item=menulink from=$SEARCHMENU}
+					<li id="smenu{$menulabel}" role="presentation" class="slds-listbox__item">
+						<a style="text-decoration: none" href="{$menulink}">
+						<div class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">
+							<span class="slds-media__body">
+								<span class="slds-listbox__option-text slds-listbox__option-text_entity">{$menulabel}</span>
+							</span>
+						</div>
+						</a>
+					</li>
+					{/foreach}
+				</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

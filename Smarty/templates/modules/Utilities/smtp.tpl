@@ -91,7 +91,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 					</div>
 				</div>
 			</div>
-			<div class="slds-form-element slds-m-top--small" id="ic-div-server-type">
+			<div class="slds-form-element slds-m-top_small" id="ic-div-server-type">
 				<label class="slds-form-element__label" for="ic_mail_server_type">{'LBL_SELECT_SERVER_TYPE'|@getTranslatedString:$MODULE}</label>
 				<div class="slds-form-element__control">
 					<select id="ic_mail_server_type" name="ic_mail_server_type" class="slds-input" onchange="Utilities.smtp_config_setting_helper(this);">
@@ -105,7 +105,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 				<div class="slds-form-element__help" id="form-error-ic-server-type"></div>
 			</div>
 			<div id="settings_details" {if $ic_mail_server_displayname neq ''} style="display:block;" {else} style="display:none;"{/if}>
-				<div class="slds-form-element slds-m-top--small" id="ic-div-servername">
+				<div class="slds-form-element slds-m-top_small" id="ic-div-servername">
 					<font color="red">*</font>&nbsp;
 					<label class="slds-form-element__label" for="ic_mail_server_name">{'LBL_OUTGOING_MAIL_SERVER'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
@@ -113,7 +113,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 					</div>
 					<div class="slds-form-element__help" id="form-error-ic-server-name"></div>
 				</div>
-				<div class="slds-form-element slds-m-top--small" id="ic-div-username">
+				<div class="slds-form-element slds-m-top_small" id="ic-div-username">
 					<font color="red">*</font>&nbsp;
 					<label class="slds-form-element__label" for="ic_mail_server_username">{'LBL_USERNAME'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
@@ -121,7 +121,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 					</div>
 					<div class="slds-form-element__help" id="form-error-ic-server-username"></div>
 				</div>
-				<div class="slds-form-element slds-m-top--small" id="ic-div-password">
+				<div class="slds-form-element slds-m-top_small" id="ic-div-password">
 					<font color="red">*</font>&nbsp;
 					<label class="slds-form-element__label" for="ic_mail_server_password">{'LBL_PASWRD'|@getTranslatedString:'Settings'}</label>
 					<div class="slds-form-element__control">
@@ -130,7 +130,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 					<div class="slds-form-element__help" id="form-error-ic-server-password"></div>
 				</div>
 				<div id="additional_settings" {if $ic_mail_server_displayname eq 'other'} style="display:block;"{else} style="display:none;" {/if}>
-					<div class="slds-form-element slds-m-top--small">
+					<div class="slds-form-element slds-m-top_small">
 						<fieldset class="slds-form-element">
 							<legend class="slds-form-element__legend slds-form-element__label">{'LBL_Protocol'|@getTranslatedString:'MailManager'}</legend>
 							<div class="slds-form-element__control">
@@ -151,7 +151,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 							</div>
 						</fieldset>
 					</div>
-					<div class="slds-form-element slds-m-top--small">
+					<div class="slds-form-element slds-m-top_small">
 					<div class="slds-grid slds-gutters slds-gutters_medium">
 						<fieldset class="slds-col slds-form-element">
 							<legend class="slds-form-element__legend slds-form-element__label">{'LBL_SSL_Options'|@getTranslatedString:'MailManager'}</legend>
@@ -200,7 +200,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 					</div>
 					</div>
 				</div>
-				<div class="slds-form-element slds-m-top--small">
+				<div class="slds-form-element slds-m-top_small">
 					<label class="slds-form-element__label" for="ic_mail_server_refresh_time">{'LBL_REFRESH_TIME'|@getTranslatedString:'MailManager'}</label>
 					<div class="slds-form-element__control">
 						<select id="ic_mail_server_refresh_time" name="ic_mail_server_refresh_time" class="slds-input">
@@ -274,7 +274,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 					</div>
 				</div>
 			</div>
-			<div class="slds-form-element slds-m-top--small" id="og-div-server-name">
+			<div class="slds-form-element slds-m-top_small" id="og-div-server-name">
 				<font color="red">*</font>&nbsp;
 				<label class="slds-form-element__label" for="og_mail_server_name">{'LBL_OUTGOING_MAIL_SERVER'|@getTranslatedString:'Settings'}</label>
 				<div class="slds-form-element__control">
@@ -282,7 +282,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 				</div>
 				<div class="slds-form-element__help" id="form-error-og-server-name"></div>
 			</div>
-			<div class="slds-form-element slds-m-top--small" id="og-div-server-username">
+			<div class="slds-form-element slds-m-top_small" id="og-div-server-username">
 				<font color="red">*</font>&nbsp;
 				<label class="slds-form-element__label" for="og_mail_server_username">{'LBL_USERNAME'|@getTranslatedString:'Settings'}</label>
 				<div class="slds-form-element__control">
@@ -290,7 +290,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 				</div>
 				<div class="slds-form-element__help" id="form-error-og-server-username"></div>
 			</div>
-			<div class="slds-form-element slds-m-top--small" id="og-div-server-password">
+			<div class="slds-form-element slds-m-top_small" id="og-div-server-password">
 				<font color="red">*</font>&nbsp;
 				<label class="slds-form-element__label" for="og_mail_server_password">{'LBL_PASWRD'|@getTranslatedString:'Settings'}</label>
 				<div class="slds-form-element__control">
@@ -298,7 +298,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 				</div>
 				<div class="slds-form-element__help" id="form-error-og-server-password"></div>
 			</div>
-			<div class="slds-form-element slds-m-top--small">
+			<div class="slds-form-element slds-m-top_small">
 				<label class="slds-form-element__label" for="og_mail_server_smtp_auth">{'LBL_REQUIRES_AUTHENT'|@getTranslatedString:'Settings'}</label>
 				<div class="slds-form-element__control">
 					<select id="og_mail_server_smtp_auth" name="og_mail_server_smtp_auth" class="slds-input">
@@ -314,9 +314,9 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 		</div>
 	</div>
 	<br />
-	<div class="slds-m-top--large">
+	<div class="slds-m-top_large">
 		<div class="slds-float_right">
-			<button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+			<button type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 		</div>
 	</div>
 	</form>

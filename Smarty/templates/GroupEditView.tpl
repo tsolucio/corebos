@@ -199,7 +199,7 @@ function validate()
 							<td>
 								<div align="right">
 								{if $MODE eq 'edit'}
-								<input type="submit" class="slds-button slds-button--brand crmButton small save" name="add" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onClick="return validate()">
+								<input type="submit" class="slds-button slds-button_brand crmButton small save" name="add" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onClick="return validate()">
 								{else}
 								<input type="submit" class="crmButton create small" name="add" value="{$CMOD.LBL_ADD_GROUP_BUTTON}" onClick="return validate()">
 								{/if}

@@ -16,7 +16,7 @@
 	{foreach item=module from=$INFOMODULES}
 	<tr onmouseover="this.className='prvPrfHoverOn'" onmouseout="this.className='prvPrfHoverOff'">
 		<td class="listTableRow small" width="50%">{$module.name|@getTranslatedString:$module.name}</td>
-		<td class="listTableRow cellText small"  align="center">
+		<td class="listTableRow cellText small" align="center">
 		<div id="status" style="position:absolute;left:850px;top:5px;height:27px;white-space:nowrap;display:none"><img src="themes/softed/images/status.gif"></div>
 		{if $module.visible eq '1'}
 			<a href="javascript:void(0);" onclick="toggleModule_mod('{$module.tabid}', 'module_disable');">

@@ -129,7 +129,16 @@
 		*/
 		getPreExisting: function () {
 			let input = document.getElementById('cbds-advfilt_existing-conditions');
-			let existing = input ? JSON.parse(input.value).length || JSON.parse(input.value)[1] ? JSON.parse(input.value) : null : null;
+			let existing = null;
+			if (input) {
+				try {
+					let jparse = JSON.parse(input.value);
+					if (jparse) {
+						existing = jparse;
+					}
+				} catch(e) {
+				}
+			}
 			const groups = [];
 			if (existing != null) {
 				existing = JSON.parse(input.value);
