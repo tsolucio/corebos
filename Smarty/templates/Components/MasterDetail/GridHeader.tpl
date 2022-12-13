@@ -42,18 +42,4 @@
 </div>
 </div>
 </div>
-	<script>
-
-		const blockToggleBtn = document.getElementById("btn-{$MasterDetailLayoutMap.mapname}");
-		const id = blockToggleBtn?.dataset?.id;
-
-		setTimeout( () => {
-			blockToggleBtn.click();
-		}, 3000);
-
-		setTimeout( () => {
-			masterdetailwork.MDToggle('', id);
-		}, 4000);
-
-	</script>
 </div>

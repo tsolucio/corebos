@@ -165,6 +165,9 @@ foreach ($blocks as $block) {
 			$mergedBlocks[] = $block;
 		} else {
 			//suport for related lists
+			if (!isset($block['sequence'])) {
+				continue;
+			}
 			$header = array_keys($block);
 			$mergedBlocks[] = array(
 				'__sequence' => (int)$block['sequence'],

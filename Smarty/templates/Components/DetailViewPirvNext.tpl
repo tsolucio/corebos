@@ -82,14 +82,19 @@
 		aria-haspopup="true"
 		title="{$APP.TOGGLE_ACTIONS}"
 		onclick="{literal}
+		let bodycolumn = document.getElementById('bodycolumn');
 		if (document.getElementById('actioncolumn').style.display=='none') {
-			document.getElementById('actioncolumn').style.display='table-cell';
+			document.getElementById('actioncolumn').style.display='block';
 			document.getElementById('action-on').style.display='block';
 			document.getElementById('action-off').style.display='none';
+			bodycolumn.classList.remove('slds-size_5-of-5');
+			bodycolumn.classList.add('slds-size_4-of-5');
 		} else {
 			document.getElementById('actioncolumn').style.display='none';
 			document.getElementById('action-on').style.display='none';
 			document.getElementById('action-off').style.display='block';
+			bodycolumn.classList.remove('slds-size_4-of-5');
+			bodycolumn.classList.add('slds-size_5-of-5');
 		}
 		window.dispatchEvent(new Event('resize'));{/literal}"
 		>
