@@ -1483,7 +1483,7 @@ class QueryGenerator {
 			if ($this->isNumericType($field->getFieldDataType())) {
 				if (empty($value)) {
 					$value = '0';
-				} elseif (strpos((string)$value, ',')>0  || (!is_numeric($value) && !preg_match('/\'/', $value))) {
+				} elseif (strpos((string)$value, ',')>0  || (!is_numeric($value) && strpos($value, "'") === false)) {
 					$value = "'$value'";
 				}
 			}
