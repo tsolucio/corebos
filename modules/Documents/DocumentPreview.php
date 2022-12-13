@@ -37,6 +37,7 @@ class DocumentPreview_DetailViewBlock extends DeveloperBlock {
 		$smarty = $this->getViewer();
 		$record_id = $this->getFromContext('record_id');
 		$docid = $this->getFromContext('docid');
+		$mapid = $this->getFromContext('mapid');
 		$width = $this->getFromContext('width');
 		$height = $this->getFromContext('height');
 		if ($record_id) {
@@ -52,7 +53,13 @@ class DocumentPreview_DetailViewBlock extends DeveloperBlock {
 				where crm2.crmid=? and filetype='application/pdf' order by vtiger_attachments.attachmentsid desc LIMIT 1",
 				array($record_id)
 			);
-		} elseif ($docid) {
+		} elseif ($docid || $mapid) {
+			if ($mapid) {
+				$docid = coreBOS_Rule::evaluate($mapid, $this->getFromContext('crmid'));
+				if (empty($docid)) {
+					$docid = 0;
+				}
+			}
 			$rs = $adb->pquery(
 				'select vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,
 					vtiger_seattachmentsrel.attachmentsid attachmentsid,vtiger_notes.notecontent description,vtiger_notes.*
