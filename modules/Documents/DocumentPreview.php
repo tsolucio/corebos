@@ -14,7 +14,8 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 // block://DocumentPreview:modules/Documents/DocumentPreview.php:record_id=$RECORD$
-// block://DocumentPreview:modules/Documents/DocumentPreview.php:docid=45112
+// block://DocumentPreview:modules/Documents/DocumentPreview.php:docid=45012
+// block://DocumentPreview:modules/Documents/DocumentPreview.php:record_id=$RECORD$&mapid=45122
 
 require_once 'modules/Vtiger/DeveloperWidget.php';
 global $currentModule;
@@ -40,7 +41,7 @@ class DocumentPreview_DetailViewBlock extends DeveloperBlock {
 		$mapid = $this->getFromContext('mapid');
 		$width = $this->getFromContext('width');
 		$height = $this->getFromContext('height');
-		if ($record_id) {
+		if ($record_id && !$mapid) {
 			$rs = $adb->pquery(
 				"select vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,
 					vtiger_seattachmentsrel.attachmentsid attachmentsid,vtiger_notes.notecontent description,vtiger_notes.*
@@ -55,7 +56,7 @@ class DocumentPreview_DetailViewBlock extends DeveloperBlock {
 			);
 		} elseif ($docid || $mapid) {
 			if ($mapid) {
-				$docid = coreBOS_Rule::evaluate($mapid, $this->getFromContext('crmid'));
+				$docid = coreBOS_Rule::evaluate($mapid, $record_id);
 				if (empty($docid)) {
 					$docid = 0;
 				}
