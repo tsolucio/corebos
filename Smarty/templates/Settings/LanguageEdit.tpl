@@ -42,7 +42,7 @@ function changeModule(form) {
 	form.submit();
 }
 function addLabel() {
-	document.getElementById('tableofLabels').innerHTML+='<tr style="background-color:#FFF;"><td valign="top" class="listTableRow small"><input style="width:100%" name="newLabels['+k+'][key]"/></td><td valign="top" class="listTableRow small"><input style="width:100%" /></td><td class="listTableRow small" valign=top><input type="text" name="newLabels['+k+'][value]"  class="small" style="width:100%"></td></tr>';
+	document.getElementById('tableofLabels').innerHTML+='<tr style="background-color:#FFF;"><td valign="top" class="listTableRow small"><input style="width:100%" name="newLabels['+k+'][key]"/></td><td valign="top" class="listTableRow small"><input style="width:100%" /></td><td class="listTableRow small" valign=top><input type="text" name="newLabels['+k+'][value]" class="small" style="width:100%"></td></tr>';
 	k++;
 }
 {/literal}

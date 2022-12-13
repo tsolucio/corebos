@@ -18,35 +18,35 @@
 		<input type="hidden" name="action" value="integration">
 		<input type="hidden" name="_op" value="setconfigwc">
 		<div class="slds-form-element">
-			<label class="slds-checkbox--toggle slds-grid">
-			<span class="slds-form-element__label slds-m-bottom--none">{'_active'|@getTranslatedString:$MODULE}</span>
+			<label class="slds-checkbox_toggle slds-grid">
+			<span class="slds-form-element__label slds-m-bottom_none">{'_active'|@getTranslatedString:$MODULE}</span>
 			<input type="checkbox" name="woocommerce_active" aria-describedby="toggle-desc" {if $isActive}checked{/if} />
-			<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-				<span class="slds-checkbox--faux"></span>
-				<span class="slds-checkbox--on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
-				<span class="slds-checkbox--off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
+			<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+				<span class="slds-checkbox_faux"></span>
+				<span class="slds-checkbox_on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
+				<span class="slds-checkbox_off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
 			</span>
 			</label>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="cs">{'wccs'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="cs" name="cs" class="slds-input" value="{$cs}" />
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="ck">{'wcck'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="ck" name="ck" class="slds-input" value="{$ck}" />
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="wcurl">{'wcurl'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="wcurl" name="wcurl" class="slds-input" value="{$wcurl}" />
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="wcsct">{'wcsct'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="wcsct" name="wcsct" class="slds-input" value="{$wcsct}" />
@@ -55,46 +55,46 @@
 		<div class="slds-grid slds-gutters slds-m-top_medium">
 			<div class="slds-col slds-size_1-of-3">
 				<div class="slds-form-element">
-					<label class="slds-checkbox--toggle slds-grid">
-					<span class="slds-form-element__label slds-m-bottom--none">{'wccustomer'|@getTranslatedString:$MODULE}</span>
+					<label class="slds-checkbox_toggle slds-grid">
+					<span class="slds-form-element__label slds-m-bottom_none">{'wccustomer'|@getTranslatedString:$MODULE}</span>
 					<input type="checkbox" name="woocommerce_customer" aria-describedby="toggle-desc" {if $isContact}checked{/if} />
-					<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-						<span class="slds-checkbox--faux"></span>
-						<span class="slds-checkbox--on slds-text-title_bold">{'SINGLE_Contacts'|@getTranslatedString:'Contacts'}</span>
-						<span class="slds-checkbox--off slds-text-title_bold">{'SINGLE_Accounts'|@getTranslatedString:'Accounts'}</span>
+					<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+						<span class="slds-checkbox_faux"></span>
+						<span class="slds-checkbox_on slds-text-title_bold">{'SINGLE_Contacts'|@getTranslatedString:'Contacts'}</span>
+						<span class="slds-checkbox_off slds-text-title_bold">{'SINGLE_Accounts'|@getTranslatedString:'Accounts'}</span>
 					</span>
 					</label>
 				</div>
 			</div>
 			<div class="slds-col slds-size_1-of-3">
 				<div class="slds-form-element">
-					<label class="slds-checkbox--toggle slds-grid">
-					<span class="slds-form-element__label slds-m-bottom--none">{'wcproduct'|@getTranslatedString:$MODULE}</span>
+					<label class="slds-checkbox_toggle slds-grid">
+					<span class="slds-form-element__label slds-m-bottom_none">{'wcproduct'|@getTranslatedString:$MODULE}</span>
 					<input type="checkbox" name="woocommerce_product" aria-describedby="toggle-desc" {if $isProduct}checked{/if} />
-					<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-						<span class="slds-checkbox--faux"></span>
-						<span class="slds-checkbox--on slds-text-title_bold">{'SINGLE_Products'|@getTranslatedString:'Products'}</span>
-						<span class="slds-checkbox--off slds-text-title_bold">{'SINGLE_Services'|@getTranslatedString:'Services'}</span>
+					<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+						<span class="slds-checkbox_faux"></span>
+						<span class="slds-checkbox_on slds-text-title_bold">{'SINGLE_Products'|@getTranslatedString:'Products'}</span>
+						<span class="slds-checkbox_off slds-text-title_bold">{'SINGLE_Services'|@getTranslatedString:'Services'}</span>
 					</span>
 					</label>
 				</div>
 			</div>
 			<div class="slds-col slds-size_1-of-3">
 				<div class="slds-form-element">
-					<label class="slds-checkbox--toggle slds-grid">
-					<span class="slds-form-element__label slds-m-bottom--none">{'wcorder'|@getTranslatedString:$MODULE}</span>
+					<label class="slds-checkbox_toggle slds-grid">
+					<span class="slds-form-element__label slds-m-bottom_none">{'wcorder'|@getTranslatedString:$MODULE}</span>
 					<input type="checkbox" name="woocommerce_order" aria-describedby="toggle-desc" {if $isSalesOrder}checked{/if} />
-					<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-						<span class="slds-checkbox--faux"></span>
-						<span class="slds-checkbox--on slds-text-title_bold">{'SINGLE_SalesOrder'|@getTranslatedString:'SalesOrder'}</span>
-						<span class="slds-checkbox--off slds-text-title_bold">{'SINGLE_Invoice'|@getTranslatedString:'Invoice'}</span>
+					<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+						<span class="slds-checkbox_faux"></span>
+						<span class="slds-checkbox_on slds-text-title_bold">{'SINGLE_SalesOrder'|@getTranslatedString:'SalesOrder'}</span>
+						<span class="slds-checkbox_off slds-text-title_bold">{'SINGLE_Invoice'|@getTranslatedString:'Invoice'}</span>
 					</span>
 					</label>
 				</div>
 			</div>
 		</div>
-		<div class="slds-m-top--large">
-			<button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+		<div class="slds-m-top_large">
+			<button type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 		</div>
 		</form>
 	{/if}

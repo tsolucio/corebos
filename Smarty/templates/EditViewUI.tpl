@@ -282,7 +282,7 @@
 			<td id="td_val_{$fldname}" width=30% align=left class="dvtCellInfo">
 				<span style='display:none;' id='{$fldname}_hidden'></span>
 					<div style="position: relative;">
-						<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" 
+						<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}"
 						{if isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['combobox'])}
 							autocomplete="off"
 							class="autocomplete-input detailedViewTextBox"

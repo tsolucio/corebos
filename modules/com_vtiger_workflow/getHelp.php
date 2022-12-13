@@ -18,8 +18,8 @@ Vtiger_Request::validateRequest();
 $wfclass = ($_REQUEST['wfclass']);
 $classpath = 'modules/com_vtiger_workflow/tasks/'.$wfclass;
 if (!empty($wfclass) && (file_exists($classpath.'.php') || file_exists($classpath.'.inc'))) {
-	include_once $classpath.'.php';
-	include_once $classpath.'.inc';
+	@include_once $classpath.'.php';
+	@include_once $classpath.'.inc';
 	$wf = new $wfclass;
 	$smarty = new vtigerCRM_Smarty();
 	$smarty->assign('HELPHEADER', getTranslatedString($wfclass, 'com_vtiger_workflow'));
