@@ -256,7 +256,7 @@ class Migration_Utils {
 						$new_db_has_tables = true;
 					}
 					$db_utf8_support = check_db_utf8_support($newdb_conn);
-					$configInfo['vt_charset'] = ($db_utf8_support)? 'UTF-8' : 'ISO-8859-1';
+					$configInfo['vt_charset'] = ($db_utf8_support)? 'UTF-8' : 'UTF-8';
 					$newdb_conn->Close();
 				}
 			}
