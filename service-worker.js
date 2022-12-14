@@ -11471,7 +11471,7 @@ precacheAndRoute([{
   "revision": "045f54dabb34aa52ad190b1f308034bf"
 }, {
   "url": "include/js/FieldDependencies.js",
-  "revision": "fa83ea69bee81e924cc613a7a241e3cb"
+  "revision": "d084b6024971a1d71a7fc33e43f50f82"
 }, {
   "url": "include/js/FieldDepFunc.js",
   "revision": "2ded50797c9a63942ff4cdf928df3439"
@@ -11480,7 +11480,7 @@ precacheAndRoute([{
   "revision": "70e4040be9d6e893aec7e605033a773a"
 }, {
   "url": "include/js/general.js",
-  "revision": "030558fb8c230fa31608c076d2af5cf0"
+  "revision": "aaa1665c241921e163924b2bd285892b"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "b4fad7ff70fb9444a5e86f58490269b9"
@@ -12350,7 +12350,7 @@ precacheAndRoute([{
   "revision": "aba9f38466e2ee904b8465a3cbe65de7"
 }, {
   "url": "modules/Utilities/Utilities.js",
-  "revision": "08738fbd221f6bc1c53f0ddbe4b37a8a"
+  "revision": "fcaf90049fc1d870640ea3eb10b66fd7"
 }, {
   "url": "modules/Import/resources/ImportStep2.js",
   "revision": "f98f9eeb54cd2b95375d74c1af6a9f14"
