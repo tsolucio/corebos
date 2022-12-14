@@ -339,13 +339,37 @@ function __cb_getfieldsof($arr) {
 	} else {
 		$qg->setFields(array('*'));
 	}
-	$crmid = vtws_getCRMID($arr[0]);
-	$qg->addCondition('id', $crmid, 'e');
-	$rs = $adb->query($qg->getQuery(false));
-	if ($rs && $adb->num_rows($rs)>0) {
-		return array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
+	$crmids = explode(',', $arr[0]);
+	if (count($crmids) > 1) {
+		$qg->startGroup();
+		foreach ($crmids as $crmid) {
+			$crmid = vtws_getCRMID(trim($crmid));
+			$qg->addCondition('id', trim($crmid), 'e', 'or');
+		}
+		$qg->endGroup();
+		$rs = $adb->query($qg->getQuery(false));
+		$noOfRows = $adb->num_rows($rs);
+		$value = array();
+		for ($i=0; $i < $noOfRows; $i++) {
+			$result = array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
+			if (isset($arr[2])) {
+				$fields = explode(',', $arr[2]);
+				if (count($fields) == 1) {
+					$result = $result[$arr[2]];
+				}
+			}
+			$value[] = $result;
+		}
+		return $value;
 	} else {
-		return array();
+		$crmid = vtws_getCRMID($arr[0]);
+		$qg->addCondition('id', $crmid, 'e');
+		$rs = $adb->query($qg->getQuery(false));
+		if ($rs && $adb->num_rows($rs)>0) {
+			return array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
+		} else {
+			return array();
+		}
 	}
 }
 

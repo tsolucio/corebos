@@ -54,13 +54,45 @@ function vtws_getfilterfields($module, $user) {
 	$_REQUEST['action'] = $saveAction;
 	$viewinfo = $customView->getColumnsListByCvid($viewid);
 	$fields = array();
+	$relatedfields = array();
+	$relatedfieldsInfo = array();
 	foreach ($viewinfo as $fld) {
 		$finfo=explode(':', $fld);
-		$fields[]=($finfo[1]=='smownerid' ? 'assigned_user_id' : $finfo[2]);
+		$mod = explode('_', $finfo[3]);
+		if ($mod[0] == 'Notes') {
+			$mod[0] = 'Documents';
+		}
+		if ($mod[0] != $module) {
+			$fields[]=$mod[0].'.'.$finfo[2];
+			if (empty($relatedfieldsInfo[$mod[0]])) {
+				$relatedfieldsInfo[$mod[0]] = getModuleFieldsInfo($mod[0]);
+			}
+			if (empty($relatedfieldsInfo[$mod[0]])) {
+				continue;
+			}
+			$row = array();
+			foreach ($relatedfieldsInfo[$mod[0]] as $rows) {
+				if ($rows['fieldname'] == $finfo[2]) {
+					$row = $rows;
+					break;
+				}
+			}
+			$relatedfields[$finfo[2]] = array(
+				'name' => $finfo[2],
+				'label' => getTranslatedString($row['fieldlabel'], $mod[0]),
+				'label_raw' => $row['fieldlabel'],
+				'uitype' => $row['uitype'],
+				'typeofdata' => $row['typeofdata'],
+				'default' => $row['defaultvalue'],
+			);
+		} else {
+			$fields[]=($finfo[1]=='smownerid' ? 'assigned_user_id' : $finfo[2]);
+		}
 	}
 
 	return array(
 		'fields'=>$fields,
+		'relatedfields'=>$relatedfields,
 		'linkfields'=>$linkfields,
 		'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
 	);

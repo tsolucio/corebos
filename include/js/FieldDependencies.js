@@ -543,11 +543,7 @@ FieldDependencies.prototype.fieldReadonlyEditView = function (readonlyFields) {
 		}
 		let fn = document.getElementById(field);
 		if (fn) {
-			if (fn.item) {
-				fn.item(0).style.display='none';
-			} else {
-				fn.style.display='none';
-			}
+			fn.style.display='none';
 		}
 	}
 };
