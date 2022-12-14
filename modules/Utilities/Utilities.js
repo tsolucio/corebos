@@ -556,7 +556,7 @@ class DeleteButtonRender {
 		let el = document.createElement('span');
 		let actions = `
 			<button class="slds-button slds-button_destructive delete" title="" onclick="deleteChRow(${rowKey})" name="Delete">
-			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use> </svg>
+			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true"><use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use></svg>
 			`+ mod_alert_arr.LBL_DELETE+`</button>`;
 		el.innerHTML = actions;
 		this.el = el;
