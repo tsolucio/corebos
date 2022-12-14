@@ -34,18 +34,36 @@ function kbGetBoardItems($module, $limit_start_rec, $boardinfo) {
 				$fields = array();
 				foreach ($boardinfo['cards']['showfields'] as $fname) {
 					$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, (string)$fname);
+					if (isset($row[$finfo['columnname']])) {
+						$row[$fname] = $row[$finfo['columnname']]; // set fields where fieldname!=columnname
+						$output = getDetailViewOutputHtml($finfo['uitype'], $finfo['fieldname'], $finfo['fieldlabel'], $row, $finfo['generatedtype'], $orgtabid, $module);
+					} else {
+						$output = [
+							getTranslatedString($finfo['fieldlabel'], $module),
+							''
+						];
+					}
 					$fields[] = array(
-						'label' => getTranslatedString($finfo['fieldlabel'], $module),
-						'value' => isset($row[$fname]) ? $row[$fname] : '',
+						'label' => $output[0],
+						'value' => $output[1],
 					);
 				}
 				$item['showfields'] = $fields;
 				$fields = array();
 				foreach ($boardinfo['cards']['morefields'] as $fname) {
 					$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, (string)$fname);
+					if (isset($row[$finfo['columnname']])) {
+						$row[$fname] = $row[$finfo['columnname']]; // set fields where fieldname!=columnname
+						$output = getDetailViewOutputHtml($finfo['uitype'], $finfo['fieldname'], $finfo['fieldlabel'], $row, $finfo['generatedtype'], $orgtabid, $module);
+					} else {
+						$output = [
+							getTranslatedString($finfo['fieldlabel'], $module),
+							''
+						];
+					}
 					$fields[] = array(
-						'label' => getTranslatedString($finfo['fieldlabel'], $module),
-						'value' => isset($row[$fname]) ? $row[$fname] : '',
+						'label' => $output[0],
+						'value' => $output[1],
 					);
 				}
 				$item['morefields'] = $fields;

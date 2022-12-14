@@ -16,22 +16,22 @@
  *************************************************************************************************/
 -->*}
 <script type="text/javascript">
-$(document).ready(function() {
-    document.getElementById("closeBtn").addEventListener("click", function() {
-    document.getElementById("denorm_responsebody").style.display = "none";
-  });
+$(document).ready(function () {
+	document.getElementById('closeBtn').addEventListener('click', function() {
+	document.getElementById('denorm_responsebody').style.display = 'none';
+});
 });
 </script>
 <section id="denorm_responsebody" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-  <div class="slds-modal__container" style="height:fit-content; border:20px;">
-    <header class="slds-modal__header">
-      <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{'denormalize response'|@getTranslatedString}</h2>
-    </header>
-    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-        <p>{$DENORM_RESPONSE}</p>
-      </div>
-    <footer class="slds-modal__footer">
-      <button id="closeBtn" class="slds-button slds-button_brand">{'LBL_CLOSE'|@getTranslatedString:'Settings'}</button>
-    </footer>
-  </div>
+<div class="slds-modal__container" style="height:fit-content; border:20px;">
+	<header class="slds-modal__header">
+		<h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{'denormalize response'|@getTranslatedString}</h2>
+	</header>
+	<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+		<p>{$DENORM_RESPONSE}</p>
+		</div>
+	<footer class="slds-modal__footer">
+		<button id="closeBtn" class="slds-button slds-button_brand">{'LBL_CLOSE'|@getTranslatedString:'Settings'}</button>
+	</footer>
+</div>
 </section>

@@ -39,7 +39,7 @@ function vtmailscanner_folders_resetAll_To(checktype) {
 		<input type='hidden' name='return_action' value='MailScanner'>
 		<input type='hidden' name='return_module' value='Settings'>
 
-        <br>
+		<br>
 
 		<div align=center>
 				<!-- DISPLAY -->
@@ -75,7 +75,7 @@ function vtmailscanner_folders_resetAll_To(checktype) {
 
 				<table border=0 cellspacing=0 cellpadding=0 width=100% class="listRow">
 				<tr valign=top>
-	         	    <td class="small" valign=top ><table width="100%"  border="0" cellspacing="0" cellpadding="5">
+					<td class="small" valign=top ><table width="100%" border="0" cellspacing="0" cellpadding="5">
 						{foreach item=FOLDER key=FOLDERNAME from=$FOLDERINFO}
 						{if ($FOLDER_COL_INDEX % $FOLDER_COL_LIMIT) eq 0}
 						<tr>
@@ -116,7 +116,7 @@ function vtmailscanner_folders_resetAll_To(checktype) {
 	</div>
 
 </td>
-   </tr>
+</tr>
 </tbody>
 </form>
 </table>

@@ -80,7 +80,7 @@
 								<svg aria-hidden="true" class="slds-input__icon">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 								</svg>
-								<input type="text"  name="namerole_search" id="namerole_search" class="slds-input" style="height: 30px;"/>
+								<input type="text" name="namerole_search" id="namerole_search" class="slds-input" style="height: 30px;"/>
 							</div>
 						</div>
 					</div>
@@ -94,7 +94,7 @@
 								<svg aria-hidden="true" class="slds-input__icon">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 								</svg>
-								<input type="text"  name="email_search" id="email_search" class="slds-input" style="height: 30px;"/>
+								<input type="text" name="email_search" id="email_search" class="slds-input" style="height: 30px;"/>
 							</div>
 						</div>
 					</div>

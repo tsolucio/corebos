@@ -111,7 +111,7 @@ class DecisionTable extends processcbMap {
 		$rules = array();
 		foreach ($xml->rules->rule as $value) {
 			$sequence = (string)$value->sequence;
-			$ruleOutput = (string)$value->output;
+			$ruleOutput = strtolower((string)$value->output);
 			$rule = array(
 				'sequence' => $sequence,
 				'ruleOutput' => $ruleOutput,
@@ -135,9 +135,9 @@ class DecisionTable extends processcbMap {
 				$eval = $exprEvaluater->evaluate($entity);
 				$rule['valueevaluate'] = $testexpression;
 				$rule['valueresult'] = $eval;
-				if ($ruleOutput == 'ExpressionResult' || $ruleOutput == 'FieldValue') {
+				if ($ruleOutput == 'expressionresult' || $ruleOutput == 'fieldvalue') {
 					$outputs[$sequence] = $eval;
-				} elseif ($ruleOutput == 'crmObject') {
+				} elseif ($ruleOutput == 'crmobject') {
 					$crmobj = CRMEntity::getInstance(getSalesEntityType($eval));
 					$crmobj->retrieve_entity_info($eval);
 					$outputs[$sequence] = $crmobj;
@@ -151,9 +151,9 @@ class DecisionTable extends processcbMap {
 				$rule['type'] = 'map';
 				$rule['valueraw'] = $mapid;
 				$rule['valueresult'] = $eval;
-				if ($ruleOutput == 'ExpressionResult' || $ruleOutput == 'FieldValue') {
+				if ($ruleOutput == 'expressionresult' || $ruleOutput == 'fieldvalue') {
 					$outputs[$sequence] = $eval;
-				} elseif ($ruleOutput == 'crmObject') {
+				} elseif ($ruleOutput == 'crmobject') {
 					$crmobj = CRMEntity::getInstance(getSalesEntityType($eval));
 					$crmobj->retrieve_entity_info($eval);
 					$outputs[$sequence] = $crmobj;
@@ -240,7 +240,7 @@ class DecisionTable extends processcbMap {
 					$field = $finfo['entityid'];
 				}
 				while ($result && $row = $adb->fetch_array($result)) {
-					if ($ruleOutput == 'Row') {
+					if ($ruleOutput == 'row') {
 						$seqidx = $sequence.'_'.sprintf("%'.04d", $seqcnt++);
 						$ret = $row;
 						for ($col=0; $col < $numfields; $col++) {
@@ -250,9 +250,9 @@ class DecisionTable extends processcbMap {
 					} elseif (isset($row[$field])) {
 						$eval = $row[$field];
 						$seqidx = $sequence.'_'.sprintf("%'.04d", $seqcnt++);
-						if ($ruleOutput == 'ExpressionResult' || $ruleOutput == 'FieldValue') {
+						if ($ruleOutput == 'expressionresult' || $ruleOutput == 'fieldvalue') {
 							$outputs[$seqidx] = $eval;
-						} elseif ($ruleOutput == 'crmObject') {
+						} elseif ($ruleOutput == 'crmobject') {
 							$crmobj = CRMEntity::getInstance(getSalesEntityType($eval));
 							$crmobj->retrieve_entity_info($eval);
 							$outputs[$seqidx] = $crmobj;

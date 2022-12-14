@@ -18,36 +18,36 @@
 		<input type="hidden" name="action" value="integration">
 		<input type="hidden" name="_op" value="setconfigzendesk">
 		<div class="slds-form-element">
-			<label class="slds-checkbox--toggle slds-grid">
-			<span class="slds-form-element__label slds-m-bottom--none">{'zendesk_active'|@getTranslatedString:$MODULE}</span>
+			<label class="slds-checkbox_toggle slds-grid">
+			<span class="slds-form-element__label slds-m-bottom_none">{'zendesk_active'|@getTranslatedString:$MODULE}</span>
 			<input type="checkbox" name="zendesk_active" aria-describedby="toggle-desc" {if $isActive}checked{/if} />
-			<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
-				<span class="slds-checkbox--faux"></span>
-				<span class="slds-checkbox--on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
-				<span class="slds-checkbox--off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
+			<span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+				<span class="slds-checkbox_faux"></span>
+				<span class="slds-checkbox_on">{'LBL_ENABLED'|@getTranslatedString:'Settings'}</span>
+				<span class="slds-checkbox_off">{'LBL_DISABLED'|@getTranslatedString:'Settings'}</span>
 			</span>
 			</label>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="API_URL">{'zendesk_apiurl'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="API_URL" name="API_URL" class="slds-input" value="{$API_URL}" />
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="accessCode">{'zendesk_accessCode'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="accessCode" name="accessCode" class="slds-input" value="{$accessCode}" />
 			</div>
 		</div>
-		<div class="slds-form-element slds-m-top--small">
+		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="username">{'zendesk_username'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
 				<input type="text" id="username" name="username" class="slds-input" value="{$username}" />
 			</div>
 		</div>
-		<div class="slds-m-top--large">
-			<button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+		<div class="slds-m-top_large">
+			<button type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 		</div>
 		</form>
 	{/if}

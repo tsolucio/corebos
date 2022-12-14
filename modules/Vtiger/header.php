@@ -100,7 +100,7 @@ $smarty->assign('Calendar_Notification_Sound', $NotificationSound);
 
 $companyDetails = retrieveCompanyDetails();
 $smarty->assign('COMPANY_DETAILS', $companyDetails);
-$getTitle = GlobalVariable::getVariable('Application_TitleInformation', getTranslatedString($currentModule, $currentModule).' - '.$appUIName);
+$getTitle = GlobalVariable::getVariable('Application_TitleInformation', getTranslatedString($currentModule, $currentModule).' - '.$appUIName, $currentModule, $current_user->id, $_REQUEST['action']);
 if (is_numeric($getTitle)) {
 	$getTitle = coreBOS_Rule::evaluate($getTitle, $_REQUEST['record']);
 }

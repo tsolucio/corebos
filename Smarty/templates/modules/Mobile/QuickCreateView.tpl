@@ -93,7 +93,7 @@
 									{/if}
 									{if $_FIELD->uitype() eq '15'}
 											<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-											<select id="{$_FIELD->name()}" name="{$_FIELD->name()}"  data-mini="true" class="select" data-native-menu="false">
+											<select id="{$_FIELD->name()}" name="{$_FIELD->name()}" data-mini="true" class="select" data-native-menu="false">
 												{foreach item=arr from=$_FIELD->value()}
 													<option value="{$arr.value}" {if isset($arr.selected)}{$arr.selected}{/if}>
 														{$arr.label|@getTranslatedString:$_MODULE->name()}
@@ -153,7 +153,7 @@
 											</fieldset>
 										</div>
 										<span id="assign_user" style="{$style_user}">
-											<select name="assigned_user_id" data-mini="true"  class="select" data-native-menu="false">
+											<select name="assigned_user_id" data-mini="true" class="select" data-native-menu="false">
 												{foreach key=key_one item=arr from=$_FIELD->value()}
 													{if $key_one eq '0'}
 														{foreach key=sel_value1 item=arr1 from=$arr}
@@ -166,7 +166,7 @@
 											</select>
 										</span>
 										<span id="assign_team" style="{$style_group}">
-											<select name="assigned_group_id" data-mini="true"  id="assing" class="select" data-native-menu="false">
+											<select name="assigned_group_id" data-mini="true" id="assing" class="select" data-native-menu="false">
 												{foreach key=key_one item=arr from=$_FIELD->value()}
 													{if $key_one eq '1'}
 														{foreach key=sel_value1 item=arr1 from=$arr}

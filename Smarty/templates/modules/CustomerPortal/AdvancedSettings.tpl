@@ -12,7 +12,7 @@
 
 {include file='Buttons_List.tpl'}
 
-<form  method="post" name="new" id="form">
+<form method="post" name="new" id="form">
 <input type="hidden" name="module" value="CustomerPortal">
 <input type="hidden" name="action" value="AdvancedSettings">
 <input type="hidden" name="return_action" value="AdvancedSettings">

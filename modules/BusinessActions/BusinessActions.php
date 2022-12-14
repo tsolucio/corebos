@@ -207,16 +207,24 @@ class BusinessActions extends CRMEntity {
 			// Multiple link type selection
 			if (is_array($type)) {
 				$multitype = true;
-				$type_sql = $adb->convert2Sql(' AND ba.elementtype_action IN ('.Vtiger_Utils::implodestr('?', count($type), ',') .') ', $adb->flatten_array($type));
+				$types = $type;
+				if (in_array('DETAILVIEWBASIC', $type)) {
+					$types[] = 'DETAILVIEWACTIONBUTTON';
+				}
+				$type_sql = $adb->convert2Sql(' AND ba.elementtype_action IN ('.Vtiger_Utils::implodestr('?', count($types), ',') .') ', $adb->flatten_array($types));
 				if ($tabid == self::IGNORE_MODULE && !empty($currentModule)) {
 					$module_sql = " AND ((ba.onlyonmymodule AND (ba.module_list = '".$currentModule."' OR ba.module_list LIKE '".$currentModule." %' OR ba.module_list LIKE '% ".$currentModule." %' OR ba.module_list LIKE '% ".$currentModule."')) OR !ba.onlyonmymodule) ";
 				}
 			} else {
-				$type_sql = $adb->convert2Sql(' AND ba.elementtype_action = ?', array($type));
+				if ('DETAILVIEWBASIC' == $type) {
+					$type_sql = $adb->convert2Sql(' AND ba.elementtype_action IN (?,?)', array($type, 'DETAILVIEWACTIONBUTTON'));
+				} else {
+					$type_sql = $adb->convert2Sql(' AND ba.elementtype_action=?', array($type));
+				}
 			}
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
-		$query = 'SELECT  ba.*
+		$query = 'SELECT ba.*
 			FROM vtiger_businessactions as ba INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=ba.businessactionsid
 			WHERE vtiger_crmentity.deleted=0 AND ba.active=1 '.$module_sql.$type_sql;
 
@@ -273,6 +281,10 @@ class BusinessActions extends CRMEntity {
 
 			//Get Vtiger_Link object
 			$link = self::convertToObject($tabid, $row);
+			if ($link->linktype=='DETAILVIEWACTIONBUTTON') {
+				$link->linktype = 'DETAILVIEWBASIC';
+				$link->showasbutton = true;
+			}
 
 			if (!empty($row['handler_path']) && isInsideApplication($row['handler_path'])) {
 				checkFileAccessForInclusion($row['handler_path']);

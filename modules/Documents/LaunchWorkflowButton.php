@@ -13,6 +13,7 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
+// module=Documents&action=DocumentsAjax&file=LaunchWorkflowButton&record=$RECORD$&workflow_id=59&type=slds-button_destructive&button_label=ANNULLARE
 
 require_once 'modules/Vtiger/DeveloperWidget.php';
 global $currentModule;
