@@ -156,7 +156,7 @@ class Documents extends CRMEntity {
 		$this->column_fields['filetype'] = $filetype;
 		$this->column_fields['filedownloadcount'] = $filedownloadcount;
 		if (!empty($this->parentid)) {
-			$this->save_related_module('Documents', $this->id, getSalesEntityType($this->parentid), $this->parentid);
+			relateEntities($this, 'Documents', $this->id, getSalesEntityType($this->parentid), $this->parentid);
 		}
 		$Document_DefaultFolder = GlobalVariable::getVariable('Document_DefaultFolder', '');
 		if (empty($this->mode) && !empty($Document_DefaultFolder)) {

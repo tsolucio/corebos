@@ -1898,7 +1898,9 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"getFieldsOF('8509', 'Contacts')",
+		"getFieldsOF('8509,8510,IDn', 'Contacts')",
 		"getFieldsOF('8509', 'Contacts', 'field1,field2,...,fieldN')",
+		"getFieldsOF('8509,8510,IDn', 'Contacts', 'field1,field2,...,fieldN')",
 	),
 ),
 'getFromContext' => array(

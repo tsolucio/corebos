@@ -1480,8 +1480,12 @@ class QueryGenerator {
 			) {
 				$value = "'$value'";
 			}
-			if ($this->isNumericType($field->getFieldDataType()) && empty($value)) {
-				$value = '0';
+			if ($this->isNumericType($field->getFieldDataType())) {
+				if (empty($value)) {
+					$value = '0';
+				} elseif (strpos((string)$value, ',')>0  || (!is_numeric($value) && strpos($value, "'") === false)) {
+					$value = "'$value'";
+				}
 			}
 			if ($this->requiresSoundex($operator)) {
 				$sql[] = 'SOUNDEX('.$field->getTableName().'.'.$field->getColumnName().') '.($operator=='nsx' ? 'NOT ' : '')."LIKE SOUNDEX($value)";
