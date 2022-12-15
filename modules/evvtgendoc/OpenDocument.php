@@ -1050,6 +1050,8 @@ class OpenDocument {
 		$lenifnotexistsGD=strlen($ifnotexistsGD);
 		$lenifexistsEndGD=strlen($ifexistsEndGD);
 		$lenifnotexistsEndGD=strlen($ifnotexistsEndGD);
+		$lencondGD=strlen($conditionalGD);
+		$lencondEndGD=strlen($conditionalENDGD);
 		if (get_class($obj)=='ArrayObject') {
 			$iterat=$obj;
 		} elseif (!is_null($obj)) {
@@ -1148,11 +1150,27 @@ class OpenDocument {
 						}
 						continue 2;
 					}
+					if (substr($texto_plow, 0, $lencondGD)==$conditionalGD) {
+						// obtener condición
+						$condicion=rtrim(trim(substr($texto_p, $lencondGD)), '}');
+						// evaluar condición
+						$cumple_cond = eval_conditional($condicion, $id, $module);
+						if ($cumple_cond && $hayqueincluir) {
+							array_push($siincluir, true);
+						} else {
+							array_push($siincluir, false);
+						}
+						continue 2;
+					}
 					if (substr($texto_plow, 0, $lenifexistsEndGD)==$ifexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
 					if (substr($texto_plow, 0, $lenifnotexistsEndGD)==$ifnotexistsEndGD) {
+						array_pop($siincluir);
+						continue 2;
+					}
+					if (substr($texto_plow, 0, $lencondEndGD)==$conditionalENDGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
@@ -1312,6 +1330,8 @@ class OpenDocument {
 		$lenifnotexistsGD=strlen($ifnotexistsGD);
 		$lenifexistsEndGD=strlen($ifexistsEndGD);
 		$lenifnotexistsEndGD=strlen($ifnotexistsEndGD);
+		$lencondGD=strlen($conditionalGD);
+		$lencondEndGD=strlen($conditionalENDGD);
 		if (get_class($obj)=='ArrayObject') {
 			$iterat=$obj;
 		} else {
@@ -1393,11 +1413,27 @@ class OpenDocument {
 						}
 						continue 2;
 					}
+					if (substr($texto_plow, 0, $lencondGD)==$conditionalGD) {
+						// obtener condición
+						$condicion=rtrim(trim(substr($texto_p, $lencondGD)), '}');
+						// evaluar condición
+						$cumple_cond = eval_conditional($condicion, $id, $module);
+						if ($cumple_cond && $hayqueincluir) {
+							array_push($siincluir, true);
+						} else {
+							array_push($siincluir, false);
+						}
+						continue 2;
+					}
 					if (substr($texto_plow, 0, $lenifexistsEndGD)==$ifexistsEndGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
 					if (substr($texto_plow, 0, $lenifnotexistsEndGD)==$ifnotexistsEndGD) {
+						array_pop($siincluir);
+						continue 2;
+					}
+					if (substr($texto_plow, 0, $lencondEndGD)==$conditionalENDGD) {
 						array_pop($siincluir);
 						continue 2;
 					}
