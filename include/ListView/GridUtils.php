@@ -697,6 +697,7 @@ function TreeView($element, $modules, $map, $i = 0) {
 						}
 						$row[$finfo['fieldinfo']['name']] = $gridValue[0];
 						$row[$finfo['fieldinfo']['name'].'_attributes'] = $gridValue[1];
+						$row[$finfo['fieldinfo']['name'].'_raw'] = $gridValue[1][0]['mdValue'];
 					}
 					$row['typeof_row'] = 'children';
 					$row['child_id'] = $id;

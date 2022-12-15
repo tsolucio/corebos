@@ -40,7 +40,18 @@
 		</module>
 		<module>
 			<name>Assets</name>
-			<popupaction>id</popupaction>
+			<popupaction>
+				<id></id>
+				<conditions>
+					<fieldname>field | Module.field</fieldname>
+					<relatedfield>field</relatedfield>
+					<values>
+						<value>1</value>
+						<value>2</value>
+						...
+					</svalue>
+				</conditions>
+			</popupaction>
 			<listview>
 				<fields>
 					<field>
@@ -115,7 +126,14 @@ class RelatedListBlock extends processcbMap {
 					$this->mapping_arr['modules'][$idx]['editview'] = $this->FormatFields((array)$key->editview->fields, 'editview');
 				}
 				if (isset($key->popupaction)) {
-					$this->mapping_arr['modules'][$idx]['popupaction'] = (string)$key->popupaction;
+					$this->mapping_arr['modules'][$idx]['popupaction'] = array(
+						'id' => (string)$key->popupaction->id,
+						'conditions' => array(
+							'fieldname' => isset($key->popupaction->conditions->fieldname) ? (string)$key->popupaction->conditions->fieldname : '',
+							'relatedfield' => isset($key->popupaction->conditions->relatedfield) ? (string)$key->popupaction->conditions->relatedfield : '',
+							'values' => isset($key->popupaction->conditions->values) ? (array)$key->popupaction->conditions->values : '',
+						)
+					);
 				}
 				$idx++;
 			}
