@@ -5534,7 +5534,7 @@ function handleAcKeys(e) {
 			}
 			window.coreBOSSearchingText = '';
 		}
-	} else if (document.activeElement.tagName=='BODY' && e.key!='Control' && !e.ctrlKey && e.key!='Alt' && !e.altKey) {
+	} else if (document.activeElement.tagName=='BODY' && e.key!='Control' && !e.ctrlKey && e.key!='Alt' && !e.altKey && ((e.keyCode>64 && e.keyCode<91) || (e.keyCode>47 && e.keyCode<58) || e.keyCode==13 || e.keyCode==32 || e.keyCode==8 || e.keyCode==27)) {
 		window.coreBOSSearching = true;
 		if (e.keyCode==27) {
 			window.coreBOSSearchingText = '';
@@ -5561,32 +5561,30 @@ function handleAcKeys(e) {
 				smenuul.style.opacity = 'unset';
 			}
 		}
-		if (e.keyCode==32 || (e.keyCode>47 && e.keyCode<58) || (e.keyCode>64 && e.keyCode<91) || (e.keyCode>96 && e.keyCode<123) || e.keyCode==13 || e.keyCode==8) {
-			if (e.keyCode==8) {
-				window.coreBOSSearchingText=(window.coreBOSSearchingText.length>0 ? window.coreBOSSearchingText.substring(0, window.coreBOSSearchingText.length-1) : '');
-			}
-			if (e.keyCode>31) {
-				window.coreBOSSearchingText = window.coreBOSSearchingText+e.key.toUpperCase();
-			}
-			let tmenu = document.getElementById('typemenusearch');
-			if (tmenu) {
-				tmenu.value = window.coreBOSSearchingText;
-			}
-			fns = Object.keys(window.coreBOSMenu)
-				.filter(fn => fn.startsWith(window.coreBOSSearchingText))
-				.reduce((res, key) => {
-					res[key] = window.coreBOSMenu[key];
-					return res;
-				}, {});
-			let fnsarray = Object.keys(fns);
-			let smenu = document.getElementById('searchmenuul');
-			if (smenu) {
-				for (menuli=0; menuli<smenu.children.length; menuli++) {
-					if (!fnsarray.includes(smenu.children[menuli].id.substring(5))) {
-						smenu.children[menuli].style.display = 'none';
-					} else {
-						smenu.children[menuli].style.display = 'block';
-					}
+		if (e.keyCode==8) {
+			window.coreBOSSearchingText=(window.coreBOSSearchingText.length>0 ? window.coreBOSSearchingText.substring(0, window.coreBOSSearchingText.length-1) : '');
+		}
+		if (e.keyCode>31) {
+			window.coreBOSSearchingText = window.coreBOSSearchingText+e.key.toUpperCase();
+		}
+		let tmenu = document.getElementById('typemenusearch');
+		if (tmenu) {
+			tmenu.value = window.coreBOSSearchingText;
+		}
+		fns = Object.keys(window.coreBOSMenu)
+			.filter(fn => fn.startsWith(window.coreBOSSearchingText))
+			.reduce((res, key) => {
+				res[key] = window.coreBOSMenu[key];
+				return res;
+			}, {});
+		let fnsarray = Object.keys(fns);
+		let smenu = document.getElementById('searchmenuul');
+		if (smenu) {
+			for (menuli=0; menuli<smenu.children.length; menuli++) {
+				if (!fnsarray.includes(smenu.children[menuli].id.substring(5))) {
+					smenu.children[menuli].style.display = 'none';
+				} else {
+					smenu.children[menuli].style.display = 'block';
 				}
 			}
 		}
