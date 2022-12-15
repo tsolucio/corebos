@@ -102,11 +102,15 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				$condition = '';
 				if ($businessMap == 'Condition Query') {
 					$ids = $focusmap->ConditionQuery($recordId);
-					foreach ($ids as $recid) {
-						$getids[] = $recid[$mainid];
+					if (is_array($ids)) {
+						foreach ($ids as $recid) {
+							$getids[] = $recid[$mainid];
+						}
+					} else {
+						$getids = array($ids);
 					}
 					if (count($getids)>0) {
-						$condition = " and $mainid in (".implode(',', $getids).')';
+						$condition = " and $maintable.$mainid in (".implode(',', $getids).')';
 					}
 				}
 
@@ -136,7 +140,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 					$rs = $adb->query($query);
 					while ($row = $adb->fetch_array($rs)) {
 						$relId = $row['crmid'];
-						if ($businessMap == '' || ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression(vtws_getEntityId($relmodule).'x'.$relId))) {
+						if ($businessMap == '' || $businessMap == 'Condition Query' || ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression(vtws_getEntityId($relmodule).'x'.$relId))) {
 							$focusrel[$fldmod]->id = $relId;
 							$focusrel[$fldmod]->mode = 'edit';
 							$focusrel[$fldmod]->retrieve_entity_info($relId, $relmodule, false, $from_wf);
