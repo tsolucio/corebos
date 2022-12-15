@@ -452,6 +452,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 		$label_fld[] = $custfldval;
 	} elseif ($uitype == 28) {
+		global $site_URL;
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$rs = $adb->pquery('select * from vtiger_seattachmentsrel where crmid = ?', array($col_fields['record_id']));
 		$attachmentid = $adb->query_result($rs, 0, 'attachmentsid');
@@ -489,6 +490,8 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 						$custfldval .= '<br/><img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" style="max-width:300px; max-height:300px">';
 					} elseif (stripos($col_fields['filetype'], 'video') !== false) {
 						$custfldval .= '<br/><video width="300px" height="300px" controls><source src="' . $imgpath . '" type="' . $col_fields['filetype'] . '"></video>';
+					} elseif (stripos($col_fields['filetype'], 'pdf') !== false) {
+						$custfldval .= '<br/><br/><a target="__blank" href="'. $site_URL . '/Smarty/templates/modules/Documents/pdfViewer.html?file=' . $site_URL . '/' . $imgpath .'">View PDF</a>';
 					}
 				} else {
 					$custfldval = decode_html($col_fields[$fieldname]);
