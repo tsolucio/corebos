@@ -693,6 +693,31 @@ switch ($functiontocall) {
 			);
 		}
 		break;
+	case 'getDeepFieldValue':
+		$moduleName = vtlib_purify($_REQUEST['moduleName']);
+		$value = vtlib_purify($_REQUEST['value']);
+		$fieldsArray = explode("-&gt;", $value);
+		// remove all $ signs
+		foreach ($fieldsArray as &$value) {
+			$value = substr($value, 1);
+		}
+		$firstFieldRecordID = vtlib_purify($_REQUEST['firstFieldRecordID']);
+
+		$result = '';
+		$currentFieldvalue = $firstFieldRecordID;
+		foreach ($fieldsArray as $key => $fieldName) {
+			if ($key == 0) {
+				continue;
+			}
+			$queryGenerator = new QueryGenerator(getSalesEntityType($currentFieldvalue), $current_user);
+			$queryGenerator->setFields(array($fieldName));
+			$queryGenerator->addCondition('id', $currentFieldvalue, 'e');
+			$query = $queryGenerator->getQuery();
+			$result = $adb->query($query)->fields[0];
+			$currentFieldvalue = $result;
+		}
+		$ret = $result;
+		break;
 	default:
 		$ret = '';
 		break;
