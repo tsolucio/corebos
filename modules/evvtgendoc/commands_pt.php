@@ -32,6 +32,8 @@ global $dateGD;
 global $lineGD;
 global $repeticionGD;
 global $enGD;
+global $conditionalGD;
+global $conditionalENDGD;
 
 $foreachGD="{paracada ";
 $foreachEndGD="{/paracada}";
@@ -47,4 +49,6 @@ $dateGD="data";
 $lineGD="linha";
 $repeticionGD='repeticao';
 $enGD='en';
+$conditionalGD='conditional';
+$conditionalENDGD='{/conditional}';
 ?>

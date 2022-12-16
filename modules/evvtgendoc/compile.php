@@ -559,6 +559,108 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 	return $reemplazo;
 }
 
+function eval_conditional($condition, $id, $module) {
+	global $current_user, $enGD;
+	OpenDocument::debugmsg('<h3>CONDITIONAL -- Condition: '.$condition.' ID: '.$id.' MODULE: '.$module.'</h3>');
+	preg_match('/(.+)\s*(>|<|==|!=|<=|>=| '.$enGD.' | !'.$enGD.' )\s*(.+)/', $condition, $splitcondition);
+	if (!empty($splitcondition)) {
+		$condition_pair = array(
+			$splitcondition[1],
+			$splitcondition[3],
+		);
+		$comp = trim($splitcondition[2]);
+		if (substr($comp, 0, 1) == '!') {
+			$comp = substr($comp, 1);
+			$negado = true;
+		} else {
+			$negado = false;
+		}
+	} else {
+		$condition_pair = (array)$condition;
+		$comp = '';
+		$negado = false;
+	}
+	if ($comp == $enGD) {
+		$valstr = trim($condition_pair[1]);
+		$valstr = substr($valstr, 0, -1);
+		$valstr = substr($valstr, 1);
+		$values = explode(',', $valstr);
+	}
+
+	for ($i=0; $i<count($condition_pair); $i++) {
+		$condition_pair[$i] = trim($condition_pair[$i]);
+	}
+
+	$token_pair = explode('.', $condition_pair[0]);
+
+	preg_match('/(\w+)\s\[(.+)+\]/', $condition, $cond_elements); // Multiple conditions?
+	if (!empty($cond_elements) && isset($cond_elements[2])) {
+		$json_condition = make_json_condition($cond_elements[1], $cond_elements[2]);
+		OpenDocument::debugmsg($json_condition);
+		$comp = 'wfeval';
+		$token_first_space_split = explode(' ', $token_pair[0]);
+		$token_pair[0] = $token_first_space_split[0];
+	}
+	$cond_ok = false;
+	if (count($condition_pair) == 2) {
+		$conditions = multiple_values(retrieve_from_db($condition_pair[0], $id, $module));
+		$cond = $conditions[0];
+		$cond = str_replace(',', '.', $cond);
+		if (!empty($token_pair[1])) {
+			$uitype = getUItypeByFieldName($module, $token_pair[1]);
+			if (in_array($uitype, array(7, 71, 72))) {
+				$numField = new CurrencyField($cond);
+				$cond = $numField->getDBInsertedValue($current_user, false);
+			}
+		}
+		$vals = multiple_values($condition_pair[1]);
+		$val = $vals[0];
+		switch ($comp) {
+			case '>':
+				$cond_ok = ($cond > $val);
+				break;
+			case '<':
+				$cond_ok = ($cond < $val);
+				break;
+			case '=':
+			case '==':
+				$cond_ok = ($cond == $val);
+				break;
+			case '<=':
+				$cond_ok = ($cond <= $val);
+				break;
+			case '>=':
+				$cond_ok = ($cond >= $val);
+				break;
+			case $enGD:
+				$cond_ok = (count(array_intersect($conditions, $values)) > 0);
+				break;
+			case 'wfeval':
+				include_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+				include_once 'modules/com_vtiger_workflow/VTJsonCondition.inc';
+				include_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+				$rs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?', array($relmodule));
+				$wsid = $adb->query_result($rs, 0, 'id');
+				$wsid = $wsid . 'x' . $value;
+				$util = new VTWorkflowUtils();
+				$adminUser = $util->adminUser();
+				$entityCache = new VTEntityCache($adminUser);
+				$entityCache->forId($wsid);
+				$cs = new VTJsonCondition();
+				$util->revertUser();
+				$cond_ok = $cs->evaluate($json_condition, $entityCache, $wsid);
+				break;
+		}
+		if ($negado && ($comp != 'wfeval')) {
+			$cond_ok = !$cond_ok;
+		}
+		OpenDocument::debugmsg(array('ID' => $id, 'NEG' => $negado, 'COND' => $cond . $comp . $val, 'EVAL'=> $cond_ok));
+	} else {
+		$cond_ok = true;
+	}
+	return $cond_ok;
+}
+
 function eval_existe($condition, $id, $module) {
 	global $special_modules, $enGD;
 	OpenDocument::debugmsg('<h3>IFEXIST -- Condition: '.$condition.' ID: '.$id.' MODULE: '.$module.'</h3>');

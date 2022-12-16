@@ -51,7 +51,7 @@ class DocumentPreview_DetailViewBlock extends DeveloperBlock {
 				inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid
 				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 				left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
-				where crm2.crmid=? and filetype='application/pdf' order by vtiger_attachments.attachmentsid desc LIMIT 1",
+				where crm2.crmid=? and type='application/pdf' order by vtiger_attachments.attachmentsid desc LIMIT 1",
 				array($record_id)
 			);
 		} elseif ($docid || $mapid) {

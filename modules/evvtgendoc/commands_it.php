@@ -25,6 +25,8 @@ global $dateGD;
 global $lineGD;
 global $repeticionGD;
 global $enGD;
+global $conditionalGD;
+global $conditionalENDGD;
 
 $foreachGD="{perogni ";
 $foreachEndGD="{/perogni}";
@@ -40,4 +42,6 @@ $dateGD="data";
 $lineGD="linea";
 $repeticionGD='iterazione';
 $enGD='en';
+$conditionalGD='conditional';
+$conditionalENDGD='{/conditional}';
 ?>
