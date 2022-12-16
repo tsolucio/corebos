@@ -161,7 +161,7 @@ async function processGettingDeepFieldsValues(value, firstFieldRecordID) {
 	const url = new URL(window.location.href);
 	const moduleName = url.searchParams.get('module');
 	try {
-		const res = await ExecuteFunctions('getDeepFieldValue', `moduleName=${moduleName}&firstFieldRecordID=${firstFieldRecordID}&value=${value}`);
+		const res = await ExecuteFunctions('getFieldValuesFromRecordRecursively', `moduleName=${moduleName}&firstFieldRecordID=${firstFieldRecordID}&value=${value}`);
 		return res;
 	} catch (error) {
 		console.log('error', error);
