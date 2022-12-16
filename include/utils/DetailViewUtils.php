@@ -491,7 +491,8 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 					} elseif (stripos($col_fields['filetype'], 'video') !== false) {
 						$custfldval .= '<br/><video width="300px" height="300px" controls><source src="' . $imgpath . '" type="' . $col_fields['filetype'] . '"></video>';
 					} elseif (stripos($col_fields['filetype'], 'pdf') !== false) {
-						$custfldval .= '<br/><br/><a target="__blank" href="'. $site_URL . '/Smarty/templates/modules/Documents/pdfViewer.html?file=' . $site_URL . '/' . $imgpath .'">View PDF</a>';
+						$url = $site_URL . '/Smarty/templates/modules/Documents/pdfViewer.html?file=' . $site_URL . '/' . $imgpath .'">'. getTranslatedString('View PDF', 'Documents');
+						$custfldval .= '<br/><br/><a target="__blank" href="'. $url .'</a>';
 					}
 				} else {
 					$custfldval = decode_html($col_fields[$fieldname]);
