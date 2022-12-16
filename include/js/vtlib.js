@@ -142,8 +142,8 @@ async function replaceDynamicVariableWithRecordValue(arr) {
 				const element = array[index];
 				if (element['value'].includes('$')) {
 					let value = element['value'].substr(1);
-					if (element['value'].includes('->')) {
-						let arr = value.split('->');
+					if (element['value'].includes('.')) {
+						let arr = value.split('.');
 						let firstFieldRecordID = formValues[arr[0]];
 						element['value'] = await processGettingDeepFieldsValues(element['value'], firstFieldRecordID);
 					} else {

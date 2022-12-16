@@ -696,7 +696,7 @@ switch ($functiontocall) {
 	case 'getDeepFieldValue':
 		$moduleName = vtlib_purify($_REQUEST['moduleName']);
 		$value = vtlib_purify($_REQUEST['value']);
-		$fieldsArray = explode("-&gt;", $value);
+		$fieldsArray = explode(".", $value);
 		// remove all $ signs
 		foreach ($fieldsArray as &$value) {
 			$value = substr($value, 1);

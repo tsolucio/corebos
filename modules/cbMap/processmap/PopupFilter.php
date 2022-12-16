@@ -71,7 +71,7 @@
 		<field>
 			<fieldname>account_id</fieldname>
 			<modulename>Accounts</modulename>
-			<advft_criteria>[{"groupid":1,"columnname":"contact","comparator":"e","value":"$account_id->$account_id->$phone","columncondition":""}]</advft_criteria>
+			<advft_criteria>[{"groupid":1,"columnname":"contact","comparator":"e","value":"$account_id.$account_id.$phone","columncondition":""}]</advft_criteria>
 			<advft_criteria_groups>[]</advft_criteria_groups>
 		</field>
 	</map>
