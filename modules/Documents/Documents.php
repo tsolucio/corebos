@@ -92,11 +92,13 @@ class Documents extends CRMEntity {
 		global $adb, $upload_badext;
 		$filetype_fieldname = $this->getFileTypeFieldName();
 		$filename_fieldname = $this->getFile_FieldName();
+		$tryToFindMime = false;
 		if ($this->column_fields[$filetype_fieldname] == 'I') {
 			if (!empty($_FILES[$filename_fieldname]['name'])) {
 				$filedownloadcount = 0;
 				$errCode=$_FILES[$filename_fieldname]['error'];
 				if ($errCode == 0) {
+					$tryToFindMime = true;
 					foreach ($_FILES as $files) {
 						if ($files['name'] != '' && $files['size'] > 0) {
 							$filename = $_FILES[$filename_fieldname]['name'];
@@ -110,6 +112,7 @@ class Documents extends CRMEntity {
 					}
 				}
 			} elseif ($this->mode == 'edit') {
+				$tryToFindMime = true;
 				$fileres = $adb->pquery('select filetype, filesize,filename,filedownloadcount,filelocationtype from vtiger_notes where notesid=?', array($this->id));
 				if ($adb->num_rows($fileres) > 0) {
 					$filename = $adb->query_result($fileres, 0, 'filename');
@@ -119,6 +122,7 @@ class Documents extends CRMEntity {
 					$filelocationtype = $adb->query_result($fileres, 0, 'filelocationtype');
 				}
 			} elseif ($this->column_fields[$filename_fieldname]) {
+				$tryToFindMime = true;
 				$filename = $this->column_fields[$filename_fieldname];
 				$filesize = $this->column_fields['filesize'];
 				$filetype = $this->column_fields['filetype'];
@@ -141,6 +145,11 @@ class Documents extends CRMEntity {
 			$filetype = '';
 			$filesize = 0;
 			$filedownloadcount = null;
+		}
+		if ($tryToFindMime && $filetype=='') {
+			$finfo = new finfo(FILEINFO_MIME);
+			$filetype = explode(';', $finfo->buffer(file_get_contents(self::getAttachmentPath($this->id))));
+			$filetype = $filetype[0];
 		}
 		$query = 'UPDATE vtiger_notes SET filename = ? ,filesize = ?, filetype = ? , filelocationtype = ? , filedownloadcount = ? WHERE notesid = ?';
 		$adb->pquery($query, array(decode_html($filename), $filesize, $filetype, $filelocationtype, $filedownloadcount, $this->id));
