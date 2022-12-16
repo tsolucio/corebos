@@ -698,9 +698,9 @@ switch ($functiontocall) {
 		$value = vtlib_purify($_REQUEST['value']);
 		$fieldsArray = explode(".", $value);
 		// remove all $ signs
-		foreach ($fieldsArray as &$value) {
-			$value = substr($value, 1);
-		}
+		array_walk($fieldsArray, function (&$item, $key) {
+			$item = substr($item, 1);
+		});
 		$firstFieldRecordID = vtlib_purify($_REQUEST['firstFieldRecordID']);
 
 		$result = '';
