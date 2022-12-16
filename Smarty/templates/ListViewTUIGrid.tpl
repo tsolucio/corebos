@@ -32,7 +32,7 @@
 	<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
 </form>
 <!-- List View's Buttons and Filters starts -->
-<table style="width:100%;" class="slds-card">
+<table style="width:100%;{$Application_ListView_FilterPanel_Open}" class="slds-card">
 <tr>
 	<td width="25%" class="small" nowrap align="left">
 		<span id="gridRecordCountHeader"></span>
