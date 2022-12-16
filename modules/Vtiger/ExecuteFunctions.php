@@ -121,10 +121,14 @@ switch ($functiontocall) {
 				continue;
 			}
 			$queryGenerator = new QueryGenerator(getSalesEntityType($currentFieldvalue), $current_user);
-			$queryGenerator->setFields(array($fieldName));
+			$queryGenerator->setFields(explode(',', $fieldName));
 			$queryGenerator->addCondition('id', $currentFieldvalue, 'e');
 			$query = $queryGenerator->getQuery();
-			$result = $adb->query($query)->fields[0];
+			if (count($fieldsArray) == $key + 1) {
+				$result = $adb->query($query)->fields;
+			} else {
+				$result = $adb->query($query)->fields[0];
+			}
 			$currentFieldvalue = $result;
 		}
 		$ret = $result;

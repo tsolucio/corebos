@@ -162,7 +162,7 @@ async function processGettingDeepFieldsValues(value, firstFieldRecordID) {
 	const moduleName = url.searchParams.get('module');
 	try {
 		const res = await ExecuteFunctions('getFieldValuesFromRecordRecursively', `moduleName=${moduleName}&firstFieldRecordID=${firstFieldRecordID}&value=${value}`);
-		return res;
+		return JSON.parse(res)[0];
 	} catch (error) {
 		console.log('error', error);
 	}
