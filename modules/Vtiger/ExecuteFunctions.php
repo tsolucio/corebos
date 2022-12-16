@@ -104,6 +104,35 @@ switch ($functiontocall) {
 			}
 		}
 		break;
+	case 'getFieldValuesFromRecordRecursively':
+		$moduleName = vtlib_purify($_REQUEST['moduleName']);
+		$value = vtlib_purify($_REQUEST['value']);
+		$fieldsArray = explode(".", $value);
+		// remove all $ signs
+		array_walk($fieldsArray, function (&$item, $key) {
+			$item = substr($item, 1);
+		});
+		$firstFieldRecordID = vtlib_purify($_REQUEST['firstFieldRecordID']);
+
+		$result = '';
+		$currentFieldvalue = $firstFieldRecordID;
+		foreach ($fieldsArray as $key => $fieldName) {
+			if ($key == 0) {
+				continue;
+			}
+			$queryGenerator = new QueryGenerator(getSalesEntityType($currentFieldvalue), $current_user);
+			$queryGenerator->setFields(explode(',', $fieldName));
+			$queryGenerator->addCondition('id', $currentFieldvalue, 'e');
+			$query = $queryGenerator->getQuery();
+			if (count($fieldsArray) == $key + 1) {
+				$result = $adb->query($query)->fields;
+			} else {
+				$result = $adb->query($query)->fields[0];
+			}
+			$currentFieldvalue = $result;
+		}
+		$ret = $result;
+		break;
 	case 'getFieldValuesFromSearch':
 		$ret = array();
 		global $current_user, $adb;
