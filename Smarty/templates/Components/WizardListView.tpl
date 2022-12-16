@@ -7,6 +7,7 @@ wizard.WizardColumns[{$step}] = '{$Columns|json_encode}';
 wizard.WizardActions[{$step}] = '{$WizardActions|json_encode}';
 wizard.WizardMode[{$step}] = '{$WizardMode}';
 wizard.WizardFilterBy[{$step}] = {$WizardFilterBy|json_encode};
+wizard.WizardConditionQuery[{$step}] = '{$WizardConditionQuery}';
 wizard.WizardValidate[{$step}] = {$WizardValidate};
 wizard.WizardGoBack[{$step}] = {$WizardGoBack};
 wizard.WizardRequiredAction[{$step}] = '{$WizardRequiredAction}';
