@@ -373,7 +373,9 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 					}
 					switch (getTypeOfDataByFieldName($module, $token_pair[1])) {
 						case 'I':
-							$cadena = substr($cadena, 0, strrpos($cadena, $current_user->currency_decimal_separator));
+							if (strpos($cadena, $current_user->currency_decimal_separator)!==false) {
+								$cadena = substr($cadena, 0, strrpos($cadena, $current_user->currency_decimal_separator));
+							}
 							break;
 						case 'N':
 						case 'NN':
