@@ -18,28 +18,41 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************
  * The accepted format is:
- <map>
-   <originmodule>
-	 <originname></originname>
-   </originmodule>
-   <blocks>
-	 <block>
-	   <label></label>
-	   <sequence></sequence>
-	   <type></type> ApplicationFields | FieldList | RelatedList | Widget | CodeWithHeader | CodeWithoutHeader
-	   <blockid></blockid>
-	   <layout>
-		 <row>
-		   <column>fieldname</column>
-		 </row>
-	   </layout>
-	   <loadfrom></loadfrom> related list label or id | file to load | widget reference
-	   <handler_class></handler_class>
-	   <handler></handler>
-	 </block>
-	 .....
-   </blocks>
- </map>
+<map>
+	<originmodule>
+		<originname></originname>
+	</originmodule>
+	<blocks>
+		<block>
+			<label></label>
+			<sequence></sequence>
+			<type></type> ApplicationFields | FieldList | RelatedList | Widget | CodeWithHeader | CodeWithoutHeader
+		<blockid></blockid>
+		<layout>
+			<row>
+				<column>fieldname</column>
+			</row>
+		</layout>
+		<loadfrom></loadfrom> related list label or id | file to load | widget reference
+			<handler_class></handler_class>
+			<handler></handler>
+		<parameters>
+			<parameter>
+				<name>module</name>
+				<value>Accounts</value>
+				<valuetype>CONST | EXPRESSION</valuetype>
+			</parameter>
+			...
+		</parameters>
+		<conditions>
+			<module></module>
+			<condition>[{"fieldname":"productcategory","operation":"contains","value":"Test","valuetype":"rawtext","joincondition":"or","groupid":"0"}]</condition>
+			<query></query> direct query condition
+		</conditions>
+	</block>
+	.....
+	</blocks>
+</map>
  *************************************************************************************************/
 include_once 'vtlib/Vtiger/Link.php';
 
@@ -249,6 +262,9 @@ class DetailViewLayoutMapping extends processcbMap {
 						$wfvals['test'] = (string)$value->conditions->condition;
 						$workflow->setup($wfvals);
 						$block['conditions']['condition'] = $workflowScheduler->getWorkflowQuery($workflow, array('*'));
+					}
+					if (isset($value->conditions->query)) {
+						$block['conditions']['query'] = (string)$value->conditions->query;
 					}
 				} else {
 					$block['loadfrom'] = '';

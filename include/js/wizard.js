@@ -30,6 +30,7 @@ class WizardComponent {
 		this.WizardActions = [];
 		this.WizardMode = [];
 		this.WizardFilterBy = [];
+		this.WizardConditionQuery = [];
 		this.WizardValidate = [];
 		this.WizardGoBack = [];
 		this.WizardRequiredAction = [];
@@ -759,7 +760,9 @@ class WizardComponent {
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setRequestParams({
 				forids: JSON.stringify(ids),
 				formodule: module,
-				forfield: findColName
+				forfield: findColName,
+				parentid: this.RecordID,
+				conditionquery: this.WizardConditionQuery[`${this.ActiveStep+1}`]
 			});
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
 		}

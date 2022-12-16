@@ -390,7 +390,7 @@ class RLActionRender {
 			</button>`;
 		}
 		let popupactions = JSON.parse(relatedlistgrid.PopupAction[`${props.grid.el.id}`]);
-		if (parent_module == '' && popupactions[related_child].id !== undefined) {
+		if (parent_module == '' && popupactions[related_child] !== undefined) {
 			if (popupactions[related_child].conditions.fieldname != '') {
 				let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=PopupAction';
 				if (popupactions[related_child].conditions.fieldname.indexOf('.') !== -1) {

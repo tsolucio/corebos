@@ -122,11 +122,16 @@ class WizardView {
 			}
 			$smarty->assign('WizardSaveAction', $WizardSaveAction);
 			$smarty->assign('ResetWizard', $this->reset_wizard);
-			$query = '';
+			$condition = '';
 			if (isset($this->conditions['condition'])) {
-				$query = $this->conditions['condition'];
+				$condition = $this->conditions['condition'];
 			}
-			$smarty->assign('WizardFilterBy', $query);
+			$query = '';
+			if (isset($this->conditions['query'])) {
+				$query = $this->conditions['query'];
+			}
+			$smarty->assign('WizardFilterBy', $condition);
+			$smarty->assign('WizardConditionQuery', $query);
 			return $smarty->fetch('Smarty/templates/Components/WizardListView.tpl');
 		}
 	}
@@ -165,7 +170,9 @@ class WizardActions extends WizardCustomFunctions {
 		$perPage = vtlib_purify($_REQUEST['perPage']);
 		$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 		$step = isset($_REQUEST['step']) ? intval($_REQUEST['step']) : '';
-		$filtergrid = isset($_REQUEST['filtergrid']) ? $_REQUEST['filtergrid'] : false;
+		$filtergrid = isset($_REQUEST['filtergrid']) ? vtlib_purify($_REQUEST['filtergrid']) : false;
+		$conditionquery = isset($_REQUEST['conditionquery']) ? vtlib_purify($_REQUEST['conditionquery']) : false;
+		$parentid = isset($_REQUEST['parentid']) ? vtlib_purify($_REQUEST['parentid']) : 0;
 		$required_action = isset($_REQUEST['required_action']) ? intval($_REQUEST['required_action']) : '';
 		if (isset($_REQUEST['query']) && !empty($_REQUEST['query']) && !$filtergrid) {
 			$sql = vtlib_purify($_REQUEST['query']);
@@ -227,6 +234,9 @@ class WizardActions extends WizardCustomFunctions {
 				}
 			}
 			$sql = $qg->getQuery();
+			if ($parentid > 0 && !empty($conditionquery)) {
+				$sql = $adb->convert2Sql($sql.' '.$conditionquery, array($parentid));
+			}
 		}
 		$limit = ($page-1) * $perPage;
 		//count all records
