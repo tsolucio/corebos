@@ -3153,7 +3153,12 @@ function getRelationTables($module, $secmodule) {
 	}
 	$primary_obj = CRMEntity::getInstance($module);
 	$secondary_obj = CRMEntity::getInstance($secmodule);
-
+	if (($module=='Documents' && $secmodule=='DocumentFolders') || ($module=='DocumentFolders' && $secmodule=='Documents')) {
+		return array(
+			'vtiger_crmentityrel' => array('crmid','relcrmid'),
+			$primary_obj->table_name => $primary_obj->table_index
+		);
+	}
 	if (method_exists($primary_obj, 'setRelationTables')) {
 		$reltables = $primary_obj->setRelationTables($secmodule);
 	}
