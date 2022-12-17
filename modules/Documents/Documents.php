@@ -483,9 +483,7 @@ class Documents extends CRMEntity {
 		$data['destinationRecordId'] = $return_id;
 		cbEventHandler::do_action('corebos.entity.link.delete', $data);
 		$adb->pquery('DELETE FROM vtiger_senotesrel WHERE notesid = ? AND crmid = ?', array($id, $return_id));
-		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
-		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$adb->pquery($sql, $params);
+		deleteFromCrmEntityRel($id, $return_id);
 		cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 	}
 

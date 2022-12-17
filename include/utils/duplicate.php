@@ -157,8 +157,6 @@ function get_related_lists($curr_tab_id, $maped_relations) {
 
 function dup_related_lists($new_record_id, $currentModule, $related_list, $record_id, $maped_relations) {
 	global $adb;
-	$sql = 'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE crmid=? AND relmodule=?';
-	$sqldocs = 'INSERT INTO vtiger_senotesrel (crmid,notesid) SELECT ?,notesid FROM vtiger_senotesrel WHERE crmid=?';
 	foreach ($related_list as $rel_module) {
 		// Get and check condition type
 		$condition = !empty($maped_relations[$rel_module]['condition']) ? $maped_relations[$rel_module]['condition'] : '';
@@ -210,17 +208,28 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 						}
 					}
 				} else {
-					$adb->pquery($sqldocs, array($new_record_id,$record_id));
+					$adb->pquery('INSERT INTO vtiger_senotesrel (crmid,notesid) SELECT ?,notesid FROM vtiger_senotesrel WHERE crmid=?', array($new_record_id,$record_id));
 				}
 			} else {
 				if ($businessMap == 'Condition Query') {
 					// Get crmids
 					$ids = $cbmap->ConditionQuery($record_id);
 					if ($ids && count($ids) > 0) {
+						$params = $adb->flatten_array(array($new_record_id,$currentModule,$ids,$rel_module));
 						$adb->pquery(
 							'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) 
 								SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE relcrmid IN ('.generateQuestionMarks($ids).') AND relmodule=?',
-							array($new_record_id,$currentModule,$ids,$rel_module)
+							$params
+						);
+						$adb->pquery(
+							'INSERT INTO vtiger_crmentityreldenorm (crmid,module,relcrmid,relmodule)
+								SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE relcrmid IN ('.generateQuestionMarks($ids).') AND relmodule=?',
+							$params
+						);
+						$adb->pquery(
+							'INSERT INTO vtiger_crmentityreldenorm (crmid,module,relcrmid,relmodule)
+								SELECT relcrmid,relmodule,?,? FROM vtiger_crmentityrel WHERE relcrmid IN ('.generateQuestionMarks($ids).') AND relmodule=?',
+							$params
 						);
 					}
 				} elseif ($businessMap == 'Condition Expression') {
@@ -229,15 +238,23 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 					if ($result && $adb->num_rows($result) > 0) {
 						while ($related = $adb->fetch_array($result)) {
 							if ($cbmap->ConditionExpression($entityId.'x'.$related['relcrmid'])) {
-								$adb->pquery(
-									'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) VALUES(?,?,?,?)',
-									array($new_record_id,$currentModule,$related['relcrmid'],$rel_module)
-								);
+								insertIntoCrmEntityRel($new_record_id, $currentModule, $related['relcrmid'], $rel_module);
 							}
 						}
 					}
 				} else {
-					$adb->pquery($sql, array($new_record_id,$currentModule,$record_id,$rel_module));
+					$adb->pquery(
+						'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE crmid=? AND relmodule=?',
+						array($new_record_id,$currentModule,$record_id,$rel_module)
+					);
+					$adb->pquery(
+						'INSERT INTO vtiger_crmentityreldenorm (crmid,module,relcrmid,relmodule) SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE crmid=? AND relmodule=?',
+						array($new_record_id,$currentModule,$record_id,$rel_module)
+					);
+					$adb->pquery(
+						'INSERT INTO vtiger_crmentityreldenorm (crmid,module,relcrmid,relmodule) SELECT relcrmid,relmodule,?,? FROM vtiger_crmentityrel WHERE relcrmid=? AND module=?',
+						array($new_record_id,$currentModule,$record_id,$rel_module)
+					);
 				}
 			}
 		}

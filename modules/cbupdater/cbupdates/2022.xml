@@ -265,4 +265,11 @@
 	<classname>addBAtypesForDVActionButton</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>CRMEntityRel denormalization.</description>
+	<filename>build/changeSets/2022/addDenormCRMEntityRel.php</filename>
+	<classname>addDenormCRMEntityRel</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

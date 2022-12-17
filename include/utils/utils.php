@@ -2959,6 +2959,28 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 }
 //functions for asterisk integration end
 
+function insertIntoCrmEntityRel($crmid, $module, $relcrmid, $with_module) {
+	global $adb;
+	$rdo = $adb->pquery('INSERT INTO vtiger_crmentityrel(crmid, module, relcrmid, relmodule) VALUES(?,?,?,?)', array($crmid, $module, $relcrmid, $with_module));
+	$adb->pquery(
+		'INSERT INTO vtiger_crmentityreldenorm (crmid, module, relcrmid, relmodule) VALUES (?,?,?,?),(?,?,?,?)',
+		array($crmid, $module, $relcrmid, $with_module, $relcrmid, $with_module, $crmid, $module)
+	);
+	return $rdo;
+}
+
+function deleteFromCrmEntityRel($crmid, $relcrmid) {
+	global $adb;
+	$adb->pquery(
+		'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relcrmid=?) OR (relcrmid=? AND crmid=?)',
+		array($crmid, $relcrmid, $crmid, $relcrmid)
+	);
+	$adb->pquery(
+		'DELETE FROM vtiger_crmentityreldenorm WHERE (crmid=? AND relcrmid=?) OR (relcrmid=? AND crmid=?)',
+		array($crmid, $relcrmid, $crmid, $relcrmid)
+	);
+}
+
 //functions for settings page
 /**
  * this function returns the blocks for the settings page

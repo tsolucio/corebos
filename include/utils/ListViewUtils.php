@@ -3039,9 +3039,8 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	if ($reltable != null) {
 		$query = 'SELECT ' . $selectfield . ' FROM ' . $reltable . ' ' . $condition;
 	} elseif ($currentmodule != $returnmodule && $returnmodule != '') { // If none of the above relation match, then the relation is assumed to be stored in crmentityrel
-		$query = 'SELECT relcrmid AS relatedid FROM vtiger_crmentityrel WHERE crmid = ? and module = ? and relmodule = ?
-					UNION SELECT crmid AS relatedid FROM vtiger_crmentityrel WHERE relcrmid = ? and relmodule = ? and module = ?';
-		array_push($params, $recordid, $returnmodule, $currentmodule, $recordid, $returnmodule, $currentmodule);
+		$query = 'SELECT relcrmid AS relatedid FROM vtiger_crmentityreldenorm WHERE crmid=? and module=? and relmodule=?';
+		array_push($params, $recordid, $returnmodule, $currentmodule);
 
 		$focus_obj = CRMEntity::getInstance($currentmodule);
 		$field = $focus_obj->table_index;

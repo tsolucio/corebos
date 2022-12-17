@@ -541,10 +541,7 @@ class Campaigns extends CRMEntity {
 			} elseif ($with_module == 'Accounts') {
 				$adb->pquery('DELETE FROM vtiger_campaignaccountrel WHERE campaignid=? AND accountid=?', array($crmid, $relcrmid));
 			} else {
-				$adb->pquery(
-					'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND module=? AND relcrmid=? AND relmodule=?) OR (relcrmid=? AND relmodule=? AND crmid=? AND module=?)',
-					array($crmid, $module, $relcrmid, $with_module,$crmid, $module, $relcrmid, $with_module)
-				);
+				deleteFromCrmEntityRel($crmid, $relcrmid);
 			}
 			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		}
