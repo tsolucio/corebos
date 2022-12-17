@@ -189,7 +189,7 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 					$ids = $cbmap->ConditionQuery($record_id);
 					if ($ids && count($ids) > 0) {
 						$adb->pquery(
-							'INSERT IGNORE INTO vtiger_senotesrel (crmid,notesid) 
+							'INSERT IGNORE INTO vtiger_senotesrel (crmid,notesid)
 								SELECT ?,notesid FROM vtiger_senotesrel WHERE notesid IN ('.generateQuestionMarks($ids).')',
 							array($new_record_id,$ids)
 						);
@@ -217,7 +217,7 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 					if ($ids && count($ids) > 0) {
 						$params = $adb->flatten_array(array($new_record_id,$currentModule,$ids,$rel_module));
 						$adb->pquery(
-							'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) 
+							'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule)
 								SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE relcrmid IN ('.generateQuestionMarks($ids).') AND relmodule=?',
 							$params
 						);
