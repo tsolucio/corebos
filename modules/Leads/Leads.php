@@ -330,6 +330,8 @@ class Leads extends CRMEntity {
 			'vtiger_seproductsrel'=>'crmid',
 			'vtiger_campaignleadrel'=>'leadid',
 		);
+		$isMessagesActive = vtlib_isModuleActive('Messages');
+		$field = ($module=='Accounts' ? 'account_message' : 'contact_message');
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
 				$id_field = $tbl_field_arr[$rel_table];
@@ -348,6 +350,9 @@ class Leads extends CRMEntity {
 							array($entityId,$transferId,$id_field_value)
 						);
 					}
+				}
+				if ($isMessagesActive) {
+					$adb->pquery("update vtiger_messages set $field=? where messagesrelatedto=?", array($entityId,$transferId));
 				}
 			}
 		}
