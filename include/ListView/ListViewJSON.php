@@ -709,7 +709,6 @@ class GridListView {
 		$numOfRows = $adb->num_rows($rs);
 		$data = array();
 		if ($numOfRows > 0) {
-			$listviewcolumns = $adb->getFieldsArray($rs);
 			$data[] = $this->processResults($rs, $field_types, $id);
 		}
 		return $data;
