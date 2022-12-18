@@ -23,7 +23,7 @@ class addDenormCRMEntityRel extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('CREATE TABLE `vtiger_crmentityreldenorm` (
+			$this->ExecuteQuery('CREATE TABLE IF NOT EXISTS `vtiger_crmentityreldenorm` (
 				`crmid` int NOT NULL,
 				`module` varchar(100) NOT NULL,
 				`relcrmid` int NOT NULL,
