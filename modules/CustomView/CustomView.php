@@ -93,19 +93,22 @@ class CustomView extends CRMEntity {
 			} elseif ($this->setdefaultviewid != '') {
 				$viewid = $this->setdefaultviewid;
 			} else {
-				$defcv_result = $adb->pquery(
-					'select default_cvid from vtiger_user_module_preferences where userid = ? and tabid =?',
-					array($current_user->id, getTabid($module))
-				);
-				if ($adb->num_rows($defcv_result) > 0) {
-					$viewid = $adb->query_result($defcv_result, 0, 'default_cvid');
-				} else {
-					$query = 'select cvid from vtiger_customview where setdefault=1 and entitytype=?';
-					$cvresult = $adb->pquery($query, array($module));
-					if ($adb->num_rows($cvresult) > 0) {
-						$viewid = $adb->query_result($cvresult, 0, 'cvid');
+				$viewid = cbCVManagement::getDefaultView($module, $current_user->id);
+				if (empty($viewid)) {
+					$defcv_result = $adb->pquery(
+						'select default_cvid from vtiger_user_module_preferences where userid = ? and tabid =?',
+						array($current_user->id, getTabid($module))
+					);
+					if ($adb->num_rows($defcv_result) > 0) {
+						$viewid = $adb->query_result($defcv_result, 0, 'default_cvid');
 					} else {
-						$viewid = '';
+						$query = 'select cvid from vtiger_customview where setdefault=1 and entitytype=?';
+						$cvresult = $adb->pquery($query, array($module));
+						if ($adb->num_rows($cvresult) > 0) {
+							$viewid = $adb->query_result($cvresult, 0, 'cvid');
+						} else {
+							$viewid = '';
+						}
 					}
 				}
 			}
