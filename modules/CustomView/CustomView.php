@@ -194,7 +194,7 @@ class CustomView extends CRMEntity {
 	 */
 	public function getCustomViewCombo($viewid = '', $markselected = true) {
 		require_once 'include/Webservices/GetViewsByModule.php';
-		global $adb, $current_user, $app_strings;
+		global $current_user, $app_strings;
 		$getViewsByModule = getViewsByModule($this->customviewmodule, $current_user);
 		$userprivs = $current_user->getPrivileges();
 		$shtml_user = '';
@@ -208,19 +208,18 @@ class CustomView extends CRMEntity {
 		$Application_All_Filter_Show = GlobalVariable::getVariable('Application_All_Filter_Show', 1, $this->customviewmodule);
 		$cuserroles = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
 		foreach ($getViewsByModule['filters'] as $cvid => $cvrow) {
-			$cvrow['cvid'] = $cvid;
-			$cvrow['ename'] = getUserFullName($cvrow['userid']);
 			if ($cvrow['raw_name'] == 'All' && $Application_All_Filter_Show == 0) {
 				continue;
 			}
 			if ($cvrow['raw_name'] == 'All') {
 				$cvrow['name'] = $app_strings['COMBO_ALL'];
 			} else { /** Should the filter shown?  */
-				$return = cbEventHandler::do_filter('corebos.filter.listview.filter.show', $cvrow);
-				if (!$return) {
+				if (!cbEventHandler::do_filter('corebos.filter.listview.filter.show', $cvrow)) {
 					continue;
 				}
 			}
+			$cvrow['cvid'] = $cvid;
+			$cvrow['ename'] = getUserFullName($cvrow['userid']);
 			$option = '';
 			$viewname = $cvrow['name'];
 			if ($cvrow['status'] == CV_STATUS_DEFAULT || $cvrow['userid'] == $current_user->id) {
@@ -229,14 +228,11 @@ class CustomView extends CRMEntity {
 				$userName = getFullNameFromArray('Users', $cvrow);
 				$disp_viewname = $viewname . ' [' . $userName . '] ';
 			}
-			if ($cvrow['default'] && $viewid == '') {
-				$option = "<option $selected value=\"" . $cvrow['cvid'] . "\">" . $disp_viewname . "</option>";
-				$this->setdefaultviewid = $cvrow['cvid'];
-			} elseif ($cvrow['cvid'] == $viewid) {
-				$option = "<option $selected value=\"" . $cvrow['cvid'] . "\">" . $disp_viewname . "</option>";
+			if (($cvrow['default'] && $viewid == '') || ($cvrow['cvid'] == $viewid)) {
+				$option = "<option $selected value=\"" . $cvrow['cvid'] . '">' . $disp_viewname . '</option>';
 				$this->setdefaultviewid = $cvrow['cvid'];
 			} else {
-				$option = "<option value=\"" . $cvrow['cvid'] . "\">" . $disp_viewname . "</option>";
+				$option = '<option value="' . $cvrow['cvid'] . '">' . $disp_viewname . '</option>';
 			}
 			// Add the option to combo box at appropriate section
 			if ($option != '') {
