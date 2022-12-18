@@ -146,10 +146,10 @@ class cbCVManagement extends CRMEntity {
 		}
 	}
 
-	/* returns the default Custom View ID for the given module and user applying escalation rules
-	 * param $module: the module we need the view for, will use current module if no value is given
-	 * param $cvuserid: user for which we want to get the view, will use current user if no value is given
-	 * returns: custom view ID
+	/** returns the default Custom View ID for the given module and user applying escalation rules
+	 * @param string the module we need the view for, will use current module if no value is given
+	 * @param integer user for which we want to get the view, will use current user if no value is given
+	 * @return integer custom view ID
 	 *   search for mandatory default record
 	 *   search for non-mandatory record that belongs to the role of the user
 	 *   search for non-mandatory record assigned to the user
@@ -273,10 +273,10 @@ class cbCVManagement extends CRMEntity {
 		return false;
 	}
 
-	/* returns all the Custom Views available for the given module and user applying escalation rules
-	 * param $module: the module we need the views for, will use current module if no value is given
-	 * param $cvuserid: user for which we want to get the views, will use current user if no value is given
-	 * returns: custom view ID
+	/** returns all the Custom Views available for the given module and user applying escalation rules
+	 * @param string the module we need the views for, will use current module if no value is given
+	 * @param integer user for which we want to get the views, will use current user if no value is given
+	 * @return mixed custom view IDs
 	 *   search for mandatory default record
 	 *   search for non-mandatory record that belongs to the role of the user
 	 *   search for non-mandatory record assigned to the user
@@ -441,13 +441,12 @@ class cbCVManagement extends CRMEntity {
 		}
 	}
 
-	/* returns set of permissions of a user upon a custom view depending on the different records
-	 * param $cvid: the custom view identifier
-	 * param $cvuserid: user for which we want to know the perimissions, will use current user if no value is given
-	 * returns:
+	/** returns set of permissions of a user upon a custom view depending on the different records
+	 * @param integer the custom view identifier
+	 * @param integer user for which we want to know the perimissions, will use current user if no value is given
+	 * @return mixed
 	 *  if $cvid or $cvuserid are empty or invalid it returns boolean false
-	 *  else it returns
-	 *  array with CRUD and Approve permissions:
+	 *  else it returns array with CRUD and Approve permissions:
 	 *   search for mandatory record that belongs to the user
 	 *   search for mandatory record that belongs to the role of the user
 	 *   search for mandatory record that belongs to any group the user is in
