@@ -12,6 +12,7 @@ $theme_path = 'themes/' . $theme . '/';
 $image_path = $theme_path . 'images/';
 require_once 'include/utils/utils.php';
 require_once 'include/Webservices/Utils.php';
+require_once 'modules/cbCVManagement/cbCVManagement.php';
 
 class CustomView extends CRMEntity {
 
