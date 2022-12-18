@@ -156,30 +156,22 @@ class CustomView extends CRMEntity {
 	 */
 	public function getCustomViewByCvid($cvid) {
 		global $adb, $current_user;
-		$tabid = getTabid($this->customviewmodule);
-		$userprivs = $current_user->getPrivileges();
-
-		$ssql = 'select vtiger_customview.*
-			from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype where vtiger_customview.cvid=?';
-		$sparams = array($cvid);
-
-		if (!$userprivs->isAdmin()) {
-			$ssql .= ' and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or ';
-			$ssql .= " vtiger_customview.userid in (select vtiger_user2role.userid
-				from vtiger_user2role
-				inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
-				where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%'))";
-			$sparams[] = $current_user->id;
+		$result = $adb->pquery(
+			'select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name=vtiger_customview.entitytype where vtiger_customview.cvid=?',
+			array($cvid)
+		);
+		$permissions = cbCVManagement::getPermission($cvid, $current_user->id);
+		$def_cvid = cbCVManagement::getDefaultView($this->customviewmodule, $current_user->id);
+		if (empty($def_cvid)) {
+			$tabid = getTabid($this->customviewmodule);
+			$usercv_result = $adb->pquery('select default_cvid from vtiger_user_module_preferences where userid = ? and tabid = ?', array($current_user->id, $tabid));
+			$def_cvid = $adb->query_result($usercv_result, 0, 'default_cvid');
 		}
-		$result = $adb->pquery($ssql, $sparams);
-
-		$usercv_result = $adb->pquery('select default_cvid from vtiger_user_module_preferences where userid = ? and tabid = ?', array($current_user->id, $tabid));
-		$def_cvid = $adb->query_result($usercv_result, 0, 'default_cvid');
-
 		$customviewlist = array();
-		while ($cvrow = $adb->fetch_array($result)) {
+		if ($permissions['R'] && $result && $adb->num_rows($result)>0) {
+			$cvrow = $adb->fetch_array($result);
 			$customviewlist['viewname'] = $cvrow['viewname'];
-			if ((isset($def_cvid) || $def_cvid != '') && $def_cvid == $cvid) {
+			if ($def_cvid == $cvid) {
 				$customviewlist['setdefault'] = 1;
 			} else {
 				$customviewlist['setdefault'] = $cvrow['setdefault'];
