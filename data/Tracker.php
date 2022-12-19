@@ -35,8 +35,8 @@ class Tracker {
 	}
 
 	/**
-	 * Add this new item to the tracker table. If there are to many items (global config for now)
-	 * then remove the oldest item. If there is more than one extra item, log an error.
+	 * Add this new item to the tracker table. If there are to many items then remove the oldest item.
+	 * If there is more than one extra item, log an error.
 	 * If the new item is the same as the most recent item then do not change the list
 	 */
 	public function track_view($user_id, $current_module, $item_id, $item_summary) {
@@ -74,9 +74,9 @@ class Tracker {
 	}
 
 	/**
-	 * param $user_id - The id of the user to retrive the history for
-	 * param $module_name - Filter the history to only return records from the specified module. If not specified all records are returned
-	 * return - return the array of result set rows from the query. All of the table fields are included
+	 * @param integer id of the user to retrieve the history for
+	 * @param string filter the history to only return records from the specified module. If not specified all records are returned
+	 * @return array of result set rows from the query. All of the table fields are included
 	 */
 	public function get_recently_viewed($user_id, $module_name = '') {
 		$list = array();
