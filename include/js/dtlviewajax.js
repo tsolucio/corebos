@@ -216,7 +216,8 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	var editArea = 'editarea_'+ fieldLabel;
 	var groupurl = '';
 
-	if (globaluitype == 53) {
+	globaluitype = uitype;
+	if (uitype == 53) {
 		var assigntype = document.getElementsByName('assigntype');
 		if (assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
@@ -244,7 +245,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			alert(alert_arr.ERR_FIELD_SELECTION);
 			return false;
 		}
-	} else if (globaluitype == 33 || globaluitype == 3313 || globaluitype == 3314) {
+	} else if (uitype == 33 || uitype == 3313 || uitype == 3314) {
 		var txtBox= 'txtbox_'+ fieldLabel;
 		var oMulSelect = document.getElementById(txtBox);
 		var r = new Array();
