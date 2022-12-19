@@ -125,8 +125,7 @@ class Tracker {
 	 * It is used to remove old occurances of previously viewed items.
 	 */
 	private function delete_history($user_id, $item_id) {
-		$query = "DELETE from $this->table_name WHERE user_id=? and item_id=?";
-		$this->db->pquery($query, array($user_id, $item_id), true);
+		$this->db->pquery("DELETE from $this->table_name WHERE user_id=? and item_id=?", array($user_id, $item_id), true);
 	}
 
 	/**
@@ -143,9 +142,9 @@ class Tracker {
 		// Check to see if the number of items in the list is now greater than the config max.
 		$rs = $this->db->pquery("SELECT count(*) from {$this->table_name} WHERE user_id=?", array($user_id));
 		$count = $this->db->query_result($rs, 0, 0);
+		$query = "SELECT * from $this->table_name WHERE user_id='$user_id' ORDER BY id ASC";
 		while ($count >= $this->history_max_viewed) {
 			// delete the last one. This assumes that entries are added one at a time > we should never add a bunch of entries
-			$query = "SELECT * from $this->table_name WHERE user_id='$user_id' ORDER BY id ASC";
 			$result = $this->db->limitQuery($query, 0, 1);
 			$oldest_item = $this->db->fetchByAssoc($result, -1, false);
 			$this->db->pquery("DELETE from $this->table_name WHERE id=?", array($oldest_item['id']), true);
