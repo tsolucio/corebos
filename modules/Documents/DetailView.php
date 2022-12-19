@@ -197,10 +197,10 @@ $smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application
 $smarty->display('DetailView.tpl');
 
 // sending PopupFilter map results to the frontEnd
-$MapObject = new cbMap();
 $bmapname = $currentModule.'_PopupFilter';
 $Mapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 if ($Mapid) {
+	$MapObject = new cbMap();
 	$MapObject->id = $Mapid;
 	$MapObject->mode = '';
 	$MapObject->retrieve_entity_info($Mapid, "cbMap");
