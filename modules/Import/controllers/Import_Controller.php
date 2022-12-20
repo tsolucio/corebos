@@ -144,7 +144,7 @@ class Import_Controller {
 				$firstRowData = $fileReader->getFirstRowData($hasHeader);
 				$headers = array_keys($firstRowData);
 				foreach ($fieldMapping as $fieldName => $index) {
-					$saveMapping["$headers[$index]"] = $fieldName;
+					$saveMapping[$headers[$index]] = $fieldName;
 				}
 			} else {
 				$saveMapping = array_flip($fieldMapping);
