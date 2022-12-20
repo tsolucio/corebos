@@ -550,6 +550,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If existing validation rules should be applied on records being imported.',
 ),
+'Import_Check_Apache' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Import will check if running in Apache environment if this variable is set to 1, which is the default value.',
+),
 'Export_Field_Separator_Symbol' => array(
 	'valuetype' => 'character',
 	'category' => 'Application',

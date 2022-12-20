@@ -84,7 +84,8 @@ class Import_Controller {
 
 		$importStatusCount = $importDataController->getImportStatusCount();
 		$totalRecords = $importStatusCount['TOTAL'];
-		if ($totalRecords > ($importStatusCount['IMPORTED'] + $importStatusCount['FAILED']) && strpos(PHP_SAPI, 'apache')!==false) {
+		$ImportNotCheckApache = !filter_var(GlobalVariable::getVariable('Import_Check_Apache', 1, $importInfo['module'], $user->id), FILTER_VALIDATE_BOOLEAN);
+		if ($totalRecords > ($importStatusCount['IMPORTED'] + $importStatusCount['FAILED']) && ($ImportNotCheckApache || strpos(PHP_SAPI, 'apache')!==false)) {
 			self::showCurrentStatus($importInfo, $importStatusCount, $continueImport);
 			exit;
 		} else {

@@ -550,6 +550,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si se deben aplicar las reglas de validación existentes en los registros que se están importando.',
 ),
+'Import_Check_Apache' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'La importación comprobará si se ejecuta en un entorno Apache si esta variable se establece en 1, que es el valor predeterminado.',
+),
 'Export_Field_Separator_Symbol' => array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
