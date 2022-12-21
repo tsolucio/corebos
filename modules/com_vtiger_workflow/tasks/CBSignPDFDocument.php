@@ -102,7 +102,7 @@ class CBSignPDFDocument extends VTTask {
 							$pdf->AddPage();
 							$pdf->useTemplate($tplIdx, 0, 0, $s['width'], $s['height'], true);
 							if ($pages_count == $i) {
-								$pdf->Image($signature_path, $width, $height, 100, '', '', '', '', false, 300);
+								$pdf->Image($signature_path, $width, $height, '', '', '', '', '', false, 300);
 							}
 						}
 
