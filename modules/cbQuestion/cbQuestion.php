@@ -488,7 +488,7 @@ class cbQuestion extends CRMEntity {
 		$fld = Vtiger_Field::getInstance($groupby, $mod);
 		if ($fld) {
 			$tablename = $fld->table;
-			$fldname = $fld->field;
+			$fldname = $fld->name;
 			$colname = $fld->column;
 		} else {
 			getColumnFields($qmodule);
