@@ -1477,7 +1477,7 @@ function runBAScript(scripturi) {
 	return void(0);
 }
 
-function runBAWorkflow(workflowid, crmids) {
+function runBAWorkflow(workflowid, crmids, context = '') {
 	if (typeof workflowid == 'undefined' || workflowid == '') {
 		return false;
 	}
@@ -1492,7 +1492,7 @@ function runBAWorkflow(workflowid, crmids) {
 	}
 	VtigerJS_DialogBox.block();
 	const dataset = document.activeElement.dataset;
-	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids).then(function (data) {
+	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids+'&ctx='+context).then(function (data) {
 		const response = JSON.parse(data);
 		if (response) {
 			if (dataset.success !== undefined && dataset.success != '') {
