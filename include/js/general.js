@@ -1492,7 +1492,7 @@ function runBAWorkflow(workflowid, crmids, context = '') {
 	}
 	VtigerJS_DialogBox.block();
 	const dataset = document.activeElement.dataset;
-	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids+'&ctx='+context).then(function (data) {
+	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids+'&ctx='+encodeURIComponent(context)).then(function (data) {
 		const response = JSON.parse(data);
 		if (response) {
 			if (dataset.success !== undefined && dataset.success != '') {
