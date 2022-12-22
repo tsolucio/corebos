@@ -87,7 +87,7 @@ class CBWatermark extends VTTask {
 			$mainImageAspectRatioType = $wmImageAspectRatio < $mainImageAspectRatio ? 'vertical' : 'horizontal';
 
 			// water mark image options
-			$wmSize = (float)$this->imagesx;
+			$wmSize = (float)$this->imagesx * 0.01;
 			$position = $this->imagesy;
 
 			switch ($mainImageAspectRatioType) {
