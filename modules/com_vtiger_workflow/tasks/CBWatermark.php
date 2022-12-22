@@ -28,12 +28,13 @@ class CBWatermark extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $current_user, $logbg, $from_wf, $currentModule;
+		global $current_user, $logbg, $from_wf, $currentModule, $root_directory;
 		$from_wf = true;
 		$logbg->debug('> CBWatermark');
 		$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 		$_REQUEST['ajxaction'] = 'Workflow';
 		if (!empty($this->imagesvalue)) {
+			$watermark = '';
 			if ($this->exptype == 'rawtext') {
 				$watermark = $this->imagesvalue;
 			} elseif ($this->exptype == 'fieldname') {
@@ -48,19 +49,120 @@ class CBWatermark extends VTTask {
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 				$watermark = $exprEvaluater->evaluate($entity);
 			}
+			$waterMarkUrl = $watermark;
+			$waterMarkArr = explode('/', $waterMarkUrl);
+			$waterMarkDotArr = explode('.', $waterMarkUrl);
+			$waterMarkName = $waterMarkArr[count($waterMarkArr) - 1];
+			$waterMarkType = $waterMarkDotArr[count($waterMarkDotArr) - 1];
+			$waterMarkSavedPath = $root_directory . 'storage/';
 			$data = $entity->getData();
-			$filetype = $data['filetype'];
-			switch ($filetype) {
-				case 'image/png':
+			$mainImageFileName = $data['filename'];
+			$mainImageFileType = $data['filetype'];
+			$mainImageFileSize = $data['filesize'];
+			$mainImageDownloadUrl = $data['_downloadurl'];
+			$mainImagePath = substr($root_directory, 0, strlen($root_directory) - 9) . parse_url($mainImageDownloadUrl)['path'];
+
+			// create image objects
+			$waterMarkImg = null;
+			$mainImage = null;
+			if ($waterMarkType == 'png') {
+				$waterMarkImg = imagecreatefrompng($waterMarkUrl);
+			} elseif ($mainImageFileType == 'jpg' || $mainImageFileType == 'jpeg') {
+				$waterMarkImg = imagecreatefrompng($waterMarkUrl);
+			}
+			if ($mainImageFileType == 'image/png') {
+				$mainImage = imagecreatefrompng($mainImagePath);
+			} elseif ($mainImageFileType == 'image/jpg' || $mainImageFileType == 'image/jpeg') {
+				$mainImage = imagecreatefromjpeg($mainImagePath);
+			}
+
+			// Get the height/width of the watermark and main image
+			$wmsx = imagesx($waterMarkImg);
+			$wmsy = imagesy($waterMarkImg);
+			$misx = imagesx($mainImage);
+			$misy = imagesy($mainImage);
+			// set the size of the watermark image
+			$wmImageAspectRatio = $wmsx / $wmsy;
+			$mainImageAspectRatio = $misx / $misy;
+			$mainImageAspectRatioType = $wmImageAspectRatio < $mainImageAspectRatio ? 'vertical' : 'horizontal';
+
+			// water mark image options
+			$wmSize = (float)$this->imagesx;
+			$position = $this->imagesy;
+
+			switch ($mainImageAspectRatioType) {
+				case 'horizontal':
+					$wmnsx = $misx * $wmSize;
+					$wmnsy = ($wmnsx / $wmImageAspectRatio);
 					break;
-				case 'image/jpg':
+				case 'vertical':
+					$wmnsy = $misy * $wmSize;
+					$wmnsx = ($wmnsy * $wmImageAspectRatio);
 					break;
-				case 'image/jpeg':
+			}
+			switch ($position) {
+				case 'center':
+					$wmpx = $misx / 2 - ($wmnsx / 2);
+					$wmpy = $misy / 2 - ($wmnsy / 2);
+					break;
+				case 'top':
+					$wmpx = $misx / 2 - ($wmnsx / 2);
+					$wmpy = 0;
+					break;
+				case 'bottom':
+					$wmpx = $misx / 2 - ($wmnsx / 2);
+					$wmpy = $misy - $wmnsy;
+					break;
+				case 'right':
+					$wmpx = $misx - $wmnsx;
+					$wmpy = $misy / 2 - ($wmnsy / 2);
+					break;
+				case 'left':
+					$wmpx = 0;
+					$wmpy = $misy / 2 - ($wmnsy / 2);
+					break;
+				case 'topright':
+					$wmpx = $misx - $wmnsx;
+					$wmpy = 0;
+					break;
+				case 'topleft':
+					$wmpx = 0;
+					$wmpy = 0;
+					break;
+				case 'bottomleft':
+					$wmpx = 0;
+					$wmpy = $misy - $wmnsy;
+					break;
+				case 'bottomright':
+					$wmpx = $misx - $wmnsx;
+					$wmpy = $misy - $wmnsy;
 					break;
 				default:
 					//do nothing
 					break;
 			}
+
+			// resize the watermark image
+			$waterMarkImgAfterResize = imagecreatetruecolor($wmnsx, $wmnsy);
+			imagesavealpha($waterMarkImgAfterResize, true);
+			$color = imagecolorallocatealpha($waterMarkImgAfterResize, 0, 0, 0, 127);
+			imagefill($waterMarkImgAfterResize, 0, 0, $color);
+			imagecopyresampled($waterMarkImgAfterResize, $waterMarkImg, 0, 0, 0, 0, $wmnsx, $wmnsy, $wmsx, $wmsy);
+
+			// add the watermark to the image
+			imagecopy($mainImage, $waterMarkImgAfterResize, $wmpx, $wmpy, 0, 0, $wmnsx, $wmnsy);
+
+			// Save image and free memory
+			if ($mainImageFileType == 'image/png') {
+				imagepng($mainImage, $mainImagePath);
+			} elseif ($mainImageFileType == 'image/jpg' || $mainImageFileType == 'image/jpeg') {
+				imagejpeg($mainImage, $mainImagePath);
+			}
+
+			// free the images
+			imagedestroy($waterMarkImgAfterResize);
+			imagedestroy($waterMarkImg);
+			imagedestroy($mainImage);
 		}
 		$_REQUEST['ajxaction'] = $hold_ajxaction;
 		$from_wf = false;

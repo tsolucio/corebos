@@ -40,7 +40,7 @@
 	<div class="slds-col slds-size_4-of-12 slds-p-around_x-small">
 		<div class="slds-form">
 			<div class="slds-form-element">
-				<label class="slds-form-element__label">{'Position X'|@getTranslatedString}</label>
+				<label class="slds-form-element__label">{'Water Mark Size'|@getTranslatedString}</label>
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
 					<input type="text" name="imagesx" id="imagesx" class="slds slds-input" value="{$task->imagesx}">
 				</div>
@@ -50,7 +50,7 @@
 	<div class="slds-col slds-size_4-of-12 slds-p-around_x-small">
 		<div class="slds-form">
 			<div class="slds-form-element">
-				<label class="slds-form-element__label">{'Position Y'|@getTranslatedString}</label>
+				<label class="slds-form-element__label">{'Water Mark Position'|@getTranslatedString}</label>
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
 					<input type="text" name="imagesy" id="imagesy" class="slds slds-input" value="{$task->imagesy}">
 				</div>
