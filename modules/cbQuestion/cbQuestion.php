@@ -490,12 +490,14 @@ class cbQuestion extends CRMEntity {
 			$tablename = $fld->table;
 			$fldname = $fld->name;
 			$colname = $fld->column;
+			$uitype = $fld->uitype;
 		} else {
 			getColumnFields($qmodule);
 			$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($mod->id, $groupby);
 			$tablename = $fieldinfo['tablename'];
 			$colname = $fieldinfo['columnname'];
 			$fldname = $fieldinfo['fieldname'];
+			$uitype = $fieldinfo['uitype'];
 		}
 		$gby = mkXQuery($sql_query, $tablename.'.'.$colname);
 		$rs = $adb->query($gby);
@@ -503,6 +505,10 @@ class cbQuestion extends CRMEntity {
 		$colspec = $cv->getFilterFieldDefinitionByNameOrLabel($fldname, $qmodule);
 		$gbyelems = [];
 		while ($elem = $adb->fetch_array($rs)) {
+			if ($uitype==10) {
+				$ename = getEntityName(getSalesEntityType($elem[0]), $elem[0]);
+				$elem[0] = $ename[$elem[0]];
+			}
 			$gbyelems[] = json_encode([[
 				'columnname' => $colspec,
 				'comparator' => 'e',
