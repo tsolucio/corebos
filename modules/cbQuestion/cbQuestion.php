@@ -430,7 +430,7 @@ class cbQuestion extends CRMEntity {
 				}
 				return array(
 					'module' => $q->column_fields['qmodule'],
-					'columns' =>  html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
+					'columns' => html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
 					'groupings' => $groupinginfo,
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
@@ -843,7 +843,7 @@ class cbQuestion extends CRMEntity {
 	}
 
 	public function convertColumns2DataTable() {
-		global $adb, $log;
+		global $adb;
 		$qcols = $this->column_fields;
 		if (empty($qcols['qcolumns'])) {
 			return array(
@@ -871,7 +871,7 @@ class cbQuestion extends CRMEntity {
 		$parsed = $parser->parse('select '.$qcols.' from stubtable');
 		$generatedQColumns = '';
 		if (isset($parsed['SELECT'])) {
-			$selectCoulums = $parsed["SELECT"];
+			$selectCoulums = $parsed['SELECT'];
 			foreach ($selectCoulums as $col) {
 				if ($col['expr_type'] == 'colref' || $col['expr_type'] == 'function' || $col['expr_type'] == 'expression') {
 					$value = '';
