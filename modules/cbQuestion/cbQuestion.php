@@ -502,6 +502,7 @@ class cbQuestion extends CRMEntity {
 		$gby = mkXQuery($sql_query, $tablename.'.'.$colname);
 		$rs = $adb->query($gby);
 		$cv = new CustomView($qmodule);
+		$conds = $cv->getConditionsFromSQL2CV($sql_query, ['columnname' => 'rating', 'comparator' => 'e', 'value' => 'Active', 'columncondition' => '']);
 		$colspec = $cv->getFilterFieldDefinitionByNameOrLabel($fldname, $qmodule);
 		$gbyelems = [];
 		while ($elem = $adb->fetch_array($rs)) {
@@ -509,13 +510,10 @@ class cbQuestion extends CRMEntity {
 				$ename = getEntityName(getSalesEntityType($elem[0]), $elem[0]);
 				$elem[0] = $ename[$elem[0]];
 			}
-			$gbyelems[] = json_encode([[
-				'columnname' => $colspec,
-				'comparator' => 'e',
-				'value' => $elem[0],
-				'groupid' => 1,
-				'columncondition' => ''
-			]]);
+			$gbyc = $conds;
+			$gbyc[count($gbyc)-1]['columnname'] = $colspec;
+			$gbyc[count($gbyc)-1]['value'] = $elem[0];
+			$gbyelems[] = json_encode($gbyc);
 		}
 		return $gbyelems;
 	}
