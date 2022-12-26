@@ -48,7 +48,7 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 		$time = date('H:i', strtotime("+$intervalInMinutes minutes", $time));
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
 		$callback_query =
-			'SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed, vtiger_crmentity.*'
+			'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed, vtiger_crmentity.*'
 			.' FROM vtiger_activity_reminder_popup'
 			.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
 			.' inner join vtiger_activity on vtiger_activity.activityid = vtiger_activity_reminder_popup.recordid '
@@ -57,8 +57,17 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 			." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
 			."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
 			." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
-			." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "')))"
-			.' ORDER BY vtiger_activity_reminder_popup.date_start DESC limit 0, '.$list_max_entries_per_page;
+			." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))))"
+			.' UNION '
+			.'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed, vtiger_crmentity.*'
+			.' FROM vtiger_activity_reminder_popup'
+			.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
+			.' WHERE vtiger_crmentity.smownerid = '.$current_user->id.' and vtiger_crmentity.deleted=0 and vtiger_activity_reminder_popup.semodule!='."'cbCalendar'"
+			." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
+			."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
+			." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
+			." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))))"
+			.' ORDER BY date_start DESC limit 0, '.$list_max_entries_per_page;
 
 		$result = $adb->query($callback_query);
 
@@ -107,7 +116,7 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 					$cbtime         = $adb->query_result($result, $index, 'time_start');
 					$cbstatus = '';
 					$mod = CRMEntity::getInstance($cbmodule);
-					$activity['activityimage'] = $mod->$moduleIcon['icon'];
+					$activity['activityimage'] = [$mod->moduleIcon['library'], $mod->moduleIcon['icon']];
 				}
 				if ($cbtime != '') {
 					$date = new DateTimeField($cbdate.' '.$cbtime);
@@ -180,14 +189,18 @@ function printToDoList($activities_reminder) {
 		$smarty->assign('TASKSubtitleColor', vtlib_purify($ACTIVITY['cbcolor']));
 		$smarty->assign('TASKStatus', vtlib_purify($ACTIVITY['cbdate'].' '.$ACTIVITY['cbtime']));
 		$actions = array();
-		$actions[getTranslatedString('LBL_VIEW', 'Settings')] = array(
-			'type' => 'link',
-			'action' => 'index.php?action=DetailView&module=cbCalendar&record='.$ACTIVITY['cbrecord'],
-		);
-		$actions[getTranslatedString('LBL_POSTPONE', 'Calendar4You')] = array(
-			'type' => 'click',
-			'action' => "ActivityReminderPostponeCallback('cbCalendar', '".$ACTIVITY['cbrecord']."', '".$ACTIVITY['cbreminderid']."');ActivityReminderRemovePopupDOM('".$ACTIVITY['popupid']."');"
-		);
+		if (isRecordExists($ACTIVITY['cbrecord'])) {
+			$actions[getTranslatedString('LBL_VIEW', 'Settings')] = array(
+				'type' => 'link',
+				'action' => 'index.php?action=DetailView&module='.$ACTIVITY['cbmodule'].'&record='.$ACTIVITY['cbrecord'],
+			);
+		}
+		if ($ACTIVITY['cbmodule']=='cbCalendar') {
+			$actions[getTranslatedString('LBL_POSTPONE', 'Calendar4You')] = array(
+				'type' => 'click',
+				'action' => "ActivityReminderPostponeCallback('cbCalendar', '".$ACTIVITY['cbrecord']."', '".$ACTIVITY['cbreminderid']."');ActivityReminderRemovePopupDOM('".$ACTIVITY['popupid']."');"
+			);
+		}
 		$actions[getTranslatedString('LBL_HIDE')] = array(
 			'type' => 'click',
 			'action' => "ActivityReminderCallbackReset(0, '".$ACTIVITY['popupid']."');ActivityReminderRemovePopupDOM('".$ACTIVITY['popupid']."');"
