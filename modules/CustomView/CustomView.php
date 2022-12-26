@@ -13,6 +13,8 @@ $image_path = $theme_path . 'images/';
 require_once 'include/utils/utils.php';
 require_once 'include/Webservices/Utils.php';
 require_once 'modules/cbCVManagement/cbCVManagement.php';
+use \PHPSQLParser\PHPSQLParser;
+use \PHPSQLParser\utils\ExpressionType;
 
 class CustomView extends CRMEntity {
 
@@ -1053,6 +1055,239 @@ class CustomView extends CRMEntity {
 			$groupjoin = $cols['condition'];
 		}
 		return json_encode($evql);
+	}
+
+	/** convert SQL query "where conditions" to Custom View filter format
+	 * side effect: the vtiger_crmentity.deleted=0 condition will be eliminated
+	 * @param string SQL query to convert
+	 * @param array containing a condition to add to the result
+	 * 	array(
+	 * 		'columnname' => 'rating',
+	 * 		'comparator' => 'e',
+	 * 		'value' => 'Active',
+	 * 		'columncondition' => ''
+	 * 	)
+	 * @return array filter conditions that represent the SQL query where conditions
+	 */
+	public function getConditionsFromSQL2CV($sqlquery, $addCondition = []) {
+		$conds = [];
+		$parser = new PHPSQLParser();
+		$parsed = $parser->parse($sqlquery);
+		if (!empty($parsed['WHERE'])) {
+			getColumnFields($this->customviewmodule);
+			$tabid = getTabid($this->customviewmodule);
+			$group = 1;
+			$glue = 'AND';
+			for ($sqlp=0; $sqlp<count($parsed['WHERE']); $sqlp++) {
+				$skipthese = 0;
+				if (($parsed['WHERE'][$sqlp]['base_expr']=='vtiger_crmentity.deleted' || $parsed['WHERE'][$sqlp]['base_expr']=='deleted')
+					&& $parsed['WHERE'][$sqlp+2]['base_expr']==0
+				) {
+					$sqlp = $sqlp+2;
+					continue;
+				}
+				if ($parsed['WHERE'][$sqlp]['expr_type']=='colref') {
+					if (strpos($parsed['WHERE'][$sqlp]['base_expr'], '.')) {
+						list($table, $column) = explode('.', $parsed['WHERE'][$sqlp]['base_expr']);
+					} else {
+						$column = $parsed['WHERE'][$sqlp]['base_expr'];
+					}
+					$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $column);
+					if (!$fieldinfo) {
+						$sqlp = $sqlp+2;
+						continue;
+					}
+					$colspec = $this->getFilterFieldDefinition($fieldinfo['fieldname'], $this->customviewmodule);
+					$sqlop = $parsed['WHERE'][$sqlp+1]['base_expr'];
+					if ($parsed['WHERE'][$sqlp+2]['expr_type']=='operator') {
+						$sqlop = $sqlop.' '.$parsed['WHERE'][$sqlp+2]['base_expr'];
+						$skipthese = 1;
+					}
+					$operator = $this->convertOperatorFromSQL2CV($sqlop);
+					$value = $parsed['WHERE'][$sqlp+2+$skipthese]['base_expr'];
+					if ($operator=='bw') {
+						$value = $value.','.$parsed['WHERE'][$sqlp+4+$skipthese]['base_expr'];
+						$skipthese = $skipthese + 2;
+					}
+					$offset = $sqlp+3+$skipthese;
+					$glue = (isset($parsed['WHERE'][$offset]) && $parsed['WHERE'][$offset]['expr_type']=='operator' ? $parsed['WHERE'][$offset]['base_expr'] : '');
+					$conds[] = [
+						'columnname' => $colspec,
+						'comparator' => $operator,
+						'value' => $value,
+						'groupid' => $group,
+						'columncondition' => $glue
+					];
+					$sqlp = $sqlp+2+$skipthese;
+					continue;
+				}
+				if ($parsed['WHERE'][$sqlp]['expr_type']=='bracket_expression') {
+					$conds[] = $this->getConditionBranchFromSQL2CV($parsed['WHERE'][$sqlp]['sub_tree'], $group);
+				}
+			}
+			$conds = $this->flattenBracketElements($conds);
+		}
+		$conds = isset($conds[0]) ? $conds[0] : $conds;
+		if (count($addCondition)>0) {
+			$colspec = $this->getFilterFieldDefinition($addCondition['columnname'], $this->customviewmodule);
+			if (!empty($conds)) {
+				$conds[count($conds)-1]['columncondition'] = 'and';
+			}
+			$conds[] = [
+				'columnname' => $colspec,
+				'comparator' => $addCondition['comparator'],
+				'value' => $addCondition['value'],
+				'groupid' => $group,
+				'columncondition' => ''
+			];
+		}
+		return $conds;
+	}
+
+	public function getConditionBranchFromSQL2CV($where, $group = 1) {
+		$conds = [];
+		if (!empty($where)) {
+			getColumnFields($this->customviewmodule);
+			$tabid = getTabid($this->customviewmodule);
+			$glue = 'AND';
+			for ($sqlp=0; $sqlp<count($where); $sqlp++) {
+				$skipthese = 0;
+				if (($where[$sqlp]['base_expr']=='vtiger_crmentity.deleted' || $where[$sqlp]['base_expr']=='deleted')
+					&& $where[$sqlp+2]['base_expr']==0
+				) {
+					$sqlp = $sqlp+2;
+					continue;
+				}
+				if ($where[$sqlp]['expr_type']=='colref') {
+					if (strpos($where[$sqlp]['base_expr'], '.')) {
+						list($table, $column) = explode('.', $where[$sqlp]['base_expr']);
+					} else {
+						$column = $where[$sqlp]['base_expr'];
+					}
+					$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $column);
+					if (!$fieldinfo) {
+						$sqlp = $sqlp+2;
+						continue;
+					}
+					$colspec = $this->getFilterFieldDefinition($fieldinfo['fieldname'], $this->customviewmodule);
+					$sqlop = $where[$sqlp+1]['base_expr'];
+					if (strtolower($sqlop)=='in' && $where[$sqlp+2]['expr_type']=='subquery') {
+						$sqlp = $sqlp+3;
+						continue;
+					}
+					if ($where[$sqlp+2]['expr_type']=='operator') {
+						$sqlop = $sqlop.' '.$where[$sqlp+2]['base_expr'];
+						$skipthese = 1;
+					}
+					$operator = $this->convertOperatorFromSQL2CV($sqlop);
+					$value = trim($where[$sqlp+2+$skipthese]['base_expr'], "'");
+					if ($operator=='bw') {
+						$value = $value.','.$where[$sqlp+4+$skipthese]['base_expr'];
+						$skipthese = $skipthese + 2;
+					}
+					$offset = $sqlp+3+$skipthese;
+					$glue = (isset($where[$offset]) && $where[$offset]['expr_type']=='operator' ? $where[$offset]['base_expr'] : '');
+					$conds[] = [
+						'columnname' => $colspec,
+						'comparator' => $operator,
+						'value' => $value,
+						'groupid' => $group,
+						'columncondition' => $glue
+					];
+					$sqlp = $sqlp+2+$skipthese;
+					continue;
+				}
+				if ($where[$sqlp]['expr_type']=='bracket_expression') {
+					$group++;
+					$c = $this->getConditionBranchFromSQL2CV($where[$sqlp]['sub_tree'], $group);
+					if (!empty($c)) {
+						if (isset($where[$sqlp+1]['expr_type']) && $where[$sqlp+1]['expr_type']=='operator') {
+							$c[count($c)-1]['columncondition'] = $where[$sqlp+1]['base_expr'];
+							$sqlp++;
+						}
+						$flat = [];
+						for ($idx = 0; $idx < count($c); $idx++) {
+							if (count($c[$idx])==1) {
+								$flat[] = reset($c[$idx]);
+							} elseif (count($c)==1) {
+								$flat = reset($c);
+							} else {
+								$flat[] = $c[$idx];
+							}
+						}
+						$conds[] = $flat;
+					}
+				} elseif (strpos($where[$sqlp]['base_expr'], 'select translation_key')) {
+					preg_match("/ (\w+)\.(\w+) = '(\w+)'\)/", $where[$sqlp]['base_expr'], $parts);
+					$op = 'e';
+					if (empty($parts)) {
+						preg_match("/ (\w+)\.(\w+) <> '(\w+)'\)/", $where[$sqlp]['base_expr'], $parts);
+						$op = 'n';
+					}
+					$glue = (isset($where[$sqlp+1]) && $where[$sqlp+1]['expr_type']=='operator' ? $where[$sqlp+1]['base_expr'] : '');
+					$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $parts[2]);
+					$colspec = $this->getFilterFieldDefinition($fieldinfo['fieldname'], $this->customviewmodule);
+					$conds[] = [
+						'columnname' => $colspec,
+						'comparator' => $op,
+						'value' => $parts[3],
+						'groupid' => $group,
+						'columncondition' => $glue
+					];
+				}
+			}
+		}
+		return $conds;
+	}
+
+	public function convertOperatorFromSQL2CV($comparator) {
+		switch (strtolower($comparator)) {
+			case '=':
+				return 'e';
+			case '!=':
+			case '<>':
+				return 'n';
+			case 'like':
+				return 'c';
+			case 'not like':
+				return 'k';
+			case '<':
+				return 'l';
+			case '>':
+				return 'g';
+			case '<=':
+				return 'm';
+			case '>=':
+				return 'h';
+			case 'is':
+				return 'y';
+			case 'not is':
+				return 'ny';
+			case 'between':
+				return 'bw';
+			// case not supported in SQL:
+			// return 's';
+			// return 'dnsw';
+			// return 'ew';
+			// return 'dnew';
+			// return 'b';
+			// return 'a';
+		}
+		return 'e';
+	}
+
+	public function flattenBracketElements($conds) {
+		$flat = [];
+		for ($idx = 0; $idx < count($conds); $idx++) {
+			if (count($conds[$idx])==1) {
+				$flat[] = reset($conds[$idx]);
+			} elseif (count($conds)==1) {
+				$flat = reset($conds);
+			} else {
+				$flat[] = $conds[$idx];
+			}
+		}
+		return $flat;
 	}
 
 	/** get workflow operator from a query generator comparator
