@@ -88,7 +88,6 @@ if ($cvmodule != '') {
 	}
 	//<<<<<<<columns>>>>>>>>>
 
-
 	//<<<<<<<standardfilters>>>>>>>>>
 	$std_filter_list = array();
 	$stdfiltercolumn = isset($_REQUEST['stdDateFilterField']) ? $_REQUEST['stdDateFilterField'] : '';
@@ -305,7 +304,6 @@ if ($cvmodule != '') {
 
 			$deletesql = 'DELETE FROM vtiger_cvadvfilter_grouping WHERE cvid = ?';
 			$deleteresult = $adb->pquery($deletesql, array($cvid));
-
 
 			$genCVid = $cvid;
 			if ($updatecvresult && isset($columnslist)) {

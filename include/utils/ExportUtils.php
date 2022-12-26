@@ -127,7 +127,6 @@ function exportUserCommentsForModule($module, $recordid, $format, $field_arr = a
 	return true;
 }
 
-
 /**
  * Function to exporting XLS rows file format for modules.
  * @param object $rowsonfo object contain rows to export

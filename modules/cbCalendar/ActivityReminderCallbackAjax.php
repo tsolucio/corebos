@@ -122,7 +122,6 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 					$cbtime = $cbtimeArr['starthour'].':'.$cbtimeArr['startmin'].''.$cbtimeArr['startfmt'];
 				}
 
-
 				// Appending recordid we can get unique callback dom id for that record.
 				$popupid = "ActivityReminder_$cbrecord";
 				$cbcolor = '';

@@ -1238,7 +1238,6 @@ const ListView = {
 	}
 };
 
-
 const DocumentsView = {
 
 	Show: (url, viewname = '') => {

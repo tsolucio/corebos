@@ -32,7 +32,6 @@ class Curl_HTTP_Client {
 	 */
 	protected $ch ;
 
-
 	/**
 	 * Default curl options
 	 * 	(more details about each option: http://www.php.net/manual/en/function.curl-setopt-array.php)
@@ -124,7 +123,6 @@ class Curl_HTTP_Client {
 		curl_setopt($this->ch, CURLOPT_USERPWD, "$username:$password");
 	}
 
-
 	/**
 	 * Set proxy to use for each curl request
 	 *
@@ -179,7 +177,6 @@ class Curl_HTTP_Client {
 
 		return $result;
 	}
-
 
 	/**
 	 * Send post request to target URL

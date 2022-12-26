@@ -1568,7 +1568,6 @@ class OpenDocument {
 		return $bookmark;
 	}
 
-
 	/**
 	 * Create OpenDocument_Table
 	 *

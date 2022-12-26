@@ -112,7 +112,6 @@ $related_module = array(
 	),
 );
 
-
 //Array de mapeig de moduls especials, p.e. el presciptors son comptes
 //aleshores el tag Prescriptor el mapegem a Accounts
 //També per a llistes de relacionats, quan tenim més d'un tipus d'entitat per modul, p.e.

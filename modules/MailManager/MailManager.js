@@ -170,7 +170,6 @@ if (typeof(MailManager) == 'undefined') {
 			}
 		},
 
-
 		moveMail : function (element) {
 
 			function execute() {
@@ -267,7 +266,6 @@ if (typeof(MailManager) == 'undefined') {
 				jQuery('#mm_selected_folder').val('mm_settings');
 			});
 		},
-
 
 		handle_settings_confighelper: function (selectBox) {
 			var form = selectBox.form;
@@ -844,7 +842,6 @@ if (typeof(MailManager) == 'undefined') {
 				jQuery('#mm_selected_folder').val('mm_compose');
 			});
 		},
-
 
 		deleteAttachment : function (id, docid, ele) {
 			MailManager.progress_show(MailManager.i18n('JSLBL_Loading'), ' ...');

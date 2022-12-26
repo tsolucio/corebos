@@ -821,8 +821,4 @@ class crxml implements arrayAccess, iterator
 			}
 		}
 	}*/
-
-
 }
-
-
