@@ -31,8 +31,18 @@
 			<div class="slds-form-element">
 				<label class="slds-form-element__label">{'Watermark Value'|@getTranslatedString}</label>
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
-					<input id="filename" class="slds-input" name="imagesvalue" value="{$task->imagesvalue}" onfocus="wfeditexptype($(this), { 'name':'string' })" onchange="setwfexptype()" style="border: 1px solid #bababa">
+					<input id="filename" class="slds-input" name="wmImageValue" value="{$task->wmImageValue}" onfocus="wfeditexptype($(this), { 'name':'string' })" onchange="setwfexptype()" style="border: 1px solid #bababa">
 					<input type="hidden" name="exptype" id="exptype" value="{$task->exptype}"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="slds-col slds-size_4-of-12 slds-p-around_x-small">
+		<div class="slds-form">
+			<div class="slds-form-element">
+				<label class="slds-form-element__label">{'image field name'|@getTranslatedString}</label>
+				<div class="slds-form-element__control slds-input-has-fixed-addon">
+					<input type="text" name="imagefieldName" id="imagefieldName" class="slds slds-input" value="{$task->imagefieldName}">
 				</div>
 			</div>
 		</div>
@@ -42,17 +52,20 @@
 			<div class="slds-form-element">
 				<label class="slds-form-element__label">{'Water Mark Size'|@getTranslatedString}</label>
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
-					<input type="text" name="imagesx" id="imagesx" class="slds slds-input" value="{$task->imagesx}">
+					<input type="text" name="wmSize" id="wmSize" class="slds slds-input" value="{$task->wmSize}">
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
+
+<div class="slds-grid slds-gutters slds-p-horizontal_x-large slds-grid_vertical-align-center">
 	<div class="slds-col slds-size_4-of-12 slds-p-around_x-small">
 		<div class="slds-form">
 			<div class="slds-form-element">
 				<label class="slds-form-element__label">{'Water Mark Position'|@getTranslatedString}</label>
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
-					<input type="text" name="imagesy" id="imagesy" class="slds slds-input" value="{$task->imagesy}">
+					<input type="text" name="wmPosition" id="wmPosition" class="slds slds-input" value="{$task->wmPosition}">
 				</div>
 			</div>
 		</div>

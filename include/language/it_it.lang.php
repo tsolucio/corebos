@@ -1277,6 +1277,12 @@ $app_strings = array (
 'LBL_HIERARCHY' => 'Hierarchy',
 'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Search Documents',
 
+// watermark WF template
+'Watermark Value' => 'Watermark Value',
+'image field name' => 'image field name',
+'Water Mark Size' => 'Water Mark Size',
+'Water Mark Position' => 'Water Mark Position',
+
 //login translation
 'LBL_Please_login_to_your_account' => 'Please login to your account',
 'LBL_Bussiness'	=> 'Make your business run smoothly',
