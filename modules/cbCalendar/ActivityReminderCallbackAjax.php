@@ -48,7 +48,7 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 		$time = date('H:i', strtotime("+$intervalInMinutes minutes", $time));
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
 		$callback_query =
-			'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed, vtiger_crmentity.*'
+			'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
 			.' FROM vtiger_activity_reminder_popup'
 			.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
 			.' inner join vtiger_activity on vtiger_activity.activityid = vtiger_activity_reminder_popup.recordid '
@@ -59,10 +59,18 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 			." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
 			." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))))"
 			.' UNION '
-			.'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed, vtiger_crmentity.*'
+			.'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
 			.' FROM vtiger_activity_reminder_popup'
 			.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
 			.' WHERE vtiger_crmentity.smownerid = '.$current_user->id.' and vtiger_crmentity.deleted=0 and vtiger_activity_reminder_popup.semodule!='."'cbCalendar'"
+			." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
+			."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
+			." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
+			." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))))"
+			.' UNION '
+			.'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
+			.' FROM vtiger_activity_reminder_popup'
+			.' WHERE (vtiger_activity_reminder_popup.ownerid=-1 or vtiger_activity_reminder_popup.ownerid='.$current_user->id.')'
 			." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
 			."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
 			." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
@@ -79,7 +87,7 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 				$activity = array();
 				$reminderid = $adb->query_result($result, $index, 'reminderid');
 				$cbrecord = $adb->query_result($result, $index, 'recordid');
-				$cbmodule = $adb->query_result($result, $index, 'setype');
+				$cbmodule = $adb->query_result($result, $index, 'semodule');
 				$cbreaded = $adb->query_result($result, $index, 'readed');
 				if ($cbreaded == '0') {
 					$notreaded++;
@@ -109,14 +117,28 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 					}
 				} else {
 					// For non-calendar records.
-					$cbsubject      = array_values(getEntityName($cbmodule, $cbrecord));
-					$cbsubject      = $cbsubject[0];
-					$cbactivitytype = getTranslatedString($cbmodule, $cbmodule);
-					$cbdate         = $adb->query_result($result, $index, 'date_start');
-					$cbtime         = $adb->query_result($result, $index, 'time_start');
+					if (empty($cbrecord)) {
+						$moreinfo = $adb->query_result($result, $index, 'moreinfo');
+						$moreinfo = json_decode(html_entity_decode($moreinfo, ENT_QUOTES), true);
+						$cbsubject = $moreinfo['subject'];
+						$cbactivitytype = $moreinfo['subtitle'];
+						$activity['activityimage'] = $moreinfo['icon'];
+					} else {
+						$cbsubject = array_values(getEntityName($cbmodule, $cbrecord));
+						$cbsubject = $cbsubject[0];
+						$cbactivitytype = getTranslatedString($cbmodule, $cbmodule);
+						$mod = CRMEntity::getInstance($cbmodule);
+						$activity['activityimage'] = [$mod->moduleIcon['library'], $mod->moduleIcon['icon']];
+					}
+					$cbdate   = $adb->query_result($result, $index, 'date_start');
+					$cbtime   = $adb->query_result($result, $index, 'time_start');
+					$cbaction = $adb->query_result($result, $index, 'moreaction');
+					if (!empty($cbaction)) {
+						$cbaction = json_decode(html_entity_decode($cbaction, ENT_QUOTES), true);
+						$activity['cbactionlabel'] = $cbaction['label'];
+						$activity['cbactionlink'] = $cbaction['link'];
+					}
 					$cbstatus = '';
-					$mod = CRMEntity::getInstance($cbmodule);
-					$activity['activityimage'] = [$mod->moduleIcon['library'], $mod->moduleIcon['icon']];
 				}
 				if ($cbtime != '') {
 					$date = new DateTimeField($cbdate.' '.$cbtime);
@@ -185,7 +207,7 @@ function printToDoList($activities_reminder) {
 		$smarty->assign('TASKImage', $ACTIVITY['activityimage']);
 		$smarty->assign('TASKType', $ACTIVITY['activitytype']);
 		$smarty->assign('TASKTitle', vtlib_purify($ACTIVITY['cbsubject']));
-		$smarty->assign('TASKSubtitle', vtlib_purify($ACTIVITY['activitytype'].' - '.$ACTIVITY['cbstatus']));
+		$smarty->assign('TASKSubtitle', vtlib_purify($ACTIVITY['activitytype'].(empty($ACTIVITY['cbstatus']) ? '' : ' - '.$ACTIVITY['cbstatus'])));
 		$smarty->assign('TASKSubtitleColor', vtlib_purify($ACTIVITY['cbcolor']));
 		$smarty->assign('TASKStatus', vtlib_purify($ACTIVITY['cbdate'].' '.$ACTIVITY['cbtime']));
 		$actions = array();
@@ -199,6 +221,11 @@ function printToDoList($activities_reminder) {
 			$actions[getTranslatedString('LBL_POSTPONE', 'Calendar4You')] = array(
 				'type' => 'click',
 				'action' => "ActivityReminderPostponeCallback('cbCalendar', '".$ACTIVITY['cbrecord']."', '".$ACTIVITY['cbreminderid']."');ActivityReminderRemovePopupDOM('".$ACTIVITY['popupid']."');"
+			);
+		} elseif (!empty($ACTIVITY['cbactionlink'])) {
+			$actions[getTranslatedString($ACTIVITY['cbactionlabel'], $ACTIVITY['cbmodule'])] = array(
+				'type' => 'click',
+				'action' => $ACTIVITY['cbactionlink']
 			);
 		}
 		$actions[getTranslatedString('LBL_HIDE')] = array(
