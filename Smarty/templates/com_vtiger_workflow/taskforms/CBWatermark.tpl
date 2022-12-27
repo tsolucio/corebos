@@ -65,7 +65,18 @@
 			<div class="slds-form-element">
 				<label class="slds-form-element__label">{'Water Mark Position'|@getTranslatedString}</label>
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
-					<input type="text" name="wmPosition" id="wmPosition" class="slds slds-input" value="{$task->wmPosition}">
+					{* <input type="text" name="wmPosition" id="wmPosition" class="slds slds-input" value="{$task->wmPosition}"> *}
+					<select name="wmPosition" id="wmPosition" class="slds slds-input" value="{$task->wmPosition}">
+						<option value="center">center</option>
+						<option value="top">top</option>
+						<option value="bottom">bottom</option>
+						<option value="right">right</option>
+						<option value="left">left</option>
+						<option value="topright">topright</option>
+						<option value="topleft">topleft</option>
+						<option value="bottomleft">bottomleft</option>
+						<option value="bottomright">bottomright</option>
+					</select>
 				</div>
 			</div>
 		</div>
