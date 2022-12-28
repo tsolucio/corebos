@@ -4001,7 +4001,7 @@ precacheAndRoute([{
   "revision": "c5518025b115c73bbeb9b8518ec0499b"
 }, {
   "url": "modules/Calendar4You/fullcalendar/themes/cupertino/theme.css",
-  "revision": "5e885f2a9f6890b2c8e5a041654d66cc"
+  "revision": "2f0b11ad96b1a726f6f455efd7ce1982"
 }, {
   "url": "modules/Calendar4You/images/color_picker.gif",
   "revision": "765a90c24ad2f3969b53e542bdf2e32f"
@@ -4103,10 +4103,10 @@ precacheAndRoute([{
   "revision": "2d4e606e8e5c04af04ea6baf1c6fa6fd"
 }, {
   "url": "modules/Mobile/resources/css/theme.css",
-  "revision": "3ad2cc4a1e7c3b6c566726883e414b15"
+  "revision": "7c2e76dc88159564ca863929f1297699"
 }, {
   "url": "modules/Mobile/resources/css/tinyselect.css",
-  "revision": "df87e74765c600edb73159d1dfd5b9ab"
+  "revision": "965ae104e32f40ad0d8409e917daab75"
 }, {
   "url": "modules/Mobile/resources/documents.js",
   "revision": "351e44a8f5939b2fa6d5c498a65bcdc9"
@@ -11432,7 +11432,7 @@ precacheAndRoute([{
   "revision": "321798c3a4f90cafc07df60d8a8f0f2f"
 }, {
   "url": "include/js/advancefilter.js",
-  "revision": "c6f16828be0c815c713d8c479df7b13b"
+  "revision": "320c287a1932f77d9f3da4e4742f52d4"
 }, {
   "url": "include/js/asterisk.js",
   "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
@@ -11480,7 +11480,7 @@ precacheAndRoute([{
   "revision": "70e4040be9d6e893aec7e605033a773a"
 }, {
   "url": "include/js/general.js",
-  "revision": "aaa1665c241921e163924b2bd285892b"
+  "revision": "598d44fb2958cb7e5935d9bf8636b2ae"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "b4fad7ff70fb9444a5e86f58490269b9"
@@ -11498,7 +11498,7 @@ precacheAndRoute([{
   "revision": "994e53756bdd418770cb8643ae240869"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "48418646e225495008580c4911a18ac9"
+  "revision": "1b29ac181ea0764c445535fb22fc0ff7"
 }, {
   "url": "include/js/ListViewRenderes.js",
   "revision": "6a360b0feb15c05b45cdf9f63e4f7b24"
@@ -11942,7 +11942,7 @@ precacheAndRoute([{
   "revision": "9ed4669f524bec38319be63a2ee4ba26"
 }, {
   "url": "modules/MailManager/MailManager.js",
-  "revision": "d166fb54361a463cf82a8b5cd908708c"
+  "revision": "458fbdebe25e290e2399a8446c344f78"
 }, {
   "url": "modules/MailManager/MailManager.png",
   "revision": "1c045d808355b6ed581cd4971f3436f9"
@@ -12266,7 +12266,7 @@ precacheAndRoute([{
   "revision": "cde88c33da015b3b7e277c8906c50457"
 }, {
   "url": "modules/Home/Homestuff.js",
-  "revision": "15e47a85456e109ca860fd85ec223d13"
+  "revision": "5293ffc1fc695bcefb44e2ac7550897a"
 }, {
   "url": "modules/Home/js/HelpMeNow.js",
   "revision": "3facd26fc8ea33e48ec5c19fcef2472d"
