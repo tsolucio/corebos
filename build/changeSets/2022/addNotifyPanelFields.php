@@ -28,6 +28,9 @@ class addNotifyPanelFields extends cbupdaterWorker {
 			if (!in_array('ownerid', $columns)) {
 				$this->ExecuteQuery('ALTER TABLE vtiger_activity_reminder_popup ADD COLUMN ownerid INT(11) DEFAULT NULL', array());
 			}
+			if (!in_array('relwith', $columns)) {
+				$this->ExecuteQuery('ALTER TABLE vtiger_activity_reminder_popup ADD COLUMN relwith INT(11) DEFAULT NULL', array());
+			}
 			if (!in_array('moreaction', $columns)) {
 				$this->ExecuteQuery('ALTER TABLE vtiger_activity_reminder_popup ADD COLUMN moreaction VARCHAR(450) DEFAULT NULL', array());
 			}

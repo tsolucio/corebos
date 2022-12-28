@@ -296,7 +296,7 @@ class cbCalendar extends CRMEntity {
 		self::addNotificationReminder($cbmodule, $this->id, $this->column_fields['dtstart']);
 	}
 
-	public static function addNotificationReminder($cbmodule, $cbrecord, $dtstart, $owner = 0, $action = '', $moreinfo = '') {
+	public static function addNotificationReminder($cbmodule, $cbrecord, $dtstart, $owner = 0, $relwith = 0, $action = '', $moreinfo = '') {
 		global $adb;
 		coreBOS_Session::delete('next_reminder_time');
 		if (isset($cbmodule) && isset($cbrecord)) {
@@ -310,13 +310,15 @@ class cbCalendar extends CRMEntity {
 			if ($adb->num_rows($reminderidres) > 0) {
 				$reminderid = $adb->query_result($reminderidres, 0, 'reminderid');
 			}
-
+			if (empty($relwith) && !empty($cbrecord)) {
+				$relwith = getRelatedAccountContact($cbrecord);
+			}
 			if (isset($reminderid)) {
-				$callback_query = 'UPDATE vtiger_activity_reminder_popup set status=0, date_start=?, time_start=?, ownerid=?, moreaction=?, moreinfo=? WHERE reminderid=?';
-				$callback_params = array($cbdate, $cbtime, $owner, $action, $moreinfo, $reminderid);
+				$callback_query = 'UPDATE vtiger_activity_reminder_popup set status=0, date_start=?, time_start=?, ownerid=?, relwith=?, moreaction=?, moreinfo=? WHERE reminderid=?';
+				$callback_params = array($cbdate, $cbtime, $owner, $relwith, $action, $moreinfo, $reminderid);
 			} else {
-				$callback_query = 'INSERT INTO vtiger_activity_reminder_popup (semodule, recordid, date_start, time_start, status, ownerid, moreaction, moreinfo) VALUES (?,?,?,?,0,?,?,?)';
-				$callback_params = array($cbmodule, $cbrecord, $cbdate, $cbtime, $owner, $action, $moreinfo);
+				$callback_query = 'INSERT INTO vtiger_activity_reminder_popup (semodule, recordid, date_start, time_start, status, ownerid, relwith, moreaction, moreinfo) VALUES (?,?,?,?,0,?,?,?,?)';
+				$callback_params = array($cbmodule, $cbrecord, $cbdate, $cbtime, $owner, $relwith, $action, $moreinfo);
 			}
 
 			$adb->pquery($callback_query, $callback_params);
