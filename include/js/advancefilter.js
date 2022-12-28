@@ -1513,11 +1513,8 @@
 		* @return: (bool)
 		*/
 		allowedChars: function (char) {
-			const chars = ['$'];
-			if (chars.includes(char)) {
-				return true;
-			}
-			return false;
+			const chars = ['$', '+'];
+			return Array.from(char).some(c => chars.includes(c));
 		},
 
 		/*
