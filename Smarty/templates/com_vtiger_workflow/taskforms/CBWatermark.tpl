@@ -67,15 +67,15 @@
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
 					{* <input type="text" name="wmPosition" id="wmPosition" class="slds slds-input" value="{$task->wmPosition}"> *}
 					<select name="wmPosition" id="wmPosition" class="slds slds-input" value="{$task->wmPosition}">
-						<option value="center">center</option>
-						<option value="top">top</option>
-						<option value="bottom">bottom</option>
-						<option value="right">right</option>
-						<option value="left">left</option>
-						<option value="topright">topright</option>
-						<option value="topleft">topleft</option>
-						<option value="bottomleft">bottomleft</option>
-						<option value="bottomright">bottomright</option>
+						<option value="center">{'Center'|@getTranslatedString}</option>
+						<option value="top">{'Top'|@getTranslatedString}</option>
+						<option value="bottom">{'Bottom'|@getTranslatedString}</option>
+						<option value="right">{'Right'|@getTranslatedString}</option>
+						<option value="left">{'Left'|@getTranslatedString}</option>
+						<option value="topright">{'Top Right'|@getTranslatedString}</option>
+						<option value="topleft">{'Top Left'|@getTranslatedString}</option>
+						<option value="bottomleft">{'Bottom Left'|@getTranslatedString}</option>
+						<option value="bottomright">{'Bottom Right'|@getTranslatedString}</option>
 					</select>
 				</div>
 			</div>
