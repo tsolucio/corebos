@@ -50,6 +50,9 @@ class CustomView extends CRMEntity {
 		'y' => 'is empty',
 		'ny' => 'is not empty',
 		'bw' => 'between',
+		'rgxp' => 'regexp',
+		'sx' => 'soundex',
+		'nsx' => 'not soundex',
 	);
 
 	/** This function sets

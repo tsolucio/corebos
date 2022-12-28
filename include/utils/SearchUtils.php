@@ -1286,6 +1286,15 @@ function getAdvancedSearchComparator($comparator, $value, $datatype = '') {
 	if ($comparator == 'a') {
 		$rtvalue = ' > '.$adb->quote($value);
 	}
+	if ($comparator == 'rgxp') {
+		$rtvalue = ' REGEXP '.$adb->quote($value);
+	}
+	if ($comparator == 'sx') {
+		$rtvalue = ' SOUNDEX '.$adb->quote($value);
+	}
+	if ($comparator == 'nsx') {
+		$rtvalue = ' NOT SOUNDEX '.$adb->quote($value);
+	}
 	return $rtvalue;
 }
 
