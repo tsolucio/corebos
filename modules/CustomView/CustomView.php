@@ -1083,7 +1083,7 @@ class CustomView extends CRMEntity {
 			$glue = 'AND';
 			for ($sqlp=0; $sqlp<count($parsed['WHERE']); $sqlp++) {
 				$skipthese = 0;
-				if (($parsed['WHERE'][$sqlp]['base_expr']=='vtiger_crmentity.deleted' || $parsed['WHERE'][$sqlp]['base_expr']=='deleted')
+				if (($parsed['WHERE'][$sqlp]['base_expr']=='vtiger_crmentity.deleted' || $parsed['WHERE'][$sqlp]['base_expr']=='deleted' || substr($parsed['WHERE'][$sqlp]['base_expr'], -8)=='.deleted')
 					&& $parsed['WHERE'][$sqlp+2]['base_expr']==0
 				) {
 					$sqlp = $sqlp+2;
@@ -1095,19 +1095,32 @@ class CustomView extends CRMEntity {
 					} else {
 						$column = $parsed['WHERE'][$sqlp]['base_expr'];
 					}
+					$mainmodule = true;
 					$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $column);
 					if (!$fieldinfo) {
-						$sqlp = $sqlp+2;
+						$modinfo = getEntityFieldNamesByTableName($table);
+						if (!empty($modinfo['modulename']) && $this->customviewmodule!=$modinfo['modulename']) {
+							getColumnFields($modinfo['modulename']);
+							$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn(getTabid($modinfo['modulename']), $column);
+							$mainmodule = false;
+						}
+						if (!$fieldinfo) {
+							$sqlp = $sqlp+2;
+							continue;
+						}
+					}
+					$colspec = $this->getFilterFieldDefinition($fieldinfo['fieldname'], ($mainmodule ? $this->customviewmodule : $modinfo['modulename']));
+					$sqlop = $parsed['WHERE'][$sqlp+1]['base_expr'];
+					if (strtolower($sqlop)=='in' && $parsed['WHERE'][$sqlp+2]['expr_type']=='subquery') {
+						$sqlp = $sqlp+3;
 						continue;
 					}
-					$colspec = $this->getFilterFieldDefinition($fieldinfo['fieldname'], $this->customviewmodule);
-					$sqlop = $parsed['WHERE'][$sqlp+1]['base_expr'];
 					if ($parsed['WHERE'][$sqlp+2]['expr_type']=='operator') {
 						$sqlop = $sqlop.' '.$parsed['WHERE'][$sqlp+2]['base_expr'];
 						$skipthese = 1;
 					}
 					$operator = $this->convertOperatorFromSQL2CV($sqlop);
-					$value = $parsed['WHERE'][$sqlp+2+$skipthese]['base_expr'];
+					$value = trim($parsed['WHERE'][$sqlp+2+$skipthese]['base_expr'], "'");
 					if ($operator=='bw') {
 						$value = $value.','.$parsed['WHERE'][$sqlp+4+$skipthese]['base_expr'];
 						$skipthese = $skipthese + 2;
@@ -1128,9 +1141,14 @@ class CustomView extends CRMEntity {
 					$conds[] = $this->getConditionBranchFromSQL2CV($parsed['WHERE'][$sqlp]['sub_tree'], $group);
 				}
 			}
-			$conds = $this->flattenBracketElements($conds);
+			if (!isset($conds[0]['columnname'])) {
+				$conds = $this->flattenBracketElements($conds);
+			}
 		}
-		$conds = isset($conds[0]) ? $conds[0] : $conds;
+		$conds = isset($conds[0]) && !isset($conds[0]['columnname']) ? $conds[0] : $conds;
+		if (isset($conds['columnname'])) {
+			$conds[0] = $conds;
+		}
 		if (count($addCondition)>0) {
 			$colspec = $this->getFilterFieldDefinition($addCondition['columnname'], $this->customviewmodule);
 			if (!empty($conds)) {
