@@ -3565,19 +3565,49 @@ function getEntityFieldNames($module) {
 			return $data[$module];
 		}
 		$result = $adb->pquery('select fieldname,modulename,tablename,entityidfield from vtiger_entityname where modulename=?', array($module));
-		$fieldsName = $adb->query_result($result, 0, 'fieldname');
-		$tableName = $adb->query_result($result, 0, 'tablename');
-		$entityIdField = $adb->query_result($result, 0, 'entityidfield');
-		$moduleName = $adb->query_result($result, 0, 'modulename');
-		if (strpos($fieldsName, ',')) {
-			$fieldsName = explode(',', $fieldsName);
+		$data[$module] = getEntityFieldNamesFromRow($result);
+		return $data[$module];
+	}
+	return array('tablename' => '', 'modulename' => '', 'fieldname' => '', 'entityidfield' => '');
+}
+
+/**
+ * this function returns the entity information for a given module searching by the main or the custom field database table
+ * it returns the information of tablename, modulename, fieldsname and id that it gets from vtiger_entityname
+ * NOTE: for the custom field table to work it must follow the `cf` ending convention
+ * @param string table name
+ * @return array entity information for the module
+ */
+function getEntityFieldNamesByTableName($table) {
+	global $adb;
+	static $data = array();
+	if (!empty($table)) {
+		if (substr($table, -2)=='cf') {
+			$table = substr($table, 0, strlen($table)-2);
 		}
-		$data[$module] = array('tablename' => $tableName, 'modulename' => $moduleName, 'fieldname' => $fieldsName, 'entityidfield' => $entityIdField);
-	} else {
-		$fieldsName = '';
-		$tableName = '';
-		$entityIdField = '';
-		$moduleName = '';
+		if (isset($data[$table])) {
+			return $data[$table];
+		}
+		$result = $adb->pquery('select fieldname,modulename,tablename,entityidfield from vtiger_entityname where tablename=?', array($table));
+		$data[$table] = getEntityFieldNamesFromRow($result);
+		return $data[$table];
+	}
+	return array('tablename' => '', 'modulename' => '', 'fieldname' => '', 'entityidfield' => '');
+}
+
+/**
+ * this function returns the entity information for a given module from a database row read from the table vtiger_entityname
+ * @param recordset row from database
+ * @return array entity information for the module
+ */
+function getEntityFieldNamesFromRow($result) {
+	global $adb;
+	$fieldsName = $adb->query_result($result, 0, 'fieldname');
+	$tableName = $adb->query_result($result, 0, 'tablename');
+	$entityIdField = $adb->query_result($result, 0, 'entityidfield');
+	$moduleName = $adb->query_result($result, 0, 'modulename');
+	if (strpos($fieldsName, ',')) {
+		$fieldsName = explode(',', $fieldsName);
 	}
 	return array('tablename' => $tableName, 'modulename' => $moduleName, 'fieldname' => $fieldsName, 'entityidfield' => $entityIdField);
 }
