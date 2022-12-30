@@ -65,7 +65,7 @@ if ($mode == 'mergesave') {
 	}
 	echo '<script>window.opener.location.href=window.opener.location.href;window.self.close();</script>';
 } elseif ($mode == 'mergefields') {
-	$idstring   = vtlib_purify($_REQUEST['passurl']);
+	$idstring = vtlib_purify($_REQUEST['passurl']);
 
 	$exploded_id=explode(',', $idstring, -1);
 	$record_count = count($exploded_id);
@@ -74,13 +74,15 @@ if ($mode == 'mergesave') {
 	$smarty->assign('EDIT_DUPLICATE', '');
 	if ($record_count == 2) {
 		if (isPermitted($currentModule, 'EditView', $exploded_id[0]) == 'yes' && isPermitted($currentModule, 'EditView', $exploded_id[1]) == 'yes'
-			 && isPermitted($currentModule, 'Delete', $exploded_id[0]) == 'yes' && isPermitted($currentModule, 'Delete', $exploded_id[1]) == 'yes') {
+			&& isPermitted($currentModule, 'Delete', $exploded_id[0]) == 'yes' && isPermitted($currentModule, 'Delete', $exploded_id[1]) == 'yes'
+		) {
 			$smarty->assign('EDIT_DUPLICATE', 'permitted');
 		}
 	} else {
 		if (isPermitted($currentModule, 'EditView', $exploded_id[0]) == 'yes' && isPermitted($currentModule, 'EditView', $exploded_id[1]) == 'yes'
 			&& isPermitted($currentModule, 'EditView', $exploded_id[2]) == 'yes' && isPermitted($currentModule, 'Delete', $exploded_id[0]) == 'yes'
-			&& isPermitted($currentModule, 'Delete', $exploded_id[1]) == 'yes' && isPermitted($currentModule, 'Delete', $exploded_id[2]) == 'yes') {
+			&& isPermitted($currentModule, 'Delete', $exploded_id[1]) == 'yes' && isPermitted($currentModule, 'Delete', $exploded_id[2]) == 'yes'
+		) {
 			$smarty->assign('EDIT_DUPLICATE', 'permitted');
 		}
 	}
