@@ -2436,10 +2436,9 @@ function validateImageContents($filename) {
 	$security_checkimage = GlobalVariable::getVariable('Security_ImageCheck', 'strict');
 	switch ($security_checkimage) {
 		case 'loose':
-			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
-				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
-				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
-				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
+			$check = preg_match('/<script.*language.*=.*".*php.*".*/i', $contents) === 1
+				|| preg_match('/<script.*language.*=.*".*javascript.*".*/i', $contents) === 1
+				|| preg_match('/<script.*type.*=.*".*javascript.*".*/i', $contents) === 1
 				|| stripos($contents, '<</js') !== false || stripos($contents, '<?php ') !== false;
 			break;
 		case 'clean':
@@ -2462,10 +2461,9 @@ function validateImageContents($filename) {
 			break;
 		case 'strict':
 		default:
-			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
-				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
-				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
-				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
+			$check = preg_match('/<script.*language.*=.*".*php.*".*/i', $contents) === 1
+				|| preg_match('/<script.*language.*=.*".*javascript.*".*/i', $contents) === 1
+				|| preg_match('/<script.*type.*=.*".*javascript.*".*/i', $contents) === 1
 				|| preg_match('/<\s*html\s*:\s*script\s*>/i', $contents) === 1 // XML
 				|| preg_match('/<\s*script\s*>/i', $contents) === 1
 				|| stripos($contents, '<?=') !== false
