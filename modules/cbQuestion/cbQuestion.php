@@ -506,13 +506,16 @@ class cbQuestion extends CRMEntity {
 		$colspec = $cv->getFilterFieldDefinitionByNameOrLabel($fldname, $qmodule);
 		$gbyelems = [];
 		while ($elem = $adb->fetch_array($rs)) {
-			if ($uitype==10) {
+			if ($uitype==10 && !empty($elem[0])) {
 				$ename = getEntityName(getSalesEntityType($elem[0]), $elem[0]);
 				$elem[0] = $ename[$elem[0]];
 			}
 			$gbyc = $conds;
 			$gbyc[count($gbyc)-1]['columnname'] = $colspec;
 			$gbyc[count($gbyc)-1]['value'] = $elem[0];
+			if (empty($elem[0])) {
+				$gbyc[count($gbyc)-1]['operator'] = 'y';
+			}
 			$gbyelems[] = json_encode($gbyc);
 		}
 		return $gbyelems;
