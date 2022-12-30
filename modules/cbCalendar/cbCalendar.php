@@ -325,6 +325,82 @@ class cbCalendar extends CRMEntity {
 		}
 	}
 
+	public static function printToDoListCards($activities_reminder) {
+		$smarty = new vtigerCRM_Smarty;
+		$list = '';
+		foreach ($activities_reminder as $ACTIVITY) {
+			$smarty->assign('TASKItemID', $ACTIVITY['popupid']);
+			$smarty->assign('TASKItemRead', $ACTIVITY['cbreaded']);
+			$smarty->assign('TASKImage', $ACTIVITY['activityimage']);
+			$smarty->assign('TASKType', $ACTIVITY['activitytype']);
+			$smarty->assign('TASKTitle', vtlib_purify($ACTIVITY['cbsubject']));
+			$smarty->assign('TASKSubtitle', vtlib_purify($ACTIVITY['activitytype'].(empty($ACTIVITY['cbstatus']) ? '' : ' - '.$ACTIVITY['cbstatus'])));
+			$smarty->assign('TASKSubtitleColor', vtlib_purify($ACTIVITY['cbcolor']));
+			$smarty->assign('TASKStatus', vtlib_purify($ACTIVITY['cbdate'].' '.$ACTIVITY['cbtime']));
+			$actions = array();
+			if (isRecordExists($ACTIVITY['cbrecord'])) {
+				$actions[getTranslatedString('LBL_VIEW', 'Settings')] = array(
+					'type' => 'link',
+					'action' => 'index.php?action=DetailView&module='.$ACTIVITY['cbmodule'].'&record='.$ACTIVITY['cbrecord'],
+				);
+			}
+			if ($ACTIVITY['cbmodule']=='cbCalendar') {
+				$actions[getTranslatedString('LBL_POSTPONE', 'Calendar4You')] = array(
+					'type' => 'click',
+					'action' => "ActivityReminderPostponeCallback('cbCalendar', '".$ACTIVITY['cbrecord']."', '".$ACTIVITY['cbreminderid']."');ActivityReminderRemovePopupDOM('".$ACTIVITY['popupid']."');"
+				);
+			} elseif (!empty($ACTIVITY['cbactionlink'])) {
+				$actions[getTranslatedString($ACTIVITY['cbactionlabel'], $ACTIVITY['cbmodule'])] = array(
+					'type' => 'click',
+					'action' => $ACTIVITY['cbactionlink']
+				);
+			}
+			$actions[getTranslatedString('LBL_HIDE')] = array(
+				'type' => 'click',
+				'action' => "ActivityReminderCallbackReset(0, '".$ACTIVITY['popupid']."');ActivityReminderRemovePopupDOM('".$ACTIVITY['popupid']."');"
+			);
+			$smarty->assign('TASKActions', $actions);
+			$list .= $smarty->fetch('Components/TaskItem.tpl');
+		}
+		return $list;
+	}
+
+	public static function getActionsQuery($user, $date, $date_inpast, $time, $limit, $status = '', $relwith = 0) {
+		global $adb;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
+		$statcond = $status == '' ? '' : ' AND (status=0 || status=1)';
+		$relcond = $relwith == 0 ? '' : $adb->convert2Sql(' AND (relwith=? || recordid=?)', [$relwith, $relwith]);
+		return
+		'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
+		.' FROM vtiger_activity_reminder_popup'
+		.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
+		.' inner join vtiger_activity on vtiger_activity.activityid = vtiger_activity_reminder_popup.recordid '
+		.' WHERE vtiger_crmentity.smownerid = '.$user->id.' and vtiger_crmentity.deleted = 0 '
+		." AND (vtiger_activity.activitytype not in ('Emails') and vtiger_activity.eventstatus not in ('','Held','Completed','Deferred'))"
+		." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
+		."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
+		." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
+		." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))))"
+		.' UNION '
+		.'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
+		.' FROM vtiger_activity_reminder_popup'
+		.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
+		.' WHERE vtiger_crmentity.smownerid = '.$user->id.' and vtiger_crmentity.deleted=0 and vtiger_activity_reminder_popup.semodule!='."'cbCalendar'".$statcond
+		." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
+		."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
+		." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
+		." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))))"
+		.' UNION '
+		.'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
+		.' FROM vtiger_activity_reminder_popup'
+		.' WHERE (vtiger_activity_reminder_popup.ownerid=-1 or vtiger_activity_reminder_popup.ownerid='.$user->id.')'.$statcond.$relcond
+		." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
+		."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
+		." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
+		." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))))"
+		.' ORDER BY date_start DESC limit 0, '.$limit;
+	}
+
 	/** Function to insert values in vtiger_activity_remainder table
 	  * @param $recurid
 	 */
