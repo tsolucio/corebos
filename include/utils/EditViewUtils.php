@@ -467,8 +467,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			for ($image_iter=0, $img_itrMax = $adb->num_rows($result_image); $image_iter < $img_itrMax; $image_iter++) {
 				$image_id_array[] = $adb->query_result($result_image, $image_iter, 'attachmentsid');
 
-				//decode_html  - added to handle UTF-8   characters in file names
-				//urlencode    - added to handle special characters like #, %, etc.,
+				//decode_html - added to handle UTF-8 characters in file names
+				//urlencode - added to handle special characters like #, %, etc.,
 				$image_array[] = urlencode(decode_html($adb->query_result($result_image, $image_iter, 'name')));
 				$image_orgname_array[] = decode_html($adb->query_result($result_image, $image_iter, 'name'));
 

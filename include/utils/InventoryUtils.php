@@ -79,9 +79,9 @@ function getPrdReOrderLevel($product_id) {
 	return $reorderlevel;
 }
 
-/**	function to get the taxid
- *	@param string $type - tax type (VAT or Sales or Service)
- *	return int   $taxid - taxid corresponding to the Tax type from vtiger_inventorytaxinfo vtiger_table
+/** function to get the taxid
+ * @param string tax type (VAT or Sales or Service)
+ * @return int taxid corresponding to the Tax type from vtiger_inventorytaxinfo table
  */
 function getTaxId($type) {
 	global $adb, $log;
@@ -98,9 +98,9 @@ function getTaxId($type) {
 	return $taxid;
 }
 
-/**	function to get the taxpercentage
- *	@param string $type       - tax type (VAT or Sales or Service)
- *	return int $taxpercentage - taxpercentage corresponding to the Tax type from vtiger_inventorytaxinfo vtiger_table
+/** function to get the taxpercentage
+ * @param string tax type (VAT or Sales or Service)
+ * @return int taxpercentage corresponding to the Tax type from vtiger_inventorytaxinfo table
  */
 function getTaxPercentage($type) {
 	global $adb, $log;
@@ -117,12 +117,12 @@ function getTaxPercentage($type) {
 	return $taxpercentage;
 }
 
-/**	function to get the product's taxpercentage
- *	@param string $type       - tax type (VAT or Sales or Service)
- *	@param id  $productid     - productid to which we want the tax percentage
- *	@param id  $default       - if 'default' then first look for product's tax percentage and product's tax is empty then it will return the default configured
- *								tax percentage, else it will return the product's tax (not look for default value)
- *	return int $taxpercentage - taxpercentage corresponding to the Tax type from vtiger_inventorytaxinfo vtiger_table
+/** function to get the product taxpercentage
+ * @param string tax type (VAT or Sales or Service)
+ * @param integer productid to which we want the tax percentage
+ * @param string if 'default' then first look for product tax percentage, if product tax is empty then it will return the default configured
+ *				tax percentage, else it will return the product tax (not look for default value)
+ * @return integer taxpercentage corresponding to the Tax type from vtiger_inventorytaxinfo table
  */
 function getProductTaxPercentage($type, $productid, $default = '') {
 	global $adb, $log;
@@ -562,7 +562,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 	//we should update the netprice (subtotal), taxtype, group discount, S&H charge, S&H taxes, adjustment and total
 	//netprice, group discount, taxtype, S&H amount, adjustment and total to entity table
 
-	$updatequery  = " update $focus->table_name set ";
+	$updatequery = " update $focus->table_name set ";
 	$updateparams = array();
 	$subtotal = vtlib_purify($_REQUEST['subtotal']);
 	$updatequery .= ' subtotal=?,';
@@ -699,9 +699,9 @@ function getInventorySHTaxPercent($id, $taxname) {
 	return $taxpercentage;
 }
 
-/**	Function used to get the list of all Currencies as a array
- *  @param string available - if 'all' returns all the currencies, default value 'available' returns only the currencies which are available for use.
- *	return array $currency_details - return details of all the currencies as a array
+/** Function used to get the list of all Currencies as an array
+ * @param string if 'all' returns all the currencies, default value 'available' returns only the currencies which are available for use
+ * @return array return details of all the currencies as an array
  */
 function getAllCurrencies($available = 'available') {
 	global $adb, $log;
@@ -729,13 +729,13 @@ function getAllCurrencies($available = 'available') {
 	return $currency_details;
 }
 
-/**	Function used to get all the price details for different currencies which are associated to the given product
- *	@param integer $productid - product id to which we want to get all the associated prices
- *  @param float $unit_price - Unit price of the product
- *  @param string $available - available or available_associated where as default is available,
- *  	if available then the prices in the currencies which are available now will be returned,
- *  	otherwise if the value is available_associated then prices of all the associated currencies will be returned
- *	@return array $price_details - price details as a array with productid, curid, curname
+/** Function used to get all the price details for different currencies which are associated to the given product
+ * @param integer product id to which we want to get all the associated prices
+ * @param float Unit price of the product
+ * @param string available or available_associated where as default is available,
+ * 	if available then the prices in the currencies which are available now will be returned,
+ * 	otherwise if the value is available_associated then prices of all the associated currencies will be returned
+ * @return array price details as a array with productid, curid, curname
  */
 function getPriceDetailsForProduct($productid, $unit_price, $available = 'available', $itemtype = 'Products') {
 	global $log, $adb;
@@ -841,9 +841,9 @@ function getPriceDetailsForProduct($productid, $unit_price, $available = 'availa
 	return $price_details;
 }
 
-/**	Function used to get the base currency used for the given Product
- *	@param integer $productid - product id for which we want to get the id of the base currency
- *  @return integer $currencyid - id of the base currency for the given product
+/** Function used to get the base currency used for the given Product
+ * @param integer product id for which we want to get the id of the base currency
+ * @return integer id of the base currency for the given product
  */
 function getProductBaseCurrency($productid, $module = 'Products') {
 	global $adb;
@@ -856,10 +856,10 @@ function getProductBaseCurrency($productid, $module = 'Products') {
 	return $adb->query_result($res, 0, 'currency_id');
 }
 
-/**	Function used to get the conversion rate for the product base currency with respect to the CRM base currency
- *	@param integer $productid - product id for which we want to get the conversion rate of the base currency
- *  @param string $mode - Mode in which the function is called
- *  @return float $conversion_rate - conversion rate of the base currency for the given product based on the CRM base currency
+/** Function used to get the conversion rate for the product base currency with respect to the base currency
+ * @param integer product id for which we want to get the conversion rate of the base currency
+ * @param string Mode in which the function is called
+ * @return float conversion rate of the base currency for the given product based on the base currency
  */
 function getBaseConversionRateForProduct($productid, $mode = 'edit', $module = 'Products') {
 	global $adb, $current_user;
@@ -888,10 +888,10 @@ function getBaseConversionRateForProduct($productid, $mode = 'edit', $module = '
 	return 1 / (empty($conv_rate) ? 1 : $conv_rate);
 }
 
-/**	Function used to get the prices for the given list of products based in the specified currency
- *	@param integer $currencyid - currency id based on which the prices have to be provided
- *	@param array $product_ids - List of product id's for which we want to get the price based on given currency
- *  @return array $prices_list - List of prices for the given list of products based on the given currency in the form of 'product id' mapped to 'price value'
+/** Function used to get the prices for the given list of products based in the specified currency
+ * @param integer currency id based on which the prices have to be provided
+ * @param array List of product id's for which we want to get the price based on given currency
+ * @return array List of prices for the given list of products based on the given currency in the form of 'product id' mapped to 'price value'
  */
 function getPricesForProducts($currencyid, $product_ids, $module = 'Products', $unitprice = true) {
 	global $adb, $current_user;
@@ -937,9 +937,9 @@ function getPricesForProducts($currencyid, $product_ids, $module = 'Products', $
 	return $price_list;
 }
 
-/**	Function used to get the currency used for the given Price book
- *	@param integer $pricebook_id - pricebook id for which we want to get the id of the currency used
- *  @return integer $currencyid - id of the currency used for the given pricebook
+/** Function used to get the currency used for the given Price book
+ * @param integer pricebook id for which we want to get the id of the currency used
+ * @return integer id of the currency used for the given pricebook
  */
 function getPriceBookCurrency($pricebook_id) {
 	global $adb;

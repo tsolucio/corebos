@@ -22,10 +22,10 @@ function DelImage($id) {
 	}
 	$aname = vtlib_purify($_REQUEST['attachmentname']);
 	$query= 'select vtiger_seattachmentsrel.attachmentsid
-	 from vtiger_seattachmentsrel
-	 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid
-	 inner join vtiger_attachments on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
-	 where vtiger_crmentity.setype=? and vtiger_attachments.name=? and vtiger_seattachmentsrel.crmid=?';
+		from vtiger_seattachmentsrel
+		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid
+		inner join vtiger_attachments on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
+		where vtiger_crmentity.setype=? and vtiger_attachments.name=? and vtiger_seattachmentsrel.crmid=?';
 	$result = $adb->pquery($query, array($imgmod.' '.$imageattachment, $aname, $id));
 	if ($result && $adb->num_rows($result)==1) {
 		$attachmentsid = $adb->query_result($result, 0, 'attachmentsid');
@@ -36,8 +36,7 @@ function DelImage($id) {
 		if ($numrels==1) {
 			$adb->pquery('delete from vtiger_crmentity where crmid=?', array($attachmentsid));
 		}
-		$sql = 'SELECT tablename,columnname,fieldname FROM vtiger_field
-		 WHERE uitype=69 and vtiger_field.tabid = ? and fieldname = ?';
+		$sql = 'SELECT tablename,columnname,fieldname FROM vtiger_field WHERE uitype=69 and vtiger_field.tabid=? and fieldname=?';
 		$tabid = getTabid($imgmod);
 		$result = $adb->pquery($sql, array($tabid, $fname));
 		if ($result && $adb->num_rows($result)==1) {
