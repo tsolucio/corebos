@@ -449,6 +449,12 @@ class cbCalendar extends CRMEntity {
 		return $list;
 	}
 
+	public static function printToDoListTable($actions) {
+		$smarty = new vtigerCRM_Smarty;
+		$smarty->assign('TASKActions', $actions);
+		return $smarty->fetch('Components/TaskTable.tpl');
+	}
+
 	public static function getActionsQuery($user, $date, $date_inpast, $time, $limit, $status = '', $relwith = 0) {
 		global $adb;
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
