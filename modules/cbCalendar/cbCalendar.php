@@ -368,6 +368,7 @@ class cbCalendar extends CRMEntity {
 				$cbaction = json_decode(html_entity_decode($cbaction, ENT_QUOTES), true);
 				$activity['cbactionlabel'] = $cbaction['label'];
 				$activity['cbactionlink'] = $cbaction['link'];
+				$activity['cbactiontype'] = isset($cbaction['type']) ? $cbaction['type'] : 'click';
 			}
 			$cbstatus = '';
 		}
