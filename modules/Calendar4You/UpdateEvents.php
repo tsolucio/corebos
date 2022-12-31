@@ -40,7 +40,7 @@ if ($num_rows1 > 0) {
 
 			if ($GoogleSync4You->isLogged()) {
 				$sql2 = 'SELECT its4you_googlesync4you_events.*, vtiger_activity.activitytype
-					FROM its4you_googlesync4you_events 
+					FROM its4you_googlesync4you_events
 					INNER JOIN vtiger_activity ON vtiger_activity.activityid = its4you_googlesync4you_events.crmid
 					WHERE '.$where.' AND userid = ?';
 				$result2 = $adb->pquery($sql2, array($controldate,$userid));

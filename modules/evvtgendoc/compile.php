@@ -1418,7 +1418,7 @@ function getServiceList($module, $id) {
 			((quantity * listprice) - COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0))) * (COALESCE(tax1, 0) + COALESCE(tax2, 0) + COALESCE(tax3, 0)) /100 AS linetax,
 			((quantity * listprice) - COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0))) * (1 + (COALESCE(tax1, 0) + COALESCE(tax2, 0) + COALESCE(tax3, 0)) /100) AS linetotal
 			from vtiger_inventoryproductrel
-			inner join vtiger_service on vtiger_service.serviceid=vtiger_inventoryproductrel.productid 
+			inner join vtiger_service on vtiger_service.serviceid=vtiger_inventoryproductrel.productid
 			where id=? ORDER BY sequence_no";
 	}
 

@@ -797,8 +797,8 @@ class Accounts extends CRMEntity {
 		global $adb;
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 		$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Potentials', true);
-		$pot_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable.' 
-			INNER JOIN vtiger_potential ON vtiger_crmentity.crmid=vtiger_potential.potentialid
+		$pot_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable
+			.' INNER JOIN vtiger_potential ON vtiger_crmentity.crmid=vtiger_potential.potentialid
 			LEFT JOIN vtiger_account ON vtiger_account.accountid=vtiger_potential.related_to
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_potential.related_to=?';
 		$pot_res = $adb->pquery($pot_q, array($id));
@@ -816,8 +816,8 @@ class Accounts extends CRMEntity {
 		//Deleting Account related Quotes.
 		$crmEntityTable2 = CRMEntity::getcrmEntityTableAlias('Quotes');
 		$crmEntityTable3 = CRMEntity::getcrmEntityTableAlias('Quotes', true);
-		$quo_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable2.' 
-			INNER JOIN vtiger_quotes ON vtiger_crmentity.crmid=vtiger_quotes.quoteid
+		$quo_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable2
+			.' INNER JOIN vtiger_quotes ON vtiger_crmentity.crmid=vtiger_quotes.quoteid
 			INNER JOIN vtiger_account ON vtiger_account.accountid=vtiger_quotes.accountid
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_quotes.accountid=?';
 		$quo_res = $adb->pquery($quo_q, array($id));

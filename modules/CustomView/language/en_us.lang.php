@@ -21,12 +21,9 @@ $mod_strings = array(
 'LBL_SF_STARTDATE'=>'Start Date',
 'LBL_SF_ENDDATE'=>'End Date',
 'LBL_AF_HDR1'=>'Set the search conditions to further restrict the list.',
-'LBL_AF_HDR2'=>'You can use &quot;or&quot; filters by entering multiple  
-items in the third column.',
-'LBL_AF_HDR3'=>'You can enter up to 10 items, separated by commas. For  
-example: CA, NY, TX, FL searches for CA or NY or TX or FL.',
-'LBL_AF_HDR4'=>'If "Activity Type" is selected, give any one of the  
-following values "Call","Meeting" or "Task".',
+'LBL_AF_HDR2'=>'You can use &quot;or&quot; filters by entering multiple items in the third column.',
+'LBL_AF_HDR3'=>'You can enter up to 10 items, separated by commas. For example: CA, NY, TX, FL searches for CA or NY or TX or FL.',
+'LBL_AF_HDR4'=>'If "Activity Type" is selected, give any one of the following values "Call","Meeting" or "Task".',
 
 'LBL_NONE'=>'None',
 'LBL_AND'=>'And',
@@ -235,8 +232,7 @@ following values "Call","Meeting" or "Task".',
 'Details'=>'Details',
 'New_Custom_View'=>'New Custom view',
 'Edit_Custom_View'=>'Edit Custom View',
-'LBL_AF_HDR5'=>'Simple Time Filter allows you to select date based on  
-<b>Organization Created Time</b> or  <b>Organization Modified Time</b>',
+'LBL_AF_HDR5'=>'Simple Time Filter allows you to select date based on <b>Organization Created Time</b> or <b>Organization Modified Time</b>',
 'Select_Duration'=>'Select Duration',
 'Simple_Time_Filter'=>'Simple Time Filter',
 'Start_Date'=>'Start Date',

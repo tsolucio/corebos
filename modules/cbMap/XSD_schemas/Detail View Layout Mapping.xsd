@@ -29,7 +29,7 @@
         <xs:enumeration value="CodeWithoutHeader"/>
           </xs:restriction>
             </xs:simpleType>
-               </xs:element> 
+               </xs:element>
                     <xs:element type="xs:string" name="blockid"/>
                     <xs:element name="layout">
                       <xs:complexType>

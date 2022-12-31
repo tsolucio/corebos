@@ -704,7 +704,7 @@ class cbCalendar extends CRMEntity {
 			}
 			$adb->query("ALTER TABLE `vtiger_activity` CHANGE `date_start` `date_start` DATE NULL");
 			$adb->query("update vtiger_activity set eventstatus=status where activitytype='Task'");
-			$adb->query("UPDATE `vtiger_activity` SET 
+			$adb->query("UPDATE `vtiger_activity` SET
 				`dtstart`= str_to_date(concat(date_format(`date_start`,'%Y/%m/%d'),' ',`time_start`),'%Y/%m/%d %H:%i:%s'),
 				`dtend` = str_to_date(concat(date_format(`due_date`,'%Y/%m/%d'),' ',`time_end`),'%Y/%m/%d %H:%i:%s')");
 			$bck = $adb->getUniqueID('vtiger_blocks');

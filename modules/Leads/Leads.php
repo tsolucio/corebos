@@ -115,8 +115,8 @@ class Leads extends CRMEntity {
 
 		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name
-			FROM ".$crmEntityTable." 
-			INNER JOIN vtiger_leaddetails ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
+			FROM ".$crmEntityTable
+			." INNER JOIN vtiger_leaddetails ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
 			LEFT JOIN vtiger_leadsubdetails ON vtiger_leaddetails.leadid = vtiger_leadsubdetails.leadsubscriptionid
 			LEFT JOIN vtiger_leadaddress ON vtiger_leaddetails.leadid=vtiger_leadaddress.leadaddressid
 			LEFT JOIN vtiger_leadscf ON vtiger_leadscf.leadid=vtiger_leaddetails.leadid

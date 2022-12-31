@@ -476,12 +476,10 @@ class BusinessActions extends CRMEntity {
 			}
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 			$businessAction = $adb->pquery(
-				'SELECT 1 
+				'SELECT 1
 				FROM vtiger_businessactions
-				INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
-					AND vtiger_crmentity.deleted = 0
-					AND vtiger_businessactions.module_list = ?
-					AND vtiger_businessactions.businessactionsid = ?',
+				INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid=vtiger_crmentity.crmid
+					AND vtiger_crmentity.deleted=0 AND vtiger_businessactions.module_list=? AND vtiger_businessactions.businessactionsid=?',
 				array($module_name, $businessActionId)
 			);
 
