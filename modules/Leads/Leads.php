@@ -39,7 +39,7 @@ class Leads extends CRMEntity {
 	public $customFieldTable = array('vtiger_leadscf', 'leadid');
 	public $related_tables = array(
 		'vtiger_leadsubdetails' => array('leadsubscriptionid', 'vtiger_leaddetails', 'leadid'),
-		'vtiger_leadaddress'    => array('leadaddressid', 'vtiger_leaddetails', 'leadid'),
+		'vtiger_leadaddress' => array('leadaddressid', 'vtiger_leaddetails', 'leadid'),
 	);
 
 	public $sortby_fields = array('lastname','firstname','email','phone','company','smownerid','website');
@@ -194,7 +194,7 @@ class Leads extends CRMEntity {
 
 	/**
 	* Function to get lead related Products
-	* @param  integer lead id
+	* @param integer lead id
 	* @return array related Products record
 	*/
 	public function get_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
@@ -478,7 +478,7 @@ class Leads extends CRMEntity {
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted=0';
 		if (trim($emailaddress) != '') {
 			$query .= " AND ((vtiger_leaddetails.email like '". formatForSqlLike($emailaddress) ."') or vtiger_leaddetails.lastname REGEXP REPLACE('".$emailaddress.
-				"',' ','|') or vtiger_leaddetails.firstname REGEXP REPLACE('".$emailaddress."',' ','|'))  and vtiger_leaddetails.email != ''";
+				"',' ','|') or vtiger_leaddetails.firstname REGEXP REPLACE('".$emailaddress."',' ','|')) and vtiger_leaddetails.email!=''";
 		} else {
 			$query .= " AND (vtiger_leaddetails.email like '". formatForSqlLike($emailaddress) ."' and vtiger_leaddetails.email != '')";
 		}
@@ -525,7 +525,7 @@ class Leads extends CRMEntity {
 
 		$result = $adb->query($query, true, "Error retrieving $currentModule list: ");
 		$list = array();
-		$rows_found =  $adb->getRowCount($result);
+		$rows_found = $adb->getRowCount($result);
 		if ($rows_found != 0) {
 			for ($index = 0 , $row = $adb->fetchByAssoc($result, $index); $row && $index <$rows_found; $index++, $row = $adb->fetchByAssoc($result, $index)) {
 				$lead = array();
@@ -533,7 +533,7 @@ class Leads extends CRMEntity {
 				$lead['lastname'] = in_array('lastname', $permitted_field_lists) ? $row['lastname'] : '';
 				$lead['firstname'] = in_array('firstname', $permitted_field_lists)? $row['firstname'] : '';
 				$lead['email'] = in_array('email', $permitted_field_lists) ? $row['email'] : '';
-				$lead['leadid'] =  $row['leadid'];
+				$lead['leadid'] = $row['leadid'];
 				$lead['company'] = in_array('company', $permitted_field_lists) ? $row['company'] : '';
 				$list[] = $lead;
 			}

@@ -53,9 +53,9 @@ class ClickATellREST implements ISMSProvider {
 		if ($type) {
 			switch (strtoupper($type)) {
 				case self::SERVICE_AUTH:
-					return  self::SERVICE_URI . '/';
+					return self::SERVICE_URI . '/';
 				case self::SERVICE_SEND:
-					return  self::SERVICE_URI . '/messages';
+					return self::SERVICE_URI . '/messages';
 				case self::SERVICE_QUERY:
 				default:
 					return self::SERVICE_URI . '/message';

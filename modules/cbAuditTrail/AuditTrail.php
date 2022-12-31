@@ -13,7 +13,7 @@ require_once 'include/ListView/ListView.php';
 require_once 'include/database/PearDatabase.php';
 
 /** This class is used to track all the operations done by the particular User while using vtiger crm.
- *  It is intended to be called when the check for audit trail is enabled.
+ * It is intended to be called when the check for audit trail is enabled.
  **/
 class AuditTrail {
 	public $auditid;
@@ -33,20 +33,20 @@ class AuditTrail {
 
 	// This is the list of vtiger_fields that are in the lists.
 	public $list_fields = array(
-			'User Name' => array('vtiger_audit_trial'=>'userid'),
-			'Module' => array('vtiger_audit_trial'=>'module'),
-			'Action' => array('vtiger_audit_trial'=>'action'),
-			'Record' => array('vtiger_audit_trial'=>'recordid'),
-			'Action Date' => array('vtiger_audit_trial'=>'actiondate'),
-		);
+		'User Name' => array('vtiger_audit_trial'=>'userid'),
+		'Module' => array('vtiger_audit_trial'=>'module'),
+		'Action' => array('vtiger_audit_trial'=>'action'),
+		'Record' => array('vtiger_audit_trial'=>'recordid'),
+		'Action Date' => array('vtiger_audit_trial'=>'actiondate'),
+	);
 
 	public $list_fields_name = array(
-			'User Name'=>'userid',
-			'Module'=>'module',
-			'Action'=>'action',
-			'Record'=>'recordid',
-			'Action Date'=>'actiondate',
-		);
+		'User Name'=>'userid',
+		'Module'=>'module',
+		'Action'=>'action',
+		'Record'=>'recordid',
+		'Action Date'=>'actiondate',
+	);
 
 	public $default_order_by = 'actiondate';
 	public $default_sort_order = 'DESC';
@@ -70,12 +70,12 @@ class AuditTrail {
 	}
 
 	/**
-	  * Function to get the Audit Trail Information values of the actions performed by a particular User.
-	  * @param integer $userid - User's ID
-	  * @param $navigation_array - Array values to navigate through the number of entries.
-	  * @param $sortorder - DESC
-	  * @param $order_by - actiondate
-	  * Returns the audit trail entries in an array format.
+	 * Function to get the Audit Trail Information values of the actions performed by a particular User.
+	 * @param integer $userid - User's ID
+	 * @param $navigation_array - Array values to navigate through the number of entries.
+	 * @param $sortorder - DESC
+	 * @param $order_by - actiondate
+	 * Returns the audit trail entries in an array format.
 	**/
 	public function getAuditTrailEntries($userid, $navigation_array, $sorder = '', $order_by = '') {
 		global $log, $adb;
@@ -104,19 +104,20 @@ class AuditTrail {
 			return $entries_list;
 		}
 	}
+
 	public function getAuditJSON($userid, $page, $order_by = 'actiondate', $sorder = 'DESC', $action_search = '') {
 		global $log, $adb;
 		require_once 'include/ListView/ListViewJSON.php';
 		$log->debug('> getAuditJSON');
 		$where = '';
 		if (!empty($userid)) {
-			$where .=  $adb->convert2Sql(' where userid=?', array($userid));
+			$where .= $adb->convert2Sql(' where userid=?', array($userid));
 		}
 		if (!empty($action_search)) {
 			if (empty($where)) {
 				$where .= ' where 1';
 			}
-			$where .=  $adb->convert2Sql(' and action like ?', array('%' . $action_search . '%'));
+			$where .= $adb->convert2Sql(' and action like ?', array('%' . $action_search . '%'));
 		}
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "select * from vtiger_audit_trial $where order by $order_by $sorder";
@@ -138,23 +139,24 @@ class AuditTrail {
 		return json_encode($entries_list);
 	}
 }
+
 function formatRecordIdAuditTrail($recordid, $row) {
-		global $adb;
+	global $adb;
 	if (empty($recordid)) {
-			$rurl = '';
+		$rurl = '';
 	} else {
 		if ($row['Module']=='Reports') {
-				$rname = $adb->pquery('select vtiger_report.reportname from vtiger_report where vtiger_report.reportid=?', array($recordid));
-				$rurl = '<a href="index.php?module=Reports&action=SaveAndRun&record='.$recordid.'">'.$rname->fields['reportname'].'</a>';
+			$rname = $adb->pquery('select vtiger_report.reportname from vtiger_report where vtiger_report.reportid=?', array($recordid));
+			$rurl = '<a href="index.php?module=Reports&action=SaveAndRun&record='.$recordid.'">'.$rname->fields['reportname'].'</a>';
 		} else {
-				$rinfo = getEntityName($row['Module'], $recordid);
+			$rinfo = getEntityName($row['Module'], $recordid);
 			if (empty($rinfo)) {
-					$rurl = $recordid;
+				$rurl = $recordid;
 			} else {
-					$rurl = '<a href="index.php?module='.$row['Module'].'&action=DetailView&record='.$recordid.'">'.$rinfo[$recordid].'</a>';
+				$rurl = '<a href="index.php?module='.$row['Module'].'&action=DetailView&record='.$recordid.'">'.$rinfo[$recordid].'</a>';
 			}
 		}
 	}
-			return $rurl;
+	return $rurl;
 }
 ?>

@@ -40,8 +40,8 @@ if (!is_admin($current_user)) {
 	// Few more configuration
 	$menu_array['SMS_SERVER_CONFIGURATION']['location'] = 'index.php?module=SMSNotifier&action=SMSConfigServer&formodule=SMSNotifier';
 	$menu_array['SMS_SERVER_CONFIGURATION']['image_src']= 'themes/images/proxy.gif';
-	$menu_array['SMS_SERVER_CONFIGURATION']['desc']     = getTranslatedString('SERVER_CONFIGURATION_DESCRIPTION', $module);
-	$menu_array['SMS_SERVER_CONFIGURATION']['label']    = getTranslatedString('SERVER_CONFIGURATION', $module);
+	$menu_array['SMS_SERVER_CONFIGURATION']['desc'] = getTranslatedString('SERVER_CONFIGURATION_DESCRIPTION', $module);
+	$menu_array['SMS_SERVER_CONFIGURATION']['label'] = getTranslatedString('SERVER_CONFIGURATION', $module);
 
 	//add blanks for 3-column layout
 	$count = count($menu_array)%3;

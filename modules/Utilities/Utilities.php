@@ -41,7 +41,7 @@ class Utilities extends CRMEntity {
 	 */
 	public $tab_name_index = array(
 		'vtiger_crmentity' => 'crmid',
-		'vtiger_MODULE_NAME_LOWERCASE'   => 'MODULE_NAME_LOWERCASEid',
+		'vtiger_MODULE_NAME_LOWERCASE' => 'MODULE_NAME_LOWERCASEid',
 		'vtiger_MODULE_NAME_LOWERCASEcf' => 'MODULE_NAME_LOWERCASEid',
 	);
 

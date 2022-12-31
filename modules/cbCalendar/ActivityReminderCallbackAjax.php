@@ -101,8 +101,8 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 						$mod = CRMEntity::getInstance($cbmodule);
 						$activity['activityimage'] = [$mod->moduleIcon['library'], $mod->moduleIcon['icon']];
 					}
-					$cbdate   = $adb->query_result($result, $index, 'date_start');
-					$cbtime   = $adb->query_result($result, $index, 'time_start');
+					$cbdate = $adb->query_result($result, $index, 'date_start');
+					$cbtime = $adb->query_result($result, $index, 'time_start');
 					$cbaction = $adb->query_result($result, $index, 'moreaction');
 					if (!empty($cbaction)) {
 						$cbaction = json_decode(html_entity_decode($cbaction, ENT_QUOTES), true);

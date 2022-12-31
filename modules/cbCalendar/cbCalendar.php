@@ -42,7 +42,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	public $tab_name_index = array(
 		'vtiger_crmentity' => 'crmid',
-		'vtiger_activity'   => 'activityid',
+		'vtiger_activity' => 'activityid',
 		'vtiger_activity_reminder'=>'activity_id',
 		'vtiger_recurringevents'=>'activityid',
 		'vtiger_activitycf' => 'activityid',
@@ -221,7 +221,7 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to insert values in vtiger_recurringevents table for the specified tablename,module
-	  * @param $recurObj -- Recurring Object:: Type varchar
+	 * @param string Recurring Object
 	 */
 	public function insertIntoRecurringTable(&$recurObj) {
 		global $log,$adb;
@@ -290,7 +290,7 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to insert values in activity_reminder_popup table for the specified module
-	  * @param string module
+	 * @param string module
 	 */
 	public function insertIntoActivityReminderPopup($cbmodule) {
 		self::addNotificationReminder($cbmodule, $this->id, $this->column_fields['dtstart']);
@@ -402,7 +402,7 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to insert values in vtiger_activity_remainder table
-	  * @param $recurid
+	 * @param $recurid
 	 */
 	public function insertIntoReminderTable($recurid) {
 		global $log;
@@ -431,11 +431,11 @@ class cbCalendar extends CRMEntity {
 
 	/**
 	 * Function to get reminder for activity
-	 * @param  integer   $activity_id     - activity id
-	 * @param  string    $reminder_time   - reminder time
-	 * @param  integer   $reminder_sent   - 0 or 1
-	 * @param  integer   $recurid         - recuring eventid
-	 * @param  string    $remindermode    - string like 'edit'
+	 * @param integer activity id
+	 * @param string reminder time
+	 * @param integer 0 or 1
+	 * @param integer recuring eventid
+	 * @param string string like 'edit'
 	 */
 	public function activity_reminder($activity_id, $reminder_time, $reminder_sent = 0, $recurid = 0, $remindermode = '') {
 		global $log, $adb;
@@ -466,9 +466,9 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to insert values in vtiger_invitees table for the specified module,tablename ,invitees_array
-	  * @param $table_name -- table name:: Type varchar
-	  * @param $module -- module:: Type varchar
-	  * @param $invitees_array Array
+	 * @param string table name
+	 * @param string module
+	 * @param array
 	 */
 	public function insertIntoInviteeTable($module, $invitees_array) {
 		global $log,$adb;
@@ -485,7 +485,6 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to insert values in vtiger_salesmanactivityrel table for the specified module
-	  * @param $module -- module:: Type varchar
 	*/
 	public function insertIntoSmActivityRel() {
 		global $adb;
@@ -539,7 +538,7 @@ class cbCalendar extends CRMEntity {
 				}
 			}
 		}
-		$cont_name  = trim($cont_name, ', ');
+		$cont_name = trim($cont_name, ', ');
 		$mail_data = array();
 		$mail_data['user_id'] = $this->column_fields['assigned_user_id'];
 		$mail_data['subject'] = $this->column_fields['subject'];
@@ -586,8 +585,8 @@ class cbCalendar extends CRMEntity {
 
 	/**
 	 * Function to get Activity related Contacts
-	 * @param  integer   $id      - activityid
-	 * returns related Contacts record in array format
+	 * @param integer activityid
+	 * @return array related Contacts record in array format
 	 */
 	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule, $adb;
@@ -757,15 +756,15 @@ class cbCalendar extends CRMEntity {
 			// Calendar workflow create follow up
 			$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
 			$calendarWorkflow->test='[{"fieldname":"followupcreate","operation":"has changed to","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
-			$calendarWorkflow->description = "Create Calendar Follow Up on change";
+			$calendarWorkflow->description = 'Create Calendar Follow Up on change';
 			$calendarWorkflow->executionCondition = VTWorkflowManager::$ON_MODIFY;
 			$calendarWorkflow->defaultworkflow = 1;
 			$workflowManager->save($calendarWorkflow);
 			$task = $taskManager->createTask('VTCreateEntityTask', $calendarWorkflow->id);
 			$task->active = true;
 			$task->summary = 'Create Calendar Follow Up';
-			$task->entity_type = "cbCalendar";
-			$task->reference_field = "relatedwith";
+			$task->entity_type = 'cbCalendar';
+			$task->reference_field = 'relatedwith';
 			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},'
 				.'{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},'
 				.'{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},'
@@ -787,7 +786,7 @@ class cbCalendar extends CRMEntity {
 			$task->test = '';
 			$task->reevaluate = 0;
 			$taskManager->saveTask($task);
-			$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
+			$calendarWorkflow = $workflowManager->newWorkFlow('cbCalendar');
 			$calendarWorkflow->test='[{"fieldname":"followupcreate","operation":"is","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 			$calendarWorkflow->description = "Create Calendar Follow Up on create";
 			$calendarWorkflow->executionCondition = VTWorkflowManager::$ON_FIRST_SAVE;
@@ -796,8 +795,8 @@ class cbCalendar extends CRMEntity {
 			$task = $taskManager->createTask('VTCreateEntityTask', $calendarWorkflow->id);
 			$task->active = true;
 			$task->summary = 'Create Calendar Follow Up';
-			$task->entity_type = "cbCalendar";
-			$task->reference_field = "relatedwith";
+			$task->entity_type = 'cbCalendar';
+			$task->reference_field = 'relatedwith';
 			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},'
 				.'{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},'
 				.'{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},'
@@ -1020,8 +1019,8 @@ class cbCalendar extends CRMEntity {
 
 	/**
 	 * this function sets the status flag of activity to true or false depending on the status passed to it
-	 * @param string $status - the status of the activity flag to set
-	 * @return:: true if successful; false otherwise
+	 * @param string the status of the activity flag to set
+	 * @return boolean true if successful; false otherwise
 	 */
 	public function setActivityReminder($status) {
 		global $adb;
@@ -1037,8 +1036,8 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to change the status of an event
-	 * @param $status string : new status value
-	 * @param $activityid integer : activity id
+	 * @param string new status value
+	 * @param integer activity id
 	 */
 	public static function changeStatus($status, $activityid) {
 		global $log, $current_user;
@@ -1056,10 +1055,10 @@ class cbCalendar extends CRMEntity {
 		}
 	}
 
-	/*
+	/**
 	 * Function to get the primary query part of a report
-	 * @param - $module primary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @return string the query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsQuery($module, $queryPlanner) {
 		$query = parent::generateReportsQuery($module, $queryPlanner);
@@ -1072,9 +1071,9 @@ class cbCalendar extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get iCalendar formatted event
-	 * returns relative filepath formatted iCalendar
+	 * @return string relative filepath formatted iCalendar
 	 */
 	public function getiCalendar($activityData, $sendtobrowser = false) {
 		global $default_timezone;

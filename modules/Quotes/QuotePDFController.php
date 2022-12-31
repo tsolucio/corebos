@@ -32,10 +32,10 @@ class Vtiger_QuotePDFController extends Vtiger_InventoryPDFController {
 
 		return array(
 			'dates' => array(
-				$issueDateLabel  => $this->formatDate(date('Y-m-d')),
+				$issueDateLabel => $this->formatDate(date('Y-m-d')),
 				$validDateLabel => $this->formatDate($this->focusColumnValue('validtill')),
 			),
-			$billingAddressLabel  => $this->buildHeaderBillingAddress(),
+			$billingAddressLabel => $this->buildHeaderBillingAddress(),
 			$shippingAddressLabel => $this->buildHeaderShippingAddress()
 		);
 	}

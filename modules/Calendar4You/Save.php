@@ -42,7 +42,7 @@ if ($mode) {
 	$focus->mode = $mode;
 }
 if ($record) {
-	$focus->id  = $record;
+	$focus->id = $record;
 }
 
 $timeFields = array('time_start', 'time_end');
@@ -105,7 +105,7 @@ $focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
 
 $focus->save($tab_type);
 /* For Followup START */
-if (isset($_REQUEST['followup']) && $_REQUEST['followup']=='on' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start']!='') {
+if (isset($_REQUEST['followup']) && $_REQUEST['followup']=='on' && isset($_REQUEST['followup_time_start']) && $_REQUEST['followup_time_start']!='') {
 	$heldevent_id = $focus->id;
 	$focus->column_fields['subject'] = '['.getTranslatedString('LBL_FOLLOWUP', 'cbCalendar').'] '.$focus->column_fields['subject'];
 	$startDate = new DateTimeField($_REQUEST['followup_date'].' '.$_REQUEST['followup_time_start']);
@@ -159,7 +159,7 @@ function getRequestData($return_id) {
 			$cont_name .= $contact_name .', ';
 		}
 	}
-	$cont_name  = trim($cont_name, ', ');
+	$cont_name = trim($cont_name, ', ');
 	$mail_data = array();
 	$mail_data['user_id'] = $_REQUEST['assigned_user_id'];
 	$mail_data['subject'] = $_REQUEST['subject'];

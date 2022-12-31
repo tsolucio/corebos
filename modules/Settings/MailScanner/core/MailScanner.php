@@ -259,7 +259,7 @@ class Vtiger_MailScanner {
 
 	private $_cachedAccounts = array();
 	private $_cachedContacts = array();
-	private $_cachedTickets  = array();
+	private $_cachedTickets = array();
 	private $_cachedProjects = array();
 
 	public $linkedid;

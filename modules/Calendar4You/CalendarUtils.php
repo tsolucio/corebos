@@ -48,7 +48,7 @@ function getaddITSEventPopupTime($starttime, $endtime, $format) {
 
 /**
  * Function creates HTML to display small(mini) Calendar
- * @param array   $cal    - collection of objects and strings
+ * @param array collection of objects and strings
  */
 function get_its_mini_calendar(&$cal) {
 	global $mod_strings;
@@ -67,7 +67,7 @@ function get_its_mini_calendar(&$cal) {
 	$minical .= "<div class='slds-col slds-size_2-of-6 slds-align_absolute-center'>
 		<a style='text-decoration:none;' href='javascript:void(0);' onclick='return changeCalendarMonthDate(\"".$cal['calendar']->date_time->year.'","'.$mt.'","'.$dy."\");'>"
 		.'<b>'.display_date($cal['view'], $cal['calendar']->date_time).'</b></a></div>';
-	$minical .=  '<div class="slds-col slds-size_1-of-6 slds-align_absolute-center">'.get_next_its_cal($cal).'</div>';
+	$minical .= '<div class="slds-col slds-size_1-of-6 slds-align_absolute-center">'.get_next_its_cal($cal).'</div>';
 	$minical .= '<div class="slds-col slds-size_1-of-6" align="right">
 		<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true"
 			onClick="ghide(\'miniCal\');" title="'.getTranslatedString('LBL_CLOSE').'">

@@ -622,7 +622,7 @@ function reports_goback() {
 
 /**
  * [fillReportColumnsTotal description]
- * @param  {Object} block
+ * @param {Object} block
  */
 function fillReportColumnsTotal(block) {
 	var block_length = block.length;
@@ -664,7 +664,7 @@ function fillReportColumnsTotal(block) {
 
 /**
  * [returnList description]
- * @param  {json} block
+ * @param {json} block
  * @return {html}
  */
 function returnList(block) {
@@ -695,8 +695,8 @@ function returnList(block) {
 
 /**
  * loops over options and sets disabled and selected properties
- * @param  {Object} block
- * @param  {HTML ID} id of select box
+ * @param {Object} block
+ * @param {HTML ID} id of select box
  * @return undefined
  */
 function setPropertiesOnList(block, selectid) {
@@ -722,8 +722,8 @@ function setPropertiesOnList(block, selectid) {
 
 /**
  * [fillList description]
- * @param  {Object} block
- * @param  {String} element_id
+ * @param {Object} block
+ * @param {String} element_id
  */
 function fillList(block, element_id) {
 	var html = returnList(block);
@@ -736,7 +736,7 @@ function fillList(block, element_id) {
 
 /**
  * returns full List that has optgroup elements
- * @param  {Object} block
+ * @param {Object} block
  * @return {HTML} Select list in HTML format
  */
 function returnFullList(block) {
@@ -744,7 +744,7 @@ function returnFullList(block) {
 		var $html = $('<select>');
 		for (var i=0; i<block.length; i++) {
 			var node = block[i];
-			var optgroup =  $('<optgroup>', {'class':node.class, 'label':node.label, 'style':block.style});
+			var optgroup = $('<optgroup>', {'class':node.class, 'label':node.label, 'style':block.style});
 			var options_length = 0;
 			if (Object.prototype.hasOwnProperty.call(node, 'options')) {
 				options_length = node.options.length;
@@ -769,8 +769,8 @@ function returnFullList(block) {
 
 /**
  * loops over options and sets disabled and selected properties
- * @param  {Object} block
- * @param  {HTML ID} id of select box
+ * @param {Object} block
+ * @param {HTML ID} id of select box
  * @return undefined
  */
 function setPropertiesOnListWithOptGroup(block, selectid) {
@@ -799,8 +799,8 @@ function setPropertiesOnListWithOptGroup(block, selectid) {
 
 /**
  * [fillList description]
- * @param  {Object} block
- * @param  {String} element_id
+ * @param {Object} block
+ * @param {String} element_id
  */
 function fillFullList(block, element_id, has_none=false, label_none='') {
 	var html = returnFullList(block);
@@ -917,7 +917,7 @@ function ScheduleEmail() {
 
 /**
  * Set Report type from Json response
- * @param  {Json} response
+ * @param {Json} response
  * @return {bool}
  */
 function setReportType(response) {
@@ -940,7 +940,7 @@ function setReportType(response) {
 
 /**
  * Function to populate Select Columns
- * @param  {Json} response
+ * @param {Json} response
  * @return {bool}
  */
 function fillSelectedColumns(response) {
@@ -962,7 +962,7 @@ function fillSelectedColumns(response) {
 
 /**
  * Function to populate Filter options
- * @param  {Json} response
+ * @param {Json} response
  * @return {bool}
  */
 function fillFilterInfo(response) {
@@ -1003,7 +1003,7 @@ function flattenComparisonFields(fields) {
 
 /**
  * Function to populate Grouping options
- * @param  {Json} response
+ * @param {Json} response
  * @return {bool}
  */
 function fillGroupingInfo(response) {
@@ -1151,7 +1151,7 @@ function saveReportAdvFilter(id) {
 }
 
 function selectReport() {
-	var id = document.NewReport.another_report.options  [document.NewReport.another_report.selectedIndex].value;
+	var id = document.NewReport.another_report.options[document.NewReport.another_report.selectedIndex].value;
 	var folderid = getObj('folderid').value;
 	var url ='index.php?action=SaveAndRun&module=Reports&record='+id+'&folderid='+folderid;
 	window.open(url, '_blank');
@@ -1164,7 +1164,7 @@ function SaveAsReport(id) {
 	}
 	AdvancedFilter.updateHiddenFields();
 	var reportname = prompt(alert_arr.LBL_REPORT_NAME);
-	if (reportname !== null  && reportname !=='' && reportname!== undefined) {
+	if (reportname !== null && reportname !=='' && reportname!== undefined) {
 		document.getElementById('newreportname').value = reportname;
 		VtigerJS_DialogBox.block();
 		var advft_criteria = document.getElementById('advft_criteria').value;

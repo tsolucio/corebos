@@ -10,7 +10,7 @@
 @include 'modules/Vtiger/default_module_view.php';
 
 global $currentModule;
-$idlist            = isset($_REQUEST['idlist']) ? vtlib_purify($_REQUEST['idlist']) : '';
+$idlist = isset($_REQUEST['idlist']) ? vtlib_purify($_REQUEST['idlist']) : '';
 $destinationModule = vtlib_purify($_REQUEST['destination_module']);
 
 $forCRMRecord = vtlib_purify($_REQUEST['parentid']);

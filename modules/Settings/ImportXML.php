@@ -54,7 +54,7 @@ if ($uploaded) {
 						$prole=substr($prole, strrpos($prole, '::')+2);
 					}
 				}
-				$parentRoleId = $adb->getone("select roleid from vtiger_role where rolename='$prole'");  // this one must exist if XML is sorted correctly
+				$parentRoleId = $adb->getone("select roleid from vtiger_role where rolename='$prole'"); // this one must exist if XML is sorted correctly
 				$profile_array = array();
 				foreach ($role->vtcrm_role2profiles->vtcrm_role2pf as $profile) {
 					$profile_array[] = $adb->getone("select profileid from vtiger_profile where profilename='".(string)$profile."'");
@@ -109,7 +109,7 @@ if ($uploaded) {
 				$sql4="insert into vtiger_profile2standardpermissions values(?,?,?,?)";
 				$rstab = $adb->query('select tabid from vtiger_tab');
 				while ($tb = $adb->fetch_array($rstab)) {
-					for ($action=0; $action<5; $action++) {  // count 5 actions
+					for ($action=0; $action<5; $action++) { // count 5 actions
 						$adb->pquery($sql4, array($profile_id, $tb['tabid'], $action, 0));
 					}
 				}
@@ -149,7 +149,7 @@ if ($uploaded) {
 				}
 
 				// default values
-				insertProfile2field($profile_id);  // set default values for all fields
+				insertProfile2field($profile_id); // set default values for all fields
 				// import values
 				$p2fins="INSERT INTO vtiger_profile2field (profileid, tabid, fieldid, visible, readonly) VALUES(?,?,?,?,?)";
 				$p2fupd="UPDATE vtiger_profile2field set visible=?, readonly=? where profileid=? and tabid=? and fieldid=?";
