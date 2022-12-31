@@ -325,6 +325,85 @@ class cbCalendar extends CRMEntity {
 		}
 	}
 
+	public static function getActionElement($reminderid, $cbmodule, $cbrecord, $moreinfo, $cbdate, $cbtime, $cbaction, $cbreaded) {
+		global $current_user;
+		$activity = array();
+		if ($cbmodule == 'cbCalendar') {
+			$focus = CRMEntity::getInstance($cbmodule);
+			$focus->retrieve_entity_info($cbrecord, $cbmodule);
+			$cbsubject = $focus->column_fields['subject'];
+			$cbactivitytype = getTranslatedString($focus->column_fields['activitytype'], 'cbCalendar');
+			$cbdate = $focus->column_fields['date_start'];
+			$cbtime = $focus->column_fields['time_start'];
+			$cbstatus = getTranslatedString($focus->column_fields['eventstatus'], 'cbCalendar');
+			switch ($focus->column_fields['activitytype']) {
+				case 'Call':
+					$activity['activityimage'] = array('action', 'call');
+					break;
+				case 'Task':
+					$activity['activityimage'] = array('utility', 'event');
+					break;
+				case 'Meeting':
+					$activity['activityimage'] = array('utility', 'people');
+					break;
+				default:
+					$activity['activityimage'] = array('utility', 'date_time');
+					break;
+			}
+		} else {
+			// For non-calendar records.
+			if (empty($cbrecord)) {
+				$moreinfo = json_decode(html_entity_decode($moreinfo, ENT_QUOTES), true);
+				$cbsubject = $moreinfo['subject'];
+				$cbactivitytype = $moreinfo['subtitle'];
+				$activity['activityimage'] = $moreinfo['icon'];
+			} else {
+				$cbsubject = array_values(getEntityName($cbmodule, $cbrecord));
+				$cbsubject = $cbsubject[0];
+				$cbactivitytype = getTranslatedString($cbmodule, $cbmodule);
+				$mod = CRMEntity::getInstance($cbmodule);
+				$activity['activityimage'] = [$mod->moduleIcon['library'], $mod->moduleIcon['icon']];
+			}
+			if (!empty($cbaction)) {
+				$cbaction = json_decode(html_entity_decode($cbaction, ENT_QUOTES), true);
+				$activity['cbactionlabel'] = $cbaction['label'];
+				$activity['cbactionlink'] = $cbaction['link'];
+			}
+			$cbstatus = '';
+		}
+		if ($cbtime != '') {
+			$date = new DateTimeField($cbdate.' '.$cbtime);
+			$cbtime = $date->getDisplayTime();
+			$cbdate = $date->getDisplayDate();
+			if (empty($current_user->hour_format)) {
+				$format = '24';
+			} else {
+				$format = $current_user->hour_format;
+			}
+			$cbtimeArr = getaddEventPopupTime($cbtime, '', $format);
+			$cbtime = $cbtimeArr['starthour'].':'.$cbtimeArr['startmin'].''.$cbtimeArr['startfmt'];
+		}
+
+		// Appending recordid we can get unique callback dom id for that record.
+		$popupid = "ActivityReminder_$cbrecord";
+		$cbcolor = '';
+		if ($cbdate <= date('Y-m-d') && !($cbdate == date('Y-m-d') && $cbtime > date('H:i'))) {
+			$cbcolor= '#FF1515';
+		}
+		$activity['popupid'] = $popupid;
+		$activity['cbreminderid'] = $reminderid;
+		$activity['cbdate'] = $cbdate;
+		$activity['cbtime'] = $cbtime;
+		$activity['cbsubject'] = $cbsubject;
+		$activity['cbmodule'] = $cbmodule;
+		$activity['cbrecord'] = $cbrecord;
+		$activity['cbstatus'] = $cbstatus;
+		$activity['cbcolor'] = $cbcolor;
+		$activity['activitytype'] = $cbactivitytype;
+		$activity['cbreaded'] = $cbreaded;
+		return $activity;
+	}
+
 	public static function printToDoListCards($activities_reminder) {
 		$smarty = new vtigerCRM_Smarty;
 		$list = '';
