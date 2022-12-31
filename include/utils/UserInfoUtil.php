@@ -1059,7 +1059,7 @@ function isAllowed_Outlook($module, $action, $user_id, $record_id) {
 		global $current_user;
 		$tabid = getTabid($module);
 		$actionid = getActionid($action);
-		$profile_id = fetchUserProfileId($user_id);
+		$profile_id = getUserProfile($user_id);
 		$tab_per_Data = getAllTabsPermission($profile_id);
 
 		$permissionData = getTabsActionPermission($profile_id);
