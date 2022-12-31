@@ -452,8 +452,8 @@ class cbCalendar extends CRMEntity {
 	public static function getActionsQuery($user, $date, $date_inpast, $time, $limit, $status = '', $relwith = 0) {
 		global $adb;
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
-		$statcond = $status == '' ? '' : ' AND (status=0 || status=1)';
-		$relcond = $relwith == 0 ? '' : $adb->convert2Sql(' AND (relwith=? || recordid=?)', [$relwith, $relwith]);
+		$statcond = $status == '' ? '' : ' AND (vtiger_activity_reminder_popup.status=0 || vtiger_activity_reminder_popup.status=1)';
+		$relcond = $relwith == 0 ? '' : $adb->convert2Sql(' AND (vtiger_activity_reminder_popup.relwith=? || vtiger_activity_reminder_popup.recordid=?)', [$relwith, $relwith]);
 		return
 		'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
 		.' FROM vtiger_activity_reminder_popup'
