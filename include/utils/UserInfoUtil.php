@@ -1060,13 +1060,14 @@ function isAllowed_Outlook($module, $action, $user_id, $record_id) {
 		$tabid = getTabid($module);
 		$actionid = getActionid($action);
 		$profile_id = getUserProfile($user_id);
+		$profile_id = $profile_id[0];
 		$tab_per_Data = getAllTabsPermission($profile_id);
 
 		$permissionData = getTabsActionPermission($profile_id);
 		$defSharingPermissionData = getDefaultSharingAction();
 		$others_permission_id = $defSharingPermissionData[$tabid];
 
-		//Checking whether this vtiger_tab is allowed
+		//Checking if this tab is allowed
 		if ($tab_per_Data[$tabid] == 0) {
 			$permission = 'yes';
 			//Checking whether this action is allowed

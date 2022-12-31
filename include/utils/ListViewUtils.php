@@ -3388,7 +3388,7 @@ function getMergeFields($module, $str) {
 	}
 
 	$user_profileid = getUserProfile($current_user->id);
-	$permitted_list = getProfile2FieldPermissionList($module, $user_profileid);
+	$permitted_list = getProfile2FieldPermissionList($module, $user_profileid[0]);
 
 	$result_def_org = $adb->pquery('select fieldid from vtiger_def_org_field where tabid=? and visible=0', array($tabid));
 	$permitted_org_list = array();

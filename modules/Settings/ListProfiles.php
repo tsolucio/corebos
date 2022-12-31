@@ -33,7 +33,7 @@ function getStdOutput($profileListResult, $noofrows) {
 		$profile_id = $adb->query_result($profileListResult, $i, 'profileid');
 		$description = $adb->query_result($profileListResult, $i, 'description');
 		$current_profile = getUserProfile($current_user->id);
-		if ($profile_id != 1 && $profile_id != $current_profile) {
+		if ($profile_id != 1 && $profile_id != $current_profile[0]) {
 			$standCustFld['del_permission']='yes';
 		} else {
 			$standCustFld['del_permission']='no';
