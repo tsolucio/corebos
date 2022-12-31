@@ -367,7 +367,7 @@ class WorkFlowScheduler {
 
 	/**
 	 * Special Date functions
-	 * @return <Array>
+	 * @return array
 	 */
 	private function _specialDateTimeOperator() {
 		return array('less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later',
@@ -376,8 +376,8 @@ class WorkFlowScheduler {
 
 	/**
 	 * Function parse the value based on the condition
-	 * @param <Array> $condition
-	 * @return <String>
+	 * @param array $condition
+	 * @return string
 	 */
 	private function _parseValueForDate($condition) {
 		$value = $condition['value'];
@@ -390,22 +390,22 @@ class WorkFlowScheduler {
 		@date_default_timezone_set($adminTimeZone);
 
 		switch ($operation) {
-			case 'less than days ago':		//between current date and (currentdate - givenValue)
+			case 'less than days ago': //between current date and (currentdate - givenValue)
 				$days = $condition['value'];
 				$value = date('Y-m-d', strtotime('-'.$days.' days')).','.date('Y-m-d', strtotime('+1 day'));
 				break;
 
-			case 'more than days ago':		// less than (current date - givenValue)
+			case 'more than days ago': // less than (current date - givenValue)
 				$days = $condition['value']-1;
 				$value = date('Y-m-d', strtotime('-'.$days.' days'));
 				break;
 
-			case 'in less than':			// between current date and future date(current date + givenValue)
+			case 'in less than': // between current date and future date(current date + givenValue)
 				$days = $condition['value']+1;
 				$value = date('Y-m-d', strtotime('-1 day')).','.date('Y-m-d', strtotime('+'.$days.' days'));
 				break;
 
-			case 'in more than':			// greater than future date(current date + givenValue)
+			case 'in more than': // greater than future date(current date + givenValue)
 				$days = $condition['value']-1;
 				$value = date('Y-m-d', strtotime('+'.$days.' days'));
 				break;

@@ -237,12 +237,12 @@ class Vtiger_MailScanner {
 
 	/**
 	 * Convert string to integer value.
-	 * @param $strvalue
-	 * @returns false if given contain non-digits, else integer value
+	 * @param string
+	 * @return boolean false if given contain non-digits, else integer value
 	 */
 	public function __toInteger($strvalue) {
 		$ival = (int)$strvalue;
-		$intvalstr = "$ival";
+		$intvalstr = $ival;
 		if (strlen($strvalue) == strlen($intvalstr)) {
 			return $ival;
 		}
@@ -448,6 +448,7 @@ class Vtiger_MailScanner {
 		}
 		return $accountid;
 	}
+
 	/**
 	 * Lookup Ticket record based on the subject or id given.
 	 */
@@ -563,6 +564,7 @@ class Vtiger_MailScanner {
 		}
 		return $account_focus;
 	}
+
 	/**
 	 * Get Contact record information based on email.
 	 */

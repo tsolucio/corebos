@@ -1045,7 +1045,7 @@ function isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id) {
  * @param string Module Name
  * @param string Action Name
  * @param integer Record Id
- * @return 'yes' or 'no'. 'yes' means the action is allowed for the currently logged in user. 'no' means this action is not allowed for the currently logged in user
+ * @return string yes/no. 'yes' means the action is allowed for the currently logged in user. 'no' means this action is not allowed for the currently logged in user
  */
 function isAllowed_Outlook($module, $action, $user_id, $record_id) {
 	global $log;

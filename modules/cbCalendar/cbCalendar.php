@@ -681,18 +681,18 @@ class cbCalendar extends CRMEntity {
 			global $adb;
 			set_time_limit(0);
 			$rs = $adb->query('select vtiger_seactivityrel.crmid, activityid
-					from vtiger_seactivityrel
-					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_seactivityrel.crmid
-					where deleted=0 and activityid>0');
+				from vtiger_seactivityrel
+				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seactivityrel.crmid
+				where deleted=0 and activityid>0');
 			$upd = 'update vtiger_activity set rel_id=? where activityid=?';
 			while ($act = $adb->fetch_array($rs)) {
 				$adb->pquery($upd, array($act['crmid'],$act['activityid']));
 			}
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 			$rs = $adb->query('select activityid, contactid
-					from vtiger_cntactivityrel
-					inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_cntactivityrel.contactid
-					where deleted=0');
+				from vtiger_cntactivityrel
+				inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_cntactivityrel.contactid
+				where deleted=0');
 			$upd = 'update vtiger_activity set cto_id=? where activityid=?';
 			$actid = 0;
 			while ($act = $adb->fetch_array($rs)) {
@@ -740,18 +740,18 @@ class cbCalendar extends CRMEntity {
 			$task->recepient = "\$(assigned_user_id : (Users) email1)";
 			$task->subject = "Calendar :  \$subject";
 			$task->content = '$(assigned_user_id : (Users) last_name) $(assigned_user_id : (Users) first_name) ,<br/>'
-					. '<b>Task Notification Details:</b><br/>'
-					. 'Subject : $subject<br/>'
-					. 'Start date and time : $dtstart ( $(general : (__VtigerMeta__) dbtimezone) ) <br/>'
-					. 'End date and time   : $dtend ( $(general : (__VtigerMeta__) dbtimezone) ) <br/>'
-					. 'Event type          : $activitytype <br/>'
-					. 'Status              : $eventstatus <br/>'
-					. 'Priority            : $taskpriority <br/>'
-					. 'Related To          : $(parent_id : (Leads) lastname) $(parent_id : (Leads) firstname) $(parent_id : (Accounts) accountname) '
-					. '$(parent_id : (Potentials) potentialname) $(parent_id : (HelpDesk) ticket_title) <br/>'
-					. 'Contact             : $(contact_id : (Contacts) lastname) $(contact_id : (Contacts) firstname) <br/>'
-					. 'Location            : $location <br/>'
-					. 'Description         : $description';
+				.'<b>Task Notification Details:</b><br/>'
+				.'Subject : $subject<br/>'
+				.'Start date and time : $dtstart ( $(general : (__VtigerMeta__) dbtimezone) ) <br/>'
+				.'End date and time   : $dtend ( $(general : (__VtigerMeta__) dbtimezone) ) <br/>'
+				.'Event type          : $activitytype <br/>'
+				.'Status              : $eventstatus <br/>'
+				.'Priority            : $taskpriority <br/>'
+				.'Related To          : $(parent_id : (Leads) lastname) $(parent_id : (Leads) firstname) $(parent_id : (Accounts) accountname) '
+				.'$(parent_id : (Potentials) potentialname) $(parent_id : (HelpDesk) ticket_title) <br/>'
+				.'Contact             : $(contact_id : (Contacts) lastname) $(contact_id : (Contacts) firstname) <br/>'
+				.'Location            : $location <br/>'
+				.'Description         : $description';
 			$taskManager->saveTask($task);
 			// Calendar workflow create follow up
 			$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");

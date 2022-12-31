@@ -90,7 +90,7 @@ class Google_List_View {
 
 	/**
 	 * Sync Contacts Records
-	 * @return <array> Count of Contacts Records
+	 * @return array Count of Contacts Records
 	 */
 	public function Contacts() {
 		global $current_user;

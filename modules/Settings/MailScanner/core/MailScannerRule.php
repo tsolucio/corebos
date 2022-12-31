@@ -170,8 +170,8 @@ class Vtiger_MailScannerRule {
 	/**
 	 * Apply all the criteria.
 	 * @param $mailrecord
-	 * @param $includingBody
-	 * @returns false if not match is found or else all matching result found
+	 * @param boolean $includingBody
+	 * @return boolean false if not match is found or else all matching result found
 	 */
 	public function applyAll($mailrecord, $includingBody = true) {
 		$matchresults = array();
@@ -355,8 +355,8 @@ class Vtiger_MailScannerRule {
 
 	/**
 	 * Detect if the rule match result has Regex condition
-	 * @param $matchresult result of apply obtained earlier
-	 * @returns matchinfo if Regex match is found, false otherwise
+	 * @param array result of apply obtained earlier
+	 * @return boolean matchinfo if Regex match is found, false otherwise
 	 */
 	public function hasRegexMatch($matchresult) {
 		foreach ($matchresult as $matchinfo) {
