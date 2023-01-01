@@ -648,6 +648,12 @@ switch ($functiontocall) {
 			'content' => $content
 		);
 		break;
+	case 'setNotificationStatus':
+		$adb->pquery(
+			'update vtiger_activity_reminder_popup set status=? WHERE moreinfo->"$.id"=?',
+			[vtlib_purify($_REQUEST['status']), vtlib_purify($_REQUEST['remid'])]
+		);
+		break;
 	case 'getFieldsAttributes':
 		$fields = vtlib_purify($_REQUEST['fields']);
 		$modulename = vtlib_purify($_REQUEST['modulename']);
