@@ -45,9 +45,8 @@ class pendingactionswidget_DetailViewBlock extends DeveloperBlock {
 		$Calendar_PopupReminder_DaysPast = GlobalVariable::getVariable('Calendar_PopupReminder_DaysPast', 7, 'cbCalendar');
 		$active = $adb->pquery('select reminder_interval from vtiger_users where id=?', array($current_user->id));
 		$interval = $adb->query_result($active, 0, 'reminder_interval');
-		$intervalInMinutes = ConvertToMinutes($interval);
+		$intervalInMinutes = $interval=='None' ? 15 : ConvertToMinutes($interval);
 		$time = time();
-		$intervalInMinutes = ConvertToMinutes($interval);
 		$date = date('Y-m-d', strtotime("+$intervalInMinutes minutes", $time));
 		$date_inpast = date('Y-m-d', strtotime('-'.$Calendar_PopupReminder_DaysPast.' day', $time));
 		$time = date('H:i', strtotime("+$intervalInMinutes minutes", $time));
