@@ -156,9 +156,11 @@ class CustomView extends CRMEntity {
 	/** to get the details of a custom view
 	 * @param integer custom view ID
 	 * @return array in the following format
-	 * $customviewlist = array('viewname'=>value,
-	 *                         'setdefault'=>defaultchk,
-	 *                         'setmetrics'=>setmetricschk)
+	 * array(
+	 * 'viewname'=>value,
+	 * 'setdefault'=>defaultchk,
+	 * 'setmetrics'=>setmetricschk
+	 * )
 	 */
 	public function getCustomViewByCvid($cvid) {
 		global $adb, $current_user;
@@ -174,17 +176,19 @@ class CustomView extends CRMEntity {
 			$def_cvid = $adb->query_result($usercv_result, 0, 'default_cvid');
 		}
 		$customviewlist = array();
-		if ($permissions['R'] && $result && $adb->num_rows($result)>0) {
+		if ($result && $adb->num_rows($result)>0) {
 			$cvrow = $adb->fetch_array($result);
-			$customviewlist['viewname'] = $cvrow['viewname'];
-			if ($def_cvid == $cvid) {
-				$customviewlist['setdefault'] = 1;
-			} else {
-				$customviewlist['setdefault'] = $cvrow['setdefault'];
+			if ($permissions['R'] || $cvrow['viewname']=='All') {
+				$customviewlist['viewname'] = $cvrow['viewname'];
+				if ($def_cvid == $cvid) {
+					$customviewlist['setdefault'] = 1;
+				} else {
+					$customviewlist['setdefault'] = $cvrow['setdefault'];
+				}
+				$customviewlist['setmetrics'] = $cvrow['setmetrics'];
+				$customviewlist['userid'] = $cvrow['userid'];
+				$customviewlist['status'] = $cvrow['status'];
 			}
-			$customviewlist['setmetrics'] = $cvrow['setmetrics'];
-			$customviewlist['userid'] = $cvrow['userid'];
-			$customviewlist['status'] = $cvrow['status'];
 		}
 		return $customviewlist;
 	}
