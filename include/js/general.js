@@ -7174,14 +7174,9 @@ function initSelect2() {
 	* @return: (bool)
 	*/
 	cbVal.isTime = function (val) {
-		var hours  = window.userHourFormat == 'am/pm' ? 12 : 23,
-			patt   = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}$/ : /^[0-9]{1,2}\:[0-9]{2}[ ]?(am|pm)?$/,
-			isTime = false; // Assume the worst
-
-		if (patt.test(val) && parseInt(val.split(':')[0]) <= hours && parseInt(val.split(':')[1]) <= 59) {
-			isTime = true;
-		}
-		return isTime;
+		var hours = window.userHourFormat == 'am/pm' ? 12 : 23,
+			patt  = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}(\:[0-9]{2})?$/ : /^[0-9]{1,2}\:[0-9]{2}(\:[0-9]{2})?[ ]?(am|pm)?$/;
+		return (patt.test(val) && parseInt(val.split(':')[0]) <= hours && parseInt(val.split(':')[1]) <= 59);
 	};
 
 	/*
