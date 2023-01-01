@@ -472,4 +472,6 @@ var alert_arr = {
 	'LBL_ERROR_DROPZONE': 'Error leyendo el enlace. Verifícalo e intenta de nuevo.',
 	'LBL_COLLAPSE': 'Contraer',
 	'LBL_EXPAND': 'Expandir',
+	'currentuser': 'Usuario Actual',
+	'wfmodule': 'Módulo Flujo Trabajo',
 };

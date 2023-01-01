@@ -438,4 +438,6 @@ var alert_arr = {
 	'LBL_ERROR_DROPZONE': 'Error uploading link. Check the link and try again.',
 	'LBL_COLLAPSE': 'Colapseaza',
 	'LBL_EXPAND': 'Expandeaza',
+	'currentuser': 'Current User',
+	'wfmodule': 'Workflow Module',
 };
