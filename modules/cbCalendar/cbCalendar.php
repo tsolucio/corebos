@@ -428,7 +428,7 @@ class cbCalendar extends CRMEntity {
 			);
 		} elseif (!empty($ACTIVITY['cbactionlink'])) {
 			$actions[getTranslatedString($ACTIVITY['cbactionlabel'], $ACTIVITY['cbmodule'])] = array(
-				'type' => 'click',
+				'type' => empty($ACTIVITY['cbactiontype']) ? 'click' : $ACTIVITY['cbactiontype'],
 				'action' => $ACTIVITY['cbactionlink']
 			);
 		}
