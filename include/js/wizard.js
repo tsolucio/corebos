@@ -39,6 +39,8 @@ class WizardComponent {
 		this.ApplyFilter = [];
 		this.WizardSaveAction = [];
 		this.WizardSaveIsActive = [];
+		this.WizardFilterFromContext = [];
+		this.Context = {};
 		this.Operation = '';
 		this.ProceedToNextStep = true;
 		this.ResetWizard = true;
@@ -363,6 +365,7 @@ class WizardComponent {
 				wizard.IsDuplicatedFromProduct[wizard.ActiveStep] = 1;
 				wizard.MoveToStep('');
 				wizard.CheckedRows[wizard.ActiveStep-1][1]= [response];
+				wizard.Context = response;
 			}
 		});
 	}

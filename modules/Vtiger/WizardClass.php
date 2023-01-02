@@ -82,6 +82,9 @@ class WizardView {
 		if (isset($this->params['save_action'])) {
 			$this->save_action = $this->params['save_action'];
 		}
+		if (isset($this->params['filter_context'])) {
+			$this->filtercontext = $this->params['filter_context'];
+		}
 	}
 
 	public function Init() {
@@ -115,6 +118,7 @@ class WizardView {
 			$smarty->assign('WizardGoBack', $this->goback);
 			$smarty->assign('WizardRequiredAction', $this->required_action);
 			$smarty->assign('WizardCustomFunction', $this->custom_function);
+			$smarty->assign('WizardContext', $this->filtercontext);
 			$smarty->assign('WizardModuleEditor', $this->module);
 			$WizardSaveAction = false;
 			if (!empty($this->save_action)) {
