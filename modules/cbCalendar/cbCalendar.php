@@ -365,9 +365,11 @@ class cbCalendar extends CRMEntity {
 				$activity['activityimage'] = [$mod->moduleIcon['library'], $mod->moduleIcon['icon']];
 			}
 			if (!empty($cbaction)) {
+				$strtemplate = new Vtiger_StringTemplate();
+				$strtemplate->assign('RECORD', $cbrecord);
 				$cbaction = json_decode(html_entity_decode($cbaction, ENT_QUOTES), true);
 				$activity['cbactionlabel'] = $cbaction['label'];
-				$activity['cbactionlink'] = $cbaction['link'];
+				$activity['cbactionlink'] = $strtemplate->merge($cbaction['link']);
 				$activity['cbactiontype'] = isset($cbaction['type']) ? $cbaction['type'] : 'click';
 			}
 			$cbstatus = '';
