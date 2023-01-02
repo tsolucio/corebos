@@ -11450,7 +11450,7 @@ precacheAndRoute([{
   "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "4d74b63500a915d1516ede0fb96e257f"
+  "revision": "f620950dc058519146741c4503ceabda"
 }, {
   "url": "include/js/dedup.js",
   "revision": "f09b1b73041383bfe8a85ccce9641617"
@@ -11459,16 +11459,16 @@ precacheAndRoute([{
   "revision": "5cd21c1015423b1fa6ad1ed041757737"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "f5c6e2bf2718d90f0b28675329f5fc11"
+  "revision": "fd2e8f80aa77da459d7580f9694a7d78"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "45aebaabdab78070a1ad6003bd414b84"
+  "revision": "958f6de4ea77f86baaee4bf9e211615b"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "068d882bac65ff942f6355a2176a83f5"
+  "revision": "97f3d30a8d4b3fa8f9f0fed606a21560"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "045f54dabb34aa52ad190b1f308034bf"
+  "revision": "096e0db00fb825b30518e8eb4252074c"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "d084b6024971a1d71a7fc33e43f50f82"
@@ -11477,19 +11477,19 @@ precacheAndRoute([{
   "revision": "2ded50797c9a63942ff4cdf928df3439"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "70e4040be9d6e893aec7e605033a773a"
+  "revision": "1963567b7f613adcc54507cf12fa9b49"
 }, {
   "url": "include/js/general.js",
-  "revision": "598d44fb2958cb7e5935d9bf8636b2ae"
+  "revision": "301a730c0f977f97eb8a075061ed4a70"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "b4fad7ff70fb9444a5e86f58490269b9"
+  "revision": "98f36d72db2eab66f7c00e7037efc23b"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "733037aedbea5f5a6a76f9afd5ebc54d"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "2a142528be62b77398ca63ba76e93626"
+  "revision": "7792a6d4901291bebe725edccd9ca502"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
@@ -11522,7 +11522,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "7f8232968ac0de4e62f8dfffd8f2eee2"
+  "revision": "07a948c1920217bef655ca5b3ef300cc"
 }, {
   "url": "include/js/notebook.js",
   "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
@@ -11540,7 +11540,7 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "7480f8b37ed5ea24fe2a8aa9e6ad92bd"
+  "revision": "e9525fee6a9e20470cb2c2df6d952ddc"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "89ad8ae2e8972f6085b6728624061ac2"
@@ -11555,7 +11555,7 @@ precacheAndRoute([{
   "revision": "5939e45063d7400f478b0b4a37a91e81"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "9d3560bc2b8f150f60efb995fb195385"
+  "revision": "6923dd80929a856c7876115c2a3037b9"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -11781,6 +11781,9 @@ precacheAndRoute([{
 }, {
   "url": "modules/com_vtiger_workflow/resources/add.png",
   "revision": "15a73d14b6e91db79ae7847c2c0de1a1"
+}, {
+  "url": "modules/com_vtiger_workflow/resources/addnotification.js",
+  "revision": "fcf0584e5e9e16bc4b8017e8a861ee4b"
 }, {
   "url": "modules/com_vtiger_workflow/resources/createentitytaskscript.js",
   "revision": "fc6646a77fe08a9ae143dc4384b6844f"
