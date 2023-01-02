@@ -107,7 +107,9 @@ class WizardComponent {
 					this.CheckedRows[this.ActiveStep-1] = [];
 					this.CheckedRows[this.ActiveStep] = [];
 					this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
-					this.WizardInstance[`wzgrid${this.ActiveStep-1}`].uncheckAll();
+					if (this.WizardInstance[`wzgrid${this.ActiveStep-1}`]) {
+						this.WizardInstance[`wzgrid${this.ActiveStep-1}`].uncheckAll();
+					}
 					return this.FilterRows(ev);
 				}
 				if (this.WizardMode[this.ActiveStep] == 'CREATEPRODUCTCOMPONENT') {
