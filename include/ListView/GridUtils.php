@@ -814,7 +814,6 @@ function generateRelationQuery($module, $relatedmodule, $fieldname, $value, $map
 	return $qg->getQuery();
 }
 
-
 function getRelatedFieldId($relatedmodule, $module) {
 	global $adb;
 	$rs = $adb->pquery('select fieldid from vtiger_fieldmodulerel where module=? and relmodule=?', array(

@@ -358,10 +358,10 @@ $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Appli
 $smarty->display('salesEditView.tpl');
 
 // sending PopupFilter map results to the frontEnd
-$MapObject = new cbMap();
 $bmapname = $currentModule.'_PopupFilter';
 $Mapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 if ($Mapid) {
+	$MapObject = new cbMap();
 	$MapObject->id = $Mapid;
 	$MapObject->mode = '';
 	$MapObject->retrieve_entity_info($Mapid, "cbMap");

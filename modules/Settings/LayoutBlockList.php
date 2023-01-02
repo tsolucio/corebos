@@ -194,8 +194,8 @@ function InStrCount($String, $Find, $CaseSensitive = false) {
 
 /**
  * Function to get customfield entries
- * @param string $module - Module name
- * return array  $cflist - customfield entries
+ * @param string Module name
+ * @return array customfield entries
  */
 function getFieldListEntries($module) {
 	$tabid = getTabid($module);
@@ -204,7 +204,7 @@ function getFieldListEntries($module) {
 	$dbQuery = 'select vtiger_blocks.*,vtiger_tab.presence as tabpresence
 		from vtiger_blocks
 		inner join vtiger_tab on vtiger_tab.tabid = vtiger_blocks.tabid
-		where vtiger_blocks.tabid=?  and vtiger_tab.presence = 0 order by sequence';
+		where vtiger_blocks.tabid=? and vtiger_tab.presence=0 order by sequence';
 	$result = $adb->pquery($dbQuery, array($tabid));
 	$row = $adb->fetch_array($result);
 
@@ -271,7 +271,7 @@ function getFieldListEntries($module) {
 				$sql_field_params = array($row['blockid']);
 			} else {
 				$sql_field="select *
-					from  vtiger_field
+					from vtiger_field
 					where block=? and (vtiger_field.fieldlabel!='Total' and vtiger_field.fieldlabel!='Sub Total' and vtiger_field.fieldlabel!='Tax') and
 						vtiger_field.displaytype IN (1,2,4) order by sequence";
 				$sql_field_params = array($row['blockid']);
@@ -392,8 +392,8 @@ function getFieldListEntries($module) {
 			if ($row_field != '') {
 				$movefieldcount = 0;
 				do {
-					$movefields[$movefieldcount]['fieldid'] =  $row_field['fieldid'];
-					$movefields[$movefieldcount]['fieldlabel'] =  getTranslatedString($row_field['fieldlabel'], $module);
+					$movefields[$movefieldcount]['fieldid'] = $row_field['fieldid'];
+					$movefields[$movefieldcount]['fieldlabel'] = getTranslatedString($row_field['fieldlabel'], $module);
 					$movefieldcount++;
 				} while ($row_field = $adb->fetch_array($fields));
 				$cflist[$i]['movefieldcount'] = $movefieldcount;
@@ -499,14 +499,14 @@ function changeFieldOrder() {
 			$blockid = vtlib_purify($_REQUEST['blockid']);
 			if (substr($blockid, 0, 3)=='dvb') { // detail view block
 				$adb->pquery('update vtiger_businessactions set sequence=sequence+1 where businessactionsid=?', array(substr($blockid, 3)));
-			} else {  // normal block
+			} else { // normal block
 				$sql='select sequence from vtiger_blocks where blockid=?';
 				$result = $adb->pquery($sql, array($blockid));
 				$row= $adb->fetch_array($result);
 				$current_sequence=$row['sequence'];
 
 				$sql_next='select * from vtiger_blocks where sequence > ? and tabid=? limit 0,1';
-				$result_next = $adb->pquery($sql_next, array($current_sequence,  vtlib_purify($_REQUEST['tabid'])));
+				$result_next = $adb->pquery($sql_next, array($current_sequence, vtlib_purify($_REQUEST['tabid'])));
 				$row_next= $adb->fetch_array($result_next);
 				$next_sequence=$row_next['sequence'];
 				$next_id=$row_next['blockid'];
@@ -520,7 +520,7 @@ function changeFieldOrder() {
 			$blockid = vtlib_purify($_REQUEST['blockid']);
 			if (substr($blockid, 0, 3)=='dvb') { // detail view block
 				$adb->pquery('update vtiger_businessactions set sequence=if (sequence-1<0,0,sequence-1) where businessactionsid=?', array(substr($blockid, 3)));
-			} else {  // normal block
+			} else { // normal block
 				$result = $adb->pquery('select * from vtiger_blocks where blockid=?', array($blockid));
 				$row= $adb->fetch_array($result);
 				$current_sequence=$row['sequence'];
@@ -552,8 +552,8 @@ function changeFieldOrder() {
 			$next_sequence=$row_next['sequence'];
 			$next_id=$row_next['fieldid'];
 
-			$adb->pquery('update vtiger_field  set sequence=? where fieldid=?', array($next_sequence,  vtlib_purify($_REQUEST['fieldid'])));
-			$adb->pquery('update vtiger_field  set sequence=? where fieldid=?', array($current_sequence,$next_id));
+			$adb->pquery('update vtiger_field set sequence=? where fieldid=?', array($next_sequence, vtlib_purify($_REQUEST['fieldid'])));
+			$adb->pquery('update vtiger_field set sequence=? where fieldid=?', array($current_sequence,$next_id));
 			$smarty->assign('COLORID', vtlib_purify($_REQUEST['fieldid']));
 		}
 
@@ -567,14 +567,14 @@ function changeFieldOrder() {
 			} else {
 				$sql_previous='select * from vtiger_field where sequence < ? and block=? and vtiger_field.presence in (0,2) order by sequence desc limit 0,1';
 			}
-			$sql_prev_params = array($current_sequence,  vtlib_purify($_REQUEST['blockid']));
+			$sql_prev_params = array($current_sequence, vtlib_purify($_REQUEST['blockid']));
 
 			$result_previous = $adb->pquery($sql_previous, $sql_prev_params);
 			$row_previous= $adb->fetch_array($result_previous);
 			$previous_sequence=$row_previous['sequence'];
 			$previous_id=$row_previous['fieldid'];
 
-			$adb->pquery('update vtiger_field set sequence=? where fieldid=?', array($previous_sequence,  vtlib_purify($_REQUEST['fieldid'])));
+			$adb->pquery('update vtiger_field set sequence=? where fieldid=?', array($previous_sequence, vtlib_purify($_REQUEST['fieldid'])));
 			$adb->pquery('update vtiger_field set sequence=? where fieldid=?', array($current_sequence,$previous_id));
 			$smarty->assign('COLORID', vtlib_purify($_REQUEST['fieldid']));
 		}
@@ -590,7 +590,7 @@ function changeFieldOrder() {
 }
 
 function getFieldInfo($fieldname, $typeofdata, $quickcreate, $massedit, $presence, $strictlyMandatory, $customfieldflag, $displaytype, $uitype) {
-	$fieldtype =  explode('~', $typeofdata);
+	$fieldtype = explode('~', $typeofdata);
 	if ($strictlyMandatory) {//fields without which the CRM Record will be inconsistent
 		$mandatory = '0';
 	} elseif ($fieldtype[1] == 'M') {//fields which are made mandatory
@@ -644,7 +644,7 @@ function updateFieldProperties() {
 
 	$focus = CRMEntity::getInstance($fld_module);
 
-	$fieldtype =  explode('~', $typeofdata);
+	$fieldtype = explode('~', $typeofdata);
 	$mandatory_checked= vtlib_purify($_REQUEST['ismandatory']);
 	$quickcreate_checked = vtlib_purify($_REQUEST['quickcreate']);
 	$presence_check = vtlib_purify($_REQUEST['isPresent']);
@@ -779,7 +779,7 @@ function deleteCustomField() {
 	$oldfieldlabel = $adb->query_result($res, 0, 'fieldlabel');
 	$tablename = $adb->query_result($res, 0, 'tablename');
 	$columnname = $adb->query_result($res, 0, 'columnname');
-	$fieldtype =  explode('~', $typeofdata);
+	$fieldtype = explode('~', $typeofdata);
 
 	//Deleting the CustomField from the Custom Field Table
 	$query='delete from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
@@ -1092,12 +1092,12 @@ function addCustomField() {
 						'.$columnName." varchar(200) NOT NULL,
 						presence int(1) NOT NULL default '1',
 						picklist_valueid int(19) NOT NULL default '0',
-						PRIMARY KEY  (".$columnName.'id)
+						PRIMARY KEY (".$columnName.'id)
 					)';
 					$adb->pquery($qur, array());
 				}
 
-				//Adding a  new picklist value in the picklist table
+				//Adding a new picklist value in the picklist table
 				if ($mode != 'edit') {
 					$picklistid = $adb->getUniqueID('vtiger_picklist');
 					$adb->pquery('insert into vtiger_picklist values(?,?,1)', array($picklistid, $columnName));
@@ -1260,7 +1260,7 @@ function changeRelatedListOrder() {
 			$next_sequence = $adb->query_result($next_relation, 0, 'sequence');
 			$next_relationid = $adb->query_result($next_relation, 0, 'relation_id');
 
-			$adb->pquery('update vtiger_relatedlists set sequence = ? where relation_id = ? and tabid = ?', array($next_sequence,  vtlib_purify($_REQUEST['id']),$tabid));
+			$adb->pquery('update vtiger_relatedlists set sequence = ? where relation_id = ? and tabid = ?', array($next_sequence, vtlib_purify($_REQUEST['id']),$tabid));
 			$adb->pquery('update vtiger_relatedlists set sequence = ? where tabid = ? and relation_id = ?', array($currentsequence,$tabid,$next_relationid));
 		}
 	}

@@ -176,7 +176,7 @@ foreach ($ActTypes as $act_id => $act_name) {
 		'textColor'=>$Colors['text'],
 		'checked'=>$event_checked
 	);
-	//  add modules
+	// add modules
 	foreach ($tasklabel as $tbid => $mname) {
 		$Modules_Colors = getEColors('type', $mname);
 		$Module_Types[$mname] = array(

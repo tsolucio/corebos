@@ -22,7 +22,7 @@ class Import_Queue_Controller {
 		if (!Vtiger_Utils::CheckTable('vtiger_import_queue')) {
 			Vtiger_Utils::CreateTable(
 				'vtiger_import_queue',
-				"(importid INT NOT NULL PRIMARY KEY,
+				'(importid INT NOT NULL PRIMARY KEY,
 					userid INT NOT NULL,
 					tabid INT NOT NULL,
 					field_mapping TEXT,
@@ -31,7 +31,7 @@ class Import_Queue_Controller {
 					merge_fields TEXT,
 					status INT default 0,
 					importmergecondition INT default 0,
-					skipcreate INT default 0)",
+					skipcreate INT default 0)',
 				true
 			);
 		}

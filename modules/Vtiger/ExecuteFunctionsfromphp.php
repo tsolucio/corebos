@@ -22,7 +22,7 @@ global $adb, $log, $current_user;
 function executefunctionsvalidate($functiontocall, $module, $structure = null) {
 	include_once 'modules/cbMap/processmap/Validations.php';
 	$valmod = vtlib_purify($module);
-	if ($functiontocall ==  'ValidationExists') {
+	if ($functiontocall == 'ValidationExists') {
 		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
 			return 'yes';
 		} else {
@@ -32,7 +32,7 @@ function executefunctionsvalidate($functiontocall, $module, $structure = null) {
 				return 'no';
 			}
 		}
-	} elseif ($functiontocall ==  'ValidationLoad') {
+	} elseif ($functiontocall == 'ValidationLoad') {
 		$_REQUEST['structure'] = $structure;
 		if (Validations::ValidationsExist($valmod)) {
 			$validation = Validations::processAllValidationsFor($valmod);

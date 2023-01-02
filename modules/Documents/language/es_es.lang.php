@@ -143,5 +143,6 @@ $mod_strings = array(
 'LBL_MASSUPLOAD_DESCRIPTION' => 'Activa y desctiva el componente de subida masiva de documentos en cada módulo.',
 'Approve' => 'Aprobar',
 'Decline' => 'Rechazar',
+'View PDF' => 'Ver PDF',
 );
 ?>

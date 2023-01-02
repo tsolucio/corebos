@@ -29,10 +29,7 @@ if ($mode == 'delete') {
 	foreach ($with_crmid as $relcrmid) {
 		$data['destinationRecordId'] = $relcrmid;
 		cbEventHandler::do_action('corebos.entity.link.delete', $data);
-		$adb->pquery(
-			'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND module=? AND relcrmid=? AND relmodule=?) OR (crmid=? AND relmodule=? AND relcrmid=? AND module=?)',
-			array($crmid, $destinationModule, $relcrmid, $currentModule, $relcrmid, $destinationModule, $crmid,$currentModule)
-		);
+		deleteFromCrmEntityRel($crmid, $relcrmid);
 		cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 	}
 } else {

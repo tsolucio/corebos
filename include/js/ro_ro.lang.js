@@ -445,4 +445,6 @@ var alert_arr = {
 	'LNK_DUPLICATE': 'Duplicate',
 	'LBL_COLLAPSE': 'Colapseaza',
 	'LBL_EXPAND': 'Expandeaza',
+	'currentuser': 'Current User',
+	'wfmodule': 'Workflow Module',
 };

@@ -16,7 +16,7 @@ $tableName = $adb->sql_escape_string($tableName);
 $moduleName=vtlib_purify($_REQUEST['fld_module']);
 $uitype=vtlib_purify($_REQUEST['uitype']);
 
-if (isset($_REQUEST['parentroleid']) && $_REQUEST['parentroleid']  != '') {
+if (isset($_REQUEST['parentroleid']) && $_REQUEST['parentroleid'] != '') {
 	$roleid = vtlib_purify($_REQUEST['parentroleid']);
 } else {
 	$roleid = vtlib_purify($_REQUEST['roleid']);
@@ -33,7 +33,7 @@ $temp_module_strings = return_module_language($current_language, $moduleName);
 
 //To get the Editable Picklist Values
 $query = 'select * from vtiger_'.$tableName
-	." inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid=vtiger_$tableName.picklist_valueid where roleid=? and  presence=1 order by sortid";
+	." inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid=vtiger_$tableName.picklist_valueid where roleid=? and presence=1 order by sortid";
 $result = $adb->pquery($query, array($roleid));
 $fldVal='';
 

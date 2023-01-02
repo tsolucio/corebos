@@ -164,7 +164,7 @@ wizard.steps({
 			});
 
 			return can_pass;
-		} else if (currentIndex - new_steps_count == 3  && newIndex - new_steps_count == 4) {
+		} else if (currentIndex - new_steps_count == 3 && newIndex - new_steps_count == 4) {
 			var can_pass = false;
 			var $error_selector = $('#step4_error');
 			var data = setStepData(5);
@@ -190,7 +190,7 @@ wizard.steps({
 			});
 
 			return can_pass;
-		} else if (currentIndex - new_steps_count == 4  && newIndex - new_steps_count == 5 ) {
+		} else if (currentIndex - new_steps_count == 4 && newIndex - new_steps_count == 5 ) {
 			var can_pass = false;
 			var data = setStepData(6);
 
@@ -205,7 +205,7 @@ wizard.steps({
 				showDateRange(document.getElementById('stdDateFilter').value);
 			});
 			return can_pass;
-		} else if (currentIndex - new_steps_count == 5  && newIndex - new_steps_count == 6 ) {
+		} else if (currentIndex - new_steps_count == 5 && newIndex - new_steps_count == 6 ) {
 			var can_pass = false;
 			var data = setStepData(7);
 

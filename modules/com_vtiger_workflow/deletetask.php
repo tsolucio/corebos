@@ -39,5 +39,7 @@ function vtDeleteWorkflow($adb, $request) {
 	</script>
 	<?php
 }
+$_SERVER['REQUEST_METHOD'] = 'POST';
+$_POST[$GLOBALS['csrf']['input-name']] = empty($_REQUEST[$GLOBALS['csrf']['input-name']]) ? '' : $_REQUEST[$GLOBALS['csrf']['input-name']];
 vtDeleteWorkflow($adb, $_REQUEST);
 ?>

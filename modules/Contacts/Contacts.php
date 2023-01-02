@@ -941,8 +941,8 @@ class Contacts extends CRMEntity {
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 		$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Potentials', true);
 		$pot_q = 'SELECT vtiger_crmentity.crmid
-			FROM '.$crmEntityTable.' 
-			INNER JOIN vtiger_potential ON vtiger_crmentity.crmid=vtiger_potential.potentialid
+			FROM '.$crmEntityTable
+			.' INNER JOIN vtiger_potential ON vtiger_crmentity.crmid=vtiger_potential.potentialid
 			LEFT JOIN vtiger_account ON vtiger_account.accountid=vtiger_potential.related_to
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_potential.related_to=?';
 		$pot_res = $adb->pquery($pot_q, array($id));

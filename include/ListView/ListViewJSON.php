@@ -700,16 +700,15 @@ class GridListView {
 		}
 		$query = 'select distinct vtiger_notes.*, vtiger_crmentity.*, vtiger_notescf.* from vtiger_notes
 			inner join vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_notes.notesid
-			inner join vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid)
+			inner join vtiger_crmentityreldenorm ON vtiger_crmentityreldenorm.relcrmid=vtiger_crmentity.crmid
 			inner join vtiger_notescf ON vtiger_notescf.notesid = vtiger_notes.notesid
 			left join vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 			left join vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			where vtiger_crmentity.deleted=0 and (vtiger_crmentityrel.crmid=? OR vtiger_crmentityrel.relcrmid=?) '.$whereClause;
-		$rs = $adb->pquery($query, array($id, $id));
+			where vtiger_crmentity.deleted=0 and vtiger_crmentityreldenorm.crmid=? '.$whereClause;
+		$rs = $adb->pquery($query, array($id));
 		$numOfRows = $adb->num_rows($rs);
 		$data = array();
 		if ($numOfRows > 0) {
-			$listviewcolumns = $adb->getFieldsArray($rs);
 			$data[] = $this->processResults($rs, $field_types, $id);
 		}
 		return $data;

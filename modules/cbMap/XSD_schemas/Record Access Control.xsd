@@ -35,7 +35,7 @@
               </xs:element>
             </xs:sequence>
           </xs:complexType>
-        </xs:element> 
+        </xs:element>
         <xs:element name="detailview" minOccurs="0">
           <xs:complexType mixed="true">
             <xs:sequence>

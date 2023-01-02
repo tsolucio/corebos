@@ -4001,7 +4001,7 @@ precacheAndRoute([{
   "revision": "c5518025b115c73bbeb9b8518ec0499b"
 }, {
   "url": "modules/Calendar4You/fullcalendar/themes/cupertino/theme.css",
-  "revision": "5e885f2a9f6890b2c8e5a041654d66cc"
+  "revision": "2f0b11ad96b1a726f6f455efd7ce1982"
 }, {
   "url": "modules/Calendar4You/images/color_picker.gif",
   "revision": "765a90c24ad2f3969b53e542bdf2e32f"
@@ -4103,10 +4103,10 @@ precacheAndRoute([{
   "revision": "2d4e606e8e5c04af04ea6baf1c6fa6fd"
 }, {
   "url": "modules/Mobile/resources/css/theme.css",
-  "revision": "3ad2cc4a1e7c3b6c566726883e414b15"
+  "revision": "7c2e76dc88159564ca863929f1297699"
 }, {
   "url": "modules/Mobile/resources/css/tinyselect.css",
-  "revision": "df87e74765c600edb73159d1dfd5b9ab"
+  "revision": "965ae104e32f40ad0d8409e917daab75"
 }, {
   "url": "modules/Mobile/resources/documents.js",
   "revision": "351e44a8f5939b2fa6d5c498a65bcdc9"
@@ -11432,7 +11432,7 @@ precacheAndRoute([{
   "revision": "321798c3a4f90cafc07df60d8a8f0f2f"
 }, {
   "url": "include/js/advancefilter.js",
-  "revision": "c6f16828be0c815c713d8c479df7b13b"
+  "revision": "320c287a1932f77d9f3da4e4742f52d4"
 }, {
   "url": "include/js/asterisk.js",
   "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
@@ -11450,25 +11450,25 @@ precacheAndRoute([{
   "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "4d74b63500a915d1516ede0fb96e257f"
+  "revision": "f620950dc058519146741c4503ceabda"
 }, {
   "url": "include/js/dedup.js",
   "revision": "f09b1b73041383bfe8a85ccce9641617"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "d3954b30d36a6b9aca95c3fece852884"
+  "revision": "5cd21c1015423b1fa6ad1ed041757737"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "f5c6e2bf2718d90f0b28675329f5fc11"
+  "revision": "fd2e8f80aa77da459d7580f9694a7d78"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "45aebaabdab78070a1ad6003bd414b84"
+  "revision": "958f6de4ea77f86baaee4bf9e211615b"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "068d882bac65ff942f6355a2176a83f5"
+  "revision": "97f3d30a8d4b3fa8f9f0fed606a21560"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "045f54dabb34aa52ad190b1f308034bf"
+  "revision": "096e0db00fb825b30518e8eb4252074c"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "d084b6024971a1d71a7fc33e43f50f82"
@@ -11477,31 +11477,31 @@ precacheAndRoute([{
   "revision": "2ded50797c9a63942ff4cdf928df3439"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "70e4040be9d6e893aec7e605033a773a"
+  "revision": "1963567b7f613adcc54507cf12fa9b49"
 }, {
   "url": "include/js/general.js",
-  "revision": "aaa1665c241921e163924b2bd285892b"
+  "revision": "301a730c0f977f97eb8a075061ed4a70"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "b4fad7ff70fb9444a5e86f58490269b9"
+  "revision": "98f36d72db2eab66f7c00e7037efc23b"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "733037aedbea5f5a6a76f9afd5ebc54d"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "2a142528be62b77398ca63ba76e93626"
+  "revision": "7792a6d4901291bebe725edccd9ca502"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "2016625cad9cf4abb4c9631c742043f5"
+  "revision": "994e53756bdd418770cb8643ae240869"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "6407c9adfeb9b28b4a56fceb370beee7"
+  "revision": "1b29ac181ea0764c445535fb22fc0ff7"
 }, {
   "url": "include/js/ListViewRenderes.js",
-  "revision": "1b4abaf1dcd13446bca4724a9419a55a"
+  "revision": "6a360b0feb15c05b45cdf9f63e4f7b24"
 }, {
   "url": "include/js/loadjslog.js",
   "revision": "d5317a375aa85d10e53f5989b1be0524"
@@ -11522,7 +11522,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "7f8232968ac0de4e62f8dfffd8f2eee2"
+  "revision": "07a948c1920217bef655ca5b3ef300cc"
 }, {
   "url": "include/js/notebook.js",
   "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
@@ -11540,13 +11540,13 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "7480f8b37ed5ea24fe2a8aa9e6ad92bd"
+  "revision": "e9525fee6a9e20470cb2c2df6d952ddc"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "89ad8ae2e8972f6085b6728624061ac2"
 }, {
   "url": "include/js/relatedlistgrid.js",
-  "revision": "c708d94a0657fa7288d46522bae4bbab"
+  "revision": "58bd18237808ad28e7494953722c546b"
 }, {
   "url": "include/js/relatedlists.js",
   "revision": "11bf2a6771f84a03764f40e052d76358"
@@ -11555,7 +11555,7 @@ precacheAndRoute([{
   "revision": "5939e45063d7400f478b0b4a37a91e81"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "9d3560bc2b8f150f60efb995fb195385"
+  "revision": "6923dd80929a856c7876115c2a3037b9"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -11564,7 +11564,7 @@ precacheAndRoute([{
   "revision": "008f3e9768bd2d226e65ea69999c9f14"
 }, {
   "url": "include/js/vtlib.js",
-  "revision": "eea8e9de88b7525865ee9583c0940ba3"
+  "revision": "af1e4d2ca3a63942e333ad9f9e4ced16"
 }, {
   "url": "include/components/Carousel/vanilla-js-carousel.css",
   "revision": "3c84a75d9db4550dc2954a596bbf6f58"
@@ -11782,6 +11782,9 @@ precacheAndRoute([{
   "url": "modules/com_vtiger_workflow/resources/add.png",
   "revision": "15a73d14b6e91db79ae7847c2c0de1a1"
 }, {
+  "url": "modules/com_vtiger_workflow/resources/addnotification.js",
+  "revision": "fcf0584e5e9e16bc4b8017e8a861ee4b"
+}, {
   "url": "modules/com_vtiger_workflow/resources/createentitytaskscript.js",
   "revision": "fc6646a77fe08a9ae143dc4384b6844f"
 }, {
@@ -11942,7 +11945,7 @@ precacheAndRoute([{
   "revision": "9ed4669f524bec38319be63a2ee4ba26"
 }, {
   "url": "modules/MailManager/MailManager.js",
-  "revision": "d166fb54361a463cf82a8b5cd908708c"
+  "revision": "458fbdebe25e290e2399a8446c344f78"
 }, {
   "url": "modules/MailManager/MailManager.png",
   "revision": "1c045d808355b6ed581cd4971f3436f9"
@@ -11960,10 +11963,10 @@ precacheAndRoute([{
   "revision": "fc384192e4fa1a8cf362dd13fc9795b4"
 }, {
   "url": "modules/Tooltip/TooltipHeaderScript.js",
-  "revision": "eecf7ef8e5030d1053235e5bf68311f5"
+  "revision": "f267d34d3ea860870f065fd87375f2cb"
 }, {
   "url": "modules/Tooltip/TooltipSettings.js",
-  "revision": "7d1c2445657e28da2cbcdebcace07c96"
+  "revision": "56dde84486ab7eaa087456910eb62d7a"
 }, {
   "url": "modules/Accounts/Accounts.png",
   "revision": "f67a467753048c2b24896fea369f94c7"
@@ -12071,13 +12074,13 @@ precacheAndRoute([{
   "revision": "bad0f7ffab917e6e2a06966f0c91d277"
 }, {
   "url": "modules/Documents/Documents.js",
-  "revision": "e32fd9e9d52794e54e0de77c15cc8acf"
+  "revision": "6375cd5e50e7fd431fdfa61032222c1b"
 }, {
   "url": "modules/SalesOrder/SalesOrder.js",
   "revision": "16492cb9a5e8791e2b8f443f5aedac2f"
 }, {
   "url": "modules/Settings/Settings.js",
-  "revision": "c081711ead8af84fe7f995d23462f0e7"
+  "revision": "f0607731ff24be98c706f9b1e5b1e62b"
 }, {
   "url": "modules/Settings/profilePrivileges.js",
   "revision": "e8735c467cb77eab04e51f77a14ca87b"
@@ -12131,7 +12134,7 @@ precacheAndRoute([{
   "revision": "c663d6d8dfeba2b51a542382c8623087"
 }, {
   "url": "modules/cbCalendar/script.js",
-  "revision": "540de50fa20840cf36d96db9df7a208a"
+  "revision": "dc823d9b271fcf4045a67787ae9019e3"
 }, {
   "url": "modules/cbCalendar/cbCalendar.js",
   "revision": "c5d583ade66cf5418d8aafc19803ed35"
@@ -12236,7 +12239,7 @@ precacheAndRoute([{
   "revision": "07af75347840dd7440241b543551a284"
 }, {
   "url": "modules/cbMap/generatemap/DecisionTable.js",
-  "revision": "7c6a0066ea3fb375f23412a076d5063a"
+  "revision": "ab90986960bc4de7faf6f2f738359868"
 }, {
   "url": "modules/cbMap/generatemap/DetailViewLayoutMapping.js",
   "revision": "d333d135915576c76507e5b2f47b3729"
@@ -12266,7 +12269,7 @@ precacheAndRoute([{
   "revision": "cde88c33da015b3b7e277c8906c50457"
 }, {
   "url": "modules/Home/Homestuff.js",
-  "revision": "15e47a85456e109ca860fd85ec223d13"
+  "revision": "5293ffc1fc695bcefb44e2ac7550897a"
 }, {
   "url": "modules/Home/js/HelpMeNow.js",
   "revision": "3facd26fc8ea33e48ec5c19fcef2472d"
@@ -12347,10 +12350,10 @@ precacheAndRoute([{
   "revision": "aba71d0bc4a7c39fed8e8e9e421d5b35"
 }, {
   "url": "modules/Users/ChangePassword.js",
-  "revision": "aba9f38466e2ee904b8465a3cbe65de7"
+  "revision": "0e93b2cc4ac6013a7010eba1a2093ff7"
 }, {
   "url": "modules/Utilities/Utilities.js",
-  "revision": "fcaf90049fc1d870640ea3eb10b66fd7"
+  "revision": "8da0ae4753fc2e85e4f008c67f69ef41"
 }, {
   "url": "modules/Import/resources/ImportStep2.js",
   "revision": "f98f9eeb54cd2b95375d74c1af6a9f14"
@@ -12362,10 +12365,10 @@ precacheAndRoute([{
   "revision": "65682db92a471ba46f12737f6f6b3e4d"
 }, {
   "url": "modules/Reports/Reports.js",
-  "revision": "6f79422b9a80f2a8c68196bad5376eac"
+  "revision": "87debd245ef9d9473bb8cf703a340940"
 }, {
   "url": "modules/Reports/ReportsSteps.js",
-  "revision": "9eb56ccf0c9161a66bdbd8170be17d3f"
+  "revision": "04c6790cf015921f5bb585711dbbcc52"
 }, {
   "url": "modules/PriceBooks/PriceBooks.js",
   "revision": "c8af6625b22f69a1f9ff221f2312b252"

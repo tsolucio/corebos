@@ -1001,7 +1001,7 @@ const ListView = {
 								</span>
 							</div>
 							<div class="slds-media__body">
-								<h2 class="slds-truncate slds-text-heading_medium" title="${alert_arr.QuickView}">${alert_arr.QuickView}</h2>
+								<h2 class="slds-truncate" title="${alert_arr.QuickView}">${alert_arr.QuickView}</h2>
 							</div>
 							</div>
 						</header>
@@ -1237,7 +1237,6 @@ const ListView = {
 		});
 	}
 };
-
 
 const DocumentsView = {
 

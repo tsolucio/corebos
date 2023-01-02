@@ -66,10 +66,16 @@ class CBDeleteRelatedTask extends VTTask {
 			switch ($relation_result_row['name']) {
 				case 'get_related_list':
 					if ($businessMap == 'Condition Query') {
+						$params = $adb->flatten_array(array($masterRecord, $ids, $masterRecord, $ids));
 						$adb->pquery(
 							'delete from vtiger_crmentityrel
 								where (crmid = ? and relcrmid in ('.generateQuestionMarks($ids).')) or (relcrmid = ? and crmid in ('.generateQuestionMarks($ids).'))',
-							array($masterRecord, $ids, $masterRecord, $ids)
+							$params
+						);
+						$adb->pquery(
+							'delete from vtiger_crmentityreldenorm
+								where (crmid=? and relcrmid in ('.generateQuestionMarks($ids).')) or (relcrmid=? and crmid in ('.generateQuestionMarks($ids).'))',
+							$params
 						);
 					} elseif ($businessMap == 'Condition Expression') {
 						// Get related Modules
@@ -80,16 +86,17 @@ class CBDeleteRelatedTask extends VTTask {
 						if ($result && $adb->num_rows($result) > 0) {
 							while ($related = $adb->fetch_array($result)) {
 								if ($focus->ConditionExpression($entityId.'x'.$related['id'])) {
-									$adb->pquery(
-										'delete from vtiger_crmentityrel where (crmid = ? and relcrmid = ?) or (crmid = ? and relcrmid = ?)',
-										array($masterRecord, $related['id'], $related['id'], $masterRecord)
-									);
+									deleteFromCrmEntityRel($masterRecord, $related['id']);
 								}
 							}
 						}
 					} else {
 						$adb->pquery(
 							'delete from vtiger_crmentityrel where (crmid = ? and relmodule = ?) or (relcrmid = ? and module = ?)',
+							array($masterRecord, $relatedModule, $masterRecord, $relatedModule)
+						);
+						$adb->pquery(
+							'delete from vtiger_crmentityreldenorm where (crmid=? and relmodule=?) or (relcrmid=? and module=?)',
 							array($masterRecord, $relatedModule, $masterRecord, $relatedModule)
 						);
 					}

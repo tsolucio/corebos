@@ -11,8 +11,8 @@ include_once 'include/fields/DateTimeField.php';
 
 /**
  * To get the lists of sharedids
- * @param $id -- The user id :: Type integer
- * @returns $sharedids -- The shared vtiger_users id :: Type Array
+ * @param integer The user id
+ * @return array The shared users id
  */
 function getSharedUserId($id) {
 	global $adb;
@@ -32,8 +32,8 @@ function getSharedUserId($id) {
 
 /**
  * To get the lists of vtiger_users id who shared their calendar with specified user
- * @param $sharedid -- The shared user id :: Type integer
- * @returns $shared_ids -- a comma seperated vtiger_users id  :: Type string
+ * @param integer The shared user id
+ * @return string a comma seperated vtiger_users id
  */
 function getSharedCalendarId($sharedid) {
 	global $adb;
@@ -50,8 +50,8 @@ function getSharedCalendarId($sharedid) {
 
 /**
  * To get userid and username of all vtiger_users except the current user
- * @param $id -- The user id :: Type integer
- * @returns $user_details -- Array in the following format:
+ * @param integer The user id
+ * @return array in the following format:
  * $user_details=Array($userid1=>$username, $userid2=>$username,............,$useridn=>$username);
  */
 function getOtherUserName($id) {
@@ -69,8 +69,8 @@ function getOtherUserName($id) {
 
 /**
  * To get userid and username of vtiger_users in hierarchy level
- * @param $id -- The user id :: Type integer
- * @returns $user_details -- Array in the following format:
+ * @param integer The user id
+ * @return array in the following format:
  * $user_details=Array($userid1=>$username, $userid2=>$username,............,$useridn=>$username);
  */
 function getSharingUserName($id) {
@@ -115,10 +115,10 @@ function getSharingUserName($id) {
 
 /**
  * To get hour,minute and format
- * @param $starttime -- The date&time :: Type string
- * @param $endtime -- The date&time :: Type string
- * @param $format -- The format :: Type string
- * @returns $timearr :: Type Array
+ * @param string The date&time
+ * @param string The date&time
+ * @param string The format
+ * @return array
 */
 function getaddEventPopupTime($starttime, $endtime, $format) {
 	$timearr = array();
@@ -131,7 +131,7 @@ function getaddEventPopupTime($starttime, $endtime, $format) {
 			$hr = 12;
 		}
 		$timearr['starthour'] = twoDigit(($hr>12)?($hr-12):$hr);
-		$timearr['startmin']  = $stmin;
+		$timearr['startmin'] = $stmin;
 
 		$edhr = $edhr+0;
 		$timearr['endfmt'] = ($edhr >= 12) ? 'pm' : 'am';
@@ -139,24 +139,23 @@ function getaddEventPopupTime($starttime, $endtime, $format) {
 			$edhr = 12;
 		}
 		$timearr['endhour'] = twoDigit(($edhr>12)?($edhr-12):$edhr);
-		$timearr['endmin']  = $edmin;
+		$timearr['endmin'] = $edmin;
 	} else { // if ($format == '24') {
 		$timearr['starthour'] = twoDigit($sthr);
-		$timearr['startmin']  = $stmin;
-		$timearr['startfmt']  = '';
-		$timearr['endhour']   = twoDigit($edhr);
-		$timearr['endmin']    = $edmin;
-		$timearr['endfmt']    = '';
+		$timearr['startmin'] = $stmin;
+		$timearr['startfmt'] = '';
+		$timearr['endhour'] = twoDigit($edhr);
+		$timearr['endmin'] = $edmin;
+		$timearr['endfmt'] = '';
 	}
 	return $timearr;
 }
 
 /**
- *To construct time select combo box
- *@param $format -- the format :: Type string
- *@param $bimode -- The mode :: Type string
- *constructs html select combo box for time selection
- *and returns it in string format.
+ * To construct time select combo box
+ * @param string the format
+ * @param string The mode
+ * @return string html select combo box for time selection
  */
 function getTimeCombo($format, $bimode, $hour = '', $min = '', $fmt = '', $todocheck = false) {
 	global $mod_strings;
@@ -201,7 +200,7 @@ function getTimeCombo($format, $bimode, $hour = '', $min = '', $fmt = '', $todoc
 			$hrsel = ($hour == $hrvalue)?'selected':'';
 			$combo .= '<option value="'.$hrvalue.'" '.$hrsel.'>'.$hrvalue.'</option>';
 		}
-		$combo .= '</select>'.$mod_strings[LBL_HR].'&nbsp;';
+		$combo .= '</select>'.$mod_strings['LBL_HR'].'&nbsp;';
 		$combo .= '<select name="'.$bimode.'min" id="'.$bimode.'min" class=small '.$jsfn.'>';
 		for ($i=0; $i<12; $i++) {
 			$value = $i*5;
@@ -209,20 +208,19 @@ function getTimeCombo($format, $bimode, $hour = '', $min = '', $fmt = '', $todoc
 			$minsel = ($min == $value)?'selected':'';
 			$combo .= '<option value="'.$value.'" '.$minsel.'>'.$value.'</option>';
 		}
-		$combo .= '</select>&nbsp;'.$mod_strings[LBL_MIN].'<input type="hidden" name="'.$bimode.'fmt" id="'.$bimode.'fmt">';
+		$combo .= '</select>&nbsp;'.$mod_strings['LBL_MIN'].'<input type="hidden" name="'.$bimode.'fmt" id="'.$bimode.'fmt">';
 	}
-		return $combo;
+	return $combo;
 }
 
 /**
- *Function to construct HTML select combo box
- *@param $fieldname -- the field name :: Type string
- *@param $tablename -- The table name :: Type string
- *constructs html select combo box for combo field
- *and returns it in string format.
+ * Function to construct HTML select combo box
+ * @param string the field name
+ * @param string The table name
+ * @return string html select combo box for combo field
  */
 function getActFieldCombo($fieldname, $tablename, $follow_activitytype = false) {
-	global $adb, $mod_strings,$current_user;
+	global $adb, $current_user;
 	$combo = '';
 	$js_fn = '';
 	if ($fieldname == 'eventstatus') {
@@ -247,7 +245,7 @@ function getActFieldCombo($fieldname, $tablename, $follow_activitytype = false) 
 
 		if (count($roleids) > 1) {
 			$q="select distinct $fieldname
-				from  $tablename
+				from $tablename
 				inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid
 				where roleid in ('". implode('","', $roleids) ."') and picklistid in (select picklistid from $tablename) order by sortid asc";
 		} else {
@@ -269,9 +267,9 @@ function getActFieldCombo($fieldname, $tablename, $follow_activitytype = false) 
 
 /**
  * Function to get the vtiger_activity details for mail body
- * @param   string   $description       - activity description
- * @param   string   $from              - to differenciate from notification to invitation.
- * return   string   $list              - HTML in string format
+ * @param string activity description
+ * @param string to differenciate from notification to invitation.
+ * @return string HTML in string format
  */
 function getActivityDetails($description, $user_id, $from = '') {
 	global $log, $current_user, $current_language;
@@ -344,9 +342,9 @@ function timeString($datetime, $fmt) {
 
 /**
  *
- * @param type $datetime
- * @param type $fmt
- * @return Date
+ * @param mixed date/time
+ * @param string type 'am/pm'
+ * @return string Date
  */
 function formatUserTimeString($datetime, $fmt) {
 	if (is_object($datetime)) {
@@ -468,7 +466,7 @@ function getActivityMailInfo($return_id, $status, $activity_type) {
 // User Select Customization
 /**
  * get the id of the User selected by current user in the picklist of the ListView or Calendar view
- * @return String Id of the user that the current user has selected
+ * @return string Id of the user that the current user has selected
  */
 function calendarview_getSelectedUserId() {
 	global $current_user, $default_charset;
@@ -504,8 +502,8 @@ function calendarview_getSelectedUserFilterQuerySuffix() {
 
 /**
  * Function returns the data of the user selected by current user in the picklist of the ListView or Calendar view of Current User
- * @param $useridInUse - The Id of the user that the Current User has selected in dropdown picklist in Calendar modules listview or Calendar View
- * return string - The array of the events for the user that the current user has selected
+ * @param integer The Id of the user that the Current User has selected in dropdown picklist in Calendar modules listview or Calendar View
+ * @return string The array of the events for the user that the current user has selected
  */
 function calendarview_getUserSelectOptions($useridInUse) {
 	global $adb, $app_strings, $current_user, $mod_strings;

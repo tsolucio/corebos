@@ -10,14 +10,11 @@
 
 $mod_strings = array(
 	'cbLoginHistory' => 'Cronologia Accessi Utente',
-	'SINGLE_ModuleName' => 'Cronologia Accessi Utente',
-	'ModuleName ID' => 'ID Cronologia Accessi Utente',
+	'SINGLE_cbLoginHistory' => 'Cronologia Accessi Utente',
+	'cbLoginHistory ID' => 'ID Cronologia Accessi Utente',
 
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
-	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
-
-	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
-
+	'LBL_CBLOGINHISTORY_INFORMATION' => 'Informazione Blocco del Modulo',
 
 	'login id' => 'ID Accedi',
 	'user name' => 'Nome Utente',
@@ -25,9 +22,5 @@ $mod_strings = array(
 	'logout time' => 'Tempo disconnessione',
 	'login time' => 'Tempo Accedi',
 	'status' => 'Stato',
-
-
-
-
 );
 ?>

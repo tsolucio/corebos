@@ -292,6 +292,16 @@ $mod_strings = array(
 'Which field from Users should be used as a signature?' => 'Which field from Users should be used as a signature?',
 'Coordinates' => 'Coordinates',
 'Coordinate X' => 'Coordinate X',
-'Coordinate Y' => 'Coordinate Y'
+'Coordinate Y' => 'Coordinate Y',
+'CBAddNotification' => 'Add Notification',
+'HELP_CBAddNotification' => 'Add notification events with actions as reminders and pending tasks for the users. These notifications will appear in the notification panel and Pending Action widget.',
+'HELP_CBAddNotification_Module' => 'Module related to the notification. By default will be the module triggering the workflow',
+'HELP_CBAddNotification_Record' => 'Record related to the notification. Information from the record will be used to show the event. By default will be the record triggering the workflow',
+'HELP_CBAddNotification_Date' => 'Date of the notification in ISO format. By default will be the date time of the workflow trigger',
+'HELP_CBAddNotification_Time' => 'Time of the notification. By default will be the date time of the workflow trigger',
+'HELP_CBAddNotification_MoreAction' => 'More Action JSON. This link is an additional action to show on the notification.<br>{"label":"some label", "link":"some link", "type":"link or click"}',
+'HELP_CBAddNotification_MoreInfo' => 'More Information JSON. For events not related to records we can use this JSON to set the values to use:<br>{"icon":["standard","account"], "subject":"subject", "subtitle":"sub title"}',
+'HELP_CBAddNotification_Owner' => 'User owner of the notification. By default will be the current user when the workflow triggers',
+'HELP_CBAddNotification_Related' => 'Notification is additionally related to this record. If empty and "Record" is set, the account/contact related to Record will be used.',
 );
 ?>

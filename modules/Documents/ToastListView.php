@@ -14,6 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
 require_once 'Smarty_setup.php';
 require_once 'include/ListView/ListView.php';
 require_once 'modules/CustomView/CustomView.php';
@@ -25,6 +26,7 @@ $url_string = '';
 if (!isset($tool_buttons)) {
 	$tool_buttons = Button_Check($currentModule);
 }
+
 $focus = new $currentModule();
 $focus->initSortbyField($currentModule);
 $list_buttons=$focus->getListButtons($app_strings, $mod_strings);
@@ -36,7 +38,8 @@ if (isPermitted('Documents', 'Delete', '') == 'yes') {
 }
 // Identify this module as custom module.
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
-$smarty->assign('MAX_RECORDS', 20);
+
+$smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
@@ -45,6 +48,7 @@ $smarty->assign('BUTTONS', $list_buttons);
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+
 if (empty($ERROR_MESSAGE) && !empty($_REQUEST['error_msg'])) {
 	if (isset($_REQUEST['error_msgclass'])) {
 		$ERROR_MESSAGE_CLASS = vtlib_purify($_REQUEST['error_msgclass']);
@@ -55,19 +59,25 @@ if (!empty($ERROR_MESSAGE)) {
 	$smarty->assign('ERROR_MESSAGE_CLASS', isset($ERROR_MESSAGE_CLASS) ? $ERROR_MESSAGE_CLASS : 'cb-alert-info');
 	$smarty->assign('ERROR_MESSAGE', getTranslatedString($ERROR_MESSAGE, $currentModule));
 }
+// Custom View
 $customView = new CustomView($currentModule);
 $viewid = $customView->getViewId($currentModule);
 $viewinfo = $customView->getCustomViewByCvid($viewid);
+
+// Approving or Denying status-public by the admin in CustomView
 $statusdetails = $customView->isPermittedChangeStatus($viewinfo['status'], $viewid);
 $smarty->assign('CUSTOMVIEW_PERMISSION', $statusdetails);
 $smarty->assign('VIEWID', $viewid);
+
 if ($viewinfo['viewname'] == 'All') {
 	$smarty->assign('ALL', 'All');
 }
+
 if ($viewid == 0) {
 	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 	exit;
 }
+
 global $current_user;
 $sql_error = false;
 $queryGenerator = new QueryGenerator($currentModule, $current_user);
@@ -146,6 +156,28 @@ $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS', ($DEFAULT_SEARCH_PANEL_STATUS ? '
 $smarty->assign('EDIT_FILTER_ALL', GlobalVariable::getVariable('Application_Filter_All_Edit', 1));
 $smarty->assign('moduleView', GlobalVariable::getVariable('Application_ListView_Layout', 'table'));
 $smarty->assign('Apache_Tika_URL', GlobalVariable::getVariable('Apache_Tika_URL', ''));
+$smarty->assign('ShowCreateMessage', GlobalVariable::getVariable('Application_ListView_Show_Create_Message', '0'));
+
+// send advancedSearch business map data to the frontEnd
+$advancedSearchMapResult = 'MAP_NOT_FOUND';
+$advancedSearchMapObject = new cbMap();
+$advancedSearchbmapname = $currentModule.'_AdvancedSearch';
+$advancedSearchMapid = GlobalVariable::getVariable('BusinessMapping_'.$advancedSearchbmapname, cbMap::getMapIdByName($advancedSearchbmapname));
+if ($advancedSearchMapid) {
+	$advancedSearchMapObject->id = $advancedSearchMapid;
+	$advancedSearchMapObject->mode = '';
+	$advancedSearchMapObject->retrieve_entity_info($advancedSearchMapid, 'cbMap');
+	$advancedSearchMapResult = $advancedSearchMapObject->AdvancedSearch($currentModule);
+}
+$smarty->assign('advancedSearchMapResult', $advancedSearchMapResult);
+
+// GV responsible for showing or hiding filter panel
+$Application_ListView_FilterPanel_Open = GlobalVariable::getVariable('Application_ListView_FilterPanel_Open', '1', $currentModule);
+if (!$Application_ListView_FilterPanel_Open) {
+	$smarty->assign('Application_ListView_FilterPanel_Open', 'display: none;');
+} else {
+	$smarty->assign('Application_ListView_FilterPanel_Open', '');
+}
 
 if (!empty($custom_list_include) && file_exists($custom_list_include)) {
 	include $custom_list_include;

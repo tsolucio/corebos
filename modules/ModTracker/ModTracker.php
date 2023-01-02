@@ -217,7 +217,7 @@ class ModTracker {
 	 */
 	public static function updateCache($tabid, $visible) {
 		self::$__cache_modtracker[$tabid] = array(
-			'tabid'   => $tabid,
+			'tabid' => $tabid,
 			'visible' => $visible
 		);
 	}
@@ -282,10 +282,10 @@ class ModTracker {
 		for ($i=0; $i<$rows; $i++) {
 			$status = $adb->query_result($result, $i, 'status');
 
-			$record['uniqueid']     = $adb->query_result($result, $i, 'id');
+			$record['uniqueid'] = $adb->query_result($result, $i, 'id');
 			$record['modifiedtime'] = $adb->query_result($result, $i, 'modifiedtime');
-			$record['module']       = $adb->query_result($result, $i, 'module');
-			$record['crmid']        = $adb->query_result($result, $i, 'crmid');
+			$record['module'] = $adb->query_result($result, $i, 'module');
+			$record['crmid'] = $adb->query_result($result, $i, 'crmid');
 			$record['assigneduserid'] = $adb->query_result($result, $i, 'smownerid');
 
 			if ($status == ModTracker::$DELETED) {
@@ -296,7 +296,7 @@ class ModTracker {
 				$updatedRecords[] = $record;
 			}
 
-			$modTime[]   = $record['modifiedtime'];
+			$modTime[] = $record['modifiedtime'];
 			$uniqueIds[] = $record['uniqueid'];
 		}
 

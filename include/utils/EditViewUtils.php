@@ -467,8 +467,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			for ($image_iter=0, $img_itrMax = $adb->num_rows($result_image); $image_iter < $img_itrMax; $image_iter++) {
 				$image_id_array[] = $adb->query_result($result_image, $image_iter, 'attachmentsid');
 
-				//decode_html  - added to handle UTF-8   characters in file names
-				//urlencode    - added to handle special characters like #, %, etc.,
+				//decode_html - added to handle UTF-8 characters in file names
+				//urlencode - added to handle special characters like #, %, etc.,
 				$image_array[] = urlencode(decode_html($adb->query_result($result_image, $image_iter, 'name')));
 				$image_orgname_array[] = decode_html($adb->query_result($result_image, $image_iter, 'name'));
 
@@ -1090,20 +1090,14 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			'Products' AS entitytype
 			FROM vtiger_products
 			INNER JOIN $crmETProduct ON vtiger_crmentity.crmid=vtiger_products.productid
-			INNER JOIN vtiger_crmentityrel ON (
-				(vtiger_crmentityrel.crmid=vtiger_products.productid and vtiger_crmentityrel.relcrmid=?) or
-				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_products.productid)
-			)
+			INNER JOIN vtiger_crmentityreldenorm ON vtiger_crmentityreldenorm.crmid=vtiger_products.productid and vtiger_crmentityreldenorm.relcrmid=?
 			WHERE vtiger_crmentity.deleted=0";
 		$query.=" UNION SELECT vtiger_service.serviceid AS productid, vtiger_service.servicename AS productname,
 			'NA' AS productcode, vtiger_service.unit_price AS unit_price, 'NA' AS qtyinstock,
 			vtiger_crmentity.description AS product_description, 'Services' AS entitytype
 			FROM vtiger_service
 			INNER JOIN $crmETService ON vtiger_crmentity.crmid=vtiger_service.serviceid
-			INNER JOIN vtiger_crmentityrel ON (
-				(vtiger_crmentityrel.crmid=vtiger_service.serviceid and vtiger_crmentityrel.relcrmid=?) or
-				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_service.serviceid)
-			)
+			INNER JOIN vtiger_crmentityreldenorm ON vtiger_crmentityreldenorm.crmid=vtiger_service.serviceid and vtiger_crmentityreldenorm.relcrmid=?
 			WHERE vtiger_crmentity.deleted=0";
 			$params = array($seid, $seid, $seid, $seid);
 	}

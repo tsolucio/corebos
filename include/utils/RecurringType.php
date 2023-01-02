@@ -48,7 +48,7 @@ class RecurringType {
 
 	/**
 	 * Constructor for class RecurringType
-	 * @param array  $repeat_arr - array contains recurring info
+	 * @param array array contains recurring info
 	 */
 	public function __construct($repeat_arr) {
 		$st_date = explode("-", $repeat_arr["startdate"]);
@@ -342,8 +342,8 @@ class RecurringType {
 	}
 
 	/**
-	 *  Function to get recurring dates depending on the recurring type
-	 *  @return array Recurring Dates in DB Time Zone, as well as DB format
+	 * Function to get recurring dates depending on the recurring type
+	 * @return array Recurring Dates in DB Time Zone, as well as DB format
 	 */
 	public function _getRecurringDates() {
 		$startdateObj = $this->startdate;
@@ -520,9 +520,9 @@ class RecurringType {
 	}
 
 	/** Function to get first day of the month (like first Monday or Friday and etc.)
-	 *  @param string day of the week to repeat the event
-	 *  @param object vt_DateTime Object
-	 *  @return object the vt_DateTime object on which the event repeats
+	 * @param string day of the week to repeat the event
+	 * @param object vt_DateTime Object
+	 * @return object the vt_DateTime object on which the event repeats
 	 */
 	public function getFistdayofmonth($dayofweek, &$dateObj) {
 		if ($dayofweek < $dateObj->dayofweek) {
@@ -542,9 +542,9 @@ class RecurringType {
 	}
 
 	/** Function to get last day of the month (like last Monday or Friday and etc.)
-	 *  @param string day of the week to repeat the event
-	 *  @param object vt_DateTime Object
-	 *  @return object the vt_DateTime object on which the event repeats
+	 * @param string day of the week to repeat the event
+	 * @param object vt_DateTime Object
+	 * @return object the vt_DateTime object on which the event repeats
 	 */
 	public function getLastdayofmonth($dayofweek, &$dateObj) {
 		if ($dayofweek == $dateObj->dayofweek) {

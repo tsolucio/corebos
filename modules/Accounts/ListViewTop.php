@@ -8,9 +8,9 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-/**Function to get the top 5 Accounts order by Amount in Descending Order
- *return array $values - array with the title, header and entries like  Array('Title'=>$title,'Header'=>$listview_header,'Entries'=>$listview_entries)
- *	where listview_header and listview_entries are arrays of header and entity values which are returned from function getListViewHeader and getListViewEntries
+/** Function to get the top 5 Accounts order by Amount in Descending Order
+ * @return array array with the title, header and entries like Array('Title'=>$title,'Header'=>$listview_header,'Entries'=>$listview_entries)
+ * 	where listview_header and listview_entries are arrays of header and entity values which are returned from function getListViewHeader and getListViewEntries
 */
 function getTopAccounts($maxval, $calCnt) {
 	$log = LoggerManager::getLogger('top accounts_list');
@@ -27,7 +27,7 @@ function getTopAccounts($maxval, $calCnt) {
 		'sum(vtiger_potential.amount) as amount from vtiger_potential '.
 		'inner join '.$crmEntityTable.' on (vtiger_potential.potentialid=vtiger_crmentity.crmid) '.
 		'inner join vtiger_account on (vtiger_potential.related_to=vtiger_account.accountid) ';
-	$list_query .= ' WHERE vtiger_crmentity.deleted = 0  AND vtiger_potential.potentialid>0';
+	$list_query .= ' WHERE vtiger_crmentity.deleted=0 AND vtiger_potential.potentialid>0';
 	$list_query .= " AND vtiger_crmentity.smownerid='".$current_user->id."' ".
 		"and vtiger_potential.sales_stage not in ('Closed Won', 'Closed Lost','".$app_strings['LBL_CLOSE_WON']."','".$app_strings['LBL_CLOSE_LOST']."')";
 	$list_query .= ' group by vtiger_account.accountid order by amount desc';

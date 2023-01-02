@@ -1477,7 +1477,7 @@ function runBAScript(scripturi) {
 	return void(0);
 }
 
-function runBAWorkflow(workflowid, crmids) {
+function runBAWorkflow(workflowid, crmids, context = '') {
 	if (typeof workflowid == 'undefined' || workflowid == '') {
 		return false;
 	}
@@ -1492,7 +1492,7 @@ function runBAWorkflow(workflowid, crmids) {
 	}
 	VtigerJS_DialogBox.block();
 	const dataset = document.activeElement.dataset;
-	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids).then(function (data) {
+	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids+'&ctx='+encodeURIComponent(context)).then(function (data) {
 		const response = JSON.parse(data);
 		if (response) {
 			if (dataset.success !== undefined && dataset.success != '') {
@@ -7174,14 +7174,9 @@ function initSelect2() {
 	* @return: (bool)
 	*/
 	cbVal.isTime = function (val) {
-		var hours  = window.userHourFormat == 'am/pm' ? 12 : 23,
-			patt   = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}$/ : /^[0-9]{1,2}\:[0-9]{2}[ ]?(am|pm)?$/,
-			isTime = false; // Assume the worst
-
-		if (patt.test(val) && parseInt(val.split(':')[0]) <= hours && parseInt(val.split(':')[1]) <= 59) {
-			isTime = true;
-		}
-		return isTime;
+		var hours = window.userHourFormat == 'am/pm' ? 12 : 23,
+			patt  = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}(\:[0-9]{2})?$/ : /^[0-9]{1,2}\:[0-9]{2}(\:[0-9]{2})?[ ]?(am|pm)?$/;
+		return (patt.test(val) && parseInt(val.split(':')[0]) <= hours && parseInt(val.split(':')[1]) <= 59);
 	};
 
 	/*

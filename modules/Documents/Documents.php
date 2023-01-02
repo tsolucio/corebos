@@ -244,8 +244,8 @@ class Documents extends CRMEntity {
 	/**
 	 * This function is used to add attachments.
 	 * This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
-	 * @param int $id  - entity id to which the files to be uploaded
-	 * @param string $module  - the current module name
+	 * @param int entity id to which the files to be uploaded
+	 * @param string the current module name
 	*/
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log;
@@ -483,9 +483,7 @@ class Documents extends CRMEntity {
 		$data['destinationRecordId'] = $return_id;
 		cbEventHandler::do_action('corebos.entity.link.delete', $data);
 		$adb->pquery('DELETE FROM vtiger_senotesrel WHERE notesid = ? AND crmid = ?', array($id, $return_id));
-		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
-		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$adb->pquery($sql, $params);
+		deleteFromCrmEntityRel($id, $return_id);
 		cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 	}
 
@@ -547,10 +545,10 @@ class Documents extends CRMEntity {
 				WHERE crmid=? or note_no=?';
 			$res_att = $adb->pquery($SQL_att, array($docid, $docid));
 			if ($res_att && $adb->num_rows($res_att)>0) {
-				$name   = $res_att->fields['name'];
-				$ruta   = $res_att->fields['path'];
+				$name = $res_att->fields['name'];
+				$ruta = $res_att->fields['path'];
 				$prefix = $res_att->fields['attachmentsid'].'_';
-				$path   = $root_directory.$ruta.$prefix.$name;
+				$path = $root_directory.$ruta.$prefix.$name;
 			}
 		}
 		return $path;

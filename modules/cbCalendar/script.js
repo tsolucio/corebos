@@ -175,7 +175,7 @@ function fnAddEvent(obj, CurrObj, start_date, end_date, start_hr, start_min, sta
 	var tagName = document.getElementById(CurrObj);
 	var left_Side = findPosX(obj);
 	var top_Side = findPosY(obj);
-	tagName.style.left= left_Side  + 'px';
+	tagName.style.left= left_Side + 'px';
 	tagName.style.top= top_Side + 22+ 'px';
 	tagName.style.display = 'block';
 	eventlist = eventlist.split(';');
@@ -243,7 +243,7 @@ function getcalAction(obj, Lay, id, view, hour, dateVal, type) {
 	var day = parseInt(vtDate[2], 10);
 	var month = parseInt(vtDate[1], 10);
 	var year = parseInt(vtDate[0], 10);
-	if (getVal  > window.innerWidth ) {
+	if (getVal > window.innerWidth ) {
 		leftSide = leftSide - widthM;
 		tagName.style.left = leftSide + 'px';
 	} else {
@@ -357,9 +357,9 @@ function getSelectedStatus() {
 	}
 }
 
-/**this is for to add a option element while selecting contact in add event page
-   lvalue ==> is a contact id
-   ltext ==> is a contact name
+/** this is for to add a option element while selecting contact in add event page
+ lvalue ==> is a contact id
+ ltext ==> is a contact name
 **/
 function addOption(lvalue, ltext) {
 	var optObj = document.createElement('OPTION');

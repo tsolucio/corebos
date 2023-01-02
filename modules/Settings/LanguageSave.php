@@ -42,7 +42,7 @@ function quote_replace($value) {
 // If file contains license header we respect it, if not we return the default header
 function cbGetHeaderToUseInLanguageFile($filename) {
 	global $line_break;
-	$filehdr = file_get_contents($filename, false, null, 0, 4000);  // should be enough to get very big headers
+	$filehdr = file_get_contents($filename, false, null, 0, 4000); // should be enough to get very big headers
 	$startcomm = strpos($filehdr, '/*');
 	$stopcomm = strpos($filehdr, '*/');
 	if (!($startcomm===false || $stopcomm===false)) {

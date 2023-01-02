@@ -18,15 +18,15 @@ class Vtiger_MailScannerInfo {
 	// name of this scanner
 	public $scannername=false;
 	// mail server to connect to
-	public $server    = false;
+	public $server = false;
 	// mail protocol to use
-	public $protocol  = false;
+	public $protocol = false;
 	// username to use
-	public $username  = false;
+	public $username = false;
 	// password to use
-	public $password  = false;
+	public $password = false;
 	// notls/tls/ssl
-	public $ssltype   = false;
+	public $ssltype = false;
 	// validate-certificate or novalidate-certificate
 	public $sslmethod = false;
 	// last successful connection url to use
@@ -37,13 +37,13 @@ class Vtiger_MailScannerInfo {
 	public $markas = false;
 
 	// is the scannered enabled?
-	public $isvalid   = false;
+	public $isvalid = false;
 
 	// Last scan on the folders.
-	public $lastscan  = false;
+	public $lastscan = false;
 
 	// Need rescan on the folders?
-	public $rescan    = false;
+	public $rescan = false;
 
 	// Rules associated with this mail scanner
 	public $rules = false;
@@ -105,7 +105,7 @@ class Vtiger_MailScannerInfo {
 		global $adb;
 		if ($this->scannerid) {
 			$this->lastscan = array();
-			$this->rescan   = array();
+			$this->rescan = array();
 			$lastscanres = $adb->pquery('SELECT * FROM vtiger_mailscanner_folders WHERE scannerid=?', array($this->scannerid));
 			$lastscancount = $adb->num_rows($lastscanres);
 			if ($lastscancount) {
@@ -114,7 +114,7 @@ class Vtiger_MailScannerInfo {
 					$scannedon =$adb->query_result($lastscanres, $lsindex, 'lastscan');
 					$nextrescan =$adb->query_result($lastscanres, $lsindex, 'rescan');
 					$this->lastscan[$folder] = $scannedon;
-					$this->rescan[$folder]   = $nextrescan != 0;
+					$this->rescan[$folder] = $nextrescan != 0;
 				}
 			}
 		}

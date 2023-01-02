@@ -17,7 +17,7 @@ class PrefixEvent extends VTEventHandler {
 	public function handleFilter($handlerType, $parameter) {
 		global $adb, $currentModule, $default_charset, $current_user;
 		if ($handlerType=='corebos.filter.ModuleSeqNumber.set') {
-			/****  Parameters:
+			/**** Parameters:
 			 * $mode = configure, $module, $req_str, $req_no,
 			 * $result => value to be returned
 			 * $returnResult => true if returned value should be used
@@ -30,13 +30,13 @@ class PrefixEvent extends VTEventHandler {
 				$focus = new AutoNumberPrefix();
 				$focus->id = '';
 				$focus->mode = '';
-				$focus->column_fields['prefix']   =$parameter[2];
-				$focus->column_fields['semodule'] =$parameter[1];
-				$focus->column_fields['format']   =$parameter[3];
-				$focus->column_fields['active']   =1;
-				$focus->column_fields['current']  =$parameter[3];
-				$focus->column_fields['default1'] =1;
-				$focus->column_fields['assigned_user_id']=1;
+				$focus->column_fields['prefix'] = $parameter[2];
+				$focus->column_fields['semodule'] = $parameter[1];
+				$focus->column_fields['format'] = $parameter[3];
+				$focus->column_fields['active'] = 1;
+				$focus->column_fields['current'] = $parameter[3];
+				$focus->column_fields['default1'] = 1;
+				$focus->column_fields['assigned_user_id'] = 1;
 				$focus->save('AutoNumberPrefix');
 				$parameter[4]=true;
 			} elseif ($adb->num_rows($check) != 0) {
@@ -52,7 +52,7 @@ class PrefixEvent extends VTEventHandler {
 			}
 			$parameter[5]=true;
 		} elseif ($handlerType=='corebos.filter.ModuleSeqNumber.increment') {
-			/****  Parameters:
+			/**** Parameters:
 			 * $mode = increment, $module, $req_str, $req_no
 			 * $result => value to be returned // overrided with crmid for workflow expressions
 			 * $returnResult => true if returned value should be used
@@ -92,7 +92,7 @@ class PrefixEvent extends VTEventHandler {
 			$parameter[4]=decode_html($prev_inv_no);
 			$parameter[5]=true;
 		} elseif ($handlerType=='corebos.filter.ModuleSeqNumber.get') {
-			/****  Parameters:
+			/**** Parameters:
 			 * $mod_seq_string, $mod_seq_prefix, $mod_seq_no,
 			 * $doNative => true if default functionality is to be invoked, false if not
 			 */
@@ -104,7 +104,7 @@ class PrefixEvent extends VTEventHandler {
 			$parameter[2] = $adb->query_result($parameter[0], 0, 'current');
 			$parameter[3] = false;
 		} elseif ($handlerType=='corebos.filter.ModuleSeqNumber.fillempty') {
-			/****  Parameters:
+			/**** Parameters:
 			 * $module
 			 * $result => value to be returned
 			 * $returnResult => true if returned value should be used

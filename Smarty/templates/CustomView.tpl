@@ -297,13 +297,52 @@ function mandatoryCheck() {
 	{/if}
   <tr><td colspan="4">&nbsp;</td></tr>
   <tr><td colspan="4" style="padding: 5px;">
-	<div align="center">
-	  <input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save"  name="button2" value="{$APP.LBL_SAVE_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
-	  {if $PERMITALL neq 'true'}
-	  	<input title="{$APP.LBL_NEW_BUTTON_TITLE}" accesskey="{$APP.LBL_NEW_BUTTON_KEY}" class="crmbutton small create" name="newsave" value="{$APP.LBL_NEW_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
-	  {/if}
-	  <input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" name="button2" onclick='window.history.back()' value="{$APP.LBL_CANCEL_BUTTON_LABEL}" type="button" />
-	</div>
+	<ul class="slds-button-group-list slds-align_absolute-center" name="cbCVButtonGroup">
+		<li>
+		<button
+			class="slds-button slds-button_neutral"
+			title="{'LBL_SAVE_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
+			accessKey="{'LBL_SAVE_BUTTON_KEY'|@getTranslatedString:$MODULE}"
+			onclick="return validateCV();"
+			type="submit"
+			name="button2">
+			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+			</svg>
+			{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}
+		</button>
+		</li>
+		{if $PERMITALL neq 'true'}
+			<li>
+			<button
+				class="slds-button slds-button_outline-brand"
+				title="{'LBL_NEW_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
+				accessKey="{'LBL_NEW_BUTTON_KEY'|@getTranslatedString:$MODULE}"
+				onclick="return validateCV();"
+				type="submit"
+				name="newsave">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+				</svg>
+				{'LBL_NEW_BUTTON_LABEL'|@getTranslatedString:$MODULE}
+			</button>
+			</li>
+		{/if}
+		<li>
+		<button
+			class="slds-button slds-button_text-destructive"
+			title="{'LBL_CANCEL_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
+			accessKey="{'LBL_CANCEL_BUTTON_KEY'|@getTranslatedString:$MODULE}"
+			onclick="window.history.back();"
+			type="button"
+			name="button2">
+			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
+			</svg>
+			{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE}
+		</button>
+		</li>
+	</ul>
   </td></tr>
   <tr><td colspan="4">&nbsp;</td></tr>
 </table>

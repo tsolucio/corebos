@@ -50,9 +50,9 @@ class MailManager_Connector {
 
 	/**
 	 * Connects to the Imap server with the given parameters
-	 * @param $model MailManager_Model_Mailbox Instance
-	 * $param $folder String optional - mail box folder name
-	 * @returns MailManager_Connector Object
+	 * @param object MailManager_Model_Mailbox Instance
+	 * @param string optional - mail box folder name
+	 * @return object MailManager_Connector
 	 */
 	public static function connectorWithModel($model, $folder = '') {
 		$port = 143; // IMAP
@@ -84,11 +84,11 @@ class MailManager_Connector {
 
 	/**
 	 * Opens up imap connection to the specified url
-	 * @param $url String - mail server url
-	 * @param $username String  - user name of the mail box
-	 * @param $password String  - pass word of the mail box
-	 * @param $baseUrl Optional - url of the mailserver excluding folder name.
-	 *	This is used to fetch the folders of the mail box
+	 * This is used to fetch the folders of the mail box
+	 * @param string mail server url
+	 * @param string user name of the mail box
+	 * @param string pass word of the mail box
+	 * @param string url of the mailserver excluding folder name.
 	 */
 	public function __construct($url, $username, $password, $baseUrl = false) {
 		$boxUrl = $this->convertCharacterEncoding(html_entity_decode($url), 'UTF7-IMAP', 'UTF-8'); //handle both utf8 characters and html entities
@@ -151,7 +151,7 @@ class MailManager_Connector {
 
 	/**
 	 * Reads mail box folders
-	 * @param string $ref Optional -
+	 * @param string folder to read
 	 */
 	public function folders($ref = '{folder}') {
 		if ($this->mFolders) {
@@ -175,7 +175,7 @@ class MailManager_Connector {
 
 	/**
 	 * Used to update the folders optionus
-	 * @param imap_stats flag $options
+	 * @param imap_stats flag
 	 */
 	public function updateFolders($options = SA_UNSEEN) {
 		$this->folders(); // Initializes the folder Instance
@@ -186,8 +186,8 @@ class MailManager_Connector {
 
 	/**
 	 * Updates the mail box's folder
-	 * @param MailManager_Model_Folder $folder - folder instance
-	 * @param $options imap_status flags like SA_UNSEEN, SA_MESSAGES etc
+	 * @param MailManager_Model_Folder folder instance
+	 * @param array imap_status flags like SA_UNSEEN, SA_MESSAGES etc
 	 */
 	public function updateFolder($folder, $options) {
 		$mailbox = $this->convertCharacterEncoding($folder->name($this->mBoxUrl), 'UTF7-IMAP', 'ISO-8859-1'); //Encode folder name
@@ -204,7 +204,7 @@ class MailManager_Connector {
 
 	/**
 	 * Returns MailManager_Model_Folder Instance
-	 * @param string $name - folder name
+	 * @param string folder name
 	 */
 	public function folderInstance($name) {
 		return new MailManager_Model_Folder($name);
@@ -212,9 +212,9 @@ class MailManager_Connector {
 
 	/**
 	 * Sets a list of mails with paging
-	 * @param string $folder - MailManager_Model_Folder Instance
-	 * @param Integer $start  - Page number
-	 * @param Integer $maxLimit - Number of mails
+	 * @param string MailManager_Model_Folder Instance
+	 * @param integer Page number
+	 * @param integer Number of mails
 	 */
 	public function folderMails($folder, $start, $maxLimit) {
 		$folderCheck = @imap_check($this->mBox);
@@ -275,7 +275,7 @@ class MailManager_Connector {
 
 	/**
 	 * Function which deletes the mails
-	 * @param string $msgno - List of message number seperated by commas.
+	 * @param string List of message number seperated by commas.
 	 */
 	public function deleteMail($msgno) {
 		$msgno = trim($msgno, ',');
@@ -288,8 +288,8 @@ class MailManager_Connector {
 
 	/**
 	 * Function which moves mail to another folder
-	 * @param string $msgno - List of message number separated by commas
-	 * @param string $folderName - folder name
+	 * @param string List of message number separated by commas
+	 * @param string folder name
 	 */
 	public function moveMail($msgno, $folderName) {
 		$msgno = trim($msgno, ',');
@@ -303,7 +303,7 @@ class MailManager_Connector {
 
 	/**
 	 * Creates an instance of Message
-	 * @param string $msgno - Message number
+	 * @param string Message number
 	 * @return MailManager_Model_Message
 	 */
 	public function openMail($msgno) {
@@ -313,7 +313,7 @@ class MailManager_Connector {
 
 	/**
 	 * Marks the mail as Unread
-	 * @param <String> $msgno - Message Number
+	 * @param string Message Number
 	 */
 	public function markMailUnread($msgno) {
 		imap_clearflag_full($this->mBox, $msgno, '\\Seen');
@@ -322,7 +322,7 @@ class MailManager_Connector {
 
 	/**
 	 * Marks the mail as Read
-	 * @param string $msgno - Message Number
+	 * @param string Message Number
 	 */
 	public function markMailRead($msgno) {
 		imap_setflag_full($this->mBox, $msgno, '\\Seen');
@@ -331,10 +331,10 @@ class MailManager_Connector {
 
 	/**
 	 * Searches the Mail Box with the query
-	 * @param string $query - imap search format
-	 * @param MailManager_Model_Folder $folder - folder instance
-	 * @param Integer $start - Page number
-	 * @param Integer $maxLimit - Number of mails
+	 * @param string imap search format
+	 * @param MailManager_Model_Folder folder instance
+	 * @param integer Page number
+	 * @param integer Number of mails
 	 */
 	public function searchMails($query, $folder, $start, $maxLimit) {
 		$nos = imap_search($this->mBox, $query);
@@ -371,7 +371,7 @@ class MailManager_Connector {
 
 	/**
 	 * Returns list of Folder for the Mail Box
-	 * @return Array folder list
+	 * @return array folder list
 	 */
 	public function getFolderList() {
 		$folderList = array();

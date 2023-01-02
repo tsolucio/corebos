@@ -80,8 +80,8 @@ function fnwriteRules(module, related, modulei18n) {
 	var tagName = document.getElementById(module+'_share');
 	var tagName2 = document.getElementById(module+'_access');
 	var tagName3 = document.getElementById('share_memberType');
-	var soucre =  document.getElementById('rules');
-	var soucre1 =  document.getElementById('relrules');
+	var soucre = document.getElementById('rules');
+	var soucre1 = document.getElementById('relrules');
 	var select1 = tagName.options[tagName.selectedIndex].text;
 	var select2 = tagName2.options[tagName2.selectedIndex].text;
 	var select3 = tagName3.options[tagName3.selectedIndex].text;

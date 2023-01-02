@@ -25,7 +25,7 @@ class concat_pdf extends setasign\Fpdi\TcpdfFpdi {
 	public $files = array();
 
 	public function setFiles($files) {
-		 $this->files = $files;
+		$this->files = $files;
 	}
 
 	public function concat() {

@@ -260,7 +260,7 @@ function massDownload() {
 			}
 		}
 	}
-	var count  = Object.keys(arrayobj).length;
+	var count = Object.keys(arrayobj).length;
 	var array_val = JSON.stringify(arrayobj);
 	if (count !== 0) {
 		window.location.href = 'index.php?action=DocumentsAjax&mode=ajax&ajax=true&file=SaveFile&module=Documents&file_id=' + array_val + '&act=massDldCnt';

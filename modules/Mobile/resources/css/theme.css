@@ -9,7 +9,6 @@
 *
 */
 
-
 /* Globals */
 /* Font
 -----------------------------------------------------------------------------------------------------------*/
@@ -542,7 +541,6 @@ html head + body .ui-body-b.ui-focus {
 	box-shadow: 0 0 12px #3388cc /*{b-active-background-color}*/;
 }
 
-
 /* C
 -----------------------------------------------------------------------------------------------------------*/
 /* Bar: Toolbars, dividers, slider track */
@@ -705,7 +703,6 @@ html head + body .ui-body-c.ui-focus {
 	-moz-box-shadow: 0 0 12px #3388cc /*{c-active-background-color}*/;
 	box-shadow: 0 0 12px #3388cc /*{c-active-background-color}*/;
 }
-
 
 /* D
 -----------------------------------------------------------------------------------------------------------*/
@@ -870,7 +867,6 @@ html head + body .ui-body-d.ui-focus {
 	box-shadow: 0 0 12px #3388cc /*{d-active-background-color}*/;
 }
 
-
 /* E
 -----------------------------------------------------------------------------------------------------------*/
 /* Bar: Toolbars, dividers, slider track */
@@ -1033,7 +1029,6 @@ html head + body .ui-body-e.ui-focus {
 	-moz-box-shadow: 0 0 12px #3388cc /*{e-active-background-color}*/;
 	box-shadow: 0 0 12px #3388cc /*{e-active-background-color}*/;
 }
-
 
 /* Structure */
 /* Disabled

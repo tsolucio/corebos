@@ -1,4 +1,4 @@
-<div class="slds-button-group" role="group">
+<div class="slds-button-group slds-template__container" role="group">
 	{foreach key=button_check item=button_label from=$BUTTONS}
 		{if $button_check eq 'del'}
 			<button type="button" class="slds-button slds-button_text-destructive" onclick="return massDelete('{$MODULE}')">
@@ -135,5 +135,31 @@
 				</div>
 			</div>
 		{/if}
+	{/if}
+	{if !empty($CUSTOM_LINKS.LISTVIEWACTION)}
+	<button class="slds-button slds-button_icon slds-button_icon-brand" style="margin-left: auto;" title="{$APP.TOGGLE_ACTIONS}" type="button"
+		onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {
+			document.getElementById('actioncolumn').style.display='block';
+			document.getElementById('lvgridcolumn').classList.add('slds-size_9-of-12');
+			document.getElementById('actioncolumn').classList.add('slds-size_3-of-12');
+			document.getElementById('action-on').style.display='block';
+			document.getElementById('action-off').style.display='none';
+		} else {
+			document.getElementById('actioncolumn').style.display='none';
+			document.getElementById('lvgridcolumn').classList.remove('slds-size_9-of-12');
+			document.getElementById('actioncolumn').classList.remove('slds-size_3-of-12');
+			document.getElementById('action-on').style.display='none';
+			document.getElementById('action-off').style.display='block';
+		}
+		window.dispatchEvent(new Event('resize'));{/literal}"
+		>
+		<svg class="slds-button__icon" id="action-on" style="display: block;">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#contract_alt"></use>
+		</svg>
+		<svg class="slds-button__icon" id="action-off" style="display: none;">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#expand_alt"></use>
+		</svg>
+		<span class="slds-assistive-text">{$APP.TOGGLE_ACTIONS}</span>
+	</button>
 	{/if}
 </div>

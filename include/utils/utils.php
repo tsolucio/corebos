@@ -60,7 +60,7 @@ function getBrowserVariables(&$smarty) {
 	global $currentModule,$current_user,$default_charset,$theme,$adb,$current_language;
 	$vars = array();
 	$vars['gVTModule'] = $currentModule;
-	$vars['gVTTheme']  = $theme;
+	$vars['gVTTheme'] = $theme;
 	$vars['default_charset'] = $default_charset;
 	if (empty($current_user)) {
 		$vars['gVTUserID'] = 0;
@@ -1356,15 +1356,15 @@ function getEmailParentsList($module, $id, $focus = false) {
 	$res = $adb->pquery('select fieldid from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)', array(getTabid($module), $fieldname));
 	$fieldid = $adb->query_result($res, 0, 'fieldid');
 
-	$hidden  = '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
-	$hidden .= '<input type="hidden" name="pmodule" value="'.$module.'">';
+	$hidden = '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
+	$hidden.= '<input type="hidden" name="pmodule" value="'.$module.'">';
 
 	$log->debug('< getEmailParentsList');
 	return $hidden;
 }
 
 /** This Function returns the current status of the specified Purchase Order.
- *  @param integer Purchase Order Id
+ * @param integer Purchase Order Id
  */
 function getPoStatus($po_id) {
 	global $log, $adb;
@@ -1428,8 +1428,8 @@ function deductFromProductDemand($productId, $qty) {
 }
 
 /** This Function returns the current product quantity in stock
- *  @param integer Product Id
- *  @return integer quantity in stock
+ * @param integer Product Id
+ * @return integer quantity in stock
  */
 function getProductQtyInStock($product_id) {
 	global $log, $adb;
@@ -1798,7 +1798,7 @@ function Graph_n_table_format($period_type, $date_value) {
 	global $log;
 	$log->debug('> Graph_n_table_format '.$period_type.','.$date_value);
 	$date_val=explode('-', $date_value);
-	if ($period_type=='month') {  //to get the vtiger_table format dates
+	if ($period_type=='month') {
 		$table_format=date('j', mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
 		$graph_format=date('D', mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
 	} elseif ($period_type=='week') {
@@ -2959,6 +2959,28 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 }
 //functions for asterisk integration end
 
+function insertIntoCrmEntityRel($crmid, $module, $relcrmid, $with_module) {
+	global $adb;
+	$rdo = $adb->pquery('INSERT INTO vtiger_crmentityrel(crmid, module, relcrmid, relmodule) VALUES(?,?,?,?)', array($crmid, $module, $relcrmid, $with_module));
+	$adb->pquery(
+		'INSERT INTO vtiger_crmentityreldenorm (crmid, module, relcrmid, relmodule) VALUES (?,?,?,?),(?,?,?,?)',
+		array($crmid, $module, $relcrmid, $with_module, $relcrmid, $with_module, $crmid, $module)
+	);
+	return $rdo;
+}
+
+function deleteFromCrmEntityRel($crmid, $relcrmid) {
+	global $adb;
+	$adb->pquery(
+		'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relcrmid=?) OR (relcrmid=? AND crmid=?)',
+		array($crmid, $relcrmid, $crmid, $relcrmid)
+	);
+	$adb->pquery(
+		'DELETE FROM vtiger_crmentityreldenorm WHERE (crmid=? AND relcrmid=?) OR (relcrmid=? AND crmid=?)',
+		array($crmid, $relcrmid, $crmid, $relcrmid)
+	);
+}
+
 //functions for settings page
 /**
  * this function returns the blocks for the settings page
@@ -3131,7 +3153,12 @@ function getRelationTables($module, $secmodule) {
 	}
 	$primary_obj = CRMEntity::getInstance($module);
 	$secondary_obj = CRMEntity::getInstance($secmodule);
-
+	if (($module=='Documents' && $secmodule=='DocumentFolders') || ($module=='DocumentFolders' && $secmodule=='Documents')) {
+		return array(
+			'vtiger_crmentityrel' => array('crmid','relcrmid'),
+			$primary_obj->table_name => $primary_obj->table_index
+		);
+	}
 	if (method_exists($primary_obj, 'setRelationTables')) {
 		$reltables = $primary_obj->setRelationTables($secmodule);
 	}
@@ -3331,7 +3358,7 @@ function isRecordExists($recordId) {
 /** Function to check if a number is an attachment ID
  * @param integer entity ID
  * @return boolean true if ID belongs to an attachment, false otherwise
-  */
+ */
 function is_attachmentid($id) {
 	global $adb, $log;
 	$log->debug('> is_attachmentid '.$id);
@@ -3801,25 +3828,25 @@ function retrieveCompanyDetails() {
 		array()
 	);
 	if ($query && $adb->num_rows($query) > 0) {
-		$companyDetails['name']     = $companyDetails['companyname'] = decode_html($adb->query_result($query, 0, 'companyname'));
-		$companyDetails['website']  = $adb->query_result($query, 0, 'website');
-		$companyDetails['email']  = $adb->query_result($query, 0, 'email');
-		$companyDetails['siccode']  = $adb->query_result($query, 0, 'siccode');
-		$companyDetails['accid']  = $adb->query_result($query, 0, 'accid');
-		$companyDetails['address']  = decode_html($adb->query_result($query, 0, 'address'));
-		$companyDetails['city']     = decode_html($adb->query_result($query, 0, 'city'));
-		$companyDetails['state']    = decode_html($adb->query_result($query, 0, 'state'));
-		$companyDetails['country']  = decode_html($adb->query_result($query, 0, 'country'));
+		$companyDetails['name'] = $companyDetails['companyname'] = decode_html($adb->query_result($query, 0, 'companyname'));
+		$companyDetails['website'] = $adb->query_result($query, 0, 'website');
+		$companyDetails['email'] = $adb->query_result($query, 0, 'email');
+		$companyDetails['siccode'] = $adb->query_result($query, 0, 'siccode');
+		$companyDetails['accid'] = $adb->query_result($query, 0, 'accid');
+		$companyDetails['address'] = decode_html($adb->query_result($query, 0, 'address'));
+		$companyDetails['city'] = decode_html($adb->query_result($query, 0, 'city'));
+		$companyDetails['state'] = decode_html($adb->query_result($query, 0, 'state'));
+		$companyDetails['country'] = decode_html($adb->query_result($query, 0, 'country'));
 		$companyDetails['postalcode'] = $companyDetails['code'] = decode_html($adb->query_result($query, 0, 'postalcode'));
-		$companyDetails['phone']    = $adb->query_result($query, 0, 'phone');
-		$companyDetails['fax']      = $adb->query_result($query, 0, 'fax');
+		$companyDetails['phone'] = $adb->query_result($query, 0, 'phone');
+		$companyDetails['fax'] = $adb->query_result($query, 0, 'fax');
 		for ($i=0; $i<$adb->num_rows($query); $i++) {
-			$path           = $adb->query_result($query, $i, 'path');
-			$attachmentsid  = $adb->query_result($query, $i, 'attachmentsid');
-			$favicon        = decode_html($adb->query_result($query, $i, 'favicon'));
-			$companylogo    = decode_html($adb->query_result($query, $i, 'companylogo'));
-			$applogo        = decode_html($adb->query_result($query, $i, 'applogo'));
-			$name           = $adb->query_result($query, $i, 'name'); // attachmentname
+			$path          = $adb->query_result($query, $i, 'path');
+			$attachmentsid = $adb->query_result($query, $i, 'attachmentsid');
+			$favicon       = decode_html($adb->query_result($query, $i, 'favicon'));
+			$companylogo   = decode_html($adb->query_result($query, $i, 'companylogo'));
+			$applogo       = decode_html($adb->query_result($query, $i, 'applogo'));
+			$name          = $adb->query_result($query, $i, 'name'); // attachmentname
 			if ($name == $favicon && !isset($companyDetails['favicon'])) {
 				$companyDetails['favicon'] = $path.$attachmentsid.'_'.$favicon;
 			}

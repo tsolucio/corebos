@@ -916,13 +916,26 @@ function getListViewCount(module, element, parentElement, url) {
 			elementList[i].style.display = 'none';
 		}
 		elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
+		var result = response.split('&#&#&#');
 		if (module != 'Documents' && typeof parentElement != 'undefined' && elementList.length !=0) {
 			for (i=0; i<elementList.length;) {
 				//No need to increment the count, as the element will be eliminated in the next step.
-				elementList[i].parentNode.innerHTML = response;
+				elementList[i].parentNode.innerHTML = result[0];
+			}
+			var el = document.getElementById('recordListRanget');
+			if (el) {
+				el.innerHTML = el.innerHTML + ' ' + result[1];
+			}
+			var el = document.getElementById('recordListRangeb');
+			if (el) {
+				el.innerHTML = el.innerHTML + ' ' + result[1];
 			}
 		} else {
-			parentElement.innerHTML = response;
+			parentElement.innerHTML = result[0];
+			var el = parentElement.parentElement.previousSibling.previousElementSibling;
+			if (el) {
+				el.innerHTML = el.innerHTML + ' ' + result[1];
+			}
 		}
 	});
 }

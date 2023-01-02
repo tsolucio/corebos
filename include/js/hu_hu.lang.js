@@ -459,4 +459,6 @@ var alert_arr = {
 	'LNK_DUPLICATE': 'Duplicate',
 	'LBL_COLLAPSE': 'Bezár',
 	'LBL_EXPAND': 'Kibont',
+	'currentuser': 'Current User',
+	'wfmodule': 'Workflow Module',
 };

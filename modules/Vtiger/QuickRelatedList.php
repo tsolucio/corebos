@@ -55,7 +55,7 @@ while ($rel = $adb->fetch_array($result)) {
 }
 $goto = getTranslatedString('LBL_JUMP_BTN');
 $add = getTranslatedString('LBL_CREATE');
-echo '<table  class="slds-table slds-table_cell-buffer slds-table_header-hidden">';
+echo '<table class="slds-table slds-table_cell-buffer slds-table_header-hidden">';
 foreach ($rls as $relid => $relinfo) {
 	$module = $relinfo['module'];
 	$label = $relinfo['label'];

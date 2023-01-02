@@ -146,7 +146,7 @@ function wsapp_RegisterHandler($type, $handlerClass, $handlerPath) {
 function wsapp_DeleteHandler($type) {
 	$type = (array)$type;
 	$db = PearDatabase::getInstance();
-	$query = 'DELETE FROM vtiger_wsapp_handlerdetails WHERE type IN('.  generateQuestionMarks($type).')';
+	$query = 'DELETE FROM vtiger_wsapp_handlerdetails WHERE type IN('.generateQuestionMarks($type).')';
 	$db->pquery($query, $type);
 }
 ?>

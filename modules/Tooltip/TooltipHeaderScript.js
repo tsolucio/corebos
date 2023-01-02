@@ -47,7 +47,7 @@ var TOOLTIP = {
 		var event_type = evtparams['event'];
 		var module = evtparams['module'];
 		var fieldname = evtparams['fieldname'];
-		var recordid  = evtparams['recordid'];
+		var recordid = evtparams['recordid'];
 		var node = evtparams['domnode'];
 		if (document.getElementById('status').style.display == 'block') {
 			this._relinguishStatusControl = true;

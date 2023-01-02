@@ -797,8 +797,8 @@ class Accounts extends CRMEntity {
 		global $adb;
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 		$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Potentials', true);
-		$pot_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable.' 
-			INNER JOIN vtiger_potential ON vtiger_crmentity.crmid=vtiger_potential.potentialid
+		$pot_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable
+			.' INNER JOIN vtiger_potential ON vtiger_crmentity.crmid=vtiger_potential.potentialid
 			LEFT JOIN vtiger_account ON vtiger_account.accountid=vtiger_potential.related_to
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_potential.related_to=?';
 		$pot_res = $adb->pquery($pot_q, array($id));
@@ -816,8 +816,8 @@ class Accounts extends CRMEntity {
 		//Deleting Account related Quotes.
 		$crmEntityTable2 = CRMEntity::getcrmEntityTableAlias('Quotes');
 		$crmEntityTable3 = CRMEntity::getcrmEntityTableAlias('Quotes', true);
-		$quo_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable2.' 
-			INNER JOIN vtiger_quotes ON vtiger_crmentity.crmid=vtiger_quotes.quoteid
+		$quo_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable2
+			.' INNER JOIN vtiger_quotes ON vtiger_crmentity.crmid=vtiger_quotes.quoteid
 			INNER JOIN vtiger_account ON vtiger_account.accountid=vtiger_quotes.accountid
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_quotes.accountid=?';
 		$quo_res = $adb->pquery($quo_q, array($id));
@@ -946,14 +946,14 @@ class Accounts extends CRMEntity {
 		}
 		//crm-now changed query to search in groups too and make only owned contacts available
 		$query = 'SELECT vtiger_account.accountname, vtiger_account.account_no, vtiger_account.accountid, vtiger_account.email1
-					FROM vtiger_account 
-					INNER JOIN '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_account.accountid
-					LEFT JOIN vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid  
-					LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-					WHERE vtiger_crmentity.deleted=0';
+			FROM vtiger_account
+			INNER JOIN '.$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_account.accountid
+			LEFT JOIN vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+			WHERE vtiger_crmentity.deleted=0';
 		if (trim($emailaddress) != '') {
 			$query .= " AND ((vtiger_account.email1 like '". formatForSqlLike($emailaddress) ."') or vtiger_account.accountname REGEXP REPLACE('"
-				.$emailaddress."',' ','|') or vtiger_account.account_no REGEXP REPLACE('".$emailaddress."',' ','|'))  and vtiger_account.email1 != ''";
+				.$emailaddress."',' ','|') or vtiger_account.account_no REGEXP REPLACE('".$emailaddress."',' ','|')) and vtiger_account.email1!=''";
 		} else {
 			$query .= " AND (vtiger_account.email1 like '". formatForSqlLike($emailaddress) ."' and vtiger_account.email1 != '')";
 		}
@@ -1008,7 +1008,7 @@ class Accounts extends CRMEntity {
 				$account['accountname'] = in_array('accountname', $permitted_field_lists) ? $row['accountname'] : '';
 				$account['account_no'] = in_array('account_no', $permitted_field_lists)? $row['account_no'] : '';
 				$account['email1'] = in_array('email1', $permitted_field_lists) ? $row['email1'] : '';
-				$account['accountid'] =  $row['accountid'];
+				$account['accountid'] = $row['accountid'];
 				$list[] = $account;
 			}
 		}

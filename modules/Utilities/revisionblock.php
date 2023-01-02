@@ -39,7 +39,7 @@ class REVISIONBLOCK_DetailViewBlock extends DeveloperBlock {
 		include_once "modules/$currmodule/$currmodule.php";
 		$focus = new $currmodule;
 		$entityidfield = $focus->table_index;
-		$table_name  = $focus->table_name;
+		$table_name = $focus->table_name;
 		$queryfield = $adb->pquery(
 			'select columnname from vtiger_field join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid where uitype=4 and name=?',
 			array($currmodule)

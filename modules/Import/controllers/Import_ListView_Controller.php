@@ -67,7 +67,7 @@ class Import_ListView_Controller {
 
 		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $moduleName)) {
 			$count_result = $adb->query(mkCountQuery($list_query));
-			$noofrows = $adb->query_result($count_result, 0, "count");
+			$noofrows = $adb->query_result($count_result, 0, 'count');
 		} else {
 			$noofrows = null;
 		}

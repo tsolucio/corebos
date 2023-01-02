@@ -53,9 +53,9 @@ class smsFactor implements ISMSProvider {
 		if ($type) {
 			switch (strtoupper($type)) {
 				case self::SERVICE_AUTH:
-					return  self::SERVICE_URI . '';
+					return self::SERVICE_URI . '';
 				case self::SERVICE_SEND:
-					return  self::SERVICE_URI . '?method=SendSMS&';
+					return self::SERVICE_URI . '?method=SendSMS&';
 				case self::SERVICE_QUERY:
 					return self::SERVICE_URI . '?method=GetSMSStatus&';
 			}

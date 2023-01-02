@@ -167,9 +167,9 @@ class Calendar_RepeatEvents {
 				} elseif ($key == 'dtstart') {
 					$new_focus->column_fields['dtstart'] = $startDate . $userStartTime;
 				} elseif ($key == 'dtend') {
-					$new_focus->column_fields['dtend']   = $endDate . $userEndTime;
+					$new_focus->column_fields['dtend'] = $endDate . $userEndTime;
 				} else {
-					$new_focus->column_fields[$key]      = $value;
+					$new_focus->column_fields[$key] = $value;
 				}
 			}
 			if ($numberOfRepeats > 10 && $index > 10) {

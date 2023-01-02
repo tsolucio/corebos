@@ -72,7 +72,7 @@ if ($mode) {
 	$focus->mode = $mode;
 }
 if ($record) {
-	$focus->id  = $record;
+	$focus->id = $record;
 }
 if (isset($_REQUEST['inventory_currency'])) {
 	$focus->column_fields['currency_id'] = vtlib_purify($_REQUEST['inventory_currency']);

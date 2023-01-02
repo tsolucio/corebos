@@ -27,6 +27,7 @@
 		<a href="?_operation=edit&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_EDIT}</a>
 		<a href="?_operation=getrelatedlists&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_RELATED_LISTS}</a>
 		<a href="?_operation=duplicate&module={$_MODULE->name()}&record={$_RECORD->id()}&duplicatedfrom={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-recycle ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_DUPLICATE}</a>
+		<a href="?_operation=listModuleRecords&module={$_MODULE->name()}" class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext" data-transition="slideup" >{$_MODULE->label()}</a>
 		<a href="#" onclick="window.history.back()" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
 	{else}
 		<a href="?_operation=getrelatedlists&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_RELATED_LISTS}</a>

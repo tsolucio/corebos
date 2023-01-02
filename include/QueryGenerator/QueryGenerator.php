@@ -778,6 +778,9 @@ class QueryGenerator {
 			$alreadyinfrom[] = $baseTable;
 			if (isset($this->referenceModuleField) && is_array($this->referenceModuleField)) {
 				foreach ($this->referenceModuleField as $conditionInfo) {
+					if (empty($conditionInfo['relatedModule'])) {
+						continue;
+					}
 					if ($conditionInfo['relatedModule'] == 'Users' && $baseModule != 'Users'
 					 && !in_array('vtiger_users', $referenceFieldTableList) && !in_array('vtiger_users', $tableList)) {
 						$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
@@ -1075,6 +1078,9 @@ class QueryGenerator {
 		// This is added to support reference module fields
 		if (isset($this->referenceModuleField)) {
 			foreach ($this->referenceModuleField as $index => $conditionInfo) {
+				if (empty($conditionInfo['relatedModule'])) {
+					continue;
+				}
 				$handler = vtws_getModuleHandlerFromName($conditionInfo['relatedModule'], $current_user);
 				$meta_data = $handler->getMeta();
 				$fieldName = $conditionInfo['fieldName'];
