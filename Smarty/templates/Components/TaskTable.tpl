@@ -28,7 +28,7 @@ TASKActions
 	<tbody>
 	{foreach from=$TASKActions item=action}
 	<tr class="slds-hint-parent">
-		<td>
+		<td style="width:75%">
 		{if $SHOWIMAGE}
 		<span class="slds-media__figure">
 		<span class="slds-icon_container slds-icon_container_circle slds-icon-action-description" title="{$action.activitytype}">
@@ -41,7 +41,7 @@ TASKActions
 		{/if}
 		<span class="slds-truncate" title="{$action.cbsubject}">
 		{if isRecordExists($action.cbrecord)}
-			<a href="index.php?action=DetailView&module={$action.cbmodule}&record={$action.cbrecord}" target="pa{$action.cbrecord}_blank">{$action.cbsubject}</a>
+			<a href="index.php?action=DetailView&module={$action.cbmodule}&record={$action.cbrecord}" target="pa{$action.cbrecord}_blank">{$action.cbsubject|textlength_check:25}</a>
 		{else}
 			{$action.cbsubject}
 		{/if}
