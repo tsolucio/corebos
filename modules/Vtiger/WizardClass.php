@@ -374,11 +374,10 @@ class WizardActions extends WizardCustomFunctions {
 		);
 	}
 
-	public function MassCreate() {
+	public function MassCreate($target = array()) {
 		require_once 'include/Webservices/MassCreate.php';
 		global $current_user;
 		$subaction = isset($_REQUEST['subaction']) ? vtlib_purify($_REQUEST['subaction']) : '';
-		$target = array();
 		if (!empty($subaction)) {
 			$target = $this->$subaction();
 		}
