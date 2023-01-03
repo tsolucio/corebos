@@ -97,7 +97,7 @@ class WizardComponent {
 					}
 					if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined && ev.target.dataset.type == 'next') {
 						if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
-							this.WizardCustomFunction[this.ActiveStep] = 'GetCustodiaPrd';
+							this.WizardCustomFunction[0] = 'GetCustodiaPrd';
 							this.DuplicateProduct(ev);
 							return false;
 						}

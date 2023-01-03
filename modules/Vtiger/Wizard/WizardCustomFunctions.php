@@ -216,7 +216,8 @@ class WizardCustomFunctions {
 				'data' => array(
 					[$rid],
 					[$adb->query_result($result, 0, 'productid')]
-				)
+				),
+				'step' => vtlib_purify($_REQUEST['step'])
 			);
 			$this->module = 'ProductComponent';
 			$data = $this->Create_ProductComponent();
