@@ -70,7 +70,7 @@ class WizardComponent {
 		const ids = [
 			'btn-next',
 			'btn-back'
-		];		
+		];
 		for (let i in ids) {
 			this.el(ids[i]).addEventListener('click', function(event) {
 				const prc = wizard.Next(event);
@@ -88,8 +88,8 @@ class WizardComponent {
 	Next(ev) {
 		switch (this.Operation) {
 			case 'CREATEPRODUCTCOMPONENTS':
-				if (this.WizardFilterFromContext[this.ActiveStep] != '') {
-					this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep]);
+				if (this.WizardFilterFromContext[this.ActiveStep+1] != '') {
+					this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep+1]);
 				}
 				if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
