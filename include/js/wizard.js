@@ -70,7 +70,7 @@ class WizardComponent {
 		const ids = [
 			'btn-next',
 			'btn-back'
-		];		
+		];
 		for (let i in ids) {
 			this.el(ids[i]).addEventListener('click', function(event) {
 				const prc = wizard.Next(event);
@@ -88,8 +88,8 @@ class WizardComponent {
 	Next(ev) {
 		switch (this.Operation) {
 			case 'CREATEPRODUCTCOMPONENTS':
-				if (this.WizardFilterFromContext[this.ActiveStep] != '') {
-					this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep]);
+				if (this.WizardFilterFromContext[this.ActiveStep+1] != '') {
+					this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep+1]);
 				}
 				if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
@@ -97,6 +97,7 @@ class WizardComponent {
 					}
 					if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined && ev.target.dataset.type == 'next') {
 						if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
+							this.WizardCustomFunction[this.ActiveStep] = 'GetCustodiaPrd';
 							this.DuplicateProduct(ev);
 							return false;
 						}
@@ -367,13 +368,13 @@ class WizardComponent {
 			modulename: this.WizardCurrentModule[this.ActiveStep]
 		}).then(function(response) {
 			if (response) {
+				wizard.Context = response;
 				if (wizard.WizardCustomFunction[wizard.ActiveStep] != '') {
 					wizard.CallCustomFunction();
 				}
 				wizard.IsDuplicatedFromProduct[wizard.ActiveStep] = 1;
 				wizard.MoveToStep('');
 				wizard.CheckedRows[wizard.ActiveStep-1][1]= [response];
-				wizard.Context = response;
 				if (wizard.WizardFilterFromContext[wizard.ActiveStep] != '') {
 					wizard.FilterRows(ev, wizard.WizardFilterFromContext[wizard.ActiveStep], wizard.ActiveStep);
 				}
@@ -659,7 +660,7 @@ class WizardComponent {
 			delete this.IsDuplicatedFromProduct[this.ActiveStep-1];
 			return true;
 		}
-		const url = `${this.url}&wizardaction=CustomCreate&subaction=${this.WizardCustomFunction[this.ActiveStep]}&step=${this.ActiveStep}`;
+		const url = `${this.url}&wizardaction=CustomCreate&subaction=${this.WizardCustomFunction[this.ActiveStep]}&step=${this.ActiveStep}&rid=${this.Context.id}`;
 		let rows = [];
 		for (let i in this.CheckedRows[this.ActiveStep]) {
 			let ids = [];

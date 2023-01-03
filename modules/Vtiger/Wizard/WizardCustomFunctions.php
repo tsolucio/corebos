@@ -72,6 +72,9 @@ class WizardCustomFunctions {
 		$UsersTabid = vtws_getEntityId('Users');
 		$ProductsTabid = vtws_getEntityId('Products');
 		$data = json_decode($_REQUEST['data'], true);
+		if (is_array($_REQUEST['data'])) {
+			$data = $_REQUEST['data'];
+		}
 		$fromProduct = $data[0][0];
 		unset($data[0]);
 		$target = array();
@@ -195,6 +198,34 @@ class WizardCustomFunctions {
 		coreBOS_Session::set('DuplicatedRecords^parentpc^'.$parentpc, $parentpc);
 		MassCreate($target, $current_user);
 		return true;
+	}
+
+	public function GetCustodiaPrd() {
+		require_once 'modules/Products/Products.php';
+		global $adb;
+		$cnod = $adb->getColumnNames('vtiger_products');
+		if (!in_array('cassettacode', $cnod) || !in_array('productcode', $cnod)) {
+			return 0;
+		}
+		$rid = vtlib_purify($_REQUEST['rid']);
+		$focus = new Products;
+		$focus->retrieve_entity_info($rid, 'Products');
+		$result = $adb->pquery('select productid from vtiger_products inner join vtiger_crmentity on crmid=productid where deleted=0 and cassettacode=?', array($focus->column_fields['product_code']));
+		if ($adb->num_rows($result) == 1) {
+			$_REQUEST = array(
+				'data' => array(
+					[$rid],
+					[$adb->query_result($result, 0, 'productid')]
+				)
+			);
+			$this->module = 'ProductComponent';
+			$data = $this->Create_ProductComponent();
+			if (empty($data)) {
+				return 0;
+			}
+			return $this->MassCreate($data);
+		}
+		return 0;
 	}
 }
 ?>

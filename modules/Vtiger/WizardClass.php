@@ -179,20 +179,17 @@ class WizardActions extends WizardCustomFunctions {
 		$parentid = isset($_REQUEST['parentid']) ? vtlib_purify($_REQUEST['parentid']) : 0;
 		$required_action = isset($_REQUEST['required_action']) ? intval($_REQUEST['required_action']) : '';
 		$context = isset($_REQUEST['context']) ? $_REQUEST['context'] : '';
-		$filterFromContext = isset($_REQUEST['filterFromContext']) ? explode(',', $_REQUEST['filterFromContext']) : '';
+		$filterFromContext = isset($_REQUEST['filterFromContext']) ? json_decode($_REQUEST['filterFromContext'], true) : '';
 		if (isset($_REQUEST['query']) && !empty($_REQUEST['query']) && !$filtergrid) {
 			$sql = vtlib_purify($_REQUEST['query']);
 			$ctxConds = '';
 			if (!empty($filterFromContext)) {
-				foreach ($filterFromContext as $fieldCnx) {
-					$fldName = $fieldCnx;
-					if (strpos($fieldCnx, '.') !== false) {
-						list($table, $fldName) = explode('.', $fieldCnx);
-					}
-					if (!isset($context[$fldName])) {
+				foreach ($filterFromContext as $condX) {
+					$fldName = $condX['match'];
+					if (!isset($context[$condX['find']])) {
 						continue;
 					}
-					$ctxConds .= $adb->convert2Sql(' and '.$fieldCnx.' =? ', array($context[$fldName]));
+					$ctxConds .= $adb->convert2Sql(' and '.$condX['match'].' =? ', array($context[$condX['find']]));
 				}
 			}
 			$sql .= $ctxConds;
@@ -206,22 +203,28 @@ class WizardActions extends WizardCustomFunctions {
 			if ($filterrows) {
 				//filter records for the next step based on some givend ids
 				if (!empty($forids)) {
+					$qg->startGroup();
 					foreach ($forids as $id) {
 						$qg->addCondition('id', $id, 'e', 'or');
 					}
+					$qg->endGroup();
 				}
 				if (!empty($newRecords)) {
 					$step = vtlib_purify($_REQUEST['step']);
+					$qg->startGroup();
 					foreach ($newRecords[$step-1] as $id) {
 						$qg->addCondition('id', $id, 'e', 'or');
 					}
+					$qg->endGroup();
 				}
 			} elseif ($required_action == 'duplicate' && $this->module == 'Products' && $mode == 'SELECTPRODUCT') {
 				//specific use case
 				if (!empty($newRecords)) {
+					$qg->startGroup();
 					foreach ($newRecords[$step-1] as $id) {
 						$qg->addCondition('id', $id, 'e', 'or');
 					}
+					$qg->endGroup();
 					$page = 1;
 				}
 			} elseif ($filtergrid) {
@@ -247,9 +250,11 @@ class WizardActions extends WizardCustomFunctions {
 						}
 					} else {
 						//filter records for the next step based on some givend ids
+						$qg->startGroup();
 						foreach ($forids as $id) {
 							$qg->addReferenceModuleFieldCondition($forfield['relmodule'], $forfield['fieldname'], 'id', $id, 'e', 'or');
 						}
+						$qg->endGroup();
 					}
 				}
 			}
@@ -369,11 +374,10 @@ class WizardActions extends WizardCustomFunctions {
 		);
 	}
 
-	public function MassCreate() {
+	public function MassCreate($target = array()) {
 		require_once 'include/Webservices/MassCreate.php';
 		global $current_user;
 		$subaction = isset($_REQUEST['subaction']) ? vtlib_purify($_REQUEST['subaction']) : '';
-		$target = array();
 		if (!empty($subaction)) {
 			$target = $this->$subaction();
 		}
