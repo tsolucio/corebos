@@ -166,7 +166,7 @@ coreBOS_Session::set($currentModule.'_listquery', $list_query);
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
-$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
+$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW','LISTVIEWACTION','LISTVIEWBUTTON'), $customlink_params));
 
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 	$smarty->display('ListViewEntries.tpl');

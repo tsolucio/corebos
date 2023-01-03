@@ -107,6 +107,35 @@
 							</a>
 						</li>
 					{/if}
+					{if !isset($isDetailView) && empty($Module_Popup_Edit) && isset($CUSTOM_LINKS) && isset($CUSTOM_LINKS.LISTVIEWBUTTON)}
+						{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.LISTVIEWBUTTON}
+							{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
+							{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
+							{assign var="customlink_id" value=$CUSTOMLINK->linklabel|replace:' ':''}
+							{if $customlink_label eq ''}
+								{assign var="customlink_label" value=$customlink_href}
+							{else}
+								{* Pickup the translated label provided by the module *}
+								{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
+							{/if}
+							<li>
+								<button
+									class="slds-button slds-button_neutral"
+									title="{$customlink_label}"
+									onclick="{$customlink_href}"
+									type="button"
+									name="button">
+									{if $CUSTOMLINK->linkicon && strpos($CUSTOMLINK->linkicon, '}')>0}
+										{assign var="customlink_iconinfo" value=$CUSTOMLINK->linkicon|json_decode:true}
+										<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/{$customlink_iconinfo.library}-sprite/svg/symbols.svg#{$customlink_iconinfo.icon}"></use>
+										</svg>
+									{/if}
+									{$customlink_label}
+								</button>
+							</li>
+						{/foreach}
+					{/if}
 					{if isset($isDetailView) && $isDetailView && empty($Module_Popup_Edit)}
 						{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBUTTON}
 							{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBUTTON}

@@ -7,4 +7,11 @@
 	<classname>modifyReminderMoreColumns</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Business Actions type for List View Button</description>
+	<filename>build/changeSets/2023/addBAtypesForLVButton.php</filename>
+	<classname>addBAtypesForLVButton</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

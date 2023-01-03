@@ -140,7 +140,7 @@ if ($sql_error) {
 	$smarty->assign('CURRENT_PAGE_BOXES', '');
 	include_once 'vtlib/Vtiger/Link.php';
 	$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
-	$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
+	$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW','LISTVIEWACTION','LISTVIEWBUTTON'), $customlink_params));
 }
 $smarty->assign('IS_ADMIN', is_admin($current_user));
 if (isset($listview_header_search) && is_array($listview_header_search)) {
