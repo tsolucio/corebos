@@ -210,7 +210,7 @@ class WizardCustomFunctions {
 		$rid = vtlib_purify($_REQUEST['rid']);
 		$focus = new Products;
 		$focus->retrieve_entity_info($rid, 'Products');
-		$result = $adb->pquery('select productid from vtiger_products inner join vtiger_crmentity on crmid=productid where deleted=0 and cassettacode=?', array($focus->column_fields['product_code']));
+		$result = $adb->pquery('select productid from vtiger_products inner join vtiger_crmentity on crmid=productid where deleted=0 and cassettacode=? and productcategory=?', array($focus->column_fields['product_code'], 'Custodia'));
 		if ($adb->num_rows($result) == 1) {
 			$_REQUEST = array(
 				'data' => array(
