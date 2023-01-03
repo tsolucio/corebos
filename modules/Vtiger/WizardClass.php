@@ -203,22 +203,28 @@ class WizardActions extends WizardCustomFunctions {
 			if ($filterrows) {
 				//filter records for the next step based on some givend ids
 				if (!empty($forids)) {
+					$qg->startGroup();
 					foreach ($forids as $id) {
 						$qg->addCondition('id', $id, 'e', 'or');
 					}
+					$qg->endGroup();
 				}
 				if (!empty($newRecords)) {
 					$step = vtlib_purify($_REQUEST['step']);
+					$qg->startGroup();
 					foreach ($newRecords[$step-1] as $id) {
 						$qg->addCondition('id', $id, 'e', 'or');
 					}
+					$qg->endGroup();
 				}
 			} elseif ($required_action == 'duplicate' && $this->module == 'Products' && $mode == 'SELECTPRODUCT') {
 				//specific use case
 				if (!empty($newRecords)) {
+					$qg->startGroup();
 					foreach ($newRecords[$step-1] as $id) {
 						$qg->addCondition('id', $id, 'e', 'or');
 					}
+					$qg->endGroup();
 					$page = 1;
 				}
 			} elseif ($filtergrid) {
@@ -244,9 +250,11 @@ class WizardActions extends WizardCustomFunctions {
 						}
 					} else {
 						//filter records for the next step based on some givend ids
+						$qg->startGroup();
 						foreach ($forids as $id) {
 							$qg->addReferenceModuleFieldCondition($forfield['relmodule'], $forfield['fieldname'], 'id', $id, 'e', 'or');
 						}
+						$qg->endGroup();
 					}
 				}
 			}
