@@ -39,6 +39,8 @@ class WizardComponent {
 		this.ApplyFilter = [];
 		this.WizardSaveAction = [];
 		this.WizardSaveIsActive = [];
+		this.WizardFilterFromContext = [];
+		this.Context = {};
 		this.Operation = '';
 		this.ProceedToNextStep = true;
 		this.ResetWizard = true;
@@ -86,6 +88,9 @@ class WizardComponent {
 	Next(ev) {
 		switch (this.Operation) {
 			case 'CREATEPRODUCTCOMPONENTS':
+				if (this.WizardFilterFromContext[this.ActiveStep] != '') {
+					this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep]);
+				}
 				if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
 						return false;
@@ -107,7 +112,9 @@ class WizardComponent {
 					this.CheckedRows[this.ActiveStep-1] = [];
 					this.CheckedRows[this.ActiveStep] = [];
 					this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
-					this.WizardInstance[`wzgrid${this.ActiveStep-1}`].uncheckAll();
+					if (this.WizardInstance[`wzgrid${this.ActiveStep-1}`]) {
+						this.WizardInstance[`wzgrid${this.ActiveStep-1}`].uncheckAll();
+					}
 					return this.FilterRows(ev);
 				}
 				if (this.WizardMode[this.ActiveStep] == 'CREATEPRODUCTCOMPONENT') {
@@ -237,18 +244,23 @@ class WizardComponent {
 	 * Filter records for every step with direct query from map
 	 * @param {Object} event
 	 */
-	FilterRows(ev) {
+	FilterRows(ev, filterFromContext = '', currentIdx = '') {
 		const type = ev.target.dataset.type;
 		if (type == 'back') {
 			return true;
 		}
-		if (this.WizardFilterBy[this.ActiveStep+1] != '' && this.WizardInstance[`wzgrid${this.ActiveStep+1}`] !== undefined) {
-			const module = this.WizardCurrentModule[this.ActiveStep+1];
-			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setRequestParams({
+		if (currentIdx == '') {
+			currentIdx = this.ActiveStep+1;
+		}
+		if (this.WizardFilterBy[currentIdx] != '' && this.WizardInstance[`wzgrid${currentIdx}`] !== undefined) {
+			const module = this.WizardCurrentModule[currentIdx];
+			this.WizardInstance[`wzgrid${currentIdx}`].setRequestParams({
 				formodule: module,
-				query: this.WizardFilterBy[this.ActiveStep+1]
+				query: this.WizardFilterBy[currentIdx],
+				context: this.Context,
+				filterFromContext: filterFromContext
 			});
-			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
+			this.WizardInstance[`wzgrid${currentIdx}`].setPerPage(parseInt(20));
 		}
 		return true;
 	}
@@ -361,6 +373,10 @@ class WizardComponent {
 				wizard.IsDuplicatedFromProduct[wizard.ActiveStep] = 1;
 				wizard.MoveToStep('');
 				wizard.CheckedRows[wizard.ActiveStep-1][1]= [response];
+				wizard.Context = response;
+				if (wizard.WizardFilterFromContext[wizard.ActiveStep] != '') {
+					wizard.FilterRows(ev, wizard.WizardFilterFromContext[wizard.ActiveStep], wizard.ActiveStep);
+				}
 			}
 		});
 	}

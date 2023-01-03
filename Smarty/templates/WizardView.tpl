@@ -22,6 +22,7 @@
 		wizard.isModal = {$isModal};
 		wizard.gridInstance = '{$gridInstance}';
 		wizard.RecordID = '{$RecordID}';
+		wizard.IsDuplicatedFromProduct = [];
 		wizard.DeleteSession().then(function() {
 			window.addEventListener('DOMContentLoaded', () => {
 				wizard.Init();
