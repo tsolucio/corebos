@@ -118,8 +118,8 @@ class WizardView {
 			$smarty->assign('WizardGoBack', $this->goback);
 			$smarty->assign('WizardRequiredAction', $this->required_action);
 			$smarty->assign('WizardCustomFunction', $this->custom_function);
-			$smarty->assign('WizardContext', $this->filtercontext);
 			$smarty->assign('WizardModuleEditor', $this->module);
+			$smarty->assign('WizardContext', $this->filtercontext);
 			$WizardSaveAction = false;
 			if (!empty($this->save_action)) {
 				$WizardSaveAction = boolval($this->save_action);
@@ -178,8 +178,24 @@ class WizardActions extends WizardCustomFunctions {
 		$conditionquery = isset($_REQUEST['conditionquery']) ? vtlib_purify($_REQUEST['conditionquery']) : false;
 		$parentid = isset($_REQUEST['parentid']) ? vtlib_purify($_REQUEST['parentid']) : 0;
 		$required_action = isset($_REQUEST['required_action']) ? intval($_REQUEST['required_action']) : '';
+		$context = isset($_REQUEST['context']) ? $_REQUEST['context'] : '';
+		$filterFromContext = isset($_REQUEST['filterFromContext']) ? explode(',', $_REQUEST['filterFromContext']) : '';
 		if (isset($_REQUEST['query']) && !empty($_REQUEST['query']) && !$filtergrid) {
 			$sql = vtlib_purify($_REQUEST['query']);
+			$ctxConds = '';
+			if (!empty($filterFromContext)) {
+				foreach ($filterFromContext as $fieldCnx) {
+					$fldName = $fieldCnx;
+					if (strpos($fieldCnx, '.') !== false) {
+						list($table, $fldName) = explode('.', $fieldCnx);
+					}
+					if (!isset($context[$fldName])) {
+						continue;
+					}
+					$ctxConds .= $adb->convert2Sql(' and '.$fieldCnx.' =? ', array($context[$fldName]));
+				}
+			}
+			$sql .= $ctxConds;
 		} else {
 			$forids = isset($_REQUEST['forids']) ? json_decode($_REQUEST['forids'], true) : array();
 			$forfield = isset($_REQUEST['forfield']) ? $_REQUEST['forfield'] : array();
