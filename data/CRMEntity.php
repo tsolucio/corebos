@@ -1989,9 +1989,7 @@ class CRMEntity {
 		$data['destinationRecordId'] = $return_id;
 		cbEventHandler::do_action('corebos.entity.link.delete', $data);
 
-		$query = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
-		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$adb->pquery($query, $params);
+		deleteFromCrmEntityRel($id, $return_id);
 
 		$fieldRes = $adb->pquery(
 			'SELECT tabid, tablename, columnname FROM vtiger_field WHERE fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE module=? AND relmodule=?)',
@@ -2482,7 +2480,7 @@ class CRMEntity {
 				if ($checkpresence && $adb->num_rows($checkpresence)) {
 					continue;
 				}
-				$adb->pquery('INSERT INTO vtiger_crmentityrel(crmid, module, relcrmid, relmodule) VALUES(?,?,?,?)', array($crmid, $module, $relcrmid, $with_module));
+				insertIntoCrmEntityRel($crmid, $module, $relcrmid, $with_module);
 			}
 		}
 	}
@@ -2507,10 +2505,7 @@ class CRMEntity {
 			if ($with_module == 'Documents') {
 				$adb->pquery('DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?', array($crmid, $relcrmid));
 			} else {
-				$adb->pquery(
-					'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND module=? AND relcrmid=? AND relmodule=?) OR (relcrmid=? AND relmodule=? AND crmid=? AND module=?)',
-					array($crmid, $module, $relcrmid, $with_module,$crmid, $module, $relcrmid, $with_module)
-				);
+				deleteFromCrmEntityRel($crmid, $relcrmid);
 			}
 			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		}
@@ -2655,7 +2650,7 @@ class CRMEntity {
 		if ($related_module != 'Users') {
 			$query .= ' INNER JOIN '.$other->crmentityTableAlias." ON vtiger_crmentity.crmid=$other->table_name.$other->table_index";
 		}
-		$query .= ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid='.$maintableid.' OR vtiger_crmentityrel.crmid='.$maintableid.')';
+		$query .= ' INNER JOIN vtiger_crmentityreldenorm ON vtiger_crmentityreldenorm.relcrmid='.$maintableid;
 		$query .= $more_relation;
 		if ($related_module != 'Users') {
 			$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = '.$other->crmentityTable.'.smownerid';
@@ -2664,7 +2659,7 @@ class CRMEntity {
 		} else {
 			$del_table = 'vtiger_users';
 		}
-		$query .= " WHERE {$del_table}.deleted = 0 AND (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
+		$query .= " WHERE {$del_table}.deleted = 0 AND vtiger_crmentityreldenorm.crmid=$id";
 
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 
@@ -3000,6 +2995,14 @@ class CRMEntity {
 					'UPDATE vtiger_crmentityrel SET crmid=? WHERE relcrmid=? AND relmodule=? AND crmid=? AND module=?',
 					array($entityId, $relcrmid, $relmodule, $transferId, $module)
 				);
+				$adb->pquery(
+					'UPDATE vtiger_crmentityreldenorm SET crmid=? WHERE relcrmid=? AND relmodule=? AND crmid=? AND module=?',
+					array($entityId, $relcrmid, $relmodule, $transferId, $module)
+				);
+				$adb->pquery(
+					'UPDATE vtiger_crmentityreldenorm SET relcrmid=? WHERE crmid=? AND module=? AND relcrmid=? AND relmodule=?',
+					array($entityId, $relcrmid, $relmodule, $transferId, $module)
+				);
 			}
 
 			// Pick the records to which the entity to be transfered is related, but do not pick the ones to which current entity is already related.
@@ -3014,6 +3017,14 @@ class CRMEntity {
 				$parmodule = $adb->query_result($parentRecords, $i, 'module');
 				$adb->pquery(
 					'UPDATE vtiger_crmentityrel SET relcrmid=? WHERE crmid=? AND module=? AND relcrmid=? AND relmodule=?',
+					array($entityId, $parcrmid, $parmodule, $transferId, $module)
+				);
+				$adb->pquery(
+					'UPDATE vtiger_crmentityreldenorm SET relcrmid=? WHERE crmid=? AND module=? AND relcrmid=? AND relmodule=?',
+					array($entityId, $parcrmid, $parmodule, $transferId, $module)
+				);
+				$adb->pquery(
+					'UPDATE vtiger_crmentityreldenorm SET crmid=? WHERE relcrmid=? AND relmodule=? AND crmid=? AND module=?',
 					array($entityId, $parcrmid, $parmodule, $transferId, $module)
 				);
 			}
@@ -3377,8 +3388,8 @@ class CRMEntity {
 
 		$query = '';
 		if ($pritablename == 'vtiger_crmentityrel') {
-			$condition = "($table_name.$column_name={$tmpname}.{$secfieldname} OR $table_name.$column_name={$tmpname}.{$prifieldname})";
-			$query = " left join vtiger_crmentityrel as $tmpname ON ($condvalue={$tmpname}.{$secfieldname} OR $condvalue={$tmpname}.{$prifieldname}) ";
+			$condition = "$table_name.$column_name={$tmpname}.{$prifieldname}";
+			$query = " left join vtiger_crmentityreldenorm as $tmpname ON $condvalue={$tmpname}.{$secfieldname} ";
 		} elseif (strripos($pritablename, 'rel') === (strlen($pritablename) - 3)) {
 			$instance = self::getInstance($module);
 			$sectableindex = $instance->tab_name_index[$sectablename];

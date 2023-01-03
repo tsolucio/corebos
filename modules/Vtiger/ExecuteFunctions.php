@@ -73,7 +73,7 @@ switch ($functiontocall) {
 		break;
 	case 'getProductServiceAutocomplete':
 		include_once 'include/Webservices/CustomerPortalWS.php';
-		$limit =  isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
+		$limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
 		$ret = getProductServiceAutocomplete($_REQUEST['term'], array(), $limit);
 		break;
 	case 'getEntityName':
@@ -103,6 +103,35 @@ switch ($functiontocall) {
 				}
 			}
 		}
+		break;
+	case 'getFieldValuesFromRecordRecursively':
+		$moduleName = vtlib_purify($_REQUEST['moduleName']);
+		$value = vtlib_purify($_REQUEST['value']);
+		$fieldsArray = explode(".", $value);
+		// remove all $ signs
+		array_walk($fieldsArray, function (&$item, $key) {
+			$item = substr($item, 1);
+		});
+		$firstFieldRecordID = vtlib_purify($_REQUEST['firstFieldRecordID']);
+
+		$result = '';
+		$currentFieldvalue = $firstFieldRecordID;
+		foreach ($fieldsArray as $key => $fieldName) {
+			if ($key == 0) {
+				continue;
+			}
+			$queryGenerator = new QueryGenerator(getSalesEntityType($currentFieldvalue), $current_user);
+			$queryGenerator->setFields(explode(',', $fieldName));
+			$queryGenerator->addCondition('id', $currentFieldvalue, 'e');
+			$query = $queryGenerator->getQuery();
+			if (count($fieldsArray) == $key + 1) {
+				$result = $adb->query($query)->fields;
+			} else {
+				$result = $adb->query($query)->fields[0];
+			}
+			$currentFieldvalue = $result;
+		}
+		$ret = $result;
 		break;
 	case 'getFieldValuesFromSearch':
 		$ret = array();
@@ -242,7 +271,7 @@ switch ($functiontocall) {
 		$startDate = vtlib_purify($_REQUEST['startFrom']);
 		$endDate = vtlib_purify($_REQUEST['endFrom']);
 		$format = isset($_REQUEST['dateFormat']) ? vtlib_purify($_REQUEST['dateFormat']) : 'Y-m-d';
-		$ret =  DateTimeField::getWeekendDates($startDate, $endDate, $format);
+		$ret = DateTimeField::getWeekendDates($startDate, $endDate, $format);
 		break;
 	case 'ValidationLoad':
 		$valmod = vtlib_purify($_REQUEST['valmodule']);
@@ -514,7 +543,7 @@ switch ($functiontocall) {
 				$grid->tabid = $tabid;
 				$grid->entries = $perPage;
 				$grid->orderBy = $orderBy;
-				$grid->sortColumn =  $sortColumn;
+				$grid->sortColumn = $sortColumn;
 				$grid->currentPage = $page;
 				$grid->searchUrl = $search;
 				$grid->searchtype = $searchtype;
@@ -619,6 +648,12 @@ switch ($functiontocall) {
 			'content' => $content
 		);
 		break;
+	case 'setNotificationStatus':
+		$adb->pquery(
+			'update vtiger_activity_reminder_popup set status=? WHERE moreinfo->"$.id"=?',
+			[vtlib_purify($_REQUEST['status']), vtlib_purify($_REQUEST['remid'])]
+		);
+		break;
 	case 'getFieldsAttributes':
 		$fields = vtlib_purify($_REQUEST['fields']);
 		$modulename = vtlib_purify($_REQUEST['modulename']);
@@ -669,16 +704,16 @@ switch ($functiontocall) {
 			$grid = new GridListView('Utilities');
 			$q = 'select * from vtiger_ws_clickhousetables';
 			$field_lists = array(
-				'id' =>  array('vtiger_ws_clickhousetables'=>'id'),
+				'id' => array('vtiger_ws_clickhousetables'=>'id'),
 				'ws_name' => array('vtiger_ws_clickhousetables'=>'ws_name'),
-				'table_name' =>  array('vtiger_ws_clickhousetables'=>'table_name') ,
-				'access' =>  array('vtiger_ws_clickhousetables'=>'access'),
-				'create' =>  array('vtiger_ws_clickhousetables'=>'create'),
-				'read' =>  array('vtiger_ws_clickhousetables'=>'read'),
-				'write' =>  array('vtiger_ws_clickhousetables'=>'write'),
-				'delete' =>  array('vtiger_ws_clickhousetables'=>'delete'),
+				'table_name' => array('vtiger_ws_clickhousetables'=>'table_name') ,
+				'access' => array('vtiger_ws_clickhousetables'=>'access'),
+				'create' => array('vtiger_ws_clickhousetables'=>'create'),
+				'read' => array('vtiger_ws_clickhousetables'=>'read'),
+				'write' => array('vtiger_ws_clickhousetables'=>'write'),
+				'delete' => array('vtiger_ws_clickhousetables'=>'delete'),
 			);
-			 $ret =  $grid->gridTableBasedEntries($q, $field_lists, 'vtiger_ws_clickhousetables');
+			$ret = $grid->gridTableBasedEntries($q, $field_lists, 'vtiger_ws_clickhousetables');
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
 			$table_name = $_REQUEST['table_name'];
 			$ws_name = $_REQUEST['ws_name'];

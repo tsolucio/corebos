@@ -464,6 +464,10 @@ class corebos_woocommerce {
 				'delete from vtiger_crmentityrel where (crmid=? and relmodule=?) OR (relcrmid=? and module=?)',
 				array($crmid, 'wcProductCategory', $crmid, 'wcProductCategory')
 			);
+			$adb->pquery(
+				'delete from vtiger_crmentityreldenorm where (crmid=? and relmodule=?) OR (relcrmid=? and module=?)',
+				array($crmid, 'wcProductCategory', $crmid, 'wcProductCategory')
+			);
 			// establish relations
 			$cats = array();
 			foreach ($send2cb['categories'] as $wccat) {

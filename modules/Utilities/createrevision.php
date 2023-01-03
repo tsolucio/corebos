@@ -29,7 +29,7 @@ function dq_recoverRevision($currentcrmid, $newcrmid, $module) {
 	include_once "modules/$module/$module.php";
 	$focus = new $module;
 	$entityidfield = $focus->table_index;
-	$table_name  = $focus->table_name;
+	$table_name = $focus->table_name;
 	$adb->pquery("update $table_name set revisionactiva=0 where $entityidfield=?", array($currentcrmid));
 	$adb->pquery("update $table_name set revisionactiva=1 where $entityidfield=?", array($newcrmid));
 }

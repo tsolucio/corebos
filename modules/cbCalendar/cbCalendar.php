@@ -42,7 +42,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	public $tab_name_index = array(
 		'vtiger_crmentity' => 'crmid',
-		'vtiger_activity'   => 'activityid',
+		'vtiger_activity' => 'activityid',
 		'vtiger_activity_reminder'=>'activity_id',
 		'vtiger_recurringevents'=>'activityid',
 		'vtiger_activitycf' => 'activityid',
@@ -221,7 +221,7 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to insert values in vtiger_recurringevents table for the specified tablename,module
-	  * @param $recurObj -- Recurring Object:: Type varchar
+	 * @param string Recurring Object
 	 */
 	public function insertIntoRecurringTable(&$recurObj) {
 		global $log,$adb;
@@ -290,13 +290,13 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to insert values in activity_reminder_popup table for the specified module
-	  * @param string module
+	 * @param string module
 	 */
 	public function insertIntoActivityReminderPopup($cbmodule) {
 		self::addNotificationReminder($cbmodule, $this->id, $this->column_fields['dtstart']);
 	}
 
-	public static function addNotificationReminder($cbmodule, $cbrecord, $dtstart) {
+	public static function addNotificationReminder($cbmodule, $cbrecord, $dtstart, $owner = 0, $relwith = 0, $action = '', $moreinfo = '') {
 		global $adb;
 		coreBOS_Session::delete('next_reminder_time');
 		if (isset($cbmodule) && isset($cbrecord)) {
@@ -310,21 +310,191 @@ class cbCalendar extends CRMEntity {
 			if ($adb->num_rows($reminderidres) > 0) {
 				$reminderid = $adb->query_result($reminderidres, 0, 'reminderid');
 			}
-
+			if (empty($relwith) && !empty($cbrecord)) {
+				$relwith = getRelatedAccountContact($cbrecord);
+			}
 			if (isset($reminderid)) {
-				$callback_query = 'UPDATE vtiger_activity_reminder_popup set status=0, date_start=?, time_start=? WHERE reminderid=?';
-				$callback_params = array($cbdate, $cbtime, $reminderid);
+				$callback_query = 'UPDATE vtiger_activity_reminder_popup set status=0, date_start=?, time_start=?, ownerid=?, relwith=?, moreaction=?, moreinfo=? WHERE reminderid=?';
+				$callback_params = array($cbdate, $cbtime, $owner, $relwith, $action, $moreinfo, $reminderid);
 			} else {
-				$callback_query = 'INSERT INTO vtiger_activity_reminder_popup (semodule, recordid, date_start, time_start, status) VALUES (?,?,?,?,0)';
-				$callback_params = array($cbmodule, $cbrecord, $cbdate, $cbtime);
+				$callback_query = 'INSERT INTO vtiger_activity_reminder_popup (semodule, recordid, date_start, time_start, status, ownerid, relwith, moreaction, moreinfo) VALUES (?,?,?,?,0,?,?,?,?)';
+				$callback_params = array($cbmodule, $cbrecord, $cbdate, $cbtime, $owner, $relwith, $action, $moreinfo);
 			}
 
 			$adb->pquery($callback_query, $callback_params);
 		}
 	}
 
+	public static function getActionElement($reminderid, $cbmodule, $cbrecord, $moreinfo, $cbdate, $cbtime, $cbaction, $cbreaded) {
+		global $current_user;
+		$activity = array();
+		if ($cbmodule == 'cbCalendar') {
+			$focus = CRMEntity::getInstance($cbmodule);
+			$focus->retrieve_entity_info($cbrecord, $cbmodule);
+			$cbsubject = $focus->column_fields['subject'];
+			$cbactivitytype = getTranslatedString($focus->column_fields['activitytype'], 'cbCalendar');
+			$cbdate = $focus->column_fields['date_start'];
+			$cbtime = $focus->column_fields['time_start'];
+			$cbstatus = getTranslatedString($focus->column_fields['eventstatus'], 'cbCalendar');
+			switch ($focus->column_fields['activitytype']) {
+				case 'Call':
+					$activity['activityimage'] = array('action', 'call');
+					break;
+				case 'Task':
+					$activity['activityimage'] = array('utility', 'event');
+					break;
+				case 'Meeting':
+					$activity['activityimage'] = array('utility', 'people');
+					break;
+				default:
+					$activity['activityimage'] = array('utility', 'date_time');
+					break;
+			}
+		} else {
+			// For non-calendar records.
+			if (empty($cbrecord)) {
+				$moreinfo = json_decode(html_entity_decode($moreinfo, ENT_QUOTES), true);
+				$cbsubject = $moreinfo['subject'];
+				$cbactivitytype = $moreinfo['subtitle'];
+				$activity['activityimage'] = $moreinfo['icon'];
+			} else {
+				$cbsubject = array_values(getEntityName($cbmodule, $cbrecord));
+				$cbsubject = $cbsubject[0];
+				$cbactivitytype = getTranslatedString($cbmodule, $cbmodule);
+				$mod = CRMEntity::getInstance($cbmodule);
+				$activity['activityimage'] = [$mod->moduleIcon['library'], $mod->moduleIcon['icon']];
+			}
+			if (!empty($cbaction)) {
+				$strtemplate = new Vtiger_StringTemplate();
+				$strtemplate->assign('RECORD', $cbrecord);
+				$cbaction = json_decode(html_entity_decode($cbaction, ENT_QUOTES), true);
+				$activity['cbactionlabel'] = $cbaction['label'];
+				$activity['cbactionlink'] = $strtemplate->merge($cbaction['link']);
+				$activity['cbactiontype'] = isset($cbaction['type']) ? $cbaction['type'] : 'click';
+			}
+			$cbstatus = '';
+		}
+		if ($cbtime != '') {
+			$date = new DateTimeField($cbdate.' '.$cbtime);
+			$cbtime = $date->getDisplayTime();
+			$cbdate = $date->getDisplayDate();
+			if (empty($current_user->hour_format)) {
+				$format = '24';
+			} else {
+				$format = $current_user->hour_format;
+			}
+			$cbtimeArr = getaddEventPopupTime($cbtime, '', $format);
+			$cbtime = $cbtimeArr['starthour'].':'.$cbtimeArr['startmin'].''.$cbtimeArr['startfmt'];
+		}
+
+		// Appending recordid we can get unique callback dom id for that record.
+		$popupid = "ActivityReminder_$cbrecord";
+		$cbcolor = '';
+		if ($cbdate <= date('Y-m-d') && !($cbdate == date('Y-m-d') && $cbtime > date('H:i'))) {
+			$cbcolor= '#FF1515';
+		}
+		$activity['popupid'] = $popupid;
+		$activity['cbreminderid'] = $reminderid;
+		$activity['cbdate'] = $cbdate;
+		$activity['cbtime'] = $cbtime;
+		$activity['cbsubject'] = $cbsubject;
+		$activity['cbmodule'] = $cbmodule;
+		$activity['cbrecord'] = $cbrecord;
+		$activity['cbstatus'] = $cbstatus;
+		$activity['cbcolor'] = $cbcolor;
+		$activity['activitytype'] = $cbactivitytype;
+		$activity['cbreaded'] = $cbreaded;
+		return $activity;
+	}
+
+	public static function setToDoListSmarty($ACTIVITY, $smarty) {
+		$smarty->assign('TASKItemID', $ACTIVITY['popupid']);
+		$smarty->assign('TASKItemRead', $ACTIVITY['cbreaded']);
+		$smarty->assign('TASKImage', $ACTIVITY['activityimage']);
+		$smarty->assign('TASKType', $ACTIVITY['activitytype']);
+		$smarty->assign('TASKTitle', vtlib_purify($ACTIVITY['cbsubject']));
+		$smarty->assign('TASKSubtitle', vtlib_purify($ACTIVITY['activitytype'].(empty($ACTIVITY['cbstatus']) ? '' : ' - '.$ACTIVITY['cbstatus'])));
+		$smarty->assign('TASKSubtitleColor', vtlib_purify($ACTIVITY['cbcolor']));
+		$smarty->assign('TASKStatus', vtlib_purify($ACTIVITY['cbdate'].' '.$ACTIVITY['cbtime']));
+		$actions = array();
+		if (isRecordExists($ACTIVITY['cbrecord'])) {
+			$actions[getTranslatedString('LBL_VIEW', 'Settings')] = array(
+				'type' => 'link',
+				'action' => 'index.php?action=DetailView&module='.$ACTIVITY['cbmodule'].'&record='.$ACTIVITY['cbrecord'],
+			);
+		}
+		if ($ACTIVITY['cbmodule']=='cbCalendar') {
+			$actions[getTranslatedString('LBL_POSTPONE', 'Calendar4You')] = array(
+				'type' => 'click',
+				'action' => "ActivityReminderPostponeCallback('cbCalendar', '".$ACTIVITY['cbrecord']."', '".$ACTIVITY['cbreminderid']."');ActivityReminderRemovePopupDOM('".$ACTIVITY['popupid']."');"
+			);
+		} elseif (!empty($ACTIVITY['cbactionlink'])) {
+			$actions[getTranslatedString($ACTIVITY['cbactionlabel'], $ACTIVITY['cbmodule'])] = array(
+				'type' => empty($ACTIVITY['cbactiontype']) ? 'click' : $ACTIVITY['cbactiontype'],
+				'action' => $ACTIVITY['cbactionlink']
+			);
+		}
+		$actions[getTranslatedString('LBL_HIDE')] = array(
+			'type' => 'click',
+			'action' => "ActivityReminderCallbackReset(0, '".$ACTIVITY['popupid']."');ActivityReminderRemovePopupDOM('".$ACTIVITY['popupid']."');"
+		);
+		$smarty->assign('TASKActions', $actions);
+	}
+
+	public static function printToDoListCards($activities_reminder) {
+		$smarty = new vtigerCRM_Smarty;
+		$list = '';
+		foreach ($activities_reminder as $ACTIVITY) {
+			self::setToDoListSmarty($ACTIVITY, $smarty);
+			$list .= $smarty->fetch('Components/TaskItem.tpl');
+		}
+		return $list;
+	}
+
+	public static function printToDoListTable($actions) {
+		$smarty = new vtigerCRM_Smarty;
+		$smarty->assign('TASKActions', $actions);
+		return $smarty->fetch('Components/TaskTable.tpl');
+	}
+
+	public static function getActionsQuery($user, $date, $date_inpast, $time, $limit, $status = '', $relwith = 0) {
+		global $adb;
+		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCalendar');
+		$statcond = $status == '' ? '' : ' AND (vtiger_activity_reminder_popup.status=0 || vtiger_activity_reminder_popup.status=1)';
+		$relcond = $relwith == 0 ? '' : $adb->convert2Sql(' AND (vtiger_activity_reminder_popup.relwith=? || vtiger_activity_reminder_popup.recordid=?)', [$relwith, $relwith]);
+		return
+		'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
+		.' FROM vtiger_activity_reminder_popup'
+		.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
+		.' inner join vtiger_activity on vtiger_activity.activityid = vtiger_activity_reminder_popup.recordid '
+		.' WHERE vtiger_crmentity.smownerid = '.$user->id.' and vtiger_crmentity.deleted = 0 '
+		." AND (vtiger_activity.activitytype not in ('Emails') and vtiger_activity.eventstatus not in ('','Held','Completed','Deferred'))"
+		." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
+		."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
+		." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
+		." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))))"
+		.' UNION '
+		.'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
+		.' FROM vtiger_activity_reminder_popup'
+		.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
+		.' WHERE vtiger_crmentity.smownerid = '.$user->id.' and vtiger_crmentity.deleted=0 and vtiger_activity_reminder_popup.semodule!='."'cbCalendar'".$statcond
+		." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
+		."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
+		." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
+		." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))))"
+		.' UNION '
+		.'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
+		.' FROM vtiger_activity_reminder_popup'
+		.' WHERE (vtiger_activity_reminder_popup.ownerid=-1 or vtiger_activity_reminder_popup.ownerid='.$user->id.')'.$statcond.$relcond
+		." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
+		."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
+		." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
+		." AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))))"
+		.' ORDER BY date_start DESC limit 0, '.$limit;
+	}
+
 	/** Function to insert values in vtiger_activity_remainder table
-	  * @param $recurid
+	 * @param $recurid
 	 */
 	public function insertIntoReminderTable($recurid) {
 		global $log;
@@ -353,11 +523,11 @@ class cbCalendar extends CRMEntity {
 
 	/**
 	 * Function to get reminder for activity
-	 * @param  integer   $activity_id     - activity id
-	 * @param  string    $reminder_time   - reminder time
-	 * @param  integer   $reminder_sent   - 0 or 1
-	 * @param  integer   $recurid         - recuring eventid
-	 * @param  string    $remindermode    - string like 'edit'
+	 * @param integer activity id
+	 * @param string reminder time
+	 * @param integer 0 or 1
+	 * @param integer recuring eventid
+	 * @param string string like 'edit'
 	 */
 	public function activity_reminder($activity_id, $reminder_time, $reminder_sent = 0, $recurid = 0, $remindermode = '') {
 		global $log, $adb;
@@ -388,9 +558,9 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to insert values in vtiger_invitees table for the specified module,tablename ,invitees_array
-	  * @param $table_name -- table name:: Type varchar
-	  * @param $module -- module:: Type varchar
-	  * @param $invitees_array Array
+	 * @param string table name
+	 * @param string module
+	 * @param array
 	 */
 	public function insertIntoInviteeTable($module, $invitees_array) {
 		global $log,$adb;
@@ -407,7 +577,6 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to insert values in vtiger_salesmanactivityrel table for the specified module
-	  * @param $module -- module:: Type varchar
 	*/
 	public function insertIntoSmActivityRel() {
 		global $adb;
@@ -461,7 +630,7 @@ class cbCalendar extends CRMEntity {
 				}
 			}
 		}
-		$cont_name  = trim($cont_name, ', ');
+		$cont_name = trim($cont_name, ', ');
 		$mail_data = array();
 		$mail_data['user_id'] = $this->column_fields['assigned_user_id'];
 		$mail_data['subject'] = $this->column_fields['subject'];
@@ -508,8 +677,8 @@ class cbCalendar extends CRMEntity {
 
 	/**
 	 * Function to get Activity related Contacts
-	 * @param  integer   $id      - activityid
-	 * returns related Contacts record in array format
+	 * @param integer activityid
+	 * @return array related Contacts record in array format
 	 */
 	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule, $adb;
@@ -604,18 +773,18 @@ class cbCalendar extends CRMEntity {
 			global $adb;
 			set_time_limit(0);
 			$rs = $adb->query('select vtiger_seactivityrel.crmid, activityid
-					from vtiger_seactivityrel
-					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_seactivityrel.crmid
-					where deleted=0 and activityid>0');
+				from vtiger_seactivityrel
+				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seactivityrel.crmid
+				where deleted=0 and activityid>0');
 			$upd = 'update vtiger_activity set rel_id=? where activityid=?';
 			while ($act = $adb->fetch_array($rs)) {
 				$adb->pquery($upd, array($act['crmid'],$act['activityid']));
 			}
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Contacts');
 			$rs = $adb->query('select activityid, contactid
-					from vtiger_cntactivityrel
-					inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_cntactivityrel.contactid
-					where deleted=0');
+				from vtiger_cntactivityrel
+				inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_cntactivityrel.contactid
+				where deleted=0');
 			$upd = 'update vtiger_activity set cto_id=? where activityid=?';
 			$actid = 0;
 			while ($act = $adb->fetch_array($rs)) {
@@ -627,7 +796,7 @@ class cbCalendar extends CRMEntity {
 			}
 			$adb->query("ALTER TABLE `vtiger_activity` CHANGE `date_start` `date_start` DATE NULL");
 			$adb->query("update vtiger_activity set eventstatus=status where activitytype='Task'");
-			$adb->query("UPDATE `vtiger_activity` SET 
+			$adb->query("UPDATE `vtiger_activity` SET
 				`dtstart`= str_to_date(concat(date_format(`date_start`,'%Y/%m/%d'),' ',`time_start`),'%Y/%m/%d %H:%i:%s'),
 				`dtend` = str_to_date(concat(date_format(`due_date`,'%Y/%m/%d'),' ',`time_end`),'%Y/%m/%d %H:%i:%s')");
 			$bck = $adb->getUniqueID('vtiger_blocks');
@@ -663,31 +832,31 @@ class cbCalendar extends CRMEntity {
 			$task->recepient = "\$(assigned_user_id : (Users) email1)";
 			$task->subject = "Calendar :  \$subject";
 			$task->content = '$(assigned_user_id : (Users) last_name) $(assigned_user_id : (Users) first_name) ,<br/>'
-					. '<b>Task Notification Details:</b><br/>'
-					. 'Subject : $subject<br/>'
-					. 'Start date and time : $dtstart ( $(general : (__VtigerMeta__) dbtimezone) ) <br/>'
-					. 'End date and time   : $dtend ( $(general : (__VtigerMeta__) dbtimezone) ) <br/>'
-					. 'Event type          : $activitytype <br/>'
-					. 'Status              : $eventstatus <br/>'
-					. 'Priority            : $taskpriority <br/>'
-					. 'Related To          : $(parent_id : (Leads) lastname) $(parent_id : (Leads) firstname) $(parent_id : (Accounts) accountname) '
-					. '$(parent_id : (Potentials) potentialname) $(parent_id : (HelpDesk) ticket_title) <br/>'
-					. 'Contact             : $(contact_id : (Contacts) lastname) $(contact_id : (Contacts) firstname) <br/>'
-					. 'Location            : $location <br/>'
-					. 'Description         : $description';
+				.'<b>Task Notification Details:</b><br/>'
+				.'Subject : $subject<br/>'
+				.'Start date and time : $dtstart ( $(general : (__VtigerMeta__) dbtimezone) ) <br/>'
+				.'End date and time   : $dtend ( $(general : (__VtigerMeta__) dbtimezone) ) <br/>'
+				.'Event type          : $activitytype <br/>'
+				.'Status              : $eventstatus <br/>'
+				.'Priority            : $taskpriority <br/>'
+				.'Related To          : $(parent_id : (Leads) lastname) $(parent_id : (Leads) firstname) $(parent_id : (Accounts) accountname) '
+				.'$(parent_id : (Potentials) potentialname) $(parent_id : (HelpDesk) ticket_title) <br/>'
+				.'Contact             : $(contact_id : (Contacts) lastname) $(contact_id : (Contacts) firstname) <br/>'
+				.'Location            : $location <br/>'
+				.'Description         : $description';
 			$taskManager->saveTask($task);
 			// Calendar workflow create follow up
 			$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
 			$calendarWorkflow->test='[{"fieldname":"followupcreate","operation":"has changed to","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
-			$calendarWorkflow->description = "Create Calendar Follow Up on change";
+			$calendarWorkflow->description = 'Create Calendar Follow Up on change';
 			$calendarWorkflow->executionCondition = VTWorkflowManager::$ON_MODIFY;
 			$calendarWorkflow->defaultworkflow = 1;
 			$workflowManager->save($calendarWorkflow);
 			$task = $taskManager->createTask('VTCreateEntityTask', $calendarWorkflow->id);
 			$task->active = true;
 			$task->summary = 'Create Calendar Follow Up';
-			$task->entity_type = "cbCalendar";
-			$task->reference_field = "relatedwith";
+			$task->entity_type = 'cbCalendar';
+			$task->reference_field = 'relatedwith';
 			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},'
 				.'{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},'
 				.'{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},'
@@ -709,7 +878,7 @@ class cbCalendar extends CRMEntity {
 			$task->test = '';
 			$task->reevaluate = 0;
 			$taskManager->saveTask($task);
-			$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
+			$calendarWorkflow = $workflowManager->newWorkFlow('cbCalendar');
 			$calendarWorkflow->test='[{"fieldname":"followupcreate","operation":"is","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 			$calendarWorkflow->description = "Create Calendar Follow Up on create";
 			$calendarWorkflow->executionCondition = VTWorkflowManager::$ON_FIRST_SAVE;
@@ -718,8 +887,8 @@ class cbCalendar extends CRMEntity {
 			$task = $taskManager->createTask('VTCreateEntityTask', $calendarWorkflow->id);
 			$task->active = true;
 			$task->summary = 'Create Calendar Follow Up';
-			$task->entity_type = "cbCalendar";
-			$task->reference_field = "relatedwith";
+			$task->entity_type = 'cbCalendar';
+			$task->reference_field = 'relatedwith';
 			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},'
 				.'{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},'
 				.'{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},'
@@ -942,8 +1111,8 @@ class cbCalendar extends CRMEntity {
 
 	/**
 	 * this function sets the status flag of activity to true or false depending on the status passed to it
-	 * @param string $status - the status of the activity flag to set
-	 * @return:: true if successful; false otherwise
+	 * @param string the status of the activity flag to set
+	 * @return boolean true if successful; false otherwise
 	 */
 	public function setActivityReminder($status) {
 		global $adb;
@@ -959,8 +1128,8 @@ class cbCalendar extends CRMEntity {
 	}
 
 	/** Function to change the status of an event
-	 * @param $status string : new status value
-	 * @param $activityid integer : activity id
+	 * @param string new status value
+	 * @param integer activity id
 	 */
 	public static function changeStatus($status, $activityid) {
 		global $log, $current_user;
@@ -978,10 +1147,10 @@ class cbCalendar extends CRMEntity {
 		}
 	}
 
-	/*
+	/**
 	 * Function to get the primary query part of a report
-	 * @param - $module primary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @return string the query string formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsQuery($module, $queryPlanner) {
 		$query = parent::generateReportsQuery($module, $queryPlanner);
@@ -994,9 +1163,9 @@ class cbCalendar extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get iCalendar formatted event
-	 * returns relative filepath formatted iCalendar
+	 * @return string relative filepath formatted iCalendar
 	 */
 	public function getiCalendar($activityData, $sendtobrowser = false) {
 		global $default_timezone;

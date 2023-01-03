@@ -38,7 +38,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 		// Start the parent role element
 		$xmlwriter->startElement('vtcrm_roles');
 
-		$pfrs = $adb->query('select * from vtiger_role order by depth');  // Order is VERY important for import
+		$pfrs = $adb->query('select * from vtiger_role order by depth'); // Order is VERY important for import
 		while ($pf = $adb->fetch_array($pfrs)) {
 			$xmlwriter->startElement('vtcrm_role');
 			// Start the element for role definition

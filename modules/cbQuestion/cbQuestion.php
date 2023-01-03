@@ -430,7 +430,7 @@ class cbQuestion extends CRMEntity {
 				}
 				return array(
 					'module' => $q->column_fields['qmodule'],
-					'columns' =>  html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
+					'columns' => html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
 					'groupings' => $groupinginfo,
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
@@ -488,28 +488,35 @@ class cbQuestion extends CRMEntity {
 		$fld = Vtiger_Field::getInstance($groupby, $mod);
 		if ($fld) {
 			$tablename = $fld->table;
-			$fldname = $fld->field;
+			$fldname = $fld->name;
 			$colname = $fld->column;
+			$uitype = $fld->uitype;
 		} else {
 			getColumnFields($qmodule);
 			$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($mod->id, $groupby);
 			$tablename = $fieldinfo['tablename'];
 			$colname = $fieldinfo['columnname'];
 			$fldname = $fieldinfo['fieldname'];
+			$uitype = $fieldinfo['uitype'];
 		}
 		$gby = mkXQuery($sql_query, $tablename.'.'.$colname);
 		$rs = $adb->query($gby);
 		$cv = new CustomView($qmodule);
+		$conds = $cv->getConditionsFromSQL2CV($sql_query, ['columnname' => 'rating', 'comparator' => 'e', 'value' => 'Active', 'columncondition' => '']);
 		$colspec = $cv->getFilterFieldDefinitionByNameOrLabel($fldname, $qmodule);
 		$gbyelems = [];
 		while ($elem = $adb->fetch_array($rs)) {
-			$gbyelems[] = json_encode([[
-				'columnname' => $colspec,
-				'comparator' => 'e',
-				'value' => $elem[0],
-				'groupid' => 1,
-				'columncondition' => ''
-			]]);
+			if ($uitype==10 && !empty($elem[0])) {
+				$ename = getEntityName(getSalesEntityType($elem[0]), $elem[0]);
+				$elem[0] = $ename[$elem[0]];
+			}
+			$gbyc = $conds;
+			$gbyc[count($gbyc)-1]['columnname'] = $colspec;
+			$gbyc[count($gbyc)-1]['value'] = $elem[0];
+			if (empty($elem[0])) {
+				$gbyc[count($gbyc)-1]['operator'] = 'y';
+			}
+			$gbyelems[] = json_encode($gbyc);
 		}
 		return $gbyelems;
 	}
@@ -837,7 +844,7 @@ class cbQuestion extends CRMEntity {
 	}
 
 	public function convertColumns2DataTable() {
-		global $adb, $log;
+		global $adb;
 		$qcols = $this->column_fields;
 		if (empty($qcols['qcolumns'])) {
 			return array(
@@ -865,7 +872,7 @@ class cbQuestion extends CRMEntity {
 		$parsed = $parser->parse('select '.$qcols.' from stubtable');
 		$generatedQColumns = '';
 		if (isset($parsed['SELECT'])) {
-			$selectCoulums = $parsed["SELECT"];
+			$selectCoulums = $parsed['SELECT'];
 			foreach ($selectCoulums as $col) {
 				if ($col['expr_type'] == 'colref' || $col['expr_type'] == 'function' || $col['expr_type'] == 'expression') {
 					$value = '';

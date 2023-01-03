@@ -127,7 +127,6 @@ function exportUserCommentsForModule($module, $recordid, $format, $field_arr = a
 	return true;
 }
 
-
 /**
  * Function to exporting XLS rows file format for modules.
  * @param object $rowsonfo object contain rows to export
@@ -499,7 +498,7 @@ class ExportUtils {
 
 	/**
 	 * this function takes in an array of values for an user and sanitizes it for export
-	 * @param array $arr - the array of values
+	 * @param array the array of values
 	 */
 	public function sanitizeValues($arr) {
 		global $current_user, $adb;

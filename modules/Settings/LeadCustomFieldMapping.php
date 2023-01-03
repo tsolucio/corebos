@@ -20,7 +20,7 @@ $smarty->assign('IMAGE_PATH', $image_path);
 
 /**
  * Function to get leads mapping custom fields
- * return array   $leadcf - mapping custom fields
+ * @return array mapping custom fields
  */
 function customFieldMappings() {
 	global $adb;

@@ -39,7 +39,7 @@ class Leads extends CRMEntity {
 	public $customFieldTable = array('vtiger_leadscf', 'leadid');
 	public $related_tables = array(
 		'vtiger_leadsubdetails' => array('leadsubscriptionid', 'vtiger_leaddetails', 'leadid'),
-		'vtiger_leadaddress'    => array('leadaddressid', 'vtiger_leaddetails', 'leadid'),
+		'vtiger_leadaddress' => array('leadaddressid', 'vtiger_leaddetails', 'leadid'),
 	);
 
 	public $sortby_fields = array('lastname','firstname','email','phone','company','smownerid','website');
@@ -115,8 +115,8 @@ class Leads extends CRMEntity {
 
 		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name
-			FROM ".$crmEntityTable." 
-			INNER JOIN vtiger_leaddetails ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
+			FROM ".$crmEntityTable
+			." INNER JOIN vtiger_leaddetails ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
 			LEFT JOIN vtiger_leadsubdetails ON vtiger_leaddetails.leadid = vtiger_leadsubdetails.leadsubscriptionid
 			LEFT JOIN vtiger_leadaddress ON vtiger_leaddetails.leadid=vtiger_leadaddress.leadaddressid
 			LEFT JOIN vtiger_leadscf ON vtiger_leadscf.leadid=vtiger_leaddetails.leadid
@@ -194,7 +194,7 @@ class Leads extends CRMEntity {
 
 	/**
 	* Function to get lead related Products
-	* @param  integer lead id
+	* @param integer lead id
 	* @return array related Products record
 	*/
 	public function get_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
@@ -330,6 +330,8 @@ class Leads extends CRMEntity {
 			'vtiger_seproductsrel'=>'crmid',
 			'vtiger_campaignleadrel'=>'leadid',
 		);
+		$isMessagesActive = vtlib_isModuleActive('Messages');
+		$field = ($module=='Accounts' ? 'account_message' : 'contact_message');
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
 				$id_field = $tbl_field_arr[$rel_table];
@@ -348,6 +350,9 @@ class Leads extends CRMEntity {
 							array($entityId,$transferId,$id_field_value)
 						);
 					}
+				}
+				if ($isMessagesActive) {
+					$adb->pquery("update vtiger_messages set $field=? where messagesrelatedto=?", array($entityId,$transferId));
 				}
 			}
 		}
@@ -473,7 +478,7 @@ class Leads extends CRMEntity {
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted=0';
 		if (trim($emailaddress) != '') {
 			$query .= " AND ((vtiger_leaddetails.email like '". formatForSqlLike($emailaddress) ."') or vtiger_leaddetails.lastname REGEXP REPLACE('".$emailaddress.
-				"',' ','|') or vtiger_leaddetails.firstname REGEXP REPLACE('".$emailaddress."',' ','|'))  and vtiger_leaddetails.email != ''";
+				"',' ','|') or vtiger_leaddetails.firstname REGEXP REPLACE('".$emailaddress."',' ','|')) and vtiger_leaddetails.email!=''";
 		} else {
 			$query .= " AND (vtiger_leaddetails.email like '". formatForSqlLike($emailaddress) ."' and vtiger_leaddetails.email != '')";
 		}
@@ -520,7 +525,7 @@ class Leads extends CRMEntity {
 
 		$result = $adb->query($query, true, "Error retrieving $currentModule list: ");
 		$list = array();
-		$rows_found =  $adb->getRowCount($result);
+		$rows_found = $adb->getRowCount($result);
 		if ($rows_found != 0) {
 			for ($index = 0 , $row = $adb->fetchByAssoc($result, $index); $row && $index <$rows_found; $index++, $row = $adb->fetchByAssoc($result, $index)) {
 				$lead = array();
@@ -528,7 +533,7 @@ class Leads extends CRMEntity {
 				$lead['lastname'] = in_array('lastname', $permitted_field_lists) ? $row['lastname'] : '';
 				$lead['firstname'] = in_array('firstname', $permitted_field_lists)? $row['firstname'] : '';
 				$lead['email'] = in_array('email', $permitted_field_lists) ? $row['email'] : '';
-				$lead['leadid'] =  $row['leadid'];
+				$lead['leadid'] = $row['leadid'];
 				$lead['company'] = in_array('company', $permitted_field_lists) ? $row['company'] : '';
 				$list[] = $lead;
 			}

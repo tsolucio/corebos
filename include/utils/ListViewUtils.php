@@ -182,20 +182,20 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 							}
 							$moduleLabel = str_replace(' ', '', $moduleLabel);
 							$name = "<a href='javascript:void(0);' onClick='loadRelatedListBlock" .
-									"(\"module=$relatedmodule&action=" . $relatedmodule . 'Ajax&' .
-									'file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=' . $moduleHeader .
-									"&order_by=$col&record=$relatedlist&sorder=$temp_sorder$relationURL" .
-									"$actionsURL\",\"tbl_" . $relatedmodule . "_$moduleLabel\"," .
-									'"'.$relatedmodule.'_'.$moduleLabel."\");' class='listFormHeaderLinks'>$lbl_name$arrow</a>";
+								"(\"module=$relatedmodule&action=" . $relatedmodule . 'Ajax&' .
+								'file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=' . $moduleHeader .
+								"&order_by=$col&record=$relatedlist&sorder=$temp_sorder$relationURL" .
+								"$actionsURL\",\"tbl_" . $relatedmodule . "_$moduleLabel\"," .
+								'"'.$relatedmodule.'_'.$moduleLabel."\");' class='listFormHeaderLinks'>$lbl_name$arrow</a>";
 						} elseif ($module == 'Users' && $name == 'User Name') {
-							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . '","order_by=' . $col;
-							$name .= '&start=1&sorder=' . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>";
-							$name .= getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module) . $arrow . '</a>';
+							$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . '","order_by=' . $col;
+							$name.= '&start=1&sorder=' . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>";
+							$name.= getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module) . $arrow . '</a>';
 						} elseif ($relatedlist == 'global') {
 							$name = $lbl_name;
 						} else {
-							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . '","order_by=' . $col;
-							$name .= '&start=1&sorder=' . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>" . $lbl_name . $arrow . '</a>';
+							$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . '","order_by=' . $col;
+							$name.= '&start=1&sorder=' . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>" . $lbl_name . $arrow . '</a>';
 						}
 						$arrow = '';
 					} else {
@@ -1221,7 +1221,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$values=explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $parent_id);
 			$numvals = count($values);
 			for ($fvalues=0; $fvalues < $numvals; $fvalues++) {
-				$srchmod =  getSalesEntityType($values[$fvalues]);
+				$srchmod = getSalesEntityType($values[$fvalues]);
 				$id = $values[$fvalues];
 				$displayValueArray = getEntityName($srchmod, $id);
 				if (!empty($displayValueArray)) {
@@ -3039,9 +3039,8 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	if ($reltable != null) {
 		$query = 'SELECT ' . $selectfield . ' FROM ' . $reltable . ' ' . $condition;
 	} elseif ($currentmodule != $returnmodule && $returnmodule != '') { // If none of the above relation match, then the relation is assumed to be stored in crmentityrel
-		$query = 'SELECT relcrmid AS relatedid FROM vtiger_crmentityrel WHERE crmid = ? and module = ? and relmodule = ?
-					UNION SELECT crmid AS relatedid FROM vtiger_crmentityrel WHERE relcrmid = ? and relmodule = ? and module = ?';
-		array_push($params, $recordid, $returnmodule, $currentmodule, $recordid, $returnmodule, $currentmodule);
+		$query = 'SELECT relcrmid AS relatedid FROM vtiger_crmentityreldenorm WHERE crmid=? and module=? and relmodule=?';
+		array_push($params, $recordid, $returnmodule, $currentmodule);
 
 		$focus_obj = CRMEntity::getInstance($currentmodule);
 		$field = $focus_obj->table_index;
@@ -3284,7 +3283,7 @@ function getEntityId($module, $entityName, $searchonfield = '') {
 	$entityidfield = $adb->query_result($result, 0, 'entityidfield');
 	if (strpos($fieldsname, ',')) {
 		$fieldlists = explode(',', $fieldsname);
-		$fieldsname = 'trim(concat(';  // Add trim function to weed-out extra character values
+		$fieldsname = 'trim(concat('; // Add trim function to weed-out extra character values
 		$fieldsname = $fieldsname . implode(",' ',", $fieldlists);
 		$fieldsname = $fieldsname . '))';
 		$entityName = trim($entityName); // Trim the input to be consistent in comparison
@@ -3388,8 +3387,8 @@ function getMergeFields($module, $str) {
 		$result = $adb->pquery('select fieldid from vtiger_user2mergefields where tabid=? and userid=? and visible=1', array($tabid, $current_user->id));
 	}
 
-	$user_profileid = fetchUserProfileId($current_user->id);
-	$permitted_list = getProfile2FieldPermissionList($module, $user_profileid);
+	$user_profileid = getUserProfile($current_user->id);
+	$permitted_list = getProfile2FieldPermissionList($module, $user_profileid[0]);
 
 	$result_def_org = $adb->pquery('select fieldid from vtiger_def_org_field where tabid=? and visible=0', array($tabid));
 	$permitted_org_list = array();

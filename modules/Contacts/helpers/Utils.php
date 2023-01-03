@@ -15,8 +15,8 @@ class Google_Utils_Helper {
 
 	/**
 	 * Updates the database with syncronization times
-	 * @param <sting> $sourceModule module to which sync time should be stored
-	 * @param <date> $modifiedTime Max modified time of record that are sync
+	 * @param string module to which sync time should be stored
+	 * @param mixed date Max modified time of record that are sync
 	 */
 	public static function updateSyncTime($sourceModule, $modifiedTime = false) {
 		$db = PearDatabase::getInstance();
@@ -52,8 +52,8 @@ class Google_Utils_Helper {
 
 	/**
 	 *  Gets the max Modified time of last sync records
-	 *  @param <sting> $sourceModule modulename to which sync time should return
-	 *  @return <date> max Modified time of last sync records OR <boolean> false when date not present
+	 *  @param string modulename to which sync time should return
+	 *  @return mixed date max Modified time of last sync records OR <boolean> false when date not present
 	 */
 	public static function getSyncTime($sourceModule) {
 		global $current_user;
@@ -70,8 +70,8 @@ class Google_Utils_Helper {
 
 	/**
 	 *  Gets the last syncronazation time
-	 *  @param <sting> $sourceModule modulename to which sync time should return
-	 *  @return <date> last syncronazation time OR <boolean> false when date not present
+	 *  @param string modulename to which sync time should return
+	 *  @return mixed date of last syncronazation time OR boolean false when date not present
 	 */
 	public static function getLastSyncTime($sourceModule) {
 		global $current_user;
@@ -88,9 +88,9 @@ class Google_Utils_Helper {
 
 	/**
 	 *  Get the callback url for a module
-	 * @global type $site_URL
-	 * @param <object> $request
-	 * @param <array> $options any extra parameter add to url
+	 * @global string $site_URL
+	 * @param object $request
+	 * @param array any extra parameter add to url
 	 * @return string callback url
 	 */
 	public static function getCallbackUrl($request, $options = array()) {

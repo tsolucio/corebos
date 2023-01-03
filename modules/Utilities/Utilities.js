@@ -456,7 +456,7 @@ function updateFieldData(ev, idx) {
 	}
 
 	const table_name = columnChanged === 'table_name' ? newValue : gridInstance.getValue(idx, 'table_name');
-	const old_table_name = columnChanged === 'table_name' ?  oldValue : table_name;
+	const old_table_name = columnChanged === 'table_name' ? oldValue : table_name;
 	const ws_name = columnChanged === 'ws_name' ? newValue : gridInstance.getValue(idx, 'ws_name');
 	const old_ws_name = columnChanged === 'ws_name' ? oldValue : ws_name;
 	const access = columnChanged === 'access' ? newValue : gridInstance.getValue(idx, 'access');

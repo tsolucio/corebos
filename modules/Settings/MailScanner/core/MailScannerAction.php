@@ -20,7 +20,7 @@ require_once 'include/Webservices/ExecuteWorkflow.php';
  */
 class Vtiger_MailScannerAction {
 	// actionid for this instance
-	public $actionid  = false;
+	public $actionid = false;
 	// scanner to which this action is associated
 	public $scannerid = false;
 	// type of mailscanner action
@@ -28,9 +28,9 @@ class Vtiger_MailScannerAction {
 	// text representation of action
 	public $actiontext= false;
 	// target module for action
-	public $module    = false;
+	public $module = false;
 	// lookup information while taking action
-	public $lookup    = false;
+	public $lookup = false;
 	// other CRMIDs we have to relate the email with
 	private $otherEmailRelations = array();
 
@@ -38,7 +38,7 @@ class Vtiger_MailScannerAction {
 	private $STORAGE_FOLDER = 'storage/mailscanner/';
 
 	/** DEBUG functionality */
-	public $debug     = false;
+	public $debug = false;
 	private function log($message) {
 		global $log;
 		if ($log && $this->debug) {
@@ -63,11 +63,11 @@ class Vtiger_MailScannerAction {
 		$result = $adb->pquery('SELECT * FROM vtiger_mailscanner_actions WHERE actionid=? ORDER BY sequence', array($foractionid));
 
 		if ($adb->num_rows($result)) {
-			$this->actionid   = $adb->query_result($result, 0, 'actionid');
-			$this->scannerid  = $adb->query_result($result, 0, 'scannerid');
+			$this->actionid = $adb->query_result($result, 0, 'actionid');
+			$this->scannerid = $adb->query_result($result, 0, 'scannerid');
 			$this->actiontype = $adb->query_result($result, 0, 'actiontype');
-			$this->module     = $adb->query_result($result, 0, 'module');
-			$this->lookup     = $adb->query_result($result, 0, 'lookup');
+			$this->module = $adb->query_result($result, 0, 'module');
+			$this->lookup = $adb->query_result($result, 0, 'lookup');
 			$this->actiontext = "$this->actiontype,$this->module,$this->lookup";
 		}
 	}
@@ -80,8 +80,8 @@ class Vtiger_MailScannerAction {
 
 		$inputparts = explode(',', $actiontext);
 		$this->actiontype = $inputparts[0]; // LINK, CREATE
-		$this->module     = $inputparts[1]; // Module name
-		$this->lookup     = $inputparts[2]; // FROM, TO
+		$this->module = $inputparts[1]; // Module name
+		$this->lookup = $inputparts[2]; // FROM, TO
 
 		$this->actiontext = $actiontext;
 
@@ -527,7 +527,7 @@ class Vtiger_MailScannerAction {
 	}
 
 	/**
-	 * trigger  workflow
+	 * trigger workflow
 	 */
 	public function __triggerWorkflow($mailscannerrule, $mailrecord, $crmid) {
 		global $current_user;

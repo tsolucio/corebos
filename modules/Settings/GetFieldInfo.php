@@ -36,14 +36,14 @@ $output = '<div class="layerPopup" style="position:relative; display:block">
 		<tr>
 			<td width="95%" align="left" class="layerPopupHeading">'.$label.'</td>
 			<td width="5%" align="right">
-				<a href="javascript:fninvsh(\'fieldInfo\');"><img src="'. vtiger_imageurl('editfield.gif', $theme) .'" border="0"  align="absmiddle" /></a>
+				<a href="javascript:fninvsh(\'fieldInfo\');"><img src="'. vtiger_imageurl('editfield.gif', $theme) .'" border="0" align="absmiddle" /></a>
 			</td>
 		</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding="5" width=99%>
 		<tr>
 			<td valign="top">
-				<input name="mandatory"  type="checkbox" '.$visible.'  '.$disable.' >
+				<input name="mandatory" type="checkbox" '.$visible.' '.$disable.' >
 				&nbsp;<b>Mandatory Field</b>
 			</td>
 		</tr>
@@ -55,7 +55,7 @@ $output = '<div class="layerPopup" style="position:relative; display:block">
 		</tr>
 		<tr>
 		<td align="center">
-			<input type="submit" name="save"  value=" &nbsp; '.$app_strings['LBL_SAVE_BUTTON_LABEL'].'&nbsp; " class="crmButton small save" "/>&nbsp;
+			<input type="submit" name="save" value=" &nbsp; '.$app_strings['LBL_SAVE_BUTTON_LABEL'].'&nbsp; " class="crmButton small save" "/>&nbsp;
 			<input type="button" name="cancel" value=" '.$app_strings['LBL_CANCEL_BUTTON_LABEL'].' " class="crmButton small cancel" onclick="fninvsh(\'fieldInfo\');" />
 		</td>
 	</tr>

@@ -288,6 +288,16 @@ $mod_strings = array(
 'Which field from Users should be used as a signature?' => '¿Qué campo de usuario contiene la imagen con la firma?',
 'Coordinates' => 'Coordenadas',
 'Coordinate X' => 'Coordenada X',
-'Coordinate Y' => 'Coordenada Y'
+'Coordinate Y' => 'Coordenada Y',
+'CBAddNotification' => 'Añadir Notificación',
+'HELP_CBAddNotification' => 'Añade eventos de notificación con acciones como recordatorios y tareas pendientes para los usuarios. Estas notificaciones aparecerán en el panel de notificaciones y en el widget de Acciones pendientes.',
+'HELP_CBAddNotification_Module' => 'Módulo relacionado con la notificación. De forma predeterminada, será el módulo que activa el flujo de trabajo.',
+'HELP_CBAddNotification_Record' => 'Registro relacionado con la notificación. La información del registro se utilizará para mostrar el evento. Por defecto será el registro que activa el flujo de trabajo',
+'HELP_CBAddNotification_Date' => 'Fecha de la notificación en formato ISO. Por defecto será la fecha y hora de la ejecución del flujo de trabajo',
+'HELP_CBAddNotification_Time' => 'Hora de la notificación. Por defecto será la fecha y hora de la ejecución del flujo de trabajo',
+'HELP_CBAddNotification_MoreAction' => 'JSON con una acción más. Este enlace es una acción adicional para mostrar en la notificación.<br>{"label":"some label", "link":"some link", "type":"link or click"}',
+'HELP_CBAddNotification_MoreInfo' => 'JSON con más información. Para eventos no relacionados con registros, podemos usar este JSON para establecer los valores a mostrar:<br>{"icon":["standard","account"], "subject":"subject", "subtitle":"sub title"}',
+'HELP_CBAddNotification_Owner' => 'Usuario propietario de la notificación. De forma predeterminada, será el usuario actual cuando se active el flujo de trabajo',
+'HELP_CBAddNotification_Related' => 'La notificación se relacionará también con este registro. Si está vacío y se establece "Registro", se utilizará la cuenta/contacto relacionado con el Registro.',
 );
 ?>

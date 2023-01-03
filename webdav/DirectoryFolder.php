@@ -27,15 +27,16 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 
 	private function getDocumentQuery() {
 		global $current_user;
-		$sql = "select distinct vtiger_notes.*, vtiger_crmentity.*, vtiger_notescf.* from vtiger_notes
+		$sql = 'select distinct vtiger_notes.*, vtiger_crmentity.*, vtiger_notescf.*
+			from vtiger_notes
 			inner join vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_notes.notesid
-			inner join vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid)
+			inner join vtiger_crmentityreldenorm ON vtiger_crmentityreldenorm.relcrmid=vtiger_crmentity.crmid
 			inner join vtiger_notescf ON vtiger_notescf.notesid = vtiger_notes.notesid
 			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
 			left join vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 			left join vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			where vtiger_crmentity.deleted=0 and (vtiger_crmentityrel.crmid=? OR vtiger_crmentityrel.relcrmid=?) ";
+			where vtiger_crmentity.deleted=0 and vtiger_crmentityreldenorm.crmid=? ';
 		$instance = CRMEntity::getInstance('Documents');
 		$sql .= $instance->getNonAdminAccessControlQuery('Documents', $current_user);
 		return $sql;
@@ -44,7 +45,7 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 	public function getChildren() {
 		global $adb;
 		$query = $this->getDocumentQuery();
-		$records = $adb->pquery($query, array($this->folderid, $this->folderid));
+		$records = $adb->pquery($query, array($this->folderid));
 		while ($row = $adb->fetch_array($records)) {
 			if ($row['filelocationtype'] == 'I') {
 				$folder[] = new CRMFile($row, $this->folderid);
@@ -73,7 +74,7 @@ class DirectoryFolder extends Sabre\DAV\Collection {
 		global $adb;
 		$filename = html_entity_decode(html_entity_decode($filename));
 		$query = $this->getDocumentQuery().' and (vtiger_notes.filename=? OR vtiger_attachments.name=?)';
-		$records = $adb->pquery($query, array($this->folderid, $this->folderid, $filename, $filename));
+		$records = $adb->pquery($query, array($this->folderid, $filename, $filename));
 		if ($adb->num_rows($records) == 0) {
 			$result = $adb->pquery('SELECT documentfoldersid, foldername FROM vtiger_documentfolders INNER JOIN vtiger_crmentity ON crmid=documentfoldersid WHERE foldername=? AND parentfolder=?', array($filename, $this->folderid));
 			if ($adb->num_rows($result) > 0) {

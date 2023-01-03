@@ -69,7 +69,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 } else {
 	$primarymodule = vtlib_purify($_REQUEST['primarymodule']);
 	$BLOCK1 = getPrimaryColumns_GroupingHTML($primarymodule);
-	$ogReport =  new Reports();
+	$ogReport = new Reports();
 	if (!empty($ogReport->related_modules[$primarymodule])) {
 		foreach ($ogReport->related_modules[$primarymodule] as $value) {
 			$BLOCK1 .= getSecondaryColumns_GroupingHTML($_REQUEST['secondarymodule_'.$value]);
@@ -89,10 +89,9 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 }
 
 /** Function to get the combo values for the Primary module Columns
- *  @ param $module(module name) :: Type String
- *  @ param $selected (<selected or ''>) :: Type String
- *  This function generates the combo values for the columns  for the given module
- *  and return a HTML string
+ * @param string module name
+ * @param string selected or ''
+ * @return string HTML combo values for the columns for the given module
  */
 function getPrimaryColumns_GroupingHTML($module, $selected = '') {
 	global $ogReport, $current_language;
@@ -138,10 +137,9 @@ function getPrimaryColumns_GroupingHTML($module, $selected = '') {
 }
 
 /** Function to get the combo values for the Secondary module Columns
- *  @ param $module(module name) :: Type String
- *  @ param $selected (<selected or ''>) :: Type String
- *  This function generates the combo values for the columns for the given module
- *  and return a HTML string
+ * @param string module name
+ * @param string selected or ''
+ * @return string HTML combo values for the columns for the given module
  */
 function getSecondaryColumns_GroupingHTML($module, $selected = '') {
 	global $ogReport, $current_language;
@@ -213,7 +211,7 @@ function getGroupByTimeDiv($sortid, $reportid = '') {
 	$selectid = 'groupbytime'.$sortid;
 	$div = '';
 	$div .= "<div id=$divid style='display:$displaystyle'>".$mod_strings['LBL_GROUPING_TIME']."<br>";
-	$div .= "<select id=$selectid name=$selectid  class='txtBox'>";
+	$div .= "<select id=$selectid name=$selectid class='txtBox'>";
 	$div .= "<option value='None' $noneselected>".$mod_strings['LBL_NONE']."</option>";
 	$div .= "<option value='Year' $yearselected>".$mod_strings['LBL_YEAR']."</option>";
 	$div .= "<option value='Month' $monthselected>".$mod_strings['LBL_MONTH']."</option>";
@@ -226,26 +224,21 @@ if ($sortorder[0] != 'Descending') {
 	$shtml = "<option selected value='Ascending'>".$app_strings['Ascending']."</option>
 	 <option value='Descending'>".$app_strings['Descending']."</option>";
 } else {
-	$shtml = "<option value='Ascending'>".$app_strings['Ascending']."</option>
-	  <option selected value='Descending'>".$app_strings['Descending']."</option>";
+	$shtml = "<option value='Ascending'>".$app_strings['Ascending']."</option><option selected value='Descending'>".$app_strings['Descending']."</option>";
 }
 $report_group->assign('ASCDESC1', $shtml);
 
 if ($sortorder[1] != 'Descending') {
-	$shtml = "<option selected value='Ascending'>".$app_strings['Ascending']."</option>
-          <option value='Descending'>".$app_strings['Descending']."</option>";
+	$shtml = "<option selected value='Ascending'>".$app_strings['Ascending']."</option><option value='Descending'>".$app_strings['Descending']."</option>";
 } else {
-	$shtml = "<option value='Ascending'>".$app_strings['Ascending']."</option>
-          <option selected value='Descending'>".$app_strings['Descending']."</option>";
+	$shtml = "<option value='Ascending'>".$app_strings['Ascending']."</option><option selected value='Descending'>".$app_strings['Descending']."</option>";
 }
 $report_group->assign('ASCDESC2', $shtml);
 
 if ($sortorder[2] != 'Descending') {
-	$shtml = "<option selected value='Ascending'>".$app_strings['Ascending']."</option>
-	  <option value='Descending'>".$app_strings['Descending']."</option>";
+	$shtml = "<option selected value='Ascending'>".$app_strings['Ascending']."</option><option value='Descending'>".$app_strings['Descending']."</option>";
 } else {
-	$shtml =  "<option value='Ascending'>".$app_strings['Ascending']."</option>
-	   <option selected value='Descending'>".$app_strings['Descending']."</option>";
+	$shtml = "<option value='Ascending'>".$app_strings['Ascending']."</option><option selected value='Descending'>".$app_strings['Descending']."</option>";
 }
 $report_group->assign('ASCDESC3', $shtml);
 $report_group->display('ReportGrouping.tpl');

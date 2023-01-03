@@ -153,8 +153,8 @@ echo $loc;
 /**
  * returns value 0 if request permission is on else returns value 1
  *
- * @param   $req_per -- Request Permission:: Type varchar
- * @returns $permission - can have value 0 or 1:: Type integer
+ * @param string Request Permission
+ * @return integer can have value 0 or 1
  */
 function getPermissionValue($req_per) {
 	return ($req_per == 'on' ? 0 : 1);

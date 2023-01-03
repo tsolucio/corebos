@@ -1334,7 +1334,7 @@ const mb = {
 			'style': 'width: 25%'
 		};
 		let setdefaultOption = [{
-			true:  alert_arr.YES,
+			true: alert_arr.YES,
 			false: alert_arr.NO,
 		}];
 		var viewTemplate = `

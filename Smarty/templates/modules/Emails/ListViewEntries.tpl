@@ -34,7 +34,7 @@
 				<!-- List View's Buttons and Filters starts -->
 				<table width="100%" class="layerPopupTransport">
 					<tr>
-						<td width="25%" class="small" nowrap align="left">{$recordListRange}</td>
+						<td width="25%" class="small" nowrap align="left" id="recordListRanget">{$recordListRange}</td>
 						<td><table align="center">
 								<tr>
 									<td>
@@ -152,7 +152,7 @@
 			<td>
 				<table width="100%">
 					<tr>
-						<td class="small" nowrap align="left">{$recordListRange}</td>
+						<td class="small" nowrap align="left" id="recordListRangeb">{$recordListRange}</td>
 						<td nowrap width="50%" align="right" class="cblds-t-align_right">
 							<table border=0 cellspacing=0 cellpadding=0 class="small" style="display: inline-block;">
 							<tr>{$NAVIGATION}</tr>

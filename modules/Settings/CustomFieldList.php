@@ -84,8 +84,8 @@ if (empty($_REQUEST['ajax']) || $_REQUEST['ajax'] != 'true') {
 
 /**
  * Function to get customfield entries for leads
- * @param string $module - Module name
- * return array  $cflist - customfield entries
+ * @param string Module name
+ * @return array customfield entries
  */
 function getCFLeadMapping($module) {
 	global $adb;

@@ -57,7 +57,7 @@ class ServiceContracts extends CRMEntity {
 		/* Format: Field Label => fieldname */
 		'Subject' => 'subject',
 		'Assigned To' => 'assigned_user_id',
-		'Contract No' =>  'contract_no',
+		'Contract No' => 'contract_no',
 		'Used Units' => 'used_units',
 		'Total Units' => 'total_units'
 	);
@@ -114,7 +114,7 @@ class ServiceContracts extends CRMEntity {
 		}
 		$return_action = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : false;
 		$for_module = isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : false;
-		$for_crmid  =isset($_REQUEST['return_id']) ? vtlib_purify($_REQUEST['return_id']) : false;
+		$for_crmid =isset($_REQUEST['return_id']) ? vtlib_purify($_REQUEST['return_id']) : false;
 		if ($return_action && $for_module && $for_crmid && $for_module == 'HelpDesk') {
 			$on_focus = CRMEntity::getInstance($for_module);
 			relateEntities($on_focus, $for_module, $for_crmid, $module, $this->id);

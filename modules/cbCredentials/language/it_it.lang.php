@@ -38,9 +38,6 @@ $mod_strings = array(
 	'Opencloud Password' => 'Password OpenCloud',
 	'Opencloud Projectname' => 'Nome Progetto OpenCloud',
 	'cbcredentialsid' => 'ID Credenziali',
-
-
-
 	'LBL_CUSTOM_INFORMATION' => 'Informazioni Personalizzate',
 	'LBL_CBCREDENTIALS_INFORMATION' => 'Informazioni Credenziali',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrizione',

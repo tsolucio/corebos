@@ -36,7 +36,6 @@ $mod_strings = array(
 	'Description' => 'Descrizione',
 	'cbcompanyid' => 'ID Compagnia',
 
-
 	'Accounts' => 'Compagnie',
 	'SINGLE_Accounts' => 'Compagnia',
 	'ModuleName ID' => 'ID Compagnia',

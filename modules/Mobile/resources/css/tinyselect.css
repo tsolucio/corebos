@@ -49,9 +49,6 @@
 
 }
 
-
-
-
 .tinyselect .dropdown {
 	position: absolute;
 	width: 100%;
@@ -88,10 +85,6 @@
 	height: 14px;
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADESURBVDhPnZLBDcIwDEW7DIt0CmZgBW5tc2AAFugWDNB7FuDMAB0g+FV25AQLJA5Prb797djJUEoJmabptCzLVVjneb4Lo483yYYadqF0bBQkJzJdSJIOT/7RtPuKLmS0yPgCq+zhyGq+NYGU0tkCXvdQVNh68TgmX697JJahEf/uaAEWE80oMbb9OSPJus1jq5zA6SxmR0erJhFGM30h20kOk85WL5wCWogu3N9q3Y3QFM3Xw8D+adUn9QtvfEQJMWV4A2WMBVG/g0M8AAAAAElFTkSuQmCC');
 }
-
-
-
-
 
 .tinyselect .itemcontainer {
 	list-style: none;

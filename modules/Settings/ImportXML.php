@@ -54,7 +54,7 @@ if ($uploaded) {
 						$prole=substr($prole, strrpos($prole, '::')+2);
 					}
 				}
-				$parentRoleId = $adb->getone("select roleid from vtiger_role where rolename='$prole'");  // this one must exist if XML is sorted correctly
+				$parentRoleId = $adb->getone("select roleid from vtiger_role where rolename='$prole'"); // this one must exist if XML is sorted correctly
 				$profile_array = array();
 				foreach ($role->vtcrm_role2profiles->vtcrm_role2pf as $profile) {
 					$profile_array[] = $adb->getone("select profileid from vtiger_profile where profilename='".(string)$profile."'");
@@ -78,24 +78,24 @@ if ($uploaded) {
 					echo "$prfname already exists!<br />";
 					continue;
 				}
-				$profile_id = $adb->getUniqueID("vtiger_profile");
+				$profile_id = $adb->getUniqueID('vtiger_profile');
 				//Inserting values into Profile Table
-				$sql1 = "insert into vtiger_profile(profileid, profilename, description) values(?,?,?)";
+				$sql1 = 'insert into vtiger_profile(profileid, profilename, description) values(?,?,?)';
 				$adb->pquery($sql1, array($profile_id,$prfname, $prfdesc));
 
-				$sql4="insert into vtiger_profile2globalpermissions values(?,?,?)";
+				$sql4='insert into vtiger_profile2globalpermissions values(?,?,?)';
 				foreach ($profile->vtcrm_profile2glbs->vtcrm_profile2glb as $pf2glb) {
 					$adb->pquery($sql4, array($profile_id,(string)$pf2glb,(string)$pf2glb->attributes()->permission));
 				}
 
 				// default values
-				$sql4="insert into vtiger_profile2tab values(?,?,?)";
+				$sql4='insert into vtiger_profile2tab values(?,?,?)';
 				$rstab = $adb->query('select tabid from vtiger_tab');
 				while ($tb = $adb->fetch_array($rstab)) {
 					$adb->pquery($sql4, array($profile_id, $tb['tabid'], 0));
 				}
 				// import values
-				$sql4="update vtiger_profile2tab set permissions=? where profileid=? and tabid=?";
+				$sql4='update vtiger_profile2tab set permissions=? where profileid=? and tabid=?';
 				foreach ($profile->vtcrm_profile2tabs->vtcrm_profile2tab as $pf2tab) {
 					if ((string)$pf2tab->attributes()->permission!=0) {
 						$tab_id=getTabid((string)$pf2tab);
@@ -106,15 +106,15 @@ if ($uploaded) {
 				}
 
 				// default values
-				$sql4="insert into vtiger_profile2standardpermissions values(?,?,?,?)";
+				$sql4='insert into vtiger_profile2standardpermissions values(?,?,?,?)';
 				$rstab = $adb->query('select tabid from vtiger_tab');
 				while ($tb = $adb->fetch_array($rstab)) {
-					for ($action=0; $action<5; $action++) {  // count 5 actions
+					for ($action=0; $action<5; $action++) { // count 5 actions
 						$adb->pquery($sql4, array($profile_id, $tb['tabid'], $action, 0));
 					}
 				}
 				// import values
-				$sql7="update vtiger_profile2standardpermissions set permissions=? where profileid=? and tabid=? and operation=?";
+				$sql7='update vtiger_profile2standardpermissions set permissions=? where profileid=? and tabid=? and operation=?';
 				foreach ($profile->vtcrm_profile2stds->vtcrm_profile2std as $pf2tab) {
 					if ((string)$pf2tab->attributes()->permission!=0) {
 						$tab_id=getTabid((string)$pf2tab);
@@ -126,8 +126,8 @@ if ($uploaded) {
 
 				// import values
 				$importedtabs = array();
-				//$sql9="insert IGNORE into vtiger_profile2utility values(?,?,?,?)";
-				$sql9="insert into vtiger_profile2utility values(?,?,?,?)";
+				//$sql9='insert IGNORE into vtiger_profile2utility values(?,?,?,?)';
+				$sql9='insert into vtiger_profile2utility values(?,?,?,?)';
 				foreach ($profile->vtcrm_profile2utils->vtcrm_profile2util as $pf2tab) {
 					$tab_id=getTabid((string)$pf2tab);
 					if (!empty($tab_id)) {
@@ -149,10 +149,10 @@ if ($uploaded) {
 				}
 
 				// default values
-				insertProfile2field($profile_id);  // set default values for all fields
+				insertProfile2field($profile_id); // set default values for all fields
 				// import values
-				$p2fins="INSERT INTO vtiger_profile2field (profileid, tabid, fieldid, visible, readonly) VALUES(?,?,?,?,?)";
-				$p2fupd="UPDATE vtiger_profile2field set visible=?, readonly=? where profileid=? and tabid=? and fieldid=?";
+				$p2fins='INSERT INTO vtiger_profile2field (profileid, tabid, fieldid, visible, readonly) VALUES(?,?,?,?,?)';
+				$p2fupd='UPDATE vtiger_profile2field set visible=?, readonly=? where profileid=? and tabid=? and fieldid=?';
 				$lasttabname='';
 				foreach ($profile->vtcrm_profile2fields->vtcrm_profile2field as $pf2tab) {
 					if ((string)$pf2tab->attributes()->tabname!=$lasttabname) {

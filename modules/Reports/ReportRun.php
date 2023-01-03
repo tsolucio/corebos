@@ -39,8 +39,8 @@ class ReportRun extends CRMEntity {
 	public $page = 1;
 	public $islastpage = false;
 
-	public $_groupinglist  = false;
-	public $_columnslist   = array();
+	public $_groupinglist = false;
+	public $_columnslist = array();
 	public $_stdfilterlist = false;
 	public $_columnstotallist = false;
 	public $_columnstotallistaddtoselect = false;
@@ -65,8 +65,8 @@ class ReportRun extends CRMEntity {
 	public $_tmptablesinitialized = false;
 
 	/** Function to set reportid,primarymodule,secondarymodule,reporttype,reportname, for given reportid
-	 *  This function accepts the $reportid as argument
-	 *  It sets reportid,primarymodule,secondarymodule,reporttype,reportname for the given reportid
+	 * This function accepts the $reportid as argument
+	 * It sets reportid,primarymodule,secondarymodule,reporttype,reportname for the given reportid
 	 */
 	public function __construct($reportid) {
 		$oReport = new Reports($reportid);
@@ -86,8 +86,8 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get the columns for the reportid
-	 *  This function accepts the $reportid and $outputformat (optional)
-	 *  This function returns  $columnslist Array: $tablename:$columnname:$fieldlabel:$fieldname:$typeofdata=>$tablename.$columnname As Header value,
+	 * This function accepts the $reportid and $outputformat (optional)
+	 * This function returns $columnslist Array: $tablename:$columnname:$fieldlabel:$fieldname:$typeofdata=>$tablename.$columnname As Header value,
 	 *					$tablename1:$columnname1:$fieldlabel1:$fieldname1:$typeofdata1=>$tablename1.$columnname1 As Header value,
 	 *					|
 	 *					$tablenamen:$columnnamen:$fieldlabeln:$fieldnamen:$typeofdatan=>$tablenamen.$columnnamen As Header value
@@ -178,7 +178,7 @@ class ReportRun extends CRMEntity {
 						$columnslist[$fieldcolname] = " case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end as cbCalendar_Status";
 						$this->queryPlanner->addTable($selectedfields[0]);
 					} elseif ($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'date_start') {
-						$columnslist[$fieldcolname] = "cast(concat(vtiger_activity.date_start,'  ',vtiger_activity.time_start) as DATETIME) as cbCalendar_Start_Date_and_Time";
+						$columnslist[$fieldcolname] = "cast(concat(vtiger_activity.date_start,' ',vtiger_activity.time_start) as DATETIME) as cbCalendar_Start_Date_and_Time";
 						$this->queryPlanner->addTable($selectedfields[0]);
 					} elseif (stristr($selectedfields[0], 'vtiger_users') && ($selectedfields[1] == 'user_name')) {
 						$temp_module_from_tablename = str_replace('vtiger_users', '', $selectedfields[0]);
@@ -232,7 +232,7 @@ class ReportRun extends CRMEntity {
 								."' when '0' then '".getTranslatedString('LBL_NO')."' else '-' end as '$selectedfields[2]'";
 						} elseif ($selectedfields[1] == 'filesize') {
 							$columnslist[$fieldcolname] = 'case '.$selectedfields[0].'.'.$selectedfields[1]
-								." when '' then '-' else concat(".$selectedfields[0].'.'.$selectedfields[1]."/1024,'  ','KB') end as '$selectedfields[2]'";
+								." when '' then '-' else concat(".$selectedfields[0].'.'.$selectedfields[1]."/1024,' ','KB') end as '$selectedfields[2]'";
 						}
 					} elseif ($selectedfields[0] == 'vtiger_inventoryproductrel' || $selectedfields[0] == 'vtiger_inventoryproductrel'.$module) {
 						if ($outputformat !== 'COLUMNSTOTOTAL') {
@@ -475,8 +475,8 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get field that is to be compared in query form for the given Comparator and field
-	 *  @param string field expression
-	 *  @return string the value for the comparator
+	 * @param string field expression
+	 * @return string the value for the comparator
 	 */
 	public function getFilterComparedField($field) {
 		global $adb;
@@ -514,8 +514,8 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get the advanced filter columns for the reportid
-	 *  This function accepts the $reportid
-	 *  This function returns  $columnslist Array: $columnname => $tablename:$columnname:$fieldlabel:$fieldname:$typeofdata=>$tablename.$columnname filtercriteria,
+	 * This function accepts the $reportid
+	 * This function returns $columnslist Array: $columnname => $tablename:$columnname:$fieldlabel:$fieldname:$typeofdata=>$tablename.$columnname filtercriteria,
 	 *					$tablename1:$columnname1:$fieldlabel1:$fieldname1:$typeofdata1=>$tablename1.$columnname1 filtercriteria,
 	 *					|
 	 *					$tablenamen:$columnnamen:$fieldlabeln:$fieldnamen:$typeofdatan=>$tablenamen.$columnnamen filtercriteria
@@ -661,7 +661,7 @@ class ReportRun extends CRMEntity {
 							if ($selectedfields[0] == 'vtiger_crmentity'.$this->primarymodule) {
 								$fieldvalue = '(vtiger_crmentity.'.$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
 							} elseif ($selectedfields[2]=='cbCalendar_Start_Date_and_Time') {
-								$fieldvalue = "(cast(concat(vtiger_activity.date_start,'  ',vtiger_activity.time_start) as DATETIME) between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
+								$fieldvalue = "(cast(concat(vtiger_activity.date_start,' ',vtiger_activity.time_start) as DATETIME) between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
 							} else {
 								$fieldvalue = '('.$selectedfields[0].'.'.$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
 							}
@@ -783,8 +783,8 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** Function to get the Standard filter columns for the reportid
-	 *  This function accepts the $reportid datatype Integer
-	 *  This function returns  $stdfilterlist Array: $columnname => $tablename:$columnname:$fieldlabel:$fieldname:$typeofdata=>$tablename.$columnname filtercriteria,
+	 * This function accepts the $reportid datatype Integer
+	 * This function returns $stdfilterlist Array: $columnname => $tablename:$columnname:$fieldlabel:$fieldname:$typeofdata=>$tablename.$columnname filtercriteria,
 	 *					$tablename1:$columnname1:$fieldlabel1:$fieldname1:$typeofdata1=>$tablename1.$columnname1 filtercriteria,
 	 */
 	public function getStdFilterList($reportid) {
@@ -1066,8 +1066,8 @@ class ReportRun extends CRMEntity {
 	 * @param integer report id
 	 * @return array in the following format
 	 * 	$grouplist = Array($tablename:$columnname:$fieldlabel:fieldname:typeofdata=>$tablename:$columnname $sorder,
-	 *	   $tablename1:$columnname1:$fieldlabel1:fieldname1:typeofdata1=>$tablename1:$columnname1 $sorder,
-	 *	   $tablename2:$columnname2:$fieldlabel2:fieldname2:typeofdata2=>$tablename2:$columnname2 $sorder)
+	 *	 $tablename1:$columnname1:$fieldlabel1:fieldname1:typeofdata1=>$tablename1:$columnname1 $sorder,
+	 *	 $tablename2:$columnname2:$fieldlabel2:fieldname2:typeofdata2=>$tablename2:$columnname2 $sorder)
 	 * This function also sets the return value in the class variable $this->groupbylist
 	 */
 	public function getGroupingList($reportid) {
@@ -1156,9 +1156,9 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** function to get the selected orderby list for the given reportid
-	 *  @param integer report id
-	 *  @return string orderby clause for the sort order columns
-	 *  @sideeffect this function also sets the return value in the class variable $this->orderbylistsql
+	 * @param integer report id
+	 * @return string orderby clause for the sort order columns
+	 * @sideeffect this function also sets the return value in the class variable $this->orderbylistsql
 	 */
 	public function getSelectedOrderbyList($reportid) {
 		global $adb, $log;
@@ -1769,10 +1769,10 @@ class ReportRun extends CRMEntity {
 	 * @param string outputformat (valid parameters HTML,PDF,TOTAL,PRINT,PRINT_TOTAL)
 	 * @param string filtersql
 	 * @return string HTML Report if $outputformat is HTML
-	 *  		Array for PDF if  $outputformat is PDF
+	 * 		Array for PDF if $outputformat is PDF
 	 *		HTML strings for TOTAL if $outputformat is TOTAL
 	 *		Array for PRINT if $outputformat is PRINT
-	 *		HTML strings for TOTAL fields  if $outputformat is PRINTTOTAL
+	 *		HTML strings for TOTAL fields if $outputformat is PRINTTOTAL
 	 *		HTML strings for
 	 */
 	public function GenerateReport($outputformat, $filtersql, $directOutput = false, &$returnfieldinfo = array()) {

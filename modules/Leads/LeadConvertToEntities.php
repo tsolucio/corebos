@@ -46,18 +46,18 @@ if (!empty($_REQUEST['entities'])) {
 	if (vtlib_isModuleActive('Potentials')&& in_array('Potentials', $entities)) {
 		$entityValues['entities']['Potentials']['create']=true;
 		$entityValues['entities']['Potentials']['name']='Potentials';
-		$entityValues['entities']['Potentials']['potentialname']=  vtlib_purify($_REQUEST['potentialname']);
-		$entityValues['entities']['Potentials']['closingdate']=  vtlib_purify($_REQUEST['closingdate']);
-		$entityValues['entities']['Potentials']['sales_stage']=  vtlib_purify($_REQUEST['sales_stage']);
-		$entityValues['entities']['Potentials']['amount']=  vtlib_purify($_REQUEST['amount']);
+		$entityValues['entities']['Potentials']['potentialname']= vtlib_purify($_REQUEST['potentialname']);
+		$entityValues['entities']['Potentials']['closingdate']= vtlib_purify($_REQUEST['closingdate']);
+		$entityValues['entities']['Potentials']['sales_stage']= vtlib_purify($_REQUEST['sales_stage']);
+		$entityValues['entities']['Potentials']['amount']= vtlib_purify($_REQUEST['amount']);
 	}
 
 	if (vtlib_isModuleActive('Contacts')&& in_array('Contacts', $entities)) {
 		$entityValues['entities']['Contacts']['create']=true;
 		$entityValues['entities']['Contacts']['name']='Contacts';
-		$entityValues['entities']['Contacts']['lastname']=  vtlib_purify($_REQUEST['lastname']);
-		$entityValues['entities']['Contacts']['firstname']=  vtlib_purify($_REQUEST['firstname']);
-		$entityValues['entities']['Contacts']['email']=  vtlib_purify($_REQUEST['email']);
+		$entityValues['entities']['Contacts']['lastname']= vtlib_purify($_REQUEST['lastname']);
+		$entityValues['entities']['Contacts']['firstname']= vtlib_purify($_REQUEST['firstname']);
+		$entityValues['entities']['Contacts']['email']= vtlib_purify($_REQUEST['email']);
 	}
 
 	try {
@@ -110,7 +110,7 @@ function showError($entityValues, $errmsg = '') {
 		<body>
 		<div class="slds-card" style="width: 55%;margin:auto;">
 		<div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
-		  <header class="slds-expression__title">
+		<header class="slds-expression__title">
 			<span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small">
 			<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
@@ -118,15 +118,15 @@ function showError($entityValues, $errmsg = '') {
 			</span>
 EOT;
 		echo '<h2 class="slds-modal__title">'.getTranslatedString('SINGLE_'.$currentModule, $currentModule).' '.$convlead.'</h2>
-		  </header>
-		  <div class="slds-expression__title slds-p-around_medium">'
+		</header>
+		<div class="slds-expression__title slds-p-around_medium">'
 			.getTranslatedString('LBL_FOLLOWING_ARE_POSSIBLE_REASONS', $currentModule) .':'
 			.'<ul class="slds-list_dotted slds-text-align_left">'
 			.(empty($errmsg) ? '' : '<li>'.$errmsg.'</li>')
 			.'<li>'. getTranslatedString('LBL_LEADS_FIELD_MAPPING_INCOMPLETE', $currentModule) .'</li>
 			<li>'. getTranslatedString('LBL_MANDATORY_FIELDS_ARE_EMPTY', $currentModule) .'</li>
 			</ul>
-		  </div>
+		</div>
 		</div>';
 	showMandatoryFieldsAndValues($entityValues);
 	echo '<div class="slds-align_absolute-center slds-p-around_large">';

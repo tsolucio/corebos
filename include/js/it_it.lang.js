@@ -466,4 +466,6 @@ var alert_arr = {
 	'LNK_DUPLICATE': 'Duplicate',
 	'LBL_COLLAPSE': 'Restringi',
 	'LBL_EXPAND': 'Espandi',
+	'currentuser': 'Current User',
+	'wfmodule': 'Workflow Module',
 };

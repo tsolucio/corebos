@@ -721,7 +721,7 @@ async function generateSection(ev, preLoadMap = {}) {
 				<span class="slds-form-element__addon">
 					<button type="image" id="clear-btn-${rowKey}" class="slds-button" alt="${mod_alert_arr.LBL_CLEAR}" title="${mod_alert_arr.LBL_CLEAR}" onClick="this.form.bmapid_${rowKey}.value=''; this.form.bmapid_${rowKey}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 						<svg class="slds-icon slds-icon_small slds-icon-text-light" aria-hidden="true" >
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use> 
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 						</svg>
 					</button>
 				</span>

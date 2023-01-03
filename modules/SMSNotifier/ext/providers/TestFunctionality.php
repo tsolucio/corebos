@@ -51,7 +51,7 @@ class TestFunctionality implements ISMSProvider {
 
 	public function getServiceURL($type = false) {
 		if ($type) {
-			return  self::SERVICE_URI . $type;
+			return self::SERVICE_URI . $type;
 		}
 		return 'false';
 	}

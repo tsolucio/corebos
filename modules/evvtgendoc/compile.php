@@ -112,7 +112,6 @@ $related_module = array(
 	),
 );
 
-
 //Array de mapeig de moduls especials, p.e. el presciptors son comptes
 //aleshores el tag Prescriptor el mapegem a Accounts
 //També per a llistes de relacionats, quan tenim més d'un tipus d'entitat per modul, p.e.
@@ -373,7 +372,9 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 					}
 					switch (getTypeOfDataByFieldName($module, $token_pair[1])) {
 						case 'I':
-							$cadena = substr($cadena, 0, strrpos($cadena, $current_user->currency_decimal_separator));
+							if (strpos($cadena, $current_user->currency_decimal_separator)!==false) {
+								$cadena = substr($cadena, 0, strrpos($cadena, $current_user->currency_decimal_separator));
+							}
 							break;
 						case 'N':
 						case 'NN':
@@ -1417,7 +1418,7 @@ function getServiceList($module, $id) {
 			((quantity * listprice) - COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0))) * (COALESCE(tax1, 0) + COALESCE(tax2, 0) + COALESCE(tax3, 0)) /100 AS linetax,
 			((quantity * listprice) - COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0))) * (1 + (COALESCE(tax1, 0) + COALESCE(tax2, 0) + COALESCE(tax3, 0)) /100) AS linetotal
 			from vtiger_inventoryproductrel
-			inner join vtiger_service on vtiger_service.serviceid=vtiger_inventoryproductrel.productid 
+			inner join vtiger_service on vtiger_service.serviceid=vtiger_inventoryproductrel.productid
 			where id=? ORDER BY sequence_no";
 	}
 

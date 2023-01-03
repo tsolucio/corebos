@@ -35,8 +35,8 @@ class vt_DateTime {
 
 	/**
 	 * Constructor for vt_DateTime class
-	 * @param array  $timearr - collection of string
-	 * @param string $check   - check string
+	 * @param array collection of string
+	 * @param string check string
 	 */
 	public function __construct(&$timearr, $check) {
 		if (empty($timearr)) {
@@ -50,7 +50,7 @@ class vt_DateTime {
 			if (isset($timearr['min']) && $timearr['min'] !== '') {
 				$this->minute = $timearr['min'];
 			}
-			if (isset($timearr['sec']) && $timearr['sec']  !== '') {
+			if (isset($timearr['sec']) && $timearr['sec'] !== '') {
 				$this->second = $timearr['sec'];
 			}
 			if (isset($timearr['day']) && $timearr['day'] !== '') {
@@ -75,10 +75,10 @@ class vt_DateTime {
 
 	/**
 	 * function to get date and time using index
-	 * @param integer $index - number between 0 to 23
-	 * @param string  day
-	 * @param string  month
-	 * @param string  year
+	 * @param integer number between 0 to 23
+	 * @param string day
+	 * @param string month
+	 * @param string year
 	 * @return object vt_DateTime datetime value
 	 */
 	public function getTodayDatetimebyIndex($index, $dy = '', $mnth = '', $yr = '') {
@@ -125,10 +125,10 @@ class vt_DateTime {
 	 * function to get days in month using index
 	 *
 	 * @deprecated use getThisMonthsDayByIndex()
-	 * @param integer $index - number between 0 to 42
-	 * @param string  day
-	 * @param string  month
-	 * @param string  year
+	 * @param integer number between 0 to 42
+	 * @param string day
+	 * @param string month
+	 * @param string year
 	 * @return object vt_DateTime datetime value
 	 */
 	public function getThismonthDaysbyIndex($index, $dy = '', $mnth = '', $yr = '') {
@@ -150,7 +150,7 @@ class vt_DateTime {
 
 	/**
 	 * function to get months in year using index
-	 * @param integer  $index - number between 0 to 11
+	 * @param integer number between 0 to 11
 	 * @return object vt_DateTime datetime value
 	 */
 	public function getThisyearMonthsbyIndex($index) {
@@ -211,7 +211,7 @@ class vt_DateTime {
 
 	/**
 	 * function to get day of week
-	 * @return string $this->day  - day (eg: Monday)
+	 * @return string $this->day - day (eg: Monday)
 	 */
 	public function get_Date() {
 		return $this->day;
@@ -219,7 +219,7 @@ class vt_DateTime {
 
 	/**
 	 * function to get month name in short
-	 * @return string $this->month_inshort  - month name (eg: Jan)
+	 * @return string $this->month_inshort - month name (eg: Jan)
 	 */
 	public function getmonthName_inshort() {
 		return $this->month_inshort;
@@ -227,7 +227,7 @@ class vt_DateTime {
 
 	/**
 	 * function to get month
-	 * @return string $this->month  - month name
+	 * @return string $this->month - month name
 	 */
 	public function getMonth() {
 		return $this->month;
@@ -249,7 +249,7 @@ class vt_DateTime {
 
 	/**
 	 * function to get month name
-	 * @return string $this->month_inlong  - month name
+	 * @return string $this->month_inlong - month name
 	 */
 	public function getmonthName() {
 		return $this->month_inlong;
@@ -257,7 +257,7 @@ class vt_DateTime {
 
 	/**
 	 * function to get day of week
-	 * @return string $this->dayofweek_inlong  - day of week
+	 * @return string $this->dayofweek_inlong - day of week
 	 */
 	public function getdayofWeek() {
 		return $this->dayofweek_inlong;
@@ -265,7 +265,7 @@ class vt_DateTime {
 
 	/**
 	 * function to get day of week in short
-	 * @return string $this->dayofweek_inshort  - day of week (eg: Mon)
+	 * @return string $this->dayofweek_inshort - day of week (eg: Mon)
 	 */
 	public function getdayofWeek_inshort() {
 		return $this->dayofweek_inshort;
@@ -273,7 +273,7 @@ class vt_DateTime {
 
 	/**
 	 * function to set values for vt_DateTime object
-	 * @param integer   $ts  - Time stamp
+	 * @param integer Time stamp
 	 */
 	public function setDateTime($ts) {
 		global $current_language;
@@ -362,7 +362,7 @@ class vt_DateTime {
 
 	/**
 	 * function to get date depends on mode value
-	 * @param string $mode  - 'increment' or 'decrement'
+	 * @param string 'increment' or 'decrement'
 	 * @return object vt_DateTime
 	 */
 	public function get_changed_day($mode) {
@@ -377,7 +377,7 @@ class vt_DateTime {
 
 	/**
 	 * function to get changed week depends on mode value
-	 * @param string $mode  - 'increment' or 'decrement'
+	 * @param string 'increment' or 'decrement'
 	 * @return object vt_DateTime
 	 */
 	public function get_first_day_of_changed_week($mode) {
@@ -393,7 +393,7 @@ class vt_DateTime {
 
 	/**
 	 * function to get month depends on mode value
-	 * @param string $mode  - 'increment' or 'decrement'
+	 * @param string 'increment' or 'decrement'
 	 * @return object vt_DateTime
 	 */
 	public function get_first_day_of_changed_month($mode) {
@@ -419,7 +419,7 @@ class vt_DateTime {
 
 	/**
 	 * function to get year depends on mode value
-	 * @param string $mode  - 'increment' or 'decrement'
+	 * @param string 'increment' or 'decrement'
 	 * @return object vt_DateTime
 	 */
 	public function get_first_day_of_changed_year($mode) {
@@ -450,15 +450,15 @@ class vt_DateTime {
 		if (isset($this->year) && $this->year != '') {
 			$array[] = 'year='.$this->year;
 		}
-		return  ('&'.implode('&', $array));
+		return ('&'.implode('&', $array));
 	}
 
 	/**
 	 * function to get days in month using index
-	 * @param integer $index - number between 0 to 42
-	 * @param string  day
-	 * @param string  month
-	 * @param string  year
+	 * @param integer number between 0 to 42
+	 * @param string day
+	 * @param string month
+	 * @param string year
 	 * @return object vt_DateTime datetime value
 	 */
 	public function getThisMonthsDayByIndex($index) {

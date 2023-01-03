@@ -78,8 +78,7 @@ class PriceBooks extends CRMEntity {
 		$this->updateListPrices();
 	}
 
-	/* Function to Update the List prices for all the products of a current price book
-	   with its Unit price, if the Currency for Price book has changed. */
+	/* Function to Update the List prices for all the products of a current price book with its Unit price, if the Currency for Price book has changed. */
 	private function updateListPrices() {
 		global $log, $adb;
 		$log->debug('> function updateListPrices');
@@ -154,7 +153,7 @@ class PriceBooks extends CRMEntity {
 		$query = "from $moduletable $cfquery
 			inner join $crmtablealias on vtiger_crmentity.crmid=$moduletable.$moduleindex";
 		if ($queryplanner->requireTable("vtiger_currency_info$module")) {
-			$query .= "  left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = $moduletable.currency_id";
+			$query .= " left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = $moduletable.currency_id";
 		}
 		if ($queryplanner->requireTable("vtiger_groups$module")) {
 			$query .= " left join vtiger_groups as vtiger_groups$module on vtiger_groups$module.groupid = vtiger_crmentity.smownerid";

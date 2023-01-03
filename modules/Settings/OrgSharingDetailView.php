@@ -102,8 +102,8 @@ uksort($custom_access, function ($a, $b) {
 $smarty->assign('MODSHARING', $custom_access);
 
 /** returns the list of sharing rules for the specified module
-  * @param string Module Name
-  * @return array sharing rules list info
+ * @param string Module Name
+ * @return array sharing rules list info
  */
 function getSharingRuleList($module) {
 	global $adb,$mod_strings;

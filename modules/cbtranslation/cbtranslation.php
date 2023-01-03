@@ -145,7 +145,7 @@ class cbtranslation extends CRMEntity {
 	/**
 	 * Returns the language string to be used for translation
 	 * Try to get it from User, next from request headers and finally from global configuration
-	 * @return	<String> Language string to be used
+	 * @return string Language string to be used
 	 */
 	public static function getLanguage() {
 		global $current_user, $default_language;
@@ -182,7 +182,8 @@ class cbtranslation extends CRMEntity {
 
 	/**
 	 * Function that returns given language short name, if none is given the current language short name will be returned
-	 * @return <String>
+	 * @param string language to shorten
+	 * @return string language short version
 	 */
 	public static function getShortLanguageName($languageLongName = '') {
 		global $current_language;
@@ -194,7 +195,8 @@ class cbtranslation extends CRMEntity {
 
 	/**
 	 * Function that returns given language long name, if none is given the current language long name will be returned
-	 * @return <String>
+	 * @param string language to lengthen
+	 * @return string language long version
 	 */
 	public static function getLongLanguageName($languageShortName = '') {
 		global $current_language;
@@ -214,16 +216,16 @@ class cbtranslation extends CRMEntity {
 		return (isset($lang[$languageShortName]) ? $lang[$languageShortName] : '');
 	}
 
-	/*
+	/**
 	 * Retrieve a translated label from the database
-	 * @param <String> $key   label to translate
-	 * @param <String> $module module context to search for the label frist before fall back to main translation file
-	 * @param <Array> $options
-	 * 		language => <String> language to translate against, if not set $current_language will be used
-	 * 		context => <String> label modifier for specific translation contexts like gender
-	 * 		count => <Integer> label modifier for plurals
-	 * @param if more parameters are given they will be passed in order to the translated label using sprintf
-	 * @returns <String> translated string if found, same label if not
+	 * @param string label to translate
+	 * @param string module context to search for the label frist before fall back to main translation file
+	 * @param array
+	 * 		language => string language to translate against, if not set $current_language will be used
+	 * 		context => string label modifier for specific translation contexts like gender
+	 * 		count => integer label modifier for plurals
+	 * @param mixed if more parameters are given they will be passed in order to the translated label using sprintf
+	 * @return string translated string if found, same label if not
 	 */
 	public static function get($key, $module = '', $options = '') {
 		global $adb, $current_language, $currentModule, $installationStrings;
@@ -381,18 +383,18 @@ class cbtranslation extends CRMEntity {
 	}
 
 	/**
-	 *  This function returns the modified keycode to match the plural form(s) of a given language and a given count with the same pattern used by i18next JS library
-	 *  Global patterns for keycode are as below :
-	 *  - No plural form : only one non modified key is needed :)
-	 *  - 2 forms : unmodified key for singular values and 'key_PLURAL' for plural values
-	 *  - 3 or more forms : key_X with X indented for each plural form
-	 *  @see https://www.i18next.com/plurals.html for some examples
-	 *  @see http://docs.translatehouse.org/projects/localization-guide/en/latest/l10n/pluralforms.html?id=l10n/pluralforms for whole plural rules used by getText
+	 * This function returns the modified keycode to match the plural form(s) of a given language and a given count with the same pattern used by i18next JS library
+	 * Global patterns for keycode are as below :
+	 * - No plural form : only one non modified key is needed :)
+	 * - 2 forms : unmodified key for singular values and 'key_PLURAL' for plural values
+	 * - 3 or more forms : key_X with X indented for each plural form
+	 * @see https://www.i18next.com/plurals.html for some examples
+	 * @see http://docs.translatehouse.org/projects/localization-guide/en/latest/l10n/pluralforms.html?id=l10n/pluralforms for whole plural rules used by getText
 	 *
-	 *	@param	<String>	$key		Key to be pluralized
-	 *  @param	<String>	$locale		Locale/language value
-	 *  @param	<Float>		$count		Quantity for plural determination
-	 *	@return	<String>	Pluralized key to look for
+	 * @param string Key to be pluralized
+	 * @param string Locale/language value
+	 * @param float Quantity for plural determination
+	 * @return string Pluralized key to look for
 	 */
 	public static function getPluralizedKey($key, $locale, $count) {
 		//Extract language code from locale with special cases

@@ -15,7 +15,7 @@
 {/if}
 {if !empty($CUSTOM_LINKS.LISTVIEWACTION)}
 	<div class="slds-grid slds-gutters">
-	<div class="slds-col slds-size_9-of-12">
+	<div class="slds-col slds-size_9-of-12" id="lvgridcolumn">
 {/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();">
@@ -151,7 +151,7 @@
 			<td>
 				<table width="100%">
 					<tr>
-						<td class="small" nowrap align="left">{$recordListRange}</td>
+						<td class="small" nowrap align="left" id="recordListRangeb">{$recordListRange}</td>
 						<td nowrap width="50%" align="right" class="cblds-t-align_right">
 							<table border=0 cellspacing=0 cellpadding=0 class="small" style="display: inline-block;">
 							<tr>{$NAVIGATION}</tr>
@@ -170,7 +170,7 @@
 </div>
 {if !empty($CUSTOM_LINKS.LISTVIEWACTION)}
 	</div>
-	<div class="slds-col slds-size_3-of-12">
+	<div class="slds-col slds-size_3-of-12" id="actioncolumn">
 	{include file='ListViewActions.tpl'}
 	</div>
 	</div>

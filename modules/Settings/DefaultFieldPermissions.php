@@ -35,9 +35,9 @@ if (!empty($_REQUEST['fld_module'])) {
 }
 
 /** Function to get the field label/permission array to construct the default orgnization field UI for the specified profile
- * @param $fieldListResult -- mysql query result that contains the field label and uitype:: Type array
- * @param $module -- module to translate with
- * @returns $standCustFld -- field label/permission array :: Type varchar
+ * @param object mysql query result that contains the field label and uitype
+ * @param string module to translate with
+ * @return string field label/permission
 */
 function getStdOutput($fieldListResult, $noofrows, $module) {
 	global $adb, $theme;

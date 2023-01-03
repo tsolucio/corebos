@@ -127,7 +127,7 @@ foreach ($modArr as $fld_module => $fld_label) {
 	$noofrows = $adb->num_rows($fieldListResult);
 	$tab_id = getTabid($fld_module);
 	for ($i=0; $i<$noofrows; $i++) {
-		$fieldid =  $adb->query_result($fieldListResult, $i, 'fieldid');
+		$fieldid = $adb->query_result($fieldListResult, $i, 'fieldid');
 		if (isset($sentvariables->$fieldid)) {
 			$visible = $sentvariables->$fieldid;
 		} else {
@@ -170,8 +170,8 @@ echo $loc;
 /**
  * returns value 0 if request permission is on else returns value 1
  *
- * @param   $req_per -- Request Permission:: Type varchar
- * @returns $permission - can have value 0 or 1:: Type integer
+ * @param string Request Permission
+ * @return integer can have value 0 or 1
  */
 function getPermissionValue($req_per) {
 	return ($req_per == 'on' ? 0 : 1);

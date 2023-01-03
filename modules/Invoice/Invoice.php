@@ -709,8 +709,8 @@ class Invoice extends CRMEntity {
 		$fields_list = getFieldsListFromQuery($sql);
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
 		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
-		$query = "SELECT $fields_list FROM ".$crmEntityTable." 
-			INNER JOIN vtiger_invoice ON vtiger_invoice.invoiceid = vtiger_crmentity.crmid
+		$query = "SELECT $fields_list FROM ".$crmEntityTable
+			." INNER JOIN vtiger_invoice ON vtiger_invoice.invoiceid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
 			LEFT JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_invoice.salesorderid
 			LEFT JOIN vtiger_invoicebillads ON vtiger_invoicebillads.invoicebilladdressid = vtiger_invoice.invoiceid

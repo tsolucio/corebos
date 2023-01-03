@@ -75,25 +75,25 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 	}
 	$smarty->assign('CHECK', $tool_buttons);
 	$smarty->assign('UNDO', '');
-	$smarty->assign("MOD", $mod_strings);
-	$smarty->assign("APP", $app_strings);
-	$smarty->assign("THEME", $theme);
-	$smarty->assign("IMAGE_PATH", $image_path);
+	$smarty->assign('MOD', $mod_strings);
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('THEME', $theme);
+	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('MODULE', 'cbCalendar');
 	$smarty->assign('SINGLE_MOD', 'SINGLE_cbCalendar');
-	$smarty->display("Buttons_List.tpl");
+	$smarty->display('Buttons_List.tpl');
 	$imported_tasks = $cnt - $skip_count;
-	$message= "<b>".$mod_strings['LBL_SUCCESS']."</b>"
-		."<br><br>" .$mod_strings['LBL_SUCCESS_CALENDAR_1']."  $imported_tasks"
-		."<br><br>" .$mod_strings['LBL_SKIPPED_CALENDAR_1'].$skip_count
-		."<br><br>";
+	$message= '<b>'.$mod_strings['LBL_SUCCESS'].'</b>'
+		.'<br><br>' .$mod_strings['LBL_SUCCESS_CALENDAR_1']." $imported_tasks"
+		.'<br><br>' .$mod_strings['LBL_SKIPPED_CALENDAR_1'].$skip_count
+		.'<br><br>';
 
-	$smarty->assign("MESSAGE", $message);
-	$smarty->assign("RETURN_MODULE", $currentModule);
-	$smarty->assign("RETURN_ACTION", 'ListView');
-	$smarty->assign("MODULE", $currentModule);
-	$smarty->assign("MODULENAME", $currentModule);
-	$smarty->display("iCalImport.tpl");
+	$smarty->assign('MESSAGE', $message);
+	$smarty->assign('RETURN_MODULE', $currentModule);
+	$smarty->assign('RETURN_ACTION', 'ListView');
+	$smarty->assign('MODULE', $currentModule);
+	$smarty->assign('MODULENAME', $currentModule);
+	$smarty->display('iCalImport.tpl');
 } else {
 	$smarty = new vtigerCRM_Smarty;
 
@@ -101,29 +101,29 @@ if (empty($_REQUEST['step']) || $_REQUEST['step']!='undo') {
 		$tool_buttons = Button_Check('cbCalendar');
 	}
 	$smarty->assign('CHECK', $tool_buttons);
-	$smarty->assign("MOD", $mod_strings);
-	$smarty->assign("APP", $app_strings);
-	$smarty->assign("THEME", $theme);
-	$smarty->assign("IMAGE_PATH", $image_path);
+	$smarty->assign('MOD', $mod_strings);
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('THEME', $theme);
+	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('MODULE', 'cbCalendar');
 	$smarty->assign('SINGLE_MOD', 'SINGLE_cbCalendar');
-	$smarty->display("Buttons_List.tpl");
+	$smarty->display('Buttons_List.tpl');
 
 	$last_import = new iCalLastImport();
 	$ret_value = $last_import->undo('cbCalendar', $current_user->id);
 
 	if (!empty($ret_value)) {
-		$message= "<b>".$mod_strings['LBL_SUCCESS'].'</b><br><br>' .$mod_strings['LBL_LAST_IMPORT_UNDONE']." ";
+		$message= '<b>'.$mod_strings['LBL_SUCCESS'].'</b><br><br>' .$mod_strings['LBL_LAST_IMPORT_UNDONE'].' ';
 	} else {
-		$message= "<b>".$mod_strings['LBL_FAILURE'].'</b><br><br>' .$mod_strings['LBL_NO_IMPORT_TO_UNDO']." ";
+		$message= '<b>'.$mod_strings['LBL_FAILURE'].'</b><br><br>' .$mod_strings['LBL_NO_IMPORT_TO_UNDO'].' ';
 	}
 
-	$smarty->assign("MESSAGE", $message);
-	$smarty->assign("UNDO", 'yes');
-	$smarty->assign("RETURN_MODULE", $currentModule);
-	$smarty->assign("RETURN_ACTION", 'ListView');
-	$smarty->assign("MODULE", $currentModule);
-	$smarty->assign("MODULENAME", $currentModule);
-	$smarty->display("iCalImport.tpl");
+	$smarty->assign('MESSAGE', $message);
+	$smarty->assign('UNDO', 'yes');
+	$smarty->assign('RETURN_MODULE', $currentModule);
+	$smarty->assign('RETURN_ACTION', 'ListView');
+	$smarty->assign('MODULE', $currentModule);
+	$smarty->assign('MODULENAME', $currentModule);
+	$smarty->display('iCalImport.tpl');
 }
 ?>

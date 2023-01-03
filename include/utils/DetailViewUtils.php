@@ -433,7 +433,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}
 			if ($org_filename != '') {
 				if ($col_fields['filelocationtype'] == 'E') {
-					if ($col_fields['filestatus'] == 1) {//&& strlen($col_fields['filename']) > 7  ){
+					if ($col_fields['filestatus'] == 1) {
 						$custfldval = '<a target="_blank" href =' . $col_fields['filename'] . ' onclick=\'javascript:dldCntIncrease(' . $col_fields['record_id']
 							. ');\'>' . $col_fields[$fieldname] . '</a>';
 					} else {
@@ -470,7 +470,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$custfldval = '';
 		if ($org_filename != '') {
 			if ($col_fields['filelocationtype'] == 'E') {
-				if ($col_fields['filestatus'] == 1) {//&& strlen($col_fields['filename']) > 7  ){
+				if ($col_fields['filestatus'] == 1) {
 					$custfldval = '<a target="_blank" href =' . $col_fields['filename'] . ' onclick=\'javascript:dldCntIncrease(' . $col_fields['record_id'] . ');\'>'
 						. $col_fields[$fieldname] . '</a>';
 				} else {
@@ -514,11 +514,9 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$image_array = array();
 			for ($image_iter = 0; $image_iter < $adb->num_rows($result_image); $image_iter++) {
 				$image_id_array[] = $adb->query_result($result_image, $image_iter, 'attachmentsid');
-
-				//decode_html  - added to handle UTF-8   characters in file names
-				//urlencode    - added to handle special characters like #, %, etc.,
+				//decode_html - added to handle UTF-8 characters in file names
+				//urlencode - added to handle special characters like #, %, etc.,
 				$image_array[] = urlencode(decode_html($adb->query_result($result_image, $image_iter, 'name')));
-
 				$imagepath_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
 			global $site_URL;
@@ -555,25 +553,24 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$imageattachment = 'Attachment';
 		}
 		$sql = "select vtiger_attachments.*,vtiger_crmentity.setype
-		 from vtiger_attachments
-		 inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
-		 inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-		 where vtiger_crmentity.setype='$module $imageattachment'
-		  and vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?";
+			from vtiger_attachments
+			inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
+			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
+			where vtiger_crmentity.setype='$module $imageattachment' and vtiger_attachments.name=? and vtiger_seattachmentsrel.crmid=?";
 		$image_res = $adb->pquery($sql, array(str_replace(' ', '_', decode_html($col_fields[$fieldname])),$col_fields['record_id']));
 		if ($adb->num_rows($image_res)==0) {
 			$sql = 'select vtiger_attachments.*,vtiger_crmentity.setype
-			 from vtiger_attachments
-			 inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
-			 inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-			 where vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?';
+				from vtiger_attachments
+				inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+				where vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?';
 			$image_res = $adb->pquery($sql, array(str_replace(' ', '_', $col_fields[$fieldname]),$col_fields['record_id']));
 		}
 		if ($adb->num_rows($image_res)>0) {
 			$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
 			$image_path = $adb->query_result($image_res, 0, 'path');
-			//decode_html  - added to handle UTF-8   characters in file names
-			//urlencode    - added to handle special characters like #, %, etc.,
+			//decode_html - added to handle UTF-8 characters in file names
+			//urlencode - added to handle special characters like #, %, etc.,
 			$image_name = decode_html($adb->query_result($image_res, 0, 'name'));
 			$imgpath = $image_path . $image_id . '_' . urlencode($image_name);
 			if ($image_name != '') {
@@ -1070,17 +1067,17 @@ function getDetailAssociatedProducts($module, $focus) {
 		$output .= '
 			<td class="crmTableRow small lineOnTop detailview_inventory_lpricecell" align="right">
 				<table width="100%" border="0" cellpadding="5" cellspacing="0">
-				   <tr>
-				    <td align="right">' . CurrencyField::convertToUserFormat($listprice, null, true) . '</td>
-				   </tr>
-				   <tr>
+					<tr>
+						<td align="right">' . CurrencyField::convertToUserFormat($listprice, null, true) . '</td>
+					</tr>
+					<tr>
 						<td align="right">
 							(-)&nbsp;<b><a href="javascript:;" onclick="alert(\'' . $discount_info_message . '\'); ">' . $app_strings['LBL_DISCOUNT'] . ' : </a></b>
 						</td>
-				   </tr>
-				   <tr>
-				    <td align="right" nowrap>' . $app_strings['LBL_TOTAL_AFTER_DISCOUNT'] . ' : </td>
-				   </tr>';
+					</tr>
+					<tr>
+						<td align="right" nowrap>' . $app_strings['LBL_TOTAL_AFTER_DISCOUNT'] . ' : </td>
+					</tr>';
 		if ($taxtype == 'individual') {
 			$output .= '
 				<tr>
@@ -1096,9 +1093,9 @@ function getDetailAssociatedProducts($module, $focus) {
 		$output .= '
 			<td class="crmTableRow small lineOnTop detailview_inventory_totalscell" align="right">
 				<table width="100%" border="0" cellpadding="5" cellspacing="0">
-				   <tr><td align="right">' . CurrencyField::convertToUserFormat($total, null, true) . '</td></tr>
-				   <tr><td align="right">' . CurrencyField::convertToUserFormat($productDiscount, null, true) . '</td></tr>
-				   <tr><td align="right" nowrap>' . CurrencyField::convertToUserFormat($totalAfterDiscount, null, true) . '</td></tr>';
+					<tr><td align="right">' . CurrencyField::convertToUserFormat($total, null, true) . '</td></tr>
+					<tr><td align="right">' . CurrencyField::convertToUserFormat($productDiscount, null, true) . '</td></tr>
+					<tr><td align="right" nowrap>' . CurrencyField::convertToUserFormat($totalAfterDiscount, null, true) . '</td></tr>';
 
 		if ($taxtype == 'individual') {
 			$output .= '<tr><td align="right" nowrap>' . CurrencyField::convertToUserFormat($taxtotal, null, true) . '</td></tr>';

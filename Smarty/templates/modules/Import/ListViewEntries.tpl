@@ -10,7 +10,7 @@
 -->*}
 <table width="100%" class="layerPopupTransport" cellpadding="5">
 	<tr>
-		<td align="left" class="small">
+		<td align="left" class="small" id="recordListRanget">
 			{$recordListRange}
 		</td>
 		<td align="right" class="small">

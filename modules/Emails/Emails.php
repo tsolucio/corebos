@@ -487,9 +487,7 @@ class Emails extends CRMEntity {
 		global $adb;
 		$sql = 'DELETE FROM vtiger_seactivityrel WHERE activityid=? AND crmid = ?';
 		$adb->pquery($sql, array($id, $return_id));
-		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
-		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$adb->pquery($sql, $params);
+		deleteFromCrmEntityRel($id, $return_id);
 		$mtime = date('y-m-d H:i:d');
 		$adb->pquery('UPDATE '.$this->crmentityTable.' SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
 		$adb->pquery('UPDATE vtiger_crmobject SET modifiedtime=? WHERE crmid=?', array($mtime, $id));

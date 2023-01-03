@@ -265,4 +265,25 @@
 	<classname>addBAtypesForDVActionButton</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>CRMEntityRel denormalization.</description>
+	<filename>build/changeSets/2022/addDenormCRMEntityRel.php</filename>
+	<classname>addDenormCRMEntityRel</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Notify Panel Fields for events not related to module records.</description>
+	<filename>build/changeSets/2022/addNotifyPanelFields.php</filename>
+	<classname>addNotifyPanelFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Notification workflow task.</description>
+	<filename>build/changeSets/2022/add_workflow_addnotification.php</filename>
+	<classname>add_workflow_addnotification</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -14,27 +14,27 @@ require_once 'modules/Settings/MailScanner/core/MailScannerAction.php';
  */
 class Vtiger_MailScannerRule {
 	// id of this instance
-	public $ruleid    = false;
+	public $ruleid = false;
 	// scanner to which this rule is linked
 	public $scannerid = false;
 	// from address criteria
 	public $fromaddress= false;
 	// to address criteria
-	public $toaddress  = false;
+	public $toaddress = false;
 	// subject criteria operator
 	public $subjectop = false;
 	// cc criteria
-	public $cc  = false;
+	public $cc = false;
 	// subject criteria
-	public $subject   = false;
+	public $subject = false;
 	// body criteria operator
-	public $bodyop    = false;
+	public $bodyop = false;
 	// body criteria
-	public $body      = false;
+	public $body = false;
 	// order of this rule
-	public $sequence  = false;
+	public $sequence = false;
 	// is this action valid
-	public $isvalid   = false;
+	public $isvalid = false;
 	// match criteria ALL or ANY
 	public $matchusing = false;
 	// Assign (Ticket) to user or groups
@@ -47,12 +47,12 @@ class Vtiger_MailScannerRule {
 	public $must_be_related = true;
 
 	// associated actions for this rule
-	public $actions  = false;
+	public $actions = false;
 	// NOTE: we are restricting one action for one rule right now
 	public $useaction= false;
 
 	/** DEBUG functionality **/
-	public $debug     = false;
+	public $debug = false;
 	private function log($message) {
 		global $log;
 		if ($log && $this->debug) {
@@ -102,9 +102,9 @@ class Vtiger_MailScannerRule {
 			$this->workflowid = $adb->query_result($result, 0, 'workflowid');
 			$this->workflowname = $adb->query_result($result, 0, 'workflowname');
 			$this->must_be_related = $adb->query_result($result, 0, 'must_be_related');
-			$this->isvalid    = true;
+			$this->isvalid = true;
 			//User | Group to assign
-			$this->assign_to  = $adb->query_result($result, 0, 'assign_to');
+			$this->assign_to = $adb->query_result($result, 0, 'assign_to');
 			$result = $adb->pquery('SELECT * from vtiger_users where id = ?', array($this->assign_to));
 			if ($adb->num_rows($result) > 0) {
 				$this->assign_to_type = 'U';
@@ -170,8 +170,8 @@ class Vtiger_MailScannerRule {
 	/**
 	 * Apply all the criteria.
 	 * @param $mailrecord
-	 * @param $includingBody
-	 * @returns false if not match is found or else all matching result found
+	 * @param boolean $includingBody
+	 * @return boolean false if not match is found or else all matching result found
 	 */
 	public function applyAll($mailrecord, $includingBody = true) {
 		$matchresults = array();
@@ -355,8 +355,8 @@ class Vtiger_MailScannerRule {
 
 	/**
 	 * Detect if the rule match result has Regex condition
-	 * @param $matchresult result of apply obtained earlier
-	 * @returns matchinfo if Regex match is found, false otherwise
+	 * @param array result of apply obtained earlier
+	 * @return boolean matchinfo if Regex match is found, false otherwise
 	 */
 	public function hasRegexMatch($matchresult) {
 		foreach ($matchresult as $matchinfo) {

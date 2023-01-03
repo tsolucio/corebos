@@ -750,7 +750,7 @@ function vtws_saveLeadRelations($leadId, $relatedId, $setype) {
 	for ($i = 0; $i < $rowCount; ++$i) {
 		$recordId = $adb->query_result($result, $i, 'relcrmid');
 		$recordModule = $adb->query_result($result, $i, 'relmodule');
-		$resultNew = $adb->pquery('insert into vtiger_crmentityrel values(?,?,?,?)', array($relatedId, $setype, $recordId, $recordModule));
+		$resultNew = insertIntoCrmEntityRel($relatedId, $setype, $recordId, $recordModule);
 		if ($resultNew === false) {
 			return false;
 		}
@@ -763,10 +763,7 @@ function vtws_saveLeadRelations($leadId, $relatedId, $setype) {
 	for ($i = 0; $i < $rowCount; ++$i) {
 		$recordId = $adb->query_result($result, $i, 'crmid');
 		$recordModule = $adb->query_result($result, $i, 'module');
-		$resultNew = $adb->pquery(
-			'insert into vtiger_crmentityrel values(?,?,?,?)',
-			array($relatedId, $setype, $recordId, $recordModule)
-		);
+		$resultNew = insertIntoCrmEntityRel($relatedId, $setype, $recordId, $recordModule);
 		if ($resultNew === false) {
 			return false;
 		}

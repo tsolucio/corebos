@@ -59,10 +59,10 @@ function isInsideApplication($path2check) {
 
 /**
  * THIS FUNCTION IS DEPRECATED AND SHOULD NOT BE USED; USE get_select_options_with_id()
- * Create HTML to display select options in a dropdown list.  To be used inside
- * of a select statement in a form.
- * @param $option_list - the array of strings to that contains the option list
- * @param $selected - the string which contains the default value
+ * Create HTML to display select options in a dropdown list.
+ * To be used inside of a select statement in a form.
+ * @param array of strings to that contains the option list
+ * @param string which contains the default value
  * @deprecated
  */
 function get_select_options(&$option_list, $selected, $advsearch = 'false') {
@@ -72,10 +72,11 @@ function get_select_options(&$option_list, $selected, $advsearch = 'false') {
 }
 
 /**
- * Create HTML to display select options in a dropdown list.  To be used inside
- * of a select statement in a form.   This method expects the option list to have keys and values.  The keys are the ids.  The values is an array of the datas
- * param $option_list - the array of strings to that contains the option list
- * param $selected - the string which contains the default value
+ * Create HTML to display select options in a dropdown list.
+ * To be used inside of a select statement in a form.
+ * This method expects the option list to have keys and values. The keys are the ids. The values is an array of the data
+ * @param array of strings to that contains the option list
+ * @param string which contains the default value
  */
 function get_select_options_with_id(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
@@ -90,9 +91,9 @@ function get_select_options_with_value(&$option_list, $selected_key, $advsearch 
 }
 
 /**
- * Create HTML to display select options in a dropdown list.  To be used inside
- * of a select statement in a form.   This method expects the option list to have keys and values.  The keys are the ids.
- * The values are the display strings.
+ * Create HTML to display select options in a dropdown list.
+ * To be used inside of a select statement in a form.
+ * This method expects the option list to have keys and values. The keys are the ids. The values are the display strings.
  */
 function get_select_options_array(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
@@ -101,14 +102,15 @@ function get_select_options_array(&$option_list, $selected_key, $advsearch = 'fa
 }
 
 /**
- * Create HTML to display select options in a dropdown list.  To be used inside
- * of a select statement in a form.   This method expects the option list to have keys and values.  The keys are the ids.  The value is an array of data
- * param $label_list - the array of strings to that contains the option list
- * param $key_list - the array of strings to that contains the values list
- * param $selected - the string which contains the default value
+ * Create HTML to display select options in a dropdown list.
+ * To be used inside of a select statement in a form.
+ * This method expects the option list to have keys and values. The keys are the ids. The value is an array of data
+ * @param array of strings to that contains the option list
+ * @param array of strings to that contains the values list
+ * @param string which contains the default value
  */
 function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key, $advsearch = 'false') {
-	global $log,  $app_strings;
+	global $log, $app_strings;
 	$log->debug('> get_options_array_seperate_key');
 	if ($advsearch == 'true') {
 		$select_options = "\n<OPTION value=''>--NA--</OPTION>";
@@ -124,8 +126,6 @@ function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key,
 	//create the type dropdown domain and set the selected value if $opp value already exists
 	foreach ($key_list as $option_key => $option_value) {
 		$selected_string = '';
-		// the system is evaluating $selected_key == 0 || '' to true.  Be very careful when changing this.  Test all cases.
-		// The reported bug was only happening with one of the users in the drop down.  It was being replaced by none.
 		if (($option_key != '' && $selected_key == $option_key) || ($selected_key == '' && $option_key == '') || (in_array($option_key, $selected_key))) {
 			$selected_string = 'selected';
 		}
@@ -142,9 +142,9 @@ function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key,
 }
 
 /**
- * Create HTML to display select options in a dropdown list.  To be used inside
- * of a select statement in a form.   This method expects the option list to have keys and values.  The keys are the ids.
- * The values are the display strings.
+ * Create HTML to display select options in a dropdown list.
+ * To be used inside of a select statement in a form.
+ * This method expects the option list to have keys and values. The keys are the ids. The values are the display strings.
  */
 function get_select_options_with_id_separate_key(&$label_list, &$key_list, $selected_key, $advsearch = 'false') {
 	global $log, $app_strings;
@@ -505,7 +505,7 @@ function getTabOwnedBy($module) {
 
 /**
  * Function to get the module name/type of a given crmid
- * @param int $crmid  CRMID of the record we want to know the type
+ * @param int CRMID of the record we want to know the type
  * @return string module name of the crmid record
  */
 function getSalesEntityType($crmid) {
@@ -526,7 +526,7 @@ function getDenormalizedModules($module = '') {
 	global $log, $adb;
 	$log->debug('> getDenormalizedModules');
 	if ($module != '') {
-		 $where = 'and modulename=?';
+		$where = 'and modulename=?';
 		$params = array($module);
 	} else {
 		$where = '';
@@ -772,7 +772,8 @@ function getGroupName($groupid) {
 }
 
 /**
- * Get the username by giving the user id.   This method expects the user id
+ * Get the username by giving the user id
+ * @param integer user id
  */
 function getUserName($userid) {
 	global $adb, $log;
@@ -787,7 +788,8 @@ function getUserName($userid) {
 }
 
 /**
- * Get the user full name by giving the user id.   This method expects the user id
+ * Get the user full name by giving the user id
+ * @param integer user id
  */
 function getUserFullName($userid) {
 	global $log;
@@ -956,7 +958,7 @@ function getRelatedAccountContact($entityid, $module = '') {
 				$rspot = $adb->pquery('select parent_id from vtiger_cobropago where cobropagoid=?', array($crmid));
 				$acid = $adb->query_result($rspot, 0, 'parent_id');
 				break;
-			default:  // we look for uitype 10
+			default: // we look for uitype 10
 				$rsfld = $adb->pquery('SELECT fieldname from vtiger_fieldmodulerel
 					INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
 					WHERE module=? and relmodule=?', array($setype,$module));
@@ -981,8 +983,8 @@ function getRelatedAccountContact($entityid, $module = '') {
 }
 
 /**
- * Creates and returns database query. To be used for search and other text links.   This method expects the module object.
- * param $focus - the module object contains the column_fields
+ * Creates and returns database query. To be used for search and other text links
+ * @param object the module object contains the column_fields
  */
 function getURLstring($focus) {
 	global $log;
@@ -2436,10 +2438,9 @@ function validateImageContents($filename) {
 	$security_checkimage = GlobalVariable::getVariable('Security_ImageCheck', 'strict');
 	switch ($security_checkimage) {
 		case 'loose':
-			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
-				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
-				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
-				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
+			$check = preg_match('/<script.*language.*=.*".*php.*".*/i', $contents) === 1
+				|| preg_match('/<script.*language.*=.*".*javascript.*".*/i', $contents) === 1
+				|| preg_match('/<script.*type.*=.*".*javascript.*".*/i', $contents) === 1
 				|| stripos($contents, '<</js') !== false || stripos($contents, '<?php ') !== false;
 			break;
 		case 'clean':
@@ -2462,10 +2463,9 @@ function validateImageContents($filename) {
 			break;
 		case 'strict':
 		default:
-			$check = preg_match('/(<\?php?(.*?))/si', $contents) === 1
-				|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
-				|| preg_match('/(<script(.*?)language(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
-				|| preg_match('/(<script(.*?)type(.*?)=(.*?)"(.*?)javascript(.*?)"(.*?))/si', $contents) === 1
+			$check = preg_match('/<script.*language.*=.*".*php.*".*/i', $contents) === 1
+				|| preg_match('/<script.*language.*=.*".*javascript.*".*/i', $contents) === 1
+				|| preg_match('/<script.*type.*=.*".*javascript.*".*/i', $contents) === 1
 				|| preg_match('/<\s*html\s*:\s*script\s*>/i', $contents) === 1 // XML
 				|| preg_match('/<\s*script\s*>/i', $contents) === 1
 				|| stripos($contents, '<?=') !== false
@@ -2664,10 +2664,10 @@ function getMergedDescriptionCustomVars($fields, $description) {
 
 /**
  * This function is used to merge a URL Template with the fields from a record
- *  @param string $url  -body of the URL
- *  @param integer $id - Id of the entity
- *  @param string $parent_type - module of the entity
- *  @return string URL template merged with the field values from the record.
+ * @param string body of the URL
+ * @param integer id of the entity
+ * @param string module of the entity
+ * @return string URL template merged with the field values from the record.
  */
 function getMergedDescriptionForURL($url, $id, $parent_type) {
 	global $log;
@@ -3081,7 +3081,7 @@ function getCvIdOfAll($module) {
 	return $cvid;
 }
 
-/** gives the option  to display  the tagclouds or not for the given user
+/** gives the option to display the tagclouds or not for the given user
  * @param integer user ID
  * @return boolean
  */
@@ -3098,10 +3098,10 @@ function getTagCloudView($id = '') {
 	return ($tag_cloud_status == 0);
 }
 
-/** Stores the option in database to display  the tagclouds or not for the current user
- * * @param $id -- user id:: Type integer
- * * Added to provide User based Tagcloud
- * */
+/** Stores the option in database to display the tagclouds or not for the current user
+ * Added to provide User based Tagcloud
+ * @param integer user id
+ */
 function SaveTagCloudView($id = '') {
 	global $log, $adb;
 	$log->debug('> SaveTagCloudView '.$id);
@@ -3126,9 +3126,9 @@ function SaveTagCloudView($id = '') {
 }
 
 /** retrieve show tag cloud as for given user
- ** @param integer user ID
- ** @return string show tag cloud type
- **/
+ * @param integer user ID
+ * @return string show tag cloud type
+ */
 function getTagCloudShowAs($id) {
 	global $log, $adb;
 	$log->debug('> getTagCloudShowAs '.$id);
@@ -3147,27 +3147,27 @@ function getTagCloudShowAs($id) {
 	return $tag_cloud_status;
 }
 
-/**     function used to change the Type of Data for advanced filters in custom view and Reports
- * *     @param string $table_name - tablename value from field table
- * *     @param string $column_nametable_name - columnname value from field table
- * *     @param string $type_of_data - current type of data of the field. It is to return the same TypeofData
- * *            if the  field is not matched with the $new_field_details array.
- * *     return string $type_of_data - If the string matched with the $new_field_details array then the Changed
- * *	       typeofdata will return, else the same typeofdata will return.
- * *
- * *     EXAMPLE: If you have a field entry like this:
- * *
- * * 		fieldlabel         | typeofdata | tablename            | columnname       |
- * *	        -------------------+------------+----------------------+------------------+
- * *		Potential Name     | I~O        | vtiger_quotes        | potentialid      |
- * *
- * *     Then put an entry in $new_field_details  like this:
- * *
- * *				"vtiger_quotes:potentialid"=>"V",
- * *
- * *	Now in customview and report's advance filter this field's criteria will be show like string.
- * *
- * */
+/** function used to change the Type of Data for advanced filters in custom view and Reports
+ * @param string table name value from field table
+ * @param string column name value from field table
+ * @param string current type of data of the field. It is to return the same TypeofData
+ *		if the field is not matched with the $new_field_details array
+ * @return string If the string matched with the $new_field_details array then the Changed
+ *		typeofdata will return, else the same typeofdata will return
+ *
+ * EXAMPLE: If you have a field entry like this:
+ *
+ * 		fieldlabel         | typeofdata | tablename            | columnname       |
+ *	        -------------------+------------+----------------------+------------------+
+ *		Potential Name     | I~O        | vtiger_quotes        | potentialid      |
+ *
+ * Then put an entry in $new_field_details  like this:
+ *
+ *				"vtiger_quotes:potentialid"=>"V",
+ *
+ *	Now in customview and report's advance filter this field's criteria will be show like string.
+ *
+ */
 function ChangeTypeOfData_Filter($table_name, $column_name, $type_of_data) {
 	$field = $table_name . ':' . $column_name;
 	//Add the field details in this array if you want to change the advance filter field details
@@ -3328,9 +3328,9 @@ function getEmailTemplateVariables($modules_list = null) {
 
 /** Function to get picklist values for the given field that are accessible for the given role NOT including subordinate roles
  * use getAssignedPicklistValues if you need also subordinate roles
- *  @param string picklist fieldname
- *  @param string user role ID
- *  @return array picklist values accessible by the user. array(0=>value,1=>value1,-------------,n=>valuen)
+ * @param string picklist fieldname
+ * @param string user role ID
+ * @return array picklist values accessible by the user. array(0=>value,1=>value1,-------------,n=>valuen)
  */
 function getPickListValues($tablename, $roleid) {
 	global $adb;
@@ -3444,8 +3444,8 @@ function isFileAccessible($filepath) {
 }
 
 /** Function to get the ActivityType for the given entity id
- *  @param integer entityid
- *  @return string the activity type for the given id
+ * @param integer entityid
+ * @return string the activity type for the given id
  */
 function getActivityType($id) {
 	global $adb;
@@ -3546,7 +3546,7 @@ function getEntityField($module, $fqn = false) {
 			$fieldsname = $tablename.'.'.$fieldsname;
 		}
 	} else {
-		$tablename  = $fieldsname = $entityidfield = '';
+		$tablename = $fieldsname = $entityidfield = '';
 	}
 	return array('tablename' => $tablename, 'fieldname' => $fieldsname, 'entityid' => $entityidfield);
 }
@@ -3565,19 +3565,49 @@ function getEntityFieldNames($module) {
 			return $data[$module];
 		}
 		$result = $adb->pquery('select fieldname,modulename,tablename,entityidfield from vtiger_entityname where modulename=?', array($module));
-		$fieldsName = $adb->query_result($result, 0, 'fieldname');
-		$tableName = $adb->query_result($result, 0, 'tablename');
-		$entityIdField = $adb->query_result($result, 0, 'entityidfield');
-		$moduleName = $adb->query_result($result, 0, 'modulename');
-		if (strpos($fieldsName, ',')) {
-			$fieldsName = explode(',', $fieldsName);
+		$data[$module] = getEntityFieldNamesFromRow($result);
+		return $data[$module];
+	}
+	return array('tablename' => '', 'modulename' => '', 'fieldname' => '', 'entityidfield' => '');
+}
+
+/**
+ * this function returns the entity information for a given module searching by the main or the custom field database table
+ * it returns the information of tablename, modulename, fieldsname and id that it gets from vtiger_entityname
+ * NOTE: for the custom field table to work it must follow the `cf` ending convention
+ * @param string table name
+ * @return array entity information for the module
+ */
+function getEntityFieldNamesByTableName($table) {
+	global $adb;
+	static $data = array();
+	if (!empty($table)) {
+		if (substr($table, -2)=='cf') {
+			$table = substr($table, 0, strlen($table)-2);
 		}
-		$data[$module] = array('tablename' => $tableName, 'modulename' => $moduleName, 'fieldname' => $fieldsName, 'entityidfield' => $entityIdField);
-	} else {
-		$fieldsName = '';
-		$tableName = '';
-		$entityIdField = '';
-		$moduleName = '';
+		if (isset($data[$table])) {
+			return $data[$table];
+		}
+		$result = $adb->pquery('select fieldname,modulename,tablename,entityidfield from vtiger_entityname where tablename=?', array($table));
+		$data[$table] = getEntityFieldNamesFromRow($result);
+		return $data[$table];
+	}
+	return array('tablename' => '', 'modulename' => '', 'fieldname' => '', 'entityidfield' => '');
+}
+
+/**
+ * this function returns the entity information for a given module from a database row read from the table vtiger_entityname
+ * @param recordset row from database
+ * @return array entity information for the module
+ */
+function getEntityFieldNamesFromRow($result) {
+	global $adb;
+	$fieldsName = $adb->query_result($result, 0, 'fieldname');
+	$tableName = $adb->query_result($result, 0, 'tablename');
+	$entityIdField = $adb->query_result($result, 0, 'entityidfield');
+	$moduleName = $adb->query_result($result, 0, 'modulename');
+	if (strpos($fieldsName, ',')) {
+		$fieldsName = explode(',', $fieldsName);
 	}
 	return array('tablename' => $tableName, 'modulename' => $moduleName, 'fieldname' => $fieldsName, 'entityidfield' => $entityIdField);
 }

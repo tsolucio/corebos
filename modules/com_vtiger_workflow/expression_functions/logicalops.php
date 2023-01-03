@@ -97,7 +97,7 @@ function __cb_relatedevaluations($evaluation, $params) {
 		$env = $params[3];
 	}
 	$data = $env->getData();
-	$recordid = $data['id'];
+	$recordid = empty($data['id']) ? 0 : $data['id']; // creating
 	$module = $env->getModuleName();
 	if (!empty($relatedmodule) && !empty($recordid) && !empty($module)) {
 		list($mid, $crmid) = explode('x', $recordid);
