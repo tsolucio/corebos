@@ -306,15 +306,22 @@ class BusinessActions extends CRMEntity {
 				if (!empty($parameters['RECORD'])) {
 					include_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 					$entityCache = new VTEntityCache($current_user);
-					$ct = new VTSimpleTemplate($link->linkurl, true);
 					if ($module_name=='Users') {
 						if (Users::is_ActiveUserID($parameters['RECORD'])) {
-							$link->linkurl = $ct->render($entityCache, vtws_getEntityId('Users').'x'.$parameters['RECORD']);
+							$ct = new VTSimpleTemplate($link->linkurl, true);
+							$id = vtws_getEntityId('Users').'x'.$parameters['RECORD'];
+							$link->linkurl = $ct->render($entityCache, $id);
+							$ct = new VTSimpleTemplate($link->linklabel, true);
+							$link->linklabel = $ct->render($entityCache, $id);
 						} else {
 							$link->linkurl = '';
 						}
 					} else {
-						$link->linkurl = $ct->render($entityCache, vtws_getEntityId(getSalesEntityType($parameters['RECORD'])).'x'.$parameters['RECORD']);
+						$ct = new VTSimpleTemplate($link->linkurl, true);
+						$id = vtws_getEntityId(getSalesEntityType($parameters['RECORD'])).'x'.$parameters['RECORD'];
+						$link->linkurl = $ct->render($entityCache, $id);
+						$ct = new VTSimpleTemplate($link->linklabel, true);
+						$link->linklabel = $ct->render($entityCache, $id);
 					}
 				}
 			}
