@@ -117,18 +117,6 @@ class CBWatermark extends VTTask {
 			if ($exptype == 'rawtext') {
 				$watermark = $wmImageValue;
 			}
-			// elseif ($exptype == 'fieldname') {
-			// 	$util = new VTWorkflowUtils();
-			// 	$adminUser = $util->adminUser();
-			// 	$entityCache = new VTEntityCache($adminUser);
-			// 	$fn = new VTSimpleTemplate($wmImageValue);
-			// 	$watermark = $fn->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
-			// } else {
-			// 	$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($wmImageValue)));
-			// 	$expression = $parser->expression();
-			// 	$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-			// 	$watermark = $exprEvaluater->evaluate($entity);
-			// }
 			$waterMarkUrl = $watermark;
 			$waterMarkArr = explode('/', $waterMarkUrl);
 			$waterMarkDotArr = explode('.', $waterMarkUrl);
