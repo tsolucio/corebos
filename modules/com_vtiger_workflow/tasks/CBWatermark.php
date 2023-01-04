@@ -134,7 +134,7 @@ class CBWatermark extends VTTask {
 			$waterMarkDotArr = explode('.', $waterMarkUrl);
 			$waterMarkName = $waterMarkArr[count($waterMarkArr) - 1];
 			$waterMarkType = $waterMarkDotArr[count($waterMarkDotArr) - 1];
-			$waterMarkSavedPath = $root_directory . 'storage/';
+			$waterMarkSavedPath = $root_directory . GlobalVariable::getVariable('Application_Storage_Directory', 'storage/');
 			$data = $entity->getData();
 
 			$mainImageFileName = '';
