@@ -359,6 +359,9 @@ class VTTaskType {
 				}
 			}
 		}
+		uasort($taskTypeInstances, function ($a, $b) {
+			return (strtolower(getTranslatedString($a, 'com_vtiger_workflow')) < strtolower(getTranslatedString($b, 'com_vtiger_workflow'))) ? -1 : 1;
+		});
 		return $taskTypeInstances;
 	}
 
