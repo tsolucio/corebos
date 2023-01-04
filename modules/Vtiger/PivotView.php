@@ -116,6 +116,8 @@ if ($cbMapid) {
 				$fieldsinfo[$fld] = null;
 			}
 		}
+		$mainfield = getEntityField($currentModule)['fieldname'];
+		$rowlinks['Name'] = getFieldForAdvancedSearch($mainfield, $currentModule);
 		$queryGenerator->setFields($fields2get);
 		$list_query = $adb->pquery($queryGenerator->getQuery(), array());
 		$count = $adb->num_rows($list_query);
@@ -135,10 +137,6 @@ if ($cbMapid) {
 				$record[$rec] = '"'.$fieldaggr.'":"'.$adb->query_result($list_query, $i, $fieldaggr).'"';
 			}
 			$rec++;
-			$mainfield = getEntityField($currentModule)['fieldname'];
-			if (!isset($rowlinks['Name'])) {
-				$rowlinks['Name'] = getFieldForAdvancedSearch($mainfield, $currentModule);
-			}
 			$record[$rec] = '"Name":"'.addslashes(getTranslatedString(decode_html($adb->query_result($list_query, $i, $mainfield)))).'"';
 			if (!empty($aggregations)) {
 				$currentRow = array();
