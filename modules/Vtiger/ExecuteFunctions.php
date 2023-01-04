@@ -107,7 +107,7 @@ switch ($functiontocall) {
 	case 'getFieldValuesFromRecordRecursively':
 		$moduleName = vtlib_purify($_REQUEST['moduleName']);
 		$value = vtlib_purify($_REQUEST['value']);
-		$fieldsArray = explode(".", $value);
+		$fieldsArray = explode('.', $value);
 		// remove all $ signs
 		array_walk($fieldsArray, function (&$item, $key) {
 			$item = substr($item, 1);

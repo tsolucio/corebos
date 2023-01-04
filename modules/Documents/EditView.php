@@ -364,7 +364,7 @@ if ($Mapid) {
 	$MapObject = new cbMap();
 	$MapObject->id = $Mapid;
 	$MapObject->mode = '';
-	$MapObject->retrieve_entity_info($Mapid, "cbMap");
+	$MapObject->retrieve_entity_info($Mapid, 'cbMap');
 	$MapResult = $MapObject->PopupFilter($record, $currentModule);
 	$smarty->assign('PopupFilterMapResults', $MapResult);
 }
