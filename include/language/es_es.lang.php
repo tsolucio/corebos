@@ -1372,20 +1372,20 @@ $app_strings = array (
 	'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Buscar Documentos',
 
 	// watermark WF template
-	'Watermark Value' => 'Watermark Value',
-	'image field name' => 'image field name',
-	'Water Mark Size' => 'Water Mark Size',
-	'Water Mark Position' => 'Water Mark Position',
+	'Watermark Value' => 'Valor de la marca de agua',
+	'image field name' => 'Nombre del campo de imagen',
+	'Water Mark Size' => 'Tamaño de la marca de agua',
+	'Water Mark Position' => 'Posicón de la marca de agua',
 	// watermark direction
-	'Center' => 'Center',
-	'Top' => 'Top',
-	'Bottom' => 'Bottom',
-	'Right' => 'Right',
-	'Left' => 'Left',
-	'Top Right' => 'Top Right',
-	'Top Left' => 'Top Left',
-	'Bottom Left' => 'Bottom Left',
-	'Bottom Right' => 'Bottom Right',
+	'Center' => 'Centro',
+	'Top' => 'Arriba',
+	'Bottom' => 'Abajo',
+	'Right' => 'Derecha',
+	'Left' => 'Izquierda',
+	'Top Right' => 'Arriba Derecha',
+	'Top Left' => 'Arriba Izquierda',
+	'Bottom Left' => 'Abajo Izquierda',
+	'Bottom Right' => 'Abajo Derecha',
 
 	//login translation
 	'LBL_Please_login_to_your_account' => 'Por favor accede a tu cuenta',

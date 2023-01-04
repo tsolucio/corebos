@@ -1381,7 +1381,7 @@ $app_strings = array(
 
 // watermark WF template
 'Watermark Value' => 'Watermark Value',
-'image field name' => 'image field name',
+'image field name' => 'Image Field Name',
 'Water Mark Size' => 'Water Mark Size',
 'Water Mark Position' => 'Water Mark Position',
 // watermark direction

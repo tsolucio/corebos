@@ -22,22 +22,21 @@
 <script src="modules/{$module->name}/resources/functionselect.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	var moduleName = '{$entityName}';
-	var exptype = {$task->exptype|json_encode}
 </script>
 <script src="modules/com_vtiger_workflow/resources/wfWatermark.js" type="text/javascript" charset="utf-8"></script>
 <div class="slds-grid slds-gutters slds-p-horizontal_x-large slds-grid_vertical-align-center">
-	<div class="slds-col slds-size_4-of-12 slds-p-around_x-small">
+	<div class="slds-col slds-size_6-of-12 slds-p-around_x-small">
 		<div class="slds-form">
 			<div class="slds-form-element">
 				<label class="slds-form-element__label">{'Watermark Value'|@getTranslatedString}</label>
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
 					<input id="filename" class="slds-input" name="wmImageValue" value="{$task->wmImageValue}" onfocus="wfeditexptype($(this), { 'name':'string' })" onchange="setwfexptype()" style="border: 1px solid #bababa">
-					<input type="hidden" name="exptype" id="exptype" value="{$task->exptype}"/>
+					<input type="hidden" name="exptype" id="exptype" value="rawtext"/>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="slds-col slds-size_4-of-12 slds-p-around_x-small">
+	<div class="slds-col slds-size_6-of-12 slds-p-around_x-small">
 		<div class="slds-form">
 			<div class="slds-form-element">
 				<label class="slds-form-element__label">{'image field name'|@getTranslatedString}</label>
@@ -47,25 +46,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="slds-col slds-size_4-of-12 slds-p-around_x-small">
-		<div class="slds-form">
-			<div class="slds-form-element">
-				<label class="slds-form-element__label">{'Water Mark Size'|@getTranslatedString}</label>
-				<div class="slds-form-element__control slds-input-has-fixed-addon">
-					<input type="text" name="wmSize" id="wmSize" class="slds slds-input" value="{$task->wmSize}">
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 
 <div class="slds-grid slds-gutters slds-p-horizontal_x-large slds-grid_vertical-align-center">
-	<div class="slds-col slds-size_4-of-12 slds-p-around_x-small">
+	<div class="slds-col slds-size_6-of-12 slds-p-around_x-small">
 		<div class="slds-form">
 			<div class="slds-form-element">
 				<label class="slds-form-element__label">{'Water Mark Position'|@getTranslatedString}</label>
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
-					{* <input type="text" name="wmPosition" id="wmPosition" class="slds slds-input" value="{$task->wmPosition}"> *}
 					<select name="wmPosition" id="wmPosition" class="slds slds-input" value="{$task->wmPosition}">
 						<option value="center">{'Center'|@getTranslatedString}</option>
 						<option value="top">{'Top'|@getTranslatedString}</option>
@@ -77,6 +65,16 @@
 						<option value="bottomleft">{'Bottom Left'|@getTranslatedString}</option>
 						<option value="bottomright">{'Bottom Right'|@getTranslatedString}</option>
 					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="slds-col slds-size_6-of-12 slds-p-around_x-small">
+		<div class="slds-form">
+			<div class="slds-form-element">
+				<label class="slds-form-element__label">{'Water Mark Size'|@getTranslatedString}</label>
+				<div class="slds-form-element__control slds-input-has-fixed-addon">
+					<input type="text" name="wmSize" id="wmSize" class="slds slds-input" value="{$task->wmSize}">
 				</div>
 			</div>
 		</div>
