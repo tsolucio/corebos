@@ -1792,6 +1792,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'HTML ID',
 	'definition' => 'Element ID that will be focused when the page loads',
 ),
+'Application_Toolbar_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the Toolbar menu',
+),
 'Application_TitleInformation' => array(
 	'valuetype' => 'String|Integer',
 	'category' => 'Application',
