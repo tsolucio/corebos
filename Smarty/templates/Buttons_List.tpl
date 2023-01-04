@@ -466,7 +466,7 @@
 					</svg>
 			</button>
 			{/if}
-			{if $Application_Toolbar_Show}
+			{if !empty($Application_Toolbar_Show)}
 				<div class="slds-page-header__col-controls">
 					<div class="slds-page-header__controls">
 						<div class="slds-page-header__control">
