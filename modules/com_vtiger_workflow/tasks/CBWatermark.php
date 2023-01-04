@@ -24,43 +24,107 @@ class CBWatermark extends VTTask {
 	public $queable = true;
 
 	public function getFieldNames() {
-		// return array('imagesvalue', 'imagesx', 'imagesy', 'exptype');
 		return array('wmImageValue', 'imagefieldName', 'wmSize', 'wmPosition', 'exptype');
 	}
 
-	// public function getContextVariables() {
-	// 	return array(
-	// 		'watermarkImage' => array(
-	// 			'type' => '15',
-	// 			'values' => array($this),
-	// 			'modules' => '',
-	// 			'massaction' => true,
-	// 			'description' => 'watermarkImage details',
-	// 		),
-	// 	);
-	// }
+	public function getContextVariables() {
+		return array(
+			'WaterMark_Image_value' => array(
+				'type' => '1',
+				'values' => 'varchar',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_WaterMark_Image_value',
+			),
+			'Image_Fieled_Name' => array(
+				'type' => '1',
+				'values' => 'varchar',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_Image_Field_Name',
+			),
+			'WaterMark_Size' => array(
+				'type' => '7',
+				'values' => 'integer',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_WaterMark_Size',
+			),
+			'WaterMark_Position' => array(
+				'type' => '7',
+				'values' => 'integer',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_WaterMark_Position',
+			),
+			'Expression_Type' => array(
+				'type' => '1',
+				'values' => 'varchar',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_Expression_Type',
+			),
+		);
+	}
 
 	public function doTask(&$entity) {
 		global $current_user, $logbg, $from_wf, $currentModule, $root_directory;
 		global $log;
+		$logbg->debug('> CBWatermark');
+
+		// setting workflow variables
+		$wmImageValue = null;
+		$imagefieldName = null;
+		$wmsize = null;
+		$wmPosition = null;
+		$exptype = null;
+		if (empty($entity->WorkflowContext['WaterMark_Image_value'])) {
+			$wmImageValue = $this->wmImageValue;
+		} else {
+			$wmImageValue = $entity->WorkflowContext['WaterMark_Image_value'];
+		}
+
+		if (empty($entity->WorkflowContext['Image_Fieled_Name'])) {
+			$imagefieldName = $this->imagefieldName;
+		} else {
+			$imagefieldName = $entity->WorkflowContext['Image_Fieled_Name'];
+		}
+
+		if (empty($entity->WorkflowContext['WaterMark_Size'])) {
+			$wmsize = $this->wmSize;
+		} else {
+			$wmsize = $entity->WorkflowContext['WaterMark_Size'];
+		}
+
+		if (empty($entity->WorkflowContext['WaterMark_Position'])) {
+			$wmPosition = $this->wmPosition;
+		} else {
+			$wmPosition = $entity->WorkflowContext['WaterMark_Position'];
+		}
+
+		if (empty($entity->WorkflowContext['Expression_Type'])) {
+			$exptype = $this->exptype;
+		} else {
+			$exptype = $entity->WorkflowContext['Expression_Type'];
+		}
+
 		$currentRecordId = explode('x', $entity->id)[1];
 		$from_wf = true;
-		$logbg->debug('> CBWatermark');
 		$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 		$_REQUEST['ajxaction'] = 'Workflow';
-		if (!empty($this->wmImageValue)) {
+		if (!empty($wmImageValue)) {
 			$watermark = '';
-			if ($this->exptype == 'rawtext') {
-				$watermark = $this->wmImageValue;
+			if ($exptype == 'rawtext') {
+				$watermark = $wmImageValue;
 			}
-			// elseif ($this->exptype == 'fieldname') {
+			// elseif ($exptype == 'fieldname') {
 			// 	$util = new VTWorkflowUtils();
 			// 	$adminUser = $util->adminUser();
 			// 	$entityCache = new VTEntityCache($adminUser);
-			// 	$fn = new VTSimpleTemplate($this->wmImageValue);
+			// 	$fn = new VTSimpleTemplate($wmImageValue);
 			// 	$watermark = $fn->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 			// } else {
-			// 	$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($this->wmImageValue)));
+			// 	$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($wmImageValue)));
 			// 	$expression = $parser->expression();
 			// 	$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 			// 	$watermark = $exprEvaluater->evaluate($entity);
@@ -85,9 +149,8 @@ class CBWatermark extends VTTask {
 				$mainImageFileSize = $data['filesize'];
 				$mainImageDownloadUrl = $data['_downloadurl'];
 				$mainImagePath = $root_directory . substr(parse_url($mainImageDownloadUrl)['path'], strlen(explode('/', parse_url($mainImageDownloadUrl)['path'])[1]+1)) ;
-				// $mainImagePath = $root_directory . $watermarkPrefix . substr(parse_url($mainImageDownloadUrl)['path'], strlen(explode('/', parse_url($mainImageDownloadUrl)['path'])[1]+1)) ;
 			} else {
-				$imageKey = $this->imagefieldName . 'imageinfo';
+				$imageKey = $imagefieldName . 'imageinfo';
 				$mainImageFileName = $data[$imageKey]['name'];
 				// $mainImageFileName = $watermarkPrefix . $data[$imageKey]['name'];
 				$mainImageFileType = $data[$imageKey]['type'];
@@ -96,7 +159,6 @@ class CBWatermark extends VTTask {
 				$mainImageUrl = $data[$imageKey]['fullpath'];
 				$mainImageUniqueFileName = explode('/', $mainImageUrl)[count(explode('/', $mainImageUrl))-1];
 				$mainImagePath = $root_directory . $mainImageFolderPath . $mainImageUniqueFileName;
-				// $mainImagePath = $root_directory . $mainImageFolderPath . $watermarkPrefix . $mainImageUniqueFileName;
 			}
 			$mainImageFileType = strpos($mainImageFileType, '/') !== false ? explode('/', $mainImageFileType)[1] : $mainImageFileType;
 
@@ -106,16 +168,32 @@ class CBWatermark extends VTTask {
 			$mainImageOriginal = null;
 			if ($waterMarkType == 'png') {
 				$waterMarkImg = imagecreatefrompng($waterMarkUrl);
+				if (!$waterMarkImg) {
+					$logbg->debug('(CBWatermark) The watermark image was not created');
+					$log->fatal('(CBWatermark) The watermark image was not created');
+				}
 			} elseif ($waterMarkType == 'jpg' || $waterMarkType == 'jpeg') {
 				$waterMarkImg = imagecreatefromjpeg($waterMarkUrl);
+				if (!$waterMarkImg) {
+					$logbg->debug('(CBWatermark) The watermark image was not created ');
+					$log->fatal('(CBWatermark) The watermark image was not created ');
+				}
 			} else {
 				$logbg->debug('(CBWatermark) can\'t create the watermark image because extension is not supported');
 			}
 			if ($mainImageFileType == 'png') {
 				$mainImage = imagecreatefrompng($mainImagePath);
+				if (!$mainImage) {
+					$logbg->debug('(CBWatermark) The main image was not created');
+					$log->fatal('(CBWatermark) The main image was not created');
+				}
 				$mainImageOriginal = imagecreatefrompng($mainImagePath);
 			} elseif ($mainImageFileType == 'jpg' || $mainImageFileType == 'jpeg') {
 				$mainImage = imagecreatefromjpeg($mainImagePath);
+				if (!$mainImage) {
+					$logbg->debug('(CBWatermark) The main image was not created');
+					$log->fatal('(CBWatermark) The main image was not created');
+				}
 				$mainImageOriginal = imagecreatefromjpeg($mainImagePath);
 			} else {
 				$logbg->debug('(CBWatermark) can\'t create the main image because extension is not supported');
@@ -126,15 +204,18 @@ class CBWatermark extends VTTask {
 			$wmsy = imagesy($waterMarkImg);
 			$misx = imagesx($mainImage);
 			$misy = imagesy($mainImage);
+
 			// set the size of the watermark image
 			$wmImageAspectRatio = $wmsx / $wmsy;
 			$mainImageAspectRatio = $misx / $misy;
-			$mainImageAspectRatioType = $wmImageAspectRatio < $mainImageAspectRatio ? 'vertical' : 'horizontal';
+			$mainImageAspectRatioType = $wmImageAspectRatio <= $mainImageAspectRatio ? 'vertical' : 'horizontal';
 
 			// water mark image options
-			$wmSize = (float)$this->wmSize * 0.01;
-			$position = $this->wmPosition;
+			$wmSize = (float)$wmsize * 0.01;
+			$position = $wmPosition;
 
+			$wmnsx = null;
+			$wmnsy = null;
 			switch ($mainImageAspectRatioType) {
 				case 'horizontal':
 					$wmnsx = $misx * $wmSize;
@@ -145,6 +226,9 @@ class CBWatermark extends VTTask {
 					$wmnsx = ($wmnsy * $wmImageAspectRatio);
 					break;
 			}
+
+			$wmpx = null;
+			$wmpy = null;
 			switch ($position) {
 				case 'center':
 					$wmpx = $misx / 2 - ($wmnsx / 2);
@@ -196,7 +280,10 @@ class CBWatermark extends VTTask {
 			imagecopyresampled($waterMarkImgAfterResize, $waterMarkImg, 0, 0, 0, 0, $wmnsx, $wmnsy, $wmsx, $wmsy);
 
 			// add the watermark to the image
-			imagecopy($mainImage, $waterMarkImgAfterResize, $wmpx, $wmpy, 0, 0, $wmnsx, $wmnsy);
+			$res = imagecopy($mainImage, $waterMarkImgAfterResize, $wmpx, $wmpy, 0, 0, $wmnsx, $wmnsy);
+			if (!$res) {
+				$logbg->debug('(CBWatermark) could not add the watermark on the image');
+			}
 
 			// Save image
 			$mainOriginalImagePath = $mainImagePath . '_ORIGINAL';

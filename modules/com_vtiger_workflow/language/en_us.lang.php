@@ -224,6 +224,12 @@ $mod_strings = array(
 'HELP_GenerateImageCode_ValueToEncode' => 'Field name where the value to encode will be read from',
 'HELP_GenerateImageCode_EncodingType' => 'Encoding type to be used for the image',
 'HELP_GenerateImageCode_SaveTo' => 'Image field where the image will be saved',
+// watermark workflow context variable
+'HELP_WaterMark_Image_value' => 'Watermark image url',
+'HELP_Image_Field_Name' => 'The field of the image that gets watermarked',
+'HELP_WaterMark_Size' => 'The size of the watermark image in percentage',
+'HELP_WaterMark_Position' => 'the position of the watermark in image',
+'HELP_Expression_Type' => 'expresstion type',
 'CONTEXT_VARIABLES' => 'Context variables',
 'LBL_ON_RELATE' => 'On Relate with',
 'LBL_ON_UNRELATE' => 'On Unrelate with',
