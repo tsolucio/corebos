@@ -73,14 +73,14 @@ if ($cbMapid) {
 			$rlabel = getTranslatedString($rw['label']);
 			$namerow[] = $rw['name'];
 			$namelabelrow[] = $rlabel;
-			$rowlinks[$rlabel] = getFieldForAdvancedSearch($rw['name'], $currentModule);
+			$rowlinks[$rlabel] = CustomView::getFilterFieldDefinition($rw['name'], $currentModule);
 		}
 		foreach ($cols as $cl) {
 			$clabel = getTranslatedString($cl['label']);
 			$namecol[] = $cl['name'];
 			$namelabelcol[] = $clabel;
 			$namecolaggr[] = $cl['name'];
-			$rowlinks[$clabel] = getFieldForAdvancedSearch($cl['name'], $currentModule);
+			$rowlinks[$clabel] = CustomView::getFilterFieldDefinition($cl['name'], $currentModule);
 		}
 		if (isset($fieldaggr) && $fieldaggr!='') {
 			$aggreg='aggregator: sum(intFormat)(["'.$fieldaggr.'"]),';
@@ -92,7 +92,7 @@ if ($cbMapid) {
 		if (!empty($aggregations)) {
 			foreach ($aggregations as $agg) {
 				$aggcols[] = $agg['arguments'][0];
-				$rowlinks[$agg['name']] = getFieldForAdvancedSearch($agg['name'], $currentModule);
+				$rowlinks[$agg['name']] = CustomView::getFilterFieldDefinition($agg['name'], $currentModule);
 			}
 		}
 		$queryGenerator = new QueryGenerator($currentModule, $current_user);
@@ -117,7 +117,7 @@ if ($cbMapid) {
 			}
 		}
 		$mainfield = getEntityField($currentModule)['fieldname'];
-		$rowlinks['Name'] = getFieldForAdvancedSearch($mainfield, $currentModule);
+		$rowlinks['Name'] = CustomView::getFilterFieldDefinition($mainfield, $currentModule);
 		$queryGenerator->setFields($fields2get);
 		$list_query = $adb->pquery($queryGenerator->getQuery(), array());
 		$count = $adb->num_rows($list_query);
