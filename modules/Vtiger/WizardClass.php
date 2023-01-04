@@ -177,6 +177,7 @@ class WizardActions extends WizardCustomFunctions {
 		$filtergrid = isset($_REQUEST['filtergrid']) ? vtlib_purify($_REQUEST['filtergrid']) : false;
 		$conditionquery = isset($_REQUEST['conditionquery']) ? vtlib_purify($_REQUEST['conditionquery']) : false;
 		$parentid = isset($_REQUEST['parentid']) ? vtlib_purify($_REQUEST['parentid']) : 0;
+		$currentid = isset($_REQUEST['currentid']) ? vtlib_purify($_REQUEST['currentid']) : 0;
 		$required_action = isset($_REQUEST['required_action']) ? intval($_REQUEST['required_action']) : '';
 		$context = isset($_REQUEST['context']) ? $_REQUEST['context'] : '';
 		$filterFromContext = isset($_REQUEST['filterFromContext']) ? json_decode($_REQUEST['filterFromContext'], true) : '';
@@ -261,6 +262,9 @@ class WizardActions extends WizardCustomFunctions {
 			$sql = $qg->getQuery();
 			if ($parentid > 0 && !empty($conditionquery)) {
 				$sql = $adb->convert2Sql($sql.' '.$conditionquery, array($parentid));
+			}
+			if ($currentid > 0 && !empty($conditionquery)) {
+				$sql = $adb->convert2Sql($sql.' '.$conditionquery, array($currentid));
 			}
 		}
 		$limit = ($page-1) * $perPage;

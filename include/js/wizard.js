@@ -134,6 +134,16 @@ class WizardComponent {
 				break;
 			case 'MASSCREATE':
 			case 'MASSCREATETREEVIEW':
+				//use condition query from the map with current_record id
+				if (this.WizardConditionQuery[`${this.ActiveStep+1}`] !== undefined && this.WizardConditionQuery[`${this.ActiveStep+1}`] != '') {
+					this.WizardInstance[`wzgrid${this.ActiveStep+1}`].clear();
+					this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setRequestParams({
+						parentid: 0,
+						currentid: document.getElementById('parent_id').value,
+						conditionquery: this.WizardConditionQuery[`${this.ActiveStep+1}`],
+					});
+					this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
+				}
 				return this.MassCreateGrid(ev, this.Operation);
 				break;
 			default:
@@ -779,6 +789,7 @@ class WizardComponent {
 				formodule: module,
 				forfield: findColName,
 				parentid: this.RecordID,
+				currentid: 0,
 				conditionquery: this.WizardConditionQuery[`${this.ActiveStep+1}`]
 			});
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
