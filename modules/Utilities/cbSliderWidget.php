@@ -32,7 +32,7 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 	protected $widgetName = 'sliderWidget';
 
 	public function process($context = false) {
-		global $adb, $site_URL, $currentModule;
+		global $adb, $site_URL, $currentModule, $current_user;
 		$this->context = $context;
 		$smarty = $this->getViewer();
 		$BAInfo = json_decode($this->getFromContext('BusinessActionInformation'), true);
@@ -53,8 +53,9 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
 			inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid
 			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
-			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
-			where crm2.crmid=? and vtiger_notes.filetype in ("image/png", "image/jpg", "image/jpeg") order by vtiger_attachments.attachmentsid',
+			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid'
+			.getNonAdminAccessControlQuery('Documents', $current_user)
+			.' where crm2.crmid=? and vtiger_notes.filetype in ("image/png", "image/jpg", "image/jpeg") order by vtiger_attachments.attachmentsid',
 			array($ID)
 		);
 		if ($adb->num_rows($rs) == 0) {
