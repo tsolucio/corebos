@@ -32,20 +32,20 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 	protected $widgetName = 'sliderWidget';
 
 	public function process($context = false) {
-		global $adb, $site_URL;
+		global $adb, $site_URL, $currentModule;
 		$this->context = $context;
 		$smarty = $this->getViewer();
 		$BAInfo = json_decode($this->getFromContext('BusinessActionInformation'), true);
 		$ID = $this->getFromContext('RECORDID');
+		if (empty($ID)) {
+			return 'ID '.getTranslatedString('LBL_NO_SEARCHRESULT', 'Mobile');
+		}
 		$title = $this->getFromContext('title');
 		$autoplay = $this->getFromContext('autoplay');
 		$infinite = $this->getFromContext('infinite');
 		$initial = $this->getFromContext('initial');
 		$dots = $this->getFromContext('dots');
 		$arrows = $this->getFromContext('arrows');
-		if (empty($ID)) {
-			return 'ID not found.';
-		}
 		$rs = $adb->pquery(
 			'select vtiger_attachments.attachmentsid,vtiger_attachments.type filetype,vtiger_attachments.path,vtiger_attachments.name,vtiger_notes.title,vtiger_notes.notesid
 			from vtiger_notes
@@ -61,7 +61,7 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 			array($ID)
 		);
 		if ($adb->num_rows($rs) == 0) {
-			return 'No images found.';
+			return getTranslatedString('MSG_IMAGE_ERROR', $currentModule);
 		}
 		$dataIMG = array();
 		while ($image = $adb->fetch_array($rs)) {
