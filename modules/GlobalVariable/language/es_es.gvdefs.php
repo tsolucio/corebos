@@ -108,15 +108,15 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_Menu_Direction' => array(
 	'valuetype' => 'Cadena',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => 'Horizontal | Vertical',
 	'definition' => 'Dirección del menú de la aplicación.',
 ),
 'Application_Menu_Show' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
-	'definition' => 'hide or show the main menu',
+	'definition' => 'mostrar o esconder el menú principal',
 ),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Booleano',
@@ -888,7 +888,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_MultipleUserLogins' => array(
 	'valuetype' => 'Entero',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => '1 (predeterminado) permite que el mismo usuario inicie sesión varias veces desde diferentes sesiones de navegador.',
 ),
@@ -906,7 +906,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_Session_LockUserAgent' => array(
 	'valuetype' => 'Entero',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => '1 (predeterminado) restringe el acceso al mismo navegador desde el que se inició sesión',
 ),
@@ -924,7 +924,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_Session_LockIP' => array(
 	'valuetype' => 'Entero',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => '1 restringe el acceso a la misma IP desde la que se realizó el inicio de sesión. 0 es el valor predeterminado',
 ),
@@ -1116,7 +1116,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Calendar_Show_Only_My_Events' => array(
 	'valuetype' => 'Booleano',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => 'Mostrar solo los eventos asignados a mi, compartidos conmigo y en los que esté invitado.',
 ),
@@ -1758,7 +1758,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Webservice_WriteRunWS_Logs' => array(
 	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => 'Write logs in the RunWebserviceWorkflow task. Default is 1',
 ),

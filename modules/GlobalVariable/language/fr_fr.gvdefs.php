@@ -112,6 +112,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Horizontal | Vertical',
 	'definition' => 'Application menu direction.',
 ),
+'Application_Menu_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the main menu',
+),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Booléen',
 	'category' => 'Fonctionnalité Module',
