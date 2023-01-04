@@ -1793,10 +1793,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'ID de elemento HTML que se enfocará cuando se cargue la página',
 ),
 'Application_Toolbar_Show' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'hide or show the Toolbar menu',
+	'definition' => 'mostrar o esconder los botones de ayuda en la vista de detalle',
 ),
 'Application_TitleInformation' => array(
 	'valuetype' => 'Texto|Entero',

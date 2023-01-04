@@ -388,6 +388,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show search columns in the list view table',
 ),
+'Application_ListView_FilterPanel_Open' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the filter panel',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Performance',
@@ -1785,6 +1791,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'HTML ID',
 	'definition' => 'Element ID that will be focused when the page loads',
+),
+'Application_Toolbar_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the Toolbar menu',
 ),
 'Application_TitleInformation' => array(
 	'valuetype' => 'String',
