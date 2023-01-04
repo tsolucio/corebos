@@ -143,8 +143,7 @@
 {if empty($Module_Popup_Edit)}
 
 <!-- LDS Global header -->
-{if $Application_Menu_Show}
-	<header class="slds-global-header_container noprint" id="global-header" style="position:sticky;">
+<header class="slds-global-header_container noprint" id="global-header" style="position:sticky;">
 		<div class="slds-global-header slds-grid slds-grid_align-spread">
 			<div class="slds-global-header__item">
 				<div class="slds-global-header__logo" style="background-image: url('{$COMPANY_DETAILS.applogo}');"></div>
@@ -371,7 +370,7 @@
 		{$COREBOS_HEADER_PREMENU}
 		</div>
 		{/if}
-		{if $Application_Menu_Direction!='Vertical'}
+		{if $Application_Menu_Direction!='Vertical' && $Application_Menu_Show != 0}
 		<div class="noprint">
 			<div class="slds-context-bar">
 				<div class="slds-context-bar__primary slds-context-bar__item_divider-right">
@@ -401,7 +400,6 @@
 		</div>
 		{/if}
 	</header>
-{/if}
 <!-- END LDS Global header -->
 <a name="top"></a>
 {if $Application_Menu_Direction=='Vertical' && $Application_Menu_Show != 0}
