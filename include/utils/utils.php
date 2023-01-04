@@ -3904,4 +3904,20 @@ function validateClickHouseSecret($signedvalue, $signedkey, $input) {
 	$computedSignature = base64_encode(hash_hmac('sha256', $input, $signedvalue, true));
 	return ($receivedSignature === $computedSignature);
 }
+
+function getFieldForAdvancedSearch($field, $module) {
+	global $adb;
+	$tabid = getTabid($module);
+	$rs = $adb->pquery('SELECT tablename, fieldname, columnname, fieldlabel, typeofdata FROM vtiger_field WHERE tabid=? AND fieldname=?', array($tabid, $field));
+	$field = '';
+	if ($adb->num_rows($rs) == 1) {
+		$typeofdata = explode('~', $adb->query_result($rs, 0, 'typeofdata'));
+		$tablename = $adb->query_result($rs, 0, 'tablename');
+		$fieldname = $adb->query_result($rs, 0, 'fieldname');
+		$columnname = $adb->query_result($rs, 0, 'columnname');
+		$fieldlabel = $adb->query_result($rs, 0, 'fieldlabel');
+		$field = $tablename.':'.$columnname.':'.$fieldname.':'.$module.'_'.$fieldlabel.':'.$typeofdata[0];
+	}
+	return $field;
+}
 ?>
