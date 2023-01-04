@@ -427,197 +427,199 @@
 					{/if}
 				</div>
 			</div>
-			<div class="slds-page-header__col-controls">
-				<div class="slds-page-header__controls">
-					<div class="slds-page-header__control">
-						{if $ANNOUNCEMENT}
-						<button
-							class="slds-button slds-button_icon slds-button_icon-border-filled"
-							aria-haspopup="true"
-							style="transform: scale(-1,1); color: #d3451d;">
-								<svg class="slds-button__icon" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#announcement"></use>
-								</svg>
-						</button>
-						{/if}
-						<div class="slds-button-group" role="group">
-							{* Search button *}
-							{if $CHECK.index eq 'yes'
-								&& ($smarty.request.action eq 'ListView' || $smarty.request.action eq 'index')
-								&& $MODULE neq 'Emails'
-								&& $MODULE neq 'Calendar4You'
-							}
-								{$searchdisabled = false}
-							{else}
-								{$searchdisabled = true}
-							{/if}
+			{if $Application_Toolbar_Show}
+				<div class="slds-page-header__col-controls">
+					<div class="slds-page-header__controls">
+						<div class="slds-page-header__control">
+							{if $ANNOUNCEMENT}
 							<button
 								class="slds-button slds-button_icon slds-button_icon-border-filled"
 								aria-haspopup="true"
-								{if $searchdisabled == true}disabled=""{/if}
-								title="{$APP.LBL_SEARCH_TITLE}{$MODULE|getTranslatedString:$MODULE}..."
-								onClick="searchshowhide('searchAcc','advSearch');mergehide('mergeDup')">
+								style="transform: scale(-1,1); color: #d3451d;">
 									<svg class="slds-button__icon" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#announcement"></use>
 									</svg>
-									<span class="slds-assistive-text">
-										{$APP.LBL_SEARCH_TITLE}{$MODULE|getTranslatedString:$MODULE}...
-									</span>
-							</button>
-							{* Calendar button *}
-							{if $CALENDAR_DISPLAY eq 'true'}
-								{$canusecalendar = true}
-								{if $CHECK.Calendar != 'yes'}
-									{$canusecalendar = false}
-								{/if}
-							<button
-								class="slds-button slds-button_icon slds-button_icon-border-filled"
-								aria-haspopup="true"
-								{if $canusecalendar == false}disabled=""{/if}
-								onclick="fnvshobj(this,'miniCal');getITSMiniCal('');"
-								title="{$APP.LBL_CALENDAR_TITLE}">
-									<svg class="slds-button__icon" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#monthlyview"></use>
-									</svg>
-									<span class="slds-assistive-text">
-										{$APP.LBL_CALENDAR_TITLE}
-									</span>
 							</button>
 							{/if}
-							{* World clock button *}
-							{if $WORLD_CLOCK_DISPLAY eq 'true'}
-							<button
-								class="slds-button slds-button_icon slds-button_icon-border-filled"
-								aria-haspopup="true"
-								onClick="fnvshobj(this,'wclock');"
-								title="{$APP.LBL_CLOCK_TITLE}">
-									<svg class="slds-button__icon" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#world"></use>
-									</svg>
-									<span class="slds-assistive-text">
-										{$APP.LBL_CLOCK_TITLE}
-									</span>
-							</button>
-							{/if}
-							{* Import button *}
-							{if $CHECK.Import eq 'yes'
-								&& $MODULE neq 'Documents'
-								&& $MODULE neq 'Calendar4You'
-							}
-							<a
-								class="slds-button slds-button_icon slds-button_icon-border-filled"
-								aria-haspopup="true"
-								title="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}"
-								href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=index">
-									<svg class="slds-button__icon" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
-									</svg>
-									<span class="slds-assistive-text">
-										{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}
-									</span>
-							</a>
-							{elseif $CHECK.Import eq 'yes' && $MODULE eq 'Calendar4You'}
-							<button
-								class="slds-button slds-button_icon slds-button_icon-border-filled"
-								aria-haspopup="true"
-								onclick="fnvshobj(this,'CalImport');"
-								title="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}">
-									<svg class="slds-button__icon" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
-									</svg>
-									<span class="slds-assistive-text">
-										{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}
-									</span>
-							</button>
-							{/if}
-							{* Export Button *}
-							{if $CHECK.Export eq 'yes'}
-								{if $MODULE eq 'Calendar4You'}
-									{$exportbuttononclick = "fnvshobj(this,'CalExport');"}
+							<div class="slds-button-group" role="group">
+								{* Search button *}
+								{if $CHECK.index eq 'yes'
+									&& ($smarty.request.action eq 'ListView' || $smarty.request.action eq 'index')
+									&& $MODULE neq 'Emails'
+									&& $MODULE neq 'Calendar4You'
+								}
+									{$searchdisabled = false}
 								{else}
-									{$exportbuttononclick = "return selectedRecords('{$MODULE}')"}
+									{$searchdisabled = true}
 								{/if}
-							{/if}
-							{if isset($exportbuttononclick)}
-							<button
-								class="slds-button slds-button_icon slds-button_icon-border-filled"
-								aria-haspopup="true"
-								onclick="{$exportbuttononclick}"
-								title="{$APP.LBL_EXPORT} {$MODULE|getTranslatedString:$MODULE}">
-									<svg class="slds-button__icon" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>
-									</svg>
-									<span class="slds-assistive-text">
-										{$APP.LBL_EXPORT} {$MODULE|getTranslatedString:$MODULE}
-									</span>
-							</button>
-							{/if}
-							{* Deduplicate button *}
-							{if $CHECK.DuplicatesHandling eq 'yes'
-								&& $MODULE neq 'Calendar4You'
-								&& ($smarty.request.action eq 'ListView' || $smarty.request.action eq 'index')
-							}
-							<button
-								class="slds-button slds-button_icon slds-button_icon-border-filled"
-								aria-haspopup="true"
-								onclick="mergeshowhide('mergeDup');searchhide('searchAcc','advSearch');"
-								title="{$APP.LBL_FIND_DUPLICATES}">
-									<svg class="slds-button__icon" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#crossfilter"></use>
-									</svg>
-									<span class="slds-assistive-text">
-										{$APP.LBL_FIND_DUPLICATES}
-									</span>
-							</button>
-							{/if}
-							{* Calendar4You stuff *}
-							{if $MODULE eq 'Calendar4You'}
-								{* Calendar settings button *}
-								{if $MODE neq 'DetailView' && $MODE neq 'EditView' && $MODE neq 'RelatedList'}
 								<button
 									class="slds-button slds-button_icon slds-button_icon-border-filled"
 									aria-haspopup="true"
-									onclick="fnvshobj(this,'calSettings'); getITSCalSettings();"
-									title="Settings">
+									{if $searchdisabled == true}disabled=""{/if}
+									title="{$APP.LBL_SEARCH_TITLE}{$MODULE|getTranslatedString:$MODULE}..."
+									onClick="searchshowhide('searchAcc','advSearch');mergehide('mergeDup')">
 										<svg class="slds-button__icon" aria-hidden="true">
-											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#metrics"></use>
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 										</svg>
-										<span class="slds-assistive-text">Settings</span>
+										<span class="slds-assistive-text">
+											{$APP.LBL_SEARCH_TITLE}{$MODULE|getTranslatedString:$MODULE}...
+										</span>
+								</button>
+								{* Calendar button *}
+								{if $CALENDAR_DISPLAY eq 'true'}
+									{$canusecalendar = true}
+									{if $CHECK.Calendar != 'yes'}
+										{$canusecalendar = false}
+									{/if}
+								<button
+									class="slds-button slds-button_icon slds-button_icon-border-filled"
+									aria-haspopup="true"
+									{if $canusecalendar == false}disabled=""{/if}
+									onclick="fnvshobj(this,'miniCal');getITSMiniCal('');"
+									title="{$APP.LBL_CALENDAR_TITLE}">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#monthlyview"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$APP.LBL_CALENDAR_TITLE}
+										</span>
 								</button>
 								{/if}
-								{* Tasks link *}
+								{* World clock button *}
+								{if $WORLD_CLOCK_DISPLAY eq 'true'}
+								<button
+									class="slds-button slds-button_icon slds-button_icon-border-filled"
+									aria-haspopup="true"
+									onClick="fnvshobj(this,'wclock');"
+									title="{$APP.LBL_CLOCK_TITLE}">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#world"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$APP.LBL_CLOCK_TITLE}
+										</span>
+								</button>
+								{/if}
+								{* Import button *}
+								{if $CHECK.Import eq 'yes'
+									&& $MODULE neq 'Documents'
+									&& $MODULE neq 'Calendar4You'
+								}
 								<a
 									class="slds-button slds-button_icon slds-button_icon-border-filled"
 									aria-haspopup="true"
-									title="{'Tasks'|getTranslatedString:$MODULE}"
-									href="index.php?module=cbCalendar&action=index">
+									title="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}"
+									href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=index">
 										<svg class="slds-button__icon" aria-hidden="true">
-											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#task"></use>
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
 										</svg>
 										<span class="slds-assistive-text">
-											{'Tasks'|getTranslatedString:$MODULE}
+											{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}
 										</span>
 								</a>
-							{/if}
-							{* General settings button *}
-							{if $CHECK.moduleSettings eq 'yes'}
-							<a
-								class="slds-button slds-button_icon slds-button_icon-border-filled"
-								aria-haspopup="true"
-								title="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}"
-								href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}">
-									<svg class="slds-button__icon" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
-									</svg>
-									<span class="slds-assistive-text">
-										{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}
-									</span>
-							</a>
-							{/if}
+								{elseif $CHECK.Import eq 'yes' && $MODULE eq 'Calendar4You'}
+								<button
+									class="slds-button slds-button_icon slds-button_icon-border-filled"
+									aria-haspopup="true"
+									onclick="fnvshobj(this,'CalImport');"
+									title="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}
+										</span>
+								</button>
+								{/if}
+								{* Export Button *}
+								{if $CHECK.Export eq 'yes'}
+									{if $MODULE eq 'Calendar4You'}
+										{$exportbuttononclick = "fnvshobj(this,'CalExport');"}
+									{else}
+										{$exportbuttononclick = "return selectedRecords('{$MODULE}')"}
+									{/if}
+								{/if}
+								{if isset($exportbuttononclick)}
+								<button
+									class="slds-button slds-button_icon slds-button_icon-border-filled"
+									aria-haspopup="true"
+									onclick="{$exportbuttononclick}"
+									title="{$APP.LBL_EXPORT} {$MODULE|getTranslatedString:$MODULE}">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$APP.LBL_EXPORT} {$MODULE|getTranslatedString:$MODULE}
+										</span>
+								</button>
+								{/if}
+								{* Deduplicate button *}
+								{if $CHECK.DuplicatesHandling eq 'yes'
+									&& $MODULE neq 'Calendar4You'
+									&& ($smarty.request.action eq 'ListView' || $smarty.request.action eq 'index')
+								}
+								<button
+									class="slds-button slds-button_icon slds-button_icon-border-filled"
+									aria-haspopup="true"
+									onclick="mergeshowhide('mergeDup');searchhide('searchAcc','advSearch');"
+									title="{$APP.LBL_FIND_DUPLICATES}">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#crossfilter"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$APP.LBL_FIND_DUPLICATES}
+										</span>
+								</button>
+								{/if}
+								{* Calendar4You stuff *}
+								{if $MODULE eq 'Calendar4You'}
+									{* Calendar settings button *}
+									{if $MODE neq 'DetailView' && $MODE neq 'EditView' && $MODE neq 'RelatedList'}
+									<button
+										class="slds-button slds-button_icon slds-button_icon-border-filled"
+										aria-haspopup="true"
+										onclick="fnvshobj(this,'calSettings'); getITSCalSettings();"
+										title="Settings">
+											<svg class="slds-button__icon" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#metrics"></use>
+											</svg>
+											<span class="slds-assistive-text">Settings</span>
+									</button>
+									{/if}
+									{* Tasks link *}
+									<a
+										class="slds-button slds-button_icon slds-button_icon-border-filled"
+										aria-haspopup="true"
+										title="{'Tasks'|getTranslatedString:$MODULE}"
+										href="index.php?module=cbCalendar&action=index">
+											<svg class="slds-button__icon" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#task"></use>
+											</svg>
+											<span class="slds-assistive-text">
+												{'Tasks'|getTranslatedString:$MODULE}
+											</span>
+									</a>
+								{/if}
+								{* General settings button *}
+								{if $CHECK.moduleSettings eq 'yes'}
+								<a
+									class="slds-button slds-button_icon slds-button_icon-border-filled"
+									aria-haspopup="true"
+									title="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}"
+									href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
+										</svg>
+										<span class="slds-assistive-text">
+											{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}
+										</span>
+								</a>
+								{/if}
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			{/if}
 		</div>
 		{/if}
 	</div>
