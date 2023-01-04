@@ -133,7 +133,7 @@ $(function() {
 					const advSearch = [{
 						'columnname': rowFields[thHeaderName.html()],
 						'comparator': 'e',
-						'value': e.target.innerText,
+						'value': encodeURIComponent(e.target.innerText),
 						'groupid': 1,
 						'columncondition': 'and'
 					}];
