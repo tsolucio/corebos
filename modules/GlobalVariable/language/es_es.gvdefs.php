@@ -1804,6 +1804,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'MapID o texto',
 	'definition' => 'Título de la pestaña del navegador. Puede ser un ID de mapa de expresión',
 ),
+'Application_Header_Buttons_Position' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => 'porcentaje',
+	'definition' => 'Porcentaje de espacio de encabezado que se deja para el título antes de colocar los botones. Por defecto, los botones estarán alineados a la derecha.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

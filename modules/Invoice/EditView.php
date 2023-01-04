@@ -491,6 +491,7 @@ $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('Inventory_Pro
 $smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inventory_ListPrice_ReadOnly', '0', $currentModule, $current_user->id));
 $smarty->assign('Inventory_Comment_Style', GlobalVariable::getVariable('Inventory_Comment_Style', 'width:70%;height:40px;', $currentModule, $current_user->id));
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
+$smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
 //Set taxt type group or individual by default when create
 $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule, $current_user->id));
 $smarty->assign('TAXFILLINMODE', GlobalVariable::getVariable('Inventory_Tax_FillInMode', 'All', $currentModule, $current_user->id));
@@ -498,15 +499,6 @@ $smarty->assign('TAXFILLINMODE', GlobalVariable::getVariable('Inventory_Tax_Fill
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 $smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $currentModule, $current_user->id));
 $smarty->assign('ShowInventoryLines', strpos(GlobalVariable::getVariable('Inventory_DoNotUseLines', '', $currentModule, $current_user->id), $currentModule)===false);
-
-if (empty($associated_prod) && GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1
-		&& isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'sotoinvoice'
-) {
-	$smarty->assign('OPERATION_MESSAGE', $app_strings['LBL_NOPRODUCTS']);
-	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
-} else {
-	$smarty->display('Inventory/InventoryEditView.tpl');
-}
 
 // sending PopupFilter map results to the frontEnd
 $bmapname = $currentModule.'_PopupFilter';
@@ -518,5 +510,13 @@ if ($Mapid) {
 	$MapObject->retrieve_entity_info($Mapid, 'cbMap');
 	$MapResult = $MapObject->PopupFilter($record, $currentModule);
 	$smarty->assign('PopupFilterMapResults', $MapResult);
+}
+if (empty($associated_prod) && GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1
+	&& isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'sotoinvoice'
+) {
+	$smarty->assign('OPERATION_MESSAGE', $app_strings['LBL_NOPRODUCTS']);
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+} else {
+	$smarty->display('Inventory/InventoryEditView.tpl');
 }
 ?>

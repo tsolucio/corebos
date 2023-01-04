@@ -41,7 +41,7 @@
 <div id="page-header-placeholder"></div>
 <div id="page-header" class="slds-page-header slds-m-vertical_medium noprint">
 	<div class="slds-page-header__row">
-		<div class="slds-page-header__col-title">
+		<div class="slds-page-header__col-title"{if !empty($App_Header_Buttons_Position)} style="flex: 0 1 {$App_Header_Buttons_Position}%"{/if}>
 			<div class="slds-media">
 				<div class="slds-media__figure">
 					<a class="hdrLink" href="index.php?action={$action}&module={$MODULE}">

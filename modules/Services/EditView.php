@@ -263,7 +263,7 @@ $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndR
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule, (empty($focus->mode) ? 'create' : 'edit'));
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
-$smarty->display('Inventory/InventoryEditView.tpl');
+$smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
 
 // sending PopupFilter map results to the frontEnd
 $bmapname = $currentModule.'_PopupFilter';
@@ -276,4 +276,5 @@ if ($Mapid) {
 	$MapResult = $MapObject->PopupFilter($record, $currentModule);
 	$smarty->assign('PopupFilterMapResults', $MapResult);
 }
+$smarty->display('Inventory/InventoryEditView.tpl');
 ?>

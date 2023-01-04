@@ -1804,6 +1804,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'MapID or string',
 	'definition' => 'Browser tab title. Can be an expression business map ID',
 ),
+'Application_Header_Buttons_Position' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => 'percentage',
+	'definition' => 'Percentage of header space to leave for title before placing the buttons. By default buttons will be aligned to the right.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {
