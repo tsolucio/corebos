@@ -49,14 +49,11 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 		$rs = $adb->pquery(
 			'select vtiger_attachments.attachmentsid,vtiger_attachments.type filetype,vtiger_attachments.path,vtiger_attachments.name,vtiger_notes.title,vtiger_notes.notesid
 			from vtiger_notes
-			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
-			left join vtiger_notescf ON vtiger_notescf.notesid=vtiger_notes.notesid
 			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
+			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
 			inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid
-			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
-			left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
 			where crm2.crmid=? and vtiger_notes.filetype in ("image/png", "image/jpg", "image/jpeg") order by vtiger_attachments.attachmentsid',
 			array($ID)
 		);
