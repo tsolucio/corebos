@@ -68,15 +68,19 @@ if ($cbMapid) {
 		$namerow = array();
 		$namecol = array();
 		$record = array();
-
+		$rowlinks = array();
 		foreach ($rows as $rw) {
+			$rlabel = getTranslatedString($rw['label']);
 			$namerow[] = $rw['name'];
-			$namelabelrow[] = getTranslatedString($rw['label']);
+			$namelabelrow[] = $rlabel;
+			$rowlinks[$rlabel] = getFieldForAdvancedSearch($rw['name'], $currentModule);
 		}
 		foreach ($cols as $cl) {
+			$clabel = getTranslatedString($cl['label']);
 			$namecol[] = $cl['name'];
-			$namelabelcol[] = getTranslatedString($cl['label']);
+			$namelabelcol[] = $clabel;
 			$namecolaggr[] = $cl['name'];
+			$rowlinks[$clabel] = getFieldForAdvancedSearch($cl['name'], $currentModule);
 		}
 		if (isset($fieldaggr) && $fieldaggr!='') {
 			$aggreg='aggregator: sum(intFormat)(["'.$fieldaggr.'"]),';
@@ -88,6 +92,7 @@ if ($cbMapid) {
 		if (!empty($aggregations)) {
 			foreach ($aggregations as $agg) {
 				$aggcols[] = $agg['arguments'][0];
+				$rowlinks[$agg['name']] = getFieldForAdvancedSearch($agg['name'], $currentModule);
 			}
 		}
 		$queryGenerator = new QueryGenerator($currentModule, $current_user);
@@ -131,6 +136,9 @@ if ($cbMapid) {
 			}
 			$rec++;
 			$mainfield = getEntityField($currentModule)['fieldname'];
+			if (!isset($rowlinks['Name'])) {
+				$rowlinks['Name'] = getFieldForAdvancedSearch($mainfield, $currentModule);
+			}
 			$record[$rec] = '"Name":"'.addslashes(getTranslatedString(decode_html($adb->query_result($list_query, $i, $mainfield)))).'"';
 			if (!empty($aggregations)) {
 				$currentRow = array();
@@ -153,6 +161,7 @@ if ($cbMapid) {
 		$smarty->assign('COLS', $namecl);
 		$smarty->assign('RECORDS', $recordsimpl);
 		$smarty->assign('bmapname', $bmapname);
+		$smarty->assign('rowlinks', json_encode($rowlinks));
 	}
 } else {
 	$smarty->assign('showDesert', true);
