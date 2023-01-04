@@ -427,20 +427,20 @@
 					{/if}
 				</div>
 			</div>
+			{if $ANNOUNCEMENT}
+			<button
+				class="slds-button slds-button_icon slds-button_icon-border-filled"
+				aria-haspopup="true"
+				style="transform: scale(-1,1); color: #d3451d;">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#announcement"></use>
+					</svg>
+			</button>
+			{/if}
 			{if $Application_Toolbar_Show}
 				<div class="slds-page-header__col-controls">
 					<div class="slds-page-header__controls">
 						<div class="slds-page-header__control">
-							{if $ANNOUNCEMENT}
-							<button
-								class="slds-button slds-button_icon slds-button_icon-border-filled"
-								aria-haspopup="true"
-								style="transform: scale(-1,1); color: #d3451d;">
-									<svg class="slds-button__icon" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#announcement"></use>
-									</svg>
-							</button>
-							{/if}
 							<div class="slds-button-group" role="group">
 								{* Search button *}
 								{if $CHECK.index eq 'yes'
