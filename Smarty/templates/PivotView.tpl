@@ -25,6 +25,7 @@
 <script type="text/javascript">
 {literal}
 const bmapname = {/literal}'{$bmapname}'{literal};
+const rowlinks = {/literal}'{$rowlinks}'{literal};
 $(function() {
 	let url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getMapByName&mapname=${bmapname}`;
 	fetch(
@@ -121,6 +122,24 @@ $(function() {
 						fields = Array();
 					}
 				}
+			},
+			onRefresh: function(config) {
+				let rowFields = JSON.parse(rowlinks);
+				$('.pvtRowLabel').click(function(e) {
+					let vTotalAxisLabels = $('.pvtAxisLabel').length;
+					let vTotalRowLabels =  ($(this).siblings('th').length)+1;
+					let vColRowLabels = vTotalAxisLabels - vTotalRowLabels ;
+					let thHeaderName = $('.pvtAxisLabel').eq($(this).index()+vColRowLabels);
+					const advSearch = [{
+						'columnname': rowFields[thHeaderName.html()],
+						'comparator': 'e',
+						'value': encodeURIComponent(e.target.innerText),
+						'groupid': 1,
+						'columncondition': 'and'
+					}];
+					const urlstring = `${JSON.stringify(advSearch)}&advft_criteria_groups=[null,{"groupcondition":""}]`;
+					window.open(`index.php?module=${gVTModule}&action=index&query=true&search=true&searchtype=advance&advft_criteria=${urlstring}`, '_blank');
+				});
 			}
 		};
 		const aggregatorName = {/literal}'{$aggregatorName}'{literal};
