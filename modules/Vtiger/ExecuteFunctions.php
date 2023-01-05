@@ -660,7 +660,7 @@ switch ($functiontocall) {
 		$tabid = getTabid($modulename);
 		$fields = explode(',', $fields);
 		$rs = $adb->pquery(
-			'SELECT tablename, fieldname, columnname, fieldlabel, typeofdata FROM vtiger_field WHERE tabid=? AND fieldname IN ('.generateQuestionMarks($fields).')', 
+			'SELECT tablename, fieldname, columnname, fieldlabel, typeofdata FROM vtiger_field WHERE tabid=? AND fieldname IN ('.generateQuestionMarks($fields).')',
 			array($tabid, $fields)
 		);
 		$fieldInfo = array();
