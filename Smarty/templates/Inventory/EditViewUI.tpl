@@ -115,18 +115,10 @@ alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedStr
 				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
 alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 			</span>
-
-		{elseif $uitype eq 2}
-			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
-			</span>
-			<span class="mdCellInfo">
-				<input type="text" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" value="{$fldvalue}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'">
-			</span>
 		{elseif $uitype eq 3 || $uitype eq 4}<!-- Non Editable field, only configured value will be loaded -->
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}"><font color="red">{$mandatory_field}</font>{$usefldlabel}</span>
 			<span class="mdCellInfo"><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span>
-		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 13 || $uitype eq 7}
+		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 2 || $uitype eq 13 || $uitype eq 7}
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}"><font color="red">{$mandatory_field}</font>{$usefldlabel}</span>
 			<span class="mdCellInfo"><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span><br>
 		{elseif $uitype eq 9}
