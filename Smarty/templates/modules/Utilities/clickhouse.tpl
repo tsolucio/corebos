@@ -136,6 +136,3 @@
 		</div>
 	</div>
 </section>
-<script>
-$.getScript('modules/Utilities/Utilities.js', function () {});
-</script>
