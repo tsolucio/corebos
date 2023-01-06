@@ -184,7 +184,16 @@ class corebos_clickhouse {
 
 	public function addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name = '', $old_table_name = '') {
 		global $adb;
+		$result = [
+			'success' => false,
+			'message' => getTranslatedString('clickhouse_upserterror', 'Utilities'),
+		];
+		$check = $adb->pquery('select 1 from vtiger_ws_entity where `name`=?', [$ws_name]);
 		if ($old_table_name === '' || $old_ws_name === '') {
+			if ($check && $adb->num_rows($check)>0) {
+				$result['message'] = getTranslatedString('clickhouse_tableexists', 'Utilities');
+				return $result;
+			}
 			$query = 'INSERT INTO `vtiger_ws_clickhousetables` (`ws_name`, `table_name`, `access`, `create`, `read`, `write`) VALUES (?,?,?,?,?,?)';
 			$res = $adb->pquery($query, array($ws_name, $table_name, $access, $create, $read, $write));
 			if ($res) {
@@ -195,10 +204,23 @@ class corebos_clickhouse {
 					array($wsid, $ws_name)
 				);
 				$adb->pquery('INSERT INTO vtiger_ws_entity_tables (webservice_entity_id, table_name) VALUES (?, ?)', array($wsid, $table_name));
-				return true;
+				return ['success' => true];
 			}
 		} else {
-			$reference = '';
+			if ($ws_name == $old_ws_name && (!$check || $adb->num_rows($check)!=1)) {
+				return $result;
+			}
+			if ($ws_name != $old_ws_name) {
+				if ($check && $adb->num_rows($check)>0) {
+					$result['message'] = getTranslatedString('clickhouse_tableexists', 'Utilities');
+					return $result;
+				}
+				$check = $adb->pquery('select 1 from vtiger_ws_entity where `name`=? and handler_class=?', [$old_ws_name, 'VtigerClickHouseOperation']);
+				if (!$check || $adb->num_rows($check)==0) {
+					$result['message'] = getTranslatedString('clickhouse_tableexists', 'Utilities');
+					return $result;
+				}
+			}
 			$query = 'UPDATE vtiger_ws_clickhousetables SET `ws_name`=?,`table_name`=?,`access`=?,`create`=?,`read`=?,`write`=? WHERE ';
 			if ($old_ws_name === '') {
 				$query.= 'table_name=?';
@@ -210,17 +232,17 @@ class corebos_clickhouse {
 			$res = $adb->pquery($query, array($ws_name, $table_name, $access, $create, $read, $write, $reference));
 			if ($res) {
 				if ($ws_name !== $old_ws_name) {
-					$adb->pquery('UPDATE vtiger_ws_entity SET name=? WHERE name=?', array($ws_name, $old_ws_name));
+					$adb->pquery('UPDATE vtiger_ws_entity SET name=? WHERE name=? and handler_class=?', array($ws_name, $old_ws_name, 'VtigerClickHouseOperation'));
 				}
 				if ($table_name !== $old_table_name) {
 					$adb->pquery('UPDATE vtiger_ws_entity_tables SET table_name=? WHERE table_name=?', array($table_name, $old_table_name));
 				}
-				return true;
+				return ['success' => true];
 			} else {
-				return $res;
+				return $result;
 			}
 		}
-		return false;
+		return $result;
 	}
 
 	public function getTables() {

@@ -690,15 +690,7 @@ switch ($functiontocall) {
 			$write = $_REQUEST['write'];
 			$old_ws_name = $_REQUEST['old_ws_name'];
 			$old_table_name = $_REQUEST['old_table_name'];
-			$res = $clickHouse->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name, $old_table_name);
-			if ($res) {
-				$success = true;
-			} else {
-				$success = false;
-			}
-			$ret = array(
-				'success' => $success,
-			);
+			$ret = $clickHouse->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name, $old_table_name);
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
 			$grid = new GridListView('Utilities');
 			$q = 'select * from vtiger_ws_clickhousetables';

@@ -170,6 +170,9 @@ $mod_strings = array(
 	'clickhouse_active' => 'Active',
 	'clickhouse_database' => 'Database',
 	'clickhouse_query' => 'ClickHouse Query (limited to 100 rows)',
+	'clickhouse_webhook_secret' => 'Webhook Secret',
+	'clickhouse_tableexists' => 'A web service table with that name already exists.',
+	'clickhouse_upserterror' => 'Error with clickhouse webservice upsert query.',
 	'mautic_webhook_secret' => 'Webhook Secret',
 	'Facebook Activation' => 'Facebook Activation',
 	'Facebook Activation_Desc' => 'Facebook Configuration',
@@ -178,6 +181,5 @@ $mod_strings = array(
 	'facebook_destination_module' => 'Destination Module',
 	'Unable2Connect' => 'Unable to connect',
 	'Able2Connect' => 'Able to connect',
-	'clickhouse_webhook_secret' => 'Webhook Secret',
 );
 ?>

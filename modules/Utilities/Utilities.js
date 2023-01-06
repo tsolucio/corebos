@@ -486,9 +486,11 @@ function updateAjax(data) {
 		url: `${defaultURL}&functiontocall=clickHouse&method=addUpdateTable`,
 		data: data
 	}).then(function (response) {
-		if (response.success) {
-			gridInstance.reloadData();
+		response = JSON.parse(response);
+		if (!response.success) {
+			Utilities.show_error(response.message);
 		}
+		gridInstance.reloadData();
 	});
 }
 
