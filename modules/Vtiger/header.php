@@ -120,6 +120,7 @@ $Application_Global_Search_Active = GlobalVariable::getVariable('Application_Glo
 $smarty->assign('Application_Global_Search_Active', $Application_Global_Search_Active);
 $smarty->assign('Application_Menu_Direction', GlobalVariable::getVariable('Application_Menu_Direction', 'Horizontal'));
 $smarty->assign('Application_Menu_Show', GlobalVariable::getVariable('Application_Menu_Show', '1'));
+$smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
 $smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
 
 $smarty->assign('HELP_URL', GlobalVariable::getVariable('Application_Help_URL', 'https://corebos.org/documentation'));

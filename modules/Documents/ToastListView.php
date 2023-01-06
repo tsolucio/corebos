@@ -157,6 +157,7 @@ $smarty->assign('EDIT_FILTER_ALL', GlobalVariable::getVariable('Application_Filt
 $smarty->assign('moduleView', GlobalVariable::getVariable('Application_ListView_Layout', 'table'));
 $smarty->assign('Apache_Tika_URL', GlobalVariable::getVariable('Apache_Tika_URL', ''));
 $smarty->assign('ShowCreateMessage', GlobalVariable::getVariable('Application_ListView_Show_Create_Message', '0'));
+$smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
 $smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
 
 // send advancedSearch business map data to the frontEnd
