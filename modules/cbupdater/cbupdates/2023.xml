@@ -14,4 +14,11 @@
 	<classname>addBAtypesForLVButton</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add coreBOS Web Service Authentication Token</description>
+	<filename>build/changeSets/2023/addcoreBOSAuthWSToken.php</filename>
+	<classname>addcoreBOSAuthWSToken</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

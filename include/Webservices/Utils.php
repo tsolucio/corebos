@@ -205,6 +205,31 @@ function vtws_getParameter($parameterArray, $paramName, $default = null) {
 	return $param;
 }
 
+function vtws_convertToken2Session($authorization) {
+	global $adb;
+	$qg = new QueryGenerator('cbCredentials', Users::getActiveAdminUser());
+	$qg->setFields(['id', 'assigned_user_id']);
+	$now = date('Y-m-d H:i:s');
+	$qg->addCondition('adapter', 'coreBOSWSAuthToken', 'e', $qg::$AND);
+	$qg->addCondition('cbauthtoken', $authorization, 'e', $qg::$AND);
+	$qg->addCondition('cbauthstart', $now, 'b', $qg::$AND);
+	$qg->addCondition('cbauthend', $now, 'a', $qg::$AND);
+	$check = $adb->query($qg->getQuery());
+	if ($check && $adb->num_rows($check)>0) {
+		$usrid = $check->fields['smownerid'];
+		$check = $adb->pquery('SELECT session_id FROM session_data WHERE section=? AND userid=?', ['cbws', $usrid]);
+		if ($check && $adb->num_rows($check)>0) {
+			return $check->fields['session_id'];
+		} else {
+			$userDetails = new Users();
+			$userDetails->retrieveCurrentUserInfoFromFile($usrid);
+			$sesinfo = vtws_registerSession($userDetails);
+			return $sesinfo['sessionName'];
+		}
+	}
+	return $authorization;
+}
+
 function vtws_registerSession($userDetails) {
 	global $API_VERSION, $adb;
 	coreBOS_Session::set('authenticated_user_id', $userDetails->id);
