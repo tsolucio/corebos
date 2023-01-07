@@ -177,7 +177,7 @@ class freetag {
 		$prefix = $this->_table_prefix;
 
 		$sql = "SELECT DISTINCT object_id
-			FROM ${prefix}freetagged_objects INNER JOIN ${prefix}freetags ON (tag_id = id)
+			FROM {$prefix}freetagged_objects INNER JOIN {$prefix}freetags ON (tag_id = id)
 			WHERE $where
 			ORDER BY object_id ASC
 			LIMIT $offset, $limit";
@@ -223,7 +223,7 @@ class freetag {
 		$prefix = $this->_table_prefix;
 
 		$sql = "SELECT DISTINCT object_id
-			FROM ${prefix}freetagged_objects INNER JOIN ${prefix}freetags ON (tag_id = id)
+			FROM {$prefix}freetagged_objects INNER JOIN {$prefix}freetags ON (tag_id = id)
 			WHERE $where
 			ORDER BY object_id ASC";
 
@@ -278,12 +278,12 @@ class freetag {
 		// We must adjust for duplicate normalized tags appearing multiple times in the join by
 		// counting only the distinct tags. It should also work for an individual user.
 
-		$sql = "SELECT ${prefix}freetagged_objects.object_id, tag, COUNT(DISTINCT tag) AS uniques
-			FROM ${prefix}freetagged_objects 
-			INNER JOIN ${prefix}freetags ON (${prefix}freetagged_objects.tag_id = ${prefix}freetags.id)
-			WHERE ${prefix}freetags.tag IN (". generateQuestionMarks($tagArray) .")
+		$sql = "SELECT {$prefix}freetagged_objects.object_id, tag, COUNT(DISTINCT tag) AS uniques
+			FROM {$prefix}freetagged_objects
+			INNER JOIN {$prefix}freetags ON ({$prefix}freetagged_objects.tag_id = {$prefix}freetags.id)
+			WHERE {$prefix}freetags.tag IN (". generateQuestionMarks($tagArray) .")
 			$tagger_sql
-			GROUP BY ${prefix}freetagged_objects.object_id
+			GROUP BY {$prefix}freetagged_objects.object_id
 			HAVING uniques = $numTags
 			LIMIT $offset, $limit";
 		$this->debug_text("Tag combo: " . join("+", $tagArray) . " SQL: $sql");
@@ -328,7 +328,7 @@ class freetag {
 		$prefix = $this->_table_prefix;
 
 		$sql = "SELECT DISTINCT object_id
-			FROM ${prefix}freetagged_objects INNER JOIN ${prefix}freetags ON (tag_id = id)
+			FROM {$prefix}freetagged_objects INNER JOIN {$prefix}freetags ON (tag_id = id)
 			WHERE $where
 			ORDER BY object_id ASC
 			LIMIT $offset, $limit ";
@@ -383,7 +383,7 @@ class freetag {
 		global $adb;
 
 		$sql = "SELECT DISTINCT tag, raw_tag, tagger_id, id
-			FROM ${prefix}freetagged_objects INNER JOIN ${prefix}freetags ON (tag_id = id)
+			FROM {$prefix}freetagged_objects INNER JOIN {$prefix}freetags ON (tag_id = id)
 			WHERE $where
 			ORDER BY id ASC
 			$limit_sql";
@@ -441,9 +441,9 @@ class freetag {
 			$tagger_sql = " AND tagger_id = ? ";
 			array_push($params, $tagger_id);
 		} else $tagger_sql = "";
-		$sql = "SELECT COUNT(*) as count 
-			FROM ${prefix}freetagged_objects INNER JOIN ${prefix}freetags ON (tag_id = id)
-			WHERE 1=1 
+		$sql = "SELECT COUNT(*) as count
+			FROM {$prefix}freetagged_objects INNER JOIN {$prefix}freetags ON (tag_id = id)
+			WHERE 1=1
 			$tagger_sql
 			AND object_id = ?
 			AND tag = ? ";
@@ -454,21 +454,21 @@ class freetag {
 			return true;
 		}
 		// Then see if a raw tag in this form exists.
-		$sql = "SELECT id FROM ${prefix}freetags WHERE raw_tag = ? ";
+		$sql = "SELECT id FROM {$prefix}freetags WHERE raw_tag = ? ";
 		$rs = $adb->pquery($sql, array($tag));
 		if(!$rs->EOF) {
 			$tag_id = $rs->fields['id'];
 		} else {
 			// Add new tag!
 			$tag_id = $adb->getUniqueId('vtiger_freetags');
-			$sql = "INSERT INTO ${prefix}freetags (id, tag, raw_tag) VALUES (?,?,?)";
+			$sql = "INSERT INTO {$prefix}freetags (id, tag, raw_tag) VALUES (?,?,?)";
 			$params = array($tag_id, $normalized_tag, $tag);
 			$rs = $adb->pquery($sql, $params);
 		}
 		if(!($tag_id > 0)) {
 			return false;
 		}
-		$sql = "INSERT INTO ${prefix}freetagged_objects
+		$sql = "INSERT INTO {$prefix}freetagged_objects
 			(tag_id, tagger_id, object_id, tagged_on, module) VALUES (?,?,?, NOW(),?)";
 		$params = array($tag_id, $tagger_id, $object_id, $module);
 		$rs = $adb->pquery($sql, $params);
@@ -532,7 +532,7 @@ class freetag {
 		foreach ($valid_tags_array as $tag) {
 			$tag_id = $this->get_raw_tag_id($tag);
 			if ($tag_id > 0) {
-				$sql = "DELETE FROM ${prefix}freetagged_objects WHERE tagger_id = ? AND object_id = ? AND tag_id = ? LIMIT 1";
+				$sql = "DELETE FROM {$prefix}freetagged_objects WHERE tagger_id = ? AND object_id = ? AND tag_id = ? LIMIT 1";
 				$params = array($tagger_id, $object_id, $tag_id);
 				$rs = $adb->pquery($sql, $params);
 				if (!$rs) $delok = false;
@@ -569,7 +569,7 @@ class freetag {
 		foreach ($valid_tags_array as $tag) {
 			$tag_id = $this->get_raw_tag_id($tag);
 			if ($tag_id > 0) {
-				$sql = "DELETE FROM ${prefix}freetagged_objects WHERE object_id = ? AND tag_id = ?";
+				$sql = "DELETE FROM {$prefix}freetagged_objects WHERE object_id = ? AND tag_id = ?";
 				$params = array($object_id, $tag_id);
 				$rs = $adb->pquery($sql, $params);
 				if (!$rs) $delok = false;
@@ -596,7 +596,7 @@ class freetag {
 		global $adb;
 		$prefix = $this->_table_prefix;
 		if($object_id > 0) {
-			$sql = "DELETE FROM ${prefix}freetagged_objects WHERE object_id = ? ";
+			$sql = "DELETE FROM {$prefix}freetagged_objects WHERE object_id = ? ";
 			$rs = $adb->pquery($sql, array($object_id));
 			return true;
 		} else {
@@ -627,7 +627,7 @@ class freetag {
 		global $adb;
 		$prefix = $this->_table_prefix;
 		if($object_id > 0) {
-			$sql = "DELETE FROM ${prefix}freetagged_objects WHERE tagger_id = ? AND object_id = ?";
+			$sql = "DELETE FROM {$prefix}freetagged_objects WHERE tagger_id = ? AND object_id = ?";
 			$rs = $adb->pquery($sql, array($tagger_id, $object_id));
 			return true;
 		} else {
@@ -654,7 +654,7 @@ class freetag {
 		}
 		global $adb;
 		$prefix = $this->_table_prefix;
-		$sql = "SELECT id FROM ${prefix}freetags WHERE tag = ? LIMIT 1 ";
+		$sql = "SELECT id FROM {$prefix}freetags WHERE tag = ? LIMIT 1 ";
 		$rs = $adb->pquery($sql, array($tag));
 		return $rs->fields['id'];
 	}
@@ -677,7 +677,7 @@ class freetag {
 		}
 		global $adb;
 		$prefix = $this->_table_prefix;
-		$sql = "SELECT id FROM ${prefix}freetags WHERE raw_tag = ? LIMIT 1 ";
+		$sql = "SELECT id FROM {$prefix}freetags WHERE raw_tag = ? LIMIT 1 ";
 		$rs = $adb->pquery($sql, array($tag));
 		return $rs->fields['id'];
 	}
@@ -698,7 +698,7 @@ class freetag {
 		}
 		global $adb;
 		$prefix = $this->_table_prefix;
-		$sql = "SELECT tag FROM ${prefix}freetags WHERE id = ? LIMIT 1";
+		$sql = "SELECT tag FROM {$prefix}freetags WHERE id = ? LIMIT 1";
 		$rs = $adb->pquery($sql, array($tag_id));
 		return $rs->fields['tag'];
 	}
@@ -860,7 +860,7 @@ class freetag {
 		$prefix = $this->_table_prefix;
 
 		$sql = "SELECT tag, COUNT(*) as count
-			FROM ${prefix}freetags INNER JOIN ${prefix}freetagged_objects ON (id = tag_id)
+			FROM {$prefix}freetags INNER JOIN {$prefix}freetagged_objects ON (id = tag_id)
 			WHERE 1
 			$tagger_sql
 			GROUP BY tag
@@ -914,7 +914,7 @@ class freetag {
 		$sql = "";
 		if (!$tag) {
 			$sql = "SELECT DISTINCT object_id, tagged_on FROM
-				${prefix}freetagged_objects
+				{$prefix}freetagged_objects
 				WHERE 1
 				$tagger_sql
 				ORDER BY tagged_on DESC
@@ -922,7 +922,7 @@ class freetag {
 		} else {
 			$params = array_merge(array($tag) , $params);
 			$sql = "SELECT DISTINCT object_id, tagged_on
-				FROM ${prefix}freetagged_objects INNER JOIN ${prefix}freetags ON (tag_id = id)
+				FROM {$prefix}freetagged_objects INNER JOIN {$prefix}freetags ON (tag_id = id)
 				WHERE tag = $tag
 				$tagger_sql
 				ORDER BY tagged_on DESC
@@ -968,7 +968,7 @@ class freetag {
 		$prefix = $this->_table_prefix;
 
 		$sql = "SELECT COUNT(DISTINCT $distinct_col) as count
-			FROM ${prefix}freetags INNER JOIN ${prefix}freetagged_objects ON (id = tag_id)
+			FROM {$prefix}freetags INNER JOIN {$prefix}freetagged_objects ON (id = tag_id)
 			WHERE 1
 			$tagger_sql";
 
@@ -1099,8 +1099,8 @@ class freetag {
 
 		$prefix = $this->_table_prefix;
 		$sql = "SELECT tag,tag_id,COUNT(object_id) AS quantity
-			FROM ${prefix}freetags INNER JOIN ${prefix}freetagged_objects
-			ON (${prefix}freetags.id = tag_id)
+			FROM {$prefix}freetags INNER JOIN {$prefix}freetagged_objects
+			ON ({$prefix}freetags.id = tag_id)
 			WHERE 1=1
 			$tagger_sql
 			GROUP BY tag_id
@@ -1176,10 +1176,10 @@ class freetag {
 		$prefix = $this->_table_prefix;
 
 		$sql = "SELECT t1.tag, COUNT( o1.object_id ) AS quantity
-			FROM ${prefix}freetagged_objects o1
-			INNER JOIN ${prefix}freetags t1 ON ( t1.id = o1.tag_id )
-			INNER JOIN ${prefix}freetagged_objects o2 ON ( o1.object_id = o2.object_id )
-			INNER JOIN ${prefix}freetags t2 ON ( t2.id = o2.tag_id )
+			FROM {$prefix}freetagged_objects o1
+			INNER JOIN {$prefix}freetags t1 ON ( t1.id = o1.tag_id )
+			INNER JOIN {$prefix}freetagged_objects o2 ON ( o1.object_id = o2.object_id )
+			INNER JOIN {$prefix}freetags t2 ON ( t2.id = o2.tag_id )
 			WHERE t2.tag = ? AND t1.tag != ?
 			$where_sql
 			GROUP BY o1.tag_id
@@ -1255,8 +1255,8 @@ class freetag {
 		$prefix = $this->_table_prefix;
 
 		$sql = "SELECT matches.object_id, COUNT( matches.object_id ) AS num_common_tags
-			FROM ${prefix}freetagged_objects as matches
-			INNER JOIN ${prefix}freetags as tags ON ( tags.id = matches.tag_id )
+			FROM {$prefix}freetagged_objects as matches
+			INNER JOIN {$prefix}freetags as tags ON ( tags.id = matches.tag_id )
 			WHERE tags.tag IN (". generateQuestionMarks($tagArray) .")
 			GROUP BY matches.object_id
 			HAVING num_common_tags >= ?
