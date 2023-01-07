@@ -35,6 +35,7 @@ class QueryGenerator {
 	private $fields;
 	private $addJoinFields;
 	private $referenceModuleMetaInfo;
+	private $referenceModuleField;
 	private $moduleNameFields;
 	private $referenceFieldInfoList;
 	private $referenceFieldList;
