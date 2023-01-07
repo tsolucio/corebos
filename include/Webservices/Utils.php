@@ -205,6 +205,19 @@ function vtws_getParameter($parameterArray, $paramName, $default = null) {
 	return $param;
 }
 
+function vtws_registerSession($userDetails) {
+	global $API_VERSION, $adb;
+	coreBOS_Session::set('authenticated_user_id', $userDetails->id);
+	coreBOS_Session::saveUserID($userDetails->id, coreBOS_Session::id(), 'cbws');
+	if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1, 'Users', $userDetails->id)!=1) {
+		coreBOS_Session::deleteUserID($userDetails->id, coreBOS_Session::id(), 'cbws');
+	}
+	cbEventHandler::do_action('corebos.login', array($userDetails, null, 'webservice'));
+	$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
+	$userId = vtws_getId($webserviceObject->getEntityId(), $userDetails->id);
+	return array('sessionName'=>coreBOS_Session::id(), 'userId'=>$userId, 'version'=>$API_VERSION, 'vtigerVersion'=>vtws_getVtigerVersion());
+}
+
 function vtws_getQueableCommands() {
 	global $adb;
 	$wsops = $adb->query('SELECT name FROM vtiger_ws_operation where queable=1');
