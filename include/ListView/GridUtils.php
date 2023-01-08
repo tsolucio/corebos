@@ -441,7 +441,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 							"' onclick='javascript:dldCntIncrease($fileid);'>".textlength_check($fieldValue).'</a>';
 					} elseif ($downloadtype == 'E') {
 						$value = "<a target='_blank' href='$fieldValue' onclick='javascript:".
-							"dldCntIncrease($docid);' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module)."'>".textlength_check($fieldValue).'</a>';
+							"dldCntIncrease($notesid);' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module)."'>".textlength_check($fieldValue).'</a>';
 					} else {
 						$value = '--';
 					}
